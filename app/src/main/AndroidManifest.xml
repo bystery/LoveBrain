@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:name=".LoveBrainApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.LoveBrain">
+        <!-- /：allowBackup=false——画像/聊天归档/日志不进 Android 云备份
+             （EncryptedSharedPreferences 密文恢复到新机也解不开，备份无意义徒增泄漏面） -->
+
+        <!-- 悬浮窗服务（2026-08-11 v7 零保活：普通后台服务，无 FGS/无 STICKY/无自重启）
+             2026-08-12 修复矩形外露：加透明主题 → 窗口背景透明，圆角组件四角不再露出矩形底 -->
+        <service
+            android:name=".service.FloatingService"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 无障碍服务：感知微信"复制"点击，实现复制多条自动累积 -->
+        <service
+            android:name=".service.CopyCaptureService"
+            android:exported="false"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_config" />
+        </service>
+
+        <!-- 设置/引导 Activity -->
+        <activity
+            android:name=".ui.SetupActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.LoveBrain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 知识库列表页（.3） -->
+        <activity
+            android:name=".ui.KnowledgeBaseActivity"
+            android:exported="false"
+            android:label="知识库管理"
+            android:theme="@style/Theme.LoveBrain" />
+
+        <!-- 知识库详情/编辑页（.4） -->
+        <activity
+            android:name=".ui.KbEditActivity"
+            android:exported="false"
+            android:label="编辑知识库"
+            android:theme="@style/Theme.LoveBrain" />
+
+    </application>
+
+</manifest>

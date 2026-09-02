@@ -1,0 +1,61 @@
+# Release 自动构建工作流
+# 触发：推送 v* 格式 tag（如 v0.1.0、v1.1.0）
+# 产物：assembleRelease APK 自动上传到对应 GitHub Release，并自动生成 Release Notes
+#
+# ⚠️ 签名说明：app/build.gradle.kts 中 release 构建目前沿用 debug 签名（保守默认，
+#    产出可直接安装的 APK）。后续替换正式签名的位置有两处：
+#    1. 本文件 "TODO 正式签名" 标记处 —— 在 CI 中注入 keystore（建议用 repo secrets：
+#       KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS / KEY_PASSWORD，解码后写入
+#       keystore.properties，build.gradle.kts 读取并替换 signingConfig）
+#    2. app/build.gradle.kts 的 release signingConfig —— 改为读取 keystore.properties
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    # 临时禁用自动发版：release 仍用 debug 签名，禁止把 debug-signed APK 公开发布到 Releases。
+    # 待替换正式 keystore（见下方"TODO 正式签名"）后，移除此行即可恢复。
+    if: false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # 允许创建 Release 和上传产物
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Run unit tests
+        run: chmod +x gradlew && ./gradlew testReleaseUnitTest
+
+      - name: Build release APK
+        run: ./gradlew assembleRelease
+
+      # TODO 正式签名：替换 debug 签名后，在此步骤前插入 keystore 解码与签名校验
+      #（可用 r0adkll/sign-android-release 或 apksigner verify）
+
+      - name: Rename APK with version
+        id: ver
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          mkdir -p dist
+          cp app/build/outputs/apk/release/app-release.apk "dist/LoveBrain-${VERSION}.apk"
+          echo "VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release and upload APK
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/LoveBrain-*.apk
+          generate_release_notes: true

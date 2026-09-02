@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2026-08-11 v7.1：去掉 isAccessibilityTool="true"。
+     该属性让系统把我们当"系统级辅助工具"（TalkBack 类），crash 后系统保留 enabled
+     并尝试自动重连 → 杀进程后残留"已开启/无法运行"关不掉。
+     改为普通无障碍服务后，crash 时系统自动从已开启列表移除（与小红书行为一致）。
+     （2026-08-17）：加 canRetrieveWindowContent=true 激活第三兜底源；
+     删除 flagReportViewIds（代码从不使用 viewId）。 -->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeViewLongClicked|typeWindowStateChanged"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagDefault|flagIncludeNotImportantViews"
+    android:canRetrieveWindowContent="true"
+    android:notificationTimeout="50"
+    android:description="@string/accessibility_capture_desc" />

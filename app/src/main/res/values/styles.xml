@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 悬浮面板窗口动画（2026-08-12 第3轮：入场 scale+淡入，退出淡出） -->
+    <style name="PanelWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/panel_pop_in</item>
+        <item name="android:windowExitAnimation">@anim/panel_fade_out</item>
+    </style>
+</resources>
