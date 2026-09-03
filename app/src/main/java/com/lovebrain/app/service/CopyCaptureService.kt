@@ -37,6 +37,8 @@ class CopyCaptureService : AccessibilityService() {
 
     private var pendingContent: String? = null
     private var pendingTime = 0L
+    /** H1 包名锁定：pending 来自哪个 App，窗口事件须同包名才消费（防跨 App 幽灵捕获） */
+    private var pendingPkg: String? = null
 
     /** SecurePrefs 实例（用于读取 captureEnabled 开关） */
     private var securePrefs: SecurePrefs? = null
@@ -193,55 +195,59 @@ class CopyCaptureService : AccessibilityService() {
                 if (!content.isNullOrEmpty() && content.length >= 1) {
                     pendingContent = content
                     pendingTime = SystemClock.uptimeMillis()
+                    pendingPkg = pkg
                     L.w("long-press stored pending: len=${content.length}")
                     appendDiag("LONGCLICK_ARRIVE|len=${content.length}")
                 } else {
                     // A1 修复：提取失败时必须清空 pending，否则旧值残留到下次捕获造成 off-by-one
                     pendingContent = null
                     pendingTime = 0L
+                    pendingPkg = null
                     appendDiag("LONGCLICK_ARRIVE|len=0|noTextFound|pendingCleared")
                 }
             }
 
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                val isMessageMenu = joined.contains("复制") && (
-                    joined.contains("转发") || joined.contains("删除") ||
-                    joined.contains("回复") || joined.contains("多选") ||
-                    joined.contains("收藏") || joined.contains("举报") ||
-                    joined.contains("引用")
-                )
+                // 消息菜单 = 弹窗文字含「复制」即可确认；转发/删除/多选等七词门槛已删（分享/拷贝类菜单也能捕）
+                val isMessageMenu = joined.contains("复制")
                 val pending = pendingContent
-                val sinceLongClick = if (pendingTime > 0L)
-                    SystemClock.uptimeMillis() - pendingTime else -1L
+                val now = SystemClock.uptimeMillis()
+                val sinceLongClick = if (pendingTime > 0L) now - pendingTime else -1L
                 if (pending != null) {
-                    val menuMatched = isMessageMenu &&
-                        SystemClock.uptimeMillis() - pendingTime < AppConfig.LONG_PRESS_TIMEOUT_MS
-                    appendDiag("WINDOW_ARRIVE|menuMatch=$menuMatched|sinceLong=${sinceLongClick}ms|pendingLen=${pending.length}")
+                    appendDiag("WINDOW_ARRIVE|menuMatch=$isMessageMenu|pkgMatch=${pendingPkg == pkg}|sinceLong=${sinceLongClick}ms|pendingLen=${pending.length}")
                 } else {
                     appendDiag("WINDOW_ARRIVE|noPending|sinceLong=${sinceLongClick}ms")
                 }
-                if (isMessageMenu && pending != null &&
-                    SystemClock.uptimeMillis() - pendingTime < AppConfig.LONG_PRESS_TIMEOUT_MS
-                ) {
-                    L.w(">>> message menu confirmed, capture len=${pending.length}")
-                    appendDiag("CAPTURE_OK|len=${pending.length}")
-                    //  问题 4①：不再主动 startService 重启悬浮窗，
-                    // 仅暂存 pendingMessage，由用户下次手动打开悬浮窗时消费（FloatingService.onCreate :143-147）
-                    if (FloatingService.instance == null) {
-                        L.w("FloatingService not running, storing pending (len=${pending.length})")
-                        FloatingService.pendingMessage = pending
-                        appendDiag("CAPTURE_PENDING|len=${pending.length}")
+                if (isMessageMenu && pending != null) {
+                    val pkgOk = pendingPkg == pkg
+                    // H2：超过 30s 的旧 pending 视为过期（惰性校验，无定时器开销）；慢菜单(>3s)不再作废
+                    val notExpired = sinceLongClick <= AppConfig.PENDING_MAX_AGE_MS
+                    if (pkgOk && notExpired) {
+                        L.w(">>> message menu confirmed, capture len=${pending.length}")
+                        appendDiag("CAPTURE_OK|len=${pending.length}")
+                        //  问题 4①：不再主动 startService 重启悬浮窗，
+                        // 仅暂存 pendingMessage，由用户下次手动打开悬浮窗时消费（FloatingService.onCreate）
+                        if (FloatingService.instance == null) {
+                            L.w("FloatingService not running, storing pending (len=${pending.length})")
+                            FloatingService.pendingMessage = pending
+                            appendDiag("CAPTURE_PENDING|len=${pending.length}")
+                        } else {
+                            EventBus.emitCapturedMessage(pending)
+                            appendDiag("CAPTURE_EVENTBUS|len=${pending.length}")
+                        }
+                        pendingContent = null
+                        pendingTime = 0L
+                        pendingPkg = null
+                    } else if (!pkgOk) {
+                        // H1：跨 App 的复制菜单不是这次长按的确认——不消费，保留 pending 等原 App 的菜单
+                        appendDiag("WINDOW_ARRIVE|CROSS_PKG_SKIP|pendingPkg=$pendingPkg|pkg=$pkg")
                     } else {
-                        EventBus.emitCapturedMessage(pending)
-                        appendDiag("CAPTURE_EVENTBUS|len=${pending.length}")
+                        // H2 过期：这次长按的机会已结束，清掉脏 pending，防止残留到下次捕获造成 off-by-one
+                        pendingContent = null
+                        pendingTime = 0L
+                        pendingPkg = null
+                        appendDiag("WINDOW_ARRIVE|PENDING_EXPIRED|age=${sinceLongClick}ms|pendingCleared")
                     }
-                    pendingContent = null
-                } else if (isMessageMenu && pending != null) {
-                    // A1 修复：菜单到了但超时未捕获——这次机会已结束，清掉脏 pending
-                    // 否则残留到下次捕获造成 off-by-one（存成上一条）
-                    pendingContent = null
-                    pendingTime = 0L
-                    appendDiag("WINDOW_ARRIVE|menuTimeout|pendingCleared")
                 }
             }
         }

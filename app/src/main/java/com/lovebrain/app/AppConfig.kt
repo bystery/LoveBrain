@@ -67,7 +67,8 @@ object AppConfig {
     const val COUNSELING_MAX_HISTORY_ROUNDS = 6 // 谈心追问只带最近 6 轮问答（防 context length）
 
     // ═══ 无障碍服务 ═══
-    const val LONG_PRESS_TIMEOUT_MS = 3000L
+    // pending 生命期（H2）：超过 30s 的旧暂存不再消费——慢菜单(>3s)照捕，只拦久远残留
+    const val PENDING_MAX_AGE_MS = 30_000L
     // 洪峰去重窗口：仅拦 ≤1.5s 内同文本的重复事件（同一次手势的系统连发），不拦用户主动重捕
     const val BURST_DEDUP_WINDOW_MS = 1500L
 
