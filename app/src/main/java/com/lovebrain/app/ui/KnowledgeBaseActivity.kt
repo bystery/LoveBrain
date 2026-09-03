@@ -111,6 +111,9 @@ class KnowledgeBaseActivity : ComponentActivity() {
     // C1 修复：建库/AI 结果反馈通道（空分支原样补告知）
     private val kbFeedback = mutableStateOf<String?>(null)
 
+    // P0-① 修复：持有 onboarding 生成协程 Job，onDismiss 时显式 cancel
+    private var onboardingJob: kotlinx.coroutines.Job? = null
+
     private fun createEmptyKb(onDone: () -> Unit) {
         lifecycleScope.launch {
             val name = autoKbName()
@@ -137,7 +140,8 @@ class KnowledgeBaseActivity : ComponentActivity() {
             noProviderDialogVisible.value = true
             return
         }
-        lifecycleScope.launch {
+        // P0-① 修复：存 Job 引用，onDismiss 时 cancel → generateRaw 抛 CancellationException 跳出
+        onboardingJob = lifecycleScope.launch {
             val name = autoKbName()
             val system = readEngineAsset(com.lovebrain.app.domain.AssetRegistry.ONBOARDING)
             val user = buildString {
@@ -151,7 +155,8 @@ class KnowledgeBaseActivity : ComponentActivity() {
             val raw = runCatching {
                 withContext(Dispatchers.IO) { deepSeek.generateRaw(system, user) }
             }.getOrDefault("")
-            // C3 修复：生成期间用户若已离开页面（协程取消），不再建库
+            // P0-① 修复：协程被 cancel 后 withContext 恢复会抛 CancellationException，
+            // runCatching 吞掉后 raw="" 且 isActive=false——这里拦住不建库
             if (!isActive) {
                 onDone()
                 return@launch
@@ -315,6 +320,12 @@ class KnowledgeBaseActivity : ComponentActivity() {
                                 showOnboarding = false
                                 reload()
                             }
+                        },
+                        // P0-① 修复：生成中取消——cancel 协程后关闭页面
+                        onCancelGenerating = {
+                            onboardingJob?.cancel()
+                            onboardingJob = null
+                            showOnboarding = false
                         }
                     )
                 }
@@ -708,7 +719,9 @@ private fun KbCard(
 private fun OnboardingScreen(
     onDismiss: () -> Unit,
     onSkip: () -> Unit,
-    onComplete: (Map<Int, String>, String, String) -> Unit
+    onComplete: (Map<Int, String>, String, String) -> Unit,
+    // P0-① 修复：生成中取消时调用（cancel 协程 + 关闭页面）
+    onCancelGenerating: () -> Unit
 ) {
     val answers = remember { mutableStateMapOf<Int, String>() }
     var myName by remember { mutableStateOf("") }
@@ -805,8 +818,8 @@ private fun OnboardingScreen(
         Button(
             onClick = {
                 if (generating) {
-                    // C3 修复：生成中可取消（关闭 Onboarding 页，协程 isActive 检查阻止建库）
-                    onDismiss()
+                    // P0-① 修复：生成中取消——cancel 协程（generateRaw 抛 CancellationException 跳出）
+                    onCancelGenerating()
                 } else {
                     generating = true
                     onComplete(answers.toMap(), myName.trim(), herName.trim())
