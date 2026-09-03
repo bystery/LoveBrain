@@ -13,13 +13,13 @@
 [![Privacy](https://img.shields.io/badge/隐私-零遥测·全本地-red)](#-隐私军师嘴很严)
 [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
 
-<!-- 🎬 TODO：录好演示 GIF 后放入 docs/demo.gif 并取消下方注释（录制清单见 marketing/shot-list.md）
+<!-- 🎬 TODO：录好演示 GIF 后放入 docs/demo.gif 并取消下方注释
 <br/>
 <img src="docs/demo.gif" alt="LoveBrain 演示：长按消息，悬浮窗弹出四种回复" width="360"/>
 <br/>
 -->
 
-> 🎬 **演示 GIF 占位**：`docs/demo.gif`（待录制，清单见 [marketing/shot-list.md](marketing/shot-list.md)）
+> 🎬 **演示 GIF 占位**：`docs/demo.gif`（待录制）
 
 </div>
 

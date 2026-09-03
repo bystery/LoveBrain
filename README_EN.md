@@ -16,7 +16,7 @@ You pick the one that sounds most like you — the words that leave your mouth a
 <img src="docs/demo.gif" alt="LoveBrain demo: long-press a message, floating panel streams 4 replies" width="360"/>
 -->
 
-> 🎬 **Demo GIF placeholder**: `docs/demo.gif` (recording checklist: [marketing/shot-list.md](marketing/shot-list.md))
+> 🎬 **Demo GIF placeholder**: `docs/demo.gif` (to be recorded)
 
 </div>
 
