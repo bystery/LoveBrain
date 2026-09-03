@@ -151,6 +151,11 @@ class KnowledgeBaseActivity : ComponentActivity() {
             val raw = runCatching {
                 withContext(Dispatchers.IO) { deepSeek.generateRaw(system, user) }
             }.getOrDefault("")
+            // C3 修复：生成期间用户若已离开页面（协程取消），不再建库
+            if (!isActive) {
+                onDone()
+                return@launch
+            }
 
             val display = parseSection(raw, "===DISPLAY===", "===STAGE===")
                 .ifBlank { herName.ifBlank { "我的她" } }
@@ -799,11 +804,16 @@ private fun OnboardingScreen(
 
         Button(
             onClick = {
-                generating = true
-                onComplete(answers.toMap(), myName.trim(), herName.trim())
+                if (generating) {
+                    // C3 修复：生成中可取消（关闭 Onboarding 页，协程 isActive 检查阻止建库）
+                    onDismiss()
+                } else {
+                    generating = true
+                    onComplete(answers.toMap(), myName.trim(), herName.trim())
+                }
             },
-            enabled = !generating,
-            colors = ButtonDefaults.buttonColors(containerColor = Primary),
+            enabled = true,
+            colors = ButtonDefaults.buttonColors(containerColor = if (generating) TextHint else Primary),
             shape = LoveBrainShape.md,
             modifier = Modifier.fillMaxWidth().height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
         ) {
@@ -816,7 +826,7 @@ private fun OnboardingScreen(
                     strokeWidth = Spacing.xs
                 )
                 Spacer(modifier = Modifier.width(Spacing.md))
-                Text("军师正在生成画像…", style = AppTypography.titleMedium)
+                Text("点击取消（军师还在生成画像…）", style = AppTypography.titleMedium)
             } else {
                 Text("完成，AI 生成画像", style = AppTypography.titleMedium)
             }
