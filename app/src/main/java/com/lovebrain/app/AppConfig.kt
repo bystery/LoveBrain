@@ -67,7 +67,7 @@ object AppConfig {
     const val COUNSELING_MAX_HISTORY_ROUNDS = 6 // 谈心追问只带最近 6 轮问答（防 context length）
 
     // ═══ 无障碍服务 ═══
-    const val LONG_PRESS_TIMEOUT_MS = 1500L
+    const val LONG_PRESS_TIMEOUT_MS = 3000L
 
     // ═══ 知识库更新触发 ═══
     const val LESSON_TRIGGER_INTERVAL = 5    // 每积累 5 个话题触发一次经验提取

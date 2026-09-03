@@ -94,6 +94,24 @@ class CopyCaptureService : AccessibilityService() {
         return best
     }
 
+    /**
+     * A3 修复：递归收集节点树中所有文本（用于弹窗菜单关键词匹配）。
+     * 弹窗菜单项"复制"/"转发"等分散在各子节点，直取 event.text 经常取不到 → 菜单匹配失败。
+     * 返回所有文本用 "|" 拼接，供 contains 关键词校验。
+     */
+    private fun collectAllTextFromTree(node: AccessibilityNodeInfo?, depth: Int = 0, maxDepth: Int = 4): String {
+        if (node == null || depth > maxDepth) return ""
+        val sb = StringBuilder()
+        node.text?.toString()?.trim()?.let { if (it.isNotEmpty()) sb.append(it).append("|") }
+        node.contentDescription?.toString()?.trim()?.let { if (it.isNotEmpty()) sb.append(it).append("|") }
+        for (i in 0 until node.childCount) {
+            val child = runCatching { node.getChild(i) }.getOrNull() ?: continue
+            sb.append(collectAllTextFromTree(child, depth + 1, maxDepth))
+            child.recycle()
+        }
+        return sb.toString()
+    }
+
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
       try {
         // 支持全部 App（不再限定微信/抖音），后续逻辑已有文本特征校验兑底
@@ -120,7 +138,18 @@ class CopyCaptureService : AccessibilityService() {
             event.contentDescription?.let { texts.add("evDesc:" + it.toString()) }
             event.source?.contentDescription?.let { texts.add("srcDesc:" + it.toString()) }
         }
-        val joined = texts.joinToString("|")
+        var joined = texts.joinToString("|")
+        // A3 修复：弹窗菜单项文本常在子节点里——直取不含"复制"时补查子节点树
+        if (!joined.contains("复制")) {
+            runCatching {
+                val childTexts = collectAllTextFromTree(event.source)
+                if (childTexts.contains("复制")) {
+                    texts.add("tree:$childTexts")
+                    joined = texts.joinToString("|")
+                    appendDiag("WINDOW_MENU_FROM_TREE|matched")
+                }
+            }
+        }
         val typeName = when (type) {
             AccessibilityEvent.TYPE_VIEW_LONG_CLICKED -> "LONGCLICK"
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> "WINDOW"
