@@ -710,6 +710,8 @@ private fun OnboardingScreen(
     var currentStep by remember { mutableStateOf(1) }
     var branch by remember { mutableStateOf("") }
     val answers = remember { mutableStateMapOf<Int, Int>() }  // step → optionIndex
+    // R2: step → 自定义文本（answers[step] = -1 哨兵时生效，Q2-Q5 专用）
+    val customTexts = remember { mutableStateMapOf<Int, String>() }
     var myName by remember { mutableStateOf("") }
     var herName by remember { mutableStateOf("") }
     var generating by remember { mutableStateOf(false) }
@@ -810,18 +812,22 @@ private fun OnboardingScreen(
                                     val wasRedline = com.lovebrain.app.domain.OnboardingStateMachine
                                         .isRedlineTriggered(answers, branch)
                                     answers[currentStep] = originalIndex
+                                    // R2: 选固定选项 → 清掉本步残留的自定义文本
+                                    customTexts.remove(currentStep)
 
                                     if (currentStep == 1) {
                                         // Q1 改了 → branch 变 → 清空后续
                                         branch = com.lovebrain.app.domain.OnboardingStateMachine
                                             .branchFromQ1(originalIndex)
                                         answers.keys.filter { it >= 2 }.forEach { answers.remove(it) }
+                                        customTexts.keys.filter { it >= 2 }.forEach { customTexts.remove(it) }
                                     }
 
                                     val nowRedline = com.lovebrain.app.domain.OnboardingStateMachine
                                         .isRedlineTriggered(answers, branch)
                                     if (!wasRedline && nowRedline && answers.containsKey(5)) {
                                         answers.remove(5)
+                                        customTexts.remove(5)
                                         if (currentStep > 5) currentStep = 5
                                     }
 
@@ -832,6 +838,44 @@ private fun OnboardingScreen(
                             )
                         }
                         if (pair.size == 1) Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+
+                // R2: 自定义输入入口（仅 Q2-Q5；Q1 是分支题不加）。Q5 红线态也保留，
+                // 作为被隐藏 A/B 选项之外的逃生门；选它不自动推进，输入完点「完成」走
+                if (currentStep in 2..totalSteps) {
+                    Spacer(modifier = Modifier.height(Spacing.sm))
+                    val isCustom = answers[currentStep] == -1
+                    OnboardingOption(
+                        text = "以上都不太对，我自己说 →",
+                        selected = isCustom,
+                        enabled = !generating,
+                        onClick = { answers[currentStep] = -1 },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    if (isCustom) {
+                        Spacer(modifier = Modifier.height(Spacing.md))
+                        CompactInput(
+                            value = customTexts[currentStep] ?: "",
+                            onValueChange = { customTexts[currentStep] = it.take(100) },
+                            placeholder = "简单说说，100 字以内",
+                            trailingAction = {
+                                val canSubmit =
+                                    (customTexts[currentStep] ?: "").isNotBlank() && !generating
+                                Text(
+                                    "完成",
+                                    style = AppTypography.titleMedium,
+                                    color = if (canSubmit) Primary else TextHint,
+                                    modifier = Modifier.clickable(enabled = canSubmit) {
+                                        // 先 trim 落库再推进，与固定选项的自动推进语义对齐
+                                        customTexts[currentStep] =
+                                            (customTexts[currentStep] ?: "").trim()
+                                        if (currentStep < totalSteps) currentStep++
+                                        else if (currentStep == totalSteps) currentStep = totalSteps + 1
+                                    }
+                                )
+                            }
+                        )
                     }
                 }
             } else {
@@ -878,7 +922,7 @@ private fun OnboardingScreen(
                 onClick = {
                     generating = true
                     val schema = com.lovebrain.app.domain.OnboardingSchemaBuilder.build(
-                        answers.toMap(), myName.trim(), herName.trim()
+                        answers.toMap(), myName.trim(), herName.trim(), customTexts.toMap()
                     )
                     onComplete(schema, myName.trim(), herName.trim())
                 },
