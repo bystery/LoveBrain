@@ -5,12 +5,18 @@ import kotlinx.serialization.Serializable
 /**
  * v4.0 动态自适应问卷机制：5 步状态机，每条分支步长恒定 5 题。
  *
- * 设计来源：v4.0 设计文档（timu.md），题目文案逐字搬入不修改。
+ * 设计来源：v4.0 设计文档（timu.md）→ v4.1 口语化改写（需求文档-问卷v4.1.md）。
  * "推拉""试探""框架"等措辞是项目核心产品语言（format.md/core.md/counseling.md/suggest.md
  * 系统使用），不等于 PUA，按原文使用。
  *
  * 结构：Q1 入口题（5 选项 A-E）→ Q1 答案确定分支 → Q2-Q5 跟随同一分支。
  * 红线：Q3-E 选 D 或 Q4-E 选 A → Q5-E 隐藏 A/B 选项，只显示 C(止损)/D(疗愈)。
+ *
+ * v4.1 增量：
+ * R1 题目文案口语化改写，tag/isRedline/结构与 v4.0 冻结一致。
+ * R2 Q2-Q5 支持自定义输入：answers[step] = -1 哨兵值表示「我自己说」，
+ *    文本由 customTexts[step] 提供；-1 不参与 tag 收集，也不参与客户端红线
+ *    判定（自定义文本的红线信号交给 AI 引擎按 onboarding.md 规则识别）。
  */
 
 // ═══════════ 数据模型 ═══════════
@@ -91,7 +97,12 @@ object OnboardingStateMachine {
 
 object OnboardingSchemaBuilder {
 
-    fun build(answers: Map<Int, Int>, myName: String, herName: String): OnboardingSchema {
+    fun build(
+        answers: Map<Int, Int>,
+        myName: String,
+        herName: String,
+        customTexts: Map<Int, String> = emptyMap()
+    ): OnboardingSchema {
         val branch = OnboardingStateMachine.branchFromQ1(answers[1] ?: 0)
         val stage = OnboardingStateMachine.stageFromBranch(branch)
         val redline = OnboardingStateMachine.isRedlineTriggered(answers, branch)
@@ -99,7 +110,7 @@ object OnboardingSchemaBuilder {
 
         val path = buildPath(answers, branch)
         val tags = collectTags(answers, branch)
-        val profile = buildProfile(answers, branch)
+        val profile = buildProfile(answers, branch, customTexts)
 
         return OnboardingSchema(
             stage = stage,
@@ -132,22 +143,28 @@ object OnboardingSchemaBuilder {
         return tags
     }
 
-    private fun buildProfile(answers: Map<Int, Int>, branch: String): OnboardingSchema.Profile {
-        val q2 = OnboardingBank.question(2, branch)
-        val q3 = OnboardingBank.question(3, branch)
-        val q4 = OnboardingBank.question(4, branch)
-        val q5 = OnboardingBank.question(5, branch)
+    private fun buildProfile(
+        answers: Map<Int, Int>,
+        branch: String,
+        customTexts: Map<Int, String> = emptyMap()
+    ): OnboardingSchema.Profile {
+        // idx == -1 为 R2 自定义输入哨兵：取 customTexts 文本；否则取固定选项文案
+        fun field(step: Int): String {
+            val idx = answers[step] ?: 0
+            if (idx == -1) return customTexts[step]?.trim().orEmpty()
+            return OnboardingBank.question(step, branch).options.getOrNull(idx)?.text ?: ""
+        }
 
         return OnboardingSchema.Profile(
-            interpersonal_context = q2.options.getOrNull(answers[2] ?: 0)?.text ?: "",
-            counterpart_feedback = q3.options.getOrNull(answers[3] ?: 0)?.text ?: "",
-            core_dilemma = q4.options.getOrNull(answers[4] ?: 0)?.text ?: "",
-            user_intent = q5.options.getOrNull(answers[5] ?: 0)?.text ?: ""
+            interpersonal_context = field(2),
+            counterpart_feedback = field(3),
+            core_dilemma = field(4),
+            user_intent = field(5)
         )
     }
 }
 
-// ═══════════ 题库（v4.0 设计文档逐字搬入） ═══════════
+// ═══════════ 题库（v4.1 口语化改写；tag/isRedline/结构与 v4.0 一致） ═══════════
 
 object OnboardingBank {
 
