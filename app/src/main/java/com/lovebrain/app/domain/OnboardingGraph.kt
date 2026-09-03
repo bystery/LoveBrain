@@ -245,7 +245,7 @@ object OnboardingBank {
 
     private val q3c = OnboardingQuestion("Q3-C", 3, "C", "日常沟通里最常出现的毛病是？", listOf(
         OnboardingOption("她抛情绪我讲大道理，越聊越火大", "comm_logic"),
-        OnboardingOption("报备式打卡，除了"早安晚安吃了没"无话可说", "comm_dry"),
+        OnboardingOption("报备式打卡，除了\u201c早安晚安吃了没\u201d无话可说", "comm_dry"),
         OnboardingOption("她习惯冷战/闷着，一定要别人猜心思", "comm_cold"),
         OnboardingOption("容易翻旧账，一件小事能扯出一堆历史问题", "comm_history")
     ))
@@ -295,8 +295,8 @@ object OnboardingBank {
     ))
 
     private val q4e = OnboardingQuestion("Q4-E", 4, "E", "对方是否有过极度坚决的表态？", listOf(
-        OnboardingOption("明确说了"别再纠缠我/不可能了/放过我"", "blk_explicit_refusal", isRedline = true),
-        OnboardingOption("说了"彼此冷静一段时间"，没把话说绝", "blk_cool_down"),
+        OnboardingOption("明确说了\u201c别再纠缠我/不可能了/放过我\u201d", "blk_explicit_refusal", isRedline = true),
+        OnboardingOption("说了\u201c彼此冷静一段时间\u201d，没把话说绝", "blk_cool_down"),
         OnboardingOption("还在数落指责我过去的缺点和不足", "blk_venting"),
         OnboardingOption("平静客气地祝福彼此，保持礼貌距离", "blk_calm_exit")
     ))

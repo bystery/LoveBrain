@@ -91,8 +91,11 @@ class CopyCaptureService : AccessibilityService() {
         for (i in 0 until node.childCount) {
             val child = runCatching { node.getChild(i) }.getOrNull() ?: continue
             val childText = collectTextFromChildren(child, depth + 1, maxDepth)
-            if (childText != null && (best == null || childText.length > best.length)) {
-                best = childText
+            if (childText != null) {
+                val currentBest = best
+                if (currentBest == null || childText.length > currentBest.length) {
+                    best = childText
+                }
             }
             child.recycle()
         }
