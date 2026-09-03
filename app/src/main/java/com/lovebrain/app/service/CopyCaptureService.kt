@@ -123,7 +123,10 @@ class CopyCaptureService : AccessibilityService() {
                     L.w("long-press stored pending: len=${content.length}")
                     appendDiag("LONGCLICK_ARRIVE|len=${content.length}")
                 } else {
-                    appendDiag("LONGCLICK_ARRIVE|len=0|noTextFound")
+                    // A1 修复：提取失败时必须清空 pending，否则旧值残留到下次捕获造成 off-by-one
+                    pendingContent = null
+                    pendingTime = 0L
+                    appendDiag("LONGCLICK_ARRIVE|len=0|noTextFound|pendingCleared")
                 }
             }
 
@@ -160,6 +163,12 @@ class CopyCaptureService : AccessibilityService() {
                         appendDiag("CAPTURE_EVENTBUS|len=${pending.length}")
                     }
                     pendingContent = null
+                } else if (isMessageMenu && pending != null) {
+                    // A1 修复：菜单到了但超时未捕获——这次机会已结束，清掉脏 pending
+                    // 否则残留到下次捕获造成 off-by-one（存成上一条）
+                    pendingContent = null
+                    pendingTime = 0L
+                    appendDiag("WINDOW_ARRIVE|menuTimeout|pendingCleared")
                 }
             }
         }
