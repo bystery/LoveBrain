@@ -40,6 +40,7 @@ import com.lovebrain.app.ui.panel.LoveBrainPanelScreen
 import com.lovebrain.app.ui.theme.LoveBrainTheme
 import com.lovebrain.app.util.L
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
+import java.util.LinkedHashSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -107,7 +108,15 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     private var panelW = 0
     private var panelH = 0
 
-    private var lastReadClip = ""
+    // A4 修复：去重从单值改为最近 N 条集合，避免合法重复内容被永久丢弃
+    private val recentClips = object : LinkedHashSet<String>() {
+        private val maxSize = 20
+        override fun add(e: String): Boolean {
+            // 超容量时移除最早的（LinkedHashSet 保持插入顺序）
+            while (size >= maxSize) iterator().let { it.next(); it.remove() }
+            return super.add(e)
+        }
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -152,11 +161,10 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         // 订阅 EventBus：接收无障碍服务捕获的消息
         scope.launch {
             EventBus.capturedMessages.collect { event ->
-                addClipIfNew(event.text, viewModel.currentRole.value)
-                // 未读角标 +1（仅悬浮球存活时计数，打开面板清零）
-                if (bubbleView != null) {
+                val stored = addClipIfNew(event.text, viewModel.currentRole.value)
+                // A4 修复：只在消息真正入库时才亮红点（去重丢弃时不亮）
+                if (stored && bubbleView != null) {
                     bubbleUi.value = bubbleUi.value.copy(badgeCount = bubbleUi.value.badgeCount + 1)
-                    // 有未读时若处于半隐藏 → 回弹让用户看到角标（QQ 未读提示思路）
                     if (bubbleHidden) showBubbleFromEdge()
                 }
             }
@@ -199,11 +207,13 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         super.onDestroy()
     }
 
-    private fun addClipIfNew(text: String?, role: ChatMessage.Role = viewModel.currentRole.value) {
-        if (text.isNullOrEmpty()) return
-        if (text == lastReadClip) return
-        lastReadClip = text
+    // A4 修复：返回是否真正入库，调用方据此决定是否亮红点
+    private fun addClipIfNew(text: String?, role: ChatMessage.Role = viewModel.currentRole.value): Boolean {
+        if (text.isNullOrEmpty()) return false
+        if (recentClips.contains(text)) return false
+        recentClips.add(text)
         viewModel.addMessage(role, text)
+        return true
     }
 
     // ═══════════ 气泡（ComposeView 容器：纯主球） ═════════
@@ -691,7 +701,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         cm.setPrimaryClip(android.content.ClipData.newPlainText("军师回复", text))
         // ：复制成功可见反馈（固定文案，不含用户内容）
         Toast.makeText(this, "已复制", Toast.LENGTH_SHORT).show()
-        lastReadClip = text.trim()
+        // A4 修复：不再写 recentClips——复制的是军师回复，不是捕获的消息，不应影响捕获去重
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
