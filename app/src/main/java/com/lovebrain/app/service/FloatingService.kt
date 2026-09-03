@@ -61,9 +61,6 @@ import org.koin.android.ext.android.inject
 class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStateRegistryOwner {
 
     companion object {
-        /** 服务被杀时，无障碍服务暂存的消息（重启后消费） */
-        var pendingMessage: String? = null
-
         /** 供外部查询服务是否存活 */
         @Volatile
         var instance: FloatingService? = null
@@ -144,13 +141,6 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         val savedH = securePrefs.panelHeight
         panelW = if (savedW > 0) savedW else dp(AppConfig.PANEL_DEFAULT_W)
         panelH = if (savedH > 0) savedH else dp(AppConfig.PANEL_DEFAULT_H)
-
-        // 消费无障碍服务暂存的消息（服务被杀重启后）
-        pendingMessage?.let { msg ->
-            viewModel.addMessage(ChatMessage.Role.HER, msg)
-            pendingMessage = null
-            L.w("consumed pendingMessage from accessibility restart")
-        }
 
         // 订阅 EventBus：接收无障碍服务捕获的消息
         scope.launch {

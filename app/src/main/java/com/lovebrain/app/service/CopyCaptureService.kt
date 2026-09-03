@@ -225,12 +225,10 @@ class CopyCaptureService : AccessibilityService() {
                     if (pkgOk && notExpired) {
                         L.w(">>> message menu confirmed, capture len=${pending.length}")
                         appendDiag("CAPTURE_OK|len=${pending.length}")
-                        //  问题 4①：不再主动 startService 重启悬浮窗，
-                        // 仅暂存 pendingMessage，由用户下次手动打开悬浮窗时消费（FloatingService.onCreate）
                         if (FloatingService.instance == null) {
-                            L.w("FloatingService not running, storing pending (len=${pending.length})")
-                            FloatingService.pendingMessage = pending
-                            appendDiag("CAPTURE_PENDING|len=${pending.length}")
+                            // 悬浮服务没在跑：不再暂存补录（旧话自己冒出来的源头），直接丢弃并在 diag 里交代
+                            L.w("FloatingService not running, capture dropped (len=${pending.length})")
+                            appendDiag("CAPTURE_OK|serviceDown|dropped")
                         } else {
                             EventBus.emitCapturedMessage(pending)
                             appendDiag("CAPTURE_EVENTBUS|len=${pending.length}")
