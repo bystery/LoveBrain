@@ -301,10 +301,14 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             // 瞬时回弹（不启动动画）：showPanel() 紧接着会读取 bubbleParams 计算面板位置，
             // 如果用动画，bubbleParams 此时还在隐藏位置 → 面板位置算错（出现在屏幕中间）
             showBubbleFromEdge(animate = false)
+            // B1 修复：点击唤醒必须复位 idleDimmed，否则松手后球立刻又暗回去
+            bubbleUi.value = bubbleUi.value.copy(idleDimmed = false)
             resetIdleTimer()
             if (isPanelShowing) hidePanel() else showPanel()
             return
         }
+        // B1 修复：正常态点击也复位 idleDimmed
+        bubbleUi.value = bubbleUi.value.copy(idleDimmed = false)
         resetIdleTimer()
         // 点击小球 → 直接出现悬浮窗（完整展示）
         if (isPanelShowing) hidePanel() else showPanel()
