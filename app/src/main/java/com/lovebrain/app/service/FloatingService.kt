@@ -98,7 +98,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     private val bubbleUi = mutableStateOf(BubbleUiState())
     /** 闲置计时器（4s 半透明 → 8s 滑出半隐藏） */
     private var idleJob: Job? = null
-    /** 侧边半隐藏状态（闲置 8s 后滑出，只露 12dp 边缘） */
+    /** 侧边半隐藏状态（B2 已禁用半隐藏阶段，此字段恒为 false，相关分支不可达，保留待后续清理） */
     private var bubbleHidden = false
 
     /** 系统"移除动画"（无障碍）→ 吸附动画瞬时完成（WCAG 2.3.3） */
