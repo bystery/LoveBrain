@@ -108,10 +108,16 @@ class KnowledgeBaseActivity : ComponentActivity() {
     private val noProviderDialogVisible = mutableStateOf(false)
     private var pendingNoProviderDone: (() -> Unit)? = null
 
+    // C1 修复：建库/AI 结果反馈通道（空分支原样补告知）
+    private val kbFeedback = mutableStateOf<String?>(null)
+
     private fun createEmptyKb(onDone: () -> Unit) {
         lifecycleScope.launch {
             val name = autoKbName()
             val ok = runCatching { repo.create(name, "新知识库") }.isSuccess
+            if (!ok) {
+                kbFeedback.value = "创建失败：可能名称重复，请重试"
+            }
             onDone()
         }
     }
@@ -159,11 +165,14 @@ class KnowledgeBaseActivity : ComponentActivity() {
                 if (her.isNotBlank()) repo.writeFile(name, "understand/her.md", her)
                 if (warmth.isNotBlank()) repo.writeFile(name, "understand/warmth.md", warmth)
                 repo.updateStage(name, stage)
-                //  ：成功分支拆分——AI 分析返回空不再假装成功（降级链如实告知）
+                // C1 修复：成功分支补充反馈——AI 分析返回空不再假装成功（降级链如实告知）
                 if (raw.isBlank()) {
+                    kbFeedback.value = "AI 分析失败，已创建空模板库，可稍后在编辑页补充画像"
                 } else {
+                    kbFeedback.value = "知识库已创建，画像已生成"
                 }
             } else {
+                kbFeedback.value = "创建失败：可能名称重复，请重试"
             }
             onDone()
         }
@@ -333,6 +342,20 @@ class KnowledgeBaseActivity : ComponentActivity() {
                                 pendingNoProviderDone = null
                             }) {
                                 Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
+                            }
+                        }
+                    )
+                }
+
+                // C1 修复：建库/生成结果反馈弹窗
+                kbFeedback.value?.let { msg ->
+                    AlertDialog(
+                        onDismissRequest = { kbFeedback.value = null },
+                        title = { Text("提示", style = AppTypography.titleLarge) },
+                        text = { Text(msg, style = AppTypography.bodyMedium, color = TextSecondary) },
+                        confirmButton = {
+                            TextButton(onClick = { kbFeedback.value = null }) {
+                                Text("知道了", color = Primary, style = AppTypography.titleMedium)
                             }
                         }
                     )
