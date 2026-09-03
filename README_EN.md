@@ -12,6 +12,12 @@ You pick the one that sounds most like you — the words that leave your mouth a
 [![Privacy](https://img.shields.io/badge/privacy-zero_telemetry·on_device-red)](#-privacy-strict-by-design)
 [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
 
+<br/>
+
+<img src="images/demo.gif" alt="LoveBrain demo: long-press a message, the floating panel streams 4 replies" width="360"/>
+
+<br/>
+
 </div>
 
 ---
