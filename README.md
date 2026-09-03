@@ -15,9 +15,7 @@
 
 <img src="images/demo.gif" alt="LoveBrain 演示" width="360"/>
 
-<p align="center" style="font-size: 14px; color: #666; margin-top: 4px;">
-  给消息点赞然后再点击记入知识库才能正确记入哦
-</p>
+> *💡 点赞选中要存的回复 → 再点「记入知识库」（可多选）*
 
 </div>
 
