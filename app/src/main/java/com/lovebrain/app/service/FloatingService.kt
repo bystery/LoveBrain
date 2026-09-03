@@ -403,8 +403,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             if (!isPanelShowing) {
                 bubbleUi.value = bubbleUi.value.copy(idleDimmed = true)
             }
-            delay(AppConfig.BUBBLE_HIDE_IDLE_MS - AppConfig.BUBBLE_IDLE_DIM_MS)
-            hideBubbleToEdge()
+            // B2 修复：删掉半隐藏阶段（8s 滑出侧边只露 12dp）。
+            // 半隐藏后可点区域只剩 12dp → 经常点空"不灵"，且与捕获 bug 无因果关系。
+            // 保留 4s 半透明降遮挡即可。
         }
     }
 
