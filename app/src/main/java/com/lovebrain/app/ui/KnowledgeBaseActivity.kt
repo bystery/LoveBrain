@@ -736,7 +736,7 @@ private fun OnboardingScreen(
     ) {
         // 进度条：Step X/5
         val progressStep = if (currentStep <= totalSteps) currentStep else totalSteps
-        Text("第 $progressStep / $totalSteps 步", style = AppTypography.labelSmall, color = TextHint)
+        Text("第 $progressStep 步（共 $totalSteps 步）", style = AppTypography.labelSmall, color = TextHint)
         Spacer(modifier = Modifier.height(Spacing.xs))
         Box(
             modifier = Modifier
