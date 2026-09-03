@@ -13,11 +13,12 @@
 [![Privacy](https://img.shields.io/badge/隐私-零遥测·全本地-red)](#-隐私军师嘴很严)
 [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
 
-<br/>
-
-<img src="images/demo.gif" alt="LoveBrain 演示：长按消息，悬浮窗弹出四种回复" width="360"/>
-
-<br/>
+<figure>
+  <img src="images/demo.gif" alt="LoveBrain 演示" width="360"/>
+  <figcaption style="font-size: 13px; color: #666; text-align: center; margin-top: 4px;">
+    给消息点赞然后再点击记入知识库才能正确记入哦
+  </figcaption>
+</figure>
 
 </div>
 
