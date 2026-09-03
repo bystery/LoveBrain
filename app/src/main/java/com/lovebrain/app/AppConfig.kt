@@ -68,6 +68,8 @@ object AppConfig {
 
     // ═══ 无障碍服务 ═══
     const val LONG_PRESS_TIMEOUT_MS = 3000L
+    // 洪峰去重窗口：仅拦 ≤1.5s 内同文本的重复事件（同一次手势的系统连发），不拦用户主动重捕
+    const val BURST_DEDUP_WINDOW_MS = 1500L
 
     // ═══ 知识库更新触发 ═══
     const val LESSON_TRIGGER_INTERVAL = 5    // 每积累 5 个话题触发一次经验提取

@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.IBinder
+import android.os.SystemClock
 import android.provider.Settings
 import android.view.Gravity
 import android.view.View
@@ -40,7 +41,6 @@ import com.lovebrain.app.ui.panel.LoveBrainPanelScreen
 import com.lovebrain.app.ui.theme.LoveBrainTheme
 import com.lovebrain.app.util.L
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
-import java.util.LinkedHashSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -108,15 +108,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     private var panelW = 0
     private var panelH = 0
 
-    // A4 修复：去重从单值改为最近 N 条集合，避免合法重复内容被永久丢弃
-    private val recentClips = object : LinkedHashSet<String>() {
-        private val maxSize = 20
-        override fun add(e: String): Boolean {
-            // 超容量时移除最早的（LinkedHashSet 保持插入顺序）
-            while (size >= maxSize) iterator().let { it.next(); it.remove() }
-            return super.add(e)
-        }
-    }
+    /** 洪峰去重：仅拦 ≤1.5s 内同文本的重复事件（同一次手势的系统连发），不拦用户主动重捕 */
+    private var lastClipText: String? = null
+    private var lastClipTime = 0L
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -207,11 +201,13 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         super.onDestroy()
     }
 
-    // A4 修复：返回是否真正入库，调用方据此决定是否亮红点
+    /** 返回是否真正入库，调用方据此决定是否亮红点；只拦 1.5s 内的同文本洪峰，间隔更久的重捕一律入库 */
     private fun addClipIfNew(text: String?, role: ChatMessage.Role = viewModel.currentRole.value): Boolean {
         if (text.isNullOrEmpty()) return false
-        if (recentClips.contains(text)) return false
-        recentClips.add(text)
+        val now = SystemClock.uptimeMillis()
+        if (text == lastClipText && now - lastClipTime <= AppConfig.BURST_DEDUP_WINDOW_MS) return false
+        lastClipText = text
+        lastClipTime = now
         viewModel.addMessage(role, text)
         return true
     }
