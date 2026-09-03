@@ -178,8 +178,9 @@ class KnowledgeBaseActivity : ComponentActivity() {
         }
     }
 
+    // C2 修复：去掉 % 1000000（每 16.7 分钟循环碰撞），用全时间戳 + 随机后缀
     private fun autoKbName(): String =
-        "kb_" + (System.currentTimeMillis() % 1000000).toString()
+        "kb_" + System.currentTimeMillis().toString(36) + "_" + (0..9999).random().toString(36)
 
     private fun readEngineAsset(path: String): String = runCatching {
         assets.open(path).bufferedReader().use { it.readText() }
