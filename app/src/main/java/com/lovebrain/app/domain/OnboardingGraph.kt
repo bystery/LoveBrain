@@ -156,13 +156,13 @@ object OnboardingBank {
         id = "Q1",
         step = 1,
         branch = "",
-        title = "先把脉，你们俩目前整体走到哪一步了？",
+        title = "你们现在啥情况？",
         options = listOf(
-            OnboardingOption("刚认识 / 刚加上", "stage_new"),
-            OnboardingOption("互相接触 / 暧昧拉扯", "stage_chasing"),
-            OnboardingOption("正式恋爱中", "stage_dating"),
-            OnboardingOption("闹矛盾 / 僵住了", "stage_conflict"),
-            OnboardingOption("处于分手边缘 / 已分开", "stage_breakup")
+            OnboardingOption("刚认识/刚加上好友", "stage_new"),
+            OnboardingOption("有点暧昧/在拉扯", "stage_chasing"),
+            OnboardingOption("已经在一起了", "stage_dating"),
+            OnboardingOption("闹矛盾了/僵住了", "stage_conflict"),
+            OnboardingOption("快分了/已经分了", "stage_breakup")
         )
     )
 
@@ -192,149 +192,149 @@ object OnboardingBank {
 
     // ─── Step 2: 基础场景与现状 ───
 
-    private val q2a = OnboardingQuestion("Q2-A", 2, "A", "现实交集底子如何？", listOf(
-        OnboardingOption("同事/同学/同圈子（抬头不见低头见）", "ctx_circle"),
-        OnboardingOption("朋友聚会/活动认识（互相有基本认知）", "ctx_social"),
-        OnboardingOption("纯网聊/匹配软件（彼此一张白纸）", "ctx_online"),
-        OnboardingOption("偶遇搭讪/长辈牵线（几乎完全陌生）", "ctx_blind")
+    private val q2a = OnboardingQuestion("Q2-A", 2, "A", "你们怎么认识的？", listOf(
+        OnboardingOption("同事/同学/同圈子", "ctx_circle"),
+        OnboardingOption("朋友聚会/活动上认识的", "ctx_social"),
+        OnboardingOption("网聊/匹配软件认识的", "ctx_online"),
+        OnboardingOption("偶遇/长辈介绍的，基本不熟", "ctx_blind")
     ))
 
-    private val q2b = OnboardingQuestion("Q2-B", 2, "B", "目前你们的互动节奏是？", listOf(
-        OnboardingOption("刚升温不久（认识 1 个月内，势头挺好）", "pace_early"),
-        OnboardingOption("拉扯太久了（超过 1~2 个月，迟迟无法突破）", "pace_stuck"),
-        OnboardingOption("忽冷忽热（今天很能聊，过几天又没影）", "pace_wave"),
-        OnboardingOption("基本全靠我主动硬撑（对方很少主动找我）", "pace_passive")
+    private val q2b = OnboardingQuestion("Q2-B", 2, "B", "最近你俩什么节奏？", listOf(
+        OnboardingOption("刚升温，认识不到 1 个月", "pace_early"),
+        OnboardingOption("拉扯 1~2 个月，一直没突破", "pace_stuck"),
+        OnboardingOption("忽冷忽热，时好时坏", "pace_wave"),
+        OnboardingOption("基本我主动找她，她很少主动", "pace_passive")
     ))
 
-    private val q2c = OnboardingQuestion("Q2-C", 2, "C", "在一起大概多久了？", listOf(
-        OnboardingOption("3 个月以内（还在甜蜜热恋期）", "dur_honeymoon"),
-        OnboardingOption("3 个月~1 年（开始出现习惯摩擦）", "dur_adjust"),
-        OnboardingOption("1 年以上（平稳但也趋于平淡）", "dur_stable"),
-        OnboardingOption("长期异地/聚少离多", "dur_distance")
+    private val q2c = OnboardingQuestion("Q2-C", 2, "C", "你俩在一起多久了？", listOf(
+        OnboardingOption("不到 3 个月，还热乎着", "dur_honeymoon"),
+        OnboardingOption("3 个月到 1 年，开始磨合", "dur_adjust"),
+        OnboardingOption("1 年以上，有点平淡了", "dur_stable"),
+        OnboardingOption("长期异地，聚少离多", "dur_distance")
     ))
 
-    private val q2d = OnboardingQuestion("Q2-D", 2, "D", "这次矛盾的起因主要是？", listOf(
-        OnboardingOption("鸡毛蒜皮琐事吵架，话赶话上了头", "cause_temper"),
-        OnboardingOption("触碰到底线/信任危机（如异性边界、撒谎）", "cause_trust"),
-        OnboardingOption("长期积怨总爆发（觉得某一方一直在忍）", "cause_accumulated"),
-        OnboardingOption("对方单方面闹情绪，问了也不说", "cause_unclear")
+    private val q2d = OnboardingQuestion("Q2-D", 2, "D", "这次为啥吵起来的？", listOf(
+        OnboardingOption("小事吵的，话赶话上头", "cause_temper"),
+        OnboardingOption("碰了底线：撒谎/异性没边界", "cause_trust"),
+        OnboardingOption("积怨太久，这次总爆发", "cause_accumulated"),
+        OnboardingOption("她闹情绪，问也问不出来", "cause_unclear")
     ))
 
-    private val q2e = OnboardingQuestion("Q2-E", 2, "E", "目前具体走到哪一步了？", listOf(
-        OnboardingOption("对方正式提了分手，还没几天", "brk_fresh"),
-        OnboardingOption("没挑明分手，但已经形同陌路断联了", "brk_ghost"),
-        OnboardingOption("我冲动提了分手，现在后悔想收回", "brk_regret"),
-        OnboardingOption("已经分开一段时间，但心里一直放不下", "brk_lingering")
+    private val q2e = OnboardingQuestion("Q2-E", 2, "E", "现在具体到哪一步了？", listOf(
+        OnboardingOption("她正式提了分手，没几天", "brk_fresh"),
+        OnboardingOption("没明说，但已经断联了", "brk_ghost"),
+        OnboardingOption("我冲动提的分手，后悔了", "brk_regret"),
+        OnboardingOption("分了段时间，还是放不下", "brk_lingering")
     ))
 
     // ─── Step 3: 对方近期反应与态度 ───
 
-    private val q3a = OnboardingQuestion("Q3-A", 3, "A", "你发消息过去，她通常怎么接？", listOf(
-        OnboardingOption("态度热情，会主动反问和扩句", "att_warm"),
-        OnboardingOption("客气礼貌，有问必答，但字数很少", "att_polite"),
-        OnboardingOption("回得极慢，隔半天回一两句", "att_slow"),
-        OnboardingOption("纯躺列，打过招呼后几乎没说话", "att_silent")
+    private val q3a = OnboardingQuestion("Q3-A", 3, "A", "你发消息过去，她一般怎么回？", listOf(
+        OnboardingOption("挺热情，还会主动找话题", "att_warm"),
+        OnboardingOption("客气有回，但就几个字", "att_polite"),
+        OnboardingOption("回得超慢，半天蹦一两句", "att_slow"),
+        OnboardingOption("纯躺列，基本不说话", "att_silent")
     ))
 
-    private val q3b = OnboardingQuestion("Q3-B", 3, "B", "除了文字打字，你们有过更深的连接吗？", listOf(
-        OnboardingOption("会深夜长聊心事，分享过脆弱情绪", "depth_deep"),
-        OnboardingOption("经常单独出来吃饭看电影，有肢体接触", "depth_meet"),
-        OnboardingOption("停留在日常开玩笑，不敢触及走心话题", "depth_surface"),
-        OnboardingOption("一旦约线下就找借口，只愿线上聊", "depth_online")
+    private val q3b = OnboardingQuestion("Q3-B", 3, "B", "聊天之外，你们更近一步了吗？", listOf(
+        OnboardingOption("深夜聊过心事，交过底", "depth_deep"),
+        OnboardingOption("常单独约会，有过肢体接触", "depth_meet"),
+        OnboardingOption("只停留在玩笑，没敢走心", "depth_surface"),
+        OnboardingOption("一约线下就躲，只想线上聊", "depth_online")
     ))
 
-    private val q3c = OnboardingQuestion("Q3-C", 3, "C", "日常沟通里最常出现的毛病是？", listOf(
-        OnboardingOption("她抛情绪我讲大道理，越聊越火大", "comm_logic"),
-        OnboardingOption("报备式打卡，除了\u201c早安晚安吃了没\u201d无话可说", "comm_dry"),
-        OnboardingOption("她习惯冷战/闷着，一定要别人猜心思", "comm_cold"),
-        OnboardingOption("容易翻旧账，一件小事能扯出一堆历史问题", "comm_history")
+    private val q3c = OnboardingQuestion("Q3-C", 3, "C", "你俩聊天最容易出啥问题？", listOf(
+        OnboardingOption("她发泄我讲理，越聊越炸", "comm_logic"),
+        OnboardingOption("只会早安晚安吃了没", "comm_dry"),
+        OnboardingOption("她爱冷战憋着，让你猜", "comm_cold"),
+        OnboardingOption("爱翻旧账，小事扯出一堆", "comm_history")
     ))
 
-    private val q3d = OnboardingQuestion("Q3-D", 3, "D", "目前的僵局持续多久了？", listOf(
-        OnboardingOption("几小时以内，情绪还在风头上", "freeze_hours"),
-        OnboardingOption("1~2 天，谁都没主动找谁", "freeze_short"),
-        OnboardingOption("超过 3 天甚至一周了", "freeze_long"),
-        OnboardingOption("对方虽然回消息，但字字带刺/冷嘲热讽", "freeze_cold")
+    private val q3d = OnboardingQuestion("Q3-D", 3, "D", "这回僵多久了？", listOf(
+        OnboardingOption("几个小时，气还没消", "freeze_hours"),
+        OnboardingOption("1~2 天，谁也没找谁", "freeze_short"),
+        OnboardingOption("超过 3 天，甚至一周了", "freeze_long"),
+        OnboardingOption("她回是回，但句句带刺", "freeze_cold")
     ))
 
-    private val q3e = OnboardingQuestion("Q3-E", 3, "E", "目前你和对方还能说得上话吗？", listOf(
-        OnboardingOption("还能正常回复，语气客气克制", "reach_ok"),
-        OnboardingOption("回得很敷衍，甚至已读不回", "reach_ignore"),
-        OnboardingOption("删除了部分联系方式，仅留个别渠道", "reach_part"),
-        OnboardingOption("电话微信全部被拉黑", "reach_blocked", isRedline = true)
+    private val q3e = OnboardingQuestion("Q3-E", 3, "E", "你们现在还说得上话吗？", listOf(
+        OnboardingOption("还正常回，语气挺客气", "reach_ok"),
+        OnboardingOption("回得敷衍，甚至已读不回", "reach_ignore"),
+        OnboardingOption("删了部分联系方式，还留一两个", "reach_part"),
+        OnboardingOption("电话微信全被拉黑", "reach_blocked", isRedline = true)
     ))
 
     // ─── Step 4: 核心症结与痛点（红线拦截层） ───
 
-    private val q4a = OnboardingQuestion("Q4-A", 4, "A", "现阶段交流，你最大的卡点在？", listOf(
-        OnboardingOption("找不到自然的话头，怕被当成查户口", "blk_open"),
-        OnboardingOption("不会接梗接话，容易把气氛聊死", "blk_dry"),
-        OnboardingOption("怕太主动显得讨好，太被动又变空气", "blk_balance"),
-        OnboardingOption("摸不清对方兴趣，找不到共鸣话题", "blk_vibe")
+    private val q4a = OnboardingQuestion("Q4-A", 4, "A", "现在聊天你最卡哪儿？", listOf(
+        OnboardingOption("开不了话头，怕像查户口", "blk_open"),
+        OnboardingOption("接不住梗，容易把天聊死", "blk_dry"),
+        OnboardingOption("主动怕显得讨好，被动没存在感", "blk_balance"),
+        OnboardingOption("摸不清她喜欢啥，聊不到一块", "blk_vibe")
     ))
 
-    private val q4b = OnboardingQuestion("Q4-B", 4, "B", "你觉得阻碍你们跨进下一步的阻力是？", listOf(
-        OnboardingOption("猜不透她是真喜欢我，还是单纯享受被追", "blk_heart"),
-        OnboardingOption("关系到了天花板，不知道怎么捅破窗户纸", "blk_confirm"),
-        OnboardingOption("感觉自己陷进去了，患得患失失去主见", "blk_anxious"),
-        OnboardingOption("怕挑明之后如果被拒绝，连朋友都做不成", "blk_fear")
+    private val q4b = OnboardingQuestion("Q4-B", 4, "B", "卡在哪儿，没法更进一步？", listOf(
+        OnboardingOption("猜不透她是喜欢我，还是享受被追", "blk_heart"),
+        OnboardingOption("到天花板了，不知道咋捅破", "blk_confirm"),
+        OnboardingOption("陷进去了，患得患失没了主见", "blk_anxious"),
+        OnboardingOption("怕表白被拒，朋友都没得做", "blk_fear")
     ))
 
-    private val q4c = OnboardingQuestion("Q4-C", 4, "C", "你在这段关系里最常感到的情绪内耗是？", listOf(
-        OnboardingOption("委屈，感觉自己一直在妥协和讨好", "blk_pleasing"),
-        OnboardingOption("疲惫，感觉一直在猜对方的心思和脸色", "blk_tired"),
-        OnboardingOption("焦虑，总觉得对方没有以前那么在乎自己了", "blk_insecure"),
-        OnboardingOption("烦躁，沟通成本太高，宁愿自己待着", "blk_annoyed")
+    private val q4c = OnboardingQuestion("Q4-C", 4, "C", "这段感情里，最磨你的是啥？", listOf(
+        OnboardingOption("委屈，一直在妥协讨好", "blk_pleasing"),
+        OnboardingOption("累，一直猜她心思脸色", "blk_tired"),
+        OnboardingOption("焦虑，觉得她没以前在乎我", "blk_insecure"),
+        OnboardingOption("烦，沟通太累，宁愿自己待着", "blk_annoyed")
     ))
 
-    private val q4d = OnboardingQuestion("Q4-D", 4, "D", "冷静下来看，你觉得这次矛盾的主要症结是？", listOf(
-        OnboardingOption("确实是我有错在先，但不知道怎么挽回面子破冰", "blk_my_fault"),
-        OnboardingOption("对方原则性过分，我不想无底线妥协认错", "blk_boundary"),
-        OnboardingOption("纯属情绪失控发泄，需要双方给个自然台阶", "blk_temper"),
-        OnboardingOption("核心诉求没谈拢，即便这次哄好下次还得吵", "blk_deep")
+    private val q4d = OnboardingQuestion("Q4-D", 4, "D", "冷静想想，这回到底为啥僵？", listOf(
+        OnboardingOption("我错在先，但拉不下脸破冰", "blk_my_fault"),
+        OnboardingOption("她太过了，我不想无底线认错", "blk_boundary"),
+        OnboardingOption("情绪上头，就差个台阶", "blk_temper"),
+        OnboardingOption("根子问题没解决，哄好还得吵", "blk_deep")
     ))
 
-    private val q4e = OnboardingQuestion("Q4-E", 4, "E", "对方是否有过极度坚决的表态？", listOf(
-        OnboardingOption("明确说了\u201c别再纠缠我/不可能了/放过我\u201d", "blk_explicit_refusal", isRedline = true),
-        OnboardingOption("说了\u201c彼此冷静一段时间\u201d，没把话说绝", "blk_cool_down"),
-        OnboardingOption("还在数落指责我过去的缺点和不足", "blk_venting"),
-        OnboardingOption("平静客气地祝福彼此，保持礼貌距离", "blk_calm_exit")
+    private val q4e = OnboardingQuestion("Q4-E", 4, "E", "她说过特别绝的话吗？", listOf(
+        OnboardingOption("明确说过\u201c不可能/放过我\u201d", "blk_explicit_refusal", isRedline = true),
+        OnboardingOption("说\u201c先冷静下\u201d，没说死", "blk_cool_down"),
+        OnboardingOption("还在数落我以前的毛病", "blk_venting"),
+        OnboardingOption("客客气气祝我好，保持距离", "blk_calm_exit")
     ))
 
     // ─── Step 5: 破局诉求与目标 ───
 
-    private val q5a = OnboardingQuestion("Q5-A", 5, "A", "这次找军师，你最想达成的目的是？", listOf(
-        OnboardingOption("帮我想几个自然、不尴尬的破冰开场白", "goal_icebreak"),
-        OnboardingOption("帮我润色平时的接话，显得更有趣一些", "goal_polish"),
-        OnboardingOption("帮我分析她的话，看她到底愿不愿跟我聊", "goal_judge"),
-        OnboardingOption("帮我找合适时机，自然促成第一次线下见面", "goal_invite")
+    private val q5a = OnboardingQuestion("Q5-A", 5, "A", "这回找军师，你最想要啥？", listOf(
+        OnboardingOption("给我几个不尬的开场白", "goal_icebreak"),
+        OnboardingOption("帮我接话更有趣一点", "goal_polish"),
+        OnboardingOption("帮我分析她到底想不想聊", "goal_judge"),
+        OnboardingOption("找机会约出第一次见面", "goal_invite")
     ))
 
-    private val q5b = OnboardingQuestion("Q5-B", 5, "B", "你最希望军师在哪个环节助攻？", listOf(
-        OnboardingOption("帮我适度推拉，找回不迎合、有主见的节奏", "goal_frame"),
-        OnboardingOption("制造带点暧昧张力的话术，试探对方心意", "goal_flirt"),
-        OnboardingOption("设计一次不刻意的邀约，推进线下实质进展", "goal_escalate"),
-        OnboardingOption("教我如何真诚且有底线地确认恋爱关系", "goal_confirm")
+    private val q5b = OnboardingQuestion("Q5-B", 5, "B", "最想让军师在哪步搭把手？", listOf(
+        OnboardingOption("帮我推拉起来，别一味迎合", "goal_frame"),
+        OnboardingOption("来点暧昧张力的话，试探她", "goal_flirt"),
+        OnboardingOption("设计个自然的邀约，推进线下", "goal_escalate"),
+        OnboardingOption("教我有底线地把关系挑明", "goal_confirm")
     ))
 
-    private val q5c = OnboardingQuestion("Q5-C", 5, "C", "现阶段你最希望军师协助你做好什么？", listOf(
-        OnboardingOption("接住对方的情绪爆点，避免误解与争吵", "goal_soothe"),
-        OnboardingOption("找回日常新鲜感，设计走心的互动交流", "goal_fresh"),
-        OnboardingOption("坚定清晰地表达自己的边界，拒绝单方面迎合", "goal_boundary"),
-        OnboardingOption("帮我客观梳理相处中的问题，停止无谓内耗", "goal_evaluate")
+    private val q5c = OnboardingQuestion("Q5-C", 5, "C", "现在最想让军师帮你稳住啥？", listOf(
+        OnboardingOption("接住她的情绪雷点，别吵起来", "goal_soothe"),
+        OnboardingOption("整点走心互动，找回新鲜感", "goal_fresh"),
+        OnboardingOption("帮我立住边界，不再单向迎合", "goal_boundary"),
+        OnboardingOption("帮我理清问题，别再内耗", "goal_evaluate")
     ))
 
-    private val q5d = OnboardingQuestion("Q5-D", 5, "D", "这次局面，你最想怎么收场？", listOf(
-        OnboardingOption("真诚且有担当的道歉沟通，先把局破开", "goal_apology"),
-        OnboardingOption("给双方一个体面自然的台阶，别再继续冷着", "goal_stepdown"),
-        OnboardingOption("就事论事讲清楚问题根源，杜绝下次再犯", "goal_resolve"),
-        OnboardingOption("帮我守住尊严底线，不卑不亢地处理对立", "goal_stand")
+    private val q5d = OnboardingQuestion("Q5-D", 5, "D", "这局面你想怎么收场？", listOf(
+        OnboardingOption("有担当地道个歉，先破局", "goal_apology"),
+        OnboardingOption("给彼此个台阶，别再冷着", "goal_stepdown"),
+        OnboardingOption("把根子问题说清，别再犯", "goal_resolve"),
+        OnboardingOption("守住尊严，不卑不亢地处理", "goal_stand")
     ))
 
-    private val q5e = OnboardingQuestion("Q5-E", 5, "E", "听完真话，你现在最想怎么做？", listOf(
-        OnboardingOption("还有一丝机会，帮我策划最后一次真诚体面的沟通", "goal_last_shot"),
-        OnboardingOption("帮我判断她现在的真实心理，到底是不是彻底死心", "goal_truth"),
-        OnboardingOption("帮我稳住心态，阻止我做出卑微纠缠的掉价行为", "goal_stop_chase"),
-        OnboardingOption("我很痛苦内耗，需要帮我梳理情绪，体面放下走出泥潭", "goal_heal")
+    private val q5e = OnboardingQuestion("Q5-E", 5, "E", "听完真话，你想怎么走？", listOf(
+        OnboardingOption("还有点机会，帮我最后试一次", "goal_last_shot"),
+        OnboardingOption("帮我判断她是不是彻底死心", "goal_truth"),
+        OnboardingOption("拉住我，别让我卑微纠缠", "goal_stop_chase"),
+        OnboardingOption("太痛苦了，帮我体面放下", "goal_heal")
     ))
 }
