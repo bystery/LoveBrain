@@ -51,3 +51,6 @@ local.properties
 # 正式签名 keystore 与密码配置（绝不入库）
 /keystore/
 /keystore.properties
+
+# benchmark 本地测试资产（只入库 BENCHMARK.md，不入库脚本/数据/key）
+/benchmark/
