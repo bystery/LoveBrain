@@ -77,8 +77,6 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
-private data class ObQuestion(val title: String, val options: List<String>)
-
 /** 知识库管理页内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object KbDimens {
     const val EMPTY_ICON_CONTAINER_DP = 72    // 空态图标容器（语义例外：大于通用 48）
@@ -88,15 +86,6 @@ private object KbDimens {
     const val ONBOARDING_SPINNER_SIZE_DP = 18 // 问卷生成中按钮内转圈尺寸
     const val PROGRESS_BAR_HEIGHT_DP = 4     // 问卷答题进度条高度
 }
-
-private val ONBOARDING_QUESTIONS = listOf(
-    ObQuestion("你们现在是什么关系？", listOf("刚认识/朋友", "暧昧中", "已在一起", "已婚", "说不清")),
-    ObQuestion("在一起多久了？", listOf("还没在一起", "3个月内", "3个月到1年", "1年以上")),
-    ObQuestion("你们主要怎么相处？", listOf("异地", "同城常见面", "同城但少见", "基本线上")),
-    ObQuestion("她大概什么性格？", listOf("活泼外向", "安静内敛", "时冷时热", "理性独立")),
-    ObQuestion("你在感情里最容易犯的毛病？", listOf("太焦虑总想确认", "太冷淡不善表达", "太讨好没底线", "太自我忽略她")),
-    ObQuestion("你们现在最大的状况？", listOf("刚认识在试探", "热恋很甜", "有点矛盾在磨合", "平稳但有点淡", "正在闹矛盾"))
-)
 
 class KnowledgeBaseActivity : ComponentActivity() {
 
@@ -126,13 +115,11 @@ class KnowledgeBaseActivity : ComponentActivity() {
     }
 
     private fun createKbWithOnboarding(
-        answers: Map<Int, String>,
+        schema: com.lovebrain.app.domain.OnboardingSchema,
         myName: String,
         herName: String,
         onDone: () -> Unit
     ) {
-        //  ：建库守卫（存量豁免内处置：复用本文件已注入 deepSeek 的读通道，
-        // 不搬分层，决策留档见 记账）：未就绪 → 二选一弹窗（继续=空模板库）
         val ready = deepSeek.getActiveTicket()?.model?.isNotBlank() == true &&
             !deepSeek.getActiveApiKey().isNullOrBlank()
         if (!ready) {
@@ -144,14 +131,10 @@ class KnowledgeBaseActivity : ComponentActivity() {
         onboardingJob = lifecycleScope.launch {
             val name = autoKbName()
             val system = readEngineAsset(com.lovebrain.app.domain.AssetRegistry.ONBOARDING)
-            val user = buildString {
-                append("## 用户的选择题答案\n")
-                ONBOARDING_QUESTIONS.forEachIndexed { i, q ->
-                    append("- ").append(q.title).append("：").append(answers[i] ?: "未回答").append("\n")
-                }
-                append("- 你的称呼：").append(myName.ifBlank { "（未提供）" }).append("\n")
-                append("- 她的称呼：").append(herName.ifBlank { "（未提供）" }).append("\n")
-            }
+            // v4.0：输入改为 JSON Schema（取代文本拼接块）
+            val user = Json.encodeToString(
+                com.lovebrain.app.domain.OnboardingSchema.serializer(), schema
+            )
             val raw = runCatching {
                 withContext(Dispatchers.IO) { deepSeek.generateRaw(system, user) }
             }.getOrDefault("")
@@ -315,8 +298,8 @@ class KnowledgeBaseActivity : ComponentActivity() {
                                 reload()
                             }
                         },
-                        onComplete = { answers, myName, herName ->
-                            createKbWithOnboarding(answers, myName, herName) {
+                        onComplete = { schema, myName, herName ->
+                            createKbWithOnboarding(schema, myName, herName) {
                                 showOnboarding = false
                                 reload()
                             }
@@ -719,36 +702,40 @@ private fun KbCard(
 private fun OnboardingScreen(
     onDismiss: () -> Unit,
     onSkip: () -> Unit,
-    onComplete: (Map<Int, String>, String, String) -> Unit,
-    // P0-① 修复：生成中取消时调用（cancel 协程 + 关闭页面）
+    onComplete: (com.lovebrain.app.domain.OnboardingSchema, String, String) -> Unit,
     onCancelGenerating: () -> Unit
 ) {
-    val answers = remember { mutableStateMapOf<Int, String>() }
+    // v4.0 向导状态：currentStep 1-5 答题，6 称呼收尾
+    var currentStep by remember { mutableStateOf(1) }
+    var branch by remember { mutableStateOf("") }
+    val answers = remember { mutableStateMapOf<Int, Int>() }  // step → optionIndex
     var myName by remember { mutableStateOf("") }
     var herName by remember { mutableStateOf("") }
     var generating by remember { mutableStateOf(false) }
 
+    val totalSteps = 5
+
     ScreenPage(
         title = "新建知识库",
-        onBack = onDismiss,
+        onBack = {
+            // 向导返回：step>1 回退一步，step=1 关闭页面
+            if (generating) {
+                onCancelGenerating()
+            } else if (currentStep > 1) {
+                currentStep--
+            } else {
+                onDismiss()
+            }
+        },
         trailing = {
             TextButton(onClick = onSkip) {
                 Text("建空档案", color = TextSecondary, style = AppTypography.labelLarge)
             }
         }
     ) {
-        Text(
-            "回答几道简单选择题，军师帮你建好初始画像。依恋类型不用你答，AI 会推断。也可点右上「建空档案」。",
-            style = AppTypography.bodySmall,
-            color = TextSecondary
-        )
-        Spacer(modifier = Modifier.height(Spacing.sm))
-        // 答题进度反馈：n/6 计数 + 细进度条（填几张、还剩几张一眼可见）
-        Text(
-            "已答 ${answers.size}/${ONBOARDING_QUESTIONS.size} 题",
-            style = AppTypography.labelSmall,
-            color = TextHint
-        )
+        // 进度条：Step X/5
+        val progressStep = if (currentStep <= totalSteps) currentStep else totalSteps
+        Text("第 $progressStep / $totalSteps 步", style = AppTypography.labelSmall, color = TextHint)
         Spacer(modifier = Modifier.height(Spacing.xs))
         Box(
             modifier = Modifier
@@ -759,10 +746,7 @@ private fun OnboardingScreen(
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(
-                        if (ONBOARDING_QUESTIONS.isEmpty()) 0f
-                        else answers.size.toFloat() / ONBOARDING_QUESTIONS.size
-                    )
+                    .fillMaxWidth(progressStep.toFloat() / totalSteps)
                     .height(KbDimens.PROGRESS_BAR_HEIGHT_DP.dp)
                     .clip(LoveBrainShape.full)
                     .background(Primary)
@@ -770,67 +754,113 @@ private fun OnboardingScreen(
         }
         Spacer(modifier = Modifier.height(Spacing.lg))
 
+        // 内容区
         Column(
             modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(Spacing.xxl)
         ) {
-            ONBOARDING_QUESTIONS.forEachIndexed { i, q ->
-                Column(verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                    Text(q.title, style = AppTypography.titleMedium, fontWeight = FontWeight.SemiBold, color = TextPrimary)
-                    q.options.chunked(2).forEach { pair ->
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(Spacing.md),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            pair.forEach { opt ->
-                                // 补按压缩放反馈；生成中整体禁点（防答案与已提交请求不一致）
-                                OnboardingOption(
-                                    text = opt,
-                                    selected = answers[i] == opt,
-                                    enabled = !generating,
-                                    onClick = { answers[i] = opt },
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
-                            if (pair.size == 1) Spacer(modifier = Modifier.weight(1f))
+            if (currentStep <= totalSteps) {
+                // 取当前题
+                val question = if (currentStep == 1) {
+                    com.lovebrain.app.domain.OnboardingBank.q1
+                } else {
+                    com.lovebrain.app.domain.OnboardingBank.question(currentStep, branch)
+                }
+
+                // Step5 红线检测
+                val redline = com.lovebrain.app.domain.OnboardingStateMachine
+                    .isRedlineTriggered(answers, branch)
+                val hiddenIndices = if (redline && currentStep == 5) {
+                    com.lovebrain.app.domain.OnboardingStateMachine.hiddenOptionIndices(true)
+                } else emptySet()
+
+                if (redline && currentStep == 5) {
+                    Text(
+                        "军师检测到你目前的情况更适合止损和自我调整，暂时不提供挽回建议。",
+                        color = Error,
+                        style = AppTypography.bodySmall
+                    )
+                    Spacer(modifier = Modifier.height(Spacing.sm))
+                }
+
+                // 题干
+                Text(
+                    question.title,
+                    style = AppTypography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = TextPrimary
+                )
+                Spacer(modifier = Modifier.height(Spacing.md))
+
+                // 选项（2列布局，红线隐藏的选项不渲染）
+                question.options.filterIndexed { i, _ -> i !in hiddenIndices }.chunked(2).forEach { pair ->
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(Spacing.md),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        pair.forEach { opt ->
+                            val originalIndex = question.options.indexOf(opt)
+                            OnboardingOption(
+                                text = opt.text,
+                                selected = answers[currentStep] == originalIndex,
+                                enabled = !generating,
+                                onClick = {
+                                    // Q1-② 修正：先算旧红线状态再写入新值
+                                    val wasRedline = com.lovebrain.app.domain.OnboardingStateMachine
+                                        .isRedlineTriggered(answers, branch)
+                                    answers[currentStep] = originalIndex
+
+                                    if (currentStep == 1) {
+                                        // Q1 改了 → branch 变 → 清空后续
+                                        branch = com.lovebrain.app.domain.OnboardingStateMachine
+                                            .branchFromQ1(originalIndex)
+                                        answers.keys.filter { it >= 2 }.forEach { answers.remove(it) }
+                                    }
+
+                                    val nowRedline = com.lovebrain.app.domain.OnboardingStateMachine
+                                        .isRedlineTriggered(answers, branch)
+                                    if (!wasRedline && nowRedline && answers.containsKey(5)) {
+                                        answers.remove(5)
+                                        if (currentStep > 5) currentStep = 5
+                                    }
+
+                                    if (currentStep < totalSteps) currentStep++
+                                    else if (currentStep == totalSteps) currentStep = totalSteps + 1
+                                },
+                                modifier = Modifier.weight(1f)
+                            )
                         }
+                        if (pair.size == 1) Spacer(modifier = Modifier.weight(1f))
                     }
                 }
+            } else {
+                // Step6：称呼输入（选填）
+                Text("选填（不填也能建，之后能改）", style = AppTypography.bodySmall, color = TextSecondary)
+                Spacer(modifier = Modifier.height(Spacing.xs))
+                CompactInput(
+                    value = myName,
+                    onValueChange = { myName = it },
+                    placeholder = "你的称呼"
+                )
+                Spacer(modifier = Modifier.height(Spacing.xs))
+                CompactInput(
+                    value = herName,
+                    onValueChange = { herName = it },
+                    placeholder = "她的称呼"
+                )
             }
-
-            Spacer(modifier = Modifier.height(Spacing.sm))
-            Text("选填（不填也能建，之后能改）", style = AppTypography.bodySmall, color = TextSecondary)
-            Spacer(modifier = Modifier.height(Spacing.xs))
-            CompactInput(
-                value = myName,
-                onValueChange = { myName = it },
-                placeholder = "你的称呼"
-            )
-            Spacer(modifier = Modifier.height(Spacing.xs))
-            CompactInput(
-                value = herName,
-                onValueChange = { herName = it },
-                placeholder = "她的称呼"
-            )
-            Spacer(modifier = Modifier.height(Spacing.md))
         }
 
-        Button(
-            onClick = {
-                if (generating) {
-                    // P0-① 修复：生成中取消——cancel 协程（generateRaw 抛 CancellationException 跳出）
-                    onCancelGenerating()
-                } else {
-                    generating = true
-                    onComplete(answers.toMap(), myName.trim(), herName.trim())
-                }
-            },
-            enabled = true,
-            colors = ButtonDefaults.buttonColors(containerColor = if (generating) TextHint else Primary),
-            shape = LoveBrainShape.md,
-            modifier = Modifier.fillMaxWidth().height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
-        ) {
-            if (generating) {
+        // 底部按钮
+        if (generating) {
+            // 生成中：取消按钮
+            Button(
+                onClick = { onCancelGenerating() },
+                enabled = true,
+                colors = ButtonDefaults.buttonColors(containerColor = TextHint),
+                shape = LoveBrainShape.md,
+                modifier = Modifier.fillMaxWidth().height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
+            ) {
                 CircularProgressIndicator(
                     color = androidx.compose.ui.graphics.Color.White,
                     modifier = Modifier
@@ -840,7 +870,22 @@ private fun OnboardingScreen(
                 )
                 Spacer(modifier = Modifier.width(Spacing.md))
                 Text("点击取消（军师还在生成画像…）", style = AppTypography.titleMedium)
-            } else {
+            }
+        } else if (currentStep > totalSteps) {
+            // Step6：完成按钮
+            Button(
+                onClick = {
+                    generating = true
+                    val schema = com.lovebrain.app.domain.OnboardingSchemaBuilder.build(
+                        answers.toMap(), myName.trim(), herName.trim()
+                    )
+                    onComplete(schema, myName.trim(), herName.trim())
+                },
+                enabled = true,
+                colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                shape = LoveBrainShape.md,
+                modifier = Modifier.fillMaxWidth().height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
+            ) {
                 Text("完成，AI 生成画像", style = AppTypography.titleMedium)
             }
         }
