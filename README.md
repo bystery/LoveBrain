@@ -77,6 +77,13 @@ cd LoveBrain
 ./gradlew assembleDebug     # 产物在 app/build/outputs/apk/debug/
 ```
 
+## 🔧 工作原理
+
+**触发捕获 → 检索装配 → 组装提示词 → 流式生成 → 用户挑选改写 → 后台沉淀（画像/向量/经验）→ 闭环回读**。
+
+<div align="center">
+<img src="images/owerview.jpg" alt="LoveBrain 工作原理总览：触发捕获→检索装配→组装提示词→流式生成→用户挑选改写→后台沉淀→闭环回读" width="800"/>
+</div>
 
 ## 核心特性与机制
 
