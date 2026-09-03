@@ -76,6 +76,11 @@ class CopyCaptureService : AccessibilityService() {
      * A2 修复：递归遍历无障碍节点树，收集所有非空文本。
      * 新版微信消息文本常挂在子节点上，长按的容器节点本身不带字 → 直接取 event.text 取不到。
      * 深度限制 4 层防性能问题，取最长的一条（最可能是完整消息内容）。
+     *
+     * 注意：入参 node（通常 = event.source）的生命周期由系统管理，调用方不应 recycle 它。
+     * 本方法只 recycle 自己创建的子节点（node.getChild(i)）。
+     * 本方法仅在 TYPE_VIEW_LONG_CLICKED 事件中调用，与 collectAllTextFromTree（WINDOW 事件）
+     * 不会在同一次事件中执行，不存在对同一子节点重复 recycle 的问题。
      */
     private fun collectTextFromChildren(node: AccessibilityNodeInfo?, depth: Int = 0, maxDepth: Int = 4): String? {
         if (node == null || depth > maxDepth) return null
@@ -98,6 +103,10 @@ class CopyCaptureService : AccessibilityService() {
      * A3 修复：递归收集节点树中所有文本（用于弹窗菜单关键词匹配）。
      * 弹窗菜单项"复制"/"转发"等分散在各子节点，直取 event.text 经常取不到 → 菜单匹配失败。
      * 返回所有文本用 "|" 拼接，供 contains 关键词校验。
+     *
+     * 注意：入参 node（通常 = event.source）的生命周期由系统管理，调用方不应 recycle 它。
+     * 本方法只 recycle 自己创建的子节点。仅在 TYPE_WINDOW_STATE_CHANGED 事件中调用，
+     * 与 collectTextFromChildren（LONGCLICK 事件）不会在同一次事件中执行。
      */
     private fun collectAllTextFromTree(node: AccessibilityNodeInfo?, depth: Int = 0, maxDepth: Int = 4): String {
         if (node == null || depth > maxDepth) return ""
