@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 /**
  * v4.0 动态自适应问卷机制：5 步状态机，每条分支步长恒定 5 题。
  *
- * 设计来源：v4.0 设计文档（timu.md）→ v4.1 口语化改写（需求文档-问卷v4.1.md）。
+ * 设计来源：v4.0 设计文档（timu.md）→ v4.1 口语化改写（R1）+ 自定义输入（R2）。
  * "推拉""试探""框架"等措辞是项目核心产品语言（format.md/core.md/counseling.md/suggest.md
  * 系统使用），不等于 PUA，按原文使用。
  *

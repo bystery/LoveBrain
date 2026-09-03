@@ -6,7 +6,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * R2 自定义输入（v4.1 需求文档-问卷v4.1.md）契约单测：
+ * R2 自定义输入（问卷 v4.1）契约单测：
  * answers[step] = -1 哨兵 → profile 文本取 customTexts[step]（trim 后）；
  * -1 不参与 tag 收集、不触发客户端红线判定；切回固定选项后残留 customText 无效。
  */

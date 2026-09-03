@@ -19,8 +19,14 @@ local.properties
 *.log
 *.tmp
 
-# Dev process archives (not for public repo)
-/docs/development/
+# docs/ 采用白名单模式：仅对外文档入库，新增文档默认忽略，
+# 需公开时在下方显式加 ! 条目（内部需求/避坑/迁移文档一律不入库）
+/docs/*
+!/docs/ARCHITECTURE.md
+!/docs/KNOWLEDGE_BASE_OVERVIEW.md
+!/docs/RELEASE_CHECKLIST.md
+!/docs/ROADMAP.md
+!/docs/img/
 
 # AI tool cache
 /.qoder/*

@@ -7,7 +7,7 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 /**
- * pathData 契约单测（2026-09-03 图标事故回归防线，见 docs/避坑指南.md 坑#1）：
+ * pathData 契约单测（2026-09-03 图标 pathData 截断事故回归防线）：
  * res 下各 drawable 目录（drawable、drawable-v24 等限定符目录）的 XML 中，每条
  * android:pathData 必须语法完整——以 M/m 移动命令开头、命令参数个数符合 SVG path 语法、
  * 无非法字符残留。
