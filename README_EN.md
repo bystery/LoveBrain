@@ -12,12 +12,6 @@ You pick the one that sounds most like you — the words that leave your mouth a
 [![Privacy](https://img.shields.io/badge/privacy-zero_telemetry·on_device-red)](#-privacy-strict-by-design)
 [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
 
-<!-- 🎬 TODO: drop docs/demo.gif in and uncomment
-<img src="docs/demo.gif" alt="LoveBrain demo: long-press a message, floating panel streams 4 replies" width="360"/>
--->
-
-> 🎬 **Demo GIF placeholder**: `docs/demo.gif` (to be recorded)
-
 </div>
 
 ---
@@ -145,7 +139,7 @@ Multiple knowledge bases (one per person, say), creatable, deletable, switchable
  Fed back into the next generation — it knows you two better every time
 ```
 
-In one sentence: a floating-window app + an accessibility service that senses long-presses + a local Markdown knowledge base + the official DeepSeek API. That's all. Full architecture and prompt-assembly details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+In one sentence: a floating-window app + an accessibility service that senses long-presses + a local Markdown knowledge base + the official DeepSeek API. That's all.
 
 ## 🚀 Getting started
 
@@ -164,8 +158,6 @@ In one sentence: a floating-window app + an accessibility service that senses lo
 |---|---|---|
 | Display over other apps | The bubble and panel must float above other apps | Only displaying the bubble and panel; never clicks or operates anything for you |
 | Accessibility | To sense "you long-pressed a message" — the only screenshot-free way to capture it | Only listens to two system events (long-press, window change) and reads that message; no keylogging, no scanning |
-
-> 📸 Permission-screenshot placeholders: `docs/img/perm-overlay.png`, `docs/img/perm-accessibility.png` (TODO)
 
 Power move: when creating a knowledge base, tap **"AI generate"** and answer a questionnaire so the AI builds your starter profile.
 

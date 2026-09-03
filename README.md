@@ -13,14 +13,6 @@
 [![Privacy](https://img.shields.io/badge/隐私-零遥测·全本地-red)](#-隐私军师嘴很严)
 [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
 
-<!-- 🎬 TODO：录好演示 GIF 后放入 docs/demo.gif 并取消下方注释
-<br/>
-<img src="docs/demo.gif" alt="LoveBrain 演示：长按消息，悬浮窗弹出四种回复" width="360"/>
-<br/>
--->
-
-> 🎬 **演示 GIF 占位**：`docs/demo.gif`（待录制）
-
 </div>
 
 ---
@@ -47,10 +39,6 @@ LoveBrain 是一个**对话脚手架**。AI 替代不了人类的真心，但能
 1. **长按她发来的消息**
 2. **点一下生成**
 3. **把4种回复当成参考草稿自由组装，融入自己的语气发出去。**
-
-## 🔧 工作原理
-
-![LoveBrain 工作原理总览](docs/img/overview.jpg)
 
 ## 🚀 快速开始
 
@@ -124,7 +112,7 @@ cd LoveBrain
 | 今日锦囊生成 | — | — |
 | 主动开场润色 | — | — |
 
-> 表中"—"为占位，实际数值由真机运行后填入。详见 [测试报告](docs/test-report.md)（待补充）。
+> 表中"—"为占位，实际数值由真机运行后填入。
 
 ## 🚧 边界声明
 LoveBrain 旨在帮助你在关系里**真诚表达、不讨好、不内耗**。军师给的是表达参考，没有"必胜话术"，它帮你开口，真诚靠你自己
