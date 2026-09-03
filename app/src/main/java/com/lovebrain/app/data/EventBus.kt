@@ -1,5 +1,6 @@
 package com.lovebrain.app.data
 
+import android.os.SystemClock
 import com.lovebrain.app.util.L
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,11 +17,13 @@ object EventBus {
 
     /** 无障碍服务捕获到的消息事件 */
     data class CapturedMessage(
-        val text: String
+        val text: String,
+        /** 捕获发生时刻（SystemClock.uptimeMillis），供订阅方过滤服务重建前的旧重放 */
+        val ts: Long
     )
 
-    //  ：replay = 1——面板订阅前发生的捕获仍可收到最近一条（重放去重由
-    // FloatingService.addClipIfNew 兜底）；完整补录见 backlog 挂起项
+    //  ：replay = 1——collector 未就绪的窗口不丢事件；服务重建后的旧重放由
+    // FloatingService 按 ts 做 session 过滤（早于本次启动的一律丢弃）
     private val _capturedMessages = MutableSharedFlow<CapturedMessage>(replay = 1, extraBufferCapacity = 16)
     val capturedMessages: SharedFlow<CapturedMessage> = _capturedMessages.asSharedFlow()
 
@@ -29,7 +32,7 @@ object EventBus {
         if (_capturedMessages.subscriptionCount.value == 0) {
             L.w("捕获事件时无订阅者（丢失，长度=${text.length}）")
         }
-        _capturedMessages.tryEmit(CapturedMessage(text))
+        _capturedMessages.tryEmit(CapturedMessage(text, SystemClock.uptimeMillis()))
     }
 
     /**

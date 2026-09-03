@@ -143,8 +143,11 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         panelH = if (savedH > 0) savedH else dp(AppConfig.PANEL_DEFAULT_H)
 
         // 订阅 EventBus：接收无障碍服务捕获的消息
+        val sessionStart = SystemClock.uptimeMillis()
         scope.launch {
             EventBus.capturedMessages.collect { event ->
+                // 服务重建后会收到死前的重放事件（replay=1）：早于本次启动的旧事件一律丢弃，避免重复入库
+                if (event.ts < sessionStart - 500L) return@collect
                 val stored = addClipIfNew(event.text, viewModel.currentRole.value)
                 // A4 修复：只在消息真正入库时才亮红点（去重丢弃时不亮）
                 if (stored && bubbleView != null) {
