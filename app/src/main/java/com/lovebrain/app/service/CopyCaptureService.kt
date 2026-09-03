@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.EventBus
 import com.lovebrain.app.data.SecurePrefs
@@ -71,6 +72,28 @@ class CopyCaptureService : AccessibilityService() {
         }
     }
 
+    /**
+     * A2 修复：递归遍历无障碍节点树，收集所有非空文本。
+     * 新版微信消息文本常挂在子节点上，长按的容器节点本身不带字 → 直接取 event.text 取不到。
+     * 深度限制 4 层防性能问题，取最长的一条（最可能是完整消息内容）。
+     */
+    private fun collectTextFromChildren(node: AccessibilityNodeInfo?, depth: Int = 0, maxDepth: Int = 4): String? {
+        if (node == null || depth > maxDepth) return null
+        var best: String? = null
+        node.text?.toString()?.trim()?.let { t ->
+            if (t.isNotEmpty()) best = t
+        }
+        for (i in 0 until node.childCount) {
+            val child = runCatching { node.getChild(i) }.getOrNull() ?: continue
+            val childText = collectTextFromChildren(child, depth + 1, maxDepth)
+            if (childText != null && (best == null || childText.length > best.length)) {
+                best = childText
+            }
+            child.recycle()
+        }
+        return best
+    }
+
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
       try {
         // 支持全部 App（不再限定微信/抖音），后续逻辑已有文本特征校验兑底
@@ -116,6 +139,15 @@ class CopyCaptureService : AccessibilityService() {
                     content = runCatching {
                         event.source?.text?.toString()?.trim()
                     }.getOrNull()
+                }
+                // A2 修复：三处都取不到时，递归遍历子节点树取最长文本
+                if (content.isNullOrEmpty()) {
+                    content = runCatching {
+                        collectTextFromChildren(event.source)
+                    }.getOrNull()
+                    if (!content.isNullOrEmpty()) {
+                        appendDiag("LONGCLICK_TEXT_FROM_CHILDREN|len=${content.length}")
+                    }
                 }
                 if (!content.isNullOrEmpty() && content.length >= 1) {
                     pendingContent = content
