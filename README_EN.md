@@ -10,7 +10,7 @@ You pick the one that sounds most like you — the words that leave your mouth a
 [![Version](https://img.shields.io/badge/version-1.1.0-blue)](../../releases/latest)
 [![Platform](https://img.shields.io/badge/Android-8.0%2B-green)](../../releases/latest)
 [![Privacy](https://img.shields.io/badge/privacy-zero_telemetry·on_device-red)](#-privacy-strict-by-design)
-[![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
+[![License](https://img.shields.io/badge/license-AGPL--3.0_%7C_Commercial-orange)](LICENSE)
 
 <br/>
 
@@ -67,7 +67,7 @@ These lines aren't README decoration — they are hard rules **written into the 
 - ❌ Use it to **harass, stalk, or pressure** anyone who has said no
 - ❌ Use any of this on **minors**
 - ❌ Use it for **scams, romance fraud, or pig-butchering** — illegal use is on you, and this project offers zero cover for it
-- ❌ Resell it as paid "dating coaching" or bulk-reply services — it's MIT open source; don't turn it into an IQ tax
+- ❌ Resell it as paid "dating coaching" or bulk-reply services — the open-source edition is AGPL-3.0; don't turn it into an IQ tax
 
 **Expectation management**
 
@@ -201,7 +201,7 @@ A: Only at the moment you **long-press a specific message** — it reads that me
 A: The only outbound request is the generation call to the official DeepSeek API when you tap "generate". Everything else stays on-device: the knowledge base is plain Markdown in the app's private directory, cloud backup is disabled, and you can edit, export or delete it anytime.
 
 **Q: Is it free?**
-A: The app is open-source and free (MIT). Generation requires your own DeepSeek API key, billed per use by DeepSeek — expect a few RMB per month for casual usage (estimate; see the TODO in Getting Started).
+A: The app is **dual-licensed**: AGPL-3.0 (free for open-source / personal / learning use), or a commercial license (for closed-source use). Generation requires your own DeepSeek API key, billed per use by DeepSeek — expect a few RMB per month for casual usage (estimate; see the TODO in Getting Started).
 
 **Q: Is there an iOS version?**
 A: Not yet. iOS is far more restrictive around accessibility and floating windows; Android first.
@@ -221,7 +221,7 @@ This project is for learning, exchange and entertainment only. AI-generated repl
 
 ## 📄 License
 
-[MIT](LICENSE)
+**Dual-licensed**: open-source use under [AGPL-3.0](LICENSE); closed-source commercial use requires a [commercial license](LICENSE) (contact via GitHub Issues).
 
 ---
 

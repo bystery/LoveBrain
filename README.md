@@ -11,7 +11,7 @@
 [![Version](https://img.shields.io/badge/version-1.1.0-blue)](../../releases/latest)
 [![Platform](https://img.shields.io/badge/Android-8.0%2B-green)](../../releases/latest)
 [![Privacy](https://img.shields.io/badge/隐私-零遥测·全本地-red)](#-隐私军师嘴很严)
-[![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
+[![License](https://img.shields.io/badge/license-AGPL--3.0_%7C_Commercial-orange)](LICENSE)
 
 <img src="images/demo.gif" alt="LoveBrain 演示" width="360"/>
 
@@ -138,7 +138,7 @@ A：只在你**长按某条消息**时，读取那一条消息——这是生成
 A：只有你点"生成"时，当次上下文会发给对应的模型服务商。其余全部留在你手机本地：知识库是 App 私有目录里的 Markdown 文件，随时可编辑、导出或删除。
 
 **Q：免费吗？**
-A：App 本身开源免费（MIT）。但生成回复需要你自备 API Key。
+A：App 采用**双协议授权**：AGPL-3.0 开源免费（个人/学习/开源使用），或商业许可（闭源商用）。生成回复需你自备 API Key。
 
 **Q：iOS 有吗？**
 A：暂无。iOS 的无障碍和悬浮窗限制更严，先做好 Android。
@@ -158,7 +158,7 @@ A：军师的提示词里专门有"自然度检查"，目标是让建议像人�
 
 ## 📄 License
 
-[MIT](LICENSE)
+**双协议授权**：开源免费走 [AGPL-3.0](LICENSE)；闭源商用需 [商业许可](LICENSE)（通过 GitHub Issues 洽谈）。
 
 ## 🌏 English
 
