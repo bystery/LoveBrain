@@ -7,7 +7,8 @@ plugins {
 }
 
 // 正式签名：仓库根目录的 keystore.properties（已 gitignore，不入库）提供 keystore 路径与密码。
-// 贡献者本地没有该文件时，release 构建自动回退 debug 签名（仅供本地测试，不用于发布）。
+// 贡献者本地没有该文件时，release 构建产出 unsigned APK（仍可验证 R8/资源裁剪/编译），
+// 绝不静默回退 debug 签名冒充正式发布。
 val keystorePropsFile = rootProject.file("keystore.properties")
 val keystoreProps = Properties().apply {
     if (keystorePropsFile.exists()) keystorePropsFile.inputStream().use { load(it) }
@@ -44,11 +45,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // 有 keystore.properties 时用正式签名发布；没有时回退 debug 签名（仅本地测试）。
-            signingConfig = if (keystorePropsFile.exists()) {
-                signingConfigs.getByName("release")
-            } else {
-                signingConfigs.getByName("debug")
+            // 有 keystore.properties 时用正式签名发布；没有时不指定 signingConfig，
+            // 产出 unsigned release APK（可用于 R8/资源裁剪/CI 编译验证），绝不回退 debug key。
+            if (keystorePropsFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
             }
         }
     }
@@ -118,7 +118,7 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-compose:3.5.6")
 
     // Secure storage for API key
-    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("androidx.security:security-crypto:1.1.0")
 
     // Core
     implementation("androidx.core:core-ktx:1.13.1")

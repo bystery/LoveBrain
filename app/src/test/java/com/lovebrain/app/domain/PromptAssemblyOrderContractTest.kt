@@ -11,6 +11,7 @@ import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.model.StreamEvent
+import com.lovebrain.app.data.ProviderRequestConfig
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -279,9 +280,12 @@ class PromptAssemblyOrderContractTest {
         every { Log.w(any(), any<String>()) } returns 0
         val pb = newBuilder()
         val dsk = mockk<DeepSeekRepository>()
+        every { dsk.snapshotProviderConfig() } returns ProviderRequestConfig(
+            ticketId = "test", apiKey = "k", baseUrl = "https://api.deepseek.com", model = "m", thinkingMode = 0
+        )
         val systems = mutableListOf<String>()
         val users = mutableListOf<String>()
-        every { dsk.generateStream(any(), any(), any(), any()) } answers {
+        every { dsk.generateStream(any(), any(), any(), any(), any()) } answers {
             systems.add(arg(0))
             users.add(arg(1))
             flowOf<StreamEvent>(StreamEvent.Complete("done"))

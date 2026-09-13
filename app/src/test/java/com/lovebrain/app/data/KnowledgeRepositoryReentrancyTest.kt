@@ -94,6 +94,7 @@ class KnowledgeRepositoryReentrancyTest {
         withContext(Dispatchers.IO) {
             withTimeout(10_000) {
             val dir = kbDir()
+            writeKbJson(dir, KnowledgeBase(name = "kb", displayName = "kb", updatedAt = "2026-08-27T09:00:00+08:00"))
             dir.sub("memory/counseling_log.md").writeText("# 谈心记录\n# 军师分析\n")
 
             newRepo().appendCounselingEntries("kb", "R1", "A1")
@@ -116,6 +117,7 @@ class KnowledgeRepositoryReentrancyTest {
         withContext(Dispatchers.IO) {
             withTimeout(10_000) {
             val dir = kbDir()
+            writeKbJson(dir, KnowledgeBase(name = "kb", displayName = "kb", updatedAt = "2026-08-27T09:00:00+08:00"))
             dir.sub("understand/warmth.md").writeText(
                 "亲密度：50/100\n信任度：50/100\n承诺度：50/100\n激情：50/100\n安全感：50/100\n"
             )
@@ -140,6 +142,7 @@ class KnowledgeRepositoryReentrancyTest {
         withContext(Dispatchers.IO) {
             withTimeout(10_000) {
             val dir = kbDir()
+            writeKbJson(dir, KnowledgeBase(name = "kb", displayName = "kb", updatedAt = "2026-08-27T09:00:00+08:00"))
             dir.sub("understand/warmth.md").writeText(
                 "亲密度：50/100\n信任度：50/100\n承诺度：50/100\n激情：50/100\n安全感：50/100\n- 阶段标签：暧昧期\n"
             )
@@ -183,7 +186,8 @@ class KnowledgeRepositoryReentrancyTest {
     fun concurrent_writes_both_complete_and_result_is_atomic() = runTest {
         withContext(Dispatchers.IO) {
             withTimeout(10_000) {
-            kbDir()
+            val dir = kbDir()
+            writeKbJson(dir, KnowledgeBase(name = "kb", displayName = "kb", updatedAt = "2026-08-27T09:00:00+08:00"))
             val repo = newRepo()
 
             val j1 = launch(Dispatchers.IO) { repo.writeFile("kb", "a.md", "ONE") }
