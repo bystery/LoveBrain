@@ -2,6 +2,7 @@ package com.lovebrain.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lovebrain.app.data.CostScope
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
@@ -288,10 +289,11 @@ class LoveBrainViewModel(
                 deepSeekRepo.costEvents.collect { ev ->
                     val today = java.time.LocalDate.now().toString()
                     if (today != todayCostDate) { todayCostDate = today; _todayCostYuan.value = 0.0 }
+                    // PROV-03：今日累计包含全部可计费 AI 请求（前台 + 后台）
                     _todayCostYuan.value += ev.yuan
                     securePrefs.saveTodayCost(today, _todayCostYuan.value)
-                    // ：后台引擎/建库的用量只计入今日累计，不刷新"本次"（仅面板四流程内刷新）
-                    if (_isGenerating.value || _isCounseling.value || _isSuggesting.value || _isProactive.value) {
+                    // PROV-03：本次费用只显示前台流式请求（FOREGROUND），不被后台 raw 污染
+                    if (ev.scope == CostScope.FOREGROUND) {
                         _lastCostYuan.value = ev.yuan
                     }
                 }

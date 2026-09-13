@@ -63,10 +63,40 @@ data class ApiStats(
 }
 
 /**
+ * 计费事件来源标识（PROV-03）。
+ * FOREGROUND = 悬浮窗四流程（回复/谈心/锦囊/主动发）的流式请求
+ * BACKGROUND = 后台 generateRaw（向量重估/经验提取/画像 reflect/Onboarding）
+ */
+enum class CostScope {
+    FOREGROUND,
+    BACKGROUND
+}
+
+/**
  * 计费事件：logUsage 过双条件计费后发射，VM 聚合今日累计/本次花费。
  * timestampMs 供消费侧跨天滚动判定。
+ * scope 标识来源（PROV-03）：VM 只将 FOREGROUND 费用写入"本次花费"。
  */
-data class UsageCostEvent(val yuan: Double, val timestampMs: Long)
+data class UsageCostEvent(
+    val yuan: Double,
+    val timestampMs: Long,
+    val scope: CostScope
+)
+
+/**
+ * 请求级不可变配置快照（PROV-01）。
+ *
+ * 一次 API 请求从出生到结束的固定身份：ticket / apiKey / baseUrl / model / thinkingMode。
+ * 请求开始时一次性冻结，后续 build body / build URL / Authorization / retry / usage 计费
+ * 全部只使用此快照，用户之后切工单不影响已启动的请求。
+ */
+data class ProviderRequestConfig(
+    val ticketId: String,
+    val apiKey: String,
+    val baseUrl: String,
+    val model: String,
+    val thinkingMode: Int
+)
 
 /**
  * DeepSeek API 网络层 v2。
@@ -120,6 +150,45 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
         HttpsTrustGuard.enforce(trimmed)
         return trimmed
     }
+
+    /**
+     * PROV-01：一次性解析当前激活工单为不可变请求配置快照。
+     * 返回 null = 配置不完整（调用方负责发 CONFIG_ERROR）。
+     * 返回后整次请求只使用此快照，不再调 getActiveTicket/getActiveApiKey/getActiveModel。
+     * normalizeBaseUrl（含 HttpsTrustGuard）在此完成，地址不合法时抛 IllegalArgumentException。
+     *
+     * 关键：开头一次性读取 securePrefs.activeTicketId，后续全部围绕这个固定 ID 取值。
+     * ticket 和 apiKey 必须来自同一个 ticketId，禁止分两次读取 activeTicketId。
+     */
+    private fun resolveRequestConfig(): ProviderRequestConfig? {
+        // PROV-01：固定 ticketId —— 后续 ticket/apiKey 都围绕此 ID 取值，不再二次读 activeTicketId
+        val ticketId = securePrefs.activeTicketId ?: return null
+        if (ticketId.isBlank()) return null
+
+        val ticket = getAllTickets().firstOrNull { it.id == ticketId } ?: return null
+        if (ticket.id.isBlank() || ticket.baseUrl.isBlank() || ticket.model.isBlank()) return null
+
+        val apiKey = securePrefs.getWorkerApiKey(ticketId)?.takeIf { it.isNotBlank() } ?: return null
+
+        // normalizeBaseUrl 包含脏数据拦截 + HttpsTrustGuard.enforce
+        val baseUrl = normalizeBaseUrl(ticket.baseUrl)
+        val thinkingMode = ticket.thinkingMode ?: securePrefs.thinkingMode
+        return ProviderRequestConfig(
+            ticketId = ticketId,
+            apiKey = apiKey,
+            baseUrl = baseUrl,
+            model = ticket.model,
+            thinkingMode = thinkingMode
+        )
+    }
+
+    /**
+     * PROV-01：公开快照入口——供 GenerationEngine 在整轮生成开始时冻结 Provider 身份。
+     * 后续所有 retry attempt 使用同一个 ProviderRequestConfig，不因用户切工单而漂移。
+     * 返回 null = 配置不完整（调用方负责处理）。
+     */
+    internal fun snapshotProviderConfig(): ProviderRequestConfig? =
+        try { resolveRequestConfig() } catch (e: IllegalArgumentException) { null }
 
     // ═══════════ API 统计计数器（线程安全） ═══════════
 
@@ -220,7 +289,11 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
      * - 逐块发射 StreamEvent.Chunk
      * - 流结束后发射 StreamEvent.Complete（含完整累积文本）
      *
-     * @param thinkingOverride 超时降级用：非 null 时覆盖 securePrefs 中的 thinkingMode。
+     * PROV-01：接受外部冻结的 [config] 快照（由 GenerationEngine 在整轮生成开始时 snapshot）。
+     * 如果调用方未传 config，则每次调用自行 resolve 一次（向后兼容）。
+     *
+     * @param config 请求级不可变配置快照（PROV-01）。传 null 时内部自行 resolve。
+     * @param thinkingOverride 超时降级用：非 null 时覆盖 config 中的 thinkingMode。
      *        降级链：thinking(enabled) → timeout → thinking(disabled=0) → retry → fail
      * @param thinkingShapeIndex thinking 参数 wire shape 索引（ 降级链用）
      */
@@ -228,36 +301,42 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
         systemPrompt: String,
         userPrompt: String,
         thinkingOverride: Int? = null,
-        thinkingShapeIndex: Int = 0
+        thinkingShapeIndex: Int = 0,
+        config: ProviderRequestConfig? = null
     ): Flow<StreamEvent> = callbackFlow {
-        //  Step 3+5+6A+6B: 三校验 + 脏数据拦截 (ticket/baseUrl/apiKey)
-        val ticket = getActiveTicket()
-            ?: run { trySend(StreamEvent.Error("CONFIG_ERROR:请先配置一个模型供应商", "")).getOrThrow(); close(); return@callbackFlow }
-        
-        if (ticket.id.isNullOrBlank()) {
-            run { trySend(StreamEvent.Error("CONFIG_ERROR:工单 ID 无效，请重新激活", "")).getOrThrow(); close(); return@callbackFlow }
+        // PROV-01：一次性冻结请求配置快照——后续 build body / build URL / Authorization / logUsage 全用此快照
+        val resolvedConfig = config ?: try {
+            resolveRequestConfig()
+        } catch (e: IllegalArgumentException) {
+            // normalizeBaseUrl / HttpsTrustGuard 脏数据拦截
+            trySend(StreamEvent.Error("CONFIG_ERROR:${e.message ?: "地址配置异常"}", "")).getOrThrow()
+            close()
+            return@callbackFlow
         }
-        
-        if (ticket.baseUrl.isNullOrBlank()) {
-            run { trySend(StreamEvent.Error("CONFIG_ERROR:接口地址未填写，请在设置中补充", "")).getOrThrow(); close(); return@callbackFlow }
+        if (resolvedConfig == null) {
+            // 区分具体缺失项给精确提示
+            val ticket = getActiveTicket()
+            val errMsg = when {
+                ticket == null -> "CONFIG_ERROR:请先配置一个模型供应商"
+                ticket.id.isNullOrBlank() -> "CONFIG_ERROR:工单 ID 无效，请重新激活"
+                ticket.baseUrl.isNullOrBlank() -> "CONFIG_ERROR:接口地址未填写，请在设置中补充"
+                ticket.model.isNullOrBlank() -> "CONFIG_ERROR:模型名称未配置，请在设置中补充"
+                else -> "CONFIG_ERROR:API Key 缺失，请检查工单配置"
+            }
+            trySend(StreamEvent.Error(errMsg, "")).getOrThrow()
+            close()
+            return@callbackFlow
         }
-        
-        if (ticket.model.isNullOrBlank()) {
-            run { trySend(StreamEvent.Error("CONFIG_ERROR:模型名称未配置，请在设置中补充", "")).getOrThrow(); close(); return@callbackFlow }
-        }
-        
-        val apiKey = getActiveApiKey()
-            ?: run { trySend(StreamEvent.Error("CONFIG_ERROR:API Key 缺失，请检查工单配置", "")).getOrThrow(); close(); return@callbackFlow }
-        
+
         _totalRequests.incrementAndGet()
         refreshStats()
 
-        val requestBody = buildRequestBody(
-            systemPrompt, userPrompt, AppConfig.TEMPERATURE_MAIN, stream = true,
+        val requestBody = buildRequestBodyWithConfig(
+            resolvedConfig, systemPrompt, userPrompt, AppConfig.TEMPERATURE_MAIN, stream = true,
             thinkingOverride = thinkingOverride,
             thinkingShapeIndex = thinkingShapeIndex
         )
-        val request = buildRequest(apiKey, requestBody)
+        val request = buildRequestWithConfig(resolvedConfig, requestBody)
         val accumulated = StringBuilder()
 
         val call = streamClient.newCall(request)
@@ -323,7 +402,8 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
                             val chunkContent = runCatching {
                                 val chunk = json.parseToJsonElement(payload).jsonObject
                                 // 流式末尾带 usage 的 chunk（include_usage=true 时最后一条）
-                                if (chunk["usage"] != null) logUsage(chunk)
+                                // PROV-02：logUsage 使用请求开始时冻结的 config + FOREGROUND scope
+                                if (chunk["usage"] != null) logUsage(chunk, resolvedConfig, CostScope.FOREGROUND)
                                 val contentElement = chunk["choices"]?.jsonArray
                                     ?.get(0)?.jsonObject
                                     ?.get("delta")?.jsonObject
@@ -395,30 +475,46 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
     /**
      * 纯文本生成（不解析为 LoveBrainResponse），用于经验提取等辅助任务。
      * 使用 suspendCancellableCoroutine + enqueue，支持协程取消。
+     *
+     * PROV-01：内部自行 resolve 配置快照，请求身份冻结后不再读实时 activeTicket/Model。
+     * PROV-04：CancellationException 重新抛出，不计入 failCount。
      */
     suspend fun generateRaw(systemPrompt: String, userPrompt: String): String {
-        //  改动点⑧：Key 源切换至工单
-        val apiKey = getActiveApiKey() ?: return ""
-        if (apiKey.isBlank()) return ""
+        val config = try { resolveRequestConfig() } catch (e: IllegalArgumentException) { return "" }
+            ?: return ""
+        return generateRaw(config, systemPrompt, userPrompt)
+    }
 
+    /**
+     * PROV-01：接受外部冻结 config 的 generateRaw overload。
+     * 供调用方在已持有 config 快照时复用，确保请求身份一致。
+     */
+    suspend fun generateRaw(
+        config: ProviderRequestConfig,
+        systemPrompt: String,
+        userPrompt: String
+    ): String {
         _totalRequests.incrementAndGet()
-        val requestBody = buildRequestBody(
-            systemPrompt, userPrompt, AppConfig.TEMPERATURE_RAW, stream = false
+        val requestBody = buildRequestBodyWithConfig(
+            config, systemPrompt, userPrompt, AppConfig.TEMPERATURE_RAW, stream = false
         )
-        val request = buildRequest(apiKey, requestBody)
+        val request = buildRequestWithConfig(config, requestBody)
 
-        return runCatching {
+        // PROV-04：CancellationException 必须重新抛出，不计入 failCount
+        return try {
             val respBody = executeRequest(client, request)
             val root = json.parseToJsonElement(respBody).jsonObject
-            // 统计 token 用量（非流式响应也带 usage）
-            runCatching { logUsage(root) }
+            // PROV-02：统计 token 用量 + 计费使用请求开始时冻结的 config + BACKGROUND scope
+            runCatching { logUsage(root, config, CostScope.BACKGROUND) }
             _successCount.incrementAndGet()
             refreshStats()
             root["choices"]?.jsonArray
                 ?.get(0)?.jsonObject
                 ?.get("message")?.jsonObject
                 ?.get("content")?.jsonPrimitive?.content ?: ""
-        }.getOrElse {
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
             _failCount.incrementAndGet()
             refreshStats()
             ""
@@ -524,7 +620,12 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
             })
         }
 
-    private fun buildRequestBody(
+    /**
+     * PROV-01：使用冻结的 [config] 构建请求体，禁止再读取 getActiveModel()/getActiveTicket()/securePrefs.thinkingMode。
+     * model 来自 config.model，thinkingMode 来自 config.thinkingMode（thinkingOverride 优先）。
+     */
+    internal fun buildRequestBodyWithConfig(
+        config: ProviderRequestConfig,
         systemPrompt: String,
         userPrompt: String,
         temperature: Double,
@@ -533,30 +634,22 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
         thinkingShapeIndex: Int = 0
     ): String {
         val body = buildJsonObject {
-            //  改动点③：model 源 = 激活工单绑定的模型（一工单 = 一模型）
-            val model = getActiveModel() ?: throw IllegalStateException("激活工单未配置模型，请到设置里补充")
-            put("model", model)
+            // PROV-01：model 来自 config 快照，不再读 getActiveModel()
+            put("model", config.model)
             put("temperature", temperature)
             if (stream) {
                 put("stream", true)
                 // 让流式响应末尾带 usage 字段（用于统计 token 消耗）
                 putJsonObject("stream_options") { put("include_usage", true) }
             }
-            // 思考模式两态（悬浮窗可切换）：0=直出 1=思考（toggle 切换，两态化后无写 2 的可达路径）
-            // deepseek-v4-flash 默认 thinking=enabled+high，输出思维链 → completion 虚高、偶发 content 空。
-            // 话术生成任务是确定性输出，默认直出，更快更省更稳。
-            // 超时降级：thinkingOverride 非 null 时覆盖配置值（用于超时后自动降级到直出模式）
-            // 配置校验：无效值兜底为 0（直出），防止 API 报错
-            //  消费兜底链：本次调用覆盖 > 工单开关 > 全局设置；
-            // 老工单无字段（null）回退全局 = 继承当前全局直出/思考设置；工单开关经
-            // SetupViewModel.toggleTicketThinking 写入（SecurePrefs.thinkingMode 键保留作兜底读源）
-            val effectiveThinking = thinkingOverride ?: (getActiveTicket()?.thinkingMode ?: securePrefs.thinkingMode)
+            // PROV-01：thinkingMode 来自 config 快照，thinkingOverride 优先
+            val effectiveThinking = thinkingOverride ?: config.thinkingMode
             val tMode = effectiveThinking.coerceIn(0, 1)
             if (tMode != effectiveThinking) {
                 L.w("⚠️ thinkingMode=$effectiveThinking 无效，已回退为 $tMode")
             }
-            if (thinkingOverride != null && thinkingOverride != securePrefs.thinkingMode) {
-                L.w("⚡ 超时降级：thinkingMode ${securePrefs.thinkingMode} → $tMode")
+            if (thinkingOverride != null && thinkingOverride != config.thinkingMode) {
+                L.w("⚡ 超时降级：thinkingMode ${config.thinkingMode} → $tMode")
             }
             // 两态：0=直出（disabled） 1=思考（enabled + reasoning_effort low）
             when (tMode) {
@@ -599,21 +692,26 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
         return body.toString()
     }
 
-    private fun buildRequest(apiKey: String, body: String): Request {
-        //  改动点②：URL 源切换至激活工单；
-        // ：异常文案经 GenerationEngine :260 原样透传展示给用户，黑话换成固定表人话（G4③）
-        val ticket = getActiveTicket()
-            ?: throw IllegalStateException("还没有可用的模型配置，请到设置里检查")
-        val url = normalizeBaseUrl(ticket.baseUrl)
+    /**
+     * PROV-01：使用冻结的 [config] 构建请求，禁止再读取 getActiveTicket()。
+     * URL 来自 config.baseUrl（已在 resolveRequestConfig 中 normalize），Authorization 来自 config.apiKey。
+     */
+    internal fun buildRequestWithConfig(config: ProviderRequestConfig, body: String): Request {
+        // PROV-01：URL + Key 全部来自 config 快照，不再读 getActiveTicket()/getActiveApiKey()
         return Request.Builder()
-            .url(url)
-            .header("Authorization", "Bearer $apiKey")
+            .url(config.baseUrl)  // resolveRequestConfig 中已 normalize
+            .header("Authorization", "Bearer ${config.apiKey}")
             .header("Content-Type", "application/json")
             .post(body.toRequestBody(JSON_MEDIA_TYPE))
             .build()
     }
 
-    private fun logUsage(root: JsonObject) {
+    /**
+     * PROV-02：计费必须绑定实际请求 config，禁止读取响应时的 active ticket/model。
+     * @param config 请求开始时冻结的 ProviderRequestConfig 快照
+     * @param scope  计费来源标识（FOREGROUND=悬浮窗流式 / BACKGROUND=后台 generateRaw）
+     */
+    private fun logUsage(root: JsonObject, config: ProviderRequestConfig, scope: CostScope) {
         runCatching {
             val usage = root["usage"]?.jsonObject ?: return
             val hit = usage["prompt_cache_hit_tokens"]?.jsonPrimitive?.int ?: 0
@@ -627,17 +725,15 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
             _totalCacheMissTokens.addAndGet(miss.toLong())
             refreshStats()
             L.w("API usage: prompt=$prompt(hit=$hit,miss=$miss) completion=$completion")
-            // ：计费双条件（主人拍板）——工单地址含 deepseek.com 且 usage 带缓存命中/未命中字段；
-            // 不满足 → 不计费（展示侧"本次"位占位"—"）。日志只记金额（规则 8 口径）。
+            // PROV-02：计费双条件使用 config.baseUrl / config.model，不再读 getActiveTicket()/getActiveModel()
             val hasCacheFields = usage.containsKey("prompt_cache_hit_tokens") || usage.containsKey("prompt_cache_miss_tokens")
-            val ticket = getActiveTicket()
-            if (ticket != null && UsagePricer.shouldBill(ticket.baseUrl, hasCacheFields)) {
-                val tier = UsagePricer.priceTier(getActiveModel().orEmpty())
+            if (UsagePricer.shouldBill(config.baseUrl, hasCacheFields)) {
+                val tier = UsagePricer.priceTier(config.model)
                 val peak = UsagePricer.isPeakHourBeijing(Instant.now())
                 val costYuan = UsagePricer.costYuan(hit.toLong(), miss.toLong(), completion.toLong(), tier, peak)
                 if (costYuan > 0.0) {
-                    _costEvents.tryEmit(UsageCostEvent(costYuan, System.currentTimeMillis()))
-                    L.w("Cost billed: ${"%.4f".format(costYuan)} yuan (tier=$tier, peak=$peak)")
+                    _costEvents.tryEmit(UsageCostEvent(costYuan, System.currentTimeMillis(), scope))
+                    L.w("Cost billed: ${"%.4f".format(costYuan)} yuan (tier=$tier, peak=$peak, scope=$scope)")
                 }
             }
         }

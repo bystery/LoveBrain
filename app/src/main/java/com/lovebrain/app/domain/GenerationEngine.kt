@@ -203,6 +203,16 @@ class GenerationEngine(
             }
             L.w("PERF t1 prompt built (+${System.currentTimeMillis() - t0}ms), user=${user.length} chars")
 
+            // PROV-01：整轮生成开始时冻结 Provider 身份——所有 retry attempt 使用同一个 config
+            val providerConfig = deepSeekRepo.snapshotProviderConfig()
+            if (providerConfig == null) {
+                callbacks.onReplyResult(GenerateResult.Error("请先配置一个可用的模型供应商"))
+                callbacks.onReplyGenerating(false, false)
+                callbacks.onReplyStreamingCoreTextReset()
+                callbacks.onReplyPanelState(PanelState.AI_RESULT)
+                return@launch
+            }
+
             var fullText = ""
             var errorMsg: String? = null
             var timedOut = false
@@ -233,7 +243,8 @@ class GenerationEngine(
                     val thinkingOverride = if (timedOut) 0 else null
                     errorMsg = null  // 每次重试重置错误
                     fullText = collectStream(
-                        deepSeekRepo.generateStream(system, user, thinkingOverride, thinkingShapeIndex),
+                        // PROV-01：所有 retry attempt 使用同一个 providerConfig 快照
+                        deepSeekRepo.generateStream(system, user, thinkingOverride, thinkingShapeIndex, config = providerConfig),
                         AppConfig.GENERATE_TIMEOUT_MS,
                         onChunk = { chunk ->
                             callbacks.onReplyStreamingCoreText(chunk)
@@ -330,6 +341,13 @@ class GenerationEngine(
         callbacks.onCounselingStart()
 
         return scope.launch {
+            // PROV-01：冻结 Provider 身份
+            val providerConfig = deepSeekRepo.snapshotProviderConfig()
+            if (providerConfig == null) {
+                callbacks.onCounselingError("请先配置一个可用的模型供应商")
+                callbacks.onCounselingEnd()
+                return@launch
+            }
             // ：谈心首字耗时计时起点（复用回复流程 t0 口径）
             val t0 = System.currentTimeMillis()
             val suffix = "\n\n## 用户倾诉\n" + userMessage.trim() +
@@ -343,7 +361,8 @@ class GenerationEngine(
             var errorMsg: String? = null
             try {
                 fullText = collectStream(
-                    deepSeekRepo.generateStream(system, user),
+                    // PROV-01：使用冻结的 providerConfig
+                    deepSeekRepo.generateStream(system, user, config = providerConfig),
                     AppConfig.GENERATE_TIMEOUT_MS,
                     onChunk = { callbacks.onCounselingStreaming(it) },
                     onError = { errorMsg = it },
@@ -405,6 +424,14 @@ class GenerationEngine(
                 promptBuilder.buildSuggestUserPrompt(kb)
             }
 
+            // PROV-01：冻结 Provider 身份
+            val providerConfig = deepSeekRepo.snapshotProviderConfig()
+            if (providerConfig == null) {
+                callbacks.onSuggestError("请先配置一个可用的模型供应商")
+                callbacks.onSuggestEnd()
+                return@launch
+            }
+
             val buffer = StringBuilder()
             var fullText = ""
             val t0 = System.currentTimeMillis()
@@ -414,7 +441,8 @@ class GenerationEngine(
             try {
                 L.w("SUGGEST t0 request enqueued, user=${user.length} chars")
                 fullText = collectStream(
-                    deepSeekRepo.generateStream(system, user),
+                    // PROV-01：使用冻结的 providerConfig
+                    deepSeekRepo.generateStream(system, user, config = providerConfig),
                     AppConfig.SUGGEST_TIMEOUT_MS,
                     onChunk = { chunk ->
                         if (firstChunkAt < 0) {
@@ -458,6 +486,13 @@ class GenerationEngine(
         callbacks.onProactiveStart()
 
         return scope.launch(Dispatchers.Main) {
+            // PROV-01：冻结 Provider 身份
+            val providerConfig = deepSeekRepo.snapshotProviderConfig()
+            if (providerConfig == null) {
+                callbacks.onProactiveError("请先配置一个可用的模型供应商")
+                callbacks.onProactiveEnd()
+                return@launch
+            }
             // ：主动发首字耗时计时起点（复用回复流程 t0 口径）
             val t0 = System.currentTimeMillis()
             //  规格：scene 参数保留但不再注入；user 仅草稿（无时间戳/无知识/无场景）
@@ -468,7 +503,8 @@ class GenerationEngine(
             var fullText = ""
             try {
                 fullText = collectStream(
-                    deepSeekRepo.generateStream(system, user),
+                    // PROV-01：使用冻结的 providerConfig
+                    deepSeekRepo.generateStream(system, user, config = providerConfig),
                     AppConfig.SUGGEST_TIMEOUT_MS,
                     onChunk = { chunk ->
                         buffer.append(chunk)
