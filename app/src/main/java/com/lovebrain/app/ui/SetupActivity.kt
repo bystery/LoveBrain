@@ -756,7 +756,7 @@ private fun ProviderEditDialog(
     var modelInput by remember { mutableStateOf("") }
     var editIndex by remember { mutableStateOf(-1) }
     var testingModel by remember { mutableStateOf<String?>(null) }
-    var testResult by remember { mutableStateOf<Pair<String, Boolean>?>(null) }
+    var testResult by remember { mutableStateOf<Triple<String, Boolean, String?>?>(null) }
 
     fun commitModelInput(index: Int) {
         val m = modelInput.trim()
@@ -877,9 +877,9 @@ private fun ProviderEditDialog(
                                 testResult = null
                                 scope.launch {
                                     val t = ticket ?: ProviderTicket(name = name.ifBlank { "未命名" }, baseUrl = baseUrl, model = m, models = models)
-                                    val ok = viewModel.testConnection(t, m, key.trim())
+                                    val result = viewModel.testConnection(t, m, key.trim())
                                     testingModel = null
-                                    testResult = m to ok
+                                    testResult = Triple(m, result.success, result.message)
                                 }
                             }
                             IconAction(Icons.Filled.Edit, "编辑", tint = TextSecondary) {
@@ -922,9 +922,9 @@ private fun ProviderEditDialog(
                             .padding(horizontal = Spacing.md, vertical = Spacing.xs)
                     )
                 }
-                testResult?.let { (m, ok) ->
+                testResult?.let { (m, ok, msg) ->
                     Text(
-                        if (ok) "✓ 连接成功，接口已自动补全" else "✗ $m 连接失败，请检查配置",
+                        if (ok) "✓ 连接成功，接口已自动补全" else "✗ $m 连接失败：${msg ?: "请检查配置"}",
                         style = AppTypography.labelSmall,
                         color = if (ok) Success else Error
                     )

@@ -537,12 +537,11 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
     // ═══════════ API 连接测试 ═══════════
 
     /**
-     * URL-01：带 endpoint 自动探测的连接测试（保存供应商时使用）。
+     * URL-01：带 endpoint 自动探测的连接测试（保存供应商 + 测试连接按钮共用）。
      *
      * 用 [OpenAiChatEndpointResolver] 生成候选 URL 列表，逐个探测：
-     * - 404 / 405 → 继续下一个候选（主机到了，但路径不对）
-     * - 401 / 403 → Key / 权限问题，立即停止
-     * - 400 → 模型或请求参数问题，立即停止
+     * - 404 / 405 / 400 → 路径不对，继续下一个候选
+     * - 401 / 403 → 可能是路径不对导致网关拦截，继续下一个候选；若所有候选都返回 auth 错误，则返回 Key/权限原因
      * - 429 → 限流，立即停止
      * - 5xx → 供应商服务异常，立即停止
      * - DNS / 超时 → 网络问题，立即停止
@@ -570,6 +569,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
         val candidates = OpenAiChatEndpointResolver.candidates(normalizedBase)
         L.w("testConnectionWithProbe: candidates=${candidates.size} base=$normalizedBase")
 
+        var lastAuthError: String? = null
         for (url in candidates) {
             L.w("testConnectionWithProbe: trying $url")
             val result = probeEndpoint(apiKey, testModel, url)
@@ -579,19 +579,26 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
                     return ConnectionTestResult(success = true, resolvedUrl = url)
                 }
                 is ProbeResult.NotFound -> {
-                    // 404 / 405 → 继续下一个候选
+                    // 404 / 405 / 400 → 路径不对，继续下一个候选
                     L.w("testConnectionWithProbe: ${result.code} on $url, trying next candidate")
                     continue
                 }
+                is ProbeResult.AuthError -> {
+                    // 401/403 → 可能是路径不对导致网关拦截，继续下一个候选，但记录原因
+                    L.w("testConnectionWithProbe: auth error on $url: ${result.message}, trying next candidate")
+                    lastAuthError = result.message
+                    continue
+                }
                 is ProbeResult.Fatal -> {
-                    // 401/403/400/429/5xx/DNS/超时 → 立即停止
+                    // 429/5xx/DNS/超时 → 立即停止
                     return ConnectionTestResult(success = false, message = result.message)
                 }
             }
         }
+        // 所有候选都尝试完毕：如果有 auth 错误，优先返回 auth 原因（更可能是 Key 问题）
         return ConnectionTestResult(
             success = false,
-            message = "无法连接到接口地址，请检查 URL 是否正确"
+            message = lastAuthError ?: "无法连接到接口地址，请检查 URL 是否正确"
         )
     }
 
@@ -656,19 +663,22 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
 
     /**
      * URL-01：endpoint 探测结果密封类。
-     * Success = 连接成功；NotFound = 404/405 继续下一个候选；Fatal = 其他错误立即停止。
+     * Success = 连接成功；
+     * NotFound = 404/405/400 路径不对，继续下一个候选；
+     * AuthError = 401/403 可能是路径不对导致的网关拦截，继续下一个候选，但记录原因以防所有候选都失败；
+     * Fatal = 429/5xx/DNS/超时 等不可恢复错误，立即停止。
      */
     private sealed class ProbeResult {
         data class Success(val url: String) : ProbeResult()
         data class NotFound(val code: Int) : ProbeResult()
+        data class AuthError(val message: String) : ProbeResult()
         data class Fatal(val message: String) : ProbeResult()
     }
 
     /**
      * URL-01：对单个 URL 发送极小请求探测。
-     * 404/405 → NotFound（继续下一个候选）
-     * 401/403 → Fatal（Key/权限问题）
-     * 400 → Fatal（模型或请求参数问题）
+     * 404/405/400 → NotFound（路径不对，继续下一个候选）
+     * 401/403 → AuthError（可能是路径不对导致网关拦截，继续下一个候选，但记录原因）
      * 429 → Fatal（限流）
      * 5xx → Fatal（供应商服务异常）
      * DNS/超时 → Fatal（网络问题）
@@ -705,10 +715,9 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
             throw e
         } catch (e: HttpCodeException) {
             when (e.code) {
-                404, 405 -> ProbeResult.NotFound(e.code)
-                401 -> ProbeResult.Fatal("API Key 无效，请检查密钥")
-                403 -> ProbeResult.Fatal("没有权限访问该接口，请检查 API Key 权限")
-                400 -> ProbeResult.Fatal("请求参数有误，请检查模型名称是否正确")
+                404, 405, 400 -> ProbeResult.NotFound(e.code)
+                401 -> ProbeResult.AuthError("API Key 无效，请检查密钥")
+                403 -> ProbeResult.AuthError("没有权限访问该接口，请检查 API Key 权限")
                 429 -> ProbeResult.Fatal("请求过于频繁，请稍后再试")
                 in 500..599 -> ProbeResult.Fatal("供应商服务异常（${e.code}），请稍后再试")
                 else -> ProbeResult.Fatal("连接失败（${e.code}）")

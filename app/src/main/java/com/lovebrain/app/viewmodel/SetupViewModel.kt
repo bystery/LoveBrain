@@ -332,16 +332,30 @@ class SetupViewModel(
     // ──────────────── 连接测试（ 修复） ────────────────
 
     /**
-     * 连接测试：走 DeepSeekRepository 真实链路，按模型逐个测（多模型批）。
+     * 连接测试：走 testConnectionWithProbe，与「保存」走同一条探测链，
+     * 保证「测试连接」和「保存」行为一致。
      * @param key 表单里用户新填的 Key；留空则用供应商已存 Key（UI 永不接触明文，）
-     * @return 连接是否成功
+     * @return ConnectionTestResult（含 success / resolvedUrl / message）
      */
-    suspend fun testConnection(ticket: ProviderTicket, model: String, key: String): Boolean {
-        if (model.isBlank()) return false
+    suspend fun testConnection(
+        ticket: ProviderTicket,
+        model: String,
+        key: String
+    ): com.lovebrain.app.data.ConnectionTestResult {
+        if (model.isBlank()) {
+            return com.lovebrain.app.data.ConnectionTestResult(
+                success = false,
+                message = "模型名称不能为空"
+            )
+        }
         val effectiveKey = key.ifBlank { securePrefs.getWorkerApiKey(ticket.id).orEmpty() }
-        return runCatching {
-            deepSeekRepo.testConnection(effectiveKey, model, ticket.baseUrl)
-        }.getOrElse { false }
+        if (effectiveKey.isBlank()) {
+            return com.lovebrain.app.data.ConnectionTestResult(
+                success = false,
+                message = "API Key 不能为空"
+            )
+        }
+        return deepSeekRepo.testConnectionWithProbe(effectiveKey, model, ticket.baseUrl)
     }
 
     // ═══ 消息捕获开关（ 问题 4）═══

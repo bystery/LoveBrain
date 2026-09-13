@@ -269,4 +269,82 @@ class SetupViewModelSaveProbeTest {
 
         assertFalse("无激活工单不得 Ready", vm.providerReady.value)
     }
+
+    // ═══ P2-1：testConnection 走 testConnectionWithProbe（与保存一致） ═══
+
+    @Test
+    fun test_connection_success_returns_connection_test_result() = runTest {
+        val ticket = ProviderTicket(
+            id = "t1", name = "Test", baseUrl = "https://api.example.com",
+            model = "deepseek-chat", thinkingMode = 0
+        )
+        val prefs = mockPrefs(tickets = listOf(ticket), activeTicketId = "t1", apiKey = "sk-test")
+        val repo = mockRepo(
+            com.lovebrain.app.data.ConnectionTestResult(
+                success = true,
+                resolvedUrl = "https://api.example.com/chat/completions"
+            )
+        )
+        val vm = SetupViewModel(prefs, repo)
+
+        val result = vm.testConnection(ticket, "deepseek-chat", "sk-test")
+
+        assertTrue(result.success)
+        assertEquals("https://api.example.com/chat/completions", result.resolvedUrl)
+    }
+
+    @Test
+    fun test_connection_failure_returns_error_message() = runTest {
+        val ticket = ProviderTicket(
+            id = "t1", name = "Test", baseUrl = "https://api.example.com",
+            model = "deepseek-chat", thinkingMode = 0
+        )
+        val prefs = mockPrefs(tickets = listOf(ticket), activeTicketId = "t1", apiKey = "sk-test")
+        val repo = mockRepo(
+            com.lovebrain.app.data.ConnectionTestResult(
+                success = false,
+                message = "API Key 无效，请检查密钥"
+            )
+        )
+        val vm = SetupViewModel(prefs, repo)
+
+        val result = vm.testConnection(ticket, "deepseek-chat", "sk-test")
+
+        assertFalse(result.success)
+        assertEquals("API Key 无效，请检查密钥", result.message)
+    }
+
+    @Test
+    fun test_connection_blank_model_returns_failure() = runTest {
+        val ticket = ProviderTicket(
+            id = "t1", name = "Test", baseUrl = "https://api.example.com",
+            model = "deepseek-chat", thinkingMode = 0
+        )
+        val vm = SetupViewModel(mockPrefs(), mockk(relaxed = true))
+
+        val result = vm.testConnection(ticket, "", "sk-test")
+
+        assertFalse(result.success)
+        assertTrue(result.message!!.contains("模型"))
+    }
+
+    @Test
+    fun test_connection_blank_key_returns_failure() = runTest {
+        val ticket = ProviderTicket(
+            id = "t1", name = "Test", baseUrl = "https://api.example.com",
+            model = "deepseek-chat", thinkingMode = 0
+        )
+        val prefs = mockk<SecurePrefs>(relaxed = true)
+        every { prefs.getWorkerTickets() } returns listOf(ticket)
+        every { prefs.activeTicketId } returns "t1"
+        every { prefs.getWorkerApiKey("t1") } returns null  // 无 Key
+        every { prefs.thinkingMode } returns 0
+        every { prefs.captureEnabled } returns true
+        val vm = SetupViewModel(prefs, mockk(relaxed = true))
+
+        val result = vm.testConnection(ticket, "deepseek-chat", "")
+
+        assertFalse(result.success)
+        assertTrue(result.message!!.contains("API Key"))
+    }
 }
