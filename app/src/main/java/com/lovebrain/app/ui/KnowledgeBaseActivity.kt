@@ -6,12 +6,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,10 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
@@ -706,26 +701,32 @@ private fun OnboardingScreen(
     onComplete: (com.lovebrain.app.domain.OnboardingSchema, String, String) -> Unit,
     onCancelGenerating: () -> Unit
 ) {
-    // v4.0 向导状态：currentStep 1-5 答题，6 称呼收尾
+    // v4.2 向导状态：currentStep 1-5 答题，6 称呼收尾
     var currentStep by remember { mutableStateOf(1) }
     var branch by remember { mutableStateOf("") }
-    val answers = remember { mutableStateMapOf<Int, Int>() }  // step → optionIndex
-    // R2: step → 自定义文本（answers[step] = -1 哨兵时生效，Q2-Q5 专用）
-    val customTexts = remember { mutableStateMapOf<Int, String>() }
+    // v4.2: 统一答案对象（Set<Int> + customText），废除 -1 哨兵
+    val answers = remember {
+        mutableStateMapOf<Int, com.lovebrain.app.domain.OnboardingAnswer>()
+    }
     var myName by remember { mutableStateOf("") }
     var herName by remember { mutableStateOf("") }
     var generating by remember { mutableStateOf(false) }
+    // 补充说明展开状态
+    var showCustomInput by remember { mutableStateOf(false) }
+    // 多选上限提示
+    var maxSelectionToast by remember { mutableStateOf(false) }
 
     val totalSteps = 5
+    val singleColumn = com.lovebrain.app.ui.onboarding.shouldUseSingleColumn()
 
     ScreenPage(
         title = "新建知识库",
         onBack = {
-            // 向导返回：step>1 回退一步，step=1 关闭页面
             if (generating) {
                 onCancelGenerating()
             } else if (currentStep > 1) {
                 currentStep--
+                showCustomInput = false
             } else {
                 onDismiss()
             }
@@ -736,9 +737,13 @@ private fun OnboardingScreen(
             }
         }
     ) {
-        // 进度条：Step X/5
+        // ── 进度条 ──
         val progressStep = if (currentStep <= totalSteps) currentStep else totalSteps
-        Text("第 $progressStep 步（共 $totalSteps 步）", style = AppTypography.labelSmall, color = TextHint)
+        Text(
+            "第 $progressStep 步 · 共 $totalSteps 步",
+            style = AppTypography.labelSmall,
+            color = TextHint
+        )
         Spacer(modifier = Modifier.height(Spacing.xs))
         Box(
             modifier = Modifier
@@ -757,26 +762,26 @@ private fun OnboardingScreen(
         }
         Spacer(modifier = Modifier.height(Spacing.lg))
 
-        // 内容区
+        // ── 内容区 ──
         Column(
             modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(Spacing.xxl)
+            verticalArrangement = Arrangement.spacedBy(Spacing.lg)
         ) {
             if (currentStep <= totalSteps) {
-                // 取当前题
                 val question = if (currentStep == 1) {
                     com.lovebrain.app.domain.OnboardingBank.q1
                 } else {
                     com.lovebrain.app.domain.OnboardingBank.question(currentStep, branch)
                 }
 
-                // Step5 红线检测
+                // 红线检测
                 val redline = com.lovebrain.app.domain.OnboardingStateMachine
                     .isRedlineTriggered(answers, branch)
                 val hiddenIndices = if (redline && currentStep == 5) {
                     com.lovebrain.app.domain.OnboardingStateMachine.hiddenOptionIndices(true)
                 } else emptySet()
 
+                // 红线提示
                 if (redline && currentStep == 5) {
                     Text(
                         "军师检测到你目前的情况更适合止损和自我调整，暂时不提供挽回建议。",
@@ -786,97 +791,146 @@ private fun OnboardingScreen(
                     Spacer(modifier = Modifier.height(Spacing.sm))
                 }
 
-                // 题干
+                // ── 题目标题（最强层级）──
                 Text(
                     question.title,
-                    style = AppTypography.titleMedium,
+                    style = AppTypography.titleLarge,
                     fontWeight = FontWeight.SemiBold,
                     color = TextPrimary
                 )
-                Spacer(modifier = Modifier.height(Spacing.md))
 
-                // 选项（2列布局，红线隐藏的选项不渲染）
-                question.options.filterIndexed { i, _ -> i !in hiddenIndices }.chunked(2).forEach { pair ->
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(Spacing.md),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        pair.forEach { opt ->
-                            val originalIndex = question.options.indexOf(opt)
-                            OnboardingOption(
-                                text = opt.text,
-                                selected = answers[currentStep] == originalIndex,
-                                enabled = !generating,
-                                onClick = {
-                                    // Q1-② 修正：先算旧红线状态再写入新值
-                                    val wasRedline = com.lovebrain.app.domain.OnboardingStateMachine
-                                        .isRedlineTriggered(answers, branch)
-                                    answers[currentStep] = originalIndex
-                                    // R2: 选固定选项 → 清掉本步残留的自定义文本
-                                    customTexts.remove(currentStep)
+                // ── 规则说明（次弱层级）──
+                val currentAnswer = answers[currentStep]
+                    ?: com.lovebrain.app.domain.OnboardingAnswer()
+                if (question.selectionMode == com.lovebrain.app.domain.SelectionMode.MULTIPLE) {
+                    val max = question.maxSelections ?: 2
+                    val selectedCount = currentAnswer.selectedIndices.size
+                    val hintText = if (selectedCount == 0) {
+                        "可多选，最多 $max 项"
+                    } else {
+                        "已选 $selectedCount/$max"
+                    }
+                    Text(
+                        hintText,
+                        style = AppTypography.labelMedium,
+                        color = if (selectedCount >= max) PrimaryDark else TextHint
+                    )
+                }
+                Spacer(modifier = Modifier.height(Spacing.sm))
 
-                                    if (currentStep == 1) {
-                                        // Q1 改了 → branch 变 → 清空后续
-                                        branch = com.lovebrain.app.domain.OnboardingStateMachine
-                                            .branchFromQ1(originalIndex)
-                                        answers.keys.filter { it >= 2 }.forEach { answers.remove(it) }
-                                        customTexts.keys.filter { it >= 2 }.forEach { customTexts.remove(it) }
-                                    }
+                // ── 选项区 ──
+                val visibleOptions = question.options.mapIndexed { idx, opt -> idx to opt }
+                    .filter { (idx, _) -> idx !in hiddenIndices }
 
-                                    val nowRedline = com.lovebrain.app.domain.OnboardingStateMachine
-                                        .isRedlineTriggered(answers, branch)
-                                    if (!wasRedline && nowRedline && answers.containsKey(5)) {
-                                        answers.remove(5)
-                                        customTexts.remove(5)
-                                        if (currentStep > 5) currentStep = 5
-                                    }
-
-                                    if (currentStep < totalSteps) currentStep++
-                                    else if (currentStep == totalSteps) currentStep = totalSteps + 1
-                                },
-                                modifier = Modifier.weight(1f)
-                            )
+                if (singleColumn) {
+                    // 大字体 / 窄屏：单列
+                    visibleOptions.forEach { (idx, opt) ->
+                        com.lovebrain.app.ui.onboarding.OnboardingOptionCard(
+                            text = opt.text,
+                            selected = idx in currentAnswer.selectedIndices,
+                            selectionMode = question.selectionMode,
+                            enabled = !generating,
+                            onClick = {
+                                maxSelectionToast = false
+                                handleOptionClick(
+                                    question = question,
+                                    index = idx,
+                                    currentStep = currentStep,
+                                    answers = answers,
+                                    branch = branch,
+                                    onBranchChange = { branch = it },
+                                    onMaxReached = { maxSelectionToast = true },
+                                    generating = generating
+                                )
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            useSingleColumn = true
+                        )
+                        Spacer(modifier = Modifier.height(Spacing.md))
+                    }
+                } else {
+                    // 标准：双列 chunked(2)
+                    visibleOptions.chunked(2).forEach { pair ->
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(Spacing.lg),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            pair.forEach { (idx, opt) ->
+                                com.lovebrain.app.ui.onboarding.OnboardingOptionCard(
+                                    text = opt.text,
+                                    selected = idx in currentAnswer.selectedIndices,
+                                    selectionMode = question.selectionMode,
+                                    enabled = !generating,
+                                    onClick = {
+                                        maxSelectionToast = false
+                                        handleOptionClick(
+                                            question = question,
+                                            index = idx,
+                                            currentStep = currentStep,
+                                            answers = answers,
+                                            branch = branch,
+                                            onBranchChange = { branch = it },
+                                            onMaxReached = { maxSelectionToast = true },
+                                            generating = generating
+                                        )
+                                    },
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                            if (pair.size == 1) Spacer(modifier = Modifier.weight(1f))
                         }
-                        if (pair.size == 1) Spacer(modifier = Modifier.weight(1f))
                     }
                 }
 
-                // R2: 自定义输入入口（仅 Q2-Q5；Q1 是分支题不加）。Q5 红线态也保留，
-                // 作为被隐藏 A/B 选项之外的逃生门；选它不自动推进，输入完点「完成」走
+                // ── 补充说明入口（仅 Q2-Q5）──
                 if (currentStep in 2..totalSteps) {
                     Spacer(modifier = Modifier.height(Spacing.sm))
-                    val isCustom = answers[currentStep] == -1
-                    OnboardingOption(
-                        text = "以上都不太对，我自己说 →",
-                        selected = isCustom,
-                        enabled = !generating,
-                        onClick = { answers[currentStep] = -1 },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    if (isCustom) {
-                        Spacer(modifier = Modifier.height(Spacing.md))
-                        CompactInput(
-                            value = customTexts[currentStep] ?: "",
-                            onValueChange = { customTexts[currentStep] = it.take(100) },
-                            placeholder = "简单说说，100 字以内",
-                            trailingAction = {
-                                val canSubmit =
-                                    (customTexts[currentStep] ?: "").isNotBlank() && !generating
-                                Text(
-                                    "完成",
-                                    style = AppTypography.titleMedium,
-                                    color = if (canSubmit) Primary else TextHint,
-                                    modifier = Modifier.clickable(enabled = canSubmit) {
-                                        // 先 trim 落库再推进，与固定选项的自动推进语义对齐
-                                        customTexts[currentStep] =
-                                            (customTexts[currentStep] ?: "").trim()
-                                        if (currentStep < totalSteps) currentStep++
-                                        else if (currentStep == totalSteps) currentStep = totalSteps + 1
-                                    }
-                                )
-                            }
+                    // 弱一级入口：点击展开/收起
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = { showCustomInput = !showCustomInput }
+                            )
+                            .padding(vertical = Spacing.xs)
+                    ) {
+                        Text(
+                            if (showCustomInput) "− 收起补充" else "＋ 补充其他情况",
+                            style = AppTypography.bodySmall,
+                            color = Primary,
+                            fontWeight = FontWeight.Medium
                         )
                     }
+                    // 展开后的输入框
+                    if (showCustomInput) {
+                        Spacer(modifier = Modifier.height(Spacing.sm))
+                        val existingCustom = answers[currentStep]?.customText ?: ""
+                        var customText by remember(currentStep, existingCustom) {
+                            mutableStateOf(existingCustom)
+                        }
+                        CompactInput(
+                            value = customText,
+                            onValueChange = {
+                                customText = it.take(100)
+                                val cur = answers[currentStep]
+                                    ?: com.lovebrain.app.domain.OnboardingAnswer()
+                                answers[currentStep] = cur.copy(customText = customText)
+                            },
+                            placeholder = "简单说说你的情况，100 字以内"
+                        )
+                    }
+                }
+
+                // 多选上限提示
+                if (maxSelectionToast) {
+                    Spacer(modifier = Modifier.height(Spacing.xs))
+                    Text(
+                        "最多选择 ${question.maxSelections ?: 2} 项",
+                        style = AppTypography.labelSmall,
+                        color = Error
+                    )
                 }
             } else {
                 // Step6：称呼输入（选填）
@@ -896,9 +950,8 @@ private fun OnboardingScreen(
             }
         }
 
-        // 底部按钮
+        // ── 底部按钮 ──
         if (generating) {
-            // 生成中：取消按钮
             Button(
                 onClick = { onCancelGenerating() },
                 enabled = true,
@@ -922,7 +975,7 @@ private fun OnboardingScreen(
                 onClick = {
                     generating = true
                     val schema = com.lovebrain.app.domain.OnboardingSchemaBuilder.build(
-                        answers.toMap(), myName.trim(), herName.trim(), customTexts.toMap()
+                        answers.toMap(), myName.trim(), herName.trim()
                     )
                     onComplete(schema, myName.trim(), herName.trim())
                 },
@@ -933,59 +986,104 @@ private fun OnboardingScreen(
             ) {
                 Text("完成，AI 生成画像", style = AppTypography.titleMedium)
             }
+        } else {
+            // 答题阶段：下一步按钮（不自动跳页）
+            val question = if (currentStep == 1) {
+                com.lovebrain.app.domain.OnboardingBank.q1
+            } else {
+                com.lovebrain.app.domain.OnboardingBank.question(currentStep, branch)
+            }
+            val currentAnswer = answers[currentStep]
+                ?: com.lovebrain.app.domain.OnboardingAnswer()
+            val canProceed = currentAnswer.isAnswered(question)
+
+            Button(
+                onClick = {
+                    if (currentStep < totalSteps) {
+                        currentStep++
+                        showCustomInput = false
+                        maxSelectionToast = false
+                    } else {
+                        currentStep = totalSteps + 1
+                        showCustomInput = false
+                    }
+                },
+                enabled = canProceed,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (canProceed) Primary else SurfaceInset
+                ),
+                shape = LoveBrainShape.md,
+                modifier = Modifier.fillMaxWidth().height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
+            ) {
+                Text(
+                    "下一步",
+                    style = AppTypography.titleMedium,
+                    color = if (canProceed) androidx.compose.ui.graphics.Color.White else TextHint
+                )
+            }
         }
     }
 }
 
-/** 问卷选项：选中态 PrimaryLight+描边，按压缩放 0.97，可禁用 */
-@Composable
-private fun OnboardingOption(
-    text: String,
-    selected: Boolean,
-    enabled: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+/**
+ * 处理选项点击：toggle 选中状态、Q1 改选清理后续、红线变化清理 Q5 隐藏项。
+ */
+private fun handleOptionClick(
+    question: com.lovebrain.app.domain.OnboardingQuestion,
+    index: Int,
+    currentStep: Int,
+    answers: androidx.compose.runtime.snapshots.SnapshotStateMap<Int, com.lovebrain.app.domain.OnboardingAnswer>,
+    branch: String,
+    onBranchChange: (String) -> Unit,
+    onMaxReached: () -> Unit,
+    generating: Boolean
 ) {
-    val interaction = remember { MutableInteractionSource() }
-    val pressed by interaction.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        if (pressed && enabled) 0.97f else 1f,
-        label = "obOptionScale"
-    )
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            // 统一 chip 语言（主人选型）：选中 = Primary 蓝底白字；未选 = SurfaceInset 灰底 + 细描边——
-            // 与全 App 的分段器/文件 chip 同族，废除旧的"浅底+描边"双写样式
-            .background(
-                if (selected) Primary else SurfaceInset,
-                LoveBrainShape.md
-            )
-            .border(
-                if (selected) 0.dp else AppDimens.BORDER_WIDTH_DP.dp,
-                if (selected) Color.Transparent else Border,
-                LoveBrainShape.md
-            )
-            .semantics { this.selected = selected }
-            .then(
-                if (enabled) Modifier.clickable(
-                    interactionSource = interaction,
-                    indication = null,
-                    onClick = onClick
-                ) else Modifier
-            )
-            .padding(horizontal = Spacing.md, vertical = Spacing.md)
-    ) {
-        Text(
-            text,
-            style = AppTypography.bodyMedium,
-            color = when {
-                !enabled -> TextHint
-                selected -> Color.White
-                else -> TextPrimary
-            },
-            fontWeight = if (selected) FontWeight.Medium else FontWeight.Normal
+    if (generating) return
+
+    val currentAnswer = answers[currentStep]
+        ?: com.lovebrain.app.domain.OnboardingAnswer()
+
+    // 记录红线变化前状态
+    val wasRedline = com.lovebrain.app.domain.OnboardingStateMachine
+        .isRedlineTriggered(answers, branch)
+
+    // Q1 改选 → 分支变化 → 清空后续
+    if (currentStep == 1) {
+        val newBranch = com.lovebrain.app.domain.OnboardingStateMachine
+            .branchFromQ1(index)
+        if (newBranch != branch) {
+            onBranchChange(newBranch)
+            com.lovebrain.app.domain.OnboardingStateMachine.clearDownstreamAnswers(answers)
+        }
+        // Q1 是 SINGLE，直接设为唯一选择
+        answers[currentStep] = com.lovebrain.app.domain.OnboardingAnswer(
+            selectedIndices = setOf(index),
+            customText = currentAnswer.customText
+        )
+    } else {
+        // Q2-Q5: 走 toggle 逻辑
+        val beforeSize = currentAnswer.selectedIndices.size
+        val newAnswer = com.lovebrain.app.domain.OnboardingStateMachine
+            .toggleOption(question, currentAnswer, index)
+        // 如果 toggle 没有改变（达到上限），提示
+        if (newAnswer.selectedIndices.size == beforeSize && index !in currentAnswer.selectedIndices) {
+            onMaxReached()
+        } else {
+            // 清除上限提示
+        }
+        // 保留 customText
+        answers[currentStep] = newAnswer.copy(customText = currentAnswer.customText)
+    }
+
+    // 红线变化检测
+    val nowRedline = com.lovebrain.app.domain.OnboardingStateMachine
+        .isRedlineTriggered(answers, branch)
+    if (!wasRedline && nowRedline) {
+        // 新触发红线 → 清理 Q5 中的隐藏项
+        val hiddenIndices = com.lovebrain.app.domain.OnboardingStateMachine
+            .hiddenOptionIndices(true)
+        com.lovebrain.app.domain.OnboardingStateMachine.cleanHiddenFromQ5(
+            answers, hiddenIndices
         )
     }
 }
