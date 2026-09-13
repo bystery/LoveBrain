@@ -714,11 +714,16 @@ class LoveBrainViewModel(
 
     // ═══════════ 谈心模式（委托 GenerationEngine） ═══════════
 
-    /** GEN-01：同步 guard — 正在谈心时拒绝启动。Engine reject → null → 旧 Job 保持。 */
+    /**
+     * GEN-01：同步 guard — 正在谈心时拒绝启动。Engine reject → null → 旧 Job 保持。
+     * COUN-01：冻结 KB 快照传入 Engine，谈心期间切 KB 不影响 prompt 与日志目标。
+     */
     fun generateCounseling(userMessage: String) {
         if (userMessage.isBlank()) return
         if (_isCounseling.value) return
-        val job = generationEngine.generateCounseling(userMessage, viewModelScope, this)
+        // COUN-01：冻结 KB 快照
+        val kbSnapshot = _activeKb.value
+        val job = generationEngine.generateCounseling(userMessage, kbSnapshot, viewModelScope, this)
         if (job != null) {
             counselingJob = job
             job.invokeOnCompletion {
@@ -818,8 +823,16 @@ class LoveBrainViewModel(
     fun refreshKnowledgeBases() {
         viewModelScope.launch {
             runCatching {
-                _activeKb.value = knowledgeRepo.getActive()
-                _activeKb.value?.let {
+                // KBUI-01：切库时清理上一 KB 的瞬时 vector UI（delta / update / notice）
+                val oldKbName = _activeKb.value?.name
+                val newKb = knowledgeRepo.getActive()
+                if (oldKbName != newKb?.name) {
+                    _vectorDelta.value = emptyMap()
+                    _vectorUpdate.value = null
+                    _kbNotice.value = null
+                }
+                _activeKb.value = newKb
+                newKb?.let {
                     knowledgeRepo.migrateIfNeeded(it.name)
                     _currentVector.value = knowledgeRepo.readVector(it.name)
                 }
@@ -959,9 +972,15 @@ class LoveBrainViewModel(
         _isCounseling.value = false
     }
 
-    override fun onCounselingSaveLog(userMessage: String, replyText: String, analysisText: String) {
+    // COUN-01：日志目标使用 Engine 传入的冻结 kbName，不读 _activeKb
+    override fun onCounselingSaveLog(
+        kbName: String?,
+        userMessage: String,
+        replyText: String,
+        analysisText: String
+    ) {
         viewModelScope.launch {
-            saveCounselingLog(_activeKb.value?.name, userMessage, replyText, analysisText)
+            saveCounselingLog(kbName, userMessage, replyText, analysisText)
         }
     }
 

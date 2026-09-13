@@ -212,10 +212,10 @@ class LoveBrainViewModelGenBatchTest {
         delay(100)
 
         var callCount = 0
-        every { generationEngine.generateCounseling(any(), any(), any()) } answers {
+        every { generationEngine.generateCounseling(any(), any(), any(), any()) } answers {
             callCount++
-            val scope = arg<CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
+            val scope = arg<CoroutineScope>(2)
+            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(3)
             scope.launch {
                 callbacks.onCounselingStart()
                 try { delay(999_999) } catch (_: Exception) {}
@@ -743,5 +743,146 @@ class LoveBrainViewModelGenBatchTest {
         delay(100)
 
         assertEquals("停止后 streamingSchemes 应清空", emptyList<Scheme>(), vm.streamingSchemes.value)
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // COUN-01 Test 1: 谈心冻结 KB — prompt 使用发起时的 KB
+    // ════════════════════════════════════════════════════════════════
+
+    @Test
+    fun coun01_counseling_freezes_kb_snapshot_for_prompt() = runBlocking {
+        val knowledgeRepo = mockk<com.lovebrain.app.data.KnowledgeRepository>(relaxed = true)
+        coEvery { knowledgeRepo.getActive() } returns KnowledgeBase(name = "kb-a", stage = "暧昧期")
+        coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
+        coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
+        coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = "kb-a", stage = "暧昧期"))
+        coEvery { knowledgeRepo.appendCounselingEntries(any(), any(), any()) } returns Unit
+
+        val vm = newViewModelWithKb(kbName = "kb-a", knowledgeRepoOverride = knowledgeRepo)
+        delay(200)
+
+        assertEquals("kb-a", vm.activeKb.value?.name)
+
+        // 捕获传给 Engine 的 KnowledgeBase 参数
+        val capturedKb = slot<KnowledgeBase>()
+        val gate = CompletableDeferred<Unit>()
+        every { generationEngine.generateCounseling(any(), capture(capturedKb), any(), any()) } answers {
+            val scope = arg<CoroutineScope>(2)
+            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(3)
+            scope.launch {
+                callbacks.onCounselingStart()
+                try { gate.await() } catch (_: Exception) {}
+            }
+        }
+
+        vm.generateCounseling("我好累")
+        delay(200)
+
+        // 谈心进行中切换 KB
+        coEvery { knowledgeRepo.getActive() } returns KnowledgeBase(name = "kb-b", stage = "热恋期")
+        vm.refreshKnowledgeBases()
+        delay(200)
+
+        assertEquals("kb-b", vm.activeKb.value?.name)
+        assertEquals(
+            "Engine 收到的 KB 应为发起时的 kb-a",
+            "kb-a",
+            capturedKb.captured.name
+        )
+
+        vm.stopCounseling()
+        gate.complete(Unit)
+        delay(100)
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // COUN-01 Test 2: 谈心日志写原 KB — 不写切换后的 KB
+    // ════════════════════════════════════════════════════════════════
+
+    @Test
+    fun coun01_counseling_save_log_uses_originating_kb() = runBlocking {
+        val knowledgeRepo = mockk<com.lovebrain.app.data.KnowledgeRepository>(relaxed = true)
+        coEvery { knowledgeRepo.getActive() } returns KnowledgeBase(name = "kb-a", stage = "暧昧期")
+        coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
+        coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
+        coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = "kb-a", stage = "暧昧期"))
+        coEvery { knowledgeRepo.appendCounselingEntries(any(), any(), any()) } returns Unit
+
+        val vm = newViewModelWithKb(kbName = "kb-a", knowledgeRepoOverride = knowledgeRepo)
+        delay(200)
+
+        assertEquals("kb-a", vm.activeKb.value?.name)
+
+        // Engine 成功完成谈心，回调 onCounselingSaveLog
+        every { generationEngine.generateCounseling(any(), any(), any(), any()) } answers {
+            val scope = arg<CoroutineScope>(2)
+            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(3)
+            val kb = arg<KnowledgeBase?>(1)
+            scope.launch {
+                callbacks.onCounselingStart()
+                callbacks.onCounselingStreaming("回复内容")
+                callbacks.onCounselingResult("回复内容")
+                callbacks.onCounselingSaveLog(kb?.name, "我好累", "回复内容", "分析内容")
+                callbacks.onCounselingEnd()
+            }
+        }
+
+        vm.generateCounseling("我好累")
+        delay(300)
+
+        // 谈心完成后切换 KB
+        coEvery { knowledgeRepo.getActive() } returns KnowledgeBase(name = "kb-b", stage = "热恋期")
+        vm.refreshKnowledgeBases()
+        delay(200)
+
+        assertEquals("kb-b", vm.activeKb.value?.name)
+
+        // 日志应写入 kb-a（发起时 KB），不写 kb-b
+        coVerify { knowledgeRepo.appendCounselingEntries("kb-a", any(), any()) }
+        coVerify(exactly = 0) { knowledgeRepo.appendCounselingEntries("kb-b", any(), any()) }
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // KBUI-01 Test: 切 KB 清 transient vector state
+    // ════════════════════════════════════════════════════════════════
+
+    @Test
+    fun kbui01_switch_kb_clears_transient_vector_state() = runBlocking {
+        val knowledgeRepo = mockk<com.lovebrain.app.data.KnowledgeRepository>(relaxed = true)
+        val kbA = KnowledgeBase(name = "kb-a", stage = "暧昧期")
+        val kbB = KnowledgeBase(name = "kb-b", stage = "热恋期")
+        coEvery { knowledgeRepo.getActive() } returns kbA
+        coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
+        coEvery { knowledgeRepo.readVector("kb-a") } returns mapOf("intimacy" to 5)
+        coEvery { knowledgeRepo.readVector("kb-b") } returns mapOf("intimacy" to 8)
+
+        val vm = newViewModelWithKb(kbName = "kb-a", knowledgeRepoOverride = knowledgeRepo)
+        delay(200)
+
+        // 模拟 A 有 delta / update / notice
+        vm.onVectorUpdated("kb-a", mapOf("intimacy" to 5), mapOf("intimacy" to 2))
+        vm.onVectorUpdateNotice("kb-a", "五维更新")
+        vm.onKbNotice("A 的通知")
+        delay(100)
+
+        assertEquals("delta 应存在", 2, vm.vectorDelta.value["intimacy"])
+        assertNotNull("vectorUpdate 应存在", vm.vectorUpdate.value)
+        assertNotNull("kbNotice 应存在", vm.kbNotice.value)
+
+        // 切换到 B
+        coEvery { knowledgeRepo.getActive() } returns kbB
+        vm.refreshKnowledgeBases()
+        delay(300)
+
+        // 断言 transient state 被清
+        assertEquals(
+            "切库后 vectorDelta 应为空",
+            emptyMap<String, Int>(),
+            vm.vectorDelta.value
+        )
+        assertNull("切库后 vectorUpdate 应为 null", vm.vectorUpdate.value)
+        assertNull("切库后 kbNotice 应为 null", vm.kbNotice.value)
+        // 新 vector 应为 B 的
+        assertEquals(8, vm.currentVector.value["intimacy"])
     }
 }

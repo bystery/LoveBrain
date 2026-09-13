@@ -139,7 +139,7 @@ class GenerationEngine(
         fun onCounselingResult(text: String)
         fun onCounselingError(error: String)
         fun onCounselingEnd()
-        fun onCounselingSaveLog(userMessage: String, replyText: String, analysisText: String)
+        fun onCounselingSaveLog(kbName: String?, userMessage: String, replyText: String, analysisText: String)
 
         // ═══ 锦囊 ═══
         fun onSuggestStart()
@@ -334,8 +334,16 @@ class GenerationEngine(
 
     // ═══════════ 谈心模式 ═══════════
 
-    /** GEN-01：返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。 */
-    fun generateCounseling(userMessage: String, scope: CoroutineScope, callbacks: Callbacks): Job? {
+    /**
+     * GEN-01：返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。
+     * COUN-01：knowledgeBase 由 ViewModel 传入冻结快照，谈心期间切 KB 不影响 prompt 与日志。
+     */
+    fun generateCounseling(
+        userMessage: String,
+        knowledgeBase: KnowledgeBase?,
+        scope: CoroutineScope,
+        callbacks: Callbacks
+    ): Job? {
         if (userMessage.isBlank() || callbacks.isCounseling()) return null
 
         callbacks.onCounselingStart()
@@ -352,9 +360,10 @@ class GenerationEngine(
             val t0 = System.currentTimeMillis()
             val suffix = "\n\n## 用户倾诉\n" + userMessage.trim() +
                 "\n\n## 任务\n请以公正法官的身份，按谈心引擎的回应结构（六步法）回复，末尾按契约附上 ===分析=== 块。"
+            // COUN-01：使用冻结的 knowledgeBase 快照，不读 callbacks.getActiveKb()
             val (system, user) = withContext(Dispatchers.IO) {
                 promptBuilder.buildCounselingSystemPrompt() to
-                    promptBuilder.buildCounselingUserPrompt(callbacks.getActiveKb(), suffix)
+                    promptBuilder.buildCounselingUserPrompt(knowledgeBase, suffix)
             }
 
             var fullText = ""
@@ -378,7 +387,7 @@ class GenerationEngine(
             if (fullText.isNotBlank()) {
                 val (replyText, analysisText) = splitCounselingAnalysis(fullText)
                 callbacks.onCounselingResult(replyText)
-                callbacks.onCounselingSaveLog(userMessage, replyText, analysisText)
+                callbacks.onCounselingSaveLog(knowledgeBase?.name, userMessage, replyText, analysisText)
             } else {
                 //  修复：PARAM_UNSUPPORTED 是内部标记，不直接展示给用户（谈心无降级链，转通用人话）；
                 // ：CONFIG_ERROR 类配置错误去前缀透传（谈心单次调用，无重试面）

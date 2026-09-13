@@ -100,6 +100,7 @@ fun LoveBrainPanelScreen(
     val composeRole = if (ideaComposeMode) ChatMessage.Role.IDEA else currentRole
     val editingIndex by viewModel.editingIndex.collectAsStateWithLifecycle()
     val profileSuggestion by viewModel.profileSuggestion.collectAsStateWithLifecycle()
+    val activeKb by viewModel.activeKb.collectAsStateWithLifecycle()
     val kbNotice by viewModel.kbNotice.collectAsStateWithLifecycle()
     val panelWarning by viewModel.panelWarning.collectAsStateWithLifecycle()
     val vectorUpdate by viewModel.vectorUpdate.collectAsStateWithLifecycle()
@@ -263,7 +264,8 @@ fun LoveBrainPanelScreen(
                 }
             }
 
-            if (profileSuggestion != null) {
+            // KBUI-01：suggestion 仅在所属 KB 为当前激活 KB 时显示
+            if (profileSuggestion != null && profileSuggestion?.kbName == activeKb?.name) {
                 ProfileSuggestionCard(
                     suggestion = profileSuggestion?.display.orEmpty(),
                     onConfirm = { viewModel.confirmProfileUpdate() },
@@ -272,13 +274,16 @@ fun LoveBrainPanelScreen(
                 Spacer(Modifier.height(Spacing.md))
             }
 
+            // KBUI-01：stage suggestion 同样按 kbName 过滤
             stageSuggestion?.let { suggestion ->
-                StageSuggestionCard(
-                    suggestion = suggestion,
-                    onConfirm = { viewModel.confirmStageChange() },
-                    onDismiss = { viewModel.dismissStageChange() }
-                )
-                Spacer(Modifier.height(Spacing.md))
+                if (suggestion.kbName == activeKb?.name) {
+                    StageSuggestionCard(
+                        suggestion = suggestion,
+                        onConfirm = { viewModel.confirmStageChange() },
+                        onDismiss = { viewModel.dismissStageChange() }
+                    )
+                    Spacer(Modifier.height(Spacing.md))
+                }
             }
 
             if (panelMode == 0) {
