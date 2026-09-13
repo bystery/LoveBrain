@@ -172,12 +172,14 @@ class GenerationEngine(
 
     /**
      * GEN-01：返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。
-     * GEN-02：messages 由 ViewModel 传入冻结快照，Engine 不再从 callbacks.getMessages() 获取可能漂移的实时列表。
-     * userHint 同样由 ViewModel 从同一快照收集后传入，保证本轮所有上下文同源。
+     * GEN-02：messages / userHint / knowledgeBase 均由 ViewModel 传入冻结快照，
+     * Engine 不再从 callbacks 读取可能漂移的实时状态。
+     * GEN-02B：knowledgeBase 参数冻结生成时 KB，防止生成途中切 KB 导致 prompt 与保存不同源。
      */
     fun generate(
         messages: List<ChatMessage>,
         userHint: String,
+        knowledgeBase: KnowledgeBase?,
         scope: CoroutineScope,
         callbacks: Callbacks
     ): Job? {
@@ -196,7 +198,8 @@ class GenerationEngine(
             val aggressive = callbacks.getOutputMode() == 1
             val system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt() }
             val user = withContext(Dispatchers.IO) {
-                promptBuilder.buildReplyUserPrompt(callbacks.getActiveKb(), messages, userHint, aggressive)
+                // GEN-02B：使用冻结的 knowledgeBase 快照，不读 callbacks.getActiveKb()
+                promptBuilder.buildReplyUserPrompt(knowledgeBase, messages, userHint, aggressive)
             }
             L.w("PERF t1 prompt built (+${System.currentTimeMillis() - t0}ms), user=${user.length} chars")
 

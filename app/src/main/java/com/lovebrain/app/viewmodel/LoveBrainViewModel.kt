@@ -423,7 +423,8 @@ class LoveBrainViewModel(
 
     /**
      * GEN-01：同步 guard — 正在生成时拒绝启动，绝不覆盖当前 Job 引用。
-     * GEN-02：启动前冻结消息快照 + KB 名，建立 ReplyGenerationContext。
+     * GEN-02：启动前冻结消息快照 + KB，建立 ReplyGenerationContext。
+     * GEN-02B：冻结完整 KnowledgeBase 对象传入 Engine，AI prompt 与 nextRound 保存同源。
      * Engine reject → null → 旧 Job 保持 + context 不保存。
      */
     fun generate() {
@@ -433,10 +434,12 @@ class LoveBrainViewModel(
         // GEN-02：冻结快照 — 所有本轮上下文同源
         val snapshot = _messages.value.map { it.copy() }
         val userHint = collectIdeaHint(snapshot)
-        val kbName = _activeKb.value?.name
+        // GEN-02B：冻结 KB 快照 — AI prompt 和 nextRound 保存使用同一对象
+        val kbSnapshot = _activeKb.value
+        val kbName = kbSnapshot?.name
 
         // GEN-01 双层保护第二层：Engine 返回 null = reject，不覆盖旧 Job
-        val job = generationEngine.generate(snapshot, userHint, viewModelScope, this)
+        val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this)
         if (job != null) {
             generateJob = job
             // GEN-02：context 必须和实际启动成功的 Job 绑定

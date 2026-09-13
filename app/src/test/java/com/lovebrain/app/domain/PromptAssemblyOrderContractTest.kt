@@ -12,9 +12,11 @@ import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.model.StreamEvent
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -288,19 +290,68 @@ class PromptAssemblyOrderContractTest {
 
         val callbacks = mockk<GenerationEngine.Callbacks>(relaxed = true)
         every { callbacks.isGenerating() } returns false
-        every { callbacks.getActiveKb() } returns kb
         every { callbacks.getOutputMode() } returnsMany listOf(0, 1)
 
         val engine = GenerationEngine(dsk, pb)
         runBlocking {
-            engine.generate(twoMsgs, "", this, callbacks)?.join()
-            engine.generate(twoMsgs, "", this, callbacks)?.join()
+            engine.generate(twoMsgs, "", kb, this, callbacks)?.join()
+            engine.generate(twoMsgs, "", kb, this, callbacks)?.join()
         }
 
         assertEquals("generateStream 应被调用两次", 2, systems.size)
         assertEquals("普通/进攻两模式 system 必须字节级相等", systems[0], systems[1])
         assertFalse("普通 user 不含 aggressive 首行", users[0].contains(AGG_FIRST))
         assertTrue("进攻 user 含 aggressive 首行", users[1].contains(AGG_FIRST))
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // GEN-02B: Engine 主回复 generate 使用冻结的 knowledgeBase 参数，不读 callbacks.getActiveKb()
+    // ════════════════════════════════════════════════════════════════
+
+    @Test
+    fun t_gen02b_engine_uses_frozen_kb_not_callback() = runBlocking {
+        val kbA = KnowledgeBase(name = "kb-a", stage = "暧昧期")
+        val kbB = KnowledgeBase(name = "kb-b", stage = "热恋期")
+
+        val dsk = mockk<DeepSeekRepository>(relaxed = true)
+        every { dsk.generateStream(any(), any(), any(), any()) } returns
+            flowOf<StreamEvent>(StreamEvent.Complete("{\"response\":{\"recommended\":\"r\"}}"))
+        every { dsk.parseReplyResponse(any()) } returns
+            LoveBrainResponse(response = ReplySchemes(recommended = "r"))
+
+        val pb = mockk<PromptBuilder>(relaxed = true)
+        every { pb.buildSystemPrompt() } returns "system"
+        coEvery { pb.buildReplyUserPrompt(any(), any(), any(), any()) } returns "user"
+
+        val callbacks = mockk<GenerationEngine.Callbacks>(relaxed = true)
+        every { callbacks.isGenerating() } returns false
+        every { callbacks.getOutputMode() } returns 0
+        // callbacks.getActiveKb() 返回 KB-B — 如果 Engine 误读它就会被抓到
+        every { callbacks.getActiveKb() } returns kbB
+
+        val engine = GenerationEngine(dsk, pb)
+        engine.generate(twoMsgs, "", kbA, this, callbacks)?.join()
+
+        // 验证 PromptBuilder 收到的是冻结的 KB-A
+        coVerify {
+            pb.buildReplyUserPrompt(
+                match { it?.name == "kb-a" },
+                any(),
+                any(),
+                any()
+            )
+        }
+        // 验证 PromptBuilder 从未收到 KB-B
+        coVerify(exactly = 0) {
+            pb.buildReplyUserPrompt(
+                match { it?.name == "kb-b" },
+                any(),
+                any(),
+                any()
+            )
+        }
+        // 验证 Engine 主回复流程不读 callbacks.getActiveKb()
+        verify(exactly = 0) { callbacks.getActiveKb() }
     }
 
     companion object {
