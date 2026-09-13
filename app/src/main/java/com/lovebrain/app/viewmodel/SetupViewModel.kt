@@ -198,6 +198,9 @@ class SetupViewModel(
         val newValue = !_captureEnabled.value
         securePrefs.captureEnabled = newValue
         _captureEnabled.value = newValue
+        if (!newValue) {
+            com.lovebrain.app.service.CopyCaptureService.discardPendingCapture()
+        }
         L.w("capture switch toggled: $newValue")
     }
 

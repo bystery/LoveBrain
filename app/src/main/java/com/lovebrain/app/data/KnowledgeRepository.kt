@@ -208,17 +208,25 @@ class KnowledgeRepository(
 
     suspend fun setActive(name: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
-            securePrefs.activeKbName = name
-            listAll().forEach { kb ->
-                val metaFile = File(File(knowledgeRoot, kb.name), "kb.json")
+            setActiveUnlocked(name)
+        }
+    }
+
+    /** setActive 的无锁核心：调用方必须已持有文件互斥锁（Mutex 非重入，锁内再抢=永久挂起） */
+    private fun setActiveUnlocked(name: String) {
+        securePrefs.activeKbName = name
+        knowledgeRoot.listFiles()
+            ?.filter { it.isDirectory && !it.name.startsWith(".") }
+            ?.forEach { dir ->
+                val metaFile = File(dir, "kb.json")
                 if (metaFile.exists()) {
                     runCatching {
+                        val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
                         val updated = kb.copy(active = kb.name == name)
                         atomicWriteText(metaFile, json.encodeToString(KnowledgeBase.serializer(), updated))
                     }
                 }
             }
-        }
     }
 
     suspend fun create(name: String, displayName: String): KnowledgeBase = withContext(Dispatchers.IO) {
@@ -279,7 +287,14 @@ class KnowledgeRepository(
             // 清理旧版本遗留的 .trash（若存在），一次性腾空
             File(knowledgeRoot, ".trash").takeIf { it.exists() }?.deleteRecursively()
             if (ok && securePrefs.activeKbName == name) {
-                securePrefs.activeKbName = listAll().firstOrNull()?.name ?: ""
+                val next = knowledgeRoot.listFiles()
+                    ?.filter { it.isDirectory && !it.name.startsWith(".") }
+                    ?.maxByOrNull { it.lastModified() }
+                if (next != null) {
+                    setActiveUnlocked(next.name)
+                } else {
+                    securePrefs.activeKbName = ""
+                }
             }
             ok
         }

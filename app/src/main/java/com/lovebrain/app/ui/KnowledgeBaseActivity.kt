@@ -60,6 +60,7 @@ import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
 import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.ui.theme.*
+import com.lovebrain.app.util.L
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -193,13 +194,20 @@ class KnowledgeBaseActivity : ComponentActivity() {
         // （ 清偿）：zip 下沉 IO 线程，防大库阻塞主线程（ANR 隐患）；函数体零改动
         lifecycleScope.launch(Dispatchers.IO) {
             runCatching {
-                contentResolver.openOutputStream(uri)?.use { os ->
-                    zipKbFolder(File(filesDir, "knowledge/$kbName"), kbName, ZipOutputStream(os))
+                val output = contentResolver.openOutputStream(uri)
+                    ?: throw IllegalStateException("无法打开导出文件")
+                output.use { os ->
+                    ZipOutputStream(os).use { zos ->
+                        zipKbFolder(File(filesDir, "knowledge/$kbName"), kbName, zos)
+                    }
                 }
                 withContext(Dispatchers.Main) {
+                    kbFeedback.value = "知识库已导出"
                 }
-            }.onFailure {
+            }.onFailure { error ->
+                L.e("knowledge export failed", error)
                 withContext(Dispatchers.Main) {
+                    kbFeedback.value = "导出失败，请重试"
                 }
             }
         }
@@ -213,17 +221,24 @@ class KnowledgeBaseActivity : ComponentActivity() {
         // 激活修正+recreate 移入同一协程、置于解压成功之后，时序与基线一致
         lifecycleScope.launch(Dispatchers.IO) {
             runCatching {
-                contentResolver.openInputStream(uri)?.use { input ->
-                    unzipToKnowledge(ZipInputStream(input), File(filesDir, "knowledge"))
+                val input = contentResolver.openInputStream(uri)
+                    ?: throw IllegalStateException("无法打开导入文件")
+                input.use {
+                    ZipInputStream(it).use { zis ->
+                        unzipToKnowledge(zis, File(filesDir, "knowledge"))
+                    }
                 }
                 // 导入后强制修正 active 状态，防止导入的 KB 带 active=true 导致双激活
                 val currentActive = repo.getActive()?.name ?: repo.listAll().firstOrNull()?.name
                 if (currentActive != null) repo.setActive(currentActive)
                 withContext(Dispatchers.Main) {
+                    kbFeedback.value = "知识库导入成功"
                     recreate()
                 }
-            }.onFailure {
+            }.onFailure { error ->
+                L.e("knowledge import failed", error)
                 withContext(Dispatchers.Main) {
+                    kbFeedback.value = "导入失败，请检查文件是否为有效的 LoveBrain 知识库备份"
                 }
             }
         }
@@ -368,7 +383,7 @@ class KnowledgeBaseActivity : ComponentActivity() {
             file.inputStream().use { it.copyTo(zos) }
             zos.closeEntry()
         }
-        zos.finish()
+        // finish/close 由 ZipOutputStream.use 自动处理，避免双重生命周期职责
     }
 
     /**

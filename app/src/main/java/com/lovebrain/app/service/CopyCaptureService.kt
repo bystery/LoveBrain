@@ -25,6 +25,7 @@ class CopyCaptureService : AccessibilityService() {
     companion object {
         @Volatile
         var instance: CopyCaptureService? = null
+            private set
 
         @Volatile
         var isRunning: Boolean = false
@@ -33,6 +34,11 @@ class CopyCaptureService : AccessibilityService() {
         private const val DIAG_FILE = "capture_diag.log"
         /** 诊断文件大小上限 */
         private const val DIAG_MAX_BYTES = 200 * 1024L
+
+        /** CAP-04：关闭捕获时主动废弃 pending，无需等下一条 AccessibilityEvent */
+        fun discardPendingCapture() {
+            instance?.clearPending("capture_toggle_off")
+        }
     }
 
     private var pendingContent: String? = null
@@ -41,7 +47,7 @@ class CopyCaptureService : AccessibilityService() {
     private var pendingPkg: String? = null
 
     /** CAP-02：统一清理 pending 捕获事务，避免多路径手写三字段清理遗漏 */
-    private fun clearPending(reason: String) {
+    internal fun clearPending(reason: String) {
         val hadPending = pendingContent != null
 
         pendingContent = null

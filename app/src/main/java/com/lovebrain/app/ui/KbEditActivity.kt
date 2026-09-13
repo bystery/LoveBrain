@@ -122,14 +122,7 @@ class KbEditActivity : ComponentActivity() {
                         lastFile = securePrefs.lastKbEditFile,
                         onLastFileChange = { securePrefs.lastKbEditFile = it },
                         readFile = { path ->
-                            val content = repo.readFile(kbName, path)
-                            if (content.isNotBlank()) content
-                            else {
-                                val oldPath = KnowledgeRepository.OLD_PATH_MAP[path]
-                                // 新路径为空时，才尝试回退旧路径；且仅当旧路径非空时才读取
-                                val fallbackContent = oldPath?.let { repo.readFile(kbName, it) }.orEmpty()
-                                fallbackContent
-                            }
+                            repo.readFile(kbName, path)
                         },
                         saveFile = { path, content -> repo.writeFile(kbName, path, content) },
                         onBack = { finish() }

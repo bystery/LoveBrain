@@ -232,7 +232,7 @@ class OnboardingSchemaCustomInputTest {
     @Test
     fun `no redline when no redline option selected in branch E`() {
         // 分支 E，Q3 全选普通项，Q4 全选普通项
-        val answers = fixedAnswersE() + (
+        val answers = fixedAnswersE() + mapOf(
             3 to OnboardingAnswer(selectedIndices = setOf(0, 1)),
             4 to OnboardingAnswer(selectedIndices = setOf(1, 2))
         )
