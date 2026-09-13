@@ -187,7 +187,7 @@ Item by item, no hand-waving:
 - **The accessibility service does two things**: listens for long-press and window-change events to confirm your long-press. No keylogging, no background scanning, no reading your notifications
 - **Accessibility consent**: before requesting system accessibility permission, LoveBrain shows its own data-usage disclosure. You must explicitly consent before any text is captured
 - **Diagnostics never log content**: the capture pipeline logs event types and text lengths only
-- **Panel history dies with the process**: reply-panel messages are memory-only; what persists long-term is distilled conclusions (profiles, lessons), not raw chats
+- **Panel UI state is memory-only**: the reply-panel messages themselves die with the process. When you explicitly record a round into the knowledge base, that round's message text, your hint, and the selected final reply are stored locally in the knowledge base (recent / raw-chat archives) and may later be used for relationship memory and distillation
 - **API key stored encrypted**: EncryptedSharedPreferences, with an explicit fallback notice on the few devices that don't support it
 - **Opted out of cloud backup**: `allowBackup=false` — profiles never ride your account to the cloud
 - **Your knowledge base is yours**: local plain-text files, editable, importable/exportable — exports are **plaintext** zips, the app warns you, don't casually upload them
