@@ -126,6 +126,7 @@ class GenerationEngine(
         fun onReplyStart
         fun onReplyStreamingCoreText(chunk: String)
         fun onReplyStreamingSchemes(schemes: List<Scheme>)
+        fun onReplyStreamingSchemesReset
         fun onReplyResult(result: GenerateResult)
         fun onReplyPanelState(state: PanelState)
         fun onReplyGenerating(isGenerating: Boolean, isGeneratingCore: Boolean)
@@ -137,7 +138,7 @@ class GenerationEngine(
         fun onCounselingResult(text: String)
         fun onCounselingError(error: String)
         fun onCounselingEnd
-        fun onCounselingSaveLog(userMessage: String, replyText: String, analysisText: String)
+        fun onCounselingSaveLog(kbName: String?, userMessage: String, replyText: String, analysisText: String)
 
         // ═══ 锦囊 ═══
         fun onSuggestStart
@@ -168,15 +169,26 @@ class GenerationEngine(
 
     // ═══════════ 回复生成（主生成） ═══════════
 
-    fun generate(scope: CoroutineScope, callbacks: Callbacks): Job {
-        val msgs = callbacks.getMessages
-        if (msgs.isEmpty || callbacks.isGenerating) return scope.launch { }
+    /**
+     * 返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。
+     * messages / userHint / knowledgeBase 均由 ViewModel 传入冻结快照，
+     * Engine 不再从 callbacks 读取可能漂移的实时状态。
+     * GEN-02B：knowledgeBase 参数冻结生成时 KB，防止生成途中切 KB 导致 prompt 与保存不同源。
+     */
+    fun generate(
+        messages: List<ChatMessage>,
+        userHint: String,
+        knowledgeBase: KnowledgeBase?,
+        scope: CoroutineScope,
+        callbacks: Callbacks
+    ): Job? {
+        if (messages.isEmpty || callbacks.isGenerating) return null
 
         callbacks.onReplyStart
         callbacks.onReplyPanelState(PanelState.AI_LOADING)
         callbacks.onReplyGenerating(true, true)
         callbacks.onReplyStreamingCoreTextReset
-        callbacks.onReplyStreamingSchemes(emptyList)
+        callbacks.onReplyStreamingSchemesReset
 
         val t0 = System.currentTimeMillis
         L.w("PERF t0 click generate")
@@ -185,13 +197,23 @@ class GenerationEngine(
             val aggressive = callbacks.getOutputMode == 1
             val system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt }
             val user = withContext(Dispatchers.IO) {
-                promptBuilder.buildReplyUserPrompt(callbacks.getActiveKb, msgs, callbacks.getUserHint, aggressive)
+                // GEN-02B：使用冻结的 knowledgeBase 快照，不读 callbacks.getActiveKb
+                promptBuilder.buildReplyUserPrompt(knowledgeBase, messages, userHint, aggressive)
             }
             L.w("PERF t1 prompt built (+${System.currentTimeMillis - t0}ms), user=${user.length} chars")
 
+            // 整轮生成开始时冻结 Provider 身份——所有 retry attempt 使用同一个 config
+            val providerConfig = deepSeekRepo.snapshotProviderConfig
+            if (providerConfig == null) {
+                callbacks.onReplyResult(GenerateResult.Error("请先配置一个可用的模型供应商"))
+                callbacks.onReplyGenerating(false, false)
+                callbacks.onReplyStreamingCoreTextReset
+                callbacks.onReplyPanelState(PanelState.AI_RESULT)
+                return@launch
+            }
+
             var fullText = ""
             var errorMsg: String? = null
-            val rawBuffer = StringBuilder
             var timedOut = false
             // /：thinking 降级与重试共用 GENERATE_MAX_ATTEMPTS=4 总预算（3→4 使候选 ④ none 可达）
             var thinkingShapeIndex = 0
@@ -201,6 +223,8 @@ class GenerationEngine(
 
             while (attemptsUsed < AppConfig.GENERATE_MAX_ATTEMPTS) {
                 attemptsUsed++
+                // 每个 attempt 拥有独立 rawBuffer，防上一次失败 attempt 的 partial JSON 污染下一次 retry
+                val rawBuffer = StringBuilder
                 if (attemptsUsed > 1) {
                     //  修复：区分参数降级 / 网络超时 / 网络重试的文案口径，不再一律误报"网络波动"
                     val degradeMsg = when {
@@ -211,12 +235,15 @@ class GenerationEngine(
                     callbacks.onReplyStreamingCoreText(degradeMsg)
                     delay(DEGRADE_HINT_HOLD_MS)
                     callbacks.onReplyStreamingCoreTextReset
+                    // retry 前清理上一次 attempt 的流式方案卡
+                    callbacks.onReplyStreamingSchemesReset
                 }
                 try {
                     val thinkingOverride = if (timedOut) 0 else null
                     errorMsg = null  // 每次重试重置错误
                     fullText = collectStream(
-                        deepSeekRepo.generateStream(system, user, thinkingOverride, thinkingShapeIndex),
+                        // 所有 retry attempt 使用同一个 providerConfig 快照
+                        deepSeekRepo.generateStream(system, user, thinkingOverride, thinkingShapeIndex, config = providerConfig),
                         AppConfig.GENERATE_TIMEOUT_MS,
                         onChunk = { chunk ->
                             callbacks.onReplyStreamingCoreText(chunk)
@@ -306,26 +333,44 @@ class GenerationEngine(
 
     // ═══════════ 谈心模式 ═══════════
 
-    fun generateCounseling(userMessage: String, scope: CoroutineScope, callbacks: Callbacks): Job {
-        if (userMessage.isBlank || callbacks.isCounseling) return scope.launch { }
+    /**
+     * 返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。
+     * knowledgeBase 由 ViewModel 传入冻结快照，谈心期间切 KB 不影响 prompt 与日志。
+     */
+    fun generateCounseling(
+        userMessage: String,
+        knowledgeBase: KnowledgeBase?,
+        scope: CoroutineScope,
+        callbacks: Callbacks
+    ): Job? {
+        if (userMessage.isBlank || callbacks.isCounseling) return null
 
         callbacks.onCounselingStart
 
         return scope.launch {
+            // 冻结 Provider 身份
+            val providerConfig = deepSeekRepo.snapshotProviderConfig
+            if (providerConfig == null) {
+                callbacks.onCounselingError("请先配置一个可用的模型供应商")
+                callbacks.onCounselingEnd
+                return@launch
+            }
             // 谈心首字耗时计时起点（复用回复流程 t0 口径）
             val t0 = System.currentTimeMillis
             val suffix = "\n\n## 用户倾诉\n" + userMessage.trim +
                 "\n\n## 任务\n请以公正法官的身份，按谈心引擎的回应结构（六步法）回复，末尾按契约附上 ===分析=== 块。"
+            // 使用冻结的 knowledgeBase 快照，不读 callbacks.getActiveKb
             val (system, user) = withContext(Dispatchers.IO) {
                 promptBuilder.buildCounselingSystemPrompt to
-                    promptBuilder.buildCounselingUserPrompt(callbacks.getActiveKb, suffix)
+                    promptBuilder.buildCounselingUserPrompt(knowledgeBase, suffix)
             }
 
             var fullText = ""
             var errorMsg: String? = null
             try {
                 fullText = collectStream(
-                    deepSeekRepo.generateStream(system, user),
+                    // 使用冻结的 providerConfig
+                    deepSeekRepo.generateStream(system, user, config = providerConfig),
                     AppConfig.GENERATE_TIMEOUT_MS,
                     onChunk = { callbacks.onCounselingStreaming(it) },
                     onError = { errorMsg = it },
@@ -341,7 +386,7 @@ class GenerationEngine(
             if (fullText.isNotBlank) {
                 val (replyText, analysisText) = splitCounselingAnalysis(fullText)
                 callbacks.onCounselingResult(replyText)
-                callbacks.onCounselingSaveLog(userMessage, replyText, analysisText)
+                callbacks.onCounselingSaveLog(knowledgeBase?.name, userMessage, replyText, analysisText)
             } else {
                 //  修复：PARAM_UNSUPPORTED 是内部标记，不直接展示给用户（谈心无降级链，转通用人话）；
                 // CONFIG_ERROR 类配置错误去前缀透传（谈心单次调用，无重试面）
@@ -369,14 +414,15 @@ class GenerationEngine(
 
     // ═══════════ 今日锦囊 ═══════════
 
-    fun generateSuggest(scope: CoroutineScope, callbacks: Callbacks): Job {
+    /** 返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。 */
+    fun generateSuggest(scope: CoroutineScope, callbacks: Callbacks): Job? {
         val kb = callbacks.getActiveKb
         if (kb == null) {
             // 无 KB 不做死路——锦囊区给引导提示
             callbacks.onSuggestError("还没有知识库，请先到设置页创建")
-            return scope.launch { }
+            return null
         }
-        if (callbacks.isSuggesting) return scope.launch { }
+        if (callbacks.isSuggesting) return null
 
         callbacks.onSuggestStart
 
@@ -384,6 +430,14 @@ class GenerationEngine(
             val system = withContext(Dispatchers.IO) { promptBuilder.buildSuggestSystemPrompt }
             val user = withContext(Dispatchers.IO) {
                 promptBuilder.buildSuggestUserPrompt(kb)
+            }
+
+            // 冻结 Provider 身份
+            val providerConfig = deepSeekRepo.snapshotProviderConfig
+            if (providerConfig == null) {
+                callbacks.onSuggestError("请先配置一个可用的模型供应商")
+                callbacks.onSuggestEnd
+                return@launch
             }
 
             val buffer = StringBuilder
@@ -395,7 +449,8 @@ class GenerationEngine(
             try {
                 L.w("SUGGEST t0 request enqueued, user=${user.length} chars")
                 fullText = collectStream(
-                    deepSeekRepo.generateStream(system, user),
+                    // 使用冻结的 providerConfig
+                    deepSeekRepo.generateStream(system, user, config = providerConfig),
                     AppConfig.SUGGEST_TIMEOUT_MS,
                     onChunk = { chunk ->
                         if (firstChunkAt < 0) {
@@ -432,12 +487,20 @@ class GenerationEngine(
 
     // ═══════════ 主动发起/润色 ═══════════
 
-    fun generateProactive(draft: String, scene: String, scope: CoroutineScope, callbacks: Callbacks): Job {
-        if (callbacks.isProactive) return scope.launch { }
+    /** 返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。 */
+    fun generateProactive(draft: String, scene: String, scope: CoroutineScope, callbacks: Callbacks): Job? {
+        if (callbacks.isProactive) return null
 
         callbacks.onProactiveStart
 
         return scope.launch(Dispatchers.Main) {
+            // 冻结 Provider 身份
+            val providerConfig = deepSeekRepo.snapshotProviderConfig
+            if (providerConfig == null) {
+                callbacks.onProactiveError("请先配置一个可用的模型供应商")
+                callbacks.onProactiveEnd
+                return@launch
+            }
             // 主动发首字耗时计时起点（复用回复流程 t0 口径）
             val t0 = System.currentTimeMillis
             //  规格：scene 参数保留但不再注入；user 仅草稿（无时间戳/无知识/无场景）
@@ -448,7 +511,8 @@ class GenerationEngine(
             var fullText = ""
             try {
                 fullText = collectStream(
-                    deepSeekRepo.generateStream(system, user),
+                    // 使用冻结的 providerConfig
+                    deepSeekRepo.generateStream(system, user, config = providerConfig),
                     AppConfig.SUGGEST_TIMEOUT_MS,
                     onChunk = { chunk ->
                         buffer.append(chunk)

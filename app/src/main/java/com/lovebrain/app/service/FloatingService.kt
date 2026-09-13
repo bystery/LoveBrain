@@ -3,15 +3,25 @@ package com.lovebrain.app.service
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
+import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.graphics.PixelFormat
+import android.os.Build
 import android.os.IBinder
+import android.os.PersistableBundle
 import android.os.SystemClock
 import android.provider.Settings
+import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -36,6 +46,8 @@ import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.ui.bubble.BubbleUiState
 import com.lovebrain.app.ui.bubble.FloatingBubble
+import com.lovebrain.app.ui.common.OverlayTextToolbarHost
+import com.lovebrain.app.ui.common.rememberOverlayTextToolbar
 import com.lovebrain.app.ui.SetupActivity
 import com.lovebrain.app.ui.panel.LoveBrainPanelScreen
 import com.lovebrain.app.ui.theme.LoveBrainTheme
@@ -61,6 +73,10 @@ import org.koin.android.ext.android.inject
 class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedStateRegistryOwner {
 
     companion object {
+        private const val OVERLAY_CHANNEL_ID = "lovebrain_overlay"
+        private const val OVERLAY_NOTIFICATION_ID = 1001
+        private const val ACTION_STOP = "com.lovebrain.app.action.STOP_FLOATING"
+
         /** 供外部查询服务是否存活 */
         @Volatile
         var instance: FloatingService? = null
@@ -91,6 +107,121 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
     private var composeView: ComposeView? = null
     private var isPanelShowing = false
 
+    /*
+     * IMPORTANT OVERLAY FOCUS CONTRACT
+     *
+     * LoveBrain runs above arbitrary host apps.
+     *
+     * PANEL_PASSIVE:
+     *   FLAG_NOT_FOCUSABLE must be enabled.
+     *
+     * PANEL_EDITING:
+     *   FLAG_NOT_FOCUSABLE may be removed temporarily.
+     *
+     * The panel must never remain focusable merely because it is visible.
+     *
+     * Outside touch releases Panel editing/window focus,
+     * but keeps the Panel visible.
+     *
+     * Never special-case host application package names.
+     */
+
+    /** Panel 焦点状态机：PASSIVE = 不抢焦点；EDITING = 临时可聚焦供输入 */
+    private enum class PanelFocusMode {
+        PASSIVE,
+        EDITING
+    }
+
+    /** 唯一 Panel 焦点状态源 */
+    private var panelFocusMode = PanelFocusMode.PASSIVE
+
+    /** Compose 输入焦点清理回调（由 Panel 层注册，releasePanelInput 时调用） */
+    private var clearComposeFocusCallback: ( -> Unit)? = null
+
+    /** 当前持有输入焦点的输入框 ID（null = 无输入框获焦） */
+    private var activeInputId: String? = null
+
+    /**
+     * 统一 Panel flags 计算函数：整个项目唯一允许计算 Panel Window flags 的入口。
+     *
+     * PASSIVE: NOT_FOCUSABLE | NOT_TOUCH_MODAL | WATCH_OUTSIDE_TOUCH
+     * EDITING: NOT_TOUCH_MODAL | WATCH_OUTSIDE_TOUCH（去掉 NOT_FOCUSABLE）
+     */
+    private fun panelFlags(mode: PanelFocusMode): Int {
+        var result =
+            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
+            WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+        if (mode == PanelFocusMode.PASSIVE) {
+            result = result or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        }
+        return result
+    }
+
+    /**
+     * 统一 Panel 焦点模式切换入口：整个项目唯一允许修改 Panel FLAG_NOT_FOCUSABLE 的方法。
+     * 其他文件只能通过 [enterPanelEditing] / [exitPanelEditing] 间接调用。
+     */
+    private fun setPanelFocusMode(newMode: PanelFocusMode, reason: String) {
+        val cv = composeView ?: return
+        val params = cv.layoutParams as? WindowManager.LayoutParams ?: return
+
+        if (panelFocusMode == newMode) return
+
+        val oldMode = panelFocusMode
+        panelFocusMode = newMode
+
+        params.flags = panelFlags(newMode)
+
+        runCatching {
+            wm.updateViewLayout(cv, params)
+        }.onSuccess {
+            L.w("panel focus: $oldMode -> $newMode reason=$reason")
+        }.onFailure {
+            L.e("panel focus update failed: $oldMode -> $newMode reason=$reason", it)
+            // 回滚状态，避免状态与实际 Window flags 不一致
+            panelFocusMode = oldMode
+        }
+    }
+
+    /** 进入编辑态：用户明确按下 TextField 后调用 */
+    private fun enterPanelEditing(reason: String) {
+        setPanelFocusMode(PanelFocusMode.EDITING, reason)
+    }
+
+    /** 退出编辑态：输入框失焦或 Panel 即将隐藏时调用 */
+    private fun exitPanelEditing(reason: String) {
+        setPanelFocusMode(PanelFocusMode.PASSIVE, reason)
+    }
+
+    /**
+     * 释放 Panel 输入状态：清理 Compose 焦点 + 隐藏 IME + Window 恢复 NOT_FOCUSABLE。
+     * 关闭顺序：1.清 TextField Focus → 2.Hide IME → 3.Window → PASSIVE
+     */
+    private fun releasePanelInput(reason: String) {
+        // 0. 清空输入所有者
+        activeInputId = null
+        // 1. 清理 Compose 输入焦点
+        clearComposeFocusCallback?.invoke
+        // 2. 隐藏 IME（通过清除焦点自动隐藏，此处兜底）
+        composeView?.let { cv ->
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+            imm.hideSoftInputFromWindow(cv.windowToken, 0)
+        }
+        // 3. Window 恢复 NOT_FOCUSABLE
+        exitPanelEditing(reason)
+    }
+
+    /**
+     * 统一 Panel 收起入口：收起按钮 / 模式切换关闭走此方法。
+     * 注意：ACTION_OUTSIDE 不走此方法（只释放输入不关 Panel）。
+     * 顺序：释放输入 → hidePanel（淡出动画）→ Bubble 恢复
+     */
+    private fun dismissPanelToBubble(reason: String) {
+        L.w("panel dismiss reason=$reason")
+        releasePanelInput("dismiss_$reason")
+        hidePanel
+    }
+
     /** 悬浮球 UI 状态（Compose 只读渲染，Service 侧更新） */
     private val bubbleUi = mutableStateOf(BubbleUiState)
     /** 闲置计时器（4s 半透明 → 8s 滑出半隐藏） */
@@ -112,8 +243,12 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // v7 零保活：START_NOT_STICKY = 服务被杀后系统不再重建。
-        // 无 FGS、无 STICKY、无自重启。服务完全由用户手动开关。
+        // 停止 Action —— 用户从通知点「停止」时直接 stopSelf
+        if (intent?.action == ACTION_STOP) {
+            stopSelf
+            return START_NOT_STICKY
+        }
+        // 仍然 START_NOT_STICKY = 服务被杀后系统不再重建。无保活、无自重启。
         return START_NOT_STICKY
     }
 
@@ -126,9 +261,24 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
 
     override fun onCreate {
         super.onCreate
+
+        // CAP-01：sessionStart 必须在 instance = this 之前建立。
+        // 只有 instance != null 后 CopyCaptureService 才允许 emit 有效捕获。
+        // 因此 session 边界必须覆盖 instance 发布之后的全部时间，不能有宽限。
+        val sessionStart = SystemClock.uptimeMillis
+
         instance = this
         L.init(this)
         L.w("=== FloatingService onCreate (v5 Koin+EventBus) ===")
+
+        // 尽快进入前台服务状态，不等 IO / AI 初始化
+        ensureNotificationChannel
+        ServiceCompat.startForeground(
+            this,
+            OVERLAY_NOTIFICATION_ID,
+            buildOverlayNotification,
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+        )
 
         // 暗色模式已删，全站固定亮色
 
@@ -143,11 +293,10 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
         panelH = if (savedH > 0) savedH else dp(AppConfig.PANEL_DEFAULT_H)
 
         // 订阅 EventBus：接收无障碍服务捕获的消息
-        val sessionStart = SystemClock.uptimeMillis
         scope.launch {
             EventBus.capturedMessages.collect { event ->
-                // 服务重建后会收到死前的重放事件（replay=1）：早于本次启动的旧事件一律丢弃，避免重复入库
-                if (event.ts < sessionStart - 500L) return@collect
+                // CAP-01：严格 session 边界——早于 sessionStart 的一律是上一 session 的 replay，丢弃
+                if (event.ts < sessionStart) return@collect
                 val stored = addClipIfNew(event.text, viewModel.currentRole.value)
                 //  修复：只在消息真正入库时才亮红点（去重丢弃时不亮）
                 if (stored && bubbleView != null) {
@@ -191,6 +340,8 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
         lifecycleRegistry.currentState = Lifecycle.State.CREATED
         lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
         store.clear
+        // 销毁时确保前台状态结束
+        stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy
     }
 
@@ -293,14 +444,14 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
             //  修复：点击唤醒必须复位 idleDimmed，否则松手后球立刻又暗回去
             bubbleUi.value = bubbleUi.value.copy(idleDimmed = false)
             resetIdleTimer
-            if (isPanelShowing) hidePanel else showPanel
+            if (isPanelShowing) dismissPanelToBubble("bubble_tap") else showPanel
             return
         }
         //  修复：正常态点击也复位 idleDimmed
         bubbleUi.value = bubbleUi.value.copy(idleDimmed = false)
         resetIdleTimer
         // 点击小球 → 直接出现悬浮窗（完整展示）
-        if (isPanelShowing) hidePanel else showPanel
+        if (isPanelShowing) dismissPanelToBubble("bubble_tap") else showPanel
     }
 
     // ═══════════ 拖拽与边缘吸附 ═══════════
@@ -308,6 +459,8 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
     private fun onBubbleDrag(dx: Float, dy: Float) {
         // 半隐藏态拖拽：先回弹，再继续拖
         if (bubbleHidden) showBubbleFromEdge
+        // LB-LIFE-02：用户开始新拖动时立即取消旧吸边动画，防旧 target 被提交
+        cancelBubbleAnimation
         val cv = bubbleView ?: return
         val p = bubbleParams ?: return
         val screenW = resources.displayMetrics.widthPixels
@@ -352,6 +505,10 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
     private fun animateBubbleTo(targetX: Int, targetY: Int, onDone: ((Int, Int) -> Unit)? = null) {
         val cv = bubbleView ?: return
         val p = bubbleParams ?: return
+
+        // LB-LIFE-02：先取消旧动画，再读取当前位置作为新动画起点
+        cancelBubbleAnimation
+
         val startX = p.x
         val startY = p.y
         if (startX == targetX && startY == targetY) {
@@ -359,27 +516,43 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
             return
         }
 
-        bubbleAnim?.cancel  // ：取消上一个位移动画，防堆积
-        bubbleAnim = ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = if (reducedMotion) 0L else AppConfig.BUBBLE_SNAP_MS.toLong
-            interpolator = FastOutSlowInInterpolator
-            addUpdateListener {
-                val f = it.animatedValue as Float
-                p.x = startX + ((targetX - startX) * f).toInt
-                p.y = startY + ((targetY - startY) * f).toInt
-                runCatching { wm.updateViewLayout(cv, p) }
-                if (isPanelShowing) repositionPanel
-            }
-            addListener(object : AnimatorListenerAdapter {
-                override fun onAnimationEnd(animation: Animator) {
-                    p.x = targetX
-                    p.y = targetY
-                    runCatching { wm.updateViewLayout(cv, p) }
-                    onDone?.invoke(targetX, targetY)
-                }
-            })
-            start
+        val animator = ValueAnimator.ofFloat(0f, 1f)
+        var cancelled = false
+        animator.duration = if (reducedMotion) 0L else AppConfig.BUBBLE_SNAP_MS.toLong
+        animator.interpolator = FastOutSlowInInterpolator
+        animator.addUpdateListener {
+            val f = it.animatedValue as Float
+            p.x = startX + ((targetX - startX) * f).toInt
+            p.y = startY + ((targetY - startY) * f).toInt
+            runCatching { wm.updateViewLayout(cv, p) }
+            if (isPanelShowing) repositionPanel
         }
+        animator.addListener(object : AnimatorListenerAdapter {
+            override fun onAnimationCancel(animation: Animator) {
+                cancelled = true
+            }
+            override fun onAnimationEnd(animation: Animator) {
+                // LB-LIFE-02：取消导致的 onAnimationEnd 不允许提交旧 target
+                if (cancelled) return
+                // 实例身份保护：避免旧 animation callback 清掉后来创建的新 animation 引用
+                if (bubbleAnim === animation) {
+                    bubbleAnim = null
+                }
+                p.x = targetX
+                p.y = targetY
+                runCatching { wm.updateViewLayout(cv, p) }
+                onDone?.invoke(targetX, targetY)
+            }
+        })
+        bubbleAnim = animator
+        animator.start
+    }
+
+    /** LB-LIFE-02：统一取消吸边动画——先清引用再 cancel，防 listener 操作已失效引用 */
+    private fun cancelBubbleAnimation {
+        val anim = bubbleAnim ?: return
+        bubbleAnim = null
+        anim.cancel
     }
 
     // ═══════════ 闲置计时：4s 半透明降遮挡；：8s 滑出半隐藏） ═══════════
@@ -478,9 +651,10 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
         runCatching { wm.updateViewLayout(cv, p) }
 
         cv.visibility = View.VISIBLE
-        // 读屏焦点转移——面板 VISIBLE 后把焦点与播报落进面板，避免读屏焦点留在已隐藏气泡上（announce 用固定文案，不拼用户内容）
+        // 强制 PASSIVE：确保不存在上次 EDITING 状态泄漏（打开即不抢焦点）
+        setPanelFocusMode(PanelFocusMode.PASSIVE, reason = "show_panel")
+        // 读屏播报（固定文案，不拼用户内容）；不主动 requestFocus——打开 Panel ≠ 开始输入
         cv.post {
-            runCatching { cv.requestFocus }
             cv.announceForAccessibility("军师面板已打开")
         }
         bubbleView?.visibility = View.GONE
@@ -495,6 +669,29 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
     private var bubbleAnim: ValueAnimator? = null   // ：持有引用，onDestroy 取消防泄漏
     private var isPanelHiding = false
 
+    // ═══════════ LB-LIFE-01: 输入框焦点所有权 ═══════════
+
+    /** 输入意图：用户触碰了某个输入框 → 立即接管 activeInputId 并进入编辑态 */
+    private fun onPanelInputIntent(inputId: String) {
+        activeInputId = inputId
+        enterPanelEditing("input_intent:$inputId")
+    }
+
+    /**
+     * 焦点变化：只有当前 activeInputId 的失焦才允许退出 EDITING。
+     * 如果 activeInputId 已经被新输入框接管，则忽略旧输入框的 blur。
+     */
+    private fun onPanelInputFocusChanged(inputId: String, focused: Boolean) {
+        if (focused) {
+            activeInputId = inputId
+            return
+        }
+        if (activeInputId == inputId) {
+            activeInputId = null
+            exitPanelEditing("input_blur:$inputId")
+        }
+    }
+
     private fun hidePanel {
         // BUG 修复：防重入——退出动画期间重复触发会堆积动画导致卡顿
         if (isPanelHiding) return
@@ -502,7 +699,11 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
         val cv = composeView ?: return
         isPanelHiding = true
 
+        // 兜底焦点清理：确保 hidePanel 结束后 panelFocusMode == PASSIVE（第二道保险）
+        releasePanelInput("hide_panel")
+
         // 淡出动画：150ms alpha 1→0，结束后才真正隐藏
+        // 焦点释放在动画开始之前已完成（上方 releasePanelInput）
         panelExitAnim?.cancel
         panelExitAnim = ValueAnimator.ofFloat(1f, 0f).apply {
             duration = 150L
@@ -529,6 +730,9 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
 
     private fun destroyPanel {
         isPanelShowing = false
+        releasePanelInput("service_destroy")
+        panelFocusMode = PanelFocusMode.PASSIVE
+        clearComposeFocusCallback = null
         composeView?.let { cv ->
             cv.disposeComposition
             runCatching { wm.removeView(cv) }
@@ -545,12 +749,11 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
         val ph = panelH.coerceAtMost(screenH - dp(80))
         val (px, py) = calcPanelPosition(pw, ph, screenW, screenH)
 
-        // 键盘修复：面板展示期间去掉 FLAG_NOT_FOCUSABLE，否则输入框永远拿不到焦点、
-        // 软键盘无法唤起（旧"获焦→清 flag"链路是死循环：不清 flag 永远获不了焦）。
-        // 面板隐藏/销毁时窗口移除，不影响微信等底层 App 交互。
-        // 删外触监听标志 + 外点收起——误触即收体验差，
-        // 收起改由头部收起按钮显式触发（项 2）；气泡侧 :227 外触标志属气泡既有行为，不动。
-        val flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+        // 默认 PASSIVE：Panel 可见但不抢焦点，不阻止底层 App 交互。
+        // FLAG_NOT_FOCUSABLE: Panel 默认不抢宿主 App 输入焦点
+        // FLAG_NOT_TOUCH_MODAL: Panel 外部触摸继续交给底层 App
+        // FLAG_WATCH_OUTSIDE_TOUCH: 用户点 Panel 外部时收到 ACTION_OUTSIDE → 收起
+        val flags = panelFlags(PanelFocusMode.PASSIVE)
 
         val params = WindowManager.LayoutParams(
             pw, ph,
@@ -569,36 +772,59 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
         val cv = newOverlayComposeView.apply {
             visibility = View.GONE
 
+            // ACTION_OUTSIDE 外点监听：用户点击 Panel 窗口外 →
+            // 不关 Panel（用户需边看回复边操作宿主 App），只退出编辑态：
+            // 清 Compose 焦点 → 隐藏 IME → Window 恢复 NOT_FOCUSABLE
+            setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_OUTSIDE) {
+                    if (panelFocusMode == PanelFocusMode.EDITING) {
+                        releasePanelInput("outside_touch")
+                    }
+                    true
+                } else {
+                    false
+                }
+            }
+
             setContent {
                 LoveBrainTheme {
-                    LoveBrainPanelScreen(
-                        viewModel = viewModel,
-                        onFocusChange = { _ ->
-                            // 旧的 flag 切换链路已删（与键盘修复冲突：失焦回加 NOT_FOCUSABLE
-                            // 会导致输入框再也弹不出键盘）。面板展示期固定可聚焦，无需回调。
-                        },
-                        onResize = { newW, newH ->
-                            handleResize(newW, newH)
-                        },
-                        onResizeEnd = {
-                            //  拖拽结束才写 SecurePrefs，避免每帧 onDrag 都触发磁盘写入
-                            persistPanelSize
-                        },
-                        onMove = { dx, dy ->
-                            handleMove(dx, dy)
-                        },
-                        onCopy = { text ->
-                            if (text.isNotEmpty) {
-                                copyToClipboard(text)
-                            }
-                        },
-                        // 未配置供应商引导——打开设置页（新任务栈，不干扰宿主 App）
-                        onOpenSettings = {
-                            startActivity(Intent(this@FloatingService, SetupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                        },
-                        // 头部收起按钮 = 现外点收起行为（复用 hidePanel 150ms 淡出 + 气泡重现）
-                        onCollapse = { hidePanel }
-                    )
+                    val overlayToolbar = rememberOverlayTextToolbar
+                    OverlayTextToolbarHost(toolbar = overlayToolbar) {
+                        LoveBrainPanelScreen(
+                            viewModel = viewModel,
+                            onInputFocusChange = { inputId, focused ->
+                                onPanelInputFocusChanged(inputId, focused)
+                            },
+                            onInputIntent = { inputId ->
+                                onPanelInputIntent(inputId)
+                            },
+                            onClearComposeFocus = { callback ->
+                                // 注册 Compose 焦点清理回调，releasePanelInput 时调用
+                                clearComposeFocusCallback = callback
+                            },
+                            onResize = { newW, newH ->
+                                handleResize(newW, newH)
+                            },
+                            onResizeEnd = {
+                                //  拖拽结束才写 SecurePrefs，避免每帧 onDrag 都触发磁盘写入
+                                persistPanelSize
+                            },
+                            onMove = { dx, dy ->
+                                handleMove(dx, dy)
+                            },
+                            onCopy = { text ->
+                                if (text.isNotEmpty) {
+                                    copyToClipboard(text)
+                                }
+                            },
+                            // 未配置供应商引导——打开设置页（新任务栈，不干扰宿主 App）
+                            onOpenSettings = {
+                                startActivity(Intent(this@FloatingService, SetupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                            },
+                            // 头部收起按钮 → 统一走 dismissPanelToBubble
+                            onCollapse = { dismissPanelToBubble("collapse_button") }
+                        )
+                    }
                 }
             }
         }
@@ -692,10 +918,60 @@ class FloatingService : Service, LifecycleOwner, ViewModelStoreOwner, SavedState
 
     private fun copyToClipboard(text: String) {
         val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        cm.setPrimaryClip(android.content.ClipData.newPlainText("军师回复", text))
+        val clip = android.content.ClipData.newPlainText("军师回复", text)
+        // RB-04：标记为敏感内容，隐藏 Android 13+ 系统剪贴板浮层预览
+        val extras = PersistableBundle
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            extras.putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true)
+        } else {
+            extras.putBoolean("android.content.extra.IS_SENSITIVE", true)
+        }
+        clip.description.extras = extras
+        cm.setPrimaryClip(clip)
         // 复制成功可见反馈（固定文案，不含用户内容）
         Toast.makeText(this, "已复制", Toast.LENGTH_SHORT).show
         //  修复：不再写 recentClips——复制的是军师回复，不是捕获的消息，不应影响捕获去重
+    }
+
+    // ═══════════ 前台服务通知 ═══════════
+
+    private fun ensureNotificationChannel {
+        val channel = NotificationChannel(
+            OVERLAY_CHANNEL_ID,
+            "LoveBrain 悬浮助手",
+            NotificationManager.IMPORTANCE_LOW  // 生命周期通知，不响铃、不震动、不 badge
+        ).apply {
+            description = "悬浮助手运行状态通知"
+            setShowBadge(false)
+            enableVibration(false)
+            setSound(null, null)
+        }
+        val nm = getSystemService(NotificationManager::class.java)
+        nm.createNotificationChannel(channel)
+    }
+
+    private fun buildOverlayNotification: android.app.Notification {
+        val contentIntent = PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, SetupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val stopIntent = PendingIntent.getService(
+            this,
+            1,
+            Intent(this, FloatingService::class.java).setAction(ACTION_STOP),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        return NotificationCompat.Builder(this, OVERLAY_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_bubble)
+            .setContentTitle("LoveBrain 悬浮助手正在运行")
+            .setContentText("悬浮球已开启，点此返回设置")
+            .setContentIntent(contentIntent)
+            .addAction(0, "停止", stopIntent)
+            .setOngoing(true)
+            .setSilent(true)
+            .build
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt

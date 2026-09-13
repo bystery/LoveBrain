@@ -21,6 +21,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -72,13 +73,15 @@ private val OnboardGuideLineHeight = 20.sp
 @Composable
 fun LoveBrainPanelScreen(
     viewModel: LoveBrainViewModel,
-    onFocusChange: (Boolean) -> Unit,
+    onInputFocusChange: (String, Boolean) -> Unit,
+    onInputIntent: (String) -> Unit,
+    onClearComposeFocus: (( -> Unit) -> Unit),
     onResize: (Int, Int) -> Unit,
     onResizeEnd:  -> Unit = {},
     onMove: (Float, Float) -> Unit,
     onCopy: (String) -> Unit,
     onOpenSettings:  -> Unit,
-    // 头部收起按钮回调（FloatingService 传 hidePanel）
+    // 头部收起按钮回调（FloatingService 传 dismissPanelToBubble）
     onCollapse:  -> Unit
 ) {
     val panelMode by viewModel.panelMode.collectAsStateWithLifecycle
@@ -96,6 +99,7 @@ fun LoveBrainPanelScreen(
     val composeRole = if (ideaComposeMode) ChatMessage.Role.IDEA else currentRole
     val editingIndex by viewModel.editingIndex.collectAsStateWithLifecycle
     val profileSuggestion by viewModel.profileSuggestion.collectAsStateWithLifecycle
+    val activeKb by viewModel.activeKb.collectAsStateWithLifecycle
     val kbNotice by viewModel.kbNotice.collectAsStateWithLifecycle
     val panelWarning by viewModel.panelWarning.collectAsStateWithLifecycle
     val vectorUpdate by viewModel.vectorUpdate.collectAsStateWithLifecycle
@@ -115,6 +119,14 @@ fun LoveBrainPanelScreen(
     // + 修复：面板每次进入组合时刷新工单状态（Service 长生命周期下配置后不刷新）
     LaunchedEffect(Unit) {
         viewModel.refreshTicketState
+    }
+
+    // 注册 Compose 焦点清理回调：FloatingService.releasePanelInput 时调用
+    // 清理 Compose 输入焦点，避免 Panel 隐藏后输入框仍为逻辑 Focused
+    val focusManager = LocalFocusManager.current
+    DisposableEffect(onClearComposeFocus) {
+        onClearComposeFocus { focusManager.clearFocus }
+        onDispose { }
     }
 
     Box(modifier = Modifier.fillMaxSize) {
@@ -251,22 +263,26 @@ fun LoveBrainPanelScreen(
                 }
             }
 
-            if (profileSuggestion != null) {
+            // KBUI-01：suggestion 仅在所属 KB 为当前激活 KB 时显示
+            if (profileSuggestion != null && profileSuggestion?.kbName == activeKb?.name) {
                 ProfileSuggestionCard(
-                    suggestion = profileSuggestion.orEmpty,
+                    suggestion = profileSuggestion?.display.orEmpty,
                     onConfirm = { viewModel.confirmProfileUpdate },
                     onDismiss = { viewModel.dismissProfileUpdate }
                 )
                 Spacer(Modifier.height(Spacing.md))
             }
 
+            // KBUI-01：stage suggestion 同样按 kbName 过滤
             stageSuggestion?.let { suggestion ->
-                StageSuggestionCard(
-                    suggestion = suggestion,
-                    onConfirm = { viewModel.confirmStageChange },
-                    onDismiss = { viewModel.dismissStageChange }
-                )
-                Spacer(Modifier.height(Spacing.md))
+                if (suggestion.kbName == activeKb?.name) {
+                    StageSuggestionCard(
+                        suggestion = suggestion,
+                        onConfirm = { viewModel.confirmStageChange },
+                        onDismiss = { viewModel.dismissStageChange }
+                    )
+                    Spacer(Modifier.height(Spacing.md))
+                }
             }
 
             if (panelMode == 0) {
@@ -308,7 +324,9 @@ fun LoveBrainPanelScreen(
                             viewModel.setDraft("")
                         }
                     },
-                    onFocusChange = onFocusChange,
+                    inputId = "reply",
+                    onFocusChange = { focused -> onInputFocusChange("reply", focused) },
+                    onInputIntent = { onInputIntent("reply") },
                     focusRequester = inputFocusRequester
                 )
 
@@ -420,7 +438,11 @@ fun LoveBrainPanelScreen(
                 Box(modifier = Modifier.weight(1f)) {
                     CounselingPanel(
                         viewModel = viewModel,
-                        onFocusChange = onFocusChange,
+                        inputId = "counseling_main",
+                        onFocusChange = { focused -> onInputFocusChange("counseling_main", focused) },
+                        onInputIntent = { onInputIntent("counseling_main") },
+                        onFollowUpFocusChange = { focused -> onInputFocusChange("counseling_followup", focused) },
+                        onFollowUpInputIntent = { onInputIntent("counseling_followup") },
                         modifier = Modifier.fillMaxSize
                     )
                 }

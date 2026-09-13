@@ -198,7 +198,20 @@ class SetupViewModel(
         val newValue = !_captureEnabled.value
         securePrefs.captureEnabled = newValue
         _captureEnabled.value = newValue
+        if (!newValue) {
+            com.lovebrain.app.service.CopyCaptureService.discardPendingCapture
+        }
         L.w("capture switch toggled: $newValue")
+    }
+
+    /**
+     * 用户明确点击「同意并继续」后写入当前披露版本号。
+     * CopyCaptureService 在 consent 版本 < CURRENT_DISCLOSURE_VERSION 时不处理消息内容。
+     */
+    fun confirmAccessibilityDisclosure {
+        securePrefs.accessibilityDisclosureVersion =
+            com.lovebrain.app.service.CopyCaptureService.CURRENT_DISCLOSURE_VERSION
+        L.w("accessibility disclosure confirmed: version=${com.lovebrain.app.service.CopyCaptureService.CURRENT_DISCLOSURE_VERSION}")
     }
 
     /**

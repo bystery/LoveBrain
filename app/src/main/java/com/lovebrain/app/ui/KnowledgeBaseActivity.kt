@@ -6,12 +6,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +39,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,10 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
@@ -65,6 +61,7 @@ import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
 import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.ui.theme.*
+import com.lovebrain.app.util.L
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -104,14 +101,26 @@ class KnowledgeBaseActivity : ComponentActivity {
     // 持有 onboarding 生成协程 Job，onDismiss 时显式 cancel
     private var onboardingJob: kotlinx.coroutines.Job? = null
 
+    // 统一建库事务 guard——AI 建库和空模板建库不能并发执行
+    private var kbCreationInProgress = false
+
+    // Activity 级 refresh signal——导入成功后不 recreate，改用 token 触发列表刷新
+    private val kbReloadToken = mutableIntStateOf(0)
+
     private fun createEmptyKb(onDone:  -> Unit) {
+        if (kbCreationInProgress) return
+        kbCreationInProgress = true
         lifecycleScope.launch {
-            val name = autoKbName
-            val ok = runCatching { repo.create(name, "新知识库") }.isSuccess
-            if (!ok) {
-                kbFeedback.value = "创建失败：可能名称重复，请重试"
+            try {
+                val name = autoKbName
+                val ok = runCatching { repo.create(name, "新知识库") }.isSuccess
+                if (!ok) {
+                    kbFeedback.value = "创建失败：可能名称重复，请重试"
+                }
+                onDone
+            } finally {
+                kbCreationInProgress = false
             }
-            onDone
         }
     }
 
@@ -121,6 +130,7 @@ class KnowledgeBaseActivity : ComponentActivity {
         herName: String,
         onDone:  -> Unit
     ) {
+        if (kbCreationInProgress) return
         val ready = deepSeek.getActiveTicket?.model?.isNotBlank == true &&
             !deepSeek.getActiveApiKey.isNullOrBlank
         if (!ready) {
@@ -128,48 +138,76 @@ class KnowledgeBaseActivity : ComponentActivity {
             noProviderDialogVisible.value = true
             return
         }
+        // 进入 AI 建库事务
+        kbCreationInProgress = true
         // 存 Job 引用，onDismiss 时 cancel → generateRaw 抛 CancellationException 跳出
         onboardingJob = lifecycleScope.launch {
-            val name = autoKbName
-            val system = readEngineAsset(com.lovebrain.app.domain.AssetRegistry.ONBOARDING)
-            // v4.0：输入改为 JSON Schema（取代文本拼接块）
-            val user = Json.encodeToString(
-                com.lovebrain.app.domain.OnboardingSchema.serializer, schema
-            )
-            val raw = runCatching {
-                withContext(Dispatchers.IO) { deepSeek.generateRaw(system, user) }
-            }.getOrDefault("")
-            // 协程被 cancel 后 withContext 恢复会抛 CancellationException，
-            // runCatching 吞掉后 raw="" 且 isActive=false——这里拦住不建库
-            if (!isActive) {
-                onDone
-                return@launch
-            }
-
-            val display = parseSection(raw, "===DISPLAY===", "===STAGE===")
-                .ifBlank { herName.ifBlank { "我的她" } }
-            val stage = parseSection(raw, "===STAGE===", "===ME===").ifBlank { "待确定" }
-            val me = parseSection(raw, "===ME===", "===HER===")
-            val her = parseSection(raw, "===HER===", "===WARMTH===")
-            val warmth = raw.substringAfter("===WARMTH===", "").trim
-
-            val ok = runCatching { repo.create(name, display) }.isSuccess
-            if (ok) {
-                if (me.isNotBlank) repo.writeFile(name, "understand/me.md", me)
-                if (her.isNotBlank) repo.writeFile(name, "understand/her.md", her)
-                if (warmth.isNotBlank) repo.writeFile(name, "understand/warmth.md", warmth)
-                repo.updateStage(name, stage)
-                //  修复：成功分支补充反馈——AI 分析返回空不再假装成功（降级链如实告知）
-                if (raw.isBlank) {
-                    kbFeedback.value = "AI 分析失败，已创建空模板库，可稍后在编辑页补充画像"
-                } else {
-                    kbFeedback.value = "知识库已创建，画像已生成"
+            try {
+                val name = autoKbName
+                val system = readEngineAsset(com.lovebrain.app.domain.AssetRegistry.ONBOARDING)
+                // v4.0：输入改为 JSON Schema（取代文本拼接块）
+                val user = Json.encodeToString(
+                    com.lovebrain.app.domain.OnboardingSchema.serializer, schema
+                )
+                val raw = runCatching {
+                    withContext(Dispatchers.IO) { deepSeek.generateRaw(system, user) }
+                }.getOrDefault("")
+                // 协程被 cancel 后 withContext 恢复会抛 CancellationException，
+                // runCatching 吞掉后 raw="" 且 isActive=false——这里拦住不建库
+                if (!isActive) {
+                    onDone
+                    return@launch
                 }
-            } else {
-                kbFeedback.value = "创建失败：可能名称重复，请重试"
+
+                // 用轻量结果对象解析 AI 输出，校验关键段非空后才算画像成功
+                val parsed = parseOnboardingResult(raw)
+                val display = parsed.display.ifBlank { herName.ifBlank { "我的她" } }
+                val stage = parsed.stage.ifBlank { "待确定" }
+
+                val ok = runCatching { repo.create(name, display) }.isSuccess
+                if (ok) {
+                    // 只有对应 section 非空才覆盖模板
+                    if (parsed.me.isNotBlank) repo.writeFile(name, "understand/me.md", parsed.me)
+                    if (parsed.her.isNotBlank) repo.writeFile(name, "understand/her.md", parsed.her)
+                    if (parsed.warmth.isNotBlank) repo.writeFile(name, "understand/warmth.md", parsed.warmth)
+                    repo.updateStage(name, stage)
+                    // 区分完整成功 / 降级建库 / 创建失败
+                    kbFeedback.value = if (parsed.hasUsableProfile) {
+                        "知识库已创建，画像已生成"
+                    } else {
+                        "AI 画像生成不完整，已创建模板库，可稍后在编辑页补充"
+                    }
+                } else {
+                    kbFeedback.value = "创建知识库失败，请重试"
+                }
+                onDone
+            } finally {
+                kbCreationInProgress = false
+                onboardingJob = null
             }
-            onDone
         }
+    }
+
+    // 轻量解析结果对象
+    private data class ParsedOnboardingResult(
+        val display: String,
+        val stage: String,
+        val me: String,
+        val her: String,
+        val warmth: String
+    ) {
+        val hasUsableProfile: Boolean
+            get = me.isNotBlank && her.isNotBlank && warmth.isNotBlank
+    }
+
+    private fun parseOnboardingResult(raw: String): ParsedOnboardingResult {
+        return ParsedOnboardingResult(
+            display = parseSection(raw, "===DISPLAY===", "===STAGE==="),
+            stage = parseSection(raw, "===STAGE===", "===ME==="),
+            me = parseSection(raw, "===ME===", "===HER==="),
+            her = parseSection(raw, "===HER===", "===WARMTH==="),
+            warmth = raw.substringAfter("===WARMTH===", "").trim
+        )
     }
 
     //  修复：去掉 % 1000000（每 16.7 分钟循环碰撞），用全时间戳 + 随机后缀
@@ -198,13 +236,20 @@ class KnowledgeBaseActivity : ComponentActivity {
         // （清偿）：zip 下沉 IO 线程，防大库阻塞主线程（ANR 隐患）；函数体零改动
         lifecycleScope.launch(Dispatchers.IO) {
             runCatching {
-                contentResolver.openOutputStream(uri)?.use { os ->
-                    zipKbFolder(File(filesDir, "knowledge/$kbName"), kbName, ZipOutputStream(os))
+                val output = contentResolver.openOutputStream(uri)
+                    ?: throw IllegalStateException("无法打开导出文件")
+                output.use { os ->
+                    ZipOutputStream(os).use { zos ->
+                        zipKbFolder(File(filesDir, "knowledge/$kbName"), kbName, zos)
+                    }
                 }
                 withContext(Dispatchers.Main) {
+                    kbFeedback.value = "知识库已导出"
                 }
-            }.onFailure {
+            }.onFailure { error ->
+                L.e("knowledge export failed", error)
                 withContext(Dispatchers.Main) {
+                    kbFeedback.value = "导出失败，请重试"
                 }
             }
         }
@@ -218,17 +263,25 @@ class KnowledgeBaseActivity : ComponentActivity {
         // 激活修正+recreate 移入同一协程、置于解压成功之后，时序与基线一致
         lifecycleScope.launch(Dispatchers.IO) {
             runCatching {
-                contentResolver.openInputStream(uri)?.use { input ->
-                    unzipToKnowledge(ZipInputStream(input), File(filesDir, "knowledge"))
+                val input = contentResolver.openInputStream(uri)
+                    ?: throw IllegalStateException("无法打开导入文件")
+                input.use {
+                    ZipInputStream(it).use { zis ->
+                        unzipToKnowledge(zis, File(filesDir, "knowledge"))
+                    }
                 }
                 // 导入后强制修正 active 状态，防止导入的 KB 带 active=true 导致双激活
                 val currentActive = repo.getActive?.name ?: repo.listAll.firstOrNull?.name
                 if (currentActive != null) repo.setActive(currentActive)
+                // 不 recreate（会吃掉 kbFeedback），改用 token 触发列表刷新
                 withContext(Dispatchers.Main) {
-                    recreate
+                    kbFeedback.value = "知识库导入成功"
+                    kbReloadToken.intValue++
                 }
-            }.onFailure {
+            }.onFailure { error ->
+                L.e("knowledge import failed", error)
                 withContext(Dispatchers.Main) {
+                    kbFeedback.value = "导入失败，请检查文件是否为有效的 LoveBrain 知识库备份"
                 }
             }
         }
@@ -245,7 +298,7 @@ class KnowledgeBaseActivity : ComponentActivity {
                 var active by remember(version) { mutableStateOf<KnowledgeBase?>(null) }
                 var showOnboarding by remember { mutableStateOf(false) }
 
-                LaunchedEffect(version) {
+                LaunchedEffect(version, kbReloadToken.intValue) {
                     kbs = repo.listAll
                     active = repo.getActive
                 }
@@ -306,9 +359,9 @@ class KnowledgeBaseActivity : ComponentActivity {
                             }
                         },
                         // 生成中取消——cancel 协程后关闭页面
+                        // kbCreationInProgress 由 job finally 复位，不在此处重复维护
                         onCancelGenerating = {
                             onboardingJob?.cancel
-                            onboardingJob = null
                             showOnboarding = false
                         }
                     )
@@ -373,7 +426,7 @@ class KnowledgeBaseActivity : ComponentActivity {
             file.inputStream.use { it.copyTo(zos) }
             zos.closeEntry
         }
-        zos.finish
+        // finish/close 由 ZipOutputStream.use 自动处理，避免双重生命周期职责
     }
 
     /**
@@ -381,25 +434,51 @@ class KnowledgeBaseActivity : ComponentActivity {
      * - 不直接写 knowledge/ 树：解压中途磁盘满/进程被杀不会残留半截坏库
      * - 校验三关：顶层恰一个目录 / kb.json 可解码且 name==顶层目录名（与  同判据）/ 无同名碰撞
      * - 任一失败 = 整体中止并清理暂存目录，异常上抛复用现有「导入失败：」提示
+     *  严格 ZIP 路径边界（带 File.separator 的 startsWith）+ 解压大小限制防 zip bomb
      */
     private fun unzipToKnowledge(zis: ZipInputStream, knowledgeRoot: File) {
         val stagingRoot = File(cacheDir, "kb_import_${System.currentTimeMillis}")
         stagingRoot.mkdirs
         try {
-            // 1. 解压（entry 级 canonical 防护原样保留，根改为暂存根）
+            // 1. 解压（严格路径防护 + 大小限制）
             val canonicalStaging = stagingRoot.canonicalPath
+            val safePrefix = canonicalStaging + File.separator
+            var entryCount = 0
+            var totalBytes = 0L
             var entry = zis.nextEntry
             while (entry != null) {
+                entryCount++
+                if (entryCount > MAX_IMPORT_ENTRIES) {
+                    throw IllegalStateException("ZIP 包含过多条目（上限 $MAX_IMPORT_ENTRIES）")
+                }
                 val outFile = File(stagingRoot, entry.name)
-                if (!outFile.canonicalPath.startsWith(canonicalStaging)) {
-                    entry = zis.nextEntry
-                    continue
+                // 用 canonicalPath + File.separator 严格判断，防 prefix collision
+                val targetPath = outFile.canonicalPath
+                require(targetPath.startsWith(safePrefix)) {
+                    throw IllegalStateException("ZIP 包含非法路径：${entry.name}")
                 }
                 if (entry.isDirectory) {
                     outFile.mkdirs
                 } else {
                     outFile.parentFile?.mkdirs
-                    FileOutputStream(outFile).use { fos -> zis.copyTo(fos) }
+                    // 逐 entry 统计实际解压字节，不信任 ZipEntry.size
+                    var entryBytes = 0L
+                    val buffer = ByteArray(8 * 1024)
+                    FileOutputStream(outFile).use { fos ->
+                        while (true) {
+                            val read = zis.read(buffer)
+                            if (read < 0) break
+                            entryBytes += read
+                            totalBytes += read
+                            require(entryBytes <= MAX_IMPORT_ENTRY_BYTES) {
+                                throw IllegalStateException("ZIP 条目过大（单文件上限 ${MAX_IMPORT_ENTRY_BYTES / 1024 / 1024} MiB）")
+                            }
+                            require(totalBytes <= MAX_IMPORT_TOTAL_BYTES) {
+                                throw IllegalStateException("ZIP 解压总大小超限（上限 ${MAX_IMPORT_TOTAL_BYTES / 1024 / 1024} MiB）")
+                            }
+                            fos.write(buffer, 0, read)
+                        }
+                    }
                 }
                 entry = zis.nextEntry
             }
@@ -434,6 +513,13 @@ class KnowledgeBaseActivity : ComponentActivity {
             runCatching { stagingRoot.deleteRecursively }
             throw e
         }
+    }
+
+    // ZIP 解压安全限制常量
+    companion object {
+        private const val MAX_IMPORT_ENTRIES = 2048
+        private const val MAX_IMPORT_ENTRY_BYTES = 16L * 1024 * 1024
+        private const val MAX_IMPORT_TOTAL_BYTES = 64L * 1024 * 1024
     }
 }
 
@@ -706,39 +792,56 @@ private fun OnboardingScreen(
     onComplete: (com.lovebrain.app.domain.OnboardingSchema, String, String) -> Unit,
     onCancelGenerating:  -> Unit
 ) {
-    // v4.0 向导状态：currentStep 1-5 答题，6 称呼收尾
+    // v4.2 向导状态：currentStep 1-5 答题，6 称呼收尾
     var currentStep by remember { mutableStateOf(1) }
     var branch by remember { mutableStateOf("") }
-    val answers = remember { mutableStateMapOf<Int, Int> }  // step → optionIndex
-    // R2: step → 自定义文本（answers[step] = -1 哨兵时生效，Q2-Q5 专用）
-    val customTexts = remember { mutableStateMapOf<Int, String> }
+    // v4.2: 统一答案对象（Set<Int> + customText），废除 -1 哨兵
+    val answers = remember {
+        mutableStateMapOf<Int, com.lovebrain.app.domain.OnboardingAnswer>
+    }
     var myName by remember { mutableStateOf("") }
     var herName by remember { mutableStateOf("") }
     var generating by remember { mutableStateOf(false) }
+    // 补充说明展开状态
+    var showCustomInput by remember { mutableStateOf(false) }
+    // 多选上限提示
+    var maxSelectionToast by remember { mutableStateOf(false) }
 
     val totalSteps = 5
+    val singleColumn = com.lovebrain.app.ui.onboarding.shouldUseSingleColumn
 
     ScreenPage(
         title = "新建知识库",
         onBack = {
-            // 向导返回：step>1 回退一步，step=1 关闭页面
             if (generating) {
                 onCancelGenerating
             } else if (currentStep > 1) {
                 currentStep--
+                showCustomInput = false
             } else {
                 onDismiss
             }
         },
         trailing = {
-            TextButton(onClick = onSkip) {
-                Text("建空档案", color = TextSecondary, style = AppTypography.labelLarge)
+            TextButton(
+                onClick = onSkip,
+                enabled = !generating
+            ) {
+                Text(
+                    "建空档案",
+                    color = if (generating) TextHint else TextSecondary,
+                    style = AppTypography.labelLarge
+                )
             }
         }
     ) {
-        // 进度条：Step X/5
+        // ── 进度条 ──
         val progressStep = if (currentStep <= totalSteps) currentStep else totalSteps
-        Text("第 $progressStep 步（共 $totalSteps 步）", style = AppTypography.labelSmall, color = TextHint)
+        Text(
+            "第 $progressStep 步 · 共 $totalSteps 步",
+            style = AppTypography.labelSmall,
+            color = TextHint
+        )
         Spacer(modifier = Modifier.height(Spacing.xs))
         Box(
             modifier = Modifier
@@ -757,26 +860,26 @@ private fun OnboardingScreen(
         }
         Spacer(modifier = Modifier.height(Spacing.lg))
 
-        // 内容区
+        // ── 内容区 ──
         Column(
             modifier = Modifier.weight(1f).verticalScroll(rememberScrollState),
-            verticalArrangement = Arrangement.spacedBy(Spacing.xxl)
+            verticalArrangement = Arrangement.spacedBy(Spacing.lg)
         ) {
             if (currentStep <= totalSteps) {
-                // 取当前题
                 val question = if (currentStep == 1) {
                     com.lovebrain.app.domain.OnboardingBank.q1
                 } else {
                     com.lovebrain.app.domain.OnboardingBank.question(currentStep, branch)
                 }
 
-                // Step5 红线检测
+                // 红线检测
                 val redline = com.lovebrain.app.domain.OnboardingStateMachine
                     .isRedlineTriggered(answers, branch)
                 val hiddenIndices = if (redline && currentStep == 5) {
                     com.lovebrain.app.domain.OnboardingStateMachine.hiddenOptionIndices(true)
                 } else emptySet
 
+                // 红线提示
                 if (redline && currentStep == 5) {
                     Text(
                         "军师检测到你目前的情况更适合止损和自我调整，暂时不提供挽回建议。",
@@ -786,97 +889,146 @@ private fun OnboardingScreen(
                     Spacer(modifier = Modifier.height(Spacing.sm))
                 }
 
-                // 题干
+                // ── 题目标题（最强层级）──
                 Text(
                     question.title,
-                    style = AppTypography.titleMedium,
+                    style = AppTypography.titleLarge,
                     fontWeight = FontWeight.SemiBold,
                     color = TextPrimary
                 )
-                Spacer(modifier = Modifier.height(Spacing.md))
 
-                // 选项（2列布局，红线隐藏的选项不渲染）
-                question.options.filterIndexed { i, _ -> i !in hiddenIndices }.chunked(2).forEach { pair ->
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(Spacing.md),
-                        modifier = Modifier.fillMaxWidth
-                    ) {
-                        pair.forEach { opt ->
-                            val originalIndex = question.options.indexOf(opt)
-                            OnboardingOption(
-                                text = opt.text,
-                                selected = answers[currentStep] == originalIndex,
-                                enabled = !generating,
-                                onClick = {
-                                    // Q1-② 修正：先算旧红线状态再写入新值
-                                    val wasRedline = com.lovebrain.app.domain.OnboardingStateMachine
-                                        .isRedlineTriggered(answers, branch)
-                                    answers[currentStep] = originalIndex
-                                    // R2: 选固定选项 → 清掉本步残留的自定义文本
-                                    customTexts.remove(currentStep)
+                // ── 规则说明（次弱层级）──
+                val currentAnswer = answers[currentStep]
+                    ?: com.lovebrain.app.domain.OnboardingAnswer
+                if (question.selectionMode == com.lovebrain.app.domain.SelectionMode.MULTIPLE) {
+                    val max = question.maxSelections ?: 2
+                    val selectedCount = currentAnswer.selectedIndices.size
+                    val hintText = if (selectedCount == 0) {
+                        "可多选，最多 $max 项"
+                    } else {
+                        "已选 $selectedCount/$max"
+                    }
+                    Text(
+                        hintText,
+                        style = AppTypography.labelMedium,
+                        color = if (selectedCount >= max) PrimaryDark else TextHint
+                    )
+                }
+                Spacer(modifier = Modifier.height(Spacing.sm))
 
-                                    if (currentStep == 1) {
-                                        // Q1 改了 → branch 变 → 清空后续
-                                        branch = com.lovebrain.app.domain.OnboardingStateMachine
-                                            .branchFromQ1(originalIndex)
-                                        answers.keys.filter { it >= 2 }.forEach { answers.remove(it) }
-                                        customTexts.keys.filter { it >= 2 }.forEach { customTexts.remove(it) }
-                                    }
+                // ── 选项区 ──
+                val visibleOptions = question.options.mapIndexed { idx, opt -> idx to opt }
+                    .filter { (idx, _) -> idx !in hiddenIndices }
 
-                                    val nowRedline = com.lovebrain.app.domain.OnboardingStateMachine
-                                        .isRedlineTriggered(answers, branch)
-                                    if (!wasRedline && nowRedline && answers.containsKey(5)) {
-                                        answers.remove(5)
-                                        customTexts.remove(5)
-                                        if (currentStep > 5) currentStep = 5
-                                    }
-
-                                    if (currentStep < totalSteps) currentStep++
-                                    else if (currentStep == totalSteps) currentStep = totalSteps + 1
-                                },
-                                modifier = Modifier.weight(1f)
-                            )
+                if (singleColumn) {
+                    // 大字体 / 窄屏：单列
+                    visibleOptions.forEach { (idx, opt) ->
+                        com.lovebrain.app.ui.onboarding.OnboardingOptionCard(
+                            text = opt.text,
+                            selected = idx in currentAnswer.selectedIndices,
+                            selectionMode = question.selectionMode,
+                            enabled = !generating,
+                            onClick = {
+                                maxSelectionToast = false
+                                handleOptionClick(
+                                    question = question,
+                                    index = idx,
+                                    currentStep = currentStep,
+                                    answers = answers,
+                                    branch = branch,
+                                    onBranchChange = { branch = it },
+                                    onMaxReached = { maxSelectionToast = true },
+                                    generating = generating
+                                )
+                            },
+                            modifier = Modifier.fillMaxWidth,
+                            useSingleColumn = true
+                        )
+                        Spacer(modifier = Modifier.height(Spacing.md))
+                    }
+                } else {
+                    // 标准：双列 chunked(2)
+                    visibleOptions.chunked(2).forEach { pair ->
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(Spacing.lg),
+                            modifier = Modifier.fillMaxWidth
+                        ) {
+                            pair.forEach { (idx, opt) ->
+                                com.lovebrain.app.ui.onboarding.OnboardingOptionCard(
+                                    text = opt.text,
+                                    selected = idx in currentAnswer.selectedIndices,
+                                    selectionMode = question.selectionMode,
+                                    enabled = !generating,
+                                    onClick = {
+                                        maxSelectionToast = false
+                                        handleOptionClick(
+                                            question = question,
+                                            index = idx,
+                                            currentStep = currentStep,
+                                            answers = answers,
+                                            branch = branch,
+                                            onBranchChange = { branch = it },
+                                            onMaxReached = { maxSelectionToast = true },
+                                            generating = generating
+                                        )
+                                    },
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                            if (pair.size == 1) Spacer(modifier = Modifier.weight(1f))
                         }
-                        if (pair.size == 1) Spacer(modifier = Modifier.weight(1f))
                     }
                 }
 
-                // R2: 自定义输入入口（仅 Q2-Q5；Q1 是分支题不加）。Q5 红线态也保留，
-                // 作为被隐藏 A/B 选项之外的逃生门；选它不自动推进，输入完点「完成」走
+                // ── 补充说明入口（仅 Q2-Q5）──
                 if (currentStep in 2..totalSteps) {
                     Spacer(modifier = Modifier.height(Spacing.sm))
-                    val isCustom = answers[currentStep] == -1
-                    OnboardingOption(
-                        text = "以上都不太对，我自己说 →",
-                        selected = isCustom,
-                        enabled = !generating,
-                        onClick = { answers[currentStep] = -1 },
-                        modifier = Modifier.fillMaxWidth
-                    )
-                    if (isCustom) {
-                        Spacer(modifier = Modifier.height(Spacing.md))
-                        CompactInput(
-                            value = customTexts[currentStep] ?: "",
-                            onValueChange = { customTexts[currentStep] = it.take(100) },
-                            placeholder = "简单说说，100 字以内",
-                            trailingAction = {
-                                val canSubmit =
-                                    (customTexts[currentStep] ?: "").isNotBlank && !generating
-                                Text(
-                                    "完成",
-                                    style = AppTypography.titleMedium,
-                                    color = if (canSubmit) Primary else TextHint,
-                                    modifier = Modifier.clickable(enabled = canSubmit) {
-                                        // 先 trim 落库再推进，与固定选项的自动推进语义对齐
-                                        customTexts[currentStep] =
-                                            (customTexts[currentStep] ?: "").trim
-                                        if (currentStep < totalSteps) currentStep++
-                                        else if (currentStep == totalSteps) currentStep = totalSteps + 1
-                                    }
-                                )
-                            }
+                    // 弱一级入口：点击展开/收起
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource },
+                                indication = null,
+                                onClick = { showCustomInput = !showCustomInput }
+                            )
+                            .padding(vertical = Spacing.xs)
+                    ) {
+                        Text(
+                            if (showCustomInput) "− 收起补充" else "＋ 补充其他情况",
+                            style = AppTypography.bodySmall,
+                            color = Primary,
+                            fontWeight = FontWeight.Medium
                         )
                     }
+                    // 展开后的输入框
+                    if (showCustomInput) {
+                        Spacer(modifier = Modifier.height(Spacing.sm))
+                        val existingCustom = answers[currentStep]?.customText ?: ""
+                        var customText by remember(currentStep, existingCustom) {
+                            mutableStateOf(existingCustom)
+                        }
+                        CompactInput(
+                            value = customText,
+                            onValueChange = {
+                                customText = it.take(100)
+                                val cur = answers[currentStep]
+                                    ?: com.lovebrain.app.domain.OnboardingAnswer
+                                answers[currentStep] = cur.copy(customText = customText)
+                            },
+                            placeholder = "简单说说你的情况，100 字以内"
+                        )
+                    }
+                }
+
+                // 多选上限提示
+                if (maxSelectionToast) {
+                    Spacer(modifier = Modifier.height(Spacing.xs))
+                    Text(
+                        "最多选择 ${question.maxSelections ?: 2} 项",
+                        style = AppTypography.labelSmall,
+                        color = Error
+                    )
                 }
             } else {
                 // Step6：称呼输入（选填）
@@ -896,9 +1048,8 @@ private fun OnboardingScreen(
             }
         }
 
-        // 底部按钮
+        // ── 底部按钮 ──
         if (generating) {
-            // 生成中：取消按钮
             Button(
                 onClick = { onCancelGenerating },
                 enabled = true,
@@ -922,7 +1073,7 @@ private fun OnboardingScreen(
                 onClick = {
                     generating = true
                     val schema = com.lovebrain.app.domain.OnboardingSchemaBuilder.build(
-                        answers.toMap, myName.trim, herName.trim, customTexts.toMap
+                        answers.toMap, myName.trim, herName.trim
                     )
                     onComplete(schema, myName.trim, herName.trim)
                 },
@@ -933,59 +1084,107 @@ private fun OnboardingScreen(
             ) {
                 Text("完成，AI 生成画像", style = AppTypography.titleMedium)
             }
+        } else {
+            // 答题阶段：下一步按钮（不自动跳页）
+            val question = if (currentStep == 1) {
+                com.lovebrain.app.domain.OnboardingBank.q1
+            } else {
+                com.lovebrain.app.domain.OnboardingBank.question(currentStep, branch)
+            }
+            val currentAnswer = answers[currentStep]
+                ?: com.lovebrain.app.domain.OnboardingAnswer
+            val canProceed = currentAnswer.isAnswered(question)
+
+            Button(
+                onClick = {
+                    if (currentStep < totalSteps) {
+                        currentStep++
+                        showCustomInput = false
+                        maxSelectionToast = false
+                    } else {
+                        currentStep = totalSteps + 1
+                        showCustomInput = false
+                    }
+                },
+                enabled = canProceed,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (canProceed) Primary else SurfaceInset
+                ),
+                shape = LoveBrainShape.md,
+                modifier = Modifier.fillMaxWidth.height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
+            ) {
+                Text(
+                    "下一步",
+                    style = AppTypography.titleMedium,
+                    color = if (canProceed) androidx.compose.ui.graphics.Color.White else TextHint
+                )
+            }
         }
     }
 }
 
-/** 问卷选项：选中态 PrimaryLight+描边，按压缩放 0.97，可禁用 */
-@Composable
-private fun OnboardingOption(
-    text: String,
-    selected: Boolean,
-    enabled: Boolean,
-    onClick:  -> Unit,
-    modifier: Modifier = Modifier
+/**
+ * 处理选项点击：toggle 选中状态、Q1 改选清理后续、红线变化清理 Q5 隐藏项。
+ */
+private fun handleOptionClick(
+    question: com.lovebrain.app.domain.OnboardingQuestion,
+    index: Int,
+    currentStep: Int,
+    answers: androidx.compose.runtime.snapshots.SnapshotStateMap<Int, com.lovebrain.app.domain.OnboardingAnswer>,
+    branch: String,
+    onBranchChange: (String) -> Unit,
+    onMaxReached:  -> Unit,
+    generating: Boolean
 ) {
-    val interaction = remember { MutableInteractionSource }
-    val pressed by interaction.collectIsPressedAsState
-    val scale by animateFloatAsState(
-        if (pressed && enabled) 0.97f else 1f,
-        label = "obOptionScale"
-    )
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            // 统一 chip 语言（主人选型）：选中 = Primary 蓝底白字；未选 = SurfaceInset 灰底 + 细描边——
-            // 与全 App 的分段器/文件 chip 同族，废除旧的"浅底+描边"双写样式
-            .background(
-                if (selected) Primary else SurfaceInset,
-                LoveBrainShape.md
-            )
-            .border(
-                if (selected) 0.dp else AppDimens.BORDER_WIDTH_DP.dp,
-                if (selected) Color.Transparent else Border,
-                LoveBrainShape.md
-            )
-            .semantics { this.selected = selected }
-            .then(
-                if (enabled) Modifier.clickable(
-                    interactionSource = interaction,
-                    indication = null,
-                    onClick = onClick
-                ) else Modifier
-            )
-            .padding(horizontal = Spacing.md, vertical = Spacing.md)
-    ) {
-        Text(
-            text,
-            style = AppTypography.bodyMedium,
-            color = when {
-                !enabled -> TextHint
-                selected -> Color.White
-                else -> TextPrimary
-            },
-            fontWeight = if (selected) FontWeight.Medium else FontWeight.Normal
+    if (generating) return
+
+    val currentAnswer = answers[currentStep]
+        ?: com.lovebrain.app.domain.OnboardingAnswer
+
+        // 记录红线变化前状态
+    val wasRedline = com.lovebrain.app.domain.OnboardingStateMachine
+        .isRedlineTriggered(answers, branch)
+
+    // Q1 改选 → 分支变化 → 清空后续
+    if (currentStep == 1) {
+        val newBranch = com.lovebrain.app.domain.OnboardingStateMachine
+            .branchFromQ1(index)
+        if (newBranch != branch) {
+            onBranchChange(newBranch)
+            com.lovebrain.app.domain.OnboardingStateMachine.clearDownstreamAnswers(answers)
+        }
+        // Q1 是 SINGLE，直接设为唯一选择
+        answers[currentStep] = com.lovebrain.app.domain.OnboardingAnswer(
+            selectedIndices = setOf(index),
+            customText = currentAnswer.customText
+        )
+    } else {
+        // Q2-Q5: 走 toggle 逻辑
+        val newAnswer = com.lovebrain.app.domain.OnboardingStateMachine
+            .toggleOption(question, currentAnswer, index)
+        // 只有 MULTIPLE 且集合完全没变且点的是新项 → 才是因上限被拒
+        if (
+            question.selectionMode == com.lovebrain.app.domain.SelectionMode.MULTIPLE &&
+            newAnswer.selectedIndices == currentAnswer.selectedIndices &&
+            index !in currentAnswer.selectedIndices
+        ) {
+            onMaxReached
+        } else {
+            // 清除上限提示
+        }
+        // 保留 customText
+        answers[currentStep] = newAnswer.copy(customText = currentAnswer.customText)
+    }
+
+    // 红线变化检测
+    val nowRedline = com.lovebrain.app.domain.OnboardingStateMachine
+        .isRedlineTriggered(answers, branch)
+    if (!wasRedline && nowRedline) {
+        // 新触发红线 → 清理 Q5 中的隐藏项
+        val hiddenIndices = com.lovebrain.app.domain.OnboardingStateMachine
+            .hiddenOptionIndices(true)
+        com.lovebrain.app.domain.OnboardingStateMachine.cleanHiddenFromQ5(
+            answers, hiddenIndices
         )
     }
 }

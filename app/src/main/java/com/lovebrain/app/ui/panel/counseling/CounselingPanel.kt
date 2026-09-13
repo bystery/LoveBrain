@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.stateDescription
@@ -61,7 +62,12 @@ private object CounselingDimens {
 fun CounselingPanel(
     viewModel: LoveBrainViewModel,
     onFocusChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    onInputIntent: ( -> Unit)? = null,
+    modifier: Modifier = Modifier,
+    // LB-LIFE-01：追问输入框独立焦点回调与输入意图
+    onFollowUpFocusChange: ((Boolean) -> Unit)? = null,
+    onFollowUpInputIntent: ( -> Unit)? = null,
+    inputId: String = "counseling_main"
 ) {
     val draft by viewModel.counselingDraft.collectAsStateWithLifecycle
     val result by viewModel.counselingResult.collectAsStateWithLifecycle
@@ -80,6 +86,18 @@ fun CounselingPanel(
                 .clip(LoveBrainShape.lg)
                 .background(SurfaceCard)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
+                // 编辑意图：用户触碰输入框区域 → 通知 FloatingService 进入 EDITING
+                // 使用 pointerInput 检测 Press 事件但不消费，让 BasicTextField 仍能收到点击获焦
+                .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            val event = awaitPointerEvent
+                            if (event.changes.any { it.pressed }) {
+                                onInputIntent
+                            }
+                        }
+                    }
+                } else Modifier)
                 .padding(Spacing.lg)
         ) {
             BasicTextField(
@@ -391,6 +409,18 @@ fun CounselingPanel(
                                         .clip(LoveBrainShape.md)
                                         .background(SurfaceInset)
                                         .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
+                                        // 编辑意图：追问输入框同样需要进入 EDITING
+                                        // 使用 pointerInput 检测 Press 事件但不消费
+                                        .then(if (onFollowUpInputIntent != null) Modifier.pointerInput(Unit) {
+                                            awaitPointerEventScope {
+                                                while (true) {
+                                                    val event = awaitPointerEvent
+                                                    if (event.changes.any { it.pressed }) {
+                                                        onFollowUpInputIntent
+                                                    }
+                                                }
+                                            }
+                                        } else Modifier)
                                         .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                                 ) {
                                     if (followUpText.isEmpty) {
@@ -407,7 +437,15 @@ fun CounselingPanel(
                                         maxLines = 3,
                                         textStyle = AppTypography.bodySmall.copy(color = TextPrimary),
                                         cursorBrush = SolidColor(Primary),
-                                        modifier = Modifier.fillMaxWidth
+                                        modifier = Modifier
+                                            .fillMaxWidth
+                                            .then(
+                                                if (onFollowUpFocusChange != null) {
+                                                    Modifier.onFocusChanged { state ->
+                                                        onFollowUpFocusChange(state.isFocused)
+                                                    }
+                                                } else Modifier
+                                            )
                                     )
                                 }
                                 Spacer(Modifier.width(Spacing.sm))

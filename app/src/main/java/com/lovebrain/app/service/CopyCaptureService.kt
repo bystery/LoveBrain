@@ -23,8 +23,12 @@ import java.io.File
 class CopyCaptureService : AccessibilityService {
 
     companion object {
+        /** 当前隐私披露版本。递增此值可强制用户重新确认。 */
+        const val CURRENT_DISCLOSURE_VERSION = 1
+
         @Volatile
         var instance: CopyCaptureService? = null
+            private set
 
         @Volatile
         var isRunning: Boolean = false
@@ -33,6 +37,11 @@ class CopyCaptureService : AccessibilityService {
         private const val DIAG_FILE = "capture_diag.log"
         /** 诊断文件大小上限 */
         private const val DIAG_MAX_BYTES = 200 * 1024L
+
+        /** CAP-04：关闭捕获时主动废弃 pending，无需等下一条 AccessibilityEvent */
+        fun discardPendingCapture {
+            instance?.clearPending("capture_toggle_off")
+        }
     }
 
     private var pendingContent: String? = null
@@ -40,11 +49,25 @@ class CopyCaptureService : AccessibilityService {
     /** H1 包名锁定：pending 来自哪个 App，窗口事件须同包名才消费（防跨 App 幽灵捕获） */
     private var pendingPkg: String? = null
 
+    /** CAP-02：统一清理 pending 捕获事务，避免多路径手写三字段清理遗漏 */
+    internal fun clearPending(reason: String) {
+        val hadPending = pendingContent != null
+
+        pendingContent = null
+        pendingTime = 0L
+        pendingPkg = null
+
+        if (hadPending) {
+            appendDiag("PENDING_CLEAR|reason=$reason")
+        }
+    }
+
     /** SecurePrefs 实例（用于读取 captureEnabled 开关） */
     private var securePrefs: SecurePrefs? = null
 
     override fun onServiceConnected {
         super.onServiceConnected
+        clearPending("service_connected_reset")
         instance = this
         isRunning = true
         securePrefs = SecurePrefs(this)
@@ -54,8 +77,7 @@ class CopyCaptureService : AccessibilityService {
     }
 
     override fun onDestroy {
-        // 终版：只清理静态状态，不干预无障碍 enabled 状态。
-        // （用户实测"不锁定卡片"时系统正常回收，无需任何附加机制）
+        clearPending("service_destroy")
         instance = null
         isRunning = false
         super.onDestroy
@@ -137,12 +159,21 @@ class CopyCaptureService : AccessibilityService {
         //  问题 4②：消息捕获总开关前置检查 —— 每次事件读取最新值
         val capEnabled = securePrefs?.captureEnabled ?: true
         if (!capEnabled) {
+            clearPending("capture_disabled")
             val typeTag = when (type) {
                 AccessibilityEvent.TYPE_VIEW_LONG_CLICKED -> "LONGCLICK"
                 AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> "WINDOW"
                 else -> "TYPE$type"
             }
             appendDiag("SWITCH_OFF|type=$typeTag")
+            return
+        }
+
+        // 无 consent 时不读取节点文字——旧版本用户已开启无障碍但未确认新披露时也拦截
+        val consentVersion = securePrefs?.accessibilityDisclosureVersion ?: 0
+        if (consentVersion < CURRENT_DISCLOSURE_VERSION) {
+            clearPending("disclosure_not_confirmed")
+            appendDiag("CONSENT_PENDING|version=$consentVersion")
             return
         }
 
@@ -200,9 +231,7 @@ class CopyCaptureService : AccessibilityService {
                     appendDiag("LONGCLICK_ARRIVE|len=${content.length}")
                 } else {
                     //  修复：提取失败时必须清空 pending，否则旧值残留到下次捕获造成 off-by-one
-                    pendingContent = null
-                    pendingTime = 0L
-                    pendingPkg = null
+                    clearPending("longclick_no_text")
                     appendDiag("LONGCLICK_ARRIVE|len=0|noTextFound|pendingCleared")
                 }
             }
@@ -229,21 +258,18 @@ class CopyCaptureService : AccessibilityService {
                             // 悬浮服务没在跑：不再暂存补录（旧话自己冒出来的源头），直接丢弃并在 diag 里交代
                             L.w("FloatingService not running, capture dropped (len=${pending.length})")
                             appendDiag("CAPTURE_OK|serviceDown|dropped")
+                            clearPending("capture_finished")
                         } else {
-                            EventBus.emitCapturedMessage(pending)
-                            appendDiag("CAPTURE_EVENTBUS|len=${pending.length}")
+                            val accepted = EventBus.emitCapturedMessage(pending)
+                            appendDiag("CAPTURE_EVENTBUS|accepted=$accepted|len=${pending.length}")
+                            clearPending("capture_finished")
                         }
-                        pendingContent = null
-                        pendingTime = 0L
-                        pendingPkg = null
                     } else if (!pkgOk) {
                         // H1：跨 App 的复制菜单不是这次长按的确认——不消费，保留 pending 等原 App 的菜单
                         appendDiag("WINDOW_ARRIVE|CROSS_PKG_SKIP|pendingPkg=$pendingPkg|pkg=$pkg")
                     } else {
                         // H2 过期：这次长按的机会已结束，清掉脏 pending，防止残留到下次捕获造成 off-by-one
-                        pendingContent = null
-                        pendingTime = 0L
-                        pendingPkg = null
+                        clearPending("expired")
                         appendDiag("WINDOW_ARRIVE|PENDING_EXPIRED|age=${sinceLongClick}ms|pendingCleared")
                     }
                 }
@@ -255,10 +281,12 @@ class CopyCaptureService : AccessibilityService {
     }
 
     override fun onInterrupt {
+        clearPending("service_interrupted")
         L.w("CopyCaptureService interrupted")
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
+        clearPending("service_unbind")
         isRunning = false
         instance = null
         L.w("CopyCaptureService unbound")

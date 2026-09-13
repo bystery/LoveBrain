@@ -1,13 +1,12 @@
 # Release 自动构建工作流
-# 触发：推送 v* 格式 tag（如 v0.1.0、v1.1.0）
-# 产物：assembleRelease APK 自动上传到对应 GitHub Release，并自动生成 Release Notes
+# 触发：推送 v* 格式 tag（如 v1.3.0）
+# 产物：正式签名 assembleRelease APK 自动上传到对应 GitHub Release，并自动生成 Release Notes
 #
-# ⚠️ 签名说明：app/build.gradle.kts 中 release 构建目前沿用 debug 签名（保守默认，
-#    产出可直接安装的 APK）。后续替换正式签名的位置有两处：
-#    1. 本文件 "TODO 正式签名" 标记处 —— 在 CI 中注入 keystore（建议用 repo secrets：
-#       KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS / KEY_PASSWORD，解码后写入
-#       keystore.properties，build.gradle.kts 读取并替换 signingConfig）
-#    2. app/build.gradle.kts 的 release signingConfig —— 改为读取 keystore.properties
+# 签名说明：
+#   CI 通过 GitHub Secrets 注入 keystore（KEYSTORE_BASE64 / KEYSTORE_PASSWORD /
+#   KEY_ALIAS / KEY_PASSWORD），解码后写入 keystore.properties，build.gradle.kts 读取并签名。
+#   缺少任一 secret 时 workflow 直接失败，绝不 fallback 到 debug 签名。
+#   本地没有 keystore.properties 时 build.gradle.kts 产出 unsigned release APK（仅供 R8/CI 验证）。
 
 name: Release
 
@@ -18,9 +17,6 @@ on:
 
 jobs:
   build:
-    # 临时禁用自动发版：release 仍用 debug 签名，禁止把 debug-signed APK 公开发布到 Releases。
-    # 待替换正式 keystore（见下方"TODO 正式签名"）后，移除此行即可恢复。
-    if: false
     runs-on: ubuntu-latest
     permissions:
       contents: write   # 允许创建 Release 和上传产物
@@ -37,14 +33,48 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      - name: Verify release signing secrets
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          test -n "$KEYSTORE_BASE64" || { echo "Missing KEYSTORE_BASE64"; exit 1; }
+          test -n "$KEYSTORE_PASSWORD" || { echo "Missing KEYSTORE_PASSWORD"; exit 1; }
+          test -n "$KEY_ALIAS" || { echo "Missing KEY_ALIAS"; exit 1; }
+          test -n "$KEY_PASSWORD" || { echo "Missing KEY_PASSWORD"; exit 1; }
+
+      - name: Prepare release keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          mkdir -p keystore
+          echo "$KEYSTORE_BASE64" | base64 --decode > keystore/release.jks
+          cat > keystore.properties <<EOF
+          storeFile=../keystore/release.jks
+          storePassword=$KEYSTORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          keyPassword=$KEY_PASSWORD
+          EOF
+
       - name: Run unit tests
-        run: chmod +x gradlew && ./gradlew testReleaseUnitTest
+        run: chmod +x gradlew && ./gradlew :app:testDebugUnitTest
 
       - name: Build release APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew :app:assembleRelease
 
-      # TODO 正式签名：替换 debug 签名后，在此步骤前插入 keystore 解码与签名校验
-      #（可用 r0adkll/sign-android-release 或 apksigner verify）
+      - name: Verify APK signature
+        run: |
+          APKSIGNER="$(find "$ANDROID_HOME/build-tools" \
+            -type f -name apksigner | sort -V | tail -1)"
+          "$APKSIGNER" verify \
+            --verbose \
+            --print-certs \
+            app/build/outputs/apk/release/app-release.apk
 
       - name: Rename APK with version
         id: ver

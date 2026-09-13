@@ -2,6 +2,7 @@ package com.lovebrain.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lovebrain.app.data.CostScope
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
@@ -18,6 +19,7 @@ import com.lovebrain.app.model.ProactiveOption
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.StageSuggestion
 import com.lovebrain.app.model.SuggestTip
 import com.lovebrain.app.util.Jsons
@@ -77,6 +79,18 @@ class LoveBrainViewModel(
     private var counselingJob: kotlinx.coroutines.Job? = null
     private var suggestJob: kotlinx.coroutines.Job? = null
 
+    // ═══════════ 本轮生成上下文（不可变快照） ═══════════
+    /**
+     * 一轮 AI 生成 = 固定消息快照 + 固定知识库 + 固定 AI 回复 + 固定用户反馈。
+     * 生成开始时建立，保存成功后才清除。停止生成时也清除（本轮无成功结果）。
+     */
+    private data class ReplyGenerationContext(
+        val messages: List<ChatMessage>,
+        val messageIds: Set<String>,
+        val kbName: String?
+    )
+    private var replyGenerationContext: ReplyGenerationContext? = null
+
     private val _streamingCoreText = MutableStateFlow("")
     val streamingCoreText: StateFlow<String> = _streamingCoreText.asStateFlow
 
@@ -87,9 +101,9 @@ class LoveBrainViewModel(
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow
 
-    private val _profileSuggestion = MutableStateFlow<String?>(null)
-    val profileSuggestion: StateFlow<String?> = _profileSuggestion.asStateFlow
-    private var profileRawJson: String? = null
+    //  ProfileSuggestion 作为单一事实源，携带 originating kbName
+    private val _profileSuggestion = MutableStateFlow<ProfileSuggestion?>(null)
+    val profileSuggestion: StateFlow<ProfileSuggestion?> = _profileSuggestion.asStateFlow
 
     /** 知识库后台操作的临时提示（如经验提取完成），在悬浮窗内短暂展示 */
     private val _kbNotice = MutableStateFlow<String?>(null)
@@ -275,10 +289,11 @@ class LoveBrainViewModel(
                 deepSeekRepo.costEvents.collect { ev ->
                     val today = java.time.LocalDate.now.toString
                     if (today != todayCostDate) { todayCostDate = today; _todayCostYuan.value = 0.0 }
+                    // 今日累计包含全部可计费 AI 请求（前台 + 后台）
                     _todayCostYuan.value += ev.yuan
                     securePrefs.saveTodayCost(today, _todayCostYuan.value)
-                    // 后台引擎/建库的用量只计入今日累计，不刷新"本次"（仅面板四流程内刷新）
-                    if (_isGenerating.value || _isCounseling.value || _isSuggesting.value || _isProactive.value) {
+                    // 本次费用只显示前台流式请求（FOREGROUND），不被后台 raw 污染
+                    if (ev.scope == CostScope.FOREGROUND) {
                         _lastCostYuan.value = ev.yuan
                     }
                 }
@@ -408,10 +423,45 @@ class LoveBrainViewModel(
 
     // ═══════════ 流式生成（委托 GenerationEngine） ═══════════
 
+    /**
+     * 同步 guard — 正在生成时拒绝启动，绝不覆盖当前 Job 引用。
+     * 启动前冻结消息快照 + KB，建立 ReplyGenerationContext。
+     * GEN-02B：冻结完整 KnowledgeBase 对象传入 Engine，AI prompt 与 nextRound 保存同源。
+     * Engine reject → null → 旧 Job 保持 + context 不保存。
+     */
     fun generate {
-        generateJob = generationEngine.generate(viewModelScope, this)
+        // 双层保护第一层：ViewModel guard
+        if (_isGenerating.value) return
+
+        // 冻结快照 — 所有本轮上下文同源
+        val snapshot = _messages.value.map { it.copy }
+        val userHint = collectIdeaHint(snapshot)
+        // GEN-02B：冻结 KB 快照 — AI prompt 和 nextRound 保存使用同一对象
+        val kbSnapshot = _activeKb.value
+        val kbName = kbSnapshot?.name
+
+        // 双层保护第二层：Engine 返回 null = reject，不覆盖旧 Job
+        val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this)
+        if (job != null) {
+            generateJob = job
+            // context 必须和实际启动成功的 Job 绑定
+            replyGenerationContext = ReplyGenerationContext(
+                messages = snapshot,
+                messageIds = snapshot.mapTo(mutableSetOf) { it.id },
+                kbName = kbName
+            )
+            // 正常结束后清 Job 引用（identity guard 防止清掉后来的新 Job）
+            job.invokeOnCompletion {
+                if (generateJob === job) {
+                    generateJob = null
+                }
+            }
+        }
     }
 
+    /**
+     * 停止生成 — 取消真正运行的 Job，清 context，但不清消息。
+     */
     fun stopGeneration {
         if (!_isGenerating.value) return
         L.w("user stopped generation")
@@ -420,7 +470,10 @@ class LoveBrainViewModel(
         _isGenerating.value = false
         _isGeneratingCore.value = false
         _streamingCoreText.value = ""
+        _streamingSchemes.value = emptyList
         _panelState.value = PanelState.KEYBOARD
+        // 停止生成时清 context（本轮无成功结果），但消息本身不删
+        replyGenerationContext = null
         if (_result.value == null) {
             _result.value = GenerateResult.Error("已手动停止生成")
         }
@@ -438,12 +491,21 @@ class LoveBrainViewModel(
 
     private var recordingRound = false
 
+    /**
+     * 提交顺序改为「先写盘成功 → 再提交 UI」。
+     * 写盘失败时保留所有本轮数据（消息/结果/反馈/context），用户可重试。
+     * 保存时使用 replyGenerationContext 中的快照消息和 KB 名，不用实时 _messages/_activeKb。
+     */
     fun nextRound {
         val response = (_result.value as? GenerateResult.Success)?.response ?: return
         if (recordingRound) return
+
+        // 使用生成时绑定的 context，不用实时状态
+        val context = replyGenerationContext ?: return
+
         recordingRound = true
-        val msgs = _messages.value
-        val kb = _activeKb.value
+
+        val kbName = context.kbName
 
         val likedSchemes = response.schemes
             .filter { _feedbacks.value[it.tag] == SchemeFeedback.LIKED }
@@ -458,43 +520,94 @@ class LoveBrainViewModel(
             else -> response.schemes.firstOrNull { it.tag == "A" } ?: response.schemes.firstOrNull
         }
 
-        _messages.value = emptyList
+        // 无 KB 时保持当前产品语义（可结束但提示未记入）
+        if (kbName == null) {
+            commitReplyRound(context.messageIds)
+            showPanelWarning("未激活知识库，本轮对话未记入")
+            replyGenerationContext = null
+            recordingRound = false
+            return
+        }
+
+        if (selectedScheme == null) {
+            recordingRound = false
+            return
+        }
+
+        // 先写盘，成功后才提交 UI
+        val analysis = response.analysis
+        val feedbackSnapshot = _feedbacks.value.toMap
+        val messagesSnapshot = context.messages
+        val consumedIds = context.messageIds
+
+        viewModelScope.launch {
+            try {
+                // 按 context.kbName 查找 KB（生成时的 KB，非当前激活 KB）
+                val kb = withContext(Dispatchers.IO) {
+                    knowledgeRepo.listAll.firstOrNull { it.name == kbName }
+                }
+                if (kb == null) {
+                    // 生成时的 KB 后来被删除 → 保存失败，本轮保持
+                    showPanelWarning("本轮保存失败：知识库已被删除，内容已保留，请重试")
+                    return@launch
+                }
+
+                val t7Start = System.currentTimeMillis
+                withContext(Dispatchers.IO) {
+                    val topicRotated = topicRecorder.record(
+                        kb, messagesSnapshot, selectedScheme, analysis.topic_status, analysis.topic_label,
+                        // （-⑨ 主控裁定）：userHint 实参传 ""——记录段已含《想法》行（msgs 经 role.label 渲染），
+                        // 不再重复写"我的想法"段；domain 形参零触碰
+                        analysis.scene_facts, "", analysis.ongoing
+                    )
+                    if (topicRotated) {
+                        triggerCoordinator.checkTriggers(kb.name, viewModelScope, this@LoveBrainViewModel)
+                    }
+                }
+                L.w("PERF t7 kb write done (${System.currentTimeMillis - t7Start}ms)")
+
+                // 写盘成功 → 才提交 UI 状态
+                commitReplyRound(consumedIds)
+                replyGenerationContext = null
+                refreshKnowledgeBases
+            } catch (t: Throwable) {
+                L.e("nextRound record failed", t)
+                // 写盘失败 → 不清 messages/result/feedback/context，用户可重试
+                showPanelWarning("本轮保存失败，内容已保留，请重试")
+            } finally {
+                recordingRound = false
+            }
+        }
+    }
+
+    /**
+     * 提交本轮 UI 状态 — 只删除本轮 snapshot 对应的消息（按 ID），不盲目清空全部。
+     * 同时修正 editingIndex/draftText 防止指向已删除的位置。
+     */
+    private fun commitReplyRound(consumedMessageIds: Set<String>) {
+        val oldList = _messages.value
+        val newList = oldList.filterNot { it.id in consumedMessageIds }
+
+        // 修正 editingIndex：如果编辑中的消息属于 consumedIds，清编辑态
+        val editing = _editingIndex.value
+        if (editing >= 0 && editing < oldList.size) {
+            val editingMsg = oldList[editing]
+            if (editingMsg.id in consumedMessageIds) {
+                _editingIndex.value = -1
+                _draftText.value = ""
+            } else {
+                // 编辑的消息不在 consumed 中，重算新 index
+                val newIdx = newList.indexOfFirst { it.id == editingMsg.id }
+                _editingIndex.value = newIdx
+            }
+        }
+
+        _messages.value = newList
         _result.value = null
         _feedbacks.value = emptyMap
+        _streamingCoreText.value = ""
+        _streamingSchemes.value = emptyList
         _panelState.value = PanelState.KEYBOARD
-
-        if (kb != null && msgs.isNotEmpty && selectedScheme != null) {
-            val analysis = response.analysis
-            viewModelScope.launch {
-                try {
-                    val t7Start = System.currentTimeMillis
-                    withContext(Dispatchers.IO) {
-                        val topicRotated = topicRecorder.record(
-                            kb, msgs, selectedScheme, analysis.topic_status, analysis.topic_label,
-                            // （-⑨ 主控裁定）：userHint 实参传 ""——记录段已含《想法》行（msgs 经 role.label 渲染），
-                            // 不再重复写"我的想法"段；domain 形参零触碰
-                            analysis.scene_facts, "", analysis.ongoing
-                        )
-                        if (topicRotated) {
-                            triggerCoordinator.checkTriggers(kb.name, viewModelScope, this@LoveBrainViewModel)
-                        }
-                    }
-                    L.w("PERF t7 kb write done (${System.currentTimeMillis - t7Start}ms)")
-                    refreshKnowledgeBases
-                } catch (t: Throwable) {
-                    L.e("nextRound record failed", t)
-                } finally {
-                    recordingRound = false
-                }
-            }
-        } else {
-            // 未激活知识库时明示"未记入"，不让用户误以为对话已保存
-            if (kb == null && msgs.isNotEmpty) {
-                showPanelWarning("未激活知识库，本轮对话未记入")
-            }
-            refreshKnowledgeBases
-            recordingRound = false
-        }
     }
 
     fun copyScheme(scheme: Scheme): String {
@@ -503,12 +616,15 @@ class LoveBrainViewModel(
 
     // ═══════════ KnowledgeTriggerCoordinator.Callbacks 实现 ═══════════
 
-    override fun onVectorUpdated(newVector: Map<String, Int>, delta: Map<String, Int>) {
+    //  只让当前 KB 的 vector 回调更新 UI
+    override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {
+        if (_activeKb.value?.name != kbName) return
         _currentVector.value = newVector
         _vectorDelta.value = delta
     }
 
-    override fun onVectorUpdateNotice(summary: String) {
+    override fun onVectorUpdateNotice(kbName: String, summary: String) {
+        if (_activeKb.value?.name != kbName) return
         _vectorUpdate.value = summary
     }
 
@@ -520,18 +636,21 @@ class LoveBrainViewModel(
         _kbNotice.value = notice
     }
 
-    override fun onProfileSuggestion(display: String, rawJson: String) {
-        _profileSuggestion.value = display.ifBlank { "画像更新建议已生成，点击确认写入。" }
-        profileRawJson = rawJson
+    //  画像建议绑定 originating KB，不丢弃身份
+    override fun onProfileSuggestion(suggestion: ProfileSuggestion) {
+        _profileSuggestion.value = suggestion
     }
 
-    override fun onCurrentVector(vector: Map<String, Int>) {
+    //  只让当前 KB 的 vector 回调更新 UI
+    override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {
+        if (_activeKb.value?.name != kbName) return
         _currentVector.value = vector
     }
 
+    //  确认画像时使用 suggestion.kbName，不使用 _activeKb
     fun confirmProfileUpdate {
-        val kb = _activeKb.value ?: return
-        val rawJson = profileRawJson ?: return
+        val suggestion = _profileSuggestion.value ?: return
+        val rawJson = suggestion.rawJson
 
         // 先解析后清卡——解析失败保留卡片 + 弱警告（可重试），成功才清卡写库
         val parsed = runCatching {
@@ -541,10 +660,22 @@ class LoveBrainViewModel(
             showPanelWarning("建议解析失败，可重试或忽略")
             return
         }
-        _profileSuggestion.value = null
-        profileRawJson = null
+
+        val kbName = suggestion.kbName
 
         viewModelScope.launch {
+            //  +交汇：如果建议所属 KB 已被删除 → 不写盘、不复活、清卡 + 提示
+            val exists = withContext(Dispatchers.IO) {
+                knowledgeRepo.listAll.any { it.name == kbName }
+            }
+            if (!exists) {
+                _profileSuggestion.value = null
+                showPanelWarning("原知识库已删除，这条画像建议已失效")
+                return@launch
+            }
+
+            _profileSuggestion.value = null
+
             val meContent = parsed["me"]?.jsonPrimitive?.content
             val herContent = parsed["her"]?.jsonPrimitive?.content
             val warmthContent = parsed["warmth"]?.jsonPrimitive?.content
@@ -553,37 +684,53 @@ class LoveBrainViewModel(
 
             withContext(Dispatchers.IO) {
                 if (!meContent.isNullOrBlank) {
-                    knowledgeRepo.writeFile(kb.name, "understand/me.md", meContent)
+                    knowledgeRepo.writeFile(kbName, "understand/me.md", meContent)
                 }
                 if (!herContent.isNullOrBlank) {
-                    knowledgeRepo.writeFile(kb.name, "understand/her.md", herContent)
+                    knowledgeRepo.writeFile(kbName, "understand/her.md", herContent)
                 }
                 if (!warmthContent.isNullOrBlank) {
-                    knowledgeRepo.writeFile(kb.name, "understand/warmth.md", warmthContent)
-                    val currentVec = _currentVector.value
-                    if (currentVec.isNotEmpty) {
-                        knowledgeRepo.writeVector(kb.name, currentVec)
+                    knowledgeRepo.writeFile(kbName, "understand/warmth.md", warmthContent)
+                    //  画像确认时读取目标 KB 自己的 vector，不使用 UI 全局 _currentVector
+                    val targetVector = knowledgeRepo.readVector(kbName)
+                    if (targetVector.isNotEmpty) {
+                        knowledgeRepo.writeVector(kbName, targetVector)
                     }
                 }
                 if (stageChanged && !newStage.isNullOrBlank) {
-                    knowledgeRepo.updateStage(kb.name, newStage)
+                    knowledgeRepo.updateStage(kbName, newStage)
                 }
             }
 
-            _kbNotice.value = "画像已更新"
+            _kbNotice.value = "已更新知识库「$kbName」的画像"
             refreshKnowledgeBases
         }
     }
 
     fun dismissProfileUpdate {
         _profileSuggestion.value = null
-        profileRawJson = null
     }
 
     // ═══════════ 谈心模式（委托 GenerationEngine） ═══════════
 
+    /**
+     * 同步 guard — 正在谈心时拒绝启动。Engine reject → null → 旧 Job 保持。
+     * 冻结 KB 快照传入 Engine，谈心期间切 KB 不影响 prompt 与日志目标。
+     */
     fun generateCounseling(userMessage: String) {
-        counselingJob = generationEngine.generateCounseling(userMessage, viewModelScope, this)
+        if (userMessage.isBlank) return
+        if (_isCounseling.value) return
+        // 冻结 KB 快照
+        val kbSnapshot = _activeKb.value
+        val job = generationEngine.generateCounseling(userMessage, kbSnapshot, viewModelScope, this)
+        if (job != null) {
+            counselingJob = job
+            job.invokeOnCompletion {
+                if (counselingJob === job) {
+                    counselingJob = null
+                }
+            }
+        }
     }
 
     fun stopCounseling {
@@ -675,10 +822,22 @@ class LoveBrainViewModel(
     fun refreshKnowledgeBases {
         viewModelScope.launch {
             runCatching {
-                _activeKb.value = knowledgeRepo.getActive
-                _activeKb.value?.let {
+                // KBUI-01：切库时清理上一 KB 的瞬时 vector UI（delta / update / notice）
+                val oldKbName = _activeKb.value?.name
+                val newKb = knowledgeRepo.getActive
+                if (oldKbName != newKb?.name) {
+                    _vectorDelta.value = emptyMap
+                    _vectorUpdate.value = null
+                    _kbNotice.value = null
+                }
+                _activeKb.value = newKb
+                newKb?.let {
                     knowledgeRepo.migrateIfNeeded(it.name)
                     _currentVector.value = knowledgeRepo.readVector(it.name)
+                }
+                // CARRY-09：删除最后一个 KB 时 newKb==null，旧 _currentVector 未被清空
+                if (newKb == null) {
+                    _currentVector.value = emptyMap
                 }
             }.onFailure { L.w("refreshKnowledgeBases failed: ${it::class.simpleName}") }
         }
@@ -689,8 +848,18 @@ class LoveBrainViewModel(
     fun openPlanPanel { _showPlanPanel.value = true }
     fun dismissPlanPanel { _showPlanPanel.value = false }
 
+    /** 同步 guard — 正在生成锦囊时拒绝启动。Engine reject → null → 旧 Job 保持。 */
     fun generateSuggest {
-        suggestJob = generationEngine.generateSuggest(viewModelScope, this)
+        if (_isSuggesting.value) return
+        val job = generationEngine.generateSuggest(viewModelScope, this)
+        if (job != null) {
+            suggestJob = job
+            job.invokeOnCompletion {
+                if (suggestJob === job) {
+                    suggestJob = null
+                }
+            }
+        }
     }
 
     fun stopSuggest {
@@ -706,8 +875,18 @@ class LoveBrainViewModel(
 
     // ═══════════ 主动发起/润色（委托 GenerationEngine） ═══════════
 
+    /** 同步 guard — 正在主动发时拒绝启动。Engine reject → null → 旧 Job 保持。 */
     fun generateProactive(draft: String = "", scene: String = "") {
-        proactiveJob = generationEngine.generateProactive(draft, scene, viewModelScope, this)
+        if (_isProactive.value) return
+        val job = generationEngine.generateProactive(draft, scene, viewModelScope, this)
+        if (job != null) {
+            proactiveJob = job
+            job.invokeOnCompletion {
+                if (proactiveJob === job) {
+                    proactiveJob = null
+                }
+            }
+        }
     }
 
     fun stopProactive {
@@ -746,6 +925,11 @@ class LoveBrainViewModel(
 
     override fun onReplyStreamingSchemes(schemes: List<Scheme>) {
         if (schemes.size > _streamingSchemes.value.size) _streamingSchemes.value = schemes
+    }
+
+    /** retry 前清理上一次 attempt 的流式方案卡 */
+    override fun onReplyStreamingSchemesReset {
+        _streamingSchemes.value = emptyList
     }
 
     override fun onReplyResult(result: GenerateResult) {
@@ -791,9 +975,15 @@ class LoveBrainViewModel(
         _isCounseling.value = false
     }
 
-    override fun onCounselingSaveLog(userMessage: String, replyText: String, analysisText: String) {
+    // 日志目标使用 Engine 传入的冻结 kbName，不读 _activeKb
+    override fun onCounselingSaveLog(
+        kbName: String?,
+        userMessage: String,
+        replyText: String,
+        analysisText: String
+    ) {
         viewModelScope.launch {
-            saveCounselingLog(_activeKb.value?.name, userMessage, replyText, analysisText)
+            saveCounselingLog(kbName, userMessage, replyText, analysisText)
         }
     }
 
@@ -858,10 +1048,11 @@ class LoveBrainViewModel(
     // --- 共用 ---
     override fun getActiveKb: KnowledgeBase? = _activeKb.value
     override fun getMessages: List<ChatMessage> = _messages.value
-    // userHint 状态废除——生成时从消息列表收集《想法》消息（：收集读 :438 msgs 快照同源，
-    // nextRound 清空后 getUserHint 返回 ""，lifecycle 契约由 LoveBrainViewModelIdeaHintTest ④ 锁定）
-    private fun collectIdeaHint: String =
-        _messages.value.filter { it.role == ChatMessage.Role.IDEA }.joinToString("\n") { it.content }
+    // collectIdeaHint 改为纯函数，接受 messages 参数 — 同一快照同源收集，不读实时状态
+    // （lifecycle 契约由 LoveBrainViewModelIdeaHintTest ④ 锁定，getUserHint 仍读实时列表保持兼容）
+    private fun collectIdeaHint(messages: List<ChatMessage>): String =
+        messages.filter { it.role == ChatMessage.Role.IDEA }.joinToString("\n") { it.content }
+    private fun collectIdeaHint: String = collectIdeaHint(_messages.value)
     override fun getUserHint: String = collectIdeaHint
     override fun isGenerating: Boolean = _isGenerating.value
     override fun isCounseling: Boolean = _isCounseling.value
