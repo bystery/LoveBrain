@@ -66,6 +66,7 @@ data class OnboardingAnswer(
 data class OnboardingSchema(
     val stage: String,
     val meta: Meta,
+    val names: Names,
     val tags: List<String>,
     val profile: Profile,
     val redline_triggered: Boolean,
@@ -75,6 +76,13 @@ data class OnboardingSchema(
     data class Meta(
         val total_answered: Int,
         val path: List<String>
+    )
+
+    // ONB-02 修复：双方称呼独立上下文字段
+    @Serializable
+    data class Names(
+        val self: String = "",
+        val counterpart: String = ""
     )
 
     @Serializable
@@ -217,6 +225,10 @@ object OnboardingSchemaBuilder {
         return OnboardingSchema(
             stage = stage,
             meta = OnboardingSchema.Meta(total_answered = totalAnswered, path = path),
+            names = OnboardingSchema.Names(
+                self = myName.trim(),
+                counterpart = herName.trim()
+            ),
             tags = tags,
             profile = profile,
             redline_triggered = redline,

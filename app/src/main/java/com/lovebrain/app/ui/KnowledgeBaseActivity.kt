@@ -39,6 +39,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -100,14 +101,26 @@ class KnowledgeBaseActivity : ComponentActivity() {
     // P0-① 修复：持有 onboarding 生成协程 Job，onDismiss 时显式 cancel
     private var onboardingJob: kotlinx.coroutines.Job? = null
 
+    // ONB-01 修复：统一建库事务 guard——AI 建库和空模板建库不能并发执行
+    private var kbCreationInProgress = false
+
+    // KB-04 修复：Activity 级 refresh signal——导入成功后不 recreate，改用 token 触发列表刷新
+    private val kbReloadToken = mutableIntStateOf(0)
+
     private fun createEmptyKb(onDone: () -> Unit) {
+        if (kbCreationInProgress) return
+        kbCreationInProgress = true
         lifecycleScope.launch {
-            val name = autoKbName()
-            val ok = runCatching { repo.create(name, "新知识库") }.isSuccess
-            if (!ok) {
-                kbFeedback.value = "创建失败：可能名称重复，请重试"
+            try {
+                val name = autoKbName()
+                val ok = runCatching { repo.create(name, "新知识库") }.isSuccess
+                if (!ok) {
+                    kbFeedback.value = "创建失败：可能名称重复，请重试"
+                }
+                onDone()
+            } finally {
+                kbCreationInProgress = false
             }
-            onDone()
         }
     }
 
@@ -117,6 +130,7 @@ class KnowledgeBaseActivity : ComponentActivity() {
         herName: String,
         onDone: () -> Unit
     ) {
+        if (kbCreationInProgress) return
         val ready = deepSeek.getActiveTicket()?.model?.isNotBlank() == true &&
             !deepSeek.getActiveApiKey().isNullOrBlank()
         if (!ready) {
@@ -124,48 +138,76 @@ class KnowledgeBaseActivity : ComponentActivity() {
             noProviderDialogVisible.value = true
             return
         }
+        // ONB-01 修复：进入 AI 建库事务
+        kbCreationInProgress = true
         // P0-① 修复：存 Job 引用，onDismiss 时 cancel → generateRaw 抛 CancellationException 跳出
         onboardingJob = lifecycleScope.launch {
-            val name = autoKbName()
-            val system = readEngineAsset(com.lovebrain.app.domain.AssetRegistry.ONBOARDING)
-            // v4.0：输入改为 JSON Schema（取代文本拼接块）
-            val user = Json.encodeToString(
-                com.lovebrain.app.domain.OnboardingSchema.serializer(), schema
-            )
-            val raw = runCatching {
-                withContext(Dispatchers.IO) { deepSeek.generateRaw(system, user) }
-            }.getOrDefault("")
-            // P0-① 修复：协程被 cancel 后 withContext 恢复会抛 CancellationException，
-            // runCatching 吞掉后 raw="" 且 isActive=false——这里拦住不建库
-            if (!isActive) {
-                onDone()
-                return@launch
-            }
-
-            val display = parseSection(raw, "===DISPLAY===", "===STAGE===")
-                .ifBlank { herName.ifBlank { "我的她" } }
-            val stage = parseSection(raw, "===STAGE===", "===ME===").ifBlank { "待确定" }
-            val me = parseSection(raw, "===ME===", "===HER===")
-            val her = parseSection(raw, "===HER===", "===WARMTH===")
-            val warmth = raw.substringAfter("===WARMTH===", "").trim()
-
-            val ok = runCatching { repo.create(name, display) }.isSuccess
-            if (ok) {
-                if (me.isNotBlank()) repo.writeFile(name, "understand/me.md", me)
-                if (her.isNotBlank()) repo.writeFile(name, "understand/her.md", her)
-                if (warmth.isNotBlank()) repo.writeFile(name, "understand/warmth.md", warmth)
-                repo.updateStage(name, stage)
-                // C1 修复：成功分支补充反馈——AI 分析返回空不再假装成功（降级链如实告知）
-                if (raw.isBlank()) {
-                    kbFeedback.value = "AI 分析失败，已创建空模板库，可稍后在编辑页补充画像"
-                } else {
-                    kbFeedback.value = "知识库已创建，画像已生成"
+            try {
+                val name = autoKbName()
+                val system = readEngineAsset(com.lovebrain.app.domain.AssetRegistry.ONBOARDING)
+                // v4.0：输入改为 JSON Schema（取代文本拼接块）
+                val user = Json.encodeToString(
+                    com.lovebrain.app.domain.OnboardingSchema.serializer(), schema
+                )
+                val raw = runCatching {
+                    withContext(Dispatchers.IO) { deepSeek.generateRaw(system, user) }
+                }.getOrDefault("")
+                // P0-① 修复：协程被 cancel 后 withContext 恢复会抛 CancellationException，
+                // runCatching 吞掉后 raw="" 且 isActive=false——这里拦住不建库
+                if (!isActive) {
+                    onDone()
+                    return@launch
                 }
-            } else {
-                kbFeedback.value = "创建失败：可能名称重复，请重试"
+
+                // ONB-04 修复：用轻量结果对象解析 AI 输出，校验关键段非空后才算画像成功
+                val parsed = parseOnboardingResult(raw)
+                val display = parsed.display.ifBlank { herName.ifBlank { "我的她" } }
+                val stage = parsed.stage.ifBlank { "待确定" }
+
+                val ok = runCatching { repo.create(name, display) }.isSuccess
+                if (ok) {
+                    // ONB-04：只有对应 section 非空才覆盖模板
+                    if (parsed.me.isNotBlank()) repo.writeFile(name, "understand/me.md", parsed.me)
+                    if (parsed.her.isNotBlank()) repo.writeFile(name, "understand/her.md", parsed.her)
+                    if (parsed.warmth.isNotBlank()) repo.writeFile(name, "understand/warmth.md", parsed.warmth)
+                    repo.updateStage(name, stage)
+                    // ONB-04：区分完整成功 / 降级建库 / 创建失败
+                    kbFeedback.value = if (parsed.hasUsableProfile) {
+                        "知识库已创建，画像已生成"
+                    } else {
+                        "AI 画像生成不完整，已创建模板库，可稍后在编辑页补充"
+                    }
+                } else {
+                    kbFeedback.value = "创建知识库失败，请重试"
+                }
+                onDone()
+            } finally {
+                kbCreationInProgress = false
+                onboardingJob = null
             }
-            onDone()
         }
+    }
+
+    // ONB-04 修复：轻量解析结果对象
+    private data class ParsedOnboardingResult(
+        val display: String,
+        val stage: String,
+        val me: String,
+        val her: String,
+        val warmth: String
+    ) {
+        val hasUsableProfile: Boolean
+            get() = me.isNotBlank() && her.isNotBlank() && warmth.isNotBlank()
+    }
+
+    private fun parseOnboardingResult(raw: String): ParsedOnboardingResult {
+        return ParsedOnboardingResult(
+            display = parseSection(raw, "===DISPLAY===", "===STAGE==="),
+            stage = parseSection(raw, "===STAGE===", "===ME==="),
+            me = parseSection(raw, "===ME===", "===HER==="),
+            her = parseSection(raw, "===HER===", "===WARMTH==="),
+            warmth = raw.substringAfter("===WARMTH===", "").trim()
+        )
     }
 
     // C2 修复：去掉 % 1000000（每 16.7 分钟循环碰撞），用全时间戳 + 随机后缀
@@ -231,9 +273,10 @@ class KnowledgeBaseActivity : ComponentActivity() {
                 // 导入后强制修正 active 状态，防止导入的 KB 带 active=true 导致双激活
                 val currentActive = repo.getActive()?.name ?: repo.listAll().firstOrNull()?.name
                 if (currentActive != null) repo.setActive(currentActive)
+                // KB-04 修复：不 recreate（会吃掉 kbFeedback），改用 token 触发列表刷新
                 withContext(Dispatchers.Main) {
                     kbFeedback.value = "知识库导入成功"
-                    recreate()
+                    kbReloadToken.intValue++
                 }
             }.onFailure { error ->
                 L.e("knowledge import failed", error)
@@ -255,7 +298,7 @@ class KnowledgeBaseActivity : ComponentActivity() {
                 var active by remember(version) { mutableStateOf<KnowledgeBase?>(null) }
                 var showOnboarding by remember { mutableStateOf(false) }
 
-                LaunchedEffect(version) {
+                LaunchedEffect(version, kbReloadToken.intValue) {
                     kbs = repo.listAll()
                     active = repo.getActive()
                 }
@@ -316,9 +359,9 @@ class KnowledgeBaseActivity : ComponentActivity() {
                             }
                         },
                         // P0-① 修复：生成中取消——cancel 协程后关闭页面
+                        // ONB-01：kbCreationInProgress 由 job finally 复位，不在此处重复维护
                         onCancelGenerating = {
                             onboardingJob?.cancel()
-                            onboardingJob = null
                             showOnboarding = false
                         }
                     )
@@ -747,8 +790,15 @@ private fun OnboardingScreen(
             }
         },
         trailing = {
-            TextButton(onClick = onSkip) {
-                Text("建空档案", color = TextSecondary, style = AppTypography.labelLarge)
+            TextButton(
+                onClick = onSkip,
+                enabled = !generating
+            ) {
+                Text(
+                    "建空档案",
+                    color = if (generating) TextHint else TextSecondary,
+                    style = AppTypography.labelLarge
+                )
             }
         }
     ) {
@@ -1058,7 +1108,7 @@ private fun handleOptionClick(
     val currentAnswer = answers[currentStep]
         ?: com.lovebrain.app.domain.OnboardingAnswer()
 
-    // 记录红线变化前状态
+        // 记录红线变化前状态
     val wasRedline = com.lovebrain.app.domain.OnboardingStateMachine
         .isRedlineTriggered(answers, branch)
 
@@ -1077,11 +1127,14 @@ private fun handleOptionClick(
         )
     } else {
         // Q2-Q5: 走 toggle 逻辑
-        val beforeSize = currentAnswer.selectedIndices.size
         val newAnswer = com.lovebrain.app.domain.OnboardingStateMachine
             .toggleOption(question, currentAnswer, index)
-        // 如果 toggle 没有改变（达到上限），提示
-        if (newAnswer.selectedIndices.size == beforeSize && index !in currentAnswer.selectedIndices) {
+        // ONB-03 修复：只有 MULTIPLE 且集合完全没变且点的是新项 → 才是因上限被拒
+        if (
+            question.selectionMode == com.lovebrain.app.domain.SelectionMode.MULTIPLE &&
+            newAnswer.selectedIndices == currentAnswer.selectedIndices &&
+            index !in currentAnswer.selectedIndices
+        ) {
             onMaxReached()
         } else {
             // 清除上限提示

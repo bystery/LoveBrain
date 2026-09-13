@@ -374,4 +374,30 @@ class OnboardingSchemaCustomInputTest {
         assertEquals("", schema.profile.core_dilemma)
         assertEquals("", schema.profile.user_intent)
     }
+
+    // ═══ ONB-02：双方称呼进入 schema ═══
+
+    @Test
+    fun `schema carries user supplied names`() {
+        val schema = OnboardingSchemaBuilder.build(
+            answers = fixedAnswersB(),
+            myName = "小明",
+            herName = "小雨"
+        )
+
+        assertEquals("小明", schema.names.self)
+        assertEquals("小雨", schema.names.counterpart)
+    }
+
+    @Test
+    fun `blank names remain blank`() {
+        val schema = OnboardingSchemaBuilder.build(
+            answers = fixedAnswersB(),
+            myName = "   ",
+            herName = ""
+        )
+
+        assertEquals("", schema.names.self)
+        assertEquals("", schema.names.counterpart)
+    }
 }
