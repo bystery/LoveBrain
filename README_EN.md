@@ -7,9 +7,9 @@
 She says "I'm fine" and you don't know what to say? Your coach drafts four options.
 You pick the one that sounds most like you — the words that leave your mouth are still your own.
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue)](../../releases/latest)
+[![Version](https://img.shields.io/github/v/release/bystery/LoveBrain?label=version)](../../releases/latest)
 [![Platform](https://img.shields.io/badge/Android-8.0%2B-green)](../../releases/latest)
-[![Privacy](https://img.shields.io/badge/privacy-zero_telemetry·on_device-red)](#-privacy-strict-by-design)
+[![Privacy](https://img.shields.io/badge/privacy-zero_telemetry·local_kb-red)](#-privacy-strict-by-design)
 [![License](https://img.shields.io/badge/license-AGPL--3.0_%7C_Commercial-orange)](LICENSE)
 
 <br/>
@@ -26,7 +26,7 @@ You pick the one that sounds most like you — the words that leave your mouth a
 |---|---|
 | 🫧 **Floating window, zero app-switching** | Long-press any incoming message in any chat app — the coach panel opens on the spot. No screenshots, no copy-paste, no context switching |
 | 🧠 **Long-term relationship memory** | Profiles, stages and lessons accumulate locally, so advice gets more personal the more you use it — not a one-shot pickup-line generator |
-| 🔒 **On-device privacy** | Zero telemetry, no backend, knowledge base lives in plain Markdown on your phone — export or delete it anytime |
+| 🔒 **Local knowledge base** | Zero telemetry, no LoveBrain backend, knowledge base lives in plain Markdown on your phone — export or delete it anytime |
 
 [![⬇ Download APK (latest release)](https://img.shields.io/badge/%E2%AC%87-Download_APK-Latest_Release-2ea44f?style=for-the-badge)](../../releases/latest)
 
@@ -47,7 +47,7 @@ It gets there through three means:
 
 1. **Options, not scripts** — every message gets 4 reply styles. You pick the one closest to what you'd actually say and make it your own. What gets sent is you, not the AI.
 2. **See the relationship clearly** — a relationship vector, a stage tracker and an experience library turn your vague "something feels off" into visible records, reducing anxiety and second-guessing.
-3. **Everything stays local** — your relationship data doesn't belong to any company.
+3. **Your data stays on-device** — your relationship data doesn't belong to any company. LoveBrain has no backend, no telemetry, no analytics; the only outbound request goes to the AI provider you configure.
 
 The four reply styles are a **means to an end**: they exist so that when you're nervous, flooded, or drawing a blank, you can still turn sincerity into words the other person can actually receive.
 
@@ -117,7 +117,7 @@ The more you talk, the sharper the advice — it knows what stage you're in, wha
 
 ### 🎈 A persistent bubble
 
-Draggable, edge-snapping, fades when idle and tucks itself half-hidden against the screen edge. A badge pops on the bubble when a new message is captured — there when you need it, invisible when you don't.
+Draggable, edge-snapping, and fades when idle. A badge pops on the bubble when a new message is captured — there when you need it, invisible when you don't.
 
 ### 📚 Your knowledge base, your rules
 
@@ -136,7 +136,7 @@ Multiple knowledge bases (one per person, say), creatable, deletable, switchable
          ↓
  Assembles the prompt (persona + current stage + profiles + past lessons)
          ↓
- DeepSeek streams the generation → each card appears as it's ready
+ The configured AI provider streams the generation → each card appears as it's ready
          ↓
  You pick one and phrase it your own way → the coach logs the round
          ↓
@@ -145,7 +145,7 @@ Multiple knowledge bases (one per person, say), creatable, deletable, switchable
  Fed back into the next generation — it knows you two better every time
 ```
 
-In one sentence: a floating-window app + an accessibility service that senses long-presses + a local Markdown knowledge base + the official DeepSeek API. That's all.
+In one sentence: a floating-window app + an accessibility service that senses long-presses + a local Markdown knowledge base + the AI provider you configure. That's all.
 
 ## 🚀 Getting started
 
@@ -153,7 +153,7 @@ In one sentence: a floating-window app + an accessibility service that senses lo
 
 **Step 1 · Install**: grab the APK from the [latest release](../../releases/latest) (Android 8.0+).
 
-**Step 2 · Add your key**: paste your [DeepSeek API key](https://platform.deepseek.com/) — **stored encrypted on-device**.
+**Step 2 · Add your key**: paste your AI provider API key (default: [DeepSeek](https://platform.deepseek.com/)) — **stored encrypted on-device**.
 
 > 💰 **Cost (pre-measurement estimate)**: DeepSeek bills per token; typical casual usage is expected to be a few RMB per month. See the [official pricing page](https://api-docs.deepseek.com/quick_start/pricing).
 > - [ ] **TODO: after measuring one week of typical usage, fill in real token usage / cost per full reply here.**
@@ -182,15 +182,16 @@ cd LoveBrain
 
 Item by item, no hand-waving:
 
-- **Zero telemetry, zero upload**: no servers of ours, no analytics SDKs. The only outbound request is the generation call to the official DeepSeek API — that's the product
-- **Chat content goes to exactly two places**: the DeepSeek request, and your local knowledge base (plain Markdown in the app's private directory)
+- **Zero telemetry, zero upload**: no servers of ours, no analytics SDKs. The only outbound request is the generation call to the AI provider you configure — that's the product
+- **Chat content goes to exactly two places**: the AI provider request, and your local knowledge base (plain Markdown in the app's private directory)
 - **The accessibility service does two things**: listens for long-press and window-change events to confirm your long-press. No keylogging, no background scanning, no reading your notifications
+- **Accessibility consent**: before requesting system accessibility permission, LoveBrain shows its own data-usage disclosure. You must explicitly consent before any text is captured
 - **Diagnostics never log content**: the capture pipeline logs event types and text lengths only
 - **Panel history dies with the process**: reply-panel messages are memory-only; what persists long-term is distilled conclusions (profiles, lessons), not raw chats
 - **API key stored encrypted**: EncryptedSharedPreferences, with an explicit fallback notice on the few devices that don't support it
 - **Opted out of cloud backup**: `allowBackup=false` — profiles never ride your account to the cloud
 - **Your knowledge base is yours**: local plain-text files, editable, importable/exportable — exports are **plaintext** zips, the app warns you, don't casually upload them
-- **No keep-alive tricks**: no persistent notification, no background auto-restart
+- **Foreground service**: the floating assistant runs as a user-started Android foreground service while active. It shows the required system notification, does not auto-start on boot, does not restart itself after being killed, and stops when the user explicitly stops it
 
 ## ❓ FAQ
 
@@ -198,7 +199,7 @@ Item by item, no hand-waving:
 A: Only at the moment you **long-press a specific message** — it reads that message and its surrounding context, which is the necessary input for suggestions. No background scanning, no keylogging, no notification reading.
 
 **Q: Is my data uploaded anywhere?**
-A: The only outbound request is the generation call to the official DeepSeek API when you tap "generate". Everything else stays on-device: the knowledge base is plain Markdown in the app's private directory, cloud backup is disabled, and you can edit, export or delete it anytime.
+A: The only outbound request is the generation call to the AI provider you configure when you tap "generate". Everything else stays on-device: the knowledge base is plain Markdown in the app's private directory, cloud backup is disabled, and you can edit, export or delete it anytime.
 
 **Q: Is it free?**
 A: The app is **dual-licensed**: AGPL-3.0 (free for open-source / personal / learning use), or a commercial license (for closed-source use). Generation requires your own DeepSeek API key, billed per use by DeepSeek — expect a few RMB per month for casual usage (estimate; see the TODO in Getting Started).
@@ -210,7 +211,7 @@ A: Not yet. iOS is far more restrictive around accessibility and floating window
 A: No. The coach only suggests — tapping a card copies it. Whether and what you send is always your call.
 
 **Q: DeepSeek only?**
-A: The current version is tuned for the official DeepSeek API. Base URL and model name are editable; compatible services may work, but prompts and parameters are DeepSeek-tuned — no guarantees elsewhere.
+A: You can configure a custom provider (base URL, model name, API key). DeepSeek is the default and primary tested provider, but other compatible services may work.
 
 **Q: Will she know I'm using AI?**
 A: The prompts include a naturalness check aiming for human-sounding suggestions. More importantly: treat cards as drafts and rewrite them in your own voice — it opens the door, sincerity keeps it open.

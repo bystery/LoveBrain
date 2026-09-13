@@ -8,9 +8,9 @@
 
 **话是你说的，心是你的——军师只递词，不替你开口。**
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue)](../../releases/latest)
+[![Version](https://img.shields.io/github/v/release/bystery/LoveBrain?label=version)](../../releases/latest)
 [![Platform](https://img.shields.io/badge/Android-8.0%2B-green)](../../releases/latest)
-[![Privacy](https://img.shields.io/badge/隐私-零遥测·全本地-red)](#-隐私军师嘴很严)
+[![Privacy](https://img.shields.io/badge/隐私-零遥测·本地知识库-red)](#-隐私军师嘴很严)
 [![License](https://img.shields.io/badge/license-AGPL--3.0_%7C_Commercial-orange)](LICENSE)
 
 <img src="images/demo.gif" alt="LoveBrain 演示" width="360"/>
@@ -25,7 +25,7 @@
 |---|---|
 | **两步出方案** | 长按消息自动捕获，一键即时生成回复。不跳出聊天界面、不打断聊天节奏，要多快有多快。 |
 | **长期关系记忆** | 市面工具“用完即忘”，LoveBrain 让长程与短程记忆协同，持续建模关系阶段与彼此偏好，越用越准——军师，越懂你。 |
-| **全本地隐私** | 零遥测、无后端、知识库全在你手机里，可看、可改、可删、可带走。 |
+| **本地知识库** | 零遥测、无 LoveBrain 后端、知识库全在你手机里，可看、可改、可删、可带走。 |
 
 [![⬇ 下载 APK](https://img.shields.io/badge/%E2%AC%87_Download_APK-Latest_Release-2ea44f?style=for-the-badge)](../../releases/latest)
 
@@ -38,7 +38,7 @@
 
 ## 💡 军师怎么帮你破局
 
-LoveBrain 是一个**对话脚手架**。AI 替代不了人类的真心，但能帮你打破“开不了口”的第一步。你只需要做两件事：
+LoveBrain 是一个**对话脚手架**。AI 替代不了人类的真心，但能帮你打破“开不了口”的第一步。你只需要几步：
 
 1. **长按她发来的消息**
 2. **点一下生成**
@@ -132,10 +132,13 @@ LoveBrain 旨在帮助你在关系里**真诚表达、不讨好、不内耗**。
 ## ❓ 常见问题
 
 **Q：会读取我的聊天记录吗？**
-A：只在你**长按某条消息**时，读取那一条消息——这是生成回复建议的必要输入。不会后台扫描、不监听键盘、不读通知。
+A：只在你**长按某条消息**时，读取那一条消息——这是生成回复建议的必要输入。不会后台扫描、不监听键盘、不读通知。首次进入系统无障碍授权前，LoveBrain 会显示自己的数据用途披露，用户明确同意后才处理捕获文字。
+
+**Q：悬浮球会一直运行吗？**
+A：悬浮球作为用户手动启动的前台服务（Foreground Service）运行，会显示系统通知。不会开机自启、不会在被杀后自动重启、用户明确停止时即停止。
 
 **Q：数据会上传吗？**
-A：只有你点"生成"时，当次上下文会发给对应的模型服务商。其余全部留在你手机本地：知识库是 App 私有目录里的 Markdown 文件，随时可编辑、导出或删除。
+A：只有你点"生成"时，当次上下文（聊天内容 + 知识上下文）会发送给你配置的 AI Provider。其余全部留在你手机本地：知识库、画像、经验、谈心历史等都是 App 私有目录里的文件，随时可编辑、导出或删除。LoveBrain 自身无后端、无遥测、无分析。
 
 **Q：免费吗？**
 A：App 采用**双协议授权**：AGPL-3.0 开源免费（个人/学习/开源使用），或商业许可（闭源商用）。生成回复需你自备 API Key。
@@ -147,7 +150,7 @@ A：暂无。iOS 的无障碍和悬浮窗限制更严，先做好 Android。
 A：不会。军师只给建议，点卡片是复制到剪贴板，发不发、怎么发永远是你自己动手。
 
 **Q：支持什么模型？**
-A：自定义模型，但是我们内部的 花费判断目前只适配了deepseek
+A：支持自定义 Provider（baseUrl、model、API key）。默认以 DeepSeek 为主要测试 Provider，但你可以配置其他兼容服务商。
 
 **Q：她会知道我用 AI 回她吗？**
 A：军师的提示词里专门有"自然度检查"，目标是让建议像人话。但更重要的是：把卡片当成草稿，改成自己的语气再发——它帮你开头，真诚靠你。
@@ -162,7 +165,7 @@ A：军师的提示词里专门有"自然度检查"，目标是让建议像人�
 
 ## 🌏 English
 
-**LoveBrain** is a free & open-source Android floating-window assistant that helps you communicate sincerely in your relationship — without people-pleasing, and without overthinking. Long-press any incoming message in any chat app, and it captures the context and streams 4 reply suggestions in a floating panel. Over time, it builds a private, local knowledge base: a 5-dimension relationship vector, an 8-stage relationship tracker, and an experience library — so its advice gets more personal the more you use it. Everything is stored on-device in plain Markdown files (no telemetry, no backend, encrypted API key); the only network request goes to the DeepSeek API you configure with your own key. Requires Android 8.0+.
+**LoveBrain** is a free & open-source Android floating-window assistant that helps you communicate sincerely in your relationship — without people-pleasing, and without overthinking. Long-press any incoming message in any chat app, and it captures the context and streams 4 reply suggestions in a floating panel. Over time, it builds a private, local knowledge base: a 5-dimension relationship vector, an 8-stage relationship tracker, and an experience library — so its advice gets more personal the more you use it. Everything is stored on-device in plain Markdown files (no telemetry, no LoveBrain backend, encrypted API key); the only network request goes to the AI provider configured by the user. Requires Android 8.0+.
 
 📖 **Full English README: [README_EN.md](README_EN.md)**
 
