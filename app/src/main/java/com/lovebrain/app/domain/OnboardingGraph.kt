@@ -208,9 +208,9 @@ object OnboardingSchemaBuilder {
         val path = buildPath(branch)
         val tags = collectTags(answers, branch)
         val profile = buildProfile(answers, branch)
-        val totalAnswered = answers.count { (_, a) ->
-            val q = if (it.key == 1) OnboardingBank.q1
-                    else OnboardingBank.question(it.key, branch)
+        val totalAnswered = answers.count { (k, a) ->
+            val q = if (k == 1) OnboardingBank.q1
+                    else OnboardingBank.question(k, branch)
             a.isAnswered(q)
         }
 

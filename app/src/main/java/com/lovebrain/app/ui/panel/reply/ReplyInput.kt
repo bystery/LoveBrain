@@ -23,6 +23,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -57,6 +58,7 @@ fun ReplyInput(
     onRoleChange: (ChatMessage.Role) -> Unit,
     onAdd: () -> Unit,
     onFocusChange: (Boolean) -> Unit,
+    onInputIntent: (() -> Unit)? = null,
     focusRequester: FocusRequester? = null,
     // ：主动发态复用输入行三参——默认值保回复态行为逐字不变
     showRoleChips: Boolean = true,
@@ -100,7 +102,8 @@ fun ReplyInput(
             height = ReplyDimens.ROLE_CHIP_HEIGHT_DP.dp,
             modifier = Modifier.weight(1f),
             focusRequester = focusRequester,
-            onFocusChange = onFocusChange
+            onFocusChange = onFocusChange,
+            onInputIntent = onInputIntent
         )
 
         Spacer(Modifier.width(Spacing.sm))
@@ -142,13 +145,26 @@ fun PanelTextInput(
     modifier: Modifier = Modifier,
     height: Dp = AppDimens.INPUT_ROW_HEIGHT_DP.dp,
     focusRequester: FocusRequester? = null,
-    onFocusChange: ((Boolean) -> Unit)? = null
+    onFocusChange: ((Boolean) -> Unit)? = null,
+    onInputIntent: (() -> Unit)? = null
 ) {
     Box(
         modifier = modifier
             .heightIn(min = height)  // ：height 语义降为最小高度，防系统大字号截断
             .background(SurfaceCard, LoveBrainShape.md)
             .border(AppDimens.BORDER_WIDTH_DP.dp, if (value.isNotEmpty()) PrimarySubtle else Border, LoveBrainShape.md)
+            // 编辑意图：用户触碰输入框区域 → 通知 FloatingService 进入 EDITING
+            // 使用 pointerInput 检测 Press 事件但不消费，让 BasicTextField 仍能收到点击获焦
+            .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
+                awaitPointerEventScope {
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        if (event.changes.any { it.pressed }) {
+                            onInputIntent()
+                        }
+                    }
+                }
+            } else Modifier)
             .padding(horizontal = Spacing.lg)
     ) {
         if (value.isEmpty()) {

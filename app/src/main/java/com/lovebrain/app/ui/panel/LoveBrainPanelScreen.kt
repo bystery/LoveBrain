@@ -21,6 +21,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -74,12 +75,14 @@ private val OnboardGuideLineHeight = 20.sp
 fun LoveBrainPanelScreen(
     viewModel: LoveBrainViewModel,
     onFocusChange: (Boolean) -> Unit,
+    onInputIntent: () -> Unit,
+    onClearComposeFocus: ((() -> Unit) -> Unit),
     onResize: (Int, Int) -> Unit,
     onResizeEnd: () -> Unit = {},
     onMove: (Float, Float) -> Unit,
     onCopy: (String) -> Unit,
     onOpenSettings: () -> Unit,
-    // ：头部收起按钮回调（FloatingService 传 hidePanel）
+    // 头部收起按钮回调（FloatingService 传 dismissPanelToBubble）
     onCollapse: () -> Unit
 ) {
     val panelMode by viewModel.panelMode.collectAsStateWithLifecycle()
@@ -116,6 +119,14 @@ fun LoveBrainPanelScreen(
     // + 修复：面板每次进入组合时刷新工单状态（Service 长生命周期下配置后不刷新）
     LaunchedEffect(Unit) {
         viewModel.refreshTicketState()
+    }
+
+    // 注册 Compose 焦点清理回调：FloatingService.releasePanelInput 时调用
+    // 清理 Compose 输入焦点，避免 Panel 隐藏后输入框仍为逻辑 Focused
+    val focusManager = LocalFocusManager.current
+    DisposableEffect(onClearComposeFocus) {
+        onClearComposeFocus { focusManager.clearFocus() }
+        onDispose { }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -310,6 +321,7 @@ fun LoveBrainPanelScreen(
                         }
                     },
                     onFocusChange = onFocusChange,
+                    onInputIntent = onInputIntent,
                     focusRequester = inputFocusRequester
                 )
 
@@ -422,6 +434,7 @@ fun LoveBrainPanelScreen(
                     CounselingPanel(
                         viewModel = viewModel,
                         onFocusChange = onFocusChange,
+                        onInputIntent = onInputIntent,
                         modifier = Modifier.fillMaxSize()
                     )
                 }

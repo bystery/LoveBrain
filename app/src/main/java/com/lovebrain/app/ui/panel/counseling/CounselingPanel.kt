@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.stateDescription
@@ -61,6 +62,7 @@ private object CounselingDimens {
 fun CounselingPanel(
     viewModel: LoveBrainViewModel,
     onFocusChange: (Boolean) -> Unit,
+    onInputIntent: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val draft by viewModel.counselingDraft.collectAsStateWithLifecycle()
@@ -80,6 +82,18 @@ fun CounselingPanel(
                 .clip(LoveBrainShape.lg)
                 .background(SurfaceCard)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
+                // 编辑意图：用户触碰输入框区域 → 通知 FloatingService 进入 EDITING
+                // 使用 pointerInput 检测 Press 事件但不消费，让 BasicTextField 仍能收到点击获焦
+                .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            if (event.changes.any { it.pressed }) {
+                                onInputIntent()
+                            }
+                        }
+                    }
+                } else Modifier)
                 .padding(Spacing.lg)
         ) {
             BasicTextField(
@@ -391,6 +405,18 @@ fun CounselingPanel(
                                         .clip(LoveBrainShape.md)
                                         .background(SurfaceInset)
                                         .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
+                                        // 编辑意图：追问输入框同样需要进入 EDITING
+                                        // 使用 pointerInput 检测 Press 事件但不消费
+                                        .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
+                                            awaitPointerEventScope {
+                                                while (true) {
+                                                    val event = awaitPointerEvent()
+                                                    if (event.changes.any { it.pressed }) {
+                                                        onInputIntent()
+                                                    }
+                                                }
+                                            }
+                                        } else Modifier)
                                         .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                                 ) {
                                     if (followUpText.isEmpty()) {
