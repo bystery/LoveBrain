@@ -74,8 +74,8 @@ private val OnboardGuideLineHeight = 20.sp
 @Composable
 fun LoveBrainPanelScreen(
     viewModel: LoveBrainViewModel,
-    onFocusChange: (Boolean) -> Unit,
-    onInputIntent: () -> Unit,
+    onInputFocusChange: (String, Boolean) -> Unit,
+    onInputIntent: (String) -> Unit,
     onClearComposeFocus: ((() -> Unit) -> Unit),
     onResize: (Int, Int) -> Unit,
     onResizeEnd: () -> Unit = {},
@@ -320,8 +320,9 @@ fun LoveBrainPanelScreen(
                             viewModel.setDraft("")
                         }
                     },
-                    onFocusChange = onFocusChange,
-                    onInputIntent = onInputIntent,
+                    inputId = "reply",
+                    onFocusChange = { focused -> onInputFocusChange("reply", focused) },
+                    onInputIntent = { onInputIntent("reply") },
                     focusRequester = inputFocusRequester
                 )
 
@@ -433,8 +434,11 @@ fun LoveBrainPanelScreen(
                 Box(modifier = Modifier.weight(1f)) {
                     CounselingPanel(
                         viewModel = viewModel,
-                        onFocusChange = onFocusChange,
-                        onInputIntent = onInputIntent,
+                        inputId = "counseling_main",
+                        onFocusChange = { focused -> onInputFocusChange("counseling_main", focused) },
+                        onInputIntent = { onInputIntent("counseling_main") },
+                        onFollowUpFocusChange = { focused -> onInputFocusChange("counseling_followup", focused) },
+                        onFollowUpInputIntent = { onInputIntent("counseling_followup") },
                         modifier = Modifier.fillMaxSize()
                     )
                 }

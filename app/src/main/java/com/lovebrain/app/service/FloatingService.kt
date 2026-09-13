@@ -107,7 +107,8 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
      *
      * The panel must never remain focusable merely because it is visible.
      *
-     * Any outside touch dismisses the panel back to the bubble.
+     * Outside touch releases Panel editing/window focus,
+     * but keeps the Panel visible.
      *
      * Never special-case host application package names.
      */
@@ -123,6 +124,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
 
     /** Compose 输入焦点清理回调（由 Panel 层注册，releasePanelInput 时调用） */
     private var clearComposeFocusCallback: (() -> Unit)? = null
+
+    /** 当前持有输入焦点的输入框 ID（null = 无输入框获焦） */
+    private var activeInputId: String? = null
 
     /**
      * 统一 Panel flags 计算函数：整个项目唯一允许计算 Panel Window flags 的入口。
@@ -181,6 +185,8 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
      * 关闭顺序：1.清 TextField Focus → 2.Hide IME → 3.Window → PASSIVE
      */
     private fun releasePanelInput(reason: String) {
+        // 0. 清空输入所有者
+        activeInputId = null
         // 1. 清理 Compose 输入焦点
         clearComposeFocusCallback?.invoke()
         // 2. 隐藏 IME（通过清除焦点自动隐藏，此处兜底）
@@ -193,7 +199,8 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     }
 
     /**
-     * 统一 Panel 收起入口：所有外点 / 收起按钮 / 模式切换关闭都走此方法。
+     * 统一 Panel 收起入口：收起按钮 / 模式切换关闭走此方法。
+     * 注意：ACTION_OUTSIDE 不走此方法（只释放输入不关 Panel）。
      * 顺序：释放输入 → hidePanel（淡出动画）→ Bubble 恢复
      */
     private fun dismissPanelToBubble(reason: String) {
@@ -419,6 +426,8 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     private fun onBubbleDrag(dx: Float, dy: Float) {
         // 半隐藏态拖拽：先回弹，再继续拖
         if (bubbleHidden) showBubbleFromEdge()
+        // LB-LIFE-02：用户开始新拖动时立即取消旧吸边动画，防旧 target 被提交
+        cancelBubbleAnimation()
         val cv = bubbleView ?: return
         val p = bubbleParams ?: return
         val screenW = resources.displayMetrics.widthPixels
@@ -463,6 +472,10 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     private fun animateBubbleTo(targetX: Int, targetY: Int, onDone: ((Int, Int) -> Unit)? = null) {
         val cv = bubbleView ?: return
         val p = bubbleParams ?: return
+
+        // LB-LIFE-02：先取消旧动画，再读取当前位置作为新动画起点
+        cancelBubbleAnimation()
+
         val startX = p.x
         val startY = p.y
         if (startX == targetX && startY == targetY) {
@@ -470,27 +483,43 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             return
         }
 
-        bubbleAnim?.cancel()  // E3：取消上一个位移动画，防堆积
-        bubbleAnim = ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = if (reducedMotion) 0L else AppConfig.BUBBLE_SNAP_MS.toLong()
-            interpolator = FastOutSlowInInterpolator()
-            addUpdateListener {
-                val f = it.animatedValue as Float
-                p.x = startX + ((targetX - startX) * f).toInt()
-                p.y = startY + ((targetY - startY) * f).toInt()
-                runCatching { wm.updateViewLayout(cv, p) }
-                if (isPanelShowing) repositionPanel()
-            }
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    p.x = targetX
-                    p.y = targetY
-                    runCatching { wm.updateViewLayout(cv, p) }
-                    onDone?.invoke(targetX, targetY)
-                }
-            })
-            start()
+        val animator = ValueAnimator.ofFloat(0f, 1f)
+        var cancelled = false
+        animator.duration = if (reducedMotion) 0L else AppConfig.BUBBLE_SNAP_MS.toLong()
+        animator.interpolator = FastOutSlowInInterpolator()
+        animator.addUpdateListener {
+            val f = it.animatedValue as Float
+            p.x = startX + ((targetX - startX) * f).toInt()
+            p.y = startY + ((targetY - startY) * f).toInt()
+            runCatching { wm.updateViewLayout(cv, p) }
+            if (isPanelShowing) repositionPanel()
         }
+        animator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationCancel(animation: Animator) {
+                cancelled = true
+            }
+            override fun onAnimationEnd(animation: Animator) {
+                // LB-LIFE-02：取消导致的 onAnimationEnd 不允许提交旧 target
+                if (cancelled) return
+                // 实例身份保护：避免旧 animation callback 清掉后来创建的新 animation 引用
+                if (bubbleAnim === animation) {
+                    bubbleAnim = null
+                }
+                p.x = targetX
+                p.y = targetY
+                runCatching { wm.updateViewLayout(cv, p) }
+                onDone?.invoke(targetX, targetY)
+            }
+        })
+        bubbleAnim = animator
+        animator.start()
+    }
+
+    /** LB-LIFE-02：统一取消吸边动画——先清引用再 cancel，防 listener 操作已失效引用 */
+    private fun cancelBubbleAnimation() {
+        val anim = bubbleAnim ?: return
+        bubbleAnim = null
+        anim.cancel()
     }
 
     // ═══════════ 闲置计时（第2轮：4s 半透明降遮挡；第3轮：8s 滑出半隐藏） ═══════════
@@ -607,6 +636,29 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     private var bubbleAnim: ValueAnimator? = null   // E3：持有引用，onDestroy 取消防泄漏
     private var isPanelHiding = false
 
+    // ═══════════ LB-LIFE-01: 输入框焦点所有权 ═══════════
+
+    /** 输入意图：用户触碰了某个输入框 → 立即接管 activeInputId 并进入编辑态 */
+    private fun onPanelInputIntent(inputId: String) {
+        activeInputId = inputId
+        enterPanelEditing("input_intent:$inputId")
+    }
+
+    /**
+     * 焦点变化：只有当前 activeInputId 的失焦才允许退出 EDITING。
+     * 如果 activeInputId 已经被新输入框接管，则忽略旧输入框的 blur。
+     */
+    private fun onPanelInputFocusChanged(inputId: String, focused: Boolean) {
+        if (focused) {
+            activeInputId = inputId
+            return
+        }
+        if (activeInputId == inputId) {
+            activeInputId = null
+            exitPanelEditing("input_blur:$inputId")
+        }
+    }
+
     private fun hidePanel() {
         // BUG 修复：防重入——退出动画期间重复触发会堆积动画导致卡顿
         if (isPanelHiding) return
@@ -707,16 +759,11 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                     OverlayTextToolbarHost(toolbar = overlayToolbar) {
                         LoveBrainPanelScreen(
                             viewModel = viewModel,
-                            onFocusChange = { focused ->
-                                // 失焦 → 退出编辑态回到 PASSIVE（Panel 不关闭）
-                                // 获焦 → 不负责进入 EDITING（由 onInputIntent 负责，避免鸡生蛋问题）
-                                if (!focused && panelFocusMode == PanelFocusMode.EDITING) {
-                                    exitPanelEditing("input_blur")
-                                }
+                            onInputFocusChange = { inputId, focused ->
+                                onPanelInputFocusChanged(inputId, focused)
                             },
-                            onInputIntent = {
-                                // 用户明确触碰了输入框，准备开始输入 → 进入编辑态
-                                enterPanelEditing("input_intent")
+                            onInputIntent = { inputId ->
+                                onPanelInputIntent(inputId)
                             },
                             onClearComposeFocus = { callback ->
                                 // 注册 Compose 焦点清理回调，releasePanelInput 时调用

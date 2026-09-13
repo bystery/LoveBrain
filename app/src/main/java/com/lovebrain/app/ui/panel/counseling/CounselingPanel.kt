@@ -63,7 +63,11 @@ fun CounselingPanel(
     viewModel: LoveBrainViewModel,
     onFocusChange: (Boolean) -> Unit,
     onInputIntent: (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    // LB-LIFE-01：追问输入框独立焦点回调与输入意图
+    onFollowUpFocusChange: ((Boolean) -> Unit)? = null,
+    onFollowUpInputIntent: (() -> Unit)? = null,
+    inputId: String = "counseling_main"
 ) {
     val draft by viewModel.counselingDraft.collectAsStateWithLifecycle()
     val result by viewModel.counselingResult.collectAsStateWithLifecycle()
@@ -407,12 +411,12 @@ fun CounselingPanel(
                                         .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
                                         // 编辑意图：追问输入框同样需要进入 EDITING
                                         // 使用 pointerInput 检测 Press 事件但不消费
-                                        .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
+                                        .then(if (onFollowUpInputIntent != null) Modifier.pointerInput(Unit) {
                                             awaitPointerEventScope {
                                                 while (true) {
                                                     val event = awaitPointerEvent()
                                                     if (event.changes.any { it.pressed }) {
-                                                        onInputIntent()
+                                                        onFollowUpInputIntent()
                                                     }
                                                 }
                                             }
@@ -433,7 +437,15 @@ fun CounselingPanel(
                                         maxLines = 3,
                                         textStyle = AppTypography.bodySmall.copy(color = TextPrimary),
                                         cursorBrush = SolidColor(Primary),
-                                        modifier = Modifier.fillMaxWidth()
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .then(
+                                                if (onFollowUpFocusChange != null) {
+                                                    Modifier.onFocusChanged { state ->
+                                                        onFollowUpFocusChange(state.isFocused)
+                                                    }
+                                                } else Modifier
+                                            )
                                     )
                                 }
                                 Spacer(Modifier.width(Spacing.sm))

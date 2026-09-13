@@ -63,7 +63,9 @@ fun ReplyInput(
     // ：主动发态复用输入行三参——默认值保回复态行为逐字不变
     showRoleChips: Boolean = true,
     showAddButton: Boolean = true,
-    placeholderOverride: String? = null
+    placeholderOverride: String? = null,
+    // LB-LIFE-01：输入框身份令牌（目前仅用于文档追踪，实际透传由调用方完成）
+    inputId: String = "reply"
 ) {
     val isEditing = editingIndex >= 0
 
