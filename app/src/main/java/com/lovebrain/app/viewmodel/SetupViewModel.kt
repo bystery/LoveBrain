@@ -8,9 +8,11 @@ import com.lovebrain.app.data.HttpsTrustGuard
 import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.util.L
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.withContext
 
 /**
  * 设置页 ViewModel（：工单式模型供应商管理）。
@@ -48,11 +50,158 @@ class SetupViewModel(
     /** 表单保存错误文案；保存成功时清空。文案为固定字符串，不拼用户输入 */
     val formError: StateFlow<String?> = _formError.asStateFlow()
 
+    /** URL-01：保存中状态（探测 endpoint 时 UI 显示 loading） */
+    private val _saving = MutableStateFlow(false)
+    val saving: StateFlow<Boolean> = _saving.asStateFlow()
+
     /** 保存前信任判定：委托 [HttpsTrustGuard] 纯判定，与单测共用；返回固定拦截文案，null=放行 */
     private fun checkBaseUrlTrust(baseUrl: String): String? =
         runCatching { HttpsTrustGuard.enforce(baseUrl) }.exceptionOrNull()?.message
 
+    /**
+     * UX-02：供应商真正就绪态（与 LoveBrainViewModel.providerReady 同一判定）。
+     * 蓝点 = 工单存在 && 模型非空 && Key 非空；不完整 = 灰点。
+     * 在 _activeTicket / _tickets 变更时同步刷新。
+     */
+    private val _providerReady = MutableStateFlow(computeReady())
+    val providerReady: StateFlow<Boolean> = _providerReady.asStateFlow()
+
+    private fun computeReady(): Boolean {
+        val ticket = _activeTicket.value ?: return false
+        if (ticket.model.isBlank()) return false
+        return !securePrefs.getWorkerApiKey(ticket.id).isNullOrBlank()
+    }
+
+    /** 每次工单变更后同步刷新就绪态 */
+    private fun refreshReadyState() {
+        _providerReady.value = computeReady()
+    }
+
+    /**
+     * UX-02：供 UI 查询指定工单是否就绪（列表行蓝/灰）。
+     */
+    fun isTicketReady(ticket: ProviderTicket): Boolean =
+        ticket.model.isNotBlank() &&
+            !securePrefs.getWorkerApiKey(ticket.id).isNullOrBlank()
+
     // ──────────────── 供应商 CRUD（多模型批：一供应商多模型 + 设为当前） ────────────────
+
+    /**
+     * URL-01 + UX-01：带 endpoint 自动探测的供应商保存（新建 + 编辑统一入口）。
+     *
+     * 保存前验证：
+     * - 新建：名称 + URL + 至少一个模型 + API Key 四项齐全
+     * - 编辑：名称 + URL + 至少一个模型；API Key 留空保留原 Key
+     *
+     * 验证通过后自动探测 endpoint：
+     * - 成功 → 保存完整 endpoint 到 ProviderTicket.baseUrl，关闭弹窗
+     * - 失败 → 弹窗不关闭，formError 显示具体原因
+     */
+    suspend fun saveTicketWithProbe(
+        ticketId: String?,
+        name: String,
+        baseUrl: String,
+        models: List<String>,
+        apiKey: String,
+        thinkingMode: Int
+    ): Boolean = withContext(Dispatchers.IO) {
+        // ── 基础验证 ──
+        if (name.isBlank()) {
+            _formError.value = "供应商名称不能为空"
+            return@withContext false
+        }
+        if (baseUrl.isBlank()) {
+            _formError.value = "接口地址不能为空"
+            return@withContext false
+        }
+        val cleanModels = models.map { it.trim() }.filter { it.isNotBlank() }.distinct()
+        if (cleanModels.isEmpty()) {
+            _formError.value = "请至少添加一个模型"
+            return@withContext false
+        }
+        // UX-01：新建时 Key 必填；编辑时 Key 留空保留原 Key
+        val effectiveKey = if (ticketId != null && apiKey.isBlank()) {
+            securePrefs.getWorkerApiKey(ticketId).orEmpty()
+        } else {
+            apiKey.trim()
+        }
+        if (effectiveKey.isBlank()) {
+            _formError.value = "请填写 API Key"
+            return@withContext false
+        }
+
+        // ── HttpsTrustGuard 拦截 ──
+        val violation = checkBaseUrlTrust(baseUrl)
+        if (violation != null) {
+            _formError.value = violation
+            return@withContext false
+        }
+
+        _formError.value = null
+        _saving.value = true
+
+        // ── URL-01：endpoint 自动探测 ──
+        val testModel = cleanModels.first()
+        val result = deepSeekRepo.testConnectionWithProbe(effectiveKey, testModel, baseUrl)
+
+        _saving.value = false
+
+        if (!result.success) {
+            _formError.value = result.message ?: "连接失败，请检查配置"
+            return@withContext false
+        }
+
+        // ── 探测成功，保存完整 endpoint ──
+        val resolvedUrl = result.resolvedUrl!!
+        val effectiveThinking = if (ticketId != null) {
+            // 编辑：保留原 thinkingMode（UI 层可单独切换）
+            _tickets.value.find { it.id == ticketId }?.thinkingMode ?: thinkingMode
+        } else {
+            thinkingMode
+        }
+
+        if (ticketId == null) {
+            // 新建
+            val ticket = ProviderTicket(
+                name = name.trim(),
+                baseUrl = resolvedUrl,
+                model = cleanModels.first(),
+                models = cleanModels,
+                thinkingMode = effectiveThinking
+            )
+            val updated = _tickets.value + ticket
+            securePrefs.setWorkerTickets(updated)
+            securePrefs.saveWorkerApiKey(ticket.id, effectiveKey)
+            _tickets.value = updated
+            if (securePrefs.activeTicketId == null) {
+                securePrefs.activeTicketId = ticket.id
+            }
+        _activeTicket.value = resolveActiveTicket()
+        refreshReadyState()
+        L.w("工单已添加（URL已探测）：${ticket.name} → $resolvedUrl")
+        } else {
+            // 编辑
+            val updated = _tickets.value.map { t ->
+                if (t.id == ticketId) {
+                    t.copy(
+                        name = name.trim(),
+                        baseUrl = resolvedUrl,
+                        models = cleanModels,
+                        model = if (t.model in cleanModels) t.model else cleanModels.first()
+                    )
+                } else t
+            }
+            securePrefs.setWorkerTickets(updated)
+            securePrefs.saveWorkerApiKey(ticketId, effectiveKey)
+            _tickets.value = updated
+        _activeTicket.value = resolveActiveTicket()
+        refreshReadyState()
+        L.w("工单已更新（URL已探测）：$name → $resolvedUrl")
+        }
+
+        _formError.value = null
+        return@withContext true
+    }
 
     /** 新增供应商；首个自动激活。models 首个 = 当前生效模型 */
     fun addTicket(name: String, baseUrl: String, models: List<String>, apiKey: String) {
@@ -83,6 +232,7 @@ class SetupViewModel(
             securePrefs.activeTicketId = ticket.id
         }
         _activeTicket.value = resolveActiveTicket()
+        refreshReadyState()
         L.w("工单已添加：${ticket.name}")
     }
 
@@ -114,6 +264,7 @@ class SetupViewModel(
         }
         _tickets.value = updated
         _activeTicket.value = resolveActiveTicket()
+        refreshReadyState()
         L.w("工单已更新：$name")
     }
 
@@ -125,6 +276,7 @@ class SetupViewModel(
         securePrefs.setWorkerTickets(updated)
         _tickets.value = updated
         _activeTicket.value = resolveActiveTicket()
+        refreshReadyState()
     }
 
     /** 删除工单；若删除的是激活工单，激活态一并清空 */
@@ -138,6 +290,7 @@ class SetupViewModel(
         securePrefs.deleteWorkerApiKey(id)
         _tickets.value = updated
         _activeTicket.value = resolveActiveTicket()
+        refreshReadyState()
         L.w("工单已删除：$id")
     }
 
@@ -145,6 +298,7 @@ class SetupViewModel(
     fun activateTicket(id: String) {
         securePrefs.activeTicketId = id
         _activeTicket.value = resolveActiveTicket()
+        refreshReadyState()
     }
 
     /**
@@ -162,6 +316,7 @@ class SetupViewModel(
         securePrefs.setWorkerTickets(updated)
         _tickets.value = updated
         _activeTicket.value = resolveActiveTicket()
+        refreshReadyState()
     }
 
     /** 全局直出/思考兜底值（老工单 null 时的生效态回退读源， 继承契约； UI 接线） */

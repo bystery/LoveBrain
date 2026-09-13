@@ -5,6 +5,7 @@ import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.model.StreamEvent
 import com.lovebrain.app.util.L
+import com.lovebrain.app.util.OpenAiChatEndpointResolver
 import com.lovebrain.app.util.UsagePricer
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -96,6 +97,18 @@ data class ProviderRequestConfig(
     val baseUrl: String,
     val model: String,
     val thinkingMode: Int
+)
+
+/**
+ * URL-01：连接测试结果。
+ *
+ * 保存时自动探测 endpoint，成功后 [resolvedUrl] 携带完整 /chat/completions 地址。
+ * 失败时 [message] 提供具体原因供 UI 展示。
+ */
+data class ConnectionTestResult(
+    val success: Boolean,
+    val resolvedUrl: String? = null,
+    val message: String? = null
 )
 
 /**
@@ -524,6 +537,65 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
     // ═══════════ API 连接测试 ═══════════
 
     /**
+     * URL-01：带 endpoint 自动探测的连接测试（保存供应商时使用）。
+     *
+     * 用 [OpenAiChatEndpointResolver] 生成候选 URL 列表，逐个探测：
+     * - 404 / 405 → 继续下一个候选（主机到了，但路径不对）
+     * - 401 / 403 → Key / 权限问题，立即停止
+     * - 400 → 模型或请求参数问题，立即停止
+     * - 429 → 限流，立即停止
+     * - 5xx → 供应商服务异常，立即停止
+     * - DNS / 超时 → 网络问题，立即停止
+     *
+     * 成功时 [ConnectionTestResult.resolvedUrl] 携带完整 /chat/completions 地址，
+     * 调用方（SetupViewModel）将其存入 ProviderTicket.baseUrl。
+     * 正式生成阶段不再进行 URL 猜测，ProviderRequestConfig snapshot 逻辑完全不变。
+     */
+    suspend fun testConnectionWithProbe(
+        apiKey: String,
+        model: String,
+        baseUrl: String
+    ): ConnectionTestResult {
+        if (apiKey.isBlank() || baseUrl.isBlank()) {
+            return ConnectionTestResult(success = false, message = "API Key 和接口地址不能为空")
+        }
+        val testModel = model.ifBlank { AppConfig.DEFAULT_MODEL }
+        // normalizeBaseUrl 含脏数据拦截 + HttpsTrustGuard.enforce
+        val normalizedBase = try {
+            normalizeBaseUrl(baseUrl)
+        } catch (e: IllegalArgumentException) {
+            return ConnectionTestResult(success = false, message = e.message)
+        }
+
+        val candidates = OpenAiChatEndpointResolver.candidates(normalizedBase)
+        L.w("testConnectionWithProbe: candidates=${candidates.size} base=$normalizedBase")
+
+        for (url in candidates) {
+            L.w("testConnectionWithProbe: trying $url")
+            val result = probeEndpoint(apiKey, testModel, url)
+            when (result) {
+                is ProbeResult.Success -> {
+                    L.w("testConnectionWithProbe: resolved=$url")
+                    return ConnectionTestResult(success = true, resolvedUrl = url)
+                }
+                is ProbeResult.NotFound -> {
+                    // 404 / 405 → 继续下一个候选
+                    L.w("testConnectionWithProbe: ${result.code} on $url, trying next candidate")
+                    continue
+                }
+                is ProbeResult.Fatal -> {
+                    // 401/403/400/429/5xx/DNS/超时 → 立即停止
+                    return ConnectionTestResult(success = false, message = result.message)
+                }
+            }
+        }
+        return ConnectionTestResult(
+            success = false,
+            message = "无法连接到接口地址，请检查 URL 是否正确"
+        )
+    }
+
+    /**
      * 测试 API 连接是否有效：发送一个最小请求验证 apiKey/model/baseUrl 是否正确。
      * 不使用 securePrefs 中的配置，而是用传入的参数测试（允许用户先测试再保存）。
      *
@@ -582,7 +654,112 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
         return false
     }
 
+    /**
+     * URL-01：endpoint 探测结果密封类。
+     * Success = 连接成功；NotFound = 404/405 继续下一个候选；Fatal = 其他错误立即停止。
+     */
+    private sealed class ProbeResult {
+        data class Success(val url: String) : ProbeResult()
+        data class NotFound(val code: Int) : ProbeResult()
+        data class Fatal(val message: String) : ProbeResult()
+    }
+
+    /**
+     * URL-01：对单个 URL 发送极小请求探测。
+     * 404/405 → NotFound（继续下一个候选）
+     * 401/403 → Fatal（Key/权限问题）
+     * 400 → Fatal（模型或请求参数问题）
+     * 429 → Fatal（限流）
+     * 5xx → Fatal（供应商服务异常）
+     * DNS/超时 → Fatal（网络问题）
+     * 成功 → Success
+     */
+    private suspend fun probeEndpoint(apiKey: String, model: String, url: String): ProbeResult {
+        val body = buildJsonObject {
+            put("model", model)
+            put("temperature", 0.0)
+            put("max_tokens", 8)
+            put("messages", buildJsonArray {
+                add(buildJsonObject {
+                    put("role", "user")
+                    put("content", "hi")
+                })
+            })
+        }.toString()
+        val request = Request.Builder()
+            .url(url)
+            .header("Authorization", "Bearer $apiKey")
+            .header("Content-Type", "application/json")
+            .post(body.toRequestBody(JSON_MEDIA_TYPE))
+            .build()
+
+        return try {
+            val respBody = executeRequestWithCode(client, request)
+            val root = json.parseToJsonElement(respBody.body).jsonObject
+            if (root["choices"] != null) {
+                ProbeResult.Success(url)
+            } else {
+                ProbeResult.Fatal("接口返回异常，请检查模型名称是否正确")
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: HttpCodeException) {
+            when (e.code) {
+                404, 405 -> ProbeResult.NotFound(e.code)
+                401 -> ProbeResult.Fatal("API Key 无效，请检查密钥")
+                403 -> ProbeResult.Fatal("没有权限访问该接口，请检查 API Key 权限")
+                400 -> ProbeResult.Fatal("请求参数有误，请检查模型名称是否正确")
+                429 -> ProbeResult.Fatal("请求过于频繁，请稍后再试")
+                in 500..599 -> ProbeResult.Fatal("供应商服务异常（${e.code}），请稍后再试")
+                else -> ProbeResult.Fatal("连接失败（${e.code}）")
+            }
+        } catch (e: Exception) {
+            val msg = e.message ?: ""
+            val mapped = mapApiError(msg)
+            ProbeResult.Fatal(mapped)
+        }
+    }
+
     // ═══════════ 内部工具 ═══════════
+
+    /**
+     * URL-01：携带 HTTP 状态码的异常，供 [probeEndpoint] 区分 404/405 与其他错误。
+     */
+    private class HttpCodeException(val code: Int, message: String) : Exception(message)
+
+    /**
+     * URL-01：返回 HTTP 状态码 + body 的可取消请求执行。
+     * 成功（2xx）返回 [CodeBody]；非 2xx 抛 [HttpCodeException]（携带状态码 + body 摘要）。
+     * 网络失败抛原始 [IOException]。
+     */
+    private data class CodeBody(val code: Int, val body: String)
+
+    private suspend fun executeRequestWithCode(client: OkHttpClient, request: Request): CodeBody =
+        suspendCancellableCoroutine { cont ->
+            val call = client.newCall(request)
+            cont.invokeOnCancellation { call.cancel() }
+
+            call.enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    if (cont.isActive) {
+                        cont.resumeWithException(e)
+                    }
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    response.use { resp ->
+                        val body = resp.body?.string() ?: ""
+                        if (resp.isSuccessful) {
+                            if (cont.isActive) cont.resume(CodeBody(resp.code, body))
+                        } else {
+                            if (cont.isActive) cont.resumeWithException(
+                                HttpCodeException(resp.code, body.take(200))
+                            )
+                        }
+                    }
+                }
+            })
+        }
 
     /**
      * 可取消的异步请求执行。协程取消时自动 call.cancel()。

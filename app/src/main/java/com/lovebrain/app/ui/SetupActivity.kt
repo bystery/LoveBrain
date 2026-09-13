@@ -111,9 +111,25 @@ class SetupActivity : ComponentActivity() {
 
     private val viewModel: SetupViewModel by inject()
 
+    /**
+     * UX-03：用户主动点击“启动”后发现没有悬浮窗权限，跳授权页前标记。
+     * 授权后回 App 时 onResume 检测：如果已授权且标记为 true，自动完成启动。
+     * 避免用户授权后还需再点一次。
+     */
+    private var pendingOverlayStart = false
+
+    /**
+     * UX-03：记录用户点击启动时想打开的面板模式（null = 仅启动悬浮球）。
+     * 授权回来后如果非 null，自动启动并请求对应面板。
+     */
+    private var pendingPanelMode: Int? = null
+    private var pendingShowPlan: Boolean = false
+
     /** 启动悬浮窗服务。返回是否真正启动（未授权时跳授权页并返回 false） */
     private fun startFloatingService(): Boolean {
         if (!Settings.canDrawOverlays(this)) {
+            // UX-03：标记用户主动点了启动，授权回来后自动完成
+            pendingOverlayStart = true
             startActivity(
                 Intent(
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -129,8 +145,27 @@ class SetupActivity : ComponentActivity() {
 
     /** 首页功能卡片直达：启动悬浮窗 + 通知服务打开面板对应功能 */
     private fun openPanelFromHome(mode: Int, showPlan: Boolean) {
-        if (!startFloatingService()) return  // 未授权 → 已跳授权页，授权后回首页再点一次即可
+        if (!startFloatingService()) {
+            // UX-03：记录用户想打开的面板模式
+            pendingPanelMode = mode
+            pendingShowPlan = showPlan
+            return
+        }
         EventBus.requestPanel(mode, showPlan)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // UX-03：授权回来后自动完成刚才的启动动作
+        if (pendingOverlayStart && Settings.canDrawOverlays(this)) {
+            pendingOverlayStart = false
+            ContextCompat.startForegroundService(this, Intent(this, FloatingService::class.java))
+            // 如果用户当时是想打开某个面板
+            pendingPanelMode?.let { mode ->
+                EventBus.requestPanel(mode, pendingShowPlan)
+                pendingPanelMode = null
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -381,13 +416,18 @@ private fun HomeTabContent(
                     Spacer(Modifier.width(Spacing.sm))
                 }
                 Switch(
-                    checked = captureEnabled,
+                    checked = accessibilityGranted && captureEnabled,
+                    enabled = accessibilityGranted,
                     onCheckedChange = { viewModel.toggleCapture() },
                     colors = SwitchDefaults.colors(
                         checkedTrackColor = Primary,
                         checkedThumbColor = Color.White,
                         uncheckedTrackColor = Neutral300.copy(alpha = 0.5f),
-                        uncheckedThumbColor = Color.White
+                        uncheckedThumbColor = Color.White,
+                        disabledCheckedTrackColor = Primary.copy(alpha = 0.4f),
+                        disabledCheckedThumbColor = Color.White,
+                        disabledUncheckedTrackColor = Neutral300.copy(alpha = 0.3f),
+                        disabledUncheckedThumbColor = Color.White.copy(alpha = 0.6f)
                     )
                 )
             }
@@ -506,6 +546,7 @@ private fun FeatureCard(
 private fun ProviderSection(viewModel: SetupViewModel) {
     val tickets by viewModel.tickets.collectAsStateWithLifecycle()
     val activeTicket by viewModel.activeTicket.collectAsStateWithLifecycle()
+    val providerReady by viewModel.providerReady.collectAsStateWithLifecycle()
     var editing by remember { mutableStateOf<ProviderTicket?>(null) }
     var showAdd by remember { mutableStateOf(false) }
     var pendingDelete by remember { mutableStateOf<ProviderTicket?>(null) }
@@ -546,13 +587,13 @@ private fun ProviderSection(viewModel: SetupViewModel) {
                         .fillMaxWidth()
                         .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                 ) {
-                    // 状态点：有激活=蓝实心；未配置=灰
+                    // UX-02：状态点真正 Ready=蓝；不完整=灰
                     Box(
                         modifier = Modifier
                             .size(SetupDimens.STATUS_DOT_SIZE_DP.dp)
                             .clip(CircleShape)
                             .background(
-                                if (activeTicket != null) Primary else Neutral300
+                                if (providerReady) Primary else Neutral300
                             )
                     )
                     Spacer(Modifier.width(Spacing.md))
@@ -565,7 +606,9 @@ private fun ProviderSection(viewModel: SetupViewModel) {
                             maxLines = 1
                         )
                         Text(
-                            activeTicket?.model?.ifBlank { "未选模型" } ?: "点右侧展开添加",
+                            if (activeTicket == null) "点右侧展开添加"
+                            else if (!providerReady) "配置不完整"
+                            else activeTicket?.model?.ifBlank { "未选模型" } ?: "未选模型",
                             style = AppTypography.labelSmall,
                             color = TextHint,
                             maxLines = 1
@@ -704,7 +747,7 @@ private fun ProviderEditDialog(
     var name by remember { mutableStateOf(ticket?.name.orEmpty()) }
     var baseUrl by remember { mutableStateOf(ticket?.baseUrl.orEmpty()) }
     var key by remember { mutableStateOf("") }
-    var keyVisible by remember { mutableStateOf(true) }
+    var keyVisible by remember { mutableStateOf(false) }
     var thinking by remember { mutableStateOf((ticket?.thinkingMode ?: viewModel.globalThinking) == 1) }
     var models by remember { mutableStateOf(ticket?.models.orEmpty()) }
     var currentModel by remember { mutableStateOf(ticket?.model.orEmpty()) }
@@ -760,8 +803,8 @@ private fun ProviderEditDialog(
                 Text("供应商名称", style = AppTypography.labelMedium, color = TextSecondary)
                 CompactInput(value = name, onValueChange = { name = it }, placeholder = "名称")
 
-                Text("接口地址", style = AppTypography.labelMedium, color = TextSecondary)
-                CompactInput(value = baseUrl, onValueChange = { baseUrl = it }, placeholder = "支持 OpenAI 协议")
+                Text("接口地址（自动补全）", style = AppTypography.labelMedium, color = TextSecondary)
+                CompactInput(value = baseUrl, onValueChange = { baseUrl = it }, placeholder = "https://api.example.com")
                 if (!formError.isNullOrEmpty()) {
                     Text("✗ $formError", style = AppTypography.labelSmall, color = Error)
                 }
@@ -881,7 +924,7 @@ private fun ProviderEditDialog(
                 }
                 testResult?.let { (m, ok) ->
                     Text(
-                        if (ok) "✓ $m 连接成功" else "✗ $m 连接失败，请检查配置",
+                        if (ok) "✓ 连接成功，接口已自动补全" else "✗ $m 连接失败，请检查配置",
                         style = AppTypography.labelSmall,
                         color = if (ok) Success else Error
                     )
@@ -893,23 +936,36 @@ private fun ProviderEditDialog(
                         onClick = onDismiss,
                         modifier = Modifier.weight(1f).height(AppDimens.INPUT_ROW_HEIGHT_DP.dp)
                     ) { Text("取消", style = AppTypography.labelLarge, color = TextSecondary) }
+                    val saving by viewModel.saving.collectAsStateWithLifecycle()
                     Button(
                         onClick = {
-                            if (ticket == null) {
-                                viewModel.addTicket(name, baseUrl, models, key)
-                            } else {
-                                viewModel.updateTicket(ticket.id, name, baseUrl, models, key)
-                            }
-                            // ：违规时 formError 非空 → 弹窗不关、就地提示
-                            if (viewModel.formError.value == null && name.isNotBlank() && baseUrl.isNotBlank()) {
-                                onDismiss()
+                            scope.launch {
+                                val thinkingInt = if (thinking) 1 else 0
+                                val success = viewModel.saveTicketWithProbe(
+                                    ticket?.id, name, baseUrl, models, key.trim(), thinkingInt
+                                )
+                                if (success) onDismiss()
                             }
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White),
                         shape = LoveBrainShape.md,
-                        enabled = name.isNotBlank() && baseUrl.isNotBlank(),
+                        enabled = !saving &&
+                            name.isNotBlank() &&
+                            baseUrl.isNotBlank() &&
+                            models.isNotEmpty() &&
+                            (ticket != null || key.isNotBlank()),
                         modifier = Modifier.weight(1f).height(AppDimens.INPUT_ROW_HEIGHT_DP.dp)
-                    ) { Text(if (ticket == null) "保存" else "保存修改", style = AppTypography.labelLarge) }
+                    ) {
+                        if (saving) {
+                            CircularProgressIndicator(
+                                color = Color.White,
+                                modifier = Modifier.size(16.dp),
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            Text(if (ticket == null) "保存" else "保存修改", style = AppTypography.labelLarge)
+                        }
+                    }
                 }
             }
         }
