@@ -5,6 +5,7 @@ import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.PromptBuilder.ConfigValidationResult
 import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.data.KnowledgeRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -66,6 +67,10 @@ class ProfileConfirmTest {
         knowledgeRepo = mockk(relaxed = true)
         coEvery { knowledgeRepo.getActive() } returns
             KnowledgeBase(name = "kb1", displayName = "她", active = true)
+        coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
+        coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
+        coEvery { knowledgeRepo.listAll() } returns
+            listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
         val promptBuilder = mockk<PromptBuilder>()
         every { promptBuilder.validateConfig(any(), any()) } returns
             ConfigValidationResult(0, 0, emptyList())
@@ -84,7 +89,7 @@ class ProfileConfirmTest {
     fun parse_failure_keeps_card_and_warns() = runTest {
         val vm = newViewModel()
         advanceUntilIdle() // init 内 refreshKnowledgeBases 排空（_activeKb 就位）
-        vm.onProfileSuggestion("建议摘要", "not-a-json")
+        vm.onProfileSuggestion(ProfileSuggestion(kbName = "kb1", display = "建议摘要", rawJson = "not-a-json"))
 
         vm.confirmProfileUpdate()
         advanceUntilIdle()
@@ -92,18 +97,24 @@ class ProfileConfirmTest {
         // 卡片保留（可重试）+ 弱警告置位（固定文案）
         assertNotNull(vm.profileSuggestion.value, "解析失败不得清卡")
         assertEquals("建议解析失败，可重试或忽略", vm.panelWarning.value)
-        vm.dispose()
     }
 
     @Test
     fun parse_success_clears_card_and_writes() = runTest {
         val vm = newViewModel()
         advanceUntilIdle()
-        vm.onProfileSuggestion("建议摘要", """{"me":"新的我","stage_changed":false}""")
+        vm.onProfileSuggestion(ProfileSuggestion(kbName = "kb1", display = "建议摘要", rawJson = """{"me":"新的我","stage_changed":false}"""))
 
         vm.confirmProfileUpdate()
         advanceUntilIdle()
         // 成功才清卡 + 写库 + 通知（withContext(Dispatchers.IO) 走真实线程，轮询等回派虚拟主调度器）
+        //  KBG-02：confirmProfileUpdate 内部先 listAll 检查 KB 存在性（走 Dispatchers.IO），轮询等待
+        repeat(100) {
+            if (vm.profileSuggestion.value != null) {
+                Thread.sleep(10)
+                advanceUntilIdle()
+            }
+        }
         assertNull(vm.profileSuggestion.value, "解析成功应清卡")
         repeat(100) {
             if (vm.kbNotice.value == null) {
@@ -112,7 +123,6 @@ class ProfileConfirmTest {
             }
         }
         coVerify { knowledgeRepo.writeFile("kb1", "understand/me.md", "新的我") }
-        assertEquals("画像已更新", vm.kbNotice.value)
-        vm.dispose()
+        assertEquals("已更新知识库「kb1」的画像", vm.kbNotice.value)
     }
 }

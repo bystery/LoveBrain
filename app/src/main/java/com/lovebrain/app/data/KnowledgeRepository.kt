@@ -159,6 +159,13 @@ class KnowledgeRepository(
         }
     }
 
+    /** KBG-01：判断知识库是否真实存在（目录存在 + kb.json 存在）。调用方必须已持有文件互斥锁或处于单线程路径 */
+    private fun kbExistsUnlocked(kbName: String): Boolean {
+        val dir = File(knowledgeRoot, kbName)
+        val meta = File(dir, "kb.json")
+        return dir.isDirectory && meta.isFile
+    }
+
     /** 锁区内写入核心：不抢锁。调用方必须已持有文件互斥锁（Mutex 非重入，锁内再抢=永久挂起） */
     private fun writeFileUnlocked(kbName: String, relativePath: String, content: String) {
         val file = File(File(knowledgeRoot, kbName), relativePath)
@@ -313,22 +320,37 @@ class KnowledgeRepository(
         ""
     }
 
-    /** 线程安全的文件追加（fileMutex 锁 + I/O 线程；A2-5 合并原 appendFileSafe） */
+    /** 线程安全的文件追加（fileMutex 锁 + I/O 线程；A2-5 合并原 appendFileSafe）
+     *  KBG-01：目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
     suspend fun appendFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("appendFile skipped: kb no longer exists")
+                return@withLock
+            }
             appendFileUnlocked(kbName, relativePath, content)
         }
     }
 
-    /** 线程安全的文件写入（fileMutex 锁 + I/O 线程；A2-5 合并原 writeFileSafe） */
+    /** 线程安全的文件写入（fileMutex 锁 + I/O 线程；A2-5 合并原 writeFileSafe）
+     *  KBG-01：目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
     suspend fun writeFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("writeFile skipped: kb no longer exists")
+                return@withLock
+            }
             writeFileUnlocked(kbName, relativePath, content)
         }
     }
 
+    /**  KBG-01：目标 KB 已删除时 no-op */
     suspend fun incrementTurnCount(kbName: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("incrementTurnCount skipped: kb no longer exists")
+                return@withLock
+            }
             val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
             if (metaFile.exists()) {
                 runCatching {
@@ -367,9 +389,14 @@ class KnowledgeRepository(
         }
     }
 
-    /** 设置知识库阶段标签（onboarding 推断 / 向量重估触发阶段变化时用）。写入前经 StageCatalog 归一化 */
+    /** 设置知识库阶段标签（onboarding 推断 / 向量重估触发阶段变化时用）。写入前经 StageCatalog 归一化
+     *  KBG-01：目标 KB 已删除时 no-op */
     suspend fun updateStage(kbName: String, stage: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("updateStage skipped: kb no longer exists")
+                return@withLock
+            }
             updateStageUnlocked(kbName, stage)
         }
     }
@@ -411,9 +438,14 @@ class KnowledgeRepository(
         result
     }
 
-    /** 就地更新 warmth.md 的五维状态向量数值 */
+    /** 就地更新 warmth.md 的五维状态向量数值
+     *  KBG-01：目标 KB 已删除时 no-op */
     suspend fun writeVector(kbName: String, values: Map<String, Int>) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("writeVector skipped: kb no longer exists")
+                return@withLock
+            }
             val path = "understand/warmth.md"
             var warmth = readFile(kbName, path)
             if (warmth.isBlank()) return@withLock
@@ -428,9 +460,14 @@ class KnowledgeRepository(
         }
     }
 
-    /** 就地更新 warmth.md 的阶段标签行（阶段变化时用），保留旧值作为历史注释。写入前经 StageCatalog 归一化 */
+    /** 就地更新 warmth.md 的阶段标签行（阶段变化时用），保留旧值作为历史注释。写入前经 StageCatalog 归一化
+     *  KBG-01：目标 KB 已删除时 no-op */
     suspend fun updateWarmthStageLabel(kbName: String, newStage: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("updateWarmthStageLabel skipped: kb no longer exists")
+                return@withLock
+            }
             updateWarmthStageLabelUnlocked(kbName, newStage)
         }
     }
@@ -491,9 +528,14 @@ class KnowledgeRepository(
     /**
      * 谈心日志两段式追加：recordEntry 写入「# 谈心记录」节，analysisEntry 写入「# 军师分析」节。
      * 固定代码写入、全量不截断。旧格式文件（没有两个 # 大标题）自动迁移：旧内容并入第一节。
+     *  KBG-01：目标 KB 已删除时 no-op
      */
     suspend fun appendCounselingEntries(kbName: String, recordEntry: String, analysisEntry: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("appendCounselingEntries skipped: kb no longer exists")
+                return@withLock
+            }
             val path = "memory/counseling_log.md"
             val lines = readFile(kbName, path).lines()
             val idx1 = lines.indexOfFirst { it.trim() == counselingH1 }

@@ -265,7 +265,7 @@ fun LoveBrainPanelScreen(
 
             if (profileSuggestion != null) {
                 ProfileSuggestionCard(
-                    suggestion = profileSuggestion.orEmpty(),
+                    suggestion = profileSuggestion?.display.orEmpty(),
                     onConfirm = { viewModel.confirmProfileUpdate() },
                     onDismiss = { viewModel.dismissProfileUpdate() }
                 )

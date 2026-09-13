@@ -3,6 +3,7 @@ package com.lovebrain.app.domain
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.StageSuggestion
 import com.lovebrain.app.util.L
 import com.lovebrain.app.util.TimeFmt
@@ -44,14 +45,15 @@ class KnowledgeTriggerCoordinator(
     private val topicRecorder: TopicRecorder
 ) {
 
-    /** 回调接口——VM 实现此接口，Coordinator 通过它写回 UI 状态 */
+    /** 回调接口——VM 实现此接口，Coordinator 通过它写回 UI 状态
+     *  KBG-02/KBG-03：所有后台结果回调携带 originating kbName，防串库 */
     interface Callbacks {
-        fun onVectorUpdated(newVector: Map<String, Int>, delta: Map<String, Int>)
-        fun onVectorUpdateNotice(summary: String)
+        fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>)
+        fun onVectorUpdateNotice(kbName: String, summary: String)
         fun onStageSuggestion(suggestion: StageSuggestion)
         fun onKbNotice(notice: String)
-        fun onProfileSuggestion(display: String, rawJson: String)
-        fun onCurrentVector(vector: Map<String, Int>)
+        fun onProfileSuggestion(suggestion: ProfileSuggestion)
+        fun onCurrentVector(kbName: String, vector: Map<String, Int>)
     }
 
     /**
@@ -148,8 +150,8 @@ class KnowledgeTriggerCoordinator(
                     }
                     knowledgeRepo.appendFile(kbName, "memory/vector_history.md", histEntry + "\n")
                 }
-                callbacks.onCurrentVector(newVector)
-                callbacks.onVectorUpdated(newVector, newVector.mapValues { (k, v) -> v - (oldVector[k] ?: v) })
+                callbacks.onCurrentVector(kbName, newVector)
+                callbacks.onVectorUpdated(kbName, newVector, newVector.mapValues { (k, v) -> v - (oldVector[k] ?: v) })
 
                 // 生成变化摘要（只列变化的维度）
                 val labelMap = mapOf(
@@ -167,7 +169,7 @@ class KnowledgeTriggerCoordinator(
                 if (changes.isNotEmpty()) {
                     val summary = "五维更新：" + changes.joinToString("｜") +
                         (if (reason.isNotBlank()) "\n依据：$reason" else "")
-                    callbacks.onVectorUpdateNotice(summary)
+                    callbacks.onVectorUpdateNotice(kbName, summary)
                     val time = TimeFmt.now()
                     knowledgeRepo.appendFile(kbName, "memory/reflect_history.md",
                         "\n\n### [$time] 五维向量变化\n$summary")
@@ -239,8 +241,11 @@ class KnowledgeTriggerCoordinator(
                 }.getOrDefault(raw.take(PROFILE_FALLBACK_LIMIT))
 
                 callbacks.onProfileSuggestion(
-                    display.ifBlank { "画像更新建议已生成，点击确认写入。" },
-                    raw
+                    ProfileSuggestion(
+                        kbName = kbName,
+                        display = display.ifBlank { "画像更新建议已生成，点击确认写入。" },
+                        rawJson = raw
+                    )
                 )
 
                 val time = TimeFmt.now()

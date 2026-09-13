@@ -19,6 +19,7 @@ import com.lovebrain.app.model.ProactiveOption
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.StageSuggestion
 import com.lovebrain.app.model.SuggestTip
 import com.lovebrain.app.util.Jsons
@@ -101,9 +102,9 @@ class LoveBrainViewModel(
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
 
-    private val _profileSuggestion = MutableStateFlow<String?>(null)
-    val profileSuggestion: StateFlow<String?> = _profileSuggestion.asStateFlow()
-    private var profileRawJson: String? = null
+    //  KBG-02：ProfileSuggestion 作为单一事实源，携带 originating kbName
+    private val _profileSuggestion = MutableStateFlow<ProfileSuggestion?>(null)
+    val profileSuggestion: StateFlow<ProfileSuggestion?> = _profileSuggestion.asStateFlow()
 
     /** 知识库后台操作的临时提示（如经验提取完成），在悬浮窗内短暂展示 */
     private val _kbNotice = MutableStateFlow<String?>(null)
@@ -616,12 +617,15 @@ class LoveBrainViewModel(
 
     // ═══════════ KnowledgeTriggerCoordinator.Callbacks 实现 ═══════════
 
-    override fun onVectorUpdated(newVector: Map<String, Int>, delta: Map<String, Int>) {
+    //  KBG-03：只让当前 KB 的 vector 回调更新 UI
+    override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {
+        if (_activeKb.value?.name != kbName) return
         _currentVector.value = newVector
         _vectorDelta.value = delta
     }
 
-    override fun onVectorUpdateNotice(summary: String) {
+    override fun onVectorUpdateNotice(kbName: String, summary: String) {
+        if (_activeKb.value?.name != kbName) return
         _vectorUpdate.value = summary
     }
 
@@ -633,18 +637,21 @@ class LoveBrainViewModel(
         _kbNotice.value = notice
     }
 
-    override fun onProfileSuggestion(display: String, rawJson: String) {
-        _profileSuggestion.value = display.ifBlank { "画像更新建议已生成，点击确认写入。" }
-        profileRawJson = rawJson
+    //  KBG-02：画像建议绑定 originating KB，不丢弃身份
+    override fun onProfileSuggestion(suggestion: ProfileSuggestion) {
+        _profileSuggestion.value = suggestion
     }
 
-    override fun onCurrentVector(vector: Map<String, Int>) {
+    //  KBG-03：只让当前 KB 的 vector 回调更新 UI
+    override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {
+        if (_activeKb.value?.name != kbName) return
         _currentVector.value = vector
     }
 
+    //  KBG-02：确认画像时使用 suggestion.kbName，不使用 _activeKb
     fun confirmProfileUpdate() {
-        val kb = _activeKb.value ?: return
-        val rawJson = profileRawJson ?: return
+        val suggestion = _profileSuggestion.value ?: return
+        val rawJson = suggestion.rawJson
 
         //  ：先解析后清卡——解析失败保留卡片 + 弱警告（可重试），成功才清卡写库
         val parsed = runCatching {
@@ -654,10 +661,22 @@ class LoveBrainViewModel(
             showPanelWarning("建议解析失败，可重试或忽略")
             return
         }
-        _profileSuggestion.value = null
-        profileRawJson = null
+
+        val kbName = suggestion.kbName
 
         viewModelScope.launch {
+            //  KBG-01+KBG-02 交汇：如果建议所属 KB 已被删除 → 不写盘、不复活、清卡 + 提示
+            val exists = withContext(Dispatchers.IO) {
+                knowledgeRepo.listAll().any { it.name == kbName }
+            }
+            if (!exists) {
+                _profileSuggestion.value = null
+                showPanelWarning("原知识库已删除，这条画像建议已失效")
+                return@launch
+            }
+
+            _profileSuggestion.value = null
+
             val meContent = parsed["me"]?.jsonPrimitive?.content
             val herContent = parsed["her"]?.jsonPrimitive?.content
             val warmthContent = parsed["warmth"]?.jsonPrimitive?.content
@@ -666,31 +685,31 @@ class LoveBrainViewModel(
 
             withContext(Dispatchers.IO) {
                 if (!meContent.isNullOrBlank()) {
-                    knowledgeRepo.writeFile(kb.name, "understand/me.md", meContent)
+                    knowledgeRepo.writeFile(kbName, "understand/me.md", meContent)
                 }
                 if (!herContent.isNullOrBlank()) {
-                    knowledgeRepo.writeFile(kb.name, "understand/her.md", herContent)
+                    knowledgeRepo.writeFile(kbName, "understand/her.md", herContent)
                 }
                 if (!warmthContent.isNullOrBlank()) {
-                    knowledgeRepo.writeFile(kb.name, "understand/warmth.md", warmthContent)
-                    val currentVec = _currentVector.value
-                    if (currentVec.isNotEmpty()) {
-                        knowledgeRepo.writeVector(kb.name, currentVec)
+                    knowledgeRepo.writeFile(kbName, "understand/warmth.md", warmthContent)
+                    //  KBG-03：画像确认时读取目标 KB 自己的 vector，不使用 UI 全局 _currentVector
+                    val targetVector = knowledgeRepo.readVector(kbName)
+                    if (targetVector.isNotEmpty()) {
+                        knowledgeRepo.writeVector(kbName, targetVector)
                     }
                 }
                 if (stageChanged && !newStage.isNullOrBlank()) {
-                    knowledgeRepo.updateStage(kb.name, newStage)
+                    knowledgeRepo.updateStage(kbName, newStage)
                 }
             }
 
-            _kbNotice.value = "画像已更新"
+            _kbNotice.value = "已更新知识库「$kbName」的画像"
             refreshKnowledgeBases()
         }
     }
 
     fun dismissProfileUpdate() {
         _profileSuggestion.value = null
-        profileRawJson = null
     }
 
     // ═══════════ 谈心模式（委托 GenerationEngine） ═══════════
