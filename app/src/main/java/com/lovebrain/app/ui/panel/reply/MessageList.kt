@@ -66,10 +66,11 @@ fun MessageList(
     val scope = rememberCoroutineScope()
 
     var draggedIndex by remember { mutableStateOf<Int?>(null) }
-    // 长消息折叠状态：记录哪些 index 的消息已展开
+    // 长消息折叠状态：记录哪些消息已展开
     // 调研依据：NN/G 10 Heuristics #6 Recognition rather than recall——长消息默认折叠关键信息，
     // 用户按需展开查看全文，减少视觉噪音
-    val expandedMessages = remember { mutableStateMapOf<Int, Boolean>() }
+    // RB-02：按 msg.id 而非 index 存储，避免重排/删除后展开状态串到别的消息
+    val expandedMessages = remember { mutableStateMapOf<String, Boolean>() }
 
     // 删除动画：× 点击 → 先播放退场（200ms 向右滑出+淡出），动画结束后再真正移除
     // 用按消息ID的 Map 支持快速连续删除多个 item（旧方案用单个 index，连续点击会取消前一个的计时器）
@@ -285,7 +286,7 @@ LaunchedEffect(messages.size) {
                 // 长消息折叠：超过阈值时默认折叠，点击展开/收起
                 // 调研依据：NN/G Progressive Disclosure——长文本先展示摘要，按需展开详情
                 val COLLAPSE_THRESHOLD = 80
-                val isExpanded = expandedMessages[index] == true
+                val isExpanded = expandedMessages[msg.id] == true
                 val shouldFold = msg.content.length > COLLAPSE_THRESHOLD
                 val displayText = if (shouldFold && !isExpanded) {
                     msg.content.take(COLLAPSE_THRESHOLD)
@@ -310,7 +311,7 @@ LaunchedEffect(messages.size) {
                             modifier = Modifier
                                 // ：间距并入 clickable 覆盖区（先声明为外层），热区 16+8=24dp
                                 .clickable {
-                                    expandedMessages[index] = !(expandedMessages[index] ?: false)
+                                    expandedMessages[msg.id] = !(expandedMessages[msg.id] ?: false)
                                 }
                                 .padding(vertical = Spacing.sm)
                         )

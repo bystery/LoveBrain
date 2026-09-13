@@ -43,8 +43,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.lovebrain.app.AppConfig
@@ -158,16 +161,23 @@ fun FloatingBubble(
     )
 
     // ═══ 半隐藏露边呼吸（只露 12dp 时靠呼吸感维持存在感，防误以为闪退） ═══
-    val breathTransition = rememberInfiniteTransition(label = "bubbleBreath")
-    val breathAlpha by breathTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 0.5f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1400, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "bubbleBreathAlpha"
-    )
+    // RB-03：仅当 edgeBreathing 且非 reduceMotion 时才创建无限动画，避免废弃功能永久空转
+    val breathAlpha =
+        if (state.edgeBreathing && !reduceMotion) {
+            val transition = rememberInfiniteTransition(label = "bubbleBreath")
+            val alpha by transition.animateFloat(
+                initialValue = 1f,
+                targetValue = 0.5f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(1400, easing = FastOutSlowInEasing),
+                    repeatMode = RepeatMode.Reverse
+                ),
+                label = "bubbleBreathAlpha"
+            )
+            alpha
+        } else {
+            1f
+        }
     Box(modifier = Modifier.size(mainSize.dp)) {
         // ─── 未读角标（主球右上角；纯红点无数字，z 轴高于主球——需求#14/调节9） ───
         val badgeScale = remember { Animatable(1f) }
@@ -250,16 +260,27 @@ fun FloatingBubble(
                     indication = null,
                     onClick = { /* 点击已由父级 drag 判定，此处仅收集按压态 */ }
                 )
-                // 无障碍：语义随状态变化（TalkBack 可读）
-                .semantics {
-                    contentDescription = "打开军师悬浮窗"
+                // RB-01：用 clearAndSetSemantics 提供真正的 accessibility onClick action
+                // TalkBack 双击走 semantics onClick，普通手指走 pointerInput，各走各的不冲突
+                .clearAndSetSemantics {
+                    contentDescription =
+                        if (state.badgeCount > 0) {
+                            "打开军师悬浮窗，有${state.badgeCount}条新消息"
+                        } else {
+                            "打开军师悬浮窗"
+                        }
+                    role = Role.Button
+                    onClick(label = "打开军师悬浮窗") {
+                        onBubbleClick()
+                        true
+                    }
                 }
                 .graphicsLayer {
                     // 入场缩放 × 按压/拖拽缩放；闲置半透明 × 露边呼吸
                     val enterScale = 0.7f + 0.3f * enterAnim.value
                     scaleX = enterScale * pressScale
                     scaleY = enterScale * pressScale
-                    alpha = enterAnim.value * dimAlpha * if (state.edgeBreathing && !reduceMotion) breathAlpha else 1f
+                    alpha = enterAnim.value * dimAlpha * breathAlpha
                 },
             contentAlignment = Alignment.Center
         ) {

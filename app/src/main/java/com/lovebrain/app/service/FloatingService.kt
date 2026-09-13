@@ -7,12 +7,15 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.graphics.PixelFormat
+import android.os.Build
 import android.os.IBinder
+import android.os.PersistableBundle
 import android.os.SystemClock
 import android.provider.Settings
 import androidx.core.app.NotificationCompat
@@ -915,7 +918,16 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
 
     private fun copyToClipboard(text: String) {
         val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        cm.setPrimaryClip(android.content.ClipData.newPlainText("军师回复", text))
+        val clip = android.content.ClipData.newPlainText("军师回复", text)
+        // RB-04：标记为敏感内容，隐藏 Android 13+ 系统剪贴板浮层预览
+        val extras = PersistableBundle()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            extras.putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true)
+        } else {
+            extras.putBoolean("android.content.extra.IS_SENSITIVE", true)
+        }
+        clip.description.extras = extras
+        cm.setPrimaryClip(clip)
         // ：复制成功可见反馈（固定文案，不含用户内容）
         Toast.makeText(this, "已复制", Toast.LENGTH_SHORT).show()
         // A4 修复：不再写 recentClips——复制的是军师回复，不是捕获的消息，不应影响捕获去重
