@@ -3,14 +3,20 @@ package com.lovebrain.app.service
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.graphics.PixelFormat
 import android.os.IBinder
 import android.os.SystemClock
 import android.provider.Settings
+import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -64,6 +70,10 @@ import org.koin.android.ext.android.inject
 class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStateRegistryOwner {
 
     companion object {
+        private const val OVERLAY_CHANNEL_ID = "lovebrain_overlay"
+        private const val OVERLAY_NOTIFICATION_ID = 1001
+        private const val ACTION_STOP = "com.lovebrain.app.action.STOP_FLOATING"
+
         /** 供外部查询服务是否存活 */
         @Volatile
         var instance: FloatingService? = null
@@ -230,8 +240,12 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // v7 零保活：START_NOT_STICKY = 服务被杀后系统不再重建。
-        // 无 FGS、无 STICKY、无自重启。服务完全由用户手动开关。
+        // RA-01：停止 Action —— 用户从通知点「停止」时直接 stopSelf
+        if (intent?.action == ACTION_STOP) {
+            stopSelf()
+            return START_NOT_STICKY
+        }
+        // 仍然 START_NOT_STICKY = 服务被杀后系统不再重建。无保活、无自重启。
         return START_NOT_STICKY
     }
 
@@ -253,6 +267,15 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         instance = this
         L.init(this)
         L.w("=== FloatingService onCreate (v5 Koin+EventBus) ===")
+
+        // RA-01：尽快进入前台服务状态，不等 IO / AI 初始化
+        ensureNotificationChannel()
+        ServiceCompat.startForeground(
+            this,
+            OVERLAY_NOTIFICATION_ID,
+            buildOverlayNotification(),
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+        )
 
         // 暗色模式已删，全站固定亮色
 
@@ -314,6 +337,8 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         lifecycleRegistry.currentState = Lifecycle.State.CREATED
         lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
         store.clear()
+        // RA-01：销毁时确保前台状态结束
+        stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy()
     }
 
@@ -894,6 +919,47 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         // ：复制成功可见反馈（固定文案，不含用户内容）
         Toast.makeText(this, "已复制", Toast.LENGTH_SHORT).show()
         // A4 修复：不再写 recentClips——复制的是军师回复，不是捕获的消息，不应影响捕获去重
+    }
+
+    // ═══════════ RA-01: 前台服务通知 ═══════════
+
+    private fun ensureNotificationChannel() {
+        val channel = NotificationChannel(
+            OVERLAY_CHANNEL_ID,
+            "LoveBrain 悬浮助手",
+            NotificationManager.IMPORTANCE_LOW  // 生命周期通知，不响铃、不震动、不 badge
+        ).apply {
+            description = "悬浮助手运行状态通知"
+            setShowBadge(false)
+            enableVibration(false)
+            setSound(null, null)
+        }
+        val nm = getSystemService(NotificationManager::class.java)
+        nm.createNotificationChannel(channel)
+    }
+
+    private fun buildOverlayNotification(): android.app.Notification {
+        val contentIntent = PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, SetupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val stopIntent = PendingIntent.getService(
+            this,
+            1,
+            Intent(this, FloatingService::class.java).setAction(ACTION_STOP),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        return NotificationCompat.Builder(this, OVERLAY_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_bubble)
+            .setContentTitle("LoveBrain 悬浮助手正在运行")
+            .setContentText("悬浮球已开启，点此返回设置")
+            .setContentIntent(contentIntent)
+            .addAction(0, "停止", stopIntent)
+            .setOngoing(true)
+            .setSilent(true)
+            .build()
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()

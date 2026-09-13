@@ -434,25 +434,51 @@ class KnowledgeBaseActivity : ComponentActivity() {
      * - 不直接写 knowledge/ 树：解压中途磁盘满/进程被杀不会残留半截坏库
      * - 校验三关：顶层恰一个目录 / kb.json 可解码且 name==顶层目录名（与  同判据）/ 无同名碰撞
      * - 任一失败 = 整体中止并清理暂存目录，异常上抛复用现有「导入失败：」提示
+     *  RA-04：严格 ZIP 路径边界（带 File.separator 的 startsWith）+ 解压大小限制防 zip bomb
      */
     private fun unzipToKnowledge(zis: ZipInputStream, knowledgeRoot: File) {
         val stagingRoot = File(cacheDir, "kb_import_${System.currentTimeMillis()}")
         stagingRoot.mkdirs()
         try {
-            // 1. 解压（entry 级 canonical 防护原样保留，根改为暂存根）
+            // 1. 解压（RA-04：严格路径防护 + 大小限制）
             val canonicalStaging = stagingRoot.canonicalPath
+            val safePrefix = canonicalStaging + File.separator
+            var entryCount = 0
+            var totalBytes = 0L
             var entry = zis.nextEntry
             while (entry != null) {
+                entryCount++
+                if (entryCount > MAX_IMPORT_ENTRIES) {
+                    throw IllegalStateException("ZIP 包含过多条目（上限 $MAX_IMPORT_ENTRIES）")
+                }
                 val outFile = File(stagingRoot, entry.name)
-                if (!outFile.canonicalPath.startsWith(canonicalStaging)) {
-                    entry = zis.nextEntry
-                    continue
+                // RA-04：用 canonicalPath + File.separator 严格判断，防 prefix collision
+                val targetPath = outFile.canonicalPath
+                require(targetPath.startsWith(safePrefix)) {
+                    throw IllegalStateException("ZIP 包含非法路径：${entry.name}")
                 }
                 if (entry.isDirectory) {
                     outFile.mkdirs()
                 } else {
                     outFile.parentFile?.mkdirs()
-                    FileOutputStream(outFile).use { fos -> zis.copyTo(fos) }
+                    // RA-04：逐 entry 统计实际解压字节，不信任 ZipEntry.size
+                    var entryBytes = 0L
+                    val buffer = ByteArray(8 * 1024)
+                    FileOutputStream(outFile).use { fos ->
+                        while (true) {
+                            val read = zis.read(buffer)
+                            if (read < 0) break
+                            entryBytes += read
+                            totalBytes += read
+                            require(entryBytes <= MAX_IMPORT_ENTRY_BYTES) {
+                                throw IllegalStateException("ZIP 条目过大（单文件上限 ${MAX_IMPORT_ENTRY_BYTES / 1024 / 1024} MiB）")
+                            }
+                            require(totalBytes <= MAX_IMPORT_TOTAL_BYTES) {
+                                throw IllegalStateException("ZIP 解压总大小超限（上限 ${MAX_IMPORT_TOTAL_BYTES / 1024 / 1024} MiB）")
+                            }
+                            fos.write(buffer, 0, read)
+                        }
+                    }
                 }
                 entry = zis.nextEntry
             }
@@ -487,6 +513,13 @@ class KnowledgeBaseActivity : ComponentActivity() {
             runCatching { stagingRoot.deleteRecursively() }
             throw e
         }
+    }
+
+    // RA-04：ZIP 解压安全限制常量
+    companion object {
+        private const val MAX_IMPORT_ENTRIES = 2048
+        private const val MAX_IMPORT_ENTRY_BYTES = 16L * 1024 * 1024
+        private const val MAX_IMPORT_TOTAL_BYTES = 64L * 1024 * 1024
     }
 }
 

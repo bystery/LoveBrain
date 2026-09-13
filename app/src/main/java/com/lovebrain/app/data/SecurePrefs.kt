@@ -189,6 +189,16 @@ class SecurePrefs(context: Context) {
         get() = prefs.getBoolean(KEY_CAPTURE_ENABLED, true)
         set(value) = prefs.edit().putBoolean(KEY_CAPTURE_ENABLED, value).apply()
 
+    // ═══ RA-02：无障碍隐私披露 consent 版本号 ═══
+
+    /**
+     * 无障碍隐私披露 consent 版本号。用户明确点击「同意并继续」后写入当前版本。
+     * 披露内容发生重要变化时递增 CURRENT_DISCLOSURE_VERSION 即可重新要求确认。
+     */
+    var accessibilityDisclosureVersion: Int
+        get() = prefs.getInt(KEY_ACCESSIBILITY_DISCLOSURE_VERSION, 0)
+        set(value) = prefs.edit().putInt(KEY_ACCESSIBILITY_DISCLOSURE_VERSION, value).apply()
+
     // ═══════════ 工单系统字段（ - ）════════════
 
     /** 工单列表 JSON（非敏感元数据） */
@@ -307,6 +317,8 @@ class SecurePrefs(context: Context) {
         private const val KEY_PANEL_HEIGHT = "panel_height"
         // 消息捕获开关
         private const val KEY_CAPTURE_ENABLED = "capture_enabled"
+        // RA-02：无障碍隐私披露 consent 版本号
+        private const val KEY_ACCESSIBILITY_DISCLOSURE_VERSION = "accessibility_disclosure_version"
 
         // 工单系统键
         private const val KEY_TICKER_LIST_JSON = "worker_tickets_json"

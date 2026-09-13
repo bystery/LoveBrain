@@ -23,6 +23,9 @@ import java.io.File
 class CopyCaptureService : AccessibilityService() {
 
     companion object {
+        /** RA-02：当前隐私披露版本。递增此值可强制用户重新确认。 */
+        const val CURRENT_DISCLOSURE_VERSION = 1
+
         @Volatile
         var instance: CopyCaptureService? = null
             private set
@@ -163,6 +166,14 @@ class CopyCaptureService : AccessibilityService() {
                 else -> "TYPE$type"
             }
             appendDiag("SWITCH_OFF|type=$typeTag")
+            return
+        }
+
+        // RA-02：无 consent 时不读取节点文字——旧版本用户已开启无障碍但未确认新披露时也拦截
+        val consentVersion = securePrefs?.accessibilityDisclosureVersion ?: 0
+        if (consentVersion < CURRENT_DISCLOSURE_VERSION) {
+            clearPending("disclosure_not_confirmed")
+            appendDiag("CONSENT_PENDING|version=$consentVersion")
             return
         }
 

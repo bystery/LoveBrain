@@ -205,6 +205,16 @@ class SetupViewModel(
     }
 
     /**
+     * RA-02：用户明确点击「同意并继续」后写入当前披露版本号。
+     * CopyCaptureService 在 consent 版本 < CURRENT_DISCLOSURE_VERSION 时不处理消息内容。
+     */
+    fun confirmAccessibilityDisclosure() {
+        securePrefs.accessibilityDisclosureVersion =
+            com.lovebrain.app.service.CopyCaptureService.CURRENT_DISCLOSURE_VERSION
+        L.w("accessibility disclosure confirmed: version=${com.lovebrain.app.service.CopyCaptureService.CURRENT_DISCLOSURE_VERSION}")
+    }
+
+    /**
      *  ：无障碍授权状态判定（只读）。
      * ui 不直读系统设置（分层保持）：本应用捕获服务组件在已启用无障碍服务列表内 = 已授权。
      * 组件全限定名与 Manifest 声明同步维护（本项目唯一无障碍服务）。

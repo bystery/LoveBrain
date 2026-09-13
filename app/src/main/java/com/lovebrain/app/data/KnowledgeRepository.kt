@@ -49,8 +49,9 @@ class KnowledgeRepository(
         knowledgeRoot.mkdirs()
         // 启动时自动备份（使用 applicationScope 替代 GlobalScope，生命周期可管理）
         // : 所有 launch 必须包 SupervisorJob + ExceptionHandler
+        // RA-03：备份经 fileMutex 序列化，与 delete 互斥防竞态
         appScope.launch(Dispatchers.IO + SupervisorJob()) {
-            runCatching { backupIfNeededAsync() }.onFailure { err ->
+            runCatching { backupIfNeeded() }.onFailure { err ->
                 com.lovebrain.app.util.L.e("backup init failed", err)
             }
         }
@@ -67,7 +68,7 @@ class KnowledgeRepository(
             delay(backupDebounceMs)
             // 再次确认：delay 期间没有新的写入（时间戳没变）
             if (System.currentTimeMillis() - lastWriteTimestamp.get() >= backupDebounceMs - 100L) {
-                runCatching { backupIfNeededAsync() }.onFailure { err ->
+                runCatching { backupIfNeeded() }.onFailure { err ->
                     com.lovebrain.app.util.L.e("debounce backup failed", err)
                 }
             }
@@ -77,10 +78,20 @@ class KnowledgeRepository(
     // ═══════════ 自动备份 ═══════════
 
     /**
-     * 自动备份：如果距上次备份超过 12 小时，复制所有知识库到 .backup/目录。
-     * 供 init 块调用（非 suspend），在 IO 线程异步执行。
+     * RA-03：序列化备份过程——与 delete 共用 fileMutex，防止并发竞态。
+     * 备份最多 12 小时一次、知识库主要是文本，短暂锁住文件更新的成本可接受。
      */
-    private fun backupIfNeededAsync() {
+    private suspend fun backupIfNeeded() {
+        fileMutex.withLock {
+            backupIfNeededUnlocked()
+        }
+    }
+
+    /**
+     * 自动备份核心（无锁）：如果距上次备份超过 12 小时，复制所有知识库到 .backup/目录。
+     * 调用方必须已持有 fileMutex。
+     */
+    private fun backupIfNeededUnlocked() {
         val marker = File(knowledgeRoot, ".last_backup")
         val now = System.currentTimeMillis()
         val lastBackup = if (marker.exists()) runCatching { marker.readText().toLong() }.getOrDefault(0L) else 0L
@@ -281,7 +292,8 @@ class KnowledgeRepository(
         }
     }
 
-    /** 删除知识库（/：物理删除——UI 已有确认步骤，不再进 .trash 永久残留隐私数据） */
+    /** 删除知识库（/：物理删除——UI 已有确认步骤，不再进 .trash 永久残留隐私数据）
+     *  RA-03：delete 成功后同时删除该 KB 的全部 backup，防止私密副本残留 */
     suspend fun delete(name: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             val dir = File(knowledgeRoot, name)
@@ -293,6 +305,10 @@ class KnowledgeRepository(
             val ok = dir.deleteRecursively()
             // 清理旧版本遗留的 .trash（若存在），一次性腾空
             File(knowledgeRoot, ".trash").takeIf { it.exists() }?.deleteRecursively()
+            // RA-03：正式目录删除成功后才删 backup，防止删 backup 后正式目录删失败导致备份丢失
+            if (ok) {
+                deleteBackupsForKbUnlocked(name)
+            }
             if (ok && securePrefs.activeKbName == name) {
                 val next = knowledgeRoot.listFiles()
                     ?.filter { it.isDirectory && !it.name.startsWith(".") }
@@ -305,6 +321,20 @@ class KnowledgeRepository(
             }
             ok
         }
+    }
+
+    /**
+     * RA-03：删除指定 KB 的全部自动备份。使用 backupGroupKey 精确匹配，不用 startsWith 防误删。
+     * 调用方必须已持有 fileMutex。
+     */
+    private fun deleteBackupsForKbUnlocked(kbName: String) {
+        val backupRoot = File(knowledgeRoot, ".backup")
+        backupRoot.listFiles()
+            ?.filter { it.isDirectory }
+            ?.filter { backupGroupKey(it.name) == kbName }
+            ?.forEach {
+                runCatching { it.deleteRecursively() }
+            }
     }
 
     /** 读取文件（自动兼容新旧路径） */

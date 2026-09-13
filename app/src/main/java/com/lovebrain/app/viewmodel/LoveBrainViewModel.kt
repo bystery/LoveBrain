@@ -836,6 +836,10 @@ class LoveBrainViewModel(
                     knowledgeRepo.migrateIfNeeded(it.name)
                     _currentVector.value = knowledgeRepo.readVector(it.name)
                 }
+                // CARRY-09：删除最后一个 KB 时 newKb==null，旧 _currentVector 未被清空
+                if (newKb == null) {
+                    _currentVector.value = emptyMap()
+                }
             }.onFailure { L.w("refreshKnowledgeBases failed: ${it::class.simpleName}") }
         }
     }

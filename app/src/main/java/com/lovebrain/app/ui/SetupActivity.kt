@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.content.ContextCompat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -121,8 +122,8 @@ class SetupActivity : ComponentActivity() {
             )
             return false
         }
-        // v7 零保活：普通后台服务 startService（无 FGS）
-        startService(Intent(this, FloatingService::class.java))
+        // RA-01：使用 startForegroundService 启动前台服务（specialUse FGS）
+        ContextCompat.startForegroundService(this, Intent(this, FloatingService::class.java))
         return true
     }
 
@@ -204,6 +205,9 @@ private fun HomeTabContent(
         captureLifecycleOwner.lifecycle.addObserver(observer)
         onDispose { captureLifecycleOwner.lifecycle.removeObserver(observer) }
     }
+
+    // RA-02：无障碍隐私披露 Dialog 状态
+    var showAccessibilityDisclosure by remember { mutableStateOf(false) }
 
     val scrollState = rememberScrollState()
 
@@ -361,10 +365,10 @@ private fun HomeTabContent(
                         color = TextHint
                     )
                 }
-                //  ：去授权入口（仅未授权显示，跳系统无障碍设置页）
+                //  ：去授权入口（仅未授权显示）
                 if (!accessibilityGranted) {
                     TextButton(
-                        onClick = { context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) },
+                        onClick = { showAccessibilityDisclosure = true },
                         modifier = Modifier.height(SetupDimens.ROW_ACTION_HEIGHT_DP.dp)
                     ) {
                         Text(
@@ -392,6 +396,20 @@ private fun HomeTabContent(
         // ── 模型供应商（多模型批 /：主页直接管理，弹窗编辑，一供应商多模型）──
         ProviderSection(viewModel)
         }
+    }
+
+    // RA-02：无障碍隐私披露 Dialog
+    if (showAccessibilityDisclosure) {
+        AccessibilityDisclosureDialog(
+            onAgree = {
+                showAccessibilityDisclosure = false
+                viewModel.confirmAccessibilityDisclosure()
+                context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+            },
+            onDismiss = {
+                showAccessibilityDisclosure = false
+            }
+        )
     }
 }
 
@@ -945,4 +963,39 @@ private fun IconAction(
 }
 
 /** 紧凑圆角单行输入框已上提至 ui/common/CompactInput.kt（问卷页与供应商弹窗共用） */
+
+// ═════════════════════════════════════════════════════════════
+// RA-02：无障碍隐私披露 Dialog
+// ═════════════════════════════════════════════════════════════
+
+@Composable
+private fun AccessibilityDisclosureDialog(
+    onAgree: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("开启消息捕获前，请确认", style = AppTypography.titleLarge) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                Text("LoveBrain 会接收长按与窗口变化事件，并读取相关界面节点文字，用于判断你主动长按的消息以及\u201c复制\u201d菜单。", style = AppTypography.bodyMedium, color = TextSecondary)
+                Text("用于把你主动选择的聊天内容加入悬浮窗，从而生成回复建议。", style = AppTypography.bodyMedium, color = TextSecondary)
+                Text("当你请求 AI 回复时，相关聊天文字和所需知识上下文会发送给你在 LoveBrain 中配置的 AI 模型供应商。", style = AppTypography.bodyMedium, color = TextSecondary)
+                Text("捕获内容可在后续操作中写入 LoveBrain 本地知识库，例如聊天归档、谈心记录和画像更新所需的数据。", style = AppTypography.bodyMedium, color = TextSecondary)
+                HorizontalDivider(thickness = AppDimens.BORDER_WIDTH_DP.dp, color = Border.copy(alpha = 0.5f))
+                Text("LoveBrain 不会通过无障碍服务自动点击、自动发送消息。你可以随时关闭\u201c消息捕获\u201d，或在系统设置中撤销无障碍权限。", style = AppTypography.labelMedium, color = TextHint)
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onAgree) {
+                Text("同意并继续", color = Primary, style = AppTypography.titleMedium, fontWeight = FontWeight.SemiBold)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
+            }
+        }
+    )
+}
 

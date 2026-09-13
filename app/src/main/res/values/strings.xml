@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LoveBrain</string>
-    <string name="accessibility_capture_desc">LoveBrain 无障碍服务：监听你在任意聊天 App 中长按消息的动作与弹出的菜单（复制/转发/删除等），读取所点文本用于生成回复建议。仅处理长按与菜单弹出两类事件，不记录屏幕其他内容，不保存聊天记录。关闭服务后所有监听即刻停止。</string>
+    <string name="accessibility_capture_desc">LoveBrain 消息捕获服务：在你开启消息捕获后，监听聊天 App 中的长按与窗口变化事件，并读取相关节点文本，用于识别你主动长按且出现"复制"菜单的消息。捕获到的文字会进入 LoveBrain 悬浮窗；当你请求 AI 回复时，相关内容会发送给你配置的模型供应商；当你完成一轮并保存时，部分内容可能写入本地知识库。服务不会自动点击或发送消息。你可以随时关闭消息捕获或在系统设置中撤销无障碍权限。</string>
 </resources>
