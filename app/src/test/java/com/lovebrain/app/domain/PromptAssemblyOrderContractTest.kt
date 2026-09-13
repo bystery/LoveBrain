@@ -287,16 +287,14 @@ class PromptAssemblyOrderContractTest {
         every { dsk.parseReplyResponse(any()) } returns LoveBrainResponse(response = ReplySchemes(recommended = "r"))
 
         val callbacks = mockk<GenerationEngine.Callbacks>(relaxed = true)
-        every { callbacks.getMessages() } returns twoMsgs
         every { callbacks.isGenerating() } returns false
         every { callbacks.getActiveKb() } returns kb
-        every { callbacks.getUserHint() } returns ""
         every { callbacks.getOutputMode() } returnsMany listOf(0, 1)
 
         val engine = GenerationEngine(dsk, pb)
         runBlocking {
-            engine.generate(this, callbacks).join()
-            engine.generate(this, callbacks).join()
+            engine.generate(twoMsgs, "", this, callbacks)?.join()
+            engine.generate(twoMsgs, "", this, callbacks)?.join()
         }
 
         assertEquals("generateStream 应被调用两次", 2, systems.size)

@@ -127,6 +127,7 @@ class GenerationEngine(
         fun onReplyStart()
         fun onReplyStreamingCoreText(chunk: String)
         fun onReplyStreamingSchemes(schemes: List<Scheme>)
+        fun onReplyStreamingSchemesReset()
         fun onReplyResult(result: GenerateResult)
         fun onReplyPanelState(state: PanelState)
         fun onReplyGenerating(isGenerating: Boolean, isGeneratingCore: Boolean)
@@ -169,15 +170,24 @@ class GenerationEngine(
 
     // ═══════════ 回复生成（主生成） ═══════════
 
-    fun generate(scope: CoroutineScope, callbacks: Callbacks): Job {
-        val msgs = callbacks.getMessages()
-        if (msgs.isEmpty() || callbacks.isGenerating()) return scope.launch { }
+    /**
+     * GEN-01：返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。
+     * GEN-02：messages 由 ViewModel 传入冻结快照，Engine 不再从 callbacks.getMessages() 获取可能漂移的实时列表。
+     * userHint 同样由 ViewModel 从同一快照收集后传入，保证本轮所有上下文同源。
+     */
+    fun generate(
+        messages: List<ChatMessage>,
+        userHint: String,
+        scope: CoroutineScope,
+        callbacks: Callbacks
+    ): Job? {
+        if (messages.isEmpty() || callbacks.isGenerating()) return null
 
         callbacks.onReplyStart()
         callbacks.onReplyPanelState(PanelState.AI_LOADING)
         callbacks.onReplyGenerating(true, true)
         callbacks.onReplyStreamingCoreTextReset()
-        callbacks.onReplyStreamingSchemes(emptyList())
+        callbacks.onReplyStreamingSchemesReset()
 
         val t0 = System.currentTimeMillis()
         L.w("PERF t0 click generate")
@@ -186,13 +196,12 @@ class GenerationEngine(
             val aggressive = callbacks.getOutputMode() == 1
             val system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt() }
             val user = withContext(Dispatchers.IO) {
-                promptBuilder.buildReplyUserPrompt(callbacks.getActiveKb(), msgs, callbacks.getUserHint(), aggressive)
+                promptBuilder.buildReplyUserPrompt(callbacks.getActiveKb(), messages, userHint, aggressive)
             }
             L.w("PERF t1 prompt built (+${System.currentTimeMillis() - t0}ms), user=${user.length} chars")
 
             var fullText = ""
             var errorMsg: String? = null
-            val rawBuffer = StringBuilder()
             var timedOut = false
             // /：thinking 降级与重试共用 GENERATE_MAX_ATTEMPTS=4 总预算（3→4 使候选 ④ none 可达）
             var thinkingShapeIndex = 0
@@ -202,6 +211,8 @@ class GenerationEngine(
 
             while (attemptsUsed < AppConfig.GENERATE_MAX_ATTEMPTS) {
                 attemptsUsed++
+                // GEN-04：每个 attempt 拥有独立 rawBuffer，防上一次失败 attempt 的 partial JSON 污染下一次 retry
+                val rawBuffer = StringBuilder()
                 if (attemptsUsed > 1) {
                     //  修复：区分参数降级 / 网络超时 / 网络重试的文案口径，不再一律误报"网络波动"
                     val degradeMsg = when {
@@ -212,6 +223,8 @@ class GenerationEngine(
                     callbacks.onReplyStreamingCoreText(degradeMsg)
                     delay(DEGRADE_HINT_HOLD_MS)
                     callbacks.onReplyStreamingCoreTextReset()
+                    // GEN-04：retry 前清理上一次 attempt 的流式方案卡
+                    callbacks.onReplyStreamingSchemesReset()
                 }
                 try {
                     val thinkingOverride = if (timedOut) 0 else null
@@ -307,8 +320,9 @@ class GenerationEngine(
 
     // ═══════════ 谈心模式 ═══════════
 
-    fun generateCounseling(userMessage: String, scope: CoroutineScope, callbacks: Callbacks): Job {
-        if (userMessage.isBlank() || callbacks.isCounseling()) return scope.launch { }
+    /** GEN-01：返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。 */
+    fun generateCounseling(userMessage: String, scope: CoroutineScope, callbacks: Callbacks): Job? {
+        if (userMessage.isBlank() || callbacks.isCounseling()) return null
 
         callbacks.onCounselingStart()
 
@@ -370,14 +384,15 @@ class GenerationEngine(
 
     // ═══════════ 今日锦囊 ═══════════
 
-    fun generateSuggest(scope: CoroutineScope, callbacks: Callbacks): Job {
+    /** GEN-01：返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。 */
+    fun generateSuggest(scope: CoroutineScope, callbacks: Callbacks): Job? {
         val kb = callbacks.getActiveKb()
         if (kb == null) {
             // ：无 KB 不做死路——锦囊区给引导提示
             callbacks.onSuggestError("还没有知识库，请先到设置页创建")
-            return scope.launch { }
+            return null
         }
-        if (callbacks.isSuggesting()) return scope.launch { }
+        if (callbacks.isSuggesting()) return null
 
         callbacks.onSuggestStart()
 
@@ -433,8 +448,9 @@ class GenerationEngine(
 
     // ═══════════ 主动发起/润色 ═══════════
 
-    fun generateProactive(draft: String, scene: String, scope: CoroutineScope, callbacks: Callbacks): Job {
-        if (callbacks.isProactive()) return scope.launch { }
+    /** GEN-01：返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。 */
+    fun generateProactive(draft: String, scene: String, scope: CoroutineScope, callbacks: Callbacks): Job? {
+        if (callbacks.isProactive()) return null
 
         callbacks.onProactiveStart()
 
