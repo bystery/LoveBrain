@@ -896,12 +896,14 @@ private fun DualGenerateRow(
         }
     } else {
         // P1-5: 非生成状态始终显示双入口——"记入知识库"已移入结果工具区
+        // P0-FIX: hasReplyResult 只在 REPLY 模式下才影响左按钮——避免主动发结果展示时左按钮变成"重试"
+        val replyResultVisible = resultMode == LoveBrainViewModel.ResultMode.REPLY && hasReplyResult
         Row(
             modifier = modifier.fillMaxWidth().padding(vertical = Spacing.xs),
             horizontalArrangement = Arrangement.spacedBy(PanelDimens.GENERATE_BUTTON_GAP_DP.dp)
         ) {
             // Left: 生成回复 / 重试（有回复结果时变为重试）
-            val replyEnabled = messageCount > 0 || hasReplyResult
+            val replyEnabled = messageCount > 0 || replyResultVisible
             val (replyInteraction, replyScale) = rememberPressScale(0.96f, "genReplyScale")
             Box(
                 modifier = Modifier
@@ -916,13 +918,13 @@ private fun DualGenerateRow(
                         indication = null,
                         onClick = {
                             haptics.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
-                            if (hasReplyResult) onRetry() else onGenerateReply()
+                            if (replyResultVisible) onRetry() else onGenerateReply()
                         }
                     ) else Modifier),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = if (hasReplyResult) "重试" else "生成回复",
+                    text = if (replyResultVisible) "重试" else "生成回复",
                     color = if (replyEnabled) Color.White else TextSecondary,
                     style = AppTypography.titleMedium,
                     fontWeight = FontWeight.Bold,

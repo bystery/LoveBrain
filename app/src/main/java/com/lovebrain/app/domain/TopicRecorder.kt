@@ -76,9 +76,12 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         // P0-1：候选回复不再自动当作实际发送消息。
         // scheme=null 表示本轮没有确认发送任何候选；
         // likedSchemes 记录用户偏好（点赞），但不写入"实际对话"段。
+        // P0-FIX：IDEA（想法）不写入 recent.md——IDEA 是本轮控制信息，不是真实聊天。
+        // 只有 HER/ME 写入 moment/recent.md，IDEA 已在 buildReplyUserPrompt 中独立注入一次。
+        val conversationalMessages = messages.filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
         val entry = buildString {
             append("- [").append(time).append("]\n")
-            messages.forEach { msg ->
+            conversationalMessages.forEach { msg ->
                 append(msg.role.label).append("：").append(msg.content).append("\n")
             }
             if (userHint.isNotBlank()) {
@@ -157,9 +160,10 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
     /**
      * 更新场景链：在头部插入新条目（带绝对时间戳）。
-     * P0-3：旧事实不刷新时间——模型重述的已有事实不会获得新时间戳。
-     * 只有真正新的事实才以当前时间写入新条目；
-     * 已存在的事实保留原始时间戳不变。
+     * P0-FIX：废弃 substring contains 去重——改用主题键匹配实现 upsert/replace/expire。
+     * - 每条事实提取主题键（如"感冒""加班""搬家"），同一主题键的新事实替换旧事实（supersede）。
+     * - 完全新主题的事实追加为新条目。
+     * - 旧事实被新事实替换后直接删除，不保留过期状态。
      * scene.md 自管理，满足任一条件的条目归档到 memory/raw_scene.md：
      *   1) 年龄超过 SCENE_CHAIN_MAX_HOURS；
      *   2) 条目数超过 SCENE_CHAIN_MAX_ENTRIES（保留最新 N 条，更老的溢出）。
@@ -170,7 +174,7 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         val now = System.currentTimeMillis()
         val timeStr = com.lovebrain.app.util.TimeFmt.now()
 
-        // P0-3：拆分本轮事实为列表，逐条去重
+        // 拆分本轮事实为列表
         val newFacts = sceneFacts.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
         if (newFacts.isEmpty()) return
 
@@ -182,35 +186,65 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             emptyList()
         }
 
-        // P0-3：收集已有事实（去时间戳和标签后的纯事实文本）
-        val existingFacts = mutableSetOf<String>()
+        // P0-FIX：收集已有事实，按主题键分组
+        // 每条事实结构：(主题键, 原始事实文本)
+        data class FactEntry(val topicKey: String, val factText: String)
+        val existingFacts = mutableListOf<FactEntry>()
         for (entry in existingEntries) {
             val factsPart = entry.substringAfter("] ", "").substringAfter("：", "").substringAfter(":", "")
-            factsPart.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }.forEach { existingFacts.add(it) }
+            factsPart.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }.forEach {
+                existingFacts.add(FactEntry(extractTopicKey(it), it))
+            }
         }
 
-        // P0-3：过滤出真正新的事实（不在已有事实中，也不被已有事实包含/包含）
-        val trulyNewFacts = newFacts.filter { nf ->
-            existingFacts.none { ef -> ef == nf || ef.contains(nf) || nf.contains(ef) }
+        // P0-FIX：对新事实做 upsert——同主题键的旧事实被替换（supersede），新主题键的事实追加
+        val newTopicKeys = mutableSetOf<String>()
+        val upsertedFacts = mutableListOf<String>() // 替换/新增后的事实全集
+        val replacedTopicKeys = mutableSetOf<String>()
+
+        // 先处理新事实：提取主题键，标记要替换的旧事实
+        for (nf in newFacts) {
+            val nKey = extractTopicKey(nf)
+            newTopicKeys.add(nKey)
+            upsertedFacts.add(nf)
+            if (existingFacts.any { it.topicKey == nKey }) {
+                replacedTopicKeys.add(nKey)
+            }
         }
 
-        // 条件1：按年龄分离（超龄归档）
+        // 保留旧事实中主题键未被新事实覆盖的
+        for (ef in existingFacts) {
+            if (ef.topicKey !in newTopicKeys) {
+                upsertedFacts.add(ef.factText)
+            }
+        }
+
+        // 条件1：按年龄分离旧条目（超龄归档）——但只保留未被替换的条目
         val maxAgeMs = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
         val fresh = mutableListOf<String>()
         val expired = mutableListOf<String>()
         for (entry in existingEntries) {
             val entryTime = parseEntryTime(entry)
-            if (entryTime > 0 && (now - entryTime) > maxAgeMs) {
+            val isExpired = entryTime > 0 && (now - entryTime) > maxAgeMs
+            if (isExpired) {
                 expired.add(entry)
             } else {
-                fresh.add(entry)
+                // P0-FIX：如果这个条目的所有事实都已被新事实替换，则丢弃（不保留过期状态）
+                val factsPart = entry.substringAfter("] ", "").substringAfter("：", "").substringAfter(":", "")
+                val entryTopicKeys = factsPart.split('；', ';')
+                    .map { extractTopicKey(it.trim()) }
+                    .filter { it.isNotBlank() }
+                val allReplaced = entryTopicKeys.isNotEmpty() && entryTopicKeys.all { it in replacedTopicKeys }
+                if (!allReplaced) {
+                    fresh.add(entry)
+                }
             }
         }
 
-        // P0-3：只有真正新的事实才创建新条目；没有新事实时不写入新条目
+        // P0-FIX：新事实（含替换旧事实的）写入新条目
         val candidate = mutableListOf<String>()
-        if (trulyNewFacts.isNotEmpty()) {
-            val newEntry = "- [$timeStr] ${topicLabel.ifBlank { "日常" }}：${trulyNewFacts.joinToString("；")}"
+        if (upsertedFacts.isNotEmpty()) {
+            val newEntry = "- [$timeStr] ${topicLabel.ifBlank { "日常" }}：${upsertedFacts.joinToString("；")}"
             candidate.add(newEntry)
         }
         candidate.addAll(fresh)
@@ -222,10 +256,10 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             expired.addAll(candidate.drop(maxEntries))
         }
 
-        // P0-3：没有变化时不写文件（避免无意义 IO）
+        // 没有变化时不写文件（避免无意义 IO）
         val newChainContent = keptEntries.joinToString("\n") + "\n"
         val oldChainContent = existingEntries.joinToString("\n") + "\n"
-        if (newChainContent != oldChainContent || trulyNewFacts.isNotEmpty()) {
+        if (newChainContent != oldChainContent) {
             knowledgeRepo.writeFile(kbName, chainPath, newChainContent)
         }
 
@@ -236,6 +270,27 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             }
             knowledgeRepo.appendFile(kbName, historyPath, historyContent)
         }
+    }
+
+    /**
+     * P0-FIX：从事实文本中提取主题键——用于判断两条事实是否属于同一主题（应替换而非追加）。
+     * 策略：提取中文核心名词短语，忽略状态变化词（好了/还没好/在恢复/加重了 等）。
+     * 如 "她感冒了" 和 "她感冒好多了" → 主题键都是 "感冒" → 新的替换旧的。
+     * 如 "她加班到很晚" 和 "她感冒了" → 主题键不同 → 两者都保留。
+     */
+    private fun extractTopicKey(fact: String): String {
+        val f = fact.trim()
+        // 提取主语后的核心内容（去掉"她""我"前缀）
+        val body = f.removePrefix("她").removePrefix("我").trim()
+        // 匹配常见健康/状态/事件主题词
+        val healthKeywords = listOf("感冒", "发烧", "咳嗽", "过敏", "头疼", "肚子疼", "胃疼", "生理期", "大姨妈", "生病", "不舒服", "拉肚子", "牙疼", "腰疼", "嗓子疼")
+        val eventKeywords = listOf("加班", "出差", "考试", "面试", "搬家", "聚餐", "约会", "健身", "跑步", "聚餐", "开会", "上课", "下课", "赶项目", "答辩", "述职", "团建", "旅游", "旅行")
+        val stateKeywords = listOf("睡了", "起床", "洗澡", "化妆", "做饭", "吃饭", "回家", "到公司", "下班", "上班", "出发", "到家", "在路")
+        for (kw in healthKeywords) { if (body.contains(kw)) return kw }
+        for (kw in eventKeywords) { if (body.contains(kw)) return kw }
+        for (kw in stateKeywords) { if (body.contains(kw)) return kw }
+        // 未命中关键词：返回原文前 6 字作为主题键（兜底，保证不同表达仍可能匹配）
+        return body.take(6)
     }
 
     /** 从条目中解析时间戳："- [2026-07-24 19:32] ..." → epoch millis */

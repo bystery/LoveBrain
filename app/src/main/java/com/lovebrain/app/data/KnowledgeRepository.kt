@@ -377,20 +377,21 @@ class KnowledgeRepository(
     }
 
     /**
-     * P0-4：带版本校验的文件写入——防止编辑覆盖后台新增。
+     * P0-FIX：带版本校验的文件写入——防止编辑覆盖后台新增。
      * 调用方在读取文件时获得 [expectedVersion]（文件内容的 SHA-256），
      * 写入时校验磁盘上的文件是否仍为该版本。
-     * 如果文件已被修改（后台追加等），拒绝写入并返回 false，调用方保留草稿。
+     * 如果文件已被修改（后台追加等），拒绝写入并返回 null，调用方保留草稿。
+     * 成功写入后返回新内容的 SHA-256 作为新版本号，调用方应更新本地版本快照。
      *
-     * @return true=写入成功，false=版本冲突（文件已被修改，调用方应保留草稿）
+     * @return 新版本号（SHA-256）=写入成功，null=版本冲突或 KB 不存在
      */
     suspend fun writeFileWithVersion(
         kbName: String, relativePath: String, content: String, expectedVersion: String
-    ): Boolean = withContext(Dispatchers.IO) {
+    ): String? = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("writeFileWithVersion skipped: kb no longer exists")
-                return@withLock false
+                return@withLock null
             }
             val file = File(File(knowledgeRoot, kbName), relativePath)
             val currentVersion = if (file.exists()) {
@@ -400,10 +401,10 @@ class KnowledgeRepository(
             }
             if (currentVersion != expectedVersion) {
                 com.lovebrain.app.util.L.w("writeFileWithVersion conflict: $relativePath")
-                return@withLock false
+                return@withLock null
             }
             writeFileUnlocked(kbName, relativePath, content)
-            true
+            sha256(content)
         }
     }
 
@@ -415,6 +416,9 @@ class KnowledgeRepository(
         val content = readFile(kbName, relativePath)
         content to sha256(content)
     }
+
+    /** P0-FIX：对外暴露的内容哈希——供 KbEdit 无版本校验路径生成新版本号 */
+    fun hashContent(text: String): String = sha256(text)
 
     /** P0-4：SHA-256 哈希（用于版本校验） */
     private fun sha256(text: String): String {

@@ -131,7 +131,8 @@ class KbEditActivity : ComponentActivity() {
                                 repo.writeFileWithVersion(kbName, path, content, version)
                             } else {
                                 repo.writeFile(kbName, path, content)
-                                true
+                                // P0-FIX：无版本校验时返回内容哈希作为新版本
+                                repo.hashContent(content)
                             }
                         },
                         onBack = { finish() }
@@ -148,7 +149,7 @@ private fun KbEditScreen(
     lastFile: String?,
     onLastFileChange: (String) -> Unit,
     readFile: suspend (String) -> Pair<String, String>,
-    saveFile: suspend (String, String, String?) -> Boolean,
+    saveFile: suspend (String, String, String?) -> String?,
     onBack: () -> Unit
 ) {
     // ── 初始文件：持久化记忆 > 默认「最近两句」 ──
@@ -200,17 +201,18 @@ private fun KbEditScreen(
         if (d == (saved[path] ?: "")) return true
         val ver = versions[path]
         return runCatching { saveFile(path, d, ver) }
-            .onSuccess { ok ->
-                if (ok) {
+            .onSuccess { newVersion ->
+                if (newVersion != null) {
                     saved = saved + (path to d)
-                    // P0-4：保存成功后更新版本号（内容已落盘，新版本 = 当前草稿的哈希）
-                    // 版本号在重新读取时会自动刷新
+                    // P0-FIX：保存成功后立即更新版本号为新内容的哈希
+                    versions = versions + (path to newVersion)
                 } else {
-                    // P0-4：版本冲突——文件已被后台修改，保留草稿不覆盖
+                    // P0-FIX：版本冲突——文件已被后台修改，保留草稿不覆盖
                     L.w("KbEdit version conflict: $path, keeping draft")
                 }
             }
             .onFailure { L.w("KbEdit autosave failed: $path") }
+            .map { it != null }
             .getOrDefault(false)
     }
 
@@ -431,8 +433,11 @@ private fun KbEditScreen(
                             editorStates.remove(selectedPath)
                             scope.launch {
                                 runCatching { saveFile(selectedPath, baseline, versions[selectedPath]) }
-                                    .onSuccess { ok ->
-                                        if (ok) saved = saved + (selectedPath to baseline)
+                                    .onSuccess { newVer ->
+                                        if (newVer != null) {
+                                            saved = saved + (selectedPath to baseline)
+                                            versions = versions + (selectedPath to newVer)
+                                        }
                                     }
                                 isPreview = true
                             }
@@ -446,14 +451,16 @@ private fun KbEditScreen(
                                 scope.launch {
                                     val ver = versions[selectedPath]
                                     runCatching { saveFile(selectedPath, text, ver) }
-                                        .onSuccess { ok ->
-                                            if (ok) {
+                                        .onSuccess { newVer ->
+                                            if (newVer != null) {
                                                 saved = saved + (selectedPath to text)
+                                                // P0-FIX：保存成功后立即更新版本号
+                                                versions = versions + (selectedPath to newVer)
                                                 editorStates.remove(selectedPath)
                                                 hint = "已保存" to false
                                                 isPreview = true
                                             } else {
-                                                // P0-4：版本冲突——文件已被后台修改
+                                                // P0-FIX：版本冲突——文件已被后台修改
                                                 L.w("KbEdit save conflict: ${selected.path}")
                                                 hint = "文件已被后台修改，已保留你的草稿，请重新打开查看" to true
                                             }
@@ -493,10 +500,11 @@ private fun KbEditScreen(
                     val path = selectedPath
                 scope.launch {
                                     runCatching { saveFile(path, "", versions[path]) }
-                                        .onSuccess { ok ->
-                                            if (ok) {
+                                        .onSuccess { newVer ->
+                                            if (newVer != null) {
                                                 drafts = drafts + (path to "")
                                                 saved = saved + (path to "")
+                                                versions = versions + (path to newVer)
                                             } else {
                                                 L.w("KbEdit clear conflict: $path")
                                                 hint = "文件已被后台修改，请重新打开" to true

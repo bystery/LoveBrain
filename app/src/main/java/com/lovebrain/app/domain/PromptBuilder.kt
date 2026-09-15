@@ -359,12 +359,12 @@ class PromptBuilder(
         return text.take(headLen) + "\n\n…（中间旧记忆因长度限制已省略）…\n\n" + text.takeLast(tailLen)
     }
 
-    /** 场景链注入转换：龄标注 + 全链事实去重 + 过期条目过滤 */
+    /** 场景链注入转换：龄标注 + 主题键去重（保留最新版本）+ 过期条目过滤 */
     private fun transformSceneChain(content: String): String {
         val entryRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2}) (\\d{2}:\\d{2})]\\s*(.*)$")
         val now = System.currentTimeMillis()
         val todayStr = TimeFmt.today()
-        // P0-2：读取侧即计算过期，不依赖写入侧清理
+        // 读取侧即计算过期，不依赖写入侧清理
         val maxAgeMs = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
 
         data class Entry(val ts: Long, val date: String, val labelAndFacts: String)
@@ -376,14 +376,16 @@ class PromptBuilder(
         }
         if (entries.isEmpty()) return ""
 
-        // P0-2：过滤超龄条目——过期只表示不再注入，不代表事件已结束
+        // 过滤超龄条目——过期只表示不再注入，不代表事件已结束
         val freshEntries = entries.filter { e ->
             e.ts <= 0 || (now - e.ts) <= maxAgeMs
         }
         if (freshEntries.isEmpty()) return ""
 
-        val seen = mutableListOf<String>()
+        // P0-FIX：用主题键去重——同主题键只保留最新（时间最晚的）条目中的事实
+        val seenTopicKeys = mutableSetOf<String>()
         val out = StringBuilder()
+        // 从最新到最旧遍历，先遇到的同主题键事实即为最新版本
         for (e in freshEntries) {
             val ageH = if (e.ts > 0) ((now - e.ts) / 3600_000L).toInt() else 0
             val ageLabel = when {
@@ -398,14 +400,31 @@ class PromptBuilder(
             val facts = factsRaw.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
             val keptFacts = mutableListOf<String>()
             for (f in facts) {
-                val dup = seen.any { s -> s == f || s.contains(f) || f.contains(s) }
-                if (!dup) { keptFacts.add(f); seen.add(f) }
+                val key = extractTopicKeyForInjection(f)
+                if (key !in seenTopicKeys) {
+                    keptFacts.add(f)
+                    seenTopicKeys.add(key)
+                }
             }
-            out.append("- [").append(ageLabel).append("] ").append(label)
-            if (keptFacts.isNotEmpty()) out.append("：").append(keptFacts.joinToString("；"))
-            out.append("\n")
+            if (keptFacts.isNotEmpty()) {
+                out.append("- [").append(ageLabel).append("] ").append(label)
+                out.append("：").append(keptFacts.joinToString("；"))
+                out.append("\n")
+            }
         }
         return out.toString().trim()
+    }
+
+    /** P0-FIX：注入侧主题键提取——与 TopicRecorder.extractTopicKey 同语义 */
+    private fun extractTopicKeyForInjection(fact: String): String {
+        val body = fact.trim().removePrefix("她").removePrefix("我").trim()
+        val healthKeywords = listOf("感冒", "发烧", "咳嗽", "过敏", "头疼", "肚子疼", "胃疼", "生理期", "大姨妈", "生病", "不舒服", "拉肚子", "牙疼", "腰疼", "嗓子疼")
+        val eventKeywords = listOf("加班", "出差", "考试", "面试", "搬家", "聚餐", "约会", "健身", "跑步", "开会", "上课", "下课", "赶项目", "答辩", "述职", "团建", "旅游", "旅行")
+        val stateKeywords = listOf("睡了", "起床", "洗澡", "化妆", "做饭", "吃饭", "回家", "到公司", "下班", "上班", "出发", "到家", "在路")
+        for (kw in healthKeywords) { if (body.contains(kw)) return kw }
+        for (kw in eventKeywords) { if (body.contains(kw)) return kw }
+        for (kw in stateKeywords) { if (body.contains(kw)) return kw }
+        return body.take(6)
     }
 
     private suspend fun readFileCompat(kbName: String, newPath: String): String =
