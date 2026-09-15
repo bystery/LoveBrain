@@ -264,8 +264,8 @@ class PromptAssemblyOrderContractTest {
 
         val user = pbBig.buildReplyUserPrompt(kb, emptyList(), userHint = "")
         val knowledgePart = user.substringBefore("# 本次对话记录")
-        val marker = "\n\n…（中间内容因长度限制已省略）…\n\n"
-        assertTrue("知识段含省略标记", knowledgePart.contains("（中间内容因长度限制已省略）"))
+        val marker = "\n\n…（中间旧记忆因长度限制已省略）…\n\n"
+        assertTrue("知识段含省略标记", knowledgePart.contains("（中间旧记忆因长度限制已省略）"))
         assertTrue(
             "知识段总长 ≤ 预算 + 标记长度（实际 ${knowledgePart.length}）",
             knowledgePart.length <= AppConfig.TOTAL_BUDGET + marker.length + 2
