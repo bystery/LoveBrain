@@ -40,8 +40,8 @@ import com.lovebrain.app.ui.panel.reply.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 import com.lovebrain.app.model.StageSuggestion
-/** LoveBrainPanelScreen 横幅自动消失/驻留时长（ 魔法数字命名：值不变） */
-/** 知识库横幅自动消失时长 */
+/** LoveBrainPanelScreen 横幅自动消失/驻留时长�?魔法数字命名：值不变） */
+/** 知识库横幅自动消失时�?*/
 private const val KB_NOTICE_AUTO_DISMISS_MS = 3000L
 /** 面板警告横幅自动消失时长 */
 private const val PANEL_WARNING_AUTO_DISMISS_MS = 3000L
@@ -49,26 +49,26 @@ private const val PANEL_WARNING_AUTO_DISMISS_MS = 3000L
 private const val VECTOR_UPDATE_AUTO_DISMISS_MS = 5000L
 
 
-/** LoveBrainPanelScreen 内部使用的字符串常量（避免字面量散落） */
+/** LoveBrainPanelScreen 内部使用的字符串常量（避免字面量散落�?*/
 private object PanelStrings {
     const val STAGE_SUGGESTION_TITLE = "阶段调整建议"
-    const val PROACTIVE_EMPTY_HINT = "输入想说的话（或留空），点《生成》拿 1-3 条可直接发的开场"
+    const val PROACTIVE_EMPTY_HINT = "输入想说的话（或留空），点《生成》拿 1-3 条可直接发的开�?
 }
-/** LoveBrainPanelScreen 内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
+/** LoveBrainPanelScreen 内部尺寸常量�?令牌化：数值不变，仅外放命名） */
 private object PanelDimens {
-    const val MESSAGE_LIST_DEFAULT_HEIGHT_DP = 160 // 消息列表初始高度
+    const val MESSAGE_LIST_DEFAULT_HEIGHT_DP = 96 // 消息列表初始高度
     const val MESSAGE_LIST_MIN_HEIGHT_DP = 80      // 消息列表拖拽下限
     const val MESSAGE_LIST_MAX_HEIGHT_DP = 400     // 消息列表拖拽上限
-    const val TRIO_HEIGHT_DP = 40                  // 生成行三件套统一高度（ -⑧）
-    const val STYLE_DIVIDER_HEIGHT_DP = 16         // 生成行风格区中缝细分隔线高（主人选型 7A）
-    const val PROFILE_CARD_MAX_HEIGHT_DP = 180     // 画像建议卡内容最大高度
+    const val TRIO_HEIGHT_DP = 40                  // 生成行三件套统一高度�?-⑧）
+    const val STYLE_DIVIDER_HEIGHT_DP = 16         // 生成行风格区中缝细分隔线高（主人选型 7A�?
+    const val PROFILE_CARD_MAX_HEIGHT_DP = 180     // 画像建议卡内容最大高�?
     const val BANNER_CLOSE_ICON_SIZE_DP = 14       // 通知横幅关闭图标尺寸
     const val PILL_HEIGHT_DP = 14                  // 五维圆柱高度
-    const val PILL_LABEL_GAP_DP = 3                // 圆柱与汉字标签间距
+    const val PILL_LABEL_GAP_DP = 3                // 圆柱与汉字标签间�?
     const val TOUCH_TARGET_MIN_DP = 24             // 触控热区下限（项目自有基线， 口径；）
 }
 
-/** 引导文案行高（ 外放：值不变，仅外放命名） */
+/** 引导文案行高�?外放：值不变，仅外放命名） */
 private val OnboardGuideLineHeight = 20.sp
 
 @Composable
@@ -82,20 +82,20 @@ fun LoveBrainPanelScreen(
     onMove: (Float, Float) -> Unit,
     onCopy: (String) -> Unit,
     onOpenSettings: () -> Unit,
-    // 头部收起按钮回调（FloatingService 传 dismissPanelToBubble）
+    // 头部收起按钮回调（FloatingService �?dismissPanelToBubble�?
     onCollapse: () -> Unit
 ) {
     val panelMode by viewModel.panelMode.collectAsStateWithLifecycle()
     val outputMode by viewModel.outputMode.collectAsStateWithLifecycle()
-    // 主动发态（主人重构：空态蓝字召唤/关闭）；提前声明供 PanelHeader 齿轮禁用判断
-    var inputMode by remember { mutableStateOf(0) } // 0=回复 1=主动发
+    // 主动发态（主人重构：空态蓝字召�?关闭）；提前声明�?PanelHeader 齿轮禁用判断
+    var inputMode by remember { mutableStateOf(0) } // 0=回复 1=主动�?
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val result by viewModel.result.collectAsStateWithLifecycle()
     val isGenerating by viewModel.isGenerating.collectAsStateWithLifecycle()
     val feedbacks by viewModel.feedbacks.collectAsStateWithLifecycle()
     val draftText by viewModel.draftText.collectAsStateWithLifecycle()
     val currentRole by viewModel.currentRole.collectAsStateWithLifecycle()
-    // ：《想法》chip 态——输入去向 = composeRole（想法态 → Role.IDEA）；捕获链不受影响（VM setCurrentRole 收口）
+    // ：《想法》chip 态——输入去�?= composeRole（想法�?�?Role.IDEA）；捕获链不受影响（VM setCurrentRole 收口�?
     val ideaComposeMode by viewModel.ideaComposeMode.collectAsStateWithLifecycle()
     val composeRole = if (ideaComposeMode) ChatMessage.Role.IDEA else currentRole
     val editingIndex by viewModel.editingIndex.collectAsStateWithLifecycle()
@@ -109,21 +109,21 @@ fun LoveBrainPanelScreen(
     val vectorDelta by viewModel.vectorDelta.collectAsStateWithLifecycle()
     val showPlanPanel by viewModel.showPlanPanel.collectAsStateWithLifecycle()
 
-    // ：花费/耗时展示状态（VM 聚合；本次花费 null = 未计费 → 占位"—"）
+    // ：花�?耗时展示状态（VM 聚合；本次花�?null = 未计�?�?占位"�?�?
     val todayCostYuan by viewModel.todayCostYuan.collectAsStateWithLifecycle()
     val lastCostYuan by viewModel.lastCostYuan.collectAsStateWithLifecycle()
     val lastResponseMs by viewModel.lastResponseMs.collectAsStateWithLifecycle()
     
-    //  ：供应商就绪态订阅 VM（原面板本地 remember 计算已删，三条件含 Key 非空）
+    //  ：供应商就绪态订�?VM（原面板本地 remember 计算已删，三条件�?Key 非空�?
     val isProviderReady by viewModel.providerReady.collectAsStateWithLifecycle()
 
-    // + 修复：面板每次进入组合时刷新工单状态（Service 长生命周期下配置后不刷新）
+    // + 修复：面板每次进入组合时刷新工单状态（Service 长生命周期下配置后不刷新�?
     LaunchedEffect(Unit) {
         viewModel.refreshTicketState()
     }
 
-    // 注册 Compose 焦点清理回调：FloatingService.releasePanelInput 时调用
-    // 清理 Compose 输入焦点，避免 Panel 隐藏后输入框仍为逻辑 Focused
+    // 注册 Compose 焦点清理回调：FloatingService.releasePanelInput 时调�?
+    // 清理 Compose 输入焦点，避�?Panel 隐藏后输入框仍为逻辑 Focused
     val focusManager = LocalFocusManager.current
     DisposableEffect(onClearComposeFocus) {
         onClearComposeFocus { focusManager.clearFocus() }
@@ -134,19 +134,19 @@ fun LoveBrainPanelScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                // 矩形阴影修复：去掉面板外层 shadow（延伸到矩形 bounds 外看起来像矩形阴影）
+                // 矩形阴影修复：去掉面板外�?shadow（延伸到矩形 bounds 外看起来像矩形阴影）
                 .clip(LoveBrainShape.xl)
                 .background(SurfaceBase)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border.copy(alpha = 0.5f), LoveBrainShape.xl)
                 .padding(horizontal = Spacing.xl, vertical = Spacing.lg)
         ) {
-            // 主人纠正（2026-08-30 二次）：展示条叠加在拖拽条上——主人原话（Q6）"总刘海高度不要变"，
-            // 上一版误作为独立新行插入致刘海整体增高约 20dp，现回归需求#2 原话"字体覆盖在透明拖拽条上"：
+            // 主人纠正�?026-08-30 二次）：展示条叠加在拖拽条上——主人原话（Q6�?总刘海高度不要变"�?
+            // 上一版误作为独立新行插入致刘海整体增高约 20dp，现回归需�?2 原话"字体覆盖在透明拖拽条上"�?
             // 外层盒高钉死 4dp（拖拽条原高），小字居中溢出绘制，刘海总高不变（不裁剪，面板顶部留白容纳）
             Box(modifier = Modifier.fillMaxWidth().height(Spacing.sm)) {
                 DragHandle(onMove = onMove)
-                // 回归修复（d40ff53 后小字被 4dp 约束截断）：wrapContentHeight(unbounded=true) 让文字
-                // 按自身高度测量、居中溢出绘制，外层盒高仍钉死 4dp 刘海不变（截断根因：钉高盒会把 4dp 约束传给子级）
+                // 回归修复（d40ff53 后小字被 4dp 约束截断）：wrapContentHeight(unbounded=true) 让文�?
+                // 按自身高度测量、居中溢出绘制，外层盒高仍钉�?4dp 刘海不变（截断根因：钉高盒会�?4dp 约束传给子级�?
                 UsageStatsRow(
                     todayCostYuan = todayCostYuan,
                     lastCostYuan = lastCostYuan,
@@ -160,22 +160,22 @@ fun LoveBrainPanelScreen(
             PanelHeader(
                 panelMode = panelMode,
                 onModeChange = { viewModel.setPanelMode(it) },
-                // 需求#25：顶部三段切换（回复/锦囊/谈心），锦囊=回复模式下锦囊面板
+                // 需�?25：顶部三段切换（回复/锦囊/谈心），锦囊=回复模式下锦囊面�?
                 showPlanPanel = showPlanPanel,
                 onPlanVisibility = { show ->
                     if (show) viewModel.openPlanPanel() else viewModel.dismissPlanPanel()
                 },
-                // ：头部收起按钮（直出/思考按钮与胶囊已随/4 迁出）
+                // ：头部收起按钮（直出/思考按钮与胶囊已随/4 迁出�?
                 onCollapse = onCollapse,
 
-                // 修复 2.2：顶部整行（含切换器左侧空白）可拖动悬浮窗
-                // 主人 2026-08-31：进攻开关随齿轮一并移除（逻辑留 VM：outputMode/setOutputMode）
+                // 修复 2.2：顶部整行（含切换器左侧空白）可拖动悬浮�?
+                // 主人 2026-08-31：进攻开关随齿轮一并移除（逻辑�?VM：outputMode/setOutputMode�?
                 onHeaderDrag = onMove
             )
 
             Spacer(Modifier.height(Spacing.xs))
 
-            // ═══ 首次使用引导（轻量化内联卡片，替代原全屏遮罩引导） ═══
+            // ══�?首次使用引导（轻量化内联卡片，替代原全屏遮罩引导�?══�?
             val onboardContext = androidx.compose.ui.platform.LocalContext.current
             val onboardPrefs = remember { onboardContext.getSharedPreferences("lovebrain_onboarding", android.content.Context.MODE_PRIVATE) }
             var showOnboard by remember { mutableStateOf(!onboardPrefs.getBoolean("done", false)) }
@@ -194,7 +194,7 @@ fun LoveBrainPanelScreen(
                     ) {
                         Text("使用提示", style = AppTypography.labelLarge, color = PrimaryDark, fontWeight = FontWeight.Bold)
                         Spacer(Modifier.weight(1f))
-                        // ：热区扩至 24dp（外包盒，图标视觉尺寸不变）
+                        // ：热区扩�?24dp（外包盒，图标视觉尺寸不变）
                         Box(
                             modifier = Modifier
                                 .size(PanelDimens.TOUCH_TARGET_MIN_DP.dp)
@@ -218,7 +218,7 @@ fun LoveBrainPanelScreen(
                     }
                     Spacer(Modifier.height(Spacing.xs))
                     Text(
-                        "① 添加对话 → ② 生成回复 → ③ 查看回复方案，长按预览话术\n困惑时可切「谈心」模式，军师用公正视角帮你分析",
+                        "�?添加对话 �?�?生成回复 �?�?查看回复方案，长按预览话术\n困惑时可切「谈心」模式，军师用公正视角帮你分�?,
                         style = AppTypography.labelMedium,
                         color = TextSecondary,
                         lineHeight = OnboardGuideLineHeight
@@ -226,9 +226,9 @@ fun LoveBrainPanelScreen(
                 }
             }
 
-            // 需求#24：《回复/今日锦囊》这一行去掉（切换入口并入顶部模式切换器：回复/锦囊/谈心，需求#25）
+            // 需�?24：《回�?今日锦囊》这一行去掉（切换入口并入顶部模式切换器：回复/锦囊/谈心，需�?25�?
 
-            // 五维向量：常驻展示五个小圆柱（胶囊标签），去掉下拉框（需求#1）；字体与圆柱整体缩小
+            // 五维向量：常驻展示五个小圆柱（胶囊标签），去掉下拉框（需�?1）；字体与圆柱整体缩�?
             VectorPillsRow(vector = currentVector, delta = vectorDelta)
             Spacer(Modifier.height(Spacing.xs))
 
@@ -250,21 +250,21 @@ fun LoveBrainPanelScreen(
                     viewModel.dismissVectorUpdate()
                 }
             }
-            // Banner 合并显示：同一时间只显示一个通知，避免多个 Banner 同时出现拥挤
-            // 优先级：kbNotice > panelWarning > vectorUpdate（：知识库通知最前，面板警告次之）
+            // Banner 合并显示：同一时间只显示一个通知，避免多�?Banner 同时出现拥挤
+            // 优先级：kbNotice > panelWarning > vectorUpdate（：知识库通知最前，面板警告次之�?
             when {
                 kbNotice != null -> {
-                    KbNoticeBanner(text = "✓ ${kbNotice.orEmpty()}", onDismiss = { viewModel.dismissKbNotice() })
+                    KbNoticeBanner(text = "�?${kbNotice.orEmpty()}", onDismiss = { viewModel.dismissKbNotice() })
                 }
                 panelWarning != null -> {
-                    KbNoticeBanner(text = "⚠ ${panelWarning.orEmpty()}", onDismiss = { viewModel.dismissPanelWarning() }, container = WarningBg, textColor = Warning)
+                    KbNoticeBanner(text = "�?${panelWarning.orEmpty()}", onDismiss = { viewModel.dismissPanelWarning() }, container = WarningBg, textColor = Warning)
                 }
                 vectorUpdate != null -> {
-                    KbNoticeBanner(text = "◆ ${vectorUpdate.orEmpty()}", onDismiss = { viewModel.dismissVectorUpdate() })
+                    KbNoticeBanner(text = "�?${vectorUpdate.orEmpty()}", onDismiss = { viewModel.dismissVectorUpdate() })
                 }
             }
 
-            // KBUI-01：suggestion 仅在所属 KB 为当前激活 KB 时显示
+            // KBUI-01：suggestion 仅在所�?KB 为当前激�?KB 时显�?
             if (profileSuggestion != null && profileSuggestion?.kbName == activeKb?.name) {
                 ProfileSuggestionCard(
                     suggestion = profileSuggestion?.display.orEmpty(),
@@ -274,7 +274,7 @@ fun LoveBrainPanelScreen(
                 Spacer(Modifier.height(Spacing.md))
             }
 
-            // KBUI-01：stage suggestion 同样按 kbName 过滤
+            // KBUI-01：stage suggestion 同样�?kbName 过滤
             stageSuggestion?.let { suggestion ->
                 if (suggestion.kbName == activeKb?.name) {
                     StageSuggestionCard(
@@ -288,7 +288,7 @@ fun LoveBrainPanelScreen(
 
             if (panelMode == 0) {
                 if (showPlanPanel) {
-                    // 崩溃修复：weight 放在固定 Box 上，滚动组件拿到确定约束（不出现 Infinity）
+                    // 崩溃修复：weight 放在固定 Box 上，滚动组件拿到确定约束（不出现 Infinity�?
                     Box(modifier = Modifier.weight(1f)) {
                         SuggestPanel(
                             viewModel = viewModel,
@@ -297,13 +297,13 @@ fun LoveBrainPanelScreen(
                     }
                 } else {
                 val inputFocusRequester = remember { FocusRequester() }
-                // ═══ 方案 A：说话方向切换上提至常驻控制条，此处只保留状态消费 ═══
+                // ══�?方案 A：说话方向切换上提至常驻控制条，此处只保留状态消�?══�?
                 val isProactive by viewModel.isProactive.collectAsStateWithLifecycle()
                 val proactiveOptions by viewModel.proactiveOptions.collectAsStateWithLifecycle()
                 val proactiveError by viewModel.proactiveError.collectAsStateWithLifecycle()
 
-                // ：主动发态复用同一输入行——chips 隐藏/添加钮隐藏/placeholder 换（-⑥ 默认）；
-                // 草稿复用 draftText 通道（切态不清空，生成开场后清空），原独立主动发输入行删除
+                // ：主动发态复用同一输入行——chips 隐藏/添加钮隐�?placeholder 换（-�?默认）；
+                // 草稿复用 draftText 通道（切态不清空，生成开场后清空），原独立主动发输入行删�?
                 ReplyInput(
                     draftText = draftText,
                     currentRole = composeRole,
@@ -331,7 +331,7 @@ fun LoveBrainPanelScreen(
                     focusRequester = inputFocusRequester
                 )
 
-                // 第 6 轮 BUG 修复：消息列表与《想法》之间的拖拽块实际未插入，加回 8dp 透明 DraggableDivider
+                // �?6 �?BUG 修复：消息列表与《想法》之间的拖拽块实际未插入，加�?8dp 透明 DraggableDivider
                 // 拖拽即可实时调整消息列表高度（向下拖=增高、向上拖=减小），区间 80dp-400dp
                 val density = androidx.compose.ui.platform.LocalDensity.current
                 var messageListHeight by remember { mutableStateOf(PanelDimens.MESSAGE_LIST_DEFAULT_HEIGHT_DP.dp) }
@@ -349,30 +349,30 @@ fun LoveBrainPanelScreen(
                         }
                     },
                     onDelete = { id ->
-                        // ：editingIndex 修正已下沉 VM（持数据真源，同帧连删无旧快照竞态）
+                        // ：editingIndex 修正已下�?VM（持数据真源，同帧连删无旧快照竞态）
                         viewModel.removeMessageById(id)
                     },
-                    // 回归修复（d40ff53 后空态拖拽失效）：空态恢复吃拖拽可调高——主人要"拖动控制高度"，
-                    // 空态包高会让 messageListHeight 拖动落空；内容已垂直居中（空白对称分布，嫌高直接拖小）
+                    // 回归修复（d40ff53 后空态拖拽失效）：空态恢复吃拖拽可调高——主人要"拖动控制高度"�?
+                    // 空态包高会�?messageListHeight 拖动落空；内容已垂直居中（空白对称分布，嫌高直接拖小�?
                     modifier = Modifier.height(messageListHeight),
-                    // 主人重构（本轮）：空态蓝字 = 主动发入口（点击召唤/再点关闭）
+                    // 主人重构（本轮）：空态蓝�?= 主动发入口（点击召唤/再点关闭�?
                     onEmptyAction = { inputMode = if (inputMode == 1) 0 else 1 },
                     proactiveActive = inputMode == 1
                 )
                 DraggableDivider(
                     onDragDelta = { dyPx ->
-                        // 像素转 dp：向下拖（dyPx>0）→ 列表增高；向上拖 → 减小
+                        // 像素�?dp：向下拖（dyPx>0）→ 列表增高；向上拖 �?减小
                         val deltaDp = (dyPx / density.density).dp
                         val newHeight = (messageListHeight + deltaDp).coerceIn(PanelDimens.MESSAGE_LIST_MIN_HEIGHT_DP.dp, PanelDimens.MESSAGE_LIST_MAX_HEIGHT_DP.dp)
                         if (newHeight != messageListHeight) messageListHeight = newHeight
                     }
                 )
 
-                // ：原"想法"toggle 行与独立 userHint 输入框整块删除——想法成为输入行第三枚 chip（Role.IDEA），
-                // 生成时由 VM 从消息列表收集（getUserHint 换源 collectIdeaHint），userHint 状态链路废除
+                // ：原"想法"toggle 行与独立 userHint 输入框整块删除——想法成为输入行第三�?chip（Role.IDEA），
+                // 生成时由 VM 从消息列表收集（getUserHint 换源 collectIdeaHint），userHint 状态链路废�?
 
                 // 主人重构（本轮）：生成行只剩生成按钮独占——主动发入口挪到空态蓝字（点击召唤/关闭），
-                // 进攻收进页头小齿轮弹窗（HeaderDimens 齿轮）；行面干净，无并排开关
+                // 进攻收进页头小齿轮弹窗（HeaderDimens 齿轮）；行面干净，无并排开�?
                 GenerateButton(
                     modifier = Modifier.fillMaxWidth(),
                     proactiveMode = inputMode == 1,
@@ -382,7 +382,7 @@ fun LoveBrainPanelScreen(
                     hasResult = result is GenerateResult.Success,
                     onGenerate = {
                         if (inputMode == 1) {
-                            // ：无供应商引导在两条生成路径均保留
+                            // ：无供应商引导在两条生成路径均保�?
                             if (isProviderReady) {
                                 viewModel.generateProactive(draftText.trim())
                                 viewModel.setDraft("")
@@ -405,7 +405,7 @@ fun LoveBrainPanelScreen(
                 val streamingSchemes by viewModel.streamingSchemes.collectAsStateWithLifecycle()
 
                 // 崩溃修复：weight 放在固定 Box 上，ResultArea 内部 verticalScroll 拿到确定约束
-                // 方案 A：主动发模式下结果区切换为开场方案列表
+                // 方案 A：主动发模式下结果区切换为开场方案列�?
                 Box(modifier = Modifier.weight(1f)) {
                     if (inputMode == 1) {
                         ProactiveResultArea(
@@ -489,7 +489,7 @@ private fun ProfileSuggestionCard(
         }
         Spacer(Modifier.height(Spacing.md))
         Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-            // ：忽略/确认更新补按压反馈（复用标准件 0.96 scale + 120ms）
+            // ：忽�?确认更新补按压反馈（复用标准�?0.96 scale + 120ms�?
             val (dismissInteraction, dismissScale) = rememberPressScale(0.96f, "profileDismissScale")
             Text(
                 "忽略",
@@ -541,7 +541,7 @@ private fun KbNoticeBanner(
             overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f)
         )
-        // ：热区扩至 24dp（外包盒，图标视觉仍 14dp； 在册清偿）
+        // ：热区扩�?24dp（外包盒，图标视觉仍 14dp�?在册清偿�?
         Box(
             modifier = Modifier
                 .padding(start = Spacing.sm)
@@ -559,23 +559,23 @@ private fun KbNoticeBanner(
     }
 }
 
-/** 五维小圆柱胶囊行（需求#1：去掉下拉框，常驻直接展示；字体与圆柱整体缩小） */
+/** 五维小圆柱胶囊行（需�?1：去掉下拉框，常驻直接展示；字体与圆柱整体缩小） */
 @Composable
 private fun VectorPillsRow(vector: Map<String, Int>, delta: Map<String, Int>) {
-    // 暗色已删，固定亮色低饱和深色文字（对比度：8-9sp 小字≥4.5:1）
-    // ：五维色收编进 Color.kt 令牌（HSL 值逐位不变）
+    // 暗色已删，固定亮色低饱和深色文字（对比度�?-9sp 小字�?.5:1�?
+    // ：五维色收编�?Color.kt 令牌（HSL 值逐位不变�?
     val dims = listOf(
         Triple("intimacy", "亲密", VectorIntimacy),
         Triple("trust", "信任", VectorTrust),
         Triple("commitment", "承诺", VectorCommitment),
-        Triple("passion", "激情", VectorPassion),
+        Triple("passion", "激�?, VectorPassion),
         Triple("security", "安全", VectorSecurity)
     )
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = Spacing.xs),
-        horizontalArrangement = Arrangement.spacedBy(Spacing.sm), // 恢复：用户要求改回 4dp
+        horizontalArrangement = Arrangement.spacedBy(Spacing.sm), // 恢复：用户要求改�?4dp
         verticalAlignment = Alignment.CenterVertically
     ) {
         dims.forEach { (key, label, color) ->
@@ -590,7 +590,7 @@ private fun VectorPillsRow(vector: Map<String, Int>, delta: Map<String, Int>) {
     }
 }
 
-/** 单个小圆柱胶囊（需求#34）：汉字标签放圆柱体左边；数字放圆柱体内部（类似电量显示）；圆柱尺寸缩小 */
+/** 单个小圆柱胶囊（需�?34）：汉字标签放圆柱体左边；数字放圆柱体内部（类似电量显示）；圆柱尺寸缩小 */
 @Composable
 private fun VectorPill(
     label: String,
@@ -609,13 +609,13 @@ private fun VectorPill(
         modifier = modifier
             .semantics(mergeDescendants = true) {
                 contentDescription = buildString {
-                    append(label).append(' ').append(value).append("分")
-                    if (delta > 0) append("，上升 ").append(delta).append(" 分")
-                    else if (delta < 0) append("，下降 ").append(-delta).append(" 分")
+                    append(label).append(' ').append(value).append("�?)
+                    if (delta > 0) append("，上�?").append(delta).append(" �?)
+                    else if (delta < 0) append("，下�?").append(-delta).append(" �?)
                 }
             }
     ) {
-        // 汉字标签放圆柱体左边（9sp，与圆柱垂直居中）
+        // 汉字标签放圆柱体左边�?sp，与圆柱垂直居中�?
         Text(
             text = label,
             fontSize = 9.sp,
@@ -626,7 +626,7 @@ private fun VectorPill(
             )
         )
         Spacer(Modifier.width(PanelDimens.PILL_LABEL_GAP_DP.dp))
-        // 小圆柱（胶囊）：尺寸缩小，彩色填充 + 内部数字（类似电量显示）——恢复 14dp（用户要求改回）
+        // 小圆柱（胶囊）：尺寸缩小，彩色填�?+ 内部数字（类似电量显示）——恢�?14dp（用户要求改回）
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -642,7 +642,7 @@ private fun VectorPill(
                     .height(PanelDimens.PILL_HEIGHT_DP.dp)
                     .background(color, LoveBrainShape.full)
             )
-            // 数字放圆柱体内部：填充 >40% 时白字（落在彩色底），否则用主题色
+            // 数字放圆柱体内部：填�?>40% 时白字（落在彩色底），否则用主题�?
             Text(
                 text = "$value",
                 fontSize = 8.sp,
@@ -656,7 +656,7 @@ private fun VectorPill(
         if (delta != 0) {
             Spacer(Modifier.width(Spacing.xs))
             Text(
-                text = if (delta > 0) "↑$delta" else "↓${-delta}",
+                text = if (delta > 0) "�?delta" else "�?{-delta}",
                 fontSize = 8.sp,
                 fontWeight = FontWeight.Bold,
                 color = if (delta > 0) Success else Error,
@@ -668,7 +668,7 @@ private fun VectorPill(
     }
 }
 
-/** 非线性映射：0-40→0~20%, 40-80→20~90%, 80-100→90~100% */
+/** 非线性映射：0-40�?~20%, 40-80�?0~90%, 80-100�?0~100% */
 private fun nonlinearFraction(value: Int): Float {
     return when {
         value <= 40 -> (value / 40f) * 0.20f
@@ -692,13 +692,13 @@ private fun StageSuggestionCard(
         Text(PanelStrings.STAGE_SUGGESTION_TITLE, style = AppTypography.labelLarge, color = PrimaryDark)
         Spacer(Modifier.height(Spacing.md))
         Text(
-            text = "建议调整为「${suggestion.newStage}」\n依据：${suggestion.reason}",
+            text = "建议调整为�?{suggestion.newStage}」\n依据�?{suggestion.reason}",
             style = AppTypography.labelMedium,
             color = TextPrimary
         )
         Spacer(Modifier.height(Spacing.md))
         Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-            // ：忽略/确认调整补按压反馈（复用标准件 0.96 scale + 120ms）
+            // ：忽�?确认调整补按压反馈（复用标准�?0.96 scale + 120ms�?
             val (dismissInteraction, dismissScale) = rememberPressScale(0.96f, "stageDismissScale")
             Text(
                 "忽略",
@@ -725,8 +725,8 @@ private fun StageSuggestionCard(
 }
 
 /**
- * 花费/耗时展示条：今日花费 / 本次花费 / 首字耗时。
- * labelSmall 固定字号；本次未计费（null）显示"—"；首字耗时 ≤0 不显示。
+ * 花费/耗时展示条：今日花费 / 本次花费 / 首字耗时�?
+ * labelSmall 固定字号；本次未计费（null）显�?�?；首字耗时 �? 不显示�?
  */
 @Composable
 private fun UsageStatsRow(
@@ -740,14 +740,14 @@ private fun UsageStatsRow(
         horizontalArrangement = Arrangement.spacedBy(Spacing.lg, Alignment.CenterHorizontally)
     ) {
         UsageStatCell("今日", "¥${LoveBrainViewModel.formatYuan(todayCostYuan)}")
-        UsageStatCell("本次", lastCostYuan?.let { "¥${LoveBrainViewModel.formatYuan(it)}" } ?: "—")
+        UsageStatCell("本次", lastCostYuan?.let { "¥${LoveBrainViewModel.formatYuan(it)}" } ?: "�?)
         if (lastResponseMs > 0) {
             UsageStatCell("首字", "%.1fs".format(lastResponseMs / 1000.0))
         }
     }
 }
 
-/** 展示条单格：标签 TextHint + 数值 Primary（ 字号钉死 labelSmall） */
+/** 展示条单格：标签 TextHint + 数�?Primary�?字号钉死 labelSmall�?*/
 @Composable
 private fun UsageStatCell(label: String, value: String) {
     Row {
@@ -757,8 +757,8 @@ private fun UsageStatCell(label: String, value: String) {
 }
 
 /**
- * 主动发起结果区（方案 A）：加载/错误/开场方案列表。
- * 与 ReplyInput 的"主动发"模式配套，替换旧 ProactiveSection 折叠块。
+ * 主动发起结果区（方案 A）：加载/错误/开场方案列表�?
+ * �?ReplyInput �?主动�?模式配套，替换旧 ProactiveSection 折叠块�?
  */
 @Composable
 private fun ProactiveResultArea(
@@ -775,9 +775,9 @@ private fun ProactiveResultArea(
             isProactive && options.isEmpty() -> {
                 AiLoadingRow(
                     phrases = listOf(
-                        "军师正在看你们的近况…",
-                        "军师正在找合适的切入点…",
-                        "军师正在为你准备开场白…"
+                        "军师正在看你们的近况�?,
+                        "军师正在找合适的切入点�?,
+                        "军师正在为你准备开场白�?
                     )
                 )
             }
@@ -818,7 +818,7 @@ private fun ProactiveResultArea(
                         Text(opt.text, style = AppTypography.bodyMedium, color = TextPrimary)
                         if (opt.angle.isNotBlank()) {
                             Spacer(Modifier.height(Spacing.xs))
-                            Text("角度：${opt.angle}", style = AppTypography.labelSmall, color = TextHint)
+                            Text("角度�?{opt.angle}", style = AppTypography.labelSmall, color = TextHint)
                         }
                     }
                 }
