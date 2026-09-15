@@ -160,11 +160,23 @@ class KnowledgeRepository(
                 fos.flush()
                 fos.fd.sync() // 强制刷盘，防断电丢失
             }
-            // rename 在同一文件系统上是原子操作
-            if (!tmp.renameTo(file)) {
-                // P0-4：rename 失败时不回退到直接覆盖——保留原件，报错让调用方处理
-                // 旧代码 file.writeText(content) 会在写入中途崩溃导致半写损坏
-                throw java.io.IOException("atomic rename failed: ${file.name}")
+            // rename 在同一文件系统上是原子操作（POSIX/Android）。
+            // Windows 上 renameTo 可能因文件锁定（防病毒等）间歇失败，
+            // 添加短 retry + fallback copyTo+delete 保证可靠性。
+            var renamed = false
+            for (attempt in 1..3) {
+                if (tmp.renameTo(file)) { renamed = true; break }
+                Thread.sleep(50L * attempt)
+            }
+            if (!renamed) {
+                // Fallback: copy then delete (not atomic but safe — tmp is already fully written)
+                if (file.exists() && !file.delete()) {
+                    throw java.io.IOException("atomic rename failed (cannot delete target): ${file.name}")
+                }
+                if (!tmp.copyTo(file, overwrite = true).exists()) {
+                    throw java.io.IOException("atomic rename failed (copy fallback failed): ${file.name}")
+                }
+                tmp.delete()
             }
         } finally {
             // 清理可能残留的临时文件
