@@ -74,9 +74,14 @@ class PromptBuilder(
     /** 润色专用 system：polish.md 全文 */
     fun buildPolishSystemPrompt(): String = readAsset(AssetRegistry.POLISH)
 
-    /** 从 stage 类 markdown 中提取「当前阶段」小节（## 阶段名 到下一个 ## 之间） */
-    suspend fun extractStageSection(assetPath: String): String {
-        val stage = knowledgeRepo.getActive()?.stage?.trim().orEmpty()
+    /**
+     * 从 stage 类 markdown 中提取「当前阶段」小节（## 阶段名 到下一个 ## 之间）。
+     * P0-2：使用传入的 KB stage，不再重新读取 active KB，防生成期间切 KB 导致画像和阶段来自不同对象。
+     */
+    suspend fun extractStageSection(assetPath: String, kb: KnowledgeBase? = null): String {
+        val stage = kb?.stage?.trim().orEmpty().ifBlank {
+            knowledgeRepo.getActive()?.stage?.trim().orEmpty()
+        }
         if (stage.isBlank() || stage == "待确定" || stage == "阶段未确定") return ""
         val content = readAsset(assetPath)
         if (content.isBlank()) return ""
@@ -101,7 +106,8 @@ class PromptBuilder(
         sb.appendProfileSection(kb.name)
 
         // 阶段节选（自 system 移入：画像之后、记忆之前）
-        val stageSection = extractStageSection(AssetRegistry.STAGE)
+        // P0-2：传入当前 KB，防生成期间切 KB 导致画像和阶段来自不同对象
+        val stageSection = extractStageSection(AssetRegistry.STAGE, kb)
         if (stageSection.isNotBlank()) {
             sb.append("## 当前阶段策略（仅提取当前阶段，严格遵守；不是当前阶段的内容一律忽略）\n")
             sb.append(stageSection)
@@ -279,7 +285,8 @@ class PromptBuilder(
     private suspend fun StringBuilder.appendPlanSection(kbName: String) {
         val plan = knowledgeRepo.readPlanActive(kbName)
         if (plan.isNotBlank()) {
-            append("# 【进行中事项】（长期追踪，回复需与之呼应但不必每条都提）\n")
+            // P0-2：改掉"回复需与之呼应"措辞，只有与当前输入相关时才选入谈资
+            append("# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n")
             append(plan).append("\n")
         }
     }
@@ -342,16 +349,20 @@ class PromptBuilder(
 
     private fun enforceTotalBudget(text: String): String {
         if (text.length <= AppConfig.TOTAL_BUDGET) return text
-        val headLen = (AppConfig.TOTAL_BUDGET * 0.6).toInt()
-        val tailLen = (AppConfig.TOTAL_BUDGET * 0.3).toInt()
-        return text.take(headLen) + "\n\n…（中间内容因长度限制已省略）…\n\n" + text.takeLast(tailLen)
+        // P0-2：按区块优先级裁剪——先保留当前消息、最近真实回复和必要约束，再裁剪旧背景
+        // 优先保留头部（画像/阶段/约束）和尾部（当前对话/时间戳），裁剪中间旧记忆
+        val headLen = (AppConfig.TOTAL_BUDGET * 0.5).toInt()
+        val tailLen = (AppConfig.TOTAL_BUDGET * 0.4).toInt()
+        return text.take(headLen) + "\n\n…（中间旧记忆因长度限制已省略）…\n\n" + text.takeLast(tailLen)
     }
 
-    /** 场景链注入转换：龄标注 + 全链事实去重 */
+    /** 场景链注入转换：龄标注 + 全链事实去重 + 过期条目过滤 */
     private fun transformSceneChain(content: String): String {
         val entryRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2}) (\\d{2}:\\d{2})]\\s*(.*)$")
         val now = System.currentTimeMillis()
         val todayStr = TimeFmt.today()
+        // P0-2：读取侧即计算过期，不依赖写入侧清理
+        val maxAgeMs = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
 
         data class Entry(val ts: Long, val date: String, val labelAndFacts: String)
 
@@ -362,9 +373,15 @@ class PromptBuilder(
         }
         if (entries.isEmpty()) return ""
 
+        // P0-2：过滤超龄条目——过期只表示不再注入，不代表事件已结束
+        val freshEntries = entries.filter { e ->
+            e.ts <= 0 || (now - e.ts) <= maxAgeMs
+        }
+        if (freshEntries.isEmpty()) return ""
+
         val seen = mutableListOf<String>()
         val out = StringBuilder()
-        for (e in entries) {
+        for (e in freshEntries) {
             val ageH = if (e.ts > 0) ((now - e.ts) / 3600_000L).toInt() else 0
             val ageLabel = when {
                 e.ts <= 0 -> "时间未知"

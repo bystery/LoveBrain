@@ -740,7 +740,7 @@ private fun UsageStatsRow(
         horizontalArrangement = Arrangement.spacedBy(Spacing.lg, Alignment.CenterHorizontally)
     ) {
         UsageStatCell("今日", "¥${LoveBrainViewModel.formatYuan(todayCostYuan)}")
-        UsageStatCell("本次", lastCostYuan?.let { "¥${LoveBrainViewModel.formatYuan(it)}" } ?: "�?)
+        UsageStatCell("本次", lastCostYuan?.let { "¥${LoveBrainViewModel.formatYuan(it)}" } ?: "—")
         if (lastResponseMs > 0) {
             UsageStatCell("首字", "%.1fs".format(lastResponseMs / 1000.0))
         }

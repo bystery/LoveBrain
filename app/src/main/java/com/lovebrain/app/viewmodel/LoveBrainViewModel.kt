@@ -511,15 +511,13 @@ class LoveBrainViewModel(
         val likedSchemes = response.schemes
             .filter { _feedbacks.value[it.tag] == SchemeFeedback.LIKED }
             .sortedBy { "ABCD".indexOf(it.tag) }
-        val selectedScheme = when {
-            likedSchemes.size > 1 -> Scheme(
-                tag = likedSchemes.joinToString("+") { it.tag },
-                title = likedSchemes.joinToString("+") { "方案${it.tag}-${it.title}" },
-                reply = likedSchemes.joinToString("\n") { it.reply }
-            )
-            likedSchemes.size == 1 -> likedSchemes[0]
-            else -> response.schemes.firstOrNull { it.tag == "A" } ?: response.schemes.firstOrNull()
-        }
+
+        // P0-1：候选回复不再自动当作实际发送消息。
+        // 没有点赞时不默认选 A 作为"最终回复"；
+        // 多点赞不拼成实际发言，只记录为偏好。
+        // selectedScheme=null 表示本轮没有确认发送的候选。
+        val selectedScheme: Scheme? = likedSchemes.firstOrNull()
+        val likedForRecording = likedSchemes // 保留全部点赞用于偏好记录
 
         // GEN-03：无 KB 时保持当前产品语义（可结束但提示未记入）
         if (kbName == null) {
@@ -530,10 +528,9 @@ class LoveBrainViewModel(
             return
         }
 
-        if (selectedScheme == null) {
-            recordingRound = false
-            return
-        }
+        // P0-1：selectedScheme 可以为 null——用户没有点赞也不默认选 A。
+        // 仍允许保存本轮输入消息（不依赖选中候选）。
+        // 如果用户没有确认发送，提示"已保存对话，候选未作为已发送消息记录"。
 
         // GEN-03：先写盘，成功后才提交 UI
         val analysis = response.analysis
@@ -548,7 +545,6 @@ class LoveBrainViewModel(
                     knowledgeRepo.listAll().firstOrNull { it.name == kbName }
                 }
                 if (kb == null) {
-                    // 生成时的 KB 后来被删除 → 保存失败，本轮保持
                     showPanelWarning("本轮保存失败：知识库已被删除，内容已保留，请重试")
                     return@launch
                 }
@@ -557,9 +553,8 @@ class LoveBrainViewModel(
                 withContext(Dispatchers.IO) {
                     val topicRotated = topicRecorder.record(
                         kb, messagesSnapshot, selectedScheme, analysis.topic_status, analysis.topic_label,
-                        // （-⑨ 主控裁定）：userHint 实参传 ""——记录段已含《想法》行（msgs 经 role.label 渲染），
-                        // 不再重复写"我的想法"段；domain 形参零触碰
-                        analysis.scene_facts, "", analysis.ongoing
+                        analysis.scene_facts, "", analysis.ongoing,
+                        likedSchemes = likedForRecording
                     )
                     if (topicRotated) {
                         triggerCoordinator.checkTriggers(kb.name, viewModelScope, this@LoveBrainViewModel)
@@ -570,6 +565,10 @@ class LoveBrainViewModel(
                 // GEN-03：写盘成功 → 才提交 UI 状态
                 commitReplyRound(consumedIds)
                 replyGenerationContext = null
+                // P0-1：提示用户候选未被当作已发送消息
+                if (selectedScheme == null) {
+                    showPanelWarning("已保存对话，候选未作为已发送消息记录")
+                }
                 refreshKnowledgeBases()
             } catch (t: Throwable) {
                 L.e("nextRound record failed", t)

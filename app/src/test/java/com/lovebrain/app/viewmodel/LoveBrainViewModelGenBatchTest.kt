@@ -455,7 +455,7 @@ class LoveBrainViewModelGenBatchTest {
         delay(500)
 
         val kbSlot = slot<KnowledgeBase>()
-        coVerify { topicRecorder.record(capture(kbSlot), any(), any(), any(), any(), any(), any(), any()) }
+        coVerify { topicRecorder.record(capture(kbSlot), any(), any(), any(), any(), any(), any(), any(), any()) }
         assertEquals(
             "record 应使用生成时的 KB (kb-a)，不是切换后的 kb-b",
             "kb-a",
@@ -470,7 +470,7 @@ class LoveBrainViewModelGenBatchTest {
     @Test
     fun t7_record_failure_preserves_ui_state() = runBlocking {
         val failRecorder = mockk<TopicRecorder>()
-        coEvery { failRecorder.record(any(), any(), any(), any(), any(), any(), any(), any()) } coAnswers { throw RuntimeException("disk full") }
+        coEvery { failRecorder.record(any(), any(), any(), any(), any(), any(), any(), any(), any()) } coAnswers { throw RuntimeException("disk full") }
 
         val vm = newViewModelWithKb(recorder = failRecorder)
         vm.messages.value
@@ -708,7 +708,7 @@ class LoveBrainViewModelGenBatchTest {
 
         assertEquals("无 KB 时消息仍应被消费", emptyList<String>(), vm.messages.value.map { it.content })
         assertEquals("未激活知识库，本轮对话未记入", vm.panelWarning.value)
-        coVerify(exactly = 0) { topicRecorder.record(any(), any(), any(), any(), any(), any(), any(), any()) }
+        coVerify(exactly = 0) { topicRecorder.record(any(), any(), any(), any(), any(), any(), any(), any(), any()) }
     }
 
     // ════════════════════════════════════════════════════════════════

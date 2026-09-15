@@ -38,12 +38,13 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
     suspend fun record(
         kb: KnowledgeBase,
         messages: List<ChatMessage>,
-        scheme: Scheme,
+        scheme: Scheme?,
         topicStatus: String,
         topicLabel: String,
         sceneFacts: List<String> = emptyList(),
         userHint: String = "",
-        ongoing: List<OngoingItem> = emptyList()
+        ongoing: List<OngoingItem> = emptyList(),
+        likedSchemes: List<Scheme> = emptyList()
     ): Boolean {
         val time = com.lovebrain.app.util.TimeFmt.now()
         var topicRotated = false
@@ -72,11 +73,9 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         }
 
         // 2. 构建本轮记录
-        val schemeLabel = if (scheme.tag.contains("+")) {
-            scheme.title  // 多方案组合，title 已是 "方案C-调皮+方案D-暖男" 格式
-        } else {
-            "方案${scheme.tag}-${scheme.title}"
-        }
+        // P0-1：候选回复不再自动当作实际发送消息。
+        // scheme=null 表示本轮没有确认发送任何候选；
+        // likedSchemes 记录用户偏好（点赞），但不写入"实际对话"段。
         val entry = buildString {
             append("- [").append(time).append("]\n")
             messages.forEach { msg ->
@@ -85,7 +84,18 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             if (userHint.isNotBlank()) {
                 append("我的想法：").append(userHint.trim()).append("\n")
             }
-            append("我（最终回复：").append(schemeLabel).append("）：").append(scheme.reply).append("\n")
+            if (scheme != null) {
+                val schemeLabel = if (scheme.tag.contains("+")) {
+                    scheme.title
+                } else {
+                    "方案${scheme.tag}-${scheme.title}"
+                }
+                append("我（最终回复：").append(schemeLabel).append("）：").append(scheme.reply).append("\n")
+            }
+            if (likedSchemes.isNotEmpty() && scheme == null) {
+                val likedTags = likedSchemes.joinToString(",") { it.tag }
+                append("（用户偏好：方案$likedTags，未确认发送）\n")
+            }
         }
 
         // 3. 写入 moment/recent.md（职责拆出，见 writeRecent）
