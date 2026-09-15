@@ -114,26 +114,34 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         return topicRotated
     }
 
-    /** 职责2（自 record 拆出）：写入 moment/recent.md，保留最近 N 轮，溢出→对话暂存 */
+    /** 职责2（自 record 拆出）：写入 moment/recent.md，保留最近 N 轮，溢出→对话暂存
+     * P0-4：未识别内容（不符合时间戳格式的块）原样保留，不当垃圾丢弃。 */
     private suspend fun writeRecent(kbName: String, entry: String) {
         val recentPath = "moment/recent.md"
         val existing = knowledgeRepo.readFile(kbName, recentPath)
-        val blocks = if (existing.isNotBlank()) {
-            existing.split(Regex("(?=^- \\[)", RegexOption.MULTILINE))
-                .map { it.trim() }
-                .filter { validRoundBlock(it) }
-        } else emptyList()
+        if (existing.isNotBlank()) {
+            val allParts = existing.split(Regex("(?=^- \\[)", RegexOption.MULTILINE)).map { it.trim() }
+            val validBlocks = allParts.filter { validRoundBlock(it) }
+            // P0-4：未识别内容原样保留——拼回文件头部，不被当作轮次计数或溢出处理
+            val unrecognized = allParts.filter { !validRoundBlock(it) && it.isNotBlank() }
 
-        val kept = blocks.takeLast(maxTopicTurns - 1)
-        val overflow = blocks.dropLast(maxTopicTurns - 1)
-        if (overflow.isNotEmpty()) {
-            knowledgeRepo.appendFile(kbName, "memory/raw_chat.md", "\n" + overflow.joinToString("\n\n") + "\n")
+            val kept = validBlocks.takeLast(maxTopicTurns - 1)
+            val overflow = validBlocks.dropLast(maxTopicTurns - 1)
+            if (overflow.isNotEmpty()) {
+                knowledgeRepo.appendFile(kbName, "memory/raw_chat.md", "\n" + overflow.joinToString("\n\n") + "\n")
+            }
+            val newRecent = buildString {
+                // P0-4：未识别内容拼回头部
+                if (unrecognized.isNotEmpty()) {
+                    unrecognized.forEach { append(it).append("\n\n") }
+                }
+                kept.forEach { append(it).append("\n\n") }
+                append(entry).append("\n")
+            }
+            knowledgeRepo.writeFile(kbName, recentPath, newRecent)
+        } else {
+            knowledgeRepo.writeFile(kbName, recentPath, entry + "\n")
         }
-        val newRecent = buildString {
-            kept.forEach { append(it).append("\n\n") }
-            append(entry).append("\n")
-        }
-        knowledgeRepo.writeFile(kbName, recentPath, newRecent)
     }
 
     /** 轮次块校验：首行必须是真实时间戳行（防模板示例行被当作轮次流入暂存/档案） */
@@ -149,6 +157,9 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
     /**
      * 更新场景链：在头部插入新条目（带绝对时间戳）。
+     * P0-3：旧事实不刷新时间——模型重述的已有事实不会获得新时间戳。
+     * 只有真正新的事实才以当前时间写入新条目；
+     * 已存在的事实保留原始时间戳不变。
      * scene.md 自管理，满足任一条件的条目归档到 memory/raw_scene.md：
      *   1) 年龄超过 SCENE_CHAIN_MAX_HOURS；
      *   2) 条目数超过 SCENE_CHAIN_MAX_ENTRIES（保留最新 N 条，更老的溢出）。
@@ -159,8 +170,9 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         val now = System.currentTimeMillis()
         val timeStr = com.lovebrain.app.util.TimeFmt.now()
 
-        // 新条目（带绝对时间戳，用于计算年龄）
-        val newEntry = "- [$timeStr] ${topicLabel.ifBlank { "日常" }}：$sceneFacts"
+        // P0-3：拆分本轮事实为列表，逐条去重
+        val newFacts = sceneFacts.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
+        if (newFacts.isEmpty()) return
 
         // 读取现有链（只认带真实时间戳的行，排除模板示例行）
         val existing = knowledgeRepo.readFile(kbName, chainPath)
@@ -168,6 +180,18 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             existing.lines().filter { it.trim().startsWith("- [") && validSceneLine(it) }
         } else {
             emptyList()
+        }
+
+        // P0-3：收集已有事实（去时间戳和标签后的纯事实文本）
+        val existingFacts = mutableSetOf<String>()
+        for (entry in existingEntries) {
+            val factsPart = entry.substringAfter("] ", "").substringAfter("：", "").substringAfter(":", "")
+            factsPart.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }.forEach { existingFacts.add(it) }
+        }
+
+        // P0-3：过滤出真正新的事实（不在已有事实中，也不被已有事实包含/包含）
+        val trulyNewFacts = newFacts.filter { nf ->
+            existingFacts.none { ef -> ef == nf || ef.contains(nf) || nf.contains(ef) }
         }
 
         // 条件1：按年龄分离（超龄归档）
@@ -183,17 +207,27 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             }
         }
 
-        // 组装候选链（新条目在最前），条件2：超出条数上限的最老条目归档
-        val candidate = mutableListOf(newEntry)
+        // P0-3：只有真正新的事实才创建新条目；没有新事实时不写入新条目
+        val candidate = mutableListOf<String>()
+        if (trulyNewFacts.isNotEmpty()) {
+            val newEntry = "- [$timeStr] ${topicLabel.ifBlank { "日常" }}：${trulyNewFacts.joinToString("；")}"
+            candidate.add(newEntry)
+        }
         candidate.addAll(fresh)
+
+        // 条件2：超出条数上限的最老条目归档
         val maxEntries = AppConfig.SCENE_CHAIN_MAX_ENTRIES
         val keptEntries = candidate.take(maxEntries)
         if (candidate.size > maxEntries) {
             expired.addAll(candidate.drop(maxEntries))
         }
 
-        // 写入更新后的 chain
-        knowledgeRepo.writeFile(kbName, chainPath, keptEntries.joinToString("\n") + "\n")
+        // P0-3：没有变化时不写文件（避免无意义 IO）
+        val newChainContent = keptEntries.joinToString("\n") + "\n"
+        val oldChainContent = existingEntries.joinToString("\n") + "\n"
+        if (newChainContent != oldChainContent || trulyNewFacts.isNotEmpty()) {
+            knowledgeRepo.writeFile(kbName, chainPath, newChainContent)
+        }
 
         // 归档条目追加到 history
         if (expired.isNotEmpty()) {

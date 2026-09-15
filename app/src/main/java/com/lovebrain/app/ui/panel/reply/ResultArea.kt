@@ -60,6 +60,8 @@ fun ResultArea(
     onFeedback: (String, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
     onRetry: () -> Unit,
+    // P1-5: 记入知识库放入结果工具区
+    onSaveToKb: () -> Unit = {},
     providerReady: Boolean,
     onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier
@@ -130,6 +132,31 @@ fun ResultArea(
                 if (response.analysis.ongoing.isNotEmpty()) {
                     Spacer(Modifier.height(Spacing.sm))
                     OngoingSection(items = response.analysis.ongoing)
+                }
+
+                // P1-5: 记入知识库按钮放入结果工具区，不挤掉主入口
+                Spacer(Modifier.height(Spacing.sm))
+                val (saveInteraction, saveScale) = rememberPressScale(0.96f, "resultSaveKbScale")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
+                            .clip(LoveBrainShape.md)
+                            .background(Primary, LoveBrainShape.md)
+                            .clickable(interactionSource = saveInteraction, indication = null, onClick = onSaveToKb)
+                            .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            "记入知识库",
+                            color = Color.White,
+                            style = AppTypography.labelSmall,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
             }
         }

@@ -145,6 +145,7 @@ class KnowledgeRepository(
 
     /**
      * 原子写入：先写临时文件 → fsync 刷盘 → rename 覆盖目标文件。
+     * P0-4：rename 失败时保留原件并报错，不回退到直接覆盖（直接写可能导致半写损坏）。
      *
      * 调研依据：SQLite 的原子提交机制（写 journal → flush → rename → delete journal），
      * 以及 Kotlin File.writeText() 无原子保证（Kotlin 官方文档确认）。
@@ -161,8 +162,9 @@ class KnowledgeRepository(
             }
             // rename 在同一文件系统上是原子操作
             if (!tmp.renameTo(file)) {
-                // 某些 Android 设备 rename 可能失败（跨挂载点等），fallback 到直接写
-                file.writeText(content)
+                // P0-4：rename 失败时不回退到直接覆盖——保留原件，报错让调用方处理
+                // 旧代码 file.writeText(content) 会在写入中途崩溃导致半写损坏
+                throw java.io.IOException("atomic rename failed: ${file.name}")
             }
         } finally {
             // 清理可能残留的临时文件
@@ -372,6 +374,53 @@ class KnowledgeRepository(
             }
             writeFileUnlocked(kbName, relativePath, content)
         }
+    }
+
+    /**
+     * P0-4：带版本校验的文件写入——防止编辑覆盖后台新增。
+     * 调用方在读取文件时获得 [expectedVersion]（文件内容的 SHA-256），
+     * 写入时校验磁盘上的文件是否仍为该版本。
+     * 如果文件已被修改（后台追加等），拒绝写入并返回 false，调用方保留草稿。
+     *
+     * @return true=写入成功，false=版本冲突（文件已被修改，调用方应保留草稿）
+     */
+    suspend fun writeFileWithVersion(
+        kbName: String, relativePath: String, content: String, expectedVersion: String
+    ): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("writeFileWithVersion skipped: kb no longer exists")
+                return@withLock false
+            }
+            val file = File(File(knowledgeRoot, kbName), relativePath)
+            val currentVersion = if (file.exists()) {
+                sha256(file.readText())
+            } else {
+                sha256("")
+            }
+            if (currentVersion != expectedVersion) {
+                com.lovebrain.app.util.L.w("writeFileWithVersion conflict: $relativePath")
+                return@withLock false
+            }
+            writeFileUnlocked(kbName, relativePath, content)
+            true
+        }
+    }
+
+    /**
+     * P0-4：读取文件并返回内容 + 版本号（SHA-256）。
+     * 调用方持有版本号，写入时传给 [writeFileWithVersion] 做冲突检测。
+     */
+    suspend fun readFileWithVersion(kbName: String, relativePath: String): Pair<String, String> = withContext(Dispatchers.IO) {
+        val content = readFile(kbName, relativePath)
+        content to sha256(content)
+    }
+
+    /** P0-4：SHA-256 哈希（用于版本校验） */
+    private fun sha256(text: String): String {
+        val md = java.security.MessageDigest.getInstance("SHA-256")
+        val bytes = md.digest(text.toByteArray(Charsets.UTF_8))
+        return bytes.joinToString("") { "%02x".format(it) }
     }
 
     /**  KBG-01：目标 KB 已删除时 no-op */

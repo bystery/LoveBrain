@@ -88,7 +88,9 @@ private val KB_FILES = listOf(
     KbFile("话题档案", "memory/raw_topic.md", layer = "积累"),
     KbFile("经验", "memory/lessons.md", layer = "积累"),
     KbFile("谈心记录", "memory/counseling_log.md", layer = "积累"),
-    KbFile("军师日志", "memory/reflect_history.md", layer = "积累")
+    KbFile("军师日志", "memory/reflect_history.md", layer = "积累"),
+    // P0-4：旧迁移写入 archive.md，界面原先看不到——加入列表使历史记录可见
+    KbFile("旧版归档", "memory/archive.md", layer = "积累")
 )
 
 class KbEditActivity : ComponentActivity() {
@@ -122,9 +124,16 @@ class KbEditActivity : ComponentActivity() {
                         lastFile = securePrefs.lastKbEditFile,
                         onLastFileChange = { securePrefs.lastKbEditFile = it },
                         readFile = { path ->
-                            repo.readFile(kbName, path)
+                            repo.readFileWithVersion(kbName, path)
                         },
-                        saveFile = { path, content -> repo.writeFile(kbName, path, content) },
+                        saveFile = { path, content, version ->
+                            if (version != null) {
+                                repo.writeFileWithVersion(kbName, path, content, version)
+                            } else {
+                                repo.writeFile(kbName, path, content)
+                                true
+                            }
+                        },
                         onBack = { finish() }
                     )
                 }
@@ -138,8 +147,8 @@ private fun KbEditScreen(
     files: List<KbFile>,
     lastFile: String?,
     onLastFileChange: (String) -> Unit,
-    readFile: suspend (String) -> String,
-    saveFile: suspend (String, String) -> Unit,
+    readFile: suspend (String) -> Pair<String, String>,
+    saveFile: suspend (String, String, String?) -> Boolean,
     onBack: () -> Unit
 ) {
     // ── 初始文件：持久化记忆 > 默认「最近两句」 ──
@@ -152,6 +161,8 @@ private fun KbEditScreen(
 
     var drafts by remember { mutableStateOf(emptyMap<String, String>()) }
     var saved by remember { mutableStateOf(emptyMap<String, String>()) }
+    // P0-4：版本快照——每个文件读取时的 SHA-256，保存时做冲突检测
+    var versions by remember { mutableStateOf(emptyMap<String, String>()) }
     var loaded by remember { mutableStateOf(false) }
     var isPreview by remember { mutableStateOf(true) }
     var pendingClear by remember { mutableStateOf(false) }
@@ -165,8 +176,9 @@ private fun KbEditScreen(
     // 异步加载所有文件内容
     LaunchedEffect(files) {
         val initial = files.associate { it.path to readFile(it.path) }
-        drafts = initial
-        saved = initial
+        drafts = initial.mapValues { it.value.first }
+        saved = initial.mapValues { it.value.first }
+        versions = initial.mapValues { it.value.second }
         loaded = true
     }
 
@@ -186,10 +198,20 @@ private fun KbEditScreen(
     suspend fun autosave(path: String): Boolean {
         val d = drafts[path] ?: ""
         if (d == (saved[path] ?: "")) return true
-        return runCatching { saveFile(path, d) }
-            .onSuccess { saved = saved + (path to d) }
+        val ver = versions[path]
+        return runCatching { saveFile(path, d, ver) }
+            .onSuccess { ok ->
+                if (ok) {
+                    saved = saved + (path to d)
+                    // P0-4：保存成功后更新版本号（内容已落盘，新版本 = 当前草稿的哈希）
+                    // 版本号在重新读取时会自动刷新
+                } else {
+                    // P0-4：版本冲突——文件已被后台修改，保留草稿不覆盖
+                    L.w("KbEdit version conflict: $path, keeping draft")
+                }
+            }
             .onFailure { L.w("KbEdit autosave failed: $path") }
-            .isSuccess
+            .getOrDefault(false)
     }
 
     // ── 切换统一入口：自动保存上一个 → 切文件 → 记忆 → 回预览态 ──
@@ -408,8 +430,10 @@ private fun KbEditScreen(
                             drafts = drafts + (selectedPath to baseline)
                             editorStates.remove(selectedPath)
                             scope.launch {
-                                runCatching { saveFile(selectedPath, baseline) }
-                                    .onSuccess { saved = saved + (selectedPath to baseline) }
+                                runCatching { saveFile(selectedPath, baseline, versions[selectedPath]) }
+                                    .onSuccess { ok ->
+                                        if (ok) saved = saved + (selectedPath to baseline)
+                                    }
                                 isPreview = true
                             }
                         }) {
@@ -420,12 +444,19 @@ private fun KbEditScreen(
                             onClick = {
                                 val text = editorValue.text
                                 scope.launch {
-                                    runCatching { saveFile(selectedPath, text) }
-                                        .onSuccess {
-                                            saved = saved + (selectedPath to text)
-                                            editorStates.remove(selectedPath)
-                                            hint = "已保存" to false
-                                            isPreview = true
+                                    val ver = versions[selectedPath]
+                                    runCatching { saveFile(selectedPath, text, ver) }
+                                        .onSuccess { ok ->
+                                            if (ok) {
+                                                saved = saved + (selectedPath to text)
+                                                editorStates.remove(selectedPath)
+                                                hint = "已保存" to false
+                                                isPreview = true
+                                            } else {
+                                                // P0-4：版本冲突——文件已被后台修改
+                                                L.w("KbEdit save conflict: ${selected.path}")
+                                                hint = "文件已被后台修改，已保留你的草稿，请重新打开查看" to true
+                                            }
                                         }
                                         .onFailure {
                                             L.w("KbEdit manual save failed: ${selected.path}")
@@ -460,17 +491,22 @@ private fun KbEditScreen(
                 TextButton(onClick = {
                     pendingClear = false
                     val path = selectedPath
-                    scope.launch {
-                        runCatching { saveFile(path, "") }
-                            .onSuccess {
-                                drafts = drafts + (path to "")
-                                saved = saved + (path to "")
-                            }
-                            .onFailure {
-                                L.w("KbEdit clear failed: $path")
-                                hint = "清空失败，请重试" to true
-                            }
-                    }
+                scope.launch {
+                                    runCatching { saveFile(path, "", versions[path]) }
+                                        .onSuccess { ok ->
+                                            if (ok) {
+                                                drafts = drafts + (path to "")
+                                                saved = saved + (path to "")
+                                            } else {
+                                                L.w("KbEdit clear conflict: $path")
+                                                hint = "文件已被后台修改，请重新打开" to true
+                                            }
+                                        }
+                                        .onFailure {
+                                            L.w("KbEdit clear failed: $path")
+                                            hint = "清空失败，请重试" to true
+                                        }
+                                }
                 }) { Text("清空", color = Error, style = AppTypography.titleMedium) }
             },
             dismissButton = {
@@ -484,16 +520,14 @@ private fun KbEditScreen(
 }
 
 private fun prettyForPreview(path: String, content: String): String {
-    if (path != "moment/plan.md") return content
+    // P1-8: 所有文件都先去 HTML 注释，不只是 plan.md
+    val noComments = stripHtmlComments(content)
+    if (path != "moment/plan.md") return noComments
+    // plan.md 额外格式化事项行
     val sb = StringBuilder()
-    var inComment = false
-    content.lines().forEach { line ->
+    noComments.lines().forEach { line ->
         val t = line.trim()
         when {
-            inComment -> {
-                if (t.contains("-->")) inComment = false
-            }
-            t.startsWith("<!--") -> if (!t.contains("-->")) inComment = true
             t.isEmpty() -> sb.append("\n")
             t.startsWith("#") -> sb.append(line).append("\n")
             t.contains("|") -> {
@@ -512,4 +546,10 @@ private fun prettyForPreview(path: String, content: String): String {
         }
     }
     return sb.toString()
+}
+
+/** P1-8: 剥离 HTML 注释（<!-- ... -->，跨行也处理） */
+private fun stripHtmlComments(text: String): String {
+    val regex = Regex("<!--.*?-->", RegexOption.DOT_MATCHES_ALL)
+    return regex.replace(text, "").trim()
 }

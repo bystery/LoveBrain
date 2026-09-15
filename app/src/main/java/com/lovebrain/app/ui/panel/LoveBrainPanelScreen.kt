@@ -331,12 +331,14 @@ fun LoveBrainPanelScreen(
                     }
                 )
 
-                // P1-2: Dual button row - "生成回复" (left) | "主动发" (right)
+                // P1-5: Dual button row - "生成回复" (left) | "主动发" (right)
+                // 非生成状态下始终保留双入口；"记入知识库"移入结果工具区不再挤掉主入口
                 DualGenerateRow(
                     modifier = Modifier.fillMaxWidth(),
                     isGenerating = isGenerating,
                     isProactive = isProactive,
                     hasReplyResult = result is GenerateResult.Success,
+                    resultMode = resultMode,
                     messageCount = messages.size,
                     draftText = draftText,
                     onGenerateReply = {
@@ -354,10 +356,6 @@ fun LoveBrainPanelScreen(
                         } else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置")
                     },
                     onRetry = { if (isProviderReady) viewModel.generate() else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置") },
-                    onNextRound = {
-                        viewModel.nextRound()
-                        onCopy("")
-                    },
                     onStop = {
                         if (isProactive) viewModel.stopProactive()
                         else viewModel.stopGeneration()
@@ -395,6 +393,11 @@ fun LoveBrainPanelScreen(
                                     onCopy(reply)
                                 },
                                 onRetry = { viewModel.generate() },
+                                // P1-5: 记入知识库放入结果工具区，不挤掉主入口
+                                onSaveToKb = {
+                                    viewModel.nextRound()
+                                    onCopy("")
+                                },
                                 providerReady = isProviderReady,
                                 onOpenSettings = onOpenSettings,
                                 modifier = Modifier.fillMaxSize()
@@ -800,10 +803,10 @@ private fun ProactiveResultArea(
 }
 
 /**
- * P1-2: Dual button row - "生成回复" (left) | "主动发" (right).
- * Each button takes half width with ~8dp gap.
- * When busy (generating/proactive), shows stop button.
- * When reply result exists, shows retry + save buttons.
+ * P1-5: Dual button row - "生成回复" (left) | "主动发" (right).
+ * 非生成状态下始终保留双入口——"记入知识库"已移入结果工具区。
+ * 有回复结果时左按钮变为"重试"，右按钮"主动发"保持可达。
+ * 按钮状态同时参考 resultMode，避免主动发页面出现旧回复的保存操作。
  */
 @Composable
 private fun DualGenerateRow(
@@ -811,12 +814,12 @@ private fun DualGenerateRow(
     isGenerating: Boolean,
     isProactive: Boolean,
     hasReplyResult: Boolean,
+    resultMode: LoveBrainViewModel.ResultMode,
     messageCount: Int,
     draftText: String,
     onGenerateReply: () -> Unit,
     onGenerateProactive: () -> Unit,
     onRetry: () -> Unit,
-    onNextRound: () -> Unit,
     onStop: () -> Unit
 ) {
     val haptics = androidx.compose.ui.platform.LocalHapticFeedback.current
@@ -891,48 +894,14 @@ private fun DualGenerateRow(
         ) {
             Text("停止", color = Color.White, style = AppTypography.titleMedium, fontWeight = FontWeight.Bold)
         }
-    } else if (hasReplyResult) {
-        // Reply result exists: retry + save
-        Row(
-            modifier = modifier.fillMaxWidth().padding(vertical = Spacing.xs),
-            horizontalArrangement = Arrangement.spacedBy(PanelDimens.GENERATE_BUTTON_GAP_DP.dp)
-        ) {
-            val (retryInteraction, retryScale) = rememberPressScale(0.96f, "compactRetryScale")
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(PanelDimens.TRIO_HEIGHT_DP.dp)
-                    .graphicsLayer { scaleX = retryScale; scaleY = retryScale }
-                    .clip(LoveBrainShape.md)
-                    .border(AppDimens.BORDER_WIDTH_DP.dp, Neutral300, LoveBrainShape.md)
-                    .clickable(interactionSource = retryInteraction, indication = null, onClick = onRetry),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("重试", color = TextSecondary, style = AppTypography.bodySmall, fontWeight = FontWeight.Medium)
-            }
-            val (saveInteraction, saveScale) = rememberPressScale(0.96f, "compactSaveScale")
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(PanelDimens.TRIO_HEIGHT_DP.dp)
-                    .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
-                    .shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md)
-                    .clip(LoveBrainShape.md)
-                    .background(Primary, LoveBrainShape.md)
-                    .clickable(interactionSource = saveInteraction, indication = null, onClick = onNextRound),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("记入知识库", color = Color.White, style = AppTypography.bodySmall, fontWeight = FontWeight.Medium)
-            }
-        }
     } else {
-        // P1-2: Default dual button row
+        // P1-5: 非生成状态始终显示双入口——"记入知识库"已移入结果工具区
         Row(
             modifier = modifier.fillMaxWidth().padding(vertical = Spacing.xs),
             horizontalArrangement = Arrangement.spacedBy(PanelDimens.GENERATE_BUTTON_GAP_DP.dp)
         ) {
-            // Left: 生成回复
-            val replyEnabled = messageCount > 0
+            // Left: 生成回复 / 重试（有回复结果时变为重试）
+            val replyEnabled = messageCount > 0 || hasReplyResult
             val (replyInteraction, replyScale) = rememberPressScale(0.96f, "genReplyScale")
             Box(
                 modifier = Modifier
@@ -947,13 +916,13 @@ private fun DualGenerateRow(
                         indication = null,
                         onClick = {
                             haptics.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
-                            onGenerateReply()
+                            if (hasReplyResult) onRetry() else onGenerateReply()
                         }
                     ) else Modifier),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "生成回复",
+                    text = if (hasReplyResult) "重试" else "生成回复",
                     color = if (replyEnabled) Color.White else TextSecondary,
                     style = AppTypography.titleMedium,
                     fontWeight = FontWeight.Bold,
@@ -961,7 +930,7 @@ private fun DualGenerateRow(
                 )
             }
 
-            // Right: 主动发
+            // Right: 主动发——始终可达（非生成状态）
             val proactiveEnabled = draftText.trim().isNotEmpty()
             val (proactiveInteraction, proactiveScale) = rememberPressScale(0.96f, "genProactiveScale")
             Box(

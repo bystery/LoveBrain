@@ -258,6 +258,14 @@ class LoveBrainViewModel(
 
     private var proactiveJob: kotlinx.coroutines.Job? = null
 
+    /** P1-2：结果模式——显式区分回复结果与主动发结果 */
+    enum class ResultMode { REPLY, PROACTIVE }
+    private val _resultMode = MutableStateFlow(ResultMode.REPLY)
+    val resultMode: StateFlow<ResultMode> = _resultMode.asStateFlow()
+
+    /** P1-2：前台任务互斥——同时只运行一个回复/润色请求 */
+    val isForegroundBusy: Boolean get() = _isGenerating.value || _isProactive.value
+
     // ═══════════ 谈心模式 ═══════════
     private val _counselingResult = MutableStateFlow<String?>(null)
     val counselingResult: StateFlow<String?> = _counselingResult.asStateFlow()
@@ -432,7 +440,11 @@ class LoveBrainViewModel(
      */
     fun generate() {
         // GEN-01 双层保护第一层：ViewModel guard
-        if (_isGenerating.value) return
+        // P1-2：前台任务互斥——正在主动发时也拒绝
+        if (_isGenerating.value || _isProactive.value) return
+
+        // P1-2：设置结果模式
+        _resultMode.value = ResultMode.REPLY
 
         // GEN-02：冻结快照 — 所有本轮上下文同源
         val snapshot = _messages.value.map { it.copy() }
@@ -512,11 +524,10 @@ class LoveBrainViewModel(
             .filter { _feedbacks.value[it.tag] == SchemeFeedback.LIKED }
             .sortedBy { "ABCD".indexOf(it.tag) }
 
-        // P0-1：候选回复不再自动当作实际发送消息。
-        // 没有点赞时不默认选 A 作为"最终回复"；
-        // 多点赞不拼成实际发言，只记录为偏好。
-        // selectedScheme=null 表示本轮没有确认发送的候选。
-        val selectedScheme: Scheme? = likedSchemes.firstOrNull()
+        // P0-2：点赞不等于发送。selectedScheme 恒为 null——
+        // 用户没有"确认发送"操作，点赞只保存为偏好，不写入"实际对话"段。
+        // TopicRecorder.record 收到 scheme=null 时不写"我（最终回复：…）"行。
+        val selectedScheme: Scheme? = null
         val likedForRecording = likedSchemes // 保留全部点赞用于偏好记录
 
         // GEN-03：无 KB 时保持当前产品语义（可结束但提示未记入）
@@ -565,9 +576,11 @@ class LoveBrainViewModel(
                 // GEN-03：写盘成功 → 才提交 UI 状态
                 commitReplyRound(consumedIds)
                 replyGenerationContext = null
-                // P0-1：提示用户候选未被当作已发送消息
-                if (selectedScheme == null) {
+                // P0-2：提示用户候选未被当作已发送消息（selectedScheme 恒为 null）
+                if (likedForRecording.isEmpty()) {
                     showPanelWarning("已保存对话，候选未作为已发送消息记录")
+                } else {
+                    showPanelWarning("已保存对话和偏好，候选未作为已发送消息记录")
                 }
                 refreshKnowledgeBases()
             } catch (t: Throwable) {
@@ -876,8 +889,13 @@ class LoveBrainViewModel(
     // ═══════════ 主动发起/润色（委托 GenerationEngine） ═══════════
 
     /** GEN-01：同步 guard — 正在主动发时拒绝启动。Engine reject → null → 旧 Job 保持。 */
+    /** P1-2：前台任务互斥——正在生成回复时也拒绝 */
     fun generateProactive(draft: String = "", scene: String = "") {
-        if (_isProactive.value) return
+        if (_isProactive.value || _isGenerating.value) return
+
+        // P1-2：设置结果模式
+        _resultMode.value = ResultMode.PROACTIVE
+
         val job = generationEngine.generateProactive(draft, scene, viewModelScope, this)
         if (job != null) {
             proactiveJob = job

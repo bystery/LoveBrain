@@ -76,12 +76,12 @@ class PromptBuilder(
 
     /**
      * 从 stage 类 markdown 中提取「当前阶段」小节（## 阶段名 到下一个 ## 之间）。
-     * P0-2：使用传入的 KB stage，不再重新读取 active KB，防生成期间切 KB 导致画像和阶段来自不同对象。
+     * P1-7：只使用传入的 KB stage，不再回读活跃库——阶段为空就按未知处理。
+     * 生成链路只使用传入快照，防生成期间切库导致阶段来自不同对象。
      */
     suspend fun extractStageSection(assetPath: String, kb: KnowledgeBase? = null): String {
-        val stage = kb?.stage?.trim().orEmpty().ifBlank {
-            knowledgeRepo.getActive()?.stage?.trim().orEmpty()
-        }
+        // P1-7：阶段为空时按未知处理，不回读 knowledgeRepo.getActive()
+        val stage = kb?.stage?.trim().orEmpty()
         if (stage.isBlank() || stage == "待确定" || stage == "阶段未确定") return ""
         val content = readAsset(assetPath)
         if (content.isBlank()) return ""
@@ -176,21 +176,24 @@ class PromptBuilder(
         val sb = StringBuilder()
         sb.append(applyBudget(buildKnowledgeInsertion(kb, aggressive)))
         sb.append("\n\n")
+        // P1-6: IDEA（想法）独立注入一次——不进入 <chat> 围栏
         if (userHint.isNotBlank()) {
-            sb.append("# 用户的回复想法（参考方向，你可以质疑）\n")
+            sb.append("# 用户的回复想法\n")
             sb.append("用户想这样回：「").append(userHint.trim()).append("」\n")
-            sb.append("请基于这个方向润色出4种方案。如果你认为这个方向有问题（如踩雷区、不符合当前阶段策略），请在分析中指出问题并给出你认为更好的方向。\n\n")
+            sb.append("请基于这个方向润色出4种方案。\n\n")
         }
         sb.append("# 本次对话记录\n")
         sb.append("（按时间顺序。角色务必分清：\"她\"=对方，\"我\"=用户本人。谁做了什么，严格按对话归属判断，禁止张冠李戴把\"我\"的事安到\"她\"头上或反之。）\n\n")
         // : 注入防御——对话记录用 <chat> 围栏包裹，标记为不可信第三方文本
         sb.append("<chat>\n")
         // : 超长对话掐尾——超过上限时只保留最近 N 条，防 context length 超限
-        val effectiveMessages = if (messages.size > AppConfig.REPLY_MAX_MESSAGES) {
+        // P1-6: 只有 HER/ME 进入 <chat>，IDEA 不进——IDEA 已独立注入一次
+        val chatMessages = messages.filter { it.role != ChatMessage.Role.IDEA }
+        val effectiveMessages = if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
             sb.append("（注：对话记录超过 ${AppConfig.REPLY_MAX_MESSAGES} 条，仅保留最近 ${AppConfig.REPLY_MAX_MESSAGES} 条）\n\n")
-            messages.takeLast(AppConfig.REPLY_MAX_MESSAGES)
+            chatMessages.takeLast(AppConfig.REPLY_MAX_MESSAGES)
         } else {
-            messages
+            chatMessages
         }
         effectiveMessages.forEach { msg -> sb.append("${msg.role.label}：${msg.content}\n") }
         sb.append("</chat>\n")
