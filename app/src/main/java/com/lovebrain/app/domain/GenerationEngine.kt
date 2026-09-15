@@ -4,6 +4,7 @@ import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.PanelState
 import com.lovebrain.app.model.Scheme
@@ -183,7 +184,8 @@ class GenerationEngine(
         userHint: String,
         knowledgeBase: KnowledgeBase?,
         scope: CoroutineScope,
-        callbacks: Callbacks
+        callbacks: Callbacks,
+        intentConfig: IntentConfig? = null
     ): Job? {
         if (messages.isEmpty() || callbacks.isGenerating()) return null
 
@@ -197,11 +199,13 @@ class GenerationEngine(
         L.w("PERF t0 click generate")
 
         return scope.launch {
-            val aggressive = callbacks.getOutputMode() == 1
+            // P2-8: aggressive 模式本版关闭——恒为 false，保留策略文件不删除
+            val aggressive = false
             val system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt() }
             val user = withContext(Dispatchers.IO) {
                 // GEN-02B：使用冻结的 knowledgeBase 快照，不读 callbacks.getActiveKb()
-                promptBuilder.buildReplyUserPrompt(knowledgeBase, messages, userHint, aggressive)
+                // P2-3：冻结 intentConfig 快照传入 PromptBuilder
+                promptBuilder.buildReplyUserPrompt(knowledgeBase, messages, userHint, aggressive, intentConfig)
             }
             L.w("PERF t1 prompt built (+${System.currentTimeMillis() - t0}ms), user=${user.length} chars")
 

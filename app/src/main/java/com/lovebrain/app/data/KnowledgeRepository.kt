@@ -269,12 +269,30 @@ class KnowledgeRepository(
                 return@withLock
             }
 
-            // 首次且无库：创建默认知识库
-            runCatching {
-                val safeName = "default"
-                val dir = File(knowledgeRoot, safeName)
-                if (dir.exists()) return@runCatching // 防重复创建
+            // P2-6: 首次且无库——识别并补齐未完成状态
+            // 目录存在不代表完成；只有 kb.json 存在且完整才算有效
+            val safeName = "default"
+            val dir = File(knowledgeRoot, safeName)
+            val kbFile = File(dir, "kb.json")
 
+            // 如果目录存在但 kb.json 不存在 → 半成品，清理重来
+            if (dir.exists() && !kbFile.exists()) {
+                dir.deleteRecursively()
+            }
+
+            // 如果 kb.json 存在但其他文件不完整 → 也清理重来
+            if (kbFile.exists()) {
+                val requiredFiles = listOf(
+                    "understand/me.md", "understand/her.md", "understand/warmth.md",
+                    "moment/topic.md", "moment/recent.md", "moment/scene.md", "moment/plan.md"
+                )
+                val missingFiles = requiredFiles.filter { !File(dir, it).exists() }
+                if (missingFiles.isNotEmpty()) {
+                    dir.deleteRecursively()
+                }
+            }
+
+            runCatching {
                 File(dir, "understand").mkdirs()
                 File(dir, "moment").mkdirs()
                 File(dir, "memory").mkdirs()
@@ -288,31 +306,35 @@ class KnowledgeRepository(
                     turnCount = 0,
                     active = true
                 )
-                atomicWriteText(File(dir, "kb.json"), json.encodeToString(KnowledgeBase.serializer(), kb))
 
-                // 画像层从 schema 加载（含模板说明，用户可编辑替换）
-                atomicWriteText(File(dir, "understand/me.md"), loadSchema("me"))
-                atomicWriteText(File(dir, "understand/her.md"), loadSchema("her"))
-                atomicWriteText(File(dir, "understand/warmth.md"), loadSchema("warmth"))
-                // 此刻层
-                atomicWriteText(File(dir, "moment/topic.md"), loadSchema("topic"))
-                atomicWriteText(File(dir, "moment/recent.md"), loadSchema("recent"))
-                atomicWriteText(File(dir, "moment/scene.md"), loadSchema("scene"))
-                atomicWriteText(File(dir, "moment/plan.md"), loadSchema("plan"))
+                // P2-6: 画像层写空——模板说明留在 assets/schema/，不注入请求
+                atomicWriteText(File(dir, "understand/me.md"), "")
+                atomicWriteText(File(dir, "understand/her.md"), "")
+                atomicWriteText(File(dir, "understand/warmth.md"), "")
+                // 此刻层——topic.md 写最小有效内容（不含模板）
+                atomicWriteText(File(dir, "moment/topic.md"), "- [$now] 正在聊：（等待第一次对话）")
+                atomicWriteText(File(dir, "moment/recent.md"), "")
+                atomicWriteText(File(dir, "moment/scene.md"), "")
+                atomicWriteText(File(dir, "moment/plan.md"), "# 事项计划\n\n## 进行中\n\n## 已结束\n")
                 // 记忆层直接写空
                 atomicWriteText(File(dir, "memory/lessons.md"), "")
                 atomicWriteText(File(dir, "memory/raw_chat.md"), "")
                 atomicWriteText(File(dir, "memory/raw_topic.md"), "")
                 atomicWriteText(File(dir, "memory/raw_scene.md"), "")
-                atomicWriteText(File(dir, "memory/counseling_log.md"), loadSchema("counseling_log"))
+                atomicWriteText(File(dir, "memory/counseling_log.md"), "")
+
+                // P2-6: kb.json 在全部文件写入成功后才写
+                atomicWriteText(kbFile, json.encodeToString(KnowledgeBase.serializer(), kb))
 
                 securePrefs.activeKbName = safeName
 
-                // 全部写入成功后才标记初始化完成
+                // P2-6: 全部写入成功后才标记初始化完成
                 atomicWriteText(initMarker, isoNow())
             }.onFailure { err ->
                 com.lovebrain.app.util.L.e("ensureInitialKnowledgeBase failed", err)
                 // 失败不写标记，下次启动可重试
+                // P2-6: 清理半成品，防止下次启动误认为已有库
+                runCatching { dir.deleteRecursively() }
             }
         }
     }
@@ -346,7 +368,7 @@ class KnowledgeRepository(
         fileMutex.withLock {
             val current = readIntentUnlocked(kbName)
             val updated = current.copy(
-                text = text.take(120),  // 最大 120 字
+                text = text,  // P2-3: 不再静默截断，长度校验在 ViewModel 层完成
                 enabled = enabled,
                 revision = current.revision + 1,
                 updatedAt = isoNow()
@@ -375,6 +397,51 @@ class KnowledgeRepository(
         }.getOrDefault(com.lovebrain.app.model.IntentConfig())
     }
 
+    // ═══════════ 记忆纠正 (Memory Correction) ═══════════
+
+    /** 读取记忆纠正记录 */
+    suspend fun readMemoryCorrections(kbName: String): List<com.lovebrain.app.model.MemoryCorrection> = withContext(Dispatchers.IO) {
+        val file = File(File(knowledgeRoot, kbName), "memory_corrections.json")
+        if (!file.exists()) return@withContext emptyList()
+        runCatching {
+            json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(file.readText())
+        }.getOrDefault(emptyList())
+    }
+
+    /** 添加记忆纠正记录（幂等：同一 refId+type 不重复添加） */
+    suspend fun addMemoryCorrection(kbName: String, correction: com.lovebrain.app.model.MemoryCorrection): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            val file = File(File(knowledgeRoot, kbName), "memory_corrections.json")
+            val current = if (file.exists()) {
+                runCatching { json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(file.readText()) }.getOrDefault(emptyList())
+            } else emptyList()
+            // 幂等检查
+            if (current.any { it.refId == correction.refId && it.type == correction.type }) return@withLock true
+            val updated = current + correction
+            atomicWriteText(file, json.encodeToString(kotlinx.serialization.serializer<List<com.lovebrain.app.model.MemoryCorrection>>(), updated))
+            true
+        }
+    }
+
+    /** 撤销记忆纠正记录（按 refId 撤销最新的一条） */
+    suspend fun undoMemoryCorrection(kbName: String, refId: String): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            val file = File(File(knowledgeRoot, kbName), "memory_corrections.json")
+            if (!file.exists()) return@withLock false
+            val current = runCatching { json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(file.readText()) }.getOrDefault(emptyList())
+            val updated = current.filterNot { it.refId == refId }
+            if (updated.size == current.size) return@withLock false
+            atomicWriteText(file, json.encodeToString(kotlinx.serialization.serializer<List<com.lovebrain.app.model.MemoryCorrection>>(), updated))
+            true
+        }
+    }
+
+    /** 检查某个 MemoryRef 是否被纠正（用于过滤入口） */
+    suspend fun isMemoryCorrected(kbName: String, refId: String): Boolean = withContext(Dispatchers.IO) {
+        val corrections = readMemoryCorrections(kbName)
+        corrections.any { it.refId == refId }
+    }
+
     suspend fun create(name: String, displayName: String): KnowledgeBase = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             val safeName = name.trim().lowercase(Locale.ROOT).replace(Regex("[^a-z0-9\\u4e00-\\u9fa5_-]"), "")
@@ -395,24 +462,25 @@ class KnowledgeRepository(
                 turnCount = 0,
                 active = listAll().isEmpty()
             )
-            atomicWriteText(File(dir, "kb.json"), json.encodeToString(KnowledgeBase.serializer(), kb))
-
-            // 全部文件从 assets/schema/ 加载（schema 是知识库结构的唯一来源）
-            // 懂得层（慢变量画像）
-            atomicWriteText(File(dir, "understand/me.md"), loadSchema("me"))
-            atomicWriteText(File(dir, "understand/her.md"), loadSchema("her"))
-            atomicWriteText(File(dir, "understand/warmth.md"), loadSchema("warmth"))
+            // P2-6: kb.json 在全部文件写入成功后写
+            // 懂得层（慢变量画像）——P2-6: 画像写空，模板说明留在 assets/schema/
+            atomicWriteText(File(dir, "understand/me.md"), "")
+            atomicWriteText(File(dir, "understand/her.md"), "")
+            atomicWriteText(File(dir, "understand/warmth.md"), "")
             // 此刻层（快变量上下文）
-            atomicWriteText(File(dir, "moment/topic.md"), loadSchema("topic"))
-            atomicWriteText(File(dir, "moment/recent.md"), loadSchema("recent"))
-            atomicWriteText(File(dir, "moment/scene.md"), loadSchema("scene"))
-            atomicWriteText(File(dir, "moment/plan.md"), loadSchema("plan"))
-            // 记忆层（长期归档）——P1-8: raw_topic/raw_chat/raw_scene/lessons 直接写空内容，模板说明留在 assets
+            atomicWriteText(File(dir, "moment/topic.md"), "- [$now] 正在聊：（等待第一次对话）")
+            atomicWriteText(File(dir, "moment/recent.md"), "")
+            atomicWriteText(File(dir, "moment/scene.md"), "")
+            atomicWriteText(File(dir, "moment/plan.md"), "# 事项计划\n\n## 进行中\n\n## 已结束\n")
+            // 记忆层（长期归档）——直接写空
             atomicWriteText(File(dir, "memory/lessons.md"), "")
             atomicWriteText(File(dir, "memory/raw_chat.md"), "")
             atomicWriteText(File(dir, "memory/raw_topic.md"), "")
             atomicWriteText(File(dir, "memory/raw_scene.md"), "")
-            atomicWriteText(File(dir, "memory/counseling_log.md"), loadSchema("counseling_log"))
+            atomicWriteText(File(dir, "memory/counseling_log.md"), "")
+
+            // P2-6: kb.json 在全部文件写入成功后写
+            atomicWriteText(File(dir, "kb.json"), json.encodeToString(KnowledgeBase.serializer(), kb))
 
             if (kb.active) securePrefs.activeKbName = safeName
             scheduleDebouncedBackup()
@@ -837,53 +905,88 @@ class KnowledgeRepository(
 
     suspend fun rotateTopic(kbName: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
-            val timestamp = com.lovebrain.app.util.TimeFmt.now()
+            val dir = File(knowledgeRoot, kbName)
+            val markerFile = File(dir, ".rotate_pending")
 
+            // P2-9: 幂等归档——使用操作标记文件防止重复归档和重复计数
+            // 标记文件记录本轮归档的内容指纹，重试时通过比对判断是否已执行归档步骤
             val oldTopic = getCurrentTopic(kbName)
-            // B = 对话暂存 + 最近两句
             val rawChat = readFile(kbName, "memory/raw_chat.md")
             val recent = readFile(kbName, "moment/recent.md")
-            // A = 状态暂存 + 此刻状态
             val rawScene = readFile(kbName, "memory/raw_scene.md")
             val scene = readFile(kbName, "moment/scene.md")
 
             val hasContent = rawChat.isNotBlank() || recent.isNotBlank() || rawScene.isNotBlank() || scene.isNotBlank()
+
+            // 计算内容指纹：用于判断归档是否已执行
+            val contentFingerprint = "$oldTopic|${rawChat.length}|${recent.length}|${rawScene.length}|${scene.length}"
+
             if (hasContent) {
-                val archiveEntry = buildString {
-                    append("\n# [$timestamp] $oldTopic\n\n")
-                    // 状态变化（H2）：合并两个来源，按时间倒序（最新在前），过滤无效行
-                    append("## [$timestamp] 状态变化\n")
-                    append(mergeSceneEntriesSorted(rawScene, scene))
-                    append("\n")
-                    // 对话记录（H3）：保持时间正序（暂存在前、最近在尾，天然顺序）
-                    append("### [$timestamp] 对话记录\n")
-                    if (rawChat.isNotBlank()) append(rawChat.trim()).append("\n")
-                    if (recent.isNotBlank()) append(recent.trim()).append("\n")
+                // 检查标记文件：如果存在且指纹匹配，说明归档已执行但清空未完成
+                val markerContent = if (markerFile.exists()) markerFile.readText() else ""
+                val archiveDone = markerContent == contentFingerprint
+
+                if (!archiveDone) {
+                    // 归档尚未执行——正常执行
+                    val timestamp = com.lovebrain.app.util.TimeFmt.now()
+                    val archiveEntry = buildString {
+                        append("\n# [$timestamp] $oldTopic\n\n")
+                        // 状态变化（H2）：合并两个来源，按时间倒序（最新在前），保留未识别行
+                        append("## [$timestamp] 状态变化\n")
+                        append(mergeSceneEntriesSorted(rawScene, scene))
+                        append("\n")
+                        // 对话记录（H3）：保持时间正序（暂存在前、最近在尾，天然顺序）
+                        append("### [$timestamp] 对话记录\n")
+                        if (rawChat.isNotBlank()) append(rawChat.trim()).append("\n")
+                        if (recent.isNotBlank()) append(recent.trim()).append("\n")
+                    }
+                    appendFileUnlocked(kbName, "memory/raw_topic.md", archiveEntry)
+                    incrementTopicCountUnlocked(kbName)
+
+                    // 写入标记文件——记录已完成归档的内容指纹
+                    atomicWriteText(markerFile, contentFingerprint)
                 }
-                appendFileUnlocked(kbName, "memory/raw_topic.md", archiveEntry)
-                incrementTopicCountUnlocked(kbName)
+                // archiveDone = true: 归档已执行，跳过追加和计数，直接执行清空
             }
 
-            // 清空四个源文件，为新话题腾空间（话题与 key 由调用方写入）
+            // 清空四个源文件（无论是否刚执行归档，都需要清空）
             writeFileUnlocked(kbName, "memory/raw_chat.md", "")
             writeFileUnlocked(kbName, "memory/raw_scene.md", "")
             writeFileUnlocked(kbName, "moment/scene.md", "")
             writeFileUnlocked(kbName, "moment/recent.md", "")
+
+            // 清除标记文件——归档+清空全部完成
+            markerFile.delete()
         }
     }
 
     /** 状态条目行校验：必须以 "- [yyyy-MM-dd HH:mm]" 真实时间戳开头（防 schema 模板示例行混入） */
     private val validEntryLine = Regex("^- \\[\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}]")
 
-    /** 合并多个来源的状态条目，按时间戳倒序（最新在前）；无合法时间戳的行丢弃 */
+    /** 合并多个来源的状态条目，按时间戳倒序（最新在前）。
+     *  P2-9: 无合法时间戳的行保留到末尾（不丢弃），防源文件清空后内容丢失 */
     private fun mergeSceneEntriesSorted(vararg sources: String): String {
-        val entries = sources
+        val allLines = sources
             .flatMap { it.lines() }
             .map { it.trimEnd() }
-            .filter { validEntryLine.containsMatchIn(it) }
-        if (entries.isEmpty()) return ""
-        val sorted = entries.sortedByDescending { parseEntryTs(it) }
-        return sorted.joinToString("\n") + "\n"
+            .filter { it.isNotBlank() }
+
+        if (allLines.isEmpty()) return ""
+
+        val validEntries = allLines.filter { validEntryLine.containsMatchIn(it) }
+        val unrecognized = allLines.filter { !validEntryLine.containsMatchIn(it) }
+
+        val sorted = validEntries.sortedByDescending { parseEntryTs(it) }
+        val result = StringBuilder()
+        if (sorted.isNotEmpty()) {
+            sorted.forEach { result.append(it).append("\n") }
+        }
+        // P2-9: 未识别行追加到末尾，不丢弃
+        if (unrecognized.isNotEmpty()) {
+            result.append("# 未归类内容（保留待核对）\n")
+            unrecognized.forEach { result.append(it).append("\n") }
+        }
+        return result.toString()
     }
 
     private fun parseEntryTs(entry: String): Long {

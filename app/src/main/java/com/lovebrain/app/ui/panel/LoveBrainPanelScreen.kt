@@ -11,6 +11,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -98,6 +99,10 @@ fun LoveBrainPanelScreen(
     val currentVector by viewModel.currentVector.collectAsStateWithLifecycle()
     val vectorDelta by viewModel.vectorDelta.collectAsStateWithLifecycle()
     val showPlanPanel by viewModel.showPlanPanel.collectAsStateWithLifecycle()
+    // P2-5: 本轮参考和记忆纠正
+    val memoryRefs by viewModel.memoryRefs.collectAsStateWithLifecycle()
+    val memoryCorrections by viewModel.memoryCorrections.collectAsStateWithLifecycle()
+    val correctedRefIds = memoryCorrections.map { it.refId }.toSet()
 
     val todayCostYuan by viewModel.todayCostYuan.collectAsStateWithLifecycle()
     val lastCostYuan by viewModel.lastCostYuan.collectAsStateWithLifecycle()
@@ -331,6 +336,161 @@ fun LoveBrainPanelScreen(
                     }
                 )
 
+                // P2-3: 持续意图编辑入口（默认折叠，一个知识库一份）
+                val intentConfig by viewModel.intentConfig.collectAsStateWithLifecycle()
+                var showIntentEditor by remember { mutableStateOf(false) }
+                var intentDraft by remember(intentConfig.text) { mutableStateOf(intentConfig.text) }
+                if (showIntentEditor) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(LoveBrainShape.md)
+                            .background(SurfaceInset)
+                            .padding(Spacing.md)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "持续意图",
+                                style = AppTypography.labelMedium,
+                                color = TextSecondary,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(Modifier.weight(1f))
+                            if (intentConfig.enabled) {
+                                Text(
+                                    "已启用",
+                                    style = AppTypography.labelSmall,
+                                    color = Primary
+                                )
+                            }
+                            Spacer(Modifier.width(Spacing.sm))
+                            Box(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clip(LoveBrainShape.full)
+                                    .clickable(
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = null
+                                    ) {
+                                        showIntentEditor = false
+                                        intentDraft = intentConfig.text
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_close),
+                                    contentDescription = "关闭意图编辑",
+                                    tint = TextHint,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
+                        }
+                        Spacer(Modifier.height(Spacing.xs))
+                        BasicTextField(
+                            value = intentDraft,
+                            onValueChange = { intentDraft = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(LoveBrainShape.sm)
+                                .background(SurfaceBase)
+                                .padding(Spacing.sm),
+                            textStyle = androidx.compose.ui.text.TextStyle(
+                                fontSize = 13.sp,
+                                color = TextPrimary
+                            ),
+                            maxLines = 3,
+                            decorationBox = { innerTextField ->
+                                if (intentDraft.isEmpty()) {
+                                    Text(
+                                        "例：先恢复轻松交流",
+                                        style = AppTypography.bodySmall,
+                                        color = TextHint
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        )
+                        Spacer(Modifier.height(Spacing.xs))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            if (intentConfig.enabled) {
+                                Box(
+                                    modifier = Modifier
+                                        .clip(LoveBrainShape.sm)
+                                        .clickable(
+                                            interactionSource = remember { MutableInteractionSource() },
+                                            indication = null
+                                        ) {
+                                            viewModel.disableIntent()
+                                            showIntentEditor = false
+                                        }
+                                        .padding(horizontal = Spacing.md, vertical = Spacing.xs)
+                                ) {
+                                    Text("关闭", style = AppTypography.labelMedium, color = TextHint)
+                                }
+                                Spacer(Modifier.width(Spacing.sm))
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .clip(LoveBrainShape.sm)
+                                    .background(Primary)
+                                    .clickable(
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = null
+                                    ) {
+                                        viewModel.saveIntent(intentDraft)
+                                        showIntentEditor = false
+                                    }
+                                    .padding(horizontal = Spacing.md, vertical = Spacing.xs)
+                            ) {
+                                Text("保存", style = AppTypography.labelMedium, color = Color.White)
+                            }
+                        }
+                    }
+                } else {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = Spacing.xs),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = if (intentConfig.enabled) "意图：${intentConfig.text.take(20)}${if (intentConfig.text.length > 20) "…" else ""}" else "持续意图",
+                            style = AppTypography.labelSmall,
+                            color = if (intentConfig.enabled) Primary else TextHint,
+                            modifier = Modifier
+                                .clip(LoveBrainShape.sm)
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null
+                                ) { showIntentEditor = true }
+                                .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                        )
+                        if (intentConfig.enabled) {
+                            Spacer(Modifier.width(Spacing.sm))
+                            Text(
+                                "关闭",
+                                style = AppTypography.labelSmall,
+                                color = TextHint,
+                                modifier = Modifier
+                                    .clip(LoveBrainShape.sm)
+                                    .clickable(
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = null
+                                    ) {
+                                        viewModel.disableIntent()
+                                    }
+                                    .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                            )
+                        }
+                    }
+                }
+
                 // P1-5: Dual button row - "生成回复" (left) | "主动发" (right)
                 // 非生成状态下始终保留双入口；"记入知识库"移入结果工具区不再挤掉主入口
                 DualGenerateRow(
@@ -402,6 +562,10 @@ val streamingDirections by viewModel.streamingDirections.collectAsStateWithLifec
                                 },
                                 providerReady = isProviderReady,
                                 onOpenSettings = onOpenSettings,
+                                memoryRefs = memoryRefs,
+                                correctedRefIds = correctedRefIds,
+                                onCorrectMemory = { refId, type -> viewModel.correctMemory(refId, type) },
+                                onUndoCorrection = { refId -> viewModel.undoMemoryCorrection(refId) },
                                 modifier = Modifier.fillMaxSize()
                             )
                         }

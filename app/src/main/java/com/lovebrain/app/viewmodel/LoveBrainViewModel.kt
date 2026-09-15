@@ -11,6 +11,7 @@ import com.lovebrain.app.domain.KnowledgeTriggerCoordinator
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.DailySuggestion
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.KnowledgeBase
@@ -118,6 +119,14 @@ class LoveBrainViewModel(
     /** 持续意图配置 */
     private val _intentConfig = MutableStateFlow<IntentConfig>(IntentConfig())
     val intentConfig: StateFlow<IntentConfig> = _intentConfig.asStateFlow()
+
+    /** P2-5: 本轮参考（记忆引用列表）——生成后展示，支持纠正操作 */
+    private val _memoryRefs = MutableStateFlow<List<com.lovebrain.app.model.MemoryRef>>(emptyList())
+    val memoryRefs: StateFlow<List<com.lovebrain.app.model.MemoryRef>> = _memoryRefs.asStateFlow()
+
+    /** P2-5: 记忆纠正记录（当前 KB） */
+    private val _memoryCorrections = MutableStateFlow<List<com.lovebrain.app.model.MemoryCorrection>>(emptyList())
+    val memoryCorrections: StateFlow<List<com.lovebrain.app.model.MemoryCorrection>> = _memoryCorrections.asStateFlow()
 
     /** ：面板级临时警告（未配置引导/未记入提示），悬浮窗内短暂展示 */
     private val _panelWarning = MutableStateFlow<String?>(null)
@@ -460,12 +469,33 @@ class LoveBrainViewModel(
         // GEN-02：冻结快照 — 所有本轮上下文同源
         val snapshot = _messages.value.map { it.copy() }
         val userHint = collectIdeaHint(snapshot)
+        // P2-4: 未提交的想法草稿也参与生成
+        // 如果当前处于想法模式且有未提交草稿，将其合并到 userHint
+        val draft = _draftText.value.trim()
+        val editingIdx = _editingIndex.value
+        val effectiveHint = if (draft.isNotEmpty()) {
+            if (_ideaComposeMode.value) {
+                // 想法模式下：草稿是新想法，直接追加
+                if (userHint.isNotEmpty()) "$userHint\n$draft" else draft
+            } else if (editingIdx >= 0 && editingIdx < snapshot.size && snapshot[editingIdx].role == ChatMessage.Role.IDEA) {
+                // 编辑已有 IDEA：用草稿替换对应条目内容
+                val editedSnapshot = snapshot.toMutableList()
+                editedSnapshot[editingIdx] = editedSnapshot[editingIdx].copy(content = draft)
+                collectIdeaHint(editedSnapshot)
+            } else {
+                userHint
+            }
+        } else {
+            userHint
+        }
         // GEN-02B：冻结 KB 快照 — AI prompt 和 nextRound 保存使用同一对象
         val kbSnapshot = _activeKb.value
         val kbName = kbSnapshot?.name
+        // P2-3：冻结 intentConfig 快照 — 生成开始时冻结 kbId/text/enabled/revision
+        val intentSnapshot = _intentConfig.value
 
         // GEN-01 双层保护第二层：Engine 返回 null = reject，不覆盖旧 Job
-        val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this)
+        val job = generationEngine.generate(snapshot, effectiveHint, kbSnapshot, viewModelScope, this, intentSnapshot)
         if (job != null) {
             generateJob = job
             // GEN-02：context 必须和实际启动成功的 Job 绑定
@@ -577,7 +607,8 @@ class LoveBrainViewModel(
                     val topicRotated = topicRecorder.record(
                         kb, messagesSnapshot, selectedScheme, analysis.topic_status, analysis.topic_label,
                         analysis.scene_facts, "", analysis.ongoing,
-                        likedSchemes = likedForRecording
+                        likedSchemes = likedForRecording,
+                        sourceMessageIds = consumedIds
                     )
                     if (topicRotated) {
                         triggerCoordinator.checkTriggers(kb.name, viewModelScope, this@LoveBrainViewModel)
@@ -876,13 +907,28 @@ class LoveBrainViewModel(
 
     // ═══════════ 持续意图 ═══════════
 
+    /** 持续意图最大长度（不做静默截断，超长给用户反馈） */
+    private val maxIntentLength = 200
+
     /** 保存并启用持续意图 */
     fun saveIntent(text: String) {
         val kbName = _activeKb.value?.name ?: return
+        val trimmed = text.trim()
+        if (trimmed.isEmpty()) {
+            showPanelWarning("意图不能为空")
+            return
+        }
+        if (trimmed.length > maxIntentLength) {
+            showPanelWarning("意图过长（${trimmed.length}字），请缩减到${maxIntentLength}字以内")
+            return
+        }
         viewModelScope.launch {
             runCatching {
-                _intentConfig.value = knowledgeRepo.saveIntent(kbName, text, enabled = true)
-            }.onFailure { L.w("saveIntent failed: ${it::class.simpleName}") }
+                _intentConfig.value = knowledgeRepo.saveIntent(kbName, trimmed, enabled = true)
+            }.onFailure {
+                L.w("saveIntent failed: ${it::class.simpleName}")
+                showPanelWarning("意图保存失败，请重试")
+            }
         }
     }
 
@@ -892,10 +938,87 @@ class LoveBrainViewModel(
         viewModelScope.launch {
             runCatching {
                 _intentConfig.value = knowledgeRepo.disableIntent(kbName)
-            }.onFailure { L.w("disableIntent failed: ${it::class.simpleName}") }
+            }.onFailure {
+                L.w("disableIntent failed: ${it::class.simpleName}")
+                showPanelWarning("意图关闭失败，请重试")
+            }
         }
     }
     fun dismissPlanPanel() { _showPlanPanel.value = false }
+
+    // ═══════════ 记忆纠正 ═══════════
+
+    /** P2-5: 从本轮生成结果构建 MemoryRef 列表 */
+    private fun buildMemoryRefs(response: com.lovebrain.app.model.LoveBrainResponse, kbName: String?): List<com.lovebrain.app.model.MemoryRef> {
+        val refs = mutableListOf<com.lovebrain.app.model.MemoryRef>()
+        val now = TimeFmt.now()
+        // 场景事实
+        response.analysis.scene_facts.forEachIndexed { idx, fact ->
+            refs.add(com.lovebrain.app.model.MemoryRef(
+                id = "scene_${kbName ?: "unknown"}_${idx}_${fact.take(8)}",
+                type = com.lovebrain.app.model.MemoryType.SCENE,
+                text = fact,
+                evidenceTime = now
+            ))
+        }
+        // 进行中事项
+        response.analysis.ongoing.forEachIndexed { idx, item ->
+            refs.add(com.lovebrain.app.model.MemoryRef(
+                id = "ongoing_${kbName ?: "unknown"}_${idx}_${item.name.take(8)}",
+                type = com.lovebrain.app.model.MemoryType.ONGOING,
+                text = "${item.name}: ${item.state}",
+                evidenceTime = now
+            ))
+        }
+        return refs
+    }
+
+    /** P2-5: 生成完成后更新本轮参考列表 */
+    fun updateMemoryRefs(response: com.lovebrain.app.model.LoveBrainResponse) {
+        _memoryRefs.value = buildMemoryRefs(response, _activeKb.value?.name)
+    }
+
+    /** P2-5: 记忆纠正——不调用模型，纯本地操作 */
+    fun correctMemory(refId: String, type: com.lovebrain.app.model.MemoryCorrectionType) {
+        val kbName = _activeKb.value?.name ?: return
+        viewModelScope.launch {
+            runCatching {
+                val correction = com.lovebrain.app.model.MemoryCorrection(
+                    refId = refId,
+                    type = type,
+                    timestamp = TimeFmt.now()
+                )
+                knowledgeRepo.addMemoryCorrection(kbName, correction)
+                _memoryCorrections.value = knowledgeRepo.readMemoryCorrections(kbName)
+            }.onFailure {
+                L.w("correctMemory failed: ${it::class.simpleName}")
+                showPanelWarning("纠正操作失败，请重试")
+            }
+        }
+    }
+
+    /** P2-5: 撤销记忆纠正 */
+    fun undoMemoryCorrection(refId: String) {
+        val kbName = _activeKb.value?.name ?: return
+        viewModelScope.launch {
+            runCatching {
+                knowledgeRepo.undoMemoryCorrection(kbName, refId)
+                _memoryCorrections.value = knowledgeRepo.readMemoryCorrections(kbName)
+            }.onFailure {
+                L.w("undoMemoryCorrection failed: ${it::class.simpleName}")
+            }
+        }
+    }
+
+    /** P2-5: 加载当前 KB 的记忆纠正记录 */
+    fun refreshMemoryCorrections() {
+        val kbName = _activeKb.value?.name ?: return
+        viewModelScope.launch {
+            runCatching {
+                _memoryCorrections.value = knowledgeRepo.readMemoryCorrections(kbName)
+            }
+        }
+    }
 
     /** GEN-01：同步 guard — 正在生成锦囊时拒绝启动。Engine reject → null → 旧 Job 保持。 */
     fun generateSuggest() {
@@ -995,9 +1118,13 @@ class LoveBrainViewModel(
         _streamingDirections.value = emptyList()
     }
 
-    override fun onReplyResult(result: GenerateResult) {
-        _result.value = result
+override fun onReplyResult(result: GenerateResult) {
+    _result.value = result
+    // P2-5: 生成成功后更新本轮参考列表
+    if (result is GenerateResult.Success) {
+        updateMemoryRefs(result.response)
     }
+}
 
     override fun onReplyPanelState(state: PanelState) {
         _panelState.value = state

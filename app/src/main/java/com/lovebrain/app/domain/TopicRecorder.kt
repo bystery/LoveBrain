@@ -35,6 +35,7 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
     /**
      * 记录一轮对话 + 处理话题状态 + 更新场景链 + 合并进行中事项。
+     * P2-9: 幂等保护——通过标记文件防止部分失败后重试导致重复写入。
      */
     suspend fun record(
         kb: KnowledgeBase,
@@ -45,32 +46,55 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         sceneFacts: List<String> = emptyList(),
         userHint: String = "",
         ongoing: List<OngoingItem> = emptyList(),
-        likedSchemes: List<Scheme> = emptyList()
+        likedSchemes: List<Scheme> = emptyList(),
+        sourceMessageIds: Set<String> = emptySet()
     ): Boolean {
         val time = com.lovebrain.app.util.TimeFmt.now()
         var topicRotated = false
 
-        // 1. 话题切换处理（仅凭 status=new 触发）
-        val curTopic = knowledgeRepo.getCurrentTopic(kb.name)
-        val hasTopic = curTopic.isNotBlank() && curTopic != "（等待第一次对话）"
-        val shouldRotate = topicLabel.isNotBlank() && topicStatus == "new"
+        // P2-9: 幂等保护——生成本轮操作的唯一 ID（基于消息 ID 排序）
+        val roundId = messages
+            .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
+            .joinToString(",") { it.id }
+            .hashCode().toString()
+        val markerContent = knowledgeRepo.readFile(kb.name, ".record_pending")
+        val isRetry = markerContent.startsWith("$roundId|")
+        // 解析已完成的步骤
+        val completedSteps = if (isRetry) {
+            markerContent.substringAfter("|").split(",").filter { it.isNotBlank() }.toSet()
+        } else emptySet()
 
-        if (shouldRotate) {
-            if (hasTopic) {
-                knowledgeRepo.rotateTopic(kb.name)
-                topicRotated = true
+        // 如果不是重试，写入新的标记文件
+        if (!isRetry) {
+            knowledgeRepo.writeFile(kb.name, ".record_pending", "$roundId|")
+        }
+
+        // 1. 话题切换处理（仅凭 status=new 触发）
+        // P2-9: rotateTopic 已有内部幂等保护，这里不重复检查
+        if ("rotate" !in completedSteps) {
+            val curTopic = knowledgeRepo.getCurrentTopic(kb.name)
+            val hasTopic = curTopic.isNotBlank() && curTopic != "（等待第一次对话）"
+            val shouldRotate = topicLabel.isNotBlank() && topicStatus == "new"
+
+            if (shouldRotate) {
+                if (hasTopic) {
+                    knowledgeRepo.rotateTopic(kb.name)
+                    topicRotated = true
+                }
+                knowledgeRepo.setCurrentTopic(kb.name, topicLabel)
+            } else {
+                // 非轮换：drift 更新标签 / 首次对话设默认
+                val newLabel = when {
+                    topicStatus == "drift" && topicLabel.isNotBlank() -> topicLabel
+                    !hasTopic -> topicLabel.ifBlank { "日常对话" }
+                    else -> null
+                }
+                if (newLabel != null) {
+                    knowledgeRepo.setCurrentTopic(kb.name, newLabel)
+                }
             }
-            knowledgeRepo.setCurrentTopic(kb.name, topicLabel)
-        } else {
-            // 非轮换：drift 更新标签 / 首次对话设默认
-            val newLabel = when {
-                topicStatus == "drift" && topicLabel.isNotBlank() -> topicLabel
-                !hasTopic -> topicLabel.ifBlank { "日常对话" }
-                else -> null
-            }
-            if (newLabel != null) {
-                knowledgeRepo.setCurrentTopic(kb.name, newLabel)
-            }
+            // 标记步骤完成
+            updateMarker(kb.name, roundId, completedSteps + "rotate")
         }
 
         // 2. 构建本轮记录
@@ -79,6 +103,10 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         // likedSchemes 记录用户偏好（点赞），但不写入"实际对话"段。
         // IDEA（想法）不写入 recent.md——IDEA 是本轮控制信息，不是真实聊天。
         val conversationalMessages = messages.filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
+        // P2-1：收集本轮真实消息 ID，用于事实来源校验
+        val realMessageIds = messages.filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }.map { it.id }.toSet()
+        // 合并调用方传入的 sourceMessageIds（可能更精确），取交集确保只信任真实消息
+        val validSourceIds = if (sourceMessageIds.isEmpty()) realMessageIds else sourceMessageIds.intersect(realMessageIds)
         val entry = buildString {
             append("- [").append(time).append("]\n")
             conversationalMessages.forEach { msg ->
@@ -102,19 +130,38 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         }
 
         // 3. 写入 moment/recent.md
-        writeRecent(kb.name, entry)
+        if ("recent" !in completedSteps) {
+            writeRecent(kb.name, entry)
+            updateMarker(kb.name, roundId, completedSteps + "recent")
+        }
 
         // 4. 更新场景链（scene_facts 现为数组，join 为分号串）
-        val factsStr = sceneFacts.joinToString("；").trim()
-        if (factsStr.isNotBlank()) {
-            updateSceneChain(kb.name, topicLabel, factsStr)
+        // P2-1：事实关联来源 ID，校验来源属于本轮真实消息
+        if ("scene" !in completedSteps && sceneFacts.isNotEmpty()) {
+            updateSceneChain(kb.name, topicLabel, sceneFacts, validSourceIds)
+            updateMarker(kb.name, roundId, completedSteps + "scene")
         }
 
         // 5. 合并进行中事项（plan.md，跨话题生存）
-        mergeOngoing(kb.name, ongoing, time)
+        if ("ongoing" !in completedSteps) {
+            mergeOngoing(kb.name, ongoing, time)
+            updateMarker(kb.name, roundId, completedSteps + "ongoing")
+        }
 
-        knowledgeRepo.incrementTurnCount(kb.name)
+        if ("turncount" !in completedSteps) {
+            knowledgeRepo.incrementTurnCount(kb.name)
+            updateMarker(kb.name, roundId, completedSteps + "turncount")
+        }
+
+        // P2-9: 全部步骤完成——清除标记文件
+        knowledgeRepo.writeFile(kb.name, ".record_pending", "")
+
         return topicRotated
+    }
+
+    /** P2-9: 更新标记文件，记录已完成的步骤 */
+    private suspend fun updateMarker(kbName: String, roundId: String, steps: Set<String>) {
+        knowledgeRepo.writeFile(kbName, ".record_pending", "$roundId|${steps.joinToString(",")}")
     }
 
     /** 职责2（自 record 拆出）：写入 moment/recent.md，保留最近 N 轮，溢出→对话暂存
@@ -189,15 +236,19 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
      * 5. identity 至少包含 subject，不能让"她感冒"和"我感冒"同 key
      * 6. 新事实才使用 now 作为时间戳
      */
-    private suspend fun updateSceneChain(kbName: String, topicLabel: String, sceneFacts: String) {
+    // P2-1：sceneFacts 改为 List<String>，增加 validSourceIds 参数
+    private suspend fun updateSceneChain(kbName: String, topicLabel: String, sceneFacts: List<String>, validSourceIds: Set<String>) {
         val chainPath = "moment/scene.md"
         val historyPath = "memory/raw_scene.md"
         val now = System.currentTimeMillis()
         val timeStr = com.lovebrain.app.util.TimeFmt.now()
         val maxAgeMs = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
 
+        // P2-1：有有效来源才写入新事实；无来源时不写入但保留旧事实
+        val hasValidSource = validSourceIds.isNotEmpty()
+
         // 拆分本轮事实为列表
-        val newFactTexts = sceneFacts.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
+        val newFactTexts = sceneFacts.map { it.trim() }.filter { it.isNotBlank() }
         if (newFactTexts.isEmpty()) return
 
         // 构建本轮新事实列表（同 identity last-wins）
@@ -236,24 +287,37 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             }
         }
 
-        // P0-1：执行 fact-level upsert
-        // 新事实替换同 identity 的旧事实（supersede）
+        // P2-2：执行 fact-level upsert（幂等版）
+        // 新事实替换同 identity 的旧事实（supersede）——但文本完全相同时不刷新时间
         // 未被覆盖的旧事实保留原 timestamp
         val supersededIdentities = mutableSetOf<String>()
-        for ((identity, _) in newFactsByKey) {
-            if (oldFactsByKey.containsKey(identity)) {
+        for ((identity, newFactText) in newFactsByKey) {
+            val oldFact = oldFactsByKey[identity]
+            if (oldFact != null) {
+                // 幂等检查：文本完全相同 → 不刷新时间，不标记为 supersede
+                if (oldFact.text == newFactText) continue
                 supersededIdentities.add(identity)
             }
         }
 
         // 构建 fact → timestamp 映射（最终结果集）
-        // 新事实用 now，旧事实用各自原 timestamp
+        // 新事实（有有效来源且文本不同）→ now
+        // 旧事实（未被替换）→ 保留原 timestamp
         data class FinalFact(val text: String, val timestamp: String, val tsMillis: Long)
         val finalFacts = mutableListOf<FinalFact>()
 
-        // 新事实 → now
-        for ((_, factText) in newFactsByKey) {
-            finalFacts.add(FinalFact(factText, timeStr, now))
+        // 新事实 → now（仅当有有效来源时；幂等跳过文本相同的）
+        if (hasValidSource) {
+            for ((identity, factText) in newFactsByKey) {
+                val oldFact = oldFactsByKey[identity]
+                if (oldFact != null && oldFact.text == factText) {
+                    // 幂等：文本相同，保留旧 timestamp
+                    finalFacts.add(FinalFact(factText, oldFact.timestamp, oldFact.tsMillis))
+                } else {
+                    // 新事实或文本变化 → now
+                    finalFacts.add(FinalFact(factText, timeStr, now))
+                }
+            }
         }
 
         // 未被替换的旧事实 → 保留原 timestamp
@@ -283,11 +347,12 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             candidate.add("- [$ts] $label：$factsStr")
         }
 
-        // 条数上限：超出的最老条目归档
+        // 条数上限：超出的最老条目归档（解析回 SceneEntry 以保持类型一致）
         val maxEntries = AppConfig.SCENE_CHAIN_MAX_ENTRIES
         val keptEntries = candidate.take(maxEntries)
         if (candidate.size > maxEntries) {
-            expiredEntries.addAll(candidate.drop(maxEntries).map { it })
+            val overflow = candidate.drop(maxEntries)
+            expiredEntries.addAll(parseSceneEntries(overflow.joinToString("\n")))
         }
 
         // 写入 scene.md
@@ -301,11 +366,7 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         if (expiredEntries.isNotEmpty()) {
             val historyContent = buildString {
                 expiredEntries.forEach { e ->
-                    if (e is SceneEntry) {
-                        append("- [${e.timestamp}] ${e.label}：${e.facts.joinToString("；")}\n")
-                    } else {
-                        append(e.toString()).append("\n")
-                    }
+                    append("- [${e.timestamp}] ${e.label}：${e.facts.joinToString("；")}\n")
                 }
             }
             knowledgeRepo.appendFile(kbName, historyPath, historyContent)
@@ -341,16 +402,15 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
     }
 
     /**
-     * P0 修复版：从事实文本中提取 identity。
+     * P2 保守匹配版：从事实文本中提取 identity。
      *
-     * identity = 主体 + 事件类型 + 必要区分信息
+     * 核心原则：无法确认同一事项时不要自动覆盖。
      *
-     * 关键修复：
-     * - 不再 removePrefix("她"/"我") 删身份——必须保留 subject
-     * - "她感冒了" → "她|健康|感冒"
-     * - "我感冒了" → "我|健康|感冒"
-     * - "她周一有期末考试" → "她|考试|期末"
-     * - "她周五有英语考试" → "她|考试|英语"
+     * identity = 主体 + 事实文本归一化（去标点/去语气词/去时态变化）
+     * 不再用关键词猜测分类——避免"约"误匹配为约会、"英语"误匹配为考试等问题。
+     *
+     * 只在文本高度相似时（归一化后完全相同）才视为同一事项；
+     * 否则各自独立，不自动覆盖。
      */
     private fun extractFactIdentity(fact: String): String {
         val f = fact.trim()
@@ -362,93 +422,18 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             else -> "她" // 无明确主语时默认"她"
         }
 
-        // 提取主体后的内容
+        // 提取主体后的内容并归一化
         val body = f.removePrefix("她").removePrefix("我").trim()
 
-        // 事件类型 + 区分信息
-        val category: String
-        val distinguishing: String
+        // 归一化：去除标点、语气词、常见时态变化词，转小写
+        val normalized = body
+            .replace(Regex("[，。！？、…~～·,!?\\.\\s]+"), "")
+            .replace(Regex("(了|的|着|过|在|正|已经|刚|才)$"), "")
+            .replace(Regex("(了|的|着|过)"), "")
 
-        // 健康类
-        val healthKeywords = listOf(
-            "感冒" to "感冒", "发烧" to "发烧", "咳嗽" to "咳嗽", "过敏" to "过敏",
-            "头疼" to "头疼", "肚子疼" to "肚子疼", "胃疼" to "胃疼",
-            "生理期" to "生理期", "大姨妈" to "生理期", "生病" to "生病",
-            "不舒服" to "不舒服", "拉肚子" to "拉肚子", "牙疼" to "牙疼",
-            "腰疼" to "腰疼", "嗓子疼" to "嗓子疼"
-        )
-        // 事件类——需要区分不同实例
-        val eventKeywords = listOf(
-            "加班" to "加班", "出差" to "出差", "搬家" to "搬家",
-            "面试" to "面试", "健身" to "健身", "跑步" to "跑步",
-            "开会" to "开会", "赶项目" to "赶项目", "答辩" to "答辩",
-            "述职" to "述职", "团建" to "团建", "旅游" to "旅游", "旅行" to "旅行"
-        )
-        // 状态类
-        val stateKeywords = listOf(
-            "睡了" to "睡了", "起床" to "起床", "洗澡" to "洗澡",
-            "化妆" to "化妆", "做饭" to "做饭", "吃饭" to "吃饭",
-            "回家" to "回家", "到公司" to "到公司", "下班" to "下班",
-            "上班" to "上班", "出发" to "出发", "到家" to "到家"
-        )
-
-        // 考试需要更细粒度区分
-        val examMatch = Regex("(期末|期中|英语|数学|高数|物理|化学|专业课|选修课|考试)").find(body)
-        if (examMatch != null) {
-            val examType = examMatch.value
-            // 如果能找到具体考试名称就用它，否则用"考试"
-            val specificExam = listOf("期末", "期中", "英语", "数学", "高数", "物理", "化学")
-                .firstOrNull { body.contains(it) }
-            category = "考试"
-            distinguishing = specificExam ?: examType
-            return "$subject|$category|$distinguishing"
-        }
-
-        // 聚餐需要区分
-        if (body.contains("聚餐")) {
-            category = "聚餐"
-            distinguishing = if (body.contains("公司") || body.contains("团建")) "公司" 
-                else if (body.contains("家庭") || body.contains("周末")) "家庭"
-                else "一般"
-            return "$subject|$category|$distinguishing"
-        }
-
-        // 约会需要区分
-        if (body.contains("约会") || body.contains("见面") || body.contains("约")) {
-            category = "约会"
-            distinguishing = if (body.contains("周末")) "周末" else "一般"
-            return "$subject|$category|$distinguishing"
-        }
-
-        // 通用健康类匹配
-        for ((kw, label) in healthKeywords) {
-            if (body.contains(kw)) {
-                category = "健康"
-                distinguishing = label
-                return "$subject|$category|$distinguishing"
-            }
-        }
-
-        // 通用事件类匹配
-        for ((kw, label) in eventKeywords) {
-            if (body.contains(kw)) {
-                category = "事件"
-                distinguishing = label
-                return "$subject|$category|$distinguishing"
-            }
-        }
-
-        // 通用状态类匹配
-        for ((kw, label) in stateKeywords) {
-            if (body.contains(kw)) {
-                category = "状态"
-                distinguishing = label
-                return "$subject|$category|$distinguishing"
-            }
-        }
-
-        // 兜底：取前 8 字作为区分信息，保留 subject
-        return "$subject|其他|${body.take(8)}"
+        // identity = 主体 + 归一化文本前 16 字符
+        // 同一主体下，归一化后文本相同才视为同一事项
+        return "$subject|${normalized.take(16)}"
     }
 
     /** 从条目中解析时间戳："- [2026-07-24 19:32] ..." → epoch millis */

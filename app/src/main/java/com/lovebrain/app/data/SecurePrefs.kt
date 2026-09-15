@@ -87,11 +87,19 @@ class SecurePrefs(context: Context) {
 
     /**
      * 输出模式二态：0=普通 1=进攻（进攻模式在 user 知识段注入 aggressive.md）
-     * 默认 0。越界值钳制为 0，防止旧设置残留偷偷启用进攻。
+     * P2-8: aggressive 本版关闭。旧值 1 和越界值都归零，不再钳制为 1。
+     * 默认 0。读取时如果发现旧值 1，自动迁移为 0 并持久化。
      */
     var outputMode: Int
-        get() = prefs.getInt(KEY_OUTPUT_MODE, 0).coerceIn(0, 1)  // ← 越界钳制，防止旧残留启用进攻
-        set(value) = prefs.edit().putInt(KEY_OUTPUT_MODE, value.coerceIn(0, 1)).apply()  // ← 写入时钳制
+        get() {
+            val raw = prefs.getInt(KEY_OUTPUT_MODE, 0)
+            // P2-8: 任何非 0 值都归零——不保留 aggressive
+            if (raw != 0) {
+                prefs.edit().putInt(KEY_OUTPUT_MODE, 0).apply()
+            }
+            return 0
+        }
+        set(value) = prefs.edit().putInt(KEY_OUTPUT_MODE, 0).apply()  // P2-8: 写入恒为 0
 
     // ═══ 状态持久化（重启不丢失）═══
 

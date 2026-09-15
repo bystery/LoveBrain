@@ -14,6 +14,8 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
@@ -23,6 +25,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,6 +39,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.MemoryRef
+import com.lovebrain.app.model.MemoryCorrectionType
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.ui.panel.rememberPressScale
@@ -65,6 +70,10 @@ fun ResultArea(
     onSaveToKb: () -> Unit = {},
     providerReady: Boolean,
     onOpenSettings: () -> Unit,
+    memoryRefs: List<MemoryRef> = emptyList(),
+    correctedRefIds: Set<String> = emptySet(),
+    onCorrectMemory: (String, MemoryCorrectionType) -> Unit = { _, _ -> },
+    onUndoCorrection: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     when {
@@ -84,6 +93,14 @@ fun ResultArea(
                         onCopyScheme = onCopyScheme,
 
                     )
+                    // P2-7: 流式区也渲染四方向——先到的风格先显示，方向后到后显示
+                    if (streamingDirections.isNotEmpty()) {
+                        Spacer(Modifier.height(Spacing.sm))
+                        DirectionsSection(
+                            directions = streamingDirections,
+                            onCopyScheme = onCopyScheme
+                        )
+                    }
                     Spacer(Modifier.height(Spacing.md))
                     Box(
                         modifier = Modifier
@@ -142,6 +159,17 @@ fun ResultArea(
                     DirectionsSection(
                         directions = directions,
                         onCopyScheme = onCopyScheme
+                    )
+                }
+
+                // P2-5: 本轮参考（记忆引用）——结果底部文字入口
+                if (memoryRefs.isNotEmpty()) {
+                    Spacer(Modifier.height(Spacing.sm))
+                    MemoryRefSection(
+                        refs = memoryRefs,
+                        correctedRefIds = correctedRefIds,
+                        onCorrect = onCorrectMemory,
+                        onUndo = onUndoCorrection
                     )
                 }
 
@@ -636,14 +664,17 @@ private fun TypewriterText(
 
 /**
  * 四方向话术区（follow/expand/express/shift）。
- * 每行两个单元：左侧标题固定约 64dp，右侧文本自适应换行。
- * 点击复制，长按预览全文。空值置灰且不可复制。
+ * P2-7: 四行保留位置；空值显示"本轮不适合"，置灰且不可复制。
+ * 点击复制，长按预览全文。沿用结果区滚动，不另套固定高度滚动框。
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DirectionsSection(
     directions: List<Scheme>,
     onCopyScheme: (Scheme) -> Unit
 ) {
+    var previewText by remember { mutableStateOf<String?>(null) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -657,6 +688,7 @@ private fun DirectionsSection(
             modifier = Modifier.padding(start = Spacing.lg, top = Spacing.lg, bottom = Spacing.sm)
         )
         directions.forEachIndexed { idx, dir ->
+            val isEmpty = dir.reply.isBlank()
             if (idx > 0) {
                 HorizontalDivider(
                     thickness = AppDimens.BORDER_WIDTH_DP.dp,
@@ -666,11 +698,16 @@ private fun DirectionsSection(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .minHeight(48.dp)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) { onCopyScheme(dir) }
+                    .heightIn(min = 48.dp)
+                    .then(
+                        if (isEmpty) Modifier
+                        else Modifier.combinedClickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { onCopyScheme(dir) },
+                            onLongClick = { previewText = "${dir.title}：\n${dir.reply}" }
+                        )
+                    )
                     .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -682,12 +719,178 @@ private fun DirectionsSection(
                 )
                 Spacer(Modifier.width(Spacing.sm))
                 Text(
-                    text = dir.reply,
-                    color = TextPrimary,
+                    text = if (isEmpty) "本轮不适合" else dir.reply,
+                    color = if (isEmpty) TextHint else TextPrimary,
                     style = AppTypography.bodySmall,
                     modifier = Modifier.weight(1f)
                 )
             }
+        }
+        Spacer(Modifier.height(Spacing.sm))
+    }
+
+    // P2-7: 长按预览弹窗
+    previewText?.let { text ->
+        androidx.compose.ui.window.Dialog(onDismissRequest = { previewText = null }) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(LoveBrainShape.lg)
+                    .background(SurfaceBase)
+                    .padding(Spacing.lg)
+            ) {
+                Text(
+                    text = text,
+                    style = AppTypography.bodyMedium,
+                    color = TextPrimary
+                )
+                Spacer(Modifier.height(Spacing.md))
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .clip(LoveBrainShape.sm)
+                        .background(Primary)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) { previewText = null }
+                        .padding(horizontal = Spacing.md, vertical = Spacing.xs)
+                ) {
+                    Text("关闭", color = Color.White, style = AppTypography.labelMedium)
+                }
+            }
+        }
+    }
+}
+
+/**
+ * P2-5: 本轮参考区——结果底部文字入口，先展开最多五条，其余进入二级列表。
+ * 支持纠正操作：不对/结束/暂时别提/不是她，提供撤销，不调用模型。
+ */
+@Composable
+private fun MemoryRefSection(
+    refs: List<MemoryRef>,
+    correctedRefIds: Set<String>,
+    onCorrect: (String, MemoryCorrectionType) -> Unit,
+    onUndo: (String) -> Unit
+) {
+    var expandedAll by remember { mutableStateOf(false) }
+    val visibleRefs = if (expandedAll) refs else refs.take(5)
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(LoveBrainShape.md)
+            .background(SurfaceInset)
+    ) {
+        Text(
+            "本轮参考",
+            color = TextSecondary,
+            style = AppTypography.labelMedium,
+            modifier = Modifier.padding(start = Spacing.lg, top = Spacing.lg, bottom = Spacing.sm)
+        )
+        visibleRefs.forEachIndexed { idx, ref ->
+            val isCorrected = ref.id in correctedRefIds
+            if (idx > 0) {
+                HorizontalDivider(
+                    thickness = AppDimens.BORDER_WIDTH_DP.dp,
+                    color = Border.copy(alpha = 0.3f)
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 36.dp)
+                    .padding(horizontal = Spacing.lg, vertical = Spacing.xs),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = ref.text,
+                    color = if (isCorrected) TextHint else TextPrimary,
+                    style = AppTypography.bodySmall,
+                    modifier = Modifier.weight(1f)
+                )
+                if (isCorrected) {
+                    Text(
+                        "已纠正",
+                        style = AppTypography.labelSmall,
+                        color = TextHint,
+                        modifier = Modifier
+                            .clip(LoveBrainShape.sm)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) { onUndo(ref.id) }
+                            .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                    )
+                } else {
+                    Text(
+                        "不对",
+                        style = AppTypography.labelSmall,
+                        color = TextHint,
+                        modifier = Modifier
+                            .clip(LoveBrainShape.sm)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) { onCorrect(ref.id, MemoryCorrectionType.WRONG) }
+                            .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                    )
+                    if (ref.type == com.lovebrain.app.model.MemoryType.ONGOING) {
+                        Text(
+                            "结束",
+                            style = AppTypography.labelSmall,
+                            color = TextHint,
+                            modifier = Modifier
+                                .clip(LoveBrainShape.sm)
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null
+                                ) { onCorrect(ref.id, MemoryCorrectionType.END) }
+                                .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                        )
+                    }
+                    Text(
+                        "别提",
+                        style = AppTypography.labelSmall,
+                        color = TextHint,
+                        modifier = Modifier
+                            .clip(LoveBrainShape.sm)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) { onCorrect(ref.id, MemoryCorrectionType.MUTE) }
+                            .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                    )
+                    Text(
+                        "不是她",
+                        style = AppTypography.labelSmall,
+                        color = TextHint,
+                        modifier = Modifier
+                            .clip(LoveBrainShape.sm)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) { onCorrect(ref.id, MemoryCorrectionType.NOT_HER) }
+                            .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                    )
+                }
+            }
+        }
+        if (refs.size > 5) {
+            Spacer(Modifier.height(Spacing.xs))
+            Text(
+                text = if (expandedAll) "收起" else "展开全部（${refs.size}条）",
+                style = AppTypography.labelSmall,
+                color = Primary,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) { expandedAll = !expandedAll }
+                    .padding(horizontal = Spacing.lg, vertical = Spacing.xs)
+            )
         }
         Spacer(Modifier.height(Spacing.sm))
     }

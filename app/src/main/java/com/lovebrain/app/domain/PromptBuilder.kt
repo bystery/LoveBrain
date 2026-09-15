@@ -4,6 +4,7 @@ import android.content.Context
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.util.TimeFmt
 
@@ -164,18 +165,26 @@ class PromptBuilder(
     // ═══════════ 回复 User Prompt ═══════════
 
     /**
-     * 回复 user prompt：知识段（过预算） + 想法 + 本次对话记录 + 时间戳垫底。
+     * 回复 user prompt：知识段（过预算） [+ 持续意图] + 想法 + 本次对话记录 + 时间戳垫底。
      * format.md 已移入 system（不再附在 user 尾部）。
+     * P2-3: 持续意图在知识段之后、想法之前注入，启用时只注入短区块。
      */
     suspend fun buildReplyUserPrompt(
         kb: KnowledgeBase?,
         messages: List<ChatMessage>,
         userHint: String = "",
-        aggressive: Boolean = false
+        aggressive: Boolean = false,
+        intentConfig: IntentConfig? = null
     ): String {
         val sb = StringBuilder()
         sb.append(applyBudget(buildKnowledgeInsertion(kb, aggressive)))
         sb.append("\n\n")
+        // P2-3: 持续意图注入（仅在 enabled && text 非空时）
+        if (intentConfig != null && intentConfig.enabled && intentConfig.text.isNotBlank()) {
+            sb.append("【持续意图】\n")
+            sb.append(intentConfig.text.trim())
+            sb.append("\n\n")
+        }
         // P1-6: IDEA（想法）独立注入一次——不进入 <chat> 围栏
         if (userHint.isNotBlank()) {
             sb.append("# 用户的回复想法\n")
@@ -350,13 +359,124 @@ class PromptBuilder(
     /** 对外暴露的总预算截断（回复/谈心/锦囊 user 侧统一过 9000） */
     fun applyBudget(text: String): String = enforceTotalBudget(text)
 
+    /**
+     * P2-4: 按区块优先级裁剪——不再简单 take(head) + takeLast(tail)。
+     *
+     * 裁剪顺序（先缩减优先级最低的）：
+     * 1. 先缩减旧记忆（lessons）——超过 2 块时只保留最近 1 块
+     * 2. 再缩减较早聊天记录（recent）——只保留最近 1 轮
+     * 3. 保住完整画像、阶段策略、持续意图、本轮想法和最新真实消息
+     * 4. 不能截断结构（标题/围栏不能在中间断）
+     *
+     * 如果按区块裁剪后仍超预算，做尾部保留兜底。
+     */
     private fun enforceTotalBudget(text: String): String {
         if (text.length <= AppConfig.TOTAL_BUDGET) return text
-        // P0-2：按区块优先级裁剪——先保留当前消息、最近真实回复和必要约束，再裁剪旧背景
-        // 优先保留头部（画像/阶段/约束）和尾部（当前对话/时间戳），裁剪中间旧记忆
+
+        var result = text
+
+        // Step 1: 缩减旧记忆——# 【记忆】段如果有多块，只保留最近 1 块
+        val lessonsMarker = "# 【记忆】经验教训"
+        if (result.contains(lessonsMarker)) {
+            result = shrinkLessonsSection(result)
+            if (result.length <= AppConfig.TOTAL_BUDGET) return result
+        }
+
+        // Step 2: 缩减最近对话——# 最近对话 段只保留最后 1 个轮次块
+        val recentMarker = "# 最近对话"
+        if (result.contains(recentMarker)) {
+            result = shrinkRecentSection(result)
+            if (result.length <= AppConfig.TOTAL_BUDGET) return result
+        }
+
+        // Step 3: 缩减场景链——只保留最近 3 条
+        val sceneMarker = "## 场景状态链"
+        if (result.contains(sceneMarker)) {
+            result = shrinkSceneSection(result)
+            if (result.length <= AppConfig.TOTAL_BUDGET) return result
+        }
+
+        // Step 4: 兜底——保留头部（画像/阶段/约束）和尾部（当前对话/时间戳）
+        // 但不截断结构——在段落边界裁剪
         val headLen = (AppConfig.TOTAL_BUDGET * 0.5).toInt()
         val tailLen = (AppConfig.TOTAL_BUDGET * 0.4).toInt()
-        return text.take(headLen) + "\n\n…（中间旧记忆因长度限制已省略）…\n\n" + text.takeLast(tailLen)
+        // 找到 headLen 附近最近的段落边界
+        val headCut = findSectionBoundary(result, headLen, forward = false)
+        val tailCut = findSectionBoundary(result, result.length - tailLen, forward = true)
+        return if (headCut > 0 && tailCut > headCut && tailCut < result.length) {
+            result.take(headCut) + "\n\n…（中间旧记忆因长度限制已省略）…\n\n" + result.takeLast(result.length - tailCut)
+        } else {
+            // 最终兜底
+            result.take(headLen) + "\n\n…（中间旧记忆因长度限制已省略）…\n\n" + result.takeLast(tailLen)
+        }
+    }
+
+    /** 缩减旧记忆段：只保留最近 1 个 H1 块 */
+    private fun shrinkLessonsSection(text: String): String {
+        val marker = "# 【记忆】经验教训"
+        val startIdx = text.indexOf(marker)
+        if (startIdx < 0) return text
+        // 找到下一个 # 级标题
+        val afterMarker = text.indexOf("\n", startIdx)
+        if (afterMarker < 0) return text
+        val nextSectionIdx = text.indexOf("\n# ", afterMarker)
+        val sectionEnd = if (nextSectionIdx > 0) nextSectionIdx else text.length
+        val section = text.substring(startIdx, sectionEnd)
+        // 分割为 H1 块
+        val blocks = section.split(Regex("(?<=\n)(?=## )")).map { it.trim() }.filter { it.startsWith("## ") }
+        if (blocks.size <= 1) return text
+        val kept = blocks.takeLast(1).joinToString("\n\n")
+        return text.substring(0, startIdx) + marker + "\n" + kept + "\n\n" + text.substring(sectionEnd)
+    }
+
+    /** 缩减最近对话段：只保留最后 1 个轮次块 */
+    private fun shrinkRecentSection(text: String): String {
+        val marker = "# 最近对话"
+        val startIdx = text.indexOf(marker)
+        if (startIdx < 0) return text
+        val afterMarker = text.indexOf("\n", startIdx)
+        if (afterMarker < 0) return text
+        val nextSectionIdx = text.indexOf("\n# ", afterMarker)
+        val sectionEnd = if (nextSectionIdx > 0) nextSectionIdx else text.length
+        val section = text.substring(startIdx, sectionEnd)
+        // 分割为轮次块（以 "- [" 开头）
+        val blocks = section.split(Regex("(?=^- \\[)", RegexOption.MULTILINE)).map { it.trim() }
+            .filter { it.startsWith("- [") }
+        if (blocks.size <= 1) return text
+        val kept = blocks.takeLast(1).joinToString("\n\n")
+        return text.substring(0, startIdx) + marker + "\n" + kept + "\n\n" + text.substring(sectionEnd)
+    }
+
+    /** 缩减场景链段：只保留最近 3 条 */
+    private fun shrinkSceneSection(text: String): String {
+        val marker = "## 场景状态链"
+        val startIdx = text.indexOf(marker)
+        if (startIdx < 0) return text
+        val afterMarker = text.indexOf("\n", startIdx)
+        if (afterMarker < 0) return text
+        val nextSectionIdx = text.indexOf("\n# ", afterMarker)
+        val sectionEnd = if (nextSectionIdx > 0) nextSectionIdx else text.length
+        val section = text.substring(startIdx, sectionEnd)
+        val lines = section.lines().filter { it.trim().startsWith("- [") }
+        if (lines.size <= 3) return text
+        val kept = lines.takeLast(3).joinToString("\n")
+        // 保留标题行
+        val titleLine = section.lines().firstOrNull { it.contains(marker) } ?: marker
+        return text.substring(0, startIdx) + titleLine + "\n" + kept + "\n\n" + text.substring(sectionEnd)
+    }
+
+    /** 在 pos 附近找到最近的段落边界（\n\n 或 # 标题开头） */
+    private fun findSectionBoundary(text: String, pos: Int, forward: Boolean): Int {
+        if (pos <= 0) return 0
+        if (pos >= text.length) return text.length
+        // 向前或向后搜索最近的 \n\n
+        val searchRange = 200
+        val start = if (forward) pos else (pos - searchRange).coerceAtLeast(0)
+        val end = if (forward) (pos + searchRange).coerceAtMost(text.length) else pos
+        val searchStr = text.substring(start, end)
+        val target = "\n\n"
+        val idx = if (forward) searchStr.indexOf(target) else searchStr.lastIndexOf(target)
+        return if (idx >= 0) start + idx else pos
     }
 
     /** 场景链注入转换：龄标注 + identity 去重（保留最新版本）+ 过期条目过滤
@@ -416,8 +536,8 @@ class PromptBuilder(
         return out.toString().trim()
     }
 
-    /** P0 修复：注入侧 identity 提取——与 TopicRecorder.extractFactIdentity 同语义
-     * identity 包含 subject（她/我），不再 removePrefix 删身份 */
+    /** P2 保守匹配：注入侧 identity 提取——与 TopicRecorder.extractFactIdentity 同语义
+     * 不再用关键词猜测分类，使用归一化文本作为 identity */
     private fun extractFactIdentityForInjection(fact: String): String {
         val f = fact.trim()
         val subject = when {
@@ -427,46 +547,13 @@ class PromptBuilder(
         }
         val body = f.removePrefix("她").removePrefix("我").trim()
 
-        // 考试需要细粒度区分
-        val examMatch = Regex("(期末|期中|英语|数学|高数|物理|化学|专业课|选修课|考试)").find(body)
-        if (examMatch != null) {
-            val specificExam = listOf("期末", "期中", "英语", "数学", "高数", "物理", "化学")
-                .firstOrNull { body.contains(it) }
-            return "$subject|考试|${specificExam ?: examMatch.value}"
-        }
+        // 归一化：与 TopicRecorder 写入侧完全一致
+        val normalized = body
+            .replace(Regex("[，。！？、…~～·,!?\\.\\s]+"), "")
+            .replace(Regex("(了|的|着|过|在|正|已经|刚|才)$"), "")
+            .replace(Regex("(了|的|着|过)"), "")
 
-        // 聚餐需要区分
-        if (body.contains("聚餐")) {
-            val dist = if (body.contains("公司") || body.contains("团建")) "公司"
-                else if (body.contains("家庭") || body.contains("周末")) "家庭"
-                else "一般"
-            return "$subject|聚餐|$dist"
-        }
-
-        // 约会需要区分
-        if (body.contains("约会") || body.contains("见面") || body.contains("约")) {
-            val dist = if (body.contains("周末")) "周末" else "一般"
-            return "$subject|约会|$dist"
-        }
-
-        val healthKeywords = listOf("感冒" to "感冒", "发烧" to "发烧", "咳嗽" to "咳嗽", "过敏" to "过敏",
-            "头疼" to "头疼", "肚子疼" to "肚子疼", "胃疼" to "胃疼", "生理期" to "生理期",
-            "大姨妈" to "生理期", "生病" to "生病", "不舒服" to "不舒服", "拉肚子" to "拉肚子",
-            "牙疼" to "牙疼", "腰疼" to "腰疼", "嗓子疼" to "嗓子疼")
-        for ((kw, label) in healthKeywords) { if (body.contains(kw)) return "$subject|健康|$label" }
-
-        val eventKeywords = listOf("加班" to "加班", "出差" to "出差", "搬家" to "搬家",
-            "面试" to "面试", "健身" to "健身", "跑步" to "跑步", "开会" to "开会",
-            "赶项目" to "赶项目", "答辩" to "答辩", "述职" to "述职", "团建" to "团建",
-            "旅游" to "旅游", "旅行" to "旅行")
-        for ((kw, label) in eventKeywords) { if (body.contains(kw)) return "$subject|事件|$label" }
-
-        val stateKeywords = listOf("睡了" to "睡了", "起床" to "起床", "洗澡" to "洗澡",
-            "化妆" to "化妆", "做饭" to "做饭", "吃饭" to "吃饭", "回家" to "回家",
-            "到公司" to "到公司", "下班" to "下班", "上班" to "上班", "出发" to "出发", "到家" to "到家")
-        for ((kw, label) in stateKeywords) { if (body.contains(kw)) return "$subject|状态|$label" }
-
-        return "$subject|其他|${body.take(8)}"
+        return "$subject|${normalized.take(16)}"
     }
 
     private suspend fun readFileCompat(kbName: String, newPath: String): String =

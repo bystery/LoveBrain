@@ -53,13 +53,13 @@ data class DirectionReplies(
     val express: String? = null,
     val shift: String? = null
 ) {
-    /** 转为 UI 用的 Scheme 列表（过滤 null 和空串） */
+    /** P2-7: 转为 UI 用的 Scheme 列表——保留全部四行，空值置灰显示"本轮不适合" */
     fun toSchemes(): List<Scheme> = listOf(
         Scheme(tag = "D_follow", title = "顺着聊", reply = follow ?: ""),
         Scheme(tag = "D_expand", title = "展开", reply = expand ?: ""),
         Scheme(tag = "D_express", title = "表达自己", reply = express ?: ""),
         Scheme(tag = "D_shift", title = "换方向", reply = shift ?: "")
-    ).filter { it.reply.isNotBlank() }
+    )
 }
 
 /** DeepSeek 返回的完整结构（单次调用：response + analysis + directions） */
@@ -117,4 +117,40 @@ data class IntentConfig(
     val enabled: Boolean = false,
     val revision: Int = 0,
     val updatedAt: String = ""
+)
+
+/** P2-5: 记忆引用——持久 ID + 类型 + 来源 + 证据时间 + 版本 */
+@Serializable
+data class MemoryRef(
+    val id: String,           // 持久 ID（如 "scene_2026-09-16_感冒"）
+    val type: MemoryType,     // 画像/场景/事项/经验
+    val text: String,         // 事实/记忆文本
+    val source: String = "",  // 来源消息 ID
+    val evidenceTime: String = "",  // 证据时间（关联实际消息）
+    val version: Int = 0      // 人工调整版本号
+)
+
+/** P2-5: 记忆类型 */
+enum class MemoryType {
+    PROFILE,    // 画像
+    SCENE,      // 场景
+    ONGOING,    // 事项
+    LESSON      // 经验
+}
+
+/** P2-5: 记忆纠正操作类型 */
+enum class MemoryCorrectionType {
+    WRONG,      // "不对"——标记事实为错误
+    END,        // "结束"——仅用于事项，标记结束
+    MUTE,       // "暂时别提"——屏蔽一段时间
+    NOT_HER     // "不是她"——归属错误
+}
+
+/** P2-5: 记忆纠正记录（人工调整） */
+@Serializable
+data class MemoryCorrection(
+    val refId: String,               // 关联的 MemoryRef ID
+    val type: MemoryCorrectionType,  // 纠正类型
+    val timestamp: String = "",      // 纠正时间
+    val note: String = ""            // 可选备注
 )
