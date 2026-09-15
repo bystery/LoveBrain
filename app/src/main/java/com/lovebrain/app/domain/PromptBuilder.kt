@@ -359,7 +359,8 @@ class PromptBuilder(
         return text.take(headLen) + "\n\n…（中间旧记忆因长度限制已省略）…\n\n" + text.takeLast(tailLen)
     }
 
-    /** 场景链注入转换：龄标注 + 主题键去重（保留最新版本）+ 过期条目过滤 */
+    /** 场景链注入转换：龄标注 + identity 去重（保留最新版本）+ 过期条目过滤
+     *  P0 修复：identity 包含 subject（她/我），不再删身份；同 identity 只保留最新版本 */
     private fun transformSceneChain(content: String): String {
         val entryRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2}) (\\d{2}:\\d{2})]\\s*(.*)$")
         val now = System.currentTimeMillis()
@@ -382,10 +383,10 @@ class PromptBuilder(
         }
         if (freshEntries.isEmpty()) return ""
 
-        // P0-FIX：用主题键去重——同主题键只保留最新（时间最晚的）条目中的事实
-        val seenTopicKeys = mutableSetOf<String>()
+        // P0 修复：用 identity 去重——同 identity 只保留最新（时间最晚的）条目中的事实
+        val seenIdentities = mutableSetOf<String>()
         val out = StringBuilder()
-        // 从最新到最旧遍历，先遇到的同主题键事实即为最新版本
+        // 从最新到最旧遍历，先遇到的同 identity 事实即为最新版本
         for (e in freshEntries) {
             val ageH = if (e.ts > 0) ((now - e.ts) / 3600_000L).toInt() else 0
             val ageLabel = when {
@@ -400,10 +401,10 @@ class PromptBuilder(
             val facts = factsRaw.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
             val keptFacts = mutableListOf<String>()
             for (f in facts) {
-                val key = extractTopicKeyForInjection(f)
-                if (key !in seenTopicKeys) {
+                val identity = extractFactIdentityForInjection(f)
+                if (identity !in seenIdentities) {
                     keptFacts.add(f)
-                    seenTopicKeys.add(key)
+                    seenIdentities.add(identity)
                 }
             }
             if (keptFacts.isNotEmpty()) {
@@ -415,16 +416,57 @@ class PromptBuilder(
         return out.toString().trim()
     }
 
-    /** P0-FIX：注入侧主题键提取——与 TopicRecorder.extractTopicKey 同语义 */
-    private fun extractTopicKeyForInjection(fact: String): String {
-        val body = fact.trim().removePrefix("她").removePrefix("我").trim()
-        val healthKeywords = listOf("感冒", "发烧", "咳嗽", "过敏", "头疼", "肚子疼", "胃疼", "生理期", "大姨妈", "生病", "不舒服", "拉肚子", "牙疼", "腰疼", "嗓子疼")
-        val eventKeywords = listOf("加班", "出差", "考试", "面试", "搬家", "聚餐", "约会", "健身", "跑步", "开会", "上课", "下课", "赶项目", "答辩", "述职", "团建", "旅游", "旅行")
-        val stateKeywords = listOf("睡了", "起床", "洗澡", "化妆", "做饭", "吃饭", "回家", "到公司", "下班", "上班", "出发", "到家", "在路")
-        for (kw in healthKeywords) { if (body.contains(kw)) return kw }
-        for (kw in eventKeywords) { if (body.contains(kw)) return kw }
-        for (kw in stateKeywords) { if (body.contains(kw)) return kw }
-        return body.take(6)
+    /** P0 修复：注入侧 identity 提取——与 TopicRecorder.extractFactIdentity 同语义
+     * identity 包含 subject（她/我），不再 removePrefix 删身份 */
+    private fun extractFactIdentityForInjection(fact: String): String {
+        val f = fact.trim()
+        val subject = when {
+            f.startsWith("她") -> "她"
+            f.startsWith("我") -> "我"
+            else -> "她"
+        }
+        val body = f.removePrefix("她").removePrefix("我").trim()
+
+        // 考试需要细粒度区分
+        val examMatch = Regex("(期末|期中|英语|数学|高数|物理|化学|专业课|选修课|考试)").find(body)
+        if (examMatch != null) {
+            val specificExam = listOf("期末", "期中", "英语", "数学", "高数", "物理", "化学")
+                .firstOrNull { body.contains(it) }
+            return "$subject|考试|${specificExam ?: examMatch.value}"
+        }
+
+        // 聚餐需要区分
+        if (body.contains("聚餐")) {
+            val dist = if (body.contains("公司") || body.contains("团建")) "公司"
+                else if (body.contains("家庭") || body.contains("周末")) "家庭"
+                else "一般"
+            return "$subject|聚餐|$dist"
+        }
+
+        // 约会需要区分
+        if (body.contains("约会") || body.contains("见面") || body.contains("约")) {
+            val dist = if (body.contains("周末")) "周末" else "一般"
+            return "$subject|约会|$dist"
+        }
+
+        val healthKeywords = listOf("感冒" to "感冒", "发烧" to "发烧", "咳嗽" to "咳嗽", "过敏" to "过敏",
+            "头疼" to "头疼", "肚子疼" to "肚子疼", "胃疼" to "胃疼", "生理期" to "生理期",
+            "大姨妈" to "生理期", "生病" to "生病", "不舒服" to "不舒服", "拉肚子" to "拉肚子",
+            "牙疼" to "牙疼", "腰疼" to "腰疼", "嗓子疼" to "嗓子疼")
+        for ((kw, label) in healthKeywords) { if (body.contains(kw)) return "$subject|健康|$label" }
+
+        val eventKeywords = listOf("加班" to "加班", "出差" to "出差", "搬家" to "搬家",
+            "面试" to "面试", "健身" to "健身", "跑步" to "跑步", "开会" to "开会",
+            "赶项目" to "赶项目", "答辩" to "答辩", "述职" to "述职", "团建" to "团建",
+            "旅游" to "旅游", "旅行" to "旅行")
+        for ((kw, label) in eventKeywords) { if (body.contains(kw)) return "$subject|事件|$label" }
+
+        val stateKeywords = listOf("睡了" to "睡了", "起床" to "起床", "洗澡" to "洗澡",
+            "化妆" to "化妆", "做饭" to "做饭", "吃饭" to "吃饭", "回家" to "回家",
+            "到公司" to "到公司", "下班" to "下班", "上班" to "上班", "出发" to "出发", "到家" to "到家")
+        for ((kw, label) in stateKeywords) { if (body.contains(kw)) return "$subject|状态|$label" }
+
+        return "$subject|其他|${body.take(8)}"
     }
 
     private suspend fun readFileCompat(kbName: String, newPath: String): String =

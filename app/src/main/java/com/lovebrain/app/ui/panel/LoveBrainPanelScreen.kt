@@ -366,6 +366,7 @@ fun LoveBrainPanelScreen(
                 val streamingCoreText by viewModel.streamingCoreText.collectAsStateWithLifecycle()
                 val isGeneratingCore by viewModel.isGeneratingCore.collectAsStateWithLifecycle()
                 val streamingSchemes by viewModel.streamingSchemes.collectAsStateWithLifecycle()
+val streamingDirections by viewModel.streamingDirections.collectAsStateWithLifecycle()
 
                 // P1-2: Result area switches based on resultMode
                 Box(modifier = Modifier.weight(1f)) {
@@ -386,6 +387,7 @@ fun LoveBrainPanelScreen(
                                 streamingCoreText = streamingCoreText,
                                 isGeneratingCore = isGeneratingCore,
                                 streamingSchemes = streamingSchemes,
+                                streamingDirections = streamingDirections,
                                 feedbacks = feedbacks,
                                 onFeedback = { tag, fb -> viewModel.setFeedback(tag, fb) },
                                 onCopyScheme = { scheme ->

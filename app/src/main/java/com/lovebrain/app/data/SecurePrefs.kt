@@ -86,12 +86,12 @@ class SecurePrefs(context: Context) {
         set(value) = prefs.edit().putInt(KEY_THINKING, value.coerceIn(0, 1)).apply()  // ← 写入时钳制
 
     /**
-     * 输出模式二态：0=普通 1=进攻（进攻模式在 system prompt 追加 aggressive.md）
-     * 默认 0
+     * 输出模式二态：0=普通 1=进攻（进攻模式在 user 知识段注入 aggressive.md）
+     * 默认 0。越界值钳制为 0，防止旧设置残留偷偷启用进攻。
      */
     var outputMode: Int
-        get() = prefs.getInt(KEY_OUTPUT_MODE, 0)
-        set(value) = prefs.edit().putInt(KEY_OUTPUT_MODE, value).apply()
+        get() = prefs.getInt(KEY_OUTPUT_MODE, 0).coerceIn(0, 1)  // ← 越界钳制，防止旧残留启用进攻
+        set(value) = prefs.edit().putInt(KEY_OUTPUT_MODE, value.coerceIn(0, 1)).apply()  // ← 写入时钳制
 
     // ═══ 状态持久化（重启不丢失）═══
 

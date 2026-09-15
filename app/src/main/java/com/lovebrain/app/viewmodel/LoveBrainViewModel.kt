@@ -99,6 +99,10 @@ class LoveBrainViewModel(
     private val _streamingSchemes = MutableStateFlow<List<Scheme>>(emptyList())
     val streamingSchemes: StateFlow<List<Scheme>> = _streamingSchemes.asStateFlow()
 
+    /** 流式过程中已完整解析出的四方向话术 */
+    private val _streamingDirections = MutableStateFlow<List<Scheme>>(emptyList())
+    val streamingDirections: StateFlow<List<Scheme>> = _streamingDirections.asStateFlow()
+
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
 
@@ -110,6 +114,10 @@ class LoveBrainViewModel(
     private val _kbNotice = MutableStateFlow<String?>(null)
     val kbNotice: StateFlow<String?> = _kbNotice.asStateFlow()
     fun dismissKbNotice() { _kbNotice.value = null }
+
+    /** 持续意图配置 */
+    private val _intentConfig = MutableStateFlow<IntentConfig>(IntentConfig())
+    val intentConfig: StateFlow<IntentConfig> = _intentConfig.asStateFlow()
 
     /** ：面板级临时警告（未配置引导/未记入提示），悬浮窗内短暂展示 */
     private val _panelWarning = MutableStateFlow<String?>(null)
@@ -280,7 +288,10 @@ class LoveBrainViewModel(
     val counselingStreaming: StateFlow<String> = _counselingStreaming.asStateFlow()
 
     init {
-        refreshKnowledgeBases()
+        viewModelScope.launch {
+            knowledgeRepo.ensureInitialKnowledgeBase()
+            refreshKnowledgeBases()
+        }
         val persisted = promptBuilder.validateConfig(securePrefs.thinkingMode, securePrefs.outputMode)
         if (!persisted.isValid) {
             persisted.warnings.forEach { L.w("⚠️ 启动配置校验：$it") }
@@ -484,6 +495,7 @@ class LoveBrainViewModel(
         _isGeneratingCore.value = false
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
+        _streamingDirections.value = emptyList()
         _panelState.value = PanelState.KEYBOARD
         // GEN-02：停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
@@ -620,6 +632,7 @@ class LoveBrainViewModel(
         _feedbacks.value = emptyMap()
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
+        _streamingDirections.value = emptyList()
         _panelState.value = PanelState.KEYBOARD
     }
 
@@ -847,6 +860,7 @@ class LoveBrainViewModel(
                 newKb?.let {
                     knowledgeRepo.migrateIfNeeded(it.name)
                     _currentVector.value = knowledgeRepo.readVector(it.name)
+                    _intentConfig.value = knowledgeRepo.readIntent(it.name)
                 }
                 // CARRY-09：删除最后一个 KB 时 newKb==null，旧 _currentVector 未被清空
                 if (newKb == null) {
@@ -859,6 +873,28 @@ class LoveBrainViewModel(
     // ═══════════ 今日锦囊（委托 GenerationEngine） ═══════════
 
     fun openPlanPanel() { _showPlanPanel.value = true }
+
+    // ═══════════ 持续意图 ═══════════
+
+    /** 保存并启用持续意图 */
+    fun saveIntent(text: String) {
+        val kbName = _activeKb.value?.name ?: return
+        viewModelScope.launch {
+            runCatching {
+                _intentConfig.value = knowledgeRepo.saveIntent(kbName, text, enabled = true)
+            }.onFailure { L.w("saveIntent failed: ${it::class.simpleName}") }
+        }
+    }
+
+    /** 关闭持续意图（保留文本） */
+    fun disableIntent() {
+        val kbName = _activeKb.value?.name ?: return
+        viewModelScope.launch {
+            runCatching {
+                _intentConfig.value = knowledgeRepo.disableIntent(kbName)
+            }.onFailure { L.w("disableIntent failed: ${it::class.simpleName}") }
+        }
+    }
     fun dismissPlanPanel() { _showPlanPanel.value = false }
 
     /** GEN-01：同步 guard — 正在生成锦囊时拒绝启动。Engine reject → null → 旧 Job 保持。 */
@@ -934,6 +970,7 @@ class LoveBrainViewModel(
         _result.value = null
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
+        _streamingDirections.value = emptyList()
         _feedbacks.value = emptyMap()
     }
 
@@ -948,6 +985,14 @@ class LoveBrainViewModel(
     /** GEN-04：retry 前清理上一次 attempt 的流式方案卡 */
     override fun onReplyStreamingSchemesReset() {
         _streamingSchemes.value = emptyList()
+    }
+
+    override fun onReplyStreamingDirections(directions: List<Scheme>) {
+        if (directions.size > _streamingDirections.value.size) _streamingDirections.value = directions
+    }
+
+    override fun onReplyStreamingDirectionsReset() {
+        _streamingDirections.value = emptyList()
     }
 
     override fun onReplyResult(result: GenerateResult) {

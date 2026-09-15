@@ -249,6 +249,132 @@ class KnowledgeRepository(
             }
     }
 
+    /**
+     * 唯一初始化入口：应用启动时调用。
+     * - 有库：沿用原激活库
+     * - 首次且无库：创建"默认知识库"，阶段"待确定"，画像空
+     * - 失败保留可重试状态；不创建第二个默认库
+     * - 用户主动删除最后一个库后，不每次重启又创建
+     */
+    suspend fun ensureInitialKnowledgeBase() = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            val initMarker = File(knowledgeRoot, ".initialized")
+            // 已初始化过：不重复创建
+            if (initMarker.exists()) return@withLock
+
+            // 有库：标记已初始化，沿用原激活库
+            val existing = listAllUnlocked()
+            if (existing.isNotEmpty()) {
+                atomicWriteText(initMarker, isoNow())
+                return@withLock
+            }
+
+            // 首次且无库：创建默认知识库
+            runCatching {
+                val safeName = "default"
+                val dir = File(knowledgeRoot, safeName)
+                if (dir.exists()) return@runCatching // 防重复创建
+
+                File(dir, "understand").mkdirs()
+                File(dir, "moment").mkdirs()
+                File(dir, "memory").mkdirs()
+
+                val now = isoNow()
+                val kb = KnowledgeBase(
+                    name = safeName,
+                    displayName = "默认知识库",
+                    updatedAt = now,
+                    stage = "待确定",
+                    turnCount = 0,
+                    active = true
+                )
+                atomicWriteText(File(dir, "kb.json"), json.encodeToString(KnowledgeBase.serializer(), kb))
+
+                // 画像层从 schema 加载（含模板说明，用户可编辑替换）
+                atomicWriteText(File(dir, "understand/me.md"), loadSchema("me"))
+                atomicWriteText(File(dir, "understand/her.md"), loadSchema("her"))
+                atomicWriteText(File(dir, "understand/warmth.md"), loadSchema("warmth"))
+                // 此刻层
+                atomicWriteText(File(dir, "moment/topic.md"), loadSchema("topic"))
+                atomicWriteText(File(dir, "moment/recent.md"), loadSchema("recent"))
+                atomicWriteText(File(dir, "moment/scene.md"), loadSchema("scene"))
+                atomicWriteText(File(dir, "moment/plan.md"), loadSchema("plan"))
+                // 记忆层直接写空
+                atomicWriteText(File(dir, "memory/lessons.md"), "")
+                atomicWriteText(File(dir, "memory/raw_chat.md"), "")
+                atomicWriteText(File(dir, "memory/raw_topic.md"), "")
+                atomicWriteText(File(dir, "memory/raw_scene.md"), "")
+                atomicWriteText(File(dir, "memory/counseling_log.md"), loadSchema("counseling_log"))
+
+                securePrefs.activeKbName = safeName
+
+                // 全部写入成功后才标记初始化完成
+                atomicWriteText(initMarker, isoNow())
+            }.onFailure { err ->
+                com.lovebrain.app.util.L.e("ensureInitialKnowledgeBase failed", err)
+                // 失败不写标记，下次启动可重试
+            }
+        }
+    }
+
+    /** listAll 的无锁核心：调用方必须已持有 fileMutex */
+    private fun listAllUnlocked(): List<KnowledgeBase> {
+        return knowledgeRoot.listFiles()
+            ?.filter { it.isDirectory && !it.name.startsWith(".") && File(it, "kb.json").exists() }
+            ?.mapNotNull { dir ->
+                runCatching {
+                    json.decodeFromString<KnowledgeBase>(File(dir, "kb.json").readText())
+                }.getOrNull()
+            }
+            ?.sortedByDescending { it.updatedAt }
+            ?: emptyList()
+    }
+
+    // ═══════════ 持续意图 (Intent) ═══════════
+
+    /** 读取持续意图配置 */
+    suspend fun readIntent(kbName: String): com.lovebrain.app.model.IntentConfig = withContext(Dispatchers.IO) {
+        val file = File(File(knowledgeRoot, kbName), "intent.json")
+        if (!file.exists()) return@withContext com.lovebrain.app.model.IntentConfig()
+        runCatching {
+            json.decodeFromString<com.lovebrain.app.model.IntentConfig>(file.readText())
+        }.getOrDefault(com.lovebrain.app.model.IntentConfig())
+    }
+
+    /** 保存持续意图配置（文本 + 启用状态） */
+    suspend fun saveIntent(kbName: String, text: String, enabled: Boolean): com.lovebrain.app.model.IntentConfig = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            val current = readIntentUnlocked(kbName)
+            val updated = current.copy(
+                text = text.take(120),  // 最大 120 字
+                enabled = enabled,
+                revision = current.revision + 1,
+                updatedAt = isoNow()
+            )
+            atomicWriteText(File(File(knowledgeRoot, kbName), "intent.json"), json.encodeToString(com.lovebrain.app.model.IntentConfig.serializer(), updated))
+            updated
+        }
+    }
+
+    /** 关闭持续意图（保留文本） */
+    suspend fun disableIntent(kbName: String): com.lovebrain.app.model.IntentConfig = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            val current = readIntentUnlocked(kbName)
+            val updated = current.copy(enabled = false, revision = current.revision + 1, updatedAt = isoNow())
+            atomicWriteText(File(File(knowledgeRoot, kbName), "intent.json"), json.encodeToString(com.lovebrain.app.model.IntentConfig.serializer(), updated))
+            updated
+        }
+    }
+
+    /** 读取意图配置的无锁核心 */
+    private fun readIntentUnlocked(kbName: String): com.lovebrain.app.model.IntentConfig {
+        val file = File(File(knowledgeRoot, kbName), "intent.json")
+        if (!file.exists()) return com.lovebrain.app.model.IntentConfig()
+        return runCatching {
+            json.decodeFromString<com.lovebrain.app.model.IntentConfig>(file.readText())
+        }.getOrDefault(com.lovebrain.app.model.IntentConfig())
+    }
+
     suspend fun create(name: String, displayName: String): KnowledgeBase = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             val safeName = name.trim().lowercase(Locale.ROOT).replace(Regex("[^a-z0-9\\u4e00-\\u9fa5_-]"), "")
@@ -281,11 +407,11 @@ class KnowledgeRepository(
             atomicWriteText(File(dir, "moment/recent.md"), loadSchema("recent"))
             atomicWriteText(File(dir, "moment/scene.md"), loadSchema("scene"))
             atomicWriteText(File(dir, "moment/plan.md"), loadSchema("plan"))
-            // 记忆层（长期归档）
-            atomicWriteText(File(dir, "memory/lessons.md"), loadSchema("lessons"))
-            atomicWriteText(File(dir, "memory/raw_chat.md"), loadSchema("raw_chat"))
-            atomicWriteText(File(dir, "memory/raw_topic.md"), loadSchema("raw_topic"))
-            atomicWriteText(File(dir, "memory/raw_scene.md"), loadSchema("raw_scene"))
+            // 记忆层（长期归档）——P1-8: raw_topic/raw_chat/raw_scene/lessons 直接写空内容，模板说明留在 assets
+            atomicWriteText(File(dir, "memory/lessons.md"), "")
+            atomicWriteText(File(dir, "memory/raw_chat.md"), "")
+            atomicWriteText(File(dir, "memory/raw_topic.md"), "")
+            atomicWriteText(File(dir, "memory/raw_scene.md"), "")
             atomicWriteText(File(dir, "memory/counseling_log.md"), loadSchema("counseling_log"))
 
             if (kb.active) securePrefs.activeKbName = safeName

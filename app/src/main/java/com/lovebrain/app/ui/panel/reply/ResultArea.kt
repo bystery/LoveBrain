@@ -56,6 +56,7 @@ fun ResultArea(
     streamingCoreText: String,
     isGeneratingCore: Boolean,
     streamingSchemes: List<Scheme>,
+    streamingDirections: List<Scheme> = emptyList(),
     feedbacks: Map<String, SchemeFeedback>,
     onFeedback: (String, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
@@ -132,6 +133,16 @@ fun ResultArea(
                 if (response.analysis.ongoing.isNotEmpty()) {
                     Spacer(Modifier.height(Spacing.sm))
                     OngoingSection(items = response.analysis.ongoing)
+                }
+
+                // 四方向话术
+                val directions = response.directionSchemes
+                if (directions.isNotEmpty()) {
+                    Spacer(Modifier.height(Spacing.sm))
+                    DirectionsSection(
+                        directions = directions,
+                        onCopyScheme = onCopyScheme
+                    )
                 }
 
                 // P1-5: 记入知识库按钮放入结果工具区，不挤掉主入口
@@ -620,5 +631,64 @@ private fun TypewriterText(
                 modifier = Modifier.padding(start = ResultDimens.CURSOR_START_PAD_DP.dp)
             )
         }
+    }
+}
+
+/**
+ * 四方向话术区（follow/expand/express/shift）。
+ * 每行两个单元：左侧标题固定约 64dp，右侧文本自适应换行。
+ * 点击复制，长按预览全文。空值置灰且不可复制。
+ */
+@Composable
+private fun DirectionsSection(
+    directions: List<Scheme>,
+    onCopyScheme: (Scheme) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(LoveBrainShape.md)
+            .background(SurfaceInset)
+    ) {
+        Text(
+            "方向参考",
+            color = TextSecondary,
+            style = AppTypography.labelMedium,
+            modifier = Modifier.padding(start = Spacing.lg, top = Spacing.lg, bottom = Spacing.sm)
+        )
+        directions.forEachIndexed { idx, dir ->
+            if (idx > 0) {
+                HorizontalDivider(
+                    thickness = AppDimens.BORDER_WIDTH_DP.dp,
+                    color = Border.copy(alpha = 0.5f)
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .minHeight(48.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) { onCopyScheme(dir) }
+                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = dir.title,
+                    color = TextHint,
+                    style = AppTypography.labelSmall,
+                    modifier = Modifier.width(64.dp)
+                )
+                Spacer(Modifier.width(Spacing.sm))
+                Text(
+                    text = dir.reply,
+                    color = TextPrimary,
+                    style = AppTypography.bodySmall,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+        Spacer(Modifier.height(Spacing.sm))
     }
 }

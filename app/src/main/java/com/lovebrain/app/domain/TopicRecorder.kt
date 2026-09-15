@@ -8,12 +8,19 @@ import com.lovebrain.app.model.OngoingItem
 import com.lovebrain.app.model.Scheme
 
 /**
- * 话题生命周期管理器 v5。
+ * 话题生命周期管理器 v6。
+ *
+ * P0 修复（scene 语义重写）：
+ * - 旧事实保留原 timestamp，绝不复制到新时间戳
+ * - 过期事实先过滤，再处理新事实，防止复活
+ * - identity 包含 subject（她/我），不再 removePrefix 删身份
+ * - 同轮同 identity last-wins
+ * - 新事实只操作同 identity 的旧 fact：replace/delete/append
  *
  * 核心逻辑：
  * - 每轮对话记录到 moment/recent.md（最近 2 轮，溢出→对话暂存）
  * - 场景事实写入 moment/scene.md（带时间戳的状态链）
- * - 超过 3h/3 条 的状态条目移入 memory/raw_scene.md
+ * - 超过 SCENE_CHAIN_MAX_HOURS / SCENE_CHAIN_MAX_ENTRIES 的状态条目移入 memory/raw_scene.md
  * - 话题切换判定：仅凭 topic_status=new
  * - 话题切换时归档到 memory/raw_topic.md（状态倒序），重置此刻层
  * - ongoing 进行中事项合并写入 moment/plan.md（跨话题生存）
@@ -28,12 +35,6 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
     /**
      * 记录一轮对话 + 处理话题状态 + 更新场景链 + 合并进行中事项。
-     *
-     * @param topicStatus 从 AI 回复 JSON 中提取的话题状态（same/drift/new）
-     * @param topicLabel 从 AI 回复 JSON 中提取的话题标签
-     * @param sceneFacts 从 AI 回复 JSON 中提取的场景关键事实
-     * @param ongoing 从 AI 回复 JSON 中提取的进行中事项变化
-     * @return true 如果话题发生了切换（用于触发知识库更新）
      */
     suspend fun record(
         kb: KnowledgeBase,
@@ -76,8 +77,7 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         // P0-1：候选回复不再自动当作实际发送消息。
         // scheme=null 表示本轮没有确认发送任何候选；
         // likedSchemes 记录用户偏好（点赞），但不写入"实际对话"段。
-        // P0-FIX：IDEA（想法）不写入 recent.md——IDEA 是本轮控制信息，不是真实聊天。
-        // 只有 HER/ME 写入 moment/recent.md，IDEA 已在 buildReplyUserPrompt 中独立注入一次。
+        // IDEA（想法）不写入 recent.md——IDEA 是本轮控制信息，不是真实聊天。
         val conversationalMessages = messages.filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
         val entry = buildString {
             append("- [").append(time).append("]\n")
@@ -101,7 +101,7 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             }
         }
 
-        // 3. 写入 moment/recent.md（职责拆出，见 writeRecent）
+        // 3. 写入 moment/recent.md
         writeRecent(kb.name, entry)
 
         // 4. 更新场景链（scene_facts 现为数组，join 为分号串）
@@ -158,139 +158,297 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         return roundTsRegex.matches(line.trim().substringBefore("] ") + "]")
     }
 
+    // ════════════════════════════════════════════════════════════════
+    // P0 scene 语义重写：基于 fact-level identity 的状态机
+    // ════════════════════════════════════════════════════════════════
+
+    /** 场景中一条事实的结构化视图 */
+    private data class SceneFact(
+        val identity: String,    // 主体+事件类型+必要区分信息，如 "她|健康|感冒"
+        val text: String,        // 原始事实文本
+        val timestamp: String,   // 原始时间戳 "yyyy-MM-dd HH:mm"
+        val tsMillis: Long       // 时间戳毫秒
+    )
+
+    /** 场景条目解析后的事实列表 */
+    private data class SceneEntry(
+        val timestamp: String,
+        val tsMillis: Long,
+        val label: String,
+        val facts: List<String>  // 原始事实文本列表
+    )
+
     /**
-     * 更新场景链：在头部插入新条目（带绝对时间戳）。
-     * P0-FIX：废弃 substring contains 去重——改用主题键匹配实现 upsert/replace/expire。
-     * - 每条事实提取主题键（如"感冒""加班""搬家"），同一主题键的新事实替换旧事实（supersede）。
-     * - 完全新主题的事实追加为新条目。
-     * - 旧事实被新事实替换后直接删除，不保留过期状态。
-     * scene.md 自管理，满足任一条件的条目归档到 memory/raw_scene.md：
-     *   1) 年龄超过 SCENE_CHAIN_MAX_HOURS；
-     *   2) 条目数超过 SCENE_CHAIN_MAX_ENTRIES（保留最新 N 条，更老的溢出）。
+     * P0 修复版：更新场景链。
+     *
+     * 核心原则：
+     * 1. 先过滤已超时的旧 facts（防过期事实复活）
+     * 2. 每个旧 fact 保留自己的原 timestamp（不复制到新时间戳）
+     * 3. 新 fact 找到相同 identity 时只替换那一个 fact，其他 fact 留在原 entry、原时间
+     * 4. 同一轮出现两个同 identity facts 时 last-wins
+     * 5. identity 至少包含 subject，不能让"她感冒"和"我感冒"同 key
+     * 6. 新事实才使用 now 作为时间戳
      */
     private suspend fun updateSceneChain(kbName: String, topicLabel: String, sceneFacts: String) {
         val chainPath = "moment/scene.md"
         val historyPath = "memory/raw_scene.md"
         val now = System.currentTimeMillis()
         val timeStr = com.lovebrain.app.util.TimeFmt.now()
+        val maxAgeMs = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
 
         // 拆分本轮事实为列表
-        val newFacts = sceneFacts.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
-        if (newFacts.isEmpty()) return
+        val newFactTexts = sceneFacts.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
+        if (newFactTexts.isEmpty()) return
 
-        // 读取现有链（只认带真实时间戳的行，排除模板示例行）
+        // 构建本轮新事实列表（同 identity last-wins）
+        val newFactsByKey = LinkedHashMap<String, String>()
+        for (nf in newFactTexts) {
+            val key = extractFactIdentity(nf)
+            // last-wins：同 identity 后者覆盖前者
+            newFactsByKey[key] = nf
+        }
+        val newIdentities = newFactsByKey.keys
+
+        // 读取并解析现有链
         val existing = knowledgeRepo.readFile(kbName, chainPath)
-        val existingEntries = if (existing.isNotBlank()) {
-            existing.lines().filter { it.trim().startsWith("- [") && validSceneLine(it) }
-        } else {
-            emptyList()
-        }
+        val existingEntries = parseSceneEntries(existing)
 
-        // P0-FIX：收集已有事实，按主题键分组
-        // 每条事实结构：(主题键, 原始事实文本)
-        data class FactEntry(val topicKey: String, val factText: String)
-        val existingFacts = mutableListOf<FactEntry>()
+        // P0-2：先过滤已超时的旧 facts（在处理新事实之前）
+        // 过期 facts 不参与 upsert，直接归档，防止被复制进新条目复活
+        val freshEntries = mutableListOf<SceneEntry>()
+        val expiredEntries = mutableListOf<SceneEntry>()
         for (entry in existingEntries) {
-            val factsPart = entry.substringAfter("] ", "").substringAfter("：", "").substringAfter(":", "")
-            factsPart.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }.forEach {
-                existingFacts.add(FactEntry(extractTopicKey(it), it))
-            }
-        }
-
-        // P0-FIX：对新事实做 upsert——同主题键的旧事实被替换（supersede），新主题键的事实追加
-        val newTopicKeys = mutableSetOf<String>()
-        val upsertedFacts = mutableListOf<String>() // 替换/新增后的事实全集
-        val replacedTopicKeys = mutableSetOf<String>()
-
-        // 先处理新事实：提取主题键，标记要替换的旧事实
-        for (nf in newFacts) {
-            val nKey = extractTopicKey(nf)
-            newTopicKeys.add(nKey)
-            upsertedFacts.add(nf)
-            if (existingFacts.any { it.topicKey == nKey }) {
-                replacedTopicKeys.add(nKey)
-            }
-        }
-
-        // 保留旧事实中主题键未被新事实覆盖的
-        for (ef in existingFacts) {
-            if (ef.topicKey !in newTopicKeys) {
-                upsertedFacts.add(ef.factText)
-            }
-        }
-
-        // 条件1：按年龄分离旧条目（超龄归档）——但只保留未被替换的条目
-        val maxAgeMs = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
-        val fresh = mutableListOf<String>()
-        val expired = mutableListOf<String>()
-        for (entry in existingEntries) {
-            val entryTime = parseEntryTime(entry)
-            val isExpired = entryTime > 0 && (now - entryTime) > maxAgeMs
-            if (isExpired) {
-                expired.add(entry)
+            if (entry.tsMillis > 0 && (now - entry.tsMillis) > maxAgeMs) {
+                expiredEntries.add(entry)
             } else {
-                // P0-FIX：如果这个条目的所有事实都已被新事实替换，则丢弃（不保留过期状态）
-                val factsPart = entry.substringAfter("] ", "").substringAfter("：", "").substringAfter(":", "")
-                val entryTopicKeys = factsPart.split('；', ';')
-                    .map { extractTopicKey(it.trim()) }
-                    .filter { it.isNotBlank() }
-                val allReplaced = entryTopicKeys.isNotEmpty() && entryTopicKeys.all { it in replacedTopicKeys }
-                if (!allReplaced) {
-                    fresh.add(entry)
-                }
+                freshEntries.add(entry)
             }
         }
 
-        // P0-FIX：新事实（含替换旧事实的）写入新条目
-        val candidate = mutableListOf<String>()
-        if (upsertedFacts.isNotEmpty()) {
-            val newEntry = "- [$timeStr] ${topicLabel.ifBlank { "日常" }}：${upsertedFacts.joinToString("；")}"
-            candidate.add(newEntry)
+        // 收集所有未过期旧 facts（保留各自原 timestamp）
+        // 格式：identity → SceneFact
+        val oldFactsByKey = LinkedHashMap<String, SceneFact>()
+        for (entry in freshEntries) {
+            for (factText in entry.facts) {
+                val identity = extractFactIdentity(factText)
+                // 同一 entry 内同 identity 的 fact 也 last-wins
+                oldFactsByKey[identity] = SceneFact(identity, factText, entry.timestamp, entry.tsMillis)
+            }
         }
-        candidate.addAll(fresh)
 
-        // 条件2：超出条数上限的最老条目归档
+        // P0-1：执行 fact-level upsert
+        // 新事实替换同 identity 的旧事实（supersede）
+        // 未被覆盖的旧事实保留原 timestamp
+        val supersededIdentities = mutableSetOf<String>()
+        for ((identity, _) in newFactsByKey) {
+            if (oldFactsByKey.containsKey(identity)) {
+                supersededIdentities.add(identity)
+            }
+        }
+
+        // 构建 fact → timestamp 映射（最终结果集）
+        // 新事实用 now，旧事实用各自原 timestamp
+        data class FinalFact(val text: String, val timestamp: String, val tsMillis: Long)
+        val finalFacts = mutableListOf<FinalFact>()
+
+        // 新事实 → now
+        for ((_, factText) in newFactsByKey) {
+            finalFacts.add(FinalFact(factText, timeStr, now))
+        }
+
+        // 未被替换的旧事实 → 保留原 timestamp
+        for ((identity, fact) in oldFactsByKey) {
+            if (identity !in supersededIdentities && identity !in newIdentities) {
+                finalFacts.add(FinalFact(fact.text, fact.timestamp, fact.tsMillis))
+            }
+        }
+
+        // 按时间戳分组为 entries（同时间戳的 facts 组成同一个 entry）
+        val entriesByTime = LinkedHashMap<String, MutableList<FinalFact>>()
+        for (f in finalFacts) {
+            entriesByTime.getOrPut(f.timestamp) { mutableListOf() }.add(f)
+        }
+
+        // 按时间倒序排列（最新在前）
+        val sortedTimeKeys = entriesByTime.keys.sortedByDescending { entriesByTime[it]!!.firstOrNull()?.tsMillis ?: 0L }
+
+        // 构建 entry 行
+        val candidate = mutableListOf<String>()
+        for (ts in sortedTimeKeys) {
+            val factsAtTime = entriesByTime[ts]!!
+            if (factsAtTime.isEmpty()) continue
+            // 从原 entry 中找 label，找不到就用 topicLabel 或"日常"
+            val label = findLabelForTimestamp(freshEntries, ts) ?: topicLabel.ifBlank { "日常" }
+            val factsStr = factsAtTime.joinToString("；") { it.text }
+            candidate.add("- [$ts] $label：$factsStr")
+        }
+
+        // 条数上限：超出的最老条目归档
         val maxEntries = AppConfig.SCENE_CHAIN_MAX_ENTRIES
         val keptEntries = candidate.take(maxEntries)
         if (candidate.size > maxEntries) {
-            expired.addAll(candidate.drop(maxEntries))
+            expiredEntries.addAll(candidate.drop(maxEntries).map { it })
         }
 
-        // 没有变化时不写文件（避免无意义 IO）
+        // 写入 scene.md
         val newChainContent = keptEntries.joinToString("\n") + "\n"
-        val oldChainContent = existingEntries.joinToString("\n") + "\n"
+        val oldChainContent = existingEntries.joinToString("\n") { "- [${it.timestamp}] ${it.label}：${it.facts.joinToString("；")}" } + "\n"
         if (newChainContent != oldChainContent) {
             knowledgeRepo.writeFile(kbName, chainPath, newChainContent)
         }
 
         // 归档条目追加到 history
-        if (expired.isNotEmpty()) {
+        if (expiredEntries.isNotEmpty()) {
             val historyContent = buildString {
-                expired.forEach { append(it).append("\n") }
+                expiredEntries.forEach { e ->
+                    if (e is SceneEntry) {
+                        append("- [${e.timestamp}] ${e.label}：${e.facts.joinToString("；")}\n")
+                    } else {
+                        append(e.toString()).append("\n")
+                    }
+                }
             }
             knowledgeRepo.appendFile(kbName, historyPath, historyContent)
         }
     }
 
+    /** 从 scene.md 原文解析出 SceneEntry 列表 */
+    private fun parseSceneEntries(content: String): List<SceneEntry> {
+        if (content.isBlank()) return emptyList()
+        val entries = mutableListOf<SceneEntry>()
+        val entryRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})\\]\\s*(.*)$")
+        for (line in content.lines()) {
+            val trimmed = line.trim()
+            if (!trimmed.startsWith("- [")) continue
+            val match = entryRegex.find(trimmed) ?: continue
+            val ts = match.groupValues[1]
+            val tsMillis = com.lovebrain.app.util.TimeFmt.parse(ts)
+            val rest = match.groupValues[2]
+            val colonIdx = rest.indexOf('：')
+            val label = if (colonIdx >= 0) rest.substring(0, colonIdx).trim() else rest.trim()
+            val factsRaw = if (colonIdx >= 0) rest.substring(colonIdx + 1) else ""
+            val facts = factsRaw.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
+            if (facts.isNotEmpty()) {
+                entries.add(SceneEntry(ts, tsMillis, label, facts))
+            }
+        }
+        return entries
+    }
+
+    /** 在 freshEntries 中查找对应时间戳的 label */
+    private fun findLabelForTimestamp(entries: List<SceneEntry>, timestamp: String): String? {
+        return entries.firstOrNull { it.timestamp == timestamp }?.label
+    }
+
     /**
-     * P0-FIX：从事实文本中提取主题键——用于判断两条事实是否属于同一主题（应替换而非追加）。
-     * 策略：提取中文核心名词短语，忽略状态变化词（好了/还没好/在恢复/加重了 等）。
-     * 如 "她感冒了" 和 "她感冒好多了" → 主题键都是 "感冒" → 新的替换旧的。
-     * 如 "她加班到很晚" 和 "她感冒了" → 主题键不同 → 两者都保留。
+     * P0 修复版：从事实文本中提取 identity。
+     *
+     * identity = 主体 + 事件类型 + 必要区分信息
+     *
+     * 关键修复：
+     * - 不再 removePrefix("她"/"我") 删身份——必须保留 subject
+     * - "她感冒了" → "她|健康|感冒"
+     * - "我感冒了" → "我|健康|感冒"
+     * - "她周一有期末考试" → "她|考试|期末"
+     * - "她周五有英语考试" → "她|考试|英语"
      */
-    private fun extractTopicKey(fact: String): String {
+    private fun extractFactIdentity(fact: String): String {
         val f = fact.trim()
-        // 提取主语后的核心内容（去掉"她""我"前缀）
+
+        // 提取主体（她/我），默认"她"
+        val subject = when {
+            f.startsWith("她") -> "她"
+            f.startsWith("我") -> "我"
+            else -> "她" // 无明确主语时默认"她"
+        }
+
+        // 提取主体后的内容
         val body = f.removePrefix("她").removePrefix("我").trim()
-        // 匹配常见健康/状态/事件主题词
-        val healthKeywords = listOf("感冒", "发烧", "咳嗽", "过敏", "头疼", "肚子疼", "胃疼", "生理期", "大姨妈", "生病", "不舒服", "拉肚子", "牙疼", "腰疼", "嗓子疼")
-        val eventKeywords = listOf("加班", "出差", "考试", "面试", "搬家", "聚餐", "约会", "健身", "跑步", "聚餐", "开会", "上课", "下课", "赶项目", "答辩", "述职", "团建", "旅游", "旅行")
-        val stateKeywords = listOf("睡了", "起床", "洗澡", "化妆", "做饭", "吃饭", "回家", "到公司", "下班", "上班", "出发", "到家", "在路")
-        for (kw in healthKeywords) { if (body.contains(kw)) return kw }
-        for (kw in eventKeywords) { if (body.contains(kw)) return kw }
-        for (kw in stateKeywords) { if (body.contains(kw)) return kw }
-        // 未命中关键词：返回原文前 6 字作为主题键（兜底，保证不同表达仍可能匹配）
-        return body.take(6)
+
+        // 事件类型 + 区分信息
+        val category: String
+        val distinguishing: String
+
+        // 健康类
+        val healthKeywords = listOf(
+            "感冒" to "感冒", "发烧" to "发烧", "咳嗽" to "咳嗽", "过敏" to "过敏",
+            "头疼" to "头疼", "肚子疼" to "肚子疼", "胃疼" to "胃疼",
+            "生理期" to "生理期", "大姨妈" to "生理期", "生病" to "生病",
+            "不舒服" to "不舒服", "拉肚子" to "拉肚子", "牙疼" to "牙疼",
+            "腰疼" to "腰疼", "嗓子疼" to "嗓子疼"
+        )
+        // 事件类——需要区分不同实例
+        val eventKeywords = listOf(
+            "加班" to "加班", "出差" to "出差", "搬家" to "搬家",
+            "面试" to "面试", "健身" to "健身", "跑步" to "跑步",
+            "开会" to "开会", "赶项目" to "赶项目", "答辩" to "答辩",
+            "述职" to "述职", "团建" to "团建", "旅游" to "旅游", "旅行" to "旅行"
+        )
+        // 状态类
+        val stateKeywords = listOf(
+            "睡了" to "睡了", "起床" to "起床", "洗澡" to "洗澡",
+            "化妆" to "化妆", "做饭" to "做饭", "吃饭" to "吃饭",
+            "回家" to "回家", "到公司" to "到公司", "下班" to "下班",
+            "上班" to "上班", "出发" to "出发", "到家" to "到家"
+        )
+
+        // 考试需要更细粒度区分
+        val examMatch = Regex("(期末|期中|英语|数学|高数|物理|化学|专业课|选修课|考试)").find(body)
+        if (examMatch != null) {
+            val examType = examMatch.value
+            // 如果能找到具体考试名称就用它，否则用"考试"
+            val specificExam = listOf("期末", "期中", "英语", "数学", "高数", "物理", "化学")
+                .firstOrNull { body.contains(it) }
+            category = "考试"
+            distinguishing = specificExam ?: examType
+            return "$subject|$category|$distinguishing"
+        }
+
+        // 聚餐需要区分
+        if (body.contains("聚餐")) {
+            category = "聚餐"
+            distinguishing = if (body.contains("公司") || body.contains("团建")) "公司" 
+                else if (body.contains("家庭") || body.contains("周末")) "家庭"
+                else "一般"
+            return "$subject|$category|$distinguishing"
+        }
+
+        // 约会需要区分
+        if (body.contains("约会") || body.contains("见面") || body.contains("约")) {
+            category = "约会"
+            distinguishing = if (body.contains("周末")) "周末" else "一般"
+            return "$subject|$category|$distinguishing"
+        }
+
+        // 通用健康类匹配
+        for ((kw, label) in healthKeywords) {
+            if (body.contains(kw)) {
+                category = "健康"
+                distinguishing = label
+                return "$subject|$category|$distinguishing"
+            }
+        }
+
+        // 通用事件类匹配
+        for ((kw, label) in eventKeywords) {
+            if (body.contains(kw)) {
+                category = "事件"
+                distinguishing = label
+                return "$subject|$category|$distinguishing"
+            }
+        }
+
+        // 通用状态类匹配
+        for ((kw, label) in stateKeywords) {
+            if (body.contains(kw)) {
+                category = "状态"
+                distinguishing = label
+                return "$subject|$category|$distinguishing"
+            }
+        }
+
+        // 兜底：取前 8 字作为区分信息，保留 subject
+        return "$subject|其他|${body.take(8)}"
     }
 
     /** 从条目中解析时间戳："- [2026-07-24 19:32] ..." → epoch millis */
@@ -301,9 +459,6 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
     /**
      * 合并 ongoing 到 moment/plan.md（双二级标题重构）。
-     * 结构：`# 事项计划` + `## 进行中`（注入 prompt）+ `## 已结束`（不注入，防膨胀）。
-     * 匹配事项名：存在 → 追加 "→[time]新状态（当前）"；不存在 → 新增行。
-     * 已完成/已取消的事项移入 `## 已结束`；已结束区超过上限时丢弃最旧（防越来越大）。
      */
     private suspend fun mergeOngoing(kbName: String, items: List<OngoingItem>, timeStr: String) {
         val planPath = "moment/plan.md"

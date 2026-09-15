@@ -45,14 +45,34 @@ data class ReplyAnalysis(
     val ongoing: List<OngoingItem> = emptyList()  // 进行中事项（只报本轮有变化的）
 )
 
-/** DeepSeek 返回的完整结构（单次调用：response + analysis） */
+/** 四方向话术（follow/expand/express/shift），允许 null */
+@Serializable
+data class DirectionReplies(
+    val follow: String? = null,
+    val expand: String? = null,
+    val express: String? = null,
+    val shift: String? = null
+) {
+    /** 转为 UI 用的 Scheme 列表（过滤 null 和空串） */
+    fun toSchemes(): List<Scheme> = listOf(
+        Scheme(tag = "D_follow", title = "顺着聊", reply = follow ?: ""),
+        Scheme(tag = "D_expand", title = "展开", reply = expand ?: ""),
+        Scheme(tag = "D_express", title = "表达自己", reply = express ?: ""),
+        Scheme(tag = "D_shift", title = "换方向", reply = shift ?: "")
+    ).filter { it.reply.isNotBlank() }
+}
+
+/** DeepSeek 返回的完整结构（单次调用：response + analysis + directions） */
 @Serializable
 data class LoveBrainResponse(
     val response: ReplySchemes = ReplySchemes(),
-    val analysis: ReplyAnalysis = ReplyAnalysis()
+    val analysis: ReplyAnalysis = ReplyAnalysis(),
+    val directions: DirectionReplies = DirectionReplies()
 ) {
     /** UI 兼容访问器：4 条方案 */
     val schemes: List<Scheme> get() = response.toSchemes()
+    /** UI 兼容访问器：4 方向话术 */
+    val directionSchemes: List<Scheme> get() = directions.toSchemes()
 }
 
 /** 面板状态机 */
@@ -88,4 +108,13 @@ enum class SchemeFeedback {
 data class ProactiveOption(
     val text: String = "",   // 可直接复制发送的消息
     val angle: String = ""   // 切入角度，一句话
+)
+
+/** 持续意图配置（每个知识库一份） */
+@Serializable
+data class IntentConfig(
+    val text: String = "",
+    val enabled: Boolean = false,
+    val revision: Int = 0,
+    val updatedAt: String = ""
 )

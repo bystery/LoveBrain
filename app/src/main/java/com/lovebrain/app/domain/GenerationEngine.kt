@@ -128,6 +128,8 @@ class GenerationEngine(
         fun onReplyStreamingCoreText(chunk: String)
         fun onReplyStreamingSchemes(schemes: List<Scheme>)
         fun onReplyStreamingSchemesReset()
+        fun onReplyStreamingDirections(directions: List<Scheme>)
+        fun onReplyStreamingDirectionsReset()
         fun onReplyResult(result: GenerateResult)
         fun onReplyPanelState(state: PanelState)
         fun onReplyGenerating(isGenerating: Boolean, isGeneratingCore: Boolean)
@@ -238,6 +240,7 @@ class GenerationEngine(
                     callbacks.onReplyStreamingCoreTextReset()
                     // GEN-04：retry 前清理上一次 attempt 的流式方案卡
                     callbacks.onReplyStreamingSchemesReset()
+                    callbacks.onReplyStreamingDirectionsReset()
                 }
                 try {
                     val thinkingOverride = if (timedOut) 0 else null
@@ -255,6 +258,14 @@ class GenerationEngine(
                                     jsonLenient.decodeFromString<com.lovebrain.app.model.ReplySchemes>(respObj).toSchemes()
                                 }.getOrDefault(emptyList())
                                 callbacks.onReplyStreamingSchemes(schemes)
+                            }
+                            // 流式提取 directions（四方向话术）
+                            val dirObj = PartialJsonObjects.extractKeyObject(rawBuffer.toString(), "directions")
+                            if (dirObj != null) {
+                                val directions = runCatching {
+                                    jsonLenient.decodeFromString<com.lovebrain.app.model.DirectionReplies>(dirObj).toSchemes()
+                                }.getOrDefault(emptyList())
+                                callbacks.onReplyStreamingDirections(directions)
                             }
                         },
                         onError = { errorMsg = it },

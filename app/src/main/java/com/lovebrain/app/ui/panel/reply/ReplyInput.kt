@@ -98,7 +98,7 @@ fun ReplyInput(
             onValueChange = onDraftChange,
             placeholder = placeholderOverride ?: when (currentRole) {
                 ChatMessage.Role.HER -> "输入她说的话…"
-                ChatMessage.Role.IDEA -> "输入你的想法…"
+                ChatMessage.Role.IDEA -> "这轮想怎么说？例如：先不约，接她吐槽。"
                 else -> "输入你说的话…"
             },
             height = ReplyDimens.ROLE_CHIP_HEIGHT_DP.dp,

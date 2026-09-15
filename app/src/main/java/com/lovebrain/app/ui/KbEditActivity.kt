@@ -342,7 +342,8 @@ private fun KbEditScreen(
                 }
                 val savedText = drafts[selectedPath] ?: ""
                 val editorValue = editorStates[selectedPath] ?: TextFieldValue(savedText)
-                val liveLen = if (isPreview) savedText.length else editorValue.text.length
+                // P1-8: 字数显示使用可见正文长度（去注释后），不显示“有几百字”但页面没有正文
+                val liveLen = if (isPreview) stripHtmlComments(savedText).length else editorValue.text.length
 
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = Spacing.md),
@@ -362,18 +363,25 @@ private fun KbEditScreen(
                 }
 
                 if (isPreview) {
-                    if (savedText.isBlank()) {
+                    // P1-8: 清理后的内容为空才显示空态（防全注释文件显示"有几百字"但无正文）
+                    val previewText = remember(selectedPath, savedText) {
+                        prettyForPreview(selected.path, savedText)
+                    }
+                    if (previewText.isBlank()) {
                         Box(
                             modifier = Modifier.fillMaxWidth().weight(1f),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("还没有内容，点右上「编辑」添加", style = AppTypography.bodySmall, color = TextHint)
+                            // P1-8: 空态文案按文件类型区分
+                            val emptyText = when (selected.path) {
+                                "memory/raw_topic.md", "memory/archive.md" -> "还没有已归档的话题。"
+                                "memory/lessons.md" -> "还没有积累的经验。"
+                                else -> "还没有内容，点右上「编辑」添加"
+                            }
+                            Text(emptyText, style = AppTypography.bodySmall, color = TextHint)
                         }
                     } else {
                         // 大文件分块懒渲染（点开不卡的根因修复：只组合可见块）
-                        val previewText = remember(selectedPath, savedText) {
-                            prettyForPreview(selected.path, savedText)
-                        }
                         val previewChunks = remember(previewText) {
                             previewText.split(Regex("\n\\s*\n"))
                                 .map { it.trim() }
@@ -556,8 +564,44 @@ private fun prettyForPreview(path: String, content: String): String {
     return sb.toString()
 }
 
-/** P1-8: 剥离 HTML 注释（<!-- ... -->，跨行也处理） */
+/**
+ * P1-8: 剥离 HTML 注释（<!-- ... -->，跨行也处理）。
+ * 代码围栏（``` ... ```）中的字面量 <!-- --> 不当作注释删除。
+ */
 private fun stripHtmlComments(text: String): String {
-    val regex = Regex("<!--.*?-->", RegexOption.DOT_MATCHES_ALL)
-    return regex.replace(text, "").trim()
+    val sb = StringBuilder()
+    var inCodeFence = false
+    var i = 0
+    while (i < text.length) {
+        // 检测代码围栏开始/结束（``` 或 ~~~）
+        if (i + 2 < text.length && text.startsWith("```", i) || i + 2 < text.length && text.startsWith("~~~", i)) {
+            val fence = if (text.startsWith("```", i)) "```" else "~~~"
+            inCodeFence = !inCodeFence
+            // 找到围栏行尾
+            val lineEnd = text.indexOf('\n', i)
+            val end = if (lineEnd < 0) text.length else lineEnd + 1
+            sb.append(text, i, end)
+            i = end
+            continue
+        }
+        // 在代码围栏内，原样输出
+        if (inCodeFence) {
+            val lineEnd = text.indexOf('\n', i)
+            val end = if (lineEnd < 0) text.length else lineEnd + 1
+            sb.append(text, i, end)
+            i = end
+            continue
+        }
+        // 检测 HTML 注释开始
+        if (text.startsWith("<!--", i)) {
+            val closeIdx = text.indexOf("-->", i + 4)
+            if (closeIdx >= 0) {
+                i = closeIdx + 3
+                continue
+            }
+        }
+        sb.append(text[i])
+        i++
+    }
+    return sb.toString().trim()
 }
