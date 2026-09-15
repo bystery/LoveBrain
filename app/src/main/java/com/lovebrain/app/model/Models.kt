@@ -1,7 +1,23 @@
 package com.lovebrain.app.model
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.add
+import kotlinx.serialization.json.buildJsonArray
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
 
 /** 一条回复方案（UI 渲染用；tag/title 硬编码补，AI 只输出 reply 文本） */
 @Serializable
@@ -36,12 +52,69 @@ data class OngoingItem(
     val state: String = ""      // 本轮最新状态节点（时间戳由代码打）
 )
 
-/** 新格式 analysis 块（话题/场景/事项记录，不含展示型分析） */
+/** 场景事实（带来源关联）
+ * F03: 每条 scene fact 必须关联自己的真实 sourceMessageIds，
+ * 而不是只给整个 round 一个非空来源集合。
+ * sourceIds 引用本轮 HER/ME 消息的 id；客户端逐条校验。
+ *
+ * 兼容旧格式：AI 可能返回纯字符串列表 `["事实1", "事实2"]`，
+ * 此时 sourceIds 为空（标记为未核实来源）。 */
+@Serializable(with = SceneFactSerializer::class)
+data class SceneFact(
+    val text: String = "",
+    @SerialName("source_ids") val sourceIds: List<String> = emptyList()
+)
+
+/** F03: 自定义序列化器，兼容旧格式纯字符串和新格式带来源对象。
+ * 反序列化时接受：
+ * - "纯字符串" → SceneFact(text=..., sourceIds=[])
+ * - {"text":"...","source_ids":[...]} → 完整 SceneFact
+ * 序列化时始终输出对象格式。 */
+object SceneFactSerializer : KSerializer<SceneFact> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("SceneFact", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: SceneFact) {
+        // 始终序列化为对象格式
+        val obj = buildJsonObject {
+            put("text", value.text)
+            if (value.sourceIds.isNotEmpty()) {
+                put("source_ids", buildJsonArray {
+                    value.sourceIds.forEach { add(it) }
+                })
+            }
+        }
+        encoder.encodeSerializableValue(JsonElement.serializer(), obj)
+    }
+
+    override fun deserialize(decoder: Decoder): SceneFact {
+        val jsonDecoder = decoder as? JsonDecoder
+            ?: return SceneFact(text = decoder.decodeString())
+        val element = jsonDecoder.decodeJsonElement()
+        return when (element) {
+            is JsonPrimitive -> SceneFact(text = element.content)
+            is JsonObject -> {
+                val text = element["text"]?.jsonPrimitive?.content ?: ""
+                val sourceIds = element["source_ids"]?.let { srcEl ->
+                    if (srcEl is JsonArray) srcEl.mapNotNull { id ->
+                        (id as? JsonPrimitive)?.content
+                    } else emptyList()
+                } ?: emptyList()
+                SceneFact(text = text, sourceIds = sourceIds)
+            }
+            else -> SceneFact()
+        }
+    }
+}
+
+/** 新格式 analysis 块（话题/场景/事项记录，不含展示型分析）
+ * F03: scene_facts 改为 List<SceneFact>，每条携带来源 ID。
+ * 兼容旧格式：如果 AI 返回纯字符串列表，sourceIds 为空（标记为未核实）。 */
 @Serializable
 data class ReplyAnalysis(
     val topic_status: String = "same",   // same / drift / new
     val topic_label: String = "",        // 当前话题标签+场景状态
-    val scene_facts: List<String> = emptyList(),  // 当前场景关键事实
+    val scene_facts: List<SceneFact> = emptyList(),  // 当前场景关键事实（带来源）
     val ongoing: List<OngoingItem> = emptyList()  // 进行中事项（只报本轮有变化的）
 )
 

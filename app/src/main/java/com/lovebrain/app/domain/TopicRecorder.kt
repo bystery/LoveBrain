@@ -6,18 +6,28 @@ import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.OngoingItem
 import com.lovebrain.app.model.Scheme
+import com.lovebrain.app.model.SceneFact
 
 /**
- * 话题生命周期管理器 v5。
+ * 话题生命周期管理器 v6（F03 重构）。
  *
  * 核心逻辑：
  * - 每轮对话记录到 moment/recent.md（最近 2 轮，溢出→对话暂存）
  * - 场景事实写入 moment/scene.md（带时间戳的状态链）
- * - 超过 3h/3 条 的状态条目移入 memory/raw_scene.md
+ * - 超过 TTL/最大条数 的状态条目移入 memory/raw_scene.md
  * - 话题切换判定：仅凭 topic_status=new
  * - 话题切换时归档到 memory/raw_topic.md（状态倒序），重置此刻层
  * - ongoing 进行中事项合并写入 moment/plan.md（跨话题生存）
  * - 轮次/状态条目解析使用真实时间戳校验，防 schema 模板示例行混入
+ *
+ * F03 变更：
+ * - 废弃 extractTopicKey 中文关键词列表匹配
+ * - 每条 scene fact 携带 sourceIds，引用本轮 HER/ME 消息 ID
+ * - 客户端逐条校验 sourceId 必须属于冻结快照中的 HER/ME；非法来源只拒绝该事实
+ * - 模型重述旧事实不更新时间；只有新来源的真实证据才更新
+ * - "她"和"我"不合并：通过来源消息的 role 区分
+ * - 相同来源重复提交幂等
+ * - 无法确定同一事项时保守不覆盖
  */
 class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
@@ -29,9 +39,12 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
     /**
      * 记录一轮对话 + 处理话题状态 + 更新场景链 + 合并进行中事项。
      *
+     * F03: sceneFacts 参数改为 List<SceneFact>（带来源 ID），
+     * 同时传入冻结的 messages 快照用于来源校验。
+     *
      * @param topicStatus 从 AI 回复 JSON 中提取的话题状态（same/drift/new）
      * @param topicLabel 从 AI 回复 JSON 中提取的话题标签
-     * @param sceneFacts 从 AI 回复 JSON 中提取的场景关键事实
+     * @param sceneFacts 从 AI 回复 JSON 中提取的场景关键事实（带来源 ID）
      * @param ongoing 从 AI 回复 JSON 中提取的进行中事项变化
      * @return true 如果话题发生了切换（用于触发知识库更新）
      */
@@ -41,7 +54,7 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         scheme: Scheme?,
         topicStatus: String,
         topicLabel: String,
-        sceneFacts: List<String> = emptyList(),
+        sceneFacts: List<SceneFact> = emptyList(),
         userHint: String = "",
         ongoing: List<OngoingItem> = emptyList(),
         likedSchemes: List<Scheme> = emptyList()
@@ -110,10 +123,9 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         // 3. 写入 moment/recent.md（职责拆出，见 writeRecent）
         writeRecent(kb.name, entry)
 
-        // 4. 更新场景链（scene_facts 现为数组，join 为分号串）
-        val factsStr = sceneFacts.joinToString("；").trim()
-        if (factsStr.isNotBlank()) {
-            updateSceneChain(kb.name, topicLabel, factsStr)
+        // 4. F03: 更新场景链——传入 SceneFact 列表和冻结消息快照做来源校验
+        if (sceneFacts.isNotEmpty()) {
+            updateSceneChain(kb.name, topicLabel, sceneFacts, messages)
         }
 
         // 5. 合并进行中事项（plan.md，跨话题生存）
@@ -164,145 +176,314 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         return roundTsRegex.matches(line.trim().substringBefore("] ") + "]")
     }
 
+    // ════════════════════════════════════════════════════════════════
+    // F03: 场景事实内部数据结构
+    // ════════════════════════════════════════════════════════════════
+
+    /** scene.md 中解析出的单条事实（含来源和时间戳） */
+    private data class StoredFact(
+        val text: String,           // 事实文本
+        val sourceIds: List<String>, // 来源消息 ID（可能为空=旧数据未核实）
+        val evidenceTime: Long,      // 证据时间（写入时的真实时间，模型重述不刷新）
+        val subject: String          // 主语标记："她" / "我" / ""（未知）
+    )
+
+    /** scene.md 中解析出的条目行 */
+    private data class SceneEntry(
+        val timeStr: String,         // 时间戳字符串
+        val timeMs: Long,            // 时间戳毫秒
+        val label: String,           // 话题标签
+        val facts: List<StoredFact>  // 该行包含的事实
+    )
+
     /**
-     * 更新场景链：在头部插入新条目（带绝对时间戳）。
-     * P0-FIX：废弃 substring contains 去重——改用主题键匹配实现 upsert/replace/expire。
-     * - 每条事实提取主题键（如"感冒""加班""搬家"），同一主题键的新事实替换旧事实（supersede）。
-     * - 完全新主题的事实追加为新条目。
-     * - 旧事实被新事实替换后直接删除，不保留过期状态。
-     * scene.md 自管理，满足任一条件的条目归档到 memory/raw_scene.md：
-     *   1) 年龄超过 SCENE_CHAIN_MAX_HOURS；
-     *   2) 条目数超过 SCENE_CHAIN_MAX_ENTRIES（保留最新 N 条，更老的溢出）。
+     * F03: 更新场景链——基于来源 ID 的事实匹配和状态变化。
+     *
+     * 核心规则：
+     * 1. 来源校验：新事实的 sourceIds 必须属于本轮冻结快照中的 HER/ME 消息。
+     *    - 非法来源（IDEA/候选/不存在的 ID）→ 拒绝该事实，不影响合法事实
+     *    - 无来源（旧格式/模型未提供）→ 标记为未核实，保留但不覆盖已有事实
+     * 2. 时间不刷新：模型重述旧事实不更新 evidenceTime。
+     *    只有来源 ID 与已有事实完全匹配且文本变化时才更新（视为同一事项的新状态）。
+     * 3. "她"和"我"不合并：通过来源消息的 role 区分主语。
+     * 4. 幂等：相同来源 + 相同文本 → 不重复写入。
+     * 5. 保守不覆盖：无法确定是否同一事项时，追加而不覆盖。
      */
-    private suspend fun updateSceneChain(kbName: String, topicLabel: String, sceneFacts: String) {
+    private suspend fun updateSceneChain(
+        kbName: String,
+        topicLabel: String,
+        sceneFacts: List<SceneFact>,
+        frozenMessages: List<ChatMessage>
+    ) {
         val chainPath = "moment/scene.md"
         val historyPath = "memory/raw_scene.md"
         val now = System.currentTimeMillis()
         val timeStr = com.lovebrain.app.util.TimeFmt.now()
 
-        // 拆分本轮事实为列表
-        val newFacts = sceneFacts.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
-        if (newFacts.isEmpty()) return
+        // F03: 构建冻结快照中 HER/ME 消息的 ID→role 映射
+        val validSourceMap: Map<String, ChatMessage.Role> = frozenMessages
+            .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
+            .associate { it.id to it.role }
 
-        // 读取现有链（只认带真实时间戳的行，排除模板示例行）
+        // F03: 校验每条新事实的来源，过滤掉非法来源的事实
+        val validatedFacts = mutableListOf<StoredFact>()
+        for (sf in sceneFacts) {
+            val text = sf.text.trim()
+            if (text.isBlank()) continue
+
+            if (sf.sourceIds.isEmpty()) {
+                // 无来源（旧格式或模型未提供）→ 标记为未核实，保留但不覆盖已有事实
+                validatedFacts.add(StoredFact(
+                    text = text,
+                    sourceIds = emptyList(),
+                    evidenceTime = now,
+                    subject = extractSubject(text)
+                ))
+                continue
+            }
+
+            // F03: 逐条校验 sourceId 必须属于冻结快照中的 HER/ME
+            val validIds = sf.sourceIds.filter { id -> id in validSourceMap }
+            if (validIds.isEmpty()) {
+                // 所有来源都不合法 → 拒绝该事实（不影响合法事实）
+                com.lovebrain.app.util.L.w("SceneFact rejected (no valid source): $text")
+                continue
+            }
+
+            // F03: 确定主语——基于来源消息的 role
+            val roles = validIds.map { validSourceMap[it]!! }.toSet()
+            val subject = when {
+                ChatMessage.Role.HER in roles && ChatMessage.Role.ME !in roles -> "她"
+                ChatMessage.Role.ME in roles && ChatMessage.Role.HER !in roles -> "我"
+                else -> "" // 混合来源或无法确定
+            }
+
+            validatedFacts.add(StoredFact(
+                text = text,
+                sourceIds = validIds,
+                evidenceTime = now,
+                subject = subject
+            ))
+        }
+
+        if (validatedFacts.isEmpty()) return
+
+        // 读取现有链并解析为结构化条目
         val existing = knowledgeRepo.readFile(kbName, chainPath)
-        val existingEntries = if (existing.isNotBlank()) {
-            existing.lines().filter { it.trim().startsWith("- [") && validSceneLine(it) }
-        } else {
-            emptyList()
+        val existingEntries = parseSceneEntries(existing)
+
+        // F03: 收集所有已有事实
+        val allExistingFacts = existingEntries.flatMap { entry ->
+            entry.facts.map { fact -> fact to entry }
         }
 
-        // P0-FIX：收集已有事实，按主题键分组
-        // 每条事实结构：(主题键, 原始事实文本)
-        data class FactEntry(val topicKey: String, val factText: String)
-        val existingFacts = mutableListOf<FactEntry>()
-        for (entry in existingEntries) {
-            val factsPart = entry.substringAfter("] ", "").substringAfter("：", "").substringAfter(":", "")
-            factsPart.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }.forEach {
-                existingFacts.add(FactEntry(extractTopicKey(it), it))
+        // F03: 对每条新事实做匹配决策
+        // - 如果 sourceIds 与已有事实完全相同且文本相同 → 幂等跳过
+        // - 如果 sourceIds 与已有事实完全相同但文本不同 → 同一事项新状态，替换（保留原 evidenceTime）
+        // - 如果 sourceIds 为空（未核实）→ 追加，不覆盖任何已有事实
+        // - 如果 sourceIds 不同 → 新事实，追加
+        // - "她"和"我"的事实即使文本相似也不合并
+        val toAdd = mutableListOf<StoredFact>()
+        val toReplace = mutableMapOf<StoredFact, StoredFact>() // old → new
+
+        for (nf in validatedFacts) {
+            if (nf.sourceIds.isEmpty()) {
+                // 未核实来源 → 直接追加，不覆盖
+                toAdd.add(nf)
+                continue
+            }
+
+            // 查找同来源的已有事实
+            val sameSourceMatch = allExistingFacts.firstOrNull { (ef, _) ->
+                ef.sourceIds.isNotEmpty() &&
+                ef.sourceIds.toSet() == nf.sourceIds.toSet() &&
+                ef.subject == nf.subject
+            }
+
+            if (sameSourceMatch != null) {
+                val (ef, _) = sameSourceMatch
+                if (ef.text == nf.text) {
+                    // F03: 幂等——相同来源+相同文本 → 不重复写入
+                    com.lovebrain.app.util.L.w("SceneFact idempotent skip: $nf")
+                } else {
+                    // F03: 同一来源、不同文本 → 同一事项新状态
+                    // 保留原始 evidenceTime（模型重述不刷新时间）
+                    toReplace[ef] = nf.copy(evidenceTime = ef.evidenceTime)
+                }
+            } else {
+                // 无同来源匹配 → 新事实
+                toAdd.add(nf)
             }
         }
 
-        // P0-FIX：对新事实做 upsert——同主题键的旧事实被替换（supersede），新主题键的事实追加
-        val newTopicKeys = mutableSetOf<String>()
-        val upsertedFacts = mutableListOf<String>() // 替换/新增后的事实全集
-        val replacedTopicKeys = mutableSetOf<String>()
-
-        // 先处理新事实：提取主题键，标记要替换的旧事实
-        for (nf in newFacts) {
-            val nKey = extractTopicKey(nf)
-            newTopicKeys.add(nKey)
-            upsertedFacts.add(nf)
-            if (existingFacts.any { it.topicKey == nKey }) {
-                replacedTopicKeys.add(nKey)
+        // 如果没有变化（全部幂等跳过），仍需处理过期归档
+        if (toAdd.isEmpty() && toReplace.isEmpty()) {
+            val maxAgeMs0 = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
+            val fresh0 = mutableListOf<SceneEntry>()
+            val expired0 = mutableListOf<SceneEntry>()
+            for (entry in existingEntries) {
+                val isExpired = entry.timeMs > 0 && (now - entry.timeMs) > maxAgeMs0
+                if (isExpired) expired0.add(entry) else fresh0.add(entry)
             }
+            if (expired0.isNotEmpty()) {
+                writeSceneAndArchive(kbName, chainPath, historyPath, fresh0, expired0)
+            }
+            return
         }
 
-        // 保留旧事实中主题键未被新事实覆盖的
-        for (ef in existingFacts) {
-            if (ef.topicKey !in newTopicKeys) {
-                upsertedFacts.add(ef.factText)
+        // F03: 构建更新后的条目列表
+        // 1. 对已有条目：执行替换（将旧事实替换为新版本），保留未涉及的事实
+        // 2. 新事实追加为新条目
+        val updatedEntries = existingEntries.map { entry ->
+            val updatedFacts = entry.facts.map { fact ->
+                toReplace[fact] ?: fact
+            }.filter { fact ->
+                // 保留未被替换的旧事实
+                toReplace.keys.none { it === fact }
+            } + toReplace.entries.filter { (_, nf) ->
+                // 新版本事实回到原条目（同时间戳）
+                entry.facts.any { it.sourceIds.isNotEmpty() && it.sourceIds.toSet() == nf.sourceIds.toSet() }
+            }.map { it.value }
+
+            // 去重：同一文本只保留一条
+            val seen = mutableSetOf<String>()
+            val dedupedFacts = updatedFacts.filter { fact ->
+                val key = "${fact.subject}|${fact.text}|${fact.sourceIds.sorted()}"
+                if (key in seen) false else { seen.add(key); true }
             }
+
+            entry.copy(facts = dedupedFacts)
+        }.filter { it.facts.isNotEmpty() }.toMutableList() // 移除空条目
+
+        // 追加新事实为新条目
+        if (toAdd.isNotEmpty()) {
+            val newEntry = SceneEntry(
+                timeStr = timeStr,
+                timeMs = now,
+                label = topicLabel.ifBlank { "日常" },
+                facts = toAdd
+            )
+            updatedEntries.add(0, newEntry) // 新条目插入头部
         }
 
-        // 条件1：按年龄分离旧条目（超龄归档）——但只保留未被替换的条目
+        // F03: 过期归档
         val maxAgeMs = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
-        val fresh = mutableListOf<String>()
-        val expired = mutableListOf<String>()
-        for (entry in existingEntries) {
-            val entryTime = parseEntryTime(entry)
-            val isExpired = entryTime > 0 && (now - entryTime) > maxAgeMs
+        val maxEntries = AppConfig.SCENE_CHAIN_MAX_ENTRIES
+        val fresh = mutableListOf<SceneEntry>()
+        val expired = mutableListOf<SceneEntry>()
+        for (entry in updatedEntries) {
+            val isExpired = entry.timeMs > 0 && (now - entry.timeMs) > maxAgeMs
             if (isExpired) {
                 expired.add(entry)
             } else {
-                // P0-FIX：如果这个条目的所有事实都已被新事实替换，则丢弃（不保留过期状态）
-                val factsPart = entry.substringAfter("] ", "").substringAfter("：", "").substringAfter(":", "")
-                val entryTopicKeys = factsPart.split('；', ';')
-                    .map { extractTopicKey(it.trim()) }
-                    .filter { it.isNotBlank() }
-                val allReplaced = entryTopicKeys.isNotEmpty() && entryTopicKeys.all { it in replacedTopicKeys }
-                if (!allReplaced) {
-                    fresh.add(entry)
-                }
+                fresh.add(entry)
             }
         }
-
-        // P0-FIX：新事实（含替换旧事实的）写入新条目
-        val candidate = mutableListOf<String>()
-        if (upsertedFacts.isNotEmpty()) {
-            val newEntry = "- [$timeStr] ${topicLabel.ifBlank { "日常" }}：${upsertedFacts.joinToString("；")}"
-            candidate.add(newEntry)
-        }
-        candidate.addAll(fresh)
-
-        // 条件2：超出条数上限的最老条目归档
-        val maxEntries = AppConfig.SCENE_CHAIN_MAX_ENTRIES
-        val keptEntries = candidate.take(maxEntries)
-        if (candidate.size > maxEntries) {
-            expired.addAll(candidate.drop(maxEntries))
+        // 超出条数上限的最老条目归档
+        val keptEntries = fresh.take(maxEntries)
+        if (fresh.size > maxEntries) {
+            expired.addAll(fresh.drop(maxEntries))
         }
 
-        // 没有变化时不写文件（避免无意义 IO）
-        val newChainContent = keptEntries.joinToString("\n") + "\n"
-        val oldChainContent = existingEntries.joinToString("\n") + "\n"
-        if (newChainContent != oldChainContent) {
-            knowledgeRepo.writeFile(kbName, chainPath, newChainContent)
-        }
+        // 渲染并写入
+        writeSceneAndArchive(kbName, chainPath, historyPath, keptEntries, expired)
+    }
 
-        // 归档条目追加到 history
+    /** F03: 将 SceneEntry 列表写入 scene.md，过期条目追加到 raw_scene.md */
+    private suspend fun writeSceneAndArchive(
+        kbName: String,
+        chainPath: String,
+        historyPath: String,
+        kept: List<SceneEntry>,
+        expired: List<SceneEntry>
+    ) {
+        // 渲染 scene.md
+        val newChainContent = if (kept.isEmpty()) "" else kept.joinToString("\n") { entry ->
+            val factsStr = entry.facts.joinToString("；") { f ->
+                if (f.sourceIds.isNotEmpty()) {
+                    "${f.text}⟨${f.sourceIds.joinToString(",")}⟩"
+                } else {
+                    f.text
+                }
+            }
+            "- [${entry.timeStr}] ${entry.label}：${factsStr}"
+        } + "\n"
+
+        knowledgeRepo.writeFile(kbName, chainPath, newChainContent)
+
+        // 归档过期条目
         if (expired.isNotEmpty()) {
             val historyContent = buildString {
-                expired.forEach { append(it).append("\n") }
+                expired.forEach { entry ->
+                    val factsStr = entry.facts.joinToString("；") { f ->
+                        if (f.sourceIds.isNotEmpty()) {
+                            "${f.text}⟨${f.sourceIds.joinToString(",")}⟩"
+                        } else {
+                            f.text
+                        }
+                    }
+                    append("- [${entry.timeStr}] ${entry.label}：${factsStr}\n")
+                }
             }
             knowledgeRepo.appendFile(kbName, historyPath, historyContent)
         }
     }
 
-    /**
-     * P0-FIX：从事实文本中提取主题键——用于判断两条事实是否属于同一主题（应替换而非追加）。
-     * 策略：提取中文核心名词短语，忽略状态变化词（好了/还没好/在恢复/加重了 等）。
-     * 如 "她感冒了" 和 "她感冒好多了" → 主题键都是 "感冒" → 新的替换旧的。
-     * 如 "她加班到很晚" 和 "她感冒了" → 主题键不同 → 两者都保留。
-     */
-    private fun extractTopicKey(fact: String): String {
-        val f = fact.trim()
-        // 提取主语后的核心内容（去掉"她""我"前缀）
-        val body = f.removePrefix("她").removePrefix("我").trim()
-        // 匹配常见健康/状态/事件主题词
-        val healthKeywords = listOf("感冒", "发烧", "咳嗽", "过敏", "头疼", "肚子疼", "胃疼", "生理期", "大姨妈", "生病", "不舒服", "拉肚子", "牙疼", "腰疼", "嗓子疼")
-        val eventKeywords = listOf("加班", "出差", "考试", "面试", "搬家", "聚餐", "约会", "健身", "跑步", "聚餐", "开会", "上课", "下课", "赶项目", "答辩", "述职", "团建", "旅游", "旅行")
-        val stateKeywords = listOf("睡了", "起床", "洗澡", "化妆", "做饭", "吃饭", "回家", "到公司", "下班", "上班", "出发", "到家", "在路")
-        for (kw in healthKeywords) { if (body.contains(kw)) return kw }
-        for (kw in eventKeywords) { if (body.contains(kw)) return kw }
-        for (kw in stateKeywords) { if (body.contains(kw)) return kw }
-        // 未命中关键词：返回原文前 6 字作为主题键（兜底，保证不同表达仍可能匹配）
-        return body.take(6)
+    /** F03: 解析 scene.md 为结构化条目列表 */
+    private fun parseSceneEntries(content: String): MutableList<SceneEntry> {
+        if (content.isBlank()) return mutableListOf()
+        val entryRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})]\\s*(.*)$")
+        val result = mutableListOf<SceneEntry>()
+
+        for (line in content.lines()) {
+            val trimmed = line.trim()
+            if (!trimmed.startsWith("- [")) continue
+            val match = entryRegex.find(trimmed) ?: continue
+
+            val timeStr = match.groupValues[1]
+            val timeMs = com.lovebrain.app.util.TimeFmt.parse(timeStr)
+            val rest = match.groupValues[2]
+
+            // 分割标签和事实
+            val colonIdx = rest.indexOf('：')
+            val (label, factsRaw) = if (colonIdx >= 0) {
+                rest.substring(0, colonIdx).trim() to rest.substring(colonIdx + 1)
+            } else {
+                "" to rest
+            }
+
+            // 解析事实列表（支持 ⟨sourceIds⟩ 后缀）
+            val facts = factsRaw.split('；', ';')
+                .map { it.trim() }
+                .filter { it.isNotBlank() }
+                .map { factText ->
+                    // 检查是否有 ⟨sourceIds⟩ 后缀
+                    val srcMatch = Regex("(.*)⟨(.+)⟩$").find(factText)
+                    if (srcMatch != null) {
+                        val text = srcMatch.groupValues[1].trim()
+                        val srcIds = srcMatch.groupValues[2].split(',').map { it.trim() }.filter { it.isNotBlank() }
+                        StoredFact(text = text, sourceIds = srcIds, evidenceTime = timeMs, subject = extractSubject(text))
+                    } else {
+                        // 旧格式：无来源标记
+                        StoredFact(text = factText, sourceIds = emptyList(), evidenceTime = timeMs, subject = extractSubject(factText))
+                    }
+                }
+
+            if (facts.isNotEmpty()) {
+                result.add(SceneEntry(timeStr = timeStr, timeMs = timeMs, label = label, facts = facts))
+            }
+        }
+        return result
     }
 
-    /** 从条目中解析时间戳："- [2026-07-24 19:32] ..." → epoch millis */
-    private fun parseEntryTime(entry: String): Long {
-        val match = Regex("\\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})]").find(entry) ?: return 0
-        return com.lovebrain.app.util.TimeFmt.parse(match.groupValues[1])
+    /** F03: 从事实文本中提取主语标记 */
+    private fun extractSubject(text: String): String {
+        val t = text.trim()
+        return when {
+            t.startsWith("她") -> "她"
+            t.startsWith("我") -> "我"
+            else -> ""
+        }
     }
 
     /**

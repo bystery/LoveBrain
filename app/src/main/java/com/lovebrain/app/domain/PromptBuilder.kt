@@ -359,7 +359,10 @@ class PromptBuilder(
         return text.take(headLen) + "\n\n…（中间旧记忆因长度限制已省略）…\n\n" + text.takeLast(tailLen)
     }
 
-    /** 场景链注入转换：龄标注 + 主题键去重（保留最新版本）+ 过期条目过滤 */
+    /** F03: 场景链注入转换——龄标注 + 精确去重 + 过期过滤。
+     * 废弃 extractTopicKeyForInjection 关键词列表匹配。
+     * 去重策略：从最新到最旧，相同事实文本只保留最新版本。
+     * 剔除 ⟨sourceIds⟩ 标记，不注入 prompt。 */
     private fun transformSceneChain(content: String): String {
         val entryRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2}) (\\d{2}:\\d{2})]\\s*(.*)$")
         val now = System.currentTimeMillis()
@@ -382,10 +385,9 @@ class PromptBuilder(
         }
         if (freshEntries.isEmpty()) return ""
 
-        // P0-FIX：用主题键去重——同主题键只保留最新（时间最晚的）条目中的事实
-        val seenTopicKeys = mutableSetOf<String>()
+        // F03: 精确文本去重——从最新到最旧，相同事实文本只保留最新版本
+        val seenFactTexts = mutableSetOf<String>()
         val out = StringBuilder()
-        // 从最新到最旧遍历，先遇到的同主题键事实即为最新版本
         for (e in freshEntries) {
             val ageH = if (e.ts > 0) ((now - e.ts) / 3600_000L).toInt() else 0
             val ageLabel = when {
@@ -400,10 +402,11 @@ class PromptBuilder(
             val facts = factsRaw.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
             val keptFacts = mutableListOf<String>()
             for (f in facts) {
-                val key = extractTopicKeyForInjection(f)
-                if (key !in seenTopicKeys) {
-                    keptFacts.add(f)
-                    seenTopicKeys.add(key)
+                // F03: 剔除 ⟨sourceIds⟩ 标记，只保留事实文本
+                val cleanFact = Regex("⟨.+⟩$").replace(f, "").trim()
+                if (cleanFact.isNotBlank() && cleanFact !in seenFactTexts) {
+                    keptFacts.add(cleanFact)
+                    seenFactTexts.add(cleanFact)
                 }
             }
             if (keptFacts.isNotEmpty()) {
@@ -413,18 +416,6 @@ class PromptBuilder(
             }
         }
         return out.toString().trim()
-    }
-
-    /** P0-FIX：注入侧主题键提取——与 TopicRecorder.extractTopicKey 同语义 */
-    private fun extractTopicKeyForInjection(fact: String): String {
-        val body = fact.trim().removePrefix("她").removePrefix("我").trim()
-        val healthKeywords = listOf("感冒", "发烧", "咳嗽", "过敏", "头疼", "肚子疼", "胃疼", "生理期", "大姨妈", "生病", "不舒服", "拉肚子", "牙疼", "腰疼", "嗓子疼")
-        val eventKeywords = listOf("加班", "出差", "考试", "面试", "搬家", "聚餐", "约会", "健身", "跑步", "开会", "上课", "下课", "赶项目", "答辩", "述职", "团建", "旅游", "旅行")
-        val stateKeywords = listOf("睡了", "起床", "洗澡", "化妆", "做饭", "吃饭", "回家", "到公司", "下班", "上班", "出发", "到家", "在路")
-        for (kw in healthKeywords) { if (body.contains(kw)) return kw }
-        for (kw in eventKeywords) { if (body.contains(kw)) return kw }
-        for (kw in stateKeywords) { if (body.contains(kw)) return kw }
-        return body.take(6)
     }
 
     private suspend fun readFileCompat(kbName: String, newPath: String): String =
