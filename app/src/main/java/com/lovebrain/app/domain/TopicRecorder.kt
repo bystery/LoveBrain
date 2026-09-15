@@ -96,8 +96,14 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
                 append("我（最终回复：").append(schemeLabel).append("）：").append(scheme.reply).append("\n")
             }
             if (likedSchemes.isNotEmpty() && scheme == null) {
-                val likedTags = likedSchemes.joinToString(",") { it.tag }
-                append("（用户偏好：方案$likedTags，未确认发送）\n")
+                // F01: 点赞学习资料必须保存完整候选正文+风格标识，
+                // 不能只存 tag 标签——否则下一轮无法知道用户喜欢了什么表达。
+                append("（用户偏好，未确认发送：\n")
+                likedSchemes.forEach { s ->
+                    val label = if (s.tag.contains("+")) s.title else "方案${s.tag}-${s.title}"
+                    append("  $label：${s.reply}\n")
+                }
+                append("）\n")
             }
         }
 
