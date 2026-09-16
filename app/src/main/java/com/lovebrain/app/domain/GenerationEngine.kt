@@ -169,6 +169,8 @@ class GenerationEngine(
 
         // F09: 回报本轮注入的 MemoryRef 清单（供 UI 展示纠正入口）
         fun onReplyMemoryRefs(refs: List<com.lovebrain.app.model.MemoryRef>) {}
+        // B项修复：回报来源别名→实际消息ID映射（供 TopicRecorder 来源校验用）
+        fun onReplySourceAliasMap(aliasMap: Map<String, String>) {}
     }
 
     // ═══════════ 回复生成（主生成） ═══════════
@@ -210,6 +212,8 @@ class GenerationEngine(
             val user = buildResult.prompt
             // F09: 回报 MemoryRef 清单
             callbacks.onReplyMemoryRefs(buildResult.memoryRefs)
+            // B项修复：回报来源别名映射
+            callbacks.onReplySourceAliasMap(buildResult.sourceAliasMap)
             L.w("PERF t1 prompt built (+${System.currentTimeMillis() - t0}ms), user=${user.length} chars")
 
             // PROV-01：整轮生成开始时冻结 Provider 身份——所有 retry attempt 使用同一个 config

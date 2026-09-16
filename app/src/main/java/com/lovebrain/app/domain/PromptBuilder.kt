@@ -10,6 +10,7 @@ import com.lovebrain.app.model.MemoryCorrection
 import com.lovebrain.app.model.MemoryKind
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.util.TimeFmt
+import java.security.MessageDigest
 
 /**
  * Prompt 组装器 v4（ 缓存锚点前置重排）。
@@ -188,10 +189,13 @@ class PromptBuilder(
 
     // ═══════════ F09: 记忆引用与纠正过滤 ═══════════
 
-    /** F09: Prompt 构建结果 — 包含最终 prompt 文本和实际注入的 MemoryRef 清单 */
+    /** F09: Prompt 构建结果 — 包含最终 prompt 文本和实际注入的 MemoryRef 清单
+     * B项修复：sourceAliasMap 提供模型来源ID别名→实际消息ID的映射，
+     * 供 TopicRecorder 做来源校验时转换。 */
     data class PromptBuildResult(
         val prompt: String,
-        val memoryRefs: List<MemoryRef>
+        val memoryRefs: List<MemoryRef>,
+        val sourceAliasMap: Map<String, String> = emptyMap()
     )
 
     /**
@@ -211,44 +215,72 @@ class PromptBuilder(
     ): PromptBuildResult {
         if (kb == null) {
             val knowledgeBlock = "（暂无知识库，按通用策略处理）\n\n"
-            val (chatHeader, chatBody) = buildChatBlock(messages)
+            val (chatHeader, chatBody, sourceAliasMap) = buildChatBlockWithAliases(messages)
             val timestampBlock = buildTimestampPrompt()
             val intentBlock = buildIntentBlock(intentConfig)
             val ideaBlock = buildIdeaBlock(userHint)
-            val fullText = knowledgeBlock + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
-            return PromptBuildResult(fullText, emptyList())
+            // R09: 无库分支也过预算，不再绕过
+            val prompt = applyBudgetByBlocks(knowledgeBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
+            return PromptBuildResult(prompt, emptyList(), sourceAliasMap)
         }
 
         val refs = mutableListOf<MemoryRef>()
         val knowledgeBlock = buildKnowledgeInsertionWithRefs(kb, aggressive, corrections, refs)
         val intentBlock = buildIntentBlock(intentConfig)
         val ideaBlock = buildIdeaBlock(userHint)
-        val (chatHeader, chatBody) = buildChatBlock(messages)
+        val (chatHeader, chatBody, sourceAliasMap) = buildChatBlockWithAliases(messages)
         val timestampBlock = buildTimestampPrompt()
 
         val prompt = applyBudgetByBlocks(knowledgeBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
         // R06: refs 裁剪后再生 — 只保留实际在最终 prompt 中出现的引用
         val finalRefs = filterRefsByPrompt(refs, prompt)
-        return PromptBuildResult(prompt, finalRefs)
+        return PromptBuildResult(prompt, finalRefs, sourceAliasMap)
     }
 
-    /** R-DRY: 构建对话记录区块，返回 (header, body) */
+    /** R-DRY: 构建对话记录区块，返回 (header, body)
+     * B项修复：每行带来源别名前缀 [her-0]/[me-1]，模型可据此返回 source_ids。
+     * sourceAliasMap 映射别名→实际消息ID，供 TopicRecorder 校验。 */
     private fun buildChatBlock(messages: List<ChatMessage>): Pair<String, String> {
+        val (header, body, _) = buildChatBlockWithAliases(messages)
+        return header to body
+    }
+
+    /** B项修复：构建对话记录区块并附带来源别名映射 */
+    private fun buildChatBlockWithAliases(messages: List<ChatMessage>): Triple<String, String, Map<String, String>> {
         val chatHeader = "# 本次对话记录\n" +
-            "（按时间顺序。角色务必分清：\"她\"=对方，\"我\"=用户本人。谁做了什么，严格按对话归属判断，禁止张冠李戴把\"我\"的事安到\"她\"头上或反之。）\n\n"
+            "（按时间顺序。角色务必分清：\"她\"=对方，\"我\"=用户本人。谁做了什么，严格按对话归属判断，禁止张冠李戴把\"我\"的事安到\"她\"头上或反之。）\n" +
+            "每行开头的方括号标签为来源ID，模型在 scene_facts 的 source_ids 中使用这些标签。\n\n"
         val chatMessages = messages.filter { it.role != ChatMessage.Role.IDEA }
         val effectiveMessages = if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
             chatMessages.takeLast(AppConfig.REPLY_MAX_MESSAGES)
         } else {
             chatMessages
         }
+        // B项修复：为裁剪后保留的消息生成别名（her-N / me-N），按角色分别从0编号
+        val sourceAliasMap = mutableMapOf<String, String>()
+        val msgToAlias = mutableMapOf<String, String>() // msg.id → alias（反向映射）
+        var herIdx = 0
+        var meIdx = 0
+        for (msg in effectiveMessages) {
+            val alias = when (msg.role) {
+                ChatMessage.Role.HER -> "her-$herIdx".also { herIdx++ }
+                ChatMessage.Role.ME -> "me-$meIdx".also { meIdx++ }
+                else -> continue
+            }
+            sourceAliasMap[alias] = msg.id
+            msgToAlias[msg.id] = alias
+        }
         val chatBody = StringBuilder("<chat>\n")
         if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
             chatBody.append("（注：对话记录超过 ${AppConfig.REPLY_MAX_MESSAGES} 条，仅保留最近 ${AppConfig.REPLY_MAX_MESSAGES} 条）\n\n")
         }
-        effectiveMessages.forEach { msg -> chatBody.append("${msg.role.label}：${msg.content}\n") }
+        // B项修复：每行带来源别名前缀
+        for (msg in effectiveMessages) {
+            val alias = msgToAlias[msg.id] ?: continue
+            chatBody.append("[$alias] ${msg.role.label}：${msg.content}\n")
+        }
         chatBody.append("</chat>\n")
-        return chatHeader to chatBody.toString()
+        return Triple(chatHeader, chatBody.toString(), sourceAliasMap)
     }
 
     /** R-DRY: 持续意图区块 */
@@ -265,9 +297,21 @@ class PromptBuilder(
         } else ""
     }
 
-    /** R06: refs 裁剪后过滤 — 只保留实际出现在最终 prompt 中的引用 */
+    /** R06/R09: refs 裁剪后过滤 — 只保留实际出现在最终 prompt 中的引用。
+     * R09改进：不再仅靠子串猜测，而是检查 ref 的首行（标志性内容）
+     * 是否完整出现在 prompt 中且不在省略标记区域内。 */
     private fun filterRefsByPrompt(refs: List<MemoryRef>, prompt: String): List<MemoryRef> {
-        return refs.filter { ref -> prompt.contains(ref.text.take(100)) }
+        return refs.filter { ref ->
+            val marker = ref.text.lineSequence()
+                .firstOrNull { it.isNotBlank() }?.take(80) ?: return@filter false
+            val idx = prompt.indexOf(marker)
+            // 必须在 prompt 中找到，且上下文不是省略标记
+            if (idx < 0) return@filter false
+            val ctxStart = maxOf(0, idx - 30)
+            val ctxEnd = minOf(prompt.length, idx + marker.length + 30)
+            val ctx = prompt.substring(ctxStart, ctxEnd)
+            !ctx.contains("…（")
+        }
     }
 
     /**
@@ -390,12 +434,24 @@ class PromptBuilder(
         return sb.toString()
     }
 
-    /** R06: 生成 MemoryRef — id 为 kind+sourcePath（稳定，不随显示文本变化）
+    /** R06/C项修复: 生成 MemoryRef — id 为 kind+sourcePath+可选内容hash前缀
+     * C项修复：scene 和 ongoing 的事实/事项需要按条纠正，不能整文件共用一个ID。
+     * 画像和经验按文件编辑，保持文件级ID。
      * 旧实现用内容 hash 做 ID：画像添一句、经验多一块、事项有更新都会改变整段 ID，
      * 导致旧纠正失效。改为只基于 kind+sourcePath 的稳定 ID。
-     * unknown legacy 整段引用时才用 hash 区分。 */
+     * scene/ongoing 在 ID 后追加内容 hash 前8位，实现按条纠正。 */
     private fun makeRef(kbId: String, kind: MemoryKind, sourcePath: String, text: String): MemoryRef {
-        val stableId = "${kind.name}:${sourcePath}"
+        val stableId = when (kind) {
+            MemoryKind.SCENE, MemoryKind.ONGOING -> {
+                // C项修复：按条纠正——追加内容hash前8位
+                val hash = MessageDigest.getInstance("SHA-256")
+                    .digest(text.toByteArray(Charsets.UTF_8))
+                    .joinToString("") { "%02x".format(it) }
+                    .take(8)
+                "${kind.name}:${sourcePath}:${hash}"
+            }
+            else -> "${kind.name}:${sourcePath}"
+        }
         return MemoryRef(
             id = stableId,
             kbId = kbId,
@@ -405,14 +461,30 @@ class PromptBuilder(
         )
     }
 
-    /** R06: 检查 memoryId 是否被纠正。如果被纠正，按 action 类型处理。
-     * MUTED: 真正限制——不注入原始内容，只保留被动回应能力。 */
+    /** R06/C项修复: 检查 memoryId 是否被纠正。如果被纠正，按 action 类型处理。
+     * MUTED: 真正限制——不注入原始内容，只保留被动回应能力。
+     *
+     * C项修复：旧纠正迁移兼容。
+     * 新格式 ID 为 `KIND:path:hash`（scene/ongoing 按条纠正），
+     * 但旧纠正记录的 ID 为 `KIND:path`（文件级，无 hash）。
+     * 当新格式 ID 精确匹配失败时，回退到旧格式文件级 ID 查找。
+     * 这样旧纠正仍能对同文件的新条目生效（虽范围扩大到整文件，
+     * 但用户可撤销后重新按条纠正）。 */
     private fun isCorrected(
         memoryId: String,
         corrections: Map<String, MemoryCorrection>,
         sb: StringBuilder
     ): Boolean {
-        val correction = corrections[memoryId] ?: return false
+        // 1. 精确匹配新格式 ID
+        val correction = corrections[memoryId]
+            // 2. C项兼容：回退到旧格式文件级 ID（去掉 :hash 后缀）
+            ?: run {
+                val lastColon = memoryId.lastIndexOf(':')
+                if (lastColon > 0) {
+                    val oldFormatId = memoryId.substring(0, lastColon)
+                    corrections[oldFormatId]
+                } else null
+            } ?: return false
         return when (correction.action) {
             CorrectionAction.WRONG -> {
                 // 停止可信注入，如果有 replacementText 则注入补正内容

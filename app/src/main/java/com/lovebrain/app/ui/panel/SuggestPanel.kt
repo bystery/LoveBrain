@@ -726,8 +726,9 @@ private fun IntentEditorDialog(
                     .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
                     .clickable(interactionSource = saveInteraction, indication = null) {
                         if (!overLimit) {
+                            // R08修复：保存后由 ViewModel 在成功时关闭编辑器，
+                            // 失败时保留编辑状态供重试，不立即 onDismiss
                             onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled)
-                            onDismiss()
                         }
                     }
                     .padding(horizontal = Spacing.lg, vertical = Spacing.sm)

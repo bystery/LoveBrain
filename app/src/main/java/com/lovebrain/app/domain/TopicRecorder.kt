@@ -1,4 +1,4 @@
-package com.lovebrain.app.domain
+﻿package com.lovebrain.app.domain
 
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.KnowledgeRepository
@@ -57,10 +57,20 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         sceneFacts: List<SceneFact> = emptyList(),
         userHint: String = "",
         ongoing: List<OngoingItem> = emptyList(),
-        likedSchemes: List<Scheme> = emptyList()
+        likedSchemes: List<Scheme> = emptyList(),
+        sourceAliasMap: Map<String, String> = emptyMap() // B项修复：别名→实际消息ID映射
     ): Boolean {
         val time = com.lovebrain.app.util.TimeFmt.now()
         var topicRotated = false
+
+        // R02: 幂等保护——检查本轮消息是否已写入 recent.md（防中断重试导致重复记录）
+        // 仅跳过 recent.md 写入和 turn count，仍处理 sceneFacts/ongoing（可能有新事实）
+        val conversationalMsgs = messages.filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
+        val dedupKey = conversationalMsgs.joinToString("") { it.content.trim() }
+        val alreadyRecorded = if (dedupKey.isNotBlank()) {
+            val existingRecent = knowledgeRepo.readFile(kb.name, "moment/recent.md")
+            existingRecent.contains(dedupKey.take(200))
+        } else false
 
         // 1. 话题切换处理（仅凭 status=new 触发）
         val curTopic = knowledgeRepo.getCurrentTopic(kb.name)
@@ -121,17 +131,23 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         }
 
         // 3. 写入 moment/recent.md（职责拆出，见 writeRecent）
-        writeRecent(kb.name, entry)
+        // R02: 幂等——消息已记录时跳过 recent.md 重写和 turn count
+        if (!alreadyRecorded) {
+            writeRecent(kb.name, entry)
+        }
 
         // 4. F03: 更新场景链——传入 SceneFact 列表和冻结消息快照做来源校验
+        // B项修复：传入别名映射，将 her-0/me-1 转为实际消息 ID 后再校验
         if (sceneFacts.isNotEmpty()) {
-            updateSceneChain(kb.name, topicLabel, sceneFacts, messages)
+            updateSceneChain(kb.name, topicLabel, sceneFacts, messages, sourceAliasMap)
         }
 
         // 5. 合并进行中事项（plan.md，跨话题生存）
         mergeOngoing(kb.name, ongoing, time)
 
-        knowledgeRepo.incrementTurnCount(kb.name)
+        if (!alreadyRecorded) {
+            knowledgeRepo.incrementTurnCount(kb.name)
+        }
         return topicRotated
     }
 
@@ -213,7 +229,8 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         kbName: String,
         topicLabel: String,
         sceneFacts: List<SceneFact>,
-        frozenMessages: List<ChatMessage>
+        frozenMessages: List<ChatMessage>,
+        sourceAliasMap: Map<String, String> = emptyMap() // B项修复
     ) {
         val chainPath = "moment/scene.md"
         val historyPath = "memory/raw_scene.md"
@@ -224,6 +241,12 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         val validSourceMap: Map<String, ChatMessage.Role> = frozenMessages
             .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
             .associate { it.id to it.role }
+
+        // B项修复：将别名（her-0, me-1）转换为实际消息 ID 后再校验
+        fun resolveSourceId(rawId: String): String {
+            // 先查别名映射（her-0 → UUID），找不到则认为已经是实际 ID
+            return sourceAliasMap[rawId] ?: rawId
+        }
 
         // F03: 校验每条新事实的来源，过滤掉非法来源的事实
         val validatedFacts = mutableListOf<StoredFact>()
@@ -242,8 +265,9 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
                 continue
             }
 
-            // F03: 逐条校验 sourceId 必须属于冻结快照中的 HER/ME
-            val validIds = sf.sourceIds.filter { id -> id in validSourceMap }
+            // B项修复：先将别名转为实际消息 ID，再校验是否属于冻结快照中的 HER/ME
+            val resolvedIds = sf.sourceIds.map { resolveSourceId(it) }
+            val validIds = resolvedIds.filter { id -> id in validSourceMap }
             if (validIds.isEmpty()) {
                 // 所有来源都不合法 → 拒绝该事实（不影响合法事实）
                 com.lovebrain.app.util.L.w("SceneFact rejected (no valid source): $text")
@@ -277,10 +301,10 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             entry.facts.map { fact -> fact to entry }
         }
 
-        // F03: 对每条新事实做匹配决策
+        // F03/E项修复: 对每条新事实做匹配决策
         // - 如果 sourceIds 与已有事实完全相同且文本相同 → 幂等跳过
-        // - 如果 sourceIds 与已有事实完全相同但文本不同 → 同一事项新状态，替换（保留原 evidenceTime）
-        // - 如果 sourceIds 为空（未核实）→ 追加，不覆盖任何已有事实
+        // - 如果 sourceIds 与已有事实完全相同但文本不同 → 同一事项新状态，替换（E项修复：恢复替换）
+        // - 如果 sourceIds 为空（未核实）→ 追加，不覆盖已有事实，不刷新时间
         // - 如果 sourceIds 不同 → 新事实，追加
         // - "她"和"我"的事实即使文本相似也不合并
         val toAdd = mutableListOf<StoredFact>()
@@ -288,26 +312,30 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
         for (nf in validatedFacts) {
             if (nf.sourceIds.isEmpty()) {
-                // R05: 未核实来源 → 标记为 legacy，追加但不覆盖、不刷新时间
-                toAdd.add(nf)
+                // R05: 未核实来源 → 追加但不覆盖、不刷新时间
+                // E项修复：无来源不标记为当前时间，保持旧时间或0
+                toAdd.add(nf.copy(evidenceTime = 0L))
                 continue
             }
 
-            // R05: 来源仅作为证据，不作为事项 ID。
-            // 一条消息可以同时说明多个不同事实（如周一考试和周五聚餐），
-            // 它们不能靠同一个 source ID 合并。
-            // 替换只发生在文本完全相同（模型重述）时；文本不同则追加。
-            val exactMatch = allExistingFacts.firstOrNull { (ef, _) ->
-                ef.text == nf.text &&
-                ef.subject == nf.subject &&
-                ef.sourceIds.toSet() == nf.sourceIds.toSet()
+            // E项修复：同来源的旧事实 → 检查是否需要更新
+            // 同来源 + 不同文本 → 同一事项新状态，替换旧版本
+            val sameSourceMatch = allExistingFacts.firstOrNull { (ef, _) ->
+                ef.sourceIds.toSet() == nf.sourceIds.toSet() &&
+                ef.subject == nf.subject
             }
 
-            if (exactMatch != null) {
-                // R05: 幂等——完全相同文本+来源 → 不重复写入
-                com.lovebrain.app.util.L.w("SceneFact idempotent skip: $nf")
+            if (sameSourceMatch != null) {
+                val (ef, _) = sameSourceMatch
+                if (ef.text == nf.text) {
+                    // 幂等——完全相同文本+来源 → 不重复写入
+                    com.lovebrain.app.util.L.w("SceneFact idempotent skip: $nf")
+                } else {
+                    // E项修复：同来源新文本 → 替换旧版本（同事项新状态）
+                    toReplace[ef] = nf.copy(evidenceTime = ef.evidenceTime)
+                }
             } else {
-                // R05: 无法确定是否同一事项 → 保守追加，不覆盖
+                // 新事实，追加
                 toAdd.add(nf)
             }
         }

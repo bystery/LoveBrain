@@ -27,6 +27,7 @@ import com.lovebrain.app.util.L
 import com.lovebrain.app.util.TimeFmt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -72,6 +73,9 @@ class LoveBrainViewModel(
     private val _isGenerating = MutableStateFlow(false)
     val isGenerating: StateFlow<Boolean> = _isGenerating.asStateFlow()
 
+    // D项修复：准备期状态——从 guard 通过到 Engine 启动之间
+    private val _isPreparing = MutableStateFlow(false)
+
     private val _isGeneratingCore = MutableStateFlow(false)
     val isGeneratingCore: StateFlow<Boolean> = _isGeneratingCore.asStateFlow()
 
@@ -97,7 +101,8 @@ class LoveBrainViewModel(
         val intentEnabled: Boolean,        // F07: 冻结的持续意图启用状态
         val intentRevision: Int,           // F07: 冻结的持续意图 revision（识别旧请求）
         val memoryRefs: List<com.lovebrain.app.model.MemoryRef> = emptyList(), // F09: 冻结的 MemoryRef 清单
-        val correctionsRevision: Int = 0   // F09: 冻结的纠正 revision（防迟到覆盖）
+        val correctionsRevision: Int = 0,  // F09: 冻结的纠正 revision（防迟到覆盖）
+        val sourceAliasMap: Map<String, String> = emptyMap() // B项修复：别名→实际消息ID映射
     )
     private var replyGenerationContext: ReplyGenerationContext? = null
 
@@ -272,8 +277,9 @@ class LoveBrainViewModel(
     private val _resultMode = MutableStateFlow(ResultMode.REPLY)
     val resultMode: StateFlow<ResultMode> = _resultMode.asStateFlow()
 
-    /** P1-2：前台任务互斥——同时只运行一个回复/润色请求 */
-    val isForegroundBusy: Boolean get() = _isGenerating.value || _isProactive.value
+    /** P1-2：前台任务互斥——同时只运行一个回复/润色请求
+     *  D项修复：准备期也参与互斥 */
+    val isForegroundBusy: Boolean get() = _isGenerating.value || _isProactive.value || _isPreparing.value
 
     // ═══════════ 谈心模式 ═══════════
     private val _counselingResult = MutableStateFlow<String?>(null)
@@ -456,14 +462,31 @@ class LoveBrainViewModel(
     fun generate() {
         // GEN-01 双层保护第一层：ViewModel guard
         // P1-2：前台任务互斥——正在主动发时也拒绝
-        if (_isGenerating.value || _isProactive.value) return
+        // D项修复：准备期也参与互斥——_isPreparing 防止准备期回复/主动发并发
+        if (_isGenerating.value || _isProactive.value || _isPreparing.value) return
 
         // P1-2：设置结果模式
         _resultMode.value = ResultMode.REPLY
 
+        // D项修复：立即占用准备期所有权，防止准备期并发
+        _isPreparing.value = true
+
         // GEN-02：冻结快照 — 所有本轮上下文同源
-        val snapshot = _messages.value.map { it.copy() }
-        // F08: IDEA hint 疉入未提交草稿
+        // F08修复：应用编辑草稿的角色变更到统一快照，防双身份
+        // 用户编辑消息改角色（如HER→IDEA）但没点保存就生成时，
+        // 需要将草稿的角色和内容应用到快照中对应位置的消息
+        var snapshot = _messages.value.map { it.copy() }
+        val editingDraft = _draftText.value.trim()
+        val editingIdx = _editingIndex.value
+        if (editingDraft.isNotBlank() && editingIdx >= 0 && editingIdx < snapshot.size) {
+            // 应用编辑草稿到快照
+            val editingRole = if (_ideaComposeMode.value) ChatMessage.Role.IDEA else _currentRole.value
+            snapshot[editingIdx] = snapshot[editingIdx].copy(
+                role = editingRole,
+                content = editingDraft
+            )
+        }
+        // F08: IDEA hint 叠入未提交草稿（基于已修正的快照收集）
         val userHint = collectIdeaHintWithDraft(snapshot)
         // GEN-02B：冻结 KB 快照 — AI prompt 和 nextRound 保存使用同一对象
         val kbSnapshot = _activeKb.value
@@ -471,17 +494,25 @@ class LoveBrainViewModel(
 
         // R08: 异步冻结持续意图和纠正快照，不阻塞主线程
         // 旧代码用 runBlocking 读盘，遇锁等待会卡 UI
-        viewModelScope.launch {
+        // D项修复：准备期纳入请求生命周期——prepJob 可被 stopGeneration 取消
+        val prepJob = viewModelScope.launch {
+            // D项修复：检查是否已被取消（快速重复点击时旧请求可能已被新请求取代）
+            ensureActive()
+
             val intentSnapshot = kbName?.let { name ->
                 runCatching { withContext(Dispatchers.IO) { knowledgeRepo.readIntent(name) } }.getOrNull()
             } ?: com.lovebrain.app.model.IntentConfig()
 
-            val correctionsSnapshot = kbName?.let { name ->
-                runCatching { withContext(Dispatchers.IO) { knowledgeRepo.readCorrections(name) } }.getOrNull()
-            } ?: emptyMap()
-            val correctionsRevision = kbName?.let { name ->
-                runCatching { withContext(Dispatchers.IO) { knowledgeRepo.getCorrectionsRevision(name) } }.getOrNull()
-            } ?: 0
+            // R07: 原子读取纠正记录和 revision——消除读取纠正和读取 revision 之间的竞态窗口
+            val (correctionsSnapshot, correctionsRevision) = kbName?.let { name ->
+                runCatching { withContext(Dispatchers.IO) { knowledgeRepo.readCorrectionsAndRevision(name) } }.getOrNull()
+            } ?: (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
+
+            // D项修复：再次检查是否已被取消
+            ensureActive()
+
+            // D项修复：准备完成，释放 _isPreparing，Engine 的 isGenerating 检查将通过
+            _isPreparing.value = false
 
             // GEN-01 双层保护第二层：Engine 返回 null = reject，不覆盖旧 Job
             val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this@LoveBrainViewModel, intentSnapshot, correctionsSnapshot)
@@ -505,6 +536,15 @@ class LoveBrainViewModel(
                     }
                 }
             }
+            // D项修复：如果 Engine reject 或抛异常，_isPreparing 已在上方释放
+        }
+        // D项修复：将 prepJob 赋给 generateJob，使 stopGeneration 能取消准备期
+        generateJob = prepJob
+        prepJob.invokeOnCompletion {
+            if (generateJob === prepJob) {
+                // prepJob 完成但 Engine 未接管 → 清理准备态
+                _isPreparing.value = false
+            }
         }
     }
 
@@ -512,7 +552,9 @@ class LoveBrainViewModel(
      * GEN-01/GEN-02：停止生成 — 取消真正运行的 Job，清 context，但不清消息。
      */
     fun stopGeneration() {
-        if (!_isGenerating.value) return
+        // D项修复：停止时也清理准备期状态和 prepJob
+        _isPreparing.value = false
+        if (!_isGenerating.value && generateJob == null) return
         L.w("user stopped generation")
         generateJob?.cancel()
         generateJob = null
@@ -601,7 +643,8 @@ class LoveBrainViewModel(
                     val topicRotated = topicRecorder.record(
                         kb, messagesSnapshot, selectedScheme, analysis.topic_status, analysis.topic_label,
                         analysis.scene_facts, "", analysis.ongoing,
-                        likedSchemes = likedForRecording
+                        likedSchemes = likedForRecording,
+                        sourceAliasMap = context.sourceAliasMap
                     )
                     if (topicRotated) {
                         triggerCoordinator.checkTriggers(kb.name, viewModelScope, this@LoveBrainViewModel)
@@ -929,7 +972,8 @@ class LoveBrainViewModel(
     /** GEN-01：同步 guard — 正在主动发时拒绝启动。Engine reject → null → 旧 Job 保持。 */
     /** P1-2：前台任务互斥——正在生成回复时也拒绝 */
     fun generateProactive(draft: String = "", scene: String = "") {
-        if (_isProactive.value || _isGenerating.value) return
+        // D项修复：准备期也参与互斥
+        if (_isProactive.value || _isGenerating.value || _isPreparing.value) return
 
         // P1-2：设置结果模式
         _resultMode.value = ResultMode.PROACTIVE
@@ -1017,6 +1061,14 @@ class LoveBrainViewModel(
         val ctx = replyGenerationContext
         if (ctx != null) {
             replyGenerationContext = ctx.copy(memoryRefs = refs)
+        }
+    }
+
+    // B项修复：回报来源别名映射 — 冻结到 ReplyGenerationContext
+    override fun onReplySourceAliasMap(aliasMap: Map<String, String>) {
+        val ctx = replyGenerationContext
+        if (ctx != null) {
+            replyGenerationContext = ctx.copy(sourceAliasMap = aliasMap)
         }
     }
 
@@ -1127,30 +1179,24 @@ class LoveBrainViewModel(
     override fun getUserHint(): String = collectIdeaHint()
 
     // F08: 收集 IDEA hint，包含未提交草稿。
-    // - 当前角色是 IDEA 且草稿非空时，草稿加入本轮 hint
-    // - 正在编辑已有 IDEA 时，用草稿替换对应内容（旧新不重复）
+    // F08修复：generate() 已将编辑草稿应用到快照，此函数只需从快照收集 IDEA 消息。
+    // 但当 ideaComposeMode 为 true 且不是编辑已有消息时（新建 IDEA 草稿未提交），
+    // 仍需将草稿作为新 IDEA 加入。
     // - HER/ME 未提交草稿不自动成为真实消息
     private fun collectIdeaHintWithDraft(messages: List<ChatMessage>): String {
         val addedIdeas = messages.filter { it.role == ChatMessage.Role.IDEA }
             .joinToString("\n") { it.content }
             .trim()
 
-        // F08: 如果当前是 IDEA 模式且有未提交草稿，且正在编辑已有 IDEA，
-        // 用草稿替换对应位置的旧 IDEA（避免旧新重复）
-        val draft = _draftText.value.trim()
-        if (draft.isBlank()) return addedIdeas
-
+        // F08修复：如果编辑草稿已应用到快照（editingIdx >= 0），不需要再额外收集
         val editingIdx = _editingIndex.value
-        if (_ideaComposeMode.value && editingIdx >= 0 && editingIdx < messages.size) {
-            // 正在编辑已有 IDEA：用草稿替换编辑位置的内容
-            val ideaMessages = messages.filterIndexed { i, msg ->
-                msg.role == ChatMessage.Role.IDEA && i != editingIdx
-            }
-            val replaced = ideaMessages.joinToString("\n") { it.content }.trim()
-            return if (replaced.isBlank()) draft else "$replaced\n$draft"
+        if (editingIdx >= 0 && editingIdx < messages.size) {
+            return addedIdeas
         }
 
-        // F08: 当前角色是 IDEA 且草稿非空但不是编辑已有 IDEA → 草稿是新的 IDEA
+        // F08: 当前角色是 IDEA 且草稿非空且不是编辑已有消息 → 草稿是新的 IDEA
+        val draft = _draftText.value.trim()
+        if (draft.isBlank()) return addedIdeas
         if (_ideaComposeMode.value) {
             return if (addedIdeas.isBlank()) draft else "$addedIdeas\n$draft"
         }

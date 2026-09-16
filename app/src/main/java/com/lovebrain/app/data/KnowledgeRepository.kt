@@ -1,4 +1,4 @@
-package com.lovebrain.app.data
+﻿package com.lovebrain.app.data
 
 import android.content.Context
 import com.lovebrain.app.model.IntentConfig
@@ -561,6 +561,14 @@ class KnowledgeRepository(
      * R07: 读取库级持久化 revision（单调递增），不依赖剩余记录 max。 */
     suspend fun getCorrectionsRevision(kbName: String): Int = withContext(Dispatchers.IO) {
         readMemoryRevisionUnlocked(kbName)
+    }
+
+    /** R07: 原子读取纠正记录和 revision——用于生成准备阶段一次性快照。
+     * 消除读取纠正和读取 revision 之间的竞态窗口。 */
+    suspend fun readCorrectionsAndRevision(kbName: String): Pair<Map<String, com.lovebrain.app.model.MemoryCorrection>, Int> = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            readCorrectionsUnlocked(kbName) to readMemoryRevisionUnlocked(kbName)
+        }
     }
 
     /** R07: 库级 memory revision 标记文件 */
@@ -1161,7 +1169,7 @@ class KnowledgeRepository(
     private fun mergeSceneEntriesWithLegacy(vararg sources: String): String {
         val allLines = sources.flatMap { it.lines() }.map { it.trimEnd() }.filter { it.isNotBlank() }
         val validEntries = allLines.filter { validEntryLine.containsMatchIn(it) }
-        val legacyEntries = allLines.filter { !validEntryLine.containsMatchIn(it) && it.startsWith("- ") }
+        val legacyEntries = allLines.filter { !validEntryLine.containsMatchIn(it) }
         if (validEntries.isEmpty() && legacyEntries.isEmpty()) return ""
         val sorted = validEntries.sortedByDescending { parseEntryTs(it) }
         val sb = StringBuilder()
@@ -1261,13 +1269,28 @@ class KnowledgeRepository(
         }
     }
 
-    /** R11: 迁移的无锁核心——调用方必须已持有文件互斥锁 */
+    /** R11: 迁移的无锁核心——调用方必须已持有文件互斥锁
+     *
+     * A项修复：旧库重复迁移覆盖新内容。
+     * 旧实现只判断 global 目录是否存在，每次迁移都用 overwrite=true 覆盖新路径，
+     * 导致用户修改画像/积累新聊天后再次生成时旧数据覆盖新内容。
+     *
+     * 修复：持久迁移完成标记 (.migrated_v2) 必须参与判断。
+     * - 标记存在 → 迁移已完成，只做 v3 文件补齐和阶段迁移，不覆盖任何目标文件
+     * - 标记不存在 + global 存在 → 执行迁移，完成后写标记
+     * - 标记不存在 + global 不存在 → 全新库，只做 v3 文件补齐
+     * - 中断恢复：区分已迁移目标、空占位目标和用户新编辑目标
+     *   - 目标已有非空内容 → 跳过（用户已编辑）
+     *   - 目标为空或不存在 → 从旧源复制
+     * - topic.md 和 topic_log.md 只在迁移完成时初始化，不重复清空
+     */
     private suspend fun migrateIfNeededUnlocked(kbName: String) {
         val dir = File(knowledgeRoot, kbName)
         val oldGlobal = File(dir, "global")
         val newUnderstand = File(dir, "understand")
+        val migrationMarker = File(dir, ".migrated_v2")
 
-        // 确保 v3 文件存在（v2→v3 过渡）
+        // 确保 v3 文件存在（v2→v3 过渡）——只补缺失，不覆盖已有
         if (dir.exists()) {
             File(dir, "moment").mkdirs()
             File(dir, "memory").mkdirs()
@@ -1294,7 +1317,10 @@ class KnowledgeRepository(
             // 兼容：旧知识库把"她"的画像存为 understand/you.md，统一改名为 her.md
             val oldYou = File(dir, "understand/you.md")
             val newHer = File(dir, "understand/her.md")
-            if (oldYou.exists() && !newHer.exists()) oldYou.renameTo(newHer)
+            // A项修复：you.md 存在但 her.md 已有非空内容时不覆盖
+            if (oldYou.exists() && (!newHer.exists() || newHer.readText().isBlank())) {
+                oldYou.renameTo(newHer)
+            }
 
             // ═══  修复：旧阶段枚举（无"期"六选一）→ 新八阶段（带"期"）迁移 ═══
             val oldStage = getCurrentStage(kbName)
@@ -1305,40 +1331,70 @@ class KnowledgeRepository(
             }
         }
 
-        // R11: 不再以 understand 已存在为提前返回——空文件可能由 ensureKbFilesComplete 创建，
-        // 遮住了旧 global/ 格式迁移。改为检查旧 global 目录是否存在来决定是否迁移。
+        // A项修复：迁移标记存在 → 迁移已完成，不重复覆盖
+        if (migrationMarker.exists()) return
+
+        // 全新库（无 global 目录且无迁移标记）→ 只做 v3 文件补齐
         if (!oldGlobal.exists()) return
 
+        // 旧库迁移：首次执行（global 存在但标记不存在）
         File(dir, "understand").mkdirs()
         File(dir, "moment").mkdirs()
         File(dir, "memory").mkdirs()
 
+        // A项修复：只在目标为空或不存在时复制旧数据，不覆盖用户已有编辑
         val me = File(dir, "global/me.md")
+        val meTarget = File(dir, "understand/me.md")
+        if (me.exists() && (!meTarget.exists() || meTarget.readText().isBlank())) {
+            me.copyTo(meTarget, overwrite = true)
+        }
         val her = File(dir, "global/her.md")
+        val herTarget = File(dir, "understand/her.md")
+        // her.md 特殊：you.md 可能已改名为 her.md，检查内容是否非空
+        if (her.exists() && (!herTarget.exists() || herTarget.readText().isBlank())) {
+            her.copyTo(herTarget, overwrite = true)
+        }
         val status = File(dir, "global/status.md")
-        if (me.exists()) me.copyTo(File(dir, "understand/me.md"), overwrite = true)
-        if (her.exists()) her.copyTo(File(dir, "understand/her.md"), overwrite = true)
-        if (status.exists()) status.copyTo(File(dir, "understand/warmth.md"), overwrite = true)
+        val warmthTarget = File(dir, "understand/warmth.md")
+        if (status.exists() && (!warmthTarget.exists() || warmthTarget.readText().isBlank())) {
+            status.copyTo(warmthTarget, overwrite = true)
+        }
 
         val chatlog = File(dir, "recent/chatlog.md")
-        if (chatlog.exists()) chatlog.copyTo(File(dir, "moment/recent.md"), overwrite = true)
+        val recentTarget = File(dir, "moment/recent.md")
+        if (chatlog.exists() && (!recentTarget.exists() || recentTarget.readText().isBlank())) {
+            chatlog.copyTo(recentTarget, overwrite = true)
+        }
 
         val lessons = File(dir, "general/lessons.md")
-        if (lessons.exists()) lessons.copyTo(File(dir, "memory/lessons.md"), overwrite = true)
+        val lessonsTarget = File(dir, "memory/lessons.md")
+        if (lessons.exists() && (!lessonsTarget.exists() || lessonsTarget.readText().isBlank())) {
+            lessons.copyTo(lessonsTarget, overwrite = true)
+        }
         val moments = File(dir, "general/moments.md")
         val details = File(dir, "general/details.md")
+        val archiveFile = File(dir, "memory/archive.md")
         val archiveContent = buildString {
             if (moments.exists()) append(moments.readText()).append("\n\n")
             if (details.exists()) append(details.readText())
         }
-        if (archiveContent.isNotBlank()) {
-            atomicWriteText(File(dir, "memory/archive.md"), archiveContent)
+        if (archiveContent.isNotBlank() && (!archiveFile.exists() || archiveFile.readText().isBlank())) {
+            atomicWriteText(archiveFile, archiveContent)
         }
 
-        val initTime = com.lovebrain.app.util.TimeFmt.now()
-        atomicWriteText(File(dir, "moment/topic.md"), "- [$initTime] 正在聊：（等待第一次对话）")
-        atomicWriteText(File(dir, "memory/topic_log.md"), "")
-        atomicWriteText(File(dir, ".migrated_v2"), isoNow())
+        // A项修复：topic.md 和 topic_log.md 只在迁移完成时初始化一次
+        val topicFile = File(dir, "moment/topic.md")
+        if (!topicFile.exists() || topicFile.readText().isBlank()) {
+            val initTime = com.lovebrain.app.util.TimeFmt.now()
+            atomicWriteText(topicFile, "- [$initTime] 正在聊：（等待第一次对话）")
+        }
+        val topicLogFile = File(dir, "memory/topic_log.md")
+        if (!topicLogFile.exists()) {
+            atomicWriteText(topicLogFile, "")
+        }
+
+        // A项修复：迁移完成后写标记，后续不再重复迁移
+        atomicWriteText(migrationMarker, isoNow())
     }
 
     private fun readAsset(path: String): String {
