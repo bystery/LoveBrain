@@ -11,6 +11,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.AlertDialog
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -67,6 +69,9 @@ fun SuggestPanel(
     val currentVector by viewModel.currentVector.collectAsStateWithLifecycle()
     val streamingTips by viewModel.streamingTips.collectAsStateWithLifecycle()
     val suggestError by viewModel.suggestError.collectAsStateWithLifecycle()
+    val intentConfig by viewModel.intentConfig.collectAsStateWithLifecycle()
+    val showIntentEditor by viewModel.showIntentEditor.collectAsStateWithLifecycle()
+    val activeKb by viewModel.activeKb.collectAsStateWithLifecycle()
 
     // 需求#23：锦囊加载文案改为「军师正在 xxx」轮换（AI 应用加载话术风格，参考"深度睡眠舱"AI 生成加载）
     val suggestPhrases = remember {
@@ -85,19 +90,30 @@ fun SuggestPanel(
             .padding(Spacing.lg),
         verticalArrangement = Arrangement.spacedBy(Spacing.md)
     ) {
-        // 标题栏：只有标题 + 重新生成（无刷新、无 ×）
+        // 标题栏：标题 + 持续意图 chip + 重新生成（三者共占一行）
         item {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    "今日锦囊",
-                    style = AppTypography.titleMedium,
-                    color = TextPrimary,
-                    fontWeight = FontWeight.Bold
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        "今日锦囊",
+                        style = AppTypography.titleMedium,
+                        color = TextPrimary,
+                        fontWeight = FontWeight.Bold
+                    )
+                    // F07: 持续意图 chip — 紧凑入口，复用标题行空档
+                    if (activeKb != null) {
+                        Spacer(Modifier.width(Spacing.sm))
+                        IntentChip(
+                            enabled = intentConfig.enabled,
+                            text = intentConfig.text,
+                            onClick = { viewModel.openIntentEditor() }
+                        )
+                    }
+                }
                 // #13 修复：重新生成按钮放大——从 labelMedium 文字 chip 升级为 labelLarge 按钮
                 // 结果态升级为 Primary 实心底（与空态 CTA 同级，换一批是结果态唯一主动作）
                 // 生成中点击 = 强行停止（替代原"禁用无反馈"）
@@ -122,6 +138,18 @@ fun SuggestPanel(
                             else viewModel.generateSuggest()
                         })
                         .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+                )
+            }
+        }
+
+        // F07: 持续意图编辑弹窗（锦囊面板内编辑，不占回复主页）
+        if (showIntentEditor) {
+            item {
+                IntentEditorDialog(
+                    text = intentConfig.text,
+                    enabled = intentConfig.enabled,
+                    onSave = { text, enabled -> viewModel.saveIntent(text, enabled) },
+                    onDismiss = { viewModel.dismissIntentEditor() }
                 )
             }
         }
@@ -537,4 +565,185 @@ private fun InviteSuggestionCard(signal: String, suggestion: String) {
         Spacer(Modifier.height(Spacing.sm))
         Text(suggestion, style = AppTypography.bodySmall, color = TextPrimary)
     }
+}
+
+// ═══════════ F07: 持续意图 UI 组件（锦囊面板内紧凑入口） ═══════════
+
+/** F07: 持续意图 chip — 紧凑入口，复用标题行空档。
+ *  enabled=true 时高亮显示，点击打开编辑弹窗。 */
+@Composable
+private fun IntentChip(
+    enabled: Boolean,
+    text: String,
+    onClick: () -> Unit
+) {
+    val (interaction, scale) = rememberPressScale(0.92f, "intentChipScale")
+    val label = if (enabled) {
+        if (text.isNotBlank()) "意图·${text.take(8)}${if (text.length > 8) "…" else ""}"
+        else "意图·未设"
+    } else {
+        "意图·关"
+    }
+    Box(
+        modifier = Modifier
+            .height(22.dp)
+            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .clip(LoveBrainShape.full)
+            .background(if (enabled) PrimaryLight else SurfaceInset, LoveBrainShape.full)
+            .border(
+                AppDimens.BORDER_WIDTH_DP.dp,
+                if (enabled) PrimarySubtle else Border,
+                LoveBrainShape.full
+            )
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+            .padding(horizontal = Spacing.sm),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = label,
+            style = AppTypography.labelSmall,
+            color = if (enabled) PrimaryDark else TextHint,
+            maxLines = 1
+        )
+    }
+}
+
+/** F07: 持续意图编辑弹窗 — 输入意图文本 + 开关 + 保存/取消。
+ *  长度限制可见校验（超过 200 字提示截断），不静默截断。 */
+private const val INTENT_MAX_LENGTH = 200
+
+@Composable
+private fun IntentEditorDialog(
+    text: String,
+    enabled: Boolean,
+    onSave: (String, Boolean) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var editText by remember { mutableStateOf(text) }
+    var editEnabled by remember { mutableStateOf(enabled) }
+    val overLimit = editText.length > INTENT_MAX_LENGTH
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = SurfaceBase,
+        title = {
+            Text("持续意图", style = AppTypography.titleMedium, color = TextPrimary, fontWeight = FontWeight.Bold)
+        },
+        text = {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    "设置一个持续的对话目标（如\"约她周末看电影\"），军师每轮生成时都会参考。",
+                    style = AppTypography.labelMedium,
+                    color = TextSecondary
+                )
+                Spacer(Modifier.height(Spacing.md))
+                // 开关行
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("启用", style = AppTypography.labelLarge, color = TextPrimary)
+                    val (toggleInteraction, toggleScale) = rememberPressScale(0.92f, "intentToggleScale")
+                    Box(
+                        modifier = Modifier
+                            .width(44.dp)
+                            .height(24.dp)
+                            .graphicsLayer { scaleX = toggleScale; scaleY = toggleScale }
+                            .clip(LoveBrainShape.full)
+                            .background(if (editEnabled) Primary else SurfaceInset, LoveBrainShape.full)
+                            .border(AppDimens.BORDER_WIDTH_DP.dp, if (editEnabled) Primary else Border, LoveBrainShape.full)
+                            .clickable(interactionSource = toggleInteraction, indication = null) { editEnabled = !editEnabled },
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        Box(
+                            Modifier
+                                .offset(x = if (editEnabled) 20.dp else 2.dp)
+                                .size(20.dp)
+                                .clip(LoveBrainShape.full)
+                                .background(Color.White)
+                        )
+                    }
+                }
+                Spacer(Modifier.height(Spacing.md))
+                // 文本输入框
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 72.dp)
+                        .background(SurfaceCard, LoveBrainShape.md)
+                        .border(
+                            AppDimens.BORDER_WIDTH_DP.dp,
+                            if (overLimit) Error else PrimarySubtle,
+                            LoveBrainShape.md
+                        )
+                        .padding(Spacing.md)
+                ) {
+                    if (editText.isEmpty()) {
+                        Text(
+                            "输入你的持续意图…",
+                            color = TextHint,
+                            style = AppTypography.bodyMedium
+                        )
+                    }
+                    BasicTextField(
+                        value = editText,
+                        onValueChange = { editText = it },
+                        textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
+                        cursorBrush = androidx.compose.ui.graphics.SolidColor(Primary),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                // 字数 + 超限提示
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = Spacing.xs),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(
+                        text = "${editText.length}/$INTENT_MAX_LENGTH",
+                        style = AppTypography.labelSmall,
+                        color = if (overLimit) Error else TextHint
+                    )
+                }
+                if (overLimit) {
+                    Text(
+                        "意图过长，请精简到 $INTENT_MAX_LENGTH 字以内",
+                        style = AppTypography.labelSmall,
+                        color = Error,
+                        modifier = Modifier.padding(top = Spacing.xs)
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            val (saveInteraction, saveScale) = rememberPressScale(0.96f, "intentSaveScale")
+            Text(
+                "保存",
+                style = AppTypography.labelLarge,
+                color = if (overLimit) TextHint else Primary,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier
+                    .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
+                    .clickable(interactionSource = saveInteraction, indication = null) {
+                        if (!overLimit) {
+                            onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled)
+                            onDismiss()
+                        }
+                    }
+                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+            )
+        },
+        dismissButton = {
+            val (cancelInteraction, cancelScale) = rememberPressScale(0.96f, "intentCancelScale")
+            Text(
+                "取消",
+                style = AppTypography.labelLarge,
+                color = TextSecondary,
+                modifier = Modifier
+                    .graphicsLayer { scaleX = cancelScale; scaleY = cancelScale }
+                    .clickable(interactionSource = cancelInteraction, indication = null, onClick = onDismiss)
+                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+            )
+        }
+    )
 }

@@ -1,6 +1,7 @@
 package com.lovebrain.app.data
 
 import android.content.Context
+import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -440,6 +441,129 @@ class KnowledgeRepository(
             scheduleDebouncedBackup()
             kb
         }
+    }
+
+    // ═══════════ F07: 持续意图（每 KB 一份，moment/intent.json） ═══════════
+
+    /** F07: 读取持续意图配置 */
+    suspend fun readIntent(kbName: String): IntentConfig = withContext(Dispatchers.IO) {
+        val file = File(File(knowledgeRoot, kbName), "moment/intent.json")
+        if (!file.exists()) return@withContext IntentConfig()
+        runCatching {
+            json.decodeFromString<IntentConfig>(file.readText())
+        }.getOrDefault(IntentConfig())
+    }
+
+    /** F07: 保存持续意图配置。每次保存 revision+1，用于生成时冻结快照识别旧请求。 */
+    suspend fun saveIntent(kbName: String, text: String, enabled: Boolean): IntentConfig = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            val current = readIntentUnlocked(kbName)
+            val updated = IntentConfig(
+                text = text,
+                enabled = enabled,
+                revision = current.revision + 1
+            )
+            val dir = File(knowledgeRoot, kbName)
+            File(dir, "moment").mkdirs()
+            atomicWriteText(File(dir, "moment/intent.json"), json.encodeToString(IntentConfig.serializer(), updated))
+            updated
+        }
+    }
+
+    /** 无锁版读取（调用方持有 fileMutex） */
+    private fun readIntentUnlocked(kbName: String): IntentConfig {
+        val file = File(File(knowledgeRoot, kbName), "moment/intent.json")
+        if (!file.exists()) return IntentConfig()
+        return runCatching {
+            json.decodeFromString<IntentConfig>(file.readText())
+        }.getOrDefault(IntentConfig())
+    }
+
+    // ═══════════ F09: 记忆纠正（每 KB 一份，memory/corrections.json） ═══════════
+
+    /** F09: 读取纠正记录列表。返回 memoryId → correction 映射。 */
+    suspend fun readCorrections(kbName: String): Map<String, com.lovebrain.app.model.MemoryCorrection> = withContext(Dispatchers.IO) {
+        val file = File(File(knowledgeRoot, kbName), "memory/corrections.json")
+        if (!file.exists()) return@withContext emptyMap()
+        runCatching {
+            val list = json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(file.readText())
+            list.associateBy { it.memoryId }
+        }.getOrDefault(emptyMap())
+    }
+
+    /** F09: 保存一条纠正记录。revision 自增，后台旧任务不能覆盖新 revision。
+     * 如果 memoryId 已存在且现有 revision >= 新 revision，拒绝写入（迟到保护）。 */
+    suspend fun saveCorrection(
+        kbName: String,
+        memoryId: String,
+        action: com.lovebrain.app.model.CorrectionAction,
+        replacementText: String = "",
+        targetKbId: String = ""
+    ): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) return@withLock false
+            val current = readCorrectionsUnlocked(kbName)
+            val existing = current[memoryId]
+            val newRevision = (current.values.maxOfOrNull { it.revision } ?: 0) + 1
+            val correction = com.lovebrain.app.model.MemoryCorrection(
+                memoryId = memoryId,
+                action = action,
+                replacementText = replacementText,
+                targetKbId = targetKbId,
+                revision = newRevision,
+                updatedAt = isoNow()
+            )
+            val updated = current.toMutableMap()
+            updated[memoryId] = correction
+            val dir = File(knowledgeRoot, kbName)
+            File(dir, "memory").mkdirs()
+            atomicWriteText(
+                File(dir, "memory/corrections.json"),
+                json.encodeToString(
+                    kotlinx.serialization.builtins.ListSerializer(com.lovebrain.app.model.MemoryCorrection.serializer()),
+                    updated.values.toList()
+                )
+            )
+            scheduleDebouncedBackup()
+            true
+        }
+    }
+
+    /** F09: 撤销纠正 — 删除指定 memoryId 的纠正记录。 */
+    suspend fun undoCorrection(kbName: String, memoryId: String): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) return@withLock false
+            val current = readCorrectionsUnlocked(kbName)
+            if (!current.containsKey(memoryId)) return@withLock false
+            val updated = current.toMutableMap()
+            updated.remove(memoryId)
+            val dir = File(knowledgeRoot, kbName)
+            atomicWriteText(
+                File(dir, "memory/corrections.json"),
+                json.encodeToString(
+                    kotlinx.serialization.builtins.ListSerializer(com.lovebrain.app.model.MemoryCorrection.serializer()),
+                    updated.values.toList()
+                )
+            )
+            scheduleDebouncedBackup()
+            true
+        }
+    }
+
+    /** F09: 获取纠正记录的全局 revision（用于后台防护）。
+     * 后台任务启动时冻结 revision，完成后比对当前 revision — 如果不匹配，说明用户在期间做了新纠正，丢弃后台结果。 */
+    suspend fun getCorrectionsRevision(kbName: String): Int = withContext(Dispatchers.IO) {
+        readCorrectionsUnlocked(kbName).values.maxOfOrNull { it.revision } ?: 0
+    }
+
+    /** 无锁版读取（调用方持有 fileMutex） */
+    private fun readCorrectionsUnlocked(kbName: String): Map<String, com.lovebrain.app.model.MemoryCorrection> {
+        val file = File(File(knowledgeRoot, kbName), "memory/corrections.json")
+        if (!file.exists()) return emptyMap()
+        return runCatching {
+            val list = json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(file.readText())
+            list.associateBy { it.memoryId }
+        }.getOrDefault(emptyMap())
     }
 
     /** 删除知识库（/：物理删除——UI 已有确认步骤，不再进 .trash 永久残留隐私数据）

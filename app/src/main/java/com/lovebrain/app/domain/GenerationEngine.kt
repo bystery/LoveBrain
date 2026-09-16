@@ -166,6 +166,9 @@ class GenerationEngine(
         fun isSuggesting(): Boolean
         fun isProactive(): Boolean
         fun getOutputMode(): Int
+
+        // F09: 回报本轮注入的 MemoryRef 清单（供 UI 展示纠正入口）
+        fun onReplyMemoryRefs(refs: List<com.lovebrain.app.model.MemoryRef>) {}
     }
 
     // ═══════════ 回复生成（主生成） ═══════════
@@ -175,13 +178,16 @@ class GenerationEngine(
      * GEN-02：messages / userHint / knowledgeBase 均由 ViewModel 传入冻结快照，
      * Engine 不再从 callbacks 读取可能漂移的实时状态。
      * GEN-02B：knowledgeBase 参数冻结生成时 KB，防止生成途中切 KB 导致 prompt 与保存不同源。
+     * F07: intentConfig 冻结持续意图 text/enabled/revision，启用时短注入。
      */
     fun generate(
         messages: List<ChatMessage>,
         userHint: String,
         knowledgeBase: KnowledgeBase?,
         scope: CoroutineScope,
-        callbacks: Callbacks
+        callbacks: Callbacks,
+        intentConfig: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig(),
+        corrections: Map<String, com.lovebrain.app.model.MemoryCorrection> = emptyMap()
     ): Job? {
         if (messages.isEmpty() || callbacks.isGenerating()) return null
 
@@ -197,10 +203,13 @@ class GenerationEngine(
         return scope.launch {
             val aggressive = callbacks.getOutputMode() == 1
             val system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt() }
-            val user = withContext(Dispatchers.IO) {
-                // GEN-02B：使用冻结的 knowledgeBase 快照，不读 callbacks.getActiveKb()
-                promptBuilder.buildReplyUserPrompt(knowledgeBase, messages, userHint, aggressive)
+            // F09: 使用 buildReplyUserPromptWithRefs 收集 MemoryRef 清单并应用纠正过滤
+            val buildResult = withContext(Dispatchers.IO) {
+                promptBuilder.buildReplyUserPromptWithRefs(knowledgeBase, messages, userHint, aggressive, intentConfig, corrections)
             }
+            val user = buildResult.prompt
+            // F09: 回报 MemoryRef 清单
+            callbacks.onReplyMemoryRefs(buildResult.memoryRefs)
             L.w("PERF t1 prompt built (+${System.currentTimeMillis() - t0}ms), user=${user.length} chars")
 
             // PROV-01：整轮生成开始时冻结 Provider 身份——所有 retry attempt 使用同一个 config

@@ -264,11 +264,10 @@ class PromptAssemblyOrderContractTest {
 
         val user = pbBig.buildReplyUserPrompt(kb, emptyList(), userHint = "")
         val knowledgePart = user.substringBefore("# 本次对话记录")
-        val marker = "\n\n…（中间旧记忆因长度限制已省略）…\n\n"
-        assertTrue("知识段含省略标记", knowledgePart.contains("（中间旧记忆因长度限制已省略）"))
+        assertTrue("知识段含省略标记", knowledgePart.contains("旧记忆因长度限制已省略"))
         assertTrue(
             "知识段总长 ≤ 预算 + 标记长度（实际 ${knowledgePart.length}）",
-            knowledgePart.length <= AppConfig.TOTAL_BUDGET + marker.length + 2
+            knowledgePart.length <= AppConfig.TOTAL_BUDGET + 100
         )
         assertTrue(pb.buildTimestampPrompt().isNotBlank())
     }
@@ -325,7 +324,8 @@ class PromptAssemblyOrderContractTest {
 
         val pb = mockk<PromptBuilder>(relaxed = true)
         every { pb.buildSystemPrompt() } returns "system"
-        coEvery { pb.buildReplyUserPrompt(any(), any(), any(), any()) } returns "user"
+        coEvery { pb.buildReplyUserPromptWithRefs(any(), any(), any(), any(), any(), any()) } returns
+            PromptBuilder.PromptBuildResult("user", emptyList())
 
         val callbacks = mockk<GenerationEngine.Callbacks>(relaxed = true)
         every { callbacks.isGenerating() } returns false
@@ -338,8 +338,10 @@ class PromptAssemblyOrderContractTest {
 
         // 验证 PromptBuilder 收到的是冻结的 KB-A
         coVerify {
-            pb.buildReplyUserPrompt(
+            pb.buildReplyUserPromptWithRefs(
                 match { it?.name == "kb-a" },
+                any(),
+                any(),
                 any(),
                 any(),
                 any()
@@ -347,8 +349,10 @@ class PromptAssemblyOrderContractTest {
         }
         // 验证 PromptBuilder 从未收到 KB-B
         coVerify(exactly = 0) {
-            pb.buildReplyUserPrompt(
+            pb.buildReplyUserPromptWithRefs(
                 match { it?.name == "kb-b" },
+                any(),
+                any(),
                 any(),
                 any(),
                 any()

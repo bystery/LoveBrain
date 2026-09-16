@@ -398,6 +398,14 @@ fun LoveBrainPanelScreen(
                                     viewModel.nextRound()
                                     onCopy("")
                                 },
+                                // F09: 本轮参考记忆 + 纠正回调
+                                memoryRefs = viewModel.getCurrentMemoryRefs(),
+                                onCorrection = { memoryId, action ->
+                                    viewModel.applyMemoryCorrection(memoryId, action)
+                                },
+                                onUndoCorrection = { memoryId ->
+                                    viewModel.undoMemoryCorrection(memoryId)
+                                },
                                 providerReady = isProviderReady,
                                 onOpenSettings = onOpenSettings,
                                 modifier = Modifier.fillMaxSize()

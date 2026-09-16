@@ -51,6 +51,7 @@ private object SchemeTextDimens {
 /**
  * 回复方案卡（单面卡）：tag 标签 + 话术全文（内部滚动）+ 右下角操作（复制/赞/踩）。
  * "推荐"卡用实心底反白突出；赞/踩用边框变色反馈。按压缩放 0.96，有入场动画。
+ * F09-7: reply 为空时显示"本轮不适合"，不可复制/赞/踩，灰色样式。
  */
 @Composable
 fun SchemeCard(
@@ -60,6 +61,7 @@ fun SchemeCard(
     onCopy: (Scheme) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isEmpty = scheme.reply.isBlank()
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     // 选中态缩放动画：按下时缩小到 0.96，松开回弹
@@ -85,11 +87,13 @@ fun SchemeCard(
     )
 
     // 四色标签体系已删，统一 Primary 色系；"推荐"用实心底反白突出唯一层级
-    val isRecommended = scheme.title == "推荐"
+    val isRecommended = scheme.title == "推荐" && !isEmpty
     val tagColor = if (isRecommended) Color.White else PrimaryDark
     val tagBg = if (isRecommended) Primary else PrimaryLight
+    // F09-7: 空回复用灰色样式
+    val cardBg = if (isEmpty) SurfaceInset else SurfaceCard
+    val bodyColor = if (isEmpty) TextHint else TextPrimary
 
-    // 单面卡：标签 + 话术全文（内部滚动）+ 右下角操作
     Box(
         modifier = modifier
             .width(SchemeCardDimens.CARD_WIDTH_DP.dp)
@@ -97,16 +101,16 @@ fun SchemeCard(
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.lg)
             .clip(LoveBrainShape.lg)
-            .background(SurfaceCard)
+            .background(cardBg)
             .border(borderWidth.dp, borderColor, LoveBrainShape.lg)
-            .clickable(
+            .then(if (isEmpty) Modifier else Modifier.clickable(
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = { /* 单面卡：操作走右下角按钮，卡片仅按压反馈 */ }
-            )
+            ))
     ) {
         Column(modifier = Modifier.fillMaxSize().padding(Spacing.md)) {
-            // 标签行（调节2：无 ★ 推荐徽标）
+            // 标签行
             Box(
                 modifier = Modifier
                     .background(tagBg, LoveBrainShape.sm)
@@ -124,48 +128,67 @@ fun SchemeCard(
 
             Spacer(Modifier.height(SchemeCardDimens.TAG_TO_BODY_GAP_DP.dp))
 
-            // 话术全文：内部垂直滚动（过长可滑动看完整）
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Text(
-                    text = scheme.reply,
-                    color = TextPrimary,
-                    style = AppTypography.bodyMedium,
-                    fontSize = SchemeTextDimens.BODY_FONT_SIZE,
-                    lineHeight = SchemeTextDimens.BODY_LINE_HEIGHT
-                )
+            // F09-7: 空回复显示"本轮不适合"，不可滚动/复制
+            if (isEmpty) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "本轮不适合",
+                        color = TextHint,
+                        style = AppTypography.labelMedium,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
+                }
+            } else {
+                // 话术全文：内部垂直滚动（过长可滑动看完整）
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Text(
+                        text = scheme.reply,
+                        color = bodyColor,
+                        style = AppTypography.bodyMedium,
+                        fontSize = SchemeTextDimens.BODY_FONT_SIZE,
+                        lineHeight = SchemeTextDimens.BODY_LINE_HEIGHT
+                    )
+                }
             }
 
             Spacer(Modifier.height(Spacing.sm))
 
-            // 操作行：固定右下角（视觉 20dp + 外圈 padding 扩热区至 28dp）
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                CardActionIcon(
-                    icon = R.drawable.ic_copy,
-                    desc = "复制",
-                    tint = TextSecondary,
-                    onClick = { onCopy(scheme) }
-                )
-                CardActionIcon(
-                    icon = R.drawable.ic_thumb_up,
-                    desc = "赞",
-                    tint = if (feedback == SchemeFeedback.LIKED) Primary else TextHint,
-                    onClick = { onFeedback(scheme.tag, SchemeFeedback.LIKED) }
-                )
-                CardActionIcon(
-                    icon = R.drawable.ic_thumb_down,
-                    desc = "踩",
-                    tint = if (feedback == SchemeFeedback.DISLIKED) Error else TextHint,
-                    onClick = { onFeedback(scheme.tag, SchemeFeedback.DISLIKED) }
-                )
+            // 操作行：固定右下角（F09-7: 空回复不显示操作按钮）
+            if (!isEmpty) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CardActionIcon(
+                        icon = R.drawable.ic_copy,
+                        desc = "复制",
+                        tint = TextSecondary,
+                        onClick = { onCopy(scheme) }
+                    )
+                    CardActionIcon(
+                        icon = R.drawable.ic_thumb_up,
+                        desc = "赞",
+                        tint = if (feedback == SchemeFeedback.LIKED) Primary else TextHint,
+                        onClick = { onFeedback(scheme.tag, SchemeFeedback.LIKED) }
+                    )
+                    CardActionIcon(
+                        icon = R.drawable.ic_thumb_down,
+                        desc = "踩",
+                        tint = if (feedback == SchemeFeedback.DISLIKED) Error else TextHint,
+                        onClick = { onFeedback(scheme.tag, SchemeFeedback.DISLIKED) }
+                    )
+                }
             }
         }
     }

@@ -34,10 +34,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.MemoryRef
+import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 import kotlinx.coroutines.delay
@@ -62,6 +65,10 @@ fun ResultArea(
     onRetry: () -> Unit,
     // P1-5: 记入知识库放入结果工具区
     onSaveToKb: () -> Unit = {},
+    // F09: 本轮参考记忆 + 纠正回调
+    memoryRefs: List<MemoryRef> = emptyList(),
+    onCorrection: (String, CorrectionAction) -> Unit = { _, _ -> },
+    onUndoCorrection: (String) -> Unit = {},
     providerReady: Boolean,
     onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier
@@ -134,30 +141,14 @@ fun ResultArea(
                     OngoingSection(items = response.analysis.ongoing)
                 }
 
-                // P1-5: 记入知识库按钮放入结果工具区，不挤掉主入口
+                // F09: 本轮参考 + 记入知识库 共享工具行（禁止独占行按钮）
                 Spacer(Modifier.height(Spacing.sm))
-                val (saveInteraction, saveScale) = rememberPressScale(0.96f, "resultSaveKbScale")
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
-                            .clip(LoveBrainShape.md)
-                            .background(Primary, LoveBrainShape.md)
-                            .clickable(interactionSource = saveInteraction, indication = null, onClick = onSaveToKb)
-                            .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            "记入知识库",
-                            color = Color.White,
-                            style = AppTypography.labelSmall,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                }
+                ResultToolRow(
+                    memoryRefs = memoryRefs,
+                    onSaveToKb = onSaveToKb,
+                    onCorrection = onCorrection,
+                    onUndoCorrection = onUndoCorrection
+                )
             }
         }
 
@@ -620,5 +611,232 @@ private fun TypewriterText(
                 modifier = Modifier.padding(start = ResultDimens.CURSOR_START_PAD_DP.dp)
             )
         }
+    }
+}
+
+// ═══════════ F09: 本轮参考 + 记入知识库 共享工具行 ═══════════
+
+/**
+ * F09: 结果区工具行 — "本轮参考"入口 + "记入知识库"按钮共享一行。
+ * 禁止独占行：两个功能紧凑放在同一 Row 中。
+ * 本轮参考展开后每条只显示记忆文本 + ⋯ 菜单。
+ */
+@Composable
+private fun ResultToolRow(
+    memoryRefs: List<MemoryRef>,
+    onSaveToKb: () -> Unit,
+    onCorrection: (String, CorrectionAction) -> Unit,
+    onUndoCorrection: (String) -> Unit
+) {
+    var showRefs by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // 左：本轮参考入口（仅在有记忆引用时显示）
+            if (memoryRefs.isNotEmpty()) {
+                val (refsInteraction, refsScale) = rememberPressScale(0.96f, "refsToggleScale")
+                Row(
+                    modifier = Modifier
+                        .graphicsLayer { scaleX = refsScale; scaleY = refsScale }
+                        .clip(LoveBrainShape.md)
+                        .background(SurfaceInset, LoveBrainShape.md)
+                        .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
+                        .clickable(interactionSource = refsInteraction, indication = null) {
+                            showRefs = !showRefs
+                        }
+                        .padding(horizontal = Spacing.md, vertical = Spacing.sm),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "本轮参考 ${memoryRefs.size}",
+                        style = AppTypography.labelSmall,
+                        color = TextSecondary
+                    )
+                    Spacer(Modifier.width(Spacing.xs))
+                    Text(
+                        if (showRefs) "▾" else "▸",
+                        style = AppTypography.labelSmall,
+                        color = TextHint
+                    )
+                }
+            } else {
+                Spacer(Modifier.weight(1f))
+            }
+
+            // 右：记入知识库按钮
+            val (saveInteraction, saveScale) = rememberPressScale(0.96f, "resultSaveKbScale")
+            Box(
+                modifier = Modifier
+                    .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
+                    .clip(LoveBrainShape.md)
+                    .background(Primary, LoveBrainShape.md)
+                    .clickable(interactionSource = saveInteraction, indication = null, onClick = onSaveToKb)
+                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "记入知识库",
+                    color = Color.White,
+                    style = AppTypography.labelSmall,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+
+        // 展开后的记忆引用列表
+        AnimatedVisibility(
+            visible = showRefs && memoryRefs.isNotEmpty(),
+            enter = expandVertically(),
+            exit = shrinkVertically()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = Spacing.sm)
+                    .clip(LoveBrainShape.md)
+                    .background(SurfaceInset, LoveBrainShape.md)
+                    .padding(Spacing.md)
+            ) {
+                memoryRefs.forEachIndexed { index, ref ->
+                    if (index > 0) Spacer(Modifier.height(Spacing.sm))
+                    MemoryRefItem(
+                        ref = ref,
+                        onCorrection = onCorrection,
+                        onUndoCorrection = onUndoCorrection
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * F09: 单条记忆引用 — 只显示正文 + ⋯ 菜单。
+ * ⋯ 菜单内提供：不对 / 结束 / 暂时别提 / 不是她 / 撤销。
+ */
+@Composable
+private fun MemoryRefItem(
+    ref: MemoryRef,
+    onCorrection: (String, CorrectionAction) -> Unit,
+    onUndoCorrection: (String) -> Unit
+) {
+    var menuOpen by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Top
+        ) {
+            // kind 标签（紧凑）
+            val kindLabel = when (ref.kind) {
+                com.lovebrain.app.model.MemoryKind.PROFILE -> "画像"
+                com.lovebrain.app.model.MemoryKind.SCENE -> "场景"
+                com.lovebrain.app.model.MemoryKind.ONGOING -> "事项"
+                com.lovebrain.app.model.MemoryKind.LESSON -> "经验"
+            }
+            Text(
+                text = "[$kindLabel]",
+                style = AppTypography.labelSmall,
+                color = TextHint,
+                modifier = Modifier.padding(end = Spacing.xs)
+            )
+            // 记忆正文
+            Text(
+                text = ref.text,
+                style = AppTypography.labelSmall,
+                color = TextSecondary,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
+            )
+            // ⋯ 菜单入口
+            val (menuInteraction, menuScale) = rememberPressScale(0.92f, "refMenuScale")
+            Box(
+                modifier = Modifier
+                    .size(28.dp)
+                    .graphicsLayer { scaleX = menuScale; scaleY = menuScale }
+                    .clip(LoveBrainShape.sm)
+                    .clickable(interactionSource = menuInteraction, indication = null) {
+                        menuOpen = !menuOpen
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "⋯",
+                    style = AppTypography.labelLarge,
+                    color = TextHint
+                )
+            }
+        }
+
+        // 菜单展开
+        AnimatedVisibility(
+            visible = menuOpen,
+            enter = expandVertically(),
+            exit = shrinkVertically()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = Spacing.lg, top = Spacing.xs)
+            ) {
+                CorrectionMenuItem("不对", "标记为错误内容") {
+                    onCorrection(ref.id, CorrectionAction.WRONG)
+                    menuOpen = false
+                }
+                CorrectionMenuItem("结束", "这件事已结束") {
+                    onCorrection(ref.id, CorrectionAction.FINISHED)
+                    menuOpen = false
+                }
+                CorrectionMenuItem("暂时别提", "暂停作为续聊素材") {
+                    onCorrection(ref.id, CorrectionAction.MUTED)
+                    menuOpen = false
+                }
+                CorrectionMenuItem("不是她", "归属错误，需迁移") {
+                    onCorrection(ref.id, CorrectionAction.WRONG_PERSON)
+                    menuOpen = false
+                }
+                CorrectionMenuItem("撤销纠正", "恢复可信注入") {
+                    onUndoCorrection(ref.id)
+                    menuOpen = false
+                }
+            }
+        }
+    }
+}
+
+/** 纠正菜单项 — 紧凑文字行 */
+@Composable
+private fun CorrectionMenuItem(
+    label: String,
+    desc: String,
+    onClick: () -> Unit
+) {
+    val (interaction, scale) = rememberPressScale(0.96f, "correctionItemScale")
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .clip(LoveBrainShape.sm)
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+            .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            label,
+            style = AppTypography.labelSmall,
+            color = PrimaryDark,
+            fontWeight = FontWeight.Medium
+        )
+        Spacer(Modifier.width(Spacing.sm))
+        Text(
+            desc,
+            style = AppTypography.labelSmall,
+            color = TextHint
+        )
     }
 }

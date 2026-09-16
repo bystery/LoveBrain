@@ -113,7 +113,7 @@ class LikedSchemeRecordingTest {
         engine: com.lovebrain.app.domain.GenerationEngine,
         response: LoveBrainResponse
     ) {
-        every { engine.generate(any(), any(), any(), any(), any()) } answers {
+        every { engine.generate(any(), any(), any(), any(), any(), any(), any()) } answers {
             val scope = arg<CoroutineScope>(3)
             val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
             scope.launch {

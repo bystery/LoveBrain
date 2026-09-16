@@ -107,7 +107,7 @@ class LoveBrainViewModelGenBatchTest {
     private fun newViewModelWithKb(
         kbName: String = "kb-a",
         recorder: TopicRecorder = mockk<TopicRecorder>(relaxed = true).also { r ->
-            coEvery { r.record(any(), any(), any(), any(), any(), any(), any(), any()) } returns false
+            coEvery { r.record(any(), any(), any(), any(), any(), any(), any(), any(), any()) } returns false
         },
         knowledgeRepoOverride: com.lovebrain.app.data.KnowledgeRepository? = null
     ): LoveBrainViewModel {
@@ -152,7 +152,7 @@ class LoveBrainViewModelGenBatchTest {
             analysis = ReplyAnalysis(topic_status = "same", topic_label = "test")
         )
     ) {
-        every { engine.generate(any(), any(), any(), any(), any()) } answers {
+        every { engine.generate(any(), any(), any(), any(), any(), any(), any()) } answers {
             val scope = arg<CoroutineScope>(3)
             val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
             scope.launch {
@@ -175,7 +175,7 @@ class LoveBrainViewModelGenBatchTest {
 
         var engineCallCount = 0
         val genGate = CompletableDeferred<Unit>()
-        every { generationEngine.generate(any(), any(), any(), any(), any()) } answers {
+        every { generationEngine.generate(any(), any(), any(), any(), any(), any(), any()) } answers {
             engineCallCount++
             val scope = arg<CoroutineScope>(3)
             val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
@@ -312,7 +312,7 @@ class LoveBrainViewModelGenBatchTest {
 
         val capturedMessages = slot<List<ChatMessage>>()
         val gate = CompletableDeferred<Unit>()
-        every { generationEngine.generate(capture(capturedMessages), any(), any(), any(), any()) } answers {
+        every { generationEngine.generate(capture(capturedMessages), any(), any(), any(), any(), any(), any()) } answers {
             val scope = arg<CoroutineScope>(3)
             val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
             scope.launch {
@@ -391,7 +391,7 @@ class LoveBrainViewModelGenBatchTest {
 
         val capturedMessages = slot<List<ChatMessage>>()
         val gate = CompletableDeferred<Unit>()
-        every { generationEngine.generate(capture(capturedMessages), any(), any(), any(), any()) } answers {
+        every { generationEngine.generate(capture(capturedMessages), any(), any(), any(), any(), any(), any()) } answers {
             val scope = arg<CoroutineScope>(3)
             val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
             scope.launch {
@@ -506,7 +506,7 @@ class LoveBrainViewModelGenBatchTest {
     fun t8_record_success_commits_ui_only_after_completion() = runBlocking {
         val recordDeferred = CompletableDeferred<Boolean>()
         val slowRecorder = mockk<TopicRecorder>()
-        coEvery { slowRecorder.record(any(), any(), any(), any(), any(), any(), any(), any()) } coAnswers {
+        coEvery { slowRecorder.record(any(), any(), any(), any(), any(), any(), any(), any(), any()) } coAnswers {
             recordDeferred.await()
         }
 
@@ -553,7 +553,7 @@ class LoveBrainViewModelGenBatchTest {
         val vm = newViewModel()
         delay(100)
 
-        every { generationEngine.generate(any(), any(), any(), any(), any()) } answers {
+        every { generationEngine.generate(any(), any(), any(), any(), any(), any(), any()) } answers {
             val scope = arg<CoroutineScope>(3)
             val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
             scope.launch {
@@ -593,7 +593,7 @@ class LoveBrainViewModelGenBatchTest {
         vm.addMessage(ChatMessage.Role.ME, "B")
 
         val gate = CompletableDeferred<Unit>()
-        every { generationEngine.generate(any(), any(), any(), any(), any()) } answers {
+        every { generationEngine.generate(any(), any(), any(), any(), any(), any(), any()) } answers {
             val scope = arg<CoroutineScope>(3)
             val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
             scope.launch {
@@ -630,7 +630,7 @@ class LoveBrainViewModelGenBatchTest {
 
         var firstJob: Job? = null
         val gate = CompletableDeferred<Unit>()
-        every { generationEngine.generate(any(), any(), any(), any(), any()) } answers {
+        every { generationEngine.generate(any(), any(), any(), any(), any(), any(), any()) } answers {
             val scope = arg<CoroutineScope>(3)
             val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
             scope.launch {
@@ -646,7 +646,7 @@ class LoveBrainViewModelGenBatchTest {
         assertTrue("isGenerating 应为 true", vm.isGenerating.value)
 
         // 第二次调用：Engine 返回 null（reject）
-        every { generationEngine.generate(any(), any(), any(), any(), any()) } returns null
+        every { generationEngine.generate(any(), any(), any(), any(), any(), any(), any()) } returns null
         vm.generate()
         delay(100)
 
@@ -723,7 +723,7 @@ class LoveBrainViewModelGenBatchTest {
         vm.addMessage(ChatMessage.Role.HER, "A")
 
         val gate = CompletableDeferred<Unit>()
-        every { generationEngine.generate(any(), any(), any(), any(), any()) } answers {
+        every { generationEngine.generate(any(), any(), any(), any(), any(), any(), any()) } answers {
             val scope = arg<CoroutineScope>(3)
             val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
             scope.launch {

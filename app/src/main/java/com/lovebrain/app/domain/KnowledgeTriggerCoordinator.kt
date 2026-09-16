@@ -69,28 +69,37 @@ class KnowledgeTriggerCoordinator(
                 val topicCount = knowledgeRepo.getLessonCount(kbName)
                 if (topicCount <= 0) return@runCatching
 
+                // F09: 后台任务启动时冻结 corrections revision，完成后比对防迟到覆盖
+                val frozenCorrectionsRev = knowledgeRepo.getCorrectionsRevision(kbName)
+
                 // A12 三引擎串行：向量重估 → 经验提取 → 画像 reflect（前一引擎完成才开始下一引擎；
                 // 各自既有 runCatching 兜底不变，单引擎失败不阻断后续；reflect 最后，天然拿最新向量值）
                 if (topicCount % AppConfig.VECTOR_REESTIMATE_INTERVAL == 0) {
-                    reestimateVector(kbName, scope, callbacks).join()
+                    reestimateVector(kbName, scope, callbacks, frozenCorrectionsRev).join()
                 }
 
                 if (topicCount % AppConfig.LESSON_TRIGGER_INTERVAL == 0) {
                     val context = topicRecorder.getTopicFullContext(kbName, AppConfig.LESSON_CONTEXT_TOPICS)
-                    extractLessonsAsync(kbName, context, scope, callbacks).join()
+                    extractLessonsAsync(kbName, context, scope, callbacks, frozenCorrectionsRev).join()
                 }
 
                 if (topicCount % AppConfig.REFLECT_TRIGGER_INTERVAL == 0) {
-                    generateReflectSuggestion(kbName, scope, callbacks).join()
+                    generateReflectSuggestion(kbName, scope, callbacks, frozenCorrectionsRev).join()
                 }
             }.onFailure { L.e("checkKnowledgeTriggers failed", it) }
         }
     }
 
     /** 重估五维状态向量：读当前向量 + 最近上下文 → AI 重估 → 写回 warmth → 触发阶段建议 */
-    private fun reestimateVector(kbName: String, scope: CoroutineScope, callbacks: Callbacks): Job {
+    private fun reestimateVector(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
             runCatching {
+                // F09: 检查 corrections revision 是否已变化（用户在后台运行期间做了纠正）
+                val currentRev = knowledgeRepo.getCorrectionsRevision(kbName)
+                if (currentRev != frozenCorrectionsRev) {
+                    L.w("reestimateVector skipped: corrections changed during background task (frozen=$frozenCorrectionsRev, current=$currentRev)")
+                    return@launch
+                }
                 val oldVector = withContext(Dispatchers.IO) { knowledgeRepo.readVector(kbName) }
                 val currentStage = withContext(Dispatchers.IO) { knowledgeRepo.getCurrentStage(kbName) }
                 val context = withContext(Dispatchers.IO) { topicRecorder.getVectorContext(kbName) }
@@ -188,9 +197,15 @@ class KnowledgeTriggerCoordinator(
         }
     }
 
-    private fun extractLessonsAsync(kbName: String, topicContext: String, scope: CoroutineScope, callbacks: Callbacks): Job {
+    private fun extractLessonsAsync(kbName: String, topicContext: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
             runCatching {
+                // F09: 检查 corrections revision
+                val currentRev = knowledgeRepo.getCorrectionsRevision(kbName)
+                if (currentRev != frozenCorrectionsRev) {
+                    L.w("extractLessons skipped: corrections changed during background task")
+                    return@launch
+                }
                 if (topicContext.isBlank()) return@launch
                 val system = promptBuilder.buildLessonsSystemPrompt()
                 val user = promptBuilder.buildLessonsUserPrompt(topicContext)
@@ -209,9 +224,15 @@ class KnowledgeTriggerCoordinator(
         }
     }
 
-    private fun generateReflectSuggestion(kbName: String, scope: CoroutineScope, callbacks: Callbacks): Job {
+    private fun generateReflectSuggestion(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
             runCatching {
+                // F09: 检查 corrections revision
+                val currentRev = knowledgeRepo.getCorrectionsRevision(kbName)
+                if (currentRev != frozenCorrectionsRev) {
+                    L.w("generateReflect skipped: corrections changed during background task")
+                    return@launch
+                }
                 val system = promptBuilder.buildReflectSystemPrompt()
                 val user = promptBuilder.buildReflectUserPrompt(kbName)
                 val raw = runCatching { deepSeekRepo.generateRaw(system, user) }.getOrDefault("")
