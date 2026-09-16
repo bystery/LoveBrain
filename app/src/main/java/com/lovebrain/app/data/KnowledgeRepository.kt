@@ -210,6 +210,140 @@ class KnowledgeRepository(
         scheduleDebouncedBackup()
     }
 
+    // ═══════════ F10: 默认知识库初始化 ═══════════
+
+    /**
+     * F10: 确保应用至少有一个合法知识库。应用初始化唯一入口。
+     *
+     * 规则：
+     * 1. 有库沿用原激活项；不创建新库
+     * 2. 首次无库创建恰好一个"默认知识库"，阶段"待确定"，画像空
+     * 3. 用户主动删除最后一个库后不重复创建（通过 .kb_initialized 标记区分）
+     * 4. 导入优先：有导入的库存在时不创建默认库
+     * 5. 中断恢复优先补齐缺失文件，不 deleteRecursively 后重建
+     * 6. 全部写入成功才标完成
+     * 7. 无网络、无模型配置也成功
+     */
+    suspend fun ensureInitialKnowledgeBase() = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            val initMarker = File(knowledgeRoot, ".kb_initialized")
+            val existingKbs = listAllUnlocked()
+
+            if (existingKbs.isNotEmpty()) {
+                // 已有库（含导入）——沿用原激活项，不创建
+                // 但仍需检查已有库是否完整（中断恢复补齐）
+                existingKbs.forEach { kb -> ensureKbFilesCompleteUnlocked(kb.name) }
+                initMarker.writeText("done")
+                return@withLock
+            }
+
+            // 无库——区分"首次启动"和"用户删除最后一个库后"
+            if (initMarker.exists()) {
+                // 用户已初始化过，之后删除了所有库——不重复创建
+                return@withLock
+            }
+
+            // 首次启动——创建默认知识库
+            val defaultName = "default"
+            val defaultDir = File(knowledgeRoot, defaultName)
+            defaultDir.mkdirs()
+            File(defaultDir, "understand").mkdirs()
+            File(defaultDir, "moment").mkdirs()
+            File(defaultDir, "memory").mkdirs()
+
+            val now = isoNow()
+            val kb = KnowledgeBase(
+                name = defaultName,
+                displayName = "默认知识库",
+                updatedAt = now,
+                stage = "待确定",
+                turnCount = 0,
+                topicCount = 0,
+                active = true
+            )
+            atomicWriteText(File(defaultDir, "kb.json"), json.encodeToString(KnowledgeBase.serializer(), kb))
+
+            // F10: 画像默认真实空内容（非 schema 模板占位文字）
+            atomicWriteText(File(defaultDir, "understand/me.md"), "")
+            atomicWriteText(File(defaultDir, "understand/her.md"), "")
+            atomicWriteText(File(defaultDir, "understand/warmth.md"), "")
+            // 此刻层：topic 有初始行，其余空
+            atomicWriteText(File(defaultDir, "moment/topic.md"), "- [${com.lovebrain.app.util.TimeFmt.now()}] 正在聊：（等待第一次对话）")
+            atomicWriteText(File(defaultDir, "moment/recent.md"), "")
+            atomicWriteText(File(defaultDir, "moment/scene.md"), "")
+            atomicWriteText(File(defaultDir, "moment/plan.md"), loadSchema("plan"))
+            // 记忆层：全部空
+            atomicWriteText(File(defaultDir, "memory/lessons.md"), "")
+            atomicWriteText(File(defaultDir, "memory/raw_chat.md"), "")
+            atomicWriteText(File(defaultDir, "memory/raw_topic.md"), "")
+            atomicWriteText(File(defaultDir, "memory/raw_scene.md"), "")
+            atomicWriteText(File(defaultDir, "memory/counseling_log.md"), "")
+
+            // 全部写入成功才标完成
+            securePrefs.activeKbName = defaultName
+            initMarker.writeText("done")
+            scheduleDebouncedBackup()
+        }
+    }
+
+    /** 无锁版 listAll（调用方持有 fileMutex） */
+    private fun listAllUnlocked(): List<KnowledgeBase> {
+        return knowledgeRoot.listFiles()
+            ?.filter { it.isDirectory && !it.name.startsWith(".") }
+            ?.mapNotNull { dir ->
+                runCatching {
+                    val metaFile = File(dir, "kb.json")
+                    if (metaFile.exists()) {
+                        val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
+                        if (kb.name != dir.name) null else kb
+                    } else null
+                }.getOrNull()
+            }
+            ?.sortedByDescending { it.updatedAt }
+            ?: emptyList()
+    }
+
+    /**
+     * F10: 检查知识库文件是否完整，补齐缺失文件（中断恢复）。
+     * 不 deleteRecursively，只补缺失。调用方持有 fileMutex。
+     */
+    private fun ensureKbFilesCompleteUnlocked(kbName: String) {
+        val dir = File(knowledgeRoot, kbName)
+        if (!dir.isDirectory) return
+
+        File(dir, "understand").mkdirs()
+        File(dir, "moment").mkdirs()
+        File(dir, "memory").mkdirs()
+
+        // 补齐缺失的必需文件（不覆盖已有内容）
+        val requiredFiles = listOf(
+            "understand/me.md" to "",
+            "understand/her.md" to "",
+            "understand/warmth.md" to "",
+            "moment/recent.md" to "",
+            "moment/scene.md" to "",
+            "moment/plan.md" to loadSchema("plan"),
+            "memory/lessons.md" to "",
+            "memory/raw_chat.md" to "",
+            "memory/raw_topic.md" to "",
+            "memory/raw_scene.md" to "",
+            "memory/counseling_log.md" to ""
+        )
+
+        requiredFiles.forEach { (path, defaultContent) ->
+            val file = File(dir, path)
+            if (!file.exists()) {
+                atomicWriteText(file, defaultContent)
+            }
+        }
+
+        // topic.md 特殊处理：不存在时写入初始行
+        val topicFile = File(dir, "moment/topic.md")
+        if (!topicFile.exists()) {
+            atomicWriteText(topicFile, "- [${com.lovebrain.app.util.TimeFmt.now()}] 正在聊：（等待第一次对话）")
+        }
+    }
+
     // ═══════════ 公开 API ═══════════
 
     suspend fun listAll(): List<KnowledgeBase> = withContext(Dispatchers.IO) {

@@ -280,7 +280,12 @@ class LoveBrainViewModel(
     val counselingStreaming: StateFlow<String> = _counselingStreaming.asStateFlow()
 
     init {
-        refreshKnowledgeBases()
+        // F10: 确保至少有一个合法知识库（首次启动创建默认库，重复启动沿用，中断恢复补齐）
+        viewModelScope.launch {
+            runCatching { knowledgeRepo.ensureInitialKnowledgeBase() }
+                .onFailure { L.w("ensureInitialKnowledgeBase failed: ${it::class.simpleName}") }
+            refreshKnowledgeBases()
+        }
         val persisted = promptBuilder.validateConfig(securePrefs.thinkingMode, securePrefs.outputMode)
         if (!persisted.isValid) {
             persisted.warnings.forEach { L.w("⚠️ 启动配置校验：$it") }
