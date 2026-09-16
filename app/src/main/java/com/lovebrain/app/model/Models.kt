@@ -120,10 +120,11 @@ data class ReplyAnalysis(
     val ongoing: List<OngoingItem> = emptyList()  // 进行中事项（只报本轮有变化的）
 )
 
-/** DeepSeek 返回的完整结构（单次调用：response + analysis） */
+/** DeepSeek 返回的完整结构（response + directions + analysis） */
 @Serializable
 data class LoveBrainResponse(
     val response: ReplySchemes = ReplySchemes(),
+    val directions: List<String?> = emptyList(),
     val analysis: ReplyAnalysis = ReplyAnalysis()
 ) {
     /** UI 兼容访问器：4 条方案 */
