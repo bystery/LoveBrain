@@ -469,7 +469,8 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
         awaitClose { call.cancel() }
     }.flowOn(Dispatchers.IO)
 
-    /** 将累积文本解析为 LoveBrainResponse（单次调用：response + analysis） */
+    /** 将累积文本解析为 LoveBrainResponse（单次调用：response + analysis）
+     * R10: 至少一个真实非空风格才可作为回复成功；全空 response 被拒绝。 */
     fun parseReplyResponse(content: String): LoveBrainResponse {
         val jsonStr = com.lovebrain.app.util.Jsons.extractJsonBlock(content)
             ?: throw IllegalStateException("模型未返回有效 JSON，请重试")
@@ -477,8 +478,11 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
         val resp = runCatching { json.decodeFromString<LoveBrainResponse>(jsonStr) }
             .getOrElse { throw IllegalStateException("解析回复失败，请重试") }
 
-        if (resp.schemes.isEmpty()) {
-            throw IllegalStateException("返回格式不完整：缺少回复方案，请重试")
+        // R10: 不再用 resp.schemes.isEmpty() 验证——toSchemes 永远返回 4 条（空 reply = 本轮不适合）。
+        // 改为检查至少一个非空 reply 才算成功。
+        val hasNonEmpty = resp.schemes.any { it.reply.isNotBlank() }
+        if (!hasNonEmpty) {
+            throw IllegalStateException("返回格式不完整：所有回复方案均为空，请重试")
         }
         return resp
     }

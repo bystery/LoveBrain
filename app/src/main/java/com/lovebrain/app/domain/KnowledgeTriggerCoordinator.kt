@@ -90,16 +90,11 @@ class KnowledgeTriggerCoordinator(
         }
     }
 
-    /** 重估五维状态向量：读当前向量 + 最近上下文 → AI 重估 → 写回 warmth → 触发阶段建议 */
+    /** R07: 重估五维状态向量：读当前向量 + 最近上下文 → AI 重估 → 写回前校验 revision → 写回 warmth → 触发阶段建议
+     * 后台任务在写入前（而非启动时）校验 revision，防迟到覆盖 */
     private fun reestimateVector(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
             runCatching {
-                // F09: 检查 corrections revision 是否已变化（用户在后台运行期间做了纠正）
-                val currentRev = knowledgeRepo.getCorrectionsRevision(kbName)
-                if (currentRev != frozenCorrectionsRev) {
-                    L.w("reestimateVector skipped: corrections changed during background task (frozen=$frozenCorrectionsRev, current=$currentRev)")
-                    return@launch
-                }
                 val oldVector = withContext(Dispatchers.IO) { knowledgeRepo.readVector(kbName) }
                 val currentStage = withContext(Dispatchers.IO) { knowledgeRepo.getCurrentStage(kbName) }
                 val context = withContext(Dispatchers.IO) { topicRecorder.getVectorContext(kbName) }
@@ -139,6 +134,13 @@ class KnowledgeTriggerCoordinator(
                 val reason = raw.substringAfter("===REASON===", "").substringBefore("===STAGE===").trim()
                 val suggestedStage = raw.substringAfter("===STAGE===", "").trim()
                     .lines().firstOrNull()?.trim().orEmpty()
+
+                // R07: 写入前再次校验 corrections revision（不只检查开始时）
+                val currentRev = withContext(Dispatchers.IO) { knowledgeRepo.getCorrectionsRevision(kbName) }
+                if (currentRev != frozenCorrectionsRev) {
+                    L.w("reestimateVector skipped at write time: corrections changed (frozen=$frozenCorrectionsRev, current=$currentRev)")
+                    return@launch
+                }
 
                 // 写回 warmth.md
                 withContext(Dispatchers.IO) {
@@ -200,17 +202,17 @@ class KnowledgeTriggerCoordinator(
     private fun extractLessonsAsync(kbName: String, topicContext: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
             runCatching {
-                // F09: 检查 corrections revision
-                val currentRev = knowledgeRepo.getCorrectionsRevision(kbName)
-                if (currentRev != frozenCorrectionsRev) {
-                    L.w("extractLessons skipped: corrections changed during background task")
-                    return@launch
-                }
                 if (topicContext.isBlank()) return@launch
                 val system = promptBuilder.buildLessonsSystemPrompt()
                 val user = promptBuilder.buildLessonsUserPrompt(topicContext)
                 val lessons = runCatching { deepSeekRepo.generateRaw(system, user) }.getOrDefault("")
                 if (lessons.isNotBlank() && lessons != "无新经验") {
+                    // R07: 写入前再次校验 corrections revision
+                    val currentRev = withContext(Dispatchers.IO) { knowledgeRepo.getCorrectionsRevision(kbName) }
+                    if (currentRev != frozenCorrectionsRev) {
+                        L.w("extractLessons skipped at write time: corrections changed")
+                        return@launch
+                    }
                     val existing = withContext(Dispatchers.IO) { knowledgeRepo.readFile(kbName, "memory/lessons.md") }
                     val extractCount = countLessonSections(existing) + 1
                     val time = TimeFmt.now()
@@ -227,18 +229,18 @@ class KnowledgeTriggerCoordinator(
     private fun generateReflectSuggestion(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
             runCatching {
-                // F09: 检查 corrections revision
-                val currentRev = knowledgeRepo.getCorrectionsRevision(kbName)
-                if (currentRev != frozenCorrectionsRev) {
-                    L.w("generateReflect skipped: corrections changed during background task")
-                    return@launch
-                }
                 val system = promptBuilder.buildReflectSystemPrompt()
                 val user = promptBuilder.buildReflectUserPrompt(kbName)
                 val raw = runCatching { deepSeekRepo.generateRaw(system, user) }.getOrDefault("")
                 if (raw.isBlank()) {
-                    //  ：后台引擎失败轻提示（固定文案；extractLessons 不加，）
                     callbacks.onKbNotice("画像更新建议本次生成失败")
+                    return@launch
+                }
+
+                // R07: 写入前再次校验 corrections revision
+                val currentRev = withContext(Dispatchers.IO) { knowledgeRepo.getCorrectionsRevision(kbName) }
+                if (currentRev != frozenCorrectionsRev) {
+                    L.w("generateReflect skipped at write time: corrections changed")
                     return@launch
                 }
 

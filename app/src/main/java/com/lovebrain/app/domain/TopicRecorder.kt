@@ -288,30 +288,26 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
         for (nf in validatedFacts) {
             if (nf.sourceIds.isEmpty()) {
-                // 未核实来源 → 直接追加，不覆盖
+                // R05: 未核实来源 → 标记为 legacy，追加但不覆盖、不刷新时间
                 toAdd.add(nf)
                 continue
             }
 
-            // 查找同来源的已有事实
-            val sameSourceMatch = allExistingFacts.firstOrNull { (ef, _) ->
-                ef.sourceIds.isNotEmpty() &&
-                ef.sourceIds.toSet() == nf.sourceIds.toSet() &&
-                ef.subject == nf.subject
+            // R05: 来源仅作为证据，不作为事项 ID。
+            // 一条消息可以同时说明多个不同事实（如周一考试和周五聚餐），
+            // 它们不能靠同一个 source ID 合并。
+            // 替换只发生在文本完全相同（模型重述）时；文本不同则追加。
+            val exactMatch = allExistingFacts.firstOrNull { (ef, _) ->
+                ef.text == nf.text &&
+                ef.subject == nf.subject &&
+                ef.sourceIds.toSet() == nf.sourceIds.toSet()
             }
 
-            if (sameSourceMatch != null) {
-                val (ef, _) = sameSourceMatch
-                if (ef.text == nf.text) {
-                    // F03: 幂等——相同来源+相同文本 → 不重复写入
-                    com.lovebrain.app.util.L.w("SceneFact idempotent skip: $nf")
-                } else {
-                    // F03: 同一来源、不同文本 → 同一事项新状态
-                    // 保留原始 evidenceTime（模型重述不刷新时间）
-                    toReplace[ef] = nf.copy(evidenceTime = ef.evidenceTime)
-                }
+            if (exactMatch != null) {
+                // R05: 幂等——完全相同文本+来源 → 不重复写入
+                com.lovebrain.app.util.L.w("SceneFact idempotent skip: $nf")
             } else {
-                // 无同来源匹配 → 新事实
+                // R05: 无法确定是否同一事项 → 保守追加，不覆盖
                 toAdd.add(nf)
             }
         }

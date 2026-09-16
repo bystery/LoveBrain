@@ -165,24 +165,20 @@ class KnowledgeRepository(
             }
             // rename 在同一文件系统上是原子操作（POSIX/Android）。
             // Windows 上 renameTo 可能因文件锁定（防病毒等）间歇失败，
-            // 添加短 retry + fallback copyTo+delete 保证可靠性。
+            // 添加短 retry 保证可靠性。rename 失败时不删除原件——
+            // R01: 删除原件冒充安全兜底违反原子写失败保留原件原则。
             var renamed = false
             for (attempt in 1..3) {
                 if (tmp.renameTo(file)) { renamed = true; break }
                 Thread.sleep(50L * attempt)
             }
             if (!renamed) {
-                // Fallback: copy then delete (not atomic but safe — tmp is already fully written)
-                if (file.exists() && !file.delete()) {
-                    throw java.io.IOException("atomic rename failed (cannot delete target): ${file.name}")
-                }
-                if (!tmp.copyTo(file, overwrite = true).exists()) {
-                    throw java.io.IOException("atomic rename failed (copy fallback failed): ${file.name}")
-                }
-                tmp.delete()
+                // R01: rename 全部失败——保留旧文件不变，报错让调用方处理。
+                // 不删除目标文件冒充安全：copy 失败或中途崩溃会导致目标缺失/不完整。
+                throw java.io.IOException("atomic rename failed after 3 attempts: ${file.name}")
             }
         } finally {
-            // 清理可能残留的临时文件
+            // 清理可能残留的临时文件（rename 成功后 tmp 已不存在，此处只是兜底）
             if (tmp.exists()) tmp.delete()
         }
     }
@@ -231,9 +227,13 @@ class KnowledgeRepository(
             val existingKbs = listAllUnlocked()
 
             if (existingKbs.isNotEmpty()) {
-                // 已有库（含导入）——沿用原激活项，不创建
-                // 但仍需检查已有库是否完整（中断恢复补齐）
-                existingKbs.forEach { kb -> ensureKbFilesCompleteUnlocked(kb.name) }
+                // R11: 已有库——先完成旧格式迁移，再补缺失文件。
+                // 旧顺序：先 ensureKbFilesComplete 创建空文件，再 migrateIfNeeded——
+                // 空文件遮住迁移（migrateIfNeeded 以 understand 已存在为提前返回条件）。
+                existingKbs.forEach { kb -> 
+                    migrateIfNeededUnlocked(kb.name)
+                    ensureKbFilesCompleteUnlocked(kb.name)
+                }
                 initMarker.writeText("done")
                 return@withLock
             }
@@ -491,8 +491,9 @@ class KnowledgeRepository(
         }.getOrDefault(emptyMap())
     }
 
-    /** F09: 保存一条纠正记录。revision 自增，后台旧任务不能覆盖新 revision。
-     * 如果 memoryId 已存在且现有 revision >= 新 revision，拒绝写入（迟到保护）。 */
+    /** F09: 保存一条纠正记录。revision 单调递增（库级），不会因撤销倒退。
+     * R07: 不再使用剩余记录的 max 推算 revision（撤销删除后可能倒退）。
+     * 改为读取库级持久化 revision 标记，每次纠正/撤销均递增。 */
     suspend fun saveCorrection(
         kbName: String,
         memoryId: String,
@@ -503,8 +504,8 @@ class KnowledgeRepository(
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) return@withLock false
             val current = readCorrectionsUnlocked(kbName)
-            val existing = current[memoryId]
-            val newRevision = (current.values.maxOfOrNull { it.revision } ?: 0) + 1
+            // R07: 读取库级持久化 revision（单调递增，不会因撤销倒退）
+            val newRevision = readMemoryRevisionUnlocked(kbName) + 1
             val correction = com.lovebrain.app.model.MemoryCorrection(
                 memoryId = memoryId,
                 action = action,
@@ -524,12 +525,15 @@ class KnowledgeRepository(
                     updated.values.toList()
                 )
             )
+            // R07: 持久化库级 revision（单调递增）
+            writeMemoryRevisionUnlocked(kbName, newRevision)
             scheduleDebouncedBackup()
             true
         }
     }
 
-    /** F09: 撤销纠正 — 删除指定 memoryId 的纠正记录。 */
+    /** F09: 撤销纠正 — 删除指定 memoryId 的纠正记录。
+     * R07: 撤销也递增库级 revision，保证单调性。 */
     suspend fun undoCorrection(kbName: String, memoryId: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) return@withLock false
@@ -545,15 +549,36 @@ class KnowledgeRepository(
                     updated.values.toList()
                 )
             )
+            // R07: 撤销也递增 revision（防 0→1→0 倒退）
+            val newRevision = readMemoryRevisionUnlocked(kbName) + 1
+            writeMemoryRevisionUnlocked(kbName, newRevision)
             scheduleDebouncedBackup()
             true
         }
     }
 
     /** F09: 获取纠正记录的全局 revision（用于后台防护）。
-     * 后台任务启动时冻结 revision，完成后比对当前 revision — 如果不匹配，说明用户在期间做了新纠正，丢弃后台结果。 */
+     * R07: 读取库级持久化 revision（单调递增），不依赖剩余记录 max。 */
     suspend fun getCorrectionsRevision(kbName: String): Int = withContext(Dispatchers.IO) {
-        readCorrectionsUnlocked(kbName).values.maxOfOrNull { it.revision } ?: 0
+        readMemoryRevisionUnlocked(kbName)
+    }
+
+    /** R07: 库级 memory revision 标记文件 */
+    private fun memoryRevisionFile(kbName: String): File =
+        File(File(knowledgeRoot, kbName), "memory/.revision")
+
+    /** R07: 读取库级 memory revision（无锁，调用方持有 fileMutex） */
+    private fun readMemoryRevisionUnlocked(kbName: String): Int {
+        val file = memoryRevisionFile(kbName)
+        if (!file.exists()) return 0
+        return runCatching { file.readText().trim().toIntOrNull() ?: 0 }.getOrDefault(0)
+    }
+
+    /** R07: 写入库级 memory revision（无锁，调用方持有 fileMutex） */
+    private fun writeMemoryRevisionUnlocked(kbName: String, revision: Int) {
+        val dir = File(knowledgeRoot, kbName)
+        File(dir, "memory").mkdirs()
+        atomicWriteText(memoryRevisionFile(kbName), revision.toString())
     }
 
     /** 无锁版读取（调用方持有 fileMutex） */
@@ -1088,12 +1113,14 @@ class KnowledgeRepository(
             val completed = opState.completedSteps.toMutableList()
             val hasContent = rawChat.isNotBlank() || recent.isNotBlank() || rawScene.isNotBlank() || scene.isNotBlank()
 
-            // F04: 步骤 2 — 追加归档条目（幂等：检查是否已完成）
+            // R02/R03: 步骤 2 — 追加归档条目（幂等：检查是否已完成）
+            // R03: 保留无法识别的原内容，标为 legacy，不因格式校验丢弃用户数据
             if (hasContent && ArchiveStep.APPEND_ARCHIVE !in completed) {
                 val archiveEntry = buildString {
                     append("\n# [${opState.timestamp}] ${opState.oldTopic}\n\n")
                     append("## [${opState.timestamp}] 状态变化\n")
-                    append(mergeSceneEntriesSorted(rawScene, scene))
+                    // R03: mergeSceneEntriesSorted 保留无合法时间戳的行（标为 legacy）
+                    append(mergeSceneEntriesWithLegacy(rawScene, scene))
                     append("\n")
                     append("### [${opState.timestamp}] 对话记录\n")
                     if (rawChat.isNotBlank()) append(rawChat.trim()).append("\n")
@@ -1129,15 +1156,23 @@ class KnowledgeRepository(
     /** 状态条目行校验：必须以 "- [yyyy-MM-dd HH:mm]" 真实时间戳开头（防 schema 模板示例行混入） */
     private val validEntryLine = Regex("^- \\[\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}]")
 
-    /** 合并多个来源的状态条目，按时间戳倒序（最新在前）；无合法时间戳的行丢弃 */
-    private fun mergeSceneEntriesSorted(vararg sources: String): String {
-        val entries = sources
-            .flatMap { it.lines() }
-            .map { it.trimEnd() }
-            .filter { validEntryLine.containsMatchIn(it) }
-        if (entries.isEmpty()) return ""
-        val sorted = entries.sortedByDescending { parseEntryTs(it) }
-        return sorted.joinToString("\n") + "\n"
+    /** R03: 合并多个来源的状态条目，按时间戳倒序（最新在前）。
+     * 无合法时间戳的行不丢弃——标记为 [legacy] 保留在尾部，防用户数据永久遗漏。 */
+    private fun mergeSceneEntriesWithLegacy(vararg sources: String): String {
+        val allLines = sources.flatMap { it.lines() }.map { it.trimEnd() }.filter { it.isNotBlank() }
+        val validEntries = allLines.filter { validEntryLine.containsMatchIn(it) }
+        val legacyEntries = allLines.filter { !validEntryLine.containsMatchIn(it) && it.startsWith("- ") }
+        if (validEntries.isEmpty() && legacyEntries.isEmpty()) return ""
+        val sorted = validEntries.sortedByDescending { parseEntryTs(it) }
+        val sb = StringBuilder()
+        if (sorted.isNotEmpty()) {
+            sb.append(sorted.joinToString("\n")).append("\n")
+        }
+        if (legacyEntries.isNotEmpty()) {
+            sb.append("# [legacy] 以下为无法解析时间戳的历史内容\n")
+            legacyEntries.forEach { sb.append(it).append("\n") }
+        }
+        return sb.toString()
     }
 
     private fun parseEntryTs(entry: String): Long {
@@ -1222,82 +1257,88 @@ class KnowledgeRepository(
 
     suspend fun migrateIfNeeded(kbName: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
-            val dir = File(knowledgeRoot, kbName)
-            val oldGlobal = File(dir, "global")
-            val newUnderstand = File(dir, "understand")
+            migrateIfNeededUnlocked(kbName)
+        }
+    }
 
-            // 确保 v3 文件存在（v2→v3 过渡）
-            if (dir.exists()) {
-                File(dir, "moment").mkdirs()
-                File(dir, "memory").mkdirs()
-                val sceneFile = File(dir, "moment/scene.md")
-                if (!sceneFile.exists()) atomicWriteText(sceneFile, "")
-                val rawChat = File(dir, "memory/raw_chat.md")
-                if (!rawChat.exists()) atomicWriteText(rawChat, "")
-                val rawTopic = File(dir, "memory/raw_topic.md")
-                if (!rawTopic.exists()) atomicWriteText(rawTopic, "")
-                val rawScene = File(dir, "memory/raw_scene.md")
-                if (!rawScene.exists()) atomicWriteText(rawScene, "")
-                val planFile = File(dir, "moment/plan.md")
-                if (!planFile.exists()) atomicWriteText(planFile, loadSchema("plan"))
-                // 旧版 plan.md 的裸"格式/示例"说明行包进注释（编辑可见、预览隐藏、不进 prompt）
-                if (planFile.exists()) {
-                    val planText = runCatching { planFile.readText() }.getOrDefault("")
-                    val fixed = wrapPlanMetaLines(planText)
-                    if (fixed != planText) atomicWriteText(planFile, fixed)
-                }
-                val counselingLog = File(dir, "memory/counseling_log.md")
-                if (!counselingLog.exists()) atomicWriteText(counselingLog, "")
-                val reflectHistory = File(dir, "memory/reflect_history.md")
-                if (!reflectHistory.exists()) atomicWriteText(reflectHistory, "")
-                // 兼容：旧知识库把"她"的画像存为 understand/you.md，统一改名为 her.md
-                val oldYou = File(dir, "understand/you.md")
-                val newHer = File(dir, "understand/her.md")
-                if (oldYou.exists() && !newHer.exists()) oldYou.renameTo(newHer)
+    /** R11: 迁移的无锁核心——调用方必须已持有文件互斥锁 */
+    private suspend fun migrateIfNeededUnlocked(kbName: String) {
+        val dir = File(knowledgeRoot, kbName)
+        val oldGlobal = File(dir, "global")
+        val newUnderstand = File(dir, "understand")
 
-                // ═══  修复：旧阶段枚举（无"期"六选一）→ 新八阶段（带"期"）迁移 ═══
-                val oldStage = getCurrentStage(kbName)
-                val mapped = STAGE_MIGRATION[oldStage]
-                if (mapped != null) {
-                    updateStageUnlocked(kbName, mapped)
-                    updateWarmthStageLabelUnlocked(kbName, mapped)
-                }
-            }
-
-            if (newUnderstand.exists()) return@withLock
-            if (!oldGlobal.exists()) return@withLock
-
-            File(dir, "understand").mkdirs()
+        // 确保 v3 文件存在（v2→v3 过渡）
+        if (dir.exists()) {
             File(dir, "moment").mkdirs()
             File(dir, "memory").mkdirs()
-
-            val me = File(dir, "global/me.md")
-            val her = File(dir, "global/her.md")
-            val status = File(dir, "global/status.md")
-            if (me.exists()) me.copyTo(File(dir, "understand/me.md"), overwrite = true)
-            if (her.exists()) her.copyTo(File(dir, "understand/her.md"), overwrite = true)
-            if (status.exists()) status.copyTo(File(dir, "understand/warmth.md"), overwrite = true)
-
-            val chatlog = File(dir, "recent/chatlog.md")
-            if (chatlog.exists()) chatlog.copyTo(File(dir, "moment/recent.md"), overwrite = true)
-
-            val lessons = File(dir, "general/lessons.md")
-            if (lessons.exists()) lessons.copyTo(File(dir, "memory/lessons.md"), overwrite = true)
-            val moments = File(dir, "general/moments.md")
-            val details = File(dir, "general/details.md")
-            val archiveContent = buildString {
-                if (moments.exists()) append(moments.readText()).append("\n\n")
-                if (details.exists()) append(details.readText())
+            val sceneFile = File(dir, "moment/scene.md")
+            if (!sceneFile.exists()) atomicWriteText(sceneFile, "")
+            val rawChat = File(dir, "memory/raw_chat.md")
+            if (!rawChat.exists()) atomicWriteText(rawChat, "")
+            val rawTopic = File(dir, "memory/raw_topic.md")
+            if (!rawTopic.exists()) atomicWriteText(rawTopic, "")
+            val rawScene = File(dir, "memory/raw_scene.md")
+            if (!rawScene.exists()) atomicWriteText(rawScene, "")
+            val planFile = File(dir, "moment/plan.md")
+            if (!planFile.exists()) atomicWriteText(planFile, loadSchema("plan"))
+            // 旧版 plan.md 的裸"格式/示例"说明行包进注释（编辑可见、预览隐藏、不进 prompt）
+            if (planFile.exists()) {
+                val planText = runCatching { planFile.readText() }.getOrDefault("")
+                val fixed = wrapPlanMetaLines(planText)
+                if (fixed != planText) atomicWriteText(planFile, fixed)
             }
-            if (archiveContent.isNotBlank()) {
-                atomicWriteText(File(dir, "memory/archive.md"), archiveContent)
-            }
+            val counselingLog = File(dir, "memory/counseling_log.md")
+            if (!counselingLog.exists()) atomicWriteText(counselingLog, "")
+            val reflectHistory = File(dir, "memory/reflect_history.md")
+            if (!reflectHistory.exists()) atomicWriteText(reflectHistory, "")
+            // 兼容：旧知识库把"她"的画像存为 understand/you.md，统一改名为 her.md
+            val oldYou = File(dir, "understand/you.md")
+            val newHer = File(dir, "understand/her.md")
+            if (oldYou.exists() && !newHer.exists()) oldYou.renameTo(newHer)
 
-            val initTime = com.lovebrain.app.util.TimeFmt.now()
-            atomicWriteText(File(dir, "moment/topic.md"), "- [$initTime] 正在聊：（等待第一次对话）")
-            atomicWriteText(File(dir, "memory/topic_log.md"), "")
-            atomicWriteText(File(dir, ".migrated_v2"), isoNow())
+            // ═══  修复：旧阶段枚举（无"期"六选一）→ 新八阶段（带"期"）迁移 ═══
+            val oldStage = getCurrentStage(kbName)
+            val mapped = STAGE_MIGRATION[oldStage]
+            if (mapped != null) {
+                updateStageUnlocked(kbName, mapped)
+                updateWarmthStageLabelUnlocked(kbName, mapped)
+            }
         }
+
+        // R11: 不再以 understand 已存在为提前返回——空文件可能由 ensureKbFilesComplete 创建，
+        // 遮住了旧 global/ 格式迁移。改为检查旧 global 目录是否存在来决定是否迁移。
+        if (!oldGlobal.exists()) return
+
+        File(dir, "understand").mkdirs()
+        File(dir, "moment").mkdirs()
+        File(dir, "memory").mkdirs()
+
+        val me = File(dir, "global/me.md")
+        val her = File(dir, "global/her.md")
+        val status = File(dir, "global/status.md")
+        if (me.exists()) me.copyTo(File(dir, "understand/me.md"), overwrite = true)
+        if (her.exists()) her.copyTo(File(dir, "understand/her.md"), overwrite = true)
+        if (status.exists()) status.copyTo(File(dir, "understand/warmth.md"), overwrite = true)
+
+        val chatlog = File(dir, "recent/chatlog.md")
+        if (chatlog.exists()) chatlog.copyTo(File(dir, "moment/recent.md"), overwrite = true)
+
+        val lessons = File(dir, "general/lessons.md")
+        if (lessons.exists()) lessons.copyTo(File(dir, "memory/lessons.md"), overwrite = true)
+        val moments = File(dir, "general/moments.md")
+        val details = File(dir, "general/details.md")
+        val archiveContent = buildString {
+            if (moments.exists()) append(moments.readText()).append("\n\n")
+            if (details.exists()) append(details.readText())
+        }
+        if (archiveContent.isNotBlank()) {
+            atomicWriteText(File(dir, "memory/archive.md"), archiveContent)
+        }
+
+        val initTime = com.lovebrain.app.util.TimeFmt.now()
+        atomicWriteText(File(dir, "moment/topic.md"), "- [$initTime] 正在聊：（等待第一次对话）")
+        atomicWriteText(File(dir, "memory/topic_log.md"), "")
+        atomicWriteText(File(dir, ".migrated_v2"), isoNow())
     }
 
     private fun readAsset(path: String): String {

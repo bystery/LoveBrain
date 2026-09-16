@@ -463,51 +463,46 @@ class LoveBrainViewModel(
 
         // GEN-02：冻结快照 — 所有本轮上下文同源
         val snapshot = _messages.value.map { it.copy() }
-        // F08: IDEA hint 纳入未提交草稿
+        // F08: IDEA hint 疉入未提交草稿
         val userHint = collectIdeaHintWithDraft(snapshot)
         // GEN-02B：冻结 KB 快照 — AI prompt 和 nextRound 保存使用同一对象
         val kbSnapshot = _activeKb.value
         val kbName = kbSnapshot?.name
 
-        // F07: 冻结持续意图快照（读取当前 KB 的 intent 配置）
-        // 在 viewModelScope 中同步读取，不阻塞主线程
-        val intentSnapshot = kbName?.let { name ->
-            runCatching {
-                kotlinx.coroutines.runBlocking { knowledgeRepo.readIntent(name) }
-            }.getOrNull()
-        } ?: com.lovebrain.app.model.IntentConfig()
+        // R08: 异步冻结持续意图和纠正快照，不阻塞主线程
+        // 旧代码用 runBlocking 读盘，遇锁等待会卡 UI
+        viewModelScope.launch {
+            val intentSnapshot = kbName?.let { name ->
+                runCatching { withContext(Dispatchers.IO) { knowledgeRepo.readIntent(name) } }.getOrNull()
+            } ?: com.lovebrain.app.model.IntentConfig()
 
-        // F09: 冻结纠正记录快照（读取当前 KB 的 corrections）
-        val correctionsSnapshot = kbName?.let { name ->
-            runCatching {
-                kotlinx.coroutines.runBlocking { knowledgeRepo.readCorrections(name) }
-            }.getOrNull()
-        } ?: emptyMap()
-        val correctionsRevision = kbName?.let { name ->
-            runCatching {
-                kotlinx.coroutines.runBlocking { knowledgeRepo.getCorrectionsRevision(name) }
-            }.getOrNull()
-        } ?: 0
+            val correctionsSnapshot = kbName?.let { name ->
+                runCatching { withContext(Dispatchers.IO) { knowledgeRepo.readCorrections(name) } }.getOrNull()
+            } ?: emptyMap()
+            val correctionsRevision = kbName?.let { name ->
+                runCatching { withContext(Dispatchers.IO) { knowledgeRepo.getCorrectionsRevision(name) } }.getOrNull()
+            } ?: 0
 
-        // GEN-01 双层保护第二层：Engine 返回 null = reject，不覆盖旧 Job
-        val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this, intentSnapshot, correctionsSnapshot)
-        if (job != null) {
-            generateJob = job
-            // GEN-02：context 必须和实际启动成功的 Job 绑定
-            replyGenerationContext = ReplyGenerationContext(
-                messages = snapshot,
-                messageIds = snapshot.mapTo(mutableSetOf()) { it.id },
-                kbName = kbName,
-                ideaHint = userHint,
-                intentText = intentSnapshot.text,
-                intentEnabled = intentSnapshot.enabled,
-                intentRevision = intentSnapshot.revision,
-                correctionsRevision = correctionsRevision
-            )
-            // GEN-01：正常结束后清 Job 引用（identity guard 防止清掉后来的新 Job）
-            job.invokeOnCompletion {
-                if (generateJob === job) {
-                    generateJob = null
+            // GEN-01 双层保护第二层：Engine 返回 null = reject，不覆盖旧 Job
+            val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this@LoveBrainViewModel, intentSnapshot, correctionsSnapshot)
+            if (job != null) {
+                generateJob = job
+                // GEN-02：context 必须和实际启动成功的 Job 绑定
+                replyGenerationContext = ReplyGenerationContext(
+                    messages = snapshot,
+                    messageIds = snapshot.mapTo(mutableSetOf()) { it.id },
+                    kbName = kbName,
+                    ideaHint = userHint,
+                    intentText = intentSnapshot.text,
+                    intentEnabled = intentSnapshot.enabled,
+                    intentRevision = intentSnapshot.revision,
+                    correctionsRevision = correctionsRevision
+                )
+                // GEN-01：正常结束后清 Job 引用（identity guard 防止清掉后来的新 Job）
+                job.invokeOnCompletion {
+                    if (generateJob === job) {
+                        generateJob = null
+                    }
                 }
             }
         }
@@ -1189,19 +1184,34 @@ class LoveBrainViewModel(
         }
     }
 
-    /** F07: 保存持续意图配置 */
+    /** R08: 保存持续意图配置。绑定编辑时冻结的 KB，不读当前 active KB。
+     * 持久化失败保留编辑状态并提示。旧请求因 revision 变化而作废。 */
     fun saveIntent(text: String, enabled: Boolean) {
-        val kbName = _activeKb.value?.name ?: return
+        // R08: 绑定编辑器打开时的 KB，不读当前 active KB
+        val kbName = intentEditorKbName ?: _activeKb.value?.name ?: return
         viewModelScope.launch {
-            val updated = withContext(Dispatchers.IO) {
-                knowledgeRepo.saveIntent(kbName, text, enabled)
+            runCatching {
+                val updated = withContext(Dispatchers.IO) {
+                    knowledgeRepo.saveIntent(kbName, text, enabled)
+                }
+                _intentConfig.value = updated
+                _kbNotice.value = if (enabled) "持续意图已开启" else "持续意图已关闭"
+                // R08: 保存成功后关闭编辑器
+                _showIntentEditor.value = false
+            }.onFailure {
+                // R08: 持久化失败保留编辑状态并提示
+                showPanelWarning("意图保存失败，内容已保留，请重试")
             }
-            _intentConfig.value = updated
-            _kbNotice.value = if (enabled) "持续意图已开启" else "持续意图已关闭"
         }
     }
 
-    fun openIntentEditor() { _showIntentEditor.value = true }
+    /** R08: 编辑器绑定创建时 KB，防切库写错人 */
+    private var intentEditorKbName: String? = null
+
+    fun openIntentEditor() {
+        intentEditorKbName = _activeKb.value?.name
+        _showIntentEditor.value = true
+    }
     fun dismissIntentEditor() { _showIntentEditor.value = false }
 
     // ═══════════ F09: 记忆纠正（绑定生成时冻结的 KB） ═══════════

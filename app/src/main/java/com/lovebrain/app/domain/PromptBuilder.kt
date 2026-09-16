@@ -10,7 +10,6 @@ import com.lovebrain.app.model.MemoryCorrection
 import com.lovebrain.app.model.MemoryKind
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.util.TimeFmt
-import java.security.MessageDigest
 
 /**
  * Prompt 组装器 v4（ 缓存锚点前置重排）。
@@ -172,13 +171,10 @@ class PromptBuilder(
      * 回复 user prompt：知识段（过预算） + 持续意图 + 想法 + 本次对话记录 + 时间戳垫底。
      * format.md 已移入 system（不再附在 user 尾部）。
      *
-     * F07: 持续意图启用时短注入，关闭不注入。
-     * F08: 优先级 — 事实与红线 > 本轮想法 > 当前对话适宜性 > 持续意图 > 默认战术。
-     *      想法和持续意图在知识段之后、对话记录之前。
-     *
-     * 预算作用于最终完整 user request，按区块裁：
-     * 先裁旧记忆（lessons/raw_topic/raw_scene）→ 再裁较早 recent → 再裁较旧 scene；
+     * R09: 预算按区块裁剪——先旧经验→较早 recent→旧 scene→必要时旧 chat；
      * 完整 IDEA 和最新真实消息最后才动，结构围栏不被截半。
+     *
+     * R-DRY: 旧入口现为薄包装，委托 buildReplyUserPromptWithRefs，不再维护两份实现。
      */
     suspend fun buildReplyUserPrompt(
         kb: KnowledgeBase?,
@@ -187,36 +183,7 @@ class PromptBuilder(
         aggressive: Boolean = false,
         intentConfig: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()
     ): String {
-        // F08: 分别构建各区块，最终拼合后过预算
-        val knowledgeBlock = buildKnowledgeInsertion(kb, aggressive)
-        // F07: 持续意图短注入（仅 enabled 且非空时）
-        val intentBlock = if (intentConfig.enabled && intentConfig.text.isNotBlank()) {
-            "【持续意图】\n${intentConfig.text.trim()}\n\n"
-        } else ""
-        // P1-6: IDEA（想法）独立注入一次——不进入 <chat> 围栏
-        val ideaBlock = if (userHint.isNotBlank()) {
-            "# 用户的回复想法\n用户想这样回：「${userHint.trim()}」\n请基于这个方向润色出4种方案。\n\n"
-        } else ""
-        // 对话记录
-        val chatHeader = "# 本次对话记录\n" +
-            "（按时间顺序。角色务必分清：\"她\"=对方，\"我\"=用户本人。谁做了什么，严格按对话归属判断，禁止张冠李戴把\"我\"的事安到\"她\"头上或反之。）\n\n"
-        val chatMessages = messages.filter { it.role != ChatMessage.Role.IDEA }
-        val effectiveMessages = if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
-            chatMessages.takeLast(AppConfig.REPLY_MAX_MESSAGES)
-        } else {
-            chatMessages
-        }
-        val chatBody = StringBuilder("<chat>\n")
-        if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
-            chatBody.append("（注：对话记录超过 ${AppConfig.REPLY_MAX_MESSAGES} 条，仅保留最近 ${AppConfig.REPLY_MAX_MESSAGES} 条）\n\n")
-        }
-        effectiveMessages.forEach { msg -> chatBody.append("${msg.role.label}：${msg.content}\n") }
-        chatBody.append("</chat>\n")
-        val timestampBlock = buildTimestampPrompt()
-
-        // F08: 拼合后过预算——按区块优先级裁剪
-        val fullText = knowledgeBlock + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
-        return applyBudgetByBlocks(fullText, knowledgeBlock, intentBlock, ideaBlock, chatHeader, chatBody.toString(), timestampBlock)
+        return buildReplyUserPromptWithRefs(kb, messages, userHint, aggressive, intentConfig).prompt
     }
 
     // ═══════════ F09: 记忆引用与纠正过滤 ═══════════
@@ -243,18 +210,30 @@ class PromptBuilder(
         corrections: Map<String, MemoryCorrection> = emptyMap()
     ): PromptBuildResult {
         if (kb == null) {
-            val prompt = buildReplyUserPrompt(kb, messages, userHint, aggressive, intentConfig)
-            return PromptBuildResult(prompt, emptyList())
+            val knowledgeBlock = "（暂无知识库，按通用策略处理）\n\n"
+            val (chatHeader, chatBody) = buildChatBlock(messages)
+            val timestampBlock = buildTimestampPrompt()
+            val intentBlock = buildIntentBlock(intentConfig)
+            val ideaBlock = buildIdeaBlock(userHint)
+            val fullText = knowledgeBlock + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
+            return PromptBuildResult(fullText, emptyList())
         }
 
         val refs = mutableListOf<MemoryRef>()
         val knowledgeBlock = buildKnowledgeInsertionWithRefs(kb, aggressive, corrections, refs)
-        val intentBlock = if (intentConfig.enabled && intentConfig.text.isNotBlank()) {
-            "【持续意图】\n${intentConfig.text.trim()}\n\n"
-        } else ""
-        val ideaBlock = if (userHint.isNotBlank()) {
-            "# 用户的回复想法\n用户想这样回：「${userHint.trim()}」\n请基于这个方向润色出4种方案。\n\n"
-        } else ""
+        val intentBlock = buildIntentBlock(intentConfig)
+        val ideaBlock = buildIdeaBlock(userHint)
+        val (chatHeader, chatBody) = buildChatBlock(messages)
+        val timestampBlock = buildTimestampPrompt()
+
+        val prompt = applyBudgetByBlocks(knowledgeBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
+        // R06: refs 裁剪后再生 — 只保留实际在最终 prompt 中出现的引用
+        val finalRefs = filterRefsByPrompt(refs, prompt)
+        return PromptBuildResult(prompt, finalRefs)
+    }
+
+    /** R-DRY: 构建对话记录区块，返回 (header, body) */
+    private fun buildChatBlock(messages: List<ChatMessage>): Pair<String, String> {
         val chatHeader = "# 本次对话记录\n" +
             "（按时间顺序。角色务必分清：\"她\"=对方，\"我\"=用户本人。谁做了什么，严格按对话归属判断，禁止张冠李戴把\"我\"的事安到\"她\"头上或反之。）\n\n"
         val chatMessages = messages.filter { it.role != ChatMessage.Role.IDEA }
@@ -269,11 +248,26 @@ class PromptBuilder(
         }
         effectiveMessages.forEach { msg -> chatBody.append("${msg.role.label}：${msg.content}\n") }
         chatBody.append("</chat>\n")
-        val timestampBlock = buildTimestampPrompt()
+        return chatHeader to chatBody.toString()
+    }
 
-        val fullText = knowledgeBlock + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
-        val prompt = applyBudgetByBlocks(fullText, knowledgeBlock, intentBlock, ideaBlock, chatHeader, chatBody.toString(), timestampBlock)
-        return PromptBuildResult(prompt, refs.toList())
+    /** R-DRY: 持续意图区块 */
+    private fun buildIntentBlock(intentConfig: com.lovebrain.app.model.IntentConfig): String {
+        return if (intentConfig.enabled && intentConfig.text.isNotBlank()) {
+            "【持续意图】\n${intentConfig.text.trim()}\n\n"
+        } else ""
+    }
+
+    /** R-DRY: IDEA 区块 */
+    private fun buildIdeaBlock(userHint: String): String {
+        return if (userHint.isNotBlank()) {
+            "# 用户的回复想法\n用户想这样回：「${userHint.trim()}」\n请基于这个方向润色出4种方案。\n\n"
+        } else ""
+    }
+
+    /** R06: refs 裁剪后过滤 — 只保留实际出现在最终 prompt 中的引用 */
+    private fun filterRefsByPrompt(refs: List<MemoryRef>, prompt: String): List<MemoryRef> {
+        return refs.filter { ref -> prompt.contains(ref.text.take(100)) }
     }
 
     /**
@@ -396,14 +390,14 @@ class PromptBuilder(
         return sb.toString()
     }
 
-    /** F09: 生成 MemoryRef — id 为 kind+sourcePath+内容hash前8位 */
+    /** R06: 生成 MemoryRef — id 为 kind+sourcePath（稳定，不随显示文本变化）
+     * 旧实现用内容 hash 做 ID：画像添一句、经验多一块、事项有更新都会改变整段 ID，
+     * 导致旧纠正失效。改为只基于 kind+sourcePath 的稳定 ID。
+     * unknown legacy 整段引用时才用 hash 区分。 */
     private fun makeRef(kbId: String, kind: MemoryKind, sourcePath: String, text: String): MemoryRef {
-        val hash = MessageDigest.getInstance("SHA-256")
-            .digest(text.toByteArray(Charsets.UTF_8))
-            .joinToString("") { "%02x".format(it) }
-            .take(8)
+        val stableId = "${kind.name}:${sourcePath}"
         return MemoryRef(
-            id = "${kind.name}:${sourcePath}:$hash",
+            id = stableId,
             kbId = kbId,
             kind = kind,
             text = text.take(500),  // 截断防过大
@@ -411,7 +405,8 @@ class PromptBuilder(
         )
     }
 
-    /** F09: 检查 memoryId 是否被纠正。如果被纠正，按 action 类型处理。 */
+    /** R06: 检查 memoryId 是否被纠正。如果被纠正，按 action 类型处理。
+     * MUTED: 真正限制——不注入原始内容，只保留被动回应能力。 */
     private fun isCorrected(
         memoryId: String,
         corrections: Map<String, MemoryCorrection>,
@@ -427,18 +422,22 @@ class PromptBuilder(
                 true  // 跳过原始内容
             }
             CorrectionAction.FINISHED -> true  // 事项已结束，跳过
-            CorrectionAction.MUTED -> false    // 保留事实但标记不主动提（仍注入，但不作为主动续聊素材）
+            CorrectionAction.MUTED -> {
+                // R06: MUTED 真正限制——不注入原始内容，
+                // 但在末尾标记可被动回应（模型可回答相关提问但不主动提）
+                sb.append("（此条记忆已暂停主动提及，但仍可被动回应相关提问）\n")
+                true  // 跳过原始内容
+            }
             CorrectionAction.WRONG_PERSON -> true  // 隔离，跳过
         }
     }
 
     /**
-     * F08: 按区块优先级裁剪预算。
-     * 裁剪顺序：旧记忆 → 较早 recent → 较旧 scene → 对话记录尾部
-     * 完整 IDEA 和最新真实消息最后才动，结构围栏不被截半。
+     * R09: 按区块优先级裁剪预算。
+     * 裁剪顺序：知识段尾部旧记忆 → 知识段中较旧 recent → 较旧 scene → 对话记录头部
+     * 完整 IDEA 和最新真实消息最后才动，结构围栏 <chat></chat> 不被截半。
      */
     private fun applyBudgetByBlocks(
-        fullText: String,
         knowledgeBlock: String,
         intentBlock: String,
         ideaBlock: String,
@@ -446,27 +445,52 @@ class PromptBuilder(
         chatBody: String,
         timestampBlock: String
     ): String {
+        val fullText = knowledgeBlock + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
         if (fullText.length <= AppConfig.TOTAL_BUDGET) return fullText
 
-        // 按优先级从低到高裁剪：先裁知识段中的旧记忆部分
         var knowledge = knowledgeBlock
         var remaining = fullText.length - AppConfig.TOTAL_BUDGET
 
-        // 尝试裁剪知识段尾部（旧记忆 raw_topic/raw_scene/lessons）
+        // R09: 1. 裁知识段尾部（旧记忆 raw_topic/raw_scene/lessons 在尾部）
         if (remaining > 0 && knowledge.length > remaining + 200) {
             val keepLen = knowledge.length - remaining
             knowledge = knowledge.take(keepLen) + "\n…（旧记忆因长度限制已省略）…\n"
-            remaining = 0
         }
 
-        val result = knowledge + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
+        var result = knowledge + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
         if (result.length <= AppConfig.TOTAL_BUDGET) return result
 
-        // 如果仍超预算，裁剪对话记录头部（保留尾部最新消息）
+        // R09: 2. 裁知识段中较旧 recent（保留最新对话段）
+        remaining = result.length - AppConfig.TOTAL_BUDGET
+        if (remaining > 0) {
+            val recentIdx = knowledge.indexOf("# 最近对话\n")
+            if (recentIdx >= 0 && recentIdx < knowledge.length - 200) {
+                val recentEnd = knowledge.length
+                val cutSize = minOf(remaining, recentEnd - recentIdx - 100)
+                if (cutSize > 0) {
+                    knowledge = knowledge.substring(0, recentIdx) +
+                        "# 最近对话\n…（较旧的对话因长度限制已省略）…\n"
+                    remaining -= cutSize
+                }
+            }
+        }
+
+        result = knowledge + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
+        if (result.length <= AppConfig.TOTAL_BUDGET) return result
+
+        // R09: 3. 裁对话记录头部（保留尾部最新消息和 </chat> 围栏闭合）
         val overflow = result.length - AppConfig.TOTAL_BUDGET
         val trimmedChat = if (chatBody.length > overflow + 100) {
-            // F08: 从对话头部裁剪，保留最新消息在尾部
-            "…（较早的对话已省略）…\n" + chatBody.takeLast(chatBody.length - overflow)
+            // 保留 <chat> 开标签和 </chat> 闭标签完整
+            val chatOpen = "<chat>\n"
+            val chatClose = "</chat>\n"
+            val innerContent = chatBody.removePrefix(chatOpen).removeSuffix(chatClose)
+            val keepLen = innerContent.length - overflow
+            if (keepLen > 0) {
+                chatOpen + "…（较早的对话已省略）…\n" + innerContent.takeLast(keepLen) + chatClose
+            } else {
+                chatOpen + "…（对话记录因长度限制已省略）…\n" + chatClose
+            }
         } else {
             chatBody
         }
