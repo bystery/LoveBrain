@@ -11,9 +11,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.FileOutputStream
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -721,40 +723,148 @@ class KnowledgeRepository(
         ((System.currentTimeMillis() - updated) / 3600_000).toInt()
     }
 
+    // ═══════════ F04: 累积操作状态（rotate/archive 幂等恢复） ═══════════
+
+    /**
+     * F04: 归档操作状态——追踪 rotateTopic 的多步操作，支持中断恢复和幂等。
+     *
+     * 每一步完成后在 completedSteps 中追加，而不是每次从初始集合重新生成。
+     * 异常中断后重启读取此状态，跳过已完成步骤，只执行剩余部分。
+     */
+    @Serializable
+    private data class ArchiveOperationState(
+        val operationId: String,       // 唯一操作 ID（基于内容哈希）
+        val kbName: String,            // 目标知识库
+        val timestamp: String,         // 操作时间戳
+        val oldTopic: String,          // 旧话题名
+        val contentHash: String,       // 输入内容哈希（防重复归档不同内容）
+        val completedSteps: List<String> = emptyList()  // 已完成步骤（累积追加）
+    )
+
+    /** 归档操作步骤名称 */
+    private object ArchiveStep {
+        const val READ_INPUT = "read_input"           // 读取输入文件
+        const val APPEND_ARCHIVE = "append_archive"     // 追加到 raw_topic.md
+        const val INCREMENT_COUNT = "increment_count"   // topicCount + 1
+        const val CLEAR_SOURCES = "clear_sources"       // 清空四个源文件
+    }
+
+    /** 操作状态文件路径 */
+    private fun archiveOpFile(kbName: String): File =
+        File(File(knowledgeRoot, kbName), "moment/.archive_op.json")
+
+    /** 读取当前操作状态（无锁，调用方持有 fileMutex） */
+    private fun readArchiveOpUnlocked(kbName: String): ArchiveOperationState? {
+        val file = archiveOpFile(kbName)
+        if (!file.exists()) return null
+        return runCatching {
+            json.decodeFromString<ArchiveOperationState>(file.readText())
+        }.getOrNull()
+    }
+
+    /** 写入操作状态（无锁，调用方持有 fileMutex） */
+    private fun writeArchiveOpUnlocked(kbName: String, state: ArchiveOperationState) {
+        atomicWriteText(archiveOpFile(kbName), json.encodeToString(ArchiveOperationState.serializer(), state))
+    }
+
+    /** 删除操作状态（无锁，调用方持有 fileMutex） */
+    private fun deleteArchiveOpUnlocked(kbName: String) {
+        archiveOpFile(kbName).delete()
+    }
+
+    /** 计算内容哈希（用于检测输入是否变化） */
+    private fun contentHash(vararg contents: String): String {
+        val md = MessageDigest.getInstance("SHA-256")
+        contents.forEach { c -> md.update(c.toByteArray(Charsets.UTF_8)) }
+        return md.digest().joinToString("") { "%02x".format(it) }.take(16)
+    }
+
+    /**
+     * F04: rotateTopic — 使用累积操作状态实现幂等和中断恢复。
+     *
+     * 步骤顺序：
+     * 1. READ_INPUT: 读取 raw_chat/recent/raw_scene/scene 内容
+     * 2. APPEND_ARCHIVE: 追加归档条目到 raw_topic.md
+     * 3. INCREMENT_COUNT: topicCount + 1
+     * 4. CLEAR_SOURCES: 清空四个源文件
+     *
+     * 恢复逻辑：
+     * - 如果存在操作状态（无论是否完成），信任其中记录的已完成步骤，跳过它们
+     * - CLEAR_SOURCES 会修改源文件，因此恢复时不能用内容 hash 验证
+     * - 操作状态在创建时记录 contentHash，仅用于 operationId 唯一性
+     * - 所有步骤完成后删除状态文件
+     */
     suspend fun rotateTopic(kbName: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
-            val timestamp = com.lovebrain.app.util.TimeFmt.now()
+            // F04: 读取已有操作状态（优先恢复）
+            val existingOp = readArchiveOpUnlocked(kbName)
 
-            val oldTopic = getCurrentTopic(kbName)
-            // B = 对话暂存 + 最近两句
+            // F04: 读取输入内容
             val rawChat = readFile(kbName, "memory/raw_chat.md")
             val recent = readFile(kbName, "moment/recent.md")
-            // A = 状态暂存 + 此刻状态
             val rawScene = readFile(kbName, "memory/raw_scene.md")
             val scene = readFile(kbName, "moment/scene.md")
 
+            // F04: 如果存在未完成的操作状态，恢复它；否则创建新操作
+            val opState = if (existingOp != null) {
+                // 恢复已有操作状态——信任其中记录的已完成步骤
+                // contentHash 仅用于 operationId 唯一性，不用于恢复时验证
+                // （因为 CLEAR_SOURCES 会修改源文件，恢复时读取的内容可能已变化）
+                existingOp
+            } else {
+                // 创建新操作状态
+                val timestamp = com.lovebrain.app.util.TimeFmt.now()
+                val oldTopic = getCurrentTopic(kbName)
+                val inputHash = contentHash(rawChat, recent, rawScene, scene, oldTopic)
+                val newState = ArchiveOperationState(
+                    operationId = "$timestamp-$inputHash",
+                    kbName = kbName,
+                    timestamp = timestamp,
+                    oldTopic = oldTopic,
+                    contentHash = inputHash
+                )
+                writeArchiveOpUnlocked(kbName, newState)
+                newState
+            }
+
+            val completed = opState.completedSteps.toMutableList()
             val hasContent = rawChat.isNotBlank() || recent.isNotBlank() || rawScene.isNotBlank() || scene.isNotBlank()
-            if (hasContent) {
+
+            // F04: 步骤 2 — 追加归档条目（幂等：检查是否已完成）
+            if (hasContent && ArchiveStep.APPEND_ARCHIVE !in completed) {
                 val archiveEntry = buildString {
-                    append("\n# [$timestamp] $oldTopic\n\n")
-                    // 状态变化（H2）：合并两个来源，按时间倒序（最新在前），过滤无效行
-                    append("## [$timestamp] 状态变化\n")
+                    append("\n# [${opState.timestamp}] ${opState.oldTopic}\n\n")
+                    append("## [${opState.timestamp}] 状态变化\n")
                     append(mergeSceneEntriesSorted(rawScene, scene))
                     append("\n")
-                    // 对话记录（H3）：保持时间正序（暂存在前、最近在尾，天然顺序）
-                    append("### [$timestamp] 对话记录\n")
+                    append("### [${opState.timestamp}] 对话记录\n")
                     if (rawChat.isNotBlank()) append(rawChat.trim()).append("\n")
                     if (recent.isNotBlank()) append(recent.trim()).append("\n")
                 }
                 appendFileUnlocked(kbName, "memory/raw_topic.md", archiveEntry)
-                incrementTopicCountUnlocked(kbName)
+                completed.add(ArchiveStep.APPEND_ARCHIVE)
+                writeArchiveOpUnlocked(kbName, opState.copy(completedSteps = completed.toList()))
             }
 
-            // 清空四个源文件，为新话题腾空间（话题与 key 由调用方写入）
-            writeFileUnlocked(kbName, "memory/raw_chat.md", "")
-            writeFileUnlocked(kbName, "memory/raw_scene.md", "")
-            writeFileUnlocked(kbName, "moment/scene.md", "")
-            writeFileUnlocked(kbName, "moment/recent.md", "")
+            // F04: 步骤 3 — 增加计数（幂等：检查是否已完成）
+            if (hasContent && ArchiveStep.INCREMENT_COUNT !in completed) {
+                incrementTopicCountUnlocked(kbName)
+                completed.add(ArchiveStep.INCREMENT_COUNT)
+                writeArchiveOpUnlocked(kbName, opState.copy(completedSteps = completed.toList()))
+            }
+
+            // F04: 步骤 4 — 清空源文件（幂等：检查是否已完成）
+            if (ArchiveStep.CLEAR_SOURCES !in completed) {
+                writeFileUnlocked(kbName, "memory/raw_chat.md", "")
+                writeFileUnlocked(kbName, "memory/raw_scene.md", "")
+                writeFileUnlocked(kbName, "moment/scene.md", "")
+                writeFileUnlocked(kbName, "moment/recent.md", "")
+                completed.add(ArchiveStep.CLEAR_SOURCES)
+                writeArchiveOpUnlocked(kbName, opState.copy(completedSteps = completed.toList()))
+            }
+
+            // F04: 操作完成 — 删除状态文件
+            deleteArchiveOpUnlocked(kbName)
         }
     }
 
