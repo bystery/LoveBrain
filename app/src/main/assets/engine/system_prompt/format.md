@@ -32,7 +32,7 @@
     "topic_status": "same | drift | new",
     "topic_label": "当前话题标签",
     "scene_facts": [
-      {"text": "事实描述", "source_ids": ["her-0", "me-1"]}
+      {"text": "事实描述", "source_ids": ["m0", "m1"], "subject_candidate": "PARTNER|USER|UNKNOWN"}
     ],
     "ongoing": [
       {
@@ -140,4 +140,6 @@
 4. 区分持久事实（她怕黑）和瞬态状态（她现在在洗澡）
 5. 只报新增或变化的事实——来源必须是本轮对话中她或我的真实消息。模型自己的重述、候选回复、读取动作均不算新证据。无新增则输出 []。
 6. 同一事件已关心/回应过，对方没有再次提及、没有新进展时，不再写入 scene_facts
-7. **来源 ID 格式**：每条事实必须携带 `source_ids`，值为本轮对话记录中对应消息的来源标签。`<chat>` 围栏内每行格式为 `[her-0] 她：正文` 或 `[me-1] 我：正文`，方括号内的标签即为来源 ID。无来源的纯字符串格式已废弃，但仍兼容。
+7. **来源 ID 格式**：每条事实必须携带 `source_ids`，值为本轮对话记录中对应消息的来源标签。`<chat>` 围栏内每行格式为 `[m0] PARTNER: 正文` 或 `[m1] USER: 正文`，方括号内的标签即为来源 ID。无来源的纯字符串格式已废弃，但仍兼容。
+8. **不要提供 speaker 字段**——speaker 由客户端从 source_ids 确定性推导，模型无权覆盖。
+9. **subject_candidate**：如果可以判断事实描述的主体，提供 `subject_candidate`（值为 `PARTNER` / `USER` / `UNKNOWN`）。客户端会校验，不可靠时填 `UNKNOWN`。

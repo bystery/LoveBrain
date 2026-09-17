@@ -8,6 +8,8 @@ import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.OngoingItem
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SceneFact
+import com.lovebrain.app.domain.FactSpeakerResolver
+import com.lovebrain.app.domain.FactSubjectResolver
 
 /**
  * 话题生命周期管理器 v6（F03 重构）。
@@ -280,17 +282,37 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
                 continue
             }
 
-            // P1-05/5.5: 不再从来源消息的 role 强制推导 subject——
-            // 说话人不等于事实主体。“她：你感冒好了吗？”说话人是她，但感冒的人可能是用户。
-            // subject 留空（待解析/不确定），由后续实体解析或用户纠正决定。
-            val subject = ""
+            // P0-3: speaker 由代码从 source_ids 确定性推导——绝不交给 AI
+            val speaker = FactSpeakerResolver.resolveFromRoles(validIds, validSourceMap)
+
+            // P0-4: subject 与 speaker 分离——三层解析
+            // Level 1: 代码可确定（代词+speaker）
+            // Level 2: 实体规则
+            // Level 3: UNKNOWN（不猜）
+            // P0-5: 如果 AI 提供了 subject_candidate，作为 Level 3 候选但不无条件信
+            val subject = FactSubjectResolver.resolve(
+                factText = text,
+                speaker = speaker,
+                sourceIds = validIds,
+                dialogue = frozenMessages
+                    .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
+                    .map { com.lovebrain.app.model.DialogueMessage(
+                        id = it.id,
+                        speaker = when (it.role) {
+                            ChatMessage.Role.HER -> com.lovebrain.app.model.DialogueSpeaker.PARTNER
+                            ChatMessage.Role.ME -> com.lovebrain.app.model.DialogueSpeaker.USER
+                            else -> com.lovebrain.app.model.DialogueSpeaker.USER
+                        },
+                        text = it.content
+                    )}
+            )
 
             validatedFacts.add(StoredFact(
                 text = text,
                 sourceIds = validIds,
                 evidenceTime = now,
-                subject = EntityRef.UNKNOWN,  // P1-1: 不从来源 role 推导 subject
-                speaker = EntityRef.UNKNOWN   // P1-1: 说话人由 SceneFact 提供，不在 TopicRecorder 推导
+                subject = subject,
+                speaker = speaker
             ))
         }
 
@@ -417,7 +439,8 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         writeSceneAndArchive(kbName, chainPath, historyPath, keptEntries, expired)
     }
 
-    /** F03: 将 SceneEntry 列表写入 scene.md，过期条目追加到 raw_scene.md */
+    /** F03: 将 SceneEntry 列表写入 scene.md，过期条目追加到 raw_scene.md
+     * P0-6: 事实现在持久化 speaker/subject，不再在下一次读盘时丢失。 */
     private suspend fun writeSceneAndArchive(
         kbName: String,
         chainPath: String,
@@ -425,14 +448,22 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         kept: List<SceneEntry>,
         expired: List<SceneEntry>
     ) {
-        // 渲染 scene.md
+        // P0-6: 渲染 scene.md——事实带 speaker/subject 持久化
         val newChainContent = if (kept.isEmpty()) "" else kept.joinToString("\n") { entry ->
             val factsStr = entry.facts.joinToString("；") { f ->
+                val parts = mutableListOf<String>()
+                parts.add(f.text)
                 if (f.sourceIds.isNotEmpty()) {
-                    "${f.text}⟨${f.sourceIds.joinToString(",")}⟩"
-                } else {
-                    f.text
+                    parts.add("src=${f.sourceIds.joinToString(",")}")
                 }
+                // P0-6: 持久化 speaker/subject
+                if (f.speaker != EntityRef.UNKNOWN) {
+                    parts.add("spk=${f.speaker.name}")
+                }
+                if (f.subject != EntityRef.UNKNOWN) {
+                    parts.add("subj=${f.subject.name}")
+                }
+                parts.joinToString("|")
             }
             "- [${entry.timeStr}] ${entry.label}：${factsStr}"
         } + "\n"
@@ -444,11 +475,18 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             val historyContent = buildString {
                 expired.forEach { entry ->
                     val factsStr = entry.facts.joinToString("；") { f ->
+                        val parts = mutableListOf<String>()
+                        parts.add(f.text)
                         if (f.sourceIds.isNotEmpty()) {
-                            "${f.text}⟨${f.sourceIds.joinToString(",")}⟩"
-                        } else {
-                            f.text
+                            parts.add("src=${f.sourceIds.joinToString(",")}")
                         }
+                        if (f.speaker != EntityRef.UNKNOWN) {
+                            parts.add("spk=${f.speaker.name}")
+                        }
+                        if (f.subject != EntityRef.UNKNOWN) {
+                            parts.add("subj=${f.subject.name}")
+                        }
+                        parts.joinToString("|")
                     }
                     append("- [${entry.timeStr}] ${entry.label}：${factsStr}\n")
                 }
@@ -480,21 +518,14 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
                 "" to rest
             }
 
-            // 解析事实列表（支持 ⟨sourceIds⟩ 后缀）
+            // 解析事实列表（支持两种格式）
+            // 旧格式：事实文本⟨sourceIds⟩
+            // P0-6 新格式：事实文本|src=id1,id2|spk=HER|subj=ME
             val facts = factsRaw.split('；', ';')
                 .map { it.trim() }
                 .filter { it.isNotBlank() }
                 .map { factText ->
-                    // 检查是否有 ⟨sourceIds⟩ 后缀
-                    val srcMatch = Regex("(.*)⟨(.+)⟩$").find(factText)
-                    if (srcMatch != null) {
-                        val text = srcMatch.groupValues[1].trim()
-                        val srcIds = srcMatch.groupValues[2].split(',').map { it.trim() }.filter { it.isNotBlank() }
-                        StoredFact(text = text, sourceIds = srcIds, evidenceTime = timeMs, subject = extractSubject(text))
-                    } else {
-                        // 旧格式：无来源标记
-                        StoredFact(text = factText, sourceIds = emptyList(), evidenceTime = timeMs, subject = extractSubject(factText))
-                    }
+                    parseStoredFact(factText, timeMs)
                 }
 
             if (facts.isNotEmpty()) {
@@ -504,11 +535,53 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         return result
     }
 
-    /** F03: 从事实文本中提取主体标记
-     * P1-05/5.5: 不再用首字“她/我”猜测事实主体——说话人不等于被描述的人。
-     * 返回 UNKNOWN，由后续实体解析或用户纠正决定。 */
+    /** P0-4: 从事实文本中提取主体——使用 FactSubjectResolver 三层解析。
+     * 旧版 extractSubject 永远返回 UNKNOWN，现在改为实际解析。 */
     private fun extractSubject(text: String): EntityRef {
-        return EntityRef.UNKNOWN
+        // P0-4: 旧数据从 scene.md 读取时无 speaker 上下文，只能用 Level 2 实体规则
+        // 如果无法确定，仍返回 UNKNOWN
+        return FactSubjectResolver.resolve(
+            factText = text,
+            speaker = EntityRef.UNKNOWN,
+            sourceIds = emptyList(),
+            dialogue = emptyList()
+        )
+    }
+
+    /**
+     * P0-6: 解析单条事实文本为 StoredFact，兼容新旧两种格式。
+     *
+     * 旧格式：事实文本⟨sourceIds⟩
+     * 新格式：事实文本|src=id1,id2|spk=HER|subj=ME
+     * 无标记：纯文本（旧数据或无来源）
+     */
+    private fun parseStoredFact(factText: String, timeMs: Long): StoredFact {
+        // 优先检查新格式（| 分隔的字段）
+        if (factText.contains("|src=") || factText.contains("|spk=") || factText.contains("|subj=")) {
+            val parts = factText.split("|").map { it.trim() }
+            val text = parts.firstOrNull()?.trim().orEmpty()
+            val srcIds = parts.firstOrNull { it.startsWith("src=") }
+                ?.removePrefix("src=")?.split(",")?.map { it.trim() }?.filter { it.isNotBlank() }
+                ?: emptyList()
+            val speaker = parts.firstOrNull { it.startsWith("spk=") }
+                ?.removePrefix("spk=")?.let { runCatching { EntityRef.valueOf(it) }.getOrNull() }
+                ?: EntityRef.UNKNOWN
+            val subject = parts.firstOrNull { it.startsWith("subj=") }
+                ?.removePrefix("subj=")?.let { runCatching { EntityRef.valueOf(it) }.getOrNull() }
+                ?: extractSubject(text)
+            return StoredFact(text = text, sourceIds = srcIds, evidenceTime = timeMs, subject = subject, speaker = speaker)
+        }
+
+        // 旧格式：⟨sourceIds⟩ 后缀
+        val srcMatch = Regex("(.*)⟨(.+)⟩$").find(factText)
+        if (srcMatch != null) {
+            val text = srcMatch.groupValues[1].trim()
+            val srcIds = srcMatch.groupValues[2].split(',').map { it.trim() }.filter { it.isNotBlank() }
+            return StoredFact(text = text, sourceIds = srcIds, evidenceTime = timeMs, subject = extractSubject(text))
+        }
+
+        // 无标记：纯文本
+        return StoredFact(text = factText, sourceIds = emptyList(), evidenceTime = timeMs, subject = extractSubject(factText))
     }
 
     /**

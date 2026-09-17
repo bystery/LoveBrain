@@ -271,13 +271,14 @@ data class MemoryRef(
  *
  * HER = 她（对方）
  * ME = 我（用户）
+ * MULTIPLE = 来源混合（P0-3: 多个不同 speaker 的来源）
  * UNKNOWN = 无法可靠确定（不猜，留空避免误记）
  *
  * 关键规则：speaker=HER 不代表 subject=HER。
  * 例：她说"你感冒好了吗？" → speaker=HER, subject=ME
  */
 enum class EntityRef {
-    HER, ME, UNKNOWN
+    HER, ME, MULTIPLE, UNKNOWN
 }
 
 /**

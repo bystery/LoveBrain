@@ -107,12 +107,13 @@ class SceneUpdateRegressionTest {
 
     private fun readScene(dir: File): String = dir.sub("moment/scene.md").readText()
 
-    /** 精确提取 scene.md 中所有事实文本（去掉时间戳行格式和 ⟨sourceIds⟩ 标记，只保留事实内容） */
+    /** 精确提取 scene.md 中所有事实文本（去掉时间戳行格式和来源标记，只保留事实内容）
+     * 兼容旧格式 ⟨sourceIds⟩ 和新格式 |src=...|spk=...|subj=... */
     private fun extractFacts(scene: String): List<String> {
         return scene.lines()
             .filter { it.trim().startsWith("- [") }
             .flatMap { line ->
-                // 格式: "- [时间] 标签：事实1；事实2" 或事实可能带 ⟨sourceIds⟩ 后缀
+                // 格式: "- [时间] 标签：事实1；事实2" 或事实可能带来源标记
                 val colonIdx = line.indexOf("：")
                 if (colonIdx < 0) return@flatMap emptyList()
                 line.substring(colonIdx + 1)
@@ -120,8 +121,16 @@ class SceneUpdateRegressionTest {
                     .map { it.trim() }
                     .filter { it.isNotBlank() }
                     .map { fact ->
-                        // 剔除 ⟨sourceIds⟩ 标记
-                        Regex("⟨.+⟩$").replace(fact, "").trim()
+                        // 剔除新格式 |src=...|spk=...|subj=... 标记
+                        if (fact.contains("|src=") || fact.contains("|spk=") || fact.contains("|subj=")) {
+                            fact.substringBefore("|src=")
+                                .substringBefore("|spk=")
+                                .substringBefore("|subj=")
+                                .trim()
+                        } else {
+                            // 剔除旧格式 ⟨sourceIds⟩ 标记
+                            Regex("⟨.+⟩$").replace(fact, "").trim()
+                        }
                     }
             }
     }
@@ -339,6 +348,7 @@ class SceneUpdateRegressionTest {
             sceneFacts = listOf(SceneFact(text = "她感冒了", sourceIds = listOf("msg-0"))))
 
         val scene = readScene(dir)
-        assertTrue("scene.md 应包含 ⟨msg-0⟩ 来源标记", scene.contains("⟨msg-0⟩"))
+        // P0-6: 新格式使用 |src=msg-0 而非 ⟨msg-0⟩
+        assertTrue("scene.md 应包含 src=msg-0 来源标记", scene.contains("src=msg-0"))
     }
 }

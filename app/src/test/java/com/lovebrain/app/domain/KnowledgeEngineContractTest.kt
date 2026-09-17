@@ -152,6 +152,7 @@ class KnowledgeEngineContractTest {
         coEvery { topicRecorder.getTopicFullContext(any(), any()) } returns "话题上下文" // 经验引擎要求非空上下文
         coEvery { topicRecorder.getVectorContext(any()) } returns "向量上下文"
         val deepSeekRepo = mockk<DeepSeekRepository>()
+        // P0-11: vector + lessons 使用 generateRaw；reflect 使用 generateRawWithMetadata
         coEvery { deepSeekRepo.generateRaw(any(), any()) } coAnswers {
             val idx = callIndex.getAndIncrement()
             events.add("start-$idx")
@@ -160,8 +161,19 @@ class KnowledgeEngineContractTest {
             when (idx) {
                 0 -> "===REASON===\n向量依据\n===STAGE===\n" // 向量重估 raw（无维度数字 → 维值不变，不走阶段分支）
                 1 -> "记录一条新经验" // 经验提取（非空且非"无新经验"）
-                else -> "{\"message_to_user\":\"ok\",\"observations\":[],\"stage_changed\":false,\"new_stage\":\"\"}" // 画像 reflect JSON
+                else -> "" // 不应走到——reflect 使用 generateRawWithMetadata
             }
+        }
+        // P0-11: reflect 引擎现在使用 generateRawWithMetadata（返回 RawGenerationResult）
+        coEvery { deepSeekRepo.generateRawWithMetadata(any(), any()) } coAnswers {
+            val idx = callIndex.getAndIncrement()
+            events.add("start-$idx")
+            delay(80)
+            events.add("end-$idx")
+            com.lovebrain.app.data.RawGenerationResult(
+                content = "{\"message_to_user\":\"ok\",\"observations\":[],\"stage_changed\":false,\"new_stage\":\"\"}",
+                finishReason = "stop"
+            )
         }
         val promptBuilder = mockk<PromptBuilder>(relaxed = true)
         val callbacks = mockk<KnowledgeTriggerCoordinator.Callbacks>(relaxUnitFun = true)

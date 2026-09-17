@@ -190,23 +190,40 @@ class KnowledgeRepository(
             } catch (e: Exception) {
                 com.lovebrain.app.util.L.w("atomicWriteText: NIO ATOMIC_MOVE failed: ${e.message}")
             }
-            // NIO 全部失败时的回退：先 rename 到临时名 → 删除旧文件 → rename 临时名到目标名
-            // 这样即使中间步骤失败，旧文件仍在（除非 rename 成功后才删除旧文件）
+            // P0-12: NIO 全部失败时的回退——严格检查每步返回值，保证任何路径下至少保留 old target 或 recoverable backup。
+            // 流程：target → backup（必须成功才继续）→ tmp → target → 成功删 backup / 失败用 backup 恢复。
             if (!renamed) {
                 val backupTmp = File(file.parentFile, ".${file.name}.bak")
-                // 如果旧文件存在，先 rename 到 .bak（保留旧文件内容）
-                if (file.exists()) {
-                    file.renameTo(backupTmp)
+                // P0-12: 清理可能存在的旧 .bak 残留——防历史 backup 干扰恢复逻辑
+                if (backupTmp.exists()) {
+                    backupTmp.delete()
                 }
-                // rename tmp → 目标文件（此时目标不存在，rename 一定成功）
+                // Step 1: 如果旧文件存在，先 rename 到 .bak（保留旧文件内容）
+                // P0-12: 必须检查返回值——backup 失败则保持 target 原样，退出
+                val backupSucceeded = if (file.exists()) {
+                    file.renameTo(backupTmp)
+                } else {
+                    true // 无旧文件 → 视为 backup 成功（backupTmp 不存在）
+                }
+                if (!backupSucceeded) {
+                    // backup 失败——target 仍在，不继续 tmp → target
+                    com.lovebrain.app.util.L.w("atomicWriteText: backup rename failed, keeping original: ${file.name}")
+                    throw java.io.IOException("atomic write backup failed: ${file.name}")
+                }
+                // Step 2: rename tmp → 目标文件（此时目标不存在）
                 if (tmp.renameTo(file)) {
                     renamed = true
                     // 成功后删除旧备份
                     if (backupTmp.exists()) backupTmp.delete()
                 } else {
-                    // rename 失败——恢复旧文件
+                    // P0-12: tmp → target 失败——用 backup 恢复 target
+                    com.lovebrain.app.util.L.w("atomicWriteText: tmp→target rename failed, restoring backup: ${file.name}")
                     if (backupTmp.exists()) {
-                        backupTmp.renameTo(file)
+                        val restored = backupTmp.renameTo(file)
+                        if (!restored) {
+                            // P0-12: 恢复也失败——保留 backup 文件，绝不删除
+                            com.lovebrain.app.util.L.e("atomicWriteText: CRITICAL - backup restore also failed! Backup preserved at: ${backupTmp.absolutePath}", null)
+                        }
                     }
                     throw java.io.IOException("atomic rename failed after fallback: ${file.name}")
                 }

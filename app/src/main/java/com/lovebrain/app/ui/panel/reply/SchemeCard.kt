@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,8 +57,10 @@ private object SchemeTextDimens {
  * 回复方案卡（单面卡）：tag 标签 + 话术全文（内部滚动）+ 右下角操作（复制/赞/踩）。
  * "推荐"卡用实心底反白突出；赞/踩用边框变色反馈。按压缩放 0.96，有入场动画。
  * F09-7: reply 为空时显示"本轮不适合"，不可复制/赞/踩，灰色样式。
+ *
+ * P0-10: 长按触发语音录音 → 松手停止 → transcript 非空调用 onVoiceRewrite。
+ * 点击展开 2×2 文字改写选项。两种改写方式共存。
  */
-/** 卡片内部改写操作选项 — DRY: 统一使用 RewriteCommand.ALL_LABELS */
 
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
@@ -116,29 +119,55 @@ fun SchemeCard(
     // 阻断C修复：hasHistory 独立于 Done——只有实际有撤销历史才显示撤销
     val hasHistory = rewriteDone // Done 意味着有上一版本可撤销
 
+    // P0-10: 语音改写控制器——长按触发录音，松手停止，transcript 非空调用 onVoiceRewrite
+    val voiceController = rememberVoiceRewriteController(scheme.tag, onVoiceRewrite)
+    val voiceState = voiceController.state
+    val isRecording = voiceState == VoiceRewriteState.RECORDING || voiceState == VoiceRewriteState.PROCESSING
+    val isVoiceRewriting = voiceState == VoiceRewriteState.REWRITING
+
+    // 松手时自动停止录音
+    LaunchedEffect(isPressed, voiceState) {
+        if (!isPressed && voiceState == VoiceRewriteState.RECORDING) {
+            voiceController.stopListening()
+        }
+    }
+
+    // P0-10: 录音中或改写中——卡片边框高亮
+    val effectiveBorderWidth = if (isRecording || isVoiceRewriting) 2f else borderWidth
+    val effectiveBorderColor = when {
+        isRecording || isVoiceRewriting -> Primary
+        feedback != SchemeFeedback.NONE -> borderColor
+        else -> Border
+    }
+
     Box(
         modifier = modifier
             .width(SchemeCardDimens.CARD_WIDTH_DP.dp)
-            .then(if (isExpanded || isRewriting || rewriteError != null || hasHistory)
+            .then(if (isExpanded || isRewriting || isVoiceRewriting || rewriteError != null || hasHistory || isRecording)
                 Modifier.wrapContentHeight() else Modifier.height(SchemeCardDimens.CARD_HEIGHT_DP.dp))
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.lg)
             .clip(LoveBrainShape.lg)
             .background(cardBg)
-            .border(borderWidth.dp, borderColor, LoveBrainShape.lg)
-    // b2-6: 点击卡片时——如果在错误/成功状态，先清状态再展开选项；
-    // 如果已展开，收起
-    // b2-6: 错误状态下的"重试"按钮应该直接展开选项区让用户重选
+            .border(effectiveBorderWidth.dp, effectiveBorderColor, LoveBrainShape.lg)
     .then(if (isEmpty) Modifier else Modifier.combinedClickable(
         interactionSource = interactionSource,
         indication = null,
         onClick = {
-            onToggleRewriteExpand(scheme.tag)
+            // P0-10: 如果正在录音，点击取消录音
+            if (isRecording) {
+                voiceController.cancel()
+            } else {
+                onToggleRewriteExpand(scheme.tag)
+            }
         },
         onLongClick = {
-            // UI 冻结：长按触发语音改写（统一交互模式）
-            if (!isRewriting && rewriteError == null) {
-                onToggleRewriteExpand(scheme.tag)
+            // P0-10: 长按触发语音录音——真实手势生命周期
+            // down → 达到长按阈值 → startListening
+            // 持续按住 → recording
+            // up → stopListening
+            if (!isRewriting && rewriteError == null && !isRecording) {
+                voiceController.startListening()
             }
         }
     ))
@@ -163,6 +192,7 @@ fun SchemeCard(
             Spacer(Modifier.height(SchemeCardDimens.TAG_TO_BODY_GAP_DP.dp))
 
             // F09-7: 空回复显示"本轮不适合"，不可滚动/复制
+            // P0-10: 录音中显示录音状态
             if (isEmpty) {
                 Box(
                     modifier = Modifier
@@ -174,14 +204,77 @@ fun SchemeCard(
                         text = "本轮不适合",
                         color = TextHint,
                         style = AppTypography.labelMedium,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        textAlign = TextAlign.Center
                     )
+                }
+            } else if (isRecording) {
+                // P0-10: 录音中——显示录音状态
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(14.dp),
+                            strokeWidth = 2.dp,
+                            color = Primary
+                        )
+                        Spacer(Modifier.height(Spacing.xs))
+                        Text(
+                            text = if (voiceState == VoiceRewriteState.PROCESSING) "识别中…" else "正在录音…",
+                            style = AppTypography.labelSmall,
+                            color = PrimaryDark
+                        )
+                        Spacer(Modifier.height(Spacing.xs))
+                        Text(
+                            text = "松手后用语音修改",
+                            style = AppTypography.labelSmall,
+                            color = TextHint
+                        )
+                    }
+                }
+            } else if (isVoiceRewriting || isRewriting) {
+                // P0-10: 改写中状态（语音改写或文字改写）
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(14.dp),
+                        strokeWidth = 2.dp,
+                        color = Primary
+                    )
+                    Spacer(Modifier.width(Spacing.xs))
+                    Text(
+                        "正在改写…",
+                        style = AppTypography.labelSmall,
+                        color = PrimaryDark
+                    )
+                    // P0-10: 文字改写支持取消
+                    if (isRewriting) {
+                        Spacer(Modifier.weight(1f))
+                        Text(
+                            "取消",
+                            style = AppTypography.labelSmall,
+                            color = TextHint,
+                            modifier = Modifier.clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = { onCancelRewrite(scheme.tag) }
+                            ).padding(Spacing.xs)
+                        )
+                    }
                 }
             } else {
                 // 话术全文：内部垂直滚动（过长可滑动看完整）
                 Box(
                     modifier = Modifier
-                        .weight(1f, fill = !isExpanded && !isRewriting && rewriteError == null && !hasHistory)
+                        .weight(1f, fill = !isExpanded && rewriteError == null && !hasHistory)
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                 ) {
@@ -198,39 +291,8 @@ fun SchemeCard(
             Spacer(Modifier.height(Spacing.sm))
 
             // 改写操作区（正文下方展开）
-            if (isRewriting) {
-                // 改写中状态
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(14.dp),
-                        strokeWidth = 2.dp,
-                        color = Primary
-                    )
-                    Spacer(Modifier.width(Spacing.xs))
-                    Text(
-                        "正在改写…",
-                        style = AppTypography.labelSmall,
-                        color = PrimaryDark
-                    )
-                    Spacer(Modifier.weight(1f))
-                    Text(
-                        "取消",
-                        style = AppTypography.labelSmall,
-                        color = TextHint,
-                        modifier = Modifier.clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = { onCancelRewrite(scheme.tag) }
-                        ).padding(Spacing.xs)
-                    )
-                }
-            } else if (rewriteError != null && !isExpanded) {
+            if (rewriteError != null && !isExpanded && !isRecording && !isVoiceRewriting) {
                 // b2-6: 错误状态未展开时显示短提示+重试
-                // 重试直接展开选项区，让用户重新选择改写方向
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -251,7 +313,6 @@ fun SchemeCard(
                         modifier = Modifier.clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
-                            // b2-6: 重试 = 清错误状态 + 展开选项区
                             onClick = {
                                 onClearRewriteState(scheme.tag)
                                 onToggleRewriteExpand(scheme.tag)
@@ -259,9 +320,8 @@ fun SchemeCard(
                         ).padding(Spacing.xs)
                     )
                 }
-            } else if (isExpanded && !isEmpty) {
+            } else if (isExpanded && !isEmpty && !isRecording && !isVoiceRewriting) {
                 // 2×2 操作区（小窗容不下时自动变单列）
-                // 尝试 2 列排列
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
@@ -348,6 +408,15 @@ fun SchemeCard(
                         )
                         Spacer(Modifier.width(Spacing.xs))
                     }
+                    // P0-10: 录音中显示"长按说话修改"提示
+                    if (!isRecording && !isVoiceRewriting && !isRewriting) {
+                        Text(
+                            text = "长按说话修改",
+                            style = AppTypography.labelSmall,
+                            color = TextHint
+                        )
+                        Spacer(Modifier.width(Spacing.xs))
+                    }
                     CardActionIcon(
                         icon = R.drawable.ic_copy,
                         desc = "复制",
@@ -380,7 +449,6 @@ internal fun CardActionIcon(
     tint: Color,
     onClick: () -> Unit
 ) {
-    // #5：小图标补按压反馈（标准件 0.92 scale + 120ms；一处覆盖复制/赞/踩三图标）
     val (iconInteraction, iconScale) = rememberPressScale(0.92f, "cardActionIconScale")
     Box(
         modifier = Modifier
@@ -388,7 +456,7 @@ internal fun CardActionIcon(
             .graphicsLayer { scaleX = iconScale; scaleY = iconScale }
             .clip(LoveBrainShape.sm)
             .clickable(interactionSource = iconInteraction, indication = null, onClick = onClick)
-            .padding(Spacing.sm), // ：padding 移入 clickable 内层，热区外扩至 28dp（与 KDoc 一致）
+            .padding(Spacing.sm),
         contentAlignment = Alignment.Center
     ) {
         Icon(
@@ -402,7 +470,6 @@ internal fun CardActionIcon(
 
 /**
  * 兼容封装：颜色动画状态。
- * 调研依据：Android Compose 官方动画 API。
  */
 @Composable
 private fun animateColorAsStateCompat(

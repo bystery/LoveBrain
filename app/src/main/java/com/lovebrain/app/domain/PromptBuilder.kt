@@ -162,7 +162,9 @@ class PromptBuilder(
         if (recent.isNotBlank()) sb.append("# 最近对话\n").append(recent.trim()).append("\n\n")
 
         // # 【进行中事项】——经过 OngoingContextSelector relevance gating
-        val ongoingSection = selectOngoingForInjection(kb.name, messages)
+        // P0-7: 从 messages 中提取 replyDirective 作为 relevance signal
+        val (_, directive) = com.lovebrain.app.model.splitMessages(messages)
+        val ongoingSection = selectOngoingForInjection(kb.name, messages, directive)
         if (ongoingSection.isNotBlank()) {
             sb.append("# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n")
             sb.append(ongoingSection).append("\n")
@@ -173,15 +175,21 @@ class PromptBuilder(
 
     /**
      * OngoingContextSelector 注入入口。
-     * 如果 selector 不可用，回退到旧行为（整段注入）。
+     * P0-7: selector 缺失时 fail closed（不注入），不 fail open 回到旧 bug。
+     * P0-7: 传入 replyDirective——用户本轮想法成为真实 relevance signal。
      */
-    private suspend fun selectOngoingForInjection(kbName: String, messages: List<ChatMessage>): String {
-        val selector = ongoingSelector ?: return knowledgeRepo.readPlanActive(kbName)
+    private suspend fun selectOngoingForInjection(
+        kbName: String,
+        messages: List<ChatMessage>,
+        replyDirective: com.lovebrain.app.model.ReplyDirective? = null
+    ): String {
+        val selector = ongoingSelector ?: return ""  // P0-7: fail closed
         val turnCount = knowledgeRepo.getTurnCount(kbName)
         val ctx = OngoingContextSelector.SelectionContext(
             messages = messages,
             currentTurn = turnCount,
-            currentTime = TimeFmt.now()
+            currentTime = TimeFmt.now(),
+            replyDirective = replyDirective
         )
         val result = selector.selectForInjection(kbName, ctx)
         return result.eligibleItems.joinToString("\n") { item ->
@@ -268,26 +276,27 @@ class PromptBuilder(
         return header to body
     }
 
-    /** B项修复：构建对话记录区块并附带来源别名映射 */
+    /** P0-2: 构建对话记录区块并附带来源别名映射。
+     * 不再使用「她：」「我：」自然语言标签——改为机器结构化格式。
+     * 模型看到的是 [id] PARTNER/USER: text，而非「她：text」。
+     * Schema 定义只需一次：PARTNER=对方，USER=用户本人。不再需要「禁止张冠李戴」警告。 */
     private fun buildChatBlockWithAliases(messages: List<ChatMessage>): Triple<String, String, Map<String, String>> {
         val chatHeader = "# 本次对话记录\n" +
-            "（按时间顺序。角色务必分清：\"她\"=对方，\"我\"=用户本人。谁做了什么，严格按对话归属判断，禁止张冠李戴把\"我\"的事安到\"她\"头上或反之。）\n" +
-            "每行开头的方括号标签为来源ID，模型在 scene_facts 的 source_ids 中使用这些标签。\n\n"
+            "（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每行方括号内为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n"
         val chatMessages = messages.filter { it.role != ChatMessage.Role.IDEA }
         val effectiveMessages = if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
             chatMessages.takeLast(AppConfig.REPLY_MAX_MESSAGES)
         } else {
             chatMessages
         }
-        // B项修复：为裁剪后保留的消息生成别名（her-N / me-N），按角色分别从0编号
+        // P0-2: 统一编号 m0, m1, m2...（不再按角色分别编号 her-N/me-N）
         val sourceAliasMap = mutableMapOf<String, String>()
-        val msgToAlias = mutableMapOf<String, String>() // msg.id → alias（反向映射）
-        var herIdx = 0
-        var meIdx = 0
+        val msgToAlias = mutableMapOf<String, String>()
+        var msgIdx = 0
         for (msg in effectiveMessages) {
             val alias = when (msg.role) {
-                ChatMessage.Role.HER -> "her-$herIdx".also { herIdx++ }
-                ChatMessage.Role.ME -> "me-$meIdx".also { meIdx++ }
+                ChatMessage.Role.HER -> "m$msgIdx".also { msgIdx++ }
+                ChatMessage.Role.ME -> "m$msgIdx".also { msgIdx++ }
                 else -> continue
             }
             sourceAliasMap[alias] = msg.id
@@ -297,10 +306,15 @@ class PromptBuilder(
         if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
             chatBody.append("（注：对话记录超过 ${AppConfig.REPLY_MAX_MESSAGES} 条，仅保留最近 ${AppConfig.REPLY_MAX_MESSAGES} 条）\n\n")
         }
-        // B项修复：每行带来源别名前缀
+        // P0-2: 机器结构化格式——[id] SPEAKER: text
         for (msg in effectiveMessages) {
             val alias = msgToAlias[msg.id] ?: continue
-            chatBody.append("[$alias] ${msg.role.label}：${msg.content}\n")
+            val speakerLabel = when (msg.role) {
+                ChatMessage.Role.HER -> "PARTNER"
+                ChatMessage.Role.ME -> "USER"
+                else -> continue
+            }
+            chatBody.append("[$alias] $speakerLabel: ${msg.content}\n")
         }
         chatBody.append("</chat>\n")
         return Triple(chatHeader, chatBody.toString(), sourceAliasMap)
@@ -442,7 +456,9 @@ class PromptBuilder(
 
         // 进行中事项段——经过 OngoingContextSelector relevance gating
         // 默认拒绝注入；只有满足明确相关信号才进入回复生成 Prompt
-        val plan: String = selectOngoingForInjection(kb.name, messages)
+        // P0-7: 传入 replyDirective 作为 relevance signal
+        val (_, directive) = com.lovebrain.app.model.splitMessages(messages)
+        val plan: String = selectOngoingForInjection(kb.name, messages, directive)
 
         if (plan.isNotBlank()) {
             val ref = makeRef(kb.name, MemoryKind.ONGOING, "moment/plan.md", plan)

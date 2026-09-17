@@ -71,15 +71,22 @@ class PromptAssemblyOrderContractTest {
         coEvery { repo.readFile("kb", "moment/scene.md") } returns
             "- [2026-08-26 20:00] 咖啡店偶遇：聊了手冲咖啡"
         coEvery { repo.readFile("kb", "moment/recent.md") } returns "recent桩：昨晚聊到深夜"
-        coEvery { repo.readPlanActive("kb") } returns "plan桩：周末约展"
+        coEvery { repo.readPlanActive("kb") } returns "# 事项计划\n\n## 进行中\n周末约展 | 进行中 | [2026-09-15 20:00]约定（当前）\n"
         coEvery { repo.getTopicAgeHours("kb") } returns 2
         coEvery { repo.getCurrentTopic("kb") } returns "测试话题"
+        // OngoingContextSelector 依赖
+        coEvery { repo.readFile("kb", "moment/ongoing_cooldown.json") } returns ""
+        coEvery { repo.readFile("kb", "moment/plan.md") } returns ""
+        coEvery { repo.writeFile(any(), any(), any()) } returns Unit
+        coEvery { repo.getTurnCount("kb") } returns 1
+        coEvery { repo.readIntent("kb") } returns com.lovebrain.app.model.IntentConfig()
 
         val assets = mockk<AssetManager>()
         every { assets.open(any()) } answers { loadAsset(firstArg<String>()).byteInputStream() }
         val ctx = mockk<Context>()
         every { ctx.assets } returns assets
-        return PromptBuilder(ctx, repo)
+        val selector = OngoingContextSelector(repo)
+        return PromptBuilder(ctx, repo, selector)
     }
 
     private val kb = KnowledgeBase(name = "kb", stage = "暧昧期")
