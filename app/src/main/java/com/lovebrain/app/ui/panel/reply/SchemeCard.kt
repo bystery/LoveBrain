@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -58,6 +59,7 @@ private object SchemeTextDimens {
  */
 /** 卡片内部改写操作选项 — DRY: 统一使用 RewriteCommand.ALL_LABELS */
 
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 fun SchemeCard(
     scheme: Scheme,
@@ -71,6 +73,7 @@ fun SchemeCard(
     onUndoRewrite: (String) -> Unit = {},
     onToggleRewriteExpand: (String) -> Unit = {},
     isExpanded: Boolean = false,
+    onVoiceRewrite: (String, String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
     val isEmpty = scheme.reply.isBlank()
@@ -126,11 +129,17 @@ fun SchemeCard(
     // b2-6: 点击卡片时——如果在错误/成功状态，先清状态再展开选项；
     // 如果已展开，收起
     // b2-6: 错误状态下的"重试"按钮应该直接展开选项区让用户重选
-    .then(if (isEmpty) Modifier else Modifier.clickable(
+    .then(if (isEmpty) Modifier else Modifier.combinedClickable(
         interactionSource = interactionSource,
         indication = null,
         onClick = {
             onToggleRewriteExpand(scheme.tag)
+        },
+        onLongClick = {
+            // UI 冻结：长按触发语音改写（统一交互模式）
+            if (!isRewriting && rewriteError == null) {
+                onToggleRewriteExpand(scheme.tag)
+            }
         }
     ))
     ) {

@@ -3,6 +3,7 @@ package com.lovebrain.app.domain
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.data.RawGenerationResult
 import com.lovebrain.app.model.ProfileParseResult
 import com.lovebrain.app.model.ProfileParseStatus
 import com.lovebrain.app.model.ProfileSuggestion
@@ -254,24 +255,36 @@ class KnowledgeTriggerCoordinator(
                 // P0-2: 画像截断自动自愈——最多尝试 MAX_PROFILE_ATTEMPTS 次
                 var parseResult: ProfileParseResult? = null
                 for (attempt in 1..MAX_PROFILE_ATTEMPTS) {
+                    // P0-2 修复：使用 generateRawWithMetadata 获取 finishReason，传给 parseWithStatus
                     val rawResult = runCatching {
-                        withContext(Dispatchers.IO) { deepSeekRepo.generateRaw(system, user) }
-                    }.getOrDefault("")
+                        withContext(Dispatchers.IO) { deepSeekRepo.generateRawWithMetadata(system, user) }
+                    }.getOrDefault(RawGenerationResult(content = "", finishReason = null))
 
-                    if (rawResult.isBlank()) {
+                    if (rawResult.content.isBlank() && rawResult.error == null) {
                         // 供应商返回空——可能是偶发，允许重试
                         parseResult = ProfileParseResult(
                             status = ProfileParseStatus.EMPTY,
                             profileUpdate = null,
                             rawContent = "",
-                            finishReason = null
+                            finishReason = rawResult.finishReason
                         )
                         L.w("generateReflect: attempt $attempt got empty response")
                         continue
                     }
+                    if (rawResult.error != null) {
+                        // 供应商请求失败——允许重试
+                        parseResult = ProfileParseResult(
+                            status = ProfileParseStatus.PROVIDER_ERROR,
+                            profileUpdate = null,
+                            rawContent = rawResult.content,
+                            finishReason = rawResult.finishReason
+                        )
+                        L.w("generateReflect: attempt $attempt provider error: ${rawResult.error.message}")
+                        continue
+                    }
 
-                    // P0-2: 使用 parseWithStatus 获取分类结果
-                    parseResult = ProfileUpdate.parseWithStatus(rawResult)
+                    // P0-2: 使用 parseWithStatus 获取分类结果，传入 finishReason
+                    parseResult = ProfileUpdate.parseWithStatus(rawResult.content, rawResult.finishReason)
 
                     if (parseResult.status == ProfileParseStatus.SUCCESS) {
                         // 成功——跳出重试循环

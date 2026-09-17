@@ -75,7 +75,10 @@ data class OngoingItem(
 @Serializable(with = SceneFactSerializer::class)
 data class SceneFact(
     val text: String = "",
-    @SerialName("source_ids") val sourceIds: List<String> = emptyList()
+    @SerialName("source_ids") val sourceIds: List<String> = emptyList(),
+    // P1-1: 事实归属——谁说的 / 描述谁
+    val speaker: EntityRef = EntityRef.UNKNOWN,
+    val subject: EntityRef = EntityRef.UNKNOWN
 )
 
 /** F03: 自定义序列化器，兼容旧格式纯字符串和新格式带来源对象。
@@ -96,6 +99,13 @@ object SceneFactSerializer : KSerializer<SceneFact> {
                     value.sourceIds.forEach { add(it) }
                 })
             }
+            // P1-1: 序列化事实归属字段
+            if (value.speaker != EntityRef.UNKNOWN) {
+                put("speaker", value.speaker.name.lowercase())
+            }
+            if (value.subject != EntityRef.UNKNOWN) {
+                put("subject", value.subject.name.lowercase())
+            }
         }
         encoder.encodeSerializableValue(JsonElement.serializer(), obj)
     }
@@ -113,7 +123,14 @@ object SceneFactSerializer : KSerializer<SceneFact> {
                         (id as? JsonPrimitive)?.content
                     } else emptyList()
                 } ?: emptyList()
-                SceneFact(text = text, sourceIds = sourceIds)
+                // P1-1: 反序列化事实归属字段
+                val speaker = element["speaker"]?.jsonPrimitive?.content
+                    ?.let { name -> EntityRef.entries.firstOrNull { it.name.equals(name, ignoreCase = true) } }
+                    ?: EntityRef.UNKNOWN
+                val subject = element["subject"]?.jsonPrimitive?.content
+                    ?.let { name -> EntityRef.entries.firstOrNull { it.name.equals(name, ignoreCase = true) } }
+                    ?: EntityRef.UNKNOWN
+                SceneFact(text = text, sourceIds = sourceIds, speaker = speaker, subject = subject)
             }
             else -> SceneFact()
         }

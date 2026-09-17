@@ -524,11 +524,22 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
      * PROV-01：内部自行 resolve 配置快照，请求身份冻结后不再读实时 activeTicket/Model。
      * PROV-04：CancellationException 重新抛出，不计入 failCount。
      */
-    suspend fun generateRaw(systemPrompt: String, userPrompt: String): String {
-        val config = try { resolveRequestConfig() } catch (e: IllegalArgumentException) { return "" }
-            ?: return ""
-        return generateRaw(config, systemPrompt, userPrompt)
-    }
+suspend fun generateRaw(systemPrompt: String, userPrompt: String): String {
+    val config = try { resolveRequestConfig() } catch (e: IllegalArgumentException) { return "" }
+    ?: return ""
+    return generateRaw(config, systemPrompt, userPrompt)
+}
+
+/**
+ * P0-2: 带元数据的非流式生成便捷重载（内部自行 resolve 配置快照）。
+ * 供 KnowledgeTriggerCoordinator 等不持有 config 快照的调用方使用。
+ */
+suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): RawGenerationResult {
+    val config = try { resolveRequestConfig() } catch (e: IllegalArgumentException) {
+        return RawGenerationResult(content = "", finishReason = null, error = e)
+    } ?: return RawGenerationResult(content = "", finishReason = null)
+    return generateRawWithMetadata(config, systemPrompt, userPrompt)
+}
 
     /**
      * PROV-01：接受外部冻结 config 的 generateRaw overload。

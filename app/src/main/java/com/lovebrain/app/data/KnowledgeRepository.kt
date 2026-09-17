@@ -163,28 +163,53 @@ class KnowledgeRepository(
                 fos.flush()
                 fos.fd.sync() // 强制刷盘，防断电丢失
             }
-            // rename 在同一文件系统上是原子操作（POSIX/Android）。
-            // Windows 上 renameTo 无法覆盖已存在文件——需要先删除目标再 rename。
-            // P1-01: 不再用 Files.copy(REPLACE_EXISTING) 兜底——copy 不是原子操作，
-            // 复制中断/进程被杀时目标文件可能已部分覆盖，导致旧数据损坏。
-            // Windows 适配：先 rename → 失败则先 delete 目标再 rename（tmp 文件有完整新内容，
-            // delete 后 rename 失败仍可从 tmp 恢复——不同于 copy 覆盖中途损坏原件）。
-            // Android 生产环境第一次 renameTo 即原子成功，不走 delete 路径。
+            // 优先使用 NIO Files.move(REPLACE_EXISTING)——
+            // 在 POSIX/Android 上是原子替换，在 Windows 上也能安全替换已存在文件。
             var renamed = false
-            for (attempt in 1..3) {
-                if (tmp.renameTo(file)) { renamed = true; break }
-                // Windows: renameTo 不覆盖已存在文件，先删除目标再重试
-                if (file.exists()) {
-                    if (file.delete()) {
-                        if (tmp.renameTo(file)) { renamed = true; break }
-                    }
+            try {
+                val targetPath = file.toPath()
+                java.nio.file.Files.move(
+                    tmp.toPath(),
+                    targetPath,
+                    java.nio.file.StandardCopyOption.REPLACE_EXISTING,
+                    java.nio.file.StandardCopyOption.ATOMIC_MOVE
+                )
+                renamed = true
+            } catch (e: java.nio.file.AtomicMoveNotSupportedException) {
+                // 某些文件系统不支持 ATOMIC_MOVE → 回退到 REPLACE_EXISTING（非原子但安全）
+                try {
+                    java.nio.file.Files.move(
+                        tmp.toPath(),
+                        file.toPath(),
+                        java.nio.file.StandardCopyOption.REPLACE_EXISTING
+                    )
+                    renamed = true
+                } catch (e2: Exception) {
+                    com.lovebrain.app.util.L.w("atomicWriteText: NIO move failed: ${e2.message}")
                 }
-                Thread.sleep(50L * attempt)
+            } catch (e: Exception) {
+                com.lovebrain.app.util.L.w("atomicWriteText: NIO ATOMIC_MOVE failed: ${e.message}")
             }
+            // NIO 全部失败时的回退：先 rename 到临时名 → 删除旧文件 → rename 临时名到目标名
+            // 这样即使中间步骤失败，旧文件仍在（除非 rename 成功后才删除旧文件）
             if (!renamed) {
-                // P1-01: rename 全部失败——保留旧文件不变（如果还在），报错让调用方处理。
-                // 临时文件在 finally 中清理。不删除目标文件，不用 copy 覆盖。
-                throw java.io.IOException("atomic rename failed after 3 attempts: ${file.name}")
+                val backupTmp = File(file.parentFile, ".${file.name}.bak")
+                // 如果旧文件存在，先 rename 到 .bak（保留旧文件内容）
+                if (file.exists()) {
+                    file.renameTo(backupTmp)
+                }
+                // rename tmp → 目标文件（此时目标不存在，rename 一定成功）
+                if (tmp.renameTo(file)) {
+                    renamed = true
+                    // 成功后删除旧备份
+                    if (backupTmp.exists()) backupTmp.delete()
+                } else {
+                    // rename 失败——恢复旧文件
+                    if (backupTmp.exists()) {
+                        backupTmp.renameTo(file)
+                    }
+                    throw java.io.IOException("atomic rename failed after fallback: ${file.name}")
+                }
             }
         } finally {
             // 清理可能残留的临时文件（rename 成功后 tmp 已不存在，此处只是兜底）
@@ -831,6 +856,15 @@ class KnowledgeRepository(
                 }
             }
         }
+    }
+
+    /** 读取当前轮次数（kb.json 的 turnCount 字段），供 OngoingContextSelector 冷却逻辑使用 */
+    suspend fun getTurnCount(kbName: String): Int = withContext(Dispatchers.IO) {
+        val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
+        if (!metaFile.exists()) return@withContext 0
+        runCatching {
+            json.decodeFromString<KnowledgeBase>(metaFile.readText()).turnCount
+        }.getOrDefault(0)
     }
 
     /** 读取当前阶段（kb.json） */

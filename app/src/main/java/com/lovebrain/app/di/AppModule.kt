@@ -29,7 +29,8 @@ val appModule = module {
     single { DeepSeekRepository(get()) }
 
     // 领域层（单例）
-    single { PromptBuilder(androidContext(), get()) }
+    single { com.lovebrain.app.domain.OngoingContextSelector(get()) }
+    single { PromptBuilder(androidContext(), get(), get()) }
     single { TopicRecorder(get()) }
     single { KnowledgeTriggerCoordinator(get(), get(), get(), get()) }
     single { GenerationEngine(get(), get()) }

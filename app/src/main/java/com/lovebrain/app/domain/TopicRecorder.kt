@@ -3,6 +3,7 @@
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.model.EntityRef
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.OngoingItem
 import com.lovebrain.app.model.Scheme
@@ -203,7 +204,8 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         val text: String,           // 事实文本
         val sourceIds: List<String>, // 来源消息 ID（可能为空=旧数据未核实）
         val evidenceTime: Long,      // 证据时间（写入时的真实时间，模型重述不刷新）
-        val subject: String          // P1-05/5.5: 事实主体（被描述的人），不等同于说话人。空=待解析/不确定
+        val subject: EntityRef = EntityRef.UNKNOWN,  // P1-1: 事实主体（被描述的人）
+        val speaker: EntityRef = EntityRef.UNKNOWN   // P1-1: 谁说的
     )
 
     /** scene.md 中解析出的条目行 */
@@ -258,11 +260,13 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
             if (sf.sourceIds.isEmpty()) {
                 // 无来源（旧格式或模型未提供）→ 标记为未核实，保留但不覆盖已有事实
+                // P1-1: 使用 SceneFact 携带的 speaker/subject，不自行推导
                 validatedFacts.add(StoredFact(
                     text = text,
                     sourceIds = emptyList(),
                     evidenceTime = now,
-                    subject = extractSubject(text)
+                    subject = sf.subject,
+                    speaker = sf.speaker
                 ))
                 continue
             }
@@ -285,7 +289,8 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
                 text = text,
                 sourceIds = validIds,
                 evidenceTime = now,
-                subject = subject
+                subject = EntityRef.UNKNOWN,  // P1-1: 不从来源 role 推导 subject
+                speaker = EntityRef.UNKNOWN   // P1-1: 说话人由 SceneFact 提供，不在 TopicRecorder 推导
             ))
         }
 
@@ -311,10 +316,10 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
         for (nf in validatedFacts) {
             if (nf.sourceIds.isEmpty()) {
-                // R05: 未核实来源 → 追加但不覆盖、不刷新时间
-                // E项修复：无来源不标记为当前时间，保持旧时间或0
-                toAdd.add(nf.copy(evidenceTime = 0L))
-                continue
+            // P1-1: 未核实来源 → 追加但不覆盖、不刷新时间
+            // E项修复：无来源不标记为当前时间，保持旧时间或0
+            toAdd.add(nf.copy(evidenceTime = 0L))
+            continue
             }
 
             // E项修复：同来源的旧事实 → 检查是否需要更新
@@ -501,9 +506,9 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
 
     /** F03: 从事实文本中提取主体标记
      * P1-05/5.5: 不再用首字“她/我”猜测事实主体——说话人不等于被描述的人。
-     * 返回空字符串，由后续实体解析或用户纠正决定。 */
-    private fun extractSubject(text: String): String {
-        return ""
+     * 返回 UNKNOWN，由后续实体解析或用户纠正决定。 */
+    private fun extractSubject(text: String): EntityRef {
+        return EntityRef.UNKNOWN
     }
 
     /**

@@ -108,13 +108,19 @@ fun ResultArea(
                             onUndoRewrite = onUndoRewrite
                         )
                     }
+                    // UI 冻结：四方向不再独立行展示，合并入 SchemeCardsRow
                     if (streamingDirectionSchemes.isNotEmpty()) {
                         Spacer(Modifier.height(Spacing.sm))
-                        DirectionCardsRow(
+                        SchemeCardsRow(
                             schemes = streamingDirectionSchemes,
+                            feedbacks = emptyMap(),
+                            onFeedback = { _, _ -> },
                             onCopyScheme = onCopyScheme,
                             rewriteStates = rewriteStates,
-                            onVoiceRewrite = onRewrite
+                            onRewrite = onRewrite,
+                            onClearRewriteState = onClearRewriteState,
+                            onCancelRewrite = onCancelRewrite,
+                            onUndoRewrite = onUndoRewrite
                         )
                     }
                     Spacer(Modifier.height(Spacing.md))
@@ -168,15 +174,20 @@ fun ResultArea(
                     onUndoRewrite = onUndoRewrite
                 )
 
-                // P1-07: 四方向独立行——与四风格同时展示
+                // UI 冻结：四方向不再独立行展示，统一用 SchemeCardsRow
                 val dirs = response.directionSchemes
                 if (dirs.any { it.reply.isNotBlank() }) {
                     Spacer(Modifier.height(Spacing.sm))
-                    DirectionCardsRow(
+                    SchemeCardsRow(
                         schemes = dirs,
+                        feedbacks = emptyMap(),
+                        onFeedback = { _, _ -> },
                         onCopyScheme = onCopyScheme,
                         rewriteStates = rewriteStates,
-                        onVoiceRewrite = onRewrite
+                        onRewrite = onRewrite,
+                        onClearRewriteState = onClearRewriteState,
+                        onCancelRewrite = onCancelRewrite,
+                        onUndoRewrite = onUndoRewrite
                     )
                 }
 
@@ -494,12 +505,20 @@ private enum class VoiceRewriteState {
  * transcript 为空 → 取消，不发 API
  * partial transcript 不直接发请求
  */
+/** 语音改写控制器返回值：state + startListening + stopListening + cancel */
+private data class VoiceRewriteController(
+    val state: VoiceRewriteState,
+    val startListening: () -> Unit,
+    val stopListening: () -> Unit,
+    val cancel: () -> Unit
+)
+
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 private fun rememberVoiceRewriteController(
     schemeTag: String,
     onVoiceRewrite: (String, String) -> Unit
-): Pair<VoiceRewriteState, () -> Unit> {
+): VoiceRewriteController {
     val context = androidx.compose.ui.platform.LocalContext.current
     var voiceState by remember { mutableStateOf(VoiceRewriteState.IDLE) }
     val speechRecognizer = remember { mutableStateOf<android.speech.SpeechRecognizer?>(null) }
@@ -600,7 +619,12 @@ private fun rememberVoiceRewriteController(
         }
     }
 
-    return Pair(voiceState) { startListening() }
+    return VoiceRewriteController(
+        state = voiceState,
+        startListening = { startListening() },
+        stopListening = { stopListening() },
+        cancel = { cancel() }
+    )
 }
 
 /** P1-07: 单张方向卡——精简版（无赞踩），仅复制 + 长按语音修改
@@ -628,7 +652,17 @@ private fun DirectionCard(
     val bodyColor = if (isEmpty) TextHint else TextPrimary
 
     // P0-4: STT 长按语音修改控制器
-    val (voiceState, startListening) = rememberVoiceRewriteController(scheme.tag, onVoiceRewrite)
+    val voiceController = rememberVoiceRewriteController(scheme.tag, onVoiceRewrite)
+    val voiceState = voiceController.state
+
+    // 手势生命周期：长按开始录音 → 松手停止 → 滑出取消
+    // 检测 pressed 状态变化，松手时自动停止录音
+    LaunchedEffect(isPressed, voiceState) {
+        if (!isPressed && voiceState == VoiceRewriteState.RECORDING) {
+            // 松手 → 停止录音，等待 final transcript
+            voiceController.stopListening()
+        }
+    }
 
     // 改写状态——优先展示外部 rewriteState
     val isRewriting = voiceState == VoiceRewriteState.REWRITING
@@ -660,7 +694,7 @@ private fun DirectionCard(
                 onLongClick = {
                     // P0-4: 长按触发 STT 录音
                     if (!isEmpty && !isRewriting && !isRecording) {
-                        startListening()
+                        voiceController.startListening()
                     }
                 }
             ))

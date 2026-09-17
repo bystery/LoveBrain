@@ -26,7 +26,8 @@ import java.io.File
  */
 class PromptBuilder(
     private val context: Context,
-    private val knowledgeRepo: KnowledgeRepository
+    private val knowledgeRepo: KnowledgeRepository,
+    private val ongoingSelector: OngoingContextSelector? = null
 ) {
 
     // ═══════════ 配置校验 ═══════════
@@ -102,7 +103,7 @@ class PromptBuilder(
      * 回复系知识段（user 侧）：懂得 + 阶段节选 + 记忆 [+ 进攻] + 此刻 + 最近对话 + 进行中事项。
      * aggressive=true 时 aggressive.md 插在记忆与此刻之间（主人规格位），随知识段统一过预算。
      */
-    suspend fun buildKnowledgeInsertion(kb: KnowledgeBase?, aggressive: Boolean = false): String {
+    suspend fun buildKnowledgeInsertion(kb: KnowledgeBase?, aggressive: Boolean = false, messages: List<ChatMessage> = emptyList()): String {
         if (kb == null) return "（暂无知识库，按通用策略处理）\n\n"
         knowledgeRepo.migrateIfNeeded(kb.name)
         val sb = StringBuilder()
@@ -160,10 +161,32 @@ class PromptBuilder(
         val recent = knowledgeRepo.readFile(kb.name, "moment/recent.md")
         if (recent.isNotBlank()) sb.append("# 最近对话\n").append(recent.trim()).append("\n\n")
 
-        // # 【进行中事项】
-        sb.appendPlanSection(kb.name)
+        // # 【进行中事项】——经过 OngoingContextSelector relevance gating
+        val ongoingSection = selectOngoingForInjection(kb.name, messages)
+        if (ongoingSection.isNotBlank()) {
+            sb.append("# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n")
+            sb.append(ongoingSection).append("\n")
+        }
 
         return sb.toString()
+    }
+
+    /**
+     * OngoingContextSelector 注入入口。
+     * 如果 selector 不可用，回退到旧行为（整段注入）。
+     */
+    private suspend fun selectOngoingForInjection(kbName: String, messages: List<ChatMessage>): String {
+        val selector = ongoingSelector ?: return knowledgeRepo.readPlanActive(kbName)
+        val turnCount = knowledgeRepo.getTurnCount(kbName)
+        val ctx = OngoingContextSelector.SelectionContext(
+            messages = messages,
+            currentTurn = turnCount,
+            currentTime = TimeFmt.now()
+        )
+        val result = selector.selectForInjection(kbName, ctx)
+        return result.eligibleItems.joinToString("\n") { item ->
+            "${item.name} | ${item.status} | ${item.chain}"
+        }
     }
 
     // ═══════════ 回复 User Prompt ═══════════
@@ -225,7 +248,7 @@ class PromptBuilder(
         }
 
         val refs = mutableListOf<MemoryRef>()
-        val knowledgeBlock = buildKnowledgeInsertionWithRefs(kb, aggressive, corrections, refs)
+        val knowledgeBlock = buildKnowledgeInsertionWithRefs(kb, aggressive, corrections, refs, messages)
         val intentBlock = buildIntentBlock(intentConfig)
         val ideaBlock = buildIdeaBlock(userHint)
         val (chatHeader, chatBody, sourceAliasMap) = buildChatBlockWithAliases(messages)
@@ -321,7 +344,8 @@ class PromptBuilder(
         kb: KnowledgeBase,
         aggressive: Boolean,
         corrections: Map<String, MemoryCorrection>,
-        refs: MutableList<MemoryRef>
+        refs: MutableList<MemoryRef>,
+        messages: List<ChatMessage> = emptyList()
     ): String {
         knowledgeRepo.migrateIfNeeded(kb.name)
         val sb = StringBuilder()
@@ -416,12 +440,13 @@ class PromptBuilder(
         val recent = knowledgeRepo.readFile(kb.name, "moment/recent.md")
         if (recent.isNotBlank()) sb.append("# 最近对话\n").append(recent.trim()).append("\n\n")
 
-        // 进行中事项段
-        val plan = knowledgeRepo.readPlanActive(kb.name)
+        // 进行中事项段——经过 OngoingContextSelector relevance gating
+        // 默认拒绝注入；只有满足明确相关信号才进入回复生成 Prompt
+        val plan: String = selectOngoingForInjection(kb.name, messages)
+
         if (plan.isNotBlank()) {
             val ref = makeRef(kb.name, MemoryKind.ONGOING, "moment/plan.md", plan)
             val correction = corrections[ref.id]
-            // FINISHED 的事项退出活跃（不注入），其余按纠正规则处理
             if (correction?.action == CorrectionAction.FINISHED) {
                 // 事项已结束，不注入活跃列表
             } else if (!isCorrected(ref.id, corrections, sb)) {
@@ -573,7 +598,7 @@ class PromptBuilder(
      * 段前空白由块自带，此处不再追加分隔，拼合结果逐字等于  规格。
      */
     suspend fun buildCounselingUserPrompt(kb: KnowledgeBase?, confessionTaskBlock: String): String = buildString {
-        append(applyBudget(buildCoreKnowledgeSubset(kb)))
+        append(applyBudget(buildCoreKnowledgeSubset(kb, emptyList())))
         append(confessionTaskBlock)
         append("\n\n")
         append(buildTimestampPrompt())
@@ -584,7 +609,7 @@ class PromptBuilder(
      * 不注入阶段节选（阶段信息经 suggest.md 全文自带九阶段节获得）。
      */
     suspend fun buildSuggestUserPrompt(kb: KnowledgeBase?): String = buildString {
-        append(applyBudget(buildCoreKnowledgeSubset(kb)))
+        append(applyBudget(buildCoreKnowledgeSubset(kb, emptyList())))
         append("\n\n")
         append(buildTimestampPrompt())
     }
@@ -600,7 +625,7 @@ class PromptBuilder(
      * 核心知识子集（谈心与锦囊共用，DRY）：画像 + 记忆（最近3块） + 进行中事项。
      * 无阶段节选、无此刻、无最近对话。
      */
-    private suspend fun buildCoreKnowledgeSubset(kb: KnowledgeBase?): String {
+    private suspend fun buildCoreKnowledgeSubset(kb: KnowledgeBase?, messages: List<ChatMessage> = emptyList()): String {
         if (kb == null) return "（暂无知识库，按通用策略处理）\n\n"
         knowledgeRepo.migrateIfNeeded(kb.name)
         val sb = StringBuilder()
@@ -612,7 +637,7 @@ class PromptBuilder(
         sb.appendLessonsSection(kb.name)
 
         // # 【进行中事项】
-        sb.appendPlanSection(kb.name)
+        sb.appendPlanSection(kb.name, messages)
 
         return sb.toString()
     }
@@ -638,11 +663,11 @@ class PromptBuilder(
         }
     }
 
-    /** A2-6：# 【进行中事项】段（非空才拼） */
-    private suspend fun StringBuilder.appendPlanSection(kbName: String) {
-        val plan = knowledgeRepo.readPlanActive(kbName)
+    /** A2-6：# 【进行中事项】段——经过 OngoingContextSelector relevance gating
+     * 核心原则：记住 ≠ 每轮喂给模型。默认拒绝注入。 */
+    private suspend fun StringBuilder.appendPlanSection(kbName: String, messages: List<ChatMessage> = emptyList()) {
+        val plan = selectOngoingForInjection(kbName, messages)
         if (plan.isNotBlank()) {
-            // P0-2：改掉"回复需与之呼应"措辞，只有与当前输入相关时才选入谈资
             append("# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n")
             append(plan).append("\n")
         }
