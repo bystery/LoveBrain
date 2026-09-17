@@ -687,7 +687,7 @@ class PromptBuilder(
             if (lessons.isNotBlank()) { append("## 最近经验（最近2次提取）\n\n").append(lastH1Blocks(lessons, 2)).append("\n\n") }
             if (rawTopic.isNotBlank()) { append("## 最近话题档案（最近5个话题）\n\n").append(lastH1Blocks(rawTopic, AppConfig.REFLECT_CONTEXT_TOPICS)).append("\n\n") }
             val counselingAnalysis = knowledgeRepo.readCounselingAnalysisBlocks(kbName, 2)
-            if (counselingAnalysis.isNotBlank()) { append("## 谈心分析（最近2次）\n\n").append(counselingAnalysis).append("\n\n") }
+            if (counselingAnalysis.isNotBlank()) { append("## 谈心分析（最近2次）\n\n").append(counselingAnalysis as CharSequence).append("\n\n") }
             append("## 任务\n请根据以上经验和话题档案，按画像更新引擎的格式，输出 JSON 格式的完整覆写版本。")
         }
     }

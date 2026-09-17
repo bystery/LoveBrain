@@ -172,8 +172,17 @@ class KnowledgeRepository(
                 if (tmp.renameTo(file)) { renamed = true; break }
                 Thread.sleep(50L * attempt)
             }
+            // b3-10: Windows 兼容回退——renameTo 全部失败时用 copy+delete 替代
             if (!renamed) {
-                // R01: rename 全部失败——保留旧文件不变，报错让调用方处理。
+                try {
+                    java.nio.file.Files.copy(tmp.toPath(), file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING, java.nio.file.StandardCopyOption.COPY_ATTRIBUTES)
+                    renamed = true
+                } catch (e: Exception) {
+                    com.lovebrain.app.util.L.w("atomicWriteText copy fallback failed: ${file.name} - ${e.message}")
+                }
+            }
+            if (!renamed) {
+                // R01: rename+copy 全部失败——保留旧文件不变，报错让调用方处理。
                 // 不删除目标文件冒充安全：copy 失败或中途崩溃会导致目标缺失/不完整。
                 throw java.io.IOException("atomic rename failed after 3 attempts: ${file.name}")
             }
@@ -558,9 +567,12 @@ class KnowledgeRepository(
     }
 
     /** F09: 获取纠正记录的全局 revision（用于后台防护）。
-     * R07: 读取库级持久化 revision（单调递增），不依赖剩余记录 max。 */
+     * R07: 读取库级持久化 revision（单调递增），不依赖剩余记录 max。
+     * b3-8: 加锁读取，保证一致性（原先无锁读可能读到半写状态） */
     suspend fun getCorrectionsRevision(kbName: String): Int = withContext(Dispatchers.IO) {
-        readMemoryRevisionUnlocked(kbName)
+        fileMutex.withLock {
+            readMemoryRevisionUnlocked(kbName)
+        }
     }
 
     /** R07: 原子读取纠正记录和 revision——用于生成准备阶段一次性快照。
@@ -568,6 +580,75 @@ class KnowledgeRepository(
     suspend fun readCorrectionsAndRevision(kbName: String): Pair<Map<String, com.lovebrain.app.model.MemoryCorrection>, Int> = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             readCorrectionsUnlocked(kbName) to readMemoryRevisionUnlocked(kbName)
+        }
+    }
+
+    /** b3-8: 带修订版本条件校验的原子追加——在锁内一次性完成 revision 检查和文件写入，
+     * 消除 KnowledgeTriggerCoordinator 中先检查后写入的竞态窗口。
+     * @return true = 写入成功，false = revision 已变或 KB 不存在 */
+    suspend fun appendFileWithRevisionCheck(
+        kbName: String,
+        relativePath: String,
+        content: String,
+        expectedRevision: Int
+    ): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("appendFileWithRevisionCheck skipped: kb no longer exists")
+                return@withLock false
+            }
+            val currentRevision = readMemoryRevisionUnlocked(kbName)
+            if (currentRevision != expectedRevision) {
+                com.lovebrain.app.util.L.w("appendFileWithRevisionCheck skipped: revision changed (expected=$expectedRevision, current=$currentRevision)")
+                return@withLock false
+            }
+            appendFileUnlocked(kbName, relativePath, content)
+            true
+        }
+    }
+
+    /** b3-8: 带修订版本条件校验的原子写入——在锁内一次性完成 revision 检查和文件写入。
+     * @return true = 写入成功，false = revision 已变或 KB 不存在 */
+    suspend fun writeFileWithRevisionCheck(
+        kbName: String,
+        relativePath: String,
+        content: String,
+        expectedRevision: Int
+    ): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("writeFileWithRevisionCheck skipped: kb no longer exists")
+                return@withLock false
+            }
+            val currentRevision = readMemoryRevisionUnlocked(kbName)
+            if (currentRevision != expectedRevision) {
+                com.lovebrain.app.util.L.w("writeFileWithRevisionCheck skipped: revision changed (expected=$expectedRevision, current=$currentRevision)")
+                return@withLock false
+            }
+            writeFileUnlocked(kbName, relativePath, content)
+            true
+        }
+    }
+
+    /** b3-8: 带修订版本条件校验的向量写入——在锁内一次性完成 revision 检查和向量写入。
+     * @return true = 写入成功，false = revision 已变或 KB 不存在 */
+    suspend fun writeVectorWithRevisionCheck(
+        kbName: String,
+        values: Map<String, Int>,
+        expectedRevision: Int
+    ): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("writeVectorWithRevisionCheck skipped: kb no longer exists")
+                return@withLock false
+            }
+            val currentRevision = readMemoryRevisionUnlocked(kbName)
+            if (currentRevision != expectedRevision) {
+                com.lovebrain.app.util.L.w("writeVectorWithRevisionCheck skipped: revision changed (expected=$expectedRevision, current=$currentRevision)")
+                return@withLock false
+            }
+            writeVectorUnlocked(kbName, values)
+            true
         }
     }
 
@@ -834,18 +915,24 @@ class KnowledgeRepository(
                 com.lovebrain.app.util.L.w("writeVector skipped: kb no longer exists")
                 return@withLock
             }
-            val path = "understand/warmth.md"
-            var warmth = readFile(kbName, path)
-            if (warmth.isBlank()) return@withLock
-            for ((cn, en) in vectorDims) {
-                val v = values[en] ?: continue
-                // [^/\n]* 兼容占位值（如"待评估"）和已有数字，保留 "/100" 后缀
-                val dimRegex = Regex("($cn[^：:]*[：:]\\s*)[^/\\n]*")
-                if (!dimRegex.containsMatchIn(warmth)) com.lovebrain.app.util.L.w("writeVector 维度零匹配：$cn（文件长度=${warmth.length}）")
-                warmth = warmth.replaceFirst(dimRegex, "$1$v")
-            }
-            writeFileUnlocked(kbName, path, warmth)
+            writeVectorUnlocked(kbName, values)
         }
+    }
+
+    /** b3-8: writeVector 的无锁核心——调用方必须已持有 fileMutex */
+    private fun writeVectorUnlocked(kbName: String, values: Map<String, Int>) {
+        val path = "understand/warmth.md"
+        val file = File(File(knowledgeRoot, kbName), path)
+        var warmth = file.takeIf { it.exists() }?.readText() ?: return
+        if (warmth.isBlank()) return
+        for ((cn, en) in vectorDims) {
+            val v = values[en] ?: continue
+            // [^/\n]* 兼容占位值（如"待评估"）和已有数字，保留 "/100" 后缀
+            val dimRegex = Regex("($cn[^：:]*[：:]\\s*)[^/\\n]*")
+            if (!dimRegex.containsMatchIn(warmth)) com.lovebrain.app.util.L.w("writeVector 维度零匹配：$cn（文件长度=${warmth.length}）")
+            warmth = warmth.replaceFirst(dimRegex, "$1$v")
+        }
+        writeFileUnlocked(kbName, path, warmth)
     }
 
     /** 就地更新 warmth.md 的阶段标签行（阶段变化时用），保留旧值作为历史注释。写入前经 StageCatalog 归一化

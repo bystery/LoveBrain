@@ -75,6 +75,7 @@ fun ResultArea(
     // 单条改写
     rewriteStates: Map<String, RewriteState> = emptyMap(),
     onRewrite: (String, String) -> Unit = { _, _ -> },
+    onClearRewriteState: (String) -> Unit = {},
     onCancelRewrite: (String) -> Unit = {},
     onUndoRewrite: (String) -> Unit = {},
     modifier: Modifier = Modifier
@@ -96,6 +97,7 @@ fun ResultArea(
                         onCopyScheme = onCopyScheme,
                         rewriteStates = rewriteStates,
                         onRewrite = onRewrite,
+                        onClearRewriteState = onClearRewriteState,
                         onCancelRewrite = onCancelRewrite,
                         onUndoRewrite = onUndoRewrite
                     )
@@ -145,6 +147,7 @@ fun ResultArea(
                     onCopyScheme = onCopyScheme,
                     rewriteStates = rewriteStates,
                     onRewrite = onRewrite,
+                    onClearRewriteState = onClearRewriteState,
                     onCancelRewrite = onCancelRewrite,
                     onUndoRewrite = onUndoRewrite
                 )
@@ -248,6 +251,7 @@ private fun SchemeCardsRow(
     onCopyScheme: (Scheme) -> Unit,
     rewriteStates: Map<String, RewriteState> = emptyMap(),
     onRewrite: (String, String) -> Unit = { _, _ -> },
+    onClearRewriteState: (String) -> Unit = {},
     onCancelRewrite: (String) -> Unit = {},
     onUndoRewrite: (String) -> Unit = {}
 ) {
@@ -310,6 +314,8 @@ private fun SchemeCardsRow(
             // LazyRow item 离开视口会销毁 remember，若动画状态留在 item 内，
             // 从右向左滑（item 重新组合）会重播动画 → 卡片"闪一下"。提升到外层集合解决。
             val playedTags = remember { mutableStateMapOf<String, Boolean>() }
+            // 阻断C修复：行级唯一展开状态——同一时间只展开一张卡
+            var expandedRewriteTag by remember { mutableStateOf<String?>(null) }
             LazyRow(
                 state = scrollState,
                 horizontalArrangement = Arrangement.spacedBy(Spacing.md),
@@ -326,7 +332,7 @@ private fun SchemeCardsRow(
                         }
                     }
                     // 同一时间只展开一张改写区
-                    var expandedRewriteTag by remember { mutableStateOf<String?>(null) }
+                    // 阻断C修复：expandedRewriteTag 已提升到行级——切卡自动收上张
 
                     AnimatedVisibility(
                         visible = visible,
@@ -343,11 +349,25 @@ private fun SchemeCardsRow(
                             onCopy = onCopyScheme,
                             rewriteState = rewriteStates[scheme.tag],
                             onRewrite = onRewrite,
+                            onClearRewriteState = onClearRewriteState,
                             onCancelRewrite = onCancelRewrite,
                             onUndoRewrite = onUndoRewrite,
                             isExpanded = expandedRewriteTag == scheme.tag,
                             onToggleRewriteExpand = { tag ->
-                                expandedRewriteTag = if (expandedRewriteTag == tag) null else tag
+                                // b2-6: 切卡时自动收上张；同卡点击切换展开/收起
+                                // 展开前先清旧改写状态（Done/Error），使选项区干净展示
+                                val currentRewriteState = rewriteStates[tag]
+                                if (expandedRewriteTag != tag) {
+                                    // 展开新卡：先清状态再展开
+                                    if (currentRewriteState is RewriteState.Done ||
+                                        currentRewriteState is RewriteState.Error) {
+                                        onClearRewriteState(tag)
+                                    }
+                                    expandedRewriteTag = tag
+                                } else {
+                                    // 收起当前卡
+                                    expandedRewriteTag = null
+                                }
                             }
                         )
                     }
@@ -691,7 +711,9 @@ private fun ResultToolRow(
                         color = TextHint
                     )
                 }
+                Spacer(Modifier.weight(1f))
             } else {
+                // 阻断C修复：无引用时不独占左半区，保存按钮紧跟行首
                 Spacer(Modifier.weight(1f))
             }
 
@@ -729,12 +751,31 @@ private fun ResultToolRow(
                     .background(SurfaceInset, LoveBrainShape.md)
                     .padding(Spacing.md)
             ) {
-                memoryRefs.forEachIndexed { index, ref ->
+                // b2-7: 引用列表限制前5条，超出显示"更多"
+                val maxInitialRefs = 5
+                var showAllRefs by remember { mutableStateOf(false) }
+                val displayRefs = if (showAllRefs) memoryRefs else memoryRefs.take(maxInitialRefs)
+                displayRefs.forEachIndexed { index, ref ->
                     if (index > 0) Spacer(Modifier.height(Spacing.sm))
                     MemoryRefItem(
                         ref = ref,
                         onCorrection = onCorrection,
                         onUndoCorrection = onUndoCorrection
+                    )
+                }
+                if (memoryRefs.size > maxInitialRefs && !showAllRefs) {
+                    Spacer(Modifier.height(Spacing.sm))
+                    val (moreInteraction, moreScale) = rememberPressScale(0.96f, "moreRefsScale")
+                    Text(
+                        "更多 ${memoryRefs.size - maxInitialRefs} 条",
+                        style = AppTypography.labelSmall,
+                        color = TextHint,
+                        modifier = Modifier
+                            .graphicsLayer { scaleX = moreScale; scaleY = moreScale }
+                            .clickable(interactionSource = moreInteraction, indication = null) {
+                                showAllRefs = true
+                            }
+                            .padding(Spacing.xs)
                     )
                 }
             }

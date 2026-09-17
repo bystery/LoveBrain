@@ -9,6 +9,8 @@ import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.ProfileSuggestion
+import com.lovebrain.app.model.ProfileUpdate
+import com.lovebrain.app.model.IntentConfig
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -253,6 +255,10 @@ class KbgBatch8Test {
             coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
             coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
             coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = kbName, stage = "暧昧期"))
+            coEvery { knowledgeRepo.readCorrectionsAndRevision(any()) } returns (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
+            coEvery { knowledgeRepo.readIntent(any()) } returns IntentConfig()
+            coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
+            coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
         }
         val prefs = mockk<SecurePrefs>(relaxed = true)
         every { prefs.thinkingMode } returns 0
@@ -292,10 +298,12 @@ class KbgBatch8Test {
         delay(200)
 
         // A's suggestion arrives
+        val rawJson = """{"me":"A的画像","stage_changed":false}"""
         vm.onProfileSuggestion(ProfileSuggestion(
             kbName = "kb-a",
             display = "画像建议A",
-            rawJson = """{"me":"A的画像","stage_changed":false}"""
+            rawJson = rawJson,
+            profileUpdate = ProfileUpdate.parse(rawJson)
         ))
 
         // User switches to B
@@ -325,10 +333,12 @@ class KbgBatch8Test {
         val vm = newViewModelWithKb(kbName = "kb-a", knowledgeRepoOverride = knowledgeRepo)
         delay(200)
 
+        val rawJson = """{"me":"A的画像","stage_changed":false}"""
         vm.onProfileSuggestion(ProfileSuggestion(
             kbName = "kb-a",
             display = "画像建议A",
-            rawJson = """{"me":"A的画像","stage_changed":false}"""
+            rawJson = rawJson,
+            profileUpdate = ProfileUpdate.parse(rawJson)
         ))
 
         vm.confirmProfileUpdate()
@@ -358,10 +368,12 @@ class KbgBatch8Test {
         // UI global vector is B's vector (simulating cross-KB pollution)
         // Since we can't set _currentVector directly, we test via readVector call
 
+        val rawJson = """{"warmth":"new warmth","stage_changed":false}"""
         vm.onProfileSuggestion(ProfileSuggestion(
             kbName = "kb-a",
             display = "画像建议",
-            rawJson = """{"warmth":"new warmth","stage_changed":false}"""
+            rawJson = rawJson,
+            profileUpdate = ProfileUpdate.parse(rawJson)
         ))
 
         vm.confirmProfileUpdate()

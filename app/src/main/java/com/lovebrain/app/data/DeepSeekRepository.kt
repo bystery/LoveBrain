@@ -470,7 +470,8 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
     }.flowOn(Dispatchers.IO)
 
     /** 将累积文本解析为 LoveBrainResponse（单次调用：response + analysis）
-     * R10: 至少一个真实非空风格才可作为回复成功；全空 response 被拒绝。 */
+     * R10: 至少一个真实非空风格才可作为回复成功；全空 response 被拒绝。
+     * b3-9: 解析降级——当 response 全空但 directions 有非空项时，使用 directions 作为回复。 */
     fun parseReplyResponse(content: String): LoveBrainResponse {
         val jsonStr = com.lovebrain.app.util.Jsons.extractJsonBlock(content)
             ?: throw IllegalStateException("模型未返回有效 JSON，请重试")
@@ -480,6 +481,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
 
         // R10: 不再用 resp.schemes.isEmpty() 验证——toSchemes 永远返回 4 条（空 reply = 本轮不适合）。
         // 改为检查至少一个非空 reply 才算成功。
+        // b3-9: schemes 访问器已内置 directions 降级逻辑
         val hasNonEmpty = resp.schemes.any { it.reply.isNotBlank() }
         if (!hasNonEmpty) {
             throw IllegalStateException("返回格式不完整：所有回复方案均为空，请重试")

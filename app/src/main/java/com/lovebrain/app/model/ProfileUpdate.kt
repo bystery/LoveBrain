@@ -6,8 +6,10 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.boolean
+import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.jsonNull
 
 /**
  * 统一画像更新解析与校验入口。
@@ -15,12 +17,13 @@ import kotlinx.serialization.json.jsonPrimitive
  * 生成摘要展示和确认写入均使用同一个已验证的 ProfileUpdate 对象，
  * 不重复解析两遍不同口径的 raw。
  *
- * 校验规则：
- * - me/her/warmth 为合法非空字符串（可缺失但不接受 null/空串/对象）
- * - stage_changed 为布尔（可缺失）
- * - new_stage 为字符串（可缺失）
- * - observations 为字符串数组（可缺失，元素必须为字符串）
- * - message_to_user 为字符串（可缺失）
+ * 校验规则（按字段区分，不统一套用非空）：
+ * - me/her/warmth：必须为合法非空字符串（缺失=不更新，null/空串/数字/布尔/对象=无效）
+ * - stage_changed：布尔（可缺失）
+ * - new_stage：stage_changed=true 时必须为合法非空字符串且在合法阶段枚举内；
+ *   stage_changed=false 或缺失时允许缺失/空字符串
+ * - observations：字符串数组（可缺失，元素必须为字符串，不接受 null/数字/布尔）
+ * - message_to_user：字符串（可缺失，允许空字符串——reflect 模板要求无变化时为空）
  *
  * 截断、歧义或字段无效时 [valid]=false，不展示可确认按钮。
  */
@@ -83,18 +86,28 @@ data class ProfileUpdate(
                 )
             }
 
-            // 步骤3：逐字段类型校验
+            // 步骤3：逐字段类型校验（按字段不同规则区分）
             val errors = mutableListOf<String>()
 
-            val meContent = extractStringField(parsed, "me", errors)
-            val herContent = extractStringField(parsed, "her", errors)
-            val warmthContent = extractStringField(parsed, "warmth", errors)
+            // 画像正文：必须为合法非空字符串
+            val meContent = extractNonBlankStringField(parsed, "me", errors)
+            val herContent = extractNonBlankStringField(parsed, "her", errors)
+            val warmthContent = extractNonBlankStringField(parsed, "warmth", errors)
 
             val stageChanged = extractBooleanField(parsed, "stage_changed", errors)
-            val newStage = extractStringField(parsed, "new_stage", errors)
+
+            // new_stage：只在 stage_changed=true 时要求合法非空且属于阶段枚举
+            val newStage = if (stageChanged == true) {
+                extractStageField(parsed, "new_stage", errors)
+            } else {
+                // stage_changed=false 或缺失：new_stage 允许缺失/空，不校验
+                extractOptionalStringField(parsed, "new_stage")
+            }
 
             val observations = extractStringArrayField(parsed, "observations", errors)
-            val messageToUser = extractStringField(parsed, "message_to_user", errors)
+
+            // message_to_user：允许空字符串（reflect 模板无变化时为空）
+            val messageToUser = extractOptionalStringField(parsed, "message_to_user")
 
             // 至少一个画像字段非空才有效
             val hasProfileUpdate = meContent != null || herContent != null || warmthContent != null
@@ -122,8 +135,12 @@ data class ProfileUpdate(
             )
         }
 
-        /** 提取字符串字段，null/空串/对象/数组均记入 errors */
-        private fun extractStringField(
+        /**
+         * 提取必填非空字符串字段（画像正文用）。
+         * 缺失=不更新（null）；存在但 null/空串/数字/布尔/对象=无效。
+         * 严格检查 isString：JsonNull/数字/布尔不被当字符串接受。
+         */
+        private fun extractNonBlankStringField(
             obj: JsonObject,
             key: String,
             errors: MutableList<String>
@@ -131,12 +148,85 @@ data class ProfileUpdate(
             val element = obj[key] ?: return null // 缺失字段不报错
             return when (element) {
                 is JsonPrimitive -> {
-                    val content = element.content
-                    if (content.isBlank()) {
-                        errors.add("$key 为空字符串")
+                    if (element.isString) {
+                        val content = element.content
+                        if (content.isBlank()) {
+                            errors.add("$key 为空字符串")
+                            null
+                        } else {
+                            content
+                        }
+                    } else {
+                        // 数字、布尔等非字符串 JsonPrimitive
+                        errors.add("$key 应为字符串，实际为${element.content}")
+                        null
+                    }
+                }
+                is JsonObject -> {
+                    errors.add("$key 应为字符串，实际为对象")
+                    null
+                }
+                is JsonArray -> {
+                    errors.add("$key 应为字符串，实际为数组")
+                    null
+                }
+                else -> {
+                    errors.add("$key 类型异常")
+                    null
+                }
+            }
+        }
+
+        /**
+         * 提取可选字符串字段（message_to_user 等允许空串的字段用）。
+         * 缺失=不设置（null）；存在且为字符串=返回内容（含空串）；
+         * 存在但 null/数字/布尔/对象=无效。
+         */
+        private fun extractOptionalStringField(
+            obj: JsonObject,
+            key: String
+        ): String? {
+            val element = obj[key] ?: return null
+            return when (element) {
+                is JsonPrimitive -> {
+                    if (element.isString) element.content else null
+                }
+                else -> null
+            }
+        }
+
+        /** 合法阶段枚举（与 StageCatalog 对齐，九阶段） */
+        private val VALID_STAGES = setOf(
+            "认识期", "暧昧期", "试探期", "约会期", "热恋期",
+            "磨合期", "稳定期", "平淡期", "倦怠期"
+        )
+
+        /**
+         * 提取阶段字段（stage_changed=true 时使用）。
+         * 必须为合法非空字符串且属于阶段枚举。
+         */
+        private fun extractStageField(
+            obj: JsonObject,
+            key: String,
+            errors: MutableList<String>
+        ): String? {
+            val element = obj[key] ?: return null
+            return when (element) {
+                is JsonPrimitive -> {
+                    if (!element.isString) {
+                        errors.add("$key 应为字符串，实际为${element.content}")
                         null
                     } else {
-                        content
+                        val content = element.content.trim()
+                        if (content.isBlank()) {
+                            errors.add("$key 为空字符串（stage_changed=true 时必须指定阶段）")
+                            null
+                        } else if (content !in VALID_STAGES) {
+                            errors.add("$key 不是合法阶段：$content")
+                            null
+                        } else {
+                            content
+                        }
                     }
                 }
                 is JsonObject -> {
@@ -177,7 +267,7 @@ data class ProfileUpdate(
             }
         }
 
-        /** 提取字符串数组字段 */
+        /** 提取字符串数组字段：元素必须为 isString 的 JsonPrimitive，不接受 null/数字/布尔 */
         private fun extractStringArrayField(
             obj: JsonObject,
             key: String,
@@ -188,7 +278,12 @@ data class ProfileUpdate(
                 is JsonArray -> {
                     element.mapNotNull { item ->
                         when (item) {
-                            is JsonPrimitive -> item.content
+                            is JsonPrimitive -> {
+                                if (item.isString) item.content else {
+                                    errors.add("$key 数组元素应为字符串，实际为${item.content}")
+                                    null
+                                }
+                            }
                             else -> {
                                 errors.add("$key 数组元素应为字符串")
                                 null

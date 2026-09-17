@@ -320,8 +320,21 @@ private fun HomeTabContent(
                     )
                     Spacer(Modifier.height(Spacing.lg))
                     val (heroInteraction, heroScale) = rememberPressScale(0.96f, "heroScale")
+                    // 阻断D修复：主按钮按状态变文案——隐藏时显示"恢复"
+                    val isServiceRunning = FloatingService.instance != null
+                    val currentWindowState by FloatingService.windowStateFlow
+                        .collectAsStateWithLifecycle()
+                    val heroButtonText = when {
+                        !overlayGranted -> "授权悬浮窗（首次）"
+                        isServiceRunning && currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> "恢复军师悬浮窗"
+                        else -> "启动军师悬浮窗"
+                    }
+                    val heroButtonAction = when {
+                        isServiceRunning && currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> onRestore
+                        else -> onStartService
+                    }
                     Button(
-                        onClick = onStartService,
+                        onClick = heroButtonAction,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Primary,
                             contentColor = Color.White
@@ -339,17 +352,14 @@ private fun HomeTabContent(
                         )
                         Spacer(Modifier.width(Spacing.sm))
                         Text(
-                            if (overlayGranted) "启动军师悬浮窗"
-                            else "授权悬浮窗（首次）",
+                            heroButtonText,
                             style = AppTypography.labelLarge,
                             fontWeight = FontWeight.SemiBold
                         )
                     }
 
                     // ── Hero 卡内临时隐藏/恢复次按钮 ──
-                    // 同卡不另起大卡片，低强调文字+图标
-                    val isServiceRunning = FloatingService.instance != null
-                    val currentWindowState = FloatingService.windowState
+                    // 阻断D修复：复用上方已声明的 isServiceRunning 和 currentWindowState
                     when {
                         // 未授权：不显示次按钮
                         !overlayGranted -> { }

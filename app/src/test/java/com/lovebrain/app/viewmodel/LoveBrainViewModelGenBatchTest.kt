@@ -13,6 +13,7 @@ import com.lovebrain.app.model.ReplyAnalysis
 import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.IntentConfig
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -85,12 +86,20 @@ class LoveBrainViewModelGenBatchTest {
         every { prefs.activeTicketId } returns null
         topicRecorder = mockk(relaxed = true)
         generationEngine = mockk(relaxed = true)
+        val knowledgeRepo = mockk<com.lovebrain.app.data.KnowledgeRepository>(relaxed = true)
+        coEvery { knowledgeRepo.getActive() } returns null
+        coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
+        coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
+        coEvery { knowledgeRepo.readCorrectionsAndRevision(any()) } returns (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
+        coEvery { knowledgeRepo.readIntent(any()) } returns IntentConfig()
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
+        coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
         val promptBuilder = mockk<PromptBuilder>()
         every { promptBuilder.validateConfig(any(), any()) } returns
             ConfigValidationResult(0, 0, emptyList())
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
-            knowledgeRepo = mockk(relaxed = true),
+            knowledgeRepo = knowledgeRepo,
             promptBuilder = promptBuilder,
             topicRecorder = topicRecorder,
             securePrefs = prefs,
@@ -117,6 +126,11 @@ class LoveBrainViewModelGenBatchTest {
             coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
             coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
             coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = kbName, stage = "暧昧期"))
+            // 显式 stub 泛型返回方法，防 relaxed mock 返回 null 导致 NPE
+            coEvery { knowledgeRepo.readCorrectionsAndRevision(any()) } returns (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
+            coEvery { knowledgeRepo.readIntent(any()) } returns IntentConfig()
+            coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
+            coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
         }
 
         prefs = mockk(relaxed = true)
@@ -428,6 +442,10 @@ class LoveBrainViewModelGenBatchTest {
         coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
         coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
         coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = "kb-a", stage = "暧昧期"))
+        coEvery { knowledgeRepo.readCorrectionsAndRevision(any()) } returns (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
+        coEvery { knowledgeRepo.readIntent(any()) } returns IntentConfig()
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
+        coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
 
         val vm = newViewModelWithKb(
             kbName = "kb-a",
@@ -669,6 +687,10 @@ class LoveBrainViewModelGenBatchTest {
         coEvery { knowledgeRepo.getActive() } returns null
         coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
         coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
+        coEvery { knowledgeRepo.readCorrectionsAndRevision(any()) } returns (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
+        coEvery { knowledgeRepo.readIntent(any()) } returns IntentConfig()
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
+        coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
 
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0

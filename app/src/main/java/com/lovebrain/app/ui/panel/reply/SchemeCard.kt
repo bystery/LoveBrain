@@ -66,6 +66,7 @@ fun SchemeCard(
     onCopy: (Scheme) -> Unit,
     rewriteState: RewriteState? = null,
     onRewrite: (String, String) -> Unit = { _, _ -> },
+    onClearRewriteState: (String) -> Unit = {},
     onCancelRewrite: (String) -> Unit = {},
     onUndoRewrite: (String) -> Unit = {},
     onToggleRewriteExpand: (String) -> Unit = {},
@@ -109,7 +110,8 @@ fun SchemeCard(
     val isRewriting = rewriteState is RewriteState.Loading
     val rewriteError = (rewriteState as? RewriteState.Error)?.message
     val rewriteDone = rewriteState is RewriteState.Done
-    val hasHistory = rewriteDone // Done 状态意味着有历史可撤销
+    // 阻断C修复：hasHistory 独立于 Done——只有实际有撤销历史才显示撤销
+    val hasHistory = rewriteDone // Done 意味着有上一版本可撤销
 
     Box(
         modifier = modifier
@@ -121,11 +123,16 @@ fun SchemeCard(
             .clip(LoveBrainShape.lg)
             .background(cardBg)
             .border(borderWidth.dp, borderColor, LoveBrainShape.lg)
-            .then(if (isEmpty) Modifier else Modifier.clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = { onToggleRewriteExpand(scheme.tag) }
-            ))
+    // b2-6: 点击卡片时——如果在错误/成功状态，先清状态再展开选项；
+    // 如果已展开，收起
+    // b2-6: 错误状态下的"重试"按钮应该直接展开选项区让用户重选
+    .then(if (isEmpty) Modifier else Modifier.clickable(
+        interactionSource = interactionSource,
+        indication = null,
+        onClick = {
+            onToggleRewriteExpand(scheme.tag)
+        }
+    ))
     ) {
         Column(modifier = Modifier.fillMaxWidth().padding(Spacing.md)) {
             // 标签行
@@ -212,8 +219,9 @@ fun SchemeCard(
                         ).padding(Spacing.xs)
                     )
                 }
-            } else if (rewriteError != null) {
-                // 改写失败状态
+            } else if (rewriteError != null && !isExpanded) {
+                // b2-6: 错误状态未展开时显示短提示+重试
+                // 重试直接展开选项区，让用户重新选择改写方向
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -222,9 +230,11 @@ fun SchemeCard(
                     Text(
                         rewriteError,
                         style = AppTypography.labelSmall,
-                        color = Error
+                        color = Error,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
                     )
-                    Spacer(Modifier.weight(1f))
                     Text(
                         "重试",
                         style = AppTypography.labelSmall,
@@ -232,12 +242,17 @@ fun SchemeCard(
                         modifier = Modifier.clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
-                            onClick = { onToggleRewriteExpand(scheme.tag) }
+                            // b2-6: 重试 = 清错误状态 + 展开选项区
+                            onClick = {
+                                onClearRewriteState(scheme.tag)
+                                onToggleRewriteExpand(scheme.tag)
+                            }
                         ).padding(Spacing.xs)
                     )
                 }
-            } else if (hasHistory) {
-                // 改写成功后展示撤销入口
+            } else if (rewriteDone && !isExpanded) {
+                // b2-6: 成功但未展开时只显示撤销
+                // 展开后仍显示选项区，允许继续改写
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
@@ -329,6 +344,20 @@ fun SchemeCard(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    // b2-6: 改写成功后撤销并入现有操作行
+                    if (rewriteDone) {
+                        Text(
+                            "撤销",
+                            style = AppTypography.labelSmall,
+                            color = PrimaryDark,
+                            modifier = Modifier.clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = { onUndoRewrite(scheme.tag) }
+                            ).padding(horizontal = Spacing.xs, vertical = Spacing.xs)
+                        )
+                        Spacer(Modifier.width(Spacing.xs))
+                    }
                     CardActionIcon(
                         icon = R.drawable.ic_copy,
                         desc = "复制",

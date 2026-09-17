@@ -611,7 +611,7 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         val rawScene = knowledgeRepo.readFile(kbName, "memory/raw_scene.md")
         val rawTopic = knowledgeRepo.readFile(kbName, "memory/raw_topic.md")
         return buildString {
-            append("当前话题：").append(topic).append("\n\n")
+            append("当前话题：").append(topic as CharSequence).append("\n\n")
             if (sceneChain.isNotBlank()) {
                 append("【此刻状态】\n").append(sceneChain.trim()).append("\n\n")
             }
@@ -639,7 +639,7 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         val recent = knowledgeRepo.readFile(kbName, "moment/recent.md")
         val rawTopic = knowledgeRepo.readFile(kbName, "memory/raw_topic.md")
         return buildString {
-            append("当前话题：").append(topic).append("\n")
+            append("当前话题：").append(topic as CharSequence).append("\n")
             if (sceneChain.isNotBlank()) {
                 append("【此刻状态】\n").append(sceneChain.trim()).append("\n\n")
             }

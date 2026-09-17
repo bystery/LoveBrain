@@ -59,6 +59,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -97,10 +100,20 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         var windowState: WindowState = WindowState.STOPPED
             private set
 
+        /** 阻断D修复：Compose 可观察的窗口状态 StateFlow */
+        private val _windowStateFlow = MutableStateFlow(WindowState.STOPPED)
+        val windowStateFlow: StateFlow<WindowState> = _windowStateFlow.asStateFlow()
+
         /** 临时隐藏前的展示形态，恢复时还原 */
         @Volatile
         var preHiddenState: WindowState = WindowState.VISIBLE_BUBBLE
             private set
+
+        /** 统一更新 windowState，同步 volatile 和 StateFlow */
+        fun setWindowState(state: WindowState) {
+            windowState = state
+            _windowStateFlow.value = state
+        }
     }
 
     // ═══════════ Koin 注入 ═══════════
@@ -361,7 +374,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     override fun onDestroy() {
         L.w("=== FloatingService onDestroy ===")
         instance = null
-        windowState = WindowState.STOPPED
+        setWindowState(WindowState.STOPPED)
         bubbleAnim?.cancel()      // E3：防动画回调持有已销毁 Service
         panelExitAnim?.cancel()
         removeBubble()
@@ -403,6 +416,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
      * 不调用 stopSelf，不清 ViewModel，不取消正在运行的正常请求。
      */
     private fun tempHide() {
+        // 阻断D修复：幂等 guard——已经临时隐藏时不重复覆盖 preHiddenState
+        if (windowState == WindowState.TEMP_HIDDEN) return
+
         // 记录隐藏前展示形态
         preHiddenState = if (isPanelShowing) WindowState.VISIBLE_PANEL else WindowState.VISIBLE_BUBBLE
 
@@ -428,7 +444,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         // 取消闲置计时器（隐藏后不需要呼吸/半隐藏动画）
         idleJob?.cancel()
 
-        windowState = WindowState.TEMP_HIDDEN
+        setWindowState(WindowState.TEMP_HIDDEN)
         updateNotification()
         L.w("FloatingService: temp hide applied")
     }
@@ -445,7 +461,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             WindowState.VISIBLE_PANEL -> {
                 // 恢复面板
                 showPanel()
-                windowState = WindowState.VISIBLE_PANEL
+                setWindowState(WindowState.VISIBLE_PANEL)
             }
             WindowState.VISIBLE_BUBBLE -> {
                 // 恢复悬浮球，校正位置
@@ -462,13 +478,13 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                     bv.visibility = View.VISIBLE
                 }
                 resetIdleTimer()
-                windowState = WindowState.VISIBLE_BUBBLE
+                setWindowState(WindowState.VISIBLE_BUBBLE)
             }
             else -> {
                 // 默认恢复到球
                 bubbleView?.visibility = View.VISIBLE
                 resetIdleTimer()
-                windowState = WindowState.VISIBLE_BUBBLE
+                setWindowState(WindowState.VISIBLE_BUBBLE)
             }
         }
         updateNotification()
@@ -535,7 +551,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                 cv.forceTransparentWindowBackground()
                 L.w("showBubble addView OK size=${size} pos=(${params.x},${params.y})")
                 resetIdleTimer()   // 启动闲置半透明计时
-                windowState = WindowState.VISIBLE_BUBBLE
+                setWindowState(WindowState.VISIBLE_BUBBLE)
             }
             .onFailure {
                 L.e("showBubble addView failed", it)
@@ -753,7 +769,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         ensurePanelCreated()
         val cv = composeView ?: return
         isPanelShowing = true
-        windowState = WindowState.VISIBLE_PANEL
+        setWindowState(WindowState.VISIBLE_PANEL)
 
         // BUG 修复：打开前必须取消退出动画并重置透明度，
         // 否则上次淡出残留 alpha=0 → 面板"显示"了但完全透明看不见
@@ -843,6 +859,10 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                     cv.visibility = View.GONE
                     cv.alpha = 1f   // 复位，避免下次打开残留透明
                     bubbleView?.visibility = View.VISIBLE
+                    // 阻断D修复：动画结束后更新 windowState（但临时隐藏不覆盖）
+                    if (windowState != WindowState.TEMP_HIDDEN) {
+                        setWindowState(WindowState.VISIBLE_BUBBLE)
+                    }
                     // ：读屏播报——气泡重新可见后告知面板已关闭（固定文案）
                     bubbleView?.announceForAccessibility("军师面板已关闭")
                     isPanelHiding = false

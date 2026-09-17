@@ -282,9 +282,10 @@ class LoveBrainViewModel(
     private val _resultMode = MutableStateFlow(ResultMode.REPLY)
     val resultMode: StateFlow<ResultMode> = _resultMode.asStateFlow()
 
-    /** P1-2：前台任务互斥——同时只运行一个回复/润色请求
-     *  D项修复：准备期也参与互斥 */
-    val isForegroundBusy: Boolean get() = _isGenerating.value || _isProactive.value || _isPreparing.value
+    /** P1-2：前台任务互斥——同时只运行一个回复/润色/改写请求
+     *  D项修复：准备期也参与互斥
+     *  阻断B修复：改写也纳入前台互斥 */
+    val isForegroundBusy: Boolean get() = _isGenerating.value || _isProactive.value || _isPreparing.value || (rewriteJob?.isActive == true)
 
     // ═══════════ 谈心模式 ═══════════
     private val _counselingResult = MutableStateFlow<String?>(null)
@@ -497,7 +498,8 @@ class LoveBrainViewModel(
         // GEN-01 双层保护第一层：ViewModel guard
         // P1-2：前台任务互斥——正在主动发时也拒绝
         // D项修复：准备期也参与互斥——_isPreparing 防止准备期回复/主动发并发
-        if (_isGenerating.value || _isProactive.value || _isPreparing.value) return
+        // 阻断B修复：正在改写时也拒绝
+        if (_isGenerating.value || _isProactive.value || _isPreparing.value || (rewriteJob?.isActive == true)) return
 
         // P1-2：设置结果模式
         _resultMode.value = ResultMode.REPLY
@@ -591,6 +593,13 @@ class LoveBrainViewModel(
         _panelState.value = PanelState.KEYBOARD
         // GEN-02：停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
+        // 阻断B修复：停止生成也作废旧改写请求
+        rewriteJob?.cancel()
+        rewriteJob = null
+        rewriteRequestId = null
+        rewriteContextId = null
+        _rewriteStates.value = emptyMap()
+        _rewriteHistory.value = emptyMap()
         if (_result.value == null) {
             _result.value = GenerateResult.Error("已手动停止生成")
         }
@@ -726,6 +735,11 @@ class LoveBrainViewModel(
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
         _panelState.value = PanelState.KEYBOARD
+        // 阻断B修复：新轮开始时清理改写状态和历史，作废旧改写请求
+        _rewriteStates.value = emptyMap()
+        _rewriteHistory.value = emptyMap()
+        rewriteRequestId = null
+        rewriteContextId = null
     }
 
     fun copyScheme(scheme: Scheme): String {
@@ -819,9 +833,10 @@ class LoveBrainViewModel(
                         knowledgeRepo.writeFile(kbName, "understand/her.md", herContent)
                     }
                     payload.warmth?.let { warmthContent ->
-                        knowledgeRepo.writeFile(kbName, "understand/warmth.md", warmthContent)
-                        // KBG-03：画像确认时读取目标 KB 自己的 vector
+                        // 阻断A修复：先取得目标库当前向量，再写 warmth
+                        // 避免写入 warmth 后读到的向量已被修改
                         val targetVector = knowledgeRepo.readVector(kbName)
+                        knowledgeRepo.writeFile(kbName, "understand/warmth.md", warmthContent)
                         if (targetVector.isNotEmpty()) {
                             knowledgeRepo.writeVector(kbName, targetVector)
                         }
@@ -1023,7 +1038,8 @@ class LoveBrainViewModel(
     /** P1-2：前台任务互斥——正在生成回复时也拒绝 */
     fun generateProactive(draft: String = "", scene: String = "") {
         // D项修复：准备期也参与互斥
-        if (_isProactive.value || _isGenerating.value || _isPreparing.value) return
+        // 阻断B修复：正在改写时也拒绝
+        if (_isProactive.value || _isGenerating.value || _isPreparing.value || (rewriteJob?.isActive == true)) return
 
         // P1-2：设置结果模式
         _resultMode.value = ResultMode.PROACTIVE
@@ -1381,6 +1397,9 @@ class LoveBrainViewModel(
     /** 改写请求 ID（锁定目标，防跨轮写入） */
     private var rewriteRequestId: String? = null
 
+    /** 改写绑定轮次身份——新轮/切库/保存清空时作废旧改写请求 */
+    private var rewriteContextId: String? = null
+
     /**
      * 对指定方案卡发起单条改写。
      *
@@ -1408,12 +1427,19 @@ class LoveBrainViewModel(
         val requestId = java.util.UUID.randomUUID().toString()
         rewriteRequestId = requestId
 
+        // 阻断B修复：绑定轮次身份——新轮/切库/保存后旧改写不写入
+        val contextId = (ctx.kbName ?: "") + "_" + ctx.messageIds.hashCode()
+        rewriteContextId = contextId
+
         // 设置改写中状态
         _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Loading(option))
 
         // 保存当前版本到历史（用于撤销）
         val currentHistory = _rewriteHistory.value[schemeTag] ?: emptyList()
         _rewriteHistory.value = _rewriteHistory.value + (schemeTag to currentHistory + scheme.reply)
+
+        // 阻断B修复：捕获改写前的 feedbacks，改写成功后不自动继承到新正文
+        val preRewriteFeedback = _feedbacks.value[schemeTag]
 
         val kbSnapshot = _activeKb.value
         val ticket = _activeTicket.value
@@ -1452,6 +1478,9 @@ class LoveBrainViewModel(
 
                 // 校验请求身份——切库/新轮/清空后旧结果不写入
                 if (rewriteRequestId != requestId) return@launch
+                // 阻断B修复：校验轮次身份未变
+                val currentContextId = (_activeKb.value?.name ?: "") + "_" + (replyGenerationContext?.messageIds?.hashCode() ?: 0)
+                if (rewriteContextId != contextId || currentContextId != contextId) return@launch
 
                 val newReply = raw.trim()
                 if (newReply.isBlank()) {
@@ -1459,11 +1488,13 @@ class LoveBrainViewModel(
                     return@launch
                 }
 
-                // 成功：替换目标卡正文，保持位置和稳定身份
-                val updatedSchemes = response.schemes.map { s ->
+                // 阻断B修复：只替换目标卡正文，不回写整个捕获的旧 response
+                val currentResult = _result.value as? GenerateResult.Success ?: return@launch
+                val currentResponse = currentResult.response
+                val updatedSchemes = currentResponse.schemes.map { s ->
                     if (s.tag == schemeTag) s.copy(reply = newReply) else s
                 }
-                val updatedResponse = response.copy(
+                val updatedResponse = currentResponse.copy(
                     response = com.lovebrain.app.model.ReplySchemes(
                         recommended = updatedSchemes.getOrNull(0)?.reply ?: "",
                         badBoy = updatedSchemes.getOrNull(1)?.reply ?: "",
@@ -1472,6 +1503,13 @@ class LoveBrainViewModel(
                     )
                 )
                 _result.value = GenerateResult.Success(updatedResponse)
+
+                // 阻断B修复：改写成功后清理该卡旧反馈——新正文不自动继承旧赞/踩
+                if (preRewriteFeedback == SchemeFeedback.LIKED || preRewriteFeedback == SchemeFeedback.DISLIKED) {
+                    _feedbacks.value = _feedbacks.value.toMutableMap().apply {
+                        put(schemeTag, SchemeFeedback.NONE)
+                    }
+                }
 
                 // 清除改写状态，保留撤销入口
                 _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Done(newReply))

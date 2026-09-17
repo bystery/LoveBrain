@@ -49,6 +49,54 @@ object PartialJsonObjects {
         return result
     }
 
+    /** b3-9: 提取 "key": [...] 字符串数组中所有已完整闭合的字符串元素（流式提前渲染 directions 用） */
+    fun extractStringArray(raw: String, key: String): List<String> {
+        val buffer = raw.replace("```json", "").replace("```", "")
+        val start = buffer.indexOf("\"$key\"")
+        if (start < 0) return emptyList()
+        val arrStart = buffer.indexOf('[', start)
+        if (arrStart < 0) return emptyList()
+
+        val result = mutableListOf<String>()
+        var i = arrStart + 1
+        while (i < buffer.length) {
+            // 跳过空白和逗号
+            while (i < buffer.length && (buffer[i] == ' ' || buffer[i] == '\n' || buffer[i] == '\r' || buffer[i] == ',')) i++
+            if (i >= buffer.length) break
+            if (buffer[i] == ']') break
+            if (buffer[i] != '"') {
+                // 跳过非字符串元素（如 null、数字等）
+                while (i < buffer.length && buffer[i] != ',' && buffer[i] != ']') i++
+                continue
+            }
+            // 提取闭合的字符串
+            val strEnd = findStringEnd(buffer, i)
+            if (strEnd < 0) break // 字符串尚未闭合
+            val content = buffer.substring(i + 1, strEnd)
+            result.add(unescapeJsonString(content))
+            i = strEnd + 1
+        }
+        return result
+    }
+
+    /** 找到从 startPos 开始的字符串的结束引号位置（跳过转义） */
+    private fun findStringEnd(buffer: String, startPos: Int): Int {
+        var j = startPos + 1
+        while (j < buffer.length) {
+            when (buffer[j]) {
+                '\\' -> j += 2 // 跳过转义字符
+                '"' -> return j
+                else -> j++
+            }
+        }
+        return -1 // 未闭合
+    }
+
+    /** 简易 JSON 字符串反转义 */
+    private fun unescapeJsonString(s: String): String {
+        return s.replace("\\\"", "\"").replace("\\\\", "\\").replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r")
+    }
+
     /** 提取 "key": {...} 中已完整闭合的对象字符串；未闭合返回 null（流式提前渲染用） */
     fun extractKeyObject(raw: String, key: String): String? {
         val buffer = raw.replace("```json", "").replace("```", "")
@@ -267,7 +315,22 @@ class GenerationEngine(
                                 val schemes = runCatching {
                                     jsonLenient.decodeFromString<com.lovebrain.app.model.ReplySchemes>(respObj).toSchemes()
                                 }.getOrDefault(emptyList())
-                                callbacks.onReplyStreamingSchemes(schemes)
+                                // b3-9: 如果 response 有非空风格，立即渲染；否则尝试 directions 降级
+                                if (schemes.any { it.reply.isNotBlank() }) {
+                                    callbacks.onReplyStreamingSchemes(schemes)
+                                } else {
+                                    // b3-9: 尝试从 directions 数组提取降级方案
+                                    val dirSchemes = extractDirectionsSchemes(rawBuffer.toString())
+                                    if (dirSchemes.isNotEmpty()) {
+                                        callbacks.onReplyStreamingSchemes(dirSchemes)
+                                    }
+                                }
+                            } else {
+                                // b3-9: response 对象尚未完整，但 directions 数组可能已可用
+                                val dirSchemes = extractDirectionsSchemes(rawBuffer.toString())
+                                if (dirSchemes.isNotEmpty()) {
+                                    callbacks.onReplyStreamingSchemes(dirSchemes)
+                                }
                             }
                         },
                         onError = { errorMsg = it },
@@ -603,5 +666,17 @@ class GenerationEngine(
         val jsonStr = Jsons.extractJsonBlock(raw)
             ?: throw IllegalStateException("锦囊返回格式异常")
         return jsonLenient.decodeFromString<com.lovebrain.app.model.DailySuggestion>(jsonStr)
+    }
+
+    /** b3-9: 从流式缓冲区提取 directions 字符串数组，降级为 Scheme 列表 */
+    private fun extractDirectionsSchemes(raw: String): List<Scheme> {
+        val dirs = PartialJsonObjects.extractStringArray(raw, "directions")
+            .filter { it.isNotBlank() }
+        if (dirs.isEmpty()) return emptyList()
+        return dirs.mapIndexed { index, text ->
+            val tag = listOf("A", "B", "C", "D").getOrElse(index) { (index + 1).toString() }
+            val title = listOf("推荐", "清醒", "俏皮", "温柔").getOrElse(index) { "方案${index + 1}" }
+            Scheme(tag = tag, title = title, reply = text)
+        }
     }
 }

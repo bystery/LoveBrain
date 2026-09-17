@@ -132,31 +132,30 @@ class KnowledgeTriggerCoordinator(
                 val suggestedStage = raw.substringAfter("===STAGE===", "").trim()
                     .lines().firstOrNull()?.trim().orEmpty()
 
-                // R07: 写入前再次校验 corrections revision（不只检查开始时）
-                val currentRev = withContext(Dispatchers.IO) { knowledgeRepo.getCorrectionsRevision(kbName) }
-                if (currentRev != frozenCorrectionsRev) {
-                    L.w("reestimateVector skipped at write time: corrections changed (frozen=$frozenCorrectionsRev, current=$currentRev)")
+                // b3-8: 锁内原子 revision 检查 + 向量写入 + 历史记录，消除竞态窗口
+                val ts = TimeFmt.now()
+                val labelMap2 = mapOf(
+                    "intimacy" to "亲密", "trust" to "信任", "commitment" to "承诺",
+                    "passion" to "激情", "security" to "安全"
+                )
+                val histEntry = buildString {
+                    append("## [$ts] 向量重估\n")
+                    labelMap2.forEach { (en, label) ->
+                        val o = oldVector[en] ?: 50
+                        val n = newVector[en] ?: o
+                        append("- $label：$o→$n (${if (n > o) "+" else ""}${n - o})\n")
+                    }
+                    if (reason.isNotBlank()) append("- 依据：$reason\n")
+                }
+                val vectorWritten = withContext(Dispatchers.IO) {
+                    knowledgeRepo.writeVectorWithRevisionCheck(kbName, newVector, frozenCorrectionsRev)
+                }
+                if (!vectorWritten) {
+                    L.w("reestimateVector skipped at write time: corrections changed (frozen=$frozenCorrectionsRev)")
                     return@launch
                 }
-
-                // 写回 warmth.md
                 withContext(Dispatchers.IO) {
-                    knowledgeRepo.writeVector(kbName, newVector)
-                    val ts = TimeFmt.now()
-                    val labelMap2 = mapOf(
-                        "intimacy" to "亲密", "trust" to "信任", "commitment" to "承诺",
-                        "passion" to "激情", "security" to "安全"
-                    )
-                    val histEntry = buildString {
-                        append("## [$ts] 向量重估\n")
-                        labelMap2.forEach { (en, label) ->
-                            val o = oldVector[en] ?: 50
-                            val n = newVector[en] ?: o
-                            append("- $label：$o→$n (${if (n > o) "+" else ""}${n - o})\n")
-                        }
-                        if (reason.isNotBlank()) append("- 依据：$reason\n")
-                    }
-                    knowledgeRepo.appendFile(kbName, "memory/vector_history.md", histEntry + "\n")
+                    knowledgeRepo.appendFileWithRevisionCheck(kbName, "memory/vector_history.md", histEntry + "\n", frozenCorrectionsRev)
                 }
                 callbacks.onCurrentVector(kbName, newVector)
                 callbacks.onVectorUpdated(kbName, newVector, newVector.mapValues { (k, v) -> v - (oldVector[k] ?: v) })
@@ -179,8 +178,11 @@ class KnowledgeTriggerCoordinator(
                         (if (reason.isNotBlank()) "\n依据：$reason" else "")
                     callbacks.onVectorUpdateNotice(kbName, summary)
                     val time = TimeFmt.now()
-                    knowledgeRepo.appendFile(kbName, "memory/reflect_history.md",
-                        "\n\n### [$time] 五维向量变化\n$summary")
+                    // b3-8: 使用锁内原子 revision 检查
+                    withContext(Dispatchers.IO) {
+                        knowledgeRepo.appendFileWithRevisionCheck(kbName, "memory/reflect_history.md",
+                            "\n\n### [$time] 五维向量变化\n$summary", frozenCorrectionsRev)
+                    }
                 }
 
                 // 阶段建议（AI 建议的阶段与当前不同且非"维持"）——经 StageCatalog 归一化（九阶段全带"期"）
@@ -204,17 +206,18 @@ class KnowledgeTriggerCoordinator(
                 val user = promptBuilder.buildLessonsUserPrompt(topicContext)
                 val lessons = runCatching { deepSeekRepo.generateRaw(system, user) }.getOrDefault("")
                 if (lessons.isNotBlank() && lessons != "无新经验") {
-                    // R07: 写入前再次校验 corrections revision
-                    val currentRev = withContext(Dispatchers.IO) { knowledgeRepo.getCorrectionsRevision(kbName) }
-                    if (currentRev != frozenCorrectionsRev) {
-                        L.w("extractLessons skipped at write time: corrections changed")
-                        return@launch
-                    }
+                    // b3-8: 锁内原子 revision 检查 + 追加经验，消除竞态窗口
                     val existing = withContext(Dispatchers.IO) { knowledgeRepo.readFile(kbName, "memory/lessons.md") }
                     val extractCount = countLessonSections(existing) + 1
                     val time = TimeFmt.now()
                     val entry = "\n\n# [$time] 第${extractCount}次提取\n\n$lessons"
-                    knowledgeRepo.appendFile(kbName, "memory/lessons.md", entry)
+                    val written = withContext(Dispatchers.IO) {
+                        knowledgeRepo.appendFileWithRevisionCheck(kbName, "memory/lessons.md", entry, frozenCorrectionsRev)
+                    }
+                    if (!written) {
+                        L.w("extractLessons skipped at write time: corrections changed (frozen=$frozenCorrectionsRev)")
+                        return@launch
+                    }
                     callbacks.onKbNotice("已自动提取新经验，记入知识库「经验」")
                 } else {
                     L.w("extractLessons: AI returned empty or no new lessons, skipping")
@@ -234,13 +237,6 @@ class KnowledgeTriggerCoordinator(
                     return@launch
                 }
 
-                // R07: 写入前再次校验 corrections revision
-                val currentRev = withContext(Dispatchers.IO) { knowledgeRepo.getCorrectionsRevision(kbName) }
-                if (currentRev != frozenCorrectionsRev) {
-                    L.w("generateReflect skipped at write time: corrections changed")
-                    return@launch
-                }
-
                 // 使用统一的 ProfileUpdate 解析与校验入口
                 // 生成摘要和确认写入使用同一个已验证类型化对象
                 val profileUpdate = ProfileUpdate.parse(raw)
@@ -256,9 +252,15 @@ class KnowledgeTriggerCoordinator(
                     )
                 )
 
+                // b3-8: 锁内原子 revision 检查 + 追加画像更新历史，消除竞态窗口
                 val time = TimeFmt.now()
-                knowledgeRepo.appendFile(kbName, "memory/reflect_history.md",
-                    "\n\n## [$time] 画像更新建议\n$display")
+                val written = withContext(Dispatchers.IO) {
+                    knowledgeRepo.appendFileWithRevisionCheck(kbName, "memory/reflect_history.md",
+                        "\n\n## [$time] 画像更新建议\n$display", frozenCorrectionsRev)
+                }
+                if (!written) {
+                    L.w("generateReflect skipped at write time: corrections changed (frozen=$frozenCorrectionsRev)")
+                }
             }.onFailure { L.e("generateReflectSuggestion failed", it) }
         }
     }

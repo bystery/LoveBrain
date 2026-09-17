@@ -11,6 +11,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -247,9 +248,13 @@ fun LoveBrainPanelScreen(
             }
 
             // Profile suggestion only for active KB
+            val profileSuggestionValid = profileSuggestion?.canConfirm == true
+            val isProfileConfirming = viewModel.isProfileConfirming.collectAsStateWithLifecycle().value
             if (profileSuggestion != null && profileSuggestion?.kbName == activeKb?.name) {
                 ProfileSuggestionCard(
                     suggestion = profileSuggestion?.display.orEmpty(),
+                    canConfirm = profileSuggestionValid,
+                    isConfirming = isProfileConfirming,
                     onConfirm = { viewModel.confirmProfileUpdate() },
                     onDismiss = { viewModel.dismissProfileUpdate() }
                 )
@@ -414,6 +419,7 @@ fun LoveBrainPanelScreen(
                                 // 单条改写
                                 rewriteStates = rewriteStates,
                                 onRewrite = { tag, option -> viewModel.rewriteScheme(tag, option) },
+                                onClearRewriteState = { tag -> viewModel.clearRewriteState(tag) },
                                 onCancelRewrite = { tag -> viewModel.cancelRewrite(tag) },
                                 onUndoRewrite = { tag -> viewModel.undoRewrite(tag) },
                                 modifier = Modifier.fillMaxSize()
@@ -449,6 +455,8 @@ fun LoveBrainPanelScreen(
 @Composable
 private fun ProfileSuggestionCard(
     suggestion: String,
+    canConfirm: Boolean = true,
+    isConfirming: Boolean = false,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -489,19 +497,52 @@ private fun ProfileSuggestionCard(
                     })
                     .padding(horizontal = Spacing.lg, vertical = Spacing.md)
             )
-            val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "profileConfirmScale")
-            Text(
-                "确认更新",
-                style = AppTypography.labelLarge,
-                color = PrimaryDark,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
-                    .clickable(interactionSource = confirmInteraction, indication = null, onClick = {
-                        onConfirm()
-                    })
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-            )
+            // 阻断A修复：无效建议显示"重新生成"而非"确认更新"
+            if (canConfirm && !isConfirming) {
+                val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "profileConfirmScale")
+                Text(
+                    "确认更新",
+                    style = AppTypography.labelLarge,
+                    color = PrimaryDark,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
+                        .clickable(interactionSource = confirmInteraction, indication = null, onClick = {
+                            onConfirm()
+                        })
+                        .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                )
+            } else if (isConfirming) {
+                // 提交中：禁用并显示进度
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(14.dp),
+                        strokeWidth = 2.dp,
+                        color = Primary
+                    )
+                    Spacer(Modifier.width(Spacing.xs))
+                    Text(
+                        "写入中…",
+                        style = AppTypography.labelLarge,
+                        color = PrimaryDark,
+                        modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                    )
+                }
+            } else {
+                // 无效建议：显示重新生成（复用 dismiss 回调，用户可关闭后重新触发）
+                val (regenInteraction, regenScale) = rememberPressScale(0.96f, "profileRegenScale")
+                Text(
+                    "建议格式无效，重新生成",
+                    style = AppTypography.labelLarge,
+                    color = Error,
+                    modifier = Modifier
+                        .graphicsLayer { scaleX = regenScale; scaleY = regenScale }
+                        .clickable(interactionSource = regenInteraction, indication = null, onClick = {
+                            onDismiss()
+                        })
+                        .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                )
+            }
         }
     }
 }

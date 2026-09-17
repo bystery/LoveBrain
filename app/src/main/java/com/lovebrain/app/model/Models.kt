@@ -127,8 +127,21 @@ data class LoveBrainResponse(
     val directions: List<String?> = emptyList(),
     val analysis: ReplyAnalysis = ReplyAnalysis()
 ) {
-    /** UI 兼容访问器：4 条方案 */
-    val schemes: List<Scheme> get() = response.toSchemes()
+    /** b3-9: UI 兼容访问器：4 条方案——优先 response 风格，全空时降级使用 directions */
+    val schemes: List<Scheme>
+        get() {
+            val styleSchemes = response.toSchemes()
+            // b3-9: 如果 response 至少有一个非空风格，优先使用
+            if (styleSchemes.any { it.reply.isNotBlank() }) return styleSchemes
+            // b3-9: 降级——response 全空时使用 directions 数组
+            val dirs = directions.filterNotNull().filter { it.isNotBlank() }
+            if (dirs.isEmpty()) return styleSchemes // 仍然返回全空，让 parseReplyResponse 拒绝
+            return dirs.mapIndexed { index, text ->
+                val tag = listOf("A", "B", "C", "D").getOrElse(index) { (index + 1).toString() }
+                val title = listOf("推荐", "清醒", "俏皮", "温柔").getOrElse(index) { "方案${index + 1}" }
+                Scheme(tag = tag, title = title, reply = text)
+            }
+        }
 }
 
 /** 面板状态机 */

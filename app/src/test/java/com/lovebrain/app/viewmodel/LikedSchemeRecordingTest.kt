@@ -13,6 +13,7 @@ import com.lovebrain.app.model.ReplyAnalysis
 import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.IntentConfig
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -82,6 +83,10 @@ class LikedSchemeRecordingTest {
         coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
         coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
         coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = kbName, stage = "暧昧期"))
+        coEvery { knowledgeRepo.readCorrectionsAndRevision(any()) } returns (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
+        coEvery { knowledgeRepo.readIntent(any()) } returns IntentConfig()
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
+        coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
 
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0
