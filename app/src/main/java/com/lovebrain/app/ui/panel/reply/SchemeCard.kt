@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lovebrain.app.R
+import com.lovebrain.app.model.RewriteCommand
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
@@ -55,8 +56,7 @@ private object SchemeTextDimens {
  * "推荐"卡用实心底反白突出；赞/踩用边框变色反馈。按压缩放 0.96，有入场动画。
  * F09-7: reply 为空时显示"本轮不适合"，不可复制/赞/踩，灰色样式。
  */
-/** 卡片内部改写操作选项 */
-private val rewriteOptions = listOf("换一种说法", "更自然", "更简短", "更温柔")
+/** 卡片内部改写操作选项 — DRY: 统一使用 RewriteCommand.ALL_LABELS */
 
 @Composable
 fun SchemeCard(
@@ -250,25 +250,6 @@ fun SchemeCard(
                         ).padding(Spacing.xs)
                     )
                 }
-            } else if (rewriteDone && !isExpanded) {
-                // b2-6: 成功但未展开时只显示撤销
-                // 展开后仍显示选项区，允许继续改写
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        "撤销",
-                        style = AppTypography.labelSmall,
-                        color = PrimaryDark,
-                        modifier = Modifier.clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = { onUndoRewrite(scheme.tag) }
-                        ).padding(Spacing.xs)
-                    )
-                }
             } else if (isExpanded && !isEmpty) {
                 // 2×2 操作区（小窗容不下时自动变单列）
                 // 尝试 2 列排列
@@ -276,7 +257,7 @@ fun SchemeCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
                 ) {
-                    rewriteOptions.take(2).forEach { option ->
+                    RewriteCommand.ALL_LABELS.take(2).forEach { option ->
                         val (interaction, optScale) = rememberPressScale(0.94f, "optScale$option")
                         Box(
                             modifier = Modifier
@@ -307,7 +288,7 @@ fun SchemeCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
                 ) {
-                    rewriteOptions.drop(2).forEach { option ->
+                    RewriteCommand.ALL_LABELS.drop(2).forEach { option ->
                         val (interaction, optScale) = rememberPressScale(0.94f, "optScale$option")
                         Box(
                             modifier = Modifier
@@ -384,7 +365,7 @@ fun SchemeCard(
 
 /** 卡片操作小图标：视觉 20dp，点击热区外扩至 28dp（触控下限友好） */
 @Composable
-private fun CardActionIcon(
+internal fun CardActionIcon(
     icon: Int,
     desc: String,
     tint: Color,

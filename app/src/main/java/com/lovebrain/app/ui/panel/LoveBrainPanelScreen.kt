@@ -256,7 +256,8 @@ fun LoveBrainPanelScreen(
                     canConfirm = profileSuggestionValid,
                     isConfirming = isProfileConfirming,
                     onConfirm = { viewModel.confirmProfileUpdate() },
-                    onDismiss = { viewModel.dismissProfileUpdate() }
+                    onDismiss = { viewModel.dismissProfileUpdate() },
+                    onRegenerate = { viewModel.regenerateProfileUpdate() }
                 )
                 Spacer(Modifier.height(Spacing.md))
             }
@@ -394,6 +395,7 @@ fun LoveBrainPanelScreen(
                                 streamingCoreText = streamingCoreText,
                                 isGeneratingCore = isGeneratingCore,
                                 streamingSchemes = streamingSchemes,
+                                streamingDirectionSchemes = viewModel.streamingDirectionSchemes.value,
                                 feedbacks = feedbacks,
                                 onFeedback = { tag, fb -> viewModel.setFeedback(tag, fb) },
                                 onCopyScheme = { scheme ->
@@ -458,7 +460,8 @@ private fun ProfileSuggestionCard(
     canConfirm: Boolean = true,
     isConfirming: Boolean = false,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onRegenerate: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -529,7 +532,7 @@ private fun ProfileSuggestionCard(
                     )
                 }
             } else {
-                // 无效建议：显示重新生成（复用 dismiss 回调，用户可关闭后重新触发）
+                // P1-03: 无效建议——显示重新生成，点击真正发起新的画像生成请求
                 val (regenInteraction, regenScale) = rememberPressScale(0.96f, "profileRegenScale")
                 Text(
                     "建议格式无效，重新生成",
@@ -538,7 +541,7 @@ private fun ProfileSuggestionCard(
                     modifier = Modifier
                         .graphicsLayer { scaleX = regenScale; scaleY = regenScale }
                         .clickable(interactionSource = regenInteraction, indication = null, onClick = {
-                            onDismiss()
+                            onRegenerate()
                         })
                         .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                 )

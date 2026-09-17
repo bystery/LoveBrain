@@ -14,6 +14,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
@@ -29,6 +30,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.selected
@@ -36,6 +38,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
@@ -60,6 +63,7 @@ fun ResultArea(
     streamingCoreText: String,
     isGeneratingCore: Boolean,
     streamingSchemes: List<Scheme>,
+    streamingDirectionSchemes: List<Scheme> = emptyList(),
     feedbacks: Map<String, SchemeFeedback>,
     onFeedback: (String, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
@@ -83,24 +87,33 @@ fun ResultArea(
     when {
         // Phase 1 加载中：核心回复（schemes）还没出来
         isGeneratingCore -> {
-            if (streamingSchemes.isNotEmpty()) {
-                // ★ 边流式边出卡：已解析到的方案立即渲染，其余等待
+            if (streamingSchemes.isNotEmpty() || streamingDirectionSchemes.isNotEmpty()) {
+                // ★ P1-07: 边流式边出卡——风格和方向独立渲染
                 Column(
                     modifier = modifier
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                 ) {
-                    SchemeCardsRow(
-                        schemes = streamingSchemes,
-                        feedbacks = feedbacks,
-                        onFeedback = onFeedback,
-                        onCopyScheme = onCopyScheme,
-                        rewriteStates = rewriteStates,
-                        onRewrite = onRewrite,
-                        onClearRewriteState = onClearRewriteState,
-                        onCancelRewrite = onCancelRewrite,
-                        onUndoRewrite = onUndoRewrite
-                    )
+                    if (streamingSchemes.isNotEmpty()) {
+                        SchemeCardsRow(
+                            schemes = streamingSchemes,
+                            feedbacks = feedbacks,
+                            onFeedback = onFeedback,
+                            onCopyScheme = onCopyScheme,
+                            rewriteStates = rewriteStates,
+                            onRewrite = onRewrite,
+                            onClearRewriteState = onClearRewriteState,
+                            onCancelRewrite = onCancelRewrite,
+                            onUndoRewrite = onUndoRewrite
+                        )
+                    }
+                    if (streamingDirectionSchemes.isNotEmpty()) {
+                        Spacer(Modifier.height(Spacing.sm))
+                        DirectionCardsRow(
+                            schemes = streamingDirectionSchemes,
+                            onCopyScheme = onCopyScheme
+                        )
+                    }
                     Spacer(Modifier.height(Spacing.md))
                     Box(
                         modifier = Modifier
@@ -151,6 +164,16 @@ fun ResultArea(
                     onCancelRewrite = onCancelRewrite,
                     onUndoRewrite = onUndoRewrite
                 )
+
+                // P1-07: 四方向独立行——与四风格同时展示
+                val dirs = response.directionSchemes
+                if (dirs.any { it.reply.isNotBlank() }) {
+                    Spacer(Modifier.height(Spacing.sm))
+                    DirectionCardsRow(
+                        schemes = dirs,
+                        onCopyScheme = onCopyScheme
+                    )
+                }
 
                 if (response.analysis.ongoing.isNotEmpty()) {
                     Spacer(Modifier.height(Spacing.sm))
@@ -410,6 +433,171 @@ private fun SchemeFilterTab(
             color = if (isSelected) PrimaryDark else TextHint,
             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
         )
+    }
+}
+
+/** P1-07: 四方向卡片行——独立于四风格，紧凑展示，仅复制（无赞踩改写）。
+ *  4.2: 长按卡片触发语音朗读（SpeechRecognizer 播放回复文本） */
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
+@Composable
+private fun DirectionCardsRow(
+    schemes: List<Scheme>,
+    onCopyScheme: (Scheme) -> Unit
+) {
+    Column {
+        Text(
+            text = "四方向",
+            style = AppTypography.labelSmall,
+            color = TextHint,
+            modifier = Modifier.padding(bottom = Spacing.xs)
+        )
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(Spacing.md),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(schemes, key = { it.tag }) { scheme ->
+                DirectionCard(
+                    scheme = scheme,
+                    onCopy = { onCopyScheme(scheme) }
+                )
+            }
+        }
+    }
+}
+
+/** P1-07: 单张方向卡——精简版（无改写/赞踩），仅复制 + 长按语音 */
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
+@Composable
+private fun DirectionCard(
+    scheme: Scheme,
+    onCopy: () -> Unit
+) {
+    val isEmpty = scheme.reply.isBlank()
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.96f else 1f,
+        animationSpec = tween(100),
+        label = "dirCardScale"
+    )
+
+    val tagColor = if (isEmpty) TextHint else PrimaryDark
+    val tagBg = if (isEmpty) SurfaceInset else PrimaryLight
+    val cardBg = if (isEmpty) SurfaceInset else SurfaceCard
+    val bodyColor = if (isEmpty) TextHint else TextPrimary
+
+    // 4.2: TTS 实例 + 长按语音朗读
+    var isSpeaking by remember { mutableStateOf(false) }
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val tts = remember { android.speech.tts.TextToSpeech(context) { } }
+
+    DisposableEffect(scheme.tag) {
+        if (tts.isLanguageAvailable(java.util.Locale.CHINESE) >= 0) {
+            tts.language = java.util.Locale.CHINESE
+        }
+        tts.setOnUtteranceProgressListener(object : android.speech.tts.UtteranceProgressListener() {
+            override fun onStart(utteranceId: String?) {}
+            override fun onDone(utteranceId: String?) { isSpeaking = false }
+            @Suppress("DEPRECATION")
+            override fun onError(utteranceId: String?) { isSpeaking = false }
+        })
+        onDispose { }
+    }
+
+    Box(
+        modifier = Modifier
+            .width(SchemeCardDimens.CARD_WIDTH_DP.dp)
+            .height(SchemeCardDimens.CARD_HEIGHT_DP.dp)
+            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.lg)
+            .clip(LoveBrainShape.lg)
+            .background(cardBg)
+            .border(
+                if (isSpeaking) 2.dp else 1.dp,
+                if (isSpeaking) Primary else Border,
+                LoveBrainShape.lg
+            )
+            .then(if (isEmpty) Modifier else Modifier.combinedClickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = { onCopy() },
+                onLongClick = {
+                    // 4.2: 长按触发语音朗读
+                    if (!isEmpty && !isSpeaking) {
+                        isSpeaking = true
+                        tts.speak(scheme.reply, android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, "dir_speak_${System.currentTimeMillis()}")
+                    }
+                }
+            ))
+    ) {
+        Column(modifier = Modifier.fillMaxWidth().padding(Spacing.md)) {
+            // 标签行
+            Box(
+                modifier = Modifier
+                    .background(tagBg, LoveBrainShape.sm)
+                    .padding(horizontal = SchemeCardDimens.TAG_HPAD_DP.dp, vertical = SchemeCardDimens.TAG_VPAD_DP.dp)
+            ) {
+                Text(
+                    text = "${scheme.tag} · ${scheme.title}",
+                    color = tagColor,
+                    style = AppTypography.labelSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+
+            Spacer(Modifier.height(SchemeCardDimens.TAG_TO_BODY_GAP_DP.dp))
+
+            if (isEmpty) {
+                Box(
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "本轮不适合",
+                        color = TextHint,
+                        style = AppTypography.labelMedium,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
+                }
+            } else {
+                Box(
+                    modifier = Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())
+                ) {
+                    Text(
+                        text = scheme.reply,
+                        color = bodyColor,
+                        style = AppTypography.bodyMedium,
+                        fontSize = 13.sp,
+                        lineHeight = 18.sp
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(Spacing.sm))
+
+            if (!isEmpty) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = if (isSpeaking) "朗读中" else "长按朗读",
+                        style = AppTypography.labelSmall,
+                        color = if (isSpeaking) Primary else TextHint
+                    )
+                    Spacer(Modifier.width(Spacing.xs))
+                    CardActionIcon(
+                        icon = com.lovebrain.app.R.drawable.ic_copy,
+                        desc = "复制",
+                        tint = TextSecondary,
+                        onClick = onCopy
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -712,10 +900,8 @@ private fun ResultToolRow(
                     )
                 }
                 Spacer(Modifier.weight(1f))
-            } else {
-                // 阻断C修复：无引用时不独占左半区，保存按钮紧跟行首
-                Spacer(Modifier.weight(1f))
             }
+            // 无引用时不加 Spacer(weight=1f)——保存按钮紧跟行首，不独占右侧
 
             // 右：记入知识库按钮
             val (saveInteraction, saveScale) = rememberPressScale(0.96f, "resultSaveKbScale")

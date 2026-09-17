@@ -20,13 +20,24 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 
 /** 一条回复方案（UI 渲染用；tag/title 硬编码补，AI 只输出 reply 文本）
- * F09-7: reply 为空表示该方向本轮不适合，UI 显示"本轮不适合"且不可复制。 */
+ * F09-7: reply 为空表示该方向本轮不适合，UI 显示"本轮不适合"且不可复制。
+ * P1-07: 新增 source 字段区分来源——STYLE=四风格，DIRECTION=四方向 */
 @Serializable
 data class Scheme(
     val tag: String = "",        // A / B / C / D
     val title: String = "",      // 稳妥 / 直球 / 俏皮 / 温柔（G 批改名：原 推荐/渣男/调皮/暖男）
     val reply: String = ""       // 话术原文；空 = 本轮不适合
 )
+
+/** P1-07: 方案来源——区分四风格和四方向 */
+enum class SchemeSource { STYLE, DIRECTION }
+
+/** P1-07: 四方向的固定标签和标题 */
+object DirectionCatalog {
+    val TAGS = listOf("F", "E", "X", "S")  // Follow / Expand / eXpress / Shift
+    val TITLES = listOf("跟进", "展开", "表达", "转向")
+    val MAX = 4
+}
 
 /** 新格式 response 块：4 种风格回复（recommended/bad_boy/playful/warm）
  * F09-7: toSchemes 不再过滤空回复，固定返回 4 条（空 reply = 本轮不适合） */
@@ -120,27 +131,34 @@ data class ReplyAnalysis(
     val ongoing: List<OngoingItem> = emptyList()  // 进行中事项（只报本轮有变化的）
 )
 
-/** DeepSeek 返回的完整结构（response + directions + analysis） */
+/** DeepSeek 返回的完整结构（response + directions + analysis）
+ * P1-07: directions 不再是风格的降级兜底——两者独立共存。
+ * directions 异常不影响 response 风格渲染。 */
 @Serializable
 data class LoveBrainResponse(
     val response: ReplySchemes = ReplySchemes(),
     val directions: List<String?> = emptyList(),
     val analysis: ReplyAnalysis = ReplyAnalysis()
 ) {
-    /** b3-9: UI 兼容访问器：4 条方案——优先 response 风格，全空时降级使用 directions */
+    /** 四风格方案（独立于 directions） */
     val schemes: List<Scheme>
+        get() = response.toSchemes()
+
+    /** P1-07: 四方向方案——独立解析，固定位置，null="本轮不适合"
+     * directions 异常（反序列化失败、元素不足等）不影响 schemes。
+     * 固定返回 4 条，缺失或 null 的位置 reply 为空。 */
+    val directionSchemes: List<Scheme>
         get() {
-            val styleSchemes = response.toSchemes()
-            // b3-9: 如果 response 至少有一个非空风格，优先使用
-            if (styleSchemes.any { it.reply.isNotBlank() }) return styleSchemes
-            // b3-9: 降级——response 全空时使用 directions 数组
-            val dirs = directions.filterNotNull().filter { it.isNotBlank() }
-            if (dirs.isEmpty()) return styleSchemes // 仍然返回全空，让 parseReplyResponse 拒绝
-            return dirs.mapIndexed { index, text ->
-                val tag = listOf("A", "B", "C", "D").getOrElse(index) { (index + 1).toString() }
-                val title = listOf("推荐", "清醒", "俏皮", "温柔").getOrElse(index) { "方案${index + 1}" }
-                Scheme(tag = tag, title = title, reply = text)
+            val result = mutableListOf<Scheme>()
+            for (i in 0 until DirectionCatalog.MAX) {
+                val text = directions.getOrNull(i)?.takeIf { it.isNotBlank() } ?: ""
+                result.add(Scheme(
+                    tag = DirectionCatalog.TAGS.getOrElse(i) { "D${i + 1}" },
+                    title = DirectionCatalog.TITLES.getOrElse(i) { "方向${i + 1}" },
+                    reply = text
+                ))
             }
+            return result
         }
 }
 

@@ -10,7 +10,7 @@ import com.lovebrain.app.model.MemoryCorrection
 import com.lovebrain.app.model.MemoryKind
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.util.TimeFmt
-import java.security.MessageDigest
+import java.io.File
 
 /**
  * Prompt 组装器 v4（ 缓存锚点前置重排）。
@@ -434,24 +434,13 @@ class PromptBuilder(
         return sb.toString()
     }
 
-    /** R06/C项修复: 生成 MemoryRef — id 为 kind+sourcePath+可选内容hash前缀
-     * C项修复：scene 和 ongoing 的事实/事项需要按条纠正，不能整文件共用一个ID。
-     * 画像和经验按文件编辑，保持文件级ID。
-     * 旧实现用内容 hash 做 ID：画像添一句、经验多一块、事项有更新都会改变整段 ID，
-     * 导致旧纠正失效。改为只基于 kind+sourcePath 的稳定 ID。
-     * scene/ongoing 在 ID 后追加内容 hash 前8位，实现按条纠正。 */
+    /** R06: 生成 MemoryRef — id 为 kind+sourcePath 的稳定 ID
+     * R06 修复：scene 和 ongoing 不再用整段文本 hash——
+     * 旧实现用内容 hash 做 ID，导致画像添一句、经验多一块、事项有更新
+     * 都会改变 ID，旧纠正全部失效。改为文件级稳定 ID，
+     * 纠正绑定到文件而非内容快照。 */
     private fun makeRef(kbId: String, kind: MemoryKind, sourcePath: String, text: String): MemoryRef {
-        val stableId = when (kind) {
-            MemoryKind.SCENE, MemoryKind.ONGOING -> {
-                // C项修复：按条纠正——追加内容hash前8位
-                val hash = MessageDigest.getInstance("SHA-256")
-                    .digest(text.toByteArray(Charsets.UTF_8))
-                    .joinToString("") { "%02x".format(it) }
-                    .take(8)
-                "${kind.name}:${sourcePath}:${hash}"
-            }
-            else -> "${kind.name}:${sourcePath}"
-        }
+        val stableId = "${kind.name}:${sourcePath}"
         return MemoryRef(
             id = stableId,
             kbId = kbId,
@@ -461,23 +450,20 @@ class PromptBuilder(
         )
     }
 
-    /** R06/C项修复: 检查 memoryId 是否被纠正。如果被纠正，按 action 类型处理。
+    /** R06: 检查 memoryId 是否被纠正。如果被纠正，按 action 类型处理。
      * MUTED: 真正限制——不注入原始内容，只保留被动回应能力。
      *
-     * C项修复：旧纠正迁移兼容。
-     * 新格式 ID 为 `KIND:path:hash`（scene/ongoing 按条纠正），
-     * 但旧纠正记录的 ID 为 `KIND:path`（文件级，无 hash）。
-     * 当新格式 ID 精确匹配失败时，回退到旧格式文件级 ID 查找。
-     * 这样旧纠正仍能对同文件的新条目生效（虽范围扩大到整文件，
-     * 但用户可撤销后重新按条纠正）。 */
+     * R06 修复：所有 kind 现在都用文件级稳定 ID（kind:sourcePath），
+     * 不再有 :hash 后缀，无需旧格式回退兼容。
+     * 历史纠正记录中带 :hash 的 ID 仍可通过去掉后缀匹配到新格式。 */
     private fun isCorrected(
         memoryId: String,
         corrections: Map<String, MemoryCorrection>,
         sb: StringBuilder
     ): Boolean {
-        // 1. 精确匹配新格式 ID
+        // 1. 精确匹配
         val correction = corrections[memoryId]
-            // 2. C项兼容：回退到旧格式文件级 ID（去掉 :hash 后缀）
+            // 2. R06 兼容：回退到旧格式文件级 ID（去掉 :hash 后缀）
             ?: run {
                 val lastColon = memoryId.lastIndexOf(':')
                 if (lastColon > 0) {

@@ -175,6 +175,7 @@ class GenerationEngine(
         fun onReplyStart()
         fun onReplyStreamingCoreText(chunk: String)
         fun onReplyStreamingSchemes(schemes: List<Scheme>)
+        fun onReplyStreamingDirectionSchemes(schemes: List<Scheme>)
         fun onReplyStreamingSchemesReset()
         fun onReplyResult(result: GenerateResult)
         fun onReplyPanelState(state: PanelState)
@@ -315,21 +316,20 @@ class GenerationEngine(
                                 val schemes = runCatching {
                                     jsonLenient.decodeFromString<com.lovebrain.app.model.ReplySchemes>(respObj).toSchemes()
                                 }.getOrDefault(emptyList())
-                                // b3-9: 如果 response 有非空风格，立即渲染；否则尝试 directions 降级
-                                if (schemes.any { it.reply.isNotBlank() }) {
+                                // P1-07: 风格和方向独立渲染，不互斥
+                                if (schemes.isNotEmpty()) {
                                     callbacks.onReplyStreamingSchemes(schemes)
-                                } else {
-                                    // b3-9: 尝试从 directions 数组提取降级方案
-                                    val dirSchemes = extractDirectionsSchemes(rawBuffer.toString())
-                                    if (dirSchemes.isNotEmpty()) {
-                                        callbacks.onReplyStreamingSchemes(dirSchemes)
-                                    }
                                 }
-                            } else {
-                                // b3-9: response 对象尚未完整，但 directions 数组可能已可用
+                                // P1-07: 同时尝试渲染 directions（独立于 response）
                                 val dirSchemes = extractDirectionsSchemes(rawBuffer.toString())
                                 if (dirSchemes.isNotEmpty()) {
-                                    callbacks.onReplyStreamingSchemes(dirSchemes)
+                                    callbacks.onReplyStreamingDirectionSchemes(dirSchemes)
+                                }
+                            } else {
+                                // response 对象尚未完整，但 directions 数组可能已可用
+                                val dirSchemes = extractDirectionsSchemes(rawBuffer.toString())
+                                if (dirSchemes.isNotEmpty()) {
+                                    callbacks.onReplyStreamingDirectionSchemes(dirSchemes)
                                 }
                             }
                         },
@@ -668,14 +668,15 @@ class GenerationEngine(
         return jsonLenient.decodeFromString<com.lovebrain.app.model.DailySuggestion>(jsonStr)
     }
 
-    /** b3-9: 从流式缓冲区提取 directions 字符串数组，降级为 Scheme 列表 */
+    /** P1-07: 从流式缓冲区提取 directions 字符串数组，映射为独立 Scheme 列表
+     * 使用 DirectionCatalog 固定标签，不占用风格 tag(A/B/C/D) */
     private fun extractDirectionsSchemes(raw: String): List<Scheme> {
         val dirs = PartialJsonObjects.extractStringArray(raw, "directions")
             .filter { it.isNotBlank() }
         if (dirs.isEmpty()) return emptyList()
         return dirs.mapIndexed { index, text ->
-            val tag = listOf("A", "B", "C", "D").getOrElse(index) { (index + 1).toString() }
-            val title = listOf("推荐", "清醒", "俏皮", "温柔").getOrElse(index) { "方案${index + 1}" }
+            val tag = com.lovebrain.app.model.DirectionCatalog.TAGS.getOrElse(index) { "D${index + 1}" }
+            val title = com.lovebrain.app.model.DirectionCatalog.TITLES.getOrElse(index) { "方向${index + 1}" }
             Scheme(tag = tag, title = title, reply = text)
         }
     }

@@ -114,6 +114,10 @@ class LoveBrainViewModel(
     private val _streamingSchemes = MutableStateFlow<List<Scheme>>(emptyList())
     val streamingSchemes: StateFlow<List<Scheme>> = _streamingSchemes.asStateFlow()
 
+    /** P1-07: 流式四方向方案——独立于四风格，同时渲染 */
+    private val _streamingDirectionSchemes = MutableStateFlow<List<Scheme>>(emptyList())
+    val streamingDirectionSchemes: StateFlow<List<Scheme>> = _streamingDirectionSchemes.asStateFlow()
+
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
 
@@ -582,6 +586,13 @@ class LoveBrainViewModel(
     fun stopGeneration() {
         // D项修复：停止时也清理准备期状态和 prepJob
         _isPreparing.value = false
+        // P1-05: 先取消改写——避免提前 return 导致单独改写时走不到取消代码
+        rewriteJob?.cancel()
+        rewriteJob = null
+        rewriteRequestId = null
+        rewriteContextId = null
+        _rewriteStates.value = emptyMap()
+        _rewriteHistory.value = emptyMap()
         if (!_isGenerating.value && generateJob == null) return
         L.w("user stopped generation")
         generateJob?.cancel()
@@ -590,16 +601,10 @@ class LoveBrainViewModel(
         _isGeneratingCore.value = false
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
+        _streamingDirectionSchemes.value = emptyList()
         _panelState.value = PanelState.KEYBOARD
         // GEN-02：停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
-        // 阻断B修复：停止生成也作废旧改写请求
-        rewriteJob?.cancel()
-        rewriteJob = null
-        rewriteRequestId = null
-        rewriteContextId = null
-        _rewriteStates.value = emptyMap()
-        _rewriteHistory.value = emptyMap()
         if (_result.value == null) {
             _result.value = GenerateResult.Error("已手动停止生成")
         }
@@ -734,6 +739,7 @@ class LoveBrainViewModel(
         _feedbacks.value = emptyMap()
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
+        _streamingDirectionSchemes.value = emptyList()
         _panelState.value = PanelState.KEYBOARD
         // 阻断B修复：新轮开始时清理改写状态和历史，作废旧改写请求
         _rewriteStates.value = emptyMap()
@@ -866,6 +872,19 @@ class LoveBrainViewModel(
 
     fun dismissProfileUpdate() {
         _profileSuggestion.value = null
+    }
+
+    /**
+     * P1-03: 真正重新生成画像建议——不是只关闭卡片。
+     * 先清空旧建议，展示生成中状态，然后调用 Coordinator 重新生成。
+     */
+    fun regenerateProfileUpdate() {
+        val suggestion = _profileSuggestion.value ?: return
+        val kbName = suggestion.kbName
+        // 先清空旧建议（展示生成中），但保留 kbName 供新建议回填
+        _profileSuggestion.value = null
+        showPanelWarning("正在重新生成画像建议…")
+        triggerCoordinator.regenerateProfile(kbName, viewModelScope, this)
     }
 
     // ═══════════ 谈心模式（委托 GenerationEngine） ═══════════
@@ -1082,6 +1101,7 @@ class LoveBrainViewModel(
         _result.value = null
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
+        _streamingDirectionSchemes.value = emptyList()
         _feedbacks.value = emptyMap()
     }
 
@@ -1103,6 +1123,17 @@ class LoveBrainViewModel(
     /** GEN-04：retry 前清理上一次 attempt 的流式方案卡 */
     override fun onReplyStreamingSchemesReset() {
         _streamingSchemes.value = emptyList()
+        _streamingDirectionSchemes.value = emptyList()
+    }
+
+    /** P1-07: 四方向独立回调 */
+    override fun onReplyStreamingDirectionSchemes(schemes: List<Scheme>) {
+        val current = _streamingDirectionSchemes.value
+        if (schemes.size > current.size) {
+            _streamingDirectionSchemes.value = schemes
+        } else if (schemes.size == current.size && schemes != current) {
+            _streamingDirectionSchemes.value = schemes
+        }
     }
 
     override fun onReplyResult(result: GenerateResult) {
@@ -1380,16 +1411,16 @@ class LoveBrainViewModel(
 
     // ═══════════ 单条改写（卡片内部展开 2×2 操作区） ═══════════
 
-    /** 改写操作选项文案 */
-    val rewriteOptions = listOf("换一种说法", "更自然", "更简短", "更温柔")
+    /** DRY: 改写操作选项文案统一使用 RewriteCommand.ALL_LABELS，不在 VM 重复定义 */
+    val rewriteOptions: List<String> get() = com.lovebrain.app.model.RewriteCommand.ALL_LABELS
 
     /** 单条改写状态：schemeTag → 改写状态 */
     private val _rewriteStates = MutableStateFlow<Map<String, RewriteState>>(emptyMap())
     val rewriteStates: StateFlow<Map<String, RewriteState>> = _rewriteStates.asStateFlow()
 
-    /** 单条改写版本历史（用于撤销） */
-    private val _rewriteHistory = MutableStateFlow<Map<String, List<String>>>(emptyMap())
-    val rewriteHistory: StateFlow<Map<String, List<String>>> = _rewriteHistory.asStateFlow()
+    /** 单条改写版本历史（用于撤销）—— P1-04: 保存正文+反馈，撤销时一并恢复 */
+    private data class RewriteVersion(val reply: String, val feedback: SchemeFeedback)
+    private val _rewriteHistory = MutableStateFlow<Map<String, List<RewriteVersion>>>(emptyMap())
 
     /** 改写任务 Job——与前台生成共用任务管理 */
     private var rewriteJob: kotlinx.coroutines.Job? = null
@@ -1434,12 +1465,13 @@ class LoveBrainViewModel(
         // 设置改写中状态
         _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Loading(option))
 
-        // 保存当前版本到历史（用于撤销）
+        // 保存当前版本到历史（用于撤销）—— P1-04: 保存正文+当前反馈
+        val currentFeedback = _feedbacks.value[schemeTag] ?: SchemeFeedback.NONE
         val currentHistory = _rewriteHistory.value[schemeTag] ?: emptyList()
-        _rewriteHistory.value = _rewriteHistory.value + (schemeTag to currentHistory + scheme.reply)
+        _rewriteHistory.value = _rewriteHistory.value + (schemeTag to currentHistory + RewriteVersion(scheme.reply, currentFeedback))
 
-        // 阻断B修复：捕获改写前的 feedbacks，改写成功后不自动继承到新正文
-        val preRewriteFeedback = _feedbacks.value[schemeTag]
+        // P1-04: 不再捕获 preRewriteFeedback 做后续清理——
+        // 改写期间用户对旧文的反馈继续归旧版本；新版本独立 NONE。
 
         val kbSnapshot = _activeKb.value
         val ticket = _activeTicket.value
@@ -1504,11 +1536,10 @@ class LoveBrainViewModel(
                 )
                 _result.value = GenerateResult.Success(updatedResponse)
 
-                // 阻断B修复：改写成功后清理该卡旧反馈——新正文不自动继承旧赞/踩
-                if (preRewriteFeedback == SchemeFeedback.LIKED || preRewriteFeedback == SchemeFeedback.DISLIKED) {
-                    _feedbacks.value = _feedbacks.value.toMutableMap().apply {
-                        put(schemeTag, SchemeFeedback.NONE)
-                    }
+                // P1-04: 改写成功后——新正文独立 NONE，不自动继承旧赞/踩
+                // 旧赞保留在 rewriteHistory 中，撤销时恢复
+                _feedbacks.value = _feedbacks.value.toMutableMap().apply {
+                    put(schemeTag, SchemeFeedback.NONE)
                 }
 
                 // 清除改写状态，保留撤销入口
@@ -1532,11 +1563,11 @@ class LoveBrainViewModel(
         _rewriteStates.value = _rewriteStates.value.filterKeys { it != schemeTag }
     }
 
-    /** 撤销改写——恢复到上一版本 */
+    /** 撤销改写——恢复到上一版本（含正文和反馈） */
     fun undoRewrite(schemeTag: String) {
         val history = _rewriteHistory.value[schemeTag] ?: return
         if (history.isEmpty()) return
-        val previousReply = history.last()
+        val previousVersion = history.last()
         val updatedHistory = history.dropLast(1)
 
         _rewriteHistory.value = if (updatedHistory.isEmpty()) {
@@ -1548,7 +1579,7 @@ class LoveBrainViewModel(
         val result = _result.value as? GenerateResult.Success ?: return
         val response = result.response
         val updatedSchemes = response.schemes.map { s ->
-            if (s.tag == schemeTag) s.copy(reply = previousReply) else s
+            if (s.tag == schemeTag) s.copy(reply = previousVersion.reply) else s
         }
         val updatedResponse = response.copy(
             response = com.lovebrain.app.model.ReplySchemes(
@@ -1559,6 +1590,10 @@ class LoveBrainViewModel(
             )
         )
         _result.value = GenerateResult.Success(updatedResponse)
+        // P1-04: 撤销时恢复旧版本的反馈，不只是正文
+        _feedbacks.value = _feedbacks.value.toMutableMap().apply {
+            put(schemeTag, previousVersion.feedback)
+        }
         _rewriteStates.value = _rewriteStates.value - schemeTag
     }
 

@@ -63,13 +63,13 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         val time = com.lovebrain.app.util.TimeFmt.now()
         var topicRotated = false
 
-        // R02: 幂等保护——检查本轮消息是否已写入 recent.md（防中断重试导致重复记录）
-        // 仅跳过 recent.md 写入和 turn count，仍处理 sceneFacts/ongoing（可能有新事实）
+        // R02: 幂等保护——用消息 ID 集合检查本轮是否已写入 recent.md
+        // 替代旧的正文字串子串匹配（dedupKey.take(200) contains），避免相似内容误判
         val conversationalMsgs = messages.filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
-        val dedupKey = conversationalMsgs.joinToString("") { it.content.trim() }
-        val alreadyRecorded = if (dedupKey.isNotBlank()) {
+        val roundMsgIds = conversationalMsgs.map { it.id }.sorted().joinToString(",")
+        val alreadyRecorded = if (roundMsgIds.isNotBlank()) {
             val existingRecent = knowledgeRepo.readFile(kb.name, "moment/recent.md")
-            existingRecent.contains(dedupKey.take(200))
+            existingRecent.contains("<!-- round:msgIds:$roundMsgIds -->")
         } else false
 
         // 1. 话题切换处理（仅凭 status=new 触发）
@@ -104,6 +104,8 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         val conversationalMessages = messages.filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
         val entry = buildString {
             append("- [").append(time).append("]\n")
+            // R02: 写入幂等标记——消息 ID 集合，供下轮检查
+            append("<!-- round:msgIds:").append(roundMsgIds).append(" -->\n")
             conversationalMessages.forEach { msg ->
                 append(msg.role.label).append("：").append(msg.content).append("\n")
             }
@@ -201,7 +203,7 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         val text: String,           // 事实文本
         val sourceIds: List<String>, // 来源消息 ID（可能为空=旧数据未核实）
         val evidenceTime: Long,      // 证据时间（写入时的真实时间，模型重述不刷新）
-        val subject: String          // 主语标记："她" / "我" / ""（未知）
+        val subject: String          // P1-05/5.5: 事实主体（被描述的人），不等同于说话人。空=待解析/不确定
     )
 
     /** scene.md 中解析出的条目行 */
@@ -274,13 +276,10 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
                 continue
             }
 
-            // F03: 确定主语——基于来源消息的 role
-            val roles = validIds.map { validSourceMap[it]!! }.toSet()
-            val subject = when {
-                ChatMessage.Role.HER in roles && ChatMessage.Role.ME !in roles -> "她"
-                ChatMessage.Role.ME in roles && ChatMessage.Role.HER !in roles -> "我"
-                else -> "" // 混合来源或无法确定
-            }
+            // P1-05/5.5: 不再从来源消息的 role 强制推导 subject——
+            // 说话人不等于事实主体。“她：你感冒好了吗？”说话人是她，但感冒的人可能是用户。
+            // subject 留空（待解析/不确定），由后续实体解析或用户纠正决定。
+            val subject = ""
 
             validatedFacts.add(StoredFact(
                 text = text,
@@ -500,14 +499,11 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         return result
     }
 
-    /** F03: 从事实文本中提取主语标记 */
+    /** F03: 从事实文本中提取主体标记
+     * P1-05/5.5: 不再用首字“她/我”猜测事实主体——说话人不等于被描述的人。
+     * 返回空字符串，由后续实体解析或用户纠正决定。 */
     private fun extractSubject(text: String): String {
-        val t = text.trim()
-        return when {
-            t.startsWith("她") -> "她"
-            t.startsWith("我") -> "我"
-            else -> ""
-        }
+        return ""
     }
 
     /**
