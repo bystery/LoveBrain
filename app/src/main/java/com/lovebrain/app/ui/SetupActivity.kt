@@ -387,26 +387,14 @@ private fun HomeTabContent(
                                 )
                             }
                         }
-                        // 已临时隐藏：显示小字状态"已暂时隐藏"，不重复摆第二个恢复按钮
+                        // 已临时隐藏：主按钮已变为"恢复军师悬浮窗"，不再重复第二个恢复按钮
                         currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> {
                             Spacer(Modifier.height(Spacing.sm))
-                            TextButton(
-                                onClick = onRestore,
-                                colors = ButtonDefaults.textButtonColors(
-                                    contentColor = PrimaryDark
-                                )
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.PlayArrow,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(16.dp)
-                                )
-                                Spacer(Modifier.width(Spacing.xs))
-                                Text(
-                                    "已暂时隐藏，点此恢复",
-                                    style = AppTypography.labelMedium
-                                )
-                            }
+                            Text(
+                                "军师已暂时隐藏",
+                                style = AppTypography.labelSmall,
+                                color = TextHint
+                            )
                         }
                     }
                 }

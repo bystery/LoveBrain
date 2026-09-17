@@ -44,6 +44,32 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
+ * P0-2: 非流式生成的完整结果——content + finish_reason + 错误信息。
+ *
+ * [finishReason] 遵循 OpenAI 兼容规范：
+ * - "stop"：模型自然结束
+ * - "length"：达到 max_tokens 导致截断
+ * - "content_filter"：安全过滤
+ * - null：未返回或请求失败
+ *
+ * [error] 非 null 表示网络/解析异常（此时 content 为空）。
+ */
+data class RawGenerationResult(
+    val content: String,
+    val finishReason: String?,
+    val error: Exception? = null
+) {
+    /** 是否因达到 token 上限而截断 */
+    val isTruncatedByTokenLimit: Boolean get() = "length" == finishReason
+
+    /** 是否因安全过滤截断 */
+    val isContentFiltered: Boolean get() = "content_filter" == finishReason
+
+    /** 请求是否成功（有内容且无错误） */
+    val isSuccess: Boolean get() = error == null && content.isNotBlank()
+}
+
+/**
  * API 请求统计数据快照。
  * 用于监控 API 调用量、成功率和 token 消耗。
  */
@@ -512,7 +538,25 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
         config: ProviderRequestConfig,
         systemPrompt: String,
         userPrompt: String
-    ): String {
+    ): String = generateRawWithMetadata(config, systemPrompt, userPrompt).content
+
+    /**
+     * P0-2: 带元数据的非流式生成——返回 content + finish_reason。
+     *
+     * finish_reason 可能值（OpenAI 兼容规范）：
+     * - "stop"：正常结束
+     * - "length"：达到 max_tokens 导致截断
+     * - "content_filter"：安全过滤
+     * - null / 其他：未知
+     *
+     * 供画像 reflect 等需要判断是否截断的调用方使用。
+     * 传统 generateRaw 委托此方法，只取 content。
+     */
+    suspend fun generateRawWithMetadata(
+        config: ProviderRequestConfig,
+        systemPrompt: String,
+        userPrompt: String
+    ): RawGenerationResult {
         _totalRequests.incrementAndGet()
         val requestBody = buildRequestBodyWithConfig(
             config, systemPrompt, userPrompt, AppConfig.TEMPERATURE_RAW, stream = false
@@ -527,16 +571,21 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
             runCatching { logUsage(root, config, CostScope.BACKGROUND) }
             _successCount.incrementAndGet()
             refreshStats()
-            root["choices"]?.jsonArray
-                ?.get(0)?.jsonObject
+            val choice = root["choices"]?.jsonArray?.get(0)?.jsonObject
+            val content = choice
                 ?.get("message")?.jsonObject
                 ?.get("content")?.jsonPrimitive?.content ?: ""
+            val finishReason = choice?.get("finish_reason")?.let {
+                if (it is kotlinx.serialization.json.JsonNull) null
+                else it.jsonPrimitive.content
+            }
+            RawGenerationResult(content = content, finishReason = finishReason)
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
             _failCount.incrementAndGet()
             refreshStats()
-            ""
+            RawGenerationResult(content = "", finishReason = null, error = e)
         }
     }
 

@@ -54,3 +54,15 @@ local.properties
 
 # benchmark 本地测试资产（只入库 BENCHMARK.md，不入库脚本/数据/key）
 /benchmark/
+
+# 云盘上传临时分片（体积大，不入库）
+/.tmp.driveupload/
+
+# 构建/检查结果日志（本地留档，不入库）
+/lint_results.txt
+/release_results.txt
+/test_results.txt
+/test_results2.txt
+
+# WorkBuddy AI 工作区数据（memory 等，不入库）
+/.workbuddy-ai/

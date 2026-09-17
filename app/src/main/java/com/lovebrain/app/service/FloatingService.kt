@@ -425,6 +425,11 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         // 释放输入焦点、关闭键盘
         releasePanelInput("temp_hide")
 
+        // P1-06: 先设置 TEMP_HIDDEN 状态，再取消动画——
+        // 这样即使 cancel() 同步触发 onAnimationEnd，guard 也已看到 TEMP_HIDDEN，
+        // 不会把 bubbleView.visibility 设回 VISIBLE。
+        setWindowState(WindowState.TEMP_HIDDEN)
+
         // 隐藏面板
         if (isPanelShowing) {
             isPanelShowing = false
@@ -444,7 +449,6 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         // 取消闲置计时器（隐藏后不需要呼吸/半隐藏动画）
         idleJob?.cancel()
 
-        setWindowState(WindowState.TEMP_HIDDEN)
         updateNotification()
         L.w("FloatingService: temp hide applied")
     }
@@ -858,13 +862,14 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                 override fun onAnimationEnd(animation: Animator) {
                     cv.visibility = View.GONE
                     cv.alpha = 1f   // 复位，避免下次打开残留透明
-                    bubbleView?.visibility = View.VISIBLE
-                    // 阻断D修复：动画结束后更新 windowState（但临时隐藏不覆盖）
+                    // P1-06: 旧动画回调必须守卫全部窗口操作，不能只守卫状态变量。
+                    // TEMP_HIDDEN 时气泡不应重新可见——否则状态显示隐藏、实际球可见。
                     if (windowState != WindowState.TEMP_HIDDEN) {
+                        bubbleView?.visibility = View.VISIBLE
                         setWindowState(WindowState.VISIBLE_BUBBLE)
+                        // ：读屏播报——气泡重新可见后告知面板已关闭（固定文案）
+                        bubbleView?.announceForAccessibility("军师面板已关闭")
                     }
-                    // ：读屏播报——气泡重新可见后告知面板已关闭（固定文案）
-                    bubbleView?.announceForAccessibility("军师面板已关闭")
                     isPanelHiding = false
                     panelExitAnim = null
                 }

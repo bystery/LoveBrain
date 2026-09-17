@@ -47,6 +47,7 @@ import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
+import com.lovebrain.app.util.L
 import kotlinx.coroutines.delay
 
 /** 结果区内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
@@ -111,7 +112,9 @@ fun ResultArea(
                         Spacer(Modifier.height(Spacing.sm))
                         DirectionCardsRow(
                             schemes = streamingDirectionSchemes,
-                            onCopyScheme = onCopyScheme
+                            onCopyScheme = onCopyScheme,
+                            rewriteStates = rewriteStates,
+                            onVoiceRewrite = onRewrite
                         )
                     }
                     Spacer(Modifier.height(Spacing.md))
@@ -171,7 +174,9 @@ fun ResultArea(
                     Spacer(Modifier.height(Spacing.sm))
                     DirectionCardsRow(
                         schemes = dirs,
-                        onCopyScheme = onCopyScheme
+                        onCopyScheme = onCopyScheme,
+                        rewriteStates = rewriteStates,
+                        onVoiceRewrite = onRewrite
                     )
                 }
 
@@ -436,13 +441,15 @@ private fun SchemeFilterTab(
     }
 }
 
-/** P1-07: 四方向卡片行——独立于四风格，紧凑展示，仅复制（无赞踩改写）。
- *  4.2: 长按卡片触发语音朗读（SpeechRecognizer 播放回复文本） */
+/** P1-07: 四方向卡片行——独立于四风格，紧凑展示。
+ * P0-4: 长按卡片触发 STT 语音修改（用户说话 → 用语音指令改写该条回复） */
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 private fun DirectionCardsRow(
     schemes: List<Scheme>,
-    onCopyScheme: (Scheme) -> Unit
+    onCopyScheme: (Scheme) -> Unit,
+    rewriteStates: Map<String, RewriteState> = emptyMap(),
+    onVoiceRewrite: (String, String) -> Unit = { _, _ -> }
 ) {
     Column {
         Text(
@@ -458,19 +465,153 @@ private fun DirectionCardsRow(
             items(schemes, key = { it.tag }) { scheme ->
                 DirectionCard(
                     scheme = scheme,
-                    onCopy = { onCopyScheme(scheme) }
+                    onCopy = { onCopyScheme(scheme) },
+                    rewriteState = rewriteStates[scheme.tag],
+                    onVoiceRewrite = onVoiceRewrite
                 )
             }
         }
     }
 }
 
-/** P1-07: 单张方向卡——精简版（无改写/赞踩），仅复制 + 长按语音 */
+/**
+ * P0-4: STT 长按语音修改状态。
+ * - IDLE：未开始
+ * - RECORDING：正在录音/识别中
+ * - PROCESSING：等待 final transcript
+ * - REWRITING：已发送改写请求，等待结果
+ */
+private enum class VoiceRewriteState {
+    IDLE, RECORDING, PROCESSING, REWRITING
+}
+
+/**
+ * P0-4: 长按语音修改 Helper——封装 SpeechRecognizer 生命周期。
+ *
+ * 长按开始 → 启动 SpeechRecognizer
+ * 松手 → 停止录音，等待 final transcript
+ * transcript 非空 → 调用 onVoiceRewrite(tag, transcript)
+ * transcript 为空 → 取消，不发 API
+ * partial transcript 不直接发请求
+ */
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
+@Composable
+private fun rememberVoiceRewriteController(
+    schemeTag: String,
+    onVoiceRewrite: (String, String) -> Unit
+): Pair<VoiceRewriteState, () -> Unit> {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    var voiceState by remember { mutableStateOf(VoiceRewriteState.IDLE) }
+    val speechRecognizer = remember { mutableStateOf<android.speech.SpeechRecognizer?>(null) }
+    val accumulatedText = remember { StringBuilder() }
+    val tagRef = remember { schemeTag }
+
+    fun startListening() {
+        // 检查录音权限
+        if (context.checkPermission(android.Manifest.permission.RECORD_AUDIO,
+                android.os.Process.myPid(), android.os.Process.myUid()) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            voiceState = VoiceRewriteState.IDLE
+            L.w("VoiceRewrite: RECORD_AUDIO permission not granted")
+            return
+        }
+
+        accumulatedText.clear()
+        voiceState = VoiceRewriteState.RECORDING
+
+        try {
+            val sr = android.speech.SpeechRecognizer.createSpeechRecognizer(context)
+            speechRecognizer.value = sr
+
+            val intent = android.content.Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(android.speech.RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                    android.speech.RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(android.speech.RecognizerIntent.EXTRA_LANGUAGE, "zh-CN")
+                putExtra(android.speech.RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+            }
+
+            sr.setRecognitionListener(object : android.speech.RecognitionListener {
+                override fun onReadyForSpeech(params: android.os.Bundle?) {}
+                override fun onBeginningOfSpeech() {}
+                override fun onRmsChanged(rmsdB: Float) {}
+                override fun onBufferReceived(buffer: ByteArray?) {}
+                override fun onEndOfSpeech() {
+                    voiceState = VoiceRewriteState.PROCESSING
+                }
+                override fun onError(error: Int) {
+                    L.w("VoiceRewrite: STT error=$error")
+                    voiceState = VoiceRewriteState.IDLE
+                    speechRecognizer.value = null
+                }
+                override fun onPartialResults(partialResults: android.os.Bundle?) {
+                    // P0-4: partial transcript 不直接发请求
+                    val partial = partialResults
+                        ?.getStringArrayList(android.speech.SpeechRecognizer.RESULTS_RECOGNITION)
+                        ?.firstOrNull()
+                    if (!partial.isNullOrBlank()) {
+                        accumulatedText.clear()
+                        accumulatedText.append(partial)
+                    }
+                }
+                override fun onResults(results: android.os.Bundle?) {
+                    val finalText = results
+                        ?.getStringArrayList(android.speech.SpeechRecognizer.RESULTS_RECOGNITION)
+                        ?.firstOrNull()
+                        ?: accumulatedText.toString()
+
+                    voiceState = VoiceRewriteState.IDLE
+                    speechRecognizer.value = null
+
+                    // P0-4: final transcript 为空不发 API
+                    if (finalText.isNotBlank()) {
+                        voiceState = VoiceRewriteState.REWRITING
+                        // P0-4: transcript 只作为本次控制指令，不进入真实聊天历史
+                        onVoiceRewrite(tagRef, finalText.trim())
+                    } else {
+                        L.w("VoiceRewrite: final transcript empty, not sending API")
+                    }
+                }
+                override fun onEvent(eventType: Int, params: android.os.Bundle?) {}
+            })
+
+            sr.startListening(intent)
+        } catch (e: Exception) {
+            L.w("VoiceRewrite: SpeechRecognizer failed: ${e.message}")
+            voiceState = VoiceRewriteState.IDLE
+        }
+    }
+
+    fun stopListening() {
+        voiceState = VoiceRewriteState.PROCESSING
+        speechRecognizer.value?.stopListening()
+    }
+
+    fun cancel() {
+        speechRecognizer.value?.cancel()
+        speechRecognizer.value = null
+        voiceState = VoiceRewriteState.IDLE
+        accumulatedText.clear()
+    }
+
+    // 清理
+    androidx.compose.runtime.DisposableEffect(schemeTag) {
+        onDispose {
+            speechRecognizer.value?.cancel()
+            speechRecognizer.value = null
+        }
+    }
+
+    return Pair(voiceState) { startListening() }
+}
+
+/** P1-07: 单张方向卡——精简版（无赞踩），仅复制 + 长按语音修改
+ * P0-4: 长按触发 STT → 用户说话 → 松手 → 用语音指令改写该条回复 */
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 private fun DirectionCard(
     scheme: Scheme,
-    onCopy: () -> Unit
+    onCopy: () -> Unit,
+    rewriteState: RewriteState? = null,
+    onVoiceRewrite: (String, String) -> Unit = { _, _ -> }
 ) {
     val isEmpty = scheme.reply.isBlank()
     val interactionSource = remember { MutableInteractionSource() }
@@ -486,35 +627,30 @@ private fun DirectionCard(
     val cardBg = if (isEmpty) SurfaceInset else SurfaceCard
     val bodyColor = if (isEmpty) TextHint else TextPrimary
 
-    // 4.2: TTS 实例 + 长按语音朗读
-    var isSpeaking by remember { mutableStateOf(false) }
-    val context = androidx.compose.ui.platform.LocalContext.current
-    val tts = remember { android.speech.tts.TextToSpeech(context) { } }
+    // P0-4: STT 长按语音修改控制器
+    val (voiceState, startListening) = rememberVoiceRewriteController(scheme.tag, onVoiceRewrite)
 
-    DisposableEffect(scheme.tag) {
-        if (tts.isLanguageAvailable(java.util.Locale.CHINESE) >= 0) {
-            tts.language = java.util.Locale.CHINESE
-        }
-        tts.setOnUtteranceProgressListener(object : android.speech.tts.UtteranceProgressListener() {
-            override fun onStart(utteranceId: String?) {}
-            override fun onDone(utteranceId: String?) { isSpeaking = false }
-            @Suppress("DEPRECATION")
-            override fun onError(utteranceId: String?) { isSpeaking = false }
-        })
-        onDispose { }
-    }
+    // 改写状态——优先展示外部 rewriteState
+    val isRewriting = voiceState == VoiceRewriteState.REWRITING
+        || rewriteState is RewriteState.Loading
+    val rewriteError = (rewriteState as? RewriteState.Error)?.message
+    val rewriteDone = rewriteState is RewriteState.Done
+
+    // 录音中状态
+    val isRecording = voiceState == VoiceRewriteState.RECORDING || voiceState == VoiceRewriteState.PROCESSING
 
     Box(
         modifier = Modifier
             .width(SchemeCardDimens.CARD_WIDTH_DP.dp)
-            .height(SchemeCardDimens.CARD_HEIGHT_DP.dp)
+            .then(if (isRecording || isRewriting || rewriteError != null || rewriteDone)
+                Modifier.wrapContentHeight() else Modifier.height(SchemeCardDimens.CARD_HEIGHT_DP.dp))
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.lg)
             .clip(LoveBrainShape.lg)
             .background(cardBg)
             .border(
-                if (isSpeaking) 2.dp else 1.dp,
-                if (isSpeaking) Primary else Border,
+                if (isRecording || isRewriting) 2.dp else 1.dp,
+                if (isRecording || isRewriting) Primary else if (rewriteError != null) Error else Border,
                 LoveBrainShape.lg
             )
             .then(if (isEmpty) Modifier else Modifier.combinedClickable(
@@ -522,10 +658,9 @@ private fun DirectionCard(
                 indication = null,
                 onClick = { onCopy() },
                 onLongClick = {
-                    // 4.2: 长按触发语音朗读
-                    if (!isEmpty && !isSpeaking) {
-                        isSpeaking = true
-                        tts.speak(scheme.reply, android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, "dir_speak_${System.currentTimeMillis()}")
+                    // P0-4: 长按触发 STT 录音
+                    if (!isEmpty && !isRewriting && !isRecording) {
+                        startListening()
                     }
                 }
             ))
@@ -561,9 +696,55 @@ private fun DirectionCard(
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center
                     )
                 }
+            } else if (isRecording) {
+                // P0-4: 录音中——显示录音状态
+                Box(
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(14.dp),
+                            strokeWidth = 2.dp,
+                            color = Primary
+                        )
+                        Spacer(Modifier.height(Spacing.xs))
+                        Text(
+                            text = if (voiceState == VoiceRewriteState.PROCESSING) "识别中…" else "正在录音…",
+                            style = AppTypography.labelSmall,
+                            color = PrimaryDark
+                        )
+                        Spacer(Modifier.height(Spacing.xs))
+                        Text(
+                            text = "松手后用语音指令修改",
+                            style = AppTypography.labelSmall,
+                            color = TextHint
+                        )
+                    }
+                }
+            } else if (isRewriting) {
+                // 改写中状态
+                Row(
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(14.dp),
+                        strokeWidth = 2.dp,
+                        color = Primary
+                    )
+                    Spacer(Modifier.width(Spacing.xs))
+                    Text(
+                        "正在改写…",
+                        style = AppTypography.labelSmall,
+                        color = PrimaryDark
+                    )
+                }
             } else {
                 Box(
-                    modifier = Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())
+                    modifier = Modifier.weight(1f, fill = !rewriteDone && rewriteError == null).fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
                 ) {
                     Text(
                         text = scheme.reply,
@@ -583,12 +764,35 @@ private fun DirectionCard(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = if (isSpeaking) "朗读中" else "长按朗读",
-                        style = AppTypography.labelSmall,
-                        color = if (isSpeaking) Primary else TextHint
-                    )
-                    Spacer(Modifier.width(Spacing.xs))
+                    if (rewriteError != null) {
+                        Text(
+                            rewriteError,
+                            style = AppTypography.labelSmall,
+                            color = Error,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f)
+                        )
+                    } else if (rewriteDone) {
+                        Text(
+                            "撤销",
+                            style = AppTypography.labelSmall,
+                            color = PrimaryDark,
+                            modifier = Modifier.clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = { /* TODO: onUndoRewrite */ }
+                            ).padding(Spacing.xs)
+                        )
+                        Spacer(Modifier.width(Spacing.xs))
+                    } else {
+                        Text(
+                            text = "长按说话修改",
+                            style = AppTypography.labelSmall,
+                            color = TextHint
+                        )
+                        Spacer(Modifier.width(Spacing.xs))
+                    }
                     CardActionIcon(
                         icon = com.lovebrain.app.R.drawable.ic_copy,
                         desc = "复制",

@@ -1,5 +1,6 @@
 package com.lovebrain.app.model
 
+import com.lovebrain.app.domain.StageCatalog
 import com.lovebrain.app.util.Jsons
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -10,6 +11,49 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.jsonNull
+
+/**
+ * P0-2: 画像更新解析结果分类。
+ *
+ * - [SUCCESS]：JSON 完整且字段校验通过
+ * - [EMPTY]：模型返回空内容
+ * - [TRUNCATED]：JSON 不完整（括号未闭合）或 finish_reason=length
+ * - [INVALID_SCHEMA]：JSON 完整但字段类型/值不合法
+ * - [PROVIDER_ERROR]：API 返回错误或网络异常
+ */
+enum class ProfileParseStatus {
+    SUCCESS,
+    EMPTY,
+    TRUNCATED,
+    INVALID_SCHEMA,
+    PROVIDER_ERROR
+}
+
+/**
+ * P0-2: 画像更新解析结果——包含分类状态和 ProfileUpdate payload。
+ *
+ * 自动自愈逻辑通过 [status] 判断是否需要重试：
+ * - [TRUNCATED] → 可重试
+ * - [PROVIDER_ERROR] → 可重试
+ * - [INVALID_SCHEMA] → 不可重试（schema 问题不会因重试改变）
+ * - [EMPTY] → 可重试（可能偶发空响应）
+ * - [SUCCESS] → 不需重试
+ */
+data class ProfileParseResult(
+    val status: ProfileParseStatus,
+    val profileUpdate: ProfileUpdate?,
+    val rawContent: String,
+    val finishReason: String? = null
+) {
+    /** 是否值得自动重试 */
+    val shouldRetry: Boolean get() = status == ProfileParseStatus.TRUNCATED
+        || status == ProfileParseStatus.PROVIDER_ERROR
+        || status == ProfileParseStatus.EMPTY
+
+    /** 供 UI 展示的摘要（成功时用 profileUpdate.displaySummary，失败时用原始截断） */
+    val displaySummary: String get() = profileUpdate?.displaySummary
+        ?: rawContent.take(200)
+}
 
 /**
  * 统一画像更新解析与校验入口。
@@ -54,6 +98,71 @@ data class ProfileUpdate(
         private const val PROFILE_FALLBACK_LIMIT = 200
 
         /**
+         * P0-2: 带 finish_reason 的解析入口——返回分类结果 [ProfileParseResult]。
+         *
+         * 判定顺序：
+         * 1. finishReason == "length" → TRUNCATED（即使 content 看似完整也标截断）
+         * 2. content 为空 → EMPTY
+         * 3. Jsons.extractJsonObject 返回 null（括号不配对）→ TRUNCATED
+         * 4. JSON 解析失败 → TRUNCATED（可能截断在关键位置）
+         * 5. 字段校验失败 → INVALID_SCHEMA
+         * 6. 全通过 → SUCCESS
+         */
+        fun parseWithStatus(raw: String, finishReason: String? = null): ProfileParseResult {
+            // 1. finish_reason=length 明确截断
+            if (finishReason == "length") {
+                return ProfileParseResult(
+                    status = ProfileParseStatus.TRUNCATED,
+                    profileUpdate = null,
+                    rawContent = raw,
+                    finishReason = finishReason
+                )
+            }
+
+            // 2. 空内容
+            if (raw.isBlank()) {
+                return ProfileParseResult(
+                    status = ProfileParseStatus.EMPTY,
+                    profileUpdate = null,
+                    rawContent = raw,
+                    finishReason = finishReason
+                )
+            }
+
+            // 3-4. 提取完整 JSON 对象（处理代码围栏、外围文字、字符串内括号等）
+            val jsonStr = Jsons.extractJsonObject(raw)
+            if (jsonStr == null) {
+                // 无法提取完整对象 = 截断
+                return ProfileParseResult(
+                    status = ProfileParseStatus.TRUNCATED,
+                    profileUpdate = ProfileUpdate(
+                        rawJson = raw,
+                        valid = false,
+                        error = "无法提取完整JSON对象（可能被截断或格式不完整）",
+                        me = null, her = null, warmth = null,
+                        stageChanged = false, newStage = null,
+                        observations = emptyList(), messageToUser = null,
+                        displaySummary = raw.take(PROFILE_FALLBACK_LIMIT)
+                    ),
+                    rawContent = raw,
+                    finishReason = finishReason
+                )
+            }
+
+            // 5-6. 走原有 parse 逻辑
+            val profileUpdate = parseFromJson(jsonStr, raw)
+            val status = if (profileUpdate.valid) ProfileParseStatus.SUCCESS
+                         else ProfileParseStatus.INVALID_SCHEMA
+
+            return ProfileParseResult(
+                status = status,
+                profileUpdate = profileUpdate,
+                rawContent = raw,
+                finishReason = finishReason
+            )
+        }
+
+        /**
          * 从模型原文构建 ProfileUpdate。
          * 接受纯JSON、单个json代码围栏及可明确提取的单个对象。
          * 截断、歧义或字段无效时 valid=false。
@@ -70,8 +179,14 @@ data class ProfileUpdate(
                     observations = emptyList(), messageToUser = null,
                     displaySummary = raw.take(PROFILE_FALLBACK_LIMIT)
                 )
+            return parseFromJson(jsonStr, raw)
+        }
 
-            // 步骤2：解析 JSON
+        /**
+         * P0-2: 从已提取的 JSON 字符串构建 ProfileUpdate（内部方法）。
+         * 调用方已通过 Jsons.extractJsonObject 提取了完整 JSON 对象。
+         */
+        private fun parseFromJson(jsonStr: String, @Suppress("UNUSED_PARAMETER") raw: String): ProfileUpdate {
             val parsed: JsonObject = try {
                 json.parseToJsonElement(jsonStr).jsonObject
             } catch (e: Exception) {
@@ -195,22 +310,22 @@ data class ProfileUpdate(
             }
         }
 
-        /** 合法阶段枚举（与 StageCatalog 对齐，九阶段） */
-        private val VALID_STAGES = setOf(
-            "认识期", "暧昧期", "试探期", "约会期", "热恋期",
-            "磨合期", "稳定期", "平淡期", "倦怠期"
-        )
-
         /**
          * 提取阶段字段（stage_changed=true 时使用）。
-         * 必须为合法非空字符串且属于阶段枚举。
+         * P1-02: 不再另造白名单，统一使用 StageCatalog.normalize 归一化校验。
+         * stage_changed=true 但字段缺失/空/非字符串/不在八阶段白名单内均报条件校验错误。
          */
         private fun extractStageField(
             obj: JsonObject,
             key: String,
             errors: MutableList<String>
         ): String? {
-            val element = obj[key] ?: return null
+            val element = obj[key]
+            if (element == null) {
+                // P1-02: stage_changed=true 时字段缺失必须报错，不能静默 return null
+                errors.add("$key 缺失（stage_changed=true 时必须指定阶段）")
+                return null
+            }
             return when (element) {
                 is JsonPrimitive -> {
                     if (!element.isString) {
@@ -221,11 +336,15 @@ data class ProfileUpdate(
                         if (content.isBlank()) {
                             errors.add("$key 为空字符串（stage_changed=true 时必须指定阶段）")
                             null
-                        } else if (content !in VALID_STAGES) {
-                            errors.add("$key 不是合法阶段：$content")
-                            null
                         } else {
-                            content
+                            // P1-02: 统一使用 StageCatalog 归一化，不再用重复白名单
+                            val normalized = StageCatalog.normalize(content)
+                            if (normalized == null) {
+                                errors.add("$key 不是合法阶段：$content（合法阶段见 StageCatalog）")
+                                null
+                            } else {
+                                normalized
+                            }
                         }
                     }
                 }

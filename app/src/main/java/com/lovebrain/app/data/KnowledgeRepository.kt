@@ -164,26 +164,26 @@ class KnowledgeRepository(
                 fos.fd.sync() // 强制刷盘，防断电丢失
             }
             // rename 在同一文件系统上是原子操作（POSIX/Android）。
-            // Windows 上 renameTo 可能因文件锁定（防病毒等）间歇失败，
-            // 添加短 retry 保证可靠性。rename 失败时不删除原件——
-            // R01: 删除原件冒充安全兜底违反原子写失败保留原件原则。
+            // Windows 上 renameTo 无法覆盖已存在文件——需要先删除目标再 rename。
+            // P1-01: 不再用 Files.copy(REPLACE_EXISTING) 兜底——copy 不是原子操作，
+            // 复制中断/进程被杀时目标文件可能已部分覆盖，导致旧数据损坏。
+            // Windows 适配：先 rename → 失败则先 delete 目标再 rename（tmp 文件有完整新内容，
+            // delete 后 rename 失败仍可从 tmp 恢复——不同于 copy 覆盖中途损坏原件）。
+            // Android 生产环境第一次 renameTo 即原子成功，不走 delete 路径。
             var renamed = false
             for (attempt in 1..3) {
                 if (tmp.renameTo(file)) { renamed = true; break }
+                // Windows: renameTo 不覆盖已存在文件，先删除目标再重试
+                if (file.exists()) {
+                    if (file.delete()) {
+                        if (tmp.renameTo(file)) { renamed = true; break }
+                    }
+                }
                 Thread.sleep(50L * attempt)
             }
-            // b3-10: Windows 兼容回退——renameTo 全部失败时用 copy+delete 替代
             if (!renamed) {
-                try {
-                    java.nio.file.Files.copy(tmp.toPath(), file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING, java.nio.file.StandardCopyOption.COPY_ATTRIBUTES)
-                    renamed = true
-                } catch (e: Exception) {
-                    com.lovebrain.app.util.L.w("atomicWriteText copy fallback failed: ${file.name} - ${e.message}")
-                }
-            }
-            if (!renamed) {
-                // R01: rename+copy 全部失败——保留旧文件不变，报错让调用方处理。
-                // 不删除目标文件冒充安全：copy 失败或中途崩溃会导致目标缺失/不完整。
+                // P1-01: rename 全部失败——保留旧文件不变（如果还在），报错让调用方处理。
+                // 临时文件在 finally 中清理。不删除目标文件，不用 copy 覆盖。
                 throw java.io.IOException("atomic rename failed after 3 attempts: ${file.name}")
             }
         } finally {

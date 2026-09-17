@@ -3,6 +3,8 @@ package com.lovebrain.app.domain
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.model.ProfileParseResult
+import com.lovebrain.app.model.ProfileParseStatus
 import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.ProfileUpdate
 import com.lovebrain.app.model.StageSuggestion
@@ -15,6 +17,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 /** 画像建议构建失败时的原文截断回退长度 */
 private const val PROFILE_FALLBACK_LIMIT = 500
+
+/** P0-2: 画像生成最大自动尝试次数（含首次） */
+private const val MAX_PROFILE_ATTEMPTS = 3
+
+/** P0-2: 重试退避基准间隔（线性递增：第 1 次 500ms，第 2 次 1000ms） */
+private const val RETRY_BACKOFF_MS = 500L
 
 /**
  * 真实提取节头正则（A9 计数口径修正）：与 extractLessonsAsync 写入格式 `# [yyyy-MM-dd HH:mm] 第N次提取` 逐字同构。
@@ -226,40 +234,113 @@ class KnowledgeTriggerCoordinator(
         }
     }
 
+    /**
+     * P1-03: 用户手动触发画像重新生成（不依赖话题计数阈值）。
+     * 先清空旧建议（调用方负责），再走同一个 generateReflectSuggestion 逻辑。
+     */
+    fun regenerateProfile(kbName: String, scope: CoroutineScope, callbacks: Callbacks) {
+        scope.launch {
+            val frozenCorrectionsRev = knowledgeRepo.getCorrectionsRevision(kbName)
+            generateReflectSuggestion(kbName, scope, callbacks, frozenCorrectionsRev).join()
+        }
+    }
+
     private fun generateReflectSuggestion(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
             runCatching {
                 val system = promptBuilder.buildReflectSystemPrompt()
                 val user = promptBuilder.buildReflectUserPrompt(kbName)
-                val raw = runCatching { deepSeekRepo.generateRaw(system, user) }.getOrDefault("")
-                if (raw.isBlank()) {
+
+                // P0-2: 画像截断自动自愈——最多尝试 MAX_PROFILE_ATTEMPTS 次
+                var parseResult: ProfileParseResult? = null
+                for (attempt in 1..MAX_PROFILE_ATTEMPTS) {
+                    val rawResult = runCatching {
+                        withContext(Dispatchers.IO) { deepSeekRepo.generateRaw(system, user) }
+                    }.getOrDefault("")
+
+                    if (rawResult.isBlank()) {
+                        // 供应商返回空——可能是偶发，允许重试
+                        parseResult = ProfileParseResult(
+                            status = ProfileParseStatus.EMPTY,
+                            profileUpdate = null,
+                            rawContent = "",
+                            finishReason = null
+                        )
+                        L.w("generateReflect: attempt $attempt got empty response")
+                        continue
+                    }
+
+                    // P0-2: 使用 parseWithStatus 获取分类结果
+                    parseResult = ProfileUpdate.parseWithStatus(rawResult)
+
+                    if (parseResult.status == ProfileParseStatus.SUCCESS) {
+                        // 成功——跳出重试循环
+                        break
+                    }
+
+                    if (!parseResult.shouldRetry) {
+                        // INVALID_SCHEMA——重试不会改善，直接终止
+                        L.w("generateReflect: attempt $attempt status=${parseResult.status}, not retryable")
+                        break
+                    }
+
+                    L.w("generateReflect: attempt $attempt status=${parseResult.status}, will retry")
+                    // 短暂退避后重试
+                    if (attempt < MAX_PROFILE_ATTEMPTS) {
+                        kotlinx.coroutines.delay(RETRY_BACKOFF_MS * attempt)
+                    }
+                }
+
+                // 处理最终结果
+                val finalResult = parseResult
+                if (finalResult == null || finalResult.status == ProfileParseStatus.EMPTY) {
                     callbacks.onKbNotice("画像更新建议本次生成失败")
                     return@launch
                 }
 
-                // 使用统一的 ProfileUpdate 解析与校验入口
-                // 生成摘要和确认写入使用同一个已验证类型化对象
-                val profileUpdate = ProfileUpdate.parse(raw)
-                val display = profileUpdate.displaySummary
+                if (finalResult.status == ProfileParseStatus.SUCCESS && finalResult.profileUpdate != null) {
+                    // 成功——正常展示画像更新建议
+                    val profileUpdate = finalResult.profileUpdate
+                    val display = profileUpdate.displaySummary
 
-                callbacks.onProfileSuggestion(
-                    ProfileSuggestion(
-                        kbName = kbName,
-                        display = display,
-                        rawJson = raw,
-                        profileUpdate = profileUpdate,
-                        correctionsRevision = frozenCorrectionsRev
+                    callbacks.onProfileSuggestion(
+                        ProfileSuggestion(
+                            kbName = kbName,
+                            display = display,
+                            rawJson = finalResult.rawContent,
+                            profileUpdate = profileUpdate,
+                            correctionsRevision = frozenCorrectionsRev
+                        )
                     )
-                )
 
-                // b3-8: 锁内原子 revision 检查 + 追加画像更新历史，消除竞态窗口
-                val time = TimeFmt.now()
-                val written = withContext(Dispatchers.IO) {
-                    knowledgeRepo.appendFileWithRevisionCheck(kbName, "memory/reflect_history.md",
-                        "\n\n## [$time] 画像更新建议\n$display", frozenCorrectionsRev)
-                }
-                if (!written) {
-                    L.w("generateReflect skipped at write time: corrections changed (frozen=$frozenCorrectionsRev)")
+                    // b3-8: 锁内原子 revision 检查 + 追加画像更新历史，消除竞态窗口
+                    val time = TimeFmt.now()
+                    val written = withContext(Dispatchers.IO) {
+                        knowledgeRepo.appendFileWithRevisionCheck(kbName, "memory/reflect_history.md",
+                            "\n\n## [$time] 画像更新建议\n$display", frozenCorrectionsRev)
+                    }
+                    if (!written) {
+                        L.w("generateReflect skipped at write time: corrections changed (frozen=$frozenCorrectionsRev)")
+                    }
+                } else {
+                    // P0-2: 截断/格式错误——展示失败建议（带"重新生成"按钮）
+                    val errorMsg = when (finalResult.status) {
+                        ProfileParseStatus.TRUNCATED -> "画像更新输出不完整，本次未写入任何数据。"
+                        ProfileParseStatus.INVALID_SCHEMA -> "画像更新格式校验失败：${finalResult.profileUpdate?.error ?: "未知错误"}"
+                        ProfileParseStatus.PROVIDER_ERROR -> "画像更新请求失败，请稍后重试。"
+                        else -> "画像更新失败"
+                    }
+                    L.w("generateReflect: final status=${finalResult.status}, msg=$errorMsg")
+
+                    callbacks.onProfileSuggestion(
+                        ProfileSuggestion(
+                            kbName = kbName,
+                            display = errorMsg,
+                            rawJson = finalResult.rawContent,
+                            profileUpdate = finalResult.profileUpdate,
+                            correctionsRevision = frozenCorrectionsRev
+                        )
+                    )
                 }
             }.onFailure { L.e("generateReflectSuggestion failed", it) }
         }

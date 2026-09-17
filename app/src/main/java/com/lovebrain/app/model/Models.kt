@@ -223,7 +223,15 @@ enum class MemoryKind {
  *
  * 每条 MemoryRef 对应最终 prompt 中实际注入的一段知识库内容。
  * 用户可基于此发起纠正操作；纠正绑定 memoryId 参与下一次 PromptBuilder 过滤。
- * unknown legacy 内容整段引用，不伪装为精确事实。 */
+ * unknown legacy 内容整段引用，不伪装为精确事实。
+ *
+ * P1-1: 身份/事实归属机制。
+ * - [speaker]：谁说的（HER/ME/UNKNOWN）
+ * - [subject]：这句话描述的事实主体（HER/ME/UNKNOWN）
+ *   speaker=HER 不代表 subject=HER——她说"你感冒好了吗"描述的是 ME
+ * - [evidenceMessageIds]：证据来自哪些真实消息（sourceIds 的超集，含推导来源）
+ * - [confidence]：事实置信度（HIGH=直接陈述、MEDIUM=推导、LOW=未知/留空）
+ *   无法可靠确定 subject 时保持 UNKNOWN，不要猜 */
 @Serializable
 data class MemoryRef(
     val id: String,                  // 稳定唯一标识（kind+sourcePath+内容hash前8位）
@@ -233,8 +241,38 @@ data class MemoryRef(
     val sourcePath: String,          // 源文件相对路径（如 understand/me.md）
     val sourceIds: List<String> = emptyList(),  // 关联的消息 ID（场景事实）
     val evidenceTime: String = "",   // 证据时间戳（场景链条目时间）
-    val revision: Int = 0            // 生成时快照 revision（防迟到覆盖）
+    val revision: Int = 0,            // 生成时快照 revision（防迟到覆盖）
+    // P1-1: 身份/事实归属
+    val speaker: EntityRef = EntityRef.UNKNOWN,    // 谁说的
+    val subject: EntityRef = EntityRef.UNKNOWN,   // 描述谁
+    val evidenceMessageIds: List<String> = emptyList(), // 证据消息 ID（推导来源）
+    val confidence: FactConfidence = FactConfidence.LOW    // 事实置信度
 )
+
+/**
+ * P1-1: 事实主体枚举——谁说的 / 描述谁。
+ *
+ * HER = 她（对方）
+ * ME = 我（用户）
+ * UNKNOWN = 无法可靠确定（不猜，留空避免误记）
+ *
+ * 关键规则：speaker=HER 不代表 subject=HER。
+ * 例：她说"你感冒好了吗？" → speaker=HER, subject=ME
+ */
+enum class EntityRef {
+    HER, ME, UNKNOWN
+}
+
+/**
+ * P1-1: 事实置信度。
+ *
+ * HIGH = 直接陈述（如"她喜欢猫"）
+ * MEDIUM = 从行为推导（如"她连续三天提到猫"）
+ * LOW = 未知/留空（无法可靠确定时不猜）
+ */
+enum class FactConfidence {
+    HIGH, MEDIUM, LOW
+}
 
 /** F09: 纠正操作类型 */
 enum class CorrectionAction {
