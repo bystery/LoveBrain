@@ -4,6 +4,7 @@ import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.model.ProfileSuggestion
+import com.lovebrain.app.model.ProfileUpdate
 import com.lovebrain.app.model.StageSuggestion
 import com.lovebrain.app.util.L
 import com.lovebrain.app.util.TimeFmt
@@ -12,10 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.boolean
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 /** 画像建议构建失败时的原文截断回退长度 */
 private const val PROFILE_FALLBACK_LIMIT = 500
 
@@ -244,30 +241,18 @@ class KnowledgeTriggerCoordinator(
                     return@launch
                 }
 
-                // 从 JSON 中提取展示给用户的摘要
-                val display = runCatching {
-                    val json = kotlinx.serialization.json.Json.parseToJsonElement(raw).jsonObject
-                    val msg = json["message_to_user"]?.jsonPrimitive?.content ?: ""
-                    val obs = json["observations"]?.jsonArray?.mapNotNull { it.jsonPrimitive.content } ?: emptyList()
-                    val stageChanged = json["stage_changed"]?.jsonPrimitive?.boolean ?: false
-                    val newStage = json["new_stage"]?.jsonPrimitive?.content ?: ""
-                    buildString {
-                        if (msg.isNotBlank()) append(msg).append("\n\n")
-                        if (stageChanged && newStage.isNotBlank()) {
-                            append("【阶段调整建议】→ $newStage\n\n")
-                        }
-                        if (obs.isNotEmpty()) {
-                            append("待验证观察：\n")
-                            obs.forEach { append("· $it\n") }
-                        }
-                    }.trim()
-                }.getOrDefault(raw.take(PROFILE_FALLBACK_LIMIT))
+                // 使用统一的 ProfileUpdate 解析与校验入口
+                // 生成摘要和确认写入使用同一个已验证类型化对象
+                val profileUpdate = ProfileUpdate.parse(raw)
+                val display = profileUpdate.displaySummary
 
                 callbacks.onProfileSuggestion(
                     ProfileSuggestion(
                         kbName = kbName,
-                        display = display.ifBlank { "画像更新建议已生成，点击确认写入。" },
-                        rawJson = raw
+                        display = display,
+                        rawJson = raw,
+                        profileUpdate = profileUpdate,
+                        correctionsRevision = frozenCorrectionsRev
                     )
                 )
 

@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.model.MemoryRef
@@ -71,6 +72,11 @@ fun ResultArea(
     onUndoCorrection: (String) -> Unit = {},
     providerReady: Boolean,
     onOpenSettings: () -> Unit,
+    // 单条改写
+    rewriteStates: Map<String, RewriteState> = emptyMap(),
+    onRewrite: (String, String) -> Unit = { _, _ -> },
+    onCancelRewrite: (String) -> Unit = {},
+    onUndoRewrite: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     when {
@@ -88,7 +94,10 @@ fun ResultArea(
                         feedbacks = feedbacks,
                         onFeedback = onFeedback,
                         onCopyScheme = onCopyScheme,
-
+                        rewriteStates = rewriteStates,
+                        onRewrite = onRewrite,
+                        onCancelRewrite = onCancelRewrite,
+                        onUndoRewrite = onUndoRewrite
                     )
                     Spacer(Modifier.height(Spacing.md))
                     Box(
@@ -134,6 +143,10 @@ fun ResultArea(
                     feedbacks = feedbacks,
                     onFeedback = onFeedback,
                     onCopyScheme = onCopyScheme,
+                    rewriteStates = rewriteStates,
+                    onRewrite = onRewrite,
+                    onCancelRewrite = onCancelRewrite,
+                    onUndoRewrite = onUndoRewrite
                 )
 
                 if (response.analysis.ongoing.isNotEmpty()) {
@@ -232,7 +245,11 @@ private fun SchemeCardsRow(
     schemes: List<Scheme>,
     feedbacks: Map<String, SchemeFeedback>,
     onFeedback: (String, SchemeFeedback) -> Unit,
-    onCopyScheme: (Scheme) -> Unit
+    onCopyScheme: (Scheme) -> Unit,
+    rewriteStates: Map<String, RewriteState> = emptyMap(),
+    onRewrite: (String, String) -> Unit = { _, _ -> },
+    onCancelRewrite: (String) -> Unit = {},
+    onUndoRewrite: (String) -> Unit = {}
 ) {
     // 方案筛选：全部 / 已赞（调研：NN/G 10 Heuristics #6 Recognition rather than recall——
     // 用户赞过的方案应能快速回看，无需在 4 张卡里翻找）
@@ -308,6 +325,9 @@ private fun SchemeCardsRow(
                             visible = true
                         }
                     }
+                    // 同一时间只展开一张改写区
+                    var expandedRewriteTag by remember { mutableStateOf<String?>(null) }
+
                     AnimatedVisibility(
                         visible = visible,
                         enter = fadeIn(tween(250, delayMillis = index * 60)) +
@@ -320,7 +340,15 @@ private fun SchemeCardsRow(
                             scheme = scheme,
                             feedback = feedbacks[scheme.tag] ?: SchemeFeedback.NONE,
                             onFeedback = onFeedback,
-                            onCopy = onCopyScheme
+                            onCopy = onCopyScheme,
+                            rewriteState = rewriteStates[scheme.tag],
+                            onRewrite = onRewrite,
+                            onCancelRewrite = onCancelRewrite,
+                            onUndoRewrite = onUndoRewrite,
+                            isExpanded = expandedRewriteTag == scheme.tag,
+                            onToggleRewriteExpand = { tag ->
+                                expandedRewriteTag = if (expandedRewriteTag == tag) null else tag
+                            }
                         )
                     }
                 }

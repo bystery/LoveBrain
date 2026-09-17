@@ -10,6 +10,7 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lovebrain.app.R
+import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.ui.panel.rememberPressScale
@@ -53,12 +55,21 @@ private object SchemeTextDimens {
  * "推荐"卡用实心底反白突出；赞/踩用边框变色反馈。按压缩放 0.96，有入场动画。
  * F09-7: reply 为空时显示"本轮不适合"，不可复制/赞/踩，灰色样式。
  */
+/** 卡片内部改写操作选项 */
+private val rewriteOptions = listOf("换一种说法", "更自然", "更简短", "更温柔")
+
 @Composable
 fun SchemeCard(
     scheme: Scheme,
     feedback: SchemeFeedback,
     onFeedback: (String, SchemeFeedback) -> Unit,
     onCopy: (Scheme) -> Unit,
+    rewriteState: RewriteState? = null,
+    onRewrite: (String, String) -> Unit = { _, _ -> },
+    onCancelRewrite: (String) -> Unit = {},
+    onUndoRewrite: (String) -> Unit = {},
+    onToggleRewriteExpand: (String) -> Unit = {},
+    isExpanded: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val isEmpty = scheme.reply.isBlank()
@@ -94,10 +105,17 @@ fun SchemeCard(
     val cardBg = if (isEmpty) SurfaceInset else SurfaceCard
     val bodyColor = if (isEmpty) TextHint else TextPrimary
 
+    // 改写状态展示
+    val isRewriting = rewriteState is RewriteState.Loading
+    val rewriteError = (rewriteState as? RewriteState.Error)?.message
+    val rewriteDone = rewriteState is RewriteState.Done
+    val hasHistory = rewriteDone // Done 状态意味着有历史可撤销
+
     Box(
         modifier = modifier
             .width(SchemeCardDimens.CARD_WIDTH_DP.dp)
-            .height(SchemeCardDimens.CARD_HEIGHT_DP.dp)
+            .then(if (isExpanded || isRewriting || rewriteError != null || hasHistory)
+                Modifier.wrapContentHeight() else Modifier.height(SchemeCardDimens.CARD_HEIGHT_DP.dp))
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.lg)
             .clip(LoveBrainShape.lg)
@@ -106,10 +124,10 @@ fun SchemeCard(
             .then(if (isEmpty) Modifier else Modifier.clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = { /* 单面卡：操作走右下角按钮，卡片仅按压反馈 */ }
+                onClick = { onToggleRewriteExpand(scheme.tag) }
             ))
     ) {
-        Column(modifier = Modifier.fillMaxSize().padding(Spacing.md)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(Spacing.md)) {
             // 标签行
             Box(
                 modifier = Modifier
@@ -147,7 +165,7 @@ fun SchemeCard(
                 // 话术全文：内部垂直滚动（过长可滑动看完整）
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .weight(1f, fill = !isExpanded && !isRewriting && rewriteError == null && !hasHistory)
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                 ) {
@@ -158,6 +176,147 @@ fun SchemeCard(
                         fontSize = SchemeTextDimens.BODY_FONT_SIZE,
                         lineHeight = SchemeTextDimens.BODY_LINE_HEIGHT
                     )
+                }
+            }
+
+            Spacer(Modifier.height(Spacing.sm))
+
+            // 改写操作区（正文下方展开）
+            if (isRewriting) {
+                // 改写中状态
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(14.dp),
+                        strokeWidth = 2.dp,
+                        color = Primary
+                    )
+                    Spacer(Modifier.width(Spacing.xs))
+                    Text(
+                        "正在改写…",
+                        style = AppTypography.labelSmall,
+                        color = PrimaryDark
+                    )
+                    Spacer(Modifier.weight(1f))
+                    Text(
+                        "取消",
+                        style = AppTypography.labelSmall,
+                        color = TextHint,
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { onCancelRewrite(scheme.tag) }
+                        ).padding(Spacing.xs)
+                    )
+                }
+            } else if (rewriteError != null) {
+                // 改写失败状态
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        rewriteError,
+                        style = AppTypography.labelSmall,
+                        color = Error
+                    )
+                    Spacer(Modifier.weight(1f))
+                    Text(
+                        "重试",
+                        style = AppTypography.labelSmall,
+                        color = PrimaryDark,
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { onToggleRewriteExpand(scheme.tag) }
+                        ).padding(Spacing.xs)
+                    )
+                }
+            } else if (hasHistory) {
+                // 改写成功后展示撤销入口
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "撤销",
+                        style = AppTypography.labelSmall,
+                        color = PrimaryDark,
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { onUndoRewrite(scheme.tag) }
+                        ).padding(Spacing.xs)
+                    )
+                }
+            } else if (isExpanded && !isEmpty) {
+                // 2×2 操作区（小窗容不下时自动变单列）
+                // 尝试 2 列排列
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
+                ) {
+                    rewriteOptions.take(2).forEach { option ->
+                        val (interaction, optScale) = rememberPressScale(0.94f, "optScale$option")
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .graphicsLayer { scaleX = optScale; scaleY = optScale }
+                                .clip(LoveBrainShape.sm)
+                                .background(PrimaryLight, LoveBrainShape.sm)
+                                .clickable(
+                                    interactionSource = interaction,
+                                    indication = null,
+                                    onClick = { onRewrite(scheme.tag, option) }
+                                )
+                                .padding(vertical = Spacing.xs, horizontal = Spacing.sm),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                option,
+                                style = AppTypography.labelSmall,
+                                color = PrimaryDark,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                }
+                Spacer(Modifier.height(Spacing.xs))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
+                ) {
+                    rewriteOptions.drop(2).forEach { option ->
+                        val (interaction, optScale) = rememberPressScale(0.94f, "optScale$option")
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .graphicsLayer { scaleX = optScale; scaleY = optScale }
+                                .clip(LoveBrainShape.sm)
+                                .background(PrimaryLight, LoveBrainShape.sm)
+                                .clickable(
+                                    interactionSource = interaction,
+                                    indication = null,
+                                    onClick = { onRewrite(scheme.tag, option) }
+                                )
+                                .padding(vertical = Spacing.xs, horizontal = Spacing.sm),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                option,
+                                style = AppTypography.labelSmall,
+                                color = PrimaryDark,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
                 }
             }
 

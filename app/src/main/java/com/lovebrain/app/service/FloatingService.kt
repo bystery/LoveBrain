@@ -72,14 +72,34 @@ import org.koin.android.ext.android.inject
  */
 class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStateRegistryOwner {
 
+    /** 窗口实际状态：供 UI 订阅，不独立 remember 布尔值 */
+    enum class WindowState {
+        STOPPED,          // 服务未运行
+        VISIBLE_BUBBLE,   // 悬浮球可见
+        VISIBLE_PANEL,    // 面板可见
+        TEMP_HIDDEN       // 临时隐藏（面板和球都不可见）
+    }
+
     companion object {
         private const val OVERLAY_CHANNEL_ID = "lovebrain_overlay"
         private const val OVERLAY_NOTIFICATION_ID = 1001
         private const val ACTION_STOP = "com.lovebrain.app.action.STOP_FLOATING"
+        private const val ACTION_TEMP_HIDE = "com.lovebrain.app.action.TEMP_HIDE"
+        private const val ACTION_RESTORE = "com.lovebrain.app.action.RESTORE"
 
         /** 供外部查询服务是否存活 */
         @Volatile
         var instance: FloatingService? = null
+            private set
+
+        /** 当前窗口状态（UI 通过此值判断显示隐藏/恢复按钮） */
+        @Volatile
+        var windowState: WindowState = WindowState.STOPPED
+            private set
+
+        /** 临时隐藏前的展示形态，恢复时还原 */
+        @Volatile
+        var preHiddenState: WindowState = WindowState.VISIBLE_BUBBLE
             private set
     }
 
@@ -248,6 +268,16 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             stopSelf()
             return START_NOT_STICKY
         }
+        // 临时隐藏：面板和球都隐藏，不留触摸拦截层
+        if (intent?.action == ACTION_TEMP_HIDE) {
+            tempHide()
+            return START_NOT_STICKY
+        }
+        // 恢复：从临时隐藏恢复到隐藏前形态
+        if (intent?.action == ACTION_RESTORE) {
+            restoreFromTempHidden()
+            return START_NOT_STICKY
+        }
         // 仍然 START_NOT_STICKY = 服务被杀后系统不再重建。无保活、无自重启。
         return START_NOT_STICKY
     }
@@ -331,6 +361,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     override fun onDestroy() {
         L.w("=== FloatingService onDestroy ===")
         instance = null
+        windowState = WindowState.STOPPED
         bubbleAnim?.cancel()      // E3：防动画回调持有已销毁 Service
         panelExitAnim?.cancel()
         removeBubble()
@@ -360,6 +391,101 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     // 单击主球 → 直接展示完整悬浮窗；
     // 每次启动小球固定在页面左上方，不记忆位置/状态。
     // 手势在 Compose 内部处理（点击/拖拽判定 + 20dp 阈值），状态由 bubbleUi 持有。
+
+    // ═══════════ 临时隐藏/恢复（面板和球都隐藏，保留全部状态） ═══════════
+
+    /**
+     * 临时隐藏：同时隐藏面板和悬浮球，不留触摸拦截层。
+     * 当前草稿、消息、回复、点赞、编辑状态和本轮上下文保留。
+     * 与"收起成球"（dismissPanelToBubble）和"停止服务"（stopSelf）不同。
+     *
+     * 隐藏先释放输入焦点、关闭键盘，再隐藏/移除两个窗口。
+     * 不调用 stopSelf，不清 ViewModel，不取消正在运行的正常请求。
+     */
+    private fun tempHide() {
+        // 记录隐藏前展示形态
+        preHiddenState = if (isPanelShowing) WindowState.VISIBLE_PANEL else WindowState.VISIBLE_BUBBLE
+
+        // 释放输入焦点、关闭键盘
+        releasePanelInput("temp_hide")
+
+        // 隐藏面板
+        if (isPanelShowing) {
+            isPanelShowing = false
+            composeView?.let { cv ->
+                panelExitAnim?.cancel()
+                cv.visibility = View.GONE
+                cv.alpha = 1f
+            }
+            isPanelHiding = false
+        }
+
+        // 隐藏悬浮球（不移除视图，只改 visibility，恢复时还原位置）
+        bubbleView?.let { bv ->
+            bv.visibility = View.GONE
+        }
+
+        // 取消闲置计时器（隐藏后不需要呼吸/半隐藏动画）
+        idleJob?.cancel()
+
+        windowState = WindowState.TEMP_HIDDEN
+        updateNotification()
+        L.w("FloatingService: temp hide applied")
+    }
+
+    /**
+     * 从临时隐藏恢复到隐藏前形态。
+     * 不自动抢宿主输入焦点。
+     * 位置超屏时校正。
+     */
+    private fun restoreFromTempHidden() {
+        if (windowState != WindowState.TEMP_HIDDEN) return
+
+        when (preHiddenState) {
+            WindowState.VISIBLE_PANEL -> {
+                // 恢复面板
+                showPanel()
+                windowState = WindowState.VISIBLE_PANEL
+            }
+            WindowState.VISIBLE_BUBBLE -> {
+                // 恢复悬浮球，校正位置
+                bubbleView?.let { bv ->
+                    val p = bubbleParams
+                    if (p != null) {
+                        val screenW = resources.displayMetrics.widthPixels
+                        val screenH = resources.displayMetrics.heightPixels
+                        val mainSize = dp(AppConfig.BUBBLE_SIZE)
+                        p.x = p.x.coerceIn(0, (screenW - mainSize).coerceAtLeast(0))
+                        p.y = p.y.coerceIn(dp(48), (screenH - mainSize - dp(32)).coerceAtLeast(dp(48)))
+                        runCatching { wm.updateViewLayout(bv, p) }
+                    }
+                    bv.visibility = View.VISIBLE
+                }
+                resetIdleTimer()
+                windowState = WindowState.VISIBLE_BUBBLE
+            }
+            else -> {
+                // 默认恢复到球
+                bubbleView?.visibility = View.VISIBLE
+                resetIdleTimer()
+                windowState = WindowState.VISIBLE_BUBBLE
+            }
+        }
+        updateNotification()
+        L.w("FloatingService: restored from temp hidden to $windowState")
+    }
+
+    /** 更新通知文案以同步真实状态 */
+    private fun updateNotification() {
+        val text = when (windowState) {
+            WindowState.TEMP_HIDDEN -> "军师已暂时隐藏，点此恢复"
+            WindowState.VISIBLE_BUBBLE -> "悬浮球已开启，点此返回设置"
+            WindowState.VISIBLE_PANEL -> "军师面板已打开，点此返回设置"
+            WindowState.STOPPED -> "军师已停止"
+        }
+        val mgr = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        mgr.notify(OVERLAY_NOTIFICATION_ID, buildOverlayNotification(text))
+    }
 
     private fun showBubble() {
         if (bubbleView != null) return
@@ -409,6 +535,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                 cv.forceTransparentWindowBackground()
                 L.w("showBubble addView OK size=${size} pos=(${params.x},${params.y})")
                 resetIdleTimer()   // 启动闲置半透明计时
+                windowState = WindowState.VISIBLE_BUBBLE
             }
             .onFailure {
                 L.e("showBubble addView failed", it)
@@ -626,6 +753,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         ensurePanelCreated()
         val cv = composeView ?: return
         isPanelShowing = true
+        windowState = WindowState.VISIBLE_PANEL
 
         // BUG 修复：打开前必须取消退出动画并重置透明度，
         // 否则上次淡出残留 alpha=0 → 面板"显示"了但完全透明看不见
@@ -950,7 +1078,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         nm.createNotificationChannel(channel)
     }
 
-    private fun buildOverlayNotification(): android.app.Notification {
+    private fun buildOverlayNotification(statusText: String? = null): android.app.Notification {
         val contentIntent = PendingIntent.getActivity(
             this,
             0,
@@ -963,15 +1091,25 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             Intent(this, FloatingService::class.java).setAction(ACTION_STOP),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        return NotificationCompat.Builder(this, OVERLAY_CHANNEL_ID)
+        // 临时隐藏时增加"恢复"动作
+        val builder = NotificationCompat.Builder(this, OVERLAY_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_bubble)
             .setContentTitle("LoveBrain 悬浮助手正在运行")
-            .setContentText("悬浮球已开启，点此返回设置")
+            .setContentText(statusText ?: "悬浮球已开启，点此返回设置")
             .setContentIntent(contentIntent)
             .addAction(0, "停止", stopIntent)
             .setOngoing(true)
             .setSilent(true)
-            .build()
+        if (windowState == WindowState.TEMP_HIDDEN) {
+            val restoreIntent = PendingIntent.getService(
+                this,
+                2,
+                Intent(this, FloatingService::class.java).setAction(ACTION_RESTORE),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+            builder.addAction(0, "恢复", restoreIntent)
+        }
+        return builder.build()
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()

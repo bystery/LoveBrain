@@ -6,6 +6,7 @@ import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.PromptBuilder.ConfigValidationResult
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.ProfileSuggestion
+import com.lovebrain.app.model.ProfileUpdate
 import com.lovebrain.app.data.KnowledgeRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -89,21 +90,26 @@ class ProfileConfirmTest {
     fun parse_failure_keeps_card_and_warns() = runTest {
         val vm = newViewModel()
         advanceUntilIdle() // init 内 refreshKnowledgeBases 排空（_activeKb 就位）
-        vm.onProfileSuggestion(ProfileSuggestion(kbName = "kb1", display = "建议摘要", rawJson = "not-a-json"))
+        // 使用 ProfileUpdate.parse 构造无效 payload
+        val invalidPayload = ProfileUpdate.parse("not-a-json")
+        vm.onProfileSuggestion(ProfileSuggestion(kbName = "kb1", display = "建议摘要", rawJson = "not-a-json", profileUpdate = invalidPayload))
 
         vm.confirmProfileUpdate()
         advanceUntilIdle()
 
-        // 卡片保留（可重试）+ 弱警告置位（固定文案）
-        assertNotNull(vm.profileSuggestion.value, "解析失败不得清卡")
-        assertEquals("建议解析失败，可重试或忽略", vm.panelWarning.value)
+        // 无效 payload → 清卡 + 提示重新生成
+        assertNull(vm.profileSuggestion.value, "无效建议应清卡")
+        assertEquals("建议格式无效，请重新生成", vm.panelWarning.value)
     }
 
     @Test
     fun parse_success_clears_card_and_writes() = runTest {
         val vm = newViewModel()
         advanceUntilIdle()
-        vm.onProfileSuggestion(ProfileSuggestion(kbName = "kb1", display = "建议摘要", rawJson = """{"me":"新的我","stage_changed":false}"""))
+        val rawJson = """{"me":"新的我","stage_changed":false}"""
+        // 使用 ProfileUpdate.parse 构造有效 payload
+        val validPayload = ProfileUpdate.parse(rawJson)
+        vm.onProfileSuggestion(ProfileSuggestion(kbName = "kb1", display = "建议摘要", rawJson = rawJson, profileUpdate = validPayload))
 
         vm.confirmProfileUpdate()
         advanceUntilIdle()
@@ -123,6 +129,6 @@ class ProfileConfirmTest {
             }
         }
         coVerify { knowledgeRepo.writeFile("kb1", "understand/me.md", "新的我") }
-        assertEquals("已更新知识库「kb1」的画像", vm.kbNotice.value)
+        assertEquals("画像已更新", vm.kbNotice.value)
     }
 }

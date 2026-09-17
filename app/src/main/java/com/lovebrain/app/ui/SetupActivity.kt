@@ -111,6 +111,25 @@ class SetupActivity : ComponentActivity() {
 
     private val viewModel: SetupViewModel by inject()
 
+    /** 刷新悬浮窗服务状态——onResume 时调用 */
+    private fun refreshServiceState() {
+        // windowState 由 FloatingService 静态持有，onResume 时重新读取即可
+    }
+
+    /** 发送临时隐藏命令到悬浮窗服务 */
+    private fun tempHideFloating() {
+        val intent = Intent(this, com.lovebrain.app.service.FloatingService::class.java)
+            .setAction("com.lovebrain.app.action.TEMP_HIDE")
+        ContextCompat.startForegroundService(this, intent)
+    }
+
+    /** 发送恢复命令到悬浮窗服务 */
+    private fun restoreFloating() {
+        val intent = Intent(this, com.lovebrain.app.service.FloatingService::class.java)
+            .setAction("com.lovebrain.app.action.RESTORE")
+        ContextCompat.startForegroundService(this, intent)
+    }
+
     /**
      * UX-03：用户主动点击“启动”后发现没有悬浮窗权限，跳授权页前标记。
      * 授权后回 App 时 onResume 检测：如果已授权且标记为 true，自动完成启动。
@@ -166,6 +185,8 @@ class SetupActivity : ComponentActivity() {
                 pendingPanelMode = null
             }
         }
+        // 刷新服务真实状态——windowState 已在 service 内同步
+        refreshServiceState()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -177,7 +198,9 @@ class SetupActivity : ComponentActivity() {
                 SetupScreen(
                     viewModel = viewModel,
                     onStartService = { startFloatingService() },
-                    onOpenPanel = { mode, showPlan -> openPanelFromHome(mode, showPlan) }
+                    onOpenPanel = { mode, showPlan -> openPanelFromHome(mode, showPlan) },
+                    onTempHide = { tempHideFloating() },
+                    onRestore = { restoreFloating() }
                 )
             }
         }
@@ -188,7 +211,9 @@ class SetupActivity : ComponentActivity() {
 private fun SetupScreen(
     viewModel: SetupViewModel,
     onStartService: () -> Unit,
-    onOpenPanel: (Int, Boolean) -> Unit
+    onOpenPanel: (Int, Boolean) -> Unit,
+    onTempHide: () -> Unit,
+    onRestore: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -207,7 +232,9 @@ private fun SetupScreen(
                 onOpenPanel = onOpenPanel,
                 onOpenKnowledgeBase = {
                     context.startActivity(Intent(context, KnowledgeBaseActivity::class.java))
-                }
+                },
+                onTempHide = onTempHide,
+                onRestore = onRestore
             )
         }
     }
@@ -222,7 +249,9 @@ private fun HomeTabContent(
     viewModel: SetupViewModel,
     onStartService: () -> Unit,
     onOpenPanel: (Int, Boolean) -> Unit,
-    onOpenKnowledgeBase: () -> Unit
+    onOpenKnowledgeBase: () -> Unit,
+    onTempHide: () -> Unit,
+    onRestore: () -> Unit
 ) {
     val context = LocalContext.current
     val overlayGranted = Settings.canDrawOverlays(context)
@@ -315,6 +344,60 @@ private fun HomeTabContent(
                             style = AppTypography.labelLarge,
                             fontWeight = FontWeight.SemiBold
                         )
+                    }
+
+                    // ── Hero 卡内临时隐藏/恢复次按钮 ──
+                    // 同卡不另起大卡片，低强调文字+图标
+                    val isServiceRunning = FloatingService.instance != null
+                    val currentWindowState = FloatingService.windowState
+                    when {
+                        // 未授权：不显示次按钮
+                        !overlayGranted -> { }
+                        // 已停止：不显示无效隐藏按钮
+                        !isServiceRunning -> { }
+                        // 正常可见：显示"暂时隐藏"次按钮
+                        currentWindowState == FloatingService.WindowState.VISIBLE_BUBBLE ||
+                        currentWindowState == FloatingService.WindowState.VISIBLE_PANEL -> {
+                            Spacer(Modifier.height(Spacing.sm))
+                            TextButton(
+                                onClick = onTempHide,
+                                colors = ButtonDefaults.textButtonColors(
+                                    contentColor = PrimaryDark
+                                )
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Close,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(Modifier.width(Spacing.xs))
+                                Text(
+                                    "暂时隐藏",
+                                    style = AppTypography.labelMedium
+                                )
+                            }
+                        }
+                        // 已临时隐藏：显示小字状态"已暂时隐藏"，不重复摆第二个恢复按钮
+                        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> {
+                            Spacer(Modifier.height(Spacing.sm))
+                            TextButton(
+                                onClick = onRestore,
+                                colors = ButtonDefaults.textButtonColors(
+                                    contentColor = PrimaryDark
+                                )
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.PlayArrow,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(Modifier.width(Spacing.xs))
+                                Text(
+                                    "已暂时隐藏，点此恢复",
+                                    style = AppTypography.labelMedium
+                                )
+                            }
+                        }
                     }
                 }
             }

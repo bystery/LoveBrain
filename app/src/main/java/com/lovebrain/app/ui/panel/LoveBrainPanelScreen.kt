@@ -109,6 +109,9 @@ fun LoveBrainPanelScreen(
     val proactiveOptions by viewModel.proactiveOptions.collectAsStateWithLifecycle()
     val proactiveError by viewModel.proactiveError.collectAsStateWithLifecycle()
 
+    // 单条改写状态
+    val rewriteStates by viewModel.rewriteStates.collectAsStateWithLifecycle()
+
     LaunchedEffect(Unit) {
         viewModel.refreshTicketState()
     }
@@ -408,6 +411,11 @@ fun LoveBrainPanelScreen(
                                 },
                                 providerReady = isProviderReady,
                                 onOpenSettings = onOpenSettings,
+                                // 单条改写
+                                rewriteStates = rewriteStates,
+                                onRewrite = { tag, option -> viewModel.rewriteScheme(tag, option) },
+                                onCancelRewrite = { tag -> viewModel.cancelRewrite(tag) },
+                                onUndoRewrite = { tag -> viewModel.undoRewrite(tag) },
                                 modifier = Modifier.fillMaxSize()
                             )
                         }

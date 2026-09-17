@@ -20,6 +20,7 @@ import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.model.ProfileSuggestion
+import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.StageSuggestion
 import com.lovebrain.app.model.SuggestTip
 import com.lovebrain.app.util.Jsons
@@ -119,6 +120,10 @@ class LoveBrainViewModel(
     //  KBG-02：ProfileSuggestion 作为单一事实源，携带 originating kbName
     private val _profileSuggestion = MutableStateFlow<ProfileSuggestion?>(null)
     val profileSuggestion: StateFlow<ProfileSuggestion?> = _profileSuggestion.asStateFlow()
+
+    /** 画像确认提交中状态——提交期间禁用重复点击，幂等 */
+    private val _isProfileConfirming = MutableStateFlow(false)
+    val isProfileConfirming: StateFlow<Boolean> = _isProfileConfirming.asStateFlow()
 
     /** 知识库后台操作的临时提示（如经验提取完成），在悬浮窗内短暂展示 */
     private val _kbNotice = MutableStateFlow<String?>(null)
@@ -450,6 +455,35 @@ class LoveBrainViewModel(
         }
     }
 
+    // ═══════════ 唯一消息快照构建入口 ═══════════
+
+    /**
+     * 构建本轮生成的冻结消息快照。
+     * 供 chat、想法、来源映射及保存共用，确保所有路径使用同一份不可变快照。
+     *
+     * - 深拷贝当前消息列表，防止外部修改影响快照。
+     * - 应用未提交的编辑草稿（角色 + 内容），防双身份问题（F08）。
+     * - 按稳定消息ID操作，不依赖可能移动的下标。
+     */
+    private fun buildMessageSnapshot(): List<ChatMessage> {
+        val messages = _messages.value.map { it.copy() }
+        val editingDraft = _draftText.value.trim()
+        val editingIdx = _editingIndex.value
+
+        if (editingDraft.isNotBlank() && editingIdx in messages.indices) {
+            val targetId = messages[editingIdx].id
+            val editingRole = if (_ideaComposeMode.value) ChatMessage.Role.IDEA else _currentRole.value
+            return messages.mapIndexed { idx, msg ->
+                if (idx == editingIdx && msg.id == targetId) {
+                    msg.copy(role = editingRole, content = editingDraft)
+                } else {
+                    msg
+                }
+            }
+        }
+        return messages
+    }
+
     // ═══════════ 流式生成（委托 GenerationEngine） ═══════════
 
     /**
@@ -475,17 +509,9 @@ class LoveBrainViewModel(
         // F08修复：应用编辑草稿的角色变更到统一快照，防双身份
         // 用户编辑消息改角色（如HER→IDEA）但没点保存就生成时，
         // 需要将草稿的角色和内容应用到快照中对应位置的消息
-        var snapshot = _messages.value.map { it.copy() }
-        val editingDraft = _draftText.value.trim()
-        val editingIdx = _editingIndex.value
-        if (editingDraft.isNotBlank() && editingIdx >= 0 && editingIdx < snapshot.size) {
-            // 应用编辑草稿到快照
-            val editingRole = if (_ideaComposeMode.value) ChatMessage.Role.IDEA else _currentRole.value
-            snapshot[editingIdx] = snapshot[editingIdx].copy(
-                role = editingRole,
-                content = editingDraft
-            )
-        }
+        // GEN-02：冻结快照 — 所有本轮上下文同源
+        // 使用唯一快照构建入口，供 chat / 想法 / 来源映射 / 保存共用
+        val snapshot = buildMessageSnapshot()
         // F08: IDEA hint 叠入未提交草稿（基于已修正的快照收集）
         val userHint = collectIdeaHintWithDraft(snapshot)
         // GEN-02B：冻结 KB 快照 — AI prompt 和 nextRound 保存使用同一对象
@@ -740,62 +766,86 @@ class LoveBrainViewModel(
     }
 
     //  KBG-02：确认画像时使用 suggestion.kbName，不使用 _activeKb
+    // 使用统一的 ProfileUpdate payload，不重复解析 raw
     fun confirmProfileUpdate() {
         val suggestion = _profileSuggestion.value ?: return
-        val rawJson = suggestion.rawJson
 
-        //  ：先解析后清卡——解析失败保留卡片 + 弱警告（可重试），成功才清卡写库
-        val parsed = runCatching {
-            kotlinx.serialization.json.Json.parseToJsonElement(rawJson).jsonObject
-        }.getOrNull()
-        if (parsed == null) {
-            showPanelWarning("建议解析失败，可重试或忽略")
+        // 幂等：提交中拒绝重复点击
+        if (_isProfileConfirming.value) return
+
+        // 使用已验证的 payload，不重复解析
+        val payload = suggestion.profileUpdate
+        if (payload == null || !payload.valid) {
+            // 无效建议不展示可确认按钮——不确认
+            // 但如果走到了这里，说明卡片状态不一致，提示重新生成
+            showPanelWarning("建议格式无效，请重新生成")
+            _profileSuggestion.value = null
             return
         }
 
         val kbName = suggestion.kbName
+        val suggestionId = suggestion.suggestionId
 
         viewModelScope.launch {
-            //  KBG-01+KBG-02 交汇：如果建议所属 KB 已被删除 → 不写盘、不复活、清卡 + 提示
-            val exists = withContext(Dispatchers.IO) {
-                knowledgeRepo.listAll().any { it.name == kbName }
-            }
-            if (!exists) {
-                _profileSuggestion.value = null
-                showPanelWarning("原知识库已删除，这条画像建议已失效")
-                return@launch
-            }
+            _isProfileConfirming.value = true
 
-            _profileSuggestion.value = null
-
-            val meContent = parsed["me"]?.jsonPrimitive?.content
-            val herContent = parsed["her"]?.jsonPrimitive?.content
-            val warmthContent = parsed["warmth"]?.jsonPrimitive?.content
-            val stageChanged = parsed["stage_changed"]?.jsonPrimitive?.boolean ?: false
-            val newStage = parsed["new_stage"]?.jsonPrimitive?.content
-
-            withContext(Dispatchers.IO) {
-                if (!meContent.isNullOrBlank()) {
-                    knowledgeRepo.writeFile(kbName, "understand/me.md", meContent)
+            try {
+                // KBG-01+KBG-02 交汇：如果建议所属 KB 已被删除 → 不写盘
+                val exists = withContext(Dispatchers.IO) {
+                    knowledgeRepo.listAll().any { it.name == kbName }
                 }
-                if (!herContent.isNullOrBlank()) {
-                    knowledgeRepo.writeFile(kbName, "understand/her.md", herContent)
+                if (!exists) {
+                    _profileSuggestion.value = null
+                    showPanelWarning("原知识库已删除，这条画像建议已失效")
+                    return@launch
                 }
-                if (!warmthContent.isNullOrBlank()) {
-                    knowledgeRepo.writeFile(kbName, "understand/warmth.md", warmthContent)
-                    //  KBG-03：画像确认时读取目标 KB 自己的 vector，不使用 UI 全局 _currentVector
-                    val targetVector = knowledgeRepo.readVector(kbName)
-                    if (targetVector.isNotEmpty()) {
-                        knowledgeRepo.writeVector(kbName, targetVector)
+
+                // 版本核验：纠正 revision 变化则提示资料已变化
+                val currentRev = withContext(Dispatchers.IO) {
+                    knowledgeRepo.getCorrectionsRevision(kbName)
+                }
+                if (currentRev != suggestion.correctionsRevision) {
+                    _profileSuggestion.value = null
+                    showPanelWarning("资料已变化，请重新生成")
+                    return@launch
+                }
+
+                // 三画像、阶段与向量相关变动作为一个批次提交
+                withContext(Dispatchers.IO) {
+                    payload.me?.let { meContent ->
+                        knowledgeRepo.writeFile(kbName, "understand/me.md", meContent)
+                    }
+                    payload.her?.let { herContent ->
+                        knowledgeRepo.writeFile(kbName, "understand/her.md", herContent)
+                    }
+                    payload.warmth?.let { warmthContent ->
+                        knowledgeRepo.writeFile(kbName, "understand/warmth.md", warmthContent)
+                        // KBG-03：画像确认时读取目标 KB 自己的 vector
+                        val targetVector = knowledgeRepo.readVector(kbName)
+                        if (targetVector.isNotEmpty()) {
+                            knowledgeRepo.writeVector(kbName, targetVector)
+                        }
+                    }
+                    if (payload.stageChanged && !payload.newStage.isNullOrBlank()) {
+                        knowledgeRepo.updateStage(kbName, payload.newStage)
                     }
                 }
-                if (stageChanged && !newStage.isNullOrBlank()) {
-                    knowledgeRepo.updateStage(kbName, newStage)
-                }
-            }
 
-            _kbNotice.value = "已更新知识库「$kbName」的画像"
-            refreshKnowledgeBases()
+                // 只有提交成功且当前卡片仍是同一个 suggestionId 才清卡
+                val current = _profileSuggestion.value
+                if (current != null && current.suggestionId == suggestionId) {
+                    _profileSuggestion.value = null
+                }
+
+                _kbNotice.value = "画像已更新"
+                refreshKnowledgeBases()
+            } catch (e: Exception) {
+                L.e("confirmProfileUpdate failed", e)
+                // 磁盘失败保留卡片与重试入口
+                showPanelWarning("画像写入失败，可重试")
+            } finally {
+                _isProfileConfirming.value = false
+            }
         }
     }
 
@@ -1312,6 +1362,230 @@ class LoveBrainViewModel(
         }
     }
 
+    // ═══════════ 单条改写（卡片内部展开 2×2 操作区） ═══════════
+
+    /** 改写操作选项文案 */
+    val rewriteOptions = listOf("换一种说法", "更自然", "更简短", "更温柔")
+
+    /** 单条改写状态：schemeTag → 改写状态 */
+    private val _rewriteStates = MutableStateFlow<Map<String, RewriteState>>(emptyMap())
+    val rewriteStates: StateFlow<Map<String, RewriteState>> = _rewriteStates.asStateFlow()
+
+    /** 单条改写版本历史（用于撤销） */
+    private val _rewriteHistory = MutableStateFlow<Map<String, List<String>>>(emptyMap())
+    val rewriteHistory: StateFlow<Map<String, List<String>>> = _rewriteHistory.asStateFlow()
+
+    /** 改写任务 Job——与前台生成共用任务管理 */
+    private var rewriteJob: kotlinx.coroutines.Job? = null
+
+    /** 改写请求 ID（锁定目标，防跨轮写入） */
+    private var rewriteRequestId: String? = null
+
+    /**
+     * 对指定方案卡发起单条改写。
+     *
+     * - 复用供应商配置冻结、HTTP 调用、取消、错误处理和 usage 统计。
+     * - 禁止调用整轮 generate 然后取其中一条。
+     * - 请求只包含短固定规则、目标原回复、选择的操作、最少必要的本轮真实上下文。
+     * - 长知识库、完整分析、其他候选、四方向数组、事实提取和全量 JSON 不随之发送。
+     * - 同一时间只运行一个前台生成/主动发/单条改写，共用现有任务管理。
+     */
+    fun rewriteScheme(schemeTag: String, option: String) {
+        // 前台互斥：正在生成/主动发/改写中时拒绝
+        if (_isGenerating.value || _isProactive.value || _isPreparing.value) return
+        if (rewriteJob?.isActive == true) return
+
+        // 首轮流式尚未完成时禁用改写
+        if (_isGeneratingCore.value) return
+
+        val result = _result.value as? GenerateResult.Success ?: return
+        val response = result.response
+        val scheme = response.schemes.find { it.tag == schemeTag } ?: return
+        if (scheme.reply.isBlank()) return
+
+        // 锁定目标
+        val ctx = replyGenerationContext ?: return
+        val requestId = java.util.UUID.randomUUID().toString()
+        rewriteRequestId = requestId
+
+        // 设置改写中状态
+        _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Loading(option))
+
+        // 保存当前版本到历史（用于撤销）
+        val currentHistory = _rewriteHistory.value[schemeTag] ?: emptyList()
+        _rewriteHistory.value = _rewriteHistory.value + (schemeTag to currentHistory + scheme.reply)
+
+        val kbSnapshot = _activeKb.value
+        val ticket = _activeTicket.value
+        val apiKey = ticket?.let { securePrefs.getWorkerApiKey(it.id) }
+
+        rewriteJob = viewModelScope.launch {
+            try {
+                // 构建短请求——只包含最少必要上下文
+                val systemPrompt = buildRewriteSystemPrompt()
+                val userPrompt = buildRewriteUserPrompt(
+                    originalReply = scheme.reply,
+                    option = option,
+                    messages = ctx.messages,
+                    intentText = ctx.intentText.takeIf { it.isNotBlank() && ctx.intentEnabled },
+                    ideaHint = ctx.ideaHint.takeIf { it.isNotBlank() }
+                )
+
+                // 复用供应商配置冻结
+                val config = if (ticket != null && !apiKey.isNullOrBlank() && ticket.model.isNotBlank()) {
+                    com.lovebrain.app.data.ProviderRequestConfig(
+                        ticketId = ticket.id,
+                        apiKey = apiKey,
+                        baseUrl = ticket.baseUrl,
+                        model = ticket.model,
+                        thinkingMode = ticket.thinkingMode ?: 0
+                    )
+                } else {
+                    null
+                }
+
+                val raw = if (config != null) {
+                    deepSeekRepo.generateRaw(config, systemPrompt, userPrompt)
+                } else {
+                    deepSeekRepo.generateRaw(systemPrompt, userPrompt)
+                }
+
+                // 校验请求身份——切库/新轮/清空后旧结果不写入
+                if (rewriteRequestId != requestId) return@launch
+
+                val newReply = raw.trim()
+                if (newReply.isBlank()) {
+                    _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Error("改写返回空结果"))
+                    return@launch
+                }
+
+                // 成功：替换目标卡正文，保持位置和稳定身份
+                val updatedSchemes = response.schemes.map { s ->
+                    if (s.tag == schemeTag) s.copy(reply = newReply) else s
+                }
+                val updatedResponse = response.copy(
+                    response = com.lovebrain.app.model.ReplySchemes(
+                        recommended = updatedSchemes.getOrNull(0)?.reply ?: "",
+                        badBoy = updatedSchemes.getOrNull(1)?.reply ?: "",
+                        playful = updatedSchemes.getOrNull(2)?.reply ?: "",
+                        warm = updatedSchemes.getOrNull(3)?.reply ?: ""
+                    )
+                )
+                _result.value = GenerateResult.Success(updatedResponse)
+
+                // 清除改写状态，保留撤销入口
+                _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Done(newReply))
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("rewriteScheme failed", e)
+                if (rewriteRequestId == requestId) {
+                    _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Error("改写失败，可重试"))
+                }
+            }
+        }
+    }
+
+    /** 取消正在进行的改写 */
+    fun cancelRewrite(schemeTag: String) {
+        rewriteJob?.cancel()
+        rewriteJob = null
+        rewriteRequestId = null
+        _rewriteStates.value = _rewriteStates.value.filterKeys { it != schemeTag }
+    }
+
+    /** 撤销改写——恢复到上一版本 */
+    fun undoRewrite(schemeTag: String) {
+        val history = _rewriteHistory.value[schemeTag] ?: return
+        if (history.isEmpty()) return
+        val previousReply = history.last()
+        val updatedHistory = history.dropLast(1)
+
+        _rewriteHistory.value = if (updatedHistory.isEmpty()) {
+            _rewriteHistory.value - schemeTag
+        } else {
+            _rewriteHistory.value + (schemeTag to updatedHistory)
+        }
+
+        val result = _result.value as? GenerateResult.Success ?: return
+        val response = result.response
+        val updatedSchemes = response.schemes.map { s ->
+            if (s.tag == schemeTag) s.copy(reply = previousReply) else s
+        }
+        val updatedResponse = response.copy(
+            response = com.lovebrain.app.model.ReplySchemes(
+                recommended = updatedSchemes.getOrNull(0)?.reply ?: "",
+                badBoy = updatedSchemes.getOrNull(1)?.reply ?: "",
+                playful = updatedSchemes.getOrNull(2)?.reply ?: "",
+                warm = updatedSchemes.getOrNull(3)?.reply ?: ""
+            )
+        )
+        _result.value = GenerateResult.Success(updatedResponse)
+        _rewriteStates.value = _rewriteStates.value - schemeTag
+    }
+
+    /** 清除改写状态（展开/收起时调用） */
+    fun clearRewriteState(schemeTag: String) {
+        val current = _rewriteStates.value[schemeTag]
+        if (current is RewriteState.Done || current is RewriteState.Error) {
+            _rewriteStates.value = _rewriteStates.value - schemeTag
+        }
+    }
+
+    /** 构建改写系统提示——短固定规则 */
+    private fun buildRewriteSystemPrompt(): String = buildString {
+        appendLine("你是恋爱沟通助手。用户想改写一条已有的回复。")
+        appendLine("规则：")
+        appendLine("1. 只输出改写后的回复正文，不输出任何分析、标签或格式说明")
+        appendLine("2. 不能改人名、时间、约定和说话主体")
+        appendLine("3. 不能添加未经证实的事实")
+        appendLine("4. 不能把候选回复当作已发送消息")
+        appendLine("5. 输出一个非空回复正文即可")
+    }
+
+    /** 构建改写用户提示——只包含最少必要上下文 */
+    private fun buildRewriteUserPrompt(
+        originalReply: String,
+        option: String,
+        messages: List<ChatMessage>,
+        intentText: String?,
+        ideaHint: String?
+    ): String = buildString {
+        // 最近几条真实对话（不含想法）
+        val recentChat = messages
+            .filter { it.role != ChatMessage.Role.IDEA }
+            .takeLast(6)
+            .joinToString("\n") { msg ->
+                val role = when (msg.role) {
+                    ChatMessage.Role.HER -> "她"
+                    ChatMessage.Role.ME -> "我"
+                    else -> msg.role.label
+                }
+                "$role：${msg.content}"
+            }
+        if (recentChat.isNotBlank()) {
+            appendLine("最近对话：")
+            appendLine(recentChat)
+            appendLine()
+        }
+
+        // 持续意图（仅在有且启用时）
+        if (!intentText.isNullOrBlank()) {
+            appendLine("当前意图：$intentText")
+            appendLine()
+        }
+
+        // 想法（仅在有且非空时）
+        if (!ideaHint.isNullOrBlank()) {
+            appendLine("想法备注：$ideaHint")
+            appendLine()
+        }
+
+        appendLine("原回复：$originalReply")
+        appendLine()
+        append("改写要求：$option")
+    }
+
     // ═══════════ 生命周期清理 ═══════════
 
     /**
@@ -1329,6 +1603,7 @@ class LoveBrainViewModel(
         counselingJob?.cancel()
         suggestJob?.cancel()
         proactiveJob?.cancel()
+        rewriteJob?.cancel()
     }
 
     companion object {
