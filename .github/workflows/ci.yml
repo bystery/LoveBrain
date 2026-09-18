@@ -21,10 +21,10 @@ jobs:
       - uses: gradle/actions/setup-gradle@v3
 
       - name: Unit tests
-        run: chmod +x gradlew && ./gradlew :app:testDebugUnitTest
+        run: chmod +x gradlew && ./gradlew :app:testDebugUnitTest --no-daemon
 
       - name: Lint
-        run: ./gradlew :app:lintDebug
+        run: ./gradlew :app:lintDebug --no-daemon
 
       - name: Release R8 build
-        run: ./gradlew :app:assembleRelease
+        run: ./gradlew :app:assembleRelease --no-daemon

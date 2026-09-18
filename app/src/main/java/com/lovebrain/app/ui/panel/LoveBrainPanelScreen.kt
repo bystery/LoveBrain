@@ -400,7 +400,7 @@ fun LoveBrainPanelScreen(
                                 streamingSchemes = streamingSchemes,
                                 streamingDirectionSchemes = streamingDirectionSchemes,
                                 feedbacks = feedbacks,
-                                onFeedback = { tag, fb -> viewModel.setFeedback(tag, fb) },
+                                onFeedback = { scheme, fb -> viewModel.setFeedback(scheme.tag, fb) },
                                 onCopyScheme = { scheme ->
                                     val reply = viewModel.copyScheme(scheme)
                                     onCopy(reply)
@@ -423,10 +423,20 @@ fun LoveBrainPanelScreen(
                                 onOpenSettings = onOpenSettings,
                                 // 单条改写
                                 rewriteStates = rewriteStates,
-                                onRewrite = { tag, option -> viewModel.rewriteScheme(tag, option) },
+                                onRewrite = { tag, command -> viewModel.rewriteScheme(tag, command.instruction) },
                                 onClearRewriteState = { tag -> viewModel.clearRewriteState(tag) },
                                 onCancelRewrite = { tag -> viewModel.cancelRewrite(tag) },
                                 onUndoRewrite = { tag -> viewModel.undoRewrite(tag) },
+                                onVoiceRewrite = { tag, transcript -> viewModel.rewriteScheme(tag, transcript) },
+                                onPermissionEvent = { event ->
+                                    when (event) {
+                                        is PermissionEvent.Granted -> viewModel.showPanelWarning("麦克风权限已开启，请再次长按说话")
+                                        is PermissionEvent.Denied -> viewModel.showPanelWarning(
+                                            if (event.permanently) "需要麦克风权限才能语音修改，请到设置中开启。仍可点击卡片使用文字调整。"
+                                            else "需要麦克风权限才能语音修改，仍可点击卡片使用文字调整。"
+                                        )
+                                    }
+                                },
                                 modifier = Modifier.fillMaxSize()
                             )
                         }
@@ -486,7 +496,7 @@ private fun ProfileSuggestionCard(
     ) {
         Text("AI 画像更新建议", style = AppTypography.labelLarge, color = PrimaryDark)
         Spacer(Modifier.height(Spacing.md))
-        // P0-10: 正文区域——原地展示，regenerating 时显示 spinner
+        // P1-3: 正文区域——保持高度稳定，regenerating 时保留正文布局只叠加 loading
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -495,9 +505,10 @@ private fun ProfileSuggestionCard(
                 .padding(Spacing.md)
         ) {
             if (isRegenerating) {
-                // P0-10: 原地重新生成——卡片位置不变，正文区域显示 loading
+                // P1-3: 重新生成时——保留当前正文位置，叠加轻 overlay spinner
+                // 不用 fillMaxSize 避免高度跳变
                 Row(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {

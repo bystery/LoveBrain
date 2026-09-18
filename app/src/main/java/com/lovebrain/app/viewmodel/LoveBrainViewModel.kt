@@ -638,9 +638,15 @@ class LoveBrainViewModel(
 
         val kbName = context.kbName
 
-        val likedSchemes = response.schemes
+        val likedStyleSchemes = response.schemes
             .filter { _feedbacks.value[it.tag] == SchemeFeedback.LIKED }
             .sortedBy { "ABCD".indexOf(it.tag) }
+
+        // 方向回复的点赞也要保存——赞 F 真正保存 F 回复
+        val likedDirectionSchemes = response.directionSchemes
+            .filter { _feedbacks.value[it.tag] == SchemeFeedback.LIKED }
+
+        val likedSchemes = likedStyleSchemes + likedDirectionSchemes
 
         // P0-2：点赞不等于发送。selectedScheme 恒为 null——
         // 用户没有"确认发送"操作，点赞只保存为偏好，不写入"实际对话"段。
@@ -788,9 +794,13 @@ class LoveBrainViewModel(
     //  KBG-02：确认画像时使用 suggestion.kbName，不使用 _activeKb
     // 使用统一的 ProfileUpdate payload，不重复解析 raw
     /**
-     * P0-5: 画像确认——事务性多文件写入。
-     * 先保存旧版本 → 校验全部 payload → 全部写入 → 任一步失败 rollback。
-     * 用户最终只能观察到：全部成功 或 全部保持原状态。
+     * 画像确认——委托 Repository 执行原子事务。
+     *
+     * 事务在 Repository 的单次 fileMutex.withLock 中执行：
+     * - 所有文件写入、向量同步、阶段更新、warmth 标签更新在同一锁内完成
+     * - backup 覆盖所有实际会被修改的文件
+     * - IO 失败必须抛出（strict 版本），不吞错误
+     * - 任一步失败自动 rollback
      */
     fun confirmProfileUpdate() {
         val suggestion = _profileSuggestion.value ?: return
@@ -829,73 +839,21 @@ class LoveBrainViewModel(
                     return@launch
                 }
 
-                // P0-5: 事务性写入——先备份旧版本，全部写入成功才 commit，任一失败 rollback
-                withContext(Dispatchers.IO) {
-                    // Step 1: 收集需要写入的目标和旧内容
-                    val writeTargets = mutableListOf<Pair<String, String>>()
-                    payload.me?.let { writeTargets.add("understand/me.md" to it) }
-                    payload.her?.let { writeTargets.add("understand/her.md" to it) }
-                    payload.warmth?.let { writeTargets.add("understand/warmth.md" to it) }
+                // 委托 Repository 执行原子事务——单锁覆盖全部操作
+                val success = knowledgeRepo.applyProfileUpdateAtomically(
+                    kbName = kbName,
+                    me = payload.me,
+                    her = payload.her,
+                    warmth = payload.warmth,
+                    stageChanged = payload.stageChanged,
+                    newStage = payload.newStage,
+                    expectedRevision = suggestion.correctionsRevision
+                )
 
-                    // 备份旧版本
-                    val backups = mutableMapOf<String, String>()
-                    for ((path, _) in writeTargets) {
-                        backups[path] = knowledgeRepo.readFile(kbName, path)
-                    }
-
-                    // 备份 warmth vector（如果 warmth 要更新）
-                    val oldVector = if (payload.warmth != null) {
-                        knowledgeRepo.readVector(kbName)
-                    } else null
-
-                    // 备份 stage（如果 stage 要变）
-                    val oldStage = if (payload.stageChanged && !payload.newStage.isNullOrBlank()) {
-                        knowledgeRepo.getCurrentStage(kbName)
-                    } else null
-
-                    try {
-                        // Step 2: 逐个写入
-                        for ((path, content) in writeTargets) {
-                            knowledgeRepo.writeFile(kbName, path, content)
-                        }
-
-                        // Step 3: warmth 向量同步
-                        if (payload.warmth != null && oldVector != null && oldVector.isNotEmpty()) {
-                            knowledgeRepo.writeVector(kbName, oldVector)
-                        }
-
-                        // Step 4: 阶段更新
-                        if (payload.stageChanged && !payload.newStage.isNullOrBlank()) {
-                            knowledgeRepo.updateStage(kbName, payload.newStage)
-                            knowledgeRepo.updateWarmthStageLabel(kbName, payload.newStage)
-                        }
-                    } catch (e: Exception) {
-                        // Step 5: Rollback——恢复旧版本
-                        L.e("confirmProfileUpdate: write failed, rolling back", e)
-                        for ((path, oldContent) in backups) {
-                            try {
-                                knowledgeRepo.writeFile(kbName, path, oldContent)
-                            } catch (rollbackErr: Exception) {
-                                L.e("confirmProfileUpdate: CRITICAL rollback failed for $path", rollbackErr)
-                            }
-                        }
-                        if (oldVector != null && oldVector.isNotEmpty()) {
-                            try {
-                                knowledgeRepo.writeVector(kbName, oldVector)
-                            } catch (rollbackErr: Exception) {
-                                L.e("confirmProfileUpdate: CRITICAL vector rollback failed", rollbackErr)
-                            }
-                        }
-                        if (oldStage != null) {
-                            try {
-                                knowledgeRepo.updateStage(kbName, oldStage)
-                                knowledgeRepo.updateWarmthStageLabel(kbName, oldStage)
-                            } catch (rollbackErr: Exception) {
-                                L.e("confirmProfileUpdate: CRITICAL stage rollback failed", rollbackErr)
-                            }
-                        }
-                        throw e // 重新抛出，由外层 catch 处理用户提示
-                    }
+                if (!success) {
+                    _profileSuggestion.value = null
+                    showPanelWarning("画像写入失败：知识库已变化或已删除")
+                    return@launch
                 }
 
                 val current = _profileSuggestion.value
@@ -907,7 +865,6 @@ class LoveBrainViewModel(
                 refreshKnowledgeBases()
             } catch (e: Exception) {
                 L.e("confirmProfileUpdate failed", e)
-                // P0-5: rollback 已在事务内完成，此处只提示用户
                 showPanelWarning("画像写入失败，已恢复原数据，可重试")
             } finally {
                 _isProfileConfirming.value = false
@@ -916,33 +873,70 @@ class LoveBrainViewModel(
     }
 
     fun dismissProfileUpdate() {
+        // 取消正在进行的重新生成 job，使旧请求无效
+        profileRegenerationJob?.cancel()
+        profileRegenerationJob = null
+        profileRegenerationRequestId++
+        _profileRegenerating.value = false
         _profileSuggestion.value = null
     }
 
     /**
-     * P0-10: 真正原地重新生成画像建议——卡片位置不变，显示"正在重新生成…"。
-     * 不再清空旧建议导致整张卡消失 → 页面跳动。
-     * 设置 _profileRegenerating 标记，UI 原地展示 loading。
+     * 画像重新生成——原地显示 loading，卡片位置不变。
+     *
+     * 修复 P0-8：所有失败路径（EMPTY/PROVIDER_ERROR/EXCEPTION）都必须复位 loading。
+     * 修复 P0-9：增加 request identity——dismiss 后旧请求回来不会复活卡片。
      */
     private val _profileRegenerating = MutableStateFlow(false)
     val profileRegenerating: StateFlow<Boolean> = _profileRegenerating.asStateFlow()
 
+    /** 重新生成的协程 job——dismiss 时 cancel */
+    private var profileRegenerationJob: kotlinx.coroutines.Job? = null
+
+    /** 重新生成请求 ID——每次 dismiss 递增，旧请求回来时 requestId 不匹配则丢弃 */
+    private var profileRegenerationRequestId: Int = 0
+
     fun regenerateProfileUpdate() {
         val suggestion = _profileSuggestion.value ?: return
         val kbName = suggestion.kbName
-        // P0-10: 原地重新生成——不清空旧建议，只设置 regenerating 标记
+
+        // 取消上一次未完成的重新生成
+        profileRegenerationJob?.cancel()
+        val currentRequestId = ++profileRegenerationRequestId
+
         _profileRegenerating.value = true
-        triggerCoordinator.regenerateProfile(kbName, viewModelScope, object : KnowledgeTriggerCoordinator.Callbacks {
-            override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {}
-            override fun onVectorUpdateNotice(kbName: String, summary: String) {}
-            override fun onStageSuggestion(suggestion: StageSuggestion) {}
-            override fun onKbNotice(notice: String) {}
-            override fun onProfileSuggestion(suggestion: ProfileSuggestion) {
-                _profileSuggestion.value = suggestion
-                _profileRegenerating.value = false
+        profileRegenerationJob = viewModelScope.launch {
+            try {
+                triggerCoordinator.regenerateProfile(kbName, viewModelScope, object : KnowledgeTriggerCoordinator.Callbacks {
+                    override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {}
+                    override fun onVectorUpdateNotice(kbName: String, summary: String) {}
+                    override fun onStageSuggestion(suggestion: StageSuggestion) {}
+                    override fun onKbNotice(notice: String) {
+                        // EMPTY / 失败路径——也要复位 loading（如果 requestId 匹配）
+                        if (currentRequestId == profileRegenerationRequestId) {
+                            _profileRegenerating.value = false
+                        }
+                    }
+                    override fun onProfileSuggestion(suggestion: ProfileSuggestion) {
+                        // 成功或失败建议——只有 requestId 匹配才更新 UI
+                        if (currentRequestId == profileRegenerationRequestId) {
+                            _profileSuggestion.value = suggestion
+                            _profileRegenerating.value = false
+                        }
+                    }
+                    override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {}
+                })
+            } catch (e: Exception) {
+                L.e("regenerateProfileUpdate failed", e)
+                if (currentRequestId == profileRegenerationRequestId) {
+                    _profileRegenerating.value = false
+                }
+            } finally {
+                if (currentRequestId == profileRegenerationRequestId) {
+                    _profileRegenerating.value = false
+                }
             }
-            override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {}
-        })
+        }
     }
 
     // ═══════════ 谈心模式（委托 GenerationEngine） ═══════════

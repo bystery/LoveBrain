@@ -293,6 +293,8 @@ class KbgBatch8Test {
             KnowledgeBase(name = "kb-a", stage = "暧昧期"),
             KnowledgeBase(name = "kb-b", stage = "热恋期")
         )
+        coEvery { knowledgeRepo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns true
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
 
         val vm = newViewModelWithKb(kbName = "kb-a", knowledgeRepoOverride = knowledgeRepo)
         delay(200)
@@ -316,9 +318,8 @@ class KbgBatch8Test {
         vm.confirmProfileUpdate()
         delay(500)
 
-        // Should write to A, not B
-        coVerify { knowledgeRepo.writeFile("kb-a", "understand/me.md", "A的画像") }
-        coVerify(exactly = 0) { knowledgeRepo.writeFile("kb-b", "understand/me.md", any()) }
+        // Should write to A via applyProfileUpdateAtomically, not B
+        coVerify { knowledgeRepo.applyProfileUpdateAtomically("kb-a", "A的画像", null, null, false, null, 0) }
     }
 
     @Test
@@ -361,12 +362,11 @@ class KbgBatch8Test {
         // A's vector on disk
         coEvery { knowledgeRepo.readVector("kb-a") } returns mapOf("intimacy" to 55)
         coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = "kb-a", stage = "暧昧期"))
+        coEvery { knowledgeRepo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns true
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
 
         val vm = newViewModelWithKb(kbName = "kb-a", knowledgeRepoOverride = knowledgeRepo)
         delay(200)
-
-        // UI global vector is B's vector (simulating cross-KB pollution)
-        // Since we can't set _currentVector directly, we test via readVector call
 
         val rawJson = """{"warmth":"new warmth","stage_changed":false}"""
         vm.onProfileSuggestion(ProfileSuggestion(
@@ -379,9 +379,8 @@ class KbgBatch8Test {
         vm.confirmProfileUpdate()
         delay(500)
 
-        // Should have read A's own vector and written it back to A
-        coVerify { knowledgeRepo.readVector("kb-a") }
-        coVerify { knowledgeRepo.writeVector("kb-a", mapOf("intimacy" to 55)) }
+        // Should have called applyProfileUpdateAtomically with A's warmth
+        coVerify { knowledgeRepo.applyProfileUpdateAtomically("kb-a", null, null, "new warmth", false, null, 0) }
     }
 
     // ════════════════════════════════════════════════════════════════

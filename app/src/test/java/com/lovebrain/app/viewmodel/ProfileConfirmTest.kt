@@ -72,6 +72,8 @@ class ProfileConfirmTest {
         coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
         coEvery { knowledgeRepo.listAll() } returns
             listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
+        coEvery { knowledgeRepo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns true
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
         val promptBuilder = mockk<PromptBuilder>()
         every { promptBuilder.validateConfig(any(), any()) } returns
             ConfigValidationResult(0, 0, emptyList())
@@ -128,7 +130,7 @@ class ProfileConfirmTest {
                 advanceUntilIdle()
             }
         }
-        coVerify { knowledgeRepo.writeFile("kb1", "understand/me.md", "新的我") }
+        coVerify { knowledgeRepo.applyProfileUpdateAtomically("kb1", "新的我", null, null, false, null, 0) }
         assertEquals("画像已更新", vm.kbNotice.value)
     }
 }

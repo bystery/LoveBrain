@@ -20,23 +20,49 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 
 /** 一条回复方案（UI 渲染用；tag/title 硬编码补，AI 只输出 reply 文本）
- * F09-7: reply 为空表示该方向本轮不适合，UI 显示"本轮不适合"且不可复制。
- * P1-07: 新增 source 字段区分来源——STYLE=四风格，DIRECTION=四方向 */
+ * F09-7: reply 为空表示该方向本轮不适合，UI 显示“本轮不适合”且不可复制。
+ * Scheme 自身持有 source 字段区分来源——STYLE=四风格，DIRECTION=四方向。 */
 @Serializable
-data class Scheme(
-    val tag: String = "",        // A / B / C / D
-    val title: String = "",      // 稳妥 / 直球 / 俏皮 / 温柔（G 批改名：原 推荐/渣男/调皮/暖男）
-    val reply: String = ""       // 话术原文；空 = 本轮不适合
+ data class Scheme(
+    val tag: String = "",        // A / B / C / D（风格）或 F / E / X / S（方向）
+    val title: String = "",      // 推荐 / 清醒 / 俏皮 / 温柔 或 跟进 / 展开 / 表达 / 转向
+    val reply: String = "",      // 话术原文；空 = 本轮不适合
+    val source: SchemeSource = SchemeSource.STYLE  // 来源：风格还是方向
 )
 
-/** P1-07: 方案来源——区分四风格和四方向 */
+/** 方案来源——区分四风格和四方向 */
 enum class SchemeSource { STYLE, DIRECTION }
 
-/** P1-07: 四方向的固定标签和标题 */
+/**
+ * 四方向单一真源——解析、流式、UI 均引用此 enum。
+ * 不再维护并行 TAGS/TITLES/MAX 常量列表。
+ */
+enum class ReplyDirection(val index: Int, val tag: String, val title: String) {
+    FOLLOW(0, "F", "跟进"),
+    EXPAND(1, "E", "展开"),
+    EXPRESS(2, "X", "表达"),
+    SHIFT(3, "S", "转向");
+
+    companion object {
+        val ALL = entries.toList()
+        val MAX = ALL.size
+
+        /** 根据 index 查找，越界返回 null */
+        fun byIndex(index: Int): ReplyDirection? = ALL.getOrNull(index)
+
+        /** 根据 tag 查找 */
+        fun byTag(tag: String): ReplyDirection? = ALL.firstOrNull { it.tag == tag }
+    }
+}
+
+/**
+ * 向后兼容的 DirectionCatalog——已废弃，新代码应直接使用 [ReplyDirection]。
+ * 保留过渡期引用，避免一次性改动过多文件。
+ */
 object DirectionCatalog {
-    val TAGS = listOf("F", "E", "X", "S")  // Follow / Expand / eXpress / Shift
-    val TITLES = listOf("跟进", "展开", "表达", "转向")
-    val MAX = 4
+    val TAGS: List<String> get() = ReplyDirection.ALL.map { it.tag }
+    val TITLES: List<String> get() = ReplyDirection.ALL.map { it.title }
+    val MAX: Int get() = ReplyDirection.MAX
 }
 
 /** 新格式 response 块：4 种风格回复（recommended/bad_boy/playful/warm）
@@ -161,18 +187,20 @@ data class LoveBrainResponse(
     val schemes: List<Scheme>
         get() = response.toSchemes()
 
-    /** P1-07: 四方向方案——独立解析，固定位置，null="本轮不适合"
-     * directions 异常（反序列化失败、元素不足等）不影响 schemes。
-     * 固定返回 4 条，缺失或 null 的位置 reply 为空。 */
+    /** 四方向方案——独立解析，固定位置，null="本轮不适合"
+     * directions 异常不影响 response 风格渲染。
+     * 固定返回 4 条，缺失或 null 的位置 reply 为空。
+     * 使用 [ReplyDirection] 作为单一真源。 */
     val directionSchemes: List<Scheme>
         get() {
             val result = mutableListOf<Scheme>()
-            for (i in 0 until DirectionCatalog.MAX) {
-                val text = directions.getOrNull(i)?.takeIf { it.isNotBlank() } ?: ""
+            for (dir in ReplyDirection.ALL) {
+                val text = directions.getOrNull(dir.index)?.takeIf { it.isNotBlank() } ?: ""
                 result.add(Scheme(
-                    tag = DirectionCatalog.TAGS.getOrElse(i) { "D${i + 1}" },
-                    title = DirectionCatalog.TITLES.getOrElse(i) { "方向${i + 1}" },
-                    reply = text
+                    tag = dir.tag,
+                    title = dir.title,
+                    reply = text,
+                    source = SchemeSource.DIRECTION
                 ))
             }
             return result

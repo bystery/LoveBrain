@@ -668,16 +668,20 @@ class GenerationEngine(
         return jsonLenient.decodeFromString<com.lovebrain.app.model.DailySuggestion>(jsonStr)
     }
 
-    /** P1-07: 从流式缓冲区提取 directions 字符串数组，映射为独立 Scheme 列表
-     * 使用 DirectionCatalog 固定标签，不占用风格 tag(A/B/C/D) */
+    /** 从流式缓冲区提取 directions 字符串数组，映射为独立 Scheme 列表
+     * 使用 ReplyDirection 单一真源，不占用风格 tag(A/B/C/D) */
     private fun extractDirectionsSchemes(raw: String): List<Scheme> {
         val dirs = PartialJsonObjects.extractStringArray(raw, "directions")
             .filter { it.isNotBlank() }
         if (dirs.isEmpty()) return emptyList()
         return dirs.mapIndexed { index, text ->
-            val tag = com.lovebrain.app.model.DirectionCatalog.TAGS.getOrElse(index) { "D${index + 1}" }
-            val title = com.lovebrain.app.model.DirectionCatalog.TITLES.getOrElse(index) { "方向${index + 1}" }
-            Scheme(tag = tag, title = title, reply = text)
+            val dir = com.lovebrain.app.model.ReplyDirection.byIndex(index)
+            Scheme(
+                tag = dir?.tag ?: "D${index + 1}",
+                title = dir?.title ?: "方向${index + 1}",
+                reply = text,
+                source = com.lovebrain.app.model.SchemeSource.DIRECTION
+            )
         }
     }
 }

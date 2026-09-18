@@ -40,9 +40,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.ReplyDirection
+import com.lovebrain.app.model.RewriteCommand
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.SchemeSource
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.ui.panel.rememberPressScale
@@ -60,13 +63,13 @@ private object ResultDimens {
 @Composable
 fun ResultArea(
     result: GenerateResult?,
-    isGenerating: Boolean,
+    @Suppress("UNUSED_PARAMETER") isGenerating: Boolean,
     streamingCoreText: String,
     isGeneratingCore: Boolean,
     streamingSchemes: List<Scheme>,
     streamingDirectionSchemes: List<Scheme> = emptyList(),
     feedbacks: Map<String, SchemeFeedback>,
-    onFeedback: (String, SchemeFeedback) -> Unit,
+    onFeedback: (Scheme, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
     onRetry: () -> Unit,
     // P1-5: 记入知识库放入结果工具区
@@ -79,10 +82,12 @@ fun ResultArea(
     onOpenSettings: () -> Unit,
     // 单条改写
     rewriteStates: Map<String, RewriteState> = emptyMap(),
-    onRewrite: (String, String) -> Unit = { _, _ -> },
+    onRewrite: (String, RewriteCommand) -> Unit = { _, _ -> },
     onClearRewriteState: (String) -> Unit = {},
     onCancelRewrite: (String) -> Unit = {},
     onUndoRewrite: (String) -> Unit = {},
+    onVoiceRewrite: (String, String) -> Unit = { _, _ -> },
+    onPermissionEvent: (PermissionEvent) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     when {
@@ -90,7 +95,6 @@ fun ResultArea(
         isGeneratingCore -> {
             if (streamingSchemes.isNotEmpty() || streamingDirectionSchemes.isNotEmpty()) {
                 // ★ P1-07: 边流式边出卡——风格渲染
-                // P0-4: 四方向通过 SchemeCardsRow 内部 variant selector 展示，不新增第二排
                 Column(
                     modifier = modifier
                         .fillMaxWidth()
@@ -106,7 +110,9 @@ fun ResultArea(
                             onRewrite = onRewrite,
                             onClearRewriteState = onClearRewriteState,
                             onCancelRewrite = onCancelRewrite,
-                            onUndoRewrite = onUndoRewrite
+                            onUndoRewrite = onUndoRewrite,
+                            onVoiceRewrite = onVoiceRewrite,
+                            onPermissionEvent = onPermissionEvent
                         )
                     }
                     Spacer(Modifier.height(Spacing.md))
@@ -143,14 +149,28 @@ fun ResultArea(
         // 全部完成：方案 + 进行中事项（分析展示区已移除）
         result is GenerateResult.Success -> {
             val response = result.response
+            // P0-1: 风格/方向视图切换——始终只有一排四卡
+            val hasDirections = response.directionSchemes.any { it.reply.isNotBlank() }
+            var viewMode by remember { mutableStateOf(SchemeViewMode.STYLE) }
+            val displaySchemes = when (viewMode) {
+                SchemeViewMode.STYLE -> response.schemes
+                SchemeViewMode.DIRECTION -> response.directionSchemes
+            }
             Column(
                 modifier = modifier
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
             ) {
+                // P0-1: 轻量切换入口——只在有方向回复时显示
+                if (hasDirections) {
+                    SchemeViewSwitcher(
+                        mode = viewMode,
+                        onModeChange = { viewMode = it }
+                    )
+                    Spacer(Modifier.height(Spacing.sm))
+                }
                 SchemeCardsRow(
-                    schemes = response.schemes,
-                    directionSchemes = response.directionSchemes,
+                    schemes = displaySchemes,
                     feedbacks = feedbacks,
                     onFeedback = onFeedback,
                     onCopyScheme = onCopyScheme,
@@ -158,18 +178,18 @@ fun ResultArea(
                     onRewrite = onRewrite,
                     onClearRewriteState = onClearRewriteState,
                     onCancelRewrite = onCancelRewrite,
-                    onUndoRewrite = onUndoRewrite
+                    onUndoRewrite = onUndoRewrite,
+                    onVoiceRewrite = onVoiceRewrite,
+                    onPermissionEvent = onPermissionEvent
                 )
-
-                // P0-4: 四方向通过卡内 variant selector 展示，不新增第二排卡片
 
                 if (response.analysis.ongoing.isNotEmpty()) {
                     Spacer(Modifier.height(Spacing.sm))
                     OngoingSection(items = response.analysis.ongoing)
                 }
 
-                // P1-2: 无 memoryRefs 时不生成独立 ResultToolRow
-                // "记入知识库"并入现有结果区或只在有多个 utility action 时才出现工具行
+                // P1-1: 无 memoryRefs 时不创建新的结果工具区层级
+                // "记入知识库"只在有本轮参考时才与参考入口共享一行
                 if (memoryRefs.isNotEmpty()) {
                     Spacer(Modifier.height(Spacing.sm))
                     ResultToolRow(
@@ -178,10 +198,6 @@ fun ResultArea(
                         onCorrection = onCorrection,
                         onUndoCorrection = onUndoCorrection
                     )
-                } else {
-                    // P1-2: 无 memoryRefs 时——"记入知识库"作为结果区 trailing action，不独占整行
-                    Spacer(Modifier.height(Spacing.sm))
-                    ResultSaveOnlyRow(onSaveToKb = onSaveToKb)
                 }
             }
         }
@@ -257,22 +273,49 @@ fun ResultArea(
     }
 }
 
+/** P0-1: 风格/方向视图模式 */
+enum class SchemeViewMode { STYLE, DIRECTION }
+
 /** 方案筛选模式 */
 private enum class SchemeFilter { ALL, LIKED }
 
 /** 方案卡片行——Phase 1 完成就立刻渲染 */
+/** P0-1: 轻量风格/方向切换——高度≤28dp，使用现有配色，不成为视觉主角 */
+@Composable
+private fun SchemeViewSwitcher(
+    mode: SchemeViewMode,
+    onModeChange: (SchemeViewMode) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
+    ) {
+        SchemeFilterTab(
+            label = "风格",
+            isSelected = mode == SchemeViewMode.STYLE,
+            onClick = { onModeChange(SchemeViewMode.STYLE) }
+        )
+        SchemeFilterTab(
+            label = "方向",
+            isSelected = mode == SchemeViewMode.DIRECTION,
+            onClick = { onModeChange(SchemeViewMode.DIRECTION) }
+        )
+    }
+}
+
 @Composable
 private fun SchemeCardsRow(
     schemes: List<Scheme>,
-    directionSchemes: List<Scheme> = emptyList(),
     feedbacks: Map<String, SchemeFeedback>,
-    onFeedback: (String, SchemeFeedback) -> Unit,
+    onFeedback: (Scheme, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
     rewriteStates: Map<String, RewriteState> = emptyMap(),
-    onRewrite: (String, String) -> Unit = { _, _ -> },
+    onRewrite: (String, RewriteCommand) -> Unit = { _, _ -> },
     onClearRewriteState: (String) -> Unit = {},
     onCancelRewrite: (String) -> Unit = {},
-    onUndoRewrite: (String) -> Unit = {}
+    onUndoRewrite: (String) -> Unit = {},
+    onVoiceRewrite: (String, String) -> Unit = { _, _ -> },
+    onPermissionEvent: (PermissionEvent) -> Unit = {}
 ) {
     // 方案筛选：全部 / 已赞（调研：NN/G 10 Heuristics #6 Recognition rather than recall——
     // 用户赞过的方案应能快速回看，无需在 4 张卡里翻找）
@@ -373,23 +416,19 @@ private fun SchemeCardsRow(
                             onUndoRewrite = onUndoRewrite,
                             isExpanded = expandedRewriteTag == scheme.tag,
                             onToggleRewriteExpand = { tag ->
-                                // b2-6: 切卡时自动收上张；同卡点击切换展开/收起
-                                // 展开前先清旧改写状态（Done/Error），使选项区干净展示
                                 val currentRewriteState = rewriteStates[tag]
                                 if (expandedRewriteTag != tag) {
-                                    // 展开新卡：先清状态再展开
                                     if (currentRewriteState is RewriteState.Done ||
                                         currentRewriteState is RewriteState.Error) {
                                         onClearRewriteState(tag)
                                     }
                                     expandedRewriteTag = tag
                                 } else {
-                                    // 收起当前卡
                                     expandedRewriteTag = null
                                 }
                             },
-                            // P0-4: 四方向变体传入卡片内部 variant selector
-                            directionSchemes = directionSchemes
+                            onVoiceRewrite = onVoiceRewrite,
+                            onPermissionEvent = onPermissionEvent
                         )
                     }
                 }
@@ -861,57 +900,52 @@ private fun MemoryRefItem(
             }
         }
 
-        // 菜单展开
-        AnimatedVisibility(
-            visible = menuOpen,
-            enter = expandVertically(),
-            exit = shrinkVertically()
+        // P1-2: 纠正菜单——DropdownMenu 浮层，不改变结果区 layout height
+        androidx.compose.material3.DropdownMenu(
+            expanded = menuOpen,
+            onDismissRequest = { menuOpen = false },
+            modifier = Modifier
+                .clip(LoveBrainShape.md)
+                .background(SurfaceCard)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = Spacing.lg, top = Spacing.xs)
-            ) {
-                CorrectionMenuItem("不对", "标记为错误内容") {
-                    onCorrection(ref.id, CorrectionAction.WRONG)
-                    menuOpen = false
-                }
-                CorrectionMenuItem("结束", "这件事已结束") {
-                    onCorrection(ref.id, CorrectionAction.FINISHED)
-                    menuOpen = false
-                }
-                CorrectionMenuItem("暂时别提", "暂停作为续聊素材") {
-                    onCorrection(ref.id, CorrectionAction.MUTED)
-                    menuOpen = false
-                }
-                CorrectionMenuItem("不是她", "归属错误，需迁移") {
-                    onCorrection(ref.id, CorrectionAction.WRONG_PERSON)
-                    menuOpen = false
-                }
-                CorrectionMenuItem("撤销纠正", "恢复可信注入") {
-                    onUndoCorrection(ref.id)
-                    menuOpen = false
-                }
+            CorrectionDropdownItem("不对", "标记为错误内容") {
+                onCorrection(ref.id, CorrectionAction.WRONG)
+                menuOpen = false
+            }
+            CorrectionDropdownItem("结束", "这件事已结束") {
+                onCorrection(ref.id, CorrectionAction.FINISHED)
+                menuOpen = false
+            }
+            CorrectionDropdownItem("暂时别提", "暂停作为续聊素材") {
+                onCorrection(ref.id, CorrectionAction.MUTED)
+                menuOpen = false
+            }
+            CorrectionDropdownItem("不是她", "归属错误，需迁移") {
+                onCorrection(ref.id, CorrectionAction.WRONG_PERSON)
+                menuOpen = false
+            }
+            CorrectionDropdownItem("撤销纠正", "恢复可信注入") {
+                onUndoCorrection(ref.id)
+                menuOpen = false
             }
         }
     }
 }
 
-/** 纠正菜单项 — 紧凑文字行 */
+/** P1-2: DropdownMenu 纠正菜单项——浮层内文字行 */
 @Composable
-private fun CorrectionMenuItem(
+private fun CorrectionDropdownItem(
     label: String,
     desc: String,
     onClick: () -> Unit
 ) {
-    val (interaction, scale) = rememberPressScale(0.96f, "correctionItemScale")
+    val (interaction, scale) = rememberPressScale(0.96f, "correctionDropdownScale")
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clip(LoveBrainShape.sm)
             .clickable(interactionSource = interaction, indication = null, onClick = onClick)
-            .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
+            .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -929,35 +963,4 @@ private fun CorrectionMenuItem(
     }
 }
 
-/**
- * P1-2: 无 memoryRefs 时的"记入知识库"——紧凑 trailing action，不独占整行。
- *
- * 不再 fillMaxWidth 创建独立工具行。
- * 按钮使用 wrapContent 宽度，右对齐紧贴结果区末尾。
- */
-@Composable
-private fun ResultSaveOnlyRow(onSaveToKb: () -> Unit) {
-    val (saveInteraction, saveScale) = rememberPressScale(0.96f, "resultSaveOnlyScale")
-    Row(
-        modifier = Modifier.wrapContentWidth(align = Alignment.End),
-        horizontalArrangement = Arrangement.End,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
-                .clip(LoveBrainShape.md)
-                .background(Primary, LoveBrainShape.md)
-                .clickable(interactionSource = saveInteraction, indication = null, onClick = onSaveToKb)
-                .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                "记入知识库",
-                color = Color.White,
-                style = AppTypography.labelSmall,
-                fontWeight = FontWeight.Medium
-            )
-        }
-    }
-}
+

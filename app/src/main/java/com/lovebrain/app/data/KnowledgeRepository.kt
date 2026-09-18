@@ -1,4 +1,4 @@
-﻿package com.lovebrain.app.data
+package com.lovebrain.app.data
 
 import android.content.Context
 import com.lovebrain.app.model.IntentConfig
@@ -1032,6 +1032,190 @@ class KnowledgeRepository(
         }
         val updated = warmth.replaceFirst(regex, "${match.groupValues[1]}$newValue")
         if (updated != warmth) writeFileUnlocked(kbName, path, updated)
+    }
+
+    // ═══════════ 画像事务性写入 ═══════════
+
+    /**
+     * updateStageUnlocked 的 strict 版本——IO 失败时抛出异常，不吞错误。
+     * 供事务性 API 使用；非事务场景仍用 [updateStageUnlocked]（容错）。
+     */
+    private suspend fun updateStageUnlockedStrict(kbName: String, stage: String) {
+        if (stage.isBlank()) return
+        val normalized = com.lovebrain.app.domain.StageCatalog.normalize(stage)
+        if (normalized == null) {
+            com.lovebrain.app.util.L.w("updateStageStrict 拒绝非白名单阶段：'$stage'")
+            throw java.io.IOException("非法阶段：$stage")
+        }
+        val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
+        if (metaFile.exists()) {
+            val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
+            atomicWriteText(metaFile,
+                json.encodeToString(KnowledgeBase.serializer(),
+                    kb.copy(stage = normalized, updatedAt = isoNow()))
+            )
+        }
+    }
+
+    /**
+     * updateWarmthStageLabelUnlocked 的 strict 版本——IO 失败时抛出异常。
+     * 供事务性 API 使用。
+     */
+    private suspend fun updateWarmthStageLabelUnlockedStrict(kbName: String, newStage: String) {
+        if (newStage.isBlank()) return
+        val stage = com.lovebrain.app.domain.StageCatalog.normalize(newStage) ?: run {
+            com.lovebrain.app.util.L.w("updateWarmthStageLabelStrict 拒绝非白名单阶段：'$newStage'")
+            throw java.io.IOException("非法阶段：$newStage")
+        }
+        val path = "understand/warmth.md"
+        val warmth = readFileUnlockedFast(kbName, path)
+        if (warmth.isBlank()) return
+        val regex = Regex("(-\\s*阶段(?:标签)?[：:])([^\n]*)")
+        val match = regex.find(warmth)
+        if (match == null) {
+            val header = "## 当前状态"
+            val idx = warmth.indexOf(header)
+            val updated = if (idx >= 0) {
+                warmth.substring(0, idx + header.length) + "\n- 阶段标签：$stage" + warmth.substring(idx + header.length)
+            } else {
+                "- 阶段标签：$stage\n" + warmth
+            }
+            if (updated != warmth) writeFileUnlocked(kbName, path, updated)
+            return
+        }
+        val oldValue = match.groupValues[2].trim()
+        val oldStage = oldValue.split("；").firstOrNull()?.trim() ?: oldValue
+        val newValue = if (oldStage.isNotBlank() && oldStage != stage) {
+            "$stage；过去曾经是$oldStage"
+        } else {
+            stage
+        }
+        val updated = warmth.replaceFirst(regex, "${match.groupValues[1]}$newValue")
+        if (updated != warmth) writeFileUnlocked(kbName, path, updated)
+    }
+
+    /** 无锁快速读取文件内容（不加 mutex，调用方持有锁） */
+    private fun readFileUnlockedFast(kbName: String, relativePath: String): String {
+        val dir = File(knowledgeRoot, kbName)
+        val file = File(dir, relativePath)
+        if (file.exists()) return file.readText()
+        val oldPath = OLD_PATH_MAP[relativePath]
+        if (oldPath != null) {
+            val oldFile = File(dir, oldPath)
+            if (oldFile.exists()) return oldFile.readText()
+        }
+        return ""
+    }
+
+    /**
+     * 画像更新事务性写入——在单次 fileMutex.withLock 中执行全部操作。
+     *
+     * - 所有文件写入、向量写入、阶段更新、warmth 标签更新在同一锁内完成
+     * - backup 覆盖所有实际会被修改的文件（包括 warmth.md——即使 payload.warmth 为 null，
+     *   stage_changed=true 时 updateWarmthStageLabel 仍会修改 warmth.md）
+     * - IO 失败必须抛出（使用 strict 版本），不吞错误
+     * - 任一步失败自动 rollback 到 backup
+     *
+     * @return true=成功，false=KB 不存在或 revision 不匹配
+     * @throws IOException 写入或 rollback 失败
+     */
+    suspend fun applyProfileUpdateAtomically(
+        kbName: String,
+        me: String?,
+        her: String?,
+        warmth: String?,
+        stageChanged: Boolean,
+        newStage: String?,
+        expectedRevision: Int
+    ): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("applyProfileUpdateAtomically: kb no longer exists")
+                return@withLock false
+            }
+            val currentRevision = readMemoryRevisionUnlocked(kbName)
+            if (currentRevision != expectedRevision) {
+                com.lovebrain.app.util.L.w("applyProfileUpdateAtomically: revision changed (expected=$expectedRevision, current=$currentRevision)")
+                return@withLock false
+            }
+
+            // 确定实际会被修改的文件列表——stage_changed=true 时 warmth.md 也会被修改
+            val willChangeStage = stageChanged && !newStage.isNullOrBlank()
+            // 确定实际会被修改的文件列表——stage_changed=true 时 warmth.md 也会被修改
+            // warmthWillBeModified 用于判断 backup 范围
+
+            // 收集写入目标和旧内容（backup）
+            val writeTargets = mutableListOf<Pair<String, String>>()
+            me?.let { writeTargets.add("understand/me.md" to it) }
+            her?.let { writeTargets.add("understand/her.md" to it) }
+            warmth?.let { writeTargets.add("understand/warmth.md" to it) }
+
+            // backup 所有可能被修改的文件
+            val backups = mutableMapOf<String, String>()
+            for ((path, _) in writeTargets) {
+                backups[path] = readFileUnlockedFast(kbName, path)
+            }
+            // warmth.md 即使不在 writeTargets 中，stage 变化时也会被 updateWarmthStageLabel 修改
+            if (willChangeStage && "understand/warmth.md" !in backups) {
+                backups["understand/warmth.md"] = readFileUnlockedFast(kbName, "understand/warmth.md")
+            }
+            // kb.json backup（stage 变化时 updateStageUnlockedStrict 会修改它）
+            if (willChangeStage) {
+                val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
+                backups["kb.json"] = if (metaFile.exists()) metaFile.readText() else ""
+            }
+            // 向量 backup（warmth 变化时向量同步会修改 warmth.md 中的数值）
+            val oldVector = if (warmth != null) {
+                readVectorUnlockedFast(kbName)
+            } else null
+
+            try {
+                // 逐个写入画像文件
+                for ((path, content) in writeTargets) {
+                    writeFileUnlocked(kbName, path, content)
+                }
+
+                // warmth 向量同步——保持 warmth.md 中的数值与文件内容一致
+                // 注意：writeVectorUnlocked 会修改 warmth.md，如果 warmth 内容已写入
+                if (warmth != null && oldVector != null && oldVector.isNotEmpty()) {
+                    writeVectorUnlocked(kbName, oldVector)
+                }
+
+                // 阶段更新——使用 strict 版本，IO 失败必须抛出
+                if (willChangeStage) {
+                    updateStageUnlockedStrict(kbName, newStage!!)
+                    updateWarmthStageLabelUnlockedStrict(kbName, newStage)
+                }
+            } catch (e: Exception) {
+                // Rollback——恢复所有 backup
+                com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: write failed, rolling back", e)
+                for ((path, oldContent) in backups) {
+                    try {
+                        val dir = File(knowledgeRoot, kbName)
+                        val file = File(dir, path)
+                        file.parentFile?.mkdirs()
+                        atomicWriteText(file, oldContent)
+                    } catch (rollbackErr: Exception) {
+                        com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL rollback failed for $path", rollbackErr)
+                    }
+                }
+                throw e
+            }
+
+            scheduleDebouncedBackup()
+            true
+        }
+    }
+
+    /** 无锁快速读取向量（不加 mutex，调用方持有锁） */
+    private fun readVectorUnlockedFast(kbName: String): Map<String, Int> {
+        val warmth = readFileUnlockedFast(kbName, "understand/warmth.md")
+        val result = mutableMapOf<String, Int>()
+        for ((cn, en) in vectorDims) {
+            val v = Regex("$cn[^：:]*[：:]\\s*(\\d+)").find(warmth)?.groupValues?.get(1)?.toIntOrNull()
+            result[en] = v ?: 50
+        }
+        return result
     }
 
     /** 旧阶段枚举 → 新八阶段迁移映射 */

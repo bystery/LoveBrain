@@ -62,6 +62,22 @@ class OngoingContextSelector(
         val replyDirective: ReplyDirective? = null  // P0-7: 用户本轮想法
     )
 
+    /**
+     * 相关性信号——区分真实消息证据和指令/意图相关。
+     *
+     * 只有 [realMessageEvidence] 才更新 lastEvidenceTurn（决定 ACTIVE/DORMANT）。
+     * [replyDirectiveRelevant] 和 [persistentIntentRelevant] 可使事项 eligible，
+     * 但不刷新证据时间——防止持续意图永远保持 ACTIVE。
+     */
+    data class RelevanceSignals(
+        val realMessageEvidence: Boolean,
+        val replyDirectiveRelevant: Boolean,
+        val persistentIntentRelevant: Boolean
+    ) {
+        /** 综合判断是否相关（满足任一信号即相关） */
+        val isRelevant: Boolean get() = realMessageEvidence || replyDirectiveRelevant || persistentIntentRelevant
+    }
+
     /** 本轮注入决策结果 */
     data class SelectionResult(
         val eligibleItems: List<PlanItem>,
@@ -129,6 +145,7 @@ class OngoingContextSelector(
 
         val eligible = mutableListOf<PlanItem>()
         val injectedNames = mutableSetOf<String>()
+        val realEvidenceNames = mutableSetOf<String>()
 
         for (item in itemsWithStatus) {
             // 已完成/已取消的事项不注入
@@ -136,20 +153,21 @@ class OngoingContextSelector(
                 continue
             }
 
-            // 判断相关性——日期临近只提高 priority 不单独授权
-            val isRelevant = isRelevantToCurrentTurn(
+            // 判断相关性——返回多信号结果
+            val signals = computeRelevanceSignals(
                 item, realText, intentText, directiveText, context
             )
 
-            // P0-7: 如果本轮有真实新证据，更新 lastEvidenceTurn
-            // 注意：这里只标记“有证据”，不代表一定会被注入
-            // 证据更新在后面统一处理
+            // 只有真实消息证据才刷新 lastEvidenceTurn
+            if (signals.realMessageEvidence) {
+                realEvidenceNames.add(item.name)
+            }
 
             // 冷却检查：如果最近 N 轮已注入且当前无新证据，禁止再注入
             val cooldownEntry = cooldown[item.name]
             val isInCooldown = cooldownEntry != null &&
                 (context.currentTurn - cooldownEntry.lastInjectedTurn) < COOLDOWN_TURNS &&
-                !isRelevant
+                !signals.isRelevant
 
             if (isInCooldown) {
                 L.w("OngoingContextSelector: '${item.name}' in cooldown (last injected ${cooldownEntry?.lastInjectedTurn}, current ${context.currentTurn})")
@@ -157,15 +175,12 @@ class OngoingContextSelector(
             }
 
             // DORMANT 事项只有在重新相关时才注入
-            if (item.itemStatus == ItemStatus.DORMANT && !isRelevant) {
+            if (item.itemStatus == ItemStatus.DORMANT && !signals.isRelevant) {
                 continue
             }
 
             // ACTIVE 事项：如果不相关 → 跳过
-            // P0-6 修复：删除"首次出现允许注入一次"规则
-            // 核心原则：Stored != EligibleForCurrentTurn
-            // 没有相关性 → 永远不注入，无论是否第一次出现
-            if (item.itemStatus == ItemStatus.ACTIVE && !isRelevant) {
+            if (item.itemStatus == ItemStatus.ACTIVE && !signals.isRelevant) {
                 continue
             }
 
@@ -175,70 +190,61 @@ class OngoingContextSelector(
         }
 
         // 更新冷却状态
-        // P0-7: 同时更新 lastInjectedTurn 和 lastEvidenceTurn
-        // - lastInjectedTurn: 只在事项被注入时更新
-        // - lastEvidenceTurn: 在事项本轮有真实新证据时更新（无论是否被注入）
-        if (injectedNames.isNotEmpty() || eligible.isNotEmpty()) {
-            updateCooldown(kbName, injectedNames, eligible.map { it.name }.toSet(), context.currentTurn)
+        // - lastInjectedTurn: 只在事项被注入时更新（injectedNames）
+        // - lastEvidenceTurn: 只在真实消息证据时更新（realEvidenceNames）
+        //   持续意图和 ReplyDirective 不刷新证据时间
+        if (injectedNames.isNotEmpty() || realEvidenceNames.isNotEmpty()) {
+            updateCooldown(kbName, injectedNames, realEvidenceNames, context.currentTurn)
         }
 
         return SelectionResult(eligible, itemsWithStatus, injectedNames)
     }
 
     /**
-     * 判断事项与当前轮次是否相关。
+     * 计算事项与当前轮次的相关性信号。
      *
-     * P0-7 修正：
-     * - 日期临近不再单独成为注入理由——只能提高 retrieval priority
-     * - 增加 ReplyDirective 作为 relevance signal
-     *
-     * 满足任一条件即相关：
-     * - 当前消息中出现了事项名称的关键词
-     * - 用户本轮想法（ReplyDirective）提到了该事项
-     * - 持续意图文本提到了该事项
+     * 返回 [RelevanceSignals]——区分真实消息证据和指令/意图相关。
+     * 只有真实消息匹配才更新 lastEvidenceTurn。
      */
-    private fun isRelevantToCurrentTurn(
+    private fun computeRelevanceSignals(
         item: PlanItem,
         realText: String,
         intentText: String,
         directiveText: String,
         @Suppress("UNUSED_PARAMETER") context: SelectionContext
-    ): Boolean {
+    ): RelevanceSignals {
         val itemName = item.name.trim()
-        if (itemName.isBlank()) return false
+        if (itemName.isBlank()) return RelevanceSignals(false, false, false)
 
         val keywords = extractKeywords(itemName)
-        if (keywords.isEmpty()) return false
+        if (keywords.isEmpty()) return RelevanceSignals(false, false, false)
 
-        // P0-7: 同时提取原始事项名中的 2 字窗口词（如"周一"），增强匹配能力
         val rawKeywords = extractRawKeywords(itemName)
-
-        // 1. 关键词匹配——事项名称的核心词出现在当前消息中
-        val lowerText = realText.lowercase()
         val allKeywords = (keywords + rawKeywords).distinct()
-        val matchedInMessage = allKeywords.any { kw -> lowerText.contains(kw.lowercase()) }
-        if (matchedInMessage) return true
 
-        // 2. P0-7: 用户本轮想法（ReplyDirective）提到该事项
+        // 1. 真实消息关键词匹配——唯一能更新 lastEvidenceTurn 的信号
+        val lowerText = realText.lowercase()
+        val matchedInMessage = allKeywords.any { kw -> lowerText.contains(kw.lowercase()) }
+
+        // 2. ReplyDirective 提到该事项——相关但不刷新证据时间
+        var matchedInDirective = false
         if (directiveText.isNotBlank()) {
             val lowerDirective = directiveText.lowercase()
-            val matchedInDirective = allKeywords.any { kw -> lowerDirective.contains(kw.lowercase()) }
-            if (matchedInDirective) return true
+            matchedInDirective = allKeywords.any { kw -> lowerDirective.contains(kw.lowercase()) }
         }
 
-        // 3. 持续意图文本提到该事项
+        // 3. 持续意图文本提到该事项——相关但不刷新证据时间
+        var matchedInIntent = false
         if (intentText.isNotBlank()) {
             val lowerIntent = intentText.lowercase()
-            val matchedInIntent = allKeywords.any { kw -> lowerIntent.contains(kw.lowercase()) }
-            if (matchedInIntent) return true
+            matchedInIntent = allKeywords.any { kw -> lowerIntent.contains(kw.lowercase()) }
         }
 
-        // P0-7: 日期临近不再单独授权注入
-        // 日期只能提高 retrieval priority——在关键词匹配时使匹配更宽松
-        // 但不能单独成为"相关"的理由
-        // （旧代码: if (diffHours <= 24) return true — 已删除）
-
-        return false
+        return RelevanceSignals(
+            realMessageEvidence = matchedInMessage,
+            replyDirectiveRelevant = matchedInDirective,
+            persistentIntentRelevant = matchedInIntent
+        )
     }
 
     /** 从事项名称中提取关键词用于匹配

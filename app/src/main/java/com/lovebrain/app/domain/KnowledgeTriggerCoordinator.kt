@@ -8,6 +8,7 @@ import com.lovebrain.app.model.ProfileParseResult
 import com.lovebrain.app.model.ProfileParseStatus
 import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.ProfileUpdate
+import com.lovebrain.app.model.ProfileUpdateSchema
 import com.lovebrain.app.model.StageSuggestion
 import com.lovebrain.app.util.L
 import com.lovebrain.app.util.TimeFmt
@@ -26,39 +27,23 @@ private const val MAX_PROFILE_ATTEMPTS = 3
 private const val RETRY_BACKOFF_MS = 500L
 
 /**
- * P0-8: 严格 JSON-only system prompt——Attempt 2 使用。
- * 当 Attempt 1 返回 TRUNCATED/EMPTY/INVALID_JSON 时，换用此 prompt 重试。
- * 只要求模型输出一个合法 JSON 对象，不要 Markdown 围栏，不要解释，不要重复输入内容。
+ * Attempt 2 使用的严格 JSON-only system prompt。
+ * Schema 文案引用 [ProfileUpdateSchema.strictSchemaForPrompt]——单一真源，不另行编造。
  */
-private const val STRICT_JSON_REFLECT_SYSTEM = """你是一个画像更新引擎。请直接输出一个合法的 JSON 对象，不要使用 Markdown 代码围栏，不要输出任何解释文字，不要重复输入内容。
+private fun buildStrictJsonReflectSystem(): String = """你是一个画像更新引擎。请直接输出一个合法的 JSON 对象，不要使用 Markdown 代码围栏，不要输出任何解释文字，不要重复输入内容。
 
-JSON 对象必须包含以下字段：
-- me: 字符串，更新后的"我的画像"
-- her: 字符串，更新后的"她的画像"
-- warmth: 字符串，更新后的"关系温度描述"
-- stage_changed: 布尔值，是否建议调整阶段
-- new_stage: 字符串（stage_changed 为 true 时必填）
-- observations: 字符串数组，待验证观察
-- message_to_user: 字符串，给用户的摘要消息
+${ProfileUpdateSchema.strictSchemaForPrompt()}
 
 只输出 JSON 对象本身，不要输出其他任何内容。"""
 
 /**
- * P0-8: Compact schema repair system prompt——Attempt 3 使用。
- * 当 Attempt 2 仍然失败时，使用最小化 schema 提示修复输出。
+ * Attempt 3 使用的 compact schema repair system prompt。
+ * Schema 文案引用 [ProfileUpdateSchema.compactSchemaForPrompt]——单一真源。
+ * Fallback JSON 省略 me/her/warmth（而非空串），与 parser 规则一致。
  */
-private const val COMPACT_SCHEMA_REPAIR_SYSTEM = """请修复以下 JSON 使其合法。只输出修复后的 JSON 对象，不要输出其他任何内容。
+private fun buildCompactSchemaRepairSystem(): String = """请根据以下上下文重新生成合法的画像更新 JSON。只输出 JSON 对象，不要输出其他任何内容。
 
-要求：
-1. 确保 JSON 语法正确（括号闭合、逗号正确、字符串用双引号）
-2. me/her/warmth 必须是非空字符串
-3. stage_changed 必须是布尔值
-4. observations 必须是字符串数组
-5. 不要使用 Markdown 围栏
-6. 不要输出解释文字
-
-如果无法修复，请输出一个最小的合法 JSON 对象：
-{"me":"","her":"","warmth":"","stage_changed":false,"observations":[],"message_to_user":""}"""
+${ProfileUpdateSchema.compactSchemaForPrompt()}"""
 
 /**
  * 真实提取节头正则（A9 计数口径修正）：与 extractLessonsAsync 写入格式 `# [yyyy-MM-dd HH:mm] 第N次提取` 逐字同构。
@@ -284,25 +269,42 @@ class KnowledgeTriggerCoordinator(
     private fun generateReflectSuggestion(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
             runCatching {
-                // P0-8: 所有 attempt 共享同一次冻结的上下文
+                // 所有 attempt 共享同一份冻结上下文——Attempt 3 也不丢弃原始事实
                 val system = promptBuilder.buildReflectSystemPrompt()
                 val user = promptBuilder.buildReflectUserPrompt(kbName)
 
-                // P0-8: 分级自愈——Attempt 1: 正常 reflect prompt
+                // 分级自愈：
+                // Attempt 1: 正常 reflect prompt
                 // Attempt 2: 严格 JSON-only prompt（TRUNCATED/EMPTY/INVALID_JSON 时）
-                // Attempt 3: Compact schema repair prompt
+                // Attempt 3: Compact schema prompt + 冻结上下文重新生成（不靠残缺 JSON 猜内容）
                 var parseResult: ProfileParseResult? = null
                 for (attempt in 1..MAX_PROFILE_ATTEMPTS) {
-                    // P0-8: 根据尝试次数选择不同的 system prompt
                     val effectiveSystem = when (attempt) {
                         1 -> system
-                        2 -> STRICT_JSON_REFLECT_SYSTEM
-                        else -> COMPACT_SCHEMA_REPAIR_SYSTEM
+                        2 -> buildStrictJsonReflectSystem()
+                        else -> buildCompactSchemaRepairSystem()
                     }
 
-                    // P0-8: Attempt 3 使用 repair prompt，将上一次的原始输出附带给修复 prompt
-                    val effectiveUser = if (attempt == 3 && parseResult != null) {
-                        "请修复以下 JSON 使其合法：\n\n${parseResult.rawContent}"
+                    // Attempt 3: 携带冻结上下文重新生成，不只用残缺 JSON 猜内容
+                    val effectiveUser = if (attempt == 3) {
+                        // 区分两种情况：
+                        // A. 上次输出语义完整、只是 JSON syntax 小错误 → 可附带残缺输出供修复
+                        // B. TRUNCATED（语义内容本身缺失）→ 必须使用冻结上下文重新生成
+                        val lastStatus = parseResult?.status
+                        val isTruncated = lastStatus == ProfileParseStatus.TRUNCATED
+                        if (isTruncated) {
+                            // TRUNCATED: 残缺前缀无参考价值，使用原始冻结上下文重新生成
+                            user
+                        } else {
+                            // INVALID_JSON / EMPTY / PROVIDER_ERROR: 语义可能完整，附带残缺输出 + 冻结上下文
+                            val lastRaw = parseResult?.rawContent?.take(PROFILE_FALLBACK_LIMIT) ?: ""
+                            """以下是原始上下文，请据此重新生成合法的画像更新 JSON。
+
+$user
+
+上次输出存在格式问题，请参考并修正（不要照抄，基于上下文重新生成）：
+$lastRaw"""
+                        }
                     } else {
                         user
                     }

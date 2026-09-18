@@ -65,13 +65,8 @@ data class ProfileParseResult(
  * 生成摘要展示和确认写入均使用同一个已验证的 ProfileUpdate 对象，
  * 不重复解析两遍不同口径的 raw。
  *
- * 校验规则（按字段区分，不统一套用非空）：
- * - me/her/warmth：必须为合法非空字符串（缺失=不更新，null/空串/数字/布尔/对象=无效）
- * - stage_changed：布尔（可缺失）
- * - new_stage：stage_changed=true 时必须为合法非空字符串且在合法阶段枚举内；
- *   stage_changed=false 或缺失时允许缺失/空字符串
- * - observations：字符串数组（可缺失，元素必须为字符串，不接受 null/数字/布尔）
- * - message_to_user：字符串（可缺失，允许空字符串——reflect 模板要求无变化时为空）
+ * 校验规则以 [ProfileUpdateSchema] 为单一真源——prompt 和 parser 共用同一套字段定义，
+ * 不在别处另行维护。详见 [ProfileUpdateSchema] 类文档。
  *
  * 截断、歧义或字段无效时 [valid]=false，不展示可确认按钮。
  */
