@@ -37,6 +37,7 @@ import com.lovebrain.app.model.RewriteCommand
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.SchemeIdentity
 import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 import kotlinx.coroutines.launch
@@ -98,20 +99,21 @@ fun SchemeCard(
     onFeedback: (Scheme, SchemeFeedback) -> Unit,
     onCopy: (Scheme) -> Unit,
     rewriteState: RewriteState? = null,
-    onRewrite: (String, RewriteCommand) -> Unit = { _, _ -> },
-    onClearRewriteState: (String) -> Unit = {},
-    onCancelRewrite: (String) -> Unit = {},
-    onUndoRewrite: (String) -> Unit = {},
-    onToggleRewriteExpand: (String) -> Unit = {},
+    onRewrite: (SchemeIdentity, RewriteCommand) -> Unit = { _, _ -> },
+    onClearRewriteState: (SchemeIdentity) -> Unit = {},
+    onCancelRewrite: (SchemeIdentity) -> Unit = {},
+    onUndoRewrite: (SchemeIdentity) -> Unit = {},
+    onToggleRewriteExpand: (SchemeIdentity) -> Unit = {},
     isExpanded: Boolean = false,
-    onVoiceRewrite: (String, String) -> Unit = { _, _ -> },
+    onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     // P0-7: 权限事件回调——Panel/ViewModel 复用 panelWarning/banner
     onPermissionEvent: (PermissionEvent) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val isEmpty = scheme.reply.isBlank()
-    // P0-1: 使用 identity key 作为所有操作的稳定身份
-    val identityKey = scheme.identity.key
+    // P0-1: 使用 identity 作为所有操作的稳定身份
+    val identity = scheme.identity
+    val identityKey = identity.key
 
     val borderColor by animateColorAsStateCompat(
         targetValue = when (feedback) {
@@ -142,7 +144,7 @@ fun SchemeCard(
     // P0-7: 权限结果通过回调上抛，不在卡片内展示
     val voiceController = rememberVoiceRewriteController(
         schemeTag = identityKey,
-        onVoiceRewrite = onVoiceRewrite,
+        onVoiceRewrite = { tag, transcript -> onVoiceRewrite(identity, transcript) },
         onPermissionGranted = {
             onPermissionEvent(PermissionEvent.Granted)
         },
@@ -153,16 +155,15 @@ fun SchemeCard(
     val voiceState = voiceController.state
     val isRecording = voiceState == VoiceRewriteState.RECORDING || voiceState == VoiceRewriteState.PROCESSING
 
-    // P1-12: 统一状态推导
-    val cardState: SchemeCardPresentationState = when {
-        isRecording && voiceState == VoiceRewriteState.PROCESSING -> SchemeCardPresentationState.Recognizing
-        isRecording -> SchemeCardPresentationState.Recording
-        isRewriting -> SchemeCardPresentationState.Rewriting
-        rewriteError != null -> SchemeCardPresentationState.RewriteError(rewriteError)
-        rewriteDone -> SchemeCardPresentationState.RewriteDone
-        isExpanded -> SchemeCardPresentationState.Adjusting
-        else -> SchemeCardPresentationState.Collapsed
-    }
+    // P1-12: 统一状态推导——使用抽离的纯函数
+    val cardState: SchemeCardPresentationState = deriveCardPresentationState(
+        isRecording = isRecording,
+        voiceState = voiceState,
+        isRewriting = isRewriting,
+        rewriteError = rewriteError,
+        rewriteDone = rewriteDone,
+        isExpanded = isExpanded
+    )
 
     // P0-6: pointerInput 手势生命周期——真实 PRESSING 状态 + 移出取消
     // DOWN -> PRESSING（未达阈值）
@@ -221,10 +222,15 @@ fun SchemeCard(
                             kotlinx.coroutines.delay(longPressThresholdMs)
                             // 达到长按阈值 -> 开始录音（拖动取消后不触发）
                             if (gesturePhase == GesturePhase.PRESSING && !isRewriting && rewriteError == null && !isRecording && !dragCancelled) {
-                                longPressReached = true
-                                longPressTriggered = true
-                                gesturePhase = GesturePhase.RECORDING
-                                voiceController.startListening()
+                                // P0-1: startListening 返回 typed result——只有 STARTED 才进入 RECORDING
+                                val result = voiceController.startListening()
+                                if (result == StartListeningResult.STARTED) {
+                                    longPressReached = true
+                                    longPressTriggered = true
+                                    gesturePhase = GesturePhase.RECORDING
+                                }
+                                // PERMISSION_REQUESTED / FAILED → 不进入 RECORDING
+                                // 外层松手时 stopListening 安全处理 null recognizer
                             }
                         }
 
@@ -238,14 +244,17 @@ fun SchemeCard(
                                     // 手指抬起
                                     longPressJob.cancel()
                                     if (longPressReached && !pointerLeftBounds) {
-                                        // 正常松手 -> 停止录音，等待 final transcript
+                                        // 正常松手 -> 停止录音，提交暂存的 transcript
+                                        // P0-1: stopListening 停止录音，commitTranscript 提交缓存的 final transcript
+                                        // onResults 可能已暂存 transcript，commitTranscript 会读取并提交
                                         gesturePhase = GesturePhase.RELEASED
                                         voiceController.stopListening()
+                                        voiceController.commitTranscript()
                                     } else if (!longPressReached && !dragCancelled) {
                                         // 未达到长按阈值且未拖动取消 -> 普通 click
                                         gesturePhase = GesturePhase.IDLE
                                         if (!isRecording && !isRewriting) {
-                                            onToggleRewriteExpand(identityKey)
+                                            onToggleRewriteExpand(identity)
                                         }
                                     }
                                     break
@@ -283,6 +292,11 @@ fun SchemeCard(
                                 gesturePhase = GesturePhase.IDLE
                             }
                             longPressTriggered = false
+                            // P0-1: 如果手势结束时仍在 RECORDING/PROCESSING 但未正常 RELEASED
+                            // （如 dragCancelled 后松手），确保 cancel 清理
+                            if (gesturePhase == GesturePhase.CANCELLED || dragCancelled) {
+                                voiceController.cancel()
+                            }
                         }
                     }
                 }
@@ -369,7 +383,7 @@ fun SchemeCard(
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null,
-                                onClick = { onCancelRewrite(identityKey) }
+                                onClick = { onCancelRewrite(identity) }
                             ).padding(Spacing.xs)
                         )
                     }
@@ -400,8 +414,8 @@ fun SchemeCard(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = null,
                                     onClick = {
-                                        onClearRewriteState(identityKey)
-                                        onToggleRewriteExpand(identityKey)
+                                        onClearRewriteState(identity)
+                                        onToggleRewriteExpand(identity)
                                     }
                                 ).padding(Spacing.xs)
                             )
@@ -437,7 +451,7 @@ fun SchemeCard(
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null,
-                                onClick = { onUndoRewrite(identityKey) }
+                                onClick = { onUndoRewrite(identity) }
                             ).padding(horizontal = Spacing.xs, vertical = Spacing.xs)
                         )
                     }
@@ -468,7 +482,7 @@ fun SchemeCard(
                                             .clickable(
                                                 interactionSource = interaction,
                                                 indication = null,
-                                                onClick = { onRewrite(identityKey, command) }
+                                                onClick = { onRewrite(identity, command) }
                                             )
                                             .padding(vertical = Spacing.xs, horizontal = Spacing.sm),
                                         contentAlignment = Alignment.Center
@@ -500,7 +514,7 @@ fun SchemeCard(
                                 modifier = Modifier.clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = null,
-                                    onClick = { onToggleRewriteExpand(identityKey) }
+                                    onClick = { onToggleRewriteExpand(identity) }
                                 ).padding(horizontal = Spacing.sm, vertical = Spacing.xs)
                             )
                         }

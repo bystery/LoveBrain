@@ -73,6 +73,12 @@ class LoveBrainViewModel(
     private val _result = MutableStateFlow<GenerateResult?>(null)
     val result: StateFlow<GenerateResult?> = _result.asStateFlow()
 
+    /** P0-3: 稳定的轮次身份——只在真正完成一次新的整轮 generate 时变化。
+     * 单条改写、undo、feedback 等原地操作不改变它。
+     * ResultArea 的 viewMode 只以 round id 重置。 */
+    private val _generationRoundId = MutableStateFlow(0)
+    val generationRoundId: StateFlow<Int> = _generationRoundId.asStateFlow()
+
     private val _isGenerating = MutableStateFlow(false)
     val isGenerating: StateFlow<Boolean> = _isGenerating.asStateFlow()
 
@@ -116,8 +122,10 @@ class LoveBrainViewModel(
     private val _streamingSchemes = MutableStateFlow<List<Scheme>>(emptyList())
     val streamingSchemes: StateFlow<List<Scheme>> = _streamingSchemes.asStateFlow()
 
-    /** P1-07: 流式四方向方案——独立于四风格，同时渲染 */
+    /** P1-07: 流式四方向方案——已废弃：UI 不在生成中展示方向卡，只在最终完成后提供方向切换。
+     * 保留 StateFlow 供兼容，但 Engine 不再写入。 */
     private val _streamingDirectionSchemes = MutableStateFlow<List<Scheme>>(emptyList())
+    @Deprecated("directions streaming 已废弃——UI 只在最终完成后提供方向切换")
     val streamingDirectionSchemes: StateFlow<List<Scheme>> = _streamingDirectionSchemes.asStateFlow()
 
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
@@ -925,28 +933,26 @@ class LoveBrainViewModel(
         val kbName = suggestion.kbName
 
         // 取消上一次未完成的重新生成
+        // P0-2 真正修复：取消 profileRegenerationJob 会传播到底层 coroutineScope child，
+        // 真正取消模型请求、retry delay、reflect_history 写入
         profileRegenerationJob?.cancel()
         val currentRequestId = ++profileRegenerationRequestId
 
         _profileRegenerating.value = true
-        // P0-2: ViewModel 持有真实生成 Job——Coordinator 提供 suspend operation，
-        // 禁止 fire-and-forget 嵌套 launch。
-        // profileRegenerating=true 从请求开始持续到真实任务 terminal state。
+        // P0-2 真正修复：regenerateProfile 是纯 suspend——不传 viewModelScope，
+        // 在当前 launch 的协程内直接执行，cancel 会传播到底层所有子协程
         profileRegenerationJob = viewModelScope.launch {
             try {
-                // 直接 await suspend function——真正的模型请求在此协程内运行
-                triggerCoordinator.regenerateProfile(kbName, viewModelScope, object : KnowledgeTriggerCoordinator.Callbacks {
+                triggerCoordinator.regenerateProfile(kbName, object : KnowledgeTriggerCoordinator.Callbacks {
                     override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {}
                     override fun onVectorUpdateNotice(kbName: String, summary: String) {}
                     override fun onStageSuggestion(suggestion: StageSuggestion) {}
                     override fun onKbNotice(notice: String) {
-                        // EMPTY / 失败路径——也要复位 loading（如果 requestId 匹配）
                         if (currentRequestId == profileRegenerationRequestId) {
                             _profileRegenerating.value = false
                         }
                     }
                     override fun onProfileSuggestion(suggestion: ProfileSuggestion) {
-                        // 成功或失败建议——只有 requestId 匹配才更新 UI
                         if (currentRequestId == profileRegenerationRequestId) {
                             _profileSuggestion.value = suggestion
                             _profileRegenerating.value = false
@@ -954,7 +960,6 @@ class LoveBrainViewModel(
                     }
                     override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {}
                 })
-                // regenerateProfile 是 suspend——它会等到 generateReflectSuggestion 完成后才返回
             } catch (e: kotlinx.coroutines.CancellationException) {
                 // dismiss cancel——不设 error，只复位 loading
                 if (currentRequestId == profileRegenerationRequestId) {
@@ -967,7 +972,6 @@ class LoveBrainViewModel(
                     _profileRegenerating.value = false
                 }
             } finally {
-                // P0-2: 只有 requestId 匹配时才复位——防止晚到 callback 复活
                 if (currentRequestId == profileRegenerationRequestId) {
                     _profileRegenerating.value = false
                 }
@@ -1214,18 +1218,17 @@ class LoveBrainViewModel(
         _streamingDirectionSchemes.value = emptyList()
     }
 
-    /** P1-07: 四方向独立回调 */
+    /** P1-07: directions streaming 已废弃——不再在生成中写入 direction schemes */
     override fun onReplyStreamingDirectionSchemes(schemes: List<Scheme>) {
-        val current = _streamingDirectionSchemes.value
-        if (schemes.size > current.size) {
-            _streamingDirectionSchemes.value = schemes
-        } else if (schemes.size == current.size && schemes != current) {
-            _streamingDirectionSchemes.value = schemes
-        }
+        // 不再写入——directions 只在最终 response 完成后提供切换
     }
 
     override fun onReplyResult(result: GenerateResult) {
         _result.value = result
+        // P0-3: 只有整轮生成成功时才递增 roundId——单条改写/undo 不经过此回调
+        if (result is GenerateResult.Success) {
+            _generationRoundId.value++
+        }
     }
 
     override fun onReplyPanelState(state: PanelState) {

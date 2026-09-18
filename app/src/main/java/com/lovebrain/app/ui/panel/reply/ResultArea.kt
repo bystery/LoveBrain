@@ -45,6 +45,7 @@ import com.lovebrain.app.model.RewriteCommand
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.SchemeIdentity
 import com.lovebrain.app.model.SchemeSource
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.CorrectionAction
@@ -67,7 +68,8 @@ fun ResultArea(
     streamingCoreText: String,
     isGeneratingCore: Boolean,
     streamingSchemes: List<Scheme>,
-    streamingDirectionSchemes: List<Scheme> = emptyList(),
+    // P0-7: streamingDirectionSchemes 已废弃——directions 只在最终完成后提供切换
+    @Suppress("UNUSED_PARAMETER") streamingDirectionSchemes: List<Scheme> = emptyList(),
     feedbacks: Map<String, SchemeFeedback>,
     onFeedback: (Scheme, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
@@ -82,19 +84,21 @@ fun ResultArea(
     onOpenSettings: () -> Unit,
     // 单条改写
     rewriteStates: Map<String, RewriteState> = emptyMap(),
-    onRewrite: (String, RewriteCommand) -> Unit = { _, _ -> },
-    onClearRewriteState: (String) -> Unit = {},
-    onCancelRewrite: (String) -> Unit = {},
-    onUndoRewrite: (String) -> Unit = {},
-    onVoiceRewrite: (String, String) -> Unit = { _, _ -> },
+    onRewrite: (SchemeIdentity, RewriteCommand) -> Unit = { _, _ -> },
+    onClearRewriteState: (SchemeIdentity) -> Unit = {},
+    onCancelRewrite: (SchemeIdentity) -> Unit = {},
+    onUndoRewrite: (SchemeIdentity) -> Unit = {},
+    onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     onPermissionEvent: (PermissionEvent) -> Unit = {},
+    // P0-3: 稳定轮次身份——只在整轮 generate 成功时变化
+    generationRoundId: Int = 0,
     modifier: Modifier = Modifier
 ) {
     when {
         // Phase 1 加载中：核心回复（schemes）还没出来
         isGeneratingCore -> {
-            if (streamingSchemes.isNotEmpty() || streamingDirectionSchemes.isNotEmpty()) {
-                // ★ P1-07: 边流式边出卡——风格渲染
+            if (streamingSchemes.isNotEmpty()) {
+                // ★ P1-07: 边流式边出卡——只渲染风格（directions 不再 stream）
                 Column(
                     modifier = modifier
                         .fillMaxWidth()
@@ -149,10 +153,9 @@ fun ResultArea(
         // 全部完成：方案 + 进行中事项（分析展示区已移除）
         result is GenerateResult.Success -> {
             val response = result.response
-            // P0-1: 风格/方向视图切换——始终只有一排四卡
+            // P0-3: viewMode 只以 generationRoundId 重置——单条改写/undo/feedback 不切换用户当前 STYLE/DIRECTION
+            var viewMode by remember(generationRoundId) { mutableStateOf(SchemeViewMode.STYLE) }
             val hasDirections = response.directionSchemes.any { it.reply.isNotBlank() }
-            // P2: 每个新结果默认回到 STYLE，避免上一轮停留在 DIRECTION 后沿用旧 UI 状态
-            var viewMode by remember(response) { mutableStateOf(SchemeViewMode.STYLE) }
             val displaySchemes = when (viewMode) {
                 SchemeViewMode.STYLE -> response.schemes
                 SchemeViewMode.DIRECTION -> response.directionSchemes
@@ -310,17 +313,27 @@ private fun SchemeCardsRow(
     onFeedback: (Scheme, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
     rewriteStates: Map<String, RewriteState> = emptyMap(),
-    onRewrite: (String, RewriteCommand) -> Unit = { _, _ -> },
-    onClearRewriteState: (String) -> Unit = {},
-    onCancelRewrite: (String) -> Unit = {},
-    onUndoRewrite: (String) -> Unit = {},
-    onVoiceRewrite: (String, String) -> Unit = { _, _ -> },
+    onRewrite: (SchemeIdentity, RewriteCommand) -> Unit = { _, _ -> },
+    onClearRewriteState: (SchemeIdentity) -> Unit = {},
+    onCancelRewrite: (SchemeIdentity) -> Unit = {},
+    onUndoRewrite: (SchemeIdentity) -> Unit = {},
+    onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     onPermissionEvent: (PermissionEvent) -> Unit = {}
 ) {
     // 方案筛选：全部 / 已赞（调研：NN/G 10 Heuristics #6 Recognition rather than recall——
     // 用户赞过的方案应能快速回看，无需在 4 张卡里翻找）
-    var filter by rememberSaveable { mutableStateOf(SchemeFilter.ALL) }
+    // P0-4: filter 绑定 scheme group source——切换 STYLE/DIRECTION 时默认回 ALL
+    val currentSource = schemes.firstOrNull()?.source
+    var filter by remember(currentSource) { mutableStateOf(SchemeFilter.ALL) }
     val likedCount = schemes.count { feedbacks[it.identity.key] == SchemeFeedback.LIKED }
+
+    // P0-4: 任何时候 likedCount=0 时不保持 LIKED——防止空页死角
+    LaunchedEffect(likedCount) {
+        if (likedCount == 0 && filter == SchemeFilter.LIKED) {
+            filter = SchemeFilter.ALL
+        }
+    }
+
     val displaySchemes = when (filter) {
         SchemeFilter.ALL -> schemes
         SchemeFilter.LIKED -> schemes.filter { feedbacks[it.identity.key] == SchemeFeedback.LIKED }
@@ -415,12 +428,13 @@ private fun SchemeCardsRow(
                             onCancelRewrite = onCancelRewrite,
                             onUndoRewrite = onUndoRewrite,
                             isExpanded = expandedRewriteTag == scheme.identity.key,
-                            onToggleRewriteExpand = { key ->
+                            onToggleRewriteExpand = { identity ->
+                                val key = identity.key
                                 val currentRewriteState = rewriteStates[key]
                                 if (expandedRewriteTag != key) {
                                     if (currentRewriteState is RewriteState.Done ||
                                         currentRewriteState is RewriteState.Error) {
-                                        onClearRewriteState(key)
+                                        onClearRewriteState(identity)
                                     }
                                     expandedRewriteTag = key
                                 } else {
@@ -726,7 +740,8 @@ private fun TypewriterText(
 
 /**
  * F09: 结果区工具行 — "本轮参考"入口 + "记入知识库"按钮共享一行。
- * 禁止独占行：两个功能紧凑放在同一 Row 中。
+ * P0-6: 无 memoryRefs 时"记入知识库"不独占行——
+ * 改为右对齐紧凑按钮，不 fillMaxWidth 制造空行。
  * 本轮参考展开后每条只显示记忆文本 + ⋯ 菜单。
  */
 @Composable
@@ -739,13 +754,14 @@ private fun ResultToolRow(
     var showRefs by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // 左：本轮参考入口（仅在有记忆引用时显示）
-            if (memoryRefs.isNotEmpty()) {
+        // P0-6: 有 memoryRefs 时两个功能共享一行；无 memoryRefs 时保存按钮右对齐，不独占行
+        if (memoryRefs.isNotEmpty()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // 左：本轮参考入口
                 val (refsInteraction, refsScale) = rememberPressScale(0.96f, "refsToggleScale")
                 Row(
                     modifier = Modifier
@@ -771,27 +787,16 @@ private fun ResultToolRow(
                         color = TextHint
                     )
                 }
-                Spacer(Modifier.weight(1f))
+                // 右：记入知识库按钮
+                SaveToKbButton(onSaveToKb = onSaveToKb)
             }
-            // 无引用时不加 Spacer(weight=1f)——保存按钮紧跟行首，不独占右侧
-
-            // 右：记入知识库按钮
-            val (saveInteraction, saveScale) = rememberPressScale(0.96f, "resultSaveKbScale")
-            Box(
-                modifier = Modifier
-                    .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
-                    .clip(LoveBrainShape.md)
-                    .background(Primary, LoveBrainShape.md)
-                    .clickable(interactionSource = saveInteraction, indication = null, onClick = onSaveToKb)
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
-                contentAlignment = Alignment.Center
+        } else {
+            // P0-6: 无 memoryRefs 时保存按钮右对齐，不 fillMaxWidth——不制造单按钮独占行
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(
-                    "记入知识库",
-                    color = Color.White,
-                    style = AppTypography.labelSmall,
-                    fontWeight = FontWeight.Medium
-                )
+                SaveToKbButton(onSaveToKb = onSaveToKb)
             }
         }
 
@@ -838,6 +843,28 @@ private fun ResultToolRow(
                 }
             }
         }
+    }
+}
+
+/** P0-6: 提取保存按钮为独立 Composable——有/无 memoryRefs 时复用，避免重复代码 */
+@Composable
+private fun SaveToKbButton(onSaveToKb: () -> Unit) {
+    val (saveInteraction, saveScale) = rememberPressScale(0.96f, "resultSaveKbScale")
+    Box(
+        modifier = Modifier
+            .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
+            .clip(LoveBrainShape.md)
+            .background(Primary, LoveBrainShape.md)
+            .clickable(interactionSource = saveInteraction, indication = null, onClick = onSaveToKb)
+            .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            "记入知识库",
+            color = Color.White,
+            style = AppTypography.labelSmall,
+            fontWeight = FontWeight.Medium
+        )
     }
 }
 

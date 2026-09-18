@@ -23,16 +23,19 @@ import com.lovebrain.app.util.L
 /**
  * P0-1 修复：VoiceRewrite 只负责 STT（语音转文字）。
  *
+ * 核心原则：STT 可以提前得到 final transcript，但绝对不能提前提交 rewrite。
+ * final transcript 暂存；只有 SchemeCard 收到真实 RELEASED 后才能 commit。
+ * CANCELLED / move-out / system cancel 永远丢弃 transcript，绝不调用 API。
+ *
  * STT 状态机：
  *   IDLE → RECORDING → PROCESSING → IDLE
  *
- * final transcript 非空：
- *   先回 IDLE，然后调用 onVoiceRewrite(tag, transcript)。
- *   API 改写状态由统一 RewriteState 管理，不再维护 REWRITING。
+ * final transcript 非空时暂存在 pendingTranscript 中，
+ * 等待外部 commitTranscript() 调用（由 SchemeCard 在 RELEASED 时触发）。
  *
  * 手势生命周期（P0-2）：
  *   PRESSING → RECORDING（达到长按阈值）
- *   RECORDING → PROCESSING（松手 / onEndOfSpeech）
+ *   RECORDING → RELEASED（松手 → stopListening → 等待 final → commitTranscript）
  *   RECORDING → CANCELLED → IDLE（手指移出 / 手势 cancel，不发 API）
  *   PROCESSING → IDLE（拿到 final transcript 或 onError）
  *   partial transcript 绝不发 API
@@ -83,16 +86,24 @@ enum class VoicePermissionResult {
     PERMANENTLY_DENIED
 }
 
-/** 语音改写控制器返回值
- *
- * P0-5: gesturePhase 由外部（SchemeCard pointerInput）驱动，
- * 不在 controller 内部维护第二套状态机。
- */
+/** startListening 返回值——只有 Started 才允许外层进入 RECORDING */
+enum class StartListeningResult {
+    /** 成功启动 SpeechRecognizer */
+    STARTED,
+    /** 无权限，已弹出权限请求（外层不应进入 RECORDING） */
+    PERMISSION_REQUESTED,
+    /** 创建/启动失败（外层不应进入 RECORDING） */
+    FAILED
+}
+
+/** 语音改写控制器返回值 */
 data class VoiceRewriteController(
     val state: VoiceRewriteState,
-    val startListening: () -> Unit,
+    val startListening: () -> StartListeningResult,
     val stopListening: () -> Unit,
     val cancel: () -> Unit,
+    /** 提交暂存的 final transcript——只在物理 RELEASED 时调用 */
+    val commitTranscript: () -> Unit,
     val hasPermission: Boolean,
     val permissionResult: VoicePermissionResult?
 )
@@ -100,14 +111,12 @@ data class VoiceRewriteController(
 /**
  * 长按语音修改 Helper——封装 SpeechRecognizer 生命周期 + runtime permission。
  *
- * 长按开始 → 检查权限 → 启动 SpeechRecognizer
- * 松手 → 停止录音，等待 final transcript
- * transcript 非空 → 调用 onVoiceRewrite(tag, transcript)
- * transcript 为空 → 取消，不发 API
- * partial transcript 不直接发请求
- *
- * Runtime permission: 使用系统权限 sheet (ActivityResultContracts.RequestPermission)。
- * P0-3: 权限结果通过回调通知 UI 层展示用户可理解的提示。
+ * 关键修复：
+ * - onResults 不再直接调用 onVoiceRewrite——final transcript 暂存在 pendingTranscript
+ * - 只有 commitTranscript() 才真正提交（由 SchemeCard 在 RELEASED 时调用）
+ * - stopListening 只在 recognizer 存在时才进入 PROCESSING
+ * - startListening 返回 typed result（Started/PermissionRequested/Failed）
+ * - SpeechRecognizer.destroy() 统一 cleanup（结束、错误、取消、dispose）
  */
 @Composable
 fun rememberVoiceRewriteController(
@@ -118,11 +127,15 @@ fun rememberVoiceRewriteController(
 ): VoiceRewriteController {
     val context = LocalContext.current
     var voiceState by remember { mutableStateOf(VoiceRewriteState.IDLE) }
-    // P0-5: gesturePhase 由 SchemeCard pointerInput 外部驱动，不在此处维护
     val speechRecognizer = remember { mutableStateOf<SpeechRecognizer?>(null) }
     val accumulatedText = remember { StringBuilder() }
     val tagRef = remember { schemeTag }
     var permissionResult by remember { mutableStateOf<VoicePermissionResult?>(null) }
+
+    // P0-1: final transcript 暂存——onResults 写入，commitTranscript 读取
+    val pendingTranscript = remember { mutableStateOf<String?>(null) }
+    // P0-1: 手势取消标志——cancel 后即使 onResults 到达也不提交
+    val wasCancelled = remember { mutableStateOf(false) }
 
     var hasPermission by remember {
         mutableStateOf(
@@ -143,11 +156,9 @@ fun rememberVoiceRewriteController(
             permissionResult = VoicePermissionResult.GRANTED
             onPermissionGranted()
         } else {
-            // 检查是否永久拒绝（shouldShowRationale 返回 false 说明用户勾选了"不再询问"）
             val shouldShow = if (context is android.app.Activity) {
                 context.shouldShowRequestPermissionRationale(android.Manifest.permission.RECORD_AUDIO)
             } else {
-                // 非Activity上下文，保守判断为非永久拒绝
                 true
             }
             permissionResult = if (shouldShow) VoicePermissionResult.DENIED else VoicePermissionResult.PERMANENTLY_DENIED
@@ -155,8 +166,7 @@ fun rememberVoiceRewriteController(
         }
     }
 
-    // 权限状态可能在外部变化（用户从设置回来），P2: 基于 lifecycle resume 刷新
-    // 不再依赖仅执行一次的 LaunchedEffect(Unit)，开始录音前也会重新检查
+    // 权限状态可能在外部变化（用户从设置回来），基于 lifecycle resume 刷新
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -178,16 +188,26 @@ fun rememberVoiceRewriteController(
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    fun startListening() {
+    // P0-1: 统一 cleanup——destroy recognizer 释放资源
+    fun destroyRecognizer() {
+        speechRecognizer.value?.let { sr ->
+            runCatching { sr.cancel() }
+            runCatching { sr.destroy() }
+        }
+        speechRecognizer.value = null
+    }
+
+    fun startListening(): StartListeningResult {
         if (!hasPermission) {
             permissionLauncher.launch(android.Manifest.permission.RECORD_AUDIO)
-            return
+            return StartListeningResult.PERMISSION_REQUESTED
         }
 
         accumulatedText.clear()
-        voiceState = VoiceRewriteState.RECORDING
-        // P0-5: gesturePhase 由 SchemeCard pointerInput 外部管理，不在此处设置
-        try {
+        pendingTranscript.value = null
+        wasCancelled.value = false
+
+        return try {
             val sr = SpeechRecognizer.createSpeechRecognizer(context)
             speechRecognizer.value = sr
 
@@ -206,13 +226,18 @@ fun rememberVoiceRewriteController(
                 override fun onRmsChanged(rmsdB: Float) {}
                 override fun onBufferReceived(buffer: ByteArray?) {}
                 override fun onEndOfSpeech() {
-                    voiceState = VoiceRewriteState.PROCESSING
+                    // STT 自行判断结束——进入 PROCESSING 等待 final results
+                    // 但不提交——提交只在 commitTranscript（物理 RELEASED）
+                    if (!wasCancelled.value && voiceState == VoiceRewriteState.RECORDING) {
+                        voiceState = VoiceRewriteState.PROCESSING
+                    }
                 }
 
                 override fun onError(error: Int) {
                     L.w("VoiceRewrite: STT error=$error")
                     voiceState = VoiceRewriteState.IDLE
-                    speechRecognizer.value = null
+                    destroyRecognizer()
+                    pendingTranscript.value = null
                 }
 
                 override fun onPartialResults(partialResults: Bundle?) {
@@ -232,17 +257,21 @@ fun rememberVoiceRewriteController(
                         ?.firstOrNull()
                         ?: accumulatedText.toString()
 
-                    // P0-5: wasCancelled 由外部 gesturePhase 查询——
-                    // controller 不再持有 gesturePhase，手势取消时 SchemeCard 不会调用 stopListening()
-                    // 而是调用 cancel()，cancel() 已清空 accumulatedText 并设 IDLE
-                    // 到达 onResults 说明走的是正常 stopListening 路径
                     voiceState = VoiceRewriteState.IDLE
-                    speechRecognizer.value = null
+                    destroyRecognizer()
 
-                    if (finalText.isNotBlank()) {
-                        onVoiceRewrite(tagRef, finalText.trim())
+                    // P0-1: final transcript 暂存——不直接提交
+                    // 只有未被 cancel 时才暂存（cancel 后到达的 results 丢弃）
+                    if (!wasCancelled.value && finalText.isNotBlank()) {
+                        pendingTranscript.value = finalText.trim()
+                        L.w("VoiceRewrite: final transcript cached, waiting for commit")
                     } else {
-                        L.w("VoiceRewrite: final transcript empty, not sending API")
+                        pendingTranscript.value = null
+                        if (wasCancelled.value) {
+                            L.w("VoiceRewrite: final transcript discarded (gesture cancelled)")
+                        } else {
+                            L.w("VoiceRewrite: final transcript empty, not caching")
+                        }
                     }
                 }
 
@@ -250,31 +279,55 @@ fun rememberVoiceRewriteController(
             })
 
             sr.startListening(intent)
+            voiceState = VoiceRewriteState.RECORDING
+            StartListeningResult.STARTED
         } catch (e: Exception) {
             L.w("VoiceRewrite: SpeechRecognizer failed: ${e.message}")
             voiceState = VoiceRewriteState.IDLE
+            destroyRecognizer()
+            StartListeningResult.FAILED
         }
     }
 
     fun stopListening() {
-        // P0-5: gesturePhase 由 SchemeCard pointerInput 外部管理
-        voiceState = VoiceRewriteState.PROCESSING
-        speechRecognizer.value?.stopListening()
+        // P0-1: 只有 recognizer 真实存在且状态允许时才进入 PROCESSING
+        // 否则直接回 IDLE——防止 null recognizer + PROCESSING 永久卡死
+        val sr = speechRecognizer.value
+        if (sr != null && (voiceState == VoiceRewriteState.RECORDING || voiceState == VoiceRewriteState.PROCESSING)) {
+            voiceState = VoiceRewriteState.PROCESSING
+            runCatching { sr.stopListening() }
+        } else {
+            // recognizer 不存在（无权限/创建失败/onError 后松手）→ 安全回 IDLE
+            voiceState = VoiceRewriteState.IDLE
+        }
+    }
+
+    fun commitTranscript() {
+        // P0-1: 物理松手才调用——提交暂存的 final transcript
+        val transcript = pendingTranscript.value
+        pendingTranscript.value = null
+        if (transcript != null && !wasCancelled.value) {
+            L.w("VoiceRewrite: committing cached transcript")
+            onVoiceRewrite(tagRef, transcript)
+        } else {
+            L.w("VoiceRewrite: no transcript to commit (transcript=$transcript, cancelled=${wasCancelled.value})")
+        }
+        // 提交后确保状态归位
+        voiceState = VoiceRewriteState.IDLE
     }
 
     fun cancel() {
-        // P0-5: gesturePhase 由 SchemeCard pointerInput 外部管理
-        speechRecognizer.value?.cancel()
-        speechRecognizer.value = null
+        wasCancelled.value = true
+        pendingTranscript.value = null
+        destroyRecognizer()
         voiceState = VoiceRewriteState.IDLE
         accumulatedText.clear()
     }
 
-    // 清理
+    // P0-1: Composable dispose 时统一 destroy——防资源泄漏
     DisposableEffect(schemeTag) {
         onDispose {
-            speechRecognizer.value?.cancel()
-            speechRecognizer.value = null
+            destroyRecognizer()
         }
     }
 
@@ -283,6 +336,7 @@ fun rememberVoiceRewriteController(
         startListening = { startListening() },
         stopListening = { stopListening() },
         cancel = { cancel() },
+        commitTranscript = { commitTranscript() },
         hasPermission = hasPermission,
         permissionResult = permissionResult
     )

@@ -15,6 +15,7 @@ import com.lovebrain.app.util.TimeFmt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 /** 画像建议构建失败时的原文截断回退长度 */
@@ -258,17 +259,29 @@ class KnowledgeTriggerCoordinator(
 
     /**
      * P1-03: 用户手动触发画像重新生成（不依赖话题计数阈值）。
-     * P0-2: 改为 suspend operation——禁止 fire-and-forget 嵌套 launch。
-     * 调用方在自身协程中 await，真正持有生成任务的生命周期。
+     * P0-2 真正修复：改为纯 suspend operation——使用 coroutineScope 创建真实 child，
+     * 不再接收外部 CoroutineScope 参数。
+     * 调用方的 cancel 会传播到此协程及其所有子协程，真正取消底层模型请求。
      */
-    suspend fun regenerateProfile(kbName: String, scope: CoroutineScope, callbacks: Callbacks) {
+    suspend fun regenerateProfile(kbName: String, callbacks: Callbacks) {
         val frozenCorrectionsRev = knowledgeRepo.getCorrectionsRevision(kbName)
-        generateReflectSuggestion(kbName, scope, callbacks, frozenCorrectionsRev).join()
+        // coroutineScope 创建真实 child——调用方 cancel 会传播到这里
+        coroutineScope {
+            generateReflectSuggestionSuspend(kbName, callbacks, frozenCorrectionsRev)
+        }
     }
 
-    private fun generateReflectSuggestion(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
-        return scope.launch {
-            runCatching {
+    /**
+     * P0-2: 纯 suspend 版本——在调用方协程内直接执行，不 launch 新 Job。
+     * CancellationException 必须 rethrow，不得被 runCatching 吞掉。
+     */
+    private suspend fun generateReflectSuggestionSuspend(
+        kbName: String,
+        callbacks: Callbacks,
+        frozenCorrectionsRev: Int
+    ) {
+        // P0-2: runCatching 会吞 CancellationException——手动 rethrow
+        try {
                 // 所有 attempt 共享同一份冻结上下文——Attempt 3 也不丢弃原始事实
                 val system = promptBuilder.buildReflectSystemPrompt()
                 val user = promptBuilder.buildReflectUserPrompt(kbName)
@@ -350,7 +363,7 @@ $lastRaw"""
                     }
 
                     L.w("generateReflect: attempt $attempt status=${parseResult.status}, will retry with ${if (attempt == 1) "strict JSON prompt" else "compact schema repair prompt"}")
-                    // 短暂退避后重试
+                    // 短暂退避后重试——delay 是 suspend，cancel 会传播
                     if (attempt < MAX_PROFILE_ATTEMPTS) {
                         kotlinx.coroutines.delay(RETRY_BACKOFF_MS * attempt)
                     }
@@ -360,7 +373,7 @@ $lastRaw"""
                 val finalResult = parseResult
                 if (finalResult == null || finalResult.status == ProfileParseStatus.EMPTY) {
                     callbacks.onKbNotice("画像更新建议本次生成失败")
-                    return@launch
+                    return
                 }
 
                 if (finalResult.status == ProfileParseStatus.SUCCESS && finalResult.profileUpdate != null) {
@@ -408,7 +421,27 @@ $lastRaw"""
                         )
                     )
                 }
-            }.onFailure { L.e("generateReflectSuggestion failed", it) }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            // P0-2: CancellationException 必须 rethrow——不能被当普通 failure 吞掉
+            throw e
+        } catch (e: Exception) {
+            L.e("generateReflectSuggestionSuspend failed", e)
+        }
+    }
+
+    /**
+     * 保留旧 launch 签名供 checkTriggers 后台路径使用（fire-and-forget 仍然合理）。
+     * 手动 regenerate 路径不再使用此方法——改用 suspend 版本。
+     */
+    private fun generateReflectSuggestion(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
+        return scope.launch {
+            try {
+                generateReflectSuggestionSuspend(kbName, callbacks, frozenCorrectionsRev)
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("generateReflectSuggestion failed", e)
+            }
         }
     }
 }

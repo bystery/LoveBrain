@@ -423,20 +423,18 @@ fun LoveBrainPanelScreen(
                                 onOpenSettings = onOpenSettings,
                                 // 单条改写
                                 rewriteStates = rewriteStates,
-                                onRewrite = { tag, command -> viewModel.rewriteScheme(
-                                    com.lovebrain.app.model.SchemeIdentity.fromKey(tag)?.source
-                                        ?: com.lovebrain.app.model.SchemeSource.STYLE,
-                                    com.lovebrain.app.model.SchemeIdentity.fromKey(tag)?.tag ?: tag,
+                                onRewrite = { identity, command -> viewModel.rewriteScheme(
+                                    identity.source,
+                                    identity.tag,
                                     command.instruction
                                 ) },
-                                onClearRewriteState = { key -> viewModel.clearRewriteState(key) },
-                                onCancelRewrite = { key -> viewModel.cancelRewrite(key) },
-                                onUndoRewrite = { key -> viewModel.undoRewrite(key) },
-                                onVoiceRewrite = { key, transcript ->
-                                    val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(key)
+                                onClearRewriteState = { identity -> viewModel.clearRewriteState(identity.key) },
+                                onCancelRewrite = { identity -> viewModel.cancelRewrite(identity.key) },
+                                onUndoRewrite = { identity -> viewModel.undoRewrite(identity.key) },
+                                onVoiceRewrite = { identity, transcript ->
                                     viewModel.rewriteScheme(
-                                        identity?.source ?: com.lovebrain.app.model.SchemeSource.STYLE,
-                                        identity?.tag ?: key,
+                                        identity.source,
+                                        identity.tag,
                                         transcript
                                     )
                                 },
@@ -449,6 +447,7 @@ fun LoveBrainPanelScreen(
                                         )
                                     }
                                 },
+                                generationRoundId = viewModel.generationRoundId.collectAsStateWithLifecycle().value,
                                 modifier = Modifier.fillMaxSize()
                             )
                         }

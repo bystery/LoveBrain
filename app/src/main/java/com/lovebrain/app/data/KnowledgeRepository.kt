@@ -1197,8 +1197,9 @@ class KnowledgeRepository(
                     updateWarmthStageLabelUnlockedStrict(kbName, newStage)
                 }
             } catch (e: Exception) {
-                // P0-6: Rollback——恢复所有 backup，跟踪失败路径
+                // P0-6/P0-5: Rollback——恢复所有 backup，跟踪失败路径
                 // 原先存在的文件恢复内容；原先不存在的文件删除（不创建空文件）
+                // P0-5: 必须检查 file.delete() 返回值——delete 失败不抛异常但返回 false
                 com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: write failed, rolling back", e)
                 val rollbackFailures = mutableListOf<String>()
                 for ((path, existedAndContent) in backups) {
@@ -1209,13 +1210,42 @@ class KnowledgeRepository(
                         val (existed, oldContent) = existedAndContent
                         if (existed) {
                             atomicWriteText(file, oldContent)
+                            // P0-5: snapshot verification——恢复后内容必须等于 backup
+                            if (file.readText() != oldContent) {
+                                com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL rollback verification failed for $path (content mismatch)")
+                                rollbackFailures.add(path)
+                            }
                         } else {
-                            // 原先不存在的文件——rollback 应删除而非创建空文件
-                            file.delete()
+                            // P0-5: 原先不存在的文件——rollback 应删除，必须检查返回值
+                            if (file.exists()) {
+                                val deleted = file.delete()
+                                if (!deleted) {
+                                    com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL rollback delete failed for $path (delete returned false)")
+                                    rollbackFailures.add(path)
+                                }
+                            }
                         }
                     } catch (rollbackErr: Exception) {
                         com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL rollback failed for $path", rollbackErr)
                         rollbackFailures.add(path)
+                    }
+                }
+                // P0-5: 最终 snapshot verification——原存在的文件必须存在且内容正确；原不存在的文件必须不存在
+                for ((path, existedAndContent) in backups) {
+                    val file = File(File(knowledgeRoot, kbName), path)
+                    val (existed, oldContent) = existedAndContent
+                    if (existed) {
+                        if (!file.exists() || file.readText() != oldContent) {
+                            if (path !in rollbackFailures) {
+                                com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL post-rollback verification failed for $path")
+                                rollbackFailures.add(path)
+                            }
+                        }
+                    } else {
+                        if (file.exists() && path !in rollbackFailures) {
+                            com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL post-rollback verification failed for $path (file should not exist)")
+                            rollbackFailures.add(path)
+                        }
                     }
                 }
                 // P0-6: 区分 rollback 成功与失败——不再吞错误也不模糊 throw
