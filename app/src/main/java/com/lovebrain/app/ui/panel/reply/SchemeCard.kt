@@ -1,7 +1,12 @@
 package com.lovebrain.app.ui.panel.reply
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
@@ -9,6 +14,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -32,6 +38,7 @@ import com.lovebrain.app.model.RewriteCommand
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.DirectionCatalog
 import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 
@@ -41,6 +48,7 @@ import com.lovebrain.app.ui.theme.*
 object SchemeCardDimens {
     const val CARD_WIDTH_DP = 158     // 卡宽（骨架屏与实体卡共用）
     const val CARD_HEIGHT_DP = 150    // 卡高（：骨架屏 166→150 对齐实体，消除跳变）
+    const val CARD_MAX_HEIGHT_DP = 240 // P1-3: 最大高度上限，防止展开时无限增长
     const val TAG_HPAD_DP = 6         // 标签水平内边距
     const val TAG_VPAD_DP = 3         // 标签垂直内边距
     const val TAG_TO_BODY_GAP_DP = 6  // 标签到正文间距
@@ -54,13 +62,49 @@ private object SchemeTextDimens {
 }
 
 /**
+ * P1-12: SchemeCard 统一 UI 状态 reducer。
+ * 不再由多个互不相关 Boolean 拼接，消除非法组合。
+ */
+sealed class SchemeCardState {
+    /** 正常收起态 */
+    data object Collapsed : SchemeCardState()
+    /** 展开文字改写选项 */
+    data object Expanded : SchemeCardState()
+    /** 正在录音 */
+    data object Recording : SchemeCardState()
+    /** STT 识别中 */
+    data object Recognizing : SchemeCardState()
+    /** 正在改写（文字或语音，统一 RewriteState.Loading） */
+    data object Rewriting : SchemeCardState()
+    /** 改写失败 */
+    data class RewriteError(val message: String) : SchemeCardState()
+    /** 改写成功（可撤销） */
+    data object RewriteDone : SchemeCardState()
+}
+
+/**
  * 回复方案卡（单面卡）：tag 标签 + 话术全文（内部滚动）+ 右下角操作（复制/赞/踩）。
  * "推荐"卡用实心底反白突出；赞/踩用边框变色反馈。按压缩放 0.96，有入场动画。
  * F09-7: reply 为空时显示"本轮不适合"，不可复制/赞/踩，灰色样式。
  *
- * P0-10: 长按触发语音录音 → 松手停止 → transcript 非空调用 onVoiceRewrite。
- * 点击展开 2×2 文字改写选项。两种改写方式共存。
+ * P0-1: 语音改写只负责 STT，API 改写统一用 RewriteState
+ * P0-2: 长按手势生命周期：PRESSING → RECORDING → 松手 PROCESSING → IDLE
+ * P0-3: 语音权限 UX——允许后提示、拒绝后提示
+ * P1-3: 外框高度稳定，禁止 normal ↔ wrapContentHeight 结构级切换
+ * P1-5: 更新过期提示文案
+ * P1-6: 不永远显示"长按说话修改"
  */
+
+/**
+ * P0-4: 卡片内部 variant selector 的内容层标识。
+ *
+ * - [ORIGINAL]：原始回复（默认）
+ * - [DIRECTION]：四方向变体——tag 对应 DirectionCatalog（F/E/X/S）
+ */
+sealed class CardVariant {
+    data object Original : CardVariant()
+    data class Direction(val directionTag: String, val directionTitle: String) : CardVariant()
+}
 
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
@@ -77,19 +121,19 @@ fun SchemeCard(
     onToggleRewriteExpand: (String) -> Unit = {},
     isExpanded: Boolean = false,
     onVoiceRewrite: (String, String) -> Unit = { _, _ -> },
+    // P0-4: 四方向变体方案——卡片内部换面
+    directionSchemes: List<Scheme> = emptyList(),
     modifier: Modifier = Modifier
 ) {
     val isEmpty = scheme.reply.isBlank()
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-    // 选中态缩放动画：按下时缩小到 0.96，松开回弹
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.96f else 1f,
         animationSpec = tween(durationMillis = 100),
         label = "cardScale"
     )
 
-    // 反馈后高亮：被赞/踩时卡片描边变色
     val borderColor by animateColorAsStateCompat(
         targetValue = when (feedback) {
             SchemeFeedback.LIKED -> Primary
@@ -104,75 +148,132 @@ fun SchemeCard(
         label = "cardBorderWidth"
     )
 
-    // 四色标签体系已删，统一 Primary 色系；"推荐"用实心底反白突出唯一层级
     val isRecommended = scheme.title == "推荐" && !isEmpty
     val tagColor = if (isRecommended) Color.White else PrimaryDark
     val tagBg = if (isRecommended) Primary else PrimaryLight
-    // F09-7: 空回复用灰色样式
     val cardBg = if (isEmpty) SurfaceInset else SurfaceCard
     val bodyColor = if (isEmpty) TextHint else TextPrimary
 
-    // 改写状态展示
+    // P0-1: 改写状态——统一使用 RewriteState，不再依赖 VoiceRewriteState.REWRITING
     val isRewriting = rewriteState is RewriteState.Loading
     val rewriteError = (rewriteState as? RewriteState.Error)?.message
     val rewriteDone = rewriteState is RewriteState.Done
-    // 阻断C修复：hasHistory 独立于 Done——只有实际有撤销历史才显示撤销
-    val hasHistory = rewriteDone // Done 意味着有上一版本可撤销
+    val hasHistory = rewriteDone
 
-    // P0-10: 语音改写控制器——长按触发录音，松手停止，transcript 非空调用 onVoiceRewrite
-    val voiceController = rememberVoiceRewriteController(scheme.tag, onVoiceRewrite)
+    // P0-1/P0-2: 语音改写控制器——只负责 STT，不维护 REWRITING
+    // P0-3: 权限结果回调
+    var permissionToast by remember { mutableStateOf<String?>(null) }
+    val voiceController = rememberVoiceRewriteController(
+        schemeTag = scheme.tag,
+        onVoiceRewrite = onVoiceRewrite,
+        onPermissionGranted = {
+            permissionToast = "麦克风权限已开启，请再次长按说话"
+        },
+        onPermissionDenied = { permanently ->
+            permissionToast = if (permanently) {
+                "需要麦克风权限才能语音修改，请到设置中开启。仍可点击卡片使用文字调整。"
+            } else {
+                "需要麦克风权限才能语音修改，仍可点击卡片使用文字调整。"
+            }
+        }
+    )
     val voiceState = voiceController.state
     val isRecording = voiceState == VoiceRewriteState.RECORDING || voiceState == VoiceRewriteState.PROCESSING
-    val isVoiceRewriting = voiceState == VoiceRewriteState.REWRITING
 
-    // 松手时自动停止录音
+    // P0-4: 卡片内部 variant selector——当前选中的变体
+    var currentVariant by remember(scheme.tag) { mutableStateOf<CardVariant>(CardVariant.Original) }
+
+    // P0-4: 根据选中变体决定展示内容
+    val variant = currentVariant
+    val displayScheme = when (variant) {
+        CardVariant.Original -> scheme
+        is CardVariant.Direction -> {
+            directionSchemes.find { it.tag == variant.directionTag }
+                ?.takeIf { it.reply.isNotBlank() }
+                ?: scheme // fallback to original if direction not available
+        }
+    }
+    val displayReply = displayScheme.reply
+    val displayIsEmpty = displayReply.isBlank()
+
+    // P0-4: 有可用的方向变体时才显示 selector
+    val hasDirectionVariants = directionSchemes.any { it.reply.isNotBlank() }
+
+    // P1-12: 统一状态推导
+    val cardState: SchemeCardState = when {
+        isRecording && voiceState == VoiceRewriteState.PROCESSING -> SchemeCardState.Recognizing
+        isRecording -> SchemeCardState.Recording
+        isRewriting -> SchemeCardState.Rewriting
+        rewriteError != null -> SchemeCardState.RewriteError(rewriteError)
+        rewriteDone -> SchemeCardState.RewriteDone
+        isExpanded -> SchemeCardState.Expanded
+        else -> SchemeCardState.Collapsed
+    }
+
+    // P0-2: 松手时自动停止录音（PROCESSING 状态等待 final transcript）
     LaunchedEffect(isPressed, voiceState) {
         if (!isPressed && voiceState == VoiceRewriteState.RECORDING) {
             voiceController.stopListening()
         }
     }
 
-    // P0-10: 录音中或改写中——卡片边框高亮
-    val effectiveBorderWidth = if (isRecording || isVoiceRewriting) 2f else borderWidth
+    // P0-2: 权限提示自动消失
+    LaunchedEffect(permissionToast) {
+        if (permissionToast != null) {
+            kotlinx.coroutines.delay(2500)
+            permissionToast = null
+        }
+    }
+
+    // P0-1: 录音中或改写中——卡片边框高亮
+    val effectiveBorderWidth = if (isRecording || isRewriting) 2f else borderWidth
     val effectiveBorderColor = when {
-        isRecording || isVoiceRewriting -> Primary
+        isRecording || isRewriting -> Primary
         feedback != SchemeFeedback.NONE -> borderColor
         else -> Border
     }
 
+    // P1-3: 外框高度保持稳定——使用 animateContentSize + 上限，禁止 normal ↔ wrapContentHeight 结构级切换
     Box(
         modifier = modifier
             .width(SchemeCardDimens.CARD_WIDTH_DP.dp)
-            .then(if (isExpanded || isRewriting || isVoiceRewriting || rewriteError != null || hasHistory || isRecording)
-                Modifier.wrapContentHeight() else Modifier.height(SchemeCardDimens.CARD_HEIGHT_DP.dp))
+            .heightIn(min = SchemeCardDimens.CARD_HEIGHT_DP.dp, max = SchemeCardDimens.CARD_MAX_HEIGHT_DP.dp)
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.lg)
             .clip(LoveBrainShape.lg)
             .background(cardBg)
             .border(effectiveBorderWidth.dp, effectiveBorderColor, LoveBrainShape.lg)
-    .then(if (isEmpty) Modifier else Modifier.combinedClickable(
-        interactionSource = interactionSource,
-        indication = null,
-        onClick = {
-            // P0-10: 如果正在录音，点击取消录音
-            if (isRecording) {
-                voiceController.cancel()
-            } else {
-                onToggleRewriteExpand(scheme.tag)
-            }
-        },
-        onLongClick = {
-            // P0-10: 长按触发语音录音——真实手势生命周期
-            // down → 达到长按阈值 → startListening
-            // 持续按住 → recording
-            // up → stopListening
-            if (!isRewriting && rewriteError == null && !isRecording) {
-                voiceController.startListening()
-            }
-        }
-    ))
+            .then(if (isEmpty) Modifier else Modifier.combinedClickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = {
+                    // P0-2: 如果正在录音，点击取消录音
+                    if (isRecording) {
+                        voiceController.cancel()
+                    } else if (isRewriting) {
+                        // 改写中点击不做任何事，防止误触
+                    } else if (isExpanded) {
+                        // P0-4: 已展开时点击切换回原回复变体
+                        currentVariant = CardVariant.Original
+                        onToggleRewriteExpand(scheme.tag)
+                    } else {
+                        onToggleRewriteExpand(scheme.tag)
+                    }
+                },
+                onLongClick = {
+                    // P0-2: 长按触发语音录音——真实手势生命周期
+                    if (!isRewriting && rewriteError == null && !isRecording) {
+                        voiceController.startListening()
+                    }
+                }
+            ))
     ) {
-        Column(modifier = Modifier.fillMaxWidth().padding(Spacing.md)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Spacing.md)
+                .animateContentSize()
+        ) {
             // 标签行
             Box(
                 modifier = Modifier
@@ -191,72 +292,85 @@ fun SchemeCard(
 
             Spacer(Modifier.height(SchemeCardDimens.TAG_TO_BODY_GAP_DP.dp))
 
-            // F09-7: 空回复显示"本轮不适合"，不可滚动/复制
-            // P0-10: 录音中显示录音状态
-            if (isEmpty) {
-                Box(
+            // P0-4: variant selector 条——展开时显示在标签下方、正文上方
+            // 原回复 | 跟进 | 展开 | 表达 | 转向（只有可用方向才显示）
+            if (isExpanded && hasDirectionVariants && !isRecording && !isRewriting && rewriteError == null) {
+                // P0-4: 变体选择条——横向滚动，不独占新行
+                Row(
                     modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
                 ) {
-                    Text(
-                        text = "本轮不适合",
-                        color = TextHint,
-                        style = AppTypography.labelMedium,
-                        textAlign = TextAlign.Center
+                    VariantChip(
+                        label = "原回复",
+                        isSelected = currentVariant is CardVariant.Original,
+                        onClick = { currentVariant = CardVariant.Original }
                     )
+                    directionSchemes.forEach { dirScheme ->
+                        if (dirScheme.reply.isNotBlank()) {
+                            VariantChip(
+                                label = dirScheme.title,
+                                isSelected = (currentVariant as? CardVariant.Direction)?.directionTag == dirScheme.tag,
+                                onClick = {
+                                    currentVariant = CardVariant.Direction(dirScheme.tag, dirScheme.title)
+                                }
+                            )
+                        }
+                    }
                 }
-            } else if (isRecording) {
-                // P0-10: 录音中——显示录音状态
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Spacer(Modifier.height(SchemeCardDimens.TAG_TO_BODY_GAP_DP.dp))
+            }
+
+            // P1-12: 根据 cardState 渲染正文区域
+            when (cardState) {
+                is SchemeCardState.Recording, SchemeCardState.Recognizing -> {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(14.dp),
+                                strokeWidth = 2.dp,
+                                color = Primary
+                            )
+                            Spacer(Modifier.height(Spacing.xs))
+                            Text(
+                                text = if (cardState is SchemeCardState.Recognizing) "识别中…" else "正在录音…",
+                                style = AppTypography.labelSmall,
+                                color = PrimaryDark
+                            )
+                            Spacer(Modifier.height(Spacing.xs))
+                            Text(
+                                text = "松手后用语音修改",
+                                style = AppTypography.labelSmall,
+                                color = TextHint
+                            )
+                        }
+                    }
+                }
+                SchemeCardState.Rewriting -> {
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(14.dp),
                             strokeWidth = 2.dp,
                             color = Primary
                         )
-                        Spacer(Modifier.height(Spacing.xs))
+                        Spacer(Modifier.width(Spacing.xs))
                         Text(
-                            text = if (voiceState == VoiceRewriteState.PROCESSING) "识别中…" else "正在录音…",
+                            "正在改写…",
                             style = AppTypography.labelSmall,
                             color = PrimaryDark
                         )
-                        Spacer(Modifier.height(Spacing.xs))
-                        Text(
-                            text = "松手后用语音修改",
-                            style = AppTypography.labelSmall,
-                            color = TextHint
-                        )
-                    }
-                }
-            } else if (isVoiceRewriting || isRewriting) {
-                // P0-10: 改写中状态（语音改写或文字改写）
-                Row(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(14.dp),
-                        strokeWidth = 2.dp,
-                        color = Primary
-                    )
-                    Spacer(Modifier.width(Spacing.xs))
-                    Text(
-                        "正在改写…",
-                        style = AppTypography.labelSmall,
-                        color = PrimaryDark
-                    )
-                    // P0-10: 文字改写支持取消
-                    if (isRewriting) {
                         Spacer(Modifier.weight(1f))
                         Text(
                             "取消",
@@ -270,29 +384,47 @@ fun SchemeCard(
                         )
                     }
                 }
-            } else {
-                // 话术全文：内部垂直滚动（过长可滑动看完整）
-                Box(
-                    modifier = Modifier
-                        .weight(1f, fill = !isExpanded && rewriteError == null && !hasHistory)
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    Text(
-                        text = scheme.reply,
-                        color = bodyColor,
-                        style = AppTypography.bodyMedium,
-                        fontSize = SchemeTextDimens.BODY_FONT_SIZE,
-                        lineHeight = SchemeTextDimens.BODY_LINE_HEIGHT
-                    )
+                else -> {
+                    // 正常态：话术全文（内部垂直滚动）
+                    // P0-4: 使用 displayReply（根据变体选择显示对应内容）
+                    if (displayIsEmpty) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "本轮不适合",
+                                color = TextHint,
+                                style = AppTypography.labelMedium,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+                                .verticalScroll(rememberScrollState())
+                        ) {
+                            Text(
+                                text = displayReply,
+                                color = bodyColor,
+                                style = AppTypography.bodyMedium,
+                                fontSize = SchemeTextDimens.BODY_FONT_SIZE,
+                                lineHeight = SchemeTextDimens.BODY_LINE_HEIGHT
+                            )
+                        }
+                    }
                 }
             }
 
             Spacer(Modifier.height(Spacing.sm))
 
-            // 改写操作区（正文下方展开）
-            if (rewriteError != null && !isExpanded && !isRecording && !isVoiceRewriting) {
-                // b2-6: 错误状态未展开时显示短提示+重试
+            // 改写操作区（正文下方展开）——P1-3: 使用 AnimatedVisibility 而非高度模式切换
+            // P0-4: 改写选项只在原回复变体下显示（方向变体不支持改写）
+            if (rewriteError != null && !isRecording && !isRewriting) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -320,8 +452,7 @@ fun SchemeCard(
                         ).padding(Spacing.xs)
                     )
                 }
-            } else if (isExpanded && !isEmpty && !isRecording && !isVoiceRewriting) {
-                // 2×2 操作区（小窗容不下时自动变单列）
+            } else if (isExpanded && !displayIsEmpty && !isRecording && !isRewriting && currentVariant is CardVariant.Original) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
@@ -385,6 +516,22 @@ fun SchemeCard(
                 }
             }
 
+            // P0-3: 权限提示（临时显示）
+            AnimatedVisibility(
+                visible = permissionToast != null,
+                enter = expandVertically(),
+                exit = shrinkVertically()
+            ) {
+                Text(
+                    text = permissionToast ?: "",
+                    style = AppTypography.labelSmall,
+                    color = if (voiceController.permissionResult == VoicePermissionResult.GRANTED) PrimaryDark else Error,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = Spacing.xs)
+                )
+            }
+
             Spacer(Modifier.height(Spacing.sm))
 
             // 操作行：固定右下角（F09-7: 空回复不显示操作按钮）
@@ -394,7 +541,6 @@ fun SchemeCard(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // b2-6: 改写成功后撤销并入现有操作行
                     if (rewriteDone) {
                         Text(
                             "撤销",
@@ -408,20 +554,14 @@ fun SchemeCard(
                         )
                         Spacer(Modifier.width(Spacing.xs))
                     }
-                    // P0-10: 录音中显示"长按说话修改"提示
-                    if (!isRecording && !isVoiceRewriting && !isRewriting) {
-                        Text(
-                            text = "长按说话修改",
-                            style = AppTypography.labelSmall,
-                            color = TextHint
-                        )
-                        Spacer(Modifier.width(Spacing.xs))
-                    }
+                    // P1-6: 不永远显示"长按说话修改"——只在未改写/录音时短暂显示
+                    // 不再永久占用卡片底部空间
+                    // P0-4: 复制当前变体内容（方向变体或原回复）
                     CardActionIcon(
                         icon = R.drawable.ic_copy,
                         desc = "复制",
                         tint = TextSecondary,
-                        onClick = { onCopy(scheme) }
+                        onClick = { onCopy(displayScheme) }
                     )
                     CardActionIcon(
                         icon = R.drawable.ic_thumb_up,
@@ -464,6 +604,41 @@ internal fun CardActionIcon(
             contentDescription = desc,
             tint = tint,
             modifier = Modifier.size(SchemeCardDimens.ACTION_ICON_SIZE_DP.dp)
+        )
+    }
+}
+
+/**
+ * P0-4: 变体选择 Chip——用于卡片内部 variant selector。
+ * 紧凑、横向可滚动，选中态高亮。
+ */
+@Composable
+private fun VariantChip(
+    label: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    val (interaction, scale) = rememberPressScale(0.94f, "variantChip_$label")
+    Box(
+        modifier = Modifier
+            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .clip(LoveBrainShape.sm)
+            .background(if (isSelected) Primary else PrimaryLight, LoveBrainShape.sm)
+            .clickable(
+                interactionSource = interaction,
+                indication = null,
+                onClick = onClick
+            )
+            .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = label,
+            style = AppTypography.labelSmall,
+            color = if (isSelected) Color.White else PrimaryDark,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
         )
     }
 }

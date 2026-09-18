@@ -205,7 +205,7 @@ fun LoveBrainPanelScreen(
                     }
                     Spacer(Modifier.height(Spacing.xs))
                     Text(
-                        "添加对话 -> 生成回复 -> 查看回复方案，长按预览话术\n困惑时可切「谈心」模式，军师用公正视角帮你分析",
+                        "添加对话 -> 生成回复 -> 查看回复方案\n点击方案卡可调整措辞，长按可语音修改\n困惑时可切「谈心」模式，军师用公正视角帮你分析",
                         style = AppTypography.labelMedium,
                         color = TextSecondary,
                         lineHeight = OnboardGuideLineHeight
@@ -251,10 +251,12 @@ fun LoveBrainPanelScreen(
             val profileSuggestionValid = profileSuggestion?.canConfirm == true
             val isProfileConfirming = viewModel.isProfileConfirming.collectAsStateWithLifecycle().value
             if (profileSuggestion != null && profileSuggestion?.kbName == activeKb?.name) {
+                val isRegenerating = viewModel.profileRegenerating.collectAsStateWithLifecycle().value
                 ProfileSuggestionCard(
                     suggestion = profileSuggestion?.display.orEmpty(),
                     canConfirm = profileSuggestionValid,
                     isConfirming = isProfileConfirming,
+                    isRegenerating = isRegenerating,
                     onConfirm = { viewModel.confirmProfileUpdate() },
                     onDismiss = { viewModel.dismissProfileUpdate() },
                     onRegenerate = { viewModel.regenerateProfileUpdate() }
@@ -455,11 +457,23 @@ fun LoveBrainPanelScreen(
     }
 }
 
+/**
+ * P0-10: 画像建议卡——原地重新生成，卡片位置不变。
+ *
+ * 状态：
+ * - Ready: 正常展示建议，可确认/忽略/重新生成
+ * - Regenerating: 原地显示"正在重新生成…"，禁用确认
+ * - Confirming: 写入中，禁用所有操作
+ * - Error: 建议格式无效，显示重新生成
+ *
+ * 禁止整张卡消失再重新出现导致页面跳动。
+ */
 @Composable
 private fun ProfileSuggestionCard(
     suggestion: String,
     canConfirm: Boolean = true,
     isConfirming: Boolean = false,
+    isRegenerating: Boolean = false,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     onRegenerate: () -> Unit = {}
@@ -472,6 +486,7 @@ private fun ProfileSuggestionCard(
     ) {
         Text("AI 画像更新建议", style = AppTypography.labelLarge, color = PrimaryDark)
         Spacer(Modifier.height(Spacing.md))
+        // P0-10: 正文区域——原地展示，regenerating 时显示 spinner
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -479,46 +494,13 @@ private fun ProfileSuggestionCard(
                 .background(SurfaceCard, LoveBrainShape.md)
                 .padding(Spacing.md)
         ) {
-            Text(
-                text = suggestion,
-                style = AppTypography.labelMedium,
-                color = TextPrimary,
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            )
-        }
-        Spacer(Modifier.height(Spacing.md))
-        Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-            // press scale feedback
-            val (dismissInteraction, dismissScale) = rememberPressScale(0.96f, "profileDismissScale")
-            Text(
-                "忽略",
-                style = AppTypography.labelLarge,
-                color = TextSecondary,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = dismissScale; scaleY = dismissScale }
-                    .clickable(interactionSource = dismissInteraction, indication = null, onClick = {
-                        onDismiss()
-                    })
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-            )
-            // 阻断A修复：无效建议显示"重新生成"而非"确认更新"
-            if (canConfirm && !isConfirming) {
-                val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "profileConfirmScale")
-                Text(
-                    "确认更新",
-                    style = AppTypography.labelLarge,
-                    color = PrimaryDark,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
-                        .clickable(interactionSource = confirmInteraction, indication = null, onClick = {
-                            onConfirm()
-                        })
-                        .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-                )
-            } else if (isConfirming) {
-                // 提交中：禁用并显示进度
-                Row(verticalAlignment = Alignment.CenterVertically) {
+            if (isRegenerating) {
+                // P0-10: 原地重新生成——卡片位置不变，正文区域显示 loading
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(14.dp),
                         strokeWidth = 2.dp,
@@ -526,26 +508,99 @@ private fun ProfileSuggestionCard(
                     )
                     Spacer(Modifier.width(Spacing.xs))
                     Text(
-                        "写入中…",
-                        style = AppTypography.labelLarge,
-                        color = PrimaryDark,
-                        modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                        "正在重新生成…",
+                        style = AppTypography.labelMedium,
+                        color = PrimaryDark
                     )
                 }
             } else {
-                // P1-03: 无效建议——显示重新生成，点击真正发起新的画像生成请求
-                val (regenInteraction, regenScale) = rememberPressScale(0.96f, "profileRegenScale")
                 Text(
-                    "建议格式无效，重新生成",
-                    style = AppTypography.labelLarge,
-                    color = Error,
-                    modifier = Modifier
-                        .graphicsLayer { scaleX = regenScale; scaleY = regenScale }
-                        .clickable(interactionSource = regenInteraction, indication = null, onClick = {
-                            onRegenerate()
-                        })
-                        .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                    text = suggestion,
+                    style = AppTypography.labelMedium,
+                    color = TextPrimary,
+                    modifier = Modifier.verticalScroll(rememberScrollState())
                 )
+            }
+        }
+        Spacer(Modifier.height(Spacing.md))
+        Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
+            // P0-10: regenerating 时禁用忽略和确认
+            val actionsEnabled = !isConfirming && !isRegenerating
+            // press scale feedback
+            val (dismissInteraction, dismissScale) = rememberPressScale(0.96f, "profileDismissScale")
+            Text(
+                "忽略",
+                style = AppTypography.labelLarge,
+                color = if (actionsEnabled) TextSecondary else TextHint,
+                modifier = Modifier
+                    .graphicsLayer { scaleX = dismissScale; scaleY = dismissScale }
+                    .clickable(
+                        interactionSource = dismissInteraction,
+                        indication = null,
+                        enabled = actionsEnabled,
+                        onClick = { onDismiss() }
+                    )
+                    .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+            )
+            when {
+                isRegenerating -> {
+                    // P0-10: 重新生成中原地显示 loading，不额外显示按钮
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            "重新生成中…",
+                            style = AppTypography.labelLarge,
+                            color = TextHint,
+                            modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                        )
+                    }
+                }
+                isConfirming -> {
+                    // 提交中：禁用并显示进度
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(14.dp),
+                            strokeWidth = 2.dp,
+                            color = Primary
+                        )
+                        Spacer(Modifier.width(Spacing.xs))
+                        Text(
+                            "写入中…",
+                            style = AppTypography.labelLarge,
+                            color = PrimaryDark,
+                            modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                        )
+                    }
+                }
+                canConfirm -> {
+                    val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "profileConfirmScale")
+                    Text(
+                        "确认更新",
+                        style = AppTypography.labelLarge,
+                        color = PrimaryDark,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier
+                            .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
+                            .clickable(interactionSource = confirmInteraction, indication = null, onClick = {
+                                onConfirm()
+                            })
+                            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                    )
+                }
+                else -> {
+                    // P1-03: 无效建议——显示重新生成，点击真正发起新的画像生成请求
+                    val (regenInteraction, regenScale) = rememberPressScale(0.96f, "profileRegenScale")
+                    Text(
+                        "建议格式无效，重新生成",
+                        style = AppTypography.labelLarge,
+                        color = Error,
+                        modifier = Modifier
+                            .graphicsLayer { scaleX = regenScale; scaleY = regenScale }
+                            .clickable(interactionSource = regenInteraction, indication = null, onClick = {
+                                onRegenerate()
+                            })
+                            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                    )
+                }
             }
         }
     }

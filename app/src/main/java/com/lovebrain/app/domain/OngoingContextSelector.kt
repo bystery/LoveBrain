@@ -37,7 +37,7 @@ class OngoingContextSelector(
     /** 事项内部状态 */
     enum class ItemStatus {
         ACTIVE,     // 进行中，满足注入条件时可注入
-        DORMANT,    // 休眠——连续 N 轮无新证据，仍记得但默认不注入
+        DORMANT,    // 休眠——连续 N 轮无真实新证据，仍记得但默认不注入
         FINISHED,   // 已完成
         CANCELLED   // 已取消
     }
@@ -49,7 +49,8 @@ class OngoingContextSelector(
         val chain: String,          // 状态链
         val itemStatus: ItemStatus, // 内部推导状态
         val eventDate: String? = null,  // 结构化事件日期（仅从事项名称提取）
-        val lastInjectedTurn: Int = -1  // 最后一次注入的轮次（从冷却状态读取）
+        val lastInjectedTurn: Int = -1,  // P0-7: 最后一次注入的轮次（只做 prompt cooldown / 防重复注入）
+        val lastEvidenceTurn: Int = -1   // P0-7: 最后一次有真实新证据的轮次（决定 ACTIVE / DORMANT）
     )
 
     /** 本轮注入决策上下文
@@ -86,16 +87,23 @@ class OngoingContextSelector(
         val cooldown = readCooldown(kbName)
 
         // 将冷却信息合并到 items
+        // P0-7: 同时读取 lastInjectedTurn 和 lastEvidenceTurn——两者独立
         val itemsWithCooldown = allItems.map { item ->
             val cd = cooldown[item.name]
-            item.copy(lastInjectedTurn = cd?.lastInjectedTurn ?: -1)
+            item.copy(
+                lastInjectedTurn = cd?.lastInjectedTurn ?: -1,
+                lastEvidenceTurn = cd?.lastEvidenceTurn ?: -1
+            )
         }
 
-        // 推导 DORMANT 状态：连续 DORMANT_TURNS 轮无新证据 → DORMANT
+        // P0-7: 推导 DORMANT 状态——基于 lastEvidenceTurn 而非 lastInjectedTurn
+        // 连续 DORMANT_TURNS 轮无真实新证据 → DORMANT
+        // 事项有真实证据但因其他原因未注入，不得错误进入 DORMANT
+        // 事项不断被注入但没有任何真实新证据，也不能靠"被注入"永久保持 ACTIVE
         val itemsWithStatus = itemsWithCooldown.map { item ->
-            if (item.itemStatus == ItemStatus.ACTIVE && item.lastInjectedTurn >= 0) {
-                val turnsSinceLastInject = context.currentTurn - item.lastInjectedTurn
-                if (turnsSinceLastInject >= DORMANT_TURNS) {
+            if (item.itemStatus == ItemStatus.ACTIVE && item.lastEvidenceTurn >= 0) {
+                val turnsSinceLastEvidence = context.currentTurn - item.lastEvidenceTurn
+                if (turnsSinceLastEvidence >= DORMANT_TURNS) {
                     item.copy(itemStatus = ItemStatus.DORMANT)
                 } else {
                     item
@@ -133,6 +141,10 @@ class OngoingContextSelector(
                 item, realText, intentText, directiveText, context
             )
 
+            // P0-7: 如果本轮有真实新证据，更新 lastEvidenceTurn
+            // 注意：这里只标记“有证据”，不代表一定会被注入
+            // 证据更新在后面统一处理
+
             // 冷却检查：如果最近 N 轮已注入且当前无新证据，禁止再注入
             val cooldownEntry = cooldown[item.name]
             val isInCooldown = cooldownEntry != null &&
@@ -149,17 +161,11 @@ class OngoingContextSelector(
                 continue
             }
 
-            // ACTIVE 事项：如果不相关且有冷却记录 → 跳过
-            if (item.itemStatus == ItemStatus.ACTIVE && !isRelevant && cooldownEntry != null) {
-                continue
-            }
-
-            // ACTIVE 事项：如果不相关且无冷却记录（第一次出现）允许注入一次
+            // ACTIVE 事项：如果不相关 → 跳过
+            // P0-6 修复：删除"首次出现允许注入一次"规则
+            // 核心原则：Stored != EligibleForCurrentTurn
+            // 没有相关性 → 永远不注入，无论是否第一次出现
             if (item.itemStatus == ItemStatus.ACTIVE && !isRelevant) {
-                if (cooldownEntry == null) {
-                    eligible.add(item)
-                    injectedNames.add(item.name)
-                }
                 continue
             }
 
@@ -169,8 +175,11 @@ class OngoingContextSelector(
         }
 
         // 更新冷却状态
-        if (injectedNames.isNotEmpty()) {
-            updateCooldown(kbName, injectedNames, context.currentTurn)
+        // P0-7: 同时更新 lastInjectedTurn 和 lastEvidenceTurn
+        // - lastInjectedTurn: 只在事项被注入时更新
+        // - lastEvidenceTurn: 在事项本轮有真实新证据时更新（无论是否被注入）
+        if (injectedNames.isNotEmpty() || eligible.isNotEmpty()) {
+            updateCooldown(kbName, injectedNames, eligible.map { it.name }.toSet(), context.currentTurn)
         }
 
         return SelectionResult(eligible, itemsWithStatus, injectedNames)
@@ -340,7 +349,9 @@ class OngoingContextSelector(
     private data class CooldownEntry(
         val name: String,
         var lastInjectedTurn: Int,
-        var lastInjectedTime: String
+        var lastInjectedTime: String,
+        // P0-7: 独立的证据轮次——决定 ACTIVE / DORMANT，不与注入轮次互相替代
+        var lastEvidenceTurn: Int = -1
     )
 
     private suspend fun readCooldown(kbName: String): Map<String, CooldownEntry> {
@@ -353,14 +364,36 @@ class OngoingContextSelector(
         }.getOrDefault(emptyMap())
     }
 
-    private suspend fun updateCooldown(kbName: String, injectedNames: Set<String>, currentTurn: Int) {
+    /**
+     * P0-7: 更新冷却状态——同时更新 lastInjectedTurn 和 lastEvidenceTurn。
+     *
+     * - lastInjectedTurn: 只在事项被注入时更新（injectedNames 中的事项）
+     * - lastEvidenceTurn: 在事项本轮有真实新证据时更新（evidenceNames 中的事项）
+     *
+     * 两者独立：有证据但未注入 → lastEvidenceTurn 更新但 lastInjectedTurn 不更新；
+     * 被注入但无新证据 → lastInjectedTurn 更新但 lastEvidenceTurn 不更新。
+     */
+    private suspend fun updateCooldown(
+        kbName: String,
+        injectedNames: Set<String>,
+        evidenceNames: Set<String>,
+        currentTurn: Int
+    ) {
         val existing = readCooldown(kbName).toMutableMap()
         val now = TimeFmt.now()
         for (name in injectedNames) {
-            existing[name] = CooldownEntry(name, currentTurn, now)
+            val entry = existing[name] ?: CooldownEntry(name, -1, now, -1)
+            entry.lastInjectedTurn = currentTurn
+            entry.lastInjectedTime = now
+            existing[name] = entry
+        }
+        for (name in evidenceNames) {
+            val entry = existing[name] ?: CooldownEntry(name, -1, now, -1)
+            entry.lastEvidenceTurn = currentTurn
+            existing[name] = entry
         }
         // 只保留最近 20 条冷却记录，防膨胀
-        val toKeep = existing.values.sortedByDescending { it.lastInjectedTurn }.take(20)
+        val toKeep = existing.values.sortedByDescending { maxOf(it.lastInjectedTurn, it.lastEvidenceTurn) }.take(20)
         val json = kotlinx.serialization.json.Json.encodeToString(
             kotlinx.serialization.builtins.ListSerializer(CooldownEntry.serializer()),
             toKeep

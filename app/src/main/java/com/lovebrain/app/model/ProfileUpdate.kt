@@ -13,18 +13,20 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.jsonNull
 
 /**
- * P0-2: 画像更新解析结果分类。
+ * P0-2/P0-9: 画像更新解析结果分类。
  *
  * - [SUCCESS]：JSON 完整且字段校验通过
  * - [EMPTY]：模型返回空内容
  * - [TRUNCATED]：JSON 不完整（括号未闭合）或 finish_reason=length
- * - [INVALID_SCHEMA]：JSON 完整但字段类型/值不合法
+ * - [INVALID_JSON]：对象边界完整，但 JSON parser 失败（语法错误）
+ * - [INVALID_SCHEMA]：JSON 语法正确，但字段类型/值/阶段不合法
  * - [PROVIDER_ERROR]：API 返回错误或网络异常
  */
 enum class ProfileParseStatus {
     SUCCESS,
     EMPTY,
     TRUNCATED,
+    INVALID_JSON,
     INVALID_SCHEMA,
     PROVIDER_ERROR
 }
@@ -34,6 +36,7 @@ enum class ProfileParseStatus {
  *
  * 自动自愈逻辑通过 [status] 判断是否需要重试：
  * - [TRUNCATED] → 可重试
+ * - [INVALID_JSON] → 可重试（可能因截断导致语法错误）
  * - [PROVIDER_ERROR] → 可重试
  * - [INVALID_SCHEMA] → 不可重试（schema 问题不会因重试改变）
  * - [EMPTY] → 可重试（可能偶发空响应）
@@ -47,6 +50,7 @@ data class ProfileParseResult(
 ) {
     /** 是否值得自动重试 */
     val shouldRetry: Boolean get() = status == ProfileParseStatus.TRUNCATED
+        || status == ProfileParseStatus.INVALID_JSON
         || status == ProfileParseStatus.PROVIDER_ERROR
         || status == ProfileParseStatus.EMPTY
 
@@ -104,7 +108,7 @@ data class ProfileUpdate(
          * 1. finishReason == "length" → TRUNCATED（即使 content 看似完整也标截断）
          * 2. content 为空 → EMPTY
          * 3. Jsons.extractJsonObject 返回 null（括号不配对）→ TRUNCATED
-         * 4. JSON 解析失败 → TRUNCATED（可能截断在关键位置）
+         * 4. JSON 解析失败 → INVALID_JSON（对象边界完整但语法错误）
          * 5. 字段校验失败 → INVALID_SCHEMA
          * 6. 全通过 → SUCCESS
          */
@@ -150,7 +154,26 @@ data class ProfileUpdate(
             }
 
             // 5-6. 走原有 parse 逻辑
-            val profileUpdate = parseFromJson(jsonStr, raw)
+            // P0-9: 区分 INVALID_JSON 和 INVALID_SCHEMA
+            val profileUpdate = try {
+                parseFromJson(jsonStr, raw)
+            } catch (e: Exception) {
+                // JSON parser 抛异常 → INVALID_JSON
+                return ProfileParseResult(
+                    status = ProfileParseStatus.INVALID_JSON,
+                    profileUpdate = ProfileUpdate(
+                        rawJson = jsonStr,
+                        valid = false,
+                        error = "JSON解析失败：${e.message}",
+                        me = null, her = null, warmth = null,
+                        stageChanged = false, newStage = null,
+                        observations = emptyList(), messageToUser = null,
+                        displaySummary = jsonStr.take(PROFILE_FALLBACK_LIMIT)
+                    ),
+                    rawContent = raw,
+                    finishReason = finishReason
+                )
+            }
             val status = if (profileUpdate.valid) ProfileParseStatus.SUCCESS
                          else ProfileParseStatus.INVALID_SCHEMA
 
@@ -179,18 +202,11 @@ data class ProfileUpdate(
                     observations = emptyList(), messageToUser = null,
                     displaySummary = raw.take(PROFILE_FALLBACK_LIMIT)
                 )
-            return parseFromJson(jsonStr, raw)
-        }
-
-        /**
-         * P0-2: 从已提取的 JSON 字符串构建 ProfileUpdate（内部方法）。
-         * 调用方已通过 Jsons.extractJsonObject 提取了完整 JSON 对象。
-         */
-        private fun parseFromJson(jsonStr: String, @Suppress("UNUSED_PARAMETER") raw: String): ProfileUpdate {
-            val parsed: JsonObject = try {
-                json.parseToJsonElement(jsonStr).jsonObject
+            // P0-9: parseFromJson 现在 JSON 解析失败时抛异常
+            return try {
+                parseFromJson(jsonStr, raw)
             } catch (e: Exception) {
-                return ProfileUpdate(
+                ProfileUpdate(
                     rawJson = jsonStr,
                     valid = false,
                     error = "JSON解析失败：${e.message}",
@@ -200,6 +216,18 @@ data class ProfileUpdate(
                     displaySummary = jsonStr.take(PROFILE_FALLBACK_LIMIT)
                 )
             }
+        }
+
+        /**
+         * P0-2/P0-9: 从已提取的 JSON 字符串构建 ProfileUpdate（内部方法）。
+         * 调用方已通过 Jsons.extractJsonObject 提取了完整 JSON 对象。
+         *
+         * P0-9: JSON 解析失败时抛出异常（由 parseWithStatus 捕获并分类为 INVALID_JSON）。
+         * 字段校验失败时返回 valid=false（由 parseWithStatus 分类为 INVALID_SCHEMA）。
+         */
+        private fun parseFromJson(jsonStr: String, @Suppress("UNUSED_PARAMETER") raw: String): ProfileUpdate {
+            // P0-9: JSON parser 失败时抛出异常，由调用方区分 INVALID_JSON 和 INVALID_SCHEMA
+            val parsed: JsonObject = json.parseToJsonElement(jsonStr).jsonObject
 
             // 步骤3：逐字段类型校验（按字段不同规则区分）
             val errors = mutableListOf<String>()

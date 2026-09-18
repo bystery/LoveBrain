@@ -54,8 +54,8 @@ class MeetingPollutionRegressionTest {
     }
 
     @Test
-    fun `round 1 creates meeting event and injects once`() = runBlocking {
-        // 第 1 轮：首次出现，允许注入一次
+    fun `round 1 injects because message contains keyword`() = runBlocking {
+        // P0-6: 第 1 轮注入是因为消息含"周一""见"关键词，不是因为"首次出现"
         coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns ""
 
         val result = selector.selectForInjection("kb", ctx(1,
@@ -63,7 +63,7 @@ class MeetingPollutionRegressionTest {
             ChatMessage.Role.ME to "好"
         ))
 
-        assertEquals("第 1 轮应允许注入（首次出现）", 1, result.eligibleItems.size)
+        assertEquals("第 1 轮应注入（关键词命中）", 1, result.eligibleItems.size)
     }
 
     @Test
@@ -110,13 +110,13 @@ class MeetingPollutionRegressionTest {
     @Test
     fun `full 11-round sequence`() = runBlocking {
         // 完整 11 轮序列测试
-        // 第 1 轮
+        // 第 1 轮（注入因为消息含关键词"周一""见"）
         coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns ""
         val r1 = selector.selectForInjection("kb", ctx(1,
             ChatMessage.Role.HER to "周一见吧",
             ChatMessage.Role.ME to "好"
         ))
-        assertEquals("第 1 轮应注入", 1, r1.eligibleItems.size)
+        assertEquals("第 1 轮应注入（关键词命中）", 1, r1.eligibleItems.size)
 
         // 模拟第 1 轮后冷却已写入
         coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns

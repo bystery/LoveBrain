@@ -14,11 +14,13 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * P0-7/P0-8: OngoingContextSelector 单测。
+ * P0-6/P0-7: OngoingContextSelector 单测。
  *
  * 核心原则：
  * - plan.md 是长期存储，不是每轮必注入内容
+ * - Stored != EligibleForCurrentTurn
  * - 默认拒绝注入
+ * - P0-6: 首次出现且不相关 → 不注入（删除旧的"首次允许注入一次"规则）
  * - 日期临近不得单独授权注入
  * - ReplyDirective 是真实 relevance signal
  * - DORMANT 是真实状态
@@ -64,8 +66,12 @@ class OngoingContextSelectorTest {
         assertTrue("空 plan 应返回空 eligible", result.eligibleItems.isEmpty())
     }
 
+    /**
+     * P0-6 修复：首次出现且不相关 → 不注入
+     * 旧测试名 `first appearance allows injection once` 已废弃
+     */
     @Test
-    fun `first appearance allows injection once`() = runBlocking {
+    fun `first unseen item does not inject into unrelated conversation`() = runBlocking {
         coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("计划9-21见面")
 
         val ctx = OngoingContextSelector.SelectionContext(
@@ -75,13 +81,12 @@ class OngoingContextSelectorTest {
         )
         val result = selector.selectForInjection("kb", ctx)
 
-        // 第一次出现（无冷却记录）允许注入一次
-        assertEquals("首次出现应允许注入", 1, result.eligibleItems.size)
+        // P0-6: 不相关 → 不注入，无论是否第一次出现
+        assertEquals("不相关的首次出现不应注入", 0, result.eligibleItems.size)
     }
 
     @Test
     fun `unrelated message does not inject after first appearance`() = runBlocking {
-        // 模拟第 2 轮——已有冷却记录
         coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("计划9-21见面")
         coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns
             """[{"name":"计划9-21见面","lastInjectedTurn":1,"lastInjectedTime":"2026-09-15 10:00"}]"""
@@ -93,7 +98,6 @@ class OngoingContextSelectorTest {
         )
         val result = selector.selectForInjection("kb", ctx)
 
-        // 第 2 轮、不相关、在冷却中 -> 不注入
         assertEquals("冷却中且不相关不应注入", 0, result.eligibleItems.size)
     }
 
@@ -102,13 +106,12 @@ class OngoingContextSelectorTest {
         coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("计划9-21见面")
 
         val ctx = OngoingContextSelector.SelectionContext(
-            messages = messages(ChatMessage.Role.HER to "对了，周一几点见？"),
+            messages = messages(ChatMessage.Role.HER to "对了，周一几点见面？"),
             currentTurn = 5,
             currentTime = "2026-09-17 12:00"
         )
         val result = selector.selectForInjection("kb", ctx)
 
-        // "见面" 关键词命中 "见面"
         assertTrue("关键词匹配应注入", result.eligibleItems.isNotEmpty())
     }
 
@@ -129,10 +132,7 @@ class OngoingContextSelectorTest {
 
     @Test
     fun `date proximity alone does NOT inject`() = runBlocking {
-        // P0-7: 日期临近不得单独授权注入
-        // 事项名有日期 "9-21见面"，当前时间 2026-09-20，但消息内容不相关
         coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("计划9-21见面")
-        // 模拟已有冷却记录（不是第一次出现）
         coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns
             """[{"name":"计划9-21见面","lastInjectedTurn":1,"lastInjectedTime":"2026-09-15 10:00"}]"""
 
@@ -143,18 +143,15 @@ class OngoingContextSelectorTest {
         )
         val result = selector.selectForInjection("kb", ctx)
 
-        // 日期临近但消息不相关 -> 不注入
         assertEquals("日期临近不应单独授权注入", 0, result.eligibleItems.size)
     }
 
     @Test
     fun `DORMANT status after 5 turns without evidence`() = runBlocking {
-        // P0-7: 连续 N 轮无新证据 -> DORMANT
         coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("计划9-21见面")
         coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns
             """[{"name":"计划9-21见面","lastInjectedTurn":1,"lastInjectedTime":"2026-09-15 10:00"}]"""
 
-        // 第 7 轮（距离上次注入 6 轮，超过 DORMANT_TURNS=5）
         val ctx = OngoingContextSelector.SelectionContext(
             messages = messages(ChatMessage.Role.HER to "今天好累"),
             currentTurn = 7,
@@ -162,9 +159,7 @@ class OngoingContextSelectorTest {
         )
         val result = selector.selectForInjection("kb", ctx)
 
-        // DORMANT + 不相关 -> 不注入
         assertEquals("DORMANT 且不相关不应注入", 0, result.eligibleItems.size)
-        // 但 allItems 中应有 DORMANT 状态
         assertTrue("应有事项记录", result.allItems.isNotEmpty())
     }
 
@@ -174,7 +169,6 @@ class OngoingContextSelectorTest {
         coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns
             """[{"name":"计划9-21见面","lastInjectedTurn":1,"lastInjectedTime":"2026-09-15 10:00"}]"""
 
-        // 第 7 轮（DORMANT），但消息提到 "见面"
         val ctx = OngoingContextSelector.SelectionContext(
             messages = messages(ChatMessage.Role.HER to "对了，见面的事怎么说"),
             currentTurn = 7,

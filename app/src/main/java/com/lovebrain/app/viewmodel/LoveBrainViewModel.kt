@@ -787,17 +787,18 @@ class LoveBrainViewModel(
 
     //  KBG-02：确认画像时使用 suggestion.kbName，不使用 _activeKb
     // 使用统一的 ProfileUpdate payload，不重复解析 raw
+    /**
+     * P0-5: 画像确认——事务性多文件写入。
+     * 先保存旧版本 → 校验全部 payload → 全部写入 → 任一步失败 rollback。
+     * 用户最终只能观察到：全部成功 或 全部保持原状态。
+     */
     fun confirmProfileUpdate() {
         val suggestion = _profileSuggestion.value ?: return
 
-        // 幂等：提交中拒绝重复点击
         if (_isProfileConfirming.value) return
 
-        // 使用已验证的 payload，不重复解析
         val payload = suggestion.profileUpdate
         if (payload == null || !payload.valid) {
-            // 无效建议不展示可确认按钮——不确认
-            // 但如果走到了这里，说明卡片状态不一致，提示重新生成
             showPanelWarning("建议格式无效，请重新生成")
             _profileSuggestion.value = null
             return
@@ -810,7 +811,6 @@ class LoveBrainViewModel(
             _isProfileConfirming.value = true
 
             try {
-                // KBG-01+KBG-02 交汇：如果建议所属 KB 已被删除 → 不写盘
                 val exists = withContext(Dispatchers.IO) {
                     knowledgeRepo.listAll().any { it.name == kbName }
                 }
@@ -820,7 +820,6 @@ class LoveBrainViewModel(
                     return@launch
                 }
 
-                // 版本核验：纠正 revision 变化则提示资料已变化
                 val currentRev = withContext(Dispatchers.IO) {
                     knowledgeRepo.getCorrectionsRevision(kbName)
                 }
@@ -830,29 +829,75 @@ class LoveBrainViewModel(
                     return@launch
                 }
 
-                // 三画像、阶段与向量相关变动作为一个批次提交
+                // P0-5: 事务性写入——先备份旧版本，全部写入成功才 commit，任一失败 rollback
                 withContext(Dispatchers.IO) {
-                    payload.me?.let { meContent ->
-                        knowledgeRepo.writeFile(kbName, "understand/me.md", meContent)
+                    // Step 1: 收集需要写入的目标和旧内容
+                    val writeTargets = mutableListOf<Pair<String, String>>()
+                    payload.me?.let { writeTargets.add("understand/me.md" to it) }
+                    payload.her?.let { writeTargets.add("understand/her.md" to it) }
+                    payload.warmth?.let { writeTargets.add("understand/warmth.md" to it) }
+
+                    // 备份旧版本
+                    val backups = mutableMapOf<String, String>()
+                    for ((path, _) in writeTargets) {
+                        backups[path] = knowledgeRepo.readFile(kbName, path)
                     }
-                    payload.her?.let { herContent ->
-                        knowledgeRepo.writeFile(kbName, "understand/her.md", herContent)
-                    }
-                    payload.warmth?.let { warmthContent ->
-                        // 阻断A修复：先取得目标库当前向量，再写 warmth
-                        // 避免写入 warmth 后读到的向量已被修改
-                        val targetVector = knowledgeRepo.readVector(kbName)
-                        knowledgeRepo.writeFile(kbName, "understand/warmth.md", warmthContent)
-                        if (targetVector.isNotEmpty()) {
-                            knowledgeRepo.writeVector(kbName, targetVector)
+
+                    // 备份 warmth vector（如果 warmth 要更新）
+                    val oldVector = if (payload.warmth != null) {
+                        knowledgeRepo.readVector(kbName)
+                    } else null
+
+                    // 备份 stage（如果 stage 要变）
+                    val oldStage = if (payload.stageChanged && !payload.newStage.isNullOrBlank()) {
+                        knowledgeRepo.getCurrentStage(kbName)
+                    } else null
+
+                    try {
+                        // Step 2: 逐个写入
+                        for ((path, content) in writeTargets) {
+                            knowledgeRepo.writeFile(kbName, path, content)
                         }
-                    }
-                    if (payload.stageChanged && !payload.newStage.isNullOrBlank()) {
-                        knowledgeRepo.updateStage(kbName, payload.newStage)
+
+                        // Step 3: warmth 向量同步
+                        if (payload.warmth != null && oldVector != null && oldVector.isNotEmpty()) {
+                            knowledgeRepo.writeVector(kbName, oldVector)
+                        }
+
+                        // Step 4: 阶段更新
+                        if (payload.stageChanged && !payload.newStage.isNullOrBlank()) {
+                            knowledgeRepo.updateStage(kbName, payload.newStage)
+                            knowledgeRepo.updateWarmthStageLabel(kbName, payload.newStage)
+                        }
+                    } catch (e: Exception) {
+                        // Step 5: Rollback——恢复旧版本
+                        L.e("confirmProfileUpdate: write failed, rolling back", e)
+                        for ((path, oldContent) in backups) {
+                            try {
+                                knowledgeRepo.writeFile(kbName, path, oldContent)
+                            } catch (rollbackErr: Exception) {
+                                L.e("confirmProfileUpdate: CRITICAL rollback failed for $path", rollbackErr)
+                            }
+                        }
+                        if (oldVector != null && oldVector.isNotEmpty()) {
+                            try {
+                                knowledgeRepo.writeVector(kbName, oldVector)
+                            } catch (rollbackErr: Exception) {
+                                L.e("confirmProfileUpdate: CRITICAL vector rollback failed", rollbackErr)
+                            }
+                        }
+                        if (oldStage != null) {
+                            try {
+                                knowledgeRepo.updateStage(kbName, oldStage)
+                                knowledgeRepo.updateWarmthStageLabel(kbName, oldStage)
+                            } catch (rollbackErr: Exception) {
+                                L.e("confirmProfileUpdate: CRITICAL stage rollback failed", rollbackErr)
+                            }
+                        }
+                        throw e // 重新抛出，由外层 catch 处理用户提示
                     }
                 }
 
-                // 只有提交成功且当前卡片仍是同一个 suggestionId 才清卡
                 val current = _profileSuggestion.value
                 if (current != null && current.suggestionId == suggestionId) {
                     _profileSuggestion.value = null
@@ -862,8 +907,8 @@ class LoveBrainViewModel(
                 refreshKnowledgeBases()
             } catch (e: Exception) {
                 L.e("confirmProfileUpdate failed", e)
-                // 磁盘失败保留卡片与重试入口
-                showPanelWarning("画像写入失败，可重试")
+                // P0-5: rollback 已在事务内完成，此处只提示用户
+                showPanelWarning("画像写入失败，已恢复原数据，可重试")
             } finally {
                 _isProfileConfirming.value = false
             }
@@ -875,16 +920,29 @@ class LoveBrainViewModel(
     }
 
     /**
-     * P1-03: 真正重新生成画像建议——不是只关闭卡片。
-     * 先清空旧建议，展示生成中状态，然后调用 Coordinator 重新生成。
+     * P0-10: 真正原地重新生成画像建议——卡片位置不变，显示"正在重新生成…"。
+     * 不再清空旧建议导致整张卡消失 → 页面跳动。
+     * 设置 _profileRegenerating 标记，UI 原地展示 loading。
      */
+    private val _profileRegenerating = MutableStateFlow(false)
+    val profileRegenerating: StateFlow<Boolean> = _profileRegenerating.asStateFlow()
+
     fun regenerateProfileUpdate() {
         val suggestion = _profileSuggestion.value ?: return
         val kbName = suggestion.kbName
-        // 先清空旧建议（展示生成中），但保留 kbName 供新建议回填
-        _profileSuggestion.value = null
-        showPanelWarning("正在重新生成画像建议…")
-        triggerCoordinator.regenerateProfile(kbName, viewModelScope, this)
+        // P0-10: 原地重新生成——不清空旧建议，只设置 regenerating 标记
+        _profileRegenerating.value = true
+        triggerCoordinator.regenerateProfile(kbName, viewModelScope, object : KnowledgeTriggerCoordinator.Callbacks {
+            override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {}
+            override fun onVectorUpdateNotice(kbName: String, summary: String) {}
+            override fun onStageSuggestion(suggestion: StageSuggestion) {}
+            override fun onKbNotice(notice: String) {}
+            override fun onProfileSuggestion(suggestion: ProfileSuggestion) {
+                _profileSuggestion.value = suggestion
+                _profileRegenerating.value = false
+            }
+            override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {}
+        })
     }
 
     // ═══════════ 谈心模式（委托 GenerationEngine） ═══════════

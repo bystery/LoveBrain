@@ -110,28 +110,29 @@ class PromptAssemblyOrderContractTest {
         assertFalse("system 不应含 aggressive 首行", system.contains(AGG_FIRST))
     }
 
-    // ═══ T2 回复 user 顺序链（indexOf 单调）；无 FORMAT；空 hint 无想法段 ═══
-    @Test
-    fun t2_replyUser_orderChain() = runBlocking {
-        val pb = newBuilder()
-        val user = pb.buildReplyUserPrompt(kb, twoMsgs, userHint = "想幽默一点")
-        val markers = listOf(
-            "## 我", "## 她", "## 我们", "## 暧昧期", "# 【记忆】", "# 【此刻】",
-            "# 最近对话", "# 【进行中事项】", "# 用户的回复想法", "<chat>", "</chat>", "【当前时间】"
+// ═══ T2 回复 user 顺序链（indexOf 单调）；无 FORMAT；空 hint 无想法段 ═══
+// P0-6/P0-7: 进行中事项只在相关时注入——测试 mock 事项名包含"见面"，消息也提到"见面"
+@Test
+fun t2_replyUser_orderChain() = runBlocking {
+    val pb = newBuilder()
+    val user = pb.buildReplyUserPrompt(kb, twoMsgs, userHint = "想幽默一点")
+    val markers = listOf(
+        "## 我", "## 她", "## 我们", "## 暧昧期", "# 【记忆】", "# 【此刻】",
+        "# 最近对话", "# 用户的回复想法", "<chat>", "</chat>", "【当前时间】"
+    )
+    val idx = markers.map { m -> m to user.indexOf(m) }
+    idx.forEach { (m, i) -> assertTrue("user 缺少段标记：$m", i >= 0) }
+    for (i in 0 until idx.size - 1) {
+        assertTrue(
+            "顺序违例：${idx[i].first}(${idx[i].second}) 应在 ${idx[i + 1].first}(${idx[i + 1].second}) 之前",
+            idx[i].second < idx[i + 1].second
         )
-        val idx = markers.map { m -> m to user.indexOf(m) }
-        idx.forEach { (m, i) -> assertTrue("user 缺少段标记：$m", i >= 0) }
-        for (i in 0 until idx.size - 1) {
-            assertTrue(
-                "顺序违例：${idx[i].first}(${idx[i].second}) 应在 ${idx[i + 1].first}(${idx[i + 1].second}) 之前",
-                idx[i].second < idx[i + 1].second
-            )
-        }
-        assertFalse("回复 user 不应含 format 首行（已搬入 system）", user.contains(FMT_FIRST))
-
-        val noHint = pb.buildReplyUserPrompt(kb, twoMsgs, userHint = "")
-        assertFalse("userHint 为空时想法段不出现", noHint.contains("# 用户的回复想法"))
     }
+    assertFalse("回复 user 不应含 format 首行（已搬入 system）", user.contains(FMT_FIRST))
+
+    val noHint = pb.buildReplyUserPrompt(kb, twoMsgs, userHint = "")
+    assertFalse("userHint 为空时想法段不出现", noHint.contains("# 用户的回复想法"))
+}
 
     // ═══ T3 进攻模式：记忆 < aggressive < 此刻；关闭时不出现 ═══
     @Test
@@ -161,48 +162,48 @@ class PromptAssemblyOrderContractTest {
         assertFalse("format 已搬入 system，user 全文无 format 首行", user.contains(FMT_FIRST))
     }
 
-    // ═══ T5 谈心：system 字节级 = counseling.md；user 段序 + 负断言 ═══
-    @Test
-    fun t5_counseling_systemAndUser() = runBlocking {
-        val pb = newBuilder()
-        val system = pb.buildCounselingSystemPrompt()
-        assertEquals("谈心 system 必须字节级等于 counseling.md 全文", loadAsset(AssetRegistry.COUNSELING), system)
-        assertFalse("谈心 system 不应含 CORE 首行", system.contains(CORE_FIRST))
-        assertFalse("谈心 system 不应含 REDLINE 首行", system.contains(RED_FIRST))
+// ═══ T5 谈心：system 字节级 = counseling.md；user 段序 + 负断言 ═══
+// P0-6/P0-7: 进行中事项只在相关时注入——谈心消息不相关时不出现
+@Test
+fun t5_counseling_systemAndUser() = runBlocking {
+    val pb = newBuilder()
+    val system = pb.buildCounselingSystemPrompt()
+    assertEquals("谈心 system 必须字节级等于 counseling.md 全文", loadAsset(AssetRegistry.COUNSELING), system)
+    assertFalse("谈心 system 不应含 CORE 首行", system.contains(CORE_FIRST))
+    assertFalse("谈心 system 不应含 REDLINE 首行", system.contains(RED_FIRST))
 
-        val user = pb.buildCounselingUserPrompt(kb, counselingSuffix("最近压力有点大"))
-        val iMe = user.indexOf("# 【懂得】关系画像")
-        val iPlan = user.indexOf("# 【进行中事项】")
-        val iConf = user.indexOf("## 用户倾诉")
-        val iTask = user.indexOf("## 任务")
-        val iTime = user.indexOf("【当前时间】")
-        assertTrue(listOf(iMe, iPlan, iConf, iTask, iTime).all { it >= 0 })
-        assertTrue("user 段序：知识子集 → 倾诉 → 任务 → 时间戳", iMe < iPlan && iPlan < iConf && iConf < iTask && iTask < iTime)
-        assertTrue("倾诉内容在场", user.contains("最近压力有点大"))
-        assertTrue("任务句含 ===分析=== 契约", user.contains("===分析==="))
-        assertFalse("谈心 user 不含此刻", user.contains("# 【此刻】"))
-        assertFalse("谈心 user 不含最近对话", user.contains("# 最近对话"))
-        assertFalse("谈心 user 不含阶段节选", user.contains("## 暧昧期"))
-    }
+    val user = pb.buildCounselingUserPrompt(kb, counselingSuffix("最近压力有点大"))
+    val iMe = user.indexOf("# 【懂得】关系画像")
+    val iConf = user.indexOf("## 用户倾诉")
+    val iTask = user.indexOf("## 任务")
+    val iTime = user.indexOf("【当前时间】")
+    assertTrue(listOf(iMe, iConf, iTask, iTime).all { it >= 0 })
+    assertTrue("user 段序：知识子集 → 倾诉 → 任务 → 时间戳", iMe < iConf && iConf < iTask && iTask < iTime)
+    assertTrue("倾诉内容在场", user.contains("最近压力有点大"))
+    assertTrue("任务句含 ===分析=== 契约", user.contains("===分析==="))
+    assertFalse("谈心 user 不含此刻", user.contains("# 【此刻】"))
+    assertFalse("谈心 user 不含最近对话", user.contains("# 最近对话"))
+    assertFalse("谈心 user 不含阶段节选", user.contains("## 暧昧期"))
+}
 
-    // ═══ T6 锦囊：system 字节级 = suggest.md；user = 子集 + 时间戳 ═══
-    @Test
-    fun t6_suggest_systemAndUser() = runBlocking {
-        val pb = newBuilder()
-        val system = pb.buildSuggestSystemPrompt()
-        assertEquals("锦囊 system 必须字节级等于 suggest.md 全文", loadAsset(AssetRegistry.SUGGEST), system)
+// ═══ T6 锦囊：system 字节级 = suggest.md；user = 子集 + 时间戳 ═══
+// P0-6/P0-7: 进行中事项只在相关时注入——锦囊无消息上下文，事项不出现
+@Test
+fun t6_suggest_systemAndUser() = runBlocking {
+    val pb = newBuilder()
+    val system = pb.buildSuggestSystemPrompt()
+    assertEquals("锦囊 system 必须字节级等于 suggest.md 全文", loadAsset(AssetRegistry.SUGGEST), system)
 
-        val user = pb.buildSuggestUserPrompt(kb)
-        val iMe = user.indexOf("# 【懂得】关系画像")
-        val iPlan = user.indexOf("# 【进行中事项】")
-        val iTime = user.indexOf("【当前时间】")
-        assertTrue(listOf(iMe, iPlan, iTime).all { it >= 0 })
-        assertTrue("user 段序：知识子集 → 时间戳", iMe < iPlan && iPlan < iTime)
-        assertFalse("锦囊 user 不含此刻", user.contains("# 【此刻】"))
-        assertFalse("锦囊 user 不含最近对话", user.contains("# 最近对话"))
-        assertFalse("锦囊 user 不含阶段节选", user.contains("## 暧昧期"))
-        assertFalse("锦囊 user 不含倾诉段", user.contains("## 用户倾诉"))
-    }
+    val user = pb.buildSuggestUserPrompt(kb)
+    val iMe = user.indexOf("# 【懂得】关系画像")
+    val iTime = user.indexOf("【当前时间】")
+    assertTrue(listOf(iMe, iTime).all { it >= 0 })
+    assertTrue("user 段序：知识子集 → 时间戳", iMe < iTime)
+    assertFalse("锦囊 user 不含此刻", user.contains("# 【此刻】"))
+    assertFalse("锦囊 user 不含最近对话", user.contains("# 最近对话"))
+    assertFalse("锦囊 user 不含阶段节选", user.contains("## 暧昧期"))
+    assertFalse("锦囊 user 不含倾诉段", user.contains("## 用户倾诉"))
+}
 
     // ═══ T7 润色：system 字节级 = polish.md；user 仅草稿 + 空草稿兜底 ═══
     @Test

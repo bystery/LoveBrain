@@ -90,7 +90,7 @@ fun ResultArea(
         isGeneratingCore -> {
             if (streamingSchemes.isNotEmpty() || streamingDirectionSchemes.isNotEmpty()) {
                 // ★ P1-07: 边流式边出卡——风格渲染
-                // P0-9: 四方向后端数据保留，UI 不再渲染第二排
+                // P0-4: 四方向通过 SchemeCardsRow 内部 variant selector 展示，不新增第二排
                 Column(
                     modifier = modifier
                         .fillMaxWidth()
@@ -150,6 +150,7 @@ fun ResultArea(
             ) {
                 SchemeCardsRow(
                     schemes = response.schemes,
+                    directionSchemes = response.directionSchemes,
                     feedbacks = feedbacks,
                     onFeedback = onFeedback,
                     onCopyScheme = onCopyScheme,
@@ -160,22 +161,28 @@ fun ResultArea(
                     onUndoRewrite = onUndoRewrite
                 )
 
-                // P0-9: 四方向后端数据保留，UI 不再渲染第二排
-                // 确定有明确交互设计后再暴露
+                // P0-4: 四方向通过卡内 variant selector 展示，不新增第二排卡片
 
                 if (response.analysis.ongoing.isNotEmpty()) {
                     Spacer(Modifier.height(Spacing.sm))
                     OngoingSection(items = response.analysis.ongoing)
                 }
 
-                // F09: 本轮参考 + 记入知识库 共享工具行（禁止独占行按钮）
-                Spacer(Modifier.height(Spacing.sm))
-                ResultToolRow(
-                    memoryRefs = memoryRefs,
-                    onSaveToKb = onSaveToKb,
-                    onCorrection = onCorrection,
-                    onUndoCorrection = onUndoCorrection
-                )
+                // P1-2: 无 memoryRefs 时不生成独立 ResultToolRow
+                // "记入知识库"并入现有结果区或只在有多个 utility action 时才出现工具行
+                if (memoryRefs.isNotEmpty()) {
+                    Spacer(Modifier.height(Spacing.sm))
+                    ResultToolRow(
+                        memoryRefs = memoryRefs,
+                        onSaveToKb = onSaveToKb,
+                        onCorrection = onCorrection,
+                        onUndoCorrection = onUndoCorrection
+                    )
+                } else {
+                    // P1-2: 无 memoryRefs 时——"记入知识库"作为结果区 trailing action，不独占整行
+                    Spacer(Modifier.height(Spacing.sm))
+                    ResultSaveOnlyRow(onSaveToKb = onSaveToKb)
+                }
             }
         }
 
@@ -257,6 +264,7 @@ private enum class SchemeFilter { ALL, LIKED }
 @Composable
 private fun SchemeCardsRow(
     schemes: List<Scheme>,
+    directionSchemes: List<Scheme> = emptyList(),
     feedbacks: Map<String, SchemeFeedback>,
     onFeedback: (String, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
@@ -379,7 +387,9 @@ private fun SchemeCardsRow(
                                     // 收起当前卡
                                     expandedRewriteTag = null
                                 }
-                            }
+                            },
+                            // P0-4: 四方向变体传入卡片内部 variant selector
+                            directionSchemes = directionSchemes
                         )
                     }
                 }
@@ -916,5 +926,38 @@ private fun CorrectionMenuItem(
             style = AppTypography.labelSmall,
             color = TextHint
         )
+    }
+}
+
+/**
+ * P1-2: 无 memoryRefs 时的"记入知识库"——紧凑 trailing action，不独占整行。
+ *
+ * 不再 fillMaxWidth 创建独立工具行。
+ * 按钮使用 wrapContent 宽度，右对齐紧贴结果区末尾。
+ */
+@Composable
+private fun ResultSaveOnlyRow(onSaveToKb: () -> Unit) {
+    val (saveInteraction, saveScale) = rememberPressScale(0.96f, "resultSaveOnlyScale")
+    Row(
+        modifier = Modifier.wrapContentWidth(align = Alignment.End),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
+                .clip(LoveBrainShape.md)
+                .background(Primary, LoveBrainShape.md)
+                .clickable(interactionSource = saveInteraction, indication = null, onClick = onSaveToKb)
+                .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                "记入知识库",
+                color = Color.White,
+                style = AppTypography.labelSmall,
+                fontWeight = FontWeight.Medium
+            )
+        }
     }
 }

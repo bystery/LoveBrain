@@ -58,6 +58,10 @@ local.properties
 # 云盘上传临时分片（体积大，不入库）
 /.tmp.driveupload/
 
+# APK 发布产物（使用 GitHub Releases，不入源码仓库）
+/dist/
+*.apk
+
 # 构建/检查结果日志（本地留档，不入库）
 /lint_results.txt
 /release_results.txt

@@ -26,6 +26,41 @@ private const val MAX_PROFILE_ATTEMPTS = 3
 private const val RETRY_BACKOFF_MS = 500L
 
 /**
+ * P0-8: 严格 JSON-only system prompt——Attempt 2 使用。
+ * 当 Attempt 1 返回 TRUNCATED/EMPTY/INVALID_JSON 时，换用此 prompt 重试。
+ * 只要求模型输出一个合法 JSON 对象，不要 Markdown 围栏，不要解释，不要重复输入内容。
+ */
+private const val STRICT_JSON_REFLECT_SYSTEM = """你是一个画像更新引擎。请直接输出一个合法的 JSON 对象，不要使用 Markdown 代码围栏，不要输出任何解释文字，不要重复输入内容。
+
+JSON 对象必须包含以下字段：
+- me: 字符串，更新后的"我的画像"
+- her: 字符串，更新后的"她的画像"
+- warmth: 字符串，更新后的"关系温度描述"
+- stage_changed: 布尔值，是否建议调整阶段
+- new_stage: 字符串（stage_changed 为 true 时必填）
+- observations: 字符串数组，待验证观察
+- message_to_user: 字符串，给用户的摘要消息
+
+只输出 JSON 对象本身，不要输出其他任何内容。"""
+
+/**
+ * P0-8: Compact schema repair system prompt——Attempt 3 使用。
+ * 当 Attempt 2 仍然失败时，使用最小化 schema 提示修复输出。
+ */
+private const val COMPACT_SCHEMA_REPAIR_SYSTEM = """请修复以下 JSON 使其合法。只输出修复后的 JSON 对象，不要输出其他任何内容。
+
+要求：
+1. 确保 JSON 语法正确（括号闭合、逗号正确、字符串用双引号）
+2. me/her/warmth 必须是非空字符串
+3. stage_changed 必须是布尔值
+4. observations 必须是字符串数组
+5. 不要使用 Markdown 围栏
+6. 不要输出解释文字
+
+如果无法修复，请输出一个最小的合法 JSON 对象：
+{"me":"","her":"","warmth":"","stage_changed":false,"observations":[],"message_to_user":""}"""
+
+/**
  * 真实提取节头正则（A9 计数口径修正）：与 extractLessonsAsync 写入格式 `# [yyyy-MM-dd HH:mm] 第N次提取` 逐字同构。
  * 不数 schema 模板示例节与其他一级标题——修复 `split("\n# ")` 把示例节计入的多数 bug。
  */
@@ -249,15 +284,31 @@ class KnowledgeTriggerCoordinator(
     private fun generateReflectSuggestion(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
             runCatching {
+                // P0-8: 所有 attempt 共享同一次冻结的上下文
                 val system = promptBuilder.buildReflectSystemPrompt()
                 val user = promptBuilder.buildReflectUserPrompt(kbName)
 
-                // P0-2: 画像截断自动自愈——最多尝试 MAX_PROFILE_ATTEMPTS 次
+                // P0-8: 分级自愈——Attempt 1: 正常 reflect prompt
+                // Attempt 2: 严格 JSON-only prompt（TRUNCATED/EMPTY/INVALID_JSON 时）
+                // Attempt 3: Compact schema repair prompt
                 var parseResult: ProfileParseResult? = null
                 for (attempt in 1..MAX_PROFILE_ATTEMPTS) {
-                    // P0-2 修复：使用 generateRawWithMetadata 获取 finishReason，传给 parseWithStatus
+                    // P0-8: 根据尝试次数选择不同的 system prompt
+                    val effectiveSystem = when (attempt) {
+                        1 -> system
+                        2 -> STRICT_JSON_REFLECT_SYSTEM
+                        else -> COMPACT_SCHEMA_REPAIR_SYSTEM
+                    }
+
+                    // P0-8: Attempt 3 使用 repair prompt，将上一次的原始输出附带给修复 prompt
+                    val effectiveUser = if (attempt == 3 && parseResult != null) {
+                        "请修复以下 JSON 使其合法：\n\n${parseResult.rawContent}"
+                    } else {
+                        user
+                    }
+
                     val rawResult = runCatching {
-                        withContext(Dispatchers.IO) { deepSeekRepo.generateRawWithMetadata(system, user) }
+                        withContext(Dispatchers.IO) { deepSeekRepo.generateRawWithMetadata(effectiveSystem, effectiveUser) }
                     }.getOrDefault(RawGenerationResult(content = "", finishReason = null))
 
                     if (rawResult.content.isBlank() && rawResult.error == null) {
@@ -283,7 +334,6 @@ class KnowledgeTriggerCoordinator(
                         continue
                     }
 
-                    // P0-2: 使用 parseWithStatus 获取分类结果，传入 finishReason
                     parseResult = ProfileUpdate.parseWithStatus(rawResult.content, rawResult.finishReason)
 
                     if (parseResult.status == ProfileParseStatus.SUCCESS) {
@@ -297,7 +347,7 @@ class KnowledgeTriggerCoordinator(
                         break
                     }
 
-                    L.w("generateReflect: attempt $attempt status=${parseResult.status}, will retry")
+                    L.w("generateReflect: attempt $attempt status=${parseResult.status}, will retry with ${if (attempt == 1) "strict JSON prompt" else "compact schema repair prompt"}")
                     // 短暂退避后重试
                     if (attempt < MAX_PROFILE_ATTEMPTS) {
                         kotlinx.coroutines.delay(RETRY_BACKOFF_MS * attempt)
@@ -339,6 +389,7 @@ class KnowledgeTriggerCoordinator(
                     // P0-2: 截断/格式错误——展示失败建议（带"重新生成"按钮）
                     val errorMsg = when (finalResult.status) {
                         ProfileParseStatus.TRUNCATED -> "画像更新输出不完整，本次未写入任何数据。"
+                        ProfileParseStatus.INVALID_JSON -> "画像更新 JSON 解析失败，本次未写入任何数据。"
                         ProfileParseStatus.INVALID_SCHEMA -> "画像更新格式校验失败：${finalResult.profileUpdate?.error ?: "未知错误"}"
                         ProfileParseStatus.PROVIDER_ERROR -> "画像更新请求失败，请稍后重试。"
                         else -> "画像更新失败"
