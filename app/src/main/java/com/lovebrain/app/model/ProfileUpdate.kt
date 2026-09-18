@@ -227,25 +227,25 @@ data class ProfileUpdate(
             // 步骤3：逐字段类型校验（按字段不同规则区分）
             val errors = mutableListOf<String>()
 
-            // 画像正文：必须为合法非空字符串
-            val meContent = extractNonBlankStringField(parsed, "me", errors)
-            val herContent = extractNonBlankStringField(parsed, "her", errors)
-            val warmthContent = extractNonBlankStringField(parsed, "warmth", errors)
+            // 画像正文：必须为合法非空字符串——P0-4: 引用 ProfileUpdateSchema 常量
+            val meContent = extractNonBlankStringField(parsed, ProfileUpdateSchema.FIELD_ME, errors)
+            val herContent = extractNonBlankStringField(parsed, ProfileUpdateSchema.FIELD_HER, errors)
+            val warmthContent = extractNonBlankStringField(parsed, ProfileUpdateSchema.FIELD_WARMTH, errors)
 
-            val stageChanged = extractBooleanField(parsed, "stage_changed", errors)
+            val stageChanged = extractBooleanField(parsed, ProfileUpdateSchema.FIELD_STAGE_CHANGED, errors)
 
             // new_stage：只在 stage_changed=true 时要求合法非空且属于阶段枚举
             val newStage = if (stageChanged == true) {
-                extractStageField(parsed, "new_stage", errors)
+                extractStageField(parsed, ProfileUpdateSchema.FIELD_NEW_STAGE, errors)
             } else {
                 // stage_changed=false 或缺失：new_stage 允许缺失/空，不校验
-                extractOptionalStringField(parsed, "new_stage")
+                extractOptionalStringField(parsed, ProfileUpdateSchema.FIELD_NEW_STAGE)
             }
 
-            val observations = extractStringArrayField(parsed, "observations", errors)
+            val observations = extractStringArrayField(parsed, ProfileUpdateSchema.FIELD_OBSERVATIONS, errors)
 
             // message_to_user：允许空字符串（reflect 模板无变化时为空）
-            val messageToUser = extractOptionalStringField(parsed, "message_to_user")
+            val messageToUser = extractOptionalStringField(parsed, ProfileUpdateSchema.FIELD_MESSAGE_TO_USER)
 
             // 至少一个画像字段非空才有效
             val hasProfileUpdate = meContent != null || herContent != null || warmthContent != null

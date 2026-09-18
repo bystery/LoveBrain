@@ -6,6 +6,7 @@ import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.PromptBuilder.ConfigValidationResult
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.ProfileSuggestion
+import com.lovebrain.app.model.ProfileTransactionResult
 import com.lovebrain.app.model.ProfileUpdate
 import com.lovebrain.app.data.KnowledgeRepository
 import io.mockk.coEvery
@@ -72,7 +73,7 @@ class ProfileConfirmTest {
         coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
         coEvery { knowledgeRepo.listAll() } returns
             listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
-        coEvery { knowledgeRepo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns true
+        coEvery { knowledgeRepo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns ProfileTransactionResult.Success
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
         val promptBuilder = mockk<PromptBuilder>()
         every { promptBuilder.validateConfig(any(), any()) } returns

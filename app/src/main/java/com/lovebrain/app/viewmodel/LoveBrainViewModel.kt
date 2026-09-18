@@ -20,6 +20,8 @@ import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.model.ProfileSuggestion
+import com.lovebrain.app.model.ProfileTransactionResult
+import com.lovebrain.app.model.PreconditionReason
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.StageSuggestion
 import com.lovebrain.app.model.SuggestTip
@@ -612,9 +614,10 @@ class LoveBrainViewModel(
 
     // ═══════════ 赞踩反馈 ═══════════
 
-    fun setFeedback(tag: String, feedback: SchemeFeedback) {
+    /** P0-1: setFeedback 使用 identityKey 区分 STYLE/DIRECTION */
+    fun setFeedback(identityKey: String, feedback: SchemeFeedback) {
         _feedbacks.value = _feedbacks.value.toMutableMap().apply {
-            put(tag, if (this[tag] == feedback) SchemeFeedback.NONE else feedback)
+            put(identityKey, if (this[identityKey] == feedback) SchemeFeedback.NONE else feedback)
         }
     }
 
@@ -638,13 +641,14 @@ class LoveBrainViewModel(
 
         val kbName = context.kbName
 
+        // P0-1: 使用 identity.key 查找反馈——STYLE 和 DIRECTION 互不干扰
         val likedStyleSchemes = response.schemes
-            .filter { _feedbacks.value[it.tag] == SchemeFeedback.LIKED }
+            .filter { _feedbacks.value[it.identity.key] == SchemeFeedback.LIKED }
             .sortedBy { "ABCD".indexOf(it.tag) }
 
         // 方向回复的点赞也要保存——赞 F 真正保存 F 回复
         val likedDirectionSchemes = response.directionSchemes
-            .filter { _feedbacks.value[it.tag] == SchemeFeedback.LIKED }
+            .filter { _feedbacks.value[it.identity.key] == SchemeFeedback.LIKED }
 
         val likedSchemes = likedStyleSchemes + likedDirectionSchemes
 
@@ -796,11 +800,14 @@ class LoveBrainViewModel(
     /**
      * 画像确认——委托 Repository 执行原子事务。
      *
+     * P0-6: 事务结果以 typed [ProfileTransactionResult] 返回，
+     * 不再用模糊 Boolean 表示所有失败情况。
+     *
      * 事务在 Repository 的单次 fileMutex.withLock 中执行：
      * - 所有文件写入、向量同步、阶段更新、warmth 标签更新在同一锁内完成
      * - backup 覆盖所有实际会被修改的文件
      * - IO 失败必须抛出（strict 版本），不吞错误
-     * - 任一步失败自动 rollback
+     * - 任一步失败自动 rollback——rollback 成功/失败分别返回不同 typed result
      */
     fun confirmProfileUpdate() {
         val suggestion = _profileSuggestion.value ?: return
@@ -839,8 +846,8 @@ class LoveBrainViewModel(
                     return@launch
                 }
 
-                // 委托 Repository 执行原子事务——单锁覆盖全部操作
-                val success = knowledgeRepo.applyProfileUpdateAtomically(
+                // P0-6: 委托 Repository 执行原子事务——返回 typed result
+                val result = knowledgeRepo.applyProfileUpdateAtomically(
                     kbName = kbName,
                     me = payload.me,
                     her = payload.her,
@@ -850,22 +857,39 @@ class LoveBrainViewModel(
                     expectedRevision = suggestion.correctionsRevision
                 )
 
-                if (!success) {
-                    _profileSuggestion.value = null
-                    showPanelWarning("画像写入失败：知识库已变化或已删除")
-                    return@launch
+                // P0-6: 按 typed result 分支给出精确反馈
+                when (result) {
+                    is ProfileTransactionResult.Success -> {
+                        val current = _profileSuggestion.value
+                        if (current != null && current.suggestionId == suggestionId) {
+                            _profileSuggestion.value = null
+                        }
+                        _kbNotice.value = "画像已更新"
+                        refreshKnowledgeBases()
+                    }
+                    is ProfileTransactionResult.PreconditionFailed -> {
+                        // Repository 层的二次检查——VM 层已检查过，这是竞态兜底
+                        _profileSuggestion.value = null
+                        val msg = when (result.reason) {
+                            PreconditionReason.KB_NOT_FOUND -> "原知识库已删除，这条画像建议已失效"
+                            PreconditionReason.REVISION_CONFLICT -> "资料已变化，请重新生成"
+                        }
+                        showPanelWarning(msg)
+                    }
+                    is ProfileTransactionResult.RolledBack -> {
+                        // 写入失败但 rollback 完整成功——数据已恢复，可安全重试
+                        L.e("confirmProfileUpdate: transaction rolled back", result.cause)
+                        showPanelWarning("画像写入失败，已恢复原数据，可重试")
+                    }
+                    is ProfileTransactionResult.RollbackFailed -> {
+                        // 写入失败且 rollback 也失败——数据可能不一致，不可轻描淡写
+                        L.e("confirmProfileUpdate: CRITICAL rollback failed for paths=${result.failedPaths}", result.cause)
+                        showPanelWarning("画像写入失败且恢复异常，数据可能已损坏，请检查知识库")
+                    }
                 }
-
-                val current = _profileSuggestion.value
-                if (current != null && current.suggestionId == suggestionId) {
-                    _profileSuggestion.value = null
-                }
-
-                _kbNotice.value = "画像已更新"
-                refreshKnowledgeBases()
             } catch (e: Exception) {
-                L.e("confirmProfileUpdate failed", e)
-                showPanelWarning("画像写入失败，已恢复原数据，可重试")
+                L.e("confirmProfileUpdate unexpected error", e)
+                showPanelWarning("画像写入发生异常，请重试")
             } finally {
                 _isProfileConfirming.value = false
             }
@@ -905,8 +929,12 @@ class LoveBrainViewModel(
         val currentRequestId = ++profileRegenerationRequestId
 
         _profileRegenerating.value = true
+        // P0-2: ViewModel 持有真实生成 Job——Coordinator 提供 suspend operation，
+        // 禁止 fire-and-forget 嵌套 launch。
+        // profileRegenerating=true 从请求开始持续到真实任务 terminal state。
         profileRegenerationJob = viewModelScope.launch {
             try {
+                // 直接 await suspend function——真正的模型请求在此协程内运行
                 triggerCoordinator.regenerateProfile(kbName, viewModelScope, object : KnowledgeTriggerCoordinator.Callbacks {
                     override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {}
                     override fun onVectorUpdateNotice(kbName: String, summary: String) {}
@@ -926,12 +954,20 @@ class LoveBrainViewModel(
                     }
                     override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {}
                 })
+                // regenerateProfile 是 suspend——它会等到 generateReflectSuggestion 完成后才返回
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                // dismiss cancel——不设 error，只复位 loading
+                if (currentRequestId == profileRegenerationRequestId) {
+                    _profileRegenerating.value = false
+                }
+                throw e
             } catch (e: Exception) {
                 L.e("regenerateProfileUpdate failed", e)
                 if (currentRequestId == profileRegenerationRequestId) {
                     _profileRegenerating.value = false
                 }
             } finally {
+                // P0-2: 只有 requestId 匹配时才复位——防止晚到 callback 复活
                 if (currentRequestId == profileRegenerationRequestId) {
                     _profileRegenerating.value = false
                 }
@@ -1466,7 +1502,7 @@ class LoveBrainViewModel(
     /** DRY: 改写操作选项文案统一使用 RewriteCommand.ALL_LABELS，不在 VM 重复定义 */
     val rewriteOptions: List<String> get() = com.lovebrain.app.model.RewriteCommand.ALL_LABELS
 
-    /** 单条改写状态：schemeTag → 改写状态 */
+    /** 单条改写状态：identityKey → 改写状态（P0-1: 使用 SchemeIdentity.key 区分 STYLE/DIRECTION） */
     private val _rewriteStates = MutableStateFlow<Map<String, RewriteState>>(emptyMap())
     val rewriteStates: StateFlow<Map<String, RewriteState>> = _rewriteStates.asStateFlow()
 
@@ -1486,13 +1522,16 @@ class LoveBrainViewModel(
     /**
      * 对指定方案卡发起单条改写。
      *
+     * P0-1: 使用 SchemeIdentity(source+tag) 区分 STYLE(A/B/C/D) 和 DIRECTION(F/E/X/S)。
+     * STYLE 更新 ReplySchemes 对应正文；DIRECTION 更新 directions 对应 index。
+     *
      * - 复用供应商配置冻结、HTTP 调用、取消、错误处理和 usage 统计。
      * - 禁止调用整轮 generate 然后取其中一条。
      * - 请求只包含短固定规则、目标原回复、选择的操作、最少必要的本轮真实上下文。
      * - 长知识库、完整分析、其他候选、四方向数组、事实提取和全量 JSON 不随之发送。
      * - 同一时间只运行一个前台生成/主动发/单条改写，共用现有任务管理。
      */
-    fun rewriteScheme(schemeTag: String, option: String) {
+    fun rewriteScheme(source: com.lovebrain.app.model.SchemeSource, schemeTag: String, option: String) {
         // 前台互斥：正在生成/主动发/改写中时拒绝
         if (_isGenerating.value || _isProactive.value || _isPreparing.value) return
         if (rewriteJob?.isActive == true) return
@@ -1502,8 +1541,16 @@ class LoveBrainViewModel(
 
         val result = _result.value as? GenerateResult.Success ?: return
         val response = result.response
-        val scheme = response.schemes.find { it.tag == schemeTag } ?: return
+        // P0-1: 根据 source 查找目标 scheme——STYLE 从 schemes 找，DIRECTION 从 directionSchemes 找
+        val allSchemes = when (source) {
+            com.lovebrain.app.model.SchemeSource.STYLE -> response.schemes
+            com.lovebrain.app.model.SchemeSource.DIRECTION -> response.directionSchemes
+        }
+        val scheme = allSchemes.find { it.tag == schemeTag && it.source == source } ?: return
         if (scheme.reply.isBlank()) return
+
+        // P0-1: 使用 identity key 区分 STYLE 和 DIRECTION
+        val identityKey = com.lovebrain.app.model.SchemeIdentity(source, schemeTag).key
 
         // 锁定目标
         val ctx = replyGenerationContext ?: return
@@ -1515,12 +1562,12 @@ class LoveBrainViewModel(
         rewriteContextId = contextId
 
         // 设置改写中状态
-        _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Loading(option))
+        _rewriteStates.value = _rewriteStates.value + (identityKey to RewriteState.Loading(option))
 
         // 保存当前版本到历史（用于撤销）—— P1-04: 保存正文+当前反馈
-        val currentFeedback = _feedbacks.value[schemeTag] ?: SchemeFeedback.NONE
-        val currentHistory = _rewriteHistory.value[schemeTag] ?: emptyList()
-        _rewriteHistory.value = _rewriteHistory.value + (schemeTag to currentHistory + RewriteVersion(scheme.reply, currentFeedback))
+        val currentFeedback = _feedbacks.value[identityKey] ?: SchemeFeedback.NONE
+        val currentHistory = _rewriteHistory.value[identityKey] ?: emptyList()
+        _rewriteHistory.value = _rewriteHistory.value + (identityKey to currentHistory + RewriteVersion(scheme.reply, currentFeedback))
 
         // P1-04: 不再捕获 preRewriteFeedback 做后续清理——
         // 改写期间用户对旧文的反馈继续归旧版本；新版本独立 NONE。
@@ -1568,92 +1615,126 @@ class LoveBrainViewModel(
 
                 val newReply = raw.trim()
                 if (newReply.isBlank()) {
-                    _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Error("改写返回空结果"))
+                    _rewriteStates.value = _rewriteStates.value + (identityKey to RewriteState.Error("改写返回空结果"))
                     return@launch
                 }
 
                 // 阻断B修复：只替换目标卡正文，不回写整个捕获的旧 response
+                // P0-1: 根据 source 更新对应方案列表
                 val currentResult = _result.value as? GenerateResult.Success ?: return@launch
                 val currentResponse = currentResult.response
-                val updatedSchemes = currentResponse.schemes.map { s ->
-                    if (s.tag == schemeTag) s.copy(reply = newReply) else s
-                }
-                val updatedResponse = currentResponse.copy(
-                    response = com.lovebrain.app.model.ReplySchemes(
-                        recommended = updatedSchemes.getOrNull(0)?.reply ?: "",
-                        badBoy = updatedSchemes.getOrNull(1)?.reply ?: "",
-                        playful = updatedSchemes.getOrNull(2)?.reply ?: "",
-                        warm = updatedSchemes.getOrNull(3)?.reply ?: ""
+                val updatedResponse = if (source == com.lovebrain.app.model.SchemeSource.STYLE) {
+                    // STYLE: 更新 ReplySchemes
+                    val updatedSchemes = currentResponse.schemes.map { s ->
+                        if (s.tag == schemeTag && s.source == source) s.copy(reply = newReply) else s
+                    }
+                    currentResponse.copy(
+                        response = com.lovebrain.app.model.ReplySchemes(
+                            recommended = updatedSchemes.getOrNull(0)?.reply ?: "",
+                            badBoy = updatedSchemes.getOrNull(1)?.reply ?: "",
+                            playful = updatedSchemes.getOrNull(2)?.reply ?: "",
+                            warm = updatedSchemes.getOrNull(3)?.reply ?: ""
+                        )
                     )
-                )
+                } else {
+                    // DIRECTION: 更新 directions 数组对应 index
+                    val dir = com.lovebrain.app.model.ReplyDirection.byTag(schemeTag)
+                    if (dir != null) {
+                        val updatedDirections = currentResponse.directions.toMutableList()
+                        // 确保 directions 列表足够长
+                        while (updatedDirections.size <= dir.index) {
+                            updatedDirections.add(null)
+                        }
+                        updatedDirections[dir.index] = newReply
+                        currentResponse.copy(directions = updatedDirections)
+                    } else {
+                        currentResponse
+                    }
+                }
                 _result.value = GenerateResult.Success(updatedResponse)
 
                 // P1-04: 改写成功后——新正文独立 NONE，不自动继承旧赞/踩
                 // 旧赞保留在 rewriteHistory 中，撤销时恢复
                 _feedbacks.value = _feedbacks.value.toMutableMap().apply {
-                    put(schemeTag, SchemeFeedback.NONE)
+                    put(identityKey, SchemeFeedback.NONE)
                 }
 
                 // 清除改写状态，保留撤销入口
-                _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Done(newReply))
+                _rewriteStates.value = _rewriteStates.value + (identityKey to RewriteState.Done(newReply))
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
                 L.e("rewriteScheme failed", e)
                 if (rewriteRequestId == requestId) {
-                    _rewriteStates.value = _rewriteStates.value + (schemeTag to RewriteState.Error("改写失败，可重试"))
+                    _rewriteStates.value = _rewriteStates.value + (identityKey to RewriteState.Error("改写失败，可重试"))
                 }
             }
         }
     }
 
-    /** 取消正在进行的改写 */
-    fun cancelRewrite(schemeTag: String) {
+    /** 取消正在进行的改写 —— P0-1: 使用 identityKey */
+    fun cancelRewrite(identityKey: String) {
         rewriteJob?.cancel()
         rewriteJob = null
         rewriteRequestId = null
-        _rewriteStates.value = _rewriteStates.value.filterKeys { it != schemeTag }
+        _rewriteStates.value = _rewriteStates.value.filterKeys { it != identityKey }
     }
 
-    /** 撤销改写——恢复到上一版本（含正文和反馈） */
-    fun undoRewrite(schemeTag: String) {
-        val history = _rewriteHistory.value[schemeTag] ?: return
+    /** 撤销改写——恢复到上一版本（含正文和反馈）—— P0-1: 使用 identityKey */
+    fun undoRewrite(identityKey: String) {
+        val history = _rewriteHistory.value[identityKey] ?: return
         if (history.isEmpty()) return
         val previousVersion = history.last()
         val updatedHistory = history.dropLast(1)
 
         _rewriteHistory.value = if (updatedHistory.isEmpty()) {
-            _rewriteHistory.value - schemeTag
+            _rewriteHistory.value - identityKey
         } else {
-            _rewriteHistory.value + (schemeTag to updatedHistory)
+            _rewriteHistory.value + (identityKey to updatedHistory)
         }
 
         val result = _result.value as? GenerateResult.Success ?: return
         val response = result.response
-        val updatedSchemes = response.schemes.map { s ->
-            if (s.tag == schemeTag) s.copy(reply = previousVersion.reply) else s
-        }
-        val updatedResponse = response.copy(
-            response = com.lovebrain.app.model.ReplySchemes(
-                recommended = updatedSchemes.getOrNull(0)?.reply ?: "",
-                badBoy = updatedSchemes.getOrNull(1)?.reply ?: "",
-                playful = updatedSchemes.getOrNull(2)?.reply ?: "",
-                warm = updatedSchemes.getOrNull(3)?.reply ?: ""
+        // P0-1: 从 identityKey 解析 source 和 tag
+        val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(identityKey) ?: return
+        val updatedResponse = if (identity.source == com.lovebrain.app.model.SchemeSource.STYLE) {
+            val updatedSchemes = response.schemes.map { s ->
+                if (s.tag == identity.tag && s.source == identity.source) s.copy(reply = previousVersion.reply) else s
+            }
+            response.copy(
+                response = com.lovebrain.app.model.ReplySchemes(
+                    recommended = updatedSchemes.getOrNull(0)?.reply ?: "",
+                    badBoy = updatedSchemes.getOrNull(1)?.reply ?: "",
+                    playful = updatedSchemes.getOrNull(2)?.reply ?: "",
+                    warm = updatedSchemes.getOrNull(3)?.reply ?: ""
+                )
             )
-        )
+        } else {
+            val dir = com.lovebrain.app.model.ReplyDirection.byTag(identity.tag)
+            if (dir != null) {
+                val updatedDirections = response.directions.toMutableList()
+                while (updatedDirections.size <= dir.index) {
+                    updatedDirections.add(null)
+                }
+                updatedDirections[dir.index] = previousVersion.reply
+                response.copy(directions = updatedDirections)
+            } else {
+                response
+            }
+        }
         _result.value = GenerateResult.Success(updatedResponse)
         // P1-04: 撤销时恢复旧版本的反馈，不只是正文
         _feedbacks.value = _feedbacks.value.toMutableMap().apply {
-            put(schemeTag, previousVersion.feedback)
+            put(identityKey, previousVersion.feedback)
         }
-        _rewriteStates.value = _rewriteStates.value - schemeTag
+        _rewriteStates.value = _rewriteStates.value - identityKey
     }
 
-    /** 清除改写状态（展开/收起时调用） */
-    fun clearRewriteState(schemeTag: String) {
-        val current = _rewriteStates.value[schemeTag]
+    /** 清除改写状态（展开/收起时调用）—— P0-1: 使用 identityKey */
+    fun clearRewriteState(identityKey: String) {
+        val current = _rewriteStates.value[identityKey]
         if (current is RewriteState.Done || current is RewriteState.Error) {
-            _rewriteStates.value = _rewriteStates.value - schemeTag
+            _rewriteStates.value = _rewriteStates.value - identityKey
         }
     }
 

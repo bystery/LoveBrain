@@ -13,6 +13,8 @@ import com.lovebrain.app.model.ReplyAnalysis
 import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.SchemeIdentity
+import com.lovebrain.app.model.SchemeSource
 import com.lovebrain.app.model.IntentConfig
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -156,7 +158,7 @@ class LikedSchemeRecordingTest {
         delay(200)
 
         // 点赞方案 B
-        vm.setFeedback("B", SchemeFeedback.LIKED)
+        vm.setFeedback(SchemeIdentity(SchemeSource.STYLE, "B").key, SchemeFeedback.LIKED)
 
         // 捕获传给 TopicRecorder 的 likedSchemes
         val likedSlot = slot<List<Scheme>>()
@@ -200,8 +202,8 @@ class LikedSchemeRecordingTest {
         delay(200)
 
         // 点赞 A 和 C
-        vm.setFeedback("A", SchemeFeedback.LIKED)
-        vm.setFeedback("C", SchemeFeedback.LIKED)
+        vm.setFeedback(SchemeIdentity(SchemeSource.STYLE, "A").key, SchemeFeedback.LIKED)
+        vm.setFeedback(SchemeIdentity(SchemeSource.STYLE, "C").key, SchemeFeedback.LIKED)
 
         val likedSlot = slot<List<Scheme>>()
         coEvery {

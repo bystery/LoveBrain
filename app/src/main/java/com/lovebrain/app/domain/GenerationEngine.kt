@@ -669,17 +669,18 @@ class GenerationEngine(
     }
 
     /** 从流式缓冲区提取 directions 字符串数组，映射为独立 Scheme 列表
-     * 使用 ReplyDirection 单一真源，不占用风格 tag(A/B/C/D) */
+     * 使用 ReplyDirection 单一真源，不占用风格 tag(A/B/C/D)
+     * P2: 保留原始 index——先 filter 再 mapIndexed 会导致空方向后续 index 左移，
+     * 存在 X 被临时标成 E 的风险。改为 mapIndexed 保留原始位置，空方向 reply 设空。 */
     private fun extractDirectionsSchemes(raw: String): List<Scheme> {
         val dirs = PartialJsonObjects.extractStringArray(raw, "directions")
-            .filter { it.isNotBlank() }
         if (dirs.isEmpty()) return emptyList()
         return dirs.mapIndexed { index, text ->
             val dir = com.lovebrain.app.model.ReplyDirection.byIndex(index)
             Scheme(
                 tag = dir?.tag ?: "D${index + 1}",
                 title = dir?.title ?: "方向${index + 1}",
-                reply = text,
+                reply = text,  // 保留空字符串——空 reply = 本轮不适合，UI 已处理
                 source = com.lovebrain.app.model.SchemeSource.DIRECTION
             )
         }

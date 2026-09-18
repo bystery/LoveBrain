@@ -9,6 +9,7 @@ import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.MemoryCorrection
 import com.lovebrain.app.model.MemoryKind
 import com.lovebrain.app.model.MemoryRef
+import com.lovebrain.app.model.ProfileUpdateSchema
 import com.lovebrain.app.util.TimeFmt
 import java.io.File
 
@@ -698,7 +699,16 @@ class PromptBuilder(
         append(topicContext)
     }
 
-    fun buildReflectSystemPrompt(): String = readAsset(AssetRegistry.REFLECT)
+    /**
+     * P0-4: reflect system prompt 动态注入 ProfileUpdateSchema——
+     * reflect.md 只保留语义规则/证据门控/更新原则，不再硬编码 JSON 字段 schema。
+     * schema 描述由 ProfileUpdateSchema.schemaDescriptionForPrompt() 单一真源提供。
+     */
+    fun buildReflectSystemPrompt(): String = buildString {
+        append(readAsset(AssetRegistry.REFLECT))
+        append("\n\n---\n\n")
+        append(ProfileUpdateSchema.schemaDescriptionForPrompt())
+    }
 
     suspend fun buildReflectUserPrompt(kbName: String): String {
         val me = readFileCompat(kbName, "understand/me.md")

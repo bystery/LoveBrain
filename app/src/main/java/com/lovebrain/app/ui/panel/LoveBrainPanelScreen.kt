@@ -400,7 +400,7 @@ fun LoveBrainPanelScreen(
                                 streamingSchemes = streamingSchemes,
                                 streamingDirectionSchemes = streamingDirectionSchemes,
                                 feedbacks = feedbacks,
-                                onFeedback = { scheme, fb -> viewModel.setFeedback(scheme.tag, fb) },
+                                onFeedback = { scheme, fb -> viewModel.setFeedback(scheme.identity.key, fb) },
                                 onCopyScheme = { scheme ->
                                     val reply = viewModel.copyScheme(scheme)
                                     onCopy(reply)
@@ -423,11 +423,23 @@ fun LoveBrainPanelScreen(
                                 onOpenSettings = onOpenSettings,
                                 // 单条改写
                                 rewriteStates = rewriteStates,
-                                onRewrite = { tag, command -> viewModel.rewriteScheme(tag, command.instruction) },
-                                onClearRewriteState = { tag -> viewModel.clearRewriteState(tag) },
-                                onCancelRewrite = { tag -> viewModel.cancelRewrite(tag) },
-                                onUndoRewrite = { tag -> viewModel.undoRewrite(tag) },
-                                onVoiceRewrite = { tag, transcript -> viewModel.rewriteScheme(tag, transcript) },
+                                onRewrite = { tag, command -> viewModel.rewriteScheme(
+                                    com.lovebrain.app.model.SchemeIdentity.fromKey(tag)?.source
+                                        ?: com.lovebrain.app.model.SchemeSource.STYLE,
+                                    com.lovebrain.app.model.SchemeIdentity.fromKey(tag)?.tag ?: tag,
+                                    command.instruction
+                                ) },
+                                onClearRewriteState = { key -> viewModel.clearRewriteState(key) },
+                                onCancelRewrite = { key -> viewModel.cancelRewrite(key) },
+                                onUndoRewrite = { key -> viewModel.undoRewrite(key) },
+                                onVoiceRewrite = { key, transcript ->
+                                    val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(key)
+                                    viewModel.rewriteScheme(
+                                        identity?.source ?: com.lovebrain.app.model.SchemeSource.STYLE,
+                                        identity?.tag ?: key,
+                                        transcript
+                                    )
+                                },
                                 onPermissionEvent = { event ->
                                     when (event) {
                                         is PermissionEvent.Granted -> viewModel.showPanelWarning("麦克风权限已开启，请再次长按说话")
@@ -496,41 +508,49 @@ private fun ProfileSuggestionCard(
     ) {
         Text("AI 画像更新建议", style = AppTypography.labelLarge, color = PrimaryDark)
         Spacer(Modifier.height(Spacing.md))
-        // P1-3: 正文区域——保持高度稳定，regenerating 时保留正文布局只叠加 loading
+        // P1-1: 真正的 overlay——正文始终留在 layout 中撑高度，loading 覆盖在上层
+        // 不用 if/else 替换正文，避免高度跳变
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = PanelDimens.PROFILE_CARD_MAX_HEIGHT_DP.dp)
                 .background(SurfaceCard, LoveBrainShape.md)
-                .padding(Spacing.md)
         ) {
+            // 正文始终存在于 layout 中——负责撑高
+            Text(
+                text = suggestion,
+                style = AppTypography.labelMedium,
+                color = if (isRegenerating) TextHint else TextPrimary,
+                modifier = Modifier
+                    .padding(Spacing.md)
+                    .verticalScroll(rememberScrollState())
+            )
+            // P1-1: loading 覆盖层——不替换正文，覆盖在上方
             if (isRegenerating) {
-                // P1-3: 重新生成时——保留当前正文位置，叠加轻 overlay spinner
-                // 不用 fillMaxSize 避免高度跳变
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(SurfaceCard.copy(alpha = 0.85f))
+                        .padding(Spacing.md),
+                    contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(14.dp),
-                        strokeWidth = 2.dp,
-                        color = Primary
-                    )
-                    Spacer(Modifier.width(Spacing.xs))
-                    Text(
-                        "正在重新生成…",
-                        style = AppTypography.labelMedium,
-                        color = PrimaryDark
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(14.dp),
+                            strokeWidth = 2.dp,
+                            color = Primary
+                        )
+                        Spacer(Modifier.width(Spacing.xs))
+                        Text(
+                            "正在重新生成…",
+                            style = AppTypography.labelMedium,
+                            color = PrimaryDark
+                        )
+                    }
                 }
-            } else {
-                Text(
-                    text = suggestion,
-                    style = AppTypography.labelMedium,
-                    color = TextPrimary,
-                    modifier = Modifier.verticalScroll(rememberScrollState())
-                )
             }
         }
         Spacer(Modifier.height(Spacing.md))

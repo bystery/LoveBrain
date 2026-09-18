@@ -28,10 +28,41 @@ import kotlinx.serialization.json.put
     val title: String = "",      // 推荐 / 清醒 / 俏皮 / 温柔 或 跟进 / 展开 / 表达 / 转向
     val reply: String = "",      // 话术原文；空 = 本轮不适合
     val source: SchemeSource = SchemeSource.STYLE  // 来源：风格还是方向
-)
+) {
+    /** 方案操作身份——统一用于改写/反馈/历史 key */
+    val identity: SchemeIdentity get() = SchemeIdentity(source, tag)
+}
 
 /** 方案来源——区分四风格和四方向 */
 enum class SchemeSource { STYLE, DIRECTION }
+
+/**
+ * 方案操作身份——稳定 typed identity，区分 STYLE(A/B/C/D) 与 DIRECTION(F/E/X/S)。
+ *
+ * 改写、语音改写、反馈、撤销、history、loading state 均统一使用此身份作为 key，
+ * 避免 A 与 F 因 tag 撞车导致方向卡操作失效。
+ *
+ * 序列化为 "STYLE:A" / "DIRECTION:F" 格式，兼容 Map<String, ...> 存储。
+ */
+data class SchemeIdentity(val source: SchemeSource, val tag: String) {
+    /** 序列化 key——用于 Map<String, ...> 存储 */
+    val key: String get() = "${source.name}:$tag"
+
+    override fun toString(): String = key
+
+    companion object {
+        /** 从 Scheme 构造身份 */
+        fun from(scheme: Scheme): SchemeIdentity = SchemeIdentity(scheme.source, scheme.tag)
+
+        /** 从序列化 key 解析 */
+        fun fromKey(key: String): SchemeIdentity? {
+            val parts = key.split(":", limit = 2)
+            if (parts.size != 2) return null
+            val source = runCatching { SchemeSource.valueOf(parts[0]) }.getOrNull() ?: return null
+            return SchemeIdentity(source, parts[1])
+        }
+    }
+}
 
 /**
  * 四方向单一真源——解析、流式、UI 均引用此 enum。

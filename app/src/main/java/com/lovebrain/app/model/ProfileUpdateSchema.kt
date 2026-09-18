@@ -79,20 +79,22 @@ object ProfileUpdateSchema {
     /**
      * 供 compact/repair prompt 使用的最小化 schema 文案。
      *
-     * 修复后的最小合法 JSON 必须能通过 parser 校验。
-     * 由于 parser 要求 me/her/warmth 存在时必须非空，
-     * fallback 不能使用空字符串——必须省略不更新的字段。
+     * P0-4: 不再设计“伪合法 fallback JSON”。
+     * compact schema 只描述真正合法的画像更新——me/her/warmth 至少提供一个。
+     * 达到最大重试次数仍失败时，由 Kotlin/Coordinator 产生 typed failure，
+     * 不要求 AI 伪造画像字段来满足 parser。
      */
     fun compactSchemaForPrompt(): String = buildString {
         appendLine("修复要求：")
         appendLine("1. 确保 JSON 语法正确（括号闭合、逗号正确、字符串用双引号）")
         appendLine("2. me/her/warmth 存在时必须为非空字符串；不需要更新的字段直接省略")
-        appendLine("3. stage_changed 必须是布尔值")
-        appendLine("4. observations 必须是字符串数组")
-        appendLine("5. 不要使用 Markdown 围栏")
-        appendLine("6. 不要输出解释文字")
+        appendLine("3. me/her/warmth 至少提供一个（不能全部省略）")
+        appendLine("4. stage_changed 必须是布尔值")
+        appendLine("5. observations 必须是字符串数组")
+        appendLine("6. 不要使用 Markdown 围栏")
+        appendLine("7. 不要输出解释文字")
         appendLine()
-        appendLine("如果无法修复，输出一个最小的合法 JSON（省略不需要的字段）：")
-        appendLine("""{"stage_changed":false,"observations":[],"message_to_user":"画像更新未能生成，请重试"}""")
+        appendLine("如果确实无法生成合法的画像更新，直接输出空字符串——")
+        appendLine("系统会将其判定为生成失败，不会强制要求你伪造字段。")
     }
 }

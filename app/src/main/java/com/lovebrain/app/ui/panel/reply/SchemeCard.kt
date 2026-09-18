@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -108,6 +110,8 @@ fun SchemeCard(
     modifier: Modifier = Modifier
 ) {
     val isEmpty = scheme.reply.isBlank()
+    // P0-1: 使用 identity key 作为所有操作的稳定身份
+    val identityKey = scheme.identity.key
 
     val borderColor by animateColorAsStateCompat(
         targetValue = when (feedback) {
@@ -137,7 +141,7 @@ fun SchemeCard(
     // P0-6: 语音改写控制器——只负责 STT
     // P0-7: 权限结果通过回调上抛，不在卡片内展示
     val voiceController = rememberVoiceRewriteController(
-        schemeTag = scheme.tag,
+        schemeTag = identityKey,
         onVoiceRewrite = onVoiceRewrite,
         onPermissionGranted = {
             onPermissionEvent(PermissionEvent.Granted)
@@ -170,6 +174,9 @@ fun SchemeCard(
     var longPressTriggered by remember { mutableStateOf(false) }
     var gesturePhase by remember { mutableStateOf(GesturePhase.IDLE) }
 
+    // P0-5: touch slop——拖动超过此距离时取消长按等待，避免横滑/纵滚误触录音
+    val touchSlopPx = with(androidx.compose.ui.platform.LocalDensity.current) { 8.dp.toPx() }
+
     // 录音中或改写中——卡片边框高亮
     val effectiveBorderWidth = if (isRecording || isRewriting) 2f else borderWidth
     val effectiveBorderColor = when {
@@ -195,21 +202,25 @@ fun SchemeCard(
             .clip(LoveBrainShape.lg)
             .background(cardBg)
             .border(effectiveBorderWidth.dp, effectiveBorderColor, LoveBrainShape.lg)
-            .then(if (isEmpty) Modifier else Modifier.pointerInput(scheme.tag) {
-                // P0-6: 真实手势状态机——使用 awaitPointerEventScope 追踪手指位置
+            .then(if (isEmpty) Modifier else Modifier.pointerInput(identityKey) {
+                // P0-5: 真实手势状态机——单一 owner，避免 SchemeCard 和 VoiceRewriteController 双状态机漂移
+                // touch slop 检测：拖动超过阈值时取消 PRESSING，避免横滑/纵滚误触录音
                 kotlinx.coroutines.coroutineScope {
                     awaitEachGesture {
-                        // 等待手指按下
-                        awaitFirstDown(requireUnconsumed = false)
+                        // 等待手指按下——requireUnconsumed=true 保证只收到未被子控件消费的事件
+                        val down = awaitFirstDown(requireUnconsumed = true)
+                        // 如果 awaitFirstDown 返回了，说明事件未被消费——直接进入手势
                         gesturePhase = GesturePhase.PRESSING
 
                         var longPressReached = false
                         var pointerLeftBounds = false
+                        var dragCancelled = false
+                        val downPos = down.position
 
                         val longPressJob = launch {
                             kotlinx.coroutines.delay(longPressThresholdMs)
-                            // 达到长按阈值 -> 开始录音
-                            if (gesturePhase == GesturePhase.PRESSING && !isRewriting && rewriteError == null && !isRecording) {
+                            // 达到长按阈值 -> 开始录音（拖动取消后不触发）
+                            if (gesturePhase == GesturePhase.PRESSING && !isRewriting && rewriteError == null && !isRecording && !dragCancelled) {
                                 longPressReached = true
                                 longPressTriggered = true
                                 gesturePhase = GesturePhase.RECORDING
@@ -217,7 +228,7 @@ fun SchemeCard(
                             }
                         }
 
-                        // 持续追踪手指位置——检测移出边界
+                        // 持续追踪手指位置——检测拖动取消和移出边界
                         try {
                             while (true) {
                                 val event = awaitPointerEvent()
@@ -230,14 +241,27 @@ fun SchemeCard(
                                         // 正常松手 -> 停止录音，等待 final transcript
                                         gesturePhase = GesturePhase.RELEASED
                                         voiceController.stopListening()
-                                    } else if (!longPressReached) {
-                                        // 未达到长按阈值 -> 普通 click
+                                    } else if (!longPressReached && !dragCancelled) {
+                                        // 未达到长按阈值且未拖动取消 -> 普通 click
                                         gesturePhase = GesturePhase.IDLE
                                         if (!isRecording && !isRewriting) {
-                                            onToggleRewriteExpand(scheme.tag)
+                                            onToggleRewriteExpand(identityKey)
                                         }
                                     }
                                     break
+                                }
+
+                                // P0-5: touch slop 检测——拖动距离超过阈值时取消 PRESSING
+                                // 避免横滑 LazyRow 或纵滚长文误触发长按录音
+                                if (!dragCancelled && !longPressReached && gesturePhase == GesturePhase.PRESSING) {
+                                    val dx = change.position.x - downPos.x
+                                    val dy = change.position.y - downPos.y
+                                    val dragDist = kotlin.math.sqrt(dx * dx + dy * dy)
+                                    if (dragDist > touchSlopPx) {
+                                        dragCancelled = true
+                                        gesturePhase = GesturePhase.IDLE
+                                        longPressJob.cancel()
+                                    }
                                 }
 
                                 // 检查手指是否仍在卡片边界内
@@ -345,7 +369,7 @@ fun SchemeCard(
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null,
-                                onClick = { onCancelRewrite(scheme.tag) }
+                                onClick = { onCancelRewrite(identityKey) }
                             ).padding(Spacing.xs)
                         )
                     }
@@ -376,8 +400,8 @@ fun SchemeCard(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = null,
                                     onClick = {
-                                        onClearRewriteState(scheme.tag)
-                                        onToggleRewriteExpand(scheme.tag)
+                                        onClearRewriteState(identityKey)
+                                        onToggleRewriteExpand(identityKey)
                                     }
                                 ).padding(Spacing.xs)
                             )
@@ -413,7 +437,7 @@ fun SchemeCard(
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null,
-                                onClick = { onUndoRewrite(scheme.tag) }
+                                onClick = { onUndoRewrite(identityKey) }
                             ).padding(horizontal = Spacing.xs, vertical = Spacing.xs)
                         )
                     }
@@ -444,7 +468,7 @@ fun SchemeCard(
                                             .clickable(
                                                 interactionSource = interaction,
                                                 indication = null,
-                                                onClick = { onRewrite(scheme.tag, command) }
+                                                onClick = { onRewrite(identityKey, command) }
                                             )
                                             .padding(vertical = Spacing.xs, horizontal = Spacing.sm),
                                         contentAlignment = Alignment.Center
@@ -476,7 +500,7 @@ fun SchemeCard(
                                 modifier = Modifier.clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = null,
-                                    onClick = { onToggleRewriteExpand(scheme.tag) }
+                                    onClick = { onToggleRewriteExpand(identityKey) }
                                 ).padding(horizontal = Spacing.sm, vertical = Spacing.xs)
                             )
                         }

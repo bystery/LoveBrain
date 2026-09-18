@@ -34,15 +34,13 @@ class ProfileSchemaConsistencyTest {
     }
 
     @Test
-    fun `compact schema fallback does not use empty strings for me her warmth`() {
-        val compact = ProfileUpdateSchema.compactSchemaForPrompt()
-        // The fallback must omit me/her/warmth, not use empty strings
-        val fallbackLine = compact.lines().firstOrNull { it.contains("stage_changed") && it.contains("observations") }
-        assertNotNull("Fallback JSON should exist", fallbackLine)
-        // Fallback must not contain me/her/warmth with empty strings
-        assertFalse("Fallback must not use empty me", fallbackLine!!.contains("\"me\":\"\""))
-        assertFalse("Fallback must not use empty her", fallbackLine.contains("\"her\":\"\""))
-        assertFalse("Fallback must not use empty warmth", fallbackLine.contains("\"warmth\":\"\""))
+    fun `compact schema requires at least one profile field`() {
+        // P0-4: compact schema 不再提供伪合法 fallback。
+        // 不含 me/her/warmth 的 JSON 被 parser 正确拒绝。
+        val noProfileField = """{"stage_changed":false,"observations":[],"message_to_user":"画像更新未能生成，请重试"}"""
+        val result = ProfileUpdate.parse(noProfileField)
+        assertFalse("JSON without any profile field must be invalid", result.valid)
+        assertTrue(result.error!!.contains("画像字段"))
     }
 
     @Test
@@ -108,16 +106,14 @@ class ProfileSchemaConsistencyTest {
     }
 
     @Test
-    fun `compact fallback JSON is parser-valid`() {
-        // The fallback JSON from compact schema should be parseable and valid
-        val fallback = """{"stage_changed":false,"observations":[],"message_to_user":"画像更新未能生成，请重试"}"""
-        val result = ProfileUpdate.parse(fallback)
-        // This should fail because no me/her/warmth is provided
-        // (which is the expected behavior - the fallback is "minimal valid")
-        // Actually per schema: at least one of me/her/warmth must be present
-        // So the fallback is intentionally minimal-but-invalid
-        // The compact prompt says "如果无法修复" - meaning this is last resort
-        // The parser correctly rejects it, and the caller should handle this
-        assertFalse("Fallback without any profile field should be invalid", result.valid)
+    fun `compact schema does not provide fake-valid fallback JSON`() {
+        // P0-4: compact schema 不再设计伪合法 fallback JSON。
+        // schema 只描述真正合法的画像更新（me/her/warmth 至少提供一个）。
+        // 达到最大重试次数仍失败时，由 Coordinator 产生 typed failure。
+        val compact = ProfileUpdateSchema.compactSchemaForPrompt()
+        // compact schema 不应包含伪造的 fallback JSON 示例
+        assertFalse("compact schema must not contain fake fallback JSON", compact.contains("stage_changed.*observations.*message_to_user".toRegex()))
+        // compact schema 应明确说明至少需要一个画像字段
+        assertTrue("compact schema must mention at least one profile field required", compact.contains("至少提供一个"))
     }
 }

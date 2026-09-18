@@ -3,6 +3,8 @@ package com.lovebrain.app.data
 import android.content.Context
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.model.PreconditionReason
+import com.lovebrain.app.model.ProfileTransactionResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -1110,14 +1112,17 @@ class KnowledgeRepository(
     /**
      * 画像更新事务性写入——在单次 fileMutex.withLock 中执行全部操作。
      *
+     * P0-6: 返回 typed [ProfileTransactionResult]，替代模糊 Boolean。
+     *
      * - 所有文件写入、向量写入、阶段更新、warmth 标签更新在同一锁内完成
      * - backup 覆盖所有实际会被修改的文件（包括 warmth.md——即使 payload.warmth 为 null，
      *   stage_changed=true 时 updateWarmthStageLabel 仍会修改 warmth.md）
      * - IO 失败必须抛出（使用 strict 版本），不吞错误
      * - 任一步失败自动 rollback 到 backup
+     * - rollback 成功 → [ProfileTransactionResult.RolledBack]
+     * - rollback 自身失败 → [ProfileTransactionResult.RollbackFailed]（携带失败路径列表）
      *
-     * @return true=成功，false=KB 不存在或 revision 不匹配
-     * @throws IOException 写入或 rollback 失败
+     * @return typed result——调用方据此给出精确的 UI 反馈
      */
     suspend fun applyProfileUpdateAtomically(
         kbName: String,
@@ -1127,22 +1132,24 @@ class KnowledgeRepository(
         stageChanged: Boolean,
         newStage: String?,
         expectedRevision: Int
-    ): Boolean = withContext(Dispatchers.IO) {
+    ): ProfileTransactionResult = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("applyProfileUpdateAtomically: kb no longer exists")
-                return@withLock false
+                return@withLock ProfileTransactionResult.PreconditionFailed(
+                    PreconditionReason.KB_NOT_FOUND
+                )
             }
             val currentRevision = readMemoryRevisionUnlocked(kbName)
             if (currentRevision != expectedRevision) {
                 com.lovebrain.app.util.L.w("applyProfileUpdateAtomically: revision changed (expected=$expectedRevision, current=$currentRevision)")
-                return@withLock false
+                return@withLock ProfileTransactionResult.PreconditionFailed(
+                    PreconditionReason.REVISION_CONFLICT
+                )
             }
 
             // 确定实际会被修改的文件列表——stage_changed=true 时 warmth.md 也会被修改
             val willChangeStage = stageChanged && !newStage.isNullOrBlank()
-            // 确定实际会被修改的文件列表——stage_changed=true 时 warmth.md 也会被修改
-            // warmthWillBeModified 用于判断 backup 范围
 
             // 收集写入目标和旧内容（backup）
             val writeTargets = mutableListOf<Pair<String, String>>()
@@ -1151,18 +1158,21 @@ class KnowledgeRepository(
             warmth?.let { writeTargets.add("understand/warmth.md" to it) }
 
             // backup 所有可能被修改的文件
-            val backups = mutableMapOf<String, String>()
+            // P0-6: 记录文件原先是否存在——rollback 时原不存在的文件应删除而非创建空文件
+            val backups = mutableMapOf<String, Pair<Boolean, String>>() // path -> (existed, oldContent)
             for ((path, _) in writeTargets) {
-                backups[path] = readFileUnlockedFast(kbName, path)
+                val file = File(File(knowledgeRoot, kbName), path)
+                backups[path] = (file.exists() to readFileUnlockedFast(kbName, path))
             }
             // warmth.md 即使不在 writeTargets 中，stage 变化时也会被 updateWarmthStageLabel 修改
             if (willChangeStage && "understand/warmth.md" !in backups) {
-                backups["understand/warmth.md"] = readFileUnlockedFast(kbName, "understand/warmth.md")
+                val file = File(File(knowledgeRoot, kbName), "understand/warmth.md")
+                backups["understand/warmth.md"] = (file.exists() to readFileUnlockedFast(kbName, "understand/warmth.md"))
             }
             // kb.json backup（stage 变化时 updateStageUnlockedStrict 会修改它）
             if (willChangeStage) {
                 val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
-                backups["kb.json"] = if (metaFile.exists()) metaFile.readText() else ""
+                backups["kb.json"] = (metaFile.exists() to (if (metaFile.exists()) metaFile.readText() else ""))
             }
             // 向量 backup（warmth 变化时向量同步会修改 warmth.md 中的数值）
             val oldVector = if (warmth != null) {
@@ -1187,23 +1197,37 @@ class KnowledgeRepository(
                     updateWarmthStageLabelUnlockedStrict(kbName, newStage)
                 }
             } catch (e: Exception) {
-                // Rollback——恢复所有 backup
+                // P0-6: Rollback——恢复所有 backup，跟踪失败路径
+                // 原先存在的文件恢复内容；原先不存在的文件删除（不创建空文件）
                 com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: write failed, rolling back", e)
-                for ((path, oldContent) in backups) {
+                val rollbackFailures = mutableListOf<String>()
+                for ((path, existedAndContent) in backups) {
                     try {
                         val dir = File(knowledgeRoot, kbName)
                         val file = File(dir, path)
                         file.parentFile?.mkdirs()
-                        atomicWriteText(file, oldContent)
+                        val (existed, oldContent) = existedAndContent
+                        if (existed) {
+                            atomicWriteText(file, oldContent)
+                        } else {
+                            // 原先不存在的文件——rollback 应删除而非创建空文件
+                            file.delete()
+                        }
                     } catch (rollbackErr: Exception) {
                         com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL rollback failed for $path", rollbackErr)
+                        rollbackFailures.add(path)
                     }
                 }
-                throw e
+                // P0-6: 区分 rollback 成功与失败——不再吞错误也不模糊 throw
+                return@withLock if (rollbackFailures.isEmpty()) {
+                    ProfileTransactionResult.RolledBack(e)
+                } else {
+                    ProfileTransactionResult.RollbackFailed(e, rollbackFailures)
+                }
             }
 
             scheduleDebouncedBackup()
-            true
+            ProfileTransactionResult.Success
         }
     }
 

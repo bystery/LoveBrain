@@ -39,7 +39,8 @@ ${ProfileUpdateSchema.strictSchemaForPrompt()}
 /**
  * Attempt 3 使用的 compact schema repair system prompt。
  * Schema 文案引用 [ProfileUpdateSchema.compactSchemaForPrompt]——单一真源。
- * Fallback JSON 省略 me/her/warmth（而非空串），与 parser 规则一致。
+ * P0-4: 不再要求 AI 伪造 "最小合法 JSON"——compact schema 只描述真正合法的画像更新。
+ * 达到最大重试次数仍失败时，由 Coordinator 产生 typed failure。
  */
 private fun buildCompactSchemaRepairSystem(): String = """请根据以下上下文重新生成合法的画像更新 JSON。只输出 JSON 对象，不要输出其他任何内容。
 
@@ -257,13 +258,12 @@ class KnowledgeTriggerCoordinator(
 
     /**
      * P1-03: 用户手动触发画像重新生成（不依赖话题计数阈值）。
-     * 先清空旧建议（调用方负责），再走同一个 generateReflectSuggestion 逻辑。
+     * P0-2: 改为 suspend operation——禁止 fire-and-forget 嵌套 launch。
+     * 调用方在自身协程中 await，真正持有生成任务的生命周期。
      */
-    fun regenerateProfile(kbName: String, scope: CoroutineScope, callbacks: Callbacks) {
-        scope.launch {
-            val frozenCorrectionsRev = knowledgeRepo.getCorrectionsRevision(kbName)
-            generateReflectSuggestion(kbName, scope, callbacks, frozenCorrectionsRev).join()
-        }
+    suspend fun regenerateProfile(kbName: String, scope: CoroutineScope, callbacks: Callbacks) {
+        val frozenCorrectionsRev = knowledgeRepo.getCorrectionsRevision(kbName)
+        generateReflectSuggestion(kbName, scope, callbacks, frozenCorrectionsRev).join()
     }
 
     private fun generateReflectSuggestion(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {

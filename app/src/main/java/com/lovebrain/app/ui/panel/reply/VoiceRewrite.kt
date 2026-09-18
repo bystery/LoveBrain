@@ -10,12 +10,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.lovebrain.app.util.L
 
 /**
@@ -46,15 +48,15 @@ enum class VoiceRewriteState {
 }
 
 /**
- * P0-2: 显式手势生命周期状态——独立于 STT 状态机。
+ * P0-5: 手势生命周期状态——单一 owner，SchemeCard 和 VoiceRewriteController 共用。
  *
  * 用于跟踪长按手势的物理阶段，确保：
  * - 手指移出卡片 → CANCELLED（不发送 transcript，不请求 API）
  * - 正常松手 → RELEASED（等待 final transcript）
  * - 手势被系统取消 → CANCELLED
  *
- * 这个状态不直接驱动 UI（UI 由 VoiceRewriteState + RewriteState 驱动），
- * 但用于日志、调试和未来扩展（如拖动距离检测）。
+ * 这个状态由 SchemeCard 的 pointerInput 驱动，VoiceRewriteController 只读取它。
+ * 禁止两套状态机各自漂移。
  */
 enum class GesturePhase {
     /** 未开始手势 */
@@ -81,10 +83,13 @@ enum class VoicePermissionResult {
     PERMANENTLY_DENIED
 }
 
-/** 语音改写控制器返回值 */
+/** 语音改写控制器返回值
+ *
+ * P0-5: gesturePhase 由外部（SchemeCard pointerInput）驱动，
+ * 不在 controller 内部维护第二套状态机。
+ */
 data class VoiceRewriteController(
     val state: VoiceRewriteState,
-    val gesturePhase: GesturePhase,
     val startListening: () -> Unit,
     val stopListening: () -> Unit,
     val cancel: () -> Unit,
@@ -113,8 +118,7 @@ fun rememberVoiceRewriteController(
 ): VoiceRewriteController {
     val context = LocalContext.current
     var voiceState by remember { mutableStateOf(VoiceRewriteState.IDLE) }
-    // P0-2: 显式手势状态——独立于 STT 状态机
-    var gesturePhase by remember { mutableStateOf(GesturePhase.IDLE) }
+    // P0-5: gesturePhase 由 SchemeCard pointerInput 外部驱动，不在此处维护
     val speechRecognizer = remember { mutableStateOf<SpeechRecognizer?>(null) }
     val accumulatedText = remember { StringBuilder() }
     val tagRef = remember { schemeTag }
@@ -151,17 +155,27 @@ fun rememberVoiceRewriteController(
         }
     }
 
-    // 权限状态可能在外部变化（用户从设置回来），在组合时重新检查
-    LaunchedEffect(Unit) {
-        val nowGranted = context.checkPermission(
-            android.Manifest.permission.RECORD_AUDIO,
-            android.os.Process.myPid(),
-            android.os.Process.myUid()
-        ) == PackageManager.PERMISSION_GRANTED
-        if (nowGranted && !hasPermission) {
-            hasPermission = true
-            permissionResult = VoicePermissionResult.ALREADY_GRANTED
+    // 权限状态可能在外部变化（用户从设置回来），P2: 基于 lifecycle resume 刷新
+    // 不再依赖仅执行一次的 LaunchedEffect(Unit)，开始录音前也会重新检查
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                val nowGranted = context.checkPermission(
+                    android.Manifest.permission.RECORD_AUDIO,
+                    android.os.Process.myPid(),
+                    android.os.Process.myUid()
+                ) == PackageManager.PERMISSION_GRANTED
+                if (nowGranted != hasPermission) {
+                    hasPermission = nowGranted
+                    if (nowGranted) {
+                        permissionResult = VoicePermissionResult.ALREADY_GRANTED
+                    }
+                }
+            }
         }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
     fun startListening() {
@@ -172,8 +186,7 @@ fun rememberVoiceRewriteController(
 
         accumulatedText.clear()
         voiceState = VoiceRewriteState.RECORDING
-        gesturePhase = GesturePhase.RECORDING
-
+        // P0-5: gesturePhase 由 SchemeCard pointerInput 外部管理，不在此处设置
         try {
             val sr = SpeechRecognizer.createSpeechRecognizer(context)
             speechRecognizer.value = sr
@@ -197,9 +210,8 @@ fun rememberVoiceRewriteController(
                 }
 
                 override fun onError(error: Int) {
-                    L.w("VoiceRewrite: STT error=$error, gesturePhase=$gesturePhase")
+                    L.w("VoiceRewrite: STT error=$error")
                     voiceState = VoiceRewriteState.IDLE
-                    gesturePhase = GesturePhase.IDLE
                     speechRecognizer.value = null
                 }
 
@@ -220,21 +232,12 @@ fun rememberVoiceRewriteController(
                         ?.firstOrNull()
                         ?: accumulatedText.toString()
 
-                    // P0-2: 先检查手势是否已被取消（手指移出），再清除状态
-                    val wasCancelled = gesturePhase == GesturePhase.CANCELLED
-
-                    // P0-1: STT 完成后立即回 IDLE
-                    // API 改写状态由统一 RewriteState 管理
-                    // P0-2: 手势状态也回 IDLE
+                    // P0-5: wasCancelled 由外部 gesturePhase 查询——
+                    // controller 不再持有 gesturePhase，手势取消时 SchemeCard 不会调用 stopListening()
+                    // 而是调用 cancel()，cancel() 已清空 accumulatedText 并设 IDLE
+                    // 到达 onResults 说明走的是正常 stopListening 路径
                     voiceState = VoiceRewriteState.IDLE
-                    gesturePhase = GesturePhase.IDLE
                     speechRecognizer.value = null
-
-                    // P0-2: 如果手势已被取消（手指移出），不发送 API
-                    if (wasCancelled) {
-                        L.w("VoiceRewrite: gesture was cancelled, not sending API")
-                        return
-                    }
 
                     if (finalText.isNotBlank()) {
                         onVoiceRewrite(tagRef, finalText.trim())
@@ -254,15 +257,13 @@ fun rememberVoiceRewriteController(
     }
 
     fun stopListening() {
-        // P0-2: 正常松手——标记为 RELEASED，等待 final transcript
+        // P0-5: gesturePhase 由 SchemeCard pointerInput 外部管理
         voiceState = VoiceRewriteState.PROCESSING
-        gesturePhase = GesturePhase.RELEASED
         speechRecognizer.value?.stopListening()
     }
 
     fun cancel() {
-        // P0-2: 手指移出或手势取消——标记为 CANCELLED，不发送 transcript
-        gesturePhase = GesturePhase.CANCELLED
+        // P0-5: gesturePhase 由 SchemeCard pointerInput 外部管理
         speechRecognizer.value?.cancel()
         speechRecognizer.value = null
         voiceState = VoiceRewriteState.IDLE
@@ -279,7 +280,6 @@ fun rememberVoiceRewriteController(
 
     return VoiceRewriteController(
         state = voiceState,
-        gesturePhase = gesturePhase,
         startListening = { startListening() },
         stopListening = { stopListening() },
         cancel = { cancel() },

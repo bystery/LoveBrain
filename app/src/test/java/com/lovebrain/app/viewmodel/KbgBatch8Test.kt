@@ -9,6 +9,7 @@ import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.ProfileSuggestion
+import com.lovebrain.app.model.ProfileTransactionResult
 import com.lovebrain.app.model.ProfileUpdate
 import com.lovebrain.app.model.IntentConfig
 import io.mockk.coEvery
@@ -293,7 +294,7 @@ class KbgBatch8Test {
             KnowledgeBase(name = "kb-a", stage = "暧昧期"),
             KnowledgeBase(name = "kb-b", stage = "热恋期")
         )
-        coEvery { knowledgeRepo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns true
+        coEvery { knowledgeRepo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns ProfileTransactionResult.Success
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
 
         val vm = newViewModelWithKb(kbName = "kb-a", knowledgeRepoOverride = knowledgeRepo)
@@ -362,7 +363,7 @@ class KbgBatch8Test {
         // A's vector on disk
         coEvery { knowledgeRepo.readVector("kb-a") } returns mapOf("intimacy" to 55)
         coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = "kb-a", stage = "暧昧期"))
-        coEvery { knowledgeRepo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns true
+        coEvery { knowledgeRepo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns ProfileTransactionResult.Success
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
 
         val vm = newViewModelWithKb(kbName = "kb-a", knowledgeRepoOverride = knowledgeRepo)

@@ -151,7 +151,8 @@ fun ResultArea(
             val response = result.response
             // P0-1: 风格/方向视图切换——始终只有一排四卡
             val hasDirections = response.directionSchemes.any { it.reply.isNotBlank() }
-            var viewMode by remember { mutableStateOf(SchemeViewMode.STYLE) }
+            // P2: 每个新结果默认回到 STYLE，避免上一轮停留在 DIRECTION 后沿用旧 UI 状态
+            var viewMode by remember(response) { mutableStateOf(SchemeViewMode.STYLE) }
             val displaySchemes = when (viewMode) {
                 SchemeViewMode.STYLE -> response.schemes
                 SchemeViewMode.DIRECTION -> response.directionSchemes
@@ -188,17 +189,16 @@ fun ResultArea(
                     OngoingSection(items = response.analysis.ongoing)
                 }
 
-                // P1-1: 无 memoryRefs 时不创建新的结果工具区层级
-                // "记入知识库"只在有本轮参考时才与参考入口共享一行
-                if (memoryRefs.isNotEmpty()) {
-                    Spacer(Modifier.height(Spacing.sm))
-                    ResultToolRow(
-                        memoryRefs = memoryRefs,
-                        onSaveToKb = onSaveToKb,
-                        onCorrection = onCorrection,
-                        onUndoCorrection = onUndoCorrection
-                    )
-                }
+                // P0-3: 始终渲染结果工具区——"记入知识库"不可因无 memoryRefs 而消失。
+                // 有 memoryRefs 时共享一行（左:本轮参考 / 右:记入知识库）。
+                // 无 memoryRefs 时仅显示"记入知识库"按钮，不新增独占行。
+                Spacer(Modifier.height(Spacing.sm))
+                ResultToolRow(
+                    memoryRefs = memoryRefs,
+                    onSaveToKb = onSaveToKb,
+                    onCorrection = onCorrection,
+                    onUndoCorrection = onUndoCorrection
+                )
             }
         }
 
@@ -320,10 +320,10 @@ private fun SchemeCardsRow(
     // 方案筛选：全部 / 已赞（调研：NN/G 10 Heuristics #6 Recognition rather than recall——
     // 用户赞过的方案应能快速回看，无需在 4 张卡里翻找）
     var filter by rememberSaveable { mutableStateOf(SchemeFilter.ALL) }
-    val likedCount = schemes.count { feedbacks[it.tag] == SchemeFeedback.LIKED }
+    val likedCount = schemes.count { feedbacks[it.identity.key] == SchemeFeedback.LIKED }
     val displaySchemes = when (filter) {
         SchemeFilter.ALL -> schemes
-        SchemeFilter.LIKED -> schemes.filter { feedbacks[it.tag] == SchemeFeedback.LIKED }
+        SchemeFilter.LIKED -> schemes.filter { feedbacks[it.identity.key] == SchemeFeedback.LIKED }
     }
 
     val scrollState = rememberLazyListState()
@@ -383,13 +383,13 @@ private fun SchemeCardsRow(
                 horizontalArrangement = Arrangement.spacedBy(Spacing.md),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                items(displaySchemes, key = { it.tag }) { scheme ->
+                items(displaySchemes, key = { it.identity.key }) { scheme ->
                     // 入场动效：淡入+上移，逐张交错 60ms（仅首次组合播放）
-                    val index = displaySchemes.indexOfFirst { it.tag == scheme.tag }
-                    var visible by remember { mutableStateOf(playedTags[scheme.tag] ?: false) }
+                    val index = displaySchemes.indexOfFirst { it.identity.key == scheme.identity.key }
+                    var visible by remember { mutableStateOf(playedTags[scheme.identity.key] ?: false) }
                     LaunchedEffect(Unit) {
-                        if (!(playedTags[scheme.tag] ?: false)) {
-                            playedTags[scheme.tag] = true
+                        if (!(playedTags[scheme.identity.key] ?: false)) {
+                            playedTags[scheme.identity.key] = true
                             visible = true
                         }
                     }
@@ -406,23 +406,23 @@ private fun SchemeCardsRow(
                     ) {
                         SchemeCard(
                             scheme = scheme,
-                            feedback = feedbacks[scheme.tag] ?: SchemeFeedback.NONE,
+                            feedback = feedbacks[scheme.identity.key] ?: SchemeFeedback.NONE,
                             onFeedback = onFeedback,
                             onCopy = onCopyScheme,
-                            rewriteState = rewriteStates[scheme.tag],
+                            rewriteState = rewriteStates[scheme.identity.key],
                             onRewrite = onRewrite,
                             onClearRewriteState = onClearRewriteState,
                             onCancelRewrite = onCancelRewrite,
                             onUndoRewrite = onUndoRewrite,
-                            isExpanded = expandedRewriteTag == scheme.tag,
-                            onToggleRewriteExpand = { tag ->
-                                val currentRewriteState = rewriteStates[tag]
-                                if (expandedRewriteTag != tag) {
+                            isExpanded = expandedRewriteTag == scheme.identity.key,
+                            onToggleRewriteExpand = { key ->
+                                val currentRewriteState = rewriteStates[key]
+                                if (expandedRewriteTag != key) {
                                     if (currentRewriteState is RewriteState.Done ||
                                         currentRewriteState is RewriteState.Error) {
-                                        onClearRewriteState(tag)
+                                        onClearRewriteState(key)
                                     }
-                                    expandedRewriteTag = tag
+                                    expandedRewriteTag = key
                                 } else {
                                     expandedRewriteTag = null
                                 }
