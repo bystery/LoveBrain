@@ -507,14 +507,25 @@ class KnowledgeRepository(
         }.getOrDefault(IntentConfig())
     }
 
-    /** F07: 保存持续意图配置。每次保存 revision+1，用于生成时冻结快照识别旧请求。 */
-    suspend fun saveIntent(kbName: String, text: String, enabled: Boolean): IntentConfig = withContext(Dispatchers.IO) {
+    /** F07: 保存持续意图配置。每次保存 revision+1，用于生成时冻结快照识别旧请求。
+     *  F06: 支持有效期和完成状态。 */
+    suspend fun saveIntent(
+        kbName: String,
+        text: String,
+        enabled: Boolean,
+        expiry: com.lovebrain.app.model.IntentExpiry = com.lovebrain.app.model.IntentExpiry.UNTIL_DONE,
+        expiryDate: String = "",
+        status: com.lovebrain.app.model.IntentStatus = com.lovebrain.app.model.IntentStatus.ACTIVE
+    ): IntentConfig = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             val current = readIntentUnlocked(kbName)
             val updated = IntentConfig(
                 text = text,
                 enabled = enabled,
-                revision = current.revision + 1
+                revision = current.revision + 1,
+                expiry = expiry,
+                expiryDate = expiryDate,
+                status = status
             )
             val dir = File(knowledgeRoot, kbName)
             File(dir, "moment").mkdirs()
@@ -552,20 +563,24 @@ class KnowledgeRepository(
         memoryId: String,
         action: com.lovebrain.app.model.CorrectionAction,
         replacementText: String = "",
-        targetKbId: String = ""
+        targetKbId: String = "",
+        muteDuration: com.lovebrain.app.model.MuteDuration = com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE
     ): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) return@withLock false
             val current = readCorrectionsUnlocked(kbName)
             // R07: 读取库级持久化 revision（单调递增，不会因撤销倒退）
             val newRevision = readMemoryRevisionUnlocked(kbName) + 1
+            val now = isoNow()
             val correction = com.lovebrain.app.model.MemoryCorrection(
                 memoryId = memoryId,
                 action = action,
                 replacementText = replacementText,
                 targetKbId = targetKbId,
                 revision = newRevision,
-                updatedAt = isoNow()
+                updatedAt = now,
+                muteDuration = muteDuration,
+                muteTimestamp = if (action == com.lovebrain.app.model.CorrectionAction.MUTED) now else ""
             )
             val updated = current.toMutableMap()
             updated[memoryId] = correction

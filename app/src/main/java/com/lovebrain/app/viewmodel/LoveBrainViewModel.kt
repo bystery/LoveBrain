@@ -61,7 +61,9 @@ class LoveBrainViewModel(
     private val topicRecorder: TopicRecorder,
     private val securePrefs: SecurePrefs,
     private val triggerCoordinator: KnowledgeTriggerCoordinator,
-    private val generationEngine: GenerationEngine
+    private val generationEngine: GenerationEngine,
+    // F02: 反馈案例仓库——点踩时本地保存
+    private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null
 ) : ViewModel(), KnowledgeTriggerCoordinator.Callbacks, GenerationEngine.Callbacks {
 
     private val _panelState = MutableStateFlow(PanelState.KEYBOARD)
@@ -92,6 +94,7 @@ class LoveBrainViewModel(
     private var generateJob: kotlinx.coroutines.Job? = null
     private var counselingJob: kotlinx.coroutines.Job? = null
     private var suggestJob: kotlinx.coroutines.Job? = null
+    private var directionJob: kotlinx.coroutines.Job? = null  // F07: 方向生成 Job
 
     // ═══════════ GEN-02：本轮生成上下文（不可变快照） ═══════════
     /**
@@ -114,6 +117,21 @@ class LoveBrainViewModel(
         val sourceAliasMap: Map<String, String> = emptyMap() // B项修复：别名→实际消息ID映射
     )
     private var replyGenerationContext: ReplyGenerationContext? = null
+
+    // ═══════════ F11: 输入变化提示 + 生成历史 ═══════════
+
+    /** F11: 输入已变化——result 存在但 messages/ideaHint 与生成时快照不一致 */
+    private val _inputChanged = MutableStateFlow(false)
+    val inputChanged: StateFlow<Boolean> = _inputChanged.asStateFlow()
+
+    /** F11: 生成历史——每轮成功生成时保存的 result 快照 */
+    private data class GenerationSnapshot(
+        val result: GenerateResult.Success,
+        val messageIds: Set<String>,
+        val ideaHint: String
+    )
+    private val _generationHistory = MutableStateFlow<List<GenerationSnapshot>>(emptyList())
+    val generationHistorySize: Int get() = _generationHistory.value.size
 
     private val _streamingCoreText = MutableStateFlow("")
     val streamingCoreText: StateFlow<String> = _streamingCoreText.asStateFlow()
@@ -241,8 +259,47 @@ class LoveBrainViewModel(
     private val _lastResponseMs = MutableStateFlow(0L)
     val lastResponseMs: StateFlow<Long> = _lastResponseMs.asStateFlow()
 
+    // F12: 性能统计
+    /** 累计生成次数（跨重启持久化） */
+    private val _totalGenerateCount = MutableStateFlow(0)
+    val totalGenerateCount: StateFlow<Int> = _totalGenerateCount.asStateFlow()
+
+    /** 累计花费（元；跨重启持久化） */
+    private val _totalCostYuan = MutableStateFlow(0.0)
+    val totalCostYuan: StateFlow<Double> = _totalCostYuan.asStateFlow()
+
     /** 今日花费的计费日期（跨零点滚动清零用） */
     private var todayCostDate: String = java.time.LocalDate.now().toString()
+
+    // F12: 详细统计
+    /** 累计复制次数 */
+    private val _totalCopyCount = MutableStateFlow(0)
+    val totalCopyCount: StateFlow<Int> = _totalCopyCount.asStateFlow()
+
+    /** 累计采用次数（记录实际发送） */
+    private val _totalAdoptCount = MutableStateFlow(0)
+    val totalAdoptCount: StateFlow<Int> = _totalAdoptCount.asStateFlow()
+
+    /** 累计改写次数 */
+    private val _totalRewriteCount = MutableStateFlow(0)
+    val totalRewriteCount: StateFlow<Int> = _totalRewriteCount.asStateFlow()
+
+    /** 首条可复制回复耗时（毫秒；0 = 尚未生成） */
+    private val _firstReplyMs = MutableStateFlow(0L)
+    val firstReplyMs: StateFlow<Long> = _firstReplyMs.asStateFlow()
+
+    // ═══════════ F07: 换个思路·方向生成 ═══════════
+    /** 方向生成中 */
+    private val _isDirectionGenerating = MutableStateFlow(false)
+    val isDirectionGenerating: StateFlow<Boolean> = _isDirectionGenerating.asStateFlow()
+
+    /** 方向生成流式 schemes（逐条渲染） */
+    private val _streamingDirections = MutableStateFlow<List<Scheme>>(emptyList())
+    val streamingDirections: StateFlow<List<Scheme>> = _streamingDirections.asStateFlow()
+
+    /** 方向生成错误 */
+    private val _directionError = MutableStateFlow<String?>(null)
+    val directionError: StateFlow<String?> = _directionError.asStateFlow()
 
     private val _currentRole = MutableStateFlow(ChatMessage.Role.HER)
     val currentRole: StateFlow<ChatMessage.Role> = _currentRole.asStateFlow()
@@ -295,6 +352,60 @@ class LoveBrainViewModel(
      *  阻断B修复：改写也纳入前台互斥 */
     val isForegroundBusy: Boolean get() = _isGenerating.value || _isProactive.value || _isPreparing.value || (rewriteJob?.isActive == true)
 
+    // ═══════════ F10: 仅看本轮开关 ═══════════
+
+    /** F10: 仅看本轮开关——默认关闭。开启后只携带通用生成规则、本轮真实消息和本轮想法。
+     * 排除旧画像、关系阶段、历史对话、场景、事项、经验与持续意图。
+     * 开关属于当前工作轮次；本轮重生成保留，开启新轮次或切档案后恢复默认。 */
+    private val _onlyThisRound = MutableStateFlow(false)
+    val onlyThisRound: StateFlow<Boolean> = _onlyThisRound.asStateFlow()
+
+    fun toggleOnlyThisRound() {
+        _onlyThisRound.value = !_onlyThisRound.value
+    }
+
+    fun setOnlyThisRound(value: Boolean) {
+        _onlyThisRound.value = value
+    }
+
+    // ═══════════ F11: 输入变化提示 + 生成历史与版本回退 ═══════════
+
+    /**
+     * F11: 检测输入是否已变化——messages 或 ideaHint 与生成时快照不一致。
+     * 由 UI 在消息/想法变更后调用，或由 ViewModel 在 setMessages 时自动检测。
+     */
+    fun checkInputChanged() {
+        val ctx = replyGenerationContext ?: return
+        val result = _result.value as? GenerateResult.Success ?: return
+        val currentMsgIds = _messages.value.mapTo(mutableSetOf()) { it.id }.toSet()
+        val currentIdeaHint = collectIdeaHintWithDraft(_messages.value)
+        val changed = currentMsgIds != ctx.messageIds || currentIdeaHint != ctx.ideaHint
+        _inputChanged.value = changed
+    }
+
+    /**
+     * F11: 回退到上一轮生成结果。
+     * 弹出当前结果，恢复到历史中最后一份快照。
+     * 如果没有更早的历史，不做操作。
+     */
+    fun rollbackToPreviousGeneration() {
+        val history = _generationHistory.value
+        if (history.size < 2) return
+        val previous = history[history.size - 2]
+        val remaining = history.dropLast(1)
+        _generationHistory.value = remaining
+        _result.value = previous.result
+        _feedbacks.value = emptyMap()
+        _rewriteStates.value = emptyMap()
+        _rewriteHistory.value = emptyMap()
+        _inputChanged.value = false
+        // 递减 roundId 以触发 viewMode 重置
+        _generationRoundId.value--
+    }
+
+    /** F11: 是否可以回退到上一版本 */
+    val canRollbackGeneration: Boolean get() = _generationHistory.value.size >= 2
+
     // ═══════════ 谈心模式 ═══════════
     private val _counselingResult = MutableStateFlow<String?>(null)
     val counselingResult: StateFlow<String?> = _counselingResult.asStateFlow()
@@ -326,6 +437,12 @@ class LoveBrainViewModel(
         // ：今日花费载入（跨天清零）+ 订阅计费事件流（ 口径）
         val savedCost = securePrefs.loadTodayCost()
         _todayCostYuan.value = rollTodayCost(savedCost?.first, savedCost?.second, todayCostDate)
+        // F12: 加载累计统计
+        _totalGenerateCount.value = securePrefs.totalGenerateCount
+        _totalCostYuan.value = securePrefs.totalCostYuan
+        _totalCopyCount.value = securePrefs.totalCopyCount
+        _totalAdoptCount.value = securePrefs.totalAdoptCount
+        _totalRewriteCount.value = securePrefs.totalRewriteCount
         viewModelScope.launch {
             // 规则 11：后台收集 runCatching 兜底（SharedFlow 收集不应崩面板）
             runCatching {
@@ -335,6 +452,9 @@ class LoveBrainViewModel(
                     // PROV-03：今日累计包含全部可计费 AI 请求（前台 + 后台）
                     _todayCostYuan.value += ev.yuan
                     securePrefs.saveTodayCost(today, _todayCostYuan.value)
+                    // F12: 累计总花费
+                    _totalCostYuan.value += ev.yuan
+                    securePrefs.totalCostYuan = _totalCostYuan.value
                     // PROV-03：本次费用只显示前台流式请求（FOREGROUND），不被后台 raw 污染
                     if (ev.scope == CostScope.FOREGROUND) {
                         _lastCostYuan.value = ev.yuan
@@ -551,7 +671,7 @@ class LoveBrainViewModel(
             _isPreparing.value = false
 
             // GEN-01 双层保护第二层：Engine 返回 null = reject，不覆盖旧 Job
-            val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this@LoveBrainViewModel, intentSnapshot, correctionsSnapshot)
+            val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this@LoveBrainViewModel, intentSnapshot, correctionsSnapshot, _onlyThisRound.value)
             if (job != null) {
                 generateJob = job
                 // GEN-02：context 必须和实际启动成功的 Job 绑定
@@ -608,6 +728,7 @@ class LoveBrainViewModel(
         _panelState.value = PanelState.KEYBOARD
         // GEN-02：停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
+        _inputChanged.value = false
         if (_result.value == null) {
             _result.value = GenerateResult.Error("已手动停止生成")
         }
@@ -615,10 +736,111 @@ class LoveBrainViewModel(
 
     // ═══════════ 赞踩反馈 ═══════════
 
-    /** P0-1: setFeedback 使用 identityKey 区分 STYLE/DIRECTION */
+    /** P0-1: setFeedback 使用 identityKey 区分 STYLE/DIRECTION
+     * F02: 点踩时立即落本地反馈案例，不因点踩调用 AI */
     fun setFeedback(identityKey: String, feedback: SchemeFeedback) {
         _feedbacks.value = _feedbacks.value.toMutableMap().apply {
             put(identityKey, if (this[identityKey] == feedback) SchemeFeedback.NONE else feedback)
+        }
+        // F02: 点踩时立即保存反馈案例
+        if (feedback == SchemeFeedback.DISLIKED) {
+            saveFeedbackCase(identityKey)
+        }
+    }
+
+    /** F02: 点踩时保存最小反馈案例（仅候选原文+身份+时间，原因等后续补充） */
+    private fun saveFeedbackCase(identityKey: String) {
+        val repo = feedbackCaseRepository ?: return
+        val result = _result.value as? GenerateResult.Success ?: return
+        val response = result.response
+        val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(identityKey) ?: return
+        val allSchemes = when (identity.source) {
+            com.lovebrain.app.model.SchemeSource.STYLE -> response.schemes
+            com.lovebrain.app.model.SchemeSource.DIRECTION -> response.directionSchemes
+        }
+        val scheme = allSchemes.find { it.tag == identity.tag } ?: return
+        val ctx = replyGenerationContext ?: return
+
+        val case = com.lovebrain.app.model.FeedbackCase(
+            caseId = java.util.UUID.randomUUID().toString(),
+            schemeIdentityKey = identityKey,
+            candidateReply = scheme.reply,
+            categories = emptyList(),
+            reasons = emptyList(),
+            kbName = ctx.kbName ?: "",
+            ideaHint = ctx.ideaHint,
+            intentText = ctx.intentText.takeIf { ctx.intentEnabled } ?: "",
+            modelId = _activeTicket.value?.model ?: "",
+            timestamp = com.lovebrain.app.util.TimeFmt.now()
+        )
+        viewModelScope.launch {
+            runCatching {
+                withContext(Dispatchers.IO) {
+                    repo.save(case)
+                }
+            }.onFailure { L.w("saveFeedbackCase failed: ${it::class.simpleName}") }
+        }
+    }
+
+    /** F02: 更新反馈案例的分类、原因和补充说明 */
+    fun updateFeedbackCase(
+        caseId: String,
+        categories: List<com.lovebrain.app.model.FeedbackCategory>,
+        reasons: List<String>,
+        userNote: String = "",
+        betterVersion: String = ""
+    ) {
+        val repo = feedbackCaseRepository ?: return
+        viewModelScope.launch {
+            runCatching {
+                withContext(Dispatchers.IO) {
+                    val all = repo.getAll()
+                    val existing = all.find { it.caseId == caseId } ?: return@withContext
+                    repo.save(
+                        existing.copy(
+                            categories = categories,
+                            reasons = reasons,
+                            userNote = userNote,
+                            betterVersion = betterVersion
+                        )
+                    )
+                }
+            }.onFailure { L.w("updateFeedbackCase failed: ${it::class.simpleName}") }
+        }
+    }
+
+    /** F02: 获取全部反馈案例 */
+    fun loadFeedbackCases(
+        onResult: (List<com.lovebrain.app.model.FeedbackCase>) -> Unit
+    ) {
+        val repo = feedbackCaseRepository ?: run { onResult(emptyList()); return }
+        viewModelScope.launch {
+            val cases = withContext(Dispatchers.IO) { repo.getAll() }
+            onResult(cases)
+        }
+    }
+
+    /** F02: 导出反馈案例为 Markdown */
+    fun exportFeedbackMarkdown(
+        cases: List<com.lovebrain.app.model.FeedbackCase>,
+        onResult: (String) -> Unit
+    ) {
+        val repo = feedbackCaseRepository ?: run { onResult(""); return }
+        viewModelScope.launch {
+            val text = withContext(Dispatchers.IO) { repo.exportMarkdown(cases) }
+            onResult(text)
+        }
+    }
+
+    /** F02: 导出反馈案例为 JSON */
+    fun exportFeedbackJson(
+        cases: List<com.lovebrain.app.model.FeedbackCase>,
+        onResult: (String) -> Unit
+    ) {
+        val repo = feedbackCaseRepository ?: run { onResult(""); return }
+        viewModelScope.launch {
+            val text = withContext(Dispatchers.IO) { repo.exportJson(cases) }
+            onResult(text)
         }
     }
 
@@ -756,10 +978,65 @@ class LoveBrainViewModel(
         _rewriteHistory.value = emptyMap()
         rewriteRequestId = null
         rewriteContextId = null
+        // F10: 新轮次恢复仅看本轮开关为默认关闭
+        _onlyThisRound.value = false
     }
 
     fun copyScheme(scheme: Scheme): String {
+        // F12: 统计复制次数
+        _totalCopyCount.value += 1
+        securePrefs.totalCopyCount = _totalCopyCount.value
         return scheme.reply
+    }
+
+    // ═══════════ F03: 记录实际发送的版本 ═══════════
+
+    /**
+     * F03: 记录用户确认已发送的版本。
+     *
+     * 用户自行确认发送，不代表应用检测到了发送行为。
+     * 确认后写为"我"的真实消息，保存用户确认来源、关联候选版本（若有）、时间。
+     * 同一轮只能有一份当前最终发送记录；多条真实消息可明确添加多条。
+     * 不混淆点赞与发送。
+     */
+    fun recordActualSentMessage(
+        sentText: String,
+        linkedSchemeIdentityKey: String? = null
+    ) {
+        if (sentText.isBlank()) return
+        val ctx = replyGenerationContext ?: return
+        // F12: 统计采用次数
+        _totalAdoptCount.value += 1
+        securePrefs.totalAdoptCount = _totalAdoptCount.value
+        val kbName = ctx.kbName ?: run {
+            showPanelWarning("未激活知识库，无法记录已发送消息")
+            return
+        }
+
+        viewModelScope.launch {
+            runCatching {
+                withContext(Dispatchers.IO) {
+                    val kb = knowledgeRepo.listAll().firstOrNull { it.name == kbName }
+                    if (kb == null) {
+                        showPanelWarning("本轮保存失败：知识库已被删除")
+                        return@withContext
+                    }
+                    // 记录为真实"我"消息——追加到 recent.md
+                    val time = com.lovebrain.app.util.TimeFmt.now()
+                    val sentEntry = buildString {
+                        append("<!-- sent:").append(time).append(" linked:").append(linkedSchemeIdentityKey ?: "null").append(" -->\n")
+                        append("我（确认已发送）：").append(sentText.trim()).append("\n")
+                    }
+                    val recentPath = "moment/recent.md"
+                    val existing = knowledgeRepo.readFile(kb.name, recentPath)
+                    knowledgeRepo.writeFile(kb.name, recentPath, existing + sentEntry)
+                }
+                _kbNotice.value = "已记录实际发送的消息"
+            }.onFailure {
+                L.e("recordActualSentMessage failed", it)
+                showPanelWarning("记录发送失败，内容已保留，请重试")
+            }
+        }
     }
 
     // ═══════════ KnowledgeTriggerCoordinator.Callbacks 实现 ═══════════
@@ -1170,11 +1447,60 @@ class LoveBrainViewModel(
         _proactiveError.value = null
     }
 
+    // ═══════════ F07: 换个思路·方向生成 ═══════════
+
+    /**
+     * F07: 按需方向生成——用户点击"换个思路"时触发。
+     * 复用本轮冻结上下文（ReplyGenerationContext），仅更换 system prompt。
+     * 正在生成方向或正在生成回复时拒绝。
+     */
+    fun generateDirection() {
+        if (_isDirectionGenerating.value || _isGenerating.value || _isPreparing.value) return
+        val ctx = replyGenerationContext ?: return
+
+        _directionError.value = null
+        _streamingDirections.value = emptyList()
+
+        val job = generationEngine.generateDirection(
+            messages = ctx.messages,
+            userHint = ctx.ideaHint,
+            knowledgeBase = _activeKb.value,
+            scope = viewModelScope,
+            callbacks = this,
+            intentConfig = com.lovebrain.app.model.IntentConfig(
+                text = ctx.intentText,
+                enabled = ctx.intentEnabled,
+                revision = ctx.intentRevision
+            ),
+            onlyThisRound = _onlyThisRound.value
+        )
+        if (job != null) {
+            directionJob = job
+            job.invokeOnCompletion {
+                if (directionJob === job) {
+                    directionJob = null
+                }
+            }
+        }
+    }
+
+    /** F07: 停止方向生成 */
+    fun stopDirection() {
+        if (!_isDirectionGenerating.value) return
+        directionJob?.cancel()
+        directionJob = null
+        _isDirectionGenerating.value = false
+        _streamingDirections.value = emptyList()
+        _directionError.value = "已手动停止"
+    }
+
     // ═══════════ GenerationEngine.Callbacks 实现 ═══════════
 
     /** ：首字耗时上报（四流程统一回调，展示条消费） */
     override fun onFirstToken(elapsedMs: Long) {
         _lastResponseMs.value = elapsedMs
+        // F12: 首条可复制回复耗时 = 首字耗时（近似）
+        _firstReplyMs.value = elapsedMs
     }
 
     // --- 回复生成 ---
@@ -1213,6 +1539,20 @@ class LoveBrainViewModel(
         // P0-3: 只有整轮生成成功时才递增 roundId——单条改写/undo 不经过此回调
         if (result is GenerateResult.Success) {
             _generationRoundId.value++
+            // F11: 保存生成快照到历史
+            val ctx = replyGenerationContext
+            if (ctx != null) {
+                _generationHistory.value = _generationHistory.value + GenerationSnapshot(
+                    result = result,
+                    messageIds = ctx.messageIds,
+                    ideaHint = ctx.ideaHint
+                )
+            }
+            // F11: 生成成功后重置输入变化标记
+            _inputChanged.value = false
+            // F12: 递增累计生成次数
+            _totalGenerateCount.value += 1
+            securePrefs.totalGenerateCount = _totalGenerateCount.value
         }
     }
 
@@ -1341,6 +1681,46 @@ class LoveBrainViewModel(
         _isProactive.value = false
     }
 
+    // --- F07: 换个思路·方向生成 ---
+    override fun onDirectionStart() {
+        _isDirectionGenerating.value = true
+        _directionError.value = null
+        _streamingDirections.value = emptyList()
+    }
+
+    override fun onDirectionStreaming(schemes: List<Scheme>) {
+        _streamingDirections.value = schemes
+    }
+
+    override fun onDirectionResult(schemes: List<Scheme>) {
+        // 将方向 schemes 合并到当前 result 的 response 中
+        val currentResult = _result.value as? GenerateResult.Success ?: return
+        val response = currentResult.response
+        // 构建新的 directions 列表
+        val newDirections = MutableList<String?>(4) { null }
+        for (scheme in schemes) {
+            val dir = com.lovebrain.app.model.ReplyDirection.byTag(scheme.tag)
+            if (dir != null && scheme.reply.isNotBlank()) {
+                while (newDirections.size <= dir.index) newDirections.add(null)
+                newDirections[dir.index] = scheme.reply
+            }
+        }
+        val updatedResponse = response.copy(directions = newDirections)
+        _result.value = GenerateResult.Success(updatedResponse)
+        _streamingDirections.value = emptyList()
+    }
+
+    override fun onDirectionError(error: String) {
+        _directionError.value = error
+    }
+
+    override fun onDirectionEnd() {
+        _isDirectionGenerating.value = false
+        _streamingDirections.value = emptyList()
+    }
+
+    override fun isDirectionGenerating(): Boolean = _isDirectionGenerating.value
+
     // --- 共用 ---
     override fun getActiveKb(): KnowledgeBase? = _activeKb.value
     override fun getMessages(): List<ChatMessage> = _messages.value
@@ -1393,25 +1773,64 @@ class LoveBrainViewModel(
     private val _showIntentEditor = MutableStateFlow(false)
     val showIntentEditor: StateFlow<Boolean> = _showIntentEditor.asStateFlow()
 
-    /** F07: 刷新持续意图配置（切库/面板可见时调用） */
+    /** F07: 刷新持续意图配置（切库/面板可见时调用）
+     *  F06: 自动检测到期——TODAY 跨日自动标记 EXPIRED，DATE 过期也标记。 */
     fun refreshIntentConfig() {
         val kbName = _activeKb.value?.name ?: return
         viewModelScope.launch {
-            _intentConfig.value = withContext(Dispatchers.IO) {
+            val config = withContext(Dispatchers.IO) {
                 knowledgeRepo.readIntent(kbName)
+            }
+            // F06: 自动到期检测
+            if (config.enabled && config.status == com.lovebrain.app.model.IntentStatus.ACTIVE) {
+                val today = com.lovebrain.app.util.TimeFmt.today()
+                val shouldExpire = when (config.expiry) {
+                    com.lovebrain.app.model.IntentExpiry.TODAY -> {
+                        // TODAY 类型：如果保存日期不是今天，则已过期
+                        // 简化处理：依赖保存时的日期与今天比较
+                        // 如果 expiryDate 为空，无法判断，保守不过期
+                        config.expiryDate.isNotBlank() && config.expiryDate < today
+                    }
+                    com.lovebrain.app.model.IntentExpiry.DATE -> {
+                        config.expiryDate.isNotBlank() && config.expiryDate < today
+                    }
+                    com.lovebrain.app.model.IntentExpiry.UNTIL_DONE -> false
+                }
+                if (shouldExpire) {
+                    val updated = config.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
+                    withContext(Dispatchers.IO) {
+                        knowledgeRepo.saveIntent(
+                            kbName, config.text, false,
+                            config.expiry, config.expiryDate,
+                            com.lovebrain.app.model.IntentStatus.EXPIRED
+                        )
+                    }
+                    _intentConfig.value = updated
+                } else {
+                    _intentConfig.value = config
+                }
+            } else {
+                _intentConfig.value = config
             }
         }
     }
 
     /** R08: 保存持续意图配置。绑定编辑时冻结的 KB，不读当前 active KB。
-     * 持久化失败保留编辑状态并提示。旧请求因 revision 变化而作废。 */
-    fun saveIntent(text: String, enabled: Boolean) {
+     *  持久化失败保留编辑状态并提示。旧请求因 revision 变化而作废。
+     *  F06: 支持有效期和完成状态。 */
+    fun saveIntent(
+        text: String,
+        enabled: Boolean,
+        expiry: com.lovebrain.app.model.IntentExpiry = com.lovebrain.app.model.IntentExpiry.UNTIL_DONE,
+        expiryDate: String = "",
+        status: com.lovebrain.app.model.IntentStatus = com.lovebrain.app.model.IntentStatus.ACTIVE
+    ) {
         // R08: 绑定编辑器打开时的 KB，不读当前 active KB
         val kbName = intentEditorKbName ?: _activeKb.value?.name ?: return
         viewModelScope.launch {
             runCatching {
                 val updated = withContext(Dispatchers.IO) {
-                    knowledgeRepo.saveIntent(kbName, text, enabled)
+                    knowledgeRepo.saveIntent(kbName, text, enabled, expiry, expiryDate, status)
                 }
                 _intentConfig.value = updated
                 _kbNotice.value = if (enabled) "持续意图已开启" else "持续意图已关闭"
@@ -1452,18 +1871,61 @@ class LoveBrainViewModel(
         memoryId: String,
         action: com.lovebrain.app.model.CorrectionAction,
         replacementText: String = "",
-        targetKbId: String = ""
+        targetKbId: String = "",
+        muteDuration: com.lovebrain.app.model.MuteDuration = com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE
     ) {
         val ctx = replyGenerationContext ?: return
         val kbName = ctx.kbName ?: return
         viewModelScope.launch {
             val success = withContext(Dispatchers.IO) {
-                knowledgeRepo.saveCorrection(kbName, memoryId, action, replacementText, targetKbId)
+                knowledgeRepo.saveCorrection(kbName, memoryId, action, replacementText, targetKbId, muteDuration)
             }
             if (success) {
-                _kbNotice.value = "已记录纠正，下次生成将过滤此条记忆"
+                _kbNotice.value = when (action) {
+                    com.lovebrain.app.model.CorrectionAction.WRONG -> "已标记为错误，下次生成将过滤此条记忆"
+                    com.lovebrain.app.model.CorrectionAction.FINISHED -> "已标记为结束，不再作为活跃事项"
+                    com.lovebrain.app.model.CorrectionAction.MUTED -> "已暂停提及，下次生成将过滤此条记忆"
+                    com.lovebrain.app.model.CorrectionAction.WRONG_PERSON -> "已隔离，不再注入此条记忆"
+                }
             } else {
                 _kbNotice.value = "纠正保存失败，请重试"
+            }
+        }
+    }
+
+    /**
+     * F04: 加载所有纠正记录——供纠正中心 UI 展示。
+     * 绑定生成时冻结的 KB；无生成上下文时读当前 active KB。
+     */
+    fun loadAllCorrections(
+        onResult: (Map<String, com.lovebrain.app.model.MemoryCorrection>) -> Unit
+    ) {
+        val kbName = replyGenerationContext?.kbName ?: _activeKb.value?.name ?: run {
+            onResult(emptyMap())
+            return
+        }
+        viewModelScope.launch {
+            val corrections = withContext(Dispatchers.IO) {
+                knowledgeRepo.readCorrections(kbName)
+            }
+            onResult(corrections)
+        }
+    }
+
+    /**
+     * F04: 撤销纠正——纠正中心使用，不依赖生成上下文。
+     * 绑定生成时冻结的 KB；无生成上下文时读当前 active KB。
+     */
+    fun undoCorrectionFromCenter(memoryId: String) {
+        val kbName = replyGenerationContext?.kbName ?: _activeKb.value?.name ?: return
+        viewModelScope.launch {
+            val success = withContext(Dispatchers.IO) {
+                knowledgeRepo.undoCorrection(kbName, memoryId)
+            }
+            if (success) {
+                _kbNotice.value = "已撤销纠正，该记忆恢复可信注入"
+            } else {
+                _kbNotice.value = "撤销失败，请重试"
             }
         }
     }
@@ -1487,8 +1949,8 @@ class LoveBrainViewModel(
 
     // ═══════════ 单条改写（卡片内部展开 2×2 操作区） ═══════════
 
-    /** DRY: 改写操作选项文案统一使用 RewriteCommand.ALL_LABELS，不在 VM 重复定义 */
-    val rewriteOptions: List<String> get() = com.lovebrain.app.model.RewriteCommand.ALL_LABELS
+    /** DRY: 改写操作选项文案统一使用 RewriteCommand.PRESET_LABELS，不在 VM 重复定义 */
+    val rewriteOptions: List<String> get() = com.lovebrain.app.model.RewriteCommand.PRESET_LABELS
 
     /** 单条改写状态：identityKey → 改写状态（P0-1: 使用 SchemeIdentity.key 区分 STYLE/DIRECTION） */
     private val _rewriteStates = MutableStateFlow<Map<String, RewriteState>>(emptyMap())
@@ -1520,6 +1982,37 @@ class LoveBrainViewModel(
      * - 同一时间只运行一个前台生成/主动发/单条改写，共用现有任务管理。
      */
     fun rewriteScheme(source: com.lovebrain.app.model.SchemeSource, schemeTag: String, option: String) {
+        // 查找 RewriteCommand——预设选项使用其 instruction；自定义走 rewriteSchemeCustom
+        val command = com.lovebrain.app.model.RewriteCommand.fromLabel(option)
+        if (command != null && command == com.lovebrain.app.model.RewriteCommand.CUSTOM) {
+            // CUSTOM 不应直接调用 rewriteScheme——应由 UI 调 rewriteSchemeCustom
+            return
+        }
+        // 使用 command.instruction 作为改写指令（比旧版只用 label 更精确）
+        val instruction = command?.instruction ?: option
+        rewriteSchemeInternal(source, schemeTag, instruction, option)
+    }
+
+    /**
+     * F01 v2: 自定义改写——用户输入自由文字要求。
+     * 如“保留第一句，第二句不要”。原句和自定义文字作为数据输入，
+     * 不能借原句内的指令改变输出协议。
+     */
+    fun rewriteSchemeCustom(source: com.lovebrain.app.model.SchemeSource, schemeTag: String, customInstruction: String) {
+        if (customInstruction.isBlank()) return
+        rewriteSchemeInternal(source, schemeTag, customInstruction.trim(), "自定义")
+    }
+
+    /**
+     * F01 v2: 统一改写内部实现——预设和自定义共用。
+     * option 是 UI 展示文案，instruction 是发给模型的改写指令。
+     */
+    private fun rewriteSchemeInternal(
+        source: com.lovebrain.app.model.SchemeSource,
+        schemeTag: String,
+        instruction: String,
+        option: String
+    ) {
         // 前台互斥：正在生成/主动发/改写中时拒绝
         if (_isGenerating.value || _isProactive.value || _isPreparing.value) return
         if (rewriteJob?.isActive == true) return
@@ -1570,7 +2063,7 @@ class LoveBrainViewModel(
                 val systemPrompt = buildRewriteSystemPrompt()
                 val userPrompt = buildRewriteUserPrompt(
                     originalReply = scheme.reply,
-                    option = option,
+                    option = instruction,
                     messages = ctx.messages,
                     intentText = ctx.intentText.takeIf { it.isNotBlank() && ctx.intentEnabled },
                     ideaHint = ctx.ideaHint.takeIf { it.isNotBlank() }
@@ -1735,16 +2228,29 @@ class LoveBrainViewModel(
         appendLine("3. 不能添加未经证实的事实")
         appendLine("4. 不能把候选回复当作已发送消息")
         appendLine("5. 输出一个非空回复正文即可")
+        appendLine("6. 如果提供了「我的表达偏好」，改写时尽量遵守该偏好")
     }
 
-    /** 构建改写用户提示——只包含最少必要上下文 */
-    private fun buildRewriteUserPrompt(
+    /** 构建改写用户提示——只包含最少必要上下文
+     *  F05: 注入个人表达偏好（understand/style.md） */
+    private suspend fun buildRewriteUserPrompt(
         originalReply: String,
         option: String,
         messages: List<ChatMessage>,
         intentText: String?,
         ideaHint: String?
     ): String = buildString {
+        // F05: 个人表达偏好
+        val kbName = replyGenerationContext?.kbName
+        if (!kbName.isNullOrBlank()) {
+            val style = knowledgeRepo.readFile(kbName, "understand/style.md")
+            if (style.isNotBlank()) {
+                appendLine("我的表达偏好：")
+                appendLine(style.trim())
+                appendLine()
+            }
+        }
+
         // 最近几条真实对话（不含想法）
         val recentChat = messages
             .filter { it.role != ChatMessage.Role.IDEA }

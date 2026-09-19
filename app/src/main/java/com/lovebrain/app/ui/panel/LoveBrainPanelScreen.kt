@@ -36,6 +36,7 @@ import com.lovebrain.app.R
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.ProactiveOption
+import com.lovebrain.app.model.SchemeFeedback
 import kotlinx.coroutines.delay
 import com.lovebrain.app.ui.panel.counseling.CounselingPanel
 import com.lovebrain.app.ui.panel.reply.*
@@ -103,6 +104,9 @@ fun LoveBrainPanelScreen(
     val todayCostYuan by viewModel.todayCostYuan.collectAsStateWithLifecycle()
     val lastCostYuan by viewModel.lastCostYuan.collectAsStateWithLifecycle()
     val lastResponseMs by viewModel.lastResponseMs.collectAsStateWithLifecycle()
+    // F12: 累计统计
+    val totalGenerateCount by viewModel.totalGenerateCount.collectAsStateWithLifecycle()
+    val totalCostYuan by viewModel.totalCostYuan.collectAsStateWithLifecycle()
     val isProviderReady by viewModel.providerReady.collectAsStateWithLifecycle()
 
     // P1-2: proactive state collected at top level
@@ -112,6 +116,24 @@ fun LoveBrainPanelScreen(
 
     // 单条改写状态
     val rewriteStates by viewModel.rewriteStates.collectAsStateWithLifecycle()
+
+    // F10: 仅看本轮开关
+    val onlyThisRound by viewModel.onlyThisRound.collectAsStateWithLifecycle()
+
+    // F11: 输入已变化提示
+    val inputChanged by viewModel.inputChanged.collectAsStateWithLifecycle()
+
+    // F02: 点踩后展示原因面板——记录最近一次点踩的 case
+    var dislikeCase by remember { mutableStateOf<com.lovebrain.app.model.FeedbackCase?>(null) }
+
+    // F03: 记录实际发送——编辑框
+    var showSentDialog by remember { mutableStateOf(false) }
+    var sentDialogSchemeKey by remember { mutableStateOf<String?>(null) }
+    var sentDialogPrefill by remember { mutableStateOf("") }
+
+    // F04: 记忆纠正中心
+    var showCorrectionCenter by remember { mutableStateOf(false) }
+    var correctionCenterCorrections by remember { mutableStateOf<Map<String, com.lovebrain.app.model.MemoryCorrection>>(emptyMap()) }
 
     LaunchedEffect(Unit) {
         viewModel.refreshTicketState()
@@ -139,6 +161,8 @@ fun LoveBrainPanelScreen(
                     todayCostYuan = todayCostYuan,
                     lastCostYuan = lastCostYuan,
                     lastResponseMs = lastResponseMs,
+                    totalGenerateCount = totalGenerateCount,
+                    totalCostYuan = totalCostYuan,
                     modifier = Modifier.fillMaxWidth().wrapContentHeight(unbounded = true).align(Alignment.Center)
                 )
             }
@@ -205,7 +229,11 @@ fun LoveBrainPanelScreen(
                     }
                     Spacer(Modifier.height(Spacing.xs))
                     Text(
-                        "添加对话 -> 生成回复 -> 查看回复方案\n点击方案卡可调整措辞，长按可语音修改\n困惑时可切「谈心」模式，军师用公正视角帮你分析",
+                        "添加对话 -> 生成回复 -> 查看回复方案\n" +
+                            "点击方案卡可调整单条措辞，长按可语音修改\n" +
+                            "点踩可记录原因并导出，帮助军师学习\n" +
+                            "顶部显示今日/本次/累计花费与生成次数\n" +
+                            "困惑时可切「谈心」模式，军师用公正视角帮你分析",
                         style = AppTypography.labelMedium,
                         color = TextSecondary,
                         lineHeight = OnboardGuideLineHeight
@@ -398,7 +426,17 @@ fun LoveBrainPanelScreen(
                                 isGeneratingCore = isGeneratingCore,
                                 streamingSchemes = streamingSchemes,
                                 feedbacks = feedbacks,
-                                onFeedback = { scheme, fb -> viewModel.setFeedback(scheme.identity.key, fb) },
+                                onFeedback = { scheme, fb ->
+                                    viewModel.setFeedback(scheme.identity.key, fb)
+                                    // F02: 点踩时展开原因面板
+                                    if (fb == SchemeFeedback.DISLIKED) {
+                                        viewModel.loadFeedbackCases { cases ->
+                                            dislikeCase = cases.lastOrNull { it.schemeIdentityKey == scheme.identity.key }
+                                        }
+                                    } else {
+                                        dislikeCase = null
+                                    }
+                                },
                                 onCopyScheme = { scheme ->
                                     val reply = viewModel.copyScheme(scheme)
                                     onCopy(reply)
@@ -424,11 +462,43 @@ fun LoveBrainPanelScreen(
                                 onRewrite = { identity, command -> viewModel.rewriteScheme(
                                     identity.source,
                                     identity.tag,
-                                    command.instruction
+                                    command.label
                                 ) },
                                 onClearRewriteState = { identity -> viewModel.clearRewriteState(identity.key) },
                                 onCancelRewrite = { identity -> viewModel.cancelRewrite(identity.key) },
                                 onUndoRewrite = { identity -> viewModel.undoRewrite(identity.key) },
+                                onCustomRewrite = { identity, customText ->
+                                    viewModel.rewriteSchemeCustom(
+                                        identity.source,
+                                        identity.tag,
+                                        customText
+                                    )
+                                },
+                                // F10: 仅看本轮开关
+                                onlyThisRound = onlyThisRound,
+                                onToggleOnlyThisRound = { viewModel.toggleOnlyThisRound() },
+                                // F11: 输入已变化提示
+                                inputChanged = inputChanged,
+                                onRegenerateWithNewInput = { viewModel.generate() },
+                                // F03: 记录实际发送
+                                onRecordSent = { scheme ->
+                                    sentDialogSchemeKey = scheme.identity.key
+                                    sentDialogPrefill = scheme.reply
+                                    showSentDialog = true
+                                },
+                                // F04: 打开记忆纠正中心
+                                onShowCorrectionCenter = {
+                                    viewModel.loadAllCorrections { corrections ->
+                                        correctionCenterCorrections = corrections
+                                        showCorrectionCenter = true
+                                    }
+                                },
+                                // F07: 换个思路·方向生成
+                                isDirectionGenerating = viewModel.isDirectionGenerating.collectAsStateWithLifecycle().value,
+                                streamingDirections = viewModel.streamingDirections.collectAsStateWithLifecycle().value,
+                                onGenerateDirection = { viewModel.generateDirection() },
+                                onStopDirection = { viewModel.stopDirection() },
+                                directionError = viewModel.directionError.collectAsStateWithLifecycle().value,
                                 onVoiceRewrite = { identity, transcript ->
                                     viewModel.rewriteScheme(
                                         identity.source,
@@ -465,6 +535,50 @@ fun LoveBrainPanelScreen(
                     )
                 }
             }
+        }
+
+        // F02: 点踩原因面板——点踩后在结果区下方展开
+        if (dislikeCase != null) {
+            com.lovebrain.app.ui.panel.reply.DislikeReasonPanel(
+                case = dislikeCase,
+                onUpdateCase = { caseId, cats, reasons, note, better ->
+                    viewModel.updateFeedbackCase(caseId, cats, reasons, note, better)
+                },
+                onDismiss = { dislikeCase = null },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Spacing.md, vertical = Spacing.sm)
+            )
+        }
+
+        // F03: 记录实际发送——编辑确认框
+        if (showSentDialog) {
+            com.lovebrain.app.ui.panel.reply.RecordSentDialog(
+                prefill = sentDialogPrefill,
+                onConfirm = { text ->
+                    viewModel.recordActualSentMessage(text, sentDialogSchemeKey)
+                    showSentDialog = false
+                },
+                onDismiss = { showSentDialog = false }
+            )
+        }
+
+        // F04: 记忆纠正中心——独立列出已停用／静音／隔离项，支持撤销
+        if (showCorrectionCenter) {
+            com.lovebrain.app.ui.panel.reply.CorrectionCenter(
+                corrections = correctionCenterCorrections,
+                onUndoCorrection = { memoryId ->
+                    viewModel.undoCorrectionFromCenter(memoryId)
+                    // 撤销后刷新列表
+                    viewModel.loadAllCorrections { corrections ->
+                        correctionCenterCorrections = corrections
+                    }
+                },
+                onDismiss = { showCorrectionCenter = false },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Spacing.md, vertical = Spacing.sm)
+            )
         }
 
         ResizeGrip(
@@ -848,6 +962,8 @@ private fun UsageStatsRow(
     todayCostYuan: Double,
     lastCostYuan: Double?,
     lastResponseMs: Long,
+    totalGenerateCount: Int,
+    totalCostYuan: Double,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -859,6 +975,9 @@ private fun UsageStatsRow(
         if (lastResponseMs > 0) {
             UsageStatCell("首字", "%.1fs".format(lastResponseMs / 1000.0))
         }
+        // F12: 累计统计
+        UsageStatCell("累计", "${totalGenerateCount}次")
+        UsageStatCell("累计", "¥${LoveBrainViewModel.formatYuan(totalCostYuan)}")
     }
 }
 

@@ -81,6 +81,8 @@ private val KB_FILES = listOf(
     KbFile("我是谁", "understand/me.md", layer = "画像"),
     KbFile("她是谁", "understand/her.md", layer = "画像"),
     KbFile("我们走到哪了", "understand/warmth.md", layer = "画像"),
+    // F05: 个人表达偏好——结构化、易编辑，不要求用户写提示词
+    KbFile("我的表达偏好", "understand/style.md", layer = "画像"),
     KbFile("最近两句", "moment/recent.md", layer = "当下"),
     KbFile("在聊什么", "moment/topic.md", layer = "当下"),
     KbFile("此刻状态", "moment/scene.md", layer = "当下"),

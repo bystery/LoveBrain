@@ -67,6 +67,8 @@ class PromptAssemblyOrderContractTest {
         coEvery { repo.readFile("kb", "understand/me.md") } returns "me画像桩：喜欢咖啡"
         coEvery { repo.readFile("kb", "understand/her.md") } returns "her画像桩：喜欢猫"
         coEvery { repo.readFile("kb", "understand/warmth.md") } returns "warmth桩：关系轻松"
+        // F05: style.md mock（默认空——不改变现有测试的 prompt 内容）
+        coEvery { repo.readFile("kb", "understand/style.md") } returns ""
         coEvery { repo.readFile("kb", "memory/lessons.md") } returns lessons
         coEvery { repo.readFile("kb", "moment/scene.md") } returns
             "- [2026-08-26 20:00] 咖啡店偶遇：聊了手冲咖啡"
@@ -258,6 +260,7 @@ fun t6_suggest_systemAndUser() = runBlocking {
         coEvery { repoBig.readFile("kb", "understand/me.md") } returns "画".repeat(10_000)
         coEvery { repoBig.readFile("kb", "understand/her.md") } returns ""
         coEvery { repoBig.readFile("kb", "understand/warmth.md") } returns ""
+        coEvery { repoBig.readFile("kb", "understand/style.md") } returns ""
         coEvery { repoBig.readFile("kb", "memory/lessons.md") } returns ""
         coEvery { repoBig.readFile("kb", "moment/scene.md") } returns ""
         coEvery { repoBig.readFile("kb", "moment/recent.md") } returns ""

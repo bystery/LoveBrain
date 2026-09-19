@@ -15,6 +15,7 @@ object AssetRegistry {
     const val NATURALNESS = "engine/system_prompt/naturalness_check.md"
     const val AGGRESSIVE = "engine/system_prompt/aggressive.md"
     const val FORMAT = "engine/system_prompt/format.md"
+    const val DIRECTION = "engine/system_prompt/direction.md"  // F07: 换个思路·方向生成专用 system
 
     // ═══ 引擎附加段 ═══
     const val COUNSELING = "engine/counseling.md"
@@ -39,7 +40,7 @@ object AssetRegistry {
 
     /** 全部注册资产（启动自检用；新增资产必须登记于此，否则自检覆盖不到） */
     val ALL: List<String> = listOf(
-        CORE, STAGE, REDLINE, NATURALNESS, AGGRESSIVE, FORMAT,
+        CORE, STAGE, REDLINE, NATURALNESS, AGGRESSIVE, FORMAT, DIRECTION,
         COUNSELING, SUGGEST, POLISH,
         LESSONS, ONBOARDING, REFLECT, VECTOR, ENGINE_README
     ) + SCHEMA_NAMES.map { schema(it) }

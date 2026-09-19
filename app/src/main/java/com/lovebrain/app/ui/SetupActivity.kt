@@ -52,6 +52,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -84,6 +85,7 @@ import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
 import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
+import com.lovebrain.app.ui.panel.OnboardingFlow
 import com.lovebrain.app.viewmodel.SetupViewModel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -192,16 +194,37 @@ class SetupActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // F12: 检测是否需要引导——已有用户不强制重走
+        val showOnboarding = !viewModel.securePrefs.hasCompletedOnboarding
+
         setContent {
             // 暗色模式已删，全站固定亮色，不再检测系统暗色
             LoveBrainTheme {
-                SetupScreen(
-                    viewModel = viewModel,
-                    onStartService = { startFloatingService() },
-                    onOpenPanel = { mode, showPlan -> openPanelFromHome(mode, showPlan) },
-                    onTempHide = { tempHideFloating() },
-                    onRestore = { restoreFloating() }
-                )
+                if (showOnboarding) {
+                    OnboardingFlow(
+                        onSkip = {
+                            viewModel.securePrefs.hasCompletedOnboarding = true
+                            // 重新渲染主页
+                            recreate()
+                        },
+                        onComplete = {
+                            viewModel.securePrefs.hasCompletedOnboarding = true
+                            recreate()
+                        },
+                        onOpenSettings = {
+                            viewModel.securePrefs.hasCompletedOnboarding = true
+                            recreate()
+                        }
+                    )
+                } else {
+                    SetupScreen(
+                        viewModel = viewModel,
+                        onStartService = { startFloatingService() },
+                        onOpenPanel = { mode, showPlan -> openPanelFromHome(mode, showPlan) },
+                        onTempHide = { tempHideFloating() },
+                        onRestore = { restoreFloating() }
+                    )
+                }
             }
         }
     }
@@ -272,6 +295,7 @@ private fun HomeTabContent(
 
     // RA-02：无障碍隐私披露 Dialog 状态
     var showAccessibilityDisclosure by remember { mutableStateOf(false) }
+    var showFeedbackCaseDialog by remember { mutableStateOf(false) }
 
     val scrollState = rememberScrollState()
 
@@ -452,6 +476,29 @@ private fun HomeTabContent(
                 onClick = { onOpenPanel(0, false) }
             )
         }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.lg)
+        ) {
+            // F02: 反馈案例入口
+            FeatureCard(
+                modifier = Modifier.weight(1f),
+                iconRes = R.drawable.ic_feature_book,
+                title = "反馈案例",
+                subtitle = "点踩记录与导出",
+                iconTint = Primary,
+                container = PrimaryLight,
+                available = true,
+                onClick = { showFeedbackCaseDialog = true }
+            )
+            Box(modifier = Modifier.weight(1f))
+        }
+
+        if (showFeedbackCaseDialog) {
+            FeedbackCaseDialog(
+                onDismiss = { showFeedbackCaseDialog = false }
+            )
+        }
 
         // ── 消息捕获开关（ 问题 4）──
         Card(
@@ -516,6 +563,9 @@ private fun HomeTabContent(
 
         // ── 模型供应商（多模型批 /：主页直接管理，弹窗编辑，一供应商多模型）──
         ProviderSection(viewModel)
+
+        // F12: 详细性能统计
+        StatsSection(viewModel)
         }
     }
 
@@ -1136,3 +1186,381 @@ private fun AccessibilityDisclosureDialog(
     )
 }
 
+// ═════════════════════════════════════════════════════════════
+// F12: 性能统计卡片
+// ═════════════════════════════════════════════════════════════
+
+@Composable
+private fun StatsSection(viewModel: SetupViewModel) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = Spacing.lg)
+    ) {
+        Text(
+            "使用统计",
+            style = AppTypography.titleLarge,
+            color = TextPrimary
+        )
+        Spacer(Modifier.height(Spacing.sm))
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)
+        ) {
+            Column(modifier = Modifier.padding(Spacing.xl)) {
+                // 累计生成
+                StatRow(label = "累计生成", value = "${viewModel.totalGenerateCount} 次")
+                Spacer(Modifier.height(Spacing.md))
+
+                // 累计花费
+                val costStr = if (viewModel.totalCostYuan < 0.01) "￥0" else "￥${String.format("%.2f", viewModel.totalCostYuan)}"
+                StatRow(label = "累计花费", value = costStr)
+                Spacer(Modifier.height(Spacing.md))
+
+                // 复制次数
+                StatRow(label = "复制次数", value = "${viewModel.totalCopyCount} 次")
+                Spacer(Modifier.height(Spacing.md))
+
+                // 采用次数
+                StatRow(label = "采用（已发送）", value = "${viewModel.totalAdoptCount} 次")
+                Spacer(Modifier.height(Spacing.md))
+
+                // 改写次数
+                StatRow(label = "改写次数", value = "${viewModel.totalRewriteCount} 次")
+                Spacer(Modifier.height(Spacing.md))
+
+                // 采用率
+                val rateStr = if (viewModel.totalGenerateCount > 0)
+                    "${(viewModel.adoptRate * 100).toInt()}%"
+                else "—"
+                StatRow(label = "采用率", value = rateStr, highlight = true)
+
+                Spacer(Modifier.height(Spacing.md))
+                HorizontalDivider(thickness = AppDimens.BORDER_WIDTH_DP.dp, color = Border.copy(alpha = 0.5f))
+                Spacer(Modifier.height(Spacing.sm))
+                Text(
+                    "采用率 = 记录已发送 / 累计生成。复制和采用独立统计。",
+                    style = AppTypography.labelSmall,
+                    color = TextHint
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatRow(label: String, value: String, highlight: Boolean = false) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            label,
+            style = AppTypography.bodyMedium,
+            color = TextSecondary
+        )
+        Text(
+            value,
+            style = AppTypography.titleMedium,
+            color = if (highlight) Primary else TextPrimary,
+            fontWeight = if (highlight) FontWeight.SemiBold else FontWeight.Normal
+        )
+    }
+}
+
+
+/**
+ * F02: 反馈案例管理弹层——查看/筛选/导出。
+ *
+ * 显示条数，按时间、原因、档案、模型筛选。
+ * 支持导出 Markdown + JSON，不记录凭证。
+ */
+@Composable
+private fun FeedbackCaseDialog(
+    onDismiss: () -> Unit
+) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var cases by remember { mutableStateOf<List<com.lovebrain.app.model.FeedbackCase>>(emptyList()) }
+    var filterCategory by remember { mutableStateOf<com.lovebrain.app.model.FeedbackCategory?>(null) }
+    var exportText by remember { mutableStateOf("") }
+    var showExport by remember { mutableStateOf(false) }
+
+    // 加载案例
+    LaunchedEffect(Unit) {
+        val dir = java.io.File(context.filesDir, "feedback")
+        val file = java.io.File(dir, "cases.json")
+        if (file.exists() && file.length() > 0) {
+            runCatching {
+                val json = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
+                val text = file.readText()
+                if (text.isNotBlank()) {
+                    cases = json.decodeFromString(text)
+                }
+            }
+        }
+    }
+
+    val filtered = if (filterCategory == null) cases else cases.filter { filterCategory!! in it.categories }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            shape = LoveBrainShape.lg,
+            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+            modifier = Modifier.fillMaxWidth().padding(Spacing.md)
+        ) {
+            Column(modifier = Modifier.padding(Spacing.lg)) {
+                // 标题行
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "反馈案例（${filtered.size}条）",
+                        style = AppTypography.titleMedium,
+                        color = TextPrimary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        "关闭",
+                        style = AppTypography.labelMedium,
+                        color = TextHint,
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = onDismiss
+                        ).padding(Spacing.sm)
+                    )
+                }
+                Spacer(Modifier.height(Spacing.sm))
+
+                // 筛选行
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
+                ) {
+                    FilterChip("全部", filterCategory == null) { filterCategory = null }
+                    FilterChip("理解错误", filterCategory == com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR) { filterCategory = com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR }
+                    FilterChip("表达不喜欢", filterCategory == com.lovebrain.app.model.FeedbackCategory.EXPRESSION_DISLIKE) { filterCategory = com.lovebrain.app.model.FeedbackCategory.EXPRESSION_DISLIKE }
+                    FilterChip("其他", filterCategory == com.lovebrain.app.model.FeedbackCategory.OTHER) { filterCategory = com.lovebrain.app.model.FeedbackCategory.OTHER }
+                }
+                Spacer(Modifier.height(Spacing.sm))
+
+                // 案例列表
+                if (filtered.isEmpty()) {
+                    Text(
+                        "暂无反馈案例。点踩后会自动记录。",
+                        style = AppTypography.bodyMedium,
+                        color = TextHint,
+                        modifier = Modifier.padding(vertical = Spacing.xl)
+                    )
+                } else {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 400.dp)
+                            .verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.spacedBy(Spacing.sm)
+                    ) {
+                        filtered.forEach { c ->
+                            Card(
+                                shape = LoveBrainShape.md,
+                                colors = CardDefaults.cardColors(containerColor = SurfaceInset),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(modifier = Modifier.padding(Spacing.md)) {
+                                    Text(
+                                        "【${c.categories.joinToString(", ") { it.name }}】 ${c.reasons.joinToString(", ")}",
+                                        style = AppTypography.labelSmall,
+                                        color = PrimaryDark,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                    Spacer(Modifier.height(Spacing.xs))
+                                    Text(
+                                        "候选：${c.candidateReply.take(60)}${if (c.candidateReply.length > 60) "..." else ""}",
+                                        style = AppTypography.labelSmall,
+                                        color = TextSecondary
+                                    )
+                                    if (c.userNote.isNotBlank()) {
+                                        Text("补充：${c.userNote}", style = AppTypography.labelSmall, color = TextHint)
+                                    }
+                                    if (c.betterVersion.isNotBlank()) {
+                                        Text("期望：${c.betterVersion}", style = AppTypography.labelSmall, color = Primary)
+                                    }
+                                    Text(
+                                        "${c.timestamp} · ${c.modelId} · ${c.status}",
+                                        style = AppTypography.labelSmall,
+                                        color = TextHint
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Spacer(Modifier.height(Spacing.sm))
+
+                // 导出按钮行
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
+                ) {
+                    // 导出 Markdown
+                    val (mdInteraction, mdScale) = rememberPressScale(0.96f, "exportMd")
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .graphicsLayer { scaleX = mdScale; scaleY = mdScale }
+                            .clip(LoveBrainShape.md)
+                            .background(Primary)
+                            .clickable(
+                                interactionSource = mdInteraction,
+                                indication = null,
+                                enabled = filtered.isNotEmpty()
+                            ) {
+                                scope.launch {
+                                    exportText = buildMarkdownReport(filtered)
+                                    showExport = true
+                                }
+                            }
+                            .padding(vertical = Spacing.sm),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("导出 Markdown", style = AppTypography.labelMedium, color = Color.White, fontWeight = FontWeight.SemiBold)
+                    }
+                    // 导出 JSON
+                    val (jsonInteraction, jsonScale) = rememberPressScale(0.96f, "exportJson")
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .graphicsLayer { scaleX = jsonScale; scaleY = jsonScale }
+                            .clip(LoveBrainShape.md)
+                            .background(SurfaceInset)
+                            .border(1.dp, Border, LoveBrainShape.md)
+                            .clickable(
+                                interactionSource = jsonInteraction,
+                                indication = null,
+                                enabled = filtered.isNotEmpty()
+                            ) {
+                                scope.launch {
+                                    val json = kotlinx.serialization.json.Json { prettyPrint = true; encodeDefaults = true }
+                                    exportText = json.encodeToString(kotlinx.serialization.builtins.ListSerializer(com.lovebrain.app.model.FeedbackCase.serializer()), filtered)
+                                    showExport = true
+                                }
+                            }
+                            .padding(vertical = Spacing.sm),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("导出 JSON", style = AppTypography.labelMedium, color = TextPrimary, fontWeight = FontWeight.SemiBold)
+                    }
+                }
+            }
+        }
+    }
+
+    // 导出预览弹层
+    if (showExport) {
+        Dialog(onDismissRequest = { showExport = false }) {
+            Card(
+                shape = LoveBrainShape.lg,
+                colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+                modifier = Modifier.fillMaxWidth().padding(Spacing.md)
+            ) {
+                Column(modifier = Modifier.padding(Spacing.lg)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("导出预览", style = AppTypography.titleMedium, color = TextPrimary, fontWeight = FontWeight.SemiBold)
+                        Text("复制", style = AppTypography.labelMedium, color = Primary, modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = {
+                                val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                                clipboard.setPrimaryClip(android.content.ClipData.newPlainText("export", exportText))
+                            }
+                        ).padding(Spacing.sm))
+                    }
+                    Spacer(Modifier.height(Spacing.sm))
+                    Text(
+                        exportText,
+                        style = AppTypography.labelSmall,
+                        color = TextSecondary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 400.dp)
+                            .verticalScroll(rememberScrollState())
+                    )
+                    Spacer(Modifier.height(Spacing.sm))
+                    Text(
+                        "已复制到剪贴板，可粘贴到任何位置。默认已去除身份信息和连接信息。",
+                        style = AppTypography.labelSmall,
+                        color = TextHint
+                    )
+                }
+            }
+        }
+    }
+}
+
+/** 筛选 chip */
+@Composable
+private fun FilterChip(label: String, isSelected: Boolean, onClick: () -> Unit) {
+    val (interaction, scale) = rememberPressScale(0.94f, "filterChip_$label")
+    Box(
+        modifier = Modifier
+            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .clip(LoveBrainShape.sm)
+            .background(if (isSelected) Primary else SurfaceInset, LoveBrainShape.sm)
+            .border(1.dp, if (isSelected) Primary else Border, LoveBrainShape.sm)
+            .clickable(
+                interactionSource = interaction,
+                indication = null,
+                onClick = onClick
+            )
+            .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            label,
+            style = AppTypography.labelSmall,
+            color = if (isSelected) Color.White else TextSecondary,
+            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+        )
+    }
+}
+
+/** 构建 Markdown 报告 */
+private fun buildMarkdownReport(cases: List<com.lovebrain.app.model.FeedbackCase>): String = buildString {
+    appendLine("# LoveBrain 反馈案例报告")
+    appendLine()
+    appendLine("生成时间：${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.US).format(java.util.Date())}")
+    appendLine()
+    appendLine("## 统计")
+    appendLine("- 总案例数：${cases.size}")
+    appendLine("- 理解错误：${cases.count { com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR in it.categories }}")
+    appendLine("- 表达不喜欢：${cases.count { com.lovebrain.app.model.FeedbackCategory.EXPRESSION_DISLIKE in it.categories }}")
+    appendLine("- 其他：${cases.count { com.lovebrain.app.model.FeedbackCategory.OTHER in it.categories }}")
+    appendLine()
+    appendLine("## 案例列表")
+    appendLine()
+    cases.forEachIndexed { idx, c ->
+        appendLine("### 案例 ${idx + 1}")
+        appendLine("- **时间**：${c.timestamp}")
+        appendLine("- **分类**：${c.categories.joinToString(", ")}")
+        appendLine("- **原因**：${c.reasons.joinToString(", ")}")
+        if (c.kbName.isNotBlank()) appendLine("- **档案**：${c.kbName}")
+        if (c.modelId.isNotBlank()) appendLine("- **模型**：${c.modelId}")
+        appendLine("- **候选原文**：${c.candidateReply}")
+        if (c.userNote.isNotBlank()) appendLine("- **用户补充**：${c.userNote}")
+        if (c.betterVersion.isNotBlank()) appendLine("- **期望版本**：${c.betterVersion}")
+        appendLine("- **状态**：${c.status}")
+        appendLine()
+    }
+}

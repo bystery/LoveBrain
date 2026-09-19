@@ -26,7 +26,7 @@ import kotlinx.coroutines.withContext
  * 分层规则：SetupActivity → inject SetupViewModel（不直连 SecurePrefs/Repo）
  */
 class SetupViewModel(
-    private val securePrefs: SecurePrefs,
+    val securePrefs: SecurePrefs,
     private val deepSeekRepo: DeepSeekRepository
 ) : ViewModel() {
 
@@ -398,4 +398,28 @@ class SetupViewModel(
         val self = "${context.packageName}/com.lovebrain.app.service.CopyCaptureService"
         return enabled.split(':').any { it.trim() == self }
     }
+
+    // ═══════════ F12: 性能统计 ═══════════
+
+    /** F12: 累计生成次数 */
+    val totalGenerateCount: Int get() = securePrefs.totalGenerateCount
+
+    /** F12: 累计花费（元） */
+    val totalCostYuan: Double get() = securePrefs.totalCostYuan
+
+    /** F12: 累计复制次数 */
+    val totalCopyCount: Int get() = securePrefs.totalCopyCount
+
+    /** F12: 累计采用次数（记录实际发送） */
+    val totalAdoptCount: Int get() = securePrefs.totalAdoptCount
+
+    /** F12: 累计改写次数 */
+    val totalRewriteCount: Int get() = securePrefs.totalRewriteCount
+
+    /** F12: 采用率 = 采用次数 / 生成次数 */
+    val adoptRate: Float
+        get() {
+            val gen = securePrefs.totalGenerateCount
+            return if (gen > 0) securePrefs.totalAdoptCount.toFloat() / gen else 0f
+        }
 }

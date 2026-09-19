@@ -282,8 +282,41 @@ data class ProactiveOption(
 data class IntentConfig(
     val text: String = "",       // 自由文本意图
     val enabled: Boolean = false, // 默认关闭
-    val revision: Int = 0        // 每次保存递增，用于快照识别
+    val revision: Int = 0,       // 每次保存递增，用于快照识别
+    // F06: 有效期与完成状态
+    val expiry: IntentExpiry = IntentExpiry.UNTIL_DONE, // 默认直到手动完成
+    val expiryDate: String = "",  // 指定日期时使用 yyyy-MM-dd 格式
+    val status: IntentStatus = IntentStatus.ACTIVE    // 当前状态
 )
+
+/**
+ * F06: 意图有效期选项。
+ * - TODAY: 仅今天（设备本地时区）
+ * - DATE: 指定日期
+ * - UNTIL_DONE: 直到手动完成（默认）
+ * 旧数据无 expiry 字段时反序列化默认为 UNTIL_DONE，保持原语义。
+ */
+@Serializable
+enum class IntentExpiry {
+    TODAY,      // 仅今天
+    DATE,       // 指定日期
+    UNTIL_DONE  // 直到手动完成
+}
+
+/**
+ * F06: 意图状态。
+ * - ACTIVE: 启用中，正常注入
+ * - PAUSED: 暂停，保留文本但不注入
+ * - COMPLETED: 完成，不再注入，历史可查看
+ * - EXPIRED: 已到期，不再注入，历史可查看
+ */
+@Serializable
+enum class IntentStatus {
+    ACTIVE,
+    PAUSED,
+    COMPLETED,
+    EXPIRED
+}
 
 // ═══════════ F09: 本轮参考与记忆可纠正 ═══════════
 
@@ -359,6 +392,19 @@ enum class CorrectionAction {
     WRONG_PERSON    // 这不是她 — 先隔离，选目标库后再迁移
 }
 
+/**
+ * F04: "暂时别提"时长选项。
+ * - THIS_ROUND: 仅本轮
+ * - TODAY: 今天剩余时间
+ * - UNTIL_RESTORE: 直到手动恢复（默认）
+ */
+@Serializable
+enum class MuteDuration {
+    THIS_ROUND,     // 仅本轮
+    TODAY,          // 今天剩余
+    UNTIL_RESTORE   // 直到手动恢复
+}
+
 /** F09: 人工纠正记录 — 持久化于 memory/corrections.json
  *
  * 每条记录绑定 memoryId，参与下一次 PromptBuilder 过滤。
@@ -371,5 +417,8 @@ data class MemoryCorrection(
     val replacementText: String = "",// WRONG 时的补正内容
     val targetKbId: String = "",     // WRONG_PERSON 时的目标库
     val revision: Int = 0,           // 保存时递增
-    val updatedAt: String = ""       // 时间戳
+    val updatedAt: String = "",      // 时间戳
+    // F04: "暂时别提"时长——仅 MUTED 操作使用
+    val muteDuration: MuteDuration = MuteDuration.UNTIL_RESTORE, // 默认直到手动恢复
+    val muteTimestamp: String = ""   // 静音起始时间（用于判断 TODAY/THIS_ROUND 是否过期）
 )

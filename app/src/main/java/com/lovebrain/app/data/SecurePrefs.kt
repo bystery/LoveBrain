@@ -295,6 +295,38 @@ class SecurePrefs(context: Context) {
         memoryTicketKeyMap?.remove(ticketId)
     }
 
+    // ═══ F12: 性能统计持久化 ═══
+
+    /** F12: 累计生成次数 */
+    var totalGenerateCount: Int
+        get() = prefs.getInt(KEY_TOTAL_GEN_COUNT, 0)
+        set(value) = prefs.edit().putInt(KEY_TOTAL_GEN_COUNT, value).apply()
+
+    /** F12: 累计花费（元） */
+    var totalCostYuan: Double
+        get() = prefs.getString(KEY_TOTAL_COST_YUAN, "0")?.toDoubleOrNull() ?: 0.0
+        set(value) = prefs.edit().putString(KEY_TOTAL_COST_YUAN, value.toString()).apply()
+
+    /** F12: 累计复制次数 */
+    var totalCopyCount: Int
+        get() = prefs.getInt(KEY_TOTAL_COPY_COUNT, 0)
+        set(value) = prefs.edit().putInt(KEY_TOTAL_COPY_COUNT, value).apply()
+
+    /** F12: 累计采用次数（记录实际发送） */
+    var totalAdoptCount: Int
+        get() = prefs.getInt(KEY_TOTAL_ADOPT_COUNT, 0)
+        set(value) = prefs.edit().putInt(KEY_TOTAL_ADOPT_COUNT, value).apply()
+
+    /** F12: 累计改写次数 */
+    var totalRewriteCount: Int
+        get() = prefs.getInt(KEY_TOTAL_REWRITE_COUNT, 0)
+        set(value) = prefs.edit().putInt(KEY_TOTAL_REWRITE_COUNT, value).apply()
+
+    /** F12: 是否已完成引导（已有用户不强制重走） */
+    var hasCompletedOnboarding: Boolean
+        get() = prefs.getBoolean(KEY_ONBOARDING_DONE, false)
+        set(value) = prefs.edit().putBoolean(KEY_ONBOARDING_DONE, value).apply()
+
     companion object {
         private const val KEY_API_KEY = "deepseek_api_key"
         private const val KEY_MODEL = "deepseek_model"
@@ -317,6 +349,13 @@ class SecurePrefs(context: Context) {
         private const val KEY_PANEL_HEIGHT = "panel_height"
         // 消息捕获开关
         private const val KEY_CAPTURE_ENABLED = "capture_enabled"
+        // F12: 性能统计
+        private const val KEY_TOTAL_GEN_COUNT = "total_gen_count"
+        private const val KEY_TOTAL_COST_YUAN = "total_cost_yuan"
+        private const val KEY_TOTAL_COPY_COUNT = "total_copy_count"
+        private const val KEY_TOTAL_ADOPT_COUNT = "total_adopt_count"
+        private const val KEY_TOTAL_REWRITE_COUNT = "total_rewrite_count"
+        private const val KEY_ONBOARDING_DONE = "onboarding_done"
         // RA-02：无障碍隐私披露 consent 版本号
         private const val KEY_ACCESSIBILITY_DISCLOSURE_VERSION = "accessibility_disclosure_version"
 

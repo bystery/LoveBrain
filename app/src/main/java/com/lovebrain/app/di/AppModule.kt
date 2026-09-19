@@ -2,6 +2,7 @@ package com.lovebrain.app.di
 
 import com.lovebrain.app.LoveBrainApp
 import com.lovebrain.app.data.DeepSeekRepository
+import com.lovebrain.app.data.FeedbackCaseRepository
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.domain.GenerationEngine
@@ -27,6 +28,7 @@ val appModule = module {
     single { SecurePrefs(androidContext()) }
     single { KnowledgeRepository(File(androidContext().filesDir, "knowledge"), get(), androidContext(), (androidApplication() as LoveBrainApp).applicationScope) }
     single { DeepSeekRepository(get()) }
+    single { FeedbackCaseRepository(androidContext()) }
 
     // 领域层（单例）
     single { com.lovebrain.app.domain.OngoingContextSelector(get()) }
@@ -36,6 +38,6 @@ val appModule = module {
     single { GenerationEngine(get(), get()) }
 
     // ViewModel（每次获取新实例）
-    viewModel { LoveBrainViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { LoveBrainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SetupViewModel(get(), get()) }  // 第二个 get() 取 DeepSeekRepository 单例
 }

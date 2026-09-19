@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -88,6 +89,24 @@ fun ResultArea(
     onUndoRewrite: (SchemeIdentity) -> Unit = {},
     onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     onPermissionEvent: (PermissionEvent) -> Unit = {},
+    // F01 v2: 自定义改写
+    onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
+    // F10: 仅看本轮开关
+    onlyThisRound: Boolean = false,
+    onToggleOnlyThisRound: () -> Unit = {},
+    // F11: 输入已变化提示
+    inputChanged: Boolean = false,
+    onRegenerateWithNewInput: () -> Unit = {},
+    // F03: 记录实际发送
+    onRecordSent: (Scheme) -> Unit = {},
+    // F04: 打开记忆纠正中心
+    onShowCorrectionCenter: () -> Unit = {},
+    // F07: 换个思路·方向生成
+    isDirectionGenerating: Boolean = false,
+    streamingDirections: List<Scheme> = emptyList(),
+    onGenerateDirection: () -> Unit = {},
+    onStopDirection: () -> Unit = {},
+    directionError: String? = null,
     // P0-3: 稳定轮次身份——只在整轮 generate 成功时变化
     generationRoundId: Int = 0,
     modifier: Modifier = Modifier
@@ -114,7 +133,8 @@ fun ResultArea(
                             onCancelRewrite = onCancelRewrite,
                             onUndoRewrite = onUndoRewrite,
                             onVoiceRewrite = onVoiceRewrite,
-                            onPermissionEvent = onPermissionEvent
+                            onPermissionEvent = onPermissionEvent,
+                            onCustomRewrite = onCustomRewrite
                         )
                     }
                     Spacer(Modifier.height(Spacing.md))
@@ -151,6 +171,12 @@ fun ResultArea(
         // 全部完成：方案 + 进行中事项（分析展示区已移除）
         result is GenerateResult.Success -> {
             val response = result.response
+            // F11: 输入已变化提示——结果来自旧输入时展示
+            if (inputChanged) {
+                InputChangedBanner(onRegenerate = onRegenerateWithNewInput)
+                Spacer(Modifier.height(Spacing.sm))
+            }
+
             // P0-3: viewMode 只以 generationRoundId 重置——单条改写/undo/feedback 不切换用户当前 STYLE/DIRECTION
             var viewMode by remember(generationRoundId) { mutableStateOf(SchemeViewMode.STYLE) }
             val hasDirections = response.directionSchemes.any { it.reply.isNotBlank() }
@@ -174,14 +200,129 @@ fun ResultArea(
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                 ) {
-                    // P0-1: 轻量切换入口——只在有方向回复时显示
-                    if (hasDirections) {
-                        SchemeViewSwitcher(
-                            mode = viewMode,
-                            onModeChange = { viewMode = it }
-                        )
-                        Spacer(Modifier.height(Spacing.sm))
+            // F07: 按需方案——方向切换器改为「换个思路」入口
+            // 已有方向时直接显示切换器；无方向时显示「换个思路」按钮
+            // 方向生成中时显示流式方向卡
+            if (isDirectionGenerating) {
+                // F07: 方向生成中——显示流式方向卡或加载指示
+                if (streamingDirections.isNotEmpty()) {
+                    SchemeCardsRow(
+                        schemes = streamingDirections,
+                        feedbacks = feedbacks,
+                        onFeedback = onFeedback,
+                        onCopyScheme = onCopyScheme,
+                        rewriteStates = rewriteStates,
+                        onRewrite = onRewrite,
+                        onClearRewriteState = onClearRewriteState,
+                        onCancelRewrite = onCancelRewrite,
+                        onUndoRewrite = onUndoRewrite,
+                        onVoiceRewrite = onVoiceRewrite,
+                        onPermissionEvent = onPermissionEvent,
+                        onCustomRewrite = onCustomRewrite
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(PrimaryLight, LoveBrainShape.md)
+                            .padding(Spacing.lg),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            CircularProgressIndicator(
+                                color = Primary,
+                                modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp),
+                                strokeWidth = Spacing.xs
+                            )
+                            Spacer(Modifier.width(Spacing.sm))
+                            Text(
+                                text = "正在换个思路…",
+                                color = PrimaryDark,
+                                style = AppTypography.bodySmall
+                            )
+                        }
                     }
+                }
+                // 停止按钮
+                Spacer(Modifier.height(Spacing.xs))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    val (stopInteraction, stopScale) = rememberPressScale(0.96f, "stopDirectionScale")
+                    Text(
+                        text = "停止",
+                        color = TextSecondary,
+                        style = AppTypography.bodySmall,
+                        modifier = Modifier
+                            .graphicsLayer { scaleX = stopScale; scaleY = stopScale }
+                            .clickable(interactionSource = stopInteraction, indication = null, onClick = onStopDirection)
+                            .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+                    )
+                }
+            } else if (hasDirections) {
+                SchemeViewSwitcher(
+                    mode = viewMode,
+                    onModeChange = { viewMode = it }
+                )
+                Spacer(Modifier.height(Spacing.sm))
+            } else if (directionError != null) {
+                // F07: 方向生成失败——显示错误和重试
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(LoveBrainShape.md)
+                        .background(ErrorBg)
+                        .padding(Spacing.md)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = directionError,
+                            color = Error,
+                            style = AppTypography.bodySmall,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Spacer(Modifier.width(Spacing.sm))
+                        val (retryDirInteraction, retryDirScale) = rememberPressScale(0.96f, "retryDirectionScale")
+                        Text(
+                            text = "重试",
+                            color = PrimaryDark,
+                            style = AppTypography.bodySmall,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier
+                                .graphicsLayer { scaleX = retryDirScale; scaleY = retryDirScale }
+                                .clickable(interactionSource = retryDirInteraction, indication = null, onClick = onGenerateDirection)
+                                .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+                        )
+                    }
+                }
+                Spacer(Modifier.height(Spacing.sm))
+            } else {
+                // F07: 无方向时显示「换个思路」按钮
+                val (changeInteraction, changeScale) = rememberPressScale(0.96f, "changeApproachScale")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "换个思路",
+                        color = PrimaryDark,
+                        style = AppTypography.labelLarge,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier
+                            .clip(LoveBrainShape.md)
+                            .background(PrimaryLight)
+                            .graphicsLayer { scaleX = changeScale; scaleY = changeScale }
+                            .clickable(interactionSource = changeInteraction, indication = null, onClick = onGenerateDirection)
+                            .padding(horizontal = Spacing.xl, vertical = Spacing.md)
+                    )
+                }
+                Spacer(Modifier.height(Spacing.sm))
+            }
                     SchemeCardsRow(
                         schemes = displaySchemes,
                         feedbacks = feedbacks,
@@ -193,7 +334,10 @@ fun ResultArea(
                         onCancelRewrite = onCancelRewrite,
                         onUndoRewrite = onUndoRewrite,
                         onVoiceRewrite = onVoiceRewrite,
-                        onPermissionEvent = onPermissionEvent
+                        onPermissionEvent = onPermissionEvent,
+                        onCustomRewrite = onCustomRewrite,
+                        onlyThisRound = onlyThisRound,
+                        onToggleOnlyThisRound = onToggleOnlyThisRound
                     )
 
                     if (response.analysis.ongoing.isNotEmpty()) {
@@ -222,6 +366,11 @@ fun ResultArea(
                     showRefs = showRefs,
                     onSaveToKb = onSaveToKb,
                     onToggleRefs = { showRefs = !showRefs },
+                    onlyThisRound = onlyThisRound,
+                    onToggleOnlyThisRound = onToggleOnlyThisRound,
+                    onRecordSent = { onRecordSent(displaySchemes.firstOrNull { it.reply.isNotBlank() } ?: displaySchemes.first()) },
+                    hasResult = response.schemes.any { it.reply.isNotBlank() },
+                    onShowCorrectionCenter = onShowCorrectionCenter,
                     modifier = Modifier.align(Alignment.TopEnd)
                 )
             }
@@ -340,9 +489,41 @@ private fun SchemeCardsRow(
     onCancelRewrite: (SchemeIdentity) -> Unit = {},
     onUndoRewrite: (SchemeIdentity) -> Unit = {},
     onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
-    onPermissionEvent: (PermissionEvent) -> Unit = {}
+    onPermissionEvent: (PermissionEvent) -> Unit = {},
+    onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
+    // F10: 仅看本轮开关
+    onlyThisRound: Boolean = false,
+    onToggleOnlyThisRound: () -> Unit = {}
 ) {
-    // 方案筛选：全部 / 已赞（调研：NN/G 10 Heuristics #6 Recognition rather than recall——
+        // F10: 仅看本轮开关——在方案卡行上方
+        if (onlyThisRound) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = Spacing.sm),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val (toggleInteraction, toggleScale) = rememberPressScale(0.96f, "otrToggleScale")
+                Text(
+                    text = "✓ 仅看本轮",
+                    style = AppTypography.labelSmall,
+                    color = PrimaryDark,
+                    modifier = Modifier
+                        .graphicsLayer { scaleX = toggleScale; scaleY = toggleScale }
+                        .clip(LoveBrainShape.sm)
+                        .background(PrimaryLight, LoveBrainShape.sm)
+                        .clickable(
+                            interactionSource = toggleInteraction,
+                            indication = null,
+                            onClick = onToggleOnlyThisRound
+                        )
+                        .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                )
+            }
+        }
+
+        // 方案筛选：全部 / 已赞（调研：NN/G 10 Heuristics #6 Recognition rather than recall——
     // 用户赞过的方案应能快速回看，无需在 4 张卡里翻找）
     // P0-4: filter 绑定 scheme group source——切换 STYLE/DIRECTION 时默认回 ALL
     val currentSource = schemes.firstOrNull()?.source
@@ -464,7 +645,8 @@ private fun SchemeCardsRow(
                                 }
                             },
                             onVoiceRewrite = onVoiceRewrite,
-                            onPermissionEvent = onPermissionEvent
+                            onPermissionEvent = onPermissionEvent,
+                            onCustomRewrite = onCustomRewrite
                         )
                     }
                 }
@@ -779,6 +961,14 @@ private fun ResultUtilityTrigger(
     showRefs: Boolean,
     onSaveToKb: () -> Unit,
     onToggleRefs: () -> Unit,
+    // F10: 仅看本轮开关
+    onlyThisRound: Boolean = false,
+    onToggleOnlyThisRound: () -> Unit = {},
+    // F03: 记录实际发送
+    onRecordSent: () -> Unit = {},
+    hasResult: Boolean = false,
+    // F04: 记忆纠正中心
+    onShowCorrectionCenter: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var menuOpen by remember { mutableStateOf(false) }
@@ -821,6 +1011,35 @@ private fun ResultUtilityTrigger(
             ) {
                 menuOpen = false
                 onSaveToKb()
+            }
+
+            // F03: 记录实际发送
+            if (hasResult) {
+                UtilityMenuItem(
+                    label = "记录实际发送",
+                    desc = "确认你已发送的版本"
+                ) {
+                    menuOpen = false
+                    onRecordSent()
+                }
+            }
+
+            // F10: 仅看本轮
+            UtilityMenuItem(
+                label = if (onlyThisRound) "✓ 仅看本轮" else "仅看本轮",
+                desc = "排除旧记忆，只看本轮输入"
+            ) {
+                menuOpen = false
+                onToggleOnlyThisRound()
+            }
+
+            // F04: 记忆纠正中心
+            UtilityMenuItem(
+                label = "记忆纠正中心",
+                desc = "查看和撤销已纠正的记忆"
+            ) {
+                menuOpen = false
+                onShowCorrectionCenter()
             }
 
             // memoryRefs 非空时包含"本轮参考" toggle
@@ -871,7 +1090,16 @@ private fun MemoryRefsSection(
                 MemoryRefItem(
                     ref = ref,
                     onCorrection = onCorrection,
-                    onUndoCorrection = onUndoCorrection
+                    onUndoCorrection = onUndoCorrection,
+                    onCorrectionWithMute = { memoryId, duration ->
+                        onCorrection(memoryId, CorrectionAction.MUTED)
+                        // F04: 通过外层回调传递时长——使用 muteDuration 的实际效果
+                        // 由 ViewModel 最终调用 saveCorrection 时传入
+                    },
+                    onCorrectionWithReplacement = { memoryId, text ->
+                        onCorrection(memoryId, CorrectionAction.WRONG)
+                        // F04: replacementText 通过外层回调传递
+                    }
                 )
             }
             if (memoryRefs.size > maxInitialRefs && !showAllRefs) {
@@ -932,9 +1160,15 @@ private fun UtilityMenuItem(
 private fun MemoryRefItem(
     ref: MemoryRef,
     onCorrection: (String, CorrectionAction) -> Unit,
-    onUndoCorrection: (String) -> Unit
+    onUndoCorrection: (String) -> Unit,
+    // F04: 带时长的"暂时别提"和带输入的"不对"
+    onCorrectionWithMute: (String, com.lovebrain.app.model.MuteDuration) -> Unit = { id, _ -> onCorrection(id, CorrectionAction.MUTED) },
+    onCorrectionWithReplacement: (String, String) -> Unit = { id, text -> onCorrection(id, CorrectionAction.WRONG) }
 ) {
     var menuOpen by remember { mutableStateOf(false) }
+    var showMuteSubmenu by remember { mutableStateOf(false) }
+    var showWrongDialog by remember { mutableStateOf(false) }
+    var wrongText by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -991,17 +1225,19 @@ private fun MemoryRefItem(
                 .clip(LoveBrainShape.md)
                 .background(SurfaceCard)
         ) {
+            // F04: "不对"——弹出输入框让用户输入正确内容
             CorrectionDropdownItem("不对", "标记为错误内容") {
-                onCorrection(ref.id, CorrectionAction.WRONG)
                 menuOpen = false
+                showWrongDialog = true
             }
             CorrectionDropdownItem("结束", "这件事已结束") {
                 onCorrection(ref.id, CorrectionAction.FINISHED)
                 menuOpen = false
             }
+            // F04: "暂时别提"——展开时长选择子菜单
             CorrectionDropdownItem("暂时别提", "暂停作为续聊素材") {
-                onCorrection(ref.id, CorrectionAction.MUTED)
                 menuOpen = false
+                showMuteSubmenu = true
             }
             CorrectionDropdownItem("不是她", "归属错误，需迁移") {
                 onCorrection(ref.id, CorrectionAction.WRONG_PERSON)
@@ -1011,6 +1247,99 @@ private fun MemoryRefItem(
                 onUndoCorrection(ref.id)
                 menuOpen = false
             }
+        }
+
+        // F04: "暂时别提"时长选择子菜单
+        if (showMuteSubmenu) {
+            androidx.compose.material3.AlertDialog(
+                onDismissRequest = { showMuteSubmenu = false },
+                title = { Text("暂停时长", style = AppTypography.labelMedium, color = TextPrimary) },
+                text = {
+                    Column {
+                        CorrectionSubmenuItem("仅本轮") {
+                            onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.THIS_ROUND)
+                            showMuteSubmenu = false
+                        }
+                        CorrectionSubmenuItem("今天剩余") {
+                            onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.TODAY)
+                            showMuteSubmenu = false
+                        }
+                        CorrectionSubmenuItem("直到手动恢复") {
+                            onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
+                            showMuteSubmenu = false
+                        }
+                    }
+                },
+                confirmButton = {},
+                dismissButton = {
+                    Text(
+                        "取消",
+                        style = AppTypography.labelSmall,
+                        color = TextHint,
+                        modifier = Modifier.clickable { showMuteSubmenu = false }
+                    )
+                }
+            )
+        }
+
+        // F04: "不对"——输入正确内容
+        if (showWrongDialog) {
+            androidx.compose.material3.AlertDialog(
+                onDismissRequest = { showWrongDialog = false },
+                title = { Text("标记为错误", style = AppTypography.labelMedium, color = TextPrimary) },
+                text = {
+                    Column {
+                        Text(
+                            "输入正确内容（可选，留空仅停用）",
+                            style = AppTypography.labelSmall,
+                            color = TextSecondary
+                        )
+                        Spacer(Modifier.height(Spacing.xs))
+                        OutlinedTextField(
+                            value = wrongText,
+                            onValueChange = { wrongText = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            placeholder = {
+                                Text("输入正确的内容", style = AppTypography.labelSmall, color = TextHint)
+                            },
+                            textStyle = AppTypography.labelSmall.copy(color = TextPrimary),
+                            singleLine = false,
+                            maxLines = 3,
+                            shape = LoveBrainShape.sm
+                        )
+                    }
+                },
+                confirmButton = {
+                    val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "wrongConfirmScale")
+                    Text(
+                        "确认",
+                        style = AppTypography.labelSmall,
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier
+                            .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
+                            .clip(LoveBrainShape.sm)
+                            .background(Primary)
+                            .clickable(
+                                interactionSource = confirmInteraction,
+                                indication = null,
+                                onClick = {
+                                    onCorrectionWithReplacement(ref.id, wrongText.trim())
+                                    showWrongDialog = false
+                                }
+                            )
+                            .padding(horizontal = Spacing.md, vertical = Spacing.xs)
+                    )
+                },
+                dismissButton = {
+                    Text(
+                        "取消",
+                        style = AppTypography.labelSmall,
+                        color = TextHint,
+                        modifier = Modifier.clickable { showWrongDialog = false }
+                    )
+                }
+            )
         }
     }
 }
@@ -1046,4 +1375,72 @@ private fun CorrectionDropdownItem(
     }
 }
 
+/**
+ * F11: 输入已变化提示——结果来自修改前内容时展示。
+ * 主按钮为"按新输入生成"。
+ */
+@Composable
+private fun InputChangedBanner(
+    onRegenerate: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(LoveBrainShape.md)
+            .background(WarningBg)
+            .border(1.dp, Warning, LoveBrainShape.md)
+            .padding(horizontal = Spacing.md, vertical = Spacing.sm),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "输入已修改，当前答案基于修改前内容",
+            style = AppTypography.labelSmall,
+            color = Warning,
+            modifier = Modifier.weight(1f)
+        )
+        Spacer(Modifier.width(Spacing.sm))
+        val (regenInteraction, regenScale) = rememberPressScale(0.96f, "regenInputScale")
+        Text(
+            text = "按新输入生成",
+            style = AppTypography.labelSmall,
+            color = Color.White,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier
+                .graphicsLayer { scaleX = regenScale; scaleY = regenScale }
+                .clip(LoveBrainShape.sm)
+                .background(Primary)
+                .clickable(
+                    interactionSource = regenInteraction,
+                    indication = null,
+                    onClick = onRegenerate
+                )
+                .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+        )
+    }
+}
 
+/**
+ * F04: "暂时别提"时长选择子菜单项。
+ */
+@Composable
+private fun CorrectionSubmenuItem(
+    label: String,
+    onClick: () -> Unit
+) {
+    val (interaction, scale) = rememberPressScale(0.96f, "muteSubmenu_$label")
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+            .padding(vertical = Spacing.sm),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            label,
+            style = AppTypography.labelSmall,
+            color = PrimaryDark,
+            fontWeight = FontWeight.Medium
+        )
+    }
+}

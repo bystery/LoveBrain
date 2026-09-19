@@ -82,6 +82,12 @@ class PromptBuilder(
     fun buildPolishSystemPrompt(): String = readAsset(AssetRegistry.POLISH)
 
     /**
+     * F07: 换个思路·方向生成专用 system：direction.md 全文。
+     * 方向生成复用本轮冻结上下文（同一 user prompt），仅更换 system 和输出任务。
+     */
+    fun buildDirectionSystemPrompt(): String = readAsset(AssetRegistry.DIRECTION)
+
+    /**
      * 从 stage 类 markdown 中提取「当前阶段」小节（## 阶段名 到下一个 ## 之间）。
      * P1-7：只使用传入的 KB stage，不再回读活跃库——阶段为空就按未知处理。
      * 生成链路只使用传入快照，防生成期间切库导致阶段来自不同对象。
@@ -198,6 +204,64 @@ class PromptBuilder(
         }
     }
 
+    // ═══════════ F08: 当前场景推断 ═══════════
+
+    /**
+     * F08: 从本轮消息内容推断当前场景。
+     * 不调用模型，仅基于关键词和消息模式的简单规则判断。
+     * 返回场景名称，供 prompt 注入。
+     */
+    fun inferCurrentScene(messages: List<ChatMessage>): String {
+        val realMessages = messages.filter {
+            it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME
+        }
+        if (realMessages.isEmpty()) return ""
+        val lastHer = realMessages.lastOrNull { it.role == ChatMessage.Role.HER }
+        val allText = realMessages.joinToString(" ") { it.content }.lowercase()
+
+        // 收尾判断——对方说要睡、要忙、暂时不聊
+        if (lastHer != null) {
+            val herText = lastHer.content.lowercase()
+            val closingKeywords = listOf("睡了", "睡觉", "晚安", "先忙", "去忙", "不聊了", "下次再聊", "明天再说", "去洗澡", "去洗漱", "先走了", "去吃饭")
+            if (closingKeywords.any { herText.contains(it) }) return "收尾"
+        }
+
+        // 争执判断——语气冲突、负面情绪
+        val conflictKeywords = listOf("生气", "烦死", "不想理", "随便你", "你总是", "你每次", "又来", "有意思吗", "懒得说", "你能不能", "为什么总是", "你到底", "不是你的错难道是我的错")
+        if (conflictKeywords.any { allText.contains(it) }) return "争执"
+
+        // 解释/认错判断——用户需要道歉
+        val apologyKeywords = listOf("对不起", "抱歉", "我的错", "我错了", "原谅", "不应该", "是我不好", "是我没做好")
+        val userMessages = realMessages.filter { it.role == ChatMessage.Role.ME }.joinToString(" ") { it.content }.lowercase()
+        if (apologyKeywords.any { userMessages.contains(it) }) return "解释或认错"
+
+        // 主动邀约判断——对方提出见面或活动
+        if (lastHer != null) {
+            val inviteKeywords = listOf("见面", "约", "一起", "出来", "去吃", "去看", "周末", "有空吗", "能不能", "方便吗")
+            if (inviteKeywords.any { lastHer.content.lowercase().contains(it) }) return "主动邀约"
+        }
+
+        // 认真沟通判断——表达情绪、认真讨论
+        val seriousKeywords = listOf("难过", "不开心", "压力大", "焦虑", "想哭", "委屈", "不知道怎么办", "纠结", "在想", "其实我", "说实话", "心里")
+        if (seriousKeywords.any { allText.contains(it) }) return "认真沟通"
+
+        // 轻松互逗判断——玩笑、表情
+        val playfulKeywords = listOf("哈哈", "笑死", "233", "狗子", "笨蛋", "讨厌", "哼", "略略", "😏", "😂", "嘻")
+        if (playfulKeywords.any { allText.contains(it) }) return "轻松互逗"
+
+        // 默认——日常分享
+        return "日常分享"
+    }
+
+    /**
+     * F08: 构建当前场景注入块。
+     * 场景是本轮属性，不永久改档案，只影响本轮生成策略。
+     */
+    private fun buildSceneBlock(scene: String): String {
+        if (scene.isBlank()) return ""
+        return "# 【当前场景】（本轮属性，不改变长期阶段档案）\n场景：$scene\n\n"
+    }
+
     // ═══════════ 回复 User Prompt ═══════════
 
     /**
@@ -247,26 +311,54 @@ class PromptBuilder(
     ): PromptBuildResult {
         if (kb == null) {
             val knowledgeBlock = "（暂无知识库，按通用策略处理）\n\n"
+            // F08: 无库时也注入当前场景
+            val sceneBlock = buildSceneBlock(inferCurrentScene(messages))
             val (chatHeader, chatBody, sourceAliasMap) = buildChatBlockWithAliases(messages)
             val timestampBlock = buildTimestampPrompt()
             val intentBlock = buildIntentBlock(intentConfig)
             val ideaBlock = buildIdeaBlock(userHint)
             // R09: 无库分支也过预算，不再绕过
-            val prompt = applyBudgetByBlocks(knowledgeBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
+            val prompt = applyBudgetByBlocks(knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
             return PromptBuildResult(prompt, emptyList(), sourceAliasMap)
         }
 
         val refs = mutableListOf<MemoryRef>()
         val knowledgeBlock = buildKnowledgeInsertionWithRefs(kb, aggressive, corrections, refs, messages)
+        // F08: 推断当前场景并注入——场景是本轮属性，不永久改档案
+        val sceneBlock = buildSceneBlock(inferCurrentScene(messages))
         val intentBlock = buildIntentBlock(intentConfig)
         val ideaBlock = buildIdeaBlock(userHint)
         val (chatHeader, chatBody, sourceAliasMap) = buildChatBlockWithAliases(messages)
         val timestampBlock = buildTimestampPrompt()
 
-        val prompt = applyBudgetByBlocks(knowledgeBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
+        val prompt = applyBudgetByBlocks(knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
         // R06: refs 裁剪后再生 — 只保留实际在最终 prompt 中出现的引用
         val finalRefs = filterRefsByPrompt(refs, prompt)
         return PromptBuildResult(prompt, finalRefs, sourceAliasMap)
+    }
+
+    /**
+     * F10: 仅看本轮——排除画像、阶段、记忆、场景、事项、意图、偏好。
+     * 只携带本轮真实对话记录 + 想法 + 时间戳。
+     */
+    suspend fun buildReplyUserPromptOnlyThisRound(
+        messages: List<ChatMessage>,
+        userHint: String
+    ): PromptBuildResult {
+        val (chatHeader, chatBody, sourceAliasMap) = buildChatBlockWithAliases(messages)
+        val ideaBlock = buildIdeaBlock(userHint)
+        val timestampBlock = buildTimestampPrompt()
+        // F08: 仅看本轮也注入当前场景——场景是本轮属性，不属于旧记忆
+        val sceneBlock = buildSceneBlock(inferCurrentScene(messages))
+        val prompt = buildString {
+            append("（本轮仅看模式：不携带画像、记忆、意图和偏好）\n\n")
+            append(sceneBlock)
+            append(ideaBlock)
+            append(chatHeader)
+            append(chatBody)
+            append(timestampBlock)
+        }
+        return PromptBuildResult(prompt, emptyList(), sourceAliasMap)
     }
 
     /** R-DRY: 构建对话记录区块，返回 (header, body)
@@ -321,11 +413,35 @@ class PromptBuilder(
         return Triple(chatHeader, chatBody.toString(), sourceAliasMap)
     }
 
-    /** R-DRY: 持续意图区块 */
+    /** R-DRY: 持续意图区块
+     *  F06: 应用有效期与完成状态——到期或完成的意图不注入。
+     *  使用设备本地时区判断 TODAY 和 DATE 过期。 */
     private fun buildIntentBlock(intentConfig: com.lovebrain.app.model.IntentConfig): String {
-        return if (intentConfig.enabled && intentConfig.text.isNotBlank()) {
-            "【持续意图】\n${intentConfig.text.trim()}\n\n"
-        } else ""
+        if (!intentConfig.enabled || intentConfig.text.isBlank()) return ""
+        // F06: 检查意图状态——COMPLETED/EXPIRED 不注入
+        if (intentConfig.status == com.lovebrain.app.model.IntentStatus.COMPLETED ||
+            intentConfig.status == com.lovebrain.app.model.IntentStatus.EXPIRED) return ""
+        // F06: PAUSED 保留文本但不注入
+        if (intentConfig.status == com.lovebrain.app.model.IntentStatus.PAUSED) return ""
+        // F06: 检查有效期
+        val today = TimeFmt.today()
+        when (intentConfig.expiry) {
+            com.lovebrain.app.model.IntentExpiry.TODAY -> {
+                // 仅今天——使用设备本地日期，不硬编码 UTC
+                // 今天创建的意图今天有效，明天自动到期
+                // 由于我们不知道创建日期，依赖 status 字段——已过期时 status=EXPIRED
+            }
+            com.lovebrain.app.model.IntentExpiry.DATE -> {
+                // 指定日期过期
+                if (intentConfig.expiryDate.isNotBlank() && intentConfig.expiryDate < today) {
+                    return ""  // 已过期，不注入
+                }
+            }
+            com.lovebrain.app.model.IntentExpiry.UNTIL_DONE -> {
+                // 直到手动完成——依赖 status 字段
+            }
+        }
+        return "【持续意图】\n${intentConfig.text.trim()}\n\n"
     }
 
     /** R-DRY: IDEA 区块 */
@@ -388,6 +504,15 @@ class PromptBuilder(
             val ref = makeRef(kb.name, MemoryKind.PROFILE, "understand/warmth.md", warmth)
             if (!isCorrected(ref.id, corrections, sb)) {
                 sb.append("## 我们\n").append(warmth.trim()).append("\n")
+                refs.add(ref)
+            }
+        }
+        // F05: 个人表达偏好——独立于画像，生成都注入
+        val style = readFileCompat(kb.name, "understand/style.md")
+        if (style.isNotBlank()) {
+            val ref = makeRef(kb.name, MemoryKind.PROFILE, "understand/style.md", style)
+            if (!isCorrected(ref.id, corrections, sb)) {
+                sb.append("## 我的表达偏好\n").append(style.trim()).append("\n")
                 refs.add(ref)
             }
         }
@@ -494,6 +619,7 @@ class PromptBuilder(
 
     /** R06: 检查 memoryId 是否被纠正。如果被纠正，按 action 类型处理。
      * MUTED: 真正限制——不注入原始内容，只保留被动回应能力。
+     * F04: MUTED 支持时长过期——THIS_ROUND 仅本轮有效，TODAY 跨天后恢复，UNTIL_RESTORE 永久。
      *
      * R06 修复：所有 kind 现在都用文件级稳定 ID（kind:sourcePath），
      * 不再有 :hash 后缀，无需旧格式回退兼容。
@@ -523,6 +649,11 @@ class PromptBuilder(
             }
             CorrectionAction.FINISHED -> true  // 事项已结束，跳过
             CorrectionAction.MUTED -> {
+                // F04: 检查静音是否已过期
+                if (isMuteExpired(correction)) {
+                    // 静音已过期——恢复正常注入
+                    return false
+                }
                 // R06: MUTED 真正限制——不注入原始内容，
                 // 但在末尾标记可被动回应（模型可回答相关提问但不主动提）
                 sb.append("（此条记忆已暂停主动提及，但仍可被动回应相关提问）\n")
@@ -533,19 +664,55 @@ class PromptBuilder(
     }
 
     /**
+     * F04: 检查 MUTED 纠正是否已过期。
+     * - THIS_ROUND: 仅本轮有效。新的一次生成请求即为新一轮，过期。
+     * - TODAY: 今天剩余时间。跨天后恢复。
+     * - UNTIL_RESTORE: 永不过期，只能手动撤销。
+     * 旧数据无 muteDuration 字段时默认为 UNTIL_RESTORE，保持原语义。
+     */
+    private fun isMuteExpired(correction: MemoryCorrection): Boolean {
+        if (correction.muteTimestamp.isBlank()) return false
+        return when (correction.muteDuration) {
+            com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE -> false
+            com.lovebrain.app.model.MuteDuration.THIS_ROUND -> {
+                // 本轮有效——每次生成即为新一轮，过期
+                // 通过比较 muteTimestamp 的秒级精度与当前时间是否在同一秒
+                // 简化实现：只要 muteTimestamp 不是"刚刚"（同一秒），即视为过期
+                // 更精确的实现需要绑定格化上下文 ID，这里用时间差近似
+                val muteTime = runCatching {
+                    java.time.OffsetDateTime.parse(correction.muteTimestamp)
+                }.getOrNull() ?: return false
+                val now = java.time.OffsetDateTime.now()
+                // 超过 30 秒即视为不是"本轮"（一次生成请求通常在秒级完成）
+                java.time.Duration.between(muteTime, now).seconds > 30
+            }
+            com.lovebrain.app.model.MuteDuration.TODAY -> {
+                // 今天剩余——跨天后恢复
+                val muteTime = runCatching {
+                    java.time.OffsetDateTime.parse(correction.muteTimestamp)
+                }.getOrNull() ?: return false
+                val now = java.time.OffsetDateTime.now()
+                muteTime.toLocalDate() != now.toLocalDate()
+            }
+        }
+    }
+
+    /**
      * R09: 按区块优先级裁剪预算。
      * 裁剪顺序：知识段尾部旧记忆 → 知识段中较旧 recent → 较旧 scene → 对话记录头部
      * 完整 IDEA 和最新真实消息最后才动，结构围栏 <chat></chat> 不被截半。
+     * F08: 新增 sceneBlock 参数——场景块短小，优先保留。
      */
     private fun applyBudgetByBlocks(
         knowledgeBlock: String,
+        sceneBlock: String = "",
         intentBlock: String,
         ideaBlock: String,
         chatHeader: String,
         chatBody: String,
         timestampBlock: String
     ): String {
-        val fullText = knowledgeBlock + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
+        val fullText = knowledgeBlock + "\n\n" + sceneBlock + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
         if (fullText.length <= AppConfig.TOTAL_BUDGET) return fullText
 
         var knowledge = knowledgeBlock
@@ -557,7 +724,7 @@ class PromptBuilder(
             knowledge = knowledge.take(keepLen) + "\n…（旧记忆因长度限制已省略）…\n"
         }
 
-        var result = knowledge + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
+        var result = knowledge + "\n\n" + sceneBlock + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
         if (result.length <= AppConfig.TOTAL_BUDGET) return result
 
         // R09: 2. 裁知识段中较旧 recent（保留最新对话段）
@@ -575,7 +742,7 @@ class PromptBuilder(
             }
         }
 
-        result = knowledge + "\n\n" + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
+        result = knowledge + "\n\n" + sceneBlock + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
         if (result.length <= AppConfig.TOTAL_BUDGET) return result
 
         // R09: 3. 裁对话记录头部（保留尾部最新消息和 </chat> 围栏闭合）
@@ -595,7 +762,7 @@ class PromptBuilder(
             chatBody
         }
 
-        return knowledge + "\n\n" + intentBlock + ideaBlock + chatHeader + trimmedChat + "\n\n" + timestampBlock
+        return knowledge + "\n\n" + sceneBlock + intentBlock + ideaBlock + chatHeader + trimmedChat + "\n\n" + timestampBlock
     }
 
     // ═══════════ 时间注入 ═══════════
@@ -659,15 +826,18 @@ class PromptBuilder(
         return sb.toString()
     }
 
-    /** A2-6：# 【懂得】关系画像段（我/她/我们非空才拼；与核心子集逐字同源） */
+    /** A2-6：# 【懂得】关系画像段（我/她/我们非空才拼；与核心子集逐字同源）
+     *  F05: 增加"我的表达偏好"（understand/style.md）——非空时追加到画像段末尾 */
     private suspend fun StringBuilder.appendProfileSection(kbName: String) {
         val me = readFileCompat(kbName, "understand/me.md")
         val her = readFileCompat(kbName, "understand/her.md")
         val warmth = readFileCompat(kbName, "understand/warmth.md")
+        val style = readFileCompat(kbName, "understand/style.md")
         append("# 【懂得】关系画像\n")
         if (me.isNotBlank()) append("## 我\n").append(me.trim()).append("\n")
         if (her.isNotBlank()) append("## 她\n").append(her.trim()).append("\n")
         if (warmth.isNotBlank()) append("## 我们\n").append(warmth.trim()).append("\n")
+        if (style.isNotBlank()) append("## 我的表达偏好\n").append(style.trim()).append("\n")
         append("\n")
     }
 

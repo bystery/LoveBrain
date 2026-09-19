@@ -108,6 +108,8 @@ fun SchemeCard(
     onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     // P0-7: 权限事件回调——Panel/ViewModel 复用 panelWarning/banner
     onPermissionEvent: (PermissionEvent) -> Unit = {},
+    // F01 v2: 自定义改写回调
+    onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
     val isEmpty = scheme.reply.isBlank()
@@ -439,7 +441,7 @@ fun SchemeCard(
                     }
                 }
                 SchemeCardPresentationState.RewriteDone -> {
-                    // P0-4: 改写成功——显示新正文+撤销入口
+                    // P0-4: 改写成功——显示新正文+用这版/返回原版
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -454,34 +456,49 @@ fun SchemeCard(
                             lineHeight = SchemeTextDimens.BODY_LINE_HEIGHT
                         )
                     }
-                    // 撤销入口
+                    // F01 v2: 明确的"用这版"/"返回原版"按钮
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            "撤销",
+                            "返回原版",
                             style = AppTypography.labelSmall,
-                            color = PrimaryDark,
+                            color = TextHint,
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null,
                                 onClick = { onUndoRewrite(identity) }
                             ).padding(horizontal = Spacing.xs, vertical = Spacing.xs)
                         )
+                        Text(
+                            "用这版",
+                            style = AppTypography.labelSmall,
+                            color = PrimaryDark,
+                            modifier = Modifier.clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = { onClearRewriteState(identity) }
+                            ).padding(horizontal = Spacing.xs, vertical = Spacing.xs)
+                        )
                     }
                 }
                 SchemeCardPresentationState.Adjusting -> {
-                    // P0-4: 调整态——替换内容：显示改写选项 + 取消
+                    // P0-4: 调整态——替换内容：显示改写选项 + 自定义输入 + 取消
                     // 不显示方向 chips（P0-5: 方向属于 Result-level）
+                    var customText by remember { mutableStateOf("") }
+                    var showCustomInput by remember { mutableStateOf(false) }
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.spacedBy(Spacing.xs)
                     ) {
-                        val chunkedRows = RewriteCommand.entries.chunked(2)
+                        // 预设选项（F01 v2: 使用 PRESET_LABELS）
+                        val presetCommands = RewriteCommand.entries.filter { it != RewriteCommand.CUSTOM }
+                        val chunkedRows = presetCommands.chunked(2)
                         chunkedRows.forEachIndexed { rowIndex, rowOptions ->
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -515,6 +532,69 @@ fun SchemeCard(
                             }
                             if (rowIndex < chunkedRows.lastIndex) {
                                 Spacer(Modifier.height(Spacing.xs))
+                            }
+                        }
+                        // 自定义改写入口
+                        if (!showCustomInput) {
+                            val (customInteraction, customScale) = rememberPressScale(0.94f, "customBtnScale")
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .graphicsLayer { scaleX = customScale; scaleY = customScale }
+                                    .clip(LoveBrainShape.sm)
+                                    .background(SurfaceInset, LoveBrainShape.sm)
+                                    .border(1.dp, Border, LoveBrainShape.sm)
+                                    .clickable(
+                                        interactionSource = customInteraction,
+                                        indication = null,
+                                        onClick = { showCustomInput = true }
+                                    )
+                                    .padding(vertical = Spacing.xs, horizontal = Spacing.sm),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    "自定义要求…",
+                                    style = AppTypography.labelSmall,
+                                    color = TextHint,
+                                    maxLines = 1
+                                )
+                            }
+                        } else {
+                            // 自定义输入框
+                            androidx.compose.material3.OutlinedTextField(
+                                value = customText,
+                                onValueChange = { customText = it },
+                                modifier = Modifier.fillMaxWidth(),
+                                placeholder = {
+                                    Text(
+                                        "如：保留第一句，第二句不要",
+                                        style = AppTypography.labelSmall,
+                                        color = TextHint
+                                    )
+                                },
+                                textStyle = AppTypography.labelSmall.copy(color = TextPrimary),
+                                singleLine = false,
+                                maxLines = 3,
+                                shape = LoveBrainShape.sm
+                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Text(
+                                    "确认改写",
+                                    style = AppTypography.labelSmall,
+                                    color = if (customText.isNotBlank()) PrimaryDark else TextHint,
+                                    modifier = Modifier.clickable(
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = null,
+                                        onClick = {
+                                            if (customText.isNotBlank()) {
+                                                onCustomRewrite(identity, customText.trim())
+                                            }
+                                        }
+                                    ).padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                                )
                             }
                         }
                         Spacer(Modifier.weight(1f))

@@ -148,7 +148,12 @@ fun SuggestPanel(
                 IntentEditorDialog(
                     text = intentConfig.text,
                     enabled = intentConfig.enabled,
-                    onSave = { text, enabled -> viewModel.saveIntent(text, enabled) },
+                    expiry = intentConfig.expiry,
+                    expiryDate = intentConfig.expiryDate,
+                    status = intentConfig.status,
+                    onSave = { text, enabled, expiry, expiryDate, status ->
+                        viewModel.saveIntent(text, enabled, expiry, expiryDate, status)
+                    },
                     onDismiss = { viewModel.dismissIntentEditor() }
                 )
             }
@@ -616,11 +621,17 @@ private const val INTENT_MAX_LENGTH = 200
 private fun IntentEditorDialog(
     text: String,
     enabled: Boolean,
-    onSave: (String, Boolean) -> Unit,
+    expiry: com.lovebrain.app.model.IntentExpiry = com.lovebrain.app.model.IntentExpiry.UNTIL_DONE,
+    expiryDate: String = "",
+    status: com.lovebrain.app.model.IntentStatus = com.lovebrain.app.model.IntentStatus.ACTIVE,
+    onSave: (String, Boolean, com.lovebrain.app.model.IntentExpiry, String, com.lovebrain.app.model.IntentStatus) -> Unit,
     onDismiss: () -> Unit
 ) {
     var editText by remember { mutableStateOf(text) }
     var editEnabled by remember { mutableStateOf(enabled) }
+    var editExpiry by remember { mutableStateOf(expiry) }
+    var editExpiryDate by remember { mutableStateOf(expiryDate) }
+    var editStatus by remember { mutableStateOf(status) }
     val overLimit = editText.length > INTENT_MAX_LENGTH
 
     AlertDialog(
@@ -664,6 +675,63 @@ private fun IntentEditorDialog(
                                 .background(Color.White)
                         )
                     }
+                }
+                Spacer(Modifier.height(Spacing.md))
+                // F06: 有效期选择
+                Text("有效期", style = AppTypography.labelMedium, color = TextSecondary)
+                Spacer(Modifier.height(Spacing.xs))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
+                ) {
+                    IntentExpiryChip("直到完成", editExpiry == com.lovebrain.app.model.IntentExpiry.UNTIL_DONE) {
+                        editExpiry = com.lovebrain.app.model.IntentExpiry.UNTIL_DONE
+                    }
+                    IntentExpiryChip("仅今天", editExpiry == com.lovebrain.app.model.IntentExpiry.TODAY) {
+                        editExpiry = com.lovebrain.app.model.IntentExpiry.TODAY
+                    }
+                    IntentExpiryChip("指定日期", editExpiry == com.lovebrain.app.model.IntentExpiry.DATE) {
+                        editExpiry = com.lovebrain.app.model.IntentExpiry.DATE
+                    }
+                }
+                // F06: 指定日期时显示日期输入框
+                if (editExpiry == com.lovebrain.app.model.IntentExpiry.DATE) {
+                    Spacer(Modifier.height(Spacing.xs))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(SurfaceCard, LoveBrainShape.md)
+                            .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.md)
+                            .padding(Spacing.md)
+                    ) {
+                        if (editExpiryDate.isEmpty()) {
+                            Text("输入日期（如 2026-12-31）", color = TextHint, style = AppTypography.bodyMedium)
+                        }
+                        BasicTextField(
+                            value = editExpiryDate,
+                            onValueChange = { editExpiryDate = it },
+                            textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
+                            cursorBrush = androidx.compose.ui.graphics.SolidColor(Primary),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+                // F06: 状态操作——已完成时可标记完成
+                if (editEnabled && editStatus == com.lovebrain.app.model.IntentStatus.ACTIVE) {
+                    Spacer(Modifier.height(Spacing.sm))
+                    val (completeInteraction, completeScale) = rememberPressScale(0.96f, "intentCompleteScale")
+                    Text(
+                        "标记为已完成",
+                        style = AppTypography.labelSmall,
+                        color = TextHint,
+                        modifier = Modifier
+                            .graphicsLayer { scaleX = completeScale; scaleY = completeScale }
+                            .clickable(interactionSource = completeInteraction, indication = null) {
+                                editStatus = com.lovebrain.app.model.IntentStatus.COMPLETED
+                                editEnabled = false
+                            }
+                            .padding(vertical = Spacing.xs)
+                    )
                 }
                 Spacer(Modifier.height(Spacing.md))
                 // 文本输入框
@@ -728,7 +796,7 @@ private fun IntentEditorDialog(
                         if (!overLimit) {
                             // R08修复：保存后由 ViewModel 在成功时关闭编辑器，
                             // 失败时保留编辑状态供重试，不立即 onDismiss
-                            onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled)
+                            onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled, editExpiry, editExpiryDate.trim(), editStatus)
                         }
                     }
                     .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
@@ -746,5 +814,30 @@ private fun IntentEditorDialog(
                     .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
             )
         }
+    )
+}
+
+/**
+ * F06: 有效期选择 chip。
+ */
+@Composable
+private fun IntentExpiryChip(
+    label: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    val (interaction, scale) = rememberPressScale(0.94f, "expiryChip_$label")
+    Text(
+        text = if (isSelected) "✓ $label" else label,
+        style = AppTypography.labelSmall,
+        color = if (isSelected) Color.White else TextSecondary,
+        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+        modifier = Modifier
+            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .clip(LoveBrainShape.sm)
+            .background(if (isSelected) Primary else SurfaceCard, LoveBrainShape.sm)
+            .border(AppDimens.BORDER_WIDTH_DP.dp, if (isSelected) Primary else Border, LoveBrainShape.sm)
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+            .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
     )
 }
