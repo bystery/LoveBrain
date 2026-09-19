@@ -101,12 +101,6 @@ fun ResultArea(
     onRecordSent: (Scheme) -> Unit = {},
     // F04: 打开记忆纠正中心
     onShowCorrectionCenter: () -> Unit = {},
-    // F07: 换个思路·方向生成
-    isDirectionGenerating: Boolean = false,
-    streamingDirections: List<Scheme> = emptyList(),
-    onGenerateDirection: () -> Unit = {},
-    onStopDirection: () -> Unit = {},
-    directionError: String? = null,
     // P0-3: 稳定轮次身份——只在整轮 generate 成功时变化
     generationRoundId: Int = 0,
     modifier: Modifier = Modifier
@@ -200,127 +194,12 @@ fun ResultArea(
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                 ) {
-            // F07: 按需方案——方向切换器改为「换个思路」入口
-            // 已有方向时直接显示切换器；无方向时显示「换个思路」按钮
-            // 方向生成中时显示流式方向卡
-            if (isDirectionGenerating) {
-                // F07: 方向生成中——显示流式方向卡或加载指示
-                if (streamingDirections.isNotEmpty()) {
-                    SchemeCardsRow(
-                        schemes = streamingDirections,
-                        feedbacks = feedbacks,
-                        onFeedback = onFeedback,
-                        onCopyScheme = onCopyScheme,
-                        rewriteStates = rewriteStates,
-                        onRewrite = onRewrite,
-                        onClearRewriteState = onClearRewriteState,
-                        onCancelRewrite = onCancelRewrite,
-                        onUndoRewrite = onUndoRewrite,
-                        onVoiceRewrite = onVoiceRewrite,
-                        onPermissionEvent = onPermissionEvent,
-                        onCustomRewrite = onCustomRewrite
-                    )
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(PrimaryLight, LoveBrainShape.md)
-                            .padding(Spacing.lg),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            CircularProgressIndicator(
-                                color = Primary,
-                                modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp),
-                                strokeWidth = Spacing.xs
-                            )
-                            Spacer(Modifier.width(Spacing.sm))
-                            Text(
-                                text = "正在换个思路…",
-                                color = PrimaryDark,
-                                style = AppTypography.bodySmall
-                            )
-                        }
-                    }
-                }
-                // 停止按钮
-                Spacer(Modifier.height(Spacing.xs))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    val (stopInteraction, stopScale) = rememberPressScale(0.96f, "stopDirectionScale")
-                    Text(
-                        text = "停止",
-                        color = TextSecondary,
-                        style = AppTypography.bodySmall,
-                        modifier = Modifier
-                            .graphicsLayer { scaleX = stopScale; scaleY = stopScale }
-                            .clickable(interactionSource = stopInteraction, indication = null, onClick = onStopDirection)
-                            .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
-                    )
-                }
-            } else if (hasDirections) {
+            // P0-1: 风格/方向切换器——有方向时显示
+            if (hasDirections) {
                 SchemeViewSwitcher(
                     mode = viewMode,
                     onModeChange = { viewMode = it }
                 )
-                Spacer(Modifier.height(Spacing.sm))
-            } else if (directionError != null) {
-                // F07: 方向生成失败——显示错误和重试
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(LoveBrainShape.md)
-                        .background(ErrorBg)
-                        .padding(Spacing.md)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = directionError,
-                            color = Error,
-                            style = AppTypography.bodySmall,
-                            modifier = Modifier.weight(1f)
-                        )
-                        Spacer(Modifier.width(Spacing.sm))
-                        val (retryDirInteraction, retryDirScale) = rememberPressScale(0.96f, "retryDirectionScale")
-                        Text(
-                            text = "重试",
-                            color = PrimaryDark,
-                            style = AppTypography.bodySmall,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier
-                                .graphicsLayer { scaleX = retryDirScale; scaleY = retryDirScale }
-                                .clickable(interactionSource = retryDirInteraction, indication = null, onClick = onGenerateDirection)
-                                .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
-                        )
-                    }
-                }
-                Spacer(Modifier.height(Spacing.sm))
-            } else {
-                // F07: 无方向时显示「换个思路」按钮
-                val (changeInteraction, changeScale) = rememberPressScale(0.96f, "changeApproachScale")
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = "换个思路",
-                        color = PrimaryDark,
-                        style = AppTypography.labelLarge,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier
-                            .clip(LoveBrainShape.md)
-                            .background(PrimaryLight)
-                            .graphicsLayer { scaleX = changeScale; scaleY = changeScale }
-                            .clickable(interactionSource = changeInteraction, indication = null, onClick = onGenerateDirection)
-                            .padding(horizontal = Spacing.xl, vertical = Spacing.md)
-                    )
-                }
                 Spacer(Modifier.height(Spacing.sm))
             }
                     SchemeCardsRow(

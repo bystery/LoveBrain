@@ -94,8 +94,6 @@ class LoveBrainViewModel(
     private var generateJob: kotlinx.coroutines.Job? = null
     private var counselingJob: kotlinx.coroutines.Job? = null
     private var suggestJob: kotlinx.coroutines.Job? = null
-    private var directionJob: kotlinx.coroutines.Job? = null  // F07: 方向生成 Job
-
     // ═══════════ GEN-02：本轮生成上下文（不可变快照） ═══════════
     /**
      * 一轮 AI 生成 = 固定消息快照 + 固定知识库 + 固定 AI 回复 + 固定用户反馈。
@@ -287,19 +285,6 @@ class LoveBrainViewModel(
     /** 首条可复制回复耗时（毫秒；0 = 尚未生成） */
     private val _firstReplyMs = MutableStateFlow(0L)
     val firstReplyMs: StateFlow<Long> = _firstReplyMs.asStateFlow()
-
-    // ═══════════ F07: 换个思路·方向生成 ═══════════
-    /** 方向生成中 */
-    private val _isDirectionGenerating = MutableStateFlow(false)
-    val isDirectionGenerating: StateFlow<Boolean> = _isDirectionGenerating.asStateFlow()
-
-    /** 方向生成流式 schemes（逐条渲染） */
-    private val _streamingDirections = MutableStateFlow<List<Scheme>>(emptyList())
-    val streamingDirections: StateFlow<List<Scheme>> = _streamingDirections.asStateFlow()
-
-    /** 方向生成错误 */
-    private val _directionError = MutableStateFlow<String?>(null)
-    val directionError: StateFlow<String?> = _directionError.asStateFlow()
 
     private val _currentRole = MutableStateFlow(ChatMessage.Role.HER)
     val currentRole: StateFlow<ChatMessage.Role> = _currentRole.asStateFlow()
@@ -1447,53 +1432,6 @@ class LoveBrainViewModel(
         _proactiveError.value = null
     }
 
-    // ═══════════ F07: 换个思路·方向生成 ═══════════
-
-    /**
-     * F07: 按需方向生成——用户点击"换个思路"时触发。
-     * 复用本轮冻结上下文（ReplyGenerationContext），仅更换 system prompt。
-     * 正在生成方向或正在生成回复时拒绝。
-     */
-    fun generateDirection() {
-        if (_isDirectionGenerating.value || _isGenerating.value || _isPreparing.value) return
-        val ctx = replyGenerationContext ?: return
-
-        _directionError.value = null
-        _streamingDirections.value = emptyList()
-
-        val job = generationEngine.generateDirection(
-            messages = ctx.messages,
-            userHint = ctx.ideaHint,
-            knowledgeBase = _activeKb.value,
-            scope = viewModelScope,
-            callbacks = this,
-            intentConfig = com.lovebrain.app.model.IntentConfig(
-                text = ctx.intentText,
-                enabled = ctx.intentEnabled,
-                revision = ctx.intentRevision
-            ),
-            onlyThisRound = _onlyThisRound.value
-        )
-        if (job != null) {
-            directionJob = job
-            job.invokeOnCompletion {
-                if (directionJob === job) {
-                    directionJob = null
-                }
-            }
-        }
-    }
-
-    /** F07: 停止方向生成 */
-    fun stopDirection() {
-        if (!_isDirectionGenerating.value) return
-        directionJob?.cancel()
-        directionJob = null
-        _isDirectionGenerating.value = false
-        _streamingDirections.value = emptyList()
-        _directionError.value = "已手动停止"
-    }
-
     // ═══════════ GenerationEngine.Callbacks 实现 ═══════════
 
     /** ：首字耗时上报（四流程统一回调，展示条消费） */
@@ -1680,46 +1618,6 @@ class LoveBrainViewModel(
         }
         _isProactive.value = false
     }
-
-    // --- F07: 换个思路·方向生成 ---
-    override fun onDirectionStart() {
-        _isDirectionGenerating.value = true
-        _directionError.value = null
-        _streamingDirections.value = emptyList()
-    }
-
-    override fun onDirectionStreaming(schemes: List<Scheme>) {
-        _streamingDirections.value = schemes
-    }
-
-    override fun onDirectionResult(schemes: List<Scheme>) {
-        // 将方向 schemes 合并到当前 result 的 response 中
-        val currentResult = _result.value as? GenerateResult.Success ?: return
-        val response = currentResult.response
-        // 构建新的 directions 列表
-        val newDirections = MutableList<String?>(4) { null }
-        for (scheme in schemes) {
-            val dir = com.lovebrain.app.model.ReplyDirection.byTag(scheme.tag)
-            if (dir != null && scheme.reply.isNotBlank()) {
-                while (newDirections.size <= dir.index) newDirections.add(null)
-                newDirections[dir.index] = scheme.reply
-            }
-        }
-        val updatedResponse = response.copy(directions = newDirections)
-        _result.value = GenerateResult.Success(updatedResponse)
-        _streamingDirections.value = emptyList()
-    }
-
-    override fun onDirectionError(error: String) {
-        _directionError.value = error
-    }
-
-    override fun onDirectionEnd() {
-        _isDirectionGenerating.value = false
-        _streamingDirections.value = emptyList()
-    }
-
-    override fun isDirectionGenerating(): Boolean = _isDirectionGenerating.value
 
     // --- 共用 ---
     override fun getActiveKb(): KnowledgeBase? = _activeKb.value

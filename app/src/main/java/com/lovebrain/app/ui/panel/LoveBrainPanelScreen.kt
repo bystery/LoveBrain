@@ -493,12 +493,6 @@ fun LoveBrainPanelScreen(
                                         showCorrectionCenter = true
                                     }
                                 },
-                                // F07: 换个思路·方向生成
-                                isDirectionGenerating = viewModel.isDirectionGenerating.collectAsStateWithLifecycle().value,
-                                streamingDirections = viewModel.streamingDirections.collectAsStateWithLifecycle().value,
-                                onGenerateDirection = { viewModel.generateDirection() },
-                                onStopDirection = { viewModel.stopDirection() },
-                                directionError = viewModel.directionError.collectAsStateWithLifecycle().value,
                                 onVoiceRewrite = { identity, transcript ->
                                     viewModel.rewriteScheme(
                                         identity.source,

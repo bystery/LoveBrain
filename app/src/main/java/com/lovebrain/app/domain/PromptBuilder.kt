@@ -82,12 +82,6 @@ class PromptBuilder(
     fun buildPolishSystemPrompt(): String = readAsset(AssetRegistry.POLISH)
 
     /**
-     * F07: 换个思路·方向生成专用 system：direction.md 全文。
-     * 方向生成复用本轮冻结上下文（同一 user prompt），仅更换 system 和输出任务。
-     */
-    fun buildDirectionSystemPrompt(): String = readAsset(AssetRegistry.DIRECTION)
-
-    /**
      * 从 stage 类 markdown 中提取「当前阶段」小节（## 阶段名 到下一个 ## 之间）。
      * P1-7：只使用传入的 KB stage，不再回读活跃库——阶段为空就按未知处理。
      * 生成链路只使用传入快照，防生成期间切库导致阶段来自不同对象。
