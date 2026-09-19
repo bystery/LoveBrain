@@ -89,20 +89,25 @@ class ResultAreaVisualRegressionTest {
         composeRule.onNodeWithText("温柔回复内容").assertIsDisplayed()
     }
 
-    // ═══ 2. 四张风格卡存在于语义树（不要求同时可见） ═══
+    // ═══ 2. 四张风格卡可通过滚动访问（不要求同时 composition） ═══
+    // LazyRow 的 off-screen item 不保证已在 semantics tree 中。
+    // 数据层验证四个 Scheme 存在应放在 JVM/data test，不该要求四张同时 composition。
+    // 这里通过滚动逐个验证每张卡可见。
 
     @Test
-    fun defaultSuccessResultArea_hasFourStyleCardsInSemanticsTree() {
+    fun defaultSuccessResultArea_allFourCardsAccessibleViaScroll() {
         setupResultArea()
-        // 四张风格卡内容都存在于语义树中（LazyRow 的 item 都已组合，只是不一定在视口内）
-        val recommended = composeRule.onAllNodesWithText("推荐回复内容")
-        val badBoy = composeRule.onAllNodesWithText("清醒回复内容")
-        val playful = composeRule.onAllNodesWithText("俏皮回复内容")
-        val warm = composeRule.onAllNodesWithText("温柔回复内容")
-        assertTrue("推荐卡 should exist in semantics tree", recommended.fetchSemanticsNodes().isNotEmpty())
-        assertTrue("清醒卡 should exist in semantics tree", badBoy.fetchSemanticsNodes().isNotEmpty())
-        assertTrue("俏皮卡 should exist in semantics tree", playful.fetchSemanticsNodes().isNotEmpty())
-        assertTrue("温柔卡 should exist in semantics tree", warm.fetchSemanticsNodes().isNotEmpty())
+        // 首张默认可见
+        composeRule.onNodeWithText("推荐回复内容").assertIsDisplayed()
+        // 滚动到第二张
+        composeRule.onNodeWithText("推荐回复内容").performScrollToNode(hasText("清醒回复内容"))
+        composeRule.onNodeWithText("清醒回复内容").assertIsDisplayed()
+        // 滚动到第三张
+        composeRule.onNodeWithText("清醒回复内容").performScrollToNode(hasText("俏皮回复内容"))
+        composeRule.onNodeWithText("俏皮回复内容").assertIsDisplayed()
+        // 滚动到第四张
+        composeRule.onNodeWithText("俏皮回复内容").performScrollToNode(hasText("温柔回复内容"))
+        composeRule.onNodeWithText("温柔回复内容").assertIsDisplayed()
     }
 
     // ═══ 3. 风格/方向入口存在 ═══

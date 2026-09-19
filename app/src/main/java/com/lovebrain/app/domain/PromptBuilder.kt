@@ -659,7 +659,9 @@ class PromptBuilder(
 
     /**
      * F04: 检查 MUTED 纠正是否已过期。
-     * - THIS_ROUND: 仅本轮有效。新的一次生成请求即为新一轮，过期。
+     * - THIS_ROUND: 不在持久层判断——由 ViewModel roundCorrections transient map 管理。
+     *   持久 corrections.json 中的 THIS_ROUND 记录视为无效（不应持久化），
+     *   保守返回 false（不过期），由 ViewModel 层覆盖控制。
      * - TODAY: 今天剩余时间。跨天后恢复。
      * - UNTIL_RESTORE: 永不过期，只能手动撤销。
      * 旧数据无 muteDuration 字段时默认为 UNTIL_RESTORE，保持原语义。
@@ -669,16 +671,9 @@ class PromptBuilder(
         return when (correction.muteDuration) {
             com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE -> false
             com.lovebrain.app.model.MuteDuration.THIS_ROUND -> {
-                // 本轮有效——每次生成即为新一轮，过期
-                // 通过比较 muteTimestamp 的秒级精度与当前时间是否在同一秒
-                // 简化实现：只要 muteTimestamp 不是"刚刚"（同一秒），即视为过期
-                // 更精确的实现需要绑定格化上下文 ID，这里用时间差近似
-                val muteTime = runCatching {
-                    java.time.OffsetDateTime.parse(correction.muteTimestamp)
-                }.getOrNull() ?: return false
-                val now = java.time.OffsetDateTime.now()
-                // 超过 30 秒即视为不是"本轮"（一次生成请求通常在秒级完成）
-                java.time.Duration.between(muteTime, now).seconds > 30
+                // F04-fix: THIS_ROUND 不通过时间猜过期——由 ViewModel roundCorrections 控制。
+                // 持久层不应存在 THIS_ROUND 记录；如果存在，保守视为不过期（由 VM 层覆盖）。
+                false
             }
             com.lovebrain.app.model.MuteDuration.TODAY -> {
                 // 今天剩余——跨天后恢复

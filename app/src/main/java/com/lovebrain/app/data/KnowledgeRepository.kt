@@ -1372,6 +1372,29 @@ class KnowledgeRepository(
         }
     }
 
+    /**
+     * F03: 原子追加"实际发送"记录——在单次 fileMutex.withLock 中完成：
+     * 1. 校验 KB 仍存在
+     * 2. 读取 recent.md
+     * 3. 追加发送记录
+     * 4. 原子写入
+     * 5. 返回 true（成功）或 false（KB 不存在）
+     *
+     * 消除 ViewModel 中 listAll → readFile → writeFile 的 TOCTOU 竞态。
+     */
+    suspend fun appendActualSentRecord(kbName: String, entry: String): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("appendActualSentRecord skipped: kb no longer exists")
+                return@withLock false
+            }
+            val recentPath = "moment/recent.md"
+            val existing = readFileUnlockedFast(kbName, recentPath)
+            writeFileUnlocked(kbName, recentPath, existing + entry)
+            true
+        }
+    }
+
     /** 读取谈心日志「# 军师分析」节的最近 count 个 ## 块（供画像更新引擎） */
     suspend fun readCounselingAnalysisBlocks(kbName: String, count: Int): String = withContext(Dispatchers.IO) {
         val content = readFile(kbName, "memory/counseling_log.md")

@@ -115,20 +115,17 @@ class SetupActivity : ComponentActivity() {
 
     /**
      * F12/P1-G: 检测是否为已有使用痕迹的老用户。
-     * 升级引入 onboarding 时，有任意已有使用痕迹的安装视为老用户。
-     * 检测项：已有工单、已有 API Key、已有知识库目录、累计生成次数 > 0。
+     * F12: 委托给 OnboardingDecision 纯函数，可测试。
      */
     private fun isExistingUser(): Boolean {
-        // 已有工单
-        if (viewModel.securePrefs.getWorkerTickets().isNotEmpty()) return true
-        // 已有激活工单 ID
-        if (!viewModel.securePrefs.activeTicketId.isNullOrBlank()) return true
-        // 累计生成次数 > 0
-        if (viewModel.securePrefs.totalGenerateCount > 0) return true
-        // 已有知识库目录
         val knowledgeRoot = java.io.File(filesDir, "knowledge")
-        if (knowledgeRoot.exists() && (knowledgeRoot.listFiles()?.isNotEmpty() == true)) return true
-        return false
+        val hasKb = knowledgeRoot.exists() && (knowledgeRoot.listFiles()?.isNotEmpty() == true)
+        return com.lovebrain.app.domain.OnboardingDecision.isExistingUser(
+            hasWorkerTickets = viewModel.securePrefs.getWorkerTickets().isNotEmpty(),
+            hasActiveTicketId = !viewModel.securePrefs.activeTicketId.isNullOrBlank(),
+            totalGenerateCount = viewModel.securePrefs.totalGenerateCount,
+            hasKnowledgeBase = hasKb
+        )
     }
 
     /** 刷新悬浮窗服务状态——onResume 时调用 */

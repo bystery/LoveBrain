@@ -15,6 +15,7 @@ import com.lovebrain.app.model.EntityRef
  * - Level 3: 语义不确定——UNKNOWN（宁可 UNKNOWN，不猜）
  *
  * subject 不无条件信 AI。
+ * 封板期：AI subject_candidate 暂不参与解析——Level1/2 无法确定时直接返回 UNKNOWN。
  */
 object FactSubjectResolver {
 
@@ -43,17 +44,11 @@ object FactSubjectResolver {
         val level2 = resolveByEntityRule(factText, speaker, sourceIds, dialogue)
         if (level2 != null) return level2
 
-        // Level 3: 经校验的 subjectCandidate——AI 候选只作为低优先级证据
-        // 模型绝不能决定 speaker，但 subject_candidate 可以在代码无法确定时作为参考
-        if (subjectCandidate.isNotBlank()) {
-            return when (subjectCandidate.uppercase()) {
-                "PARTNER" -> EntityRef.HER
-                "USER" -> EntityRef.ME
-                else -> EntityRef.UNKNOWN
-            }
-        }
-
-        // 无法可靠确定——UNKNOWN（不猜）
+        // Level 3: 封板期保守策略——不信任 AI subject_candidate。
+        // 旧代码将 PARTNER→HER / USER→ME 直接映射，但 sourceIds 和 dialogue 未被用于验证，
+        // 等于"枚举值合法就自动相信"，可能制造事实污染。
+        // 封板期：Level1/2 无法确定 → UNKNOWN（宁可少记，不要错记）。
+        // 未来可通过 sourceIds + dialogue 验证 candidate 后恢复 Level 3。
         return EntityRef.UNKNOWN
     }
 

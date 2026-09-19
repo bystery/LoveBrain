@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import java.security.MessageDigest
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -121,6 +122,14 @@ class LoveBrainViewModel(
     )
     private var replyGenerationContext: ReplyGenerationContext? = null
 
+    // ═══════════ F04: 轮次级瞬时纠正（不持久化，nextRound/切库时清空） ═══════════
+    /**
+     * F04: THIS_ROUND mute 的瞬时存储——只在当前轮次有效，不写入 corrections.json。
+     * key = memoryId, value = MemoryCorrection(action=MUTED, muteDuration=THIS_ROUND)
+     * 在 nextRound()、stopGeneration()、切库时清空。
+     * 生成时与持久化 corrections 合并传入 PromptBuilder。 */
+    private val roundCorrections = mutableMapOf<String, com.lovebrain.app.model.MemoryCorrection>()
+
     // ═══════════ F11: 输入变化提示 + 生成历史 ═══════════
 
     /** F11: 输入已变化——result 存在但 messages/ideaHint 与生成时快照不一致 */
@@ -134,7 +143,8 @@ class LoveBrainViewModel(
         }
     }
 
-    /** F11/P0-D: 生成历史——每轮成功生成时保存的版本快照，携带完整版本身份 */
+    /** F11/P0-D: 生成历史——每轮成功生成时保存的版本快照，携带完整版本身份
+     * 注意：这是 session-only 内存历史，杀进程即消失。不声称跨重启完整版本历史。 */
     private data class GenerationSnapshot(
         val versionId: GenerationVersionId,
         val result: GenerateResult.Success,
@@ -144,6 +154,7 @@ class LoveBrainViewModel(
         val kbName: String?,
         val createdAt: Long = System.currentTimeMillis()
     )
+    /** F11/P0-D: session 生成历史——内存 StateFlow，杀进程即消失。不声称跨重启完整版本历史。 */
     private val _generationHistory = MutableStateFlow<List<GenerationSnapshot>>(emptyList())
     val generationHistorySize: Int get() = _generationHistory.value.size
 
@@ -384,6 +395,16 @@ class LoveBrainViewModel(
     // ═══════════ F11: 输入变化提示 + 生成历史与版本回退 ═══════════
 
     /**
+     * F10/F11: 统一标记当前结果为 stale（如果输入已变化）。
+     * 在所有消息操作（增/删/改/重排/草稿/反馈）后调用。
+     * 仅当存在已完成的生成结果时才实际检测。 */
+    private fun markCurrentResultStaleIfNeeded() {
+        if (_result.value != null && replyGenerationContext != null) {
+            checkInputChanged()
+        }
+    }
+
+    /**
      * F11: 检测输入是否已变化——使用真正的输入指纹比较。
      * 指纹覆盖：KB identity、消息正文/角色/顺序、IDEA、onlyThisRound、intent revision。
      * 以下任意变化都令当前旧结果 stale：
@@ -399,13 +420,17 @@ class LoveBrainViewModel(
      */
     fun checkInputChanged() {
         val ctx = replyGenerationContext ?: return
-        val result = _result.value as? GenerateResult.Success ?: return
+        // guard: 只在有成功结果时才需要检测 stale
+        _result.value as? GenerateResult.Success ?: return
+        // P0-3 fix: 使用当前活跃 intent revision，而非生成时冻结的 ctx.intentRevision。
+        // ctx.intentRevision 是生成时的快照值，如果用户随后修改了 intent，
+        // 用旧 revision 自己跟自己比较当然发现不了变化。
         val currentFingerprint = computeInputFingerprint(
             _messages.value,
             collectIdeaHintWithDraft(_messages.value),
             _activeKb.value?.name,
             _onlyThisRound.value,
-            ctx.intentRevision
+            _intentConfig.value.revision
         )
         _inputChanged.value = currentFingerprint != ctx.inputFingerprint
     }
@@ -430,7 +455,10 @@ class LoveBrainViewModel(
         for (msg in messages) {
             sb.append(msg.id).append(":").append(msg.role.name).append(":").append(msg.content.hashCode()).append(",")
         }
-        return sb.toString().hashCode().toString(16)
+        // F11: SHA-256 指纹——比 String.hashCode() 更抗碰撞
+        val digest = MessageDigest.getInstance("SHA-256")
+        val hashBytes = digest.digest(sb.toString().toByteArray(Charsets.UTF_8))
+        return hashBytes.joinToString("") { "%02x".format(it) }.take(16)
     }
 
     /** 稳定的 idea hint hash——空返回 0 */
@@ -457,8 +485,8 @@ class LoveBrainViewModel(
         _rewriteStates.value = emptyMap()
         _rewriteHistory.value = emptyMap()
         _inputChanged.value = false
-        // P0-D: 生成新的 roundId 值以触发 viewMode 重置——不递减
-        _generationRoundId.value = _generationRoundId.value + 100
+        // P0-D: 生成新的 roundId 值以触发 viewMode 重置——不递减，不使用 magic number
+        _generationRoundId.value = _generationRoundId.value + 1
     }
 
     /** F11: 是否可以回退到上一版本 */
@@ -530,7 +558,11 @@ class LoveBrainViewModel(
     // ═══════════ UI 状态 setters ═══════════
 
     fun setPanelState(state: PanelState) { _panelState.value = state }
-    fun setDraft(text: String) { _draftText.value = text }
+    fun setDraft(text: String) {
+        _draftText.value = text
+        // F10/F11: 草稿变化后标记旧结果为 stale（草稿参与 buildMessageSnapshot）
+        markCurrentResultStaleIfNeeded()
+    }
     fun setCounselingDraft(text: String) {
         _counselingDraft.value = text
         //  防抖：连击只落盘最后一次（行为差异：强杀最多丢 ≤600ms 输入；dispose 显式 flush 兜底）
@@ -558,6 +590,8 @@ class LoveBrainViewModel(
     fun addMessage(role: ChatMessage.Role, content: String) {
         if (content.isBlank()) return
         _messages.value = _messages.value + ChatMessage(role = role, content = content.trim())
+        // F10/F11: 消息变更后标记旧结果为 stale
+        markCurrentResultStaleIfNeeded()
     }
 
     fun updateMessage(index: Int, role: ChatMessage.Role, content: String) {
@@ -566,10 +600,14 @@ class LoveBrainViewModel(
         if (index !in list.indices) return
         list[index] = ChatMessage(id = list[index].id, role = role, content = content.trim())
         _messages.value = list
+        // F10/F11: 消息变更后标记旧结果为 stale
+        markCurrentResultStaleIfNeeded()
     }
 
     fun removeMessage(index: Int) {
         _messages.value = _messages.value.filterIndexed { i, _ -> i != index }
+        // F10/F11: 消息变更后标记旧结果为 stale
+        markCurrentResultStaleIfNeeded()
     }
 
     /**
@@ -591,6 +629,8 @@ class LoveBrainViewModel(
             }
         }
         _messages.value = list.filterNot { it.id == id }
+        // F10/F11: 消息变更后标记旧结果为 stale
+        markCurrentResultStaleIfNeeded()
     }
 
     /**
@@ -623,6 +663,8 @@ class LoveBrainViewModel(
         val item = list.removeAt(from)
         list.add(to, item)
         _messages.value = list
+        // F10/F11: 消息变更后标记旧结果为 stale
+        markCurrentResultStaleIfNeeded()
     }
 
     // ═══════════ 状态持久化 ═══════════
@@ -716,11 +758,28 @@ class LoveBrainViewModel(
             val intentSnapshot = kbName?.let { name ->
                 runCatching { withContext(Dispatchers.IO) { knowledgeRepo.readIntent(name) } }.getOrNull()
             } ?: com.lovebrain.app.model.IntentConfig()
+            // F06: 生成时也要检测 DATE 过期——与 refreshIntentConfigForKb 一致的逻辑
+            // PAUSED 意图已由 PromptBuilder.buildIntentBlock 过滤，但 VM 侧需感知以冻结正确状态
+            val effectiveIntent = if (intentSnapshot.enabled &&
+                intentSnapshot.status == com.lovebrain.app.model.IntentStatus.ACTIVE) {
+                val today = com.lovebrain.app.util.TimeFmt.today()
+                val shouldExpire = when (intentSnapshot.expiry) {
+                    com.lovebrain.app.model.IntentExpiry.TODAY ->
+                        intentSnapshot.expiryDate.isNotBlank() && intentSnapshot.expiryDate < today
+                    com.lovebrain.app.model.IntentExpiry.DATE ->
+                        intentSnapshot.expiryDate.isNotBlank() && intentSnapshot.expiryDate < today
+                    com.lovebrain.app.model.IntentExpiry.UNTIL_DONE -> false
+                }
+                if (shouldExpire) intentSnapshot.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
+                else intentSnapshot
+            } else intentSnapshot
 
             // R07: 原子读取纠正记录和 revision——消除读取纠正和读取 revision 之间的竞态窗口
             val (correctionsSnapshot, correctionsRevision) = kbName?.let { name ->
                 runCatching { withContext(Dispatchers.IO) { knowledgeRepo.readCorrectionsAndRevision(name) } }.getOrNull()
             } ?: (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
+            // F04: 合并本轮瞬时纠正（THIS_ROUND mute）与持久化纠正
+            val mergedCorrections = correctionsSnapshot.toMutableMap().also { it.putAll(roundCorrections) }
 
             // D项修复：再次检查是否已被取消
             ensureActive()
@@ -729,7 +788,7 @@ class LoveBrainViewModel(
             _isPreparing.value = false
 
             // GEN-01 双层保护第二层：Engine 返回 null = reject，不覆盖旧 Job
-            val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this@LoveBrainViewModel, intentSnapshot, correctionsSnapshot, _onlyThisRound.value)
+            val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this@LoveBrainViewModel, effectiveIntent, mergedCorrections, _onlyThisRound.value)
             if (job != null) {
                 generateJob = job
                 // GEN-02：context 必须和实际启动成功的 Job 绑定
@@ -738,11 +797,11 @@ class LoveBrainViewModel(
                     messageIds = snapshot.mapTo(mutableSetOf()) { it.id },
                     kbName = kbName,
                     ideaHint = userHint,
-                    intentText = intentSnapshot.text,
-                    intentEnabled = intentSnapshot.enabled,
-                    intentRevision = intentSnapshot.revision,
+                    intentText = effectiveIntent.text,
+                    intentEnabled = effectiveIntent.enabled,
+                    intentRevision = effectiveIntent.revision,
                     correctionsRevision = correctionsRevision,
-                    inputFingerprint = computeInputFingerprint(snapshot, userHint, kbName, _onlyThisRound.value, intentSnapshot.revision)
+                    inputFingerprint = computeInputFingerprint(snapshot, userHint, kbName, _onlyThisRound.value, effectiveIntent.revision)
                 )
                 // GEN-01：正常结束后清 Job 引用（identity guard 防止清掉后来的新 Job）
                 job.invokeOnCompletion {
@@ -787,6 +846,8 @@ class LoveBrainViewModel(
         _panelState.value = PanelState.KEYBOARD
         // GEN-02：停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
+        // F04: 停止生成时清空本轮瞬时纠正
+        roundCorrections.clear()
         _inputChanged.value = false
         if (_result.value == null) {
             _result.value = GenerateResult.Error("已手动停止生成")
@@ -797,21 +858,28 @@ class LoveBrainViewModel(
 
     /** P0-1: setFeedback 使用 identityKey 区分 STYLE/DIRECTION
      * F02: 点踩时立即落本地反馈案例，不因点踩调用 AI
-     * P1-A: 在调用时同步冻结快照，构造 case 并通过 currentFeedbackCase 暴露给 UI——消除"保存后再全量查询"竞态 */
+     * P1-A: 在调用时同步冻结快照，构造 case 并通过 currentFeedbackCase 暴露给 UI——消除"保存后再全量查询"竞态
+     * F02-fix: 先计算 effectiveFeedback（toggle 后的实际值），再据此决定是否建/清 case。
+     *  旧代码用传入参数 feedback 判断，第二次点踩取消时仍创建 case。 */
     fun setFeedback(identityKey: String, feedback: SchemeFeedback) {
         // P1-A: 同步冻结快照——防止异步保存期间 result/context 被清空
         val resultSnapshot = _result.value as? GenerateResult.Success
         val ctxSnapshot = replyGenerationContext
         val modelId = _activeTicket.value?.model ?: ""
 
+        // F02-fix: 先算 toggle 后的实际值
+        val effectiveFeedback = if (_feedbacks.value[identityKey] == feedback) SchemeFeedback.NONE else feedback
+
         _feedbacks.value = _feedbacks.value.toMutableMap().apply {
-            put(identityKey, if (this[identityKey] == feedback) SchemeFeedback.NONE else feedback)
+            put(identityKey, effectiveFeedback)
         }
-        // F02/P1-A: 点踩时同步构造 case 并暴露给 UI——不再依赖异步全库读取
-        if (feedback == SchemeFeedback.DISLIKED && resultSnapshot != null && ctxSnapshot != null) {
+        // F10/F11: 反馈变更后标记旧结果为 stale
+        markCurrentResultStaleIfNeeded()
+        // F02/P1-A: 使用 effectiveFeedback 决定行为——取消踩时 effectiveFeedback=NONE 不建 case
+        if (effectiveFeedback == SchemeFeedback.DISLIKED && resultSnapshot != null && ctxSnapshot != null) {
             saveFeedbackCase(identityKey, resultSnapshot, ctxSnapshot, modelId)
         } else {
-            // 取消点踩时清除当前 case
+            // 非踩或取消踩时清除当前 case
             _currentFeedbackCase.value = null
         }
     }
@@ -1009,7 +1077,8 @@ class LoveBrainViewModel(
                 // GEN-03：写盘成功 → 才提交 UI 状态
                 commitReplyRound(consumedIds)
                 replyGenerationContext = null
-                // P0-2：提示用户候选未被当作已发送消息（selectedScheme 恒为 null）
+                // F04: 清空本轮瞬时纠正——新轮次不再受上一轮 THIS_ROUND mute 影响
+                roundCorrections.clear()
                 if (likedForRecording.isEmpty()) {
                     showPanelWarning("已保存对话，候选未作为已发送消息记录")
                 } else {
@@ -1083,16 +1152,24 @@ class LoveBrainViewModel(
      * P1-B: 绑定真实候选版本——记录当时的版本 ID 和候选正文快照，
      * 不只记一个 identityKey 字符串，确保发送记录可追溯到具体版本。
      */
+    /**
+     * F03: 记录实际发送结果的类型化返回值。
+     * - RECORDED: 写盘成功
+     * - KB_NOT_FOUND: 知识库已被删除——不递增 adopt count
+     * - NO_KB: 未激活知识库
+     * - IO_ERROR: 写盘异常
+     */
+    enum class ActualSentResult { RECORDED, KB_NOT_FOUND, NO_KB, IO_ERROR }
+
     fun recordActualSentMessage(
         sentText: String,
         linkedSchemeIdentityKey: String? = null
-    ) {
-        if (sentText.isBlank()) return
-        val ctx = replyGenerationContext ?: return
-        // P1-B: adopt count 移到写盘成功后递增——失败/KB不存在不计 adopt
+    ): ActualSentResult {
+        if (sentText.isBlank()) return ActualSentResult.IO_ERROR
+        val ctx = replyGenerationContext ?: return ActualSentResult.IO_ERROR
         val kbName = ctx.kbName ?: run {
             showPanelWarning("未激活知识库，无法记录已发送消息")
-            return
+            return ActualSentResult.NO_KB
         }
 
         // P1-B: 冻结候选版本快照——绑定版本 ID 和候选正文
@@ -1109,37 +1186,38 @@ class LoveBrainViewModel(
             } else null
         }
 
+        // F03-fix: 使用 Repository 原子操作，消除 listAll → readFile → writeFile 的 TOCTOU 竞态。
+        // Repository 在单次 fileMutex.withLock 中完成：检查 KB → 读取 → 追加 → 写入 → 返回 Boolean。
+        val time = com.lovebrain.app.util.TimeFmt.now()
+        val sentEntry = buildString {
+            append("<!-- sent:").append(time)
+                .append(" linked:").append(linkedSchemeIdentityKey ?: "null")
+                .append(" version:").append(versionId?.value ?: "null")
+                .append(" candidate:").append(candidateReply?.let { java.net.URLEncoder.encode(it, "UTF-8").take(200) } ?: "null")
+                .append(" -->\n")
+            append("我（确认已发送）：").append(sentText.trim()).append("\n")
+        }
         viewModelScope.launch {
             runCatching {
                 withContext(Dispatchers.IO) {
-                    val kb = knowledgeRepo.listAll().firstOrNull { it.name == kbName }
-                    if (kb == null) {
-                        showPanelWarning("本轮保存失败：知识库已被删除")
-                        return@withContext
-                    }
-                    // P1-B: 记录为真实"我"消息——绑定版本 ID 和候选正文，追加到 recent.md
-                    val time = com.lovebrain.app.util.TimeFmt.now()
-                    val sentEntry = buildString {
-                        append("<!-- sent:").append(time)
-                            .append(" linked:").append(linkedSchemeIdentityKey ?: "null")
-                            .append(" version:").append(versionId?.value ?: "null")
-                            .append(" candidate:").append(candidateReply?.let { java.net.URLEncoder.encode(it, "UTF-8").take(200) } ?: "null")
-                            .append(" -->\n")
-                        append("我（确认已发送）：").append(sentText.trim()).append("\n")
-                    }
-                    val recentPath = "moment/recent.md"
-                    val existing = knowledgeRepo.readFile(kb.name, recentPath)
-                    knowledgeRepo.writeFile(kb.name, recentPath, existing + sentEntry)
+                    knowledgeRepo.appendActualSentRecord(kbName, sentEntry)
                 }
-                // P1-B: adopt count 在写盘成功后递增——失败/KB不存在不计 adopt
-                _totalAdoptCount.value += 1
-                securePrefs.totalAdoptCount = _totalAdoptCount.value
-                _kbNotice.value = "已记录实际发送的消息"
+            }.onSuccess { success ->
+                if (success) {
+                    // F03: 只有 Repository 原子操作真正成功才计 adopt
+                    _totalAdoptCount.value += 1
+                    securePrefs.totalAdoptCount = _totalAdoptCount.value
+                    _kbNotice.value = "已记录实际发送的消息"
+                } else {
+                    // KB 不存在——不计 adopt
+                    showPanelWarning("本轮保存失败：知识库已被删除")
+                }
             }.onFailure {
                 L.e("recordActualSentMessage failed", it)
                 showPanelWarning("记录发送失败，内容已保留，请重试")
             }
         }
+        return ActualSentResult.RECORDED // 同步返回：异步结果通过 _kbNotice 通知
     }
 
     // ═══════════ KnowledgeTriggerCoordinator.Callbacks 实现 ═══════════
@@ -1461,7 +1539,10 @@ class LoveBrainViewModel(
 
     fun refreshKnowledgeBases() {
         viewModelScope.launch {
-            runCatching {
+            // P1-D: refreshIntentConfigForKb 现在是结构化 child（suspend），
+            // 不再是 fire-and-forget sibling coroutine。
+            // CancellationException 正常重抛；普通 IO 异常捕获不崩 scope。
+            try {
                 // KBUI-01：切库时清理上一 KB 的瞬时 vector UI（delta / update / notice）
                 val oldKbName = _activeKb.value?.name
                 val newKb = knowledgeRepo.getActive()
@@ -1473,20 +1554,26 @@ class LoveBrainViewModel(
                     _onlyThisRound.value = false
                     // P1-D: 切库时清除旧 KB 的意图配置，防止旧意图泄漏到新 KB
                     _intentConfig.value = com.lovebrain.app.model.IntentConfig()
+                    // F04: 切库时清空本轮瞬时纠正
+                    roundCorrections.clear()
                 }
                 _activeKb.value = newKb
                 newKb?.let {
                     knowledgeRepo.migrateIfNeeded(it.name)
                     _currentVector.value = knowledgeRepo.readVector(it.name)
-                    // P1-D: 切库时通过 refreshIntentConfigForKb 刷新意图（含过期检测），
-                    // 绑定新 KB 名称，不读 _activeKb 防竞态
+                    // P1-D: 结构化 child——在当前协程内直接 await，不再 fire-and-forget。
+                    // refreshIntentConfigForKb 内部有 KB identity guard 保护 UI commit。
                     refreshIntentConfigForKb(it.name)
                 }
                 // CARRY-09：删除最后一个 KB 时 newKb==null，旧 _currentVector 未被清空
                 if (newKb == null) {
                     _currentVector.value = emptyMap()
                 }
-            }.onFailure { L.w("refreshKnowledgeBases failed: ${it::class.simpleName}") }
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.w("refreshKnowledgeBases failed: ${e::class.simpleName}")
+            }
         }
     }
 
@@ -1583,13 +1670,18 @@ class LoveBrainViewModel(
         // F09-7: 固定四方向后不再用 size 增长判断，改用内容差异（reply 变长时更新）
         val current = _streamingSchemes.value
         if (schemes.size > current.size) {
-            // P1-H: 首次收到方案卡时计算真正的首条可复制回复耗时
-            if (current.isEmpty() && generateStartTimeMs > 0) {
+            // P1-H/F12: 首次收到非空可复制方案卡时计算真正的首条可复制回复耗时
+            // 空方案不停止计时；第一条非空可复制 scheme 才记录
+            if (current.isEmpty() && generateStartTimeMs > 0 && schemes.any { it.reply.isNotBlank() }) {
                 _firstReplyMs.value = System.currentTimeMillis() - generateStartTimeMs
             }
             _streamingSchemes.value = schemes
         } else if (schemes.size == current.size && schemes != current) {
             // 内容有变化（某方向从空变非空，或文本增长）
+            // F12: 如果之前 firstReplyMs 没记录（因为首批全是空 reply），现在有非空时补记
+            if (_firstReplyMs.value == 0L && generateStartTimeMs > 0 && schemes.any { it.reply.isNotBlank() }) {
+                _firstReplyMs.value = System.currentTimeMillis() - generateStartTimeMs
+            }
             _streamingSchemes.value = schemes
         }
     }
@@ -1808,46 +1900,59 @@ class LoveBrainViewModel(
      *  P1-D: 委托给 refreshIntentConfigForKb，绑定实际 KB 名防竞态。 */
     fun refreshIntentConfig() {
         val kbName = _activeKb.value?.name ?: return
-        refreshIntentConfigForKb(kbName)
+        viewModelScope.launch {
+            refreshIntentConfigForKb(kbName)
+        }
     }
 
-    /** P1-D: 绑定 KB 名刷新意图配置——不读 _activeKb，防止切库竞态 */
-    private fun refreshIntentConfigForKb(kbName: String) {
-        viewModelScope.launch {
-            val config = withContext(Dispatchers.IO) {
-                knowledgeRepo.readIntent(kbName)
+    /** P1-D: 绑定 KB 名刷新意图配置——suspend 函数，由调用方在结构化协程中 await。
+     *  不再内部 viewModelScope.launch（fire-and-forget sibling），消除切库竞态。
+     *  KB identity guard：commit UI 前验证当前 active KB 仍是目标 KB。
+     *  CancellationException 正常重抛（协程取消）；IO 异常捕获不崩 scope。 */
+    private suspend fun refreshIntentConfigForKb(kbName: String) {
+        val config = try {
+            knowledgeRepo.readIntent(kbName)
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            L.w("refreshIntentConfigForKb read failed: ${e::class.simpleName}")
+            return
+        }
+        // F06: 自动到期检测
+        val finalConfig = if (config.enabled && config.status == com.lovebrain.app.model.IntentStatus.ACTIVE) {
+            val today = com.lovebrain.app.util.TimeFmt.today()
+            val shouldExpire = when (config.expiry) {
+                com.lovebrain.app.model.IntentExpiry.TODAY -> {
+                    config.expiryDate.isNotBlank() && config.expiryDate < today
+                }
+                com.lovebrain.app.model.IntentExpiry.DATE -> {
+                    config.expiryDate.isNotBlank() && config.expiryDate < today
+                }
+                com.lovebrain.app.model.IntentExpiry.UNTIL_DONE -> false
             }
-            // F06: 自动到期检测
-            if (config.enabled && config.status == com.lovebrain.app.model.IntentStatus.ACTIVE) {
-                val today = com.lovebrain.app.util.TimeFmt.today()
-                val shouldExpire = when (config.expiry) {
-                    com.lovebrain.app.model.IntentExpiry.TODAY -> {
-                        // TODAY 类型：如果保存日期不是今天，则已过期
-                        // 简化处理：依赖保存时的日期与今天比较
-                        // 如果 expiryDate 为空，无法判断，保守不过期
-                        config.expiryDate.isNotBlank() && config.expiryDate < today
-                    }
-                    com.lovebrain.app.model.IntentExpiry.DATE -> {
-                        config.expiryDate.isNotBlank() && config.expiryDate < today
-                    }
-                    com.lovebrain.app.model.IntentExpiry.UNTIL_DONE -> false
+            if (shouldExpire) {
+                val updated = config.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
+                try {
+                    knowledgeRepo.saveIntent(
+                        kbName, config.text, false,
+                        config.expiry, config.expiryDate,
+                        com.lovebrain.app.model.IntentStatus.EXPIRED
+                    )
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    L.w("refreshIntentConfigForKb expire save failed: ${e::class.simpleName}")
                 }
-                if (shouldExpire) {
-                    val updated = config.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
-                    withContext(Dispatchers.IO) {
-                        knowledgeRepo.saveIntent(
-                            kbName, config.text, false,
-                            config.expiry, config.expiryDate,
-                            com.lovebrain.app.model.IntentStatus.EXPIRED
-                        )
-                    }
-                    _intentConfig.value = updated
-                } else {
-                    _intentConfig.value = config
-                }
+                updated
             } else {
-                _intentConfig.value = config
+                config
             }
+        } else {
+            config
+        }
+        // KB identity guard：只有当前 active KB 仍是目标 KB 时才更新 UI
+        if (_activeKb.value?.name == kbName) {
+            _intentConfig.value = finalConfig
         }
     }
 
@@ -1874,10 +1979,14 @@ class LoveBrainViewModel(
                 val updated = withContext(Dispatchers.IO) {
                     knowledgeRepo.saveIntent(kbName, text, enabled, expiry, effectiveExpiryDate, status)
                 }
-                _intentConfig.value = updated
-                _kbNotice.value = if (enabled) "持续意图已开启" else "持续意图已关闭"
-                // R08: 保存成功后关闭编辑器
-                _showIntentEditor.value = false
+                // KB identity guard：只有当前 active KB 仍是保存目标的 KB 时才更新 UI
+                // 如果用户已切到另一个 KB，数据仍正确写目标 KB，但不覆盖当前 UI
+                if (_activeKb.value?.name == kbName) {
+                    _intentConfig.value = updated
+                    _kbNotice.value = if (enabled) "持续意图已开启" else "持续意图已关闭"
+                    // R08: 保存成功后关闭编辑器（仅当仍在同一 KB 时）
+                    _showIntentEditor.value = false
+                }
             }.onFailure {
                 // R08: 持久化失败保留编辑状态并提示
                 showPanelWarning("意图保存失败，内容已保留，请重试")
@@ -1918,6 +2027,20 @@ class LoveBrainViewModel(
     ) {
         val ctx = replyGenerationContext ?: return
         val kbName = ctx.kbName ?: return
+        // F04: THIS_ROUND mute 只存瞬时 map，不持久化——nextRound/切库自动清空
+        if (action == com.lovebrain.app.model.CorrectionAction.MUTED &&
+            muteDuration == com.lovebrain.app.model.MuteDuration.THIS_ROUND) {
+            roundCorrections[memoryId] = com.lovebrain.app.model.MemoryCorrection(
+                memoryId = memoryId,
+                action = action,
+                replacementText = replacementText,
+                targetKbId = targetKbId,
+                muteDuration = muteDuration,
+                muteTimestamp = com.lovebrain.app.util.TimeFmt.now()
+            )
+            _kbNotice.value = "已暂停本轮提及，下次生成将过滤此条记忆"
+            return
+        }
         viewModelScope.launch {
             val success = withContext(Dispatchers.IO) {
                 knowledgeRepo.saveCorrection(kbName, memoryId, action, replacementText, targetKbId, muteDuration)

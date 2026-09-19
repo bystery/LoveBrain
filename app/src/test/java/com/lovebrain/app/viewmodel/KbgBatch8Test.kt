@@ -397,6 +397,7 @@ class KbgBatch8Test {
         coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = "kb-b", stage = "热恋期"))
 
         val vm = newViewModelWithKb(kbName = "kb-b", knowledgeRepoOverride = knowledgeRepo)
+        vm.refreshKnowledgeBases()
         delay(200)
         assertEquals("kb-b", vm.activeKb.value?.name)
 
@@ -415,6 +416,7 @@ class KbgBatch8Test {
         coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = "kb-b", stage = "热恋期"))
 
         val vm = newViewModelWithKb(kbName = "kb-b", knowledgeRepoOverride = knowledgeRepo)
+        vm.refreshKnowledgeBases()
         delay(200)
 
         val vectorB = mapOf("intimacy" to 70)
@@ -432,6 +434,7 @@ class KbgBatch8Test {
         coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = "kb-b", stage = "热恋期"))
 
         val vm = newViewModelWithKb(kbName = "kb-b", knowledgeRepoOverride = knowledgeRepo)
+        vm.refreshKnowledgeBases()
         delay(200)
 
         val vectorA = mapOf("intimacy" to 90)
@@ -451,6 +454,7 @@ class KbgBatch8Test {
         coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = "kb-b", stage = "热恋期"))
 
         val vm = newViewModelWithKb(kbName = "kb-b", knowledgeRepoOverride = knowledgeRepo)
+        vm.refreshKnowledgeBases()
         delay(200)
 
         val vectorB = mapOf("intimacy" to 75)
@@ -470,6 +474,7 @@ class KbgBatch8Test {
         coEvery { knowledgeRepo.listAll() } returns listOf(KnowledgeBase(name = "kb-b", stage = "热恋期"))
 
         val vm = newViewModelWithKb(kbName = "kb-b", knowledgeRepoOverride = knowledgeRepo)
+        vm.refreshKnowledgeBases()
         delay(200)
 
         vm.onVectorUpdateNotice("kb-a", "A's vector notice")

@@ -120,7 +120,7 @@ class LikedSchemeRecordingTest {
         engine: com.lovebrain.app.domain.GenerationEngine,
         response: LoveBrainResponse
     ) {
-        every { engine.generate(any(), any(), any(), any(), any(), any(), any()) } answers {
+        every { engine.generate(any(), any(), any(), any(), any(), any(), any(), any()) } answers {
             val scope = arg<CoroutineScope>(3)
             val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
             scope.launch {
@@ -139,6 +139,7 @@ class LikedSchemeRecordingTest {
     @Test
     fun f01_liked_scheme_body_is_saved_not_just_tag() = runBlocking {
         val vm = newViewModelWithKb()
+        vm.refreshKnowledgeBases()
         delay(100)
 
         vm.addMessage(ChatMessage.Role.HER, "今天好累")
@@ -183,6 +184,7 @@ class LikedSchemeRecordingTest {
     @Test
     fun f01_multiple_likes_saved_separately() = runBlocking {
         val vm = newViewModelWithKb()
+        vm.refreshKnowledgeBases()
         delay(100)
 
         vm.addMessage(ChatMessage.Role.HER, "在吗")
@@ -229,6 +231,7 @@ class LikedSchemeRecordingTest {
     @Test
     fun f01_no_like_does_not_default_to_a_sent() = runBlocking {
         val vm = newViewModelWithKb()
+        vm.refreshKnowledgeBases()
         delay(100)
 
         vm.addMessage(ChatMessage.Role.HER, "你好")
@@ -265,6 +268,7 @@ class LikedSchemeRecordingTest {
     @Test
     fun f01_copy_only_does_not_mark_as_sent() = runBlocking {
         val vm = newViewModelWithKb()
+        vm.refreshKnowledgeBases()
         delay(100)
 
         vm.addMessage(ChatMessage.Role.HER, "在干嘛")
@@ -302,6 +306,7 @@ class LikedSchemeRecordingTest {
     @Test
     fun f02_idea_not_written_as_real_chat() = runBlocking {
         val vm = newViewModelWithKb()
+        vm.refreshKnowledgeBases()
         delay(100)
 
         vm.addMessage(ChatMessage.Role.HER, "今天好累")
@@ -340,6 +345,7 @@ class LikedSchemeRecordingTest {
     @Test
     fun f02_liked_schemes_not_formed_into_continuous_speech() = runBlocking {
         val vm = newViewModelWithKb()
+        vm.refreshKnowledgeBases()
         delay(100)
 
         vm.addMessage(ChatMessage.Role.HER, "在吗")
