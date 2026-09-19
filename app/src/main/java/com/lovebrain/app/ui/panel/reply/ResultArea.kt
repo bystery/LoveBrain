@@ -68,8 +68,6 @@ fun ResultArea(
     streamingCoreText: String,
     isGeneratingCore: Boolean,
     streamingSchemes: List<Scheme>,
-    // P0-7: streamingDirectionSchemes 已废弃——directions 只在最终完成后提供切换
-    @Suppress("UNUSED_PARAMETER") streamingDirectionSchemes: List<Scheme> = emptyList(),
     feedbacks: Map<String, SchemeFeedback>,
     onFeedback: (Scheme, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
@@ -192,11 +190,12 @@ fun ResultArea(
                     OngoingSection(items = response.analysis.ongoing)
                 }
 
-                // P0-3: 始终渲染结果工具区——"记入知识库"不可因无 memoryRefs 而消失。
-                // 有 memoryRefs 时共享一行（左:本轮参考 / 右:记入知识库）。
-                // 无 memoryRefs 时仅显示"记入知识库"按钮，不新增独占行。
-                Spacer(Modifier.height(Spacing.sm))
-                ResultToolRow(
+                // P0-4: 结果级 utility trigger——不再有"记入知识库专属 Row"。
+                // 右上角轻量 ⋯ trigger，点击打开 DropdownMenu：
+                // - 菜单始终包含"记入知识库"
+                // - memoryRefs 非空时包含"本轮参考"及后续纠正入口
+                // 不增加结果区纵向高度——overlay 在结果区尾部
+                ResultUtilityTrigger(
                     memoryRefs = memoryRefs,
                     onSaveToKb = onSaveToKb,
                     onCorrection = onCorrection,
@@ -736,134 +735,153 @@ private fun TypewriterText(
     }
 }
 
-// ═══════════ F09: 本轮参考 + 记入知识库 共享工具行 ═══════════
+// ═══════════ P0-4: 结果级 utility trigger ═══════════
 
 /**
- * F09: 结果区工具行 — "本轮参考"入口 + "记入知识库"按钮共享一行。
- * P0-6: 无 memoryRefs 时"记入知识库"不独占行——
- * 改为右对齐紧凑按钮，不 fillMaxWidth 制造空行。
- * 本轮参考展开后每条只显示记忆文本 + ⋯ 菜单。
+ * P0-4: 结果级 utility trigger — 右上角轻量 ⋯ trigger + DropdownMenu。
+ *
+ * 替代旧的"记入知识库专属 Row"。不再增加结果区纵向高度。
+ * - 菜单始终包含"记入知识库"
+ * - memoryRefs 非空时包含"本轮参考"展开/收起入口及纠正菜单
+ *
+ * 目标：功能一直存在，但没有"一个功能一整行"。
  */
 @Composable
-private fun ResultToolRow(
+private fun ResultUtilityTrigger(
     memoryRefs: List<MemoryRef>,
     onSaveToKb: () -> Unit,
     onCorrection: (String, CorrectionAction) -> Unit,
     onUndoCorrection: (String) -> Unit
 ) {
+    var menuOpen by remember { mutableStateOf(false) }
     var showRefs by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-        // P0-6: 有 memoryRefs 时两个功能共享一行；无 memoryRefs 时保存按钮右对齐，不独占行
-        if (memoryRefs.isNotEmpty()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // 左：本轮参考入口
-                val (refsInteraction, refsScale) = rememberPressScale(0.96f, "refsToggleScale")
-                Row(
-                    modifier = Modifier
-                        .graphicsLayer { scaleX = refsScale; scaleY = refsScale }
-                        .clip(LoveBrainShape.md)
-                        .background(SurfaceInset, LoveBrainShape.md)
-                        .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
-                        .clickable(interactionSource = refsInteraction, indication = null) {
-                            showRefs = !showRefs
-                        }
-                        .padding(horizontal = Spacing.md, vertical = Spacing.sm),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        "本轮参考 ${memoryRefs.size}",
-                        style = AppTypography.labelSmall,
-                        color = TextSecondary
-                    )
-                    Spacer(Modifier.width(Spacing.xs))
-                    Text(
-                        if (showRefs) "▾" else "▸",
-                        style = AppTypography.labelSmall,
-                        color = TextHint
-                    )
-                }
-                // 右：记入知识库按钮
-                SaveToKbButton(onSaveToKb = onSaveToKb)
-            }
-        } else {
-            // P0-6: 无 memoryRefs 时保存按钮右对齐，不 fillMaxWidth——不制造单按钮独占行
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                SaveToKbButton(onSaveToKb = onSaveToKb)
-            }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(Alignment.Top),
+        contentAlignment = Alignment.TopEnd
+    ) {
+        // ⋯ trigger
+        val (triggerInteraction, triggerScale) = rememberPressScale(0.92f, "resultUtilityTriggerScale")
+        Box(
+            modifier = Modifier
+                .size(28.dp)
+                .graphicsLayer { scaleX = triggerScale; scaleY = triggerScale }
+                .clip(LoveBrainShape.sm)
+                .clickable(interactionSource = triggerInteraction, indication = null) {
+                    menuOpen = !menuOpen
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                "⋯",
+                style = AppTypography.labelLarge,
+                color = TextHint
+            )
         }
 
-        // 展开后的记忆引用列表
-        AnimatedVisibility(
-            visible = showRefs && memoryRefs.isNotEmpty(),
-            enter = expandVertically(),
-            exit = shrinkVertically()
+        // DropdownMenu 浮层——不改变结果区 layout height
+        androidx.compose.material3.DropdownMenu(
+            expanded = menuOpen,
+            onDismissRequest = { menuOpen = false },
+            modifier = Modifier
+                .clip(LoveBrainShape.md)
+                .background(SurfaceCard)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = Spacing.sm)
-                    .clip(LoveBrainShape.md)
-                    .background(SurfaceInset, LoveBrainShape.md)
-                    .padding(Spacing.md)
+            // 始终包含"记入知识库"
+            UtilityMenuItem(
+                label = "记入知识库",
+                desc = "保存本轮回复到知识库"
             ) {
-                // b2-7: 引用列表限制前5条，超出显示"更多"
-                val maxInitialRefs = 5
-                var showAllRefs by remember { mutableStateOf(false) }
-                val displayRefs = if (showAllRefs) memoryRefs else memoryRefs.take(maxInitialRefs)
-                displayRefs.forEachIndexed { index, ref ->
-                    if (index > 0) Spacer(Modifier.height(Spacing.sm))
-                    MemoryRefItem(
-                        ref = ref,
-                        onCorrection = onCorrection,
-                        onUndoCorrection = onUndoCorrection
-                    )
+                menuOpen = false
+                onSaveToKb()
+            }
+
+            // memoryRefs 非空时包含"本轮参考"
+            if (memoryRefs.isNotEmpty()) {
+                UtilityMenuItem(
+                    label = if (showRefs) "收起本轮参考" else "本轮参考 ${memoryRefs.size}",
+                    desc = "查看本轮注入的记忆"
+                ) {
+                    menuOpen = false
+                    showRefs = !showRefs
                 }
-                if (memoryRefs.size > maxInitialRefs && !showAllRefs) {
-                    Spacer(Modifier.height(Spacing.sm))
-                    val (moreInteraction, moreScale) = rememberPressScale(0.96f, "moreRefsScale")
-                    Text(
-                        "更多 ${memoryRefs.size - maxInitialRefs} 条",
-                        style = AppTypography.labelSmall,
-                        color = TextHint,
-                        modifier = Modifier
-                            .graphicsLayer { scaleX = moreScale; scaleY = moreScale }
-                            .clickable(interactionSource = moreInteraction, indication = null) {
-                                showAllRefs = true
-                            }
-                            .padding(Spacing.xs)
-                    )
-                }
+            }
+        }
+    }
+
+    // 展开后的记忆引用列表——不占菜单内空间，直接在结果区下方
+    AnimatedVisibility(
+        visible = showRefs && memoryRefs.isNotEmpty(),
+        enter = expandVertically(),
+        exit = shrinkVertically()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = Spacing.sm)
+                .clip(LoveBrainShape.md)
+                .background(SurfaceInset, LoveBrainShape.md)
+                .padding(Spacing.md)
+        ) {
+            val maxInitialRefs = 5
+            var showAllRefs by remember { mutableStateOf(false) }
+            val displayRefs = if (showAllRefs) memoryRefs else memoryRefs.take(maxInitialRefs)
+            displayRefs.forEachIndexed { index, ref ->
+                if (index > 0) Spacer(Modifier.height(Spacing.sm))
+                MemoryRefItem(
+                    ref = ref,
+                    onCorrection = onCorrection,
+                    onUndoCorrection = onUndoCorrection
+                )
+            }
+            if (memoryRefs.size > maxInitialRefs && !showAllRefs) {
+                Spacer(Modifier.height(Spacing.sm))
+                val (moreInteraction, moreScale) = rememberPressScale(0.96f, "moreRefsScale")
+                Text(
+                    "更多 ${memoryRefs.size - maxInitialRefs} 条",
+                    style = AppTypography.labelSmall,
+                    color = TextHint,
+                    modifier = Modifier
+                        .graphicsLayer { scaleX = moreScale; scaleY = moreScale }
+                        .clickable(interactionSource = moreInteraction, indication = null) {
+                            showAllRefs = true
+                        }
+                        .padding(Spacing.xs)
+                )
             }
         }
     }
 }
 
-/** P0-6: 提取保存按钮为独立 Composable——有/无 memoryRefs 时复用，避免重复代码 */
+/** P0-4: DropdownMenu utility 菜单项 */
 @Composable
-private fun SaveToKbButton(onSaveToKb: () -> Unit) {
-    val (saveInteraction, saveScale) = rememberPressScale(0.96f, "resultSaveKbScale")
-    Box(
+private fun UtilityMenuItem(
+    label: String,
+    desc: String,
+    onClick: () -> Unit
+) {
+    val (interaction, scale) = rememberPressScale(0.96f, "utilityMenuScale")
+    Row(
         modifier = Modifier
-            .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
-            .clip(LoveBrainShape.md)
-            .background(Primary, LoveBrainShape.md)
-            .clickable(interactionSource = saveInteraction, indication = null, onClick = onSaveToKb)
+            .fillMaxWidth()
+            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
             .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
-        contentAlignment = Alignment.Center
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            "记入知识库",
-            color = Color.White,
+            label,
             style = AppTypography.labelSmall,
+            color = PrimaryDark,
             fontWeight = FontWeight.Medium
+        )
+        Spacer(Modifier.width(Spacing.sm))
+        Text(
+            desc,
+            style = AppTypography.labelSmall,
+            color = TextHint
         )
     }
 }

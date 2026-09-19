@@ -204,37 +204,41 @@ fun SchemeCard(
             .background(cardBg)
             .border(effectiveBorderWidth.dp, effectiveBorderColor, LoveBrainShape.lg)
             .then(if (isEmpty) Modifier else Modifier.pointerInput(identityKey) {
-                // P0-5: 真实手势状态机——单一 owner，避免 SchemeCard 和 VoiceRewriteController 双状态机漂移
-                // touch slop 检测：拖动超过阈值时取消 PRESSING，避免横滑/纵滚误触录音
+                // P1-3: 手势状态机由 reduceGesturePhase 纯函数驱动——
+                // pointerInput 事件喂给 reducer，所有状态转换通过 reducer 完成。
+                // longPressReached 从 reducer 状态推导（RECORDING/RELEASED/CANCELLED 意味着已达到长按阈值）。
+                // JVM reducer test 真正保护生产逻辑。
                 kotlinx.coroutines.coroutineScope {
                     awaitEachGesture {
-                        // 等待手指按下——requireUnconsumed=true 保证只收到未被子控件消费的事件
                         val down = awaitFirstDown(requireUnconsumed = true)
-                        // 如果 awaitFirstDown 返回了，说明事件未被消费——直接进入手势
-                        gesturePhase = GesturePhase.PRESSING
+                        // DOWN 事件 → reducer 驱动到 PRESSING
+                        gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.DOWN)
 
-                        var longPressReached = false
+                        // P1-3: longPressReached 从 reducer 状态推导——不再维护并行变量
+                        fun hasReachedLongPress(): Boolean =
+                            gesturePhase == GesturePhase.RECORDING ||
+                            gesturePhase == GesturePhase.RELEASED ||
+                            gesturePhase == GesturePhase.CANCELLED
+
                         var pointerLeftBounds = false
                         var dragCancelled = false
                         val downPos = down.position
 
                         val longPressJob = launch {
                             kotlinx.coroutines.delay(longPressThresholdMs)
-                            // 达到长按阈值 -> 开始录音（拖动取消后不触发）
+                            // 达到长按阈值 → LONG_PRESS_REACHED 事件喂给 reducer
                             if (gesturePhase == GesturePhase.PRESSING && !isRewriting && rewriteError == null && !isRecording && !dragCancelled) {
-                                // P0-1: startListening 返回 typed result——只有 STARTED 才进入 RECORDING
                                 val result = voiceController.startListening()
-                                if (result == StartListeningResult.STARTED) {
-                                    longPressReached = true
+                                val canStart = result == StartListeningResult.STARTED
+                                gesturePhase = reduceGesturePhase(
+                                    gesturePhase, GestureEvent.LONG_PRESS_REACHED, canStart
+                                )
+                                if (canStart) {
                                     longPressTriggered = true
-                                    gesturePhase = GesturePhase.RECORDING
                                 }
-                                // PERMISSION_REQUESTED / FAILED → 不进入 RECORDING
-                                // 外层松手时 stopListening 安全处理 null recognizer
                             }
                         }
 
-                        // 持续追踪手指位置——检测拖动取消和移出边界
                         try {
                             while (true) {
                                 val event = awaitPointerEvent()
@@ -243,16 +247,28 @@ fun SchemeCard(
                                 if (!change.pressed) {
                                     // 手指抬起
                                     longPressJob.cancel()
-                                    if (longPressReached && !pointerLeftBounds) {
-                                        // 正常松手 -> 停止录音，提交暂存的 transcript
-                                        // P0-1: stopListening 停止录音，commitTranscript 提交缓存的 final transcript
-                                        // onResults 可能已暂存 transcript，commitTranscript 会读取并提交
-                                        gesturePhase = GesturePhase.RELEASED
-                                        voiceController.stopListening()
-                                        voiceController.commitTranscript()
-                                    } else if (!longPressReached && !dragCancelled) {
-                                        // 未达到长按阈值且未拖动取消 -> 普通 click
-                                        gesturePhase = GesturePhase.IDLE
+                                    val stillInside = change.position.x >= 0f &&
+                                        change.position.x <= size.width &&
+                                        change.position.y >= 0f &&
+                                        change.position.y <= size.height
+
+                                    // P1-3: upEvent 从 reducer 状态推导——hasReachedLongPress() 替代局部变量
+                                    val upEvent = if (hasReachedLongPress() && !pointerLeftBounds) {
+                                        if (stillInside) GestureEvent.UP_IN_BOUNDS
+                                        else GestureEvent.UP_OUT_OF_BOUNDS
+                                    } else if (hasReachedLongPress() && pointerLeftBounds) {
+                                        GestureEvent.UP_OUT_OF_BOUNDS
+                                    } else {
+                                        GestureEvent.UP_IN_BOUNDS
+                                    }
+                                    gesturePhase = reduceGesturePhase(gesturePhase, upEvent)
+
+                                    if (gesturePhase == GesturePhase.RELEASED) {
+                                        // 正常松手 → release() 内部完成 stop + rendezvous 提交
+                                        voiceController.release()
+                                        gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.DOWN) // RELEASED → IDLE
+                                    } else if (!hasReachedLongPress() && !dragCancelled) {
+                                        // 未达到长按阈值 → 普通 click
                                         if (!isRecording && !isRewriting) {
                                             onToggleRewriteExpand(identity)
                                         }
@@ -260,42 +276,42 @@ fun SchemeCard(
                                     break
                                 }
 
-                                // P0-5: touch slop 检测——拖动距离超过阈值时取消 PRESSING
-                                // 避免横滑 LazyRow 或纵滚长文误触发长按录音
-                                if (!dragCancelled && !longPressReached && gesturePhase == GesturePhase.PRESSING) {
+                                // touch slop 检测——拖动超过阈值时取消 PRESSING
+                                if (!dragCancelled && !hasReachedLongPress() && gesturePhase == GesturePhase.PRESSING) {
                                     val dx = change.position.x - downPos.x
                                     val dy = change.position.y - downPos.y
                                     val dragDist = kotlin.math.sqrt(dx * dx + dy * dy)
                                     if (dragDist > touchSlopPx) {
                                         dragCancelled = true
-                                        gesturePhase = GesturePhase.IDLE
+                                        gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.DRAG_CANCELLED)
                                         longPressJob.cancel()
                                     }
                                 }
 
                                 // 检查手指是否仍在卡片边界内
-                                val stillInside = change.position.x >= 0f &&
+                                val stillInsideBounds = change.position.x >= 0f &&
                                     change.position.x <= size.width &&
                                     change.position.y >= 0f &&
                                     change.position.y <= size.height
 
-                                if (!stillInside && longPressReached && !pointerLeftBounds) {
-                                    // 手指移出卡片有效区域 -> CANCELLED
+                                if (!stillInsideBounds && hasReachedLongPress() && !pointerLeftBounds) {
+                                    // 手指移出卡片有效区域 → UP_OUT_OF_BOUNDS 或 SYSTEM_CANCEL
                                     pointerLeftBounds = true
-                                    gesturePhase = GesturePhase.CANCELLED
+                                    gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.UP_OUT_OF_BOUNDS)
                                     voiceController.cancel()
                                 }
                             }
                         } finally {
                             longPressJob.cancel()
-                            if (gesturePhase != GesturePhase.CANCELLED) {
-                                gesturePhase = GesturePhase.IDLE
+                            // 确保状态归位——RELEASED/CANCELLED → IDLE
+                            if (gesturePhase == GesturePhase.RELEASED || gesturePhase == GesturePhase.CANCELLED) {
+                                gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.DOWN)
                             }
                             longPressTriggered = false
-                            // P0-1: 如果手势结束时仍在 RECORDING/PROCESSING 但未正常 RELEASED
-                            // （如 dragCancelled 后松手），确保 cancel 清理
-                            if (gesturePhase == GesturePhase.CANCELLED || dragCancelled) {
+                            // 如果手势结束时仍在 RECORDING（未正常 RELEASED），确保 cancel 清理
+                            if (gesturePhase == GesturePhase.RECORDING || dragCancelled) {
                                 voiceController.cancel()
+                                gesturePhase = GesturePhase.IDLE
                             }
                         }
                     }

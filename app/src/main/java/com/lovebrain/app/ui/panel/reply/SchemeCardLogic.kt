@@ -8,7 +8,7 @@ import com.lovebrain.app.model.RewriteState
  * 包含：
  * - presentation state derivation（SchemeCardPresentationState 推导）
  * - gesture state reduction（手势状态机纯函数）
- * - voice commit decision（语音提交决策）
+ * - voice rendezvous commit decision（语音两事件 rendezvous 提交决策）
  */
 
 /**
@@ -95,20 +95,28 @@ fun reduceGesturePhase(
 }
 
 /**
- * 语音提交决策——纯函数。
+ * P0-1: 语音两事件 rendezvous 提交决策——纯函数。
  *
- * 决定是否应该提交缓存的 transcript：
- * - 只有 RELEASED 状态才提交
- * - CANCELLED 永远不提交
- * - transcript 为 null 不提交
+ * 统一提交条件：
+ *   physicalReleased && finalTranscript 非空 && !cancelled && !submitted
  *
- * @param gesturePhase 当前手势阶段
- * @param pendingTranscript 缓存的 final transcript
+ * 两个事件谁先来都行：
+ * - 路径 A: onResults 先来 → finalTranscript 已缓存，等 release 到达时提交
+ * - 路径 B: release 先来 → physicalReleased 已标记，等 onResults 到达时提交
+ *
+ * @param physicalReleased 物理松手标志
+ * @param finalTranscript 缓存的 final transcript（可能为 null——尚未到达）
+ * @param cancelled 手势取消标志
+ * @param submitted 已提交标志（保证只提交一次）
  * @return 是否应该提交
  */
 fun shouldCommitTranscript(
-    gesturePhase: GesturePhase,
-    pendingTranscript: String?
-): Boolean = gesturePhase == GesturePhase.RELEASED &&
-    pendingTranscript != null &&
-    pendingTranscript.isNotBlank()
+    physicalReleased: Boolean,
+    finalTranscript: String?,
+    cancelled: Boolean,
+    submitted: Boolean
+): Boolean = physicalReleased &&
+    finalTranscript != null &&
+    finalTranscript.isNotBlank() &&
+    !cancelled &&
+    !submitted

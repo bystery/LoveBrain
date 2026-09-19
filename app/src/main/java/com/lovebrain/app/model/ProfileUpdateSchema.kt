@@ -8,7 +8,7 @@ import com.lovebrain.app.domain.StageCatalog
  * Parser、Prompt（normal / strict / compact）、Test 全部引用此对象，
  * 禁止在别处另行维护字段规则文案。
  *
- * P0-8: normal / strict / compact 描述全部由同一套结构化 field spec 生成，
+ * P0-8 / P1-4: normal / strict / compact 描述全部由同一套结构化 field spec 生成，
  * 不再手写三段重复字段规则。
  *
  * 字段规则：
@@ -43,41 +43,52 @@ object ProfileUpdateSchema {
     /** 合法阶段列表（引用 StageCatalog，不另建白名单） */
     val VALID_STAGES: List<String> get() = StageCatalog.ALL
 
-    // ═══ P0-8: 结构化 field spec ═══
+    // ═══ P1-4: 统一 presence 语义 ═══
+
+    /**
+     * 字段存在性语义——替代之前的 required + optional 两个互补 Boolean。
+     * - [OPTIONAL]: 可选，缺失=不更新该项
+     * - [REQUIRED]: 必填
+     * - [CONDITIONAL]: 条件必填——存在性取决于其他字段的值
+     */
+    enum class Presence {
+        OPTIONAL,
+        REQUIRED,
+        CONDITIONAL
+    }
 
     /** 单个字段的规范描述 */
     private data class FieldSpec(
         val name: String,
-        val type: String,         // "字符串", "布尔值", "字符串数组"
-        val required: Boolean,    // 是否必填
-        val optional: Boolean,    // 是否可选
+        val type: String,          // "字符串", "布尔值", "字符串数组"
+        val presence: Presence,   // 存在性语义
         val note: String?,        // 附加说明
         val constraint: String?   // 额外约束
     )
 
     /** 结构化字段定义——所有 prompt 变体均从此生成 */
     private val fieldSpecs: List<FieldSpec> = listOf(
-        FieldSpec(FIELD_ME, "字符串", required = false, optional = true, note = "更新后的'我的画像'", constraint = "存在时必须为非空字符串"),
-        FieldSpec(FIELD_HER, "字符串", required = false, optional = true, note = "更新后的'她的画像'", constraint = "存在时必须为非空字符串"),
-        FieldSpec(FIELD_WARMTH, "字符串", required = false, optional = true, note = "更新后的'关系温度描述'", constraint = "存在时必须为非空字符串"),
-        FieldSpec(FIELD_STAGE_CHANGED, "布尔值", required = false, optional = true, note = "是否建议调整阶段", constraint = "缺失=false"),
-        FieldSpec(FIELD_NEW_STAGE, "字符串", required = false, optional = true, note = "新阶段名", constraint = "stage_changed=true 时必填，合法阶段：${VALID_STAGES.joinToString("/")}"),
-        FieldSpec(FIELD_OBSERVATIONS, "字符串数组", required = false, optional = true, note = "待验证观察", constraint = null),
-        FieldSpec(FIELD_MESSAGE_TO_USER, "字符串", required = false, optional = true, note = "给用户的摘要消息", constraint = "允许空字符串")
+        FieldSpec(FIELD_ME, "字符串", Presence.OPTIONAL, "更新后的'我的画像'", "存在时必须为非空字符串"),
+        FieldSpec(FIELD_HER, "字符串", Presence.OPTIONAL, "更新后的'她的画像'", "存在时必须为非空字符串"),
+        FieldSpec(FIELD_WARMTH, "字符串", Presence.OPTIONAL, "更新后的'关系温度描述'", "存在时必须为非空字符串"),
+        FieldSpec(FIELD_STAGE_CHANGED, "布尔值", Presence.OPTIONAL, "是否建议调整阶段", "缺失=false"),
+        FieldSpec(FIELD_NEW_STAGE, "字符串", Presence.CONDITIONAL, "新阶段名", "stage_changed=true 时必填，合法阶段：${VALID_STAGES.joinToString("/")}"),
+        FieldSpec(FIELD_OBSERVATIONS, "字符串数组", Presence.OPTIONAL, "待验证观察", null),
+        FieldSpec(FIELD_MESSAGE_TO_USER, "字符串", Presence.OPTIONAL, "给用户的摘要消息", "允许空字符串")
     )
 
     /** 字段必须满足的跨字段约束 */
     private const val CROSS_FIELD_CONSTRAINT = "me/her/warmth 至少提供一个（不能全部缺失）。缺失字段表示不更新该项，不要传空字符串。"
 
-    /** 从 field spec 生成单行描述 */
+    /** 从 field spec 生成单行描述（normal prompt 用） */
     private fun FieldSpec.toLine(): String = buildString {
         append("- $name: $type")
-        if (optional) append("（可选")
+        if (presence == Presence.OPTIONAL) append("（可选")
         if (note != null) {
-            if (optional) append("，") else append("。")
+            if (presence == Presence.OPTIONAL) append("，") else append("。")
             append(note)
         }
-        if (optional) append("，缺失=不更新")
+        if (presence == Presence.OPTIONAL) append("，缺失=不更新")
         if (constraint != null) {
             append("。$constraint")
         }
@@ -115,20 +126,21 @@ object ProfileUpdateSchema {
     /**
      * 供 compact/repair prompt 使用的最小化 schema 文案。
      *
-     * P0-4/P0-8: 不再设计"伪合法 fallback JSON"。
-     * compact schema 只描述真正合法的画像更新。
-     * P0-8: 不再同时说"只输出 JSON"和"失败输出空字符串"——
-     * 失败由 Kotlin typed failure 处理，不需要 AI 定义协议。
-     * compact prompt 只描述合法输出即可。
+     * P1-4: 不再手写 me/her/warmth/stage_changed/observations 规则。
+     * 由同一套 fieldSpecs + CROSS_FIELD_CONSTRAINT 生成。
      */
     fun compactSchemaForPrompt(): String = buildString {
         appendLine("修复要求：")
         appendLine("1. 确保 JSON 语法正确（括号闭合、逗号正确、字符串用双引号）")
-        appendLine("2. me/her/warmth 存在时必须为非空字符串；不需要更新的字段直接省略")
-        appendLine("3. me/her/warmth 至少提供一个（不能全部省略）")
-        appendLine("4. stage_changed 必须是布尔值")
-        appendLine("5. observations 必须是字符串数组")
-        appendLine("6. 不要使用 Markdown 围栏")
-        appendLine("7. 只输出 JSON 对象本身，不要输出解释文字")
+        // 由 fieldSpecs 生成字段约束——不再手写
+        for (spec in fieldSpecs) {
+            val parts = mutableListOf<String>()
+            parts.add(spec.type)
+            if (spec.constraint != null) parts.add(spec.constraint)
+            appendLine("${fieldSpecs.indexOf(spec) + 2}. ${spec.name}: ${parts.joinToString("；")}")
+        }
+        appendLine("${fieldSpecs.size + 2}. $CROSS_FIELD_CONSTRAINT")
+        appendLine("${fieldSpecs.size + 3}. 不要使用 Markdown 围栏")
+        appendLine("${fieldSpecs.size + 4}. 只输出 JSON 对象本身，不要输出解释文字")
     }
 }

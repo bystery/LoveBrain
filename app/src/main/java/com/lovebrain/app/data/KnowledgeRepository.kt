@@ -1231,19 +1231,45 @@ class KnowledgeRepository(
                     }
                 }
                 // P0-5: 最终 snapshot verification——原存在的文件必须存在且内容正确；原不存在的文件必须不存在
+                // P0-3: verification 自身的 I/O 异常（readText 抛异常、exists 抛异常等）
+                // 必须加入 rollbackFailures，不得从 applyProfileUpdateAtomically 直接 throw 绕过 typed result
                 for ((path, existedAndContent) in backups) {
-                    val file = File(File(knowledgeRoot, kbName), path)
-                    val (existed, oldContent) = existedAndContent
-                    if (existed) {
-                        if (!file.exists() || file.readText() != oldContent) {
-                            if (path !in rollbackFailures) {
-                                com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL post-rollback verification failed for $path")
+                    try {
+                        val file = File(File(knowledgeRoot, kbName), path)
+                        val (existed, oldContent) = existedAndContent
+                        if (existed) {
+                            val existsNow = file.exists()
+                            val contentMatches = if (existsNow) {
+                                try {
+                                    file.readText() == oldContent
+                                } catch (verifyErr: Exception) {
+                                    // readText 自身抛 I/O 异常 → 视为 verification 失败
+                                    com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL verification read failed for $path", verifyErr)
+                                    false
+                                }
+                            } else false
+                            if (!existsNow || !contentMatches) {
+                                if (path !in rollbackFailures) {
+                                    com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL post-rollback verification failed for $path")
+                                    rollbackFailures.add(path)
+                                }
+                            }
+                        } else {
+                            val stillExists = try {
+                                file.exists()
+                            } catch (verifyErr: Exception) {
+                                com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL verification exists check failed for $path", verifyErr)
+                                true // 无法确认 → 视为失败
+                            }
+                            if (stillExists && path !in rollbackFailures) {
+                                com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL post-rollback verification failed for $path (file should not exist)")
                                 rollbackFailures.add(path)
                             }
                         }
-                    } else {
-                        if (file.exists() && path !in rollbackFailures) {
-                            com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL post-rollback verification failed for $path (file should not exist)")
+                    } catch (verifyErr: Exception) {
+                        // P0-3: verification 本身的任何异常都加入 rollbackFailures
+                        com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL verification exception for $path", verifyErr)
+                        if (path !in rollbackFailures) {
                             rollbackFailures.add(path)
                         }
                     }

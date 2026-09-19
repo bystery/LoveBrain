@@ -28,3 +28,32 @@ jobs:
 
       - name: Release R8 build
         run: ./gradlew :app:assembleRelease --no-daemon
+
+  # P1-5: Compose UI interaction test（需要 emulator）
+  # 当前为可选 job——emulator 启动不稳定时不阻断 verify
+  ui-test:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0777", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Compose UI tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew :app:connectedDebugAndroidTest --no-daemon
+          disable-animations: true

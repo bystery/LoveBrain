@@ -6,54 +6,104 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * P0-1: Voice hold-to-talk 提交机制纯逻辑测试。
+ * P0-1: Voice hold-to-talk 两事件 rendezvous 提交机制纯逻辑测试。
  *
- * 测试目标：验证 final transcript 只在物理 RELEASED 时提交，
- * CANCELLED 永远不提交。
+ * 测试目标：验证 final transcript 只在 physicalReleased && finalTranscript 都满足时提交，
+ * cancelled 永远不提交，submitted 保证只提交一次。
  *
  * 测试覆盖的生产 path：
- * - shouldCommitTranscript() —— SchemeCard 松手时调用的决策函数
+ * - shouldCommitTranscript() —— VoiceRewriteController.tryCommit() 使用的决策函数
  * - reduceGesturePhase() —— 手势状态机纯函数
  * - deriveCardPresentationState() —— 卡片展示态推导
  */
 class VoiceGestureCommitTest {
 
-    // ═══ shouldCommitTranscript 测试 ═══
+    // ═══ shouldCommitTranscript 两事件 rendezvous 测试 ═══
 
     @Test
-    fun `RELEASED with non-blank transcript should commit`() {
-        assertTrue(shouldCommitTranscript(GesturePhase.RELEASED, "改写为温柔风格"))
+    fun `both events satisfied should commit`() {
+        // 路径 A: onResults 先来（finalTranscript 已缓存），release 后到达 → 提交
+        assertTrue(shouldCommitTranscript(
+            physicalReleased = true,
+            finalTranscript = "改写为温柔风格",
+            cancelled = false,
+            submitted = false
+        ))
     }
 
     @Test
-    fun `CANCELLED with non-blank transcript should NOT commit`() {
-        assertFalse(shouldCommitTranscript(GesturePhase.CANCELLED, "改写为温柔风格"))
+    fun `cancelled with non-blank transcript should NOT commit`() {
+        assertFalse(shouldCommitTranscript(
+            physicalReleased = true,
+            finalTranscript = "改写为温柔风格",
+            cancelled = true,
+            submitted = false
+        ))
     }
 
     @Test
-    fun `RELEASED with null transcript should NOT commit`() {
-        assertFalse(shouldCommitTranscript(GesturePhase.RELEASED, null))
+    fun `not released with transcript should NOT commit — must wait for release`() {
+        // onResults 已到达但松手还没发生——不提交
+        assertFalse(shouldCommitTranscript(
+            physicalReleased = false,
+            finalTranscript = "改写为温柔风格",
+            cancelled = false,
+            submitted = false
+        ))
     }
 
     @Test
-    fun `RELEASED with blank transcript should NOT commit`() {
-        assertFalse(shouldCommitTranscript(GesturePhase.RELEASED, "   "))
+    fun `released with null transcript should NOT commit — waiting for onResults`() {
+        // release 先到达，onResults 尚未到达——不提交
+        assertFalse(shouldCommitTranscript(
+            physicalReleased = true,
+            finalTranscript = null,
+            cancelled = false,
+            submitted = false
+        ))
     }
 
     @Test
-    fun `RECORDING with transcript should NOT commit — must wait for RELEASED`() {
-        // STT 可能在松手前就得到 final transcript——但此时不应提交
-        assertFalse(shouldCommitTranscript(GesturePhase.RECORDING, "改写为温柔风格"))
+    fun `released with blank transcript should NOT commit`() {
+        assertFalse(shouldCommitTranscript(
+            physicalReleased = true,
+            finalTranscript = "   ",
+            cancelled = false,
+            submitted = false
+        ))
     }
 
     @Test
-    fun `IDLE with transcript should NOT commit`() {
-        assertFalse(shouldCommitTranscript(GesturePhase.IDLE, "改写为温柔风格"))
+    fun `already submitted should NOT commit again — guarantees single submission`() {
+        // submitted 标志保证永远只提交一次
+        assertFalse(shouldCommitTranscript(
+            physicalReleased = true,
+            finalTranscript = "改写为温柔风格",
+            cancelled = false,
+            submitted = true
+        ))
     }
 
     @Test
-    fun `PRESSING with transcript should NOT commit`() {
-        assertFalse(shouldCommitTranscript(GesturePhase.PRESSING, "改写为温柔风格"))
+    fun `cancel after release but before results should NOT commit`() {
+        // release 已到达，但 cancel 发生在 onResults 之前
+        assertFalse(shouldCommitTranscript(
+            physicalReleased = true,
+            finalTranscript = null,
+            cancelled = true,
+            submitted = false
+        ))
+    }
+
+    @Test
+    fun `cancel after results but before release should NOT commit`() {
+        // onResults 已到达，但 cancel 发生在 release 之前
+        assertFalse(shouldCommitTranscript(
+            physicalReleased = false,
+            finalTranscript = "改写为温柔风格",
+            cancelled = true,
+            submitted = false
+        ))
     }
 
     // ═══ reduceGesturePhase 测试 ═══

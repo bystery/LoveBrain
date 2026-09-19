@@ -122,12 +122,6 @@ class LoveBrainViewModel(
     private val _streamingSchemes = MutableStateFlow<List<Scheme>>(emptyList())
     val streamingSchemes: StateFlow<List<Scheme>> = _streamingSchemes.asStateFlow()
 
-    /** P1-07: 流式四方向方案——已废弃：UI 不在生成中展示方向卡，只在最终完成后提供方向切换。
-     * 保留 StateFlow 供兼容，但 Engine 不再写入。 */
-    private val _streamingDirectionSchemes = MutableStateFlow<List<Scheme>>(emptyList())
-    @Deprecated("directions streaming 已废弃——UI 只在最终完成后提供方向切换")
-    val streamingDirectionSchemes: StateFlow<List<Scheme>> = _streamingDirectionSchemes.asStateFlow()
-
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
 
@@ -611,7 +605,6 @@ class LoveBrainViewModel(
         _isGeneratingCore.value = false
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
-        _streamingDirectionSchemes.value = emptyList()
         _panelState.value = PanelState.KEYBOARD
         // GEN-02：停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
@@ -757,7 +750,6 @@ class LoveBrainViewModel(
         _feedbacks.value = emptyMap()
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
-        _streamingDirectionSchemes.value = emptyList()
         _panelState.value = PanelState.KEYBOARD
         // 阻断B修复：新轮开始时清理改写状态和历史，作废旧改写请求
         _rewriteStates.value = emptyMap()
@@ -1193,7 +1185,6 @@ class LoveBrainViewModel(
         _result.value = null
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
-        _streamingDirectionSchemes.value = emptyList()
         _feedbacks.value = emptyMap()
     }
 
@@ -1215,12 +1206,6 @@ class LoveBrainViewModel(
     /** GEN-04：retry 前清理上一次 attempt 的流式方案卡 */
     override fun onReplyStreamingSchemesReset() {
         _streamingSchemes.value = emptyList()
-        _streamingDirectionSchemes.value = emptyList()
-    }
-
-    /** P1-07: directions streaming 已废弃——不再在生成中写入 direction schemes */
-    override fun onReplyStreamingDirectionSchemes(schemes: List<Scheme>) {
-        // 不再写入——directions 只在最终 response 完成后提供切换
     }
 
     override fun onReplyResult(result: GenerateResult) {

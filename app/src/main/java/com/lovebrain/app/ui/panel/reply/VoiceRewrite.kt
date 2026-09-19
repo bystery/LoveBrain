@@ -24,24 +24,17 @@ import com.lovebrain.app.util.L
  * P0-1 修复：VoiceRewrite 只负责 STT（语音转文字）。
  *
  * 核心原则：STT 可以提前得到 final transcript，但绝对不能提前提交 rewrite。
- * final transcript 暂存；只有 SchemeCard 收到真实 RELEASED 后才能 commit。
- * CANCELLED / move-out / system cancel 永远丢弃 transcript，绝不调用 API。
+ * 提交条件统一为（两事件 rendezvous）：
+ *   physicalReleased && finalTranscript 非空 && !cancelled && !submitted
+ * 两个事件谁先来都行：
+ *   路径 A: onResults 先来 → 缓存 transcript，等 release 时提交
+ *   路径 B: release 先来 → 标记 released，stop recognizer，等 onResults 到达时提交
+ * cancel/move-out/system cancel 在任意时间发生后，都永久禁止本次 submit。
  *
  * STT 状态机：
  *   IDLE → RECORDING → PROCESSING → IDLE
  *
- * final transcript 非空时暂存在 pendingTranscript 中，
- * 等待外部 commitTranscript() 调用（由 SchemeCard 在 RELEASED 时触发）。
- *
- * 手势生命周期（P0-2）：
- *   PRESSING → RECORDING（达到长按阈值）
- *   RECORDING → RELEASED（松手 → stopListening → 等待 final → commitTranscript）
- *   RECORDING → CANCELLED → IDLE（手指移出 / 手势 cancel，不发 API）
- *   PROCESSING → IDLE（拿到 final transcript 或 onError）
- *   partial transcript 绝不发 API
- *   final transcript 为空绝不发 API
- *
- * Permission UX（P0-3）：
+ * Permission UX：
  *   首次无权限 → 系统权限 sheet
  *   允许 → 回调 onPermissionGranted 提示用户再次长按
  *   拒绝 → 回调 onPermissionDenied 提示用户
@@ -51,7 +44,7 @@ enum class VoiceRewriteState {
 }
 
 /**
- * P0-5: 手势生命周期状态——单一 owner，SchemeCard 和 VoiceRewriteController 共用。
+ * 手势生命周期状态——单一 owner，SchemeCard 和 VoiceRewriteController 共用。
  *
  * 用于跟踪长按手势的物理阶段，确保：
  * - 手指移出卡片 → CANCELLED（不发送 transcript，不请求 API）
@@ -96,14 +89,23 @@ enum class StartListeningResult {
     FAILED
 }
 
-/** 语音改写控制器返回值 */
+/**
+ * 语音改写控制器——两事件 rendezvous 模型。
+ *
+ * 调用方只需要：
+ * - startListening() 开始录音
+ * - release() 松手时调用（内部完成 stopListening + rendezvous）
+ * - cancel() 取消（移出/系统取消）
+ *
+ * 不再暴露 stopListening + commitTranscript 两个需要调用方按序拼接的接口。
+ */
 data class VoiceRewriteController(
     val state: VoiceRewriteState,
     val startListening: () -> StartListeningResult,
-    val stopListening: () -> Unit,
+    /** 松手时调用——controller 内部完成 stop recognizer + rendezvous 提交 */
+    val release: () -> Unit,
+    /** 取消——移出/系统取消后调用，永久禁止本次提交 */
     val cancel: () -> Unit,
-    /** 提交暂存的 final transcript——只在物理 RELEASED 时调用 */
-    val commitTranscript: () -> Unit,
     val hasPermission: Boolean,
     val permissionResult: VoicePermissionResult?
 )
@@ -111,12 +113,13 @@ data class VoiceRewriteController(
 /**
  * 长按语音修改 Helper——封装 SpeechRecognizer 生命周期 + runtime permission。
  *
- * 关键修复：
- * - onResults 不再直接调用 onVoiceRewrite——final transcript 暂存在 pendingTranscript
- * - 只有 commitTranscript() 才真正提交（由 SchemeCard 在 RELEASED 时调用）
- * - stopListening 只在 recognizer 存在时才进入 PROCESSING
- * - startListening 返回 typed result（Started/PermissionRequested/Failed）
- * - SpeechRecognizer.destroy() 统一 cleanup（结束、错误、取消、dispose）
+ * P0-1 真正修复：两事件 rendezvous 模型
+ * - onResults 不再直接调用 onVoiceRewrite——final transcript 缓存到 finalTranscript
+ * - release() 标记 physicalReleased 并调用 tryCommit()
+ * - tryCommit() 统一提交条件：physicalReleased && finalTranscript非空 && !cancelled && !submitted
+ * - 两个事件谁先来都行——result→release 和 release→result 都只提交一次
+ * - cancel 后即使 onResults 到达也不提交
+ * - submitted 标志保证永远只提交一次
  */
 @Composable
 fun rememberVoiceRewriteController(
@@ -132,10 +135,11 @@ fun rememberVoiceRewriteController(
     val tagRef = remember { schemeTag }
     var permissionResult by remember { mutableStateOf<VoicePermissionResult?>(null) }
 
-    // P0-1: final transcript 暂存——onResults 写入，commitTranscript 读取
-    val pendingTranscript = remember { mutableStateOf<String?>(null) }
-    // P0-1: 手势取消标志——cancel 后即使 onResults 到达也不提交
-    val wasCancelled = remember { mutableStateOf(false) }
+    // P0-1: 两事件 rendezvous 状态
+    val physicalReleased = remember { mutableStateOf(false) }
+    val finalTranscript = remember { mutableStateOf<String?>(null) }
+    val cancelled = remember { mutableStateOf(false) }
+    val submitted = remember { mutableStateOf(false) }
 
     var hasPermission by remember {
         mutableStateOf(
@@ -197,15 +201,32 @@ fun rememberVoiceRewriteController(
         speechRecognizer.value = null
     }
 
+    // P0-1: 统一提交逻辑——两事件 rendezvous
+    // 条件：physicalReleased && finalTranscript非空 && !cancelled && !submitted
+    // 两个事件谁先来都行，只要两个都满足就提交
+    fun tryCommit() {
+        val transcript = finalTranscript.value
+        if (physicalReleased.value && transcript != null && transcript.isNotBlank() && !cancelled.value && !submitted.value) {
+            submitted.value = true
+            L.w("VoiceRewrite: committing transcript (rendezvous satisfied)")
+            onVoiceRewrite(tagRef, transcript.trim())
+            // 提交后状态归位
+            voiceState = VoiceRewriteState.IDLE
+        }
+    }
+
     fun startListening(): StartListeningResult {
         if (!hasPermission) {
             permissionLauncher.launch(android.Manifest.permission.RECORD_AUDIO)
             return StartListeningResult.PERMISSION_REQUESTED
         }
 
+        // 重置 rendezvous 状态
         accumulatedText.clear()
-        pendingTranscript.value = null
-        wasCancelled.value = false
+        finalTranscript.value = null
+        physicalReleased.value = false
+        cancelled.value = false
+        submitted.value = false
 
         return try {
             val sr = SpeechRecognizer.createSpeechRecognizer(context)
@@ -227,8 +248,7 @@ fun rememberVoiceRewriteController(
                 override fun onBufferReceived(buffer: ByteArray?) {}
                 override fun onEndOfSpeech() {
                     // STT 自行判断结束——进入 PROCESSING 等待 final results
-                    // 但不提交——提交只在 commitTranscript（物理 RELEASED）
-                    if (!wasCancelled.value && voiceState == VoiceRewriteState.RECORDING) {
+                    if (!cancelled.value && voiceState == VoiceRewriteState.RECORDING) {
                         voiceState = VoiceRewriteState.PROCESSING
                     }
                 }
@@ -237,7 +257,9 @@ fun rememberVoiceRewriteController(
                     L.w("VoiceRewrite: STT error=$error")
                     voiceState = VoiceRewriteState.IDLE
                     destroyRecognizer()
-                    pendingTranscript.value = null
+                    finalTranscript.value = null
+                    // onError 后不再有 final transcript——但如果已经 released，
+                    // 不需要做任何事（transcript 为 null，tryCommit 不会提交）
                 }
 
                 override fun onPartialResults(partialResults: Bundle?) {
@@ -257,20 +279,33 @@ fun rememberVoiceRewriteController(
                         ?.firstOrNull()
                         ?: accumulatedText.toString()
 
-                    voiceState = VoiceRewriteState.IDLE
                     destroyRecognizer()
 
-                    // P0-1: final transcript 暂存——不直接提交
-                    // 只有未被 cancel 时才暂存（cancel 后到达的 results 丢弃）
-                    if (!wasCancelled.value && finalText.isNotBlank()) {
-                        pendingTranscript.value = finalText.trim()
-                        L.w("VoiceRewrite: final transcript cached, waiting for commit")
+                    // P0-1: 缓存 final transcript——不直接提交
+                    // 只有未被 cancel 时才缓存（cancel 后到达的 results 丢弃）
+                    if (!cancelled.value && finalText.isNotBlank()) {
+                        finalTranscript.value = finalText.trim()
+                        L.w("VoiceRewrite: final transcript cached, attempting rendezvous commit")
+                        // 状态归位——但只在尚未 released 时
+                        // 如果已经 released，tryCommit 会处理状态归位
+                        if (physicalReleased.value) {
+                            tryCommit()
+                        } else {
+                            // 等 release 到达时提交——保持 PROCESSING 让 UI 显示识别完成
+                            voiceState = VoiceRewriteState.PROCESSING
+                        }
                     } else {
-                        pendingTranscript.value = null
-                        if (wasCancelled.value) {
+                        finalTranscript.value = null
+                        if (cancelled.value) {
                             L.w("VoiceRewrite: final transcript discarded (gesture cancelled)")
                         } else {
                             L.w("VoiceRewrite: final transcript empty, not caching")
+                        }
+                        // 即使 transcript 为空，如果已经 released，也需要归位状态
+                        if (physicalReleased.value) {
+                            voiceState = VoiceRewriteState.IDLE
+                        } else {
+                            voiceState = VoiceRewriteState.PROCESSING
                         }
                     }
                 }
@@ -289,36 +324,39 @@ fun rememberVoiceRewriteController(
         }
     }
 
-    fun stopListening() {
-        // P0-1: 只有 recognizer 真实存在且状态允许时才进入 PROCESSING
-        // 否则直接回 IDLE——防止 null recognizer + PROCESSING 永久卡死
+    /**
+     * P0-1: release()——松手时调用，controller 内部完成 stop + rendezvous。
+     * 不再暴露 stopListening + commitTranscript 两个需要调用方按序拼接的接口。
+     */
+    fun release() {
+        // 标记物理松手
+        physicalReleased.value = true
+
+        // 停止 recognizer——如果 recognizer 仍存在，stopListening 会触发 onResults
         val sr = speechRecognizer.value
         if (sr != null && (voiceState == VoiceRewriteState.RECORDING || voiceState == VoiceRewriteState.PROCESSING)) {
             voiceState = VoiceRewriteState.PROCESSING
             runCatching { sr.stopListening() }
+            // onResults 会在稍后回调，那时 finalTranscript 会被设置并触发 tryCommit
         } else {
             // recognizer 不存在（无权限/创建失败/onError 后松手）→ 安全回 IDLE
             voiceState = VoiceRewriteState.IDLE
         }
-    }
 
-    fun commitTranscript() {
-        // P0-1: 物理松手才调用——提交暂存的 final transcript
-        val transcript = pendingTranscript.value
-        pendingTranscript.value = null
-        if (transcript != null && !wasCancelled.value) {
-            L.w("VoiceRewrite: committing cached transcript")
-            onVoiceRewrite(tagRef, transcript)
-        } else {
-            L.w("VoiceRewrite: no transcript to commit (transcript=$transcript, cancelled=${wasCancelled.value})")
+        // 尝试提交——如果 onResults 已经先到达并缓存了 transcript，此时提交
+        // 如果 onResults 尚未到达，tryCommit 不会提交（finalTranscript 为 null），
+        // 等 onResults 到达时再触发 tryCommit
+        tryCommit()
+
+        // 如果 recognizer 不存在或已 destroy，且没有 transcript，直接归位
+        if (sr == null && finalTranscript.value == null) {
+            voiceState = VoiceRewriteState.IDLE
         }
-        // 提交后确保状态归位
-        voiceState = VoiceRewriteState.IDLE
     }
 
     fun cancel() {
-        wasCancelled.value = true
-        pendingTranscript.value = null
+        cancelled.value = true
+        finalTranscript.value = null
         destroyRecognizer()
         voiceState = VoiceRewriteState.IDLE
         accumulatedText.clear()
@@ -334,9 +372,8 @@ fun rememberVoiceRewriteController(
     return VoiceRewriteController(
         state = voiceState,
         startListening = { startListening() },
-        stopListening = { stopListening() },
+        release = { release() },
         cancel = { cancel() },
-        commitTranscript = { commitTranscript() },
         hasPermission = hasPermission,
         permissionResult = permissionResult
     )

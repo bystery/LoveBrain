@@ -93,15 +93,16 @@ class KnowledgeTriggerCoordinator(
      */
     fun checkTriggers(kbName: String, scope: CoroutineScope, callbacks: Callbacks) {
         scope.launch {
-            runCatching {
+            // P0-2: 不得用 runCatching——CancellationException 必须 rethrow
+            try {
                 val topicCount = knowledgeRepo.getLessonCount(kbName)
-                if (topicCount <= 0) return@runCatching
+                if (topicCount <= 0) return@launch
 
                 // F09: 后台任务启动时冻结 corrections revision，完成后比对防迟到覆盖
                 val frozenCorrectionsRev = knowledgeRepo.getCorrectionsRevision(kbName)
 
                 // A12 三引擎串行：向量重估 → 经验提取 → 画像 reflect（前一引擎完成才开始下一引擎；
-                // 各自既有 runCatching 兜底不变，单引擎失败不阻断后续；reflect 最后，天然拿最新向量值）
+                // 各自既有兜底不变，单引擎失败不阻断后续；reflect 最后，天然拿最新向量值）
                 if (topicCount % AppConfig.VECTOR_REESTIMATE_INTERVAL == 0) {
                     reestimateVector(kbName, scope, callbacks, frozenCorrectionsRev).join()
                 }
@@ -114,7 +115,11 @@ class KnowledgeTriggerCoordinator(
                 if (topicCount % AppConfig.REFLECT_TRIGGER_INTERVAL == 0) {
                     generateReflectSuggestion(kbName, scope, callbacks, frozenCorrectionsRev).join()
                 }
-            }.onFailure { L.e("checkKnowledgeTriggers failed", it) }
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("checkKnowledgeTriggers failed", e)
+            }
         }
     }
 
@@ -122,16 +127,22 @@ class KnowledgeTriggerCoordinator(
      * 后台任务在写入前（而非启动时）校验 revision，防迟到覆盖 */
     private fun reestimateVector(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
-            runCatching {
+            // P0-2: 不得用 runCatching——CancellationException 必须 rethrow
+            try {
                 val oldVector = withContext(Dispatchers.IO) { knowledgeRepo.readVector(kbName) }
                 val currentStage = withContext(Dispatchers.IO) { knowledgeRepo.getCurrentStage(kbName) }
                 val context = withContext(Dispatchers.IO) { topicRecorder.getVectorContext(kbName) }
 
                 val system = promptBuilder.buildVectorSystemPrompt()
                 val user = promptBuilder.buildVectorUserPrompt(oldVector, currentStage, context)
-                val raw = runCatching {
+                // P0-2: 不得用 runCatching——CancellationException 必须 rethrow
+                val raw = try {
                     withContext(Dispatchers.IO) { deepSeekRepo.generateRaw(system, user) }
-                }.getOrDefault("")
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    ""
+                }
                 if (raw.isBlank()) {
                     //  ：后台引擎失败轻提示（固定文案；extractLessons 不加，）
                     callbacks.onKbNotice("向量重估本次失败，可稍后重试")
@@ -225,17 +236,29 @@ class KnowledgeTriggerCoordinator(
                         reason = reason.ifBlank { "五维向量变化触发" }
                     ))
                 }
-            }.onFailure { L.e("reestimateVector failed", it) }
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("reestimateVector failed", e)
+            }
         }
     }
 
     private fun extractLessonsAsync(kbName: String, topicContext: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
-            runCatching {
+            // P0-2: 不得用 runCatching——CancellationException 必须 rethrow
+            try {
                 if (topicContext.isBlank()) return@launch
                 val system = promptBuilder.buildLessonsSystemPrompt()
                 val user = promptBuilder.buildLessonsUserPrompt(topicContext)
-                val lessons = runCatching { deepSeekRepo.generateRaw(system, user) }.getOrDefault("")
+                // P0-2: 不得用 runCatching——CancellationException 必须 rethrow
+                val lessons = try {
+                    deepSeekRepo.generateRaw(system, user)
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    ""
+                }
                 if (lessons.isNotBlank() && lessons != "无新经验") {
                     // b3-8: 锁内原子 revision 检查 + 追加经验，消除竞态窗口
                     val existing = withContext(Dispatchers.IO) { knowledgeRepo.readFile(kbName, "memory/lessons.md") }
@@ -253,7 +276,11 @@ class KnowledgeTriggerCoordinator(
                 } else {
                     L.w("extractLessons: AI returned empty or no new lessons, skipping")
                 }
-            }.onFailure { L.e("extractLessonsAsync failed", it) }
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("extractLessonsAsync failed", e)
+            }
         }
     }
 
@@ -322,9 +349,15 @@ $lastRaw"""
                         user
                     }
 
-                    val rawResult = runCatching {
+                    // P0-2: 不得用 runCatching——它会吞 CancellationException
+                    // 改为显式 try/catch，CancellationException 必须 rethrow
+                    val rawResult = try {
                         withContext(Dispatchers.IO) { deepSeekRepo.generateRawWithMetadata(effectiveSystem, effectiveUser) }
-                    }.getOrDefault(RawGenerationResult(content = "", finishReason = null))
+                    } catch (e: kotlinx.coroutines.CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        RawGenerationResult(content = "", finishReason = null, error = e)
+                    }
 
                     if (rawResult.content.isBlank() && rawResult.error == null) {
                         // 供应商返回空——可能是偶发，允许重试

@@ -49,56 +49,6 @@ object PartialJsonObjects {
         return result
     }
 
-/**
- * 提取 "key": [...] 字符串数组中所有已完整闭合的元素（流式用）。
- * P0-7: 支持 null 占位——返回 List<String?>，null 元素保留原始 index。
- * 不再把 [null, "E", "X", "S"] 压成 ["E", "X", "S"] 导致 index 错位。
- */
-fun extractStringArrayNullable(raw: String, key: String): List<String?> {
-    val buffer = raw.replace("```json", "").replace("```", "")
-    val start = buffer.indexOf("\"$key\"")
-    if (start < 0) return emptyList()
-    val arrStart = buffer.indexOf('[', start)
-    if (arrStart < 0) return emptyList()
-
-    val result = mutableListOf<String?>()
-    var i = arrStart + 1
-    while (i < buffer.length) {
-        // 跳过空白和逗号
-        while (i < buffer.length && (buffer[i] == ' ' || buffer[i] == '\n' || buffer[i] == '\r' || buffer[i] == ',')) i++
-        if (i >= buffer.length) break
-        if (buffer[i] == ']') break
-        if (buffer[i] == 'n' && buffer.substring(i).startsWith("null")) {
-            // null 占位——保留原始 index
-            result.add(null)
-            i += 4
-            continue
-        }
-        if (buffer[i] != '"') {
-            // 跳过其他非字符串非 null 元素（如数字、布尔等）——保留 index
-            val elemStart = i
-            while (i < buffer.length && buffer[i] != ',' && buffer[i] != ']') i++
-            // 非 null/字符串元素也占一个位置
-            result.add(null)
-            continue
-        }
-        // 提取闭合的字符串
-        val strEnd = findStringEnd(buffer, i)
-        if (strEnd < 0) break // 字符串尚未闭合
-        val content = buffer.substring(i + 1, strEnd)
-        result.add(unescapeJsonString(content))
-        i = strEnd + 1
-    }
-    return result
-}
-
-/** b3-9: 提取 "key": [...] 字符串数组中所有已完整闭合的字符串元素（流式提前渲染 directions 用）
- * P0-7: 旧版跳过 null 元素导致 index 错位。新代码应使用 extractStringArrayNullable。
- * 此函数保留兼容性，内部委托给 extractStringArrayNullable 后过滤 null。 */
-fun extractStringArray(raw: String, key: String): List<String> {
-    return extractStringArrayNullable(raw, key).mapNotNull { it }
-}
-
     /** 找到从 startPos 开始的字符串的结束引号位置（跳过转义） */
     private fun findStringEnd(buffer: String, startPos: Int): Int {
         var j = startPos + 1
@@ -195,7 +145,6 @@ class GenerationEngine(
         fun onReplyStart()
         fun onReplyStreamingCoreText(chunk: String)
         fun onReplyStreamingSchemes(schemes: List<Scheme>)
-        fun onReplyStreamingDirectionSchemes(schemes: List<Scheme>)
         fun onReplyStreamingSchemesReset()
         fun onReplyResult(result: GenerateResult)
         fun onReplyPanelState(state: PanelState)
@@ -678,20 +627,4 @@ class GenerationEngine(
         return jsonLenient.decodeFromString<com.lovebrain.app.model.DailySuggestion>(jsonStr)
     }
 
-    /** 从流式缓冲区提取 directions 字符串数组，映射为独立 Scheme 列表
-     * 使用 ReplyDirection 单一真源，不占用风格 tag(A/B/C/D)
-     * P0-7: 使用 extractStringArrayNullable 保留 null index，不再压销空方向 */
-    private fun extractDirectionsSchemes(raw: String): List<Scheme> {
-        val dirs = PartialJsonObjects.extractStringArrayNullable(raw, "directions")
-        if (dirs.isEmpty()) return emptyList()
-        return dirs.mapIndexed { index, text ->
-            val dir = com.lovebrain.app.model.ReplyDirection.byIndex(index)
-            Scheme(
-                tag = dir?.tag ?: "D${index + 1}",
-                title = dir?.title ?: "方向${index + 1}",
-                reply = text ?: "",  // null → 空字符串，UI 显示“本轮不适合”
-                source = com.lovebrain.app.model.SchemeSource.DIRECTION
-            )
-        }
-    }
 }
