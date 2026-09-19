@@ -368,9 +368,7 @@ $lastRaw"""
                             finishReason = rawResult.finishReason
                         )
                         L.w("generateReflect: attempt $attempt got empty response")
-                        continue
-                    }
-                    if (rawResult.error != null) {
+                    } else if (rawResult.error != null) {
                         // 供应商请求失败——允许重试
                         parseResult = ProfileParseResult(
                             status = ProfileParseStatus.PROVIDER_ERROR,
@@ -379,11 +377,12 @@ $lastRaw"""
                             finishReason = rawResult.finishReason
                         )
                         L.w("generateReflect: attempt $attempt provider error: ${rawResult.error.message}")
-                        continue
+                    } else {
+                        // 正常解析路径
+                        parseResult = ProfileUpdate.parseWithStatus(rawResult.content, rawResult.finishReason)
                     }
 
-                    parseResult = ProfileUpdate.parseWithStatus(rawResult.content, rawResult.finishReason)
-
+                    // 统一出口：检查是否需要继续重试
                     if (parseResult.status == ProfileParseStatus.SUCCESS) {
                         // 成功——跳出重试循环
                         break
@@ -395,9 +394,10 @@ $lastRaw"""
                         break
                     }
 
-                    L.w("generateReflect: attempt $attempt status=${parseResult.status}, will retry with ${if (attempt == 1) "strict JSON prompt" else "compact schema repair prompt"}")
-                    // 短暂退避后重试——delay 是 suspend，cancel 会传播
+                    // 所有 retryable failure（EMPTY / PROVIDER_ERROR / TRUNCATED / INVALID_JSON）
+                    // 都必须先执行 backoff delay 再进入下一轮——delay 是 suspend，cancel 会传播
                     if (attempt < MAX_PROFILE_ATTEMPTS) {
+                        L.w("generateReflect: attempt $attempt status=${parseResult.status}, will retry with ${if (attempt == 1) "strict JSON prompt" else "compact schema repair prompt"}")
                         kotlinx.coroutines.delay(RETRY_BACKOFF_MS * attempt)
                     }
                 }

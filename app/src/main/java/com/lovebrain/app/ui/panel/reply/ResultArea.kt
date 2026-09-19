@@ -158,6 +158,11 @@ fun ResultArea(
                 SchemeViewMode.STYLE -> response.schemes
                 SchemeViewMode.DIRECTION -> response.directionSchemes
             }
+            // P0-4: showRefs 状态提升到 Success 层——
+            // ResultUtilityTrigger 只负责 toggle 事件，MemoryRefsSection 在主 Column 中渲染。
+            // 默认 showRefs=false 不增加高度；用户展开后正常增加高度。
+            var showRefs by remember(generationRoundId) { mutableStateOf(false) }
+
             // P0-4: Box 外层——ResultUtilityTrigger 用 align(TopEnd) 覆盖，
             // 不参与 Column measurement，默认状态额外纵向高度 = 0。
             Box(
@@ -195,18 +200,28 @@ fun ResultArea(
                         Spacer(Modifier.height(Spacing.sm))
                         OngoingSection(items = response.analysis.ongoing)
                     }
+
+                    // P0-4: MemoryRefsSection 在主 Column 中按正常文档流渲染——
+                    // 默认 showRefs=false 时 AnimatedVisibility 不占高度；
+                    // 用户主动展开后正常增加信息高度，不覆盖方案卡或切换器。
+                    if (memoryRefs.isNotEmpty()) {
+                        MemoryRefsSection(
+                            memoryRefs = memoryRefs,
+                            showRefs = showRefs,
+                            onCorrection = onCorrection,
+                            onUndoCorrection = onUndoCorrection
+                        )
+                    }
                 }
 
                 // P0-4: 结果级 utility trigger——右上角 overlay，不参与 Column measurement。
-                // 点击打开 DropdownMenu：
-                // - 菜单始终包含"记入知识库"
-                // - memoryRefs 非空时包含"本轮参考"及后续纠正入口
-                // 默认未展开状态额外纵向高度 = 0
+                // 只负责：⋯ trigger + DropdownMenu + toggle 事件。
+                // 默认未展开状态额外纵向高度 = 0。
                 ResultUtilityTrigger(
                     memoryRefs = memoryRefs,
+                    showRefs = showRefs,
                     onSaveToKb = onSaveToKb,
-                    onCorrection = onCorrection,
-                    onUndoCorrection = onUndoCorrection,
+                    onToggleRefs = { showRefs = !showRefs },
                     modifier = Modifier.align(Alignment.TopEnd)
                 )
             }
@@ -750,7 +765,10 @@ private fun TypewriterText(
  *
  * 替代旧的"记入知识库专属 Row"。不增加结果区纵向高度。
  * - 菜单始终包含"记入知识库"
- * - memoryRefs 非空时包含"本轮参考"展开/收起入口及纠正菜单
+ * - memoryRefs 非空时包含"本轮参考"展开/收起 toggle
+ *
+ * 只负责：⋯ trigger、DropdownMenu、toggle 事件回调。
+ * MemoryRefsSection 由 ResultArea 在主 Column 中渲染。
  *
  * 目标：功能一直存在，但没有"一个功能一整行"。
  * 通过 modifier = Modifier.align(TopEnd) 定位为 overlay，不参与 Column measurement。
@@ -758,13 +776,12 @@ private fun TypewriterText(
 @Composable
 private fun ResultUtilityTrigger(
     memoryRefs: List<MemoryRef>,
+    showRefs: Boolean,
     onSaveToKb: () -> Unit,
-    onCorrection: (String, CorrectionAction) -> Unit,
-    onUndoCorrection: (String) -> Unit,
+    onToggleRefs: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var menuOpen by remember { mutableStateOf(false) }
-    var showRefs by remember { mutableStateOf(false) }
 
     // trigger 不使用 fillMaxWidth——只是一个 28dp 的 overlay 图标
     Box(
@@ -806,20 +823,33 @@ private fun ResultUtilityTrigger(
                 onSaveToKb()
             }
 
-            // memoryRefs 非空时包含"本轮参考"
+            // memoryRefs 非空时包含"本轮参考" toggle
             if (memoryRefs.isNotEmpty()) {
                 UtilityMenuItem(
                     label = if (showRefs) "收起本轮参考" else "本轮参考 ${memoryRefs.size}",
                     desc = "查看本轮注入的记忆"
                 ) {
                     menuOpen = false
-                    showRefs = !showRefs
+                    onToggleRefs()
                 }
             }
         }
     }
+}
 
-    // 展开后的记忆引用列表——不占菜单内空间，直接在结果区下方
+/**
+ * P0-4: MemoryRefsSection — 在主 Column 中按正常文档流渲染的记忆引用列表。
+ *
+ * 默认 showRefs=false 时 AnimatedVisibility 不占高度（collapsed）。
+ * 用户主动展开后正常增加信息高度，不覆盖方案卡或切换器。
+ */
+@Composable
+private fun MemoryRefsSection(
+    memoryRefs: List<MemoryRef>,
+    showRefs: Boolean,
+    onCorrection: (String, CorrectionAction) -> Unit,
+    onUndoCorrection: (String) -> Unit
+) {
     AnimatedVisibility(
         visible = showRefs && memoryRefs.isNotEmpty(),
         enter = expandVertically(),
