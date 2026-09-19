@@ -25,13 +25,15 @@ object FactSubjectResolver {
      * @param speaker 已确定的说话人（由 FactSpeakerResolver 推导）
      * @param sourceIds 来源消息 ID
      * @param dialogue 冻结对话快照
+     * @param subjectCandidate AI 提供的主体候选（PARTNER/USER/UNKNOWN），作为 Level 3 低优先级证据
      * @return EntityRef（HER / ME / UNKNOWN）
      */
     fun resolve(
         factText: String,
         speaker: EntityRef,
         sourceIds: List<String>,
-        dialogue: List<DialogueMessage>
+        dialogue: List<DialogueMessage>,
+        subjectCandidate: String = ""
     ): EntityRef {
         // Level 1: 代码可确定——基于 speaker + 代词
         val level1 = resolveByPronoun(factText, speaker)
@@ -41,7 +43,17 @@ object FactSubjectResolver {
         val level2 = resolveByEntityRule(factText, speaker, sourceIds, dialogue)
         if (level2 != null) return level2
 
-        // Level 3: 不确定——不猜
+        // Level 3: 经校验的 subjectCandidate——AI 候选只作为低优先级证据
+        // 模型绝不能决定 speaker，但 subject_candidate 可以在代码无法确定时作为参考
+        if (subjectCandidate.isNotBlank()) {
+            return when (subjectCandidate.uppercase()) {
+                "PARTNER" -> EntityRef.HER
+                "USER" -> EntityRef.ME
+                else -> EntityRef.UNKNOWN
+            }
+        }
+
+        // 无法可靠确定——UNKNOWN（不猜）
         return EntityRef.UNKNOWN
     }
 

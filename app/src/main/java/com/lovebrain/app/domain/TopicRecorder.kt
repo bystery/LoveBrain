@@ -288,8 +288,8 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             // P0-4: subject 与 speaker 分离——三层解析
             // Level 1: 代码可确定（代词+speaker）
             // Level 2: 实体规则
-            // Level 3: UNKNOWN（不猜）
-            // P0-5: 如果 AI 提供了 subject_candidate，作为 Level 3 候选但不无条件信
+            // Level 3: 经校验的 subjectCandidate（AI 候选只作为低优先级证据）
+            // P1-E: 把 AI 提供的 subject_candidate 传入 resolver
             val subject = FactSubjectResolver.resolve(
                 factText = text,
                 speaker = speaker,
@@ -304,7 +304,8 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
                             else -> com.lovebrain.app.model.DialogueSpeaker.USER
                         },
                         text = it.content
-                    )}
+                    )},
+                subjectCandidate = sf.subjectCandidate
             )
 
             validatedFacts.add(StoredFact(

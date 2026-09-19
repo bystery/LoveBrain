@@ -77,7 +77,7 @@ fun ResultArea(
     onSaveToKb: () -> Unit = {},
     // F09: 本轮参考记忆 + 纠正回调
     memoryRefs: List<MemoryRef> = emptyList(),
-    onCorrection: (String, CorrectionAction) -> Unit = { _, _ -> },
+    onCorrection: (String, CorrectionAction, String, com.lovebrain.app.model.MuteDuration) -> Unit = { _, _, _, _ -> },
     onUndoCorrection: (String) -> Unit = {},
     providerReady: Boolean,
     onOpenSettings: () -> Unit,
@@ -945,7 +945,7 @@ private fun ResultUtilityTrigger(
 private fun MemoryRefsSection(
     memoryRefs: List<MemoryRef>,
     showRefs: Boolean,
-    onCorrection: (String, CorrectionAction) -> Unit,
+    onCorrection: (String, CorrectionAction, String, com.lovebrain.app.model.MuteDuration) -> Unit,
     onUndoCorrection: (String) -> Unit
 ) {
     AnimatedVisibility(
@@ -971,13 +971,10 @@ private fun MemoryRefsSection(
                     onCorrection = onCorrection,
                     onUndoCorrection = onUndoCorrection,
                     onCorrectionWithMute = { memoryId, duration ->
-                        onCorrection(memoryId, CorrectionAction.MUTED)
-                        // F04: 通过外层回调传递时长——使用 muteDuration 的实际效果
-                        // 由 ViewModel 最终调用 saveCorrection 时传入
+                        onCorrection(memoryId, CorrectionAction.MUTED, "", duration)
                     },
                     onCorrectionWithReplacement = { memoryId, text ->
-                        onCorrection(memoryId, CorrectionAction.WRONG)
-                        // F04: replacementText 通过外层回调传递
+                        onCorrection(memoryId, CorrectionAction.WRONG, text, com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
                     }
                 )
             }
@@ -1038,11 +1035,11 @@ private fun UtilityMenuItem(
 @Composable
 private fun MemoryRefItem(
     ref: MemoryRef,
-    onCorrection: (String, CorrectionAction) -> Unit,
+    onCorrection: (String, CorrectionAction, String, com.lovebrain.app.model.MuteDuration) -> Unit,
     onUndoCorrection: (String) -> Unit,
     // F04: 带时长的"暂时别提"和带输入的"不对"
-    onCorrectionWithMute: (String, com.lovebrain.app.model.MuteDuration) -> Unit = { id, _ -> onCorrection(id, CorrectionAction.MUTED) },
-    onCorrectionWithReplacement: (String, String) -> Unit = { id, text -> onCorrection(id, CorrectionAction.WRONG) }
+    onCorrectionWithMute: (String, com.lovebrain.app.model.MuteDuration) -> Unit = { id, _ -> onCorrection(id, CorrectionAction.MUTED, "", com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE) },
+    onCorrectionWithReplacement: (String, String) -> Unit = { id, text -> onCorrection(id, CorrectionAction.WRONG, text, com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE) }
 ) {
     var menuOpen by remember { mutableStateOf(false) }
     var showMuteSubmenu by remember { mutableStateOf(false) }
@@ -1110,7 +1107,7 @@ private fun MemoryRefItem(
                 showWrongDialog = true
             }
             CorrectionDropdownItem("结束", "这件事已结束") {
-                onCorrection(ref.id, CorrectionAction.FINISHED)
+                onCorrection(ref.id, CorrectionAction.FINISHED, "", com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
                 menuOpen = false
             }
             // F04: "暂时别提"——展开时长选择子菜单
@@ -1118,8 +1115,8 @@ private fun MemoryRefItem(
                 menuOpen = false
                 showMuteSubmenu = true
             }
-            CorrectionDropdownItem("不是她", "归属错误，需迁移") {
-                onCorrection(ref.id, CorrectionAction.WRONG_PERSON)
+            CorrectionDropdownItem("不是她", "归属错误，暂时隔离") {
+                onCorrection(ref.id, CorrectionAction.WRONG_PERSON, "", com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
                 menuOpen = false
             }
             CorrectionDropdownItem("撤销纠正", "恢复可信注入") {

@@ -123,8 +123,8 @@ fun LoveBrainPanelScreen(
     // F11: 输入已变化提示
     val inputChanged by viewModel.inputChanged.collectAsStateWithLifecycle()
 
-    // F02: 点踩后展示原因面板——记录最近一次点踩的 case
-    var dislikeCase by remember { mutableStateOf<com.lovebrain.app.model.FeedbackCase?>(null) }
+    // F02/P1-A: 点踩后展示原因面板——直接消费 VM 的 currentFeedbackCase，不再异步全库读取
+    val dislikeCase by viewModel.currentFeedbackCase.collectAsStateWithLifecycle()
 
     // F03: 记录实际发送——编辑框
     var showSentDialog by remember { mutableStateOf(false) }
@@ -426,17 +426,10 @@ fun LoveBrainPanelScreen(
                                 isGeneratingCore = isGeneratingCore,
                                 streamingSchemes = streamingSchemes,
                                 feedbacks = feedbacks,
-                                onFeedback = { scheme, fb ->
-                                    viewModel.setFeedback(scheme.identity.key, fb)
-                                    // F02: 点踩时展开原因面板
-                                    if (fb == SchemeFeedback.DISLIKED) {
-                                        viewModel.loadFeedbackCases { cases ->
-                                            dislikeCase = cases.lastOrNull { it.schemeIdentityKey == scheme.identity.key }
-                                        }
-                                    } else {
-                                        dislikeCase = null
-                                    }
-                                },
+        onFeedback = { scheme, fb ->
+            viewModel.setFeedback(scheme.identity.key, fb)
+            // F02/P1-A: VM 同步暴露 currentFeedbackCase，UI 直接消费——不再异步全库读取
+        },
                                 onCopyScheme = { scheme ->
                                     val reply = viewModel.copyScheme(scheme)
                                     onCopy(reply)
@@ -449,8 +442,8 @@ fun LoveBrainPanelScreen(
                                 },
                                 // F09: 本轮参考记忆 + 纠正回调
                                 memoryRefs = viewModel.getCurrentMemoryRefs(),
-                                onCorrection = { memoryId, action ->
-                                    viewModel.applyMemoryCorrection(memoryId, action)
+                                onCorrection = { memoryId, action, replacementText, muteDuration ->
+                                    viewModel.applyMemoryCorrection(memoryId, action, replacementText, "", muteDuration)
                                 },
                                 onUndoCorrection = { memoryId ->
                                     viewModel.undoMemoryCorrection(memoryId)
@@ -531,14 +524,14 @@ fun LoveBrainPanelScreen(
             }
         }
 
-        // F02: 点踩原因面板——点踩后在结果区下方展开
-        if (dislikeCase != null) {
-            com.lovebrain.app.ui.panel.reply.DislikeReasonPanel(
-                case = dislikeCase,
+    // F02/P1-A: 点踩原因面板——直接消费 VM currentFeedbackCase
+    if (dislikeCase != null) {
+        com.lovebrain.app.ui.panel.reply.DislikeReasonPanel(
+            case = dislikeCase,
                 onUpdateCase = { caseId, cats, reasons, note, better ->
                     viewModel.updateFeedbackCase(caseId, cats, reasons, note, better)
                 },
-                onDismiss = { dislikeCase = null },
+                onDismiss = { viewModel.dismissFeedbackCase() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = Spacing.md, vertical = Spacing.sm)
