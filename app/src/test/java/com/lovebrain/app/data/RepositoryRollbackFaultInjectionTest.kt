@@ -138,15 +138,13 @@ class RepositoryRollbackFaultInjectionTest {
                 )
 
                 // stage 更新会因为 kb.json 损坏而抛异常 → rollback
-                assertTrue("Should be RolledBack or RollbackFailed",
-                    result is ProfileTransactionResult.RolledBack ||
-                    result is ProfileTransactionResult.RollbackFailed)
+                // backup 文件都是正常的 → rollback 必须成功
+                assertTrue("Should be RolledBack (backup files are valid, rollback must succeed)",
+                    result is ProfileTransactionResult.RolledBack)
 
-                // rollback 后 me/her 应恢复原始内容（如果 rollback 成功）
-                if (result is ProfileTransactionResult.RolledBack) {
-                    assertEquals("me should be restored", originalMe, File(dir, "understand/me.md").readText())
-                    assertEquals("her should be restored", originalHer, File(dir, "understand/her.md").readText())
-                }
+                // rollback 后 me/her 必须恢复原始内容
+                assertEquals("me should be restored after rollback", originalMe, File(dir, "understand/me.md").readText())
+                assertEquals("her should be restored after rollback", originalHer, File(dir, "understand/her.md").readText())
             }
         }
     }
@@ -274,11 +272,12 @@ class RepositoryRollbackFaultInjectionTest {
                     expectedRevision = 0
                 )
 
-                // rollback 应删除新创建的 her.md（如果 rollback 成功）
-                if (result is ProfileTransactionResult.RolledBack) {
-                    assertFalse("her.md should be deleted after rollback",
-                        File(dir, "understand/her.md").exists())
-                }
+                // rollback 应删除新创建的 her.md
+                // backup 文件都是正常的 → rollback 必须成功
+                assertTrue("Should be RolledBack (backup files are valid, rollback must succeed)",
+                    result is ProfileTransactionResult.RolledBack)
+                assertFalse("her.md should be deleted after rollback",
+                    File(dir, "understand/her.md").exists())
             }
         }
     }

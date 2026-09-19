@@ -30,10 +30,10 @@ jobs:
         run: ./gradlew :app:assembleRelease --no-daemon
 
   # P1-5: Compose UI interaction test（需要 emulator）
-  # 当前为可选 job——emulator 启动不稳定时不阻断 verify
+  # UI 测试属于最终质量门禁——失败必须使 CI 红灯。
+  # emulator 偶发问题通过 retry / artifact 处理，不得通过 continue-on-error 掩盖。
   ui-test:
     runs-on: ubuntu-latest
-    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v4
@@ -55,5 +55,5 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew :app:connectedDebugAndroidTest --no-daemon
+          script: chmod +x gradlew && ./gradlew :app:connectedDebugAndroidTest --no-daemon
           disable-animations: true

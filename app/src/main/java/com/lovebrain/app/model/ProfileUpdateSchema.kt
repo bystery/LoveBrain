@@ -80,19 +80,44 @@ object ProfileUpdateSchema {
     /** 字段必须满足的跨字段约束 */
     private const val CROSS_FIELD_CONSTRAINT = "me/her/warmth 至少提供一个（不能全部缺失）。缺失字段表示不更新该项，不要传空字符串。"
 
-    /** 从 field spec 生成单行描述（normal prompt 用） */
+    /**
+     * 从 Presence 生成存在性描述前缀。
+     * - OPTIONAL → 可选，缺失=不更新
+     * - REQUIRED → 必填
+     * - CONDITIONAL → 条件必填
+     */
+    private fun Presence.toLabel(): String = when (this) {
+        Presence.OPTIONAL -> "可选"
+        Presence.REQUIRED -> "必填"
+        Presence.CONDITIONAL -> "条件必填"
+    }
+
+    /**
+     * 从 Presence 生成缺失语义说明。
+     * - OPTIONAL → 缺失=不更新
+     * - REQUIRED → 不可缺失
+     * - CONDITIONAL → 条件不满足时可缺失
+     */
+    private fun Presence.toMissingBehavior(): String? = when (this) {
+        Presence.OPTIONAL -> "缺失=不更新"
+        Presence.REQUIRED -> "不可缺失"
+        Presence.CONDITIONAL -> null
+    }
+
+    /** 从 field spec 生成单行描述（normal prompt 用）——统一使用 Presence 语义 */
     private fun FieldSpec.toLine(): String = buildString {
-        append("- $name: $type")
-        if (presence == Presence.OPTIONAL) append("（可选")
+        append("- $name: $type（${presence.toLabel()}")
         if (note != null) {
-            if (presence == Presence.OPTIONAL) append("，") else append("。")
-            append(note)
+            append("，$note")
         }
-        if (presence == Presence.OPTIONAL) append("，缺失=不更新")
+        val missing = presence.toMissingBehavior()
+        if (missing != null) {
+            append("，$missing")
+        }
         if (constraint != null) {
-            append("。$constraint")
+            append("，$constraint")
         }
-        append("。")
+        append("）")
     }
 
     /**
@@ -108,14 +133,15 @@ object ProfileUpdateSchema {
     }
 
     /**
-     * 供 strict prompt 使用的精简 schema 文案——同一套 field spec，更紧凑的格式。
+     * 供 strict prompt 使用的精简 schema 文案——同一套 field spec + Presence 语义。
      */
     fun strictSchemaForPrompt(): String = buildString {
         appendLine("JSON 对象字段：")
         for (spec in fieldSpecs) {
-            append("- ${spec.name}: ${spec.type}（可选")
+            append("- ${spec.name}: ${spec.type}（${spec.presence.toLabel()}")
             if (spec.note != null) append("，${spec.note}")
-            append("，缺失=不更新")
+            val missing = spec.presence.toMissingBehavior()
+            if (missing != null) append("，$missing")
             if (spec.constraint != null) append("，${spec.constraint}")
             appendLine("）")
         }
@@ -132,10 +158,13 @@ object ProfileUpdateSchema {
     fun compactSchemaForPrompt(): String = buildString {
         appendLine("修复要求：")
         appendLine("1. 确保 JSON 语法正确（括号闭合、逗号正确、字符串用双引号）")
-        // 由 fieldSpecs 生成字段约束——不再手写
+        // 由 fieldSpecs + Presence 语义生成字段约束——不再手写
         for (spec in fieldSpecs) {
             val parts = mutableListOf<String>()
             parts.add(spec.type)
+            parts.add(spec.presence.toLabel())
+            val missing = spec.presence.toMissingBehavior()
+            if (missing != null) parts.add(missing)
             if (spec.constraint != null) parts.add(spec.constraint)
             appendLine("${fieldSpecs.indexOf(spec) + 2}. ${spec.name}: ${parts.joinToString("；")}")
         }

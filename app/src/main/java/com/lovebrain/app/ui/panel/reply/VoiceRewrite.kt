@@ -202,14 +202,19 @@ fun rememberVoiceRewriteController(
     }
 
     // P0-1: 统一提交逻辑——两事件 rendezvous
+    // 使用 shouldCommitTranscript() 作为单一决策源——与 VoiceGestureCommitTest 测试的纯函数一致
     // 条件：physicalReleased && finalTranscript非空 && !cancelled && !submitted
     // 两个事件谁先来都行，只要两个都满足就提交
     fun tryCommit() {
-        val transcript = finalTranscript.value
-        if (physicalReleased.value && transcript != null && transcript.isNotBlank() && !cancelled.value && !submitted.value) {
+        if (shouldCommitTranscript(
+            physicalReleased = physicalReleased.value,
+            finalTranscript = finalTranscript.value,
+            cancelled = cancelled.value,
+            submitted = submitted.value
+        )) {
             submitted.value = true
             L.w("VoiceRewrite: committing transcript (rendezvous satisfied)")
-            onVoiceRewrite(tagRef, transcript.trim())
+            onVoiceRewrite(tagRef, finalTranscript.value!!.trim())
             // 提交后状态归位
             voiceState = VoiceRewriteState.IDLE
         }

@@ -158,48 +158,56 @@ fun ResultArea(
                 SchemeViewMode.STYLE -> response.schemes
                 SchemeViewMode.DIRECTION -> response.directionSchemes
             }
-            Column(
+            // P0-4: Box 外层——ResultUtilityTrigger 用 align(TopEnd) 覆盖，
+            // 不参与 Column measurement，默认状态额外纵向高度 = 0。
+            Box(
                 modifier = modifier
                     .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
             ) {
-                // P0-1: 轻量切换入口——只在有方向回复时显示
-                if (hasDirections) {
-                    SchemeViewSwitcher(
-                        mode = viewMode,
-                        onModeChange = { viewMode = it }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    // P0-1: 轻量切换入口——只在有方向回复时显示
+                    if (hasDirections) {
+                        SchemeViewSwitcher(
+                            mode = viewMode,
+                            onModeChange = { viewMode = it }
+                        )
+                        Spacer(Modifier.height(Spacing.sm))
+                    }
+                    SchemeCardsRow(
+                        schemes = displaySchemes,
+                        feedbacks = feedbacks,
+                        onFeedback = onFeedback,
+                        onCopyScheme = onCopyScheme,
+                        rewriteStates = rewriteStates,
+                        onRewrite = onRewrite,
+                        onClearRewriteState = onClearRewriteState,
+                        onCancelRewrite = onCancelRewrite,
+                        onUndoRewrite = onUndoRewrite,
+                        onVoiceRewrite = onVoiceRewrite,
+                        onPermissionEvent = onPermissionEvent
                     )
-                    Spacer(Modifier.height(Spacing.sm))
-                }
-                SchemeCardsRow(
-                    schemes = displaySchemes,
-                    feedbacks = feedbacks,
-                    onFeedback = onFeedback,
-                    onCopyScheme = onCopyScheme,
-                    rewriteStates = rewriteStates,
-                    onRewrite = onRewrite,
-                    onClearRewriteState = onClearRewriteState,
-                    onCancelRewrite = onCancelRewrite,
-                    onUndoRewrite = onUndoRewrite,
-                    onVoiceRewrite = onVoiceRewrite,
-                    onPermissionEvent = onPermissionEvent
-                )
 
-                if (response.analysis.ongoing.isNotEmpty()) {
-                    Spacer(Modifier.height(Spacing.sm))
-                    OngoingSection(items = response.analysis.ongoing)
+                    if (response.analysis.ongoing.isNotEmpty()) {
+                        Spacer(Modifier.height(Spacing.sm))
+                        OngoingSection(items = response.analysis.ongoing)
+                    }
                 }
 
-                // P0-4: 结果级 utility trigger——不再有"记入知识库专属 Row"。
-                // 右上角轻量 ⋯ trigger，点击打开 DropdownMenu：
+                // P0-4: 结果级 utility trigger——右上角 overlay，不参与 Column measurement。
+                // 点击打开 DropdownMenu：
                 // - 菜单始终包含"记入知识库"
                 // - memoryRefs 非空时包含"本轮参考"及后续纠正入口
-                // 不增加结果区纵向高度——overlay 在结果区尾部
+                // 默认未展开状态额外纵向高度 = 0
                 ResultUtilityTrigger(
                     memoryRefs = memoryRefs,
                     onSaveToKb = onSaveToKb,
                     onCorrection = onCorrection,
-                    onUndoCorrection = onUndoCorrection
+                    onUndoCorrection = onUndoCorrection,
+                    modifier = Modifier.align(Alignment.TopEnd)
                 )
             }
         }
@@ -740,27 +748,27 @@ private fun TypewriterText(
 /**
  * P0-4: 结果级 utility trigger — 右上角轻量 ⋯ trigger + DropdownMenu。
  *
- * 替代旧的"记入知识库专属 Row"。不再增加结果区纵向高度。
+ * 替代旧的"记入知识库专属 Row"。不增加结果区纵向高度。
  * - 菜单始终包含"记入知识库"
  * - memoryRefs 非空时包含"本轮参考"展开/收起入口及纠正菜单
  *
  * 目标：功能一直存在，但没有"一个功能一整行"。
+ * 通过 modifier = Modifier.align(TopEnd) 定位为 overlay，不参与 Column measurement。
  */
 @Composable
 private fun ResultUtilityTrigger(
     memoryRefs: List<MemoryRef>,
     onSaveToKb: () -> Unit,
     onCorrection: (String, CorrectionAction) -> Unit,
-    onUndoCorrection: (String) -> Unit
+    onUndoCorrection: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var menuOpen by remember { mutableStateOf(false) }
     var showRefs by remember { mutableStateOf(false) }
 
+    // trigger 不使用 fillMaxWidth——只是一个 28dp 的 overlay 图标
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(Alignment.Top),
-        contentAlignment = Alignment.TopEnd
+        modifier = modifier
     ) {
         // ⋯ trigger
         val (triggerInteraction, triggerScale) = rememberPressScale(0.92f, "resultUtilityTriggerScale")

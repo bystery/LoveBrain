@@ -116,4 +116,49 @@ class ProfileSchemaConsistencyTest {
         // compact schema 应明确说明至少需要一个画像字段
         assertTrue("compact schema must mention at least one profile field required", compact.contains("至少提供一个"))
     }
+
+    // ═══ P0-8: new_stage Presence 一致性——不能同时出现"可选"和"必填" ═══
+
+    @Test
+    fun `new_stage is conditional in normal schema - not optional`() {
+        val desc = ProfileUpdateSchema.schemaDescriptionForPrompt()
+        // new_stage 应该是"条件必填"，不是"可选"
+        val newStageLine = desc.lines().firstOrNull { it.contains("new_stage") }
+        assertNotNull("new_stage should be mentioned in normal schema", newStageLine)
+        assertTrue("new_stage should be '条件必填' in normal schema: $newStageLine",
+            newStageLine!!.contains("条件必填"))
+        assertFalse("new_stage should NOT be '可选' in normal schema: $newStageLine",
+            newStageLine.contains("可选"))
+    }
+
+    @Test
+    fun `new_stage is conditional in strict schema - not optional`() {
+        val strict = ProfileUpdateSchema.strictSchemaForPrompt()
+        val newStageLine = strict.lines().firstOrNull { it.contains("new_stage") }
+        assertNotNull("new_stage should be mentioned in strict schema", newStageLine)
+        assertTrue("new_stage should be '条件必填' in strict schema: $newStageLine",
+            newStageLine!!.contains("条件必填"))
+        assertFalse("new_stage should NOT be '可选' in strict schema: $newStageLine",
+            newStageLine.contains("可选"))
+    }
+
+    @Test
+    fun `new_stage is conditional in compact schema - not optional`() {
+        val compact = ProfileUpdateSchema.compactSchemaForPrompt()
+        val newStageLine = compact.lines().firstOrNull { it.contains("new_stage") }
+        assertNotNull("new_stage should be mentioned in compact schema", newStageLine)
+        assertTrue("new_stage should be '条件必填' in compact schema: $newStageLine",
+            newStageLine!!.contains("条件必填"))
+    }
+
+    @Test
+    fun `normal schema toLine has balanced parentheses`() {
+        val desc = ProfileUpdateSchema.schemaDescriptionForPrompt()
+        // 每行字段描述的括号应该闭合
+        desc.lines().filter { it.startsWith("- ") }.forEach { line ->
+            val openCount = line.count { it == '（' }
+            val closeCount = line.count { it == '）' }
+            assertEquals("Parentheses should be balanced in: $line", openCount, closeCount)
+        }
+    }
 }

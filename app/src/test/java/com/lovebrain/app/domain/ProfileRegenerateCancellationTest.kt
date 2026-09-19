@@ -1,155 +1,238 @@
 package com.lovebrain.app.domain
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.supervisorScope
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.TestScope
+import com.lovebrain.app.data.DeepSeekRepository
+import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.data.RawGenerationResult
+import com.lovebrain.app.model.ProfileSuggestion
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.Assert.assertEquals
 
 /**
- * P0-2: Profile regenerate coroutine ownership 测试。
+ * P0-2: Profile regenerate production-path cancellation test.
  *
- * 验证 coroutineScope 创建的子协程在 cancel 时真正传播。
- *
- * 此测试不 mock Repository——它直接测试 coroutineScope 的结构化并发语义，
- * 即：cancel 父协程时，coroutineScope 内的子协程也会被取消。
+ * 测试真正实例化 KnowledgeTriggerCoordinator，使用可控 fake/mock DeepSeekRepository：
+ * - generateRawWithMetadata 启动后 suspend（模拟模型请求进行中）
+ * - 调用真实 regenerateProfile()，随后 cancel 上层 Job
+ * - 验证：
+ *   - provider coroutine 收到 cancellation（suspend 被打断）
+ *   - 后续 retry attempt 不发生
+ *   - onProfileSuggestion 不发生
+ *   - append reflect_history 不发生
+ *   - CancellationException 没有被转 EMPTY 或 PROVIDER_ERROR
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProfileRegenerateCancellationTest {
 
     @Test
-    fun `coroutineScope child is cancelled when parent is cancelled`() = runTest {
-        var childStarted = false
-        var childCancelled = false
+    fun `regenerateProfile cancellation propagates to provider and does not invoke callbacks`() = runTest {
+        // Track whether the provider suspend was actually entered and then cancelled
+        var providerEntered = false
+        var providerCancelled = false
+        var profileSuggestionCalled = false
+        var reflectHistoryAppended = false
 
-        val parentJob = launch {
+        val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
+        coEvery { knowledgeRepo.appendFileWithRevisionCheck(any(), any(), any(), any()) } coAnswers {
+            reflectHistoryAppended = true
+            true
+        }
+
+        val deepSeekRepo = mockk<DeepSeekRepository>()
+        // generateRawWithMetadata 启动后 suspend 直到被 cancel
+        coEvery { deepSeekRepo.generateRawWithMetadata(any(), any()) } coAnswers {
+            providerEntered = true
             try {
-                coroutineScope {
-                    val childJob = launch {
-                        childStarted = true
-                        try {
-                            delay(10000)
-                        } catch (e: kotlinx.coroutines.CancellationException) {
-                            childCancelled = true
-                            throw e
-                        }
-                    }
-                    childJob.join()
-                }
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                // 预期——父被取消
-            }
-        }
-
-        // 等待子协程启动
-        while (!childStarted) {
-            testScheduler.advanceTimeBy(1)
-        }
-
-        // 取消父协程
-        parentJob.cancel()
-
-        // 等待取消传播
-        try { parentJob.join() } catch (_: Exception) {}
-
-        assertTrue("child should have been started", childStarted)
-        assertTrue("child should have been cancelled when parent cancelled", childCancelled)
-    }
-
-    @Test
-    fun `CancellationException in coroutineScope propagates and is not swallowed`() = runTest {
-        var cancellationReached = false
-
-        val job = launch {
-            try {
-                coroutineScope {
-                    // 模拟 generateReflectSuggestionSuspend 的行为
-                    try {
-                        delay(10000)  // 模拟模型请求
-                    } catch (e: kotlinx.coroutines.CancellationException) {
-                        cancellationReached = true
-                        throw e  // rethrow——不被 catch(Exception) 吞掉
-                    }
-                }
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                // 预期
-            }
-        }
-
-        testScheduler.advanceTimeBy(1)
-        job.cancel()
-        try { job.join() } catch (_: Exception) {}
-
-        assertTrue("CancellationException should have been rethrown, not swallowed", cancellationReached)
-    }
-
-    @Test
-    fun `delay in retry loop is cancellable`() = runTest {
-        var firstAttemptDone = false
-        var retryDelayCancelled = false
-
-        val job = launch {
-            try {
-                coroutineScope {
-                    firstAttemptDone = true
-                    // 模拟重试退避——delay 是 suspend，cancel 会传播
-                    delay(500)
-                }
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                retryDelayCancelled = true
-            }
-        }
-
-        // 等待首次尝试完成
-        while (!firstAttemptDone) {
-            testScheduler.advanceTimeBy(1)
-        }
-
-        // 在 retry delay 期间取消
-        testScheduler.advanceTimeBy(50)
-        job.cancel()
-        try { job.join() } catch (_: Exception) {}
-
-        assertTrue("retry delay should be cancellable", retryDelayCancelled)
-    }
-
-    @Test
-    fun `sibling launch is NOT cancelled when parent join is cancelled`() = runTest {
-        // 反例验证：旧的 scope.launch{}.join() 模式下，
-        // 取消 join 的 Job 不会取消实际 launch 的 Job
-        var siblingCompleted = false
-
-        val outerJob = launch {
-            // 模拟旧模式：scope.launch { ... }.join()
-            val siblingJob = launch {
-                delay(100)
-                siblingCompleted = true
-            }
-            try {
-                siblingJob.join()
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                // join 被取消，但 siblingJob 可能继续运行
+                kotlinx.coroutines.delay(10000)
+                // 如果 delay 没有被取消，返回一个有效结果（不应该走到这里）
+                RawGenerationResult(content = "", finishReason = null)
+            } catch (e: CancellationException) {
+                providerCancelled = true
                 throw e
             }
         }
 
-        testScheduler.advanceTimeBy(1)
-        outerJob.cancel()
-        try { outerJob.join() } catch (_: Exception) {}
+        val promptBuilder = mockk<PromptBuilder>(relaxed = true)
+        coEvery { promptBuilder.buildReflectSystemPrompt() } returns "system prompt"
+        coEvery { promptBuilder.buildReflectUserPrompt(any()) } returns "user prompt"
 
-        // 在旧模式下，siblingJob 可能完成也可能被取消——取决于结构化并发
-        // 这个测试验证 coroutineScope 的优势：真正结构化取消
-        // 在 testScheduler 中，cancel 后所有子协程也会被取消
-        // 但旧模式 scope.launch{}.join() 的 sibling 可能不在同一层级
+        val callbacks = mockk<KnowledgeTriggerCoordinator.Callbacks>(relaxed = true)
+        coEvery { callbacks.onProfileSuggestion(any()) } answers {
+            profileSuggestionCalled = true
+            Unit
+        }
+
+        val coordinator = KnowledgeTriggerCoordinator(
+            knowledgeRepo = knowledgeRepo,
+            deepSeekRepo = deepSeekRepo,
+            promptBuilder = promptBuilder,
+            topicRecorder = mockk(relaxed = true)
+        )
+
+        // 启动 regenerateProfile 在一个子协程中
+        val job = launch {
+            try {
+                coordinator.regenerateProfile("kb1", callbacks)
+            } catch (e: CancellationException) {
+                // 预期——上层 cancel 传播到底层
+            }
+        }
+
+        // 等待 provider 进入 suspend
+        while (!providerEntered) {
+            testScheduler.advanceTimeBy(1)
+        }
+
+        // 此时 provider 正在 delay(10000)——cancel 上层 Job
+        job.cancel()
+
+        // 等待取消传播完成
+        try { job.join() } catch (_: Exception) {}
+
+        // ═══ 验证 ═══
+
+        assertTrue("Provider coroutine should have been entered", providerEntered)
+        assertTrue("Provider coroutine should have received cancellation", providerCancelled)
+        assertFalse("onProfileSuggestion should NOT be called after cancellation", profileSuggestionCalled)
+        assertFalse("reflect_history should NOT be appended after cancellation", reflectHistoryAppended)
+
+        // 验证 generateRawWithMetadata 只被调用了一次（第一次 attempt），
+        // 取消后不应该有后续 retry attempt
+        coVerify(exactly = 1) { deepSeekRepo.generateRawWithMetadata(any(), any()) }
+    }
+
+    @Test
+    fun `regenerateProfile cancellation during retry delay does not start next attempt`() = runTest {
+        var attemptCount = 0
+        var profileSuggestionCalled = false
+
+        val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
+
+        val deepSeekRepo = mockk<DeepSeekRepository>()
+        // 第一次 attempt 返回空（触发 EMPTY → retry delay），第二次 attempt 不应被到达
+        coEvery { deepSeekRepo.generateRawWithMetadata(any(), any()) } coAnswers {
+            attemptCount++
+            if (attemptCount == 1) {
+                // 返回空响应——触发 retry
+                RawGenerationResult(content = "", finishReason = null)
+            } else {
+                // 不应该走到这里——cancel 应该在 retry delay 期间生效
+                RawGenerationResult(content = "{}", finishReason = "stop")
+            }
+        }
+
+        val promptBuilder = mockk<PromptBuilder>(relaxed = true)
+        coEvery { promptBuilder.buildReflectSystemPrompt() } returns "system"
+        coEvery { promptBuilder.buildReflectUserPrompt(any()) } returns "user"
+
+        val callbacks = mockk<KnowledgeTriggerCoordinator.Callbacks>(relaxed = true)
+        coEvery { callbacks.onProfileSuggestion(any()) } answers {
+            profileSuggestionCalled = true
+            Unit
+        }
+
+        val coordinator = KnowledgeTriggerCoordinator(
+            knowledgeRepo = knowledgeRepo,
+            deepSeekRepo = deepSeekRepo,
+            promptBuilder = promptBuilder,
+            topicRecorder = mockk(relaxed = true)
+        )
+
+        val job = launch {
+            try {
+                coordinator.regenerateProfile("kb1", callbacks)
+            } catch (e: CancellationException) {
+                // 预期
+            }
+        }
+
+        // 等待第一次 attempt 完成（返回空）
+        while (attemptCount < 1) {
+            testScheduler.advanceTimeBy(1)
+        }
+
+        // 现在在 retry delay 中（RETRY_BACKOFF_MS * 1 = 500ms）
+        // 在 delay 期间 cancel
+        testScheduler.advanceTimeBy(50) // 进入 retry delay
+        job.cancel()
+        try { job.join() } catch (_: Exception) {}
+
+        // 验证：只有第一次 attempt 被执行，第二次因 cancel 未启动
+        assertEquals("Only first attempt should have executed", 1, attemptCount)
+        assertFalse("onProfileSuggestion should NOT be called", profileSuggestionCalled)
+    }
+
+    @Test
+    fun `regenerateProfile cancellation does not convert CancellationException to PROVIDER_ERROR`() = runTest {
+        var providerEntered = false
+        var providerCancelled = false
+        var kbNoticeCalled = false
+        var profileSuggestionCalled = false
+
+        val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
+
+        val deepSeekRepo = mockk<DeepSeekRepository>()
+        coEvery { deepSeekRepo.generateRawWithMetadata(any(), any()) } coAnswers {
+            providerEntered = true
+            try {
+                kotlinx.coroutines.delay(10000)
+                RawGenerationResult(content = "", finishReason = null)
+            } catch (e: CancellationException) {
+                providerCancelled = true
+                throw e // 必须 rethrow——不能被 catch(Exception) 吞掉
+            }
+        }
+
+        val promptBuilder = mockk<PromptBuilder>(relaxed = true)
+        coEvery { promptBuilder.buildReflectSystemPrompt() } returns "system"
+        coEvery { promptBuilder.buildReflectUserPrompt(any()) } returns "user"
+
+        val callbacks = object : KnowledgeTriggerCoordinator.Callbacks {
+            override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {}
+            override fun onVectorUpdateNotice(kbName: String, summary: String) {}
+            override fun onStageSuggestion(suggestion: com.lovebrain.app.model.StageSuggestion) {}
+            override fun onKbNotice(notice: String) { kbNoticeCalled = true }
+            override fun onProfileSuggestion(suggestion: ProfileSuggestion) { profileSuggestionCalled = true }
+            override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {}
+        }
+
+        val coordinator = KnowledgeTriggerCoordinator(
+            knowledgeRepo = knowledgeRepo,
+            deepSeekRepo = deepSeekRepo,
+            promptBuilder = promptBuilder,
+            topicRecorder = mockk(relaxed = true)
+        )
+
+        val job = launch {
+            try {
+                coordinator.regenerateProfile("kb1", callbacks)
+            } catch (e: CancellationException) {
+                // 预期
+            }
+        }
+
+        while (!providerEntered) {
+            testScheduler.advanceTimeBy(1)
+        }
+
+        job.cancel()
+        try { job.join() } catch (_: Exception) {}
+
+        assertTrue("Provider should have been entered", providerEntered)
+        assertTrue("Provider should have received cancellation", providerCancelled)
+        // CancellationException 不应被转为 EMPTY/PROVIDER_ERROR → 不应调用 onKbNotice
+        assertFalse("onKbNotice should NOT be called (CancellationException was swallowed)", kbNoticeCalled)
+        assertFalse("onProfileSuggestion should NOT be called", profileSuggestionCalled)
     }
 }
