@@ -14,8 +14,8 @@ import com.lovebrain.app.model.EntityRef
  * - Level 2: 实体规则——显式名字、人称引用目标
  * - Level 3: 语义不确定——UNKNOWN（宁可 UNKNOWN，不猜）
  *
- * subject 不无条件信 AI。
- * 封板期：AI subject_candidate 暂不参与解析——Level1/2 无法确定时直接返回 UNKNOWN。
+ * P1-12: AI subject_candidate 已从 format.md 移除，不再请求模型生成。
+ * 客户端通过 Level1/2 自行推导，无法确定时返回 UNKNOWN。
  */
 object FactSubjectResolver {
 
@@ -26,15 +26,13 @@ object FactSubjectResolver {
      * @param speaker 已确定的说话人（由 FactSpeakerResolver 推导）
      * @param sourceIds 来源消息 ID
      * @param dialogue 冻结对话快照
-     * @param subjectCandidate AI 提供的主体候选（PARTNER/USER/UNKNOWN），作为 Level 3 低优先级证据
      * @return EntityRef（HER / ME / UNKNOWN）
      */
     fun resolve(
         factText: String,
         speaker: EntityRef,
         sourceIds: List<String>,
-        dialogue: List<DialogueMessage>,
-        subjectCandidate: String = ""
+        dialogue: List<DialogueMessage>
     ): EntityRef {
         // Level 1: 代码可确定——基于 speaker + 代词
         val level1 = resolveByPronoun(factText, speaker)
