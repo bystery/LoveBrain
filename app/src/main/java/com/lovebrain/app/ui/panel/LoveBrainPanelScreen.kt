@@ -231,7 +231,7 @@ fun LoveBrainPanelScreen(
                     Text(
                         "添加对话 -> 生成回复 -> 查看回复方案\n" +
                             "点击方案卡可调整单条措辞，长按可语音修改\n" +
-                            "点踩可记录原因并导出，帮助军师学习\n" +
+                            "点踩可记录原因并导出，便于后续复盘和调整\n" +
                             "顶部显示今日/本次/累计花费与生成次数\n" +
                             "困惑时可切「谈心」模式，军师用公正视角帮你分析",
                         style = AppTypography.labelMedium,
@@ -473,10 +473,10 @@ fun LoveBrainPanelScreen(
                                 // F11: 输入已变化提示
                                 inputChanged = inputChanged,
                                 onRegenerateWithNewInput = { viewModel.generate() },
-                                // F03: 记录实际发送
-                                onRecordSent = { scheme ->
-                                    sentDialogSchemeKey = scheme.identity.key
-                                    sentDialogPrefill = scheme.reply
+                                // F03: 记录实际发送——P0-3: result-level 入口不自动绑定方案卡
+                                onRecordSent = {
+                                    sentDialogSchemeKey = null
+                                    sentDialogPrefill = ""
                                     showSentDialog = true
                                 },
                                 // F04: 打开记忆纠正中心

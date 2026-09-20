@@ -3,9 +3,9 @@ package com.lovebrain.app.ui.panel.reply
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performScrollToNode
-import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.performScrollToIndex
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ReplySchemes
@@ -76,16 +76,14 @@ class ResultAreaVisualRegressionTest {
         // 首张卡默认可见
         composeRule.onNodeWithText("推荐回复内容").assertIsDisplayed()
 
-        // 滚动 LazyRow 到第二张
-        composeRule.onNodeWithText("推荐回复内容").performScrollToNode(hasText("清醒回复内容"))
+        // P0-7: 使用 testTag 定位 LazyRow，performScrollToIndex 滚动到后续卡
+        composeRule.onNodeWithTag("scheme_cards_row").performScrollToIndex(1)
         composeRule.onNodeWithText("清醒回复内容").assertIsDisplayed()
 
-        // 滚动到第三张
-        composeRule.onNodeWithText("清醒回复内容").performScrollToNode(hasText("俏皮回复内容"))
+        composeRule.onNodeWithTag("scheme_cards_row").performScrollToIndex(2)
         composeRule.onNodeWithText("俏皮回复内容").assertIsDisplayed()
 
-        // 滚动到第四张
-        composeRule.onNodeWithText("俏皮回复内容").performScrollToNode(hasText("温柔回复内容"))
+        composeRule.onNodeWithTag("scheme_cards_row").performScrollToIndex(3)
         composeRule.onNodeWithText("温柔回复内容").assertIsDisplayed()
     }
 
@@ -99,14 +97,12 @@ class ResultAreaVisualRegressionTest {
         setupResultArea()
         // 首张默认可见
         composeRule.onNodeWithText("推荐回复内容").assertIsDisplayed()
-        // 滚动到第二张
-        composeRule.onNodeWithText("推荐回复内容").performScrollToNode(hasText("清醒回复内容"))
+        // P0-7: 使用 testTag + performScrollToIndex 逐个验证
+        composeRule.onNodeWithTag("scheme_cards_row").performScrollToIndex(1)
         composeRule.onNodeWithText("清醒回复内容").assertIsDisplayed()
-        // 滚动到第三张
-        composeRule.onNodeWithText("清醒回复内容").performScrollToNode(hasText("俏皮回复内容"))
+        composeRule.onNodeWithTag("scheme_cards_row").performScrollToIndex(2)
         composeRule.onNodeWithText("俏皮回复内容").assertIsDisplayed()
-        // 滚动到第四张
-        composeRule.onNodeWithText("俏皮回复内容").performScrollToNode(hasText("温柔回复内容"))
+        composeRule.onNodeWithTag("scheme_cards_row").performScrollToIndex(3)
         composeRule.onNodeWithText("温柔回复内容").assertIsDisplayed()
     }
 

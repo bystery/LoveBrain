@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -97,8 +98,8 @@ fun ResultArea(
     // F11: 输入已变化提示
     inputChanged: Boolean = false,
     onRegenerateWithNewInput: () -> Unit = {},
-    // F03: 记录实际发送
-    onRecordSent: (Scheme) -> Unit = {},
+    // F03: 记录实际发送——P0-3: 不自动绑定第一张卡，调用方决定是否预填
+    onRecordSent: () -> Unit = {},
     // F04: 打开记忆纠正中心
     onShowCorrectionCenter: () -> Unit = {},
     // P0-3: 稳定轮次身份——只在整轮 generate 成功时变化
@@ -247,7 +248,7 @@ fun ResultArea(
                     onToggleRefs = { showRefs = !showRefs },
                     onlyThisRound = onlyThisRound,
                     onToggleOnlyThisRound = onToggleOnlyThisRound,
-                    onRecordSent = { onRecordSent(displaySchemes.firstOrNull { it.reply.isNotBlank() } ?: displaySchemes.first()) },
+                    onRecordSent = { onRecordSent() },
                     hasResult = response.schemes.any { it.reply.isNotBlank() },
                     onShowCorrectionCenter = onShowCorrectionCenter,
                     modifier = Modifier.align(Alignment.TopEnd)
@@ -477,6 +478,7 @@ private fun SchemeCardsRow(
                 state = scrollState,
                 horizontalArrangement = Arrangement.spacedBy(Spacing.md),
                 modifier = Modifier.fillMaxWidth()
+                    .testTag("scheme_cards_row")
             ) {
                 items(displaySchemes, key = { it.identity.key }) { scheme ->
                     // 入场动效：淡入+上移，逐张交错 60ms（仅首次组合播放）
