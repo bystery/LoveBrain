@@ -659,9 +659,9 @@ class PromptBuilder(
 
     /**
      * F04: 检查 MUTED 纠正是否已过期。
-     * - THIS_ROUND: 不在持久层判断——由 ViewModel roundCorrections transient map 管理。
-     *   持久 corrections.json 中的 THIS_ROUND 记录视为无效（不应持久化），
-     *   保守返回 false（不过期），由 ViewModel 层覆盖控制。
+     * - THIS_ROUND: 持久 corrections.json 中的 THIS_ROUND 记录视为 legacy expired。
+     *   旧版本可能持久化了 THIS_ROUND，升级后不应变成永久静音。
+     *   THIS_ROUND 的真实生命周期由 ViewModel roundCorrections transient map 管理。
      * - TODAY: 今天剩余时间。跨天后恢复。
      * - UNTIL_RESTORE: 永不过期，只能手动撤销。
      * 旧数据无 muteDuration 字段时默认为 UNTIL_RESTORE，保持原语义。
@@ -671,9 +671,9 @@ class PromptBuilder(
         return when (correction.muteDuration) {
             com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE -> false
             com.lovebrain.app.model.MuteDuration.THIS_ROUND -> {
-                // F04-fix: THIS_ROUND 不通过时间猜过期——由 ViewModel roundCorrections 控制。
-                // 持久层不应存在 THIS_ROUND 记录；如果存在，保守视为不过期（由 VM 层覆盖）。
-                false
+                // P0-5: 持久层不应存在 THIS_ROUND 记录；如果存在，视为 legacy expired。
+                // 旧版本持久化的 THIS_ROUND 升级后不应变成永久静音。
+                true
             }
             com.lovebrain.app.model.MuteDuration.TODAY -> {
                 // 今天剩余——跨天后恢复

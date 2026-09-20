@@ -144,19 +144,21 @@ class LoveBrainViewModel(
     }
 
     /** F11/P0-D: 生成历史——每轮成功生成时保存的版本快照，携带完整版本身份
-     * 注意：这是 session-only 内存历史，杀进程即消失。不声称跨重启完整版本历史。 */
+     * 注意：这是 session-only 内存历史，杀进程即消失。不声称跨重启完整版本历史。
+     * P0-1: snapshot 保存完整 immutable ReplyGenerationContext，
+     * rollback 时原子恢复 result + versionId + context，避免 result/context 错配。 */
     private data class GenerationSnapshot(
         val versionId: GenerationVersionId,
         val result: GenerateResult.Success,
-        val inputFingerprint: String,
-        val messageIds: Set<String>,
-        val ideaHint: String,
+        val context: ReplyGenerationContext,
         val kbName: String?,
         val createdAt: Long = System.currentTimeMillis()
     )
-    /** F11/P0-D: session 生成历史——内存 StateFlow，杀进程即消失。不声称跨重启完整版本历史。 */
+    /** F11/P0-D: session 生成历史——内存 StateFlow，杀进程即消失。不声称跨重启完整版本历史。
+     * P0-1: 最多保留最近 20 个版本，防止长 session 无限增长。 */
     private val _generationHistory = MutableStateFlow<List<GenerationSnapshot>>(emptyList())
     val generationHistorySize: Int get() = _generationHistory.value.size
+    private val MAX_HISTORY_SIZE = 20
 
     /** P0-D: 当前活跃版本 ID——最新成功生成的版本身份，用于绑定点踩/发送/改写 */
     private val _currentVersionId = MutableStateFlow<GenerationVersionId?>(null)
@@ -437,7 +439,9 @@ class LoveBrainViewModel(
 
     /**
      * F11: 计算输入指纹——纯函数，对顺序敏感。
-     * 覆盖：KB identity、有序消息(id+role+content)、IDEA、onlyThisRound、intent revision。
+     * P1-8: 使用 exact canonical representation（length-prefixed encoding），
+     * 不再依赖 Java 32-bit hashCode()。覆盖：KB identity、有序消息(id+role+exact content)、
+     * IDEA exact content、onlyThisRound、intent revision。
      */
     private fun computeInputFingerprint(
         messages: List<ChatMessage>,
@@ -447,22 +451,28 @@ class LoveBrainViewModel(
         intentRevision: Int
     ): String {
         val sb = StringBuilder()
-        sb.append("kb=").append(kbName ?: "").append(";")
-        sb.append("otr=").append(onlyThisRound).append(";")
-        sb.append("irev=").append(intentRevision).append(";")
-        sb.append("idea=").append(ideaHash(ideaHint)).append(";")
+        // P1-8: length-prefixed canonical encoding — 不使用 hashCode()
+        appendLengthPrefixed(sb, "kb", kbName ?: "")
+        appendLengthPrefixed(sb, "otr", onlyThisRound.toString())
+        appendLengthPrefixed(sb, "irev", intentRevision.toString())
+        appendLengthPrefixed(sb, "idea", ideaHint.trim())
         sb.append("msgs=")
         for (msg in messages) {
-            sb.append(msg.id).append(":").append(msg.role.name).append(":").append(msg.content.hashCode()).append(",")
+            appendLengthPrefixed(sb, "m", msg.id)
+            sb.append(msg.role.name).append(",")
+            appendLengthPrefixed(sb, "c", msg.content)
+            sb.append(";")
         }
-        // F11: SHA-256 指纹——比 String.hashCode() 更抗碰撞
+        // F11: SHA-256 指纹——对 exact canonical representation 做哈希
         val digest = MessageDigest.getInstance("SHA-256")
         val hashBytes = digest.digest(sb.toString().toByteArray(Charsets.UTF_8))
         return hashBytes.joinToString("") { "%02x".format(it) }.take(16)
     }
 
-    /** 稳定的 idea hint hash——空返回 0 */
-    private fun ideaHash(hint: String): Int = if (hint.isBlank()) 0 else hint.trim().hashCode()
+    /** P1-8: length-prefixed append — 防止不同字符串产生相同 canonical representation */
+    private fun appendLengthPrefixed(sb: StringBuilder, key: String, value: String) {
+        sb.append(key).append("(").append(value.length).append("):").append(value).append(";")
+    }
 
     /**
      * F11: 回退到上一轮生成结果。
@@ -471,16 +481,22 @@ class LoveBrainViewModel(
      * P0-D: 不再用 _generationRoundId.value-- 表达版本回退——
      * generationRoundId 是 UI round identity，不是版本序号栈。
      * 回退时生成新的 roundId 值以触发 viewMode 重置。
+     *
+     * P0-1: rollback 原子恢复 result + versionId + context，避免 result/context 错配。
+     * P0-1: 只能 rollback 当前 KB 的历史——不同 KB 的 history 不能混为一个栈。
      */
     fun rollbackToPreviousGeneration() {
-        val history = _generationHistory.value
-        if (history.size < 2) return
-        val previous = history[history.size - 2]
-        val remaining = history.dropLast(1)
-        _generationHistory.value = remaining
+        val currentKb = replyGenerationContext?.kbName ?: _activeKb.value?.name
+        // P0-1: 只筛选当前 KB 的 snapshots
+        val kbHistory = _generationHistory.value.filter { it.kbName == currentKb }
+        if (kbHistory.size < 2) return
+        val previous = kbHistory[kbHistory.size - 2]
+        // P0-1: 从全局 history 中移除该条（按 versionId 匹配）
+        _generationHistory.value = _generationHistory.value.filterNot { it.versionId == previous.versionId }
+        // P0-1: 原子恢复 result + versionId + context
         _result.value = previous.result
-        // P0-D: 回退时更新当前版本 ID
         _currentVersionId.value = previous.versionId
+        replyGenerationContext = previous.context
         _feedbacks.value = emptyMap()
         _rewriteStates.value = emptyMap()
         _rewriteHistory.value = emptyMap()
@@ -489,8 +505,12 @@ class LoveBrainViewModel(
         _generationRoundId.value = _generationRoundId.value + 1
     }
 
-    /** F11: 是否可以回退到上一版本 */
-    val canRollbackGeneration: Boolean get() = _generationHistory.value.size >= 2
+    /** F11: 是否可以回退到上一版本 — P0-1: 按 KB 隔离判断 */
+    val canRollbackGeneration: Boolean
+        get() {
+            val currentKb = replyGenerationContext?.kbName ?: _activeKb.value?.name
+            return _generationHistory.value.count { it.kbName == currentKb } >= 2
+        }
 
     // ═══════════ 谈心模式 ═══════════
     private val _counselingResult = MutableStateFlow<String?>(null)
@@ -873,8 +893,8 @@ class LoveBrainViewModel(
         _feedbacks.value = _feedbacks.value.toMutableMap().apply {
             put(identityKey, effectiveFeedback)
         }
-        // F10/F11: 反馈变更后标记旧结果为 stale
-        markCurrentResultStaleIfNeeded()
+        // P2-14: 删除 markCurrentResultStaleIfNeeded()——点赞/点踩不是 GenerationInput，
+        // fingerprint 不包含 feedback，调用它是概念错误。
         // F02/P1-A: 使用 effectiveFeedback 决定行为——取消踩时 effectiveFeedback=NONE 不建 case
         if (effectiveFeedback == SchemeFeedback.DISLIKED && resultSnapshot != null && ctxSnapshot != null) {
             saveFeedbackCase(identityKey, resultSnapshot, ctxSnapshot, modelId)
@@ -1146,30 +1166,36 @@ class LoveBrainViewModel(
      *
      * 用户自行确认发送，不代表应用检测到了发送行为。
      * 确认后写为"我"的真实消息，保存用户确认来源、关联候选版本（若有）、时间。
-     * 同一轮只能有一份当前最终发送记录；多条真实消息可明确添加多条。
-     * 不混淆点赞与发送。
+     * 同一轮只能有一份当前最终发送记录；同一 generation version 再次确认更新替换。
      *
-     * P1-B: 绑定真实候选版本——记录当时的版本 ID 和候选正文快照，
-     * 不只记一个 identityKey 字符串，确保发送记录可追溯到具体版本。
+     * P0-2: 删除同步返回 ActualSentResult.RECORDED——RECORDED 只在 Repository 确认写盘后产生。
+     * 异步结果通过 actualSentState StateFlow 通知 UI。
+     * P0-3: 不自动绑定第一张卡——linkedSchemeIdentityKey 必须由调用方明确传入，
+     * 不再从 displaySchemes 自动推断。
+     * P0-4: 同一 generationVersionId 的记录使用 upsert（替换），不 append 多条。
      */
-    /**
-     * F03: 记录实际发送结果的类型化返回值。
-     * - RECORDED: 写盘成功
-     * - KB_NOT_FOUND: 知识库已被删除——不递增 adopt count
-     * - NO_KB: 未激活知识库
-     * - IO_ERROR: 写盘异常
-     */
-    enum class ActualSentResult { RECORDED, KB_NOT_FOUND, NO_KB, IO_ERROR }
+    /** F03: 实际发送记录状态——异步写盘的真实 typed result */
+    enum class ActualSentState { IDLE, RECORDED, KB_NOT_FOUND, NO_KB, IO_ERROR }
+    private val _actualSentState = MutableStateFlow(ActualSentState.IDLE)
+    val actualSentState: StateFlow<ActualSentState> = _actualSentState.asStateFlow()
+    fun dismissActualSentState() { _actualSentState.value = ActualSentState.IDLE }
 
     fun recordActualSentMessage(
         sentText: String,
         linkedSchemeIdentityKey: String? = null
-    ): ActualSentResult {
-        if (sentText.isBlank()) return ActualSentResult.IO_ERROR
-        val ctx = replyGenerationContext ?: return ActualSentResult.IO_ERROR
+    ) {
+        if (sentText.isBlank()) {
+            _actualSentState.value = ActualSentState.IO_ERROR
+            return
+        }
+        val ctx = replyGenerationContext ?: run {
+            _actualSentState.value = ActualSentState.IO_ERROR
+            return
+        }
         val kbName = ctx.kbName ?: run {
             showPanelWarning("未激活知识库，无法记录已发送消息")
-            return ActualSentResult.NO_KB
+            _actualSentState.value = ActualSentState.NO_KB
+            return
         }
 
         // P1-B: 冻结候选版本快照——绑定版本 ID 和候选正文
@@ -1186,8 +1212,7 @@ class LoveBrainViewModel(
             } else null
         }
 
-        // F03-fix: 使用 Repository 原子操作，消除 listAll → readFile → writeFile 的 TOCTOU 竞态。
-        // Repository 在单次 fileMutex.withLock 中完成：检查 KB → 读取 → 追加 → 写入 → 返回 Boolean。
+        // P0-4: upsert by generationVersionId——同一 generation version 再次确认时替换旧记录
         val time = com.lovebrain.app.util.TimeFmt.now()
         val sentEntry = buildString {
             append("<!-- sent:").append(time)
@@ -1197,28 +1222,44 @@ class LoveBrainViewModel(
                 .append(" -->\n")
             append("我（确认已发送）：").append(sentText.trim()).append("\n")
         }
+        // P0-4: 检查是否已有同一 generationVersionId 的记录
+        val existingEntry = _actualSentEntries[versionId?.value]
+        val isUpdate = existingEntry != null
+        _actualSentState.value = ActualSentState.IDLE
         viewModelScope.launch {
             runCatching {
                 withContext(Dispatchers.IO) {
-                    knowledgeRepo.appendActualSentRecord(kbName, sentEntry)
+                    if (isUpdate) {
+                        // P0-4: 替换旧记录——先删旧 entry 再追加新的
+                        knowledgeRepo.replaceActualSentRecord(kbName, existingEntry!!, sentEntry)
+                    } else {
+                        knowledgeRepo.appendActualSentRecord(kbName, sentEntry)
+                    }
                 }
             }.onSuccess { success ->
                 if (success) {
-                    // F03: 只有 Repository 原子操作真正成功才计 adopt
-                    _totalAdoptCount.value += 1
-                    securePrefs.totalAdoptCount = _totalAdoptCount.value
-                    _kbNotice.value = "已记录实际发送的消息"
+                    // P0-4: 只有第一次确认才计 adopt；同一 version 更新不重复 +1
+                    if (!isUpdate) {
+                        _totalAdoptCount.value += 1
+                        securePrefs.totalAdoptCount = _totalAdoptCount.value
+                    }
+                    _actualSentEntries[versionId?.value] = sentEntry
+                    _actualSentState.value = ActualSentState.RECORDED
+                    _kbNotice.value = if (isUpdate) "已更新实际发送记录" else "已记录实际发送的消息"
                 } else {
-                    // KB 不存在——不计 adopt
+                    _actualSentState.value = ActualSentState.KB_NOT_FOUND
                     showPanelWarning("本轮保存失败：知识库已被删除")
                 }
             }.onFailure {
                 L.e("recordActualSentMessage failed", it)
+                _actualSentState.value = ActualSentState.IO_ERROR
                 showPanelWarning("记录发送失败，内容已保留，请重试")
             }
         }
-        return ActualSentResult.RECORDED // 同步返回：异步结果通过 _kbNotice 通知
     }
+
+    /** P0-4: 跟踪当前 session 中已记录的 actual sent entries by versionId，用于 upsert 判断 */
+    private val _actualSentEntries = mutableMapOf<String?, String>()
 
     // ═══════════ KnowledgeTriggerCoordinator.Callbacks 实现 ═══════════
 
@@ -1569,6 +1610,10 @@ class LoveBrainViewModel(
                 if (newKb == null) {
                     _currentVector.value = emptyMap()
                 }
+                // P0-1: KB 切换后检测 stale——如果当前结果来自旧 KB，标记为 stale
+                if (oldKbName != null && oldKbName != newKb?.name) {
+                    markCurrentResultStaleIfNeeded()
+                }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -1660,6 +1705,8 @@ class LoveBrainViewModel(
         _feedbacks.value = emptyMap()
         // P1-H: 记录本轮生成开始时间，用于计算首条可复制回复耗时
         generateStartTimeMs = System.currentTimeMillis()
+        // P1-11: 新轮开始时重置 firstReplyMs——上一轮的耗时不应延续
+        _firstReplyMs.value = 0L
     }
 
     override fun onReplyStreamingCoreText(chunk: String) {
@@ -1697,18 +1744,19 @@ class LoveBrainViewModel(
         if (result is GenerateResult.Success) {
             _generationRoundId.value++
             // F11/P0-D: 保存生成版本快照到历史，建立版本身份
+            // P0-1: snapshot 保存完整 immutable ReplyGenerationContext
             val ctx = replyGenerationContext
             if (ctx != null) {
                 val versionId = GenerationVersionId.next()
                 _currentVersionId.value = versionId
-                _generationHistory.value = _generationHistory.value + GenerationSnapshot(
+                val newHistory = _generationHistory.value + GenerationSnapshot(
                     versionId = versionId,
                     result = result,
-                    inputFingerprint = ctx.inputFingerprint,
-                    messageIds = ctx.messageIds,
-                    ideaHint = ctx.ideaHint,
+                    context = ctx,
                     kbName = ctx.kbName
                 )
+                // P0-1: 限制 session history 最多 20 条
+                _generationHistory.value = newHistory.takeLast(MAX_HISTORY_SIZE)
             }
             // F11: 生成成功后重置输入变化标记
             _inputChanged.value = false
@@ -1974,6 +2022,18 @@ class LoveBrainViewModel(
             com.lovebrain.app.model.IntentExpiry.TODAY -> com.lovebrain.app.util.TimeFmt.today()
             else -> expiryDate
         }
+        // P1-10: DATE 类型严格校验——必须 parse 成 LocalDate，过去日期不能以 ACTIVE 保存
+        if (expiry == com.lovebrain.app.model.IntentExpiry.DATE && effectiveExpiryDate.isNotBlank()) {
+            val parsed = runCatching { java.time.LocalDate.parse(effectiveExpiryDate) }.getOrNull()
+            if (parsed == null) {
+                showPanelWarning("日期格式无效，请使用 yyyy-MM-dd 格式")
+                return
+            }
+            if (status == com.lovebrain.app.model.IntentStatus.ACTIVE && parsed.isBefore(java.time.LocalDate.now())) {
+                showPanelWarning("过去日期不能以活跃状态保存")
+                return
+            }
+        }
         viewModelScope.launch {
             runCatching {
                 val updated = withContext(Dispatchers.IO) {
@@ -1986,6 +2046,8 @@ class LoveBrainViewModel(
                     _kbNotice.value = if (enabled) "持续意图已开启" else "持续意图已关闭"
                     // R08: 保存成功后关闭编辑器（仅当仍在同一 KB 时）
                     _showIntentEditor.value = false
+                    // P1-9: Intent save 成功后检测 stale——旧答案基于旧意图
+                    markCurrentResultStaleIfNeeded()
                 }
             }.onFailure {
                 // R08: 持久化失败保留编辑状态并提示
@@ -2080,8 +2142,15 @@ class LoveBrainViewModel(
     /**
      * F04: 撤销纠正——纠正中心使用，不依赖生成上下文。
      * 绑定生成时冻结的 KB；无生成上下文时读当前 active KB。
+     * P0-6: 先检查 roundCorrections transient map——如果存在，立即撤销，不需要访问 Repository。
      */
     fun undoCorrectionFromCenter(memoryId: String) {
+        // P0-6: 先检查 transient roundCorrections
+        if (roundCorrections.containsKey(memoryId)) {
+            roundCorrections.remove(memoryId)
+            _kbNotice.value = "已撤销本轮暂停，该记忆恢复注入"
+            return
+        }
         val kbName = replyGenerationContext?.kbName ?: _activeKb.value?.name ?: return
         viewModelScope.launch {
             val success = withContext(Dispatchers.IO) {
@@ -2098,8 +2167,15 @@ class LoveBrainViewModel(
     /**
      * F09: 撤销纠正 — 删除指定 memoryId 的纠正记录。
      * 撤销后该记忆恢复可信注入资格。绑定生成时冻结的 KB。
+     * P0-6: 先检查 roundCorrections transient map——如果存在，立即撤销，不需要访问 Repository。
      */
     fun undoMemoryCorrection(memoryId: String) {
+        // P0-6: 先检查 transient roundCorrections
+        if (roundCorrections.containsKey(memoryId)) {
+            roundCorrections.remove(memoryId)
+            _kbNotice.value = "已撤销本轮暂停，该记忆恢复注入"
+            return
+        }
         val ctx = replyGenerationContext ?: return
         val kbName = ctx.kbName ?: return
         viewModelScope.launch {

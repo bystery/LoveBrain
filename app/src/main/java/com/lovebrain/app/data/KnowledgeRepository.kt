@@ -1395,6 +1395,22 @@ class KnowledgeRepository(
         }
     }
 
+    /** P0-4: 替换同一 generationVersionId 的旧 actual sent 记录（upsert）。
+     * 在单次 fileMutex.withLock 中完成：检查 KB → 读取 → 替换 → 写入 → 返回 Boolean。 */
+    suspend fun replaceActualSentRecord(kbName: String, oldEntry: String, newEntry: String): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("replaceActualSentRecord skipped: kb no longer exists")
+                return@withLock false
+            }
+            val recentPath = "moment/recent.md"
+            val existing = readFileUnlockedFast(kbName, recentPath)
+            val updated = existing.replace(oldEntry, newEntry)
+            writeFileUnlocked(kbName, recentPath, updated)
+            true
+        }
+    }
+
     /** 读取谈心日志「# 军师分析」节的最近 count 个 ## 块（供画像更新引擎） */
     suspend fun readCounselingAnalysisBlocks(kbName: String, count: Int): String = withContext(Dispatchers.IO) {
         val content = readFile(kbName, "memory/counseling_log.md")
