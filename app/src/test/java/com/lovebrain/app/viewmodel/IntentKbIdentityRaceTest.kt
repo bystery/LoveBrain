@@ -14,6 +14,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -23,6 +24,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -222,5 +225,76 @@ class IntentKbIdentityRaceTest {
 
         assertEquals("kb-a", vm.activeKb.value?.name)
         assertEquals("", vm.intentConfig.value.text)
+    }
+
+    /**
+     * P1-RC: True race test using CompletableDeferred.
+     *
+     * Scenario:
+     * 1. A readIntent starts and blocks on a gate (simulating slow disk)
+     * 2. Switch to B — getActive() returns kbB
+     * 3. B refreshKnowledgeBases runs — B readIntent completes immediately
+     * 4. B commits: activeKb = B, intentConfig = B
+     * 5. Release A gate — A readIntent finally returns intentA
+     * 6. A's late result must NOT overwrite B's committed UI
+     *
+     * Final state: activeKb = B, intentConfig = B (not A)
+     */
+    @Test
+    fun true_race_late_a_does_not_overwrite_committed_b() = runBlocking {
+        val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
+        val kbA = KnowledgeBase(name = "kb-a", stage = "stage-a")
+        val kbB = KnowledgeBase(name = "kb-b", stage = "stage-b")
+        val intentA = IntentConfig(text = "intentA", enabled = true, revision = 1)
+        val intentB = IntentConfig(text = "intentB", enabled = true, revision = 1)
+
+        coEvery { knowledgeRepo.ensureInitialKnowledgeBase() } returns Unit
+        coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
+        coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
+        coEvery { knowledgeRepo.listAll() } returns listOf(kbA, kbB)
+        coEvery { knowledgeRepo.readCorrectionsAndRevision(any()) } returns
+            (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
+        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
+        coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
+
+        // Gate to block A's readIntent
+        val aGate = CompletableDeferred<Unit>()
+
+        // A's readIntent blocks on the gate
+        coEvery { knowledgeRepo.readIntent("kb-a") } coAnswers {
+            aGate.await()
+            intentA
+        }
+        // B's readIntent returns immediately
+        coEvery { knowledgeRepo.readIntent("kb-b") } returns intentB
+
+        // Phase 1: getActive() returns A — refreshKnowledgeBases starts
+        // A's readIntent will block on the gate
+        coEvery { knowledgeRepo.getActive() } returns kbA
+
+        val vm = makeVm(knowledgeRepo)
+        vm.refreshKnowledgeBases()
+        // Let A's coroutine start and block on readIntent
+        delay(100)
+
+        // Phase 2: switch to B — getActive() now returns B
+        coEvery { knowledgeRepo.getActive() } returns kbB
+        vm.refreshKnowledgeBases()
+        // Let B's refreshKnowledgeBases complete — B readIntent is instant,
+        // B commits: activeKb = B, intentConfig = B
+        delay(200)
+
+        // Verify B has committed
+        assertEquals("B should be active before A completes", "kb-b", vm.activeKb.value?.name)
+        assertEquals("intent should be B before A completes", "intentB", vm.intentConfig.value.text)
+
+        // Phase 3: release A's gate — A's readIntent finally returns intentA
+        aGate.complete(Unit)
+        delay(200)
+
+        // A's late result must NOT overwrite B's committed UI
+        assertEquals("after A completes, active KB must still be B", "kb-b", vm.activeKb.value?.name)
+        assertEquals("after A completes, intent must still be B", "intentB", vm.intentConfig.value.text)
+        assertFalse("A's intent must not leak", vm.intentConfig.value.text == "intentA")
     }
 }

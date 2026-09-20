@@ -126,7 +126,7 @@ class LoveBrainViewModel(
     /**
      * F04: THIS_ROUND mute 的瞬时存储——只在当前轮次有效，不写入 corrections.json。
      * key = memoryId, value = MemoryCorrection(action=MUTED, muteDuration=THIS_ROUND)
-     * 在 nextRound()、stopGeneration()、切库时清空。
+     * 在 nextRound()、切库时清空。stopGeneration 不清——停止生成不等于结束当前工作轮。
      * 生成时与持久化 corrections 合并传入 PromptBuilder。 */
     private val roundCorrections = mutableMapOf<String, com.lovebrain.app.model.MemoryCorrection>()
 
@@ -476,40 +476,60 @@ class LoveBrainViewModel(
 
     /**
      * F11: 回退到上一轮生成结果。
-     * 弹出当前结果，恢复到历史中最后一份快照。
-     * 如果没有更早的历史，不做操作。
-     * P0-D: 不再用 _generationRoundId.value-- 表达版本回退——
-     * generationRoundId 是 UI round identity，不是版本序号栈。
-     * 回退时生成新的 roundId 值以触发 viewMode 重置。
+     * 正确的 one-way undo 语义：
+     *   history = [v1, v2, v3], current = v3
+     *   rollback → 删除 current(v3), 恢复 previous(v2)
+     *   history => [v1, v2]
+     * 之后基于 v2 生成 v4：
+     *   history => [v1, v2, v4]
+     * 再次 rollback → 删除 v4, 恢复 v2
+     * 绝不会重新出现已放弃的 v3。
      *
-     * P0-1: rollback 原子恢复 result + versionId + context，避免 result/context 错配。
-     * P0-1: 只能 rollback 当前 KB 的历史——不同 KB 的 history 不能混为一个栈。
+     * P0-RC: KB 边界——只有当前 result context 与 active KB 一致时才允许 rollback。
+     *   用户已切到 B 时，不允许操作 A 的 version stack。
+     * P0-RC: rollback 后不无条件 _inputChanged=false——调用 checkInputChanged()
+     *   让当前真实输入与 previous.context.inputFingerprint 比较。
+     *   如果用户当前输入与旧版本不同，stale 必须 true。
      */
     fun rollbackToPreviousGeneration() {
-        val currentKb = replyGenerationContext?.kbName ?: _activeKb.value?.name
-        // P0-1: 只筛选当前 KB 的 snapshots
-        val kbHistory = _generationHistory.value.filter { it.kbName == currentKb }
+        // P0-RC: KB 边界——result context 必须与 active KB 一致
+        val activeKbName = _activeKb.value?.name
+        val contextKbName = replyGenerationContext?.kbName
+        if (contextKbName == null || contextKbName != activeKbName) return
+
+        // P0-RC: 只筛选当前 KB 的 snapshots
+        val kbHistory = _generationHistory.value.filter { it.kbName == activeKbName }
         if (kbHistory.size < 2) return
+
+        val currentSnapshot = kbHistory.last()
         val previous = kbHistory[kbHistory.size - 2]
-        // P0-1: 从全局 history 中移除该条（按 versionId 匹配）
-        _generationHistory.value = _generationHistory.value.filterNot { it.versionId == previous.versionId }
-        // P0-1: 原子恢复 result + versionId + context
+
+        // P0-RC: 删除 current snapshot（不是 previous），恢复 previous
+        _generationHistory.value = _generationHistory.value.filterNot { it.versionId == currentSnapshot.versionId }
+
+        // P0-RC: 原子恢复 result + versionId + context
         _result.value = previous.result
         _currentVersionId.value = previous.versionId
         replyGenerationContext = previous.context
         _feedbacks.value = emptyMap()
         _rewriteStates.value = emptyMap()
         _rewriteHistory.value = emptyMap()
-        _inputChanged.value = false
+
+        // P0-RC: 重新计算 stale——当前输入可能与 previous context 不一致
+        checkInputChanged()
+
         // P0-D: 生成新的 roundId 值以触发 viewMode 重置——不递减，不使用 magic number
         _generationRoundId.value = _generationRoundId.value + 1
     }
 
-    /** F11: 是否可以回退到上一版本 — P0-1: 按 KB 隔离判断 */
+    /** F11: 是否可以回退到上一版本 — P0-RC: 以当前 active KB 为权限边界 */
     val canRollbackGeneration: Boolean
         get() {
-            val currentKb = replyGenerationContext?.kbName ?: _activeKb.value?.name
-            return _generationHistory.value.count { it.kbName == currentKb } >= 2
+            // P0-RC: result context 必须与 active KB 一致
+            val activeKbName = _activeKb.value?.name
+            val contextKbName = replyGenerationContext?.kbName
+            if (contextKbName == null || contextKbName != activeKbName) return false
+            return _generationHistory.value.count { it.kbName == activeKbName } >= 2
         }
 
     // ═══════════ 谈心模式 ═══════════
@@ -866,8 +886,9 @@ class LoveBrainViewModel(
         _panelState.value = PanelState.KEYBOARD
         // GEN-02：停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
-        // F04: 停止生成时清空本轮瞬时纠正
-        roundCorrections.clear()
+        // F04/P1-RC: stopGeneration 不清 roundCorrections——
+        // 停止生成不等于结束当前工作轮。用户 mute → stop → retry 时，
+        // 本轮 mute 应继续有效。roundCorrections 只在 nextRound / switch KB 时清。
         _inputChanged.value = false
         if (_result.value == null) {
             _result.value = GenerateResult.Error("已手动停止生成")
@@ -2022,8 +2043,12 @@ class LoveBrainViewModel(
             com.lovebrain.app.model.IntentExpiry.TODAY -> com.lovebrain.app.util.TimeFmt.today()
             else -> expiryDate
         }
-        // P1-10: DATE 类型严格校验——必须 parse 成 LocalDate，过去日期不能以 ACTIVE 保存
-        if (expiry == com.lovebrain.app.model.IntentExpiry.DATE && effectiveExpiryDate.isNotBlank()) {
+        // P1-RC: DATE 类型严格校验——blank / malformed / past 都必须拒绝
+        if (expiry == com.lovebrain.app.model.IntentExpiry.DATE) {
+            if (effectiveExpiryDate.isBlank()) {
+                showPanelWarning("指定日期不能为空，请输入 yyyy-MM-dd 格式的日期")
+                return
+            }
             val parsed = runCatching { java.time.LocalDate.parse(effectiveExpiryDate) }.getOrNull()
             if (parsed == null) {
                 showPanelWarning("日期格式无效，请使用 yyyy-MM-dd 格式")

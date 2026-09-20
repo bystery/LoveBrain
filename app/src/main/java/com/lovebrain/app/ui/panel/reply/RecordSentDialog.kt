@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -27,10 +28,14 @@ import com.lovebrain.app.ui.theme.*
  *
  * 确认后写为"我"的真实消息，保存用户确认来源、关联候选版本（若有）、时间。
  * 若用户只是想收藏，继续使用点赞，不混淆两者。
+ *
+ * P1-RC: saving=true 时禁用确认按钮并显示 loading，失败时 Dialog 不关闭，
+ * 用户输入的正文保持不变。
  */
 @Composable
 fun RecordSentDialog(
     prefill: String = "",
+    saving: Boolean = false,
     onConfirm: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -43,6 +48,7 @@ fun RecordSentDialog(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
+                enabled = !saving,
                 onClick = onDismiss
             )
     ) {
@@ -73,6 +79,7 @@ fun RecordSentDialog(
                 value = text,
                 onValueChange = { text = it },
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !saving,
                 placeholder = {
                     Text("粘贴或输入你实际发送的话", style = AppTypography.labelSmall, color = TextHint)
                 },
@@ -92,33 +99,50 @@ fun RecordSentDialog(
                 Text(
                     text = "取消",
                     style = AppTypography.labelSmall,
-                    color = TextHint,
+                    color = if (saving) TextHint.copy(alpha = 0.5f) else TextHint,
                     modifier = Modifier.clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
+                        enabled = !saving,
                         onClick = onDismiss
                     ).padding(horizontal = Spacing.sm, vertical = Spacing.xs)
                 )
                 Spacer(Modifier.width(Spacing.sm))
-                val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "sentConfirmScale")
-                Text(
-                    text = "确认已发送并记录",
-                    style = AppTypography.labelSmall,
-                    color = Color.White,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
-                        .clip(LoveBrainShape.sm)
-                        .background(Primary)
-                        .clickable(
-                            interactionSource = confirmInteraction,
-                            indication = null,
-                            onClick = {
-                                if (text.isNotBlank()) onConfirm(text.trim())
-                            }
-                        )
-                        .padding(horizontal = Spacing.md, vertical = Spacing.xs)
-                )
+                if (saving) {
+                    CircularProgressIndicator(
+                        color = Primary,
+                        modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp),
+                        strokeWidth = Spacing.xs
+                    )
+                    Spacer(Modifier.width(Spacing.sm))
+                    Text(
+                        text = "保存中…",
+                        style = AppTypography.labelSmall,
+                        color = TextHint,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                    )
+                } else {
+                    val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "sentConfirmScale")
+                    Text(
+                        text = "确认已发送并记录",
+                        style = AppTypography.labelSmall,
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier
+                            .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
+                            .clip(LoveBrainShape.sm)
+                            .background(Primary)
+                            .clickable(
+                                interactionSource = confirmInteraction,
+                                indication = null,
+                                onClick = {
+                                    if (text.isNotBlank()) onConfirm(text.trim())
+                                }
+                            )
+                            .padding(horizontal = Spacing.md, vertical = Spacing.xs)
+                    )
+                }
             }
         }
     }

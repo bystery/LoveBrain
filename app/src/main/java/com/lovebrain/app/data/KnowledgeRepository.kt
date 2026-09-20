@@ -1396,7 +1396,8 @@ class KnowledgeRepository(
     }
 
     /** P0-4: 替换同一 generationVersionId 的旧 actual sent 记录（upsert）。
-     * 在单次 fileMutex.withLock 中完成：检查 KB → 读取 → 替换 → 写入 → 返回 Boolean。 */
+     * 在单次 fileMutex.withLock 中完成：检查 KB → 读取 → 替换 → 写入 → 返回 Boolean。
+     * P1-RC: 如果 oldEntry 在 recent.md 中不存在，返回 false（不执行无效写入）。 */
     suspend fun replaceActualSentRecord(kbName: String, oldEntry: String, newEntry: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
@@ -1405,6 +1406,11 @@ class KnowledgeRepository(
             }
             val recentPath = "moment/recent.md"
             val existing = readFileUnlockedFast(kbName, recentPath)
+            // P1-RC: oldEntry 不存在时返回 false，不执行无效写入
+            if (!existing.contains(oldEntry)) {
+                com.lovebrain.app.util.L.w("replaceActualSentRecord: oldEntry not found in recent.md")
+                return@withLock false
+            }
             val updated = existing.replace(oldEntry, newEntry)
             writeFileUnlocked(kbName, recentPath, updated)
             true

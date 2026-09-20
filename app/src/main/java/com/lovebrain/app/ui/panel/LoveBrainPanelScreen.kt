@@ -130,6 +130,22 @@ fun LoveBrainPanelScreen(
     var showSentDialog by remember { mutableStateOf(false) }
     var sentDialogSchemeKey by remember { mutableStateOf<String?>(null) }
     var sentDialogPrefill by remember { mutableStateOf("") }
+    // P1-RC: Actual Sent Dialog 失败不丢输入——保存中不关闭 Dialog
+    val actualSentState by viewModel.actualSentState.collectAsStateWithLifecycle()
+    var sentDialogSaving by remember { mutableStateOf(false) }
+
+    // P1-RC: RECORDED 时才关闭 Dialog，失败时 Dialog 保持用户输入
+    LaunchedEffect(actualSentState) {
+        if (actualSentState == LoveBrainViewModel.ActualSentState.RECORDED && sentDialogSaving) {
+            sentDialogSaving = false
+            showSentDialog = false
+            viewModel.dismissActualSentState()
+        } else if (actualSentState == LoveBrainViewModel.ActualSentState.KB_NOT_FOUND ||
+            actualSentState == LoveBrainViewModel.ActualSentState.IO_ERROR) {
+            // 失败——Dialog 保持，用户输入仍在，允许重试
+            sentDialogSaving = false
+        }
+    }
 
     // F04: 记忆纠正中心
     var showCorrectionCenter by remember { mutableStateOf(false) }
@@ -542,11 +558,17 @@ fun LoveBrainPanelScreen(
         if (showSentDialog) {
             com.lovebrain.app.ui.panel.reply.RecordSentDialog(
                 prefill = sentDialogPrefill,
+                saving = sentDialogSaving,
                 onConfirm = { text ->
+                    // P1-RC: 不立即关闭 Dialog——等 actualSentState 变 RECORDED 才关
+                    sentDialogSaving = true
                     viewModel.recordActualSentMessage(text, sentDialogSchemeKey)
-                    showSentDialog = false
                 },
-                onDismiss = { showSentDialog = false }
+                onDismiss = {
+                    showSentDialog = false
+                    sentDialogSaving = false
+                    viewModel.dismissActualSentState()
+                }
             )
         }
 
