@@ -135,9 +135,7 @@ data class SceneFact(
     @SerialName("source_ids") val sourceIds: List<String> = emptyList(),
     // P1-1: 事实归属——谁说的 / 描述谁
     val speaker: EntityRef = EntityRef.UNKNOWN,
-    val subject: EntityRef = EntityRef.UNKNOWN,
-    // P1-E: AI 提供的主体候选——客户端消费但不无条件信任
-    @SerialName("subject_candidate") val subjectCandidate: String = ""
+    val subject: EntityRef = EntityRef.UNKNOWN
 )
 
 /** F03: 自定义序列化器，兼容旧格式纯字符串和新格式带来源对象。
@@ -165,10 +163,6 @@ object SceneFactSerializer : KSerializer<SceneFact> {
             if (value.subject != EntityRef.UNKNOWN) {
                 put("subject", value.subject.name.lowercase())
             }
-            // P1-E: 序列化 subject_candidate
-            if (value.subjectCandidate.isNotBlank()) {
-                put("subject_candidate", value.subjectCandidate)
-            }
         }
         encoder.encodeSerializableValue(JsonElement.serializer(), obj)
     }
@@ -193,9 +187,9 @@ object SceneFactSerializer : KSerializer<SceneFact> {
                 val subject = element["subject"]?.jsonPrimitive?.content
                     ?.let { name -> EntityRef.entries.firstOrNull { it.name.equals(name, ignoreCase = true) } }
                     ?: EntityRef.UNKNOWN
-                // P1-E: 反序列化 subject_candidate
-                val subjectCandidate = element["subject_candidate"]?.jsonPrimitive?.content ?: ""
-                SceneFact(text = text, sourceIds = sourceIds, speaker = speaker, subject = subject, subjectCandidate = subjectCandidate)
+                // P1-12: subject_candidate 已从 format.md 移除，不再需要模型生成。
+                // 反序列化时仍兼容旧返回——接受此字段但不存储（忽略）。
+                SceneFact(text = text, sourceIds = sourceIds, speaker = speaker, subject = subject)
             }
             else -> SceneFact()
         }

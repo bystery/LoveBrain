@@ -12,6 +12,9 @@ import org.junit.Test
  *
  * 封板期策略：AI subject_candidate 不参与解析。
  * Level1/2 无法确定时返回 UNKNOWN，不信任 AI candidate。
+ *
+ * P1-12: subject_candidate 参数已从 FactSubjectResolver.resolve() 移除，
+ * 模型不再被要求生成此字段。测试验证 Level1/2/3 逻辑不依赖 candidate。
  */
 class SubjectCandidateRejectionTest {
 
@@ -22,8 +25,7 @@ class SubjectCandidateRejectionTest {
             factText = "我今天加班到很晚",
             speaker = EntityRef.HER,
             sourceIds = listOf("m0"),
-            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.PARTNER, "我今天加班到很晚")),
-            subjectCandidate = "PARTNER"
+            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.PARTNER, "我今天加班到很晚"))
         )
         assertEquals(EntityRef.HER, result)
     }
@@ -35,8 +37,7 @@ class SubjectCandidateRejectionTest {
             factText = "你最近很忙吗",
             speaker = EntityRef.HER,
             sourceIds = listOf("m0"),
-            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.PARTNER, "你最近很忙吗")),
-            subjectCandidate = "USER"
+            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.PARTNER, "你最近很忙吗"))
         )
         assertEquals(EntityRef.ME, result)
     }
@@ -48,8 +49,7 @@ class SubjectCandidateRejectionTest {
             factText = "我明天要出差",
             speaker = EntityRef.ME,
             sourceIds = listOf("m0"),
-            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.USER, "我明天要出差")),
-            subjectCandidate = "USER"
+            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.USER, "我明天要出差"))
         )
         assertEquals(EntityRef.ME, result)
     }
@@ -61,34 +61,31 @@ class SubjectCandidateRejectionTest {
             factText = "她喜欢猫",
             speaker = EntityRef.ME,
             sourceIds = listOf("m0"),
-            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.USER, "她喜欢猫")),
-            subjectCandidate = "PARTNER"
+            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.USER, "她喜欢猫"))
         )
         assertEquals(EntityRef.HER, result)
     }
 
-    // Level 3: 无法确定时 → UNKNOWN（不信 AI candidate）
+    // Level 3: 无法确定时 → UNKNOWN（不依赖 AI candidate）
     @Test
-    fun level3_undetermined_returns_unknown_even_with_candidate() {
+    fun level3_undetermined_returns_unknown() {
         val result = FactSubjectResolver.resolve(
             factText = "周末天气不错",
             speaker = EntityRef.HER,
             sourceIds = listOf("m0"),
-            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.PARTNER, "周末天气不错")),
-            subjectCandidate = "PARTNER"  // AI 说 PARTNER，但不信
+            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.PARTNER, "周末天气不错"))
         )
         assertEquals(EntityRef.UNKNOWN, result)
     }
 
-    // Level 3: candidate=USER 也不信
+    // Level 3: 模糊文本 → UNKNOWN
     @Test
-    fun level3_undetermined_returns_unknown_even_with_user_candidate() {
+    fun level3_undetermined_returns_unknown_for_neutral_text() {
         val result = FactSubjectResolver.resolve(
             factText = "电影很好看",
             speaker = EntityRef.ME,
             sourceIds = listOf("m0"),
-            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.USER, "电影很好看")),
-            subjectCandidate = "USER"  // AI 说 USER，但不信
+            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.USER, "电影很好看"))
         )
         assertEquals(EntityRef.UNKNOWN, result)
     }
@@ -100,8 +97,7 @@ class SubjectCandidateRejectionTest {
             factText = "我今天去了公园",
             speaker = EntityRef.UNKNOWN,
             sourceIds = listOf("m0"),
-            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.PARTNER, "我今天去了公园")),
-            subjectCandidate = "PARTNER"
+            dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.PARTNER, "我今天去了公园"))
         )
         assertEquals(EntityRef.UNKNOWN, result)
     }

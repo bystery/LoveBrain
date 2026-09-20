@@ -357,13 +357,17 @@ class MechanismClosureTest {
         assertTrue("Fingerprint should change when message content changes", vm.inputChanged.value)
     }
 
-    // ═══════════ F03: typed ActualSentResult ═══════════
+    // ═══════════ F03: ActualSentState async model ═══════════
+    // P0-2: recordActualSentMessage 不再同步返回 ActualSentResult。
+    // RECORDED 只在 Repository 确认写盘后产生，通过 actualSentState StateFlow 通知 UI。
 
     @Test
-    fun f03_record_actual_sent_returns_recorded_on_success() = runBlocking {
+    fun f03_record_actual_sent_success_increases_adopt_and_sets_recorded() = runBlocking {
         val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
         val kb = KnowledgeBase(name = "test-kb", stage = "暧昧期")
         defaultRepoStubs(knowledgeRepo, kb)
+        // P0-4: mock Repository appendActualSentRecord 返回 true（写盘成功）
+        coEvery { knowledgeRepo.appendActualSentRecord(any(), any()) } returns true
 
         val engine = mockk<com.lovebrain.app.domain.GenerationEngine>(relaxed = true)
         GenerationEngineTestHelper.stubReplyGenerateSuccess(engine)
@@ -376,14 +380,24 @@ class MechanismClosureTest {
         vm.generate()
         delay(500)
 
-        // Ensure context was set
-        assertTrue("Should have a success result (isGenerating=${vm.isGenerating.value}, result=${vm.result.value?.javaClass?.simpleName})", vm.result.value is GenerateResult.Success)
+        assertTrue("Should have a success result", vm.result.value is GenerateResult.Success)
 
-        val result = vm.recordActualSentMessage("I sent this")
-        delay(200)
+        val initialAdopt = vm.totalAdoptCount.value
+        vm.recordActualSentMessage("I sent this")
+        delay(300)
 
-        // Synchronous return is RECORDED
-        assertEquals(LoveBrainViewModel.ActualSentResult.RECORDED, result)
+        // P0-2: actualSentState 应变为 RECORDED（异步写盘成功后）
+        assertEquals(
+            "actualSentState should be RECORDED after successful write",
+            LoveBrainViewModel.ActualSentState.RECORDED,
+            vm.actualSentState.value
+        )
+        // P0-4: adopt count +1（第一次确认）
+        assertEquals(
+            "Adopt count should increase by 1 on first confirmation",
+            initialAdopt + 1,
+            vm.totalAdoptCount.value
+        )
     }
 
     @Test
@@ -391,11 +405,14 @@ class MechanismClosureTest {
         val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
         val kb = KnowledgeBase(name = "test-kb", stage = "暧昧期")
         defaultRepoStubs(knowledgeRepo, kb)
+        // P0-4: mock Repository 返回 false（KB 不存在）
+        coEvery { knowledgeRepo.appendActualSentRecord(any(), any()) } returns false
 
         val engine = mockk<com.lovebrain.app.domain.GenerationEngine>(relaxed = true)
         GenerationEngineTestHelper.stubReplyGenerateSuccess(engine)
 
         val vm = makeVm(knowledgeRepo, engine)
+        vm.refreshKnowledgeBases()
         delay(200)
 
         vm.addMessage(ChatMessage.Role.HER, "hello")
@@ -403,14 +420,84 @@ class MechanismClosureTest {
         delay(300)
 
         val initialAdopt = vm.totalAdoptCount.value
-
-        // Simulate KB deleted after generation
-        coEvery { knowledgeRepo.listAll() } returns emptyList()
-
         vm.recordActualSentMessage("I sent this")
+        delay(300)
+
+        // P0-2: actualSentState 应为 KB_NOT_FOUND
+        assertEquals(
+            "actualSentState should be KB_NOT_FOUND",
+            LoveBrainViewModel.ActualSentState.KB_NOT_FOUND,
+            vm.actualSentState.value
+        )
+        assertEquals("Adopt count should not increase", initialAdopt, vm.totalAdoptCount.value)
+    }
+
+    @Test
+    fun f03_record_actual_sent_io_error_does_not_adopt() = runBlocking {
+        val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
+        val kb = KnowledgeBase(name = "test-kb", stage = "暧昧期")
+        defaultRepoStubs(knowledgeRepo, kb)
+        // P0-4: mock Repository 抛异常（IO 错误）
+        coEvery { knowledgeRepo.appendActualSentRecord(any(), any()) } throws java.io.IOException("disk full")
+
+        val engine = mockk<com.lovebrain.app.domain.GenerationEngine>(relaxed = true)
+        GenerationEngineTestHelper.stubReplyGenerateSuccess(engine)
+
+        val vm = makeVm(knowledgeRepo, engine)
+        vm.refreshKnowledgeBases()
         delay(200)
 
-        assertEquals("Adopt count should not increase when KB not found", initialAdopt, vm.totalAdoptCount.value)
+        vm.addMessage(ChatMessage.Role.HER, "hello")
+        vm.generate()
+        delay(300)
+
+        val initialAdopt = vm.totalAdoptCount.value
+        vm.recordActualSentMessage("I sent this")
+        delay(300)
+
+        // P0-2: actualSentState 应为 IO_ERROR
+        assertEquals(
+            "actualSentState should be IO_ERROR",
+            LoveBrainViewModel.ActualSentState.IO_ERROR,
+            vm.actualSentState.value
+        )
+        assertEquals("Adopt count should not increase on IO error", initialAdopt, vm.totalAdoptCount.value)
+    }
+
+    @Test
+    fun f03_same_version_second_confirm_does_not_double_adopt() = runBlocking {
+        val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
+        val kb = KnowledgeBase(name = "test-kb", stage = "暧昧期")
+        defaultRepoStubs(knowledgeRepo, kb)
+        coEvery { knowledgeRepo.appendActualSentRecord(any(), any()) } returns true
+        coEvery { knowledgeRepo.replaceActualSentRecord(any(), any(), any()) } returns true
+
+        val engine = mockk<com.lovebrain.app.domain.GenerationEngine>(relaxed = true)
+        GenerationEngineTestHelper.stubReplyGenerateSuccess(engine)
+
+        val vm = makeVm(knowledgeRepo, engine)
+        vm.refreshKnowledgeBases()
+        delay(200)
+
+        vm.addMessage(ChatMessage.Role.HER, "hello")
+        vm.generate()
+        delay(500)
+
+        // 第一次确认 → adopt +1
+        vm.recordActualSentMessage("I sent version 1")
+        delay(300)
+        val adoptAfterFirst = vm.totalAdoptCount.value
+        assertEquals(LoveBrainViewModel.ActualSentState.RECORDED, vm.actualSentState.value)
+
+        // 同一 generation version 再次确认（更新正文）→ 不重复 +1
+        vm.recordActualSentMessage("I sent version 2")
+        delay(300)
+        assertEquals(
+            "Adopt count should not increase on same-version update",
+            adoptAfterFirst,
+            vm.totalAdoptCount.value
+        )
+        assertEquals(LoveBrainViewModel.ActualSentState.RECORDED, vm.actualSentState.value)
     }
 
     // ═══════════ F06: DATE expiry at generation time ═══════════
