@@ -22,8 +22,8 @@ android {
         applicationId = "com.lovebrain.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 7
-        versionName = "1.3.2"
+        versionCode = 8
+        versionName = "1.3.3"
         // P1-5: Compose UI test runner
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
