@@ -27,8 +27,46 @@ import kotlinx.coroutines.withContext
  */
 class SetupViewModel(
     val securePrefs: SecurePrefs,
-    private val deepSeekRepo: DeepSeekRepository
+    private val deepSeekRepo: DeepSeekRepository,
+    private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null
 ) : ViewModel() {
+
+    // ═══════════ 反馈案例（通过 ViewModel/DI 提供，不在 Composable 中 new Repository） ═══════════
+
+    private val _feedbackCases = MutableStateFlow<List<com.lovebrain.app.model.FeedbackCase>>(emptyList())
+    val feedbackCases: StateFlow<List<com.lovebrain.app.model.FeedbackCase>> = _feedbackCases.asStateFlow()
+
+    private val _feedbackLoading = MutableStateFlow(false)
+    val feedbackLoading: StateFlow<Boolean> = _feedbackLoading.asStateFlow()
+
+    private val _feedbackError = MutableStateFlow<String?>(null)
+    val feedbackError: StateFlow<String?> = _feedbackError.asStateFlow()
+
+    suspend fun loadFeedbackCases() {
+        val repo = feedbackCaseRepository ?: run {
+            _feedbackError.value = "反馈功能未配置"
+            return
+        }
+        _feedbackLoading.value = true
+        _feedbackError.value = null
+        try {
+            _feedbackCases.value = withContext(Dispatchers.IO) { repo.getAll() }
+        } catch (e: Exception) {
+            _feedbackError.value = "加载失败：${e.message ?: "未知错误"}"
+        } finally {
+            _feedbackLoading.value = false
+        }
+    }
+
+    suspend fun exportFeedbackMarkdown(cases: List<com.lovebrain.app.model.FeedbackCase>): String {
+        val repo = feedbackCaseRepository ?: return ""
+        return withContext(Dispatchers.IO) { repo.exportMarkdown(cases) }
+    }
+
+    suspend fun exportFeedbackJson(cases: List<com.lovebrain.app.model.FeedbackCase>): String {
+        val repo = feedbackCaseRepository ?: return ""
+        return withContext(Dispatchers.IO) { repo.exportJson(cases) }
+    }
 
     // ═══════════ 工单列表状态 ────────────────
 

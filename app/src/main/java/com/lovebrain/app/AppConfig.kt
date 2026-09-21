@@ -61,6 +61,7 @@ object AppConfig {
 
     // ═══ Prompt 预算（字符数） ═══
     const val TOTAL_BUDGET = 9000
+    const val SUGGEST_BUDGET = 3500  // 锦囊独立预算：远小于回复预算，只携带轻量上下文
 
     // ═══ 上下文窗口保护 ═══
     const val REPLY_MAX_MESSAGES = 60          // 回复 prompt 超过 60 条消息时掐尾保留最近的消息

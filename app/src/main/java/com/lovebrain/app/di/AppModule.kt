@@ -39,5 +39,5 @@ val appModule = module {
 
     // ViewModel（每次获取新实例）
     viewModel { LoveBrainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { SetupViewModel(get(), get()) }  // 第二个 get() 取 DeepSeekRepository 单例
+    viewModel { SetupViewModel(get(), get(), get()) }  // securePrefs, DeepSeekRepository, FeedbackCaseRepository
 }

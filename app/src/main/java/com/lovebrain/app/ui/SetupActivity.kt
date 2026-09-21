@@ -86,6 +86,14 @@ import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.service.FloatingService
 import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
+import com.lovebrain.app.ui.feedback.FeedbackCasesScreen
+import com.lovebrain.app.ui.home.AssistantStatusCard
+import com.lovebrain.app.ui.home.HomeActionCard
+import com.lovebrain.app.ui.home.HomeDestination
+import com.lovebrain.app.ui.home.HomeSectionHeader
+import com.lovebrain.app.ui.home.HomeSettingRow
+import com.lovebrain.app.ui.home.HomeTopBar
+import com.lovebrain.app.ui.home.UsageSummary
 import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.ui.panel.OnboardingFlow
@@ -241,7 +249,7 @@ class SetupActivity : ComponentActivity() {
                         }
                     )
                 } else {
-                    SetupScreen(
+                    SetupRoot(
                         viewModel = viewModel,
                         onStartService = { startFloatingService() },
                         onOpenPanel = { mode, showPlan -> openPanelFromHome(mode, showPlan) },
@@ -255,16 +263,16 @@ class SetupActivity : ComponentActivity() {
 }
 
 @Composable
-private fun SetupScreen(
+private fun SetupRoot(
     viewModel: SetupViewModel,
     onStartService: () -> Unit,
     onOpenPanel: (Int, Boolean) -> Unit,
     onTempHide: () -> Unit,
     onRestore: () -> Unit
 ) {
+    var destination by remember { mutableStateOf<HomeDestination>(HomeDestination.Home) }
     val context = LocalContext.current
 
-    // 一页化：首页 + 配置（现为工单管理）同页，无独立设置页
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -273,16 +281,25 @@ private fun SetupScreen(
         contentAlignment = Alignment.TopCenter
     ) {
         Box(modifier = Modifier.fillMaxWidth().widthIn(max = SetupDimens.CONTENT_MAX_WIDTH_DP.dp)) {
-            HomeTabContent(
-                viewModel = viewModel,
-                onStartService = onStartService,
-                onOpenPanel = onOpenPanel,
-                onOpenKnowledgeBase = {
-                    context.startActivity(Intent(context, KnowledgeBaseActivity::class.java))
-                },
-                onTempHide = onTempHide,
-                onRestore = onRestore
-            )
+            when (destination) {
+                HomeDestination.Home -> HomeScreen(
+                    viewModel = viewModel,
+                    onStartService = onStartService,
+                    onOpenPanel = onOpenPanel,
+                    onTempHide = onTempHide,
+                    onRestore = onRestore,
+                    onNavigateFeedback = { destination = HomeDestination.FeedbackCases },
+                    onNavigateAbout = { destination = HomeDestination.About },
+                    onBack = { }
+                )
+                HomeDestination.FeedbackCases -> FeedbackCasesScreen(
+                    viewModel = viewModel,
+                    onBack = { destination = HomeDestination.Home }
+                )
+                HomeDestination.About -> AboutScreen(
+                    onBack = { destination = HomeDestination.Home }
+                )
+            }
         }
     }
 }
@@ -1613,3 +1630,261 @@ private fun FilterChip(label: String, isSelected: Boolean, onClick: () -> Unit) 
 
 // F15: buildMarkdownReport 已移入 FeedbackCaseRepository.exportMarkdown
 // 不再在 UI 层维护导出逻辑，统一由 repository 提供
+
+// ═════════════════════════════════════════════════════════════
+// 首页新架构：HomeScreen + AboutScreen
+// ═════════════════════════════════════════════════════════════
+
+@Composable
+private fun HomeScreen(
+    viewModel: SetupViewModel,
+    onStartService: () -> Unit,
+    onOpenPanel: (Int, Boolean) -> Unit,
+    onTempHide: () -> Unit,
+    onRestore: () -> Unit,
+    onNavigateFeedback: () -> Unit,
+    onNavigateAbout: () -> Unit,
+    onBack: () -> Unit
+) {
+    val context = LocalContext.current
+    val overlayGranted = Settings.canDrawOverlays(context)
+    val activeTicket by viewModel.activeTicket.collectAsStateWithLifecycle()
+    val providerReady by viewModel.providerReady.collectAsStateWithLifecycle()
+
+    var accessibilityGranted by remember { mutableStateOf(viewModel.isCaptureServiceEnabled(context)) }
+    var showAccessibilityDisclosure by remember { mutableStateOf(false) }
+    var showProviderEdit by remember { mutableStateOf(false) }
+
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
+                accessibilityGranted = viewModel.isCaptureServiceEnabled(context)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+
+    val scrollState = rememberScrollState()
+    val isServiceRunning = FloatingService.instance != null
+    val currentWindowState by FloatingService.windowStateFlow.collectAsStateWithLifecycle()
+
+    val statusText = when {
+        !overlayGranted -> "未授权"
+        !isServiceRunning -> "未启动"
+        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> "已隐藏"
+        else -> "运行中"
+    }
+    val statusColor = when {
+        !overlayGranted || !isServiceRunning -> Neutral300
+        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> Neutral300
+        else -> Primary
+    }
+    val description = when {
+        !overlayGranted -> "需要悬浮窗权限才能显示军师浮窗"
+        !isServiceRunning -> "点击启动军师悬浮窗"
+        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> "军师已暂时隐藏，点击恢复"
+        else -> "军师正在运行，长按消息即可捕获"
+    }
+    val buttonText = when {
+        !overlayGranted -> "授权悬浮窗"
+        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> "恢复军师"
+        else -> "启动军师悬浮窗"
+    }
+    val buttonAction = when {
+        !overlayGranted -> onStartService
+        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> onRestore
+        else -> onStartService
+    }
+    val canHide = isServiceRunning &&
+        (currentWindowState == FloatingService.WindowState.VISIBLE_BUBBLE ||
+         currentWindowState == FloatingService.WindowState.VISIBLE_PANEL)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(horizontal = Spacing.xxxl),
+        verticalArrangement = Arrangement.spacedBy(Spacing.xl)
+    ) {
+        HomeTopBar(onNavigateAbout = onNavigateAbout)
+
+        AssistantStatusCard(
+            statusText = statusText,
+            statusColor = statusColor,
+            description = description,
+            buttonText = buttonText,
+            onButtonClick = buttonAction,
+            onHideClick = if (canHide) onTempHide else null
+        )
+
+        HomeSectionHeader("快捷功能")
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.lg)
+        ) {
+            HomeActionCard(
+                modifier = Modifier.weight(1f),
+                iconRes = R.drawable.ic_feature_book,
+                title = "知识库",
+                subtitle = "她的专属记忆",
+                onClick = {
+                    context.startActivity(Intent(context, KnowledgeBaseActivity::class.java))
+                }
+            )
+            HomeActionCard(
+                modifier = Modifier.weight(1f),
+                iconRes = R.drawable.ic_feature_book,
+                title = "反馈案例",
+                subtitle = "点踩记录与导出",
+                onClick = onNavigateFeedback
+            )
+        }
+
+        HomeSectionHeader("服务设置")
+        Card(
+            shape = LoveBrainShape.lg,
+            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column {
+                HomeSettingRow(
+                    title = "模型供应商",
+                    subtitle = activeTicket?.let { "${it.name} · ${it.model.ifBlank { "未选模型" }}" }
+                        ?: "未配置供应商",
+                    statusText = "",
+                    statusColor = if (providerReady) Primary else Neutral300,
+                    onClick = { showProviderEdit = !showProviderEdit }
+                )
+                HorizontalDivider(thickness = AppDimens.BORDER_WIDTH_DP.dp, color = Border.copy(alpha = 0.5f))
+
+                HomeSettingRow(
+                    title = "消息捕获",
+                    subtitle = if (accessibilityGranted) "开启后长按消息自动捕获"
+                    else "尚未授予无障碍权限",
+                    trailingText = if (!accessibilityGranted) "去授权" else null,
+                    onTrailingClick = if (!accessibilityGranted) ({ showAccessibilityDisclosure = true }) else null,
+                    onClick = if (accessibilityGranted) ({ viewModel.toggleCapture() }) else null
+                )
+            }
+        }
+
+        // 模型供应商管理（折叠卡）
+        if (showProviderEdit) {
+            ProviderSection(viewModel)
+        }
+
+        HomeSectionHeader("使用概览")
+        val costStr = if (viewModel.totalCostYuan < 0.01) "￥0" else "￥${String.format("%.2f", viewModel.totalCostYuan)}"
+        val rateStr = if (viewModel.totalGenerateCount > 0) "${(viewModel.adoptRate * 100).toInt()}%" else "—"
+        UsageSummary(
+            totalGenerate = "${viewModel.totalGenerateCount}",
+            totalCost = costStr,
+            adoptRate = rateStr
+        )
+
+        Spacer(Modifier.height(Spacing.xl))
+    }
+
+    if (showAccessibilityDisclosure) {
+        AccessibilityDisclosureDialog(
+            onAgree = {
+                showAccessibilityDisclosure = false
+                viewModel.confirmAccessibilityDisclosure()
+                context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+            },
+            onDismiss = { showAccessibilityDisclosure = false }
+        )
+    }
+
+}
+
+@Composable
+private fun AboutScreen(
+    onBack: () -> Unit
+) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(horizontal = Spacing.xxxl),
+        verticalArrangement = Arrangement.spacedBy(Spacing.lg)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = Spacing.lg),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val (backInteraction, backScale) = rememberPressScale(0.94f, "aboutBack")
+            Text(
+                "←",
+                style = AppTypography.titleMedium,
+                color = Primary,
+                modifier = Modifier
+                    .graphicsLayer { scaleX = backScale; scaleY = backScale }
+                    .clip(LoveBrainShape.md)
+                    .clickable(
+                        interactionSource = backInteraction,
+                        indication = null,
+                        onClick = onBack
+                    )
+                    .padding(end = Spacing.md)
+            )
+            Text("关于", style = AppTypography.titleLarge, color = TextPrimary, fontWeight = FontWeight.SemiBold)
+        }
+
+        Card(
+            shape = LoveBrainShape.lg,
+            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(modifier = Modifier.padding(Spacing.xl), verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                Text("LoveBrain", style = AppTypography.titleLarge, color = TextPrimary, fontWeight = FontWeight.SemiBold)
+                Text(
+                    "版本 v${com.lovebrain.app.BuildConfig.VERSION_NAME}",
+                    style = AppTypography.bodyMedium,
+                    color = TextSecondary
+                )
+                Text("帮你更自然地表达", style = AppTypography.bodySmall, color = TextHint)
+
+                HorizontalDivider(thickness = AppDimens.BORDER_WIDTH_DP.dp, color = Border.copy(alpha = 0.5f))
+
+                Text("隐私说明", style = AppTypography.titleMedium, color = TextPrimary, fontWeight = FontWeight.SemiBold)
+                Text(
+                    "LoveBrain 在本地运行，聊天内容仅发送给你配置的 AI 模型供应商。\n知识库数据存储在本地设备，不上传到任何第三方服务器。",
+                    style = AppTypography.bodySmall,
+                    color = TextSecondary
+                )
+            }
+        }
+
+        // 诊断信息（可折叠）
+        var showDiagnostics by remember { mutableStateOf(false) }
+        Card(
+            shape = LoveBrainShape.lg,
+            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { showDiagnostics = !showDiagnostics }
+        ) {
+            Column(modifier = Modifier.padding(Spacing.xl)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("诊断信息", style = AppTypography.titleMedium, color = TextPrimary, fontWeight = FontWeight.SemiBold)
+                    Text(if (showDiagnostics) "▾" else "▸", color = TextHint)
+                }
+                if (showDiagnostics) {
+                    Spacer(Modifier.height(Spacing.sm))
+                    Text("SHA: ${com.lovebrain.app.BuildConfig.GIT_SHA}", style = AppTypography.labelSmall, color = TextHint)
+                    Text("Build: ${com.lovebrain.app.BuildConfig.BUILD_TYPE}", style = AppTypography.labelSmall, color = TextHint)
+                }
+            }
+        }
+    }
+}
