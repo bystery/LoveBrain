@@ -114,12 +114,16 @@ data class ReplySchemes(
     )
 }
 
-/** 进行中事项（长持续时间话题追踪） */
+/** 进行中事项（长持续时间话题追踪）
+ * F04: 增加 itemId（稳定身份）和 sourceIds（真实证据来源），
+ * 用于幂等更新和防止旧任务复活。 */
 @Serializable
 data class OngoingItem(
     @SerialName("item") val name: String = "",  // 新格式字段名为 item；内部仍用 name
     val status: String = "",    // 新出现 / 进行中 / 已完成 / 已取消
-    val state: String = ""      // 本轮最新状态节点（时间戳由代码打）
+    val state: String = "",     // 本轮最新状态节点（时间戳由代码打）
+    @SerialName("item_id") val itemId: String = "",  // F04: 稳定身份 ID
+    @SerialName("source_ids") val sourceIds: List<String> = emptyList()  // F04: 本轮真实证据来源消息 ID
 )
 
 /** 场景事实（带来源关联）

@@ -26,6 +26,18 @@ android {
         versionName = "1.3.2"
         // P1-5: Compose UI test runner
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // F03: 构建可追溯性——注入 git SHA 和构建类型
+        val gitSha = try {
+            val process = Runtime.getRuntime().exec(arrayOf("git", "rev-parse", "--short", "HEAD"))
+            val text = process.inputStream.bufferedReader().readText().trim()
+            process.waitFor()
+            if (text.length >= 7) text else "unknown"
+        } catch (e: Exception) {
+            "unknown"
+        }
+        buildConfigField("String", "GIT_SHA", "\"$gitSha\"")
+        buildConfigField("String", "BUILD_TYPE", "\"debug\"")
     }
 
     signingConfigs {
@@ -52,6 +64,12 @@ android {
             if (keystorePropsFile.exists()) {
                 signingConfig = signingConfigs.getByName("release")
             }
+            // F03: Release 构建覆盖 BUILD_TYPE
+            buildConfigField("String", "BUILD_TYPE", "\"release\"")
+        }
+        debug {
+            // F03: Debug 构建显式标记
+            buildConfigField("String", "BUILD_TYPE", "\"debug\"")
         }
     }
     compileOptions {

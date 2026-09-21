@@ -2,6 +2,7 @@ package com.lovebrain.app.domain
 
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.DeepSeekRepository
+import com.lovebrain.app.data.ProviderRequestConfig
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.KnowledgeBase
@@ -109,7 +110,12 @@ object PartialTipsParser {
         val result = mutableListOf<com.lovebrain.app.model.SuggestTip>()
         for (objStr in PartialJsonObjects.extractObjects(buffer, "tips")) {
             runCatching { jsonLenient.decodeFromString<com.lovebrain.app.model.SuggestTip>(objStr) }.getOrNull()?.let { tip ->
-                if (tip.example.isNotBlank() && result.none { it.example == tip.example }) {
+                // F18: 去重键改用 action（新主字段），兼容旧缓存用 slot
+                val dedupKey = tip.action.ifBlank { tip.slot }.ifBlank { tip.example }
+                if (dedupKey.isNotBlank() && result.none { 
+                    val existingKey = it.action.ifBlank { it.slot }.ifBlank { it.example }
+                    existingKey == dedupKey
+                }) {
                     result.add(tip)
                 }
             }
@@ -200,6 +206,31 @@ class GenerationEngine(
      * GEN-02B：knowledgeBase 参数冻结生成时 KB，防止生成途中切 KB 导致 prompt 与保存不同源。
      * F07: intentConfig 冻结持续意图 text/enabled/revision，启用时短注入。
      */
+    /**
+     * F09: 统一不可变生成输入入口。
+     * UI→domain 边界生成 GenerationInput，分离真实 dialogue 和控制信息。
+     * 内部委托给旧的 messages 接口，但未来可逐步迁移到完全使用 GenerationInput。
+     */
+    fun generate(
+        input: com.lovebrain.app.model.GenerationInput,
+        knowledgeBase: KnowledgeBase?,
+        scope: CoroutineScope,
+        callbacks: Callbacks
+    ): Job? {
+        // F09: 使用 GenerationInput 中的分离数据
+        val messages = com.lovebrain.app.model.GenerationInput.toChatMessages(input)
+        return generate(
+            messages = messages,
+            userHint = input.userHint(),
+            knowledgeBase = knowledgeBase,
+            scope = scope,
+            callbacks = callbacks,
+            intentConfig = input.effectiveIntent,
+            corrections = input.corrections,
+            onlyThisRound = input.onlyThisRound
+        )
+    }
+
     fun generate(
         messages: List<ChatMessage>,
         userHint: String,
@@ -222,16 +253,42 @@ class GenerationEngine(
         L.w("PERF t0 click generate")
 
         return scope.launch {
+            // F02: 准备阶段（system prompt 构建、知识背景、来源引用、Provider 快照）
+            // 包裹在 try/catch 中——准备阶段的读盘、迁移、状态写入异常不在原有网络请求的 try/catch 保护范围内。
+            // 该路径异常可能逃出前台 launch 导致 App 崩溃。
             val aggressive = callbacks.getOutputMode() == 1
-            val system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt() }
-            // F09: 使用 buildReplyUserPromptWithRefs 收集 MemoryRef 清单并应用纠正过滤
-            // F10: onlyThisRound=true 时只携带通用规则、本轮真实消息和想法
-            val buildResult = withContext(Dispatchers.IO) {
-                if (onlyThisRound) {
-                    promptBuilder.buildReplyUserPromptOnlyThisRound(messages, userHint)
-                } else {
-                    promptBuilder.buildReplyUserPromptWithRefs(knowledgeBase, messages, userHint, aggressive, intentConfig, corrections)
+            val system: String
+            val buildResult: PromptBuilder.PromptBuildResult
+            val providerConfig: ProviderRequestConfig?
+            try {
+                system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt() }
+                // F09: 使用 buildReplyUserPromptWithRefs 收集 MemoryRef 清单并应用纠正过滤
+                // F10: onlyThisRound=true 时只携带通用规则、本轮真实消息和想法
+                buildResult = withContext(Dispatchers.IO) {
+                    if (onlyThisRound) {
+                        promptBuilder.buildReplyUserPromptOnlyThisRound(messages, userHint)
+                    } else {
+                        promptBuilder.buildReplyUserPromptWithRefs(knowledgeBase, messages, userHint, aggressive, intentConfig, corrections)
+                    }
                 }
+                // PROV-01：整轮生成开始时冻结 Provider 身份
+                providerConfig = deepSeekRepo.snapshotProviderConfig()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e  // 取消单独处理并继续传播
+            } catch (e: Exception) {
+                // F02: 准备阶段异常——不退出 App，转成可恢复 Error
+                L.e("F02: prepare phase exception", e)
+                val userFriendlyMsg = when {
+                    e is java.io.IOException -> "读取数据时出错，请重试"
+                    DeepSeekRepository.isConfigError(e.message ?: "") ->
+                        DeepSeekRepository.stripConfigPrefix(e.message.orEmpty())
+                    else -> "准备生成时出错：${e.message ?: "未知错误"}，请重试"
+                }
+                callbacks.onReplyResult(GenerateResult.Error(userFriendlyMsg))
+                callbacks.onReplyGenerating(false, false)
+                callbacks.onReplyStreamingCoreTextReset()
+                callbacks.onReplyPanelState(PanelState.AI_RESULT)
+                return@launch
             }
             val user = buildResult.prompt
             // F09: 回报 MemoryRef 清单
@@ -240,8 +297,6 @@ class GenerationEngine(
             callbacks.onReplySourceAliasMap(buildResult.sourceAliasMap)
             L.w("PERF t1 prompt built (+${System.currentTimeMillis() - t0}ms), user=${user.length} chars")
 
-            // PROV-01：整轮生成开始时冻结 Provider 身份——所有 retry attempt 使用同一个 config
-            val providerConfig = deepSeekRepo.snapshotProviderConfig()
             if (providerConfig == null) {
                 callbacks.onReplyResult(GenerateResult.Error("请先配置一个可用的模型供应商"))
                 callbacks.onReplyGenerating(false, false)
@@ -545,9 +600,12 @@ class GenerationEngine(
             }
             // ：主动发首字耗时计时起点（复用回复流程 t0 口径）
             val t0 = System.currentTimeMillis()
-            //  规格：scene 参数保留但不再注入；user 仅草稿（无时间戳/无知识/无场景）
-            val user = withContext(Dispatchers.IO) { promptBuilder.buildPolishUserPrompt(draft) }
-            val system = withContext(Dispatchers.IO) { promptBuilder.buildPolishSystemPrompt() }
+            // F17: 使用新的主动开场 prompt（含画像和近期对话），替代旧润色 prompt
+            val activeKb = callbacks.getActiveKb()
+            val user = withContext(Dispatchers.IO) {
+                promptBuilder.buildProactiveUserPrompt(draft, activeKb, callbacks.getMessages())
+            }
+            val system = withContext(Dispatchers.IO) { promptBuilder.buildProactiveSystemPrompt() }
 
             val buffer = StringBuilder()
             var fullText = ""

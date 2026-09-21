@@ -118,7 +118,8 @@ class LoveBrainViewModel(
         val memoryRefs: List<com.lovebrain.app.model.MemoryRef> = emptyList(), // F09: 冻结的 MemoryRef 清单
         val correctionsRevision: Int = 0,  // F09: 冻结的纠正 revision（防迟到覆盖）
         val sourceAliasMap: Map<String, String> = emptyMap(), // B项修复：别名→实际消息ID映射
-        val inputFingerprint: String = "" // F11: 输入指纹——对 KB+消息正文+角色+顺序+IDEA+onlyThisRound+intent revision 做哈希
+        val inputFingerprint: String = "", // F11: 输入指纹——对 KB+消息正文+角色+顺序+IDEA+onlyThisRound+intent revision 做哈希
+        val onlyThisRound: Boolean = false // F16: 冻结 onlyThisRound 状态
     )
     private var replyGenerationContext: ReplyGenerationContext? = null
 
@@ -841,7 +842,8 @@ class LoveBrainViewModel(
                     intentEnabled = effectiveIntent.enabled,
                     intentRevision = effectiveIntent.revision,
                     correctionsRevision = correctionsRevision,
-                    inputFingerprint = computeInputFingerprint(snapshot, userHint, kbName, _onlyThisRound.value, effectiveIntent.revision)
+                    inputFingerprint = computeInputFingerprint(snapshot, userHint, kbName, _onlyThisRound.value, effectiveIntent.revision),
+                    onlyThisRound = _onlyThisRound.value
                 )
                 // GEN-01：正常结束后清 Job 引用（identity guard 防止清掉后来的新 Job）
                 job.invokeOnCompletion {
@@ -942,6 +944,16 @@ class LoveBrainViewModel(
         }
         val scheme = allSchemes.find { it.tag == identity.tag } ?: return
 
+        // F16: 冻结真实对话快照（含人物身份）
+        val dialogueSnapshot = ctx.messages
+            .filter { it.role == com.lovebrain.app.model.ChatMessage.Role.HER || it.role == com.lovebrain.app.model.ChatMessage.Role.ME }
+            .map { msg ->
+                com.lovebrain.app.model.DialogueSnapshotEntry(
+                    speaker = if (msg.role == com.lovebrain.app.model.ChatMessage.Role.HER) "PARTNER" else "USER",
+                    text = msg.content
+                )
+            }
+
         val case = com.lovebrain.app.model.FeedbackCase(
             caseId = java.util.UUID.randomUUID().toString(),
             schemeIdentityKey = identityKey,
@@ -952,7 +964,16 @@ class LoveBrainViewModel(
             ideaHint = ctx.ideaHint,
             intentText = ctx.intentText.takeIf { ctx.intentEnabled } ?: "",
             modelId = modelId,
-            timestamp = com.lovebrain.app.util.TimeFmt.now()
+            timestamp = com.lovebrain.app.util.TimeFmt.now(),
+            // F16: 完整诊断快照
+            dialogueSnapshot = dialogueSnapshot,
+            contextMode = if (ctx.onlyThisRound) "only-this-round" else "full",
+            promptVersion = "v1.3.2",
+            appVersion = com.lovebrain.app.BuildConfig.VERSION_NAME,
+            buildType = com.lovebrain.app.BuildConfig.BUILD_TYPE,
+            promptTokens = 0,  // F16: usage 不可用时默认 0（不把默认 0 当已核实成本）
+            completionTokens = 0,
+            costYuan = _lastCostYuan.value ?: 0.0
         )
         // P1-A: 同步暴露给 UI——消除竞态，UI 不需要异步全库读取
         _currentFeedbackCase.value = case
@@ -1086,7 +1107,6 @@ class LoveBrainViewModel(
 
         // GEN-03：先写盘，成功后才提交 UI
         val analysis = response.analysis
-        val feedbackSnapshot = _feedbacks.value.toMap()
         val messagesSnapshot = context.messages
         val consumedIds = context.messageIds
 
@@ -2319,7 +2339,6 @@ class LoveBrainViewModel(
         // P1-04: 不再捕获 preRewriteFeedback 做后续清理——
         // 改写期间用户对旧文的反馈继续归旧版本；新版本独立 NONE。
 
-        val kbSnapshot = _activeKb.value
         val ticket = _activeTicket.value
         val apiKey = ticket?.let { securePrefs.getWorkerApiKey(it.id) }
 

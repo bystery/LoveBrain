@@ -18,7 +18,8 @@ import org.junit.Test
  */
 class SubjectCandidateRejectionTest {
 
-    // Level 1: PARTNER 说"我..." → HER
+    // Level 1: PARTNER 说"我..." → ME
+    // F11: 模型按用户视角写"我今天加班到很晚"——"我"是用户视角的"我"，subject=ME
     @Test
     fun level1_partner_says_my_subject_is_her() {
         val result = FactSubjectResolver.resolve(
@@ -27,10 +28,11 @@ class SubjectCandidateRejectionTest {
             sourceIds = listOf("m0"),
             dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.PARTNER, "我今天加班到很晚"))
         )
-        assertEquals(EntityRef.HER, result)
+        assertEquals(EntityRef.ME, result)
     }
 
-    // Level 1: PARTNER 说"你..." → ME
+    // Level 1: PARTNER 说"你..." → HER
+    // F11: 模型按用户视角写"你最近很忙吗"——"你"是用户视角的对方，subject=HER
     @Test
     fun level1_partner_says_your_subject_is_me() {
         val result = FactSubjectResolver.resolve(
@@ -39,7 +41,7 @@ class SubjectCandidateRejectionTest {
             sourceIds = listOf("m0"),
             dialogue = listOf(DialogueMessage("m0", DialogueSpeaker.PARTNER, "你最近很忙吗"))
         )
-        assertEquals(EntityRef.ME, result)
+        assertEquals(EntityRef.HER, result)
     }
 
     // Level 1: USER 说"我..." → ME

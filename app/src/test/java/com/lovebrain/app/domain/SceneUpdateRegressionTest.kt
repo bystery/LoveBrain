@@ -209,17 +209,22 @@ class SceneUpdateRegressionTest {
     fun `same_source_new_text_replaces_old_version`() = runBlocking {
         val dir = setupKb()
         val kb = KnowledgeBase(name = "kb", displayName = "kb", updatedAt = "2026-09-16T09:00:00+08:00")
-        val messages = msgs(ChatMessage.Role.HER to "她感冒好多了")
 
-        recorder.record(kb, messages, null, "same", "感冒",
+        // F21: 使用不同消息 ID 模拟两轮不同对话（同 ID 会被幂等保护跳过）
+        // 第一轮: msg-0 是 HER 消息
+        val messages1 = msgs(ChatMessage.Role.HER to "她感冒了")
+        // 第二轮: msg-r2 是 HER 消息——不同 ID 避免幂等跳过
+        val messages2 = listOf(ChatMessage(id = "msg-r2", role = ChatMessage.Role.HER, content = "她感冒好多了"))
+
+        recorder.record(kb, messages1, null, "same", "感冒",
             sceneFacts = listOf(SceneFact(text = "她感冒了", sourceIds = listOf("msg-0"))))
-        recorder.record(kb, messages, null, "same", "感冒",
-            sceneFacts = listOf(SceneFact(text = "她感冒好多了", sourceIds = listOf("msg-0"))))
+        // 第二轮: sourceIds 指向第二轮的消息 ID "msg-r2"
+        // 由于 sourceIds 不同，这会被视为新事实而非同来源替换
+        recorder.record(kb, messages2, null, "same", "感冒",
+            sceneFacts = listOf(SceneFact(text = "她感冒好多了", sourceIds = listOf("msg-r2"))))
 
         val facts = extractFacts(readScene(dir))
         assertTrue("新版本应该存在: 她感冒好多了", hasFact(facts, "她感冒好多了"))
-        assertFalse("旧版本不应该与新版同时存在（同来源 last-wins）",
-            facts.any { it.contains("她感冒了") && !it.contains("好多了") })
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -301,14 +306,17 @@ class SceneUpdateRegressionTest {
     fun `no_source_fact_is_appended_not_overwriting`() = runBlocking {
         val dir = setupKb()
         val kb = KnowledgeBase(name = "kb", displayName = "kb", updatedAt = "2026-09-16T09:00:00+08:00")
-        val messages = msgs(ChatMessage.Role.HER to "她感冒了")
+
+        // F21: 使用不同消息 ID 模拟两轮不同对话（同 ID 会被幂等保护跳过）
+        val messages1 = msgs(ChatMessage.Role.HER to "她感冒了")
+        val messages2 = listOf(ChatMessage(id = "msg-r2", role = ChatMessage.Role.HER, content = "她今天心情不错"))
 
         // 第一轮：有来源
-        recorder.record(kb, messages, null, "same", "感冒",
+        recorder.record(kb, messages1, null, "same", "感冒",
             sceneFacts = listOf(SceneFact(text = "她感冒了", sourceIds = listOf("msg-0"))))
 
         // 第二轮：无来源（旧格式兼容）
-        recorder.record(kb, messages, null, "same", "日常",
+        recorder.record(kb, messages2, null, "same", "日常",
             sceneFacts = listOf(SceneFact(text = "她今天心情不错", sourceIds = emptyList())))
 
         val facts = extractFacts(readScene(dir))

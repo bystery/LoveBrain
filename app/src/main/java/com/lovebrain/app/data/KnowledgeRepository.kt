@@ -1794,7 +1794,11 @@ class KnowledgeRepository(
         }
 
         // A项修复：迁移标记存在 → 迁移已完成，不重复覆盖
-        if (migrationMarker.exists()) return
+        // F08: 但仍需执行 plan.md 数据迁移（处理旧版累积的万字状态链）
+        if (migrationMarker.exists()) {
+            migratePlanDataIfNeededUnlocked(kbName)
+            return
+        }
 
         // 全新库（无 global 目录且无迁移标记）→ 只做 v3 文件补齐
         if (!oldGlobal.exists()) return
@@ -1857,7 +1861,179 @@ class KnowledgeRepository(
 
         // A项修复：迁移完成后写标记，后续不再重复迁移
         atomicWriteText(migrationMarker, isoNow())
+
+        // F08: 升级修复——处理已污染的 plan.md 数据（万字状态链迁移）
+        migratePlanDataIfNeededUnlocked(kbName)
     }
+
+    /**
+     * F08: plan.md 数据迁移——处理旧版本累积的万字状态链。
+     *
+     * 旧版本 mergeOngoing 无条件追加状态链，相同文本重复返回也追加，
+     * 导致 plan.md 可膨胀到成千上万字。新写入已修（F04 幂等更新），
+     * 但已累积的旧数据不会自行消失。
+     *
+     * 迁移流程（可恢复、幂等）：
+     * 1. 检查迁移标记 .migrated_plan_v3——已迁移则跳过
+     * 2. 备份旧 plan.md → memory/plan_archive_v2.md（保留原件）
+     * 3. 解析旧格式事项（兼容有/无 itemId 前缀）
+     * 4. 合并连续完全重复状态（只保留最新一条）
+     * 5. 状态链截断——每项最多保留最近 10 条状态（活动投影有界）
+     * 6. 渲染清理后的 plan.md 并原子写入
+     * 7. 写入迁移标记
+     *
+     * 中断恢复：标记未写入前重跑无害（备份追加、归档保留）；
+     * 标记写入后跳过，保证幂等。未知格式原样保留。
+     */
+    private fun migratePlanDataIfNeededUnlocked(kbName: String) {
+        val dir = File(knowledgeRoot, kbName)
+        val planMarker = File(dir, ".migrated_plan_v3")
+        if (planMarker.exists()) return  // 已迁移
+
+        val planFile = File(dir, "moment/plan.md")
+        val planContent = if (planFile.exists()) planFile.readText() else ""
+        if (planContent.isBlank()) {
+            // 空文件——无需迁移，直接写标记
+            atomicWriteText(planMarker, isoNow())
+            return
+        }
+
+        // 1. 备份旧 plan.md 到归档
+        val archiveFile = File(dir, "memory/plan_archive_v2.md")
+        val backupContent = buildString {
+            append("<!-- F08 plan migration backup: ${isoNow()} -->\n")
+            append("<!-- 原始 plan.md 内容（迁移前快照） -->\n")
+            append(planContent)
+            if (!planContent.endsWith("\n")) append("\n")
+            if (archiveFile.exists()) {
+                append("\n<!-- 以下为更早的归档 -->\n")
+                append(archiveFile.readText())
+            }
+        }
+        atomicWriteText(archiveFile, backupContent)
+
+        // 2. 解析旧格式事项
+        val items = mutableListOf<MigratablePlanItem>()
+        var section = "active"
+        for (line in planContent.lines()) {
+            val t = line.trim()
+            when {
+                t.startsWith("## 进行中") -> section = "active"
+                t.startsWith("## 已结束") -> section = "ended"
+                t.startsWith("#") || t.startsWith("<!--") -> { /* 跳过 */ }
+                t.contains("|") -> {
+                    val parts = t.split("|").map { it.trim() }
+                    if (parts.size >= 3 && parts[0].isNotBlank()) {
+                        val firstPart = parts[0]
+                        val tildeIdx = firstPart.indexOf('~')
+                        val (itemId, name) = if (tildeIdx > 0) {
+                            firstPart.substring(0, tildeIdx) to firstPart.substring(tildeIdx + 1)
+                        } else {
+                            "" to firstPart
+                        }
+                        items.add(MigratablePlanItem(
+                            itemId = itemId,
+                            name = name,
+                            status = parts[1],
+                            chain = parts.drop(2).joinToString("|").trim(),
+                            section = section
+                        ))
+                    }
+                }
+            }
+        }
+
+        if (items.isEmpty()) {
+            // 无法解析——原样保留，写标记
+            com.lovebrain.app.util.L.w("F08: no parseable items in plan.md for '$kbName', keeping original")
+            atomicWriteText(planMarker, isoNow())
+            return
+        }
+
+        // 3. 清理重复状态——合并连续相同，截断到最大长度
+        var totalReduction = 0
+        val cleanedItems = items.map { item ->
+            val originalLen = item.chain.length
+            val cleanedChain = cleanPlanStateChain(item.chain)
+            totalReduction += originalLen - cleanedChain.length
+            item.copy(chain = cleanedChain)
+        }
+        com.lovebrain.app.util.L.w("F08: migrated plan for '$kbName', ${items.size} items, reduced $totalReduction chars")
+
+        // 4. 渲染清理后的 plan.md
+        val active = cleanedItems.filter { it.section == "active" }
+        val ended = cleanedItems.filter { it.section == "ended" }
+        val hadActiveHeader = planContent.contains("## 进行中")
+        val hadEndedHeader = planContent.contains("## 已结束")
+
+        val newPlan = buildString {
+            append("# 事项计划\n\n")
+            if (hadActiveHeader || active.isNotEmpty()) {
+                append("## 进行中\n")
+                active.forEach { item ->
+                    val id = if (item.itemId.isNotBlank()) "${item.itemId}~" else ""
+                    append(id).append(item.name)
+                        .append(" | ").append(item.status)
+                        .append(" | ").append(item.chain)
+                        .append("\n")
+                }
+                append("\n")
+            }
+            if (hadEndedHeader || ended.isNotEmpty()) {
+                append("## 已结束\n")
+                ended.forEach { item ->
+                    val id = if (item.itemId.isNotBlank()) "${item.itemId}~" else ""
+                    append(id).append(item.name)
+                        .append(" | ").append(item.status)
+                        .append(" | ").append(item.chain)
+                        .append("\n")
+                }
+            }
+        }
+        atomicWriteText(planFile, newPlan)
+
+        // 5. 写入迁移标记
+        atomicWriteText(planMarker, isoNow())
+    }
+
+    /** F08: 清理状态链——合并连续重复状态，截断到最大长度 */
+    private fun cleanPlanStateChain(chain: String): String {
+        val states = chain.split("→").filter { it.isNotBlank() }
+        if (states.isEmpty()) return chain
+
+        // 合并连续完全相同的状态（保留最新一条）
+        val deduped = mutableListOf<String>()
+        for (state in states) {
+            val last = deduped.lastOrNull()
+            if (last != null && normalizeStateForCompare(last) == normalizeStateForCompare(state)) {
+                deduped[deduped.lastIndex] = state
+            } else {
+                deduped.add(state)
+            }
+        }
+
+        // 截断——只保留最近 10 条状态
+        val kept = if (deduped.size > 10) deduped.takeLast(10) else deduped
+        return kept.joinToString("→")
+    }
+
+    /** F08: 归一化状态文本用于比较——去掉时间戳和（当前）标记 */
+    private fun normalizeStateForCompare(state: String): String {
+        val afterBracket = if (state.contains("]")) {
+            val lastBracket = state.lastIndexOf(']')
+            if (lastBracket >= 0) state.substring(lastBracket + 1) else state
+        } else state
+        return afterBracket.replace("（当前）", "").trim()
+    }
+
+    /** F08: 可迁移的事项数据 */
+    private data class MigratablePlanItem(
+        val itemId: String,
+        val name: String,
+        val status: String,
+        val chain: String,
+        val section: String
+    )
 
     private fun readAsset(path: String): String {
         return runCatching {

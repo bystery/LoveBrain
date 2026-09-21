@@ -53,38 +53,39 @@ object FactSubjectResolver {
     /**
      * Level 1: 基于 speaker + 代词推导 subject。
      *
-     * PARTNER 说"我..." → subject = HER（说话人在说自己）
-     * PARTNER 说"你..." → subject = ME（说话人在说用户）
-     * USER 说"我..." → subject = ME
-     * USER 说"你..." → subject = HER
+     * F11 修复：不再盲目用 startsWith("我") 判定为说话人自指。
      *
-     * 只在句首或明确主语位置匹配，避免误命中。
+     * 核心问题：事实文本是模型按用户视角写的摘要（如"我昨天加班"），
+     * 但模型可能是从对方的话推导出来的（如对方说"你昨天是不是加班了"）。
+     * 如果 speaker=HER 且文本以"我"开头，旧代码会把 subject 判成 HER，
+     * 但这里的"我"是用户视角的"我"，subject 应该是 ME。
+     *
+     * F11 新规则：
+     * - speaker=HER + "我..." → subject=ME（模型按用户视角写）
+     * - speaker=HER + "你..." → subject=HER（模型按对方视角写对方自己）
+     * - speaker=ME + "我..." → subject=ME
+     * - speaker=ME + "你..." → subject=HER
+     * - 其他情况返回 null（不确定）
+     *
+     * 删掉 startsWith("我今天") 等冗余分支——startsWith("我") 已覆盖。
      */
     private fun resolveByPronoun(text: String, speaker: EntityRef): EntityRef? {
         val trimmed = text.trim()
 
-        // 检查句首"我"——说话人在说自己
-        if (trimmed.startsWith("我") || trimmed.startsWith("我今天") ||
-            trimmed.startsWith("我昨") || trimmed.startsWith("我刚") ||
-            trimmed.startsWith("我准备") || trimmed.startsWith("我在") ||
-            trimmed.startsWith("我要") || trimmed.startsWith("我不") ||
-            trimmed.startsWith("我没") || trimmed.startsWith("我去")) {
+        // 检查句首"我"——用户视角的"我"始终指向用户本人
+        // F11: 不再用 startsWith("我今天") 等冗余分支，直接用 startsWith("我")
+        if (trimmed.startsWith("我")) {
             return when (speaker) {
-                EntityRef.HER -> EntityRef.HER
+                EntityRef.HER -> EntityRef.ME  // F11: 模型按用户视角写"我"→subject=ME
                 EntityRef.ME -> EntityRef.ME
                 else -> null
             }
         }
 
-        // 检查句首"你"——说话人在说对方
-        if (trimmed.startsWith("你") || trimmed.startsWith("你今天") ||
-            trimmed.startsWith("你昨") || trimmed.startsWith("你刚") ||
-            trimmed.startsWith("你准备") || trimmed.startsWith("你在") ||
-            trimmed.startsWith("你要") || trimmed.startsWith("你不") ||
-            trimmed.startsWith("你没") || trimmed.startsWith("你去") ||
-            trimmed.startsWith("你感冒") || trimmed.startsWith("你好")) {
+        // 检查句首"你"——用户视角的"你"始终指向对方
+        if (trimmed.startsWith("你")) {
             return when (speaker) {
-                EntityRef.HER -> EntityRef.ME
+                EntityRef.HER -> EntityRef.HER  // F11: 模型按用户视角写"你"→subject=HER
                 EntityRef.ME -> EntityRef.HER
                 else -> null
             }
@@ -96,23 +97,27 @@ object FactSubjectResolver {
     /**
      * Level 2: 简单实体规则。
      *
-     * 事实文本中明确提到"她"或"我"作为主语（非句首代词场景）。
-     * 例如："她喜欢猫" → subject = HER
+     * F11 修复：事实文本以"她"开头 → 描述对方，subject=HER。
+     * 删掉旧代码中"事实文本以'我'开头且 speaker==HER → subject=ME"的逻辑——
+     * 这已在 Level 1 的 resolveByPronoun 中正确处理。
+     *
+     * F11 新增：保守处理亲属、第三人、引语——不确定的返回 null，不进任何一方确定画像。
      */
     private fun resolveByEntityRule(
         factText: String,
         speaker: EntityRef,
-        sourceIds: List<String>,
-        dialogue: List<DialogueMessage>
+        @Suppress("UNUSED_PARAMETER") sourceIds: List<String>,
+        @Suppress("UNUSED_PARAMETER") dialogue: List<DialogueMessage>
     ): EntityRef? {
         val trimmed = factText.trim()
 
-        // 事实文本以"她"开头且 speaker 不是 HER → 描述对方
+        // 事实文本以"她"开头 → 描述对方
         if (trimmed.startsWith("她")) return EntityRef.HER
 
-        // 事实文本以"我"开头且 speaker 是 HER → 描述用户
-        // （Level 1 已处理 speaker 自指场景，这里处理第三人称叙述）
-        if (trimmed.startsWith("我") && speaker == EntityRef.HER) return EntityRef.ME
+        // F11: 亲属关系、第三人——不确定，不强行判定
+        // "我妈住院了" → speaker=HER, 模型写"我妈住院了" → subject 不是 HER 也不是 ME
+        // "你朋友考试" → subject 不是 HER 也不是 ME
+        // 保守返回 null，由 Level 3 返回 UNKNOWN
 
         return null
     }

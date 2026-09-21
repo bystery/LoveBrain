@@ -54,12 +54,14 @@ class OngoingContextSelector(
     )
 
     /** 本轮注入决策上下文
-     *  P0-7: 增加 replyDirective——用户本轮想法成为真实 relevance signal */
+     *  P0-7: 增加 replyDirective——用户本轮想法成为真实 relevance signal
+     *  F06: 增加 effectiveIntent——冻结的持续意图快照，不重新 readIntent */
     data class SelectionContext(
         val messages: List<ChatMessage>,
         val currentTurn: Int,
         val currentTime: String,
-        val replyDirective: ReplyDirective? = null  // P0-7: 用户本轮想法
+        val replyDirective: ReplyDirective? = null,  // P0-7: 用户本轮想法
+        val effectiveIntent: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()  // F06: 冻结快照
     )
 
     /**
@@ -135,10 +137,15 @@ class OngoingContextSelector(
         }
         val realText = realMessages.joinToString(" ") { it.content }
 
-        // 持续意图文本
-        val intentText = knowledgeRepo.readIntent(kbName).let {
-            if (it.enabled) it.text else ""
-        }
+        // F06: 使用 effectiveIntent——从冻结快照读取，不重新 readIntent
+        // 已暂停、已完成、已到期均不参与检索授权
+        val intentConfig = context.effectiveIntent
+        val intentText = if (intentConfig.enabled &&
+            intentConfig.status != com.lovebrain.app.model.IntentStatus.PAUSED &&
+            intentConfig.status != com.lovebrain.app.model.IntentStatus.COMPLETED &&
+            intentConfig.status != com.lovebrain.app.model.IntentStatus.EXPIRED) {
+            intentConfig.text
+        } else ""
 
         // P0-7: 用户本轮想法（ReplyDirective）——真实 relevance signal
         val directiveText = context.replyDirective?.text ?: ""
@@ -282,13 +289,9 @@ class OngoingContextSelector(
     /**
      * P0-7: 从原始事项名称中提取 2 字滑动窗口关键词。
      *
-     * 用途：extractKeywords 会剥离日期/周几等模式，但有时原始名称中的
-     * 日期相关词（如"周一"）本身就是用户在消息中会提到的关键词。
-     * 此方法不做任何清洗，直接从事项名中提取所有 2 字子串，
-     * 作为 extractKeywords 的补充匹配信号。
-     *
-     * 例如："周一见面" → ["周一", "一见", "见面"]
-     * 当用户说"周一几点见"时，"周一" 即可命中。
+     * F05: 已废弃——二字滑动窗口匹配太宽，会误召回。
+     * "周末见面" 包含 "周末"，消息 "周末还要加班" 即命中，但见面事项没有新证据。
+     * 现在只作为 extractKeywords 的回退参考，不再单独用于 any contains 判断。
      */
     private fun extractRawKeywords(name: String): List<String> {
         val cleaned = name.replace(Regex("[（）()【】\\[\\]「」\"'·\\s,，、]+"), "")
@@ -301,7 +304,33 @@ class OngoingContextSelector(
     }
 
     /**
+     * F05: 读取已消费的消息 ID（防重复来源推进证据时间）。
+     * 只保留最近 N 条，防文件无限增长。
+     */
+    private suspend fun readConsumedMessageIds(kbName: String): Set<String> {
+        val content = knowledgeRepo.readFile(kbName, "moment/consumed_msg_ids.json")
+        if (content.isBlank()) return emptySet()
+        return runCatching {
+            kotlinx.serialization.json.Json.decodeFromString<Set<String>>(content)
+        }.getOrDefault(emptySet())
+    }
+
+    /**
+     * F05: 写入已消费的消息 ID，只保留最近 50 条。
+     */
+    private suspend fun writeConsumedMessageIds(kbName: String, ids: Set<String>) {
+        val toKeep = ids.toList().takeLast(50).toSet()
+        val stringSerializer = kotlinx.serialization.serializer<String>()
+        val json = kotlinx.serialization.json.Json.encodeToString(
+            kotlinx.serialization.builtins.SetSerializer(stringSerializer),
+            toKeep
+        )
+        knowledgeRepo.writeFile(kbName, "moment/consumed_msg_ids.json", json)
+    }
+
+    /**
      * 解析 plan.md 的事项行为 PlanItem，推导内部状态。
+     * F04: 兼容新格式 itemId~name|status|chain 和旧格式 name|status|chain。
      */
     private fun parsePlanItems(content: String): List<PlanItem> {
         if (content.isBlank()) return emptyList()
@@ -311,7 +340,10 @@ class OngoingContextSelector(
             if (!t.contains("|")) continue
             val parts = t.split("|").map { it.trim() }
             if (parts.size < 3 || parts[0].isBlank()) continue
-            val name = parts[0]
+            // F04: 检查 itemId~ 前缀
+            val firstPart = parts[0]
+            val tildeIdx = firstPart.indexOf('~')
+            val name = if (tildeIdx > 0) firstPart.substring(tildeIdx + 1) else firstPart
             val status = parts[1]
             val chain = parts.drop(2).joinToString("|").trim()
 

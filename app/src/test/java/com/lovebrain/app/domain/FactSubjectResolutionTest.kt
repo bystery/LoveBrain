@@ -28,17 +28,17 @@ class FactSubjectResolutionTest {
     // ═══ Level 1: 代码可确定——代词 + speaker ═══
 
     @Test
-    fun `PARTNER says my X subject HER`() {
-        // "我今天发烧了" — PARTNER 在说自己
+    fun `PARTNER says my X subject ME`() {
+        // F11: 模型按用户视角写"我今天发烧了"——"我"是用户视角的"我"，subject=ME
         val result = FactSubjectResolver.resolve("我今天发烧了", EntityRef.HER, listOf("m2"), dialogue)
-        assertEquals(EntityRef.HER, result)
+        assertEquals(EntityRef.ME, result)
     }
 
     @Test
-    fun `PARTNER says you X subject ME`() {
-        // "你感冒好了吗" — PARTNER 在说用户
+    fun `PARTNER says you X subject HER`() {
+        // F11: 模型按用户视角写"你感冒好了吗"——"你"是用户视角的对方，subject=HER
         val result = FactSubjectResolver.resolve("你感冒好了吗", EntityRef.HER, listOf("m0"), dialogue)
-        assertEquals(EntityRef.ME, result)
+        assertEquals(EntityRef.HER, result)
     }
 
     @Test
@@ -57,15 +57,17 @@ class FactSubjectResolutionTest {
     // ═══ Level 1: 更多代词变体 ═══
 
     @Test
-    fun `PARTNER says I do not subject HER`() {
+    fun `PARTNER says I do not subject ME`() {
+        // F11: speaker=HER + "我..." → subject=ME（模型按用户视角写）
         val result = FactSubjectResolver.resolve("我不太确定", EntityRef.HER, listOf("m0"), dialogue)
-        assertEquals(EntityRef.HER, result)
+        assertEquals(EntityRef.ME, result)
     }
 
     @Test
-    fun `PARTNER says I went subject HER`() {
+    fun `PARTNER says I went subject ME`() {
+        // F11: speaker=HER + "我..." → subject=ME（模型按用户视角写）
         val result = FactSubjectResolver.resolve("我去超市了", EntityRef.HER, listOf("m0"), dialogue)
-        assertEquals(EntityRef.HER, result)
+        assertEquals(EntityRef.ME, result)
     }
 
     @Test

@@ -375,7 +375,18 @@ fun LoveBrainPanelScreen(
                         viewModel.removeMessageById(id)
                     },
                     modifier = Modifier.height(messageListHeight),
-                    onEmptyAction = null,
+                    onEmptyAction = {
+                        // F14: 恢复空态入口——点击进入主动发模式
+                        viewModel.setPanelMode(0)
+                        val draft = draftText.trim()
+                        if (draft.isEmpty()) {
+                            // 空草稿——直接切到主动发模式，让用户输入或找话题
+                            viewModel.showPanelWarning("想主动聊两句？输入想说的话后点主动发")
+                        } else {
+                            if (isProviderReady) viewModel.generateProactive(draft)
+                            else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置")
+                        }
+                    },
                     proactiveActive = false
                 )
                 DraggableDivider(
@@ -401,13 +412,9 @@ fun LoveBrainPanelScreen(
                         else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置")
                     },
                     onGenerateProactive = {
-                        val draft = draftText.trim()
-                        if (draft.isEmpty()) {
-                            viewModel.showPanelWarning("先输入想说的话，再点主动发")
-                            return@DualGenerateRow
-                        }
+                        // F17: 空草稿也允许主动发——生成主动话题而非仅润色
                         if (isProviderReady) {
-                            viewModel.generateProactive(draft)
+                            viewModel.generateProactive(draftText.trim())
                         } else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置")
                     },
                     onRetry = { if (isProviderReady) viewModel.generate() else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置") },
@@ -1080,6 +1087,17 @@ private fun ProactiveResultArea(
  * 有回复结果时左按钮变为"重试"，右按钮"主动发"保持可达。
  * 按钮状态同时参考 resultMode，避免主动发页面出现旧回复的保存操作。
  */
+/**
+ * F13: DualGenerateRow 重构——使用统一 GenerationActionButton 组件。
+ *
+ * 旧实现独立维护 loading、stop、pressed、enabled、elapsed 逻辑——
+ * 与旧 GenerateButton.kt（已删除）完全重复。
+ * 现在委托给 GenerationActionButton，布局层只决定一排两个入口。
+ *
+ * 非生成状态下始终保留双入口——"记入知识库"已移入结果工具区。
+ * 有回复结果时左按钮变为"重试"，右按钮"主动发"保持可达。
+ * 按钮状态同时参考 resultMode，避免主动发页面出现旧回复的保存操作。
+ */
 @Composable
 private fun DualGenerateRow(
     modifier: Modifier = Modifier,
@@ -1094,145 +1112,52 @@ private fun DualGenerateRow(
     onRetry: () -> Unit,
     onStop: () -> Unit
 ) {
-    val haptics = androidx.compose.ui.platform.LocalHapticFeedback.current
-
     if (isGenerating) {
-        // Reply generating: stop button full width
-        val transition = androidx.compose.animation.core.rememberInfiniteTransition(label = "pulse")
-        val overlayAlpha by transition.animateFloat(
-            initialValue = 0f,
-            targetValue = 0.22f,
-            animationSpec = androidx.compose.animation.core.infiniteRepeatable(
-                animation = androidx.compose.animation.core.tween(800),
-                repeatMode = androidx.compose.animation.core.RepeatMode.Reverse
-            ),
-            label = "overlayAlpha"
+        // F13: 生成中——委托给 GenerationActionButton LOADING 模式
+        GenerationActionButton(
+            text = "",
+            onClick = onStop,
+            modifier = modifier.fillMaxWidth(),
+            mode = ButtonMode.LOADING,
+            heightDp = PanelDimens.TRIO_HEIGHT_DP
         )
-        var elapsedSec by remember { mutableStateOf(0) }
-        androidx.compose.runtime.LaunchedEffect(isGenerating) {
-            elapsedSec = 0
-            while (true) {
-                kotlinx.coroutines.delay(1000)
-                elapsedSec++
-            }
-        }
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(vertical = Spacing.xs)
-                .height(PanelDimens.TRIO_HEIGHT_DP.dp)
-                .clip(LoveBrainShape.md)
-                .background(Primary, LoveBrainShape.md)
-                .clickable(onClick = onStop),
-            contentAlignment = Alignment.Center
-        ) {
-            Box(
-                Modifier.matchParentSize().graphicsLayer { alpha = overlayAlpha }
-                    .background(PrimaryDark, LoveBrainShape.md)
-            )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                androidx.compose.material3.CircularProgressIndicator(
-                    color = Color.White,
-                    modifier = Modifier.size(Spacing.xl),
-                    strokeWidth = Spacing.xs
-                )
-                Spacer(Modifier.width(Spacing.md))
-                val phase = when {
-                    elapsedSec < 5 -> "分析对话"
-                    elapsedSec < 15 -> "生成方案"
-                    else -> "深度分析"
-                }
-                Text(
-                    text = "$phase · ${elapsedSec}s  点击停止",
-                    color = Color.White,
-                    style = AppTypography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
     } else if (isProactive) {
-        // Proactive running: stop button
-        val (stopInteraction, stopScale) = rememberPressScale(0.96f, "proactiveStopScale")
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(vertical = Spacing.xs)
-                .height(PanelDimens.TRIO_HEIGHT_DP.dp)
-                .graphicsLayer { scaleX = stopScale; scaleY = stopScale }
-                .clip(LoveBrainShape.md)
-                .background(Neutral200, LoveBrainShape.md)
-                .clickable(interactionSource = stopInteraction, indication = null, onClick = onStop),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("停止", color = Color.White, style = AppTypography.titleMedium, fontWeight = FontWeight.Bold)
-        }
+        // F13: 主动发生成中——委托给 GenerationActionButton STOP 模式
+        GenerationActionButton(
+            text = "停止",
+            onClick = onStop,
+            modifier = modifier.fillMaxWidth(),
+            mode = ButtonMode.STOP,
+            heightDp = PanelDimens.TRIO_HEIGHT_DP
+        )
     } else {
-        // P1-5: 非生成状态始终显示双入口——"记入知识库"已移入结果工具区
-        // P0-FIX: hasReplyResult 只在 REPLY 模式下才影响左按钮——避免主动发结果展示时左按钮变成"重试"
+        // F13: 非生成状态——双入口
         val replyResultVisible = resultMode == LoveBrainViewModel.ResultMode.REPLY && hasReplyResult
+        val replyEnabled = messageCount > 0 || replyResultVisible
+        val proactiveEnabled = true  // F17: 空草稿也允许主动发——生成主动话题
+
         Row(
-            modifier = modifier.fillMaxWidth().padding(vertical = Spacing.xs),
+            modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(PanelDimens.GENERATE_BUTTON_GAP_DP.dp)
         ) {
-            // Left: 生成回复 / 重试（有回复结果时变为重试）
-            val replyEnabled = messageCount > 0 || replyResultVisible
-            val (replyInteraction, replyScale) = rememberPressScale(0.96f, "genReplyScale")
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(PanelDimens.TRIO_HEIGHT_DP.dp)
-                    .then(if (replyEnabled) Modifier.shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md) else Modifier)
-                    .clip(LoveBrainShape.md)
-                    .background(if (replyEnabled) Primary else SurfaceInset, LoveBrainShape.md)
-                    .graphicsLayer { scaleX = replyScale; scaleY = replyScale }
-                    .then(if (replyEnabled) Modifier.clickable(
-                        interactionSource = replyInteraction,
-                        indication = null,
-                        onClick = {
-                            haptics.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
-                            if (replyResultVisible) onRetry() else onGenerateReply()
-                        }
-                    ) else Modifier),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = if (replyResultVisible) "重试" else "生成回复",
-                    color = if (replyEnabled) Color.White else TextSecondary,
-                    style = AppTypography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1
-                )
-            }
-
-            // Right: 主动发——始终可达（非生成状态）
-            val proactiveEnabled = draftText.trim().isNotEmpty()
-            val (proactiveInteraction, proactiveScale) = rememberPressScale(0.96f, "genProactiveScale")
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(PanelDimens.TRIO_HEIGHT_DP.dp)
-                    .then(if (proactiveEnabled) Modifier.shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md) else Modifier)
-                    .clip(LoveBrainShape.md)
-                    .background(if (proactiveEnabled) PrimaryDark else SurfaceInset, LoveBrainShape.md)
-                    .graphicsLayer { scaleX = proactiveScale; scaleY = proactiveScale }
-                    .then(if (proactiveEnabled) Modifier.clickable(
-                        interactionSource = proactiveInteraction,
-                        indication = null,
-                        onClick = {
-                            haptics.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
-                            onGenerateProactive()
-                        }
-                    ) else Modifier),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "主动发",
-                    color = if (proactiveEnabled) Color.White else TextSecondary,
-                    style = AppTypography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1
-                )
-            }
+            // Left: 生成回复 / 重试
+            GenerationActionButton(
+                text = if (replyResultVisible) "重试" else "生成回复",
+                onClick = { if (replyResultVisible) onRetry() else onGenerateReply() },
+                modifier = Modifier.weight(1f),
+                enabled = replyEnabled,
+                containerColor = Primary,
+                heightDp = PanelDimens.TRIO_HEIGHT_DP
+            )
+            // Right: 主动发
+            GenerationActionButton(
+                text = "主动发",
+                onClick = onGenerateProactive,
+                modifier = Modifier.weight(1f),
+                enabled = proactiveEnabled,
+                containerColor = PrimaryDark,
+                heightDp = PanelDimens.TRIO_HEIGHT_DP
+            )
         }
     }
 }

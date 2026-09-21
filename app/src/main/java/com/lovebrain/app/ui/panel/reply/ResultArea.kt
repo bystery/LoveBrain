@@ -1127,97 +1127,72 @@ private fun MemoryRefItem(
             }
         }
 
-        // F04: "暂时别提"时长选择子菜单
+        // F04: "暂时别提"时长选择子菜单——F01: 改为 PanelModalHost
         if (showMuteSubmenu) {
-            androidx.compose.material3.AlertDialog(
-                onDismissRequest = { showMuteSubmenu = false },
-                title = { Text("暂停时长", style = AppTypography.labelMedium, color = TextPrimary) },
-                text = {
-                    Column {
-                        CorrectionSubmenuItem("仅本轮") {
-                            onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.THIS_ROUND)
-                            showMuteSubmenu = false
-                        }
-                        CorrectionSubmenuItem("今天剩余") {
-                            onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.TODAY)
-                            showMuteSubmenu = false
-                        }
-                        CorrectionSubmenuItem("直到手动恢复") {
-                            onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
-                            showMuteSubmenu = false
-                        }
+            com.lovebrain.app.ui.panel.PanelModalHost(
+                onDismiss = { showMuteSubmenu = false }
+            ) {
+                com.lovebrain.app.ui.panel.PanelModalTitle("暂停时长")
+                Spacer(Modifier.height(Spacing.md))
+                Column {
+                    CorrectionSubmenuItem("仅本轮") {
+                        onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.THIS_ROUND)
+                        showMuteSubmenu = false
                     }
-                },
-                confirmButton = {},
-                dismissButton = {
-                    Text(
-                        "取消",
-                        style = AppTypography.labelSmall,
-                        color = TextHint,
-                        modifier = Modifier.clickable { showMuteSubmenu = false }
-                    )
+                    CorrectionSubmenuItem("今天剩余") {
+                        onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.TODAY)
+                        showMuteSubmenu = false
+                    }
+                    CorrectionSubmenuItem("直到手动恢复") {
+                        onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
+                        showMuteSubmenu = false
+                    }
                 }
-            )
+                com.lovebrain.app.ui.panel.PanelModalActions(
+                    confirmLabel = "",
+                    dismissLabel = "取消",
+                    confirmEnabled = false,
+                    onConfirm = {},
+                    onDismiss = { showMuteSubmenu = false }
+                )
+            }
         }
 
-        // F04: "不对"——输入正确内容
+        // F04: "不对"——输入正确内容——F01: 改为 PanelModalHost
         if (showWrongDialog) {
-            androidx.compose.material3.AlertDialog(
-                onDismissRequest = { showWrongDialog = false },
-                title = { Text("标记为错误", style = AppTypography.labelMedium, color = TextPrimary) },
-                text = {
-                    Column {
-                        Text(
-                            "输入正确内容（可选，留空仅停用）",
-                            style = AppTypography.labelSmall,
-                            color = TextSecondary
-                        )
-                        Spacer(Modifier.height(Spacing.xs))
-                        OutlinedTextField(
-                            value = wrongText,
-                            onValueChange = { wrongText = it },
-                            modifier = Modifier.fillMaxWidth(),
-                            placeholder = {
-                                Text("输入正确的内容", style = AppTypography.labelSmall, color = TextHint)
-                            },
-                            textStyle = AppTypography.labelSmall.copy(color = TextPrimary),
-                            singleLine = false,
-                            maxLines = 3,
-                            shape = LoveBrainShape.sm
-                        )
-                    }
-                },
-                confirmButton = {
-                    val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "wrongConfirmScale")
-                    Text(
-                        "确认",
-                        style = AppTypography.labelSmall,
-                        color = Color.White,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier
-                            .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
-                            .clip(LoveBrainShape.sm)
-                            .background(Primary)
-                            .clickable(
-                                interactionSource = confirmInteraction,
-                                indication = null,
-                                onClick = {
-                                    onCorrectionWithReplacement(ref.id, wrongText.trim())
-                                    showWrongDialog = false
-                                }
-                            )
-                            .padding(horizontal = Spacing.md, vertical = Spacing.xs)
-                    )
-                },
-                dismissButton = {
-                    Text(
-                        "取消",
-                        style = AppTypography.labelSmall,
-                        color = TextHint,
-                        modifier = Modifier.clickable { showWrongDialog = false }
-                    )
-                }
-            )
+            com.lovebrain.app.ui.panel.PanelModalHost(
+                onDismiss = { showWrongDialog = false }
+            ) {
+                com.lovebrain.app.ui.panel.PanelModalTitle("标记为错误")
+                Spacer(Modifier.height(Spacing.sm))
+                Text(
+                    "输入正确内容（可选，留空仅停用）",
+                    style = AppTypography.labelSmall,
+                    color = TextSecondary
+                )
+                Spacer(Modifier.height(Spacing.xs))
+                OutlinedTextField(
+                    value = wrongText,
+                    onValueChange = { wrongText = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = {
+                        Text("输入正确的内容", style = AppTypography.labelSmall, color = TextHint)
+                    },
+                    textStyle = AppTypography.labelSmall.copy(color = TextPrimary),
+                    singleLine = false,
+                    maxLines = 3,
+                    shape = LoveBrainShape.sm
+                )
+                Spacer(Modifier.height(Spacing.md))
+                com.lovebrain.app.ui.panel.PanelModalActions(
+                    confirmLabel = "确认",
+                    onConfirm = {
+                        onCorrectionWithReplacement(ref.id, wrongText.trim())
+                        showWrongDialog = false
+                    },
+                    onDismiss = { showWrongDialog = false }
+                )
+            }
         }
     }
 }

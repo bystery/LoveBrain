@@ -81,6 +81,9 @@ class PromptBuilder(
     /** 润色专用 system：polish.md 全文 */
     fun buildPolishSystemPrompt(): String = readAsset(AssetRegistry.POLISH)
 
+    /** F17: 主动开场专用 system：proactive.md 全文 */
+    fun buildProactiveSystemPrompt(): String = readAsset(AssetRegistry.PROACTIVE)
+
     /**
      * 从 stage 类 markdown 中提取「当前阶段」小节（## 阶段名 到下一个 ## 之间）。
      * P1-7：只使用传入的 KB stage，不再回读活跃库——阶段为空就按未知处理。
@@ -102,87 +105,25 @@ class PromptBuilder(
 
     /**
      * 回复系知识段（user 侧）：懂得 + 阶段节选 + 记忆 [+ 进攻] + 此刻 + 最近对话 + 进行中事项。
-     * aggressive=true 时 aggressive.md 插在记忆与此刻之间（主人规格位），随知识段统一过预算。
+     * F20: 委托给 buildKnowledgeInsertionWithRefs，不再维护两套实现。
      */
     suspend fun buildKnowledgeInsertion(kb: KnowledgeBase?, aggressive: Boolean = false, messages: List<ChatMessage> = emptyList()): String {
+        // F20: 统一入口——委托给 buildKnowledgeInsertionWithRefs
         if (kb == null) return "（暂无知识库，按通用策略处理）\n\n"
-        knowledgeRepo.migrateIfNeeded(kb.name)
-        val sb = StringBuilder()
-
-        // # 【懂得】关系画像（A2-6：三段拼接与核心子集逐字相同，抽 helper 消重）
-        sb.appendProfileSection(kb.name)
-
-        // 阶段节选（自 system 移入：画像之后、记忆之前）
-        // P0-2：传入当前 KB，防生成期间切 KB 导致画像和阶段来自不同对象
-        val stageSection = extractStageSection(AssetRegistry.STAGE, kb)
-        if (stageSection.isNotBlank()) {
-            sb.append("## 当前阶段策略（仅提取当前阶段，严格遵守；不是当前阶段的内容一律忽略）\n")
-            sb.append(stageSection)
-            sb.append("\n\n")
-        }
-
-        // # 【记忆】经验教训（最近3块）
-        sb.appendLessonsSection(kb.name)
-
-        // 进攻模式（主人规格位：记忆之后、此刻之前；随知识段一起过预算）
-        if (aggressive) {
-            sb.append("\n\n---\n\n")
-            sb.append(readAsset(AssetRegistry.AGGRESSIVE))
-            sb.append("\n\n---\n\n")
-        }
-
-        // # 【此刻】场景上下文
-        sb.append("# 【此刻】场景上下文（仅供参考，以本次对话为准）\n")
-        val topicAge = knowledgeRepo.getTopicAgeHours(kb.name)
-        if (topicAge < 99) {
-            if (topicAge < 1) sb.append("距上次对话：不到1小时前\n")
-            else {
-                sb.append("距上次对话：约").append(topicAge).append("小时前")
-                if (topicAge > 4) sb.append("（间隔较久，话题可能已切换）")
-                sb.append("\n")
-            }
-        }
-        val topic = knowledgeRepo.getCurrentTopic(kb.name)
-        if (topic.isNotBlank() && topic != "（等待第一次对话）") {
-            sb.append("当前话题：").append(topic)
-            if (topicAge > 6) sb.append("（⚠️ 此信息来自").append(topicAge).append("小时前，可能已过时）")
-            sb.append("\n")
-        }
-        val sceneChain = knowledgeRepo.readFile(kb.name, "moment/scene.md")
-        if (sceneChain.isNotBlank()) {
-            val transformed = transformSceneChain(sceneChain)
-            if (transformed.isNotBlank()) {
-                sb.append("## 场景状态链（条目后括号内为距今时间；同一事实只在最新条目保留一次）\n")
-                    .append(transformed).append("\n")
-            }
-        }
-        sb.append("\n")
-
-        // # 最近对话
-        val recent = knowledgeRepo.readFile(kb.name, "moment/recent.md")
-        if (recent.isNotBlank()) sb.append("# 最近对话\n").append(recent.trim()).append("\n\n")
-
-        // # 【进行中事项】——经过 OngoingContextSelector relevance gating
-        // P0-7: 从 messages 中提取 replyDirective 作为 relevance signal
-        val (_, directive) = com.lovebrain.app.model.splitMessages(messages)
-        val ongoingSection = selectOngoingForInjection(kb.name, messages, directive)
-        if (ongoingSection.isNotBlank()) {
-            sb.append("# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n")
-            sb.append(ongoingSection).append("\n")
-        }
-
-        return sb.toString()
+        return buildKnowledgeInsertionWithRefs(kb, aggressive, emptyMap(), mutableListOf(), messages)
     }
 
     /**
      * OngoingContextSelector 注入入口。
      * P0-7: selector 缺失时 fail closed（不注入），不 fail open 回到旧 bug。
      * P0-7: 传入 replyDirective——用户本轮想法成为真实 relevance signal。
+     * F06: 传入 effectiveIntent——冻结的持续意图快照。
      */
     private suspend fun selectOngoingForInjection(
         kbName: String,
         messages: List<ChatMessage>,
-        replyDirective: com.lovebrain.app.model.ReplyDirective? = null
+        replyDirective: com.lovebrain.app.model.ReplyDirective? = null,
+        effectiveIntent: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()
     ): String {
         val selector = ongoingSelector ?: return ""  // P0-7: fail closed
         val turnCount = knowledgeRepo.getTurnCount(kbName)
@@ -190,7 +131,8 @@ class PromptBuilder(
             messages = messages,
             currentTurn = turnCount,
             currentTime = TimeFmt.now(),
-            replyDirective = replyDirective
+            replyDirective = replyDirective,
+            effectiveIntent = effectiveIntent  // F06: 冻结快照
         )
         val result = selector.selectForInjection(kbName, ctx)
         return result.eligibleItems.joinToString("\n") { item ->
@@ -364,19 +306,26 @@ class PromptBuilder(
     }
 
     /** P0-2: 构建对话记录区块并附带来源别名映射。
-     * 不再使用「她：」「我：」自然语言标签——改为机器结构化格式。
-     * 模型看到的是 [id] PARTNER/USER: text，而非「她：text」。
-     * Schema 定义只需一次：PARTNER=对方，USER=用户本人。不再需要「禁止张冠李戴」警告。 */
+     * F10: 使用 JSON 序列化替代字符串拼接，保护角色边界。
+     *
+     * 旧问题：`[m0] PARTNER: ${content}` 格式中，正文包含换行、`[m1] USER:`、`</chat>` 时
+     * 会造成表示层歧义；预算裁剪又用 takeLast，可能切掉来源与 speaker。
+     *
+     * F10 修复：每条消息使用 JSON 对象格式，正文通过序列化转义。
+     * PARTNER/USER 是数据中的人物身份，不机械映射成 API 的 assistant/system 消息角色。
+     *
+     * 来源映射仅保留最终真正发送的消息，最新消息不可切掉 speaker。
+     * 预算以完整消息裁剪，不切半个 JSON 对象。 */
     private fun buildChatBlockWithAliases(messages: List<ChatMessage>): Triple<String, String, Map<String, String>> {
         val chatHeader = "# 本次对话记录\n" +
-            "（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每行方括号内为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n"
+            "（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每条消息的 id 为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n"
         val chatMessages = messages.filter { it.role != ChatMessage.Role.IDEA }
         val effectiveMessages = if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
             chatMessages.takeLast(AppConfig.REPLY_MAX_MESSAGES)
         } else {
             chatMessages
         }
-        // P0-2: 统一编号 m0, m1, m2...（不再按角色分别编号 her-N/me-N）
+        // F10: 统一编号 m0, m1, m2...
         val sourceAliasMap = mutableMapOf<String, String>()
         val msgToAlias = mutableMapOf<String, String>()
         var msgIdx = 0
@@ -389,11 +338,12 @@ class PromptBuilder(
             sourceAliasMap[alias] = msg.id
             msgToAlias[msg.id] = alias
         }
+        // F10: 使用 JSON 数组格式——每条消息是独立 JSON 对象，正文通过序列化转义
         val chatBody = StringBuilder("<chat>\n")
         if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
             chatBody.append("（注：对话记录超过 ${AppConfig.REPLY_MAX_MESSAGES} 条，仅保留最近 ${AppConfig.REPLY_MAX_MESSAGES} 条）\n\n")
         }
-        // P0-2: 机器结构化格式——[id] SPEAKER: text
+        // F10: 每条消息渲染为 JSON 行——`{"id":"m0","speaker":"PARTNER","text":"..."}`
         for (msg in effectiveMessages) {
             val alias = msgToAlias[msg.id] ?: continue
             val speakerLabel = when (msg.role) {
@@ -401,7 +351,13 @@ class PromptBuilder(
                 ChatMessage.Role.ME -> "USER"
                 else -> continue
             }
-            chatBody.append("[$alias] $speakerLabel: ${msg.content}\n")
+            // F10: 使用 JSON 序列化转义正文——防止换行、特殊字符、注入攻击
+            val escapedText = kotlinx.serialization.json.Json.encodeToString(
+                kotlinx.serialization.serializer<String>(),
+                msg.content
+            )
+            chatBody.append("{\"id\":\"").append(alias).append("\",\"speaker\":\"")
+                .append(speakerLabel).append("\",\"text\":").append(escapedText).append("}\n")
         }
         chatBody.append("</chat>\n")
         return Triple(chatHeader, chatBody.toString(), sourceAliasMap)
@@ -577,31 +533,50 @@ class PromptBuilder(
         // 进行中事项段——经过 OngoingContextSelector relevance gating
         // 默认拒绝注入；只有满足明确相关信号才进入回复生成 Prompt
         // P0-7: 传入 replyDirective 作为 relevance signal
+        // F06: 传入 effectiveIntent 作为冻结快照
         val (_, directive) = com.lovebrain.app.model.splitMessages(messages)
         val plan: String = selectOngoingForInjection(kb.name, messages, directive)
 
         if (plan.isNotBlank()) {
-            val ref = makeRef(kb.name, MemoryKind.ONGOING, "moment/plan.md", plan)
-            val correction = corrections[ref.id]
-            if (correction?.action == CorrectionAction.FINISHED) {
-                // 事项已结束，不注入活跃列表
-            } else if (!isCorrected(ref.id, corrections, sb)) {
-                sb.append("# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n")
-                sb.append(plan).append("\n")
-                refs.add(ref)
+            // F19: 事项使用条目级 MemoryRef——纠正 A 不影响 B
+            // 每条事项单独生成 MemoryRef，纠正只影响该条事项
+            val planLines = plan.lines().filter { it.contains("|") }
+            for (line in planLines) {
+                val parts = line.split("|").map { it.trim() }
+                if (parts.size >= 2 && parts[0].isNotBlank()) {
+                    // F04: 检查 itemId~ 前缀
+                    val tildeIdx = parts[0].indexOf('~')
+                    val entryName = if (tildeIdx > 0) parts[0].substring(tildeIdx + 1) else parts[0]
+                    val ref = makeOngoingEntryRef(kb.name, entryName, line)
+                    val correction = corrections[ref.id]
+                    if (correction?.action == CorrectionAction.FINISHED) {
+                        // 事项已结束，不注入活跃列表
+                    } else if (!isCorrected(ref.id, corrections, sb)) {
+                        if (!sb.contains("# 【进行中事项】")) {
+                            sb.append("# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n")
+                        }
+                        sb.append(line).append("\n")
+                        refs.add(ref)
+                    }
+                }
             }
         }
 
         return sb.toString()
     }
 
-    /** R06: 生成 MemoryRef — id 为 kind+sourcePath 的稳定 ID
+    /** R06/F19: 生成 MemoryRef — id 为 kind+sourcePath 的稳定 ID
      * R06 修复：scene 和 ongoing 不再用整段文本 hash——
      * 旧实现用内容 hash 做 ID，导致画像添一句、经验多一块、事项有更新
      * 都会改变 ID，旧纠正全部失效。改为文件级稳定 ID，
-     * 纠正绑定到文件而非内容快照。 */
-    private fun makeRef(kbId: String, kind: MemoryKind, sourcePath: String, text: String): MemoryRef {
-        val stableId = "${kind.name}:${sourcePath}"
+     * 纠正绑定到文件而非内容快照。
+     *
+     * F19 修复：增加条目级 ID 支持——
+     * 对于 ongoing 事项，可以传入 entryId 来精确定位某条事项，
+     * 而不是整份 plan.md。纠正 A 不影响 B。
+     * 档案整体操作可以保留（无 entryId），但 UI 必须说清"整份档案"。 */
+    private fun makeRef(kbId: String, kind: MemoryKind, sourcePath: String, text: String, entryId: String = ""): MemoryRef {
+        val stableId = if (entryId.isNotBlank()) "${kind.name}:$sourcePath:$entryId" else "${kind.name}:$sourcePath"
         return MemoryRef(
             id = stableId,
             kbId = kbId,
@@ -609,6 +584,14 @@ class PromptBuilder(
             text = text.take(500),  // 截断防过大
             sourcePath = sourcePath
         )
+    }
+
+    /**
+     * F19: 为 ongoing 事项生成条目级 MemoryRef。
+     * 每条事项有自己的 entryId（事项名），纠正只影响该条。
+     */
+    private fun makeOngoingEntryRef(kbId: String, itemName: String, text: String): MemoryRef {
+        return makeRef(kbId, MemoryKind.ONGOING, "moment/plan.md", text, entryId = itemName)
     }
 
     /** R06: 检查 memoryId 是否被纠正。如果被纠正，按 action 类型处理。
@@ -735,15 +718,23 @@ class PromptBuilder(
         if (result.length <= AppConfig.TOTAL_BUDGET) return result
 
         // R09: 3. 裁对话记录头部（保留尾部最新消息和 </chat> 围栏闭合）
+        // F10: 预算以完整 JSON 对象裁剪，不切半个 JSON 行
         val overflow = result.length - AppConfig.TOTAL_BUDGET
         val trimmedChat = if (chatBody.length > overflow + 100) {
-            // 保留 <chat> 开标签和 </chat> 闭标签完整
+            // F10: 保留 <chat> 开标签和 </chat> 闭标签完整
             val chatOpen = "<chat>\n"
             val chatClose = "</chat>\n"
             val innerContent = chatBody.removePrefix(chatOpen).removeSuffix(chatClose)
-            val keepLen = innerContent.length - overflow
-            if (keepLen > 0) {
-                chatOpen + "…（较早的对话已省略）…\n" + innerContent.takeLast(keepLen) + chatClose
+            // F10: 按行裁剪——每行是一个完整的 JSON 对象，不切半个
+            val lines = innerContent.lines().filter { it.isNotBlank() }
+            val keepLen = lines.size - (overflow / 60).coerceAtLeast(1)  // 估算每行 ~60 字符
+            val keptLines = if (keepLen > 0) {
+                lines.takeLast(keepLen)
+            } else {
+                emptyList()
+            }
+            if (keptLines.isNotEmpty()) {
+                chatOpen + "…（较早的对话已省略）…\n" + keptLines.joinToString("\n") + "\n" + chatClose
             } else {
                 chatOpen + "…（对话记录因长度限制已省略）…\n" + chatClose
             }
@@ -795,6 +786,59 @@ class PromptBuilder(
         draft.trim().ifBlank { "（无草稿，请主动给出开场）" }
 
     /**
+     * F17: 主动开场 user prompt——替代旧润色 prompt。
+     *
+     * 不同于旧 polish（仅草稿），主动开场包含：
+     * - 用户草稿（可选，可空）
+     * - 对方画像简要
+     * - 近期对话（最近 2-3 轮）
+     * - 表达偏好（点赞过的风格，如有）
+     *
+     * 不把全部事项历史接回，只取少量可信且相关的信息。
+     */
+    suspend fun buildProactiveUserPrompt(
+        draft: String,
+        kb: KnowledgeBase? = null,
+        messages: List<ChatMessage> = emptyList()
+    ): String {
+        val sb = StringBuilder()
+
+        // 用户草稿
+        val trimmedDraft = draft.trim()
+        if (trimmedDraft.isNotBlank()) {
+            sb.append("## 用户草稿\n").append(trimmedDraft).append("\n\n")
+        } else {
+            sb.append("## 用户草稿\n（无草稿，请主动给出开场话题）\n\n")
+        }
+
+        // 对方画像简要
+        if (kb != null) {
+            knowledgeRepo.migrateIfNeeded(kb.name)
+            val herProfile = knowledgeRepo.readFile(kb.name, "understand/her.md")
+            if (herProfile.isNotBlank()) {
+                // 只取前 500 字，避免注入过多
+                sb.append("## 对方画像\n").append(herProfile.take(500))
+                if (herProfile.length > 500) sb.append("…（略）")
+                sb.append("\n\n")
+            }
+        }
+
+        // 近期对话（最近 2-3 轮真实聊天）
+        val recent = if (kb != null) knowledgeRepo.readFile(kb.name, "moment/recent.md") else ""
+        if (recent.isNotBlank()) {
+            // 只取最近的记录
+            val lines = recent.lines().filter { it.isNotBlank() }
+            val recentLines = lines.takeLast(20)
+            sb.append("## 近期对话\n").append(recentLines.joinToString("\n")).append("\n\n")
+        }
+
+        // 时间戳垫底
+        sb.append("## 当前时间\n").append(com.lovebrain.app.util.TimeFmt.now()).append("\n")
+
+        return sb.toString()
+    }
+
+    /**
      * 核心知识子集（谈心与锦囊共用，DRY）：画像 + 记忆（最近3块） + 进行中事项。
      * 无阶段节选、无此刻、无最近对话。
      */
@@ -840,9 +884,14 @@ class PromptBuilder(
     }
 
     /** A2-6：# 【进行中事项】段——经过 OngoingContextSelector relevance gating
-     * 核心原则：记住 ≠ 每轮喂给模型。默认拒绝注入。 */
-    private suspend fun StringBuilder.appendPlanSection(kbName: String, messages: List<ChatMessage> = emptyList()) {
-        val plan = selectOngoingForInjection(kbName, messages)
+     * 核心原则：记住 ≠ 每轮喂给模型。默认拒绝注入。
+     * F06: 传入 effectiveIntent 作为冻结快照 */
+    private suspend fun StringBuilder.appendPlanSection(
+        kbName: String,
+        messages: List<ChatMessage> = emptyList(),
+        effectiveIntent: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()
+    ) {
+        val plan = selectOngoingForInjection(kbName, messages, effectiveIntent = effectiveIntent)
         if (plan.isNotBlank()) {
             append("# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n")
             append(plan).append("\n")
@@ -923,15 +972,16 @@ class PromptBuilder(
         return text.take(headLen) + "\n\n…（中间旧记忆因长度限制已省略）…\n\n" + text.takeLast(tailLen)
     }
 
-    /** F03: 场景链注入转换——龄标注 + 精确去重 + 过期过滤。
+    /** F03/F07: 场景链注入转换——龄标注 + 精确去重 + 过期过滤 + 来源身份保留。
      * 废弃 extractTopicKeyForInjection 关键词列表匹配。
-     * 去重策略：从最新到最旧，相同事实文本只保留最新版本。
-     * 剔除 ⟨sourceIds⟩ 标记，不注入 prompt。 */
+     * F07 修复：
+     * - 复用写入端的 `|src=...|spk=...|subj=...` 格式解析，不再拆分字符串。
+     * - 无来源新输出不作为可信状态注入；只保留有来源或旧数据。
+     * - 事实发生时间、证据时间与写盘时间分离。 */
     private fun transformSceneChain(content: String): String {
         val entryRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2}) (\\d{2}:\\d{2})]\\s*(.*)$")
         val now = System.currentTimeMillis()
         val todayStr = TimeFmt.today()
-        // 读取侧即计算过期，不依赖写入侧清理
         val maxAgeMs = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
 
         data class Entry(val ts: Long, val date: String, val labelAndFacts: String)
@@ -949,7 +999,7 @@ class PromptBuilder(
         }
         if (freshEntries.isEmpty()) return ""
 
-        // F03: 精确文本去重——从最新到最旧，相同事实文本只保留最新版本
+        // F03/F07: 精确文本去重——从最新到最旧，相同事实文本只保留最新版本
         val seenFactTexts = mutableSetOf<String>()
         val out = StringBuilder()
         for (e in freshEntries) {
@@ -966,8 +1016,8 @@ class PromptBuilder(
             val facts = factsRaw.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
             val keptFacts = mutableListOf<String>()
             for (f in facts) {
-                // F03: 剔除 ⟨sourceIds⟩ 标记，只保留事实文本
-                val cleanFact = Regex("⟨.+⟩$").replace(f, "").trim()
+                // F07: 复用写入端格式解析，支持新旧两种格式
+                val cleanFact = cleanFactForInjection(f)
                 if (cleanFact.isNotBlank() && cleanFact !in seenFactTexts) {
                     keptFacts.add(cleanFact)
                     seenFactTexts.add(cleanFact)
@@ -980,6 +1030,25 @@ class PromptBuilder(
             }
         }
         return out.toString().trim()
+    }
+
+    /**
+     * F07: 从事实文本中剥离 src/spk/subj 标记，只保留事实文本用于注入。
+     * 复用与 TopicRecorder.parseStoredFact 相同的格式解析逻辑。
+     */
+    private fun cleanFactForInjection(factText: String): String {
+        // 新格式：事实文本|src=...|spk=...|subj=...
+        if (factText.contains("|src=") || factText.contains("|spk=") || factText.contains("|subj=")) {
+            val parts = factText.split("|").map { it.trim() }
+            return parts.firstOrNull()?.trim().orEmpty()
+        }
+        // 旧格式：事实文本⟨sourceIds⟩
+        val srcMatch = Regex("(.*)⟨.+⟩$").find(factText)
+        if (srcMatch != null) {
+            return srcMatch.groupValues[1].trim()
+        }
+        // 无标记：纯文本
+        return factText.trim()
     }
 
     private suspend fun readFileCompat(kbName: String, newPath: String): String =

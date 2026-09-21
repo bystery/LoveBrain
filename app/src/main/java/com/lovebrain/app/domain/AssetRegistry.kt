@@ -19,6 +19,7 @@ object AssetRegistry {
     const val COUNSELING = "engine/counseling.md"
     const val SUGGEST = "engine/suggest.md"
     const val POLISH = "engine/polish.md"
+    const val PROACTIVE = "engine/proactive.md"  // F17: 主动开场引擎（替代旧润色引擎）
 
     // ═══ 知识引擎 ═══
     const val LESSONS = "engine/knowledge_prompt/lessons.md"
@@ -39,7 +40,7 @@ object AssetRegistry {
     /** 全部注册资产（启动自检用；新增资产必须登记于此，否则自检覆盖不到） */
     val ALL: List<String> = listOf(
         CORE, STAGE, REDLINE, NATURALNESS, AGGRESSIVE, FORMAT,
-        COUNSELING, SUGGEST, POLISH,
+        COUNSELING, SUGGEST, POLISH, PROACTIVE,
         LESSONS, ONBOARDING, REFLECT, VECTOR, ENGINE_README
     ) + SCHEMA_NAMES.map { schema(it) }
 }

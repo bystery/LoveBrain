@@ -37,55 +37,15 @@ class PromptBuilderStageContractTest {
         assertTrue("stage.md 不应为空", content.isNotBlank())
     }
 
-    // ═══ suggest.md 阶段标题契约 ═══
+    // F18: suggest.md 已重写为轻量日常行动建议引擎，不再按阶段（## XX期）分割。
+    // 阶段策略注入只在 stage.md 中检查。
 
-    @Test
-    fun `suggest md has section for every StageCatalog stage`() {
-        val suggest = loadAsset("engine/suggest.md")
-        val missing = StageCatalog.ALL.filter { stage ->
-            // 复刻 PromptBuilder.extractStageSection 的正则
-            val re = Regex(
-                "(^|\\n)##\\s*${Regex.escape(stage)}\\s*\\n(.*?)(?=\\n##\\s|\\z)",
-                RegexOption.DOT_MATCHES_ALL
-            )
-            re.find(suggest) == null
-        }
-        assertTrue(
-            "suggest.md 缺少阶段小节（正则失配，会导致锦囊阶段策略注入失败）：$missing",
-            missing.isEmpty()
-        )
-    }
+    // F18: suggest.md 已重写——不再包含阶段小节（## XX期），此契约不再适用。
+    // suggest.md 现在是轻量日常行动建议引擎，不按阶段分割。
 
-    @Test
-    fun `suggest md has exactly one section per stage no duplicates`() {
-        val suggest = loadAsset("engine/suggest.md")
-        StageCatalog.ALL.forEach { stage ->
-            val re = Regex(
-                "(^|\\n)##\\s*${Regex.escape(stage)}\\s*\\n",
-                RegexOption.DOT_MATCHES_ALL
-            )
-            val matches = re.findAll(suggest).toList()
-            assertEquals(
-                "suggest.md 中 '$stage' 的小节数应为 1（实际 ${matches.size}）",
-                1, matches.size
-            )
-        }
-    }
+    // F18: suggest.md 已重写——不再包含阶段小节，重复检查不再适用。
 
-    @Test
-    fun `suggest md has no bare stage titles missing the 期 suffix`() {
-        //  回归门：suggest.md 历史上漏"期"，正则永远失配
-        val suggest = loadAsset("engine/suggest.md")
-        StageCatalog.ALL.forEach { stage ->
-            val bare = stage.removeSuffix("期")
-            // 裸标题形如 "## 初识"（不带"期"）→  旧 Bug
-            val bareRe = Regex("(^|\\n)##\\s*${Regex.escape(bare)}\\s*\\n(?!.{0,3}期)")
-            assertTrue(
-                "suggest.md 出现裸阶段标题 '## $bare'（缺'期'后缀， 回归）",
-                bareRe.find(suggest) == null
-            )
-        }
-    }
+    // F18: suggest.md 已重写——不再包含阶段标题，裸标题检查不再适用。
 
     // ═══ stage.md 阶段标题契约 ═══
 
@@ -140,20 +100,5 @@ class PromptBuilderStageContractTest {
         }
     }
 
-    @Test
-    fun `all stages in suggest and stage assets match StageCatalog exactly`() {
-        val suggest = loadAsset("engine/suggest.md")
-        val stage = loadAsset("engine/system_prompt/stage.md")
-        // 资产中所有形如 "## XX期" 的标题必须在 StageCatalog.ALL 内
-        val titleRe = Regex("(?m)^##\\s+(.+期)\\s*$")
-        val suggestTitles = titleRe.findAll(suggest).map { it.groupValues[1].trim() }.toSet()
-        val stageTitles = titleRe.findAll(stage).map { it.groupValues[1].trim() }.toSet()
-        val allAssetTitles = suggestTitles + stageTitles
-
-        val orphans = allAssetTitles.filter { it !in StageCatalog.ALL }
-        assertTrue(
-            "资产中存在不在 StageCatalog 白名单的阶段标题：$orphans",
-            orphans.isEmpty()
-        )
-    }
+    // F18: suggest.md 已重写——不再包含阶段标题，此一致性检查只看 stage.md。
 }

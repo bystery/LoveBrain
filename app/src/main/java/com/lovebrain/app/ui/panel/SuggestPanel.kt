@@ -12,7 +12,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.AlertDialog
+// F01: AlertDialog 已替换为 PanelModalHost，避免 Service 宿主 BadTokenException
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -82,8 +82,10 @@ fun SuggestPanel(
         )
     }
 
+    // F01: 弹层放面板根部，不作为 LazyColumn 的某一 item，以免滚动使编辑器离开 composition
+    Box(modifier = modifier.fillMaxWidth()) {
     LazyColumn(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .clip(LoveBrainShape.lg)
             .background(SurfaceBase)
@@ -138,23 +140,6 @@ fun SuggestPanel(
                             else viewModel.generateSuggest()
                         })
                         .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
-                )
-            }
-        }
-
-        // F07: 持续意图编辑弹窗（锦囊面板内编辑，不占回复主页）
-        if (showIntentEditor) {
-            item {
-                IntentEditorDialog(
-                    text = intentConfig.text,
-                    enabled = intentConfig.enabled,
-                    expiry = intentConfig.expiry,
-                    expiryDate = intentConfig.expiryDate,
-                    status = intentConfig.status,
-                    onSave = { text, enabled, expiry, expiryDate, status ->
-                        viewModel.saveIntent(text, enabled, expiry, expiryDate, status)
-                    },
-                    onDismiss = { viewModel.dismissIntentEditor() }
                 )
             }
         }
@@ -276,10 +261,10 @@ fun SuggestPanel(
                 }
             }
 
-            // 展示锦囊
+            // F18: 展示锦囊——轻量日常行动建议
             else -> {
                 val plan = suggestion ?: return@LazyColumn
-                // ：去掉生成时间戳与《本阶段目标》独立卡；goal 已并入阶段卡（关系温度下方）
+                // F18: 阶段卡保留（阶段名 + 关系温度），但不再强制 goal
                 item { SuggestStageCard(plan, vectorMean = vectorMean(currentVector)) }
 
                 items(plan.tips, key = { plan.tips.indexOf(it) }) { tip ->
@@ -291,6 +276,7 @@ fun SuggestPanel(
                     SuggestTipCard(tip = tip, priority = priority)
                 }
 
+                // F18: invite 保留但为可选（suggest.md 不再强制输出）
                 plan.invite?.let { invite ->
                     if (invite.suggestion.isNotBlank()) {
                         item {
@@ -302,10 +288,9 @@ fun SuggestPanel(
                     }
                 }
 
+                // F18: avoid 保留但为可选（suggest.md 不再默认长篇避雷）
                 if (plan.avoid.isNotEmpty()) {
                     item {
-                        // 避坑区视觉增强（调研：NN/G Error Message Guidelines——使用醒目的冗余指示器；
-                        // NN/G Proximity——相关元素分组聚合，用留白与上方 tips 区分）
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -353,6 +338,22 @@ fun SuggestPanel(
             }
         }
     }
+
+    // F01: 意图编辑弹窗——面板根部渲染，不在 LazyColumn 内部
+    if (showIntentEditor) {
+        IntentEditorDialog(
+            text = intentConfig.text,
+            enabled = intentConfig.enabled,
+            expiry = intentConfig.expiry,
+            expiryDate = intentConfig.expiryDate,
+            status = intentConfig.status,
+            onSave = { text, enabled, expiry, expiryDate, status ->
+                viewModel.saveIntent(text, enabled, expiry, expiryDate, status)
+            },
+            onDismiss = { viewModel.dismissIntentEditor() }
+        )
+    }
+    } // F01: close Box
 }
 
 /** 五维向量均值（0-100）→ 阶段进度百分比 */
@@ -361,7 +362,7 @@ private fun vectorMean(v: Map<String, Int>): Float {
     return v.values.average().toFloat() / 100f
 }
 
-/** 阶段卡片：阶段名 + 五维均值进度 + 本阶段目标（：goal 由独立卡移入此处，关系温度下方） */
+/** F18: 阶段卡片——阶段名 + 五维均值进度 + 本阶段目标（可选） */
 @Composable
 private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
     Column(
@@ -372,17 +373,20 @@ private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
             .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.lg)
             .padding(Spacing.lg)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("当前阶段", style = AppTypography.labelSmall, color = TextSecondary)
-            Spacer(Modifier.width(Spacing.md))
-            Text(
-                plan.stage,
-                style = AppTypography.labelLarge,
-                color = PrimaryDark,
-                fontWeight = FontWeight.Bold
-            )
+        // F18: stage 可能为空（suggest.md 不再强制输出 stage）
+        if (plan.stage.isNotBlank()) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("当前阶段", style = AppTypography.labelSmall, color = TextSecondary)
+                Spacer(Modifier.width(Spacing.md))
+                Text(
+                    plan.stage,
+                    style = AppTypography.labelLarge,
+                    color = PrimaryDark,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Spacer(Modifier.height(Spacing.md))
         }
-        Spacer(Modifier.height(Spacing.md))
         // 阶段进度 = 五维向量均值（方案 B）
         LinearProgressIndicator(
             progress = { vectorMean.coerceIn(0f, 1f) },
@@ -399,7 +403,7 @@ private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
             style = AppTypography.labelSmall,
             color = TextHint
         )
-        // ：本阶段目标并入此卡（关系温度下方），替代原独立灰色卡
+        // F18: goal 为可选字段
         if (plan.goal.isNotBlank()) {
             Spacer(Modifier.height(Spacing.md))
             Text(
@@ -413,18 +417,19 @@ private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
                 plan.goal,
                 style = AppTypography.bodySmall,
                 color = TextPrimary
-                // ：lineHeight = 18.sp 与 bodySmall 固有行高（Type.kt:39）重复，已删
             )
         }
     }
 }
 
-/** 单条推荐做法卡片（紧凑化：解决『tip.topic 超长撑高 Card 留白 90%』实测问题）
- *  关键修复：右侧 tip.topic 强制 maxLines=1+Ellipsis，避免 AI 把长话术塞进 topic 字段导致整张 Card 高度暴涨。
+/** F18: 单条日常行动建议卡片
+ *
+ * 展示新语义字段：action（做什么）+ timing（什么时候适合）。
+ * 点击展开显示：materialNeeded（需要素材）+ example（示例配文）+ reason（理由）。
+ * 不再展示旧字段 slot/topic/expected；伪确定预测已移除。
  */
 @Composable
 private fun SuggestTipCard(tip: SuggestTip, priority: TipPriority = TipPriority.MEDIUM) {
-    // 可折叠：高优先级默认展开，中/低优先级默认折叠
     var expanded by rememberSaveable { mutableStateOf(priority == TipPriority.HIGH) }
     val tipArrowRotation by animateFloatAsState(
         targetValue = if (expanded) 0f else -90f,
@@ -438,14 +443,13 @@ private fun SuggestTipCard(tip: SuggestTip, priority: TipPriority = TipPriority.
             .clip(LoveBrainShape.md)
             .background(SurfaceCard)
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
-            .padding(Spacing.md) // 紧凑 12→8dp，减小上下空白
+            .padding(Spacing.md)
     ) {
-        // 标题行：左 [优先级] [slot，1 行截断] ｜ 右 [topic，1 行截断 + 折叠箭头]
+        // 标题行：[优先级] [action，1 行截断] ｜ [折叠箭头]
         Row(
             modifier = Modifier.fillMaxWidth().semantics { stateDescription = if (expanded) "已展开" else "已收起" }.clickable { expanded = !expanded },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // 左侧：[优先级标签][slot]
             Box(
                 modifier = Modifier
                     .clip(LoveBrainShape.sm)
@@ -461,62 +465,72 @@ private fun SuggestTipCard(tip: SuggestTip, priority: TipPriority = TipPriority.
                 )
             }
             Spacer(Modifier.width(SuggestDimens.TITLE_ROW_GAP_DP.dp))
-            // slot 强制单行截断（防 AI 把长话术塞 slot 导致标题行换行撑高）
+            // F18: action 替代旧 slot+topic——简短可直接理解
             Text(
-                text = tip.slot,
+                text = tip.action.ifBlank { tip.slot.ifBlank { tip.topic } },
                 style = AppTypography.labelMedium,
                 color = Primary,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f, fill = false)
-            )
-            Spacer(Modifier.width(SuggestDimens.TITLE_ROW_GAP_DP.dp))
-            // topic 也强制单行截断（核心修复：防止 250dp 大空白根因）
-            Text(
-                text = tip.topic,
-                style = AppTypography.labelSmall,
-                color = TextSecondary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)
             )
             Spacer(Modifier.width(Spacing.xs))
-            // A2-2：共享三角箭头（原 Canvas Path 块与谈心处逐字相同）
             TriangleArrow(color = TextHint, rotation = tipArrowRotation)
         }
-        Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
-        // 话术主体：折叠时 1 行截断、展开时完整显示；过长时卡内可上下滑动（实测问题：长话术被面板裁掉）
-        Text(
-            text = "\u201C${tip.example}\u201D",
-            style = AppTypography.bodyMedium,
-            color = TextPrimary,
-            fontWeight = FontWeight.Medium,
-            maxLines = if (expanded) Int.MAX_VALUE else 1,
-            overflow = if (expanded) TextOverflow.Visible else TextOverflow.Ellipsis,
-            modifier = if (expanded) {
-                Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = SuggestDimens.EXAMPLE_MAX_HEIGHT_DP.dp)
-                    .verticalScroll(rememberScrollState())
-            } else {
-                Modifier.fillMaxWidth()
-            }
-        )
 
-        // 可折叠详情区：仅"她可能：预期"；展开时才渲染
+        // F18: timing（什么时候适合）——折叠态也显示，帮助用户判断
+        if (tip.timing.isNotBlank()) {
+            Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
+            Text(
+                text = "适合：${tip.timing}",
+                style = AppTypography.labelSmall,
+                color = TextSecondary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        // 可折叠详情区：materialNeeded + example + reason
         AnimatedVisibility(
-            visible = expanded && tip.expected.isNotBlank(),
+            visible = expanded,
             enter = expandVertically(),
             exit = shrinkVertically()
         ) {
             Column {
-                Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
-                Text(
-                    text = "她可能：${tip.expected}",
-                    style = AppTypography.labelSmall,
-                    color = Success
-                )
+                // F18: materialNeeded（需要的素材或前提）
+                if (tip.materialNeeded.isNotBlank()) {
+                    Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
+                    Text(
+                        text = "需要：${tip.materialNeeded}",
+                        style = AppTypography.labelSmall,
+                        color = Warning,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+                // F18: example（示例配文）
+                if (tip.example.isNotBlank()) {
+                    Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
+                    Text(
+                        text = "\u201C${tip.example}\u201D",
+                        style = AppTypography.bodyMedium,
+                        color = TextPrimary,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = SuggestDimens.EXAMPLE_MAX_HEIGHT_DP.dp)
+                            .verticalScroll(rememberScrollState())
+                    )
+                }
+                // F18: reason（为什么建议这个）
+                if (tip.reason.isNotBlank()) {
+                    Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
+                    Text(
+                        text = tip.reason,
+                        style = AppTypography.labelSmall,
+                        color = TextHint
+                    )
+                }
             }
         }
     }
@@ -634,14 +648,11 @@ private fun IntentEditorDialog(
     var editStatus by remember { mutableStateOf(status) }
     val overLimit = editText.length > INTENT_MAX_LENGTH
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        containerColor = SurfaceBase,
-        title = {
-            Text("持续意图", style = AppTypography.titleMedium, color = TextPrimary, fontWeight = FontWeight.Bold)
-        },
-        text = {
-            Column(modifier = Modifier.fillMaxWidth()) {
+    // F01: 使用 PanelModalHost 替代 AlertDialog——Service 宿主中安全
+    PanelModalHost(
+        onDismiss = onDismiss
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     "设置一个持续的对话目标（如\"约她周末看电影\"），军师每轮生成时都会参考。",
                     style = AppTypography.labelMedium,
@@ -782,40 +793,20 @@ private fun IntentEditorDialog(
                     )
                 }
             }
-        },
-        confirmButton = {
-            val (saveInteraction, saveScale) = rememberPressScale(0.96f, "intentSaveScale")
-            Text(
-                "保存",
-                style = AppTypography.labelLarge,
-                color = if (overLimit) TextHint else Primary,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = saveScale; scaleY = saveScale }
-                    .clickable(interactionSource = saveInteraction, indication = null) {
-                        if (!overLimit) {
-                            // R08修复：保存后由 ViewModel 在成功时关闭编辑器，
-                            // 失败时保留编辑状态供重试，不立即 onDismiss
-                            onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled, editExpiry, editExpiryDate.trim(), editStatus)
-                        }
+            // F01: 统一操作行——PanelModalActions
+            Spacer(Modifier.height(Spacing.md))
+            PanelModalActions(
+                confirmLabel = "保存",
+                confirmEnabled = !overLimit,
+                onConfirm = {
+                    if (!overLimit) {
+                        onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled, editExpiry, editExpiryDate.trim(), editStatus)
                     }
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
-            )
-        },
-        dismissButton = {
-            val (cancelInteraction, cancelScale) = rememberPressScale(0.96f, "intentCancelScale")
-            Text(
-                "取消",
-                style = AppTypography.labelLarge,
-                color = TextSecondary,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = cancelScale; scaleY = cancelScale }
-                    .clickable(interactionSource = cancelInteraction, indication = null, onClick = onDismiss)
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+                },
+                onDismiss = onDismiss
             )
         }
-    )
-}
+    }
 
 /**
  * F06: 有效期选择 chip。

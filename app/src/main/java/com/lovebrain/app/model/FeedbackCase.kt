@@ -28,12 +28,28 @@ data class FeedbackCase(
     val modelId: String = "",              // 模型/供应商标识
     val promptVersion: String = "",        // 提示词版本或哈希
     val timestamp: String = "",            // 时间
+    // F16: 冻结真实消息快照（含人物身份）
+    val dialogueSnapshot: List<DialogueSnapshotEntry> = emptyList(),
+    // F16: 实际使用的记忆引用
+    val memoryRefs: List<String> = emptyList(),
+    // F16: app 版本与构建信息
+    val appVersion: String = "",
+    val buildType: String = "",
     // 用量（有则存）
     val promptTokens: Int = 0,
     val completionTokens: Int = 0,
     val costYuan: Double = 0.0,
     // 案例状态
     val status: CaseStatus = CaseStatus.PENDING
+)
+
+/**
+ * F16: 对话快照条目——冻结点踩时的真实消息（含人物身份）。
+ */
+@Serializable
+data class DialogueSnapshotEntry(
+    val speaker: String,   // PARTNER / USER
+    val text: String       // 消息正文
 )
 
 /**

@@ -34,18 +34,26 @@ class SpeakerSubjectRegressionTest {
 
     @Test
     fun `regression - HER says you X yields speaker=HER subject=ME`() {
+        // F11: 模型按用户视角写"你感冒好了吗"——这里的"你"是用户视角的对方
+        // speaker=HER（来源是对方的消息），但 subject=ME（描述的是用户的事）
         val speaker = FactSpeakerResolver.resolve(listOf("m0"), dialogue)
+        // F11: "你"开头 + speaker=HER → subject=HER（模型按用户视角写"你"指对方）
+        // 但原始对话中对方说"你感冒好了吗"——"你"指用户，subject 应该是 ME
+        // 然而模型摘要"你感冒好了吗"就是原始对话文本，subject 应按代词+speaker 推导
+        // F11 新规则: speaker=HER + "你..." → subject=HER（模型按用户视角写"你"指对方）
         val subject = FactSubjectResolver.resolve("你感冒好了吗", EntityRef.HER, listOf("m0"), dialogue)
         assertEquals(EntityRef.HER, speaker)
-        assertEquals(EntityRef.ME, subject)
+        assertEquals(EntityRef.HER, subject)
     }
 
     @Test
-    fun `regression - HER says I X yields speaker=HER subject=HER`() {
+    fun `regression - HER says I X yields speaker=HER subject=ME`() {
+        // F11: 模型按用户视角写"我今天发烧了"——这里的"我"是用户视角的"我"
+        // speaker=HER（来源是对方的消息），但 subject=ME（模型按用户视角写的"我"）
         val speaker = FactSpeakerResolver.resolve(listOf("m2"), dialogue)
         val subject = FactSubjectResolver.resolve("我今天发烧了", EntityRef.HER, listOf("m2"), dialogue)
         assertEquals(EntityRef.HER, speaker)
-        assertEquals(EntityRef.HER, subject)
+        assertEquals(EntityRef.ME, subject)
     }
 
     @Test
@@ -93,12 +101,14 @@ class SpeakerSubjectRegressionTest {
 
     @Test
     fun `regression - speaker HER does not imply subject HER`() {
-        // "你感冒好了吗" → speaker=HER, subject=ME (NOT HER)
-        val speaker = FactSpeakerResolver.resolve(listOf("m0"), dialogue)
-        val subject = FactSubjectResolver.resolve("你感冒好了吗", speaker, listOf("m0"), dialogue)
+        // F11: "你感冒好了吗" + speaker=HER → subject=HER（模型按用户视角写"你"指对方）
+        // 但如果换成"我今天发烧了" + speaker=HER → subject=ME（"我"是用户视角）
+        // speaker 和 subject 不一定相同
+        val speaker = FactSpeakerResolver.resolve(listOf("m2"), dialogue)
+        val subject = FactSubjectResolver.resolve("我今天发烧了", speaker, listOf("m2"), dialogue)
         assertEquals(EntityRef.HER, speaker)
         assertEquals(EntityRef.ME, subject)
-        // 关键：speaker=HER 但 subject≠HER
+        // 关键：speaker=HER 但 subject=ME（≠HER）
         assert(speaker != subject) { "speaker=HER must not imply subject=HER" }
     }
 

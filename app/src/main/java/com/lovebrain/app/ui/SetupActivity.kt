@@ -27,10 +27,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Check
@@ -446,7 +449,7 @@ private fun HomeTabContent(
             }
         }
 
-        // ── 快捷功能网格（2×2）──
+        // F12: 快捷功能——只保留知识库 + 反馈案例两张等宽卡片
         Text("快捷功能", style = AppTypography.titleLarge, color = TextPrimary)
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -461,47 +464,7 @@ private fun HomeTabContent(
                 container = PrimaryLight,
                 onClick = onOpenKnowledgeBase
             )
-            FeatureCard(
-                modifier = Modifier.weight(1f),
-                iconRes = R.drawable.ic_feature_bulb,
-                title = "今日锦囊",
-                subtitle = "每日做法建议",
-                iconTint = Primary,
-                container = PrimaryLight,
-                available = true,
-                onClick = { onOpenPanel(0, true) }
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(Spacing.lg)
-        ) {
-            FeatureCard(
-                modifier = Modifier.weight(1f),
-                iconRes = R.drawable.ic_feature_bookmarks,
-                title = "谈心模式",
-                subtitle = "分析关系困局",
-                iconTint = Primary,
-                container = PrimaryLight,
-                available = true,
-                onClick = { onOpenPanel(1, false) }
-            )
-            FeatureCard(
-                modifier = Modifier.weight(1f),
-                iconRes = R.drawable.ic_feature_chart,
-                title = "感情五维",
-                subtitle = "亲密·信任·承诺",
-                iconTint = Primary,
-                container = PrimaryLight,
-                available = true,
-                onClick = { onOpenPanel(0, false) }
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(Spacing.lg)
-        ) {
-            // F02: 反馈案例入口
+            // F12: 反馈案例入口
             FeatureCard(
                 modifier = Modifier.weight(1f),
                 iconRes = R.drawable.ic_feature_book,
@@ -512,11 +475,20 @@ private fun HomeTabContent(
                 available = true,
                 onClick = { showFeedbackCaseDialog = true }
             )
-            Box(modifier = Modifier.weight(1f))
         }
 
+        // F03: 版本与构建追溯信息
+        Text(
+            text = "LoveBrain v${com.lovebrain.app.BuildConfig.VERSION_NAME} " +
+                "(${com.lovebrain.app.BuildConfig.GIT_SHA} · ${com.lovebrain.app.BuildConfig.BUILD_TYPE})",
+            style = AppTypography.labelSmall,
+            color = TextHint,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+
         if (showFeedbackCaseDialog) {
-            FeedbackCaseDialog(
+            F15FeedbackCasePage(
                 onDismiss = { showFeedbackCaseDialog = false }
             )
         }
@@ -1295,235 +1267,317 @@ private fun StatRow(label: String, value: String, highlight: Boolean = false) {
 
 
 /**
- * F02: 反馈案例管理弹层——查看/筛选/导出。
+ * F15: 反馈案例完整页面——替代旧 Dialog 弹层。
  *
- * 显示条数，按时间、原因、档案、模型筛选。
- * 支持导出 Markdown + JSON，不记录凭证。
+ * 改进：
+ * - 全屏页面替代小 Dialog（Activity 内合法，非悬浮窗路径）
+ * - LazyColumn 替代 Column 全量渲染
+ * - 中文类别名替代内部枚举名
+ * - 案例详情点击展开
+ * - 统一导出口径（repository 提供，UI 不直接读盘）
+ * - 筛选芯片可横向滚动
  */
 @Composable
-private fun FeedbackCaseDialog(
+private fun F15FeedbackCasePage(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var cases by remember { mutableStateOf<List<com.lovebrain.app.model.FeedbackCase>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
     var filterCategory by remember { mutableStateOf<com.lovebrain.app.model.FeedbackCategory?>(null) }
     var exportText by remember { mutableStateOf("") }
     var showExport by remember { mutableStateOf(false) }
+    var exportFormat by remember { mutableStateOf("markdown") }
+    var expandedCaseId by remember { mutableStateOf<String?>(null) }
 
-    // 加载案例
+    // F15: 通过 repository 加载，不再直接读盘
+    val repo = remember { com.lovebrain.app.data.FeedbackCaseRepository(context) }
+
     LaunchedEffect(Unit) {
-        val dir = java.io.File(context.filesDir, "feedback")
-        val file = java.io.File(dir, "cases.json")
-        if (file.exists() && file.length() > 0) {
-            runCatching {
-                val json = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
-                val text = file.readText()
-                if (text.isNotBlank()) {
-                    cases = json.decodeFromString(text)
-                }
-            }
-        }
+        isLoading = true
+        cases = repo.getAll()
+        isLoading = false
     }
 
     val filtered = if (filterCategory == null) cases else cases.filter { filterCategory!! in it.categories }
 
-    Dialog(onDismissRequest = onDismiss) {
-        Card(
-            shape = LoveBrainShape.lg,
-            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-            modifier = Modifier.fillMaxWidth().padding(Spacing.md)
+    // F15: 全屏页面（Activity 内合法）
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SurfaceBase)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Column(modifier = Modifier.padding(Spacing.lg)) {
-                // 标题行
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+            // 顶部栏
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(SurfaceCard)
+                    .padding(horizontal = Spacing.lg, vertical = Spacing.md),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        "反馈案例（${filtered.size}条）",
+                        "←",
                         style = AppTypography.titleMedium,
-                        color = TextPrimary,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        "关闭",
-                        style = AppTypography.labelMedium,
-                        color = TextHint,
+                        color = Primary,
                         modifier = Modifier.clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
                             onClick = onDismiss
-                        ).padding(Spacing.sm)
+                        ).padding(end = Spacing.md)
+                    )
+                    Text(
+                        "反馈案例",
+                        style = AppTypography.titleLarge,
+                        color = TextPrimary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(Modifier.width(Spacing.sm))
+                    Text(
+                        "(${filtered.size}条)",
+                        style = AppTypography.labelMedium,
+                        color = TextHint
                     )
                 }
-                Spacer(Modifier.height(Spacing.sm))
-
-                // 筛选行
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
+                // F15: 统一导出入口
+                val (exportInteraction, exportScale) = rememberPressScale(0.96f, "exportBtn")
+                Box(
+                    modifier = Modifier
+                        .graphicsLayer { scaleX = exportScale; scaleY = exportScale }
+                        .clip(LoveBrainShape.md)
+                        .background(if (filtered.isNotEmpty()) Primary else SurfaceInset, LoveBrainShape.md)
+                        .clickable(
+                            interactionSource = exportInteraction,
+                            indication = null,
+                            enabled = filtered.isNotEmpty()
+                        ) {
+                            scope.launch {
+                                exportText = if (exportFormat == "markdown") {
+                                    repo.exportMarkdown(filtered)
+                                } else {
+                                    repo.exportJson(filtered)
+                                }
+                                showExport = true
+                            }
+                        }
+                        .padding(horizontal = Spacing.md, vertical = Spacing.sm),
+                    contentAlignment = Alignment.Center
                 ) {
-                    FilterChip("全部", filterCategory == null) { filterCategory = null }
-                    FilterChip("理解错误", filterCategory == com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR) { filterCategory = com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR }
-                    FilterChip("表达不喜欢", filterCategory == com.lovebrain.app.model.FeedbackCategory.EXPRESSION_DISLIKE) { filterCategory = com.lovebrain.app.model.FeedbackCategory.EXPRESSION_DISLIKE }
-                    FilterChip("其他", filterCategory == com.lovebrain.app.model.FeedbackCategory.OTHER) { filterCategory = com.lovebrain.app.model.FeedbackCategory.OTHER }
+                    Text(
+                        if (exportFormat == "markdown") "导出 MD" else "导出 JSON",
+                        style = AppTypography.labelMedium,
+                        color = if (filtered.isNotEmpty()) Color.White else TextSecondary,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
-                Spacer(Modifier.height(Spacing.sm))
+            }
 
-                // 案例列表
-                if (filtered.isEmpty()) {
+            // F15: 筛选芯片可横向滚动
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
+                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
+            ) {
+                FilterChip("全部", filterCategory == null) { filterCategory = null }
+                FilterChip(
+                    com.lovebrain.app.data.FeedbackCaseRepository.categoryName(com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR),
+                    filterCategory == com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR
+                ) { filterCategory = com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR }
+                FilterChip(
+                    com.lovebrain.app.data.FeedbackCaseRepository.categoryName(com.lovebrain.app.model.FeedbackCategory.EXPRESSION_DISLIKE),
+                    filterCategory == com.lovebrain.app.model.FeedbackCategory.EXPRESSION_DISLIKE
+                ) { filterCategory = com.lovebrain.app.model.FeedbackCategory.EXPRESSION_DISLIKE }
+                FilterChip(
+                    com.lovebrain.app.data.FeedbackCaseRepository.categoryName(com.lovebrain.app.model.FeedbackCategory.OTHER),
+                    filterCategory == com.lovebrain.app.model.FeedbackCategory.OTHER
+                ) { filterCategory = com.lovebrain.app.model.FeedbackCategory.OTHER }
+                // F15: 格式切换芯片
+                FilterChip(
+                    if (exportFormat == "markdown") "✓ Markdown" else "Markdown",
+                    exportFormat == "markdown"
+                ) { exportFormat = "markdown" }
+                FilterChip(
+                    if (exportFormat == "json") "✓ JSON" else "JSON",
+                    exportFormat == "json"
+                ) { exportFormat = "json" }
+            }
+
+            // F15: 案例列表 LazyColumn
+            if (isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    androidx.compose.material3.CircularProgressIndicator(color = Primary)
+                }
+            } else if (filtered.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     Text(
                         "暂无反馈案例。点踩后会自动记录。",
                         style = AppTypography.bodyMedium,
-                        color = TextHint,
-                        modifier = Modifier.padding(vertical = Spacing.xl)
+                        color = TextHint
                     )
-                } else {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(max = 400.dp)
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(Spacing.sm)
-                    ) {
-                        filtered.forEach { c ->
-                            Card(
-                                shape = LoveBrainShape.md,
-                                colors = CardDefaults.cardColors(containerColor = SurfaceInset),
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Column(modifier = Modifier.padding(Spacing.md)) {
-                                    Text(
-                                        "【${c.categories.joinToString(", ") { it.name }}】 ${c.reasons.joinToString(", ")}",
-                                        style = AppTypography.labelSmall,
-                                        color = PrimaryDark,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
-                                    Spacer(Modifier.height(Spacing.xs))
-                                    Text(
-                                        "候选：${c.candidateReply.take(60)}${if (c.candidateReply.length > 60) "..." else ""}",
-                                        style = AppTypography.labelSmall,
-                                        color = TextSecondary
-                                    )
-                                    if (c.userNote.isNotBlank()) {
-                                        Text("补充：${c.userNote}", style = AppTypography.labelSmall, color = TextHint)
-                                    }
+                }
+            } else {
+                androidx.compose.foundation.lazy.LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                        start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.xl
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.sm)
+                ) {
+                    items(filtered) { c ->
+                        val isExpanded = expandedCaseId == c.caseId
+                        Card(
+                            shape = LoveBrainShape.md,
+                            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    expandedCaseId = if (isExpanded) null else c.caseId
+                                }
+                        ) {
+                            Column(modifier = Modifier.padding(Spacing.md)) {
+                                // F15: 中文分类名 + 原因
+                                Text(
+                                    "【${c.categories.joinToString(", ") { com.lovebrain.app.data.FeedbackCaseRepository.categoryName(it) }}】 ${c.reasons.joinToString(", ")}",
+                                    style = AppTypography.labelMedium,
+                                    color = PrimaryDark,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Spacer(Modifier.height(Spacing.xs))
+                                // F15: 候选预览（收起时截断，展开时完整）
+                                Text(
+                                    if (isExpanded) c.candidateReply else "${c.candidateReply.take(80)}${if (c.candidateReply.length > 80) "..." else ""}",
+                                    style = AppTypography.bodySmall,
+                                    color = TextSecondary
+                                )
+                                if (c.userNote.isNotBlank()) {
+                                    Text("补充：${c.userNote}", style = AppTypography.labelSmall, color = TextHint)
+                                }
+                                // F15: 次级信息
+                                Text(
+                                    "${c.timestamp} · ${c.modelId.ifBlank { "未知模型" }} · ${com.lovebrain.app.data.FeedbackCaseRepository.statusName(c.status)}",
+                                    style = AppTypography.labelSmall,
+                                    color = TextHint
+                                )
+
+                                // F15: 展开时显示完整详情
+                                if (isExpanded) {
+                                    Spacer(Modifier.height(Spacing.sm))
                                     if (c.betterVersion.isNotBlank()) {
-                                        Text("期望：${c.betterVersion}", style = AppTypography.labelSmall, color = Primary)
+                                        Text("期望版本：${c.betterVersion}", style = AppTypography.labelSmall, color = Primary)
                                     }
-                                    Text(
-                                        "${c.timestamp} · ${c.modelId} · ${c.status}",
-                                        style = AppTypography.labelSmall,
-                                        color = TextHint
-                                    )
+                                    if (c.ideaHint.isNotBlank()) {
+                                        Text("本轮想法：${c.ideaHint}", style = AppTypography.labelSmall, color = TextSecondary)
+                                    }
+                                    if (c.intentText.isNotBlank()) {
+                                        Text("意图：${c.intentText}", style = AppTypography.labelSmall, color = TextSecondary)
+                                    }
+                                    if (c.contextMode.isNotBlank()) {
+                                        Text("上下文模式：${c.contextMode}", style = AppTypography.labelSmall, color = TextSecondary)
+                                    }
+                                    // F16: 真实对话快照
+                                    if (c.dialogueSnapshot.isNotEmpty()) {
+                                        Text("真实对话：", style = AppTypography.labelSmall, color = TextSecondary, fontWeight = FontWeight.SemiBold)
+                                        c.dialogueSnapshot.forEach { msg ->
+                                            Text(
+                                                "  [${if (msg.speaker == "PARTNER") "对方" else "我"}] ${msg.text}",
+                                                style = AppTypography.labelSmall,
+                                                color = TextSecondary
+                                            )
+                                        }
+                                    }
+                                    // F16: 记忆引用
+                                    if (c.memoryRefs.isNotEmpty()) {
+                                        Text("记忆引用：${c.memoryRefs.joinToString(", ")}", style = AppTypography.labelSmall, color = TextSecondary)
+                                    }
+                                    // F16: 版本信息
+                                    if (c.appVersion.isNotBlank()) {
+                                        Text("版本：${c.appVersion} (${c.buildType})", style = AppTypography.labelSmall, color = TextHint)
+                                    }
+                                    // F16: 用量
+                                    if (c.promptTokens > 0 || c.completionTokens > 0) {
+                                        Text("Token：prompt=${c.promptTokens}, completion=${c.completionTokens}", style = AppTypography.labelSmall, color = TextHint)
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
-                Spacer(Modifier.height(Spacing.sm))
-
-                // 导出按钮行
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
-                ) {
-                    // 导出 Markdown
-                    val (mdInteraction, mdScale) = rememberPressScale(0.96f, "exportMd")
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .graphicsLayer { scaleX = mdScale; scaleY = mdScale }
-                            .clip(LoveBrainShape.md)
-                            .background(Primary)
-                            .clickable(
-                                interactionSource = mdInteraction,
-                                indication = null,
-                                enabled = filtered.isNotEmpty()
-                            ) {
-                                scope.launch {
-                                    exportText = buildMarkdownReport(filtered)
-                                    showExport = true
-                                }
-                            }
-                            .padding(vertical = Spacing.sm),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("导出 Markdown", style = AppTypography.labelMedium, color = Color.White, fontWeight = FontWeight.SemiBold)
-                    }
-                    // 导出 JSON
-                    val (jsonInteraction, jsonScale) = rememberPressScale(0.96f, "exportJson")
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .graphicsLayer { scaleX = jsonScale; scaleY = jsonScale }
-                            .clip(LoveBrainShape.md)
-                            .background(SurfaceInset)
-                            .border(1.dp, Border, LoveBrainShape.md)
-                            .clickable(
-                                interactionSource = jsonInteraction,
-                                indication = null,
-                                enabled = filtered.isNotEmpty()
-                            ) {
-                                scope.launch {
-                                    val json = kotlinx.serialization.json.Json { prettyPrint = true; encodeDefaults = true }
-                                    exportText = json.encodeToString(kotlinx.serialization.builtins.ListSerializer(com.lovebrain.app.model.FeedbackCase.serializer()), filtered)
-                                    showExport = true
-                                }
-                            }
-                            .padding(vertical = Spacing.sm),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("导出 JSON", style = AppTypography.labelMedium, color = TextPrimary, fontWeight = FontWeight.SemiBold)
-                    }
-                }
             }
         }
-    }
 
-    // 导出预览弹层
-    if (showExport) {
-        Dialog(onDismissRequest = { showExport = false }) {
-            Card(
-                shape = LoveBrainShape.lg,
-                colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-                modifier = Modifier.fillMaxWidth().padding(Spacing.md)
+        // F15: 导出预览面板（面板内，非另一层 Dialog）
+        if (showExport) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .clickable { showExport = false }
             ) {
-                Column(modifier = Modifier.padding(Spacing.lg)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text("导出预览", style = AppTypography.titleMedium, color = TextPrimary, fontWeight = FontWeight.SemiBold)
-                        Text("复制", style = AppTypography.labelMedium, color = Primary, modifier = Modifier.clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = {
-                                val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-                                clipboard.setPrimaryClip(android.content.ClipData.newPlainText("export", exportText))
-                            }
-                        ).padding(Spacing.sm))
+                Card(
+                    shape = LoveBrainShape.lg,
+                    colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(Spacing.lg)
+                        .align(Alignment.Center)
+                        .clickable { /* 拦截内部点击 */ }
+                ) {
+                    Column(modifier = Modifier.padding(Spacing.lg)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "导出预览",
+                                style = AppTypography.titleMedium,
+                                color = TextPrimary,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Text(
+                                "复制",
+                                style = AppTypography.labelMedium,
+                                color = Primary,
+                                modifier = Modifier.clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null,
+                                    onClick = {
+                                        val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                                        clipboard.setPrimaryClip(android.content.ClipData.newPlainText("export", exportText))
+                                    }
+                                ).padding(Spacing.sm)
+                            )
+                        }
+                        Spacer(Modifier.height(Spacing.sm))
+                        Text(
+                            exportText,
+                            style = AppTypography.labelSmall,
+                            color = TextSecondary,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(max = 400.dp)
+                                .verticalScroll(rememberScrollState())
+                        )
+                        Spacer(Modifier.height(Spacing.sm))
+                        Text(
+                            "已复制到剪贴板，可粘贴到任何位置。默认已去除身份信息和连接信息。",
+                            style = AppTypography.labelSmall,
+                            color = TextHint
+                        )
                     }
-                    Spacer(Modifier.height(Spacing.sm))
-                    Text(
-                        exportText,
-                        style = AppTypography.labelSmall,
-                        color = TextSecondary,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(max = 400.dp)
-                            .verticalScroll(rememberScrollState())
-                    )
-                    Spacer(Modifier.height(Spacing.sm))
-                    Text(
-                        "已复制到剪贴板，可粘贴到任何位置。默认已去除身份信息和连接信息。",
-                        style = AppTypography.labelSmall,
-                        color = TextHint
-                    )
                 }
             }
         }
@@ -1557,31 +1611,5 @@ private fun FilterChip(label: String, isSelected: Boolean, onClick: () -> Unit) 
     }
 }
 
-/** 构建 Markdown 报告 */
-private fun buildMarkdownReport(cases: List<com.lovebrain.app.model.FeedbackCase>): String = buildString {
-    appendLine("# LoveBrain 反馈案例报告")
-    appendLine()
-    appendLine("生成时间：${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.US).format(java.util.Date())}")
-    appendLine()
-    appendLine("## 统计")
-    appendLine("- 总案例数：${cases.size}")
-    appendLine("- 理解错误：${cases.count { com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR in it.categories }}")
-    appendLine("- 表达不喜欢：${cases.count { com.lovebrain.app.model.FeedbackCategory.EXPRESSION_DISLIKE in it.categories }}")
-    appendLine("- 其他：${cases.count { com.lovebrain.app.model.FeedbackCategory.OTHER in it.categories }}")
-    appendLine()
-    appendLine("## 案例列表")
-    appendLine()
-    cases.forEachIndexed { idx, c ->
-        appendLine("### 案例 ${idx + 1}")
-        appendLine("- **时间**：${c.timestamp}")
-        appendLine("- **分类**：${c.categories.joinToString(", ")}")
-        appendLine("- **原因**：${c.reasons.joinToString(", ")}")
-        if (c.kbName.isNotBlank()) appendLine("- **档案**：${c.kbName}")
-        if (c.modelId.isNotBlank()) appendLine("- **模型**：${c.modelId}")
-        appendLine("- **候选原文**：${c.candidateReply}")
-        if (c.userNote.isNotBlank()) appendLine("- **用户补充**：${c.userNote}")
-        if (c.betterVersion.isNotBlank()) appendLine("- **期望版本**：${c.betterVersion}")
-        appendLine("- **状态**：${c.status}")
-        appendLine()
-    }
-}
+// F15: buildMarkdownReport 已移入 FeedbackCaseRepository.exportMarkdown
+// 不再在 UI 层维护导出逻辑，统一由 repository 提供
