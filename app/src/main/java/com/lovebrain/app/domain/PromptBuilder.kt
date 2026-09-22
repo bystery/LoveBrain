@@ -769,13 +769,67 @@ class PromptBuilder(
     }
 
     /**
-     * 锦囊 user prompt：核心知识子集（过预算） + 时间戳垫底。
-     * 不注入阶段节选（阶段信息经 suggest.md 全文自带九阶段节获得）。
+     * 锦囊 user prompt——使用独立的 DailyBriefContext，不复用 buildCoreKnowledgeSubset。
+     *
+     * 输入预算：SUGGEST_BUDGET (3500 字符)，远小于回复的 TOTAL_BUDGET (9000)。
+     * 只包含：
+     * 1. 当前关系阶段/温度摘要
+     * 2. 与今天相关的有效事项最多 3 条
+     * 3. 表达偏好摘要
+     * 4. 需要避开的已确认边界
+     * 裁剪优先级：边界与当前事项 > 近期对话 > 画像摘要 > 旧经验
      */
-    suspend fun buildSuggestUserPrompt(kb: KnowledgeBase?): String = buildString {
-        append(applyBudget(buildCoreKnowledgeSubset(kb, emptyList())))
-        append("\n\n")
-        append(buildTimestampPrompt())
+    suspend fun buildSuggestUserPrompt(kb: KnowledgeBase?): String {
+        val raw = buildString {
+            if (kb == null) {
+                append("（暂无知识库，按通用策略处理）\n\n")
+                append(buildTimestampPrompt())
+                return@buildString
+            }
+            knowledgeRepo.migrateIfNeeded(kb.name)
+
+            // 1. 关系阶段/温度摘要（简短）
+            val stage = kb.stage?.trim()
+            if (!stage.isNullOrBlank() && stage != "待确定" && stage != "阶段未确定") {
+                append("## 关系阶段\n").append(stage).append("\n\n")
+            }
+            val warmth = readFileCompat(kb.name, "understand/warmth.md")
+            if (warmth.isNotBlank()) {
+                append("## 温度摘要\n").append(warmth.trim().take(300)).append("\n\n")
+            }
+
+            // 2. 与今天相关的有效事项最多 3 条（精简版，不含完整进行中事项历史）
+            val plan = selectOngoingForInjection(kb.name, emptyList(),
+                effectiveIntent = com.lovebrain.app.model.IntentConfig())
+            if (plan.isNotBlank()) {
+                append("## 与今天相关的事项\n")
+                append(plan.take(800)).append("\n\n")
+            }
+
+            // 3. 表达偏好摘要
+            val style = readFileCompat(kb.name, "understand/style.md")
+            if (style.isNotBlank()) {
+                append("## 表达偏好\n").append(style.trim().take(300)).append("\n\n")
+            }
+
+            // 4. 需要避开的已确认边界
+            val lessons = knowledgeRepo.readFile(kb.name, "memory/lessons.md")
+            if (lessons.isNotBlank()) {
+                val recentLessons = lastH1Blocks(lessons, 1)
+                if (recentLessons.isNotBlank()) {
+                    append("## 需要避开的经验\n")
+                    append(recentLessons.take(400)).append("\n\n")
+                }
+            }
+
+            append(buildTimestampPrompt())
+        }
+        return trimSuggestToBudget(raw)
+    }
+
+    /** 独立预算裁剪——在 buildString 之后应用 */
+    private fun trimSuggestToBudget(text: String): String {
+        return if (text.length > AppConfig.SUGGEST_BUDGET) text.take(AppConfig.SUGGEST_BUDGET) else text
     }
 
     /**

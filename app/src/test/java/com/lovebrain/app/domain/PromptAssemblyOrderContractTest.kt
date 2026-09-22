@@ -188,8 +188,8 @@ fun t5_counseling_systemAndUser() = runBlocking {
     assertFalse("谈心 user 不含阶段节选", user.contains("## 暧昧期"))
 }
 
-// ═══ T6 锦囊：system 字节级 = suggest.md；user = 子集 + 时间戳 ═══
-// P0-6/P0-7: 进行中事项只在相关时注入——锦囊无消息上下文，事项不出现
+// ═══ T6 锦囊：system 字节级 = suggest.md；user = 独立轻量上下文 + 时间戳 ═══
+// 锦囊使用独立 DailyBriefContext，不复用 buildCoreKnowledgeSubset
 @Test
 fun t6_suggest_systemAndUser() = runBlocking {
     val pb = newBuilder()
@@ -197,14 +197,16 @@ fun t6_suggest_systemAndUser() = runBlocking {
     assertEquals("锦囊 system 必须字节级等于 suggest.md 全文", loadAsset(AssetRegistry.SUGGEST), system)
 
     val user = pb.buildSuggestUserPrompt(kb)
-    val iMe = user.indexOf("# 【懂得】关系画像")
     val iTime = user.indexOf("【当前时间】")
-    assertTrue(listOf(iMe, iTime).all { it >= 0 })
-    assertTrue("user 段序：知识子集 → 时间戳", iMe < iTime)
+    assertTrue("user 包含时间戳", iTime >= 0)
     assertFalse("锦囊 user 不含此刻", user.contains("# 【此刻】"))
     assertFalse("锦囊 user 不含最近对话", user.contains("# 最近对话"))
     assertFalse("锦囊 user 不含阶段节选", user.contains("## 暧昧期"))
     assertFalse("锦囊 user 不含倾诉段", user.contains("## 用户倾诉"))
+    // 锦囊使用独立轻量上下文，不再包含完整知识子集
+    assertFalse("锦囊 user 不含完整知识子集", user.contains("# 【懂得】关系画像"))
+    // 锦囊预算应远小于 TOTAL_BUDGET
+    assertTrue("锦囊 user 长度应远小于 TOTAL_BUDGET", user.length <= com.lovebrain.app.AppConfig.SUGGEST_BUDGET)
 }
 
     // ═══ T7 润色：system 字节级 = polish.md；user 仅草稿 + 空草稿兜底 ═══
