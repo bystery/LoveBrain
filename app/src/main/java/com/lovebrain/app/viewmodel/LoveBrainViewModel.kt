@@ -19,6 +19,11 @@ import com.lovebrain.app.model.ProactiveOption
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.ReplyRequestState
+import com.lovebrain.app.model.isBusy
+import com.lovebrain.app.model.isPreparing
+import com.lovebrain.app.model.isStreaming
+import com.lovebrain.app.model.requestId
 import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.ProfileTransactionResult
 import com.lovebrain.app.model.PreconditionReason
@@ -86,11 +91,13 @@ class LoveBrainViewModel(
     private val _generationRoundId = MutableStateFlow(0)
     val generationRoundId: StateFlow<Int> = _generationRoundId.asStateFlow()
 
+    /** 统一回复请求状态——单一事实源。替代分散的 isPreparing/isGenerating/isGeneratingCore。 */
+    private val _replyRequestState = MutableStateFlow<ReplyRequestState>(ReplyRequestState.Idle)
+    val replyRequestState: StateFlow<ReplyRequestState> = _replyRequestState.asStateFlow()
+
+    /** 派生属性——向后兼容现有 UI 订阅 */
     private val _isGenerating = MutableStateFlow(false)
     val isGenerating: StateFlow<Boolean> = _isGenerating.asStateFlow()
-
-    // D项修复：准备期状态——从 guard 通过到 Engine 启动之间
-    private val _isPreparing = MutableStateFlow(false)
 
     private val _isGeneratingCore = MutableStateFlow(false)
     val isGeneratingCore: StateFlow<Boolean> = _isGeneratingCore.asStateFlow()
@@ -373,7 +380,7 @@ class LoveBrainViewModel(
     /** P1-2：前台任务互斥——同时只运行一个回复/润色/改写请求
      *  D项修复：准备期也参与互斥
      *  阻断B修复：改写也纳入前台互斥 */
-    val isForegroundBusy: Boolean get() = _isGenerating.value || _isProactive.value || _isPreparing.value || (rewriteJob?.isActive == true)
+    val isForegroundBusy: Boolean get() = _replyRequestState.value.isBusy || _isProactive.value || (rewriteJob?.isActive == true)
 
     // ═══════════ F10: 仅看本轮开关 ═══════════
 
@@ -766,15 +773,16 @@ class LoveBrainViewModel(
     fun generate() {
         // GEN-01 双层保护第一层：ViewModel guard
         // P1-2：前台任务互斥——正在主动发时也拒绝
-        // D项修复：准备期也参与互斥——_isPreparing 防止准备期回复/主动发并发
+        // 准备期也参与互斥——统一状态机 Preparing 防止准备期回复/主动发并发
         // 阻断B修复：正在改写时也拒绝
-        if (_isGenerating.value || _isProactive.value || _isPreparing.value || (rewriteJob?.isActive == true)) return
+        if (_replyRequestState.value.isBusy || _isProactive.value || (rewriteJob?.isActive == true)) return
 
         // P1-2：设置结果模式
         _resultMode.value = ResultMode.REPLY
 
-        // D项修复：立即占用准备期所有权，防止准备期并发
-        _isPreparing.value = true
+        // 统一状态机：进入 Preparing，携带唯一 requestId
+        val requestId = ReplyRequestState.newRequestId()
+        _replyRequestState.value = ReplyRequestState.Preparing(requestId)
 
         // GEN-02：冻结快照 — 所有本轮上下文同源
         // F08修复：应用编辑草稿的角色变更到统一快照，防双身份
@@ -822,11 +830,10 @@ class LoveBrainViewModel(
             // F04: 合并本轮瞬时纠正（THIS_ROUND mute）与持久化纠正
             val mergedCorrections = correctionsSnapshot.toMutableMap().also { it.putAll(roundCorrections) }
 
-            // D项修复：再次检查是否已被取消
+            // 再次检查是否已被取消（快速重复点击时旧请求可能已被新请求取代）
             ensureActive()
 
-            // D项修复：准备完成，释放 _isPreparing，Engine 的 isGenerating 检查将通过
-            _isPreparing.value = false
+            // 准备完成——状态保持 Preparing（requestId 不变），Engine 的 isGenerating 检查将通过
 
             // GEN-01 双层保护第二层：Engine 返回 null = reject，不覆盖旧 Job
             val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this@LoveBrainViewModel, effectiveIntent, mergedCorrections, _onlyThisRound.value)
@@ -852,14 +859,14 @@ class LoveBrainViewModel(
                     }
                 }
             }
-            // D项修复：如果 Engine reject 或抛异常，_isPreparing 已在上方释放
+            // 如果 Engine reject 或抛异常，统一状态机 Preparing 已在上方释放
         }
-        // D项修复：将 prepJob 赋给 generateJob，使 stopGeneration 能取消准备期
+        // 将 prepJob 赋给 generateJob，使 stopGeneration 能取消准备期
         generateJob = prepJob
         prepJob.invokeOnCompletion {
             if (generateJob === prepJob) {
-                // prepJob 完成但 Engine 未接管 → 清理准备态
-                _isPreparing.value = false
+                // prepJob 完成但 Engine 未接管 → 清理统一状态
+                _replyRequestState.compareAndSet(ReplyRequestState.Preparing(requestId), ReplyRequestState.Idle)
             }
         }
     }
@@ -868,8 +875,9 @@ class LoveBrainViewModel(
      * GEN-01/GEN-02：停止生成 — 取消真正运行的 Job，清 context，但不清消息。
      */
     fun stopGeneration() {
-        // D项修复：停止时也清理准备期状态和 prepJob
-        _isPreparing.value = false
+        // 清理统一状态机——取消当前请求并回到 Idle
+        val currentState = _replyRequestState.value
+        _replyRequestState.value = ReplyRequestState.Idle
         // P1-05: 先取消改写——避免提前 return 导致单独改写时走不到取消代码
         rewriteJob?.cancel()
         rewriteJob = null
@@ -1700,7 +1708,7 @@ class LoveBrainViewModel(
     fun generateProactive(draft: String = "", scene: String = "") {
         // D项修复：准备期也参与互斥
         // 阻断B修复：正在改写时也拒绝
-        if (_isProactive.value || _isGenerating.value || _isPreparing.value || (rewriteJob?.isActive == true)) return
+        if (_isProactive.value || _replyRequestState.value.isBusy || (rewriteJob?.isActive == true)) return
 
         // P1-2：设置结果模式
         _resultMode.value = ResultMode.PROACTIVE
@@ -1737,6 +1745,9 @@ class LoveBrainViewModel(
 
     // --- 回复生成 ---
     override fun onReplyStart() {
+        // 统一状态机：Preparing → Streaming（保持同一 requestId）
+        val currentRequestId = _replyRequestState.value.requestId ?: ReplyRequestState.newRequestId()
+        _replyRequestState.value = ReplyRequestState.Streaming(currentRequestId)
         _isGenerating.value = true
         _isGeneratingCore.value = true
         _panelState.value = PanelState.AI_LOADING
@@ -1780,6 +1791,8 @@ class LoveBrainViewModel(
     }
 
     override fun onReplyResult(result: GenerateResult) {
+        // 统一状态机：结果发布后回到 Idle
+        _replyRequestState.value = ReplyRequestState.Idle
         _result.value = result
         // P0-3: 只有整轮生成成功时才递增 roundId——单条改写/undo 不经过此回调
         if (result is GenerateResult.Success) {
@@ -1814,6 +1827,10 @@ class LoveBrainViewModel(
     override fun onReplyGenerating(isGenerating: Boolean, isGeneratingCore: Boolean) {
         _isGenerating.value = isGenerating
         _isGeneratingCore.value = isGeneratingCore
+        // 当 Engine 报告 isGenerating=false 时，如果仍在 Streaming，表示请求结束
+        if (!isGenerating && _replyRequestState.value is ReplyRequestState.Streaming) {
+            _replyRequestState.value = ReplyRequestState.Idle
+        }
     }
 
     override fun onReplyStreamingCoreTextReset() {
@@ -2300,7 +2317,7 @@ class LoveBrainViewModel(
         option: String
     ) {
         // 前台互斥：正在生成/主动发/改写中时拒绝
-        if (_isGenerating.value || _isProactive.value || _isPreparing.value) return
+        if (_replyRequestState.value.isBusy || _isProactive.value) return
         if (rewriteJob?.isActive == true) return
 
         // 首轮流式尚未完成时禁用改写

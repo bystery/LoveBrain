@@ -573,11 +573,28 @@ class GenerationEngine(
             val suggestion = runCatching {
                 parseSuggestJson(fullText.ifBlank { buffer.toString() })
             }.getOrNull()
-            if (suggestion == null) {
-                // ：超时但部分内容解析成功时不报错（成功优先）；彻底无结果才提示
+
+            // 附加成本可见性数据和 partial 标记
+            val finalSuggestion = suggestion?.let { s ->
+                val tipsCount = s.tips.size
+                val isPartial = tipsCount < 6 || failMsg != null
+                s.copy(
+                    partial = isPartial,
+                    usage = com.lovebrain.app.model.DailyBriefUsage(
+                        promptTokens = null,  // Provider 未返回时为 null，禁止以 0 冒充
+                        completionTokens = null,
+                        costYuan = null,
+                        elapsedMs = System.currentTimeMillis() - t0,
+                        generatedAt = com.lovebrain.app.util.TimeFmt.now()
+                    )
+                )
+            }
+
+            if (finalSuggestion == null) {
+                // 超时但部分内容解析成功时不报错（成功优先）；彻底无结果才提示
                 callbacks.onSuggestError(failMsg ?: "本次没生成出来，请点重新生成")
             }
-            callbacks.onSuggestResult(suggestion)
+            callbacks.onSuggestResult(finalSuggestion)
             callbacks.onSuggestEnd()
         }
     }
