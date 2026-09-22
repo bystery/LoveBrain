@@ -827,9 +827,52 @@ class PromptBuilder(
         return trimSuggestToBudget(raw)
     }
 
-    /** 独立预算裁剪——在 buildString 之后应用 */
+    /** R1-29: 结构化 section budget 裁剪——不再直接 take(N) 截断。
+     *  裁剪优先级：边界与当前事项 > 温度摘要 > 表达偏好 > 经验
+     *  按完整 section 裁剪，不截断半个 section。 */
     private fun trimSuggestToBudget(text: String): String {
-        return if (text.length > AppConfig.SUGGEST_BUDGET) text.take(AppConfig.SUGGEST_BUDGET) else text
+        if (text.length <= AppConfig.SUGGEST_BUDGET) return text
+        // 按 "## " 分割为独立 section
+        val sections = text.split(Regex("(?=^## )", RegexOption.MULTILINE))
+        // 高优先 section（边界、事项）保留完整；低优先 section 按预算裁剪
+        var remaining = AppConfig.SUGGEST_BUDGET
+        val result = StringBuilder()
+        // 非分段前缀先加（如有）
+        val prefix = sections.firstOrNull { !it.startsWith("## ") }
+        if (prefix != null) {
+            result.append(prefix)
+            remaining -= prefix.length
+        }
+        // 高优先 section 先保留
+        val highPriority = listOf("## 与今天相关的事项", "## 需要避开的经验")
+        val lowPriority = listOf("## 温度摘要", "## 表达偏好", "## 关系阶段")
+        for (section in sections.drop(if (prefix != null) 1 else 0)) {
+            val isHigh = highPriority.any { section.startsWith(it) }
+            if (isHigh && remaining > 0) {
+                val toAdd = section.take(remaining)
+                result.append(toAdd)
+                remaining -= toAdd.length
+            }
+        }
+        // 低优先 section 按剩余预算裁剪
+        for (section in sections.drop(if (prefix != null) 1 else 0)) {
+            val isLow = lowPriority.any { section.startsWith(it) }
+            if (isLow && remaining > 0) {
+                val toAdd = section.take(remaining)
+                result.append(toAdd)
+                remaining -= toAdd.length
+            }
+        }
+        // 其他 section（如时间戳等）按剩余预算裁剪
+        for (section in sections.drop(if (prefix != null) 1 else 0)) {
+            val isHandled = highPriority.any { section.startsWith(it) } || lowPriority.any { section.startsWith(it) }
+            if (!isHandled && remaining > 0) {
+                val toAdd = section.take(remaining)
+                result.append(toAdd)
+                remaining -= toAdd.length
+            }
+        }
+        return result.toString()
     }
 
     /**

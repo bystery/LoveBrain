@@ -63,6 +63,8 @@ sealed class HomeDestination {
     data object Home : HomeDestination()
     data object FeedbackCases : HomeDestination()
     data object About : HomeDestination()
+    data object Providers : HomeDestination()
+    data object Usage : HomeDestination()
 }
 
 /**
@@ -75,7 +77,7 @@ fun HomeTopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = Spacing.xxxl, vertical = Spacing.lg),
+            .padding(vertical = Spacing.lg),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -96,7 +98,7 @@ fun HomeTopBar(
         val (aboutInteraction, aboutScale) = rememberPressScale(0.94f, "aboutBtn")
         Box(
             modifier = Modifier
-                .size(40.dp)
+                .size(48.dp)
                 .graphicsLayer { scaleX = aboutScale; scaleY = aboutScale }
                 .clip(LoveBrainShape.full)
                 .clickable(
@@ -145,7 +147,7 @@ fun AssistantStatusCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(Spacing.md)
-                        .size(40.dp) // 48dp 触摸区下限
+                        .size(48.dp)
                         .graphicsLayer { scaleX = hideScale; scaleY = hideScale }
                         .clip(LoveBrainShape.full)
                         .clickable(
@@ -217,7 +219,7 @@ fun AssistantStatusCard(
                     shape = LoveBrainShape.md,
                     interactionSource = btnInteraction,
                     modifier = Modifier
-                        .height(40.dp)
+                        .height(48.dp)
                         .graphicsLayer { scaleX = btnScale; scaleY = btnScale }
                 ) {
                     Text(
@@ -273,9 +275,9 @@ fun HomeActionCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = Modifier
-                        .size(40.dp)
-                        .clip(LoveBrainShape.md)
-                        .background(PrimaryLight),
+                .size(48.dp)
+                .clip(LoveBrainShape.md)
+                .background(PrimaryLight),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -425,12 +427,19 @@ fun HomeSettingRow(
 fun UsageSummary(
     totalGenerate: String,
     totalCost: String,
-    adoptRate: String
+    adoptRate: String,
+    onClick: (() -> Unit)? = null
 ) {
     Card(
         shape = LoveBrainShape.lg,
         colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .let { mod -> if (onClick != null) mod.clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick
+            ) else mod }
     ) {
         Row(
             modifier = Modifier

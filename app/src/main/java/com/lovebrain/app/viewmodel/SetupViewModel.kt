@@ -3,6 +3,7 @@ package com.lovebrain.app.viewmodel
 import android.content.Context
 import android.provider.Settings
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.HttpsTrustGuard
 import com.lovebrain.app.data.SecurePrefs
@@ -12,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
@@ -42,6 +44,17 @@ class SetupViewModel(
     private val _feedbackError = MutableStateFlow<String?>(null)
     val feedbackError: StateFlow<String?> = _feedbackError.asStateFlow()
 
+    /** 导出状态——typed，替代裸异常 */
+    sealed class ExportState {
+        data object Idle : ExportState()
+        data object Loading : ExportState()
+        data class Success(val text: String) : ExportState()
+        data class Error(val message: String) : ExportState()
+    }
+    private val _exportState = MutableStateFlow<ExportState>(ExportState.Idle)
+    val exportState: StateFlow<ExportState> = _exportState.asStateFlow()
+    fun resetExportState() { _exportState.value = ExportState.Idle }
+
     suspend fun loadFeedbackCases() {
         val repo = feedbackCaseRepository ?: run {
             _feedbackError.value = "反馈功能未配置"
@@ -51,21 +64,34 @@ class SetupViewModel(
         _feedbackError.value = null
         try {
             _feedbackCases.value = withContext(Dispatchers.IO) { repo.getAll() }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
         } catch (e: Exception) {
-            _feedbackError.value = "加载失败：${e.message ?: "未知错误"}"
+            _feedbackError.value = "加载失败，请重试"
         } finally {
             _feedbackLoading.value = false
         }
     }
 
-    suspend fun exportFeedbackMarkdown(cases: List<com.lovebrain.app.model.FeedbackCase>): String {
-        val repo = feedbackCaseRepository ?: return ""
-        return withContext(Dispatchers.IO) { repo.exportMarkdown(cases) }
-    }
-
-    suspend fun exportFeedbackJson(cases: List<com.lovebrain.app.model.FeedbackCase>): String {
-        val repo = feedbackCaseRepository ?: return ""
-        return withContext(Dispatchers.IO) { repo.exportJson(cases) }
+    fun exportFeedback(cases: List<com.lovebrain.app.model.FeedbackCase>, format: String) {
+        val repo = feedbackCaseRepository ?: run {
+            _exportState.value = ExportState.Error("反馈功能未配置")
+            return
+        }
+        _exportState.value = ExportState.Loading
+        viewModelScope.launch {
+            try {
+                val text = withContext(Dispatchers.IO) {
+                    if (format == "markdown") repo.exportMarkdown(cases)
+                    else repo.exportJson(cases)
+                }
+                _exportState.value = ExportState.Success(text)
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _exportState.value = ExportState.Error("导出失败，请重试")
+            }
+        }
     }
 
     // ═══════════ 工单列表状态 ────────────────

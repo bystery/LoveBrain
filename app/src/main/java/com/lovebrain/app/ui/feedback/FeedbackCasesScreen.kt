@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -46,6 +47,7 @@ import com.lovebrain.app.model.FeedbackCategory
 import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.AppTypography
 import com.lovebrain.app.ui.theme.Border
+import com.lovebrain.app.ui.theme.Error
 import com.lovebrain.app.ui.theme.LoveBrainShape
 import com.lovebrain.app.ui.theme.Primary
 import com.lovebrain.app.ui.theme.PrimaryDark
@@ -76,12 +78,12 @@ fun FeedbackCasesScreen(
     val cases by viewModel.feedbackCases.collectAsStateWithLifecycle()
     val isLoading by viewModel.feedbackLoading.collectAsStateWithLifecycle()
     val loadError by viewModel.feedbackError.collectAsStateWithLifecycle()
+    val exportState by viewModel.exportState.collectAsStateWithLifecycle()
 
     var filterCategory by remember { mutableStateOf<FeedbackCategory?>(null) }
     var expandedCaseId by remember { mutableStateOf<String?>(null) }
-    var exportText by remember { mutableStateOf("") }
-    var showExport by remember { mutableStateOf(false) }
     var exportFormat by remember { mutableStateOf("markdown") }
+    var copiedFeedback by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadFeedbackCases()
@@ -106,20 +108,25 @@ fun FeedbackCasesScreen(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val (backInteraction, backScale) = rememberPressScale(0.94f, "backBtn")
-                    Text(
-                        "←",
-                        style = AppTypography.titleMedium,
-                        color = Primary,
+                    Box(
                         modifier = Modifier
+                            .size(48.dp)
                             .graphicsLayer { scaleX = backScale; scaleY = backScale }
                             .clip(LoveBrainShape.md)
                             .clickable(
                                 interactionSource = backInteraction,
                                 indication = null,
                                 onClick = onBack
-                            )
-                            .padding(end = Spacing.md)
-                    )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            "←",
+                            style = AppTypography.titleMedium,
+                            color = Primary
+                        )
+                    }
+                    Spacer(Modifier.width(Spacing.sm))
                     Text(
                         "反馈案例",
                         style = AppTypography.titleLarge,
@@ -137,6 +144,7 @@ fun FeedbackCasesScreen(
                 val (exportInteraction, exportScale) = rememberPressScale(0.96f, "exportBtn")
                 Box(
                     modifier = Modifier
+                        .heightIn(min = 48.dp)
                         .graphicsLayer { scaleX = exportScale; scaleY = exportScale }
                         .clip(LoveBrainShape.md)
                         .background(if (filtered.isNotEmpty()) Primary else SurfaceInset, LoveBrainShape.md)
@@ -145,14 +153,7 @@ fun FeedbackCasesScreen(
                             indication = null,
                             enabled = filtered.isNotEmpty()
                         ) {
-                            scope.launch {
-                                exportText = if (exportFormat == "markdown") {
-                                    viewModel.exportFeedbackMarkdown(filtered)
-                                } else {
-                                    viewModel.exportFeedbackJson(filtered)
-                                }
-                                showExport = true
-                            }
+                            viewModel.exportFeedback(filtered, exportFormat)
                         }
                         .padding(horizontal = Spacing.md, vertical = Spacing.sm),
                     contentAlignment = Alignment.Center
@@ -209,7 +210,7 @@ fun FeedbackCasesScreen(
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                loadError!!,
+                                loadError.orEmpty(),
                                 style = AppTypography.bodyMedium,
                                 color = TextHint
                             )
@@ -224,8 +225,8 @@ fun FeedbackCasesScreen(
                                         interactionSource = retryInteraction,
                                         indication = null,
                                         onClick = {
-                                            scope.launch { viewModel.loadFeedbackCases() }
-                                        }
+                                        scope.launch { viewModel.loadFeedbackCases() }
+                                    }
                                     )
                                     .padding(horizontal = Spacing.xl, vertical = Spacing.md),
                                 contentAlignment = Alignment.Center
@@ -329,71 +330,152 @@ fun FeedbackCasesScreen(
             }
         }
 
-        // 导出预览面板
-        if (showExport) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.5f))
-                    .clickable { showExport = false }
-            ) {
-                Card(
-                    shape = LoveBrainShape.lg,
-                    colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+        // 导出预览面板——使用 typed exportState
+        when (val state = exportState) {
+            is SetupViewModel.ExportState.Loading -> {
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Spacing.lg)
-                        .align(Alignment.Center)
-                        .clickable { }
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.5f))
+                        .clickable(enabled = false) {},
+                    contentAlignment = Alignment.Center
                 ) {
-                    Column(modifier = Modifier.padding(Spacing.lg)) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                "导出预览",
-                                style = AppTypography.titleMedium,
-                                color = TextPrimary,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                            val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-                            Text(
-                                "复制",
-                                style = AppTypography.labelMedium,
-                                color = Primary,
-                                modifier = Modifier
-                                    .clip(LoveBrainShape.md)
-                                    .clickable(
-                                        interactionSource = remember { MutableInteractionSource() },
-                                        indication = null,
-                                        onClick = {
-                                            clipboard.setPrimaryClip(android.content.ClipData.newPlainText("export", exportText))
-                                        }
+                    CircularProgressIndicator(color = Primary)
+                }
+            }
+            is SetupViewModel.ExportState.Success -> {
+                val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = if (exportFormat == "json") "application/json" else "text/markdown"
+                    putExtra(Intent.EXTRA_TEXT, state.text)
+                }
+                val saveIntent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                    type = if (exportFormat == "json") "application/json" else "text/markdown"
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    putExtra(Intent.EXTRA_TITLE, "feedback_export.${exportFormat}")
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.5f))
+                        .clickable { viewModel.resetExportState() }
+                ) {
+                    Card(
+                        shape = LoveBrainShape.lg,
+                        colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Spacing.lg)
+                            .align(Alignment.Center)
+                            .clickable { }
+                    ) {
+                        Column(modifier = Modifier.padding(Spacing.lg)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    "导出预览",
+                                    style = AppTypography.titleMedium,
+                                    color = TextPrimary,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    // R1-18: 系统分享
+                                    val (shareInteraction, shareScale) = rememberPressScale(0.94f, "shareBtn")
+                                    Text(
+                                        "分享",
+                                        style = AppTypography.labelMedium,
+                                        color = Primary,
+                                        modifier = Modifier
+                                            .graphicsLayer { scaleX = shareScale; scaleY = shareScale }
+                                            .clip(LoveBrainShape.md)
+                                            .clickable(
+                                                interactionSource = shareInteraction,
+                                                indication = null,
+                                                onClick = {
+                                                    context.startActivity(Intent.createChooser(shareIntent, "分享到"))
+                                                }
+                                            )
+                                            .padding(Spacing.sm)
                                     )
-                                    .padding(Spacing.sm)
+                                    Spacer(Modifier.width(Spacing.sm))
+                                    // R1-19: 复制按钮——复制成功后才显示"已复制"
+                                    val (copyInteraction, copyScale) = rememberPressScale(0.94f, "copyBtn")
+                                    Text(
+                                        if (copiedFeedback) "✓ 已复制" else "复制",
+                                        style = AppTypography.labelMedium,
+                                        color = if (copiedFeedback) Primary else Primary,
+                                        fontWeight = if (copiedFeedback) FontWeight.Bold else FontWeight.Normal,
+                                        modifier = Modifier
+                                            .graphicsLayer { scaleX = copyScale; scaleY = copyScale }
+                                            .clip(LoveBrainShape.md)
+                                            .clickable(
+                                                interactionSource = copyInteraction,
+                                                indication = null,
+                                                onClick = {
+                                                    clipboard.setPrimaryClip(android.content.ClipData.newPlainText("export", state.text))
+                                                    copiedFeedback = true
+                                                }
+                                            )
+                                            .padding(Spacing.sm)
+                                    )
+                                }
+                            }
+                            Spacer(Modifier.height(Spacing.sm))
+                            Text(
+                                state.text,
+                                style = AppTypography.labelSmall,
+                                color = TextSecondary,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .heightIn(max = 400.dp)
+                                    .verticalScroll(rememberScrollState())
+                            )
+                            Spacer(Modifier.height(Spacing.sm))
+                            // R1-19: 底部反馈——只显示当前实际状态
+                            Text(
+                                if (copiedFeedback) "已复制到剪贴板，可粘贴到任何位置。" else "点击「复制」复制到剪贴板，或点击「分享」发送到其他应用。",
+                                style = AppTypography.labelSmall,
+                                color = TextHint
                             )
                         }
-                        Spacer(Modifier.height(Spacing.sm))
-                        Text(
-                            exportText,
-                            style = AppTypography.labelSmall,
-                            color = TextSecondary,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .heightIn(max = 400.dp)
-                                .verticalScroll(rememberScrollState())
-                        )
-                        Spacer(Modifier.height(Spacing.sm))
-                        Text(
-                            "已复制到剪贴板，可粘贴到任何位置。默认已去除身份信息和连接信息。",
-                            style = AppTypography.labelSmall,
-                            color = TextHint
-                        )
                     }
                 }
             }
+            is SetupViewModel.ExportState.Error -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.5f))
+                        .clickable { viewModel.resetExportState() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Card(
+                        shape = LoveBrainShape.lg,
+                        colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Spacing.lg)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(Spacing.xl),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(state.message, color = Error, style = AppTypography.bodyMedium)
+                            Spacer(Modifier.height(Spacing.md))
+                            Text(
+                                "关闭",
+                                color = Primary,
+                                style = AppTypography.labelLarge,
+                                modifier = Modifier.clickable { viewModel.resetExportState() }.padding(Spacing.sm)
+                            )
+                        }
+                    }
+                }
+            }
+            SetupViewModel.ExportState.Idle -> { /* nothing */ }
         }
     }
 }

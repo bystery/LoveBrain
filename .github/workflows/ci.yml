@@ -23,11 +23,49 @@ jobs:
       - name: Unit tests
         run: chmod +x gradlew && ./gradlew :app:testDebugUnitTest --no-daemon
 
+      - name: Upload unit test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report
+          path: app/build/reports/tests/testDebugUnitTest/
+          retention-days: 30
+
       - name: Lint
         run: ./gradlew :app:lintDebug --no-daemon
 
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: app/build/reports/lint-results-debug.*
+          retention-days: 30
+
       - name: Release R8 build
         run: ./gradlew :app:assembleRelease --no-daemon
+
+      - name: Compute APK SHA-256
+        if: success()
+        run: |
+          sha256sum app/build/outputs/apk/release/*.apk > apk_sha256.txt
+          cat apk_sha256.txt
+
+      - name: Upload APK checksum
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-checksum
+          path: apk_sha256.txt
+          retention-days: 90
+
+      - name: Upload release APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: app/build/outputs/apk/release/*.apk
+          retention-days: 90
 
   # P1-5: Compose UI interaction test（需要 emulator）
   # UI 测试属于最终质量门禁——失败必须使 CI 红灯。
@@ -57,3 +95,11 @@ jobs:
           api-level: 29
           script: chmod +x gradlew && ./gradlew :app:connectedDebugAndroidTest --no-daemon
           disable-animations: true
+
+      - name: Upload instrumentation test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: instrumentation-test-report
+          path: app/build/reports/androidTests/connected/
+          retention-days: 30

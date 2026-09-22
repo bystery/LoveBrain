@@ -95,22 +95,46 @@ class SecurePrefs(context: Context) {
 
     // ═══ 状态持久化（重启不丢失）═══
 
-    /** 今日锦囊持久化（JSON + 日期，仅当天恢复；） */
-    fun saveSuggestion(json: String, dateStr: String) {
-        prefs.edit().putString(KEY_SUGGESTION, json).putString(KEY_SUGGESTION_DATE, dateStr).apply()
+    /** 今日锦囊持久化（JSON + 日期 + 上下文指纹 + prompt版本；命中缓存不重复请求） */
+    fun saveSuggestion(json: String, dateStr: String, kbId: String, contextFingerprint: String, promptVersion: String) {
+        prefs.edit()
+            .putString(KEY_SUGGESTION, json)
+            .putString(KEY_SUGGESTION_DATE, dateStr)
+            .putString(KEY_SUGGESTION_KB_ID, kbId)
+            .putString(KEY_SUGGESTION_FP, contextFingerprint)
+            .putString(KEY_SUGGESTION_PV, promptVersion)
+            .apply()
     }
 
-    /** 读取今日锦囊（json to dateStr；无则 null） */
-    fun loadSuggestion(): Pair<String, String>? {
+    /** 读取今日锦囊缓存；调用方校验 kbId/日期/指纹/promptVersion 是否匹配 */
+    fun loadSuggestion(): SuggestionCache? {
         val json = prefs.getString(KEY_SUGGESTION, null) ?: return null
         val date = prefs.getString(KEY_SUGGESTION_DATE, null) ?: return null
-        return json to date
+        val kbId = prefs.getString(KEY_SUGGESTION_KB_ID, null) ?: return null
+        val fp = prefs.getString(KEY_SUGGESTION_FP, null) ?: return null
+        val pv = prefs.getString(KEY_SUGGESTION_PV, null) ?: "v1"
+        return SuggestionCache(json, date, kbId, fp, pv)
     }
 
-    /** 清除今日锦囊 */
-    fun clearSuggestion() {
-        prefs.edit().remove(KEY_SUGGESTION).remove(KEY_SUGGESTION_DATE).apply()
-    }
+    /** 今日锦囊缓存数据 */
+    data class SuggestionCache(
+        val json: String,
+        val date: String,
+        val kbId: String,
+        val contextFingerprint: String,
+        val promptVersion: String
+    )
+
+/** 清除今日锦囊（含缓存键） */
+fun clearSuggestion() {
+    prefs.edit()
+        .remove(KEY_SUGGESTION)
+        .remove(KEY_SUGGESTION_DATE)
+        .remove(KEY_SUGGESTION_KB_ID)
+        .remove(KEY_SUGGESTION_FP)
+        .remove(KEY_SUGGESTION_PV)
+        .apply()
+}
 
     /** 面板模式 (0=reply, 1=counseling) */
     var panelMode: Int
@@ -336,8 +360,11 @@ class SecurePrefs(context: Context) {
         private const val KEY_OUTPUT_MODE = "output_mode"
         // 状态持久化
         private const val KEY_PANEL_MODE = "saved_panel_mode"
-        private const val KEY_SUGGESTION = "saved_suggestion"
-        private const val KEY_SUGGESTION_DATE = "saved_suggestion_date"
+    private const val KEY_SUGGESTION = "saved_suggestion"
+    private const val KEY_SUGGESTION_DATE = "saved_suggestion_date"
+    private const val KEY_SUGGESTION_KB_ID = "saved_suggestion_kb_id"
+    private const val KEY_SUGGESTION_FP = "saved_suggestion_fp"
+    private const val KEY_SUGGESTION_PV = "saved_suggestion_pv"
         private const val KEY_API_STATS = "saved_api_stats"
         // ：今日花费（日期 + 金额双键）
         private const val KEY_TODAY_COST_DATE = "today_cost_date"

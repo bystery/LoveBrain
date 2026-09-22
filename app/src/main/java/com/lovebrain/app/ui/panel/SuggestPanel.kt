@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
+import com.lovebrain.app.model.DailyBriefUsage
 import com.lovebrain.app.model.DailySuggestion
 import com.lovebrain.app.model.SuggestTip
 import com.lovebrain.app.ui.theme.*
@@ -43,7 +44,6 @@ import com.lovebrain.app.viewmodel.LoveBrainViewModel
 /** 锦囊面板内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object SuggestDimens {
     const val PRIORITY_BADGE_HPAD_DP = 6    // 优先级/时机徽章水平内边距
-    const val TITLE_ROW_GAP_DP = 6          // 标题行元素间距
     const val SECTION_GAP_DP = 6            // 卡内区块间距
     const val PROGRESS_HEIGHT_DP = 6        // 阶段进度条高度
     const val EXAMPLE_MAX_HEIGHT_DP = 96    // 话术主体展开最大高度
@@ -148,13 +148,8 @@ fun SuggestPanel(
             // 生成中：已有流式 tips 则逐条渲染，否则转圈
             isSuggesting -> {
                 if (streamingTips.isNotEmpty()) {
-                    items(streamingTips, key = { streamingTips.indexOf(it) }) { tip ->
-                        val priority = when (streamingTips.indexOf(tip)) {
-                            0 -> TipPriority.HIGH
-                            1 -> TipPriority.MEDIUM
-                            else -> TipPriority.LOW
-                        }
-                        SuggestTipCard(tip = tip, priority = priority)
+                    items(streamingTips, key = { it.id }) { tip ->
+                        SuggestTipCard(tip = tip)
                     }
                     item {
                         Box(
@@ -264,16 +259,23 @@ fun SuggestPanel(
             // F18: 展示锦囊——轻量日常行动建议
             else -> {
                 val plan = suggestion ?: return@LazyColumn
+                // R1-25: 顶部显示 usage 与 partial 标识（usage 为 null 时也显示“未知”）
+                item {
+                    SuggestUsageBar(usage = plan.usage, isPartial = plan.partial)
+                }
                 // F18: 阶段卡保留（阶段名 + 关系温度），但不再强制 goal
                 item { SuggestStageCard(plan, vectorMean = vectorMean(currentVector)) }
 
-                items(plan.tips, key = { plan.tips.indexOf(it) }) { tip ->
-                    val priority = when (plan.tips.indexOf(tip)) {
-                        0 -> TipPriority.HIGH
-                        1 -> TipPriority.MEDIUM
-                        else -> TipPriority.LOW
+                // R1-31: 按 timingCategory 分组，不使用列表下标伪装优先级
+                val groupedTips = groupTipsByCategory(plan.tips)
+                for ((category, tips) in groupedTips) {
+                    if (tips.isEmpty()) continue
+                    item(key = "category-$category") {
+                        TipCategoryHeader(category = category)
                     }
-                    SuggestTipCard(tip = tip, priority = priority)
+                    items(tips, key = { it.id }) { tip ->
+                        SuggestTipCard(tip = tip)
+                    }
                 }
 
                 // F18: invite 保留但为可选（suggest.md 不再强制输出）
@@ -429,8 +431,8 @@ private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
  * 不再展示旧字段 slot/topic/expected；伪确定预测已移除。
  */
 @Composable
-private fun SuggestTipCard(tip: SuggestTip, priority: TipPriority = TipPriority.MEDIUM) {
-    var expanded by rememberSaveable { mutableStateOf(priority == TipPriority.HIGH) }
+private fun SuggestTipCard(tip: SuggestTip) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
     val tipArrowRotation by animateFloatAsState(
         targetValue = if (expanded) 0f else -90f,
         animationSpec = tween(300, easing = FastOutSlowInEasing),
@@ -445,29 +447,14 @@ private fun SuggestTipCard(tip: SuggestTip, priority: TipPriority = TipPriority.
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
             .padding(Spacing.md)
     ) {
-        // 标题行：[优先级] [action，1 行截断] ｜ [折叠箭头]
+        // 标题行：[action，1 行截断] ｜ [折叠箭头] — R1-31: 优先级由分组 header 体现
         Row(
             modifier = Modifier.fillMaxWidth().semantics { stateDescription = if (expanded) "已展开" else "已收起" }.clickable { expanded = !expanded },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .clip(LoveBrainShape.sm)
-                    .background(priority.bgColor)
-                    .padding(horizontal = SuggestDimens.PRIORITY_BADGE_HPAD_DP.dp, vertical = Spacing.xs)
-            ) {
-                Text(
-                    text = priority.label,
-                    style = AppTypography.labelSmall,
-                    color = priority.textColor,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1
-                )
-            }
-            Spacer(Modifier.width(SuggestDimens.TITLE_ROW_GAP_DP.dp))
-            // F18: action 替代旧 slot+topic——简短可直接理解
+            // R1-30: UI 只消费新模型字段，不再兼容旧 slot/topic
             Text(
-                text = tip.action.ifBlank { tip.slot.ifBlank { tip.topic } },
+                text = tip.action,
                 style = AppTypography.labelMedium,
                 color = Primary,
                 fontWeight = FontWeight.SemiBold,
@@ -536,16 +523,94 @@ private fun SuggestTipCard(tip: SuggestTip, priority: TipPriority = TipPriority.
     }
 }
 
-/** 优先级枚举：中性化——只留"高优先"黄色警示，中/低统一中性灰，
- *  让避坑（红）和邀约（绿）成为页面上唯二的彩色信号 */
-private enum class TipPriority(
-    val label: String,
-    val textColor: androidx.compose.ui.graphics.Color,
-    val bgColor: androidx.compose.ui.graphics.Color
-) {
-    HIGH("高优先", Warning, WarningBg),
-    MEDIUM("中优先", TextSecondary, SurfaceInset),
-    LOW("低优先", TextSecondary, SurfaceInset)
+/** R1-31: 按 timingCategory 分组 tips。
+ * 顺序：“现在可用” → “今天可准备” → “有机会再做” → 其他（无分类的排末尾）。 */
+private fun groupTipsByCategory(tips: List<SuggestTip>): List<Pair<String, List<SuggestTip>>> {
+    val order = listOf("现在可用", "今天可准备", "有机会再做")
+    val grouped = tips.groupBy { it.timingCategory }
+    val result = mutableListOf<Pair<String, List<SuggestTip>>>()
+    for (cat in order) {
+        (grouped[cat] ?: emptyList()).takeIf { it.isNotEmpty() }?.let {
+            result.add(cat to it)
+        }
+    }
+    // 未分类的 tips
+    val uncategorized = tips.filter { it.timingCategory.isBlank() || it.timingCategory !in order }
+    if (uncategorized.isNotEmpty()) {
+        result.add("更多建议" to uncategorized)
+    }
+    return result
+}
+
+/** R1-31: 分类标题 */
+@Composable
+private fun TipCategoryHeader(category: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = Spacing.sm, bottom = Spacing.xs),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = category,
+            style = AppTypography.labelLarge,
+            color = PrimaryDark,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+/** R1-25: 锦囊 usage 与 partial 状态展示。
+ *  Provider 返回 usage 时显示 token/费用/耗时；无值显示“未知”。
+ *  partial=true 时显示不完整标识。 */
+@Composable
+private fun SuggestUsageBar(usage: DailyBriefUsage?, isPartial: Boolean) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(LoveBrainShape.md)
+            .background(if (isPartial) WarningBg else SurfaceInset, LoveBrainShape.md)
+            .border(
+                AppDimens.BORDER_WIDTH_DP.dp,
+                if (isPartial) Warning else Border,
+                LoveBrainShape.md
+            )
+            .padding(horizontal = Spacing.md, vertical = Spacing.sm),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // 左侧：token 信息
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (isPartial) {
+                Text("不完整", style = AppTypography.labelSmall, color = Warning, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.width(Spacing.sm))
+            }
+            val tokens = usage?.let {
+                listOfNotNull(
+                    it.promptTokens?.let { p -> "↑$p" },
+                    it.completionTokens?.let { c -> "↓$c" }
+                ).joinToString("  ")
+            } ?: ""
+            if (tokens.isNotBlank()) {
+                Text(tokens, style = AppTypography.labelSmall, color = TextSecondary)
+            } else {
+                Text("token 未知", style = AppTypography.labelSmall, color = TextHint)
+            }
+        }
+        // 右侧：费用 + 耗时
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            val cost = usage?.costYuan
+            if (cost != null) {
+                Text("≈${"%.4f".format(cost)}元", style = AppTypography.labelSmall, color = TextSecondary)
+            } else {
+                Text("费用未知", style = AppTypography.labelSmall, color = TextHint)
+            }
+            Spacer(Modifier.width(Spacing.md))
+            usage?.elapsedMs?.let { ms ->
+                Text("${ms / 1000}s", style = AppTypography.labelSmall, color = TextHint)
+            }
+        }
+    }
 }
 
 /** 邀约窗口卡片（：简约化；：去复制按钮，纯展示） */

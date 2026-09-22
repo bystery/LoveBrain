@@ -1,9 +1,11 @@
 package com.lovebrain.app.model
 
+import com.lovebrain.app.domain.SuggestValidator
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -103,8 +105,10 @@ class DailySuggestionContractTest {
             SuggestTip(id = "tip-$i", timingCategory = "现在可用", action = "action$i")
         }
         val suggestion = DailySuggestion(tips = tips)
-        // The partial flag is set by engine, but the contract requires marking it
-        assertTrue("Fewer than 6 tips should be marked partial", tips.size < 6)
+        // R1-34: 调用生产 SuggestValidator，不只是断言数据类
+        val validated = SuggestValidator.validate(suggestion)
+        assertTrue("Fewer than 6 tips should be marked partial", validated.partial)
+        assertEquals(3, validated.tips.size)
     }
 
     @Test
@@ -150,9 +154,93 @@ class DailySuggestionContractTest {
     fun `timingCategory must be one of three valid values`() {
         val validCategories = listOf("现在可用", "今天可准备", "有机会再做")
         for (cat in validCategories) {
-            val tip = SuggestTip(timingCategory = cat)
+            val tip = SuggestTip(timingCategory = cat, action = "test")
             assertTrue("Category $cat should be valid", cat in validCategories)
         }
+    }
+
+    // ═══ R1-34: 调用生产 SuggestValidator 的合同测试 ═══
+
+    @Test
+    fun `SuggestValidator rejects tips with empty action`() {
+        val tips = listOf(
+            SuggestTip(id = "tip-1", action = ""),
+            SuggestTip(id = "tip-2", action = "valid action")
+        )
+        val validated = SuggestValidator.validate(DailySuggestion(tips = tips))
+        assertEquals("Empty action tips should be filtered", 1, validated.tips.size)
+        assertEquals("valid action", validated.tips[0].action)
+    }
+
+    @Test
+    fun `SuggestValidator deduplicates by action`() {
+        val tips = listOf(
+            SuggestTip(id = "tip-1", action = "duplicate"),
+            SuggestTip(id = "tip-2", action = "duplicate"),
+            SuggestTip(id = "tip-3", action = "unique")
+        )
+        val validated = SuggestValidator.validate(DailySuggestion(tips = tips))
+        assertEquals("Duplicate actions should be deduplicated", 2, validated.tips.size)
+    }
+
+    @Test
+    fun `SuggestValidator deduplicates by id`() {
+        val tips = listOf(
+            SuggestTip(id = "same-id", action = "action1"),
+            SuggestTip(id = "same-id", action = "action2"),
+            SuggestTip(id = "tip-3", action = "action3")
+        )
+        val validated = SuggestValidator.validate(DailySuggestion(tips = tips))
+        assertEquals("Duplicate ids should be deduplicated", 2, validated.tips.size)
+    }
+
+    @Test
+    fun `SuggestValidator generates stable id for empty id tips`() {
+        val tips = listOf(
+            SuggestTip(id = "", action = "action1"),
+            SuggestTip(id = "", action = "action2")
+        )
+        val validated = SuggestValidator.validate(DailySuggestion(tips = tips))
+        assertEquals("tip-1", validated.tips[0].id)
+        assertEquals("tip-2", validated.tips[1].id)
+    }
+
+    @Test
+    fun `SuggestValidator normalizes invalid timingCategory to empty`() {
+        val tips = listOf(
+            SuggestTip(id = "tip-1", action = "action1", timingCategory = "invalid"),
+            SuggestTip(id = "tip-2", action = "action2", timingCategory = "现在可用")
+        )
+        val validated = SuggestValidator.validate(DailySuggestion(tips = tips))
+        assertEquals("Invalid category should be normalized to empty", "", validated.tips[0].timingCategory)
+        assertEquals("Valid category should be preserved", "现在可用", validated.tips[1].timingCategory)
+    }
+
+    @Test
+    fun `SuggestValidator truncates to 8 tips max`() {
+        val tips = (1..10).map { i ->
+            SuggestTip(id = "tip-$i", action = "action$i")
+        }
+        val validated = SuggestValidator.validate(DailySuggestion(tips = tips))
+        assertEquals("Should truncate to 8 tips", 8, validated.tips.size)
+    }
+
+    @Test
+    fun `SuggestValidator marks partial when fewer than 6 valid tips`() {
+        val tips = (1..5).map { i ->
+            SuggestTip(id = "tip-$i", action = "action$i")
+        }
+        val validated = SuggestValidator.validate(DailySuggestion(tips = tips))
+        assertTrue("5 tips should be partial", validated.partial)
+    }
+
+    @Test
+    fun `SuggestValidator does not mark partial with 6 valid tips`() {
+        val tips = (1..6).map { i ->
+            SuggestTip(id = "tip-$i", action = "action$i")
+        }
+        val validated = SuggestValidator.validate(DailySuggestion(tips = tips))
+        assertFalse("6 tips should not be partial", validated.partial)
     }
 
     @Test
@@ -202,9 +290,9 @@ class DailySuggestionContractTest {
             SuggestTip(id = "tip-1", action = "action2"),
             SuggestTip(id = "tip-2", action = "action3")
         )
-        val ids = tips.map { it.id }
-        val duplicates = ids.groupingBy { it }.eachCount().filter { it.value > 1 }
-        assertTrue("Should detect duplicate id tip-1", duplicates.containsKey("tip-1"))
+        // R1-34: 调用生产 SuggestValidator 进行去重
+        val validated = SuggestValidator.validate(DailySuggestion(tips = tips))
+        assertEquals("Duplicate id should be deduplicated by validator", 2, validated.tips.size)
     }
 
     @Test

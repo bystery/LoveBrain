@@ -425,11 +425,11 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
                         }
                     }
 
+                    var streamUsage: com.lovebrain.app.model.StreamUsage? = null
                     try {
                         val source = resp.body?.source()
                             ?: throw IllegalStateException("响应体为空")
                         var firstChunkLogged = false
-
                         while (!call.isCanceled()) {
                             val line = source.readUtf8Line() ?: break
                             if (line.isBlank()) continue
@@ -442,7 +442,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
                                 val chunk = json.parseToJsonElement(payload).jsonObject
                                 // 流式末尾带 usage 的 chunk（include_usage=true 时最后一条）
                                 // PROV-02：logUsage 使用请求开始时冻结的 config + FOREGROUND scope
-                                if (chunk["usage"] != null) logUsage(chunk, resolvedConfig, CostScope.FOREGROUND)
+                                if (chunk["usage"] != null) streamUsage = logUsage(chunk, resolvedConfig, CostScope.FOREGROUND)
                                 val contentElement = chunk["choices"]?.jsonArray
                                     ?.get(0)?.jsonObject
                                     ?.get("delta")?.jsonObject
@@ -471,8 +471,8 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
                             L.w("PERF t4 stream complete (+${System.currentTimeMillis() - t2}ms, ${accumulated.length} chars)")
                             L.w("API stats: ${_stats.value}")
                             logStatsSummary()
-                            // : 流结束发射完整文本，同样用 trySendBlocking 防背压丢字
-                            trySendBlocking(StreamEvent.Complete(accumulated.toString()))
+                            // ：流结束发射完整文本和 usage，同样用 trySendBlocking 防背压丢字
+                            trySendBlocking(StreamEvent.Complete(accumulated.toString(), streamUsage))
                         }
                     } catch (e: Exception) {
                         if (!call.isCanceled()) {
@@ -485,6 +485,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
                                 accumulated.toString()
                             ))
                         }
+                        streamUsage = null
                     }
                     close()
                 }
@@ -963,9 +964,9 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
      * @param config 请求开始时冻结的 ProviderRequestConfig 快照
      * @param scope  计费来源标识（FOREGROUND=悬浮窗流式 / BACKGROUND=后台 generateRaw）
      */
-    private fun logUsage(root: JsonObject, config: ProviderRequestConfig, scope: CostScope) {
-        runCatching {
-            val usage = root["usage"]?.jsonObject ?: return
+    private fun logUsage(root: JsonObject, config: ProviderRequestConfig, scope: CostScope): com.lovebrain.app.model.StreamUsage? {
+        return runCatching {
+            val usage = root["usage"]?.jsonObject ?: return@runCatching null
             val hit = usage["prompt_cache_hit_tokens"]?.jsonPrimitive?.int ?: 0
             val miss = usage["prompt_cache_miss_tokens"]?.jsonPrimitive?.int ?: 0
             val prompt = usage["prompt_tokens"]?.jsonPrimitive?.int ?: 0
@@ -979,16 +980,23 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
             L.w("API usage: prompt=$prompt(hit=$hit,miss=$miss) completion=$completion")
             // PROV-02：计费双条件使用 config.baseUrl / config.model，不再读 getActiveTicket()/getActiveModel()
             val hasCacheFields = usage.containsKey("prompt_cache_hit_tokens") || usage.containsKey("prompt_cache_miss_tokens")
+            var costYuan: Double? = null
             if (UsagePricer.shouldBill(config.baseUrl, hasCacheFields)) {
                 val tier = UsagePricer.priceTier(config.model)
                 val peak = UsagePricer.isPeakHourBeijing(Instant.now())
-                val costYuan = UsagePricer.costYuan(hit.toLong(), miss.toLong(), completion.toLong(), tier, peak)
-                if (costYuan > 0.0) {
-                    _costEvents.tryEmit(UsageCostEvent(costYuan, System.currentTimeMillis(), scope))
-                    L.w("Cost billed: ${"%.4f".format(costYuan)} yuan (tier=$tier, peak=$peak, scope=$scope)")
+                val cost = UsagePricer.costYuan(hit.toLong(), miss.toLong(), completion.toLong(), tier, peak)
+                if (cost > 0.0) {
+                    costYuan = cost
+                    _costEvents.tryEmit(UsageCostEvent(cost, System.currentTimeMillis(), scope))
+                    L.w("Cost billed: ${"%.4f".format(cost)} yuan (tier=$tier, peak=$peak, scope=$scope)")
                 }
             }
-        }
+            com.lovebrain.app.model.StreamUsage(
+                promptTokens = prompt.takeIf { it > 0 },
+                completionTokens = completion.takeIf { it > 0 },
+                costYuan = costYuan
+            )
+        }.getOrNull()
     }
 
     companion object {

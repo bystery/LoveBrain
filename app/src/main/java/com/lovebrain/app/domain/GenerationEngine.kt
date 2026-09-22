@@ -104,20 +104,27 @@ object PartialJsonObjects {
     }
 }
 
-/** 锦囊 tips 流式解析（逐条渲染） */
+/** 锦囊 tips 流式解析（逐条渲染）。
+ * R1-28: 流式和最终解析共用 SuggestValidator 的去重/校验规则，保证一致性。 */
 object PartialTipsParser {
     fun parseCompleted(buffer: String): List<com.lovebrain.app.model.SuggestTip> {
         val result = mutableListOf<com.lovebrain.app.model.SuggestTip>()
+        val seenIds = mutableSetOf<String>()
+        val seenActions = mutableSetOf<String>()
         for (objStr in PartialJsonObjects.extractObjects(buffer, "tips")) {
             runCatching { jsonLenient.decodeFromString<com.lovebrain.app.model.SuggestTip>(objStr) }.getOrNull()?.let { tip ->
-                // F18: 去重键改用 action（新主字段），兼容旧缓存用 slot
-                val dedupKey = tip.action.ifBlank { tip.slot }.ifBlank { tip.example }
-                if (dedupKey.isNotBlank() && result.none { 
-                    val existingKey = it.action.ifBlank { it.slot }.ifBlank { it.example }
-                    existingKey == dedupKey
-                }) {
-                    result.add(tip)
+                val action = tip.action.trim()
+                if (action.isBlank()) return@let
+                if (action in seenActions) return@let
+                seenActions.add(action)
+                val stableId = if (tip.id.isNotBlank() && tip.id !in seenIds) {
+                    tip.id
+                } else {
+                    "tip-${result.size + 1}"
                 }
+                if (stableId in seenIds) return@let
+                seenIds.add(stableId)
+                result.add(tip.copy(id = stableId, action = action))
             }
         }
         return result
@@ -206,31 +213,6 @@ class GenerationEngine(
      * GEN-02B：knowledgeBase 参数冻结生成时 KB，防止生成途中切 KB 导致 prompt 与保存不同源。
      * F07: intentConfig 冻结持续意图 text/enabled/revision，启用时短注入。
      */
-    /**
-     * F09: 统一不可变生成输入入口。
-     * UI→domain 边界生成 GenerationInput，分离真实 dialogue 和控制信息。
-     * 内部委托给旧的 messages 接口，但未来可逐步迁移到完全使用 GenerationInput。
-     */
-    fun generate(
-        input: com.lovebrain.app.model.GenerationInput,
-        knowledgeBase: KnowledgeBase?,
-        scope: CoroutineScope,
-        callbacks: Callbacks
-    ): Job? {
-        // F09: 使用 GenerationInput 中的分离数据
-        val messages = com.lovebrain.app.model.GenerationInput.toChatMessages(input)
-        return generate(
-            messages = messages,
-            userHint = input.userHint(),
-            knowledgeBase = knowledgeBase,
-            scope = scope,
-            callbacks = callbacks,
-            intentConfig = input.effectiveIntent,
-            corrections = input.corrections,
-            onlyThisRound = input.onlyThisRound
-        )
-    }
-
     fun generate(
         messages: List<ChatMessage>,
         userHint: String,
@@ -360,7 +342,7 @@ class GenerationEngine(
                                 callbacks.onFirstToken(System.currentTimeMillis() - t0)
                             }
                         }
-                    )
+                    ).text
                     //  段 B：收到 PARAM_UNSUPPORTED 错误 → 换下一候选 wire shape
                     if (fullText.isBlank() && errorMsg != null && errorMsg?.startsWith("PARAM_UNSUPPORTED:") == true && thinkingShapeIndex < 3) {
                         thinkingShapeIndex++
@@ -465,14 +447,14 @@ class GenerationEngine(
             var fullText = ""
             var errorMsg: String? = null
             try {
-                fullText = collectStream(
-                    // PROV-01：使用冻结的 providerConfig
-                    deepSeekRepo.generateStream(system, user, config = providerConfig),
-                    AppConfig.GENERATE_TIMEOUT_MS,
-                    onChunk = { callbacks.onCounselingStreaming(it) },
-                    onError = { errorMsg = it },
-                    onFirstChunk = { callbacks.onFirstToken(System.currentTimeMillis() - t0) }
-                )
+fullText = collectStream(
+// PROV-01：使用冻结的 providerConfig
+deepSeekRepo.generateStream(system, user, config = providerConfig),
+AppConfig.GENERATE_TIMEOUT_MS,
+onChunk = { callbacks.onCounselingStreaming(it) },
+onError = { errorMsg = it },
+onFirstChunk = { callbacks.onFirstToken(System.currentTimeMillis() - t0) }
+).text
             } catch (_: kotlinx.coroutines.TimeoutCancellationException) {
                 errorMsg = "请求超时，请重试"
             } catch (e: Exception) {
@@ -524,6 +506,8 @@ class GenerationEngine(
         callbacks.onSuggestStart()
 
         return scope.launch(Dispatchers.Main) {
+            // R1-32: 整条 suggest transaction 使用 try/finally，确保 onSuggestEnd 始终被调用
+            try {
             val system = withContext(Dispatchers.IO) { promptBuilder.buildSuggestSystemPrompt() }
             val user = withContext(Dispatchers.IO) {
                 promptBuilder.buildSuggestUserPrompt(kb)
@@ -533,7 +517,6 @@ class GenerationEngine(
             val providerConfig = deepSeekRepo.snapshotProviderConfig()
             if (providerConfig == null) {
                 callbacks.onSuggestError("请先配置一个可用的模型供应商")
-                callbacks.onSuggestEnd()
                 return@launch
             }
 
@@ -543,23 +526,26 @@ class GenerationEngine(
             var firstChunkAt = -1L
             // ：弱网超时/异常/解析失败——记录错因，拿不到结果时告知 UI
             var failMsg: String? = null
+            var streamResult: StreamResult? = null
             try {
                 L.w("SUGGEST t0 request enqueued, user=${user.length} chars")
-                fullText = collectStream(
-                    // PROV-01：使用冻结的 providerConfig
-                    deepSeekRepo.generateStream(system, user, config = providerConfig),
-                    AppConfig.SUGGEST_TIMEOUT_MS,
-                    onChunk = { chunk ->
-                        if (firstChunkAt < 0) {
-                            firstChunkAt = System.currentTimeMillis()
-                            callbacks.onFirstToken(firstChunkAt - t0) // ：锦囊复用既有首 chunk 时点上报（单次流无重试，天然幂等）
-                            L.w("SUGGEST t1 first chunk (+${firstChunkAt - t0}ms)")
-                        }
-                        buffer.append(chunk)
-                        val parsed = PartialTipsParser.parseCompleted(buffer.toString())
-                        callbacks.onSuggestStreamingTips(parsed)
-                    }
-                )
+val sr = collectStream(
+// PROV-01：使用冻结的 providerConfig
+deepSeekRepo.generateStream(system, user, config = providerConfig),
+AppConfig.SUGGEST_TIMEOUT_MS,
+onChunk = { chunk ->
+if (firstChunkAt < 0) {
+firstChunkAt = System.currentTimeMillis()
+callbacks.onFirstToken(firstChunkAt - t0) // ：锦囊复用既有首 chunk 时点上报（单次流无重试，天然幂等）
+L.w("SUGGEST t1 first chunk (+${firstChunkAt - t0}ms)")
+}
+buffer.append(chunk)
+val parsed = PartialTipsParser.parseCompleted(buffer.toString())
+callbacks.onSuggestStreamingTips(parsed)
+}
+)
+streamResult = sr
+fullText = sr.text
                 L.w("SUGGEST t2 complete (+${System.currentTimeMillis() - t0}ms, ${buffer.length} chars)")
             } catch (_: kotlinx.coroutines.TimeoutCancellationException) {
                 callbacks.onSuggestLog("SUGGEST timeout after ${AppConfig.SUGGEST_TIMEOUT_MS}ms, partial=${buffer.length} chars, firstChunkAt=${if (firstChunkAt < 0) "NONE" else (firstChunkAt - t0)}ms")
@@ -574,16 +560,18 @@ class GenerationEngine(
                 parseSuggestJson(fullText.ifBlank { buffer.toString() })
             }.getOrNull()
 
-            // 附加成本可见性数据和 partial 标记
+            // R1-24: 使用 Provider 返回的真实 usage，不再硬编码 null
+            // R1-32: finally 确保无论异常/解析失败都调用 onSuggestEnd
+            val suggestUsage = streamResult?.usage
             val finalSuggestion = suggestion?.let { s ->
                 val tipsCount = s.tips.size
                 val isPartial = tipsCount < 6 || failMsg != null
                 s.copy(
                     partial = isPartial,
                     usage = com.lovebrain.app.model.DailyBriefUsage(
-                        promptTokens = null,  // Provider 未返回时为 null，禁止以 0 冒充
-                        completionTokens = null,
-                        costYuan = null,
+                        promptTokens = suggestUsage?.promptTokens,
+                        completionTokens = suggestUsage?.completionTokens,
+                        costYuan = suggestUsage?.costYuan,
                         elapsedMs = System.currentTimeMillis() - t0,
                         generatedAt = com.lovebrain.app.util.TimeFmt.now()
                     )
@@ -595,7 +583,10 @@ class GenerationEngine(
                 callbacks.onSuggestError(failMsg ?: "本次没生成出来，请点重新生成")
             }
             callbacks.onSuggestResult(finalSuggestion)
-            callbacks.onSuggestEnd()
+            } finally {
+                // R1-32: finally 确保无论异常/解析失败都调用 onSuggestEnd
+                callbacks.onSuggestEnd()
+            }
         }
     }
 
@@ -627,17 +618,17 @@ class GenerationEngine(
             val buffer = StringBuilder()
             var fullText = ""
             try {
-                fullText = collectStream(
-                    // PROV-01：使用冻结的 providerConfig
-                    deepSeekRepo.generateStream(system, user, config = providerConfig),
-                    AppConfig.SUGGEST_TIMEOUT_MS,
-                    onChunk = { chunk ->
-                        buffer.append(chunk)
-                        val parsed = parseProactiveOptions(buffer.toString())
-                        callbacks.onProactiveStreamingOptions(parsed)
-                    },
-                    onFirstChunk = { callbacks.onFirstToken(System.currentTimeMillis() - t0) }
-                )
+fullText = collectStream(
+// PROV-01：使用冻结的 providerConfig
+deepSeekRepo.generateStream(system, user, config = providerConfig),
+AppConfig.SUGGEST_TIMEOUT_MS,
+onChunk = { chunk ->
+buffer.append(chunk)
+val parsed = parseProactiveOptions(buffer.toString())
+callbacks.onProactiveStreamingOptions(parsed)
+},
+onFirstChunk = { callbacks.onFirstToken(System.currentTimeMillis() - t0) }
+).text
             } catch (_: kotlinx.coroutines.TimeoutCancellationException) {
                 callbacks.onProactiveError("生成超时，已保留部分内容")
             } catch (e: Exception) {
@@ -665,10 +656,11 @@ class GenerationEngine(
         onError: (String) -> Unit = {},
         // ：首个非空 chunk 回调（首字耗时上报；只触发一次，不影响降级/重试链）
         onFirstChunk: (() -> Unit)? = null,
-    ): String {
+    ): StreamResult {
         val buf = StringBuilder()
         var full = ""
         var firstChunkSeen = false
+        var usage: com.lovebrain.app.model.StreamUsage? = null
         withTimeout(timeoutMs) {
             flow.collect { e ->
                 when (e) {
@@ -680,7 +672,10 @@ class GenerationEngine(
                         }
                         onChunk(e.text)
                     }
-                    is StreamEvent.Complete -> full = e.fullText
+                    is StreamEvent.Complete -> {
+                        full = e.fullText
+                        usage = e.usage
+                    }
                     is StreamEvent.Error -> {
                         onError(e.message)
                         if (e.partialText.isNotBlank()) full = e.partialText
@@ -688,8 +683,11 @@ class GenerationEngine(
                 }
             }
         }
-        return full.ifBlank { buf.toString() }
+        return StreamResult(full.ifBlank { buf.toString() }, usage)
     }
+
+    /** collectStream 返回值：完整文本 + Provider usage */
+    private data class StreamResult(val text: String, val usage: com.lovebrain.app.model.StreamUsage?)
 
     /** 流式提取 options 数组里已完整闭合的对象 */
     private fun parseProactiveOptions(raw: String): List<com.lovebrain.app.model.ProactiveOption> {
@@ -701,11 +699,12 @@ class GenerationEngine(
         return result
     }
 
-    /** 解析锦囊 JSON（容错：提取首个 { } 块） */
+    /** 解析锦囊 JSON（容错：提取首个 { } 块）并执行产品合同校验 */
     private fun parseSuggestJson(raw: String): com.lovebrain.app.model.DailySuggestion {
         val jsonStr = Jsons.extractJsonBlock(raw)
             ?: throw IllegalStateException("锦囊返回格式异常")
-        return jsonLenient.decodeFromString<com.lovebrain.app.model.DailySuggestion>(jsonStr)
+        val parsed = jsonLenient.decodeFromString<com.lovebrain.app.model.DailySuggestion>(jsonStr)
+        return SuggestValidator.validate(parsed)
     }
 
 }

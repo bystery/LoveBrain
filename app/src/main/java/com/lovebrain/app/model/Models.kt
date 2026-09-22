@@ -261,11 +261,19 @@ sealed class GenerateResult {
 sealed class StreamEvent {
     /** 增量文本块 */
     data class Chunk(val text: String) : StreamEvent()
-    /** 流完成，附带完整累积文本 */
-    data class Complete(val fullText: String) : StreamEvent()
+    /** 流完成，附带完整累积文本和 Provider 返回的 usage（可能为 null） */
+    data class Complete(val fullText: String, val usage: StreamUsage? = null) : StreamEvent()
     /** 错误（含已累积的部分文本） */
     data class Error(val message: String, val partialText: String) : StreamEvent()
 }
+
+/** Provider 返回的流式 usage 数据，与本次请求绑定 */
+@Serializable
+data class StreamUsage(
+    val promptTokens: Int? = null,
+    val completionTokens: Int? = null,
+    val costYuan: Double? = null
+)
 
 /** 用户对方案的反馈 */
 enum class SchemeFeedback {

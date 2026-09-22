@@ -22,6 +22,9 @@ local.properties
 # 本地文档目录（内部需求/避坑/迁移/指导书等，一律不入库）
 /docs/
 
+# 内部阶段审计/指导书（只存项目管理系统，不入公开仓库）
+LoveBrain_Phase*_*.md
+
 # AI tool cache
 /.qoder/*
 !/.qoder/agents/

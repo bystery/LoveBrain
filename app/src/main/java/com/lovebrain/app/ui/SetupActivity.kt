@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.content.ContextCompat
@@ -104,12 +105,12 @@ import org.koin.android.ext.android.inject
 private object SetupDimens {
     const val STATUS_DOT_SIZE_DP = 6
     const val CONTENT_MAX_WIDTH_DP = 600
-    const val HERO_BUTTON_HEIGHT_DP = 40
+    const val HERO_BUTTON_HEIGHT_DP = 48
     const val HERO_ICON_SIZE_DP = 16
-    const val FEATURE_ICON_CONTAINER_DP = 40
+    const val FEATURE_ICON_CONTAINER_DP = 48
     const val FEATURE_ICON_SIZE_DP = 22
     const val FEATURE_ARROW_SIZE_DP = 20
-    const val ROW_ACTION_HEIGHT_DP = 32
+    const val ROW_ACTION_HEIGHT_DP = 48
 }
 
 /**
@@ -259,15 +260,31 @@ private fun SetupRoot(
                     onRestore = onRestore,
                     onNavigateFeedback = { destination = HomeDestination.FeedbackCases },
                     onNavigateAbout = { destination = HomeDestination.About },
-                    onBack = { }
+                    onNavigateProviders = { destination = HomeDestination.Providers },
+                    onNavigateUsage = { destination = HomeDestination.Usage },
+                    onBack = { (context as? android.app.Activity)?.finish() }
                 )
-                HomeDestination.FeedbackCases -> FeedbackCasesScreen(
+                HomeDestination.FeedbackCases -> {
+                    BackHandler { destination = HomeDestination.Home }
+                    FeedbackCasesScreen(
                     viewModel = viewModel,
                     onBack = { destination = HomeDestination.Home }
                 )
-                HomeDestination.About -> AboutScreen(
+                }
+                HomeDestination.About -> {
+                    BackHandler { destination = HomeDestination.Home }
+                    AboutScreen(
                     onBack = { destination = HomeDestination.Home }
                 )
+                }
+                HomeDestination.Providers -> {
+                    BackHandler { destination = HomeDestination.Home }
+                    ProviderSection(viewModel = viewModel, onBack = { destination = HomeDestination.Home })
+                }
+                HomeDestination.Usage -> {
+                    BackHandler { destination = HomeDestination.Home }
+                    UsageDetailScreen(viewModel = viewModel, onBack = { destination = HomeDestination.Home })
+                }
             }
         }
     }
@@ -286,6 +303,8 @@ private fun HomeScreen(
     onRestore: () -> Unit,
     onNavigateFeedback: () -> Unit,
     onNavigateAbout: () -> Unit,
+    onNavigateProviders: () -> Unit,
+    onNavigateUsage: () -> Unit,
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -293,9 +312,11 @@ private fun HomeScreen(
     val activeTicket by viewModel.activeTicket.collectAsStateWithLifecycle()
     val providerReady by viewModel.providerReady.collectAsStateWithLifecycle()
 
+    val captureEnabled by viewModel.captureEnabled.collectAsStateWithLifecycle()
     var accessibilityGranted by remember { mutableStateOf(viewModel.isCaptureServiceEnabled(context)) }
     var showAccessibilityDisclosure by remember { mutableStateOf(false) }
-    var showProviderEdit by remember { mutableStateOf(false) }
+
+    BackHandler { onBack() }
 
     val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
@@ -332,11 +353,13 @@ private fun HomeScreen(
     val buttonText = when {
         !overlayGranted -> "授权悬浮窗"
         currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> "恢复军师"
+        isServiceRunning -> "打开军师"
         else -> "启动军师悬浮窗"
     }
     val buttonAction = when {
         !overlayGranted -> onStartService
         currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> onRestore
+        isServiceRunning -> { { onOpenPanel(0, false) } }
         else -> onStartService
     }
     val canHide = isServiceRunning &&
@@ -377,7 +400,7 @@ private fun HomeScreen(
             )
             HomeActionCard(
                 modifier = Modifier.weight(1f),
-                iconRes = R.drawable.ic_feature_book,
+                iconRes = R.drawable.ic_feature_feedback,
                 title = "反馈案例",
                 subtitle = "点踩记录与导出",
                 onClick = onNavigateFeedback
@@ -397,14 +420,21 @@ private fun HomeScreen(
                         ?: "未配置供应商",
                     statusText = "",
                     statusColor = if (providerReady) Primary else Neutral300,
-                    onClick = { showProviderEdit = !showProviderEdit }
+                    trailingText = "管理",
+                    onTrailingClick = onNavigateProviders,
+                    onClick = onNavigateProviders
                 )
                 HorizontalDivider(thickness = AppDimens.BORDER_WIDTH_DP.dp, color = Border.copy(alpha = 0.5f))
 
                 HomeSettingRow(
                     title = "消息捕获",
-                    subtitle = if (accessibilityGranted) "开启后长按消息自动捕获"
-                    else "尚未授予无障碍权限",
+                    subtitle = when {
+                        !accessibilityGranted -> "尚未授予无障碍权限"
+                        captureEnabled -> "已开启·长按消息自动捕获"
+                        else -> "已关闭·点击开启"
+                    },
+                    statusText = if (accessibilityGranted) (if (captureEnabled) "开" else "关") else null,
+                    statusColor = if (captureEnabled) Primary else Neutral300,
                     trailingText = if (!accessibilityGranted) "去授权" else null,
                     onTrailingClick = if (!accessibilityGranted) ({ showAccessibilityDisclosure = true }) else null,
                     onClick = if (accessibilityGranted) ({ viewModel.toggleCapture() }) else null
@@ -412,10 +442,7 @@ private fun HomeScreen(
             }
         }
 
-        // 模型供应商管理（折叠卡）
-        if (showProviderEdit) {
-            ProviderSection(viewModel)
-        }
+        // 模型供应商管理移至根页面
 
         HomeSectionHeader("使用概览")
         val costStr = if (viewModel.totalCostYuan < 0.01) "￥0" else "￥${String.format("%.2f", viewModel.totalCostYuan)}"
@@ -423,8 +450,9 @@ private fun HomeScreen(
         UsageSummary(
             totalGenerate = "${viewModel.totalGenerateCount}",
             totalCost = costStr,
-            adoptRate = rateStr
-        )
+            adoptRate = rateStr,
+            onClick = onNavigateUsage
+                )
 
         Spacer(Modifier.height(Spacing.xl))
     }
@@ -446,7 +474,7 @@ private fun HomeScreen(
 // ═════════════════════════════════════════════════════════════
 
 @Composable
-private fun ProviderSection(viewModel: SetupViewModel) {
+private fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
     val tickets by viewModel.tickets.collectAsStateWithLifecycle()
     val activeTicket by viewModel.activeTicket.collectAsStateWithLifecycle()
     val providerReady by viewModel.providerReady.collectAsStateWithLifecycle()
@@ -461,15 +489,44 @@ private fun ProviderSection(viewModel: SetupViewModel) {
 
     Column(
         verticalArrangement = Arrangement.spacedBy(Spacing.xs),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = Spacing.xxxl)
     ) {
-        Text(
-            "模型供应商",
-            style = AppTypography.titleMedium,
-            color = TextPrimary,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(start = Spacing.sm)
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = Spacing.lg),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val (backInteraction, backScale) = rememberPressScale(0.94f, "providerBack")
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .graphicsLayer { scaleX = backScale; scaleY = backScale }
+                    .clip(LoveBrainShape.md)
+                    .clickable(
+                        interactionSource = backInteraction,
+                        indication = null,
+                        onClick = onBack
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "←",
+                    style = AppTypography.titleMedium,
+                    color = Primary
+                )
+            }
+            Spacer(Modifier.width(Spacing.sm))
+            Text(
+                "模型供应商",
+                style = AppTypography.titleLarge,
+                color = TextPrimary,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
 
         Card(
             shape = LoveBrainShape.lg,
@@ -890,7 +947,7 @@ private fun MiniSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     }
 }
 
-/** 弹窗内行尾图标操作钮 */
+/** 弹窗内行尾图标操作钮——48dp 触摸区满足无障碍下限 */
 @Composable
 private fun IconAction(
     icon: ImageVector,
@@ -900,12 +957,12 @@ private fun IconAction(
 ) {
     Box(
         modifier = Modifier
-            .size(28.dp)
+            .size(48.dp)
             .clip(LoveBrainShape.full)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
-        Icon(imageVector = icon, contentDescription = contentDesc, tint = tint, modifier = Modifier.size(16.dp))
+        Icon(imageVector = icon, contentDescription = contentDesc, tint = tint, modifier = Modifier.size(20.dp))
     }
 }
 
@@ -967,20 +1024,25 @@ private fun AboutScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val (backInteraction, backScale) = rememberPressScale(0.94f, "aboutBack")
-            Text(
-                "←",
-                style = AppTypography.titleMedium,
-                color = Primary,
+            Box(
                 modifier = Modifier
+                    .size(48.dp)
                     .graphicsLayer { scaleX = backScale; scaleY = backScale }
                     .clip(LoveBrainShape.md)
                     .clickable(
                         interactionSource = backInteraction,
                         indication = null,
                         onClick = onBack
-                    )
-                    .padding(end = Spacing.md)
-            )
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "←",
+                    style = AppTypography.titleMedium,
+                    color = Primary
+                )
+            }
+            Spacer(Modifier.width(Spacing.sm))
             Text("关于", style = AppTypography.titleLarge, color = TextPrimary, fontWeight = FontWeight.SemiBold)
         }
 
@@ -1032,6 +1094,72 @@ private fun AboutScreen(
                     Text("SHA: ${com.lovebrain.app.BuildConfig.GIT_SHA}", style = AppTypography.labelSmall, color = TextHint)
                     Text("Build: ${com.lovebrain.app.BuildConfig.BUILD_TYPE}", style = AppTypography.labelSmall, color = TextHint)
                 }
+            }
+        }
+    }
+}
+
+// ═════════════════════════════════════════════════════════════
+// 使用概览详情页
+// ═════════════════════════════════════════════════════════════
+
+@Composable
+private fun UsageDetailScreen(
+    viewModel: SetupViewModel,
+    onBack: () -> Unit
+) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(horizontal = Spacing.xxxl),
+        verticalArrangement = Arrangement.spacedBy(Spacing.lg)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = Spacing.lg),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val (backInteraction, backScale) = rememberPressScale(0.94f, "usageBack")
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .graphicsLayer { scaleX = backScale; scaleY = backScale }
+                    .clip(LoveBrainShape.md)
+                    .clickable(
+                        interactionSource = backInteraction,
+                        indication = null,
+                        onClick = onBack
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "←",
+                    style = AppTypography.titleMedium,
+                    color = Primary
+                )
+            }
+            Spacer(Modifier.width(Spacing.sm))
+            Text("使用概览", style = AppTypography.titleLarge, color = TextPrimary, fontWeight = FontWeight.SemiBold)
+        }
+
+        Card(
+            shape = LoveBrainShape.lg,
+            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(modifier = Modifier.padding(Spacing.xl), verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                Text("累计统计", style = AppTypography.titleMedium, color = TextPrimary, fontWeight = FontWeight.SemiBold)
+                Text("生成次数：${viewModel.totalGenerateCount}", style = AppTypography.bodyMedium, color = TextSecondary)
+                Text("复制次数：${viewModel.totalCopyCount}", style = AppTypography.bodyMedium, color = TextSecondary)
+                Text("采用次数：${viewModel.totalAdoptCount}", style = AppTypography.bodyMedium, color = TextSecondary)
+                Text("改写次数：${viewModel.totalRewriteCount}", style = AppTypography.bodyMedium, color = TextSecondary)
+                val costStr = if (viewModel.totalCostYuan < 0.01) "￥0" else "￥${String.format("%.2f", viewModel.totalCostYuan)}"
+                Text("累计花费：$costStr", style = AppTypography.bodyMedium, color = TextSecondary)
+                val rateStr = if (viewModel.totalGenerateCount > 0) "${(viewModel.adoptRate * 100).toInt()}%" else "—"
+                Text("采用率：$rateStr", style = AppTypography.bodyMedium, color = TextSecondary)
             }
         }
     }
