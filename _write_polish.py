@@ -1,1 +1,0 @@
-_write_polish.py
