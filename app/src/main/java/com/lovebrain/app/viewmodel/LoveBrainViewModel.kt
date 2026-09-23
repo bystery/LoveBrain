@@ -112,9 +112,13 @@ class LoveBrainViewModel(
     private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null
 ) : ViewModel() {
 
-    // /: 当前反馈案例——点踩时同步构造并暴露给 UI，消除"保存后再全量查询"竞态
-    private val _currentFeedbackCase = MutableStateFlow<com.lovebrain.app.model.FeedbackCase?>(null)
-    val currentFeedbackCase: StateFlow<com.lovebrain.app.model.FeedbackCase?> = _currentFeedbackCase.asStateFlow()
+    /**
+     * 赞/踩与点踩案例。状态与落盘都在 [FeedbackCaseController] 里，
+     * ViewModel 只做一件事：在用户点击那一刻把方案正文和上下文冻成 [FeedbackCaseDraft]。
+     */
+    private val feedbackCases = FeedbackCaseController(feedbackCaseRepository)
+
+    val currentFeedbackCase: StateFlow<com.lovebrain.app.model.FeedbackCase?> = feedbackCases.currentCase
 
     private val _panelState = MutableStateFlow(PanelState.KEYBOARD)
     val panelState: StateFlow<PanelState> = _panelState.asStateFlow()
@@ -184,7 +188,10 @@ class LoveBrainViewModel(
         val correctionsRevision: Int = 0,  // 冻结的纠正 revision（防迟到覆盖）
         val sourceAliasMap: Map<String, String> = emptyMap(), // B项修复：别名→实际消息ID映射
         val inputFingerprint: String = "", // 输入指纹——对 KB+消息正文+角色+顺序+IDEA+onlyThisRound+intent revision 做哈希
-        val onlyThisRound: Boolean = false // 冻结 onlyThisRound 状态
+        val onlyThisRound: Boolean = false, // 冻结 onlyThisRound 状态
+        // 生成本轮真正使用的 system prompt 资产指纹——点踩案例记的是它，不是 App 版本名。
+        // 版本名没发就永远算不出"prompt 被改过"，硬编码字符串更会把诊断指向错误的 prompt。
+        val promptVersion: String = ""
     )
     private var replyGenerationContext: ReplyGenerationContext? = null
 
@@ -357,8 +364,7 @@ class LoveBrainViewModel(
     private val _vectorDelta = MutableStateFlow<Map<String, Int>>(emptyMap())
     val vectorDelta: StateFlow<Map<String, Int>> = _vectorDelta.asStateFlow()
 
-    private val _feedbacks = MutableStateFlow<Map<String, SchemeFeedback>>(emptyMap())
-    val feedbacks: StateFlow<Map<String, SchemeFeedback>> = _feedbacks.asStateFlow()
+    val feedbacks: StateFlow<Map<String, SchemeFeedback>> = feedbackCases.feedbacks
 
     private val _draftText = MutableStateFlow("")
     val draftText: StateFlow<String> = _draftText.asStateFlow()
@@ -650,7 +656,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         replaceReplyResult(previous.result)
         _currentVersionId.value = previous.versionId
         replyGenerationContext = previous.context
-        _feedbacks.value = emptyMap()
+        feedbackCases.clearFeedbacks()
         _rewriteStates.value = emptyMap()
         _rewriteHistory.value = emptyMap()
 
@@ -1025,7 +1031,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 inputFingerprint = computeInputFingerprint(
                     snapshot, userHint, kbName, _onlyThisRound.value, effectiveIntent.revision
                 ),
-                onlyThisRound = _onlyThisRound.value
+                onlyThisRound = _onlyThisRound.value,
+                promptVersion = promptBuilder.replyPromptAssetHash()
             )
 
             // Engine 只暴露事件流，本协程是它唯一的订阅者
@@ -1176,97 +1183,51 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // ═══════════ 赞踩反馈 ═══════════
 
-    /** setFeedback 使用 identityKey 区分 STYLE/DIRECTION
-     * 点踩时立即落本地反馈案例，不因点踩调用 AI
-     * 在调用时同步冻结快照，构造 case 并通过 currentFeedbackCase 暴露给 UI——消除"保存后再全量查询"竞态
-     * 先计算 effectiveFeedback（toggle 后的实际值），再据此决定是否建/清 case。
-     *  旧代码用传入参数 feedback 判断，第二次点踩取消时仍创建 case。 */
+    /**
+     * 赞/踩切换——identityKey 区分 STYLE 与 DIRECTION，互不干扰。
+     *
+     * 点踩不调用 AI，只落一份本地可诊断案例。切换判定与案例构造在 [FeedbackCaseController]；
+     * 异步落盘仍由本 ViewModel 发起（唯一异步 owner），这里唯一额外的工作是
+     * **在点击当刻**把素材冻成 [FeedbackCaseDraft]，免得异步保存期间结果被换掉。
+     */
     fun setFeedback(identityKey: String, feedback: SchemeFeedback) {
-        // 同步冻结快照——防止异步保存期间 result/context 被清空
-        val resultSnapshot = replyResult as? GenerateResult.Success
-        val ctxSnapshot = replyGenerationContext
-        val modelId = _activeTicket.value?.model ?: ""
-
-        // 先算 toggle 后的实际值
-        val effectiveFeedback = if (_feedbacks.value[identityKey] == feedback) SchemeFeedback.NONE else feedback
-
-        _feedbacks.value = _feedbacks.value.toMutableMap().apply {
-            put(identityKey, effectiveFeedback)
-        }
-        // 删除 markCurrentResultStaleIfNeeded()——点赞/点踩不是 GenerationInput，
-        // fingerprint 不包含 feedback，调用它是概念错误。
-        // /: 使用 effectiveFeedback 决定行为——取消踩时 effectiveFeedback=NONE 不建 case
-        if (effectiveFeedback == SchemeFeedback.DISLIKED && resultSnapshot != null && ctxSnapshot != null) {
-            saveFeedbackCase(identityKey, resultSnapshot, ctxSnapshot, modelId)
-        } else {
-            // 非踩或取消踩时清除当前 case
-            _currentFeedbackCase.value = null
-        }
+        val created = feedbackCases.toggle(identityKey, feedback, freezeDislikeDraft(identityKey))
+        if (created != null) viewModelScope.launch { feedbackCases.persistCase(created) }
     }
 
-    /** /: 点踩时保存最小反馈案例——使用调用方传入的冻结快照，不读实时状态。
-     *  同步构造 case 并暴露给 _currentFeedbackCase，UI 直接消费，不需读全库猜最后一条 */
-    private fun saveFeedbackCase(
-        identityKey: String,
-        result: GenerateResult.Success,
-        ctx: ReplyGenerationContext,
-        modelId: String
-    ) {
-        val repo = feedbackCaseRepository
-        val response = result.response
-        val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(identityKey) ?: return
+    /**
+     * 冻结点踩素材。
+     *
+     * 返回 null 表示此刻采不出案例（还没有结果、上下文已清、方案已不在结果里）——
+     * 控制器据此只更新赞/踩状态，不建案例。
+     */
+    private fun freezeDislikeDraft(identityKey: String): FeedbackCaseDraft? {
+        val result = replyResult as? GenerateResult.Success ?: return null
+        val ctx = replyGenerationContext ?: return null
+        val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(identityKey) ?: return null
         val allSchemes = when (identity.source) {
-            com.lovebrain.app.model.SchemeSource.STYLE -> response.schemes
-            com.lovebrain.app.model.SchemeSource.DIRECTION -> response.directionSchemes
+            com.lovebrain.app.model.SchemeSource.STYLE -> result.response.schemes
+            com.lovebrain.app.model.SchemeSource.DIRECTION -> result.response.directionSchemes
         }
-        val scheme = allSchemes.find { it.tag == identity.tag } ?: return
-
-        // 冻结真实对话快照（含人物身份）
-        val dialogueSnapshot = ctx.messages
-            .filter { it.role == com.lovebrain.app.model.ChatMessage.Role.HER || it.role == com.lovebrain.app.model.ChatMessage.Role.ME }
-            .map { msg ->
-                com.lovebrain.app.model.DialogueSnapshotEntry(
-                    speaker = if (msg.role == com.lovebrain.app.model.ChatMessage.Role.HER) "PARTNER" else "USER",
-                    text = msg.content
-                )
-            }
-
-        val case = com.lovebrain.app.model.FeedbackCase(
-            caseId = java.util.UUID.randomUUID().toString(),
-            schemeIdentityKey = identityKey,
-            candidateReply = scheme.reply,
-            categories = emptyList(),
-            reasons = emptyList(),
+        val scheme = allSchemes.find { it.tag == identity.tag } ?: return null
+        return FeedbackCaseDraft(
+            schemeReply = scheme.reply,
             kbName = ctx.kbName ?: "",
             ideaHint = ctx.ideaHint,
             intentText = ctx.intentText.takeIf { ctx.intentEnabled } ?: "",
-            modelId = modelId,
-            timestamp = com.lovebrain.app.util.TimeFmt.now(),
-            // 完整诊断快照
-            dialogueSnapshot = dialogueSnapshot,
+            dialogue = ctx.messages
+                .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
+                .map { msg ->
+                    com.lovebrain.app.model.DialogueSnapshotEntry(
+                        speaker = if (msg.role == ChatMessage.Role.HER) "PARTNER" else "USER",
+                        text = msg.content
+                    )
+                },
             contextMode = if (ctx.onlyThisRound) "only-this-round" else "full",
-            promptVersion = "v1.3.2",
-            appVersion = com.lovebrain.app.BuildConfig.VERSION_NAME,
-            buildType = com.lovebrain.app.BuildConfig.BUILD_TYPE,
-            promptTokens = 0,  // usage 不可用时默认 0（不把默认 0 当已核实成本）
-            completionTokens = 0,
+            promptVersion = ctx.promptVersion,
+            modelId = _activeTicket.value?.model ?: "",
             costYuan = _lastCostYuan.value ?: 0.0
         )
-        // 同步暴露给 UI——消除竞态，UI 不需要异步全库读取
-        _currentFeedbackCase.value = case
-        if (repo != null) {
-            viewModelScope.launch {
-                try {
-                    withContext(Dispatchers.IO) {
-                        repo.save(case)
-                    }
-                } catch (e: kotlinx.coroutines.CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    L.w("saveFeedbackCase failed: ${e::class.simpleName}")
-                }
-            }
-        }
     }
 
     /** 更新反馈案例的分类、原因和补充说明 */
@@ -1277,68 +1238,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         userNote: String = "",
         betterVersion: String = ""
     ) {
-        val repo = feedbackCaseRepository ?: return
         viewModelScope.launch {
-            try {
-                withContext(Dispatchers.IO) {
-                    val all = repo.getAll()
-                    val existing = all.find { it.caseId == caseId } ?: return@withContext
-                    repo.save(
-                        existing.copy(
-                            categories = categories,
-                            reasons = reasons,
-                            userNote = userNote,
-                            betterVersion = betterVersion
-                        )
-                    )
-                }
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                L.w("updateFeedbackCase failed: ${e::class.simpleName}")
-            }
+            feedbackCases.updateCase(caseId, categories, reasons, userNote, betterVersion)
         }
     }
 
-    /** 获取全部反馈案例 */
-    fun loadFeedbackCases(
-        onResult: (List<com.lovebrain.app.model.FeedbackCase>) -> Unit
-    ) {
-        val repo = feedbackCaseRepository ?: run { onResult(emptyList()); return }
-        viewModelScope.launch {
-            val cases = withContext(Dispatchers.IO) { repo.getAll() }
-            onResult(cases)
-        }
-    }
-
-    /** /: 清除当前反馈案例（UI dismiss 时调用） */
-    fun dismissFeedbackCase() {
-        _currentFeedbackCase.value = null
-    }
-
-    /** 导出反馈案例为 Markdown */
-    fun exportFeedbackMarkdown(
-        cases: List<com.lovebrain.app.model.FeedbackCase>,
-        onResult: (String) -> Unit
-    ) {
-        val repo = feedbackCaseRepository ?: run { onResult(""); return }
-        viewModelScope.launch {
-            val text = withContext(Dispatchers.IO) { repo.exportMarkdown(cases) }
-            onResult(text)
-        }
-    }
-
-    /** 导出反馈案例为 JSON */
-    fun exportFeedbackJson(
-        cases: List<com.lovebrain.app.model.FeedbackCase>,
-        onResult: (String) -> Unit
-    ) {
-        val repo = feedbackCaseRepository ?: run { onResult(""); return }
-        viewModelScope.launch {
-            val text = withContext(Dispatchers.IO) { repo.exportJson(cases) }
-            onResult(text)
-        }
-    }
+    /** 清除当前反馈案例展示（UI dismiss 时调用）；已落盘的案例不动 */
+    fun dismissFeedbackCase() = feedbackCases.dismissCase()
 
     // ═══════════ 下一轮（存 KB + 清空） ═══════════
 
@@ -1362,12 +1268,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         // 使用 identity.key 查找反馈——STYLE 和 DIRECTION 互不干扰
         val likedStyleSchemes = response.schemes
-            .filter { _feedbacks.value[it.identity.key] == SchemeFeedback.LIKED }
+            .filter { feedbackCases.feedbackFor(it.identity.key) == SchemeFeedback.LIKED }
             .sortedBy { "ABCD".indexOf(it.tag) }
 
         // 方向回复的点赞也要保存——赞 F 真正保存 F 回复
         val likedDirectionSchemes = response.directionSchemes
-            .filter { _feedbacks.value[it.identity.key] == SchemeFeedback.LIKED }
+            .filter { feedbackCases.feedbackFor(it.identity.key) == SchemeFeedback.LIKED }
 
         val likedSchemes = likedStyleSchemes + likedDirectionSchemes
 
@@ -1471,7 +1377,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
 
         _messages.value = newList
-        _feedbacks.value = emptyMap()
+        feedbackCases.clearFeedbacks()
         // 结果/流式态的清空也走 reducer，不再各自写四个 StateFlow
         applyReplyEvent(ReplyCleared(_replyUi.value.ownerRequestId ?: ""))
         // 新轮次开始时清理改写状态和历史，作废旧改写请求
@@ -2641,7 +2547,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         _rewriteStates.value = _rewriteStates.value + (identityKey to RewriteState.Loading(option))
 
         // 保存当前版本到历史（用于撤销）—— 保存正文+当前反馈
-        val currentFeedback = _feedbacks.value[identityKey] ?: SchemeFeedback.NONE
+        val currentFeedback = feedbackCases.feedbackFor(identityKey)
         val currentHistory = _rewriteHistory.value[identityKey] ?: emptyList()
         _rewriteHistory.value = _rewriteHistory.value + (identityKey to currentHistory + RewriteVersion(scheme.reply, currentFeedback))
 
@@ -2735,9 +2641,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
                 // 改写成功后——新正文独立 NONE，不自动继承旧赞/踩
                 // 旧赞保留在 rewriteHistory 中，撤销时恢复
-                _feedbacks.value = _feedbacks.value.toMutableMap().apply {
-                    put(identityKey, SchemeFeedback.NONE)
-                }
+                feedbackCases.putFeedback(identityKey, SchemeFeedback.NONE)
 
                 // 递增累计改写次数
                 _totalRewriteCount.value += 1
@@ -2808,9 +2712,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
         replaceReplyResult(GenerateResult.Success(updatedResponse))
         // 撤销时恢复旧版本的反馈，不只是正文
-        _feedbacks.value = _feedbacks.value.toMutableMap().apply {
-            put(identityKey, previousVersion.feedback)
-        }
+        feedbackCases.putFeedback(identityKey, previousVersion.feedback)
         _rewriteStates.value = _rewriteStates.value - identityKey
     }
 
