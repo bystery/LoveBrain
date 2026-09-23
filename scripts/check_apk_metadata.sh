@@ -156,9 +156,27 @@ if [ "$EXPECT_RELEASE" -eq 1 ]; then
   ok "release build verified: android:debuggable is $DEBUGGABLE in $APK"
   if [ -n "$R8_MAPPING" ]; then
     require_file "$R8_MAPPING" "R8 mapping.txt"
-    grep -q '^[[:space:]]*[a-zA-Z0-9_.$]+ -> ' "$R8_MAPPING" \
-      || die "$R8_MAPPING exists but carries no renamed-class entries — R8 minification did not actually run"
-    ok "R8 mapping present: $R8_MAPPING ($(wc -l <"$R8_MAPPING" | tr -d ' ') lines)"
+    # 两件事都要成立，缺一就是伪门禁：
+    # 1) 用 -E。BRE 里的 '+' 是字面加号，`X -> a` 这种正常重映射行永远匹配不上，
+    #    这道检查对任何真 mapping 都会误判"R8 没跑"（本机实测踩过，exit 1 而 R8 其实跑了）。
+    # 2) 至少要有一条左右名字不同的行。只要求"存在映射行"不够——-dontobfuscate
+    #    同样产出 mapping，只不过全是 `com.foo.Bar -> com.foo.Bar:` 自映射。
+    R8_RENAMED="$(awk -F' -> ' '
+      /^#/ { next }
+      NF == 2 {
+        left = $1; right = $2
+        gsub(/[[:space:]]/, "", left)
+        sub(/[[:space:]]*:$/, "", right)
+        gsub(/[[:space:]]/, "", right)
+        # 成员行在 mapping 里以空白缩进开头，且左侧带类型前缀（"int x -> a"），
+        # 只统计顶格的类行，否则一个 "int x -> x" 就会被当成"发生过重命名"。
+        if ($0 !~ /^[[:space:]]/ && left != "" && right != "" && left != right) n++
+      }
+      END { print n + 0 }' "$R8_MAPPING")"
+    if [ "${R8_RENAMED:-0}" -lt 1 ]; then
+      die "$R8_MAPPING has no entry whose obfuscated name differs from the original — R8 renaming did not actually run (a -dontobfuscate mapping looks exactly like this)"
+    fi
+    ok "R8 mapping present: $R8_MAPPING ($(wc -l <"$R8_MAPPING" | tr -d ' ') lines, $R8_RENAMED renamed entries)"
   else
     log "no --r8-mapping supplied: minification is NOT asserted here, only the non-debug flag"
   fi
