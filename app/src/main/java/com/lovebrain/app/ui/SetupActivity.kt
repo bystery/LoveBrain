@@ -13,13 +13,13 @@ import com.lovebrain.app.ui.home.SetupRoot
 import com.lovebrain.app.ui.panel.OnboardingFlow
 import com.lovebrain.app.ui.theme.LoveBrainTheme
 import com.lovebrain.app.viewmodel.SetupViewModel
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * 设置页——Activity 宿主 + 系统权限桥接 + 根路由入口。
  *
  * 职责仅限于：
- * - 初始化 ViewModel 和 onboarding 判断
+ * - 取 ViewModel、决定是否显示引导
  * - 悬浮窗权限申请与 Service 启停
  * - 将回调委托给 [SetupRoot] 组合根
  *
@@ -27,18 +27,8 @@ import org.koin.android.ext.android.inject
  */
 class SetupActivity : ComponentActivity() {
 
-    private val viewModel: SetupViewModel by inject()
-
-    private fun isExistingUser(): Boolean {
-        val knowledgeRoot = java.io.File(filesDir, "knowledge")
-        val hasKb = knowledgeRoot.exists() && (knowledgeRoot.listFiles()?.isNotEmpty() == true)
-        return com.lovebrain.app.domain.OnboardingDecision.isExistingUser(
-            hasWorkerTickets = viewModel.securePrefs.getWorkerTickets().isNotEmpty(),
-            hasActiveTicketId = !viewModel.securePrefs.activeTicketId.isNullOrBlank(),
-            totalGenerateCount = viewModel.securePrefs.totalGenerateCount,
-            hasKnowledgeBase = hasKb
-        )
-    }
+    // by viewModel() 而非 by inject()：后者不经 ViewModelStore，配置变更后 VM 内存态会丢
+    private val viewModel: SetupViewModel by viewModel()
 
     private fun tempHideFloating() {
         val intent = Intent(this, FloatingService::class.java)
@@ -100,27 +90,22 @@ class SetupActivity : ComponentActivity() {
             android.view.WindowManager.LayoutParams.FLAG_SECURE
         )
 
-        if (!viewModel.securePrefs.hasCompletedOnboarding) {
-            if (isExistingUser()) {
-                viewModel.securePrefs.hasCompletedOnboarding = true
-            }
-        }
-        val showOnboarding = !viewModel.securePrefs.hasCompletedOnboarding
+        val showOnboarding = viewModel.shouldShowOnboarding()
 
         setContent {
             LoveBrainTheme {
                 if (showOnboarding) {
                     OnboardingFlow(
                         onSkip = {
-                            viewModel.securePrefs.hasCompletedOnboarding = true
+                            viewModel.completeOnboarding()
                             recreate()
                         },
                         onComplete = {
-                            viewModel.securePrefs.hasCompletedOnboarding = true
+                            viewModel.completeOnboarding()
                             recreate()
                         },
                         onOpenSettings = {
-                            viewModel.securePrefs.hasCompletedOnboarding = true
+                            viewModel.completeOnboarding()
                             recreate()
                         }
                     )

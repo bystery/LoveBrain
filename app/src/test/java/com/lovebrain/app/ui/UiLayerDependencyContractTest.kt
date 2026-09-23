@@ -109,4 +109,57 @@ class UiLayerDependencyContractTest {
                 assertTrue("$name must be registered in Koin", registered.contains(name))
             }
     }
+
+    /**
+     * 「伸手进 VM 拿仓库」等价于直接 inject 仓库。
+     *
+     * SetupActivity 原先写的是 `viewModel.securePrefs.hasCompletedOnboarding`——
+     * 类型上确实没在 ui 包出现 SecurePrefs，前面那条规则抓不到它，但分层已经被穿透了。
+     * 所以这条规则按**属性穿透**判，而不是按类型名判。
+     */
+    @Test
+    fun `ui layer must not reach through a view model into the data layer`() {
+        val laundered = Regex("\\.(securePrefs|knowledgeRepo|deepSeekRepo|repo|feedbackCaseRepository)\\b")
+        val offenders = kotlinFiles(dir("ui"))
+            .map { it.name to codeOf(it.readText()) }
+            .filter { (_, code) -> laundered.containsMatchIn(code) }
+            .map { it.first }
+        assertTrue(
+            "ui 层不得通过 viewModel.xxxRepo 间接访问数据层（该走 VM 上语义化方法）：$offenders",
+            offenders.isEmpty()
+        )
+    }
+
+    /**
+     * Activity 取 ViewModel 必须经 ViewModelStore。
+     *
+     * `by inject()` 每次解析一个新实例，配置变更后 VM 内存态（反馈列表、导出状态）直接丢失；
+     * 报告 S2-05 要的是"数据逻辑归 ViewModel"，如果 VM 活不过旋转，这句话就落不了地。
+     */
+    @Test
+    fun `activities obtain view models through the ViewModelStore not raw injection`() {
+        val vmProperty = Regex(":\\s*(\\w+ViewModel)\\s+by\\s+(inject|lazy)")
+        // 按**类名**而不是文件名筛 Activity：注入点写在哪个文件里不重要，
+        // 第一版按 "xxxActivity.kt" 过滤，负向用例把 Activity 放进 ZzLayerProbe.kt 就躲过去了。
+        val offenders = kotlinFiles(dir("ui"))
+            .map { it.name to codeOf(it.readText()) }
+            .filter { (_, code) ->
+                vmProperty.containsMatchIn(code) ||
+                    Regex("class\\s+\\w*Activity\\b").containsMatchIn(code) &&
+                        Regex("by\\s+(inject|lazy)\\s*\\(\\s*\\)").containsMatchIn(code)
+            }
+            .map { it.first }
+        assertTrue(
+            "ui 层的 ViewModel 必须用 by viewModel() 取，使实例挂在 ViewModelStore 上：$offenders",
+            offenders.isEmpty()
+        )
+        // 反向确认这条规则真的在看着东西，不是扫了个空目录
+        val activitiesUsingViewModelStore = kotlinFiles(dir("ui"))
+            .map { codeOf(it.readText()) }
+            .count { it.contains("by viewModel()") }
+        assertTrue(
+            "至少 3 处应经 viewModel() 取得 VM，实测 $activitiesUsingViewModelStore",
+            activitiesUsingViewModelStore >= 3
+        )
+    }
 }

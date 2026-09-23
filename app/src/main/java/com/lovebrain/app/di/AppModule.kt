@@ -43,7 +43,7 @@ val appModule = module {
 
     // ViewModel（每次获取新实例）
     viewModel { LoveBrainViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { SetupViewModel(get(), get(), get()) }  // securePrefs, DeepSeekRepository, FeedbackCaseRepository
+    viewModel { SetupViewModel(get(), get(), get(), androidContext()) }  // securePrefs, DeepSeekRepository, FeedbackCaseRepository, Context
     viewModel { com.lovebrain.app.viewmodel.KnowledgeBaseViewModel(androidContext(), get(), get()) }
     viewModel { com.lovebrain.app.viewmodel.KbEditViewModel(get(), get()) }
 }

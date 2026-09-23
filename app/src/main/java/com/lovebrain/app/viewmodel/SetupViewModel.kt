@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 /**
  * 设置页 ViewModel（：工单式模型供应商管理）。
@@ -26,13 +27,53 @@ import kotlinx.coroutines.withContext
  * - 连接测试调度（IO 隔离，走 DeepSeekRepository 真实链路，修复 ）
  * - 消息捕获开关：captureEnabled 状态暴露与切换
  *
- * 分层规则：SetupActivity → inject SetupViewModel（不直连 SecurePrefs/Repo）
+ * 分层规则：SetupActivity 用 by viewModel() 取本类；既不直接 inject SecurePrefs/Repo，
+ * 也不通过 viewModel.securePrefs 这种「伸手进 VM 拿仓库」的方式间接直连。
  */
 class SetupViewModel(
-    val securePrefs: SecurePrefs,
+    private val securePrefs: SecurePrefs,
     private val deepSeekRepo: DeepSeekRepository,
-    private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null
+    private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null,
+    /** 只为"本机是否已有知识库"这一项判断存在；测试里可不给，此时按"没有"处理 */
+    private val appContext: Context? = null
 ) : ViewModel() {
+
+    // ═══════════ 首次引导（原先由 Activity 直接读写 securePrefs，现已收在这里）═══════════
+
+    /**
+     * 本次启动是否应该显示引导流程。
+     *
+     * 老用户（已配供应商 / 已生成过 / 已有知识库）在第一次进设置页时就把完成标记补上，
+     * 免得被当成新人重走一遍。判定逻辑与"补标记"这个写动作都在 ViewModel 里，
+     * Activity 只拿一个布尔结果。
+     */
+    fun shouldShowOnboarding(): Boolean {
+        if (securePrefs.hasCompletedOnboarding) return false
+        if (isExistingUser()) {
+            securePrefs.hasCompletedOnboarding = true
+            return false
+        }
+        return true
+    }
+
+    /** 用户跳过 / 完成 / 转去设置，三种出口都算引导结束 */
+    fun completeOnboarding() {
+        securePrefs.hasCompletedOnboarding = true
+    }
+
+    private fun isExistingUser(): Boolean {
+        // 没有 Context 只代表"查不了本机知识库"，不代表其他三条都不成立——
+        // 早先写成 `?: return false` 会让老用户（已有工单/已生成过）在缺 Context 时被当成新人重走引导。
+        val knowledgeRoot = appContext?.filesDir?.let { File(it, "knowledge") }
+        val hasKb = knowledgeRoot != null &&
+            knowledgeRoot.exists() && knowledgeRoot.listFiles()?.isNotEmpty() == true
+        return com.lovebrain.app.domain.OnboardingDecision.isExistingUser(
+            hasWorkerTickets = securePrefs.getWorkerTickets().isNotEmpty(),
+            hasActiveTicketId = !securePrefs.activeTicketId.isNullOrBlank(),
+            totalGenerateCount = securePrefs.totalGenerateCount,
+            hasKnowledgeBase = hasKb
+        )
+    }
 
     // ═══════════ 反馈案例（通过 ViewModel/DI 提供，不在 Composable 中 new Repository） ═══════════
 
