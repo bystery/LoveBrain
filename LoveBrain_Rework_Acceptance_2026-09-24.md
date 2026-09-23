@@ -186,7 +186,7 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | `:app:compileDebugAndroidTestKotlin` | BUILD SUCCESSFUL（报告里红的就是这一步） |
 | `:app:lintDebug` | 0 error |
 | `:app:assembleRelease` | 产出签名 + R8 APK |
-| `scripts/check_apk_metadata.sh` | OK：`com.lovebrain.app` / versionCode 9 / 1.4.0-rc1 / minSdk 26 / targetSdk 35 / launcher `ui.SetupActivity` / 2 803 568 bytes / SHA-256 `d81e3ef1e7d34dde65b64c14d5e732bbcf45e6517fb9a6132eb8a218d3fd6bf9`，写入 `dist/apk-metadata.txt`；R8 mapping 4472 条顶格重命名条目 |
+| `scripts/check_apk_metadata.sh` | OK：`com.lovebrain.app` / versionCode 9 / 1.4.0-rc1 / minSdk 26 / targetSdk 35 / launcher `ui.SetupActivity` / 2 803 568 bytes；R8 mapping 350 619 行、4472 条顶格重命名条目。**SHA-256 不写死**：同一份源码本机连跑两次 `assembleRelease` 得到 `d81e3ef1…` 与 `5b11ed8d…` 两个不同值（大小一致，差在 zip 内时间戳），所以发布候选的 hash 只认 CI 那一次构建产出的 `dist/apk-metadata.txt`，本机数字只作当次证据 |
 | `scripts/verify_signing_continuity.sh` | OK：证书 SHA-256 `c2986640bce6…2f7d`，与已公开 v1.3.1 一致（同时用 `gh api` 对过 release 正文与 asset digest） |
 | `scripts/license_scan.sh` | OK：124/124，SBOM 产出且可 JSON 解析 |
 | `scripts/assert_artifacts.sh` | OK：真实 788 例 / 95 套件 / 0 failures；空目录 → 1；篡改 XML 声明数 → 1 |
