@@ -1,9 +1,9 @@
 # LoveBrain 返工验收包（对齐 2026-09-23 全面独立复核报告）
 
 > 被审提交：`286c9406b40b79e4443f1db465bfa5b489f540fa`（报告结论 FAIL）
-> 本轮返工提交链：`8745a3d` → `ce89b86` → `5424e21` → `6d67b37` → `0abe572` → `73ed6a8` → `d390dc6` →（本文件所在提交）
+> 本轮返工提交链：`8745a3d` → `ce89b86` → `5424e21` → `6d67b37` → `0abe572` → `73ed6a8` → `d390dc6` → `c51e443` → `a9ae136` → `42da306` → `aea24c5` → `4e1f2e4` → `eaba6af`(S2-05) → `73b3d08`(S2-07 错误类型) → `6597bd9`(S2-07 取消审计) → `9539dd2`(S2-07 工单编号) →（本文件所在提交）
 > 复核依据：`LoveBrain_Comprehensive_Reaudit_286c9406_2026-09-23.md`，逐节对照
-> 编写日期：2026-09-24
+> 编写日期：2026-09-24（第二轮补：S2-05 与 S2-07 三项在初版里被记为"未做"，现已做完并重新实测）
 
 ## 0. 先说没做到的部分
 
@@ -12,14 +12,18 @@
 
 | # | 报告条目 | 状态 | 原因 |
 |---|---|---|---|
-| 1 | §6 S2-05 后半：`KnowledgeBaseActivity` / `KbEditActivity` 数据逻辑迁 ViewModel | **未做** | 本轮动手改到一半（已写出两个 ViewModel 并完成 Activity 接线），连续撞 Koin `inject` 重载歧义、`readFileWithVersion` 契约差异、`lastKbEditFile` 可空性三处，继续推进有把树改坏的风险。**已整体回退**，Activity 里那两条"此处违反 SRP/DIP、以后应改"的注释原样保留。这是报告点名"记录技术债不等于修复技术债"的那一条，它现在仍然是技术债。 |
-| 2 | §6 S2-07：错误类型仍可从字符串前缀反推 | **未做** | 同上：typed `StreamEvent.Error(kind)` 改到一半（Models/仓库/引擎三处联动），未收敛即回退。当前 `PARAM_UNSUPPORTED:` / `isConfigError(message)` 的 `startsWith` 判定仍有 6 处。 |
-| 3 | §6 S2-07：历史工单编号留在生产代码 | **未做** | 实测仍有约 566 处 `F09-7 / RA-04 / P0-① / S2-04` 一类标记。数量大、纯机械、且和当前行为正确性无关，本轮选择把预算花在可执行门禁上。这一条我明确认账，不当成已完成。 |
-| 4 | §7 P3-02/P3-03：TalkBack、2.0x 字体、360dp 截图矩阵 | **未执行** | 本机没有 Android system image（`D:/Android/Sdk/system-images` 为空），`adb devices` 为空，跑不了任何 instrumentation。触摸区问题我用**可离线执行的静态合同测试**（`ProductionUiContractTest`）把 §7.1 点名的每个反例钉住，但那不等于设备上的真实验收。 |
-| 5 | §8 第一步门禁 6 项中的 `connectedDebugAndroidTest` 真跑 | **未执行** | 同上。CI 里这一项会真跑（`scripts/run_ui_tests.sh` + 空证据即失败），但我在这台机器上没有执行过，所以不声称它通过。 |
-| 6 | §7 P3-04：Macrobenchmark / Perfetto / 帧时间 | **未产出数据，且模块接线本轮撤回** | 需要设备。另外并行工程加过一个 `:benchmark` 模块，但它声明的 `androidx.baselineprofile` 插件在 1.3.0–1.3.4 各版本于 Google Maven、Gradle Plugin Portal、mavenCentral **全部 404**（实测），而插件写在根 `build.gradle.kts`，导致**所有** Gradle 任务在配置期就失败（连 `:app:tasks` 都跑不起来）——正是报告 §1 的头号问题。已整体回退该接线，只保留可离线验证的部分：真增量解析器 + `IncrementalJsonStreamParserTest`。帧数据仍然没有，不给它披上"已接入"的外衣。 |
-| 7 | §5.2 锦囊"真实费用基准" | **未产出数据** | 需要用户 API Key 与真实请求。已提供可重放脚本与输出契约（`scripts/suggest_cost_baseline.py`），未执行 = 无数字。 |
-| 8 | §7.2/§8.3.6 抓包证明零遥测 | **未执行** | 需要设备。已提供 `scripts/verify_network_egress.sh`；README 已改成"依据源码与依赖清单核对，抓包未执行"，不再拿未做的事当证据。 |
+| 1 | §7 P3-02/P3-03：TalkBack、2.0x 字体、360dp 截图矩阵 | **未执行** | 本机没有 Android system image（`D:/Android/Sdk/system-images` 为空），`adb devices` 为空，跑不了任何 instrumentation。触摸区问题我用**可离线执行的静态合同测试**（`ProductionUiContractTest`）把 §7.1 点名的每个反例钉住，但那不等于设备上的真实验收。 |
+| 2 | §8 第一步门禁 6 项中的 `connectedDebugAndroidTest` 真跑 | **未执行** | 同上。CI 里这一项会真跑（`scripts/run_ui_tests.sh` + 空证据即失败），但我在这台机器上没有执行过，所以不声称它通过。 |
+| 3 | §7 P3-04：Macrobenchmark / Perfetto / 帧时间 | **未产出数据，且模块接线本轮撤回** | 需要设备。另外并行工程加过一个 `:benchmark` 模块，但它声明的 `androidx.baselineprofile` 插件在 1.3.0–1.3.4 各版本于 Google Maven、Gradle Plugin Portal、mavenCentral **全部 404**（实测），而插件写在根 `build.gradle.kts`，导致**所有** Gradle 任务在配置期就失败（连 `:app:tasks` 都跑不起来）——正是报告 §1 的头号问题。已整体回退该接线，只保留可离线验证的部分：真增量解析器 + `IncrementalJsonStreamParserTest`。帧数据仍然没有，不给它披上"已接入"的外衣。 |
+| 4 | §5.2 锦囊"真实费用基准" | **未产出数据** | 需要用户 API Key 与真实请求。已提供可重放脚本与输出契约（`scripts/suggest_cost_baseline.py`），未执行 = 无数字。 |
+| 5 | §7.2/§8.3.6 抓包证明零遥测 | **未执行** | 需要设备。已提供 `scripts/verify_network_egress.sh`；README 已改成"依据源码与依赖清单核对，抓包未执行"，不再拿未做的事当证据。 |
+| 6 | §8.3.7 v1.3.1 → 候选 APK 真机升级断言 | **脚本与门禁做，设备未跑** | `scripts/run_upgrade_test.sh` 全链存在且被 CI 调用，但覆盖安装、数据可读、主流程可用这三段都需要设备。 |
+| 7 | §6 S2-05 的"上帝类"这一项**只部分达成** | 部分 | 职责方向对了（Activity 不再持有数据层、Engine/TopicRecorder 变小），但 `LoveBrainViewModel` 与 `KnowledgeRepository` 相比报告基线**仍然更大**（见 4.1 实测表）。拆文件不等于拆职责，也不等于行数下降，这一格不给"完成"。 |
+| 8 | 自发现项（报告未点名）：`KnowledgeTriggerCoordinator` 仍保留"收外部 scope + 自启 Job + 巨型 Callbacks 写 ViewModel 状态"的旧结构 | **未做** | 报告 §8 第二步 1/2 条与"无双 Job owner"的门禁，只落在 `GenerationEngine` 上算完成。同一类模式在这三处仍然存在：`checkTriggers(kbName, scope, callbacks)`（第 94 行）、`reestimateVector/extractLessonsAsync/generateReflectSuggestion` 各 `scope.launch` 返 `Job`（第 128/247/469 行）、`KnowledgeTriggerCoordinator.Callbacks` 接口（第 78 行）由 ViewModel 实现并直写 StateFlow。这些后台 Job 不在 `ForegroundOperationCoordinator` 的注册表里，因此"六类前台操作单 owner"为真、"**全仓**单 Job owner"为假。改它要同时动 ViewModel 三处调用与既有 Kbg/Trigger 用例，本轮没有把预算花在这里，也没有把它写成已完成。 |
+| 9 | 自发现项：`SetupActivity` 用 `by inject()` 取 `SetupViewModel` | **未做** | 分层上没问题（拿到的是 ViewModel，不是 Repository，`UiLayerDependencyContractTest` 也不拦），但 `inject()` 不走 `ViewModelStore`：配置变更后 VM 内的内存态（反馈列表、导出状态）会丢。本轮新接的两个 ViewModel 用的是 `by viewModel()`，SetupActivity 这一处历史写法未统一。 |
+
+初版这里还列着三条（S2-05 的 Activity 迁移、S2-07 的字符串前缀推错误、S2-07 的工单编号），
+本轮已做完并从"未完成"移入第 1 节的变更表：三条都有可执行证据，不再是"注释式修复"。
 
 ## 1. 逐条变更表（报告条目 → 改动 → 证据）
 
@@ -73,9 +77,9 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | S2-02 | invokeOnCompletion 在 Mutex 外读改写 StateFlow；stop/stopByType/shutdownAll 不持锁；`startSync` 锁忙返回 null 但调用方已先启动 Job 且忽略 null；SUGGEST/PROFILE_REFRESH 无同类去重；REWRITE/PROFILE_REFRESH 无注册点；ViewModel 仍手写 guard；`stopGeneration` 一次停三类；`dispose` 自己 cancel 不调 shutdownAll；**仓库中没有 ForegroundOperationCoordinatorTest** | 协调器重写：`start(type, requestId) { body }` 在锁内用 `CoroutineStart.LAZY` **先注册后启动**，被拒就 cancel 一个从未跑过的 Job → 不可能有"跑了但不受管"的孤儿；start/stop/stopCurrent/shutdownAll/invokeOnCompletion 全部走同一把 `ReentrantLock`（非挂起路径也能上同一把锁）；六类互斥矩阵含同类去重；REWRITE 与 PROFILE_REFRESH 真正注册；`stop` 按租约、`stopCurrent` 按类，`stopGeneration()` 只停 REPLY；ViewModel 删掉 `generateJob/counselingJob/suggestJob/proactiveJob/rewriteJob/profileRegenerationJob` 与手写 guard，`isProactive/isSuggesting/isCounseling/profileRegenerating` 全成派生；`dispose()` 调 `shutdownAll()`。**新增 `ForegroundOperationCoordinatorTest`**（10 个用例，含"被拒的 start 一次都不跑 body""停一个不牵连另一个"） |
 | S2-03 | Engine 仍暴露巨型 Callbacks；回调无 requestId；旧请求迟到可被贴新 requestId；Idle 接受任意迟到 Completed；`onReplyResult` 不拒绝还直写 `_result`；Chunk/Schemes/Usage 未接 Flow；reducer 只是局部包装 | `GenerationEngine.Callbacks` 整个接口删除；Engine 改四条冷流 `replyStream/counselingStream/suggestStream/proactiveStream`，不收 scope、不 launch、不返回 Job；每个事件自带冻结 requestId；回复状态收进单一 `ReplyUiState`，唯一写入口 `dispatchReply → ReplyReducer.reduce`，被拒时返回**同一个对象**（调用方据此知道被拒）；`_result/_replyRequestState/_streamingCoreText/_streamingSchemes` 不再是独立可写流，全部 `map` 派生；chunk 在 dispatch 层合并后再归约，节流不再靠绕过状态源实现 |
 | S2-04 | 见 §1；另外：roundId 随机、恢复丢 sourceIds/itemId/state、WRITING 从不写、target 不在单一锁内、recent marker 当跨文件提交标记、恢复顺序导致漏加 count、rotate 边界重复 rotate、手写 JSON 丢反斜杠、`turnCountIncrement` 不按值用、无 `RoundCommitJournalTest` | `RoundCommitJournal` 重写：kotlinx.serialization 取代手写 parser（转义保真，实测 `\n`/`\r`/引号/字面 `\\n`/尾反斜杠往返不变）；roundId 由 kb+消息 ID 集合派生（重试同身份）；六个投影各有水位；rotate 与 setCurrentTopic 拆成两个投影，"已 rotate 未 set"不再重复归档；PREPARED→**WRITING**→COMMITTED 三段真写；`incrementTurnCountBy(delta)` 按事件里的值；跨文件幂等看 committed 清单，recent marker 降级为该文件自身去重（用例：抹掉 marker 后仍不重复写）；在途事务存在时开新轮抛错拒绝覆盖；取消也保留 journal；损坏 journal 先落 `.round_commit_corrupt.log` 再删；`RoundCommitJournalTest` 17 例，对六个边界逐个故障注入并断言恢复后与一次跑通逐文件等值 |
-| S2-05 | 七个上帝类；两个 Activity 只加注释承认违规 | **未达标**。Activity 迁移**未做**并已回退（§0 第 1 条）。上帝类行数逐只量过，见第 4.1 节：GenerationEngine 828→678 与 TopicRecorder 1006→991 确实降了，但 KnowledgeRepository **2118→2271 反而涨**、PromptBuilder 1177→1199 也涨，ViewModel 2954→2920 基本没动。这一格是净负进展，不能写成"已拆分"。 |
+| S2-05 | 七个上帝类；两个 Activity 只加注释承认违规 | **Activity 侧已做完**（初版这里写的"未做并已回退"已不成立）：新增 `KnowledgeBaseViewModel` + `KbEditViewModel`，两个 Activity 里 `KnowledgeRepository`/`DeepSeekRepository`/`SecurePrefs` 四个类型出现次数实测 **0**，改由 `by viewModel()` 取得；两条"此处违反 SRP/DIP、以后应改"的注释删除。建库事务原本靠 `kbCreationInProgress` boolean + `onboardingJob` 两套台账，现在只剩 `creationJob?.isActive` 一个真源，五种结果（画像完整/降级/建库失败/取消/未配置供应商）改成 typed `KbEvent` 回传，UI 只按事件选文案。另把两块**只能在真机上碰**的私有逻辑下沉成纯件：`KbArchiveTransfer`（zip 导出 + 暂存→校验→原子搬入）与 `OnboardingResultParser`（marker 分段 + 降级判定），并新增 13 + 8 条 JVM 用例真跑到 0 失败（路径穿越、zip bomb、条目数超限、元数据不一致、同名碰撞、坏包不留半截库、暂存清理）。`KnowledgeBaseActivity` 1213→924、`KbEditActivity` 584→572 行。<br>但"上帝类"这一格只算部分达成：`LoveBrainViewModel` 与 `KnowledgeRepository` 仍比报告基线大（见 4.1），我不用文件变小来冒充职责变清。 |
 | S2-06 | 新库无 oldGlobal 直接 return 可能永不写版本；`KbRelativePath` 只有定义无使用；公共方法仍收裸 String；未来 schema 不拒绝；无 v1.3.1 夹具升级/中断/降级测试 | 三处全改并有 `KnowledgeSchemaVersionTest` 13 例：新库落 CURRENT；只有 legacy marker 时也归一化写版本并清 marker；`isBeyondSupported` + `schemaTooNewKbs` 让过新的库转只读（所有写路径统一拒，读仍可用）；`safeKbFile` 让**所有 String 入口**都过 `KbName`/`KbRelativePath`，并补掉盘符绝对路径与反斜杠两个真漏洞（旧校验只挡 `/`），canonical 失败按拒绝处理而非抛穿。v1.3.1 真机升级/降级测试仍待设备 |
-| S2-07 | 错误类型可从字符串前缀反推；生产大量硬编码中文；历史工单编号留生产；四套机制并存；无全仓 CancellationException 审计与 lint 防回归 | 硬编码中文：面板主操作/页头/加载态/错误文案/首页行迁入 `strings.xml` 并被组件真调用，`values-en/` 补齐且用 `ProductionUiContractTest` 双向核对（zh 每条都有 en，en 不多出）；死 API `draftText`、`ResultArea.onSaveToKb` 链删除并有防回流用例。四套机制：Job 字段与 boolean 真源已删（见 S2-02）。**字符串前缀推错误类型未做**、**工单编号未清理**（§0 第 2、3 条）；`grep` 口径实测数据见第 4 节，供下一轮定量 |
+| S2-07 | 错误类型可从字符串前缀反推；生产大量硬编码中文；历史工单编号留生产；四套机制并存；无全仓 CancellationException 审计与 lint 防回归 | **五条全做完，逐条可核**：<br>① 字符串前缀推类型：`CONFIG_ERROR_PREFIX` / `CONFIG_ERROR_MESSAGES` / `isConfigError` / `stripConfigPrefix` / `ReplyFailureKind.fromErrorMessage` 全部删除，`StreamEvent.Error` 从 `(String, String)` 改为 `(ProviderFailure, String)`；分类只发生在 `DeepSeekRepository.classifyApiError` 这一个供应商边界出口，`ReplyFailureKind` 上不留任何"从消息反推"的 API（用例用反射断言这些方法名不存在，防止回流）。原先 6 处 `startsWith("PARAM_UNSUPPORTED:")` / `isConfigError(msg)` 判定改为读 `thinkingParamRejected` / `isConfigProblem`，`grep` 实测生产码 **0 处**。补 `InsufficientBalance`/`ContentFiltered`/`ContextTooLong`/`ServerBusy`/`InvalidAddress` 五个 kind，回复链路不再把它们压成"生成失败，请重试"。<br>② 硬编码中文：面板主操作/页头/加载态/错误文案/首页行迁入 `strings.xml` 并被组件真调用，`values-en/` 双向核对。知识库两个页面仍是中文字面量（本轮只动职责，没顺手改文案），如实记为未完成。<br>③ 工单编号：`app/src/main` 注释与字面量里的编号 **913 处 → 0**（880 注释 + 33 字面量，用同一把尺在清理前后各量一次），70 个文件、988 行改写、**逐文件行数 0 变化**、只动注释列与字符串前缀。`scripts/strip_ticket_ids.py --check` 进 CI，注释/代码/字面量任一残留即红；已用注入样例证明该门禁真会失败。<br>④ 四套机制并存：Job 字段与 boolean 真源已删（见 S2-02），本轮又拔掉建库那一套双台账。<br>⑤ 取消审计：`scripts/audit_cancellation.py` 扫 `app/src/main` 全部 167 个吞异常站点，按"块内/紧邻/同一条 try 链是否显式放行 CancellationException + 段内是否真有挂起点"分四档：PROTECTED 52、WAIVED 2、SUSPEND-FREE 113、NEEDS_REVIEW **0**。审计挖出 9 处真实吞取消并逐个修（冻结输入用 `runCatching` 包挂起读、nextRound 的 `catch(Throwable)`、画像写入兜底、备份防抖、回滚兜底伪装成业务失败、导入导出把取消报成失败等）；`--check` 进 CI，同样做过注入失败验证。完整逐站点清单落在 `docs/CANCELLATION-AUDIT.md`。 |
 
 ### §7：第三阶段
 
@@ -104,6 +108,37 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 第一步门禁（同 SHA compile+unit+lint+R8+connectedDebugAndroidTest 全绿 + 可安装 APK + 真实主链不崩）：
 前四项与 APK 本机已绿，**connectedDebugAndroidTest 因无设备未跑**。
 
+### §8 三步返工：第二步逐条（删架构双轨 + 修数据一致性）
+
+| # | 报告原句 | 处置 | 可核对证据 |
+|---|---|---|---|
+| 1 | Engine 改为当前协程内的 suspend/Flow，不再收外部 scope 并启第二个 Job | 做（限报告所指的 GenerationEngine） | `GenerationEngine` 四个公开入口全是 `fun …Stream(…): Flow<…>`，签名里 `scope: CoroutineScope` 与 `: Job?` 各 0 处；`GenerationEngine.Callbacks` 已删<br>**但同类模式在 `KnowledgeTriggerCoordinator` 里还剩一份**（见 §0 第 8 条），报告没点名它，我不把它算成已完成 |
+| 2 | 所有事件源头带 requestId，单一 reducer，删 Reply Callback 写状态路径 | 做（Reply 路径） | `ReplyEvent` 全部携带 requestId；唯一写入口 `dispatchReply → ReplyReducer.reduce`，被拒时返回同一对象。全仓 `Callbacks` 字样实测 13 处命中，其中 **0 处在回复链路**，其余是 `KnowledgeTriggerCoordinator.Callbacks`（后台经验/向量/reflect 三引擎）与两处解释性注释 |
+| 3 | coordinator 提供"创建并启动"的原子 API 或注册失败立即 cancel；同一把锁；六类操作全注册 | 做 | `CoroutineStart.LAZY` + 锁内注册，被拒即 `job.cancel()`；`ForegroundOperationCoordinatorTest` 10 例，含"被拒的 start 一次都不跑 body" |
+| 4 | 删 ViewModel 手写 guard、Job 真源与多 boolean；停止按 lease | 做 | `generateJob/…/profileRegenerationJob`、`_isProactive` 等 6 字段删除；`stopGeneration()` 只停 REPLY；建库侧本轮再拔一套双台账 |
+| 5 | `GenerationInput` 直接进 Prompt/Provider；冻结 KB revision、资产 hash、完整非敏感 Provider 身份 | 做 | `ProviderIdentity(ticketId/hostHash/model/thinkingMode)`，Engine 只按冻结 ticketId 取配置，对不上发 `ProviderChanged` 并失败；`contentRevision` 是真实文件 SHA-256 而非 turnCount 近似 |
+| 6 | 重做 round commit：稳定 roundId、完整 typed event、每投影水位或单锁 append-only log；禁 recent marker 当跨文件提交标记 | 做 | `stableRoundId` 派生自 kb+消息 ID；六投影各有水位；跨文件幂等看 committed 清单，recent marker 降级为文件内去重 |
+| 7 | 对 topic/recent/scene/plan/count 每个写入边界故障注入，重启后校验 exactly-once | 做 | `RoundCommitJournalTest` 17 例逐个边界注入，断言恢复后与一次跑通逐文件等值 |
+| 8 | 新库直接写 CURRENT；未来 schema 明确拒绝只读；边界全面改 `KbName/KbRelativePath` | 做 | `KnowledgeSchemaVersionTest` 13 例 + `safeKbFile` 覆盖所有 String 入口（含盘符绝对路径与反斜杠两条真实绕过） |
+| 9 | 把 KnowledgeBase/KbEdit 的数据逻辑迁到 ViewModel/use case，删"仅写注释承认违规"的假修复 | 做（本轮） | 见 §6 S2-05 行；`UiLayerDependencyContractTest` 4 例把"ui 层不得直连 data 层"和"不得再出现只记录不修复的注释"钉成静态合同 |
+
+第二步门禁（无双 Job owner、无无 requestId callback、无死 reducer、无未注册操作、无裸路径边界、WAL 故障矩阵全绿）：
+本机逐条为真；`KnowledgeRepository` 行数仍大于基线这一事实单独记在 4.1，不用门禁通过来掩盖。
+
+### §8 三步返工：第三步逐条（体验、无障碍、隐私、发布工程）
+
+| # | 要求 | 处置 |
+|---|---|---|
+| 1 | 页面 × 状态 × 主操作 × Back 矩阵 + 截图基线 | **未做**（需设备/截图，见 §0 第 1 条） |
+| 2 | 自定义 clickable 全 ≥48dp，补语义，跑 TalkBack/2.0x/360dp | 数值部分做并有静态合同；三项设备验收未跑 |
+| 3 | 用户文案迁 resources 且真被调用；中英同步 | 核心组件已迁并双向核对；知识库两个页面仍是字面量，未做 |
+| 4 | 真增量 parser + Macrobenchmark/Perfetto/帧时间/内存/长流 | parser 做并有 2 个真缺陷修复记录；性能数据未产出（§0 第 3 条） |
+| 5 | allowlist 化、二次拒绝、默认 fail-closed | 做（`CapturePolicy` + 选择页 + 11 例） |
+| 6 | threat model、出口清单、可复现抓包与脱敏结果 | 文档与脚本做，抓包未执行（§0 第 5 条） |
+| 7 | 升级 job 真下载校验 v1.3.1、真写夹具、覆盖安装签名候选、断言数据与主流程、FATAL 必失败 | 脚本与门禁做，设备未跑（§0 第 6 条） |
+| 8 | Release 依赖 verify+ui-test+upgrade-test、比对已公开证书、验新装/覆盖/版本/SHA-256/SBOM | 做（`wait-ci` 等三项；`verify_signing_continuity.sh` 对过线上 v1.3.1） |
+| 9 | BENCHMARK 固定 commit、真实资产 SHA-256、脚本、锁文件、原始数据与重放命令 | 头部改为实测组合 hash 并写明不可信时间线；真实费用数据未产出（§0 第 4 条） |
+
 ## 2. 删除清单（报告 §9 第 2 项要求）
 
 | 删掉的东西 | 位置 |
@@ -123,6 +158,18 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | `ReplyPrimaryActions.draftText`、`ResultArea`/`ResultUtilityTrigger.onSaveToKb` 死参数链 | 删；有防回流用例 |
 | CI 里 `continue-on-error: true`、`|| true`、`|| echo`、`if-no-files-found: warn` | 删；两份 workflow 现为 0 处 |
 | `RoundCommitJournal` 里只写注释不写数据的 `WRITING` 伪阶段 | 变成真落盘的阶段 |
+| `KnowledgeBaseActivity` / `KbEditActivity` 里直接 `by inject()` 的 `repo` / `deepSeek` / `securePrefs` 三个字段 | 删；两个 Activity 现只持有 `by viewModel()` |
+| `KnowledgeBaseActivity.kbCreationInProgress` boolean + `onboardingJob` 两套建库台账 | 删；只剩 `creationJob?.isActive` 一个真源 |
+| `KnowledgeBaseActivity` 的 `kbReloadToken`（mutableIntStateOf）+ `version`/`kbs`/`active` 三处 `remember` 局部状态 | 删；列表状态收进 `KnowledgeBaseViewModel.state: StateFlow<KbListState>` |
+| `KnowledgeBaseActivity` 私有方法 `zipKbFolder` / `unzipToKnowledge` / `parseOnboardingResult` / `parseSection` / `autoKbName` / `readEngineAsset` 与内嵌 `ParsedOnboardingResult` | 移出 UI 层：`KbArchiveTransfer` / `OnboardingResultParser` / ViewModel（可离线单测） |
+| `KnowledgeBaseActivity` 里 `if (ok) { } else { }` 两个空分支（删除结果被咽下） | 删；删除失败改发 `KbEvent.DeleteFailed` 并给提示 |
+| `PendingNoProviderDone: (() -> Unit)?` 载荷（把回调存字段里） | 删；二选一确认直接调 `createEmptyKb()` |
+| `CONFIG_ERROR_PREFIX` / `CONFIG_ERROR_MESSAGES` / `isConfigError()` / `stripConfigPrefix()` | 删；分类只在 `classifyApiError` 一处 |
+| `ReplyFailureKind.fromErrorMessage(String)` | 删；反射用例断言该方法名不得回来 |
+| `StreamEvent.Error(message: String, partialText: String)` | 改为 `(failure: ProviderFailure, partialText: String)`；message 只作展示，控制流走 kind |
+| `app/src/main` 注释与字面量里的 913 处历史工单编号（含写进归档文件的 `<!-- F08 plan migration backup -->` 标记） | 删；`strip_ticket_ids.py --check` 防回流 |
+| 生产注释里的"审计技术债：此处违反 SRP/DIP""修复方向：…"式自述 | 删（本轮清掉 2 处，其余同类表述随编号一并清理）；`UiLayerDependencyContractTest` 防回流 |
+| 吞取消的 9 处兜底（`runCatching { 挂起读 }`、`catch (Throwable)` 包住 nextRound 等） | 改为显式放行 `CancellationException` |
 
 ## 3. 同一 SHA 的 required checks（§9 第 3 项）
 
@@ -139,12 +186,14 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | `:app:compileDebugAndroidTestKotlin` | BUILD SUCCESSFUL（报告里红的就是这一步） |
 | `:app:lintDebug` | 0 error |
 | `:app:assembleRelease` | 产出签名 + R8 APK |
-| `scripts/check_apk_metadata.sh` | OK：`com.lovebrain.app` / versionCode 9 / 1.4.0-rc1 / SHA-256 记录在 `dist/apk-metadata.txt` |
+| `scripts/check_apk_metadata.sh` | OK：`com.lovebrain.app` / versionCode 9 / 1.4.0-rc1 / minSdk 26 / targetSdk 35 / launcher `ui.SetupActivity` / 2 803 568 bytes / SHA-256 `d81e3ef1e7d34dde65b64c14d5e732bbcf45e6517fb9a6132eb8a218d3fd6bf9`，写入 `dist/apk-metadata.txt`；R8 mapping 4472 条顶格重命名条目 |
 | `scripts/verify_signing_continuity.sh` | OK：证书 SHA-256 `c2986640bce6…2f7d`，与已公开 v1.3.1 一致（同时用 `gh api` 对过 release 正文与 asset digest） |
 | `scripts/license_scan.sh` | OK：124/124，SBOM 产出且可 JSON 解析 |
-| `scripts/assert_artifacts.sh` | OK：真实 724 例；空目录 → 1；篡改 XML 声明数 → 1 |
+| `scripts/assert_artifacts.sh` | OK：真实 788 例 / 95 套件 / 0 failures；空目录 → 1；篡改 XML 声明数 → 1 |
 | `scripts/asset_hashes.sh --check` | OK：prompt 资产未漂移 |
-| `bash -n`（16 个脚本 + 2 个 lib） | 全部通过 |
+| `scripts/audit_cancellation.py --check` | OK：167 站点，NEEDS_REVIEW=0；注入吞取消样例 → exit 1（已验证会红） |
+| `scripts/strip_ticket_ids.py --check` | OK：注释/代码/字面量三处工单编号均为 0；注入 `P0-9: probe` → exit 1（已验证会红） |
+| `bash -n`（17 个 shell 脚本 + 2 个 lib）与 `ast.parse`（3 个 py） | 全部通过 |
 | `:app:lintDebug` / `:app:compileDebugAndroidTestKotlin` | BUILD SUCCESSFUL |
 | `yaml.safe_load` 两份 workflow | 通过；`|| true`/`continue-on-error`/`|| echo` 计数 0 |
 
@@ -154,8 +203,7 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 ## 4. 测试数量、失败数与工件（§9 第 4 项）
 
 权威口径：`python` 解析 `app/build/test-results/testDebugUnitTest/*.xml` 汇总，
-并用 `scripts/assert_artifacts.sh --min-tests auto` 复核"声明数 == 实际 `<testcase>` 数"，
-结果 747 / 91 套件 / 0 failures / 0 skipped。
+并用 `scripts/assert_artifacts.sh --min-tests auto` 复核"声明数 == 实际 `<testcase>` 数"。
 
 | 阶段 | suites | tests | failures | errors | skipped |
 |---|---|---|---|---|---|
@@ -163,17 +211,38 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | WAL 重写后 | 86 | 692 | 0 | 0 | 0 |
 | 架构统一 + 测试适配后 | 89 | 724 | 0 | 0 | 0 |
 | +协调器合同用例与 requestId 绑定 | 91 | 747 | 0 | 0 | 0 |
+| +S2-05 职责拆分（归档/解析/ViewModel/分层合同） | 95 | 788 | 0 | 0 | 0 |
+| +S2-07 错误类型改造（净 +1 条：删 10 条前缀推断用例，补 12+4 条 typed 用例） | 95 | 788 | 0 | 0 | 0 |
 
-工件：`app/build/test-results/testDebugUnitTest/*.xml`（90 份）、
+本轮新增/改写的用例（逐套件读 XML，全部 0 失败）：
+
+| 套件 | 用例数 | 钉住的东西 |
+|---|---:|---|
+| `KbArchiveTransferTest` | 13 | zip 导入的路径穿越、条目数超限、元数据不一致/损坏/缺失、双顶层、同名碰撞、坏包不留半截库、暂存必清 |
+| `OnboardingResultParserTest` | 8 | 五段 marker 切分、缺段即降级（不许把降级报成画像成功）、乱序 marker 不吞正文 |
+| `KnowledgeBaseViewModelTest` | 15 | 建库事务单 owner、四种结果各发各的事件、取消不落盘、未配置供应商不碰仓库、导入后修 active、导出可回读 |
+| `UiLayerDependencyContractTest` | 4 | ui 层不得直连 Repository/SecurePrefs；两个知识库页必须经 ViewModel；生产码不得再有"审计技术债/修复方向"式注释 |
+| `ProviderFailureClassificationTest` | 12 | typed 分类合同：Auth/参数不支持可降级、400+thinking 不可降级、运行期错误不得误判成配置错、已归类错误不外泄英文原文 |
+| `DeepSeekRepositoryErrorMappingTest` | 3 | 边界产物不再夹带内部标记；未知错误保留固定话术 |
+| `ReplyFailureKindTest` | 15 | 反射断言"从字符串反推类型"的 API 不存在；kind 与文案一一对应不撞句 |
+
+工件：`app/build/test-results/testDebugUnitTest/*.xml`（95 份）、
 `app/build/reports/tests/testDebugUnitTest/index.html`。
 计数用解析 XML 得到，不是复制网页数字；`assert_artifacts.sh` 会额外核对
 "声明的 tests 数 == 真实 `<testcase>` 数"，防止报告注水。
 没有 `@Ignore`、没有 `assumeTrue(false)`、没有在 workflow 里用 `--tests` 过滤缩小范围。
 
-instrumentation：44 个用例编译通过，**执行数为 0（未跑）**，见 §0 第 4/5 条。
+instrumentation：`app/src/androidTest` 现有 40 个 `@Test`（5 个文件，本机 `grep -c "@Test"` 实测），
+`:app:compileDebugAndroidTestKotlin` 通过，**执行数为 0（无设备）**，见 §0 第 1/2 条。
 
-本轮最后一次全量门禁（同一棵树，含 lint 与签名 release 构建）：
-`:app:testDebugUnitTest` + `:app:compileDebugAndroidTestKotlin` + `:app:lintDebug` → BUILD SUCCESSFUL。
+静态门禁（不是测试，但同样可执行、同样进 CI verify）：
+`scripts/audit_cancellation.py --check` 与 `scripts/strip_ticket_ids.py --check` 当前均为 0 命中；
+两者都用注入样例验证过"确实会红"（前者 `NEGATIVE-TEST exit=1`，后者 `NEGATIVE exit=1`）。
+
+本轮最后一次全量门禁（同一棵树）：
+`:app:testDebugUnitTest` + `:app:lintDebug` + `:app:compileDebugAndroidTestKotlin` + `:app:assembleRelease`
+→ BUILD SUCCESSFUL；随后 `python scripts/strip_ticket_ids.py --check`、
+`python scripts/audit_cancellation.py --check`、`bash scripts/asset_hashes.sh --check docs/prompt-assets.lock` 全绿。
 
 ## 5. 发布判定
 
@@ -181,26 +250,91 @@ instrumentation：44 个用例编译通过，**执行数为 0（未跑）**，�
 
 理由（不对外甩锅，对内也不自签 PASS）：
 1. 第一步门禁的 `connectedDebugAndroidTest` 没真跑过——报告正是因此判 FAIL 的，我不能用同一缺口自证通过。
-2. §0 列的 8 项未完成里，S2-05 与 S2-07 是报告明确点名的生产架构/正确性问题，不是可选项。
-3. worker 不得自签 PASS（报告 §8 第三步门禁）。这份文件是**交付给复核者的证据包**，不是通过证明。
+2. §0 现在剩 9 项未完成，其中 5 项（截图矩阵、instrumentation、Macrobenchmark、真机升级、抓包）
+   都卡在同一件事上：**没有设备**。这不是理由的替代品，只是说明它们的共同前提。
+   第 8、9 两条是我自己扫出来、报告没点名的同类旧结构，也不是"可以忽略"级别。
+3. S2-05 只算部分达成：`KnowledgeRepository`（2118→2283）与 `PromptBuilder`（1177→1199）
+   仍比报告基线大，我不给"职责拆分完成"这个词盖章。
+4. worker 不得自签 PASS（报告 §8 第三步门禁）。这份文件是**交付给复核者的证据包**，不是通过证明。
+
+已做完的部分（§6 S2-01…S2-07、§7 P3-01/03/04/05/07/08、§8 第一步 1-3/6-7、第二步 1-9）
+逐条列在第 1 节，每条给的是命令与数字，不是形容词。
 
 worker 不能自签的另外一面也照做：上面每个"OK"都是命令输出，不是叙述；每个"没做"都写了没做的原因和现状数字。
 
 ### 4.1 上帝类行数（报告 §6 S2-05 的表，本轮实测对照）
 
-报告给的被审行数与本轮 `wc -l` 实测：
+报告给的被审行数与本轮 `wc -l` 实测（HEAD = `9539dd2` 之后）：
 
-| 文件 | 报告 | 本轮 | 变化 |
-|---|---:|---:|---:|
-| `LoveBrainViewModel.kt` | 2954 | 2920 | −34（删掉 Job 字段与手写 guard，但新增事件归约代码抵消了大部分） |
-| `KnowledgeRepository.kt` | 2118 | **2271** | **+153（变差）** |
-| `KnowledgeBaseActivity.kt` | 1214 | 1213 | −1（等于没动） |
-| `PromptBuilder.kt` | 1177 | **1199** | **+22（变差）** |
-| `TopicRecorder.kt` | 1006 | 991 | −15 |
-| `GenerationEngine.kt` | 828 | 678 | −150（Callbacks 与 launch 逻辑移除） |
-| `KbEditActivity.kt` | 585 | 584 | −1（等于没动） |
+| 文件 | 报告 | 上一轮 | 现在 | 变化 |
+|---|---:|---:|---:|---|
+| `LoveBrainViewModel.kt` | 2954 | 2920 | 2942 | 相比报告 −12；相比上一轮 +22（取消审计新增 `readOrNull` 与三处显式重抛） |
+| `KnowledgeRepository.kt` | 2118 | 2271 | 2283 | **+165（仍比报告大，未达标）** |
+| `KnowledgeBaseActivity.kt` | 1214 | 1213 | **924** | **−290**（数据逻辑与 zip 归档全部下沉） |
+| `PromptBuilder.kt` | 1177 | 1199 | 1199 | +22（未动） |
+| `TopicRecorder.kt` | 1006 | 991 | 991 | −15 |
+| `GenerationEngine.kt` | 828 | 678 | 686 | −142 |
+| `KbEditActivity.kt` | 585 | 584 | **572** | −13（保存/读版本契约下沉） |
 
-结论：S2-05 的"职责拆分"只在 GenerationEngine / TopicRecorder 上真实发生；
-Repository 与 PromptBuilder 因为承接了 S2-01/S2-06 新加的内容而变大，
-两个 Activity 基本原封不动。报告说"记录技术债不等于修复技术债"，
-本轮不能一边批评它一边犯同样的错，所以这里按实测写"未达标"，不写成已完成。
+承接方（新增，同一轮）：`KnowledgeBaseViewModel.kt` 324、`KbArchiveTransfer.kt` 138、
+`KbEditViewModel.kt` 53、`OnboardingResultParser.kt` 51、`ProviderFailure.kt` 50。
+即 Activity 减掉的 303 行没有消失，而是搬到了可单测、可离线跑的位置——
+这句话只在"位置变了、能被测到"的意义上成立，不等于职责已经拆干净。
+
+结论：报告点名的两个"只写注释不整改"的 Activity 这次真改了，
+且 `app/src/main` 里四个 data 层类型在 ui 包的出现次数实测为 0（`UiLayerDependencyContractTest` 锁住）。
+但 `KnowledgeRepository` 与 `PromptBuilder` 仍比基线大，S2-05 只算**部分达成**，不写成已完成。
+报告说"记录技术债不等于修复技术债"，本轮不能一边批评它一边犯同样的错。
+---
+
+## 6. 第二轮逐字复核：复核动作本身又抓出了什么
+
+按要求"完成后重新根据文件一个字一个字复核"。这一轮的目标不是复述上面写过的话，
+而是**拿报告当尺子重新量一遍当前树**，并把上一版本文件里写错的地方改过来。
+
+### 6.1 上一版验收包自己写错的地方（已改）
+
+| 上一版写的 | 实测真相 | 处置 |
+|---|---|---|
+| `scripts/check_apk_metadata.sh` → OK | 该步当时**从没在我本机跑通过**：R8 mapping 判定用 BRE，`'…]+ -> '` 里的 `+` 是字面加号，任何真 mapping 都匹配不上 → 门禁必红 | 已修（`-E` + 要求至少一条顶格类行左右不同，能识破 `-dontobfuscate` 的自映射），并双向实测：真 mapping exit 0 / 人造自映射 exit 1。提交 `0da80d5` |
+| §4 表 "结果 747 / 91 套件" | 本轮改动后实测 **788 / 95 套件 / 0 failures** | 已按 XML 解析重填，并逐套件列出新增来源 |
+| §4 "instrumentation 44 个用例" | `app/src/androidTest` 实测 **40 个 `@Test`（5 个文件）** | 已改成实测值 |
+| §2 删除清单里 "`Callbacks` 全删" | 全仓 `Callbacks` 字样仍有 13 处命中，其中 **0 处在回复链路**，其余是 `KnowledgeTriggerCoordinator.Callbacks` 与两处解释注释 | 第二步 1/2 条改成"限 GenerationEngine 完成"，并把 TriggerCoordinator 那份列为 §0 第 8 条未完成 |
+| §8 第二步"1-9 全做" | 第 9 条（Activity 迁 ViewModel）此前被记为未做；本轮做完 | 拆成逐条表格，每条给可核对证据；同时对"全仓单 Job owner"这类说满了的话收回 |
+| APK SHA / size | 旧值 `49a0b9d9… / 2 802 248` 已失效 | 重新解析 APK：`d81e3ef1… / 2 803 568` |
+
+### 6.2 复核中新发现的、报告没点名的两处（记为未完成，不算战果）
+
+| 位置 | 问题 | 为什么这次没改 |
+|---|---|---|
+| `domain/KnowledgeTriggerCoordinator.kt:78,94,128,247,469` | 后台三引擎仍是"外部传 `CoroutineScope` + 自启 `Job` + 巨型 `Callbacks` 直写 ViewModel 状态"，这些 Job 不在 `ForegroundOperationCoordinator` 注册表里 | 报告 §8 第二步的原文主语是 Engine；改它要连带动 ViewModel 三处调用和既有 Kbg/Trigger 用例。前台六类单 owner 为真，"**全仓**单 Job owner"因此为假——写在这里而不是悄悄略过 |
+| `ui/SetupActivity.kt:30` | `SetupViewModel by inject()` 不走 `ViewModelStore`，配置变更后 VM 内存态（反馈列表、导出状态）会丢 | 本轮新接的两个 ViewModel 用的是 `by viewModel()`；这处历史写法未统一，也不影响 §6 S2-05 的"Activity 不直连 data 层"判定 |
+
+### 6.3 报告逐节复核对账结果（当前 HEAD）
+
+| 报告节 | 该节的每一条可核对断言 | 现在的实测 |
+|---|---|---|
+| §1 六条事实 | 编译、CI run #39、retry 语法、无候选 APK、Release 停在 v1.3.1、"注释声称完成而实现未闭环" | 前五条分别由 compile/`--offline` 全门禁/APK 产物/未打 tag 处置；最后一条本轮清掉三处（S2-05 注释式技术债、S2-07 前缀推类型、工单编号），另在 6.2 补记两处同类新发现 |
+| §2 表格 + 七个不给 PASS 的点 | 入口方向、只切模式 0 调用、JUnit 断言、disabled 断言、停止文案锚定、死 API、停止范围、48dp | 逐项：`OverlayGenerateSmokeTest:194,205` 断言 `requestCount==0`；`ReplyPrimaryActionsTest:130` `assertIsNotEnabled()`、:220 正则匹配真实 LOADING 文案；`ReplyPrimaryActions` 无 `draftText`、`ResultArea` 无 `onSaveToKb`；`stopGeneration()` 只 `stopCurrent(REPLY)`；48dp 见 6.4 |
+| §3 九个门禁 + 八条伪门禁 | 见上一版第 3 节表 | 全部落到 `scripts/` 真脚本，两份 workflow 里 `\|\| true` / `continue-on-error` / `\|\| echo` 计数 0；引用的 15 个脚本全部存在 |
+| §4 worker 自报 11 行 | 逐行 | 见 §6 S2 各行与第 1 节；本轮把"注释/提交信息声称完成、实现未闭环"的三类清零 |
+| §5.1 破损用例 | 前置条件、真按钮、fake Provider、单请求、按 lease 停止、旧请求不覆盖 | `OverlayGenerateSmokeTest` 重写版先加消息再断言 `ProviderMissing` 文案与 `requestCount==0`；**执行仍需设备** |
+| §5.2 锦囊六条 | 真实费用、指纹与注释一致、prompt hash、日期冻结、requestId、A/B 证据 | 指纹 KDoc 现在逐条列出实际输入并明确"不谎称覆盖温度"；`currentPromptVersion()` = `assetHashOf(SUGGEST)`；日期在发起时冻结；suggest 有 requestId 归属判定；真实费用与 A/B **未产数据**（§0 第 4 条） |
+| §6 S2-01…S2-07 | 见第 1 节 §6 表 | 七项均有可执行证据；S2-05 记为部分达成 |
+| §7.1 五个 48dp 反例 | 逐个 | `COLLAPSE_HOTZONE_DP = MIN_TOUCH_TARGET_DP(48)`；三段切换 20dp 视觉包进 48dp 命中盒（`PanelHeader.kt:141-145`）；结果工具入口在 `ResultArea.kt` 内 ≥48；`GenerationActionButton` `height(maxOf(heightDp, 48))` 且 `.clickable` 在 `.padding(vertical)` **之前**（三处分支）；Home 尾部动作在 `ui/common/RowAction.kt`。全部由 `ProductionUiContractTest` 静态钉住 |
+| §7.2 allowlist | 默认 fail-closed、二次拒绝、无关键词 blocklist | `CapturePolicy.decide()` 七种 Deny；`CopyCaptureService` 里 `sensitiveApp*` 已删；allowlist 为空 = 一个都不采 |
+| §7.3 文档与基准 | README 抓包声明、BENCHMARK hash/脚本/原始数据 | README 改为"依据源码与依赖清单核对，抓包未执行"；BENCHMARK 头部是实测组合 hash 并写明不可信时间线；原始 JSON/真实费用 **未产** |
+| §8 三步 | 逐条 | 第 1 节末尾两张逐条表（9 + 9） |
+| §9 十二项 | 逐项 | 1 变更表 ✅（本文件）；2 删除清单 ✅；3 required checks ⚠ 需推送才存在（未推送，给的是本地等价门禁 + job 名）；4 测试数与工件 ✅；5 录屏 ❌ 无设备；6 WAL 故障矩阵 ✅；7 v1.3.1 升级断言 ⚠ 脚本+门禁 ✅ / 真机 ❌；8 APK SHA/version/指纹 ✅；9 TalkBack/2.0x/360dp ❌；10 真实费用 ❌；11 抓包 ❌（威胁模型 ✅）；12 文档 diff ✅ |
+| §10 结语四个事实 | 无法编译 / 关键测试没跑 / 架构双轨 / 伪门禁与过度声明 | 第一条已解；第二条本机可跑的全跑、需设备的如实标未跑；第三条 Reply/coordinator/建库侧已清，TriggerCoordinator 一处记为未完成；第四条清了三处伪门禁并新修了本文件自己写错的 `check_apk_metadata` 判定 |
+
+### 6.4 复核用的仪器本身也验过一次
+
+被审对象之外的东西也要能失败，否则"全绿"没意义：
+
+- `assert_artifacts.sh`：空目录 → 1；把 `tests="5"` 只放 2 个 `<testcase>` → 1。
+- `check_logcat_fatal.sh`：含 FATAL → 1；干净非空 → 0。
+- `audit_cancellation.py --check`：注入 `catch (Exception)` 吞 `delay` → `NEGATIVE-TEST exit=1`。
+- `strip_ticket_ids.py --check`：注入 `P0-9: probe` 字面量 → `NEGATIVE exit=1`。
+- `check_apk_metadata.sh`：人造全名自映射 mapping → exit=1（这条是本轮新加的负向用例）。
+- 清理器幂等：`--idempotence-check` stable；落盘前后逐文件行数不变（实测 69 个 .kt，0 变化）。
