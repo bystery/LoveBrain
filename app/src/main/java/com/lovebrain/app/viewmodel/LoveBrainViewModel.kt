@@ -12,6 +12,7 @@ import com.lovebrain.app.domain.GenerationEngine
 import com.lovebrain.app.domain.KnowledgeTriggerCoordinator
 import com.lovebrain.app.domain.MemoryCorrectionPolicy
 import com.lovebrain.app.domain.PromptBuilder
+import com.lovebrain.app.domain.RewritePrompt
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
@@ -658,8 +659,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         _currentVersionId.value = previous.versionId
         replyGenerationContext = previous.context
         feedbackCases.clearFeedbacks()
-        _rewriteStates.value = emptyMap()
-        _rewriteHistory.value = emptyMap()
+        rewriteLedger.clearAll()
 
         // 重新计算 stale——当前输入可能与 previous context 不一致
         checkInputChanged()
@@ -1382,8 +1382,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // 结果/流式态的清空也走 reducer，不再各自写四个 StateFlow
         applyReplyEvent(ReplyCleared(_replyUi.value.ownerRequestId ?: ""))
         // 新轮次开始时清理改写状态和历史，作废旧改写请求
-        _rewriteStates.value = emptyMap()
-        _rewriteHistory.value = emptyMap()
+        rewriteLedger.clearAll()
         rewriteRequestId = null
         rewriteContextId = null
         // 新轮次恢复仅看本轮开关为默认关闭
@@ -2444,15 +2443,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     /** DRY: 改写操作选项文案统一使用 RewriteCommand.PRESET_LABELS，不在 VM 重复定义 */
     val rewriteOptions: List<String> get() = com.lovebrain.app.model.RewriteCommand.PRESET_LABELS
 
-    /** 单条改写状态：identityKey → 改写状态（使用 SchemeIdentity.key 区分 STYLE/DIRECTION） */
-    private val _rewriteStates = MutableStateFlow<Map<String, RewriteState>>(emptyMap())
-    val rewriteStates: StateFlow<Map<String, RewriteState>> = _rewriteStates.asStateFlow()
-
-    /** 单条改写版本历史（用于撤销）—— 保存正文+反馈，撤销时一并恢复 */
-    private data class RewriteVersion(val reply: String, val feedback: SchemeFeedback)
-    private val _rewriteHistory = MutableStateFlow<Map<String, List<RewriteVersion>>>(emptyMap())
-
-    /** 改写任务 Job——与前台生成共用任务管理 */
+    /**
+     * 改写卡片状态与被改写的版本历史。真源在 [RewriteLedger]，
+     * ViewModel 只把只读流转发给面板——和回复结果一样，一个状态只有一个可写处。
+     */
+    private val rewriteLedger = RewriteLedger()
+    val rewriteStates: StateFlow<Map<String, RewriteState>> = rewriteLedger.states
 
     /** 改写请求 ID（锁定目标，防跨轮写入） */
     private var rewriteRequestId: String? = null
@@ -2533,13 +2529,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val contextId = (ctx.kbName ?: "") + "_" + ctx.messageIds.hashCode()
         rewriteContextId = contextId
 
-        // 设置改写中状态
-        _rewriteStates.value = _rewriteStates.value + (identityKey to RewriteState.Loading(option))
-
-        // 保存当前版本到历史（用于撤销）—— 保存正文+当前反馈
-        val currentFeedback = feedbackCases.feedbackFor(identityKey)
-        val currentHistory = _rewriteHistory.value[identityKey] ?: emptyList()
-        _rewriteHistory.value = _rewriteHistory.value + (identityKey to currentHistory + RewriteVersion(scheme.reply, currentFeedback))
+        // 进"改写中"并把当前正文连同其反馈压进历史：撤销时两者要一起回来
+        rewriteLedger.begin(identityKey, option, scheme.reply, feedbackCases.feedbackFor(identityKey))
 
         // 不再捕获 preRewriteFeedback 做后续清理——
         // 改写期间用户对旧文的反馈继续归旧版本；新版本独立 NONE。
@@ -2591,7 +2582,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
                 val newReply = raw.trim()
                 if (newReply.isBlank()) {
-                    _rewriteStates.value = _rewriteStates.value + (identityKey to RewriteState.Error("改写返回空结果"))
+                    rewriteLedger.setState(identityKey, RewriteState.Error("改写返回空结果"))
                     return@start
                 }
 
@@ -2638,13 +2629,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 securePrefs.totalRewriteCount = _totalRewriteCount.value
 
                 // 清除改写状态，保留撤销入口
-                _rewriteStates.value = _rewriteStates.value + (identityKey to RewriteState.Done(newReply))
+                rewriteLedger.setState(identityKey, RewriteState.Done(newReply))
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
                 L.e("rewriteScheme failed", e)
                 if (rewriteRequestId == requestId) {
-                    _rewriteStates.value = _rewriteStates.value + (identityKey to RewriteState.Error("改写失败，可重试"))
+                    rewriteLedger.setState(identityKey, RewriteState.Error("改写失败，可重试"))
                 }
             }
         }
@@ -2655,21 +2646,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // 只停 REWRITE 这一个 owner
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.REWRITE)
         rewriteRequestId = null
-        _rewriteStates.value = _rewriteStates.value.filterKeys { it != identityKey }
+        rewriteLedger.removeState(identityKey)
     }
 
     /** 撤销改写——恢复到上一版本（含正文和反馈）—— 使用 identityKey */
     fun undoRewrite(identityKey: String) {
-        val history = _rewriteHistory.value[identityKey] ?: return
-        if (history.isEmpty()) return
-        val previousVersion = history.last()
-        val updatedHistory = history.dropLast(1)
-
-        _rewriteHistory.value = if (updatedHistory.isEmpty()) {
-            _rewriteHistory.value - identityKey
-        } else {
-            _rewriteHistory.value + (identityKey to updatedHistory)
-        }
+        val previousVersion = rewriteLedger.pop(identityKey) ?: return
 
         val result = replyResult as? GenerateResult.Success ?: return
         val response = result.response
@@ -2703,82 +2685,42 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         replaceReplyResult(GenerateResult.Success(updatedResponse))
         // 撤销时恢复旧版本的反馈，不只是正文
         feedbackCases.putFeedback(identityKey, previousVersion.feedback)
-        _rewriteStates.value = _rewriteStates.value - identityKey
+        rewriteLedger.removeState(identityKey)
     }
 
     /** 清除改写状态（展开/收起时调用）—— 使用 identityKey */
     fun clearRewriteState(identityKey: String) {
-        val current = _rewriteStates.value[identityKey]
+        val current = rewriteLedger.stateOf(identityKey)
         if (current is RewriteState.Done || current is RewriteState.Error) {
-            _rewriteStates.value = _rewriteStates.value - identityKey
+            rewriteLedger.removeState(identityKey)
         }
     }
 
-    /** 构建改写系统提示——短固定规则 */
-    private fun buildRewriteSystemPrompt(): String = buildString {
-        appendLine("你是恋爱沟通助手。用户想改写一条已有的回复。")
-        appendLine("规则：")
-        appendLine("1. 只输出改写后的回复正文，不输出任何分析、标签或格式说明")
-        appendLine("2. 不能改人名、时间、约定和说话主体")
-        appendLine("3. 不能添加未经证实的事实")
-        appendLine("4. 不能把候选回复当作已发送消息")
-        appendLine("5. 输出一个非空回复正文即可")
-        appendLine("6. 如果提供了「我的表达偏好」，改写时尽量遵守该偏好")
-    }
+    /** 改写系统提示——固定短规则，正文在 `RewritePrompt`（可离线单测） */
+    private fun buildRewriteSystemPrompt(): String = RewritePrompt.system
 
-    /** 构建改写用户提示——只包含最少必要上下文
-     *  注入个人表达偏好（understand/style.md） */
+    /**
+     * 组装改写请求：表达偏好来自知识库，其余是本轮冻结上下文。
+     *
+     * 拼装规则本身在纯函数 `RewritePrompt` 里（可离线单测）；这里只负责读 style.md。
+     */
     private suspend fun buildRewriteUserPrompt(
         originalReply: String,
         option: String,
         messages: List<ChatMessage>,
         intentText: String?,
         ideaHint: String?
-    ): String = buildString {
-        // 个人表达偏好
+    ): String {
         val kbName = replyGenerationContext?.kbName
-        if (!kbName.isNullOrBlank()) {
-            val style = knowledgeRepo.readFile(kbName, "understand/style.md")
-            if (style.isNotBlank()) {
-                appendLine("我的表达偏好：")
-                appendLine(style.trim())
-                appendLine()
-            }
-        }
-
-        // 最近几条真实对话（不含想法）
-        val recentChat = messages
-            .filter { it.role != ChatMessage.Role.IDEA }
-            .takeLast(6)
-            .joinToString("\n") { msg ->
-                val role = when (msg.role) {
-                    ChatMessage.Role.HER -> "她"
-                    ChatMessage.Role.ME -> "我"
-                    else -> msg.role.label
-                }
-                "$role：${msg.content}"
-            }
-        if (recentChat.isNotBlank()) {
-            appendLine("最近对话：")
-            appendLine(recentChat)
-            appendLine()
-        }
-
-        // 持续意图（仅在有且启用时）
-        if (!intentText.isNullOrBlank()) {
-            appendLine("当前意图：$intentText")
-            appendLine()
-        }
-
-        // 想法（仅在有且非空时）
-        if (!ideaHint.isNullOrBlank()) {
-            appendLine("想法备注：$ideaHint")
-            appendLine()
-        }
-
-        appendLine("原回复：$originalReply")
-        appendLine()
-        append("改写要求：$option")
+        val style = if (kbName.isNullOrBlank()) "" else knowledgeRepo.readFile(kbName, "understand/style.md")
+        return RewritePrompt.user(
+            originalReply = originalReply,
+            instruction = option,
+            recentChat = RewritePrompt.recentChat(messages),
+            intentText = intentText,
+            ideaHint = ideaHint,
+            style = style
+        )
     }
 
     // ═══════════ 生命周期清理 ═══════════
