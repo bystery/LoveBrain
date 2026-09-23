@@ -5,7 +5,7 @@ import com.lovebrain.app.model.DialogueSpeaker
 import com.lovebrain.app.model.EntityRef
 
 /**
- * P0-3: 事实说话人推导器——从 source_ids 确定性推导 speaker。
+ * 事实说话人推导器——从 source_ids 确定性推导 speaker。
  *
  * 核心原则：speaker 绝不交给 AI 判断。
  * source_id → DialogueMessage → speaker 是 100% 确定的。

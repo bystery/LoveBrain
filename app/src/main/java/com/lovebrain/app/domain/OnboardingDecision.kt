@@ -1,7 +1,7 @@
 package com.lovebrain.app.domain
 
 /**
- * F12: Onboarding 迁移决策——纯函数，可测试。
+ * Onboarding 迁移决策——纯函数，可测试。
  *
  * 从 SetupActivity 私有函数抽离为 domain 级 pure function。
  * 检测项：

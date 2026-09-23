@@ -22,7 +22,7 @@ object EventBus {
         val ts: Long
     )
 
-    //  ：replay = 1——collector 未就绪的窗口不丢事件；服务重建后的旧重放由
+    // replay = 1——collector 未就绪的窗口不丢事件；服务重建后的旧重放由
     // FloatingService 按 ts 做 session 过滤（早于本次启动的一律丢弃）
     private val _capturedMessages = MutableSharedFlow<CapturedMessage>(replay = 1, extraBufferCapacity = 16)
     val capturedMessages: SharedFlow<CapturedMessage> = _capturedMessages.asSharedFlow()

@@ -27,12 +27,12 @@ import java.io.File
  * - 使用 AppConfig 常量
  * - ：消息捕获总开关（captureEnabled）在事件入口前置判断；不再主动 startService 重启悬浮窗
  * - ：捕获链路本地诊断文件（capture_diag.log），只记类型/长度/毫秒，不记内容
- * - P3-04: 诊断日志进有界 channel，由 IO worker 批量写；release 默认关闭或只保留脱敏环形计数
+ * - 诊断日志进有界 channel，由 IO worker 批量写；release 默认关闭或只保留脱敏环形计数
  */
 class CopyCaptureService : AccessibilityService() {
 
     companion object {
-        /** RA-02：当前隐私披露版本。递增此值可强制用户重新确认。 */
+        /** 当前隐私披露版本。递增此值可强制用户重新确认。 */
         const val CURRENT_DISCLOSURE_VERSION = 1
 
         @Volatile
@@ -61,7 +61,7 @@ class CopyCaptureService : AccessibilityService() {
     /** H1 包名锁定：pending 来自哪个 App，窗口事件须同包名才消费（防跨 App 幽灵捕获） */
     private var pendingPkg: String? = null
 
-    /** P3-04: 诊断日志异步写入——有界 channel + IO worker，不阻塞主回调线程 */
+    /** 诊断日志异步写入——有界 channel + IO worker，不阻塞主回调线程 */
     private val diagScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val diagChannel = Channel<String>(capacity = 64, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     private var diagWorkerStarted = false
@@ -97,12 +97,12 @@ class CopyCaptureService : AccessibilityService() {
         clearPending("service_destroy")
         instance = null
         isRunning = false
-        // P3-04: 取消诊断 IO scope
+        // 取消诊断 IO scope
         diagScope.cancel()
         super.onDestroy()
     }
 
-    /** P3-04: 追加诊断记录——异步写入，不阻塞主回调线程。
+    /** 追加诊断记录——异步写入，不阻塞主回调线程。
      * 格式 `uptimeMs|TAG|detail`，仅记类型/布尔/长度/毫秒，不记内容 */
     private fun appendDiag(line: String) {
         val ts = SystemClock.uptimeMillis()
@@ -134,7 +134,7 @@ class CopyCaptureService : AccessibilityService() {
      * 新版微信消息文本常挂在子节点上，长按的容器节点本身不带字 → 直接取 event.text 取不到。
      * 深度限制 4 层防性能问题，取最长的一条（最可能是完整消息内容）。
      *
-     * P3-04: 增加节点数预算（maxNodes）和截止时间（deadline），超限 fail closed。
+     * 增加节点数预算（maxNodes）和截止时间（deadline），超限 fail closed。
      *
      * 注意：入参 node（通常 = event.source）的生命周期由系统管理，调用方不应 recycle 它。
      * 本方法只 recycle 自己创建的子节点（node.getChild(i)）。
@@ -199,7 +199,7 @@ class CopyCaptureService : AccessibilityService() {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
       try {
-        // P3-05: 默认 fail-closed 的 allowlist——只有用户明确选过的聊天 App 才进入捕获，
+        // 默认 fail-closed 的 allowlist——只有用户明确选过的聊天 App 才进入捕获，
         // 且即使命中 allowlist，密码/验证码节点与系统窗口仍做二次拒绝。
         val pkg = event.packageName?.toString() ?: return
         val decision = CapturePolicy.decide(
@@ -233,7 +233,7 @@ class CopyCaptureService : AccessibilityService() {
             return
         }
 
-        // RA-02：无 consent 时不读取节点文字——旧版本用户已开启无障碍但未确认新披露时也拦截
+        // 无 consent 时不读取节点文字——旧版本用户已开启无障碍但未确认新披露时也拦截
         val consentVersion = securePrefs?.accessibilityDisclosureVersion ?: 0
         if (consentVersion < CURRENT_DISCLOSURE_VERSION) {
             clearPending("disclosure_not_confirmed")
@@ -350,7 +350,7 @@ class CopyCaptureService : AccessibilityService() {
     }
 
     /**
-     * P3-05: 二次拒绝——即使用户把某个 App 加进 allowlist，
+     * 二次拒绝——即使用户把某个 App 加进 allowlist，
      * 系统级窗口（通知栏/锁屏/系统选择器）仍然不采。
      *
      * 只看窗口类型与包名，不读正文。
@@ -361,7 +361,7 @@ class CopyCaptureService : AccessibilityService() {
     }
 
     /**
-     * P3-05: 事件源子树里是否存在凭据输入节点。
+     * 事件源子树里是否存在凭据输入节点。
      *
      * 判定只用 isPassword 布尔位与 className，绝不把节点正文带进判断，
      * 因此聊天正文里出现"password"字样不会被误杀。
@@ -398,7 +398,7 @@ class CopyCaptureService : AccessibilityService() {
         clearPending("service_unbind")
         isRunning = false
         instance = null
-        // P3-04: 取消诊断 IO scope
+        // 取消诊断 IO scope
         diagScope.cancel()
         L.w("CopyCaptureService unbound")
         return super.onUnbind(intent)

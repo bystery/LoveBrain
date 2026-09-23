@@ -179,7 +179,7 @@ fun FloatingBubble(
             1f
         }
     Box(modifier = Modifier.size(mainSize.dp)) {
-        // ─── 未读角标（主球右上角；纯红点无数字，z 轴高于主球——需求#14/调节9） ───
+        // ─── 未读角标（主球右上角；纯红点无数字，z 轴高于主球——/调节9） ───
         val badgeScale = remember { Animatable(1f) }
         LaunchedEffect(state.badgeCount) {
             if (state.badgeCount > 0) {
@@ -207,7 +207,7 @@ fun FloatingBubble(
                         scaleX = badgeScale.value
                         scaleY = badgeScale.value
                     }
-                    // 需求#43：shadow 在 clip 之前，圆角阴影贴合圆角
+                    // shadow 在 clip 之前，圆角阴影贴合圆角
                     .shadow(BubbleDimens.BADGE_SHADOW_DP.dp, CircleShape)
                     .clip(CircleShape)
                     .background(Error)
@@ -284,7 +284,7 @@ fun FloatingBubble(
                 },
             contentAlignment = Alignment.Center
         ) {
-            // 图标：需求#13 直接用 App 图标（自适应图标前景，圆形裁剪，保留原色）
+            // 图标：直接用 App 图标（自适应图标前景，圆形裁剪，保留原色）
             Icon(
                 painter = painterResource(R.drawable.ic_launcher_foreground),
                 contentDescription = "军师助手",

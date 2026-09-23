@@ -21,7 +21,7 @@ import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 
 /**
- * F01: 面板内统一弹层宿主——在既有 Overlay 根容器中渲染弹层内容。
+ * 面板内统一弹层宿主——在既有 Overlay 根容器中渲染弹层内容。
  *
  * 替代 AlertDialog：Service 宿主中使用 AlertDialog 会因缺少合适的
  * 应用窗口 token 而抛出 WindowManager.BadTokenException。
@@ -74,7 +74,7 @@ fun PanelModalHost(
 }
 
 /**
- * F01: 面板内弹层标题组件——统一样式。
+ * 面板内弹层标题组件——统一样式。
  */
 @Composable
 fun PanelModalTitle(text: String) {
@@ -87,7 +87,7 @@ fun PanelModalTitle(text: String) {
 }
 
 /**
- * F01: 面板内弹层操作行——保存/取消按钮。
+ * 面板内弹层操作行——保存/取消按钮。
  * 统一的视觉和按压反馈。
  */
 @Composable

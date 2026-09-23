@@ -12,7 +12,7 @@ import kotlinx.serialization.json.Json
 import java.security.MessageDigest
 
 /**
- * S2-04: Round Commit Journal——可恢复的轮次提交事务。
+ * Round Commit Journal——可恢复的轮次提交事务。
  *
  * ## 为什么存在
  * 一轮对话要写 6 个互不原子的事物（话题归档、话题标签、recent.md、scene.md、plan.md、轮次计数）。
@@ -233,7 +233,7 @@ class RoundCommitJournal(
             block: suspend () -> R
         ): R {
             if (state.projections[projection] == roundId) {
-                L.w("S2-04: projection $projection already applied for round $roundId, skipping")
+                L.w("projection $projection already applied for round $roundId, skipping")
                 return skipped
             }
             val result = block()
@@ -263,7 +263,7 @@ class RoundCommitJournal(
         val raw = knowledgeRepo.readFile(kbName, STATE_PATH)
         if (raw.isBlank()) return CommitState()
         return runCatching { json.decodeFromString<CommitState>(raw) }
-            .onFailure { L.w("S2-04: commit state unreadable, starting empty: ${it.message}") }
+            .onFailure { L.w("commit state unreadable, starting empty: ${it.message}") }
             .getOrDefault(CommitState())
     }
 
@@ -288,7 +288,7 @@ class RoundCommitJournal(
         if (existing != null && existing.roundId != event.roundId) {
             // 上一轮尚未收敛——先让调用方恢复，避免 journal 被覆盖丢账
             throw IllegalStateException(
-                "S2-04: round ${existing.roundId} (stage ${existing.stage}) is still in flight for $kbName; " +
+                "round ${existing.roundId} (stage ${existing.stage}) is still in flight for $kbName; " +
                     "call recoverPending() before starting a new commit"
             )
         }
@@ -296,7 +296,7 @@ class RoundCommitJournal(
         // 1. PREPARED——完整事件先落盘
         val prepared = event.copy(stage = CommitStage.PREPARED)
         knowledgeRepo.writeFile(kbName, JOURNAL_PATH, json.encodeToString(RoundCommitEvent.serializer(), prepared))
-        L.w("S2-04: WAL PREPARED roundId=${event.roundId}")
+        L.w("WAL PREPARED roundId=${event.roundId}")
 
         // 2. WRITING——显式标记已开始写 target
         knowledgeRepo.writeFile(
@@ -314,7 +314,7 @@ class RoundCommitJournal(
             body(tx, event)
         } catch (t: Throwable) {
             // 保留 journal，交由下次恢复 roll-forward；不回滚 target（target 各自幂等）
-            L.w("S2-04: round ${event.roundId} aborted (${t::class.simpleName}); journal kept for roll-forward")
+            L.w("round ${event.roundId} aborted (${t::class.simpleName}); journal kept for roll-forward")
             throw t
         }
 
@@ -328,7 +328,7 @@ class RoundCommitJournal(
             json.encodeToString(RoundCommitEvent.serializer(), event.copy(stage = CommitStage.COMMITTED))
         )
         knowledgeRepo.deleteFile(kbName, JOURNAL_PATH)
-        L.w("S2-04: WAL COMMITTED roundId=${event.roundId}")
+        L.w("WAL COMMITTED roundId=${event.roundId}")
         result
     }
 
@@ -338,11 +338,11 @@ class RoundCommitJournal(
         return when (event.stage) {
             CommitStage.COMMITTED -> {
                 knowledgeRepo.deleteFile(kbName, JOURNAL_PATH)
-                L.w("S2-04: WAL recovery - committed but uncleared, cleaned roundId=${event.roundId}")
+                L.w("WAL recovery - committed but uncleared, cleaned roundId=${event.roundId}")
                 null
             }
             CommitStage.PREPARED, CommitStage.WRITING -> {
-                L.w("S2-04: WAL recovery - ${event.stage} roundId=${event.roundId}, rolling forward")
+                L.w("WAL recovery - ${event.stage} roundId=${event.roundId}, rolling forward")
                 event
             }
         }
@@ -374,7 +374,7 @@ class RoundCommitJournal(
             )
             writeState(kbName, committed)
             knowledgeRepo.deleteFile(kbName, JOURNAL_PATH)
-            L.w("S2-04: recovery complete for round ${pending.roundId}")
+            L.w("recovery complete for round ${pending.roundId}")
         }
         return true
     }
@@ -384,7 +384,7 @@ class RoundCommitJournal(
         val event = readEvent(kbName) ?: return@withLock
         if (event.roundId == roundId) {
             knowledgeRepo.deleteFile(kbName, JOURNAL_PATH)
-            L.w("S2-04: WAL abandoned roundId=$roundId")
+            L.w("WAL abandoned roundId=$roundId")
         }
     }
 
@@ -393,7 +393,7 @@ class RoundCommitJournal(
         if (raw.isBlank()) return null
         return runCatching { json.decodeFromString<RoundCommitEvent>(raw) }
             .onFailure {
-                L.w("S2-04: journal corrupt, discarding: ${it.message}")
+                L.w("journal corrupt, discarding: ${it.message}")
                 // 损坏的 journal 必须留下痕迹再删除，否则丢账无人知情
                 knowledgeRepo.appendFile(
                     kbName, "moment/.round_commit_corrupt.log",

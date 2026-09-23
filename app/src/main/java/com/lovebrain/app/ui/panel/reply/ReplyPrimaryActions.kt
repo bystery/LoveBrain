@@ -13,7 +13,7 @@ import com.lovebrain.app.ui.theme.PrimaryDark
 import com.lovebrain.app.viewmodel.LoveBrainViewModel.ComposerMode
 
 /**
- * S1-01/S1-03: ReplyPrimaryActions — 生产可测试组件（不再是 private）。
+ * ReplyPrimaryActions — 生产可测试组件（不再是 private）。
  *
  * 使用 ComposerMode 驱动的 4 种按钮状态，完全匹配 v1.3.1 主动发入口语义：
  * 1. REPLY 模式 + 无结果 → 全宽"生成回复 · N 条消息"（N=0 时显示"生成回复"并禁用）
@@ -21,11 +21,11 @@ import com.lovebrain.app.viewmodel.LoveBrainViewModel.ComposerMode
  * 3. PROACTIVE 模式 + 空闲 → 全宽"生成开场"
  * 4. 任意模式 + 生成中 → 全宽"停止"
  *
- * 审计要求：删除 ReplyPrimaryActionsTestable 复制品，测试直接使用此生产组件。
+ * 删除 ReplyPrimaryActionsTestable 复制品，测试直接使用此生产组件。
  */
 
 private object ReplyActionsDimens {
-    /** P3-03: 主操作按钮触摸区下限——旧值 40dp 达不到无障碍要求 */
+    /** 主操作按钮触摸区下限——旧值 40dp 达不到无障碍要求 */
     const val TRIO_HEIGHT_DP = 48
     const val GENERATE_BUTTON_GAP_DP = 8
 }

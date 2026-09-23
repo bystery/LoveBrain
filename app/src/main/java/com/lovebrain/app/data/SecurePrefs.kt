@@ -48,14 +48,14 @@ class SecurePrefs(context: Context) {
             memoryTicketKeyMap = mutableMapOf()
         }
 
-        // P3-05 审计修复: 一次性内存迁移——如果旧明文 prefs 中有 provider_key_*，
+        // 一次性内存迁移——如果旧明文 prefs 中有 provider_key_*，
         // 迁移到加密存储后立即删除明文残留。
         // 只在加密可用时执行——降级路径中不存在明文 Key（已不写入）。
         if (isEncrypted) {
             migrateAndDeleteOldPlaintextKeys(context)
         }
 
-        // ：消息/想法改纯内存（杀进程即清）——启动顺手移除旧残留键，键不再使用
+        // 消息/想法改纯内存（杀进程即清）——启动顺手移除旧残留键，键不再使用
         prefs.edit()
             .remove("saved_messages")
             .remove("saved_user_hint")
@@ -184,7 +184,7 @@ fun clearSuggestion() {
 
     fun loadApiStats(): String? = prefs.getString(KEY_API_STATS, null)
 
-    // ═══ ：今日花费持久化（仿锦囊 date+value 双键，非敏感金额）═══
+    // ═══ 今日花费持久化（仿锦囊 date+value 双键，非敏感金额）═══
 
     /** 保存今日花费（日期 + 金额；跨天清零由消费侧 rollTodayCost 判定） */
     fun saveTodayCost(dateStr: String, yuan: Double) {
@@ -220,7 +220,7 @@ fun clearSuggestion() {
         get() = prefs.getBoolean(KEY_CAPTURE_ENABLED, true)
         set(value) = prefs.edit().putBoolean(KEY_CAPTURE_ENABLED, value).apply()
 
-    // ═══ RA-02：无障碍隐私披露 consent 版本号 ═══
+    // ═══ 无障碍隐私披露 consent 版本号 ═══
 
     /**
      * 无障碍隐私披露 consent 版本号。用户明确点击「同意并继续」后写入当前版本。
@@ -230,7 +230,7 @@ fun clearSuggestion() {
         get() = prefs.getInt(KEY_ACCESSIBILITY_DISCLOSURE_VERSION, 0)
         set(value) = prefs.edit().putInt(KEY_ACCESSIBILITY_DISCLOSURE_VERSION, value).apply()
 
-    // ═══ P3-05：无障碍抓取 allowlist（默认 fail-closed）═══
+    // ═══ 无障碍抓取 allowlist（默认 fail-closed）═══
 
     /**
      * 用户明确允许抓取的聊天 App 包名集合。
@@ -310,10 +310,10 @@ fun clearSuggestion() {
      */
     fun getSelectedModel(ticketId: String): String? = prefs.getString("selected_model_$ticketId", null)
 
-    /** 
+    /**
      * 获取工单的 API Key（加密分条存储 / 降级内存 Map）
      * 优先级：memoryMap → encrypted → fallback null
-     * P3-05 审计修复: 降级路径不再从明文 prefs 读 provider_key_*——旧明文 Key 已在迁移后删除
+     * 降级路径不再从明文 prefs 读 provider_key_*——旧明文 Key 已在迁移后删除
      */
     fun getWorkerApiKey(ticketId: String): String? {
         // 先查内存 Map（Keystore 降级路径）
@@ -321,7 +321,7 @@ fun clearSuggestion() {
             memoryTicketKeyMap?.let { map ->
                 map[ticketId]?.takeIf { it.isNotEmpty() }?.also { return it }
             }
-            // P3-05: 降级路径不再从明文 prefs 读旧 Key——返回 null，用户需重新输入
+            // 降级路径不再从明文 prefs 读旧 Key——返回 null，用户需重新输入
             return null
         }
         
@@ -349,40 +349,40 @@ fun clearSuggestion() {
         memoryTicketKeyMap?.remove(ticketId)
     }
 
-    // ═══ F12: 性能统计持久化 ═══
+    // ═══ 性能统计持久化 ═══
 
-    /** F12: 累计生成次数 */
+    /** 累计生成次数 */
     var totalGenerateCount: Int
         get() = prefs.getInt(KEY_TOTAL_GEN_COUNT, 0)
         set(value) = prefs.edit().putInt(KEY_TOTAL_GEN_COUNT, value).apply()
 
-    /** F12: 累计花费（元） */
+    /** 累计花费（元） */
     var totalCostYuan: Double
         get() = prefs.getString(KEY_TOTAL_COST_YUAN, "0")?.toDoubleOrNull() ?: 0.0
         set(value) = prefs.edit().putString(KEY_TOTAL_COST_YUAN, value.toString()).apply()
 
-    /** F12: 累计复制次数 */
+    /** 累计复制次数 */
     var totalCopyCount: Int
         get() = prefs.getInt(KEY_TOTAL_COPY_COUNT, 0)
         set(value) = prefs.edit().putInt(KEY_TOTAL_COPY_COUNT, value).apply()
 
-    /** F12: 累计采用次数（记录实际发送） */
+    /** 累计采用次数（记录实际发送） */
     var totalAdoptCount: Int
         get() = prefs.getInt(KEY_TOTAL_ADOPT_COUNT, 0)
         set(value) = prefs.edit().putInt(KEY_TOTAL_ADOPT_COUNT, value).apply()
 
-    /** F12: 累计改写次数 */
+    /** 累计改写次数 */
     var totalRewriteCount: Int
         get() = prefs.getInt(KEY_TOTAL_REWRITE_COUNT, 0)
         set(value) = prefs.edit().putInt(KEY_TOTAL_REWRITE_COUNT, value).apply()
 
-    /** F12: 是否已完成引导（已有用户不强制重走） */
+    /** 是否已完成引导（已有用户不强制重走） */
     var hasCompletedOnboarding: Boolean
         get() = prefs.getBoolean(KEY_ONBOARDING_DONE, false)
         set(value) = prefs.edit().putBoolean(KEY_ONBOARDING_DONE, value).apply()
 
     /**
-     * P3-05 审计修复: 一次性内存迁移——将旧明文 prefs 中的 provider_key_* 迁移到加密存储后删除。
+     * 一次性内存迁移——将旧明文 prefs 中的 provider_key_* 迁移到加密存储后删除。
      * 在 init 中调用，只执行一次（迁移后明文 key 已删除，后续不再命中）。
      */
     private fun migrateAndDeleteOldPlaintextKeys(context: Context) {
@@ -396,14 +396,14 @@ fun clearSuggestion() {
                 val ticketId = key.removePrefix("provider_key_")
                 prefs.edit().putString(key, value).apply()
                 keysToDelete.add(key)
-                L.w("P3-05: migrated plaintext key for ticket=$ticketId to encrypted store")
+                L.w("migrated plaintext key for ticket=$ticketId to encrypted store")
             }
         }
         if (keysToDelete.isNotEmpty()) {
             val editor = fallbackPrefs.edit()
             keysToDelete.forEach { editor.remove(it) }
             editor.apply()
-            L.w("P3-05: deleted ${keysToDelete.size} old plaintext keys from fallback prefs")
+            L.w("deleted ${keysToDelete.size} old plaintext keys from fallback prefs")
         }
     }
 
@@ -422,7 +422,7 @@ fun clearSuggestion() {
     private const val KEY_SUGGESTION_FP = "saved_suggestion_fp"
     private const val KEY_SUGGESTION_PV = "saved_suggestion_pv"
         private const val KEY_API_STATS = "saved_api_stats"
-        // ：今日花费（日期 + 金额双键）
+        // 今日花费（日期 + 金额双键）
         private const val KEY_TODAY_COST_DATE = "today_cost_date"
         private const val KEY_TODAY_COST_YUAN = "today_cost_yuan"
         private const val KEY_COUNSELING_RESULT = "saved_counseling_result"
@@ -432,16 +432,16 @@ fun clearSuggestion() {
         private const val KEY_PANEL_HEIGHT = "panel_height"
         // 消息捕获开关
         private const val KEY_CAPTURE_ENABLED = "capture_enabled"
-        // F12: 性能统计
+        // 性能统计
         private const val KEY_TOTAL_GEN_COUNT = "total_gen_count"
         private const val KEY_TOTAL_COST_YUAN = "total_cost_yuan"
         private const val KEY_TOTAL_COPY_COUNT = "total_copy_count"
         private const val KEY_TOTAL_ADOPT_COUNT = "total_adopt_count"
         private const val KEY_TOTAL_REWRITE_COUNT = "total_rewrite_count"
         private const val KEY_ONBOARDING_DONE = "onboarding_done"
-        // RA-02：无障碍隐私披露 consent 版本号
+        // 无障碍隐私披露 consent 版本号
         private const val KEY_ACCESSIBILITY_DISCLOSURE_VERSION = "accessibility_disclosure_version"
-        // P3-05：无障碍抓取 allowlist（默认空集 = 不抓任何 App）
+        // 无障碍抓取 allowlist（默认空集 = 不抓任何 App）
         private const val KEY_CAPTURE_ALLOWED_PACKAGES = "capture_allowed_packages"
 
         // 工单系统键

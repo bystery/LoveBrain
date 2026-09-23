@@ -40,11 +40,11 @@ private object ReplyDimens {
 }
 
 /**
- * 消息输入区（第 2 轮迭代）。
+ * 消息输入区。
  *
- * 需求#2：《她》《我》《输入框》《添加》放在同一行；删除《粘贴》按钮。
+ * 《她》《我》《输入框》《添加》放在同一行；删除《粘贴》按钮。
  *
- * 设计来源（第 2 轮搜索）：
+ * 设计来源：
  * · 微信 8.0 聊天界面改版：功能按钮与输入框整合、单手操作、圆润边框
  * · CometChat Composer 最佳实践：single-line 输入框超长自动横向滚动
  * · MD3 Text Fields：单行输入自动左滚；Apple HIG：输入框配 clear 按钮（✕）
@@ -60,7 +60,7 @@ fun ReplyInput(
     onFocusChange: (Boolean) -> Unit,
     onInputIntent: (() -> Unit)? = null,
     focusRequester: FocusRequester? = null,
-    // ：主动发态复用输入行三参——默认值保回复态行为逐字不变
+    // 主动发态复用输入行三参——默认值保回复态行为逐字不变
     showRoleChips: Boolean = true,
     showAddButton: Boolean = true,
     placeholderOverride: String? = null,
@@ -69,7 +69,7 @@ fun ReplyInput(
 ) {
     val isEditing = editingIndex >= 0
 
-    // 单行布局（需求#2）：她 | 我 | 想法 | 输入框(weight 1f) | 添加；主动发态 chips/添加钮隐藏（-⑥）
+    // 单行布局：她 | 我 | 想法 | 输入框(weight 1f) | 添加；主动发态 chips/添加钮隐藏（-⑥）
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -85,14 +85,14 @@ fun ReplyInput(
                 onRoleChange(ChatMessage.Role.ME)
             }
             Spacer(Modifier.width(Spacing.sm))
-            // ：想法 = 第三种消息（Role.IDEA）；VM 侧收口保证捕获链不受此选择影响
+            // 想法 = 第三种消息（Role.IDEA）；VM 侧收口保证捕获链不受此选择影响
             RoleChip("想法", currentRole == ChatMessage.Role.IDEA) {
                 onRoleChange(ChatMessage.Role.IDEA)
             }
             Spacer(Modifier.width(Spacing.sm))
         }
 
-        // 输入框（DRY：共享 PanelTextInput；高度与 chips 一致（C1）；placeholder 随角色联动）
+        // 输入框（DRY：共享 PanelTextInput；高度与 chips 一致（）；placeholder 随角色联动）
         PanelTextInput(
             value = draftText,
             onValueChange = onDraftChange,
@@ -152,7 +152,7 @@ fun PanelTextInput(
 ) {
     Box(
         modifier = modifier
-            .heightIn(min = height)  // ：height 语义降为最小高度，防系统大字号截断
+            .heightIn(min = height)  // height 语义降为最小高度，防系统大字号截断
             .background(SurfaceCard, LoveBrainShape.md)
             .border(AppDimens.BORDER_WIDTH_DP.dp, if (value.isNotEmpty()) PrimarySubtle else Border, LoveBrainShape.md)
             // 编辑意图：用户触碰输入框区域 → 通知 FloatingService 进入 EDITING
@@ -187,7 +187,7 @@ fun PanelTextInput(
             value = value,
             onValueChange = onValueChange,
             singleLine = true,
-            // ：裸字号走排版令牌（bodyMedium = 13sp）
+            // 裸字号走排版令牌（bodyMedium = 13sp）
             textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
             cursorBrush = SolidColor(Primary),
             modifier = tfModifier
@@ -202,7 +202,7 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
     val scale by animateFloatAsState(if (pressed) 0.92f else 1f, label = "roleChipScale")
     Box(
         modifier = Modifier
-            .heightIn(min = ReplyDimens.ROLE_CHIP_HEIGHT_DP.dp)  // 
+            .heightIn(min = ReplyDimens.ROLE_CHIP_HEIGHT_DP.dp)  //
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .clip(LoveBrainShape.md)
             .background(if (selected) Primary else SurfaceInset, LoveBrainShape.md)

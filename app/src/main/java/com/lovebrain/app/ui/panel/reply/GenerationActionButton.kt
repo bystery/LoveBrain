@@ -33,14 +33,14 @@ import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 
-/** P3-03: 无障碍触摸区下限（dp）——所有生成按钮的可点击盒子不得低于此值 */
+/** 无障碍触摸区下限（dp）——所有生成按钮的可点击盒子不得低于此值 */
 private const val MIN_TOUCH_TARGET_DP = 48
 
 /** 生成中按钮的自动化锚点：点击即停止 */
 const val GENERATE_STOP_TEST_TAG = "generation_stop_action"
 
 /**
- * F13: 统一生成操作按钮组件——替代旧 GenerateButton 和 DualGenerateRow 中的重复实现。
+ * 统一生成操作按钮组件——替代旧 GenerateButton 和 DualGenerateRow 中的重复实现。
  *
  * 设计要点：
  * - pressed、disabled、loading、stop、retry 的尺寸/圆角/反馈共用
@@ -65,7 +65,7 @@ fun GenerationActionButton(
     mode: ButtonMode = ButtonMode.NORMAL,
     heightDp: Int = MIN_TOUCH_TARGET_DP
 ) {
-    // P3-03: 可点击盒子必须是完整的 heightDp（默认 48dp）。
+    // 可点击盒子必须是完整的 heightDp（默认 48dp）。
     // 旧写法是 .padding(vertical = Spacing.xs) 放在 .clickable 之前，
     // 于是真正能点到的只有 heightDp - 2*xs，等于自己把热区削掉一圈。
     // 现在把内边距放到 clickable 之后，交给内容层承担。
@@ -115,8 +115,8 @@ fun GenerationActionButton(
                         strokeWidth = Spacing.xs
                     )
                     Spacer(Modifier.width(Spacing.md))
-                    // P3-03/S1-02: 文案进资源，并用 testTag 给自动化一个稳定锚点。
-                    // 复核报告点名的缺陷正是"测试找精确文字『停止』，而生产实际显示
+                    // 文案进资源，并用 testTag 给自动化一个稳定锚点。
+                    //缺陷正是"测试找精确文字『停止』，而生产实际显示
                     // 『分析对话 · Ns 点击停止』"——文字会变，tag 不会。
                     val phase = when {
                         elapsedSec < 5 -> stringResource(R.string.panel_phase_analysing)

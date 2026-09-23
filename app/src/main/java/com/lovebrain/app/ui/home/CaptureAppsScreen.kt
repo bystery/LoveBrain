@@ -47,9 +47,9 @@ import com.lovebrain.app.ui.theme.TextSecondary
 import com.lovebrain.app.viewmodel.SetupViewModel
 
 /**
- * P3-05: 消息捕获 allowlist 选择页。
+ * 消息捕获 allowlist 选择页。
  *
- * 复核报告 §7.2 的事实是：代码里只有关键词 blocklist，没命中的任意 App 都能进入捕获逻辑。
+ *事实是：代码里只有关键词 blocklist，没命中的任意 App 都能进入捕获逻辑。
  * 现在捕获默认 fail-closed，所以必须有一个页面让用户真正点名授权哪些 App——
  * 否则"最小化采集"仍然只是文档上的说法。
  */
@@ -150,7 +150,7 @@ fun CaptureAppsScreen(
 /**
  * 一行 = 一个可授权 App。
  *
- * P3-03: 整行可点，高度 ≥48dp；被二次拒绝的类别不可勾选，但仍然显示出来，
+ * 整行可点，高度 ≥48dp；被二次拒绝的类别不可勾选，但仍然显示出来，
  * 让用户看得见"为什么它不能选"，而不是假装列表里只有这些 App。
  */
 @Composable

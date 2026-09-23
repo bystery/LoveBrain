@@ -1,7 +1,7 @@
 package com.lovebrain.app.util
 
 /**
- * URL-01：OpenAI Chat Completions endpoint 候选生成器（纯函数，无 Android 依赖）。
+ * OpenAI Chat Completions endpoint 候选生成器（纯函数，无 Android 依赖）。
  *
  * 用户可能填入：
  * - 根地址：https://api.deepseek.com

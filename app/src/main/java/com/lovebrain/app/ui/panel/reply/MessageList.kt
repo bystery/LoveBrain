@@ -116,9 +116,9 @@ LaunchedEffect(messages.size) {
                     .clickable { onEmptyAction?.invoke() }
                     .padding(horizontal = Spacing.md, vertical = Spacing.xs)
             )
-            // ：空态副文案删除（捕获机制无需在空态重复提示），只保留主文案一行
-            // 需求#33：《手动输入》按钮完全去掉（输入区已有输入框，无需空状态冗余入口）
-            // ：原空态卡片内的控制条插槽整体删除（三件套常驻生成行，）
+            // 空态副文案删除（捕获机制无需在空态重复提示），只保留主文案一行
+            // 《手动输入》按钮完全去掉（输入区已有输入框，无需空状态冗余入口）
+            // 原空态卡片内的控制条插槽整体删除（三件套常驻生成行，）
         }
         return
     }
@@ -230,7 +230,7 @@ LaunchedEffect(messages.size) {
                     .scale(scale)
                     .animateItemPlacement()
                     .then(
-                        // ：拖拽态阴影 6dp 超限 → 收敛至上限 4dp（ELEVATION_MAX_DP）
+                        // 拖拽态阴影 6dp 超限 → 收敛至上限 4dp（ELEVATION_MAX_DP）
                         if (isDragged) Modifier.shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.md)
                         else Modifier
                     )
@@ -242,7 +242,7 @@ LaunchedEffect(messages.size) {
                         },
                         LoveBrainShape.md
                     )
-                    // 需求#4：单击消息 → 选中并在上方输入框编辑（长按拖拽不受影响）
+                    // 单击消息 → 选中并在上方输入框编辑（长按拖拽不受影响）
                     .clickable { onEdit(index) }
                     .padding(horizontal = Spacing.lg, vertical = Spacing.md)
             ) {
@@ -309,7 +309,7 @@ LaunchedEffect(messages.size) {
                             style = AppTypography.labelSmall,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier
-                                // ：间距并入 clickable 覆盖区（先声明为外层），热区 16+8=24dp
+                                // 间距并入 clickable 覆盖区（先声明为外层），热区 16+8=24dp
                                 .clickable {
                                     expandedMessages[msg.id] = !(expandedMessages[msg.id] ?: false)
                                 }

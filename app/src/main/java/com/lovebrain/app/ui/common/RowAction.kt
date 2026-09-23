@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 /** 行内次级操作按钮规格 */
 private object RowActionDimens {
     /**
-     * P3-03: 可点击盒子最小边长。
+     * 可点击盒子最小边长。
      *
      * 旧值 32dp 且 clickable 挂在 vertical padding 之后，实际热区更小；
      * 这是自定义 Box.clickable，Material 不会自动补触摸区。

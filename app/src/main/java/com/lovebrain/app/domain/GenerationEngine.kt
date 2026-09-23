@@ -179,7 +179,7 @@ object PartialTipsParser {
 /**
  * 生成引擎（从 LoveBrainViewModel 拆出）。
  *
- * ## S2-02 / S2-03 的接口形状
+ * ## 接口形状
  * Engine 只暴露冷流：`fun xxxStream(...): Flow<Event>`。
  * 它**不再**接收 CoroutineScope、**不再** launch、**不再**返回 Job、**不再**回调 ViewModel。
  * 于是"谁拥有这个任务"只有一个答案——订阅这条流的协程，也就是
@@ -196,7 +196,7 @@ class GenerationEngine(
     // ═══════════ 回复生成（主生成） ═══════════
 
     /**
-     * S2-01: 不可变生成输入入口。
+     * 不可变生成输入入口。
      *
      * 全部输入取自 [GenerationInput]：requestId、dialogue（只含 PARTNER/USER）、
      * replyDirective、冻结的 KB 内容修订、intent、corrections、onlyThisRound、
@@ -226,7 +226,7 @@ class GenerationEngine(
                     )
                 }
             }
-            // S2-01：按冻结的 ticketId 解析，不回读 activeTicketId
+            // 按冻结的 ticketId 解析，不回读 activeTicketId
             providerConfig = input.providerIdentity?.let {
                 deepSeekRepo.configForTicket(it.ticketId)
             }
@@ -249,14 +249,14 @@ class GenerationEngine(
             return@flow
         }
         if (identity != null && !identity.matches(providerConfig.toView())) {
-            L.w("S2-01: provider config drifted from the frozen identity, refusing to send")
+            L.w("provider config drifted from the frozen identity, refusing to send")
             emitFailed(requestId, ReplyFailureKind.ProviderChanged)
             return@flow
         }
         // 资产 hash 只做诊断：不一致说明 prompt 在冻结后被换掉，本轮仍用冻结时的 prompt 文本
         val liveAssetHash = promptBuilder.replyPromptAssetHash()
         if (input.promptAssetHash.isNotBlank() && liveAssetHash != input.promptAssetHash) {
-            L.w("S2-01: prompt assets changed after freeze (frozen=${input.promptAssetHash.take(8)})")
+            L.w("prompt assets changed after freeze (frozen=${input.promptAssetHash.take(8)})")
         }
 
         val user = buildResult.prompt
@@ -273,7 +273,7 @@ class GenerationEngine(
 
         while (attemptsUsed < AppConfig.GENERATE_MAX_ATTEMPTS) {
             attemptsUsed++
-            // GEN-04：每个 attempt 一套独立的增量解析状态，防上一次失败 attempt 的半成品污染重试
+            // 每个 attempt 一套独立的增量解析状态，防上一次失败 attempt 的半成品污染重试
             val responseScanner = IncrementalSingleObjectScanner("response")
 
             if (attemptsUsed > 1) {
@@ -297,7 +297,7 @@ class GenerationEngine(
                     AppConfig.GENERATE_TIMEOUT_MS,
                     onChunk = { chunk ->
                         emit(ReplyChunk(requestId, chunk))
-                        // P3-04：只把新增文本交给扫描器，不再 toString() 全量重扫
+                        // 只把新增文本交给扫描器，不再 toString() 全量重扫
                         val objStr = responseScanner.feed(chunk)
                         if (objStr != null) {
                             val schemes = runCatching {
@@ -384,7 +384,7 @@ class GenerationEngine(
     // ═══════════ 谈心模式 ═══════════
 
     /**
-     * COUN-01：knowledgeBase 由 ViewModel 传入冻结快照，谈心期间切库不影响 prompt 与日志。
+     * knowledgeBase 由 ViewModel 传入冻结快照，谈心期间切库不影响 prompt 与日志。
      */
     fun counselingStream(
         requestId: String,
@@ -392,7 +392,7 @@ class GenerationEngine(
         knowledgeBase: KnowledgeBase?
     ): Flow<CounselingEvent> = flow {
         emit(CounselingStarted(requestId))
-        // COUN-01：prompt 与日志都用调用方传入的冻结快照；Provider 配置按当次活跃工单取
+        // prompt 与日志都用调用方传入的冻结快照；Provider 配置按当次活跃工单取
         val providerConfig = deepSeekRepo.snapshotProviderConfig()
         if (providerConfig == null) {
             emit(CounselingFailed(requestId, ReplyFailureKind.ProviderMissing.userMessage))
@@ -457,7 +457,7 @@ class GenerationEngine(
     // ═══════════ 今日锦囊 ═══════════
 
     /**
-     * S1-04：整条流的解析状态属于本次请求——扫描器随流创建，不再放全局单例。
+     * 整条流的解析状态属于本次请求——扫描器随流创建，不再放全局单例。
      */
     fun suggestStream(requestId: String, knowledgeBase: KnowledgeBase): Flow<SuggestEvent> = flow {
         emit(SuggestStarted(requestId))
@@ -507,7 +507,7 @@ class GenerationEngine(
 
         val suggestion = runCatching { parseSuggestJson(fullText.ifBlank { buffer.toString() }) }.getOrNull()
 
-        // R1-24: 使用 Provider 返回的真实 usage，不硬编码 null
+        // 使用 Provider 返回的真实 usage，不硬编码 null
         val finalSuggestion = suggestion?.let { s ->
             s.copy(
                 partial = s.tips.size < 6 || failMsg != null,
@@ -543,7 +543,7 @@ class GenerationEngine(
             return@flow
         }
         val t0 = System.currentTimeMillis()
-        // F17: 使用主动开场 prompt（含画像和近期对话），替代旧润色 prompt
+        // 使用主动开场 prompt（含画像和近期对话），替代旧润色 prompt
         val user = withContext(Dispatchers.IO) {
             promptBuilder.buildProactiveUserPrompt(draft, knowledgeBase, messages)
         }
@@ -671,7 +671,7 @@ fun ProviderRequestConfig.toView(): ProviderRequestConfigView = ProviderRequestC
 )
 
 /**
- * S2-01: 把 Provider 配置冻结成 GenerationInput 里的身份。
+ * 把 Provider 配置冻结成 GenerationInput 里的身份。
  *
  * 覆盖 ticketId/host/model/thinkingMode 四项非敏感配置——
  * 以前只冻 host hash 和 model，用户换了工单（同 host 同模型）本轮识别不出来。

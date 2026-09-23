@@ -20,7 +20,7 @@ import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 
 /**
- * F03: 记录实际发送——用户确认已发送的版本。
+ * 记录实际发送——用户确认已发送的版本。
  *
  * 打开编辑框，可从当前候选预填，也可粘贴、改写或输入完全不同的话。
  * 按钮文案为"确认已发送并记录"，说明是用户自行确认，不代表应用检测到了发送行为。
@@ -29,7 +29,7 @@ import com.lovebrain.app.ui.theme.*
  * 确认后写为"我"的真实消息，保存用户确认来源、关联候选版本（若有）、时间。
  * 若用户只是想收藏，继续使用点赞，不混淆两者。
  *
- * P1-RC: saving=true 时禁用确认按钮并显示 loading，失败时 Dialog 不关闭，
+ * saving=true 时禁用确认按钮并显示 loading，失败时 Dialog 不关闭，
  * 用户输入的正文保持不变。
  */
 @Composable

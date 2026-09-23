@@ -63,7 +63,7 @@ private fun loveBrainColorScheme(): androidx.compose.material3.ColorScheme {
     )
 }
 
-// ═══ 全局去 ripple（需求#21 终极修复）═══
+// ═══ 全局去 ripple ═══
 // 用户反复反馈"圆角组件点击出现矩形灰色阴影"——根因是 Compose 默认 Material ripple
 // 未按圆角裁剪（clip 顺序/组件自身 bounds）。在主题层把 LocalIndication 替换为空绘制：
 // 所有 clickable/Button 等不再绘制水波纹，按压反馈统一走各组件自定义 scale。

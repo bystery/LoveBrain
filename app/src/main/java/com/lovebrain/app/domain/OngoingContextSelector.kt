@@ -10,7 +10,7 @@ import com.lovebrain.app.util.TimeFmt
 /**
  * 进行中事项上下文选择器——在 PromptBuilder 之前做 relevance gating。
  *
- * P0-7 修正：
+ * 修正：
  * - SelectionContext 增加 replyDirective 字段——用户本轮想法才能成为真实 relevance signal
  * - DORMANT 成为真实状态：连续 N 轮无新证据 → DORMANT
  * - eventDate 只从事项名称提取，不从状态链记录时间提取（状态写入时间 ≠ 事件发生时间）
@@ -49,19 +49,19 @@ class OngoingContextSelector(
         val chain: String,          // 状态链
         val itemStatus: ItemStatus, // 内部推导状态
         val eventDate: String? = null,  // 结构化事件日期（仅从事项名称提取）
-        val lastInjectedTurn: Int = -1,  // P0-7: 最后一次注入的轮次（只做 prompt cooldown / 防重复注入）
-        val lastEvidenceTurn: Int = -1   // P0-7: 最后一次有真实新证据的轮次（决定 ACTIVE / DORMANT）
+        val lastInjectedTurn: Int = -1,  // 最后一次注入的轮次（只做 prompt cooldown / 防重复注入）
+        val lastEvidenceTurn: Int = -1   // 最后一次有真实新证据的轮次（决定 ACTIVE / DORMANT）
     )
 
     /** 本轮注入决策上下文
-     *  P0-7: 增加 replyDirective——用户本轮想法成为真实 relevance signal
-     *  F06: 增加 effectiveIntent——冻结的持续意图快照，不重新 readIntent */
+     *  增加 replyDirective——用户本轮想法成为真实 relevance signal
+     *  增加 effectiveIntent——冻结的持续意图快照，不重新 readIntent */
     data class SelectionContext(
         val messages: List<ChatMessage>,
         val currentTurn: Int,
         val currentTime: String,
-        val replyDirective: ReplyDirective? = null,  // P0-7: 用户本轮想法
-        val effectiveIntent: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()  // F06: 冻结快照
+        val replyDirective: ReplyDirective? = null,  // 用户本轮想法
+        val effectiveIntent: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()  // 冻结快照
     )
 
     /**
@@ -91,7 +91,7 @@ class OngoingContextSelector(
      * 从 plan.md 读取进行中事项，做 relevance gating 后返回本轮允许注入的事项。
      *
      * 默认拒绝注入——只有满足明确相关信号才进入。
-     * P0-7: fail closed——selector 逻辑任何异常都不 fallback 到整段注入。
+     * fail closed——selector 逻辑任何异常都不 fallback 到整段注入。
      */
     suspend fun selectForInjection(
         kbName: String,
@@ -105,7 +105,7 @@ class OngoingContextSelector(
         val cooldown = readCooldown(kbName)
 
         // 将冷却信息合并到 items
-        // P0-7: 同时读取 lastInjectedTurn 和 lastEvidenceTurn——两者独立
+        // 同时读取 lastInjectedTurn 和 lastEvidenceTurn——两者独立
         val itemsWithCooldown = allItems.map { item ->
             val cd = cooldown[item.name]
             item.copy(
@@ -114,7 +114,7 @@ class OngoingContextSelector(
             )
         }
 
-        // P0-7: 推导 DORMANT 状态——基于 lastEvidenceTurn 而非 lastInjectedTurn
+        // 推导 DORMANT 状态——基于 lastEvidenceTurn 而非 lastInjectedTurn
         // 连续 DORMANT_TURNS 轮无真实新证据 → DORMANT
         // 事项有真实证据但因其他原因未注入，不得错误进入 DORMANT
         // 事项不断被注入但没有任何真实新证据，也不能靠"被注入"永久保持 ACTIVE
@@ -137,7 +137,7 @@ class OngoingContextSelector(
         }
         val realText = realMessages.joinToString(" ") { it.content }
 
-        // F06: 使用 effectiveIntent——从冻结快照读取，不重新 readIntent
+        // 使用 effectiveIntent——从冻结快照读取，不重新 readIntent
         // 已暂停、已完成、已到期均不参与检索授权
         val intentConfig = context.effectiveIntent
         val intentText = if (intentConfig.enabled &&
@@ -147,7 +147,7 @@ class OngoingContextSelector(
             intentConfig.text
         } else ""
 
-        // P0-7: 用户本轮想法（ReplyDirective）——真实 relevance signal
+        // 用户本轮想法（ReplyDirective）——真实 relevance signal
         val directiveText = context.replyDirective?.text ?: ""
 
         val eligible = mutableListOf<PlanItem>()
@@ -255,14 +255,14 @@ class OngoingContextSelector(
     }
 
     /** 从事项名称中提取关键词用于匹配
-     * P0-7: 改进关键词提取——从事项名中去除日期/数字前缀，提取核心名词 */
+     * 改进关键词提取——从事项名中去除日期/数字前缀，提取核心名词 */
     private fun extractKeywords(name: String): List<String> {
         // 去除常见前缀词和标点
         var cleaned = name.replace(Regex("[（）()【】\\[\\]「」\"'·]"), "")
             .replace(Regex("^(计划|约|定于|准备)"), "")
             .trim()
 
-        // P0-7: 去除日期模式（如 "9-21", "周一", "周二" 等），保留核心事件名词
+        // 去除日期模式（如 "9-21", "周一", "周二" 等），保留核心事件名词
         cleaned = cleaned.replace(Regex("\\d{1,2}[-/]\\d{1,2}"), "")
             .replace(Regex("周[一二三四五六日天]"), "")
             .replace(Regex("^[\\s-]+"), "")
@@ -275,7 +275,7 @@ class OngoingContextSelector(
         // 如果分割后只有一条，直接用清理后的名
         val keywords = if (parts.isEmpty()) listOf(cleaned).filter { it.length >= 2 } else parts
 
-        // P0-7: 如果清理后关键词为空（如事项名只有日期），回退到原始名（去除前缀后的）
+        // 如果清理后关键词为空（如事项名只有日期），回退到原始名（去除前缀后的）
         return if (keywords.isEmpty()) {
             val fallback = name.replace(Regex("[（）()【】\\[\\]「」\"'·]"), "")
                 .replace(Regex("^(计划|约|定于|准备)"), "")
@@ -287,9 +287,9 @@ class OngoingContextSelector(
     }
 
     /**
-     * P0-7: 从原始事项名称中提取 2 字滑动窗口关键词。
+     * 从原始事项名称中提取 2 字滑动窗口关键词。
      *
-     * F05: 已废弃——二字滑动窗口匹配太宽，会误召回。
+     * 已废弃——二字滑动窗口匹配太宽，会误召回。
      * "周末见面" 包含 "周末"，消息 "周末还要加班" 即命中，但见面事项没有新证据。
      * 现在只作为 extractKeywords 的回退参考，不再单独用于 any contains 判断。
      */
@@ -304,7 +304,7 @@ class OngoingContextSelector(
     }
 
     /**
-     * F05: 读取已消费的消息 ID（防重复来源推进证据时间）。
+     * 读取已消费的消息 ID（防重复来源推进证据时间）。
      * 只保留最近 N 条，防文件无限增长。
      */
     private suspend fun readConsumedMessageIds(kbName: String): Set<String> {
@@ -316,7 +316,7 @@ class OngoingContextSelector(
     }
 
     /**
-     * F05: 写入已消费的消息 ID，只保留最近 50 条。
+     * 写入已消费的消息 ID，只保留最近 50 条。
      */
     private suspend fun writeConsumedMessageIds(kbName: String, ids: Set<String>) {
         val toKeep = ids.toList().takeLast(50).toSet()
@@ -330,7 +330,7 @@ class OngoingContextSelector(
 
     /**
      * 解析 plan.md 的事项行为 PlanItem，推导内部状态。
-     * F04: 兼容新格式 itemId~name|status|chain 和旧格式 name|status|chain。
+     * 兼容新格式 itemId~name|status|chain 和旧格式 name|status|chain。
      */
     private fun parsePlanItems(content: String): List<PlanItem> {
         if (content.isBlank()) return emptyList()
@@ -340,7 +340,7 @@ class OngoingContextSelector(
             if (!t.contains("|")) continue
             val parts = t.split("|").map { it.trim() }
             if (parts.size < 3 || parts[0].isBlank()) continue
-            // F04: 检查 itemId~ 前缀
+            // 检查 itemId~ 前缀
             val firstPart = parts[0]
             val tildeIdx = firstPart.indexOf('~')
             val name = if (tildeIdx > 0) firstPart.substring(tildeIdx + 1) else firstPart
@@ -356,7 +356,7 @@ class OngoingContextSelector(
     }
 
     /** 推导内部状态
-     * P0-7: DORMANT 不在此推导——DORMANT 由冷却状态 + 轮次差距在 selectForInjection 中推导 */
+     * DORMANT 不在此推导——DORMANT 由冷却状态 + 轮次差距在 selectForInjection 中推导 */
     private fun deriveItemStatus(status: String, @Suppress("UNUSED_PARAMETER") chain: String): ItemStatus {
         val s = status.trim()
         return when {
@@ -367,7 +367,7 @@ class OngoingContextSelector(
         }
     }
 
-    /** P0-7: 尝试从事项名称中提取事件日期
+    /** 尝试从事项名称中提取事件日期
      * 修正：不再从状态链中提取日期——状态链中的时间是"记录状态的时间"，不是"事件发生时间" */
     private fun extractEventDate(name: String): String? {
         // 仅从事项名中提取日期（如"9-21见面" → "2026-09-21"）
@@ -388,7 +388,7 @@ class OngoingContextSelector(
         val name: String,
         var lastInjectedTurn: Int,
         var lastInjectedTime: String,
-        // P0-7: 独立的证据轮次——决定 ACTIVE / DORMANT，不与注入轮次互相替代
+        // 独立的证据轮次——决定 ACTIVE / DORMANT，不与注入轮次互相替代
         var lastEvidenceTurn: Int = -1
     )
 
@@ -403,7 +403,7 @@ class OngoingContextSelector(
     }
 
     /**
-     * P0-7: 更新冷却状态——同时更新 lastInjectedTurn 和 lastEvidenceTurn。
+     * 更新冷却状态——同时更新 lastInjectedTurn 和 lastEvidenceTurn。
      *
      * - lastInjectedTurn: 只在事项被注入时更新（injectedNames 中的事项）
      * - lastEvidenceTurn: 在事项本轮有真实新证据时更新（evidenceNames 中的事项）
@@ -443,7 +443,7 @@ class OngoingContextSelector(
         /** 冷却轮数：如果一个事项在最近 N 轮已注入且无新证据，禁止再注入 */
         const val COOLDOWN_TURNS = 3
 
-        /** P0-7: DORMANT 阈值——连续 N 轮无新证据 → DORMANT */
+        /** DORMANT 阈值——连续 N 轮无新证据 → DORMANT */
         const val DORMANT_TURNS = 5
     }
 }

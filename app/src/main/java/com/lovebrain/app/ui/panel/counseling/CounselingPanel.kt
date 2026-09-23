@@ -130,7 +130,7 @@ fun CounselingPanel(
         )
 
         // 谈心快速模板：未在谈心中、无结果时，显示常见困惑模板 chip（全部 6 个，一行横向滚动）
-        // 第 7 轮修复（用户实测"示例没了"）：不再要求 draft.isEmpty()，也不折叠成 2 个——
+        //（用户实测"示例没了"）：不再要求 draft.isEmpty()，也不折叠成 2 个——
         // 只要不在谈心中且无结果就全部展示；点击模板直接填入输入框。
         if (!isCounseling && result == null && error == null) {
             Spacer(Modifier.height(Spacing.xs))
@@ -183,7 +183,7 @@ fun CounselingPanel(
         // 谈心中脉冲动画（与 GenerateButton 一致的视觉反馈）——
         // 仅在 isCounseling 时创建 rememberInfiniteTransition，非谈心状态不运行动画（避免无谓重组开销）
         if (isCounseling) {
-            // ：实底 Primary + PrimaryDark 叠层呼吸（对比度优于整条 alpha 脉冲）
+            // 实底 Primary + PrimaryDark 叠层呼吸（对比度优于整条 alpha 脉冲）
             val pulseTransition = rememberInfiniteTransition(label = "counselingPulse")
             val overlayAlpha by pulseTransition.animateFloat(
                 initialValue = 0f,
@@ -204,7 +204,7 @@ fun CounselingPanel(
                     .clickable { viewModel.stopCounseling() },
                 contentAlignment = Alignment.Center
             ) {
-                // ：PrimaryDark 叠层呼吸（不透明度 0~0.22 循环），实底之上做明暗脉动
+                // PrimaryDark 叠层呼吸（不透明度 0~0.22 循环），实底之上做明暗脉动
                 Box(
                     Modifier
                         .matchParentSize()
@@ -234,7 +234,7 @@ fun CounselingPanel(
                 }
             }
         } else {
-            // ：开始谈心 CTA 补按压反馈（复用标准件 0.96 scale + 120ms；条件 clickable 结构保留）
+            // 开始谈心 CTA 补按压反馈（复用标准件 0.96 scale + 120ms；条件 clickable 结构保留）
             val (ctaInteraction, ctaScale) = rememberPressScale(0.96f, "ctaScale")
             Box(
                 modifier = Modifier
@@ -242,7 +242,7 @@ fun CounselingPanel(
                     .height(CounselingDimens.CTA_HEIGHT_DP.dp)
                     .graphicsLayer { scaleX = ctaScale; scaleY = ctaScale }
                     .then(if (canStart) Modifier.shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md) else Modifier)
-                    // ：禁用态对齐 GenerateButton 先例（SurfaceInset 底 + TextSecondary 文字，WCAG 对比度）
+                    // 禁用态对齐 GenerateButton 先例（SurfaceInset 底 + TextSecondary 文字，WCAG 对比度）
                     .background(if (canStart) Primary else SurfaceInset, LoveBrainShape.md)
                     .then(if (canStart) Modifier.clickable(interactionSource = ctaInteraction, indication = null, onClick = {
                         viewModel.generateCounseling(draft.trim())
@@ -297,7 +297,7 @@ fun CounselingPanel(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = err, color = Error, style = AppTypography.bodySmall)
                         Spacer(Modifier.height(Spacing.sm))
-                        // ：点击重试补按压反馈（复用标准件 0.96 scale + 120ms）
+                        // 点击重试补按压反馈（复用标准件 0.96 scale + 120ms）
                         val (retryInteraction, retryScale) = rememberPressScale(0.96f, "counselRetryScale")
                         Text(
                             text = "点击重试",
@@ -309,7 +309,7 @@ fun CounselingPanel(
                                 .clickable(interactionSource = retryInteraction, indication = null, onClick = {
                                     viewModel.generateCounseling(draft.trim())
                                 })
-                                .padding(horizontal = Spacing.lg, vertical = Spacing.sm) // ：热区外扩至 ≥24dp（文字高约 16dp + 垂直内边距）
+                                .padding(horizontal = Spacing.lg, vertical = Spacing.sm) // 热区外扩至 ≥24dp（文字高约 16dp + 垂直内边距）
                         )
                     }
                 }
@@ -350,7 +350,7 @@ fun CounselingPanel(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // ：继续追问胶囊补按压反馈（胶囊类 0.92，对齐 RoleChip 先例）
+                        // 继续追问胶囊补按压反馈（胶囊类 0.92，对齐 RoleChip 先例）
                         val (followUpInteraction, followUpScale) = rememberPressScale(0.92f, "followUpScale")
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -373,7 +373,7 @@ fun CounselingPanel(
                             // A2-2：共享三角箭头（原 Canvas Path 块与锦囊处逐字相同）
                             TriangleArrow(color = Primary, rotation = followUpArrowRotation)
                         }
-                        // ：清空重聊胶囊补按压反馈（胶囊类 0.92，对齐 RoleChip 先例）
+                        // 清空重聊胶囊补按压反馈（胶囊类 0.92，对齐 RoleChip 先例）
                         val (clearInteraction, clearScale) = rememberPressScale(0.92f, "clearScale")
                         Text(
                             text = "清空重聊",
@@ -449,7 +449,7 @@ fun CounselingPanel(
                                     )
                                 }
                                 Spacer(Modifier.width(Spacing.sm))
-                                // ：追问动作按钮补按压反馈（复用标准件 0.96 scale + 120ms）
+                                // 追问动作按钮补按压反馈（复用标准件 0.96 scale + 120ms）
                                 val (askInteraction, askScale) = rememberPressScale(0.96f, "askScale")
                                 Box(
                                     modifier = Modifier
@@ -459,7 +459,7 @@ fun CounselingPanel(
                                             LoveBrainShape.md
                                         )
                                         .graphicsLayer { scaleX = askScale; scaleY = askScale }
-                                        // ：禁用态三件套——空输入时不可点（对齐  先例）
+                                        // 禁用态三件套——空输入时不可点（对齐  先例）
                                         .then(if (followUpText.isNotBlank()) Modifier.clickable(interactionSource = askInteraction, indication = null, onClick = {
                                             if (followUpText.isNotBlank()) {
                                                 // 保存当前问答对到历史
@@ -467,7 +467,7 @@ fun CounselingPanel(
                                                 // 持久化历史到磁盘（重启不丢失）
                                                 viewModel.saveCounselingHistory(counselingHistory)
                                                 // 组装带上下文的追问消息
-                                                // : 只保留最近 N 轮问答，防 context length 超限
+                                                //  只保留最近 N 轮问答，防 context length 超限
                                                 val recentHistory = counselingHistory.takeLast(AppConfig.COUNSELING_MAX_HISTORY_ROUNDS)
                                                 val contextMsg = buildString {
                                                     append("【前情提要】\n")
@@ -577,7 +577,7 @@ private fun TemplateChip(text: String, onClick: () -> Unit) {
             .background(SurfaceInset, LoveBrainShape.sm)
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.sm)
             .clickable(interactionSource = interaction, indication = null, onClick = onClick)
-            .padding(horizontal = Spacing.md, vertical = Spacing.sm) // ：垂直内边距 xs→sm，热区 ≈20→24dp
+            .padding(horizontal = Spacing.md, vertical = Spacing.sm) // 垂直内边距 xs→sm，热区 ≈20→24dp
     ) {
         Text(text = text, style = AppTypography.labelSmall, color = TextSecondary)
     }

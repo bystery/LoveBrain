@@ -1,7 +1,7 @@
 package com.lovebrain.app.model
 
 /**
- * S2-03: 领域事件——use case 与 ViewModel 之间唯一的通信协议。
+ * 领域事件——use case 与 ViewModel 之间唯一的通信协议。
  *
  * ## 这里解决的缺陷
  * 旧实现里 GenerationEngine 通过一个四十多个方法的 `Callbacks` 大接口反向写 ViewModel，
@@ -185,7 +185,7 @@ data class ReplyUiState(
 }
 
 /**
- * S2-03: 回复 reducer——唯一状态入口。
+ * 回复 reducer——唯一状态入口。
  *
  * 规则：
  * 1. 身份不符 → 原样返回**同一个对象**，调用方据此知道事件被拒。

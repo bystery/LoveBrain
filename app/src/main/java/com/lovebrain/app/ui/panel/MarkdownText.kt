@@ -28,7 +28,7 @@ import com.lovebrain.app.ui.theme.Spacing
 import com.lovebrain.app.ui.theme.TextHint
 import com.lovebrain.app.ui.theme.TextSecondary
 
-/** ：4 个解析 Regex 上提为文件级常量（模式串逐字节不变；避免流式热路径每次重组现编译） */
+/** 4 个解析 Regex 上提为文件级常量（模式串逐字节不变；避免流式热路径每次重组现编译） */
 private val RE_HTML_COMMENT = Regex("<!--.*?-->", RegexOption.DOT_MATCHES_ALL)
 private val RE_HR = Regex("^[-*]{2,}$")
 private val RE_ORDERED_LIST = Regex("^\\d+[.、)]\\s.*")
@@ -63,7 +63,7 @@ private object MarkdownDimens {
 fun MarkdownText(
     text: String,
     color: Color,
-    // ：默认值接排版令牌（21→22 = MarkdownBodyLineHeight；调用方全显式传参，零影响）
+    // 默认值接排版令牌（21→22 = MarkdownBodyLineHeight；调用方全显式传参，零影响）
     fontSize: TextUnit = MarkdownBodyFontSize,
     lineHeight: TextUnit = MarkdownBodyLineHeight,
     modifier: Modifier = Modifier,

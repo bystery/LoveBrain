@@ -13,7 +13,7 @@ import java.time.ZoneId
  * - 高峰时段 = 北京时间周一至周五 9:00-12:00、14:00-18:00（左闭右开），其余为低谷；
  * - 价格表单位 = 元/百万 tokens；其他模型（UNKNOWN 档）不计费返回 0。
  *
- * 纯函数、无 Android 依赖（先例 = HttpsTrustGuard），由 UsagePricerTest 回归钉死。
+ * 纯函数、无 Android 依赖（），由 UsagePricerTest 回归钉死。
  * 展示口径：双条件不满足或非闪/PRO 档 → 本次花费位显示占位符（步骤 6 消费侧处理）。
  */
 internal object UsagePricer {

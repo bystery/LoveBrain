@@ -21,10 +21,10 @@ import kotlinx.coroutines.withContext
 /** 画像建议构建失败时的原文截断回退长度 */
 private const val PROFILE_FALLBACK_LIMIT = 500
 
-/** P0-2: 画像生成最大自动尝试次数（含首次） */
+/** 画像生成最大自动尝试次数（含首次） */
 private const val MAX_PROFILE_ATTEMPTS = 3
 
-/** P0-2: 重试退避基准间隔（线性递增：第 1 次 500ms，第 2 次 1000ms） */
+/** 重试退避基准间隔（线性递增：第 1 次 500ms，第 2 次 1000ms） */
 private const val RETRY_BACKOFF_MS = 500L
 
 /**
@@ -40,7 +40,7 @@ ${ProfileUpdateSchema.strictSchemaForPrompt()}
 /**
  * Attempt 3 使用的 compact schema repair system prompt。
  * Schema 文案引用 [ProfileUpdateSchema.compactSchemaForPrompt]——单一真源。
- * P0-4: 不再要求 AI 伪造 "最小合法 JSON"——compact schema 只描述真正合法的画像更新。
+ * 不再要求 AI 伪造 "最小合法 JSON"——compact schema 只描述真正合法的画像更新。
  * 达到最大重试次数仍失败时，由 Coordinator 产生 typed failure。
  */
 private fun buildCompactSchemaRepairSystem(): String = """请根据以下上下文重新生成合法的画像更新 JSON。只输出 JSON 对象，不要输出其他任何内容。
@@ -74,7 +74,7 @@ class KnowledgeTriggerCoordinator(
 ) {
 
     /** 回调接口——VM 实现此接口，Coordinator 通过它写回 UI 状态
-     *  KBG-02/KBG-03：所有后台结果回调携带 originating kbName，防串库 */
+     *  所有后台结果回调携带 originating kbName，防串库 */
     interface Callbacks {
         fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>)
         fun onVectorUpdateNotice(kbName: String, summary: String)
@@ -87,18 +87,18 @@ class KnowledgeTriggerCoordinator(
     /**
      * 检查是否达到经验提取（5 话题）/画像更新（5 话题）/向量重估（3 话题）阈值。
      * A12：在 [scope] 中启动后台协程，串行执行三引擎——向量重估 → 经验提取 → 画像 reflect。
-     * 
+     *
      *  第 3 步：画像更新频率从"every turn"→"every 50 topics"
      * 使用 AppConfig.REFLECT_TRIGGER_INTERVAL（值=5）控制触发间隔
      */
     fun checkTriggers(kbName: String, scope: CoroutineScope, callbacks: Callbacks) {
         scope.launch {
-            // P0-2: 不得用 runCatching——CancellationException 必须 rethrow
+            // 不得用 runCatching——CancellationException 必须 rethrow
             try {
                 val topicCount = knowledgeRepo.getLessonCount(kbName)
                 if (topicCount <= 0) return@launch
 
-                // F09: 后台任务启动时冻结 corrections revision，完成后比对防迟到覆盖
+                // 后台任务启动时冻结 corrections revision，完成后比对防迟到覆盖
                 val frozenCorrectionsRev = knowledgeRepo.getCorrectionsRevision(kbName)
 
                 // A12 三引擎串行：向量重估 → 经验提取 → 画像 reflect（前一引擎完成才开始下一引擎；
@@ -127,7 +127,7 @@ class KnowledgeTriggerCoordinator(
      * 后台任务在写入前（而非启动时）校验 revision，防迟到覆盖 */
     private fun reestimateVector(kbName: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
-            // P0-2: 不得用 runCatching——CancellationException 必须 rethrow
+            // 不得用 runCatching——CancellationException 必须 rethrow
             try {
                 val oldVector = withContext(Dispatchers.IO) { knowledgeRepo.readVector(kbName) }
                 val currentStage = withContext(Dispatchers.IO) { knowledgeRepo.getCurrentStage(kbName) }
@@ -135,7 +135,7 @@ class KnowledgeTriggerCoordinator(
 
                 val system = promptBuilder.buildVectorSystemPrompt()
                 val user = promptBuilder.buildVectorUserPrompt(oldVector, currentStage, context)
-                // P0-2: 不得用 runCatching——CancellationException 必须 rethrow
+                // 不得用 runCatching——CancellationException 必须 rethrow
                 val raw = try {
                     withContext(Dispatchers.IO) { deepSeekRepo.generateRaw(system, user) }
                 } catch (e: kotlinx.coroutines.CancellationException) {
@@ -144,7 +144,7 @@ class KnowledgeTriggerCoordinator(
                     ""
                 }
                 if (raw.isBlank()) {
-                    //  ：后台引擎失败轻提示（固定文案；extractLessons 不加，）
+                    // 后台引擎失败轻提示（固定文案；extractLessons 不加，）
                     callbacks.onKbNotice("向量重估本次失败，可稍后重试")
                     return@launch
                 }
@@ -246,12 +246,12 @@ class KnowledgeTriggerCoordinator(
 
     private fun extractLessonsAsync(kbName: String, topicContext: String, scope: CoroutineScope, callbacks: Callbacks, frozenCorrectionsRev: Int): Job {
         return scope.launch {
-            // P0-2: 不得用 runCatching——CancellationException 必须 rethrow
+            // 不得用 runCatching——CancellationException 必须 rethrow
             try {
                 if (topicContext.isBlank()) return@launch
                 val system = promptBuilder.buildLessonsSystemPrompt()
                 val user = promptBuilder.buildLessonsUserPrompt(topicContext)
-                // P0-2: 不得用 runCatching——CancellationException 必须 rethrow
+                // 不得用 runCatching——CancellationException 必须 rethrow
                 val lessons = try {
                     deepSeekRepo.generateRaw(system, user)
                 } catch (e: kotlinx.coroutines.CancellationException) {
@@ -285,8 +285,8 @@ class KnowledgeTriggerCoordinator(
     }
 
     /**
-     * P1-03: 用户手动触发画像重新生成（不依赖话题计数阈值）。
-     * P0-2 真正修复：改为纯 suspend operation——使用 coroutineScope 创建真实 child，
+     * 用户手动触发画像重新生成（不依赖话题计数阈值）。
+     * 真正修复：改为纯 suspend operation——使用 coroutineScope 创建真实 child，
      * 不再接收外部 CoroutineScope 参数。
      * 调用方的 cancel 会传播到此协程及其所有子协程，真正取消底层模型请求。
      */
@@ -299,7 +299,7 @@ class KnowledgeTriggerCoordinator(
     }
 
     /**
-     * P0-2: 纯 suspend 版本——在调用方协程内直接执行，不 launch 新 Job。
+     * 纯 suspend 版本——在调用方协程内直接执行，不 launch 新 Job。
      * CancellationException 必须 rethrow，不得被 runCatching 吞掉。
      */
     private suspend fun generateReflectSuggestionSuspend(
@@ -307,7 +307,7 @@ class KnowledgeTriggerCoordinator(
         callbacks: Callbacks,
         frozenCorrectionsRev: Int
     ) {
-        // P0-2: runCatching 会吞 CancellationException——手动 rethrow
+        // runCatching 会吞 CancellationException——手动 rethrow
         try {
                 // 所有 attempt 共享同一份冻结上下文——Attempt 3 也不丢弃原始事实
                 val system = promptBuilder.buildReflectSystemPrompt()
@@ -349,7 +349,7 @@ $lastRaw"""
                         user
                     }
 
-                    // P0-2: 不得用 runCatching——它会吞 CancellationException
+                    // 不得用 runCatching——它会吞 CancellationException
                     // 改为显式 try/catch，CancellationException 必须 rethrow
                     val rawResult = try {
                         withContext(Dispatchers.IO) { deepSeekRepo.generateRawWithMetadata(effectiveSystem, effectiveUser) }
@@ -434,7 +434,7 @@ $lastRaw"""
                         L.w("generateReflect skipped at write time: corrections changed (frozen=$frozenCorrectionsRev)")
                     }
                 } else {
-                    // P0-2: 截断/格式错误——展示失败建议（带"重新生成"按钮）
+                    // 截断/格式错误——展示失败建议（带"重新生成"按钮）
                     val errorMsg = when (finalResult.status) {
                         ProfileParseStatus.TRUNCATED -> "画像更新输出不完整，本次未写入任何数据。"
                         ProfileParseStatus.INVALID_JSON -> "画像更新 JSON 解析失败，本次未写入任何数据。"
@@ -455,7 +455,7 @@ $lastRaw"""
                     )
                 }
         } catch (e: kotlinx.coroutines.CancellationException) {
-            // P0-2: CancellationException 必须 rethrow——不能被当普通 failure 吞掉
+            // CancellationException 必须 rethrow——不能被当普通 failure 吞掉
             throw e
         } catch (e: Exception) {
             L.e("generateReflectSuggestionSuspend failed", e)

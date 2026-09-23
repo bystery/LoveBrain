@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * S2-02: 前台任务协调器——所有前台 AI 流程唯一的任务真源。
+ * 前台任务协调器——所有前台 AI 流程唯一的任务真源。
  *
  * ## 这里解决的三个具体缺陷
  * 1. **单一 owner**：调用方不再"先 launch 再注册"。任务由协调器在锁内创建

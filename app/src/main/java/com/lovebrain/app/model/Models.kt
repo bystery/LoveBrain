@@ -20,7 +20,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 
 /** 一条回复方案（UI 渲染用；tag/title 硬编码补，AI 只输出 reply 文本）
- * F09-7: reply 为空表示该方向本轮不适合，UI 显示“本轮不适合”且不可复制。
+ * reply 为空表示该方向本轮不适合，UI 显示“本轮不适合”且不可复制。
  * Scheme 自身持有 source 字段区分来源——STYLE=四风格，DIRECTION=四方向。 */
 @Serializable
  data class Scheme(
@@ -97,7 +97,7 @@ object DirectionCatalog {
 }
 
 /** 新格式 response 块：4 种风格回复（recommended/bad_boy/playful/warm）
- * F09-7: toSchemes 不再过滤空回复，固定返回 4 条（空 reply = 本轮不适合） */
+ * toSchemes 不再过滤空回复，固定返回 4 条（空 reply = 本轮不适合） */
 @Serializable
 data class ReplySchemes(
     val recommended: String = "",
@@ -105,7 +105,7 @@ data class ReplySchemes(
     val playful: String = "",
     val warm: String = ""
 ) {
-    /** 映射为 UI 用的 4 条 Scheme（F09-7: 不再过滤空回复，固定四个方向） */
+    /** 映射为 UI 用的 4 条 Scheme（不再过滤空回复，固定四个方向） */
     fun toSchemes(): List<Scheme> = listOf(
         Scheme(tag = "A", title = "推荐", reply = recommended),
         Scheme(tag = "B", title = "清醒", reply = badBoy),
@@ -115,19 +115,19 @@ data class ReplySchemes(
 }
 
 /** 进行中事项（长持续时间话题追踪）
- * F04: 增加 itemId（稳定身份）和 sourceIds（真实证据来源），
+ * 增加 itemId（稳定身份）和 sourceIds（真实证据来源），
  * 用于幂等更新和防止旧任务复活。 */
 @Serializable
 data class OngoingItem(
     @SerialName("item") val name: String = "",  // 新格式字段名为 item；内部仍用 name
     val status: String = "",    // 新出现 / 进行中 / 已完成 / 已取消
     val state: String = "",     // 本轮最新状态节点（时间戳由代码打）
-    @SerialName("item_id") val itemId: String = "",  // F04: 稳定身份 ID
-    @SerialName("source_ids") val sourceIds: List<String> = emptyList()  // F04: 本轮真实证据来源消息 ID
+    @SerialName("item_id") val itemId: String = "",  // 稳定身份 ID
+    @SerialName("source_ids") val sourceIds: List<String> = emptyList()  // 本轮真实证据来源消息 ID
 )
 
 /** 场景事实（带来源关联）
- * F03: 每条 scene fact 必须关联自己的真实 sourceMessageIds，
+ * 每条 scene fact 必须关联自己的真实 sourceMessageIds，
  * 而不是只给整个 round 一个非空来源集合。
  * sourceIds 引用本轮 HER/ME 消息的 id；客户端逐条校验。
  *
@@ -137,12 +137,12 @@ data class OngoingItem(
 data class SceneFact(
     val text: String = "",
     @SerialName("source_ids") val sourceIds: List<String> = emptyList(),
-    // P1-1: 事实归属——谁说的 / 描述谁
+    // 事实归属——谁说的 / 描述谁
     val speaker: EntityRef = EntityRef.UNKNOWN,
     val subject: EntityRef = EntityRef.UNKNOWN
 )
 
-/** F03: 自定义序列化器，兼容旧格式纯字符串和新格式带来源对象。
+/** 自定义序列化器，兼容旧格式纯字符串和新格式带来源对象。
  * 反序列化时接受：
  * - "纯字符串" → SceneFact(text=..., sourceIds=[])
  * - {"text":"...","source_ids":[...]} → 完整 SceneFact
@@ -160,7 +160,7 @@ object SceneFactSerializer : KSerializer<SceneFact> {
                     value.sourceIds.forEach { add(it) }
                 })
             }
-            // P1-1: 序列化事实归属字段
+            // 序列化事实归属字段
             if (value.speaker != EntityRef.UNKNOWN) {
                 put("speaker", value.speaker.name.lowercase())
             }
@@ -184,14 +184,14 @@ object SceneFactSerializer : KSerializer<SceneFact> {
                         (id as? JsonPrimitive)?.content
                     } else emptyList()
                 } ?: emptyList()
-                // P1-1: 反序列化事实归属字段
+                // 反序列化事实归属字段
                 val speaker = element["speaker"]?.jsonPrimitive?.content
                     ?.let { name -> EntityRef.entries.firstOrNull { it.name.equals(name, ignoreCase = true) } }
                     ?: EntityRef.UNKNOWN
                 val subject = element["subject"]?.jsonPrimitive?.content
                     ?.let { name -> EntityRef.entries.firstOrNull { it.name.equals(name, ignoreCase = true) } }
                     ?: EntityRef.UNKNOWN
-                // P1-12: subject_candidate 已从 format.md 移除，不再需要模型生成。
+                // subject_candidate 已从 format.md 移除，不再需要模型生成。
                 // 反序列化时仍兼容旧返回——接受此字段但不存储（忽略）。
                 SceneFact(text = text, sourceIds = sourceIds, speaker = speaker, subject = subject)
             }
@@ -201,7 +201,7 @@ object SceneFactSerializer : KSerializer<SceneFact> {
 }
 
 /** 新格式 analysis 块（话题/场景/事项记录，不含展示型分析）
- * F03: scene_facts 改为 List<SceneFact>，每条携带来源 ID。
+ * scene_facts 改为 List<SceneFact>，每条携带来源 ID。
  * 兼容旧格式：如果 AI 返回纯字符串列表，sourceIds 为空（标记为未核实）。 */
 @Serializable
 data class ReplyAnalysis(
@@ -212,7 +212,7 @@ data class ReplyAnalysis(
 )
 
 /** DeepSeek 返回的完整结构（response + directions + analysis）
- * P1-07: directions 不再是风格的降级兜底——两者独立共存。
+ * directions 不再是风格的降级兜底——两者独立共存。
  * directions 异常不影响 response 风格渲染。 */
 @Serializable
 data class LoveBrainResponse(
@@ -293,7 +293,7 @@ data class ProactiveOption(
     val angle: String = ""   // 切入角度，一句话
 )
 
-/** F07: 持续意图配置（每个知识库一份，存储于 moment/intent.json）
+/** 持续意图配置（每个知识库一份，存储于 moment/intent.json）
  *
  * 默认关闭（enabled=false），无预设恋爱目标。
  * 跨面板关闭、重启和正常下一轮保留；关闭时保留最后文本但不注入。
@@ -303,14 +303,14 @@ data class IntentConfig(
     val text: String = "",       // 自由文本意图
     val enabled: Boolean = false, // 默认关闭
     val revision: Int = 0,       // 每次保存递增，用于快照识别
-    // F06: 有效期与完成状态
+    // 有效期与完成状态
     val expiry: IntentExpiry = IntentExpiry.UNTIL_DONE, // 默认直到手动完成
     val expiryDate: String = "",  // 指定日期时使用 yyyy-MM-dd 格式
     val status: IntentStatus = IntentStatus.ACTIVE    // 当前状态
 )
 
 /**
- * F06: 意图有效期选项。
+ * 意图有效期选项。
  * - TODAY: 仅今天（设备本地时区）
  * - DATE: 指定日期
  * - UNTIL_DONE: 直到手动完成（默认）
@@ -324,7 +324,7 @@ enum class IntentExpiry {
 }
 
 /**
- * F06: 意图状态。
+ * 意图状态。
  * - ACTIVE: 启用中，正常注入
  * - PAUSED: 暂停，保留文本但不注入
  * - COMPLETED: 完成，不再注入，历史可查看
@@ -338,9 +338,9 @@ enum class IntentStatus {
     EXPIRED
 }
 
-// ═══════════ F09: 本轮参考与记忆可纠正 ═══════════
+// ═══════════ 本轮参考与记忆可纠正 ═══════════
 
-/** F09: 记忆引用类型 — 画像/场景/事项/经验 */
+/** 记忆引用类型 — 画像/场景/事项/经验 */
 enum class MemoryKind {
     PROFILE,    // 画像（me/her/warmth）
     SCENE,      // 场景事实（scene.md）
@@ -348,13 +348,13 @@ enum class MemoryKind {
     LESSON      // 经验教训（lessons.md）
 }
 
-/** F09: 记忆引用 — 来自实际注入 Prompt 的裁剪后记忆片段。
+/** 记忆引用 — 来自实际注入 Prompt 的裁剪后记忆片段。
  *
  * 每条 MemoryRef 对应最终 prompt 中实际注入的一段知识库内容。
  * 用户可基于此发起纠正操作；纠正绑定 memoryId 参与下一次 PromptBuilder 过滤。
  * unknown legacy 内容整段引用，不伪装为精确事实。
  *
- * P1-1: 身份/事实归属机制。
+ * 身份/事实归属机制。
  * - [speaker]：谁说的（HER/ME/UNKNOWN）
  * - [subject]：这句话描述的事实主体（HER/ME/UNKNOWN）
  *   speaker=HER 不代表 subject=HER——她说"你感冒好了吗"描述的是 ME
@@ -371,7 +371,7 @@ data class MemoryRef(
     val sourceIds: List<String> = emptyList(),  // 关联的消息 ID（场景事实）
     val evidenceTime: String = "",   // 证据时间戳（场景链条目时间）
     val revision: Int = 0,            // 生成时快照 revision（防迟到覆盖）
-    // P1-1: 身份/事实归属
+    // 身份/事实归属
     val speaker: EntityRef = EntityRef.UNKNOWN,    // 谁说的
     val subject: EntityRef = EntityRef.UNKNOWN,   // 描述谁
     val evidenceMessageIds: List<String> = emptyList(), // 证据消息 ID（推导来源）
@@ -379,11 +379,11 @@ data class MemoryRef(
 )
 
 /**
- * P1-1: 事实主体枚举——谁说的 / 描述谁。
+ * 事实主体枚举——谁说的 / 描述谁。
  *
  * HER = 她（对方）
  * ME = 我（用户）
- * MULTIPLE = 来源混合（P0-3: 多个不同 speaker 的来源）
+ * MULTIPLE = 来源混合（多个不同 speaker 的来源）
  * UNKNOWN = 无法可靠确定（不猜，留空避免误记）
  *
  * 关键规则：speaker=HER 不代表 subject=HER。
@@ -394,7 +394,7 @@ enum class EntityRef {
 }
 
 /**
- * P1-1: 事实置信度。
+ * 事实置信度。
  *
  * HIGH = 直接陈述（如"她喜欢猫"）
  * MEDIUM = 从行为推导（如"她连续三天提到猫"）
@@ -404,7 +404,7 @@ enum class FactConfidence {
     HIGH, MEDIUM, LOW
 }
 
-/** F09: 纠正操作类型 */
+/** 纠正操作类型 */
 enum class CorrectionAction {
     WRONG,          // 这条不对 — 停止可信注入，允许补正确内容
     FINISHED,       // 这件事结束了 — 退出活跃事项、保留历史（只对事项可用）
@@ -413,7 +413,7 @@ enum class CorrectionAction {
 }
 
 /**
- * F04: "暂时别提"时长选项。
+ * "暂时别提"时长选项。
  * - THIS_ROUND: 仅本轮
  * - TODAY: 今天剩余时间
  * - UNTIL_RESTORE: 直到手动恢复（默认）
@@ -425,7 +425,7 @@ enum class MuteDuration {
     UNTIL_RESTORE   // 直到手动恢复
 }
 
-/** F09: 人工纠正记录 — 持久化于 memory/corrections.json
+/** 人工纠正记录 — 持久化于 memory/corrections.json
  *
  * 每条记录绑定 memoryId，参与下一次 PromptBuilder 过滤。
  * 所有操作可撤销（删除记录即恢复）、重启有效、不调用模型。
@@ -438,7 +438,7 @@ data class MemoryCorrection(
     val targetKbId: String = "",     // WRONG_PERSON 时的目标库
     val revision: Int = 0,           // 保存时递增
     val updatedAt: String = "",      // 时间戳
-    // F04: "暂时别提"时长——仅 MUTED 操作使用
+    // "暂时别提"时长——仅 MUTED 操作使用
     val muteDuration: MuteDuration = MuteDuration.UNTIL_RESTORE, // 默认直到手动恢复
     val muteTimestamp: String = ""   // 静音起始时间（用于判断 TODAY/THIS_ROUND 是否过期）
 )

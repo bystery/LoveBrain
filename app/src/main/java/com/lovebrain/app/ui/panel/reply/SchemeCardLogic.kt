@@ -3,7 +3,7 @@ package com.lovebrain.app.ui.panel.reply
 import com.lovebrain.app.model.RewriteState
 
 /**
- * P0-10: 从 SchemeCard 抽离的纯机制逻辑——可测试，不依赖 Composable。
+ * 从 SchemeCard 抽离的纯机制逻辑——可测试，不依赖 Composable。
  *
  * 包含：
  * - presentation state derivation（SchemeCardPresentationState 推导）
@@ -95,7 +95,7 @@ fun reduceGesturePhase(
 }
 
 /**
- * P0-1: 语音两事件 rendezvous 提交决策——纯函数。
+ * 语音两事件 rendezvous 提交决策——纯函数。
  *
  * 统一提交条件：
  *   physicalReleased && finalTranscript 非空 && !cancelled && !submitted

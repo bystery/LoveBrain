@@ -3,7 +3,7 @@ package com.lovebrain.app.model
 import java.util.UUID
 
 /**
- * 画像更新建议（KBG-02：绑定 originating KB 身份，防串库）。
+ * 画像更新建议（绑定 originating KB 身份，防串库）。
  *
  * 携带 suggestionId 供确认时幂等核验；携带已验证的 ProfileUpdate payload，
  * 生成摘要和确认写入使用同一个已校验类型化对象，不重复解析 raw。

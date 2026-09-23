@@ -1,7 +1,7 @@
 package com.lovebrain.app.model
 
 /**
- * S2-06: 统一知识库 schema 版本治理。
+ * 统一知识库 schema 版本治理。
  *
  * 使用单一 `.schema_version` 文件替代分散的 `.migrated_v2`、`.migrated_plan_v3` 等 marker 文件。
  * 迁移按 vN -> vN+1 顺序运行；每步有备份、幂等、校验与恢复。
@@ -51,7 +51,7 @@ object KnowledgeSchemaVersion {
 }
 
 /**
- * S2-06: KB 名称/路径 value object——验证 canonical boundary。
+ * KB 名称/路径 value object——验证 canonical boundary。
  * 上层不能传任意路径，必须通过此 value object。
  */
 @JvmInline
@@ -65,7 +65,7 @@ value class KbName(val value: String) {
 }
 
 /**
- * S2-06: KB 相对路径 value object——验证 canonical boundary。
+ * KB 相对路径 value object——验证 canonical boundary。
  */
 @JvmInline
 value class KbRelativePath(val value: String) {

@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * F02: 反馈案例——点踩时本地保存的反馈记录。
+ * 反馈案例——点踩时本地保存的反馈记录。
  *
  * 理解错误与表达偏好必须分开。允许一条反馈同时属于两类。
  * 不记录 API Key、认证头或敏感连接参数。
@@ -28,11 +28,11 @@ data class FeedbackCase(
     val modelId: String = "",              // 模型/供应商标识
     val promptVersion: String = "",        // 提示词版本或哈希
     val timestamp: String = "",            // 时间
-    // F16: 冻结真实消息快照（含人物身份）
+    // 冻结真实消息快照（含人物身份）
     val dialogueSnapshot: List<DialogueSnapshotEntry> = emptyList(),
-    // F16: 实际使用的记忆引用
+    // 实际使用的记忆引用
     val memoryRefs: List<String> = emptyList(),
-    // F16: app 版本与构建信息
+    // app 版本与构建信息
     val appVersion: String = "",
     val buildType: String = "",
     // 用量（有则存）
@@ -44,7 +44,7 @@ data class FeedbackCase(
 )
 
 /**
- * F16: 对话快照条目——冻结点踩时的真实消息（含人物身份）。
+ * 对话快照条目——冻结点踩时的真实消息（含人物身份）。
  */
 @Serializable
 data class DialogueSnapshotEntry(
@@ -53,7 +53,7 @@ data class DialogueSnapshotEntry(
 )
 
 /**
- * F02: 反馈一级类别——理解错误与表达不喜欢不互斥。
+ * 反馈一级类别——理解错误与表达不喜欢不互斥。
  */
 enum class FeedbackCategory {
     UNDERSTANDING_ERROR,   // 理解错误
@@ -62,7 +62,7 @@ enum class FeedbackCategory {
 }
 
 /**
- * F02: 案例状态。
+ * 案例状态。
  */
 enum class CaseStatus {
     PENDING,       // 待分析
@@ -72,7 +72,7 @@ enum class CaseStatus {
 }
 
 /**
- * F02: 理解错误二级原因。
+ * 理解错误二级原因。
  */
 object UnderstandingReasons {
     val ALL = listOf(
@@ -87,7 +87,7 @@ object UnderstandingReasons {
 }
 
 /**
- * F02: 表达不喜欢二级原因。
+ * 表达不喜欢二级原因。
  */
 object ExpressionDislikeReasons {
     val ALL = listOf(

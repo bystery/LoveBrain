@@ -1,7 +1,7 @@
 package com.lovebrain.app.model
 
 /**
- * P0-6: 画像事务写入的 typed result——替代模糊的 Boolean。
+ * 画像事务写入的 typed result——替代模糊的 Boolean。
  *
  * 四种终态覆盖所有事务路径，调用方可据此给出精确的 UI 反馈：
  *

@@ -52,10 +52,10 @@ class TopicRecorder(
     /**
      * 记录一轮对话 + 处理话题状态 + 更新场景链 + 合并进行中事项。
      *
-     * F03: sceneFacts 参数为带来源 ID 的 [SceneFact]，
+     * sceneFacts 参数为带来源 ID 的 [SceneFact]，
      * 同时传入冻结的 messages 快照用于来源校验。
      *
-     * S2-04: 六个写入边界（话题归档、话题标签、recent、scene、plan、轮次计数）
+     * 六个写入边界（话题归档、话题标签、recent、scene、plan、轮次计数）
      * 全部包在一把 journal 事务锁里，完整事件先落 WAL 再动 target。
      * 幂等判据是 [RoundCommitJournal.isRoundCommitted] + 每投影水位，
      * 不再拿 recent.md 的 HTML marker 当跨文件提交标记。
@@ -112,7 +112,7 @@ class TopicRecorder(
 
         // 5. 本轮是否已完整提交（跨文件幂等的唯一判据）
         if (journal.isRoundCommitted(kb.name, roundId)) {
-            L.w("S2-04: round $roundId already committed, skipping all writes (roundMsgIds=$roundMsgIds)")
+            L.w("round $roundId already committed, skipping all writes (roundMsgIds=$roundMsgIds)")
             return false
         }
 
@@ -210,9 +210,9 @@ class TopicRecorder(
     /**
      * 构建一轮的 recent.md 记录（纯函数）。
      *
-     * P0-1：候选回复不再自动当作实际发送消息——scheme=null 表示本轮没有确认发送任何候选，
+     * 候选回复不再自动当作实际发送消息——scheme=null 表示本轮没有确认发送任何候选，
      * likedSchemes 记录用户偏好（点赞），但不写入"实际对话"段。
-     * P0-FIX：IDEA（想法）不写入 recent.md——IDEA 是本轮控制信息，不是真实聊天。
+     * IDEA（想法）不写入 recent.md——IDEA 是本轮控制信息，不是真实聊天。
      */
     private fun buildRoundEntry(
         time: String,
@@ -239,7 +239,7 @@ class TopicRecorder(
             append("我（最终回复：").append(schemeLabel).append("）：").append(scheme.reply).append("\n")
         }
         if (likedSchemes.isNotEmpty() && scheme == null) {
-            // F01: 点赞学习资料必须保存完整候选正文+风格标识，
+            // 点赞学习资料必须保存完整候选正文+风格标识，
             // 不能只存 tag 标签——否则下一轮无法知道用户喜欢了什么表达。
             append("（用户偏好，未确认发送：\n")
             likedSchemes.forEach { s ->
@@ -251,14 +251,14 @@ class TopicRecorder(
     }
 
     /** 职责2（自 record 拆出）：写入 moment/recent.md，保留最近 N 轮，溢出→对话暂存
-     * P0-4：未识别内容（不符合时间戳格式的块）原样保留，不当垃圾丢弃。
-     * S2-04：marker 只作本文件内的去重，不承担跨文件提交标记。 */
+     * 未识别内容（不符合时间戳格式的块）原样保留，不当垃圾丢弃。
+     * marker 只作本文件内的去重，不承担跨文件提交标记。 */
     private suspend fun writeRecent(kbName: String, entry: String, roundMsgIds: String = "") {
         val recentPath = "moment/recent.md"
         if (roundMsgIds.isNotBlank()) {
             val marker = "${RoundCommitJournal.WRITER_MARKER_PREFIX}$roundMsgIds -->"
             if (knowledgeRepo.readFile(kbName, recentPath).contains(marker)) {
-                L.w("S2-04: recent.md already holds this round locally, skipping append")
+                L.w("recent.md already holds this round locally, skipping append")
                 return
             }
         }
@@ -266,7 +266,7 @@ class TopicRecorder(
         if (existing.isNotBlank()) {
             val allParts = existing.split(Regex("(?=^- \\[)", RegexOption.MULTILINE)).map { it.trim() }
             val validBlocks = allParts.filter { validRoundBlock(it) }
-            // P0-4：未识别内容原样保留——拼回文件头部，不被当作轮次计数或溢出处理
+            // 未识别内容原样保留——拼回文件头部，不被当作轮次计数或溢出处理
             val unrecognized = allParts.filter { !validRoundBlock(it) && it.isNotBlank() }
 
             val kept = validBlocks.takeLast(maxTopicTurns - 1)
@@ -275,7 +275,7 @@ class TopicRecorder(
                 knowledgeRepo.appendFile(kbName, "memory/raw_chat.md", "\n" + overflow.joinToString("\n\n") + "\n")
             }
             val newRecent = buildString {
-                // P0-4：未识别内容拼回头部
+                // 未识别内容拼回头部
                 if (unrecognized.isNotEmpty()) {
                     unrecognized.forEach { append(it).append("\n\n") }
                 }
@@ -300,7 +300,7 @@ class TopicRecorder(
     }
 
     // ════════════════════════════════════════════════════════════════
-    // F03: 场景事实内部数据结构
+    // 场景事实内部数据结构
     // ════════════════════════════════════════════════════════════════
 
     /** scene.md 中解析出的单条事实（含来源和时间戳） */
@@ -308,8 +308,8 @@ class TopicRecorder(
         val text: String,           // 事实文本
         val sourceIds: List<String>, // 来源消息 ID（可能为空=旧数据未核实）
         val evidenceTime: Long,      // 证据时间（写入时的真实时间，模型重述不刷新）
-        val subject: EntityRef = EntityRef.UNKNOWN,  // P1-1: 事实主体（被描述的人）
-        val speaker: EntityRef = EntityRef.UNKNOWN   // P1-1: 谁说的
+        val subject: EntityRef = EntityRef.UNKNOWN,  // 事实主体（被描述的人）
+        val speaker: EntityRef = EntityRef.UNKNOWN   // 谁说的
     )
 
     /** scene.md 中解析出的条目行 */
@@ -321,7 +321,7 @@ class TopicRecorder(
     )
 
     /**
-     * F03: 更新场景链——基于来源 ID 的事实匹配和状态变化。
+     * 更新场景链——基于来源 ID 的事实匹配和状态变化。
      *
      * 核心规则：
      * 1. 来源校验：新事实的 sourceIds 必须属于本轮冻结快照中的 HER/ME 消息。
@@ -345,7 +345,7 @@ class TopicRecorder(
         val now = System.currentTimeMillis()
         val timeStr = com.lovebrain.app.util.TimeFmt.now()
 
-        // F03: 构建冻结快照中 HER/ME 消息的 ID→role 映射
+        // 构建冻结快照中 HER/ME 消息的 ID→role 映射
         val validSourceMap: Map<String, ChatMessage.Role> = frozenMessages
             .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
             .associate { it.id to it.role }
@@ -356,7 +356,7 @@ class TopicRecorder(
             return sourceAliasMap[rawId] ?: rawId
         }
 
-        // F03: 校验每条新事实的来源，过滤掉非法来源的事实
+        // 校验每条新事实的来源，过滤掉非法来源的事实
         val validatedFacts = mutableListOf<StoredFact>()
         for (sf in sceneFacts) {
             val text = sf.text.trim()
@@ -364,7 +364,7 @@ class TopicRecorder(
 
             if (sf.sourceIds.isEmpty()) {
                 // 无来源（旧格式或模型未提供）→ 标记为未核实，保留但不覆盖已有事实
-                // P1-1: 使用 SceneFact 携带的 speaker/subject，不自行推导
+                // 使用 SceneFact 携带的 speaker/subject，不自行推导
                 validatedFacts.add(StoredFact(
                     text = text,
                     sourceIds = emptyList(),
@@ -384,13 +384,13 @@ class TopicRecorder(
                 continue
             }
 
-            // P0-3: speaker 由代码从 source_ids 确定性推导——绝不交给 AI
+            // speaker 由代码从 source_ids 确定性推导——绝不交给 AI
             val speaker = FactSpeakerResolver.resolveFromRoles(validIds, validSourceMap)
 
-            // P0-4: subject 与 speaker 分离——三层解析
+            // subject 与 speaker 分离——三层解析
             // Level 1: 代码可确定（代词+speaker）
             // Level 2: 实体规则
-            // P1-12: subject_candidate 已从 format.md 移除，不再传入 resolver
+            // subject_candidate 已从 format.md 移除，不再传入 resolver
             val subject = FactSubjectResolver.resolve(
                 factText = text,
                 speaker = speaker,
@@ -423,12 +423,12 @@ class TopicRecorder(
         val existing = knowledgeRepo.readFile(kbName, chainPath)
         val existingEntries = parseSceneEntries(existing)
 
-        // F03: 收集所有已有事实
+        // 收集所有已有事实
         val allExistingFacts = existingEntries.flatMap { entry ->
             entry.facts.map { fact -> fact to entry }
         }
 
-        // F03/E项修复: 对每条新事实做匹配决策
+        // /E项修复: 对每条新事实做匹配决策
         // - 如果 sourceIds 与已有事实完全相同且文本相同 → 幂等跳过
         // - 如果 sourceIds 与已有事实完全相同但文本不同 → 同一事项新状态，替换（E项修复：恢复替换）
         // - 如果 sourceIds 为空（未核实）→ 追加，不覆盖已有事实，不刷新时间
@@ -439,7 +439,7 @@ class TopicRecorder(
 
         for (nf in validatedFacts) {
             if (nf.sourceIds.isEmpty()) {
-            // P1-1: 未核实来源 → 追加但不覆盖、不刷新时间
+            // 未核实来源 → 追加但不覆盖、不刷新时间
             // E项修复：无来源不标记为当前时间，保持旧时间或0
             toAdd.add(nf.copy(evidenceTime = 0L))
             continue
@@ -482,7 +482,7 @@ class TopicRecorder(
             return
         }
 
-        // F03: 构建更新后的条目列表
+        // 构建更新后的条目列表
         // 1. 对已有条目：执行替换（将旧事实替换为新版本），保留未涉及的事实
         // 2. 新事实追加为新条目
         val updatedEntries = existingEntries.map { entry ->
@@ -517,7 +517,7 @@ class TopicRecorder(
             updatedEntries.add(0, newEntry) // 新条目插入头部
         }
 
-        // F03: 过期归档
+        // 过期归档
         val maxAgeMs = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
         val maxEntries = AppConfig.SCENE_CHAIN_MAX_ENTRIES
         val fresh = mutableListOf<SceneEntry>()
@@ -540,8 +540,8 @@ class TopicRecorder(
         writeSceneAndArchive(kbName, chainPath, historyPath, keptEntries, expired)
     }
 
-    /** F03: 将 SceneEntry 列表写入 scene.md，过期条目追加到 raw_scene.md
-     * P0-6: 事实现在持久化 speaker/subject，不再在下一次读盘时丢失。 */
+    /** 将 SceneEntry 列表写入 scene.md，过期条目追加到 raw_scene.md
+     * 事实现在持久化 speaker/subject，不再在下一次读盘时丢失。 */
     private suspend fun writeSceneAndArchive(
         kbName: String,
         chainPath: String,
@@ -549,7 +549,7 @@ class TopicRecorder(
         kept: List<SceneEntry>,
         expired: List<SceneEntry>
     ) {
-        // P0-6: 渲染 scene.md——事实带 speaker/subject 持久化
+        // 渲染 scene.md——事实带 speaker/subject 持久化
         val newChainContent = if (kept.isEmpty()) "" else kept.joinToString("\n") { entry ->
             val factsStr = entry.facts.joinToString("；") { f ->
                 val parts = mutableListOf<String>()
@@ -557,7 +557,7 @@ class TopicRecorder(
                 if (f.sourceIds.isNotEmpty()) {
                     parts.add("src=${f.sourceIds.joinToString(",")}")
                 }
-                // P0-6: 持久化 speaker/subject
+                // 持久化 speaker/subject
                 if (f.speaker != EntityRef.UNKNOWN) {
                     parts.add("spk=${f.speaker.name}")
                 }
@@ -596,7 +596,7 @@ class TopicRecorder(
         }
     }
 
-    /** F03: 解析 scene.md 为结构化条目列表 */
+    /** 解析 scene.md 为结构化条目列表 */
     private fun parseSceneEntries(content: String): MutableList<SceneEntry> {
         if (content.isBlank()) return mutableListOf()
         val entryRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})]\\s*(.*)$")
@@ -621,7 +621,7 @@ class TopicRecorder(
 
             // 解析事实列表（支持两种格式）
             // 旧格式：事实文本⟨sourceIds⟩
-            // P0-6 新格式：事实文本|src=id1,id2|spk=HER|subj=ME
+            // 新格式：事实文本|src=id1,id2|spk=HER|subj=ME
             val facts = factsRaw.split('；', ';')
                 .map { it.trim() }
                 .filter { it.isNotBlank() }
@@ -636,10 +636,10 @@ class TopicRecorder(
         return result
     }
 
-    /** P0-4: 从事实文本中提取主体——使用 FactSubjectResolver 三层解析。
+    /** 从事实文本中提取主体——使用 FactSubjectResolver 三层解析。
      * 旧版 extractSubject 永远返回 UNKNOWN，现在改为实际解析。 */
     private fun extractSubject(text: String): EntityRef {
-        // P0-4: 旧数据从 scene.md 读取时无 speaker 上下文，只能用 Level 2 实体规则
+        // 旧数据从 scene.md 读取时无 speaker 上下文，只能用 Level 2 实体规则
         // 如果无法确定，仍返回 UNKNOWN
         return FactSubjectResolver.resolve(
             factText = text,
@@ -650,7 +650,7 @@ class TopicRecorder(
     }
 
     /**
-     * P0-6: 解析单条事实文本为 StoredFact，兼容新旧两种格式。
+     * 解析单条事实文本为 StoredFact，兼容新旧两种格式。
      *
      * 旧格式：事实文本⟨sourceIds⟩
      * 新格式：事实文本|src=id1,id2|spk=HER|subj=ME
@@ -692,7 +692,7 @@ class TopicRecorder(
      * 已完成/已取消的事项移入 `## 已结束`；已结束区超过上限时丢弃最旧（防越来越大）。
      */
     /**
-     * F04: 合并 ongoing 到 moment/plan.md（幂等更新 + 稳定 ID + 防止旧任务复活）
+     * 合并 ongoing 到 moment/plan.md（幂等更新 + 稳定 ID + 防止旧任务复活）
      *
      * 核心规则：
      * 1. 稳定 ID：每个事项有一个 itemId，不靠 name 字符串匹配。
@@ -708,7 +708,7 @@ class TopicRecorder(
         val planPath = "moment/plan.md"
         val content = knowledgeRepo.readFile(kbName, planPath)
 
-        // F04: 解析两个分区，兼容新旧格式（新格式: itemId~name|status|chain；旧格式: name|status|chain）
+        // 解析两个分区，兼容新旧格式（新格式: itemId~name|status|chain；旧格式: name|status|chain）
         val activeLines = mutableListOf<String>()
         val endedLines = mutableListOf<String>()
         var section = "active"
@@ -725,13 +725,13 @@ class TopicRecorder(
             }
         }
 
-        // F04: 解析函数——支持新格式 itemId~name 和旧格式 name
+        // 解析函数——支持新格式 itemId~name 和旧格式 name
         val parse = { lines: List<String> ->
             lines.mapNotNull { l ->
                 val parts = l.split("|").map { it.trim() }
                 if (parts.size < 3 || parts[0].isBlank()) return@mapNotNull null
                 val firstPart = parts[0]
-                // F04: 检查是否有 itemId~ 前缀
+                // 检查是否有 itemId~ 前缀
                 val tildeIdx = firstPart.indexOf('~')
                 val (itemId, name) = if (tildeIdx > 0) {
                     firstPart.substring(0, tildeIdx) to firstPart.substring(tildeIdx + 1)
@@ -740,7 +740,7 @@ class TopicRecorder(
                 }
                 val status = parts[1]
                 val chain = parts.drop(2).joinToString("|").trim()
-                // F04: 从 chain 中提取最后一条状态文本作为 lastState
+                // 从 chain 中提取最后一条状态文本作为 lastState
                 val lastState = extractLastStateFromChain(chain)
                 PlanItemView(name = name, status = status, chain = chain, itemId = itemId, lastState = lastState)
             }.toMutableList()
@@ -748,7 +748,7 @@ class TopicRecorder(
         val active = parse(activeLines)
         val ended = parse(endedLines)
 
-        // F04: 构建查找映射——优先 itemId 匹配，回退 name 匹配
+        // 构建查找映射——优先 itemId 匹配，回退 name 匹配
         fun findExisting(item: OngoingItem): Pair<PlanItemView?, Boolean> {
             val targetItemId = item.itemId.ifBlank { deriveItemId(item.name) }
             // 先在 active 中找
@@ -778,20 +778,20 @@ class TopicRecorder(
             val (existing, fromEnded) = findExisting(item)
 
             if (existing != null) {
-                // F04: 防止旧任务复活——已结束事项不被非终态输出重新激活
+                // 防止旧任务复活——已结束事项不被非终态输出重新激活
                 if (fromEnded && status != "已完成" && status != "已取消") {
                     // 事项在 ended 区，本轮输出是非终态 → 不复活
                     // 只有当 item 携带新的真实证据来源（sourceIds 非空）时才允许复活
                     if (item.sourceIds.isEmpty()) {
-                        com.lovebrain.app.util.L.w("F04: skipping revive of ended item '$name' without new evidence")
+                        com.lovebrain.app.util.L.w("skipping revive of ended item '$name' without new evidence")
                         continue
                     }
-                    com.lovebrain.app.util.L.w("F04: reviving ended item '$name' with new evidence")
+                    com.lovebrain.app.util.L.w("reviving ended item '$name' with new evidence")
                 }
 
-                // F04: 幂等检查——相同 itemId + 相同 state 文本 → 不追加
+                // 幂等检查——相同 itemId + 相同 state 文本 → 不追加
                 if (existing.lastState == state) {
-                    com.lovebrain.app.util.L.w("F04: idempotent skip for '$name' (same state)")
+                    com.lovebrain.app.util.L.w("idempotent skip for '$name' (same state)")
                     // 即使 state 相同，status 可能变化（如 进行中→已完成）
                     if (existing.status != status) {
                         existing.status = status
@@ -805,10 +805,10 @@ class TopicRecorder(
                     continue
                 }
 
-                // F04: 有实质变化 → 追加 delta
+                // 有实质变化 → 追加 delta
                 existing.status = status
                 val oldChain = existing.chain.replace("（当前）", "").trimEnd('→', ' ')
-                // F04: 状态链截断——只保留最近 MAX_CHAIN_STATES 条状态
+                // 状态链截断——只保留最近 MAX_CHAIN_STATES 条状态
                 val newChain = "$oldChain→[$timeStr]$state（当前）"
                 existing.chain = truncateChain(newChain)
                 existing.lastState = state
@@ -821,7 +821,7 @@ class TopicRecorder(
                     }
                 }
             } else {
-                // F04: 新事项——分配稳定 ID
+                // 新事项——分配稳定 ID
                 active.add(PlanItemView(
                     name = name,
                     status = status,
@@ -847,7 +847,7 @@ class TopicRecorder(
     }
 
     /**
-     * F04: 从状态链中提取最后一条状态文本（去掉时间戳和（当前）标记）。
+     * 从状态链中提取最后一条状态文本（去掉时间戳和（当前）标记）。
      * 例如 "[09-21 14:30]进行中（当前）" → "进行中"
      */
     private fun extractLastStateFromChain(chain: String): String {
@@ -859,7 +859,7 @@ class TopicRecorder(
     }
 
     /**
-     * F04: 截断状态链——只保留最近 MAX_CHAIN_STATES 条状态。
+     * 截断状态链——只保留最近 MAX_CHAIN_STATES 条状态。
      * 旧链被截掉的部分不丢失（已被归档系统处理），这里只是活动投影。
      */
     private fun truncateChain(chain: String): String {
@@ -871,7 +871,7 @@ class TopicRecorder(
     }
 
     /**
-     * F04: 从事项名称派生稳定 ID。
+     * 从事项名称派生稳定 ID。
      * 使用 name 的稳定 hash，不随时间变化。
      */
     private fun deriveItemId(name: String): String {
@@ -880,7 +880,7 @@ class TopicRecorder(
     }
 
     /** 职责3（自 mergeOngoing 拆出）：把进行中/已结束两区渲染为 plan.md 文本
-     * F04: 在事项行首插入 itemId，格式: itemId|name|status|chain */
+     * 在事项行首插入 itemId，格式: itemId|name|status|chain */
     private fun renderPlan(active: List<PlanItemView>, ended: List<PlanItemView>): String = buildString {
         append("# 事项计划\n\n## 进行中\n")
         active.forEach {
@@ -895,13 +895,13 @@ class TopicRecorder(
     }
 
     /** plan.md 行视图（name/status/chain），供 parse/apply/render 共用
-     * F04: 增加 itemId（稳定身份）和 lastState（上一轮状态文本），用于幂等更新检测 */
+     * 增加 itemId（稳定身份）和 lastState（上一轮状态文本），用于幂等更新检测 */
     private data class PlanItemView(
         val name: String,
         var status: String,
         var chain: String,
-        val itemId: String = "",      // F04: 稳定身份 ID
-        var lastState: String = ""    // F04: 上一轮状态文本（用于检测实质变化）
+        val itemId: String = "",      // 稳定身份 ID
+        var lastState: String = ""    // 上一轮状态文本（用于检测实质变化）
     )
 
     companion object {
@@ -912,12 +912,12 @@ class TopicRecorder(
             "本轮未提及，事项持续推进中", "本轮无进展，事项持续推进中"
         )
 
-        /** F04: 活动状态链最大保留条数——超出截断，防膨胀 */
+        /** 活动状态链最大保留条数——超出截断，防膨胀 */
         private const val MAX_CHAIN_STATES = 10
     }
 
     /**
-     * S2-04: 崩溃恢复——若 journal 中有 PREPARED/WRITING 的在途轮次，
+     * 崩溃恢复——若 journal 中有 PREPARED/WRITING 的在途轮次，
      * 用与首提完全相同的 [applyRound] 补齐尚未覆盖的投影。
      *
      * 在 KB 被打开/激活时调用。恢复不再自己拼一套"简化版"重放：

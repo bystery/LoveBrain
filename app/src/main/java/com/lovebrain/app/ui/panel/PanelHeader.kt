@@ -38,7 +38,7 @@ private object HeaderDimens {
     const val BORDER_WIDTH_DP = 1           // 细边框宽度
 
     /**
-     * P3-03: 无障碍触摸区下限。
+     * 无障碍触摸区下限。
      *
      * 图标/文字仍然按 CONTROL_HEIGHT_DP 画小，但可点击盒子必须 ≥48dp。
      * 旧实现把 20dp 的胶囊和 24dp 的收起盒子直接当热区，
@@ -138,7 +138,7 @@ private fun ModeSegmentThree(
         animationSpec = tween(250, easing = FastOutSlowInEasing),
         label = "modeIndicator"
     )
-    // P3-03: 用 48dp 高的"命中盒"包住 20dp 高的视觉胶囊。
+    // 用 48dp 高的"命中盒"包住 20dp 高的视觉胶囊。
     // 视觉层放在 InteractionBox 里，点击由外层每段各自的 clickable 承担。
     Box(
         modifier = modifier

@@ -19,7 +19,7 @@ object AssetRegistry {
     const val COUNSELING = "engine/counseling.md"
     const val SUGGEST = "engine/suggest.md"
     const val POLISH = "engine/polish.md"
-    const val PROACTIVE = "engine/proactive.md"  // F17: 主动开场引擎（替代旧润色引擎）
+    const val PROACTIVE = "engine/proactive.md"  // 主动开场引擎（替代旧润色引擎）
 
     // ═══ 知识引擎 ═══
     const val LESSONS = "engine/knowledge_prompt/lessons.md"

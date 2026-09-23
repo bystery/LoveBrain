@@ -31,16 +31,16 @@ object AppConfig {
     // ═══ 悬浮球（纯主球形态：单击开面板、拖拽吸附、闲置半透明/半隐藏）═══
     const val BUBBLE_SIZE = 56               // 主球直径 56dp（M3 FAB 标准尺寸，触控达标）
     const val BUBBLE_EDGE_MARGIN = 2         // 吸附后距屏幕边缘留白（2dp，近乎贴边又不被系统手势区遮挡）
-    const val BUBBLE_SNAP_MS = 250           // 边缘吸附动画时长（第 4 轮：去掉吸附震动，保留平滑滑向动画）
+    const val BUBBLE_SNAP_MS = 250           // 边缘吸附动画时长——去掉吸附震动，保留平滑滑向动画
     const val BUBBLE_DRAG_THRESHOLD_DP = 20  // 点击 vs 拖拽判定阈值（累计位移≥20dp 才算拖拽，否则抬起=点击）
 
-    // ═══ 悬浮球（第 2 轮迭代：闲置降遮挡 + 入场动画）═══
+    // ═══ 悬浮球：闲置降遮挡 + 入场动画 ═══
     const val BUBBLE_IDLE_DIM_MS = 4000L     // 闲置 4s 无交互 → 半透明（AssistiveTouch 降遮挡思路）
     const val BUBBLE_IDLE_ALPHA = 0.78f      // 闲置半透明 alpha（保持 3:1 对比度下限）
     const val BUBBLE_ENTRANCE_STIFFNESS = 300f   // 入场 spring 刚度（慢而稳的浮入）
     const val BUBBLE_ENTRANCE_DAMPING = 0.7f     // 入场 spring 阻尼（轻微过冲）
 
-    // ═══ 悬浮球（第 3 轮迭代：侧边半隐藏 + 无障碍降动画）═══
+    // ═══ 悬浮球：侧边半隐藏 + 无障碍降动画 ═══
     const val BUBBLE_HIDE_IDLE_MS = 8000L    // 闲置 8s（半透明之后）→ 滑出侧边半隐藏（QQ 悬挂思路）
     const val BUBBLE_HIDE_EDGE_DP = 12       // 半隐藏后露边宽度（可点击回弹）
 

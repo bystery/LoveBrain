@@ -13,7 +13,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.jsonNull
 
 /**
- * P0-2/P0-9: 画像更新解析结果分类。
+ * 画像更新解析结果分类。
  *
  * - [SUCCESS]：JSON 完整且字段校验通过
  * - [EMPTY]：模型返回空内容
@@ -32,7 +32,7 @@ enum class ProfileParseStatus {
 }
 
 /**
- * P0-2: 画像更新解析结果——包含分类状态和 ProfileUpdate payload。
+ * 画像更新解析结果——包含分类状态和 ProfileUpdate payload。
  *
  * 自动自愈逻辑通过 [status] 判断是否需要重试：
  * - [TRUNCATED] → 可重试
@@ -97,7 +97,7 @@ data class ProfileUpdate(
         private const val PROFILE_FALLBACK_LIMIT = 200
 
         /**
-         * P0-2: 带 finish_reason 的解析入口——返回分类结果 [ProfileParseResult]。
+         * 带 finish_reason 的解析入口——返回分类结果 [ProfileParseResult]。
          *
          * 判定顺序：
          * 1. finishReason == "length" → TRUNCATED（即使 content 看似完整也标截断）
@@ -149,7 +149,7 @@ data class ProfileUpdate(
             }
 
             // 5-6. 走原有 parse 逻辑
-            // P0-9: 区分 INVALID_JSON 和 INVALID_SCHEMA
+            // 区分 INVALID_JSON 和 INVALID_SCHEMA
             val profileUpdate = try {
                 parseFromJson(jsonStr, raw)
             } catch (e: Exception) {
@@ -197,7 +197,7 @@ data class ProfileUpdate(
                     observations = emptyList(), messageToUser = null,
                     displaySummary = raw.take(PROFILE_FALLBACK_LIMIT)
                 )
-            // P0-9: parseFromJson 现在 JSON 解析失败时抛异常
+            // parseFromJson 现在 JSON 解析失败时抛异常
             return try {
                 parseFromJson(jsonStr, raw)
             } catch (e: Exception) {
@@ -214,20 +214,20 @@ data class ProfileUpdate(
         }
 
         /**
-         * P0-2/P0-9: 从已提取的 JSON 字符串构建 ProfileUpdate（内部方法）。
+         * 从已提取的 JSON 字符串构建 ProfileUpdate（内部方法）。
          * 调用方已通过 Jsons.extractJsonObject 提取了完整 JSON 对象。
          *
-         * P0-9: JSON 解析失败时抛出异常（由 parseWithStatus 捕获并分类为 INVALID_JSON）。
+         * JSON 解析失败时抛出异常（由 parseWithStatus 捕获并分类为 INVALID_JSON）。
          * 字段校验失败时返回 valid=false（由 parseWithStatus 分类为 INVALID_SCHEMA）。
          */
         private fun parseFromJson(jsonStr: String, @Suppress("UNUSED_PARAMETER") raw: String): ProfileUpdate {
-            // P0-9: JSON parser 失败时抛出异常，由调用方区分 INVALID_JSON 和 INVALID_SCHEMA
+            // JSON parser 失败时抛出异常，由调用方区分 INVALID_JSON 和 INVALID_SCHEMA
             val parsed: JsonObject = json.parseToJsonElement(jsonStr).jsonObject
 
             // 步骤3：逐字段类型校验（按字段不同规则区分）
             val errors = mutableListOf<String>()
 
-            // 画像正文：必须为合法非空字符串——P0-4: 引用 ProfileUpdateSchema 常量
+            // 画像正文：必须为合法非空字符串——: 引用 ProfileUpdateSchema 常量
             val meContent = extractNonBlankStringField(parsed, ProfileUpdateSchema.FIELD_ME, errors)
             val herContent = extractNonBlankStringField(parsed, ProfileUpdateSchema.FIELD_HER, errors)
             val warmthContent = extractNonBlankStringField(parsed, ProfileUpdateSchema.FIELD_WARMTH, errors)
@@ -335,7 +335,7 @@ data class ProfileUpdate(
 
         /**
          * 提取阶段字段（stage_changed=true 时使用）。
-         * P1-02: 不再另造白名单，统一使用 StageCatalog.normalize 归一化校验。
+         * 不再另造白名单，统一使用 StageCatalog.normalize 归一化校验。
          * stage_changed=true 但字段缺失/空/非字符串/不在八阶段白名单内均报条件校验错误。
          */
         private fun extractStageField(
@@ -345,7 +345,7 @@ data class ProfileUpdate(
         ): String? {
             val element = obj[key]
             if (element == null) {
-                // P1-02: stage_changed=true 时字段缺失必须报错，不能静默 return null
+                // stage_changed=true 时字段缺失必须报错，不能静默 return null
                 errors.add("$key 缺失（stage_changed=true 时必须指定阶段）")
                 return null
             }
@@ -360,7 +360,7 @@ data class ProfileUpdate(
                             errors.add("$key 为空字符串（stage_changed=true 时必须指定阶段）")
                             null
                         } else {
-                            // P1-02: 统一使用 StageCatalog 归一化，不再用重复白名单
+                            // 统一使用 StageCatalog 归一化，不再用重复白名单
                             val normalized = StageCatalog.normalize(content)
                             if (normalized == null) {
                                 errors.add("$key 不是合法阶段：$content（合法阶段见 StageCatalog）")

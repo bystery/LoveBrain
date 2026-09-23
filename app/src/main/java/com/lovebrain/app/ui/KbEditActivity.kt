@@ -80,7 +80,7 @@ private val KB_FILES = listOf(
     KbFile("我是谁", "understand/me.md", layer = "画像"),
     KbFile("她是谁", "understand/her.md", layer = "画像"),
     KbFile("我们走到哪了", "understand/warmth.md", layer = "画像"),
-    // F05: 个人表达偏好——结构化、易编辑，不要求用户写提示词
+    // 个人表达偏好——结构化、易编辑，不要求用户写提示词
     KbFile("我的表达偏好", "understand/style.md", layer = "画像"),
     KbFile("最近两句", "moment/recent.md", layer = "当下"),
     KbFile("在聊什么", "moment/topic.md", layer = "当下"),
@@ -90,7 +90,7 @@ private val KB_FILES = listOf(
     KbFile("经验", "memory/lessons.md", layer = "积累"),
     KbFile("谈心记录", "memory/counseling_log.md", layer = "积累"),
     KbFile("军师日志", "memory/reflect_history.md", layer = "积累"),
-    // P0-4：旧迁移写入 archive.md，界面原先看不到——加入列表使历史记录可见
+    // 旧迁移写入 archive.md，界面原先看不到——加入列表使历史记录可见
     KbFile("旧版归档", "memory/archive.md", layer = "积累")
 )
 
@@ -101,12 +101,12 @@ class KbEditActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // P3-05: FLAG_SECURE——知识库编辑页含关系数据，防止最近任务截图泄露
+        // FLAG_SECURE——知识库编辑页含关系数据，防止最近任务截图泄露
         window.setFlags(
             android.view.WindowManager.LayoutParams.FLAG_SECURE,
             android.view.WindowManager.LayoutParams.FLAG_SECURE
         )
-        // S2-06 审计修复: KbName value object 验证——UI 不直接传递任意路径
+        // KbName value object 验证——UI 不直接传递任意路径
         val rawName = intent.getStringExtra("kb_name") ?: run { finish(); return }
         val kbName = try {
             com.lovebrain.app.model.KbName(rawName).value
@@ -166,7 +166,7 @@ private fun KbEditScreen(
 
     var drafts by remember { mutableStateOf(emptyMap<String, String>()) }
     var saved by remember { mutableStateOf(emptyMap<String, String>()) }
-    // P0-4：版本快照——每个文件读取时的 SHA-256，保存时做冲突检测
+    // 版本快照——每个文件读取时的 SHA-256，保存时做冲突检测
     var versions by remember { mutableStateOf(emptyMap<String, String>()) }
     var loaded by remember { mutableStateOf(false) }
     var isPreview by remember { mutableStateOf(true) }
@@ -332,7 +332,7 @@ private fun KbEditScreen(
         Card(
             shape = LoveBrainShape.lg,
             colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-            // ：阴影统一收进 2/4 令牌（6→4 为任务单批准的唯一超限修正）
+            // 阴影统一收进 2/4 令牌（6→4 为唯一超限修正）
             modifier = Modifier.fillMaxWidth().weight(1f).shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.lg)
         ) {
             Column(modifier = Modifier.padding(Spacing.xl)) cardContent@{
@@ -537,7 +537,7 @@ private fun KbEditScreen(
 }
 
 private fun prettyForPreview(path: String, content: String): String {
-    // P1-8: 所有文件都先去 HTML 注释，不只是 plan.md
+    // 所有文件都先去 HTML 注释，不只是 plan.md
     val noComments = stripHtmlComments(content)
     if (path != "moment/plan.md") return noComments
     // plan.md 额外格式化事项行
@@ -565,7 +565,7 @@ private fun prettyForPreview(path: String, content: String): String {
     return sb.toString()
 }
 
-/** P1-8: 剥离 HTML 注释（<!-- ... -->，跨行也处理） */
+/** 剥离 HTML 注释（<!-- ... -->，跨行也处理） */
 private fun stripHtmlComments(text: String): String {
     val regex = Regex("<!--.*?-->", RegexOption.DOT_MATCHES_ALL)
     return regex.replace(text, "").trim()

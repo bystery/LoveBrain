@@ -68,7 +68,7 @@ data object Usage : HomeDestination()
 data object CaptureApps : HomeDestination()
 
 companion object {
-    /** S1-06: Saver for rememberSaveable */
+    /** Saver for rememberSaveable */
     val Saver = androidx.compose.runtime.saveable.Saver<HomeDestination, String>(
         save = { it::class.simpleName ?: "Home" },
         restore = { name ->

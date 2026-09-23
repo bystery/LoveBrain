@@ -15,13 +15,13 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 /**
- * F02/F15/F16: 反馈案例仓库——本地持久化于 feedback/cases.json。
+ * 反馈案例仓库——本地持久化于 feedback/cases.json。
  *
  * 点踩立即落本地反馈；不因点踩就自动调用 AI。
  * 导出 Markdown + JSON，不记录凭证。
  * 幂等：同 caseId 不重复入库。
  *
- * F16 修复：
+ *
  * - mutex 互斥保护（旧版 mutableList 无互斥）
  * - 原子落盘（旧版 file.writeText 直接覆写）
  * - 统一导出口径（UI 不再直接读盘）
@@ -52,7 +52,7 @@ class FeedbackCaseRepository(context: Context) {
     }
 
     private fun saveCasesSync() {
-        // F16: 原子写入——先写 tmp 再 rename，避免写入中断导致数据损坏
+        // 原子写入——先写 tmp 再 rename，避免写入中断导致数据损坏
         val tmpFile = File(dir, "cases.json.tmp")
         runCatching {
             tmpFile.writeText(json.encodeToString(_cases.toList()))
@@ -138,7 +138,7 @@ class FeedbackCaseRepository(context: Context) {
     }
 
     /**
-     * F15/F16: 统一导出为 Markdown 报告。
+     * 统一导出为 Markdown 报告。
      * 包含完整真实消息快照、版本信息、记忆引用。
      * UI 不再自己实现 buildMarkdownReport。
      */
@@ -178,7 +178,7 @@ class FeedbackCaseRepository(context: Context) {
                 if (c.ideaHint.isNotBlank()) appendLine("- **本轮想法**：${c.ideaHint}")
                 if (c.intentText.isNotBlank()) appendLine("- **意图**：${c.intentText}")
 
-                // F16: 完整真实消息快照
+                // 完整真实消息快照
                 if (c.dialogueSnapshot.isNotEmpty()) {
                     appendLine("- **真实对话**：")
                     c.dialogueSnapshot.forEach { msg ->
@@ -186,12 +186,12 @@ class FeedbackCaseRepository(context: Context) {
                     }
                 }
 
-                // F16: 记忆引用
+                // 记忆引用
                 if (c.memoryRefs.isNotEmpty()) {
                     appendLine("- **记忆引用**：${c.memoryRefs.joinToString(", ")}")
                 }
 
-                // F16: 用量
+                // 用量
                 if (c.promptTokens > 0 || c.completionTokens > 0) {
                     appendLine("- **Token 用量**：prompt=${c.promptTokens}, completion=${c.completionTokens}")
                 }
@@ -211,14 +211,14 @@ class FeedbackCaseRepository(context: Context) {
     }
 
     companion object {
-        /** F15: 分类中文名 */
+        /** 分类中文名 */
         fun categoryName(cat: FeedbackCategory): String = when (cat) {
             FeedbackCategory.UNDERSTANDING_ERROR -> "理解错误"
             FeedbackCategory.EXPRESSION_DISLIKE -> "表达不喜欢"
             FeedbackCategory.OTHER -> "其他"
         }
 
-        /** F15: 状态中文名 */
+        /** 状态中文名 */
         fun statusName(status: CaseStatus): String = when (status) {
             CaseStatus.PENDING -> "待分析"
             CaseStatus.CONCLUDED -> "已有结论"

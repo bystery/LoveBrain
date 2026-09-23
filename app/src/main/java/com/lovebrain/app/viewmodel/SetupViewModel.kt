@@ -49,7 +49,7 @@ class SetupViewModel(
 sealed class ExportState {
     data object Idle : ExportState()
     data object Loading : ExportState()
-    /** S1-05: Success 携带 exportId——绑定复制/保存状态，新导出自动重置 */
+    /** Success 携带 exportId——绑定复制/保存状态，新导出自动重置 */
     data class Success(val text: String, val exportId: String = java.util.UUID.randomUUID().toString()) : ExportState()
     data class Error(val message: String) : ExportState()
 }
@@ -116,7 +116,7 @@ sealed class ExportState {
     /** 表单保存错误文案；保存成功时清空。文案为固定字符串，不拼用户输入 */
     val formError: StateFlow<String?> = _formError.asStateFlow()
 
-    /** URL-01：保存中状态（探测 endpoint 时 UI 显示 loading） */
+    /** 保存中状态（探测 endpoint 时 UI 显示 loading） */
     private val _saving = MutableStateFlow(false)
     val saving: StateFlow<Boolean> = _saving.asStateFlow()
 
@@ -125,7 +125,7 @@ sealed class ExportState {
         runCatching { HttpsTrustGuard.enforce(baseUrl) }.exceptionOrNull()?.message
 
     /**
-     * UX-02：供应商真正就绪态（与 LoveBrainViewModel.providerReady 同一判定）。
+     * 供应商真正就绪态（与 LoveBrainViewModel.providerReady 同一判定）。
      * 蓝点 = 工单存在 && 模型非空 && Key 非空；不完整 = 灰点。
      * 在 _activeTicket / _tickets 变更时同步刷新。
      */
@@ -144,7 +144,7 @@ sealed class ExportState {
     }
 
     /**
-     * UX-02：供 UI 查询指定工单是否就绪（列表行蓝/灰）。
+     * 供 UI 查询指定工单是否就绪（列表行蓝/灰）。
      */
     fun isTicketReady(ticket: ProviderTicket): Boolean =
         ticket.model.isNotBlank() &&
@@ -153,7 +153,7 @@ sealed class ExportState {
     // ──────────────── 供应商 CRUD（多模型批：一供应商多模型 + 设为当前） ────────────────
 
     /**
-     * URL-01 + UX-01：带 endpoint 自动探测的供应商保存（新建 + 编辑统一入口）。
+     * + 带 endpoint 自动探测的供应商保存（新建 + 编辑统一入口）。
      *
      * 保存前验证：
      * - 新建：名称 + URL + 至少一个模型 + API Key 四项齐全
@@ -185,7 +185,7 @@ sealed class ExportState {
             _formError.value = "请至少添加一个模型"
             return@withContext false
         }
-        // UX-01：新建时 Key 必填；编辑时 Key 留空保留原 Key
+        // 新建时 Key 必填；编辑时 Key 留空保留原 Key
         val effectiveKey = if (ticketId != null && apiKey.isBlank()) {
             securePrefs.getWorkerApiKey(ticketId).orEmpty()
         } else {
@@ -206,7 +206,7 @@ sealed class ExportState {
         _formError.value = null
         _saving.value = true
 
-        // ── URL-01：endpoint 自动探测 ──
+        // ── endpoint 自动探测 ──
         val testModel = cleanModels.first()
         val result = deepSeekRepo.testConnectionWithProbe(effectiveKey, testModel, baseUrl)
 
@@ -272,7 +272,7 @@ sealed class ExportState {
     /** 新增供应商；首个自动激活。models 首个 = 当前生效模型 */
     fun addTicket(name: String, baseUrl: String, models: List<String>, apiKey: String) {
         if (name.isBlank() || baseUrl.isBlank()) return
-        // ：http:// 非 loopback 保存前拦截不落盘；固定文案经 formError 暴露
+        // http:// 非 loopback 保存前拦截不落盘；固定文案经 formError 暴露
         val violation = checkBaseUrlTrust(baseUrl)
         if (violation != null) {
             _formError.value = violation
@@ -306,7 +306,7 @@ sealed class ExportState {
      *  当前生效模型若仍在列表内则保持，否则回退列表首个 */
     fun updateTicket(id: String, name: String, baseUrl: String, models: List<String>, apiKey: String) {
         if (name.isBlank() || baseUrl.isBlank()) return
-        // ：http:// 非 loopback 保存前拦截不落盘；固定文案经 formError 暴露
+        // http:// 非 loopback 保存前拦截不落盘；固定文案经 formError 暴露
         val violation = checkBaseUrlTrust(baseUrl)
         if (violation != null) {
             _formError.value = violation
@@ -352,7 +352,7 @@ sealed class ExportState {
         if (securePrefs.activeTicketId == id) {
             securePrefs.activeTicketId = null
         }
-        // ：删工单同步清理分条 Key 密文（激活/未激活分支均清，防幽灵密钥残留）
+        // 删工单同步清理分条 Key 密文（激活/未激活分支均清，防幽灵密钥残留）
         securePrefs.deleteWorkerApiKey(id)
         _tickets.value = updated
         _activeTicket.value = resolveActiveTicket()
@@ -440,7 +440,7 @@ sealed class ExportState {
     }
 
     /**
-     * RA-02：用户明确点击「同意并继续」后写入当前披露版本号。
+     * 用户明确点击「同意并继续」后写入当前披露版本号。
      * CopyCaptureService 在 consent 版本 < CURRENT_DISCLOSURE_VERSION 时不处理消息内容。
      */
     fun confirmAccessibilityDisclosure() {
@@ -449,7 +449,7 @@ sealed class ExportState {
         L.w("accessibility disclosure confirmed: version=${com.lovebrain.app.service.CopyCaptureService.CURRENT_DISCLOSURE_VERSION}")
     }
 
-    // ═══ P3-05：消息捕获 allowlist（默认 fail-closed）═══
+    // ═══ 消息捕获 allowlist（默认 fail-closed）═══
 
     /** 用户已授权可捕获的包名集合。空集 = 什么都不捕获。 */
     private val _captureAllowedPackages = MutableStateFlow(securePrefs.captureAllowedPackages)
@@ -505,7 +505,7 @@ sealed class ExportState {
     )
 
     /**
-     *  ：无障碍授权状态判定（只读）。
+     * 无障碍授权状态判定（只读）。
      * ui 不直读系统设置（分层保持）：本应用捕获服务组件在已启用无障碍服务列表内 = 已授权。
      * 组件全限定名与 Manifest 声明同步维护（本项目唯一无障碍服务）。
      */
@@ -520,24 +520,24 @@ sealed class ExportState {
         return enabled.split(':').any { it.trim() == self }
     }
 
-    // ═══════════ F12: 性能统计 ═══════════
+    // ═══════════ 性能统计 ═══════════
 
-    /** F12: 累计生成次数 */
+    /** 累计生成次数 */
     val totalGenerateCount: Int get() = securePrefs.totalGenerateCount
 
-    /** F12: 累计花费（元） */
+    /** 累计花费（元） */
     val totalCostYuan: Double get() = securePrefs.totalCostYuan
 
-    /** F12: 累计复制次数 */
+    /** 累计复制次数 */
     val totalCopyCount: Int get() = securePrefs.totalCopyCount
 
-    /** F12: 累计采用次数（记录实际发送） */
+    /** 累计采用次数（记录实际发送） */
     val totalAdoptCount: Int get() = securePrefs.totalAdoptCount
 
-    /** F12: 累计改写次数 */
+    /** 累计改写次数 */
     val totalRewriteCount: Int get() = securePrefs.totalRewriteCount
 
-    /** F12: 采用率 = 采用次数 / 生成次数 */
+    /** 采用率 = 采用次数 / 生成次数 */
     val adoptRate: Float
         get() {
             val gen = securePrefs.totalGenerateCount

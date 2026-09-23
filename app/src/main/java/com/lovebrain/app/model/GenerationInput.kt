@@ -1,7 +1,7 @@
 package com.lovebrain.app.model
 
 /**
- * S2-01: 不可变生成输入边界——冻结一轮生成的全部输入。
+ * 不可变生成输入边界——冻结一轮生成的全部输入。
  *
  * 替代散参传递（List<ChatMessage> + userHint + knowledgeBase + intentConfig + corrections + onlyThisRound）。
  * 进入 domain 后不再出现 ChatMessage.Role.IDEA——dialogue 只能是 PARTNER/USER。
@@ -69,7 +69,7 @@ data class KbContext(
 )
 
 /**
- * S2-01: 冻结的 Provider 身份——完整的非敏感配置。
+ * 冻结的 Provider 身份——完整的非敏感配置。
  *
  * [configHash] 覆盖 ticketId/host/model/thinkingMode：Engine 发请求前
  * 必须按 [ticketId] 重新解析并比对，任何一项变了就拒绝继续，
@@ -104,7 +104,7 @@ data class ProviderRequestConfigView(
 fun hashProviderHost(baseUrl: String?): String? = baseUrl?.hashCode()?.toString(16)
 
 /**
- * S2-01: 从 GenerationInput 转回 ChatMessage 列表的适配器。
+ * 从 GenerationInput 转回 ChatMessage 列表的适配器。
  *
  * 只服务于 PromptBuilder 内部的历史渲染函数；
  * domain 公开入口不得再接收 List<ChatMessage>。
@@ -124,7 +124,7 @@ fun GenerationInput.toChatMessages(): List<ChatMessage> =
     }
 
 /**
- * S2-01: 从 KbContext 重建 KnowledgeBase 对象，供 PromptBuilder 的历史渲染函数使用。
+ * 从 KbContext 重建 KnowledgeBase 对象，供 PromptBuilder 的历史渲染函数使用。
  */
 fun KbContext.toKnowledgeBase(): KnowledgeBase = KnowledgeBase(
     name = name,
@@ -133,7 +133,7 @@ fun KbContext.toKnowledgeBase(): KnowledgeBase = KnowledgeBase(
 )
 
 /**
- * S2-01: 构建冻结输入。
+ * 构建冻结输入。
  *
  * UI 兼容 ChatMessage 只允许存在于这一处 adapter；进入 domain 后不再出现 Role.IDEA。
  */
@@ -152,7 +152,7 @@ fun buildGenerationInput(
     kbRevision: String,
     promptAssetHash: String
 ): GenerationInput {
-    // S2-01: 分离对话与想法——dialogue 只含 PARTNER/USER，IDEA 进入 ReplyDirective
+    // 分离对话与想法——dialogue 只含 PARTNER/USER，IDEA 进入 ReplyDirective
     val dialogue = messages
         .filter { it.role != ChatMessage.Role.IDEA }
         .map { msg ->

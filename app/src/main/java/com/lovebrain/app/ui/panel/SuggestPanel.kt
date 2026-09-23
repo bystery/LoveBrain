@@ -12,7 +12,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
-// F01: AlertDialog 已替换为 PanelModalHost，避免 Service 宿主 BadTokenException
+// AlertDialog 已替换为 PanelModalHost，避免 Service 宿主 BadTokenException
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -73,7 +73,7 @@ fun SuggestPanel(
     val showIntentEditor by viewModel.showIntentEditor.collectAsStateWithLifecycle()
     val activeKb by viewModel.activeKb.collectAsStateWithLifecycle()
 
-    // 需求#23：锦囊加载文案改为「军师正在 xxx」轮换（AI 应用加载话术风格，参考"深度睡眠舱"AI 生成加载）
+    // 锦囊加载文案改为「军师正在 xxx」轮换（AI 应用加载话术风格，参考"深度睡眠舱"AI 生成加载）
     val suggestPhrases = remember {
         listOf(
             "军师正在分析你们的关系…",
@@ -82,7 +82,7 @@ fun SuggestPanel(
         )
     }
 
-    // F01: 弹层放面板根部，不作为 LazyColumn 的某一 item，以免滚动使编辑器离开 composition
+    // 弹层放面板根部，不作为 LazyColumn 的某一 item，以免滚动使编辑器离开 composition
     Box(modifier = modifier.fillMaxWidth()) {
     LazyColumn(
         modifier = Modifier
@@ -106,7 +106,7 @@ fun SuggestPanel(
                         color = TextPrimary,
                         fontWeight = FontWeight.Bold
                     )
-                    // F07: 持续意图 chip — 紧凑入口，复用标题行空档
+                    // 持续意图 chip — 紧凑入口，复用标题行空档
                     if (activeKb != null) {
                         Spacer(Modifier.width(Spacing.sm))
                         IntentChip(
@@ -119,7 +119,7 @@ fun SuggestPanel(
                 // #13 修复：重新生成按钮放大——从 labelMedium 文字 chip 升级为 labelLarge 按钮
                 // 结果态升级为 Primary 实心底（与空态 CTA 同级，换一批是结果态唯一主动作）
                 // 生成中点击 = 强行停止（替代原"禁用无反馈"）
-                // ：重新生成补按压反馈（复用标准件 0.96 scale + 120ms）
+                // 重新生成补按压反馈（复用标准件 0.96 scale + 120ms）
                 val (regenInteraction, regenScale) = rememberPressScale(0.96f, "regenScale")
                 Text(
                     if (isSuggesting) "生成中·点击停止" else "重新生成",
@@ -172,7 +172,7 @@ fun SuggestPanel(
                     }
                 } else {
                     item {
-                        // ：统一 AiLoadingRow（三点跳动 + 轮换文案 + 15s 超时提示）
+                        // 统一 AiLoadingRow（三点跳动 + 轮换文案 + 15s 超时提示）
                         AiLoadingRow(
                             phrases = suggestPhrases,
                             timeoutHintMs = 15_000L
@@ -181,7 +181,7 @@ fun SuggestPanel(
                 }
             }
 
-            // ：锦囊错误态（无 KB 引导/弱网超时/解析失败）——显示错因 + 重试
+            // 锦囊错误态（无 KB 引导/弱网超时/解析失败）——显示错因 + 重试
             suggestError != null -> {
                 item {
                     Box(
@@ -238,7 +238,7 @@ fun SuggestPanel(
                             style = AppTypography.bodySmall
                         )
                         Spacer(Modifier.height(Spacing.lg))
-                        // ：生成锦囊补按压反馈（复用标准件 0.96 scale + 120ms）
+                        // 生成锦囊补按压反馈（复用标准件 0.96 scale + 120ms）
                         val (genInteraction, genScale) = rememberPressScale(0.96f, "genScale")
                         Text(
                             "生成锦囊",
@@ -256,14 +256,14 @@ fun SuggestPanel(
                 }
             }
 
-            // F18: 展示锦囊——轻量日常行动建议
+            // 展示锦囊——轻量日常行动建议
             else -> {
                 val plan = suggestion ?: return@LazyColumn
                 // 顶部显示 usage 与 partial 标识
                 item {
                     SuggestUsageBar(usage = plan.usage, isPartial = plan.partial)
                 }
-                // F18: 阶段卡保留（阶段名 + 关系温度），但不再强制 goal
+                // 阶段卡保留（阶段名 + 关系温度），但不再强制 goal
                 item { SuggestStageCard(plan, vectorMean = vectorMean(currentVector)) }
 
                 // 按 timingCategory 分组
@@ -278,7 +278,7 @@ fun SuggestPanel(
                     }
                 }
 
-                // F18: invite 保留但为可选（suggest.md 不再强制输出）
+                // invite 保留但为可选（suggest.md 不再强制输出）
                 plan.invite?.let { invite ->
                     if (invite.suggestion.isNotBlank()) {
                         item {
@@ -290,7 +290,7 @@ fun SuggestPanel(
                     }
                 }
 
-                // F18: avoid 保留但为可选（suggest.md 不再默认长篇避雷）
+                // avoid 保留但为可选（suggest.md 不再默认长篇避雷）
                 if (plan.avoid.isNotEmpty()) {
                     item {
                         Row(
@@ -341,7 +341,7 @@ fun SuggestPanel(
         }
     }
 
-    // F01: 意图编辑弹窗——面板根部渲染，不在 LazyColumn 内部
+    // 意图编辑弹窗——面板根部渲染，不在 LazyColumn 内部
     if (showIntentEditor) {
         IntentEditorDialog(
             text = intentConfig.text,
@@ -355,7 +355,7 @@ fun SuggestPanel(
             onDismiss = { viewModel.dismissIntentEditor() }
         )
     }
-    } // F01: close Box
+    } // close Box
 }
 
 /** 五维向量均值（0-100）→ 阶段进度百分比 */
@@ -364,7 +364,7 @@ private fun vectorMean(v: Map<String, Int>): Float {
     return v.values.average().toFloat() / 100f
 }
 
-/** F18: 阶段卡片——阶段名 + 五维均值进度 + 本阶段目标（可选） */
+/** 阶段卡片——阶段名 + 五维均值进度 + 本阶段目标（可选） */
 @Composable
 private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
     Column(
@@ -375,7 +375,7 @@ private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
             .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.lg)
             .padding(Spacing.lg)
     ) {
-        // F18: stage 可能为空（suggest.md 不再强制输出 stage）
+        // stage 可能为空（suggest.md 不再强制输出 stage）
         if (plan.stage.isNotBlank()) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("当前阶段", style = AppTypography.labelSmall, color = TextSecondary)
@@ -405,7 +405,7 @@ private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
             style = AppTypography.labelSmall,
             color = TextHint
         )
-        // F18: goal 为可选字段
+        // goal 为可选字段
         if (plan.goal.isNotBlank()) {
             Spacer(Modifier.height(Spacing.md))
             Text(
@@ -424,7 +424,7 @@ private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
     }
 }
 
-/** F18: 单条日常行动建议卡片
+/** 单条日常行动建议卡片
  *
  * 展示新语义字段：action（做什么）+ timing（什么时候适合）。
  * 点击展开显示：materialNeeded（需要素材）+ example（示例配文）+ reason（理由）。
@@ -466,7 +466,7 @@ private fun SuggestTipCard(tip: SuggestTip) {
             TriangleArrow(color = TextHint, rotation = tipArrowRotation)
         }
 
-        // F18: timing（什么时候适合）——折叠态也显示，帮助用户判断
+        // timing（什么时候适合）——折叠态也显示，帮助用户判断
         if (tip.timing.isNotBlank()) {
             Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
             Text(
@@ -485,7 +485,7 @@ private fun SuggestTipCard(tip: SuggestTip) {
             exit = shrinkVertically()
         ) {
             Column {
-                // F18: materialNeeded（需要的素材或前提）
+                // materialNeeded（需要的素材或前提）
                 if (tip.materialNeeded.isNotBlank()) {
                     Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
                     Text(
@@ -495,7 +495,7 @@ private fun SuggestTipCard(tip: SuggestTip) {
                         fontWeight = FontWeight.Medium
                     )
                 }
-                // F18: example（示例配文）
+                // example（示例配文）
                 if (tip.example.isNotBlank()) {
                     Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
                     Text(
@@ -509,7 +509,7 @@ private fun SuggestTipCard(tip: SuggestTip) {
                             .verticalScroll(rememberScrollState())
                     )
                 }
-                // F18: reason（为什么建议这个）
+                // reason（为什么建议这个）
                 if (tip.reason.isNotBlank()) {
                     Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
                     Text(
@@ -651,9 +651,9 @@ private fun InviteSuggestionCard(signal: String, suggestion: String) {
     }
 }
 
-// ═══════════ F07: 持续意图 UI 组件（锦囊面板内紧凑入口） ═══════════
+// ═══════════ 持续意图 UI 组件（锦囊面板内紧凑入口） ═══════════
 
-/** F07: 持续意图 chip — 紧凑入口，复用标题行空档。
+/** 持续意图 chip — 紧凑入口，复用标题行空档。
  *  enabled=true 时高亮显示，点击打开编辑弹窗。 */
 @Composable
 private fun IntentChip(
@@ -692,7 +692,7 @@ private fun IntentChip(
     }
 }
 
-/** F07: 持续意图编辑弹窗 — 输入意图文本 + 开关 + 保存/取消。
+/** 持续意图编辑弹窗 — 输入意图文本 + 开关 + 保存/取消。
  *  长度限制可见校验（超过 200 字提示截断），不静默截断。 */
 private const val INTENT_MAX_LENGTH = 200
 
@@ -713,7 +713,7 @@ private fun IntentEditorDialog(
     var editStatus by remember { mutableStateOf(status) }
     val overLimit = editText.length > INTENT_MAX_LENGTH
 
-    // F01: 使用 PanelModalHost 替代 AlertDialog——Service 宿主中安全
+    // 使用 PanelModalHost 替代 AlertDialog——Service 宿主中安全
     PanelModalHost(
         onDismiss = onDismiss
     ) {
@@ -753,7 +753,7 @@ private fun IntentEditorDialog(
                     }
                 }
                 Spacer(Modifier.height(Spacing.md))
-                // F06: 有效期选择
+                // 有效期选择
                 Text("有效期", style = AppTypography.labelMedium, color = TextSecondary)
                 Spacer(Modifier.height(Spacing.xs))
                 Row(
@@ -770,7 +770,7 @@ private fun IntentEditorDialog(
                         editExpiry = com.lovebrain.app.model.IntentExpiry.DATE
                     }
                 }
-                // F06: 指定日期时显示日期输入框
+                // 指定日期时显示日期输入框
                 if (editExpiry == com.lovebrain.app.model.IntentExpiry.DATE) {
                     Spacer(Modifier.height(Spacing.xs))
                     Box(
@@ -792,7 +792,7 @@ private fun IntentEditorDialog(
                         )
                     }
                 }
-                // F06: 状态操作——已完成时可标记完成
+                // 状态操作——已完成时可标记完成
                 if (editEnabled && editStatus == com.lovebrain.app.model.IntentStatus.ACTIVE) {
                     Spacer(Modifier.height(Spacing.sm))
                     val (completeInteraction, completeScale) = rememberPressScale(0.96f, "intentCompleteScale")
@@ -858,7 +858,7 @@ private fun IntentEditorDialog(
                     )
                 }
             }
-            // F01: 统一操作行——PanelModalActions
+            // 统一操作行——PanelModalActions
             Spacer(Modifier.height(Spacing.md))
             PanelModalActions(
                 confirmLabel = "保存",
@@ -874,7 +874,7 @@ private fun IntentEditorDialog(
     }
 
 /**
- * F06: 有效期选择 chip。
+ * 有效期选择 chip。
  */
 @Composable
 private fun IntentExpiryChip(

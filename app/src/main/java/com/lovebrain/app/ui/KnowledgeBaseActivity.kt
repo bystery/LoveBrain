@@ -98,7 +98,7 @@ class KnowledgeBaseActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // P3-05: FLAG_SECURE——知识库内容含关系数据，防止最近任务截图泄露
+        // FLAG_SECURE——知识库内容含关系数据，防止最近任务截图泄露
         window.setFlags(
             android.view.WindowManager.LayoutParams.FLAG_SECURE,
             android.view.WindowManager.LayoutParams.FLAG_SECURE
@@ -279,11 +279,11 @@ private fun KbListScreen(
             verticalArrangement = Arrangement.spacedBy(Spacing.xl)
         ) {
         if (kbs.isEmpty()) {
-            // 空状态三要素（第2轮调研：图标 + 友好文案 + 明确 CTA）
+            // 空状态三要素：图标 + 友好文案 + 明确 CTA
             Card(
                 shape = LoveBrainShape.lg,
                 colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-                // ：阴影统一收进 2/4 令牌（6→4 为任务单批准的唯一超限修正）
+                // 阴影统一收进 2/4 令牌（6→4 为唯一超限修正）
                 modifier = Modifier.fillMaxWidth().shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.lg)
             ) {
                 Column(
@@ -377,7 +377,7 @@ private fun KbListScreen(
         )
     }
 
-    // ：导出警示 Compose 化（/：明文 zip 含全部画像/归档，先警示再启动；文案红线逐字不动）
+    // 导出警示 Compose 化（/：明文 zip 含全部画像/归档，先警示再启动；文案红线逐字不动）
     pendingExport?.let { kb ->
         AlertDialog(
             onDismissRequest = { pendingExport = null },
@@ -417,8 +417,8 @@ private fun KbCard(
     Card(
         shape = LoveBrainShape.lg,
         colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-        // ：阴影统一收进 2/4 令牌（6→4 为任务单批准的唯一超限修正）
-        // ：点卡片主体 = 激活（非当前库时），与供应商行交互一致
+        // 阴影统一收进 2/4 令牌（6→4 为唯一超限修正）
+        // 点卡片主体 = 激活（非当前库时），与供应商行交互一致
         modifier = Modifier
             .fillMaxWidth()
             .shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.lg)
@@ -896,7 +896,7 @@ private fun handleOptionClick(
         // Q2-Q5: 走 toggle 逻辑
         val newAnswer = com.lovebrain.app.domain.OnboardingStateMachine
             .toggleOption(question, currentAnswer, index)
-        // ONB-03 修复：只有 MULTIPLE 且集合完全没变且点的是新项 → 才是因上限被拒
+        // 只有 MULTIPLE 且集合完全没变且点的是新项 → 才是因上限被拒
         if (
             question.selectionMode == com.lovebrain.app.domain.SelectionMode.MULTIPLE &&
             newAnswer.selectedIndices == currentAnswer.selectedIndices &&

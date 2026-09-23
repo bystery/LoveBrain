@@ -1,7 +1,7 @@
 package com.lovebrain.app.domain
 
 /**
- * P3-05: 无障碍抓取裁决策略——默认 fail-closed 的 allowlist。
+ * 无障碍抓取裁决策略——默认 fail-closed 的 allowlist。
  *
  * ## 为什么重写
  * 上一版只在 XML 里移除了 `flagIncludeNotImportantViews`，注释声称"allowlist 应在代码层实现"，

@@ -90,7 +90,7 @@ private const val TITLE_FIRST_LINE_LIMIT = 60
 /** 谈心记录标题截断：用户消息回退 */
 private const val TITLE_FALLBACK_LIMIT = 40
 
-/** ：谈心草稿写盘防抖窗口——连续击键只在停顿后落盘一次（强杀最多丢 ≤600ms 输入；正常关闭经 dispose flush 零丢失） */
+/** 谈心草稿写盘防抖窗口——连续击键只在停顿后落盘一次（强杀最多丢 ≤600ms 输入；正常关闭经 dispose flush 零丢失） */
 private const val COUNSELING_DRAFT_DEBOUNCE_MS = 600L
 
 
@@ -106,13 +106,13 @@ class LoveBrainViewModel(
     private val securePrefs: SecurePrefs,
     private val triggerCoordinator: KnowledgeTriggerCoordinator,
     private val generationEngine: GenerationEngine,
-    // S2-02: 统一前台任务协调器——管理所有 AI 前台流程的互斥和生命周期
+    // 统一前台任务协调器——管理所有 AI 前台流程的互斥和生命周期
     val operationCoordinator: ForegroundOperationCoordinator,
-    // F02: 反馈案例仓库——点踩时本地保存
+    // 反馈案例仓库——点踩时本地保存
     private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null
 ) : ViewModel(), KnowledgeTriggerCoordinator.Callbacks {
 
-    // F02/P1-A: 当前反馈案例——点踩时同步构造并暴露给 UI，消除"保存后再全量查询"竞态
+    // /: 当前反馈案例——点踩时同步构造并暴露给 UI，消除"保存后再全量查询"竞态
     private val _currentFeedbackCase = MutableStateFlow<com.lovebrain.app.model.FeedbackCase?>(null)
     val currentFeedbackCase: StateFlow<com.lovebrain.app.model.FeedbackCase?> = _currentFeedbackCase.asStateFlow()
 
@@ -122,11 +122,11 @@ class LoveBrainViewModel(
     private val _messages = MutableStateFlow<List<ChatMessage>>(emptyList())
     val messages: StateFlow<List<ChatMessage>> = _messages.asStateFlow()
 
-    // ═══ S2-02/S2-03: 回复流程唯一状态源 ═══
+    // ═══ 回复流程唯一状态源 ═══
     /**
      * 回复流程的全部状态。
      *
-     * S2-03 之前这里是六个各自独立的 MutableStateFlow（_result / _replyRequestState /
+     * 之前这里是六个各自独立的 MutableStateFlow（_result / _replyRequestState /
      * _streamingCoreText / _streamingSchemes / _generationRoundId / _currentVersionId），
      * 谁都能写。现在唯一写入口是 [dispatchReply] → [ReplyReducer.reduce]。
      * 下面暴露的 result / replyRequestState / streamingCoreText / … 全部由这里 map 出去，
@@ -148,70 +148,70 @@ class LoveBrainViewModel(
     val isGeneratingCore: StateFlow<Boolean> = _replyUi.map { it.isBusy }
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, false)
 
-    /** P0-3: 稳定的轮次身份——只在真正完成一次新的整轮 generate 时变化。
+    /** 稳定的轮次身份——只在真正完成一次新的整轮 generate 时变化。
      * 单条改写、undo、feedback 等原地操作不改变它。
      * ResultArea 的 viewMode 只以 round id 重置。 */
     private val _generationRoundId = MutableStateFlow(0)
     val generationRoundId: StateFlow<Int> = _generationRoundId.asStateFlow()
 
-    // ═══ S2-02: 前台任务不在 ViewModel 里留 Job 字段 ═══
+    // ═══ 前台任务不在 ViewModel 里留 Job 字段 ═══
     // 旧实现在这里放 generateJob / counselingJob / suggestJob，各自挂 invokeOnCompletion 清引用，
     // 于是"谁在跑"有两本账（Job 字段 + coordinator），且 stopGeneration 一次取消三类操作。
     // 现在只有 coordinator 一本账，停止按租约/按类型走。
 
-    // S1-04 审计修复：冻结锦囊请求身份——生成开始时冻结，完成时使用冻结值而非实时 _activeKb
+    // 冻结锦囊请求身份——生成开始时冻结，完成时使用冻结值而非实时 _activeKb
     // 防止生成期间切 KB 导致缓存写入错误的 kbId
     private var suggestRequestKbName: String? = null
     private var suggestRequestContextFp: String = ""
     private var suggestRequestPromptVersion: String = ""
-    // ═══════════ GEN-02：本轮生成上下文（不可变快照） ═══════════
+    // ═══════════ 本轮生成上下文（不可变快照） ═══════════
     /**
      * 一轮 AI 生成 = 固定消息快照 + 固定知识库 + 固定 AI 回复 + 固定用户反馈。
      * 生成开始时建立，保存成功后才清除。停止生成时也清除（本轮无成功结果）。
      *
-     * F07/F08: 扩展为真正的请求快照，冻结 kbName/kbId、messages、IDEA、
+     * 扩展为真正的请求快照，冻结 kbName/kbId、messages、IDEA、
      * 持续意图 text/enabled/revision，以及未提交 IDEA 草稿。
      */
     private data class ReplyGenerationContext(
         val messages: List<ChatMessage>,
         val messageIds: Set<String>,
         val kbName: String?,
-        val ideaHint: String,              // F08: 冻结的 IDEA hint（含未提交草稿）
-        val intentText: String,            // F07: 冻结的持续意图文本
-        val intentEnabled: Boolean,        // F07: 冻结的持续意图启用状态
-        val intentRevision: Int,           // F07: 冻结的持续意图 revision（识别旧请求）
-        val memoryRefs: List<com.lovebrain.app.model.MemoryRef> = emptyList(), // F09: 冻结的 MemoryRef 清单
-        val correctionsRevision: Int = 0,  // F09: 冻结的纠正 revision（防迟到覆盖）
+        val ideaHint: String,              // 冻结的 IDEA hint（含未提交草稿）
+        val intentText: String,            // 冻结的持续意图文本
+        val intentEnabled: Boolean,        // 冻结的持续意图启用状态
+        val intentRevision: Int,           // 冻结的持续意图 revision（识别旧请求）
+        val memoryRefs: List<com.lovebrain.app.model.MemoryRef> = emptyList(), // 冻结的 MemoryRef 清单
+        val correctionsRevision: Int = 0,  // 冻结的纠正 revision（防迟到覆盖）
         val sourceAliasMap: Map<String, String> = emptyMap(), // B项修复：别名→实际消息ID映射
-        val inputFingerprint: String = "", // F11: 输入指纹——对 KB+消息正文+角色+顺序+IDEA+onlyThisRound+intent revision 做哈希
-        val onlyThisRound: Boolean = false // F16: 冻结 onlyThisRound 状态
+        val inputFingerprint: String = "", // 输入指纹——对 KB+消息正文+角色+顺序+IDEA+onlyThisRound+intent revision 做哈希
+        val onlyThisRound: Boolean = false // 冻结 onlyThisRound 状态
     )
     private var replyGenerationContext: ReplyGenerationContext? = null
 
-    // ═══════════ F04: 轮次级瞬时纠正（不持久化，nextRound/切库时清空） ═══════════
+    // ═══════════ 轮次级瞬时纠正（不持久化，nextRound/切库时清空） ═══════════
     /**
-     * F04: THIS_ROUND mute 的瞬时存储——只在当前轮次有效，不写入 corrections.json。
+     * THIS_ROUND mute 的瞬时存储——只在当前轮次有效，不写入 corrections.json。
      * key = memoryId, value = MemoryCorrection(action=MUTED, muteDuration=THIS_ROUND)
      * 在 nextRound()、切库时清空。stopGeneration 不清——停止生成不等于结束当前工作轮。
      * 生成时与持久化 corrections 合并传入 PromptBuilder。 */
     private val roundCorrections = mutableMapOf<String, com.lovebrain.app.model.MemoryCorrection>()
 
-    // ═══════════ F11: 输入变化提示 + 生成历史 ═══════════
+    // ═══════════ 输入变化提示 + 生成历史 ═══════════
 
-    /** F11: 输入已变化——result 存在但 messages/ideaHint 与生成时快照不一致 */
+    /** 输入已变化——result 存在但 messages/ideaHint 与生成时快照不一致 */
     private val _inputChanged = MutableStateFlow(false)
     val inputChanged: StateFlow<Boolean> = _inputChanged.asStateFlow()
 
-    /** F11/P0-D: 生成版本 ID——每轮成功生成的唯一身份 */
+    /** /: 生成版本 ID——每轮成功生成的唯一身份 */
     data class GenerationVersionId(val value: String) {
         companion object {
             fun next(): GenerationVersionId = GenerationVersionId(java.util.UUID.randomUUID().toString())
         }
     }
 
-    /** F11/P0-D: 生成历史——每轮成功生成时保存的版本快照，携带完整版本身份
+    /** /: 生成历史——每轮成功生成时保存的版本快照，携带完整版本身份
      * 注意：这是 session-only 内存历史，杀进程即消失。不声称跨重启完整版本历史。
-     * P0-1: snapshot 保存完整 immutable ReplyGenerationContext，
+     * snapshot 保存完整 immutable ReplyGenerationContext，
      * rollback 时原子恢复 result + versionId + context，避免 result/context 错配。 */
     private data class GenerationSnapshot(
         val versionId: GenerationVersionId,
@@ -220,20 +220,20 @@ class LoveBrainViewModel(
         val kbName: String?,
         val createdAt: Long = System.currentTimeMillis()
     )
-    /** F11/P0-D: session 生成历史——内存 StateFlow，杀进程即消失。不声称跨重启完整版本历史。
-     * P0-1: 最多保留最近 20 个版本，防止长 session 无限增长。 */
+    /** /: session 生成历史——内存 StateFlow，杀进程即消失。不声称跨重启完整版本历史。
+     * 最多保留最近 20 个版本，防止长 session 无限增长。 */
     private val _generationHistory = MutableStateFlow<List<GenerationSnapshot>>(emptyList())
     val generationHistorySize: Int get() = _generationHistory.value.size
     private val MAX_HISTORY_SIZE = 20
 
-    /** P0-D: 当前活跃版本 ID——最新成功生成的版本身份，用于绑定点踩/发送/改写 */
+    /** 当前活跃版本 ID——最新成功生成的版本身份，用于绑定点踩/发送/改写 */
     private val _currentVersionId = MutableStateFlow<GenerationVersionId?>(null)
     val currentVersionId: StateFlow<GenerationVersionId?> = _currentVersionId.asStateFlow()
 
     /**
      * 流式正文 / 方案卡——从 [_replyUi] 派生，不再有独立可写的 StateFlow。
      *
-     * P3-04 的"别每个 token 全量重绘一次"不再靠 StringBuilder+定时器绕过状态源，
+     * "别每个 token 全量重绘一次"不再靠 StringBuilder+定时器绕过状态源，
      * 而是在 [dispatchReply] 里把相邻的 chunk 合并成一个事件再归约。
      * 这样节流和"reducer 是唯一写入口"不再互相牺牲。
      */
@@ -281,7 +281,7 @@ class LoveBrainViewModel(
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
 
-    //  KBG-02：ProfileSuggestion 作为单一事实源，携带 originating kbName
+    //  ProfileSuggestion 作为单一事实源，携带 originating kbName
     private val _profileSuggestion = MutableStateFlow<ProfileSuggestion?>(null)
     val profileSuggestion: StateFlow<ProfileSuggestion?> = _profileSuggestion.asStateFlow()
 
@@ -294,7 +294,7 @@ class LoveBrainViewModel(
     val kbNotice: StateFlow<String?> = _kbNotice.asStateFlow()
     fun dismissKbNotice() { _kbNotice.value = null }
 
-    /** ：面板级临时警告（未配置引导/未记入提示），悬浮窗内短暂展示 */
+    /** 面板级临时警告（未配置引导/未记入提示），悬浮窗内短暂展示 */
     private val _panelWarning = MutableStateFlow<String?>(null)
     val panelWarning: StateFlow<String?> = _panelWarning.asStateFlow()
     fun showPanelWarning(msg: String) { _panelWarning.value = msg }
@@ -324,7 +324,7 @@ class LoveBrainViewModel(
     private val _activeTicket = MutableStateFlow<com.lovebrain.app.model.ProviderTicket?>(null)
     val activeTicket: StateFlow<com.lovebrain.app.model.ProviderTicket?> = _activeTicket.asStateFlow()
 
-    /**  ：供应商就绪态下沉（面板不再本地计算）：工单存在 && 模型非空 && Key 非空 */
+    /** 供应商就绪态下沉（面板不再本地计算）：工单存在 && 模型非空 && Key 非空 */
     private val _providerReady = MutableStateFlow(false)
     val providerReady: StateFlow<Boolean> = _providerReady.asStateFlow()
 
@@ -337,7 +337,7 @@ class LoveBrainViewModel(
                 val ticket = tickets.find { it.id == activeId }
                 if (ticket != null) {
                     _activeTicket.value = ticket
-                    // ：就绪三条件（含 Key 非空）在 VM 统一判定，面板只订阅结果
+                    // 就绪三条件（含 Key 非空）在 VM 统一判定，面板只订阅结果
                     _providerReady.value = ticket.model.isNotBlank() &&
                         !securePrefs.getWorkerApiKey(ticket.id).isNullOrBlank()
                     return@launch
@@ -365,7 +365,7 @@ class LoveBrainViewModel(
 
     private val _counselingDraft = MutableStateFlow("")
     val counselingDraft: StateFlow<String> = _counselingDraft.asStateFlow()
-    /** ：谈心草稿防抖写盘任务（取消旧任务 + 延迟 600ms 落盘，防每击键一次加密写盘） */
+    /** 谈心草稿防抖写盘任务（取消旧任务 + 延迟 600ms 落盘，防每击键一次加密写盘） */
     private var draftPersistJob: kotlinx.coroutines.Job? = null
 
     private val _panelMode = MutableStateFlow(0) // 0=reply, 1=counseling
@@ -376,14 +376,14 @@ class LoveBrainViewModel(
     val outputMode: StateFlow<Int> = _outputMode.asStateFlow()
 
     fun setOutputMode(mode: Int) {
-        // ：直出/思考悬浮窗切换面已移除（改工单级开关），思考值直读持久层参与校验
+        // 直出/思考悬浮窗切换面已移除（改工单级开关），思考值直读持久层参与校验
         val result = promptBuilder.validateConfig(securePrefs.thinkingMode, mode)
         result.warnings.forEach { L.w("⚠️ $it") }
         _outputMode.value = result.outputMode
         securePrefs.outputMode = result.outputMode
     }
 
-    /** ═══════════ ：花费/耗时展示（VM 聚合） ═══════════ */
+    /** ═══════════ 花费/耗时展示（VM 聚合） ═══════════ */
 
     /** 今日累计花费（元；跨天清零，持久层对账） */
     private val _todayCostYuan = MutableStateFlow(0.0)
@@ -397,7 +397,7 @@ class LoveBrainViewModel(
     private val _lastResponseMs = MutableStateFlow(0L)
     val lastResponseMs: StateFlow<Long> = _lastResponseMs.asStateFlow()
 
-    // F12: 性能统计
+    // 性能统计
     /** 累计生成次数（跨重启持久化） */
     private val _totalGenerateCount = MutableStateFlow(0)
     val totalGenerateCount: StateFlow<Int> = _totalGenerateCount.asStateFlow()
@@ -409,7 +409,7 @@ class LoveBrainViewModel(
     /** 今日花费的计费日期（跨零点滚动清零用） */
     private var todayCostDate: String = java.time.LocalDate.now().toString()
 
-    // F12: 详细统计
+    // 详细统计
     /** 累计复制次数 */
     private val _totalCopyCount = MutableStateFlow(0)
     val totalCopyCount: StateFlow<Int> = _totalCopyCount.asStateFlow()
@@ -423,11 +423,11 @@ class LoveBrainViewModel(
     val totalRewriteCount: StateFlow<Int> = _totalRewriteCount.asStateFlow()
 
     /** 首条可复制回复耗时（毫秒；0 = 尚未生成）
-     *  P1-H: 从生成开始到首张方案卡完整解析的真实耗时，不再近似等于首字耗时 */
+     *  从生成开始到首张方案卡完整解析的真实耗时，不再近似等于首字耗时 */
     private val _firstReplyMs = MutableStateFlow(0L)
     val firstReplyMs: StateFlow<Long> = _firstReplyMs.asStateFlow()
 
-    /** P1-H: 本轮生成开始时间戳（用于计算首条可复制回复耗时） */
+    /** 本轮生成开始时间戳（用于计算首条可复制回复耗时） */
     private var generateStartTimeMs: Long = 0L
 
     private val _currentRole = MutableStateFlow(ChatMessage.Role.HER)
@@ -449,7 +449,7 @@ class LoveBrainViewModel(
     private val _suggestion = MutableStateFlow<com.lovebrain.app.model.DailySuggestion?>(null)
     val suggestion: StateFlow<com.lovebrain.app.model.DailySuggestion?> = _suggestion.asStateFlow()
 
-    /** S2-02: 某类前台任务是否在跑——一律从 coordinator 派生，不再有独立可写 boolean */
+    /** 某类前台任务是否在跑——一律从 coordinator 派生，不再有独立可写 boolean */
     private fun busyOf(
         type: ForegroundOperationCoordinator.OperationType
     ): StateFlow<Boolean> = operationCoordinator.activeOperations
@@ -462,7 +462,7 @@ class LoveBrainViewModel(
     private val _streamingTips = MutableStateFlow<List<com.lovebrain.app.model.SuggestTip>>(emptyList())
     val streamingTips: StateFlow<List<com.lovebrain.app.model.SuggestTip>> = _streamingTips.asStateFlow()
 
-    /** ：锦囊错误提示（无 KB 引导/弱网超时/解析失败） */
+    /** 锦囊错误提示（无 KB 引导/弱网超时/解析失败） */
     private val _suggestError = MutableStateFlow<String?>(null)
     val suggestError: StateFlow<String?> = _suggestError.asStateFlow()
 
@@ -470,19 +470,19 @@ class LoveBrainViewModel(
     private val _proactiveOptions = MutableStateFlow<List<com.lovebrain.app.model.ProactiveOption>>(emptyList())
     val proactiveOptions: StateFlow<List<com.lovebrain.app.model.ProactiveOption>> = _proactiveOptions.asStateFlow()
 
-    /** S2-02: 主动开场是否在生成——从 coordinator 派生。模式开关是 composerMode，不是这个 */
+    /** 主动开场是否在生成——从 coordinator 派生。模式开关是 composerMode，不是这个 */
     val isProactive: StateFlow<Boolean> =
         busyOf(ForegroundOperationCoordinator.OperationType.PROACTIVE)
 
     private val _proactiveError = MutableStateFlow<String?>(null)
     val proactiveError: StateFlow<String?> = _proactiveError.asStateFlow()
 
-    /** P1-2：结果模式——显式区分回复结果与主动发结果 */
+    /** 结果模式——显式区分回复结果与主动发结果 */
     enum class ResultMode { REPLY, PROACTIVE }
     private val _resultMode = MutableStateFlow(ResultMode.REPLY)
     val resultMode: StateFlow<ResultMode> = _resultMode.asStateFlow()
 
-    /** S1-01: Composer mode——UI 会话状态，单一事实源。
+    /** Composer mode——UI 会话状态，单一事实源。
      * REPLY = 普通回复模式（默认）
      * PROACTIVE = 主动发模式（蓝字切换进入，不发网络请求）
      * 替代之前分散的 local inputMode / resultMode / isProactive 三个变量各自推断。 */
@@ -490,7 +490,7 @@ class LoveBrainViewModel(
     private val _composerMode = MutableStateFlow(ComposerMode.REPLY)
     val composerMode: StateFlow<ComposerMode> = _composerMode.asStateFlow()
 
-    /** S1-01: 切换主动发模式——第一次点击只切换模式，不发网络请求。
+    /** 切换主动发模式——第一次点击只切换模式，不发网络请求。
      * 再次点击退出主动发模式回到普通回复。 */
     fun toggleProactiveMode() {
         if (operationCoordinator.isBusy(ForegroundOperationCoordinator.OperationType.PROACTIVE) ||
@@ -504,18 +504,18 @@ class LoveBrainViewModel(
         }
     }
 
-    /** S1-01: 退出主动发模式（供生成成功后或取消时调用） */
+    /** 退出主动发模式（供生成成功后或取消时调用） */
     fun exitProactiveMode() {
         _composerMode.value = ComposerMode.REPLY
         _resultMode.value = ResultMode.REPLY
     }
 
-/** S2-02: 前台任务互斥——从 operationCoordinator 派生，不再拼多个 boolean */
+/** 前台任务互斥——从 operationCoordinator 派生，不再拼多个 boolean */
 val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
-    // ═══════════ F10: 仅看本轮开关 ═══════════
+    // ═══════════ 仅看本轮开关 ═══════════
 
-    /** F10: 仅看本轮开关——默认关闭。开启后只携带通用生成规则、本轮真实消息和本轮想法。
+    /** 仅看本轮开关——默认关闭。开启后只携带通用生成规则、本轮真实消息和本轮想法。
      * 排除旧画像、关系阶段、历史对话、场景、事项、经验与持续意图。
      * 开关属于当前工作轮次；本轮重生成保留，开启新轮次或切档案后恢复默认。 */
     private val _onlyThisRound = MutableStateFlow(false)
@@ -523,20 +523,20 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     fun toggleOnlyThisRound() {
         _onlyThisRound.value = !_onlyThisRound.value
-        // P1-F: 切换 onlyThisRound 后已有旧结果立即 stale
+        // 切换 onlyThisRound 后已有旧结果立即 stale
         checkInputChanged()
     }
 
     fun setOnlyThisRound(value: Boolean) {
         _onlyThisRound.value = value
-        // P1-F: 切换 onlyThisRound 后已有旧结果立即 stale
+        // 切换 onlyThisRound 后已有旧结果立即 stale
         checkInputChanged()
     }
 
-    // ═══════════ F11: 输入变化提示 + 生成历史与版本回退 ═══════════
+    // ═══════════ 输入变化提示 + 生成历史与版本回退 ═══════════
 
     /**
-     * F10/F11: 统一标记当前结果为 stale（如果输入已变化）。
+     * 统一标记当前结果为 stale（如果输入已变化）。
      * 在所有消息操作（增/删/改/重排/草稿/反馈）后调用。
      * 仅当存在已完成的生成结果时才实际检测。 */
     private fun markCurrentResultStaleIfNeeded() {
@@ -546,7 +546,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /**
-     * F11: 检测输入是否已变化——使用真正的输入指纹比较。
+     * 检测输入是否已变化——使用真正的输入指纹比较。
      * 指纹覆盖：KB identity、消息正文/角色/顺序、IDEA、onlyThisRound、intent revision。
      * 以下任意变化都令当前旧结果 stale：
      * - 修改消息正文
@@ -563,7 +563,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val ctx = replyGenerationContext ?: return
         // guard: 只在有成功结果时才需要检测 stale
         replyResult as? GenerateResult.Success ?: return
-        // P0-3 fix: 使用当前活跃 intent revision，而非生成时冻结的 ctx.intentRevision。
+        // fix: 使用当前活跃 intent revision，而非生成时冻结的 ctx.intentRevision。
         // ctx.intentRevision 是生成时的快照值，如果用户随后修改了 intent，
         // 用旧 revision 自己跟自己比较当然发现不了变化。
         val currentFingerprint = computeInputFingerprint(
@@ -577,8 +577,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /**
-     * F11: 计算输入指纹——纯函数，对顺序敏感。
-     * P1-8: 使用 exact canonical representation（length-prefixed encoding），
+     * 计算输入指纹——纯函数，对顺序敏感。
+     * 使用 exact canonical representation（length-prefixed encoding），
      * 不再依赖 Java 32-bit hashCode()。覆盖：KB identity、有序消息(id+role+exact content)、
      * IDEA exact content、onlyThisRound、intent revision。
      */
@@ -590,7 +590,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         intentRevision: Int
     ): String {
         val sb = StringBuilder()
-        // P1-8: length-prefixed canonical encoding — 不使用 hashCode()
+        // length-prefixed canonical encoding — 不使用 hashCode()
         appendLengthPrefixed(sb, "kb", kbName ?: "")
         appendLengthPrefixed(sb, "otr", onlyThisRound.toString())
         appendLengthPrefixed(sb, "irev", intentRevision.toString())
@@ -602,19 +602,19 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             appendLengthPrefixed(sb, "c", msg.content)
             sb.append(";")
         }
-        // F11: SHA-256 指纹——对 exact canonical representation 做哈希
+        // SHA-256 指纹——对 exact canonical representation 做哈希
         val digest = MessageDigest.getInstance("SHA-256")
         val hashBytes = digest.digest(sb.toString().toByteArray(Charsets.UTF_8))
         return hashBytes.joinToString("") { "%02x".format(it) }.take(16)
     }
 
-    /** P1-8: length-prefixed append — 防止不同字符串产生相同 canonical representation */
+    /** length-prefixed append — 防止不同字符串产生相同 canonical representation */
     private fun appendLengthPrefixed(sb: StringBuilder, key: String, value: String) {
         sb.append(key).append("(").append(value.length).append("):").append(value).append(";")
     }
 
     /**
-     * F11: 回退到上一轮生成结果。
+     * 回退到上一轮生成结果。
      * 正确的 one-way undo 语义：
      *   history = [v1, v2, v3], current = v3
      *   rollback → 删除 current(v3), 恢复 previous(v2)
@@ -624,29 +624,29 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 再次 rollback → 删除 v4, 恢复 v2
      * 绝不会重新出现已放弃的 v3。
      *
-     * P0-RC: KB 边界——只有当前 result context 与 active KB 一致时才允许 rollback。
+     * KB 边界——只有当前 result context 与 active KB 一致时才允许 rollback。
      *   用户已切到 B 时，不允许操作 A 的 version stack。
-     * P0-RC: rollback 后不无条件 _inputChanged=false——调用 checkInputChanged()
+     * rollback 后不无条件 _inputChanged=false——调用 checkInputChanged()
      *   让当前真实输入与 previous.context.inputFingerprint 比较。
      *   如果用户当前输入与旧版本不同，stale 必须 true。
      */
     fun rollbackToPreviousGeneration() {
-        // P0-RC: KB 边界——result context 必须与 active KB 一致
+        // KB 边界——result context 必须与 active KB 一致
         val activeKbName = _activeKb.value?.name
         val contextKbName = replyGenerationContext?.kbName
         if (contextKbName == null || contextKbName != activeKbName) return
 
-        // P0-RC: 只筛选当前 KB 的 snapshots
+        // 只筛选当前 KB 的 snapshots
         val kbHistory = _generationHistory.value.filter { it.kbName == activeKbName }
         if (kbHistory.size < 2) return
 
         val currentSnapshot = kbHistory.last()
         val previous = kbHistory[kbHistory.size - 2]
 
-        // P0-RC: 删除 current snapshot（不是 previous），恢复 previous
+        // 删除 current snapshot（不是 previous），恢复 previous
         _generationHistory.value = _generationHistory.value.filterNot { it.versionId == currentSnapshot.versionId }
 
-        // P0-RC: 原子恢复 result + versionId + context
+        // 原子恢复 result + versionId + context
         replaceReplyResult(previous.result)
         _currentVersionId.value = previous.versionId
         replyGenerationContext = previous.context
@@ -654,17 +654,17 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         _rewriteStates.value = emptyMap()
         _rewriteHistory.value = emptyMap()
 
-        // P0-RC: 重新计算 stale——当前输入可能与 previous context 不一致
+        // 重新计算 stale——当前输入可能与 previous context 不一致
         checkInputChanged()
 
-        // P0-D: 生成新的 roundId 值以触发 viewMode 重置——不递减，不使用 magic number
+        // 生成新的 roundId 值以触发 viewMode 重置——不递减，不使用 magic number
         _generationRoundId.value = _generationRoundId.value + 1
     }
 
-    /** F11: 是否可以回退到上一版本 — P0-RC: 以当前 active KB 为权限边界 */
+    /** 是否可以回退到上一版本 — 以当前 active KB 为权限边界 */
     val canRollbackGeneration: Boolean
         get() {
-            // P0-RC: result context 必须与 active KB 一致
+            // result context 必须与 active KB 一致
             val activeKbName = _activeKb.value?.name
             val contextKbName = replyGenerationContext?.kbName
             if (contextKbName == null || contextKbName != activeKbName) return false
@@ -678,17 +678,17 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     private val _counselingError = MutableStateFlow<String?>(null)
     val counselingError: StateFlow<String?> = _counselingError.asStateFlow()
 
-    /** S2-02: 谈心是否在生成——从 coordinator 派生 */
+    /** 谈心是否在生成——从 coordinator 派生 */
     val isCounseling: StateFlow<Boolean> =
         busyOf(ForegroundOperationCoordinator.OperationType.COUNSELING)
 
     private val _counselingStreaming = MutableStateFlow("")
     val counselingStreaming: StateFlow<String> = _counselingStreaming.asStateFlow()
 
-    // P3-04: 谈心流式节流已改由 applyCounselingEvent 的合并缓冲承担（见 S2-03 归约段）
+    // 谈心流式节流已改由 applyCounselingEvent 的合并缓冲承担（见 归约段）
 
     init {
-        // F10: 确保至少有一个合法知识库（首次启动创建默认库，重复启动沿用，中断恢复补齐）
+        // 确保至少有一个合法知识库（首次启动创建默认库，重复启动沿用，中断恢复补齐）
         viewModelScope.launch {
             try {
                 knowledgeRepo.ensureInitialKnowledgeBase()
@@ -707,10 +707,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             securePrefs.outputMode = persisted.outputMode
         }
 
-        // ：今日花费载入（跨天清零）+ 订阅计费事件流（ 口径）
+        // 今日花费载入（跨天清零）+ 订阅计费事件流（ 口径）
         val savedCost = securePrefs.loadTodayCost()
         _todayCostYuan.value = rollTodayCost(savedCost?.first, savedCost?.second, todayCostDate)
-        // F12: 加载累计统计
+        // 加载累计统计
         _totalGenerateCount.value = securePrefs.totalGenerateCount
         _totalCostYuan.value = securePrefs.totalCostYuan
         _totalCopyCount.value = securePrefs.totalCopyCount
@@ -722,13 +722,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 deepSeekRepo.costEvents.collect { ev ->
                     val today = java.time.LocalDate.now().toString()
                     if (today != todayCostDate) { todayCostDate = today; _todayCostYuan.value = 0.0 }
-                    // PROV-03：今日累计包含全部可计费 AI 请求（前台 + 后台）
+                    // 今日累计包含全部可计费 AI 请求（前台 + 后台）
                     _todayCostYuan.value += ev.yuan
                     securePrefs.saveTodayCost(today, _todayCostYuan.value)
-                    // F12: 累计总花费
+                    // 累计总花费
                     _totalCostYuan.value += ev.yuan
                     securePrefs.totalCostYuan = _totalCostYuan.value
-                    // PROV-03：本次费用只显示前台流式请求（FOREGROUND），不被后台 raw 污染
+                    // 本次费用只显示前台流式请求（FOREGROUND），不被后台 raw 污染
                     if (ev.scope == CostScope.FOREGROUND) {
                         _lastCostYuan.value = ev.yuan
                     }
@@ -742,7 +742,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         restoreState()
         
-        // : 从 SecurePrefs 读取激活工单信息（面板每次可见时经 refreshTicketState 再刷新）
+        //  从 SecurePrefs 读取激活工单信息（面板每次可见时经 refreshTicketState 再刷新）
         refreshTicketState()
     }
 
@@ -751,7 +751,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     fun setPanelState(state: PanelState) { _panelState.value = state }
     fun setDraft(text: String) {
         _draftText.value = text
-        // F10/F11: 草稿变化后标记旧结果为 stale（草稿参与 buildMessageSnapshot）
+        // 草稿变化后标记旧结果为 stale（草稿参与 buildMessageSnapshot）
         markCurrentResultStaleIfNeeded()
     }
     fun setCounselingDraft(text: String) {
@@ -781,7 +781,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     fun addMessage(role: ChatMessage.Role, content: String) {
         if (content.isBlank()) return
         _messages.value = _messages.value + ChatMessage(role = role, content = content.trim())
-        // F10/F11: 消息变更后标记旧结果为 stale
+        // 消息变更后标记旧结果为 stale
         markCurrentResultStaleIfNeeded()
     }
 
@@ -791,19 +791,19 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         if (index !in list.indices) return
         list[index] = ChatMessage(id = list[index].id, role = role, content = content.trim())
         _messages.value = list
-        // F10/F11: 消息变更后标记旧结果为 stale
+        // 消息变更后标记旧结果为 stale
         markCurrentResultStaleIfNeeded()
     }
 
     fun removeMessage(index: Int) {
         _messages.value = _messages.value.filterIndexed { i, _ -> i != index }
-        // F10/F11: 消息变更后标记旧结果为 stale
+        // 消息变更后标记旧结果为 stale
         markCurrentResultStaleIfNeeded()
     }
 
     /**
-     * ：按消息 id 删除（动画延迟回调里 index 会过期，id 是 data class 稳定值）。
-     * ：editingIndex 修正下沉至 VM——VM 持数据真源，同帧连删串行执行永远看最新快照，
+     * 按消息 id 删除（动画延迟回调里 index 会过期，id 是 data class 稳定值）。
+     * editingIndex 修正下沉至 VM——VM 持数据真源，同帧连删串行执行永远看最新快照，
      * 消除 UI 侧依赖 composition 旧快照各自算 index 必错位的竞态。
      */
     fun removeMessageById(id: String) {
@@ -820,12 +820,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             }
         }
         _messages.value = list.filterNot { it.id == id }
-        // F10/F11: 消息变更后标记旧结果为 stale
+        // 消息变更后标记旧结果为 stale
         markCurrentResultStaleIfNeeded()
     }
 
     /**
-     * ：拖拽重排同步修正 editingIndex——与 removeMessageById 的  同源：
+     * 拖拽重排同步修正 editingIndex——与 removeMessageById 的  同源：
      * 修正下沉 VM（VM 持数据真源），不许 UI 侧依赖 composition 旧快照各自算 index。
      * 推演基于 removeAt(from)+add(to, item) 后的真实位置（editing 为搬移前下标）：
      * - 拖的就是编辑中消息（from == editing）→ 跟随到 to；
@@ -854,7 +854,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val item = list.removeAt(from)
         list.add(to, item)
         _messages.value = list
-        // F10/F11: 消息变更后标记旧结果为 stale
+        // 消息变更后标记旧结果为 stale
         markCurrentResultStaleIfNeeded()
     }
 
@@ -864,7 +864,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         securePrefs.panelMode.let { if (it in 0..1) _panelMode.value = it }
         securePrefs.loadCounselingResult()?.let { if (it.isNotBlank()) _counselingResult.value = it }
         securePrefs.counselingDraft.takeIf { it.isNotEmpty() }?.let { _counselingDraft.value = it }
-        // ：今日锦囊仅当天恢复（隔天不恢复旧锦囊）；消息/想法已改纯内存，杀进程即清
+        // 今日锦囊仅当天恢复（隔天不恢复旧锦囊）；消息/想法已改纯内存，杀进程即清
         securePrefs.loadSuggestion()?.let { (json, date) ->
             if (date == TimeFmt.today()) {
                 runCatching {
@@ -882,7 +882,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 供 chat、想法、来源映射及保存共用，确保所有路径使用同一份不可变快照。
      *
      * - 深拷贝当前消息列表，防止外部修改影响快照。
-     * - 应用未提交的编辑草稿（角色 + 内容），防双身份问题（F08）。
+     * - 应用未提交的编辑草稿（角色 + 内容），防双身份问题（）。
      * - 按稳定消息ID操作，不依赖可能移动的下标。
      */
     private fun buildMessageSnapshot(): List<ChatMessage> {
@@ -907,7 +907,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     // ═══════════ 流式生成（委托 GenerationEngine） ═══════════
 
     /**
-     * S2-01/S2-02/S2-03: 生成回复。
+     * 生成回复。
      *
      * 一个请求 = coordinator 注册的**一个**任务，覆盖"准备 → 网络 → 解析 → 发布"全程。
      * 旧写法是 ViewModel 先 launch 一个 prepJob，再把 scope 交给 Engine 让它 launch 第二个 Job，
@@ -921,7 +921,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // 生产前置条件：没有真实对话（HER/ME）不发起请求
         if (snapshot.none { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }) return
 
-        // P1-2：设置结果模式
+        // 设置结果模式
         _resultMode.value = ResultMode.REPLY
 
         val requestId = ReplyRequestState.newRequestId()
@@ -993,7 +993,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
             currentCoroutineContext().ensureActive()
 
-            // S2-01: 构建不可变 GenerationInput——冻结本轮全部输入，
+            // 构建不可变 GenerationInput——冻结本轮全部输入，
             // 含 KB 内容修订、画像正文、Provider 完整非敏感身份与 prompt 资产 hash
             val aggressive = _outputMode.value == 1
             val providerConfig = deepSeekRepo.snapshotProviderConfig()
@@ -1028,13 +1028,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 onlyThisRound = _onlyThisRound.value
             )
 
-            // S2-03: Engine 只暴露事件流，本协程是它唯一的订阅者
+            // Engine 只暴露事件流，本协程是它唯一的订阅者
             generationEngine.replyStream(input).collect { dispatchReply(it) }
         } catch (e: kotlinx.coroutines.CancellationException) {
             dispatchReply(ReplyStopped(requestId))
             throw e
         } catch (e: Exception) {
-            // S1-02: 准备阶段异常转为可恢复错误，不泄露路径/Provider/内部细节
+            // 准备阶段异常转为可恢复错误，不泄露路径/Provider/内部细节
             L.e("generate request failed", e)
             dispatchReply(
                 ReplyCompleted(
@@ -1045,17 +1045,17 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    // ═══════════ S2-03: 回复状态唯一写入口 ═══════════
+    // ═══════════ 回复状态唯一写入口 ═══════════
 
     /** 待合并的流式增量所属请求 */
     private var pendingChunkRequestId: String? = null
 
     /**
-     * S2-03: 回复状态的唯一写入口。
+     * 回复状态的唯一写入口。
      *
      * - 身份不符的事件在这里被 reducer 拒掉，返回同一个状态对象，
      *   于是被取代的旧请求连"顺带写个流式文本"都做不到。
-     * - 相邻的流式增量合并成一个事件再归约：P3-04 要的节流和"唯一入口"不再互相牺牲。
+     * - 相邻的流式增量合并成一个事件再归约：要的节流和"唯一入口"不再互相牺牲。
      *
      * 只在 viewModelScope（Main 分发器）上被调用——Engine 的事件流在主协程收集，
      * 所以合并缓冲是单线程访问，不需要额外加锁。
@@ -1104,7 +1104,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val before = _replyUi.value
         val after = ReplyReducer.reduce(before, event)
         if (after === before) {
-            L.w("S2-03: reply event ${event::class.simpleName} rejected (stale requestId ${event.requestId.take(8)})")
+            L.w("reply event ${event::class.simpleName} rejected (stale requestId ${event.requestId.take(8)})")
             return
         }
         _replyUi.value = after
@@ -1134,12 +1134,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     ),
                     kbName = ctx.kbName
                 )
-                // P0-1: 限制 session history 最多 20 条
+                // 限制 session history 最多 20 条
                 _generationHistory.value = (_generationHistory.value + snapshot).takeLast(MAX_HISTORY_SIZE)
             }
-            // F11: 生成成功后重置输入变化标记
+            // 生成成功后重置输入变化标记
             _inputChanged.value = false
-            // F12: 递增累计生成次数
+            // 递增累计生成次数
             _totalGenerateCount.value += 1
             securePrefs.totalGenerateCount = _totalGenerateCount.value
         }
@@ -1152,7 +1152,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /**
-     * GEN-01/GEN-02 / S2-02：停止生成——只取消当前 REPLY owner。
+     * 停止生成——只取消当前 REPLY owner。
      *
      * 旧实现在这里一次 stopByType(REPLY/PROACTIVE/REWRITE)，
      * 把并行的主动发和改写一起杀掉，破坏了 owner 隔离；
@@ -1166,9 +1166,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.REPLY)
         cancelPendingChunkFlush()
         current?.let { applyReplyEvent(ReplyStopped(it.requestId)) }
-        // GEN-02：停止生成时清 context（本轮无成功结果），但消息本身不删
+        // 停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
-        // F04/P1-RC: stopGeneration 不清 roundCorrections——
+        // /: stopGeneration 不清 roundCorrections——
         // 停止生成不等于结束当前工作轮。用户 mute → stop → retry 时，
         // 本轮 mute 应继续有效。roundCorrections 只在 nextRound / switch KB 时清。
         _inputChanged.value = false
@@ -1176,26 +1176,26 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // ═══════════ 赞踩反馈 ═══════════
 
-    /** P0-1: setFeedback 使用 identityKey 区分 STYLE/DIRECTION
-     * F02: 点踩时立即落本地反馈案例，不因点踩调用 AI
-     * P1-A: 在调用时同步冻结快照，构造 case 并通过 currentFeedbackCase 暴露给 UI——消除"保存后再全量查询"竞态
-     * F02-fix: 先计算 effectiveFeedback（toggle 后的实际值），再据此决定是否建/清 case。
+    /** setFeedback 使用 identityKey 区分 STYLE/DIRECTION
+     * 点踩时立即落本地反馈案例，不因点踩调用 AI
+     * 在调用时同步冻结快照，构造 case 并通过 currentFeedbackCase 暴露给 UI——消除"保存后再全量查询"竞态
+     * 先计算 effectiveFeedback（toggle 后的实际值），再据此决定是否建/清 case。
      *  旧代码用传入参数 feedback 判断，第二次点踩取消时仍创建 case。 */
     fun setFeedback(identityKey: String, feedback: SchemeFeedback) {
-        // P1-A: 同步冻结快照——防止异步保存期间 result/context 被清空
+        // 同步冻结快照——防止异步保存期间 result/context 被清空
         val resultSnapshot = replyResult as? GenerateResult.Success
         val ctxSnapshot = replyGenerationContext
         val modelId = _activeTicket.value?.model ?: ""
 
-        // F02-fix: 先算 toggle 后的实际值
+        // 先算 toggle 后的实际值
         val effectiveFeedback = if (_feedbacks.value[identityKey] == feedback) SchemeFeedback.NONE else feedback
 
         _feedbacks.value = _feedbacks.value.toMutableMap().apply {
             put(identityKey, effectiveFeedback)
         }
-        // P2-14: 删除 markCurrentResultStaleIfNeeded()——点赞/点踩不是 GenerationInput，
+        // 删除 markCurrentResultStaleIfNeeded()——点赞/点踩不是 GenerationInput，
         // fingerprint 不包含 feedback，调用它是概念错误。
-        // F02/P1-A: 使用 effectiveFeedback 决定行为——取消踩时 effectiveFeedback=NONE 不建 case
+        // /: 使用 effectiveFeedback 决定行为——取消踩时 effectiveFeedback=NONE 不建 case
         if (effectiveFeedback == SchemeFeedback.DISLIKED && resultSnapshot != null && ctxSnapshot != null) {
             saveFeedbackCase(identityKey, resultSnapshot, ctxSnapshot, modelId)
         } else {
@@ -1204,7 +1204,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** F02/P1-A: 点踩时保存最小反馈案例——使用调用方传入的冻结快照，不读实时状态。
+    /** /: 点踩时保存最小反馈案例——使用调用方传入的冻结快照，不读实时状态。
      *  同步构造 case 并暴露给 _currentFeedbackCase，UI 直接消费，不需读全库猜最后一条 */
     private fun saveFeedbackCase(
         identityKey: String,
@@ -1221,7 +1221,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
         val scheme = allSchemes.find { it.tag == identity.tag } ?: return
 
-        // F16: 冻结真实对话快照（含人物身份）
+        // 冻结真实对话快照（含人物身份）
         val dialogueSnapshot = ctx.messages
             .filter { it.role == com.lovebrain.app.model.ChatMessage.Role.HER || it.role == com.lovebrain.app.model.ChatMessage.Role.ME }
             .map { msg ->
@@ -1242,17 +1242,17 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             intentText = ctx.intentText.takeIf { ctx.intentEnabled } ?: "",
             modelId = modelId,
             timestamp = com.lovebrain.app.util.TimeFmt.now(),
-            // F16: 完整诊断快照
+            // 完整诊断快照
             dialogueSnapshot = dialogueSnapshot,
             contextMode = if (ctx.onlyThisRound) "only-this-round" else "full",
             promptVersion = "v1.3.2",
             appVersion = com.lovebrain.app.BuildConfig.VERSION_NAME,
             buildType = com.lovebrain.app.BuildConfig.BUILD_TYPE,
-            promptTokens = 0,  // F16: usage 不可用时默认 0（不把默认 0 当已核实成本）
+            promptTokens = 0,  // usage 不可用时默认 0（不把默认 0 当已核实成本）
             completionTokens = 0,
             costYuan = _lastCostYuan.value ?: 0.0
         )
-        // P1-A: 同步暴露给 UI——消除竞态，UI 不需要异步全库读取
+        // 同步暴露给 UI——消除竞态，UI 不需要异步全库读取
         _currentFeedbackCase.value = case
         if (repo != null) {
             viewModelScope.launch {
@@ -1269,7 +1269,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** F02: 更新反馈案例的分类、原因和补充说明 */
+    /** 更新反馈案例的分类、原因和补充说明 */
     fun updateFeedbackCase(
         caseId: String,
         categories: List<com.lovebrain.app.model.FeedbackCategory>,
@@ -1300,7 +1300,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** F02: 获取全部反馈案例 */
+    /** 获取全部反馈案例 */
     fun loadFeedbackCases(
         onResult: (List<com.lovebrain.app.model.FeedbackCase>) -> Unit
     ) {
@@ -1311,12 +1311,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** F02/P1-A: 清除当前反馈案例（UI dismiss 时调用） */
+    /** /: 清除当前反馈案例（UI dismiss 时调用） */
     fun dismissFeedbackCase() {
         _currentFeedbackCase.value = null
     }
 
-    /** F02: 导出反馈案例为 Markdown */
+    /** 导出反馈案例为 Markdown */
     fun exportFeedbackMarkdown(
         cases: List<com.lovebrain.app.model.FeedbackCase>,
         onResult: (String) -> Unit
@@ -1328,7 +1328,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** F02: 导出反馈案例为 JSON */
+    /** 导出反馈案例为 JSON */
     fun exportFeedbackJson(
         cases: List<com.lovebrain.app.model.FeedbackCase>,
         onResult: (String) -> Unit
@@ -1345,22 +1345,22 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     private var recordingRound = false
 
     /**
-     * GEN-03：提交顺序改为「先写盘成功 → 再提交 UI」。
+     * 提交顺序改为「先写盘成功 → 再提交 UI」。
      * 写盘失败时保留所有本轮数据（消息/结果/反馈/context），用户可重试。
-     * GEN-02：保存时使用 replyGenerationContext 中的快照消息和 KB 名，不用实时 _messages/_activeKb。
+     * 保存时使用 replyGenerationContext 中的快照消息和 KB 名，不用实时 _messages/_activeKb。
      */
     fun nextRound() {
         val response = (replyResult as? GenerateResult.Success)?.response ?: return
         if (recordingRound) return
 
-        // GEN-02：使用生成时绑定的 context，不用实时状态
+        // 使用生成时绑定的 context，不用实时状态
         val context = replyGenerationContext ?: return
 
         recordingRound = true
 
         val kbName = context.kbName
 
-        // P0-1: 使用 identity.key 查找反馈——STYLE 和 DIRECTION 互不干扰
+        // 使用 identity.key 查找反馈——STYLE 和 DIRECTION 互不干扰
         val likedStyleSchemes = response.schemes
             .filter { _feedbacks.value[it.identity.key] == SchemeFeedback.LIKED }
             .sortedBy { "ABCD".indexOf(it.tag) }
@@ -1371,13 +1371,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         val likedSchemes = likedStyleSchemes + likedDirectionSchemes
 
-        // P0-2：点赞不等于发送。selectedScheme 恒为 null——
+        // 点赞不等于发送。selectedScheme 恒为 null——
         // 用户没有"确认发送"操作，点赞只保存为偏好，不写入"实际对话"段。
         // TopicRecorder.record 收到 scheme=null 时不写"我（最终回复：…）"行。
         val selectedScheme: Scheme? = null
         val likedForRecording = likedSchemes // 保留全部点赞用于偏好记录
 
-        // GEN-03：无 KB 时保持当前产品语义（可结束但提示未记入）
+        // 无 KB 时保持当前产品语义（可结束但提示未记入）
         if (kbName == null) {
             commitReplyRound(context.messageIds)
             showPanelWarning("未激活知识库，本轮对话未记入")
@@ -1386,18 +1386,18 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             return
         }
 
-        // P0-1：selectedScheme 可以为 null——用户没有点赞也不默认选 A。
+        // selectedScheme 可以为 null——用户没有点赞也不默认选 A。
         // 仍允许保存本轮输入消息（不依赖选中候选）。
         // 如果用户没有确认发送，提示"已保存对话，候选未作为已发送消息记录"。
 
-        // GEN-03：先写盘，成功后才提交 UI
+        // 先写盘，成功后才提交 UI
         val analysis = response.analysis
         val messagesSnapshot = context.messages
         val consumedIds = context.messageIds
 
         viewModelScope.launch {
             try {
-                // GEN-02：按 context.kbName 查找 KB（生成时的 KB，非当前激活 KB）
+                // 按 context.kbName 查找 KB（生成时的 KB，非当前激活 KB）
                 val kb = withContext(Dispatchers.IO) {
                     knowledgeRepo.listAll().firstOrNull { it.name == kbName }
                 }
@@ -1420,10 +1420,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 }
                 L.w("PERF t7 kb write done (${System.currentTimeMillis() - t7Start}ms)")
 
-                // GEN-03：写盘成功 → 才提交 UI 状态
+                // 写盘成功 → 才提交 UI 状态
                 commitReplyRound(consumedIds)
                 replyGenerationContext = null
-                // F04: 清空本轮瞬时纠正——新轮次不再受上一轮 THIS_ROUND mute 影响
+                // 清空本轮瞬时纠正——新轮次不再受上一轮 THIS_ROUND mute 影响
                 roundCorrections.clear()
                 if (likedForRecording.isEmpty()) {
                     showPanelWarning("已保存对话，候选未作为已发送消息记录")
@@ -1436,7 +1436,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 throw t
             } catch (t: Throwable) {
                 L.e("nextRound record failed", t)
-                // GEN-03：写盘失败 → 不清 messages/result/feedback/context，用户可重试
+                // 写盘失败 → 不清 messages/result/feedback/context，用户可重试
                 showPanelWarning("本轮保存失败，内容已保留，请重试")
             } finally {
                 recordingRound = false
@@ -1445,7 +1445,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /**
-     * GEN-03：提交本轮 UI 状态 — 只删除本轮 snapshot 对应的消息（按 ID），不盲目清空全部。
+     * 提交本轮 UI 状态 — 只删除本轮 snapshot 对应的消息（按 ID），不盲目清空全部。
      * 同时修正 editingIndex/draftText 防止指向已删除的位置。
      */
     private fun commitReplyRound(consumedMessageIds: Set<String>) {
@@ -1468,40 +1468,40 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         _messages.value = newList
         _feedbacks.value = emptyMap()
-        // S2-03: 结果/流式态的清空也走 reducer，不再各自写四个 StateFlow
+        // 结果/流式态的清空也走 reducer，不再各自写四个 StateFlow
         applyReplyEvent(ReplyCleared(_replyUi.value.ownerRequestId ?: ""))
         // 新轮次开始时清理改写状态和历史，作废旧改写请求
         _rewriteStates.value = emptyMap()
         _rewriteHistory.value = emptyMap()
         rewriteRequestId = null
         rewriteContextId = null
-        // F10: 新轮次恢复仅看本轮开关为默认关闭
+        // 新轮次恢复仅看本轮开关为默认关闭
         _onlyThisRound.value = false
     }
 
     fun copyScheme(scheme: Scheme): String {
-        // F12: 统计复制次数
+        // 统计复制次数
         _totalCopyCount.value += 1
         securePrefs.totalCopyCount = _totalCopyCount.value
         return scheme.reply
     }
 
-    // ═══════════ F03: 记录实际发送的版本 ═══════════
+    // ═══════════ 记录实际发送的版本 ═══════════
 
     /**
-     * F03/P1-B: 记录用户确认已发送的版本。
+     * /: 记录用户确认已发送的版本。
      *
      * 用户自行确认发送，不代表应用检测到了发送行为。
      * 确认后写为"我"的真实消息，保存用户确认来源、关联候选版本（若有）、时间。
      * 同一轮只能有一份当前最终发送记录；同一 generation version 再次确认更新替换。
      *
-     * P0-2: 删除同步返回 ActualSentResult.RECORDED——RECORDED 只在 Repository 确认写盘后产生。
+     * 删除同步返回 ActualSentResult.RECORDED——RECORDED 只在 Repository 确认写盘后产生。
      * 异步结果通过 actualSentState StateFlow 通知 UI。
-     * P0-3: 不自动绑定第一张卡——linkedSchemeIdentityKey 必须由调用方明确传入，
+     * 不自动绑定第一张卡——linkedSchemeIdentityKey 必须由调用方明确传入，
      * 不再从 displaySchemes 自动推断。
-     * P0-4: 同一 generationVersionId 的记录使用 upsert（替换），不 append 多条。
+     * 同一 generationVersionId 的记录使用 upsert（替换），不 append 多条。
      */
-    /** F03: 实际发送记录状态——异步写盘的真实 typed result */
+    /** 实际发送记录状态——异步写盘的真实 typed result */
     enum class ActualSentState { IDLE, RECORDED, KB_NOT_FOUND, NO_KB, IO_ERROR }
     private val _actualSentState = MutableStateFlow(ActualSentState.IDLE)
     val actualSentState: StateFlow<ActualSentState> = _actualSentState.asStateFlow()
@@ -1525,7 +1525,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             return
         }
 
-        // P1-B: 冻结候选版本快照——绑定版本 ID 和候选正文
+        // 冻结候选版本快照——绑定版本 ID 和候选正文
         val versionId = _currentVersionId.value
         val candidateReply = linkedSchemeIdentityKey?.let { key ->
             val result = replyResult as? GenerateResult.Success
@@ -1539,7 +1539,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             } else null
         }
 
-        // P0-4: upsert by generationVersionId——同一 generation version 再次确认时替换旧记录
+        // upsert by generationVersionId——同一 generation version 再次确认时替换旧记录
         val time = com.lovebrain.app.util.TimeFmt.now()
         val sentEntry = buildString {
             append("<!-- sent:").append(time)
@@ -1549,7 +1549,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 .append(" -->\n")
             append("我（确认已发送）：").append(sentText.trim()).append("\n")
         }
-        // P0-4: 检查是否已有同一 generationVersionId 的记录
+        // 检查是否已有同一 generationVersionId 的记录
         val existingEntry = _actualSentEntries[versionId?.value]
         val isUpdate = existingEntry != null
         _actualSentState.value = ActualSentState.IDLE
@@ -1586,12 +1586,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** P0-4: 跟踪当前 session 中已记录的 actual sent entries by versionId，用于 upsert 判断 */
+    /** 跟踪当前 session 中已记录的 actual sent entries by versionId，用于 upsert 判断 */
     private val _actualSentEntries = mutableMapOf<String?, String>()
 
     // ═══════════ KnowledgeTriggerCoordinator.Callbacks 实现 ═══════════
 
-    //  KBG-03：只让当前 KB 的 vector 回调更新 UI
+    //  只让当前 KB 的 vector 回调更新 UI
     override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {
         if (_activeKb.value?.name != kbName) return
         _currentVector.value = newVector
@@ -1611,23 +1611,23 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         _kbNotice.value = notice
     }
 
-    //  KBG-02：画像建议绑定 originating KB，不丢弃身份
+    //  画像建议绑定 originating KB，不丢弃身份
     override fun onProfileSuggestion(suggestion: ProfileSuggestion) {
         _profileSuggestion.value = suggestion
     }
 
-    //  KBG-03：只让当前 KB 的 vector 回调更新 UI
+    //  只让当前 KB 的 vector 回调更新 UI
     override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {
         if (_activeKb.value?.name != kbName) return
         _currentVector.value = vector
     }
 
-    //  KBG-02：确认画像时使用 suggestion.kbName，不使用 _activeKb
+    //  确认画像时使用 suggestion.kbName，不使用 _activeKb
     // 使用统一的 ProfileUpdate payload，不重复解析 raw
     /**
      * 画像确认——委托 Repository 执行原子事务。
      *
-     * P0-6: 事务结果以 typed [ProfileTransactionResult] 返回，
+     * 事务结果以 typed [ProfileTransactionResult] 返回，
      * 不再用模糊 Boolean 表示所有失败情况。
      *
      * 事务在 Repository 的单次 fileMutex.withLock 中执行：
@@ -1673,7 +1673,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     return@launch
                 }
 
-                // P0-6: 委托 Repository 执行原子事务——返回 typed result
+                // 委托 Repository 执行原子事务——返回 typed result
                 val result = knowledgeRepo.applyProfileUpdateAtomically(
                     kbName = kbName,
                     me = payload.me,
@@ -1684,7 +1684,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     expectedRevision = suggestion.correctionsRevision
                 )
 
-                // P0-6: 按 typed result 分支给出精确反馈
+                // 按 typed result 分支给出精确反馈
                 when (result) {
                     is ProfileTransactionResult.Success -> {
                         val current = _profileSuggestion.value
@@ -1734,15 +1734,15 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     /**
      * 画像重新生成——原地显示 loading，卡片位置不变。
      *
-     * P0-8：所有失败路径（EMPTY/PROVIDER_ERROR/EXCEPTION）都必须复位 loading。
-     * P0-9：dismiss 后旧请求回来不得复活卡片——S2-02 之后这条不再靠自增计数器手写 guard，
+     * 所有失败路径（EMPTY/PROVIDER_ERROR/EXCEPTION）都必须复位 loading。
+     * dismiss 后旧请求回来不得复活卡片——之后这条不再靠自增计数器手写 guard，
      * 而是由 coordinator 的租约身份判定：PROFILE_REFRESH 同类只允许一个在跑，
      * 迟到回调只有仍持有租约才被接受。
      */
     val profileRegenerating: StateFlow<Boolean> =
         busyOf(ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH)
 
-    /** 画像重新生成——见下方 regenerateProfileUpdate 的 P0-8/P0-9 说明 */
+    /** 画像重新生成——见下方 regenerateProfileUpdate 的 说明 */
     fun regenerateProfileUpdate() {
         val suggestion = _profileSuggestion.value ?: return
         val kbName = suggestion.kbName
@@ -1751,7 +1751,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH)
         val requestId = ReplyRequestState.newRequestId()
 
-        // P0-2：regenerateProfile 是纯 suspend——不传 scope，在本协程内直接执行，
+        // regenerateProfile 是纯 suspend——不传 scope，在本协程内直接执行，
         // 取消会传播到底层模型请求、retry delay、reflect_history 写入
         val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH,
@@ -1785,8 +1785,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     // ═══════════ 谈心模式（委托 GenerationEngine） ═══════════
 
     /**
-     * S2-02: 谈心——coordinator 注册的唯一前台任务；不存在第二个 Job owner。
-     * COUN-01：冻结 KB 快照传入 Engine，谈心期间切 KB 不影响 prompt 与日志目标。
+     * 谈心——coordinator 注册的唯一前台任务；不存在第二个 Job owner。
+     * 冻结 KB 快照传入 Engine，谈心期间切 KB 不影响 prompt 与日志目标。
      */
     fun generateCounseling(userMessage: String) {
         if (userMessage.isBlank()) return
@@ -1897,7 +1897,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     fun refreshKnowledgeBases() {
         viewModelScope.launch {
-            // P1-D: refreshIntentConfigForKb 现在是结构化 child（suspend），
+            // refreshIntentConfigForKb 现在是结构化 child（suspend），
             // 不再是 fire-and-forget sibling coroutine。
             // CancellationException 正常重抛；普通 IO 异常捕获不崩 scope。
             try {
@@ -1908,20 +1908,20 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     _vectorDelta.value = emptyMap()
                     _vectorUpdate.value = null
                     _kbNotice.value = null
-                    // P1-F: 切库时复位仅看本轮开关——属于当前工作轮次
+                    // 切库时复位仅看本轮开关——属于当前工作轮次
                     _onlyThisRound.value = false
-                    // P1-D: 切库时清除旧 KB 的意图配置，防止旧意图泄漏到新 KB
+                    // 切库时清除旧 KB 的意图配置，防止旧意图泄漏到新 KB
                     _intentConfig.value = com.lovebrain.app.model.IntentConfig()
-                    // F04: 切库时清空本轮瞬时纠正
+                    // 切库时清空本轮瞬时纠正
                     roundCorrections.clear()
                 }
                 _activeKb.value = newKb
                 newKb?.let {
                     knowledgeRepo.migrateIfNeeded(it.name)
-                    // S2-04: WAL 崩溃恢复——检查未完成的 round commit 事务并 roll-forward
+                    // WAL 崩溃恢复——检查未完成的 round commit 事务并 roll-forward
                     topicRecorder.recoverIfNeeded(it.name)
                     _currentVector.value = knowledgeRepo.readVector(it.name)
-                    // P1-D: 结构化 child——在当前协程内直接 await，不再 fire-and-forget。
+                    // 结构化 child——在当前协程内直接 await，不再 fire-and-forget。
                     // refreshIntentConfigForKb 内部有 KB identity guard 保护 UI commit。
                     refreshIntentConfigForKb(it.name)
                 }
@@ -1929,7 +1929,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 if (newKb == null) {
                     _currentVector.value = emptyMap()
                 }
-                // P0-1: KB 切换后检测 stale——如果当前结果来自旧 KB，标记为 stale
+                // KB 切换后检测 stale——如果当前结果来自旧 KB，标记为 stale
                 if (oldKbName != null && oldKbName != newKb?.name) {
                     markCurrentResultStaleIfNeeded()
                 }
@@ -1959,12 +1959,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     /** 当前在途的锦囊请求上下文；任务结束时清空 */
     private var suggestContext: SuggestRequestContext? = null
 
-    /** GEN-01：同步 guard 由 coordinator 承担——Engine reject → null → 旧任务保持。 */
+    /** 同步 guard 由 coordinator 承担——Engine reject → null → 旧任务保持。 */
     fun generateSuggest() {
         showTodaySuggestion()
     }
 
-    /** S1-04: 展示今日锦囊——允许命中缓存（同日同KB同上下文不重复请求）。
+    /** 展示今日锦囊——允许命中缓存（同日同KB同上下文不重复请求）。
      * 上下文指纹要读事项/偏好文件，所以在协程里算完再决定是否发请求。 */
     fun showTodaySuggestion() {
         if (operationCoordinator.isBusy(ForegroundOperationCoordinator.OperationType.SUGGEST)) return
@@ -1994,7 +1994,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** S1-04: 明确重新生成锦囊——绕过缓存，发起新的模型请求 */
+    /** 明确重新生成锦囊——绕过缓存，发起新的模型请求 */
     fun regenerateSuggestion() {
         if (operationCoordinator.isBusy(ForegroundOperationCoordinator.OperationType.SUGGEST)) return
         if (_activeKb.value == null) { applySuggestError("还没有知识库，请先到设置页创建"); return }
@@ -2005,7 +2005,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** S1-04 审计修复: 在发起之前把请求身份冻结下来 */
+    /** 在发起之前把请求身份冻结下来 */
     private suspend fun buildSuggestContext(): SuggestRequestContext? {
         val kb = _activeKb.value ?: return null
         val today = TimeFmt.today()
@@ -2038,7 +2038,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /**
-     * S1-04: prompt 版本 = 真正进入请求的 prompt 资产内容 hash。
+     * prompt 版本 = 真正进入请求的 prompt 资产内容 hash。
      *
      * 以前这里返回 BuildConfig.VERSION_NAME：App 没发版就永远算不出"prompt 被改过"，
      * 于是改过 prompt 仍然命中旧缓存——用户看到的还是上一版建议。
@@ -2046,7 +2046,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     private fun currentPromptVersion(): String = promptBuilder.assetHashOf(AssetRegistry.SUGGEST)
 
     /**
-     * S1-04: 计算锦囊上下文指纹。
+     * 计算锦囊上下文指纹。
      *
      * 上一版的注释写着"覆盖事项 revision、表达偏好、温度与边界、prompt asset hash"，
      * 实际只拼了 kbId/date/stage/outputMode/thinkingMode/onlyThisRound/App版本名/host/model。
@@ -2106,9 +2106,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // ═══════════ 主动发起/润色（委托 GenerationEngine） ═══════════
 
-    /** S2-02: 主动发——coordinator 注册的唯一前台任务 */
+    /** 主动发——coordinator 注册的唯一前台任务 */
     fun generateProactive(draft: String = "", scene: String = "") {
-        // S1-01: 主动发生成入口——设置 composer mode 和 result mode
+        // 主动发生成入口——设置 composer mode 和 result mode
         _composerMode.value = ComposerMode.PROACTIVE
         _resultMode.value = ResultMode.PROACTIVE
 
@@ -2149,7 +2149,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
 
-    // ═══════════ S2-03: 谈心 / 锦囊 / 主动发的事件归约 ═══════════
+    // ═══════════ 谈心 / 锦囊 / 主动发的事件归约 ═══════════
     //
     // Engine 不再回调 ViewModel。这三个流程的状态各自只有一个 apply 入口，
     // 并且都先拿 coordinator 当前租约核对 requestId：被取代的旧请求的迟到事件整条丢弃。
@@ -2168,7 +2168,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     private fun applyCounselingEvent(event: CounselingEvent) {
         if (!ownsOperation(ForegroundOperationCoordinator.OperationType.COUNSELING, event.requestId)) {
-            L.w("S2-03: counseling event ${event::class.simpleName} rejected (stale requestId)")
+            L.w("counseling event ${event::class.simpleName} rejected (stale requestId)")
             return
         }
         when (event) {
@@ -2187,7 +2187,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 flushPendingCounselingChunk()
                 _counselingResult.value = event.replyText
                 securePrefs.saveCounselingResult(event.replyText)
-                // COUN-01：日志目标与倾诉文本都取事件里冻结的值，不回读实时状态
+                // 日志目标与倾诉文本都取事件里冻结的值，不回读实时状态
                 viewModelScope.launch {
                     saveCounselingLog(event.kbName, event.userMessage, event.replyText, event.analysisText)
                 }
@@ -2230,7 +2230,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     private fun applySuggestEvent(event: SuggestEvent) {
         if (!ownsOperation(ForegroundOperationCoordinator.OperationType.SUGGEST, event.requestId)) {
-            L.w("S2-03: suggest event ${event::class.simpleName} rejected (stale requestId)")
+            L.w("suggest event ${event::class.simpleName} rejected (stale requestId)")
             return
         }
         when (event) {
@@ -2244,7 +2244,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             is SuggestFailed -> _suggestError.value = event.message
             is SuggestResult -> {
                 _suggestion.value = event.suggestion
-                // S1-04: 用发起时冻结的身份写缓存——跨午夜完成也写回发起那一天，
+                // 用发起时冻结的身份写缓存——跨午夜完成也写回发起那一天，
                 // 不再回读实时 _activeKb、也不再重算"今天"
                 val ctx = suggestContext
                 if (event.suggestion != null && ctx != null && ctx.requestId == event.requestId) {
@@ -2272,7 +2272,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     private fun applyProactiveEvent(event: ProactiveEvent) {
         if (!ownsOperation(ForegroundOperationCoordinator.OperationType.PROACTIVE, event.requestId)) {
-            L.w("S2-03: proactive event ${event::class.simpleName} rejected (stale requestId)")
+            L.w("proactive event ${event::class.simpleName} rejected (stale requestId)")
             return
         }
         when (event) {
@@ -2287,19 +2287,19 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    // ═══════════ F07: 持续意图 UI 状态 ═══════════
+    // ═══════════ 持续意图 UI 状态 ═══════════
 
-    /** F07: 当前 KB 的持续意图配置（面板 chip 展示 + 编辑入口） */
+    /** 当前 KB 的持续意图配置（面板 chip 展示 + 编辑入口） */
     private val _intentConfig = MutableStateFlow(com.lovebrain.app.model.IntentConfig())
     val intentConfig: StateFlow<com.lovebrain.app.model.IntentConfig> = _intentConfig.asStateFlow()
 
-    /** F07: 持续意图编辑面板可见性 */
+    /** 持续意图编辑面板可见性 */
     private val _showIntentEditor = MutableStateFlow(false)
     val showIntentEditor: StateFlow<Boolean> = _showIntentEditor.asStateFlow()
 
-    /** F07/P1-D: 刷新持续意图配置（切库/面板可见时调用）
-     *  F06: 自动检测到期——TODAY 跨日自动标记 EXPIRED，DATE 过期也标记。
-     *  P1-D: 委托给 refreshIntentConfigForKb，绑定实际 KB 名防竞态。 */
+    /** /: 刷新持续意图配置（切库/面板可见时调用）
+     *  自动检测到期——TODAY 跨日自动标记 EXPIRED，DATE 过期也标记。
+     *  委托给 refreshIntentConfigForKb，绑定实际 KB 名防竞态。 */
     fun refreshIntentConfig() {
         val kbName = _activeKb.value?.name ?: return
         viewModelScope.launch {
@@ -2307,7 +2307,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** P1-D: 绑定 KB 名刷新意图配置——suspend 函数，由调用方在结构化协程中 await。
+    /** 绑定 KB 名刷新意图配置——suspend 函数，由调用方在结构化协程中 await。
      *  不再内部 viewModelScope.launch（fire-and-forget sibling），消除切库竞态。
      *  KB identity guard：commit UI 前验证当前 active KB 仍是目标 KB。
      *  CancellationException 正常重抛（协程取消）；IO 异常捕获不崩 scope。 */
@@ -2320,7 +2320,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             L.w("refreshIntentConfigForKb read failed: ${e::class.simpleName}")
             return
         }
-        // F06: 自动到期检测
+        // 自动到期检测
         val finalConfig = if (config.enabled && config.status == com.lovebrain.app.model.IntentStatus.ACTIVE) {
             val today = com.lovebrain.app.util.TimeFmt.today()
             val shouldExpire = when (config.expiry) {
@@ -2360,8 +2360,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     /** R08: 保存持续意图配置。绑定编辑时冻结的 KB，不读当前 active KB。
      *  持久化失败保留编辑状态并提示。旧请求因 revision 变化而作废。
-     *  F06: 支持有效期和完成状态。
-     *  P1-D: TODAY 时自动写 expiryDate=today()，不依赖 UI 填写。 */
+     *  支持有效期和完成状态。
+     *  TODAY 时自动写 expiryDate=today()，不依赖 UI 填写。 */
     fun saveIntent(
         text: String,
         enabled: Boolean,
@@ -2371,12 +2371,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     ) {
         // R08: 绑定编辑器打开时的 KB，不读当前 active KB
         val kbName = intentEditorKbName ?: _activeKb.value?.name ?: return
-        // P1-D: TODAY 类型自动写 expiryDate=today()，不依赖 UI 填写
+        // TODAY 类型自动写 expiryDate=today()，不依赖 UI 填写
         val effectiveExpiryDate = when (expiry) {
             com.lovebrain.app.model.IntentExpiry.TODAY -> com.lovebrain.app.util.TimeFmt.today()
             else -> expiryDate
         }
-        // P1-RC: DATE 类型严格校验——blank / malformed / past 都必须拒绝
+        // DATE 类型严格校验——blank / malformed / past 都必须拒绝
         if (expiry == com.lovebrain.app.model.IntentExpiry.DATE) {
             if (effectiveExpiryDate.isBlank()) {
                 showPanelWarning("指定日期不能为空，请输入 yyyy-MM-dd 格式的日期")
@@ -2421,10 +2421,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
     fun dismissIntentEditor() { _showIntentEditor.value = false }
 
-    // ═══════════ F09: 记忆纠正（绑定生成时冻结的 KB） ═══════════
+    // ═══════════ 记忆纠正（绑定生成时冻结的 KB） ═══════════
 
     /**
-     * F09: 获取本轮注入的 MemoryRef 清单（供 UI 展示纠正入口）。
+     * 获取本轮注入的 MemoryRef 清单（供 UI 展示纠正入口）。
      * 返回生成时冻结的快照，不受后续切 KB 影响。
      */
     fun getCurrentMemoryRefs(): List<com.lovebrain.app.model.MemoryRef> {
@@ -2432,7 +2432,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /**
-     * F09: 对指定 memoryId 发起纠正操作。
+     * 对指定 memoryId 发起纠正操作。
      * 必须绑定生成时冻结的 KB（context.kbName），不读当前 active KB。
      * 纠正参与下一次 PromptBuilder 过滤；所有操作可撤销、重启有效、不调用模型。
      */
@@ -2445,7 +2445,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     ) {
         val ctx = replyGenerationContext ?: return
         val kbName = ctx.kbName ?: return
-        // F04: THIS_ROUND mute 只存瞬时 map，不持久化——nextRound/切库自动清空
+        // THIS_ROUND mute 只存瞬时 map，不持久化——nextRound/切库自动清空
         if (action == com.lovebrain.app.model.CorrectionAction.MUTED &&
             muteDuration == com.lovebrain.app.model.MuteDuration.THIS_ROUND) {
             roundCorrections[memoryId] = com.lovebrain.app.model.MemoryCorrection(
@@ -2477,7 +2477,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /**
-     * F04: 加载所有纠正记录——供纠正中心 UI 展示。
+     * 加载所有纠正记录——供纠正中心 UI 展示。
      * 绑定生成时冻结的 KB；无生成上下文时读当前 active KB。
      */
     fun loadAllCorrections(
@@ -2496,12 +2496,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /**
-     * F04: 撤销纠正——纠正中心使用，不依赖生成上下文。
+     * 撤销纠正——纠正中心使用，不依赖生成上下文。
      * 绑定生成时冻结的 KB；无生成上下文时读当前 active KB。
-     * P0-6: 先检查 roundCorrections transient map——如果存在，立即撤销，不需要访问 Repository。
+     * 先检查 roundCorrections transient map——如果存在，立即撤销，不需要访问 Repository。
      */
     fun undoCorrectionFromCenter(memoryId: String) {
-        // P0-6: 先检查 transient roundCorrections
+        // 先检查 transient roundCorrections
         if (roundCorrections.containsKey(memoryId)) {
             roundCorrections.remove(memoryId)
             _kbNotice.value = "已撤销本轮暂停，该记忆恢复注入"
@@ -2521,12 +2521,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /**
-     * F09: 撤销纠正 — 删除指定 memoryId 的纠正记录。
+     * 撤销纠正 — 删除指定 memoryId 的纠正记录。
      * 撤销后该记忆恢复可信注入资格。绑定生成时冻结的 KB。
-     * P0-6: 先检查 roundCorrections transient map——如果存在，立即撤销，不需要访问 Repository。
+     * 先检查 roundCorrections transient map——如果存在，立即撤销，不需要访问 Repository。
      */
     fun undoMemoryCorrection(memoryId: String) {
-        // P0-6: 先检查 transient roundCorrections
+        // 先检查 transient roundCorrections
         if (roundCorrections.containsKey(memoryId)) {
             roundCorrections.remove(memoryId)
             _kbNotice.value = "已撤销本轮暂停，该记忆恢复注入"
@@ -2549,11 +2549,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     /** DRY: 改写操作选项文案统一使用 RewriteCommand.PRESET_LABELS，不在 VM 重复定义 */
     val rewriteOptions: List<String> get() = com.lovebrain.app.model.RewriteCommand.PRESET_LABELS
 
-    /** 单条改写状态：identityKey → 改写状态（P0-1: 使用 SchemeIdentity.key 区分 STYLE/DIRECTION） */
+    /** 单条改写状态：identityKey → 改写状态（使用 SchemeIdentity.key 区分 STYLE/DIRECTION） */
     private val _rewriteStates = MutableStateFlow<Map<String, RewriteState>>(emptyMap())
     val rewriteStates: StateFlow<Map<String, RewriteState>> = _rewriteStates.asStateFlow()
 
-    /** 单条改写版本历史（用于撤销）—— P1-04: 保存正文+反馈，撤销时一并恢复 */
+    /** 单条改写版本历史（用于撤销）—— 保存正文+反馈，撤销时一并恢复 */
     private data class RewriteVersion(val reply: String, val feedback: SchemeFeedback)
     private val _rewriteHistory = MutableStateFlow<Map<String, List<RewriteVersion>>>(emptyMap())
 
@@ -2568,7 +2568,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     /**
      * 对指定方案卡发起单条改写。
      *
-     * P0-1: 使用 SchemeIdentity(source+tag) 区分 STYLE(A/B/C/D) 和 DIRECTION(F/E/X/S)。
+     * 使用 SchemeIdentity(source+tag) 区分 STYLE(A/B/C/D) 和 DIRECTION(F/E/X/S)。
      * STYLE 更新 ReplySchemes 对应正文；DIRECTION 更新 directions 对应 index。
      *
      * - 复用供应商配置冻结、HTTP 调用、取消、错误处理和 usage 统计。
@@ -2618,7 +2618,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         val result = replyResult as? GenerateResult.Success ?: return
         val response = result.response
-        // P0-1: 根据 source 查找目标 scheme——STYLE 从 schemes 找，DIRECTION 从 directionSchemes 找
+        // 根据 source 查找目标 scheme——STYLE 从 schemes 找，DIRECTION 从 directionSchemes 找
         val allSchemes = when (source) {
             com.lovebrain.app.model.SchemeSource.STYLE -> response.schemes
             com.lovebrain.app.model.SchemeSource.DIRECTION -> response.directionSchemes
@@ -2626,7 +2626,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val scheme = allSchemes.find { it.tag == schemeTag && it.source == source } ?: return
         if (scheme.reply.isBlank()) return
 
-        // P0-1: 使用 identity key 区分 STYLE 和 DIRECTION
+        // 使用 identity key 区分 STYLE 和 DIRECTION
         val identityKey = com.lovebrain.app.model.SchemeIdentity(source, schemeTag).key
 
         // 锁定目标
@@ -2641,18 +2641,18 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // 设置改写中状态
         _rewriteStates.value = _rewriteStates.value + (identityKey to RewriteState.Loading(option))
 
-        // 保存当前版本到历史（用于撤销）—— P1-04: 保存正文+当前反馈
+        // 保存当前版本到历史（用于撤销）—— 保存正文+当前反馈
         val currentFeedback = _feedbacks.value[identityKey] ?: SchemeFeedback.NONE
         val currentHistory = _rewriteHistory.value[identityKey] ?: emptyList()
         _rewriteHistory.value = _rewriteHistory.value + (identityKey to currentHistory + RewriteVersion(scheme.reply, currentFeedback))
 
-        // P1-04: 不再捕获 preRewriteFeedback 做后续清理——
+        // 不再捕获 preRewriteFeedback 做后续清理——
         // 改写期间用户对旧文的反馈继续归旧版本；新版本独立 NONE。
 
         val ticket = _activeTicket.value
         val apiKey = ticket?.let { securePrefs.getWorkerApiKey(it.id) }
 
-        // S2-02: 改写也进 coordinator 账本。旧实现只把 Job 存进 rewriteJob 字段，
+        // 改写也进 coordinator 账本。旧实现只把 Job 存进 rewriteJob 字段，
         // 协调器完全不知道有这个任务，"六类前台操作统一协调"就是假的。
         val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.REWRITE,
@@ -2701,7 +2701,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 }
 
                 // 只替换目标卡正文，不回写整个捕获的旧 response
-                // P0-1: 根据 source 更新对应方案列表
+                // 根据 source 更新对应方案列表
                 val currentResult = replyResult as? GenerateResult.Success ?: return@start
                 val currentResponse = currentResult.response
                 val updatedResponse = if (source == com.lovebrain.app.model.SchemeSource.STYLE) {
@@ -2734,13 +2734,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 }
                 replaceReplyResult(GenerateResult.Success(updatedResponse))
 
-                // P1-04: 改写成功后——新正文独立 NONE，不自动继承旧赞/踩
+                // 改写成功后——新正文独立 NONE，不自动继承旧赞/踩
                 // 旧赞保留在 rewriteHistory 中，撤销时恢复
                 _feedbacks.value = _feedbacks.value.toMutableMap().apply {
                     put(identityKey, SchemeFeedback.NONE)
                 }
 
-                // P1-H: 递增累计改写次数
+                // 递增累计改写次数
                 _totalRewriteCount.value += 1
                 securePrefs.totalRewriteCount = _totalRewriteCount.value
 
@@ -2757,15 +2757,15 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** 取消正在进行的改写 —— P0-1: 使用 identityKey */
+    /** 取消正在进行的改写 —— 使用 identityKey */
     fun cancelRewrite(identityKey: String) {
-        // S2-02: 只停 REWRITE 这一个 owner
+        // 只停 REWRITE 这一个 owner
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.REWRITE)
         rewriteRequestId = null
         _rewriteStates.value = _rewriteStates.value.filterKeys { it != identityKey }
     }
 
-    /** 撤销改写——恢复到上一版本（含正文和反馈）—— P0-1: 使用 identityKey */
+    /** 撤销改写——恢复到上一版本（含正文和反馈）—— 使用 identityKey */
     fun undoRewrite(identityKey: String) {
         val history = _rewriteHistory.value[identityKey] ?: return
         if (history.isEmpty()) return
@@ -2780,7 +2780,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         val result = replyResult as? GenerateResult.Success ?: return
         val response = result.response
-        // P0-1: 从 identityKey 解析 source 和 tag
+        // 从 identityKey 解析 source 和 tag
         val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(identityKey) ?: return
         val updatedResponse = if (identity.source == com.lovebrain.app.model.SchemeSource.STYLE) {
             val updatedSchemes = response.schemes.map { s ->
@@ -2808,14 +2808,14 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             }
         }
         replaceReplyResult(GenerateResult.Success(updatedResponse))
-        // P1-04: 撤销时恢复旧版本的反馈，不只是正文
+        // 撤销时恢复旧版本的反馈，不只是正文
         _feedbacks.value = _feedbacks.value.toMutableMap().apply {
             put(identityKey, previousVersion.feedback)
         }
         _rewriteStates.value = _rewriteStates.value - identityKey
     }
 
-    /** 清除改写状态（展开/收起时调用）—— P0-1: 使用 identityKey */
+    /** 清除改写状态（展开/收起时调用）—— 使用 identityKey */
     fun clearRewriteState(identityKey: String) {
         val current = _rewriteStates.value[identityKey]
         if (current is RewriteState.Done || current is RewriteState.Error) {
@@ -2836,7 +2836,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /** 构建改写用户提示——只包含最少必要上下文
-     *  F05: 注入个人表达偏好（understand/style.md） */
+     *  注入个人表达偏好（understand/style.md） */
     private suspend fun buildRewriteUserPrompt(
         originalReply: String,
         option: String,
@@ -2844,7 +2844,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         intentText: String?,
         ideaHint: String?
     ): String = buildString {
-        // F05: 个人表达偏好
+        // 个人表达偏好
         val kbName = replyGenerationContext?.kbName
         if (!kbName.isNullOrBlank()) {
             val style = knowledgeRepo.readFile(kbName, "understand/style.md")
@@ -2900,10 +2900,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 注：完整泄漏验证需 LeakCanary 运行（AUTO_POLISH PHASE A 跟进）。
      */
     fun dispose() {
-        // ：取消防抖尾 + 同步直写最终草稿（正常关闭悬浮窗零丢失）
+        // 取消防抖尾 + 同步直写最终草稿（正常关闭悬浮窗零丢失）
         draftPersistJob?.cancel()
         securePrefs.counselingDraft = _counselingDraft.value
-        // S2-02: 统一走 coordinator 关闭，不再逐个 cancel 手里的 Job 字段。
+        // 统一走 coordinator 关闭，不再逐个 cancel 手里的 Job 字段。
         // 旧写法会漏掉没被字段覆盖的任务（画像刷新、流式刷新定时器）。
         cancelPendingChunkFlush()
         cancelPendingCounselingFlush()
@@ -2928,12 +2928,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
 
     companion object {
-        /** ：金额格式化（固定三位小数 + 固定 Locale.US 小数点，防区域格式回归；展示条字号钉死） */
+        /** 金额格式化（固定三位小数 + 固定 Locale.US 小数点，防区域格式回归；展示条字号钉死） */
         // 花费保留三位小数
         internal fun formatYuan(yuan: Double): String = String.format(java.util.Locale.US, "%.3f", yuan)
 
         /**
-         * ：今日花费跨天滚动——同日期保留存量，跨天（或无存档）清零。
+         * 今日花费跨天滚动——同日期保留存量，跨天（或无存档）清零。
          * 纯函数，单测覆盖（CostDisplayTest）。
          */
         internal fun rollTodayCost(savedDate: String?, savedYuan: Double?, todayDate: String): Double =

@@ -24,7 +24,7 @@ import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 
 /**
- * F04: 记忆纠正中心——独立列出已停用／静音／隔离项，支持撤销。
+ * 记忆纠正中心——独立列出已停用／静音／隔离项，支持撤销。
  *
  * 因为被过滤的引用会消失，不能只把撤销放在已消失的引用菜单。
  * 纠正中心提供持久入口，用户随时可查看和撤销所有纠正记录。
@@ -96,7 +96,7 @@ fun CorrectionCenter(
 }
 
 /**
- * F04: 单条纠正记录卡片。
+ * 单条纠正记录卡片。
  */
 @Composable
 private fun CorrectionRecordCard(

@@ -1,7 +1,7 @@
 package com.lovebrain.app.util
 
 /**
- * P3-04: 真增量 JSON 对象流解析器。
+ * 真增量 JSON 对象流解析器。
  *
  * ## 它替掉的是什么
  * 旧路径每收到 50 个字符就 `rawBuffer.toString()` 把整个累积缓冲复制一遍，
@@ -224,7 +224,7 @@ class IncrementalJsonObjectScanner(private val key: String) {
 }
 
 /**
- * P3-04: 提取 `"$key"` 后面第一个完整 JSON 对象的增量扫描器。
+ * 提取 `"$key"` 后面第一个完整 JSON 对象的增量扫描器。
  *
  * 回复链路的 `"response": { ... }` 是对象不是数组，
  * 旧实现每 50 字符 `rawBuffer.toString()` + `indexOf("\"response\"")` 从头再找一遍。

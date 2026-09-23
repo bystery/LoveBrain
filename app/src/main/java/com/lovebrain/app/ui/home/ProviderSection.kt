@@ -537,12 +537,12 @@ private fun ProviderEditDialog(
     }
 }
 
-/** 小型开关（P3-03 审计修复: 48×32 触摸区 + 20dp 圆球） */
+/** 小型开关（48×32 触摸区 + 20dp 圆球） */
 @Composable
 private fun MiniSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Box(
         modifier = Modifier
-            // P3-03: 触摸区从 36×20 扩大到 48×32，满足 48dp 无障碍下限
+            // 触摸区从 36×20 扩大到 48×32，满足 48dp 无障碍下限
             .size(width = 48.dp, height = 32.dp)
             .clip(LoveBrainShape.full)
             .background(if (checked) Primary else Neutral300.copy(alpha = 0.5f))

@@ -8,7 +8,7 @@ import com.lovebrain.app.domain.StageCatalog
  * Parser、Prompt（normal / strict / compact）、Test 全部引用此对象，
  * 禁止在别处另行维护字段规则文案。
  *
- * P0-8 / P1-4: normal / strict / compact 描述全部由同一套结构化 field spec 生成，
+ * normal / strict / compact 描述全部由同一套结构化 field spec 生成，
  * 不再手写三段重复字段规则。
  *
  * 字段规则：
@@ -43,7 +43,7 @@ object ProfileUpdateSchema {
     /** 合法阶段列表（引用 StageCatalog，不另建白名单） */
     val VALID_STAGES: List<String> get() = StageCatalog.ALL
 
-    // ═══ P1-4: 统一 presence 语义 ═══
+    // ═══ 统一 presence 语义 ═══
 
     /**
      * 字段存在性语义——替代之前的 required + optional 两个互补 Boolean。
@@ -152,7 +152,7 @@ object ProfileUpdateSchema {
     /**
      * 供 compact/repair prompt 使用的最小化 schema 文案。
      *
-     * P1-4: 不再手写 me/her/warmth/stage_changed/observations 规则。
+     * 不再手写 me/her/warmth/stage_changed/observations 规则。
      * 由同一套 fieldSpecs + CROSS_FIELD_CONSTRAINT 生成。
      */
     fun compactSchemaForPrompt(): String = buildString {

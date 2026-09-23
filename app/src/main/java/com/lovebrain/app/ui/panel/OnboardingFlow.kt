@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.theme.*
 
 /**
- * F12: 新手引导流程——可跳过的短流程。
+ * 新手引导流程——可跳过的短流程。
  *
  * 1. 演示消息体验角色（预置结果，不伪装在线生成）
  * 2. 添加供应商、模型与 Key（复用现有连接测试）

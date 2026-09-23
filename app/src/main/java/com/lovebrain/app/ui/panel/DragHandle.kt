@@ -24,9 +24,9 @@ import com.lovebrain.app.ui.theme.AppDimens
 import com.lovebrain.app.ui.theme.Spacing
 
 /**
- * 顶部拖拽条（第4轮迭代 + 4dp 极简）。
+ * 顶部拖拽条 + 4dp 极简。
  *
- * 需求#6：去掉 <-> 图标，按住悬浮窗顶部即可拖拽移动；顶部高度 22dp → 14dp → 8dp → 4dp（用户明确要求 8→4）。
+ * 去掉 <-> 图标，按住悬浮窗顶部即可拖拽移动；顶部高度 22dp → 14dp → 8dp → 4dp（用户明确要求 8→4）。
  * 视觉：完全透明的细条，不画任何箭头/横线装饰——更克制，把视觉焦点让给内容。
  * 热区：fillMaxWidth 整行；切换器左侧空白区的拖拽由 PanelHeader.onHeaderDrag 补充（修复 2.2 失效）。
  */

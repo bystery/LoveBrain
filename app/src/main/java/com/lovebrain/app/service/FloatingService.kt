@@ -276,7 +276,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // RA-01：停止 Action —— 用户从通知点「停止」时直接 stopSelf
+        // 停止 Action —— 用户从通知点「停止」时直接 stopSelf
         if (intent?.action == ACTION_STOP) {
             stopSelf()
             return START_NOT_STICKY
@@ -314,7 +314,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         L.init(this)
         L.w("=== FloatingService onCreate (v5 Koin+EventBus) ===")
 
-        // RA-01：尽快进入前台服务状态，不等 IO / AI 初始化
+        // 尽快进入前台服务状态，不等 IO / AI 初始化
         ensureNotificationChannel()
         ServiceCompat.startForeground(
             this,
@@ -379,12 +379,12 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         panelExitAnim?.cancel()
         removeBubble()
         destroyPanel()
-        viewModel.dispose()      // ：显式取消 VM 生成协程，防泄漏
+        viewModel.dispose()      // 显式取消 VM 生成协程，防泄漏
         scope.cancel()
         lifecycleRegistry.currentState = Lifecycle.State.CREATED
         lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
         store.clear()
-        // RA-01：销毁时确保前台状态结束
+        // 销毁时确保前台状态结束
         stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy()
     }
@@ -425,7 +425,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         // 释放输入焦点、关闭键盘
         releasePanelInput("temp_hide")
 
-        // P1-06: 先设置 TEMP_HIDDEN 状态，再取消动画——
+        // 先设置 TEMP_HIDDEN 状态，再取消动画——
         // 这样即使 cancel() 同步触发 onAnimationEnd，guard 也已看到 TEMP_HIDDEN，
         // 不会把 bubbleView.visibility 设回 VISIBLE。
         setWindowState(WindowState.TEMP_HIDDEN)
@@ -511,7 +511,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         if (bubbleView != null) return
         val size = dp(AppConfig.BUBBLE_SIZE)
 
-        // 第4轮：每次启动都固定在页面左上方（需求#11），不恢复上次位置（需求#10）
+        // 每次启动都固定在页面左上方，不恢复上次位置
         val initX = dp(AppConfig.BUBBLE_EDGE_MARGIN)
         val initY = dp(48)   // 避开状态栏
 
@@ -579,7 +579,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         }
     }
 
-    // ═══════════ 小球点击 → 完整悬浮窗（需求#31：点击小球 → 直接出现悬浮窗，完整展示） ═══════════
+    // ═══════════ 小球点击 → 完整悬浮窗：点击小球直接出现悬浮窗、完整展示 ═══════════
 
     private fun onBubbleTap() {
         L.w("bubble: onBubbleTap bubbleHidden=$bubbleHidden panel=$isPanelShowing")
@@ -624,7 +624,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         resetIdleTimer()
     }
 
-    /** 松手后吸附到最近的屏幕边缘（保留平滑滑向动画；需求#12：去掉吸附震动） */
+    /** 松手后吸附到最近的屏幕边缘（保留平滑滑向动画；：去掉吸附震动） */
     private fun snapBubbleToEdge() {
         bubbleUi.value = bubbleUi.value.copy(dragging = false)
         bubbleHidden = false
@@ -643,7 +643,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         // Y 方向仅 clamp 在安全区内（顶部留状态栏，底部留导航条），不强制吸附
         val targetY = p.y.coerceIn(dp(48), screenH - mainSize - dp(32))
         animateBubbleTo(targetX, targetY) { _, _ ->
-            // 第4轮：去掉触觉震动（需求#12）；不再持久化位置（需求#10/#11，每次启动固定左上方）
+            // 去掉触觉震动；不再持久化位置，每次启动固定左上方
             resetIdleTimer()
         }
     }
@@ -702,7 +702,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         anim.cancel()
     }
 
-    // ═══════════ 闲置计时（第2轮：4s 半透明降遮挡；第3轮：8s 滑出半隐藏） ═══════════
+    // ═══════════ 闲置计时：4s 半透明降遮挡；8s 滑出半隐藏 ═══════════
     // 阶段1：4s 无交互 → 半透明（AssistiveTouch）；阶段2：再 4s → 滑出侧边只露 12dp（QQ 悬挂）
 
     private fun resetIdleTimer() {
@@ -862,12 +862,12 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                 override fun onAnimationEnd(animation: Animator) {
                     cv.visibility = View.GONE
                     cv.alpha = 1f   // 复位，避免下次打开残留透明
-                    // P1-06: 旧动画回调必须守卫全部窗口操作，不能只守卫状态变量。
+                    // 旧动画回调必须守卫全部窗口操作，不能只守卫状态变量。
                     // TEMP_HIDDEN 时气泡不应重新可见——否则状态显示隐藏、实际球可见。
                     if (windowState != WindowState.TEMP_HIDDEN) {
                         bubbleView?.visibility = View.VISIBLE
                         setWindowState(WindowState.VISIBLE_BUBBLE)
-                        // ：读屏播报——气泡重新可见后告知面板已关闭（固定文案）
+                        // 读屏播报——气泡重新可见后告知面板已关闭（固定文案）
                         bubbleView?.announceForAccessibility("军师面板已关闭")
                     }
                     isPanelHiding = false
@@ -959,7 +959,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                                 handleResize(newW, newH)
                             },
                             onResizeEnd = {
-                                // : 拖拽结束才写 SecurePrefs，避免每帧 onDrag 都触发磁盘写入
+                                //  拖拽结束才写 SecurePrefs，避免每帧 onDrag 都触发磁盘写入
                                 persistPanelSize()
                             },
                             onMove = { dx, dy ->
@@ -970,7 +970,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                                     copyToClipboard(text)
                                 }
                             },
-                            // ：未配置供应商引导——打开设置页（新任务栈，不干扰宿主 App）
+                            // 未配置供应商引导——打开设置页（新任务栈，不干扰宿主 App）
                             onOpenSettings = {
                                 startActivity(Intent(this@FloatingService, SetupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                             },
@@ -1045,11 +1045,11 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         p.height = newH
         panelW = newW
         panelH = newH
-        // : 持久化移至 onResizeEnd（拖拽松手时），此处只更新内存与视图
+        //  持久化移至 onResizeEnd（拖拽松手时），此处只更新内存与视图
         runCatching { wm.updateViewLayout(cv, p) }
     }
 
-    /** : 拖拽松手时持久化面板尺寸到 SecurePrefs */
+    /**  拖拽松手时持久化面板尺寸到 SecurePrefs */
     private fun persistPanelSize() {
         securePrefs.panelWidth = panelW
         securePrefs.panelHeight = panelH
@@ -1081,12 +1081,12 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         }
         clip.description.extras = extras
         cm.setPrimaryClip(clip)
-        // ：复制成功可见反馈（固定文案，不含用户内容）
+        // 复制成功可见反馈（固定文案，不含用户内容）
         Toast.makeText(this, "已复制", Toast.LENGTH_SHORT).show()
         // A4 修复：不再写 recentClips——复制的是军师回复，不是捕获的消息，不应影响捕获去重
     }
 
-    // ═══════════ RA-01: 前台服务通知 ═══════════
+    // ═══════════ 前台服务通知 ═══════════
 
     private fun ensureNotificationChannel() {
         val channel = NotificationChannel(
@@ -1140,7 +1140,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 
     /**
-     * ：悬浮窗 ComposeView 宿主样板（桥接生命周期 + 透明背景防矩形外露）。
+     * 悬浮窗 ComposeView 宿主样板（桥接生命周期 + 透明背景防矩形外露）。
      * 集中一处，避免气泡/面板各抄一份导致矩形外露 bug 修不全。
      */
     private fun newOverlayComposeView(): ComposeView = ComposeView(this).apply {

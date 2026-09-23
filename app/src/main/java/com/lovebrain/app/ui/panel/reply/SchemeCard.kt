@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 object SchemeCardDimens {
     const val CARD_WIDTH_DP = 158     // 卡宽（骨架屏与实体卡共用）
     const val CARD_HEIGHT_DP = 150    // 卡高（骨架屏 166->150 对齐实体，消除跳变）
-    const val CARD_MAX_HEIGHT_DP = 200 // P1-3: 最大高度上限，防止展开时无限增长
+    const val CARD_MAX_HEIGHT_DP = 200 // 最大高度上限，防止展开时无限增长
     const val TAG_HPAD_DP = 6         // 标签水平内边距
     const val TAG_VPAD_DP = 3         // 标签垂直内边距
     const val TAG_TO_BODY_GAP_DP = 6  // 标签到正文间距
@@ -87,10 +87,10 @@ sealed class SchemeCardPresentationState {
  * 默认态：标签 + 正文 + 右下操作（复制/赞/踩）。
  * 调整态：标签 + 改写选项 + 取消（替换内容，不追加）。
  *
- * P0-4: 卡片展开 = 进入调整态，替换内容而非在正文下方追加
- * P0-5: 方向 chips 移出卡片——方向属于 Result-level
- * P0-6: 使用 pointerInput 实现真实手势生命周期
- * P0-7: 权限反馈移出卡片——通过 onPermissionEvent 回调通知 Panel
+ * 卡片展开 = 进入调整态，替换内容而非在正文下方追加
+ * 方向 chips 移出卡片——方向属于 Result-level
+ * 使用 pointerInput 实现真实手势生命周期
+ * 权限反馈移出卡片——通过 onPermissionEvent 回调通知 Panel
  */
 @Composable
 fun SchemeCard(
@@ -106,14 +106,14 @@ fun SchemeCard(
     onToggleRewriteExpand: (SchemeIdentity) -> Unit = {},
     isExpanded: Boolean = false,
     onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
-    // P0-7: 权限事件回调——Panel/ViewModel 复用 panelWarning/banner
+    // 权限事件回调——Panel/ViewModel 复用 panelWarning/banner
     onPermissionEvent: (PermissionEvent) -> Unit = {},
     // 自定义改写回调
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
     val isEmpty = scheme.reply.isBlank()
-    // P0-1: 使用 identity 作为所有操作的稳定身份
+    // 使用 identity 作为所有操作的稳定身份
     val identity = scheme.identity
     val identityKey = identity.key
 
@@ -142,8 +142,8 @@ fun SchemeCard(
     val rewriteError = (rewriteState as? RewriteState.Error)?.message
     val rewriteDone = rewriteState is RewriteState.Done
 
-    // P0-6: 语音改写控制器——只负责 STT
-    // P0-7: 权限结果通过回调上抛，不在卡片内展示
+    // 语音改写控制器——只负责 STT
+    // 权限结果通过回调上抛，不在卡片内展示
     val voiceController = rememberVoiceRewriteController(
         schemeTag = identityKey,
         onVoiceRewrite = { tag, transcript -> onVoiceRewrite(identity, transcript) },
@@ -157,7 +157,7 @@ fun SchemeCard(
     val voiceState = voiceController.state
     val isRecording = voiceState == VoiceRewriteState.RECORDING || voiceState == VoiceRewriteState.PROCESSING
 
-    // P1-12: 统一状态推导——使用抽离的纯函数
+    // 统一状态推导——使用抽离的纯函数
     val cardState: SchemeCardPresentationState = deriveCardPresentationState(
         isRecording = isRecording,
         voiceState = voiceState,
@@ -167,7 +167,7 @@ fun SchemeCard(
         isExpanded = isExpanded
     )
 
-    // P0-6: pointerInput 手势生命周期——真实 PRESSING 状态 + 移出取消
+    // pointerInput 手势生命周期——真实 PRESSING 状态 + 移出取消
     // DOWN -> PRESSING（未达阈值）
     // 达到长按阈值 -> RECORDING
     // RECORDING 中正常 UP -> RELEASED -> stopListening
@@ -177,7 +177,7 @@ fun SchemeCard(
     var longPressTriggered by remember { mutableStateOf(false) }
     var gesturePhase by remember { mutableStateOf(GesturePhase.IDLE) }
 
-    // P0-5: touch slop——拖动超过此距离时取消长按等待，避免横滑/纵滚误触录音
+    // touch slop——拖动超过此距离时取消长按等待，避免横滑/纵滚误触录音
     val touchSlopPx = with(androidx.compose.ui.platform.LocalDensity.current) { 8.dp.toPx() }
 
     // 录音中或改写中——卡片边框高亮
@@ -188,14 +188,14 @@ fun SchemeCard(
         else -> Border
     }
 
-    // P0-4: 按压缩放
+    // 按压缩放
     val scale by animateFloatAsState(
         targetValue = if (longPressTriggered || isRecording || gesturePhase == GesturePhase.PRESSING) 0.97f else 1f,
         animationSpec = tween(durationMillis = 100),
         label = "cardScale"
     )
 
-    // P0-1: 外框高度保持稳定
+    // 外框高度保持稳定
     Box(
         modifier = modifier
             .width(SchemeCardDimens.CARD_WIDTH_DP.dp)
@@ -206,7 +206,7 @@ fun SchemeCard(
             .background(cardBg)
             .border(effectiveBorderWidth.dp, effectiveBorderColor, LoveBrainShape.lg)
             .then(if (isEmpty) Modifier else Modifier.pointerInput(identityKey) {
-                // P1-3: 手势状态机由 reduceGesturePhase 纯函数驱动——
+                // 手势状态机由 reduceGesturePhase 纯函数驱动——
                 // pointerInput 事件喂给 reducer，所有状态转换通过 reducer 完成。
                 // longPressReached 从 reducer 状态推导（RECORDING/RELEASED/CANCELLED 意味着已达到长按阈值）。
                 // JVM reducer test 真正保护生产逻辑。
@@ -216,7 +216,7 @@ fun SchemeCard(
                         // DOWN 事件 → reducer 驱动到 PRESSING
                         gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.DOWN)
 
-                        // P1-3: longPressReached 从 reducer 状态推导——不再维护并行变量
+                        // longPressReached 从 reducer 状态推导——不再维护并行变量
                         fun hasReachedLongPress(): Boolean =
                             gesturePhase == GesturePhase.RECORDING ||
                             gesturePhase == GesturePhase.RELEASED ||
@@ -254,7 +254,7 @@ fun SchemeCard(
                                         change.position.y >= 0f &&
                                         change.position.y <= size.height
 
-                                    // P1-3: upEvent 从 reducer 状态推导——hasReachedLongPress() 替代局部变量
+                                    // upEvent 从 reducer 状态推导——hasReachedLongPress() 替代局部变量
                                     val upEvent = if (hasReachedLongPress() && !pointerLeftBounds) {
                                         if (stillInside) GestureEvent.UP_IN_BOUNDS
                                         else GestureEvent.UP_OUT_OF_BOUNDS
@@ -344,7 +344,7 @@ fun SchemeCard(
 
             Spacer(Modifier.height(SchemeCardDimens.TAG_TO_BODY_GAP_DP.dp))
 
-            // P0-4: 根据 cardState 渲染卡片内容——替换而非追加
+            // 根据 cardState 渲染卡片内容——替换而非追加
             when (cardState) {
                 is SchemeCardPresentationState.Recording, SchemeCardPresentationState.Recognizing -> {
                     Box(
@@ -407,7 +407,7 @@ fun SchemeCard(
                     }
                 }
                 is SchemeCardPresentationState.RewriteError -> {
-                    // P0-4: 改写错误——替换内容显示错误+重试
+                    // 改写错误——替换内容显示错误+重试
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -441,7 +441,7 @@ fun SchemeCard(
                     }
                 }
                 SchemeCardPresentationState.RewriteDone -> {
-                    // P0-4: 改写成功——显示新正文+用这版/返回原版
+                    // 改写成功——显示新正文+用这版/返回原版
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -485,8 +485,8 @@ fun SchemeCard(
                     }
                 }
                 SchemeCardPresentationState.Adjusting -> {
-                    // P0-4: 调整态——替换内容：显示改写选项 + 自定义输入 + 取消
-                    // 不显示方向 chips（P0-5: 方向属于 Result-level）
+                    // 调整态——替换内容：显示改写选项 + 自定义输入 + 取消
+                    // 不显示方向 chips（方向属于 Result-level）
                     var customText by remember { mutableStateOf("") }
                     var showCustomInput by remember { mutableStateOf(false) }
                     Column(
@@ -617,7 +617,7 @@ fun SchemeCard(
                     }
                 }
                 SchemeCardPresentationState.Collapsed -> {
-                    // P0-4: 默认态——v1.3.1 简洁：标签 + 正文 + 操作行
+                    // 默认态——v1.3.1 简洁：标签 + 正文 + 操作行
                     if (isEmpty) {
                         Box(
                             modifier = Modifier
@@ -712,7 +712,7 @@ internal fun CardActionIcon(
 }
 
 /**
- * P0-7: 权限事件——SchemeCard 上抛给 Panel/ViewModel。
+ * 权限事件——SchemeCard 上抛给 Panel/ViewModel。
  * Panel 复用 panelWarning/KbNoticeBanner 展示，不在卡片内造通知。
  */
 sealed class PermissionEvent {

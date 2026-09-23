@@ -21,7 +21,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.lovebrain.app.util.L
 
 /**
- * P0-1 修复：VoiceRewrite 只负责 STT（语音转文字）。
+ * VoiceRewrite 只负责 STT（语音转文字）。
  *
  * 核心原则：STT 可以提前得到 final transcript，但绝对不能提前提交 rewrite。
  * 提交条件统一为（两事件 rendezvous）：
@@ -113,7 +113,7 @@ data class VoiceRewriteController(
 /**
  * 长按语音修改 Helper——封装 SpeechRecognizer 生命周期 + runtime permission。
  *
- * P0-1 真正修复：两事件 rendezvous 模型
+ * 真正修复：两事件 rendezvous 模型
  * - onResults 不再直接调用 onVoiceRewrite——final transcript 缓存到 finalTranscript
  * - release() 标记 physicalReleased 并调用 tryCommit()
  * - tryCommit() 统一提交条件：physicalReleased && finalTranscript非空 && !cancelled && !submitted
@@ -135,7 +135,7 @@ fun rememberVoiceRewriteController(
     val tagRef = remember { schemeTag }
     var permissionResult by remember { mutableStateOf<VoicePermissionResult?>(null) }
 
-    // P0-1: 两事件 rendezvous 状态
+    // 两事件 rendezvous 状态
     val physicalReleased = remember { mutableStateOf(false) }
     val finalTranscript = remember { mutableStateOf<String?>(null) }
     val cancelled = remember { mutableStateOf(false) }
@@ -192,7 +192,7 @@ fun rememberVoiceRewriteController(
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    // P0-1: 统一 cleanup——destroy recognizer 释放资源
+    // 统一 cleanup——destroy recognizer 释放资源
     fun destroyRecognizer() {
         speechRecognizer.value?.let { sr ->
             runCatching { sr.cancel() }
@@ -201,7 +201,7 @@ fun rememberVoiceRewriteController(
         speechRecognizer.value = null
     }
 
-    // P0-1: 统一提交逻辑——两事件 rendezvous
+    // 统一提交逻辑——两事件 rendezvous
     // 使用 shouldCommitTranscript() 作为单一决策源——与 VoiceGestureCommitTest 测试的纯函数一致
     // 条件：physicalReleased && finalTranscript非空 && !cancelled && !submitted
     // 两个事件谁先来都行，只要两个都满足就提交
@@ -286,7 +286,7 @@ fun rememberVoiceRewriteController(
 
                     destroyRecognizer()
 
-                    // P0-1: 缓存 final transcript——不直接提交
+                    // 缓存 final transcript——不直接提交
                     // 只有未被 cancel 时才缓存（cancel 后到达的 results 丢弃）
                     if (!cancelled.value && finalText.isNotBlank()) {
                         finalTranscript.value = finalText.trim()
@@ -330,7 +330,7 @@ fun rememberVoiceRewriteController(
     }
 
     /**
-     * P0-1: release()——松手时调用，controller 内部完成 stop + rendezvous。
+     * release()——松手时调用，controller 内部完成 stop + rendezvous。
      * 不再暴露 stopListening + commitTranscript 两个需要调用方按序拼接的接口。
      */
     fun release() {
@@ -367,7 +367,7 @@ fun rememberVoiceRewriteController(
         accumulatedText.clear()
     }
 
-    // P0-1: Composable dispose 时统一 destroy——防资源泄漏
+    // Composable dispose 时统一 destroy——防资源泄漏
     DisposableEffect(schemeTag) {
         onDispose {
             destroyRecognizer()

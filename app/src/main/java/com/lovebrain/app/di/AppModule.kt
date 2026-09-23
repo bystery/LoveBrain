@@ -38,7 +38,7 @@ val appModule = module {
     single { RoundCommitJournal(get()) }
     single { KnowledgeTriggerCoordinator(get(), get(), get(), get()) }
     single { GenerationEngine(get(), get()) }
-    // S2-02: ForegroundOperationCoordinator 作为单例——使用 application scope
+    // ForegroundOperationCoordinator 作为单例——使用 application scope
     single { com.lovebrain.app.domain.ForegroundOperationCoordinator((androidApplication() as LoveBrainApp).applicationScope) }
 
     // ViewModel（每次获取新实例）

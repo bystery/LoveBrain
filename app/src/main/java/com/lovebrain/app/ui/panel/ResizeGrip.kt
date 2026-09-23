@@ -63,7 +63,7 @@ fun ResizeGrip(
     Box(
         modifier = modifier
             .size(GripDimens.GRIP_SIZE_DP.dp)
-            // ：读屏可达性——pointerInput 不产生无障碍节点，补语义 + 自定义动作提供等价缩放（拖拽原样保留）
+            // 读屏可达性——pointerInput 不产生无障碍节点，补语义 + 自定义动作提供等价缩放（拖拽原样保留）
             .semantics {
                 contentDescription = "面板大小调整手柄"
                 // ui 1.6.8 无 customAction(label) 帮助函数，直接用 customActions 属性等价实现
@@ -106,7 +106,7 @@ fun ResizeGrip(
                         accumX += dragAmount.x
                         accumY += dragAmount.y
                         val density = view.resources.displayMetrics.density
-                        // ：面板边界硬编码 → AppConfig 常量（与上方无障碍动作同源，值不变）
+                        // 面板边界硬编码 → AppConfig 常量（与上方无障碍动作同源，值不变）
                         val minW = (AppConfig.PANEL_MIN_W * density).toInt()
                         val maxW = (AppConfig.PANEL_MAX_W * density).toInt()
                         val minH = (AppConfig.PANEL_MIN_H * density).toInt()
@@ -115,7 +115,7 @@ fun ResizeGrip(
                         val newH = (startH + accumY).toInt().coerceIn(minH, maxH)
                         onResize(newW, newH)
                     },
-                    // : 拖拽结束才触发持久化回调，避免 onDrag 每帧写 SecurePrefs
+                    //  拖拽结束才触发持久化回调，避免 onDrag 每帧写 SecurePrefs
                     onDragEnd = {
                         isActive = false
                         onResizeEnd()

@@ -60,7 +60,7 @@ import kotlinx.coroutines.delay
 
 /** 结果区内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object ResultDimens {
-    /** P3-03: 结果区工具入口的可点击盒子下限（视觉字形仍 28dp） */
+    /** 结果区工具入口的可点击盒子下限（视觉字形仍 28dp） */
     const val UTILITY_HITBOX_DP = 48
     const val FILTER_TAB_HEIGHT_DP = 28      // 筛选 Tab 高度
     const val SKELETON_TAG_WIDTH_DP = 60     // 骨架标签条宽度
@@ -78,7 +78,7 @@ fun ResultArea(
     onFeedback: (Scheme, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
     onRetry: () -> Unit,
-    // F09: 本轮参考记忆 + 纠正回调
+    // 本轮参考记忆 + 纠正回调
     memoryRefs: List<MemoryRef> = emptyList(),
     onCorrection: (String, CorrectionAction, String, com.lovebrain.app.model.MuteDuration) -> Unit = { _, _, _, _ -> },
     onUndoCorrection: (String) -> Unit = {},
@@ -94,17 +94,17 @@ fun ResultArea(
     onPermissionEvent: (PermissionEvent) -> Unit = {},
     // 自定义改写回调
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
-    // F10: 仅看本轮开关
+    // 仅看本轮开关
     onlyThisRound: Boolean = false,
     onToggleOnlyThisRound: () -> Unit = {},
-    // F11: 输入已变化提示
+    // 输入已变化提示
     inputChanged: Boolean = false,
     onRegenerateWithNewInput: () -> Unit = {},
-    // F03: 记录实际发送——P0-3: 不自动绑定第一张卡，调用方决定是否预填
+    // 记录实际发送——: 不自动绑定第一张卡，调用方决定是否预填
     onRecordSent: () -> Unit = {},
-    // F04: 打开记忆纠正中心
+    // 打开记忆纠正中心
     onShowCorrectionCenter: () -> Unit = {},
-    // P0-3: 稳定轮次身份——只在整轮 generate 成功时变化
+    // 稳定轮次身份——只在整轮 generate 成功时变化
     generationRoundId: Int = 0,
     modifier: Modifier = Modifier
 ) {
@@ -112,7 +112,7 @@ fun ResultArea(
         // Phase 1 加载中：核心回复（schemes）还没出来
         isGeneratingCore -> {
             if (streamingSchemes.isNotEmpty()) {
-                // ★ P1-07: 边流式边出卡——只渲染风格（directions 不再 stream）
+                // ★ 边流式边出卡——只渲染风格（directions 不再 stream）
                 Column(
                     modifier = modifier
                         .fillMaxWidth()
@@ -168,25 +168,25 @@ fun ResultArea(
         // 全部完成：方案 + 进行中事项（分析展示区已移除）
         result is GenerateResult.Success -> {
             val response = result.response
-            // F11: 输入已变化提示——结果来自旧输入时展示
+            // 输入已变化提示——结果来自旧输入时展示
             if (inputChanged) {
                 InputChangedBanner(onRegenerate = onRegenerateWithNewInput)
                 Spacer(Modifier.height(Spacing.sm))
             }
 
-            // P0-3: viewMode 只以 generationRoundId 重置——单条改写/undo/feedback 不切换用户当前 STYLE/DIRECTION
+            // viewMode 只以 generationRoundId 重置——单条改写/undo/feedback 不切换用户当前 STYLE/DIRECTION
             var viewMode by remember(generationRoundId) { mutableStateOf(SchemeViewMode.STYLE) }
             val hasDirections = response.directionSchemes.any { it.reply.isNotBlank() }
             val displaySchemes = when (viewMode) {
                 SchemeViewMode.STYLE -> response.schemes
                 SchemeViewMode.DIRECTION -> response.directionSchemes
             }
-            // P0-4: showRefs 状态提升到 Success 层——
+            // showRefs 状态提升到 Success 层——
             // ResultUtilityTrigger 只负责 toggle 事件，MemoryRefsSection 在主 Column 中渲染。
             // 默认 showRefs=false 不增加高度；用户展开后正常增加高度。
             var showRefs by remember(generationRoundId) { mutableStateOf(false) }
 
-            // P0-4: Box 外层——ResultUtilityTrigger 用 align(TopEnd) 覆盖，
+            // Box 外层——ResultUtilityTrigger 用 align(TopEnd) 覆盖，
             // 不参与 Column measurement，默认状态额外纵向高度 = 0。
             Box(
                 modifier = modifier
@@ -197,7 +197,7 @@ fun ResultArea(
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                 ) {
-            // P0-1: 风格/方向切换器——有方向时显示
+            // 风格/方向切换器——有方向时显示
             if (hasDirections) {
                 SchemeViewSwitcher(
                     mode = viewMode,
@@ -227,7 +227,7 @@ fun ResultArea(
                         OngoingSection(items = response.analysis.ongoing)
                     }
 
-                    // P0-4: MemoryRefsSection 在主 Column 中按正常文档流渲染——
+                    // MemoryRefsSection 在主 Column 中按正常文档流渲染——
                     // 默认 showRefs=false 时 AnimatedVisibility 不占高度；
                     // 用户主动展开后正常增加信息高度，不覆盖方案卡或切换器。
                     if (memoryRefs.isNotEmpty()) {
@@ -240,7 +240,7 @@ fun ResultArea(
                     }
                 }
 
-                // P0-4: 结果级 utility trigger——右上角 overlay，不参与 Column measurement。
+                // 结果级 utility trigger——右上角 overlay，不参与 Column measurement。
                 // 只负责：⋯ trigger + DropdownMenu + toggle 事件。
                 // 默认未展开状态额外纵向高度 = 0。
                 ResultUtilityTrigger(
@@ -278,13 +278,13 @@ fun ResultArea(
                         modifier = Modifier
                             .graphicsLayer { scaleX = retryScale; scaleY = retryScale }
                             .clickable(interactionSource = retryInteraction, indication = null, onClick = onRetry)
-                            .padding(horizontal = Spacing.lg, vertical = Spacing.sm) // ：热区外扩至 ≥24dp（文字高约 16dp + 垂直内边距）
+                            .padding(horizontal = Spacing.lg, vertical = Spacing.sm) // 热区外扩至 ≥24dp（文字高约 16dp + 垂直内边距）
                     )
                 }
             }
         }
 
-        // ：未配置供应商——空态不做死路，引导去设置页（可点通）
+        // 未配置供应商——空态不做死路，引导去设置页（可点通）
         !providerReady -> {
             Box(
                 modifier = modifier
@@ -328,14 +328,14 @@ fun ResultArea(
     }
 }
 
-/** P0-1: 风格/方向视图模式 */
+/** 风格/方向视图模式 */
 enum class SchemeViewMode { STYLE, DIRECTION }
 
 /** 方案筛选模式 */
 private enum class SchemeFilter { ALL, LIKED }
 
 /** 方案卡片行——Phase 1 完成就立刻渲染 */
-/** P0-1: 轻量风格/方向切换——高度≤28dp，使用现有配色，不成为视觉主角 */
+/** 轻量风格/方向切换——高度≤28dp，使用现有配色，不成为视觉主角 */
 @Composable
 private fun SchemeViewSwitcher(
     mode: SchemeViewMode,
@@ -372,11 +372,11 @@ private fun SchemeCardsRow(
     onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     onPermissionEvent: (PermissionEvent) -> Unit = {},
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
-    // F10: 仅看本轮开关
+    // 仅看本轮开关
     onlyThisRound: Boolean = false,
     onToggleOnlyThisRound: () -> Unit = {}
 ) {
-        // F10: 仅看本轮开关——在方案卡行上方
+        // 仅看本轮开关——在方案卡行上方
         if (onlyThisRound) {
             Row(
                 modifier = Modifier
@@ -406,12 +406,12 @@ private fun SchemeCardsRow(
 
         // 方案筛选：全部 / 已赞（调研：NN/G 10 Heuristics #6 Recognition rather than recall——
     // 用户赞过的方案应能快速回看，无需在 4 张卡里翻找）
-    // P0-4: filter 绑定 scheme group source——切换 STYLE/DIRECTION 时默认回 ALL
+    // filter 绑定 scheme group source——切换 STYLE/DIRECTION 时默认回 ALL
     val currentSource = schemes.firstOrNull()?.source
     var filter by remember(currentSource) { mutableStateOf(SchemeFilter.ALL) }
     val likedCount = schemes.count { feedbacks[it.identity.key] == SchemeFeedback.LIKED }
 
-    // P0-4: 任何时候 likedCount=0 时不保持 LIKED——防止空页死角
+    // 任何时候 likedCount=0 时不保持 LIKED——防止空页死角
     LaunchedEffect(likedCount) {
         if (likedCount == 0 && filter == SchemeFilter.LIKED) {
             filter = SchemeFilter.ALL
@@ -424,7 +424,7 @@ private fun SchemeCardsRow(
     }
 
     val scrollState = rememberLazyListState()
-    // 需求#20：去掉当前卡片指示器（原 activeIndex 追踪已移除）
+    // 去掉当前卡片指示器（原 activeIndex 追踪已移除）
     // 切换筛选时滚动回起点
     LaunchedEffect(filter) {
         scrollState.scrollToItem(0)
@@ -469,7 +469,7 @@ private fun SchemeCardsRow(
                 )
             }
         } else {
-            // 需求#19 修复：入场动画只在首次出现时播放一次（playedTags 集合）。
+            //修复：入场动画只在首次出现时播放一次（playedTags 集合）。
             // LazyRow item 离开视口会销毁 remember，若动画状态留在 item 内，
             // 从右向左滑（item 重新组合）会重播动画 → 卡片"闪一下"。提升到外层集合解决。
             val playedTags = remember { mutableStateMapOf<String, Boolean>() }
@@ -533,7 +533,7 @@ private fun SchemeCardsRow(
                     }
                 }
             }
-            // 需求#20：去掉卡片下方的四个点（当前卡片指示器）
+            // 去掉卡片下方的四个点（当前卡片指示器）
         }
     }
 }
@@ -664,7 +664,7 @@ private fun CoreLoadingIndicator(
             .verticalScroll(rememberScrollState())
     ) {
         // 骨架卡片占位：4 张灰色卡片，让用户预知即将出现的内容布局
-        // ：骨架卡尺寸引用 SchemeCardDimens（166→150 对齐实体卡，消除加载完成瞬间跳变）
+        // 骨架卡尺寸引用 SchemeCardDimens（166→150 对齐实体卡，消除加载完成瞬间跳变）
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(Spacing.md),
             modifier = Modifier.fillMaxWidth()
@@ -822,10 +822,10 @@ private fun TypewriterText(
     }
 }
 
-// ═══════════ P0-4: 结果级 utility trigger ═══════════
+// ═══════════ 结果级 utility trigger ═══════════
 
 /**
- * P0-4: 结果级 utility trigger — 右上角轻量 ⋯ trigger + DropdownMenu。
+ * 结果级 utility trigger — 右上角轻量 ⋯ trigger + DropdownMenu。
  *
  * 替代旧的"记入知识库专属 Row"。不增加结果区纵向高度。
  * - 菜单始终包含"记入知识库"
@@ -842,19 +842,19 @@ private fun ResultUtilityTrigger(
     memoryRefs: List<MemoryRef>,
     showRefs: Boolean,
     onToggleRefs: () -> Unit,
-    // F10: 仅看本轮开关
+    // 仅看本轮开关
     onlyThisRound: Boolean = false,
     onToggleOnlyThisRound: () -> Unit = {},
-    // F03: 记录实际发送
+    // 记录实际发送
     onRecordSent: () -> Unit = {},
     hasResult: Boolean = false,
-    // F04: 记忆纠正中心
+    // 记忆纠正中心
     onShowCorrectionCenter: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var menuOpen by remember { mutableStateOf(false) }
 
-    // P3-03: 视觉仍是 28dp 图标，但可点击盒子必须 ≥48dp——这是自定义 Box.clickable，
+    // 视觉仍是 28dp 图标，但可点击盒子必须 ≥48dp——这是自定义 Box.clickable，
     // Material 不会帮忙补足触摸热区。
     Box(
         modifier = modifier
@@ -897,10 +897,10 @@ private fun ResultUtilityTrigger(
                 .clip(LoveBrainShape.md)
                 .background(SurfaceCard)
         ) {
-            // S1-01 审计修复："记入知识库"已作为有结果时的主操作按钮展示（ReplyPrimaryActions），
+            // "记入知识库"已作为有结果时的主操作按钮展示（ReplyPrimaryActions），
             // ⋯ 菜单不再重复提供——消除双入口和旧设计残留。
 
-            // F03: 记录实际发送
+            // 记录实际发送
             if (hasResult) {
                 UtilityMenuItem(
                     label = "记录实际发送",
@@ -911,7 +911,7 @@ private fun ResultUtilityTrigger(
                 }
             }
 
-            // F10: 仅看本轮
+            // 仅看本轮
             UtilityMenuItem(
                 label = if (onlyThisRound) "✓ 仅看本轮" else "仅看本轮",
                 desc = "排除旧记忆，只看本轮输入"
@@ -920,7 +920,7 @@ private fun ResultUtilityTrigger(
                 onToggleOnlyThisRound()
             }
 
-            // F04: 记忆纠正中心
+            // 记忆纠正中心
             UtilityMenuItem(
                 label = "记忆纠正中心",
                 desc = "查看和撤销已纠正的记忆"
@@ -944,7 +944,7 @@ private fun ResultUtilityTrigger(
 }
 
 /**
- * P0-4: MemoryRefsSection — 在主 Column 中按正常文档流渲染的记忆引用列表。
+ * MemoryRefsSection — 在主 Column 中按正常文档流渲染的记忆引用列表。
  *
  * 默认 showRefs=false 时 AnimatedVisibility 不占高度（collapsed）。
  * 用户主动展开后正常增加信息高度，不覆盖方案卡或切换器。
@@ -1005,7 +1005,7 @@ private fun MemoryRefsSection(
     }
 }
 
-/** P0-4: DropdownMenu utility 菜单项 */
+/** DropdownMenu utility 菜单项 */
 @Composable
 private fun UtilityMenuItem(
     label: String,
@@ -1037,7 +1037,7 @@ private fun UtilityMenuItem(
 }
 
 /**
- * F09: 单条记忆引用 — 只显示正文 + ⋯ 菜单。
+ * 单条记忆引用 — 只显示正文 + ⋯ 菜单。
  * ⋯ 菜单内提供：不对 / 结束 / 暂时别提 / 不是她 / 撤销。
  */
 @Composable
@@ -1045,7 +1045,7 @@ private fun MemoryRefItem(
     ref: MemoryRef,
     onCorrection: (String, CorrectionAction, String, com.lovebrain.app.model.MuteDuration) -> Unit,
     onUndoCorrection: (String) -> Unit,
-    // F04: 带时长的"暂时别提"和带输入的"不对"
+    // 带时长的"暂时别提"和带输入的"不对"
     onCorrectionWithMute: (String, com.lovebrain.app.model.MuteDuration) -> Unit = { id, _ -> onCorrection(id, CorrectionAction.MUTED, "", com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE) },
     onCorrectionWithReplacement: (String, String) -> Unit = { id, text -> onCorrection(id, CorrectionAction.WRONG, text, com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE) }
 ) {
@@ -1101,7 +1101,7 @@ private fun MemoryRefItem(
             }
         }
 
-        // P1-2: 纠正菜单——DropdownMenu 浮层，不改变结果区 layout height
+        // 纠正菜单——DropdownMenu 浮层，不改变结果区 layout height
         androidx.compose.material3.DropdownMenu(
             expanded = menuOpen,
             onDismissRequest = { menuOpen = false },
@@ -1109,7 +1109,7 @@ private fun MemoryRefItem(
                 .clip(LoveBrainShape.md)
                 .background(SurfaceCard)
         ) {
-            // F04: "不对"——弹出输入框让用户输入正确内容
+            // "不对"——弹出输入框让用户输入正确内容
             CorrectionDropdownItem("不对", "标记为错误内容") {
                 menuOpen = false
                 showWrongDialog = true
@@ -1118,7 +1118,7 @@ private fun MemoryRefItem(
                 onCorrection(ref.id, CorrectionAction.FINISHED, "", com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
                 menuOpen = false
             }
-            // F04: "暂时别提"——展开时长选择子菜单
+            // "暂时别提"——展开时长选择子菜单
             CorrectionDropdownItem("暂时别提", "暂停作为续聊素材") {
                 menuOpen = false
                 showMuteSubmenu = true
@@ -1133,7 +1133,7 @@ private fun MemoryRefItem(
             }
         }
 
-        // F04: "暂时别提"时长选择子菜单——F01: 改为 PanelModalHost
+        // "暂时别提"时长选择子菜单——: 改为 PanelModalHost
         if (showMuteSubmenu) {
             com.lovebrain.app.ui.panel.PanelModalHost(
                 onDismiss = { showMuteSubmenu = false }
@@ -1164,7 +1164,7 @@ private fun MemoryRefItem(
             }
         }
 
-        // F04: "不对"——输入正确内容——F01: 改为 PanelModalHost
+        // "不对"——输入正确内容——: 改为 PanelModalHost
         if (showWrongDialog) {
             com.lovebrain.app.ui.panel.PanelModalHost(
                 onDismiss = { showWrongDialog = false }
@@ -1203,7 +1203,7 @@ private fun MemoryRefItem(
     }
 }
 
-/** P1-2: DropdownMenu 纠正菜单项——浮层内文字行 */
+/** DropdownMenu 纠正菜单项——浮层内文字行 */
 @Composable
 private fun CorrectionDropdownItem(
     label: String,
@@ -1235,7 +1235,7 @@ private fun CorrectionDropdownItem(
 }
 
 /**
- * F11: 输入已变化提示——结果来自修改前内容时展示。
+ * 输入已变化提示——结果来自修改前内容时展示。
  * 主按钮为"按新输入生成"。
  */
 @Composable
@@ -1279,7 +1279,7 @@ private fun InputChangedBanner(
 }
 
 /**
- * F04: "暂时别提"时长选择子菜单项。
+ * "暂时别提"时长选择子菜单项。
  */
 @Composable
 private fun CorrectionSubmenuItem(

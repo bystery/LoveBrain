@@ -78,7 +78,7 @@ data class OnboardingSchema(
         val path: List<String>
     )
 
-    // ONB-02 修复：双方称呼独立上下文字段
+    // 双方称呼独立上下文字段
     @Serializable
     data class Names(
         val self: String = "",

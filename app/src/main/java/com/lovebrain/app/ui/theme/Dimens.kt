@@ -8,7 +8,7 @@ package com.lovebrain.app.ui.theme
  */
 object AppDimens {
     /**
-     * P3-03: 无障碍触摸区下限（dp）。
+     * 无障碍触摸区下限（dp）。
      *
      * 所有可点击元素——包括自定义 Box.clickable——的热区都必须 ≥ 此值。
      * Material 组件会自动补足，自定义盒子不会，所以统一取这个常量。

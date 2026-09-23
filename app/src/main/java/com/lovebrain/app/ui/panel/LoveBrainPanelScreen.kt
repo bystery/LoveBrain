@@ -62,7 +62,7 @@ private object PanelDimens {
     const val BANNER_CLOSE_ICON_SIZE_DP = 14
     const val PILL_HEIGHT_DP = 14
     const val PILL_LABEL_GAP_DP = 3
-    const val TOUCH_TARGET_MIN_DP = 48  // P3-03: 从 24dp 修正为 48dp 无障碍下限
+    const val TOUCH_TARGET_MIN_DP = 48  // 从 24dp 修正为 48dp 无障碍下限
     const val GENERATE_BUTTON_GAP_DP = 8
 }
 
@@ -106,12 +106,12 @@ fun LoveBrainPanelScreen(
     val todayCostYuan by viewModel.todayCostYuan.collectAsStateWithLifecycle()
     val lastCostYuan by viewModel.lastCostYuan.collectAsStateWithLifecycle()
     val lastResponseMs by viewModel.lastResponseMs.collectAsStateWithLifecycle()
-    // F12: 累计统计
+    // 累计统计
     val totalGenerateCount by viewModel.totalGenerateCount.collectAsStateWithLifecycle()
     val totalCostYuan by viewModel.totalCostYuan.collectAsStateWithLifecycle()
     val isProviderReady by viewModel.providerReady.collectAsStateWithLifecycle()
 
-    // P1-2: proactive state collected at top level
+    // proactive state collected at top level
     val isProactive by viewModel.isProactive.collectAsStateWithLifecycle()
     val proactiveOptions by viewModel.proactiveOptions.collectAsStateWithLifecycle()
     val proactiveError by viewModel.proactiveError.collectAsStateWithLifecycle()
@@ -119,24 +119,24 @@ fun LoveBrainPanelScreen(
     // 单条改写状态
     val rewriteStates by viewModel.rewriteStates.collectAsStateWithLifecycle()
 
-    // F10: 仅看本轮开关
+    // 仅看本轮开关
     val onlyThisRound by viewModel.onlyThisRound.collectAsStateWithLifecycle()
 
-    // F11: 输入已变化提示
+    // 输入已变化提示
     val inputChanged by viewModel.inputChanged.collectAsStateWithLifecycle()
 
-    // F02/P1-A: 点踩后展示原因面板——直接消费 VM 的 currentFeedbackCase，不再异步全库读取
+    // /: 点踩后展示原因面板——直接消费 VM 的 currentFeedbackCase，不再异步全库读取
     val dislikeCase by viewModel.currentFeedbackCase.collectAsStateWithLifecycle()
 
-    // F03: 记录实际发送——编辑框
+    // 记录实际发送——编辑框
     var showSentDialog by remember { mutableStateOf(false) }
     var sentDialogSchemeKey by remember { mutableStateOf<String?>(null) }
     var sentDialogPrefill by remember { mutableStateOf("") }
-    // P1-RC: Actual Sent Dialog 失败不丢输入——保存中不关闭 Dialog
+    // Actual Sent Dialog 失败不丢输入——保存中不关闭 Dialog
     val actualSentState by viewModel.actualSentState.collectAsStateWithLifecycle()
     var sentDialogSaving by remember { mutableStateOf(false) }
 
-    // P1-RC: RECORDED 时才关闭 Dialog，失败时 Dialog 保持用户输入
+    // RECORDED 时才关闭 Dialog，失败时 Dialog 保持用户输入
     LaunchedEffect(actualSentState) {
         if (actualSentState == LoveBrainViewModel.ActualSentState.RECORDED && sentDialogSaving) {
             sentDialogSaving = false
@@ -149,7 +149,7 @@ fun LoveBrainPanelScreen(
         }
     }
 
-    // F04: 记忆纠正中心
+    // 记忆纠正中心
     var showCorrectionCenter by remember { mutableStateOf(false) }
     var correctionCenterCorrections by remember { mutableStateOf<Map<String, com.lovebrain.app.model.MemoryCorrection>>(emptyMap()) }
 
@@ -378,7 +378,7 @@ fun LoveBrainPanelScreen(
                     },
                     modifier = Modifier.height(messageListHeight),
                     onEmptyAction = {
-                        // S1-01: 恢复空态入口——点击蓝字只切换到主动发模式，不发网络请求
+                        // 恢复空态入口——点击蓝字只切换到主动发模式，不发网络请求
                         viewModel.toggleProactiveMode()
                     },
                     proactiveActive = composerMode == ComposerMode.PROACTIVE
@@ -391,7 +391,7 @@ fun LoveBrainPanelScreen(
                     }
                 )
 
-                // S1-01: 替换 DualGenerateRow——使用 ComposerMode 驱动的 ReplyPrimaryActions
+                // 替换 DualGenerateRow——使用 ComposerMode 驱动的 ReplyPrimaryActions
                 // 4 种按钮状态完全匹配指导书要求：
                 // 1. 普通回复、无结果 → 全宽"生成回复 · N 条消息"
                 // 2. 普通回复、有结果 → "重试 | 记入知识库"
@@ -429,7 +429,7 @@ fun LoveBrainPanelScreen(
                 val isGeneratingCore by viewModel.isGeneratingCore.collectAsStateWithLifecycle()
                 val streamingSchemes by viewModel.streamingSchemes.collectAsStateWithLifecycle()
 
-                // P1-2: Result area switches based on resultMode
+                // Result area switches based on resultMode
                 Box(modifier = Modifier.weight(1f)) {
                     when (resultMode) {
                         LoveBrainViewModel.ResultMode.PROACTIVE -> {
@@ -451,14 +451,14 @@ fun LoveBrainPanelScreen(
                                 feedbacks = feedbacks,
         onFeedback = { scheme, fb ->
             viewModel.setFeedback(scheme.identity.key, fb)
-            // F02/P1-A: VM 同步暴露 currentFeedbackCase，UI 直接消费——不再异步全库读取
+            // /: VM 同步暴露 currentFeedbackCase，UI 直接消费——不再异步全库读取
         },
                                 onCopyScheme = { scheme ->
                                     val reply = viewModel.copyScheme(scheme)
                                     onCopy(reply)
                                 },
                                 onRetry = { viewModel.generate() },
-                                // F09: 本轮参考记忆 + 纠正回调
+                                // 本轮参考记忆 + 纠正回调
                                 memoryRefs = viewModel.getCurrentMemoryRefs(),
                                 onCorrection = { memoryId, action, replacementText, muteDuration ->
                                     viewModel.applyMemoryCorrection(memoryId, action, replacementText, "", muteDuration)
@@ -485,19 +485,19 @@ fun LoveBrainPanelScreen(
                                         customText
                                     )
                                 },
-                                // F10: 仅看本轮开关
+                                // 仅看本轮开关
                                 onlyThisRound = onlyThisRound,
                                 onToggleOnlyThisRound = { viewModel.toggleOnlyThisRound() },
-                                // F11: 输入已变化提示
+                                // 输入已变化提示
                                 inputChanged = inputChanged,
                                 onRegenerateWithNewInput = { viewModel.generate() },
-                                // F03: 记录实际发送——P0-3: result-level 入口不自动绑定方案卡
+                                // 记录实际发送——: result-level 入口不自动绑定方案卡
                                 onRecordSent = {
                                     sentDialogSchemeKey = null
                                     sentDialogPrefill = ""
                                     showSentDialog = true
                                 },
-                                // F04: 打开记忆纠正中心
+                                // 打开记忆纠正中心
                                 onShowCorrectionCenter = {
                                     viewModel.loadAllCorrections { corrections ->
                                         correctionCenterCorrections = corrections
@@ -542,7 +542,7 @@ fun LoveBrainPanelScreen(
             }
         }
 
-    // F02/P1-A: 点踩原因面板——直接消费 VM currentFeedbackCase
+    // /: 点踩原因面板——直接消费 VM currentFeedbackCase
     if (dislikeCase != null) {
         com.lovebrain.app.ui.panel.reply.DislikeReasonPanel(
             case = dislikeCase,
@@ -556,13 +556,13 @@ fun LoveBrainPanelScreen(
             )
         }
 
-        // F03: 记录实际发送——编辑确认框
+        // 记录实际发送——编辑确认框
         if (showSentDialog) {
             com.lovebrain.app.ui.panel.reply.RecordSentDialog(
                 prefill = sentDialogPrefill,
                 saving = sentDialogSaving,
                 onConfirm = { text ->
-                    // P1-RC: 不立即关闭 Dialog——等 actualSentState 变 RECORDED 才关
+                    // 不立即关闭 Dialog——等 actualSentState 变 RECORDED 才关
                     sentDialogSaving = true
                     viewModel.recordActualSentMessage(text, sentDialogSchemeKey)
                 },
@@ -574,7 +574,7 @@ fun LoveBrainPanelScreen(
             )
         }
 
-        // F04: 记忆纠正中心——独立列出已停用／静音／隔离项，支持撤销
+        // 记忆纠正中心——独立列出已停用／静音／隔离项，支持撤销
         if (showCorrectionCenter) {
             com.lovebrain.app.ui.panel.reply.CorrectionCenter(
                 corrections = correctionCenterCorrections,
@@ -602,7 +602,7 @@ fun LoveBrainPanelScreen(
 }
 
 /**
- * P0-10: 画像建议卡——原地重新生成，卡片位置不变。
+ * 画像建议卡——原地重新生成，卡片位置不变。
  *
  * 状态：
  * - Ready: 正常展示建议，可确认/忽略/重新生成
@@ -630,7 +630,7 @@ private fun ProfileSuggestionCard(
     ) {
         Text("AI 画像更新建议", style = AppTypography.labelLarge, color = PrimaryDark)
         Spacer(Modifier.height(Spacing.md))
-        // P1-1: 真正的 overlay——正文始终留在 layout 中撑高度，loading 覆盖在上层
+        // 真正的 overlay——正文始终留在 layout 中撑高度，loading 覆盖在上层
         // 不用 if/else 替换正文，避免高度跳变
         Box(
             modifier = Modifier
@@ -647,7 +647,7 @@ private fun ProfileSuggestionCard(
                     .padding(Spacing.md)
                     .verticalScroll(rememberScrollState())
             )
-            // P1-1: loading 覆盖层——不替换正文，覆盖在上方
+            // loading 覆盖层——不替换正文，覆盖在上方
             if (isRegenerating) {
                 Box(
                     modifier = Modifier
@@ -677,7 +677,7 @@ private fun ProfileSuggestionCard(
         }
         Spacer(Modifier.height(Spacing.md))
         Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-            // P0-10: regenerating 时禁用忽略和确认
+            // regenerating 时禁用忽略和确认
             val actionsEnabled = !isConfirming && !isRegenerating
             // press scale feedback
             val (dismissInteraction, dismissScale) = rememberPressScale(0.96f, "profileDismissScale")
@@ -697,7 +697,7 @@ private fun ProfileSuggestionCard(
             )
             when {
                 isRegenerating -> {
-                    // P0-10: 重新生成中原地显示 loading，不额外显示按钮
+                    // 重新生成中原地显示 loading，不额外显示按钮
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             "重新生成中…",
@@ -740,7 +740,7 @@ private fun ProfileSuggestionCard(
                     )
                 }
                 else -> {
-                    // P1-03: 无效建议——显示重新生成，点击真正发起新的画像生成请求
+                    // 无效建议——显示重新生成，点击真正发起新的画像生成请求
                     val (regenInteraction, regenScale) = rememberPressScale(0.96f, "profileRegenScale")
                     Text(
                         "建议格式无效，重新生成",
@@ -966,7 +966,7 @@ private fun StageSuggestionCard(
 
 /**
  * Usage stats row
- * 
+ *
  */
 @Composable
 private fun UsageStatsRow(
@@ -986,7 +986,7 @@ private fun UsageStatsRow(
         if (lastResponseMs > 0) {
             UsageStatCell("首字", "%.1fs".format(lastResponseMs / 1000.0))
         }
-        // F12: 累计统计
+        // 累计统计
         UsageStatCell("累计", "${totalGenerateCount}次")
         UsageStatCell("累计", "¥${LoveBrainViewModel.formatYuan(totalCostYuan)}")
     }
@@ -1002,7 +1002,7 @@ private fun UsageStatCell(label: String, value: String) {
 }
 
 /**
- * Proactive result area - P1-2: now with copy support
+ * Proactive result area - now with copy support
  */
 @Composable
 private fun ProactiveResultArea(
@@ -1076,5 +1076,5 @@ private fun ProactiveResultArea(
     }
 }
 
-// S1-01: ReplyPrimaryActions 已提取为 reply/ReplyPrimaryActions.kt 中的公共可测试组件。
+// ReplyPrimaryActions 已提取为 reply/ReplyPrimaryActions.kt 中的公共可测试组件。
 // 不再在 LoveBrainPanelScreen 中维护 private 副本——测试直接使用生产组件，消除双轨。

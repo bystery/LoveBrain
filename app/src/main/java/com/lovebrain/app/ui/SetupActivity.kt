@@ -94,7 +94,7 @@ class SetupActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // P3-05: 敏感页面 FLAG_SECURE——防止 API Key / 知识库内容在最近任务截图中泄露
+        // 敏感页面 FLAG_SECURE——防止 API Key / 知识库内容在最近任务截图中泄露
         window.setFlags(
             android.view.WindowManager.LayoutParams.FLAG_SECURE,
             android.view.WindowManager.LayoutParams.FLAG_SECURE

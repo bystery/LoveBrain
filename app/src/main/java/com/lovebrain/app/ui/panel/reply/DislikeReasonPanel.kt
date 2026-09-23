@@ -26,7 +26,7 @@ import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 
 /**
- * F02: 点踩原因面板——点踩后展开轻量原因选择。
+ * 点踩原因面板——点踩后展开轻量原因选择。
  *
  * - 原因可多选、可跳过、可补文字。
  * - 关闭弹层仍保留点踩，不强迫写作文。
@@ -156,7 +156,7 @@ fun DislikeReasonPanel(
                     }
                 }
             )
-            // F05: 表达反馈可"同时记为我的偏好"
+            // 表达反馈可"同时记为我的偏好"
             // 必须由用户主动选择，不自动加入偏好
             Text(
                 text = "提示：可在知识库表达偏好中手动添加不喜欢的表达",

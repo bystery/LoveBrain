@@ -67,7 +67,7 @@ import com.lovebrain.app.viewmodel.SetupViewModel
 import kotlinx.coroutines.launch
 
 /**
- * S1-05: 反馈案例独立页面——根级导航目标，不在首页 Column 内插入。
+ * 反馈案例独立页面——根级导航目标，不在首页 Column 内插入。
  *
  * 数据通过 ViewModel/DI 提供，不在 Composable 中直接 new Repository。
  * 页面状态：Loading / Empty / Data / Error
@@ -92,11 +92,11 @@ fun FeedbackCasesScreen(
     val loadError by viewModel.feedbackError.collectAsStateWithLifecycle()
     val exportState by viewModel.exportState.collectAsStateWithLifecycle()
 
-    // S1-06 审计修复: 筛选/展开/格式状态使用 rememberSaveable，旋转/进程重建后恢复
+    // 筛选/展开/格式状态使用 rememberSaveable，旋转/进程重建后恢复
     var filterCategory by rememberSaveable { mutableStateOf<FeedbackCategory?>(null) }
     var expandedCaseId by rememberSaveable { mutableStateOf<String?>(null) }
     var exportFormat by rememberSaveable { mutableStateOf("markdown") }
-    // S1-05: copiedFeedback 绑定 exportId，新导出自动重置
+    // copiedFeedback 绑定 exportId，新导出自动重置
     var copiedExportId by remember { mutableStateOf<String?>(null) }
     var saveError by remember { mutableStateOf<String?>(null) }
 
@@ -106,8 +106,8 @@ fun FeedbackCasesScreen(
 
     val filtered = if (filterCategory == null) cases else cases.filter { filterCategory!! in it.categories }
 
-    // S1-05: CreateDocument launcher——真正写入用户选择的 Uri
-    // 审计修复：openOutputStream() 返回 null 时不得假装成功。
+    // CreateDocument launcher——真正写入用户选择的 Uri
+    // openOutputStream() 返回 null 时不得假装成功。
     val saveLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument(if (exportFormat == "json") "application/json" else "text/markdown")
     ) { uri ->
@@ -194,7 +194,7 @@ fun FeedbackCasesScreen(
                             indication = null,
                             enabled = filtered.isNotEmpty()
                         ) {
-                            // S1-05: 新导出自动重置 copied 状态
+                            // 新导出自动重置 copied 状态
                             copiedExportId = null
                             viewModel.exportFeedback(filtered, exportFormat)
                         }
@@ -299,7 +299,7 @@ fun FeedbackCasesScreen(
                         ),
                         verticalArrangement = Arrangement.spacedBy(Spacing.sm)
                     ) {
-                        // S1-05: 使用 stable key
+                        // 使用 stable key
                         items(filtered, key = { it.caseId }) { c ->
                             val isExpanded = expandedCaseId == c.caseId
                             Card(
@@ -374,7 +374,7 @@ fun FeedbackCasesScreen(
             }
         }
 
-        // S1-05: 导出预览——使用 AlertDialog 替代伪全屏遮罩
+        // 导出预览——使用 AlertDialog 替代伪全屏遮罩
         when (val state = exportState) {
             is SetupViewModel.ExportState.Loading -> {
                 Box(
@@ -389,7 +389,7 @@ fun FeedbackCasesScreen(
             }
             is SetupViewModel.ExportState.Success -> {
                 val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-                // S1-05: copiedFeedback 绑定 exportId
+                // copiedFeedback 绑定 exportId
                 val isCopied = copiedExportId == state.exportId
                 AlertDialog(
                     onDismissRequest = { viewModel.resetExportState() },
@@ -421,7 +421,7 @@ fun FeedbackCasesScreen(
                         }
                     },
                     confirmButton = {
-                        // S1-05: 保存按钮——真正写入文件
+                        // 保存按钮——真正写入文件
                         TextButton(onClick = {
                             val fileName = "feedback_export.${exportFormat}"
                             saveLauncher.launch(fileName)
@@ -431,7 +431,7 @@ fun FeedbackCasesScreen(
                     },
                     dismissButton = {
                         Row {
-                            // S1-05: 分享按钮——捕获 ActivityNotFoundException
+                            // 分享按钮——捕获 ActivityNotFoundException
                             TextButton(onClick = {
                                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
                                     type = if (exportFormat == "json") "application/json" else "text/markdown"
@@ -445,7 +445,7 @@ fun FeedbackCasesScreen(
                             }) {
                                 Text("分享", color = Primary)
                             }
-                            // S1-05: 复制按钮
+                            // 复制按钮
                             TextButton(onClick = {
                                 clipboard.setPrimaryClip(android.content.ClipData.newPlainText("export", state.text))
                                 copiedExportId = state.exportId
@@ -478,7 +478,7 @@ fun FeedbackCasesScreen(
             SetupViewModel.ExportState.Idle -> { /* nothing */ }
         }
 
-        // S1-05: 保存错误 Dialog
+        // 保存错误 Dialog
         if (saveError != null) {
             AlertDialog(
                 onDismissRequest = { saveError = null },

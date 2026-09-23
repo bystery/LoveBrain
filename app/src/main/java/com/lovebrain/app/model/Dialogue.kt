@@ -3,7 +3,7 @@ package com.lovebrain.app.model
 import java.util.UUID
 
 /**
- * P0-1: 真实对话消息——只有 PARTNER 和 USER 两种角色。
+ * 真实对话消息——只有 PARTNER 和 USER 两种角色。
  *
  * IDEA（想法）不再是 message role，改为 [ReplyDirective]。
  * 在类型系统层面，对话流水线不可能出现 IDEA。
@@ -16,7 +16,7 @@ data class DialogueMessage(
 )
 
 /**
- * P0-1: 对话参与者——只有两种。
+ * 对话参与者——只有两种。
  *
  * PARTNER = 对方（她）
  * USER = 用户本人（我）
@@ -27,7 +27,7 @@ enum class DialogueSpeaker {
 }
 
 /**
- * P0-1: 回复指令（原 IDEA）——控制平面，不是消息。
+ * 回复指令（原 IDEA）——控制平面，不是消息。
  *
  * 它是用户对本轮生成方向的指导，不是对话内容。
  * 禁止进入 recent.md / scene fact / topic detection / ongoing extraction / fact evidence。
@@ -41,13 +41,13 @@ data class ReplyDirective(
     val aggressive: Boolean = false
 )
 
-/** P0-1: 指令作用域 */
+/** 指令作用域 */
 enum class DirectiveScope {
     CURRENT_GENERATION_ONLY
 }
 
 /**
- * P0-1: 从 ChatMessage 列表中分离出对话消息和回复指令。
+ * 从 ChatMessage 列表中分离出对话消息和回复指令。
  *
  * HER → PARTNER, ME → USER, IDEA → ReplyDirective
  * 旧代码中的 ChatMessage.Role.IDEA 在此边界转换为 ReplyDirective，
@@ -77,7 +77,7 @@ fun splitMessages(messages: List<ChatMessage>): Pair<List<DialogueMessage>, Repl
 }
 
 /**
- * P0-1: 从 ChatMessage 列表提取 ReplyDirective（兼容旧接口）。
+ * 从 ChatMessage 列表提取 ReplyDirective（兼容旧接口）。
  * 供 ViewModel 中 collectIdeaHint 等旧入口使用。
  */
 fun extractReplyDirective(messages: List<ChatMessage>): String =

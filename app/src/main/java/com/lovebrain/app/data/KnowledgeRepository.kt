@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicLong
 /**
  * 知识库仓储 v3：基于「懂得/此刻/记忆」三层架构。
  *
- * ：所有公开方法 suspend + withContext(Dispatchers.IO) 确保主线程无磁盘 IO；
+ * 所有公开方法 suspend + withContext(Dispatchers.IO) 确保主线程无磁盘 IO；
  * read-modify-write 路径经 fileMutex.withLock 保护，防止并发读写冲突。
  */
 class KnowledgeRepository(
@@ -55,8 +55,8 @@ class KnowledgeRepository(
     init {
         knowledgeRoot.mkdirs()
         // 启动时自动备份（使用 applicationScope 替代 GlobalScope，生命周期可管理）
-        // : 所有 launch 必须包 SupervisorJob + ExceptionHandler
-        // RA-03：备份经 fileMutex 序列化，与 delete 互斥防竞态
+        //  所有 launch 必须包 SupervisorJob + ExceptionHandler
+        // 备份经 fileMutex 序列化，与 delete 互斥防竞态
         appScope.launch(Dispatchers.IO + SupervisorJob()) {
             try {
                 backupIfNeeded()
@@ -94,7 +94,7 @@ class KnowledgeRepository(
     // ═══════════ 自动备份 ═══════════
 
     /**
-     * RA-03：序列化备份过程——与 delete 共用 fileMutex，防止并发竞态。
+     * 序列化备份过程——与 delete 共用 fileMutex，防止并发竞态。
      * 备份最多 12 小时一次、知识库主要是文本，短暂锁住文件更新的成本可接受。
      */
     private suspend fun backupIfNeeded() {
@@ -161,7 +161,7 @@ class KnowledgeRepository(
 
     /**
      * 原子写入：先写临时文件 → fsync 刷盘 → rename 覆盖目标文件。
-     * P0-4：rename 失败时保留原件并报错，不回退到直接覆盖（直接写可能导致半写损坏）。
+     * rename 失败时保留原件并报错，不回退到直接覆盖（直接写可能导致半写损坏）。
      *
      * 调研依据：SQLite 的原子提交机制（写 journal → flush → rename → delete journal），
      * 以及 Kotlin File.writeText() 无原子保证（Kotlin 官方文档确认）。
@@ -203,16 +203,16 @@ class KnowledgeRepository(
             } catch (e: Exception) {
                 com.lovebrain.app.util.L.w("atomicWriteText: NIO ATOMIC_MOVE failed: ${e.message}")
             }
-            // P0-12: NIO 全部失败时的回退——严格检查每步返回值，保证任何路径下至少保留 old target 或 recoverable backup。
+            // NIO 全部失败时的回退——严格检查每步返回值，保证任何路径下至少保留 old target 或 recoverable backup。
             // 流程：target → backup（必须成功才继续）→ tmp → target → 成功删 backup / 失败用 backup 恢复。
             if (!renamed) {
                 val backupTmp = File(file.parentFile, ".${file.name}.bak")
-                // P0-12: 清理可能存在的旧 .bak 残留——防历史 backup 干扰恢复逻辑
+                // 清理可能存在的旧 .bak 残留——防历史 backup 干扰恢复逻辑
                 if (backupTmp.exists()) {
                     backupTmp.delete()
                 }
                 // Step 1: 如果旧文件存在，先 rename 到 .bak（保留旧文件内容）
-                // P0-12: 必须检查返回值——backup 失败则保持 target 原样，退出
+                // 必须检查返回值——backup 失败则保持 target 原样，退出
                 val backupSucceeded = if (file.exists()) {
                     file.renameTo(backupTmp)
                 } else {
@@ -229,12 +229,12 @@ class KnowledgeRepository(
                     // 成功后删除旧备份
                     if (backupTmp.exists()) backupTmp.delete()
                 } else {
-                    // P0-12: tmp → target 失败——用 backup 恢复 target
+                    // tmp → target 失败——用 backup 恢复 target
                     com.lovebrain.app.util.L.w("atomicWriteText: tmp→target rename failed, restoring backup: ${file.name}")
                     if (backupTmp.exists()) {
                         val restored = backupTmp.renameTo(file)
                         if (!restored) {
-                            // P0-12: 恢复也失败——保留 backup 文件，绝不删除
+                            // 恢复也失败——保留 backup 文件，绝不删除
                             com.lovebrain.app.util.L.e("atomicWriteText: CRITICAL - backup restore also failed! Backup preserved at: ${backupTmp.absolutePath}", null)
                         }
                     }
@@ -247,7 +247,7 @@ class KnowledgeRepository(
         }
     }
 
-    /** KBG-01：判断知识库是否真实存在（目录存在 + kb.json 存在）。调用方必须已持有文件互斥锁或处于单线程路径 */
+    /** 判断知识库是否真实存在（目录存在 + kb.json 存在）。调用方必须已持有文件互斥锁或处于单线程路径 */
     private fun kbExistsUnlocked(kbName: String): Boolean {
         val dir = File(knowledgeRoot, kbName)
         val meta = File(dir, "kb.json")
@@ -255,7 +255,7 @@ class KnowledgeRepository(
     }
 
     /**
-     * S2-06: 库 schema 比本 App 支持的还新时拒绝写入。
+     * 库 schema 比本 App 支持的还新时拒绝写入。
      *
      * 所有写路径（含 appendFileUnlocked）最终都落到这里，所以拦截只需要这一处；
      * 用旧代码往 v4 结构里写 v3 形状，会把新字段静默抹掉。
@@ -264,7 +264,7 @@ class KnowledgeRepository(
     private fun refusedByReadOnlySchema(kbName: String, op: String, relativePath: String): Boolean {
         if (!schemaTooNewKbs.contains(kbName)) return false
         com.lovebrain.app.util.L.w(
-            "S2-06: $op refused on $kbName/$relativePath — schema newer than this build, library is read-only"
+            "$op refused on $kbName/$relativePath — schema newer than this build, library is read-only"
         )
         return true
     }
@@ -291,10 +291,10 @@ class KnowledgeRepository(
         scheduleDebouncedBackup()
     }
 
-    // ═══════════ F10: 默认知识库初始化 ═══════════
+    // ═══════════ 默认知识库初始化 ═══════════
 
     /**
-     * F10: 确保应用至少有一个合法知识库。应用初始化唯一入口。
+     * 确保应用至少有一个合法知识库。应用初始化唯一入口。
      *
      * 规则：
      * 1. 有库沿用原激活项；不创建新库
@@ -348,7 +348,7 @@ class KnowledgeRepository(
             )
             atomicWriteText(File(defaultDir, "kb.json"), json.encodeToString(KnowledgeBase.serializer(), kb))
 
-            // F10: 画像默认真实空内容（非 schema 模板占位文字）
+            // 画像默认真实空内容（非 schema 模板占位文字）
             atomicWriteText(File(defaultDir, "understand/me.md"), "")
             atomicWriteText(File(defaultDir, "understand/her.md"), "")
             atomicWriteText(File(defaultDir, "understand/warmth.md"), "")
@@ -389,7 +389,7 @@ class KnowledgeRepository(
     }
 
     /**
-     * F10: 检查知识库文件是否完整，补齐缺失文件（中断恢复）。
+     * 检查知识库文件是否完整，补齐缺失文件（中断恢复）。
      * 不 deleteRecursively，只补缺失。调用方持有 fileMutex。
      */
     private fun ensureKbFilesCompleteUnlocked(kbName: String) {
@@ -439,7 +439,7 @@ class KnowledgeRepository(
                     val metaFile = File(dir, "kb.json")
                     if (metaFile.exists()) {
                         val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
-                        // : name 字段必须与目录名等值——防 kb.json 内容字段路径遍历（单一扼制点，所有消费端均源于 listAll）
+                        //  name 字段必须与目录名等值——防 kb.json 内容字段路径遍历（单一扼制点，所有消费端均源于 listAll）
                         if (kb.name != dir.name) {
                             com.lovebrain.app.util.L.w("知识库元数据异常已忽略：dir=${dir.name}")
                             null
@@ -527,9 +527,9 @@ class KnowledgeRepository(
         }
     }
 
-    // ═══════════ F07: 持续意图（每 KB 一份，moment/intent.json） ═══════════
+    // ═══════════ 持续意图（每 KB 一份，moment/intent.json） ═══════════
 
-    /** F07: 读取持续意图配置 */
+    /** 读取持续意图配置 */
     suspend fun readIntent(kbName: String): IntentConfig = withContext(Dispatchers.IO) {
         val file = File(File(knowledgeRoot, kbName), "moment/intent.json")
         if (!file.exists()) return@withContext IntentConfig()
@@ -538,8 +538,8 @@ class KnowledgeRepository(
         }.getOrDefault(IntentConfig())
     }
 
-    /** F07: 保存持续意图配置。每次保存 revision+1，用于生成时冻结快照识别旧请求。
-     *  F06: 支持有效期和完成状态。 */
+    /** 保存持续意图配置。每次保存 revision+1，用于生成时冻结快照识别旧请求。
+     *  支持有效期和完成状态。 */
     suspend fun saveIntent(
         kbName: String,
         text: String,
@@ -574,9 +574,9 @@ class KnowledgeRepository(
         }.getOrDefault(IntentConfig())
     }
 
-    // ═══════════ F09: 记忆纠正（每 KB 一份，memory/corrections.json） ═══════════
+    // ═══════════ 记忆纠正（每 KB 一份，memory/corrections.json） ═══════════
 
-    /** F09: 读取纠正记录列表。返回 memoryId → correction 映射。 */
+    /** 读取纠正记录列表。返回 memoryId → correction 映射。 */
     suspend fun readCorrections(kbName: String): Map<String, com.lovebrain.app.model.MemoryCorrection> = withContext(Dispatchers.IO) {
         val file = File(File(knowledgeRoot, kbName), "memory/corrections.json")
         if (!file.exists()) return@withContext emptyMap()
@@ -586,7 +586,7 @@ class KnowledgeRepository(
         }.getOrDefault(emptyMap())
     }
 
-    /** F09: 保存一条纠正记录。revision 单调递增（库级），不会因撤销倒退。
+    /** 保存一条纠正记录。revision 单调递增（库级），不会因撤销倒退。
      * R07: 不再使用剩余记录的 max 推算 revision（撤销删除后可能倒退）。
      * 改为读取库级持久化 revision 标记，每次纠正/撤销均递增。 */
     suspend fun saveCorrection(
@@ -631,7 +631,7 @@ class KnowledgeRepository(
         }
     }
 
-    /** F09: 撤销纠正 — 删除指定 memoryId 的纠正记录。
+    /** 撤销纠正 — 删除指定 memoryId 的纠正记录。
      * R07: 撤销也递增库级 revision，保证单调性。 */
     suspend fun undoCorrection(kbName: String, memoryId: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
@@ -656,7 +656,7 @@ class KnowledgeRepository(
         }
     }
 
-    /** F09: 获取纠正记录的全局 revision（用于后台防护）。
+    /** 获取纠正记录的全局 revision（用于后台防护）。
      * R07: 读取库级持久化 revision（单调递增），不依赖剩余记录 max。
      * b3-8: 加锁读取，保证一致性（原先无锁读可能读到半写状态） */
     suspend fun getCorrectionsRevision(kbName: String): Int = withContext(Dispatchers.IO) {
@@ -771,11 +771,11 @@ class KnowledgeRepository(
     }
 
     /** 删除知识库（/：物理删除——UI 已有确认步骤，不再进 .trash 永久残留隐私数据）
-     *  RA-03：delete 成功后同时删除该 KB 的全部 backup，防止私密副本残留 */
+     *  delete 成功后同时删除该 KB 的全部 backup，防止私密副本残留 */
     suspend fun delete(name: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             val dir = File(knowledgeRoot, name)
-            // : canonical 纵深守卫——删除目标必须落在 knowledge/ 树内（与 unzipToKnowledge entry 防护同写法）
+            //  canonical 纵深守卫——删除目标必须落在 knowledge/ 树内（与 unzipToKnowledge entry 防护同写法）
             val canonicalDirPath = dir.canonicalPath
             val canonicalRootPath = knowledgeRoot.canonicalPath
             if (!canonicalDirPath.startsWith(canonicalRootPath + File.separator)) return@withLock false
@@ -783,7 +783,7 @@ class KnowledgeRepository(
             val ok = dir.deleteRecursively()
             // 清理旧版本遗留的 .trash（若存在），一次性腾空
             File(knowledgeRoot, ".trash").takeIf { it.exists() }?.deleteRecursively()
-            // RA-03：正式目录删除成功后才删 backup，防止删 backup 后正式目录删失败导致备份丢失
+            // 正式目录删除成功后才删 backup，防止删 backup 后正式目录删失败导致备份丢失
             if (ok) {
                 deleteBackupsForKbUnlocked(name)
             }
@@ -802,7 +802,7 @@ class KnowledgeRepository(
     }
 
     /**
-     * RA-03：删除指定 KB 的全部自动备份。使用 backupGroupKey 精确匹配，不用 startsWith 防误删。
+     * 删除指定 KB 的全部自动备份。使用 backupGroupKey 精确匹配，不用 startsWith 防误删。
      * 调用方必须已持有 fileMutex。
      */
     private fun deleteBackupsForKbUnlocked(kbName: String) {
@@ -828,25 +828,25 @@ class KnowledgeRepository(
         ""
     }
 
-    // ═══════════ S2-06: canonical 路径边界 ═══════════
+    // ═══════════ canonical 路径边界 ═══════════
 
     /**
      * 把裸字符串库名校验成 [KbName]。
      *
-     * 复核报告 §6 S2-06 的原话是"Repository 的公共方法仍接收裸 String kbName/path，
+     *原话是"Repository 的公共方法仍接收裸 String kbName/path，
      * canonical boundary 没建立"。光加一个没人用的 value class 不算建立边界，
      * 所以这里让**所有** String 入口先过同一套校验：
      * 空名、带路径分隔符、`..`、超长一律拒绝，非法输入不再有机会变成 File 路径。
      */
     fun toKbName(raw: String): com.lovebrain.app.model.KbName? =
         runCatching { com.lovebrain.app.model.KbName(raw) }
-            .onFailure { com.lovebrain.app.util.L.w("S2-06: rejected kb name: ${it.message}") }
+            .onFailure { com.lovebrain.app.util.L.w("rejected kb name: ${it.message}") }
             .getOrNull()
 
     /** 把裸字符串相对路径校验成 [KbRelativePath] */
     fun toKbPath(raw: String): com.lovebrain.app.model.KbRelativePath? =
         runCatching { com.lovebrain.app.model.KbRelativePath(raw) }
-            .onFailure { com.lovebrain.app.util.L.w("S2-06: rejected kb path: ${it.message}") }
+            .onFailure { com.lovebrain.app.util.L.w("rejected kb path: ${it.message}") }
             .getOrNull()
 
     /**
@@ -865,18 +865,18 @@ class KnowledgeRepository(
         val escaped = runCatching {
             !file.canonicalPath.startsWith(dir.canonicalPath + File.separator)
         }.getOrElse {
-            com.lovebrain.app.util.L.w("S2-06: path could not be canonicalised, refused: ${it.message}")
+            com.lovebrain.app.util.L.w("path could not be canonicalised, refused: ${it.message}")
             true
         }
         if (escaped) {
-            com.lovebrain.app.util.L.w("S2-06: path escapes knowledge dir, refused")
+            com.lovebrain.app.util.L.w("path escapes knowledge dir, refused")
             return null
         }
         return file
     }
 
     /** 线程安全的文件追加（fileMutex 锁 + I/O 线程；A2-5 合并原 appendFileSafe）
-     *  KBG-01：目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
+     *  目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
     suspend fun appendFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
@@ -887,7 +887,7 @@ class KnowledgeRepository(
         }
     }
 
-    /** S2-04: 线程安全的文件删除（fileMutex 锁 + I/O 线程） */
+    /** 线程安全的文件删除（fileMutex 锁 + I/O 线程） */
     suspend fun deleteFile(kbName: String, relativePath: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) return@withLock false
@@ -898,7 +898,7 @@ class KnowledgeRepository(
     }
 
     /** 线程安全的文件写入（fileMutex 锁 + I/O 线程；A2-5 合并原 writeFileSafe）
-     *  KBG-01：目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
+     *  目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
     suspend fun writeFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
@@ -910,7 +910,7 @@ class KnowledgeRepository(
     }
 
     /**
-     * P0-FIX：带版本校验的文件写入——防止编辑覆盖后台新增。
+     * 带版本校验的文件写入——防止编辑覆盖后台新增。
      * 调用方在读取文件时获得 [expectedVersion]（文件内容的 SHA-256），
      * 写入时校验磁盘上的文件是否仍为该版本。
      * 如果文件已被修改（后台追加等），拒绝写入并返回 null，调用方保留草稿。
@@ -942,7 +942,7 @@ class KnowledgeRepository(
     }
 
     /**
-     * P0-4：读取文件并返回内容 + 版本号（SHA-256）。
+     * 读取文件并返回内容 + 版本号（SHA-256）。
      * 调用方持有版本号，写入时传给 [writeFileWithVersion] 做冲突检测。
      */
     suspend fun readFileWithVersion(kbName: String, relativePath: String): Pair<String, String> = withContext(Dispatchers.IO) {
@@ -950,21 +950,21 @@ class KnowledgeRepository(
         content to sha256(content)
     }
 
-    /** P0-FIX：对外暴露的内容哈希——供 KbEdit 无版本校验路径生成新版本号 */
+    /** 对外暴露的内容哈希——供 KbEdit 无版本校验路径生成新版本号 */
     fun hashContent(text: String): String = sha256(text)
 
-    /** P0-4：SHA-256 哈希（用于版本校验） */
+    /** SHA-256 哈希（用于版本校验） */
     private fun sha256(text: String): String {
         val md = java.security.MessageDigest.getInstance("SHA-256")
         val bytes = md.digest(text.toByteArray(Charsets.UTF_8))
         return bytes.joinToString("") { "%02x".format(it) }
     }
 
-    /**  KBG-01：目标 KB 已删除时 no-op */
+    /**  目标 KB 已删除时 no-op */
     suspend fun incrementTurnCount(kbName: String) = incrementTurnCountBy(kbName, 1)
 
     /**
-     * S2-04：按 WAL 事件中记录的增量推进轮次计数。
+     * 按 WAL 事件中记录的增量推进轮次计数。
      *
      * 恢复路径必须读事件里的 `turnCountIncrement` 值，
      * 而不是硬编码 +1——否则一次记录 2 轮的事务恢复后只补 1。
@@ -999,7 +999,7 @@ class KnowledgeRepository(
     }
 
     /**
-     * S2-01: 关系画像正文。
+     * 关系画像正文。
      *
      * GenerationInput 的 `kbContext.profile` 历史上被写死成空串，
      * 于是"冻结输入"里根本没有画像，画像变化也就无从参与身份比对。
@@ -1014,7 +1014,7 @@ class KnowledgeRepository(
     }
 
     /**
-     * S2-01: 知识内容修订号——对回复链路真正会读到的知识文件取内容指纹。
+     * 知识内容修订号——对回复链路真正会读到的知识文件取内容指纹。
      *
      * 不能用 turnCount 近似：turnCount 只统计"提交过几轮"，
      * 同一 turnCount 可以对应完全不同的画像/场景/事项内容，
@@ -1058,7 +1058,7 @@ class KnowledgeRepository(
     }
 
     /** 设置知识库阶段标签（onboarding 推断 / 向量重估触发阶段变化时用）。写入前经 StageCatalog 归一化
-     *  KBG-01：目标 KB 已删除时 no-op */
+     *  目标 KB 已删除时 no-op */
     suspend fun updateStage(kbName: String, stage: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
@@ -1107,7 +1107,7 @@ class KnowledgeRepository(
     }
 
     /** 就地更新 warmth.md 的五维状态向量数值
-     *  KBG-01：目标 KB 已删除时 no-op */
+     *  目标 KB 已删除时 no-op */
     suspend fun writeVector(kbName: String, values: Map<String, Int>) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
@@ -1135,7 +1135,7 @@ class KnowledgeRepository(
     }
 
     /** 就地更新 warmth.md 的阶段标签行（阶段变化时用），保留旧值作为历史注释。写入前经 StageCatalog 归一化
-     *  KBG-01：目标 KB 已删除时 no-op */
+     *  目标 KB 已删除时 no-op */
     suspend fun updateWarmthStageLabel(kbName: String, newStage: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
@@ -1258,7 +1258,7 @@ class KnowledgeRepository(
     /**
      * 画像更新事务性写入——在单次 fileMutex.withLock 中执行全部操作。
      *
-     * P0-6: 返回 typed [ProfileTransactionResult]，替代模糊 Boolean。
+     * 返回 typed [ProfileTransactionResult]，替代模糊 Boolean。
      *
      * - 所有文件写入、向量写入、阶段更新、warmth 标签更新在同一锁内完成
      * - backup 覆盖所有实际会被修改的文件（包括 warmth.md——即使 payload.warmth 为 null，
@@ -1304,7 +1304,7 @@ class KnowledgeRepository(
             warmth?.let { writeTargets.add("understand/warmth.md" to it) }
 
             // backup 所有可能被修改的文件
-            // P0-6: 记录文件原先是否存在——rollback 时原不存在的文件应删除而非创建空文件
+            // 记录文件原先是否存在——rollback 时原不存在的文件应删除而非创建空文件
             val backups = mutableMapOf<String, Pair<Boolean, String>>() // path -> (existed, oldContent)
             for ((path, _) in writeTargets) {
                 val file = File(File(knowledgeRoot, kbName), path)
@@ -1343,9 +1343,9 @@ class KnowledgeRepository(
                     updateWarmthStageLabelUnlockedStrict(kbName, newStage)
                 }
             } catch (e: Exception) {
-                // P0-6/P0-5: Rollback——恢复所有 backup，跟踪失败路径
+                // Rollback——恢复所有 backup，跟踪失败路径
                 // 原先存在的文件恢复内容；原先不存在的文件删除（不创建空文件）
-                // P0-5: 必须检查 file.delete() 返回值——delete 失败不抛异常但返回 false
+                // 必须检查 file.delete() 返回值——delete 失败不抛异常但返回 false
                 com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: write failed, rolling back", e)
                 val rollbackFailures = mutableListOf<String>()
                 for ((path, existedAndContent) in backups) {
@@ -1356,13 +1356,13 @@ class KnowledgeRepository(
                         val (existed, oldContent) = existedAndContent
                         if (existed) {
                             atomicWriteText(file, oldContent)
-                            // P0-5: snapshot verification——恢复后内容必须等于 backup
+                            // snapshot verification——恢复后内容必须等于 backup
                             if (file.readText() != oldContent) {
                                 com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL rollback verification failed for $path (content mismatch)")
                                 rollbackFailures.add(path)
                             }
                         } else {
-                            // P0-5: 原先不存在的文件——rollback 应删除，必须检查返回值
+                            // 原先不存在的文件——rollback 应删除，必须检查返回值
                             if (file.exists()) {
                                 val deleted = file.delete()
                                 if (!deleted) {
@@ -1376,8 +1376,8 @@ class KnowledgeRepository(
                         rollbackFailures.add(path)
                     }
                 }
-                // P0-5: 最终 snapshot verification——原存在的文件必须存在且内容正确；原不存在的文件必须不存在
-                // P0-3: verification 自身的 I/O 异常（readText 抛异常、exists 抛异常等）
+                // 最终 snapshot verification——原存在的文件必须存在且内容正确；原不存在的文件必须不存在
+                // verification 自身的 I/O 异常（readText 抛异常、exists 抛异常等）
                 // 必须加入 rollbackFailures，不得从 applyProfileUpdateAtomically 直接 throw 绕过 typed result
                 for ((path, existedAndContent) in backups) {
                     try {
@@ -1413,7 +1413,7 @@ class KnowledgeRepository(
                             }
                         }
                     } catch (verifyErr: Exception) {
-                        // P0-3: verification 本身的任何异常都加入 rollbackFailures
+                        // verification 本身的任何异常都加入 rollbackFailures
                         com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL verification exception for $path", verifyErr)
                         if (path !in rollbackFailures) {
                             rollbackFailures.add(path)
@@ -1422,7 +1422,7 @@ class KnowledgeRepository(
                 }
                 // 取消不是业务失败：回滚照做，但做完原样上抛，不得伪装成 RolledBack 结果
                 if (e is CancellationException) throw e
-                // P0-6: 区分 rollback 成功与失败——不再吞错误也不模糊 throw
+                // 区分 rollback 成功与失败——不再吞错误也不模糊 throw
                 return@withLock if (rollbackFailures.isEmpty()) {
                     ProfileTransactionResult.RolledBack(e)
                 } else {
@@ -1466,7 +1466,7 @@ class KnowledgeRepository(
     /**
      * 谈心日志两段式追加：recordEntry 写入「# 谈心记录」节，analysisEntry 写入「# 军师分析」节。
      * 固定代码写入、全量不截断。旧格式文件（没有两个 # 大标题）自动迁移：旧内容并入第一节。
-     *  KBG-01：目标 KB 已删除时 no-op
+     *  目标 KB 已删除时 no-op
      */
     suspend fun appendCounselingEntries(kbName: String, recordEntry: String, analysisEntry: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
@@ -1506,7 +1506,7 @@ class KnowledgeRepository(
     }
 
     /**
-     * F03: 原子追加"实际发送"记录——在单次 fileMutex.withLock 中完成：
+     * 原子追加"实际发送"记录——在单次 fileMutex.withLock 中完成：
      * 1. 校验 KB 仍存在
      * 2. 读取 recent.md
      * 3. 追加发送记录
@@ -1528,9 +1528,9 @@ class KnowledgeRepository(
         }
     }
 
-    /** P0-4: 替换同一 generationVersionId 的旧 actual sent 记录（upsert）。
+    /** 替换同一 generationVersionId 的旧 actual sent 记录（upsert）。
      * 在单次 fileMutex.withLock 中完成：检查 KB → 读取 → 替换 → 写入 → 返回 Boolean。
-     * P1-RC: 如果 oldEntry 在 recent.md 中不存在，返回 false（不执行无效写入）。 */
+     * 如果 oldEntry 在 recent.md 中不存在，返回 false（不执行无效写入）。 */
     suspend fun replaceActualSentRecord(kbName: String, oldEntry: String, newEntry: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
@@ -1539,7 +1539,7 @@ class KnowledgeRepository(
             }
             val recentPath = "moment/recent.md"
             val existing = readFileUnlockedFast(kbName, recentPath)
-            // P1-RC: oldEntry 不存在时返回 false，不执行无效写入
+            // oldEntry 不存在时返回 false，不执行无效写入
             if (!existing.contains(oldEntry)) {
                 com.lovebrain.app.util.L.w("replaceActualSentRecord: oldEntry not found in recent.md")
                 return@withLock false
@@ -1609,10 +1609,10 @@ class KnowledgeRepository(
         ((System.currentTimeMillis() - updated) / 3600_000).toInt()
     }
 
-    // ═══════════ F04: 累积操作状态（rotate/archive 幂等恢复） ═══════════
+    // ═══════════ 累积操作状态（rotate/archive 幂等恢复） ═══════════
 
     /**
-     * F04: 归档操作状态——追踪 rotateTopic 的多步操作，支持中断恢复和幂等。
+     * 归档操作状态——追踪 rotateTopic 的多步操作，支持中断恢复和幂等。
      *
      * 每一步完成后在 completedSteps 中追加，而不是每次从初始集合重新生成。
      * 异常中断后重启读取此状态，跳过已完成步骤，只执行剩余部分。
@@ -1666,7 +1666,7 @@ class KnowledgeRepository(
     }
 
     /**
-     * F04: rotateTopic — 使用累积操作状态实现幂等和中断恢复。
+     * rotateTopic — 使用累积操作状态实现幂等和中断恢复。
      *
      * 步骤顺序：
      * 1. READ_INPUT: 读取 raw_chat/recent/raw_scene/scene 内容
@@ -1682,16 +1682,16 @@ class KnowledgeRepository(
      */
     suspend fun rotateTopic(kbName: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
-            // F04: 读取已有操作状态（优先恢复）
+            // 读取已有操作状态（优先恢复）
             val existingOp = readArchiveOpUnlocked(kbName)
 
-            // F04: 读取输入内容
+            // 读取输入内容
             val rawChat = readFile(kbName, "memory/raw_chat.md")
             val recent = readFile(kbName, "moment/recent.md")
             val rawScene = readFile(kbName, "memory/raw_scene.md")
             val scene = readFile(kbName, "moment/scene.md")
 
-            // F04: 如果存在未完成的操作状态，恢复它；否则创建新操作
+            // 如果存在未完成的操作状态，恢复它；否则创建新操作
             val opState = if (existingOp != null) {
                 // 恢复已有操作状态——信任其中记录的已完成步骤
                 // contentHash 仅用于 operationId 唯一性，不用于恢复时验证
@@ -1734,14 +1734,14 @@ class KnowledgeRepository(
                 writeArchiveOpUnlocked(kbName, opState.copy(completedSteps = completed.toList()))
             }
 
-            // F04: 步骤 3 — 增加计数（幂等：检查是否已完成）
+            // 步骤 3 — 增加计数（幂等：检查是否已完成）
             if (hasContent && ArchiveStep.INCREMENT_COUNT !in completed) {
                 incrementTopicCountUnlocked(kbName)
                 completed.add(ArchiveStep.INCREMENT_COUNT)
                 writeArchiveOpUnlocked(kbName, opState.copy(completedSteps = completed.toList()))
             }
 
-            // F04: 步骤 4 — 清空源文件（幂等：检查是否已完成）
+            // 步骤 4 — 清空源文件（幂等：检查是否已完成）
             if (ArchiveStep.CLEAR_SOURCES !in completed) {
                 writeFileUnlocked(kbName, "memory/raw_chat.md", "")
                 writeFileUnlocked(kbName, "memory/raw_scene.md", "")
@@ -1751,7 +1751,7 @@ class KnowledgeRepository(
                 writeArchiveOpUnlocked(kbName, opState.copy(completedSteps = completed.toList()))
             }
 
-            // F04: 操作完成 — 删除状态文件
+            // 操作完成 — 删除状态文件
             deleteArchiveOpUnlocked(kbName)
         }
     }
@@ -1835,18 +1835,18 @@ class KnowledgeRepository(
      * 效果：编辑态可见、预览态（MarkdownText 去注释）隐藏、prompt 注入不携带。
      */
     /**
-     * S2-06: 使用单一 .schema_version 文件检测当前 schema 版本。
+     * 使用单一 .schema_version 文件检测当前 schema 版本。
      * 如果 .schema_version 存在，直接读取其版本号。
      * 如果不存在，回退到 legacy marker 文件检测（向后兼容）。
      */
-    /** S2-06: schema 高于本 App 支持范围的库——只读，拒绝写入 */
+    /** schema 高于本 App 支持范围的库——只读，拒绝写入 */
     private val schemaTooNewKbs = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
 
     /** 该库是否因 schema 过新而进入只读保护 */
     fun isSchemaReadOnly(kbName: String): Boolean = schemaTooNewKbs.contains(kbName)
 
     /**
-     * S2-06: 库当前的 schema 版本（对外只读，供升级断言与诊断使用）。
+     * 库当前的 schema 版本（对外只读，供升级断言与诊断使用）。
      * 读不到 .schema_version 时按 legacy marker 推断，与迁移判定同一把尺。
      */
     suspend fun schemaVersion(kbName: String): Int = withContext(Dispatchers.IO) {
@@ -1873,7 +1873,7 @@ class KnowledgeRepository(
     }
 
     /**
-     * S2-06: 写入统一 schema 版本文件，同时清理 legacy marker。
+     * 写入统一 schema 版本文件，同时清理 legacy marker。
      */
     private fun writeSchemaVersion(kbName: String, version: Int) {
         val dir = File(knowledgeRoot, kbName)
@@ -1934,19 +1934,19 @@ class KnowledgeRepository(
         val dir = File(knowledgeRoot, kbName)
         val oldGlobal = File(dir, "global")
         val newUnderstand = File(dir, "understand")
-        // S2-06: 使用 KnowledgeSchemaVersion 确定当前版本
+        // 使用 KnowledgeSchemaVersion 确定当前版本
         val currentVersion = detectSchemaVersion(kbName)
 
-        // S2-06: 库比本 App 还新（降级安装 / 新版设备带回的数据）——
+        // 库比本 App 还新（降级安装 / 新版设备带回的数据）——
         // 记为"只读"，让上层拒绝写入，而不是当成"不需要迁移"继续用旧代码读写未来结构。
         if (KnowledgeSchemaVersion.isBeyondSupported(currentVersion)) {
             schemaTooNewKbs.add(kbName)
             com.lovebrain.app.util.L.w(
-                "S2-06: schema v$currentVersion is newer than supported v${KnowledgeSchemaVersion.CURRENT}; $kbName is read-only"
+                "schema v$currentVersion is newer than supported v${KnowledgeSchemaVersion.CURRENT}; $kbName is read-only"
             )
             return
         }
-        // S2-06: 版本已经够新，但如果 .schema_version 还没落盘（只有 legacy marker），
+        // 版本已经够新，但如果 .schema_version 还没落盘（只有 legacy marker），
         // 就必须归一化一次：否则每次启动都要重新靠 marker 猜版本，marker 也永远清不掉。
         if (!KnowledgeSchemaVersion.needsMigration(currentVersion)) {
             val versionFile = File(dir, ".schema_version")
@@ -1997,7 +1997,7 @@ class KnowledgeRepository(
             }
         }
 
-        // S2-06: 版本 >= 2 表示 v1→v2 迁移已完成
+        // 版本 >= 2 表示 v1→v2 迁移已完成
         // 但仍需检查是否需要 v2→v3 plan 数据迁移
         if (currentVersion >= 2) {
             migratePlanDataIfNeededUnlocked(kbName)
@@ -2006,7 +2006,7 @@ class KnowledgeRepository(
             return
         }
 
-        // S2-06: 全新库（无 global 目录、无任何迁移标记）——上面的 ensureKbFilesComplete
+        // 全新库（无 global 目录、无任何迁移标记）——上面的 ensureKbFilesComplete
         // 已经把 v3 文件补齐了，这里必须把 CURRENT 版本号落下去。
         // 旧实现在这里直接 return，于是新库永远没有 .schema_version，
         // detectSchemaVersion 每次都回落到 1，每次启动都重跑一遍"迁移"。
@@ -2071,29 +2071,29 @@ class KnowledgeRepository(
             atomicWriteText(topicLogFile, "")
         }
 
-        // S2-06: v1→v2 迁移完成后，执行 v2→v3 plan 数据迁移
+        // v1→v2 迁移完成后，执行 v2→v3 plan 数据迁移
         migratePlanDataIfNeededUnlocked(kbName)
 
-        // S2-06: 写入统一 schema 版本文件，清理所有 legacy marker
+        // 写入统一 schema 版本文件，清理所有 legacy marker
         writeSchemaVersion(kbName, KnowledgeSchemaVersion.CURRENT)
     }
 
     /**
-     * F08: plan.md 数据迁移——处理旧版本累积的万字状态链。
+     * plan.md 数据迁移——处理旧版本累积的万字状态链。
      *
      * 旧版本 mergeOngoing 无条件追加状态链，相同文本重复返回也追加，
-     * 导致 plan.md 可膨胀到成千上万字。新写入已修（F04 幂等更新），
+     * 导致 plan.md 可膨胀到成千上万字。新写入已修（幂等更新），
      * 但已累积的旧数据不会自行消失。
      *
      * 迁移流程（可恢复、幂等）：
-     * S2-06: 迁移标记现在通过 .schema_version >= 3 判断（不再使用 .migrated_plan_v3）。
+     * 迁移标记现在通过 .schema_version >= 3 判断（不再使用 .migrated_plan_v3）。
      *
      * 中断恢复：版本未写入 .schema_version 前重跑无害（备份追加、归档保留）；
      * 版本写入后跳过，保证幂等。未知格式原样保留。
      */
     private fun migratePlanDataIfNeededUnlocked(kbName: String) {
         val dir = File(knowledgeRoot, kbName)
-        // S2-06: 通过 schema version 判断是否已迁移
+        // 通过 schema version 判断是否已迁移
         val currentVersion = detectSchemaVersion(kbName)
         if (currentVersion >= 3) return  // plan v3 迁移已完成
 
@@ -2108,7 +2108,7 @@ class KnowledgeRepository(
         // 1. 备份旧 plan.md 到归档
         val archiveFile = File(dir, "memory/plan_archive_v2.md")
         val backupContent = buildString {
-            append("<!-- F08 plan migration backup: ${isoNow()} -->\n")
+            append("<!-- plan 结构迁移 v2 备份: ${isoNow()} -->\n")
             append("<!-- 原始 plan.md 内容（迁移前快照） -->\n")
             append(planContent)
             if (!planContent.endsWith("\n")) append("\n")
@@ -2152,7 +2152,7 @@ class KnowledgeRepository(
 
         if (items.isEmpty()) {
             // 无法解析——原样保留，标记为已迁移
-            com.lovebrain.app.util.L.w("F08: no parseable items in plan.md for '$kbName', keeping original")
+            com.lovebrain.app.util.L.w("no parseable items in plan.md for '$kbName', keeping original")
             writeSchemaVersion(kbName, 3)
             return
         }
@@ -2165,7 +2165,7 @@ class KnowledgeRepository(
             totalReduction += originalLen - cleanedChain.length
             item.copy(chain = cleanedChain)
         }
-        com.lovebrain.app.util.L.w("F08: migrated plan for '$kbName', ${items.size} items, reduced $totalReduction chars")
+        com.lovebrain.app.util.L.w("migrated plan for '$kbName', ${items.size} items, reduced $totalReduction chars")
 
         // 4. 渲染清理后的 plan.md
         val active = cleanedItems.filter { it.section == "active" }
@@ -2199,11 +2199,11 @@ class KnowledgeRepository(
         }
         atomicWriteText(planFile, newPlan)
 
-        // S2-06: 写入 schema version 3，标记 plan 迁移完成
+        // 写入 schema version 3，标记 plan 迁移完成
         writeSchemaVersion(kbName, 3)
     }
 
-    /** F08: 清理状态链——合并连续重复状态，截断到最大长度 */
+    /** 清理状态链——合并连续重复状态，截断到最大长度 */
     private fun cleanPlanStateChain(chain: String): String {
         val states = chain.split("→").filter { it.isNotBlank() }
         if (states.isEmpty()) return chain
@@ -2224,7 +2224,7 @@ class KnowledgeRepository(
         return kept.joinToString("→")
     }
 
-    /** F08: 归一化状态文本用于比较——去掉时间戳和（当前）标记 */
+    /** 归一化状态文本用于比较——去掉时间戳和（当前）标记 */
     private fun normalizeStateForCompare(state: String): String {
         val afterBracket = if (state.contains("]")) {
             val lastBracket = state.lastIndexOf(']')
@@ -2233,7 +2233,7 @@ class KnowledgeRepository(
         return afterBracket.replace("（当前）", "").trim()
     }
 
-    /** F08: 可迁移的事项数据 */
+    /** 可迁移的事项数据 */
     private data class MigratablePlanItem(
         val itemId: String,
         val name: String,
@@ -2252,7 +2252,7 @@ class KnowledgeRepository(
         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault()).format(Date())
 
     companion object {
-        /** 回复链路实际读取的知识文件——内容变化即构成一次新的可冻结修订（S2-01） */
+        /** 回复链路实际读取的知识文件——内容变化即构成一次新的可冻结修订（） */
         private val REVISION_INPUT_PATHS = listOf(
             "understand/me.md", "understand/her.md", "understand/warmth.md", "understand/style.md",
             "moment/topic.md", "moment/scene.md", "moment/recent.md", "moment/plan.md",
