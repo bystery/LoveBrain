@@ -477,8 +477,6 @@ class LoveBrainViewModel(
     private val _proactiveError = MutableStateFlow<String?>(null)
     val proactiveError: StateFlow<String?> = _proactiveError.asStateFlow()
 
-    private var proactiveJob: kotlinx.coroutines.Job? = null
-
     /** P1-2：结果模式——显式区分回复结果与主动发结果 */
     enum class ResultMode { REPLY, PROACTIVE }
     private val _resultMode = MutableStateFlow(ResultMode.REPLY)
@@ -1723,43 +1721,36 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     fun dismissProfileUpdate() {
-        // 取消正在进行的重新生成 job，使旧请求无效
+        // 取消正在进行的重新生成，使旧请求的回调不再被接受
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH)
-        profileRegenerationRequestId++
         _profileSuggestion.value = null
     }
 
     /**
      * 画像重新生成——原地显示 loading，卡片位置不变。
      *
-     * 修复 P0-8：所有失败路径（EMPTY/PROVIDER_ERROR/EXCEPTION）都必须复位 loading。
-     * 修复 P0-9：增加 request identity——dismiss 后旧请求回来不会复活卡片。
+     * P0-8：所有失败路径（EMPTY/PROVIDER_ERROR/EXCEPTION）都必须复位 loading。
+     * P0-9：dismiss 后旧请求回来不得复活卡片——S2-02 之后这条不再靠自增计数器手写 guard，
+     * 而是由 coordinator 的租约身份判定：PROFILE_REFRESH 同类只允许一个在跑，
+     * 迟到回调只有仍持有租约才被接受。
      */
-    /** S2-02: 是否在重新生成画像——从 coordinator 派生，不再是独立 boolean */
     val profileRegenerating: StateFlow<Boolean> =
         busyOf(ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH)
 
-
-    /** 重新生成请求 ID——每次 dismiss 递增，旧请求回来时 requestId 不匹配则丢弃 */
-    private var profileRegenerationRequestId: Int = 0
-
+    /** 画像重新生成——见下方 regenerateProfileUpdate 的 P0-8/P0-9 说明 */
     fun regenerateProfileUpdate() {
         val suggestion = _profileSuggestion.value ?: return
         val kbName = suggestion.kbName
 
-        // 取消上一次未完成的重新生成
-        // P0-2 真正修复：取消 profileRegenerationJob 会传播到底层 coroutineScope child，
-        // 真正取消模型请求、retry delay、reflect_history 写入
-        // S2-02: 取消上一次未完成的重新生成——经历 coordinator，不再自己持 Job
+        // 取消上一次未完成的重新生成（同类去重由 coordinator 保证，这里只是显式让位）
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH)
-        val currentRequestId = ++profileRegenerationRequestId
+        val requestId = ReplyRequestState.newRequestId()
 
-        // P0-2 真正修复：regenerateProfile 是纯 suspend——不传 viewModelScope，
-        // 在当前 launch 的协程内直接执行，cancel 会传播到底层所有子协程
-        // S2-02: PROFILE_REFRESH 此前从未注册到协调器，现在进账本
-        operationCoordinator.start(
+        // P0-2：regenerateProfile 是纯 suspend——不传 scope，在本协程内直接执行，
+        // 取消会传播到底层模型请求、retry delay、reflect_history 写入
+        val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH,
-            currentRequestId.toString()
+            requestId
         ) {
             try {
                 triggerCoordinator.regenerateProfile(kbName, object : KnowledgeTriggerCoordinator.Callbacks {
@@ -1767,30 +1758,23 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     override fun onVectorUpdateNotice(kbName: String, summary: String) {}
                     override fun onStageSuggestion(suggestion: StageSuggestion) {}
                     override fun onKbNotice(notice: String) {
-                        if (currentRequestId == profileRegenerationRequestId) {
-                        }
+                        if (operationCoordinator.ownsRequest(requestId)) _profileSuggestion.value = null
                     }
                     override fun onProfileSuggestion(suggestion: ProfileSuggestion) {
-                        if (currentRequestId == profileRegenerationRequestId) {
+                        if (operationCoordinator.ownsRequest(requestId)) {
                             _profileSuggestion.value = suggestion
                         }
                     }
                     override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {}
                 })
             } catch (e: kotlinx.coroutines.CancellationException) {
-                // dismiss cancel——不设 error，只复位 loading
-                if (currentRequestId == profileRegenerationRequestId) {
-                }
+                // dismiss 取消——loading 由 profileRegenerating 派生，自动归位
                 throw e
             } catch (e: Exception) {
                 L.e("regenerateProfileUpdate failed", e)
-                if (currentRequestId == profileRegenerationRequestId) {
-                }
-            } finally {
-                if (currentRequestId == profileRegenerationRequestId) {
-                }
             }
         }
+        if (lease == null) L.w("profile refresh rejected: one is already running")
     }
 
     // ═══════════ 谈心模式（委托 GenerationEngine） ═══════════
