@@ -1,7 +1,7 @@
 # LoveBrain 返工验收包（对齐 2026-09-23 全面独立复核报告）
 
 > 被审提交：`286c9406b40b79e4443f1db465bfa5b489f540fa`（报告结论 FAIL）
-> 本轮返工提交链：`8745a3d` → `ce89b86` → `5424e21` → `6d67b37` → `0abe572` → `73ed6a8` → `d390dc6` → `c51e443` → `a9ae136` → `42da306` → `aea24c5` → `4e1f2e4` → `eaba6af`(S2-05) → `73b3d08`(S2-07 错误类型) → `6597bd9`(S2-07 取消审计) → `9539dd2`(S2-07 工单编号) →（本文件所在提交）
+> 本轮返工提交链：`8745a3d` → `ce89b86` → `5424e21` → `6d67b37` → `0abe572` → `73ed6a8` → `d390dc6` → `c51e443` → `a9ae136` → `42da306` → `aea24c5` → `4e1f2e4` → `eaba6af`(S2-05) → `73b3d08`(S2-07 错误类型) → `6597bd9`(S2-07 取消审计) → `9539dd2`(S2-07 工单编号) → `0da80d5`(修自己的伪门禁) → `dc1cb31`(SetupActivity 收口) → `316913f`(TriggerCoordinator 改冷流) →（本文件所在提交）
 > 复核依据：`LoveBrain_Comprehensive_Reaudit_286c9406_2026-09-23.md`，逐节对照
 > 编写日期：2026-09-24（第二轮补：S2-05 与 S2-07 三项在初版里被记为"未做"，现已做完并重新实测）
 
@@ -18,12 +18,12 @@
 | 4 | §5.2 锦囊"真实费用基准" | **未产出数据** | 需要用户 API Key 与真实请求。已提供可重放脚本与输出契约（`scripts/suggest_cost_baseline.py`），未执行 = 无数字。 |
 | 5 | §7.2/§8.3.6 抓包证明零遥测 | **未执行** | 需要设备。已提供 `scripts/verify_network_egress.sh`；README 已改成"依据源码与依赖清单核对，抓包未执行"，不再拿未做的事当证据。 |
 | 6 | §8.3.7 v1.3.1 → 候选 APK 真机升级断言 | **脚本与门禁做，设备未跑** | `scripts/run_upgrade_test.sh` 全链存在且被 CI 调用，但覆盖安装、数据可读、主流程可用这三段都需要设备。 |
-| 7 | §6 S2-05 的"上帝类"这一项**只部分达成** | 部分 | 职责方向对了（Activity 不再持有数据层、Engine/TopicRecorder 变小），但 `LoveBrainViewModel` 与 `KnowledgeRepository` 相比报告基线**仍然更大**（见 4.1 实测表）。拆文件不等于拆职责，也不等于行数下降，这一格不给"完成"。 |
-| 8 | 自发现项（报告未点名）：`KnowledgeTriggerCoordinator` 仍保留"收外部 scope + 自启 Job + 巨型 Callbacks 写 ViewModel 状态"的旧结构 | **未做** | 报告 §8 第二步 1/2 条与"无双 Job owner"的门禁，只落在 `GenerationEngine` 上算完成。同一类模式在这三处仍然存在：`checkTriggers(kbName, scope, callbacks)`（第 94 行）、`reestimateVector/extractLessonsAsync/generateReflectSuggestion` 各 `scope.launch` 返 `Job`（第 128/247/469 行）、`KnowledgeTriggerCoordinator.Callbacks` 接口（第 78 行）由 ViewModel 实现并直写 StateFlow。这些后台 Job 不在 `ForegroundOperationCoordinator` 的注册表里，因此"六类前台操作单 owner"为真、"**全仓**单 Job owner"为假。改它要同时动 ViewModel 三处调用与既有 Kbg/Trigger 用例，本轮没有把预算花在这里，也没有把它写成已完成。 |
-| 9 | 自发现项：`SetupActivity` 用 `by inject()` 取 `SetupViewModel` | **未做** | 分层上没问题（拿到的是 ViewModel，不是 Repository，`UiLayerDependencyContractTest` 也不拦），但 `inject()` 不走 `ViewModelStore`：配置变更后 VM 内的内存态（反馈列表、导出状态）会丢。本轮新接的两个 ViewModel 用的是 `by viewModel()`，SetupActivity 这一处历史写法未统一。 |
+| 7 | §6 S2-05 的"上帝类"这一项**只部分达成** | 部分 | 职责方向对了（Activity 不再持有数据层、Engine/TopicRecorder/TriggerCoordinator 都在变小、后台引擎不再是第二个 Job owner），但 `LoveBrainViewModel` 与 `KnowledgeRepository` 相比报告基线**仍然更大**（见 4.1 实测表）。拆文件不等于拆职责，也不等于行数下降，这一格不给"完成"。 |
 
-初版这里还列着三条（S2-05 的 Activity 迁移、S2-07 的字符串前缀推错误、S2-07 的工单编号），
-本轮已做完并从"未完成"移入第 1 节的变更表：三条都有可执行证据，不再是"注释式修复"。
+初版这里还列着五条"未做"：S2-05 的 Activity 迁移、S2-07 的字符串前缀推错误、S2-07 的工单编号，
+外加逐字复核时我自己抓出来的两处同病（SetupActivity 伸手进 VM 拿仓库、KnowledgeTriggerCoordinator
+仍是"收外部 scope + 自启 Job + 巨型 Callbacks 反向写 VM 状态"）。这五条本轮全部做完，
+移入第 1 节变更表，每条都配了可执行证据与防回流静态规则——不再是"注释式修复"。
 
 ## 1. 逐条变更表（报告条目 → 改动 → 证据）
 
@@ -112,8 +112,8 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 
 | # | 报告原句 | 处置 | 可核对证据 |
 |---|---|---|---|
-| 1 | Engine 改为当前协程内的 suspend/Flow，不再收外部 scope 并启第二个 Job | 做（限报告所指的 GenerationEngine） | `GenerationEngine` 四个公开入口全是 `fun …Stream(…): Flow<…>`，签名里 `scope: CoroutineScope` 与 `: Job?` 各 0 处；`GenerationEngine.Callbacks` 已删<br>**但同类模式在 `KnowledgeTriggerCoordinator` 里还剩一份**（见 §0 第 8 条），报告没点名它，我不把它算成已完成 |
-| 2 | 所有事件源头带 requestId，单一 reducer，删 Reply Callback 写状态路径 | 做（Reply 路径） | `ReplyEvent` 全部携带 requestId；唯一写入口 `dispatchReply → ReplyReducer.reduce`，被拒时返回同一对象。全仓 `Callbacks` 字样实测 13 处命中，其中 **0 处在回复链路**，其余是 `KnowledgeTriggerCoordinator.Callbacks`（后台经验/向量/reflect 三引擎）与两处解释性注释 |
+| 1 | Engine 改为当前协程内的 suspend/Flow，不再收外部 scope 并启第二个 Job | 做（限报告所指的 GenerationEngine） | `GenerationEngine` 四个公开入口全是 `fun …Stream(…): Flow<…>`，签名里 `scope: CoroutineScope` 与 `: Job?` 各 0 处；`GenerationEngine.Callbacks` 已删<br>同类模式在 `KnowledgeTriggerCoordinator` 里也有一份，逐字复核时先记为未完成、随后一并拔掉（见 6.2），现在"全仓单 Job owner"为真 |
+| 2 | 所有事件源头带 requestId，单一 reducer，删 Reply Callback 写状态路径 | 做 | `ReplyEvent` 全部携带 requestId；唯一写入口 `dispatchReply → ReplyReducer.reduce`，被拒时返回同一对象。生产码 `Callbacks` 的代码级命中 **0 处**（余 3 处全是解释性注释），`interface *Callbacks` 由 `SingleOwnerContractTest` 禁死；后台三引擎同样改成自带 kbName 的 typed 事件 |
 | 3 | coordinator 提供"创建并启动"的原子 API 或注册失败立即 cancel；同一把锁；六类操作全注册 | 做 | `CoroutineStart.LAZY` + 锁内注册，被拒即 `job.cancel()`；`ForegroundOperationCoordinatorTest` 10 例，含"被拒的 start 一次都不跑 body" |
 | 4 | 删 ViewModel 手写 guard、Job 真源与多 boolean；停止按 lease | 做 | `generateJob/…/profileRegenerationJob`、`_isProactive` 等 6 字段删除；`stopGeneration()` 只停 REPLY；建库侧本轮再拔一套双台账 |
 | 5 | `GenerationInput` 直接进 Prompt/Provider；冻结 KB revision、资产 hash、完整非敏感 Provider 身份 | 做 | `ProviderIdentity(ticketId/hostHash/model/thinkingMode)`，Engine 只按冻结 ticketId 取配置，对不上发 `ProviderChanged` 并失败；`contentRevision` 是真实文件 SHA-256 而非 turnCount 近似 |
@@ -213,20 +213,23 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | +协调器合同用例与 requestId 绑定 | 91 | 747 | 0 | 0 | 0 |
 | +S2-05 职责拆分（归档/解析/ViewModel/分层合同） | 95 | 788 | 0 | 0 | 0 |
 | +S2-07 错误类型改造（净 +1 条：删 10 条前缀推断用例，补 12+4 条 typed 用例） | 95 | 788 | 0 | 0 | 0 |
+| +SetupActivity/TriggerCoordinator 收口（9 条引导判定 + 4 条单 owner 合同 + 分层两条新规则） | 97 | 803 | 0 | 0 | 0 |
 
-本轮新增/改写的用例（逐套件读 XML，全部 0 失败）：
+本轮新增/改写的用例（逐套件读 XML，全部 0 失败；总数按最后一列为 803 例 / 97 套件）：
 
 | 套件 | 用例数 | 钉住的东西 |
 |---|---:|---|
 | `KbArchiveTransferTest` | 13 | zip 导入的路径穿越、条目数超限、元数据不一致/损坏/缺失、双顶层、同名碰撞、坏包不留半截库、暂存必清 |
 | `OnboardingResultParserTest` | 8 | 五段 marker 切分、缺段即降级（不许把降级报成画像成功）、乱序 marker 不吞正文 |
 | `KnowledgeBaseViewModelTest` | 15 | 建库事务单 owner、四种结果各发各的事件、取消不落盘、未配置供应商不碰仓库、导入后修 active、导出可回读 |
-| `UiLayerDependencyContractTest` | 4 | ui 层不得直连 Repository/SecurePrefs；两个知识库页必须经 ViewModel；生产码不得再有"审计技术债/修复方向"式注释 |
+| `UiLayerDependencyContractTest` | 6 | ui 层不得直连 Repository/SecurePrefs，也不得 `viewModel.securePrefs` 穿透；Activity 必须 `by viewModel()`；不得再出现"审计技术债/修复方向"式注释 |
+| `SetupViewModelOnboardingTest` | 9 | 引导可见性四条件与"补完成标记"的写动作，含缺 Context 时的降级 |
+| `SingleOwnerContractTest` | 4 | 不得再有 Callbacks 回写接口、不得有函数返回 Job、scope 参数与 domain 层 launch 只许协调器、两个引擎必须是 Flow |
 | `ProviderFailureClassificationTest` | 12 | typed 分类合同：Auth/参数不支持可降级、400+thinking 不可降级、运行期错误不得误判成配置错、已归类错误不外泄英文原文 |
 | `DeepSeekRepositoryErrorMappingTest` | 3 | 边界产物不再夹带内部标记；未知错误保留固定话术 |
 | `ReplyFailureKindTest` | 15 | 反射断言"从字符串反推类型"的 API 不存在；kind 与文案一一对应不撞句 |
 
-工件：`app/build/test-results/testDebugUnitTest/*.xml`（95 份）、
+工件：`app/build/test-results/testDebugUnitTest/*.xml`（97 份）、
 `app/build/reports/tests/testDebugUnitTest/index.html`。
 计数用解析 XML 得到，不是复制网页数字；`assert_artifacts.sh` 会额外核对
 "声明的 tests 数 == 真实 `<testcase>` 数"，防止报告注水。
@@ -268,13 +271,15 @@ worker 不能自签的另外一面也照做：上面每个"OK"都是命令输出
 
 | 文件 | 报告 | 上一轮 | 现在 | 变化 |
 |---|---:|---:|---:|---|
-| `LoveBrainViewModel.kt` | 2954 | 2920 | 2942 | 相比报告 −12；相比上一轮 +22（取消审计新增 `readOrNull` 与三处显式重抛） |
+| `LoveBrainViewModel.kt` | 2954 | 2920 | 2941 | 相比报告 −13；期间取消审计加了 `readOrNull` 与三处显式重抛，拔掉 Callbacks 又去掉 6 个 override 与一个匿名 6 空方法对象 |
 | `KnowledgeRepository.kt` | 2118 | 2271 | 2283 | **+165（仍比报告大，未达标）** |
 | `KnowledgeBaseActivity.kt` | 1214 | 1213 | **924** | **−290**（数据逻辑与 zip 归档全部下沉） |
 | `PromptBuilder.kt` | 1177 | 1199 | 1199 | +22（未动） |
 | `TopicRecorder.kt` | 1006 | 991 | 991 | −15 |
 | `GenerationEngine.kt` | 828 | 678 | 686 | −142 |
 | `KbEditActivity.kt` | 585 | 584 | **572** | −13（保存/读版本契约下沉） |
+| `KnowledgeTriggerCoordinator.kt` | 480 | 480 | **466** | −14（删 `Callbacks` 接口与 `Job` 包装；三引擎改 suspend + 事件） |
+| `SetupActivity.kt` | 139 | 139 | **124** | −15（引导判定与 filesDir 读取移入 VM） |
 
 承接方（新增，同一轮）：`KnowledgeBaseViewModel.kt` 324、`KbArchiveTransfer.kt` 138、
 `KbEditViewModel.kt` 53、`OnboardingResultParser.kt` 51、`ProviderFailure.kt` 50。
@@ -303,12 +308,15 @@ worker 不能自签的另外一面也照做：上面每个"OK"都是命令输出
 | §8 第二步"1-9 全做" | 第 9 条（Activity 迁 ViewModel）此前被记为未做；本轮做完 | 拆成逐条表格，每条给可核对证据；同时对"全仓单 Job owner"这类说满了的话收回 |
 | APK SHA / size | 旧值 `49a0b9d9… / 2 802 248` 已失效 | 重新解析 APK：`d81e3ef1… / 2 803 568` |
 
-### 6.2 复核中新发现的、报告没点名的两处（记为未完成，不算战果）
+### 6.2 复核中新发现的、报告没点名的两处（先记账，随后已拔掉）
 
-| 位置 | 问题 | 为什么这次没改 |
+| 位置 | 当时的问题 | 现在的处置 |
 |---|---|---|
-| `domain/KnowledgeTriggerCoordinator.kt:78,94,128,247,469` | 后台三引擎仍是"外部传 `CoroutineScope` + 自启 `Job` + 巨型 `Callbacks` 直写 ViewModel 状态"，这些 Job 不在 `ForegroundOperationCoordinator` 注册表里 | 报告 §8 第二步的原文主语是 Engine；改它要连带动 ViewModel 三处调用和既有 Kbg/Trigger 用例。前台六类单 owner 为真，"**全仓**单 Job owner"因此为假——写在这里而不是悄悄略过 |
-| `ui/SetupActivity.kt:30` | `SetupViewModel by inject()` 不走 `ViewModelStore`，配置变更后 VM 内存态（反馈列表、导出状态）会丢 | 本轮新接的两个 ViewModel 用的是 `by viewModel()`；这处历史写法未统一，也不影响 §6 S2-05 的"Activity 不直连 data 层"判定 |
+| `domain/KnowledgeTriggerCoordinator.kt`（旧 78/94/128/247/469 行） | 后台三引擎是"外部传 `CoroutineScope` + 自启 `Job` + 6 方法 `Callbacks` 反向写 ViewModel StateFlow"，等于第二套 Job owner | 已改冷流：对外只剩 `triggerEvents(kb)` / `profileRefreshEvents(kb)`，结果用 typed `KnowledgeTriggerEvent`（五种，均自带 originating kbName），VM 侧唯一落点 `applyTriggerEvent`。实测本类 `scope: CoroutineScope` 参数 0 处、返回 `Job` 0 处、生产码 `interface *Callbacks` 0 处；新增 `SingleOwnerContractTest` 4 条静态规则锁死（含"domain 层只有协调器可以 launch"），并用注入的 `ZzProbe` 验证其中三条确实会红 |
+| `ui/SetupActivity.kt` | `by inject()` 取 VM 不经 `ViewModelStore`，配置变更后 VM 内存态丢失；另有 9 处 `viewModel.securePrefs…` 伸手进 VM 拿仓库 | 已改 `by viewModel()`；引导判定与"补完成标记"整体移入 `SetupViewModel.shouldShowOnboarding()/completeOnboarding()`，`securePrefs` 改 private；`UiLayerDependencyContractTest` 从 4 条扩到 6 条（属性穿透即红、VM 用 `by inject()` 即红），且第一条初版按文件名筛 Activity 被自己的负向用例躲过，改成按类名与属性同时判后才抓到 |
+
+这两处都是"按类型名扫分层"抓不到的形态——**穿透字段**与**第二个 Job owner**。
+把它们写进静态合同而不是只改一次，是为了让同类写法下次一进来就让 CI 红。
 
 ### 6.3 报告逐节复核对账结果（当前 HEAD）
 
