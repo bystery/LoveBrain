@@ -10,6 +10,7 @@ import com.lovebrain.app.domain.AssetRegistry
 import com.lovebrain.app.domain.ForegroundOperationCoordinator
 import com.lovebrain.app.domain.GenerationEngine
 import com.lovebrain.app.domain.KnowledgeTriggerCoordinator
+import com.lovebrain.app.domain.MemoryCorrectionPolicy
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.domain.toIdentity
@@ -201,7 +202,7 @@ class LoveBrainViewModel(
      * key = memoryId, value = MemoryCorrection(action=MUTED, muteDuration=THIS_ROUND)
      * 在 nextRound()、切库时清空。stopGeneration 不清——停止生成不等于结束当前工作轮。
      * 生成时与持久化 corrections 合并传入 PromptBuilder。 */
-    private val roundCorrections = mutableMapOf<String, com.lovebrain.app.model.MemoryCorrection>()
+    private val roundCorrections = com.lovebrain.app.domain.RoundCorrectionStore()
 
     // ═══════════ 输入变化提示 + 生成历史 ═══════════
 
@@ -995,7 +996,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     null
                 }
             } ?: (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
-            val mergedCorrections = correctionsSnapshot.toMutableMap().also { it.putAll(roundCorrections) }
+            val mergedCorrections = correctionsSnapshot.toMutableMap().also { it.putAll(roundCorrections.snapshot()) }
 
             currentCoroutineContext().ensureActive()
 
@@ -2338,8 +2339,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     /**
      * 对指定 memoryId 发起纠正操作。
-     * 必须绑定生成时冻结的 KB（context.kbName），不读当前 active KB。
-     * 纠正参与下一次 PromptBuilder 过滤；所有操作可撤销、重启有效、不调用模型。
+     *
+     * 必须绑定生成时冻结的 KB（context.kbName），不读当前 active KB——否则切库之后
+     * 一次点击会把纠正写到另一个人的库上。纠正参与下一次 PromptBuilder 过滤；
+     * 所有操作可撤销、重启有效、不调用模型。
+     *
+     * 动作与文案的对应关系在 `MemoryCorrectionPolicy`，判定（哪种算本轮瞬时）也在那里。
      */
     fun applyMemoryCorrection(
         memoryId: String,
@@ -2350,34 +2355,32 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     ) {
         val ctx = replyGenerationContext ?: return
         val kbName = ctx.kbName ?: return
-        // THIS_ROUND mute 只存瞬时 map，不持久化——nextRound/切库自动清空
-        if (action == com.lovebrain.app.model.CorrectionAction.MUTED &&
-            muteDuration == com.lovebrain.app.model.MuteDuration.THIS_ROUND) {
-            roundCorrections[memoryId] = com.lovebrain.app.model.MemoryCorrection(
-                memoryId = memoryId,
-                action = action,
-                replacementText = replacementText,
-                targetKbId = targetKbId,
-                muteDuration = muteDuration,
-                muteTimestamp = com.lovebrain.app.util.TimeFmt.now()
+        // THIS_ROUND mute 只存瞬时存储，不持久化——nextRound/切库自动清空
+        if (MemoryCorrectionPolicy.isTransientRoundMute(action, muteDuration)) {
+            roundCorrections.put(
+                MemoryCorrectionPolicy.transientMute(
+                    memoryId = memoryId,
+                    replacementText = replacementText,
+                    targetKbId = targetKbId,
+                    timestamp = com.lovebrain.app.util.TimeFmt.now()
+                )
             )
-            _kbNotice.value = "已暂停本轮提及，下次生成将过滤此条记忆"
+            _kbNotice.value = MemoryCorrectionPolicy.roundMuteApplied()
             return
         }
         viewModelScope.launch {
-            val success = withContext(Dispatchers.IO) {
-                knowledgeRepo.saveCorrection(kbName, memoryId, action, replacementText, targetKbId, muteDuration)
-            }
-            if (success) {
-                _kbNotice.value = when (action) {
-                    com.lovebrain.app.model.CorrectionAction.WRONG -> "已标记为错误，下次生成将过滤此条记忆"
-                    com.lovebrain.app.model.CorrectionAction.FINISHED -> "已标记为结束，不再作为活跃事项"
-                    com.lovebrain.app.model.CorrectionAction.MUTED -> "已暂停提及，下次生成将过滤此条记忆"
-                    com.lovebrain.app.model.CorrectionAction.WRONG_PERSON -> "已隔离，不再注入此条记忆"
+            val ok = try {
+                withContext(Dispatchers.IO) {
+                    knowledgeRepo.saveCorrection(kbName, memoryId, action, replacementText, targetKbId, muteDuration)
                 }
-            } else {
-                _kbNotice.value = "纠正保存失败，请重试"
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                // 写盘抛异常不该把进程带下去：它和"返回 false"是同一种用户可见结果
+                L.w("saveCorrection threw: ${e::class.simpleName}")
+                false
             }
+            _kbNotice.value = if (ok) MemoryCorrectionPolicy.applied(action) else MemoryCorrectionPolicy.applyFailed()
         }
     }
 
@@ -2400,52 +2403,39 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /**
-     * 撤销纠正——纠正中心使用，不依赖生成上下文。
-     * 绑定生成时冻结的 KB；无生成上下文时读当前 active KB。
-     * 先检查 roundCorrections transient map——如果存在，立即撤销，不需要访问 Repository。
-     */
-    fun undoCorrectionFromCenter(memoryId: String) {
-        // 先检查 transient roundCorrections
-        if (roundCorrections.containsKey(memoryId)) {
-            roundCorrections.remove(memoryId)
-            _kbNotice.value = "已撤销本轮暂停，该记忆恢复注入"
-            return
-        }
-        val kbName = replyGenerationContext?.kbName ?: _activeKb.value?.name ?: return
-        viewModelScope.launch {
-            val success = withContext(Dispatchers.IO) {
-                knowledgeRepo.undoCorrection(kbName, memoryId)
-            }
-            if (success) {
-                _kbNotice.value = "已撤销纠正，该记忆恢复可信注入"
-            } else {
-                _kbNotice.value = "撤销失败，请重试"
-            }
-        }
-    }
+    /** 撤销纠正——纠正中心入口。没有生成上下文时允许回落到当前激活库 */
+    fun undoCorrectionFromCenter(memoryId: String) = undoCorrection(memoryId, allowActiveKbFallback = true)
 
     /**
-     * 撤销纠正 — 删除指定 memoryId 的纠正记录。
-     * 撤销后该记忆恢复可信注入资格。绑定生成时冻结的 KB。
-     * 先检查 roundCorrections transient map——如果存在，立即撤销，不需要访问 Repository。
+     * 撤销纠正——方案卡片入口。
+     * 卡片属于某一轮生成，只能撤那一轮绑定的 KB，不回落到"当前激活库"。
      */
-    fun undoMemoryCorrection(memoryId: String) {
-        // 先检查 transient roundCorrections
-        if (roundCorrections.containsKey(memoryId)) {
-            roundCorrections.remove(memoryId)
-            _kbNotice.value = "已撤销本轮暂停，该记忆恢复注入"
+    fun undoMemoryCorrection(memoryId: String) = undoCorrection(memoryId, allowActiveKbFallback = false)
+
+    /**
+     * 两条入口共用一份实现：先看本轮瞬时 mute（不碰磁盘），否则撤持久化纠正。
+     *
+     * 失败一律给提示——过去只有纠正中心那条路有失败提示，卡片那条路静默，
+     * 同一次失败在两个地方看得见不一样。
+     */
+    private fun undoCorrection(memoryId: String, allowActiveKbFallback: Boolean) {
+        if (roundCorrections.remove(memoryId)) {
+            _kbNotice.value = MemoryCorrectionPolicy.roundMuteUndone()
             return
         }
-        val ctx = replyGenerationContext ?: return
-        val kbName = ctx.kbName ?: return
+        val kbName = replyGenerationContext?.kbName
+            ?: (if (allowActiveKbFallback) _activeKb.value?.name else null)
+            ?: return
         viewModelScope.launch {
-            val success = withContext(Dispatchers.IO) {
-                knowledgeRepo.undoCorrection(kbName, memoryId)
+            val ok = try {
+                withContext(Dispatchers.IO) { knowledgeRepo.undoCorrection(kbName, memoryId) }
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.w("undoCorrection threw: ${e::class.simpleName}")
+                false
             }
-            if (success) {
-                _kbNotice.value = "已撤销纠正，该记忆恢复可信注入"
-            }
+            _kbNotice.value = if (ok) MemoryCorrectionPolicy.undone() else MemoryCorrectionPolicy.undoFailed()
         }
     }
 

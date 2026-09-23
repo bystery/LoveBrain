@@ -562,4 +562,108 @@ class MechanismClosureTest {
             capturedIntent?.status
         )
     }
+    // ═══════════ F14: 纠正的结果必须可见（拆出 MemoryCorrectionPolicy 之后）═══════════
+
+    /** 生成一轮，拿到非空 replyGenerationContext——纠正入口只认生成时冻结的 KB */
+    private suspend fun vmWithGeneratedContext(): Pair<LoveBrainViewModel, KnowledgeRepository> {
+        val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
+        defaultRepoStubs(knowledgeRepo)
+        val engine = mockk<com.lovebrain.app.domain.GenerationEngine>(relaxed = true)
+        GenerationEngineTestHelper.stubReplyGenerateSuccess(engine)
+        val vm = makeVm(knowledgeRepo, engine)
+        vm.refreshKnowledgeBases()
+        delay(200)
+        vm.addMessage(ChatMessage.Role.HER, "hello")
+        vm.generate()
+        delay(300)
+        assertTrue("前置条件：需要一轮成功生成的上下文", vm.result.value is GenerateResult.Success)
+        return vm to knowledgeRepo
+    }
+
+    @Test
+    fun f14_undo_from_card_says_so_when_the_write_back_fails() = runBlocking {
+        val (vm, repo) = vmWithGeneratedContext()
+        coEvery { repo.undoCorrection(any(), any()) } returns false
+        vm.dismissKbNotice()
+
+        vm.undoMemoryCorrection("PROFILE:understand/me.md")
+        delay(200)
+
+        assertEquals("撤销失败，请重试", vm.kbNotice.value)
+    }
+
+    @Test
+    fun f14_both_undo_entries_report_the_same_failure() = runBlocking {
+        val (vm, repo) = vmWithGeneratedContext()
+        coEvery { repo.undoCorrection(any(), any()) } returns false
+        vm.dismissKbNotice()
+
+        vm.undoCorrectionFromCenter("PROFILE:understand/me.md")
+        delay(200)
+        val fromCenter = vm.kbNotice.value
+
+        vm.dismissKbNotice()
+        vm.undoMemoryCorrection("PROFILE:understand/me.md")
+        delay(200)
+
+        assertEquals(
+            "同一次失败在纠正中心和方案卡片上说得不一样",
+            fromCenter,
+            vm.kbNotice.value
+        )
+        assertEquals("撤销失败，请重试", vm.kbNotice.value)
+    }
+
+    @Test
+    fun f14_undoing_a_this_round_mute_stays_in_memory() = runBlocking {
+        val (vm, repo) = vmWithGeneratedContext()
+        vm.applyMemoryCorrection(
+            memoryId = "PROFILE:understand/me.md",
+            action = CorrectionAction.MUTED,
+            muteDuration = MuteDuration.THIS_ROUND
+        )
+        vm.dismissKbNotice()
+
+        vm.undoMemoryCorrection("PROFILE:understand/me.md")
+        delay(200)
+
+        assertEquals("已撤销本轮暂停，该记忆恢复注入", vm.kbNotice.value)
+        coVerify(exactly = 0) { repo.undoCorrection(any(), any()) }
+    }
+
+    @Test
+    fun f14_a_persisted_correction_says_what_it_changed() = runBlocking {
+        val (vm, repo) = vmWithGeneratedContext()
+        coEvery { repo.saveCorrection(any(), any(), any(), any(), any(), any()) } returns true
+        vm.dismissKbNotice()
+
+        vm.applyMemoryCorrection(
+            memoryId = "MEMORY:archive.md#1",
+            action = CorrectionAction.WRONG_PERSON,
+            targetKbId = "kb-x"
+        )
+        delay(200)
+
+        assertEquals("已隔离，不再注入此条记忆", vm.kbNotice.value)
+        coVerify(exactly = 1) {
+            repo.saveCorrection(any(), "MEMORY:archive.md#1", CorrectionAction.WRONG_PERSON, "", "kb-x", MuteDuration.UNTIL_RESTORE)
+        }
+    }
+
+    @Test
+    fun f14_a_throwing_write_becomes_a_notice_instead_of_a_crash() = runBlocking {
+        val (vm, repo) = vmWithGeneratedContext()
+        coEvery { repo.saveCorrection(any(), any(), any(), any(), any(), any()) } throws
+            java.io.IOException("disk full")
+        vm.dismissKbNotice()
+
+        vm.applyMemoryCorrection(
+            memoryId = "MEMORY:archive.md#2",
+            action = CorrectionAction.WRONG
+        )
+        delay(200)
+
+        // 跑到这里没抛出去就是"不崩"，文案再证明用户看得见失败
+        assertEquals("纠正保存失败，请重试", vm.kbNotice.value)
+    }
 }
