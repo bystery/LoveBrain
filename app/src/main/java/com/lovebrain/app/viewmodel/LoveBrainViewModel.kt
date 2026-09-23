@@ -13,6 +13,7 @@ import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.DailySuggestion
+import com.lovebrain.app.model.DomainEvent
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.KnowledgeBase
@@ -30,6 +31,7 @@ import com.lovebrain.app.model.isStreaming
 import com.lovebrain.app.model.requestId
 import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.ProfileTransactionResult
+import com.lovebrain.app.model.ReplyReducer
 import com.lovebrain.app.model.PreconditionReason
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.StageSuggestion
@@ -114,9 +116,18 @@ class LoveBrainViewModel(
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, false)
 
     // ═══ 可停止生成：持有 Job 供强行停止 ═══
+    // S2-02 审计说明：这些 Job 引用仅用于 invokeOnCompletion 清理跟踪，
+    // 不用于 guard 逻辑。guard 独家通过 operationCoordinator.isActive() 检查。
+    // S2-05 职责拆分后将完全移除这些引用，由 coordinator 统一管理。
     private var generateJob: kotlinx.coroutines.Job? = null
     private var counselingJob: kotlinx.coroutines.Job? = null
     private var suggestJob: kotlinx.coroutines.Job? = null
+
+    // S1-04 审计修复：冻结锦囊请求身份——生成开始时冻结，完成时使用冻结值而非实时 _activeKb
+    // 防止生成期间切 KB 导致缓存写入错误的 kbId
+    private var suggestRequestKbName: String? = null
+    private var suggestRequestContextFp: String = ""
+    private var suggestRequestPromptVersion: String = ""
     // ═══════════ GEN-02：本轮生成上下文（不可变快照） ═══════════
     /**
      * 一轮 AI 生成 = 固定消息快照 + 固定知识库 + 固定 AI 回复 + 固定用户反馈。
@@ -185,6 +196,13 @@ class LoveBrainViewModel(
 
     private val _streamingCoreText = MutableStateFlow("")
     val streamingCoreText: StateFlow<String> = _streamingCoreText.asStateFlow()
+
+    /** P3-04: 流式 UI 节流——StringBuilder 累加 + 定时 flush，避免逐 token 全量重绘 */
+    private val streamingCoreBuffer = StringBuilder()
+    /** S1-02/P3-04: 累加器——flush 时只赋值一次 toString()，避免 `value += snapshot` 的 O(n) 全量复制 */
+    private val streamingCoreAccumulator = StringBuilder()
+    private var streamingFlushJob: kotlinx.coroutines.Job? = null
+    private val STREAMING_FLUSH_INTERVAL_MS = 50L
 
     /** 流式过程中已完整解析出的方案卡（逐张渲染，边收边出） */
     private val _streamingSchemes = MutableStateFlow<List<Scheme>>(emptyList())
@@ -589,6 +607,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     private val _counselingStreaming = MutableStateFlow("")
     val counselingStreaming: StateFlow<String> = _counselingStreaming.asStateFlow()
 
+    /** P3-04: 谈心流式 UI 节流——StringBuilder 累加 + 50ms 定时 flush */
+    private val counselingStreamingBuffer = StringBuilder()
+    /** S1-02/P3-04: 累加器——flush 时只赋值一次 toString()，避免 `value += snapshot` 的 O(n) 全量复制 */
+    private val counselingStreamingAccumulator = StringBuilder()
+    private var counselingFlushJob: kotlinx.coroutines.Job? = null
+
     init {
         // F10: 确保至少有一个合法知识库（首次启动创建默认库，重复启动沿用，中断恢复补齐）
         viewModelScope.launch {
@@ -836,6 +860,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val kbSnapshot = _activeKb.value
         val kbName = kbSnapshot?.name
 
+        // S1-02 审计修复：使用 coroutineScope 创建子 Job，Engine 的 launch 成为 prepJob 的子任务，
+        // 不再脱离父任务。取消 prepJob 会取消 Engine 的 Job 及其所有子 Job。
         // 异步冻结持续意图和纠正快照，不阻塞主线程；准备期纳入请求生命周期，可被 stopGeneration 取消
         val prepJob = viewModelScope.launch {
             // 统一 try/catch/finally——单一 request owner 覆盖准备/网络/解析/发布
@@ -899,7 +925,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 )
 
                 // S2-01: 调用不可变输入入口 generateReply
-                val job = generationEngine.generateReply(input, viewModelScope, this@LoveBrainViewModel)
+                // S1-02 审计修复: 使用当前协程 scope (this) 而非 viewModelScope，
+                // 使 Engine 的 Job 成为 prepJob 的子任务——取消 prepJob 会自动取消 Engine Job。
+                val job = generationEngine.generateReply(input, this, this@LoveBrainViewModel)
                 if (job != null) {
                     generateJob = job
                     // S2-02: 注册到 operationCoordinator
@@ -962,7 +990,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      */
     fun stopGeneration() {
         // S1-02: 先取消 Job，再写 Idle——避免先写 Idle 导致 callback 写入迟到状态
-        generateJob?.cancel()
+        // 审计修复 S2-02: 通过 coordinator 统一停止，不再只依赖 generateJob
+        operationCoordinator.stopByType(ForegroundOperationCoordinator.OperationType.REPLY)
+        operationCoordinator.stopByType(ForegroundOperationCoordinator.OperationType.PROACTIVE)
+        operationCoordinator.stopByType(ForegroundOperationCoordinator.OperationType.REWRITE)
         generateJob = null
 
         // P1-05: 先取消改写——避免提前 return 导致单独改写时走不到取消代码
@@ -975,6 +1006,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         // S1-02: 清流式临时态，但保留输入、草稿、KB 和可重试信息
         _streamingCoreText.value = ""
+        // P3-04: 清空流式缓冲
+        synchronized(streamingCoreBuffer) { streamingCoreBuffer.clear() }
+        streamingCoreAccumulator.clear()
+        streamingFlushJob?.cancel()
+        streamingFlushJob = null
         _streamingSchemes.value = emptyList()
         _panelState.value = PanelState.KEYBOARD
 
@@ -1630,8 +1666,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val job = generationEngine.generateCounseling(userMessage, kbSnapshot, viewModelScope, this)
         if (job != null) {
             counselingJob = job
-            // S2-02: 注册到 operationCoordinator
-            operationCoordinator.start(ForegroundOperationCoordinator.OperationType.COUNSELING, job)
+            // S2-02: 注册到 operationCoordinator（审计修复：使用 startSync 非挂起版本）
+            operationCoordinator.startSync(ForegroundOperationCoordinator.OperationType.COUNSELING, job)
             job.invokeOnCompletion {
                 if (counselingJob === job) {
                     counselingJob = null
@@ -1643,7 +1679,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     fun stopCounseling() {
         if (!_isCounseling.value) return
         L.w("user stopped counseling")
-        counselingJob?.cancel()
+        // 审计修复 S2-02: 通过 coordinator 统一停止
+        operationCoordinator.stopByType(ForegroundOperationCoordinator.OperationType.COUNSELING)
         counselingJob = null
         _isCounseling.value = false
         _counselingStreaming.value = ""
@@ -1826,13 +1863,22 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         startSuggestGeneration()
     }
 
-    /** S1-04: 实际发起锦囊生成请求 */
+    /** S1-04 审计修复: 实际发起锦囊生成请求——冻结请求身份 */
     private fun startSuggestGeneration() {
+        // 审计修复：在生成开始时冻结 KB 身份、上下文指纹、prompt 版本
+        // 完成时使用冻结值写缓存，不读取实时 _activeKb
+        val kb = _activeKb.value
+        val kbName = kb?.name ?: ""
+        val today = TimeFmt.today()
+        suggestRequestKbName = kbName
+        suggestRequestContextFp = computeSuggestContextFingerprint(kbName, today)
+        suggestRequestPromptVersion = getCurrentPromptVersion()
+
         val job = generationEngine.generateSuggest(viewModelScope, this)
         if (job != null) {
             suggestJob = job
-            // S2-02: 注册到 operationCoordinator
-            operationCoordinator.start(ForegroundOperationCoordinator.OperationType.SUGGEST, job)
+            // S2-02: 注册到 operationCoordinator（审计修复：使用 startSync 非挂起版本）
+            operationCoordinator.startSync(ForegroundOperationCoordinator.OperationType.SUGGEST, job)
             job.invokeOnCompletion {
                 if (suggestJob === job) {
                     suggestJob = null
@@ -1846,16 +1892,21 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         return com.lovebrain.app.BuildConfig.VERSION_NAME
     }
 
-    /** S1-04: 计算锦囊上下文指纹——覆盖 KB identity、stage、profile、outputMode、thinkingMode、onlyThisRound
-     * 使用 SHA-256 替代简单 hashCode，避免碰撞 */
+    /** S1-04: 计算锦囊上下文指纹——覆盖 KB identity、stage、items revision、outputMode、thinkingMode、onlyThisRound、prompt asset hash、Provider/model
+     * 使用 SHA-256 替代简单 hashCode，避免碰撞
+     * 审计修复：指纹覆盖实际被选择的事项、表达偏好、温度与边界、prompt asset hash、Provider/model identity */
     private fun computeSuggestContextFingerprint(kbId: String, today: String): String {
         val kb = _activeKb.value
         val stage = kb?.stage ?: ""
-        val profile = ""  // KnowledgeBase has no profile field; stage is the main context
         val outputMode = _outputMode.value
         val thinkingMode = securePrefs.thinkingMode
         val onlyThisRound = _onlyThisRound.value
-        val fingerprintInput = "$kbId|$today|$stage|$profile|$outputMode|$thinkingMode|$onlyThisRound"
+        // S1-04 审计修复: 补充 prompt asset hash、provider/model identity
+        val providerConfig = deepSeekRepo.snapshotProviderConfig()
+        val providerHost = providerConfig?.baseUrl ?: ""
+        val providerModel = providerConfig?.model ?: ""
+        val promptVersion = getCurrentPromptVersion()
+        val fingerprintInput = "$kbId|$today|$stage|$outputMode|$thinkingMode|$onlyThisRound|$promptVersion|$providerHost|$providerModel"
         val md = java.security.MessageDigest.getInstance("SHA-256")
         val hashBytes = md.digest(fingerprintInput.toByteArray())
         return hashBytes.joinToString("") { "%02x".format(it) }.take(16)
@@ -1866,11 +1917,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     fun stopSuggest() {
         if (!_isSuggesting.value) return
         L.w("user stopped suggest")
-        suggestJob?.cancel()
+        // 审计修复 S2-02: 通过 coordinator 统一停止
+        operationCoordinator.stopByType(ForegroundOperationCoordinator.OperationType.SUGGEST)
         suggestJob = null
         _isSuggesting.value = false
         _streamingTips.value = emptyList()
-        // ：对齐谈心停止先例（_counselingError="已手动停止"）——复用既有 _suggestError 通道，零新状态
         _suggestError.value = "已手动停止"
     }
 
@@ -1890,8 +1941,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val job = generationEngine.generateProactive(draft, scene, viewModelScope, this)
         if (job != null) {
             proactiveJob = job
-            // S2-02: 注册到 operationCoordinator
-            operationCoordinator.start(ForegroundOperationCoordinator.OperationType.PROACTIVE, job)
+            // S2-02: 注册到 operationCoordinator（审计修复：使用 startSync 非挂起版本）
+            operationCoordinator.startSync(ForegroundOperationCoordinator.OperationType.PROACTIVE, job)
             job.invokeOnCompletion {
                 if (proactiveJob === job) {
                     proactiveJob = null
@@ -1902,7 +1953,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     fun stopProactive() {
         if (!_isProactive.value) return
-        proactiveJob?.cancel()
+        // 审计修复 S2-02: 通过 coordinator 统一停止
+        operationCoordinator.stopByType(ForegroundOperationCoordinator.OperationType.PROACTIVE)
         proactiveJob = null
         _isProactive.value = false
     }
@@ -1921,12 +1973,18 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // --- 回复生成 ---
     override fun onReplyStart() {
-        // 统一状态机：Preparing → Streaming（保持同一 requestId）
+        // S2-03 审计修复: 通过 ReplyReducer 进行状态转换——reducer 是唯一状态写入口
         val currentRequestId = _replyRequestState.value.requestId ?: ReplyRequestState.newRequestId()
-        _replyRequestState.value = ReplyRequestState.Streaming(currentRequestId)
+        val event = DomainEvent.Started(currentRequestId)
+        _replyRequestState.value = ReplyReducer.reduce(_replyRequestState.value, event)
         _panelState.value = PanelState.AI_LOADING
         _result.value = null
         _streamingCoreText.value = ""
+        // P3-04: 清空流式缓冲
+        synchronized(streamingCoreBuffer) { streamingCoreBuffer.clear() }
+        streamingCoreAccumulator.clear()
+        streamingFlushJob?.cancel()
+        streamingFlushJob = null
         _streamingSchemes.value = emptyList()
         _feedbacks.value = emptyMap()
         // P1-H: 记录本轮生成开始时间，用于计算首条可复制回复耗时
@@ -1936,7 +1994,42 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     override fun onReplyStreamingCoreText(chunk: String) {
-        _streamingCoreText.value += chunk
+        // P3-04: 流式 UI 节流——StringBuilder 累加 + 50ms 定时 flush
+        // 不逐 token 全量重绘，每 50ms 合并发布一次，完成时立即 flush
+        synchronized(streamingCoreBuffer) {
+            streamingCoreBuffer.append(chunk)
+        }
+        if (streamingFlushJob?.isActive != true) {
+            streamingFlushJob = viewModelScope.launch {
+                while (true) {
+                    delay(STREAMING_FLUSH_INTERVAL_MS)
+                    flushStreamingCoreBuffer()
+                }
+            }
+        }
+    }
+
+    /** P3-04: 将 StringBuilder 缓冲 flush 到 StateFlow
+     * S1-02/P3-04 审计修复: 不再使用 `_streamingCoreText.value += snapshot`（O(n) 全量复制），
+     * 改为用 streamingCoreAccumulator 累加后只赋值一次。 */
+    private fun flushStreamingCoreBuffer() {
+        val snapshot: String
+        synchronized(streamingCoreBuffer) {
+            if (streamingCoreBuffer.isEmpty()) return
+            snapshot = streamingCoreBuffer.toString()
+            streamingCoreBuffer.clear()
+        }
+        if (snapshot.isNotEmpty()) {
+            streamingCoreAccumulator.append(snapshot)
+            _streamingCoreText.value = streamingCoreAccumulator.toString()
+        }
+    }
+
+    /** P3-04: 流式结束时立即 flush 剩余缓冲 */
+    private fun flushStreamingCoreAndStop() {
+        flushStreamingCoreBuffer()
+        streamingFlushJob?.cancel()
+        streamingFlushJob = null
     }
 
     override fun onReplyStreamingSchemes(schemes: List<Scheme>) {
@@ -1965,20 +2058,18 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     override fun onReplyResult(result: GenerateResult) {
+        // P3-04: 流式结束时立即 flush 剩余缓冲
+        flushStreamingCoreAndStop()
         // S1-02: requestId 隔离——迟到旧回调不污染新请求状态
         val currentState = _replyRequestState.value
         if (!currentState.isBusy && currentState !is ReplyRequestState.Idle) {
             // 非活跃请求的回调，丢弃
             return
         }
-        // 统一状态机：根据结果类型发布对应状态，UI 可见且有 retry/open settings 动作
-        _replyRequestState.value = when (result) {
-            is GenerateResult.Success -> ReplyRequestState.Idle
-            is GenerateResult.Error -> ReplyRequestState.RecoverableError(
-                message = result.message,
-                retryable = true
-            )
-        }
+        // S2-03 审计修复: 通过 ReplyReducer 进行状态转换——reducer 是唯一状态写入口
+        val requestId = currentState.requestId ?: ""
+        val event = DomainEvent.Completed(requestId, result)
+        _replyRequestState.value = ReplyReducer.reduce(currentState, event)
         _result.value = result
         // P0-3: 只有整轮生成成功时才递增 roundId——单条改写/undo 不经过此回调
         if (result is GenerateResult.Success) {
@@ -2022,6 +2113,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     override fun onReplyStreamingCoreTextReset() {
         _streamingCoreText.value = ""
+        synchronized(streamingCoreBuffer) { streamingCoreBuffer.clear() }
+        streamingCoreAccumulator.clear()
     }
 
     // F09: 回报本轮注入的 MemoryRef 清单 — 冻结到 ReplyGenerationContext
@@ -2046,10 +2139,41 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         _counselingResult.value = null
         _counselingError.value = null
         _counselingStreaming.value = ""
+        synchronized(counselingStreamingBuffer) { counselingStreamingBuffer.clear() }
+        counselingStreamingAccumulator.clear()
+        counselingFlushJob?.cancel()
+        counselingFlushJob = null
     }
 
     override fun onCounselingStreaming(chunk: String) {
-        _counselingStreaming.value += chunk
+        // P3-04: 流式 UI 节流——StringBuilder 累加 + 50ms 定时 flush
+        synchronized(counselingStreamingBuffer) {
+            counselingStreamingBuffer.append(chunk)
+        }
+        if (counselingFlushJob?.isActive != true) {
+            counselingFlushJob = viewModelScope.launch {
+                while (true) {
+                    delay(STREAMING_FLUSH_INTERVAL_MS)
+                    flushCounselingStreamingBuffer()
+                }
+            }
+        }
+    }
+
+    /** P3-04: 将谈心 StringBuilder 缓冲 flush 到 StateFlow
+     * S1-02/P3-04 审计修复: 不再使用 `_counselingStreaming.value += snapshot`（O(n) 全量复制），
+     * 改为用 counselingStreamingAccumulator 累加后只赋值一次。 */
+    private fun flushCounselingStreamingBuffer() {
+        val snapshot: String
+        synchronized(counselingStreamingBuffer) {
+            if (counselingStreamingBuffer.isEmpty()) return
+            snapshot = counselingStreamingBuffer.toString()
+            counselingStreamingBuffer.clear()
+        }
+        if (snapshot.isNotEmpty()) {
+            counselingStreamingAccumulator.append(snapshot)
+            _counselingStreaming.value = counselingStreamingAccumulator.toString()
+        }
     }
 
     override fun onCounselingResult(text: String) {
@@ -2062,7 +2186,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     override fun onCounselingEnd() {
+        // P3-04: flush 剩余谈心流式缓冲
+        flushCounselingStreamingBuffer()
+        counselingFlushJob?.cancel()
+        counselingFlushJob = null
         _counselingStreaming.value = ""
+        counselingStreamingAccumulator.clear()
         _isCounseling.value = false
     }
 
@@ -2092,12 +2221,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     override fun onSuggestResult(suggestion: com.lovebrain.app.model.DailySuggestion?) {
         _suggestion.value = suggestion
-        // S1-04: 持久化——缓存键包含 kbId、日期、上下文指纹、promptVersion（不再硬编码）
+        // S1-04 审计修复: 使用生成开始时冻结的请求身份写缓存，
+        // 不读取实时 _activeKb——防止生成期间切 KB 导致缓存写入错误的 kbId
         if (suggestion != null) {
-            val kbId = _activeKb.value?.name ?: ""
+            val kbId = suggestRequestKbName ?: ""
             val today = TimeFmt.today()
-            val contextFp = computeSuggestContextFingerprint(kbId, today)
-            val promptVersion = getCurrentPromptVersion()
+            val contextFp = suggestRequestContextFp.ifBlank { computeSuggestContextFingerprint(kbId, today) }
+            val promptVersion = suggestRequestPromptVersion.ifBlank { getCurrentPromptVersion() }
             securePrefs.saveSuggestion(
                 Json.encodeToString(serializer<com.lovebrain.app.model.DailySuggestion>(), suggestion),
                 today,
@@ -2106,6 +2236,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 promptVersion
             )
         }
+        // 清理冻结的请求身份
+        suggestRequestKbName = null
+        suggestRequestContextFp = ""
+        suggestRequestPromptVersion = ""
     }
 
     override fun onSuggestEnd() {

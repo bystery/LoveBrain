@@ -126,7 +126,9 @@ fun buildGenerationInput(
                 name = kb.name,
                 stage = kb.stage,
                 profile = "",
-                revision = 0
+                // S2-01 审计修复: 使用 KnowledgeBase.turnCount 作为 revision 近似值，
+                // 而非写死 0——turnCount 反映了 KB 的实际更新次数
+                revision = kb.turnCount
             )
         },
         intentConfig = intentConfig,

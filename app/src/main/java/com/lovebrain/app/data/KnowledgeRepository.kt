@@ -3,6 +3,7 @@ package com.lovebrain.app.data
 import android.content.Context
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.model.KnowledgeSchemaVersion
 import com.lovebrain.app.model.PreconditionReason
 import com.lovebrain.app.model.ProfileTransactionResult
 import kotlinx.coroutines.CoroutineScope
@@ -1710,6 +1711,43 @@ class KnowledgeRepository(
      * 旧版 plan.md 清理：把注释外的裸"格式（每条一行）/示例：…"说明行包进 <!-- -->。
      * 效果：编辑态可见、预览态（MarkdownText 去注释）隐藏、prompt 注入不携带。
      */
+    /**
+     * S2-06: 使用单一 .schema_version 文件检测当前 schema 版本。
+     * 如果 .schema_version 存在，直接读取其版本号。
+     * 如果不存在，回退到 legacy marker 文件检测（向后兼容）。
+     */
+    private fun detectSchemaVersion(kbName: String): Int {
+        val dir = File(knowledgeRoot, kbName)
+        // 优先从统一 .schema_version 文件读取
+        val versionFile = File(dir, ".schema_version")
+        if (versionFile.exists()) {
+            val content = runCatching { versionFile.readText().trim() }.getOrDefault("")
+            val version = content.toIntOrNull()
+            if (version != null && version > 0) return version
+        }
+        // 回退：检查 legacy marker 文件
+        var maxVersion = 1
+        for ((markerName, version) in KnowledgeSchemaVersion.legacyMarkers) {
+            if (File(dir, markerName).exists()) {
+                if (version > maxVersion) maxVersion = version
+            }
+        }
+        return maxVersion
+    }
+
+    /**
+     * S2-06: 写入统一 schema 版本文件，同时清理 legacy marker。
+     */
+    private fun writeSchemaVersion(kbName: String, version: Int) {
+        val dir = File(knowledgeRoot, kbName)
+        atomicWriteText(File(dir, ".schema_version"), version.toString())
+        // 清理 legacy marker 文件
+        for ((markerName, _) in KnowledgeSchemaVersion.legacyMarkers) {
+            val marker = File(dir, markerName)
+            if (marker.exists()) marker.delete()
+        }
+    }
+
     private fun wrapPlanMetaLines(text: String): String {
         if (text.isBlank()) return text
         val sb = StringBuilder()
@@ -1759,7 +1797,11 @@ class KnowledgeRepository(
         val dir = File(knowledgeRoot, kbName)
         val oldGlobal = File(dir, "global")
         val newUnderstand = File(dir, "understand")
-        val migrationMarker = File(dir, ".migrated_v2")
+        // S2-06: 使用 KnowledgeSchemaVersion 确定当前版本
+        val currentVersion = detectSchemaVersion(kbName)
+
+        // S2-06: 如果已是最新版本，跳过迁移
+        if (!KnowledgeSchemaVersion.needsMigration(currentVersion)) return
 
         // 确保 v3 文件存在（v2→v3 过渡）——只补缺失，不覆盖已有
         if (dir.exists()) {
@@ -1802,10 +1844,12 @@ class KnowledgeRepository(
             }
         }
 
-        // A项修复：迁移标记存在 → 迁移已完成，不重复覆盖
-        // F08: 但仍需执行 plan.md 数据迁移（处理旧版累积的万字状态链）
-        if (migrationMarker.exists()) {
+        // S2-06: 版本 >= 2 表示 v1→v2 迁移已完成
+        // 但仍需检查是否需要 v2→v3 plan 数据迁移
+        if (currentVersion >= 2) {
             migratePlanDataIfNeededUnlocked(kbName)
+            // 确保 schema_version 文件存在并清理 legacy marker
+            writeSchemaVersion(kbName, KnowledgeSchemaVersion.CURRENT)
             return
         }
 
@@ -1868,11 +1912,11 @@ class KnowledgeRepository(
             atomicWriteText(topicLogFile, "")
         }
 
-        // A项修复：迁移完成后写标记，后续不再重复迁移
-        atomicWriteText(migrationMarker, isoNow())
-
-        // F08: 升级修复——处理已污染的 plan.md 数据（万字状态链迁移）
+        // S2-06: v1→v2 迁移完成后，执行 v2→v3 plan 数据迁移
         migratePlanDataIfNeededUnlocked(kbName)
+
+        // S2-06: 写入统一 schema 版本文件，清理所有 legacy marker
+        writeSchemaVersion(kbName, KnowledgeSchemaVersion.CURRENT)
     }
 
     /**
@@ -1883,27 +1927,22 @@ class KnowledgeRepository(
      * 但已累积的旧数据不会自行消失。
      *
      * 迁移流程（可恢复、幂等）：
-     * 1. 检查迁移标记 .migrated_plan_v3——已迁移则跳过
-     * 2. 备份旧 plan.md → memory/plan_archive_v2.md（保留原件）
-     * 3. 解析旧格式事项（兼容有/无 itemId 前缀）
-     * 4. 合并连续完全重复状态（只保留最新一条）
-     * 5. 状态链截断——每项最多保留最近 10 条状态（活动投影有界）
-     * 6. 渲染清理后的 plan.md 并原子写入
-     * 7. 写入迁移标记
+     * S2-06: 迁移标记现在通过 .schema_version >= 3 判断（不再使用 .migrated_plan_v3）。
      *
-     * 中断恢复：标记未写入前重跑无害（备份追加、归档保留）；
-     * 标记写入后跳过，保证幂等。未知格式原样保留。
+     * 中断恢复：版本未写入 .schema_version 前重跑无害（备份追加、归档保留）；
+     * 版本写入后跳过，保证幂等。未知格式原样保留。
      */
     private fun migratePlanDataIfNeededUnlocked(kbName: String) {
         val dir = File(knowledgeRoot, kbName)
-        val planMarker = File(dir, ".migrated_plan_v3")
-        if (planMarker.exists()) return  // 已迁移
+        // S2-06: 通过 schema version 判断是否已迁移
+        val currentVersion = detectSchemaVersion(kbName)
+        if (currentVersion >= 3) return  // plan v3 迁移已完成
 
         val planFile = File(dir, "moment/plan.md")
         val planContent = if (planFile.exists()) planFile.readText() else ""
         if (planContent.isBlank()) {
-            // 空文件——无需迁移，直接写标记
-            atomicWriteText(planMarker, isoNow())
+            // 空文件——无需迁移，直接标记为已迁移
+            writeSchemaVersion(kbName, 3)
             return
         }
 
@@ -1953,9 +1992,9 @@ class KnowledgeRepository(
         }
 
         if (items.isEmpty()) {
-            // 无法解析——原样保留，写标记
+            // 无法解析——原样保留，标记为已迁移
             com.lovebrain.app.util.L.w("F08: no parseable items in plan.md for '$kbName', keeping original")
-            atomicWriteText(planMarker, isoNow())
+            writeSchemaVersion(kbName, 3)
             return
         }
 
@@ -2001,8 +2040,8 @@ class KnowledgeRepository(
         }
         atomicWriteText(planFile, newPlan)
 
-        // 5. 写入迁移标记
-        atomicWriteText(planMarker, isoNow())
+        // S2-06: 写入 schema version 3，标记 plan 迁移完成
+        writeSchemaVersion(kbName, 3)
     }
 
     /** F08: 清理状态链——合并连续重复状态，截断到最大长度 */

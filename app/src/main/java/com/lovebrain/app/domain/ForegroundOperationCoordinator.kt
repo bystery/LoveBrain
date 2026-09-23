@@ -7,10 +7,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 /**
- * S2-02: 统一前台任务协调器——管理所有 AI 前台流程的互斥和生命周期。
+ * S2-02 审计修复: 统一前台任务协调器——管理所有 AI 前台流程的互斥和生命周期。
+ *
+ * 审计缺陷修复：
+ * - ActiveOperation 现在保存 Job——stopByType/shutdownAll 真正取消
+ * - start() 使用 Mutex 保护的原子操作，消除竞态
+ * - shutdownAll() 真正取消所有 child Job
+ * - 六类操作全部注册（Reply/Proactive/Rewrite/Counseling/Suggest/ProfileRefresh）
+ * - ViewModel 不再手写 guard/Job 真源——通过 coordinator 统一管理
  *
  * 类型：Reply / Proactive / Rewrite / Counseling / Suggest / ProfileRefresh。
  * 同一时刻允许哪些组合写成表，不允许各函数手写 guard。
@@ -33,17 +43,24 @@ class ForegroundOperationCoordinator(
         val job: Job
     )
 
-    /** 当前活跃操作 */
+    /**
+     * 审计修复：ActiveOperation 现在保存 Job 引用。
+     * stopByType/shutdownAll 通过 Job 引用真正取消任务。
+     */
     data class ActiveOperation(
         val type: OperationType,
-        val operationId: String
+        val operationId: String,
+        val job: Job
     )
 
     private val _activeOperations = MutableStateFlow<List<ActiveOperation>>(emptyList())
     val activeOperations: StateFlow<List<ActiveOperation>> = _activeOperations.asStateFlow()
 
+    /** 审计修复：使用 Mutex 保证 start/stop 原子性，消除竞态 */
+    private val mutex = Mutex()
+
     /**
-     * S2-02: 互斥矩阵——定义哪些组合允许同时运行。
+     * 互斥矩阵——定义哪些组合允许同时运行。
      * 规则：
      * - Reply 和 Proactive 互斥（前台主操作）
      * - Rewrite 与 Reply 互斥（改写是 Reply 的子操作）
@@ -64,51 +81,83 @@ class ForegroundOperationCoordinator(
     }
 
     /**
-     * 启动一个前台操作。返回租约，或 null 表示被互斥拒绝。
+     * 审计修复：启动一个前台操作——使用 Mutex 保证原子性。
+     * 返回租约，或 null 表示被互斥拒绝。
      */
-    fun start(type: OperationType, job: Job): OperationLease? {
-        val current = _activeOperations.value.map { it.type }
-        if (!canStartWith(type, current)) return null
+    suspend fun start(type: OperationType, job: Job): OperationLease? {
+        return mutex.withLock {
+            val current = _activeOperations.value.map { it.type }
+            if (!canStartWith(type, current)) return@withLock null
 
-        val operationId = UUID.randomUUID().toString()
-        val lease = OperationLease(operationId, type, job)
+            val operationId = UUID.randomUUID().toString()
+            val lease = OperationLease(operationId, type, job)
 
-        _activeOperations.value = _activeOperations.value + ActiveOperation(type, operationId)
+            _activeOperations.value = _activeOperations.value + ActiveOperation(type, operationId, job)
 
-        job.invokeOnCompletion {
-            _activeOperations.value = _activeOperations.value.filter { it.operationId != operationId }
+            job.invokeOnCompletion {
+                _activeOperations.value = _activeOperations.value.filter { it.operationId != operationId }
+            }
+
+            lease
         }
+    }
 
-        return lease
+    /**
+     * 非挂起版本的 start——用于 ViewModel 同步调用场景。
+     * 使用 tryLock，如果锁被占用则拒绝（保守策略）。
+     */
+    fun startSync(type: OperationType, job: Job): OperationLease? {
+        if (!mutex.tryLock()) return null
+        try {
+            val current = _activeOperations.value.map { it.type }
+            if (!canStartWith(type, current)) return null
+
+            val operationId = UUID.randomUUID().toString()
+            val lease = OperationLease(operationId, type, job)
+
+            _activeOperations.value = _activeOperations.value + ActiveOperation(type, operationId, job)
+
+            job.invokeOnCompletion {
+                _activeOperations.value = _activeOperations.value.filter { it.operationId != operationId }
+            }
+
+            return lease
+        } finally {
+            mutex.unlock()
+        }
     }
 
     /**
      * 停止指定租约的操作。只取消相同 operationId 的 Job。
+     * 审计修复：现在真正调用 job.cancel()。
      */
     fun stop(lease: OperationLease) {
-        lease.job.cancel()
         _activeOperations.value = _activeOperations.value.filter { it.operationId != lease.operationId }
+        lease.job.cancel()
     }
 
     /**
      * 停止指定类型的所有操作。
+     * 审计修复：现在真正取消每个匹配 Job。
      */
     fun stopByType(type: OperationType) {
         val toStop = _activeOperations.value.filter { it.type == type }
+        _activeOperations.value = _activeOperations.value.filter { it.operationId !in toStop.map { op -> op.operationId } }
         toStop.forEach { op ->
-            // Job 已在 start 时注册 invokeOnCompletion，只需从列表移除
-            _activeOperations.value = _activeOperations.value.filter { it.operationId != op.operationId }
+            op.job.cancel()
         }
     }
 
     /**
      * Service destroy 时调用——关闭所有 child。
+     * 审计修复：现在真正取消所有 Job。
      */
     fun shutdownAll() {
-        _activeOperations.value.forEach { op ->
-            // 只标记移除，Job 由 scope cancel 处理
-        }
+        val all = _activeOperations.value
         _activeOperations.value = emptyList()
+        all.forEach { op ->
+            op.job.cancel()
+        }
     }
 
     /** 检查指定类型是否活跃 */

@@ -11,23 +11,31 @@ import com.lovebrain.app.ui.theme.PrimaryDark
 import com.lovebrain.app.viewmodel.LoveBrainViewModel.ComposerMode
 
 /**
- * S1-03: ReplyPrimaryActionsTestable — 测试用包装，直接使用 GenerationActionButton。
- * 与 LoveBrainPanelScreen 中的 ReplyPrimaryActions 逻辑完全一致，
- * 验证 4 种按钮状态的可点击性和回调。
+ * S1-01/S1-03: ReplyPrimaryActions — 生产可测试组件（不再是 private）。
+ *
+ * 使用 ComposerMode 驱动的 4 种按钮状态，完全匹配 v1.3.1 主动发入口语义：
+ * 1. REPLY 模式 + 无结果 → 全宽"生成回复 · N 条消息"（N=0 时显示"生成回复"并禁用）
+ * 2. REPLY 模式 + 有结果 → "重试 | 记入知识库"
+ * 3. PROACTIVE 模式 + 空闲 → 全宽"生成开场"
+ * 4. 任意模式 + 生成中 → 全宽"停止"
+ *
+ * 审计要求：删除 ReplyPrimaryActionsTestable 复制品，测试直接使用此生产组件。
  */
 
-private object TestPanelDimens {
+private object ReplyActionsDimens {
     const val TRIO_HEIGHT_DP = 40
     const val GENERATE_BUTTON_GAP_DP = 8
 }
 
 @Composable
-internal fun ReplyPrimaryActionsTestable(
+fun ReplyPrimaryActions(
+    modifier: Modifier = Modifier,
     composerMode: ComposerMode,
     isGenerating: Boolean,
     isProactive: Boolean,
     hasReplyResult: Boolean,
     messageCount: Int,
+    draftText: String = "",
     onGenerateReply: () -> Unit,
     onGenerateProactive: () -> Unit,
     onRetry: () -> Unit,
@@ -35,63 +43,69 @@ internal fun ReplyPrimaryActionsTestable(
     onStop: () -> Unit
 ) {
     when {
+        // 生成中——回复或主动发都显示"停止"
         isGenerating -> {
             GenerationActionButton(
                 text = "",
                 onClick = onStop,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 mode = ButtonMode.LOADING,
-                heightDp = TestPanelDimens.TRIO_HEIGHT_DP
+                heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
             )
         }
+        // 主动发生成中——显示"停止"
         isProactive -> {
             GenerationActionButton(
                 text = "停止",
                 onClick = onStop,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 mode = ButtonMode.STOP,
-                heightDp = TestPanelDimens.TRIO_HEIGHT_DP
+                heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
             )
         }
+        // PROACTIVE 模式 + 空闲 → 全宽"生成开场"
         composerMode == ComposerMode.PROACTIVE -> {
             GenerationActionButton(
                 text = "生成开场",
                 onClick = onGenerateProactive,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 containerColor = PrimaryDark,
-                heightDp = TestPanelDimens.TRIO_HEIGHT_DP
+                heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
             )
         }
+        // REPLY 模式 + 有结果 → "重试 | 记入知识库"
         composerMode == ComposerMode.REPLY && hasReplyResult -> {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(TestPanelDimens.GENERATE_BUTTON_GAP_DP.dp)
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(ReplyActionsDimens.GENERATE_BUTTON_GAP_DP.dp)
             ) {
                 GenerationActionButton(
                     text = "重试",
                     onClick = onRetry,
                     modifier = Modifier.weight(1f),
                     containerColor = Primary,
-                    heightDp = TestPanelDimens.TRIO_HEIGHT_DP
+                    heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
                 )
                 GenerationActionButton(
                     text = "记入知识库",
                     onClick = onSaveToKb,
                     modifier = Modifier.weight(1f),
                     containerColor = PrimaryDark,
-                    heightDp = TestPanelDimens.TRIO_HEIGHT_DP
+                    heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
                 )
             }
         }
+        // REPLY 模式 + 无结果 → 全宽"生成回复 · N 条消息"
         else -> {
+            val replyEnabled = messageCount > 0
             GenerationActionButton(
-                text = "生成回复 · $messageCount 条消息",
+                text = if (messageCount > 0) "生成回复 · ${messageCount}条消息" else "生成回复",
                 onClick = onGenerateReply,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
+                enabled = replyEnabled,
                 containerColor = Primary,
-                heightDp = TestPanelDimens.TRIO_HEIGHT_DP
+                heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
             )
         }
     }
 }
-

@@ -23,6 +23,11 @@ import org.koin.dsl.module
 /**
  * S1-03: Overlay 生成生命周期冒烟测试（instrumentation）。
  *
+ * 审计修复：
+ * - floatingService_startsAndStopsWithoutCrash 现在先启动 Koin 再启动 Service，
+ *   修复 "KoinApplication has not been started" 崩溃。
+ * - 所有测试统一在 setUp 中启动 Koin，在 tearDown 中停止。
+ *
  * 验证真实 Service 宿主中 ViewModel + Engine 的生成生命周期：
  * - 无 Provider 时点击生成显示可恢复错误（而非崩溃）
  * - 快速连点只产生一个活跃请求（requestId 唯一）
@@ -40,94 +45,89 @@ class OverlayGenerateSmokeTest {
 
     private val app = ApplicationProvider.getApplicationContext<Application>()
 
+    @org.junit.Before
+    fun setUp() {
+        startKoinForTest()
+    }
+
+    @org.junit.After
+    fun tearDown() {
+        try { stopKoin() } catch (_: Exception) {}
+    }
+
     @Test
     fun generate_whenNoProvider_showsRecoverableError() {
-        startKoinForTest()
+        val vm = org.koin.core.context.GlobalContext.get().get<LoveBrainViewModel>()
 
-        try {
-            val vm = org.koin.core.context.GlobalContext.get().get<LoveBrainViewModel>()
+        // 无 Provider 配置时点击生成
+        vm.generate()
 
-            // 无 Provider 配置时点击生成
-            vm.generate()
-
-            // 应该进入可恢复错误状态，而不是崩溃
-            val state = runBlocking {
-                withTimeoutOrNull(5000L) {
-                    vm.replyRequestState.first { it is ReplyRequestState.RecoverableError }
-                }
+        // 应该进入可恢复错误状态，而不是崩溃
+        val state = runBlocking {
+            withTimeoutOrNull(5000L) {
+                vm.replyRequestState.first { it is ReplyRequestState.RecoverableError }
             }
-            assertNotNull("Should reach RecoverableError state", state)
-            val errorState = state as ReplyRequestState.RecoverableError
-            assertTrue("Error should be retryable", errorState.retryable)
-        } finally {
-            stopKoin()
         }
+        assertNotNull("Should reach RecoverableError state", state)
+        val errorState = state as ReplyRequestState.RecoverableError
+        assertTrue("Error should be retryable", errorState.retryable)
     }
 
     @Test
     fun generate_rapidDoubleTap_producesOnlyOneRequest() {
-        startKoinForTest()
+        val vm = org.koin.core.context.GlobalContext.get().get<LoveBrainViewModel>()
 
-        try {
-            val vm = org.koin.core.context.GlobalContext.get().get<LoveBrainViewModel>()
+        // 快速连点两次
+        vm.generate()
+        vm.generate()  // 第二次应该被 guard 拒绝
 
-            // 快速连点两次
-            vm.generate()
-            vm.generate()  // 第二次应该被 guard 拒绝
-
-            // 等待状态稳定（最长 5s）
-            val state = runBlocking {
-                withTimeoutOrNull(5000L) {
-                    vm.replyRequestState.first {
-                        it is ReplyRequestState.RecoverableError || it is ReplyRequestState.Idle
-                    }
-                } ?: vm.replyRequestState.value
-            }
-
-            // 状态不应卡在 Preparing——证明第二次 generate 没有创建新请求
-            assertTrue(
-                "State should be RecoverableError or Idle, not stuck in Preparing. Actual: $state",
-                state is ReplyRequestState.RecoverableError || state is ReplyRequestState.Idle
-            )
-        } finally {
-            stopKoin()
+        // 等待状态稳定（最长 5s）
+        val state = runBlocking {
+            withTimeoutOrNull(5000L) {
+                vm.replyRequestState.first {
+                    it is ReplyRequestState.RecoverableError || it is ReplyRequestState.Idle
+                }
+            } ?: vm.replyRequestState.value
         }
+
+        // 状态不应卡在 Preparing——证明第二次 generate 没有创建新请求
+        assertTrue(
+            "State should be RecoverableError or Idle, not stuck in Preparing. Actual: $state",
+            state is ReplyRequestState.RecoverableError || state is ReplyRequestState.Idle
+        )
     }
 
     @Test
     fun stopGeneration_returnsToIdle() {
-        startKoinForTest()
+        val vm = org.koin.core.context.GlobalContext.get().get<LoveBrainViewModel>()
 
-        try {
-            val vm = org.koin.core.context.GlobalContext.get().get<LoveBrainViewModel>()
+        // 发起生成
+        vm.generate()
 
-            // 发起生成
-            vm.generate()
-
-            // 等待进入活跃状态
-            runBlocking {
-                withTimeoutOrNull(3000L) {
-                    vm.replyRequestState.first { it.isBusy }
-                }
+        // 等待进入活跃状态
+        runBlocking {
+            withTimeoutOrNull(3000L) {
+                vm.replyRequestState.first { it.isBusy }
             }
-
-            // 停止
-            vm.stopGeneration()
-
-            // 应回到 Idle 或 RecoverableError
-            val state = vm.replyRequestState.value
-            assertTrue(
-                "After stop, should be Idle or Error, not busy",
-                state !is ReplyRequestState.Preparing && state !is ReplyRequestState.Streaming
-            )
-        } finally {
-            stopKoin()
         }
+
+        // 停止
+        vm.stopGeneration()
+
+        // 应回到 Idle 或 RecoverableError
+        val state = vm.replyRequestState.value
+        assertTrue(
+            "After stop, should be Idle or Error, not busy",
+            state !is ReplyRequestState.Preparing && state !is ReplyRequestState.Streaming
+        )
     }
 
     @Test
     fun floatingService_startsAndStopsWithoutCrash() {
-        // 验证 Service 可以启动和停止而不崩溃
+        // 审计修复：Koin 已在 setUp 中启动。
+        // FloatingService.onCreate 会通过 Koin 获取依赖——Koin 未启动会导致
+        // "KoinApplication has not been started" 崩溃，使 24 个 instrumentation
+        // 测试在第 3 个即中止。
         val intent = Intent(app, FloatingService::class.java)
         try {
             serviceRule.startService(intent)

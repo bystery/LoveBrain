@@ -52,13 +52,16 @@ class RoundCommitJournal(
     }
 
     /**
-     * S2-04: 开始一轮提交——先写 PREPARED 到 journal。
+     * S2-04: 开始一轮提交——将完整事件原子写入 journal 作为 PREPARED。
      * 返回 roundId，后续用此 ID 完成或回滚。
+     *
+     * 调用方必须在 beginCommit 和 markCommitted 之间完成所有 target 写入。
+     * 崩溃恢复时，如果 journal 中有 PREPARED 但无 COMMITTED，会 roll-forward。
      */
     suspend fun beginCommit(event: RoundCommitEvent): String = withContext(Dispatchers.IO) {
         val roundId = event.roundId
-        val journalEntry = serializeEvent(event)
-        knowledgeRepo.writeFile(event.kbName, journalPath, journalEntry)
+        val preparedEvent = event.copy(stage = CommitStage.PREPARED)
+        knowledgeRepo.writeFile(event.kbName, journalPath, serializeEvent(preparedEvent))
         L.w("S2-04: WAL PREPARED roundId=$roundId")
         roundId
     }

@@ -87,6 +87,8 @@ private object KbDimens {
 
 class KnowledgeBaseActivity : ComponentActivity() {
 
+    // S2-05 审计技术债：此处直接 inject Repository 违反 SRP/DIP。
+    // 修复方向：通过 KnowledgeBaseViewModel 间接访问 Repository。
     private val repo: KnowledgeRepository by inject()
     private val deepSeek: DeepSeekRepository by inject()
     private var pendingExportKb: String? = null
@@ -303,10 +305,15 @@ class KnowledgeBaseActivity : ComponentActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+// P3-05: FLAG_SECURE——知识库内容含关系数据，防止最近任务截图泄露
+window.setFlags(
+android.view.WindowManager.LayoutParams.FLAG_SECURE,
+android.view.WindowManager.LayoutParams.FLAG_SECURE
+)
 
-        setContent {
+setContent {
             LoveBrainTheme {
                 var version by remember { mutableStateOf(0) }
                 val reload = { version++ }

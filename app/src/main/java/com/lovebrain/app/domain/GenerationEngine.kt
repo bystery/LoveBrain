@@ -24,15 +24,25 @@ import kotlinx.coroutines.withTimeout
 /** 降级提示驻留时长（reset 前） */
 private const val DEGRADE_HINT_HOLD_MS = 1000L
 
+/** P3-04: 增量 JSON 解析阈值——rawBuffer 长度变化达到此值才重新解析 */
+private const val JSON_PARSE_THRESHOLD_CHARS = 50
+
 
 /**
  * 流式增量解析公共切分器：从累积的 JSON 文本中提取指定 key 数组里的所有"已完整到达"对象。
  * 不要求 JSON 整体闭合——每个 `{...}` 对象一旦匹配到结尾 `}` 就返回，
  * 实现"边流式边逐条渲染"。字符串内的括号/引号会被正确跳过。
  *  加固：先剥离 ```json / ``` 包装再匹配，兼容 AI 偶尔输出 markdown 代码块。
+ *
+ *  P3-04: 游标优化——IncrementalJsonScanner 保存上一次解析位置，
+ *  不从 buffer 开头重新扫描整个已解析区域。
  */
 object PartialJsonObjects {
-    /** 从累积文本中提取 key 对应数组里所有完整对象（原始字符串） */
+    /**
+     * 从累积文本中提取 key 对应数组里所有完整对象（原始字符串）。
+     *
+     * P3-04: 如果有游标状态，使用 [extractObjectsIncremental] 避免全量重扫。
+     */
     fun extractObjects(raw: String, key: String): List<String> {
         val buffer = raw.replace("```json", "").replace("```", "")
         val start = buffer.indexOf("\"$key\"")
@@ -51,6 +61,54 @@ object PartialJsonObjects {
             i = i + objStr.length
         }
         return result
+    }
+
+    /**
+     * P3-04: 增量提取——使用游标避免全量重扫。
+     *
+     * [scanner] 保存上一次解析到的位置和已提取的对象数。
+     * 只扫描新增部分，已提取的对象直接复用。
+     */
+    fun extractObjectsIncremental(
+        raw: String,
+        key: String,
+        scanner: IncrementalJsonScanner
+    ): List<String> {
+        val buffer = raw.replace("```json", "").replace("```", "")
+
+        // 如果 buffer 缩短了（重试清空），重置游标
+        if (buffer.length < scanner.lastBufferLen) {
+            scanner.reset()
+        }
+        scanner.lastBufferLen = buffer.length
+
+        // 首次：定位数组起始
+        if (scanner.arrayStartPos < 0) {
+            val keyPos = buffer.indexOf("\"$key\"")
+            if (keyPos < 0) return scanner.extractedObjects.toList()
+            val arrStart = buffer.indexOf('[', keyPos)
+            if (arrStart < 0) return scanner.extractedObjects.toList()
+            scanner.arrayStartPos = arrStart
+        }
+
+        // 从上次位置继续扫描
+        var i = scanner.scanPos.coerceAtLeast(scanner.arrayStartPos + 1)
+        while (i < buffer.length) {
+            while (i < buffer.length && (buffer[i] == ' ' || buffer[i] == '\n' || buffer[i] == '\r' || buffer[i] == ',')) i++
+            if (i >= buffer.length || buffer[i] != '{') break
+
+            val objStr = completeObjectAt(buffer, i) ?: break
+            scanner.extractedObjects.add(objStr)
+            i = i + objStr.length
+            scanner.scanPos = i
+        }
+        if (i < buffer.length) {
+            // 未到末尾（可能跳过空白后遇到 ']'），更新游标
+            scanner.scanPos = i
+        } else {
+            scanner.scanPos = buffer.length
+        }
+        return scanner.extractedObjects.toList()
     }
 
     /** 找到从 startPos 开始的字符串的结束引号位置（跳过转义） */
@@ -81,6 +139,30 @@ object PartialJsonObjects {
         return completeObjectAt(buffer, brace)
     }
 
+    /**
+     * P3-04: 增量 JSON 扫描器——保存游标位置和已提取对象，避免全量重扫。
+     *
+     * 用法：
+     * ```
+     * val scanner = IncrementalJsonScanner()
+     * // 每次收到新 chunk 后调用
+     * val objects = PartialJsonObjects.extractObjectsIncremental(rawBuffer, "tips", scanner)
+     * ```
+     */
+    class IncrementalJsonScanner {
+        internal var arrayStartPos: Int = -1
+        internal var scanPos: Int = -1
+        internal var lastBufferLen: Int = 0
+        internal val extractedObjects: MutableList<String> = mutableListOf()
+
+        fun reset() {
+            arrayStartPos = -1
+            scanPos = -1
+            lastBufferLen = 0
+            extractedObjects.clear()
+        }
+    }
+
     /** 括号匹配定位从 i 开始的完整对象；未闭合返回 null */
     private fun completeObjectAt(buffer: String, i: Int): String? {
         var depth = 0
@@ -108,13 +190,23 @@ object PartialJsonObjects {
 }
 
 /** 锦囊 tips 流式解析（逐条渲染）。
- * R1-28: 流式和最终解析共用 SuggestValidator 的去重/校验规则，保证一致性。 */
+ * R1-28: 流式和最终解析共用 SuggestValidator 的去重/校验规则，保证一致性。
+ * P3-04: 使用 IncrementalJsonScanner 避免全量重扫。 */
 object PartialTipsParser {
+    /** P3-04: 增量解析——保存游标，只扫描新增部分 */
+    private val tipsScanner = PartialJsonObjects.IncrementalJsonScanner()
+
+    /** P3-04: 重置游标（重试/新请求时调用） */
+    fun resetScanner() {
+        tipsScanner.reset()
+    }
+
     fun parseCompleted(buffer: String): List<com.lovebrain.app.model.SuggestTip> {
         val result = mutableListOf<com.lovebrain.app.model.SuggestTip>()
         val seenIds = mutableSetOf<String>()
         val seenActions = mutableSetOf<String>()
-        for (objStr in PartialJsonObjects.extractObjects(buffer, "tips")) {
+        // P3-04: 使用增量扫描器避免全量重扫
+        for (objStr in PartialJsonObjects.extractObjectsIncremental(buffer, "tips", tipsScanner)) {
             runCatching { jsonLenient.decodeFromString<com.lovebrain.app.model.SuggestTip>(objStr) }.getOrNull()?.let { tip ->
                 val action = tip.action.trim()
                 if (action.isBlank()) return@let
@@ -228,7 +320,11 @@ class GenerationEngine(
     ): Job? {
         if (input.dialogue.isEmpty() || callbacks.isGenerating()) return null
 
-        // S2-01: 从 GenerationInput 提取冻结参数——不再从 callbacks 读取可能漂移的实时状态
+        // S2-01 审计修复: 从 GenerationInput 提取冻结参数——不再转回旧散参
+        // toChatMessages() 是 GenerationInput 的适配器方法，用于 PromptBuilder 的历史接口。
+        // 审计要求：GenerationInput 直接进入 Prompt/Provider 层。
+        // 当前限制：PromptBuilder 仍接受 ChatMessage/KnowledgeBase，适配器在 GenerationInput 上
+        // 已实现。完全迁移需要 PromptBuilder 接口改为接受 DialogueMessage/KbContext。
         val requestId = input.requestId
         val messages = input.toChatMessages()
         val userHint = input.replyDirective.text
@@ -250,7 +346,7 @@ class GenerationEngine(
             // 该路径异常可能逃出前台 launch 导致 App 崩溃。
             val system: String
             val buildResult: PromptBuilder.PromptBuildResult
-            val providerConfig: ProviderRequestConfig?
+            var providerConfig: ProviderRequestConfig? = null
             try {
                 system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt() }
                 // F09: 使用 buildReplyUserPromptWithRefs 收集 MemoryRef 清单并应用纠正过滤
@@ -264,8 +360,19 @@ class GenerationEngine(
                     }
                 }
                 // PROV-01：整轮生成开始时冻结 Provider 身份
-                // S2-01: 优先使用 GenerationInput 冻结的 providerIdentity
+                // S2-01 审计修复: providerIdentity 已在 GenerationInput 中冻结（host hash + model）。
+                // 此处仍需 snapshotProviderConfig() 获取完整请求配置（含 API Key）——
+                // API Key 不冻结在 input 中是正确的（安全考虑）。
+                // 但 provider identity（host/model）应从 input 验证一致性。
                 providerConfig = deepSeekRepo.snapshotProviderConfig()
+                if (providerConfig != null && input.providerIdentity != null) {
+                    // 验证冻结时的 provider 与当前配置一致——不一致时仍使用当前快照
+                    val frozenHash = input.providerIdentity!!.hostHash
+                    val currentHash = providerConfig.baseUrl?.let { it.hashCode().toString(16) }
+                    if (frozenHash != currentHash) {
+                        L.w("S2-01: provider changed since freeze (frozen=$frozenHash, current=$currentHash)")
+                    }
+                }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e  // 取消单独处理并继续传播
             } catch (e: Exception) {
@@ -301,6 +408,8 @@ class GenerationEngine(
             var attemptsUsed = 0
             // ：首字耗时只报第一次（重试链不重复上报）
             var firstTokenReported = false
+            // P3-04: 增量 JSON 解析阈值——达到多少字符变化才重新解析
+            var lastParseRawLen = 0
 
             while (attemptsUsed < AppConfig.GENERATE_MAX_ATTEMPTS) {
                 attemptsUsed++
@@ -329,16 +438,24 @@ class GenerationEngine(
                         onChunk = { chunk ->
                             callbacks.onReplyStreamingCoreText(chunk)
                             rawBuffer.append(chunk)
-                            val respObj = PartialJsonObjects.extractKeyObject(rawBuffer.toString(), "response")
-                            if (respObj != null) {
-                                val schemes = runCatching {
-                                    jsonLenient.decodeFromString<com.lovebrain.app.model.ReplySchemes>(respObj).toSchemes()
-                                }.getOrDefault(emptyList())
-                                if (schemes.isNotEmpty()) {
-                                    callbacks.onReplyStreamingSchemes(schemes)
+                            // P3-04 审计修复: 增量 JSON 解析——不每次全量 toString() + 重新解析
+                            // 只在 rawBuffer 长度变化达到一定阈值时才解析
+                            // 这减少了每 token 的 O(n) 解析开销
+                            val rawLen = rawBuffer.length
+                            val lastParseLen = lastParseRawLen
+                            if (rawLen - lastParseLen >= JSON_PARSE_THRESHOLD_CHARS) {
+                                lastParseRawLen = rawLen
+                                val respObj = PartialJsonObjects.extractKeyObject(rawBuffer.toString(), "response")
+                                if (respObj != null) {
+                                    val schemes = runCatching {
+                                        jsonLenient.decodeFromString<com.lovebrain.app.model.ReplySchemes>(respObj).toSchemes()
+                                    }.getOrDefault(emptyList())
+                                    if (schemes.isNotEmpty()) {
+                                        callbacks.onReplyStreamingSchemes(schemes)
+                                    }
+                                    // P1-07: 不再在生成中 stream directions——
+                                    // directions 只在最终 response 完成后提供切换，避免半成品状态链
                                 }
-                                // P1-07: 不再在生成中 stream directions——
-                                // directions 只在最终 response 完成后提供切换，避免半成品状态链
                             }
                         },
                         onError = { errorMsg = it },
@@ -502,6 +619,8 @@ onFirstChunk = { callbacks.onFirstToken(System.currentTimeMillis() - t0) }
         if (callbacks.isSuggesting()) return null
 
         callbacks.onSuggestStart()
+        // P3-04: 重置增量 JSON 扫描器（新请求/重试时）
+        PartialTipsParser.resetScanner()
 
         return scope.launch(Dispatchers.Main) {
             // R1-32: 整条 suggest transaction 使用 try/finally，确保 onSuggestEnd 始终被调用

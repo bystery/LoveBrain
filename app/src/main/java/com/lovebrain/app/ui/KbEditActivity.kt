@@ -97,12 +97,26 @@ private val KB_FILES = listOf(
 
 class KbEditActivity : ComponentActivity() {
 
+    // S2-05 审计技术债：此处直接 inject Repository/SecurePrefs 违反 SRP/DIP。
+    // 修复方向：通过 KbEditViewModel 间接访问 Repository，Activity 只负责 UI 生命周期。
+    // 当前保留是因为完整迁移需要同时修改 Koin module 和所有调用路径。
     private val repo: KnowledgeRepository by inject()
     private val securePrefs: SecurePrefs by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val kbName = intent.getStringExtra("kb_name") ?: run { finish(); return }
+        // P3-05: FLAG_SECURE——知识库编辑页含关系数据，防止最近任务截图泄露
+        window.setFlags(
+            android.view.WindowManager.LayoutParams.FLAG_SECURE,
+            android.view.WindowManager.LayoutParams.FLAG_SECURE
+        )
+        // S2-06 审计修复: KbName value object 验证——UI 不直接传递任意路径
+        val rawName = intent.getStringExtra("kb_name") ?: run { finish(); return }
+        val kbName = try {
+            com.lovebrain.app.model.KbName(rawName).value
+        } catch (e: IllegalArgumentException) {
+            finish(); return
+        }
 
         setContent {
             LoveBrainTheme {

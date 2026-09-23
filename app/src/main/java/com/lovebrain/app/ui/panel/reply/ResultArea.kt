@@ -885,14 +885,8 @@ private fun ResultUtilityTrigger(
                 .clip(LoveBrainShape.md)
                 .background(SurfaceCard)
         ) {
-            // 始终包含"记入知识库"
-            UtilityMenuItem(
-                label = "记入知识库",
-                desc = "保存本轮回复到知识库"
-            ) {
-                menuOpen = false
-                onSaveToKb()
-            }
+            // S1-01 审计修复："记入知识库"已作为有结果时的主操作按钮展示（ReplyPrimaryActions），
+            // ⋯ 菜单不再重复提供——消除双入口和旧设计残留。
 
             // F03: 记录实际发送
             if (hasResult) {

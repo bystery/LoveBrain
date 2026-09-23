@@ -3,9 +3,12 @@ package com.lovebrain.app.model
 /**
  * S2-06: 统一知识库 schema 版本治理。
  *
- * 替代分散的 `.migrated_v2`、`.migrated_plan_v3` 等 marker 文件。
+ * 使用单一 `.schema_version` 文件替代分散的 `.migrated_v2`、`.migrated_plan_v3` 等 marker 文件。
  * 迁移按 vN -> vN+1 顺序运行；每步有备份、幂等、校验与恢复。
  * PromptBuilder 不再调用 migrateIfNeeded——迁移只能在打开/升级知识库时运行。
+ *
+ * 向后兼容：如果 `.schema_version` 不存在，回退到 legacy marker 文件检测。
+ * 迁移完成后写入 `.schema_version` 并删除所有 legacy marker。
  */
 object KnowledgeSchemaVersion {
     /** 当前 App 支持的最新 schema 版本 */

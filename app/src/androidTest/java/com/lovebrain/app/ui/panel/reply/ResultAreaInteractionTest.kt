@@ -150,10 +150,10 @@ class ResultAreaInteractionTest {
         composeRule.onNodeWithText("去设置").assertIsDisplayed()
     }
 
-    // ═══ 5. `⋯` 菜单可打开并点击"记入知识库" ═══
+    // ═══ 5. `⋯` 菜单可打开——"记入知识库"已移至主操作按钮，不再在 ⋯ 菜单中 ═══
 
     @Test
-    fun resultArea_utilityMenu_canOpenAndSaveToKb() {
+    fun resultArea_utilityMenu_canOpenAndDoesNotContainSaveToKb() {
         var saveCalled = false
         composeRule.setContent {
             ResultArea(
@@ -174,11 +174,12 @@ class ResultAreaInteractionTest {
         }
         // 点击 ⋯ trigger 打开菜单
         composeRule.onNodeWithText("⋯").performClick()
-        // 菜单中应有"记入知识库"
-        composeRule.onNodeWithText("记入知识库").assertIsDisplayed()
-        // 点击"记入知识库"
-        composeRule.onNodeWithText("记入知识库").performClick()
-        assert(saveCalled) { "onSaveToKb should have been called" }
+        // 审计修复："记入知识库"已从 ⋯ 菜单中删除——它现在是 ReplyPrimaryActions 的主操作按钮
+        val saveNodes = composeRule.onAllNodesWithText("记入知识库")
+        assert(saveNodes.fetchSemanticsNodes().isEmpty()) {
+            "Save to KB should not be in ⋯ menu — it's now a primary action button"
+        }
+        assert(!saveCalled) { "onSaveToKb should not be called from ⋯ menu" }
     }
 
     // ═══ 6. 点击 like 不触发展开 ═══

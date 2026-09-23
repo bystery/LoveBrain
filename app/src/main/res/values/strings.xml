@@ -2,4 +2,36 @@
 <resources>
     <string name="app_name">LoveBrain</string>
     <string name="accessibility_capture_desc">LoveBrain 消息捕获服务：在你开启消息捕获后，监听聊天 App 中的长按与窗口变化事件，并读取相关节点文本，用于识别你主动长按且出现"复制"菜单的消息。捕获到的文字会进入 LoveBrain 悬浮窗；当你请求 AI 回复时，相关内容会发送给你配置的模型供应商；当你完成一轮并保存时，部分内容可能写入本地知识库。服务不会自动点击或发送消息。你可以随时关闭消息捕获或在系统设置中撤销无障碍权限。</string>
+    
+    <!-- S2-07: 面板核心文案 -->
+    <string name="panel_generate_reply">生成回复</string>
+    <string name="panel_generate_reply_with_count">生成回复 · %1$d条消息</string>
+    <string name="panel_generate_opening">生成开场</string>
+    <string name="panel_retry">重试</string>
+    <string name="panel_save_to_kb">记入知识库</string>
+    <string name="panel_stop">停止</string>
+    <string name="panel_collapse">收起面板</string>
+    
+    <!-- S2-07: 主动发空态文案 -->
+    <string name="proactive_empty_hint">输入想说的话，点击下方「生成开场」让军师帮你找话题</string>
+    
+    <!-- S2-07: 错误文案 -->
+    <string name="error_provider_missing">请先配置一个可用的模型供应商</string>
+    <string name="error_auth">API Key 无效或已过期，请检查设置</string>
+    <string name="error_network">网络连接失败，请检查网络后重试</string>
+    <string name="error_timeout">请求超时，请重试</string>
+    <string name="error_rate_limited">请求过于频繁，请稍后再试</string>
+    <string name="error_prompt_read">读取配置时出错，请重试</string>
+    <string name="error_parse">解析回复失败，请重试</string>
+    <string name="error_storage">保存数据时出错，请重试</string>
+    <string name="error_param_unsupported">模型不支持当前思考模式，已尝试所有降级方案</string>
+    <string name="error_unknown">生成失败，请重试</string>
+    
+    <!-- S2-07: 无障碍 -->
+    <string name="a11y_close_onboarding">关闭使用提示</string>
+    <string name="a11y_close_notice">关闭通知</string>
+    
+    <!-- S2-07: 使用提示 -->
+    <string name="onboarding_title">使用提示</string>
+    <string name="onboarding_body">添加对话 -> 生成回复 -> 查看回复方案\n点击方案卡可调整单条措辞，长按可语音修改\n点踩可记录原因并导出，便于后续复盘和调整\n顶部显示今日/本次/累计花费与生成次数\n困惑时可切「谈心」模式，军师用公正视角帮你分析</string>
 </resources>

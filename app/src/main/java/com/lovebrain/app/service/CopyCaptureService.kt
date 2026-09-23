@@ -9,6 +9,13 @@ import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.EventBus
 import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.util.L
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 import java.io.File
 
 /**
@@ -19,6 +26,7 @@ import java.io.File
  * - 使用 AppConfig 常量
  * - ：消息捕获总开关（captureEnabled）在事件入口前置判断；不再主动 startService 重启悬浮窗
  * - ：捕获链路本地诊断文件（capture_diag.log），只记类型/长度/毫秒，不记内容
+ * - P3-04: 诊断日志进有界 channel，由 IO worker 批量写；release 默认关闭或只保留脱敏环形计数
  */
 class CopyCaptureService : AccessibilityService() {
 
@@ -48,6 +56,11 @@ class CopyCaptureService : AccessibilityService() {
     private var pendingTime = 0L
     /** H1 包名锁定：pending 来自哪个 App，窗口事件须同包名才消费（防跨 App 幽灵捕获） */
     private var pendingPkg: String? = null
+
+    /** P3-04: 诊断日志异步写入——有界 channel + IO worker，不阻塞主回调线程 */
+    private val diagScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val diagChannel = Channel<String>(capacity = 64, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private var diagWorkerStarted = false
 
     /** CAP-02：统一清理 pending 捕获事务，避免多路径手写三字段清理遗漏 */
     internal fun clearPending(reason: String) {
@@ -80,20 +93,36 @@ class CopyCaptureService : AccessibilityService() {
         clearPending("service_destroy")
         instance = null
         isRunning = false
+        // P3-04: 取消诊断 IO scope
+        diagScope.cancel()
         super.onDestroy()
     }
 
-    /** 追加诊断记录：格式 `uptimeMs|TAG|detail`，仅记类型/布尔/长度/毫秒 */
+    /** P3-04: 追加诊断记录——异步写入，不阻塞主回调线程。
+     * 格式 `uptimeMs|TAG|detail`，仅记类型/布尔/长度/毫秒，不记内容 */
     private fun appendDiag(line: String) {
-        runCatching {
-            val file = File(filesDir, DIAG_FILE)
-            if (file.exists() && file.length() > DIAG_MAX_BYTES) {
-                // 超过 200KB：清空重写（只保留当前这行）
-                file.writeText("")
+        val ts = SystemClock.uptimeMillis()
+        val entry = "$ts|$line\n"
+        // 启动 IO worker（只启动一次）
+        if (!diagWorkerStarted) {
+            diagWorkerStarted = true
+            diagScope.launch {
+                val file = File(filesDir, DIAG_FILE)
+                while (true) {
+                    val data = diagChannel.receive()
+                    try {
+                        if (file.exists() && file.length() > DIAG_MAX_BYTES) {
+                            file.writeText("")
+                        }
+                        file.appendText(data)
+                    } catch (e: Exception) {
+                        L.e("appendDiag async write failed", e)
+                    }
+                }
             }
-            val ts = SystemClock.uptimeMillis()
-            file.appendText("$ts|$line\n")
         }
+        // 非阻塞投递——channel 满时丢弃最旧条目
+        diagChannel.trySend(entry)
     }
 
     /**
@@ -101,20 +130,29 @@ class CopyCaptureService : AccessibilityService() {
      * 新版微信消息文本常挂在子节点上，长按的容器节点本身不带字 → 直接取 event.text 取不到。
      * 深度限制 4 层防性能问题，取最长的一条（最可能是完整消息内容）。
      *
+     * P3-04: 增加节点数预算（maxNodes）和截止时间（deadline），超限 fail closed。
+     *
      * 注意：入参 node（通常 = event.source）的生命周期由系统管理，调用方不应 recycle 它。
      * 本方法只 recycle 自己创建的子节点（node.getChild(i)）。
      * 本方法仅在 TYPE_VIEW_LONG_CLICKED 事件中调用，与 collectAllTextFromTree（WINDOW 事件）
      * 不会在同一次事件中执行，不存在对同一子节点重复 recycle 的问题。
      */
     private fun collectTextFromChildren(node: AccessibilityNodeInfo?, depth: Int = 0, maxDepth: Int = 4): String? {
+        return collectTextFromChildrenBounded(node, depth, maxDepth, IntArray(1).apply { this[0] = 256 }, SystemClock.uptimeMillis() + 100L)
+    }
+
+    private fun collectTextFromChildrenBounded(node: AccessibilityNodeInfo?, depth: Int, maxDepth: Int, nodeCount: IntArray, deadline: Long): String? {
         if (node == null || depth > maxDepth) return null
+        if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) return null
+        nodeCount[0]--
         var best: String? = null
         node.text?.toString()?.trim()?.let { t ->
             if (t.isNotEmpty()) best = t
         }
         for (i in 0 until node.childCount) {
+            if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) break
             val child = runCatching { node.getChild(i) }.getOrNull() ?: continue
-            val childText = collectTextFromChildren(child, depth + 1, maxDepth)
+            val childText = collectTextFromChildrenBounded(child, depth + 1, maxDepth, nodeCount, deadline)
             if (childText != null) {
                 val currentBest = best
                 if (currentBest == null || childText.length > currentBest.length) {
@@ -136,13 +174,20 @@ class CopyCaptureService : AccessibilityService() {
      * 与 collectTextFromChildren（LONGCLICK 事件）不会在同一次事件中执行。
      */
     private fun collectAllTextFromTree(node: AccessibilityNodeInfo?, depth: Int = 0, maxDepth: Int = 4): String {
+        return collectAllTextFromTreeBounded(node, depth, maxDepth, IntArray(1).apply { this[0] = 256 }, SystemClock.uptimeMillis() + 100L)
+    }
+
+    private fun collectAllTextFromTreeBounded(node: AccessibilityNodeInfo?, depth: Int, maxDepth: Int, nodeCount: IntArray, deadline: Long): String {
         if (node == null || depth > maxDepth) return ""
+        if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) return ""
+        nodeCount[0]--
         val sb = StringBuilder()
         node.text?.toString()?.trim()?.let { if (it.isNotEmpty()) sb.append(it).append("|") }
         node.contentDescription?.toString()?.trim()?.let { if (it.isNotEmpty()) sb.append(it).append("|") }
         for (i in 0 until node.childCount) {
+            if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) break
             val child = runCatching { node.getChild(i) }.getOrNull() ?: continue
-            sb.append(collectAllTextFromTree(child, depth + 1, maxDepth))
+            sb.append(collectAllTextFromTreeBounded(child, depth + 1, maxDepth, nodeCount, deadline))
             child.recycle()
         }
         return sb.toString()
@@ -150,9 +195,13 @@ class CopyCaptureService : AccessibilityService() {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
       try {
-        // 支持全部 App（不再限定微信/抖音），后续逻辑已有文本特征校验兑底
+        // P3-05: 默认最小化——排除银行、密码管理器、支付、系统设置等敏感 App
         val pkg = event.packageName?.toString() ?: return
         if (pkg == packageName) return // 忽略自身进程的事件
+        if (isSensitiveApp(pkg)) {
+            clearPending("sensitive_app_excluded")
+            return
+        }
 
         val type = event.eventType
 
@@ -285,10 +334,49 @@ class CopyCaptureService : AccessibilityService() {
         L.w("CopyCaptureService interrupted")
     }
 
+    /**
+     * P3-05: 敏感 App 排除列表——默认排除银行、密码管理器、支付、系统设置等。
+     * 未来可通过 SecurePrefs 让用户自定义 allowlist/blocklist。
+     */
+    private val sensitiveAppPrefixes = setOf(
+        "com.android.settings",
+        "com.android.phone",
+        "com.android.systemui",
+        "com.android.contacts",
+        "com.android.dialer",
+        "com.google.android.gm",
+        "com.android.chrome",
+        "com.android.vending"
+    )
+
+    private val sensitiveAppKeywords = listOf(
+        "bank", "banking", "pay", "wallet", "finance", "stock", "trade",
+        "password", "1password", "lastpass", "bitwarden", "keeper",
+        "alipay", "wechatpay", "unionpay", "cmb", "icbc", "boc", "ccb", "abc",
+        "mabank", "spdb", "citic", "cebbank", "pab", "cmbc", "bocom",
+        "google.android.apps.photos",
+        "com.android.insecurebatch"
+    )
+
+    private fun isSensitiveApp(pkg: String): Boolean {
+        // 精确匹配前缀列表
+        for (prefix in sensitiveAppPrefixes) {
+            if (pkg == prefix || pkg.startsWith("$prefix.")) return true
+        }
+        // 关键词匹配（小写）
+        val pkgLower = pkg.lowercase()
+        for (keyword in sensitiveAppKeywords) {
+            if (pkgLower.contains(keyword)) return true
+        }
+        return false
+    }
+
     override fun onUnbind(intent: Intent?): Boolean {
         clearPending("service_unbind")
         isRunning = false
         instance = null
+        // P3-04: 取消诊断 IO scope
+        diagScope.cancel()
         L.w("CopyCaptureService unbound")
         return super.onUnbind(intent)
     }

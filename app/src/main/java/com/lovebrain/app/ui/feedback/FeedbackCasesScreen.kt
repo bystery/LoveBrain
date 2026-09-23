@@ -35,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -91,9 +92,10 @@ fun FeedbackCasesScreen(
     val loadError by viewModel.feedbackError.collectAsStateWithLifecycle()
     val exportState by viewModel.exportState.collectAsStateWithLifecycle()
 
-    var filterCategory by remember { mutableStateOf<FeedbackCategory?>(null) }
-    var expandedCaseId by remember { mutableStateOf<String?>(null) }
-    var exportFormat by remember { mutableStateOf("markdown") }
+    // S1-06 审计修复: 筛选/展开/格式状态使用 rememberSaveable，旋转/进程重建后恢复
+    var filterCategory by rememberSaveable { mutableStateOf<FeedbackCategory?>(null) }
+    var expandedCaseId by rememberSaveable { mutableStateOf<String?>(null) }
+    var exportFormat by rememberSaveable { mutableStateOf("markdown") }
     // S1-05: copiedFeedback 绑定 exportId，新导出自动重置
     var copiedExportId by remember { mutableStateOf<String?>(null) }
     var saveError by remember { mutableStateOf<String?>(null) }
@@ -105,17 +107,25 @@ fun FeedbackCasesScreen(
     val filtered = if (filterCategory == null) cases else cases.filter { filterCategory!! in it.categories }
 
     // S1-05: CreateDocument launcher——真正写入用户选择的 Uri
+    // 审计修复：openOutputStream() 返回 null 时不得假装成功。
     val saveLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument(if (exportFormat == "json") "application/json" else "text/markdown")
     ) { uri ->
         val state = exportState
         if (uri != null && state is SetupViewModel.ExportState.Success) {
             try {
+                var writeSucceeded = false
                 context.contentResolver.openOutputStream(uri)?.use { output ->
                     output.write(state.text.toByteArray())
+                    writeSucceeded = true
                 }
-                // 保存成功后关闭预览
-                viewModel.resetExportState()
+                if (writeSucceeded) {
+                    // 保存成功后关闭预览
+                    viewModel.resetExportState()
+                } else {
+                    // openOutputStream 返回 null——不假装成功
+                    saveError = "保存失败：无法打开输出流"
+                }
             } catch (e: Exception) {
                 saveError = "保存失败：${e.message ?: "未知错误"}"
             }

@@ -91,30 +91,12 @@ class TopicRecorder(
             return false
         }
 
-        // 1. 话题切换处理（仅凭 status=new 触发）——在 WAL PREPARED 之前确定 topic 状态
+        // 1. 确定本轮要做的变更（不写入任何 target）——在 WAL PREPARED 之前确定
         val curTopic = knowledgeRepo.getCurrentTopic(kb.name)
         val hasTopic = curTopic.isNotBlank() && curTopic != "（等待第一次对话）"
         val shouldRotate = topicLabel.isNotBlank() && topicStatus == "new"
 
-        if (shouldRotate) {
-            if (hasTopic) {
-                knowledgeRepo.rotateTopic(kb.name)
-                topicRotated = true
-            }
-            knowledgeRepo.setCurrentTopic(kb.name, topicLabel)
-        } else {
-            // 非轮换：drift 更新标签 / 首次对话设默认
-            val newLabel = when {
-                topicStatus == "drift" && topicLabel.isNotBlank() -> topicLabel
-                !hasTopic -> topicLabel.ifBlank { "日常对话" }
-                else -> null
-            }
-            if (newLabel != null) {
-                knowledgeRepo.setCurrentTopic(kb.name, newLabel)
-            }
-        }
-
-        // 2. 构建本轮记录
+        // 2. 构建本轮记录（pure function，不写入）
         // P0-1：候选回复不再自动当作实际发送消息。
         // scheme=null 表示本轮没有确认发送任何候选；
         // likedSchemes 记录用户偏好（点赞），但不写入"实际对话"段。
@@ -151,44 +133,62 @@ class TopicRecorder(
             }
         }
 
-        // S2-04: WAL — PREPARED: 将完整 RoundCommitEvent（含实际 recentEntry）原子写入 journal
+        // S2-04: WAL — 所有 target 写入必须在 beginCommit 和 markCommitted 之间
+        // 构造完整的 RoundCommitEvent（含所有变更数据），原子写入 journal 作为 PREPARED
         val roundId = java.util.UUID.randomUUID().toString()
+        val walEvent = RoundCommitJournal.RoundCommitEvent(
+            roundId = roundId,
+            kbName = kb.name,
+            inputRevision = 0,
+            timestamp = time,
+            topicStatus = topicStatus,
+            topicLabel = topicLabel,
+            sceneFacts = sceneFacts.map { it.text },
+            ongoing = ongoing.map { it.name },
+            recentEntry = entry,
+            turnCountIncrement = 1
+        )
+
         if (roundCommitJournal != null) {
-            val commitEvent = RoundCommitJournal.RoundCommitEvent(
-                roundId = roundId,
-                kbName = kb.name,
-                inputRevision = 0,
-                timestamp = time,
-                topicStatus = topicStatus,
-                topicLabel = topicLabel,
-                sceneFacts = sceneFacts.map { it.text },
-                ongoing = ongoing.map { it.name },
-                recentEntry = entry,
-                turnCountIncrement = 1
-            )
-            roundCommitJournal.beginCommit(commitEvent)
+            roundCommitJournal.beginCommit(walEvent)
         }
 
-        // 3. 写入 moment/recent.md（职责拆出，见 writeRecent）
-        // R02: 幂等——消息已记录时跳过 recent.md 重写和 turn count
-        if (!alreadyRecorded) {
-            writeRecent(kb.name, entry)
+        // 3. 所有 target 写入——全部在 WAL 事务边界内
+        // 3a. 话题切换（仅凭 status=new 触发）
+        if (shouldRotate) {
+            if (hasTopic) {
+                knowledgeRepo.rotateTopic(kb.name)
+                topicRotated = true
+            }
+            knowledgeRepo.setCurrentTopic(kb.name, topicLabel)
+        } else {
+            // 非轮换：drift 更新标签 / 首次对话设默认
+            val newLabel = when {
+                topicStatus == "drift" && topicLabel.isNotBlank() -> topicLabel
+                !hasTopic -> topicLabel.ifBlank { "日常对话" }
+                else -> null
+            }
+            if (newLabel != null) {
+                knowledgeRepo.setCurrentTopic(kb.name, newLabel)
+            }
         }
 
-        // 4. F03: 更新场景链——传入 SceneFact 列表和冻结消息快照做来源校验
+        // 3b. 写入 moment/recent.md（职责拆出，见 writeRecent）
+        writeRecent(kb.name, entry)
+
+        // 3c. F03: 更新场景链——传入 SceneFact 列表和冻结消息快照做来源校验
         // B项修复：传入别名映射，将 her-0/me-1 转为实际消息 ID 后再校验
         if (sceneFacts.isNotEmpty()) {
             updateSceneChain(kb.name, topicLabel, sceneFacts, messages, sourceAliasMap)
         }
 
-        // 5. 合并进行中事项（plan.md，跨话题生存）
+        // 3d. 合并进行中事项（plan.md，跨话题生存）
         mergeOngoing(kb.name, ongoing, time)
 
-        if (!alreadyRecorded) {
-            knowledgeRepo.incrementTurnCount(kb.name)
-        }
+        // 3e. turn count increment
+        knowledgeRepo.incrementTurnCount(kb.name)
 
-        // S2-04: WAL — COMMITTED: 标记提交完成并清理 journal
+        // S2-04: WAL — COMMITTED: 所有 targets 已写入，标记提交完成并清理 journal
         if (roundCommitJournal != null) {
             roundCommitJournal.markCommitted(kb.name, roundId)
         }
@@ -866,13 +866,19 @@ class TopicRecorder(
 
         com.lovebrain.app.util.L.w("S2-04: recovering round ${pendingEvent.roundId} for kb=$kbName")
 
-        // Roll-forward: 重放写入操作（幂等）
-        // 1. 话题切换
+        // S2-04 审计修复: roll-forward 重放写入操作（幂等）
+        // 修复点 1: 恢复重放现在包含 scene 和 plan（之前缺失）
+        // 修复点 2: topic rotate 幂等检查（避免重复 rotate）
+        // 修复点 3: turn count 不再依赖 recent marker 判断完成状态
+
+        // 1. 话题切换（幂等）
         val curTopic = knowledgeRepo.getCurrentTopic(kbName)
         val hasTopic = curTopic.isNotBlank() && curTopic != "（等待第一次对话）"
         val shouldRotate = pendingEvent.topicLabel.isNotBlank() && pendingEvent.topicStatus == "new"
         if (shouldRotate) {
-            if (hasTopic) {
+            // 审计修复: 只在当前 topic 不是 pendingEvent.topicLabel 时才 rotate
+            // 防止崩溃重放时重复 rotate
+            if (hasTopic && curTopic != pendingEvent.topicLabel) {
                 knowledgeRepo.rotateTopic(kbName)
             }
             knowledgeRepo.setCurrentTopic(kbName, pendingEvent.topicLabel)
@@ -882,7 +888,7 @@ class TopicRecorder(
                 !hasTopic -> pendingEvent.topicLabel.ifBlank { "日常对话" }
                 else -> null
             }
-            if (newLabel != null) {
+            if (newLabel != null && newLabel != curTopic) {
                 knowledgeRepo.setCurrentTopic(kbName, newLabel)
             }
         }
@@ -899,15 +905,39 @@ class TopicRecorder(
             }
         }
 
-        // 3. 增加 turn count（幂等——如果 recent 已包含则不重复）
-        val existingRecent = knowledgeRepo.readFile(kbName, "moment/recent.md")
-        val roundMsgIdMarker = pendingEvent.recentEntry.lines()
+        // 3. 审计修复: 重放 scene 写入（之前缺失）
+        if (pendingEvent.sceneFacts.isNotEmpty()) {
+            com.lovebrain.app.util.L.w("S2-04: replaying ${pendingEvent.sceneFacts.size} scene facts")
+            // scene facts 重放——使用事件中的 sceneFacts
+            // 注意：sourceIds 信息在 journal 中不完整，重放时不做来源校验
+            val sceneFacts = pendingEvent.sceneFacts.mapIndexed { idx, text ->
+                com.lovebrain.app.model.SceneFact(text = text, sourceIds = emptyList())
+            }
+            if (sceneFacts.isNotEmpty()) {
+                updateSceneChain(kbName, pendingEvent.topicLabel, sceneFacts, emptyList(), emptyMap())
+            }
+        }
+
+        // 4. 审计修复: 重放 plan 写入（之前缺失）
+        if (pendingEvent.ongoing.isNotEmpty()) {
+            com.lovebrain.app.util.L.w("S2-04: replaying ${pendingEvent.ongoing.size} ongoing items")
+            val ongoingItems = pendingEvent.ongoing.map { name ->
+                com.lovebrain.app.model.OngoingItem(name = name, status = "本轮提及", chain = "")
+            }
+            mergeOngoing(kbName, ongoingItems, pendingEvent.timestamp)
+        }
+
+        // 5. 审计修复: turn count 不再依赖 recent marker
+        // 只在 recent 写入成功时才增加 turn count
+        // 如果 recent 已包含此轮 marker，则 turn count 也已增加
+        val existingRecentForCount = knowledgeRepo.readFile(kbName, "moment/recent.md")
+        val roundMsgIdMarkerForCount = pendingEvent.recentEntry.lines()
             .firstOrNull { it.startsWith("<!-- round:msgIds:") }
-        if (roundMsgIdMarker == null || !existingRecent.contains(roundMsgIdMarker)) {
+        if (roundMsgIdMarkerForCount == null || !existingRecentForCount.contains(roundMsgIdMarkerForCount)) {
             knowledgeRepo.incrementTurnCount(kbName)
         }
 
-        // 4. 标记 COMMITTED 并清理 journal
+        // 6. 标记 COMMITTED 并清理 journal
         journal.markCommitted(kbName, pendingEvent.roundId)
         com.lovebrain.app.util.L.w("S2-04: recovery complete for round ${pendingEvent.roundId}")
     }

@@ -105,7 +105,7 @@ fun PanelHeader(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_chevron_down),
-                    contentDescription = null,
+                    contentDescription = "收起面板",
                     tint = TextSecondary,
                     modifier = Modifier.size(HeaderDimens.CONTROL_HEIGHT_DP.dp)
                 )

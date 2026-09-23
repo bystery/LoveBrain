@@ -48,6 +48,13 @@ class SecurePrefs(context: Context) {
             memoryTicketKeyMap = mutableMapOf()
         }
 
+        // P3-05 审计修复: 一次性内存迁移——如果旧明文 prefs 中有 provider_key_*，
+        // 迁移到加密存储后立即删除明文残留。
+        // 只在加密可用时执行——降级路径中不存在明文 Key（已不写入）。
+        if (isEncrypted) {
+            migrateAndDeleteOldPlaintextKeys(context)
+        }
+
         // ：消息/想法改纯内存（杀进程即清）——启动顺手移除旧残留键，键不再使用
         prefs.edit()
             .remove("saved_messages")
@@ -280,7 +287,8 @@ fun clearSuggestion() {
 
     /** 
      * 获取工单的 API Key（加密分条存储 / 降级内存 Map）
-     * 优先级：memoryMap → encrypted → fallback 空串
+     * 优先级：memoryMap → encrypted → fallback null
+     * P3-05 审计修复: 降级路径不再从明文 prefs 读 provider_key_*——旧明文 Key 已在迁移后删除
      */
     fun getWorkerApiKey(ticketId: String): String? {
         // 先查内存 Map（Keystore 降级路径）
@@ -288,15 +296,12 @@ fun clearSuggestion() {
             memoryTicketKeyMap?.let { map ->
                 map[ticketId]?.takeIf { it.isNotEmpty() }?.also { return it }
             }
+            // P3-05: 降级路径不再从明文 prefs 读旧 Key——返回 null，用户需重新输入
+            return null
         }
         
-        // 再查加密存储
+        // 加密存储路径
         val key = prefs.getString("provider_key_$ticketId", null)
-        
-        // 降级路径同步：如果从加密区读到且内存 Map 为空，回填内存 Map
-        if (!isEncrypted && !key.isNullOrEmpty()) {
-            memoryTicketKeyMap?.set(ticketId, key)
-        }
         
         return key
     }
@@ -350,6 +355,32 @@ fun clearSuggestion() {
     var hasCompletedOnboarding: Boolean
         get() = prefs.getBoolean(KEY_ONBOARDING_DONE, false)
         set(value) = prefs.edit().putBoolean(KEY_ONBOARDING_DONE, value).apply()
+
+    /**
+     * P3-05 审计修复: 一次性内存迁移——将旧明文 prefs 中的 provider_key_* 迁移到加密存储后删除。
+     * 在 init 中调用，只执行一次（迁移后明文 key 已删除，后续不再命中）。
+     */
+    private fun migrateAndDeleteOldPlaintextKeys(context: Context) {
+        // 读取可能的旧明文 prefs（降级路径使用的 fallback prefs）
+        val fallbackPrefs = context.getSharedPreferences("lovebrain_prefs_fallback", Context.MODE_PRIVATE)
+        val allEntries = fallbackPrefs.all
+        val keysToDelete = mutableListOf<String>()
+        for ((key, value) in allEntries) {
+            if (key.startsWith("provider_key_") && value is String && value.isNotEmpty()) {
+                // 迁移到加密存储
+                val ticketId = key.removePrefix("provider_key_")
+                prefs.edit().putString(key, value).apply()
+                keysToDelete.add(key)
+                L.w("P3-05: migrated plaintext key for ticket=$ticketId to encrypted store")
+            }
+        }
+        if (keysToDelete.isNotEmpty()) {
+            val editor = fallbackPrefs.edit()
+            keysToDelete.forEach { editor.remove(it) }
+            editor.apply()
+            L.w("P3-05: deleted ${keysToDelete.size} old plaintext keys from fallback prefs")
+        }
+    }
 
     companion object {
         private const val KEY_API_KEY = "deepseek_api_key"

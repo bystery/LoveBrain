@@ -50,7 +50,7 @@ private const val VECTOR_UPDATE_AUTO_DISMISS_MS = 5000L
 
 private object PanelStrings {
     const val STAGE_SUGGESTION_TITLE = "阶段调整建议"
-    const val PROACTIVE_EMPTY_HINT = "输入想说的话后，点击「主动发」润色"
+    const val PROACTIVE_EMPTY_HINT = "输入想说的话，点击下方「生成开场」让军师帮你找话题"
 }
 private object PanelDimens {
     const val MESSAGE_LIST_DEFAULT_HEIGHT_DP = 80
@@ -62,7 +62,7 @@ private object PanelDimens {
     const val BANNER_CLOSE_ICON_SIZE_DP = 14
     const val PILL_HEIGHT_DP = 14
     const val PILL_LABEL_GAP_DP = 3
-    const val TOUCH_TARGET_MIN_DP = 24
+    const val TOUCH_TARGET_MIN_DP = 48  // P3-03: 从 24dp 修正为 48dp 无障碍下限
     const val GENERATE_BUTTON_GAP_DP = 8
 }
 
@@ -1082,94 +1082,5 @@ private fun ProactiveResultArea(
     }
 }
 
-/**
- * S1-01: ReplyPrimaryActions — 替代旧 DualGenerateRow。
- *
- * 使用 ComposerMode 驱动的 4 种按钮状态，完全匹配 v1.3.1 主动发入口语义：
- * 1. REPLY 模式 + 无结果 → 全宽"生成回复 · N 条消息"
- * 2. REPLY 模式 + 有结果 → "重试 | 记入知识库"（记入知识库不再藏在 ⋯ 菜单）
- * 3. PROACTIVE 模式 + 空闲 → 全宽"生成开场"
- * 4. 任意模式 + 生成中 → 全宽"停止"
- */
-@Composable
-private fun ReplyPrimaryActions(
-    modifier: Modifier = Modifier,
-    composerMode: ComposerMode,
-    isGenerating: Boolean,
-    isProactive: Boolean,
-    hasReplyResult: Boolean,
-    messageCount: Int,
-    draftText: String,
-    onGenerateReply: () -> Unit,
-    onGenerateProactive: () -> Unit,
-    onRetry: () -> Unit,
-    onSaveToKb: () -> Unit,
-    onStop: () -> Unit
-) {
-    when {
-        // 生成中——回复或主动发都显示"停止"
-        isGenerating -> {
-            GenerationActionButton(
-                text = "",
-                onClick = onStop,
-                modifier = modifier.fillMaxWidth(),
-                mode = ButtonMode.LOADING,
-                heightDp = PanelDimens.TRIO_HEIGHT_DP
-            )
-        }
-        // 主动发生成中——显示"停止"
-        isProactive -> {
-            GenerationActionButton(
-                text = "停止",
-                onClick = onStop,
-                modifier = modifier.fillMaxWidth(),
-                mode = ButtonMode.STOP,
-                heightDp = PanelDimens.TRIO_HEIGHT_DP
-            )
-        }
-        // PROACTIVE 模式 + 空闲 → 全宽"生成开场"
-        composerMode == ComposerMode.PROACTIVE -> {
-            GenerationActionButton(
-                text = "生成开场",
-                onClick = onGenerateProactive,
-                modifier = modifier.fillMaxWidth(),
-                containerColor = PrimaryDark,
-                heightDp = PanelDimens.TRIO_HEIGHT_DP
-            )
-        }
-        // REPLY 模式 + 有结果 → "重试 | 记入知识库"
-        composerMode == ComposerMode.REPLY && hasReplyResult -> {
-            Row(
-                modifier = modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(PanelDimens.GENERATE_BUTTON_GAP_DP.dp)
-            ) {
-                GenerationActionButton(
-                    text = "重试",
-                    onClick = onRetry,
-                    modifier = Modifier.weight(1f),
-                    containerColor = Primary,
-                    heightDp = PanelDimens.TRIO_HEIGHT_DP
-                )
-                GenerationActionButton(
-                    text = "记入知识库",
-                    onClick = onSaveToKb,
-                    modifier = Modifier.weight(1f),
-                    containerColor = PrimaryDark,
-                    heightDp = PanelDimens.TRIO_HEIGHT_DP
-                )
-            }
-        }
-        // REPLY 模式 + 无结果 → 全宽"生成回复 · N 条消息"
-        else -> {
-            val replyEnabled = messageCount > 0
-            GenerationActionButton(
-                text = if (messageCount > 0) "生成回复 · ${messageCount}条消息" else "生成回复",
-                onClick = onGenerateReply,
-                modifier = modifier.fillMaxWidth(),
-                enabled = replyEnabled,
-                containerColor = Primary,
-                heightDp = PanelDimens.TRIO_HEIGHT_DP
-            )
-        }
-    }
-}
+// S1-01: ReplyPrimaryActions 已提取为 reply/ReplyPrimaryActions.kt 中的公共可测试组件。
+// 不再在 LoveBrainPanelScreen 中维护 private 副本——测试直接使用生产组件，消除双轨。
