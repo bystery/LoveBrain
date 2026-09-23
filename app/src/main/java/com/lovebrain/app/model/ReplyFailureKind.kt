@@ -25,6 +25,13 @@ sealed class ReplyFailureKind {
     data object Storage : ReplyFailureKind()
     /** Provider 参数不支持 */
     data object ParamUnsupported : ReplyFailureKind()
+    /**
+     * S2-01: Provider 配置在本轮冻结之后被改掉了。
+     *
+     * 旧实现遇到这种情况只写一条日志、然后改用新配置把请求发出去——
+     * 于是"冻结 Provider 身份"是假的。现在直接失败，让用户用新配置重试。
+     */
+    data object ProviderChanged : ReplyFailureKind()
     /** 未知错误 */
     data class Unknown(val rawMessage: String?) : ReplyFailureKind()
 
@@ -39,13 +46,15 @@ sealed class ReplyFailureKind {
         Parse -> "解析回复失败，请重试"
         Storage -> "保存数据时出错，请重试"
         ParamUnsupported -> "模型不支持当前思考模式，已尝试所有降级方案"
+        ProviderChanged -> "模型供应商已切换，请重新生成"
         is Unknown -> "生成失败，请重试"
     }
 
     /** 是否可重试 */
     val retryable: Boolean get() = when (this) {
         ProviderMissing, Auth -> false
-        Network, Timeout, RateLimited, PromptRead, Parse, Storage, ParamUnsupported -> true
+        Network, Timeout, RateLimited, PromptRead, Parse, Storage, ParamUnsupported,
+        ProviderChanged -> true
         is Unknown -> true
     }
 

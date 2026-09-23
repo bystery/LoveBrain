@@ -920,6 +920,40 @@ class KnowledgeRepository(
         }.getOrDefault(0)
     }
 
+    /**
+     * S2-01: 关系画像正文。
+     *
+     * GenerationInput 的 `kbContext.profile` 历史上被写死成空串，
+     * 于是"冻结输入"里根本没有画像，画像变化也就无从参与身份比对。
+     */
+    suspend fun readProfile(kbName: String): String = withContext(Dispatchers.IO) {
+        buildString {
+            for (name in listOf("me", "her", "warmth", "style")) {
+                val text = readFile(kbName, "understand/$name.md").trim()
+                if (text.isNotBlank()) append(text).append('\n')
+            }
+        }
+    }
+
+    /**
+     * S2-01: 知识内容修订号——对回复链路真正会读到的知识文件取内容指纹。
+     *
+     * 不能用 turnCount 近似：turnCount 只统计"提交过几轮"，
+     * 同一 turnCount 可以对应完全不同的画像/场景/事项内容，
+     * 手工编辑画像也不会改 turnCount。
+     */
+    suspend fun contentRevision(kbName: String): String = withContext(Dispatchers.IO) {
+        val digest = java.security.MessageDigest.getInstance("SHA-256")
+        for (path in REVISION_INPUT_PATHS) {
+            val text = readFile(kbName, path)
+            digest.update(path.toByteArray(Charsets.UTF_8))
+            digest.update(0)
+            digest.update(text.toByteArray(Charsets.UTF_8))
+            digest.update(0)
+        }
+        digest.digest().joinToString("") { "%02x".format(it) }.substring(0, 16)
+    }
+
     /** 读取当前阶段（kb.json） */
     suspend fun getCurrentStage(kbName: String): String = withContext(Dispatchers.IO) {
         val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
@@ -2102,6 +2136,13 @@ class KnowledgeRepository(
         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault()).format(Date())
 
     companion object {
+        /** 回复链路实际读取的知识文件——内容变化即构成一次新的可冻结修订（S2-01） */
+        private val REVISION_INPUT_PATHS = listOf(
+            "understand/me.md", "understand/her.md", "understand/warmth.md", "understand/style.md",
+            "moment/topic.md", "moment/scene.md", "moment/recent.md", "moment/plan.md",
+            "memory/lessons.md", "memory/raw_topic.md", "memory/raw_scene.md", "memory/raw_chat.md"
+        )
+
         private const val BACKUP_MAX_COUNT = 7      // 每个知识库保留最近 7 份备份
         private const val BACKUP_INTERVAL_MS = 12 * 3600_000L  // 两次备份间隔 ≥ 12 小时
         // 备份目录名 = <库名>_<yyyyMMdd>_<HHmm>：锚定实际命名去时间戳还原库名作分组键；

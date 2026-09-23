@@ -8,6 +8,7 @@ import android.view.accessibility.AccessibilityNodeInfo
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.EventBus
 import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.CapturePolicy
 import com.lovebrain.app.util.L
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +46,9 @@ class CopyCaptureService : AccessibilityService() {
         private const val DIAG_FILE = "capture_diag.log"
         /** 诊断文件大小上限 */
         private const val DIAG_MAX_BYTES = 200 * 1024L
+
+        /** 凭据节点探测最多访问多少个节点——大页面不无限遍历 */
+        private const val CREDENTIAL_SCAN_MAX_NODES = 120
 
         /** CAP-04：关闭捕获时主动废弃 pending，无需等下一条 AccessibilityEvent */
         fun discardPendingCapture() {
@@ -195,11 +199,22 @@ class CopyCaptureService : AccessibilityService() {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
       try {
-        // P3-05: 默认最小化——排除银行、密码管理器、支付、系统设置等敏感 App
+        // P3-05: 默认 fail-closed 的 allowlist——只有用户明确选过的聊天 App 才进入捕获，
+        // 且即使命中 allowlist，密码/验证码节点与系统窗口仍做二次拒绝。
         val pkg = event.packageName?.toString() ?: return
-        if (pkg == packageName) return // 忽略自身进程的事件
-        if (isSensitiveApp(pkg)) {
-            clearPending("sensitive_app_excluded")
+        val decision = CapturePolicy.decide(
+            CapturePolicy.Observation(
+                sourcePackage = pkg,
+                allowedPackages = securePrefs?.captureAllowedPackages ?: emptySet(),
+                ownPackage = packageName,
+                windowIsSystemLevel = isSystemLevelWindow(event),
+                hasPasswordNode = hasCredentialNode(event.source)
+            )
+        )
+        if (decision is CapturePolicy.Decision.Deny) {
+            // 只记录裁决原因，绝不记录正文或节点文本
+            clearPending("capture_denied:${decision.reason}")
+            appendDiag("DENY|pkg=${pkg.takeLast(24)}|reason=${decision.reason}")
             return
         }
 
@@ -335,40 +350,48 @@ class CopyCaptureService : AccessibilityService() {
     }
 
     /**
-     * P3-05: 敏感 App 排除列表——默认排除银行、密码管理器、支付、系统设置等。
-     * 未来可通过 SecurePrefs 让用户自定义 allowlist/blocklist。
+     * P3-05: 二次拒绝——即使用户把某个 App 加进 allowlist，
+     * 系统级窗口（通知栏/锁屏/系统选择器）仍然不采。
+     *
+     * 只看窗口类型与包名，不读正文。
      */
-    private val sensitiveAppPrefixes = setOf(
-        "com.android.settings",
-        "com.android.phone",
-        "com.android.systemui",
-        "com.android.contacts",
-        "com.android.dialer",
-        "com.google.android.gm",
-        "com.android.chrome",
-        "com.android.vending"
-    )
+    private fun isSystemLevelWindow(event: AccessibilityEvent): Boolean {
+        val pkg = event.packageName?.toString().orEmpty()
+        return pkg == "com.android.systemui" || pkg == "android"
+    }
 
-    private val sensitiveAppKeywords = listOf(
-        "bank", "banking", "pay", "wallet", "finance", "stock", "trade",
-        "password", "1password", "lastpass", "bitwarden", "keeper",
-        "alipay", "wechatpay", "unionpay", "cmb", "icbc", "boc", "ccb", "abc",
-        "mabank", "spdb", "citic", "cebbank", "pab", "cmbc", "bocom",
-        "google.android.apps.photos",
-        "com.android.insecurebatch"
-    )
-
-    private fun isSensitiveApp(pkg: String): Boolean {
-        // 精确匹配前缀列表
-        for (prefix in sensitiveAppPrefixes) {
-            if (pkg == prefix || pkg.startsWith("$prefix.")) return true
+    /**
+     * P3-05: 事件源子树里是否存在凭据输入节点。
+     *
+     * 判定只用 isPassword 布尔位与 className，绝不把节点正文带进判断，
+     * 因此聊天正文里出现"password"字样不会被误杀。
+     */
+    private fun hasCredentialNode(root: AccessibilityNodeInfo?): Boolean {
+        if (root == null) return false
+        var found = false
+        runCatching {
+            val queue = ArrayDeque<AccessibilityNodeInfo>()
+            queue.add(root)
+            var visited = 0
+            while (queue.isNotEmpty() && !found && visited < CREDENTIAL_SCAN_MAX_NODES) {
+                val node = queue.removeFirst()
+                visited++
+                // AccessibilityNodeInfo 在 API 30 之前不暴露 inputType，
+                // 所以这里能用的凭据信号就是 isPassword 布尔位本身；
+                // 第三参数留给能拿到 inputType 的调用方，这里不假装知道更多。
+                if (CapturePolicy.looksLikeCredentialNode(
+                        className = node.className?.toString(),
+                        isPassword = node.isPassword,
+                        textHintsPasswordInputType = false
+                    )
+                ) {
+                    found = true
+                    break
+                }
+                for (i in 0 until node.childCount) node.getChild(i)?.let { queue.add(it) }
+            }
         }
-        // 关键词匹配（小写）
-        val pkgLower = pkg.lowercase()
-        for (keyword in sensitiveAppKeywords) {
-            if (pkgLower.contains(keyword)) return true
-        }
-        return false
+        return found
     }
 
     override fun onUnbind(intent: Intent?): Boolean {

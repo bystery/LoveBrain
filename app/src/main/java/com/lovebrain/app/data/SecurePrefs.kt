@@ -230,6 +230,31 @@ fun clearSuggestion() {
         get() = prefs.getInt(KEY_ACCESSIBILITY_DISCLOSURE_VERSION, 0)
         set(value) = prefs.edit().putInt(KEY_ACCESSIBILITY_DISCLOSURE_VERSION, value).apply()
 
+    // ═══ P3-05：无障碍抓取 allowlist（默认 fail-closed）═══
+
+    /**
+     * 用户明确允许抓取的聊天 App 包名集合。
+     *
+     * 空集 = 什么都不抓。这是有意的默认值：上一版只有关键词 blocklist，
+     * 没命中关键词的任意 App（地区银行、企业内聊、医疗、WebView 登录页）都会进入捕获逻辑。
+     * allowlist 才能把边界收敛到用户真正授权的那几个聊天 App。
+     */
+    var captureAllowedPackages: Set<String>
+        get() = prefs.getStringSet(KEY_CAPTURE_ALLOWED_PACKAGES, emptySet())?.toSet() ?: emptySet()
+        set(value) =
+            prefs.edit().putStringSet(KEY_CAPTURE_ALLOWED_PACKAGES, value.toSet()).apply()
+
+    /** 追加一个允许抓取的包名 */
+    fun addCaptureAllowedPackage(pkg: String) {
+        if (pkg.isBlank()) return
+        captureAllowedPackages = captureAllowedPackages + pkg
+    }
+
+    /** 移除一个允许抓取的包名 */
+    fun removeCaptureAllowedPackage(pkg: String) {
+        captureAllowedPackages = captureAllowedPackages - pkg
+    }
+
     // ═══════════ 工单系统字段（ - ）════════════
 
     /** 工单列表 JSON（非敏感元数据） */
@@ -416,6 +441,8 @@ fun clearSuggestion() {
         private const val KEY_ONBOARDING_DONE = "onboarding_done"
         // RA-02：无障碍隐私披露 consent 版本号
         private const val KEY_ACCESSIBILITY_DISCLOSURE_VERSION = "accessibility_disclosure_version"
+        // P3-05：无障碍抓取 allowlist（默认空集 = 不抓任何 App）
+        private const val KEY_CAPTURE_ALLOWED_PACKAGES = "capture_allowed_packages"
 
         // 工单系统键
         private const val KEY_TICKER_LIST_JSON = "worker_tickets_json"

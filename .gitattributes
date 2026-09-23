@@ -1,0 +1,31 @@
+# Normalize line endings so the repository is byte-stable across platforms.
+#
+# Shell scripts MUST be LF: a CRLF script fails on ubuntu-latest with
+# "/usr/bin/env bash\r: No such file or directory", and the 2026-09-23 audit
+# already cost us a red CI run over a malformed shell block.
+* text=auto
+
+*.sh    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+*.txt   text eol=lf
+*.xml   text eol=lf
+*.html  text eol=lf
+
+# Binary evidence must never be text-normalised — a mangled APK/PNG breaks
+# SHA-256 verification in the release gates.
+*.apk      binary
+*.jks      binary
+*.keystore binary
+*.png      binary
+*.jpg      binary
+*.jpeg     binary
+*.gif      binary
+*.webp     binary
+*.ico      binary
+*.zip      binary
+*.gz       binary
+*.pdf      binary
+*.mp4      binary

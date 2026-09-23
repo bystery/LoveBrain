@@ -200,8 +200,18 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
      * ticket 和 apiKey 必须来自同一个 ticketId，禁止分两次读取 activeTicketId。
      */
     private fun resolveRequestConfig(): ProviderRequestConfig? {
-        // PROV-01：固定 ticketId —— 后续 ticket/apiKey 都围绕此 ID 取值，不再二次读 activeTicketId
         val ticketId = securePrefs.activeTicketId ?: return null
+        return resolveRequestConfigFor(ticketId)
+    }
+
+    /**
+     * S2-01：按指定 ticketId 解析请求配置。
+     *
+     * 生成请求在 GenerationInput 里冻结了 ticketId，Engine 必须按那个 ticketId 取配置，
+     * 不能在准备阶段之后再回读 activeTicketId——否则用户中途切工单，
+     * 本轮就会用一套从未被冻结、也从未被校验过的配置发出去。
+     */
+    private fun resolveRequestConfigFor(ticketId: String): ProviderRequestConfig? {
         if (ticketId.isBlank()) return null
 
         val ticket = getAllTickets().firstOrNull { it.id == ticketId } ?: return null
@@ -228,6 +238,16 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
      */
     internal fun snapshotProviderConfig(): ProviderRequestConfig? =
         try { resolveRequestConfig() } catch (e: IllegalArgumentException) { null }
+
+    /**
+     * S2-01：按 GenerationInput 里冻结的 ticketId 取请求配置。
+     *
+     * 与 [snapshotProviderConfig] 的区别是它绝不回读 activeTicketId：
+     * 用户中途换工单时这里返回的是**冻结时那张工单**的配置，
+     * Engine 再用非敏感字段比对，任何一项对不上就失败，而不是悄悄换供应商发请求。
+     */
+    internal fun configForTicket(ticketId: String): ProviderRequestConfig? =
+        try { resolveRequestConfigFor(ticketId) } catch (e: IllegalArgumentException) { null }
 
     // ═══════════ API 统计计数器（线程安全） ═══════════
 
