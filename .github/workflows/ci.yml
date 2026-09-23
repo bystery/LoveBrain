@@ -1,10 +1,20 @@
 name: CI
 
+# Re-audit 2026-09-23 §3/§8: every step in this file must be able to turn the
+# build red. Nothing below may swallow a failure: the audited workflow masked
+# failed downloads, failed installs and found crashes with permissive flags.
+#
+# All multi-line shell lives in scripts/ so it can be run and reviewed
+# locally; the YAML only calls those scripts.
+
 on:
   push:
     branches:
       - main
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   verify:
@@ -20,8 +30,15 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v3
 
+      - name: Make scripts executable
+        run: chmod +x gradlew scripts/*.sh scripts/lib/*.sh
+
       - name: Unit tests
-        run: chmod +x gradlew && ./gradlew :app:testDebugUnitTest --no-daemon
+        run: ./gradlew :app:testDebugUnitTest --no-daemon
+
+      - name: Assert unit test evidence is real
+        # An empty/absent XML result set is a failure, not a warning.
+        run: bash scripts/assert_artifacts.sh --label "unit" --min-tests auto --xml-dir app/build/test-results/testDebugUnitTest --html-dir app/build/reports/tests/testDebugUnitTest
 
       - name: Upload unit test report
         if: always()
@@ -29,10 +46,14 @@ jobs:
         with:
           name: unit-test-report
           path: app/build/reports/tests/testDebugUnitTest/
+          if-no-files-found: error
           retention-days: 30
 
       - name: Lint
         run: ./gradlew :app:lintDebug --no-daemon
+
+      - name: Assert lint actually ran
+        run: bash scripts/assert_artifacts.sh --label "lint" --html-dir app/build/reports
 
       - name: Upload lint report
         if: always()
@@ -40,63 +61,52 @@ jobs:
         with:
           name: lint-report
           path: app/build/reports/lint-results-debug.*
+          if-no-files-found: error
           retention-days: 30
 
       - name: Release R8 build
         run: ./gradlew :app:assembleRelease --no-daemon
 
-      - name: Dependency license scan
-        run: ./gradlew :app:dependencies --configuration releaseRuntimeClasspath --no-daemon > dependency-list.txt || true
+      - name: Verify APK metadata (SHA-256 / versionCode / versionName / package)
+        run: |
+          bash scripts/check_apk_metadata.sh \
+            app/build/outputs/apk/release/app-release.apk \
+            --expected-package com.lovebrain.app \
+            --properties dist/apk-metadata.txt \
+            --report dist/apk-metadata.md
 
-      - name: Upload dependency list
+      - name: Dependency license scan and SBOM
+        # Replaces the audited dependency dump, which was piped through a permissive
+        # fallback so it could never fail — and was neither a license scan nor an SBOM.
+        run: |
+          bash scripts/license_scan.sh \
+            --gradle-task ":app:dependencies" \
+            --configuration releaseRuntimeClasspath \
+            --policy scripts/license-policy.txt \
+            --overrides scripts/license-overrides.txt \
+            --sbom dist/sbom.spdx.json \
+            --csv dist/dependency-licenses.csv \
+            --report dist/dependency-license-report.md
+
+      - name: Upload SBOM and license evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dependency-list
-          path: dependency-list.txt
+          name: sbom-and-licenses
+          path: |
+            dist/sbom.spdx.json
+            dist/dependency-licenses.csv
+            dist/dependency-license-report.md
+          if-no-files-found: error
           retention-days: 90
 
-      - name: Compute APK SHA-256 and metadata
-        if: success()
-        run: |
-          echo "## APK Build Metadata" > ci-artifact-info.md
-          echo "" >> ci-artifact-info.md
-          echo "| Field | Value |" >> ci-artifact-info.md
-          echo "|---|---|" >> ci-artifact-info.md
-          echo "| Build type | release (R8, unsigned) |" >> ci-artifact-info.md
-          echo "| Signing status | unsigned (no debug/release keystore applied) |" >> ci-artifact-info.md
-          echo "| Commit SHA | ${{ github.sha }} |" >> ci-artifact-info.md
-          echo "| Branch | ${{ github.ref_name }} |" >> ci-artifact-info.md
-          sha256sum app/build/outputs/apk/release/*.apk > apk_sha256.txt
-          cat apk_sha256.txt
-          # Extract versionName and versionCode from APK
-          AAPT=$(ls $ANDROID_HOME/build-tools/*/aapt2 2>/dev/null | head -1)
-          if [ -n "$AAPT" ]; then
-            for apk in app/build/outputs/apk/release/*.apk; do
-              echo "| APK file | $(basename $apk) |" >> ci-artifact-info.md
-              echo "| SHA-256 | $(sha256sum "$apk" | cut -d' ' -f1) |" >> ci-artifact-info.md
-            done
-          fi
-          echo "" >> ci-artifact-info.md
-          echo "### Test Report Index" >> ci-artifact-info.md
-          echo "- Unit tests: unit-test-report artifact" >> ci-artifact-info.md
-          echo "- Lint: lint-report artifact" >> ci-artifact-info.md
-          echo "- Instrumentation: instrumentation-test-report artifact (from ui-test job)" >> ci-artifact-info.md
-
-      - name: Upload APK checksum
-        if: success()
+      - name: Upload APK checksum and metadata
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: apk-checksum
-          path: apk_sha256.txt
-          retention-days: 90
-
-      - name: Upload CI artifact info
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ci-artifact-info
-          path: ci-artifact-info.md
+          name: apk-metadata
+          path: dist/apk-metadata.*
+          if-no-files-found: error
           retention-days: 90
 
       # 无签名的 assembleRelease 产物命名为 unsigned-r8-check-apk，不能叫 release-apk
@@ -106,10 +116,12 @@ jobs:
         with:
           name: unsigned-r8-check-apk
           path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
           retention-days: 90
 
   # UI 测试属于最终质量门禁——失败必须使 CI 红灯。
-  # emulator 偶发问题通过 retry 处理，不得通过 continue-on-error 掩盖。
+  # emulator 偶发问题通过 scripts/run_ui_tests.sh 的 retry 处理，
+  # 不得用放行标志掩盖。
   ui-test:
     runs-on: ubuntu-latest
 
@@ -129,32 +141,22 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Compose UI tests (with retry)
+      - name: Compose UI tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
           script: |
-            chmod +x gradlew
-            # Retry up to 2 times for emulator flakiness.
-            # Use explicit exit code tracking instead of `||` to avoid shell 127.
-            # Both attempts must fail for the step to fail.
-            EXIT_CODE=0
-            ./gradlew :app:connectedDebugAndroidTest --no-daemon || EXIT_CODE=$?
-            if [ $EXIT_CODE -ne 0 ]; then
-              echo "First attempt failed with exit code $EXIT_CODE, retrying..."
-              EXIT_CODE=0
-              ./gradlew :app:connectedDebugAndroidTest --no-daemon || EXIT_CODE=$?
-            fi
-            exit $EXIT_CODE
+            chmod +x gradlew scripts/*.sh scripts/lib/*.sh
+            bash scripts/run_ui_tests.sh --attempts 2 --min-tests auto
           disable-animations: true
 
-      - name: Upload screenshots on failure
-        if: failure()
+      - name: Upload screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: screenshots-on-failure
+          name: instrumentation-screenshots
           path: app/build/outputs/connected_android_test_additional_output/
-          retention-days: 7
+          retention-days: 30
 
       - name: Upload test XML report
         if: always()
@@ -166,7 +168,7 @@ jobs:
             app/build/outputs/androidTest-results/connected/**/*.xml
             app/build/reports/androidTests/connected/**/*.xml
           retention-days: 30
-          if-no-files-found: warn
+          if-no-files-found: error
 
       - name: Upload instrumentation test report
         if: always()
@@ -174,19 +176,21 @@ jobs:
         with:
           name: instrumentation-test-report
           path: app/build/reports/androidTests/connected/
+          if-no-files-found: error
           retention-days: 30
 
-      - name: Upload logcat on failure
-        if: failure()
+      - name: Upload logcat
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: logcat-on-failure
+          name: logcat
           path: |
             /tmp/logcat*.txt
             app/build/outputs/androidTest-results/connected/
           retention-days: 7
 
-  # P3-07: 升级安装测试——安装旧版 APK，写入夹具，覆盖安装候选 APK，跑 smoke
+  # P3-07: 升级安装测试——下载并校验 v1.3.1、安装旧版、真实写夹具、
+  # 覆盖安装**签名/R8 Release** 候选、断言数据可读 + schema 已升级 + 主页面可用。
   upgrade-test:
     runs-on: ubuntu-latest
     needs: verify
@@ -206,38 +210,42 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Build candidate APK
-        run: chmod +x gradlew && ./gradlew :app:assembleDebug --no-daemon
-
-      - name: Download v1.3.1 fixture APK
+      - name: Build candidate release APK (R8)
+        # The audited job used assembleDebug. An upgrade verified against a
+        # debug APK says nothing about the R8'd artifact we ship.
         run: |
-          mkdir -p fixtures
-          # Download v1.3.1 release APK from GitHub releases
-          gh release download v1.3.1 --repo ${{ github.repository }} --pattern "*.apk" --dir fixtures/ || echo "No v1.3.1 APK found, skipping upgrade test"
+          chmod +x gradlew scripts/*.sh scripts/lib/*.sh
+          ./gradlew :app:assembleRelease --no-daemon
+
+      - name: Download and verify v1.3.1 fixture APK
+        # A failed download is a hard failure. The previous version of this step
+        # swallowed the failure and marked the whole upgrade gate as skipped.
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
+        run: |
+          bash scripts/download_release_apk.sh \
+            --repo "$GITHUB_REPOSITORY" \
+            --tag v1.3.1 \
+            --asset app-release.apk \
+            --dir fixtures \
+            --baseline scripts/signing-baseline.txt
 
-      - name: Upgrade install and smoke test
-        if: success()
+      - name: Upgrade install, fixture write and smoke test
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
           script: |
-            # Install old version first
-            if ls fixtures/*.apk 1>/dev/null 2>&1; then
-              adb install fixtures/*.apk || true
-              # Start old version, write fixture data
-              adb shell am start -n com.lovebrain.app/.ui.SetupActivity || true
-              sleep 5
-              # Install candidate APK (upgrade)
-              adb install -r app/build/outputs/apk/debug/*.apk
-              # Verify app still works after upgrade
-              adb shell am start -n com.lovebrain.app/.ui.SetupActivity
-              sleep 5
-              # Check for crash
-              adb logcat -d | grep -i "FATAL EXCEPTION" || true
-            else
-              echo "No fixture APK available, skipping upgrade test"
-            fi
+            bash scripts/run_upgrade_test.sh \
+              --old-apk fixtures/app-release.apk \
+              --candidate-apk app/build/outputs/apk/release/app-release.apk \
+              --out-dir fixtures
           disable-animations: true
+
+      - name: Upload upgrade evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: upgrade-evidence
+          path: fixtures/
+          if-no-files-found: error
+          retention-days: 30

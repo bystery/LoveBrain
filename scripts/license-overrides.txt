@@ -1,0 +1,14 @@
+# Reviewed license overrides for scripts/license_scan.sh
+#
+# Format (one per line):
+#   <group>:<artifact>|<license name exactly as it should be classified>
+#
+# An override is consulted ONLY when the module's POM (and its parent POMs)
+# carry no license metadata at all, so artifacts shipped without licence
+# information can be reviewed and recorded explicitly instead of silently
+# passing. The override text still goes through scripts/license-policy.txt, so
+# an override can still be DENIED — it never bypasses the policy.
+#
+# Do not add an entry just to make a red job green: read the license first.
+#
+# (no overrides at present)

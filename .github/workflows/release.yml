@@ -1,17 +1,21 @@
 # Release 自动构建工作流
 # 触发：推送 v* 格式 tag（如 v1.3.0, v1.4.0-rc1）
-# 产物：正式签名 assembleRelease APK 自动上传到对应 GitHub Release，并自动生成 Release Notes
+# 产物：正式签名 assembleRelease APK 上传到对应 GitHub Release，附证据索引
 #
 # 签名说明：
 #   CI 通过 GitHub Secrets 注入 keystore（KEYSTORE_BASE64 / KEYSTORE_PASSWORD /
-#   KEY_ALIAS / KEY_PASSWORD），解码后写入 keystore.properties，build.gradle.kts 读取并签名。
-#   缺少任一 secret 时 workflow 直接失败，绝不 fallback 到 debug 签名。
-#   本地没有 keystore.properties 时 build.gradle.kts 产出 unsigned release APK（仅供 R8/CI 验证）。
+#   KEY_ALIAS / KEY_PASSWORD）。scripts/prepare_release_keystore.sh 解码后会
+#   立刻把证书指纹与 scripts/signing-baseline.txt 比对，密钥不对就在任何
+#   Gradle 任务跑起来之前失败；绝不回退到 debug 签名。
 #
-# 质量门禁：
-#   - 发布 job 依赖同 SHA 的 CI verify + ui-test 全部成功
-#   - 构建前校验 tag == v${versionName}，RC tag 标记为 pre-release
-#   - 跑 unit + lint + R8 后才允许创建 Release
+# 质量门禁（对齐 2026-09-23 独立复核 §3 / §8 第 3 步）：
+#   - 必须等同一 SHA 的 CI verify + ui-test + upgrade-test 全绿
+#   - tag 必须等于 v${versionName}
+#   - 产物必须是签名 + R8 的 release APK，不是 debug 包
+#   - 必须与已公开 v1.3.1 的签名证书指纹连续
+#   - 必须通过真实许可证扫描 / SBOM 门禁
+#   - 必须验证全新安装与覆盖安装
+#   - 必须产出可核对的证据索引，缺任何一项就不发布
 
 name: Release
 
@@ -20,8 +24,12 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
-  # 发布 job 必须依赖同一 commit SHA 的全部 CI 成功（verify + ui-test）
+  # 发布 job 必须依赖同一 commit SHA 的全部 CI 成功。
+  # upgrade-test 以前不在这里，等于升级门禁可以整条红灯照样发布。
   wait-ci:
     runs-on: ubuntu-latest
     steps:
@@ -38,6 +46,14 @@ jobs:
         with:
           ref: ${{ github.sha }}
           check-name: 'ui-test'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 30
+
+      - name: Wait for CI upgrade-test to pass
+        uses: lewagon/wait-on-check-action@v1.3.4
+        with:
+          ref: ${{ github.sha }}
+          check-name: 'upgrade-test'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 30
 
@@ -77,7 +93,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Verify release signing secrets
+      - name: Make scripts executable
+        run: chmod +x gradlew scripts/*.sh scripts/lib/*.sh
+
+      # 缺 secret 直接失败；四个都必须非空。
+      - name: Require release signing secrets
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -89,39 +109,83 @@ jobs:
           test -n "$KEY_ALIAS" || { echo "Missing KEY_ALIAS"; exit 1; }
           test -n "$KEY_PASSWORD" || { echo "Missing KEY_PASSWORD"; exit 1; }
 
-      - name: Prepare release keystore
+      # 解码 keystore 并立刻验证证书指纹 == 已公开 v1.3.1 的指纹。
+      # 密钥被轮换或放错时，这一步在任何构建发生前就失败。
+      - name: Prepare and verify release keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          mkdir -p keystore
-          echo "$KEYSTORE_BASE64" | base64 --decode > keystore/release.jks
-          cat > keystore.properties <<EOF
-          storeFile=../keystore/release.jks
-          storePassword=$KEYSTORE_PASSWORD
-          keyAlias=$KEY_ALIAS
-          keyPassword=$KEY_PASSWORD
-          EOF
+          bash scripts/prepare_release_keystore.sh \
+            --baseline scripts/signing-baseline.txt \
+            --keystore keystore/release.jks \
+            --properties dist/keystore-check.properties
 
       - name: Run unit tests
-        run: chmod +x gradlew && ./gradlew :app:testDebugUnitTest
+        run: ./gradlew :app:testDebugUnitTest --no-daemon
+
+      - name: Assert unit test evidence is real
+        run: bash scripts/assert_artifacts.sh --label "release/unit" --min-tests auto --xml-dir app/build/test-results/testDebugUnitTest --html-dir app/build/reports/tests/testDebugUnitTest
 
       - name: Run lint
-        run: ./gradlew :app:lintDebug
+        run: ./gradlew :app:lintDebug --no-daemon
 
-      - name: Build release APK
-        run: ./gradlew :app:assembleRelease
+      - name: Build release APK (signed + R8)
+        run: ./gradlew :app:assembleRelease --no-daemon
 
-      - name: Verify APK signature
+      # 证书连续性：候选 APK 的签名者必须与 v1.3.1 已公开指纹一致。
+      # 旧流程只 apksigner verify 自身签名，换一把 key 也照样"通过"。
+      - name: Verify signing continuity with published v1.3.1
         run: |
-          APKSIGNER="$(find "$ANDROID_HOME/build-tools" \
-            -type f -name apksigner | sort -V | tail -1)"
-          "$APKSIGNER" verify \
-            --verbose \
-            --print-certs \
-            app/build/outputs/apk/release/app-release.apk
+          bash scripts/verify_signing_continuity.sh \
+            app/build/outputs/apk/release/app-release.apk \
+            --baseline scripts/signing-baseline.txt \
+            --properties dist/signing.properties \
+            --report dist/signing.md
+
+      - name: Verify APK metadata (SHA-256 / versionCode / versionName)
+        id: meta
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          bash scripts/check_apk_metadata.sh \
+            app/build/outputs/apk/release/app-release.apk \
+            --expected-package com.lovebrain.app \
+            --expected-version-name "$VERSION" \
+            --min-version-code 1 \
+            --properties dist/apk-metadata.txt \
+            --report dist/apk-metadata.md
+          cat dist/apk-metadata.txt
+
+      - name: Dependency license scan and SBOM
+        run: |
+          bash scripts/license_scan.sh \
+            --configuration releaseRuntimeClasspath \
+            --policy scripts/license-policy.txt \
+            --overrides scripts/license-overrides.txt \
+            --spdx dist/sbom.spdx.json \
+            --csv dist/dependency-licenses.csv \
+            --report dist/dependency-license-report.md
+
+      - name: Download the CI instrumentation evidence for this SHA
+        # 证据索引必须引用真正跑出来的东西，所以这里把 ui-test / upgrade-test
+        # 的工件取回来；取不到就说明门禁没跑，emit_release_evidence.sh 会失败。
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p evidence
+          gh run download "$GITHUB_SHA" --repo "$GITHUB_REPOSITORY" \
+            --name test-xml-report --dir evidence/ui-xml || {
+              echo "instrumentation XML for this SHA is missing"; exit 1; }
+          gh run download "$GITHUB_SHA" --repo "$GITHUB_REPOSITORY" \
+            --name instrumentation-test-report --dir evidence/ui-html || {
+              echo "instrumentation HTML for this SHA is missing"; exit 1; }
+          gh run download "$GITHUB_SHA" --repo "$GITHUB_REPOSITORY" \
+            --name upgrade-evidence --dir evidence/upgrade || {
+              echo "upgrade evidence for this SHA is missing"; exit 1; }
+          bash scripts/assert_artifacts.sh --label "release/ui-test" --min-tests auto \
+            --xml-dir evidence/ui-xml --html-dir evidence/ui-html
 
       - name: Rename APK with version
         id: ver
@@ -129,20 +193,49 @@ jobs:
           VERSION="${GITHUB_REF_NAME#v}"
           mkdir -p dist
           cp app/build/outputs/apk/release/app-release.apk "dist/LoveBrain-${VERSION}.apk"
+          sha256sum "dist/LoveBrain-${VERSION}.apk" > dist/SHA256.txt
+          cat dist/SHA256.txt
           echo "VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
 
-      - name: Compute APK SHA-256
+      - name: Build the release evidence index
         run: |
-          cd dist
-          sha256sum LoveBrain-*.apk > SHA256.txt
-          cat SHA256.txt
+          bash scripts/emit_release_evidence.sh \
+            --out dist/release-evidence.md \
+            --title "${GITHUB_REF_NAME}" \
+            --apk "dist/LoveBrain-${GITHUB_REF_NAME#v}.apk" \
+            --metadata dist/apk-metadata.txt \
+            --signing dist/signing.properties \
+            --sbom dist/sbom.spdx.json \
+            --sbom-csv dist/dependency-licenses.csv \
+            --license-report dist/dependency-license-report.md \
+            --upgrade-evidence evidence/upgrade \
+            --ui-xml-dir evidence/ui-xml \
+            --extra "commit=${GITHUB_SHA}" \
+            --extra "tag=${GITHUB_REF_NAME}"
 
-      - name: Create GitHub Release and upload APK
+      - name: Upload release evidence bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-evidence
+          path: |
+            dist/release-evidence.md
+            dist/apk-metadata.*
+            dist/signing.*
+            dist/sbom.spdx.json
+            dist/dependency-licenses.csv
+            dist/dependency-license-report.md
+            dist/SHA256.txt
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Create GitHub Release and upload artifacts
         uses: softprops/action-gh-release@v2
         with:
           files: |
             dist/LoveBrain-*.apk
             dist/SHA256.txt
+            dist/release-evidence.md
+            dist/sbom.spdx.json
             app/build/outputs/mapping/release/mapping.txt
-          generate_release_notes: true
+          body_path: dist/release-evidence.md
           prerelease: ${{ steps.tagcheck.outputs.IS_PRERELEASE == 'true' }}
