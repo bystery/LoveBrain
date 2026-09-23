@@ -25,13 +25,19 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import com.lovebrain.app.R
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 
 /** P3-03: 无障碍触摸区下限（dp）——所有生成按钮的可点击盒子不得低于此值 */
 private const val MIN_TOUCH_TARGET_DP = 48
+
+/** 生成中按钮的自动化锚点：点击即停止 */
+const val GENERATE_STOP_TEST_TAG = "generation_stop_action"
 
 /**
  * F13: 统一生成操作按钮组件——替代旧 GenerateButton 和 DualGenerateRow 中的重复实现。
@@ -109,13 +115,17 @@ fun GenerationActionButton(
                         strokeWidth = Spacing.xs
                     )
                     Spacer(Modifier.width(Spacing.md))
+                    // P3-03/S1-02: 文案进资源，并用 testTag 给自动化一个稳定锚点。
+                    // 复核报告点名的缺陷正是"测试找精确文字『停止』，而生产实际显示
+                    // 『分析对话 · Ns 点击停止』"——文字会变，tag 不会。
                     val phase = when {
-                        elapsedSec < 5 -> "分析对话"
-                        elapsedSec < 15 -> "生成方案"
-                        else -> "深度分析"
+                        elapsedSec < 5 -> stringResource(R.string.panel_phase_analysing)
+                        elapsedSec < 15 -> stringResource(R.string.panel_phase_drafting)
+                        else -> stringResource(R.string.panel_phase_deep_analysing)
                     }
                     Text(
-                        text = "$phase · ${elapsedSec}s  点击停止",
+                        text = stringResource(R.string.panel_analysing_with_seconds, phase, elapsedSec),
+                        modifier = Modifier.testTag(GENERATE_STOP_TEST_TAG),
                         color = Color.White,
                         style = AppTypography.titleMedium,
                         fontWeight = FontWeight.Bold

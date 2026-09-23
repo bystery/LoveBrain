@@ -1877,8 +1877,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         _counselingError.value = null
         _counselingDraft.value = ""
         _counselingStreaming.value = ""
-                securePrefs.clearCounselingResult()
-        // ：先取消防抖尾再写空，防"清空后旧草稿被防抖任务写回"复活竞态
+        // 先取消防抖尾再写空，防"清空后旧草稿被防抖任务写回"复活竞态
         draftPersistJob?.cancel()
         securePrefs.counselingDraft = ""
         securePrefs.clearCounselingHistory()

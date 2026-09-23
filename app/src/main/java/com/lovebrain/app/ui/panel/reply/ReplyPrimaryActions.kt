@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.lovebrain.app.R
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.theme.Primary
 import com.lovebrain.app.ui.theme.PrimaryDark
@@ -56,7 +58,7 @@ fun ReplyPrimaryActions(
         // 主动发生成中——显示"停止"
         isProactive -> {
             GenerationActionButton(
-                text = "停止",
+                text = stringResource(R.string.panel_stop),
                 onClick = onStop,
                 modifier = modifier.fillMaxWidth(),
                 mode = ButtonMode.STOP,
@@ -66,7 +68,7 @@ fun ReplyPrimaryActions(
         // PROACTIVE 模式 + 空闲 → 全宽"生成开场"
         composerMode == ComposerMode.PROACTIVE -> {
             GenerationActionButton(
-                text = "生成开场",
+                text = stringResource(R.string.panel_generate_opening),
                 onClick = onGenerateProactive,
                 modifier = modifier.fillMaxWidth(),
                 containerColor = PrimaryDark,
@@ -80,14 +82,14 @@ fun ReplyPrimaryActions(
                 horizontalArrangement = Arrangement.spacedBy(ReplyActionsDimens.GENERATE_BUTTON_GAP_DP.dp)
             ) {
                 GenerationActionButton(
-                    text = "重试",
+                    text = stringResource(R.string.panel_retry),
                     onClick = onRetry,
                     modifier = Modifier.weight(1f),
                     containerColor = Primary,
                     heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
                 )
                 GenerationActionButton(
-                    text = "记入知识库",
+                    text = stringResource(R.string.panel_save_to_kb),
                     onClick = onSaveToKb,
                     modifier = Modifier.weight(1f),
                     containerColor = PrimaryDark,
@@ -99,7 +101,9 @@ fun ReplyPrimaryActions(
         else -> {
             val replyEnabled = messageCount > 0
             GenerationActionButton(
-                text = if (messageCount > 0) "生成回复 · ${messageCount}条消息" else "生成回复",
+                text = if (messageCount > 0)
+                    stringResource(R.string.panel_generate_reply_with_count, messageCount)
+                else stringResource(R.string.panel_generate_reply),
                 onClick = onGenerateReply,
                 modifier = modifier.fillMaxWidth(),
                 enabled = replyEnabled,
