@@ -883,7 +883,16 @@ class KnowledgeRepository(
     }
 
     /**  KBG-01：目标 KB 已删除时 no-op */
-    suspend fun incrementTurnCount(kbName: String) = withContext(Dispatchers.IO) {
+    suspend fun incrementTurnCount(kbName: String) = incrementTurnCountBy(kbName, 1)
+
+    /**
+     * S2-04：按 WAL 事件中记录的增量推进轮次计数。
+     *
+     * 恢复路径必须读事件里的 `turnCountIncrement` 值，
+     * 而不是硬编码 +1——否则一次记录 2 轮的事务恢复后只补 1。
+     */
+    suspend fun incrementTurnCountBy(kbName: String, delta: Int) = withContext(Dispatchers.IO) {
+        if (delta <= 0) return@withContext
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("incrementTurnCount skipped: kb no longer exists")
@@ -895,7 +904,7 @@ class KnowledgeRepository(
                     val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
                     atomicWriteText(metaFile,
                         json.encodeToString(KnowledgeBase.serializer(),
-                            kb.copy(turnCount = kb.turnCount + 1, updatedAt = isoNow()))
+                            kb.copy(turnCount = kb.turnCount + delta, updatedAt = isoNow()))
                     )
                 }
             }
