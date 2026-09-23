@@ -17,7 +17,7 @@
 | SUSPEND-FREE | 受保护代码段内没有挂起点，且所在函数不是 suspend：吞异常不等于吞取消 |
 | NEEDS_REVIEW | 可挂起处吞掉取消信号 —— `--check` 直接失败 |
 
-挂起判据由两部分组成：全仓 `suspend fun` 名单（本仓库 128 个）+ 协程/并发库确定的挂起 API（withContext / delay / launch / withLock / collect / await / emit …）。
+挂起判据由两部分组成：全仓 `suspend fun` 名单（本仓库 133 个）+ 协程/并发库确定的挂起 API（withContext / delay / launch / withLock / collect / await / emit …）。
 
 ## 结果
 
@@ -50,43 +50,43 @@
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/FeedbackCaseRepository.kt:57` | — | — |
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KbArchiveTransfer.kt:77` | — | — |
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KbArchiveTransfer.kt:135` | — | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:66` | backupIfNeeded | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeMigrator.kt:75` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeMigrator.kt:139` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeMigrator.kt:161` | — | — |
 | PROTECTED | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:87` | backupIfNeeded | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:113` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:124` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:155` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:200` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:203` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:379` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:438` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:476` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:536` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:572` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:583` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:753` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:767` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:814` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:842` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:848` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:865` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:981` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:996` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1038` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1049` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1082` | — | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1345` | updateStageUnlockedStrict | — |
-| WAIVED | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1374` | delete | 这里只有 java.io.File 读写（delete()/writeText()），协程取消不会从这里抛出 |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1391` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1406` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1415` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1646` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1789` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1798` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1819` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1861` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1953` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1975` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:2246` | — | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:108` | backupIfNeeded | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:134` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:145` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:176` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:221` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:224` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:418` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:477` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:515` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:575` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:611` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:622` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:792` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:806` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:853` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:881` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:887` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:904` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1013` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1028` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1070` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1081` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1114` | — | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1377` | updateStageUnlockedStrict | — |
+| WAIVED | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1406` | delete | 这里只有 java.io.File 读写（delete()/writeText()），协程取消不会从这里抛出 |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1423` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1438` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1447` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1667` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1776` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1785` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1806` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt:1820` | — | — |
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/SecurePrefs.kt:29` | — | — |
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/data/SecurePrefs.kt:269` | — | — |
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/domain/GenerationEngine.kt:131` | — | — |
