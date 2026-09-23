@@ -928,16 +928,16 @@ class KnowledgeRepository(
             }
             val file = safeKbFile(kbName, relativePath) ?: return@withLock null
             val currentVersion = if (file.exists()) {
-                sha256(file.readText())
+                KbTextOps.sha256(file.readText())
             } else {
-                sha256("")
+                KbTextOps.sha256("")
             }
             if (currentVersion != expectedVersion) {
                 com.lovebrain.app.util.L.w("writeFileWithVersion conflict: $relativePath")
                 return@withLock null
             }
             writeFileUnlocked(kbName, relativePath, content)
-            sha256(content)
+            KbTextOps.sha256(content)
         }
     }
 
@@ -947,18 +947,11 @@ class KnowledgeRepository(
      */
     suspend fun readFileWithVersion(kbName: String, relativePath: String): Pair<String, String> = withContext(Dispatchers.IO) {
         val content = readFile(kbName, relativePath)
-        content to sha256(content)
+        content to KbTextOps.sha256(content)
     }
 
     /** 对外暴露的内容哈希——供 KbEdit 无版本校验路径生成新版本号 */
-    fun hashContent(text: String): String = sha256(text)
-
-    /** SHA-256 哈希（用于版本校验） */
-    private fun sha256(text: String): String {
-        val md = java.security.MessageDigest.getInstance("SHA-256")
-        val bytes = md.digest(text.toByteArray(Charsets.UTF_8))
-        return bytes.joinToString("") { "%02x".format(it) }
-    }
+    fun hashContent(text: String): String = KbTextOps.sha256(text)
 
     /**  目标 KB 已删除时 no-op */
     suspend fun incrementTurnCount(kbName: String) = incrementTurnCountBy(kbName, 1)
@@ -1658,13 +1651,6 @@ class KnowledgeRepository(
         archiveOpFile(kbName).delete()
     }
 
-    /** 计算内容哈希（用于检测输入是否变化） */
-    private fun contentHash(vararg contents: String): String {
-        val md = MessageDigest.getInstance("SHA-256")
-        contents.forEach { c -> md.update(c.toByteArray(Charsets.UTF_8)) }
-        return md.digest().joinToString("") { "%02x".format(it) }.take(16)
-    }
-
     /**
      * rotateTopic — 使用累积操作状态实现幂等和中断恢复。
      *
@@ -1701,7 +1687,7 @@ class KnowledgeRepository(
                 // 创建新操作状态
                 val timestamp = com.lovebrain.app.util.TimeFmt.now()
                 val oldTopic = getCurrentTopic(kbName)
-                val inputHash = contentHash(rawChat, recent, rawScene, scene, oldTopic)
+                val inputHash = KbTextOps.contentHash(rawChat, recent, rawScene, scene, oldTopic)
                 val newState = ArchiveOperationState(
                     operationId = "$timestamp-$inputHash",
                     kbName = kbName,
@@ -1722,8 +1708,8 @@ class KnowledgeRepository(
                 val archiveEntry = buildString {
                     append("\n# [${opState.timestamp}] ${opState.oldTopic}\n\n")
                     append("## [${opState.timestamp}] 状态变化\n")
-                    // R03: mergeSceneEntriesSorted 保留无合法时间戳的行（标为 legacy）
-                    append(mergeSceneEntriesWithLegacy(rawScene, scene))
+                    // 合并策略见 KbTextOps.mergeSceneEntries：无合法时间戳的行不丢弃，标为 legacy 留在尾部
+                    append(KbTextOps.mergeSceneEntries(rawScene, scene))
                     append("\n")
                     append("### [${opState.timestamp}] 对话记录\n")
                     if (rawChat.isNotBlank()) append(rawChat.trim()).append("\n")
@@ -1754,33 +1740,6 @@ class KnowledgeRepository(
             // 操作完成 — 删除状态文件
             deleteArchiveOpUnlocked(kbName)
         }
-    }
-
-    /** 状态条目行校验：必须以 "- [yyyy-MM-dd HH:mm]" 真实时间戳开头（防 schema 模板示例行混入） */
-    private val validEntryLine = Regex("^- \\[\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}]")
-
-    /** R03: 合并多个来源的状态条目，按时间戳倒序（最新在前）。
-     * 无合法时间戳的行不丢弃——标记为 [legacy] 保留在尾部，防用户数据永久遗漏。 */
-    private fun mergeSceneEntriesWithLegacy(vararg sources: String): String {
-        val allLines = sources.flatMap { it.lines() }.map { it.trimEnd() }.filter { it.isNotBlank() }
-        val validEntries = allLines.filter { validEntryLine.containsMatchIn(it) }
-        val legacyEntries = allLines.filter { !validEntryLine.containsMatchIn(it) }
-        if (validEntries.isEmpty() && legacyEntries.isEmpty()) return ""
-        val sorted = validEntries.sortedByDescending { parseEntryTs(it) }
-        val sb = StringBuilder()
-        if (sorted.isNotEmpty()) {
-            sb.append(sorted.joinToString("\n")).append("\n")
-        }
-        if (legacyEntries.isNotEmpty()) {
-            sb.append("# [legacy] 以下为无法解析时间戳的历史内容\n")
-            legacyEntries.forEach { sb.append(it).append("\n") }
-        }
-        return sb.toString()
-    }
-
-    private fun parseEntryTs(entry: String): Long {
-        val match = Regex("\\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})]").find(entry) ?: return 0L
-        return com.lovebrain.app.util.TimeFmt.parse(match.groupValues[1])
     }
 
     suspend fun getLessonCount(kbName: String): Int = withContext(Dispatchers.IO) {
@@ -1885,30 +1844,6 @@ class KnowledgeRepository(
         }
     }
 
-    private fun wrapPlanMetaLines(text: String): String {
-        if (text.isBlank()) return text
-        val sb = StringBuilder()
-        var inComment = false
-        for (line in text.lines()) {
-            val t = line.trim()
-            when {
-                inComment -> {
-                    sb.append(line).append("\n")
-                    if (t.contains("-->")) inComment = false
-                }
-                t.startsWith("<!--") -> {
-                    sb.append(line).append("\n")
-                    if (!t.contains("-->")) inComment = true
-                }
-                t.startsWith("格式") || t.startsWith("示例") -> {
-                    sb.append("<!-- ").append(t).append(" -->\n")
-                }
-                else -> sb.append(line).append("\n")
-            }
-        }
-        return sb.toString().trimEnd('\n') + "\n"
-    }
-
     suspend fun migrateIfNeeded(kbName: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             migrateIfNeededUnlocked(kbName)
@@ -1973,7 +1908,7 @@ class KnowledgeRepository(
             // 旧版 plan.md 的裸"格式/示例"说明行包进注释（编辑可见、预览隐藏、不进 prompt）
             if (planFile.exists()) {
                 val planText = runCatching { planFile.readText() }.getOrDefault("")
-                val fixed = wrapPlanMetaLines(planText)
+                val fixed = KbTextOps.wrapPlanMetaLines(planText)
                 if (fixed != planText) atomicWriteText(planFile, fixed)
             }
             val counselingLog = File(dir, "memory/counseling_log.md")
@@ -2161,7 +2096,7 @@ class KnowledgeRepository(
         var totalReduction = 0
         val cleanedItems = items.map { item ->
             val originalLen = item.chain.length
-            val cleanedChain = cleanPlanStateChain(item.chain)
+            val cleanedChain = KbTextOps.cleanStateChain(item.chain)
             totalReduction += originalLen - cleanedChain.length
             item.copy(chain = cleanedChain)
         }
@@ -2201,36 +2136,6 @@ class KnowledgeRepository(
 
         // 写入 schema version 3，标记 plan 迁移完成
         writeSchemaVersion(kbName, 3)
-    }
-
-    /** 清理状态链——合并连续重复状态，截断到最大长度 */
-    private fun cleanPlanStateChain(chain: String): String {
-        val states = chain.split("→").filter { it.isNotBlank() }
-        if (states.isEmpty()) return chain
-
-        // 合并连续完全相同的状态（保留最新一条）
-        val deduped = mutableListOf<String>()
-        for (state in states) {
-            val last = deduped.lastOrNull()
-            if (last != null && normalizeStateForCompare(last) == normalizeStateForCompare(state)) {
-                deduped[deduped.lastIndex] = state
-            } else {
-                deduped.add(state)
-            }
-        }
-
-        // 截断——只保留最近 10 条状态
-        val kept = if (deduped.size > 10) deduped.takeLast(10) else deduped
-        return kept.joinToString("→")
-    }
-
-    /** 归一化状态文本用于比较——去掉时间戳和（当前）标记 */
-    private fun normalizeStateForCompare(state: String): String {
-        val afterBracket = if (state.contains("]")) {
-            val lastBracket = state.lastIndexOf(']')
-            if (lastBracket >= 0) state.substring(lastBracket + 1) else state
-        } else state
-        return afterBracket.replace("（当前）", "").trim()
     }
 
     /** 可迁移的事项数据 */
