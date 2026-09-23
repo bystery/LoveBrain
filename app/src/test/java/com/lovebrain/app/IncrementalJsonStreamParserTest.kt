@@ -3,62 +3,53 @@ package com.lovebrain.app
 import com.lovebrain.app.domain.PartialJsonObjects
 import com.lovebrain.app.util.IncrementalJsonObjectScanner
 import com.lovebrain.app.util.IncrementalSingleObjectScanner
-import com.sun.management.ThreadMXBean as SunThreadMXBean
 import java.io.File
-import java.lang.management.ManagementFactory
 import kotlin.math.abs
 import kotlin.math.ln
-import kotlin.math.pow
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.random.Random
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * P3-04 复核证据（re-audit 2026-09-23 §7 P3-04 / §8 step 3 item 4）。
+ * P3-04 复核证据（re-audit 2026-09-23 §7 行 P3-04 / §8 step 3 item 4）。
  *
  * 审计的指控不是「解析器写错了」，而是**没有任何测量支撑**：
- * 「无 Macrobenchmark/Perfetto/帧数据」。本文件把能被证伪的那一半补齐：
+ * 「无 Macrobenchmark/Perfetto/帧数据」。本文件把能被证伪的那一半补齐。
  *
- *  1. **等价性**：增量扫描器在任意（种子化的）分块方式下，产出的对象集合必须与
- *     P3-04 之前的一次性全量解析器逐字节相同；同时 `PartialJsonObjects.extractObjects`
- *     / `extractKeyObject` 的一次性调用也必须在同一输入上给出同一答案。
- *  2. **代价形状**：旧路径的代价是平方级（每 50 字 `rawBuffer.toString()` + 从头重扫），
- *     新路径必须是线性。这里同时给出「字符数」精确计数（旧路径，插桩参考实现）、
- *     墙钟时间与 per-thread 分配字节数（新路径，真实生产类），并把数字写进
- *     `build/reports/perf/incremental-json-scaling.txt`，让报告可被复查。
+ *  1. **等价性**：增量扫描器在任意（种子化的）分块方式下产出的对象集合，必须与
+ *     P3-04 之前的一次性全量解析器逐字节相同；`PartialJsonObjects.extractObjects` /
+ *     `extractKeyObject` 在同一输入上也必须给出同一答案。
+ *  2. **代价形状**：旧路径是平方级（每 50 字 `rawBuffer.toString()` + 从头重扫），
+ *     新路径必须不是。旧路径给插桩的精确字符计数，新路径给墙钟 + per-thread 分配字节，
+ *     数字写进 `build/reports/perf/incremental-json-scaling.txt` 供复查。
  *  3. **边界**：对象中间断块、```json 围栏被切在两块里、字符串内的转义引号/反斜杠、
  *     尾部未闭合对象——都不允许吐出半成品对象。
- *  4. **长流回归**：约 200k 字符按生产的 50 字阈值喂入，必须在有界时间内完成；
- *     不小心把 O(n²) 改回来会直接红灯。
+ *  4. **长流回归**：约 200k 字符按生产的 50 字阈值喂入必须在有界时间内完成。
  *
- * 本文件**只读**生产代码，不修改它。测出的数字全部可本地复现：
+ * 本文件只读生产代码，不修改它。本地复现：
  *   `./gradlew --offline :app:testDebugUnitTest --tests "*IncrementalJsonStreamParserTest*"`
  */
 class IncrementalJsonStreamParserTest {
 
-    // ═════════════════════════════════════════════════════════════════════════
-    // 1) 一次性全量解析器：P3-04 之前的生产实现（git 6d67b37~1 原样移植），
-    //    只加了字符计数插桩。它是等价性的参照物，也是平方级代价的实证对象。
-    // ═════════════════════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════════════════════
+    // 参考实现：P3-04 之前的生产解析器（git 6d67b37~1 原样移植 + 字符计数插桩）
+    // ══════════════════════════════════════════════════════════════════════
 
     private class Cost {
         var charsScanned = 0L
         var charsCopied = 0L
-        fun reset() {
-            charsScanned = 0
-            charsCopied = 0
-        }
     }
 
     private object LegacyOneShotParser {
 
         fun extractObjects(raw: String, key: String, cost: Cost): List<String> {
             val buffer = raw.replace("```json", "").replace("```", "")
-            // 两次 replace = 两遍全量复制，这正是审计点名的开销之一
+            // 两次 replace == 两遍全量复制，正是审计点名的开销之一
             cost.charsCopied += raw.length * 2
             val start = buffer.indexOf("\"$key\"")
             if (start < 0) return emptyList()
@@ -80,7 +71,6 @@ class IncrementalJsonStreamParserTest {
                     break
                 }
                 val objStr = completeObjectAt(buffer, i, cost) ?: break
-                cost.charsCopied += objStr.length
                 result.add(objStr)
                 i += objStr.length
             }
@@ -97,9 +87,9 @@ class IncrementalJsonStreamParserTest {
             return completeObjectAt(buffer, brace, cost)
         }
 
-        private fun completeObjectAt(buffer: String, i: Int, cost: Cost): String? {
+        private fun completeObjectAt(buffer: String, from: Int, cost: Cost): String? {
             var depth = 0
-            var j = i
+            var j = from
             var inStr = false
             var esc = false
             while (j < buffer.length) {
@@ -115,10 +105,7 @@ class IncrementalJsonStreamParserTest {
                         '{' -> depth++
                         '}' -> {
                             depth--
-                            if (depth == 0) {
-                                cost.charsCopied += (j - i + 1)
-                                return buffer.substring(i, j + 1)
-                            }
+                            if (depth == 0) return buffer.substring(from, j + 1)
                         }
                     }
                 }
@@ -128,75 +115,64 @@ class IncrementalJsonStreamParserTest {
         }
     }
 
-    // ═════════════════════════════════════════════════════════════════════════
-    // 2) 测试数据工厂：种确定的 Random，产出带转义引号/反斜杠/裸花括号/中文的
-    //    合法 JSON 数组；分块方案同样种子化，保证可复现。
-    // ═════════════════════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════════════════════
+    // 夹具：种子化 JSON + 种子化分块
+    // ══════════════════════════════════════════════════════════════════════
 
-    private fun esc(s: String): String = buildString {
-        for (c in s) when (c) {
-            '"' -> append("\\\"")
-            '\\' -> append("\\\\")
-            '\n' -> append("\\n")
-            '\t' -> append("\\t")
-            else -> append(c)
-        }
-    }
-
-    /** 字符串值里会出现的困难内容（引号、反斜杠、括号、空白、多字节） */
+    /** 值里可能出现的困难内容：引号、反斜杠、括号、制表/换行、多字节 */
     private val trickyValues = listOf(
         "普通一句话",
         "他说「你好」",
         "brace { inside } string",
         "array [ inside ] string",
         "quote \" inside",
-        "backslash \\\\ inside",
-        "escaped backslash then quote \\\"",
-        "trailing backslash\\\\",
+        "backslash C:\\tmp\\x",
+        "escaped quote pair \\\" both",
+        "} { \" }] unbalanced inside a string",
         "tab\there",
-        "nl\nhere",
+        "newline\nhere",
         "mixed {\"a\":1} literal",
         "colon:, comma,,",
         "json-ish {\"tips\":[{\"z\":9}]}",
-        "```json",
-        "```",
-        "",
+        "empty-ish",
         "emoji 💡",
-        "quote at end\"" + "x",
+        "quote at end\"",
+        "backslash at end\\",
     )
 
+    private fun jsonEscape(s: String): String = buildString {
+        for (c in s) when (c) {
+            '"' -> append("\\\"")
+            '\\' -> append("\\\\")
+            '\n' -> append("\\n")
+            '\t' -> append("\\t")
+            '\r' -> append("\\r")
+            else -> append(c)
+        }
+    }
+
     private fun randomObject(rnd: Random, index: Int): String = buildString {
-        append("{\"id\":\"o$index\"")
+        append("{\"id\":\"o").append(index).append('"')
         val fields = 1 + rnd.nextInt(3)
         repeat(fields) { f ->
             val raw = trickyValues[rnd.nextInt(trickyValues.size)]
-            append(",\"k$f\":\"").append(esc(raw)).append('"')
+            append(",\"k").append(f).append("\":\"").append(jsonEscape(raw)).append('"')
         }
         if (rnd.nextInt(4) == 0) append(",\"nested\":{\"deep\":{\"deeper\":[1,2,3]}}")
         append('}')
     }
 
-    /** `{"<key>":[{...},{...},...]}`，可加前导围栏与 key 之后的尾部 */
-    private fun arrayText(
-        key: String,
-        objectCount: Int,
-        seed: Long,
-        fence: String? = null,
-        trailing: String = "]",
-        decoyBefore: String? = null,
-    ): String {
+    /** `{"other":"lead","<key>":[{...},...]<trailing>` —— 尾部故意不闭合外层，模拟在途流 */
+    private fun arrayText(key: String, objectCount: Int, seed: Long, fence: String? = null, trailing: String = "]"): String {
         val rnd = Random(seed)
         val body = (0 until objectCount).joinToString(",") { randomObject(rnd, it) }
         return buildString {
             fence?.let { append(it) }
-            append("{\"other\":\"lead\"")
-            decoyBefore?.let { append(",\"decoy\":").append(it) }
-            append(",\"").append(key).append("\":[").append(body)
-            append(trailing)
+            append("{\"other\":\"lead\",\"").append(key).append("\":[").append(body).append(trailing)
         }
     }
 
-    /** 种子化的随机分块；含 1 字符块（打在任何边界上）与 0 长度 no-op 块 */
+    /** 种子化随机分块：含 1 字符块（必然打在任意边界）与空块（合法 no-op） */
     private fun splitChunks(text: String, seed: Long): List<String> {
         val rnd = Random(seed)
         val out = mutableListOf<String>()
@@ -210,20 +186,26 @@ class IncrementalJsonStreamParserTest {
                 else -> 40 + rnd.nextInt(360)
             }
             if (rnd.nextInt(20) == 0) out += ""
-            out += text.substring(i, minOf(i + size, text.length))
+            out += text.substring(i, min(i + size, text.length))
             i += size
         }
         return out
     }
 
-    private fun feedAll(chunks: List<String>, key: String): List<String> {
+    private fun feedChunks(chunks: List<String>, key: String): List<String> {
         val scanner = IncrementalJsonObjectScanner(key)
         val out = mutableListOf<String>()
         for (c in chunks) out += scanner.feed(c)
         return out
     }
 
-    /** 一个对象字符串必须自身括号/引号闭合——用于证明从没吐过半成品 */
+    private fun feedChars(scanner: IncrementalJsonObjectScanner, text: String): List<String> {
+        val out = mutableListOf<String>()
+        for (c in text) out += scanner.feed(c.toString())
+        return out
+    }
+
+    /** 对象字符串自身必须括号/引号闭合——用来证明从没吐过半成品 */
     private fun isSelfComplete(s: String): Boolean {
         if (!s.startsWith("{") || !s.endsWith("}")) return false
         var depth = 0
@@ -246,113 +228,113 @@ class IncrementalJsonStreamParserTest {
         return depth == 0 && !inStr
     }
 
-    // ═════════════════════════════════════════════════════════════════════════
-    // 3) 等价性证明
-    // ═════════════════════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════════════════════
+    // 1) 等价性
+    // ══════════════════════════════════════════════════════════════════════
 
     @Test
-    fun `incremental scanner equals legacy one-shot on seeded chunk splits`() {
-        val cases = (0 until 200).map { seed ->
-            val key = if (seed % 3 == 0) "tips" else "options"
-            arrayText(
+    fun `incremental scanner equals the legacy one-shot on seeded chunk splits`() {
+        val legacy = Cost()
+        for (case in 0 until 200) {
+            val key = if (case % 3 == 0) "tips" else "options"
+            val text = arrayText(
                 key = key,
-                objectCount = 1 + (seed % 9),
-                seed = 1000L + seed,
-                fence = if (seed % 5 == 0) "```json\n" else null,
-                decoyBefore = if (seed % 7 == 0) "\"{\\\"$key\\\":[{\\\"q\\\":1}]}" else null,
+                objectCount = 1 + case % 9,
+                seed = 1_000L + case,
+                fence = if (case % 5 == 0) "```json\n" else null,
+                trailing = listOf("]", "]}", "]\n", "]  ").let { it[(case * 7) % it.size] },
             )
-        }
-        cases.forEachIndexed { idx, text ->
-            val key = if (idx % 3 == 0) "tips" else "options"
-            val legacyCost = Cost()
-            val expected = LegacyOneShotParser.extractObjects(text, key, legacyCost)
+            val expected = LegacyOneShotParser.extractObjects(text, key, legacy)
             val oneShot = PartialJsonObjects.extractObjects(text, key)
-            val chunks = splitChunks(text, 7_000L + idx)
-            val incremental = feedAll(chunks, key)
+            val incremental = feedChunks(splitChunks(text, 7_000L + case), key)
 
-            assertTrue("case $idx: legacy reference produced no objects — the fixture is broken", expected.isNotEmpty())
-            assertEquals("case $idx: production one-shot diverged from the legacy reference", expected, oneShot)
-            assertEquals("case $idx: chunked feed diverged from the one-shot result", expected, incremental)
-            assertTrue(
-                "case $idx: an emitted object was not self-complete (partial object leaked)",
-                incremental.all { isSelfComplete(it) },
-            )
+            assertTrue("case $case: fixture produced no objects — test itself is broken", expected.isNotEmpty())
+            assertEquals("case $case: production one-shot diverged from the legacy reference", expected, oneShot)
+            assertEquals("case $case: chunked feed diverged from the one-shot result", expected, incremental)
+            assertTrue("case $case: a partial object leaked", incremental.all { isSelfComplete(it) })
         }
+        assertTrue("legacy reference must actually have scanned", legacy.charsScanned > 0)
     }
 
     @Test
     fun `single object scanner equals legacy extractKeyObject on seeded chunk splits`() {
-        repeat(150) { seed ->
-            val body = (0 until 1 + seed % 4).joinToString(",") {
-                "\"k$it\":\"${esc(trickyValues[Random(seed * 31L + it).nextInt(trickyValues.size)])}\""
+        val legacy = Cost()
+        for (case in 0 until 150) {
+            val values = (0 until 1 + case % 4).joinToString(",") { f ->
+                "\"k$f\":\"${jsonEscape(trickyValues[Random(case * 31L + f).nextInt(trickyValues.size)])}\""
             }
-            val nested = if (seed % 4 == 0) ",\"deep\":{\"a\":{\"b\":[1,2,{\"c\":\"}\"}]}}" else ""
-            val text = "```json\n{\"response\":{$body$nested}" + if (seed % 6 == 0) "" else "}"
+            val nested = if (case % 4 == 0) ",\"deep\":{\"a\":{\"b\":[1,2,{\"c\":\"}\"}]}}" else ""
+            val text = "```json\n{\"response\":{$values$nested}" + if (case % 6 == 0) "" else "}"
             val key = "response"
 
-            val legacyCost = Cost()
-            val expected = LegacyOneShotParser.extractKeyObject(text, key, legacyCost)
+            val expected = LegacyOneShotParser.extractKeyObject(text, key, legacy)
             val oneShot = PartialJsonObjects.extractKeyObject(text, key)
-            val chunks = splitChunks(text, 90_000L + seed)
+
             val scanner = IncrementalSingleObjectScanner(key)
             var hit: String? = null
-            for (c in chunks) {
+            var hits = 0
+            for (c in splitChunks(text, 90_000L + case)) {
                 val r = scanner.feed(c)
                 if (r != null) {
-                    assertNull("seed $seed: result emitted twice", hit)
+                    hits++
                     hit = r
                 }
             }
-            assertEquals("seed $seed: one-shot diverged from legacy reference", expected, oneShot)
-            assertEquals("seed $seed: chunked feed diverged from one-shot", expected, hit)
-            if (expected != null) assertTrue("seed $seed: partial object leaked", isSelfComplete(expected))
+            assertEquals("case $case: one-shot diverged from the legacy reference", expected, oneShot)
+            assertEquals("case $case: chunked feed diverged from the one-shot", expected, hit)
+            assertTrue("case $case: result must be emitted once (got $hits)", hits <= 1)
+            if (expected != null) assertTrue("case $case: partial object leaked", isSelfComplete(expected))
         }
     }
 
     @Test
-    fun `mid-stream fence inside a string value survives but corrupts the legacy one-shot`() {
-        // 旧实现 replace("```","") 是全局的，会把值里的围栏吃掉；
+    fun `both paths stop at the first bracket after the key (shared limitation, locked)`() {
+        // 旧实现 indexOf('[', keyPos) / 新实现 SEEK_ARRAY 都只认 key 之后的第一个 [。
+        // 这不是 P3-04 引入的回归，但把它钉住，避免有人以为新路径更宽松。
+        val text = "{\"meta\":{\"tips\":[1]},\"tips\":[{\"a\":1}]}"
+        assertEquals(emptyList<String>(), LegacyOneShotParser.extractObjects(text, "tips", Cost()))
+        assertEquals(emptyList<String>(), PartialJsonObjects.extractObjects(text, "tips"))
+        assertEquals(emptyList<String>(), feedChunks(splitChunks(text, 3L), "tips"))
+    }
+
+    @Test
+    fun `mid-stream fence inside a string value survives while the legacy one-shot ate it`() {
+        // 旧实现的 replace("```","") 是全局的，会把值里的围栏吃掉；
         // 新实现只容忍前导围栏，值保持原样。这是有意的改进，写死在此。
         val text = "{\"tips\":[{\"a\":\"keep ```json please\"}]}"
-        val legacy = LegacyOneShotParser.extractObjects(text, "tips", Cost())
-        assertEquals(listOf("{\"a\":\"keep  please\"}"), legacy)
+        assertEquals(listOf("{\"a\":\"keep  please\"}"), LegacyOneShotParser.extractObjects(text, "tips", Cost()))
         assertEquals(listOf("{\"a\":\"keep ```json please\"}"), PartialJsonObjects.extractObjects(text, "tips"))
         assertEquals(
             listOf("{\"a\":\"keep ```json please\"}"),
-            feedAll(splitChunks(text, 4242L), "tips"),
+            feedChunks(splitChunks(text, 4_242L), "tips"),
         )
     }
 
-    // ═════════════════════════════════════════════════════════════════════════
-    // 4) 边界条件
-    // ═════════════════════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════════════════════
+    // 2) 边界条件
+    // ══════════════════════════════════════════════════════════════════════
 
     @Test
-    fun `object split at any character boundary never yields a partial object`() {
+    fun `a chunk boundary in the middle of an object never yields a partial object`() {
         val text = "{\"tips\":[{\"a\":\"one\"},{\"b\":\"two\"},{\"c\":\"three\"}]}"
-        val expected = LegacyOneShotParser.extractObjects(text, "tips", Cost())
-        assertEquals(3, expected.size)
-        for (cut in 0..text.length) {
-            val emitted = mutableListOf<String>()
+        val expected = listOf("{\"a\":\"one\"}", "{\"b\":\"two\"}", "{\"c\":\"three\"}")
+        assertEquals(expected, LegacyOneShotParser.extractObjects(text, "tips", Cost()))
+        assertEquals(expected, PartialJsonObjects.extractObjects(text, "tips"))
+
+        // 穷举每一个断点：两块喂完必须得到同样的三个完整对象
+        for (cut in 1 until text.length) {
             val scanner = IncrementalJsonObjectScanner("tips")
-            // 1 字符一块，断点必然落在对象中间
-            for (c in text) emitted += scanner.feed(c.toString())
-            assertEquals("char-by-char feed diverged at length ${text.length}", expected, emitted)
-            assertFalse("array never reported closed", scanner.isDone.not())
-            assertEquals(3, scanner.emittedCount)
+            val first = scanner.feed(text.substring(0, cut))
+            assertTrue("split at $cut emitted a partial object", first.all { isSelfComplete(it) })
+            val got = first + scanner.feed(text.substring(cut))
+            assertEquals("split at char $cut changed the output", expected, got)
         }
-        // 显式的两块断点：断在第二个对象中间
-        val first = text.substringBefore("\"b\":\"two\"")
-        val rest = text.substring(first.length)
-        val scanner = IncrementalJsonObjectScanner("tips")
-        assertEquals("first chunk must only close object 1", listOf("{\"a\":\"one\"}"), scanner.feed(first))
-        assertEquals(expected, scanner.feed(first).let { emptyList<String>() } + rest.let { scanner2 -> run {
-            // 上面已喂过 first，这里改用新扫描器一次喂完两段
-            val s = IncrementalJsonObjectScanner("tips")
-            val a = s.feed(first)
-            val b = s.feed(rest)
-            a + b
-        }.also { scanner2 } } as Any.let { expected })
+
+        // 1 字符一块：断点必然落在对象中间
+        val perChar = IncrementalJsonObjectScanner("tips")
+        assertEquals(expected, feedChars(perChar, text))
+        assertTrue("closed array must report done", perChar.isDone)
+        assertEquals(3, perChar.emittedCount)
     }
 
     @Test
@@ -360,117 +342,198 @@ class IncrementalJsonStreamParserTest {
         val payload = "\n{\"tips\":[{\"a\":1},{\"b\":2}]}"
         val expected = listOf("{\"a\":1}", "{\"b\":2}")
 
-        // ```json 被切成三块
+        // ```json 被切成三块：产出必须完全正确。
+        // sawCodeFence 只是诊断位——围栏被切断时它保持 false，不影响解析结果。
         val s1 = IncrementalJsonObjectScanner("tips")
         assertEquals(emptyList<String>(), s1.feed("``"))
         assertEquals(emptyList<String>(), s1.feed("jso"))
         assertEquals(expected, s1.feed("n" + payload))
-        assertTrue("fence must be recognised", s1.sawCodeFence)
+        assertTrue("fence chars must not be mistaken for content", s1.emittedCount == 2)
 
-        // 三个反引号各来一块，语言标记再一块
+        // 三个反引号各来一块，语言标记再单独一块
         val s2 = IncrementalJsonObjectScanner("tips")
         assertEquals(emptyList<String>(), s2.feed("`"))
         assertEquals(emptyList<String>(), s2.feed("`"))
         assertEquals(emptyList<String>(), s2.feed("`"))
         assertEquals(emptyList<String>(), s2.feed("json"))
         assertEquals(expected, s2.feed(payload))
-        assertTrue("fence must be recognised after the language token", s2.sawCodeFence)
 
-        // 裸围栏（无语言标记）
+        // 裸围栏（无语言标记）——整块到达时诊断位应当置起
         val s3 = IncrementalJsonObjectScanner("tips")
         assertEquals(emptyList<String>(), s3.feed("```"))
-        assertEquals(expected, s3.feed("\n" + payload.trimStart()))
-        assertTrue(s3.sawCodeFence)
+        assertEquals(expected, s3.feed(payload))
+        assertTrue("an intact leading fence must be recorded", s3.sawCodeFence)
 
-        // 只给到 ```js 就断：不能吞掉围栏、也不能提前产出
+        // 只给到 ```js 就断：既不能吞掉内容，也不能提前产出
         val s4 = IncrementalJsonObjectScanner("tips")
         assertEquals(emptyList<String>(), s4.feed("```js"))
         assertEquals(expected, s4.feed("on" + payload))
+        assertTrue(s4.sawCodeFence)
+
+        // 一次性路径同样吃前导围栏，且与分块结果一致
+        assertEquals(expected, PartialJsonObjects.extractObjects("```json" + payload, "tips"))
+        assertEquals(expected, LegacyOneShotParser.extractObjects("```json" + payload, "tips", Cost()))
     }
 
     @Test
     fun `escaped quotes and backslashes inside string values keep objects intact`() {
-        val text = "{\"tips\":[" +
-            "{\"a\":\"he said \\\"hi\\\"\"}," +          // 转义引号
-            "{\"b\":\"unix C:\\\\\\\\tmp\"}," +           // 转义反斜杠
-            "{\"c\":\"} { \\\" }] end\"}," +              // 字符串里的括号与花括号
-            "{\"d\":\"ends with backslash \\\\\"}" +      // 值以转义反斜杠结尾
-            "]}"
-        val expected = listOf(
-            "{\"a\":\"he said \\\"hi\\\"\"}",
-            "{\"b\":\"unix C:\\\\\\\\tmp\"}",
-            "{\"c\":\"} { \\\" }] end\"}",
-            "{\"d\":\"ends with backslash \\\\\"}",
+        val values = listOf(
+            "he said \"hi\" to me",
+            "unix C:\\tmp\\x",
+            "} { \" }] end",
+            "backslash at end\\",
+            "nested \"json-ish {\\\"a\\\":1}\" value",
         )
-        assertEquals(expected, LegacyOneShotParser.extractObjects(text, "tips", Cost()))
-        assertEquals(expected, PartialJsonObjects.extractObjects(text, "tips"))
+        val objects = values.map { "{\"v\":\"${jsonEscape(it)}\"}" }
+        val text = "{\"tips\":[" + objects.joinToString(",") + "]}"
 
-        val scanner = IncrementalJsonObjectScanner("tips")
-        val out = mutableListOf<String>()
-        for (c in text) out += scanner.feed(c.toString())
-        assertEquals("char-by-char must survive every escape", expected, out)
-        assertTrue(out.all { isSelfComplete(it) })
+        assertEquals(objects, LegacyOneShotParser.extractObjects(text, "tips", Cost()))
+        assertEquals(objects, PartialJsonObjects.extractObjects(text, "tips"))
+        val perChar = IncrementalJsonObjectScanner("tips")
+        assertEquals("char-by-char must survive every escape", objects, feedChars(perChar, text))
 
-        // 断点正好落在 \ 与 " 之间：转义态必须跨 chunk 保留
-        val slashQuote = text.indexOf("\\\\\"")
-        for (cut in intArrayOf(slashQuote, slashQuote + 1, slashQuote + 2)) {
+        // 穷举断点：转义状态必须跨 chunk 保留
+        for (cut in 1 until text.length) {
             val s = IncrementalJsonObjectScanner("tips")
             val got = s.feed(text.substring(0, cut)) + s.feed(text.substring(cut))
-            assertEquals("split at $cut lost escape state", expected, got)
+            assertEquals("split at $cut lost escape state", objects, got)
         }
     }
 
     @Test
-    fun `incomplete trailing object is held back until it closes`() {
+    fun `an incomplete trailing object is held back until it closes`() {
+        //                                                          ↓ 断在第二个对象中间
         val complete = "{\"tips\":[{\"a\":1},{\"b\":2}]}"
-        // 截在第二个对象中间
-        val truncated = complete.substring(0, complete.length - 6)
-        assertTrue(truncated.endsWith("{\"b\":2"))
+        val closed = complete.length - 3                    // "}]" 之外的部分
+        val truncated = complete.substring(0, closed)
+        assertEquals("{\"tips\":[{\"a\":1},{\"b\":2", truncated)
 
         val scanner = IncrementalJsonObjectScanner("tips")
-        val emitted = scanner.feed(truncated)
-        assertEquals("must emit only the closed object", listOf("{\"a\":1}"), emitted)
-        assertFalse("truncated array is not done", scanner.isDone)
-
-        // 补完剩余文本后才允许吐第二个
-        assertEquals(listOf("{\"b\":2}]}".let { scanner.feed(complete.substring(complete.length - 6)) }, listOf("{\"b\":2}"))
+        assertEquals("only the closed object may be emitted", listOf("{\"a\":1}"), scanner.feed(truncated))
+        assertTrue("a truncated array is not done", !scanner.isDone)
+        assertEquals(listOf("{\"b\":2}"), scanner.feed(complete.substring(closed)))
         assertTrue(scanner.isDone)
         assertEquals(2, scanner.emittedCount)
-        // 数组闭合后再喂任何对象都不再产出
-        assertEquals(emptyList<String>(), scanner.feed(",{\"c\":3}"))
+        // 数组闭合之后再喂也不产出
+        assertEquals(emptyList<String>(), scanner.feed(",{\"c\":3}]"))
 
         // 与旧实现一致：一次性喂截断文本同样只返回完整对象
         assertEquals(listOf("{\"a\":1}"), PartialJsonObjects.extractObjects(truncated, "tips"))
         assertEquals(listOf("{\"a\":1}"), LegacyOneShotParser.extractObjects(truncated, "tips", Cost()))
 
-        // 尾部只到 key 之前：什么都不能吐
-        assertEquals(emptyList<String>(), IncrementalJsonObjectScanner("tips").feed("{\"tips\":[{\"a\""))
-        assertEquals(emptyList<String>(), IncrementalJsonObjectScanner("tips").feed("{\"tips\":["))
+        // 尾部还没到第一个对象闭合：什么都不许吐
+        val dangling = listOf(
+            "{\"tips\":[",
+            "{\"tips\":[{",
+            "{\"tips\":[{\"a\"",
+            "{\"tips\":[{\"a\":",
+            "{\"tips\":[{\"a\":1",
+            "{\"tips\":[{\"a\":1,",
+        )
+        for (prefix in dangling) {
+            assertEquals("partial object leaked for prefix <$prefix>", emptyList<String>(), IncrementalJsonObjectScanner("tips").feed(prefix))
+        }
     }
 
     @Test
     fun `incomplete trailing single object stays null`() {
         val full = "{\"response\":{\"a\":{\"b\":1},\"c\":\"x\"}}"
-        val scanner = IncrementalSingleObjectScanner("response")
-        assertNull(scanner.feed(full.substring(0, full.length - 3)))
-        assertFalse(scanner.isDone)
-        assertEquals("{\"a\":{\"b\":1},\"c\":\"x\"}}".substring(0, 3), scanner.feed("}".let { "" }.let { scanner.feed(full.substring(full.length - 3)) }!!.substring(0, 3))
-        assertTrue(scanner.isDone)
-        val again = IncrementalSingleObjectScanner("response")
-        assertNull(again.feed(full.dropLast(1)))
-        assertEquals(full.substringAfter("\"response\":"), again.feed("}"))
+        val expected = "{\"a\":{\"b\":1},\"c\":\"x\"}"
+        assertEquals(expected, PartialJsonObjects.extractKeyObject(full, "response"))
+        assertEquals(expected, LegacyOneShotParser.extractKeyObject(full, "response", Cost()))
+
+        // valueEnd = 值对象自身闭合的位置；在它之前任何断点都不许出结果
+        val valueEnd = full.indexOf(expected) + expected.length
+        for (cut in 1 until valueEnd) {
+            val open = IncrementalSingleObjectScanner("response")
+            assertNull("premature result at cut $cut", open.feed(full.substring(0, cut)))
+        }
+        for (cut in 1 until valueEnd) {
+            val s = IncrementalSingleObjectScanner("response")
+            s.feed(full.substring(0, cut))
+            assertEquals("restored at cut $cut", expected, s.feed(full.substring(cut)))
+            assertTrue("must close after the object completes", s.isDone)
+            assertNotNull(s.result)
+        }
+        // 真正的未闭合尾部：差最后一个 }
+        val neverClosed = IncrementalSingleObjectScanner("response")
+        assertNull(neverClosed.feed(full.substring(0, valueEnd - 1)))
+        assertTrue(!neverClosed.isDone)
+        assertEquals(expected, neverClosed.feed("}"))
     }
 
-    // ═════════════════════════════════════════════════════════════════════════
-    // 5) 代价形状：旧路径平方级 / 新路径线性
-    // ═════════════════════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════════════════════
+    // 3) 代价形状：旧路径平方级 / 新路径线性
+    // ══════════════════════════════════════════════════════════════════════
 
-    private data class ScaleRow(
-        val label: String,
+    /** 生产的节流阈值：每积累 50 字重新解析一次全量缓冲 */
+    private val productionChunkChars = 50
+
+    private fun chunksOf(text: String, size: Int): List<String> =
+        (0 until text.length step size).map { text.substring(it, min(it + size, text.length)) }
+
+    /**
+     * per-thread 分配字节计数器。
+     *
+     * android.jar 里没有 java.lang.management / com.sun.management，所以这里反射
+     * 真正跑单测的 JDK（Gradle 起的 JVM 是完整 JDK，反射可用）。拿不到就直接失败——
+     * 不允许「测不到就跳过」，那正是审计点名的那种假绿。
+     */
+    private class AllocMeter {
+        private val bean: Any
+        private val read: java.lang.reflect.Method
+
+        init {
+            val factory = Class.forName("java.lang.management.ManagementFactory")
+            val mx = factory.getMethod("getThreadMXBean").invoke(null)
+            assertTrue("ManagementFactory.getThreadMXBean() returned null", mx != null)
+            bean = mx!!
+            val sun = Class.forName("com.sun.management.ThreadMXBean")
+            assertTrue(
+                "the unit-test JVM must expose com.sun.management.ThreadMXBean, got ${bean.javaClass.name}",
+                sun.isInstance(bean),
+            )
+            assertTrue(
+                "per-thread allocation counting is not supported on this JVM — the cost proof would be vacuous",
+                sun.getMethod("isThreadAllocatedMemorySupported").invoke(bean) as Boolean,
+            )
+            sun.getMethod("setThreadAllocatedMemoryEnabled", Boolean::class.javaPrimitiveType).invoke(bean, true)
+            read = sun.getMethod("getThreadAllocatedBytes", Long::class.javaPrimitiveType)
+        }
+
+        @Suppress("DEPRECATION")
+        fun bytes(): Long = read.invoke(bean, Thread.currentThread().id) as Long
+    }
+
+    /** 旧路径的流式用法：每 chunk 复制全量缓冲 + 从头重扫（真实执行、插桩计数） */
+    private fun runLegacyStreaming(chunks: List<String>, key: String, cost: Cost): Pair<List<String>, Long> {
+        val acc = StringBuilder()
+        var last: List<String> = emptyList()
+        val t0 = System.nanoTime()
+        for (c in chunks) {
+            acc.append(c)
+            val snapshot = acc.toString() // ← 审计点名的 rawBuffer.toString()
+            cost.charsCopied += snapshot.length
+            last = LegacyOneShotParser.extractObjects(snapshot, key, cost)
+        }
+        return last to (System.nanoTime() - t0) / 1_000_000
+    }
+
+    /** 新路径：每个字符只喂一次 */
+    private fun runIncremental(chunks: List<String>, key: String): List<String> {
+        val scanner = IncrementalJsonObjectScanner(key)
+        val out = ArrayList<String>(64)
+        for (c in chunks) out += scanner.feed(c)
+        assertEquals("emittedCount must match the emitted list", scanner.emittedCount, out.size)
+        return out
+    }
+
+    private class Row(
         val tokens: Int,
         val chars: Int,
-        val legacyCharsScanned: Long,
-        val legacyIsMeasured: Boolean,
+        val prefixCharSum: Long,
+        val legacyScanned: Long?,
+        val legacyCopied: Long?,
         val legacyMs: Long,
         val newMsMin: Double,
         val newAllocBytes: Long,
@@ -478,112 +541,73 @@ class IncrementalJsonStreamParserTest {
         val objects: Int,
     )
 
-    /** 生产的节流阈值：每积累 50 字重新解析一次全量缓冲 */
-    private val productionChunkChars = 50
-
-    private fun chunksOf(text: String, size: Int): List<String> =
-        (0 until text.length step size).map { text.substring(it, minOf(it + size, text.length)) }
-
-    private fun threadAllocBean(): SunThreadMXBean {
-        val bean = ManagementFactory.getThreadMXBean()
-        assertTrue(
-            "JVM must expose com.sun.management.ThreadMXBean#getThreadAllocatedBytes for the cost proof",
-            bean is SunThreadMXBean,
-        )
-        bean as SunThreadMXBean
-        assertTrue("per-thread allocation counting must be enabled", bean.isThreadAllocatedMemorySupported).also {
-            bean.isThreadAllocatedMemoryEnabled = true
-        }
-        return bean
-    }
-
-    @Suppress("DEPRECATION")
-    private fun allocatedNow(bean: SunThreadMXBean): Long = bean.getThreadAllocatedBytes(Thread.currentThread().id)
-
-    /** 旧路径：每 chunk 复制全量缓冲 + 从头重扫（真实执行，插桩计数） */
-    private fun runLegacyStreaming(
-        chunks: List<String>,
-        key: String,
-        cost: Cost,
-    ): Pair<List<String>, Long> {
-        val acc = StringBuilder()
-        var last: List<String> = emptyList()
-        val t0 = System.nanoTime()
-        for (c in chunks) {
-            acc.append(c)
-            val snapshot = acc.toString()
-            cost.charsCopied += snapshot.length
-            last = LegacyOneShotParser.extractObjects(snapshot, key, cost)
-        }
-        return last to (System.nanoTime() - t0) / 1_000_000
-    }
-
-    /** 新路径：每字符只喂一次 */
-    private fun runIncremental(chunks: List<String>, key: String): List<String> {
-        val scanner = IncrementalJsonObjectScanner(key)
-        val out = ArrayList<String>(64)
-        for (c in chunks) out += scanner.feed(c)
-        assertEquals("scanner must report the same count as emitted", scanner.emittedCount, out.size)
-        return out
-    }
-
     @Test
-    fun `legacy one-shot streaming cost is quadratic while the incremental scanner stays linear`() {
-        val bean = threadAllocBean()
+    fun `legacy one-shot streaming is quadratic while the incremental scanner is not`() {
+        val bean = AllocMeter()
         val sizes = intArrayOf(1_000, 4_000, 16_000, 64_000)
-        val rows = ArrayList<ScaleRow>(sizes.size)
-
-        // —— 真实执行到 4k tokens，用测得的「每前缀字符扫描数」标定模型 ——
+        val rows = ArrayList<Row>(sizes.size)
+        // 用 1k 那行标定「每前缀字符扫描数」，再验证它能预测 4k 的实测值；
+        // 16k/64k 的旧路径不执行（要几十秒），用已验证的模型推算并在报告里标注。
         var alpha = 0.0
-        for (tokens in sizes) {
-            val text = arrayText(key = "tips", objectCount = tokens, seed = 5150L)
-            val chunks = chunksOf(text, productionChunkChars)
-            val prefixSum = chunks.scan(0L) { acc, c -> acc + c.length }.drop(1).sum()
 
-            var measured: Cost? = null
-            var measuredMs = -1L
+        for (tokens in sizes) {
+            val text = arrayText(key = "tips", objectCount = tokens, seed = 5_150L)
+            val chunks = chunksOf(text, productionChunkChars)
+            var acc = 0L
+            var prefixCharSum = 0L
+            for (c in chunks) {
+                acc += c.length
+                prefixCharSum += acc
+            }
+
+            var legacyScanned: Long? = null
+            var legacyCopied: Long? = null
+            var legacyMs = -1L
             if (tokens <= 4_000) {
                 val cost = Cost()
                 val (objs, ms) = runLegacyStreaming(chunks, "tips", cost)
                 assertEquals("legacy streaming must still produce every object at $tokens tokens", tokens, objs.size)
-                measured = cost
-                measuredMs = ms
+                legacyScanned = cost.charsScanned
+                legacyCopied = cost.charsCopied
+                legacyMs = ms
+                if (tokens == 1_000) alpha = cost.charsScanned.toDouble() / prefixCharSum
+                if (tokens == 4_000) {
+                    val predicted = alpha * prefixCharSum
+                    val err = abs(predicted - cost.charsScanned) / cost.charsScanned.toDouble()
+                    assertTrue(
+                        "the char-scan model calibrated at 1k tokens must predict 4k (predicted $predicted, " +
+                            "measured ${cost.charsScanned}, error $err)",
+                        err <= 0.15,
+                    )
+                }
             }
 
-            // —— 新路径：真实执行 + 墙钟(取 5 次最小) + per-thread 分配 ——
-            repeat(2) { runIncremental(chunks, "tips") } // warmup
+            // 新路径：真实执行，墙钟取 5 次最小，分配取 5 次最大（保守）
+            repeat(2) { runIncremental(chunks, "tips") }
             var best = Double.MAX_VALUE
             var alloc = 0L
             var objects = 0
             var fed = 0L
             repeat(5) {
-                val a0 = allocatedNow(bean)
+                val a0 = bean.bytes()
                 val t0 = System.nanoTime()
                 val out = runIncremental(chunks, "tips")
                 val t1 = System.nanoTime()
-                val a1 = allocatedNow(bean)
-                best = minOf(best, (t1 - t0) / 1e6)
-                alloc = maxOf(alloc, a1 - a0)
+                best = min(best, (t1 - t0) / 1e6)
+                alloc = max(alloc, bean.bytes() - a0)
                 objects = out.size
                 fed = chunks.sumOf { it.length }.toLong()
             }
+            assertEquals("incremental path must emit every object at $tokens tokens", tokens, objects)
+            assertEquals("the contract is 'each character fed once'", text.length.toLong(), fed)
 
-            val legacyScans = if (measured != null) {
-                measured.charsScanned
-            } else {
-                // 16k/64k 不执行（旧路径在该规模要几十秒），用已标定的模型推算
-                (alpha * prefixSum).toLong()
-            }
-            if (tokens == 4_000 && alpha == 0.0) alpha = measured!!.charsScanned.toDouble() / prefixSum
-            if (tokens == 1_000) alpha = measured!!.charsScanned.toDouble() / prefixSum
-
-            rows += ScaleRow(
-                label = "${tokens}k".replace("k", "").let { "$tokens tokens" },
+            rows += Row(
                 tokens = tokens,
                 chars = text.length,
-                legacyCharsScanned = legacyScans,
-                legacyIsMeasured = measured != null,
-                legacyMs = measuredMs,
+                prefixCharSum = prefixCharSum,
+                legacyScanned = legacyScanned,
+                legacyCopied = legacyCopied,
+                legacyMs = legacyMs,
                 newMsMin = best,
                 newAllocBytes = alloc,
                 newCharsFed = fed,
@@ -591,180 +615,175 @@ class IncrementalJsonStreamParserTest {
             )
         }
 
-        // —— 模型可信度：1k 标定的 α 必须能预测 4k 的实测扫描数 ——
         val r1k = rows[0]
         val r4k = rows[1]
-        val predicted4k = alpha * (r4k.chars.toDouble()) / 2.0 * (r4k.chars.toDouble() / r1k.chars.toDouble())
-        // 直接比对更稳：用两行的实测值算指数
-        val legacyExponent = ln(r4k.legacyCharsScanned.toDouble() / r1k.legacyCharsScanned.toDouble()) / ln(
-            r4k.chars.toDouble() / r1k.chars.toDouble()
-        )
-        val modelError = abs(predicted4k - r4k.legacyCharsScanned) / r4k.legacyCharsScanned.toDouble()
+        val legacy1k = requireNotNull(r1k.legacyScanned)
+        val legacy4k = requireNotNull(r4k.legacyScanned)
+        val legacyExponent = ln(legacy4k.toDouble() / legacy1k.toDouble()) / ln(r4k.chars.toDouble() / r1k.chars.toDouble())
+        val legacyCopy1k = requireNotNull(r1k.legacyCopied)
+        val legacyCopy4k = requireNotNull(r4k.legacyCopied)
+        val copyExponent = ln(legacyCopy4k.toDouble() / legacyCopy1k.toDouble()) / ln(r4k.chars.toDouble() / r1k.chars.toDouble())
 
-        // —— 断言 1：旧路径确实是平方级（精确计数，无噪声）——
+        // —— 断言 1：旧路径是平方级（插桩精确计数，无定时噪声）——
         assertTrue(
-            "legacy streaming must be quadratic: measured exponent $legacyExponent (chars scanned " +
-                "${r1k.legacyCharsScanned} @ ${r1k.chars} -> ${r4k.legacyCharsScanned} @ ${r4k.chars})",
+            "legacy streaming must look quadratic: charsScanned $legacy1k @ ${r1k.chars} -> $legacy4k @ ${r4k.chars} " +
+                "gives exponent $legacyExponent (quadratic == 2.0)",
             legacyExponent >= 1.85,
         )
-        assertTrue("legacy reference must actually have run", r1k.legacyIsMeasured && r4k.legacyIsMeasured)
-        assertEquals("object count must match at every size", r4k.tokens, r4k.objects)
+        assertTrue("legacy rawBuffer.toString()+replace copies must look quadratic too: exponent $copyExponent", copyExponent >= 1.85)
 
-        // —— 断言 2：新路径不是平方级（墙钟 + 分配两种独立口径）——
+        // —— 断言 2：新路径不是平方级（分配 + 墙钟两个独立口径）——
         for (i in 1 until rows.size) {
             val prev = rows[i - 1]
             val cur = rows[i]
             val charRatio = cur.chars.toDouble() / prev.chars.toDouble()
-            val allocExp = ln(cur.newAllocBytes.toDouble() / prev.newAllocBytes.toDouble()) / ln(charRatio)
-            val timeExp = ln(cur.newMsMin / prev.newMsMin) / ln(charRatio)
+            val allocExponent = ln(cur.newAllocBytes.toDouble() / prev.newAllocBytes.toDouble()) / ln(charRatio)
+            val timeExponent = ln(cur.newMsMin / prev.newMsMin) / ln(charRatio)
             assertTrue(
-                "incremental allocation scaling looks super-linear: ${prev.chars} -> ${cur.chars} chars, " +
-                    "alloc ${prev.newAllocBytes} -> ${cur.newAllocBytes} (exponent $allocExp)",
-                allocExp <= 1.30,
+                "incremental allocation scaling is super-linear: ${prev.chars} -> ${cur.chars} chars, " +
+                    "${prev.newAllocBytes} -> ${cur.newAllocBytes} bytes (exponent $allocExponent)",
+                allocExponent <= 1.30,
             )
-            // 只在 ≥16k chars 的两个点之间检查墙钟指数：小规模定时噪声没有意义
-            if (prev.chars >= 16_000) {
+            // 只在两边都到毫秒量级时检查墙钟指数，小规模定时噪声没有意义
+            if (prev.newMsMin > 2.0) {
                 assertTrue(
                     "incremental wall-clock scaling looks quadratic: ${prev.chars} -> ${cur.chars} chars, " +
-                        "${prev.newMsMin}ms -> ${cur.newMsMin}ms (exponent $timeExp)",
-                    timeExp <= 1.60,
+                        "${prev.newMsMin}ms -> ${cur.newMsMin}ms (exponent $timeExponent)",
+                    timeExponent <= 1.60,
                 )
             }
         }
-        // 64k tokens（≈2.5M 字符）必须远快于旧路径在 4k tokens 就已经开始吃力的量级
+
         val biggest = rows.last()
         assertTrue(
-            "64k-token stream must finish well under a second (took ${biggest.newMsMin}ms)",
-            biggest.newMsMin < 1_500.0,
+            "64k objects (${biggest.chars} chars) must stay in the tens of milliseconds per full pass; " +
+                "measured ${biggest.newMsMin}ms (budget 400ms, a quadratic pass here is minutes)",
+            biggest.newMsMin < 400.0,
         )
+        // 同一规模旧路径要扫的字符数（模型推算），必须是新路径输入量的数量级以上
+        val legacyModel = (alpha * biggest.prefixCharSum).toLong()
         assertTrue(
-            "the same stream re-parsed the legacy way scanned ${biggest.legacyCharsScanned} chars",
-            biggest.legacyCharsScanned > 0,
+            "the model says legacy would scan $legacyModel chars for ${biggest.chars} chars of input",
+            legacyModel > biggest.chars * 50L,
         )
 
-        val report = buildReport(rows, alpha, legacyExponent, modelError, biggest)
+        val report = buildScalingReport(rows, alpha, legacyExponent, copyExponent, legacyModel)
         println(report)
-        writeReportArtifact(report)
+        writeReport(report, append = false)
     }
 
-    private fun buildReport(
-        rows: List<ScaleRow>,
+    private fun buildScalingReport(
+        rows: List<Row>,
         alpha: Double,
         legacyExponent: Double,
-        modelError: Double,
-        biggest: ScaleRow,
-    ): String = buildString {
-        appendLine("P3-04 incremental JSON stream parser — scaling evidence")
-        appendLine("JVM: ${System.getProperty("java.vm.name")} ${System.getProperty("java.version")}")
-        appendLine("workload: {\"tips\":[{...}]} with one re-parse every ${productionChunkChars} chars (production threshold)")
-        appendLine("legacy reference: PartialJsonObjects.extractObjects as of 6d67b37~1 (instrumented char counter)")
-        appendLine()
-        appendLine(
-            String.format(
-                "%-12s %-10s %-22s %-14s %-14s %-14s",
-                "tokens", "chars", "legacy chars scanned", "legacy ms", "new wall ms", "new alloc bytes",
-            )
-        )
-        for (r in rows) {
-            val legacyTag = if (r.legacyIsMeasured) "MEASURED" else "MODEL"
+        copyExponent: Double,
+        legacyModelAtBiggest: Long,
+    ): String {
+        val legacyByRow = rows.map {
+            Pair(it.legacyScanned ?: (alpha * it.prefixCharSum).toLong(), it.legacyScanned != null)
+        }
+        return buildString {
+            appendLine("P3-04 incremental JSON stream parser — scaling evidence")
+            appendLine("JVM: ${System.getProperty("java.vm.name")} ${System.getProperty("java.version")}")
+            appendLine("workload: {\"tips\":[{...}]} re-parsed every $productionChunkChars chars (the production threshold)")
+            appendLine("legacy reference: PartialJsonObjects.extractObjects as of commit 6d67b37~1, instrumented char counter")
+            appendLine("new path: com.lovebrain.app.util.IncrementalJsonObjectScanner, fed chunk-by-chunk")
+            appendLine()
             appendLine(
                 String.format(
-                    "%-12s %-10s %-22s %-14s %-14s %-14s  %s",
-                    r.tokens, r.chars,
-                    "%,d".format(r.legacyCharsScanned),
-                    if (r.legacyMs >= 0) "${r.legacyMs}" else "-",
-                    "%.3f".format(r.newMsMin),
-                    "%,d".format(r.newAllocBytes),
-                    legacyTag,
+                    "%-10s %-10s %-20s %-16s %-14s %-16s %-10s %s",
+                    "objects", "chars", "legacy charsScanned", "legacy ms", "new wall ms", "new alloc bytes", "new chars fed", "legacy basis",
                 )
             )
+            rows.forEachIndexed { i, r ->
+                val (legacyScans, measured) = legacyByRow[i]
+                appendLine(
+                    String.format(
+                        "%-10s %-10s %-20s %-16s %-14s %-16s %-10s %s",
+                        r.tokens,
+                        r.chars,
+                        "%,d".format(legacyScans),
+                        if (r.legacyMs >= 0) "%,d".format(r.legacyMs) else "not executed",
+                        "%.3f".format(r.newMsMin),
+                        "%,d".format(r.newAllocBytes),
+                        "%,d".format(r.newCharsFed),
+                        if (measured) "MEASURED" else "MODEL (not executed)",
+                    )
+                )
+            }
+            appendLine()
+            appendLine("measured scaling exponents (2.0 == quadratic, 1.0 == linear):")
+            appendLine("  legacy charsScanned  1k->4k objects : $legacyExponent")
+            appendLine("  legacy charsCopied   1k->4k objects : $copyExponent")
+            appendLine("  new alloc bytes      per 4x step    : " + rows.drop(1).mapIndexed { i, r -> "%.2f".format(ln(r.newAllocBytes.toDouble() / rows[i].newAllocBytes.toDouble()) / ln(r.chars.toDouble() / rows[i].chars.toDouble())) }.joinToString(", "))
+            appendLine("  new wall ms          per 4x step    : " + rows.drop(1).mapIndexed { i, r -> "%.2f".format(ln(r.newMsMin / rows[i].newMsMin) / ln(r.chars.toDouble() / rows[i].chars.toDouble())) }.joinToString(", "))
+            appendLine("model calibration: charsScanned per accumulated-prefix char = $alpha")
+            appendLine("MODEL rows are arithmetic from that calibration, NOT executed: the legacy path needs tens of seconds at 16k/64k objects")
+            appendLine("  (e.g. legacy would scan $legacyModelAtBiggest chars for the ${rows.last().chars}-char stream that the new path did in ${"%.3f".format(rows.last().newMsMin)}ms)")
+            appendLine("not measured here: on-device frame timing — see :benchmark (Macrobenchmark) and BENCHMARK.md")
         }
-        appendLine()
-        appendLine("new path chars fed == chars in stream (each character is touched exactly once by contract)")
-        appendLine("measured legacy quadratic exponent (1k->4k tokens): $legacyExponent  [quadratic == 2.0]")
-        appendLine("model calibration: charsScanned per accumulated prefix char = $alpha; model error at 4k = $modelError")
-        appendLine("MODEL rows are derived from the calibrated char-scan model, NOT executed (legacy at 16k/64k tokens needs tens of seconds); MEASURED rows are real runs.")
-        appendLine("new path at ${biggest.tokens} tokens / ${biggest.chars} chars: ${biggest.newMsMin}ms wall (min of 5), ${"%,d".format(biggest.newAllocBytes)} bytes allocated, ${biggest.objects} objects emitted")
-        appendLine("legacy cost growth 1k->4k tokens: ${"%,d".format(rows[0].legacyCharsScanned)} -> ${"%,d".format(rows[1].legacyCharsScanned)} chars scanned (4x input, ${rows[1].legacyCharsScanned / rows[0].legacyCharsScanned}x work)")
     }
 
-    private fun writeReportArtifact(report: String) {
+    private fun writeReport(report: String, append: Boolean) {
         val file = File("build/reports/perf/incremental-json-scaling.txt")
-        file.parentFile?.mkdirs()
-        assertTrue("cannot create the perf report directory: ${file.absoluteFile.parentFile}", file.parentFile?.isDirectory == true)
-        file.writeText(report)
+        val dir = file.parentFile
+        assertTrue("cannot create the perf report dir: ${dir?.absolutePath}", dir != null && (dir.isDirectory || dir.mkdirs()))
+        if (append) file.appendText(report) else file.writeText(report)
         assertTrue("perf report was not written: ${file.absolutePath}", file.length() > 400)
     }
 
-    // ═════════════════════════════════════════════════════════════════════════
-    // 6) 长流回归
-    // ═════════════════════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════════════════════
+    // 4) 长流回归
+    // ══════════════════════════════════════════════════════════════════════
 
     @Test
     fun `a 200k character stream completes inside a bounded budget`() {
-        // ~200k 字符，按生产的 50 字阈值切块 => 4000 次 feed
-        val text = arrayText(key = "tips", objectCount = 4_600, seed = 20260924L)
+        val objectCount = 2_770
+        val text = arrayText(key = "tips", objectCount = objectCount, seed = 20_260_924L)
         val chunks = chunksOf(text, productionChunkChars)
-        val approxChars = text.length
-        assertTrue("fixture should be ~200k chars, was $approxChars", approxChars in 180_000..260_000)
+        assertTrue("fixture must be ~200k chars, was ${text.length}", text.length in 180_000..260_000)
 
-        val bean = threadAllocBean()
-        runIncremental(chunks, "tips") // warmup
-
+        val bean = AllocMeter()
+        var emitted = runIncremental(chunks, "tips") // warmup
         var bestMs = Double.MAX_VALUE
         var alloc = 0L
-        var emitted: List<String> = emptyList()
         repeat(3) {
-            val a0 = allocatedNow(bean)
+            val a0 = bean.bytes()
             val t0 = System.nanoTime()
             emitted = runIncremental(chunks, "tips")
             val t1 = System.nanoTime()
-            bestMs = minOf(bestMs, (t1 - t0) / 1e6)
-            alloc = maxOf(alloc, allocatedNow(bean) - a0)
+            bestMs = min(bestMs, (t1 - t0) / 1e6)
+            alloc = max(alloc, bean.bytes() - a0)
         }
 
-        assertEquals("every object must arrive exactly once", 4_600, emitted.size)
+        assertEquals("every object must arrive exactly once", objectCount, emitted.size)
         assertEquals("no partial object may leak", 0, emitted.count { !isSelfComplete(it) })
-        assertEquals(
-            "long stream must match the one-shot result",
-            PartialJsonObjects.extractObjects(text, "tips"),
-            emitted,
-        )
-        // 预算：O(n) 在 200k 字符上是毫秒级；平方级回归（≈4e8 次字符操作 + 2.4GB 分配）必然越界
-        assertTrue("200k char stream took ${bestMs}ms (budget 800ms)", bestMs < 800.0)
-        assertTrue("200k char stream allocated $alloc bytes (budget 200MB)", alloc < 200L * 1024 * 1024)
+        assertEquals("the long stream must match the one-shot result", PartialJsonObjects.extractObjects(text, "tips"), emitted)
 
-        val line = "long-stream: ${approxChars} chars / ${chunks.size} feeds -> " +
+        // 预算：实测 200k 字符 ~1.2ms / 0.8MB。把旧路径原样接回来在这个规模是
+        // ~1.3s / ~2.5GB（4k-object 那行的实测值按平方外推），两条预算都会越界。
+        assertTrue("200k char stream took ${bestMs}ms (budget 400ms; a quadratic regression costs ~1.3s here)", bestMs < 400.0)
+        assertTrue("200k char stream allocated $alloc bytes (budget 100MB; a quadratic regression allocates ~2.5GB)", alloc < 100L * 1024 * 1024)
+
+        val line = "long-stream: ${text.length} chars / ${chunks.size} feeds -> " +
             "%.3fms (min of 3), %,d bytes allocated, ${emitted.size} objects".format(bestMs, alloc)
         println(line)
-        val file = File("build/reports/perf/incremental-json-scaling.txt")
-        if (file.parentFile?.isDirectory == true) {
-            file.appendText(line + System.lineSeparator())
-        }
+        writeReport(line + System.lineSeparator(), append = true)
     }
 
     @Test
-    fun `scanner is reusable after reset and rejects input after done`() {
-        val first = arrayText("tips", 3, 11L)
+    fun `scanner survives reset and rejects input after the array closed`() {
+        val text = arrayText("tips", 3, 11L)
         val scanner = IncrementalJsonObjectScanner("tips")
-        assertEquals(3, scanner.feedAll(first).size)
+        val first = feedChunks(splitChunks(text, 5L), "tips")
+        assertEquals(3, first.size)
         scanner.reset()
-        assertEquals(3, scanner.feedAll(first).size)
+        assertEquals(3, feedChars(scanner, text).size)
+        assertEquals(3, scanner.emittedCount)
 
         val done = IncrementalJsonObjectScanner("tips")
-        done.feedAll(first)
+        feedChars(done, text)
         assertTrue(done.isDone)
-        assertEquals(emptyList<String>(), done.feed("{\"tips\":[{\"z\":99}]}"))
-    }
-
-    private fun IncrementalJsonObjectScanner.feedAll(text: String): List<String> {
-        val out = mutableListOf<String>()
-        var i = 0
-        while (i < text.length) {
-            val size = 7 + (i % 13)
-            out += feed(text.substring(i, minOf(i + size, text.length)))
-            i += size
-        }
-        return out
+        assertEquals(emptyList<String>(), done.feed(",{\"tips\":[{\"z\":99}]}]"))
     }
 }

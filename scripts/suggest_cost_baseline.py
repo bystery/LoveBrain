@@ -542,6 +542,7 @@ def normalise_usage(usage: dict):
 
 def summarise(records: list, meta: dict) -> dict:
     ok = [r for r in records if r["status"] == "ok"]
+    dry = [r for r in records if r["status"] == "dry-run"]
     def vals(key):
         return [r[key] for r in ok if isinstance(r.get(key), (int, float))]
 
@@ -564,7 +565,8 @@ def summarise(records: list, meta: dict) -> dict:
         "baseline_identity": meta,
         "requests_planned": meta.get("requests"),
         "requests_succeeded": len(ok),
-        "requests_failed": len(records) - len(ok),
+        "requests_dry_run": len(dry),
+        "requests_failed": len(records) - len(ok) - len(dry),
         "tokens": {
             "prompt_mean": round(statistics.mean(prompts), 2) if prompts else None,
             "prompt_median": med(prompts),

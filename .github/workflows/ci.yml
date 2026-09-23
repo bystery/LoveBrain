@@ -53,7 +53,15 @@ jobs:
         run: ./gradlew :app:lintDebug --no-daemon
 
       - name: Assert lint actually ran
-        run: bash scripts/assert_artifacts.sh --label "lint" --html-dir app/build/reports
+        # The lint report is not a JUnit XML, so it needs its own evidence mode:
+        # non-empty, a parseable <issues> root, at least one issue element, no
+        # Fatal severity and a non-stub HTML companion.
+        run: bash scripts/assert_artifacts.sh --label "lint" --lint-xml app/build/reports/lint-results-debug.xml --lint-html app/build/reports/lint-results-debug.html
+
+      - name: Prompt asset lock must not have drifted
+        # BENCHMARK.md quotes a real SHA-256 of the prompt assets; this is what
+        # keeps that quote honest instead of decorative.
+        run: bash scripts/asset_hashes.sh --check docs/prompt-assets.lock
 
       - name: Upload lint report
         if: always()
@@ -67,24 +75,50 @@ jobs:
       - name: Release R8 build
         run: ./gradlew :app:assembleRelease --no-daemon
 
+      - name: Resolve the release artifact this job produced
+        # The verify job has no release keystore on purpose: it proves R8 + the
+        # APK shape, and must not be mistaken for a shippable candidate. The name
+        # of the produced file depends on that, so it is resolved, not guessed.
+        run: |
+          bash scripts/resolve_release_apk.sh --allow-unsigned \
+            --path-file dist/release-apk-path.txt
+
       - name: Verify APK metadata (SHA-256 / versionCode / versionName / package)
         run: |
           bash scripts/check_apk_metadata.sh \
-            app/build/outputs/apk/release/app-release.apk \
+            "$(cat dist/release-apk-path.txt)" \
             --expected-package com.lovebrain.app \
+            --expect-release \
+            --r8-mapping app/build/outputs/mapping/release/mapping.txt \
             --properties dist/apk-metadata.txt \
             --report dist/apk-metadata.md
+
+      - name: Suggest cost-baseline harness (offline parts)
+        # The real N-request cost baseline needs an operator-supplied key, so CI
+        # runs only what it can honestly prove: the frozen fixture, the request
+        # construction and the metric maths. No usage/cost number is invented here.
+        run: |
+          bash scripts/suggest_cost_baseline.sh --self-test
+          bash scripts/suggest_cost_baseline.sh --requests 3 --dry-run --tag ci-dry-run
+
+      - name: Upload suggest-baseline dry-run evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suggest-baseline-dry-run
+          path: dist/suggest-baseline/
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Dependency license scan and SBOM
         # Replaces the audited dependency dump, which was piped through a permissive
         # fallback so it could never fail — and was neither a license scan nor an SBOM.
         run: |
           bash scripts/license_scan.sh \
-            --gradle-task ":app:dependencies" \
             --configuration releaseRuntimeClasspath \
             --policy scripts/license-policy.txt \
             --overrides scripts/license-overrides.txt \
-            --sbom dist/sbom.spdx.json \
+            --spdx dist/sbom.spdx.json \
             --csv dist/dependency-licenses.csv \
             --report dist/dependency-license-report.md
 
@@ -210,34 +244,48 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Build candidate release APK (R8)
-        # The audited job used assembleDebug. An upgrade verified against a
-        # debug APK says nothing about the R8'd artifact we ship.
+      - name: Require the release signing secrets
+        # An upgrade gate on an UNSIGNED candidate proves nothing about the artifact
+        # users will actually receive, so this job fails loudly instead of falling
+        # back to assembleDebug (the audited behaviour) or skipping.
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: bash scripts/prepare_release_keystore.sh --baseline scripts/signing-baseline.txt
+
+      - name: Build candidate release APK (signed + R8)
+        # keystore.properties was just materialised, so :app:assembleRelease now
+        # emits the signed app-release.apk — the same artifact class Release publishes.
         run: |
           chmod +x gradlew scripts/*.sh scripts/lib/*.sh
           ./gradlew :app:assembleRelease --no-daemon
+          bash scripts/resolve_release_apk.sh --require-signed --path-file fixtures/candidate-apk-path.txt
 
       - name: Download and verify v1.3.1 fixture APK
         # A failed download is a hard failure. The previous version of this step
         # swallowed the failure and marked the whole upgrade gate as skipped.
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          bash scripts/download_release_apk.sh \
+          bash scripts/download_release_apk.sh v1.3.1 fixtures \
             --repo "$GITHUB_REPOSITORY" \
-            --tag v1.3.1 \
-            --asset app-release.apk \
-            --dir fixtures \
-            --baseline scripts/signing-baseline.txt
+            --path-file fixtures/old-apk-path.txt
 
       - name: Upgrade install, fixture write and smoke test
+        # `default`/google_apis image: scripts/write_upgrade_fixture.sh needs a root
+        # adb shell because the candidate is a NON-debuggable release APK, so run-as
+        # cannot reach /data/data/<pkg>. A playstore image would fail loudly there.
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
+          target: google_apis
           script: |
             bash scripts/run_upgrade_test.sh \
-              --old-apk fixtures/app-release.apk \
-              --candidate-apk app/build/outputs/apk/release/app-release.apk \
+              --old-apk "$(cat fixtures/old-apk-path.txt)" \
+              --candidate-apk "$(cat fixtures/candidate-apk-path.txt)" \
               --out-dir fixtures
           disable-animations: true
 

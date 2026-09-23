@@ -10,21 +10,28 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * R1-33: 锦囊 token/费用成本基准测试。
+ * R1-33 / 复核报告 2026-09-23 §5.2：锦囊 usage 绑定的 **JVM 单元测试夹具**。
  *
- * 建立固定样本的成本基准：
- * - 输入 prompt 长度 → 预期 prompt token 估算
- * - 输出 tips 数量 → 预期 completion token 估算
- * - 费用计算正确性
- * - 有效建议数/重复/空泛数判定
+ * 这个类能证明的只有一件事：`SuggestValidator.validate()` 对**手工构造**的
+ * `DailySuggestion` / `DailyBriefUsage` 做了什么——条数、action 去重、partial 判定、
+ * usage 字段的透传与 null 语义。
  *
- * 不发起真实网络请求——使用固定样本验证 usage 绑定和费用展示逻辑。
+ * 它**不能**证明任何真实花费：本文件里出现的 promptTokens / completionTokens /
+ * costYuan / elapsedMs 全是人写死的常量，一次网络请求都没发过。复核报告 §5.2 正是
+ * 因此判定"拿它当成本基准证据"不成立，§9 也不接受"测试文件已新增"这种替代。
+ *
+ * 真实 Provider 的成本基准走另一条路（真发流量、按返回 usage 计价、逐条落
+ * machine-readable JSON）：
+ *   `bash scripts/suggest_cost_baseline.sh --requests 5`
+ *   冻结夹具：`benchmarks/suggest-baseline/kb`（内容指纹见 `benchmarks/suggest-baseline/FIXTURE.lock`）
+ *   旧版/当前对比表与"是否已执行"的实况：`BENCHMARK.md` 第 5 节
+ * 在那条命令真的跑出结果之前，任何"一次锦囊花 ¥0.0xx"的说法都只是 fixture。
  */
-class SuggestCostBaselineTest {
+class SuggestCostUnitFixtureTest {
 
     /**
-     * 基准样本：6 条有效建议的标准输出。
-     * 每条约 100-150 字 → 预期 completion ~800-1000 tokens。
+     * 夹具样本：6 条有效建议的标准输出。
+     * 每条约 100-150 字——这只是**样本形状说明**，不是实测 token 数。
      */
     private val standardSixTips = (1..6).map { i ->
         SuggestTip(

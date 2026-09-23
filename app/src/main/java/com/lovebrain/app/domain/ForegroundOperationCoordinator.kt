@@ -130,6 +130,9 @@ class ForegroundOperationCoordinator(
                 null
             } else {
                 records[lease.operationId] = Record(lease, job)
+                // 认领请求身份：requestId 与租约的绑定和登记发生在同一次加锁里，
+                // 调用方不需要再手动 bind，也就不会出现"表里有任务、没有身份"的半套状态。
+                if (requestId.isNotBlank()) leaseByRequestId.putIfAbsent(requestId, lease)
                 publishLocked()
                 lease
             }
@@ -144,7 +147,12 @@ class ForegroundOperationCoordinator(
         // 完成清理必须在 start 之前挂好，避免"极短任务已完成后才注册回调"漏掉
         job.invokeOnCompletion {
             lock.withLock {
-                if (records.remove(lease.operationId) != null) publishLocked()
+                if (records.remove(lease.operationId) != null) {
+                    if (lease.requestId.isNotBlank() &&
+                        leaseByRequestId[lease.requestId] == lease
+                    ) leaseByRequestId.remove(lease.requestId)
+                    publishLocked()
+                }
             }
         }
         job.start()
@@ -159,7 +167,12 @@ class ForegroundOperationCoordinator(
     fun stop(lease: Lease): Boolean {
         val record = lock.withLock {
             val found = records.remove(lease.operationId)
-            if (found != null) publishLocked()
+            if (found != null) {
+                if (found.lease.requestId.isNotBlank() &&
+                    leaseByRequestId[found.lease.requestId] == found.lease
+                ) leaseByRequestId.remove(found.lease.requestId)
+                publishLocked()
+            }
             found
         } ?: return false
         record.job.cancel()
@@ -177,6 +190,9 @@ class ForegroundOperationCoordinator(
             val found = records.values.lastOrNull { it.lease.type == type }
             if (found != null) {
                 records.remove(found.lease.operationId)
+                if (found.lease.requestId.isNotBlank() &&
+                    leaseByRequestId[found.lease.requestId] == found.lease
+                ) leaseByRequestId.remove(found.lease.requestId)
                 publishLocked()
             }
             found
@@ -220,6 +236,7 @@ class ForegroundOperationCoordinator(
         val toCancel = lock.withLock {
             val all = records.values.toList()
             records.clear()
+            leaseByRequestId.clear()
             publishLocked()
             all
         }

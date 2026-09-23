@@ -15,8 +15,16 @@
 #        [--expected-version-code 9] \
 #        [--min-version-code 1] \
 #        [--expected-sha256 <hex>] \
+#        [--expect-release] \
+#        [--r8-mapping app/build/outputs/mapping/release/mapping.txt] \
 #        [--properties <key=value out file>] \
 #        [--report <markdown out file>]
+#
+#   --expect-release  additionally proves the artifact is NOT a debug build:
+#                     android:debuggable must be absent/false. The 2026-09-23
+#                     re-audit (§3) flagged the upgrade gate for installing an
+#                     assembleDebug APK as if it were the shipped candidate.
+#   --r8-mapping      path that must exist and be non-empty, i.e. R8 actually ran.
 #
 # Exit codes: 0 verified, 1 verification failed, 2 usage / missing tooling.
 set -euo pipefail
@@ -31,6 +39,8 @@ EXPECTED_VERSION_NAME=""
 EXPECTED_VERSION_CODE=""
 MIN_VERSION_CODE=""
 EXPECTED_SHA256=""
+EXPECT_RELEASE=0
+R8_MAPPING=""
 PROPERTIES=""
 REPORT=""
 
@@ -41,6 +51,8 @@ while [ $# -gt 0 ]; do
     --expected-version-code) EXPECTED_VERSION_CODE="$2"; shift 2 ;;
     --min-version-code) MIN_VERSION_CODE="$2"; shift 2 ;;
     --expected-sha256) EXPECTED_SHA256="$2"; shift 2 ;;
+    --r8-mapping) R8_MAPPING="$2"; shift 2 ;;
+    --expect-release) EXPECT_RELEASE=1; shift ;;
     --properties) PROPERTIES="$2"; shift 2 ;;
     --report) REPORT="$2"; shift 2 ;;
     -h | --help) die_usage "see header of $0" ;;
@@ -124,6 +136,34 @@ log "launcher   : ${LAUNCHABLE:-<none reported>}"
 log "size       : $BYTES bytes"
 log "sha256     : $SHA256"
 
+# ── release-build evidence (audit §3: the audited gate installed a debug APK) ─
+DEBUGGABLE="not-declared"
+if [ "$EXPECT_RELEASE" -eq 1 ]; then
+  XMLTREE="$("$AAPT2" dump xmltree --file AndroidManifest.xml "$(to_native_path "$APK")" 2>/dev/null)" ||
+    die "aapt2 could not dump the binary AndroidManifest.xml of $APK — the release-build check cannot run"
+  DEBUGGABLE_LINE="$(first_match 'android:debuggable[^$]*' "$XMLTREE")"
+  if [ -n "$DEBUGGABLE_LINE" ]; then
+    case "$DEBUGGABLE_LINE" in
+      *"(Raw: \"true\")"* | *"0x000000ffffffff"* | *"=true"*)
+        printf '%s\n' "$DEBUGGABLE_LINE" >&2
+        die "$APK declares android:debuggable=true — it is a DEBUG build. The upgrade gate and the release must run against the R8 release APK (./gradlew :app:assembleRelease); a debug candidate proves nothing about the shipped artifact."
+        ;;
+    esac
+    DEBUGGABLE="false"
+  else
+    DEBUGGABLE="absent"
+  fi
+  ok "release build verified: android:debuggable is $DEBUGGABLE in $APK"
+  if [ -n "$R8_MAPPING" ]; then
+    require_file "$R8_MAPPING" "R8 mapping.txt"
+    grep -q '^[[:space:]]*[a-zA-Z0-9_.$]+ -> ' "$R8_MAPPING" \
+      || die "$R8_MAPPING exists but carries no renamed-class entries — R8 minification did not actually run"
+    ok "R8 mapping present: $R8_MAPPING ($(wc -l <"$R8_MAPPING" | tr -d ' ') lines)"
+  else
+    log "no --r8-mapping supplied: minification is NOT asserted here, only the non-debug flag"
+  fi
+fi
+
 if [ -n "$PROPERTIES" ]; then
   mkdir -p "$(dirname "$PROPERTIES")"
   {
@@ -136,6 +176,8 @@ if [ -n "$PROPERTIES" ]; then
     printf 'launchable_activity=%s\n' "$LAUNCHABLE"
     printf 'size_bytes=%s\n' "$BYTES"
     printf 'sha256=%s\n' "$SHA256"
+    printf 'expect_release=%s\n' "$EXPECT_RELEASE"
+    printf 'debuggable=%s\n' "$DEBUGGABLE"
   } >"$PROPERTIES"
   ok "properties written: $PROPERTIES"
 fi

@@ -20,6 +20,12 @@
 # Usage:
 #   bash scripts/download_release_apk.sh <tag> <out_dir> [owner/repo]
 #        [--pattern '*.apk'] [--expected-sha256 <hex>] [--allow-any-sha256]
+#        [--path-file <out>]
+#
+#   --pattern    glob the asset name must match (default '*.apk'); with several
+#                APKs on a release this decides which one becomes the fixture.
+#   --path-file  write the resolved local APK path here, so a later CI step can
+#                hand the fixture to scripts/run_upgrade_test.sh without globbing.
 #
 # Exit codes: 0 downloaded + verified, 1 failure, 2 usage.
 set -euo pipefail
@@ -34,6 +40,7 @@ OUT_DIR=""
 REPO="${GITHUB_REPOSITORY:-bystery/LoveBrain}"
 PATTERN='*.apk'
 EXPECTED_SHA256=""
+PATH_FILE=""
 ALLOW_ANY_SHA256=0
 
 while [ $# -gt 0 ]; do
@@ -41,6 +48,7 @@ while [ $# -gt 0 ]; do
     --pattern) PATTERN="$2"; shift 2 ;;
     --repo) REPO="$2"; shift 2 ;;
     --expected-sha256) EXPECTED_SHA256="$2"; shift 2 ;;
+    --path-file) PATH_FILE="$2"; shift 2 ;;
     --allow-any-sha256) ALLOW_ANY_SHA256=1; shift ;;
     -h | --help) die_usage "see header of $0" ;;
     -*) die_usage "unknown option: $1" ;;
@@ -65,8 +73,13 @@ mkdir -p "$OUT_DIR"
 if [ -z "$EXPECTED_SHA256" ] && [ -f "$BASELINE_FILE" ]; then
   ref_tag="$(baseline_value reference_apk_tag "$BASELINE_FILE")"
   ref_sha="$(baseline_value reference_apk_sha256 "$BASELINE_FILE")"
+  ref_name="$(baseline_value reference_apk_name "$BASELINE_FILE")"
   if [ "$TAG" = "$ref_tag" ] && [ -n "$ref_sha" ]; then
     EXPECTED_SHA256="$ref_sha"
+    if [ "$PATTERN" = '*.apk' ] && [ -n "$ref_name" ]; then
+      PATTERN="$ref_name"
+      log "restricting asset selection to the pinned name '$ref_name'"
+    fi
     log "using pinned SHA-256 for $TAG from signing baseline"
   fi
 fi
@@ -76,25 +89,42 @@ fi
 
 # Pick the asset URL. gh first (works with a token on private repos), then the
 # anonymous REST API via curl. Both paths propagate their exit status.
+# `--pattern` is applied for real: with several APK assets on one release the
+# first match wins, and no match is a hard failure (the audited job let "we could
+# not find the fixture" turn into a skipped upgrade test).
 ASSET_URL=""
 ASSET_NAME=""
+APPLIES=""
 
-LINE=""
+matches_pattern() {
+  local name="$1"
+  # shellcheck disable=SC2254
+  case "$name" in
+    $PATTERN) return 0 ;;
+    *) APPLIES="$APPLIES $name" ;;
+  esac
+  return 1
+}
+
 if command -v gh >/dev/null 2>&1 && [ -n "${GITHUB_TOKEN:-}${GH_TOKEN:-}" ]; then
   log "resolving release assets with gh for $REPO $TAG"
-  if LINE="$(gh api "repos/$REPO/releases/tags/$TAG" \
+  if TSV="$(gh api "repos/$REPO/releases/tags/$TAG" \
     --jq '.assets[] | select(.name | endswith(".apk")) | [.name, .browser_download_url] | @tsv' \
     2>/dev/null)"; then
-    LINE="$(printf '%s\n' "$LINE" | head -1)"
-    ASSET_NAME="$(printf '%s' "$LINE" | cut -f1)"
-    ASSET_URL="$(printf '%s' "$LINE" | cut -f2)"
+    while IFS=$'\t' read -r name url; do
+      [ -n "$name" ] || continue
+      if matches_pattern "$name"; then
+        ASSET_NAME="$name"
+        ASSET_URL="$url"
+        break
+      fi
+    done <<<"$TSV"
   else
     log "gh api lookup failed — falling back to the anonymous REST API"
-    LINE=""
   fi
 fi
 
-if [ -z "$ASSET_URL" ]; then
+if [ -z "$ASSET_URL" ] && [ -z "$APPLIES" ]; then
   require_cmd curl
   log "resolving release assets with the GitHub REST API for $REPO $TAG"
   API_JSON=""
@@ -105,19 +135,34 @@ if [ -z "$ASSET_URL" ]; then
   fi
   URLS="$(all_matches '"browser_download_url":[[:space:]]*"[^"]*"' "$API_JSON" |
     sed 's/^"browser_download_url":[[:space:]]*"//; s/"$//')" || URLS=""
-  ASSET_URL="$(first_match 'https://[^" ]*\.apk' "$URLS")"
-  if [ -z "$ASSET_URL" ]; then
-    ASSET_COUNT="$(printf '%s\n' "$URLS" | grep -c .)" || ASSET_COUNT=0
+  while read -r url; do
+    [ -n "$url" ] || continue
+    case "$url" in
+      *.apk) ;;
+      *) continue ;;
+    esac
+    name="$(basename "$url")"
+    if matches_pattern "$name"; then
+      ASSET_NAME="$name"
+      ASSET_URL="$url"
+      break
+    fi
+  done <<<"$(printf '%s\n' "$URLS")"
+  if [ -z "$ASSET_URL" ] && [ -z "$APPLIES" ]; then
+    ASSET_COUNT="$(printf '%s\n' "$URLS" | grep -c '\.apk$')" || ASSET_COUNT=0
     die "release $TAG of $REPO exposes no .apk asset ($ASSET_COUNT asset URL(s) found). The upgrade fixture is unavailable, so this job fails instead of skipping."
   fi
-  ASSET_NAME="$(basename "$ASSET_URL")"
+fi
+
+if [ -z "$ASSET_URL" ]; then
+  die "no asset of release $TAG matches --pattern '$PATTERN' (saw:$APPLIES). Pass the right --pattern or pin the name in scripts/signing-baseline.txt — refusing to guess which APK is the v1.3.1 fixture."
 fi
 
 OUT_FILE="$OUT_DIR/$ASSET_NAME"
 log "downloading $ASSET_NAME from $ASSET_URL"
 require_cmd curl
 DOWNLOAD_OK=0
-if curl -fSL --retry 5 --retry-delay 2 --retry-all-errors --max-time 900 \
+if curl -fsSL --no-progress-meter --retry 5 --retry-delay 2 --retry-all-errors --max-time 900 \
   ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} \
   -o "$OUT_FILE" "$ASSET_URL"; then
   DOWNLOAD_OK=1
@@ -156,4 +201,9 @@ if [ -f "$BASELINE_FILE" ]; then
 fi
 
 ok "release APK downloaded and verified: $OUT_FILE"
+if [ -n "$PATH_FILE" ]; then
+  mkdir -p "$(dirname "$PATH_FILE")"
+  printf '%s\n' "$OUT_FILE" >"$PATH_FILE"
+  log "resolved path written: $PATH_FILE"
+fi
 printf '%s\n' "$OUT_FILE"

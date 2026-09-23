@@ -126,7 +126,11 @@ while IFS='|' read -r rel sentinel desc; do
   check "upgrade evidence extracted: $local_dest" "$rc"
 done <"$MANIFEST"
 
-check "the fixture manifest listed at least one data file" "$([ "$FIXTURE_ROWS" -gt 0 ] && echo 0 || echo 1)"
+if [ "$FIXTURE_ROWS" -gt 0 ]; then
+  check "the fixture manifest listed at least one data file" 0
+else
+  check "the fixture manifest listed at least one data file" 1
+fi
 [ "$FIXTURE_ROWS" -gt 0 ] ||
   die "no fixture files were listed in $MANIFEST — nothing was verified, so the upgrade gate cannot pass"
 
@@ -187,7 +191,11 @@ done
 # ── 6. process alive + no fatal evidence ────────────────────────────────────
 PID="$(adb shell "pidof $PKG" | tr -d '\r')" || PID=""
 PID="$(first_nonempty_line "$PID")"
-check "the app process is alive after the upgrade (pid '${PID:-none}')" "$([ -n "$PID" ] && echo 0 || echo 1)"
+if [ -n "$PID" ]; then
+  check "the app process is alive after the upgrade (pid '$PID')" 0
+else
+  check "the app process is alive after the upgrade (pid 'none')" 1
+fi
 
 if [ -n "$LOGCAT" ]; then
   require_file "$LOGCAT" "logcat dump"

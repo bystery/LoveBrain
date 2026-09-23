@@ -50,9 +50,27 @@ DATA_ROOT="/data/data/$PKG"
 [ -n "$OLD_APK" ] || die_usage "--old-apk is required"
 [ -n "$CANDIDATE_APK" ] || die_usage "--candidate-apk is required"
 require_file "$OLD_APK" "old (v1.3.1) APK"
-require_file "$CANDIDATE_APK" "candidate APK"
+# An upgrade gate that installs a file that is not there proves nothing, so the
+# failure message has to say what the release build actually produced.
+if [ ! -f "$CANDIDATE_APK" ]; then
+  printf '%s  FAIL candidate APK does not exist: %s\n' "$GATE_LOG_PREFIX" "$CANDIDATE_APK" >&2
+  printf '%s       what ./gradlew :app:assembleRelease actually produced:\n' "$GATE_LOG_PREFIX" >&2
+  ls -1 app/build/outputs/apk/release/ >&2 || printf '%s         (no release output directory at all)\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       A release build WITHOUT a keystore produces app-release-unsigned.apk;\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       the upgrade gate must run against the signed candidate, so export the\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       release keystore (scripts/prepare_release_keystore.sh) and rebuild.\n' "$GATE_LOG_PREFIX" >&2
+  exit 1
+fi
+MAPPING="${LOVEBRAIN_R8_MAPPING:-app/build/outputs/mapping/release/mapping.txt}"
 mkdir -p "$OUT_DIR"
 BASELINE="$SCRIPT_DIR/signing-baseline.txt"
+
+# The schema assertion floor must follow the app, not a number typed into a shell
+# script: read KnowledgeSchemaVersion.CURRENT and fail if it cannot be found.
+SCHEMA_SRC="$SCRIPT_DIR/../app/src/main/java/com/lovebrain/app/model/KnowledgeSchemaVersion.kt"
+CURRENT_SCHEMA="$(grep -m1 'const val CURRENT: Int' "$SCHEMA_SRC" | sed 's/.*: Int = //; s/[^0-9].*//')" || CURRENT_SCHEMA=""
+[ -n "$CURRENT_SCHEMA" ] || die "cannot read KnowledgeSchemaVersion.CURRENT from $SCHEMA_SRC — the schema assertion would be a guess"
+log "expected post-upgrade schema version: $CURRENT_SCHEMA (from KnowledgeSchemaVersion.kt)"
 
 require_cmd adb
 export PATH="$(sdk_root)/platform-tools:$PATH"
@@ -62,8 +80,11 @@ require_device
 bash "$SCRIPT_DIR/check_apk_metadata.sh" "$OLD_APK" \
   --expected-package "$PKG" --properties "$OUT_DIR/old-apk-metadata.txt" \
   --report "$OUT_DIR/old-apk-metadata.md"
+# The audited job used an assembleDebug APK as the candidate. Prove this one is a
+# non-debug R8 release build before installing it.
 bash "$SCRIPT_DIR/check_apk_metadata.sh" "$CANDIDATE_APK" \
-  --expected-package "$PKG" --properties "$OUT_DIR/candidate-metadata.txt" \
+  --expected-package "$PKG" --expect-release --r8-mapping "$MAPPING" \
+  --properties "$OUT_DIR/candidate-metadata.txt" \
   --report "$OUT_DIR/candidate-metadata.md"
 
 OLD_NAME="$(sed -n 's/^version_name=//p' "$OUT_DIR/old-apk-metadata.txt")"
@@ -88,7 +109,15 @@ bash "$SCRIPT_DIR/verify_signing_continuity.sh" "$CANDIDATE_APK" --baseline "$BA
 bash "$SCRIPT_DIR/verify_signing_continuity.sh" "$OLD_APK" --baseline "$BASELINE"
 
 # ── 2. install the old version for real ─────────────────────────────────────
-adb uninstall "$PKG" >/dev/null 2>&1 || log "no previous $PKG installation to remove (expected on a fresh emulator)"
+# The audited workflow did `adb install … || true`. Here: a leftover install must
+# actually go away (otherwise "upgrade" would be tested against an unknown state),
+# and the old APK must come back with the published version we expect.
+if [ "$(adb shell "pm list packages $PKG" | tr -d '\r' | grep -c "^package:$PKG\$")" != "0" ]; then
+  log "a previous $PKG install exists — removing it so the test starts from the published old version"
+  if ! adb uninstall "$PKG"; then
+    die "adb uninstall $PKG failed — the old version could not be installed from a clean state, so any 'upgrade' result would be meaningless"
+  fi
+fi
 device_install "$OLD_APK"
 [ "$(adb shell "pm list packages $PKG" | tr -d '\r' | grep -c "^package:$PKG\$")" = "1" ] ||
   die "$PKG is not installed after installing $OLD_APK"
@@ -135,17 +164,21 @@ bash "$SCRIPT_DIR/assert_upgrade_state.sh" \
   --manifest "$OUT_DIR/upgrade-fixture-manifest.txt" \
   --expected-version-name "$CAND_NAME" \
   --expected-version-code "$CAND_CODE" \
+  --min-schema-version "$CURRENT_SCHEMA" \
   --logcat "$LOGCAT" \
   --out-dir "$OUT_DIR" \
   --activity "$PKG/.ui.SetupActivity" \
   --activity "$PKG/.ui.KnowledgeBaseActivity"
 
+CAND_DEBUGGABLE="$(sed -n 's/^debuggable=//p' "$OUT_DIR/candidate-metadata.txt")"
 {
   printf '# Upgrade test evidence\n\n'
   printf '| item | value |\n|---|---|\n'
   printf '| old (installed first) | `%s` versionCode %s |\n' "$OLD_NAME" "$OLD_CODE"
   printf '| candidate (覆盖安装) | `%s` versionCode %s |\n' "$CAND_NAME" "$CAND_CODE"
   printf '| candidate SHA-256 | `%s` |\n' "$CAND_SHA"
+  printf '| candidate build kind | android:debuggable=%s (release must be absent/false), R8 mapping `%s` |\n' "${CAND_DEBUGGABLE:-unknown}" "$MAPPING"
+  printf '| post-upgrade schema floor | `%s` (KnowledgeSchemaVersion.CURRENT) |\n' "$CURRENT_SCHEMA"
   printf '| package | `%s` |\n' "$PKG"
   printf '\nThe candidate is the final signed/R8 release APK, upgrade-installed over the\n'
   printf 'published old version with `-r` so /data survived. The assertions in\n'

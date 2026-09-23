@@ -48,6 +48,37 @@ while [ $# -gt 0 ]; do
 done
 
 have() { command -v "$1" >/dev/null 2>&1; }
+
+# run_tshark <描述> <输出文件> <tshark 参数…>
+#
+# 复核报告 §3 的那类伪门禁就长这样：
+#   tshark … | sort -u > out || true
+# tshark 报错 → 输出空 → "表外目的地 0 个" → 脚本宣布零遥测成立。这里把 tshark 的
+# 退出码真的当回事：非 0 就是"没能验证"（exit 2），输出为空也是"没能验证"，绝不放行。
+run_tshark() {
+  local what="$1" out="$2"
+  shift 2
+  local err
+  err="$(mktemp)"
+  if ! have tshark; then
+    rm -f "$err"
+    die_unverified "tshark is not installed — $what cannot be analysed, so the zero-telemetry claim stays UNVERIFIED"
+  fi
+  if ! tshark -r "$PCAP" "$@" >"$out" 2>"$err"; then
+    printf '%s  tshark failed while computing %s:\n' "$GATE_LOG_PREFIX" "$what" >&2
+    sed 's/^/    /' "$err" >&2
+    rm -f "$err"
+    die_unverified "tshark errored on $what — an unparseable capture is NOT evidence of no telemetry"
+  fi
+  rm -f "$err"
+  if [ ! -s "$out" ]; then
+    # 空输出不是"没有遥测"，而是"这个视角什么都没看见"——单独放过没有意义，
+    # 但三个视角全空时下面会统一判定 CANNOT-VERIFY。
+    warn "$what produced zero rows from $PCAP"
+  else
+    log "$what: $(wc -l <"$out" | tr -d ' ') row(s)"
+  fi
+}
 die_unverified() { printf '%s  CANNOT-VERIFY %s
 ' "$GATE_LOG_PREFIX" "$*" >&2; exit 2; }
 have adb || die_unverified "adb not on PATH; cannot produce or pull a capture"
@@ -84,20 +115,37 @@ WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
 # 外连目的地：IPv4 目的地址 + TLS SNI + DNS 查询名，三个视角交叉，
-# 避免只看到 IP 而漏掉直连 IP 的遥测端点。
-tshark -r "$PCAP" -T fields -e ip.dst -e _ws.col.Destination -Y "not ip.dst==224.0.0.0/4 and not ip.dst==255.255.255.255" 2>/dev/null \
-  | tr '\t' '\n' | sed 's/:[0-9]*$//' | grep -v '^$' | sort -u >"$WORK/dst_ip.txt" || true
-tshark -r "$PCAP" -T fields -e tls.handshake.extensions_server_name 2>/dev/null \
-  | tr ',' '\n' | grep -v '^$' | sort -u >"$WORK/sni.txt" || true
-tshark -r "$PCAP" -Y "dns.flags.response==0" -T fields -e dns.qry.name 2>/dev/null \
-  | tr ',' '\n' | grep -v '^$' | sort -u >"$WORK/dns.txt" || true
+# 避免只看到 IP 而漏掉直连 IP 的遥测端点。任一视角解析失败或零行 → CANNOT-VERIFY。
+run_tshark "destination IPs" "$WORK/dst_ip.raw" -T fields -e ip.dst -e _ws.col.Destination \
+  -Y "not ip.dst==224.0.0.0/4 and not ip.dst==255.255.255.255"
+run_tshark "TLS SNI names" "$WORK/sni.raw" -T fields -e tls.handshake.extensions_server_name
+run_tshark "DNS queries" "$WORK/dns.raw" -Y "dns.flags.response==0" -T fields -e dns.qry.name
 
-# 把允许的主机解析成 IP，允许 DNS/SNI 名与 IP 任一对上
+post_process() {
+  # post_process <raw-file> <separator-regex> <out> — 拆字段 + 去端口 + 去空 + 排序去重
+  local raw="$1" sep="$2" out="$3"
+  tr "$sep" '\n' <"$raw" | sed 's/:[0-9]*$//' | grep -v '^[[:space:]]*$' | sort -u >"$out"
+}
+post_process "$WORK/dst_ip.raw" '\t' "$WORK/dst_ip.txt"
+post_process "$WORK/sni.raw" ',' "$WORK/sni.txt"
+post_process "$WORK/dns.raw" ',' "$WORK/dns.txt"
+
+# 三个视角全空 = 抓包里根本没有可判定的外连，这是"没验证"，不是"零遥测成立"。
+if [ ! -s "$WORK/dst_ip.txt" ] && [ ! -s "$WORK/sni.txt" ] && [ ! -s "$WORK/dns.txt" ]; then
+  die_unverified "the capture yielded no destination, SNI or DNS record at all — the app never talked to anyone during the capture, so 'no telemetry' is UNVERIFIED, not proven"
+fi
+
+# 把允许的主机解析成 IP，允许 DNS/SNI 名与 IP 任一对上。
+# 解析不到任何允许 IP 时不算失败（离线/无 DNS 环境），但会显式记录，
+# 因为那种情况下判定只依赖 SNI/DNS 名，报告里必须看得见这一点。
 ALLOW_IPS="$WORK/allow_ips.txt"
 : >"$ALLOW_IPS"
 for h in "${ALLOW_HOSTS[@]}"; do
-  getent hosts "$h" 2>/dev/null | awk '{print $1}' >>"$ALLOW_IPS" || true
-  python3 - "$h" <<'PY' 2>/dev/null >>"$ALLOW_IPS" || true
+  if have getent; then
+    getent hosts "$h" | awk '{print $1}' >>"$ALLOW_IPS"
+  fi
+  if have python3; then
+    python3 - "$h" <<'PY' >>"$ALLOW_IPS"
 import socket,sys
 try:
     for fam,_,_,_,sa in socket.getaddrinfo(sys.argv[1], None):
@@ -106,8 +154,12 @@ try:
 except Exception:
     pass
 PY
+  fi
 done
 sort -u "$ALLOW_IPS" -o "$ALLOW_IPS"
+if [ ! -s "$ALLOW_IPS" ]; then
+  warn "no allowed host resolved to an IP — the IP view is unchecked, only SNI/DNS names are"
+fi
 
 UNEXPECTED="$WORK/unexpected.txt"
 : >"$UNEXPECTED"

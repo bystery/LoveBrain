@@ -81,7 +81,7 @@ log "seeding knowledge base '$KB_NAME' with upgrade fixture data"
 
 # Record the pre-upgrade schema state so the post-upgrade assertion can prove a
 # migration actually occurred (v1.3.1 predates the unified .schema_version file).
-PRE_SCHEMA="$(dev_capture \"cat $KB_DIR/.schema_version\")"
+PRE_SCHEMA="$(dev_capture "cat $KB_DIR/.schema_version")"
 PRE_SCHEMA="$(printf '%s' "$PRE_SCHEMA" | tr -d ' \r\n')"
 if [ -z "$PRE_SCHEMA" ]; then
   PRE_SCHEMA="absent"
@@ -100,16 +100,36 @@ log "pre-upgrade tree: $(wc -l <"$TREE" | tr -d ' ') file(s) -> $TREE"
 write_fixture_file() {
   # write_fixture_file <rel-path> <generated-local-file> <description>
   local rel="$1" local_file="$2" desc="$3"
-  if [ "$(device_yes_no "test -f '$rel' && echo ok")" = "YES" ]; then
-    dev_capture \"cat $rel\" >"$WORK/existing.txt"
+  assert_safe_path "$rel"
+  # NOTE: no quotes around $rel inside the device command — dev_capture wraps the
+  # whole command in single quotes for `run-as … sh -c`, so an inner quote would
+  # break the command apart (that is what silently zeroed the pre-upgrade content).
+  if [ "$(device_yes_no "test -f $rel && echo ok")" = "YES" ]; then
+    if ! dev_capture "cat $rel" >"$WORK/existing.txt"; then
+      die "could not read the existing $DATA_ROOT/$rel — appending to it would destroy old user data"
+    fi
   else
     : >"$WORK/existing.txt"
   fi
+  # Old content first, fixture second: the fixture must never replace the old data.
   cat "$WORK/existing.txt" "$local_file" >"$WORK/combined.txt"
+  [ "$(wc -c <"$WORK/combined.txt" | tr -d ' ')" -ge "$(wc -c <"$WORK/existing.txt" | tr -d ' ')" ] ||
+    die "the fixture append produced a smaller file than the pre-existing $rel — old data would be lost"
   device_push_mode "$WORK/combined.txt" "$rel"
   # Prove it landed: read it back from the device, not from the local copy.
   if [ "$(device_yes_no "grep -q $SENTINEL $rel && echo ok")" != "YES" ]; then
     die "fixture write could not be verified on the device: $SENTINEL is not present in $rel"
+  fi
+  # …and that the pre-existing content is still there, not just the new lines.
+  if [ -s "$WORK/existing.txt" ]; then
+    local keep
+    keep="$(dev_capture "wc -c < $rel")"
+    keep="$(printf '%s' "$keep" | tr -d ' \r\n')"
+    case "$keep" in
+      '' | *[!0-9]*) die "could not read back the size of $rel on the device" ;;
+    esac
+    [ "$keep" -ge "$(wc -c <"$WORK/existing.txt" | tr -d ' ')" ] ||
+      die "$rel shrank on the device ($keep < pre-existing $(wc -c <"$WORK/existing.txt" | tr -d ' ') bytes) — the old user data was overwritten, not preserved"
   fi
   printf '%s|%s|%s\n' "$rel" "$SENTINEL" "$desc" >>"$MANIFEST"
   ok "fixture written and read back: $rel ($desc)"
@@ -157,8 +177,8 @@ printf 'legacy_marker_v2|%s|\n' "$LEGACY_V2" >>"$MANIFEST"
 printf 'legacy_marker_v3|%s|\n' "$LEGACY_V3" >>"$MANIFEST"
 printf 'kb_name|%s|\n' "$KB_NAME" >>"$MANIFEST"
 
-FIXTURE_COUNT="$(grep -c '|' "$MANIFEST")" || FIXTURE_COUNT=0
-[ "$FIXTURE_COUNT" -ge 4 ] || die "the fixture manifest has fewer than 4 entries ($FIXTURE_COUNT): $MANIFEST"
+FIXTURE_COUNT="$(awk -F'|' '$1 ~ /^files\// { n++ } END { print n + 0 }' "$MANIFEST")"
+[ "$FIXTURE_COUNT" -ge 4 ] || die "the fixture manifest has fewer than 4 seeded files ($FIXTURE_COUNT): $MANIFEST"
 
 dev_capture "find files -type f | sort" >"$OUT_DIR/post-fixture-tree.txt"
 log "fixture manifest: $MANIFEST"

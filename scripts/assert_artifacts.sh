@@ -19,6 +19,15 @@
 #        [--xml-dir DIR ...] [--html-dir DIR ...] [--screenshots-dir DIR ...] \
 #        [--min-tests N] [--allow-skipped]
 #
+#   bash scripts/assert_artifacts.sh --label "lint" \
+#        --lint-xml app/build/reports/lint-results-debug.xml \
+#        [--lint-html app/build/reports/lint-results-debug.html]
+#
+#   --lint-xml switches to LINT-EVIDENCE mode: the JUnit counters do not apply to
+#   a lint report, so instead of "tests ran" this proves "lint really produced a
+#   report with parseable content" (non-empty, <issues> root, issue elements, no
+#   fatal severity, and a non-stub HTML companion when asked for).
+#
 # Exit codes: 0 evidence is real, 1 evidence missing/empty/failing, 2 usage.
 set -euo pipefail
 
@@ -28,6 +37,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 LABEL="artifacts"
 MIN_TESTS=1
+LINT_XML=""
+LINT_HTML=""
 declare -a XML_DIRS=() HTML_DIRS=() SHOT_DIRS=()
 
 while [ $# -gt 0 ]; do
@@ -37,12 +48,49 @@ while [ $# -gt 0 ]; do
     --html-dir) HTML_DIRS+=("$2"); shift 2 ;;
     --screenshots-dir) SHOT_DIRS+=("$2"); shift 2 ;;
     --min-tests) MIN_TESTS="$2"; shift 2 ;;
+    --lint-xml) LINT_XML="$2"; shift 2 ;;
+    --lint-html) LINT_HTML="$2"; shift 2 ;;
     -h | --help) die_usage "see header of $0" ;;
     *) die_usage "unknown option: $1" ;;
   esac
 done
 
-[ "${#XML_DIRS[@]}" -gt 0 ] || die_usage "at least one --xml-dir is required"
+# ── lint mode ────────────────────────────────────────────────────────────────
+if [ -n "$LINT_XML" ]; then
+  if [ "${#XML_DIRS[@]}" -gt 0 ] || [ "${#HTML_DIRS[@]}" -gt 0 ] || [ "${#SHOT_DIRS[@]}" -gt 0 ]; then
+    die_usage "--lint-xml cannot be combined with --xml-dir/--html-dir/--screenshots-dir"
+  fi
+  LINT_FILE="$LINT_XML"
+  if [ -d "$LINT_XML" ]; then
+    found="$(find "$LINT_XML" -type f -name 'lint-results*.xml' | head -1)" || found=""
+    [ -n "$found" ] || die "$LABEL: no lint-results*.xml under $LINT_XML — lint wrote no report, which is a FAILURE not a pass"
+    LINT_FILE="$found"
+  fi
+  require_file "$LINT_FILE" "lint XML report"
+  grep -q '<issues' "$LINT_FILE" ||
+    die "$LABEL: $LINT_FILE has no <issues> root — it is not a lint report, so it proves nothing"
+  ISSUE_COUNT="$(grep -c '<issue' "$LINT_FILE")" || ISSUE_COUNT=0
+  ERR_COUNT="$(grep -c 'severity="Error"' "$LINT_FILE")" || ERR_COUNT=0
+  FATAL_COUNT="$(grep -c 'severity="Fatal"' "$LINT_FILE")" || FATAL_COUNT=0
+  BYTES="$(wc -c <"$LINT_FILE" | tr -d ' ')"
+  log "$LABEL: $LINT_FILE — $BYTES bytes, $ISSUE_COUNT issue element(s), $ERR_COUNT Error, $FATAL_COUNT Fatal"
+  [ "$ISSUE_COUNT" -gt 0 ] ||
+    die "$LABEL: the lint XML declares 0 <issue> elements in $BYTES bytes — an empty report is not evidence that lint ran"
+  if [ "$FATAL_COUNT" -gt 0 ]; then
+    die "$LABEL: lint reported $FATAL_COUNT Fatal issue(s) — the build must not go green on top of them"
+  fi
+  if [ -n "$LINT_HTML" ]; then
+    require_file "$LINT_HTML" "lint HTML report"
+    html_bytes="$(wc -c <"$LINT_HTML" | tr -d ' ')"
+    [ "$html_bytes" -ge 4096 ] ||
+      die "$LABEL: lint HTML report is a stub ($html_bytes bytes): $LINT_HTML"
+    log "$LABEL: lint HTML report: $LINT_HTML ($html_bytes bytes)"
+  fi
+  ok "$LABEL lint evidence gate passed: $ISSUE_COUNT issue(s), $ERR_COUNT error(s), 0 fatal, report is real"
+  exit 0
+fi
+
+[ "${#XML_DIRS[@]}" -gt 0 ] || die_usage "at least one --xml-dir is required (or use --lint-xml for the lint report)"
 
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
