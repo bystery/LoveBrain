@@ -100,3 +100,6 @@ api_key.txt
 benchmarks/**/raw/
 benchmark/results.jsonl
 benchmark/kb_*/
+
+# CI 脚本本机验证时下载的 v1.3.1 夹具 APK，属于可再生的外部产物
+/fixtures/
