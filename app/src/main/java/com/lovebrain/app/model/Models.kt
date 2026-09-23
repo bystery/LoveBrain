@@ -263,8 +263,14 @@ sealed class StreamEvent {
     data class Chunk(val text: String) : StreamEvent()
     /** 流完成，附带完整累积文本和 Provider 返回的 usage（可能为 null） */
     data class Complete(val fullText: String, val usage: StreamUsage? = null) : StreamEvent()
-    /** 错误（含已累积的部分文本） */
-    data class Error(val message: String, val partialText: String) : StreamEvent()
+    /** 错误（typed 分类结果 + 已累积的部分文本） */
+    data class Error(
+        val failure: ProviderFailure,
+        val partialText: String
+    ) : StreamEvent() {
+        /** 展示文案（不再让下游从前缀反推类型） */
+        val message: String get() = failure.message
+    }
 }
 
 /** Provider 返回的流式 usage 数据，与本次请求绑定 */

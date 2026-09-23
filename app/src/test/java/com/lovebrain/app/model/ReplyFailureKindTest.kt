@@ -4,13 +4,13 @@ import org.junit.Assert.*
 import org.junit.Test
 
 /**
- * S1-03: ReplyFailureKind 错误映射 JVM 测试。
+ * ReplyFailureKind 错误映射 JVM 测试。
  *
  * 验证：
- * - fromException 正确映射常见异常类型
- * - fromErrorMessage 正确映射 CONFIG_ERROR / PARAM_UNSUPPORTED / 429 / 401 / 超时
- * - userMessage 不泄露路径/Provider/内部细节
- * - retryable 语义正确
+ * - fromException 按**异常类型**映射（不解析 message 文本）
+ * - 模型上不存在从字符串前缀反推类型的 API
+ * - userMessage 不泄露路径/Provider/内部细节，且 kind 与文案一一对应
+ * - retryable / isConfigProblem 语义正确
  */
 class ReplyFailureKindTest {
 
@@ -53,68 +53,82 @@ class ReplyFailureKindTest {
         assertEquals("unexpected", (kind as ReplyFailureKind.Unknown).rawMessage)
     }
 
-    // ═══ fromErrorMessage ═══
+    // ═══ 错误类型不得再从字符串反推（S2-07）═══
 
     @Test
-    fun `CONFIG_ERROR with Key maps to Auth`() {
-        val kind = ReplyFailureKind.fromErrorMessage("CONFIG_ERROR:API Key 缺失，请检查工单配置")
-        assertTrue(kind is ReplyFailureKind.Auth)
+    fun `no message-parsing api exists on the failure model`() {
+        val names = ReplyFailureKind::class.java.declaredMethods.map { it.name } +
+            ReplyFailureKind.Companion::class.java.declaredMethods.map { it.name }
+        listOf("fromErrorMessage", "fromMessage", "classifyByMessage", "parse").forEach { banned ->
+            assertFalse(
+                "$banned 不得回来：错误类型一旦能从字符串前缀反推，分类就会散落到每个消费点",
+                names.contains(banned)
+            )
+        }
     }
 
     @Test
-    fun `CONFIG_ERROR with 地址 maps to ProviderMissing`() {
-        val kind = ReplyFailureKind.fromErrorMessage("CONFIG_ERROR:接口地址未填写")
-        assertTrue(kind is ReplyFailureKind.ProviderMissing)
+    fun `config problems are declared by kind not by prefix`() {
+        assertTrue(ReplyFailureKind.ProviderMissing.isConfigProblem)
+        assertTrue(ReplyFailureKind.Auth.isConfigProblem)
+        assertTrue(ReplyFailureKind.InvalidAddress.isConfigProblem)
+        listOf(
+            ReplyFailureKind.Network,
+            ReplyFailureKind.Timeout,
+            ReplyFailureKind.RateLimited,
+            ReplyFailureKind.InsufficientBalance,
+            ReplyFailureKind.ContentFiltered,
+            ReplyFailureKind.ContextTooLong,
+            ReplyFailureKind.ServerBusy,
+            ReplyFailureKind.ParamUnsupported,
+            ReplyFailureKind.ProviderChanged,
+            ReplyFailureKind.Parse,
+            ReplyFailureKind.Storage,
+            ReplyFailureKind.PromptRead,
+            ReplyFailureKind.Unknown("boom")
+        ).forEach { assertFalse("$it 不是配置问题", it.isConfigProblem) }
     }
 
     @Test
-    fun `CONFIG_ERROR generic maps to ProviderMissing`() {
-        val kind = ReplyFailureKind.fromErrorMessage("CONFIG_ERROR:请先配置一个模型供应商")
-        assertTrue(kind is ReplyFailureKind.ProviderMissing)
+    fun `every kind has distinct non-empty copy`() {
+        val all = listOf(
+            ReplyFailureKind.ProviderMissing,
+            ReplyFailureKind.InvalidAddress,
+            ReplyFailureKind.Auth,
+            ReplyFailureKind.Network,
+            ReplyFailureKind.Timeout,
+            ReplyFailureKind.RateLimited,
+            ReplyFailureKind.InsufficientBalance,
+            ReplyFailureKind.ContentFiltered,
+            ReplyFailureKind.ContextTooLong,
+            ReplyFailureKind.ServerBusy,
+            ReplyFailureKind.PromptRead,
+            ReplyFailureKind.Parse,
+            ReplyFailureKind.Storage,
+            ReplyFailureKind.ParamUnsupported,
+            ReplyFailureKind.ProviderChanged,
+            ReplyFailureKind.Unknown("x")
+        )
+        all.forEach { assertTrue("${it::class.simpleName} 必须有文案", it.userMessage.isNotBlank()) }
+        assertEquals(
+            "两种 kind 撞同一句话明着是漏了分支",
+            all.size,
+            all.map { it.userMessage }.distinct().size
+        )
     }
 
     @Test
-    fun `PARAM_UNSUPPORTED maps to ParamUnsupported`() {
-        val kind = ReplyFailureKind.fromErrorMessage("PARAM_UNSUPPORTED:thinking")
-        assertTrue(kind is ReplyFailureKind.ParamUnsupported)
-    }
-
-    @Test
-    fun `429 in message maps to RateLimited`() {
-        val kind = ReplyFailureKind.fromErrorMessage("请求过于频繁 429")
-        assertTrue(kind is ReplyFailureKind.RateLimited)
-    }
-
-    @Test
-    fun `401 in message maps to Auth`() {
-        val kind = ReplyFailureKind.fromErrorMessage("401 Unauthorized")
-        assertTrue(kind is ReplyFailureKind.Auth)
-    }
-
-    @Test
-    fun `403 in message maps to Auth`() {
-        val kind = ReplyFailureKind.fromErrorMessage("403 Forbidden")
-        assertTrue(kind is ReplyFailureKind.Auth)
-    }
-
-    @Test
-    fun `timeout in message maps to Timeout`() {
-        val kind = ReplyFailureKind.fromErrorMessage("请求超时，请重试")
-        assertTrue(kind is ReplyFailureKind.Timeout)
-    }
-
-    @Test
-    fun `null message maps to Unknown`() {
-        val kind = ReplyFailureKind.fromErrorMessage(null)
-        assertTrue(kind is ReplyFailureKind.Unknown)
-        assertNull((kind as ReplyFailureKind.Unknown).rawMessage)
-    }
-
-    @Test
-    fun `unrecognized message maps to Unknown with rawMessage`() {
-        val kind = ReplyFailureKind.fromErrorMessage("something weird happened")
-        assertTrue(kind is ReplyFailureKind.Unknown)
-        assertEquals("something weird happened", (kind as ReplyFailureKind.Unknown).rawMessage)
+    fun `coroutine timeout exception is classified by type`() {
+        // TimeoutCancellationException 的构造器是 internal，只能让真实超时产生它
+        val caught: Throwable = try {
+            kotlinx.coroutines.runBlocking {
+                kotlinx.coroutines.withTimeout(1L) { kotlinx.coroutines.delay(5_000L) }
+            }
+            AssertionError("expected withTimeout to fire")
+        } catch (e: Throwable) {
+            e
+        }
+        assertEquals(ReplyFailureKind.Timeout, ReplyFailureKind.fromException(caught))
     }
 
     // ═══ userMessage 不泄露内部细节 ═══

@@ -265,7 +265,7 @@ class GenerationEngine(
         L.w("PERF t1 prompt built (+${System.currentTimeMillis() - t0}ms), user=${user.length} chars")
 
         var fullText = ""
-        var errorMsg: String? = null
+        var failure: com.lovebrain.app.model.ProviderFailure? = null
         var timedOut = false
         var thinkingShapeIndex = 0
         var attemptsUsed = 0
@@ -278,7 +278,7 @@ class GenerationEngine(
 
             if (attemptsUsed > 1) {
                 val degradeMsg = when {
-                    errorMsg?.startsWith("PARAM_UNSUPPORTED:") == true -> "参数不支持，正在降级…"
+                    failure?.thinkingParamRejected == true -> "参数不支持，正在降级…"
                     timedOut -> "网络波动，正在重试…"
                     else -> "网络波动，第 ${attemptsUsed - 1} 次重试中…"
                 }
@@ -289,7 +289,7 @@ class GenerationEngine(
             }
             try {
                 val thinkingOverride = if (timedOut) 0 else null
-                errorMsg = null
+                failure = null
                 fullText = collectStream(
                     deepSeekRepo.generateStream(
                         system, user, thinkingOverride, thinkingShapeIndex, config = providerConfig
@@ -306,7 +306,7 @@ class GenerationEngine(
                             if (schemes.isNotEmpty()) emit(ReplySchemesArrived(requestId, schemes))
                         }
                     },
-                    onError = { errorMsg = it },
+                    onError = { failure = it },
                     onFirstChunk = {
                         if (!firstTokenReported) {
                             firstTokenReported = true
@@ -326,15 +326,17 @@ class GenerationEngine(
                         }
                     }
                 ).text
-                if (fullText.isBlank() && errorMsg?.startsWith("PARAM_UNSUPPORTED:") == true && thinkingShapeIndex < 3) {
+                if (fullText.isBlank() && failure?.thinkingParamRejected == true && thinkingShapeIndex < 3) {
                     thinkingShapeIndex++
                     L.w("thinking 参数不支持，降级到候选 $thinkingShapeIndex")
                     continue
                 }
-                if (fullText.isBlank() && errorMsg?.let { DeepSeekRepository.isConfigError(it) } == true) break
+                if (fullText.isBlank() && failure?.isConfigProblem == true) break
                 L.w("PERF t2 stream complete (+${System.currentTimeMillis() - t0}ms, ${fullText.length} chars)")
             } catch (_: kotlinx.coroutines.TimeoutCancellationException) {
-                errorMsg = "请求超时，请重试"
+                failure = com.lovebrain.app.model.ProviderFailure(
+                    com.lovebrain.app.model.ReplyFailureKind.Timeout
+                )
                 timedOut = true
                 if (thinkingShapeIndex < 3) {
                     thinkingShapeIndex++
@@ -343,14 +345,15 @@ class GenerationEngine(
                 }
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e
-                errorMsg = e.message ?: "请求异常"
-                if (fullText.isBlank() && errorMsg?.let { DeepSeekRepository.isConfigError(it) } == true) break
+                val caught = com.lovebrain.app.model.ProviderFailure.fromThrowable(e)
+                failure = caught
+                if (fullText.isBlank() && caught.isConfigProblem) break
             }
             if (fullText.isNotBlank()) break
         }
 
         if (fullText.isBlank()) {
-            emitFailed(requestId, ReplyFailureKind.fromErrorMessage(errorMsg))
+            emitFailed(requestId, failure?.kind ?: ReplyFailureKind.Unknown(null))
             return@flow
         }
 
@@ -405,37 +408,42 @@ class GenerationEngine(
         }
 
         var fullText = ""
-        var errorMsg: String? = null
+        var failure: com.lovebrain.app.model.ProviderFailure? = null
         try {
             fullText = collectStream(
                 deepSeekRepo.generateStream(system, user, config = providerConfig),
                 AppConfig.GENERATE_TIMEOUT_MS,
                 onChunk = { emit(CounselingChunk(requestId, it)) },
-                onError = { errorMsg = it },
+                onError = { failure = it },
                 onFirstChunk = { emit(CounselingFirstToken(requestId, System.currentTimeMillis() - t0)) }
             ).text
         } catch (_: kotlinx.coroutines.TimeoutCancellationException) {
-            errorMsg = "请求超时，请重试"
+            failure = com.lovebrain.app.model.ProviderFailure(
+                com.lovebrain.app.model.ReplyFailureKind.Timeout
+            )
         } catch (e: Exception) {
             if (e is kotlinx.coroutines.CancellationException) throw e
-            errorMsg = e.message ?: "请求失败，请重试"
+            failure = com.lovebrain.app.model.ProviderFailure.fromThrowable(e)
         }
 
         if (fullText.isNotBlank()) {
             val (replyText, analysisText) = splitCounselingAnalysis(fullText)
             emit(CounselingResult(requestId, replyText, analysisText, knowledgeBase?.name, userMessage))
         } else {
-            emit(CounselingFailed(requestId, friendlyProviderError(errorMsg)))
+            emit(CounselingFailed(requestId, friendlyProviderError(failure)))
         }
         emit(CounselingEnded(requestId))
     }
 
-    private fun friendlyProviderError(errorMsg: String?): String = when {
-        errorMsg?.startsWith("PARAM_UNSUPPORTED:") == true ->
+    /**
+     * 展示文案：分类已在 Provider 边界做完，这里只按 typed 结果选话术，
+     * 不再从前缀或异常 message 反推错误类型。
+     */
+    private fun friendlyProviderError(failure: com.lovebrain.app.model.ProviderFailure?): String = when {
+        failure == null -> "未知错误，请重试"
+        failure.thinkingParamRejected ->
             "模型不支持当前思考模式，请更换模型或关闭思考后再试"
-        errorMsg?.let { DeepSeekRepository.isConfigError(it) } == true ->
-            DeepSeekRepository.stripConfigPrefix(errorMsg.orEmpty())
-        else -> errorMsg ?: "未知错误，请重试"
+        else -> failure.message
     }
 
     /** 切分谈心输出：===分析=== 之前 = 回复正文，之后 = 分析块 */
@@ -575,7 +583,7 @@ class GenerationEngine(
             emit(
                 ProactiveFailed(
                     requestId,
-                    "生成失败：${DeepSeekRepository.stripConfigPrefix(e.message ?: "未知错误")}"
+                    "生成失败：${com.lovebrain.app.model.ProviderFailure.fromThrowable(e).message}"
                 )
             )
         }
@@ -599,7 +607,7 @@ class GenerationEngine(
         flow: Flow<StreamEvent>,
         timeoutMs: Long = AppConfig.GENERATE_TIMEOUT_MS,
         onChunk: suspend (String) -> Unit = {},
-        onError: suspend (String) -> Unit = {},
+        onError: suspend (com.lovebrain.app.model.ProviderFailure) -> Unit = {},
         onFirstChunk: suspend () -> Unit = {},
         onComplete: suspend (com.lovebrain.app.model.StreamUsage?) -> Unit = {}
     ): StreamResult {
@@ -624,7 +632,7 @@ class GenerationEngine(
                         onComplete(e.usage)
                     }
                     is StreamEvent.Error -> {
-                        onError(e.message)
+                        onError(e.failure)
                         if (e.partialText.isNotBlank()) full = e.partialText
                     }
                 }

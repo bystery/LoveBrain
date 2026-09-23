@@ -2,7 +2,10 @@ package com.lovebrain.app.data
 
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.model.LoveBrainResponse
+import com.lovebrain.app.model.ProviderFailure
+import com.lovebrain.app.model.ProviderFailureException
 import com.lovebrain.app.model.ProviderTicket
+import com.lovebrain.app.model.ReplyFailureKind
 import com.lovebrain.app.model.StreamEvent
 import com.lovebrain.app.util.L
 import com.lovebrain.app.util.OpenAiChatEndpointResolver
@@ -192,7 +195,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
 
     /**
      * PROV-01：一次性解析当前激活工单为不可变请求配置快照。
-     * 返回 null = 配置不完整（调用方负责发 CONFIG_ERROR）。
+     * 返回 null = 配置不完整（调用方负责发 ProviderMissing）。
      * 返回后整次请求只使用此快照，不再调 getActiveTicket/getActiveApiKey/getActiveModel。
      * normalizeBaseUrl（含 HttpsTrustGuard）在此完成，地址不合法时抛 IllegalArgumentException。
      *
@@ -368,21 +371,35 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
             resolveRequestConfig()
         } catch (e: IllegalArgumentException) {
             // normalizeBaseUrl / HttpsTrustGuard 脏数据拦截
-            trySend(StreamEvent.Error("CONFIG_ERROR:${e.message ?: "地址配置异常"}", "")).getOrThrow()
+            trySend(
+                StreamEvent.Error(
+                    ProviderFailure(
+                        kind = ReplyFailureKind.InvalidAddress,
+                        message = e.message?.takeIf { it.isNotBlank() }
+                            ?: ReplyFailureKind.InvalidAddress.userMessage
+                    ),
+                    ""
+                )
+            ).getOrThrow()
             close()
             return@callbackFlow
         }
         if (resolvedConfig == null) {
             // 区分具体缺失项给精确提示
             val ticket = getActiveTicket()
-            val errMsg = when {
-                ticket == null -> "CONFIG_ERROR:请先配置一个模型供应商"
-                ticket.id.isNullOrBlank() -> "CONFIG_ERROR:工单 ID 无效，请重新激活"
-                ticket.baseUrl.isNullOrBlank() -> "CONFIG_ERROR:接口地址未填写，请在设置中补充"
-                ticket.model.isNullOrBlank() -> "CONFIG_ERROR:模型名称未配置，请在设置中补充"
-                else -> "CONFIG_ERROR:API Key 缺失，请检查工单配置"
+            val failure = when {
+                ticket == null -> ProviderFailure(
+                    ReplyFailureKind.ProviderMissing, "请先配置一个模型供应商")
+                ticket.id.isNullOrBlank() -> ProviderFailure(
+                    ReplyFailureKind.ProviderMissing, "工单 ID 无效，请重新激活")
+                ticket.baseUrl.isNullOrBlank() -> ProviderFailure(
+                    ReplyFailureKind.ProviderMissing, "接口地址未填写，请在设置中补充")
+                ticket.model.isNullOrBlank() -> ProviderFailure(
+                    ReplyFailureKind.ProviderMissing, "模型名称未配置，请在设置中补充")
+                else -> ProviderFailure(
+                    ReplyFailureKind.Auth, "API Key 缺失，请检查工单配置")
             }
-            trySend(StreamEvent.Error(errMsg, "")).getOrThrow()
+            trySend(StreamEvent.Error(failure, "")).getOrThrow()
             close()
             return@callbackFlow
         }
@@ -410,7 +427,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
                 // ：日志脱敏，只记 host 和消息长度
                 L.w("API onFailure host=${request.url.host} msgLen=${e.message?.length}")
                 trySend(StreamEvent.Error(
-                    mapApiError(e.message ?: ""),
+                    classifyApiError(e.message ?: ""),
                     accumulated.toString()
                 ))
                 close()
@@ -422,14 +439,14 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
                         resp.code == 401 -> {
                             _failCount.incrementAndGet()
                             refreshStats()
-                            trySend(StreamEvent.Error("CONFIG_ERROR:API Key 无效，请检查设置", ""))
+                            trySend(StreamEvent.Error(ProviderFailure(ReplyFailureKind.Auth), ""))
                             close()
                             return
                         }
                         resp.code == 429 -> {
                             _failCount.incrementAndGet()
                             refreshStats()
-                            trySend(StreamEvent.Error("请求过于频繁，请稍后再试", ""))
+                            trySend(StreamEvent.Error(ProviderFailure(ReplyFailureKind.RateLimited), ""))
                             close()
                             return
                         }
@@ -439,7 +456,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
                             val errBody = resp.body?.string()?.take(500) ?: ""
                             // ：日志脱敏，响应体只记长度
                             L.w("API error code=${resp.code} bodyLen=${errBody.length}")
-                            trySend(StreamEvent.Error(mapApiError(errBody, resp.code), ""))
+                            trySend(StreamEvent.Error(classifyApiError(errBody, resp.code), ""))
                             close()
                             return
                         }
@@ -501,7 +518,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
                             // ：日志脱敏，只记消息长度
                             L.w("API stream error msgLen=${e.message?.length}")
                             trySend(StreamEvent.Error(
-                                mapApiError(e.message ?: ""),
+                                classifyApiError(e.message ?: ""),
                                 accumulated.toString()
                             ))
                         }
@@ -694,7 +711,7 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
      * 不使用 securePrefs 中的配置，而是用传入的参数测试（允许用户先测试再保存）。
      *
      * 请求体接上降级链——初始带 thinking.type=disabled（直出），
-     * 命中 PARAM_UNSUPPORTED 就去掉 thinking 参数重试一次（最多 2 次尝试）。
+     * 参数被供应商拒掉就去掉 thinking 参数重试一次（最多 2 次尝试）。
      */
     suspend fun testConnection(apiKey: String, model: String, baseUrl: String): Boolean {
         if (apiKey.isBlank() || baseUrl.isBlank()) return false
@@ -702,7 +719,7 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
         // 使用 normalizeBaseUrl 统一处理
         val url = normalizeBaseUrl(baseUrl)
 
-        // 降级链：最多 2 次尝试（初始带 thinking.type=disabled + 命中 PARAM_UNSUPPORTED 后去掉 thinking）
+        // 降级链：最多 2 次尝试（初始带 thinking.type=disabled + 参数被拒后去掉 thinking）
         var thinkingShapeIndex = 0
         var attemptsUsed = 0
 
@@ -735,9 +752,9 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
             } catch (e: Exception) {
                 // 取消信号必须重抛
                 if (e is CancellationException) throw e
-                // 命中 PARAM_UNSUPPORTED → 去掉 thinking 参数重试一次
-                val errorMsg = mapApiError(e.message ?: "")
-                if (errorMsg.startsWith("PARAM_UNSUPPORTED:") && thinkingShapeIndex < 1) {
+                // 参数被供应商拒掉 → 去掉 thinking 参数重试一次
+                val failure = classifyApiError(e.message ?: "")
+                if (failure.thinkingParamRejected && thinkingShapeIndex < 1) {
                     thinkingShapeIndex++
                     L.w("testConnection: thinking 参数不支持，降级到不带 thinking 参数重试")
                     continue
@@ -810,9 +827,7 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
                 else -> ProbeResult.Fatal("连接失败（${e.code}）")
             }
         } catch (e: Exception) {
-            val msg = e.message ?: ""
-            val mapped = mapApiError(msg)
-            ProbeResult.Fatal(mapped)
+            ProbeResult.Fatal(classifyApiError(e.message ?: "").message)
         }
     }
 
@@ -878,13 +893,18 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
                         when {
                             resp.code == 401 ->
                                 if (cont.isActive) cont.resumeWithException(
-                                    IllegalStateException("CONFIG_ERROR:API Key 无效，请检查设置"))
+                                    ProviderFailureException(
+                                        ProviderFailure(
+                                            ReplyFailureKind.Auth,
+                                            "API Key 无效，请检查设置"
+                                        )
+                                    ))
                             resp.code == 429 ->
                                 if (cont.isActive) cont.resumeWithException(
-                                    IllegalStateException("请求过于频繁，请稍后再试"))
+                                    ProviderFailureException(ProviderFailure(ReplyFailureKind.RateLimited)))
                             !resp.isSuccessful ->
                                 if (cont.isActive) cont.resumeWithException(
-                                    IllegalStateException("请求失败 (${resp.code})：${body.take(200)}"))
+                                    ProviderFailureException(classifyApiError(body.take(200), resp.code)))
                             else ->
                                 if (cont.isActive) cont.resume(body)
                         }
@@ -1021,37 +1041,6 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
 
     companion object {
 
-        /**
-         * 配置类错误内部前缀：
-         * 携带此标记的错误不重试、不误报"网络波动"，展示前去前缀透传原文案。
-         */
-        internal const val CONFIG_ERROR_PREFIX = "CONFIG_ERROR:"
-
-        /** 配置类错误固定文案全集 */
-        private val CONFIG_ERROR_MESSAGES = setOf(
-            // normalizeBaseUrl
-            "地址必须以 http:// 或 https:// 开头",
-            "检测到 API Key 误填入地址栏，请检查",
-            // HttpsTrustGuard 两条
-            "地址格式不正确，请检查后重试",
-            "http:// 地址仅限本机（127.0.0.1/::1/localhost）；对外地址请使用 https://，避免 API Key 明文传输",
-            // mapApiError 401 人话
-            "API Key 无效，请检查设置里填的密钥",
-            // buildRequest 无工单
-            "还没有可用的模型配置，请到设置里检查"
-        )
-
-        /**
-         * 配置类错误判定：前缀命中 或 属固定文案全集。
-         * internal 放开供单测锚定（先例 = mapApiError/HttpsTrustGuard）。
-         */
-        internal fun isConfigError(msg: String): Boolean =
-            msg.startsWith(CONFIG_ERROR_PREFIX) || msg in CONFIG_ERROR_MESSAGES
-
-        /** 展示前去前缀透传原文案（无标记时原样返回） */
-        internal fun stripConfigPrefix(msg: String): String =
-            if (msg.startsWith(CONFIG_ERROR_PREFIX)) msg.removePrefix(CONFIG_ERROR_PREFIX) else msg
-
         /** thinking 参数 wire shape 降级候选列表 */
         private val THINKING_WIRE_SHAPES = listOf(
             "thinking.type",      // ① thinking.type = enabled + reasoning_effort = low
@@ -1061,14 +1050,16 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
         )
 
         /**
-         * 错误文案映射：DeepSeek/网络的英文原文不直接甩给用户。
-         * 命中已知错误→人话；未命中→通用提示；英文原文保留在 logcat（L.w）供排查。
-         * PARAM_UNSUPPORTED 仅限内部使用（GenerationEngine 判定降级），
-         * 降级用尽后走人话兜底文案。
+         * 全仓唯一的错误分类出口：把供应商/网络的原始响应读成一个 typed [ProviderFailure]。
+         *
+         * 供应商的英文词汇只在这里被解释一次；下游按 kind 决定控制流、按 message 展示，
+         * 供应商的原始词汇只在这里解释一次，下游不再从字符串前缀或异常 message 反推类型。
+         * 英文原文保留在 logcat（L.w）供排查，不作为 UI 输入。
          */
-        internal fun mapApiError(raw: String, code: Int = 0): String {
+        internal fun classifyApiError(raw: String, code: Int = 0): ProviderFailure {
             val s = raw.lowercase()
-            // 参数不支持族 → 内部标记（仅 GenerationEngine 降级判定用，不直接展示给用户）
+            L.w("provider error classified: code=$code rawLen=${raw.length}")
+            // 参数不支持族 → 允许换一种 thinking wire shape 再试（是否真的可换由调用方决定）
             if (s.contains("unknown parameter") ||
                 s.contains("unsupported") ||
                 s.contains("invalid field")) {
@@ -1076,36 +1067,51 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
                     s.contains("thinking") -> "thinking"
                     s.contains("reasoning_effort") -> "reasoning_effort"
                     s.contains("enable_thinking") -> "enable_thinking"
-                    else -> ""
+                    else -> null
                 }
-                return "PARAM_UNSUPPORTED:$field"
+                return ProviderFailure(
+                    kind = ReplyFailureKind.ParamUnsupported,
+                    thinkingParamRejected = true,
+                    rejectedParameter = field
+                )
             }
-            // 人话兜底：400 且 body 含 thinking 族关键词
+            // 400 且 body 提到 thinking 族：同为参数不支持，但换参数已无意义
             if (code == 400 &&
                 (s.contains("thinking") || s.contains("reasoning_effort") || s.contains("enable_thinking"))) {
-                return "模型不支持思考模式参数，请切换直出模式后重试"
+                return ProviderFailure(
+                    ReplyFailureKind.ParamUnsupported,
+                    "模型不支持思考模式参数，请切换直出模式后重试"
+                )
             }
-            return when {
+            val kind = when {
                 s.contains("insufficient balance") || s.contains("insufficient_balance") || code == 402 ->
-                    "API 余额不足，去供应商官网充值后就能继续用了"
-                s.contains("invalid api key") || s.contains("authentication credentials") || code == 401 ->
-                    "API Key 无效，请检查设置里填的密钥"
-                s.contains("rate limit") || s.contains("too many requests") || s.contains("max concurrency") || code == 429 ->
-                    "请求太频繁了，稍等几秒再试"
+                    ReplyFailureKind.InsufficientBalance
+                s.contains("invalid api key") || s.contains("authentication credentials") ||
+                    code == 401 || code == 403 -> ReplyFailureKind.Auth
+                s.contains("rate limit") || s.contains("too many requests") ||
+                    s.contains("max concurrency") || code == 429 -> ReplyFailureKind.RateLimited
                 s.contains("content_filter") || s.contains("content filter") || s.contains("sensitive") ->
-                    "内容被安全过滤拦截了，换个说法再试"
-                s.contains("context_length") || s.contains("context length") || s.contains("too long") || s.contains("max_tokens") ->
-                    "内容太长超过模型上限，删减几条对话再试"
-                s.contains("server is busy") || s.contains("overloaded") || s.contains("server_error") || code == 503 ->
-                    "服务繁忙，稍后再试"
-                s.contains("timeout") || s.contains("timed out") ->
-                    "请求超时，检查网络后重试"
-                s.contains("unable to resolve host") || s.contains("failed to connect") || s.contains("network is unreachable") ->
-                    "网络不通，检查手机联网"
-                code == 502 -> "网关错误，稍后再试"
-                code in 500..599 -> "服务暂时开小差，稍后再试"
-                else -> "生成失败，请重试"
+                    ReplyFailureKind.ContentFiltered
+                s.contains("context_length") || s.contains("context length") ||
+                    s.contains("too long") || s.contains("max_tokens") -> ReplyFailureKind.ContextTooLong
+                s.contains("server is busy") || s.contains("overloaded") ||
+                    s.contains("server_error") || code == 503 -> ReplyFailureKind.ServerBusy
+                s.contains("timeout") || s.contains("timed out") -> ReplyFailureKind.Timeout
+                s.contains("unable to resolve host") || s.contains("failed to connect") ||
+                    s.contains("network is unreachable") -> ReplyFailureKind.Network
+                code == 502 -> ReplyFailureKind.ServerBusy
+                code in 500..599 -> ReplyFailureKind.ServerBusy
+                else -> ReplyFailureKind.Unknown(raw.take(200))
             }
+            // 502 / 其它 5xx 保留原有更具体的话术，其余用 kind 的固定文案
+            val message = when {
+                code == 502 && kind == ReplyFailureKind.ServerBusy -> "网关错误，稍后再试"
+                code in 500..599 && kind == ReplyFailureKind.ServerBusy &&
+                    !s.contains("server is busy") && !s.contains("overloaded") &&
+                    !s.contains("server_error") && code != 503 -> "服务暂时开小差，稍后再试"
+                else -> kind.userMessage
+            }
+            return ProviderFailure(kind, message)
         }
         private val JSON_MEDIA_TYPE = "application/json; charset=utf-8".toMediaType()
     }
