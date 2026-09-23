@@ -48,15 +48,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.data.KnowledgeRepository
-import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.ui.common.ScreenHeader
 import com.lovebrain.app.ui.panel.MarkdownText
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.util.L
+import com.lovebrain.app.viewmodel.KbEditViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private data class KbFile(val label: String, val path: String, val layer: String)
 
@@ -97,11 +96,8 @@ private val KB_FILES = listOf(
 
 class KbEditActivity : ComponentActivity() {
 
-    // S2-05 审计技术债：此处直接 inject Repository/SecurePrefs 违反 SRP/DIP。
-    // 修复方向：通过 KbEditViewModel 间接访问 Repository，Activity 只负责 UI 生命周期。
-    // 当前保留是因为完整迁移需要同时修改 Koin module 和所有调用路径。
-    private val repo: KnowledgeRepository by inject()
-    private val securePrefs: SecurePrefs by inject()
+    // 数据访问一律经 ViewModel（Activity 不 inject Repository/SecurePrefs）
+    private val viewModel: KbEditViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,7 +119,7 @@ class KbEditActivity : ComponentActivity() {
                 var loaded by remember { mutableStateOf(false) }
 
                 LaunchedEffect(kbName) {
-                    repo.migrateIfNeeded(kbName)
+                    viewModel.ensureMigrated(kbName)
                     loaded = true
                 }
 
@@ -137,19 +133,11 @@ class KbEditActivity : ComponentActivity() {
                 } else {
                     KbEditScreen(
                         files = KB_FILES,
-                        lastFile = securePrefs.lastKbEditFile,
-                        onLastFileChange = { securePrefs.lastKbEditFile = it },
-                        readFile = { path ->
-                            repo.readFileWithVersion(kbName, path)
-                        },
+                        lastFile = viewModel.lastFile,
+                        onLastFileChange = { viewModel.lastFile = it },
+                        readFile = { path -> viewModel.read(kbName, path) },
                         saveFile = { path, content, version ->
-                            if (version != null) {
-                                repo.writeFileWithVersion(kbName, path, content, version)
-                            } else {
-                                repo.writeFile(kbName, path, content)
-                                // P0-FIX：无版本校验时返回内容哈希作为新版本
-                                repo.hashContent(content)
-                            }
+                            viewModel.save(kbName, path, content, version)
                         },
                         onBack = { finish() }
                     )

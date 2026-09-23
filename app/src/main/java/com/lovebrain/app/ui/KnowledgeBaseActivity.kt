@@ -39,7 +39,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,28 +51,17 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
-import com.lovebrain.app.data.DeepSeekRepository
-import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
 import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.ui.theme.*
-import com.lovebrain.app.util.L
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import org.koin.android.ext.android.inject
-import java.io.File
-import java.io.FileOutputStream
-import java.nio.file.Files
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
-import java.util.zip.ZipOutputStream
+import com.lovebrain.app.viewmodel.KbCreationOutcome
+import com.lovebrain.app.viewmodel.KbEvent
+import com.lovebrain.app.viewmodel.KnowledgeBaseViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /** 知识库管理页内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object KbDimens {
@@ -87,163 +75,11 @@ private object KbDimens {
 
 class KnowledgeBaseActivity : ComponentActivity() {
 
-    // S2-05 审计技术债：此处直接 inject Repository 违反 SRP/DIP。
-    // 修复方向：通过 KnowledgeBaseViewModel 间接访问 Repository。
-    private val repo: KnowledgeRepository by inject()
-    private val deepSeek: DeepSeekRepository by inject()
+    // 数据访问一律经 ViewModel：Activity 不 inject Repository，只负责窗口标记与 Activity Result 启动
+    private val viewModel: KnowledgeBaseViewModel by viewModel()
+
+    /** 导出目标库：CreateDocument 回调只回传 Uri，需自行配对 */
     private var pendingExportKb: String? = null
-
-    //  ：未就绪二选一弹窗态（守卫拦截时的待定 onDone 载荷）
-    private val noProviderDialogVisible = mutableStateOf(false)
-    private var pendingNoProviderDone: (() -> Unit)? = null
-
-    // C1 修复：建库/AI 结果反馈通道（空分支原样补告知）
-    private val kbFeedback = mutableStateOf<String?>(null)
-
-    // P0-① 修复：持有 onboarding 生成协程 Job，onDismiss 时显式 cancel
-    private var onboardingJob: kotlinx.coroutines.Job? = null
-
-    // ONB-01 修复：统一建库事务 guard——AI 建库和空模板建库不能并发执行
-    private var kbCreationInProgress = false
-
-    // KB-04 修复：Activity 级 refresh signal——导入成功后不 recreate，改用 token 触发列表刷新
-    private val kbReloadToken = mutableIntStateOf(0)
-
-    private fun createEmptyKb(onDone: () -> Unit) {
-        if (kbCreationInProgress) return
-        kbCreationInProgress = true
-        lifecycleScope.launch {
-            try {
-                val name = autoKbName()
-                val ok = try {
-                    repo.create(name, "新知识库")
-                    true
-                } catch (e: kotlinx.coroutines.CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    false
-                }
-                if (!ok) {
-                    kbFeedback.value = "创建失败：可能名称重复，请重试"
-                }
-                onDone()
-            } finally {
-                kbCreationInProgress = false
-            }
-        }
-    }
-
-    private fun createKbWithOnboarding(
-        schema: com.lovebrain.app.domain.OnboardingSchema,
-        myName: String,
-        herName: String,
-        onDone: () -> Unit
-    ) {
-        if (kbCreationInProgress) return
-        val ready = deepSeek.getActiveTicket()?.model?.isNotBlank() == true &&
-            !deepSeek.getActiveApiKey().isNullOrBlank()
-        if (!ready) {
-            pendingNoProviderDone = onDone
-            noProviderDialogVisible.value = true
-            return
-        }
-        // ONB-01 修复：进入 AI 建库事务
-        kbCreationInProgress = true
-        // P0-① 修复：存 Job 引用，onDismiss 时 cancel → generateRaw 抛 CancellationException 跳出
-        onboardingJob = lifecycleScope.launch {
-            try {
-                val name = autoKbName()
-                val system = readEngineAsset(com.lovebrain.app.domain.AssetRegistry.ONBOARDING)
-                // v4.0：输入改为 JSON Schema（取代文本拼接块）
-                val user = Json.encodeToString(
-                    com.lovebrain.app.domain.OnboardingSchema.serializer(), schema
-                )
-                val raw = try {
-                    withContext(Dispatchers.IO) { deepSeek.generateRaw(system, user) }
-                } catch (e: kotlinx.coroutines.CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    ""
-                }
-                if (!isActive) {
-                    onDone()
-                    return@launch
-                }
-
-                // ONB-04 修复：用轻量结果对象解析 AI 输出，校验关键段非空后才算画像成功
-                val parsed = parseOnboardingResult(raw)
-                val display = parsed.display.ifBlank { herName.ifBlank { "我的她" } }
-                val stage = parsed.stage.ifBlank { "待确定" }
-
-                val ok = try {
-                    repo.create(name, display)
-                    true
-                } catch (e: kotlinx.coroutines.CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    false
-                }
-                if (ok) {
-                    // ONB-04：只有对应 section 非空才覆盖模板
-                    if (parsed.me.isNotBlank()) repo.writeFile(name, "understand/me.md", parsed.me)
-                    if (parsed.her.isNotBlank()) repo.writeFile(name, "understand/her.md", parsed.her)
-                    if (parsed.warmth.isNotBlank()) repo.writeFile(name, "understand/warmth.md", parsed.warmth)
-                    repo.updateStage(name, stage)
-                    // ONB-04：区分完整成功 / 降级建库 / 创建失败
-                    kbFeedback.value = if (parsed.hasUsableProfile) {
-                        "知识库已创建，画像已生成"
-                    } else {
-                        "AI 画像生成不完整，已创建模板库，可稍后在编辑页补充"
-                    }
-                } else {
-                    kbFeedback.value = "创建知识库失败，请重试"
-                }
-                onDone()
-            } finally {
-                kbCreationInProgress = false
-                onboardingJob = null
-            }
-        }
-    }
-
-    // ONB-04 修复：轻量解析结果对象
-    private data class ParsedOnboardingResult(
-        val display: String,
-        val stage: String,
-        val me: String,
-        val her: String,
-        val warmth: String
-    ) {
-        val hasUsableProfile: Boolean
-            get() = me.isNotBlank() && her.isNotBlank() && warmth.isNotBlank()
-    }
-
-    private fun parseOnboardingResult(raw: String): ParsedOnboardingResult {
-        return ParsedOnboardingResult(
-            display = parseSection(raw, "===DISPLAY===", "===STAGE==="),
-            stage = parseSection(raw, "===STAGE===", "===ME==="),
-            me = parseSection(raw, "===ME===", "===HER==="),
-            her = parseSection(raw, "===HER===", "===WARMTH==="),
-            warmth = raw.substringAfter("===WARMTH===", "").trim()
-        )
-    }
-
-    // C2 修复：去掉 % 1000000（每 16.7 分钟循环碰撞），用全时间戳 + 随机后缀
-    private fun autoKbName(): String =
-        "kb_" + System.currentTimeMillis().toString(36) + "_" + (0..9999).random().toString(36)
-
-    private fun readEngineAsset(path: String): String = runCatching {
-        assets.open(path).bufferedReader().use { it.readText() }
-    }.onFailure { com.lovebrain.app.util.L.e("readEngineAsset missing/failed: $path", it) }
-        .getOrDefault("")
-
-    private fun parseSection(text: String, startMarker: String, endMarker: String): String {
-        val start = text.indexOf(startMarker)
-        if (start < 0) return ""
-        val contentStart = start + startMarker.length
-        val end = text.indexOf(endMarker, contentStart)
-        return (if (end > contentStart) text.substring(contentStart, end) else "").trim()
-    }
 
     private val exportLauncher = registerForActivityResult(
         ActivityResultContracts.CreateDocument("application/zip")
@@ -251,300 +87,175 @@ class KnowledgeBaseActivity : ComponentActivity() {
         val kbName = pendingExportKb
         pendingExportKb = null
         if (uri == null || kbName == null) return@registerForActivityResult
-        // （ 清偿）：zip 下沉 IO 线程，防大库阻塞主线程（ANR 隐患）；函数体零改动
-        lifecycleScope.launch(Dispatchers.IO) {
-            runCatching {
-                val output = contentResolver.openOutputStream(uri)
-                    ?: throw IllegalStateException("无法打开导出文件")
-                output.use { os ->
-                    ZipOutputStream(os).use { zos ->
-                        zipKbFolder(File(filesDir, "knowledge/$kbName"), kbName, zos)
-                    }
-                }
-                withContext(Dispatchers.Main) {
-                    kbFeedback.value = "知识库已导出"
-                }
-            }.onFailure { error ->
-                L.e("knowledge export failed", error)
-                withContext(Dispatchers.Main) {
-                    kbFeedback.value = "导出失败，请重试"
-                }
-            }
-        }
+        viewModel.export(kbName, uri)
     }
 
     private val importLauncher = registerForActivityResult(
         ActivityResultContracts.OpenDocument()
     ) { uri: Uri? ->
-        if (uri == null) return@registerForActivityResult
-        // （ 清偿）：解压下沉 IO 线程，防大库阻塞主线程（ANR 隐患）；函数体零改动
-        // 激活修正+recreate 移入同一协程、置于解压成功之后，时序与基线一致
-        lifecycleScope.launch(Dispatchers.IO) {
-            runCatching {
-                val input = contentResolver.openInputStream(uri)
-                    ?: throw IllegalStateException("无法打开导入文件")
-                input.use {
-                    ZipInputStream(it).use { zis ->
-                        unzipToKnowledge(zis, File(filesDir, "knowledge"))
-                    }
-                }
-                // 导入后强制修正 active 状态，防止导入的 KB 带 active=true 导致双激活
-                val currentActive = repo.getActive()?.name ?: repo.listAll().firstOrNull()?.name
-                if (currentActive != null) repo.setActive(currentActive)
-                // KB-04 修复：不 recreate（会吃掉 kbFeedback），改用 token 触发列表刷新
-                withContext(Dispatchers.Main) {
-                    kbFeedback.value = "知识库导入成功"
-                    kbReloadToken.intValue++
-                }
-            }.onFailure { error ->
-                L.e("knowledge import failed", error)
-                withContext(Dispatchers.Main) {
-                    kbFeedback.value = "导入失败，请检查文件是否为有效的 LoveBrain 知识库备份"
-                }
-            }
-        }
+        if (uri != null) viewModel.import(uri)
     }
 
-override fun onCreate(savedInstanceState: Bundle?) {
-super.onCreate(savedInstanceState)
-// P3-05: FLAG_SECURE——知识库内容含关系数据，防止最近任务截图泄露
-window.setFlags(
-android.view.WindowManager.LayoutParams.FLAG_SECURE,
-android.view.WindowManager.LayoutParams.FLAG_SECURE
-)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // P3-05: FLAG_SECURE——知识库内容含关系数据，防止最近任务截图泄露
+        window.setFlags(
+            android.view.WindowManager.LayoutParams.FLAG_SECURE,
+            android.view.WindowManager.LayoutParams.FLAG_SECURE
+        )
 
-setContent {
+        setContent {
             LoveBrainTheme {
-                var version by remember { mutableStateOf(0) }
-                val reload = { version++ }
-                var kbs by remember(version) { mutableStateOf(emptyList<KnowledgeBase>()) }
-                var active by remember(version) { mutableStateOf<KnowledgeBase?>(null) }
-                var showOnboarding by remember { mutableStateOf(false) }
-
-                LaunchedEffect(version, kbReloadToken.intValue) {
-                    kbs = repo.listAll()
-                    active = repo.getActive()
-                }
-
-                KbListScreen(
-                    kbs = kbs,
-                    activeName = active?.name,
-                    onActivate = { name ->
-                        lifecycleScope.launch {
-                            repo.setActive(name)
-                            val displayName = repo.getActive()?.displayName ?: name
-                            reload()
-                        }
-                    },
-                    onNewKb = { showOnboarding = true },
-                    onRename = { name, newDisplay ->
-                        lifecycleScope.launch {
-                            repo.updateDisplayName(name, newDisplay)
-                            reload()
-                        }
-                    },
-                    onDelete = { name ->
-                        lifecycleScope.launch {
-                            val ok = repo.delete(name)
-                            reload()
-                            if (ok) {
-                            } else {
-                            }
-                        }
-                    },
+                KbManagementScreen(
+                    viewModel = viewModel,
                     onEdit = { name ->
-                        startActivity(Intent(this, KbEditActivity::class.java).putExtra("kb_name", name))
+                        startActivity(
+                            Intent(this, KbEditActivity::class.java).putExtra("kb_name", name)
+                        )
                     },
-                    // ：导出警示 Compose 化——确认链路上提至此，弹窗由 KbListScreen pendingExport 承载
-                    onConfirmExport = { name ->
+                    onExport = { name ->
                         pendingExportKb = name
                         exportLauncher.launch("kb_${name}.zip")
                     },
                     onImport = {
-                        importLauncher.launch(arrayOf("application/zip", "application/octet-stream"))
+                        importLauncher.launch(
+                            arrayOf("application/zip", "application/octet-stream")
+                        )
                     },
                     onBack = { finish() }
                 )
-
-                if (showOnboarding) {
-                    OnboardingScreen(
-                        onDismiss = { showOnboarding = false },
-                        onSkip = {
-                            createEmptyKb {
-                                showOnboarding = false
-                                reload()
-                            }
-                        },
-                        onComplete = { schema, myName, herName ->
-                            createKbWithOnboarding(schema, myName, herName) {
-                                showOnboarding = false
-                                reload()
-                            }
-                        },
-                        // P0-① 修复：生成中取消——cancel 协程后关闭页面
-                        // ONB-01：kbCreationInProgress 由 job finally 复位，不在此处重复维护
-                        onCancelGenerating = {
-                            onboardingJob?.cancel()
-                            showOnboarding = false
-                        }
-                    )
-                }
-
-                //  ：未配置供应商二选一弹窗（继续 = 空模板库，取消 = 返回）
-                if (noProviderDialogVisible.value) {
-                    AlertDialog(
-                        onDismissRequest = {
-                            noProviderDialogVisible.value = false
-                            pendingNoProviderDone = null
-                        },
-                        title = { Text("未配置模型供应商", style = AppTypography.titleLarge) },
-                        text = {
-                            Text(
-                                "未配置模型供应商，只能创建空模板库",
-                                style = AppTypography.bodyMedium,
-                                color = TextSecondary
-                            )
-                        },
-                        confirmButton = {
-                            TextButton(onClick = {
-                                val done = pendingNoProviderDone
-                                noProviderDialogVisible.value = false
-                                pendingNoProviderDone = null
-                                if (done != null) createEmptyKb(done)
-                            }) { Text("继续", color = Primary, style = AppTypography.titleMedium) }
-                        },
-                        dismissButton = {
-                            TextButton(onClick = {
-                                noProviderDialogVisible.value = false
-                                pendingNoProviderDone = null
-                            }) {
-                                Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
-                            }
-                        }
-                    )
-                }
-
-                // C1 修复：建库/生成结果反馈弹窗
-                kbFeedback.value?.let { msg ->
-                    AlertDialog(
-                        onDismissRequest = { kbFeedback.value = null },
-                        title = { Text("提示", style = AppTypography.titleLarge) },
-                        text = { Text(msg, style = AppTypography.bodyMedium, color = TextSecondary) },
-                        confirmButton = {
-                            TextButton(onClick = { kbFeedback.value = null }) {
-                                Text("知道了", color = Primary, style = AppTypography.titleMedium)
-                            }
-                        }
-                    )
-                }
             }
         }
-    }
-
-    private fun zipKbFolder(folder: File, prefix: String, zos: ZipOutputStream) {
-        if (!folder.exists()) return
-        folder.walkTopDown().filter { it.isFile }.forEach { file ->
-            val entryName = "$prefix/${file.relativeTo(folder).path.replace('\\', '/')}"
-            zos.putNextEntry(ZipEntry(entryName))
-            file.inputStream().use { it.copyTo(zos) }
-            zos.closeEntry()
-        }
-        // finish/close 由 ZipOutputStream.use 自动处理，避免双重生命周期职责
-    }
-
-    /**
-     * : 导入知识库 = 解压到暂存区 → 校验 → 原子搬入正式位置。
-     * - 不直接写 knowledge/ 树：解压中途磁盘满/进程被杀不会残留半截坏库
-     * - 校验三关：顶层恰一个目录 / kb.json 可解码且 name==顶层目录名（与  同判据）/ 无同名碰撞
-     * - 任一失败 = 整体中止并清理暂存目录，异常上抛复用现有「导入失败：」提示
-     *  RA-04：严格 ZIP 路径边界（带 File.separator 的 startsWith）+ 解压大小限制防 zip bomb
-     */
-    private fun unzipToKnowledge(zis: ZipInputStream, knowledgeRoot: File) {
-        val stagingRoot = File(cacheDir, "kb_import_${System.currentTimeMillis()}")
-        stagingRoot.mkdirs()
-        try {
-            // 1. 解压（RA-04：严格路径防护 + 大小限制）
-            val canonicalStaging = stagingRoot.canonicalPath
-            val safePrefix = canonicalStaging + File.separator
-            var entryCount = 0
-            var totalBytes = 0L
-            var entry = zis.nextEntry
-            while (entry != null) {
-                entryCount++
-                if (entryCount > MAX_IMPORT_ENTRIES) {
-                    throw IllegalStateException("ZIP 包含过多条目（上限 $MAX_IMPORT_ENTRIES）")
-                }
-                val outFile = File(stagingRoot, entry.name)
-                // RA-04：用 canonicalPath + File.separator 严格判断，防 prefix collision
-                val targetPath = outFile.canonicalPath
-                require(targetPath.startsWith(safePrefix)) {
-                    throw IllegalStateException("ZIP 包含非法路径：${entry.name}")
-                }
-                if (entry.isDirectory) {
-                    outFile.mkdirs()
-                } else {
-                    outFile.parentFile?.mkdirs()
-                    // RA-04：逐 entry 统计实际解压字节，不信任 ZipEntry.size
-                    var entryBytes = 0L
-                    val buffer = ByteArray(8 * 1024)
-                    FileOutputStream(outFile).use { fos ->
-                        while (true) {
-                            val read = zis.read(buffer)
-                            if (read < 0) break
-                            entryBytes += read
-                            totalBytes += read
-                            require(entryBytes <= MAX_IMPORT_ENTRY_BYTES) {
-                                throw IllegalStateException("ZIP 条目过大（单文件上限 ${MAX_IMPORT_ENTRY_BYTES / 1024 / 1024} MiB）")
-                            }
-                            require(totalBytes <= MAX_IMPORT_TOTAL_BYTES) {
-                                throw IllegalStateException("ZIP 解压总大小超限（上限 ${MAX_IMPORT_TOTAL_BYTES / 1024 / 1024} MiB）")
-                            }
-                            fos.write(buffer, 0, read)
-                        }
-                    }
-                }
-                entry = zis.nextEntry
-            }
-
-            // 2a. 校验：顶层恰一个目录
-            val topDirs = stagingRoot.listFiles()?.filter { it.isDirectory } ?: emptyList()
-            if (topDirs.size != 1) {
-                throw IllegalStateException("知识库包结构无效：应恰有一个顶层目录")
-            }
-            val topDir = topDirs.first()
-
-            // 2b. 校验：kb.json 可解码且 name 字段 == 顶层目录名（ 同判据，导入时前置拦截）
-            val kb = runCatching {
-                Json.decodeFromString<KnowledgeBase>(File(topDir, "kb.json").readText())
-            }.getOrNull() ?: throw IllegalStateException("知识库元数据缺失或损坏")
-            if (kb.name != topDir.name) {
-                throw IllegalStateException("知识库元数据校验失败：name 与目录名不一致")
-            }
-
-            // 2c. 校验：已有同名知识库 → 碰撞即整体中止（不静默覆盖）
-            val target = File(knowledgeRoot, topDir.name)
-            if (target.exists()) {
-                throw IllegalStateException("已存在同名知识库，导入中止")
-            }
-
-            // 3. 原子搬入正式位置（minSdk=26：java.nio.file 可用）
-            Files.move(topDir.toPath(), target.toPath())
-            // 成功后清理暂存空壳（防御性）
-            runCatching { stagingRoot.deleteRecursively() }
-        } catch (e: Exception) {
-            // 任何失败路径均清理暂存目录后上抛
-            runCatching { stagingRoot.deleteRecursively() }
-            throw e
-        }
-    }
-
-    // RA-04：ZIP 解压安全限制常量
-    companion object {
-        private const val MAX_IMPORT_ENTRIES = 2048
-        private const val MAX_IMPORT_ENTRY_BYTES = 16L * 1024 * 1024
-        private const val MAX_IMPORT_TOTAL_BYTES = 64L * 1024 * 1024
     }
 }
+
+/**
+ * 建库/导入/导出页的状态承载。
+ *
+ * 结果反馈只有一条通道：ViewModel 的 KbEvent → 固定文案 → AlertDialog（禁 Toast 铁律）。
+ */
+@Composable
+private fun KbManagementScreen(
+    viewModel: KnowledgeBaseViewModel,
+    onEdit: (String) -> Unit,
+    onExport: (String) -> Unit,
+    onImport: () -> Unit,
+    onBack: () -> Unit
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    var showOnboarding by remember { mutableStateOf(false) }
+    var feedback by remember { mutableStateOf<String?>(null) }
+    // 未配置供应商二选一弹窗：继续 = 空模板库，取消 = 留在向导内
+    var showNoProviderDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) { viewModel.refresh() }
+
+    LaunchedEffect(viewModel) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is KbEvent.Creation -> when (val outcome = event.outcome) {
+                    KbCreationOutcome.ProfileCreated -> {
+                        showOnboarding = false
+                        feedback = "知识库已创建，画像已生成"
+                        viewModel.refresh()
+                    }
+                    KbCreationOutcome.TemplateOnlyCreated -> {
+                        showOnboarding = false
+                        feedback = "AI 画像生成不完整，已创建模板库，可稍后在编辑页补充"
+                        viewModel.refresh()
+                    }
+                    KbCreationOutcome.EmptyCreated -> {
+                        showOnboarding = false
+                        viewModel.refresh()
+                    }
+                    KbCreationOutcome.EmptyCreateFailed -> {
+                        showOnboarding = false
+                        feedback = "创建失败：可能名称重复，请重试"
+                    }
+                    KbCreationOutcome.OnboardingCreateFailed -> {
+                        showOnboarding = false
+                        feedback = "创建知识库失败，请重试"
+                    }
+                    KbCreationOutcome.Cancelled -> showOnboarding = false
+                    KbCreationOutcome.ProviderNotConfigured -> showNoProviderDialog = true
+                }
+                KbEvent.Exported -> feedback = "知识库已导出"
+                KbEvent.ExportFailed -> feedback = "导出失败，请重试"
+                KbEvent.Imported -> feedback = "知识库导入成功"
+                KbEvent.ImportFailed -> feedback = "导入失败，请检查文件是否为有效的 LoveBrain 知识库备份"
+                KbEvent.DeleteFailed -> feedback = "删除失败，请重试"
+            }
+        }
+    }
+
+    KbListScreen(
+        kbs = state.knowledgeBases,
+        activeName = state.activeName,
+        onActivate = viewModel::setActive,
+        onNewKb = { showOnboarding = true },
+        onRename = viewModel::rename,
+        onDelete = viewModel::delete,
+        onEdit = onEdit,
+        // 导出警示 Compose 化——确认链路上提至此，弹窗由 KbListScreen pendingExport 承载
+        onConfirmExport = onExport,
+        onImport = onImport,
+        onBack = onBack
+    )
+
+    if (showOnboarding) {
+        OnboardingScreen(
+            onDismiss = { showOnboarding = false },
+            onSkip = { viewModel.createEmptyKb() },
+            onComplete = { schema -> viewModel.createKbWithOnboarding(schema) },
+            // 生成中取消：cancel 协程后关闭页面（结果以 KbEvent.Creation(Cancelled) 回传）
+            onCancelGenerating = {
+                viewModel.cancelOnboarding()
+                showOnboarding = false
+            }
+        )
+    }
+
+    // 未配置供应商二选一弹窗（继续 = 空模板库，取消 = 返回向导）
+    if (showNoProviderDialog) {
+        AlertDialog(
+            onDismissRequest = { showNoProviderDialog = false },
+            title = { Text("未配置模型供应商", style = AppTypography.titleLarge) },
+            text = {
+                Text(
+                    "未配置模型供应商，只能创建空模板库",
+                    style = AppTypography.bodyMedium,
+                    color = TextSecondary
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    showNoProviderDialog = false
+                    viewModel.createEmptyKb()
+                }) { Text("继续", color = Primary, style = AppTypography.titleMedium) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showNoProviderDialog = false }) {
+                    Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
+                }
+            }
+        )
+    }
+
+    // 建库/生成/导入导出结果反馈弹窗
+    feedback?.let { msg ->
+        AlertDialog(
+            onDismissRequest = { feedback = null },
+            title = { Text("提示", style = AppTypography.titleLarge) },
+            text = { Text(msg, style = AppTypography.bodyMedium, color = TextSecondary) },
+            confirmButton = {
+                TextButton(onClick = { feedback = null }) {
+                    Text("知道了", color = Primary, style = AppTypography.titleMedium)
+                }
+            }
+        )
+    }
+}
+
 
 @Composable
 private fun KbListScreen(
@@ -812,7 +523,7 @@ private fun KbCard(
 private fun OnboardingScreen(
     onDismiss: () -> Unit,
     onSkip: () -> Unit,
-    onComplete: (com.lovebrain.app.domain.OnboardingSchema, String, String) -> Unit,
+    onComplete: (com.lovebrain.app.domain.OnboardingSchema) -> Unit,
     onCancelGenerating: () -> Unit
 ) {
     // v4.2 向导状态：currentStep 1-5 答题，6 称呼收尾
@@ -1098,7 +809,7 @@ private fun OnboardingScreen(
                     val schema = com.lovebrain.app.domain.OnboardingSchemaBuilder.build(
                         answers.toMap(), myName.trim(), herName.trim()
                     )
-                    onComplete(schema, myName.trim(), herName.trim())
+                    onComplete(schema)
                 },
                 enabled = true,
                 colors = ButtonDefaults.buttonColors(containerColor = Primary),
