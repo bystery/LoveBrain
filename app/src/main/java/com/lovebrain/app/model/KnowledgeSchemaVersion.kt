@@ -33,6 +33,15 @@ object KnowledgeSchemaVersion {
     fun needsMigration(fromVersion: Int): Boolean = fromVersion < CURRENT
 
     /**
+     * 库的 schema 比本 App 支持的还新——通常是降级安装，或多设备同步带回的新版数据。
+     *
+     * 这种库只能读不能写：用 v3 的代码去写 v4 结构，会把新字段静默抹掉。
+     * 旧实现只判断 needsMigration，遇到更高的版本号返回 false，
+     * 于是"太新所以不该动"被当成了"够新所以不用动"，照常读写未来结构。
+     */
+    fun isBeyondSupported(fromVersion: Int): Boolean = fromVersion > CURRENT
+
+    /**
      * 获取从当前版本到目标版本的迁移步骤列表。
      */
     fun migrationSteps(fromVersion: Int): List<Int> {
@@ -63,6 +72,14 @@ value class KbRelativePath(val value: String) {
     init {
         require(value.isNotBlank()) { "Path must not be blank" }
         require(!value.contains("..")) { "Path must not contain path traversal" }
+        // POSIX 绝对路径
         require(!value.startsWith("/")) { "Path must be relative" }
+        // Windows 绝对路径：盘符（C:\、C:/）与 UNC（\server\share）。
+        // 只挡 "/" 是不够的——File(dir, "C:\x") 在 Windows 上会直接跳出库目录。
+        require(!(value.length >= 2 && value[1] == ':' && (value[0].isLetter()))) {
+            "Path must not be a windows drive-absolute path"
+        }
+        require(!value.startsWith("\\\\")) { "Path must not be a UNC path" }
+        // 反斜杠在 Windows 上就是分隔符，允许它等于允许 ..        require(!value.contains('\')) { "Path must not contain windows separators" }
     }
 }

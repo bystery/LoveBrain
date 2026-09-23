@@ -244,9 +244,28 @@ class KnowledgeRepository(
         return dir.isDirectory && meta.isFile
     }
 
+    /**
+     * S2-06: 库 schema 比本 App 支持的还新时拒绝写入。
+     *
+     * 所有写路径（含 appendFileUnlocked）最终都落到这里，所以拦截只需要这一处；
+     * 用旧代码往 v4 结构里写 v3 形状，会把新字段静默抹掉。
+     * 与"KB 已删除即 no-op"保持同一风格：不抛异常、不复活目录，只记一条日志。
+     */
+    private fun refusedByReadOnlySchema(kbName: String, op: String, relativePath: String): Boolean {
+        if (!schemaTooNewKbs.contains(kbName)) return false
+        com.lovebrain.app.util.L.w(
+            "S2-06: $op refused on $kbName/$relativePath — schema newer than this build, library is read-only"
+        )
+        return true
+    }
+
+    /** 该库当前是否可写（schema 过新时为 false） */
+    fun isWritable(kbName: String): Boolean = !schemaTooNewKbs.contains(kbName)
+
     /** 锁区内写入核心：不抢锁。调用方必须已持有文件互斥锁（Mutex 非重入，锁内再抢=永久挂起） */
     private fun writeFileUnlocked(kbName: String, relativePath: String, content: String) {
-        val file = File(File(knowledgeRoot, kbName), relativePath)
+        if (refusedByReadOnlySchema(kbName, "writeFile", relativePath)) return
+        val file = safeKbFile(kbName, relativePath) ?: return
         file.parentFile?.mkdirs()
         atomicWriteText(file, content)
         scheduleDebouncedBackup()
@@ -254,7 +273,8 @@ class KnowledgeRepository(
 
     /** 锁区内追加核心：不抢锁。调用方必须已持有文件互斥锁 */
     private fun appendFileUnlocked(kbName: String, relativePath: String, content: String) {
-        val file = File(File(knowledgeRoot, kbName), relativePath)
+        if (refusedByReadOnlySchema(kbName, "appendFile", relativePath)) return
+        val file = safeKbFile(kbName, relativePath) ?: return
         file.parentFile?.mkdirs()
         val existing = if (file.exists()) file.readText() else ""
         atomicWriteText(file, existing + content)
@@ -798,6 +818,53 @@ class KnowledgeRepository(
         ""
     }
 
+    // ═══════════ S2-06: canonical 路径边界 ═══════════
+
+    /**
+     * 把裸字符串库名校验成 [KbName]。
+     *
+     * 复核报告 §6 S2-06 的原话是"Repository 的公共方法仍接收裸 String kbName/path，
+     * canonical boundary 没建立"。光加一个没人用的 value class 不算建立边界，
+     * 所以这里让**所有** String 入口先过同一套校验：
+     * 空名、带路径分隔符、`..`、超长一律拒绝，非法输入不再有机会变成 File 路径。
+     */
+    fun toKbName(raw: String): com.lovebrain.app.model.KbName? =
+        runCatching { com.lovebrain.app.model.KbName(raw) }
+            .onFailure { com.lovebrain.app.util.L.w("S2-06: rejected kb name: ${it.message}") }
+            .getOrNull()
+
+    /** 把裸字符串相对路径校验成 [KbRelativePath] */
+    fun toKbPath(raw: String): com.lovebrain.app.model.KbRelativePath? =
+        runCatching { com.lovebrain.app.model.KbRelativePath(raw) }
+            .onFailure { com.lovebrain.app.util.L.w("S2-06: rejected kb path: ${it.message}") }
+            .getOrNull()
+
+    /**
+     * String 入口的统一守门：返回解析后的绝对 File，非法输入返回 null 并记日志。
+     *
+     * 之前只检查 `..`，漏了绝对路径与 Windows 反斜杠分隔符，
+     * 也允许 `/etc/passwd` 这类以 `/` 开头的值走到 File(parent, child) 里。
+     */
+    private fun safeKbFile(kbName: String, relativePath: String): File? {
+        val name = toKbName(kbName) ?: return null
+        val path = toKbPath(relativePath) ?: return null
+        val dir = File(knowledgeRoot, name.value)
+        val file = File(dir, path.value)
+        // canonicalPath 在某些畸形输入上会直接抛 IOException（Windows 上混用分隔符时实测会抛），
+        // 边界函数不能让异常穿到调用方——抛不出去就当拒绝。
+        val escaped = runCatching {
+            !file.canonicalPath.startsWith(dir.canonicalPath + File.separator)
+        }.getOrElse {
+            com.lovebrain.app.util.L.w("S2-06: path could not be canonicalised, refused: ${it.message}")
+            true
+        }
+        if (escaped) {
+            com.lovebrain.app.util.L.w("S2-06: path escapes knowledge dir, refused")
+            return null
+        }
+        return file
+    }
+
     /** 线程安全的文件追加（fileMutex 锁 + I/O 线程；A2-5 合并原 appendFileSafe）
      *  KBG-01：目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
     suspend fun appendFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
@@ -814,7 +881,8 @@ class KnowledgeRepository(
     suspend fun deleteFile(kbName: String, relativePath: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) return@withLock false
-            val file = File(File(knowledgeRoot, kbName), relativePath)
+            if (refusedByReadOnlySchema(kbName, "deleteFile", relativePath)) return@withLock false
+            val file = safeKbFile(kbName, relativePath) ?: return@withLock false
             if (file.exists()) file.delete() else false
         }
     }
@@ -848,7 +916,7 @@ class KnowledgeRepository(
                 com.lovebrain.app.util.L.w("writeFileWithVersion skipped: kb no longer exists")
                 return@withLock null
             }
-            val file = File(File(knowledgeRoot, kbName), relativePath)
+            val file = safeKbFile(kbName, relativePath) ?: return@withLock null
             val currentVersion = if (file.exists()) {
                 sha256(file.readText())
             } else {
@@ -1759,6 +1827,20 @@ class KnowledgeRepository(
      * 如果 .schema_version 存在，直接读取其版本号。
      * 如果不存在，回退到 legacy marker 文件检测（向后兼容）。
      */
+    /** S2-06: schema 高于本 App 支持范围的库——只读，拒绝写入 */
+    private val schemaTooNewKbs = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
+
+    /** 该库是否因 schema 过新而进入只读保护 */
+    fun isSchemaReadOnly(kbName: String): Boolean = schemaTooNewKbs.contains(kbName)
+
+    /**
+     * S2-06: 库当前的 schema 版本（对外只读，供升级断言与诊断使用）。
+     * 读不到 .schema_version 时按 legacy marker 推断，与迁移判定同一把尺。
+     */
+    suspend fun schemaVersion(kbName: String): Int = withContext(Dispatchers.IO) {
+        detectSchemaVersion(kbName)
+    }
+
     private fun detectSchemaVersion(kbName: String): Int {
         val dir = File(knowledgeRoot, kbName)
         // 优先从统一 .schema_version 文件读取
@@ -1843,8 +1925,24 @@ class KnowledgeRepository(
         // S2-06: 使用 KnowledgeSchemaVersion 确定当前版本
         val currentVersion = detectSchemaVersion(kbName)
 
-        // S2-06: 如果已是最新版本，跳过迁移
-        if (!KnowledgeSchemaVersion.needsMigration(currentVersion)) return
+        // S2-06: 库比本 App 还新（降级安装 / 新版设备带回的数据）——
+        // 记为"只读"，让上层拒绝写入，而不是当成"不需要迁移"继续用旧代码读写未来结构。
+        if (KnowledgeSchemaVersion.isBeyondSupported(currentVersion)) {
+            schemaTooNewKbs.add(kbName)
+            com.lovebrain.app.util.L.w(
+                "S2-06: schema v$currentVersion is newer than supported v${KnowledgeSchemaVersion.CURRENT}; $kbName is read-only"
+            )
+            return
+        }
+        // S2-06: 版本已经够新，但如果 .schema_version 还没落盘（只有 legacy marker），
+        // 就必须归一化一次：否则每次启动都要重新靠 marker 猜版本，marker 也永远清不掉。
+        if (!KnowledgeSchemaVersion.needsMigration(currentVersion)) {
+            val versionFile = File(dir, ".schema_version")
+            if (!versionFile.exists() || runCatching { versionFile.readText().trim().toIntOrNull() }.getOrNull() == null) {
+                writeSchemaVersion(kbName, currentVersion)
+            }
+            return
+        }
 
         // 确保 v3 文件存在（v2→v3 过渡）——只补缺失，不覆盖已有
         if (dir.exists()) {
@@ -1896,8 +1994,14 @@ class KnowledgeRepository(
             return
         }
 
-        // 全新库（无 global 目录且无迁移标记）→ 只做 v3 文件补齐
-        if (!oldGlobal.exists()) return
+        // S2-06: 全新库（无 global 目录、无任何迁移标记）——上面的 ensureKbFilesComplete
+        // 已经把 v3 文件补齐了，这里必须把 CURRENT 版本号落下去。
+        // 旧实现在这里直接 return，于是新库永远没有 .schema_version，
+        // detectSchemaVersion 每次都回落到 1，每次启动都重跑一遍"迁移"。
+        if (!oldGlobal.exists()) {
+            writeSchemaVersion(kbName, KnowledgeSchemaVersion.CURRENT)
+            return
+        }
 
         // 旧库迁移：首次执行（global 存在但标记不存在）
         File(dir, "understand").mkdirs()
