@@ -931,9 +931,9 @@ class LoveBrainViewModelGenBatchTest {
         delay(200)
 
         // 模拟 A 有 delta / update / notice
-        vm.onVectorUpdated("kb-a", mapOf("intimacy" to 5), mapOf("intimacy" to 2))
-        vm.onVectorUpdateNotice("kb-a", "五维更新")
-        vm.onKbNotice("A 的通知")
+        vm.feedVectorUpdated("kb-a", mapOf("intimacy" to 5), mapOf("intimacy" to 2))
+        vm.feedVectorSummary("kb-a", "五维更新")
+        vm.feedKbNotice(message = "A 的通知")
         delay(100)
 
         assertEquals("delta 应存在", 2, vm.vectorDelta.value["intimacy"])

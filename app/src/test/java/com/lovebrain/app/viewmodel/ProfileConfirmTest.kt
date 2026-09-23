@@ -96,7 +96,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         advanceUntilIdle() // init 内 refreshKnowledgeBases 排空（_activeKb 就位）
         // 使用 ProfileUpdate.parse 构造无效 payload
         val invalidPayload = ProfileUpdate.parse("not-a-json")
-        vm.onProfileSuggestion(ProfileSuggestion(kbName = "kb1", display = "建议摘要", rawJson = "not-a-json", profileUpdate = invalidPayload))
+        vm.feedProfileSuggestion(ProfileSuggestion(kbName = "kb1", display = "建议摘要", rawJson = "not-a-json", profileUpdate = invalidPayload))
 
         vm.confirmProfileUpdate()
         advanceUntilIdle()
@@ -113,7 +113,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         val rawJson = """{"me":"新的我","stage_changed":false}"""
         // 使用 ProfileUpdate.parse 构造有效 payload
         val validPayload = ProfileUpdate.parse(rawJson)
-        vm.onProfileSuggestion(ProfileSuggestion(kbName = "kb1", display = "建议摘要", rawJson = rawJson, profileUpdate = validPayload))
+        vm.feedProfileSuggestion(ProfileSuggestion(kbName = "kb1", display = "建议摘要", rawJson = rawJson, profileUpdate = validPayload))
 
         vm.confirmProfileUpdate()
         advanceUntilIdle()

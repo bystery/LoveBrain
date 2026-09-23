@@ -110,7 +110,7 @@ class LoveBrainViewModel(
     val operationCoordinator: ForegroundOperationCoordinator,
     // 反馈案例仓库——点踩时本地保存
     private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null
-) : ViewModel(), KnowledgeTriggerCoordinator.Callbacks {
+) : ViewModel() {
 
     // /: 当前反馈案例——点踩时同步构造并暴露给 UI，消除"保存后再全量查询"竞态
     private val _currentFeedbackCase = MutableStateFlow<com.lovebrain.app.model.FeedbackCase?>(null)
@@ -1415,7 +1415,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                         sourceAliasMap = context.sourceAliasMap
                     )
                     if (topicRotated) {
-                        triggerCoordinator.checkTriggers(kb.name, viewModelScope, this@LoveBrainViewModel)
+                        // 后台三引擎不占用前台租约；收集方（本 VM 的 viewModelScope）就是这段工作的 owner
+                        viewModelScope.launch {
+                            triggerCoordinator.triggerEvents(kb.name)
+                                .collect { applyTriggerEvent(it) }
+                        }
                     }
                 }
                 L.w("PERF t7 kb write done (${System.currentTimeMillis() - t7Start}ms)")
@@ -1589,37 +1593,34 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     /** 跟踪当前 session 中已记录的 actual sent entries by versionId，用于 upsert 判断 */
     private val _actualSentEntries = mutableMapOf<String?, String>()
 
-    // ═══════════ KnowledgeTriggerCoordinator.Callbacks 实现 ═══════════
+    // ═══════════ KnowledgeTriggerCoordinator 事件的唯一落点 ═══════════
 
-    //  只让当前 KB 的 vector 回调更新 UI
-    override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {
-        if (_activeKb.value?.name != kbName) return
-        _currentVector.value = newVector
-        _vectorDelta.value = delta
-    }
-
-    override fun onVectorUpdateNotice(kbName: String, summary: String) {
-        if (_activeKb.value?.name != kbName) return
-        _vectorUpdate.value = summary
-    }
-
-    override fun onStageSuggestion(suggestion: StageSuggestion) {
-        _stageSuggestion.value = suggestion
-    }
-
-    override fun onKbNotice(notice: String) {
-        _kbNotice.value = notice
-    }
-
-    //  画像建议绑定 originating KB，不丢弃身份
-    override fun onProfileSuggestion(suggestion: ProfileSuggestion) {
-        _profileSuggestion.value = suggestion
-    }
-
-    //  只让当前 KB 的 vector 回调更新 UI
-    override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {
-        if (_activeKb.value?.name != kbName) return
-        _currentVector.value = vector
+    /**
+     * 后台引擎结果只有这一处写状态。
+     *
+     * 旧写法是 Coordinator 拿着本类实现的 6 方法 Callbacks 反向写 StateFlow，
+     * "谁拥有状态"分散在两个类里，还要靠 originating kbName 参数在回调里补身份。
+     * 现在事件自带 kbName，向量类事件仍只接受当前库的结果（防串库）。
+     */
+    internal fun applyTriggerEvent(event: com.lovebrain.app.domain.KnowledgeTriggerEvent) {
+        when (event) {
+            is com.lovebrain.app.domain.KnowledgeTriggerEvent.VectorUpdated -> {
+                if (_activeKb.value?.name != event.kbName) return
+                _currentVector.value = event.newVector
+                _vectorDelta.value = event.delta
+            }
+            is com.lovebrain.app.domain.KnowledgeTriggerEvent.VectorSummary -> {
+                if (_activeKb.value?.name != event.kbName) return
+                _vectorUpdate.value = event.summary
+            }
+            is com.lovebrain.app.domain.KnowledgeTriggerEvent.StageSuggested ->
+                _stageSuggestion.value = event.suggestion
+            is com.lovebrain.app.domain.KnowledgeTriggerEvent.Notice ->
+                _kbNotice.value = event.message
+            is com.lovebrain.app.domain.KnowledgeTriggerEvent.ProfileReady ->
+                // 画像建议绑定 originating kbName，确认时也用 suggestion.kbName 而不是 _activeKb
+                _profileSuggestion.value = event.suggestion
+        }
     }
 
     //  确认画像时使用 suggestion.kbName，不使用 _activeKb
@@ -1751,27 +1752,25 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH)
         val requestId = ReplyRequestState.newRequestId()
 
-        // regenerateProfile 是纯 suspend——不传 scope，在本协程内直接执行，
+        // 冷流：不传 scope，在本协程内直接 collect，
         // 取消会传播到底层模型请求、retry delay、reflect_history 写入
         val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH,
             requestId
         ) {
             try {
-                triggerCoordinator.regenerateProfile(kbName, object : KnowledgeTriggerCoordinator.Callbacks {
-                    override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {}
-                    override fun onVectorUpdateNotice(kbName: String, summary: String) {}
-                    override fun onStageSuggestion(suggestion: StageSuggestion) {}
-                    override fun onKbNotice(notice: String) {
-                        if (operationCoordinator.ownsRequest(requestId)) _profileSuggestion.value = null
+                triggerCoordinator.profileRefreshEvents(kbName).collect { event ->
+                    // 迟到事件只有仍持有租约才被接受
+                    if (!operationCoordinator.ownsRequest(requestId)) return@collect
+                    when (event) {
+                        is com.lovebrain.app.domain.KnowledgeTriggerEvent.Notice ->
+                            // 重新生成失败：清掉旧建议，让"重新生成"按钮回到可点状态
+                            _profileSuggestion.value = null
+                        is com.lovebrain.app.domain.KnowledgeTriggerEvent.ProfileReady ->
+                            _profileSuggestion.value = event.suggestion
+                        else -> Unit
                     }
-                    override fun onProfileSuggestion(suggestion: ProfileSuggestion) {
-                        if (operationCoordinator.ownsRequest(requestId)) {
-                            _profileSuggestion.value = suggestion
-                        }
-                    }
-                    override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {}
-                })
+                }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 // dismiss 取消——loading 由 profileRegenerating 派生，自动归位
                 throw e

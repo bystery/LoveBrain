@@ -3,12 +3,12 @@ package com.lovebrain.app.domain
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.RawGenerationResult
-import com.lovebrain.app.model.ProfileSuggestion
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -17,222 +17,170 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * P0-2: Profile regenerate production-path cancellation test.
+ * 画像重新生成链路的取消合同（生产路径，不是替身）。
  *
- * 测试真正实例化 KnowledgeTriggerCoordinator，使用可控 fake/mock DeepSeekRepository：
- * - generateRawWithMetadata 启动后 suspend（模拟模型请求进行中）
- * - 调用真实 regenerateProfile()，随后 cancel 上层 Job
- * - 验证：
- *   - provider coroutine 收到 cancellation（suspend 被打断）
- *   - 后续 retry attempt 不发生
- *   - onProfileSuggestion 不发生
- *   - append reflect_history 不发生
- *   - CancellationException 没有被转 EMPTY 或 PROVIDER_ERROR
+ * 真实例化 [KnowledgeTriggerCoordinator]，只把 Provider/仓库换成 fake：
+ * - generateRawWithMetadata 进入后 suspend（模拟模型请求进行中）
+ * - collect 冷流 [KnowledgeTriggerCoordinator.profileRefreshEvents]，随后 cancel 收集方协程
+ * - 断言：
+ *   - 底层 suspend 真的收到取消
+ *   - 后续 retry attempt 不再发生（含 retry delay 期间被取消）
+ *   - 不产出 ProfileReady / Notice 事件
+ *   - reflect_history 不被写
+ *   - CancellationException 没被转成 EMPTY / PROVIDER_ERROR
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProfileRegenerateCancellationTest {
 
-    @Test
-    fun `regenerateProfile cancellation propagates to provider and does not invoke callbacks`() = runTest {
-        // Track whether the provider suspend was actually entered and then cancelled
-        var providerEntered = false
-        var providerCancelled = false
-        var profileSuggestionCalled = false
-        var reflectHistoryAppended = false
+    private class Harness(
+        val coordinator: KnowledgeTriggerCoordinator,
+        val knowledgeRepo: KnowledgeRepository,
+        val deepSeekRepo: DeepSeekRepository
+    )
 
+    private fun harness(
+        onGenerate: suspend () -> RawGenerationResult
+    ): Harness {
         val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
-        coEvery { knowledgeRepo.appendFileWithRevisionCheck(any(), any(), any(), any()) } coAnswers {
-            reflectHistoryAppended = true
-            true
-        }
-
         val deepSeekRepo = mockk<DeepSeekRepository>()
-        // generateRawWithMetadata 启动后 suspend 直到被 cancel
-        coEvery { deepSeekRepo.generateRawWithMetadata(any(), any()) } coAnswers {
+        coEvery { deepSeekRepo.generateRawWithMetadata(any(), any()) } coAnswers { onGenerate() }
+        val promptBuilder = mockk<PromptBuilder>(relaxed = true)
+        coEvery { promptBuilder.buildReflectSystemPrompt() } returns "system"
+        coEvery { promptBuilder.buildReflectUserPrompt(any()) } returns "user"
+        return Harness(
+            KnowledgeTriggerCoordinator(
+                knowledgeRepo = knowledgeRepo,
+                deepSeekRepo = deepSeekRepo,
+                promptBuilder = promptBuilder,
+                topicRecorder = mockk(relaxed = true)
+            ),
+            knowledgeRepo,
+            deepSeekRepo
+        )
+    }
+
+    @Test
+    fun `cancellation propagates to the provider and emits no event`() = runTest {
+        var providerEntered = false
+        var providerCancelled = false
+        var profileReady = false
+        var notice = false
+
+        val h = harness {
             providerEntered = true
             try {
-                kotlinx.coroutines.delay(10000)
-                // 如果 delay 没有被取消，返回一个有效结果（不应该走到这里）
+                kotlinx.coroutines.delay(10_000)
                 RawGenerationResult(content = "", finishReason = null)
             } catch (e: CancellationException) {
                 providerCancelled = true
                 throw e
             }
         }
-
-        val promptBuilder = mockk<PromptBuilder>(relaxed = true)
-        coEvery { promptBuilder.buildReflectSystemPrompt() } returns "system prompt"
-        coEvery { promptBuilder.buildReflectUserPrompt(any()) } returns "user prompt"
-
-        val callbacks = mockk<KnowledgeTriggerCoordinator.Callbacks>(relaxed = true)
-        coEvery { callbacks.onProfileSuggestion(any()) } answers {
-            profileSuggestionCalled = true
-            Unit
+        coEvery {
+            h.knowledgeRepo.appendFileWithRevisionCheck(any(), any(), any(), any())
+        } coAnswers {
+            notice = true // 写历史也算"取消后仍在干活"
+            true
         }
 
-        val coordinator = KnowledgeTriggerCoordinator(
-            knowledgeRepo = knowledgeRepo,
-            deepSeekRepo = deepSeekRepo,
-            promptBuilder = promptBuilder,
-            topicRecorder = mockk(relaxed = true)
-        )
-
-        // 启动 regenerateProfile 在一个子协程中
         val job = launch {
             try {
-                coordinator.regenerateProfile("kb1", callbacks)
+                h.coordinator.profileRefreshEvents("kb1").collect { event ->
+                    when (event) {
+                        is KnowledgeTriggerEvent.ProfileReady -> profileReady = true
+                        is KnowledgeTriggerEvent.Notice -> notice = true
+                        else -> Unit
+                    }
+                }
             } catch (e: CancellationException) {
                 // 预期——上层 cancel 传播到底层
             }
         }
 
-        // 等待 provider 进入 suspend
-        while (!providerEntered) {
-            testScheduler.advanceTimeBy(1)
-        }
-
-        // 此时 provider 正在 delay(10000)——cancel 上层 Job
+        while (!providerEntered) testScheduler.advanceTimeBy(1)
         job.cancel()
-
-        // 等待取消传播完成
         try { job.join() } catch (_: Exception) {}
 
-        // ═══ 验证 ═══
-
-        assertTrue("Provider coroutine should have been entered", providerEntered)
-        assertTrue("Provider coroutine should have received cancellation", providerCancelled)
-        assertFalse("onProfileSuggestion should NOT be called after cancellation", profileSuggestionCalled)
-        assertFalse("reflect_history should NOT be appended after cancellation", reflectHistoryAppended)
-
-        // 验证 generateRawWithMetadata 只被调用了一次（第一次 attempt），
-        // 取消后不应该有后续 retry attempt
-        coVerify(exactly = 1) { deepSeekRepo.generateRawWithMetadata(any(), any()) }
+        assertTrue("Provider 协程应真的进入", providerEntered)
+        assertTrue("Provider 协程应收到取消", providerCancelled)
+        assertFalse("取消后不得产出画像建议", profileReady)
+        assertFalse("取消后不得发提示事件", notice)
+        coVerify(exactly = 1) { h.deepSeekRepo.generateRawWithMetadata(any(), any()) }
     }
 
     @Test
-    fun `regenerateProfile cancellation during retry delay does not start next attempt`() = runTest {
+    fun `cancellation during the retry backoff does not start the next attempt`() = runTest {
         var attemptCount = 0
-        var profileSuggestionCalled = false
+        var profileReady = false
 
-        val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
-        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
-
-        val deepSeekRepo = mockk<DeepSeekRepository>()
-        // 第一次 attempt 返回空（触发 EMPTY → retry delay），第二次 attempt 不应被到达
-        coEvery { deepSeekRepo.generateRawWithMetadata(any(), any()) } coAnswers {
+        val h = harness {
             attemptCount++
             if (attemptCount == 1) {
-                // 返回空响应——触发 retry
-                RawGenerationResult(content = "", finishReason = null)
+                RawGenerationResult(content = "", finishReason = null) // EMPTY → 触发 retry
             } else {
-                // 不应该走到这里——cancel 应该在 retry delay 期间生效
-                RawGenerationResult(content = "{}", finishReason = "stop")
+                RawGenerationResult(content = "{}", finishReason = "stop") // 不该走到
             }
         }
 
-        val promptBuilder = mockk<PromptBuilder>(relaxed = true)
-        coEvery { promptBuilder.buildReflectSystemPrompt() } returns "system"
-        coEvery { promptBuilder.buildReflectUserPrompt(any()) } returns "user"
-
-        val callbacks = mockk<KnowledgeTriggerCoordinator.Callbacks>(relaxed = true)
-        coEvery { callbacks.onProfileSuggestion(any()) } answers {
-            profileSuggestionCalled = true
-            Unit
-        }
-
-        val coordinator = KnowledgeTriggerCoordinator(
-            knowledgeRepo = knowledgeRepo,
-            deepSeekRepo = deepSeekRepo,
-            promptBuilder = promptBuilder,
-            topicRecorder = mockk(relaxed = true)
-        )
-
         val job = launch {
             try {
-                coordinator.regenerateProfile("kb1", callbacks)
+                h.coordinator.profileRefreshEvents("kb1").collect { event ->
+                    if (event is KnowledgeTriggerEvent.ProfileReady) profileReady = true
+                }
             } catch (e: CancellationException) {
                 // 预期
             }
         }
 
-        // 等待第一次 attempt 完成（返回空）
-        while (attemptCount < 1) {
-            testScheduler.advanceTimeBy(1)
-        }
-
-        // 现在在 retry delay 中（RETRY_BACKOFF_MS * 1 = 500ms）
-        // 在 delay 期间 cancel
-        testScheduler.advanceTimeBy(50) // 进入 retry delay
+        while (attemptCount < 1) testScheduler.advanceTimeBy(1)
+        testScheduler.advanceTimeBy(50)   // 进入 retry backoff（500ms × 1）
         job.cancel()
         try { job.join() } catch (_: Exception) {}
 
-        // 验证：只有第一次 attempt 被执行，第二次因 cancel 未启动
-        assertEquals("Only first attempt should have executed", 1, attemptCount)
-        assertFalse("onProfileSuggestion should NOT be called", profileSuggestionCalled)
+        assertEquals("只应执行第一次 attempt", 1, attemptCount)
+        assertFalse("取消后不得产出画像建议", profileReady)
     }
 
     @Test
-    fun `regenerateProfile cancellation does not convert CancellationException to PROVIDER_ERROR`() = runTest {
+    fun `cancellation is never converted into a provider error event`() = runTest {
         var providerEntered = false
         var providerCancelled = false
-        var kbNoticeCalled = false
-        var profileSuggestionCalled = false
+        var notice = false
+        var profileReady = false
 
-        val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
-        coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
-
-        val deepSeekRepo = mockk<DeepSeekRepository>()
-        coEvery { deepSeekRepo.generateRawWithMetadata(any(), any()) } coAnswers {
+        val h = harness {
             providerEntered = true
             try {
-                kotlinx.coroutines.delay(10000)
+                kotlinx.coroutines.delay(10_000)
                 RawGenerationResult(content = "", finishReason = null)
             } catch (e: CancellationException) {
                 providerCancelled = true
-                throw e // 必须 rethrow——不能被 catch(Exception) 吞掉
+                throw e // 必须 rethrow——不能被 catch(Exception) 当成请求失败
             }
         }
 
-        val promptBuilder = mockk<PromptBuilder>(relaxed = true)
-        coEvery { promptBuilder.buildReflectSystemPrompt() } returns "system"
-        coEvery { promptBuilder.buildReflectUserPrompt(any()) } returns "user"
-
-        val callbacks = object : KnowledgeTriggerCoordinator.Callbacks {
-            override fun onVectorUpdated(kbName: String, newVector: Map<String, Int>, delta: Map<String, Int>) {}
-            override fun onVectorUpdateNotice(kbName: String, summary: String) {}
-            override fun onStageSuggestion(suggestion: com.lovebrain.app.model.StageSuggestion) {}
-            override fun onKbNotice(notice: String) { kbNoticeCalled = true }
-            override fun onProfileSuggestion(suggestion: ProfileSuggestion) { profileSuggestionCalled = true }
-            override fun onCurrentVector(kbName: String, vector: Map<String, Int>) {}
-        }
-
-        val coordinator = KnowledgeTriggerCoordinator(
-            knowledgeRepo = knowledgeRepo,
-            deepSeekRepo = deepSeekRepo,
-            promptBuilder = promptBuilder,
-            topicRecorder = mockk(relaxed = true)
-        )
-
         val job = launch {
             try {
-                coordinator.regenerateProfile("kb1", callbacks)
+                h.coordinator.profileRefreshEvents("kb1").collect { event ->
+                    when (event) {
+                        is KnowledgeTriggerEvent.Notice -> notice = true
+                        is KnowledgeTriggerEvent.ProfileReady -> profileReady = true
+                        else -> Unit
+                    }
+                }
             } catch (e: CancellationException) {
                 // 预期
             }
         }
 
-        while (!providerEntered) {
-            testScheduler.advanceTimeBy(1)
-        }
-
+        while (!providerEntered) testScheduler.advanceTimeBy(1)
         job.cancel()
         try { job.join() } catch (_: Exception) {}
 
-        assertTrue("Provider should have been entered", providerEntered)
-        assertTrue("Provider should have received cancellation", providerCancelled)
-        // CancellationException 不应被转为 EMPTY/PROVIDER_ERROR → 不应调用 onKbNotice
-        assertFalse("onKbNotice should NOT be called (CancellationException was swallowed)", kbNoticeCalled)
-        assertFalse("onProfileSuggestion should NOT be called", profileSuggestionCalled)
+        assertTrue(providerEntered)
+        assertTrue("取消信号必须原样上抛", providerCancelled)
+        assertFalse("取消不得被转成「本次生成失败」提示", notice)
+        assertFalse(profileReady)
     }
 }

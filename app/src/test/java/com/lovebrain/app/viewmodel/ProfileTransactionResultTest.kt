@@ -149,7 +149,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         val vm = newViewModel(repoOverride = repo)
         advanceUntilIdle()
 
-        vm.onProfileSuggestion(makeSuggestion())
+        vm.feedProfileSuggestion(makeSuggestion())
         vm.confirmProfileUpdate()
         waitForNotice(vm, this)
 
@@ -173,7 +173,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         val vm = newViewModel(repoOverride = repo)
         advanceUntilIdle()
 
-        vm.onProfileSuggestion(makeSuggestion())
+        vm.feedProfileSuggestion(makeSuggestion())
         vm.confirmProfileUpdate()
         waitForWarning(vm, this)
 
@@ -197,7 +197,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         val vm = newViewModel(repoOverride = repo)
         advanceUntilIdle()
 
-        vm.onProfileSuggestion(makeSuggestion())
+        vm.feedProfileSuggestion(makeSuggestion())
         vm.confirmProfileUpdate()
         waitForWarning(vm, this)
 
@@ -223,7 +223,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         advanceUntilIdle()
 
         val suggestion = makeSuggestion()
-        vm.onProfileSuggestion(suggestion)
+        vm.feedProfileSuggestion(suggestion)
         vm.confirmProfileUpdate()
         waitForWarning(vm, this)
 
@@ -255,7 +255,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         advanceUntilIdle()
 
         val suggestion = makeSuggestion()
-        vm.onProfileSuggestion(suggestion)
+        vm.feedProfileSuggestion(suggestion)
         vm.confirmProfileUpdate()
         waitForWarning(vm, this)
 

@@ -139,20 +139,24 @@ class KnowledgeEngineContractTest {
         assertEquals("唯一一级标题应为 # 经验库", "# 经验库", topHeadings.first())
     }
 
-    // ═══ T11：A12 三引擎串行触发（向量重估 → 经验提取 → 画像 reflect）═══
+    // ═══ T11：三引擎串行触发（向量重估 → 经验提取 → 画像 reflect）═══
 
     @Test(timeout = 30_000)
-    fun `checkTriggers runs three engines serially vector then lessons then reflect`() {
+    fun `triggerEvents runs three engines serially vector then lessons then reflect`() {
         val events = java.util.Collections.synchronizedList(mutableListOf<String>())
         val callIndex = java.util.concurrent.atomic.AtomicInteger(0)
 
         val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
         coEvery { knowledgeRepo.getLessonCount("kb") } returns 15 // 15 % 3 == 0 且 % 5 == 0 → 三引擎齐触发
+        // 写盘前的 revision 校验放行：否则 relaxed mock 返回 false，引擎会在写入前静默放弃，
+        // 事件序列就只剩最后一条，测不到"向量 → 经验 → 画像"三段真的各自产出了结果
+        coEvery { knowledgeRepo.writeVectorWithRevisionCheck(any(), any(), any()) } returns true
+        coEvery { knowledgeRepo.appendFileWithRevisionCheck(any(), any(), any(), any()) } returns true
         val topicRecorder = mockk<TopicRecorder>(relaxed = true)
         coEvery { topicRecorder.getTopicFullContext(any(), any()) } returns "话题上下文" // 经验引擎要求非空上下文
         coEvery { topicRecorder.getVectorContext(any()) } returns "向量上下文"
         val deepSeekRepo = mockk<DeepSeekRepository>()
-        // P0-11: vector + lessons 使用 generateRaw；reflect 使用 generateRawWithMetadata
+        // vector + lessons 使用 generateRaw；reflect 使用 generateRawWithMetadata
         coEvery { deepSeekRepo.generateRaw(any(), any()) } coAnswers {
             val idx = callIndex.getAndIncrement()
             events.add("start-$idx")
@@ -164,7 +168,7 @@ class KnowledgeEngineContractTest {
                 else -> "" // 不应走到——reflect 使用 generateRawWithMetadata
             }
         }
-        // P0-11: reflect 引擎现在使用 generateRawWithMetadata（返回 RawGenerationResult）
+        // reflect 引擎使用 generateRawWithMetadata（返回 RawGenerationResult）
         coEvery { deepSeekRepo.generateRawWithMetadata(any(), any()) } coAnswers {
             val idx = callIndex.getAndIncrement()
             events.add("start-$idx")
@@ -175,20 +179,42 @@ class KnowledgeEngineContractTest {
                 finishReason = "stop"
             )
         }
-        val promptBuilder = mockk<PromptBuilder>(relaxed = true)
-        val callbacks = mockk<KnowledgeTriggerCoordinator.Callbacks>(relaxUnitFun = true)
 
+        val promptBuilder = mockk<PromptBuilder>(relaxed = true)
         val coordinator = KnowledgeTriggerCoordinator(knowledgeRepo, deepSeekRepo, promptBuilder, topicRecorder)
-        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-        coordinator.checkTriggers("kb", scope, callbacks)
-        runBlocking { scope.coroutineContext[Job]!!.children.forEach { it.join() } }
-        scope.cancel()
+
+        // 冷流：collect 完即全部引擎结束，不需要外部 scope、也不需要 join 一堆子 Job
+        val emitted = java.util.Collections.synchronizedList(mutableListOf<KnowledgeTriggerEvent>())
+        kotlinx.coroutines.runBlocking {
+            coordinator.triggerEvents("kb").collect { emitted += it }
+        }
 
         assertEquals("三引擎应各触发一次", 3, callIndex.get())
         assertEquals(
             "触发顺序应串行：向量(0) → 经验(1) → 画像(2)，且前引擎完成先于后引擎开始",
             listOf("start-0", "end-0", "start-1", "end-1", "start-2", "end-2"),
             events.toList()
+        )
+        // 事件序列同样证明串行与身份携带：向量更新 → 经验提示 → 画像建议
+        assertEquals(
+            listOf(
+                KnowledgeTriggerEvent.VectorUpdated::class,
+                KnowledgeTriggerEvent.Notice::class,
+                KnowledgeTriggerEvent.ProfileReady::class
+            ),
+            emitted.map { it::class }
+        )
+        assertTrue(
+            "每个事件都要带 originating kbName",
+            emitted.all {
+                when (it) {
+                    is KnowledgeTriggerEvent.VectorUpdated -> it.kbName == "kb"
+                    is KnowledgeTriggerEvent.Notice -> it.kbName == "kb"
+                    is KnowledgeTriggerEvent.VectorSummary -> it.kbName == "kb"
+                    is KnowledgeTriggerEvent.StageSuggested -> it.suggestion.kbName == "kb"
+                    is KnowledgeTriggerEvent.ProfileReady -> it.suggestion.kbName == "kb"
+                }
+            }
         )
     }
 

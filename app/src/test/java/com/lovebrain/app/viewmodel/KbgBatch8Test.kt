@@ -303,7 +303,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
 
         // A's suggestion arrives
         val rawJson = """{"me":"A的画像","stage_changed":false}"""
-        vm.onProfileSuggestion(ProfileSuggestion(
+        vm.feedProfileSuggestion(ProfileSuggestion(
             kbName = "kb-a",
             display = "画像建议A",
             rawJson = rawJson,
@@ -337,7 +337,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         delay(200)
 
         val rawJson = """{"me":"A的画像","stage_changed":false}"""
-        vm.onProfileSuggestion(ProfileSuggestion(
+        vm.feedProfileSuggestion(ProfileSuggestion(
             kbName = "kb-a",
             display = "画像建议A",
             rawJson = rawJson,
@@ -371,7 +371,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         delay(200)
 
         val rawJson = """{"warmth":"new warmth","stage_changed":false}"""
-        vm.onProfileSuggestion(ProfileSuggestion(
+        vm.feedProfileSuggestion(ProfileSuggestion(
             kbName = "kb-a",
             display = "画像建议",
             rawJson = rawJson,
@@ -403,7 +403,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         assertEquals("kb-b", vm.activeKb.value?.name)
 
         val vectorA = mapOf("intimacy" to 80)
-        vm.onCurrentVector("kb-a", vectorA)
+        vm.feedCurrentVector("kb-a", vectorA)
 
         assertEquals("非当前 KB 的向量不应更新 UI", emptyMap<String, Int>(), vm.currentVector.value)
     }
@@ -421,7 +421,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         delay(200)
 
         val vectorB = mapOf("intimacy" to 70)
-        vm.onCurrentVector("kb-b", vectorB)
+        vm.feedCurrentVector("kb-b", vectorB)
 
         assertEquals("当前 KB 的向量应更新 UI", vectorB, vm.currentVector.value)
     }
@@ -440,7 +440,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
 
         val vectorA = mapOf("intimacy" to 90)
         val deltaA = mapOf("intimacy" to 10)
-        vm.onVectorUpdated("kb-a", vectorA, deltaA)
+        vm.feedVectorUpdated("kb-a", vectorA, deltaA)
 
         assertEquals("非当前 KB 的向量不应更新 UI", emptyMap<String, Int>(), vm.currentVector.value)
         assertEquals("非当前 KB 的 delta 不应更新 UI", emptyMap<String, Int>(), vm.vectorDelta.value)
@@ -460,7 +460,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
 
         val vectorB = mapOf("intimacy" to 75)
         val deltaB = mapOf("intimacy" to 5)
-        vm.onVectorUpdated("kb-b", vectorB, deltaB)
+        vm.feedVectorUpdated("kb-b", vectorB, deltaB)
 
         assertEquals("当前 KB 的向量应更新 UI", vectorB, vm.currentVector.value)
         assertEquals("当前 KB 的 delta 应更新 UI", deltaB, vm.vectorDelta.value)
@@ -478,7 +478,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.refreshKnowledgeBases()
         delay(200)
 
-        vm.onVectorUpdateNotice("kb-a", "A's vector notice")
+        vm.feedVectorSummary("kb-a", "A's vector notice")
         assertNull("非当前 KB 的 notice 不应更新 UI", vm.vectorUpdate.value)
     }
 }

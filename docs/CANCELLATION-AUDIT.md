@@ -17,17 +17,17 @@
 | SUSPEND-FREE | 受保护代码段内没有挂起点，且所在函数不是 suspend：吞异常不等于吞取消 |
 | NEEDS_REVIEW | 可挂起处吞掉取消信号 —— `--check` 直接失败 |
 
-挂起判据由两部分组成：全仓 `suspend fun` 名单（本仓库 127 个）+ 协程/并发库确定的挂起 API（withContext / delay / launch / withLock / collect / await / emit …）。
+挂起判据由两部分组成：全仓 `suspend fun` 名单（本仓库 128 个）+ 协程/并发库确定的挂起 API（withContext / delay / launch / withLock / collect / await / emit …）。
 
 ## 结果
 
 | 判定 | 站点数 |
 |---|---:|
-| PROTECTED | 52 |
+| PROTECTED | 51 |
 | WAIVED | 2 |
 | SUSPEND-FREE | 113 |
 | NEEDS_REVIEW | 0 |
-| 合计 | 167 |
+| 合计 | 166 |
 
 `--check` 结论：**PASS**（没有未处置的可挂起吞取消站点）
 
@@ -101,14 +101,13 @@
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/domain/GenerationEngine.kt:568` | — | — |
 | PROTECTED | `app/src/main/java/com/lovebrain/app/domain/GenerationEngine.kt:581` | collectStream | — |
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/domain/GenerationEngine.kt:651` | — | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:120` | getLessonCount | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:143` | withContext | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:241` | withContext | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:259` | generateRaw | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:281` | generateRaw | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:358` | withContext | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:460` | withContext | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:475` | generateReflectSuggestionSuspend | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:133` | getLessonCount | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:165` | withContext | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:271` | withContext | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:291` | generateRaw | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:317` | generateRaw | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:369` | withContext | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/domain/KnowledgeTriggerCoordinator.kt:462` | withContext | — |
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/domain/OngoingContextSelector.kt:313` | — | — |
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/domain/OngoingContextSelector.kt:398` | — | — |
 | SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/domain/PromptBuilder.kt:687` | — | — |
@@ -181,24 +180,24 @@
 | PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1036` | withContext | — |
 | PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1265` | withContext | — |
 | PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1297` | withContext | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1437` | withContext | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1581` | withContext | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1719` | withContext | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1778` | — | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1853` | withContext | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1884` | — | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1938` | getActive | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1983` | — | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2319` | readIntent | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2345` | saveIntent | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2385` | — | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2409` | withContext | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2751` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2917` | — | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2926` | read | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:71` | withContext | — |
-| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:93` | withContext | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:125` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:464` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:470` | — | — |
-| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:513` | — | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1441` | withContext | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1585` | withContext | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1720` | withContext | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1777` | — | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1852` | withContext | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1883` | — | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1937` | getActive | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:1982` | — | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2318` | readIntent | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2344` | saveIntent | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2384` | — | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2408` | withContext | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2750` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2916` | — | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt:2925` | read | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:112` | withContext | — |
+| PROTECTED | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:134` | withContext | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:166` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:505` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:511` | — | — |
+| SUSPEND-FREE | `app/src/main/java/com/lovebrain/app/viewmodel/SetupViewModel.kt:554` | — | — |
