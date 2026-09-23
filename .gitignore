@@ -104,3 +104,6 @@ benchmark/kb_*/
 
 # CI 脚本本机验证时下载的 v1.3.1 夹具 APK，属于可再生的外部产物
 /fixtures/
+
+# 本地跑门禁脚本时 Python 落的字节码，不是仓库内容
+__pycache__/
