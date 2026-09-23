@@ -107,3 +107,7 @@ benchmark/kb_*/
 
 # 本地跑门禁脚本时 Python 落的字节码，不是仓库内容
 __pycache__/
+
+# 本机 scratch 与"绝不删除、只搬走"的落点（协议要求保留文件，但不属于仓库内容）
+/_temp/
+/_archive/

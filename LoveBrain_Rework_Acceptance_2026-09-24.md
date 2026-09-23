@@ -200,7 +200,7 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | `scripts/asset_hashes.sh --check` | OK：prompt 资产未漂移（`27abe25529deb47cb40366961998597c556c5184416fa038ff3ece81a2d6eb5c`） |
 | `scripts/audit_cancellation.py --check` | OK：168 站点（PROTECTED 53 / WAIVED 2 / SUSPEND-FREE 113），NEEDS_REVIEW=0；注入吞取消样例 → exit 1（已验证会红） |
 | `scripts/strip_ticket_ids.py --check` | OK：注释/代码/字面量三处工单编号均为 0；注入 `P0-9: probe` → exit 1（已验证会红） |
-| `bash -n`（17 个 shell 脚本 + 2 个 lib）与 `ast.parse`（3 个 py） | 全部通过 |
+| `bash -n`（`scripts/*.sh` 16 个 + `scripts/lib/*.sh` 2 个，共 18 个）与 `ast.parse`（3 个 py） | 全部通过，0 语法错误（`find . -name '*.sh'` 实测 18 个，逐个 `bash -n`） |
 | `:app:lintDebug` / `:app:compileDebugAndroidTestKotlin` | BUILD SUCCESSFUL |
 | `yaml.safe_load` 两份 workflow | 通过；`|| true`/`continue-on-error`/`|| echo` 计数 0 |
 
@@ -254,7 +254,11 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 `app/build/reports/tests/testDebugUnitTest/index.html`。
 计数用解析 XML 得到，不是复制网页数字；`assert_artifacts.sh` 会额外核对
 "声明的 tests 数 == 真实 `<testcase>` 数"，防止报告注水。
-没有 `@Ignore`、没有 `assumeTrue(false)`、没有在 workflow 里用 `--tests` 过滤缩小范围。
+没有 `@Ignore`；unit 侧 **skipped=0**（`assert_artifacts.sh` 读 XML 的 skipped 列，实测 0），
+也没有在 workflow 里用 `--tests` 过滤缩小范围。
+全仓只有 2 处 `Assume.assumeTrue`，都在 `OverlayGenerateSmokeTest`（instrumentation）里，
+条件是"FloatingService 这次能不能在 instrumentation 环境起来"，带原因文案，
+不是 `assumeTrue(false)` 那种无条件跳过——起不来的设备上报 skipped，起得来的设备上是真断言。
 
 instrumentation：`app/src/androidTest` 现有 40 个 `@Test`（5 个文件，本机 `grep -c "@Test"` 实测），
 `:app:compileDebugAndroidTestKotlin` 通过，**执行数为 0（无设备）**，见 §0 第 1/2 条。
