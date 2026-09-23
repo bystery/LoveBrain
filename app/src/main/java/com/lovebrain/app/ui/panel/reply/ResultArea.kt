@@ -34,6 +34,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.platform.testTag
@@ -58,6 +60,8 @@ import kotlinx.coroutines.delay
 
 /** 结果区内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object ResultDimens {
+    /** P3-03: 结果区工具入口的可点击盒子下限（视觉字形仍 28dp） */
+    const val UTILITY_HITBOX_DP = 48
     const val FILTER_TAB_HEIGHT_DP = 28      // 筛选 Tab 高度
     const val SKELETON_TAG_WIDTH_DP = 60     // 骨架标签条宽度
     const val CURSOR_START_PAD_DP = 1        // 打字机光标左间距
@@ -74,8 +78,6 @@ fun ResultArea(
     onFeedback: (Scheme, SchemeFeedback) -> Unit,
     onCopyScheme: (Scheme) -> Unit,
     onRetry: () -> Unit,
-    // P1-5: 记入知识库放入结果工具区
-    onSaveToKb: () -> Unit = {},
     // F09: 本轮参考记忆 + 纠正回调
     memoryRefs: List<MemoryRef> = emptyList(),
     onCorrection: (String, CorrectionAction, String, com.lovebrain.app.model.MuteDuration) -> Unit = { _, _, _, _ -> },
@@ -244,7 +246,6 @@ fun ResultArea(
                 ResultUtilityTrigger(
                     memoryRefs = memoryRefs,
                     showRefs = showRefs,
-                    onSaveToKb = onSaveToKb,
                     onToggleRefs = { showRefs = !showRefs },
                     onlyThisRound = onlyThisRound,
                     onToggleOnlyThisRound = onToggleOnlyThisRound,
@@ -840,7 +841,6 @@ private fun TypewriterText(
 private fun ResultUtilityTrigger(
     memoryRefs: List<MemoryRef>,
     showRefs: Boolean,
-    onSaveToKb: () -> Unit,
     onToggleRefs: () -> Unit,
     // F10: 仅看本轮开关
     onlyThisRound: Boolean = false,
@@ -854,27 +854,39 @@ private fun ResultUtilityTrigger(
 ) {
     var menuOpen by remember { mutableStateOf(false) }
 
-    // trigger 不使用 fillMaxWidth——只是一个 28dp 的 overlay 图标
+    // P3-03: 视觉仍是 28dp 图标，但可点击盒子必须 ≥48dp——这是自定义 Box.clickable，
+    // Material 不会帮忙补足触摸热区。
     Box(
         modifier = modifier
     ) {
         // ⋯ trigger
         val (triggerInteraction, triggerScale) = rememberPressScale(0.92f, "resultUtilityTriggerScale")
+        val menuDescription = stringResource(com.lovebrain.app.R.string.panel_result_menu)
         Box(
             modifier = Modifier
-                .size(28.dp)
-                .graphicsLayer { scaleX = triggerScale; scaleY = triggerScale }
-                .clip(LoveBrainShape.sm)
-                .clickable(interactionSource = triggerInteraction, indication = null) {
-                    menuOpen = !menuOpen
-                },
+                .size(ResultDimens.UTILITY_HITBOX_DP.dp)
+                .semantics { contentDescription = menuDescription }
+                .clickable(
+                    interactionSource = triggerInteraction,
+                    indication = null,
+                    onClick = { menuOpen = !menuOpen }
+                ),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                "⋯",
-                style = AppTypography.labelLarge,
-                color = TextHint
-            )
+            // 字形保持 28dp，热区 48dp
+            Box(
+                modifier = Modifier
+                    .size(28.dp)
+                    .graphicsLayer { scaleX = triggerScale; scaleY = triggerScale }
+                    .clip(LoveBrainShape.sm),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "⋯",
+                    style = AppTypography.labelLarge,
+                    color = TextHint
+                )
+            }
         }
 
         // DropdownMenu 浮层——不改变结果区 layout height

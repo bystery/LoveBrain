@@ -214,6 +214,15 @@ object ReplyReducer {
             )
         }
 
+        // 用户显式结束本轮：不要求任务在途，但身份必须对得上。
+        // 成功后状态已回 Idle，若把 ReplyCleared 也压在 isBusy 门禁后面，
+        // nextRound() 就永远清不掉上一轮结果。
+        if (event is ReplyCleared) {
+            return if (event.requestId == (current.ownerRequestId ?: "")) {
+                ReplyUiState(panelState = current.panelState)
+            } else current
+        }
+
         // ── 其余事件：身份 + 活跃阶段双重门禁 ──
         val owner = current.ownerRequestId ?: return current
         if (event.requestId != owner) return current

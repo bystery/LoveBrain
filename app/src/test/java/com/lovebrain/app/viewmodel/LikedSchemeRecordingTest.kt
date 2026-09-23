@@ -7,6 +7,7 @@ import com.lovebrain.app.domain.PromptBuilder.ConfigValidationResult
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ReplyAnalysis
@@ -105,6 +106,8 @@ class LikedSchemeRecordingTest {
         generationEngine = mockk(relaxed = true)
         val promptBuilder = mockk<PromptBuilder>()
         every { promptBuilder.validateConfig(any(), any()) } returns ConfigValidationResult(0, 0, emptyList())
+        // S2-01: 准备阶段冻结 prompt 资产指纹，严格 mock 需要显式答案
+        every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = knowledgeRepo,
@@ -121,14 +124,13 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         engine: com.lovebrain.app.domain.GenerationEngine,
         response: LoveBrainResponse
     ) {
-        every { engine.generateReply(any(), any(), any()) } answers {
-            val scope = arg<CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
-            scope.launch {
-                callbacks.onReplyStart()
-                callbacks.onReplyResult(GenerateResult.Success(response))
-                callbacks.onReplyGenerating(false, false)
-                callbacks.onReplyPanelState(com.lovebrain.app.model.PanelState.AI_RESULT)
+        every { engine.replyStream(any()) } answers {
+            val callbacks = EventRecorder().apply { requestId = arg<GenerationInput>(0).requestId }
+            callbacks.record {
+                onReplyStart()
+                onReplyResult(GenerateResult.Success(response))
+                onReplyGenerating(false, false)
+                onReplyPanelState(com.lovebrain.app.model.PanelState.AI_RESULT)
             }
         }
     }

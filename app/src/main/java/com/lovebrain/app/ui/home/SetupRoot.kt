@@ -61,6 +61,7 @@ fun SetupRoot(
                     onNavigateAbout = { destination = HomeDestination.About },
                     onNavigateProviders = { destination = HomeDestination.Providers },
                     onNavigateUsage = { destination = HomeDestination.Usage },
+                    onNavigateCaptureApps = { destination = HomeDestination.CaptureApps },
                     onBack = { (context as? Activity)?.finish() }
                 )
                 HomeDestination.FeedbackCases -> {
@@ -79,6 +80,14 @@ fun SetupRoot(
                 HomeDestination.Providers -> {
                     BackHandler { destination = HomeDestination.Home }
                     ProviderSection(viewModel = viewModel, onBack = { destination = HomeDestination.Home })
+                }
+                HomeDestination.CaptureApps -> {
+                    BackHandler { destination = HomeDestination.Home }
+                    CaptureAppsScreen(viewModel = viewModel, onBack = { destination = HomeDestination.Home })
+                }
+                HomeDestination.CaptureApps -> {
+                    BackHandler { destination = HomeDestination.Home }
+                    CaptureAppsScreen(viewModel = viewModel, onBack = { destination = HomeDestination.Home })
                 }
                 HomeDestination.Usage -> {
                     BackHandler { destination = HomeDestination.Home }

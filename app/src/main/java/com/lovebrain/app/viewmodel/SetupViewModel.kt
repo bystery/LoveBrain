@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.HttpsTrustGuard
 import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.CapturePolicy
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.util.L
 import kotlinx.coroutines.Dispatchers
@@ -447,6 +448,61 @@ sealed class ExportState {
             com.lovebrain.app.service.CopyCaptureService.CURRENT_DISCLOSURE_VERSION
         L.w("accessibility disclosure confirmed: version=${com.lovebrain.app.service.CopyCaptureService.CURRENT_DISCLOSURE_VERSION}")
     }
+
+    // ═══ P3-05：消息捕获 allowlist（默认 fail-closed）═══
+
+    /** 用户已授权可捕获的包名集合。空集 = 什么都不捕获。 */
+    private val _captureAllowedPackages = MutableStateFlow(securePrefs.captureAllowedPackages)
+    val captureAllowedPackages: StateFlow<Set<String>> = _captureAllowedPackages.asStateFlow()
+
+    /** 本机可启动的 App（包名 → 显示名），已排除本应用与二次拒绝的敏感类别 */
+    fun selectableCaptureTargets(context: Context): List<CaptureApp> {
+        val pm = context.packageManager
+        val launchIntent = android.content.Intent(
+            android.content.Intent.ACTION_MAIN
+        ).addCategory(android.content.Intent.CATEGORY_LAUNCHER)
+        return runCatching {
+            pm.queryIntentActivities(launchIntent, 0).orEmpty()
+        }.getOrDefault(emptyList()).asSequence()
+            .mapNotNull { info ->
+                val pkg = info.activityInfo?.packageName ?: return@mapNotNull null
+                if (pkg == context.packageName) return@mapNotNull null
+                val label = runCatching {
+                    info.loadLabel(pm).toString()
+                }.getOrDefault(pkg)
+                CaptureApp(
+                    packageName = pkg,
+                    displayName = label.ifBlank { pkg },
+                    secondRejected = CapturePolicy.isSecondRejectApp(pkg)
+                )
+            }
+            .distinctBy { it.packageName }
+            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.displayName })
+            .toList()
+    }
+
+    /** 勾选/取消一个允许捕获的 App；二次拒绝类别不允许加入 */
+    fun setCaptureAllowed(packageName: String, allowed: Boolean) {
+        if (packageName.isBlank()) return
+        if (allowed && CapturePolicy.isSecondRejectApp(packageName)) {
+            L.w("refused to allowlist a second-reject package: ${packageName.takeLast(24)}")
+            return
+        }
+        val next = if (allowed) _captureAllowedPackages.value + packageName
+        else _captureAllowedPackages.value - packageName
+        securePrefs.captureAllowedPackages = next
+        _captureAllowedPackages.value = next
+        if (!allowed) com.lovebrain.app.service.CopyCaptureService.discardPendingCapture()
+        // allowlist 变更必须提高披露版本要求：旧 consent 覆盖不了新的采集范围
+        L.w("capture allowlist changed: size=${next.size}")
+    }
+
+    /** 一个可被授权捕获的 App */
+    data class CaptureApp(
+        val packageName: String,
+        val displayName: String,
+        val secondRejected: Boolean
+    )
 
     /**
      *  ：无障碍授权状态判定（只读）。

@@ -132,7 +132,7 @@ LoveBrain 旨在帮助你在关系里**真诚表达、不讨好、不内耗**。
 ## ❓ 常见问题
 
 **Q：会读取我的聊天记录吗？**
-A：只在你**长按某条消息**时，读取那一条消息——这是生成回复建议的必要输入。不会后台扫描、不监听键盘、不读通知。首次进入系统无障碍授权前，LoveBrain 会显示自己的数据用途披露，用户明确同意后才处理捕获文字。
+A：只在你**长按某条消息**时，读取那一条消息——这是生成回复建议的必要输入。而且只有你在「捕获范围」里点选过的 App 才会被读取，一个都不选就等于捕获关闭；支付、银行、密码管理、浏览器这类界面即使被你点选的 App 内嵌出来也会被二次拒绝。不会后台扫描、不监听键盘、不读通知、不会替你点击或发送。首次进入系统无障碍授权前，LoveBrain 会显示自己的数据用途披露，用户明确同意后才处理捕获文字。完整边界与出口清单见 [docs/PRIVACY-THREAT-MODEL.md](docs/PRIVACY-THREAT-MODEL.md)。
 
 **Q：悬浮球会一直运行吗？**
 A：悬浮球作为用户手动启动的前台服务（Foreground Service）运行，会显示系统通知。不会开机自启、不会在被杀后自动重启、用户明确停止时即停止。
@@ -163,9 +163,11 @@ A：军师的提示词里专门有"自然度检查"，目标是让建议像人�
 | 最低 Android 版本 | 8.0 (API 26) |
 | 最新公开 Release | `v1.3.1` |
 | 签名状态 | 候选 APK 为 unsigned R8 check 构建 |
-| 零遥测 | 依赖扫描和网络抓包证明只有用户配置 Provider 请求 |
+| 零遥测 | 依据是**源码 + 依赖清单核对**：无遥测/统计/广告 SDK，无自建后端，出口只有用户配置的 Provider（清单见 [docs/PRIVACY-THREAT-MODEL.md](docs/PRIVACY-THREAT-MODEL.md)）。机器可读依赖证据是 CI 产物 `dist/sbom.spdx.json`。**抓包验证脚本已提供但尚未执行**（本仓库没有设备），复现步骤见该文档 §7，在此之前不声称"抓包证明" |
+| API Key 安全 | 使用 EncryptedSharedPreferences (AES256)，降级路径仅内存不落明文；Key 不进冻结输入、不进事件、不进日志 |
+| 无障碍最小化 | **默认 fail-closed allowlist**：只有在「捕获范围」里点选过的 App 才会被读取，一个都不选等于不捕获；支付/银行/密码管理/浏览器等类别即使被点选也二次拒绝 |
 | API Key 安全 | 使用 EncryptedSharedPreferences (AES256)，降级路径仅内存不落明文 |
-| 无障碍最小化 | 默认 flagDefault，不再声明 flagIncludeNotImportantViews |
+| 无障碍配置面 | XML 不再声明 `flagIncludeNotImportantViews`；真正的边界在代码层（上一条） |
 | 本地数据 | allowBackup=false，知识库全在 App 私有目录 |
 
 ## ⚠️ 免责声明

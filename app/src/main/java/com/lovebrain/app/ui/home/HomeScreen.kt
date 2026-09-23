@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.Lifecycle
+import androidx.compose.ui.res.stringResource
 import com.lovebrain.app.R
 import com.lovebrain.app.service.FloatingService
 import com.lovebrain.app.ui.KnowledgeBaseActivity
@@ -57,6 +58,7 @@ fun HomeScreen(
     onNavigateAbout: () -> Unit,
     onNavigateProviders: () -> Unit,
     onNavigateUsage: () -> Unit,
+    onNavigateCaptureApps: () -> Unit,
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -65,6 +67,8 @@ fun HomeScreen(
     val providerReady by viewModel.providerReady.collectAsStateWithLifecycle()
 
     val captureEnabled by viewModel.captureEnabled.collectAsStateWithLifecycle()
+    val captureAllowed by viewModel.captureAllowedPackages.collectAsStateWithLifecycle()
+    val captureAllowedCount = captureAllowed.size
     var accessibilityGranted by remember { mutableStateOf(viewModel.isCaptureServiceEnabled(context)) }
     var showAccessibilityDisclosure by remember { mutableStateOf(false) }
 
@@ -179,16 +183,26 @@ fun HomeScreen(
                 HorizontalDivider(thickness = AppDimens.BORDER_WIDTH_DP.dp, color = Border.copy(alpha = 0.5f))
 
                 HomeSettingRow(
-                    title = "消息捕获",
+                    title = stringResource(R.string.capture_apps_title),
                     subtitle = when {
-                        !accessibilityGranted -> "尚未授予无障碍权限"
-                        captureEnabled -> "已开启·长按消息自动捕获"
-                        else -> "已关闭·点击开启"
+                        !accessibilityGranted -> stringResource(R.string.home_capture_no_permission)
+                        captureAllowedCount == 0 -> stringResource(R.string.capture_apps_row_subtitle_none)
+                        captureEnabled -> stringResource(R.string.home_capture_status_on)
+                        else -> stringResource(R.string.home_capture_status_off)
                     },
-                    statusText = if (accessibilityGranted) (if (captureEnabled) "开" else "关") else null,
+                    statusText = if (accessibilityGranted) {
+                        stringResource(
+                            if (captureEnabled) R.string.home_on else R.string.home_off
+                        )
+                    } else null,
                     statusColor = if (captureEnabled) Primary else Neutral300,
-                    trailingText = if (!accessibilityGranted) "去授权" else null,
-                    onTrailingClick = if (!accessibilityGranted) ({ showAccessibilityDisclosure = true }) else null,
+                    trailingText = if (!accessibilityGranted) {
+                        stringResource(R.string.home_grant_accessibility)
+                    } else {
+                        stringResource(R.string.capture_apps_row_subtitle, captureAllowedCount)
+                    },
+                    onTrailingClick = if (!accessibilityGranted) ({ showAccessibilityDisclosure = true })
+                    else ({ onNavigateCaptureApps() }),
                     onClick = if (accessibilityGranted) ({ viewModel.toggleCapture() }) else null
                 )
             }

@@ -7,6 +7,13 @@ package com.lovebrain.app.ui.theme
  * 私有 object（照抄 PanelDimens/HeaderDimens 体例）。
  */
 object AppDimens {
+    /**
+     * P3-03: 无障碍触摸区下限（dp）。
+     *
+     * 所有可点击元素——包括自定义 Box.clickable——的热区都必须 ≥ 此值。
+     * Material 组件会自动补足，自定义盒子不会，所以统一取这个常量。
+     */
+    const val TOUCH_TARGET_MIN_DP = 48
     const val INPUT_ROW_HEIGHT_DP = 36        // 输入行/按钮行统一高度（： 上提，≥3 复用方）
     const val BORDER_WIDTH_DP = 1             // 细边框/分割线宽度（≥3 文件）
     const val ELEVATION_DEFAULT_DP = 2        // 默认阴影高度

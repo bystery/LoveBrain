@@ -9,6 +9,7 @@ import androidx.compose.ui.test.performScrollToIndex
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ReplySchemes
+import com.lovebrain.app.testing.MainChainHarness
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -36,17 +37,13 @@ class ResultAreaVisualRegressionTest {
     val composeRule = createComposeRule()
 
     private fun makeSuccessResult(): GenerateResult.Success {
-        return GenerateResult.Success(
-            LoveBrainResponse(
-                response = ReplySchemes(
-                    recommended = "推荐回复内容",
-                    badBoy = "清醒回复内容",
-                    playful = "俏皮回复内容",
-                    warm = "温柔回复内容"
-                ),
-                directions = listOf("F方向内容", "E方向内容", "X方向内容", "S方向内容")
-            )
-        )
+        // S1-03 审计修复（编译健壮性）：不直接 new 生产 ReplySchemes（同包内已有两个同名类型），
+        // 改由生产 parseReplyResponse 解析一段真实形态的 Provider 文本。
+        val raw = "{\"response\":{\"recommended\":\"推荐回复内容\",\"bad_boy\":\"清醒回复内容\"," +
+            "\"playful\":\"俏皮回复内容\",\"warm\":\"温柔回复内容\"}," +
+            "\"directions\":[\"F方向内容\",\"E方向内容\",\"X方向内容\",\"S方向内容\"]," +
+            "\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"test\"}}"
+        return GenerateResult.Success(MainChainHarness.parseProviderText(raw))
     }
 
     private fun setupResultArea() {
@@ -128,10 +125,12 @@ class ResultAreaVisualRegressionTest {
     @Test
     fun defaultSuccessResultArea_doesNotShowSaveToKbButtonDirectly() {
         setupResultArea()
-        val saveNodes = composeRule.onAllNodesWithText("记入知识库")
-        assert(saveNodes.fetchSemanticsNodes().isEmpty()) {
-            "Save to KB button should not be directly visible in default state — only in ⋯ menu"
-        }
+        // 审计 §2 同类缺陷：裸 Kotlin assert() 在 instrumentation 下不保证开 -ea，会静默恒真
+        val saveNodes = composeRule.onAllNodesWithText("记入知识库").fetchSemanticsNodes()
+        assertTrue(
+            "Save to KB button should not be directly visible in default state — only in ⋯ menu",
+            saveNodes.isEmpty()
+        )
     }
 
     // ═══ 6. 无 memoryRefs 时"本轮参考"不存在 ═══

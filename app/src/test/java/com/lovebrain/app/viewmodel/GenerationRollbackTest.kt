@@ -6,6 +6,7 @@ import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.LoveBrainResponse
@@ -80,6 +81,9 @@ class GenerationRollbackTest {
         val promptBuilder = mockk<PromptBuilder>()
         every { promptBuilder.validateConfig(any(), any()) } returns
             PromptBuilder.ConfigValidationResult(0, 0, emptyList())
+        // S2-01: 准备阶段会冻结 prompt 资产指纹——严格 mock 必须给答案，
+        // 否则 generate() 在 buildGenerationInput 处就抛 MockKException。
+        every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = knowledgeRepo,
@@ -138,17 +142,17 @@ class GenerationRollbackTest {
         )
 
         every {
-            engine.generateReply(any(), any(), any())
+            engine.replyStream(any())
         } answers {
-            val scope = arg<CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
+            val callbacks = EventRecorder().apply { requestId = arg<GenerationInput>(0).requestId }
             val resp = responses[generateCount.coerceAtMost(responses.lastIndex)]
             generateCount++
-            scope.launch {
-                callbacks.onReplyStart()
-                callbacks.onReplyResult(GenerateResult.Success(resp))
-                callbacks.onReplyGenerating(false, false)
-                callbacks.onReplyPanelState(com.lovebrain.app.model.PanelState.AI_RESULT)
+            callbacks.record {
+
+                onReplyStart()
+                onReplyResult(GenerateResult.Success(resp))
+                onReplyGenerating(false, false)
+                onReplyPanelState(com.lovebrain.app.model.PanelState.AI_RESULT)
             }
         }
 
@@ -232,17 +236,17 @@ class GenerationRollbackTest {
         val responses = listOf(makeResponse("v1-reply"), makeResponse("v2-reply"))
 
         every {
-            engine.generateReply(any(), any(), any())
+            engine.replyStream(any())
         } answers {
-            val scope = arg<CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
+            val callbacks = EventRecorder().apply { requestId = arg<GenerationInput>(0).requestId }
             val resp = responses[generateCount.coerceAtMost(responses.lastIndex)]
             generateCount++
-            scope.launch {
-                callbacks.onReplyStart()
-                callbacks.onReplyResult(GenerateResult.Success(resp))
-                callbacks.onReplyGenerating(false, false)
-                callbacks.onReplyPanelState(com.lovebrain.app.model.PanelState.AI_RESULT)
+            callbacks.record {
+
+                onReplyStart()
+                onReplyResult(GenerateResult.Success(resp))
+                onReplyGenerating(false, false)
+                onReplyPanelState(com.lovebrain.app.model.PanelState.AI_RESULT)
             }
         }
 

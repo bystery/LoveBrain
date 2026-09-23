@@ -1,16 +1,23 @@
 package com.lovebrain.app.viewmodel
 
 import android.util.Log
+import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.GenerationEngine
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.PromptBuilder.ConfigValidationResult
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.model.SuggestStarted
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -18,6 +25,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -48,7 +56,10 @@ class LoveBrainViewModelR2RegressionTest {
     }
 
     /** 构造 LoveBrainViewModel：init 读取面显式桩（同 DraftPersistTest 先例） */
-    private fun newViewModel(): LoveBrainViewModel {
+    private fun newViewModel(
+        engine: GenerationEngine = mockk(relaxed = true),
+        knowledgeRepo: KnowledgeRepository = mockk(relaxed = true)
+    ): LoveBrainViewModel {
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0
         every { prefs.outputMode } returns 0
@@ -63,26 +74,57 @@ class LoveBrainViewModelR2RegressionTest {
         val promptBuilder = mockk<PromptBuilder>()
         every { promptBuilder.validateConfig(any(), any()) } returns
             ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.assetHashOf(*anyVararg()) } returns "asset-hash"
+        // S2-02: 任务由 coordinator 创建并拥有——把它挂在测试调度器上，
+        // 否则 advanceUntilIdle() 推进不到生成任务里，测的就不是同一条时间线。
+        val coordinatorScope = kotlinx.coroutines.CoroutineScope(
+            kotlinx.coroutines.SupervisorJob() + Dispatchers.Main
+        )
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
-            knowledgeRepo = mockk(relaxed = true),
+            knowledgeRepo = knowledgeRepo,
             promptBuilder = promptBuilder,
             topicRecorder = mockk(relaxed = true),
             securePrefs = prefs,
             triggerCoordinator = mockk(relaxed = true),
-            generationEngine = mockk(relaxed = true),
-operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
+            generationEngine = engine,
+            operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(coordinatorScope)
         )
     }
 
     /** ：手动停止锦囊 → 错误面给出固定文案（SuggestPanel 错误卡可见），生成态关闭 */
     @Test
     fun stop_suggest_shows_manual_stop_notice() = runTest {
-        val vm = newViewModel()
+        // S2-02 之后锦囊是否"在生成"只由 coordinator 的在管任务派生，
+        // 所以必须先真发起一个任务，再点停止——不能像旧代码那样直接调回调进生成态。
+        val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
+        coEvery { knowledgeRepo.getActive() } returns
+            KnowledgeBase(name = "kb-a", stage = "暧昧期")
+        coEvery { knowledgeRepo.migrateIfNeeded(any()) } returns Unit
+        coEvery { knowledgeRepo.readVector(any()) } returns emptyMap()
+        coEvery { knowledgeRepo.readFile(any(), any()) } returns ""
+
+        val gate = CompletableDeferred<Unit>()
+        val engine = mockk<GenerationEngine>(relaxed = true)
+        every { engine.suggestStream(any(), any()) } answers {
+            val requestId = arg<String>(0)
+            flow {
+                emit(SuggestStarted(requestId))
+                gate.await()
+            }
+        }
+
+        val vm = newViewModel(engine = engine, knowledgeRepo = knowledgeRepo)
         advanceUntilIdle()
 
-        vm.onSuggestStart() // VM 即 Callbacks 实现，直调进入生成态
+        vm.generateSuggest()
+        advanceUntilIdle()
+        assertTrue("锦囊应处于生成中", vm.isSuggesting.value)
+
         vm.stopSuggest()
+        // isSuggesting 是从 coordinator 的 activeOperations 派生的 flow，
+        // 要先让调度器把这一次取消发布出去再读。
+        advanceUntilIdle()
 
         assertEquals("已手动停止", vm.suggestError.value)
         assertEquals(false, vm.isSuggesting.value)

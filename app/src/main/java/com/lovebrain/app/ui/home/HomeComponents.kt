@@ -65,6 +65,7 @@ data object FeedbackCases : HomeDestination()
 data object About : HomeDestination()
 data object Providers : HomeDestination()
 data object Usage : HomeDestination()
+data object CaptureApps : HomeDestination()
 
 companion object {
     /** S1-06: Saver for rememberSaveable */
@@ -76,6 +77,7 @@ companion object {
                 "About" -> About
                 "Providers" -> Providers
                 "Usage" -> Usage
+                "CaptureApps" -> CaptureApps
                 else -> Home
             }
         }

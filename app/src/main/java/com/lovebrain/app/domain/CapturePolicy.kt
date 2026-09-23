@@ -45,20 +45,29 @@ object CapturePolicy {
      * 覆盖"聊天 App 里内嵌浏览器打开的支付/登录页"这类越界场景：
      * 包名是用户选的微信，但窗口其实是银行 H5。
      */
+    /**
+     * 二次拒绝关键词。
+     *
+     * 只收"整段前缀撞上真实人名/普通词的概率足够低"的词。
+     * 3~4 字母的泛化词（pay / otp / abc / cmb / boc …）刻意不放进来：
+     * `com.payne.chatapp` 会被 "pay" 误杀成支付 App，用户点了授权却静默不采，
+     * 这种"看不见的拒绝"比多一个可选项危险得多。
+     * 真正的边界是 allowlist —— 没点选的 App 一律不采，不依赖这里猜。
+     */
     private val SECOND_REJECT_KEYWORDS = listOf(
         // 支付 / 银行 / 证券
-        "bank", "banking", "pay", "wallet", "finance", "securities", "stock", "trading",
-        "alipay", "wechatpay", "unionpay", "paypal", "stripe",
+        "bank", "banking", "wallet", "finance", "securities", "securities", "trading",
+        "alipay", "wechatpay", "unionpay", "paypal", "stripe", "payment", "payments",
         // 凭据
         "password", "passbook", "1password", "lastpass", "bitwarden", "keepass", "keeper",
-        "authenticator", "2fa", "otp",
+        "authenticator",
         // 浏览器与 WebView 宿主（会话里可能是任何站点）
-        "chrome", "firefox", "edge", "browser", "webview",
+        "chrome", "firefox", "browser", "webview",
         // 医疗与企业身份
-        "health", "medical", "hospital", "sso", "okta", "adfs"
+        "medical", "hospital", "okta", "adfs"
     )
 
-    /** 国内常用缩写行名——单独列出来避免和 "pay"/"abc" 之类误伤或漏判 */
+    /** 系统组件包——精确前缀，不参与关键词猜测 */
     private val SECOND_REJECT_EXACT_PREFIXES = listOf(
         "com.android.settings",
         "com.android.systemui",

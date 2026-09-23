@@ -23,7 +23,8 @@ import com.lovebrain.app.viewmodel.LoveBrainViewModel.ComposerMode
  */
 
 private object ReplyActionsDimens {
-    const val TRIO_HEIGHT_DP = 40
+    /** P3-03: 主操作按钮触摸区下限——旧值 40dp 达不到无障碍要求 */
+    const val TRIO_HEIGHT_DP = 48
     const val GENERATE_BUTTON_GAP_DP = 8
 }
 
@@ -35,7 +36,6 @@ fun ReplyPrimaryActions(
     isProactive: Boolean,
     hasReplyResult: Boolean,
     messageCount: Int,
-    draftText: String = "",
     onGenerateReply: () -> Unit,
     onGenerateProactive: () -> Unit,
     onRetry: () -> Unit,

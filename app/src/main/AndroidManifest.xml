@@ -8,6 +8,16 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- P3-05: 消息捕获改为「用户点选的聊天 App」allowlist。
+         要在设置页列出候选 App，需要看到已安装的 launcher 目标；
+         这里只声明 LAUNCHER 可见性，不用 QUERY_ALL_PACKAGES。 -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
     <application
         android:name=".LoveBrainApp"
         android:allowBackup="false"

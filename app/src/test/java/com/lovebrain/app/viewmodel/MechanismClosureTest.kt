@@ -7,6 +7,7 @@ import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.IntentExpiry
 import com.lovebrain.app.model.IntentStatus
@@ -88,6 +89,8 @@ class MechanismClosureTest {
         val promptBuilder = mockk<PromptBuilder>()
         every { promptBuilder.validateConfig(any(), any()) } returns
             PromptBuilder.ConfigValidationResult(0, 0, emptyList())
+        // S2-01: 准备阶段冻结 prompt 资产指纹，严格 mock 需要显式答案
+        every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = knowledgeRepo,
@@ -522,14 +525,13 @@ class MechanismClosureTest {
         // Capture the intent passed to engine
         var capturedIntent: IntentConfig? = null
         every {
-            engine.generateReply(any(), any(), any())
+            engine.replyStream(any())
         } answers {
             capturedIntent = arg<com.lovebrain.app.model.GenerationInput>(0).intentConfig
-            val scope = arg<kotlinx.coroutines.CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
-            scope.launch {
-                callbacks.onReplyStart()
-                callbacks.onReplyResult(
+            val callbacks = EventRecorder().apply { requestId = arg<GenerationInput>(0).requestId }
+            callbacks.record {
+                onReplyStart()
+                onReplyResult(
                     GenerateResult.Success(
                         LoveBrainResponse(
                             response = ReplySchemes(recommended = "reply"),
@@ -537,10 +539,9 @@ class MechanismClosureTest {
                         )
                     )
                 )
-                callbacks.onReplyGenerating(false, false)
-                callbacks.onReplyPanelState(com.lovebrain.app.model.PanelState.AI_RESULT)
+                onReplyGenerating(false, false)
+                onReplyPanelState(com.lovebrain.app.model.PanelState.AI_RESULT)
             }
-            mockk<kotlinx.coroutines.Job>(relaxed = true)
         }
 
         val vm = makeVm(knowledgeRepo, engine)

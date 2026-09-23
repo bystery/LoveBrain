@@ -30,6 +30,9 @@ import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.ui.theme.*
 
+/** P3-03: 无障碍触摸区下限（dp）——所有生成按钮的可点击盒子不得低于此值 */
+private const val MIN_TOUCH_TARGET_DP = 48
+
 /**
  * F13: 统一生成操作按钮组件——替代旧 GenerateButton 和 DualGenerateRow 中的重复实现。
  *
@@ -54,14 +57,18 @@ fun GenerationActionButton(
     containerColor: Color = Primary,
     textColor: Color = Color.White,
     mode: ButtonMode = ButtonMode.NORMAL,
-    heightDp: Int = 40
+    heightDp: Int = MIN_TOUCH_TARGET_DP
 ) {
+    // P3-03: 可点击盒子必须是完整的 heightDp（默认 48dp）。
+    // 旧写法是 .padding(vertical = Spacing.xs) 放在 .clickable 之前，
+    // 于是真正能点到的只有 heightDp - 2*xs，等于自己把热区削掉一圈。
+    // 现在把内边距放到 clickable 之后，交给内容层承担。
     val haptics = LocalHapticFeedback.current
     val (interaction, scale) = rememberPressScale(0.96f, "genActionScale")
 
     val baseModifier = Modifier
         .then(modifier)
-        .height(heightDp.dp)
+        .height(maxOf(heightDp, MIN_TOUCH_TARGET_DP).dp)
 
     when (mode) {
         ButtonMode.LOADING -> {
@@ -85,10 +92,10 @@ fun GenerationActionButton(
             }
             Box(
                 modifier = baseModifier
-                    .padding(vertical = Spacing.xs)
                     .clip(LoveBrainShape.md)
                     .background(containerColor, LoveBrainShape.md)
-                    .clickable(onClick = onClick),
+                    .clickable(onClick = onClick)
+                    .padding(vertical = Spacing.xs),
                 contentAlignment = Alignment.Center
             ) {
                 Box(
@@ -119,11 +126,11 @@ fun GenerationActionButton(
         ButtonMode.STOP -> {
             Box(
                 modifier = baseModifier
-                    .padding(vertical = Spacing.xs)
                     .graphicsLayer { scaleX = scale; scaleY = scale }
                     .clip(LoveBrainShape.md)
                     .background(Neutral200, LoveBrainShape.md)
-                    .clickable(interactionSource = interaction, indication = null, onClick = onClick),
+                    .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+                    .padding(vertical = Spacing.xs),
                 contentAlignment = Alignment.Center
             ) {
                 Text(text, color = Color.White, style = AppTypography.titleMedium, fontWeight = FontWeight.Bold)
@@ -133,7 +140,6 @@ fun GenerationActionButton(
             // NORMAL / DISABLED
             Box(
                 modifier = baseModifier
-                    .padding(vertical = Spacing.xs)
                     .then(if (enabled) Modifier.shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md) else Modifier)
                     .clip(LoveBrainShape.md)
                     .background(
@@ -141,14 +147,22 @@ fun GenerationActionButton(
                         LoveBrainShape.md
                     )
                     .graphicsLayer { scaleX = scale; scaleY = scale }
-                    .then(if (enabled) Modifier.clickable(
+                    .clickable(
+                        enabled = enabled,
                         interactionSource = interaction,
-                        indication = null,
-                        onClick = {
-                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                            onClick()
-                        }
-                    ) else Modifier),
+                        indication = null
+                    ) {
+                        haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onClick()
+                    }
+                    .padding(vertical = Spacing.xs)
+                    .then(if (enabled) Modifier.shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md) else Modifier)
+                    .clip(LoveBrainShape.md)
+                    .background(
+                        if (enabled) containerColor else SurfaceInset,
+                        LoveBrainShape.md
+                    )
+                    .graphicsLayer { scaleX = scale; scaleY = scale },
                 contentAlignment = Alignment.Center
             ) {
                 Text(

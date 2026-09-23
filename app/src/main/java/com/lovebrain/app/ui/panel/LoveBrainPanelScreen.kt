@@ -404,7 +404,6 @@ fun LoveBrainPanelScreen(
                     isProactive = isProactive,
                     hasReplyResult = result is GenerateResult.Success,
                     messageCount = messages.size,
-                    draftText = draftText,
                     onGenerateReply = {
                         if (isProviderReady) viewModel.generate()
                         else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置")
@@ -459,11 +458,6 @@ fun LoveBrainPanelScreen(
                                     onCopy(reply)
                                 },
                                 onRetry = { viewModel.generate() },
-                                // P1-5: 记入知识库放入结果工具区，不挤掉主入口
-                                onSaveToKb = {
-                                    viewModel.nextRound()
-                                    onCopy("")
-                                },
                                 // F09: 本轮参考记忆 + 纠正回调
                                 memoryRefs = viewModel.getCurrentMemoryRefs(),
                                 onCorrection = { memoryId, action, replacementText, muteDuration ->

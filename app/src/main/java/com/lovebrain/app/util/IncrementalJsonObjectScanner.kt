@@ -206,7 +206,11 @@ class IncrementalJsonObjectScanner(private val key: String) {
         }
         // 丢掉已消费部分；未闭合对象的文字留在 current，buf 清空等下一段
         buf.deleteRange(0, i)
-        return out.isNotEmpty()
+        // 进度只能由"真的吃掉了字符"定义。
+        // 之前这里返回 out.isNotEmpty()，而 out 会在多次调用间累积，
+        // 于是"已吐出一个对象 + 缓冲区已抽干"的组合会让 feed 的
+        // while(progressed) 循环永远转下去（实测把 JVM 挂死）。
+        return i > 0
     }
 
     private fun StringBuilder.deleteRange(from: Int, toExclusive: Int) {
@@ -282,8 +286,15 @@ class IncrementalSingleObjectScanner(private val key: String) {
     }
 
     private fun stepBrace(): Boolean {
-        val ws = leadingWhitespace()
+        var ws = leadingWhitespace()
         if (ws > 0) buf.deleteRange(0, ws)
+        // "key" 之后必须先吃掉冒号。旧实现没有这一步，
+        // 于是 buf[0] 永远是 ':'，直接判 DONE —— extractKeyObject 恒为 null。
+        if (buf.isNotEmpty() && buf[0] == ':') {
+            buf.deleteRange(0, 1)
+            ws = leadingWhitespace()
+            if (ws > 0) buf.deleteRange(0, ws)
+        }
         if (buf.isEmpty()) return false
         if (buf[0] != '{') { phase = Phase.DONE; return false }
         phase = Phase.BODY

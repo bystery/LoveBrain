@@ -292,9 +292,14 @@ fun t6_suggest_systemAndUser() = runBlocking {
         every { Log.w(any(), any<String>()) } returns 0
         val pb = newBuilder()
         val dsk = mockk<DeepSeekRepository>()
-        every { dsk.snapshotProviderConfig() } returns ProviderRequestConfig(
-            ticketId = "test", apiKey = "k", baseUrl = "https://api.deepseek.com", model = "m", thinkingMode = 0
+        val cfg = ProviderRequestConfig(
+            ticketId = "t", apiKey = "k", baseUrl = "https://api.deepseek.com", model = "m", thinkingMode = 0
         )
+        every { dsk.snapshotProviderConfig() } returns cfg
+        // S2-01: Engine 不再回读活跃配置，而是按冻结进输入的 ticketId 取配置；
+        // 取不到 = ProviderMissing，取到但对不上身份 = ProviderChanged，两种都会直接失败。
+        every { dsk.configForTicket("t") } returns cfg
+        val identity = cfg.toIdentity()
         val systems = mutableListOf<String>()
         val users = mutableListOf<String>()
         every { dsk.generateStream(any(), any(), any(), any(), any()) } answers {
@@ -304,10 +309,6 @@ fun t6_suggest_systemAndUser() = runBlocking {
         }
         every { dsk.parseReplyResponse(any()) } returns LoveBrainResponse(response = ReplySchemes(recommended = "r"))
 
-        val callbacks = mockk<GenerationEngine.Callbacks>(relaxed = true)
-        every { callbacks.isGenerating() } returns false
-        every { callbacks.getOutputMode() } returnsMany listOf(0, 1)
-
         val engine = GenerationEngine(dsk, pb)
         runBlocking {
             val input1 = com.lovebrain.app.model.buildGenerationInput(
@@ -315,11 +316,12 @@ fun t6_suggest_systemAndUser() = runBlocking {
                 intentConfig = com.lovebrain.app.model.IntentConfig(),
                 corrections = emptyMap(), correctionsRevision = 0,
                 onlyThisRound = false, aggressive = false,
-                providerHostHash = "hash", providerModel = "m"
+                providerIdentity = identity,
+                kbProfile = "", kbRevision = "rev", promptAssetHash = "assets"
             )
             val input2 = input1.copy(requestId = "test-2", replyDirective = input1.replyDirective.copy(aggressive = true))
-            engine.generateReply(input1, this, callbacks)?.join()
-            engine.generateReply(input2, this, callbacks)?.join()
+            engine.replyStream(input1).collect { }
+            engine.replyStream(input2).collect { }
         }
 
         assertEquals("generateStream 应被调用两次", 2, systems.size)
@@ -348,21 +350,16 @@ fun t6_suggest_systemAndUser() = runBlocking {
         coEvery { pb.buildReplyUserPromptWithRefs(any(), any(), any(), any(), any(), any()) } returns
             PromptBuilder.PromptBuildResult("user", emptyList())
 
-        val callbacks = mockk<GenerationEngine.Callbacks>(relaxed = true)
-        every { callbacks.isGenerating() } returns false
-        every { callbacks.getOutputMode() } returns 0
-        // callbacks.getActiveKb() 返回 KB-B — 如果 Engine 误读它就会被抓到
-        every { callbacks.getActiveKb() } returns kbB
-
         val engine = GenerationEngine(dsk, pb)
         val input = com.lovebrain.app.model.buildGenerationInput(
             requestId = "test-kb", messages = twoMsgs, userHint = "", knowledgeBase = kbA,
             intentConfig = com.lovebrain.app.model.IntentConfig(),
             corrections = emptyMap(), correctionsRevision = 0,
             onlyThisRound = false, aggressive = false,
-            providerHostHash = "hash", providerModel = "m"
+            providerIdentity = com.lovebrain.app.model.ProviderIdentity("t", "hash", "m", 0),
+            kbProfile = "", kbRevision = "rev", promptAssetHash = "assets"
         )
-        engine.generateReply(input, this, callbacks)?.join()
+        kotlinx.coroutines.runBlocking { engine.replyStream(input).collect { } }
 
         // 验证 PromptBuilder 收到的是冻结的 KB-A
         coVerify {
@@ -386,8 +383,8 @@ fun t6_suggest_systemAndUser() = runBlocking {
                 any()
             )
         }
-        // 验证 Engine 主回复流程不读 callbacks.getActiveKb()
-        verify(exactly = 0) { callbacks.getActiveKb() }
+        // S2-03: Engine 已经没有 callbacks 可读，冻结 KB 只能来自 GenerationInput。
+        // 上面那条 coVerify(match { it?.name == "kb-a" }) 就是这一点的证明。
     }
 
     companion object {

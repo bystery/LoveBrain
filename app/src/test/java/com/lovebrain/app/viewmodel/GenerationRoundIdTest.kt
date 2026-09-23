@@ -7,7 +7,10 @@ import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.LoveBrainResponse
+import com.lovebrain.app.model.ReplyCompleted
 import com.lovebrain.app.model.ReplySchemes
+import com.lovebrain.app.model.ReplyStarted
+import com.lovebrain.app.model.ReplyRequested
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -38,8 +41,9 @@ import org.junit.Test
  * - feedback 不变
  * - 下一轮成功再次递增
  *
- * 此测试直接调用 ViewModel 的 onReplyResult() 回调——
- * 与生产代码中的 GenerationEngine 回调路径一致。
+ * S2-03 之后 Engine 不再回调 ViewModel，roundId 由 reducer 决定。
+ * 因此这里用 [runOneRound] 走真实事件序列（认领请求 → Started → Completed），
+ * 而不是从侧面直接写状态——否则测的就不是生产路径了。
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class GenerationRoundIdTest {
@@ -98,6 +102,15 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         )
     }
 
+    /** 走一遍 reducer 的真实序列：认领 → 流式 → 完成 */
+    private var roundSeq = 0
+    private fun LoveBrainViewModel.runOneRound(result: GenerateResult) {
+        val requestId = "round-${++roundSeq}"
+        dispatchReply(ReplyRequested(requestId))
+        dispatchReply(ReplyStarted(requestId))
+        dispatchReply(ReplyCompleted(requestId, result))
+    }
+
     private fun makeSuccessResult(): GenerateResult.Success {
         return GenerateResult.Success(
             LoveBrainResponse(
@@ -119,7 +132,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         val vm = newViewModel()
         advanceUntilIdle()
 
-        vm.onReplyResult(makeSuccessResult())
+        vm.runOneRound(makeSuccessResult())
         advanceUntilIdle()
 
         assertEquals(1, vm.generationRoundId.value)
@@ -130,7 +143,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         val vm = newViewModel()
         advanceUntilIdle()
 
-        vm.onReplyResult(GenerateResult.Error("network error"))
+        vm.runOneRound(GenerateResult.Error("network error"))
         advanceUntilIdle()
 
         assertEquals(0, vm.generationRoundId.value)
@@ -141,11 +154,11 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         val vm = newViewModel()
         advanceUntilIdle()
 
-        vm.onReplyResult(makeSuccessResult())
+        vm.runOneRound(makeSuccessResult())
         advanceUntilIdle()
         assertEquals(1, vm.generationRoundId.value)
 
-        vm.onReplyResult(makeSuccessResult())
+        vm.runOneRound(makeSuccessResult())
         advanceUntilIdle()
         assertEquals(2, vm.generationRoundId.value)
     }
@@ -155,7 +168,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         val vm = newViewModel()
         advanceUntilIdle()
 
-        vm.onReplyResult(makeSuccessResult())
+        vm.runOneRound(makeSuccessResult())
         advanceUntilIdle()
         val roundAfterReply = vm.generationRoundId.value
 
@@ -171,7 +184,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         val vm = newViewModel()
         advanceUntilIdle()
 
-        vm.onReplyResult(makeSuccessResult())
+        vm.runOneRound(makeSuccessResult())
         advanceUntilIdle()
         val roundAfterReply = vm.generationRoundId.value
 
@@ -188,12 +201,12 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         advanceUntilIdle()
 
         // 第一轮成功
-        vm.onReplyResult(makeSuccessResult())
+        vm.runOneRound(makeSuccessResult())
         advanceUntilIdle()
         val round1 = vm.generationRoundId.value
 
         // 第二轮成功
-        vm.onReplyResult(makeSuccessResult())
+        vm.runOneRound(makeSuccessResult())
         advanceUntilIdle()
         val round2 = vm.generationRoundId.value
 

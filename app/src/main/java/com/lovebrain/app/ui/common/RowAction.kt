@@ -22,7 +22,16 @@ import androidx.compose.ui.graphics.graphicsLayer
 
 /** 行内次级操作按钮规格 */
 private object RowActionDimens {
-    const val MIN_HEIGHT_DP = 32  // 最小高度（原≈24 提到 32）
+    /**
+     * P3-03: 可点击盒子最小边长。
+     *
+     * 旧值 32dp 且 clickable 挂在 vertical padding 之后，实际热区更小；
+     * 这是自定义 Box.clickable，Material 不会自动补触摸区。
+     * 视觉胶囊仍按内边距画小，触摸盒补足到 48dp。
+     */
+    const val MIN_HEIGHT_DP = 48
+    /** 视觉胶囊的垂直内缩 */
+    const val VISUAL_VERTICAL_INSET_DP = 10
 }
 
 /**
@@ -41,10 +50,11 @@ fun RowActionButton(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .heightIn(min = RowActionDimens.MIN_HEIGHT_DP.dp)
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+            .padding(vertical = RowActionDimens.VISUAL_VERTICAL_INSET_DP.dp)
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .clip(LoveBrainShape.full)
             .background(TextSecondary.copy(alpha = 0.08f))
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
             .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
     ) {
         Text(

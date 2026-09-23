@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LoveBrain</string>
+    <string name="accessibility_capture_desc">LoveBrain message capture service. When capture is on, it listens for long-press and window events in the chat apps you allow and reads the related node text to identify the message you long-pressed that shows a \"Copy\" menu. Captured text goes into the LoveBrain overlay; when you ask the AI for a reply it is sent to the model provider you configured; when you finish and save a round, some of it may be written to the local knowledge base. The service never taps or sends messages for you. You can turn capture off or revoke the accessibility permission at any time.</string>
+    <string name="panel_generate_reply">Generate reply</string>
+    <string name="panel_generate_reply_with_count">Generate reply · %1$d messages</string>
+    <string name="panel_generate_opening">Generate opener</string>
+    <string name="panel_retry">Retry</string>
+    <string name="panel_save_to_kb">Save to knowledge base</string>
+    <string name="panel_stop">Stop</string>
+    <string name="panel_collapse">Collapse panel</string>
+    <string name="proactive_empty_hint">Type what you want to say, then tap \"Generate opener\" below for something to talk about</string>
+    <string name="error_provider_missing">Configure an available model provider first</string>
+    <string name="error_auth">API key is invalid or expired, please check settings</string>
+    <string name="error_network">Network request failed, check your connection and retry</string>
+    <string name="error_timeout">Request timed out, please retry</string>
+    <string name="error_rate_limited">Too many requests, please try again later</string>
+    <string name="error_prompt_read">Failed to read configuration, please retry</string>
+    <string name="error_parse">Failed to parse the reply, please retry</string>
+    <string name="error_storage">Failed to save data, please retry</string>
+    <string name="error_param_unsupported">This model does not support the current thinking mode; all fallbacks were tried</string>
+    <string name="error_unknown">Generation failed, please retry</string>
+    <string name="a11y_close_onboarding">Dismiss tip</string>
+    <string name="a11y_close_notice">Dismiss notice</string>
+    <string name="onboarding_title">How this works</string>
+    <string name="onboarding_body">Add the conversation -&gt; Generate reply -&gt; Review the options
+Tap an option to reword it; long-press to change it by voice
+A thumbs down records why, and can be exported for review
+The header shows today / session / total spend and generation count
+Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</string>
+    <string name="capture_apps_title">Capture scope</string>
+    <string name="capture_apps_intro">Only the apps you tick here are ever read. With nothing selected, LoveBrain captures nothing at all.</string>
+    <string name="capture_apps_empty_hint">No app selected yet, so message capture is effectively off.</string>
+    <string name="capture_apps_row_subtitle">%1$d app(s) allowed</string>
+    <string name="capture_apps_row_subtitle_none">No app selected · nothing is captured</string>
+    <string name="capture_apps_blocked">Payment, banking, password-manager and browser apps cannot be allowed</string>
+    <string name="capture_apps_allow">Allow capture</string>
+    <string name="capture_apps_search">Search apps</string>
+    <string name="capture_apps_no_results">No matching apps</string>
+    <string name="capture_apps_back">Back to settings</string>
+    <string name="capture_apps_selected_count">%1$d selected</string>
+    <string name="panel_analysing_with_seconds">Analysing · %1$ds, tap to stop</string>
+    <string name="panel_voice_rewrite">Voice rewrite</string>
+    <string name="panel_mode_reply">Reply</string>
+    <string name="panel_mode_suggest">Brief</string>
+    <string name="panel_mode_counseling">Talk it through</string>
+    <string name="panel_mode_proactive">Opener</string>
+    <string name="panel_result_menu">More actions</string>
+    <string name="panel_expand">Expand</string>
+    <string name="panel_dislike">Thumbs down</string>
+    <string name="panel_like">Thumbs up</string>
+    <string name="panel_copy">Copy</string>
+    <string name="panel_send">Send</string>
+    <string name="panel_saved_to_kb">Saved to knowledge base</string>
+    <string name="panel_scheme_label_recommend">Recommended</string>
+    <string name="panel_scheme_label_calm">Level-headed</string>
+    <string name="panel_scheme_label_playful">Playful</string>
+    <string name="panel_scheme_label_warm">Warm</string>
+    <string name="home_capture_status_on">On · long-press a message to capture it</string>
+    <string name="home_capture_status_off">Off · tap to enable</string>
+    <string name="home_capture_no_permission">Accessibility permission not granted yet</string>
+    <string name="home_grant_accessibility">Grant</string>
+    <string name="home_manage">Manage</string>
+    <string name="home_off">Off</string>
+    <string name="home_on">On</string>
+</resources>

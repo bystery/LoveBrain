@@ -184,14 +184,27 @@ Item by item, no hand-waving:
 
 - **Zero telemetry, zero upload**: no servers of ours, no analytics SDKs. The only outbound request is the generation call to the AI provider you configure — that's the product
 - **Chat content goes to exactly two places**: the AI provider request, and your local knowledge base (plain Markdown in the app's private directory)
-- **The accessibility service does two things**: listens for long-press and window-change events to confirm your long-press. No keylogging, no background scanning, no reading your notifications
-- **Accessibility consent**: before requesting system accessibility permission, LoveBrain shows its own data-usage disclosure. You must explicitly consent before any text is captured
+- **The accessibility service is a fail-closed allowlist**: it only reads an app you named under **Capture scope**. Select nothing and nothing is captured at all. Payment, banking, password-manager and browser surfaces are refused a second time even inside an app you did allow. No keylogging, no background scanning, no reading your notifications, and it never taps or sends for you
+- **Accessibility consent**: before requesting system accessibility permission, LoveBrain shows its own data-usage disclosure. You must explicitly consent before any text is captured, and re-consent is required whenever the disclosure changes
 - **Diagnostics never log content**: the capture pipeline logs event types and text lengths only
 - **Panel UI state is memory-only**: the reply-panel messages themselves die with the process. When you explicitly record a round into the knowledge base, that round's message text, your hint, and the selected final reply are stored locally in the knowledge base (recent / raw-chat archives) and may later be used for relationship memory and distillation
 - **API key stored encrypted**: EncryptedSharedPreferences, with an explicit fallback notice on the few devices that don't support it
 - **Opted out of cloud backup**: `allowBackup=false` — profiles never ride your account to the cloud
 - **Your knowledge base is yours**: local plain-text files, editable, importable/exportable — exports are **plaintext** zips, the app warns you, don't casually upload them
 - **Foreground service**: the floating assistant runs as a user-started Android foreground service while active. It shows the required system notification, does not auto-start on boot, does not restart itself after being killed, and stops when the user explicitly stops it
+
+## 📦 Current build and security posture
+
+| Item | Value |
+|---|---|
+| Current version | `1.4.0-rc1` (versionCode 9) |
+| Minimum Android | 8.0 (API 26) |
+| Latest public release | `v1.3.1` |
+| Signing | release candidates must match the published `v1.3.1` certificate SHA-256 (`scripts/signing-baseline.txt`, enforced by `scripts/verify_signing_continuity.sh`) |
+| Zero telemetry | Basis: **source and dependency-manifest review** — no telemetry/analytics/ad SDKs, no LoveBrain backend, egress is only the provider you configure. Machine-readable dependency evidence is the CI artifact `dist/sbom.spdx.json`. The packet-capture verification script ships but **has not been run** (no device here); see `docs/PRIVACY-THREAT-MODEL.md` §7. Until that output exists we do not claim "proven by capture" |
+| API key safety | EncryptedSharedPreferences (AES256-GCM); the degraded path keeps keys in memory only and never writes plaintext. Keys are not part of the frozen generation input, never ride in events, never logged |
+| Accessibility minimisation | Fail-closed allowlist in code (see above); the service configuration no longer declares `flagIncludeNotImportantViews` |
+| Local data | `allowBackup=false`; knowledge base lives entirely in the app's private directory |
 
 ## ❓ FAQ
 

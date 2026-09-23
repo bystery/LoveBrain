@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -31,11 +32,21 @@ import com.lovebrain.app.ui.theme.*
 
 /** 面板头部内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object HeaderDimens {
-    const val ROW_HEIGHT_DP = 30            // 头部整行高度（含拖拽热区）
-    const val CONTROL_HEIGHT_DP = 20        // 三段切换/收起按钮视觉字形统一控件高（KDoc 规格"所有控件高 20dp"）
+    const val ROW_HEIGHT_DP = 48            // 头部整行高度——等于无障碍触摸区下限，见 MIN_TOUCH_TARGET_DP
+    const val CONTROL_HEIGHT_DP = 20        // 三段切换/收起按钮的**视觉字形**高度
     const val SEGMENT_INNER_PADDING_DP = 1  // 三段切换器内边距（高亮块间隙）
     const val BORDER_WIDTH_DP = 1           // 细边框宽度
-    const val COLLAPSE_HOTZONE_DP = 24      // 收起按钮热区外包盒（触控下限，/ 口径）
+
+    /**
+     * P3-03: 无障碍触摸区下限。
+     *
+     * 图标/文字仍然按 CONTROL_HEIGHT_DP 画小，但可点击盒子必须 ≥48dp。
+     * 旧实现把 20dp 的胶囊和 24dp 的收起盒子直接当热区，
+     * 而这是自定义 Box.clickable，不会由 Material 自动补齐触摸区。
+     */
+    const val MIN_TOUCH_TARGET_DP = 48
+    /** 收起按钮热区外包盒——满足 MIN_TOUCH_TARGET_DP */
+    const val COLLAPSE_HOTZONE_DP = MIN_TOUCH_TARGET_DP
 }
 
 /**
@@ -92,10 +103,11 @@ fun PanelHeader(
             )
 
             // ── 右：收起按钮 ──
+            val collapseDescription = stringResource(R.string.panel_collapse)
             Box(
                 modifier = Modifier
                     .size(HeaderDimens.COLLAPSE_HOTZONE_DP.dp)
-                    .semantics { contentDescription = "收起面板" }
+                    .semantics { contentDescription = collapseDescription }
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
@@ -105,7 +117,7 @@ fun PanelHeader(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_chevron_down),
-                    contentDescription = "收起面板",
+                    contentDescription = collapseDescription,
                     tint = TextSecondary,
                     modifier = Modifier.size(HeaderDimens.CONTROL_HEIGHT_DP.dp)
                 )
@@ -126,9 +138,17 @@ private fun ModeSegmentThree(
         animationSpec = tween(250, easing = FastOutSlowInEasing),
         label = "modeIndicator"
     )
+    // P3-03: 用 48dp 高的"命中盒"包住 20dp 高的视觉胶囊。
+    // 视觉层放在 InteractionBox 里，点击由外层每段各自的 clickable 承担。
     Box(
         modifier = modifier
-            .height(HeaderDimens.CONTROL_HEIGHT_DP.dp) // 与头部其他控件同高
+            .height(HeaderDimens.MIN_TOUCH_TARGET_DP.dp),
+        contentAlignment = Alignment.Center
+    ) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(HeaderDimens.CONTROL_HEIGHT_DP.dp) // 视觉字形高度不变
             .clip(LoveBrainShape.full)
             .background(SurfaceInset, LoveBrainShape.full)
             .border(HeaderDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.full)
@@ -148,16 +168,17 @@ private fun ModeSegmentThree(
         )
         // 三段文字：等宽均分、Box 精确居中、统一 11sp（20dp 高内不被裁切）
         Row(modifier = Modifier.fillMaxSize()) {
-            ModeSegmentLabel("回复", selected = selectedIndex == 0, modifier = Modifier.weight(1f)) {
+            ModeSegmentLabel(stringResource(R.string.panel_mode_reply), selected = selectedIndex == 0, modifier = Modifier.weight(1f)) {
                 onSelect(0)
             }
-            ModeSegmentLabel("锦囊", selected = selectedIndex == 1, modifier = Modifier.weight(1f)) {
+            ModeSegmentLabel(stringResource(R.string.panel_mode_suggest), selected = selectedIndex == 1, modifier = Modifier.weight(1f)) {
                 onSelect(1)
             }
-            ModeSegmentLabel("谈心", selected = selectedIndex == 2, modifier = Modifier.weight(1f)) {
+            ModeSegmentLabel(stringResource(R.string.panel_mode_counseling), selected = selectedIndex == 2, modifier = Modifier.weight(1f)) {
                 onSelect(2)
             }
         }
+    }
     }
 }
 

@@ -12,6 +12,8 @@ import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeSource
+import com.lovebrain.app.testing.MainChainHarness
+import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
 
@@ -34,17 +36,16 @@ class ResultAreaInteractionTest {
     val composeRule = createComposeRule()
 
     private fun makeSuccessResult(): GenerateResult.Success {
-        return GenerateResult.Success(
-            LoveBrainResponse(
-                response = ReplySchemes(
-                    recommended = "推荐回复内容",
-                    badBoy = "清醒回复",
-                    playful = "俏皮回复",
-                    warm = "温柔回复"
-                ),
-                directions = listOf("F reply", "E reply", "X reply", "S reply")
-            )
-        )
+        // S1-03 审计修复（编译健壮性）：不再直接 new ReplySchemes ——
+        // 生产 com.lovebrain.app.model 包内现在有两个同名 ReplySchemes
+        // （Models.kt 的四风格 DTO / GenerationEvents.kt 的 typed event），
+        // 测试端自造 DTO 构造会随生产重构直接编译失败（同名歧义已在 main 侧报错）。
+        // 改为喂一段真实 Provider 文本给生产 parseReplyResponse 构造同一模型。
+        val raw = "{\"response\":{\"recommended\":\"推荐回复内容\",\"bad_boy\":\"清醒回复\"," +
+            "\"playful\":\"俏皮回复\",\"warm\":\"温柔回复\"}," +
+            "\"directions\":[\"F reply\",\"E reply\",\"X reply\",\"S reply\"]," +
+            "\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"test\"}}"
+        return GenerateResult.Success(MainChainHarness.parsedSuccess(raw))
     }
 
     // ═══ 1. 成功态渲染方案卡 ═══
@@ -166,7 +167,6 @@ class ResultAreaInteractionTest {
                 onFeedback = { _, _ -> },
                 onCopyScheme = {},
                 onRetry = {},
-                onSaveToKb = { saveCalled = true },
                 providerReady = true,
                 onOpenSettings = {},
                 generationRoundId = 1
@@ -175,11 +175,9 @@ class ResultAreaInteractionTest {
         // 点击 ⋯ trigger 打开菜单
         composeRule.onNodeWithText("⋯").performClick()
         // 审计修复："记入知识库"已从 ⋯ 菜单中删除——它现在是 ReplyPrimaryActions 的主操作按钮
-        val saveNodes = composeRule.onAllNodesWithText("记入知识库")
-        assert(saveNodes.fetchSemanticsNodes().isEmpty()) {
-            "Save to KB should not be in ⋯ menu — it's now a primary action button"
-        }
-        assert(!saveCalled) { "onSaveToKb should not be called from ⋯ menu" }
+        // （改用 Compose/JUnit 断言：裸 Kotlin assert() 在 instrumentation 下不保证开 -ea，会静默恒真）
+        composeRule.onAllNodesWithText("记入知识库").assertCountEquals(0)
+        assertFalse("onSaveToKb should not be called from ⋯ menu", saveCalled)
     }
 
     // ═══ 6. 点击 like 不触发展开 ═══
@@ -210,10 +208,7 @@ class ResultAreaInteractionTest {
             likeNodes[0].performClick()
         }
         // 验证"撤销"不存在（展开后才出现）
-        val undoNodes = composeRule.onAllNodesWithText("撤销")
-        assert(undoNodes.fetchSemanticsNodes().isEmpty()) {
-            "Undo should not appear after just liking — card should not expand"
-        }
+        composeRule.onAllNodesWithText("撤销").assertCountEquals(0)
     }
 
     // ═══ 7. LIKED filter 自动恢复 ALL ═══
@@ -238,10 +233,7 @@ class ResultAreaInteractionTest {
         }
         // 默认无点赞 → 不应有"已赞"筛选 Tab
         // 只有"全部 4"和"已赞 0"都不应该出现（likedCount=0 时不显示筛选器）
-        val likedFilterNodes = composeRule.onAllNodesWithText("已赞 0")
-        assert(likedFilterNodes.fetchSemanticsNodes().isEmpty()) {
-            "Liked filter tab should not be visible when likedCount=0"
-        }
+        composeRule.onAllNodesWithText("已赞 0").assertCountEquals(0)
     }
 
     // ═══ 8. 无 memoryRefs 默认不额外出现保存工具行 ═══

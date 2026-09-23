@@ -2,18 +2,25 @@ package com.lovebrain.app.viewmodel
 
 import android.util.Log
 import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.ForegroundOperationCoordinator
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.PromptBuilder.ConfigValidationResult
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.model.CounselingStarted
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.LoveBrainResponse
+import com.lovebrain.app.model.PanelState
 import com.lovebrain.app.model.ReplyAnalysis
 import com.lovebrain.app.model.ReplySchemes
+import com.lovebrain.app.model.ReplyStarted
+import com.lovebrain.app.model.ReplyRequestState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.SuggestStarted
+import com.lovebrain.app.model.ProactiveStarted
 import com.lovebrain.app.model.toChatMessages
 import com.lovebrain.app.model.IntentConfig
 import io.mockk.coEvery
@@ -23,13 +30,13 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
 import io.mockk.unmockkStatic
+import io.mockk.verify
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 // advanceUntilIdle only works inside runTest; using delay() in runBlocking tests
@@ -50,6 +57,10 @@ import org.junit.Test
  *
  * 纯 JVM 构造沿用 LoveBrainViewModelR5RegressionTest 先例：7 依赖全 mock + setMain 接管。
  * 使用 UnconfinedTestDispatcher 让所有协程立即执行，避免 Dispatchers.IO 在测试中不被推进的问题。
+ *
+ * S2-02/S2-03 之后 Engine 只暴露冷流、ViewModel 只有一个 reply 写入口，
+ * 因此"是否重复发起"由 [ForegroundOperationCoordinator] 的互斥矩阵决定，
+ * 断言也跟着改成"engine 的流入口被调用了几次 + coordinator 在管任务数"。
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoveBrainViewModelGenBatchTest {
@@ -74,18 +85,33 @@ class LoveBrainViewModelGenBatchTest {
         unmockkStatic(Log::class)
     }
 
+    /** promptBuilder 是严格 mock：prepare 阶段真正会读的两个资产口径必须显式桩 */
+    private fun newPromptBuilder(): PromptBuilder {
+        val promptBuilder = mockk<PromptBuilder>()
+        every { promptBuilder.validateConfig(any(), any()) } returns
+            ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
+        every { promptBuilder.assetHashOf(*anyVararg()) } returns "asset-hash"
+        return promptBuilder
+    }
+
+    private fun newPrefs(): SecurePrefs {
+        val p = mockk<SecurePrefs>(relaxed = true)
+        every { p.thinkingMode } returns 0
+        every { p.outputMode } returns 0
+        every { p.panelMode } returns 0
+        every { p.counselingDraft } returns ""
+        every { p.loadCounselingResult() } returns null
+        every { p.loadSuggestion() } returns null
+        every { p.loadTodayCost() } returns null
+        every { p.getWorkerTickets() } returns emptyList()
+        every { p.activeTicketId } returns null
+        return p
+    }
+
     /** 构造 LoveBrainViewModel：init 读取面显式桩（同 R5RegressionTest 先例） */
     private fun newViewModel(): LoveBrainViewModel {
-        prefs = mockk(relaxed = true)
-        every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
-        every { prefs.panelMode } returns 0
-        every { prefs.counselingDraft } returns ""
-        every { prefs.loadCounselingResult() } returns null
-        every { prefs.loadSuggestion() } returns null
-        every { prefs.loadTodayCost() } returns null
-        every { prefs.getWorkerTickets() } returns emptyList()
-        every { prefs.activeTicketId } returns null
+        prefs = newPrefs()
         topicRecorder = mockk(relaxed = true)
         generationEngine = mockk(relaxed = true)
         val knowledgeRepo = mockk<com.lovebrain.app.data.KnowledgeRepository>(relaxed = true)
@@ -96,18 +122,15 @@ class LoveBrainViewModelGenBatchTest {
         coEvery { knowledgeRepo.readIntent(any()) } returns IntentConfig()
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
         coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
-        val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            ConfigValidationResult(0, 0, emptyList())
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = knowledgeRepo,
-            promptBuilder = promptBuilder,
+            promptBuilder = newPromptBuilder(),
             topicRecorder = topicRecorder,
             securePrefs = prefs,
             triggerCoordinator = mockk(relaxed = true),
             generationEngine = generationEngine,
-operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
+            operationCoordinator = ForegroundOperationCoordinator(CoroutineScope(kotlinx.coroutines.SupervisorJob()))
         )
     }
 
@@ -136,29 +159,18 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
             coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
         }
 
-        prefs = mockk(relaxed = true)
-        every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
-        every { prefs.panelMode } returns 0
-        every { prefs.counselingDraft } returns ""
-        every { prefs.loadCounselingResult() } returns null
-        every { prefs.loadSuggestion() } returns null
-        every { prefs.loadTodayCost() } returns null
-        every { prefs.getWorkerTickets() } returns emptyList()
-        every { prefs.activeTicketId } returns null
+        prefs = newPrefs()
         topicRecorder = recorder
         generationEngine = mockk(relaxed = true)
-        val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns ConfigValidationResult(0, 0, emptyList())
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = knowledgeRepo,
-            promptBuilder = promptBuilder,
+            promptBuilder = newPromptBuilder(),
             topicRecorder = recorder,
             securePrefs = prefs,
             triggerCoordinator = mockk(relaxed = true),
             generationEngine = generationEngine,
-operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
+            operationCoordinator = ForegroundOperationCoordinator(CoroutineScope(kotlinx.coroutines.SupervisorJob()))
         )
     }
 
@@ -170,17 +182,35 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
             analysis = ReplyAnalysis(topic_status = "same", topic_label = "test")
         )
     ) {
-        every { engine.generateReply(any(), any(), any()) } answers {
-            val scope = arg<CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
-            scope.launch {
-                callbacks.onReplyStart()
-                callbacks.onReplyResult(GenerateResult.Success(response))
+        every { engine.replyStream(any()) } answers {
+            val callbacks = EventRecorder().apply { requestId = arg<GenerationInput>(0).requestId }
+            callbacks.record {
+                onReplyStart()
+                onReplyResult(GenerateResult.Success(response))
                 callbacks.onReplyGenerating(false, false)
-                callbacks.onReplyPanelState(com.lovebrain.app.model.PanelState.AI_RESULT)
+                callbacks.onReplyPanelState(PanelState.AI_RESULT)
             }
         }
     }
+
+    /** 模拟 Engine 一条挂在 gate 上的流（只 Started，无终态），用于测"生成期间"的行为 */
+    private fun stubEngineGenerateHanging(
+        engine: com.lovebrain.app.domain.GenerationEngine,
+        gate: CompletableDeferred<Unit>
+    ) {
+        every { engine.replyStream(any()) } answers {
+            val requestId = arg<GenerationInput>(0).requestId
+            flow {
+                emit(ReplyStarted(requestId))
+                gate.await()
+            }
+        }
+    }
+
+    /** 该类型当前在管任务数——S2-02 后这是"有几个请求在飞"的唯一真源 */
+    private fun ForegroundOperationCoordinator.countOf(
+        type: ForegroundOperationCoordinator.OperationType
+    ): Int = activeOperations.value.count { it.type == type }
 
     // ════════════════════════════════════════════════════════════════
     // Test 1: 重复 generate 不覆盖正在运行 Job
@@ -189,17 +219,17 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
     @Test
     fun t1_duplicate_generate_does_not_replace_active_job() = runBlocking {
         val vm = newViewModel()
-        vm.messages.value
+        vm.addMessage(ChatMessage.Role.HER, "A")
+        vm.addMessage(ChatMessage.Role.ME, "B")
 
         var engineCallCount = 0
         val genGate = CompletableDeferred<Unit>()
-        every { generationEngine.generateReply(any(), any(), any()) } answers {
+        every { generationEngine.replyStream(any()) } answers {
             engineCallCount++
-            val scope = arg<CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
-            scope.launch {
-                callbacks.onReplyStart()
-                try { genGate.await() } catch (_: Exception) {}
+            val requestId = arg<GenerationInput>(0).requestId
+            flow {
+                emit(ReplyStarted(requestId))
+                genGate.await()
             }
         }
 
@@ -208,10 +238,15 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         assertEquals("Engine 应被调用 1 次", 1, engineCallCount)
         assertTrue("isGenerating 应为 true", vm.isGenerating.value)
 
-        // 第二次调用 — 应被 ViewModel guard 拒绝
+        // 第二次调用 — 应被 coordinator 的互斥矩阵拒绝
         vm.generate()
         delay(100)
         assertEquals("Engine 不应被第二次调用", 1, engineCallCount)
+        assertEquals(
+            "REPLY 在管任务应仍只有一个",
+            1,
+            vm.operationCoordinator.countOf(ForegroundOperationCoordinator.OperationType.REPLY)
+        )
 
         // 停止生成
         vm.stopGeneration()
@@ -226,17 +261,17 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
 
     @Test
     fun t2_counseling_duplicate_does_not_replace_active_job() = runBlocking {
-        val vm = newViewModel()
+        val vm = newViewModelWithKb()
+        vm.refreshKnowledgeBases()
         delay(100)
 
         var callCount = 0
-        every { generationEngine.generateCounseling(any(), any(), any(), any()) } answers {
+        every { generationEngine.counselingStream(any(), any(), any()) } answers {
             callCount++
-            val scope = arg<CoroutineScope>(2)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(3)
-            scope.launch {
-                callbacks.onCounselingStart()
-                try { delay(999_999) } catch (_: Exception) {}
+            val requestId = arg<String>(0)
+            flow {
+                emit(CounselingStarted(requestId))
+                delay(999_999)
             }
         }
 
@@ -248,6 +283,11 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.generateCounseling("再试一次")
         delay(100)
         assertEquals("不应重复调用", 1, callCount)
+        assertEquals(
+            "COUNSELING 在管任务应只有一个",
+            1,
+            vm.operationCoordinator.countOf(ForegroundOperationCoordinator.OperationType.COUNSELING)
+        )
 
         vm.stopCounseling()
         delay(100)
@@ -256,27 +296,27 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
 
     @Test
     fun t2_suggest_duplicate_does_not_replace_active_job() = runBlocking {
-        val vm = newViewModel()
+        val vm = newViewModelWithKb()
+        vm.refreshKnowledgeBases()
         delay(100)
 
         var callCount = 0
-        every { generationEngine.generateSuggest(any(), any()) } answers {
+        every { generationEngine.suggestStream(any(), any()) } answers {
             callCount++
-            val scope = arg<CoroutineScope>(0)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(1)
-            scope.launch {
-                callbacks.onSuggestStart()
-                try { delay(999_999) } catch (_: Exception) {}
+            val requestId = arg<String>(0)
+            flow {
+                emit(SuggestStarted(requestId))
+                delay(999_999)
             }
         }
 
         vm.generateSuggest()
-        delay(100)
+        delay(300)
         assertEquals(1, callCount)
         assertTrue("isSuggesting 应为 true", vm.isSuggesting.value)
 
         vm.generateSuggest()
-        delay(100)
+        delay(300)
         assertEquals("不应重复调用", 1, callCount)
 
         vm.stopSuggest()
@@ -286,18 +326,18 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
 
     @Test
     fun t2_proactive_duplicate_does_not_replace_active_job() = runBlocking {
-        val vm = newViewModel()
-        vm.messages.value
+        val vm = newViewModelWithKb()
+        vm.refreshKnowledgeBases()
+        delay(100)
 
         var callCount = 0
         val gate = CompletableDeferred<Unit>()
-        every { generationEngine.generateProactive(any(), any(), any(), any()) } answers {
+        every { generationEngine.proactiveStream(any(), any(), any(), any()) } answers {
             callCount++
-            val scope = arg<CoroutineScope>(2)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(3)
-            scope.launch {
-                callbacks.onProactiveStart()
-                try { gate.await() } catch (_: Exception) {}
+            val requestId = arg<String>(0)
+            flow {
+                emit(ProactiveStarted(requestId))
+                gate.await()
             }
         }
 
@@ -306,7 +346,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         assertEquals(1, callCount)
         assertTrue("isProactive 应为 true", vm.isProactive.value)
 
-        vm.generateProactive("再试", "")
+        vm.generateProactive("再试", "场景")
         delay(100)
         assertEquals("不应重复调用", 1, callCount)
 
@@ -328,20 +368,18 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.addMessage(ChatMessage.Role.HER, "A")
         vm.addMessage(ChatMessage.Role.ME, "B")
 
-        val capturedMessages = slot<com.lovebrain.app.model.GenerationInput>()
+        val capturedMessages = slot<GenerationInput>()
         val gate = CompletableDeferred<Unit>()
-every { generationEngine.generateReply(capture(capturedMessages), any(), any()) } answers {
-val input = capturedMessages.captured
-val scope = arg<CoroutineScope>(1)
-val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
-            scope.launch {
-                callbacks.onReplyStart()
-                try { gate.await() } catch (_: Exception) {}
+        every { generationEngine.replyStream(capture(capturedMessages)) } answers {
+            val requestId = capturedMessages.captured.requestId
+            flow {
+                emit(ReplyStarted(requestId))
+                gate.await()
             }
         }
 
         vm.generate()
-        delay(100)
+        delay(200)
 
         // 生成期间新增 C
         vm.addMessage(ChatMessage.Role.HER, "C")
@@ -410,20 +448,18 @@ val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
 
         vm.addMessage(ChatMessage.Role.HER, "A")
 
-        val capturedMessages = slot<com.lovebrain.app.model.GenerationInput>()
+        val capturedMessages = slot<GenerationInput>()
         val gate = CompletableDeferred<Unit>()
-every { generationEngine.generateReply(capture(capturedMessages), any(), any()) } answers {
-val input = capturedMessages.captured
-val scope = arg<CoroutineScope>(1)
-val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
-            scope.launch {
-                callbacks.onReplyStart()
-                try { gate.await() } catch (_: Exception) {}
+        every { generationEngine.replyStream(capture(capturedMessages)) } answers {
+            val requestId = capturedMessages.captured.requestId
+            flow {
+                emit(ReplyStarted(requestId))
+                gate.await()
             }
         }
 
         vm.generate()
-        delay(100)
+        delay(200)
 
         // 生成期间编辑 A → A'
         vm.updateMessage(0, ChatMessage.Role.HER, "A'")
@@ -584,19 +620,22 @@ val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
         val vm = newViewModel()
         delay(100)
 
-        every { generationEngine.generateReply(any(), any(), any()) } answers {
-            val scope = arg<CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
-            scope.launch {
-                callbacks.onReplyStart()
-                callbacks.onReplyStreamingSchemes(listOf(Scheme(tag = "A", title = "方案A-第一次", reply = "r1")))
-                callbacks.onReplyStreamingSchemesReset()
-                callbacks.onReplyStreamingSchemes(listOf(Scheme(tag = "C", title = "方案C-第二次", reply = "r2")))
-                callbacks.onReplyResult(GenerateResult.Success(
-                    LoveBrainResponse(response = ReplySchemes(recommended = "r2"))
-                ))
+        vm.addMessage(ChatMessage.Role.HER, "A")
+
+        every { generationEngine.replyStream(any()) } answers {
+            val callbacks = EventRecorder().apply { requestId = arg<GenerationInput>(0).requestId }
+            callbacks.record {
+                onReplyStart()
+                onReplyStreamingSchemes(listOf(Scheme(tag = "A", title = "方案A-第一次", reply = "r1")))
+                onReplyStreamingSchemesReset()
+                onReplyStreamingSchemes(listOf(Scheme(tag = "C", title = "方案C-第二次", reply = "r2")))
+                onReplyResult(
+                    GenerateResult.Success(
+                        LoveBrainResponse(response = ReplySchemes(recommended = "r2"))
+                    )
+                )
                 callbacks.onReplyGenerating(false, false)
-                callbacks.onReplyPanelState(com.lovebrain.app.model.PanelState.AI_RESULT)
+                callbacks.onReplyPanelState(PanelState.AI_RESULT)
             }
         }
 
@@ -624,17 +663,10 @@ val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
         vm.addMessage(ChatMessage.Role.ME, "B")
 
         val gate = CompletableDeferred<Unit>()
-        every { generationEngine.generateReply(any(), any(), any()) } answers {
-            val scope = arg<CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
-            scope.launch {
-                callbacks.onReplyStart()
-                try { gate.await() } catch (_: Exception) {}
-            }
-        }
+        stubEngineGenerateHanging(generationEngine, gate)
 
         vm.generate()
-        delay(100)
+        delay(200)
         assertTrue("isGenerating 应为 true", vm.isGenerating.value)
 
         vm.stopGeneration()
@@ -647,41 +679,60 @@ val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
             vm.messages.value.map { it.content }
         )
         assertFalse("isGenerating 应为 false", vm.isGenerating.value)
-        assertTrue("result 应为 Error", vm.result.value is GenerateResult.Error)
+        // S2-03：停止是一个终态迁移而不是"伪造一条失败结果"——
+        // reducer 把请求落回 Idle、面板回到键盘，且不产出任何 result。
+        assertTrue(
+            "停止后请求状态应为 Idle",
+            vm.replyRequestState.value is ReplyRequestState.Idle
+        )
+        assertEquals("停止后应回到键盘态", PanelState.KEYBOARD, vm.panelState.value)
+        assertNull("被停止的请求不得留下任何结果", vm.result.value)
     }
 
     // ════════════════════════════════════════════════════════════════
-    // Test 11: Engine reject 时 context 不保存、旧 Job 不覆盖
+    // Test 11: 二次发起被协调器拒绝时，在途请求不受影响
     // ════════════════════════════════════════════════════════════════
 
     @Test
-    fun t11_engine_reject_does_not_save_context_or_replace_job() = runBlocking {
+    fun t11_second_start_rejected_leaves_running_request_untouched() = runBlocking {
         val vm = newViewModel()
-        vm.messages.value
-
-        var firstJob: Job? = null
-        val gate = CompletableDeferred<Unit>()
-        every { generationEngine.generateReply(any(), any(), any()) } answers {
-            val scope = arg<CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
-            scope.launch {
-                callbacks.onReplyStart()
-                try { gate.await() } catch (_: Exception) {}
-            }.also { firstJob = it }
-        }
-
         vm.addMessage(ChatMessage.Role.HER, "msg")
+
+        val gate = CompletableDeferred<Unit>()
+        stubEngineGenerateHanging(generationEngine, gate)
+
         vm.generate()
         delay(200)
-        assertNotNull("第一次应有 Job", firstJob)
+        assertTrue(
+            "第一次发起应进入流式态",
+            vm.replyRequestState.value is ReplyRequestState.Streaming
+        )
         assertTrue("isGenerating 应为 true", vm.isGenerating.value)
 
-        // 第二次调用：Engine 返回 null（reject）
-        every { generationEngine.generateReply(any(), any(), any()) } returns null
+        // 第二次调用：S2-02 之后"拒绝"由协调器决定——start 返回 null，body 从未执行，
+        // 所以 Engine 的流入口根本不会被第二次调用，在途的第一个请求也不受影响。
+        val firstOwner = vm.operationCoordinator.current(
+            ForegroundOperationCoordinator.OperationType.REPLY
+        )
         vm.generate()
         delay(100)
 
-        assertTrue("旧 Job 应仍活跃", firstJob?.isActive == true)
+        verify(exactly = 1) { generationEngine.replyStream(any()) }
+        assertEquals(
+            "REPLY 在管任务仍只有一个",
+            1,
+            vm.operationCoordinator.countOf(ForegroundOperationCoordinator.OperationType.REPLY)
+        )
+        assertEquals(
+            "第一个请求仍是当前 owner，未被第二次发起取代",
+            firstOwner?.requestId,
+            vm.operationCoordinator.current(ForegroundOperationCoordinator.OperationType.REPLY)?.requestId
+        )
+        assertEquals(
+            "reducer 的 owner 也仍是第一个请求",
+            firstOwner?.requestId,
+            (vm.replyRequestState.value as ReplyRequestState.Streaming).requestId
+        )
         assertTrue("isGenerating 应仍为 true", vm.isGenerating.value)
 
         vm.stopGeneration()
@@ -705,30 +756,19 @@ val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
         coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
 
-        prefs = mockk(relaxed = true)
-        every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
-        every { prefs.panelMode } returns 0
-        every { prefs.counselingDraft } returns ""
-        every { prefs.loadCounselingResult() } returns null
-        every { prefs.loadSuggestion() } returns null
-        every { prefs.loadTodayCost() } returns null
-        every { prefs.getWorkerTickets() } returns emptyList()
-        every { prefs.activeTicketId } returns null
+        prefs = newPrefs()
         topicRecorder = mockk(relaxed = true)
         generationEngine = mockk(relaxed = true)
-        val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns ConfigValidationResult(0, 0, emptyList())
 
         val vm = LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = knowledgeRepo,
-            promptBuilder = promptBuilder,
+            promptBuilder = newPromptBuilder(),
             topicRecorder = topicRecorder,
             securePrefs = prefs,
             triggerCoordinator = mockk(relaxed = true),
             generationEngine = generationEngine,
-operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
+            operationCoordinator = ForegroundOperationCoordinator(CoroutineScope(kotlinx.coroutines.SupervisorJob()))
         )
         delay(200)
 
@@ -759,18 +799,14 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.addMessage(ChatMessage.Role.HER, "A")
 
         val gate = CompletableDeferred<Unit>()
-        every { generationEngine.generateReply(any(), any(), any()) } answers {
-            val scope = arg<CoroutineScope>(1)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
-            scope.launch {
-                callbacks.onReplyStart()
-                callbacks.onReplyStreamingSchemes(listOf(Scheme(tag = "A", title = "test", reply = "r")))
-                try { gate.await() } catch (_: Exception) {}
-            }
-        }
+        GenerationEngineTestHelper.stubReplyGenerateHanging(
+            generationEngine,
+            gate,
+            listOf(Scheme(tag = "A", title = "test", reply = "r"))
+        )
 
         vm.generate()
-        delay(100)
+        delay(200)
 
         assertEquals(1, vm.streamingSchemes.value.size)
 
@@ -803,12 +839,13 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         // 捕获传给 Engine 的 KnowledgeBase 参数
         val capturedKb = slot<KnowledgeBase>()
         val gate = CompletableDeferred<Unit>()
-        every { generationEngine.generateCounseling(any(), capture(capturedKb), any(), any()) } answers {
-            val scope = arg<CoroutineScope>(2)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(3)
-            scope.launch {
-                callbacks.onCounselingStart()
-                try { gate.await() } catch (_: Exception) {}
+        every {
+            generationEngine.counselingStream(any(), any(), capture(capturedKb))
+        } answers {
+            val requestId = arg<String>(0)
+            flow {
+                emit(CounselingStarted(requestId))
+                gate.await()
             }
         }
 
@@ -851,18 +888,13 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
 
         assertEquals("kb-a", vm.activeKb.value?.name)
 
-        // Engine 成功完成谈心，回调 onCounselingSaveLog
-        every { generationEngine.generateCounseling(any(), any(), any(), any()) } answers {
-            val scope = arg<CoroutineScope>(2)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(3)
-            val kb = arg<KnowledgeBase?>(1)
-            scope.launch {
-                callbacks.onCounselingStart()
-                callbacks.onCounselingStreaming("回复内容")
-                callbacks.onCounselingResult("回复内容")
-                callbacks.onCounselingSaveLog(kb?.name, "我好累", "回复内容", "分析内容")
-                callbacks.onCounselingEnd()
-            }
+        // Engine 成功完成谈心。COUN-01：KB 名与倾诉原文由事件自带，
+        // ViewModel 落日志时不回读实时 activeKb / 草稿。
+        GenerationEngineTestHelper.stubCounseling(generationEngine) {
+            onCounselingStart()
+            onCounselingStreaming("回复内容")
+            onCounselingResult("回复内容", "分析内容")
+            onCounselingEnd()
         }
 
         vm.generateCounseling("我好累")
