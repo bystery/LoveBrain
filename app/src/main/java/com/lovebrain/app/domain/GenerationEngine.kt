@@ -5,12 +5,15 @@ import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.ProviderRequestConfig
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.PanelState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.StreamEvent
 import com.lovebrain.app.util.Jsons
 import com.lovebrain.app.util.L
+import com.lovebrain.app.model.toChatMessages
+import com.lovebrain.app.model.toKnowledgeBase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -198,32 +201,39 @@ class GenerationEngine(
         fun isProactive(): Boolean
         fun getOutputMode(): Int
 
-        // F09: 回报本轮注入的 MemoryRef 清单（供 UI 展示纠正入口）
+        // 回报本轮注入的 MemoryRef 清单（供 UI 展示纠正入口）
         fun onReplyMemoryRefs(refs: List<com.lovebrain.app.model.MemoryRef>) {}
-        // B项修复：回报来源别名→实际消息ID映射（供 TopicRecorder 来源校验用）
+        // 回报来源别名→实际消息ID映射（供 TopicRecorder 来源校验用）
         fun onReplySourceAliasMap(aliasMap: Map<String, String>) {}
     }
 
     // ═══════════ 回复生成（主生成） ═══════════
 
     /**
-     * GEN-01：返回 Job? — reject 时返回 null，不创建假 Job 覆盖调用方引用。
-     * GEN-02：messages / userHint / knowledgeBase 均由 ViewModel 传入冻结快照，
-     * Engine 不再从 callbacks 读取可能漂移的实时状态。
-     * GEN-02B：knowledgeBase 参数冻结生成时 KB，防止生成途中切 KB 导致 prompt 与保存不同源。
-     * F07: intentConfig 冻结持续意图 text/enabled/revision，启用时短注入。
+     * S2-01: 不可变生成输入入口——替代散参的 [generate] 方法。
+     *
+     * 所有输入通过 [GenerationInput] 冻结：requestId、dialogue（只含 PARTNER/USER）、
+     * replyDirective（hint + aggressive）、kbContext、intentConfig、corrections、
+     * onlyThisRound、providerIdentity。
+     *
+     * 进入 domain 后不再出现 ChatMessage.Role.IDEA——dialogue 只能是 PARTNER/USER。
+     * ReplyDirective 独立，不能作为事实、topic、scene、ongoing 或 recent 证据。
+     *
+     * S2-03: 事件携带 input.requestId，reducer 只接受 owner 匹配的事件。
      */
-    fun generate(
-        messages: List<ChatMessage>,
-        userHint: String,
-        knowledgeBase: KnowledgeBase?,
+    fun generateReply(
+        input: GenerationInput,
         scope: CoroutineScope,
-        callbacks: Callbacks,
-        intentConfig: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig(),
-        corrections: Map<String, com.lovebrain.app.model.MemoryCorrection> = emptyMap(),
-        onlyThisRound: Boolean = false
+        callbacks: Callbacks
     ): Job? {
-        if (messages.isEmpty() || callbacks.isGenerating()) return null
+        if (input.dialogue.isEmpty() || callbacks.isGenerating()) return null
+
+        // S2-01: 从 GenerationInput 提取冻结参数——不再从 callbacks 读取可能漂移的实时状态
+        val requestId = input.requestId
+        val messages = input.toChatMessages()
+        val userHint = input.replyDirective.text
+        val knowledgeBase = input.kbContext?.toKnowledgeBase()
+        val aggressive = input.replyDirective.aggressive
 
         callbacks.onReplyStart()
         callbacks.onReplyPanelState(PanelState.AI_LOADING)
@@ -232,13 +242,12 @@ class GenerationEngine(
         callbacks.onReplyStreamingSchemesReset()
 
         val t0 = System.currentTimeMillis()
-        L.w("PERF t0 click generate")
+        L.w("PERF t0 click generate (requestId=${requestId.take(8)})")
 
         return scope.launch {
             // F02: 准备阶段（system prompt 构建、知识背景、来源引用、Provider 快照）
             // 包裹在 try/catch 中——准备阶段的读盘、迁移、状态写入异常不在原有网络请求的 try/catch 保护范围内。
             // 该路径异常可能逃出前台 launch 导致 App 崩溃。
-            val aggressive = callbacks.getOutputMode() == 1
             val system: String
             val buildResult: PromptBuilder.PromptBuildResult
             val providerConfig: ProviderRequestConfig?
@@ -246,36 +255,33 @@ class GenerationEngine(
                 system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt() }
                 // F09: 使用 buildReplyUserPromptWithRefs 收集 MemoryRef 清单并应用纠正过滤
                 // F10: onlyThisRound=true 时只携带通用规则、本轮真实消息和想法
+                // S2-01: 参数全部来自冻结的 GenerationInput，不读 callbacks 实时状态
                 buildResult = withContext(Dispatchers.IO) {
-                    if (onlyThisRound) {
+                    if (input.onlyThisRound) {
                         promptBuilder.buildReplyUserPromptOnlyThisRound(messages, userHint)
                     } else {
-                        promptBuilder.buildReplyUserPromptWithRefs(knowledgeBase, messages, userHint, aggressive, intentConfig, corrections)
+                        promptBuilder.buildReplyUserPromptWithRefs(knowledgeBase, messages, userHint, aggressive, input.intentConfig, input.corrections)
                     }
                 }
                 // PROV-01：整轮生成开始时冻结 Provider 身份
+                // S2-01: 优先使用 GenerationInput 冻结的 providerIdentity
                 providerConfig = deepSeekRepo.snapshotProviderConfig()
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e  // 取消单独处理并继续传播
             } catch (e: Exception) {
-                // F02: 准备阶段异常——不退出 App，转成可恢复 Error
-                L.e("F02: prepare phase exception", e)
-                val userFriendlyMsg = when {
-                    e is java.io.IOException -> "读取数据时出错，请重试"
-                    DeepSeekRepository.isConfigError(e.message ?: "") ->
-                        DeepSeekRepository.stripConfigPrefix(e.message.orEmpty())
-                    else -> "准备生成时出错：${e.message ?: "未知错误"}，请重试"
-                }
-                callbacks.onReplyResult(GenerateResult.Error(userFriendlyMsg))
+                // S1-02: 准备阶段异常——使用 ReplyFailureKind 映射，不泄露路径/Provider/内部细节
+                L.e("prepare phase exception", e)
+                val failure = com.lovebrain.app.model.ReplyFailureKind.fromException(e)
+                callbacks.onReplyResult(GenerateResult.Error(failure.userMessage))
                 callbacks.onReplyGenerating(false, false)
                 callbacks.onReplyStreamingCoreTextReset()
                 callbacks.onReplyPanelState(PanelState.AI_RESULT)
                 return@launch
             }
             val user = buildResult.prompt
-            // F09: 回报 MemoryRef 清单
+            // 回报 MemoryRef 清单
             callbacks.onReplyMemoryRefs(buildResult.memoryRefs)
-            // B项修复：回报来源别名映射
+            // 回报来源别名映射
             callbacks.onReplySourceAliasMap(buildResult.sourceAliasMap)
             L.w("PERF t1 prompt built (+${System.currentTimeMillis() - t0}ms), user=${user.length} chars")
 
@@ -290,7 +296,7 @@ class GenerationEngine(
             var fullText = ""
             var errorMsg: String? = null
             var timedOut = false
-            // /：thinking 降级与重试共用 GENERATE_MAX_ATTEMPTS=4 总预算（3→4 使候选 ④ none 可达）
+            // thinking 降级与重试共用 GENERATE_MAX_ATTEMPTS 总预算
             var thinkingShapeIndex = 0
             var attemptsUsed = 0
             // ：首字耗时只报第一次（重试链不重复上报）
@@ -301,7 +307,7 @@ class GenerationEngine(
                 // GEN-04：每个 attempt 拥有独立 rawBuffer，防上一次失败 attempt 的 partial JSON 污染下一次 retry
                 val rawBuffer = StringBuilder()
                 if (attemptsUsed > 1) {
-                    //  修复：区分参数降级 / 网络超时 / 网络重试的文案口径，不再一律误报"网络波动"
+                    // 区分参数降级 / 网络超时 / 网络重试的文案口径
                     val degradeMsg = when {
                         errorMsg?.startsWith("PARAM_UNSUPPORTED:") == true -> "参数不支持，正在降级…"
                         timedOut -> "网络波动，正在重试…"
@@ -343,21 +349,19 @@ class GenerationEngine(
                             }
                         }
                     ).text
-                    //  段 B：收到 PARAM_UNSUPPORTED 错误 → 换下一候选 wire shape
+                    // 收到 PARAM_UNSUPPORTED 错误 → 换下一候选 wire shape
                     if (fullText.isBlank() && errorMsg != null && errorMsg?.startsWith("PARAM_UNSUPPORTED:") == true && thinkingShapeIndex < 3) {
                         thinkingShapeIndex++
                         L.w("thinking 参数不支持，降级到候选 $thinkingShapeIndex")
                         continue
                     }
-                    // ：CONFIG_ERROR 类配置错误（无工单/缺 Key/无效 Key/非法地址）不重试，立即退出；
-                    // 展示前经 stripConfigPrefix 去前缀（见下方兜底分支）
+                    // CONFIG_ERROR 类配置错误不重试，立即退出；展示前去前缀
                     if (fullText.isBlank() && errorMsg?.let { DeepSeekRepository.isConfigError(it) } == true) break
                     L.w("PERF t2 stream complete (+${System.currentTimeMillis() - t0}ms, ${fullText.length} chars)")
                 } catch (_: kotlinx.coroutines.TimeoutCancellationException) {
                     errorMsg = "请求超时，请重试"
                     timedOut = true
-                    // ：超时也触发降级（换下一 wire shape 或关闭 thinking）
-                    //  修复③：条件显式带上 timedOut，日志区分"网络超时"口径
+                    // 超时也触发降级
                     if (timedOut && thinkingShapeIndex < 3) {
                         thinkingShapeIndex++
                         L.w("网络超时，降级到候选 $thinkingShapeIndex")
@@ -366,24 +370,16 @@ class GenerationEngine(
                 } catch (e: Exception) {
                     if (e is kotlinx.coroutines.CancellationException) throw e
                     errorMsg = e.message ?: "请求异常"
-                    // ：异常携带的配置类错误（normalizeBaseUrl/HttpsTrustGuard 固定文案）同样不重试，立即退出；
-                    // 展示前经下方兜底分支 stripConfigPrefix 去前缀（?.let 形态与 :239 同口径，防闭包捕获 smart cast 坑）
+                    // 异常携带配置类错误同样不重试，立即退出
                     if (fullText.isBlank() && errorMsg?.let { DeepSeekRepository.isConfigError(it) } == true) break
                 }
                 if (fullText.isNotBlank()) break
             }
 
             if (fullText.isBlank()) {
-                //  修复：预算耗尽后，PARAM_UNSUPPORTED 内部标记转人话兜底文案，不直接展示裸标记；
-                // ：CONFIG_ERROR 类配置错误去前缀透传原文案（本就是固定人话）
-                val userFriendlyMsg = when {
-                    errorMsg?.startsWith("PARAM_UNSUPPORTED:") == true ->
-                        "模型不支持当前思考模式，已尝试所有降级方案"
-                    errorMsg?.let { DeepSeekRepository.isConfigError(it) } == true ->
-                        DeepSeekRepository.stripConfigPrefix(errorMsg.orEmpty())
-                    else -> errorMsg ?: "生成失败，请重试"
-                }
-                callbacks.onReplyResult(GenerateResult.Error(userFriendlyMsg))
+                // S1-02: 使用 ReplyFailureKind 统一错误映射
+                val failure = com.lovebrain.app.model.ReplyFailureKind.fromErrorMessage(errorMsg)
+                callbacks.onReplyResult(GenerateResult.Error(failure.userMessage))
                 callbacks.onReplyGenerating(false, false)
                 callbacks.onReplyStreamingCoreTextReset()
                 callbacks.onReplyPanelState(PanelState.AI_RESULT)
@@ -392,7 +388,10 @@ class GenerationEngine(
 
             val parsed = runCatching { deepSeekRepo.parseReplyResponse(fullText) }
             if (parsed.isFailure) {
-                callbacks.onReplyResult(GenerateResult.Error(parsed.exceptionOrNull()?.message ?: "解析失败，请重试"))
+                // S1-02: 解析失败使用 ReplyFailureKind
+                val cause = parsed.exceptionOrNull()
+                if (cause is kotlinx.coroutines.CancellationException) throw cause
+                callbacks.onReplyResult(GenerateResult.Error(com.lovebrain.app.model.ReplyFailureKind.Parse.userMessage))
                 L.w("PERF parse failed: ${parsed.exceptionOrNull()?.message} | rawLen=${fullText.length}")
                 callbacks.onReplyGenerating(false, false)
                 callbacks.onReplyStreamingCoreTextReset()
@@ -467,8 +466,7 @@ onFirstChunk = { callbacks.onFirstToken(System.currentTimeMillis() - t0) }
                 callbacks.onCounselingResult(replyText)
                 callbacks.onCounselingSaveLog(knowledgeBase?.name, userMessage, replyText, analysisText)
             } else {
-                //  修复：PARAM_UNSUPPORTED 是内部标记，不直接展示给用户（谈心无降级链，转通用人话）；
-                // ：CONFIG_ERROR 类配置错误去前缀透传（谈心单次调用，无重试面）
+                // PARAM_UNSUPPORTED 是内部标记，不直接展示给用户；CONFIG_ERROR 去前缀透传
                 val userFriendlyMsg = when {
                     errorMsg?.startsWith("PARAM_UNSUPPORTED:") == true ->
                         "模型不支持当前思考模式，请更换模型或关闭思考后再试"
@@ -633,7 +631,7 @@ onFirstChunk = { callbacks.onFirstToken(System.currentTimeMillis() - t0) }
                 callbacks.onProactiveError("生成超时，已保留部分内容")
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e
-                // ：异常文案可能携带 CONFIG_ERROR 前缀（建链前校验抛出），展示前去前缀防裸标记外露
+                // 异常文案可能携带 CONFIG_ERROR 前缀，展示前去前缀
                 callbacks.onProactiveError("生成失败：${DeepSeekRepository.stripConfigPrefix(e.message ?: "未知错误")}")
             }
 
@@ -654,7 +652,7 @@ onFirstChunk = { callbacks.onFirstToken(System.currentTimeMillis() - t0) }
         timeoutMs: Long = AppConfig.GENERATE_TIMEOUT_MS,
         onChunk: (String) -> Unit = {},
         onError: (String) -> Unit = {},
-        // ：首个非空 chunk 回调（首字耗时上报；只触发一次，不影响降级/重试链）
+            // 首个非空 chunk 回调（首字耗时上报；只触发一次）
         onFirstChunk: (() -> Unit)? = null,
     ): StreamResult {
         val buf = StringBuilder()

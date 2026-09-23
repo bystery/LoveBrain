@@ -137,7 +137,7 @@ fun SuggestPanel(
                         .graphicsLayer { scaleX = regenScale; scaleY = regenScale }
                         .clickable(interactionSource = regenInteraction, indication = null, onClick = {
                             if (isSuggesting) viewModel.stopSuggest()
-                            else viewModel.generateSuggest()
+                            else viewModel.regenerateSuggestion()
                         })
                         .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
                 )
@@ -231,7 +231,7 @@ fun SuggestPanel(
                             modifier = Modifier.size(AppDimens.EMPTY_ICON_CONTAINER_DP.dp)
                         )
                         Spacer(Modifier.height(Spacing.md))
-                        //  文案（/）：主句删除；副句去"为你"（主人原话）
+                        // 空态文案
                         Text(
                             "生成今日专属做法，找话题、推进关系不卡壳",
                             color = TextHint,
@@ -259,14 +259,14 @@ fun SuggestPanel(
             // F18: 展示锦囊——轻量日常行动建议
             else -> {
                 val plan = suggestion ?: return@LazyColumn
-                // R1-25: 顶部显示 usage 与 partial 标识（usage 为 null 时也显示“未知”）
+                // 顶部显示 usage 与 partial 标识
                 item {
                     SuggestUsageBar(usage = plan.usage, isPartial = plan.partial)
                 }
                 // F18: 阶段卡保留（阶段名 + 关系温度），但不再强制 goal
                 item { SuggestStageCard(plan, vectorMean = vectorMean(currentVector)) }
 
-                // R1-31: 按 timingCategory 分组，不使用列表下标伪装优先级
+                // 按 timingCategory 分组
                 val groupedTips = groupTipsByCategory(plan.tips)
                 for ((category, tips) in groupedTips) {
                     if (tips.isEmpty()) continue
@@ -447,12 +447,12 @@ private fun SuggestTipCard(tip: SuggestTip) {
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
             .padding(Spacing.md)
     ) {
-        // 标题行：[action，1 行截断] ｜ [折叠箭头] — R1-31: 优先级由分组 header 体现
+        // 标题行：优先级由分组 header 体现
         Row(
             modifier = Modifier.fillMaxWidth().semantics { stateDescription = if (expanded) "已展开" else "已收起" }.clickable { expanded = !expanded },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // R1-30: UI 只消费新模型字段，不再兼容旧 slot/topic
+            // UI 只消费新模型字段
             Text(
                 text = tip.action,
                 style = AppTypography.labelMedium,
@@ -523,8 +523,8 @@ private fun SuggestTipCard(tip: SuggestTip) {
     }
 }
 
-/** R1-31: 按 timingCategory 分组 tips。
- * 顺序：“现在可用” → “今天可准备” → “有机会再做” → 其他（无分类的排末尾）。 */
+/** 按 timingCategory 分组 tips。
+ * 顺序："现在可用" → "今天可准备" → "有机会再做" → 其他（无分类的排末尾）。 */
 private fun groupTipsByCategory(tips: List<SuggestTip>): List<Pair<String, List<SuggestTip>>> {
     val order = listOf("现在可用", "今天可准备", "有机会再做")
     val grouped = tips.groupBy { it.timingCategory }
@@ -542,7 +542,7 @@ private fun groupTipsByCategory(tips: List<SuggestTip>): List<Pair<String, List<
     return result
 }
 
-/** R1-31: 分类标题 */
+/** 分类标题 */
 @Composable
 private fun TipCategoryHeader(category: String) {
     Row(
@@ -560,8 +560,8 @@ private fun TipCategoryHeader(category: String) {
     }
 }
 
-/** R1-25: 锦囊 usage 与 partial 状态展示。
- *  Provider 返回 usage 时显示 token/费用/耗时；无值显示“未知”。
+/** 锦囊 usage 与 partial 状态展示。
+ *  Provider 返回 usage 时显示 token/费用/耗时；无值显示"未知"。
  *  partial=true 时显示不完整标识。 */
 @Composable
 private fun SuggestUsageBar(usage: DailyBriefUsage?, isPartial: Boolean) {

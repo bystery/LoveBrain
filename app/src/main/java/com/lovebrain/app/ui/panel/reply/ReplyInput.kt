@@ -212,7 +212,7 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
             )
             .semantics { this.selected = selected }
             .clickable(interactionSource = interaction, indication = null, onClick = onClick)
-            // C4：左右内边距收窄 12→9dp（主人原话：两边各减 1/8），省出的空间让给输入框
+            // 左右内边距 9dp，留更多空间给输入框
             .padding(horizontal = 9.dp),
         contentAlignment = Alignment.Center
     ) {

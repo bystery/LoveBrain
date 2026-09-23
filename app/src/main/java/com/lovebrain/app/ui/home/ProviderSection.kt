@@ -1,0 +1,584 @@
+package com.lovebrain.app.ui.home
+
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.lovebrain.app.R
+import com.lovebrain.app.model.ProviderTicket
+import com.lovebrain.app.ui.common.CompactInput
+import com.lovebrain.app.ui.common.RowActionButton
+import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.ui.theme.AppDimens
+import com.lovebrain.app.ui.theme.AppTypography
+import com.lovebrain.app.ui.theme.Border
+import com.lovebrain.app.ui.theme.Error
+import com.lovebrain.app.ui.theme.LoveBrainShape
+import com.lovebrain.app.ui.theme.Neutral300
+import com.lovebrain.app.ui.theme.Primary
+import com.lovebrain.app.ui.theme.PrimaryDark
+import com.lovebrain.app.ui.theme.PrimaryLight
+import com.lovebrain.app.ui.theme.Spacing
+import com.lovebrain.app.ui.theme.Success
+import com.lovebrain.app.ui.theme.SurfaceCard
+import com.lovebrain.app.ui.theme.SurfaceInset
+import com.lovebrain.app.ui.theme.TextHint
+import com.lovebrain.app.ui.theme.TextPrimary
+import com.lovebrain.app.ui.theme.TextSecondary
+import com.lovebrain.app.viewmodel.SetupViewModel
+import kotlinx.coroutines.launch
+
+/** 供应商管理页内部尺寸常量 */
+private object ProviderDimens {
+    const val STATUS_DOT_SIZE_DP = 6
+    const val FEATURE_ARROW_SIZE_DP = 20
+}
+
+/**
+ * 模型供应商管理页——列表、展开、添加、编辑、删除与连接测试。
+ */
+@Composable
+fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
+    val tickets by viewModel.tickets.collectAsStateWithLifecycle()
+    val activeTicket by viewModel.activeTicket.collectAsStateWithLifecycle()
+    val providerReady by viewModel.providerReady.collectAsStateWithLifecycle()
+    var editing by remember { mutableStateOf<ProviderTicket?>(null) }
+    var showAdd by remember { mutableStateOf(false) }
+    var pendingDelete by remember { mutableStateOf<ProviderTicket?>(null) }
+    var expanded by remember { mutableStateOf(false) }
+    val chevronRotation by animateFloatAsState(
+        if (expanded) 90f else 0f,
+        label = "providerChevron"
+    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = Spacing.xxxl)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = Spacing.lg),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val (backInteraction, backScale) = rememberPressScale(0.94f, "providerBack")
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .graphicsLayer { scaleX = backScale; scaleY = backScale }
+                    .clip(LoveBrainShape.md)
+                    .clickable(
+                        interactionSource = backInteraction,
+                        indication = null,
+                        onClick = onBack
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "←",
+                    style = AppTypography.titleMedium,
+                    color = Primary
+                )
+            }
+            Spacer(Modifier.width(Spacing.sm))
+            Text(
+                "模型供应商",
+                style = AppTypography.titleLarge,
+                color = TextPrimary,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+
+        Card(
+            shape = LoveBrainShape.lg,
+            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(LoveBrainShape.lg)
+                .clickable { expanded = !expanded }
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(ProviderDimens.STATUS_DOT_SIZE_DP.dp)
+                            .clip(CircleShape)
+                            .background(
+                                if (providerReady) Primary else Neutral300
+                            )
+                    )
+                    Spacer(Modifier.width(Spacing.md))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            activeTicket?.name ?: "未配置供应商",
+                            style = AppTypography.titleMedium,
+                            color = TextPrimary,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1
+                        )
+                        Text(
+                            if (activeTicket == null) "点右侧展开添加"
+                            else if (!providerReady) "配置不完整"
+                            else activeTicket?.model?.ifBlank { "未选模型" } ?: "未选模型",
+                            style = AppTypography.labelSmall,
+                            color = TextHint,
+                            maxLines = 1
+                        )
+                    }
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        contentDescription = if (expanded) "收起" else "展开",
+                        tint = TextHint,
+                        modifier = Modifier
+                            .size(ProviderDimens.FEATURE_ARROW_SIZE_DP.dp)
+                            .rotate(chevronRotation)
+                    )
+                }
+
+                if (expanded) {
+                    HorizontalDivider(
+                        thickness = AppDimens.BORDER_WIDTH_DP.dp,
+                        color = Border.copy(alpha = 0.5f)
+                    )
+                    if (tickets.isEmpty()) {
+                        Text(
+                            "还没有供应商",
+                            style = AppTypography.bodySmall,
+                            color = TextHint,
+                            modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                        )
+                    } else {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            tickets.forEachIndexed { index, t ->
+                                val active = activeTicket?.id == t.id
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(if (active) PrimaryLight.copy(alpha = 0.5f) else Color.Transparent)
+                                        .clickable { viewModel.activateTicket(t.id) }
+                                        .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(ProviderDimens.STATUS_DOT_SIZE_DP.dp)
+                                            .clip(CircleShape)
+                                            .background(if (active) Primary else Color.Transparent)
+                                            .border(
+                                                if (active) 0.dp else AppDimens.BORDER_WIDTH_DP.dp,
+                                                Neutral300,
+                                                CircleShape
+                                            )
+                                    )
+                                    Spacer(Modifier.width(Spacing.md))
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            t.name,
+                                            style = AppTypography.bodyMedium,
+                                            color = TextPrimary,
+                                            fontWeight = FontWeight.Medium,
+                                            maxLines = 1
+                                        )
+                                        Text(
+                                            t.model.ifBlank { "未配置模型" },
+                                            style = AppTypography.labelSmall,
+                                            color = TextHint,
+                                            maxLines = 1
+                                        )
+                                    }
+                                    RowActionButton("编辑") { editing = t }
+                                    Spacer(Modifier.width(Spacing.sm))
+                                    RowActionButton("删除", tint = Error) { pendingDelete = t }
+                                }
+                                if (index < tickets.lastIndex) {
+                                    HorizontalDivider(
+                                        thickness = AppDimens.BORDER_WIDTH_DP.dp,
+                                        color = Border.copy(alpha = 0.5f)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Text(
+                        "＋ 添加供应商",
+                        style = AppTypography.labelLarge,
+                        color = Primary,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(LoveBrainShape.md)
+                            .clickable { showAdd = true }
+                            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                    )
+                }
+            }
+        }
+    }
+
+    if (showAdd) {
+        ProviderEditDialog(viewModel = viewModel, ticket = null, onDismiss = { showAdd = false })
+    }
+    editing?.let { t ->
+        ProviderEditDialog(viewModel = viewModel, ticket = t, onDismiss = { editing = null })
+    }
+
+    pendingDelete?.let { t ->
+        AlertDialog(
+            onDismissRequest = { pendingDelete = null },
+            title = { Text("删除「${t.name}」？", style = AppTypography.titleLarge) },
+            text = { Text("删除后不可恢复，需要重新填写全部配置。确定？", style = AppTypography.bodyMedium, color = TextSecondary) },
+            confirmButton = {
+                TextButton(onClick = { pendingDelete = null; viewModel.deleteTicket(t.id) }) {
+                    Text("删除", color = Error, style = AppTypography.titleMedium)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingDelete = null }) {
+                    Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
+                }
+            }
+        )
+    }
+}
+
+@Composable
+private fun ProviderEditDialog(
+    viewModel: SetupViewModel,
+    ticket: ProviderTicket?,
+    onDismiss: () -> Unit
+) {
+    val scope = rememberCoroutineScope()
+    val formError by viewModel.formError.collectAsStateWithLifecycle()
+
+    var name by remember { mutableStateOf(ticket?.name.orEmpty()) }
+    var baseUrl by remember { mutableStateOf(ticket?.baseUrl.orEmpty()) }
+    var key by remember { mutableStateOf("") }
+    var keyVisible by remember { mutableStateOf(false) }
+    var thinking by remember { mutableStateOf((ticket?.thinkingMode ?: viewModel.globalThinking) == 1) }
+    var models by remember { mutableStateOf(ticket?.models.orEmpty()) }
+    var currentModel by remember { mutableStateOf(ticket?.model.orEmpty()) }
+
+    var addingModel by remember { mutableStateOf(false) }
+    var modelInput by remember { mutableStateOf("") }
+    var editIndex by remember { mutableStateOf(-1) }
+    var testingModel by remember { mutableStateOf<String?>(null) }
+    var testResult by remember { mutableStateOf<Triple<String, Boolean, String?>?>(null) }
+
+    fun commitModelInput(index: Int) {
+        val m = modelInput.trim()
+        if (m.isBlank()) return
+        val newList = if (index >= 0) {
+            models.toMutableList().also { it[index] = m }
+        } else if (m !in models) {
+            models + m
+        } else models
+        models = newList
+        if (currentModel.isBlank()) currentModel = m
+        modelInput = ""
+        addingModel = false
+        editIndex = -1
+    }
+
+    fun deleteModel(index: Int) {
+        val removed = models[index]
+        val newList = models.toMutableList().also { it.removeAt(index) }
+        models = newList
+        if (currentModel == removed) currentModel = newList.firstOrNull().orEmpty()
+    }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            shape = LoveBrainShape.xl,
+            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(Spacing.xl)
+                    .heightIn(max = 520.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(Spacing.md)
+            ) {
+                Text(
+                    if (ticket == null) "添加供应商" else "编辑供应商",
+                    style = AppTypography.titleLarge,
+                    color = TextPrimary,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text("供应商名称", style = AppTypography.labelMedium, color = TextSecondary)
+                CompactInput(value = name, onValueChange = { name = it }, placeholder = "名称")
+
+                Text("接口地址（自动补全）", style = AppTypography.labelMedium, color = TextSecondary)
+                CompactInput(value = baseUrl, onValueChange = { baseUrl = it }, placeholder = "https://api.example.com")
+                if (!formError.isNullOrEmpty()) {
+                    Text("✗ $formError", style = AppTypography.labelSmall, color = Error)
+                }
+
+                Text("API Key", style = AppTypography.labelMedium, color = TextSecondary)
+                CompactInput(
+                    value = key,
+                    onValueChange = { key = it },
+                    placeholder = if (ticket != null && viewModel.getKeyMask(ticket.id).isNotEmpty()) "留空保留原 Key" else "sk-…",
+                    passwordVisible = keyVisible,
+                    trailingAction = {
+                        TextButton(onClick = { keyVisible = !keyVisible }) {
+                            Text(if (keyVisible) "隐藏" else "显示", style = AppTypography.bodySmall, color = Primary)
+                        }
+                    }
+                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("思考模式", style = AppTypography.labelMedium, color = TextSecondary)
+                    Spacer(Modifier.weight(1f))
+                    MiniSwitch(checked = thinking, onCheckedChange = { thinking = it })
+                }
+
+                Text("模型列表", style = AppTypography.labelMedium, color = TextSecondary)
+                models.forEachIndexed { i, m ->
+                    if (editIndex == i) {
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                            CompactInput(
+                                value = modelInput,
+                                onValueChange = { modelInput = it },
+                                placeholder = "模型名称",
+                                modifier = Modifier.weight(1f)
+                            )
+                            IconAction(Icons.Filled.Check, "确认") { commitModelInput(i) }
+                            IconAction(Icons.Filled.Close, "取消", tint = TextHint) {
+                                modelInput = ""; editIndex = -1
+                            }
+                        }
+                    } else {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(LoveBrainShape.md)
+                                .background(SurfaceInset)
+                                .padding(horizontal = Spacing.md, vertical = Spacing.xs)
+                        ) {
+                            Text(
+                                m,
+                                style = AppTypography.bodyMedium,
+                                color = if (m == currentModel) PrimaryDark else TextPrimary,
+                                fontWeight = if (m == currentModel) FontWeight.SemiBold else FontWeight.Normal,
+                                maxLines = 1,
+                                modifier = Modifier.weight(1f)
+                            )
+                            IconAction(
+                                Icons.Filled.Star,
+                                "设为当前",
+                                tint = if (m == currentModel) Primary else TextHint
+                            ) {
+                                currentModel = m
+                                if (ticket != null) viewModel.setTicketModel(ticket.id, m)
+                            }
+                            IconAction(ImageVector.vectorResource(R.drawable.ic_unplug), "测试连接", tint = Primary) {
+                                testingModel = m
+                                testResult = null
+                                scope.launch {
+                                    val t = ticket ?: ProviderTicket(name = name.ifBlank { "未命名" }, baseUrl = baseUrl, model = m, models = models)
+                                    val result = viewModel.testConnection(t, m, key.trim())
+                                    testingModel = null
+                                    testResult = Triple(m, result.success, result.message)
+                                }
+                            }
+                            IconAction(Icons.Filled.Edit, "编辑", tint = TextSecondary) {
+                                modelInput = m
+                                editIndex = i
+                            }
+                            IconAction(Icons.Filled.Delete, "删除", tint = Error) { deleteModel(i) }
+                        }
+                    }
+                    if (testingModel == m) {
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = Spacing.md)) {
+                            CircularProgressIndicator(color = Primary, modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp), strokeWidth = Spacing.xs)
+                            Spacer(Modifier.width(Spacing.sm))
+                            Text("测试中…", style = AppTypography.labelSmall, color = TextHint)
+                        }
+                    }
+                }
+                if (addingModel) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                        CompactInput(
+                            value = modelInput,
+                            onValueChange = { modelInput = it },
+                            placeholder = "模型名称",
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconAction(Icons.Filled.Check, "确认") { commitModelInput(-1) }
+                        IconAction(Icons.Filled.Close, "取消", tint = TextHint) {
+                            modelInput = ""; addingModel = false
+                        }
+                    }
+                } else {
+                    Text(
+                        "＋ 添加模型",
+                        style = AppTypography.labelLarge,
+                        color = Primary,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier
+                            .clip(LoveBrainShape.md)
+                            .clickable { addingModel = true }
+                            .padding(horizontal = Spacing.md, vertical = Spacing.xs)
+                    )
+                }
+                testResult?.let { (m, ok, msg) ->
+                    Text(
+                        if (ok) "✓ 连接成功，接口已自动补全" else "✗ $m 连接失败：${msg ?: "请检查配置"}",
+                        style = AppTypography.labelSmall,
+                        color = if (ok) Success else Error
+                    )
+                }
+
+                Spacer(Modifier.height(Spacing.xs))
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                    TextButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.weight(1f).height(AppDimens.INPUT_ROW_HEIGHT_DP.dp)
+                    ) { Text("取消", style = AppTypography.labelLarge, color = TextSecondary) }
+                    val saving by viewModel.saving.collectAsStateWithLifecycle()
+                    Button(
+                        onClick = {
+                            scope.launch {
+                                val thinkingInt = if (thinking) 1 else 0
+                                val success = viewModel.saveTicketWithProbe(
+                                    ticket?.id, name, baseUrl, models, key.trim(), thinkingInt
+                                )
+                                if (success) onDismiss()
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White),
+                        shape = LoveBrainShape.md,
+                        enabled = !saving &&
+                            name.isNotBlank() &&
+                            baseUrl.isNotBlank() &&
+                            models.isNotEmpty() &&
+                            (ticket != null || key.isNotBlank()),
+                        modifier = Modifier.weight(1f).height(AppDimens.INPUT_ROW_HEIGHT_DP.dp)
+                    ) {
+                        if (saving) {
+                            CircularProgressIndicator(
+                                color = Color.White,
+                                modifier = Modifier.size(16.dp),
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            Text(if (ticket == null) "保存" else "保存修改", style = AppTypography.labelLarge)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/** 小型开关（36×20 胶囊 + 16dp 圆球） */
+@Composable
+private fun MiniSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(width = 36.dp, height = 20.dp)
+            .clip(LoveBrainShape.full)
+            .background(if (checked) Primary else Neutral300.copy(alpha = 0.5f))
+            .toggleable(
+                value = checked,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onValueChange = onCheckedChange
+            )
+    ) {
+        Box(
+            modifier = Modifier
+                .align(if (checked) Alignment.CenterEnd else Alignment.CenterStart)
+                .padding(2.dp)
+                .size(16.dp)
+                .shadow(1.dp, CircleShape)
+                .clip(CircleShape)
+                .background(Color.White)
+        )
+    }
+}
+
+/** 弹窗内行尾图标操作钮——48dp 触摸区满足无障碍下限 */
+@Composable
+private fun IconAction(
+    icon: ImageVector,
+    contentDesc: String,
+    tint: Color = TextSecondary,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(48.dp)
+            .clip(LoveBrainShape.full)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(imageVector = icon, contentDescription = contentDesc, tint = tint, modifier = Modifier.size(20.dp))
+    }
+}

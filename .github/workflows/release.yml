@@ -1,5 +1,5 @@
 # Release 自动构建工作流
-# 触发：推送 v* 格式 tag（如 v1.3.0）
+# 触发：推送 v* 格式 tag（如 v1.3.0, v1.4.0-rc1）
 # 产物：正式签名 assembleRelease APK 自动上传到对应 GitHub Release，并自动生成 Release Notes
 #
 # 签名说明：
@@ -7,6 +7,11 @@
 #   KEY_ALIAS / KEY_PASSWORD），解码后写入 keystore.properties，build.gradle.kts 读取并签名。
 #   缺少任一 secret 时 workflow 直接失败，绝不 fallback 到 debug 签名。
 #   本地没有 keystore.properties 时 build.gradle.kts 产出 unsigned release APK（仅供 R8/CI 验证）。
+#
+# 质量门禁：
+#   - 发布 job 依赖同 SHA 的 CI verify + ui-test 全部成功
+#   - 构建前校验 tag == v${versionName}，RC tag 标记为 pre-release
+#   - 跑 unit + lint + R8 后才允许创建 Release
 
 name: Release
 
@@ -16,13 +21,52 @@ on:
       - 'v*'
 
 jobs:
+  # 发布 job 必须依赖同一 commit SHA 的全部 CI 成功（verify + ui-test）
+  wait-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for CI verify to pass
+        uses: lewagon/wait-on-check-action@v1.3.4
+        with:
+          ref: ${{ github.sha }}
+          check-name: 'verify'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 30
+
+      - name: Wait for CI ui-test to pass
+        uses: lewagon/wait-on-check-action@v1.3.4
+        with:
+          ref: ${{ github.sha }}
+          check-name: 'ui-test'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 30
+
   build:
+    needs: wait-ci
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # 允许创建 Release 和上传产物
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # 校验 tag 与 versionName 一致；RC tag 标记为 pre-release
+      - name: Verify tag matches versionName
+        id: tagcheck
+        run: |
+          TAG_NAME="${GITHUB_REF_NAME}"
+          VERSION_NAME=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*versionName\s*=\s*"\([^"]*\)".*/\1/')
+          echo "Tag: $TAG_NAME, versionName: v$VERSION_NAME"
+          if [ "$TAG_NAME" != "v$VERSION_NAME" ]; then
+            echo "ERROR: Tag $TAG_NAME does not match versionName v$VERSION_NAME"
+            exit 1
+          fi
+          if echo "$TAG_NAME" | grep -q '\-rc'; then
+            echo "IS_PRERELEASE=true" >> "$GITHUB_OUTPUT"
+            echo "RC tag detected — will create as pre-release"
+          else
+            echo "IS_PRERELEASE=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -64,6 +108,9 @@ jobs:
       - name: Run unit tests
         run: chmod +x gradlew && ./gradlew :app:testDebugUnitTest
 
+      - name: Run lint
+        run: ./gradlew :app:lintDebug
+
       - name: Build release APK
         run: ./gradlew :app:assembleRelease
 
@@ -84,8 +131,18 @@ jobs:
           cp app/build/outputs/apk/release/app-release.apk "dist/LoveBrain-${VERSION}.apk"
           echo "VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
 
+      - name: Compute APK SHA-256
+        run: |
+          cd dist
+          sha256sum LoveBrain-*.apk > SHA256.txt
+          cat SHA256.txt
+
       - name: Create GitHub Release and upload APK
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/LoveBrain-*.apk
+          files: |
+            dist/LoveBrain-*.apk
+            dist/SHA256.txt
+            app/build/outputs/mapping/release/mapping.txt
           generate_release_notes: true
+          prerelease: ${{ steps.tagcheck.outputs.IS_PRERELEASE == 'true' }}

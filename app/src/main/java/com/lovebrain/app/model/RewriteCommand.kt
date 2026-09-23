@@ -6,7 +6,7 @@ package com.lovebrain.app.model
  *
  * [label] 是用户可见文案，[instruction] 是发给模型的改写指令关键词。
  *
- * F01 v2: 扩展预设选项——更短、更像我、别反问、更直接、更温柔。
+ * 扩展预设选项——更短、更像我、别反问、更直接、更温柔。
  * 保留原有换一种说法/更自然。新增自定义改写支持（CUSTOM）。
  */
 enum class RewriteCommand(val label: String, val instruction: String) {

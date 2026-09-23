@@ -75,7 +75,7 @@ class SceneUpdateRegressionTest {
     fun setUp() {
         root = Files.createTempDirectory("scene_regression").toFile()
         repo = newRepo()
-        recorder = TopicRecorder(repo)
+        recorder = TopicRecorder(repo, null)
     }
 
     @After

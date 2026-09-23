@@ -809,6 +809,15 @@ class KnowledgeRepository(
         }
     }
 
+    /** S2-04: 线程安全的文件删除（fileMutex 锁 + I/O 线程） */
+    suspend fun deleteFile(kbName: String, relativePath: String): Boolean = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kbName)) return@withLock false
+            val file = File(File(knowledgeRoot, kbName), relativePath)
+            if (file.exists()) file.delete() else false
+        }
+    }
+
     /** 线程安全的文件写入（fileMutex 锁 + I/O 线程；A2-5 合并原 writeFileSafe）
      *  KBG-01：目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
     suspend fun writeFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {

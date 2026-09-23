@@ -202,20 +202,21 @@ private fun KbEditScreen(
         val d = drafts[path] ?: ""
         if (d == (saved[path] ?: "")) return true
         val ver = versions[path]
-        return runCatching { saveFile(path, d, ver) }
-            .onSuccess { newVersion ->
-                if (newVersion != null) {
-                    saved = saved + (path to d)
-                    // P0-FIX：保存成功后立即更新版本号为新内容的哈希
-                    versions = versions + (path to newVersion)
-                } else {
-                    // P0-FIX：版本冲突——文件已被后台修改，保留草稿不覆盖
-                    L.w("KbEdit version conflict: $path, keeping draft")
-                }
+        return try {
+            val newVersion = saveFile(path, d, ver)
+            if (newVersion != null) {
+                saved = saved + (path to d)
+                versions = versions + (path to newVersion)
+            } else {
+                L.w("KbEdit version conflict: $path, keeping draft")
             }
-            .onFailure { L.w("KbEdit autosave failed: $path") }
-            .map { it != null }
-            .getOrDefault(false)
+            newVersion != null
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            L.w("KbEdit autosave failed: $path")
+            false
+        }
     }
 
     // ── 切换统一入口：自动保存上一个 → 切文件 → 记忆 → 回预览态 ──
@@ -290,7 +291,7 @@ private fun KbEditScreen(
                     files.filter { it.layer == layerName }.forEach { f ->
                         val isSel = f.path == selectedPath
                         val dirty = isDirty(f.path)
-                        // 之前按钮样式（792b040）：TextButton 浅蓝底 + 深蓝字（主人复点）
+                        // 次级按钮样式
                         TextButton(
                             onClick = { switchToFile(f) },
                             shape = LoveBrainShape.md,
@@ -434,13 +435,17 @@ private fun KbEditScreen(
                             drafts = drafts + (selectedPath to baseline)
                             editorStates.remove(selectedPath)
                             scope.launch {
-                                runCatching { saveFile(selectedPath, baseline, versions[selectedPath]) }
-                                    .onSuccess { newVer ->
-                                        if (newVer != null) {
-                                            saved = saved + (selectedPath to baseline)
-                                            versions = versions + (selectedPath to newVer)
-                                        }
+                                try {
+                                    val newVer = saveFile(selectedPath, baseline, versions[selectedPath])
+                                    if (newVer != null) {
+                                        saved = saved + (selectedPath to baseline)
+                                        versions = versions + (selectedPath to newVer)
                                     }
+                                } catch (e: kotlinx.coroutines.CancellationException) {
+                                    throw e
+                                } catch (e: Exception) {
+                                    L.w("KbEdit discard save failed: $selectedPath")
+                                }
                                 isPreview = true
                             }
                         }) {
@@ -452,25 +457,24 @@ private fun KbEditScreen(
                                 val text = editorValue.text
                                 scope.launch {
                                     val ver = versions[selectedPath]
-                                    runCatching { saveFile(selectedPath, text, ver) }
-                                        .onSuccess { newVer ->
-                                            if (newVer != null) {
-                                                saved = saved + (selectedPath to text)
-                                                // P0-FIX：保存成功后立即更新版本号
-                                                versions = versions + (selectedPath to newVer)
-                                                editorStates.remove(selectedPath)
-                                                hint = "已保存" to false
-                                                isPreview = true
-                                            } else {
-                                                // P0-FIX：版本冲突——文件已被后台修改
-                                                L.w("KbEdit save conflict: ${selected.path}")
-                                                hint = "文件已被后台修改，已保留你的草稿，请重新打开查看" to true
-                                            }
+                                    try {
+                                        val newVer = saveFile(selectedPath, text, ver)
+                                        if (newVer != null) {
+                                            saved = saved + (selectedPath to text)
+                                            versions = versions + (selectedPath to newVer)
+                                            editorStates.remove(selectedPath)
+                                            hint = "已保存" to false
+                                            isPreview = true
+                                        } else {
+                                            L.w("KbEdit save conflict: ${selected.path}")
+                                            hint = "文件已被后台修改，已保留你的草稿，请重新打开查看" to true
                                         }
-                                        .onFailure {
-                                            L.w("KbEdit manual save failed: ${selected.path}")
-                                            hint = "保存失败，请重试" to true
-                                        }
+                                    } catch (e: kotlinx.coroutines.CancellationException) {
+                                        throw e
+                                    } catch (e: Exception) {
+                                        L.w("KbEdit manual save failed: ${selected.path}")
+                                        hint = "保存失败，请重试" to true
+                                    }
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = Primary),
@@ -501,21 +505,22 @@ private fun KbEditScreen(
                     pendingClear = false
                     val path = selectedPath
                 scope.launch {
-                                    runCatching { saveFile(path, "", versions[path]) }
-                                        .onSuccess { newVer ->
-                                            if (newVer != null) {
-                                                drafts = drafts + (path to "")
-                                                saved = saved + (path to "")
-                                                versions = versions + (path to newVer)
-                                            } else {
-                                                L.w("KbEdit clear conflict: $path")
-                                                hint = "文件已被后台修改，请重新打开" to true
-                                            }
+                                    try {
+                                        val newVer = saveFile(path, "", versions[path])
+                                        if (newVer != null) {
+                                            drafts = drafts + (path to "")
+                                            saved = saved + (path to "")
+                                            versions = versions + (path to newVer)
+                                        } else {
+                                            L.w("KbEdit clear conflict: $path")
+                                            hint = "文件已被后台修改，请重新打开" to true
                                         }
-                                        .onFailure {
-                                            L.w("KbEdit clear failed: $path")
-                                            hint = "清空失败，请重试" to true
-                                        }
+                                    } catch (e: kotlinx.coroutines.CancellationException) {
+                                        throw e
+                                    } catch (e: Exception) {
+                                        L.w("KbEdit clear failed: $path")
+                                        hint = "清空失败，请重试" to true
+                                    }
                                 }
                 }) { Text("清空", color = Error, style = AppTypography.titleMedium) }
             },

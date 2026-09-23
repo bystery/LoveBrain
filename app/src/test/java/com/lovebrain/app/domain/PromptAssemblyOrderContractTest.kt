@@ -310,8 +310,16 @@ fun t6_suggest_systemAndUser() = runBlocking {
 
         val engine = GenerationEngine(dsk, pb)
         runBlocking {
-            engine.generate(twoMsgs, "", kb, this, callbacks)?.join()
-            engine.generate(twoMsgs, "", kb, this, callbacks)?.join()
+            val input1 = com.lovebrain.app.model.buildGenerationInput(
+                requestId = "test-1", messages = twoMsgs, userHint = "", knowledgeBase = kb,
+                intentConfig = com.lovebrain.app.model.IntentConfig(),
+                corrections = emptyMap(), correctionsRevision = 0,
+                onlyThisRound = false, aggressive = false,
+                providerHostHash = "hash", providerModel = "m"
+            )
+            val input2 = input1.copy(requestId = "test-2", replyDirective = input1.replyDirective.copy(aggressive = true))
+            engine.generateReply(input1, this, callbacks)?.join()
+            engine.generateReply(input2, this, callbacks)?.join()
         }
 
         assertEquals("generateStream 应被调用两次", 2, systems.size)
@@ -347,7 +355,14 @@ fun t6_suggest_systemAndUser() = runBlocking {
         every { callbacks.getActiveKb() } returns kbB
 
         val engine = GenerationEngine(dsk, pb)
-        engine.generate(twoMsgs, "", kbA, this, callbacks)?.join()
+        val input = com.lovebrain.app.model.buildGenerationInput(
+            requestId = "test-kb", messages = twoMsgs, userHint = "", knowledgeBase = kbA,
+            intentConfig = com.lovebrain.app.model.IntentConfig(),
+            corrections = emptyMap(), correctionsRevision = 0,
+            onlyThisRound = false, aggressive = false,
+            providerHostHash = "hash", providerModel = "m"
+        )
+        engine.generateReply(input, this, callbacks)?.join()
 
         // 验证 PromptBuilder 收到的是冻结的 KB-A
         coVerify {

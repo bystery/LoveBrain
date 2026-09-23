@@ -37,7 +37,8 @@ enum class DialogueSpeaker {
  */
 data class ReplyDirective(
     val text: String,
-    val scope: DirectiveScope = DirectiveScope.CURRENT_GENERATION_ONLY
+    val scope: DirectiveScope = DirectiveScope.CURRENT_GENERATION_ONLY,
+    val aggressive: Boolean = false
 )
 
 /** P0-1: 指令作用域 */

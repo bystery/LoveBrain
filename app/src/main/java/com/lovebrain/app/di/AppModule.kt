@@ -8,6 +8,7 @@ import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.domain.GenerationEngine
 import com.lovebrain.app.domain.KnowledgeTriggerCoordinator
 import com.lovebrain.app.domain.PromptBuilder
+import com.lovebrain.app.domain.RoundCommitJournal
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 import com.lovebrain.app.viewmodel.SetupViewModel
@@ -33,11 +34,14 @@ val appModule = module {
     // 领域层（单例）
     single { com.lovebrain.app.domain.OngoingContextSelector(get()) }
     single { PromptBuilder(androidContext(), get(), get()) }
-    single { TopicRecorder(get()) }
+    single { TopicRecorder(get(), RoundCommitJournal(get())) }
+    single { RoundCommitJournal(get()) }
     single { KnowledgeTriggerCoordinator(get(), get(), get(), get()) }
     single { GenerationEngine(get(), get()) }
+    // S2-02: ForegroundOperationCoordinator 作为单例——使用 application scope
+    single { com.lovebrain.app.domain.ForegroundOperationCoordinator((androidApplication() as LoveBrainApp).applicationScope) }
 
     // ViewModel（每次获取新实例）
-    viewModel { LoveBrainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { LoveBrainViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SetupViewModel(get(), get(), get()) }  // securePrefs, DeepSeekRepository, FeedbackCaseRepository
 }

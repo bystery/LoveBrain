@@ -42,6 +42,7 @@ import com.lovebrain.app.ui.panel.counseling.CounselingPanel
 import com.lovebrain.app.ui.panel.reply.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
+import com.lovebrain.app.viewmodel.LoveBrainViewModel.ComposerMode
 import com.lovebrain.app.model.StageSuggestion
 private const val KB_NOTICE_AUTO_DISMISS_MS = 3000L
 private const val PANEL_WARNING_AUTO_DISMISS_MS = 3000L
@@ -82,6 +83,7 @@ fun LoveBrainPanelScreen(
 ) {
     val panelMode by viewModel.panelMode.collectAsStateWithLifecycle()
     val resultMode by viewModel.resultMode.collectAsStateWithLifecycle()
+    val composerMode by viewModel.composerMode.collectAsStateWithLifecycle()
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val result by viewModel.result.collectAsStateWithLifecycle()
     val isGenerating by viewModel.isGenerating.collectAsStateWithLifecycle()
@@ -335,9 +337,9 @@ fun LoveBrainPanelScreen(
                     draftText = draftText,
                     currentRole = composeRole,
                     editingIndex = editingIndex,
-                    showRoleChips = true,
-                    showAddButton = true,
-                    placeholderOverride = null,
+                    showRoleChips = composerMode == ComposerMode.REPLY,
+                    showAddButton = composerMode == ComposerMode.REPLY,
+                    placeholderOverride = if (composerMode == ComposerMode.PROACTIVE) "想说什么？留空让军师找话题" else null,
                     onDraftChange = { viewModel.setDraft(it) },
                     onRoleChange = { viewModel.setCurrentRole(it) },
                     onAdd = {
@@ -376,18 +378,10 @@ fun LoveBrainPanelScreen(
                     },
                     modifier = Modifier.height(messageListHeight),
                     onEmptyAction = {
-                        // F14: 恢复空态入口——点击进入主动发模式
-                        viewModel.setPanelMode(0)
-                        val draft = draftText.trim()
-                        if (draft.isEmpty()) {
-                            // 空草稿——直接切到主动发模式，让用户输入或找话题
-                            viewModel.showPanelWarning("想主动聊两句？输入想说的话后点主动发")
-                        } else {
-                            if (isProviderReady) viewModel.generateProactive(draft)
-                            else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置")
-                        }
+                        // S1-01: 恢复空态入口——点击蓝字只切换到主动发模式，不发网络请求
+                        viewModel.toggleProactiveMode()
                     },
-                    proactiveActive = false
+                    proactiveActive = composerMode == ComposerMode.PROACTIVE
                 )
                 DraggableDivider(
                     onDragDelta = { dyPx ->
@@ -397,14 +391,18 @@ fun LoveBrainPanelScreen(
                     }
                 )
 
-                // P1-5: Dual button row - "生成回复" (left) | "主动发" (right)
-                // 非生成状态下始终保留双入口；"记入知识库"移入结果工具区不再挤掉主入口
-                DualGenerateRow(
+                // S1-01: 替换 DualGenerateRow——使用 ComposerMode 驱动的 ReplyPrimaryActions
+                // 4 种按钮状态完全匹配指导书要求：
+                // 1. 普通回复、无结果 → 全宽"生成回复 · N 条消息"
+                // 2. 普通回复、有结果 → "重试 | 记入知识库"
+                // 3. 主动发模式 → 全宽"生成开场"；生成中 → "停止"
+                // 4. 回复生成中 → "停止"
+                ReplyPrimaryActions(
                     modifier = Modifier.fillMaxWidth(),
+                    composerMode = composerMode,
                     isGenerating = isGenerating,
                     isProactive = isProactive,
                     hasReplyResult = result is GenerateResult.Success,
-                    resultMode = resultMode,
                     messageCount = messages.size,
                     draftText = draftText,
                     onGenerateReply = {
@@ -412,12 +410,15 @@ fun LoveBrainPanelScreen(
                         else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置")
                     },
                     onGenerateProactive = {
-                        // F17: 空草稿也允许主动发——生成主动话题而非仅润色
                         if (isProviderReady) {
                             viewModel.generateProactive(draftText.trim())
                         } else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置")
                     },
                     onRetry = { if (isProviderReady) viewModel.generate() else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置") },
+                    onSaveToKb = {
+                        viewModel.nextRound()
+                        onCopy("")
+                    },
                     onStop = {
                         if (isProactive) viewModel.stopProactive()
                         else viewModel.stopGeneration()
@@ -1082,80 +1083,91 @@ private fun ProactiveResultArea(
 }
 
 /**
- * P1-5: Dual button row - "生成回复" (left) | "主动发" (right).
- * 非生成状态下始终保留双入口——"记入知识库"已移入结果工具区。
- * 有回复结果时左按钮变为"重试"，右按钮"主动发"保持可达。
- * 按钮状态同时参考 resultMode，避免主动发页面出现旧回复的保存操作。
- */
-/**
- * F13: DualGenerateRow 重构——使用统一 GenerationActionButton 组件。
+ * S1-01: ReplyPrimaryActions — 替代旧 DualGenerateRow。
  *
- * 旧实现独立维护 loading、stop、pressed、enabled、elapsed 逻辑——
- * 与旧 GenerateButton.kt（已删除）完全重复。
- * 现在委托给 GenerationActionButton，布局层只决定一排两个入口。
- *
- * 非生成状态下始终保留双入口——"记入知识库"已移入结果工具区。
- * 有回复结果时左按钮变为"重试"，右按钮"主动发"保持可达。
- * 按钮状态同时参考 resultMode，避免主动发页面出现旧回复的保存操作。
+ * 使用 ComposerMode 驱动的 4 种按钮状态，完全匹配 v1.3.1 主动发入口语义：
+ * 1. REPLY 模式 + 无结果 → 全宽"生成回复 · N 条消息"
+ * 2. REPLY 模式 + 有结果 → "重试 | 记入知识库"（记入知识库不再藏在 ⋯ 菜单）
+ * 3. PROACTIVE 模式 + 空闲 → 全宽"生成开场"
+ * 4. 任意模式 + 生成中 → 全宽"停止"
  */
 @Composable
-private fun DualGenerateRow(
+private fun ReplyPrimaryActions(
     modifier: Modifier = Modifier,
+    composerMode: ComposerMode,
     isGenerating: Boolean,
     isProactive: Boolean,
     hasReplyResult: Boolean,
-    resultMode: LoveBrainViewModel.ResultMode,
     messageCount: Int,
     draftText: String,
     onGenerateReply: () -> Unit,
     onGenerateProactive: () -> Unit,
     onRetry: () -> Unit,
+    onSaveToKb: () -> Unit,
     onStop: () -> Unit
 ) {
-    if (isGenerating) {
-        // F13: 生成中——委托给 GenerationActionButton LOADING 模式
-        GenerationActionButton(
-            text = "",
-            onClick = onStop,
-            modifier = modifier.fillMaxWidth(),
-            mode = ButtonMode.LOADING,
-            heightDp = PanelDimens.TRIO_HEIGHT_DP
-        )
-    } else if (isProactive) {
-        // F13: 主动发生成中——委托给 GenerationActionButton STOP 模式
-        GenerationActionButton(
-            text = "停止",
-            onClick = onStop,
-            modifier = modifier.fillMaxWidth(),
-            mode = ButtonMode.STOP,
-            heightDp = PanelDimens.TRIO_HEIGHT_DP
-        )
-    } else {
-        // F13: 非生成状态——双入口
-        val replyResultVisible = resultMode == LoveBrainViewModel.ResultMode.REPLY && hasReplyResult
-        val replyEnabled = messageCount > 0 || replyResultVisible
-        val proactiveEnabled = true  // F17: 空草稿也允许主动发——生成主动话题
-
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(PanelDimens.GENERATE_BUTTON_GAP_DP.dp)
-        ) {
-            // Left: 生成回复 / 重试
+    when {
+        // 生成中——回复或主动发都显示"停止"
+        isGenerating -> {
             GenerationActionButton(
-                text = if (replyResultVisible) "重试" else "生成回复",
-                onClick = { if (replyResultVisible) onRetry() else onGenerateReply() },
-                modifier = Modifier.weight(1f),
-                enabled = replyEnabled,
-                containerColor = Primary,
+                text = "",
+                onClick = onStop,
+                modifier = modifier.fillMaxWidth(),
+                mode = ButtonMode.LOADING,
                 heightDp = PanelDimens.TRIO_HEIGHT_DP
             )
-            // Right: 主动发
+        }
+        // 主动发生成中——显示"停止"
+        isProactive -> {
             GenerationActionButton(
-                text = "主动发",
+                text = "停止",
+                onClick = onStop,
+                modifier = modifier.fillMaxWidth(),
+                mode = ButtonMode.STOP,
+                heightDp = PanelDimens.TRIO_HEIGHT_DP
+            )
+        }
+        // PROACTIVE 模式 + 空闲 → 全宽"生成开场"
+        composerMode == ComposerMode.PROACTIVE -> {
+            GenerationActionButton(
+                text = "生成开场",
                 onClick = onGenerateProactive,
-                modifier = Modifier.weight(1f),
-                enabled = proactiveEnabled,
+                modifier = modifier.fillMaxWidth(),
                 containerColor = PrimaryDark,
+                heightDp = PanelDimens.TRIO_HEIGHT_DP
+            )
+        }
+        // REPLY 模式 + 有结果 → "重试 | 记入知识库"
+        composerMode == ComposerMode.REPLY && hasReplyResult -> {
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(PanelDimens.GENERATE_BUTTON_GAP_DP.dp)
+            ) {
+                GenerationActionButton(
+                    text = "重试",
+                    onClick = onRetry,
+                    modifier = Modifier.weight(1f),
+                    containerColor = Primary,
+                    heightDp = PanelDimens.TRIO_HEIGHT_DP
+                )
+                GenerationActionButton(
+                    text = "记入知识库",
+                    onClick = onSaveToKb,
+                    modifier = Modifier.weight(1f),
+                    containerColor = PrimaryDark,
+                    heightDp = PanelDimens.TRIO_HEIGHT_DP
+                )
+            }
+        }
+        // REPLY 模式 + 无结果 → 全宽"生成回复 · N 条消息"
+        else -> {
+            val replyEnabled = messageCount > 0
+            GenerationActionButton(
+                text = if (messageCount > 0) "生成回复 · ${messageCount}条消息" else "生成回复",
+                onClick = onGenerateReply,
+                modifier = modifier.fillMaxWidth(),
+                enabled = replyEnabled,
+                containerColor = Primary,
                 heightDp = PanelDimens.TRIO_HEIGHT_DP
             )
         }

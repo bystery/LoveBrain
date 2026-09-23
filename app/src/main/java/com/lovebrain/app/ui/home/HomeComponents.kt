@@ -60,11 +60,27 @@ import com.lovebrain.app.ui.theme.TextSecondary
 
 /** 首页页面目的地——根级导航 */
 sealed class HomeDestination {
-    data object Home : HomeDestination()
-    data object FeedbackCases : HomeDestination()
-    data object About : HomeDestination()
-    data object Providers : HomeDestination()
-    data object Usage : HomeDestination()
+data object Home : HomeDestination()
+data object FeedbackCases : HomeDestination()
+data object About : HomeDestination()
+data object Providers : HomeDestination()
+data object Usage : HomeDestination()
+
+companion object {
+    /** S1-06: Saver for rememberSaveable */
+    val Saver = androidx.compose.runtime.saveable.Saver<HomeDestination, String>(
+        save = { it::class.simpleName ?: "Home" },
+        restore = { name ->
+            when (name) {
+                "FeedbackCases" -> FeedbackCases
+                "About" -> About
+                "Providers" -> Providers
+                "Usage" -> Usage
+                else -> Home
+            }
+        }
+    )
+}
 }
 
 /**

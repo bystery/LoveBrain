@@ -12,7 +12,7 @@ import com.lovebrain.app.domain.FactSpeakerResolver
 import com.lovebrain.app.domain.FactSubjectResolver
 
 /**
- * 话题生命周期管理器 v6（F03 重构）。
+ * 话题生命周期管理器。
  *
  * 核心逻辑：
  * - 每轮对话记录到 moment/recent.md（最近 2 轮，溢出→对话暂存）
@@ -23,8 +23,8 @@ import com.lovebrain.app.domain.FactSubjectResolver
  * - ongoing 进行中事项合并写入 moment/plan.md（跨话题生存）
  * - 轮次/状态条目解析使用真实时间戳校验，防 schema 模板示例行混入
  *
- * F03 变更：
- * - 废弃 extractTopicKey 中文关键词列表匹配
+ * 设计要点：
+ * - 废弃中文关键词列表匹配
  * - 每条 scene fact 携带 sourceIds，引用本轮 HER/ME 消息 ID
  * - 客户端逐条校验 sourceId 必须属于冻结快照中的 HER/ME；非法来源只拒绝该事实
  * - 模型重述旧事实不更新时间；只有新来源的真实证据才更新
@@ -32,7 +32,10 @@ import com.lovebrain.app.domain.FactSubjectResolver
  * - 相同来源重复提交幂等
  * - 无法确定同一事项时保守不覆盖
  */
-class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
+class TopicRecorder(
+    private val knowledgeRepo: KnowledgeRepository,
+    private val roundCommitJournal: RoundCommitJournal? = null
+) {
 
     private val maxTopicTurns = AppConfig.MAX_TOPIC_TURNS
 
@@ -88,7 +91,7 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             return false
         }
 
-        // 1. 话题切换处理（仅凭 status=new 触发）
+        // 1. 话题切换处理（仅凭 status=new 触发）——在 WAL PREPARED 之前确定 topic 状态
         val curTopic = knowledgeRepo.getCurrentTopic(kb.name)
         val hasTopic = curTopic.isNotBlank() && curTopic != "（等待第一次对话）"
         val shouldRotate = topicLabel.isNotBlank() && topicStatus == "new"
@@ -148,6 +151,24 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
             }
         }
 
+        // S2-04: WAL — PREPARED: 将完整 RoundCommitEvent（含实际 recentEntry）原子写入 journal
+        val roundId = java.util.UUID.randomUUID().toString()
+        if (roundCommitJournal != null) {
+            val commitEvent = RoundCommitJournal.RoundCommitEvent(
+                roundId = roundId,
+                kbName = kb.name,
+                inputRevision = 0,
+                timestamp = time,
+                topicStatus = topicStatus,
+                topicLabel = topicLabel,
+                sceneFacts = sceneFacts.map { it.text },
+                ongoing = ongoing.map { it.name },
+                recentEntry = entry,
+                turnCountIncrement = 1
+            )
+            roundCommitJournal.beginCommit(commitEvent)
+        }
+
         // 3. 写入 moment/recent.md（职责拆出，见 writeRecent）
         // R02: 幂等——消息已记录时跳过 recent.md 重写和 turn count
         if (!alreadyRecorded) {
@@ -166,6 +187,12 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         if (!alreadyRecorded) {
             knowledgeRepo.incrementTurnCount(kb.name)
         }
+
+        // S2-04: WAL — COMMITTED: 标记提交完成并清理 journal
+        if (roundCommitJournal != null) {
+            roundCommitJournal.markCommitted(kb.name, roundId)
+        }
+
         return topicRotated
     }
 
@@ -826,6 +853,65 @@ class TopicRecorder(private val knowledgeRepo: KnowledgeRepository) {
         /** F04: 活动状态链最大保留条数——超出截断，防膨胀 */
         private const val MAX_CHAIN_STATES = 10
     }
+
+    /**
+     * S2-04: 崩溃恢复——检查是否有未完成的 WAL 事务并 roll-forward。
+     *
+     * 在 KB 被打开/激活时调用。如果 journal 中有 PREPARED/WRITING 阶段的事件，
+     * 重放其写入操作（幂等），然后标记 COMMITTED 并清理 journal。
+     */
+    suspend fun recoverIfNeeded(kbName: String) {
+        val journal = roundCommitJournal ?: return
+        val pendingEvent = journal.recoverPending(kbName) ?: return
+
+        com.lovebrain.app.util.L.w("S2-04: recovering round ${pendingEvent.roundId} for kb=$kbName")
+
+        // Roll-forward: 重放写入操作（幂等）
+        // 1. 话题切换
+        val curTopic = knowledgeRepo.getCurrentTopic(kbName)
+        val hasTopic = curTopic.isNotBlank() && curTopic != "（等待第一次对话）"
+        val shouldRotate = pendingEvent.topicLabel.isNotBlank() && pendingEvent.topicStatus == "new"
+        if (shouldRotate) {
+            if (hasTopic) {
+                knowledgeRepo.rotateTopic(kbName)
+            }
+            knowledgeRepo.setCurrentTopic(kbName, pendingEvent.topicLabel)
+        } else {
+            val newLabel = when {
+                pendingEvent.topicStatus == "drift" && pendingEvent.topicLabel.isNotBlank() -> pendingEvent.topicLabel
+                !hasTopic -> pendingEvent.topicLabel.ifBlank { "日常对话" }
+                else -> null
+            }
+            if (newLabel != null) {
+                knowledgeRepo.setCurrentTopic(kbName, newLabel)
+            }
+        }
+
+        // 2. 写入 recent.md（幂等——如果已包含相同 roundMsgIds 则跳过）
+        if (pendingEvent.recentEntry.isNotBlank()) {
+            val existingRecent = knowledgeRepo.readFile(kbName, "moment/recent.md")
+            val roundMsgIdMarker = pendingEvent.recentEntry.lines()
+                .firstOrNull { it.startsWith("<!-- round:msgIds:") }
+            if (roundMsgIdMarker != null && existingRecent.contains(roundMsgIdMarker)) {
+                com.lovebrain.app.util.L.w("S2-04: recent.md already contains this round, skipping write")
+            } else {
+                writeRecent(kbName, pendingEvent.recentEntry)
+            }
+        }
+
+        // 3. 增加 turn count（幂等——如果 recent 已包含则不重复）
+        val existingRecent = knowledgeRepo.readFile(kbName, "moment/recent.md")
+        val roundMsgIdMarker = pendingEvent.recentEntry.lines()
+            .firstOrNull { it.startsWith("<!-- round:msgIds:") }
+        if (roundMsgIdMarker == null || !existingRecent.contains(roundMsgIdMarker)) {
+            knowledgeRepo.incrementTurnCount(kbName)
+        }
+
+        // 4. 标记 COMMITTED 并清理 journal
+        journal.markCommitted(kbName, pendingEvent.roundId)
+        com.lovebrain.app.util.L.w("S2-04: recovery complete for round ${pendingEvent.roundId}")
+    }
+
     /** 获取经验提取的完整上下文：当前话题 + 场景链 + 最近对话 + 暂存 + 话题档案（最近N个） */
     suspend fun getTopicFullContext(kbName: String, topicCount: Int = AppConfig.VECTOR_CONTEXT_TOPICS): String {
         val topic = knowledgeRepo.getCurrentTopic(kbName)

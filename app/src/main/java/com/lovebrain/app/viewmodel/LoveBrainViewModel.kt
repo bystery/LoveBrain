@@ -6,6 +6,7 @@ import com.lovebrain.app.data.CostScope
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.ForegroundOperationCoordinator
 import com.lovebrain.app.domain.GenerationEngine
 import com.lovebrain.app.domain.KnowledgeTriggerCoordinator
 import com.lovebrain.app.domain.PromptBuilder
@@ -13,13 +14,16 @@ import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.DailySuggestion
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.PanelState
 import com.lovebrain.app.model.ProactiveOption
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
+import com.lovebrain.app.model.ReplyFailureKind
 import com.lovebrain.app.model.ReplyRequestState
+import com.lovebrain.app.model.buildGenerationInput
 import com.lovebrain.app.model.isBusy
 import com.lovebrain.app.model.isPreparing
 import com.lovebrain.app.model.isStreaming
@@ -71,6 +75,8 @@ class LoveBrainViewModel(
     private val securePrefs: SecurePrefs,
     private val triggerCoordinator: KnowledgeTriggerCoordinator,
     private val generationEngine: GenerationEngine,
+    // S2-02: 统一前台任务协调器——管理所有 AI 前台流程的互斥和生命周期
+    val operationCoordinator: ForegroundOperationCoordinator,
     // F02: 反馈案例仓库——点踩时本地保存
     private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null
 ) : ViewModel(), KnowledgeTriggerCoordinator.Callbacks, GenerationEngine.Callbacks {
@@ -382,10 +388,35 @@ class LoveBrainViewModel(
     private val _resultMode = MutableStateFlow(ResultMode.REPLY)
     val resultMode: StateFlow<ResultMode> = _resultMode.asStateFlow()
 
-    /** P1-2：前台任务互斥——同时只运行一个回复/润色/改写请求
-     *  D项修复：准备期也参与互斥
-     *  阻断B修复：改写也纳入前台互斥 */
-    val isForegroundBusy: Boolean get() = _replyRequestState.value.isBusy || _isProactive.value || (rewriteJob?.isActive == true)
+    /** S1-01: Composer mode——UI 会话状态，单一事实源。
+     * REPLY = 普通回复模式（默认）
+     * PROACTIVE = 主动发模式（蓝字切换进入，不发网络请求）
+     * 替代之前分散的 local inputMode / resultMode / isProactive 三个变量各自推断。 */
+    enum class ComposerMode { REPLY, PROACTIVE }
+    private val _composerMode = MutableStateFlow(ComposerMode.REPLY)
+    val composerMode: StateFlow<ComposerMode> = _composerMode.asStateFlow()
+
+    /** S1-01: 切换主动发模式——第一次点击只切换模式，不发网络请求。
+     * 再次点击退出主动发模式回到普通回复。 */
+    fun toggleProactiveMode() {
+        if (_isProactive.value || _replyRequestState.value.isBusy) return
+        _composerMode.value = if (_composerMode.value == ComposerMode.PROACTIVE) ComposerMode.REPLY else ComposerMode.PROACTIVE
+        // 退出主动发时清残留结果
+        if (_composerMode.value == ComposerMode.REPLY) {
+            _resultMode.value = ResultMode.REPLY
+            _proactiveOptions.value = emptyList()
+            _proactiveError.value = null
+        }
+    }
+
+    /** S1-01: 退出主动发模式（供生成成功后或取消时调用） */
+    fun exitProactiveMode() {
+        _composerMode.value = ComposerMode.REPLY
+        _resultMode.value = ResultMode.REPLY
+    }
+
+/** S2-02: 前台任务互斥——从 operationCoordinator 派生，不再拼多个 boolean */
+val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // ═══════════ F10: 仅看本轮开关 ═══════════
 
@@ -561,8 +592,13 @@ class LoveBrainViewModel(
     init {
         // F10: 确保至少有一个合法知识库（首次启动创建默认库，重复启动沿用，中断恢复补齐）
         viewModelScope.launch {
-            runCatching { knowledgeRepo.ensureInitialKnowledgeBase() }
-                .onFailure { L.w("ensureInitialKnowledgeBase failed: ${it::class.simpleName}") }
+            try {
+                knowledgeRepo.ensureInitialKnowledgeBase()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.w("ensureInitialKnowledgeBase failed: ${e::class.simpleName}")
+            }
             refreshKnowledgeBases()
         }
         val persisted = promptBuilder.validateConfig(securePrefs.thinkingMode, securePrefs.outputMode)
@@ -583,8 +619,8 @@ class LoveBrainViewModel(
         _totalAdoptCount.value = securePrefs.totalAdoptCount
         _totalRewriteCount.value = securePrefs.totalRewriteCount
         viewModelScope.launch {
-            // 规则 11：后台收集 runCatching 兜底（SharedFlow 收集不应崩面板）
-            runCatching {
+            // SharedFlow 收集不应崩面板
+            try {
                 deepSeekRepo.costEvents.collect { ev ->
                     val today = java.time.LocalDate.now().toString()
                     if (today != todayCostDate) { todayCostDate = today; _todayCostYuan.value = 0.0 }
@@ -599,7 +635,11 @@ class LoveBrainViewModel(
                         _lastCostYuan.value = ev.yuan
                     }
                 }
-            }.onFailure { L.w("计费事件收集异常：${it.javaClass.simpleName}") }
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.w("计费事件收集异常：${e.javaClass.simpleName}")
+            }
         }
 
         restoreState()
@@ -769,18 +809,19 @@ class LoveBrainViewModel(
     // ═══════════ 流式生成（委托 GenerationEngine） ═══════════
 
     /**
+     * S2-01/S2-02: 生成回复——通过 ForegroundOperationCoordinator 互斥，通过 GenerationInput 冻结输入。
+     *
      * GEN-01：同步 guard — 正在生成时拒绝启动，绝不覆盖当前 Job 引用。
      * GEN-02：启动前冻结消息快照 + KB，建立 ReplyGenerationContext。
-     * GEN-02B：冻结完整 KnowledgeBase 对象传入 Engine，AI prompt 与 nextRound 保存同源。
-     * F07/F08: 冻结持续意图和 IDEA 草稿到快照，结果和保存始终使用同一快照。
+     * S2-01：所有输入通过不可变 GenerationInput 冻结，进入 domain 后不再出现 Role.IDEA。
+     * S2-02：通过 operationCoordinator 统一管理前台任务互斥。
      * Engine reject → null → 旧 Job 保持 + context 不保存。
      */
     fun generate() {
-        // GEN-01 双层保护第一层：ViewModel guard
-        // P1-2：前台任务互斥——正在主动发时也拒绝
-        // 准备期也参与互斥——统一状态机 Preparing 防止准备期回复/主动发并发
-        // 阻断B修复：正在改写时也拒绝
-        if (_replyRequestState.value.isBusy || _isProactive.value || (rewriteJob?.isActive == true)) return
+        // S2-02: 通过 operationCoordinator 统一 guard
+        if (operationCoordinator.isActive(ForegroundOperationCoordinator.OperationType.REPLY) ||
+            operationCoordinator.isActive(ForegroundOperationCoordinator.OperationType.PROACTIVE) ||
+            operationCoordinator.isActive(ForegroundOperationCoordinator.OperationType.REWRITE)) return
 
         // P1-2：设置结果模式
         _resultMode.value = ResultMode.REPLY
@@ -790,28 +831,26 @@ class LoveBrainViewModel(
         _replyRequestState.value = ReplyRequestState.Preparing(requestId)
 
         // GEN-02：冻结快照 — 所有本轮上下文同源
-        // F08修复：应用编辑草稿的角色变更到统一快照，防双身份
-        // 用户编辑消息改角色（如HER→IDEA）但没点保存就生成时，
-        // 需要将草稿的角色和内容应用到快照中对应位置的消息
-        // GEN-02：冻结快照 — 所有本轮上下文同源
-        // 使用唯一快照构建入口，供 chat / 想法 / 来源映射 / 保存共用
         val snapshot = buildMessageSnapshot()
-        // F08: IDEA hint 叠入未提交草稿（基于已修正的快照收集）
         val userHint = collectIdeaHintWithDraft(snapshot)
-        // GEN-02B：冻结 KB 快照 — AI prompt 和 nextRound 保存使用同一对象
         val kbSnapshot = _activeKb.value
         val kbName = kbSnapshot?.name
 
-        // R08: 异步冻结持续意图和纠正快照，不阻塞主线程
-        // 旧代码用 runBlocking 读盘，遇锁等待会卡 UI
-        // D项修复：准备期纳入请求生命周期——prepJob 可被 stopGeneration 取消
+        // 异步冻结持续意图和纠正快照，不阻塞主线程；准备期纳入请求生命周期，可被 stopGeneration 取消
         val prepJob = viewModelScope.launch {
-            // R1-03: 统一 try/catch/finally——单一 request owner 覆盖准备/网络/解析/发布
+            // 统一 try/catch/finally——单一 request owner 覆盖准备/网络/解析/发布
             try {
                 ensureActive()
 
                 val intentSnapshot = kbName?.let { name ->
-                    runCatching { withContext(Dispatchers.IO) { knowledgeRepo.readIntent(name) } }.getOrNull()
+                    try {
+                        withContext(Dispatchers.IO) { knowledgeRepo.readIntent(name) }
+                    } catch (e: kotlinx.coroutines.CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        L.w("readIntent failed: ${e.message}")
+                        null
+                    }
                 } ?: com.lovebrain.app.model.IntentConfig()
 
                 val effectiveIntent = if (intentSnapshot.enabled &&
@@ -829,16 +868,42 @@ class LoveBrainViewModel(
                 } else intentSnapshot
 
                 val (correctionsSnapshot, correctionsRevision) = kbName?.let { name ->
-                    runCatching { withContext(Dispatchers.IO) { knowledgeRepo.readCorrectionsAndRevision(name) } }.getOrNull()
+                    try {
+                        withContext(Dispatchers.IO) { knowledgeRepo.readCorrectionsAndRevision(name) }
+                    } catch (e: kotlinx.coroutines.CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        L.w("readCorrectionsAndRevision failed: ${e.message}")
+                        null
+                    }
                 } ?: (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
                 val mergedCorrections = correctionsSnapshot.toMutableMap().also { it.putAll(roundCorrections) }
 
                 ensureActive()
 
-                // Engine 返回 null = reject；抛异常由 catch 转为 RecoverableError
-                val job = generationEngine.generate(snapshot, userHint, kbSnapshot, viewModelScope, this@LoveBrainViewModel, effectiveIntent, mergedCorrections, _onlyThisRound.value)
+                // S2-01: 构建不可变 GenerationInput——冻结本轮全部输入
+                val aggressive = _outputMode.value == 1
+                val providerConfig = deepSeekRepo.snapshotProviderConfig()
+                val input = buildGenerationInput(
+                    requestId = requestId,
+                    messages = snapshot,
+                    userHint = userHint,
+                    knowledgeBase = kbSnapshot,
+                    intentConfig = effectiveIntent,
+                    corrections = mergedCorrections,
+                    correctionsRevision = correctionsRevision,
+                    onlyThisRound = _onlyThisRound.value,
+                    aggressive = aggressive,
+                    providerHostHash = providerConfig?.baseUrl?.let { it.hashCode().toString(16) },
+                    providerModel = providerConfig?.model
+                )
+
+                // S2-01: 调用不可变输入入口 generateReply
+                val job = generationEngine.generateReply(input, viewModelScope, this@LoveBrainViewModel)
                 if (job != null) {
                     generateJob = job
+                    // S2-02: 注册到 operationCoordinator
+                    operationCoordinator.start(ForegroundOperationCoordinator.OperationType.REPLY, job)
                     replyGenerationContext = ReplyGenerationContext(
                         messages = snapshot,
                         messageIds = snapshot.mapTo(mutableSetOf()) { it.id },
@@ -861,14 +926,15 @@ class LoveBrainViewModel(
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
-                // R1-03/R1-04: 准备阶段异常转为 RecoverableError，不逃出协程
+                // S1-02: 准备阶段异常转为 RecoverableError，不泄露路径/Provider/内部细节
                 L.e("generate prep phase exception", e)
+                val failure = ReplyFailureKind.fromException(e)
                 _replyRequestState.value = ReplyRequestState.RecoverableError(
-                    message = "准备生成时出错：${e.message ?: "未知错误"}，请重试",
-                    retryable = true
+                    message = failure.userMessage,
+                    retryable = failure.retryable
                 )
             } finally {
-                // R1-03: finally 按 requestId 清理——只在仍为当前 requestId 时清理
+                // 按 requestId 清理——只在仍为当前 requestId 时清理
                 _replyRequestState.compareAndSet(
                     ReplyRequestState.Preparing(requestId),
                     ReplyRequestState.Idle
@@ -876,8 +942,6 @@ class LoveBrainViewModel(
             }
         }
         // Only track prepJob if it hasn't completed yet.
-        // With UnconfinedTestDispatcher, prepJob may complete before reaching this line.
-        // If it did, generateJob was already set to the Engine job (or null) inside prepJob.
         if (prepJob.isActive) {
             generateJob = prepJob
         }
@@ -891,10 +955,16 @@ class LoveBrainViewModel(
     /**
      * GEN-01/GEN-02：停止生成 — 取消真正运行的 Job，清 context，但不清消息。
      */
+    /**
+     * S1-02: 停止生成——先取消当前 owner Job，再清流式临时态。
+     * 保留输入、草稿、KB 和可重试信息。
+     * 清理顺序：取消 Job → 清流式状态 → 回 Idle → 清 context。
+     */
     fun stopGeneration() {
-        // 清理统一状态机——取消当前请求并回到 Idle
-        val currentState = _replyRequestState.value
-        _replyRequestState.value = ReplyRequestState.Idle
+        // S1-02: 先取消 Job，再写 Idle——避免先写 Idle 导致 callback 写入迟到状态
+        generateJob?.cancel()
+        generateJob = null
+
         // P1-05: 先取消改写——避免提前 return 导致单独改写时走不到取消代码
         rewriteJob?.cancel()
         rewriteJob = null
@@ -902,13 +972,15 @@ class LoveBrainViewModel(
         rewriteContextId = null
         _rewriteStates.value = emptyMap()
         _rewriteHistory.value = emptyMap()
-        if (!_replyRequestState.value.isBusy && generateJob == null) return
-        L.w("user stopped generation")
-        generateJob?.cancel()
-        generateJob = null
+
+        // S1-02: 清流式临时态，但保留输入、草稿、KB 和可重试信息
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
         _panelState.value = PanelState.KEYBOARD
+
+        // 回到 Idle
+        _replyRequestState.value = ReplyRequestState.Idle
+
         // GEN-02：停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
         // F04/P1-RC: stopGeneration 不清 roundCorrections——
@@ -1002,11 +1074,15 @@ class LoveBrainViewModel(
         _currentFeedbackCase.value = case
         if (repo != null) {
             viewModelScope.launch {
-                runCatching {
+                try {
                     withContext(Dispatchers.IO) {
                         repo.save(case)
                     }
-                }.onFailure { L.w("saveFeedbackCase failed: ${it::class.simpleName}") }
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    L.w("saveFeedbackCase failed: ${e::class.simpleName}")
+                }
             }
         }
     }
@@ -1021,7 +1097,7 @@ class LoveBrainViewModel(
     ) {
         val repo = feedbackCaseRepository ?: return
         viewModelScope.launch {
-            runCatching {
+            try {
                 withContext(Dispatchers.IO) {
                     val all = repo.getAll()
                     val existing = all.find { it.caseId == caseId } ?: return@withContext
@@ -1034,7 +1110,11 @@ class LoveBrainViewModel(
                         )
                     )
                 }
-            }.onFailure { L.w("updateFeedbackCase failed: ${it::class.simpleName}") }
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.w("updateFeedbackCase failed: ${e::class.simpleName}")
+            }
         }
     }
 
@@ -1207,7 +1287,7 @@ class LoveBrainViewModel(
         _streamingCoreText.value = ""
         _streamingSchemes.value = emptyList()
         _panelState.value = PanelState.KEYBOARD
-        // 阻断B修复：新轮开始时清理改写状态和历史，作废旧改写请求
+        // 新轮次开始时清理改写状态和历史，作废旧改写请求
         _rewriteStates.value = emptyMap()
         _rewriteHistory.value = emptyMap()
         rewriteRequestId = null
@@ -1291,18 +1371,17 @@ class LoveBrainViewModel(
         val isUpdate = existingEntry != null
         _actualSentState.value = ActualSentState.IDLE
         viewModelScope.launch {
-            runCatching {
-                withContext(Dispatchers.IO) {
+            try {
+                val success = withContext(Dispatchers.IO) {
                     if (isUpdate) {
-                        // P0-4: 替换旧记录——先删旧 entry 再追加新的
+                        // 替换旧记录——先删旧 entry 再追加新的
                         knowledgeRepo.replaceActualSentRecord(kbName, existingEntry!!, sentEntry)
                     } else {
                         knowledgeRepo.appendActualSentRecord(kbName, sentEntry)
                     }
                 }
-            }.onSuccess { success ->
                 if (success) {
-                    // P0-4: 只有第一次确认才计 adopt；同一 version 更新不重复 +1
+                    // 只有第一次确认才计 adopt；同一 version 更新不重复 +1
                     if (!isUpdate) {
                         _totalAdoptCount.value += 1
                         securePrefs.totalAdoptCount = _totalAdoptCount.value
@@ -1314,8 +1393,10 @@ class LoveBrainViewModel(
                     _actualSentState.value = ActualSentState.KB_NOT_FOUND
                     showPanelWarning("本轮保存失败：知识库已被删除")
                 }
-            }.onFailure {
-                L.e("recordActualSentMessage failed", it)
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("recordActualSentMessage failed", e)
                 _actualSentState.value = ActualSentState.IO_ERROR
                 showPanelWarning("记录发送失败，内容已保留，请重试")
             }
@@ -1537,17 +1618,20 @@ class LoveBrainViewModel(
     // ═══════════ 谈心模式（委托 GenerationEngine） ═══════════
 
     /**
-     * GEN-01：同步 guard — 正在谈心时拒绝启动。Engine reject → null → 旧 Job 保持。
+     * S2-02: 谈心——通过 operationCoordinator 互斥。
      * COUN-01：冻结 KB 快照传入 Engine，谈心期间切 KB 不影响 prompt 与日志目标。
      */
     fun generateCounseling(userMessage: String) {
         if (userMessage.isBlank()) return
-        if (_isCounseling.value) return
+        // S2-02: 通过 operationCoordinator 统一 guard
+        if (operationCoordinator.isActive(ForegroundOperationCoordinator.OperationType.COUNSELING)) return
         // COUN-01：冻结 KB 快照
         val kbSnapshot = _activeKb.value
         val job = generationEngine.generateCounseling(userMessage, kbSnapshot, viewModelScope, this)
         if (job != null) {
             counselingJob = job
+            // S2-02: 注册到 operationCoordinator
+            operationCoordinator.start(ForegroundOperationCoordinator.OperationType.COUNSELING, job)
             job.invokeOnCompletion {
                 if (counselingJob === job) {
                     counselingJob = null
@@ -1593,11 +1677,15 @@ class LoveBrainViewModel(
             }
         } else ""
 
-        runCatching {
+        try {
             withContext(Dispatchers.IO) {
                 knowledgeRepo.appendCounselingEntries(kbName, recordEntry, analysisEntry)
             }
-        }.onFailure { L.w("saveCounselingLog failed: ${it.javaClass.simpleName}") }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            L.w("saveCounselingLog failed: ${e.javaClass.simpleName}")
+        }
     }
 
     fun clearCounseling() {
@@ -1665,6 +1753,8 @@ class LoveBrainViewModel(
                 _activeKb.value = newKb
                 newKb?.let {
                     knowledgeRepo.migrateIfNeeded(it.name)
+                    // S2-04: WAL 崩溃恢复——检查未完成的 round commit 事务并 roll-forward
+                    topicRecorder.recoverIfNeeded(it.name)
                     _currentVector.value = knowledgeRepo.readVector(it.name)
                     // P1-D: 结构化 child——在当前协程内直接 await，不再 fire-and-forget。
                     // refreshIntentConfigForKb 内部有 KB identity guard 保护 UI commit。
@@ -1693,21 +1783,32 @@ class LoveBrainViewModel(
 
     /** GEN-01：同步 guard — 正在生成锦囊时拒绝启动。Engine reject → null → 旧 Job 保持。 */
     fun generateSuggest() {
+        // S1-04: 保留为内部入口，外部应调用 showTodaySuggestion 或 regenerateSuggestion
+        showTodaySuggestion()
+    }
+
+    /** S1-04: 展示今日锦囊——允许命中缓存（同日同KB同上下文不重复请求） */
+    fun showTodaySuggestion() {
         if (_isSuggesting.value) return
 
-        // R1-23: 缓存命中检查——同日同 kbId 同上下文指纹不重复请求
+        // 缓存命中检查——同日同 kbId 同上下文指纹不重复请求
         val kb = _activeKb.value
         val kbId = kb?.name ?: ""
         val today = TimeFmt.today()
         val contextFp = computeSuggestContextFingerprint(kbId, today)
-        val promptVersion = "v1.3.3"
+        val promptVersion = getCurrentPromptVersion()
         val cache = securePrefs.loadSuggestion()
         if (cache != null && cache.date == today && cache.kbId == kbId &&
             cache.contextFingerprint == contextFp && cache.promptVersion == promptVersion) {
             // 缓存命中——不发送模型请求
-            val cached = runCatching {
+            val cached = try {
                 Json.decodeFromString<com.lovebrain.app.model.DailySuggestion>(cache.json)
-            }.getOrNull()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.w("SUGGEST cache parse failed: ${e.message}")
+                null
+            }
             if (cached != null) {
                 _suggestion.value = cached
                 L.w("SUGGEST cache hit, skipping model request")
@@ -1715,9 +1816,23 @@ class LoveBrainViewModel(
             }
         }
 
+        startSuggestGeneration()
+    }
+
+    /** S1-04: 明确重新生成锦囊——绕过缓存，发起新的模型请求 */
+    fun regenerateSuggestion() {
+        if (operationCoordinator.isActive(ForegroundOperationCoordinator.OperationType.SUGGEST)) return
+        L.w("SUGGEST explicit regeneration, bypassing cache")
+        startSuggestGeneration()
+    }
+
+    /** S1-04: 实际发起锦囊生成请求 */
+    private fun startSuggestGeneration() {
         val job = generationEngine.generateSuggest(viewModelScope, this)
         if (job != null) {
             suggestJob = job
+            // S2-02: 注册到 operationCoordinator
+            operationCoordinator.start(ForegroundOperationCoordinator.OperationType.SUGGEST, job)
             job.invokeOnCompletion {
                 if (suggestJob === job) {
                     suggestJob = null
@@ -1726,10 +1841,24 @@ class LoveBrainViewModel(
         }
     }
 
-    /** R1-23: 计算锦囊上下文指纹——kbId + 日期 + 阶段（不读盘，同步安全） */
+    /** S1-04: 获取当前 prompt 版本——不再硬编码 */
+    private fun getCurrentPromptVersion(): String {
+        return com.lovebrain.app.BuildConfig.VERSION_NAME
+    }
+
+    /** S1-04: 计算锦囊上下文指纹——覆盖 KB identity、stage、profile、outputMode、thinkingMode、onlyThisRound
+     * 使用 SHA-256 替代简单 hashCode，避免碰撞 */
     private fun computeSuggestContextFingerprint(kbId: String, today: String): String {
-        val stage = _activeKb.value?.stage ?: ""
-        return "$kbId|$today|$stage".hashCode().toString(16)
+        val kb = _activeKb.value
+        val stage = kb?.stage ?: ""
+        val profile = ""  // KnowledgeBase has no profile field; stage is the main context
+        val outputMode = _outputMode.value
+        val thinkingMode = securePrefs.thinkingMode
+        val onlyThisRound = _onlyThisRound.value
+        val fingerprintInput = "$kbId|$today|$stage|$profile|$outputMode|$thinkingMode|$onlyThisRound"
+        val md = java.security.MessageDigest.getInstance("SHA-256")
+        val hashBytes = md.digest(fingerprintInput.toByteArray())
+        return hashBytes.joinToString("") { "%02x".format(it) }.take(16)
     }
 
     private val kbName: String? get() = _activeKb.value?.name
@@ -1747,19 +1876,22 @@ class LoveBrainViewModel(
 
     // ═══════════ 主动发起/润色（委托 GenerationEngine） ═══════════
 
-    /** GEN-01：同步 guard — 正在主动发时拒绝启动。Engine reject → null → 旧 Job 保持。 */
-    /** P1-2：前台任务互斥——正在生成回复时也拒绝 */
+    /** S2-02: 主动发——通过 operationCoordinator 互斥 */
     fun generateProactive(draft: String = "", scene: String = "") {
-        // D项修复：准备期也参与互斥
-        // 阻断B修复：正在改写时也拒绝
-        if (_isProactive.value || _replyRequestState.value.isBusy || (rewriteJob?.isActive == true)) return
+        // S2-02: 通过 operationCoordinator 统一 guard
+        if (operationCoordinator.isActive(ForegroundOperationCoordinator.OperationType.PROACTIVE) ||
+            operationCoordinator.isActive(ForegroundOperationCoordinator.OperationType.REPLY) ||
+            operationCoordinator.isActive(ForegroundOperationCoordinator.OperationType.REWRITE)) return
 
-        // P1-2：设置结果模式
+        // S1-01: 主动发生成入口——设置 composer mode 和 result mode
+        _composerMode.value = ComposerMode.PROACTIVE
         _resultMode.value = ResultMode.PROACTIVE
 
         val job = generationEngine.generateProactive(draft, scene, viewModelScope, this)
         if (job != null) {
             proactiveJob = job
+            // S2-02: 注册到 operationCoordinator
+            operationCoordinator.start(ForegroundOperationCoordinator.OperationType.PROACTIVE, job)
             job.invokeOnCompletion {
                 if (proactiveJob === job) {
                     proactiveJob = null
@@ -1833,6 +1965,12 @@ class LoveBrainViewModel(
     }
 
     override fun onReplyResult(result: GenerateResult) {
+        // S1-02: requestId 隔离——迟到旧回调不污染新请求状态
+        val currentState = _replyRequestState.value
+        if (!currentState.isBusy && currentState !is ReplyRequestState.Idle) {
+            // 非活跃请求的回调，丢弃
+            return
+        }
         // 统一状态机：根据结果类型发布对应状态，UI 可见且有 retry/open settings 动作
         _replyRequestState.value = when (result) {
             is GenerateResult.Success -> ReplyRequestState.Idle
@@ -1873,9 +2011,11 @@ class LoveBrainViewModel(
     }
 
     override fun onReplyGenerating(isGenerating: Boolean, isGeneratingCore: Boolean) {
-        // 派生属性已由 replyRequestState 驱动，不再独立写入
-        // 当 Engine 报告 isGenerating=false 时，如果仍在 Streaming，表示请求结束
-        if (!isGenerating && _replyRequestState.value is ReplyRequestState.Streaming) {
+        // S1-02: requestId 隔离——只在当前请求仍为活跃状态时才修改
+        // 旧请求的迟到 callback 不得把新请求改回 Idle
+        val currentState = _replyRequestState.value
+        if (!isGenerating && currentState is ReplyRequestState.Streaming) {
+            // 只在当前 Streaming 状态属于活跃请求时才回 Idle
             _replyRequestState.value = ReplyRequestState.Idle
         }
     }
@@ -1952,12 +2092,12 @@ class LoveBrainViewModel(
 
     override fun onSuggestResult(suggestion: com.lovebrain.app.model.DailySuggestion?) {
         _suggestion.value = suggestion
-        // R1-23: 持久化——缓存键包含 kbId、日期、上下文指纹、promptVersion
+        // S1-04: 持久化——缓存键包含 kbId、日期、上下文指纹、promptVersion（不再硬编码）
         if (suggestion != null) {
             val kbId = _activeKb.value?.name ?: ""
             val today = TimeFmt.today()
             val contextFp = computeSuggestContextFingerprint(kbId, today)
-            val promptVersion = "v1.3.3"
+            val promptVersion = getCurrentPromptVersion()
             securePrefs.saveSuggestion(
                 Json.encodeToString(serializer<com.lovebrain.app.model.DailySuggestion>(), suggestion),
                 today,
@@ -2151,22 +2291,20 @@ class LoveBrainViewModel(
             }
         }
         viewModelScope.launch {
-            runCatching {
+            try {
                 val updated = withContext(Dispatchers.IO) {
                     knowledgeRepo.saveIntent(kbName, text, enabled, expiry, effectiveExpiryDate, status)
                 }
                 // KB identity guard：只有当前 active KB 仍是保存目标的 KB 时才更新 UI
-                // 如果用户已切到另一个 KB，数据仍正确写目标 KB，但不覆盖当前 UI
                 if (_activeKb.value?.name == kbName) {
                     _intentConfig.value = updated
                     _kbNotice.value = if (enabled) "持续意图已开启" else "持续意图已关闭"
-                    // R08: 保存成功后关闭编辑器（仅当仍在同一 KB 时）
                     _showIntentEditor.value = false
-                    // P1-9: Intent save 成功后检测 stale——旧答案基于旧意图
                     markCurrentResultStaleIfNeeded()
                 }
-            }.onFailure {
-                // R08: 持久化失败保留编辑状态并提示
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
                 showPanelWarning("意图保存失败，内容已保留，请重试")
             }
         }
@@ -2351,7 +2489,7 @@ class LoveBrainViewModel(
     }
 
     /**
-     * F01 v2: 自定义改写——用户输入自由文字要求。
+     * 自定义改写——用户输入自由文字要求。
      * 如“保留第一句，第二句不要”。原句和自定义文字作为数据输入，
      * 不能借原句内的指令改变输出协议。
      */
@@ -2361,7 +2499,7 @@ class LoveBrainViewModel(
     }
 
     /**
-     * F01 v2: 统一改写内部实现——预设和自定义共用。
+     * 统一改写内部实现——预设和自定义共用。
      * option 是 UI 展示文案，instruction 是发给模型的改写指令。
      */
     private fun rewriteSchemeInternal(
@@ -2395,7 +2533,7 @@ class LoveBrainViewModel(
         val requestId = java.util.UUID.randomUUID().toString()
         rewriteRequestId = requestId
 
-        // 阻断B修复：绑定轮次身份——新轮/切库/保存后旧改写不写入
+        // 绑定轮次身份——新轮/切库/保存后旧改写不写入
         val contextId = (ctx.kbName ?: "") + "_" + ctx.messageIds.hashCode()
         rewriteContextId = contextId
 
@@ -2446,7 +2584,7 @@ class LoveBrainViewModel(
 
                 // 校验请求身份——切库/新轮/清空后旧结果不写入
                 if (rewriteRequestId != requestId) return@launch
-                // 阻断B修复：校验轮次身份未变
+                // 校验轮次身份未变
                 val currentContextId = (_activeKb.value?.name ?: "") + "_" + (replyGenerationContext?.messageIds?.hashCode() ?: 0)
                 if (rewriteContextId != contextId || currentContextId != contextId) return@launch
 
@@ -2456,7 +2594,7 @@ class LoveBrainViewModel(
                     return@launch
                 }
 
-                // 阻断B修复：只替换目标卡正文，不回写整个捕获的旧 response
+                // 只替换目标卡正文，不回写整个捕获的旧 response
                 // P0-1: 根据 source 更新对应方案列表
                 val currentResult = _result.value as? GenerateResult.Success ?: return@launch
                 val currentResponse = currentResult.response
@@ -2668,7 +2806,7 @@ class LoveBrainViewModel(
 
     companion object {
         /** ：金额格式化（固定三位小数 + 固定 Locale.US 小数点，防区域格式回归；展示条字号钉死） */
-        // 主人纠正（2026-08-30）：今日/本次花费保留三位小数（原 Q6 两位小数口径作废，原话：保留三位小数）
+        // 花费保留三位小数
         internal fun formatYuan(yuan: Double): String = String.format(java.util.Locale.US, "%.3f", yuan)
 
         /**

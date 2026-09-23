@@ -44,13 +44,14 @@ class SetupViewModel(
     private val _feedbackError = MutableStateFlow<String?>(null)
     val feedbackError: StateFlow<String?> = _feedbackError.asStateFlow()
 
-    /** 导出状态——typed，替代裸异常 */
-    sealed class ExportState {
-        data object Idle : ExportState()
-        data object Loading : ExportState()
-        data class Success(val text: String) : ExportState()
-        data class Error(val message: String) : ExportState()
-    }
+/** 导出状态——typed，替代裸异常 */
+sealed class ExportState {
+    data object Idle : ExportState()
+    data object Loading : ExportState()
+    /** S1-05: Success 携带 exportId——绑定复制/保存状态，新导出自动重置 */
+    data class Success(val text: String, val exportId: String = java.util.UUID.randomUUID().toString()) : ExportState()
+    data class Error(val message: String) : ExportState()
+}
     private val _exportState = MutableStateFlow<ExportState>(ExportState.Idle)
     val exportState: StateFlow<ExportState> = _exportState.asStateFlow()
     fun resetExportState() { _exportState.value = ExportState.Idle }

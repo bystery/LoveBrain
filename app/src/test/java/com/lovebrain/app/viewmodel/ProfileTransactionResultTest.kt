@@ -99,7 +99,8 @@ class ProfileTransactionResultTest {
             topicRecorder = mockk(relaxed = true),
             securePrefs = prefs,
             triggerCoordinator = mockk(relaxed = true),
-            generationEngine = mockk(relaxed = true)
+            generationEngine = mockk(relaxed = true),
+operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
         )
     }
 

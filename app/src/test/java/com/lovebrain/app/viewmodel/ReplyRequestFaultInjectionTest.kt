@@ -99,15 +99,16 @@ class ReplyRequestFaultInjectionTest {
         val vm = createViewModel(knowledgeRepo = knowledgeRepo)
         vm.addMessage(com.lovebrain.app.model.ChatMessage.Role.HER, "test")
 
-        // 快速连点
+        // 快速连点——第二次应被 guard 拒绝
         vm.generate()
         vm.generate()
 
-        // 只有一个活跃请求——状态不应出现两个 requestId
+        // 状态应为 RecoverableError 或 Idle（第一次的 prep 失败），
+        // 不应卡在 Preparing——证明第二次 generate 没有创建新请求覆盖清理
         val state = vm.replyRequestState.value
         assertTrue(
-            "State should not have two concurrent requests. Actual: $state",
-            state !is ReplyRequestState.Preparing || state !is ReplyRequestState.Preparing
+            "State should be RecoverableError or Idle after double generate with failing prep. Actual: $state",
+            state is ReplyRequestState.RecoverableError || state is ReplyRequestState.Idle
         )
     }
 
@@ -135,14 +136,9 @@ class ReplyRequestFaultInjectionTest {
         every { securePrefs.totalAdoptCount } returns 0
         every { securePrefs.totalRewriteCount } returns 0
         every { securePrefs.getWorkerTickets() } returns emptyList()
-        // Engine.generate 返回 null（reject），使 prepJob 走正常路径
+        // Engine.generateReply 返回 null（reject），使 prepJob 走正常路径
         every {
-            generationEngine.generate(
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
+            generationEngine.generateReply(
                 any(),
                 any(),
                 any()
@@ -155,7 +151,8 @@ class ReplyRequestFaultInjectionTest {
             topicRecorder = topicRecorder,
             securePrefs = securePrefs,
             triggerCoordinator = triggerCoordinator,
-            generationEngine = generationEngine
+            generationEngine = generationEngine,
+            operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
         )
     }
 }

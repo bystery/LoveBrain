@@ -33,7 +33,7 @@ import com.lovebrain.app.ui.theme.TextPrimary
 import com.lovebrain.app.ui.theme.TextSecondary
 
 /**
- * 全 App 唯一页头规格（主人 2026-08-31 定稿）：
+ * 全 App 唯一页头规格：
  *   顶部留白 24dp → 页头行（返回钮 + 18sp 标题）高 48dp → 1dp 浅分割线 → 内容距分割线 16dp。
  *   所有二级页（知识库管理/编辑知识库/设置页/新建知识库问卷）走 [ScreenPage]，不再各写各的。
  */

@@ -311,7 +311,7 @@ class PromptBuilder(
      * 旧问题：`[m0] PARTNER: ${content}` 格式中，正文包含换行、`[m1] USER:`、`</chat>` 时
      * 会造成表示层歧义；预算裁剪又用 takeLast，可能切掉来源与 speaker。
      *
-     * F10 修复：每条消息使用 JSON 对象格式，正文通过序列化转义。
+     * 每条消息使用 JSON 对象格式，正文通过序列化转义。
      * PARTNER/USER 是数据中的人物身份，不机械映射成 API 的 assistant/system 消息角色。
      *
      * 来源映射仅保留最终真正发送的消息，最新消息不可切掉 speaker。
@@ -427,8 +427,9 @@ class PromptBuilder(
         corrections: Map<String, MemoryCorrection>,
         refs: MutableList<MemoryRef>,
         messages: List<ChatMessage> = emptyList()
-    ): String {
-        knowledgeRepo.migrateIfNeeded(kb.name)
+): String {
+// S2-06: migrateIfNeeded 不再在 PromptBuilder 热路径调用——迁移只在打开/升级知识库时运行
+
         val sb = StringBuilder()
 
         // 画像段（me/her/warmth 各一条 MemoryRef）
@@ -566,12 +567,12 @@ class PromptBuilder(
     }
 
     /** R06/F19: 生成 MemoryRef — id 为 kind+sourcePath 的稳定 ID
-     * R06 修复：scene 和 ongoing 不再用整段文本 hash——
+     * scene 和 ongoing 不再用整段文本 hash——
      * 旧实现用内容 hash 做 ID，导致画像添一句、经验多一块、事项有更新
      * 都会改变 ID，旧纠正全部失效。改为文件级稳定 ID，
      * 纠正绑定到文件而非内容快照。
      *
-     * F19 修复：增加条目级 ID 支持——
+     * 增加条目级 ID 支持——
      * 对于 ongoing 事项，可以传入 entryId 来精确定位某条事项，
      * 而不是整份 plan.md。纠正 A 不影响 B。
      * 档案整体操作可以保留（无 entryId），但 UI 必须说清"整份档案"。 */
@@ -786,7 +787,7 @@ class PromptBuilder(
                 append(buildTimestampPrompt())
                 return@buildString
             }
-            knowledgeRepo.migrateIfNeeded(kb.name)
+            // S2-06: migrateIfNeeded removed from prompt hot path
 
             // 1. 关系阶段/温度摘要（简短）
             val stage = kb.stage?.trim()
@@ -846,10 +847,11 @@ class PromptBuilder(
         // 高优先 section 先保留
         val highPriority = listOf("## 与今天相关的事项", "## 需要避开的经验")
         val lowPriority = listOf("## 温度摘要", "## 表达偏好", "## 关系阶段")
+        // S1-04: 只在条目/段落边界裁剪，不做裸 take(N) 截断
         for (section in sections.drop(if (prefix != null) 1 else 0)) {
             val isHigh = highPriority.any { section.startsWith(it) }
             if (isHigh && remaining > 0) {
-                val toAdd = section.take(remaining)
+                val toAdd = trimToEntryBoundary(section, remaining)
                 result.append(toAdd)
                 remaining -= toAdd.length
             }
@@ -858,7 +860,7 @@ class PromptBuilder(
         for (section in sections.drop(if (prefix != null) 1 else 0)) {
             val isLow = lowPriority.any { section.startsWith(it) }
             if (isLow && remaining > 0) {
-                val toAdd = section.take(remaining)
+                val toAdd = trimToEntryBoundary(section, remaining)
                 result.append(toAdd)
                 remaining -= toAdd.length
             }
@@ -867,10 +869,25 @@ class PromptBuilder(
         for (section in sections.drop(if (prefix != null) 1 else 0)) {
             val isHandled = highPriority.any { section.startsWith(it) } || lowPriority.any { section.startsWith(it) }
             if (!isHandled && remaining > 0) {
-                val toAdd = section.take(remaining)
+                val toAdd = trimToEntryBoundary(section, remaining)
                 result.append(toAdd)
                 remaining -= toAdd.length
             }
+        }
+        return result.toString()
+    }
+
+    /** S1-04: 在条目/段落边界裁剪文本，不做裸 take(N) 截断。
+     *  按 \n\n 或 \n- 分割为完整条目，只追加完整条目。 */
+    private fun trimToEntryBoundary(text: String, maxLength: Int): String {
+        if (text.length <= maxLength) return text
+        // 按行分割，保留完整行
+        val lines = text.split("\n")
+        val result = StringBuilder()
+        for (line in lines) {
+            if (result.length + line.length + 1 > maxLength) break
+            if (result.isNotEmpty()) result.append("\n")
+            result.append(line)
         }
         return result.toString()
     }
@@ -909,9 +926,9 @@ class PromptBuilder(
         }
 
         // 对方画像简要
-        if (kb != null) {
-            knowledgeRepo.migrateIfNeeded(kb.name)
-            val herProfile = knowledgeRepo.readFile(kb.name, "understand/her.md")
+if (kb != null) {
+// S2-06: migrateIfNeeded removed from prompt hot path
+val herProfile = knowledgeRepo.readFile(kb.name, "understand/her.md")
             if (herProfile.isNotBlank()) {
                 // 只取前 500 字，避免注入过多
                 sb.append("## 对方画像\n").append(herProfile.take(500))
@@ -940,9 +957,9 @@ class PromptBuilder(
      * 无阶段节选、无此刻、无最近对话。
      */
     private suspend fun buildCoreKnowledgeSubset(kb: KnowledgeBase?, messages: List<ChatMessage> = emptyList()): String {
-        if (kb == null) return "（暂无知识库，按通用策略处理）\n\n"
-        knowledgeRepo.migrateIfNeeded(kb.name)
-        val sb = StringBuilder()
+if (kb == null) return "（暂无知识库，按通用策略处理）\n\n"
+// S2-06: migrateIfNeeded removed from prompt hot path
+val sb = StringBuilder()
 
         // # 【懂得】关系画像（A2-6：三段拼接与回复知识段逐字相同，抽 helper 消重）
         sb.appendProfileSection(kb.name)

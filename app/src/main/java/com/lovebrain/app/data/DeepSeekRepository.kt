@@ -673,13 +673,13 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
      * 测试 API 连接是否有效：发送一个最小请求验证 apiKey/model/baseUrl 是否正确。
      * 不使用 securePrefs 中的配置，而是用传入的参数测试（允许用户先测试再保存）。
      *
-     *  修复：请求体接上  降级链——初始带 thinking.type=disabled（直出），
+     * 请求体接上降级链——初始带 thinking.type=disabled（直出），
      * 命中 PARAM_UNSUPPORTED 就去掉 thinking 参数重试一次（最多 2 次尝试）。
      */
     suspend fun testConnection(apiKey: String, model: String, baseUrl: String): Boolean {
         if (apiKey.isBlank() || baseUrl.isBlank()) return false
         val testModel = model.ifBlank { AppConfig.DEFAULT_MODEL }
-        //  改动点⑤：使用 normalizeBaseUrl 统一处理（含  脏数据拦截）
+        // 使用 normalizeBaseUrl 统一处理
         val url = normalizeBaseUrl(baseUrl)
 
         // 降级链：最多 2 次尝试（初始带 thinking.type=disabled + 命中 PARAM_UNSUPPORTED 后去掉 thinking）
@@ -713,7 +713,7 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
                 val root = json.parseToJsonElement(respBody).jsonObject
                 return root["choices"] != null
             } catch (e: Exception) {
-                // ：取消信号必须重抛，禁止吞掉误报"测试失败"（复用 GenerationEngine :397 先例）
+                // 取消信号必须重抛
                 if (e is CancellationException) throw e
                 // 命中 PARAM_UNSUPPORTED → 去掉 thinking 参数重试一次
                 val errorMsg = mapApiError(e.message ?: "")
@@ -906,13 +906,13 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
             }
             // 两态：0=直出（disabled） 1=思考（enabled + reasoning_effort low）
             when (tMode) {
-                //  修复②：直出模式也走降级链——前 3 个候选（index 0-2）才发 disabled；
-                // thinkingShapeIndex == 3（④ none）时不发送任何 thinking 族参数
+                // 直出模式也走降级链——前 3 个候选才发 disabled；
+                // thinkingShapeIndex == 3 时不发送任何 thinking 族参数
                 0 -> if (thinkingShapeIndex < 3) {
                     putJsonObject("thinking") { put("type", "disabled") }
                 }
                 1 -> {
-                    //  改动点④：thinking 两态候选 wire shape
+                    // thinking 两态候选 wire shape
                     when (THINKING_WIRE_SHAPES.getOrNull(thinkingShapeIndex)) {
                         "thinking.type" -> {
                             putJsonObject("thinking") {
@@ -1002,14 +1002,14 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
     companion object {
 
         /**
-         * 配置类错误内部前缀（，仿 PARAM_UNSUPPORTED: 先例）：
+         * 配置类错误内部前缀：
          * 携带此标记的错误不重试、不误报"网络波动"，展示前去前缀透传原文案。
          */
         internal const val CONFIG_ERROR_PREFIX = "CONFIG_ERROR:"
 
-        /** 配置类错误固定文案全集（无新机制：全部来自既有固定字符串，单测锚定） */
+        /** 配置类错误固定文案全集 */
         private val CONFIG_ERROR_MESSAGES = setOf(
-            // normalizeBaseUrl 两条（ 脏数据拦截）
+            // normalizeBaseUrl
             "地址必须以 http:// 或 https:// 开头",
             "检测到 API Key 误填入地址栏，请检查",
             // HttpsTrustGuard 两条
@@ -1043,10 +1043,8 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
         /**
          * 错误文案映射：DeepSeek/网络的英文原文不直接甩给用户。
          * 命中已知错误→人话；未命中→通用提示；英文原文保留在 logcat（L.w）供排查。
-         *  改动点⑥ + ：新增 PARAM_UNSUPPORTED 标记供降级链判定；响应体只记长度。
-         *  修复：PARAM_UNSUPPORTED 仅限内部使用（GenerationEngine 判定降级），
-         * 降级用尽后走下方人话兜底文案，不直接展示裸标记。
-         * ：internal 放开（仅单测可见，先例 = HttpsTrustGuard），供回归锚定 400+thinking 文案。
+         * PARAM_UNSUPPORTED 仅限内部使用（GenerationEngine 判定降级），
+         * 降级用尽后走人话兜底文案。
          */
         internal fun mapApiError(raw: String, code: Int = 0): String {
             val s = raw.lowercase()
@@ -1062,8 +1060,7 @@ suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): R
                 }
                 return "PARAM_UNSUPPORTED:$field"
             }
-            // 人话兜底：400 且 body 含 thinking 族关键词（降级链未接或已用尽时展示）
-            // ：原“已自动降级”描述失真（降级已用尽才走到这），换成如实指引（固定表文案）
+            // 人话兜底：400 且 body 含 thinking 族关键词
             if (code == 400 &&
                 (s.contains("thinking") || s.contains("reasoning_effort") || s.contains("enable_thinking"))) {
                 return "模型不支持思考模式参数，请切换直出模式后重试"

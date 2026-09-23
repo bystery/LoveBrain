@@ -2,26 +2,28 @@ package com.lovebrain.app.viewmodel
 
 import com.lovebrain.app.domain.GenerationEngine
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.PanelState
+import com.lovebrain.app.model.toChatMessages
 import io.mockk.every
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.launch
 
 /**
- * 测试辅助：统一 stub GenerationEngine.generate() 的 8 参数签名。
+ * 测试辅助：统一 stub GenerationEngine.generateReply() 的 3 参数签名。
  *
- * 生产代码 generate() 签名为：
- *   generate(messages, userHint, knowledgeBase, scope, callbacks, intentConfig, corrections, onlyThisRound)
+ * S2-01: 生产代码 generateReply() 签名为：
+ *   generateReply(input: GenerationInput, scope: CoroutineScope, callbacks: Callbacks)
  *
  * 旧测试只 mock 7 个 any()，导致 MockK 不匹配 → relaxed mock 返回 null → 连锁失败。
- * 本 helper 确保所有 stub 完整匹配 8 参数；Engine 签名再演进只改这一处。
+ * 本 helper 确保所有 stub 完整匹配 3 参数；Engine 签名再演进只改这一处。
  */
 object GenerationEngineTestHelper {
 
     /**
-     * Stub engine.generate 成功返回——模拟完整流式回调链。
+     * Stub engine.generateReply 成功返回——模拟完整流式回调链。
      *
      * @param engine 被 mock 的 GenerationEngine
      * @param response 返回的 LoveBrainResponse
@@ -36,12 +38,12 @@ object GenerationEngineTestHelper {
         gate: CompletableDeferred<Unit>? = null
     ) {
         every {
-            engine.generate(
-                any(), any(), any(), any(), any(), any(), any(), any()
+            engine.generateReply(
+                any(), any(), any()
             )
         } answers {
-            val scope = arg<CoroutineScope>(3)
-            val callbacks = arg<GenerationEngine.Callbacks>(4)
+            val scope = arg<CoroutineScope>(1)
+            val callbacks = arg<GenerationEngine.Callbacks>(2)
             scope.launch {
                 callbacks.onReplyStart()
                 if (gate != null) {
@@ -56,7 +58,7 @@ object GenerationEngineTestHelper {
     }
 
     /**
-     * Stub engine.generate 成功返回，并可捕获传入的 messages 快照。
+     * Stub engine.generateReply 成功返回，并可捕获传入的 messages 快照。
      */
     fun stubReplyGenerateSuccessCapturing(
         engine: GenerationEngine,
@@ -68,14 +70,14 @@ object GenerationEngineTestHelper {
         gate: CompletableDeferred<Unit>? = null
     ) {
         every {
-            engine.generate(
-                any(), any(), any(), any(), any(), any(), any(), any()
+            engine.generateReply(
+                any(), any(), any()
             )
         } answers {
-            val msgs = firstArg<List<com.lovebrain.app.model.ChatMessage>>()
-            capturedMessages.complete(msgs)
-            val scope = arg<CoroutineScope>(3)
-            val callbacks = arg<GenerationEngine.Callbacks>(4)
+            val input = firstArg<GenerationInput>()
+            capturedMessages.complete(input.toChatMessages())
+            val scope = arg<CoroutineScope>(1)
+            val callbacks = arg<GenerationEngine.Callbacks>(2)
             scope.launch {
                 callbacks.onReplyStart()
                 if (gate != null) {
@@ -90,7 +92,7 @@ object GenerationEngineTestHelper {
     }
 
     /**
-     * Stub engine.generate 挂起在 gate 上——用于测试生成期间操作。
+     * Stub engine.generateReply 挂起在 gate 上——用于测试生成期间操作。
      * 回调链只触发 onReplyStart，然后挂起。
      */
     fun stubReplyGenerateHanging(
@@ -99,12 +101,12 @@ object GenerationEngineTestHelper {
         onStreamingSchemes: List<com.lovebrain.app.model.Scheme>? = null
     ) {
         every {
-            engine.generate(
-                any(), any(), any(), any(), any(), any(), any(), any()
+            engine.generateReply(
+                any(), any(), any()
             )
         } answers {
-            val scope = arg<CoroutineScope>(3)
-            val callbacks = arg<GenerationEngine.Callbacks>(4)
+            val scope = arg<CoroutineScope>(1)
+            val callbacks = arg<GenerationEngine.Callbacks>(2)
             scope.launch {
                 callbacks.onReplyStart()
                 if (onStreamingSchemes != null) {
@@ -116,12 +118,12 @@ object GenerationEngineTestHelper {
     }
 
     /**
-     * Stub engine.generate 返回 null（Engine reject）。
+     * Stub engine.generateReply 返回 null（Engine reject）。
      */
     fun stubReplyGenerateReject(engine: GenerationEngine) {
         every {
-            engine.generate(
-                any(), any(), any(), any(), any(), any(), any(), any()
+            engine.generateReply(
+                any(), any(), any()
             )
         } returns null
     }

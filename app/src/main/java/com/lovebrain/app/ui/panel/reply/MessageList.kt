@@ -57,7 +57,7 @@ fun MessageList(
     onEdit: (Int) -> Unit,
     onDelete: (String) -> Unit,
     modifier: Modifier = Modifier,
-    // 主人重构：空态蓝字 = 主动发入口（点击召唤/再点关闭）
+    // 空态蓝字 = 主动发入口（点击召唤/再点关闭）
     onEmptyAction: (() -> Unit)? = null,
     proactiveActive: Boolean = false
 ) {
@@ -90,7 +90,7 @@ LaunchedEffect(messages.size) {
 }
 
     if (messages.isEmpty()) {
-        // 主人纠正（2026-08-30）：空态包高+垂直居中，去掉 20dp 大边距（原固定高顶部对齐致想法行上方大片空白）
+        // 空态垂直居中
         Column(
             modifier = modifier.fillMaxWidth().padding(vertical = Spacing.md),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -105,7 +105,7 @@ LaunchedEffect(messages.size) {
                 modifier = Modifier.size(AppDimens.EMPTY_ICON_CONTAINER_DP.dp)
             )
             Spacer(Modifier.height(Spacing.md))
-            // 主人重构：空态蓝字 = 主动发入口——点击召唤主动发，再点关闭
+            // 空态蓝字 = 主动发入口——点击召唤主动发，再点关闭
             Text(
                 text = if (proactiveActive) "主动发模式已开启，点击关闭" else "还没有聊天记录，点这里主动发一条",
                 color = Primary,
@@ -319,9 +319,7 @@ LaunchedEffect(messages.size) {
                 }
 
                 if (!isDragged) {
-                    // 需求#3：× = 直接删除（换 ic_close 图标统一语言；走删除动画，需求1.2）
-                    // ：删除盒补按压反馈（复用标准件 0.96 scale + 120ms）
-                    // （A1 复制按钮已按主人对齐第 4 条删除：只保留 ❌，全 App 禁 Toast）
+                    // × = 直接删除；只保留删除按钮，全 App 禁 Toast
                     val (deleteInteraction, deleteScale) = rememberPressScale(0.96f, "deleteScale")
                     Box(
                         modifier = Modifier

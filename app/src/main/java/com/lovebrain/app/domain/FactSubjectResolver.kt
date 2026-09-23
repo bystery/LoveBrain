@@ -53,14 +53,14 @@ object FactSubjectResolver {
     /**
      * Level 1: 基于 speaker + 代词推导 subject。
      *
-     * F11 修复：不再盲目用 startsWith("我") 判定为说话人自指。
+     * 不盲目用 startsWith("我") 判定为说话人自指。
      *
      * 核心问题：事实文本是模型按用户视角写的摘要（如"我昨天加班"），
      * 但模型可能是从对方的话推导出来的（如对方说"你昨天是不是加班了"）。
      * 如果 speaker=HER 且文本以"我"开头，旧代码会把 subject 判成 HER，
      * 但这里的"我"是用户视角的"我"，subject 应该是 ME。
      *
-     * F11 新规则：
+     * 新规则：
      * - speaker=HER + "我..." → subject=ME（模型按用户视角写）
      * - speaker=HER + "你..." → subject=HER（模型按对方视角写对方自己）
      * - speaker=ME + "我..." → subject=ME
@@ -73,10 +73,9 @@ object FactSubjectResolver {
         val trimmed = text.trim()
 
         // 检查句首"我"——用户视角的"我"始终指向用户本人
-        // F11: 不再用 startsWith("我今天") 等冗余分支，直接用 startsWith("我")
         if (trimmed.startsWith("我")) {
             return when (speaker) {
-                EntityRef.HER -> EntityRef.ME  // F11: 模型按用户视角写"我"→subject=ME
+                EntityRef.HER -> EntityRef.ME  // 模型按用户视角写"我"→subject=ME
                 EntityRef.ME -> EntityRef.ME
                 else -> null
             }

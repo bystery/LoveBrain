@@ -90,7 +90,7 @@ fun ResultArea(
     onUndoRewrite: (SchemeIdentity) -> Unit = {},
     onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     onPermissionEvent: (PermissionEvent) -> Unit = {},
-    // F01 v2: 自定义改写
+    // 自定义改写回调
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     // F10: 仅看本轮开关
     onlyThisRound: Boolean = false,
@@ -320,7 +320,7 @@ fun ResultArea(
             }
         }
 
-        // 空状态：生成前直接留白（  主人拍板——灰色引导占位卡删除，空白本身即状态说明）
+        // 空状态：生成前直接留白
         else -> {
             Spacer(modifier = modifier.fillMaxWidth())
         }
@@ -472,7 +472,7 @@ private fun SchemeCardsRow(
             // LazyRow item 离开视口会销毁 remember，若动画状态留在 item 内，
             // 从右向左滑（item 重新组合）会重播动画 → 卡片"闪一下"。提升到外层集合解决。
             val playedTags = remember { mutableStateMapOf<String, Boolean>() }
-            // 阻断C修复：行级唯一展开状态——同一时间只展开一张卡
+            // 行级唯一展开状态——同一时间只展开一张卡
             var expandedRewriteTag by remember { mutableStateOf<String?>(null) }
             LazyRow(
                 state = scrollState,
@@ -491,7 +491,7 @@ private fun SchemeCardsRow(
                         }
                     }
                     // 同一时间只展开一张改写区
-                    // 阻断C修复：expandedRewriteTag 已提升到行级——切卡自动收上张
+                    // expandedRewriteTag 已提升到行级——切卡自动收上张
 
                     AnimatedVisibility(
                         visible = visible,

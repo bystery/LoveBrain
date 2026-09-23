@@ -112,7 +112,8 @@ class LikedSchemeRecordingTest {
             topicRecorder = topicRecorder,
             securePrefs = prefs,
             triggerCoordinator = mockk(relaxed = true),
-            generationEngine = generationEngine
+            generationEngine = generationEngine,
+operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
         )
     }
 
@@ -120,9 +121,9 @@ class LikedSchemeRecordingTest {
         engine: com.lovebrain.app.domain.GenerationEngine,
         response: LoveBrainResponse
     ) {
-        every { engine.generate(any(), any(), any(), any(), any(), any(), any(), any()) } answers {
-            val scope = arg<CoroutineScope>(3)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
+        every { engine.generateReply(any(), any(), any()) } answers {
+            val scope = arg<CoroutineScope>(1)
+            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
             scope.launch {
                 callbacks.onReplyStart()
                 callbacks.onReplyResult(GenerateResult.Success(response))

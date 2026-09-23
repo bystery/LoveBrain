@@ -62,7 +62,7 @@ class GenerationRollbackTest {
         unmockkStatic(Log::class)
     }
 
-    private fun makeVm(
+        private fun makeVm(
         knowledgeRepo: KnowledgeRepository,
         engine: com.lovebrain.app.domain.GenerationEngine = mockk(relaxed = true)
     ): LoveBrainViewModel {
@@ -87,7 +87,8 @@ class GenerationRollbackTest {
             topicRecorder = mockk(relaxed = true),
             securePrefs = prefs,
             triggerCoordinator = mockk(relaxed = true),
-            generationEngine = engine
+            generationEngine = engine,
+            operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
         )
     }
 
@@ -137,10 +138,10 @@ class GenerationRollbackTest {
         )
 
         every {
-            engine.generate(any(), any(), any(), any(), any(), any(), any(), any())
+            engine.generateReply(any(), any(), any())
         } answers {
-            val scope = arg<CoroutineScope>(3)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
+            val scope = arg<CoroutineScope>(1)
+            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
             val resp = responses[generateCount.coerceAtMost(responses.lastIndex)]
             generateCount++
             scope.launch {
@@ -231,10 +232,10 @@ class GenerationRollbackTest {
         val responses = listOf(makeResponse("v1-reply"), makeResponse("v2-reply"))
 
         every {
-            engine.generate(any(), any(), any(), any(), any(), any(), any(), any())
+            engine.generateReply(any(), any(), any())
         } answers {
-            val scope = arg<CoroutineScope>(3)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
+            val scope = arg<CoroutineScope>(1)
+            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
             val resp = responses[generateCount.coerceAtMost(responses.lastIndex)]
             generateCount++
             scope.launch {

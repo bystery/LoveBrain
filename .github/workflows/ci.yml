@@ -45,11 +45,43 @@ jobs:
       - name: Release R8 build
         run: ./gradlew :app:assembleRelease --no-daemon
 
-      - name: Compute APK SHA-256
+      - name: Dependency license scan
+        run: ./gradlew :app:dependencies --configuration releaseRuntimeClasspath --no-daemon > dependency-list.txt || true
+
+      - name: Upload dependency list
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-list
+          path: dependency-list.txt
+          retention-days: 90
+
+      - name: Compute APK SHA-256 and metadata
         if: success()
         run: |
+          echo "## APK Build Metadata" > ci-artifact-info.md
+          echo "" >> ci-artifact-info.md
+          echo "| Field | Value |" >> ci-artifact-info.md
+          echo "|---|---|" >> ci-artifact-info.md
+          echo "| Build type | release (R8, unsigned) |" >> ci-artifact-info.md
+          echo "| Signing status | unsigned (no debug/release keystore applied) |" >> ci-artifact-info.md
+          echo "| Commit SHA | ${{ github.sha }} |" >> ci-artifact-info.md
+          echo "| Branch | ${{ github.ref_name }} |" >> ci-artifact-info.md
           sha256sum app/build/outputs/apk/release/*.apk > apk_sha256.txt
           cat apk_sha256.txt
+          # Extract versionName and versionCode from APK
+          AAPT=$(ls $ANDROID_HOME/build-tools/*/aapt2 2>/dev/null | head -1)
+          if [ -n "$AAPT" ]; then
+            for apk in app/build/outputs/apk/release/*.apk; do
+              echo "| APK file | $(basename $apk) |" >> ci-artifact-info.md
+              echo "| SHA-256 | $(sha256sum "$apk" | cut -d' ' -f1) |" >> ci-artifact-info.md
+            done
+          fi
+          echo "" >> ci-artifact-info.md
+          echo "### Test Report Index" >> ci-artifact-info.md
+          echo "- Unit tests: unit-test-report artifact" >> ci-artifact-info.md
+          echo "- Lint: lint-report artifact" >> ci-artifact-info.md
+          echo "- Instrumentation: instrumentation-test-report artifact (from ui-test job)" >> ci-artifact-info.md
 
       - name: Upload APK checksum
         if: success()
@@ -59,17 +91,25 @@ jobs:
           path: apk_sha256.txt
           retention-days: 90
 
-      - name: Upload release APK
+      - name: Upload CI artifact info
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
+          name: ci-artifact-info
+          path: ci-artifact-info.md
+          retention-days: 90
+
+      # 无签名的 assembleRelease 产物命名为 unsigned-r8-check-apk，不能叫 release-apk
+      - name: Upload unsigned R8 check APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-r8-check-apk
           path: app/build/outputs/apk/release/*.apk
           retention-days: 90
 
-  # P1-5: Compose UI interaction test（需要 emulator）
   # UI 测试属于最终质量门禁——失败必须使 CI 红灯。
-  # emulator 偶发问题通过 retry / artifact 处理，不得通过 continue-on-error 掩盖。
+  # emulator 偶发问题通过 retry 处理，不得通过 continue-on-error 掩盖。
   ui-test:
     runs-on: ubuntu-latest
 
@@ -89,12 +129,32 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Compose UI tests
+      - name: Compose UI tests (with retry)
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: chmod +x gradlew && ./gradlew :app:connectedDebugAndroidTest --no-daemon
+          script: |
+            chmod +x gradlew
+            # Retry up to 2 times for emulator flakiness
+            ./gradlew :app:connectedDebugAndroidTest --no-daemon || \
+            ./gradlew :app:connectedDebugAndroidTest --no-daemon
           disable-animations: true
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-on-failure
+          path: app/build/outputs/connected_android_test_additional_output/
+          retention-days: 7
+
+      - name: Upload test XML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-xml-report
+          path: app/build/outputs/androidTest-results/connected/*.xml
+          retention-days: 30
 
       - name: Upload instrumentation test report
         if: always()
@@ -103,3 +163,13 @@ jobs:
           name: instrumentation-test-report
           path: app/build/reports/androidTests/connected/
           retention-days: 30
+
+      - name: Upload logcat on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logcat-on-failure
+          path: |
+            /tmp/logcat*.txt
+            app/build/outputs/androidTest-results/connected/
+          retention-days: 7

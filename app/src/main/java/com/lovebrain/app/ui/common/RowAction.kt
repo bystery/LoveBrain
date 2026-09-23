@@ -20,14 +20,14 @@ import com.lovebrain.app.ui.theme.Spacing
 import com.lovebrain.app.ui.theme.TextSecondary
 import androidx.compose.ui.graphics.graphicsLayer
 
-/** 行内次级操作按钮规格（主人选型问题3：整体放大一号） */
+/** 行内次级操作按钮规格 */
 private object RowActionDimens {
     const val MIN_HEIGHT_DP = 32  // 最小高度（原≈24 提到 32）
 }
 
 /**
- * 行内次级操作小按钮（/F2 统一样式）：浅灰胶囊底 + 13sp 小字，供应商行与知识库卡片共用。
- * 主人选型问题3：内边距加厚、字号 11sp→13sp、最小高度 32dp（两处调用方自动同步，无需改调用侧）。
+ * 行内次级操作小按钮：浅灰胶囊底 + 13sp 小字，供应商行与知识库卡片共用。
+ * 内边距加厚、最小高度 32dp。
  * 按压反馈沿用全局标准件（0.94 scale）。
  */
 @Composable

@@ -1,6 +1,8 @@
 package com.lovebrain.app.ui.feedback
 
 import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,10 +24,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -62,10 +66,17 @@ import com.lovebrain.app.viewmodel.SetupViewModel
 import kotlinx.coroutines.launch
 
 /**
- * 反馈案例独立页面——根级导航目标，不在首页 Column 内插入。
+ * S1-05: 反馈案例独立页面——根级导航目标，不在首页 Column 内插入。
  *
  * 数据通过 ViewModel/DI 提供，不在 Composable 中直接 new Repository。
  * 页面状态：Loading / Empty / Data / Error
+ *
+ * 修复：
+ * - 使用 AlertDialog 替代伪全屏遮罩
+ * - 真正的保存按钮使用 CreateDocument launcher
+ * - items 使用 stable key
+ * - 捕获 ActivityNotFoundException
+ * - exportId 绑定导出状态
  */
 @Composable
 fun FeedbackCasesScreen(
@@ -83,13 +94,33 @@ fun FeedbackCasesScreen(
     var filterCategory by remember { mutableStateOf<FeedbackCategory?>(null) }
     var expandedCaseId by remember { mutableStateOf<String?>(null) }
     var exportFormat by remember { mutableStateOf("markdown") }
-    var copiedFeedback by remember { mutableStateOf(false) }
+    // S1-05: copiedFeedback 绑定 exportId，新导出自动重置
+    var copiedExportId by remember { mutableStateOf<String?>(null) }
+    var saveError by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.loadFeedbackCases()
     }
 
     val filtered = if (filterCategory == null) cases else cases.filter { filterCategory!! in it.categories }
+
+    // S1-05: CreateDocument launcher——真正写入用户选择的 Uri
+    val saveLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument(if (exportFormat == "json") "application/json" else "text/markdown")
+    ) { uri ->
+        val state = exportState
+        if (uri != null && state is SetupViewModel.ExportState.Success) {
+            try {
+                context.contentResolver.openOutputStream(uri)?.use { output ->
+                    output.write(state.text.toByteArray())
+                }
+                // 保存成功后关闭预览
+                viewModel.resetExportState()
+            } catch (e: Exception) {
+                saveError = "保存失败：${e.message ?: "未知错误"}"
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -153,6 +184,8 @@ fun FeedbackCasesScreen(
                             indication = null,
                             enabled = filtered.isNotEmpty()
                         ) {
+                            // S1-05: 新导出自动重置 copied 状态
+                            copiedExportId = null
                             viewModel.exportFeedback(filtered, exportFormat)
                         }
                         .padding(horizontal = Spacing.md, vertical = Spacing.sm),
@@ -256,7 +289,8 @@ fun FeedbackCasesScreen(
                         ),
                         verticalArrangement = Arrangement.spacedBy(Spacing.sm)
                     ) {
-                        items(filtered) { c ->
+                        // S1-05: 使用 stable key
+                        items(filtered, key = { it.caseId }) { c ->
                             val isExpanded = expandedCaseId == c.caseId
                             Card(
                                 shape = LoveBrainShape.md,
@@ -330,7 +364,7 @@ fun FeedbackCasesScreen(
             }
         }
 
-        // 导出预览面板——使用 typed exportState
+        // S1-05: 导出预览——使用 AlertDialog 替代伪全屏遮罩
         when (val state = exportState) {
             is SetupViewModel.ExportState.Loading -> {
                 Box(
@@ -345,85 +379,20 @@ fun FeedbackCasesScreen(
             }
             is SetupViewModel.ExportState.Success -> {
                 val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-                val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = if (exportFormat == "json") "application/json" else "text/markdown"
-                    putExtra(Intent.EXTRA_TEXT, state.text)
-                }
-                val saveIntent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                    type = if (exportFormat == "json") "application/json" else "text/markdown"
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    putExtra(Intent.EXTRA_TITLE, "feedback_export.${exportFormat}")
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f))
-                        .clickable { viewModel.resetExportState() }
-                ) {
-                    Card(
-                        shape = LoveBrainShape.lg,
-                        colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(Spacing.lg)
-                            .align(Alignment.Center)
-                            .clickable { }
-                    ) {
-                        Column(modifier = Modifier.padding(Spacing.lg)) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    "导出预览",
-                                    style = AppTypography.titleMedium,
-                                    color = TextPrimary,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    // R1-18: 系统分享
-                                    val (shareInteraction, shareScale) = rememberPressScale(0.94f, "shareBtn")
-                                    Text(
-                                        "分享",
-                                        style = AppTypography.labelMedium,
-                                        color = Primary,
-                                        modifier = Modifier
-                                            .graphicsLayer { scaleX = shareScale; scaleY = shareScale }
-                                            .clip(LoveBrainShape.md)
-                                            .clickable(
-                                                interactionSource = shareInteraction,
-                                                indication = null,
-                                                onClick = {
-                                                    context.startActivity(Intent.createChooser(shareIntent, "分享到"))
-                                                }
-                                            )
-                                            .padding(Spacing.sm)
-                                    )
-                                    Spacer(Modifier.width(Spacing.sm))
-                                    // R1-19: 复制按钮——复制成功后才显示"已复制"
-                                    val (copyInteraction, copyScale) = rememberPressScale(0.94f, "copyBtn")
-                                    Text(
-                                        if (copiedFeedback) "✓ 已复制" else "复制",
-                                        style = AppTypography.labelMedium,
-                                        color = if (copiedFeedback) Primary else Primary,
-                                        fontWeight = if (copiedFeedback) FontWeight.Bold else FontWeight.Normal,
-                                        modifier = Modifier
-                                            .graphicsLayer { scaleX = copyScale; scaleY = copyScale }
-                                            .clip(LoveBrainShape.md)
-                                            .clickable(
-                                                interactionSource = copyInteraction,
-                                                indication = null,
-                                                onClick = {
-                                                    clipboard.setPrimaryClip(android.content.ClipData.newPlainText("export", state.text))
-                                                    copiedFeedback = true
-                                                }
-                                            )
-                                            .padding(Spacing.sm)
-                                    )
-                                }
-                            }
-                            Spacer(Modifier.height(Spacing.sm))
+                // S1-05: copiedFeedback 绑定 exportId
+                val isCopied = copiedExportId == state.exportId
+                AlertDialog(
+                    onDismissRequest = { viewModel.resetExportState() },
+                    title = {
+                        Text(
+                            "导出预览",
+                            style = AppTypography.titleMedium,
+                            color = TextPrimary,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    },
+                    text = {
+                        Column {
                             Text(
                                 state.text,
                                 style = AppTypography.labelSmall,
@@ -434,48 +403,83 @@ fun FeedbackCasesScreen(
                                     .verticalScroll(rememberScrollState())
                             )
                             Spacer(Modifier.height(Spacing.sm))
-                            // R1-19: 底部反馈——只显示当前实际状态
                             Text(
-                                if (copiedFeedback) "已复制到剪贴板，可粘贴到任何位置。" else "点击「复制」复制到剪贴板，或点击「分享」发送到其他应用。",
+                                if (isCopied) "已复制到剪贴板，可粘贴到任何位置。" else "点击「复制」复制到剪贴板，「分享」发送到其他应用，「保存」写入文件。",
                                 style = AppTypography.labelSmall,
                                 color = TextHint
                             )
                         }
-                    }
-                }
-            }
-            is SetupViewModel.ExportState.Error -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f))
-                        .clickable { viewModel.resetExportState() },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Card(
-                        shape = LoveBrainShape.lg,
-                        colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(Spacing.lg)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(Spacing.xl),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(state.message, color = Error, style = AppTypography.bodyMedium)
-                            Spacer(Modifier.height(Spacing.md))
-                            Text(
-                                "关闭",
-                                color = Primary,
-                                style = AppTypography.labelLarge,
-                                modifier = Modifier.clickable { viewModel.resetExportState() }.padding(Spacing.sm)
-                            )
+                    },
+                    confirmButton = {
+                        // S1-05: 保存按钮——真正写入文件
+                        TextButton(onClick = {
+                            val fileName = "feedback_export.${exportFormat}"
+                            saveLauncher.launch(fileName)
+                        }) {
+                            Text("保存", color = Primary, fontWeight = FontWeight.SemiBold)
+                        }
+                    },
+                    dismissButton = {
+                        Row {
+                            // S1-05: 分享按钮——捕获 ActivityNotFoundException
+                            TextButton(onClick = {
+                                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                    type = if (exportFormat == "json") "application/json" else "text/markdown"
+                                    putExtra(Intent.EXTRA_TEXT, state.text)
+                                }
+                                try {
+                                    context.startActivity(Intent.createChooser(shareIntent, "分享到"))
+                                } catch (e: android.content.ActivityNotFoundException) {
+                                    saveError = "没有可用的分享应用"
+                                }
+                            }) {
+                                Text("分享", color = Primary)
+                            }
+                            // S1-05: 复制按钮
+                            TextButton(onClick = {
+                                clipboard.setPrimaryClip(android.content.ClipData.newPlainText("export", state.text))
+                                copiedExportId = state.exportId
+                            }) {
+                                Text(
+                                    if (isCopied) "✓ 已复制" else "复制",
+                                    color = Primary,
+                                    fontWeight = if (isCopied) FontWeight.Bold else FontWeight.Normal
+                                )
+                            }
+                            TextButton(onClick = { viewModel.resetExportState() }) {
+                                Text("关闭", color = TextSecondary)
+                            }
                         }
                     }
-                }
+                )
+            }
+            is SetupViewModel.ExportState.Error -> {
+                AlertDialog(
+                    onDismissRequest = { viewModel.resetExportState() },
+                    title = { Text("导出失败", style = AppTypography.titleMedium) },
+                    text = { Text(state.message, color = Error, style = AppTypography.bodyMedium) },
+                    confirmButton = {
+                        TextButton(onClick = { viewModel.resetExportState() }) {
+                            Text("关闭", color = Primary)
+                        }
+                    }
+                )
             }
             SetupViewModel.ExportState.Idle -> { /* nothing */ }
+        }
+
+        // S1-05: 保存错误 Dialog
+        if (saveError != null) {
+            AlertDialog(
+                onDismissRequest = { saveError = null },
+                title = { Text("操作失败", style = AppTypography.titleMedium) },
+                text = { Text(saveError.orEmpty(), color = Error, style = AppTypography.bodyMedium) },
+                confirmButton = {
+                    TextButton(onClick = { saveError = null }) {
+                        Text("关闭", color = Primary)
+                    }
+                }
+            )
         }
     }
 }

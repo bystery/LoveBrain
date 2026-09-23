@@ -79,7 +79,7 @@ import java.util.zip.ZipOutputStream
 private object KbDimens {
     const val EMPTY_ICON_CONTAINER_DP = 72    // 空态图标容器（语义例外：大于通用 48）
     const val EMPTY_ICON_SIZE_DP = 36         // 空态图标本体（语义例外）
-    const val PRIMARY_ACTION_HEIGHT_DP = 48   // 新建/导入/完成大按钮高度（主人 2026-08-31 定稿 48dp）
+    const val PRIMARY_ACTION_HEIGHT_DP = 48   // 新建/导入/完成大按钮高度
     const val EDIT_ICON_SIZE_DP = 14          // 重命名小铅笔图标
     const val ONBOARDING_SPINNER_SIZE_DP = 18 // 问卷生成中按钮内转圈尺寸
     const val PROGRESS_BAR_HEIGHT_DP = 4     // 问卷答题进度条高度
@@ -113,7 +113,14 @@ class KnowledgeBaseActivity : ComponentActivity() {
         lifecycleScope.launch {
             try {
                 val name = autoKbName()
-                val ok = runCatching { repo.create(name, "新知识库") }.isSuccess
+                val ok = try {
+                    repo.create(name, "新知识库")
+                    true
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    false
+                }
                 if (!ok) {
                     kbFeedback.value = "创建失败：可能名称重复，请重试"
                 }
@@ -149,11 +156,13 @@ class KnowledgeBaseActivity : ComponentActivity() {
                 val user = Json.encodeToString(
                     com.lovebrain.app.domain.OnboardingSchema.serializer(), schema
                 )
-                val raw = runCatching {
+                val raw = try {
                     withContext(Dispatchers.IO) { deepSeek.generateRaw(system, user) }
-                }.getOrDefault("")
-                // P0-① 修复：协程被 cancel 后 withContext 恢复会抛 CancellationException，
-                // runCatching 吞掉后 raw="" 且 isActive=false——这里拦住不建库
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    ""
+                }
                 if (!isActive) {
                     onDone()
                     return@launch
@@ -164,7 +173,14 @@ class KnowledgeBaseActivity : ComponentActivity() {
                 val display = parsed.display.ifBlank { herName.ifBlank { "我的她" } }
                 val stage = parsed.stage.ifBlank { "待确定" }
 
-                val ok = runCatching { repo.create(name, display) }.isSuccess
+                val ok = try {
+                    repo.create(name, display)
+                    true
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    false
+                }
                 if (ok) {
                     // ONB-04：只有对应 section 非空才覆盖模板
                     if (parsed.me.isNotBlank()) repo.writeFile(name, "understand/me.md", parsed.me)
@@ -691,7 +707,7 @@ private fun KbCard(
             .clickable(enabled = !isActive, onClick = onActivate)
     ) {
         Column(modifier = Modifier.padding(Spacing.xl)) {
-            // 第一行：名称 + 重命名笔 + 当前使用徽章 + 删除（F2 合行）
+            // 第一行：名称 + 重命名笔 + 当前使用徽章 + 删除
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -737,7 +753,7 @@ private fun KbCard(
                 )
             }
             Spacer(modifier = Modifier.height(Spacing.md))
-            // 第二行：阶段/对话信息 + 编辑/导出（F2 合行；按钮样式复用供应商行同款 RowActionButton）
+            // 第二行：阶段/对话信息 + 编辑/导出
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     "阶段：${kb.stage} ｜ 已对话 ${kb.turnCount} 轮",

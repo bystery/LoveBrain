@@ -95,7 +95,8 @@ class MechanismClosureTest {
             topicRecorder = mockk(relaxed = true),
             securePrefs = prefs,
             triggerCoordinator = mockk(relaxed = true),
-            generationEngine = generationEngine
+            generationEngine = generationEngine,
+            operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
         )
     }
 
@@ -521,11 +522,11 @@ class MechanismClosureTest {
         // Capture the intent passed to engine
         var capturedIntent: IntentConfig? = null
         every {
-            engine.generate(any(), any(), any(), any(), any(), any(), any(), any())
+            engine.generateReply(any(), any(), any())
         } answers {
-            capturedIntent = arg(5)
-            val scope = arg<kotlinx.coroutines.CoroutineScope>(3)
-            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(4)
+            capturedIntent = arg<com.lovebrain.app.model.GenerationInput>(0).intentConfig
+            val scope = arg<kotlinx.coroutines.CoroutineScope>(1)
+            val callbacks = arg<com.lovebrain.app.domain.GenerationEngine.Callbacks>(2)
             scope.launch {
                 callbacks.onReplyStart()
                 callbacks.onReplyResult(

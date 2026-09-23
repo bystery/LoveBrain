@@ -108,7 +108,7 @@ fun SchemeCard(
     onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     // P0-7: 权限事件回调——Panel/ViewModel 复用 panelWarning/banner
     onPermissionEvent: (PermissionEvent) -> Unit = {},
-    // F01 v2: 自定义改写回调
+    // 自定义改写回调
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
@@ -456,7 +456,7 @@ fun SchemeCard(
                             lineHeight = SchemeTextDimens.BODY_LINE_HEIGHT
                         )
                     }
-                    // F01 v2: 明确的"用这版"/"返回原版"按钮
+                    // 明确的"用这版"/"返回原版"按钮
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End,
@@ -496,7 +496,7 @@ fun SchemeCard(
                             .verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.spacedBy(Spacing.xs)
                     ) {
-                        // 预设选项（F01 v2: 使用 PRESET_LABELS）
+                        // 预设选项
                         val presetCommands = RewriteCommand.entries.filter { it != RewriteCommand.CUSTOM }
                         val chunkedRows = presetCommands.chunked(2)
                         chunkedRows.forEachIndexed { rowIndex, rowOptions ->
