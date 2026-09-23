@@ -172,6 +172,9 @@ class KnowledgeBaseViewModel(
             return
         }
         creationJob = viewModelScope.launch {
+            // cancel-safe: 取消不吞——finishCreation 按 exceptionOrNull() 的**类型**把
+            // CancellationException 分流成 KbCreationOutcome.Cancelled（不建库、不报失败），
+            // 由 KnowledgeBaseViewModelTest 的 cancelling generation 用例钉住
             val outcome = runCatching { runOnboardingCreation(schema) }
             finishCreation(outcome)
         }
@@ -213,6 +216,7 @@ class KnowledgeBaseViewModel(
     fun createEmptyKb() {
         if (isCreating) return
         creationJob = viewModelScope.launch {
+            // cancel-safe: 同上——取消经 finishCreation 转成 Cancelled，不伪装成 CreateFailed
             val outcome = runCatching {
                 if (createKnowledgeBase(autoKbName(), "新知识库")) KbCreationOutcome.EmptyCreated
                 else KbCreationOutcome.EmptyCreateFailed
@@ -256,13 +260,20 @@ class KnowledgeBaseViewModel(
      */
     fun export(kbName: String, target: Uri) {
         viewModelScope.launch(ioContext) {
-            val ok = runCatching {
+            val ok = try {
                 val folder = File(appContext.filesDir, "knowledge/$kbName")
                 val output = appContext.contentResolver.openOutputStream(target)
                     ?: error("无法打开导出文件")
                 output.use { KbArchiveTransfer.export(folder, kbName, it) }
-            }.isSuccess
-            if (!ok) L.e("knowledge export failed")
+                true
+            } catch (e: CancellationException) {
+                // 页面已销毁不是"导出失败"：不回事件，让上层协程处理取消
+                L.w("knowledge export cancelled")
+                return@launch
+            } catch (e: Exception) {
+                L.e("knowledge export failed", e)
+                false
+            }
             _events.tryEmit(if (ok) KbEvent.Exported else KbEvent.ExportFailed)
         }
     }
@@ -273,7 +284,7 @@ class KnowledgeBaseViewModel(
      */
     fun import(source: Uri) {
         viewModelScope.launch(ioContext) {
-            val ok = runCatching {
+            val ok = try {
                 val staging = File(appContext.cacheDir, "kb_import_${System.currentTimeMillis()}")
                 val input = appContext.contentResolver.openInputStream(source)
                     ?: error("无法打开导入文件")
@@ -286,8 +297,15 @@ class KnowledgeBaseViewModel(
                 }
                 val currentActive = repo.getActive()?.name ?: repo.listAll().firstOrNull()?.name
                 if (currentActive != null) repo.setActive(currentActive)
-            }.isSuccess
-            if (!ok) L.e("knowledge import failed")
+                true
+            } catch (e: CancellationException) {
+                // active 修正是挂起调用：取消必须原样上抛，不能被算成"导入失败"再提示用户
+                L.w("knowledge import cancelled")
+                return@launch
+            } catch (e: Exception) {
+                L.e("knowledge import failed", e)
+                false
+            }
             if (ok) loadState()
             _events.tryEmit(if (ok) KbEvent.Imported else KbEvent.ImportFailed)
         }

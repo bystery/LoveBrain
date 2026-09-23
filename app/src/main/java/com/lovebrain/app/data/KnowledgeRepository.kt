@@ -6,6 +6,7 @@ import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.KnowledgeSchemaVersion
 import com.lovebrain.app.model.PreconditionReason
 import com.lovebrain.app.model.ProfileTransactionResult
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -57,8 +58,13 @@ class KnowledgeRepository(
         // : 所有 launch 必须包 SupervisorJob + ExceptionHandler
         // RA-03：备份经 fileMutex 序列化，与 delete 互斥防竞态
         appScope.launch(Dispatchers.IO + SupervisorJob()) {
-            runCatching { backupIfNeeded() }.onFailure { err ->
-                com.lovebrain.app.util.L.e("backup init failed", err)
+            try {
+                backupIfNeeded()
+            } catch (e: CancellationException) {
+                // 作用域被取消不是"备份失败"，记成失败会丢真相
+                throw e
+            } catch (e: Exception) {
+                com.lovebrain.app.util.L.e("backup init failed", e)
             }
         }
     }
@@ -74,8 +80,12 @@ class KnowledgeRepository(
             delay(backupDebounceMs)
             // 再次确认：delay 期间没有新的写入（时间戳没变）
             if (System.currentTimeMillis() - lastWriteTimestamp.get() >= backupDebounceMs - 100L) {
-                runCatching { backupIfNeeded() }.onFailure { err ->
-                    com.lovebrain.app.util.L.e("debounce backup failed", err)
+                try {
+                    backupIfNeeded()
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    com.lovebrain.app.util.L.e("debounce backup failed", e)
                 }
             }
         }
@@ -1361,7 +1371,7 @@ class KnowledgeRepository(
                                 }
                             }
                         }
-                    } catch (rollbackErr: Exception) {
+                    } catch (rollbackErr: Exception) { // cancel-safe: 这里只有 java.io.File 读写（delete()/writeText()），协程取消不会从这里抛出
                         com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL rollback failed for $path", rollbackErr)
                         rollbackFailures.add(path)
                     }
@@ -1410,6 +1420,8 @@ class KnowledgeRepository(
                         }
                     }
                 }
+                // 取消不是业务失败：回滚照做，但做完原样上抛，不得伪装成 RolledBack 结果
+                if (e is CancellationException) throw e
                 // P0-6: 区分 rollback 成功与失败——不再吞错误也不模糊 throw
                 return@withLock if (rollbackFailures.isEmpty()) {
                     ProfileTransactionResult.RolledBack(e)

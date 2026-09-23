@@ -1008,8 +1008,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 onlyThisRound = _onlyThisRound.value,
                 aggressive = aggressive,
                 providerIdentity = providerConfig?.toIdentity(),
-                kbProfile = kbName?.let { runCatching { knowledgeRepo.readProfile(it) }.getOrDefault("") } ?: "",
-                kbRevision = kbName?.let { runCatching { knowledgeRepo.contentRevision(it) }.getOrDefault("") } ?: "",
+                kbProfile = kbName?.let { readOrNull("") { knowledgeRepo.readProfile(it) } } ?: "",
+                kbRevision = kbName?.let { readOrNull("") { knowledgeRepo.contentRevision(it) } } ?: "",
                 promptAssetHash = promptBuilder.replyPromptAssetHash()
             )
 
@@ -1431,6 +1431,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     showPanelWarning("已保存对话和偏好，候选未作为已发送消息记录")
                 }
                 refreshKnowledgeBases()
+            } catch (t: kotlinx.coroutines.CancellationException) {
+                // 取消信号不写盘、不报"保存失败"：交给上层协程处理
+                throw t
             } catch (t: Throwable) {
                 L.e("nextRound record failed", t)
                 // GEN-03：写盘失败 → 不清 messages/result/feedback/context，用户可重试
@@ -1711,6 +1714,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                         showPanelWarning("画像写入失败且恢复异常，数据可能已损坏，请检查知识库")
                     }
                 }
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
             } catch (e: Exception) {
                 L.e("confirmProfileUpdate unexpected error", e)
                 showPanelWarning("画像写入发生异常，请重试")
@@ -2066,9 +2071,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val providerModel = providerConfig?.model ?: ""
         val assetHash = promptBuilder.assetHashOf(AssetRegistry.SUGGEST)
         val ongoingRevision = kbId.takeIf { it.isNotBlank() }
-            ?.let { runCatching { knowledgeRepo.readFile(it, "moment/plan.md") }.getOrDefault("") } ?: ""
+            ?.let { readOrNull("") { knowledgeRepo.readFile(it, "moment/plan.md") } } ?: ""
         val styleRevision = kbId.takeIf { it.isNotBlank() }
-            ?.let { runCatching { knowledgeRepo.readFile(it, "understand/style.md") }.getOrDefault("") } ?: ""
+            ?.let { readOrNull("") { knowledgeRepo.readFile(it, "understand/style.md") } } ?: ""
 
         val fingerprintInput = buildString {
             append(kbId).append('|').append(today).append('|').append(stage).append('|')
@@ -2904,6 +2909,23 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         cancelPendingCounselingFlush()
         operationCoordinator.shutdownAll()
     }
+
+    /**
+     * 冻结生成输入时的"可选读取"。
+     *
+     * 读失败按缺项继续（这几项缺失只让 prompt 降级，不该让整次生成失败），
+     * 但**取消信号必须原样上抛**。此前直接 `runCatching { 挂起读 }`，
+     * 会把"用户点了停止 / 页面已销毁"当成"读取失败"吞掉，
+     * 正是全仓取消信号审计（scripts/audit_cancellation.py）点名的形态。
+     */
+    private suspend fun <T> readOrNull(fallback: T, read: suspend () -> T): T =
+        try {
+            read()
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            fallback
+        }
 
     companion object {
         /** ：金额格式化（固定三位小数 + 固定 Locale.US 小数点，防区域格式回归；展示条字号钉死） */

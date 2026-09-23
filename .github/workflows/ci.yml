@@ -63,6 +63,18 @@ jobs:
         # keeps that quote honest instead of decorative.
         run: bash scripts/asset_hashes.sh --check docs/prompt-assets.lock
 
+      - name: Cancellation-hygiene audit must be clean
+        # 复核报告 §6 S2-07 最后一条要求"全仓 CancellationException 审计结果 + lint/static rule 防回归"。
+        # 这条就是那条静态规则：协程可挂起处吞掉 Exception/Throwable 而未放行取消信号 = 直接红。
+        run: python3 scripts/audit_cancellation.py --check
+
+      - name: Upload cancellation audit result
+        uses: actions/upload-artifact@v4
+        with:
+          name: cancellation-audit
+          path: docs/CANCELLATION-AUDIT.md
+          if-no-files-found: error
+
       - name: Upload lint report
         if: always()
         uses: actions/upload-artifact@v4
