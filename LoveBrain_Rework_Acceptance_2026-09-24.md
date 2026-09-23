@@ -1,7 +1,7 @@
 # LoveBrain 返工验收包（对齐 2026-09-23 全面独立复核报告）
 
 > 被审提交：`286c9406b40b79e4443f1db465bfa5b489f540fa`（报告结论 FAIL）
-> 本轮返工提交链：`8745a3d` → `ce89b86` → `5424e21` → `6d67b37` → `0abe572` → `73ed6a8` → `d390dc6` → `c51e443` → `a9ae136` → `42da306` → `aea24c5` → `4e1f2e4` → `eaba6af`(S2-05) → `73b3d08`(S2-07 错误类型) → `6597bd9`(S2-07 取消审计) → `9539dd2`(S2-07 工单编号) → `0da80d5`(修自己的伪门禁) → `dc1cb31`(SetupActivity 收口) → `316913f`(TriggerCoordinator 改冷流) →（本文件所在提交）
+> 本轮返工提交链：`8745a3d` → `ce89b86` → `5424e21` → `6d67b37` → `0abe572` → `73ed6a8` → `d390dc6` → `c51e443` → `a9ae136` → `42da306` → `aea24c5` → `4e1f2e4` → `eaba6af`(S2-05) → `73b3d08`(S2-07 错误类型) → `6597bd9`(S2-07 取消审计) → `9539dd2`(S2-07 工单编号) → `0da80d5`(修自己的伪门禁) → `dc1cb31`(SetupActivity 收口) → `316913f`(TriggerCoordinator 改冷流) → `4c1ec8b`(记账) → `50e4fb6`(Koin 图 JVM 解析) →（本文件所在提交）
 > 复核依据：`LoveBrain_Comprehensive_Reaudit_286c9406_2026-09-23.md`，逐节对照
 > 编写日期：2026-09-24（第二轮补：S2-05 与 S2-07 三项在初版里被记为"未做"，现已做完并重新实测）
 
@@ -214,6 +214,7 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | +S2-05 职责拆分（归档/解析/ViewModel/分层合同） | 95 | 788 | 0 | 0 | 0 |
 | +S2-07 错误类型改造（净 +1 条：删 10 条前缀推断用例，补 12+4 条 typed 用例） | 95 | 788 | 0 | 0 | 0 |
 | +SetupActivity/TriggerCoordinator 收口（9 条引导判定 + 4 条单 owner 合同 + 分层两条新规则） | 97 | 803 | 0 | 0 | 0 |
+| +Koin 生产图 JVM 解析（`AppModuleGraphTest` 3 例） | 98 | 806 | 0 | 0 | 0 |
 
 本轮新增/改写的用例（逐套件读 XML，全部 0 失败；总数按最后一列为 803 例 / 97 套件）：
 
@@ -225,11 +226,12 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | `UiLayerDependencyContractTest` | 6 | ui 层不得直连 Repository/SecurePrefs，也不得 `viewModel.securePrefs` 穿透；Activity 必须 `by viewModel()`；不得再出现"审计技术债/修复方向"式注释 |
 | `SetupViewModelOnboardingTest` | 9 | 引导可见性四条件与"补完成标记"的写动作，含缺 Context 时的降级 |
 | `SingleOwnerContractTest` | 4 | 不得再有 Callbacks 回写接口、不得有函数返回 Job、scope 参数与 domain 层 launch 只许协调器、两个引擎必须是 Flow |
+| `AppModuleGraphTest` | 3 | Koin 生产图在 JVM 上真解析一次：11 个 single + 4 个 ViewModel；single 复用同实例、viewModel 每次新实例 |
 | `ProviderFailureClassificationTest` | 12 | typed 分类合同：Auth/参数不支持可降级、400+thinking 不可降级、运行期错误不得误判成配置错、已归类错误不外泄英文原文 |
 | `DeepSeekRepositoryErrorMappingTest` | 3 | 边界产物不再夹带内部标记；未知错误保留固定话术 |
 | `ReplyFailureKindTest` | 15 | 反射断言"从字符串反推类型"的 API 不存在；kind 与文案一一对应不撞句 |
 
-工件：`app/build/test-results/testDebugUnitTest/*.xml`（97 份）、
+工件：`app/build/test-results/testDebugUnitTest/*.xml`（98 份）、
 `app/build/reports/tests/testDebugUnitTest/index.html`。
 计数用解析 XML 得到，不是复制网页数字；`assert_artifacts.sh` 会额外核对
 "声明的 tests 数 == 真实 `<testcase>` 数"，防止报告注水。
@@ -237,6 +239,13 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 
 instrumentation：`app/src/androidTest` 现有 40 个 `@Test`（5 个文件，本机 `grep -c "@Test"` 实测），
 `:app:compileDebugAndroidTestKotlin` 通过，**执行数为 0（无设备）**，见 §0 第 1/2 条。
+
+补的一处覆盖缺口：`AppModule` 里的注册是位置参数，本轮又改过 `SetupViewModel` 的构造签名，
+而"注册参数与构造函数不一致 / 缺绑定"这类错误在 JVM 单测里原本**完全测不到**（要等 App 启动或 instrumentation）。
+`AppModuleGraphTest` 现在把整张图 resolve 一遍，并用两种破坏方式验过它确实会红：
+注释掉 `single { RoundCommitJournal(get()) }` → 用例失败；给 `KbEditViewModel` 多传一个 `get()` → 编译期即拦。
+写它的时候还顺带撞出一个事实：`LoveBrainViewModel` 构造即建 `viewModelScope`（`Dispatchers.Main.immediate`），
+所以 JVM 侧必须先 `Dispatchers.setMain`——这条用例能跑是有前提的，不是白拿的。
 
 静态门禁（不是测试，但同样可执行、同样进 CI verify）：
 `scripts/audit_cancellation.py --check` 与 `scripts/strip_ticket_ids.py --check` 当前均为 0 命中；
