@@ -145,6 +145,7 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | `scripts/assert_artifacts.sh` | OK：真实 724 例；空目录 → 1；篡改 XML 声明数 → 1 |
 | `scripts/asset_hashes.sh --check` | OK：prompt 资产未漂移 |
 | `bash -n`（16 个脚本 + 2 个 lib） | 全部通过 |
+| `:app:lintDebug` / `:app:compileDebugAndroidTestKotlin` | BUILD SUCCESSFUL |
 | `yaml.safe_load` 两份 workflow | 通过；`|| true`/`continue-on-error`/`|| echo` 计数 0 |
 
 推送后 CI 的 required checks 应为：`verify`、`ui-test`、`upgrade-test`，Release 三者都等。
@@ -152,12 +153,16 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 
 ## 4. 测试数量、失败数与工件（§9 第 4 项）
 
+权威口径：`python` 解析 `app/build/test-results/testDebugUnitTest/*.xml` 汇总，
+并用 `scripts/assert_artifacts.sh --min-tests auto` 复核"声明数 == 实际 `<testcase>` 数"，
+结果 747 / 91 套件 / 0 failures / 0 skipped。
+
 | 阶段 | suites | tests | failures | errors | skipped |
 |---|---|---|---|---|---|
 | 报告被审提交（8745a3d 之前）基线 | 85 | 675 | 0 | 0 | 0 |
 | WAL 重写后 | 86 | 692 | 0 | 0 | 0 |
 | 架构统一 + 测试适配后 | 89 | 724 | 0 | 0 | 0 |
-| +协调器合同用例 | 90 | 734 | 0 | 0 | 0 |
+| +协调器合同用例与 requestId 绑定 | 91 | 747 | 0 | 0 | 0 |
 
 工件：`app/build/test-results/testDebugUnitTest/*.xml`（90 份）、
 `app/build/reports/tests/testDebugUnitTest/index.html`。
@@ -166,6 +171,9 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 没有 `@Ignore`、没有 `assumeTrue(false)`、没有在 workflow 里用 `--tests` 过滤缩小范围。
 
 instrumentation：44 个用例编译通过，**执行数为 0（未跑）**，见 §0 第 4/5 条。
+
+本轮最后一次全量门禁（同一棵树，含 lint 与签名 release 构建）：
+`:app:testDebugUnitTest` + `:app:compileDebugAndroidTestKotlin` + `:app:lintDebug` → BUILD SUCCESSFUL。
 
 ## 5. 发布判定
 
