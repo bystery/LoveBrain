@@ -60,7 +60,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
-import com.lovebrain.app.core.designsystem.LbEmptyState
+import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.ui.common.CompactInput
@@ -209,17 +210,21 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
                         thickness = AppDimens.BORDER_WIDTH_DP.dp,
                         color = Border.copy(alpha = 0.5f)
                     )
-                    if (tickets.isEmpty()) {
-                        // §6.3：空态走统一版式，并且就地给出「添加供应商」这个动作。
-                        // 原来这里只有一句话，动作在下方另起一行——空态把决定权丢在半路。
-                        LbEmptyState(
-                            message = stringResource(R.string.provider_empty),
-                            action = ScreenAction(stringResource(R.string.provider_add)) { showAdd = true },
-                            modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)
-                        )
-                    } else {
+                    // §6.3：空 / 有内容两格由同一个 ScreenState 判定，由 LbAsyncState 画。
+                    // 上一版是 if/else 两边各画一次（空态那格虽然已经用了统一组件，
+                    // 但"哪一格"仍是这一页自己判的）；现在判定只有一处，版式也只有一处。
+                    val listState: ScreenState<List<ProviderTicket>> =
+                        if (tickets.isEmpty()) {
+                            ScreenState.Empty(
+                                message = stringResource(R.string.provider_empty),
+                                action = ScreenAction(stringResource(R.string.provider_add)) { showAdd = true }
+                            )
+                        } else {
+                            ScreenState.Content(tickets)
+                        }
+                    LbAsyncState(listState) { shownTickets ->
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            tickets.forEachIndexed { index, t ->
+                            shownTickets.forEachIndexed { index, t ->
                                 val active = activeTicket?.id == t.id
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
@@ -260,7 +265,7 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
                                     Spacer(Modifier.width(Spacing.sm))
                                     RowActionButton("删除", tint = Error) { pendingDelete = t }
                                 }
-                                if (index < tickets.lastIndex) {
+                                if (index < shownTickets.lastIndex) {
                                     HorizontalDivider(
                                         thickness = AppDimens.BORDER_WIDTH_DP.dp,
                                         color = Border.copy(alpha = 0.5f)
