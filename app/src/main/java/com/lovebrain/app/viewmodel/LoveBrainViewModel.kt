@@ -20,12 +20,8 @@ import com.lovebrain.app.domain.RewritePrompt
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
-import com.lovebrain.app.model.CounselingChunk
 import com.lovebrain.app.model.CounselingEnded
 import com.lovebrain.app.model.CounselingEvent
-import com.lovebrain.app.model.CounselingFailed
-import com.lovebrain.app.model.CounselingFirstToken
-import com.lovebrain.app.model.CounselingResult
 import com.lovebrain.app.model.CounselingStarted
 import com.lovebrain.app.model.DailySuggestion
 import com.lovebrain.app.feature.reply.ReplyStore
@@ -704,20 +700,42 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
 
     // ═══════════ 谈心模式 ═══════════
-    private val _counselingResult = MutableStateFlow<String?>(null)
-    val counselingResult: StateFlow<String?> = _counselingResult.asStateFlow()
+    /**
+     * 谈心的流式正文、结果、错误与"日志命令"的触发住在
+     * [com.lovebrain.app.feature.counseling.CounselingStore]（§5.2 第 4 步）。
+     *
+     * 谈心**草稿**（[counselingDraft]）仍在这里：它是用户输入 + SecurePrefs 的防抖落盘，
+     * 不是这条生成链的状态；混进 store 只会让 store 再去碰 prefs。
+     */
+    private val counselingStore = com.lovebrain.app.feature.counseling.CounselingStore(
+        scope = viewModelScope,
+        isCurrentRequest = { requestId ->
+            val owns = ownsOperation(ForegroundOperationCoordinator.OperationType.COUNSELING, requestId)
+            // 归约搬进 store 时这道闸只剩布尔判断，日志差点跟着丢掉；在这唯一的注入点补回来，
+            // store 仍然不知道有日志这回事。
+            if (!owns) L.w("counseling event rejected (stale requestId=$requestId)")
+            owns
+        },
+        // STREAMING_FLUSH_INTERVAL_MS 在本文件更靠前的位置声明（grep 得到），
+        // 所以这里读到的是真值不是 0——replyStore 那处就因为这个顺序问题只能用自己的默认常量。
+        flushIntervalMs = STREAMING_FLUSH_INTERVAL_MS
+    ) { effect -> onCounselingEffect(effect) }
 
-    private val _counselingError = MutableStateFlow<String?>(null)
-    val counselingError: StateFlow<String?> = _counselingError.asStateFlow()
+    val counselingResult: StateFlow<String?> =
+        counselingStore.uiState.map { it.result }
+            .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
+
+    val counselingError: StateFlow<String?> =
+        counselingStore.uiState.map { it.error }
+            .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
 
     /** 谈心是否在生成——从 coordinator 派生 */
     val isCounseling: StateFlow<Boolean> =
         busyOf(ForegroundOperationCoordinator.OperationType.COUNSELING)
 
-    private val _counselingStreaming = MutableStateFlow("")
-    val counselingStreaming: StateFlow<String> = _counselingStreaming.asStateFlow()
-
-    // 谈心流式节流已改由 applyCounselingEvent 的合并缓冲承担（见 归约段）
+    val counselingStreaming: StateFlow<String> =
+        counselingStore.uiState.map { it.streaming }
+            .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, "")
 
     init {
         // 确保至少有一个合法知识库（首次启动创建默认库，重复启动沿用，中断恢复补齐）
@@ -894,7 +912,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     private fun restoreState() {
         securePrefs.panelMode.let { if (it in 0..1) _panelMode.value = it }
-        securePrefs.loadCounselingResult()?.let { if (it.isNotBlank()) _counselingResult.value = it }
+        securePrefs.loadCounselingResult()?.let {
+            if (it.isNotBlank()) {
+                counselingStore.accept(
+                    com.lovebrain.app.feature.counseling.CounselingStore.Intent.Restore(it)
+                )
+            }
+        }
         securePrefs.counselingDraft.takeIf { it.isNotEmpty() }?.let { _counselingDraft.value = it }
         // 今日锦囊仅当天恢复（隔天不恢复旧锦囊）；消息/想法已改纯内存，杀进程即清
         securePrefs.loadSuggestion()?.let { (json, date) ->
@@ -1688,7 +1712,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         cancelPendingCounselingFlush()
         applyCounselingEvent(CounselingEnded(current.requestId))
         L.w("user stopped counseling")
-        if (_counselingResult.value == null) _counselingError.value = "已手动停止"
+        if (counselingStore.currentResult == null) {
+            counselingStore.accept(
+                com.lovebrain.app.feature.counseling.CounselingStore.Intent.Fail("已手动停止")
+            )
+        }
     }
 
 
@@ -1729,16 +1757,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     fun clearCounseling() {
-        _counselingResult.value = null
-        _counselingError.value = null
+        counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Clear)
         securePrefs.clearCounselingResult()
     }
 
     fun clearCounselingAll() {
-        _counselingResult.value = null
-        _counselingError.value = null
+        counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Clear)
         _counselingDraft.value = ""
-        _counselingStreaming.value = ""
         // 先取消防抖尾再写空，防"清空后旧草稿被防抖任务写回"复活竞态
         draftPersistJob?.cancel()
         securePrefs.counselingDraft = ""
@@ -2043,67 +2068,36 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // --- 谈心 ---
 
-    private val counselingChunkPending = StringBuilder()
-    private var counselingFlushJob: kotlinx.coroutines.Job? = null
-
     private fun applyCounselingEvent(event: CounselingEvent) {
-        if (!ownsOperation(ForegroundOperationCoordinator.OperationType.COUNSELING, event.requestId)) {
-            L.w("counseling event ${event::class.simpleName} rejected (stale requestId)")
-            return
-        }
-        when (event) {
-            is CounselingStarted -> {
-                _counselingResult.value = null
-                _counselingError.value = null
-                _counselingStreaming.value = ""
-                counselingChunkPending.setLength(0)
-            }
-            is CounselingChunk -> {
-                counselingChunkPending.append(event.text)
-                scheduleCounselingFlush()
-            }
-            is CounselingFirstToken -> _lastResponseMs.value = event.elapsedMs
-            is CounselingResult -> {
-                flushPendingCounselingChunk()
-                _counselingResult.value = event.replyText
-                securePrefs.saveCounselingResult(event.replyText)
-                // 日志目标与倾诉文本都取事件里冻结的值，不回读实时状态
+        counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Apply(event))
+    }
+
+    /** 用户停止/换轮时丢掉未发布的半截增量 */
+    private fun cancelPendingCounselingFlush() {
+        counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.DiscardPendingChunks)
+    }
+
+    /**
+     * CounselingStore 交出来的两件事：结果落盘 + 写 counseling_log.md，以及首字耗时。
+     *
+     * 参数全部来自事件里冻结的值（kbName / 倾诉文本 / 回复 / 分析），
+     * 这里不回读 _activeKb 或草稿：生成期间切库、改草稿时，日志仍记在这轮真正归属处。
+     * 这条以前只是注释，现在由 CounselingStoreTest 的
+     * `persist effect carries the identity frozen in the event` 钉住。
+     */
+    private fun onCounselingEffect(effect: com.lovebrain.app.feature.counseling.CounselingStore.Effect) {
+        when (effect) {
+            is com.lovebrain.app.feature.counseling.CounselingStore.Effect.PersistResult -> {
+                securePrefs.saveCounselingResult(effect.replyText)
                 viewModelScope.launch {
-                    saveCounselingLog(event.kbName, event.userMessage, event.replyText, event.analysisText)
+                    saveCounselingLog(
+                        effect.kbName, effect.userMessage, effect.replyText, effect.analysisText
+                    )
                 }
             }
-            is CounselingFailed -> {
-                flushPendingCounselingChunk()
-                _counselingError.value = event.message
-            }
-            is CounselingEnded -> {
-                flushPendingCounselingChunk()
-                _counselingStreaming.value = ""
-            }
+
+            is com.lovebrain.app.feature.counseling.CounselingStore.Effect.FirstTokenObserved -> _lastResponseMs.value = effect.elapsedMs
         }
-    }
-
-    private fun scheduleCounselingFlush() {
-        if (counselingFlushJob?.isActive == true) return
-        counselingFlushJob = viewModelScope.launch {
-            while (true) {
-                delay(STREAMING_FLUSH_INTERVAL_MS)
-                flushPendingCounselingChunk()
-            }
-        }
-    }
-
-    private fun flushPendingCounselingChunk() {
-        if (counselingChunkPending.isEmpty()) return
-        val text = counselingChunkPending.toString()
-        counselingChunkPending.setLength(0)
-        _counselingStreaming.value = _counselingStreaming.value + text
-    }
-
-    private fun cancelPendingCounselingFlush() {
-        counselingFlushJob?.cancel()
-        counselingFlushJob = null
-        counselingChunkPending.setLength(0)
     }
 
     // --- 锦囊 ---
