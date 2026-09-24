@@ -526,35 +526,39 @@ class LoveBrainViewModel(
             .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
 
     private val _resultMode = MutableStateFlow(ResultMode.REPLY)
+
+    /**
+     * 结果区当前展示哪一类结果。写它的有两条链：回复（[generate]）与主动发
+     * （[generateProactive]、以及退出模式时收到的那条效果），所以它留在本类，
+     * 不下沉进 [com.lovebrain.app.feature.proactive.ProactiveStore]——
+     * 那会让回复链反过来写主动发的状态。
+     */
     val resultMode: StateFlow<ResultMode> = _resultMode.asStateFlow()
 
     /**
-     * Composer 模式与结果模式现在是 `model` 里的顶层 enum
-     * （[com.lovebrain.app.model.ComposerMode] / [com.lovebrain.app.model.ResultMode]）。
-     * 值域语义没变：REPLY 是默认，PROACTIVE 由蓝字切换进入且不发网络请求；
-     * 它仍然替代着早期"三个变量各自推断模式"的写法，只是不再长在 VM 身上——
-     * feature 包不许 import viewmodel，模式要归 ProactiveStore 就得先把这两个 enum 搬出去。
+     * 输入区的模式归 [com.lovebrain.app.feature.proactive.ProactiveStore]
+     * （§5.2 第 3 步清单里的最后一项，[com.lovebrain.app.model.ComposerMode] 搬到 model 之后才搬得动）。
+     *
+     * 以前这里是 `_composerMode` + 四处手写赋值（切换、发起、被拒、结束），
+     * 而"结束了且真拿到可展示开场才退回普通回复"这条规则跨两个所有者：
+     * store 报"有结果"，VM 再改自己的字段——同一瞬间可以读出"模式已退、结果还没清"。
+     * 现在模式与 options 在同一个状态对象里，规则在一次赋值里做完，本类只转发只读视图。
      */
-    private val _composerMode = MutableStateFlow(ComposerMode.REPLY)
-    val composerMode: StateFlow<ComposerMode> = _composerMode.asStateFlow()
+    val composerMode: StateFlow<ComposerMode> =
+        proactiveStore.uiState.map { it.composerMode }
+            .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, ComposerMode.REPLY)
 
     /** 切换主动发模式——第一次点击只切换模式，不发网络请求。
-     * 再次点击退出主动发模式回到普通回复。 */
+     * 再次点击退出主动发模式回到普通回复（结果由 store 一起清）。 */
     fun toggleProactiveMode() {
         if (operationCoordinator.isBusy(ForegroundOperationCoordinator.OperationType.PROACTIVE) ||
             replyUi.value.isBusy) return
-        _composerMode.value = if (_composerMode.value == ComposerMode.PROACTIVE) ComposerMode.REPLY else ComposerMode.PROACTIVE
-        // 退出主动发时清残留结果
-        if (_composerMode.value == ComposerMode.REPLY) {
-            _resultMode.value = ResultMode.REPLY
-            proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Clear)
-        }
+        proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.ToggleComposer)
     }
 
-    /** 退出主动发模式（供生成成功后或取消时调用） */
+    /** 退出主动发模式（供生成成功后或取消时调用）：模式退回，已经拿到的开场留着 */
     fun exitProactiveMode() {
-        _composerMode.value = ComposerMode.REPLY
-        _resultMode.value = ResultMode.REPLY
+        proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.ExitProactive)
     }
 
 /** 前台任务互斥——从 operationCoordinator 派生，不再拼多个 boolean */
@@ -2008,8 +2012,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     /** 主动发——coordinator 注册的唯一前台任务 */
     fun generateProactive(draft: String = "", scene: String = "") {
-        // 主动发生成入口——设置 composer mode 和 result mode
-        _composerMode.value = ComposerMode.PROACTIVE
+        // 主动发生成入口——模式由 store 持有，结果区那一半仍归本类
+        proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.EnterProactive)
         _resultMode.value = ResultMode.PROACTIVE
 
         val requestId = ReplyRequestState.newRequestId()
@@ -2029,9 +2033,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
         if (lease == null) {
             L.w("proactive rejected: foreground slot taken")
-            // 被拒绝时不把 UI 留在"主动发"空壳上
-            _composerMode.value = ComposerMode.REPLY
-            _resultMode.value = ResultMode.REPLY
+            // 被拒绝时不把 UI 留在"主动发"空壳上（模式退回，结果区跟着归位）
+            proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.ExitProactive)
         }
     }
 
@@ -2145,12 +2148,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * "真拿到可展示的开场之后要不要退出主动发模式"。
      *
      * 旧实现是 reducer 里直接调 exitProactiveMode()：状态持有者顺手改了 UI 会话状态，
-     * 两个所有者。现在模式仍然归 VM（为什么这轮没一起搬，写在 _composerMode 上方），
+     * 两个所有者。现在模式归 store、结果区模式归本类，两边各写各的：
      * "结束且有结果才退出"这条规则本身仍只有一处实现。
      */
     private fun onProactiveEffect(effect: com.lovebrain.app.feature.proactive.ProactiveStore.Effect) {
         when (effect) {
-            is com.lovebrain.app.feature.proactive.ProactiveStore.Effect.FinishedWithResults -> exitProactiveMode()
+            com.lovebrain.app.feature.proactive.ProactiveStore.Effect.ExitedProactiveMode -> _resultMode.value = ResultMode.REPLY
             is com.lovebrain.app.feature.proactive.ProactiveStore.Effect.FirstTokenObserved -> _lastResponseMs.value = effect.elapsedMs
         }
     }
