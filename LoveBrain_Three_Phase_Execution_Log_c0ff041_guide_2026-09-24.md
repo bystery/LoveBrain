@@ -3,9 +3,10 @@
 > 输入指导书：`LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md`
 > 被审提交 `c0ff0415`；本轮起点 `4795471`（上一窗口的最后一个提交，它已停手并留了
 > `LoveBrain_Handover_CI_Evidence_2026-09-24.md`）。
-> 本轮 HEAD：`284463f`（谈心 store `4a8f7f7` + 协调器偶发红 `284463f`）。
-> **全部只在本地、未推送**：`git ls-remote origin main` 测得远端仍是起点
-> `4795471`，本地 `git rev-list --count 4795471..HEAD` = 29。
+> 本轮 HEAD：`4a8f7f7`（谈心 store）+ `284463f`（协调器偶发红）+ 本文件这条。
+> **全部只在本地、未推送**：`git ls-remote origin main` 实测远端仍是起点
+> `4795471`；领先多少个提交**别抄这里的数**，现算：
+> `git rev-list --count 4795471..HEAD`（写这一段时测得 30，含本条 docs 提交）。
 > 阶段一的 P0-03/04/05 + 阶段二的 ports/棘轮/死 API/四个 store 都在里面。
 > 本轮没有改 prompt：`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` → 零差异。
 
@@ -213,7 +214,9 @@ KnowledgeRepository                  2001 行，仍是全仓第二长
 
 ## 5. 下一步（按依赖顺序，不跳步）
 
-1. 说一声「推送」→ 把本轮 29 个提交推上去，等同一 SHA 的 `verify` / `ui-test` / `upgrade-test`；
+1. 说一声「推送」→ 把本地领先 `4795471` 的那一串提交推上去
+   （多少个别抄数，现算 `git rev-list --count 4795471..HEAD`），等同一 SHA 的
+   `verify` / `ui-test` / `upgrade-test`；
    `ui-test` 若还红，用新加的诊断输出定位那 8 条"not displayed"是没测量、被裁还是出窗口；
    新加的 3 格语义树断言（48dp / selected / contentDescription）**预期可能红**，
    那是把假绿换成真信号，不是回归。
