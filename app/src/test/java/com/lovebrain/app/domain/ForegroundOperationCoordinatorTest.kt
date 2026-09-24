@@ -41,14 +41,33 @@ class ForegroundOperationCoordinatorTest {
      * 协调器跑在真实调度器上，所以不能用 runTest 的虚拟时间等它——
      * runTest { delay(400) } 在虚拟时间里瞬间返回，真实协程根本还没被调度，
      * 断言就会随机看到"还没完成"。这里按墙钟轮询，超时即失败。
+     *
+     * 预算从 3s 提到 15s：2026-09-24 整仓 1005 个用例一起跑时出现过一次 3s 超时
+     * （单独跑这个类 3 次、加 10 个 busy loop 再跑 8 次都全绿，抓不到第二次）。
+     * 读代码定位到的原因是 Dispatchers.Default 被同批用例里等 CountDownLatch /
+     * 轮询的线程占满，被 LAZY 启动的任务体排不上队，而不是清理漏了——
+     * `start()` 里 invokeOnCompletion 挂在 job.start() **之前**，极短任务也不会漏掉回调。
+     * 真丢清理是正确性问题，本条要能报；纯调度饥饿是测试稳定性问题，不该报。
+     * 15s 只改变"多久之后才认定丢了"，不改变判定标准。
      */
-    private fun awaitTrue(timeoutMs: Long = 3000L, what: String, condition: () -> Boolean) {
+    private fun awaitTrue(
+        timeoutMs: Long = AWAIT_TIMEOUT_MS,
+        what: String,
+        describe: () -> String = { "" },
+        condition: () -> Boolean
+    ) {
         val deadline = System.currentTimeMillis() + timeoutMs
         while (System.currentTimeMillis() < deadline) {
             if (condition()) return
             Thread.sleep(10)
         }
-        org.junit.Assert.fail("timed out after ${timeoutMs}ms waiting for: $what")
+        org.junit.Assert.fail(
+            "timed out after ${timeoutMs}ms waiting for: $what (last seen: ${describe()})"
+        )
+    }
+
+    private companion object {
+        const val AWAIT_TIMEOUT_MS = 15_000L
     }
 
     /** 阻塞直到测试主动放行，用来模拟"一个还在跑的前台任务" */
@@ -120,7 +139,8 @@ class ForegroundOperationCoordinatorTest {
             assertEquals(1, c.snapshot().size)
             assertNotNull("the lease must carry the request identity slot", lease?.requestId)
             awaitTrue(what = "the body to run") { bodyRan.get() }
-            awaitTrue(what = "the finished job to be unregistered") { c.snapshot().isEmpty() }
+            awaitTrue(what = "the finished job to be unregistered",
+                describe = { c.snapshot().toString() }) { c.snapshot().isEmpty() }
         } finally {
             c.shutdownAll(); scope.cancel()
         }
@@ -162,10 +182,13 @@ class ForegroundOperationCoordinatorTest {
         val c = ForegroundOperationCoordinator(scope)
         try {
             c.start(OperationType.SUGGEST) { delay(5) }
-            awaitTrue(what = "the operation to be registered") { c.snapshot().size == 1 }
+            // 登记是同步的：`start()` 在锁内写完表并发布快照才返回，
+            // 所以这里直接断言，不用轮询等一个转瞬就会过去的中间态。
+            assertEquals("the operation must be registered by the time start() returns", 1, c.snapshot().size)
             assertTrue(c.activeOperations.value.isNotEmpty())
 
-            awaitTrue(what = "completion cleanup to unregister it") { c.snapshot().isEmpty() }
+            awaitTrue(what = "completion cleanup to unregister it",
+                describe = { c.snapshot().toString() }) { c.snapshot().isEmpty() }
             assertTrue("StateFlow must agree with the snapshot", c.activeOperations.value.isEmpty())
         } finally {
             c.shutdownAll(); scope.cancel()
