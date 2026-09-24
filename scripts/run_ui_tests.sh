@@ -82,10 +82,13 @@ mkdir -p "$SCREENSHOT_DIR"
 if [ "$MIN_TESTS" = "auto" ]; then
   # The expectation is derived from the repository itself so a suite that
   # silently stops running cannot pass.
-  SRC_TESTS="$(grep -r --include='*.kt' -c '^\s*@Test' app/src/androidTest 2>/dev/null |
-    awk -F: '{ s += $2 } END { print s + 0 }')"
-  IGNORED="$(grep -r --include='*.kt' -c '^\s*@Ignore' app/src/androidTest 2>/dev/null |
-    awk -F: '{ s += $2 } END { print s + 0 }')"
+  #
+  # Counting must tolerate "zero matches": grep exits 1 on an empty result, and under
+  # `set -euo pipefail` that used to abort this script *because the tree had no @Ignore*
+  # — i.e. the cleaner the repo, the more certain the CI failure. The fail-closed
+  # property stays where it belongs: a zero @Test count still refuses to run.
+  SRC_TESTS="$(count_annotations app/src/androidTest '^\s*@Test')"
+  IGNORED="$(count_annotations app/src/androidTest '^\s*@Ignore')"
   [ "$SRC_TESTS" -gt 0 ] || die "could not count @Test annotations under app/src/androidTest — refusing to run an unbounded UI gate"
   MIN_TESTS=$((SRC_TESTS - IGNORED))
   [ "$MIN_TESTS" -ge 1 ] || MIN_TESTS=1

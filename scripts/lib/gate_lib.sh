@@ -252,3 +252,20 @@ require_device() {
   [ -n "$serials" ] || die "no online adb device found — the emulator failed to start or died; refusing to pass with zero tests"
   log "device(s) online: $(printf '%s' "$serials" | tr '\n' ' ')"
 }
+
+# count_annotations <dir> <grep-regex> — prints the total number of matching lines.
+#
+# A zero-match search is a legitimate answer, not a failure: grep exits 1 when it
+# finds nothing, and under `set -euo pipefail` that used to kill the caller with no
+# output at all (CI's ui-test job died precisely because the tree had no @Ignore).
+# Callers that must fail closed do so explicitly on the *value*, not on the exit code.
+count_annotations() {
+  local dir="$1" pattern="$2" total
+  if [ ! -d "$dir" ]; then
+    printf '0'
+    return 0
+  fi
+  total="$(grep -r --include='*.kt' -c "$pattern" "$dir" 2>/dev/null |
+    awk -F: '{ s += $2 } END { print s + 0 }' || true)"
+  printf '%s' "${total:-0}"
+}
