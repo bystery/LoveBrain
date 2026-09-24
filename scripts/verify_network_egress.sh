@@ -12,10 +12,13 @@
 # Usage:
 #   bash scripts/verify_network_egress.sh --pcap <file.pcap> \
 #        --allow-host api.deepseek.com [--allow-host <other>]... \
-#        [--out dist/network-egress.txt] [--json dist/network-egress.json]
+#        [--allow-ip 1.2.3.4]... [--out dist/network-egress.txt] [--json dist/network-egress.json]
 #
 #   bash scripts/verify_network_egress.sh --capture-on-device \
 #        [--serial <adb-serial>] [--duration 120]
+#
+# Self-test of the checker itself (synthetic captures,正反 both directions):
+#   bash scripts/test_verify_network_egress.sh
 #
 # Exit codes:
 #   0  抓包存在且所有外连目的地都在白名单内
@@ -33,6 +36,11 @@ SERIAL=""
 OUT=""
 JSON_OUT=""
 ALLOW_HOSTS=()
+ALLOW_IPS_EXTRA=()
+
+# TSHARK_BIN 默认就是 PATH 上的 tshark。可覆盖是为了让"工具缺失"这一格
+# 能被独立测试脚本确定性地复现（指向一个不存在的路径），而不是靠"这台机器碰巧没装"。
+TSHARK_BIN="${TSHARK_BIN:-tshark}"
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -41,6 +49,7 @@ while [ $# -gt 0 ]; do
     --duration) DURATION="$2"; shift 2 ;;
     --serial) SERIAL="$2"; shift 2 ;;
     --allow-host) ALLOW_HOSTS+=("$2"); shift 2 ;;
+    --allow-ip) ALLOW_IPS_EXTRA+=("$2"); shift 2 ;;
     --out) OUT="$2"; shift 2 ;;
     --json) JSON_OUT="$2"; shift 2 ;;
     *) die_usage "verify_network_egress.sh: unknown argument: $1" ;;
@@ -60,11 +69,11 @@ run_tshark() {
   shift 2
   local err
   err="$(mktemp)"
-  if ! have tshark; then
+  if ! have "$TSHARK_BIN"; then
     rm -f "$err"
-    die_unverified "tshark is not installed — $what cannot be analysed, so the zero-telemetry claim stays UNVERIFIED"
+    die_unverified "$TSHARK_BIN is not installed — $what cannot be analysed, so the zero-telemetry claim stays UNVERIFIED"
   fi
-  if ! tshark -r "$PCAP" "$@" >"$out" 2>"$err"; then
+  if ! "$TSHARK_BIN" -r "$PCAP" "$@" >"$out" 2>"$err"; then
     printf '%s  tshark failed while computing %s:\n' "$GATE_LOG_PREFIX" "$what" >&2
     sed 's/^/    /' "$err" >&2
     rm -f "$err"
@@ -81,9 +90,11 @@ run_tshark() {
 }
 die_unverified() { printf '%s  CANNOT-VERIFY %s
 ' "$GATE_LOG_PREFIX" "$*" >&2; exit 2; }
-have adb || die_unverified "adb not on PATH; cannot produce or pull a capture"
 
+# adb 只在"要现场抓包"时才需要。--pcap 模式是离线分析，
+# 把它当成全局前置条件会让"没有 adb"盖住"没有 tshark"这一格，测试就分不开了。
 if [ "$CAPTURE" -eq 1 ]; then
+  have adb || die_unverified "adb not on PATH; cannot produce or pull a capture"
   ADB=(adb)
   [ -n "$SERIAL" ] && ADB+=( -s "$SERIAL" )
   "${ADB[@]}" get-state >/dev/null 2>&1 || die 2 "no device attached"
@@ -105,7 +116,7 @@ fi
 [ -n "$PCAP" ] || die_usage "provide --pcap <file> or --capture-on-device"
 [ -s "$PCAP" ] || die_unverified "pcap missing or empty: $PCAP — nothing was captured, so the claim is UNVERIFIED, not proven"
 
-have tshark || die_unverified "tshark not installed; cannot parse the capture"
+have "$TSHARK_BIN" || die_unverified "$TSHARK_BIN not installed; cannot parse the capture"
 
 if [ "${#ALLOW_HOSTS[@]}" -eq 0 ]; then
   die_usage "at least one --allow-host is required (the user-configured Provider host)"
@@ -140,6 +151,11 @@ fi
 # 因为那种情况下判定只依赖 SNI/DNS 名，报告里必须看得见这一点。
 ALLOW_IPS="$WORK/allow_ips.txt"
 : >"$ALLOW_IPS"
+# 显式声明的 IP 优先于 DNS 解析结果：合成抓包（fixture）里的主机名是假的，
+# 只有 IP 是真的；离线环境也没有 DNS 可查。
+for ip in ${ALLOW_IPS_EXTRA[@]+"${ALLOW_IPS_EXTRA[@]}"}; do
+  printf '%s\n' "$ip" >>"$ALLOW_IPS"
+done
 for h in "${ALLOW_HOSTS[@]}"; do
   if have getent; then
     getent hosts "$h" | awk '{print $1}' >>"$ALLOW_IPS"
@@ -163,12 +179,30 @@ fi
 
 UNEXPECTED="$WORK/unexpected.txt"
 : >"$UNEXPECTED"
+
+# 只跳过"根本出不了本机/本链路"的地址：回环、RFC1918、链路本地、ULA、组播。
+#
+# 这一格以前结尾写的是 `|*) continue ;;`。`*` 匹配任何输入，于是**每一个**目的 IP
+# 都在这里被 continue 掉——整个 IP 视角形同不存在，直连 IP 的遥测端点会被放行
+# （独立复核 P0-04 指出的假阴性）。兜底语义必须是"没列出来的算表外"，
+# 不是"没列出来的都放过"。
+#
+# 同时删掉了旧列表里的 `2000::*`：2000::/3 是全局单播聚合，公网地址几乎全在里面，
+# 留着它和留个 `*` 没有本质区别。
+is_nonroutable() {
+  case "$1" in
+    10.*|127.*|192.168.*|169.254.*|0.0.0.0|::) return 0 ;;
+    172.1[6-9].*|172.2[0-9].*|172.3[01].*) return 0 ;;
+    224.*|239.*|255.255.255.255) return 0 ;;
+    ::1|fe[89ab]*:*|fc*:*|fd*:*|ff*:*) return 0 ;;
+  esac
+  return 1
+}
+
 while read -r ip; do
   [ -n "$ip" ] || continue
-  case "$ip" in
-    10.*|127.*|172.1[6-9].*|172.2[0-9].*|172.3[01].*|192.168.*|169.254.*|fe80:*|::1|2000::*|*) continue ;;
-  esac
-  grep -qx "$ip" "$ALLOW_IPS" || printf 'ip\t%s\n' "$ip" >>"$UNEXPECTED"
+  if is_nonroutable "$ip"; then continue; fi
+  grep -qx -- "$ip" "$ALLOW_IPS" || printf 'ip\t%s\n' "$ip" >>"$UNEXPECTED"
 done <"$WORK/dst_ip.txt"
 while read -r name; do
   [ -n "$name" ] || continue
@@ -179,9 +213,17 @@ while read -r name; do
   done
   [ "$ok" = 1 ] || printf 'sni\t%s\n' "$name" >>"$UNEXPECTED"
 done <"$WORK/sni.txt"
+PTR_SKIPPED=0
 while read -r name; do
   [ -n "$name" ] || continue
-  case "$name" in *.arpa|*) continue ;; esac
+  # 反向解析（*.arpa）由系统产生、不是 App 的目的地，跳过但必须在报告里数得出来，
+  # 不能像旧的 `*.arpa|*` 那样顺手把正向查询一起吞掉。
+  case "$name" in
+    *.arpa)
+      PTR_SKIPPED=$((PTR_SKIPPED + 1))
+      continue
+      ;;
+  esac
   ok=0
   for h in "${ALLOW_HOSTS[@]}"; do
     [ "$name" = "$h" ] || case "$name" in *".$h") ok=1 ;; esac
@@ -197,6 +239,7 @@ SUMMARY="$WORK/summary.txt"
   echo "distinct destination IPs : $(wc -l <"$WORK/dst_ip.txt" | tr -d ' ')"
   echo "distinct TLS SNI         : $(wc -l <"$WORK/sni.txt" | tr -d ' ')"
   echo "distinct DNS queries     : $(wc -l <"$WORK/dns.txt" | tr -d ' ')"
+  echo "reverse (PTR) queries    : $PTR_SKIPPED  (skipped by policy, counted on purpose)"
   echo "out-of-list destinations : $(wc -l <"$UNEXPECTED" | tr -d ' ')"
 } >"$SUMMARY"
 cat "$SUMMARY"

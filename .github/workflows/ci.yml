@@ -68,6 +68,28 @@ jobs:
         # keeps that quote honest instead of decorative.
         run: bash scripts/asset_hashes.sh --check docs/prompt-assets.lock
 
+      - name: Egress checker must be gradeable against synthetic captures
+        # P0-04：判据本身要正反各跑一遍。tshark 不在 runner 预装里，装不上就是红，
+        # 这一步没有"没装就跳过"的分支。
+        env:
+          DEBIAN_FRONTEND: noninteractive
+          WORK_DIR: build/gate-artifacts/egress-selftest
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold tshark
+          tshark --version | head -1
+          bash scripts/test_verify_network_egress.sh
+
+      - name: Upload egress self-test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: egress-selftest-evidence
+          path: build/gate-artifacts/egress-selftest/
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Cancellation-hygiene audit must be clean
         # 复核报告 §6 S2-07 最后一条要求"全仓 CancellationException 审计结果 + lint/static rule 防回归"。
         # 这条就是那条静态规则：协程可挂起处吞掉 Exception/Throwable 而未放行取消信号 = 直接红。
