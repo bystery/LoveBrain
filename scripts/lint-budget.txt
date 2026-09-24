@@ -20,7 +20,7 @@ RedundantLabel 1
 ReturnFromAwaitPointerEventScope 3
 StaticFieldLeak 1
 SwitchIntDef 1
-UnusedResources 34
+UnusedResources 33
 
 # ── advisory：不进预算比对的规则（每次仍然打印条数与理由）──
 # 只允许「发现来自仓库之外」的检查走这里；名单写死在 check_lint_budget.sh 的

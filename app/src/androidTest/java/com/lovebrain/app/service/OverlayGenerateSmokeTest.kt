@@ -7,6 +7,7 @@ import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
@@ -16,6 +17,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ServiceTestRule
 import com.lovebrain.app.AppConfig
+import com.lovebrain.app.R
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.GenerateResult
@@ -25,6 +27,8 @@ import com.lovebrain.app.model.ReplyFailureKind
 import com.lovebrain.app.testing.FakeProviderServer
 import com.lovebrain.app.testing.MainChainHarness
 import com.lovebrain.app.testing.ProductionPanel
+import com.lovebrain.app.testing.UiText
+import com.lovebrain.app.ui.panel.reply.GENERATE_STOP_TEST_TAG
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -77,20 +81,26 @@ class OverlayGenerateSmokeTest {
     private lateinit var vm: LoveBrainViewModel
     private var server: FakeProviderServer? = null
 
-    /** 生成中面板渲染 LOADING 无限动画，关掉自动推进时钟，由测试按帧推进 */
-    private val loadingStopSuffix = "点击停止"
-    private val loadingStopText = Regex("""(分析对话|生成方案|深度分析) · \d+s\s+点击停止""")
+    /**
+     * 生成中那条停止棒的整串匹配模式。
+     *
+     * 旧写法把中文写死在这里（`(分析对话|生成方案|深度分析) · \d+s\s+点击停止`），
+     * 而生产早就改成 panel_analysing_with_seconds(阶段词, 秒数) + 三个资源阶段词，
+     * 英文模拟器上渲染的是 "Reading the conversation · 3s, tap to stop" —— 于是永远配不上。
+     * 现在模式与定位锚点都不再从测试这边抄文案：锚点用生产留的 tag，模式由资源现拼。
+     */
+    private val loadingStopText: Regex get() = UiText.generatingBarPattern()
 
     /**
      * 断言主操作位置就是生产 LOADING 停止条，并返回该节点文本。
-     * Compose 1.6.8 无 Regex finder → 用恒定后缀定位 + 整串正则校验真实文案。
      */
     private fun assertLoadingStopBar(reason: String) {
-        composeRule.onNodeWithText(loadingStopSuffix, substring = true).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        val node = composeRule
-            .onNodeWithText(loadingStopSuffix, substring = true)
-            .fetchSemanticsNode("未找到生成中的停止条：$reason")
-        val bar = node.config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text.orEmpty()
+        composeRule.onNodeWithTag(GENERATE_STOP_TEST_TAG)
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        val bar = composeRule
+            .onNodeWithTag(GENERATE_STOP_TEST_TAG)
+            .fetchSemanticsNode("未找到生成中的停止条：$reason（tag=$GENERATE_STOP_TEST_TAG）")
+            .config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text.orEmpty()
         assertTrue("$reason：生产停止条文案应完整匹配，实际：$bar", loadingStopText.matches(bar))
     }
 
@@ -162,7 +172,9 @@ class OverlayGenerateSmokeTest {
     }
 
     private fun tapGenerateReplyButton(messageCount: Int) {
-        composeRule.onNodeWithText("生成回复 · ${messageCount}条消息").performClick()
+        composeRule.onNodeWithText(
+            UiText.current(R.string.panel_generate_reply_with_count, messageCount)
+        ).performClick()
     }
 
     private fun currentError(): GenerateResult.Error? = vm.result.value as? GenerateResult.Error
@@ -178,7 +190,7 @@ class OverlayGenerateSmokeTest {
         val s = installProvider(FakeProviderServer.Script.Stream(listOf("不该被用到的响应")))
         mountPanel()
 
-        val entryText = "还没有聊天记录，点这里主动发一条"
+        val entryText = UiText.current(R.string.proactive_empty_send_one)
         composeRule.onNodeWithText(entryText).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         assertEquals(
             "初始应为 REPLY 模式",
@@ -194,13 +206,14 @@ class OverlayGenerateSmokeTest {
             ComposerMode.PROACTIVE,
             vm.composerMode.value
         )
-        composeRule.onNodeWithText("生成开场").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(UiText.current(R.string.panel_generate_opening))
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         assertFalse("切模式不得进入生成中", vm.isGenerating.value)
         assertNull("切模式不得产生结果", vm.result.value)
         assertEquals("切模式的 Engine/Provider 调用次数必须为 0", 0, s.requestCount)
 
         // 再点一次 = 关闭主动发，仍然零请求
-        composeRule.onNodeWithText("主动发模式已开启，点击关闭").performClick()
+        composeRule.onNodeWithText(UiText.current(R.string.proactive_empty_turn_off)).performClick()
         composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
 
         assertEquals(
@@ -299,8 +312,10 @@ class OverlayGenerateSmokeTest {
             s.lastRequestBody().contains("你最近是不是很忙")
         )
         // 有结果时生产主操作位换成「重试 | 记入知识库」
-        composeRule.onNodeWithText("重试").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        composeRule.onNodeWithText("记入知识库").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(UiText.current(R.string.panel_retry))
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(UiText.current(R.string.panel_save_to_kb))
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         assertFalse("完成后不得留在生成中", vm.isGenerating.value)
     }
 
@@ -407,15 +422,16 @@ class OverlayGenerateSmokeTest {
         assertLoadingStopBar("停止前")
         assertEquals("停止前应已发出 1 个请求", 1, s.requestCount)
 
-        // 点生产停止动作：点 LOADING 条文字节点，触摸注入由其可点击父节点接收
-        composeRule.onNodeWithText(loadingStopSuffix, substring = true).performClick()
+        // 点生产停止动作：按生产留的 tag 定位文字节点，触摸注入由其可点击父节点接收
+        composeRule.onNodeWithTag(GENERATE_STOP_TEST_TAG).performClick()
         composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
 
         pumpUntil("停止后应退出生成中") { !vm.isGenerating.value }
         assertFalse("停止后 isGenerating 必须为 false", vm.isGenerating.value)
         assertNull("停止不得留下结果", vm.result.value)
         assertEquals("停止不得清空消息", 1, vm.messages.value.size)
-        composeRule.onNodeWithText("生成回复 · 1条消息").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(UiText.current(R.string.panel_generate_reply_with_count, 1))
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }
 
     // ═══════════════════════ 8. 快速双击 ═══════════════════════

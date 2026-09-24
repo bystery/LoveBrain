@@ -7,10 +7,13 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
+import com.lovebrain.app.R
 import com.lovebrain.app.model.ComposerMode
+import com.lovebrain.app.testing.UiText
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -45,14 +48,28 @@ class ReplyPrimaryActionsTest {
      * Compose 1.6.8 的 ui-test 没有 Regex 版 finder，先用恒定后缀「点击停止」定位节点，
      * 再取该节点 semantics 文本做整串正则校验（既不写死秒数，也不放过文案漂移）。
      */
-    private val loadingStopSuffix = "点击停止"
-    private val loadingStopText = Regex("""(分析对话|生成方案|深度分析) · \d+s\s+点击停止""")
+    // 停止棒文案不写死在这里：生产拼法是 panel_analysing_with_seconds(阶段词, 秒数)，
+    // 阶段词又随秒数在三个资源之间换，所以整串匹配模式也从资源现拼
+    // （见 UiText.generatingBarPattern()）。模板被改动时那条正则当场红，而不是静默失配。
+    private val loadingStopText: Regex get() = UiText.generatingBarPattern()
+
+    // 按钮文案一律取自资源。写死中文的断言在英文模拟器上永远找不到节点——
+    // CI run 36019334520 本文件 8 格里红 7 格就是这个原因，唯一不认文字的那格是绿的。
+    private val generateReply: String get() = UiText.current(R.string.panel_generate_reply)
+    private fun generateReplyWithCount(n: Int): String =
+        UiText.current(R.string.panel_generate_reply_with_count, n)
+
+    private val generateOpening: String get() = UiText.current(R.string.panel_generate_opening)
+    private val retry: String get() = UiText.current(R.string.panel_retry)
+    private val saveToKb: String get() = UiText.current(R.string.panel_save_to_kb)
+    private val stop: String get() = UiText.current(R.string.panel_stop)
 
     /** 取承载「点击停止」的那条文案的完整语义文本 */
     private fun loadingStopBarText(): String {
+        // 用生产留的 tag 定位（文字会变，tag 不会），再取语义文本做整串校验
         val node = composeRule
-            .onNodeWithText(loadingStopSuffix, substring = true)
-            .fetchSemanticsNode("未找到生成中的停止条")
+            .onNodeWithTag(GENERATE_STOP_TEST_TAG)
+            .fetchSemanticsNode("未找到生成中的停止条（tag=$GENERATE_STOP_TEST_TAG）")
         return node.config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text.orEmpty()
     }
 
@@ -95,8 +112,8 @@ class ReplyPrimaryActionsTest {
             messageCount = 3,
             onGenerateReply = { generateClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText("生成回复 · 3条消息").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        composeRule.onNodeWithText("生成回复 · 3条消息").performClick()
+        composeRule.onNodeWithText(generateReplyWithCount(3)).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(generateReplyWithCount(3)).performClick()
         // 审计修订：JUnit 断言，不用裸 assert()
         assertEquals("生成回复回调应恰好触发 1 次", 1, generateClicks.get())
     }
@@ -126,9 +143,9 @@ class ReplyPrimaryActionsTest {
             onGenerateReply = { generateClicks.incrementAndGet() }
         )
         // 0 条消息：无计数后缀
-        composeRule.onNodeWithText("生成回复").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        composeRule.onNodeWithText("生成回复 · 0条消息").assertIsNotDisplayed()
-        composeRule.onNodeWithText("生成回复").assertIsNotEnabled()
+        composeRule.onNodeWithText(generateReply).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(generateReplyWithCount(0)).assertIsNotDisplayed()
+        composeRule.onNodeWithText(generateReply).assertIsNotEnabled()
     }
 
     /**
@@ -144,7 +161,7 @@ class ReplyPrimaryActionsTest {
             messageCount = 0,
             onGenerateReply = { generateClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText("生成回复").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(generateReply).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         composeRule.onAllNodes(hasClickAction()).assertCountEquals(0)
         assertEquals("零消息时不得有任何生成回调", 0, generateClicks.get())
     }
@@ -162,13 +179,13 @@ class ReplyPrimaryActionsTest {
             onRetry = { retryClicks.incrementAndGet() },
             onSaveToKb = { saveClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText("重试").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        composeRule.onNodeWithText("记入知识库").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(retry).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(saveToKb).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         // 有结果时不得再出现「生成回复」主按钮（主动发/生成入口不能被挤掉）
-        composeRule.onNodeWithText("生成回复 · 3条消息").assertIsNotDisplayed()
+        composeRule.onNodeWithText(generateReplyWithCount(3)).assertIsNotDisplayed()
 
-        composeRule.onNodeWithText("重试").performClick()
-        composeRule.onNodeWithText("记入知识库").performClick()
+        composeRule.onNodeWithText(retry).performClick()
+        composeRule.onNodeWithText(saveToKb).performClick()
 
         assertEquals("重试点击应恰好 1 次", 1, retryClicks.get())
         assertEquals("记入知识库点击应恰好 1 次", 1, saveClicks.get())
@@ -186,8 +203,8 @@ class ReplyPrimaryActionsTest {
             onGenerateProactive = { proactiveClicks.incrementAndGet() },
             onGenerateReply = { replyClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText("生成开场").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        composeRule.onNodeWithText("生成开场").performClick()
+        composeRule.onNodeWithText(generateOpening).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(generateOpening).performClick()
 
         assertEquals("生成开场应恰好 1 次", 1, proactiveClicks.get())
         assertEquals("主动发模式不得触发回复生成", 0, replyClicks.get())
@@ -215,16 +232,16 @@ class ReplyPrimaryActionsTest {
         // 推进若干帧完成组合 + LaunchedEffect
         composeRule.mainClock.advanceTimeBy(120L)
 
-        composeRule.onNodeWithText(loadingStopSuffix, substring = true).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithTag(GENERATE_STOP_TEST_TAG).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         // 整串校验真实文案（旧用例写死 onNodeWithText("停止") 就是在这里必挂）
         val bar = loadingStopBarText()
         assertTrue("生产 LOADING 停止条文案应完整匹配，实际：$bar", loadingStopText.matches(bar))
         assertEquals("只应存在一个停止条", 1,
             composeRule.onAllNodes(hasClickAction()).fetchSemanticsNodes().size)
         // 生成中不得还能点到「生成回复」
-        composeRule.onNodeWithText("生成回复 · 3条消息").assertIsNotDisplayed()
+        composeRule.onNodeWithText(generateReplyWithCount(3)).assertIsNotDisplayed()
         // 回归护栏：LOADING 态从不渲染裸「停止」——旧用例正是因此必挂
-        composeRule.onNodeWithText("停止").assertDoesNotExist()
+        composeRule.onNodeWithText(stop).assertDoesNotExist()
 
         // 接点击的是带 click action 语义的父节点（文字节点自身无 action）
         composeRule.onNode(hasClickAction()).performClick()
@@ -241,9 +258,9 @@ class ReplyPrimaryActionsTest {
             onGenerateProactive = {},
             onStop = { stopClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText("停止").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        composeRule.onNodeWithText("生成开场").assertIsNotDisplayed()
-        composeRule.onNodeWithText("停止").performClick()
+        composeRule.onNodeWithText(stop).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(generateOpening).assertIsNotDisplayed()
+        composeRule.onNodeWithText(stop).performClick()
         assertEquals("主动发停止应恰好触发 1 次", 1, stopClicks.get())
     }
 

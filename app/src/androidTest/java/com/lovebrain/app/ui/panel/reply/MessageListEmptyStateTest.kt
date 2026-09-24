@@ -7,7 +7,9 @@ import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.lovebrain.app.R
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.testing.UiText
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -33,8 +35,16 @@ class MessageListEmptyStateTest {
     @get:Rule
     val composeRule = createComposeRule()
 
-    private val emptyEntryText = "还没有聊天记录，点这里主动发一条"
-    private val activeEntryText = "主动发模式已开启，点击关闭"
+    /**
+     * 文案不写死在这里：生产这两句早就进了资源（`proactive_empty_send_one` /
+     * `proactive_empty_turn_off`），写死中文的断言在英文环境里永远找不到节点——
+     * CI run 36019334520 本文件 4 格红的就是这个。取当前配置下生产真正会渲染的那句。
+     */
+    private val emptyEntryText: String
+        get() = UiText.current(R.string.proactive_empty_send_one)
+
+    private val activeEntryText: String
+        get() = UiText.current(R.string.proactive_empty_turn_off)
 
     private fun setList(
         messages: List<ChatMessage>,
@@ -61,8 +71,8 @@ class MessageListEmptyStateTest {
 
         composeRule.onNodeWithText(emptyEntryText).assertIsDisplayed()
         // 空态里不得出现任何生成入口（生成动作只属于 ReplyPrimaryActions）
-        composeRule.onNodeWithText("生成回复").assertDoesNotExist()
-        composeRule.onNodeWithText("生成开场").assertDoesNotExist()
+        composeRule.onNodeWithText(UiText.current(R.string.panel_generate_reply)).assertDoesNotExist()
+        composeRule.onNodeWithText(UiText.current(R.string.panel_generate_opening)).assertDoesNotExist()
         // 唯一可点击节点 = 蓝字入口
         composeRule.onAllNodes(hasClickAction()).assertCountEquals(1)
 
@@ -121,7 +131,10 @@ class MessageListEmptyStateTest {
         setList(messages = emptyList(), onEmptyAction = { emptyActionCalls.incrementAndGet() })
 
         composeRule.onNodeWithText(emptyEntryText).assertIsDisplayed().assertIsEnabled()
-        composeRule.onNodeWithText("主动发").assertDoesNotExist()
-        composeRule.onNodeWithText("生成回复 · 0条消息").assertDoesNotExist()
+        // 「主动发」是模式名，不该在空态里被拆成一个单独入口
+        composeRule.onNodeWithText(UiText.current(R.string.panel_mode_proactive)).assertDoesNotExist()
+        composeRule.onNodeWithText(
+            UiText.current(R.string.panel_generate_reply_with_count, 0)
+        ).assertDoesNotExist()
     }
 }
