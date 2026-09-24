@@ -1,0 +1,21 @@
+# lint 预算基线：每条规则允许的最大 issue 数。
+# 生成/更新：bash scripts/check_lint_budget.sh --rewrite
+# 语义：任何一条超过预算 = 新增债；任何一条低于预算 = 债还掉了，必须回来把数字改小。
+# 用每条规则单独记账而不是只记一个总数：修掉 3 条 UnusedResources 同时新加 3 条
+# ModifierParameter 会让总数不变，只看总数就看不见这种"债务搬家"。
+
+AutoboxingStateCreation 6
+ClickableViewAccessibility 1
+DataExtractionRules 1
+DefaultLocale 2
+GradleDependency 1
+IconLauncherShape 5
+IconLocation 3
+InlinedApi 1
+ModifierParameter 8
+PluralsCandidate 3
+RedundantLabel 1
+ReturnFromAwaitPointerEventScope 3
+StaticFieldLeak 1
+SwitchIntDef 1
+UnusedResources 34

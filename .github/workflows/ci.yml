@@ -58,6 +58,11 @@ jobs:
         # Fatal severity and a non-stub HTML companion.
         run: bash scripts/assert_artifacts.sh --label "lint" --lint-xml app/build/reports/lint-results-debug.xml --lint-html app/build/reports/lint-results-debug.html
 
+      - name: Lint budget must not grow
+        # 复核 §3.3：80 个 warning 不该永久当绿色背景噪声。
+        # 按**每条规则**记预算：只记总数会被"修 3 条旧的、加 3 条新的"糊过去。
+        run: bash scripts/check_lint_budget.sh
+
       - name: Instrumentation sources must compile (same SHA, same job)
         # ui-test 过去在 Gradle 之前就退出，androidTest 的编译问题会被双重遮蔽；
         # 这里显式编一遍，编译不过就当场红，不等 emulator。

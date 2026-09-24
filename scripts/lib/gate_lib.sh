@@ -41,6 +41,13 @@ die_usage() {
   exit 2
 }
 
+# "没能验证"不是"验证通过"：缺工具/缺产物/解析失败一律 exit 2，
+# 与 die()（判据判定失败）分开，这样日志里能看出是哪种红。
+die_unverified() {
+  printf '%s  CANNOT-VERIFY %s\n' "$GATE_LOG_PREFIX" "$*" >&2
+  exit 2
+}
+
 require_cmd() {
   local c
   for c in "$@"; do
