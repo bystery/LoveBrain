@@ -10,6 +10,7 @@ import com.lovebrain.app.domain.AssetRegistry
 import com.lovebrain.app.domain.ForegroundOperationCoordinator
 import com.lovebrain.app.domain.GenerationFingerprints
 import com.lovebrain.app.domain.GenerationEngine
+import com.lovebrain.app.domain.IntentPolicy
 import com.lovebrain.app.domain.KnowledgeTriggerCoordinator
 import com.lovebrain.app.domain.MemoryCorrectionPolicy
 import com.lovebrain.app.domain.PromptBuilder
@@ -950,18 +951,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 }
             } ?: com.lovebrain.app.model.IntentConfig()
 
-            val effectiveIntent = if (intentSnapshot.enabled &&
-                intentSnapshot.status == com.lovebrain.app.model.IntentStatus.ACTIVE) {
-                val today = com.lovebrain.app.util.TimeFmt.today()
-                val shouldExpire = when (intentSnapshot.expiry) {
-                    com.lovebrain.app.model.IntentExpiry.TODAY ->
-                        intentSnapshot.expiryDate.isNotBlank() && intentSnapshot.expiryDate < today
-                    com.lovebrain.app.model.IntentExpiry.DATE ->
-                        intentSnapshot.expiryDate.isNotBlank() && intentSnapshot.expiryDate < today
-                    com.lovebrain.app.model.IntentExpiry.UNTIL_DONE -> false
-                }
-                if (shouldExpire) intentSnapshot.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
-                else intentSnapshot
+            // 到期只有一把尺（IntentPolicy）：这条规则此前在「发起生成」和「面板刷新」
+            // 两处各写了一遍，改一处漏一处
+            val effectiveIntent = if (IntentPolicy.shouldAutoExpire(intentSnapshot, com.lovebrain.app.util.TimeFmt.today())) {
+                intentSnapshot.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
             } else intentSnapshot
 
             val (correctionsSnapshot, correctionsRevision) = kbName?.let { name ->
@@ -2185,35 +2178,21 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             L.w("refreshIntentConfigForKb read failed: ${e::class.simpleName}")
             return
         }
-        // 自动到期检测
-        val finalConfig = if (config.enabled && config.status == com.lovebrain.app.model.IntentStatus.ACTIVE) {
-            val today = com.lovebrain.app.util.TimeFmt.today()
-            val shouldExpire = when (config.expiry) {
-                com.lovebrain.app.model.IntentExpiry.TODAY -> {
-                    config.expiryDate.isNotBlank() && config.expiryDate < today
-                }
-                com.lovebrain.app.model.IntentExpiry.DATE -> {
-                    config.expiryDate.isNotBlank() && config.expiryDate < today
-                }
-                com.lovebrain.app.model.IntentExpiry.UNTIL_DONE -> false
+        // 自动到期检测——判定规则在 IntentPolicy（可离线单测）；改写失败不改变屏上判定
+        val finalConfig = if (IntentPolicy.shouldAutoExpire(config, com.lovebrain.app.util.TimeFmt.today())) {
+            val updated = config.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
+            try {
+                knowledgeRepo.saveIntent(
+                    kbName, config.text, false,
+                    config.expiry, config.expiryDate,
+                    com.lovebrain.app.model.IntentStatus.EXPIRED
+                )
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.w("refreshIntentConfigForKb expire save failed: ${e::class.simpleName}")
             }
-            if (shouldExpire) {
-                val updated = config.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
-                try {
-                    knowledgeRepo.saveIntent(
-                        kbName, config.text, false,
-                        config.expiry, config.expiryDate,
-                        com.lovebrain.app.model.IntentStatus.EXPIRED
-                    )
-                } catch (e: kotlinx.coroutines.CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    L.w("refreshIntentConfigForKb expire save failed: ${e::class.simpleName}")
-                }
-                updated
-            } else {
-                config
-            }
+            updated
         } else {
             config
         }
@@ -2236,26 +2215,14 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     ) {
         // R08: 绑定编辑器打开时的 KB，不读当前 active KB
         val kbName = intentEditorKbName ?: _activeKb.value?.name ?: return
-        // TODAY 类型自动写 expiryDate=today()，不依赖 UI 填写
-        val effectiveExpiryDate = when (expiry) {
-            com.lovebrain.app.model.IntentExpiry.TODAY -> com.lovebrain.app.util.TimeFmt.today()
-            else -> expiryDate
-        }
+        // TODAY 自动写当天；同一次保存里的所有日期判定共用这一个 today，
+        // 不再一边用 TimeFmt.today() 填日期、一边用 LocalDate.now() 判过去
+        val today = com.lovebrain.app.util.TimeFmt.today()
+        val effectiveExpiryDate = IntentPolicy.effectiveExpiryDate(expiry, expiryDate, today)
         // DATE 类型严格校验——blank / malformed / past 都必须拒绝
-        if (expiry == com.lovebrain.app.model.IntentExpiry.DATE) {
-            if (effectiveExpiryDate.isBlank()) {
-                showPanelWarning("指定日期不能为空，请输入 yyyy-MM-dd 格式的日期")
-                return
-            }
-            val parsed = runCatching { java.time.LocalDate.parse(effectiveExpiryDate) }.getOrNull()
-            if (parsed == null) {
-                showPanelWarning("日期格式无效，请使用 yyyy-MM-dd 格式")
-                return
-            }
-            if (status == com.lovebrain.app.model.IntentStatus.ACTIVE && parsed.isBefore(java.time.LocalDate.now())) {
-                showPanelWarning("过去日期不能以活跃状态保存")
-                return
-            }
+        IntentPolicy.validateSave(expiry, effectiveExpiryDate, status, today)?.let { reason ->
+            showPanelWarning(reason)
+            return
         }
         viewModelScope.launch {
             try {
