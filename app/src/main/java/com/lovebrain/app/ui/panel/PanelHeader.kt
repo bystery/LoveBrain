@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -34,7 +35,6 @@ import com.lovebrain.app.ui.theme.*
 private object HeaderDimens {
     const val ROW_HEIGHT_DP = 48            // 头部整行高度——等于无障碍触摸区下限，见 MIN_TOUCH_TARGET_DP
     const val CONTROL_HEIGHT_DP = 20        // 三段切换/收起按钮的**视觉字形**高度
-    const val SEGMENT_INNER_PADDING_DP = 1  // 三段切换器内边距（高亮块间隙）
     const val BORDER_WIDTH_DP = 1           // 细边框宽度
 
     /**
@@ -126,7 +126,16 @@ fun PanelHeader(
     }
 }
 
-/** 三段胶囊切换器：回复/锦囊/谈心；weight 弹性宽度，三段均分（用户要求适应性大小） */
+/**
+ * 三段胶囊切换器：回复/锦囊/谈心；weight 弹性宽度，三段均分（用户要求适应性大小）。
+ *
+ * 这里曾经的问题是"外层套了 48dp 的盒子、可点击却挂在 20dp 胶囊**里面**的标签上"——
+ * 语义树实测可点击节点只有 84x18dp，手指点不到你以为点得到的那块。
+ * 现在两层各管一件事：
+ * - 视觉层：20dp 高的胶囊底 + 滑动高亮，不接收点击；
+ * - 交互层：三段各占 1/3 宽 × 整行 48dp 高，clickable 与 selected/role 全挂在自己身上。
+ * 文字随之从视觉层搬到交互层——它必须跟着"被点的那个节点"走，否则读屏念到的和手指点的是两回事。
+ */
 @Composable
 private fun ModeSegmentThree(
     selectedIndex: Int,
@@ -138,47 +147,48 @@ private fun ModeSegmentThree(
         animationSpec = tween(250, easing = FastOutSlowInEasing),
         label = "modeIndicator"
     )
-    // 用 48dp 高的"命中盒"包住 20dp 高的视觉胶囊。
-    // 视觉层放在 InteractionBox 里，点击由外层每段各自的 clickable 承担。
+    val labels = listOf(
+        stringResource(R.string.panel_mode_reply),
+        stringResource(R.string.panel_mode_suggest),
+        stringResource(R.string.panel_mode_counseling)
+    )
     Box(
         modifier = modifier
-            .height(HeaderDimens.MIN_TOUCH_TARGET_DP.dp),
-        contentAlignment = Alignment.Center
+            .height(HeaderDimens.MIN_TOUCH_TARGET_DP.dp)
     ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(HeaderDimens.CONTROL_HEIGHT_DP.dp) // 视觉字形高度不变
-            .clip(LoveBrainShape.full)
-            .background(SurfaceInset, LoveBrainShape.full)
-            .border(HeaderDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.full)
-            .padding(HeaderDimens.SEGMENT_INNER_PADDING_DP.dp)
-    ) {
-        // 滑动高亮：精确用 graphicsLayer 按段宽平移（padding 后内容宽 = 容器宽 - 2dp）
-        // 去掉高亮块 shadow——20dp 高内 2dp 阴影造成文字视觉偏移/重影
-        val segWidth = 1f / 3f
+        // ── 视觉层：胶囊底 + 高亮，垂直居中，不吃点击 ──
         Box(
             modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth(segWidth)
-                .graphicsLayer {
-                    translationX = indicatorOffset * size.width
-                }
-                .background(Primary, LoveBrainShape.full)
-        )
-        // 三段文字：等宽均分、Box 精确居中、统一 11sp（20dp 高内不被裁切）
+                .fillMaxWidth()
+                .align(Alignment.Center)
+                .height(HeaderDimens.CONTROL_HEIGHT_DP.dp) // 视觉字形高度不变
+                .clip(LoveBrainShape.full)
+                .background(SurfaceInset, LoveBrainShape.full)
+                .border(HeaderDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.full)
+        ) {
+            // 滑动高亮：按段宽平移（与文字层分开后不再需要减 padding）
+            // 去掉高亮块 shadow——20dp 高内 2dp 阴影造成文字视觉偏移/重影
+            val segWidth = 1f / 3f
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(segWidth)
+                    .graphicsLayer {
+                        translationX = indicatorOffset * size.width
+                    }
+                    .background(Primary, LoveBrainShape.full)
+            )
+        }
+        // ── 交互层：每段一整列 48dp，点击与语义都挂在这列自己身上 ──
         Row(modifier = Modifier.fillMaxSize()) {
-            ModeSegmentLabel(stringResource(R.string.panel_mode_reply), selected = selectedIndex == 0, modifier = Modifier.weight(1f)) {
-                onSelect(0)
-            }
-            ModeSegmentLabel(stringResource(R.string.panel_mode_suggest), selected = selectedIndex == 1, modifier = Modifier.weight(1f)) {
-                onSelect(1)
-            }
-            ModeSegmentLabel(stringResource(R.string.panel_mode_counseling), selected = selectedIndex == 2, modifier = Modifier.weight(1f)) {
-                onSelect(2)
+            labels.forEachIndexed { index, label ->
+                ModeSegmentLabel(
+                    label,
+                    selected = selectedIndex == index,
+                    modifier = Modifier.weight(1f)
+                ) { onSelect(index) }
             }
         }
-    }
     }
 }
 
@@ -194,9 +204,15 @@ private fun ModeSegmentLabel(
     Box(
         modifier = modifier
             .fillMaxHeight()
-            .clip(LoveBrainShape.full) // clip 在 clickable 前 → ripple 跟随圆角（用户方案）
+            .clip(LoveBrainShape.full)
             .semantics { this.selected = selected }
-            .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClick),
+            // role 交给 clickable 自己声明：TalkBack 念成「标签」而不是一堆普通按钮
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                role = Role.Tab,
+                onClick = onClick
+            ),
         contentAlignment = Alignment.Center
     ) {
         Text(
