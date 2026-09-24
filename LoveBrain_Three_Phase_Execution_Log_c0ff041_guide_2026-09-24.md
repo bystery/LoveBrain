@@ -4,10 +4,11 @@
 > 被审提交 `c0ff0415`；本轮起点 `4795471`（上一窗口的最后一个提交，它已停手并留了
 > `LoveBrain_Handover_CI_Evidence_2026-09-24.md`）。
 > 本轮 HEAD：`4a8f7f7`（谈心 store）→ `284463f`（协调器偶发红）→ `5e06cc9`（改写 store）
-> → `afbe303`（enum 进 model）→ `b1df35a`（主动发的模式归位）→ `41536ad`（观测补齐）→ 本文件这条。
+> → `afbe303`（enum 进 model）→ `b1df35a`（主动发的模式归位）→ `41536ad`（观测补齐）
+> → `5a21ec2`（§5.3 第一格：KnowledgeBackupService）→ 本文件这条。
 > **全部只在本地、未推送**：`git ls-remote origin main` 实测远端仍是起点
 > `4795471`；领先多少个提交**别抄这里的数**，现算：
-> `git rev-list --count 4795471..HEAD`（`41536ad` 落地后测得 37）。
+> `git rev-list --count 4795471..HEAD`（`5a21ec2` 落地后测得 40）。
 > 阶段一的 P0-03/04/05 + 阶段二的 ports/棘轮/死 API/五个 store 与模式归属都在里面。
 > 本轮没有改 prompt：`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` → 零差异。
 
@@ -285,6 +286,38 @@ still resets the result area` 钉的就是前者。
 取消审计 NEEDS_REVIEW=0；工单编号 PASS；跨层 6 条；androidTest 编译通过。
 `§3` 第 7 条因此结账，阶段二剩下的仍是那两件：facade 删除、KnowledgeRepository 按能力拆分。
 
+## 2h. 阶段二第八轮：§5.3 动手——KnowledgeBackupService 是拆出的第一格
+
+`KnowledgeRepository` 2001 → **1942 行**（−59），新增 `data/KnowledgeBackupService.kt` 132 行
++ `KnowledgeBackupServiceTest` 14 格 + 原 4 格分组键回归（文件随归属改名）。
+
+| 拆出去的 | 留在仓库的 |
+|---|---|
+| 复制哪些目录、留几份、按库删备份、`.last_backup` 的间隔判定 | 那把唯一的 `fileMutex`、"什么时候要备份"的 5 秒节流调度、`atomicWriteText` 这道写门 |
+
+**这一格最有价值的部分是它先被自家门禁拦下来了。** 我第一版把 `scope.launch` 的节流备份一起
+搬进新类，`SingleOwnerContractTest > only the coordinator may own a scope and launch jobs`
+当场红（"领域/数据/VM 不许接收外部 CoroutineScope，唯一例外是协调器"）。修法不是给闸开例外，
+而是把设计改对：策略类不拿 scope、不 launch —— 现在 `KnowledgeBackupService` 是纯文件系统策略类，
+不需要协程、不需要 Android。这条正好演示了那种闸的意义：它拦住的是"拆类拆出第二个启动者"。
+
+写边界继续只有一条：备份唯一那次落盘（`.last_backup`）经 `BackupStorage.guardedWrite`
+回到仓库唯一的 `atomicWriteText`，`the marker write goes through the storage gate and a refusal
+is not worked around` 那格把门关着再跑一次，要求"一个字都不许写进去、也不许冒出第二条路径"；
+`ReadOnlySchemaWriteGateTest`（24 个公开写入口跑完目录树逐字节不变）本轮仍全绿。
+`BackupStorage` 刻意不复用 `KbStorageAccess`：备份只要"看见根目录 + 过一次写门"，
+共用接口等于给它用不到的写权限（ISP）。
+
+变异反证 8 个，7 个各咬各的格；**一个必须留档的等价变异**：把 `backups.size > maxCount`
+写成 `>=`，13 格全绿 —— 不是测试弱，是这两种写法行为完全相同
+（进块之后 `drop(7)` 对 7 份是空操作）。同一格换成真实的错就红：`drop(maxCount - 1)`（多剪一份）、
+`sortedBy`（留最旧剪最新）。记这条是因为"注入反例还全绿"这种局面有两种解释，
+分清是**测试瞎**还是**变异等价**才不致于去改一个本来没坏的断言。
+
+本轮收尾实测：1045 单测 / 126 套件 / 0 失败 0 跳过；lint 71 issues 0 error 预算 OK；
+跨层 6 条；取消审计 167 站点 NEEDS_REVIEW=0；工单编号 PASS；androidTest 编译通过；
+prompt 目录零 diff。
+
 ## 3. 明确没做到 / 没法在本机做到的（不混进上面）
 
 1. **19 条真机 instrumentation 失败还在**。本轮只做到：把 7 条同源的夹具竞态改掉、
@@ -305,8 +338,9 @@ still resets the result area` 钉的就是前者。
    端口层已铺好（domain 不再 import data，越界 15→6），所以这些都是"往上搬"，
    不必边拆边补依赖。§5.1 的 `core/designsystem` / `core/testing` 目录也都还没建
    （`feature/` 下五个 store 算开了个头）。
-   仍然要认的一条：本轮让 KnowledgeRepository 从 1857 涨到 2001 行，
-   写边界是必要的，但它同时成了"最大的一次性改动"和"最长文件之一"，拆类必须紧跟。
+   仍然要认的一条：KnowledgeRepository 拆类**才开始**——§2h 只搬出了 backup 一格（2001 → 1942 行），
+   catalog/document/profile/memory/archive(导入导出部分)/round 还都在里面；
+   它同时是"最大的一次性改动"和"最长文件之一"这件事没有变。
 5. **阶段三完全没开始**：设计 token + `Lb*` 基础组件、Home/Usage/Provider/Feedback 重写、
    Panel/ResultArea 的 modal host、320/360/412/600dp × 1.0/1.3/2.0 字体 × 中英文的截图矩阵。
    截图工具（Roborazzi 或 Paparazzi 二选一）也还没接。
