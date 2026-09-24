@@ -242,3 +242,115 @@ P0-04 egress 剩下 4 格（要 CI 的 tshark）、Service destroy 那 2 格（�
 交互合同钉进每次必跑的 job + `ScreenState` 与两颗 `Lb*` 组件落地、一个目的地换完。
 仍未开始的是：首页四段、其余三个目的地、ResultArea 浮层拆分、截图门禁、facade 删除。
 **发布判定不变：NO-GO，且 worker 不自签。**
+
+---
+
+# 追加：接手自 `3d92488` 的那一轮（跨到 2026-09-25 凌晨）
+
+上面整篇是上一窗口写的。本节只记这一轮动过的两格（交接单 §2.1、§2.2）与它们改到的数，
+判据仍照 §0 的三态标法：**本机已验**（旁边就是命令）／**沿用上轮（未复验）**／**只能等 CI**。
+
+提交（5 笔，全部未推送）：`eb8ac9a` lint 尺与账本口径 · `f76f64a` 判据自测不再写死数字 ·
+`47bbc13` ResultArea 夹具 payload · `555ca48` 文案改资源驱动 + 中英文两侧各一条断言 ·
+`6eea6eb` 真链路夹具等入口能点再点 + 修 R2 那句断言。
+
+## 10.0 本轮实测基线（与 §0.1 冲突的两行以本节为准）
+
+| 量 | 命令 | 本轮实测 |
+|---|---|---|
+| 单测 | `./gradlew :app:testDebugUnitTest` + 逐 XML 解析（GRADLE_RC=0） | **1091 tests / 137 套件 / 0 失败 / 0 错误 / 0 跳过 / 陈旧 XML 0** |
+| lint | `:app:lintDebug` + `check_lint_budget.sh` | 报告 **70 条 / 15 规则**；其中**进预算 69 条 / 14 规则**、advisory 1 条 / 1 规则；门禁 rc=0 |
+| androidTest 编译 | `:app:compileDebugAndroidTestKotlin` | rc=0 |
+
+§0.1 那句"1082 单测"没算错，是量的时刻不同：它在 22:56 量，早于 `1167c34`（那笔加了 1 格
+哨兵）。本轮 1091 = 1083（`1167c34` 之后的实际数）+ 本轮新增 8 格
+（`ComposerAddButtonGatingTest` 3 + `ReplyPayloadShapeForUiFixtureTest` 2 + `PanelUiTextLocaleParityJvmTest` 3）。
+跨层 6 条 / 取消审计 / 工单编号 / prompt 零 diff / 大文件计数 本轮**未重跑 → 沿用上轮（未复验）**。
+
+## 10.1 §2.1：verify 差的不是一条规则，是两条；两条都不属于这个仓库（本机已验）
+
+用门禁自己的正则对两份 `lint-results-debug.xml` 做集合差（两侧同尺）：
+
+```
+CI    : 81 issues / 16 rules        （gh run download 36019334520 -n lint-report）
+本机  : 71 issues / 15 rules        （./gradlew :app:lintDebug，Gradle 判 lintReportDebug UP-TO-DATE，
+                                      即报告输入就是当前代码；分析中间产物时间戳另验过一次）
+只在 CI 出现的规则：OldTargetApi 1 条
+条数不同：GradleDependency  CI=10  本机=1
+```
+
+两条都是"发现来自仓库之外"：
+
+- `GradleDependency` 量的是这台机器解析到的 Maven 版本清单——**同一句** `androidx.test.ext:junit:1.1.5`
+  声明，CI 报"可升到 1.3.0"，本机报"可升到 1.2.1"。
+- `OldTargetApi` 量的是本机 SDK 里装了多新的平台（两边 `targetSdk` 都是 35）。
+
+所以交接单给的"二选一"两个选项都不成立：①改代码消不掉（上游还会发新版，且本机根本复现不出
+CI 那 10 条）；②按平台各锁一份也锁不住（这个数既不随平台稳定也不随时间稳定，锁住 CI=10
+等于给门禁装定时引信）。**选了第三条**，且没有抬预算：
+
+- 这两类进 `advisory` 段：不比预算条数，但每次照样打印条数与登记理由；
+- 有资格被降级的规则名单写死在脚本的 `EXTERNAL_RULES` 里（想加一条必须改脚本、上评审）；
+  把仓库自己的债降级 → 当场 `FAIL ADVISORY-FORBIDDEN`；advisory 少写理由 / 与预算重复登记
+  → `CANNOT-VERIFY`（退出 2）；
+- 输出第一行自报这把尺：`ruler: tool=lint version=8.6.0 os=… machine=… report=… budget=…`；
+- 挑出去之后**进预算的部分两边逐条相等：70 条 / 14 规则**，其余 14 条登记数字一个没动。
+  （`eb8ac9a` 当时是 70；本轮后面那 12 处 finder 改走资源之后还掉了一格 `UnusedResources`，
+  于是 §10.0 的现在值是 69——见 §10.3 第 2 条，这两个数都对，只是量的时刻不同。）
+
+判据自身交给 `scripts/test_check_lint_budget.sh`（27 格，已接进 verify），夹具是这两份真报告。
+改之前它对旧脚本 20 格红 8 格绿（绿的 8 格是旧行为本来就对的，证明不是一律红）。
+`scripts/fixtures/lint/README.md` 记了两份产物的来路。
+
+**结果状态：本机已验（两侧同尺这条）；verify 会不会因此转绿 = 只能等 CI。**
+
+## 10.2 §2.2：23 条失败分完类了，四条来源三种是夹具（分类=本机已验，修复=只能等 CI）
+
+产物：`test-xml-report`（43 tests / 23 failures / 0 errors / 2 skipped）+ 每条用例独立 logcat +
+instrumentation HTML。**本轮把 CI 的 5 个产物全下载下来读过**，其中并无任何 PNG
+——上一轮交接说"截图 home.png/knowledge-base.png 都产出了"，这句**不成立**，记在此处。
+
+| 类 | 条 | 用例 | 判它的尺 | 处置 |
+|---|---:|---|---|---|
+| 夹具：把中文文案写死在测试里，而生产早已 `stringResource` | **12** | `MessageListEmptyStateTest` ×4、`ReplyPrimaryActionsTest` ×7、`OverlayGenerateSmokeTest.emptyState_blueProactiveEntry…` ×1 | ① 都报"节点不存在（fetchSemanticsNode 失败）"；② 同文件里**只用 `hasClickAction()` 不认文字**的那格是绿的 → 面板确实组合出来了；③ 生产六个标签全走资源且 `values-en` 各有词条；④ JVM 同名用例断的是英文原文且绿 | `555ca48`：新增 `UiText`（当前配置取文案 / `inTag` 取指定语言 / 由模板现场拼停止棒正则），12 处 finder 改资源驱动，停止棒改用生产 `GENERATE_STOP_TEST_TAG` 定位 |
+| 夹具：入口还没带上点击语义就点，`performClick` 静默打空 | **7** | `OverlayGenerateSmokeTest` 的 noProvider_realGenerateButtonTap / stop / 401 / parseFailure / successStream / rapidDoubleTap / timeout | 本机 `ComposerAddButtonGatingTest` 复现：关了 `autoAdvance` 后没有帧就没有重组，草稿没变成 `canAdd=true`，生产 `.then(if (canAdd) clickable else …)` 不给 clickable，而 `performClick` 只注入触摸不查语义。**变异检查**：只加一句 `advanceTimeBy(64)` 这格就红 | `6eea6eb`：`awaitAddEntryActionable` 推帧推到"带点击语义的 ➕"真出现，推不到当场红 |
+| 夹具：payload 构造用错 helper | **3** | `ResultAreaInteractionTest` 的 displaysSchemeCards / styleToDirection / directionMode | 生产解析器实测：`parsedSuccess(整段JSON)` 只往 recommended 一格塞正文 → schemes = `[整段JSON,"","",""]`，"推荐回复内容"从来不是任何一格的完整文本；同目录用 `parseProviderText` 的那 6 格是绿的 | `47bbc13`：改用 `parseProviderText`，并把那颗 helper 改名 `successWithOnlyRecommendedReply` + 写明"另外三格是空的" |
+| 未决 → 已换成能自证的断言 | **1** | `lateCallbacksFromSupersededRequest` | 红在 `requestCount >= 1`，但那个计数是 R1/R2 **共用同一个 fake 服务累计**的：R1 出过一次门这句就成立 → 这句从来没断过 R2 | `6eea6eb`：先断 R1 `>= 1`、再把 R2 改成 `>= 2` 并打印 isGenerating / providerReady / result / baseUrl。下一次 CI 能自己答出是"请求没出门"还是"迟到事件污染" |
+
+合计 **23**；另 2 条 skipped 是 Service destroy 的 `Assume`，算 skipped 不算通过。
+三类里没有一条是"把断言改软"：12 处换了取词来源（并加了中英两侧守卫）、
+7 处加了等待条件、3 处修了数据构造、1 处把一句失效的断言修成有效的并多加了一格。
+
+**结果状态：分类与机理=本机已验；这 23 格改完是否真绿 = 只能等 CI（本机没有 system image）。**
+
+## 10.3 本轮新增的欠账与两条尺的性质（别丢）
+
+1. ** composer 输入行是第 5 个可点节点，带 `EditableText` 但没有文案也没有 contentDescription**
+   ——读屏念不出它是干什么的输入框。属 §6.5 第②栏，改的是生产码，尚未动。
+   （`ComposerAddButtonGatingTest` 逐点数入口时量到的，写进了断言，将来悄悄多成第 6 个会红。）
+2. **`UnusedResources` 把 androidTest 的引用也算"已使用"**：本轮 12 处 finder 改走资源之后
+   `R.string.panel_mode_proactive` 从"未使用"变成"已使用"，预算 34→33。这条尺证明不了
+   "该文案在生产路径上真的可达"，别拿它当用户可见性证据。
+3. 两个测试源集之间没有共享目录，夹具文本只能两边各存一份（JVM 那份 `ReplyPayloadShapeForUiFixtureTest`
+   与 androidTest 那份要一起改）——这条欠账本质是 §5.1 的 `core/testing` 还没归位。
+4. 判据自测**不得把预算数字写死**：上一版写死了 34，本轮合法还一条债就 5 格假红（见 `f76f64a`）。
+   历史产物夹具只断"两边进预算的部分逐条相等 + CI 独有规则全在 advisory 里"，不断退出码。
+
+## 10.4 过程坑（本轮新增，都是实测）
+
+- `python -` 从 heredoc 读脚本时按 ANSI 码页解码，**正则里的中文自己先坏**（报
+  "unterminated character set"）。要么写成文件再执行，要么用 `\u` 转义。
+- `sed '0,/<issue\n/s//…/'` 那种带 `\n` 的模式永远不命中而**退出码还是 0**——
+  我差点把一份没动过手脚的夹具当成"变异检查通过"。以后做变异先断言"手脚确实动了"
+  （本轮补的写法：`assert head in t`）。
+- `git commit` 前那个 `values-en/strings.xml` 一直显示 ` M`，实测
+  `git rev-parse HEAD:…` 与 `git hash-object …` **同一个 hash**：内容零差异，只是 stat 缓存脏。
+  别为这个"清理"工作树。
+- Windows 控制台 GBK 下脚本的中文输出是乱码，**只影响肉眼读日志**，不影响字节文件；
+  测试断言一律匹配 ASCII 片段（`STATS` / `ruler` / `ADVISORY <规则>=<n>` / `OVER <规则>`）。
+
+## 10.5 本轮发布判定
+
+**NO-GO，worker 不自签。** 依据指导书 §10：要新 SHA 的三项 required checks 全绿且
+artifacts 齐全才算。本轮只把"本机能够自证"的部分做到能证；`verify` 与 `ui-test` 会不会
+因此转绿，只有推上去跑一次同一 SHA 才知道——**本轮没有推送**（推送需要用户明确说「推送」）。
