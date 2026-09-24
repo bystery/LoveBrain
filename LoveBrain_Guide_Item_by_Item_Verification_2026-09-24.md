@@ -587,3 +587,79 @@ artifacts 齐全才算。本轮只把"本机能够自证"的部分做到能证�
 - `scripts/asset_hashes.sh --check` 必须带锁文件路径（`--check docs/prompt-assets.lock`），
   起手命令里少写这个参数会撞 `$2: unbound variable`；`test_check_lint_budget.sh` 在 Windows 上
   同样要 `PYTHON=python`，否则 CANNOT-VERIFY(2)。
+
+---
+
+# 追加四：回滚那条第二写链，与"没抛异常"被当成成功
+
+提交 `007e4fd`（回滚写边界）与 `3b86b03`（只读事务如实报错）。§5.3 的读路径欠账**清零**。
+
+## 14.1 两把尺混用会造成什么（`007e4fd`）
+
+`applyProfileUpdateAtomically` 的三段——写前快照、回滚落盘、回滚后校验——各自拼
+`File(File(knowledgeRoot, kbName), path)`，回滚还直接 `atomicWriteText` / `file.delete()`。
+真正造成损失的是**同一份快照里两个字段出自两道门**：
+
+```kotlin
+val file = File(File(knowledgeRoot, kbName), path)      // 裸：库名带 .. 也说"在"
+backups[path] = (file.exists() to readFileUnlockedFast(kbName, path))  // 守门：给空串
+```
+
+上一轮我把 `readFileUnlockedFast` 收紧过，于是这一行变成"存在=true、旧内容=空串"，
+回滚照着空串把**知识库根外面的文件清空**。实测红：
+`expected:<外面那份画像不该被动> but was:<>`。
+
+教训单独记一条：**把某个读入口改严之后，必须回头搜"有没有别的地方还在判它的存在性/大小/时间"**。
+一宽一严不只是"两种答案"，还会拼出第三种谁都没打算写的行为。
+
+改法与配套：存在性与旧内容同出一门（`snapshotBeforeWriteUnlocked`，读不出内容就让异常穿出去——
+这段在所有写之前，抛出=一个字节没动；吞成空串反而会照着空串把真文件写没）；
+恢复用 `KnowledgeTx.write`、删除用 `KnowledgeTx.deleteAt`、校验用 `safeKbFile`；
+回滚循环里那句 `file.parentFile?.mkdirs()` 一起去掉（它会在库外建目录）。
+格内另有一格"越界不许报 Success"修前就是绿的，只算防回归。
+
+棘轮那条按数登记的规则从 10 → 4 → **0**，owners 改空集。"0 命中"通常是尺瞎了，这次不是：
+注入一行裸路径读，实测同时报「登记的是 []，实际命中 {KnowledgeRepository.kt=1}」和
+「登记的是 0 处，实际命中 1 处」。**还债把计数降到 0 之后，这条的语义就反过来了**——
+以后任何一处都是新增，读法要跟着改，别当"这族问题永远不会有了"。
+
+## 14.2 "全程没抛"不等于"写成了"（`3b86b03`）
+
+同一段事务的前置检查只查"库在不在"和"revision 对不对"，没查"还写得动吗"。
+schema 过新的只读库上：两次写被 `writeFileUnlocked` 静默跳过、没有任何一步抛，
+函数一路返回 `Success` —— 磁盘没变，UI 却提示"画像已更新"并把建议卡清掉。
+`ReadOnlySchemaWriteGateTest` 那 24 个入口的磁盘逐字节比对**本来就绿**，因为它钉的是磁盘，
+不是返回值；这一族里唯一带 typed result 的入口就这样漏了过去。
+
+- 只读升格为第三种前置条件 `PreconditionReason.LIBRARY_READ_ONLY`，判定放在入口，
+  与公开 `transaction()` 的 `RefusedNewerSchema` 同一把尺；
+- UI 分清两件事：库没了 / 资料变了 = 建议作废（清卡）；库只读 = 这个 App 写不动它（卡留着，
+  升级后同一份建议仍可确认）；
+- `ProfileTransactionResultTypeTest` 的"enum 恰好 2 个值"改成 3 —— 这条尺的存在就是逼这次判断。
+
+两格新断言各用一次变异验红：`U2a` 撤掉入口只读判定 → gate 那格红；`U2b` 让只读分支跟着清卡 →
+VM 那格红；两次都只有目标格红。仍留着一个缺口没补：**其余 24 个入口的返回值没有被同样断言**
+（返回 Boolean 的那几个本身诚实，见 §12.3 的"报成功却没写"两格；返回 Unit 的无法这样断言）。
+
+## 14.3 本轮实测（两笔合起来）
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | rc=0：**1148 tests / 143 套件 / 0 失败 / 0 错误 / 0 跳过**（最旧 XML 04:09:01，日志起点 04:05:41） |
+| 回滚那一族既有合同 | `RepositoryRollbackFaultInjectionTest` 全绿（含"rollback 删除新建文件"“verification 异常 → RollbackFailed"） |
+| 只读那一族既有合同 | `ReadOnlySchemaWriteGateTest` 6 格全绿（入口从 24 增至 25）；`ProfileTransactionResultTest` 新增一格后全绿 |
+| lint | 报告重生成（03:56 那份先移进 `_temp/`）→ 04:11：70 条 /15 规则、进预算 **69 /14**、advisory 1，rc=0；判据自测 27 格 rc=0 |
+| 其它 | androidTest 编译 rc=0；工单编号 rc=0；prompt 零 diff + lock `6dcde732…`；跨层 **6** 条（与基线同） |
+| §5.3 进度 | 仍 **6/7**（本轮是把 archive 那格欠的读/写边界先还清），裸路径计数 **0** |
+
+## 14.4 §5.3 现在到底还差什么（别再抄旧数）
+
+- 只剩 `KnowledgeArchiveService`：`rotateTopic` 的四步状态机仍在仓库（`moment/.archive_op.json` 的
+  读已归守门，事务与删除也已归 `KnowledgeTx`，剩的是"这一格该不该独立存在"的判断）。
+- `kbExistsUnlocked` 仍在用裸 `File(knowledgeRoot, kbName)` 判目录+kb.json：只泄露一个布尔
+  （库外是否存在一个像库的目录），不读内容。改严会让 ~15 个入口的日志措辞从"path refused"
+  变成"kb no longer exists"，是一次显式决定，不是顺手活。
+- 指导书点名的 `KnowledgeTransactionManager` 这个**名字**仍不存在（语义由 `fileMutex` +
+  `transaction`/`transactionUnlocked` + `KnowledgeTx` 承担）。
+- 本轮两笔的改动**没有一条有 CI 判决**；`ReadOnlySchemaWriteGateTest`/新格都进 `verify` 的
+  JVM 步骤，真链路仍等 CI。

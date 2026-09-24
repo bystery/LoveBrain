@@ -42,6 +42,22 @@ HEAD 现在是 `b6873cf`，仍未推（条数现算：`git rev-list --count 3d92
 下面 §1 的基线数、§4 的顺序、§5 的提交表、§6 的坑表都已按这一轮更新；
 上一轮写的 §0/§2/§3 仍然有效。
 
+## 0.2 又往下了两格（回滚写边界 + 只读事务如实报错）
+
+HEAD `3b86b03`，仍未推。这两笔都在账本「追加四」（§14）里，重点三条：
+
+- `007e4fd` **回滚不再有第二条写链**：`applyProfileUpdateAtomically` 的快照把"存在性"用裸
+  `file.exists()`、"旧内容"用上一轮收紧过的守门读拼在一起，库名带 `..` 时结论是
+  "外面那个文件在，但旧内容是空串"→ 回滚把**知识库根外面**的文件清空（实测红：
+  `expected:<外面那份画像不该被动> but was:<>`）。恢复/删除/校验全部回到守门与 `KnowledgeTx`。
+  那条按数登记的棘轮从 10 → 4 → **0**（owners 现在是空集；注入一处会两条消息一起红）。
+- `3b86b03` **"全程没抛"不等于"写成了"**：只读库（schema 过新）上这个事务所有写被静默挡下、
+  没有一步抛，于是返回 `Success`，UI 提示"画像已更新"并把建议卡清掉。
+  现在只读是第三种前置条件 `LIBRARY_READ_ONLY`，且 UI 不再清卡（那是"这个 App 写不动它"，
+  不是"建议作废"）。`ProfileTransactionResultTypeTest` 那条"enum 恰好 2 值"随之改成 3。
+- 通用教训两条，写进 §6 第 32–35 条：**收紧某个读入口之后要回头搜还有谁在判它的存在性**；
+  **钉磁盘的测试不会替你钉返回值**。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -60,13 +76,15 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
 ```
 
-最近一轮实测基线（到 `b6873cf`）：**1143 单测 / 142 套件 / 0 失败 / 0 错误 / 0 跳过**
-（最旧 XML 03:27:32，日志起点 03:24:40，并排比过）；lint 报告**重新生成后**（03:32）70 条 / 15 规则，
+最近一轮实测基线（到 `3b86b03`）：**1148 单测 / 143 套件 / 0 失败 / 0 错误 / 0 跳过**
+（最旧 XML 04:09:01，日志起点 04:05:41，并排比过）；lint 报告**重新生成后**（04:11）70 条 / 15 规则，
 其中 **进预算 69 条 / 14 规则**、advisory 1 条；`:app:compileDebugAndroidTestKotlin` rc=0；
 prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（与基线同，没长）。
-`KnowledgeRepository` 1941 → 1878 → **1844** 行、`LoveBrainViewModel` 仍 **2746** 行。
+`KnowledgeRepository` 1941 → 1878 → 1844 → **1876** 行（回滚三段与只读前置是净增），
+`LoveBrainViewModel` 2746 → **2756** 行（只改了 PreconditionFailed 那一个分支）。
 **大文件计数已变：>500 行从指导书的 18 个降到 17 个**（跨下来的是 `FeedbackCasesScreen.kt`，
-`e359930` 那次 534→500；没有一个新跨上去），>800 仍 10 个——别再把 18/10 当现状抄。
+`e359930` 那次 534→500；没有一个新跨上去），>800 仍 10 个——别再把 18/10 当现状抄；
+本轮两处行数变化都还在同一档里，没跨阈值。
 
 ## 2. 被证伪的六条（前两批 + 最新一条，别再当依据）
 
@@ -109,11 +127,14 @@ prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（�
 
 1. **§5.3 只剩 archive 那一格**（`KnowledgeArchiveService`：topic rotate / import / export / backup）。
    现状：backup 早有独立类（`KnowledgeBackupService`），`KbArchiveTransfer` 管导入暂存区，
-   但 `rotateTopic` 与它的幂等状态机仍在仓库里，`applyProfileUpdateAtomically` 的
-   **4 处裸路径备份快照**也在那一带。建议切法：
-   先 `rotateTopic` 的"读状态 → 追加归档 → 计数 +1 → 清源"四步事务化（条数棘轮从 4 往下减就是它的进度表），
-   再判 `applyProfileUpdateAtomically` 要不要跟着进来。**别为了进度把宽接口当成果**
+   `rotateTopic` 与它的幂等状态机仍在仓库里——但**那一带的裸路径已经清零**
+   （`007e4fd` 把快照/回滚/校验三段全并进守门与 `KnowledgeTx`，棘轮现在登记 **0 处**）。
+   所以这一格剩下的不是"补边界"，是一个归属判断：四步状态机该不该有自己的家，
+   以及 `applyProfileUpdateAtomically` 要不要跟它一起走。**别为了进度把宽接口当成果**
    （catalog 写侧那次的判断仍然有效，见下面第 2 条）。
+   另两个已知未做，别当已做：`kbExistsUnlocked` 仍用裸路径判"目录+kb.json 在不在"
+   （只泄露一个布尔，改严会让 ~15 个入口的日志措辞从 path refused 变成 kb no longer exists，
+   是一次显式决定）；指导书点名的 `KnowledgeTransactionManager` 这个**名字**全仓不存在。
 2. **catalog 写侧**（`create/delete/setActive/updateDisplayName/ensureInitial`）我试过又退回：
    `create` 要向仓库要 encode/模板写/列目录/事务改 meta/删备份…接口会长到约十个成员，
    那是拿"拆类"的名义造一个违反 ISP 的宽端口。要做就先切 `setActive`+`updateDisplayName`
@@ -141,7 +162,7 @@ prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（�
 `StorageBoundaryOwnershipTest` 的所有权 + 条数 + 零能力三组、`ReadOnlySchemaWriteGateTest` 的 24 入口遍历、
 `ProfileReadBoundaryTest` 的读边界）。
 
-## 5. 别重复劳动：这两轮做的 13 笔
+## 5. 别重复劳动：这几轮做的 15 笔
 
 | 提交 | 内容 |
 |---|---|
@@ -158,13 +179,15 @@ prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（�
 | `a07b285` | 读路径最后一批：`getCurrentStage`/`getTurnCount`/`readIntent`/`saveIntent` 四格红先修好；`archiveOpFile` 删掉；`writeVector` 的旧布局静默不写修好（先红后修）；棘轮加**条数**维度（登记 4，注入第 5 处当场报） |
 | `e7b8fdc` | 工单编号门禁回到 rc=0（还的是上一轮写进生产注释的 3 处编号） |
 | `b6873cf` | §5.3 第六格 `KnowledgeProfileStore`：维度表三处→一处、标签行改写两份→一份、白名单拒绝四处→一处；`ProfileReadBoundaryTest` 9 格 + 格级 20 格，全部注入反例验过红；棘轮新增"后拆的格子零存储能力" |
+| `007e4fd` | 回滚的第二条写链并回守门与 `KnowledgeTx`（越界那次调用以前会把库外文件写空，实测红）；快照的存在性与内容同出一门；裸路径计数 10 → 4 → **0** |
+| `3b86b03` | 只读库上的画像事务不再报 `Success`：新增 `PreconditionReason.LIBRARY_READ_ONLY` + 入口判定；UI 分清"建议作废"与"这次写不动"，只读不再清卡；enum 形状那条尺 2 → 3 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
 `GENERATE_STOP_TEST_TAG`（生产留的锚点，"文字会变，tag 不会"）。
 **新用例取文案一律走这些，别再抄一份中文字面量。**
 
-## 6. 坑表（本轮新增 6 条，接上一份的 15 条与上轮的 10 条之后）
+## 6. 坑表（编号接上一份的 1–15；16–25 是 CI 首跑后那批，26–31 画像格那批，32–35 回滚与只读这批）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -207,6 +230,20 @@ prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（�
     造了两个反例（两段内容对调、同内容放不同路径），把路径盐整段删掉两格**照样绿**——
     条目数固定 + 顺序固定 + 每条一个分隔符，位置已被区分，塞 NUL 只会多一个字节，构造不出撞号。
     结论：造不出红反例的性质就别当"已验收益"写进账本，老实降级成"纵深防御"并在注释里写明别改回去。
+32. **收紧一个读入口之后，要回头搜"还有谁在判它的存在性/大小/时间"**：`readFileUnlockedFast`
+    上一轮改严，但画像事务的快照那行还是裸 `file.exists()` 配它——"在，但内容是空串"这第三种答案
+    让回滚把**知识库根外面**的文件写空（实测 `expected:<外面那份画像不该被动> but was:<>`）。
+    一宽一严不只是"两种答案"，会拼出谁都没打算写的第三种行为。
+33. **计数棘轮还到 0 之后读法会反过来**：owners 变空集、条数变 0，之后任何一处都是新增。
+    但"0 命中"平时恰恰是尺瞎了的信号——改成 0 的那一次必须再注入证一次牙
+    （本轮注入一行裸路径读 → 同时报"新出现的所有者"和"登记的是 0 处，实际命中 1 处"）。
+34. **钉磁盘的测试不会替你钉返回值**：`ReadOnlySchemaWriteGateTest` 那 24 个入口逐字节比对全绿，
+    画像事务在只读库上照样一路返回 `Success`（写被静默挡下、没有任何一步抛）。
+    凡有 typed result / Boolean 返回的入口，都要单独一格断"没写成就不许说成功"。
+35. **`kotlin.test.assertEquals` 的 message 在最后一个参数**，与 `org.junit.Assert` 相反：
+    写成 `(message, expected, actual)` 会撞到 `(String, Double, Double)` 那个重载，
+    报的是 "Type mismatch: inferred type is String but Double was expected" 这种看不懂的错。
+    同一文件混两套 import 时最容易踩（`ProfileTransactionResultTest` 用的是 kotlin.test 那套）。
 
 ## 7. 硬约束（一条没变）
 
