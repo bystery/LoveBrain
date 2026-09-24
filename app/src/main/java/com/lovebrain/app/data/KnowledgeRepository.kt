@@ -156,7 +156,7 @@ class KnowledgeRepository(
      *
      * 搬出来的理由是一条真实的宽严不一：公开读路径过 canonical 守门，
      * 而无锁快速读 `readFileUnlockedFast` 直接 `File(File(root, kb), path)`——
-     * 同一份内容，走哪个入口决定"边界"存不存在（独立复核 P0-03 末段点名的就是它）。
+     * 同一份内容，走哪个入口决定"边界"存不存在（独立复核报告里 P0 那条读路径的末段点名的就是它）。
      * 现在两个入口共用 [KnowledgeDocumentStore.resolve]，守门只有一处。
      *
      * 写仍然只有本类那一条链：文档格想落盘必须经 [RepoStorage.writeUnlocked] 回来，

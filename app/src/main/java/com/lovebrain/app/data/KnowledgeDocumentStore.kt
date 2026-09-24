@@ -8,7 +8,7 @@ import java.io.File
  * 仓库交给文档格用的能力，故意只给四样：根目录、一条日志出口、"这个库还在不在"、
  * 以及**那一条**无锁写原语。
  *
- * 不给 Mutex，也不给第二份落盘实现——独立复核 P0-03 要的是"唯一写边界"，
+ * 不给 Mutex，也不给第二份落盘实现——独立复核报告里 P0 那条要的是"唯一写边界"，
  * `KnowledgeRepository.rawAtomicWriteText` 全仓只许有一个调用方；
  * 文档格想写文件必须回到仓库那道门（那里还捎带着只读 schema 拒绝与备份节流）。
  */
@@ -30,7 +30,7 @@ interface DocumentStorage {
  * 拆它的理由不是"仓库太大"，而是这两件事此前**各写了两遍且宽严不一**：
  * 公开读路径 `readFile` 过 `safeKbFile`（拒绝 `..`、绝对路径、盘符、UNC、反斜杠），
  * 而无锁快速读 `readFileUnlockedFast` 直接 `File(File(root, kbName), relativePath)`——
- * 同一份内容，走哪个入口决定 canonical 边界存不存在。指导书 P0-03 最后一段点名的
+ * 同一份内容，走哪个入口决定 canonical 边界存不存在。指导书里 P0 那条读路径最后一段点名的
  * 就是这件事："读取接口也必须走 safeKbFile，canonical boundary 并未覆盖所有 String 入口"。
  * 现在两个入口共用同一道门，只有一个所有者。
  *
