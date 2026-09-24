@@ -7,8 +7,9 @@
 
 ## 0. 一句话现状
 
-**本地领先远端 7 个提交，一个都没推**（远端仍是 `3d92488`）。本轮把上一份交接单里"真正卡着的两格"
-做完了本机能做的部分：
+**本地领先远端一截、一个都没推**（远端仍是 `3d92488`；条数现算：
+`git rev-list --count 3d92488..HEAD`——本轮最后一次量是 9 笔，之后还会加文档提交）。
+本轮把上一份交接单里"真正卡着的两格"做完了本机能做的部分：
 
 - **§2.1 lint 平台差**：定位清楚并改掉口径。差的**不是 1 条规则而是 2 条**（`GradleDependency` CI=10/本机=1、
   `OldTargetApi` CI=1/本机=0），而且这两条的数**既不随平台稳定也不随时间稳定**，所以既没抬预算到 81、
@@ -98,6 +99,9 @@ advisory 1 条；`:app:compileDebugAndroidTestKotlin` rc=0。
     它证明不了文案在生产路径可达。
 20. **`git status` 显示 ` M` 而 `git diff` 为空**：本轮 `values-en/strings.xml` 被编辑器写成 CRLF，
     还原后 `git rev-parse HEAD:<f>` 与 `git hash-object <f>` 同 hash——纯 stat 脏，别为此"清理"工作树。
+21. **`package_deps_report.sh` 缺 python 可用性探针**：Windows 不带 `PYTHON=python` 直接 exit 49，
+    看着像"判失败了"其实是根本没跑。`check_lint_budget.sh` 有那个探针（缺解释器给 CANNOT-VERIFY=2），
+    同族脚本里这是缺口，下次动 scripts/ 时补上。
 
 ## 7. 硬约束（一条没变）
 
@@ -112,5 +116,6 @@ advisory 1 条；`:app:compileDebugAndroidTestKotlin` rc=0。
 ## 8. 发布判定
 
 **NO-GO。** 判据是指导书 §10：新 SHA 的三项 required checks 全绿且 artifacts 齐全。
-本轮结束时本地 `6eea6eb` 从没上过 CI，`ui-test` 那 23 条的判决仍来自 `3d92488`。
+本轮结束时的最后一笔代码提交从没上过 CI（笔笔现算：`git log --oneline 3d92488..HEAD`），
+`ui-test` 那 23 条的判决仍来自 `3d92488`。
 本窗口不签 PASS，下一窗口在拿到同一 SHA 的三项结果之前也不签。

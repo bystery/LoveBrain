@@ -354,3 +354,23 @@ instrumentation HTML。**本轮把 CI 的 5 个产物全下载下来读过**，�
 **NO-GO，worker 不自签。** 依据指导书 §10：要新 SHA 的三项 required checks 全绿且
 artifacts 齐全才算。本轮只把"本机能够自证"的部分做到能证；`verify` 与 `ui-test` 会不会
 因此转绿，只有推上去跑一次同一 SHA 才知道——**本轮没有推送**（推送需要用户明确说「推送」）。
+
+### 10.5.1 收口前的机器体检（六道闸，本机重跑，全部带退出码）
+
+| 闸 | 命令 | 结果 |
+|---|---|---|
+| 单测 | `:app:testDebugUnitTest` | rc=0，1091 / 137 套件 / 0 失败 / 0 跳过 / 陈旧 XML 0 |
+| lint 预算 | `PYTHON=python bash scripts/check_lint_budget.sh` | rc=0，进预算 69 条 / 14 规则与账本一致 |
+| 判据自测 | `PYTHON=python bash scripts/test_check_lint_budget.sh` | rc=0，27 格全对 |
+| androidTest 编译 | `:app:compileDebugAndroidTestKotlin` | rc=0 |
+| prompt 未被碰 + lock | `git diff --exit-code 286c9406..HEAD -- assets/engine`；`asset_hashes.sh --check` | 零差异；lock 匹配 `6dcde732…` |
+| 工单编号 / 跨层 | `strip_ticket_ids.py --check`；`PYTHON=python bash scripts/package_deps_report.sh --count` | rc=0 PASS；**6**（与基线相同，没长） |
+
+**没验到的部分写清**：`ui-test` 那 23 格（改完 22 格 + 1 格仍待自证）与 `verify` 是否转绿，
+本机给不出——没有 system image，`connectedDebugAndroidTest` 跑不了；`upgrade-test` 与那四类
+缺失产物同理。一律标"只能等 CI"，不写"已修复"。
+
+顺带一条坑（接 §10.4）：**`package_deps_report.sh` 没有 `check_lint_budget.sh` 那种 python
+可用性探针**，Windows 上不带 `PYTHON=python` 直接 exit 49——看着像"检查判失败了"，其实是
+根本没跑。同一族脚本里这是个缺口：下次动 scripts/ 时补上探针，缺解释器要给
+`CANNOT-VERIFY`（退出 2），不要崩一个谁都看不懂的码。
