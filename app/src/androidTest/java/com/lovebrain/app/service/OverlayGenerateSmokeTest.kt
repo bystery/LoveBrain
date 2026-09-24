@@ -3,6 +3,8 @@ package com.lovebrain.app.service
 import android.app.Application
 import android.content.Intent
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -161,14 +163,43 @@ class OverlayGenerateSmokeTest {
     /** 走真 UI 往 MessageList 放一条消息（生产：输入框 + ➕ 添加） */
     private fun addMessageThroughRealUi(text: String) {
         composeRule.onNode(hasSetTextAction()).performTextInput(text)
-        composeRule.onNodeWithContentDescription("添加").performClick()
-        // mountPanel 关掉了主时钟的自动推进（LOADING 条有无限动画），所以"推一帧"
-        // 不等于"VM 的协程跑完了 + 组合测量完了"。以前这里只 advanceTimeBy 一次就断言，
-        // 真机上 7 个用例全死在同一句 "MessageList 应真收到 1 条消息 expected:<1> but was:<0>"。
+        // 关键一步：先等 ➕ 真的带上点击语义，再点它。
+        // mountPanel() 为了伺候生成中那条无限动画关掉了 mainClock.autoAdvance，
+        // 而关掉之后**没有帧就没有重组**：performTextInput 写进状态的这句草稿，
+        // 还没变成 canAdd=true 的那一次重组，生产 ReplyInput 的
+        // `.then(if (canAdd) Modifier.clickable(...) else Modifier)` 这时仍不给 clickable。
+        // 偏偏 performClick() 只做触摸注入、不检查节点有没有点击语义，
+        // 于是这一拳打在空处：不抛异常、不报错，消息永远是空的——
+        // CI 上 7 格全卡在同一句"点过➕之后 MessageList 要有这一条"就是这么来的。
+        // 机理与这条修法在 ComposerAddButtonGatingTest（JVM 用例，本机可跑且做过变异检查）。
+        awaitAddEntryActionable(text)
+        composeRule.onNodeWithContentDescription(ADD_ENTRY_DESCRIPTION).performClick()
         pumpUntil("点过➕之后 MessageList 要有这一条") { vm.messages.value.isNotEmpty() }
         composeRule.onNodeWithText(text)
             .assertIsDisplayedDiagnosed("刚添加的那条消息")
         assertEquals("MessageList 应真收到 1 条消息", 1, vm.messages.value.size)
+    }
+
+    /**
+     * 推进帧，直到 ➕ 真的带上点击语义；推不到就红——不许闷头把点击送给一个点不动的东西。
+     *
+     * 「添加」这句 contentDescription 目前仍是生产里的内联中文（ReplyInput），还没进资源，
+     * 所以这里也只能照它写死；P1-05 把它搬进 strings.xml 时这一处要一起换成
+     * UiText.current(...)。
+     */
+    private fun awaitAddEntryActionable(text: String, timeoutMs: Long = 3_000L) {
+        val wanted = hasClickAction().and(hasContentDescription(ADD_ENTRY_DESCRIPTION))
+        var pumped = 0L
+        while (composeRule.onAllNodes(wanted).fetchSemanticsNodes().isEmpty() && pumped < timeoutMs) {
+            composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
+            pumped += FRAME_PUMP_MS
+        }
+        assertTrue(
+            "推了 ${pumped}ms 帧，➕ 仍带不上点击语义（草稿=「$text」）——" +
+                "要么生产的置灰逻辑真没解开，要么这个面板已经不再靠帧推进；" +
+                "两种都得查，不许绕过这一步直接点",
+            composeRule.onAllNodes(wanted).fetchSemanticsNodes().isNotEmpty()
+        )
     }
 
     private fun tapGenerateReplyButton(messageCount: Int) {
@@ -495,13 +526,28 @@ class OverlayGenerateSmokeTest {
         vm.addMessage(ChatMessage.Role.ME, "在吗")
         vm.generate()
         pumpUntil("R1 应进入生成中") { vm.isGenerating.value }
+        // 先把"请求有没有出门"钉在这里。CI 上这个用例红在 R2 那句，
+        // 而 requestCount 是累计的：R1 若也没出门，那句 R2 断言说的其实一直是 R1 的事。
+        // 这一条早一步红，就能把「请求根本没发出」与「被取代请求的迟到事件污染新请求」
+        // 两类原因分开——后者要等前者过了才轮到它说话。
+        assertTrue(
+            "R1 应已向 Provider 发出请求（fake 服务端实收 ${s.requestCount} 次；" +
+                "isGenerating=${vm.isGenerating.value} providerReady=${vm.providerReady.value} " +
+                "result=${vm.result.value} baseUrl=${s.baseUrl}）",
+            s.requestCount >= 1
+        )
         vm.stopGeneration()
         pumpUntil("停止 R1 后应回到空闲") { !vm.isGenerating.value }
 
         // R2：新请求，被 fake 挂住不会自己完成
         vm.generate()
         pumpUntil("R2 应进入生成中") { vm.isGenerating.value }
-        assertTrue("R2 应已向 Provider 发出请求", s.requestCount >= 1)
+        assertTrue(
+            "R2 应已向 Provider 发出请求（累计实收 ${s.requestCount} 次，" +
+                "R1 那一次之后没有新增；isGenerating=${vm.isGenerating.value} " +
+                "providerReady=${vm.providerReady.value} result=${vm.result.value}）",
+            s.requestCount >= 2
+        )
         assertNull("R2 在途时不得已有结果", vm.result.value)
 
         // 注入 R1 的迟到事件——S2-03 之后 reducer 是唯一写入口，
@@ -594,5 +640,8 @@ class OverlayGenerateSmokeTest {
     companion object {
         /** 每次推帧推进的测试时钟毫秒数 */
         private const val FRAME_PUMP_MS = 120L
+
+        /** ➕ 那句 contentDescription —— 生产目前仍是内联中文（ReplyInput），尚未进资源 */
+        private const val ADD_ENTRY_DESCRIPTION = "添加"
     }
 }
