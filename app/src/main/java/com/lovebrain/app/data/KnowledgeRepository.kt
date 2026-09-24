@@ -57,7 +57,7 @@ class KnowledgeRepository(
     private val migrator = KnowledgeMigrator(RepoStorage())
 
     /** 交给迁移器用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
-    private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage {
+    private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage, DocumentStorage {
         override val root: File get() = knowledgeRoot
         override val catalogRoot: File get() = knowledgeRoot
 
@@ -69,6 +69,21 @@ class KnowledgeRepository(
         override fun onMetaRejected(dirName: String, reason: String) {
             com.lovebrain.app.util.L.w("知识库元数据异常已忽略：dir=$dirName reason=$reason")
         }
+
+        /** 文档格的观测出口：同一个日志器，不给第二个类开一条自己的日志通道 */
+        override fun note(message: String) {
+            com.lovebrain.app.util.L.w(message)
+        }
+
+        /** 文档格判断"库还在不在"用无锁那一份——锁由调用方在外面套 */
+        override fun kbExists(kbName: String): Boolean = kbExistsUnlocked(kbName)
+
+        /**
+         * 文档格的唯一写出口：回到本类的 [writeFileUnlocked]。
+         * 那里带着只读 schema 拒绝与备份节流，所以新版本写也不可能绕开它们。
+         */
+        override fun writeUnlocked(kbName: String, relativePath: String, content: String) =
+            writeFileUnlocked(kbName, relativePath, content)
 
         override fun atomicWrite(target: File, content: String) {
             // 迁移器只会写"不超纲"的库（判定在 KnowledgeMigrator 里提前 return），
@@ -107,6 +122,19 @@ class KnowledgeRepository(
      * 现在两个入口共用一个实现。
      */
     private val catalog = KnowledgeCatalogStore(RepoStorage())
+
+    /**
+     * 文档的安全路径 + 版本化读写（§5.3 第四格）。
+     *
+     * 搬出来的理由是一条真实的宽严不一：公开读路径过 canonical 守门，
+     * 而无锁快速读 `readFileUnlockedFast` 直接 `File(File(root, kb), path)`——
+     * 同一份内容，走哪个入口决定"边界"存不存在（独立复核 P0-03 末段点名的就是它）。
+     * 现在两个入口共用 [KnowledgeDocumentStore.resolve]，守门只有一处。
+     *
+     * 写仍然只有本类那一条链：文档格想落盘必须经 [RepoStorage.writeUnlocked] 回来，
+     * 于是只读 schema 拒绝与备份节流都不会被新版本写绕过。
+     */
+    private val documents = KnowledgeDocumentStore(RepoStorage())
 
     /** 备份节流：记录最后一次写入时间，debounce 5s 后触发增量备份 */
     private val backupDebounceMs = 5_000L
@@ -975,67 +1003,27 @@ class KnowledgeRepository(
     /**
      * 读取文件（自动兼容新旧路径）。
      *
-     * 写边界的另一半：读也要过 [safeKbFile]。旧实现直接 `File(File(knowledgeRoot, kbName), relativePath)`，
-     * 于是"canonical 边界覆盖了所有 String 入口"这句话对读路径并不成立——
-     * `../` 或绝对路径照样能把打开的文件指到知识库目录外面。
+     * 实现已归 [KnowledgeDocumentStore]；这里只剩转发，公开 API 不变。
      */
-    override suspend fun readFile(kbName: String, relativePath: String): String = withContext(Dispatchers.IO) {
-        val newFile = safeKbFile(kbName, relativePath) ?: return@withContext ""
-        if (newFile.exists()) return@withContext newFile.readText()
-        val oldPath = OLD_PATH_MAP[relativePath]
-        if (oldPath != null) {
-            val oldFile = safeKbFile(kbName, oldPath) ?: return@withContext ""
-            if (oldFile.exists()) return@withContext oldFile.readText()
-        }
-        ""
-    }
+    override suspend fun readFile(kbName: String, relativePath: String): String =
+        withContext(Dispatchers.IO) { documents.read(kbName, relativePath) }
 
     // ═══════════ canonical 路径边界 ═══════════
 
-    /**
-     * 把裸字符串库名校验成 [KbName]。
-     *
-     *原话是"Repository 的公共方法仍接收裸 String kbName/path，
-     * canonical boundary 没建立"。光加一个没人用的 value class 不算建立边界，
-     * 所以这里让**所有** String 入口先过同一套校验：
-     * 空名、带路径分隔符、`..`、超长一律拒绝，非法输入不再有机会变成 File 路径。
-     */
-    fun toKbName(raw: String): com.lovebrain.app.model.KbName? =
-        runCatching { com.lovebrain.app.model.KbName(raw) }
-            .onFailure { com.lovebrain.app.util.L.w("rejected kb name: ${it.message}") }
-            .getOrNull()
+    /** 把裸字符串库名校验成 [KbName]（判据见 [KnowledgeDocumentStore.toKbName]） */
+    fun toKbName(raw: String): com.lovebrain.app.model.KbName? = documents.toKbName(raw)
 
     /** 把裸字符串相对路径校验成 [KbRelativePath] */
-    fun toKbPath(raw: String): com.lovebrain.app.model.KbRelativePath? =
-        runCatching { com.lovebrain.app.model.KbRelativePath(raw) }
-            .onFailure { com.lovebrain.app.util.L.w("rejected kb path: ${it.message}") }
-            .getOrNull()
+    fun toKbPath(raw: String): com.lovebrain.app.model.KbRelativePath? = documents.toKbPath(raw)
 
     /**
-     * String 入口的统一守门：返回解析后的绝对 File，非法输入返回 null 并记日志。
+     * String 入口的统一守门：返回解析后的绝对 File，非法输入返回 null。
      *
-     * 之前只检查 `..`，漏了绝对路径与 Windows 反斜杠分隔符，
-     * 也允许 `/etc/passwd` 这类以 `/` 开头的值走到 File(parent, child) 里。
+     * 判据住在 [KnowledgeDocumentStore.resolve]——公开读、无锁快速读、写、删、版本写
+     * 全部经这一个函数，不再有第二条 `File(dir, path)` 捷径。
      */
-    private fun safeKbFile(kbName: String, relativePath: String): File? {
-        val name = toKbName(kbName) ?: return null
-        val path = toKbPath(relativePath) ?: return null
-        val dir = File(knowledgeRoot, name.value)
-        val file = File(dir, path.value)
-        // canonicalPath 在某些畸形输入上会直接抛 IOException（Windows 上混用分隔符时实测会抛），
-        // 边界函数不能让异常穿到调用方——抛不出去就当拒绝。
-        val escaped = runCatching {
-            !file.canonicalPath.startsWith(dir.canonicalPath + File.separator)
-        }.getOrElse {
-            com.lovebrain.app.util.L.w("path could not be canonicalised, refused: ${it.message}")
-            true
-        }
-        if (escaped) {
-            com.lovebrain.app.util.L.w("path escapes knowledge dir, refused")
-            return null
-        }
-        return file
-    }
+    private fun safeKbFile(kbName: String, relativePath: String): File? =
+        documents.resolve(kbName, relativePath)
 
     /** 线程安全的文件追加（fileMutex 锁 + I/O 线程；A2-5 合并原 appendFileSafe）
      *  目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
@@ -1084,22 +1072,7 @@ class KnowledgeRepository(
         kbName: String, relativePath: String, content: String, expectedVersion: String
     ): String? = withContext(Dispatchers.IO) {
         fileMutex.withLock {
-            if (!kbExistsUnlocked(kbName)) {
-                com.lovebrain.app.util.L.w("writeFileWithVersion skipped: kb no longer exists")
-                return@withLock null
-            }
-            val file = safeKbFile(kbName, relativePath) ?: return@withLock null
-            val currentVersion = if (file.exists()) {
-                KbTextOps.sha256(file.readText())
-            } else {
-                KbTextOps.sha256("")
-            }
-            if (currentVersion != expectedVersion) {
-                com.lovebrain.app.util.L.w("writeFileWithVersion conflict: $relativePath")
-                return@withLock null
-            }
-            writeFileUnlocked(kbName, relativePath, content)
-            KbTextOps.sha256(content)
+            documents.writeWithVersion(kbName, relativePath, content, expectedVersion)
         }
     }
 
@@ -1107,13 +1080,11 @@ class KnowledgeRepository(
      * 读取文件并返回内容 + 版本号（SHA-256）。
      * 调用方持有版本号，写入时传给 [writeFileWithVersion] 做冲突检测。
      */
-    suspend fun readFileWithVersion(kbName: String, relativePath: String): Pair<String, String> = withContext(Dispatchers.IO) {
-        val content = readFile(kbName, relativePath)
-        content to KbTextOps.sha256(content)
-    }
+    suspend fun readFileWithVersion(kbName: String, relativePath: String): Pair<String, String> =
+        withContext(Dispatchers.IO) { documents.readWithVersion(kbName, relativePath) }
 
     /** 对外暴露的内容哈希——供 KbEdit 无版本校验路径生成新版本号 */
-    fun hashContent(text: String): String = KbTextOps.sha256(text)
+    fun hashContent(text: String): String = documents.hashContent(text)
 
     /**  目标 KB 已删除时 no-op */
     suspend fun incrementTurnCount(kbName: String) = incrementTurnCountBy(kbName, 1)
@@ -1374,18 +1345,16 @@ class KnowledgeRepository(
         if (updated != warmth) writeFileUnlocked(kbName, path, updated)
     }
 
-    /** 无锁快速读取文件内容（不加 mutex，调用方持有锁） */
-    private fun readFileUnlockedFast(kbName: String, relativePath: String): String {
-        val dir = File(knowledgeRoot, kbName)
-        val file = File(dir, relativePath)
-        if (file.exists()) return file.readText()
-        val oldPath = OLD_PATH_MAP[relativePath]
-        if (oldPath != null) {
-            val oldFile = File(dir, oldPath)
-            if (oldFile.exists()) return oldFile.readText()
-        }
-        return ""
-    }
+    /**
+     * 无锁快速读取（调用方持有 mutex）。
+     *
+     * ⚠ 这一行改动是**行为收紧**，不是搬家：以前它直接 `File(File(root, kbName), path)`，
+     * 完全不过 canonical 守门，所以"`..`"或绝对路径能从这条入口把文件指针指到库目录外面，
+     * 而同一个内容的公开读却会被拒——同一件事两个答案。现在它走 [KnowledgeDocumentStore.read]，
+     * 与公开读共用同一道门，宽严不再有第二套。
+     */
+    private fun readFileUnlockedFast(kbName: String, relativePath: String): String =
+        documents.read(kbName, relativePath)
 
     /**
      * 画像更新事务性写入——在单次 fileMutex.withLock 中执行全部操作。

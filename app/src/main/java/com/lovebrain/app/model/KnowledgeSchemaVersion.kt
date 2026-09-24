@@ -80,6 +80,9 @@ value class KbRelativePath(val value: String) {
             "Path must not be a windows drive-absolute path"
         }
         require(!value.startsWith("\\\\")) { "Path must not be a UNC path" }
-        // 反斜杠在 Windows 上就是分隔符，允许它等于允许 ..        require(!value.contains('\')) { "Path must not contain windows separators" }
+        // 反斜杠在 Windows 上就是分隔符，允许它等于允许 `..`。
+        // ⚠ 这一条曾被并到上一行的注释里（写成 `'\'` 也是非法字面量），
+        //   于是整条校验静默不存在：Windows 上 `"..\evil"` 之外的写法照样能跳出去。
+        require(!value.contains('\\')) { "Path must not contain windows separators" }
     }
 }
