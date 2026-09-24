@@ -58,7 +58,15 @@ class KnowledgeRepository(
     /** 交给迁移器用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
     private inner class RepoStorage : KbStorageAccess {
         override val root: File get() = knowledgeRoot
-        override fun atomicWrite(target: File, content: String): Unit = atomicWriteText(target, content)
+        override fun atomicWrite(target: File, content: String) {
+            // 迁移器只会写"不超纲"的库（判定在 KnowledgeMigrator 里提前 return），
+            // 所以这里返回 false 一定是异常状况，必须留下痕迹而不是静默跳过。
+            if (!atomicWriteText(target, content)) {
+                com.lovebrain.app.util.L.e(
+                    "migration write was refused by the schema guard: ${target.name}", null
+                )
+            }
+        }
         override fun schema(name: String): String = loadSchema(name)
         override suspend fun currentStage(kbName: String): String = getCurrentStage(kbName)
         override suspend fun setStage(kbName: String, stage: String): Unit =
@@ -181,6 +189,47 @@ class KnowledgeRepository(
     // ═══════════ 原子写入工具 ═══════════
 
     /**
+     * 唯一落盘出口（2026-09-24 独立复核的写边界要求）。
+     *
+     * 独立复核报告 §3.1 的原话是：注释写着"所有写路径最终落到 writeFileUnlocked"，
+     * 但十几条路径直接 `atomicWriteText` 或自己 `File(dir, …)`，于是 v4 库在 v3 App 里
+     * 虽然显示 read-only，元数据和纠正文件照样能被改写。
+     *
+     * 所以拒绝判定放在**这里**，而且按**文件属于哪个库**判，不按"调用方有没有传 kbName"判：
+     * Repository 里任何一条写链——包括以后新加的、忘记走 [transaction] 的——
+     * 都必须先经过这道门。返回 false 表示什么都没写。
+     *
+     * 真正的字节操作在 [rawAtomicWriteText]，它只被本函数调用。
+     */
+    private fun atomicWriteText(file: File, content: String): Boolean {
+        kbOwning(file)?.let { owner ->
+            if (migrator.isReadOnly(owner)) {
+                com.lovebrain.app.util.L.w(
+                    "write refused by the single write boundary: $owner is read-only " +
+                        "(schema newer than this build) — target ${file.name}"
+                )
+                return false
+            }
+        }
+        rawAtomicWriteText(file, content)
+        return true
+    }
+
+    /**
+     * 这个文件落在哪个知识库下；root 级 marker（`.kb_initialized`、`.last_backup`）
+     * 与 `.backup/` 之类以点开头的目录返回 null，它们不属于任何库，也不受只读保护。
+     */
+    private fun kbOwning(file: File): String? {
+        val root = runCatching { knowledgeRoot.canonicalPath }.getOrNull() ?: return null
+        val abs = runCatching { file.canonicalPath }.getOrNull() ?: return null
+        val prefix = root + File.separator
+        if (!abs.startsWith(prefix)) return null
+        val first = abs.removePrefix(prefix).substringBefore(File.separator)
+        if (first.isEmpty() || first.startsWith(".")) return null
+        return first
+    }
+
+    /**
      * 原子写入：先写临时文件 → fsync 刷盘 → rename 覆盖目标文件。
      * rename 失败时保留原件并报错，不回退到直接覆盖（直接写可能导致半写损坏）。
      *
@@ -188,8 +237,10 @@ class KnowledgeRepository(
      * 以及 Kotlin File.writeText() 无原子保证（Kotlin 官方文档确认）。
      * rename 在 POSIX/Android 上是原子操作（SQLite 文档确认），
      * 确保目标文件要么是旧内容要么是新内容，绝不会出现写一半的中间状态。
+     *
+     * 仅供 [atomicWriteText] 调用——需要写文件请走 [transaction] / [KnowledgeTx]。
      */
-    private fun atomicWriteText(file: File, content: String) {
+    private fun rawAtomicWriteText(file: File, content: String) {
         val tmp = File(file.parentFile, ".${file.name}.tmp")
         try {
             FileOutputStream(tmp).use { fos ->
@@ -310,6 +361,116 @@ class KnowledgeRepository(
         val existing = if (file.exists()) file.readText() else ""
         atomicWriteText(file, existing + content)
         scheduleDebouncedBackup()
+    }
+
+    // ═══════════ 唯一写边界（独立复核 2026-09-24）═══════════
+
+    /** 一次 [transaction] 的结果。三个分支各自对应"有没有写过字节"。 */
+    sealed interface WriteResult<out T> {
+        /** 事务里的写都真的落盘了 */
+        data class Written<out T>(val value: T) : WriteResult<T>
+
+        /** 库的 schema 比本 App 还新：整段事务一个字节都没写 */
+        data object RefusedNewerSchema : WriteResult<Nothing>
+
+        /** 库不存在或已被删除：同样什么都没写 */
+        data object MissingLibrary : WriteResult<Nothing>
+    }
+
+    /**
+     * 一个知识库的写事务句柄——Repository 里唯一被允许"拿到路径 + 写文件"的入口。
+     *
+     * 为什么要有它（2026-09-24 独立复核）：以前每个新方法都可能顺手
+     * `atomicWriteText(File(dir, "kb.json"), …)`，于是"schema 过新即只读"要靠
+     * 十几处 if 各自记得写。现在 mutation 只能从这个对象取得安全路径与原子写能力，
+     * 判定集中在 [transaction] 入口 + [atomicWriteText] 出口两处。
+     *
+     * 构造点是 internal：外部拿不到一个"没经过只读判定"的 Tx。
+     */
+    inner class KnowledgeTx internal constructor(val kbName: String) {
+
+        // 方法名刻意带 At 后缀：取消审计按**名字**判断块体里有没有挂起调用，
+        // 而仓库里已经有 `suspend fun read` / 大量 delete 语义，叫裸名会被虚报成
+        // "catch 吞掉挂起调用"。名字撞车会让那条门禁变成噪声，噪声一旦被接受就等于没有门禁。
+
+        /** 相对路径 → 安全绝对路径；越界或非法输入返回 null（绝不落到库目录之外） */
+        fun pathOf(relativePath: String): File? = safeKbFile(kbName, relativePath)
+
+        /** 读；越界、非法或不存在都得到空串 */
+        fun readTextAt(relativePath: String): String {
+            val f = pathOf(relativePath) ?: return ""
+            return if (f.exists()) runCatching { f.readText(Charsets.UTF_8) }.getOrDefault("") else ""
+        }
+
+        /** 原子写。false = 被只读保护或路径非法挡下，一个字节都没落。 */
+        fun write(relativePath: String, content: String): Boolean =
+            writeFileCheckedUnlocked(kbName, relativePath, content)
+
+        /** 原子追加，语义同 [write] */
+        fun append(relativePath: String, content: String): Boolean =
+            appendFileCheckedUnlocked(kbName, relativePath, content)
+
+        /** 删除。false = 没删（被挡、越界或本来就不存在）。 */
+        fun deleteAt(relativePath: String): Boolean {
+            if (migrator.isReadOnly(kbName)) return false
+            val f = pathOf(relativePath) ?: return false
+            return f.exists() && f.delete()
+        }
+
+        /** 读改写 kb.json；库不存在 / 只读 / JSON 坏掉都返回 false 且不写 */
+        fun updateMeta(transform: (KnowledgeBase) -> KnowledgeBase): Boolean {
+            if (migrator.isReadOnly(kbName)) return false
+            val raw = readTextAt("kb.json")
+            if (raw.isBlank()) return false
+            val kb = runCatching { json.decodeFromString<KnowledgeBase>(raw) }.getOrNull() ?: return false
+            return write("kb.json", json.encodeToString(KnowledgeBase.serializer(), transform(kb)))
+        }
+    }
+
+    /**
+     * 公开写入口：一次事务、一个库、一把锁。
+     *
+     * 只读判定在**入口**做一次，所以 block 里不需要再写任何 schema if；
+     * block 返回即事务结束。失败原因用类型给出，不靠调用方猜 null。
+     */
+    suspend fun <T> transaction(
+        kb: com.lovebrain.app.model.KbName,
+        block: KnowledgeTx.() -> T
+    ): WriteResult<T> = withContext(Dispatchers.IO) {
+        fileMutex.withLock {
+            if (!kbExistsUnlocked(kb.value)) return@withLock WriteResult.MissingLibrary
+            if (migrator.isReadOnly(kb.value)) return@withLock WriteResult.RefusedNewerSchema
+            WriteResult.Written(KnowledgeTx(kb.value).block())
+        }
+    }
+
+    /**
+     * 给"已经持有 [fileMutex]"的内部路径用。
+     *
+     * 判定与 [transaction] 完全同一把尺；Mutex 非重入，锁内不能再调 [transaction]。
+     */
+    private fun <T> transactionUnlocked(kbName: String, block: KnowledgeTx.() -> T): T =
+        KnowledgeTx(kbName).block()
+
+    /** [writeFileUnlocked] 的"有没有真的写"版本：只读时返回 false 而不是静默跳过 */
+    private fun writeFileCheckedUnlocked(kbName: String, relativePath: String, content: String): Boolean {
+        if (refusedByReadOnlySchema(kbName, "writeFile", relativePath)) return false
+        val file = safeKbFile(kbName, relativePath) ?: return false
+        file.parentFile?.mkdirs()
+        if (!atomicWriteText(file, content)) return false
+        scheduleDebouncedBackup()
+        return true
+    }
+
+    /** [appendFileUnlocked] 的"有没有真的写"版本 */
+    private fun appendFileCheckedUnlocked(kbName: String, relativePath: String, content: String): Boolean {
+        if (refusedByReadOnlySchema(kbName, "appendFile", relativePath)) return false
+        val file = safeKbFile(kbName, relativePath) ?: return false
+        file.parentFile?.mkdirs()
+        val existing = if (file.exists()) file.readText() else ""
+        if (!atomicWriteText(file, existing + content)) return false
+        scheduleDebouncedBackup()
+        return true
     }
 
     // ═══════════ schema 版本与迁移（实现见 KnowledgeMigrator）═══════════
@@ -504,19 +665,19 @@ class KnowledgeRepository(
         }
     }
 
-    /** setActive 的无锁核心：调用方必须已持有文件互斥锁（Mutex 非重入，锁内再抢=永久挂起） */
+    /**
+     * setActive 的无锁核心：调用方必须已持有文件互斥锁（Mutex 非重入，锁内再抢=永久挂起）
+     *
+     * 写边界：切库要重写**每个**库的 kb.json。旧实现直接 `atomicWriteText(metaFile, …)`，
+     * 于是 schema 过新的只读库也会在这里被改掉 active 字段。现在逐库走 [KnowledgeTx]。
+     */
     private fun setActiveUnlocked(name: String) {
         securePrefs.activeKbName = name
         knowledgeRoot.listFiles()
             ?.filter { it.isDirectory && !it.name.startsWith(".") }
             ?.forEach { dir ->
-                val metaFile = File(dir, "kb.json")
-                if (metaFile.exists()) {
-                    runCatching {
-                        val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
-                        val updated = kb.copy(active = kb.name == name)
-                        atomicWriteText(metaFile, json.encodeToString(KnowledgeBase.serializer(), updated))
-                    }
+                transactionUnlocked(dir.name) {
+                    updateMeta { kb -> kb.copy(active = kb.name == name) }
                 }
             }
     }
@@ -597,9 +758,13 @@ class KnowledgeRepository(
                 expiryDate = expiryDate,
                 status = status
             )
-            val dir = File(knowledgeRoot, kbName)
-            File(dir, "moment").mkdirs()
-            atomicWriteText(File(dir, "moment/intent.json"), json.encodeToString(IntentConfig.serializer(), updated))
+            var persisted = false
+            transactionUnlocked(kbName) {
+                persisted = write("moment/intent.json", json.encodeToString(IntentConfig.serializer(), updated))
+            }
+            if (!persisted) {
+                com.lovebrain.app.util.L.w("saveIntent 未落盘：$kbName 只读（schema 过新）或目录不可用")
+            }
             updated
         }
     }
@@ -654,19 +819,22 @@ class KnowledgeRepository(
             )
             val updated = current.toMutableMap()
             updated[memoryId] = correction
-            val dir = File(knowledgeRoot, kbName)
-            File(dir, "memory").mkdirs()
-            atomicWriteText(
-                File(dir, "memory/corrections.json"),
-                json.encodeToString(
-                    kotlinx.serialization.builtins.ListSerializer(com.lovebrain.app.model.MemoryCorrection.serializer()),
-                    updated.values.toList()
+            // 写边界：两条落盘都从写事务句柄取，schema 过新的库返回 false 而不是"报了成功却没写"。
+            var written = false
+            transactionUnlocked(kbName) {
+                written = write(
+                    "memory/corrections.json",
+                    json.encodeToString(
+                        kotlinx.serialization.builtins.ListSerializer(
+                            com.lovebrain.app.model.MemoryCorrection.serializer()
+                        ),
+                        updated.values.toList()
+                    )
                 )
-            )
-            // R07: 持久化库级 revision（单调递增）
-            writeMemoryRevisionUnlocked(kbName, newRevision)
-            scheduleDebouncedBackup()
-            true
+                // R07: 持久化库级 revision（单调递增）
+                if (written) write("memory/.revision", newRevision.toString())
+            }
+            written
         }
     }
 
@@ -679,19 +847,23 @@ class KnowledgeRepository(
             if (!current.containsKey(memoryId)) return@withLock false
             val updated = current.toMutableMap()
             updated.remove(memoryId)
-            val dir = File(knowledgeRoot, kbName)
-            atomicWriteText(
-                File(dir, "memory/corrections.json"),
-                json.encodeToString(
-                    kotlinx.serialization.builtins.ListSerializer(com.lovebrain.app.model.MemoryCorrection.serializer()),
-                    updated.values.toList()
+            var written = false
+            transactionUnlocked(kbName) {
+                written = write(
+                    "memory/corrections.json",
+                    json.encodeToString(
+                        kotlinx.serialization.builtins.ListSerializer(
+                            com.lovebrain.app.model.MemoryCorrection.serializer()
+                        ),
+                        updated.values.toList()
+                    )
                 )
-            )
-            // R07: 撤销也递增 revision（防 0→1→0 倒退）
-            val newRevision = readMemoryRevisionUnlocked(kbName) + 1
-            writeMemoryRevisionUnlocked(kbName, newRevision)
-            scheduleDebouncedBackup()
-            true
+                // R07: 撤销也递增 revision（防 0→1→0 倒退）
+                if (written) {
+                    write("memory/.revision", (readMemoryRevisionUnlocked(kbName) + 1).toString())
+                }
+            }
+            written
         }
     }
 
@@ -794,9 +966,7 @@ class KnowledgeRepository(
 
     /** R07: 写入库级 memory revision（无锁，调用方持有 fileMutex） */
     private fun writeMemoryRevisionUnlocked(kbName: String, revision: Int) {
-        val dir = File(knowledgeRoot, kbName)
-        File(dir, "memory").mkdirs()
-        atomicWriteText(memoryRevisionFile(kbName), revision.toString())
+        transactionUnlocked(kbName) { write("memory/.revision", revision.toString()) }
     }
 
     /** 无锁版读取（调用方持有 fileMutex） */
@@ -854,14 +1024,19 @@ class KnowledgeRepository(
             }
     }
 
-    /** 读取文件（自动兼容新旧路径） */
+    /**
+     * 读取文件（自动兼容新旧路径）。
+     *
+     * 写边界的另一半：读也要过 [safeKbFile]。旧实现直接 `File(File(knowledgeRoot, kbName), relativePath)`，
+     * 于是"canonical 边界覆盖了所有 String 入口"这句话对读路径并不成立——
+     * `../` 或绝对路径照样能把打开的文件指到知识库目录外面。
+     */
     suspend fun readFile(kbName: String, relativePath: String): String = withContext(Dispatchers.IO) {
-        val dir = File(knowledgeRoot, kbName)
-        val newFile = File(dir, relativePath)
+        val newFile = safeKbFile(kbName, relativePath) ?: return@withContext ""
         if (newFile.exists()) return@withContext newFile.readText()
         val oldPath = OLD_PATH_MAP[relativePath]
         if (oldPath != null) {
-            val oldFile = File(dir, oldPath)
+            val oldFile = safeKbFile(kbName, oldPath) ?: return@withContext ""
             if (oldFile.exists()) return@withContext oldFile.readText()
         }
         ""
@@ -1008,15 +1183,8 @@ class KnowledgeRepository(
                 com.lovebrain.app.util.L.w("incrementTurnCount skipped: kb no longer exists")
                 return@withLock
             }
-            val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
-            if (metaFile.exists()) {
-                runCatching {
-                    val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
-                    atomicWriteText(metaFile,
-                        json.encodeToString(KnowledgeBase.serializer(),
-                            kb.copy(turnCount = kb.turnCount + delta, updatedAt = isoNow()))
-                    )
-                }
+            transactionUnlocked(kbName) {
+                updateMeta { kb -> kb.copy(turnCount = kb.turnCount + delta, updatedAt = isoNow()) }
             }
         }
     }
@@ -1076,15 +1244,8 @@ class KnowledgeRepository(
     suspend fun updateDisplayName(kbName: String, newDisplay: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (newDisplay.isBlank()) return@withLock
-            val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
-            if (metaFile.exists()) {
-                runCatching {
-                    val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
-                    atomicWriteText(metaFile,
-                        json.encodeToString(KnowledgeBase.serializer(),
-                            kb.copy(displayName = newDisplay.trim(), updatedAt = isoNow()))
-                    )
-                }
+            transactionUnlocked(kbName) {
+                updateMeta { kb -> kb.copy(displayName = newDisplay.trim(), updatedAt = isoNow()) }
             }
         }
     }
@@ -1109,15 +1270,8 @@ class KnowledgeRepository(
             com.lovebrain.app.util.L.w("updateStage 拒绝非白名单阶段：'$stage'（九阶段见 StageCatalog）")
             return
         }
-        val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
-        if (metaFile.exists()) {
-            runCatching {
-                val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
-                atomicWriteText(metaFile,
-                    json.encodeToString(KnowledgeBase.serializer(),
-                        kb.copy(stage = normalized, updatedAt = isoNow()))
-                )
-            }
+        transactionUnlocked(kbName) {
+            updateMeta { kb -> kb.copy(stage = normalized, updatedAt = isoNow()) }
         }
     }
 
@@ -1227,13 +1381,11 @@ class KnowledgeRepository(
             com.lovebrain.app.util.L.w("updateStageStrict 拒绝非白名单阶段：'$stage'")
             throw java.io.IOException("非法阶段：$stage")
         }
-        val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
-        if (metaFile.exists()) {
-            val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
-            atomicWriteText(metaFile,
-                json.encodeToString(KnowledgeBase.serializer(),
-                    kb.copy(stage = normalized, updatedAt = isoNow()))
-            )
+        val written = transactionUnlocked(kbName) {
+            updateMeta { kb -> kb.copy(stage = normalized, updatedAt = isoNow()) }
+        }
+        if (!written) {
+            throw java.io.IOException("updateStageStrict 无法写 $kbName/kb.json（库缺失、schema 过新或 JSON 不可解析）")
         }
     }
 
@@ -1671,12 +1823,14 @@ class KnowledgeRepository(
 
     /** 写入操作状态（无锁，调用方持有 fileMutex） */
     private fun writeArchiveOpUnlocked(kbName: String, state: ArchiveOperationState) {
-        atomicWriteText(archiveOpFile(kbName), json.encodeToString(ArchiveOperationState.serializer(), state))
+        transactionUnlocked(kbName) {
+            write("moment/.archive_op.json", json.encodeToString(ArchiveOperationState.serializer(), state))
+        }
     }
 
     /** 删除操作状态（无锁，调用方持有 fileMutex） */
     private fun deleteArchiveOpUnlocked(kbName: String) {
-        archiveOpFile(kbName).delete()
+        transactionUnlocked(kbName) { deleteAt("moment/.archive_op.json") }
     }
 
     /**
@@ -1771,22 +1925,20 @@ class KnowledgeRepository(
     }
 
     suspend fun getLessonCount(kbName: String): Int = withContext(Dispatchers.IO) {
-        val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
-        if (metaFile.exists()) {
-            val counted = runCatching {
-                json.decodeFromString<KnowledgeBase>(metaFile.readText()).topicCount
-            }.getOrDefault(0)
-            if (counted > 0) return@withContext counted
+        val counted = fileMutex.withLock {
+            transactionUnlocked(kbName) {
+                runCatching {
+                    json.decodeFromString<KnowledgeBase>(readTextAt("kb.json")).topicCount
+                }.getOrDefault(0)
+            }
         }
+        if (counted > 0) return@withContext counted
         // 兼容旧知识库：kb.json 还没有计数时，从 raw_topic.md 回填一次并持久化
         val content = readFile(kbName, "memory/raw_topic.md")
         val regexCount = Regex("^## \\[", RegexOption.MULTILINE).findAll(content).count()
-        if (regexCount > 0 && metaFile.exists()) {
-            runCatching {
-                val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
-                atomicWriteText(metaFile,
-                    json.encodeToString(KnowledgeBase.serializer(), kb.copy(topicCount = regexCount))
-                )
+        if (regexCount > 0) {
+            fileMutex.withLock {
+                transactionUnlocked(kbName) { updateMeta { kb -> kb.copy(topicCount = regexCount) } }
             }
         }
         regexCount
@@ -1801,17 +1953,8 @@ class KnowledgeRepository(
 
     /** incrementTopicCount 的无锁核心：调用方必须已持有文件互斥锁 */
     private suspend fun incrementTopicCountUnlocked(kbName: String) {
-        val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
-        if (metaFile.exists()) {
-            runCatching {
-                val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
-                atomicWriteText(metaFile,
-                    json.encodeToString(
-                        KnowledgeBase.serializer(),
-                        kb.copy(topicCount = kb.topicCount + 1, updatedAt = isoNow())
-                    )
-                )
-            }
+        transactionUnlocked(kbName) {
+            updateMeta { kb -> kb.copy(topicCount = kb.topicCount + 1, updatedAt = isoNow()) }
         }
     }
 
