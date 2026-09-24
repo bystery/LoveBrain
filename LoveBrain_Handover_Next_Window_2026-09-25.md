@@ -39,10 +39,12 @@ PYTHON=python bash scripts/package_deps_report.sh --count   # 不给就 exit 49�
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
 ```
 
-本轮实测基线（到 `adbf5f3`）：**1104 单测 / 139 套件 / 0 失败 / 0 错误 / 0 跳过**（最旧 XML 01:50:16，
-按 mtime 逐文件比过）；lint 报告 70 条 / 15 规则，其中**进预算 69 条 / 14 规则**（账本已
-`UnusedResources 34→33`）、advisory 1 条；`:app:compileDebugAndroidTestKotlin` rc=0；
-prompt 零 diff + lock `6dcde732…`；工单编号 PASS；跨层 **6** 条（与基线同，没长）。
+本轮实测基线（到 `a0fef45`）：**1113 单测 / 140 套件 / 0 失败 / 0 错误 / 0 跳过**
+（最旧 XML 02:32:22，与本次日志时间并排比过）；lint 报告 70 条 / 15 规则，其中
+**进预算 69 条 / 14 规则**（账本已 `UnusedResources 34→33`）、advisory 1 条；
+`:app:compileDebugAndroidTestKotlin` rc=0；prompt 零 diff + lock `6dcde732…`；
+工单编号 PASS；跨层 **6** 条（与基线同，没长）。
+`KnowledgeRepository` 1941 → **1878** 行、`LoveBrainViewModel` 仍 **2746** 行。
 **大文件计数已变：>500 行从指导书的 18 个降到 17 个**（跨下来的是 `FeedbackCasesScreen.kt`，
 `e359930` 那次 534→500；没有一个新跨上去），>800 仍 10 个——别再把 18/10 当现状抄。
 
@@ -77,14 +79,23 @@ prompt 零 diff + lock `6dcde732…`；工单编号 PASS；跨层 **6** 条（�
 
 ## 4. 下一格建议顺序（本机就能做的那批，B 类）
 
-1. **§5.3 剩四格**：catalog 写侧（`create/delete/setActive/updateDisplayName/ensureInitial`）、
-   `KnowledgeProfileStore`、`KnowledgeMemoryStore`、`RoundCommitStore`。
-   形状照 `df1e802`（枚举侧）与 `adbf5f3`（文档格）：定义"它真正需要的最小能力接口"，
-   由 `RepoStorage` 一个内部类实现；**不 new Mutex、不搬 CoroutineScope、不自家落盘**——
-   现在有三家闸会分别拦：`SingleOwnerContractTest`、`KnowledgeMigratorLegacyTest` 的锁棘轮、
-   `StorageBoundaryOwnershipTest` 的所有权棘轮（data/ 里"开流落盘 / 判 canonical 越界 /
-   拼接调用方路径"三项都登记了允许出现的文件，多一个少一个都红，新类要么走委托要么显式登记）。
-   别拿 `applyProfileUpdateAtomically`（160+ 行、跨画像/温度/阶段/向量）开第一刀。
+1. **§5.3 剩：catalog 写侧 + profile**（memory 与 document 已落地）。
+   - **catalog 写侧**（`create/delete/setActive/updateDisplayName/ensureInitial`）我试过又退回：
+     `create` 要向仓库要 encode/模板写/列目录/事务改 meta/删备份…接口会长到约十个成员，
+     那是拿"拆类"的名义造一个违反 ISP 的宽端口。要做就先切 `setActive`+`updateDisplayName`
+     这一对（它们只要 `writeTransaction` + `updateMeta`），把 `create`/`ensureInitial` 留作
+     "初始化"这一格单独判。**别为了进度把宽接口当成果。**
+   - **profile**（画像/温度/阶段/向量）先啃 `getCurrentStage/updateStage`、向量读写这一对；
+     `applyProfileUpdateAtomically`（160+ 行）不要用来开第一刀。
+   形状照 `adbf5f3`（文档格）与 `a0fef45`（记忆格）：窄接口 + 五样能力以内，
+   **不 new Mutex、不搬 CoroutineScope、不自家落盘**——现在有四家闸分别拦
+   （`SingleOwnerContractTest`、`KnowledgeMigratorLegacyTest` 的锁棘轮、
+   `StorageBoundaryOwnershipTest` 的所有权棘轮、`ReadOnlySchemaWriteGateTest` 的 24 入口遍历）。
+2. **round 那一格重判过，别重复劳动**：`RoundCommitJournal.kt`（`domain/`，457 行，Koin 注册）
+   早就是独立所有者，`KnowledgeRepository` 里一条 journal 逻辑都没有。
+   上一份账记"未做"是错的（错在把"从来不在仓库里"当成"没拆出来"）。
+   `TopicRecorder.kt:56` 那个 `?: RoundCommitJournal(knowledgeRepo)` 兜底构造是另一件事，
+   与 P1-04 的双注册有关，要动就单独一格。
 2. **`FloatingService` 那颗输入行的可点节点没有标签**——逐点数入口时量到：带 `EditableText`、
    无文案无 `contentDescription`，读屏念不出这是什么输入框（§6.5 第②栏）。改生产码，
    测试形状现成（`ComposerAddButtonGatingTest` 已经在数这些节点，数到 5 个）。
@@ -97,7 +108,7 @@ prompt 零 diff + lock `6dcde732…`；工单编号 PASS；跨层 **6** 条（�
 6. §6.5 截图工具仍**故意没接**：理由未变（§6.1–§6.4 铺开前拍的 baseline 会整批作废）。
    注意本轮已把"CI 交不出截图"这条产物洞补上（`e657778`），与"接 baseline 工具"是两件事。
 
-## 5. 别重复劳动：本轮做的 9 笔
+## 5. 别重复劳动：本轮做的 11 笔
 
 | 提交 | 内容 |
 |---|---|
@@ -109,6 +120,8 @@ prompt 零 diff + lock `6dcde732…`；工单编号 PASS；跨层 **6** 条（�
 | `6eea6eb` | `awaitAddEntryActionable`：推帧推到 ➕ 真带点击语义再点；R1/R2 那句 `requestCount` 断言修对（旧的 `>=1` 从来没断过 R2） |
 | `e657778` | 截图产物路径改对 + 13/13 上传步骤 `if-no-files-found: error`；新增"截图两两不同 / PNG 签名 / 前台 Activity 留档"三条证据判据（四组夹具证伪过） |
 | `adbf5f3` | §5.3 第四格 `KnowledgeDocumentStore`（安全路径 + 版本化读写一个所有者）；修掉一条**从未生效**的 `KbRelativePath` 反斜杠校验；新增 `StorageBoundaryOwnershipTest` 所有权棘轮 |
+| `297d1db` | 读路径第二个漏口：公开的 `readCorrections` 能把库外的纠正记录读进来（先红后修）；顺手清掉零调用的 `writeMemoryRevisionUnlocked` |
+| `a0fef45` | §5.3 第五格 `KnowledgeMemoryStore`：revision 单调性两处各写一遍 → 一个所有者；变异回 R07 老写法时当场红 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、

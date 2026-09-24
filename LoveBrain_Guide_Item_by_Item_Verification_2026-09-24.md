@@ -424,3 +424,60 @@ artifacts 齐全才算。本轮只把"本机能够自证"的部分做到能证�
 - §5.2 第 6 步删 facade：0%，`LoveBrainViewModel` 仍 **2746 行**。
 - §4 的 DIP/ISP 可验收标准未整体达成（跨层 6 条是基线，不是零）。
 - 本轮 §5.3/§5.2 的改动**没有一条有 CI 判决**：JVM 用例进 verify 每次跑、本机已验；真链路仍等 CI。
+
+---
+
+# 追加二：读路径的第二个漏口，与 §5.3 第五格
+
+提交 `297d1db`（隐私修）与 `a0fef45`（记忆格）。§5.3 从 4/7 → **5/7**。
+
+## 12.1 先纠我自己上一轮的误判
+
+上一份账把 §5.3 的 `RoundCommitStore` 记成"未做"。**错了**：`RoundCommitJournal.kt` 是
+`domain/` 下独立的 457 行类、在 Koin 里注册（`AppModule.kt:51`），而 `KnowledgeRepository` 里
+**一条 journal 逻辑都没有**（只剩一句拿 journal 打比方的注释）。所以那一格早有所有者——
+只是它从来不在仓库里，"从仓库拆出来"这个动作并没有发生。两种说法不能混着记。
+
+## 12.2 同一条读路径的第二个漏口（`297d1db`）
+
+指导书 P0-03 末段那句"读取接口也必须走 safeKbFile"不是一处而是两处。上一格修了无锁快速读，
+这轮量到**公开 API** 也漏：
+
+    suspend fun readCorrections(kbName) = File(File(knowledgeRoot, kbName), "memory/corrections.json")
+
+`memory/corrections.json` 存的是"哪条记忆被判记错了人、补正成什么、什么时候别提"——
+这份产品里最敏感的数据。带 `..` 的库名就能把它从知识库根外面读进来。
+先红后修，红话是：`带 .. 的库名把库外的纠正读进来了（实到 1 条）`。
+
+**要写清的一件事**：我同时加的"撤销不许写库外"那格**在修之前就是绿的**——写那一侧本来就
+经 `KnowledgeTx` 守门。所以它不是回归证据，只是防回退；漏的只有读。这种"同一份数据、
+两种入口宽严不一"正是 P0-03 要消灭的形状。
+
+顺手按 §7 第二步第 5 项清掉 `writeMemoryRevisionUnlocked`（全仓零调用点，实测）。
+
+## 12.3 §5.3 第五格：`KnowledgeMemoryStore`（`a0fef45`）
+
+拆的动机不是行数，是一条**单调性**承诺被写了两遍：`saveCorrection` 与 `undoCorrection`
+各自实现"revision 递增 + 只在纠正文件写成后才写标记"。R07 修的就是"用剩余记录取 max 推算"
+这种写法——撤销最大那条之后 revision 会倒退，后台防护因此漏判。
+
+接口 `MemoryStorage` 只给五样（守门读 / 一次写事务 / 编解码 / kbExists / timestamp），
+不给锁、不给 `File` 构造、不给落盘实现——这三件事分别只有仓库的 `fileMutex`、文档格的守门、
+`atomicWriteText` 一处，新类有没有偷偷越界，是 `StorageBoundaryOwnershipTest` 替我证的（它绿=没越界）。
+
+变异检查：把"取持久化标记"改回 R07 之前的"看剩余记录取 max" →
+`revisionKeepsIncreasingAcrossSaveAndUndo` 当场红
+（`删过之后再新增不许复用旧号 expected:<10> but was:<9>`）；撤回后 7 格全绿。
+
+一处既存怪癖**没有顺手改**：原实现"纠正写成、revision 写失败"时仍返回 true。
+收紧它是另一个验收目标，本次改为把这个怪癖钉成断言（标记必须保持原值），不悄悄改也不假装没看见。
+
+## 12.4 本轮实测（两道格合起来）
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | rc=0：**1113 tests / 140 套件 / 0 失败 / 0 错误 / 0 跳过**（最旧 XML 02:32:22） |
+| 上一轮的格子有没有被碰坏 | `MemoryCorrectionTest` 8、`ReadOnlySchemaWriteGateTest` 5、`KnowledgeDocumentStoreTest` 10、所有权棘轮 3 —— 全绿 |
+| androidTest 编译 / lint | rc=0；进预算 **69 条 / 14 规则**不变，新增债 0 |
+| 行数 | `KnowledgeRepository` 1941 → **1878**；新增两格共 296 行。**总量仍在涨**（+233），买的是所有者与两处边界，不是降体量 |
+| §5.3 进度 | **5/7**：migration、archive(backup)、catalog 枚举、document、memory；round 见 §12.1 的重判 |
