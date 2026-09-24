@@ -34,8 +34,11 @@ val appModule = module {
     // 领域层（单例）
     single { com.lovebrain.app.domain.OngoingContextSelector(get()) }
     single { PromptBuilder(androidContext(), get(), get()) }
-    single { TopicRecorder(get(), RoundCommitJournal(get())) }
     single { RoundCommitJournal(get()) }
+    // 事务日志必须由容器给出，不能在这里再 new 一个：
+    // TopicRecorder 持有手工构造的 journal、容器又注册另一个 journal，
+    // 就等于同一份 WAL 有两把 txMutex——"唯一事务 owner"只剩名字。
+    single { TopicRecorder(get(), get()) }
     single { KnowledgeTriggerCoordinator(get(), get(), get(), get()) }
     single { GenerationEngine(get(), get()) }
     // ForegroundOperationCoordinator 作为单例——使用 application scope

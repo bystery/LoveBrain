@@ -137,6 +137,25 @@ class AppModuleGraphTest {
     }
 
     /**
+     * 独立复核 P1-04：整张图里只能有一本事务日志。
+     *
+     * 以前 AppModule 写的是 `TopicRecorder(get(), RoundCommitJournal(get()))`：
+     * recorder 用的是**手工 new 的那本**，容器另外又注册了一本。两本 journal 就是
+     * 两把 txMutex，"同一时刻只有一个事务 owner"这条不变量只剩名字，
+     * 而且容器那本几乎没被生产调用，谁都会以为自己是唯一的写者。
+     */
+    @Test
+    fun `the round commit journal is one object for the whole graph`() {
+        val fromContainer = resolve<RoundCommitJournal>()
+        assertSame("容器两次解析必须给同一本 journal", fromContainer, resolve<RoundCommitJournal>())
+        assertSame(
+            "TopicRecorder 必须用容器里那本 journal，而不是自己 new 一本",
+            fromContainer,
+            resolve<TopicRecorder>().journal
+        )
+    }
+
+    /**
      * ViewModel 定义必须是工厂语义。
      *
      * 有人把 `viewModel {}` 改成 `single {}` 时，页面之间会共用一份可变 VM 状态；

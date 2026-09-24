@@ -41,8 +41,11 @@ class TopicRecorder(
     /**
      * WAL 始终启用。未注入时用同一实现自建，避免出现
      * "有 journal 走事务 / 无 journal 裸写" 两套写入路径。
+     *
+     * internal 只为让 Koin 图测试能断言"注入的就是容器里那一个"——
+     * 生产代码里没有任何地方第二个 new 它（AppModule 用 get() 复用同一实例）。
      */
-    private val journal: RoundCommitJournal = roundCommitJournal ?: RoundCommitJournal(knowledgeRepo)
+    internal val journal: RoundCommitJournal = roundCommitJournal ?: RoundCommitJournal(knowledgeRepo)
 
     private val maxTopicTurns = AppConfig.MAX_TOPIC_TURNS
 

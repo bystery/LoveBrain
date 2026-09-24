@@ -253,7 +253,11 @@ class GenerationEngine(
             emitFailed(requestId, ReplyFailureKind.ProviderChanged)
             return@flow
         }
-        // 资产 hash 只做诊断：不一致说明 prompt 在冻结后被换掉，本轮仍用冻结时的 prompt 文本
+        // 资产 hash 只做**诊断**，不是防重复使用：本轮的 system / user 文本都是在上面
+        // 现读资产拼出来的，所以 hash 不一致的真实含义是"冻结之后资产又被换过一次，
+        // 这一轮用的是换过之后的文本"。以前这行注释写的是"仍用冻结时的 prompt 文本"，
+        // 那是没有实现的说法。要真正做到冻结构造好的文本，得把 PreparedPrompt
+        // 整体装进 GenerationInput（复核 P2 给的两个选项里的另一个）。
         val liveAssetHash = promptBuilder.replyPromptAssetHash()
         if (input.promptAssetHash.isNotBlank() && liveAssetHash != input.promptAssetHash) {
             L.w("prompt assets changed after freeze (frozen=${input.promptAssetHash.take(8)})")

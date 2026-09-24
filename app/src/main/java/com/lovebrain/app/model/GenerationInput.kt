@@ -42,18 +42,14 @@ data class GenerationInput(
     /** 冻结的 prompt 资产内容指纹 */
     val promptAssetHash: String
 ) {
-    /** 输入指纹——用于"输入没变就别重复生成"判断，覆盖全部会影响输出的冻结字段 */
-    fun fingerprint(): String = buildString {
-        append(requestId).append('|')
-        dialogue.forEach { append(it.id).append(':').append(it.text.length).append(',') }
-        append('|').append(replyDirective.aggressive).append('|').append(replyDirective.text.length)
-        append('|').append(kbContext?.name ?: "").append('@').append(kbContext?.revision ?: "")
-        append('|').append(correctionsRevision)
-        append('|').append(onlyThisRound)
-        append('|').append(intentConfig.revision)
-        append('|').append(providerIdentity?.configHash ?: "")
-        append('|').append(promptAssetHash)
-    }
+    // 这里以前有一个 fingerprint()，注释写着"覆盖全部会影响输出的冻结字段"。
+    // 两句话都不成立：正文只记长度（同 ID 同长度改字会碰撞），而且它把每次都不一样的
+    // requestId 也拼进去，于是"输入没变就别重复生成"永远不可能命中。
+    // 全仓没有任何生产或测试调用它——一个没人用、还写着自己做不到的事的 API，
+    // 比没有这个 API 更危险：下一个人会以为已经有防重复判断了。
+    //
+    // 真正在用的输入指纹是 GenerationFingerprints.inputOf(...)，由 ViewModel 调用，
+    // 算法与用例都在那里，只有这一处。
 }
 
 /**
