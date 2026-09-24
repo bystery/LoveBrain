@@ -3,11 +3,12 @@
 > 输入指导书：`LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md`
 > 被审提交 `c0ff0415`；本轮起点 `4795471`（上一窗口的最后一个提交，它已停手并留了
 > `LoveBrain_Handover_CI_Evidence_2026-09-24.md`）。
-> 本轮 HEAD：`4a8f7f7`（谈心 store）→ `284463f`（协调器偶发红）→ `5e06cc9`（改写 store）→ 本文件这条。
+> 本轮 HEAD：`4a8f7f7`（谈心 store）→ `284463f`（协调器偶发红）→ `5e06cc9`（改写 store）
+> → `afbe303`（enum 进 model）→ `b1df35a`（主动发的模式归位）→ 本文件这条。
 > **全部只在本地、未推送**：`git ls-remote origin main` 实测远端仍是起点
 > `4795471`；领先多少个提交**别抄这里的数**，现算：
-> `git rev-list --count 4795471..HEAD`（`5e06cc9` 落地后测得 32，含本条 docs 提交则 33）。
-> 阶段一的 P0-03/04/05 + 阶段二的 ports/棘轮/死 API/五个 store 都在里面。
+> `git rev-list --count 4795471..HEAD`（`b1df35a` 落地后测得 35，本条 docs 提交之后是 36）。
+> 阶段一的 P0-03/04/05 + 阶段二的 ports/棘轮/死 API/五个 store 与模式归属都在里面。
 > 本轮没有改 prompt：`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` → 零差异。
 
 ## 0. 一句话状态
@@ -15,9 +16,10 @@
 阶段一的 P0-03 / P0-04 / P0-05 已落地并本机验证；P0-01 / P0-02 的**真机那一半卡在
 19 条 instrumentation 真失败**上，本机没有 system image，只有 CI 能出证据，所以要推送。
 阶段二：包边界棘轮 + 死 API + Koin 唯一 journal + 冻结注释改口 + ports 与双侧合同测试
-+ 三道"不许变差"的闸都落地了；§5.2 的五条 feature store **全部搬完（5/5）**，
-但 VM 反而 2651 → 2734 行，"退成薄 facade 再删掉"那一步还没做；主动发的"模式"
-（两个 enum 还在 VM 里）也没搬完；KnowledgeRepository 按能力拆分**没做**。
++ 三道"不许变差"的闸都落地了；§5.2 的五条 feature store **全部搬完（5/5），
+连§5.2 第 3 步列的"模式"也归位了**（两个 enum 先搬进 model，见 §2f）；
+但 VM 反而 2651 → 2732 行，"退成薄 facade 再删掉"（§5.2 第 6 步）还没做；
+KnowledgeRepository 按能力拆分**没做**。
 阶段三（设计系统 10 个组件、截图矩阵）**没开始**。
 
 ## 1. 逐项进度表
@@ -42,7 +44,7 @@
 | 16 | §3.3 prompt「冻结」说法不实 | **完成（选了"改口"分支）** | `845330a` | Engine 注释改成"hash 只做诊断，本轮用的是现读文本"；`PreparedPrompt` 整体冻结没做 |
 | 17 | §3.3 验收包与实现不符的两句话 | **部分** | — | "仍用冻结 prompt"已改口；"全部写路径统一拒绝"现在**变成真的**了，但验收包文档还没补这一节的实测数 |
 | 18 | §7 第二步 4：包依赖测试 | **完成** | `a9bb9b1` | 棘轮 + `scripts/package_deps_report.sh`；存量 15 条 / 11 文件已登记；四格反向验证 |
-| 19 | §7 第二步 1/2/3（ports、feature store、Repository 拆分） | **1 完成 / 2 状态持有者 5/5 但 facade 没退 / 3 没做** | ports `2dd94c0`；store `9cbcbb1`/`d25bdb0`/`8e911b8`/`4a8f7f7`/`5e06cc9` | 详见 §2b–§2e；剩下的没做项全在 §3 |
+| 19 | §7 第二步 1/2/3（ports、feature store、Repository 拆分） | **1 完成 / 2 完成（含『模式』）但 facade 没退 / 3 没做** | ports `2dd94c0`；store `9cbcbb1`/`d25bdb0`/`8e911b8`/`4a8f7f7`/`5e06cc9`；模式 `afbe303`+`b1df35a` | 详见 §2b–§2f；剩下的没做项全在 §3 |
 | 20 | §7 第三步（设计系统 + 截图矩阵） | **未开始** | — | 见 §3 |
 
 ## 2. 本机门禁（一次跑完的实测，全部来自当次命令输出）
@@ -219,6 +221,48 @@ KnowledgeRepository                  2001 行，仍是全仓第二长
 取消审计 / 工单编号 / prompt diff      NEEDS_REVIEW=0 / PASS / 零 diff，lock 6dcde732… OK
 ```
 
+## 2f. 阶段二第六轮：enum 搬进 model + 主动发的"模式"终于归位
+
+> 本节取代 §2b / §2d 里"主动发的模式那一样没搬完"的说法——那两句在各自那一轮是真的，
+> 现在不再成立。
+
+| 指导书条目 | 状态 | 实测证据 |
+|---|---|---|
+| §5.2 第 3 步剩下那一项「模式」 | **完成** | `ComposerMode` / `ResultMode` 先搬进 `model`（`afbe303`，纯机械改动，6 个文件逐处判过语境），然后 `ProactiveStore.UiState` 接管模式（`b1df35a`）。`ProactiveStoreTest` 5 → 10 格，新增 5 格全在模式上；6 个变异逐个注入反例，各咬各的格 |
+| 规则不再跨两个所有者 | **完成** | "结束且真拿到可展示开场才退回普通回复"以前是 store 报效果 + VM 改自己的 `_composerMode`/`_resultMode` 两步，中间没有原子性；现在一次 `copy()` 做完。`resultMode` **故意留在 VM**（回复链也写它），store 只能通过 `Effect.ExitedProactiveMode` 通知 |
+| 跨层棘轮没有被绕过 | 实测 6 条，与上一轮持平 | feature 包不 import viewmodel 这条现在是**真成立**，不再靠"模式没搬所以没违反"绕过去 |
+
+VM 2729 → 2732（+3，本轮）；本轮前那一步（enum 搬家）是 −5。**§5.2 五条链的状态持有者
+连同"模式"这一项全部搬完，但 VM 比开工前（2651）还长 81 行**——
+"退成薄 facade 再删掉"（§5.2 第 6 步）没做，体量要还得等那一刀。
+
+### 一条我自己写错的断言，按实修在明处
+
+`b1df35a` 的提交信息里我写了：
+
+> 新一轮开始 → 清结果但保留模式（旧写法是整份 UiState() 重建，用户正在主动发里也会被弹回普通回复
+> ——这一格是本轮新钉的行为差异）
+
+**"旧写法会把用户弹回普通回复"是错的。** 旧代码的模式在 VM 的 `_composerMode` 字段里，
+`ProactiveStarted -> _ui.value = UiState()` 根本碰不到它，所以旧行为同样是"模式保持"。
+新代码里那条 `copy(options = emptyList(), error = null)` 只是把一个**原本靠字段住处分隔开的
+隐含行为**变成 store 里的显式规则并加了测试，行为本身没有差异。
+这条测试仍然要留（它现在钉的是显式规则，将来谁把 `ProactiveStarted` 改回整份重建就会红），
+但"新钉的行为差异"这个说法不成立，在这里更正，不留到 review 被抓。
+
+本轮**真实**的行为差异只有一处：旧 `exitProactiveMode()` 在模式本来就是普通回复时也会把
+`resultMode` 置回 REPLY；现在这种情况只在"迟到的开场落地"那条分支里归位一次，
+对"本来就没进主动发"的点击不再发通知。`an opener that lands while the user has already left
+still resets the result area` 钉的就是前者。
+
+另记一次测试自己错（第一次跑当场红，改断言不改生产）：`toggling out` 那格我先写了
+"切出去之后再断言没有任何效果"，忘了切出去本身就发一次 `ExitedProactiveMode` ——
+是把计数写对，不是把规则放宽。
+
+本机收尾实测：1033 单测 / 125 套件 / 0 失败 0 跳过；lint 71 issues 0 error 预算 OK；
+`:app:compileDebugAndroidTestKotlin` BUILD SUCCESSFUL；取消审计 167 站点 NEEDS_REVIEW=0；
+工单编号 PASS；跨层 6 条。
+
 ## 3. 明确没做到 / 没法在本机做到的（不混进上面）
 
 1. **19 条真机 instrumentation 失败还在**。本轮只做到：把 7 条同源的夹具竞态改掉、
@@ -233,8 +277,8 @@ KnowledgeRepository                  2001 行，仍是全仓第二长
    catalog/document/profile/memory/migration/archive/round 拆（§5.3，且必须共用一个
    `KnowledgeTransactionManager`，不许每个新类各自 new Mutex）；
    ②§5.2 第 6 步"VM 退成薄 facade 然后删掉"——五条链的状态持有者已经全部出去（§2e），
-   但 VM 反而从 2651 涨到 2734 行，**这 83 行就是 facade 那一步要还的债**；
-   ③`ComposerMode` / `ResultMode` 两个 enum 仍在 VM 里，主动发的"模式"因此没搬完。
+   但 VM 反而从 2651 涨到 2732 行，**这 81 行就是 facade 那一步要还的债**；
+   ③『两个 enum 仍在 VM 里、主动发的模式没搬完』—— 本轮做完（§2f：`afbe303` 搬 enum、`b1df35a` 把模式归 ProactiveStore）。
    端口层已铺好（domain 不再 import data，越界 15→6），所以这些都是"往上搬"，
    不必边拆边补依赖。§5.1 的 `core/designsystem` / `core/testing` 目录也都还没建
    （`feature/` 下五个 store 算开了个头）。
@@ -268,12 +312,10 @@ KnowledgeRepository                  2001 行，仍是全仓第二长
    `ui-test` 若还红，用新加的诊断输出定位那 8 条"not displayed"是没测量、被裁还是出窗口；
    新加的 3 格语义树断言（48dp / selected / contentDescription）**预期可能红**，
    那是把假绿换成真信号，不是回归。
-2. 阶段二收尾（§5.2 五条链已 5/5，接下来这三件按顺序做）：
-   ①`ComposerMode` / `ResultMode` 两个 enum 挪进 `model`，再把主动发的"模式"从 VM 搬进
-   `ProactiveStore` —— 挪 enum 是一步独立的机械改动（改所有 `LoveBrainViewModel.ComposerMode`
-   引用点，含 UI 与 androidTest）。
+2. 阶段二收尾（§5.2 五条链与"模式"都已归位，剩下两件按顺序做）：
+   ①~~enum 挪进 model + 模式搬进 ProactiveStore~~ —— 本轮做完（§2f）。
    ②§5.2 第 6 步：VM 退成只组合 StateFlow 的 facade，然后**删 facade**——调用点直连 store。
-   这一刀才是把 VM 从 2734 行往下压的那一刀，前五步搬完它反而涨了 83 行。
+   这一刀才是把 VM 从 2732 行往下压的那一刀，前五步（加模式那一步）搬完它反而涨了 81 行。
    ③三条链的"陈旧事件被拒"日志补齐（§3 第 7 条）。
    另：`RewriteStore` 把"这轮改写算不算数"收进在途身份之后，
    `ForegroundOperationCoordinator` 与它各持一半身份（requestId 同源两处判），
