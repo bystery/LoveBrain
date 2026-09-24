@@ -56,13 +56,18 @@ object MainChainHarness {
     fun deepSeekRepository(): DeepSeekRepository = koin().get()
 
     /**
-     * 用生产解析器构造一份「成功结果」模型 —— 测试不自己 new ReplySchemes
-     * （生产同包内存在两个同名 ReplySchemes，测试端不依赖其构造签名）。
+     * 用生产解析器构造一份「只有推荐那一格有内容」的成功结果模型。
+     *
+     * ⚠ 入参是一句**回复正文**，不是 JSON：它会被塞进 validReplyJson 的 recommended 槽，
+     * 另外三格（清醒/俏皮/温柔）与 directions 都是空的。要四格齐全 + 方向列表的模型，
+     * 用下面的 [parseProviderText] 直接喂一段完整 Provider 文本。
+     * 这个名字以前叫 parsedSuccess，结果有人把整段 JSON 当正文传了进来——
+     * 解析出来的方案卡只剩一条、文本是那一整段 JSON，断言于是找不着节点。
      */
-    fun parsedSuccess(marker: String): LoveBrainResponse =
-        parseProviderText(FakeProviderServer.validReplyJson(marker))
+    fun successWithOnlyRecommendedReply(recommended: String): LoveBrainResponse =
+        parseProviderText(FakeProviderServer.validReplyJson(recommended))
 
-    /** 用生产 parseReplyResponse 解析任意 Provider 文本（构造 UI 测试要用的四风格/方向样本） */
+    /** 用生产 parseReplyResponse 解析任意 Provider 文本（要四风格/方向样本时走这条） */
     fun parseProviderText(providerText: String): LoveBrainResponse =
         deepSeekRepository().parseReplyResponse(providerText)
 

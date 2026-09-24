@@ -40,13 +40,16 @@ class ResultAreaInteractionTest {
         // S1-03 审计修复（编译健壮性）：不再直接 new ReplySchemes ——
         // 生产 com.lovebrain.app.model 包内现在有两个同名 ReplySchemes
         // （Models.kt 的四风格 DTO / GenerationEvents.kt 的 typed event），
-        // 测试端自造 DTO 构造会随生产重构直接编译失败（同名歧义已在 main 侧报错）。
-        // 改为喂一段真实 Provider 文本给生产 parseReplyResponse 构造同一模型。
+        // 测试端不依赖其构造签名。
+        // 这里要的是**四风格 + 方向列表齐全**的模型，所以必须把整段文本交给
+        // 生产 parseReplyResponse。以前走的是 harness 的 parsedSuccess(raw)，那个 helper
+        // 只往 recommended 一格塞正文、另三格和 directions 留空——于是"推荐回复内容"
+        // 这个节点根本不存在（卡上是那整段 JSON 文本），三格用例在 CI 上全红。
         val raw = "{\"response\":{\"recommended\":\"推荐回复内容\",\"bad_boy\":\"清醒回复\"," +
             "\"playful\":\"俏皮回复\",\"warm\":\"温柔回复\"}," +
             "\"directions\":[\"F reply\",\"E reply\",\"X reply\",\"S reply\"]," +
             "\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"test\"}}"
-        return GenerateResult.Success(MainChainHarness.parsedSuccess(raw))
+        return GenerateResult.Success(MainChainHarness.parseProviderText(raw))
     }
 
     // ═══ 1. 成功态渲染方案卡 ═══
