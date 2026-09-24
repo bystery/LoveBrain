@@ -20,26 +20,70 @@ import java.io.File
  */
 class UiStringLiteralBudgetTest {
 
-    private enum class Kind(val label: String, val regex: Regex) {
-        /** Text("...") / Text(text = "...") 里带中日韩字符的字面量 */
-        TEXT("Text 可见文案", Regex("""\bText\s*\(\s*(?:text\s*=\s*)?"[^"]*[\p{IsHan}][^"]*"""")),
+    private enum class Kind(val label: String, val anchor: Regex) {
+        /** `Text(` ——整段实参里任何带中文的字符串字面量 */
+        TEXT("Text 可见文案", Regex("""\bText\s*\(""")),
 
-        /** contentDescription = "..." 里带中文的字面量 */
-        DESC("contentDescription", Regex("""\bcontentDescription\s*=\s*"[^"]*[\p{IsHan}][^"]*""""))
+        /** `contentDescription =` ——赋值右边那段表达式里带中文的字面量 */
+        DESC("contentDescription", Regex("""\bcontentDescription\s*=\s*""")),
     }
 
+    /** 一行以内、含中日韩字符的字符串字面量 */
+    private val HAN_LITERAL = Regex(""""[^"\n]*[\p{IsHan}][^"\n]*"""")
+
     /**
-     * 实测基线。**用本文件这两条正则扫 app/src/main 得到**，不是照抄复核报告的 101。
+     * 从锚点往后截"这一个表达式"的范围。
      *
-     * 为什么和报告的数不一样：复核那条是 `grep 'Text\("[^"]*[一-龥]'`，
-     * 只能数到 `Text("中文` 这种紧挨着写法的；本文件的正则连
-     * `Text(text = "中文…")`、`Text(\n  "中文…", color = …)` 一起数。
-     * 两把尺的差 = 209 − 101 = 108 处，说明报告那句"至少还有 101 处"确实是下界，
-     * 真实面更大。棘轮只能用其中一把尺量，这里选宽的那把：
-     * 窄尺会漏掉新写法，等于给"换个写法继续塞中文"留门。
+     * 为什么不是正则一行搞定：`Text(text = if (proactiveActive) "中文A" else "中文B", …)`
+     * 这种写法里，锚点和字面量之间隔着一层带括号的判断条件——一条只看"锚点后面紧跟引号"的
+     * 正则永远数不到它。本轮从 `MessageList` 里搬走两处中文时就是这么发现的：
+     * **它们当时根本不在这把尺的计数里**，搬完了预算数字一个字都不用改，那笔账就成了假账。
+     * 所以这里按括号配对取范围，而不是按"紧跟不紧跟"。
+     */
+    private fun expressionAt(text: String, from: Int, kind: Kind): String {
+        var depth = if (kind == Kind.TEXT) 1 else 0
+        var i = from
+        while (i < text.length) {
+            when (text[i]) {
+                '(' -> depth++
+                ')' -> {
+                    if (depth == 0) return text.substring(from, i)
+                    depth--
+                    if (depth == 0) return text.substring(from, i)
+                }
+                ',' -> if (depth == 0 && kind == Kind.DESC) return text.substring(from, i)
+                '\n' -> if (kind == Kind.DESC && i + 1 < text.length &&
+                    text[i + 1] != '+' && text[i + 1] != '"'
+                ) {
+                    // 赋值换行且下一行不是续着写的字符串/拼接 → 表达式到此为止
+                    if (depth == 0) return text.substring(from, i)
+                }
+            }
+            i++
+        }
+        return text.substring(from)
+    }
+
+    private fun countHanLiterals(text: String, kind: Kind): Int =
+        kind.anchor.findAll(text).sumOf { match ->
+            HAN_LITERAL.findAll(expressionAt(text, match.range.last + 1, kind)).count()
+        }
+
+    /**
+     * 实测基线。**数字来自本文件这把尺对 app/src/main 的一次实扫**，不是照抄复核报告的 101。
+     *
+     * 三把尺的关系（都留档，不然下一次又有人拿最小的那个数当全量）：
+     * - 复核报告的 **101**：只数 `Text("中文`，是下界；
+     * - 上一轮的正则 **209**：多认 `Text(text = "中文…")` 与跨行写法，
+     *   仍看不见 `Text(text = if (…) "中文" else "中文")`，还是下界；
+     * - 本轮换成按括号配对取整段实参（见 [expressionAt]）→ **实测 254**。
+     *
+     * 209 → 254 这 45 处**不是有人新塞了中文**，是原来量不到的那批。
+     * 换尺会让数字变大，这一条写在预算旁边，免得下一个窗口把它误读成"债涨了"、
+     * 或者干脆把正则改窄回去拿个好看的数。棘轮照旧：只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 209,
+        Kind.TEXT to 254,
         Kind.DESC to 10
     )
 
@@ -47,7 +91,7 @@ class UiStringLiteralBudgetTest {
         if (!root.isDirectory) return -1
         return root.walkTopDown()
             .filter { it.isFile && it.extension == "kt" }
-            .sumOf { f -> kind.regex.findAll(f.readText(Charsets.UTF_8)).count() }
+            .sumOf { f -> countHanLiterals(f.readText(Charsets.UTF_8), kind) }
     }
 
     private fun mainRoot(): File {
@@ -126,6 +170,25 @@ class UiStringLiteralBudgetTest {
                 """.trimIndent(), Charsets.UTF_8
             )
             assertEquals("contentDescription 里的中文也要被数到", 1, countIn(tmp, Kind.DESC))
+
+            // 这一格是给"尺子换过"这件事兜底的：锚点与字面量之间隔着一层带括号的判断条件，
+            // 旧那条只看紧跟引号的正则在这里是瞎的——真出过事（见 expressionAt 的注释）。
+            File(tmp, "D.kt").writeText(
+                """
+                package x
+                import androidx.compose.material3.Text
+                @Composable fun D() {
+                    Text(
+                        text = if (expanded) "已经展开" else "点击展开",
+                        color = Color.Blue
+                    )
+                }
+                """.trimIndent(), Charsets.UTF_8
+            )
+            assertEquals(
+                "隔着一层 if 的两处中文也必须数到（A 里 2 处 + D 里 2 处）",
+                4, countIn(tmp, Kind.TEXT)
+            )
         } finally {
             tmp.deleteRecursively()
         }
