@@ -28,8 +28,8 @@ rm -rf app/build/test-results/testDebugUnitTest && \
   ./gradlew :app:testDebugUnitTest :app:lintDebug :app:compileDebugAndroidTestKotlin --no-daemon
 ```
 
-本机实测（最后一次全量跑，`df1e802`）：**1067 单测 / 131 套件 / 0 失败 / 0 错误 / 0 跳过**（比上一轮的
-1045 多的 22 格：§2i 的语义树/合同 17 格 + §2j 的目录枚举 5 格）；lint 71 issues、0 error；
+本机实测（最后一次全量跑，`ca76bac`）：**1077 单测 / 133 套件 / 0 失败 / 0 错误 / 0 跳过**（比上一轮的
+1045 多的 32 格：§2i 语义树/合同 17 + §2j 目录枚举 5 + §2k 四态组件 6 + §2l 锦囊折叠 4）；lint 71 issues、0 error；
 跨层越界 6 条；取消审计 167 站点 NEEDS_REVIEW=0；工单编号扫描 PASS；prompt 目录零 diff；
 生产 Kotlin 125 个 / >500 行 18 个 / >800 行 10 个。
 
