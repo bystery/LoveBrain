@@ -60,7 +60,12 @@ class UiStringLiteralBudgetTest {
                 ')' -> {
                     if (depth == 0) return text.substring(from, i)
                     depth--
-                    if (depth == 0) return text.substring(from, i)
+                    // 只有锚点本身是"函数调用"（Text(）时，配对回到 0 才是这段实参的结束。
+                    // 赋值型锚点（contentDescription = / stateDescription =）不能在这里收尾：
+                    // `contentDescription = if (expanded) "收起" else "展开"` 的 if 条件括号会把切片
+                    // 截断，于是那两处中文又数不到了——本轮第一版就栽在这行上（预算报 DESC 没变，
+                    // 而我刚搬掉了两处，这个"没变"本身就是线索）。
+                    if (anchorIsCall && depth == 0) return text.substring(from, i)
                 }
                 ',' -> if (depth == 0 && !anchorIsCall) return text.substring(from, i)
                 '\n' -> if (!anchorIsCall && i + 1 < text.length &&
@@ -93,9 +98,25 @@ class UiStringLiteralBudgetTest {
      * 换尺会让数字变大，这一条写在预算旁边，免得下一个窗口把它误读成"债涨了"、
      * 或者干脆把正则改窄回去拿个好看的数。棘轮照旧：只许往下走。
      */
+    /**
+     * 实测基线。**数字来自这把尺对 app/src/main 的一次实扫**，不是照抄复核报告的 101。
+     *
+     * 三把尺的关系（都留档，不然下一次又有人拿最小的那个数当全量）：
+     * - 复核报告的 **101**：只数 `Text("中文`，是下界；
+     * - 上一轮的正则 **209**：多认 `Text(text = "中文…")` 与跨行写法，仍看不见
+     *   `Text(text = if (…) "中文" else "中文")`，还是下界；
+     * - 本轮换成按括号配对取整段实参 → TEXT **254**；搬掉 4 处后 **250**。
+     *
+     * DESC 这一栏要单独记一笔：本轮第一次改尺时**赋值型锚点的切片被内层括号截断了**——
+     * `contentDescription = if (expanded) "收起" else "展开"` 里那对 if 条件括号提前收尾，
+     * 于是"搬掉两处中文之后 DESC 一个没变"。那个"没变"本身就是尺子还在漏的证据。
+     * 修好之后 DESC = **12**（而修之前那次量到的 10 同样是下界）。
+     *
+     * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
+     */
     private val budget = mapOf(
-        Kind.TEXT to 252,
-        Kind.DESC to 10,
+        Kind.TEXT to 250,
+        Kind.DESC to 12,
         Kind.STATE to 0
     )
 
@@ -182,6 +203,19 @@ class UiStringLiteralBudgetTest {
                 """.trimIndent(), Charsets.UTF_8
             )
             assertEquals("contentDescription 里的中文也要被数到", 1, countIn(tmp, Kind.DESC))
+
+            // 赋值型锚点 + 内层条件括号：第一版的切片在这里提前收尾，把两处中文漏成了 0。
+            // 没这一格的话，"刚搬掉两处而预算一个没动"这种矛盾根本不会被发现。
+            File(tmp, "E.kt").writeText(
+                """
+                package x
+                val mod = Modifier.semantics { contentDescription = if (open) "收起" else "展开" }
+                """.trimIndent(), Charsets.UTF_8
+            )
+            assertEquals(
+                "隔着 if 条件括号的 contentDescription 也要数到（C 的 1 处 + E 的 2 处）",
+                3, countIn(tmp, Kind.DESC)
+            )
 
             // 这一格是给"尺子换过"这件事兜底的：锚点与字面量之间隔着一层带括号的判断条件，
             // 旧那条只看紧跟引号的正则在这里是瞎的——真出过事（见 expressionAt 的注释）。

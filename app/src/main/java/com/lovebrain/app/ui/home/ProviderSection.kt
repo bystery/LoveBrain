@@ -53,6 +53,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -84,6 +86,8 @@ import kotlinx.coroutines.launch
 /** 供应商管理页内部尺寸常量 */
 private object ProviderDimens {
     const val STATUS_DOT_SIZE_DP = 6
+    /** 添加供应商那一行的最小可点击边界——§6.5 的下限是 48×48dp */
+    const val ADD_ROW_MIN_HEIGHT_DP = 48
     const val FEATURE_ARROW_SIZE_DP = 20
 }
 
@@ -188,7 +192,9 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
                     }
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = if (expanded) "收起" else "展开",
+                        contentDescription = stringResource(
+                                    if (expanded) R.string.action_collapse else R.string.action_expand
+                                ),
                         tint = TextHint,
                         modifier = Modifier
                             .size(ProviderDimens.FEATURE_ARROW_SIZE_DP.dp)
@@ -203,7 +209,7 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
                     )
                     if (tickets.isEmpty()) {
                         Text(
-                            "还没有供应商",
+                            stringResource(R.string.provider_empty),
                             style = AppTypography.bodySmall,
                             color = TextHint,
                             modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)
@@ -261,14 +267,15 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
                         }
                     }
                     Text(
-                        "＋ 添加供应商",
+                        stringResource(R.string.provider_add),
                         style = AppTypography.labelLarge,
                         color = Primary,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier
                             .fillMaxWidth()
+                            .heightIn(min = ProviderDimens.ADD_ROW_MIN_HEIGHT_DP.dp)
                             .clip(LoveBrainShape.md)
-                            .clickable { showAdd = true }
+                            .clickable(role = Role.Button) { showAdd = true }
                             .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                     )
                 }

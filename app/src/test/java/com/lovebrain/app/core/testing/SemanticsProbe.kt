@@ -23,6 +23,7 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
     /** 一个可交互节点的完整可读快照（断言失败时要能凭这一行说出"哪儿、多大、念什么"） */
     data class Target(
         val label: String,
+        val contentDescriptions: List<String>,
         val role: String,
         val selected: Boolean?,
         val stateDescription: String?,
@@ -35,7 +36,15 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
         val topDp: Float
     ) {
         /** 读屏能念出点什么：文案或 contentDescription 至少有一个 */
-        val labeled: Boolean get() = label.isNotBlank()
+        val labeled: Boolean get() = label.isNotBlank() || contentDescriptions.isNotEmpty()
+
+        /**
+         * 合并语义后的标签可能同时有文字与 contentDescription。
+         * `label` 优先取文字（那才是眼睛看到的），所以"图标自己声明了什么"
+         * 必须单独看 [contentDescriptions]——否则像"折叠箭头上写了什么"这种断言
+         * 永远读不到，还会假红。
+         */
+        val announced: String get() = (listOf(label) + contentDescriptions).joinToString(" / ")
 
         /** 合并语义后同一个名字出现两次以上 = 念两遍 */
         val isDuplicatedAnnouncement: Boolean
@@ -86,9 +95,10 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
     fun of(node: SemanticsNode): Target {
         val bounds = node.boundsInRoot
         val text = node.config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
-        val desc = node.config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString("+")
+        val descs = node.config.getOrNull(SemanticsProperties.ContentDescription).orEmpty()
         return Target(
-            label = (text ?: desc ?: "").trim(),
+            label = (text ?: descs.joinToString("+")).trim(),
+            contentDescriptions = descs,
             role = node.config.getOrNull(SemanticsProperties.Role)?.toString() ?: "无",
             selected = node.config.getOrNull(SemanticsProperties.Selected),
             stateDescription = node.config.getOrNull(SemanticsProperties.StateDescription),
