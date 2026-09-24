@@ -57,8 +57,17 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
     /** 触摸区下限（dp），失败信息里要说清用的是哪一把尺 */
     val floorDp: Float get() = minTouchDp
 
+    /**
+     * "可交互"的判据：带点击动作、带切换状态，或者**被禁用**的点击控件。
+     *
+     * 把 Disabled 也算进来不是为了多抓几个节点：`clickable(enabled = false)` 的按钮
+     * 仍然是一个操作入口，只是当前不许按。跳过它就会让"N=0 时那个按钮根本没画出来"
+     * 和"N=0 时它画出来了但是灰的"两种实现都判绿——而合同要的是后者。
+     */
     private val actionable: SemanticsMatcher =
-        hasClickAction() or SemanticsMatcher.keyIsDefined(SemanticsProperties.ToggleableState)
+        hasClickAction() or
+            SemanticsMatcher.keyIsDefined(SemanticsProperties.ToggleableState) or
+            SemanticsMatcher.keyIsDefined(SemanticsProperties.Disabled)
 
     /**
      * 取出所有带点击/切换语义的节点。
