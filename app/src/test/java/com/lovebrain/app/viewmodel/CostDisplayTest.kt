@@ -18,15 +18,23 @@ class CostDisplayTest {
         assertEquals("12.344", LoveBrainViewModel.formatYuan(12.344))
     }
 
+    /**
+     * 跨天滚动的四条判据，从 `rollTodayCost` 原样搬来——那条函数与类里那个
+     * `todayCostDate` var 是两把尺，现在只剩 `UsageStats.loaded` 这一处。
+     */
     @Test
     fun rollTodayCost_same_day_keeps_and_cross_day_resets() {
+        fun todayCost(saved: Pair<String, Double>?): Double =
+            UsageStats.loaded(today = "2026-08-30", savedTodayCost = saved).todayCostYuan
+
         // 同日期：保留存量
-        assertEquals(3.2, LoveBrainViewModel.rollTodayCost("2026-08-30", 3.2, "2026-08-30"))
-        // 同日期但金额为 null（脏数据）：兜底 0
-        assertEquals(0.0, LoveBrainViewModel.rollTodayCost("2026-08-30", null, "2026-08-30"))
+        assertEquals(3.2, todayCost("2026-08-30" to 3.2))
+        // 同日期、存量为 0（旧用例传的是 `Double? = null`；`loadTodayCost()` 本来就给不出
+        // null 金额，那个可空参数是过宽的签名，搬过来之后这一格改成"存量为 0"）
+        assertEquals(0.0, todayCost("2026-08-30" to 0.0))
         // 跨天：清零
-        assertEquals(0.0, LoveBrainViewModel.rollTodayCost("2026-08-29", 5.5, "2026-08-30"))
+        assertEquals(0.0, todayCost("2026-08-29" to 5.5))
         // 无存档（首启）：清零
-        assertEquals(0.0, LoveBrainViewModel.rollTodayCost(null, null, "2026-08-30"))
+        assertEquals(0.0, todayCost(null))
     }
 }

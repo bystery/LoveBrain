@@ -386,7 +386,7 @@ class MechanismClosureTest {
 
         assertTrue("Should have a success result", vm.result.value is GenerateResult.Success)
 
-        val initialAdopt = vm.totalAdoptCount.value
+        val initialAdopt = vm.usageStats.value.totalAdoptCount
         vm.recordActualSentMessage("I sent this")
         delay(300)
 
@@ -400,7 +400,7 @@ class MechanismClosureTest {
         assertEquals(
             "Adopt count should increase by 1 on first confirmation",
             initialAdopt + 1,
-            vm.totalAdoptCount.value
+            vm.usageStats.value.totalAdoptCount
         )
     }
 
@@ -423,7 +423,7 @@ class MechanismClosureTest {
         vm.generate()
         delay(300)
 
-        val initialAdopt = vm.totalAdoptCount.value
+        val initialAdopt = vm.usageStats.value.totalAdoptCount
         vm.recordActualSentMessage("I sent this")
         delay(300)
 
@@ -433,7 +433,7 @@ class MechanismClosureTest {
             LoveBrainViewModel.ActualSentState.KB_NOT_FOUND,
             vm.actualSentState.value
         )
-        assertEquals("Adopt count should not increase", initialAdopt, vm.totalAdoptCount.value)
+        assertEquals("Adopt count should not increase", initialAdopt, vm.usageStats.value.totalAdoptCount)
     }
 
     @Test
@@ -455,7 +455,7 @@ class MechanismClosureTest {
         vm.generate()
         delay(300)
 
-        val initialAdopt = vm.totalAdoptCount.value
+        val initialAdopt = vm.usageStats.value.totalAdoptCount
         vm.recordActualSentMessage("I sent this")
         delay(300)
 
@@ -465,7 +465,7 @@ class MechanismClosureTest {
             LoveBrainViewModel.ActualSentState.IO_ERROR,
             vm.actualSentState.value
         )
-        assertEquals("Adopt count should not increase on IO error", initialAdopt, vm.totalAdoptCount.value)
+        assertEquals("Adopt count should not increase on IO error", initialAdopt, vm.usageStats.value.totalAdoptCount)
     }
 
     @Test
@@ -490,7 +490,7 @@ class MechanismClosureTest {
         // 第一次确认 → adopt +1
         vm.recordActualSentMessage("I sent version 1")
         delay(300)
-        val adoptAfterFirst = vm.totalAdoptCount.value
+        val adoptAfterFirst = vm.usageStats.value.totalAdoptCount
         assertEquals(LoveBrainViewModel.ActualSentState.RECORDED, vm.actualSentState.value)
 
         // 同一 generation version 再次确认（更新正文）→ 不重复 +1
@@ -499,7 +499,7 @@ class MechanismClosureTest {
         assertEquals(
             "Adopt count should not increase on same-version update",
             adoptAfterFirst,
-            vm.totalAdoptCount.value
+            vm.usageStats.value.totalAdoptCount
         )
         assertEquals(LoveBrainViewModel.ActualSentState.RECORDED, vm.actualSentState.value)
     }

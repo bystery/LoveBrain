@@ -407,49 +407,35 @@ class LoveBrainViewModel(
         securePrefs.outputMode = result.outputMode
     }
 
-    /** ═══════════ 花费/耗时展示（VM 聚合） ═══════════ */
+    /** ═══════════ 花费/耗时展示（§2.2：九个 flow 并成一份快照 + 一个 reduce） ═══════════ */
 
-    /** 今日累计花费（元；跨天清零，持久层对账） */
-    private val _todayCostYuan = MutableStateFlow(0.0)
-    val todayCostYuan: StateFlow<Double> = _todayCostYuan.asStateFlow()
+    /**
+     * 面板上那九个"用了多少"的数只有一个来源。
+     *
+     * 原先是九个 `MutableStateFlow` 加一个不在任何 flow 里的 `private var todayCostDate`
+     * （跨天清零的第二份状态），十二处语句各改各的、其中五处还顺手把值抄回 `SecurePrefs`。
+     * 现在：转移在 [UsageStats.reduce]（纯函数，JVM 直接测），落盘只在 [applyUsage]。
+     */
+    private val _usageStats = MutableStateFlow(UsageStats())
+    val usageStats: StateFlow<UsageStats> = _usageStats.asStateFlow()
 
-    /** 本次生成花费（元；null = 未计费，UI 占位"—"） */
-    private val _lastCostYuan = MutableStateFlow<Double?>(null)
-    val lastCostYuan: StateFlow<Double?> = _lastCostYuan.asStateFlow()
-
-    /** 最近一次生成首字耗时（毫秒；0 = 尚未生成） */
-    private val _lastResponseMs = MutableStateFlow(0L)
-    val lastResponseMs: StateFlow<Long> = _lastResponseMs.asStateFlow()
-
-    // 性能统计
-    /** 累计生成次数（跨重启持久化） */
-    private val _totalGenerateCount = MutableStateFlow(0)
-    val totalGenerateCount: StateFlow<Int> = _totalGenerateCount.asStateFlow()
-
-    /** 累计花费（元；跨重启持久化） */
-    private val _totalCostYuan = MutableStateFlow(0.0)
-    val totalCostYuan: StateFlow<Double> = _totalCostYuan.asStateFlow()
-
-    /** 今日花费的计费日期（跨零点滚动清零用） */
-    private var todayCostDate: String = java.time.LocalDate.now().toString()
-
-    // 详细统计
-    /** 累计复制次数 */
-    private val _totalCopyCount = MutableStateFlow(0)
-    val totalCopyCount: StateFlow<Int> = _totalCopyCount.asStateFlow()
-
-    /** 累计采用次数（记录实际发送） */
-    private val _totalAdoptCount = MutableStateFlow(0)
-    val totalAdoptCount: StateFlow<Int> = _totalAdoptCount.asStateFlow()
-
-    /** 累计改写次数 */
-    private val _totalRewriteCount = MutableStateFlow(0)
-    val totalRewriteCount: StateFlow<Int> = _totalRewriteCount.asStateFlow()
-
-    /** 首条可复制回复耗时（毫秒；0 = 尚未生成）
-     *  从生成开始到首张方案卡完整解析的真实耗时，不再近似等于首字耗时 */
-    private val _firstReplyMs = MutableStateFlow(0L)
-    val firstReplyMs: StateFlow<Long> = _firstReplyMs.asStateFlow()
+    /** 唯一的写入漏斗：想改这九个数没有第二条路 */
+    private fun applyUsage(event: UsageStats.Event) {
+        val before = _usageStats.value
+        val after = before.reduce(event)
+        _usageStats.value = after
+        if (after.totalGenerateCount != before.totalGenerateCount) {
+            securePrefs.totalGenerateCount = after.totalGenerateCount
+        }
+        if (after.totalCostYuan != before.totalCostYuan) securePrefs.totalCostYuan = after.totalCostYuan
+        if (after.totalCopyCount != before.totalCopyCount) securePrefs.totalCopyCount = after.totalCopyCount
+        if (after.totalAdoptCount != before.totalAdoptCount) securePrefs.totalAdoptCount = after.totalAdoptCount
+        if (after.totalRewriteCount != before.totalRewriteCount) {
+            securePrefs.totalRewriteCount = after.totalRewriteCount
+        }
+        // 计费事件每次都存今日数（与改前一致：即便这一笔是 0 元也照存，不省那次写）
+        if (event is UsageStats.Event.Costed) securePrefs.saveTodayCost(after.todayDate, after.todayCostYuan)
+    }
 
     /** 本轮生成开始时间戳（用于计算首条可复制回复耗时） */
     private var generateStartTimeMs: Long = 0L
@@ -760,29 +746,27 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         // 今日花费载入（跨天清零）+ 订阅计费事件流（ 口径）
         val savedCost = securePrefs.loadTodayCost()
-        _todayCostYuan.value = rollTodayCost(savedCost?.first, savedCost?.second, todayCostDate)
-        // 加载累计统计
-        _totalGenerateCount.value = securePrefs.totalGenerateCount
-        _totalCostYuan.value = securePrefs.totalCostYuan
-        _totalCopyCount.value = securePrefs.totalCopyCount
-        _totalAdoptCount.value = securePrefs.totalAdoptCount
-        _totalRewriteCount.value = securePrefs.totalRewriteCount
+        _usageStats.value = UsageStats.loaded(
+            today = java.time.LocalDate.now().toString(),
+            savedTodayCost = savedCost,
+            totalGenerateCount = securePrefs.totalGenerateCount,
+            totalCostYuan = securePrefs.totalCostYuan,
+            totalCopyCount = securePrefs.totalCopyCount,
+            totalAdoptCount = securePrefs.totalAdoptCount,
+            totalRewriteCount = securePrefs.totalRewriteCount
+        )
         viewModelScope.launch {
             // SharedFlow 收集不应崩面板
             try {
                 deepSeekRepo.costEvents.collect { ev ->
-                    val today = java.time.LocalDate.now().toString()
-                    if (today != todayCostDate) { todayCostDate = today; _todayCostYuan.value = 0.0 }
-                    // 今日累计包含全部可计费 AI 请求（前台 + 后台）
-                    _todayCostYuan.value += ev.yuan
-                    securePrefs.saveTodayCost(today, _todayCostYuan.value)
-                    // 累计总花费
-                    _totalCostYuan.value += ev.yuan
-                    securePrefs.totalCostYuan = _totalCostYuan.value
-                    // 本次费用只显示前台流式请求（FOREGROUND），不被后台 raw 污染
-                    if (ev.scope == CostScope.FOREGROUND) {
-                        _lastCostYuan.value = ev.yuan
-                    }
+                    applyUsage(
+                        UsageStats.Event.Costed(
+                            today = java.time.LocalDate.now().toString(),
+                            yuan = ev.yuan,
+                            // 本次费用只显示前台流式请求（FOREGROUND），不被后台 raw 污染
+                            foreground = ev.scope == CostScope.FOREGROUND
+                        )
+                    )
                 }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
@@ -1151,13 +1135,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 // 生成成功后重置输入变化标记
                 _inputChanged.value = false
                 // 递增累计生成次数
-                _totalGenerateCount.value += 1
-                securePrefs.totalGenerateCount = _totalGenerateCount.value
+                applyUsage(UsageStats.Event.Generated)
             }
 
             is ReplyStore.Effect.TimingSampled -> {
-                effect.firstReplyMs?.let { _firstReplyMs.value = it }
-                effect.firstTokenMs?.let { _lastResponseMs.value = it }
+                applyUsage(UsageStats.Event.Timed(effect.firstReplyMs, effect.firstTokenMs))
             }
         }
     }
@@ -1226,7 +1208,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             contextMode = if (ctx.onlyThisRound) "only-this-round" else "full",
             promptVersion = ctx.promptVersion,
             modelId = _activeTicket.value?.model ?: "",
-            costYuan = _lastCostYuan.value ?: 0.0
+            costYuan = _usageStats.value.lastCostYuan ?: 0.0
         )
     }
 
@@ -1388,8 +1370,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     fun copyScheme(scheme: Scheme): String {
         // 统计复制次数
-        _totalCopyCount.value += 1
-        securePrefs.totalCopyCount = _totalCopyCount.value
+        applyUsage(UsageStats.Event.Copied)
         return scheme.reply
     }
 
@@ -1467,8 +1448,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 if (success) {
                     // 只有第一次确认才计 adopt；同一 version 更新不重复 +1
                     if (!isUpdate) {
-                        _totalAdoptCount.value += 1
-                        securePrefs.totalAdoptCount = _totalAdoptCount.value
+                        applyUsage(UsageStats.Event.Adopted)
                     }
                     _actualSentEntries[versionId?.value] = sentEntry
                     _actualSentState.value = ActualSentState.RECORDED
@@ -2119,7 +2099,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 }
             }
 
-            is com.lovebrain.app.feature.counseling.CounselingStore.Effect.FirstTokenObserved -> _lastResponseMs.value = effect.elapsedMs
+            is com.lovebrain.app.feature.counseling.CounselingStore.Effect.FirstTokenObserved ->
+                applyUsage(UsageStats.Event.Timed(firstTokenMs = effect.elapsedMs))
         }
     }
 
@@ -2153,7 +2134,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 )
 
             is com.lovebrain.app.feature.suggest.SuggestStore.Effect.FirstTokenObserved ->
-                _lastResponseMs.value = effect.elapsedMs
+                applyUsage(UsageStats.Event.Timed(firstTokenMs = effect.elapsedMs))
         }
     }
 
@@ -2180,7 +2161,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     private fun onProactiveEffect(effect: com.lovebrain.app.feature.proactive.ProactiveStore.Effect) {
         when (effect) {
             com.lovebrain.app.feature.proactive.ProactiveStore.Effect.ExitedProactiveMode -> _resultMode.value = ResultMode.REPLY
-            is com.lovebrain.app.feature.proactive.ProactiveStore.Effect.FirstTokenObserved -> _lastResponseMs.value = effect.elapsedMs
+            is com.lovebrain.app.feature.proactive.ProactiveStore.Effect.FirstTokenObserved ->
+                applyUsage(UsageStats.Event.Timed(firstTokenMs = effect.elapsedMs))
         }
     }
 
@@ -2618,8 +2600,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 feedbackCases.putFeedback(effect.identityKey, SchemeFeedback.NONE)
 
             com.lovebrain.app.feature.rewrite.RewriteStore.Effect.RewriteCounted -> {
-                _totalRewriteCount.value += 1
-                securePrefs.totalRewriteCount = _totalRewriteCount.value
+                applyUsage(UsageStats.Event.Rewritten)
             }
 
             is com.lovebrain.app.feature.rewrite.RewriteStore.Effect.StopRunningRewrite -> {
@@ -2745,12 +2726,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         /** 金额格式化（固定三位小数 + 固定 Locale.US 小数点，防区域格式回归；展示条字号钉死） */
         // 花费保留三位小数
         internal fun formatYuan(yuan: Double): String = String.format(java.util.Locale.US, "%.3f", yuan)
-
-        /**
-         * 今日花费跨天滚动——同日期保留存量，跨天（或无存档）清零。
-         * 纯函数，单测覆盖（CostDisplayTest）。
-         */
-        internal fun rollTodayCost(savedDate: String?, savedYuan: Double?, todayDate: String): Double =
-            if (savedDate == todayDate) (savedYuan ?: 0.0) else 0.0
+        // 今日花费的跨天滚动不再住在这里：它是 UsageStats.loaded 的一条判据，
+        // 与"今日那一格"同属一份状态（原先这里一个函数、类里一个 todayCostDate var，两把尺）
     }
 }

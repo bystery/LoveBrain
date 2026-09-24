@@ -104,12 +104,8 @@ fun LoveBrainPanelScreen(
     val vectorDelta by viewModel.vectorDelta.collectAsStateWithLifecycle()
     val showPlanPanel by viewModel.showPlanPanel.collectAsStateWithLifecycle()
 
-    val todayCostYuan by viewModel.todayCostYuan.collectAsStateWithLifecycle()
-    val lastCostYuan by viewModel.lastCostYuan.collectAsStateWithLifecycle()
-    val lastResponseMs by viewModel.lastResponseMs.collectAsStateWithLifecycle()
-    // 累计统计
-    val totalGenerateCount by viewModel.totalGenerateCount.collectAsStateWithLifecycle()
-    val totalCostYuan by viewModel.totalCostYuan.collectAsStateWithLifecycle()
+    // 花费与累计统计：九个数字一份快照、一次收集（原先这里 collect 了五把 flow）
+    val usage by viewModel.usageStats.collectAsStateWithLifecycle()
     val isProviderReady by viewModel.providerReady.collectAsStateWithLifecycle()
 
     // proactive state collected at top level
@@ -177,11 +173,7 @@ fun LoveBrainPanelScreen(
             Box(modifier = Modifier.fillMaxWidth().height(Spacing.sm)) {
                 DragHandle(onMove = onMove)
                 UsageStatsRow(
-                    todayCostYuan = todayCostYuan,
-                    lastCostYuan = lastCostYuan,
-                    lastResponseMs = lastResponseMs,
-                    totalGenerateCount = totalGenerateCount,
-                    totalCostYuan = totalCostYuan,
+                    usage = usage,
                     modifier = Modifier.fillMaxWidth().wrapContentHeight(unbounded = true).align(Alignment.Center)
                 )
             }
@@ -971,25 +963,22 @@ private fun StageSuggestionCard(
  */
 @Composable
 private fun UsageStatsRow(
-    todayCostYuan: Double,
-    lastCostYuan: Double?,
-    lastResponseMs: Long,
-    totalGenerateCount: Int,
-    totalCostYuan: Double,
+    usage: com.lovebrain.app.viewmodel.UsageStats,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(Spacing.lg, Alignment.CenterHorizontally)
     ) {
-        UsageStatCell("今日", "¥${LoveBrainViewModel.formatYuan(todayCostYuan)}")
-        UsageStatCell("本次", lastCostYuan?.let { "¥${LoveBrainViewModel.formatYuan(it)}" } ?: "—")
-        if (lastResponseMs > 0) {
-            UsageStatCell("首字", "%.1fs".format(lastResponseMs / 1000.0))
+        // 渲染口径一格没改：五个格子、首字那格的 >0 条件、"—" 占位都原样
+        UsageStatCell("今日", "¥${LoveBrainViewModel.formatYuan(usage.todayCostYuan)}")
+        UsageStatCell("本次", usage.lastCostYuan?.let { "¥${LoveBrainViewModel.formatYuan(it)}" } ?: "—")
+        if (usage.lastResponseMs > 0) {
+            UsageStatCell("首字", "%.1fs".format(usage.lastResponseMs / 1000.0))
         }
         // 累计统计
-        UsageStatCell("累计", "${totalGenerateCount}次")
-        UsageStatCell("累计", "¥${LoveBrainViewModel.formatYuan(totalCostYuan)}")
+        UsageStatCell("累计", "${usage.totalGenerateCount}次")
+        UsageStatCell("累计", "¥${LoveBrainViewModel.formatYuan(usage.totalCostYuan)}")
     }
 }
 

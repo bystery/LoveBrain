@@ -213,14 +213,14 @@ class RewriteEffectWiringTest {
     @Test
     fun `counting a rewrite writes the running total once`() = runTest(testDispatcher) {
         val vm = vmWithResult()
-        assertEquals(0, vm.totalRewriteCount.value)
+        assertEquals(0, vm.usageStats.value.totalRewriteCount)
 
         vm.onRewriteEffect(RewriteStore.Effect.RewriteCounted)
-        assertEquals(1, vm.totalRewriteCount.value)
+        assertEquals(1, vm.usageStats.value.totalRewriteCount)
         verify(exactly = 1) { prefs.totalRewriteCount = 1 }
 
         vm.onRewriteEffect(RewriteStore.Effect.RewriteCounted)
-        assertEquals(2, vm.totalRewriteCount.value)
+        assertEquals(2, vm.usageStats.value.totalRewriteCount)
     }
 
     @Test
