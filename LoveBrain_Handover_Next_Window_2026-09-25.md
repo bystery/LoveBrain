@@ -76,6 +76,24 @@ HEAD `0c4d6d6`，仍未推。两笔：
 `KnowledgeTransactionManager` 这个**名字**仍然不存在（语义由 `fileMutex` + `transaction` 承担）。
 详见账本 §15.4 那张表——回答"§5.3 做完了吗"要照它说，不许说"7/7 完成"。
 
+## 0.4 再往下：§2.2「没有统一 Reducer/UiState」的第一处落地（`cf80b91`）
+
+面板上那九个"用了多少"原先是九个 `MutableStateFlow` + 十二处直接改 + 五处各自抄回 `SecurePrefs`，
+外加一个**不在任何 flow 里**的 `private var todayCostDate`（跨天清零的第二份状态）
+和一个独立函数 `rollTodayCost`。现在是一份不可变 `UsageStats` + 六种事件的**纯 reduce**
++ 一个写入漏斗；UI 侧 5 次 collect 并成 1 次、`UsageStatsRow` 五个参数并成一个，渲染一格没改。
+
+三条要点：
+- **既有断言搬家不删**：跨天四条判据搬进 `CostDisplayTest`（现在打 `UsageStats.loaded`），
+  adopt/改写的落盘判据仍由 `MechanismClosureTest`/`RewriteEffectWiringTest` 看着（只改读法）。
+- 新纯函数 9 格，五处注入各自只红目标格（U1 前后台反了 / U2 丢跨天分支 / U3 生成串到复制 /
+  U4 计时丢旧值 / U6 默认值 null→0.0）。有一条**注入不了**（reduce 不改旧快照，data class 结构保证），
+  不当战果写。
+- §2.2 那行**没做完**：VM 里还剩 **30 个** `MutableStateFlow`（实测，从 39 减到 30）。
+  下一处该并谁要有判据（哪几个必须同帧变化），不是按字母清库存。
+  另：`LoveBrainViewModel` 仍是 facade，§5.2 第 6 步远没到——十几个命令式方法没有对应 intent，
+  硬搬会把 prefs/coordinator/engine 全拖进 store 端口（catalog 写侧同一种宽端口陷阱）。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -94,13 +112,13 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
 ```
 
-最近一轮实测基线（到 `0c4d6d6`）：**1163 单测 / 145 套件 / 0 失败 / 0 错误 / 0 跳过**
-（最旧 XML 04:45:22；日志止点 04:45:24、本次跑 183s → cut 从日志自己算，别用记忆里的时间）；
-lint 报告**重新生成后**（04:47）70 条 / 15 规则，其中 **进预算 69 条 / 14 规则**、advisory 1 条；
+最近一轮实测基线（到 `cf80b91`）：**1172 单测 / 146 套件 / 0 失败 / 0 错误 / 0 跳过**
+（最旧 XML 05:16:10；本次跑 177s → cut 05:13:10 从日志自己算，别用记忆里的时间）；
+lint 报告**重新生成后**（05:18）70 条 / 15 规则，其中 **进预算 69 条 / 14 规则**、advisory 1 条；
 `:app:compileDebugAndroidTestKotlin` rc=0；prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；
 跨层 **6** 条（与基线同，没长）。
 `KnowledgeRepository` 1941 → 1878 → 1844 → 1876 → **1793** 行（第一次真正变短），
-`LoveBrainViewModel` 2746 → **2756** 行（只改了 PreconditionFailed 那一个分支）。
+`LoveBrainViewModel` 2746 → 2756 → **2732** 行；VM 里的 `MutableStateFlow` **39 → 30** 个（同一把尺量的）。
 **大文件计数已变：>500 行从指导书的 18 个降到 17 个**（跨下来的是 `FeedbackCasesScreen.kt`，
 `e359930` 那次 534→500；没有一个新跨上去），>800 仍 10 个——别再把 18/10 当现状抄；
 本轮两处行数变化都还在同一档里，没跨阈值。
@@ -182,7 +200,7 @@ lint 报告**重新生成后**（04:47）70 条 / 15 规则，其中 **进预算
 新格一律配"格级 fake + 逐条注入验红"，搬家那笔必须有真文件系统的既有 net 同时在跑，
 才敢说"这一步没改行为"（归档那笔的 net 是 `ArchiveOperationStateTest` 五格）。
 
-## 5. 别重复劳动：这几轮做的 17 笔
+## 5. 别重复劳动：这几轮做的 18 笔
 
 | 提交 | 内容 |
 |---|---|
@@ -203,13 +221,14 @@ lint 报告**重新生成后**（04:47）70 条 / 15 规则，其中 **进预算
 | `3b86b03` | 只读库上的画像事务不再报 `Success`：新增 `PreconditionReason.LIBRARY_READ_ONLY` + 入口判定；UI 分清"建议作废"与"这次写不动"，只读不再清卡；enum 形状那条尺 2 → 3 |
 | `99c209d` | 话题行 `正在聊：` 五处字面量收成 `KbTextOps.topicLine/topicLabel` 一个所有者；新增"这个字面量只许出现在一个文件里"的形状尺（扫描自证不空跑）；怪癖"没标记就返回整行"只钉不改 |
 | `0c4d6d6` | §5.3 第七格 `KnowledgeArchiveService`：四步判定 / 归档条目格式 / 旧话题读法 / 计数口径各有所有者；`getLessonCount` 两把锁并一把、状态没落盘从静默变留痕；10 格新测试逐条注入验红（七次注入）；仓库 1876 → **1793** 行 |
+| `cf80b91` | 面板九个统计并成一份不可变 `UsageStats` + 纯 `reduce` + 一个写入漏斗；跨天判据不再有一份藏在 `var` 里；UI 5 次 collect 并 1 次；VM 39 → 30 个 `MutableStateFlow` |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
 `GENERATE_STOP_TEST_TAG`（生产留的锚点，"文字会变，tag 不会"）。
 **新用例取文案一律走这些，别再抄一份中文字面量。**
 
-## 6. 坑表（编号接上一份的 1–15；16–25 是 CI 首跑后那批，26–31 画像格那批，32–35 回滚与只读这批）
+## 6. 坑表（编号接上一份的 1–15；16–25 CI 首跑后那批，26–31 画像格那批，32–35 回滚与只读那批，36–40 归档与统计那批）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -276,6 +295,15 @@ lint 报告**重新生成后**（04:47）70 条 / 15 规则，其中 **进预算
 38. **一段说明文字里的 glob 会吞掉代码**：`understand/*.md` 这种写法在 KDoc 里等于开了一个嵌套
     块注释（Kotlin 注释可嵌套），整段后面全变注释。写范围时用"me/her/warmth/style 四份"这类
     自然语言，别用 `*`（同一族第 26 条）。
+39. **JUnit4 的 `assertEquals(double, double)` 运行期直接拒判**：报
+    `Use assertEquals(expected, actual, delta) to compare floating-point numbers`，
+    看着像断言内容错了其实是尺的问题——本轮九个浮点断言一次红七格。
+    浮点必须带 delta，或整份文件改走 `kotlin.test`（注意它的 message 在**最后**，见第 35 条）。
+40. **注入变异时，注释不能跟在带行尾逗号的参数后面**：
+    `val x: Double? = 0.0 // PROBE` 会把逗号吃进注释，语法错误却报在**下一行**
+    （`Expecting comma or ')'` + 一串 `Unresolved reference`），第一眼像被测代码坏了。
+    注入的注释一律单独占一行；另外变异脚本要**写成文件再执行**，
+    `python - <<EOF` 里带中文会按 ANSI 解码坏掉（第 16 条第三次命中）。
 
 ## 7. 硬约束（一条没变）
 

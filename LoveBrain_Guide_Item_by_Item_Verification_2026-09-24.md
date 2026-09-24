@@ -738,3 +738,69 @@ kb.json 的 `updatedAt` 用 ISO-8601——合并任何一把都会悄悄换掉�
 
 还没还的账，别当已做：`kbExistsUnlocked` 仍用裸路径判"目录+kb.json 在不在"（只泄露一个布尔）；
 本轮所有改动**没有一条有 CI 判决**。
+
+---
+
+# 追加六：面板九个统计并成一份快照（§2.2 那行的第一处真正落地）
+
+提交 `cf80b91`。指导书 §2.2「谈心/锦囊/主动发统一状态模型 = PARTIAL」的原话是
+"仍各自直接写多个 MutableStateFlow，没有统一 Reducer/UiState"——本轮挑的是这一族里最独立的一处。
+
+## 16.1 量到的形状
+
+| 项 | 拆之前 |
+|---|---|
+| `MutableStateFlow` 个数 | 九个（今日花费/本次/首字耗时/累计首字/生成/累计花费/复制/采用/改写） |
+| 直接改它们的语句 | 十二处 |
+| 顺手抄回 `SecurePrefs` 的位置 | 五处（各写各的，字段与写入条件没有汇总点） |
+| 状态之外的状态 | `private var todayCostDate`（跨天清零判据，**不在任何 flow 里**）+ `rollTodayCost` 独立函数 |
+| UI 侧 | 面板 5 次 `collectAsStateWithLifecycle()`；`UsageStatsRow` 五个参数 |
+
+"这九个数的所有者是谁"没有答案；要测"复制一次会不会误伤采用数"只能起整个 ViewModel。
+
+## 16.2 现在
+
+`UsageStats`（不可变快照）+ 六种事件的**纯** `reduce` + 一个写入漏斗 `applyUsage`。
+落盘只在漏斗一处，日期判据并回快照本身，`rollTodayCost` 与那个 var 一起消失。
+渲染一格没改（五格、首字那格的 `>0` 条件、`"—"` 占位原样），UI 侧 5 次 collect 并成 1 次、5 个参数并成 1 个。
+
+既有断言**搬家不删**：`CostDisplayTest` 四条跨天判据搬到 `loaded`；
+`MechanismClosureTest`（IO 失败时 adopt 不许涨）与 `RewriteEffectWiringTest`（改写计数恰好写 prefs 一次）
+只改读法、断言原样——落盘那半边仍由它们看着（新纯函数测试故意不覆盖 prefs）。
+
+新格 9 条，五处注入各自只红目标格：`U1` 前后台反了→2 红、`U2` 丢掉跨天分支→1 红、
+`U3` 生成串到复制→1 红、`U4` 计时事件丢旧值→1 红、`U6` 默认值从 null 变 0.0→1 红。
+一条**注入不了**：`reduce 不改旧快照`——data class 的 `copy` 结构上就改不动，
+它防的是将来有人手写实现，不算已验战果。
+
+## 16.3 两条本轮踩到的新坑（都写进交接单坑表）
+
+1. **JUnit4 的 `assertEquals(double, double)` 运行期直接拒判**
+   （`Use assertEquals(expected, actual, delta) to compare floating-point numbers`）：
+   我这格一次红了七次，全是这个而不是断言内容。浮点比较必须带 delta，或改 `kotlin.test`。
+2. **用脚本往代码里注入变异时，注释不能跟在"带行尾逗号的参数"后面**：
+   `val x: Double? = 0.0 // PROBE` 会把那个逗号吃进注释 → 语法错误，
+   而报错位置在**下一行**（"Expecting comma or ')'"、"Unresolved reference"），看着像被测代码坏了。
+   注入的注释一律单独占一行。另：`python - <<EOF` 里带中文会按 ANSI 解码坏掉（坑表第 16 条第三次命中），
+   变异脚本先落成文件再执行。
+
+## 16.4 实测
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | rc=0：**1172 tests / 146 套件 / 0 失败 / 0 错误 / 0 跳过**（最旧 XML 05:16:10，cut 05:13:10 由日志自身时长反推） |
+| 搬家没丢断言 | `CostDisplayTest` 2 / `MechanismClosureTest` 全 / `RewriteEffectWiringTest` 全 绿 |
+| lint | 报告重生成（05:18）70 条 /15 规则、进预算 **69 /14**、advisory 1，rc=0；判据自测 27 格 rc=0 |
+| 其它 | 工单编号 rc=0；prompt 零 diff + lock `6dcde732…`；androidTest 编译 rc=0；跨层 **6** 条 |
+| 行数 | `LoveBrainViewModel` 2756 → **2732**（−24），新文件 `UsageStats.kt` 94 行 |
+
+## 16.5 §2.2 那行现在的准确状态
+
+只并掉了**统计这一族**。VM 里还剩 **30 个** `MutableStateFlow`（39 → 30，实测同一把尺），
+其中画像是 `profileSuggestion` + `isProfileConfirming` + `stageSuggestion` + `vectorUpdate` 四个各写各的、
+意图是 `intentConfig` + `showIntentEditor`、消息编辑是 `messages`/`editingIndex`/`currentRole` 三个。
+下一处该并哪个要有判据（谁互相必须同帧变化），不是按字母顺序清库存。
+`LoveBrainViewModel` 也仍是 facade：§5.2 第 6 步"调用点迁完后删除"远没到——
+VM 还有一百多个公开成员、十几个命令式方法（`generate`/`nextRound`/`copyScheme`/`recordActualSentMessage`…）
+没有对应的 store intent，硬搬会把 `SecurePrefs`、coordinator、engine 全拖进 store 的端口里
+（与 catalog 写侧同一种"宽端口"陷阱）。
