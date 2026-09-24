@@ -43,7 +43,16 @@ class PackageDependencyTest {
             "android.", "androidx.", "com.lovebrain.app.data.",
             "com.lovebrain.app.ui.", "com.lovebrain.app.viewmodel."
         ),
-        "viewmodel" to listOf("java.io.File")
+        "viewmodel" to listOf("java.io.File"),
+        // §5.1 第一层：core 不知道数据层、容器与 Android 侧的具体东西，否则"设计系统"
+        // 就变成另一坨业务代码的附属品。
+        // 一条登记过的欠账（别藏）：core.designsystem.LbAsyncState 现在 import
+        // com.lovebrain.app.ui.theme.* 拿 token——token 还住在 ui 下面。等 theme 整体迁进
+        // core/designsystem，这里要再加一条前缀 "com.lovebrain.app.ui."。
+        "core" to listOf(
+            "android.", "java.io.File", "org.koin.",
+            "com.lovebrain.app.data.", "com.lovebrain.app.viewmodel.", "com.lovebrain.app.feature."
+        )
     )
 
     /**

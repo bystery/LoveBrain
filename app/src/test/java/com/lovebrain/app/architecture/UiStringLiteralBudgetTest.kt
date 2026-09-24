@@ -83,7 +83,7 @@ class UiStringLiteralBudgetTest {
      * 或者干脆把正则改窄回去拿个好看的数。棘轮照旧：只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 254,
+        Kind.TEXT to 252,
         Kind.DESC to 10
     )
 

@@ -44,9 +44,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.ScreenAction
+import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.model.FeedbackCase
 import com.lovebrain.app.model.FeedbackCategory
 import com.lovebrain.app.ui.panel.rememberPressScale
@@ -236,141 +241,102 @@ fun FeedbackCasesScreen(
                 ) { exportFormat = "json" }
             }
 
-            // 内容区
-            when {
-                isLoading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = Primary)
+            // 内容区：四态只判一次、版式只有一套。判定顺序与替换前逐字相同：
+            // Loading > Error > Empty > Content——原来三个分支各自画一套居中文版式，
+            // 于是"空的时候长什么样"每页一个答案。
+            val screenState: ScreenState<List<FeedbackCase>> = when {
+                isLoading -> ScreenState.Loading
+                loadError != null -> ScreenState.Error(
+                    message = loadError.orEmpty(),
+                    retry = ScreenAction(stringResource(R.string.feedback_retry)) {
+                        scope.launch { viewModel.loadFeedbackCases() }
                     }
-                }
-                loadError != null -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                loadError.orEmpty(),
-                                style = AppTypography.bodyMedium,
-                                color = TextHint
-                            )
-                            Spacer(Modifier.padding(top = Spacing.md))
-                            val (retryInteraction, retryScale) = rememberPressScale(0.96f, "retryLoad")
-                            Box(
-                                modifier = Modifier
-                                    .graphicsLayer { scaleX = retryScale; scaleY = retryScale }
-                                    .clip(LoveBrainShape.md)
-                                    .background(Primary, LoveBrainShape.md)
-                                    .clickable(
-                                        interactionSource = retryInteraction,
-                                        indication = null,
-                                        onClick = {
-                                        scope.launch { viewModel.loadFeedbackCases() }
+                )
+                filtered.isEmpty() -> ScreenState.Empty(stringResource(R.string.feedback_empty_hint))
+                else -> ScreenState.Content(filtered)
+            }
+            if (screenState is ScreenState.Content) {
+                val casesToShow = screenState.value
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                        start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.xl
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.sm)
+                ) {
+                    // 使用 stable key
+                    items(casesToShow, key = { it.caseId }) { c ->
+                        val isExpanded = expandedCaseId == c.caseId
+                        Card(
+                            shape = LoveBrainShape.md,
+                            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    expandedCaseId = if (isExpanded) null else c.caseId
+                                }
+                        ) {
+                            Column(modifier = Modifier.padding(Spacing.md)) {
+                                Text(
+                                    "【${c.categories.joinToString(", ") { categoryDisplayName(it) }}】 ${c.reasons.joinToString(", ")}",
+                                    style = AppTypography.labelMedium,
+                                    color = PrimaryDark,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Spacer(Modifier.height(Spacing.xs))
+                                Text(
+                                    if (isExpanded) c.candidateReply else "${c.candidateReply.take(80)}${if (c.candidateReply.length > 80) "..." else ""}",
+                                    style = AppTypography.bodySmall,
+                                    color = TextSecondary
+                                )
+                                if (c.userNote.isNotBlank()) {
+                                    Text("补充：${c.userNote}", style = AppTypography.labelSmall, color = TextHint)
+                                }
+                                Text(
+                                    "${c.timestamp} · ${c.modelId.ifBlank { "未知模型" }} · ${statusDisplayName(c.status)}",
+                                    style = AppTypography.labelSmall,
+                                    color = TextHint
+                                )
+                                if (isExpanded) {
+                                    Spacer(Modifier.height(Spacing.sm))
+                                    if (c.betterVersion.isNotBlank()) {
+                                        Text("期望版本：${c.betterVersion}", style = AppTypography.labelSmall, color = Primary)
                                     }
-                                    )
-                                    .padding(horizontal = Spacing.xl, vertical = Spacing.md),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text("重试", color = Color.White, style = AppTypography.labelLarge)
-                            }
-                        }
-                    }
-                }
-                filtered.isEmpty() -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            "暂无反馈案例。点踩后会自动记录。",
-                            style = AppTypography.bodyMedium,
-                            color = TextHint
-                        )
-                    }
-                }
-                else -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                            start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.xl
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(Spacing.sm)
-                    ) {
-                        // 使用 stable key
-                        items(filtered, key = { it.caseId }) { c ->
-                            val isExpanded = expandedCaseId == c.caseId
-                            Card(
-                                shape = LoveBrainShape.md,
-                                colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        expandedCaseId = if (isExpanded) null else c.caseId
+                                    if (c.ideaHint.isNotBlank()) {
+                                        Text("本轮想法：${c.ideaHint}", style = AppTypography.labelSmall, color = TextSecondary)
                                     }
-                            ) {
-                                Column(modifier = Modifier.padding(Spacing.md)) {
-                                    Text(
-                                        "【${c.categories.joinToString(", ") { categoryDisplayName(it) }}】 ${c.reasons.joinToString(", ")}",
-                                        style = AppTypography.labelMedium,
-                                        color = PrimaryDark,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
-                                    Spacer(Modifier.height(Spacing.xs))
-                                    Text(
-                                        if (isExpanded) c.candidateReply else "${c.candidateReply.take(80)}${if (c.candidateReply.length > 80) "..." else ""}",
-                                        style = AppTypography.bodySmall,
-                                        color = TextSecondary
-                                    )
-                                    if (c.userNote.isNotBlank()) {
-                                        Text("补充：${c.userNote}", style = AppTypography.labelSmall, color = TextHint)
+                                    if (c.intentText.isNotBlank()) {
+                                        Text("意图：${c.intentText}", style = AppTypography.labelSmall, color = TextSecondary)
                                     }
-                                    Text(
-                                        "${c.timestamp} · ${c.modelId.ifBlank { "未知模型" }} · ${statusDisplayName(c.status)}",
-                                        style = AppTypography.labelSmall,
-                                        color = TextHint
-                                    )
-                                    if (isExpanded) {
-                                        Spacer(Modifier.height(Spacing.sm))
-                                        if (c.betterVersion.isNotBlank()) {
-                                            Text("期望版本：${c.betterVersion}", style = AppTypography.labelSmall, color = Primary)
+                                    if (c.contextMode.isNotBlank()) {
+                                        Text("上下文模式：${c.contextMode}", style = AppTypography.labelSmall, color = TextSecondary)
+                                    }
+                                    if (c.dialogueSnapshot.isNotEmpty()) {
+                                        Text("真实对话：", style = AppTypography.labelSmall, color = TextSecondary, fontWeight = FontWeight.SemiBold)
+                                        c.dialogueSnapshot.forEach { msg ->
+                                            Text(
+                                                "  [${if (msg.speaker == "PARTNER") "对方" else "我"}] ${msg.text}",
+                                                style = AppTypography.labelSmall,
+                                                color = TextSecondary
+                                            )
                                         }
-                                        if (c.ideaHint.isNotBlank()) {
-                                            Text("本轮想法：${c.ideaHint}", style = AppTypography.labelSmall, color = TextSecondary)
-                                        }
-                                        if (c.intentText.isNotBlank()) {
-                                            Text("意图：${c.intentText}", style = AppTypography.labelSmall, color = TextSecondary)
-                                        }
-                                        if (c.contextMode.isNotBlank()) {
-                                            Text("上下文模式：${c.contextMode}", style = AppTypography.labelSmall, color = TextSecondary)
-                                        }
-                                        if (c.dialogueSnapshot.isNotEmpty()) {
-                                            Text("真实对话：", style = AppTypography.labelSmall, color = TextSecondary, fontWeight = FontWeight.SemiBold)
-                                            c.dialogueSnapshot.forEach { msg ->
-                                                Text(
-                                                    "  [${if (msg.speaker == "PARTNER") "对方" else "我"}] ${msg.text}",
-                                                    style = AppTypography.labelSmall,
-                                                    color = TextSecondary
-                                                )
-                                            }
-                                        }
-                                        if (c.memoryRefs.isNotEmpty()) {
-                                            Text("记忆引用：${c.memoryRefs.joinToString(", ")}", style = AppTypography.labelSmall, color = TextSecondary)
-                                        }
-                                        if (c.appVersion.isNotBlank()) {
-                                            Text("版本：${c.appVersion} (${c.buildType})", style = AppTypography.labelSmall, color = TextHint)
-                                        }
-                                        if (c.promptTokens > 0 || c.completionTokens > 0) {
-                                            Text("Token：prompt=${c.promptTokens}, completion=${c.completionTokens}", style = AppTypography.labelSmall, color = TextHint)
-                                        }
+                                    }
+                                    if (c.memoryRefs.isNotEmpty()) {
+                                        Text("记忆引用：${c.memoryRefs.joinToString(", ")}", style = AppTypography.labelSmall, color = TextSecondary)
+                                    }
+                                    if (c.appVersion.isNotBlank()) {
+                                        Text("版本：${c.appVersion} (${c.buildType})", style = AppTypography.labelSmall, color = TextHint)
+                                    }
+                                    if (c.promptTokens > 0 || c.completionTokens > 0) {
+                                        Text("Token：prompt=${c.promptTokens}, completion=${c.completionTokens}", style = AppTypography.labelSmall, color = TextHint)
                                     }
                                 }
                             }
                         }
                     }
                 }
+            } else {
+                LbAsyncState(screenState) { }
             }
         }
 
