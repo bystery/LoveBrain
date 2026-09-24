@@ -88,6 +88,9 @@ versionName = "1.4.0-rc1"
             // JVM 单测放行 android.util.Log 等框架调用（返回默认值不抛异常）：
             // L.* 直调 Log，Linux CI 上删除路径触发未 mock 的 Log → RuntimeException（v1.1.0 CI 实测）
             isReturnDefaultValues = true
+            // Robolectric（§6.5 / P1-02）要读合并后的 manifest 与资源才能组合 Compose 树，
+            // 没有这一行 createComposeRule() 在 JVM 上直接起不来。
+            isIncludeAndroidResources = true
         }
     }
     composeOptions {
@@ -150,6 +153,17 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.24")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
     testImplementation("io.mockk:mockk:1.13.11")
+
+    // §6.5 + P1-02：在 JVM 上真跑 Compose 语义树。
+    // 为什么要在 unitTest 里再来一条 UI 测试通道：instrumentation 只在 CI 的 emulator 上跑，
+    // 本机没有 system image → "48dp / TalkBack 属性"这类断言在本机永远是"没测过"，
+    // 而复核 §9 第 4 条禁止用源码 grep 顶替它。Robolectric 让同一批断言在 CI 之前就能红。
+    testImplementation(platform(composeBom))
+    testImplementation("org.robolectric:robolectric:4.14.1")
+    testImplementation("androidx.test:core:1.6.1")
+    testImplementation("androidx.test.ext:junit:1.2.1")
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    testImplementation("androidx.compose.ui:ui-test-manifest")
 
     // P1-5: Compose UI interaction test（需要 emulator）
     androidTestImplementation(platform(composeBom))
