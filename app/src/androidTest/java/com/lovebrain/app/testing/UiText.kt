@@ -80,20 +80,4 @@ object UiText {
                 .replace(Regex.escape("%2\$d"), """\d+""")
         )
     }
-
-    /**
-     * 停止棒文案里可当"恒定锚点"的字面片段（模板最后一个占位符之后的部分）。
-     *
-     * 只为兼容一处旧写法：Compose 1.6.8 的 ui-test 没有正则版 finder，得先用一段固定
-     * 文字把节点捞出来、再对整串做正则校验。新代码请直接用 GENERATE_STOP_TEST_TAG 定位。
-     */
-    fun generatingBarAnchor(): String {
-        val template = current(R.string.panel_analysing_with_seconds)
-        val tail = template.substringAfterLast("%2\$d")
-            .ifBlank { template.substringBefore("%1\$s") }
-        if (tail.isBlank()) {
-            throw AssertionError("模板「$template」里找不到任何可定位的字面片段")
-        }
-        return tail
-    }
 }
