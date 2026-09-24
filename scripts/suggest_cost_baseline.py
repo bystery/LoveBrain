@@ -103,9 +103,23 @@ def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+CR, LF = bytes([13]), bytes([10])
+
+
+def canon_lf(data: bytes) -> bytes:
+    """按 LF 归一：换行不是内容（CRLF 工作树与 LF 检出必须得到同一个指纹）"""
+    return data.replace(CR + LF, LF)
+
+
 def sha256_file(path: str) -> str:
+    """内容指纹（文本输入先按 LF 归一）。
+
+    `.gitattributes` 是 `* text=auto`：同一份夹具/资产在 Windows 工作树里是 CRLF、
+    在 Linux 检出里是 LF。跟着原始字节算的锁只能在一台机器上对上——锦囊 self-test 在
+    CI 上就是这么红的。换行不是内容，所以摘要前归一。
+    """
     with open(path, "rb") as fh:
-        return sha256_bytes(fh.read())
+        return sha256_bytes(canon_lf(fh.read()))
 
 
 def read_text(path: str, what: str) -> str:

@@ -125,8 +125,8 @@ mkdir -p "$OUT_DIR"
 {
   printf 'generated_at_utc=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
   printf 'git_commit=%s\n' "$COMMIT"
-  printf 'suggest_md_sha256=%s\n' "$(sha256_of "$SCRIPT_DIR/../app/src/main/assets/engine/suggest.md")"
-  printf 'fixture_lock_sha256=%s\n' "$(sha256_of "$SCRIPT_DIR/../benchmarks/suggest-baseline/FIXTURE.lock")"
+  printf 'suggest_md_sha256=%s\n' "$(sha256_of_text "$SCRIPT_DIR/../app/src/main/assets/engine/suggest.md")"
+  printf 'fixture_lock_sha256=%s\n' "$(sha256_of_text "$SCRIPT_DIR/../benchmarks/suggest-baseline/FIXTURE.lock")"
   printf 'requests=%s\n' "$REQUESTS"
   if [ "$DRY_RUN" -eq 1 ]; then
     printf 'mode=dry-run (NO request was sent; every usage/cost field in the jsonl is null)\n'

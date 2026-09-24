@@ -102,6 +102,18 @@ to_native_path() {
   fi
 }
 
+# sha256_of_text — 给"被提交进仓库的文本输入"算内容指纹时用这个。
+#
+# `.gitattributes` 是 `* text=auto`，同一份文本在 Windows 工作树里是 CRLF、在 Linux
+# 检出里是 LF。跟着字节走，锁在本机生成、在 CI 上必然对不上（这已经咬过两次：
+# prompt 资产锁与锦囊夹具锁）。换行不是内容，所以摘要前先归一成 LF。
+# 二进制产物（APK 等）必须继续用 sha256_of——那个要的就是字节级身份。
+sha256_of_text() {
+  local f="$1"
+  require_file "$f" "text input for hashing"
+  tr -d '\r' <"$f" | sha256sum | awk '{print $1}'
+}
+
 sha256_of() {
   local f="$1"
   require_file "$f" "artifact for hashing"
