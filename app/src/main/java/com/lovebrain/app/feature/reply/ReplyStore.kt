@@ -36,6 +36,15 @@ class ReplyStore(
     /** 相邻增量合并的节拍。测试要能改小，否则每测一次节流都要真等 50ms。 */
     private val flushIntervalMs: Long = DEFAULT_FLUSH_INTERVAL_MS,
     /**
+     * 被 reducer 拒掉的事件（迟到 / 重复 / 无变化）的唯一出口。
+     *
+     * 搬家之前 `applyReplyEvent` 就是靠"reducer 原样返回同一个对象"这个信号写一条被拒日志；
+     * 归约搬进 store 之后这个信号没地方接了。日志由调用方写，store 自己仍然不知道有日志这回事。
+     * 走这条而不是"accept 返回布尔"：增量是先合并进缓冲、下一次节拍才归约的，
+     * 一个迟到 chunk 在 `accept` 那一刻还没被判定，返回值会漏掉真正的拒绝点。
+     */
+    private val onStaleEvent: (ReplyEvent) -> Unit = {},
+    /**
      * 归约成功后的副作用出口。放最后是为了让调用方能写尾随 lambda；
      * 它是**同步**调用的，理由见类 KDoc。
      */
@@ -157,13 +166,16 @@ class ReplyStore(
     /**
      * 归约的唯一执行点。
      *
-     * 被拒的事件（reducer 返回同一个对象）不发布 Effect，因此迟到的旧请求
-     * 不可能递增轮次、不可能写历史、也不可能改计数。
+     * 被拒的事件（reducer 返回同一个对象）不发布 Effect，因此迟到的旧请求不可能递增轮次、
+     * 不可能写历史、也不可能改计数；它只被报给 [onStaleEvent] 留一条线索。
      */
     private fun reduce(event: ReplyEvent) {
         val before = _ui.value
         val after = ReplyReducer.reduce(before, event)
-        if (after === before) return
+        if (after === before) {
+            onStaleEvent(event)
+            return
+        }
         _ui.value = after
         if (after.panelState != before.panelState) onEffect(Effect.PanelStateChanged(after.panelState))
         val result = after.result

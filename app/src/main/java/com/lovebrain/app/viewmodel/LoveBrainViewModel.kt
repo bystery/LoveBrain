@@ -148,7 +148,11 @@ class LoveBrainViewModel(
         scope = viewModelScope,
         // 这里不能引用下面那个 STREAMING_FLUSH_INTERVAL_MS：Kotlin 的属性是按声明顺序
         // 初始化的，前面的属性读后面的 val 会拿到 0，合并定时器就会退化成 delay(0) 空转。
-        flushIntervalMs = ReplyStore.DEFAULT_FLUSH_INTERVAL_MS
+        flushIntervalMs = ReplyStore.DEFAULT_FLUSH_INTERVAL_MS,
+        // 搬家时被弄丢的那条被拒日志回到 VM 里写：store 只交出"这个事件不归它"的信号
+        onStaleEvent = { event ->
+            L.w("reply event ${event::class.simpleName} rejected (stale requestId ${event.requestId.take(8)})")
+        }
     ) { effect -> onReplyEffect(effect) }
 
     /** 只读视图：VM 内部读状态、往外 map 都走这里，写只能进 replyStore.accept */
@@ -474,7 +478,7 @@ class LoveBrainViewModel(
      */
     private val suggestStore = com.lovebrain.app.feature.suggest.SuggestStore(
         isCurrentRequest = { requestId ->
-            ownsOperation(ForegroundOperationCoordinator.OperationType.SUGGEST, requestId)
+            ownsAndLog(ForegroundOperationCoordinator.OperationType.SUGGEST, requestId, "suggest event")
         }
     ) { effect -> onSuggestEffect(effect) }
 
@@ -509,7 +513,7 @@ class LoveBrainViewModel(
      */
     private val proactiveStore = com.lovebrain.app.feature.proactive.ProactiveStore(
         isCurrentRequest = { requestId ->
-            ownsOperation(ForegroundOperationCoordinator.OperationType.PROACTIVE, requestId)
+            ownsAndLog(ForegroundOperationCoordinator.OperationType.PROACTIVE, requestId, "proactive event")
         }
     ) { effect -> onProactiveEffect(effect) }
 
@@ -710,11 +714,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     private val counselingStore = com.lovebrain.app.feature.counseling.CounselingStore(
         scope = viewModelScope,
         isCurrentRequest = { requestId ->
-            val owns = ownsOperation(ForegroundOperationCoordinator.OperationType.COUNSELING, requestId)
-            // 归约搬进 store 时这道闸只剩布尔判断，日志差点跟着丢掉；在这唯一的注入点补回来，
-            // store 仍然不知道有日志这回事。
-            if (!owns) L.w("counseling event rejected (stale requestId=$requestId)")
-            owns
+            // 归约搬进 store 时这道闸只剩布尔判断，日志差点跟着丢掉；在唯一的注入点补回来
+            ownsAndLog(ForegroundOperationCoordinator.OperationType.COUNSELING, requestId, "counseling event")
         },
         // STREAMING_FLUSH_INTERVAL_MS 在本文件更靠前的位置声明（grep 得到），
         // 所以这里读到的是真值不是 0——replyStore 那处就因为这个顺序问题只能用自己的默认常量。
@@ -2063,6 +2064,21 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         requestId: String
     ): Boolean = operationCoordinator.current(type)?.requestId == requestId
 
+    /**
+     * 租约核对 + 一条被拒日志。
+     *
+     * 五条链的归属核对都以闭包注进 store，store 只拿到布尔；日志归本类写，
+     * 这样 store 依旧不知道有日志这回事，而搬家时被弄丢的
+     * `… rejected (stale requestId)` 也不会再随着下一次搬迁消失。
+     */
+    private fun ownsAndLog(
+        type: ForegroundOperationCoordinator.OperationType,
+        requestId: String,
+        what: String
+    ): Boolean = ownsOperation(type, requestId).also {
+        if (!it) L.w("$what rejected (stale requestId=$requestId, another $type owns the slot)")
+    }
+
     // --- 谈心 ---
 
     private fun applyCounselingEvent(event: CounselingEvent) {
@@ -2396,9 +2412,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      */
     private val rewriteStore = com.lovebrain.app.feature.rewrite.RewriteStore(
         isCurrentRequest = { requestId ->
-            val owns = ownsOperation(ForegroundOperationCoordinator.OperationType.REWRITE, requestId)
-            if (!owns) L.w("rewrite result rejected (stale requestId=$requestId)")
-            owns
+            ownsAndLog(ForegroundOperationCoordinator.OperationType.REWRITE, requestId, "rewrite result")
         },
         isRoundAlive = { contextId -> rewriteContextIdOfNow() == contextId }
     ) { effect -> onRewriteEffect(effect) }

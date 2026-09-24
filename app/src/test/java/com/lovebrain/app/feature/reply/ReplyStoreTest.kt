@@ -157,6 +157,33 @@ class ReplyStoreTest {
         }
     }
 
+    /**
+     * 被拒事件从 `onStaleEvent` 出去，成功的不进这个出口。
+     *
+     * 这条是给"搬家时差点丢掉的观测"上的锁：VM 以前靠 reducer 原样返回同一个对象来写
+     * `… rejected (stale requestId)`，归约搬进 store 之后那个信号在类外面看不见。
+     * 关键点是**增量在 accept 时还没被判定**（它在下一个节拍才归约），
+     * 所以拒绝发生在 flush，而不是投事件那一刻。
+     */
+    @Test
+    fun `a rejected event is reported once, at the moment it is actually judged`() = runTest {
+        val stale = mutableListOf<ReplyEvent>()
+        val store = ReplyStore(
+            scope = this, flushIntervalMs = 50L, onStaleEvent = { stale.add(it) }
+        )
+        store.accept(ReplyStore.Intent.Apply(ReplyRequested("new")))
+        store.accept(ReplyStore.Intent.Apply(ReplyChunk("old", "迟到半句")))
+        assertTrue("收进缓冲时不该抢先判定", stale.isEmpty())
+
+        advanceTimeBy(60L)
+        runCurrent()
+        assertEquals("flush 时才被判拒", listOf("old"), stale.map { it.requestId })
+
+        stale.clear()
+        store.accept(ReplyStore.Intent.Apply(ReplyCompleted("new", success())))
+        assertEquals("归约成功的事件不进这个出口", emptyList<String>(), stale.map { it.requestId })
+    }
+
     /** 原地替换结果（改写 / undo / 版本回退）不伪装成请求事件，但仍然只能走这一个入口 */
     @Test
     fun `replacing a result in place goes through the same single writer`() = runTest {
