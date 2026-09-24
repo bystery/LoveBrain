@@ -1,9 +1,10 @@
-# LoveBrain 交接：下一窗口开工单（2026-09-25，CI 首跑之后那两格做完）
+# LoveBrain 交接：下一窗口开工单（2026-09-25，§5.3 拆到 6/7 之后）
 
 > 要做的事仍只有一件：**严格按 `LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md` 继续**。
 > 账本：`LoveBrain_Guide_Item_by_Item_Verification_2026-09-24.md` 末尾「追加：接手自 `3d92488` 的那一轮」
 > （§10.0–§10.5，三态标注）· 过程记录：`LoveBrain_Three_Phase_Execution_Log_c0ff041_guide_2026-09-24.md`
 > 上一份开工单：`LoveBrain_Handover_Next_Window_2026-09-24.md`（它的 §2.1/§2.2 已由本轮做完，其余仍有效）
+> 账本里「追加三」那一节（§13）是最近这一轮（画像格），先看它再读本文件。
 
 ## 0. 一句话现状
 
@@ -25,6 +26,22 @@
 
 `verify` 与 `ui-test` 会不会因此转绿，**只有推上去跑同一 SHA 才知道**——本机没有 system image。
 
+## 0.1 最近一轮（画像格）的增量，接着上面读
+
+HEAD 现在是 `b6873cf`，仍未推（条数现算：`git rev-list --count 3d92488..HEAD`）。这一轮三笔：
+
+- `a07b285` **读路径的最后一批裸路径**：`getCurrentStage`/`getTurnCount`/`readIntent`/`saveIntent`
+  四格红先（修前实测漏进来的值：stage「分手冷却期」、turnCount 99、意图「库外的私密意图」、
+  `saveIntent` 把库外 revision 推算成 7 返回）。`writeVectorUnlocked` 那一处黑盒量不到，
+  改由**条数棘轮**钉；但它带出一条真红：旧布局的库读得到 warmth 却**静默不写**。
+- `e7b8fdc` **还上一轮的债**：工单编号门禁实测当时是红的（见 §2 第 6 条）。
+- `b6873cf` **§5.3 第六格 `KnowledgeProfileStore`**：画像正文、内容修订、阶段读写、五维向量、
+  warmth 里的阶段标签行归一个所有者。拆掉的"以前有两份"：五维解析有**三份**、标签行改写有**两份**、
+  白名单拒绝措辞有**四处**。§5.3 → **6/7**。
+
+下面 §1 的基线数、§4 的顺序、§5 的提交表、§6 的坑表都已按这一轮更新；
+上一轮写的 §0/§2/§3 仍然有效。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -33,22 +50,25 @@ gh run list --limit 3
 # 若已推送，读同一 SHA 的三项与产物：
 gh run view <run-id> --json jobs --jq '.jobs[] | .name + " | " + (.conclusion // "?") + " | " + (.steps | map(select(.conclusion=="failure") | .name) | join(" ; "))'
 gh run download <run-id> -D _temp/ci-<run-id>
-bash scripts/test_check_lint_budget.sh            # lint 判据自测，本机 27 格
+PYTHON=python bash scripts/test_check_lint_budget.sh  # 27 格；不给 PYTHON=python 会得到 CANNOT-VERIFY(2)
 PYTHON=python bash scripts/check_lint_budget.sh   # Windows 上必须给 PYTHON=python
 PYTHON=python bash scripts/package_deps_report.sh --count   # 不给就 exit 49（缺探针，见 §6 第 21 条）
+python scripts/strip_ticket_ids.py --check        # 工单编号（只扫生产代码）
+git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine; echo "RC=$?"
+PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # 少这个路径会撞 unbound variable
+./gradlew :app:lintDebug --no-daemon; echo "RC=$?"  # 报告不重生成就别信 lint 的数，见 §6 第 28 条
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
 ```
 
-本轮实测基线（到 `a0fef45`）：**1113 单测 / 140 套件 / 0 失败 / 0 错误 / 0 跳过**
-（最旧 XML 02:32:22，与本次日志时间并排比过）；lint 报告 70 条 / 15 规则，其中
-**进预算 69 条 / 14 规则**（账本已 `UnusedResources 34→33`）、advisory 1 条；
-`:app:compileDebugAndroidTestKotlin` rc=0；prompt 零 diff + lock `6dcde732…`；
-工单编号 PASS；跨层 **6** 条（与基线同，没长）。
-`KnowledgeRepository` 1941 → **1878** 行、`LoveBrainViewModel` 仍 **2746** 行。
+最近一轮实测基线（到 `b6873cf`）：**1143 单测 / 142 套件 / 0 失败 / 0 错误 / 0 跳过**
+（最旧 XML 03:27:32，日志起点 03:24:40，并排比过）；lint 报告**重新生成后**（03:32）70 条 / 15 规则，
+其中 **进预算 69 条 / 14 规则**、advisory 1 条；`:app:compileDebugAndroidTestKotlin` rc=0；
+prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（与基线同，没长）。
+`KnowledgeRepository` 1941 → 1878 → **1844** 行、`LoveBrainViewModel` 仍 **2746** 行。
 **大文件计数已变：>500 行从指导书的 18 个降到 17 个**（跨下来的是 `FeedbackCasesScreen.kt`，
 `e359930` 那次 534→500；没有一个新跨上去），>800 仍 10 个——别再把 18/10 当现状抄。
 
-## 2. 上一份交接单里被本轮证伪的五条（别再当依据）
+## 2. 被证伪的六条（前两批 + 最新一条，别再当依据）
 
 1. 「远端已经是 `3d92488`，没有未推送提交」——现在远端仍是 `3d92488`，本地领先一截都没推。
    **这里不写条数**：文档提交自己也算一笔，任何写死的数在写完那一刻就错一位。
@@ -63,6 +83,14 @@ PYTHON=python bash scripts/package_deps_report.sh --count   # 不给就 exit 49�
 5. 「P0-01/§3.1 的读路径已经全部过 canonical」——**没有**：无锁快速读自己拼 `File(File(root,kb),path)`。
    本轮 `adbf5f3` 归到一个所有者，并修掉一条被同行注释吞掉、因此从未生效的
    `KbRelativePath` 反斜杠校验（`understand\me.md` 在 Windows 上实测能解析到库目录外）。
+6. **「工单编号 PASS」（本文 §1 原来那句）**——**最新一轮实跑是 rc=1、命中 4 处**，其中 3 处是
+   上一轮往 `KnowledgeDocumentStore`/`KnowledgeRepository` 注释里写的 `P0-03`。那句是把上上轮的数
+   抄了下来，属于"自述当取证"。`e7b8fdc` 已把四处清成不带编号的指法，`--check` 回到 rc=0，
+   并用脚本自带的 `TOKEN_RE` 独立复扫生产注释 → 0 命中。**教训：门禁要么当次跑，要么标"沿用上轮未复验"，
+   不许写 PASS。**
+   顺带把上一条结干净：`a07b285` 之后"把内容返回给调用方"的那批读已全部过守门；
+   仍剩 **4 处**在 `applyProfileUpdateAtomically` 的备份快照里，由 `StorageBoundaryOwnershipTest`
+   的条数棘轮钉着（登记 4，只许降），不是"已经全做完了"。
 
 ## 3. 只剩"推送 + 读 CI"能闭的（本轮新留下）
 
@@ -79,36 +107,41 @@ PYTHON=python bash scripts/package_deps_report.sh --count   # 不给就 exit 49�
 
 ## 4. 下一格建议顺序（本机就能做的那批，B 类）
 
-1. **§5.3 剩：catalog 写侧 + profile**（memory 与 document 已落地）。
-   - **catalog 写侧**（`create/delete/setActive/updateDisplayName/ensureInitial`）我试过又退回：
-     `create` 要向仓库要 encode/模板写/列目录/事务改 meta/删备份…接口会长到约十个成员，
-     那是拿"拆类"的名义造一个违反 ISP 的宽端口。要做就先切 `setActive`+`updateDisplayName`
-     这一对（它们只要 `writeTransaction` + `updateMeta`），把 `create`/`ensureInitial` 留作
-     "初始化"这一格单独判。**别为了进度把宽接口当成果。**
-   - **profile**（画像/温度/阶段/向量）先啃 `getCurrentStage/updateStage`、向量读写这一对；
-     `applyProfileUpdateAtomically`（160+ 行）不要用来开第一刀。
-   形状照 `adbf5f3`（文档格）与 `a0fef45`（记忆格）：窄接口 + 五样能力以内，
-   **不 new Mutex、不搬 CoroutineScope、不自家落盘**——现在有四家闸分别拦
-   （`SingleOwnerContractTest`、`KnowledgeMigratorLegacyTest` 的锁棘轮、
-   `StorageBoundaryOwnershipTest` 的所有权棘轮、`ReadOnlySchemaWriteGateTest` 的 24 入口遍历）。
-2. **round 那一格重判过，别重复劳动**：`RoundCommitJournal.kt`（`domain/`，457 行，Koin 注册）
+1. **§5.3 只剩 archive 那一格**（`KnowledgeArchiveService`：topic rotate / import / export / backup）。
+   现状：backup 早有独立类（`KnowledgeBackupService`），`KbArchiveTransfer` 管导入暂存区，
+   但 `rotateTopic` 与它的幂等状态机仍在仓库里，`applyProfileUpdateAtomically` 的
+   **4 处裸路径备份快照**也在那一带。建议切法：
+   先 `rotateTopic` 的"读状态 → 追加归档 → 计数 +1 → 清源"四步事务化（条数棘轮从 4 往下减就是它的进度表），
+   再判 `applyProfileUpdateAtomically` 要不要跟着进来。**别为了进度把宽接口当成果**
+   （catalog 写侧那次的判断仍然有效，见下面第 2 条）。
+2. **catalog 写侧**（`create/delete/setActive/updateDisplayName/ensureInitial`）我试过又退回：
+   `create` 要向仓库要 encode/模板写/列目录/事务改 meta/删备份…接口会长到约十个成员，
+   那是拿"拆类"的名义造一个违反 ISP 的宽端口。要做就先切 `setActive`+`updateDisplayName`
+   这一对（它们只要 `writeMetaTransaction` + `updateMeta`）。
+3. **round 那一格重判过，别重复劳动**：`RoundCommitJournal.kt`（`domain/`，457 行，Koin 注册）
    早就是独立所有者，`KnowledgeRepository` 里一条 journal 逻辑都没有。
    上一份账记"未做"是错的（错在把"从来不在仓库里"当成"没拆出来"）。
    `TopicRecorder.kt:56` 那个 `?: RoundCommitJournal(knowledgeRepo)` 兜底构造是另一件事，
    与 P1-04 的双注册有关，要动就单独一格。
-2. **`FloatingService` 那颗输入行的可点节点没有标签**——逐点数入口时量到：带 `EditableText`、
+4. **`FloatingService` 那颗输入行的可点节点没有标签**——逐点数入口时量到：带 `EditableText`、
    无文案无 `contentDescription`，读屏念不出这是什么输入框（§6.5 第②栏）。改生产码，
    测试形状现成（`ComposerAddButtonGatingTest` 已经在数这些节点，数到 5 个）。
-3. **§6.3 知识库页接四态**：范例已有两份（反馈页 `e359930`、供应商页 `d902514`→`80bc78e`）。
-4. **§5.1 `core/testing` 归位**：本轮新增 `app/src/androidTest/…/testing/UiText.kt`，
+5. **§6.3 知识库页接四态**：范例已有两份（反馈页 `e359930`、供应商页 `d902514`→`80bc78e`）。
+6. **§5.1 `core/testing` 归位**：本轮新增 `app/src/androidTest/…/testing/UiText.kt`，
    于是同一判据的夹具文本在两个测试源集各存一份（`ReplyPayloadShapeForUiFixtureTest` ↔
    `ResultAreaInteractionTest`；`KnowledgeDocumentStoreTest` ↔ 生产文档格），
    改一处必须改两处——这就是 §5.1 那张目录图要解决的。
-5. §6.1 剩 9 颗 `Lb*` 组件 + token 从 `ui.theme` 迁进 `core/designsystem`。
-6. §6.5 截图工具仍**故意没接**：理由未变（§6.1–§6.4 铺开前拍的 baseline 会整批作废）。
-   注意本轮已把"CI 交不出截图"这条产物洞补上（`e657778`），与"接 baseline 工具"是两件事。
+7. §6.1 剩 9 颗 `Lb*` 组件 + token 从 `ui.theme` 迁进 `core/designsystem`。
+8. §6.5 截图工具仍**故意没接**：理由未变（§6.1–§6.4 铺开前拍的 baseline 会整批作废）。
+   注意 `e657778` 已把"CI 交不出截图"这条产物洞补上，与"接 baseline 工具"是两件事。
 
-## 5. 别重复劳动：本轮做的 11 笔
+拆格的形状照 `adbf5f3`（文档）、`a0fef45`（记忆）、`b6873cf`（画像）三格：窄接口（≤6 个成员）、
+**不 new Mutex、不搬 CoroutineScope、不自家落盘**。现在有五家闸分别拦
+（`SingleOwnerContractTest`、`KnowledgeMigratorLegacyTest` 的锁棘轮、
+`StorageBoundaryOwnershipTest` 的所有权 + 条数 + 零能力三组、`ReadOnlySchemaWriteGateTest` 的 24 入口遍历、
+`ProfileReadBoundaryTest` 的读边界）。
+
+## 5. 别重复劳动：这两轮做的 13 笔
 
 | 提交 | 内容 |
 |---|---|
@@ -122,13 +155,16 @@ PYTHON=python bash scripts/package_deps_report.sh --count   # 不给就 exit 49�
 | `adbf5f3` | §5.3 第四格 `KnowledgeDocumentStore`（安全路径 + 版本化读写一个所有者）；修掉一条**从未生效**的 `KbRelativePath` 反斜杠校验；新增 `StorageBoundaryOwnershipTest` 所有权棘轮 |
 | `297d1db` | 读路径第二个漏口：公开的 `readCorrections` 能把库外的纠正记录读进来（先红后修）；顺手清掉零调用的 `writeMemoryRevisionUnlocked` |
 | `a0fef45` | §5.3 第五格 `KnowledgeMemoryStore`：revision 单调性两处各写一遍 → 一个所有者；变异回 R07 老写法时当场红 |
+| `a07b285` | 读路径最后一批：`getCurrentStage`/`getTurnCount`/`readIntent`/`saveIntent` 四格红先修好；`archiveOpFile` 删掉；`writeVector` 的旧布局静默不写修好（先红后修）；棘轮加**条数**维度（登记 4，注入第 5 处当场报） |
+| `e7b8fdc` | 工单编号门禁回到 rc=0（还的是上一轮写进生产注释的 3 处编号） |
+| `b6873cf` | §5.3 第六格 `KnowledgeProfileStore`：维度表三处→一处、标签行改写两份→一份、白名单拒绝四处→一处；`ProfileReadBoundaryTest` 9 格 + 格级 20 格，全部注入反例验过红；棘轮新增"后拆的格子零存储能力" |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
 `GENERATE_STOP_TEST_TAG`（生产留的锚点，"文字会变，tag 不会"）。
 **新用例取文案一律走这些，别再抄一份中文字面量。**
 
-## 6. 坑表（本轮新增 5 条，接上一份的 15 条之后）
+## 6. 坑表（本轮新增 6 条，接上一份的 15 条与上轮的 10 条之后）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -153,6 +189,24 @@ PYTHON=python bash scripts/package_deps_report.sh --count   # 不给就 exit 49�
     但规矩写的是"永不删除、只 rename 进 `_temp`"，我按例外处理了自己一次——记下来，别当成先例。
 25. **`sed` 改 Kotlin 时的 `\n` 模式永不命中且退出码 0**（同上一份第 17 条的家族）：改完必须
     `assert 新片段 in text`，别把没动过的文件当"已注入变异"。
+26. **KDoc 里写 glob 会开一个嵌套块注释**：`understand/*.md` 让 `KnowledgeProfileStore.kt` 从那一行
+    往下整格被吞，报 `Unclosed comment` + `Missing '}'`。Kotlin 注释可嵌套，这与上一轮
+    "`//` 吞掉 `KbRelativePath` 的 require"是同一族事故（两轮两次，都在画像/文档这一带）——
+    写文档时别在注释里放 `/*`，宁可写成"me/her/warmth/style 四份"。
+27. **`fun interface` 参数会擦除成 `Function1`**：`writeTransaction(MemoryTx.() -> Unit)` 与
+    `writeTransaction(ProfileTx.() -> Unit)` 是 platform declaration clash，编译器当场拒。
+    我原本注释里写的"参数类型不同所以互不干扰"是错的——名字要分开（`writeMetaTransaction`）。
+28. **`lintReportDebug` 报 UP-TO-DATE 时不重写报告文件**：`lintAnalyze*` 的 partial 结果 03:30 是新的，
+    `app/build/reports/lint-results-debug.xml` 的 mtime 还停在 00:52。想拿"改完代码之后"的 lint 数，
+    先把旧报告移进 `_temp/`（别删）再跑 `:app:lintDebug`，然后**核报告 mtime**，否则报的是几小时前的世界。
+29. **门禁的 PASS 不当次跑就是自述**：见 §2 第 6 条。这条与第 23 条（陈旧 XML）是同一个病的两面——
+    一个是"报告新、结论旧"，一个是"结论根本没跑"。
+30. **Edit/写文件工具会吞掉 `\u0000` 这类转义**：我连着两次写出被截断的 Kotlin 行（`to "x`）。
+    要放特殊字节就用 `Char(0).toString()` 之类构造，写完立刻读回那几行核对。
+31. **变异探针不只测"实现坏了会不会红"，还要测"反例本身对不对"**：我为"修订号把路径喂进摘要"
+    造了两个反例（两段内容对调、同内容放不同路径），把路径盐整段删掉两格**照样绿**——
+    条目数固定 + 顺序固定 + 每条一个分隔符，位置已被区分，塞 NUL 只会多一个字节，构造不出撞号。
+    结论：造不出红反例的性质就别当"已验收益"写进账本，老实降级成"纵深防御"并在注释里写明别改回去。
 
 ## 7. 硬约束（一条没变）
 

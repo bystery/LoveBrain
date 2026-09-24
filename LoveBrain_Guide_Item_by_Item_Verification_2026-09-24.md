@@ -481,3 +481,109 @@ artifacts 齐全才算。本轮只把"本机能够自证"的部分做到能证�
 | androidTest 编译 / lint | rc=0；进预算 **69 条 / 14 规则**不变，新增债 0 |
 | 行数 | `KnowledgeRepository` 1941 → **1878**；新增两格共 296 行。**总量仍在涨**（+233），买的是所有者与两处边界，不是降体量 |
 | §5.3 进度 | **5/7**：migration、archive(backup)、catalog 枚举、document、memory；round 见 §12.1 的重判 |
+
+---
+
+# 追加三：画像格与"读要过守门"这件事的最后一批
+
+提交 `a07b285`（读孔）→ `e7b8fdc`（工单编号还债）→ `b6873cf`（画像格）。§5.3 从 5/7 → **6/7**。
+
+## 13.1 先纠上一轮记错的一条：**工单编号门禁当时是红的**
+
+交接单 §1 与本文 §10 都写着"工单编号 PASS"。本轮实跑 `python scripts/strip_ticket_ids.py --check`
+→ **rc=1，命中 4 处**，其中 3 处是上一轮往 `KnowledgeDocumentStore.kt`（两处）与
+`KnowledgeRepository.kt`（一处）注释里写的 `P0-03`，第 4 处是本轮新写的注释里同一族编号。
+那句 PASS 是沿用上上轮的数，没重跑——属于"自述当取证"。
+
+处理：四处改成不带编号的指法（"复核报告里 P0 那条读路径"），`--check` 回到 **rc=0**，
+并用脚本自带的 `TOKEN_RE` 独立复扫 `app/src/main` 全部注释 → **0 命中**。
+测试代码里的编号指法不动（那条门禁只扫生产代码，保留出处更有用）。
+`e7b8fdc` 单独一笔，因为它还的是上一轮的债，与画像格不是同一个验收目标。
+
+## 13.2 读路径的最后一批裸路径（`a07b285`）
+
+同一把尺（`File(File(knowledgeRoot,` 逐行字面判）量到仓库里还剩 **10 处**，本轮封 6 处：
+
+| 入口 | 修之前实测漏了什么（值来自失败输出） |
+|---|---|
+| `getCurrentStage` | 读到库外那份 kb.json 的 stage：`实到「分手冷却期」` |
+| `getTurnCount` | 读到库外 turnCount：`实到 99`（这个数会进 PromptBuilder 与 TopicRecorder 的 inputRevision） |
+| `readIntent` | 读到库外意图：`实到「库外的私密意图」/ revision=6` |
+| `saveIntent` | 更硬：把库外读到的 revision **+1 当本次保存结果返回**：`实到 revision=7`（应为 1） |
+| `readArchiveOpUnlocked` | rotateTopic 的幂等状态；读错库＝对真库少干活。拼路径的 `archiveOpFile` 一并删掉，读写删三处改用同一个文件名常量 |
+| `writeVectorUnlocked` | 见 §13.3，这一处**不外露** |
+
+四格红先、每格配库内正对照（防止"本来就解析不出来"造成假绿）。
+
+## 13.3 `writeVectorUnlocked`：一处只当防回归，一处真红
+
+"库名带 `..`"那一面黑盒量不到——读到的内容不外露，落盘那一侧本来就拒。
+对应格子（`vectorWriteStillRefusesToTouchAnOutsideLibrary`）在修**之前**跑过，是绿的，
+所以它是防回归，不当本轮证据。本轮真正的证据是形状那一侧：
+`StorageBoundaryOwnershipTest` 新增一条按**条数**登记的规则（文件级所有者相等挡不住同一文件里多一处），
+当前登记 **4 处**（全在 `applyProfileUpdateAtomically` 的备份快照里，那格单独处理），只许降不许升；
+注入第 5 处时实测报 `登记的是 4 处，实际命中 5 处`。
+
+但这一处改动带出一个**测得出的真差别**，而且是修之前才测得出：旧布局（只有 `global/status.md`）的库，
+`readVector` 透过回退一直看得见内容，`writeVectorUnlocked` 走裸路径看不见于是**静默不写**，
+而阶段标签那条用的又是公开读、会写——同一份内容三种宽严。归到守门读之后同一把尺。
+`writingVectorForALegacyLibraryActuallyLands` 用坏实现验过它会红（9 跑 1 红）。
+
+## 13.4 第六格 `KnowledgeProfileStore`（`b6873cf`）
+
+指导书 §5.3 那行的原文是"**画像、温度/阶段、向量**"。这三件现在都在这一格里；
+仓库侧只剩锁 + suspend 外壳 + 转发（1878 → **1844** 行）。搬进去的动机是三条"以前有两份"：
+
+1. 维度表被**三处**各自循环引用（`readVector`、`writeVectorUnlocked`、`readVectorUnlockedFast`），
+   其中"按中文维度名解析数值"那段正则有**两份逐字相同**（`readVector` 与 `readVectorUnlockedFast`），
+   后者还少一条零匹配日志（实测：`git show a07b285:` 里 1192 与 1539 两行一模一样）→
+   现在只剩 `vectorOf` 一处，第三处回到它。（提交信息里我写成"五维解析有三份"，
+   严格说是"表三处、解析两份 + 替换一份"，以这里为准。）
+2. warmth 里阶段标签行的改写规则（变体认法 + 「当前状态」节插入 + "过去曾经是…"）
+   被非事务版与 strict 版各抄 30 行 → 只剩 `rewriteStageLine` 一处，strict 版回来共用。
+3. 九阶段白名单"拒绝时说不说、怎么说"散在四处 → 只剩 `normalizeStage` 一处。
+
+能力接口 `ProfileStorage` 六样（`note / timestamp / read / writeUnlocked / metaOf / writeMetaTransaction`），
+不给 Mutex、不给 `File`、不给第二份落盘。两处实现细节值得记：
+`writeMetaTransaction` 与记忆格的 `writeTransaction` 不能同名——两个 `fun interface` 都擦除成
+`Function1`，JVM 上是 platform declaration clash，我原本注释里写的"参数类型不同所以互不干扰"是错的，
+编译器当场纠正了我。另一处：`profileText` 的 KDoc 里写 `understand/*.md` 会**开一个嵌套块注释**
+（Kotlin 注释可嵌套），整格从那里往下被吞掉，报 `Unclosed comment`。这是两轮之内第二次
+"注释吞掉代码"（上一次是 `KbRelativePath` 的 require 被行注释吞了），下一格考虑给它配一把尺。
+
+## 13.5 两处"探针没打破"的断言——改掉而不是留着当已验
+
+新写的 20 格逐条注入反例。其中两格（"两段内容对调"、"同内容放不同路径"）是想证明
+`contentRevision` 把路径也喂进摘要有用：把路径盐整段删掉，两格**照样绿**——
+条目数固定、顺序固定、每条后面跟一个分隔符，内容里再塞分隔符只会多出一个字节，构造不出撞号。
+所以：断言换成"修订号是内容指纹、不许混进库名"（注入 `M6` 把库名混进去 → 当场红），
+路径盐留在代码里当纵深防御，注释与本文都写明它**不算已验收益**。别把这条改回去，除非先造出真反例。
+
+其余变异：`M2` 丢掉"过去曾经是…" → 3 红；`M3` 去掉空文件守卫 → 1 红；`M4` 白名单外放行 → 2 红；
+`M5` 内容没变也照写 → 1 红；`M8` 让画像格碰 `File(` → 新增的"后拆出去的格子零存储能力"一格红。
+
+## 13.6 本轮实测（三笔合起来，全部同一轮跑完）
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | rc=0：**1143 tests / 142 套件 / 0 失败 / 0 错误 / 0 跳过**（最旧 XML 03:27:32，日志起点 03:24:40） |
+| 既有边界合同 | `KnowledgeDocumentStoreTest` 10 / `KnowledgeMemoryStoreTest` 7 / `MemoryCorrectionTest` 8 / `ReadOnlySchemaWriteGateTest` 5 / `StorageBoundaryOwnershipTest` 4 全绿 |
+| lint | **报告先重新生成**（`lintReportDebug` 报 UP-TO-DATE 且不重写文件，先把旧报告移进 `_temp/` 逼它写一遍，新报告 03:32）：70 条 / 15 规则，进预算 **69 / 14**，advisory 1，rc=0；判据自测 27 格 rc=0 |
+| 其它门禁 | androidTest 编译 rc=0；工单编号 rc=0；prompt 零 diff + lock `6dcde732fab60281…`；跨层 **6** 条（与基线同） |
+| 行数 | `KnowledgeRepository` 1878 → **1844**；新类 227 行 → 总量 **+193**。买的是所有者与一批读边界，不是降体量 |
+| §5.3 进度 | **6/7**：migration、archive(backup)、catalog 枚举、document、memory、**profile**；剩 archive 的 rotateTopic 那一格 |
+
+## 13.7 本轮量到的"已知未做"，别当已做
+
+- `applyProfileUpdateAtomically`（160+ 行跨文件事务）里的 **4 处**裸路径读仍在，
+  由条数棘轮钉着；那一格与 `KnowledgeArchiveService`（rotateTopic/import/export）一起处理。
+- catalog 写侧仍未收窄（诚实接口要 ~10 个成员，违背 §5.3 自己的 ISP），只做了枚举。
+- 指导书点名的 `KnowledgeTransactionManager` 这个名字**全仓不存在**：共用一个事务入口这件事
+  是靠仓库唯一的 `fileMutex` + `transaction`/`transactionUnlocked` + `KnowledgeTx` 做到的，
+  语义达成、命名未达成。答"§5.3 是否照指导书做完"时这条要分开说。
+- 本轮 §5.3 的改动**没有一条有 CI 判决**：JVM 用例进 verify 每次跑、本机已验；真链路仍等 CI。
+- 仓库里 `values-en/strings.xml` 在 `git status` 里长期显示 `M` 而 `git diff` 为空——
+  是变异探针跑过之后 mtime 变了（内容逐字节相同），别去 `git add` 它。
+- `scripts/asset_hashes.sh --check` 必须带锁文件路径（`--check docs/prompt-assets.lock`），
+  起手命令里少写这个参数会撞 `$2: unbound variable`；`test_check_lint_budget.sh` 在 Windows 上
+  同样要 `PYTHON=python`，否则 CANNOT-VERIFY(2)。
