@@ -153,7 +153,7 @@ fun GenerationActionButton(
             // → clickable → 内容内边距。
             //
             // 这里原先把 shadow/clip/background/graphicsLayer 在 clickable 前后**各写了一遍**
-            // （独立复核 P1-03）：同一个盒子被裁两次、着色两次、缩放两次，
+            // （2026-09-24 独立复核点名的重复 modifier 链）：同一个盒子被裁两次、着色两次、缩放两次，
             // 既多画一层，也让"这个按钮到底被什么裁掉了"没人能从代码上回答。
             // padding 放在 clickable 之后，热区才是完整的 heightDp。
             Box(
