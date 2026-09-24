@@ -10,8 +10,10 @@
 > - App 版本：`1.4.0-rc1`（versionCode 9）
 > - Prompt 资产指纹（取代"见目录"这种不是 hash 的写法）：
 >   回复链路 system prompt 按拼装顺序的组合 SHA-256 =
->   `27abe25529deb47cb40366961998597c556c5184416fa038ff3ece81a2d6eb5c`
+>   `6dcde732fab602813559370dd6af3b774ca24fda86ce28f2c0cfd88a8be95831`
 >   （**当前树**的值，由 `bash scripts/asset_hashes.sh` 产出；逐文件 hash 见 `docs/prompt-assets.lock`。
+>   这个指纹按**内容**算：先把 CRLF 归一成 LF 再摘要，所以 Windows 工作树与 Linux 检出算出同一个值
+>   ——在此之前锁钉的是随平台换行变化的 hash，CI 永远对不上本机。
 >   2026-09-03 那次运行时的资产没有留存快照，无法回填，因此这个 hash 不能用来宣称本文数字可原样复现。）
 > - 复现与漂移检查：`bash scripts/asset_hashes.sh --check docs/prompt-assets.lock`
 > - Provider / Model：`deepseek-v4-flash`

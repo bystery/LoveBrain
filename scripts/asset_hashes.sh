@@ -32,7 +32,25 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-sha256_of() { sha256sum "$1" | cut -d' ' -f1; }
+# Hash the *content*, not the checkout's line endings.
+#
+# `.gitattributes` says `* text=auto`, so the same asset is CRLF on a Windows
+# working tree and LF on a Linux one. Hashing the raw bytes made the locked value
+# platform-dependent: the lock generated locally (CRLF) could never match CI (LF),
+# which is exactly how verify failed on the push. Normalising to LF is what git
+# itself stores, so the lock means the same thing on every machine.
+sha256_of() { tr -d '\r' <"$1" | sha256sum | cut -d' ' -f1; }
+
+# Combined digest of the reply system prompt, in assembly order, with line endings
+# normalised the same way. Built as one stream on purpose: wrapping the content in
+# "$(cat …)" would silently drop trailing newlines and change the hash again.
+combined_hash() {
+  local f
+  for f in "$@"; do
+    printf '%s=' "$(basename "$f")"
+    tr -d '\r' <"$f"
+  done | sha256sum | cut -d' ' -f1
+}
 
 REPLY_ASSETS=(
   "$ASSETS/system_prompt/core.md"
@@ -58,11 +76,13 @@ done
 
 # 组合 hash：按拼装顺序把「路径 + 内容」串起来再摘要，
 # 这样换顺序也能被发现，而逐文件 hash 相加发现不了。
-COMBINED_INPUT=""
-for f in "${REPLY_ASSETS[@]}"; do
-  COMBINED_INPUT+="$(basename "$f")=$(cat "$f")"
-done
-COMBINED_HASH="$(printf '%s' "$COMBINED_INPUT" | sha256sum | cut -d' ' -f1)"
+# 走整条管道而不是把内容塞进变量——命令替换会吞掉文件末尾的换行，那也是内容。
+COMBINED_HASH="$(
+  for f in "${REPLY_ASSETS[@]}"; do
+    printf '%s=' "$(basename "$f")"
+    tr -d '\r' <"$f"
+  done | sha256sum | cut -d' ' -f1
+)"
 
 # 逗号只能出现在非末项，否则产出的不是合法 JSON。
 emit_group() {

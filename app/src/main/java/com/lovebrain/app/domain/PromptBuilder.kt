@@ -83,17 +83,13 @@ class PromptBuilder(
         AssetRegistry.CORE, AssetRegistry.NATURALNESS, AssetRegistry.REDLINE, AssetRegistry.FORMAT
     )
 
-    /** 对任意一组资产按给定顺序取内容指纹 */
-    fun assetHashOf(vararg paths: String): String {
-        val digest = java.security.MessageDigest.getInstance("SHA-256")
-        for (path in paths) {
-            digest.update(path.toByteArray(Charsets.UTF_8))
-            digest.update(0)
-            digest.update(readAsset(path).toByteArray(Charsets.UTF_8))
-            digest.update(0)
-        }
-        return digest.digest().joinToString("") { "%02x".format(it) }.substring(0, 16)
-    }
+    /**
+     * 对任意一组资产按给定顺序取内容指纹。
+     *
+     * 算法在 `AssetFingerprints`（纯函数，可离线单测）；这里只负责把资产读出来。
+     */
+    fun assetHashOf(vararg paths: String): String =
+        AssetFingerprints.hashOf(paths.map { it to readAsset(it) })
 
     /** 谈心专用 system：counseling.md 全文（无安全声明） */
     fun buildCounselingSystemPrompt(): String = readAsset(AssetRegistry.COUNSELING)
