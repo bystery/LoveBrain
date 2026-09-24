@@ -15,6 +15,14 @@ import java.io.File
  * 所以这里用一条能进 CI 的静态门禁锁住已经改好的数值，防止被改回去；
  * 真正的 TalkBack / 2.0x 字体 / 360dp 截图矩阵仍然是需要设备的人工验收项，
  * 在验收报告里如实标注为未执行。
+ *
+ * ⚠ 但别把本文件当"触摸区已验证"（独立复核 P1-02 指出的正是这个误读）：
+ * 这里只能证明"源码里出现过 48 这个数字、clickable 没排在 padding 后面"。
+ * PanelHeader 外面套 48dp 的 Box、真正 clickable 仍挂在 20dp 的内层标签上时，
+ * 本文件的 [mode switcher hit box is at least 48dp even though the capsule stays 20dp]
+ * 照样会绿。判"点得到点不到"的权威断言在
+ * `androidTest/.../ui/panel/PanelHeaderTouchTargetsTest.kt`：它读组合后每个可点击节点的
+ * boundsInRoot。两条都要，但只有后者能证明用户行为。
  */
 class ProductionUiContractTest {
 
