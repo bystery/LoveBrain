@@ -3,6 +3,8 @@ package com.lovebrain.app.domain
 import android.content.Context
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.domain.port.KnowledgeReadPort
+import com.lovebrain.app.domain.port.Clock
+import com.lovebrain.app.domain.port.SystemClock
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.KnowledgeBase
@@ -28,7 +30,15 @@ import java.io.File
 class PromptBuilder(
     private val context: Context,
     private val knowledgeRepo: KnowledgeReadPort,
-    private val ongoingSelector: OngoingContextSelector? = null
+    private val ongoingSelector: OngoingContextSelector? = null,
+    /**
+     * prompt 里的「当前时间」段和 `buildTimestampPrompt()` 都从这个端口取。
+     *
+     * 之前它们直接读系统时间，后果有两个：一是同一份冻结输入在 09:59 与 10:01 会
+     * 拼出不同 prompt，于是"BENCHMARK 的 hash 描述的就是这棵树"永远多一个未知量；
+     * 二是任何测试都没法断言"模型被告知的时间是什么"——只能跑一次看它像不像今天。
+     */
+    private val clock: Clock = SystemClock
 ) {
 
     // ═══════════ 配置校验 ═══════════
@@ -149,7 +159,7 @@ class PromptBuilder(
         val ctx = OngoingContextSelector.SelectionContext(
             messages = messages,
             currentTurn = turnCount,
-            currentTime = TimeFmt.now(),
+            currentTime = clock.wallClock(),
             replyDirective = replyDirective,
             effectiveIntent = effectiveIntent  // 冻结快照
         )
@@ -694,7 +704,7 @@ class PromptBuilder(
 
     /** Timestamp Injection prompt */
     fun buildTimestampPrompt(): String {
-        val time = TimeFmt.now()
+        val time = clock.wallClock()
         return "【当前时间】$time\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段。时间只认系统给定的当前时间，不凭对话内容或主观感觉推测。"
     }
 
@@ -829,7 +839,7 @@ val herProfile = knowledgeRepo.readFile(kb.name, "understand/her.md")
         }
 
         // 时间戳垫底
-        sb.append("## 当前时间\n").append(com.lovebrain.app.util.TimeFmt.now()).append("\n")
+        sb.append("## 当前时间\n").append(clock.wallClock()).append("\n")
 
         return sb.toString()
     }

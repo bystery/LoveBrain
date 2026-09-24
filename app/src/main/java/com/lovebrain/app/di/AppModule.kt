@@ -37,16 +37,22 @@ val appModule = module {
     single { DeepSeekRepository(get()) }
     // 端口绑定必须显式写 get<具体类>()：写成 get() 会解析到自己，Koin 直接 StackOverflowError
     single<com.lovebrain.app.domain.port.AiGateway> { get<DeepSeekRepository>() }
+    // 时间是输入，不是日志：domain 里落进正文与 prompt 的时间一律走这个端口。
+    // 现在靠构造参数的默认值（SystemClock）注入，绑在这里是为了
+    // ① 让测试能在图外换一个 FixedClock，② 让"生产用的是真钟"这件事在图上看得见。
+    single<com.lovebrain.app.domain.port.Clock> { com.lovebrain.app.domain.port.SystemClock }
     single { FeedbackCaseRepository(androidContext()) }
 
     // 领域层（单例）
-    single { com.lovebrain.app.domain.OngoingContextSelector(get()) }
-    single { PromptBuilder(androidContext(), get(), get()) }
+    // Clock 显式 get()，不靠构造参数默认值：默认值是给测试用的后门，
+    // 图上必须能看见"生产的时间从哪来"，否则上面那条 single<Clock> 就是装饰。
+    single { com.lovebrain.app.domain.OngoingContextSelector(get(), get()) }
+    single { PromptBuilder(androidContext(), get(), get(), get()) }
     single { RoundCommitJournal(get()) }
     // 事务日志必须由容器给出，不能在这里再 new 一个：
     // TopicRecorder 持有手工构造的 journal、容器又注册另一个 journal，
     // 就等于同一份 WAL 有两把 txMutex——"唯一事务 owner"只剩名字。
-    single { TopicRecorder(get(), get()) }
+    single { TopicRecorder(get(), get(), get()) }
     single { KnowledgeTriggerCoordinator(get(), get(), get(), get()) }
     single { GenerationEngine(get(), get()) }
     // ForegroundOperationCoordinator 作为单例——使用 application scope

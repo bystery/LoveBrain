@@ -1,7 +1,9 @@
 ﻿package com.lovebrain.app.domain
 
 import com.lovebrain.app.AppConfig
+import com.lovebrain.app.domain.port.Clock
 import com.lovebrain.app.domain.port.KnowledgePort
+import com.lovebrain.app.domain.port.SystemClock
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.EntityRef
 import com.lovebrain.app.model.KnowledgeBase
@@ -35,7 +37,13 @@ import com.lovebrain.app.domain.FactSubjectResolver
  */
 class TopicRecorder(
     private val knowledgeRepo: KnowledgePort,
-    roundCommitJournal: RoundCommitJournal? = null
+    roundCommitJournal: RoundCommitJournal? = null,
+    /**
+     * 时间从端口来，不在这里 `TimeFmt.now()`：轮次块头 `- [yyyy-MM-dd HH:mm]`
+     * 和场景时间戳是**写进知识库正文的内容**，不是日志。有了可注入的时钟，
+     * "这一轮落进 recent.md 的块头到底是什么"才能被钉住断言（见 TopicRecorderClockTest）。
+     */
+    private val clock: Clock = SystemClock
 ) {
 
     /**
@@ -83,7 +91,7 @@ class TopicRecorder(
         likedSchemes: List<Scheme> = emptyList(),
         sourceAliasMap: Map<String, String> = emptyMap()
     ): Boolean {
-        val time = com.lovebrain.app.util.TimeFmt.now()
+        val time = clock.wallClock()
 
         val conversationalMessages = messages.filter {
             it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME
@@ -351,8 +359,8 @@ class TopicRecorder(
     ) {
         val chainPath = "moment/scene.md"
         val historyPath = "memory/raw_scene.md"
-        val now = System.currentTimeMillis()
-        val timeStr = com.lovebrain.app.util.TimeFmt.now()
+        val now = clock.epochMs()
+        val timeStr = clock.wallClock()
 
         // 构建冻结快照中 HER/ME 消息的 ID→role 映射
         val validSourceMap: Map<String, ChatMessage.Role> = frozenMessages

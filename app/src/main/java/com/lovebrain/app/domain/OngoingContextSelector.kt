@@ -2,6 +2,8 @@ package com.lovebrain.app.domain
 
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.domain.port.KnowledgePort
+import com.lovebrain.app.domain.port.Clock
+import com.lovebrain.app.domain.port.SystemClock
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.ReplyDirective
 import com.lovebrain.app.util.L
@@ -31,7 +33,12 @@ import com.lovebrain.app.util.TimeFmt
  * 但不能单独成为注入理由。
  */
 class OngoingContextSelector(
-    private val knowledgeRepo: KnowledgePort
+    private val knowledgeRepo: KnowledgePort,
+    /**
+     * 冷却记录里存的 `lastInjectedAt` 是要落盘的时间文本；不注入时钟的话，
+     * "事项休眠多久之后才允许再提"这条规则根本没法测（见文件里的 cooldown 分支）。
+     */
+    private val clock: Clock = SystemClock
 ) {
 
     /** 事项内部状态 */
@@ -418,7 +425,7 @@ class OngoingContextSelector(
         currentTurn: Int
     ) {
         val existing = readCooldown(kbName).toMutableMap()
-        val now = TimeFmt.now()
+        val now = clock.wallClock()
         for (name in injectedNames) {
             val entry = existing[name] ?: CooldownEntry(name, -1, now, -1)
             entry.lastInjectedTurn = currentTurn
