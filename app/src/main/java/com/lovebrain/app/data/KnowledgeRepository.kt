@@ -634,7 +634,10 @@ class KnowledgeRepository(
             atomicWriteText(File(defaultDir, "understand/her.md"), "")
             atomicWriteText(File(defaultDir, "understand/warmth.md"), "")
             // 此刻层：topic 有初始行，其余空
-            atomicWriteText(File(defaultDir, "moment/topic.md"), "- [${com.lovebrain.app.util.TimeFmt.now()}] 正在聊：（等待第一次对话）")
+            atomicWriteText(
+                File(defaultDir, "moment/topic.md"),
+                KbTextOps.topicLine(com.lovebrain.app.util.TimeFmt.now(), KbTextOps.TOPIC_INITIAL_LABEL)
+            )
             atomicWriteText(File(defaultDir, "moment/recent.md"), "")
             atomicWriteText(File(defaultDir, "moment/scene.md"), "")
             atomicWriteText(File(defaultDir, "moment/plan.md"), loadSchema("plan"))
@@ -697,7 +700,10 @@ class KnowledgeRepository(
         // topic.md 特殊处理：不存在时写入初始行
         val topicFile = File(dir, "moment/topic.md")
         if (!topicFile.exists()) {
-            atomicWriteText(topicFile, "- [${com.lovebrain.app.util.TimeFmt.now()}] 正在聊：（等待第一次对话）")
+            atomicWriteText(
+                topicFile,
+                KbTextOps.topicLine(com.lovebrain.app.util.TimeFmt.now(), KbTextOps.TOPIC_INITIAL_LABEL)
+            )
         }
     }
 
@@ -1619,15 +1625,14 @@ class KnowledgeRepository(
 
     // ═══════════ 话题管理 API ═══════════
 
+    /** 话题行的读法在 [KbTextOps.topicLabel]，与四处写侧同一个所有者 */
     override suspend fun getCurrentTopic(kbName: String): String = withContext(Dispatchers.IO) {
-        val content = readFile(kbName, "moment/topic.md")
-        val raw = content.lines().firstOrNull()?.trim()?.substringAfter("正在聊：") ?: ""
-        raw.substringBefore(" | key：").trim()
+        KbTextOps.topicLabel(readFile(kbName, "moment/topic.md"))
     }
 
     override suspend fun setCurrentTopic(kbName: String, topicLabel: String) = withContext(Dispatchers.IO) {
         val time = com.lovebrain.app.util.TimeFmt.now()
-        writeFile(kbName, "moment/topic.md", "- [$time] 正在聊：$topicLabel")
+        writeFile(kbName, "moment/topic.md", KbTextOps.topicLine(time, topicLabel))
     }
 
     /** 读取 plan.md「## 进行中」分区的事项行（注入 prompt；已结束不注入） */

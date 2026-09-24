@@ -24,6 +24,37 @@ internal object KbTextOps {
             .joinToString("") { "%02x".format(it) }
     }
 
+    // ═══════════ 当前话题行（moment/topic.md）═══════════
+
+    /**
+     * 话题行的标记。全仓只这一份字面量——写侧 4 处、读侧 1 处以前各写各的，
+     * 任何一处改字，`topicLabel` 就静默读不出话题（`rotateTopic` 会把整行当旧话题名归档）。
+     */
+    const val TOPIC_MARKER = "正在聊："
+
+    /** 话题行尾部的键值后缀（`| key：xxx`），不属于话题名 */
+    const val TOPIC_KEY_SUFFIX = " | key："
+
+    /** 新库初始化的那句话 */
+    const val TOPIC_INITIAL_LABEL = "（等待第一次对话）"
+
+    /** 唯一的话题行写法 */
+    fun topicLine(time: String, label: String): String = "- [$time] $TOPIC_MARKER$label"
+
+    /**
+     * 从 topic.md 里读回话题名。
+     *
+     * ⚠ 保留一条既存怪癖：首行里**没有**标记时，`substringAfter` 会把整行原样返回
+     * （比如旧格式 `- [2026-09-16 09:00] 旧话题` 会整条当成话题名）。
+     * 这次不顺手改它——改法要么"读不到就返回空"（会让归档标题与初始态判断跟着变），
+     * 要么兼容多种旧格式，那是一次独立的行为变更，得单独判断。
+     * `TopicLineFormatTest` 把这条怪癖钉成断言，钉住不等于认可。
+     */
+    fun topicLabel(content: String): String {
+        val raw = content.lines().firstOrNull()?.trim()?.substringAfter(TOPIC_MARKER) ?: ""
+        return raw.substringBefore(TOPIC_KEY_SUFFIX).trim()
+    }
+
     // ═══════════ 当下状态条目（moment/scene.md）═══════════
 
     /** 状态条目行校验：必须以 "- [yyyy-MM-dd HH:mm]" 真实时间戳开头（防 schema 模板示例行混入） */

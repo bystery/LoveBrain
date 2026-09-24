@@ -250,7 +250,7 @@ internal class KnowledgeMigrator(private val io: KbStorageAccess) {
         val topicFile = File(dir, "moment/topic.md")
         if (!topicFile.exists() || topicFile.readText().isBlank()) {
             val initTime = com.lovebrain.app.util.TimeFmt.now()
-            io.atomicWrite(topicFile, "- [$initTime] 正在聊：（等待第一次对话）")
+            io.atomicWrite(topicFile, KbTextOps.topicLine(initTime, KbTextOps.TOPIC_INITIAL_LABEL))
         }
         val topicLogFile = File(dir, "memory/topic_log.md")
         if (!topicLogFile.exists()) {
