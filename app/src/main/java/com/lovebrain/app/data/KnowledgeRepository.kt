@@ -57,7 +57,8 @@ class KnowledgeRepository(
     private val migrator = KnowledgeMigrator(RepoStorage())
 
     /** 交给迁移器用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
-    private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage, DocumentStorage {
+    private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage, DocumentStorage,
+        MemoryStorage {
         override val root: File get() = knowledgeRoot
         override val catalogRoot: File get() = knowledgeRoot
 
@@ -77,6 +78,33 @@ class KnowledgeRepository(
 
         /** 文档格判断"库还在不在"用无锁那一份——锁由调用方在外面套 */
         override fun kbExists(kbName: String): Boolean = kbExistsUnlocked(kbName)
+
+        /** 记忆格的读也走文档格那道守门：两个格子共用同一个路径边界，不各写一套 */
+        override fun read(kbName: String, relativePath: String): String =
+            documents.read(kbName, relativePath)
+
+        /** 记忆格只能经这一次写事务落盘：只读判定与"一批要么都写要么都不写"都在这 */
+        override fun writeTransaction(kbName: String, block: MemoryTx.() -> Unit) {
+            transactionUnlocked(kbName) {
+                MemoryTx { relativePath, content -> write(relativePath, content) }.block()
+            }
+        }
+
+        /** 编解码共用本类那一份 Json 配置：给第二个类另配一把尺就等于换了把判据 */
+        override fun decodeCorrections(
+            text: String
+        ): List<com.lovebrain.app.model.MemoryCorrection>? = runCatching {
+            json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(text)
+        }.getOrNull()
+
+        override fun encodeCorrections(
+            corrections: List<com.lovebrain.app.model.MemoryCorrection>
+        ): String = json.encodeToString(
+            kotlinx.serialization.builtins.ListSerializer(
+                com.lovebrain.app.model.MemoryCorrection.serializer()
+            ),
+            corrections
+        )
 
         /**
          * 文档格的唯一写出口：回到本类的 [writeFileUnlocked]。
@@ -135,6 +163,17 @@ class KnowledgeRepository(
      * 于是只读 schema 拒绝与备份节流都不会被新版本写绕过。
      */
     private val documents = KnowledgeDocumentStore(RepoStorage())
+
+    /**
+     * 记忆纠正与库级 revision（§5.3 第五格）。
+     *
+     * 拆它的理由是一条**单调性**承诺以前散在两处：saveCorrection 与 undoCorrection
+     * 各写一遍"递增并把 revision 落盘"，两处都得自己记得"纠正文件写成了才写 revision"。
+     * 现在这条顺序只有一个所有者（KnowledgeMemoryStore.persist）。
+     * 锁、路径守门、落盘仍然在本类：记忆格只拿到 read / writeTransaction / 编解码 /
+     * kbExists / timestamp 五样能力。
+     */
+    private val memory = KnowledgeMemoryStore(RepoStorage())
 
     /** 备份节流：记录最后一次写入时间，debounce 5s 后触发增量备份 */
     private val backupDebounceMs = 5_000L
@@ -772,11 +811,17 @@ class KnowledgeRepository(
 
     /** 读取纠正记录列表。返回 memoryId → correction 映射。 */
     suspend fun readCorrections(kbName: String): Map<String, com.lovebrain.app.model.MemoryCorrection> =
-        withContext(Dispatchers.IO) { readCorrectionsUnlocked(kbName) }
+        withContext(Dispatchers.IO) { memory.corrections(kbName) }
 
     /** 保存一条纠正记录。revision 单调递增（库级），不会因撤销倒退。
      * R07: 不再使用剩余记录的 max 推算 revision（撤销删除后可能倒退）。
      * 改为读取库级持久化 revision 标记，每次纠正/撤销均递增。 */
+    /**
+     * 保存一条纠正（§5.3 第五格之后只剩锁与转发）。
+     *
+     * revision 单调、"纠正文件写成了才允许写 revision"这条顺序都在 [KnowledgeMemoryStore.save]；
+     * 被只读保护挡下时如实返回 false，不报"成功却没落盘"。
+     */
     suspend fun saveCorrection(
         kbName: String,
         memoryId: String,
@@ -786,85 +831,32 @@ class KnowledgeRepository(
         muteDuration: com.lovebrain.app.model.MuteDuration = com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE
     ): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
-            if (!kbExistsUnlocked(kbName)) return@withLock false
-            val current = readCorrectionsUnlocked(kbName)
-            // R07: 读取库级持久化 revision（单调递增，不会因撤销倒退）
-            val newRevision = readMemoryRevisionUnlocked(kbName) + 1
-            val now = isoNow()
-            val correction = com.lovebrain.app.model.MemoryCorrection(
-                memoryId = memoryId,
-                action = action,
-                replacementText = replacementText,
-                targetKbId = targetKbId,
-                revision = newRevision,
-                updatedAt = now,
-                muteDuration = muteDuration,
-                muteTimestamp = if (action == com.lovebrain.app.model.CorrectionAction.MUTED) now else ""
-            )
-            val updated = current.toMutableMap()
-            updated[memoryId] = correction
-            // 写边界：两条落盘都从写事务句柄取，schema 过新的库返回 false 而不是"报了成功却没写"。
-            var written = false
-            transactionUnlocked(kbName) {
-                written = write(
-                    CORRECTIONS_FILE,
-                    json.encodeToString(
-                        kotlinx.serialization.builtins.ListSerializer(
-                            com.lovebrain.app.model.MemoryCorrection.serializer()
-                        ),
-                        updated.values.toList()
-                    )
-                )
-                // R07: 持久化库级 revision（单调递增）
-                if (written) write(MEMORY_REVISION_FILE, newRevision.toString())
-            }
-            written
+            memory.save(kbName, memoryId, action, replacementText, targetKbId, muteDuration)
         }
     }
 
     /** 撤销纠正 — 删除指定 memoryId 的纠正记录。
      * R07: 撤销也递增库级 revision，保证单调性。 */
+    /**
+     * 撤销一条纠正。撤销同样递增 revision（0→1→0 是最容易被破的单调性），
+     * 规则住在 [KnowledgeMemoryStore.undo] 里，这里只保留锁与转发。
+     */
     suspend fun undoCorrection(kbName: String, memoryId: String): Boolean = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            if (!kbExistsUnlocked(kbName)) return@withLock false
-            val current = readCorrectionsUnlocked(kbName)
-            if (!current.containsKey(memoryId)) return@withLock false
-            val updated = current.toMutableMap()
-            updated.remove(memoryId)
-            var written = false
-            transactionUnlocked(kbName) {
-                written = write(
-                    CORRECTIONS_FILE,
-                    json.encodeToString(
-                        kotlinx.serialization.builtins.ListSerializer(
-                            com.lovebrain.app.model.MemoryCorrection.serializer()
-                        ),
-                        updated.values.toList()
-                    )
-                )
-                // R07: 撤销也递增 revision（防 0→1→0 倒退）
-                if (written) {
-                    write(MEMORY_REVISION_FILE, (readMemoryRevisionUnlocked(kbName) + 1).toString())
-                }
-            }
-            written
-        }
+        fileMutex.withLock { memory.undo(kbName, memoryId) }
     }
 
     /** 获取纠正记录的全局 revision（用于后台防护）。
      * R07: 读取库级持久化 revision（单调递增），不依赖剩余记录 max。
      * b3-8: 加锁读取，保证一致性（原先无锁读可能读到半写状态） */
     override suspend fun getCorrectionsRevision(kbName: String): Int = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            readMemoryRevisionUnlocked(kbName)
-        }
+        fileMutex.withLock { memory.revisionOf(kbName) }
     }
 
     /** R07: 原子读取纠正记录和 revision——用于生成准备阶段一次性快照。
      * 消除读取纠正和读取 revision 之间的竞态窗口。 */
     suspend fun readCorrectionsAndRevision(kbName: String): Pair<Map<String, com.lovebrain.app.model.MemoryCorrection>, Int> = withContext(Dispatchers.IO) {
         fileMutex.withLock {
-            readCorrectionsUnlocked(kbName) to readMemoryRevisionUnlocked(kbName)
+            memory.correctionSnapshot(kbName)
         }
     }
 
@@ -942,22 +934,7 @@ class KnowledgeRepository(
      * 读走 [KnowledgeDocumentStore.read]：以前这里 `File(File(knowledgeRoot, kbName), MEMORY_REVISION_FILE)`
      * 自己拼路径，等于绕开 canonical 守门。文件不存在时读得到空串 → revision 记 0，语义不变。
      */
-    private fun readMemoryRevisionUnlocked(kbName: String): Int =
-        documents.read(kbName, MEMORY_REVISION_FILE).trim().toIntOrNull() ?: 0
-
-
-    /** 无锁版读取（调用方持有 fileMutex） */
-    private fun readCorrectionsUnlocked(kbName: String): Map<String, com.lovebrain.app.model.MemoryCorrection> {
-        // 读走文档格那道门。以前这里直接 File(File(knowledgeRoot, kbName), ...)：
-        // 库名里带 `..` 就能把纠正记录（隐私数据）从知识库根外面读进来，
-        // 而写那一侧走的是事务守门——同一个库的两种入口宽严不一。
-        val raw = documents.read(kbName, CORRECTIONS_FILE)
-        if (raw.isBlank()) return emptyMap()
-        return runCatching {
-            json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(raw)
-                .associateBy { it.memoryId }
-        }.getOrDefault(emptyMap())
-    }
+    private fun readMemoryRevisionUnlocked(kbName: String): Int = memory.revisionOf(kbName)
 
     /** 删除知识库（/：物理删除——UI 已有确认步骤，不再进 .trash 永久残留隐私数据）
      *  delete 成功后同时删除该 KB 的全部 backup，防止私密副本残留 */
