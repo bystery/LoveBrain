@@ -2,28 +2,23 @@
 #
 # scripts/test_check_lint_budget.sh
 #
-# check_lint_budget.sh 判据本身的正反测试（同一份产物、同一份预算、两台机器量出
-# 两个数，那把尺就不配当门禁）。
+# check_lint_budget.sh 判据本身的正反测试。
 #
-# 触发这件事的是 CI run 36019334520：verify 在 "Lint budget must not grow" 这一步红，
-# CI 量到 81 条 / 16 规则，本机 71 条 / 15 规则，预算登记 15 规则。差的 10 条全部来自
-# 两条**发现不属于这个仓库**的规则：
+# 触发它的是 CI run 36019334520：verify 红在 "Lint budget must not grow"——CI 量到
+# 81 条 / 16 规则，本机 71 条 / 15 规则，账本登记 15 规则。差的 10 条全部来自两条
+# "发现不属于这个仓库"的检查（GradleDependency 量的是这台机器解析到的 Maven 版本清单，
+# OldTargetApi 量的是本机 SDK 装了多新的平台）。分类之后必须仍然有牙，所以这里
+# 一半的格子在测"降级之后还咬不咬得动真债"。
 #
-#   GradleDependency  报"上游又有新版可升"。同一句 androidx.test.ext:junit:1.1.5 声明，
-#                     CI 说可升到 1.3.0，本机说可升到 1.2.1 —— 它量的是这台机器缓存到的
-#                     Maven 版本清单。
-#   OldTargetApi      报"targetSdk 不是最新"。触发与否取决于本机 SDK 里装了多新的平台。
-#
-# 所以这里的每一格都不只是测"改完对不对"，还测"改完还有没有牙"：
-# 分类之后，仓库自己欠的债必须仍然红（OVER）、登记过期必须仍然红（STALE）、
-# 冒出来的新规则必须仍然红，而降级成 advisory 必须写理由、且只允许外部状态族那几条。
-#
-# 夹具是两份真报告（run 36019334520 的产物 + 同一份代码在本机量出的产物），
-# 不是手写的：见 scripts/fixtures/lint/README.md。
+# ⚠ 一条硬规矩：合成报告的条数一律**从账本现读**，不许写死在测试里。
+#   上一版把 UnusedResources 写成 34，结果本窗口合法还掉一条债（34→33），
+#   5 个格子立刻假红——而假红的门禁教出来的习惯就是"把数字抬回去"。
+#   同理，两份真产物夹具不再断言"退出码必须 0"，只断言"不得报出新增债"
+#   与"两台机器进预算的部分条数相同"：这两条不随预算变小而失效。
 #
 # Usage:
-#   bash scripts/test_check_lint_budget.sh              # 本机（Windows 上要先 PYTHON=python）
-#   PYTHON=python bash scripts/test_check_lint_budget.sh
+#   bash scripts/test_check_lint_budget.sh
+#   PYTHON=python bash scripts/test_check_lint_budget.sh      # Windows
 #
 # 退出码：0 全部判对；1 有格子判错；2 前置解释器缺失（=没验证）。
 set -euo pipefail
@@ -35,23 +30,20 @@ ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 SCRIPT="$SCRIPT_DIR/check_lint_budget.sh"
 FIX="$SCRIPT_DIR/fixtures/lint"
-REAL_BUDGET="$ROOT/scripts/lint-budget.txt"
+CB="$ROOT/scripts/lint-budget.txt"
 
 PYBIN="${PYTHON:-python3}"
 if ! command -v "$PYBIN" >/dev/null 2>&1 || [ "$("$PYBIN" -c 'print("alive")' 2>/dev/null)" != "alive" ]; then
   die_unverified "python interpreter unusable ('PYTHON=$PYBIN') — on Windows use PYTHON=python"
 fi
 export PYTHON="$PYBIN"
-# 断言只匹配 ASCII 片段：Windows 控制台是 GBK，被捕获的中文输出会变成另一种字节，
-# 拿中文当判据的测试在这台机器上会假红。
+# 断言只匹配 ASCII 片段：Windows 控制台是 GBK，被捕获的中文输出会变成另一种字节。
 export PYTHONIOENCODING=utf-8
 
 if [ -n "${WORK_DIR:-}" ]; then
-  WORK="$WORK_DIR"
-  mkdir -p "$WORK"
+  WORK="$WORK_DIR"; mkdir -p "$WORK"
 else
-  WORK="$(mktemp -d)"
-  trap 'rm -rf "$WORK"' EXIT
+  WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 fi
 
 CASES=0
@@ -69,26 +61,59 @@ bad() {
   for line in "$@"; do printf '       %s\n' "$line" >&2; done
 }
 
-# ── 夹具：合成报告 ──────────────────────────────────────────────────────────
-# mk_report <out> <rule> <n> [<rule> <n> ...]
-# 形状照真报告：根元素带 by="lint 8.6.0"，每个 <issue> 一行、属性里有 id 与 severity。
+dump() {
+  printf '       ---- 本次输出 ----\n' >&2
+  sed 's/^/       /' "$WORK/out.txt" >&2
+  printf '       ----------------\n' >&2
+}
+
+# ── 读账本：合成报告的条数全部来自这里 ──────────────────────────────────────
+bget() {
+  awk -v k="$1" '$1==k{print $2; f=1} END{if(!f) print 0}' "$CB"
+}
+
+# budget_pairs —— 账本里进预算的 "<规则> <条数>"（跳过注释与 advisory 段）
+budget_pairs() {
+  grep -vE '^[[:space:]]*#|^[[:space:]]*$|^advisory[[:space:]]' "$CB" || true
+}
+
+# mk_report <out> [规则=条数 ...]
+# 默认每条规则正好压在账本登记的数上；参数里点名的规则改成给定条数
+# （账本里没有的规则被点名时是**追加**一条新规则，正合"冒出来没登记过的规则"那一格）。
 mk_report() {
   local out="$1"; shift
+  local overrides="$*"
   {
     printf '<?xml version="1.0" encoding="UTF-8"?>\n<issues format="6" by="lint 8.6.0">\n'
-    while [ "$#" -gt 0 ]; do
-      local rule="$1" n="$2" i=1
-      shift 2
-      while [ "$i" -le "$n" ]; do
+    local seen=""
+    while read -r rule n; do
+      [ -n "$rule" ] || continue
+      local cnt="$n" o
+      for o in $overrides; do
+        case "$o" in "$rule="*) cnt="${o#*=}" ;; esac
+      done
+      seen="$seen $rule"
+      local i=1
+      while [ "$i" -le "$cnt" ]; do
         printf '    <issue id="%s" severity="Warning" message="m" category="Correctness" priority="6"/>\n' "$rule"
         i=$((i + 1))
+      done
+    done < <(budget_pairs)
+    local o
+    for o in $overrides; do
+      rule="${o%%=*}"; cnt="${o#*=}"
+      case " $seen " in *" $rule "*) continue ;; esac   # 已在账本里，上面处理过了
+      local j=1
+      while [ "$j" -le "$cnt" ]; do
+        printf '    <issue id="%s" severity="Warning" message="m" category="Correctness" priority="6"/>\n' "$rule"
+        j=$((j + 1))
       done
     done
     printf '</issues>\n'
   } >"$out"
 }
 
-# mk_budget <out> <整行> [<整行> ...] —— 逐行原样写，方便构造"缺理由""重复登记"这类坏账本。
+# mk_budget <out> <整行> ... —— 逐行原样写，用来构造"缺理由""重复登记"这类坏账本
 mk_budget() {
   local out="$1"; shift
   : >"$out"
@@ -96,7 +121,7 @@ mk_budget() {
   for l in "$@"; do printf '%s\n' "$l" >>"$out"; done
 }
 
-# gate <budget> <xml> [script args...] —— 跑被测试的脚本，结果落 out.txt / rc.txt
+# gate <budget> <xml> [script args...]
 gate() {
   local budget="$1" xml="$2"; shift 2
   set +e
@@ -107,155 +132,145 @@ gate() {
 
 rc() { cat "$WORK/rc.txt"; }
 
-# expect_rc <标题> <期望码>
 expect_rc() {
   if [ "$(rc)" = "$2" ]; then pass "$1（退出码 $2）"; else bad "$1" "退出码 $(rc)，应为 $2"; dump; fi
 }
 
-# expect_has <标题> <必须出现的片段>
 expect_has() {
   if grep -qF -- "$2" "$WORK/out.txt"; then pass "$1"; else bad "$1" "输出里找不到片段：$2"; dump; fi
 }
 
-# expect_hasnt <标题> <必须不出现的片段>
-expect_hasnt() {
-  if grep -qF -- "$2" "$WORK/out.txt"; then bad "$1" "输出里出现了不该有的片段：$2"; dump
-  else pass "$1"; fi
+stats_of() {   # 从 STATS 行取某个键
+  grep -m1 '^\[lint-budget\] STATS ' "$WORK/out.txt" |
+    sed -n "s/.* ${1}=\([0-9]*\).*/\1/p" || true
 }
 
-# expect_stats <标题> <key=value> [...] —— 断言 STATS 那行里的具体数字，别只断言"绿了"
-expect_stats() {
-  local title="$1"; shift
-  local stats want k v missing=""
-  stats="$(grep -m1 '^\[lint-budget\] STATS ' "$WORK/out.txt" || true)"
-  if [ -z "$stats" ]; then bad "$title" "输出里没有 STATS 行，机器读不到具体条数"; dump; return 0; fi
-  for want in "$@"; do
-    k="${want%%=*}"; v="${want#*=}"
-    if ! printf '%s\n' "$stats" | grep -qE "(^| )${k}=${v}( |$)"; then
-      missing="$missing ${want}"
-    fi
-  done
-  if [ -n "$missing" ]; then bad "$title" "STATS 对不上：$missing" "实际：$stats"
-  else pass "$title"; fi
-}
+# ── 夹具本身要能读 ──────────────────────────────────────────────────────────
+require_file "$CB" "lint budget"
+require_file "$FIX/ci-run-36019334520-lint-results-debug.xml" "fixture (CI report)"
+require_file "$FIX/local-at-3d92488-lint-results-debug.xml" "fixture (local report)"
 
-dump() {
-  printf '       ---- 本次输出 ----\n' >&2
-  sed 's/^/       /' "$WORK/out.txt" >&2
-  printf '       ----------------\n' >&2
-}
-
-CB="$REAL_BUDGET"
 CI_XML="$FIX/ci-run-36019334520-lint-results-debug.xml"
 LOCAL_XML="$FIX/local-at-3d92488-lint-results-debug.xml"
 
-# ── 夹具本身要能读，否则后面全是空跑 ────────────────────────────────────────
-require_file "$CI_XML" "fixture (lint report from CI run 36019334520)"
-require_file "$LOCAL_XML" "fixture (lint report from the same code, local machine)"
+# ── C1–C2 两份真产物：两侧同尺，且不许报出新增债 ────────────────────────────
+printf '%s C1–C2：两份真报告 vs 同一份账本（两侧同尺）\n' "$GATE_LOG_PREFIX" >&2
 
-# ── C1 真产物回归：那份把 CI 判红的报告，用同一份预算必须不再报"新增债" ──────
-printf '%s C1–C2：两份真报告 vs 同一份预算（两侧同尺）\n' "$GATE_LOG_PREFIX" >&2
+# 真产物是某个 SHA 上的快照，账本只会越还越小，所以这里**不**断言"退出码 0"也
+# **不**断言"不许出现 OVER"（夹具那 34 条 UnusedResources 对着今天 33 的账本就绪判超，
+# 那是历史，不是新债）。要钉的是这条事故本身：两台机器进预算的部分必须逐条相等，
+# 而 CI 独有的规则必须全部落在 advisory 里。这两条都不随还债失效。
 gate "$CB" "$CI_XML"
-expect_rc "C1 CI 夹具不再报新增债（run 36019334520 这一步当时是红的）" "0"
-expect_has "C1 外部状态族被单独打印而不是塞进预算" "ADVISORY GradleDependency=10"
+expect_has "C1 CI 那份报告的外部状态族被点名打印（不是藏起来）" "ADVISORY GradleDependency=10"
 expect_has "C1 OldTargetApi 同样打印条数" "ADVISORY OldTargetApi=1"
-
-# ── C2 两侧同尺：同一份代码在两台机器上进预算的那部分必须一模一样 ────────────
-# 取数一律带 `|| true`：旧实现根本没有 STATS 行，`grep` 返回 1 在 `set -euo pipefail`
-# 下会把本测试当场掐断——那副样子看着像"测出问题了"，其实是测试自己死了。
-gated_of() {
-  grep -m1 '^\[lint-budget\] STATS ' "$WORK/out.txt" |
-    sed -n 's/.* gated_issues=\([0-9]*\) .*/\1/p' || true
-}
+CI_STATS="$(cat "$WORK/out.txt")"
 gate "$CB" "$LOCAL_XML"
-expect_rc "C2 本机夹具同一份预算也合规" "0"
-CI_GATED="$(gated_of)"
-gate "$CB" "$CI_XML"
-CI_GATED2="$(gated_of)"
-if [ -n "$CI_GATED" ] && [ "$CI_GATED" = "$CI_GATED2" ]; then
-  pass "C2 进预算的条数两台机器相同（$CI_GATED 条）"
+LOCAL_STATS="$(cat "$WORK/out.txt")"
+
+if "$PYBIN" - "$CI_XML" "$LOCAL_XML" "$CB" <<'PY'
+import collections, re, sys
+
+def counts(p):
+    t = open(p, encoding="utf-8", errors="replace").read()
+    return collections.Counter(re.findall(r"<issue\b[^>]*\bid=\"([^\"]+)\"", t))
+
+ci, local, budget_path = counts(sys.argv[1]), counts(sys.argv[2]), sys.argv[3]
+advisory = set()
+for line in open(budget_path, encoding="utf-8"):
+    line = line.strip()
+    if line.startswith("advisory "):
+        advisory.add(line.split(None, 2)[1])
+
+ci_gated = {r: n for r, n in ci.items() if r not in advisory}
+lo_gated = {r: n for r, n in local.items() if r not in advisory}
+bad = []
+if ci_gated != lo_gated:
+    only_ci = {r: (ci_gated.get(r), lo_gated.get(r)) for r in set(ci_gated) | set(lo_gated)
+               if ci_gated.get(r) != lo_gated.get(r)}
+    bad.append("进预算的部分两台机器对不上（规则, CI, 本机）：%s" % only_ci)
+for r in sorted((set(ci) - set(local)) - advisory):
+    bad.append("CI 独有而本机没有的规则 %s 没登记成 advisory —— 它要么是新债，要么是漏判" % r)
+for m in bad:
+    print("  " + m)
+sys.exit(1 if bad else 0)
+PY
+then
+  pass "C2 两份真产物进预算的部分逐条相等，且 CI 独有规则全在 advisory 里"
 else
-  bad "C2 两侧同尺没成立" "本机夹具 gated_issues=$CI_GATED" "CI 夹具 gated_issues=$CI_GATED2"
+  bad "C2 两侧同尺没成立（上面列出差在哪条规则）"
 fi
 
-# ── C3 还有牙：真债多一条必须红，分类不是免检通道 ────────────────────────────
-printf '%s C3–C5：降级之后判据还得有牙\n' "$GATE_LOG_PREFIX" >&2
-mk_report "$WORK/over.xml" UnusedResources 35 ModifierParameter 8 AutoboxingStateCreation 6 \
-  ClickableViewAccessibility 1 DataExtractionRules 1 DefaultLocale 2 GradleDependency 1 \
-  IconLauncherShape 5 IconLocation 3 InlinedApi 1 PluralsCandidate 3 RedundantLabel 1 \
-  ReturnFromAwaitPointerEventScope 3 StaticFieldLeak 1 SwitchIntDef 1
-gate "$CB" "$WORK/over.xml"
-expect_rc "C3 UnusedResources 34→35 必须红" "1"
-expect_has "C3 红的时候点名是哪条规则" "OVER UnusedResources"
+# ── C3–C6 分类之后还得有牙 ──────────────────────────────────────────────────
+printf '%s C3–C6：降级之后判据还有没有牙\n' "$GATE_LOG_PREFIX" >&2
 
-# ── C4 还有牙：预算过期（债还掉了没落账）必须红 ─────────────────────────────
-mk_budget "$WORK/tiny.txt" "UnusedResources 40" "ModifierParameter 9"
-gate "$WORK/tiny.txt" "$WORK/over.xml"
+UNUSED="$(bget UnusedResources)"
+mk_report "$WORK/at-budget.xml"
+gate "$CB" "$WORK/at-budget.xml"
+expect_rc "C3a 每条正好压在账本上时应当合规" "0"
+
+mk_report "$WORK/over.xml" "UnusedResources=$((UNUSED + 1))"
+gate "$CB" "$WORK/over.xml"
+expect_rc "C3b 真债多一条必须红（UnusedResources $((UNUSED + 1)) > $UNUSED）" "1"
+expect_has "C3c 红的时候点名是哪条规则" "OVER UnusedResources"
+
+mk_budget "$WORK/tiny.txt" "UnusedResources $((UNUSED + 7))" "ModifierParameter $(( $(bget ModifierParameter) + 7 ))"
+gate "$WORK/tiny.txt" "$WORK/at-budget.xml"
 expect_has "C4 实测比登记干净时仍然红（STALE）" "STALE UnusedResources"
 
-# ── C5 还有牙：冒出来一条谁都没登记过的新规则，必须红 ───────────────────────
-mk_report "$WORK/newrule.xml" UnusedResources 34 ModifierParameter 8 AutoboxingStateCreation 6 \
-  ClickableViewAccessibility 1 DataExtractionRules 1 DefaultLocale 2 GradleDependency 1 \
-  IconLauncherShape 5 IconLocation 3 InlinedApi 1 PluralsCandidate 3 RedundantLabel 1 \
-  ReturnFromAwaitPointerEventScope 3 StaticFieldLeak 1 SwitchIntDef 1 SomethingBrandNew 2
+mk_report "$WORK/newrule.xml" "SomethingBrandNew=2"
 gate "$CB" "$WORK/newrule.xml"
-expect_rc "C5 未登记的新规则仍然红" "1"
-expect_has "C5 说得出是新登记问题而非超预算" "OVER SomethingBrandNew"
+expect_rc "C5 冒出来一条没登记过的规则仍然红" "1"
+expect_has "C5 说得出是没登记而不是超预算" "OVER SomethingBrandNew"
 
-# ── C6 advisory 不锁数：上游版本清单会漂，漂了不红，但必须看得见 ────────────
-printf '%s C6–C9：advisory 的边界\n' "$GATE_LOG_PREFIX" >&2
-mk_report "$WORK/adv-drift.xml" UnusedResources 34 ModifierParameter 8 AutoboxingStateCreation 6 \
-  ClickableViewAccessibility 1 DataExtractionRules 1 DefaultLocale 2 GradleDependency 99 \
-  IconLauncherShape 5 IconLocation 3 InlinedApi 1 PluralsCandidate 3 RedundantLabel 1 \
-  ReturnFromAwaitPointerEventScope 3 StaticFieldLeak 1 SwitchIntDef 1
+mk_report "$WORK/adv-drift.xml" "GradleDependency=99"
 gate "$CB" "$WORK/adv-drift.xml"
-expect_rc "C6 GradleDependency 10→99 不该把门禁判红（它量的不是这个仓库）" "0"
-expect_has "C6 但 99 条要照样打印" "ADVISORY GradleDependency=99"
+expect_rc "C6 GradleDependency 涨到 99 不该判红（它量的不是这个仓库）" "0"
+expect_has "C6 但 99 要照样打印" "ADVISORY GradleDependency=99"
 
-# ── C7 降级必须写理由 ───────────────────────────────────────────────────────
-mk_budget "$WORK/noreason.txt" "UnusedResources 34" "advisory GradleDependency"
+# ── C7–C9 advisory 的边界 ───────────────────────────────────────────────────
+printf '%s C7–C9：advisory 的边界\n' "$GATE_LOG_PREFIX" >&2
+
+mk_budget "$WORK/noreason.txt" "UnusedResources $UNUSED" "advisory GradleDependency"
 gate "$WORK/noreason.txt" "$WORK/adv-drift.xml"
-expect_rc "C7 没有理由的 advisory 不算登记（=没验证）" "2"
+expect_rc "C7 没写理由的 advisory 不算登记（=没验证）" "2"
 expect_has "C7 说清为什么" "CANNOT-VERIFY"
 
-# ── C8 不许把仓库自己的债降级 ───────────────────────────────────────────────
-mk_budget "$WORK/demote.txt" "ModifierParameter 8" "advisory UnusedResources 我看它不顺眼"
+mk_budget "$WORK/demote.txt" "ModifierParameter $(bget ModifierParameter)" \
+  "advisory UnusedResources 我看它不顺眼"
 gate "$WORK/demote.txt" "$WORK/adv-drift.xml"
-expect_rc "C8 把 UnusedResources 降级成 advisory 必须被拒" "1"
+expect_rc "C8 把仓库自己的债降级成 advisory 必须被拒" "1"
 expect_has "C8 拒的时候要给出路" "ADVISORY-FORBIDDEN UnusedResources"
 
-# ── C9 同一条规则不许既进预算又进 advisory ─────────────────────────────────
-mk_budget "$WORK/dup.txt" "UnusedResources 34" "GradleDependency 1" \
+mk_budget "$WORK/dup.txt" "UnusedResources $UNUSED" "GradleDependency 1" \
   "advisory GradleDependency 上游一发新版条数就变"
 gate "$WORK/dup.txt" "$WORK/adv-drift.xml"
-expect_rc "C9 重复登记按'读不出该信哪条'处理" "2"
+expect_rc "C9 同一条既进预算又进 advisory = 读不出该信哪条" "2"
 
-# ── C10 尺要自报家门：本机绿不等于 CI 绿，日志里得先看得出是哪台机器量的 ──────
+# ── C10 尺要自报家门 ────────────────────────────────────────────────────────
 printf '%s C10–C12：尺必须自报 + 改账本的规矩\n' "$GATE_LOG_PREFIX" >&2
 gate "$CB" "$CI_XML"
 expect_has "C10 输出点名这次用的是哪把尺" "ruler"
-expect_has "C10 尺上带 lint 版本（从报告根元素读，不是猜的）" "version=8.6.0"
+expect_has "C10 尺上带 lint 版本（从报告根元素读）" "version=8.6.0"
 expect_has "C10 尺上带操作系统" "os="
 
-# ── C11 --rewrite 保住 advisory，且只动进预算的数字 ─────────────────────────
+# ── C11 --rewrite 保住 advisory 且不把 advisory 回写成预算 ──────────────────
 cp "$CB" "$WORK/budget-copy.txt"
-gate "$WORK/budget-copy.txt" "$WORK/adv-drift.xml" --rewrite
-expect_rc "C11 --rewrite 在合规时退出 0" "0"
+gate "$WORK/budget-copy.txt" "$WORK/at-budget.xml" --rewrite
+expect_rc "C11 合规时 --rewrite 退出 0" "0"
 if grep -q '^advisory GradleDependency ' "$WORK/budget-copy.txt"; then
-  pass "C11 --rewrite 没有把 advisory 段抹掉"
+  pass "C11 --rewrite 没有抹掉 advisory 段"
 else
-  bad "C11 --rewrite 抹掉了 advisory 段" "重写后的账本："
-  sed 's/^/       /' "$WORK/budget-copy.txt" >&2
+  bad "C11 --rewrite 抹掉了 advisory 段" "重写后的账本：" "$(sed -n '1,20p' "$WORK/budget-copy.txt")"
 fi
 if grep -qE '^GradleDependency [0-9]' "$WORK/budget-copy.txt"; then
-  bad "C11 --rewrite 把 advisory 规则又写回预算里了"
+  bad "C11 --rewrite 又把 advisory 规则写回预算里了"
 else
-  pass "C11 advisory 规则不会回写成预算"
+  pass "C11 advisory 规则不会被回写成预算"
 fi
-gate "$WORK/budget-copy.txt" "$WORK/adv-drift.xml"
-expect_rc "C11 重写之后立刻再判一遍是绿的（自洽）" "0"
+gate "$WORK/budget-copy.txt" "$WORK/at-budget.xml"
+expect_rc "C11 重写之后立刻再判一遍是自洽的" "0"
 
-# ── C12 --rewrite 不许借道抬预算 ───────────────────────────────────────────
+# ── C12 --rewrite 不许借道抬预算 ────────────────────────────────────────────
 cp "$CB" "$WORK/budget-copy2.txt"
 before="$(sha256_of "$WORK/budget-copy2.txt")"
 gate "$WORK/budget-copy2.txt" "$WORK/over.xml" --rewrite
@@ -264,11 +279,12 @@ after="$(sha256_of "$WORK/budget-copy2.txt")"
 if [ "$before" = "$after" ]; then pass "C12 拒绝重写时账本逐字节未动"
 else bad "C12 拒绝重写却改了账本" "before=$before" "after=$after"; fi
 
-# ── C13 报告读不到 = 没验证，不是通过 ──────────────────────────────────────
+# ── C13 读不到 = 没验证 ─────────────────────────────────────────────────────
 printf '%s C13：读不到就是没验证\n' "$GATE_LOG_PREFIX" >&2
 gate "$CB" "$WORK/does-not-exist.xml"
 expect_rc "C13 报告缺失 → CANNOT-VERIFY" "2"
-printf '<?xml version="1.0" encoding="UTF-8"?>\n<issues format="6" by="lint 8.6.0">\n</issues>\n' >"$WORK/zero.xml"
+printf '<?xml version="1.0" encoding="UTF-8"?>\n<issues format="6" by="lint 8.6.0">\n</issues>\n' \
+  >"$WORK/zero.xml"
 gate "$CB" "$WORK/zero.xml"
 expect_rc "C13 报告 0 条 issue → CANNOT-VERIFY（宁可信其有错）" "2"
 
