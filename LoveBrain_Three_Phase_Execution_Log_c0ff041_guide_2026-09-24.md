@@ -3,11 +3,11 @@
 > 输入指导书：`LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md`
 > 被审提交 `c0ff0415`；本轮起点 `4795471`（上一窗口的最后一个提交，它已停手并留了
 > `LoveBrain_Handover_CI_Evidence_2026-09-24.md`）。
-> 本轮 HEAD：`4a8f7f7`（谈心 store）+ `284463f`（协调器偶发红）+ 本文件这条。
+> 本轮 HEAD：`4a8f7f7`（谈心 store）→ `284463f`（协调器偶发红）→ `5e06cc9`（改写 store）→ 本文件这条。
 > **全部只在本地、未推送**：`git ls-remote origin main` 实测远端仍是起点
 > `4795471`；领先多少个提交**别抄这里的数**，现算：
-> `git rev-list --count 4795471..HEAD`（写这一段时测得 30，含本条 docs 提交）。
-> 阶段一的 P0-03/04/05 + 阶段二的 ports/棘轮/死 API/四个 store 都在里面。
+> `git rev-list --count 4795471..HEAD`（`5e06cc9` 落地后测得 32，含本条 docs 提交则 33）。
+> 阶段一的 P0-03/04/05 + 阶段二的 ports/棘轮/死 API/五个 store 都在里面。
 > 本轮没有改 prompt：`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` → 零差异。
 
 ## 0. 一句话状态
@@ -15,8 +15,9 @@
 阶段一的 P0-03 / P0-04 / P0-05 已落地并本机验证；P0-01 / P0-02 的**真机那一半卡在
 19 条 instrumentation 真失败**上，本机没有 system image，只有 CI 能出证据，所以要推送。
 阶段二：包边界棘轮 + 死 API + Koin 唯一 journal + 冻结注释改口 + ports 与双侧合同测试
-+ 三道"不许变差"的闸都落地了；五条 feature store 搬出 **4 条**（Reply / Suggest /
-Proactive / Counseling），只剩 Rewrite；KnowledgeRepository 按能力拆分**没做**。
++ 三道"不许变差"的闸都落地了；§5.2 的五条 feature store **全部搬完（5/5）**，
+但 VM 反而 2651 → 2734 行，"退成薄 facade 再删掉"那一步还没做；主动发的"模式"
+（两个 enum 还在 VM 里）也没搬完；KnowledgeRepository 按能力拆分**没做**。
 阶段三（设计系统 10 个组件、截图矩阵）**没开始**。
 
 ## 1. 逐项进度表
@@ -41,7 +42,7 @@ Proactive / Counseling），只剩 Rewrite；KnowledgeRepository 按能力拆分
 | 16 | §3.3 prompt「冻结」说法不实 | **完成（选了"改口"分支）** | `845330a` | Engine 注释改成"hash 只做诊断，本轮用的是现读文本"；`PreparedPrompt` 整体冻结没做 |
 | 17 | §3.3 验收包与实现不符的两句话 | **部分** | — | "仍用冻结 prompt"已改口；"全部写路径统一拒绝"现在**变成真的**了，但验收包文档还没补这一节的实测数 |
 | 18 | §7 第二步 4：包依赖测试 | **完成** | `a9bb9b1` | 棘轮 + `scripts/package_deps_report.sh`；存量 15 条 / 11 文件已登记；四格反向验证 |
-| 19 | §7 第二步 1/2/3（ports、feature store、Repository 拆分） | **1 完成 / 2 完成 4/5 / 3 没做** | ports `2dd94c0`；store `9cbcbb1`/`d25bdb0`/`8e911b8`/`4a8f7f7` | 详见 §2b/§2c/§2d；剩下的没做项全在 §3 |
+| 19 | §7 第二步 1/2/3（ports、feature store、Repository 拆分） | **1 完成 / 2 状态持有者 5/5 但 facade 没退 / 3 没做** | ports `2dd94c0`；store `9cbcbb1`/`d25bdb0`/`8e911b8`/`4a8f7f7`/`5e06cc9` | 详见 §2b–§2e；剩下的没做项全在 §3 |
 | 20 | §7 第三步（设计系统 + 截图矩阵） | **未开始** | — | 见 §3 |
 
 ## 2. 本机门禁（一次跑完的实测，全部来自当次命令输出）
@@ -173,6 +174,51 @@ KnowledgeRepository                  2001 行，仍是全仓第二长
 → **4/5**：回复、锦囊、主动发、谈心四条的状态持有者已经出去（主动发的"模式"那一样仍在 VM），
 只剩 Rewrite 一条。
 
+## 2e. 阶段二第五轮：RewriteStore（五个 store 全部搬完 5/5）
+
+| §5.2 第 5 步 | 状态 | 实测证据 |
+|---|---|---|
+| 接管 `rewriteRequestId` | **完成** | 两个裸字符串（`rewriteRequestId` / `rewriteContextId`）合成 `RewriteStore.Identity(requestId, contextId, identityKey, option)`，发起时冻结、终态时带回来核对。VM 里不再有任何人能做"第二次改写没登记"这种事 |
+| 接管 ledger | **完成，且台账只管一件事** | `RewriteLedger` 搬进 `feature/rewrite`（留在 viewmodel 包会让 feature 反向 import viewmodel），并拆掉它的第二职：卡片状态（Loading/Done/Error）归 `RewriteStore.UiState`，台账只剩版本栈。`RewriteLedgerTest` 7 格留历史，状态断言 4 格搬进 `RewriteStoreTest` |
+| 接管取消 | **完成** | `Intent.RequestCancel` → 只有取消的确实是那张在途卡时才发 `Effect.StopRunningRewrite(requestId)`，VM 再核对租约身份才 `stopCurrent` |
+
+搬出来后**当场看得见**修掉的三个顺序缺陷（每个都能复述成用户手上一件事）：
+
+1. 被协调器拒绝的改写让卡片永久转圈 —— 旧写法先 `begin` 再 `start`，而 `start` 会返回 null
+   （前台槽位被占、或连点两张卡）。现在 `Begin` 挪进任务体第一行：任务没跑起来就什么都不留。
+2. 点 A 卡的"取消"会停掉 B 卡正在跑的改写 —— 旧 `cancelRewrite` 无条件
+   `stopCurrent(REWRITE)`。反证：把"是不是在途那张"的判定改成"只要有在途就停" →
+   `cancelling a card that is not the in-flight one stops nothing` 红。
+3. **撤销会吃掉历史** —— 旧写法先 `pop()` 再检查"结果还在不在、key 解不解得开"，任何一步
+   失败就 `return`，那一版正文永久丢失、卡片还挂着 Done。改成两步式
+   （`UndoRequested` 只 peek 交效果 → VM 真贴回去才 `UndoCommitted` → store 这时才 pop）。
+   可达性不高（轮次切换会连带清历史），但顺序是错的，所以修。
+
+新增接缝测试 `RewriteEffectWiringTest` 8 格：钉的是"store 交出来的效果真的落到结果上"——
+只换目标卡、其他三张一个字不动、新正文从 NONE 开始、撤销连正文带赞踩一起回来、计数只加一次。
+这条接缝是搬家时新长出来的，不写它等于把"贴错卡片 / 撤销不还原反馈"留给真机发现。
+踩到的一次假失败值得记：`vm.result` 是 `stateIn` 派生的，`StandardTestDispatcher` 下
+不推进调度器读到的永远是上一帧的 `null` —— 第一版 5 格 NPE 全红在这里，不是生产问题。
+
+13 个变异逐个注入反例，每个只咬住它该咬的那格（两条打在 VM 接缝上：贴固定的 STYLE:A、
+撤销不还原反馈），脚本 `_temp/mutate_rewrite.py`（不入库），结果留档
+`_temp/rewrite_mutation_results.txt`；跑完逐字节复原并断言 `git status` 与跑前一致。
+
+体量这条本轮最难看，按实数写：**VM 2661 → 2734（+73）**。规则搬出去 223 行，
+但 `onRewriteEffect` 与它的注释留在了里面。§7 第二步"完成定义"第一条
+（VM 不再持有五条 feature 的内部状态）**状态持有者这一半达成（5/5）**，
+"薄 facade"这一半**反而更远**；把 VM 减下来是删 facade（§5.2 第 6 步）那一刀的事。
+
+本轮收尾实测：
+
+```
+:app:testDebugUnitTest              1028 tests / 125 suites / 0 失败 / 0 跳过 / 0 泄漏异常
+:app:lintDebug                      71 issues（65 Warning + 6 Information），Error 0；check_lint_budget.sh OK
+跨层 import 棘轮                     6 条（feature/rewrite 没有新增任何越界方向）
+生产 Kotlin                          123 文件 / 33,810 行 / >500 行 18 个 / >800 行 10 个
+取消审计 / 工单编号 / prompt diff      NEEDS_REVIEW=0 / PASS / 零 diff，lock 6dcde732… OK
+```
+
 ## 3. 明确没做到 / 没法在本机做到的（不混进上面）
 
 1. **19 条真机 instrumentation 失败还在**。本轮只做到：把 7 条同源的夹具竞态改掉、
@@ -183,14 +229,15 @@ KnowledgeRepository                  2001 行，仍是全仓第二长
    才算真判过；脚本没有"没装就跳过"的分支，装不上就是红。
 3. **Service destroy 那两格是 Assume 主动跳过的**（instrumentation 起不了悬浮窗/FGS）。
    报告里算 skipped，不算通过。
-4. **阶段二剩下的两块硬骨头**：①`RewriteStore`（§5.2 五条链的最后一条，它该把 §2.2 点名的
-   `rewriteRequestId` 手工账本替成 `SuggestStore.Identity` 那种在途身份）；
-   ②KnowledgeRepository 按
+4. **阶段二剩下三件**：①KnowledgeRepository 按
    catalog/document/profile/memory/migration/archive/round 拆（§5.3，且必须共用一个
-   `KnowledgeTransactionManager`，不许每个新类各自 new Mutex）。
-   端口层已铺好（domain 不再 import data，越界 15→6），所以这两块现在是"往上搬"，
+   `KnowledgeTransactionManager`，不许每个新类各自 new Mutex）；
+   ②§5.2 第 6 步"VM 退成薄 facade 然后删掉"——五条链的状态持有者已经全部出去（§2e），
+   但 VM 反而从 2651 涨到 2734 行，**这 83 行就是 facade 那一步要还的债**；
+   ③`ComposerMode` / `ResultMode` 两个 enum 仍在 VM 里，主动发的"模式"因此没搬完。
+   端口层已铺好（domain 不再 import data，越界 15→6），所以这些都是"往上搬"，
    不必边拆边补依赖。§5.1 的 `core/designsystem` / `core/testing` 目录也都还没建
-   （`feature/reply` 等四个 store 算开了个头）。
+   （`feature/` 下五个 store 算开了个头）。
    仍然要认的一条：本轮让 KnowledgeRepository 从 1857 涨到 2001 行，
    写边界是必要的，但它同时成了"最大的一次性改动"和"最长文件之一"，拆类必须紧跟。
 5. **阶段三完全没开始**：设计 token + `Lb*` 基础组件、Home/Usage/Provider/Feedback 重写、
@@ -199,8 +246,9 @@ KnowledgeRepository                  2001 行，仍是全仓第二长
 6. P1-05 文案收口没动：这一条仍然成立（本轮一行文案都没改）。宽尺测到的数是 **209 处**
    用户可见中文字面量，见 §2c 对 "101 处" 的纠偏——101 只数了 `Text("中文`，是下界。
    `UiStringLiteralBudgetTest` 的闸已装上，剩下的是还债速度。
-7. **"陈旧事件被拒"的日志只补回了谈心一处**。四次搬 store 一共带走了 4 条
-   `L.w("… rejected (stale requestId)")`，本轮在 VM 的 `isCurrentRequest` 注入点补回谈心的那条，
+7. **"陈旧事件被拒"的日志还差三处**。四次搬 stream store 一共带走 4 条
+   `L.w("… rejected (stale requestId)")`。现在谈心（§2d 补回）与改写（本轮新增——
+   旧代码在身份不合时是静默 `return@start`，一句都不报）会报，
    **Reply / Suggest / Proactive 三处仍缺**。这不是功能缺陷（闸本身还在，只是拒绝时不吭声），
    但线上排"为什么这轮没出字"时会少一条线索。修法已经验证可用，照抄即可。
 
@@ -220,12 +268,16 @@ KnowledgeRepository                  2001 行，仍是全仓第二长
    `ui-test` 若还红，用新加的诊断输出定位那 8 条"not displayed"是没测量、被裁还是出窗口；
    新加的 3 格语义树断言（48dp / selected / contentDescription）**预期可能红**，
    那是把假绿换成真信号，不是回归。
-2. 阶段二继续：按 §5.2 顺序迁最后一条链 `RewriteStore`。它该接管的不只是状态，还有
-   §2.2 点名的 `rewriteRequestId` 手工账本——替成 `SuggestStore.Identity` 那种"在途身份"，
-   让"哪一次改写的回调算数"由 store 判定而不是 VM 记字段。照抄前四把的形状：
-   Intent/Effect + 同步回调 + 不启动 VM 也能测 + 顺手把"陈旧事件被拒"的日志补回三处（§3 第 7 条）。
-   另：`ComposerMode` / `ResultMode` 两个 enum 要先挪进 model，才能把主动发的"模式"搬完
-   ——那是一步独立的机械改动（改所有 `LoveBrainViewModel.ComposerMode` 引用点）。
+2. 阶段二收尾（§5.2 五条链已 5/5，接下来这三件按顺序做）：
+   ①`ComposerMode` / `ResultMode` 两个 enum 挪进 `model`，再把主动发的"模式"从 VM 搬进
+   `ProactiveStore` —— 挪 enum 是一步独立的机械改动（改所有 `LoveBrainViewModel.ComposerMode`
+   引用点，含 UI 与 androidTest）。
+   ②§5.2 第 6 步：VM 退成只组合 StateFlow 的 facade，然后**删 facade**——调用点直连 store。
+   这一刀才是把 VM 从 2734 行往下压的那一刀，前五步搬完它反而涨了 83 行。
+   ③三条链的"陈旧事件被拒"日志补齐（§3 第 7 条）。
+   另：`RewriteStore` 把"这轮改写算不算数"收进在途身份之后，
+   `ForegroundOperationCoordinator` 与它各持一半身份（requestId 同源两处判），
+   下一步若把协调器租约直接注进 store 的 `isCurrentRequest`，要顺带确认没有第二本账。
 3. KnowledgeRepository 按 §5.3 拆 catalog/document/profile/memory/migration/archive/round，
    共用一个 `KnowledgeTransactionManager`（不许每个新类各自 new Mutex）。
 4. P1-05 的真正收口：把宽尺测到的 209 处中文字面量搬进 strings.xml / values-en，
