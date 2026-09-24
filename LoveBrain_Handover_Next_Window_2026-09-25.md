@@ -58,6 +58,24 @@ HEAD `3b86b03`，仍未推。这两笔都在账本「追加四」（§14）里�
 - 通用教训两条，写进 §6 第 32–35 条：**收紧某个读入口之后要回头搜还有谁在判它的存在性**；
   **钉磁盘的测试不会替你钉返回值**。
 
+## 0.3 §5.3 到这一格结束：七个名字都在了（其中一个是半个）
+
+HEAD `0c4d6d6`，仍未推。两笔：
+
+- `99c209d` **话题行 `正在聊：` 收成一个所有者**：它原本在五处各写一份字面量（四处写、一处读），
+  而 `substringAfter` 找不到标记时**把整行还给调用方**——改字不报错，只是归档标题里会出现时间戳。
+  新增 `KbTextOps.topicLine/topicLabel` + 一条"这个字面量只许出现在 KbTextOps.kt"的形状尺。
+- `0c4d6d6` **第七格 `KnowledgeArchiveService`**：`rotateTopic` 那 80 行方法体里的四条规则
+  （四步判定 / 归档条目格式 / 旧话题名读法 / 计数回填口径）各有所有者；`archiveEntry` 抽出来能单独测了。
+  `KnowledgeRepository` 1876 → **1793**（本轮第一次真正变短）。
+  两条不是搬家的变化：`getLessonCount` 两把锁并成一把；状态没落盘从静默变成留痕。
+  新格 10 格逐条注入验红（A1/A2/A3/A5/A6/A7/A8 七次，各自只红目标格）。
+
+准确的说法是：**七个格子都有，但 catalog 那一格是半个**（只搬了枚举侧，写侧因为诚实接口要 ~10 个成员
+而显式退回），`KnowledgeArchiveService` 这个名字是由三个协作者凑成的（rotate/transfer/backup），
+`KnowledgeTransactionManager` 这个**名字**仍然不存在（语义由 `fileMutex` + `transaction` 承担）。
+详见账本 §15.4 那张表——回答"§5.3 做完了吗"要照它说，不许说"7/7 完成"。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -76,11 +94,12 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
 ```
 
-最近一轮实测基线（到 `3b86b03`）：**1148 单测 / 143 套件 / 0 失败 / 0 错误 / 0 跳过**
-（最旧 XML 04:09:01，日志起点 04:05:41，并排比过）；lint 报告**重新生成后**（04:11）70 条 / 15 规则，
-其中 **进预算 69 条 / 14 规则**、advisory 1 条；`:app:compileDebugAndroidTestKotlin` rc=0；
-prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（与基线同，没长）。
-`KnowledgeRepository` 1941 → 1878 → 1844 → **1876** 行（回滚三段与只读前置是净增），
+最近一轮实测基线（到 `0c4d6d6`）：**1163 单测 / 145 套件 / 0 失败 / 0 错误 / 0 跳过**
+（最旧 XML 04:45:22；日志止点 04:45:24、本次跑 183s → cut 从日志自己算，别用记忆里的时间）；
+lint 报告**重新生成后**（04:47）70 条 / 15 规则，其中 **进预算 69 条 / 14 规则**、advisory 1 条；
+`:app:compileDebugAndroidTestKotlin` rc=0；prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；
+跨层 **6** 条（与基线同，没长）。
+`KnowledgeRepository` 1941 → 1878 → 1844 → 1876 → **1793** 行（第一次真正变短），
 `LoveBrainViewModel` 2746 → **2756** 行（只改了 PreconditionFailed 那一个分支）。
 **大文件计数已变：>500 行从指导书的 18 个降到 17 个**（跨下来的是 `FeedbackCasesScreen.kt`，
 `e359930` 那次 534→500；没有一个新跨上去），>800 仍 10 个——别再把 18/10 当现状抄；
@@ -107,8 +126,9 @@ prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（�
    并用脚本自带的 `TOKEN_RE` 独立复扫生产注释 → 0 命中。**教训：门禁要么当次跑，要么标"沿用上轮未复验"，
    不许写 PASS。**
    顺带把上一条结干净：`a07b285` 之后"把内容返回给调用方"的那批读已全部过守门；
-   仍剩 **4 处**在 `applyProfileUpdateAtomically` 的备份快照里，由 `StorageBoundaryOwnershipTest`
-   的条数棘轮钉着（登记 4，只许降），不是"已经全做完了"。
+   当时仍剩 4 处在 `applyProfileUpdateAtomically` 的备份快照里，`007e4fd` 也还清了——
+   **那条棘轮现在登记 0 处**（owners 是空集，注入一处会两条消息一起红）。所以"读路径全部过 canonical"
+   这句现在才算立得住，但 `kbExistsUnlocked` 那个布尔泄露仍在（见 §4 第 1 条）。
 
 ## 3. 只剩"推送 + 读 CI"能闭的（本轮新留下）
 
@@ -125,44 +145,44 @@ prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（�
 
 ## 4. 下一格建议顺序（本机就能做的那批，B 类）
 
-1. **§5.3 只剩 archive 那一格**（`KnowledgeArchiveService`：topic rotate / import / export / backup）。
-   现状：backup 早有独立类（`KnowledgeBackupService`），`KbArchiveTransfer` 管导入暂存区，
-   `rotateTopic` 与它的幂等状态机仍在仓库里——但**那一带的裸路径已经清零**
-   （`007e4fd` 把快照/回滚/校验三段全并进守门与 `KnowledgeTx`，棘轮现在登记 **0 处**）。
-   所以这一格剩下的不是"补边界"，是一个归属判断：四步状态机该不该有自己的家，
-   以及 `applyProfileUpdateAtomically` 要不要跟它一起走。**别为了进度把宽接口当成果**
-   （catalog 写侧那次的判断仍然有效，见下面第 2 条）。
-   另两个已知未做，别当已做：`kbExistsUnlocked` 仍用裸路径判"目录+kb.json 在不在"
-   （只泄露一个布尔，改严会让 ~15 个入口的日志措辞从 path refused 变成 kb no longer exists，
-   是一次显式决定）；指导书点名的 `KnowledgeTransactionManager` 这个**名字**全仓不存在。
-2. **catalog 写侧**（`create/delete/setActive/updateDisplayName/ensureInitial`）我试过又退回：
-   `create` 要向仓库要 encode/模板写/列目录/事务改 meta/删备份…接口会长到约十个成员，
-   那是拿"拆类"的名义造一个违反 ISP 的宽端口。要做就先切 `setActive`+`updateDisplayName`
-   这一对（它们只要 `writeMetaTransaction` + `updateMeta`）。
-3. **round 那一格重判过，别重复劳动**：`RoundCommitJournal.kt`（`domain/`，457 行，Koin 注册）
+1. **§5.3 只剩 catalog 的写侧**（archive 已落 `0c4d6d6`，七个名字都在了）。
+   判断仍是上一轮那条，没变：`create` 要向仓库要 encode/模板写/列目录/事务改 meta/删备份…
+   诚实接口会长到约十个成员，那是拿"拆类"的名义造一个违反 ISP 的宽端口。
+   要动就先切 `setActive` + `updateDisplayName` 这一对（它们只要 `runTransaction` 级别的
+   `updateMeta`），把 `create`/`ensureInitial`/`delete` 留作"初始化与销毁"单独判。
+   **别为了把 7/7 说满而交一个宽接口。**
+   两个已知未做的账，回答"§5.3 做完了吗"时要一起说：
+   `kbExistsUnlocked` 仍用裸路径判"目录+kb.json 在不在"（只泄露一个布尔；改严会让 ~15 个入口的
+   日志措辞从 path refused 变成 kb no longer exists，是一次显式决定）；
+   指导书点名的 `KnowledgeTransactionManager` 这个**名字**全仓不存在（语义由 `fileMutex` +
+   `transaction`/`transactionUnlocked` + `KnowledgeTx` 承担）。
+2. **round 那一格重判过，别重复劳动**：`RoundCommitJournal.kt`（`domain/`，457 行，Koin 注册）
    早就是独立所有者，`KnowledgeRepository` 里一条 journal 逻辑都没有。
    上一份账记"未做"是错的（错在把"从来不在仓库里"当成"没拆出来"）。
    `TopicRecorder.kt:56` 那个 `?: RoundCommitJournal(knowledgeRepo)` 兜底构造是另一件事，
    与 P1-04 的双注册有关，要动就单独一格。
-4. **`FloatingService` 那颗输入行的可点节点没有标签**——逐点数入口时量到：带 `EditableText`、
+3. **`FloatingService` 那颗输入行的可点节点没有标签**——逐点数入口时量到：带 `EditableText`、
    无文案无 `contentDescription`，读屏念不出这是什么输入框（§6.5 第②栏）。改生产码，
    测试形状现成（`ComposerAddButtonGatingTest` 已经在数这些节点，数到 5 个）。
-5. **§6.3 知识库页接四态**：范例已有两份（反馈页 `e359930`、供应商页 `d902514`→`80bc78e`）。
-6. **§5.1 `core/testing` 归位**：本轮新增 `app/src/androidTest/…/testing/UiText.kt`，
+4. **§6.3 知识库页接四态**：范例已有两份（反馈页 `e359930`、供应商页 `d902514`→`80bc78e`）。
+5. **§5.1 `core/testing` 归位**：本轮新增 `app/src/androidTest/…/testing/UiText.kt`，
    于是同一判据的夹具文本在两个测试源集各存一份（`ReplyPayloadShapeForUiFixtureTest` ↔
    `ResultAreaInteractionTest`；`KnowledgeDocumentStoreTest` ↔ 生产文档格），
    改一处必须改两处——这就是 §5.1 那张目录图要解决的。
-7. §6.1 剩 9 颗 `Lb*` 组件 + token 从 `ui.theme` 迁进 `core/designsystem`。
-8. §6.5 截图工具仍**故意没接**：理由未变（§6.1–§6.4 铺开前拍的 baseline 会整批作废）。
+6. §6.1 剩 9 颗 `Lb*` 组件 + token 从 `ui.theme` 迁进 `core/designsystem`。
+7. §6.5 截图工具仍**故意没接**：理由未变（§6.1–§6.4 铺开前拍的 baseline 会整批作废）。
    注意 `e657778` 已把"CI 交不出截图"这条产物洞补上，与"接 baseline 工具"是两件事。
 
-拆格的形状照 `adbf5f3`（文档）、`a0fef45`（记忆）、`b6873cf`（画像）三格：窄接口（≤6 个成员）、
+拆格的形状照 `adbf5f3`（文档）、`a0fef45`（记忆）、`b6873cf`（画像）、`0c4d6d6`（归档）四格：
+窄接口（画像 6 个成员、归档 7 个——再宽就是拿拆类名义放宽端口，catalog 写侧因此退回）、
 **不 new Mutex、不搬 CoroutineScope、不自家落盘**。现在有五家闸分别拦
 （`SingleOwnerContractTest`、`KnowledgeMigratorLegacyTest` 的锁棘轮、
-`StorageBoundaryOwnershipTest` 的所有权 + 条数 + 零能力三组、`ReadOnlySchemaWriteGateTest` 的 24 入口遍历、
-`ProfileReadBoundaryTest` 的读边界）。
+`StorageBoundaryOwnershipTest` 的所有权 + 条数 + 零能力三组、`ReadOnlySchemaWriteGateTest` 的 25 入口遍历、
+`ProfileReadBoundaryTest` + `ProfileTransactionRollbackBoundaryTest` 的读与回滚边界）。
+新格一律配"格级 fake + 逐条注入验红"，搬家那笔必须有真文件系统的既有 net 同时在跑，
+才敢说"这一步没改行为"（归档那笔的 net 是 `ArchiveOperationStateTest` 五格）。
 
-## 5. 别重复劳动：这几轮做的 15 笔
+## 5. 别重复劳动：这几轮做的 17 笔
 
 | 提交 | 内容 |
 |---|---|
@@ -181,6 +201,8 @@ prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（�
 | `b6873cf` | §5.3 第六格 `KnowledgeProfileStore`：维度表三处→一处、标签行改写两份→一份、白名单拒绝四处→一处；`ProfileReadBoundaryTest` 9 格 + 格级 20 格，全部注入反例验过红；棘轮新增"后拆的格子零存储能力" |
 | `007e4fd` | 回滚的第二条写链并回守门与 `KnowledgeTx`（越界那次调用以前会把库外文件写空，实测红）；快照的存在性与内容同出一门；裸路径计数 10 → 4 → **0** |
 | `3b86b03` | 只读库上的画像事务不再报 `Success`：新增 `PreconditionReason.LIBRARY_READ_ONLY` + 入口判定；UI 分清"建议作废"与"这次写不动"，只读不再清卡；enum 形状那条尺 2 → 3 |
+| `99c209d` | 话题行 `正在聊：` 五处字面量收成 `KbTextOps.topicLine/topicLabel` 一个所有者；新增"这个字面量只许出现在一个文件里"的形状尺（扫描自证不空跑）；怪癖"没标记就返回整行"只钉不改 |
+| `0c4d6d6` | §5.3 第七格 `KnowledgeArchiveService`：四步判定 / 归档条目格式 / 旧话题读法 / 计数口径各有所有者；`getLessonCount` 两把锁并一把、状态没落盘从静默变留痕；10 格新测试逐条注入验红（七次注入）；仓库 1876 → **1793** 行 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -244,6 +266,16 @@ prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；跨层 **6** 条（�
     写成 `(message, expected, actual)` 会撞到 `(String, Double, Double)` 那个重载，
     报的是 "Type mismatch: inferred type is String but Double was expected" 这种看不懂的错。
     同一文件混两套 import 时最容易踩（`ProfileTransactionResultTest` 用的是 kotlin.test 那套）。
+36. **同一条 JVM 擦除坑一轮踩两次**：`MemoryTx.() -> Unit` 与 `ProfileTx.() -> Unit`  clash 修完，
+    `MemoryTx` 与 `ArchiveTx` 又 clash（都擦除成 `Function1`）。凡是"给第 N 个格子加一条
+    `write*(Tx.() -> Unit)` 能力"，名字必须一开始就带域前缀（`runTransaction`/`writeMetaTransaction`），
+    别指望记性。
+37. **把一段逻辑搬成新格之前，先确认它有没有真文件系统的既有 net 在跑**：归档那笔能一边搬
+    一边宣布"没改行为"，靠的是 `ArchiveOperationStateTest` 五格在临时目录上跑整个仓库；
+    只有格级 fake 的话，搬错方向（比如两把时钟合一）不会被任何测试拦住——那一格是我补出来的。
+38. **一段说明文字里的 glob 会吞掉代码**：`understand/*.md` 这种写法在 KDoc 里等于开了一个嵌套
+    块注释（Kotlin 注释可嵌套），整段后面全变注释。写范围时用"me/her/warmth/style 四份"这类
+    自然语言，别用 `*`（同一族第 26 条）。
 
 ## 7. 硬约束（一条没变）
 

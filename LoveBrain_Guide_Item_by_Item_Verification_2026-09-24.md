@@ -663,3 +663,74 @@ VM 那格红；两次都只有目标格红。仍留着一个缺口没补：**其
   `transaction`/`transactionUnlocked` + `KnowledgeTx` 承担）。
 - 本轮两笔的改动**没有一条有 CI 判决**；`ReadOnlySchemaWriteGateTest`/新格都进 `verify` 的
   JVM 步骤，真链路仍等 CI。
+
+---
+
+# 追加五：话题行与 §5.3 第七格（归档）——格子齐了，但有一格是半个
+
+提交 `99c209d`（话题行格式）与 `0c4d6d6`（`KnowledgeArchiveService`）。§5.3 七个名字**全部到位**。
+
+## 15.1 一个标记五个主人（`99c209d`）
+
+`正在聊：` 这个标记在生产代码里出现五次：`KnowledgeMigrator` 初始化、仓库建默认库、
+仓库 `ensureInitial`、`setCurrentTopic` 各写一次，`getCurrentTopic` 再单独解析一次。
+而 `substringAfter` 的默认行为是"找不到就把整行还给你"——任何一处改字，读侧不会报错，
+而是**把整行当话题名**，`rotateTopic` 就把带时间戳的一整行写进归档标题。
+
+收进 `KbTextOps.topicLine / topicLabel` 与三个常量，五处转调，产出字节逐字相同
+（第一格把 `- [时间] 正在聊：标签` 这个线格式钉死，改格式要显式过一次）。
+另加一条源码形状尺：这个字面量在生产代码里只许出现在 `KbTextOps.kt`，且扫描自己断言
+"至少扫到 10 个文件"（否则路径写错时它会永远通过——`SingleOwnerContractTest` 同族写法）。
+既存怪癖只钉不改：首行没有标记时返回整行（要改得先决定"读不到给什么"）。
+变异：T1 塞第二处字面量→形状尺红；T2 丢 key 后缀切分→第 2 格红；T3 改线格式→第 1 格红。
+
+## 15.2 第七格 `KnowledgeArchiveService`（`0c4d6d6`）
+
+`rotateTopic` 原先是仓库里一段 80 行的方法体，四条规则混在一起且**没有名字**：
+步骤判定、归档条目格式、旧话题名读法、计数回填口径。现在各有所有者，
+`archiveEntry` 从 `buildString` 里抽出来变成能单独测的东西——这是拆的主要收益，不是行数。
+
+能力接口 `ArchiveStorage` 七样（`note` / 两把时钟 / 守门读 / 一次事务 / 状态编解码），
+`ArchiveTx` 四类动作由 `ArchiveTxView` 从 `KnowledgeTx` 收窄而来（不直接交 `KnowledgeTx`
+是为了不把 `pathOf`——它能拿 `File`——一起交出去）。零能力棘轮把它纳进清单。
+
+两条**不是搬家**的变化，写在代码与这里：
+ ① `getLessonCount` 原先读 kb.json 与回填各加一次锁，两次之间别人可以写完一份，回填会拿旧口径
+    盖一次计数；现在整段一次锁内完成（收紧）。
+ ② 状态落盘原先静默；现在"事务里的写被挡下"与"整个事务被外层跳过"两种没写成都留痕。
+
+两把时钟是既存事实不是设计癖好：条目行/`operationId` 用 `TimeFmt.now()`，
+kb.json 的 `updatedAt` 用 ISO-8601——合并任何一把都会悄悄换掉落盘格式，所以接口里显式两个名字。
+`runTransaction` 不叫 `writeTransaction` 是编译逼的：`MemoryTx.() -> Unit` 与 `ArchiveTx.() -> Unit`
+都擦除成 `Function1`。**同一条坑这一轮踩到第二次**（第一次是画像格），说明它该进坑表而不是靠记性。
+
+证据：新格 10 格全被坏实现打破过，七次注入各自只红目标格——`A1` 不清源文件→2 红、
+`A2` 计数正则放宽→1 红、`A3` 去掉追加的幂等守卫→2 红、`A5` 少落一次状态→1 红、
+`A6` 两把时钟合一→1 红、`A7` 去掉没写成的留痕→1 红、`A8` 恢复时改取当下→2 红。
+既有 net（真文件系统上 `ArchiveOperationStateTest` 五格 + Reentrancy + 25 入口只读闸）全绿。
+
+## 15.3 本轮实测（两笔合起来）
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | rc=0：**1163 tests / 145 套件 / 0 失败 / 0 错误 / 0 跳过**（最旧 XML 04:45:22；日志止点 04:45:24、本次跑 183s → cut 由日志自身算出，不凭记忆） |
+| 既有 net | `ArchiveOperationStateTest` / `KnowledgeRepositoryReentrancyTest` / `ReadOnlySchemaWriteGateTest`(25 入口) / `StorageBoundaryOwnershipTest`(4) / `TopicLineFormatTest`(5) / `KnowledgeArchiveServiceTest`(10) 全绿 |
+| lint | 报告重生成（04:47；04:11 那份先移进 `_temp/`）：70 条 / 15 规则、进预算 **69 / 14**、advisory 1，rc=0；判据自测 27 格 rc=0 |
+| 其它 | 工单编号 rc=0；prompt 零 diff + lock `6dcde732…`；androidTest 编译 rc=0；跨层 **6** 条（与基线同） |
+| 行数 | `KnowledgeRepository` 1876 → **1793**（本轮第一次真正变短 −83）；新格 230 行、话题格式那笔净 +24 |
+
+## 15.4 §5.3 现在准确的说法：七个名字都在，但 catalog 那格是半个
+
+| 指导书点名的格 | 现状 |
+|---|---|
+| `KnowledgeCatalogStore` create/list/activate/delete/rename | **只搬了枚举侧**；`create`/`delete`/`setActive`/`updateDisplayName`/`ensureInitial` 仍在仓库。写侧接口要 ~10 个成员（违 §5.3 自己的 ISP），显式退回过一次 |
+| `KnowledgeDocumentStore` 安全路径、版本化读写 | 在（`adbf5f3`） |
+| `KnowledgeProfileStore` 画像、温度/阶段、向量 | 在（`b6873cf`） |
+| `KnowledgeMemoryStore` 纠正、revision、actual sent | 在（`a0fef45`）；**actual sent 没进这格**，它仍走仓库的 `appendFile` 链 |
+| `KnowledgeMigrationService` schema detect/migrate/read-only | 在，名字叫 `KnowledgeMigrator`（命名与指导书不同，语义齐） |
+| `KnowledgeArchiveService` topic rotate/import/export/backup | rotate 本轮搬入（`0c4d6d6`）；import/export 在 `KbArchiveTransfer`、backup 在 `KnowledgeBackupService`——**是三个协作者凑成一个指导书里的名字**，这点要如实说 |
+| `RoundCommitStore` journal/transaction/idempotency | 在，是 `domain/RoundCommitJournal`（§12.1 重判过） |
+| 「所有实现共用一个 `KnowledgeTransactionManager`」 | **语义达成、命名未达成**：全仓没有这个类型，共用靠仓库唯一 `fileMutex` + `transaction`/`transactionUnlocked` + `KnowledgeTx`，并由棘轮与 `KnowledgeMigratorLegacyTest` 的锁计数盯着 |
+
+还没还的账，别当已做：`kbExistsUnlocked` 仍用裸路径判"目录+kb.json 在不在"（只泄露一个布尔）；
+本轮所有改动**没有一条有 CI 判决**。
