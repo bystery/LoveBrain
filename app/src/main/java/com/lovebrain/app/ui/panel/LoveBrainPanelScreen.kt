@@ -94,7 +94,7 @@ fun LoveBrainPanelScreen(
     val ideaComposeMode by viewModel.ideaComposeMode.collectAsStateWithLifecycle()
     val composeRole = if (ideaComposeMode) ChatMessage.Role.IDEA else currentRole
     val editingIndex by viewModel.editingIndex.collectAsStateWithLifecycle()
-    val profileSuggestion by viewModel.profileSuggestion.collectAsStateWithLifecycle()
+    val review by viewModel.profileReview.collectAsStateWithLifecycle()
     val activeKb by viewModel.activeKb.collectAsStateWithLifecycle()
     val kbNotice by viewModel.kbNotice.collectAsStateWithLifecycle()
     val panelWarning by viewModel.panelWarning.collectAsStateWithLifecycle()
@@ -286,15 +286,14 @@ fun LoveBrainPanelScreen(
                 }
             }
 
-            // Profile suggestion only for active KB
-            val profileSuggestionValid = profileSuggestion?.canConfirm == true
-            val isProfileConfirming = viewModel.isProfileConfirming.collectAsStateWithLifecycle().value
-            if (profileSuggestion != null && profileSuggestion?.kbName == activeKb?.name) {
+            // Profile suggestion only for active KB（卡片两件事来自同一份快照，不会各读各的）
+            val profileSuggestion = review.suggestion
+            if (profileSuggestion != null && profileSuggestion.kbName == activeKb?.name) {
                 val isRegenerating = viewModel.profileRegenerating.collectAsStateWithLifecycle().value
                 ProfileSuggestionCard(
-                    suggestion = profileSuggestion?.display.orEmpty(),
-                    canConfirm = profileSuggestionValid,
-                    isConfirming = isProfileConfirming,
+                    suggestion = profileSuggestion.display,
+                    canConfirm = review.canConfirm,
+                    isConfirming = review.isConfirming,
                     isRegenerating = isRegenerating,
                     onConfirm = { viewModel.confirmProfileUpdate() },
                     onDismiss = { viewModel.dismissProfileUpdate() },

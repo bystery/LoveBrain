@@ -306,13 +306,21 @@ class LoveBrainViewModel(
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
 
-    //  ProfileSuggestion 作为单一事实源，携带 originating kbName
-    private val _profileSuggestion = MutableStateFlow<ProfileSuggestion?>(null)
-    val profileSuggestion: StateFlow<ProfileSuggestion?> = _profileSuggestion.asStateFlow()
+    /**
+     * 画像建议卡片：一份快照、一个写入漏斗（§2.2 "没有统一 Reducer/UiState" 的第二处落地）。
+     *
+     * 原先是 `profileSuggestion` 与 `isProfileConfirming` 两个 flow、VM 里 14 处各改各的；
+     * 这两件事必须同帧（卡片看不看建议、按钮与转圈看在不在确认），分两处就会拼出
+     * "建议已清空但 confirming 还是 true"这种没人设计过的中间态。
+     * 判定与"重复点确认要忽略"都住在 [ProfileReview] 里，见那个文件的说明。
+     */
+    private val _profileReview = MutableStateFlow(ProfileReview())
+    val profileReview: StateFlow<ProfileReview> = _profileReview.asStateFlow()
 
-    /** 画像确认提交中状态——提交期间禁用重复点击，幂等 */
-    private val _isProfileConfirming = MutableStateFlow(false)
-    val isProfileConfirming: StateFlow<Boolean> = _isProfileConfirming.asStateFlow()
+    /** 想动卡片上那两件事，只有这一条路 */
+    private fun applyReview(event: ProfileReview.Event) {
+        _profileReview.value = _profileReview.value.reduce(event)
+    }
 
     /** 知识库后台操作的临时提示（如经验提取完成），在悬浮窗内短暂展示 */
     private val _kbNotice = MutableStateFlow<String?>(null)
@@ -1496,7 +1504,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 _kbNotice.value = event.message
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.ProfileReady ->
                 // 画像建议绑定 originating kbName，确认时也用 suggestion.kbName 而不是 _activeKb
-                _profileSuggestion.value = event.suggestion
+                applyReview(ProfileReview.Event.Arrived(event.suggestion))
         }
     }
 
@@ -1515,14 +1523,15 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * - 任一步失败自动 rollback——rollback 成功/失败分别返回不同 typed result
      */
     fun confirmProfileUpdate() {
-        val suggestion = _profileSuggestion.value ?: return
+        val review = _profileReview.value
+        // "有建议且没在确认中"这条判据住在 ProfileReview 里，不在这里重复写一遍
+        if (!review.canAttemptConfirm) return
 
-        if (_isProfileConfirming.value) return
-
+        val suggestion = review.suggestion ?: return
         val payload = suggestion.profileUpdate
         if (payload == null || !payload.valid) {
             showPanelWarning("建议格式无效，请重新生成")
-            _profileSuggestion.value = null
+            applyReview(ProfileReview.Event.Dismissed)
             return
         }
 
@@ -1530,14 +1539,14 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val suggestionId = suggestion.suggestionId
 
         viewModelScope.launch {
-            _isProfileConfirming.value = true
+            applyReview(ProfileReview.Event.ConfirmStarted)
 
             try {
                 val exists = withContext(Dispatchers.IO) {
                     knowledgeRepo.listAll().any { it.name == kbName }
                 }
                 if (!exists) {
-                    _profileSuggestion.value = null
+                    applyReview(ProfileReview.Event.Dismissed)
                     showPanelWarning("原知识库已删除，这条画像建议已失效")
                     return@launch
                 }
@@ -1546,7 +1555,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     knowledgeRepo.getCorrectionsRevision(kbName)
                 }
                 if (currentRev != suggestion.correctionsRevision) {
-                    _profileSuggestion.value = null
+                    applyReview(ProfileReview.Event.Dismissed)
                     showPanelWarning("资料已变化，请重新生成")
                     return@launch
                 }
@@ -1565,10 +1574,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 // 按 typed result 分支给出精确反馈
                 when (result) {
                     is ProfileTransactionResult.Success -> {
-                        val current = _profileSuggestion.value
-                        if (current != null && current.suggestionId == suggestionId) {
-                            _profileSuggestion.value = null
-                        }
+                        // 确认期间可能有新建议到达；只清"我确认的这一份"，这条判据在事件里
+                        applyReview(ProfileReview.Event.ClearedIfCurrent(suggestionId))
                         _kbNotice.value = "画像已更新"
                         refreshKnowledgeBases()
                     }
@@ -1577,11 +1584,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                         val msg = when (result.reason) {
                             // 建议本身作废的两种：清卡
                             PreconditionReason.KB_NOT_FOUND -> {
-                                _profileSuggestion.value = null
+                                applyReview(ProfileReview.Event.Dismissed)
                                 "原知识库已删除，这条画像建议已失效"
                             }
                             PreconditionReason.REVISION_CONFLICT -> {
-                                _profileSuggestion.value = null
+                                applyReview(ProfileReview.Event.Dismissed)
                                 "资料已变化，请重新生成"
                             }
                             // 只读保护不是建议作废：那是"这个 App 比库旧"，升级之后同一份建议仍然有效。
@@ -1608,7 +1615,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 L.e("confirmProfileUpdate unexpected error", e)
                 showPanelWarning("画像写入发生异常，请重试")
             } finally {
-                _isProfileConfirming.value = false
+                applyReview(ProfileReview.Event.ConfirmFinished)
             }
         }
     }
@@ -1616,7 +1623,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     fun dismissProfileUpdate() {
         // 取消正在进行的重新生成，使旧请求的回调不再被接受
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH)
-        _profileSuggestion.value = null
+        applyReview(ProfileReview.Event.Dismissed)
     }
 
     /**
@@ -1632,7 +1639,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     /** 画像重新生成——见下方 regenerateProfileUpdate 的 说明 */
     fun regenerateProfileUpdate() {
-        val suggestion = _profileSuggestion.value ?: return
+        val suggestion = _profileReview.value.suggestion ?: return
         val kbName = suggestion.kbName
 
         // 取消上一次未完成的重新生成（同类去重由 coordinator 保证，这里只是显式让位）
@@ -1652,9 +1659,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     when (event) {
                         is com.lovebrain.app.domain.KnowledgeTriggerEvent.Notice ->
                             // 重新生成失败：清掉旧建议，让"重新生成"按钮回到可点状态
-                            _profileSuggestion.value = null
+                            applyReview(ProfileReview.Event.Dismissed)
                         is com.lovebrain.app.domain.KnowledgeTriggerEvent.ProfileReady ->
-                            _profileSuggestion.value = event.suggestion
+                            applyReview(ProfileReview.Event.Arrived(event.suggestion))
                         else -> Unit
                     }
                 }

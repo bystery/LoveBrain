@@ -348,7 +348,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         delay(500)
 
         // Suggestion cleared
-        assertNull("建议应被清理", vm.profileSuggestion.value)
+        assertNull("建议应被清理", vm.profileReview.value.suggestion)
         // Warning shown
         assertEquals("原知识库已删除，这条画像建议已失效", vm.panelWarning.value)
         // Nothing written

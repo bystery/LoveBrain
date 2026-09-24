@@ -153,7 +153,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.confirmProfileUpdate()
         waitForNotice(vm, this)
 
-        assertNull(vm.profileSuggestion.value, "Success 应清卡")
+        assertNull(vm.profileReview.value.suggestion, "Success 应清卡")
         assertEquals("画像已更新", vm.kbNotice.value)
     }
 
@@ -177,7 +177,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.confirmProfileUpdate()
         waitForWarning(vm, this)
 
-        assertNull(vm.profileSuggestion.value, "KB 不存在应清卡")
+        assertNull(vm.profileReview.value.suggestion, "KB 不存在应清卡")
         assertEquals("原知识库已删除，这条画像建议已失效", vm.panelWarning.value)
     }
 
@@ -201,7 +201,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.confirmProfileUpdate()
         waitForWarning(vm, this)
 
-        assertNull(vm.profileSuggestion.value, "Revision 冲突应清卡")
+        assertNull(vm.profileReview.value.suggestion, "Revision 冲突应清卡")
         assertEquals("资料已变化，请重新生成", vm.panelWarning.value)
     }
 
@@ -233,7 +233,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         waitForWarning(vm, this)
 
         // 这里用的是 kotlin.test 的 assertEquals：message 在**最后一个**参数
-        assertEquals(suggestion, vm.profileSuggestion.value, "只读只是这次写不进去，建议要留着等升级后重试")
+        assertEquals(suggestion, vm.profileReview.value.suggestion, "只读只是这次写不进去，建议要留着等升级后重试")
         assertEquals(
             "这个知识库的结构版本比本 App 还新，已被设为只读，画像没有写入（可以先升级 App 再确认）",
             vm.panelWarning.value
@@ -263,7 +263,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         waitForWarning(vm, this)
 
         // RolledBack——卡片保留（用户可重试同一条建议）
-        assertEquals(suggestion.suggestionId, vm.profileSuggestion.value?.suggestionId,
+        assertEquals(suggestion.suggestionId, vm.profileReview.value.suggestion?.suggestionId,
             "RolledBack 应保留卡片供重试")
         val warning = vm.panelWarning.value
         assertEquals("画像写入失败，已恢复原数据，可重试", warning)
@@ -295,7 +295,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         waitForWarning(vm, this)
 
         // RollbackFailed——卡片保留（但建议可能已不可安全重试）
-        assertEquals(suggestion.suggestionId, vm.profileSuggestion.value?.suggestionId,
+        assertEquals(suggestion.suggestionId, vm.profileReview.value.suggestion?.suggestionId,
             "RollbackFailed 应保留卡片")
         val warning = vm.panelWarning.value
         assertNotNull(warning, "RollbackFailed 应有警告")

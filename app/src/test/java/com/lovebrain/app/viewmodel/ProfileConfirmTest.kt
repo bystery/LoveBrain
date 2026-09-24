@@ -102,7 +102,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         advanceUntilIdle()
 
         // 无效 payload → 清卡 + 提示重新生成
-        assertNull(vm.profileSuggestion.value, "无效建议应清卡")
+        assertNull(vm.profileReview.value.suggestion, "无效建议应清卡")
         assertEquals("建议格式无效，请重新生成", vm.panelWarning.value)
     }
 
@@ -120,12 +120,12 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         // 成功才清卡 + 写库 + 通知（withContext(Dispatchers.IO) 走真实线程，轮询等回派虚拟主调度器）
         //  KBG-02：confirmProfileUpdate 内部先 listAll 检查 KB 存在性（走 Dispatchers.IO），轮询等待
         repeat(100) {
-            if (vm.profileSuggestion.value != null) {
+            if (vm.profileReview.value.suggestion != null) {
                 Thread.sleep(10)
                 advanceUntilIdle()
             }
         }
-        assertNull(vm.profileSuggestion.value, "解析成功应清卡")
+        assertNull(vm.profileReview.value.suggestion, "解析成功应清卡")
         repeat(100) {
             if (vm.kbNotice.value == null) {
                 Thread.sleep(10)
