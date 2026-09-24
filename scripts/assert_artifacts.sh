@@ -186,16 +186,34 @@ if [ "${#HTML_DIRS[@]}" -gt 0 ]; then
 fi
 
 # ── screenshots ──────────────────────────────────────────────────────────────
+# 光数张数和字节数不够：CI 上真出过 home.png 与 knowledge-base.png **字节数完全相同**
+# （各 115128 B），也就是两次 screencap 拍到的是同一屏。那种"视觉证据"什么都没证明，
+# 却能让"截图非空"这一条过关。所以这里还要断言两两不同，并把每张的指纹打出来，
+# 让产物本身可被复核。
 for d in "${SHOT_DIRS[@]}"; do
   [ -d "$d" ] || die "$LABEL: screenshot directory does not exist: $d"
   N="$(find "$d" -type f -name '*.png' | grep -c . )" || N=0
   [ "$N" -gt 0 ] || die "$LABEL: screenshot directory is empty: $d — visual evidence is required"
+  seen_hashes=""
+  duplicates=""
   while read -r png; do
     [ -n "$png" ] || continue
     size="$(wc -c <"$png" | tr -d ' ')"
     [ "$size" -ge 4096 ] || die "$LABEL: screenshot is a stub ($size bytes): $png"
+    # 字节数够不代表是图：先认 PNG 签名，否则一个塞满 0 的文件也能冒充"视觉证据"。
+    head8="$(head -c 8 "$png" | od -An -tx1 | tr -d ' \n')"
+    [ "$head8" = "89504e470d0a1a0a" ] ||
+      die "$LABEL: $png 开头不是 PNG 签名（$head8）——这不是截图，是拿字节数凑出来的证据"
+    h="$(sha256_of "$png")"
+    log "$LABEL: shot $(basename "$png") — $size bytes, sha256 ${h:0:16}…"
+    case " $seen_hashes " in
+      *" $h "*) duplicates="$duplicates $(basename "$png")" ;;
+      *) seen_hashes="$seen_hashes $h" ;;
+    esac
   done < <(find "$d" -type f -name '*.png')
-  log "$LABEL: $N screenshot(s) captured in $d"
+  [ -z "$duplicates" ] ||
+    die "$LABEL: 这些截图与前面某张逐字节相同：$duplicates —— 同一屏拍两张不是两块屏幕的视觉证据（CI 上 home/knowledge-base 各 115128 字节正是这种）"
+  log "$LABEL: $N screenshot(s) captured in $d, all $N distinct"
 done
 
 ok "$LABEL evidence gate passed: $TESTS tests, $CLASS_COUNT suite(s), 0 failures, 0 errors"

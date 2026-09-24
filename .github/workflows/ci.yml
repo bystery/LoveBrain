@@ -240,12 +240,19 @@ jobs:
             bash scripts/run_ui_tests.sh --attempts 2 --min-tests auto
           disable-animations: true
 
-      - name: Upload screenshots
+      - name: Upload UI-test visual evidence
         if: always()
+        # 这一步以前指着 app/build/outputs/connected_android_test_additional_output/
+        # ——那是旧 AGP 的 additionalTestOutputDir，脚本根本不往那儿写：
+        # run_ui_tests.sh 把截图写到 build/gate-artifacts/ui-test/screenshots/。
+        # 结果 CI 日志明明印了 "captured … home.png (115128 bytes)"，产物里却一张 PNG 都没有，
+        # 因为下面那行 if-no-files-found 还是默认的 warn：空目录静默出一个"没有产物的产物"。
+        # 指导书 §9 第 5/6 条点名的正是这两件事（拿脚本存在当产物、空产物 warning 放行）。
         uses: actions/upload-artifact@v4
         with:
-          name: instrumentation-screenshots
-          path: app/build/outputs/connected_android_test_additional_output/
+          name: ui-test-evidence
+          path: build/gate-artifacts/ui-test/
+          if-no-files-found: error
           retention-days: 30
 
       - name: Upload test XML report
@@ -277,6 +284,9 @@ jobs:
           path: |
             /tmp/logcat*.txt
             app/build/outputs/androidTest-results/connected/
+          # 缺这条就是"空产物 warning 放行"（§9 第 6 条）：设备侧没抓到日志时，
+          # 这一步会静默交出一个空产物，而 P0-02 要的正是 logcat 证据。
+          if-no-files-found: error
           retention-days: 7
 
   # P3-07: 升级安装测试——下载并校验 v1.3.1、安装旧版、真实写夹具、

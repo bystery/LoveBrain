@@ -146,6 +146,16 @@ for pair in "home:com.lovebrain.app/.ui.SetupActivity" "knowledge-base:com.loveb
     die "could not launch $comp to capture $shot — the main screen is not reachable"
   fi
   sleep 2
+  # 这张图到底拍的是哪一屏，必须由产物自己说清楚：CI 上真出过 home.png 与
+  # knowledge-base.png 逐字节相同（各 115128 B），也就是第二个 activity 其实没把
+  # 前一层换掉（立刻 finish、被转走、或者压根没到前台）。光有 PNG 不算视觉证据。
+  adb shell dumpsys activity activities \
+    | grep -E "mResumedActivity|topResumedActivity|mFocusedApp" | head -3 \
+    >"$ARTIFACTS/foreground-$name.txt" || true
+  if [ ! -s "$ARTIFACTS/foreground-$name.txt" ]; then
+    die "could not read the foreground activity before capturing $shot — the screenshot has no provenance"
+  fi
+  log "foreground for $name: $(tr -s ' \t' ' ' <"$ARTIFACTS/foreground-$name.txt")"
   if ! adb exec-out screencap -p >"$shot"; then
     die "screencap failed for $shot — visual evidence cannot be produced"
   fi
