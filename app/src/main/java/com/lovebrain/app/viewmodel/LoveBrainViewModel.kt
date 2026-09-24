@@ -28,6 +28,7 @@ import com.lovebrain.app.model.CounselingFirstToken
 import com.lovebrain.app.model.CounselingResult
 import com.lovebrain.app.model.CounselingStarted
 import com.lovebrain.app.model.DailySuggestion
+import com.lovebrain.app.feature.reply.ReplyStore
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.KnowledgeBase
@@ -133,28 +134,40 @@ class LoveBrainViewModel(
 
     // ═══ 回复流程唯一状态源 ═══
     /**
-     * 回复流程的全部状态。
+     * 回复流程的全部状态住在 [ReplyStore]（复核 §5.2 的第 1 步）。
      *
      * 之前这里是六个各自独立的 MutableStateFlow（_result / _replyRequestState /
      * _streamingCoreText / _streamingSchemes / _generationRoundId / _currentVersionId），
-     * 谁都能写。现在唯一写入口是 [dispatchReply] → [ReplyReducer.reduce]。
-     * 下面暴露的 result / replyRequestState / streamingCoreText / … 全部由这里 map 出去，
-     * 不再是独立真源。
+     * 谁都能写；上一轮收成了单一 reducer 入口，这一轮把**状态持有者**也搬出 VM。
+     * 下面暴露的 result / replyRequestState / streamingCoreText / … 全部从 store 的
+     * uiState map 出去，VM 不再有可写的回复状态字段。
+     *
+     * store 的 Effect 用同步回调处理（不是 flow），理由写在 ReplyStore 的 KDoc 里：
+     * 换成异步会把"喂完事件就断言状态"的既有测试语义改掉，而那批语义现在是
+     * 真机门禁证据的来源，不该被一次结构改进顺手换掉。
      */
-    private val _replyUi = MutableStateFlow(ReplyUiState())
+    private val replyStore = ReplyStore(
+        scope = viewModelScope,
+        // 这里不能引用下面那个 STREAMING_FLUSH_INTERVAL_MS：Kotlin 的属性是按声明顺序
+        // 初始化的，前面的属性读后面的 val 会拿到 0，合并定时器就会退化成 delay(0) 空转。
+        flushIntervalMs = ReplyStore.DEFAULT_FLUSH_INTERVAL_MS
+    ) { effect -> onReplyEffect(effect) }
 
-    val result: StateFlow<GenerateResult?> = _replyUi.map { it.result }
+    /** 只读视图：VM 内部读状态、往外 map 都走这里，写只能进 replyStore.accept */
+    private val replyUi get() = replyStore.uiState
+
+    val result: StateFlow<GenerateResult?> = replyUi.map { it.result }
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
 
     /** 统一回复请求状态——单一事实源。替代分散的 isPreparing/isGenerating/isGeneratingCore。 */
-    val replyRequestState: StateFlow<ReplyRequestState> = _replyUi.map { it.request }
+    val replyRequestState: StateFlow<ReplyRequestState> = replyUi.map { it.request }
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, ReplyRequestState.Idle)
 
     /** 派生属性——从唯一状态源派生，不再是独立可写状态 */
-    val isGenerating: StateFlow<Boolean> = _replyUi.map { it.isBusy }
+    val isGenerating: StateFlow<Boolean> = replyUi.map { it.isBusy }
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, false)
 
-    val isGeneratingCore: StateFlow<Boolean> = _replyUi.map { it.isBusy }
+    val isGeneratingCore: StateFlow<Boolean> = replyUi.map { it.isBusy }
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, false)
 
     /** 稳定的轮次身份——只在真正完成一次新的整轮 generate 时变化。
@@ -243,35 +256,34 @@ class LoveBrainViewModel(
     val currentVersionId: StateFlow<GenerationVersionId?> = _currentVersionId.asStateFlow()
 
     /**
-     * 流式正文 / 方案卡——从 [_replyUi] 派生，不再有独立可写的 StateFlow。
+     * 流式正文 / 方案卡——从 [replyStore] 的 uiState 派生，不再有独立可写的 StateFlow。
      *
      * "别每个 token 全量重绘一次"不再靠 StringBuilder+定时器绕过状态源，
-     * 而是在 [dispatchReply] 里把相邻的 chunk 合并成一个事件再归约。
+     * 而是 [ReplyStore] 内部把相邻的 chunk 合并成一个事件再归约。
      * 这样节流和"reducer 是唯一写入口"不再互相牺牲。
      */
-    val streamingCoreText: StateFlow<String> = _replyUi.map { it.streamingCoreText }
+    val streamingCoreText: StateFlow<String> = replyUi.map { it.streamingCoreText }
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, "")
 
     /** 流式过程中已完整解析出的方案卡（逐张渲染，边收边出） */
-    val streamingSchemes: StateFlow<List<Scheme>> = _replyUi.map { it.streamingSchemes }
+    val streamingSchemes: StateFlow<List<Scheme>> = replyUi.map { it.streamingSchemes }
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, emptyList())
 
-    /** 待合并的流式增量；只在 [dispatchReply] 与其触发的 flush 里读写 */
-    private val pendingChunk = StringBuilder()
-    private var chunkFlushJob: kotlinx.coroutines.Job? = null
-    private val STREAMING_FLUSH_INTERVAL_MS = 50L
+    // 增量合并缓冲与它的定时器 job 已经搬进 ReplyStore；这里只留同一个节拍的引用，
+    // 给下面那处"等一帧"的用处复用，避免同一个数字在两处各写一遍。
+    private val STREAMING_FLUSH_INTERVAL_MS = ReplyStore.DEFAULT_FLUSH_INTERVAL_MS
 
     /** 读当前结果——所有内部读取走这里，不再有一个可写的 _result */
-    private val replyResult: GenerateResult? get() = _replyUi.value.result
+    private val replyResult: GenerateResult? get() = replyStore.currentResult
 
     /**
      * 原地替换结果文本（单条改写 / undo / 版本回退用）。
      *
      * 这些操作不属于任何一次生成请求，所以它们不伪装成 request 事件走 reducer，
-     * 但仍然只写 [_replyUi] 这一个状态对象——不存在第二本结果账。
+     * 但仍然只能投给 [replyStore] 这一个状态持有者——不存在第二本结果账。
      */
     private fun replaceReplyResult(result: GenerateResult) {
-        _replyUi.value = _replyUi.value.copy(result = result)
+        replyStore.accept(ReplyStore.Intent.ReplaceResult(result))
     }
 
     /** 当前本轮想法文本（已提交 IDEA + 未提交草稿） */
@@ -505,7 +517,7 @@ class LoveBrainViewModel(
      * 再次点击退出主动发模式回到普通回复。 */
     fun toggleProactiveMode() {
         if (operationCoordinator.isBusy(ForegroundOperationCoordinator.OperationType.PROACTIVE) ||
-            _replyUi.value.isBusy) return
+            replyUi.value.isBusy) return
         _composerMode.value = if (_composerMode.value == ComposerMode.PROACTIVE) ComposerMode.REPLY else ComposerMode.PROACTIVE
         // 退出主动发时清残留结果
         if (_composerMode.value == ComposerMode.REPLY) {
@@ -1027,107 +1039,68 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // ═══════════ 回复状态唯一写入口 ═══════════
 
-    /** 待合并的流式增量所属请求 */
-    private var pendingChunkRequestId: String? = null
-
     /**
-     * 回复状态的唯一写入口。
+     * 回复流程的唯一写入口——现在只是把意图投给 [replyStore]。
      *
-     * - 身份不符的事件在这里被 reducer 拒掉，返回同一个状态对象，
-     *   于是被取代的旧请求连"顺带写个流式文本"都做不到。
-     * - 相邻的流式增量合并成一个事件再归约：要的节流和"唯一入口"不再互相牺牲。
-     *
-     * 只在 viewModelScope（Main 分发器）上被调用——Engine 的事件流在主协程收集，
-     * 所以合并缓冲是单线程访问，不需要额外加锁。
+     * 事件身份校验、相邻增量合并、以及"被拒的事件不发副作用"三件事都在 store 里；
+     * 名字与 internal 可见性保留，是因为有一批用例就是按"喂一个事件"来驱动的，
+     * 换名字会让这轮重构混进无关的测试改动。
      */
     internal fun dispatchReply(event: ReplyEvent) {
-        if (event is ReplyChunk) {
-            if (pendingChunkRequestId != null && pendingChunkRequestId != event.requestId) {
-                flushPendingChunk()
-            }
-            pendingChunkRequestId = event.requestId
-            pendingChunk.append(event.text)
-            scheduleChunkFlush()
-            return
-        }
-        flushPendingChunk()
-        applyReplyEvent(event)
+        replyStore.accept(ReplyStore.Intent.Apply(event))
     }
 
-    private fun scheduleChunkFlush() {
-        if (chunkFlushJob?.isActive == true) return
-        chunkFlushJob = viewModelScope.launch {
-            while (true) {
-                delay(STREAMING_FLUSH_INTERVAL_MS)
-                flushPendingChunk()
-            }
-        }
-    }
-
-    private fun flushPendingChunk() {
-        val requestId = pendingChunkRequestId ?: return
-        if (pendingChunk.isEmpty()) return
-        val text = pendingChunk.toString()
-        pendingChunk.setLength(0)
-        applyReplyEvent(ReplyChunk(requestId, text))
-    }
+    /** 旧调用点的语义保持不变：投事件。停止用的 ReplyStopped 也走 reducer。 */
+    private fun applyReplyEvent(event: ReplyEvent) = dispatchReply(event)
 
     /** 放弃未发布的增量（停止/换请求时） */
     private fun cancelPendingChunkFlush() {
-        chunkFlushJob?.cancel()
-        chunkFlushJob = null
-        pendingChunkRequestId = null
-        pendingChunk.setLength(0)
-    }
-
-    private fun applyReplyEvent(event: ReplyEvent) {
-        val before = _replyUi.value
-        val after = ReplyReducer.reduce(before, event)
-        if (after === before) {
-            L.w("reply event ${event::class.simpleName} rejected (stale requestId ${event.requestId.take(8)})")
-            return
-        }
-        _replyUi.value = after
-        // 面板外壳状态：回复相关的迁移只由 reducer 结果驱动
-        if (after.panelState != _panelState.value) _panelState.value = after.panelState
-        onReplyUiCommitted(before, after)
+        replyStore.accept(ReplyStore.Intent.DiscardPendingChunks)
     }
 
     /**
-     * reducer 落定后的外部副作用（持久化、历史版本、耗时上报）。
+     * ReplyStore 归约成功之后，需要**别人**做的事：面板外壳状态、历史版本快照、
+     * 跨轮计数与耗时上报。
      *
-     * 只有归约被接受（状态对象换了）才执行，所以迟到的旧请求
-     * 不可能递增 roundId、不可能写历史、也不可能改计数。
+     * 只有归约被接受（状态对象换了）才会收到 Effect，所以迟到的旧请求
+     * 不可能递增 roundId、不可能写历史、也不可能改计数——这条不变量从 VM 里的
+     * 一段 if 变成了端口上的类型：store 不给，VM 就没有机会做。
+     *
+     * 用同步回调而不是 SharedFlow：这些写入要和归约落在同一帧里，
+     * 现有那批"喂完事件就断言状态"的用例才有确定性（理由另见 ReplyStore 的 KDoc）。
      */
-    private fun onReplyUiCommitted(before: ReplyUiState, after: ReplyUiState) {
-        if (after.result !== before.result && after.result is GenerateResult.Success) {
-            _generationRoundId.value++
-            val versionId = GenerationVersionId.next()
-            _currentVersionId.value = versionId
-            replyGenerationContext?.let { ctx ->
-                val snapshot = GenerationSnapshot(
-                    versionId = versionId,
-                    result = after.result as GenerateResult.Success,
-                    context = ctx.copy(
-                        memoryRefs = after.memoryRefs,
-                        sourceAliasMap = after.sourceAliasMap
-                    ),
-                    kbName = ctx.kbName
-                )
-                // 限制 session history 最多 20 条
-                _generationHistory.value = (_generationHistory.value + snapshot).takeLast(MAX_HISTORY_SIZE)
+    private fun onReplyEffect(effect: ReplyStore.Effect) {
+        when (effect) {
+            is ReplyStore.Effect.PanelStateChanged -> _panelState.value = effect.panelState
+
+            is ReplyStore.Effect.SuccessCommitted -> {
+                _generationRoundId.value++
+                val versionId = GenerationVersionId.next()
+                _currentVersionId.value = versionId
+                replyGenerationContext?.let { ctx ->
+                    val snapshot = GenerationSnapshot(
+                        versionId = versionId,
+                        result = effect.result,
+                        context = ctx.copy(
+                            memoryRefs = effect.memoryRefs,
+                            sourceAliasMap = effect.sourceAliasMap
+                        ),
+                        kbName = ctx.kbName
+                    )
+                    // 限制 session history 最多 20 条
+                    _generationHistory.value = (_generationHistory.value + snapshot).takeLast(MAX_HISTORY_SIZE)
+                }
+                // 生成成功后重置输入变化标记
+                _inputChanged.value = false
+                // 递增累计生成次数
+                _totalGenerateCount.value += 1
+                securePrefs.totalGenerateCount = _totalGenerateCount.value
             }
-            // 生成成功后重置输入变化标记
-            _inputChanged.value = false
-            // 递增累计生成次数
-            _totalGenerateCount.value += 1
-            securePrefs.totalGenerateCount = _totalGenerateCount.value
-        }
-        if (after.firstReplyMs > 0L && after.firstReplyMs != before.firstReplyMs) {
-            _firstReplyMs.value = after.firstReplyMs
-        }
-        if (after.firstTokenMs > 0L && after.firstTokenMs != before.firstTokenMs) {
-            _lastResponseMs.value = after.firstTokenMs
+
+            is ReplyStore.Effect.TimingSampled -> {
+                effect.firstReplyMs?.let { _firstReplyMs.value = it }
+                effect.firstTokenMs?.let { _lastResponseMs.value = it }
+            }
         }
     }
 
@@ -1348,7 +1321,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         _messages.value = newList
         feedbackCases.clearFeedbacks()
         // 结果/流式态的清空也走 reducer，不再各自写四个 StateFlow
-        applyReplyEvent(ReplyCleared(_replyUi.value.ownerRequestId ?: ""))
+        applyReplyEvent(ReplyCleared(replyUi.value.ownerRequestId ?: ""))
         // 新轮次开始时清理改写状态和历史，作废旧改写请求
         rewriteLedger.clearAll()
         rewriteRequestId = null
@@ -2434,11 +2407,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         option: String
     ) {
         // 前台互斥：正在生成/主动发/改写中时拒绝
-        if (_replyUi.value.isBusy ||
+        if (replyUi.value.isBusy ||
             operationCoordinator.isBusy(ForegroundOperationCoordinator.OperationType.PROACTIVE)) return
 
         // 首轮流式尚未完成时禁用改写
-        if (_replyUi.value.isBusy) return
+        if (replyUi.value.isBusy) return
 
         val result = replyResult as? GenerateResult.Success ?: return
         val response = result.response

@@ -16,6 +16,9 @@ FORBIDDEN = {
                'com.lovebrain.app.data.'],
     'ui': ['com.lovebrain.app.data.', 'java.io.File'],
     'viewmodel': ['java.io.File'],
+    # feature/* 只能碰 model 与 domain.port：与 PackageDependencyTest 保持同一套规则
+    'feature': ['android.', 'androidx.', 'com.lovebrain.app.data.',
+                'com.lovebrain.app.ui.', 'com.lovebrain.app.viewmodel.'],
 }
 
 

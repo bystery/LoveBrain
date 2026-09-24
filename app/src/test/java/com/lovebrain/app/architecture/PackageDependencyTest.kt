@@ -36,6 +36,13 @@ class PackageDependencyTest {
             "com.lovebrain.app.data."
         ),
         "ui" to listOf("com.lovebrain.app.data.", "java.io.File"),
+        // feature/* 是 §5.2 搬出来的状态持有者：它只能碰 model 与 domain.port，
+        // 反过来依赖 VM、UI 或 data 的话，"store 是纯状态所有者"这条就又是口号。
+        // 现在 0 违规，所以这条规则没有基线可躲。
+        "feature" to listOf(
+            "android.", "androidx.", "com.lovebrain.app.data.",
+            "com.lovebrain.app.ui.", "com.lovebrain.app.viewmodel."
+        ),
         "viewmodel" to listOf("java.io.File")
     )
 
