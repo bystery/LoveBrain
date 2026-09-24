@@ -61,12 +61,15 @@ scripts/test_verify_network_egress.sh        exit 2 = CANNOT-VERIFY（本机没�
 | 1 建 ports 与 contract tests，先包住 concrete repositories | **知识侧 + provider 侧都完成** | `KnowledgeReadPort` / `KnowledgeWritePort` / `KnowledgePort` / `AiGateway`；合同测试一份跑两侧：知识 8 格 ×2=16 例、网关 4 格 ×2=8 例。反向验证：把 fake 的只读判定写死 false → 那一格立即红；Koin 里把端口绑定写成 `get()` → 三条图测试当场 StackOverflowError |
 | 4 package dependency test | 完成 | 棘轮实测 **15 → 10 → 6** 条越界；数字来源 `scripts/package_deps_report.sh` |
 | 5 清死 API / 重复 journal / 重复 modifier / 历史描述性注释 | 前三项完成，注释只清到自己踩到的那处 | `fingerprint()` 删除；`TopicRecorder(get(), get())` + 身份断言；GenerationActionButton 单链；Engine「仍用冻结 prompt」改口 |
-| 2 五个 feature store | **没做** | 见 §3 第 4 条 |
+| 2 五个 feature store | **1/5 完成**（`ReplyStore`，`9cbcbb1`） | 回复状态、增量合并缓冲、副作用判定搬进 `feature/reply/ReplyStore`（181 行），VM 只留从 `store.uiState` map 出去的只读流 + 跨 feature 落账。VM 2651 → 2624 行：**这一刀的收益是所有权与可测性，不是行数**（搬出 ~100 行、又搬回 ~65 行落账逻辑）。`ReplyStoreTest` 6 格不启动 VM 就能测状态机外围。剩 Suggest / Proactive / Counseling / Rewrite |
+| — 附带修掉一个真缺陷 | 完成 | 合并循环原本是 `while (true) { delay(50); flush() }`，一旦有 chunk 就永远每 50ms 醒一次，只有外部调"丢弃"才停；在 VM 里被 `viewModelScope` 的死亡掩盖，搬进 store 用 runTest 一测当场 `UncompletedCoroutinesError`。现在循环条件与职责一致，并有一格测试锁住这个形状 |
 | 3 KnowledgeRepository 按能力拆 | **没做** | 见 §3 第 4 条 |
 
 §7 第二步「完成定义」逐条对照，不粉饰：
 
-- 「LoveBrainViewModel 不再持有五条 feature 的内部状态」→ **未达成**，VM 体量没动。
+- 「LoveBrainViewModel 不再持有五条 feature 的内部状态」→ **部分**：回复这一条的状态持有者已经
+  搬到 `ReplyStore`（VM 只剩只读派生流与跨 feature 落账），剩下 Suggest/Proactive/Counseling/
+  Rewrite 四条仍在 VM 内部。VM 2651 → 2624 行，**没到"体量下来了"的程度，别写成达成**。
 - 「KnowledgeRepository 不再是所有知识能力的唯一入口」→ **部分**：domain 已全部走端口，
   写只有 `transaction`/`KnowledgeTx` 一条路；但仓库对象自身仍是所有能力的唯一实现处，拆类未做。
 - 「每个 port 有 production/fake 共用 contract suite」→ `KnowledgePort`、`AiGateway` 达成；
@@ -115,13 +118,14 @@ androidTest 编译通过；取消审计与工单编号 PASS；prompt 目录零 d
    才算真判过；脚本没有"没装就跳过"的分支，装不上就是红。
 3. **Service destroy 那两格是 Assume 主动跳过的**（instrumentation 起不了悬浮窗/FGS）。
    报告里算 skipped，不算通过。
-4. **阶段二剩下的两块硬骨头没做**：①Reply/Suggest/Proactive/Counseling/Rewrite 五个
-   feature store（§5.2 的迁移顺序与统一 store 形状）；②KnowledgeRepository 按
+4. **阶段二剩下的两块硬骨头**：①Suggest/Proactive/Counseling/Rewrite 四个
+   feature store（§5.2 的迁移顺序与统一 store 形状；`ReplyStore` 已在 `9cbcbb1` 做完，
+   形状与测试可以照抄）；②KnowledgeRepository 按
    catalog/document/profile/memory/migration/archive/round 拆（§5.3，且必须共用一个
    `KnowledgeTransactionManager`，不许每个新类各自 new Mutex）。
    端口层已铺好（domain 不再 import data，越界 15→6），所以这两块现在是"往上搬"，
-   不必边拆边补依赖。§4 目标结构里的 `Clock` 端口、§5.1 的 `core/designsystem` /
-   `core/testing` 目录也都还没建。
+   不必边拆边补依赖。§5.1 的 `core/designsystem` / `core/testing` 目录也都还没建
+   （`feature/reply` 算开了个头）。
    仍然要认的一条：本轮让 KnowledgeRepository 从 1857 涨到 2004 行，
    写边界是必要的，但它同时成了"最大的一次性改动"和"最长文件之一"，拆类必须紧跟。
 5. **阶段三完全没开始**：设计 token + `Lb*` 基础组件、Home/Usage/Provider/Feedback 重写、
@@ -142,14 +146,12 @@ androidTest 编译通过；取消审计与工单编号 PASS；prompt 目录零 d
 
 ## 5. 下一步（按依赖顺序，不跳步）
 
-1. 说一声「推送」→ 把本轮 18 个提交推上去，等同一 SHA 的 `verify` / `ui-test` / `upgrade-test`；
+1. 说一声「推送」→ 把本轮 22 个提交推上去，等同一 SHA 的 `verify` / `ui-test` / `upgrade-test`；
    `ui-test` 若还红，用新加的诊断输出定位那 8 条"not displayed"是没测量、被裁还是出窗口；
    新加的 3 格语义树断言（48dp / selected / contentDescription）**预期可能红**，
    那是把假绿换成真信号，不是回归。
-2. 阶段二剩下的两件事，顺序不能反：
-   ① 按 §5.2 顺序迁 feature store，从 `ReplyStore` 开始 —— 回复状态已经收在 `_replyUi`
-      + `ReplyReducer` 单写入口，所以这一刀是"搬状态持有者"，不是重写状态机；
-      然后才是 Suggest / Proactive / Counseling / Rewrite。每个 store 一次提交、一次全绿。
+2. 阶段二继续：按 §5.2 顺序迁剩下四个 store，下一个是 `SuggestStore`
+   （照抄 `ReplyStore` 的形状：Intent/Effect + 同步回调 + 不启动 VM 也能测）。
 3. KnowledgeRepository 按 §5.3 拆 catalog/document/profile/memory/migration/archive/round，
    共用一个 `KnowledgeTransactionManager`（不许每个新类各自 new Mutex）。
 4. P1-05 的真正收口：把宽尺测到的 209 处中文字面量搬进 strings.xml / values-en，
