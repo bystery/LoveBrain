@@ -1,7 +1,9 @@
 # LoveBrain × 三阶段指导书 逐条对照（2026-09-24，本窗口）
 
 > 被对照的输入：`LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md`
-> 本窗口的提交：`cb44ceb` `6177cd0` `c927b2e` `9f4747a` `ead80c1` `2ef47ac`（6 个，接在交接文档 `c21b200` 之后）
+> 本窗口的提交：`cb44ceb` `6177cd0` `c927b2e` `9f4747a` `ead80c1` `2ef47ac` `f5aed70` `df1e802`
+> （8 个，接在交接文档 `c21b200` 之后；本地领先远端 `4795471` 的提交数请以
+> `git rev-list --count 4795471..HEAD` 当次输出为准）
 > 上一轮的过程证据：`LoveBrain_Three_Phase_Execution_Log_c0ff041_guide_2026-09-24.md`
 > 上一轮的交接：`LoveBrain_Handover_Unfinished_Work_2026-09-24.md`
 
@@ -17,7 +19,7 @@
 
 | 量 | 命令 | 本窗口实测 |
 |---|---|---|
-| 单测 | `./gradlew :app:testDebugUnitTest` + 逐 XML 解析 | **1062 tests / 130 套件 / 0 失败 / 0 错误 / 0 跳过**（无陈旧 XML：逐个比过 mtime） |
+| 单测 | `./gradlew :app:testDebugUnitTest` + 逐 XML 解析 | **1067 tests / 131 套件 / 0 失败 / 0 错误 / 0 跳过**（无陈旧 XML：逐个比过 mtime；`df1e802` 之后） |
 | lint | `:app:lintDebug` + `check_lint_budget.sh` | **71 条 / 15 条规则，预算一致，0 新增债**；0 error |
 | androidTest 编译 | `:app:compileDebugAndroidTestKotlin` | 通过 |
 | 跨层越界 | `package_deps_report.sh --count` | **6**（与基线一致，没长） |
@@ -25,7 +27,7 @@
 | 工单编号 | `strip_ticket_ids.py --check` | PASS（我自己写注释踩到一次，被这条闸拦下后改掉） |
 | prompt | `git diff --exit-code 286c9406..HEAD -- assets/engine` + `asset_hashes.sh --check` | **零 diff**；lock 匹配 `6dcde732…` |
 | 大文件 | 逐文件行数统计 | 生产 Kotlin 125 个 / >500 行 **18 个** / >800 行 **10 个**（与指导书 P1-01 报的数量持平，见 §3.2 行） |
-| VM / 仓库 | `wc -l` | `LoveBrainViewModel.kt` **2746**；`KnowledgeRepository.kt` **1942** |
+| VM / 仓库 | `wc -l` | `LoveBrainViewModel.kt` **2746**；`KnowledgeRepository.kt` **1941**（`df1e802` 拆出 `KnowledgeCatalogStore.kt` **83** 行，总量涨 82——那一格买的是所有者唯一，不是行数） |
 | 深色主题 | grep `darkColorScheme\|DayNight` | **零命中** → 产品只有浅色，见 §6.5 第 5 栏 |
 | 抓包判据 | `scripts/test_verify_network_egress.sh` | `CANNOT-VERIFY tshark not installed`（本机判不了，不是通过） |
 
@@ -111,7 +113,7 @@ VM 本窗口实测 **2746 行**，与上轮交接同值（既没涨也没降，�
 |---|---|
 | `KnowledgeMigrationService` | 已有（`KnowledgeMigrator`，上轮之前） |
 | `KnowledgeArchiveService`（backup 部分） | 已有（`KnowledgeBackupService`，上轮 `5a21ec2`） |
-| `KnowledgeCatalogStore` | **未做** |
+| `KnowledgeCatalogStore` | **拆出一半**（`df1e802`）：目录枚举 `listAll/listAllUnlocked` 已有唯一所有者 + 5 格用例；`create/delete/setActive/updateDisplayName/ensureInitialKnowledgeBase` 这五个**写侧**动作还在仓库里 |
 | `KnowledgeDocumentStore` | **未做** |
 | `KnowledgeProfileStore` | **未做** |
 | `KnowledgeMemoryStore` | **未做** |
@@ -166,7 +168,7 @@ VM 本窗口实测 **2746 行**，与上轮交接同值（既没涨也没降，�
 
 ### 第二步（按六原则拆架构）：**没完成**
 - VM 不再持有五条 feature 的内部状态 → 沿用上轮（状态持有者已全搬走）。
-- 仓库不再是所有知识能力的唯一入口 → **没达到**：五格未拆，仍 1942 行。
+- 仓库不再是所有知识能力的唯一入口 → **没达到**：七格里出去 3 格（migration / backup / catalog 的枚举侧），仍 1941 行；catalog 写侧与 document/profile/memory/round 未动。
 - 每个 port 有 production/fake 共用 contract suite → 见 §4 LSP 行，**这一条成立**。
 - 新增 feature 不修改已有 reducer → **没做过演练**。
 - 新代码无 >500 行、现存 >800 行持续下降 → **没下降**（18 / 10，与指导书报的持平）。本窗口新增的都是测试与 3 个既有文件的改动。
@@ -202,7 +204,7 @@ prompt 零 diff + lock（**通过**）· P0/P1/P2 对应 commit（见本文各�
 
 **A. 指导书要求、本窗口一行没做**
 1. §5.2 第 6 步：删 VM facade（2746 行）。
-2. §5.3 五格：catalog / document / profile / memory / round。
+2. §5.3 剩余：catalog 的写侧（create/delete/setActive/updateDisplayName/ensureInitial）+ document / profile / memory / round 四格。
 3. §6.1 十一个 `Lb*` 组件 + `core/designsystem` token。
 4. §6.2 首页四段；§6.3 `ScreenState` 四态；§6.4 ResultArea 浮层拆分（1305 行）。
 5. §6.5 截图工具与 baseline 人工 review 流程；⑦超长文案/极端数字那一格；⑧对比度；②里 stateDescription 那两处的断言。

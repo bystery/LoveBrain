@@ -412,6 +412,45 @@ XML 逐个比过 mtime，无陈旧报告冒充）；lint **71 条 / 15 规则**�
 与指导书 P1-01 报的持平，本轮没靠切文件凑数。
 Robolectric 首次跑要在 CI 下载 android-all 与 native 运行时，**CI 侧时长本轮没实测**。
 
+## 2j. 第十轮：§5.3 第二格——目录枚举只留一个回答者（`df1e802`）
+
+`KnowledgeRepository` 1942 → **1941 行**，新文件 `KnowledgeCatalogStore.kt` **83 行**：
+**总量涨 82 行**。这一格买到的不是体量，是"同一件事不再有两份判据"——
+先按指导书 §6 那句"文件变小不是目标"把话说在前面，别把这次记成降行数。
+
+拆它的直接理由是一处**真实的行为分叉**：`listAll()`（公开）与 `listAllUnlocked()`（无锁）
+各写了同一套"扫目录 → 读 kb.json → 校验 name 与目录名等值 → 按 updatedAt 倒序"，
+两份唯一的差别是**只有公开那份在被挡下时记日志**。也就是说"这个坏掉的库会不会被说出来"
+取决于调用方走的哪条路——上轮 §3 第 7 条那类"搬家搬掉观测"的坑，同一个形状。
+
+新类的形状照 `5a21ec2`（backup 那一格）：不持锁、不写盘、不接 `CoroutineScope`；
+拿到的能力面是只有 `catalogRoot` + `decodeMeta` + `onMetaRejected` 三件事的 `CatalogStorage`，
+**不复用** `KbStorageAccess`、**不复用** `BackupStorage` 那道写门（列目录不该拿到改库的权限）。
+解析仍由仓库那份 `Json { ignoreUnknownKeys… }` 注入，避免两处各配一把尺。
+
+### 5 格新用例 × 5 个变异，每刀各咬红一格
+
+| 注入的反例 | 红掉的那格 |
+|---|---|
+| 去掉"以 `.` 开头的目录不是库"过滤 | `hidden directories are not libraries` |
+| 放行 name 与目录名不符的条目 | `a library whose metadata disagrees…` |
+| 解不开 kb.json 时不上报（静默丢） | `one broken library drops itself…` |
+| `sortedByDescending` 改成 `sortedBy` | `libraries come out newest first` |
+| 根目录不存在时 `listFiles()!!` 抛出去 | `an empty or missing root is an empty list…` |
+
+第一格值得单记：夹具原本只放了一个"没有 kb.json 的 `.backup/`"，那样的话把过滤那行删了
+它也照样绿——**尺子量不到东西**。补一个"带合法 kb.json 的隐藏目录"之后才有牙。
+跑完逐字节复原，sha256 `f6dce644…` 与跑前一致，`M[1-5]` 标记 0 处残留。
+
+### 收尾实测（`df1e802`）
+
+**1067 单测 / 131 套件 / 0 失败 / 0 错误 / 0 跳过**（XML 逐个比过 mtime）；
+lint **71 条 / 15 规则**与预算一致、0 error；`compileDebugAndroidTestKotlin` 通过；
+跨层 **6** 条；取消审计 167 站点 NEEDS_REVIEW=0；工单编号 PASS。
+`KnowledgeRepository` 里剩下没出去的仍是 §5.3 列的那几格：
+`create/delete/setActive/updateDisplayName/ensureInitialKnowledgeBase`（catalog 的写侧）、
+document / profile / memory / round。
+
 ## 3. 明确没做到 / 没法在本机做到的（不混进上面）
 
 1. **19 条真机 instrumentation 失败还在**。本轮只做到：把 7 条同源的夹具竞态改掉、

@@ -12,7 +12,8 @@
 
 - 阶段一：P0-03 / P0-04 / P0-05 本机完成；**P0-01 / P0-02 的真机证据还没拿到**（要推送才能闭）。
 - 阶段二：§5.2 五条 feature store + "模式"全部归位；**§5.2 第 6 步（删 facade）没做**；
-  **§5.3 只拆出 1 格**（backup）。
+  **§5.3 出去 3 格**（migration / backup / catalog 的枚举侧 `df1e802`）；
+  catalog 的写侧与 document / profile / memory / round 未动。
 - 阶段三：⚠️ 组件体系（`Lb*` / 首页四段 / `ScreenState` / ResultArea 拆分 / 截图工具）**仍一行没动**；
   但 §6.5 的"语义树那一半"已有仪器，并据此修掉三处缺陷（`cb44ceb…2ef47ac`，详见执行记录 §2i）。
 
@@ -25,8 +26,8 @@ rm -rf app/build/test-results/testDebugUnitTest && \
   ./gradlew :app:testDebugUnitTest :app:lintDebug :app:compileDebugAndroidTestKotlin --no-daemon
 ```
 
-本机实测（最后一次全量跑，`2ef47ac`）：**1062 单测 / 130 套件 / 0 失败 / 0 错误 / 0 跳过**（比上一轮的
-1045 多的 17 格全是 §2i 新增的语义树/合同用例）；lint 71 issues、0 error；
+本机实测（最后一次全量跑，`df1e802`）：**1067 单测 / 131 套件 / 0 失败 / 0 错误 / 0 跳过**（比上一轮的
+1045 多的 22 格：§2i 的语义树/合同 17 格 + §2j 的目录枚举 5 格）；lint 71 issues、0 error；
 跨层越界 6 条；取消审计 167 站点 NEEDS_REVIEW=0；工单编号扫描 PASS；prompt 目录零 diff；
 生产 Kotlin 125 个 / >500 行 18 个 / >800 行 10 个。
 
@@ -37,7 +38,7 @@ rm -rf app/build/test-results/testDebugUnitTest && \
 | # | 条目 | 指导书出处 | 现状 | 起手式 |
 |---|---|---|---|---|
 | 1.1 | §5.2 第 6 步：VM 退成只组合只读 StateFlow 的 facade，然后**删 facade** | §5.2 步骤 6 / §7 第二步完成定义 | VM `LoveBrainViewModel.kt` **2746 行**，比本轮开工前（2651）**长 95 行**。状态持有者都搬走了，编排与转发全留着 | 先量调用面：`grep -rn "viewModel\." app/src/main/java/com/lovebrain/app/ui app/src/androidTest` 统计每个 public 流的引用数；只被一个面板用的流 → 把该面板改成收 `StateFlow` 参数而不是收 VM；命令类方法（generate/cancel/undo）保留在 VM |
-| 1.2 | §5.3 剩下五格：catalog / document / profile / memory / round | §5.3 | 仓库 1942 行。已出的只有 backup（`KnowledgeBackupService`，`5a21ec2`）+ migration（早就是 `KnowledgeMigrator`） | 照 §5.3 分组：**catalog**=`listAll/getActive/setActive/create/delete/updateDisplayName/ensureInitialKnowledgeBase`；**document**=`readFile/appendFile/deleteFile/writeFile/writeFileWithVersion/readFileWithVersion/toKbName/toKbPath/safeKbFile`；**profile**=`readProfile/applyProfileUpdateAtomically/getCurrentStage/updateStage/updateWarmthStageLabel/readVector/writeVector/getTurnCount/incrementTurnCount*`；**memory**=`readIntent/saveIntent/readCorrections/saveCorrection/undoCorrection/*RevisionCheck/appendActualSentRecord/replaceActualSentRecord/appendCounselingEntries/readCounselingAnalysisBlocks`；**round**=`transaction/KnowledgeTx/RoundCommitJournal` 那条链 |
+| 1.2 | §5.3 剩下几格：catalog 写侧 / document / profile / memory / round | §5.3 | 仓库 1941 行。已出三格：backup（`5a21ec2`）、migration（早就是 `KnowledgeMigrator`）、**catalog 的枚举侧**（`KnowledgeCatalogStore`，`df1e802`：`listAll` 与 `listAllUnlocked` 从此一个所有者）。`create/delete/setActive/updateDisplayName/ensureInitialKnowledgeBase` 这五个写侧动作还在仓库里 | 照 §5.3 分组：**catalog**=`listAll/getActive/setActive/create/delete/updateDisplayName/ensureInitialKnowledgeBase`；**document**=`readFile/appendFile/deleteFile/writeFile/writeFileWithVersion/readFileWithVersion/toKbName/toKbPath/safeKbFile`；**profile**=`readProfile/applyProfileUpdateAtomically/getCurrentStage/updateStage/updateWarmthStageLabel/readVector/writeVector/getTurnCount/incrementTurnCount*`；**memory**=`readIntent/saveIntent/readCorrections/saveCorrection/undoCorrection/*RevisionCheck/appendActualSentRecord/replaceActualSentRecord/appendCounselingEntries/readCounselingAnalysisBlocks`；**round**=`transaction/KnowledgeTx/RoundCommitJournal` 那条链 |
 | 1.3 | 拆类必须共用**一个** `KnowledgeTransactionManager`，不许每类各自 new Mutex | §5.3 末句 | 现状是仓库唯一一把 `fileMutex` + `RepoStorage` 受限视图，形状已经对了——**下一格必须沿用**，不要新开锁 | 沿用 `BackupStorage` 那个做法：给每格定义"它真正需要的最小能力接口"，由 `RepoStorage` 一个内部类去实现，别把 `KbStorageAccess` 当万能接口传 |
 | 1.4 | §6.1 设计 token + 11 个 `Lb*` 基础组件 | §6.1 表 | 一个都没有。现有页面各自造标题样式、按钮、卡片 | 组件清单（照指导书表）：`LbScreenScaffold` `LbTopBar` `LbSection` `LbPrimaryButton` `LbActionCard` `LbSettingRow` `LbMetricCard/Grid` `LbEmptyState` `LbAsyncState` `LbModalSheet/Dialog` `LbStatusBadge`。先建 §5.1 说的 `core/designsystem` 目录（还没建） |
 | 1.5 | §6.3 每个目的地统一 `ScreenState`（Loading/Content/Empty/Error 四态） | §6.3 | 未做。Provider、反馈案例、知识库、捕获范围各自发明空态/错误态 | 定义一次 `sealed interface ScreenState<out T>`，然后**逐页**替换，每页一格提交 |
@@ -139,7 +140,9 @@ rm -rf app/build/test-results/testDebugUnitTest && \
 
 ## 7. 建议的下一个顺序（不跳步）
 
-1. §5.3 再拆 1–2 格（先 **catalog**，再 **document**）——形状照 `5a21ec2`。
+1. §5.3 再拆 1–2 格：catalog 剩下的**写侧**（create/delete/setActive/updateDisplayName/ensureInitial，
+   枚举侧已在 `df1e802` 出去，直接往里加即可），再 **document**。形状照 `5a21ec2` 与 `df1e802`：
+   给每格定义『它真正需要的最小能力接口』，由 `RepoStorage` 一个内部类去实现。
 2. §6.4 拆 ResultArea 的浮层 state holder + modal host。**做之前先花 10 分钟**：
    照 `PanelHeaderTouchTargetsTest` 给 ResultArea 现有的可点控件补一组语义树用例（本机就能跑），
    这样"拆完没把热区/标签拆坏"是量出来的，不是看出来的。截图工具放在 §6.1–§6.4 之后接。
