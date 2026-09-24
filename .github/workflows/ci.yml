@@ -58,9 +58,16 @@ jobs:
         # Fatal severity and a non-stub HTML companion.
         run: bash scripts/assert_artifacts.sh --label "lint" --lint-xml app/build/reports/lint-results-debug.xml --lint-html app/build/reports/lint-results-debug.html
 
+      - name: Lint budget checker must be gradeable
+        # 判据本身要正反各跑一遍——尤其"降级成 advisory 之后还得咬得动真债"这一半。
+        # 夹具是同一份代码在两台机器上量出的两份真报告（run 36019334520 那次 CI 红就是
+        # 因为两侧条数对不上），所以这一格在 Linux 上跑才有意义：它验的就是"这把尺跨平台一致"。
+        run: bash scripts/test_check_lint_budget.sh
+
       - name: Lint budget must not grow
         # 复核 §3.3：80 个 warning 不该永久当绿色背景噪声。
         # 按**每条规则**记预算：只记总数会被"修 3 条旧的、加 3 条新的"糊过去。
+        # 发现来自仓库之外的检查（上游版本清单 / 本机 SDK）不进预算，但每次打印条数与理由。
         run: bash scripts/check_lint_budget.sh
 
       - name: Instrumentation sources must compile (same SHA, same job)
