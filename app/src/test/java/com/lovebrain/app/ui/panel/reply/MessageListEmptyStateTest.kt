@@ -10,6 +10,7 @@ import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.UiProbeApplication
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
