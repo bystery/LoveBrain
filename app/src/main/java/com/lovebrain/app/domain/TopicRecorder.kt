@@ -110,7 +110,9 @@ class TopicRecorder(
         // 4. 稳定 roundId——同一轮重试得到同一身份
         val roundId = RoundCommitJournal.stableRoundId(kb.name, roundMsgIds, entry)
 
-        // 5. 本轮是否已完整提交（跨文件幂等的唯一判据）
+        // 5. 本轮是否已完整提交（跨文件幂等的唯一判据）。
+        //    这是锁外快路径；并发同轮的第二个协程由 commit() 内的锁内重读拦下，
+        //    两条路径都归到这里，调用方看到的返回值语义一致。
         if (journal.isRoundCommitted(kb.name, roundId)) {
             L.w("round $roundId already committed, skipping all writes (roundMsgIds=$roundMsgIds)")
             return false
@@ -133,7 +135,11 @@ class TopicRecorder(
             turnCountIncrement = 1
         )
 
-        return journal.commit(kb.name, event) { e -> applyRound(e) }
+        return when (val outcome = journal.commit(kb.name, event) { e -> applyRound(e) }) {
+            is RoundCommitJournal.CommitOutcome.Committed -> outcome.value
+            // 另一个协程在本协程排队等锁时把这一轮提交了：本轮没有新话题切换
+            RoundCommitJournal.CommitOutcome.AlreadyCommitted -> false
+        }
     }
 
     /**

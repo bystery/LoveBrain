@@ -29,12 +29,18 @@ import org.junit.Before
 import org.junit.Test
 import java.io.File
 import java.nio.file.Files
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * S2-04 round commit 故障注入矩阵。
  *
  * 指导书 §8.2.7："对 topic/recent/scene/plan/count 每个写入边界故障注入，
  * 重启后校验 exactly-once 最终状态"。
+ * 口径按 2026-09-24 独立复核 P0-05 修正：这里能保证的是**最终状态收敛**，
+ * effect 的执行次数是至少一次；两种说法分别由
+ * `every write boundary survives interruption with a converged final state` 和
+ * `an effect that landed but lost its watermark runs again on recovery` 钉住。
  *
  * 做法：对真实 [KnowledgeRepository]（临时目录）包一层 mockk 代理，
  * 让某一个投影对应的落盘调用抛异常 → 该轮中断，journal 留在 PREPARED/WRITING；
@@ -174,6 +180,11 @@ class RoundCommitJournalTest {
     /**
      * 对每个写入边界：中途失败 → 恢复 → 最终状态必须与一次跑通完全一致。
      *
+     * 口径说明（独立复核 P0-05）：这里收敛的是**最终状态**，不是 effect 的执行次数。
+     * effect 先落盘、水位后更新，所以崩在两者之间时该投影会被重跑一次；
+     * 那一次重跑由下面的
+     * `an effect that landed but lost its watermark runs again on recovery` 钉住。
+     *
      * 这条断言同时封住旧实现的几个具体缺陷：
      * - 恢复时把 scene 的 sourceIds 写成 emptyList（语义被改变）
      * - 恢复时把 ongoing 降级成只有 name 的伪事项
@@ -181,7 +192,7 @@ class RoundCommitJournalTest {
      * - turn count 靠 recent marker 反推，"recent 刚由恢复写入"时漏加
      */
     @Test
-    fun `every write boundary survives interruption with exactly-once final state`() {
+    fun `every write boundary survives interruption with a converged final state`() {
         setupKb()
         val baseline = runBlocking {
             val r = repo()
@@ -246,6 +257,138 @@ class RoundCommitJournalTest {
     }
 
     // ─── 幂等与身份 ─────────────────────────────────────────────────
+
+    /**
+     * 独立复核 P0-05 第三条：注入"effect 已经写成、水位落盘失败"，
+     * 而不是只测 effect 自己抛异常。
+     *
+     * 顺序是 effect → watermark，所以这个窗口被截断时磁盘上记着"这一投影没做过"，
+     * 恢复必然把它再跑一遍。本测试不掩盖该行为，而是把它钉成合同：
+     * 提交语义是 **at-least-once + idempotent convergence**，不是 exactly-once。
+     */
+    @Test
+    fun `an effect that landed but lost its watermark runs again on recovery`() {
+        setupKb()
+        val runs = ConcurrentHashMap<String, Int>()
+        fun bump(projection: String) = runs.merge(projection, 1) { a, b -> a + b }
+        val body: suspend RoundCommitJournal.Tx.(RoundCommitJournal.RoundCommitEvent) -> Unit = {
+            apply(RoundCommitJournal.PROJ_RECENT) { bump(RoundCommitJournal.PROJ_RECENT) }
+            apply(RoundCommitJournal.PROJ_SCENE) { bump(RoundCommitJournal.PROJ_SCENE) }
+            apply(RoundCommitJournal.PROJ_PLAN) { bump(RoundCommitJournal.PROJ_PLAN) }
+        }
+
+        // 第 2 次水位落盘失败 = scene 的 effect 已写成，但它的水位没留住
+        val broken = watermarkFailingRepo(failOnCall = 2)
+        val thrown = runCatching {
+            runBlocking { RoundCommitJournal(broken).commit("kb", event("round-wm"), body) }
+        }.exceptionOrNull()
+        assertNotNull("losing a watermark write must fail the round", thrown)
+        assertEquals("recent is before the cut", 1, runs[RoundCommitJournal.PROJ_RECENT])
+        assertEquals("scene's effect landed before its watermark failed", 1, runs[RoundCommitJournal.PROJ_SCENE])
+        assertNull("plan never started", runs[RoundCommitJournal.PROJ_PLAN])
+        assertTrue("journal must survive for roll-forward", journalFile().exists())
+
+        // 模拟进程重启：全新组件按磁盘上的水位补齐
+        val fresh = repo()
+        val journal = RoundCommitJournal(fresh)
+        val recovered = runBlocking { journal.recover("kb", body) }
+
+        assertTrue("a WRITING journal must be recoverable", recovered)
+        assertEquals(
+            "the watermark that did land must spare recent a second effect",
+            1, runs[RoundCommitJournal.PROJ_RECENT]
+        )
+        assertEquals(
+            "scene is at-least-once: its lost watermark replays the effect",
+            2, runs[RoundCommitJournal.PROJ_SCENE]
+        )
+        assertEquals(1, runs[RoundCommitJournal.PROJ_PLAN])
+        assertTrue(
+            "the round must end up committed",
+            runBlocking { journal.isRoundCommitted("kb", "round-wm") }
+        )
+        assertFalse("journal must be cleared after roll-forward", journalFile().exists())
+    }
+
+    /**
+     * 独立复核 P0-05 第二条：两个协程同时提交同一个 round。
+     *
+     * `TopicRecorder.record()` 在事务锁**外面**查过一次提交清单，两个协程都会读到
+     * "没提交"；只有 [RoundCommitJournal.commit] 拿到 txMutex 之后的重读才作数。
+     * 锁内重读补上之前这条是红的——旧实现会让整个 round 的 effect 跑第二遍。
+     *
+     * 并发用两个真线程各跑一个 runBlocking 制造（而不是 async）：txMutex 本来就是跨线程
+     * 的挂起锁，这样能覆盖同一条竞争路径，又不会让一个 runBlocking 的事件循环
+     * 在另一个协程还没收尾时就被拆掉——那种拆法会在 kotlinx.coroutines 的
+     * DefaultExecutor 上留下 ClassCastException，把同一个 JVM 里后面的测试毒成
+     * "uncaught exceptions before the test started"。
+     */
+    @Test
+    fun `two coroutines committing the same round write it once`() {
+        setupKb()
+        val r = repo()
+        val journal = RoundCommitJournal(r)
+        val effectRuns = AtomicInteger(0)
+        val event = event("round-race")
+        val gate = java.util.concurrent.CountDownLatch(1)
+        val outcomes = java.util.concurrent.ConcurrentLinkedQueue<RoundCommitJournal.CommitOutcome<Int>>()
+        val failures = java.util.concurrent.ConcurrentLinkedQueue<Throwable>()
+
+        val threads = (1..2).map {
+            Thread {
+                try {
+                    gate.await()
+                    outcomes.add(
+                        runBlocking { journal.commit("kb", event) { effectRuns.incrementAndGet() } }
+                    )
+                } catch (t: Throwable) {
+                    failures.add(t)
+                }
+            }.apply { isDaemon = false; start() }
+        }
+        gate.countDown()
+        threads.forEach { it.join(30_000L) }
+        check(threads.all { !it.isAlive }) { "a committing thread hung" }
+
+        assertTrue("neither thread may fail: ${failures.joinToString()}", failures.isEmpty())
+        assertEquals("both coroutines must be accounted for", 2, outcomes.size)
+        assertEquals(
+            "exactly one coroutine may run the round",
+            1, outcomes.count { it is RoundCommitJournal.CommitOutcome.Committed<*> }
+        )
+        assertEquals(
+            "the loser must get a typed AlreadyCommitted instead of writing again",
+            1, outcomes.count { it is RoundCommitJournal.CommitOutcome.AlreadyCommitted }
+        )
+        assertEquals("effects must run once in total", 1, effectRuns.get())
+        assertEquals(
+            "committedRounds must not hold the round twice",
+            listOf("round-race"), runBlocking { journal.readState("kb") }.committedRounds
+        )
+        assertFalse("journal must be gone", journalFile().exists())
+    }
+
+    /**
+     * 让第 [failOnCall] 次**水位文件**落盘失败。
+     *
+     * 与 [faultyRepo] 的区别：这里失败的不是投影的 effect，而是 journal 自己的
+     * 记账写入——正是 P0-05 要求单独注入的那个窗口。
+     */
+    private fun watermarkFailingRepo(failOnCall: Int): KnowledgeRepository {
+        val real = repo()
+        val spy = spyk(real)
+        val calls = AtomicInteger(0)
+        coEvery { spy.writeFile("kb", RoundCommitJournal.STATE_PATH, any()) } coAnswers {
+            if (calls.incrementAndGet() == failOnCall) throw fault
+            // 显式转给没被拦截的那个实例。spyk 的 callOriginal() 在 suspend 函数上会把
+            // continuation 留在调用方的事件循环里；实测会让同一个 JVM 后面开跑的
+            // runTest 报 "uncaught exceptions before the test started"（本机复现过一次）。
+            real.writeFile(firstArg(), secondArg(), thirdArg())
+        }
+        return spy
+    }
+
+    private fun journalFile(): File = File(root, "kb/moment/.round_commit_journal.json")
 
     /** 同一轮重试（消息 ID 集合相同）只产生一次写入 */
     @Test

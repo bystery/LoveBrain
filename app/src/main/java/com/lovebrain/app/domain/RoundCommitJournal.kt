@@ -26,7 +26,12 @@ import java.security.MessageDigest
  * 4. **COMMITTED**：全部投影完成后写 COMMITTED、把 roundId 追加进 committedRounds、删 journal。
  *
  * 恢复 = 用同一段 body 再跑一遍；水位决定哪些投影跳过。因此：
- * - 恰好一次（effect 先落盘、水位后更新，进程死亡不会让已完成投影重跑）
+ * - **至少一次 + 幂等收敛（at-least-once + idempotent convergence）**：effect 先落盘、水位后更新，
+ *   所以进程死在两者之间时，那个投影会被重跑一次。最终状态是收敛的，
+ *   但 effect 的执行次数不是恰好一次——本项目没有跨文件事务，拿不到那个保证。
+ *   钉住这条口径的两格用例：
+ *   RoundCommitJournalTest 的 `an effect that landed but lost its watermark runs again on recovery`
+ *   与 `two coroutines committing the same round write it once`。
  * - 不依赖 recent.md 里的 HTML marker 作为跨文件提交标记
  *   （marker 仅作为 recent 投影自身的文件内去重，见 [WRITER_MARKER_PREFIX]）
  *
@@ -208,6 +213,22 @@ class RoundCommitJournal(
         val projections: Map<String, String> = emptyMap()
     )
 
+    /**
+     * 一次 [commit] 的结果。
+     *
+     * 之所以要有这个类型而不让调用方自己判断"返回值和第一次一样吗"：
+     * `TopicRecorder.record()` 在事务锁**外面**先查过一次 [isRoundCommitted]，
+     * 两个并发协程提交同一 round 时都会读到 false，第二个必须在**拿到锁之后**再查一次，
+     * 并且要让调用方看得见"这一次什么都没写"。
+     */
+    sealed interface CommitOutcome<out R> {
+        /** body 真的执行了（首次提交或恢复），[value] 是 body 的返回值 */
+        data class Committed<out R>(val value: R) : CommitOutcome<R>
+
+        /** 进入事务锁后发现该轮已在 committedRounds 里：一个字节都没有写 */
+        object AlreadyCommitted : CommitOutcome<Nothing>
+    }
+
     /** 事务执行句柄——body 通过它声明"写这个投影"，水位由 journal 统一维护 */
     inner class Tx internal constructor(
         val roundId: String,
@@ -221,9 +242,11 @@ class RoundCommitJournal(
         /**
          * 执行一个投影写入，成功后推进水位。
          *
-         * 顺序固定为 **effect → watermark**：进程在 effect 中途被杀时，
-         * 该投影会被重跑一次，所以每个 block 内部必须自己幂等
+         * 顺序固定为 **effect → watermark**：进程在 effect 中途被杀、
+         * 或在 effect 成功后、水位落盘前被杀时，该投影都会被重跑一次，
+         * 所以每个 block 内部必须自己幂等
          * （rotateTopic 用 ArchiveOperationState，recent 用文件内 marker，scene/plan 用来源与 itemId）。
+         * 这就是本事务是 at-least-once 而不是 exactly-once 的确切位置。
          *
          * @return block 的返回值；已生效则返回 [skipped]
          */
@@ -254,7 +277,12 @@ class RoundCommitJournal(
     // 对外 API
     // ════════════════════════════════════════════════════════════════
 
-    /** 本轮是否已完整提交——跨文件幂等的唯一判据，不看 recent marker */
+    /**
+     * 本轮是否已完整提交——跨文件幂等的唯一判据，不看 recent marker。
+     *
+     * 这是**不加事务锁**的快路径，只用来省掉一次完整事件的构建；
+     * 它不能作为正确性依据，真正拦并发的是 [commit] 里的锁内重读。
+     */
     suspend fun isRoundCommitted(kbName: String, roundId: String): Boolean =
         readState(kbName).committedRounds.contains(roundId)
 
@@ -278,12 +306,22 @@ class RoundCommitJournal(
      * （不得回读调用方的可变状态）——恢复时走的正是同一个 body + 同一个 event。
      *
      * 崩溃在任意点之后，[recoverPending] 会用同一 body 完成剩余投影。
+     *
+     * **锁内二次检查**：[isRoundCommitted] 是给调用方的锁外快路径，它和这里不是重复代码——
+     * 两个协程可以在锁外同时读到"未提交"，只有拿到 [txMutex] 之后重读磁盘状态才算数。
      */
     suspend fun <R> commit(
         kbName: String,
         event: RoundCommitEvent,
         body: suspend Tx.(RoundCommitEvent) -> R
-    ): R = txMutex.withLock {
+    ): CommitOutcome<R> = txMutex.withLock {
+        // 锁内二次检查：进入事务锁后重读提交清单。锁外那一次判断只省开销，不作正确性依据。
+        val stateOnDisk = readState(kbName)
+        if (stateOnDisk.committedRounds.contains(event.roundId)) {
+            L.w("WAL already-committed roundId=${event.roundId} (checked inside tx lock); nothing written")
+            return@withLock CommitOutcome.AlreadyCommitted
+        }
+
         val existing = readEvent(kbName)
         if (existing != null && existing.roundId != event.roundId) {
             // 上一轮尚未收敛——先让调用方恢复，避免 journal 被覆盖丢账
@@ -304,7 +342,7 @@ class RoundCommitJournal(
             json.encodeToString(RoundCommitEvent.serializer(), prepared.copy(stage = CommitStage.WRITING))
         )
 
-        var persisted = readState(kbName)
+        var persisted = stateOnDisk
         val tx = Tx(event.roundId, { newState ->
             persisted = newState
             writeState(kbName, newState)
@@ -329,7 +367,7 @@ class RoundCommitJournal(
         )
         knowledgeRepo.deleteFile(kbName, JOURNAL_PATH)
         L.w("WAL COMMITTED roundId=${event.roundId}")
-        result
+        CommitOutcome.Committed(result)
     }
 
     /** 有在途事务时返回它（PREPARED/WRITING），否则 null */
@@ -351,14 +389,22 @@ class RoundCommitJournal(
     /**
      * 崩溃恢复：用与首提相同的 body 重放未完成投影。
      *
-     * 返回 true 表示确实恢复了一轮。
+     * 返回 true 表示确实重放了一轮。
+     *
+     * [CommitOutcome.AlreadyCommitted] 同源的锁内二次检查在这里也有：
+     * 提交清单已经认得这一轮时，只清 journal，绝不重跑投影。
      */
     suspend fun recover(
         kbName: String,
         body: suspend Tx.(RoundCommitEvent) -> Unit
     ): Boolean {
         val pending = recoverPending(kbName) ?: return false
-        txMutex.withLock {
+        return txMutex.withLock {
+            if (readState(kbName).committedRounds.contains(pending.roundId)) {
+                knowledgeRepo.deleteFile(kbName, JOURNAL_PATH)
+                L.w("WAL recovery skipped round ${pending.roundId}: commit log already holds it, journal cleaned")
+                return@withLock false
+            }
             knowledgeRepo.writeFile(
                 kbName, JOURNAL_PATH,
                 json.encodeToString(RoundCommitEvent.serializer(), pending.copy(stage = CommitStage.WRITING))
@@ -375,8 +421,8 @@ class RoundCommitJournal(
             writeState(kbName, committed)
             knowledgeRepo.deleteFile(kbName, JOURNAL_PATH)
             L.w("recovery complete for round ${pending.roundId}")
+            true
         }
-        return true
     }
 
     /** 丢弃 journal（不撤销 target——本项目没有反向写入能力，回滚一律表现为 roll-forward） */
