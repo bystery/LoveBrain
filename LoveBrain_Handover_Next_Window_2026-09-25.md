@@ -121,6 +121,22 @@ HEAD `0c4d6d6`，仍未推。两笔：
   目前检索到的下一个候选是回滚族（`generationHistory` / `currentVersionId` / `inputChanged`，
   一次操作改三处且 `currentVersionId` 必须是 history 里存在的一项）。
 
+## 0.7 又一步：量完两格决定不动，做掉一格无障碍（`0e83c95`）
+
+- **回滚族：量完不做**（账本 §19.1）。形状确实可疑——`SuccessCommitted` 无条件写
+  `_currentVersionId`，而 history 那条快照只在 `replyGenerationContext?.let{}` 里追加；
+  但那个窗口不可达（`stopGeneration` 先撤 owner 再清 context，store 只给当前请求发 Effect）。
+  所以不加防御性 else，只把"不可达"记下来，并标清这条判断的强度是
+  **读码 + 既有 `GenerationRollbackTest` 覆盖**，不是穷举证明。
+- **输入框的读屏名字：做了**。placeholder 是兄弟节点的 `Text`、只在空草稿时画，
+  TalkBack 念不到兄弟 ⇒ 那颗输入框只有 `EditableText`、报"编辑框"，敲第一个字之后连提示都没了。
+  给可编辑节点挂 `contentDescription = placeholder`，同形状两处一起改
+  （`PanelTextInput`、`CompactInput`）；视觉一格没改。新 `ComposerInputLabelTest` 五格
+  （JVM 语义树），注入 A1 撤掉那两行 ⇒ 五格全红。**没顺手改**"三句提示是硬编码中文"那笔账
+  （资源驱动/中英 parity 是另一条），测试也只钉语言无关的事实。
+- 意图族（0.6 之前提名过）与回滚族都**量完撤回**：连着 §16/§17 做了的两处看，
+  才看得出 §2.2 那行的真实进度只有两处，不是"一路顺推四处"。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -139,8 +155,10 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
 ```
 
-最近一轮实测基线（到 `26ecf95`）：**1193 单测 / 149 套件 / 0 失败 / 0 错误 / 0 跳过**
-（最旧 XML 05:55:02 ≥ shell 记的起点 05:51:50）；
+最近一轮实测基线（到 `0e83c95`）：**1198 单测 / 150 套件 / 0 失败 / 0 错误 / 0 跳过**
+（最旧 XML 06:10:17 ≥ shell 记的起点 06:07:16）；lint 报告**重新生成后**（06:12）
+70 条 / 15 规则，其中 **进预算 69 条 / 14 规则**、advisory 1 条，
+`check_lint_budget.sh` 要**不带管道**单独取退出码（见 §6 第 44 条）；
 lint 报告**重新生成后**（05:56）70 条 / 15 规则，其中 **进预算 69 条 / 14 规则**、advisory 1 条；
 `:app:compileDebugAndroidTestKotlin` rc=0；prompt 零 diff + lock `6dcde732…`；工单编号 rc=0；
 跨层 **6** 条（与基线同，没长）。
@@ -208,9 +226,11 @@ VM 里私有 `MutableStateFlow` 用同一把尺量：**39 → 31 → 30 → 30**
    上一份账记"未做"是错的（错在把"从来不在仓库里"当成"没拆出来"）。
    `TopicRecorder.kt:56` 那个 `?: RoundCommitJournal(knowledgeRepo)` 兜底构造是另一件事，
    与 P1-04 的双注册有关，要动就单独一格。
-3. **`FloatingService` 那颗输入行的可点节点没有标签**——逐点数入口时量到：带 `EditableText`、
-   无文案无 `contentDescription`，读屏念不出这是什么输入框（§6.5 第②栏）。改生产码，
-   测试形状现成（`ComposerAddButtonGatingTest` 已经在数这些节点，数到 5 个）。
+3. ~~**`FloatingService` 那颗输入行的可点节点没有标签**~~ —— **已做**（`0e83c95`）：
+   `PanelTextInput`（回复/主动发/谈心共用）与 `CompactInput`（问卷页、供应商弹窗共用）两处同形状缺陷
+   一起挂上 `contentDescription = placeholder`；语义树 5 格新用例 + 注入 A1 验红（撤掉那两行 → 五格全红）。
+   **留下的相邻账**：那三句 placeholder 提示仍是硬编码在 `ReplyInput` 里的中文字面量
+   （资源驱动 / 中英 parity），本轮没动用户可见文案，测试也只钉语言无关的事实。
 4. **§6.3 知识库页接四态**：范例已有两份（反馈页 `e359930`、供应商页 `d902514`→`80bc78e`）。
 5. **§5.1 `core/testing` 归位**：本轮新增 `app/src/androidTest/…/testing/UiText.kt`，
    于是同一判据的夹具文本在两个测试源集各存一份（`ReplyPayloadShapeForUiFixtureTest` ↔
@@ -236,7 +256,7 @@ VM 里私有 `MutableStateFlow` 用同一把尺量：**39 → 31 → 30 → 30**
 量过，**不是**候选；`panelState`/`outputMode`/`resultMode`/`draftText` 这类独立单选值也不是。
 挑下一处之前先按坑表 43 条检索不变式，别照着上一段话干。
 
-## 5. 别重复劳动：这几轮做的 20 笔
+## 5. 别重复劳动：这几轮做的 21 笔
 
 | 提交 | 内容 |
 |---|---|
@@ -260,13 +280,14 @@ VM 里私有 `MutableStateFlow` 用同一把尺量：**39 → 31 → 30 → 30**
 | `cf80b91` | 面板九个统计并成一份不可变 `UsageStats` + 纯 `reduce` + 一个写入漏斗；跨天判据不再有一份藏在 `var` 里；UI 5 次 collect 并 1 次；flow 数 39 → 31 |
 | `6910098` | 画像卡片两件事（建议 + 正在确认）并成一份 `ProfileReview`；判据住进状态，"清卡只清我确认的那一份"从手写三步变成一条事件；面板 2 次 collect 并 1 次；flow 数 31 → 30；9 格新测试 + 六处注入各自只红目标格 |
 | `26ecf95` | 编辑位重算三处并成一条判据 `MessageListEditing.reindex`；**先**用真实 VM 穷举 130 组不变式证明三处本来就一致（没找到 bug，但从此有网），**再**合并；悬空编辑位拧成"没有编辑位"；flow 数不变（那是规则不是状态） |
+| `0e83c95` | 输入框在语义树上有名字（§6.5 无障碍第②栏）：`PanelTextInput` + `CompactInput` 挂 `contentDescription = placeholder`，视觉未变；新 JVM 语义树 5 格，注入撤掉两处 → 五格全红。同轮量完回滚族：**判定不做**（缺口不可达），理由与判断强度记在账本 §19.1 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
 `GENERATE_STOP_TEST_TAG`（生产留的锚点，"文字会变，tag 不会"）。
 **新用例取文案一律走这些，别再抄一份中文字面量。**
 
-## 6. 坑表（编号接上一份的 1–15；16–25 CI 首跑后那批，26–31 画像格那批，32–35 回滚与只读那批，36–43 归档与状态统一那批）
+## 6. 坑表（编号接上一份的 1–15；16–25 CI 首跑后那批，26–31 画像格那批，32–35 回滚与只读那批，36–44 归档、状态统一与无障碍那批）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -351,6 +372,10 @@ VM 里私有 `MutableStateFlow` 用同一把尺量：**39 → 31 → 30 → 30**
     这一笔去量，发现那两处之间没有必须同帧的不变式，并了只是结构体崇拜——真正的不变式在
     `editingIndex` 是 `messages` 下标这一族（以及回滚族的 `currentVersionId` ∈ `generationHistory`）。
     顺嘴提名是"按字母清库存"的伪装版。
+44. **管道里的 `$?` 是被管道的最后一个命令的码**：我写
+    `bash scripts/check_lint_budget.sh | grep STATS; echo "budget=$?"` 量到的是 `grep` 的 0，
+    不是门禁的码——这条与坑表第 1 批里"gradlew 别接管道"是同一个病，本轮在同一份脚本上重犯一次。
+    取退出码要 `cmd > 文件 2>&1; echo $?` 再另外 grep 文件。
 
 ## 7. 硬约束（一条没变）
 

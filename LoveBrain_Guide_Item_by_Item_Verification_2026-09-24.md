@@ -909,3 +909,55 @@ VM 还有一百多个公开成员、十几个命令式方法（`generate`/`nextR
 §2.2 那行"没有统一 Reducer/UiState"的进度仍停在 §17 的两处；下一步该由"哪些字段必须同帧"
 检索得出，目前已知的候选是**回滚族**（`generationHistory` / `currentVersionId` / `inputChanged`：
 `currentVersionId` 必须是 history 里存在的一项，而 `rollbackToPreviousGeneration` 一次改三处）。
+
+---
+
+# 追加九：回滚族量完之后不做，与输入框的读屏名字
+
+提交 `0e83c95`。第一半是"量完决定不动"。
+
+## 19.1 回滚族：不变式今天成立，唯一的理论缺口不可达
+
+量到的形状：`SuccessCommitted` 里 `_currentVersionId` 是**无条件**赋值，而 history 那条快照
+只在 `replyGenerationContext?.let { … }` 里追加。若一次"成功"落在 context 为 null 的时刻，
+就会出现"当前版本不在版本栈里"，而 `rollbackToPreviousGeneration` 删的是 `kbHistory.last()`，
+两者错位——这本来是该并的不变式。
+
+但它**不可达**：`stopGeneration` 先 `stopCurrent(REPLY)` 再清 context，而 store 的归约只在
+`isCurrentRequest` 通过时才发 `SuccessCommitted`（单 owner 那本账），停止后迟到的成功不会提交；
+`nextRound`/`commitReplyRound` 也不开这个窗口。既有 `GenerationRollbackTest` 已在真实生成链上
+钉住"回退删的是当前那条、被放弃的版本不再出现"（v1/v2/v3/v4 四段序列）。
+
+所以这一格**不加防御性 else**，把"不可达"记在这里。强度要说清：这条判断来自
+**读码 + 既有生成链用例覆盖**，不是穷举证明——真要钉死它，需要一个能在 context 为 null 时
+直接喂 `SuccessCommitted` 的入口，生产里没有那个口。
+
+## 19.2 §6.5 无障碍第②栏：输入框在语义树上没有名字
+
+placeholder 是**兄弟节点**的一行 `Text`，只在草稿为空时画；TalkBack 念不到兄弟，
+于是这一颗只有 `EditableText` 语义、报"编辑框"，而用户敲进第一个字之后连那行 Text 都不画了。
+逐点数入口时量到（`ComposerAddButtonGatingTest` 里 `describe()` 那条兜底分支就是它）。
+
+改法：给可编辑节点本身挂 `contentDescription = placeholder`（与那句提示同源，不另起一份文案）。
+同形状两处一起改：`PanelTextInput`（回复/主动发/谈心共用）与 `CompactInput`（问卷页、供应商弹窗共用）。
+视觉一格没改。新增 `ComposerInputLabelTest` 五格（JVM 语义树 + `UiMatrix` + NATIVE）：
+首帧有名字、切角色名字跟着换、敲字之后仍在、`placeholderOverride` 传进来就是什么、第二个实例同样有。
+**刻意不断言中文原文**——那三句提示目前仍是硬编码在 `ReplyInput` 里的字面量，
+资源驱动/中英 parity 是另一笔账，本轮不改用户可见文案，只钉语言无关的三件事实。
+红先：注入 `A1`（撤掉两处 semantics 行）→ 五格全红，同文件既有 3 格不受牵连；恢复后全绿。
+
+## 19.3 实测
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | rc=0：**1198 tests / 150 套件 / 0 失败 / 0 错误 / 0 跳过**（最旧 XML 06:10:17 ≥ 起点 06:07:16） |
+| lint | 报告重生成（06:12）70 / 15、进预算 **69 / 14**、advisory 1；`check_lint_budget.sh` **不带管道**单独取退出码 rc=0 —— 我在管道里取过一次 `$?`，量到的是 `grep` 的码（同族坑第二次犯） |
+| 其它 | 判据自测 27 格 rc=0；androidTest 编译 rc=0；工单编号 rc=0；prompt 零 diff + lock `6dcde732…`；跨层 **6** 条 |
+
+## 19.4 连着看才知道 §2.2 那行走了多远
+
+本轮之前我提名过两处"下一格"：意图族（§18.1 量完撤回：没有必须同帧的不变式）、
+回滚族（§19.1 量完撤回：不变式成立、缺口不可达）。加上做了的两处（统计 §16、画像卡片 §17），
+连着看才是真实进度：**§2.2 那行只推进了两处，另两处是"查过、不动"**。
+下一处候选只剩消息编辑族（`messages`/`editingIndex`/`currentRole`——前两个已有穷举矩阵兜底，
+并成一份快照的收益要重新估），以及 §6.1–§6.4 那批 UI 结构活（本阶段没动）。
