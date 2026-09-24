@@ -406,6 +406,7 @@ worker 不能自签的另外一面也照做：上面每个"OK"都是命令输出
 | `FeedbackCaseControllerTest` 第一版用 `supervisor.children().any { it.isCancelled }` 断言取消信号 | 完成的子 Job 会从父的 children 里摘掉，`children()` 是空表：`none{}` 恒真、`any{}` 恒假。一条**永远通过**的断言被写进了声称"钉住取消语义"的用例 | 改成直接调 suspend 出口断异常类型（`persistCase` 抛 `CancellationException`），同时把控制器改成不 launch、不收 scope——这一步是被 `SingleOwnerContractTest` 拦下来才做的，不是我先想到的 |
 | 本机用 `python3` 跑两条 py 门禁 | Windows 的 `python3` 是 Store 占位符：**exit 49、一行输出都没有**。如果我把"没输出"当"没报错"，两条门禁就是本地假绿 | 本机一律用 `python`（Anaconda）；已在 §4 末尾写下这条坑，CI 的 ubuntu runner 上 `python3` 才是真解释器 |
 | §1 的 S2-06 行写 `KnowledgeSchemaVersionTest` "13 例"、S2-02 行写协调器测试 "10 个用例" | 读当轮 XML 实测是 **11** 与 **11**：表格里的套件用例数一旦是"当时抄的"而不是"每次读的"，就会静默漂掉 | 两处按 XML 重填；并把 §4 表里所有套件计数改成用脚本从 `test-results/*.xml` 取，不再手抄 |
+| `PromptBudgetTest` 的"对话按整行裁剪不能切半" | 第一版注入探针（把每行 `take(20)` 截半）**没有让这条变红**——查下去发现我的 fixture 量级根本没过预算，那段裁剪从没执行，断言只是在检查没被裁过的原文 | 先在断言前加"确实裁过"（结果里必须出现省略标记、且保留行数小于原行数），再重跑探针才见红。这是本轮第三次撞上"断言跑的分支不是被测分支"，同类问题一律用注入探针当场证伪，不靠读代码觉得它对了 |
 | `RewriteLedgerTest` 里"弹空要删掉 key"那条断言 | 第一版写成 `historySize(key) == 0`——**恒真**：留下 `key -> emptyList()` 时它同样是 0，看着覆盖了其实什么都没测 | 给 ledger 加 `hasHistory(key)`（`containsKey`）并改断它；注入"弹空不删 key"的探针后该例才真的红。同一个坑本轮踩到第二次（另一次是 `children()` 恒假），所以"断言能不能被坏实现打破"当成写用例后的固定一步 |
 
 另外两处属于"搬东西时顺手发现的旧账"，一并改掉并有用例：点踩案例里写死的 `promptVersion = "v1.3.2"`（诊断会把人指向错的 prompt），
@@ -419,7 +420,8 @@ worker 不能自签的另外一面也照做：上面每个"OK"都是命令输出
 - `check_logcat_fatal.sh`：含 FATAL → 1；干净非空 → 0。
 - `audit_cancellation.py --check`：注入 `catch (Exception)` 吞 `delay` → `NEGATIVE-TEST exit=1`。
 - `strip_ticket_ids.py --check`：注入 `P0-9: probe` 字面量 → `NEGATIVE exit=1`。
-- `check_apk_metadata.sh`：人造全名自映射 mapping → exit=1（这条是本轮新加的负向用例）。
+- `check_apk_metadata.sh`：人造全名自映射 mapping → exit=1。
+- `GenerationFingerprintsTest`：去掉长度前缀（改成裸拼接）→ 撞车用例红；锦囊指纹里删掉"冻结的发起日"一段、空段不再固定成 `-` → 各 1 例红。
 - 清理器幂等：`--idempotence-check` stable；落盘前后逐文件行数不变（实测 69 个 .kt，0 变化）。
 - `KnowledgeMigratorLegacyTest` 两条结构合同：给迁移器塞一把 `kotlinx.coroutines.sync.Mutex()` → 该用例红；
   把"目标非空不覆盖"的守卫去掉 → 迁移用例红（先红后撤，实测 2 failed / 10 passed 与 0 failed / 10 passed）。
@@ -429,4 +431,5 @@ worker 不能自签的另外一面也照做：上面每个"OK"都是命令输出
   `recentChat` 的 `takeLast` 改 `drop` → 4 例红。
 - `ReplyPatchTest`：把 B 的位置映射指到 `playful`、删掉方向补位循环 → 4 例红
   （这条测的就是"抄两遍会漏一遍"的那类错，改错一处必须当场红）。
+- `PromptBudgetTest` / `SceneChainInjectionTest`：跳过知识段尾部裁剪、对话按**字符**切半、去掉超龄过滤、去掉同一条事实的去重 → 4 处改动打出 3 例红。
 - 反向验证的口径：每次注入都跑**同一套**用例并记下命中数，不写"应该会发现"这种话。
