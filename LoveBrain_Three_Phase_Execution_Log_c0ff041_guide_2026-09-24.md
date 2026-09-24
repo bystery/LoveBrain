@@ -3,7 +3,8 @@
 > 输入指导书：`LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md`
 > 被审提交 `c0ff0415`；本轮起点 `4795471`（上一窗口的最后一个提交，它已停手并留了
 > `LoveBrain_Handover_CI_Evidence_2026-09-24.md`）。
-> 本轮工作 HEAD：`a9bb9b14de6bf6747338efb5c75b9d57aef48e8a`（**8 个提交全部只在本地，未推送**）。
+> 本轮 HEAD：`a74cc8a` 之后接本文件的提交（**全部只在本地、未推送**；
+> 阶段一的 P0-03/04/05 + 阶段二的 ports/棘轮/死 API 都在里面）。
 > 本轮没有改 prompt：`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` → 零差异。
 
 ## 0. 一句话状态
@@ -53,6 +54,36 @@ scripts/suggest_cost_baseline.sh --self-test  all checks passed
 scripts/test_verify_network_egress.sh        exit 2 = CANNOT-VERIFY（本机没有 tshark，见 §3）
 ```
 
+## 2b. 阶段二第二轮推进（本机验证，提交 `2dd94c0`/`ab7457a`/`a74cc8a`）
+
+| §7 第二步条目 | 状态 | 证据 |
+|---|---|---|
+| 1 建 ports 与 contract tests，先包住 concrete repositories | **知识侧 + provider 侧都完成** | `KnowledgeReadPort` / `KnowledgeWritePort` / `KnowledgePort` / `AiGateway`；合同测试一份跑两侧：知识 8 格 ×2=16 例、网关 4 格 ×2=8 例。反向验证：把 fake 的只读判定写死 false → 那一格立即红；Koin 里把端口绑定写成 `get()` → 三条图测试当场 StackOverflowError |
+| 4 package dependency test | 完成 | 棘轮实测 **15 → 10 → 6** 条越界；数字来源 `scripts/package_deps_report.sh` |
+| 5 清死 API / 重复 journal / 重复 modifier / 历史描述性注释 | 前三项完成，注释只清到自己踩到的那处 | `fingerprint()` 删除；`TopicRecorder(get(), get())` + 身份断言；GenerationActionButton 单链；Engine「仍用冻结 prompt」改口 |
+| 2 五个 feature store | **没做** | 见 §3 第 4 条 |
+| 3 KnowledgeRepository 按能力拆 | **没做** | 见 §3 第 4 条 |
+
+§7 第二步「完成定义」逐条对照，不粉饰：
+
+- 「LoveBrainViewModel 不再持有五条 feature 的内部状态」→ **未达成**，VM 体量没动。
+- 「KnowledgeRepository 不再是所有知识能力的唯一入口」→ **部分**：domain 已全部走端口，
+  写只有 `transaction`/`KnowledgeTx` 一条路；但仓库对象自身仍是所有能力的唯一实现处，拆类未做。
+- 「每个 port 有 production/fake 共用 contract suite」→ `KnowledgePort`、`AiGateway` 达成；
+  **`Clock` 端口未建**（复核 §4 的 DIP 目标列了它）。
+- 「新增 feature 不修改已有 reducer」→ **无法验证**：reducer 还没抽出来。
+- 「新代码无 >500 行文件，现存 >800 行文件数量持续下降」→ 前半达成（本轮新增 8 个文件最大 188 行）；
+  **后半未达成**：>500 行仍是 18 个、>800 行仍是 10 个，与被审提交测到的一样，
+  而 KnowledgeRepository 因加写边界从 1857 涨到 2004。这一格记未达成，不写「方向正确」。
+
+本轮收尾实扫：117 个生产 Kotlin 文件 / 32,807 行；
+966 单测 / 117 套件 / 0 失败 0 跳过 / 0 泄漏异常；lint 72 issues 0 error；
+androidTest 编译通过；取消审计与工单编号 PASS；prompt 目录零 diff。
+
+一处自伤要认：`ab7457a` 里我用脚本改两个测试文件，把它们的行尾从 LF 翻成 CRLF，
+一个加 2 行 import 的提交报了 796 行 diff。`a74cc8a` 已复位
+（相对损伤前净差异 3 insertions / 1 deletion），损伤留在历史里没改。
+
 ## 3. 明确没做到 / 没法在本机做到的（不混进上面）
 
 1. **19 条真机 instrumentation 失败还在**。本轮只做到：把 7 条同源的夹具竞态改掉、
@@ -63,17 +94,22 @@ scripts/test_verify_network_egress.sh        exit 2 = CANNOT-VERIFY（本机没�
    才算真判过；脚本没有"没装就跳过"的分支，装不上就是红。
 3. **Service destroy 那两格是 Assume 主动跳过的**（instrumentation 起不了悬浮窗/FGS）。
    报告里算 skipped，不算通过。
-4. **阶段二主体没做**：`AiGateway`/`KnowledgeReadPort`/`KnowledgeWritePort` + 生产/fake
-   共用 contract suite、Reply/Suggest/Proactive/Counseling/Rewrite 五个 feature store、
-   KnowledgeRepository 按 catalog/document/profile/memory/migration/archive/round 拆。
-   已登记的 15 条越界 import 就是这三件事的施工图（domain 那 6 处是第一步）。
-   本轮反而让 KnowledgeRepository 从 1857 涨到 2000 行——写边界是必要的，
-   但它现在同时是"最大的一次性改动"和"最长的文件之一"，拆分必须紧跟着做。
+4. **阶段二剩下的两块硬骨头没做**：①Reply/Suggest/Proactive/Counseling/Rewrite 五个
+   feature store（§5.2 的迁移顺序与统一 store 形状）；②KnowledgeRepository 按
+   catalog/document/profile/memory/migration/archive/round 拆（§5.3，且必须共用一个
+   `KnowledgeTransactionManager`，不许每个新类各自 new Mutex）。
+   端口层已铺好（domain 不再 import data，越界 15→6），所以这两块现在是"往上搬"，
+   不必边拆边补依赖。§4 目标结构里的 `Clock` 端口、§5.1 的 `core/designsystem` /
+   `core/testing` 目录也都还没建。
+   仍然要认的一条：本轮让 KnowledgeRepository 从 1857 涨到 2004 行，
+   写边界是必要的，但它同时成了"最大的一次性改动"和"最长文件之一"，拆类必须紧跟。
 5. **阶段三完全没开始**：设计 token + `Lb*` 基础组件、Home/Usage/Provider/Feedback 重写、
    Panel/ResultArea 的 modal host、320/360/412/600dp × 1.0/1.3/2.0 字体 × 中英文的截图矩阵。
    截图工具（Roborazzi 或 Paparazzi 二选一）也还没接。
-6. P1-05 文案收口没动：production composable 里仍有硬编码中文（复核测到
-   `Text("中文…")` 101 处 / `contentDescription` 10 处，本轮没重测这个数）。
+6. P1-05 文案收口没动：本轮实测复现复核的两个数——
+   `Text("中文…")` 101 处、`contentDescription = "中文…"` 10 处（`grep -oE` 扫 app/src/main），
+   与复核测到的值一致，因为这轮一行文案都没改。§6.1 要求的
+   "production composable 禁止新增直接用户可见字面量"目前没有任何门禁在管。
 
 ## 4. 脚本索引（本轮新增/改动的可执行件）
 
