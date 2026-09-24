@@ -22,10 +22,10 @@ import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.FileOutputStream
 import java.security.MessageDigest
+import java.util.concurrent.atomic.AtomicLong
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.concurrent.atomic.AtomicLong
 
 /**
  * 知识库仓储 v3：基于「懂得/此刻/记忆」三层架构。
@@ -57,7 +57,7 @@ class KnowledgeRepository(
     private val migrator = KnowledgeMigrator(RepoStorage())
 
     /** 交给迁移器用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
-    private inner class RepoStorage : KbStorageAccess {
+    private inner class RepoStorage : KbStorageAccess, BackupStorage {
         override val root: File get() = knowledgeRoot
         override fun atomicWrite(target: File, content: String) {
             // 迁移器只会写"不超纲"的库（判定在 KnowledgeMigrator 里提前 return），
@@ -68,6 +68,8 @@ class KnowledgeRepository(
                 )
             }
         }
+        /** 备份写 `.last_backup` 走同一道门；"有没有真写进去"原样报回去 */
+        override fun guardedWrite(target: File, content: String): Boolean = atomicWriteText(target, content)
         override fun schema(name: String): String = loadSchema(name)
         override suspend fun currentStage(kbName: String): String = getCurrentStage(kbName)
         override suspend fun setStage(kbName: String, stage: String): Unit =
@@ -76,6 +78,15 @@ class KnowledgeRepository(
             updateWarmthStageLabelUnlocked(kbName, stage)
         override fun timestamp(): String = isoNow()
     }
+
+    /**
+     * 自动备份的策略（§5.3 拆出的第一格）：该复制什么、留几份、删哪些全在它里，
+     * 写盘仍经 [RepoStorage] 回到本类唯一的 [atomicWriteText]。
+     *
+     * "什么时候要备份"的节流调度**故意留在本类**：外部 CoroutineScope 只能由协调器持有
+     * （SingleOwnerContractTest 那条闸），仓库是这里唯一的启动者，把 launch 一起搬出去就违规。
+     */
+    private val backup = KnowledgeBackupService(RepoStorage())
 
     /** 备份节流：记录最后一次写入时间，debounce 5s 后触发增量备份 */
     private val backupDebounceMs = 5_000L
@@ -103,6 +114,11 @@ class KnowledgeRepository(
      * 写入后触发节流备份：每次写入操作调用此方法，5s 内无新写入则触发一次增量备份。
      * 调研依据：kotlinx.coroutines debounce 模式 + Android 文件 I/O 最佳实践。
      */
+    /**
+     * 写入后触发节流备份：5s 内没有新写入才真的备份一次。
+     *
+     * 任务体里再核一次时间戳——`delay` 期间可能又来了新写入，那一班就该让给下一班。
+     */
     private fun scheduleDebouncedBackup() {
         lastWriteTimestamp.set(System.currentTimeMillis())
         backupDebounceJob?.cancel()
@@ -121,7 +137,7 @@ class KnowledgeRepository(
         }
     }
 
-    // ═══════════ 自动备份 ═══════════
+    // ═══════════ 自动备份：调度在本类，策略在 KnowledgeBackupService ═══════════
 
     /**
      * 序列化备份过程——与 delete 共用 fileMutex，防止并发竞态。
@@ -129,61 +145,7 @@ class KnowledgeRepository(
      */
     private suspend fun backupIfNeeded() {
         fileMutex.withLock {
-            backupIfNeededUnlocked()
-        }
-    }
-
-    /**
-     * 自动备份核心（无锁）：如果距上次备份超过 12 小时，复制所有知识库到 .backup/目录。
-     * 调用方必须已持有 fileMutex。
-     */
-    private fun backupIfNeededUnlocked() {
-        val marker = File(knowledgeRoot, ".last_backup")
-        val now = System.currentTimeMillis()
-        val lastBackup = if (marker.exists()) runCatching { marker.readText().toLong() }.getOrDefault(0L) else 0L
-        if (now - lastBackup < BACKUP_INTERVAL_MS) return
-
-        val timestamp = SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault()).format(Date())
-        val backupRoot = File(knowledgeRoot, ".backup")
-        backupRoot.mkdirs()
-
-        // 备份每个知识库
-        knowledgeRoot.listFiles()
-            ?.filter { it.isDirectory && !it.name.startsWith(".") }
-            ?.forEach { kbDir ->
-                runCatching {
-                    val backupDir = File(backupRoot, "${kbDir.name}_$timestamp")
-                    if (backupDir.exists()) return@runCatching
-                    backupDir.mkdirs()
-                    kbDir.walkTopDown().forEach { src ->
-                        val rel = src.relativeTo(kbDir).path
-                        if (rel == ".") return@forEach
-                        val dst = File(backupDir, rel)
-                        if (src.isDirectory) dst.mkdirs() else src.copyTo(dst, overwrite = false)
-                    }
-                }
-            }
-
-        // 修剪旧备份（每个 KB 只保留最近 N 份）
-        pruneBackups()
-
-        // 更新备份时间标记
-        atomicWriteText(marker, now.toString())
-    }
-
-    /** 修剪旧备份：每个知识库只保留最近 BACKUP_MAX_COUNT 份 */
-    private fun pruneBackups() {
-        val backupRoot = File(knowledgeRoot, ".backup")
-        if (!backupRoot.exists()) return
-        // 按知识库名分组，每组只保留最近 N 份
-        val groups = backupRoot.listFiles()?.filter { it.isDirectory }
-            ?.groupBy { backupGroupKey(it.name) } ?: return
-        groups.forEach { (_, backups) ->
-            if (backups.size > BACKUP_MAX_COUNT) {
-                backups.sortedByDescending { it.name }
-                    .drop(BACKUP_MAX_COUNT)
-                    .forEach { old -> runCatching { old.deleteRecursively() } }
-            }
+            backup.backupIfNeededUnlocked()
         }
     }
 
@@ -995,7 +957,7 @@ class KnowledgeRepository(
             File(knowledgeRoot, ".trash").takeIf { it.exists() }?.deleteRecursively()
             // 正式目录删除成功后才删 backup，防止删 backup 后正式目录删失败导致备份丢失
             if (ok) {
-                deleteBackupsForKbUnlocked(name)
+                backup.deleteBackupsFor(name)
             }
             if (ok && securePrefs.activeKbName == name) {
                 val next = knowledgeRoot.listFiles()
@@ -1009,20 +971,6 @@ class KnowledgeRepository(
             }
             ok
         }
-    }
-
-    /**
-     * 删除指定 KB 的全部自动备份。使用 backupGroupKey 精确匹配，不用 startsWith 防误删。
-     * 调用方必须已持有 fileMutex。
-     */
-    private fun deleteBackupsForKbUnlocked(kbName: String) {
-        val backupRoot = File(knowledgeRoot, ".backup")
-        backupRoot.listFiles()
-            ?.filter { it.isDirectory }
-            ?.filter { backupGroupKey(it.name) == kbName }
-            ?.forEach {
-                runCatching { it.deleteRecursively() }
-            }
     }
 
     /**
@@ -1976,13 +1924,6 @@ class KnowledgeRepository(
             "moment/topic.md", "moment/scene.md", "moment/recent.md", "moment/plan.md",
             "memory/lessons.md", "memory/raw_topic.md", "memory/raw_scene.md", "memory/raw_chat.md"
         )
-
-        private const val BACKUP_MAX_COUNT = 7      // 每个知识库保留最近 7 份备份
-        private const val BACKUP_INTERVAL_MS = 12 * 3600_000L  // 两次备份间隔 ≥ 12 小时
-        // 备份目录名 = <库名>_<yyyyMMdd>_<HHmm>：锚定实际命名去时间戳还原库名作分组键；
-        // 不匹配命名 = 整名为键（自成一组永不修剪，保守保留）
-        private val BACKUP_TS_SUFFIX = Regex("_\\d{8}_\\d{4}$")
-        internal fun backupGroupKey(name: String): String = BACKUP_TS_SUFFIX.replace(name, "")
 
         // 旧→新路径映射：readFile 与 KbEditActivity fallback 共用（ 去重，改这里一处即可）
         val OLD_PATH_MAP = mapOf(
