@@ -61,15 +61,15 @@ scripts/test_verify_network_egress.sh        exit 2 = CANNOT-VERIFY（本机没�
 | 1 建 ports 与 contract tests，先包住 concrete repositories | **知识侧 + provider 侧都完成** | `KnowledgeReadPort` / `KnowledgeWritePort` / `KnowledgePort` / `AiGateway`；合同测试一份跑两侧：知识 8 格 ×2=16 例、网关 4 格 ×2=8 例。反向验证：把 fake 的只读判定写死 false → 那一格立即红；Koin 里把端口绑定写成 `get()` → 三条图测试当场 StackOverflowError |
 | 4 package dependency test | 完成 | 棘轮实测 **15 → 10 → 6** 条越界；数字来源 `scripts/package_deps_report.sh` |
 | 5 清死 API / 重复 journal / 重复 modifier / 历史描述性注释 | 前三项完成，注释只清到自己踩到的那处 | `fingerprint()` 删除；`TopicRecorder(get(), get())` + 身份断言；GenerationActionButton 单链；Engine「仍用冻结 prompt」改口 |
-| 2 五个 feature store | **2/5 完成**（`ReplyStore` `9cbcbb1`、`SuggestStore` 本轮） | 回复：状态 + 增量合并 + 副作用判定；锦囊：状态 + 在途身份（`Identity`）+ 缓存配对 + 流式 tips。VM 只留从 store 派生的只读流与跨 feature 落账。共 13 格 store 测试不启动 VM、不需要 Android。**体量不粉饰**：VM 2651 → 2647，两刀加起来基本没降（搬出 ~200 行、搬回全限定名与解释注释）；收益是所有权与可测性。剩 Proactive / Counseling / Rewrite |
+| 2 五个 feature store | **3/5 完成**（`ReplyStore` `9cbcbb1`、`SuggestStore` `d25bdb0`、`ProactiveStore` `8e911b8`） | 回复：状态 + 增量合并 + 副作用判定；锦囊：状态 + 在途身份 + 缓存配对 + 流式 tips；主动发：options + 错误 + 收尾语义。共 18 格 store 测试不启动 VM、不需要 Android。**ProactiveStore 只搬了三样，"模式"那一样没搬完**（enum 是 VM 嵌套类型、feature 不许 import viewmodel；原因写在 store 与 VM 两边）。**体量不粉饰**：VM 2651 → 2667。剩 Counseling / Rewrite |
 | — 附带修掉一个真缺陷 | 完成 | 合并循环原本是 `while (true) { delay(50); flush() }`，一旦有 chunk 就永远每 50ms 醒一次，只有外部调"丢弃"才停；在 VM 里被 `viewModelScope` 的死亡掩盖，搬进 store 用 runTest 一测当场 `UncompletedCoroutinesError`。现在循环条件与职责一致，并有一格测试锁住这个形状 |
 | 3 KnowledgeRepository 按能力拆 | **没做** | 见 §3 第 4 条 |
 
 §7 第二步「完成定义」逐条对照，不粉饰：
 
-- 「LoveBrainViewModel 不再持有五条 feature 的内部状态」→ **部分（2/5）**：回复与锦囊两条的
-  状态持有者已经搬到 store（VM 只剩只读派生流与跨 feature 落账），Proactive/Counseling/
-  Rewrite 三条仍在 VM 内部。VM 2651 → 2647 行，**没到"体量下来了"的程度，别写成达成**。
+- 「LoveBrainViewModel 不再持有五条 feature 的内部状态」→ **部分（3/5）**：回复、锦囊、主动发
+  三条的状态持有者已经出去（主动发的"模式"那一样仍在 VM），Counseling / Rewrite 两条还在里面。
+  VM 2651 → 2667 行，**没到"体量下来了"的程度，别写成达成**。
 - 「KnowledgeRepository 不再是所有知识能力的唯一入口」→ **部分**：domain 已全部走端口，
   写只有 `transaction`/`KnowledgeTx` 一条路；但仓库对象自身仍是所有能力的唯一实现处，拆类未做。
 - 「每个 port 有 production/fake 共用 contract suite」→ `KnowledgePort`、`AiGateway` 达成；
@@ -150,10 +150,13 @@ androidTest 编译通过；取消审计与工单编号 PASS；prompt 目录零 d
    `ui-test` 若还红，用新加的诊断输出定位那 8 条"not displayed"是没测量、被裁还是出窗口；
    新加的 3 格语义树断言（48dp / selected / contentDescription）**预期可能红**，
    那是把假绿换成真信号，不是回归。
-2. 阶段二继续：按 §5.2 顺序迁剩下三个 store，下一个是 `ProactiveStore`
-   （照抄 `ReplyStore`/`SuggestStore`：Intent/Effect + 同步回调 + 不启动 VM 也能测；
-   `SuggestStore` 还多带一样可抄的东西 —— 在途身份 `Identity`，
-   改写链的 `rewriteRequestId` 手工账本该由它替掉）。
+2. 阶段二继续：按 §5.2 顺序迁剩下两个 store，下一个是 `CounselingStore`
+   （流式正文 + 日志命令；照抄前三把：Intent/Effect + 同步回调 + 不启动 VM 也能测；
+   它的 chunk 合并缓冲和 ReplyStore 那把是同一类问题，顺手把常驻循环的坑再测一遍）。
+   再往后是 `RewriteStore`，它该把 §2.2 点名的 `rewriteRequestId` 手工账本替成
+   `SuggestStore.Identity` 那种在途身份。
+   另：`ComposerMode` / `ResultMode` 两个 enum 要先挪进 model，才能把"模式"搬进 store
+   ——那是一步独立的机械改动（改所有 `LoveBrainViewModel.ComposerMode` 引用点）。
 3. KnowledgeRepository 按 §5.3 拆 catalog/document/profile/memory/migration/archive/round，
    共用一个 `KnowledgeTransactionManager`（不许每个新类各自 new Mutex）。
 4. P1-05 的真正收口：把宽尺测到的 209 处中文字面量搬进 strings.xml / values-en，
