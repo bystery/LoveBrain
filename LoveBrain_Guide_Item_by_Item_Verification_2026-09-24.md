@@ -374,3 +374,53 @@ artifacts 齐全才算。本轮只把"本机能够自证"的部分做到能证�
 可用性探针**，Windows 上不带 `PYTHON=python` 直接 exit 49——看着像"检查判失败了"，其实是
 根本没跑。同一族脚本里这是个缺口：下次动 scripts/ 时补上探针，缺解释器要给
 `CANNOT-VERIFY`（退出 2），不要崩一个谁都看不懂的码。
+
+---
+
+# 追加：第二阶段第一格（§5.3 文档格，提交 `adbf5f3`）
+
+§5.3 七格从 **3/7 → 4/7**。
+
+## 11.1 这一格为什么拆（指导书要的是"一处所有者"，不是"文件变小"）
+
+量到一条真实的宽严不一：公开读 `readFile` 过 `safeKbFile`（拒 `..`、绝对路径、盘符、UNC），而
+**无锁快速读 `readFileUnlockedFast` 直接 `File(File(root, kbName), relativePath)`，完全不过守门**。
+指导书 P0-03 最后一段写的就是这件事："读取接口也必须走 safeKbFile，canonical boundary
+并未覆盖所有 String 入口"。现在两个入口是同一个函数。
+
+顺带抓到更紧的一条：`KbRelativePath` 里"不许含 Windows 反斜杠分隔符"那条 `require`
+**整条被吞在同一行的注释里**（而且 `'\'` 在 Kotlin 里本就是非法字面量）——这道校验从写下那天起
+就不存在。它不是读代码读出来的，是 JVM 用例报红报出来的：
+`路径「understand\me.md」竟然被接受`，Windows 上实测解析出了库目录外的 File。
+
+## 11.2 新加的所有权棘轮（以及这把尺自己踩的坑）
+
+`StorageBoundaryOwnershipTest`：data/ 里三条"能力"各登记允许出现在谁家里，断言**相等**——
+多了=第二个所有者；少了=欠账还得比登记的干净，必须回来改小。
+需要它的理由：`ReadOnlySchemaWriteGateTest` 的源码绊线**只扫 `KnowledgeRepository.kt` 一个文件**，
+新类自带第二份落盘实现时没有任何测试会拦，而 §5.3 明写"所有实现共用一个事务入口"。
+
+变异检查两次都红：① data/ 里塞一个真开流的新类 → 点名 `新出现的所有者 [ZzSecondOwnerProbe.kt]`；
+② 文档格里塞一行 `target.writeText(...)` → 报 `直接写文件 1 处`。验完撤掉，探针按"不删"约定挪进
+`_temp/mutation-probes/`。
+
+⚠ 这把尺自己先错过一版：用带 lookbehind 的正则时同一行代码报 **0 命中**（字面量查得到）。
+一把自己都会读错的尺报的是"没人碰了"，会诱导人把登记**删小**——那是反向的假绿。判据改成逐行字面判断。
+
+## 11.3 实测与代价
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | rc=0：**1104 tests / 139 套件 / 0 失败 / 0 错误 / 0 跳过**，最旧 XML 01:50:16（比 1091 多的 13 格＝本格两组新用例） |
+| 既有边界合同 | `KnowledgeSchemaVersionTest` 11 / `AtomicWriteRegressionTest` 6 / `ReadOnlySchemaWriteGateTest` 5 全绿——改严没碰坏任何既有合同 |
+| androidTest 编译 / lint | rc=0；进预算 **69 条 / 14 规则**不变，本格新增债 0 |
+| 行数 | `KnowledgeRepository.kt` 1941→**1910**，新类 155 行：**总量涨 124 行**。买的是所有者与一条修好的边界，不是降体量，别记成行数战果 |
+| P1-01 | 审的 SHA 上 >500 行 **18 个** → 现在 **17 个**：跨下来的是 `FeedbackCasesScreen.kt`（`e359930` 那次 534→500），无一个新跨上去；>800 仍 10 个 |
+
+## 11.4 第二阶段还差什么（别把这一格当成 §5.3 完成）
+
+- §5.3 仍差 **catalog 写侧 + profile + memory + round** 四格（round 实为已在 `RoundCommitJournal`，
+  是否按指导书口径算拆出，下次要再判一次，不许含糊记成已做）。
+- §5.2 第 6 步删 facade：0%，`LoveBrainViewModel` 仍 **2746 行**。
+- §4 的 DIP/ISP 可验收标准未整体达成（跨层 6 条是基线，不是零）。
+- 本轮 §5.3/§5.2 的改动**没有一条有 CI 判决**：JVM 用例进 verify 每次跑、本机已验；真链路仍等 CI。
