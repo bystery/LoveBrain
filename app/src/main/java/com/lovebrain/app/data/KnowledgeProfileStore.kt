@@ -56,7 +56,8 @@ interface ProfileStorage {
  *
  * ⚠ 唯一没收进来的是 `applyProfileUpdateAtomically`（160+ 行的跨文件事务，含备份与回滚）：
  * 它要的是"多文件一次事务 + 失败回滚"，那是另一格的能力，硬塞进这里等于把回滚语义
- * 也搬进画像格。它留下的四条裸路径由棘轮按条数登记（当前 4），账本里记着"已知未封"。
+ * 也搬进画像格。它以前那三段（快照 / 回滚落盘 / 校验）自己拼路径、自己 `atomicWriteText`，
+ * 已经连同那 4 条裸路径一起封掉了（棘轮现在登记 **0**），但它本体仍在仓库里等 archive 那一格。
  */
 internal class KnowledgeProfileStore(private val storage: ProfileStorage) {
 

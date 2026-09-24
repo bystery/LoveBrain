@@ -1298,6 +1298,10 @@ class KnowledgeRepository(
      * 返回 typed [ProfileTransactionResult]，替代模糊 Boolean。
      *
      * - 所有文件写入、向量写入、阶段更新、warmth 标签更新在同一锁内完成
+     * - **回滚与校验也走同一条写边界**：快照的存在性与旧内容出自同一道守门，恢复用
+     *   `KnowledgeTx.write`、删除用 `KnowledgeTx.deleteAt`，不再有第二条 `atomicWriteText`
+     *   （以前那三段自己拼 `File(File(knowledgeRoot, kb), path)`，库名带 `..` 时会把
+     *   知识库根外面的文件写空——见 `ProfileTransactionRollbackBoundaryTest`）
      * - backup 覆盖所有实际会被修改的文件（包括 warmth.md——即使 payload.warmth 为 null，
      *   stage_changed=true 时 updateWarmthStageLabel 仍会修改 warmth.md）
      * - IO 失败必须抛出（使用 strict 版本），不吞错误
@@ -1343,19 +1347,15 @@ class KnowledgeRepository(
             // backup 所有可能被修改的文件
             // 记录文件原先是否存在——rollback 时原不存在的文件应删除而非创建空文件
             val backups = mutableMapOf<String, Pair<Boolean, String>>() // path -> (existed, oldContent)
-            for ((path, _) in writeTargets) {
-                val file = File(File(knowledgeRoot, kbName), path)
-                backups[path] = (file.exists() to readFileUnlockedFast(kbName, path))
-            }
+            for ((path, _) in writeTargets) backups[path] = snapshotBeforeWriteUnlocked(kbName, path)
             // warmth.md 即使不在 writeTargets 中，stage 变化时也会被 updateWarmthStageLabel 修改
             if (willChangeStage && "understand/warmth.md" !in backups) {
-                val file = File(File(knowledgeRoot, kbName), "understand/warmth.md")
-                backups["understand/warmth.md"] = (file.exists() to readFileUnlockedFast(kbName, "understand/warmth.md"))
+                backups["understand/warmth.md"] =
+                    snapshotBeforeWriteUnlocked(kbName, "understand/warmth.md")
             }
             // kb.json backup（stage 变化时 updateStageUnlockedStrict 会修改它）
             if (willChangeStage) {
-                val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
-                backups["kb.json"] = (metaFile.exists() to (if (metaFile.exists()) metaFile.readText() else ""))
+                backups["kb.json"] = snapshotBeforeWriteUnlocked(kbName, "kb.json")
             }
             // 向量 backup（warmth 变化时向量同步会修改 warmth.md 中的数值）
             val oldVector = if (warmth != null) {
@@ -1387,28 +1387,33 @@ class KnowledgeRepository(
                 val rollbackFailures = mutableListOf<String>()
                 for ((path, existedAndContent) in backups) {
                     try {
-                        val dir = File(knowledgeRoot, kbName)
-                        val file = File(dir, path)
-                        file.parentFile?.mkdirs()
                         val (existed, oldContent) = existedAndContent
                         if (existed) {
-                            atomicWriteText(file, oldContent)
-                            // snapshot verification——恢复后内容必须等于 backup
-                            if (file.readText() != oldContent) {
-                                com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL rollback verification failed for $path (content mismatch)")
+                            // 恢复走唯一写链（只读拒绝、建父目录、原子 rename 都在里面），
+                            // 不再自己 atomicWriteText——那等于给回滚开第二条写边界
+                            val restored = transactionUnlocked(kbName) { write(path, oldContent) }
+                            val now = transactionUnlocked(kbName) { readTextAt(path) }
+                            if (!restored || now != oldContent) {
+                                com.lovebrain.app.util.L.e(
+                                    "applyProfileUpdateAtomically: CRITICAL rollback verification " +
+                                        "failed for $path (written=$restored, content ${if (now == oldContent) "matches" else "mismatch"})"
+                                )
                                 rollbackFailures.add(path)
                             }
                         } else {
-                            // 原先不存在的文件——rollback 应删除，必须检查返回值
-                            if (file.exists()) {
-                                val deleted = file.delete()
+                            // 原先不存在的文件——rollback 应删除，必须检查返回值。
+                            // 存在性与删除都过守门：库外的路径根本解析不出来，于是"不存在的"保持不存在，
+                            // 也不会拿 delete() 去碰不属于本库的文件。
+                            val present = safeKbFile(kbName, path)?.exists() == true
+                            if (present) {
+                                val deleted = transactionUnlocked(kbName) { deleteAt(path) }
                                 if (!deleted) {
                                     com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL rollback delete failed for $path (delete returned false)")
                                     rollbackFailures.add(path)
                                 }
                             }
                         }
-                    } catch (rollbackErr: Exception) { // cancel-safe: 这里只有 java.io.File 读写（delete()/writeText()），协程取消不会从这里抛出
+                    } catch (rollbackErr: Exception) { // cancel-safe: 这里只有写与删（都走守门后的同步 I/O），协程取消不会从这里抛出
                         com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL rollback failed for $path", rollbackErr)
                         rollbackFailures.add(path)
                     }
@@ -1418,20 +1423,23 @@ class KnowledgeRepository(
                 // 必须加入 rollbackFailures，不得从 applyProfileUpdateAtomically 直接 throw 绕过 typed result
                 for ((path, existedAndContent) in backups) {
                     try {
-                        val file = File(File(knowledgeRoot, kbName), path)
+                        // 校验也必须过守门：这条 `File(File(knowledgeRoot, kb), path)` 之前
+                        // 是全仓最后一条"自己拼库内路径"，现在解析不出来就是 null
+                        val file = safeKbFile(kbName, path)
                         val (existed, oldContent) = existedAndContent
                         if (existed) {
-                            val existsNow = file.exists()
-                            val contentMatches = if (existsNow) {
+                            // 快照说它在 → 这一条路径当时是解析得出来的；现在解析不出就是无法确认，按失败报
+                            val existsNow = file?.isFile == true
+                            val contentMatches = if (file != null && existsNow) {
                                 try {
-                                    file.readText() == oldContent
+                                    file.readText(Charsets.UTF_8) == oldContent
                                 } catch (verifyErr: Exception) {
                                     // readText 自身抛 I/O 异常 → 视为 verification 失败
                                     com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL verification read failed for $path", verifyErr)
                                     false
                                 }
                             } else false
-                            if (!existsNow || !contentMatches) {
+                            if (file == null || !existsNow || !contentMatches) {
                                 if (path !in rollbackFailures) {
                                     com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL post-rollback verification failed for $path")
                                     rollbackFailures.add(path)
@@ -1439,7 +1447,7 @@ class KnowledgeRepository(
                             }
                         } else {
                             val stillExists = try {
-                                file.exists()
+                                file?.exists() == true
                             } catch (verifyErr: Exception) {
                                 com.lovebrain.app.util.L.e("applyProfileUpdateAtomically: CRITICAL verification exists check failed for $path", verifyErr)
                                 true // 无法确认 → 视为失败
@@ -1470,6 +1478,21 @@ class KnowledgeRepository(
             scheduleDebouncedBackup()
             ProfileTransactionResult.Success
         }
+    }
+
+    /**
+     * 写前快照：目标文件的**存在性与旧内容必须出自同一道门**。
+     *
+     * 之前是裸 `File(File(knowledgeRoot, kb), path).exists()` 配守门版 `readFileUnlockedFast`：
+     * 库名带 `..` 时前者说"在"、后者给空串，回滚因此把库外那个文件当"本库的旧文件"写成空。
+     * 这里刻意读**新路径那一份**而不是带旧布局回退的公开读——快照要描述"这次写会覆盖谁"，
+     * 不是"读侧会看到什么"。读不出内容时**让异常穿出去**：这一段在所有写之前，抛出来说明
+     * 一个字节都没动过；把它吞成空串反而会害命——回滚会照着"旧内容是空"把真文件写空。
+     */
+    private fun snapshotBeforeWriteUnlocked(kbName: String, relativePath: String): Pair<Boolean, String> {
+        val file = safeKbFile(kbName, relativePath) ?: return false to ""
+        if (!file.isFile) return false to ""
+        return true to file.readText(Charsets.UTF_8)
     }
 
     /**

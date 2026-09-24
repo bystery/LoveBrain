@@ -97,14 +97,18 @@ class StorageBoundaryOwnershipTest {
             { line -> line.contains(".canonicalPath") },
             setOf("KnowledgeDocumentStore.kt", "KnowledgeRepository.kt", "KbArchiveTransfer.kt")
         ),
-        // 归档那一处（archive_op 状态）已并入守门读；剩下的四条全在
-        // applyProfileUpdateAtomically 的备份快照里，那一格单独处理，
-        // 还掉一条就回来把这个数改小——它只许降不许升，升了必须是一次显式判断。
+        // P0-03 的读侧欠账：仓库里"自己把库名和相对路径拼成 File"的写法。
+        // 从 10 处一路还到 **0 处**（document/memory/profile/rollback 四批），所以这条现在是
+        // "清零之后的看门条"：owners 是空集、条数是 0，出现任何一处都红。
+        // ⚠ "0 命中"通常意味着尺子瞎了，这条不是——它的牙用注入证过：
+        //   往 writeVectorUnlocked 里塞一行裸路径读，它报的是"登记的是 0 处，实际命中 1 处"。
+        //   还掉最后一批的是 `applyProfileUpdateAtomically` 的快照/回滚/校验三段
+        //   （见 ProfileTransactionRollbackBoundaryTest：回滚以前会把库外的文件写空）。
         Rule(
             "仓库里自己把库名与相对路径拼成文件（不过 canonical 守门）",
             { line -> line.contains("File(File(knowledgeRoot,") },
-            setOf("KnowledgeRepository.kt"),
-            expectedTotal = 4
+            emptySet(),
+            expectedTotal = 0
         )
     )
 
