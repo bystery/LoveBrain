@@ -181,11 +181,10 @@ class LoveBrainViewModel(
     // 于是"谁在跑"有两本账（Job 字段 + coordinator），且 stopGeneration 一次取消三类操作。
     // 现在只有 coordinator 一本账，停止按租约/按类型走。
 
-    // 冻结锦囊请求身份——生成开始时冻结，完成时使用冻结值而非实时 _activeKb
-    // 防止生成期间切 KB 导致缓存写入错误的 kbId
-    private var suggestRequestKbName: String? = null
-    private var suggestRequestContextFp: String = ""
-    private var suggestRequestPromptVersion: String = ""
+    // 这里曾经有三个"冻结锦囊请求身份"的字段（suggestRequestKbName / ContextFp /
+    // PromptVersion），注释写着防止生成期间切 KB 写错缓存。它们是**死字段**：
+    // 全仓没有任何地方读写它们，真正的冻结靠下面的 SuggestStore.Identity 完成。
+    // 留着的害处不是占三行，而是下一个人会以为身份冻结已经有实现（同 §fingerprint 那类）。
     // ═══════════ 本轮生成上下文（不可变快照） ═══════════
     /**
      * 一轮 AI 生成 = 固定消息快照 + 固定知识库 + 固定 AI 回复 + 固定用户反馈。
@@ -469,8 +468,21 @@ class LoveBrainViewModel(
 
     /** ═══════════ 今日锦囊（AI 生成，参考性，不写知识库） ═══════════ */
 
-    private val _suggestion = MutableStateFlow<com.lovebrain.app.model.DailySuggestion?>(null)
-    val suggestion: StateFlow<com.lovebrain.app.model.DailySuggestion?> = _suggestion.asStateFlow()
+    /**
+     * 锦囊的状态住在 [SuggestStore]（复核 §5.2 第 2 步）。
+     *
+     * `isCurrentRequest` 转发给 coordinator，而不是让 store 自己再记一份 requestId：
+     * "谁在跑"只能有一本账（§2.1 前台操作单 owner 那条），两本账迟早不一致。
+     */
+    private val suggestStore = com.lovebrain.app.feature.suggest.SuggestStore(
+        isCurrentRequest = { requestId ->
+            ownsOperation(ForegroundOperationCoordinator.OperationType.SUGGEST, requestId)
+        }
+    ) { effect -> onSuggestEffect(effect) }
+
+    val suggestion: StateFlow<com.lovebrain.app.model.DailySuggestion?> =
+        suggestStore.uiState.map { it.suggestion }
+            .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
 
     /** 某类前台任务是否在跑——一律从 coordinator 派生，不再有独立可写 boolean */
     private fun busyOf(
@@ -482,12 +494,14 @@ class LoveBrainViewModel(
     val isSuggesting: StateFlow<Boolean> =
         busyOf(ForegroundOperationCoordinator.OperationType.SUGGEST)
 
-    private val _streamingTips = MutableStateFlow<List<com.lovebrain.app.model.SuggestTip>>(emptyList())
-    val streamingTips: StateFlow<List<com.lovebrain.app.model.SuggestTip>> = _streamingTips.asStateFlow()
+    val streamingTips: StateFlow<List<com.lovebrain.app.model.SuggestTip>> =
+        suggestStore.uiState.map { it.streamingTips }
+            .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, emptyList())
 
     /** 锦囊错误提示（无 KB 引导/弱网超时/解析失败） */
-    private val _suggestError = MutableStateFlow<String?>(null)
-    val suggestError: StateFlow<String?> = _suggestError.asStateFlow()
+    val suggestError: StateFlow<String?> =
+        suggestStore.uiState.map { it.error }
+            .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
 
     /** ═══════════ 主动发起/润色 ═══════════ */
     private val _proactiveOptions = MutableStateFlow<List<com.lovebrain.app.model.ProactiveOption>>(emptyList())
@@ -868,7 +882,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             if (date == TimeFmt.today()) {
                 runCatching {
                     Json.decodeFromString(serializer<com.lovebrain.app.model.DailySuggestion>(), json)
-                }.onSuccess { _suggestion.value = it }
+                }.onSuccess { suggestStore.accept(com.lovebrain.app.feature.suggest.SuggestStore.Intent.ServeFromCache(it)) }
                     .onFailure { L.w("恢复今日锦囊失败：${it.javaClass.simpleName}") }
             }
         }
@@ -1787,17 +1801,27 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     fun dismissPlanPanel() { _showPlanPanel.value = false }
 
     /** 一次锦囊请求冻结下来的身份——写缓存时用它，绝不回读实时 _activeKb */
-    private data class SuggestRequestContext(
-        val requestId: String,
-        val kbName: String,
-        val kb: KnowledgeBase,
-        val date: String,
-        val contextFingerprint: String,
-        val promptVersion: String
+    /**
+     * 一次锦囊请求的冻结身份——类型就是 store 的那个，不再另立一份。
+     *
+     * 在途身份由 [SuggestStore] 保管（原来这里是 VM 的一个 `var suggestContext`，
+     * reducer 在完成时回读它，于是"写回哪一天/哪个库"取决于回读那一刻的状态）。
+     */
+    private fun suggestIdentityOf(
+        requestId: String,
+        kbName: String,
+        kb: com.lovebrain.app.model.KnowledgeBase,
+        date: String,
+        contextFingerprint: String,
+        promptVersion: String
+    ) = com.lovebrain.app.feature.suggest.SuggestStore.Identity(
+        requestId = requestId,
+        kbName = kbName,
+        kb = kb,
+        date = date,
+        contextFingerprint = contextFingerprint,
+        promptVersion = promptVersion
     )
-
-    /** 当前在途的锦囊请求上下文；任务结束时清空 */
-    private var suggestContext: SuggestRequestContext? = null
 
     /** 同步 guard 由 coordinator 承担——Engine reject → null → 旧任务保持。 */
     fun generateSuggest() {
@@ -1833,7 +1857,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             }
         } else null
         if (cached != null) {
-            _suggestion.value = cached
+            suggestStore.accept(com.lovebrain.app.feature.suggest.SuggestStore.Intent.ServeFromCache(cached))
             L.w("SUGGEST cache hit, skipping model request")
             return@launch
         }
@@ -1853,10 +1877,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /** 在发起之前把请求身份冻结下来 */
-    private suspend fun buildSuggestContext(): SuggestRequestContext? {
+    private suspend fun buildSuggestContext(): com.lovebrain.app.feature.suggest.SuggestStore.Identity? {
         val kb = _activeKb.value ?: return null
         val today = TimeFmt.today()
-        return SuggestRequestContext(
+        return com.lovebrain.app.feature.suggest.SuggestStore.Identity(
             requestId = ReplyRequestState.newRequestId(),
             kbName = kb.name,
             kb = kb,
@@ -1866,11 +1890,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         )
     }
 
-    private fun startSuggestGeneration(ctx: SuggestRequestContext) {
+    private fun startSuggestGeneration(ctx: com.lovebrain.app.feature.suggest.SuggestStore.Identity) {
         val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.SUGGEST, ctx.requestId
         ) {
-            suggestContext = ctx
+            suggestStore.accept(com.lovebrain.app.feature.suggest.SuggestStore.Intent.Begin(ctx))
             applySuggestEvent(SuggestStarted(ctx.requestId))
             try {
                 generationEngine.suggestStream(ctx.requestId, ctx.kb).collect { applySuggestEvent(it) }
@@ -1878,7 +1902,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 applySuggestEvent(SuggestEnded(ctx.requestId))
                 throw e
             } finally {
-                if (suggestContext?.requestId == ctx.requestId) suggestContext = null
+                suggestStore.accept(com.lovebrain.app.feature.suggest.SuggestStore.Intent.Settle(ctx.requestId))
             }
         }
         if (lease == null) L.w("suggest rejected: another suggest request is running")
@@ -1936,8 +1960,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         ) ?: return
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.SUGGEST)
         applySuggestEvent(SuggestEnded(current.requestId))
-        _streamingTips.value = emptyList()
-        _suggestError.value = "已手动停止"
+        suggestStore.accept(
+            com.lovebrain.app.feature.suggest.SuggestStore.Intent.StoppedByUser
+        )
         L.w("user stopped suggest")
     }
 
@@ -2066,43 +2091,41 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     // --- 锦囊 ---
 
     private fun applySuggestEvent(event: SuggestEvent) {
-        if (!ownsOperation(ForegroundOperationCoordinator.OperationType.SUGGEST, event.requestId)) {
-            L.w("suggest event ${event::class.simpleName} rejected (stale requestId)")
-            return
-        }
-        when (event) {
-            is SuggestStarted -> {
-                _suggestion.value = null
-                _streamingTips.value = emptyList()
-                _suggestError.value = null
-            }
-            is SuggestFirstToken -> _lastResponseMs.value = event.elapsedMs
-            is SuggestTips -> if (event.tips.size > _streamingTips.value.size) _streamingTips.value = event.tips
-            is SuggestFailed -> _suggestError.value = event.message
-            is SuggestResult -> {
-                _suggestion.value = event.suggestion
-                // 用发起时冻结的身份写缓存——跨午夜完成也写回发起那一天，
-                // 不再回读实时 _activeKb、也不再重算"今天"
-                val ctx = suggestContext
-                if (event.suggestion != null && ctx != null && ctx.requestId == event.requestId) {
-                    securePrefs.saveSuggestion(
-                        Json.encodeToString(
-                            serializer<com.lovebrain.app.model.DailySuggestion>(),
-                            event.suggestion
-                        ),
-                        ctx.date,
-                        ctx.kbName,
-                        ctx.contextFingerprint,
-                        ctx.promptVersion
-                    )
-                }
-            }
-            is SuggestEnded -> _streamingTips.value = emptyList()
+        suggestStore.accept(
+            com.lovebrain.app.feature.suggest.SuggestStore.Intent.Apply(event)
+        )
+    }
+
+    /**
+     * SuggestStore 归约后需要**别人**做的事：缓存落盘、跨 feature 的耗时统计。
+     *
+     * 原来这段逻辑写在 reducer 里，用的是 VM 的 `suggestContext` 可变字段——
+     * 也就是"完成时再去看当前上下文"。现在身份由 store 随 Effect 一起给出，
+     * 跨午夜完成、生成期间切 KB 这两种情况下，写的都是发起时冻结的那一份。
+     */
+    private fun onSuggestEffect(effect: com.lovebrain.app.feature.suggest.SuggestStore.Effect) {
+        when (effect) {
+            is com.lovebrain.app.feature.suggest.SuggestStore.Effect.Persist ->
+                securePrefs.saveSuggestion(
+                    Json.encodeToString(
+                        serializer<com.lovebrain.app.model.DailySuggestion>(),
+                        effect.suggestion
+                    ),
+                    effect.identity.date,
+                    effect.identity.kbName,
+                    effect.identity.contextFingerprint,
+                    effect.identity.promptVersion
+                )
+
+            is com.lovebrain.app.feature.suggest.SuggestStore.Effect.FirstTokenObserved ->
+                _lastResponseMs.value = effect.elapsedMs
         }
     }
 
     private fun applySuggestError(msg: String) {
-        _suggestError.value = msg
+        suggestStore.accept(
+            com.lovebrain.app.feature.suggest.SuggestStore.Intent.Fail(msg)
+        )
     }
 
     // --- 主动发起 ---
