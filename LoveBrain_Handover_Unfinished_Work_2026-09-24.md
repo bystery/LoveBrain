@@ -14,8 +14,10 @@
 - 阶段二：§5.2 五条 feature store + "模式"全部归位；**§5.2 第 6 步（删 facade）没做**；
   **§5.3 出去 3 格**（migration / backup / catalog 的枚举侧 `df1e802`）；
   catalog 的写侧与 document / profile / memory / round 未动。
-- 阶段三：⚠️ 组件体系（`Lb*` / 首页四段 / `ScreenState` / ResultArea 拆分 / 截图工具）**仍一行没动**；
-  但 §6.5 的"语义树那一半"已有仪器，并据此修掉三处缺陷（`cb44ceb…2ef47ac`，详见执行记录 §2i）。
+- 阶段三：⚠️ 起了个头（`e359930`）——`core/designsystem` 建了，`ScreenState` + `LbEmptyState` +
+  `LbAsyncState` 落地，反馈案例页换成四态语法（534 → 500 行）。**首页四段、其余三个目的地、
+  ResultArea 浮层拆分、截图工具仍没动**。§6.5 的"语义树那一半"已有仪器，据此修掉三处缺陷
+  （`cb44ceb…2ef47ac`，详见执行记录 §2i/§2k）。
 
 ```bash
 git rev-parse --short HEAD && git rev-list --count 4795471..HEAD && git ls-remote origin main
@@ -40,13 +42,13 @@ rm -rf app/build/test-results/testDebugUnitTest && \
 | 1.1 | §5.2 第 6 步：VM 退成只组合只读 StateFlow 的 facade，然后**删 facade** | §5.2 步骤 6 / §7 第二步完成定义 | VM `LoveBrainViewModel.kt` **2746 行**，比本轮开工前（2651）**长 95 行**。状态持有者都搬走了，编排与转发全留着 | 先量调用面：`grep -rn "viewModel\." app/src/main/java/com/lovebrain/app/ui app/src/androidTest` 统计每个 public 流的引用数；只被一个面板用的流 → 把该面板改成收 `StateFlow` 参数而不是收 VM；命令类方法（generate/cancel/undo）保留在 VM |
 | 1.2 | §5.3 剩下几格：catalog 写侧 / document / profile / memory / round | §5.3 | 仓库 1941 行。已出三格：backup（`5a21ec2`）、migration（早就是 `KnowledgeMigrator`）、**catalog 的枚举侧**（`KnowledgeCatalogStore`，`df1e802`：`listAll` 与 `listAllUnlocked` 从此一个所有者）。`create/delete/setActive/updateDisplayName/ensureInitialKnowledgeBase` 这五个写侧动作还在仓库里 | 照 §5.3 分组：**catalog**=`listAll/getActive/setActive/create/delete/updateDisplayName/ensureInitialKnowledgeBase`；**document**=`readFile/appendFile/deleteFile/writeFile/writeFileWithVersion/readFileWithVersion/toKbName/toKbPath/safeKbFile`；**profile**=`readProfile/applyProfileUpdateAtomically/getCurrentStage/updateStage/updateWarmthStageLabel/readVector/writeVector/getTurnCount/incrementTurnCount*`；**memory**=`readIntent/saveIntent/readCorrections/saveCorrection/undoCorrection/*RevisionCheck/appendActualSentRecord/replaceActualSentRecord/appendCounselingEntries/readCounselingAnalysisBlocks`；**round**=`transaction/KnowledgeTx/RoundCommitJournal` 那条链 |
 | 1.3 | 拆类必须共用**一个** `KnowledgeTransactionManager`，不许每类各自 new Mutex | §5.3 末句 | 现状是仓库唯一一把 `fileMutex` + `RepoStorage` 受限视图，形状已经对了——**下一格必须沿用**，不要新开锁 | 沿用 `BackupStorage` 那个做法：给每格定义"它真正需要的最小能力接口"，由 `RepoStorage` 一个内部类去实现，别把 `KbStorageAccess` 当万能接口传 |
-| 1.4 | §6.1 设计 token + 11 个 `Lb*` 基础组件 | §6.1 表 | 一个都没有。现有页面各自造标题样式、按钮、卡片 | 组件清单（照指导书表）：`LbScreenScaffold` `LbTopBar` `LbSection` `LbPrimaryButton` `LbActionCard` `LbSettingRow` `LbMetricCard/Grid` `LbEmptyState` `LbAsyncState` `LbModalSheet/Dialog` `LbStatusBadge`。先建 §5.1 说的 `core/designsystem` 目录（还没建） |
-| 1.5 | §6.3 每个目的地统一 `ScreenState`（Loading/Content/Empty/Error 四态） | §6.3 | 未做。Provider、反馈案例、知识库、捕获范围各自发明空态/错误态 | 定义一次 `sealed interface ScreenState<out T>`，然后**逐页**替换，每页一格提交 |
+| 1.4 | §6.1 设计 token + 11 个 `Lb*` 基础组件 | §6.1 表 | ⚠️ **2 / 11**（`LbEmptyState`、`LbAsyncState`，`e359930`）。剩下九行没有：现有页面仍各自造标题样式、按钮、卡片；token 还在 `ui.theme` 没迁进 `core/designsystem`（这条欠账登记在 `PackageDependencyTest` 的 core 规则旁边） | 组件清单（照指导书表）：`LbScreenScaffold` `LbTopBar` `LbSection` `LbPrimaryButton` `LbActionCard` `LbSettingRow` `LbMetricCard/Grid` `LbEmptyState` `LbAsyncState` `LbModalSheet/Dialog` `LbStatusBadge`。先建 §5.1 说的 `core/designsystem` 目录（还没建） |
+| 1.5 | §6.3 每个目的地统一 `ScreenState`（四态） | §6.3 | ⚠️ **一个目的地已换**：`ScreenState` 已定义，反馈案例页换完（三个各画一套的分支 → 一处判定 + 一套版式）。Provider、知识库、捕获范围仍各自发明空态/错误态 | 照 `FeedbackCasesScreen` 的形状：先在页面里算出一个 `ScreenState`（**判定顺序保持原样**），再 `LbAsyncState(state) { 原内容 }`；每页一格提交，改完当场用 JVM 语义树测四态 |
 | 1.6 | §6.2 首页固定四段 + 不把编辑器/列表展开在首页 | §6.2 | Home 未按四段重排 | 四段：顶部 About / 军师状态主卡 / 快捷功能 `LbActionCard` / 设置概览 `LbSettingRow` + 三等分 `LbMetricGrid` |
 | 1.7 | §6.4 ResultArea 不再承载全部浮层，拆成独立 state holder + modal host | §6.4 | 未做。`ResultArea.kt` 仍 1305 行，菜单/纠正中心/发送记录/改写/版本历史/反馈原因都在里面 | 先把每个浮层的 state holder 从 `ResultArea` 的参数里剥出来，再谈 modal host；这一步做完 §6.2/§6.3 才有落点 |
 | 1.8 | §6.5 截图/视觉门禁：Roborazzi **或** Paparazzi 二选一接入 | §6.5 | 截图工具根本没接 | 先选型再写用例。矩阵维度：宽 320/360/412/600dp × 字体 1.0/1.3/2.0 × 中英文 × 深浅色（**若暂不支持深色就明确锁定浅色，不要做半套主题**）；用例要含长 Provider 名、超长模型名、`￥9999.999`、`100000 次生成`；**baseline 变更必须人工 review，禁止自动覆盖 baseline 后判绿** |
 | 1.9 | §6.5 无障碍自动化：TalkBack role / selected / disabled / stateDescription / contentDescription；bounds ≥48dp **不许用源码搜索代替** | §6.5 / P1-02 | ⚠️ **本窗口推进了**：JVM 语义树仪器已建（`app/src/test/…/core/testing/`，走 `testDebugUnitTest`，CI verify 每次跑），PanelHeader 12 格矩阵 + 空态入口 + 主操作区共 **17 格**在跑，三处缺陷据此修掉。**仍缺**：`LoveBrainPanelScreen` 其它可点控件、Home/Provider/Feedback/知识库/捕获范围；`stateDescription` 那两处（谈心/锦囊折叠）无断言；高度维度与"超长文案/极端数字"没测 | 直接照 `PanelHeaderTouchTargetsTest` 的形状往其它页扩：`SemanticsProbe.assertAllActionableMeetTouchFloor / assertAllActionableLabeled / assertNoDuplicatedAnnouncement`。**两个前提别丢**：`@GraphicsMode(NATIVE)`（legacy 的文字度量是假的，32x39 与 224x23 之差）、纯控件用 `UiProbeApplication`（不然第二个用例撞 `KoinAppAlreadyStartedException`）。`ProductionUiContractTest` 那种源码 grep 门禁只能当"防回退"，不能当证据 |
-| 1.10 | P1-05 文案收口：209 处用户可见中文字面量搬进 `strings.xml` / `values-en` | §6.1 / P1-05 | 一行没搬。宽尺测到 **209 处**（报告里的 101 是只数 `Text("中文` 的下界） | 闸已经装上：`UiStringLiteralBudgetTest`（TEXT 209 / DESC 10 的预算）。每搬一批就把预算**改小**，不允许调大；一次提交搬一页，别混进组件改造 |
+| 1.10 | P1-05 文案收口：用户可见中文字面量搬进 `strings.xml` / `values-en` | §6.1 / P1-05 | ⚠️ 先修了尺再搬：旧正则看不见 `Text(text = if (…) "中文" else "中文")`，按括号配对重扫后 **209 → 254**（那 45 处是漏量的，不是新塞的）；搬掉 4 处后预算 **254 → 252** | 一次提交搬一页，每搬一批把 `UiStringLiteralBudgetTest` 的预算改小（只许往下）；改文案别混进组件改造 |
 | 1.11 | P1-01 18 个 >500 行文件、10 个 >800 行文件 | P1-01 | 数量没动（本轮只让 KnowledgeRepository 从 2001 降到 1942） | 每完成 1.2 的一格就少一个候选；`ResultArea` 1305、`FloatingService` 1153、`DeepSeekRepository` 1114 是下一批目标 |
 
 ## 2. 我**主动没开**的（理由：单次会话的上下文余量不够，怕留半成品）—— 不是"指导书没要求"

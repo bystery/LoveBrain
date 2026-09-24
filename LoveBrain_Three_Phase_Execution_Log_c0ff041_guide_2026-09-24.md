@@ -451,6 +451,37 @@ lint **71 条 / 15 规则**与预算一致、0 error；`compileDebugAndroidTestK
 `create/delete/setActive/updateDisplayName/ensureInitialKnowledgeBase`（catalog 的写侧）、
 document / profile / memory / round。
 
+## 2k. 第十一轮：§6.1/§6.3 起头——四态与空态版式有了唯一的家（`cd7e1df` `e359930`）
+
+先记账：`cd7e1df` 是**换尺**不是还债。`UiStringLiteralBudgetTest` 那把正则只认"锚点后面紧跟引号"，
+`Text(text = if (…) "中文A" else "中文B")` 它看不见；改成按括号配对截整段实参后
+TEXT 实测 **209 → 254**。上一轮从 `MessageList` 搬走的那 2 处**本来就不在 209 里**——
+搬了而账不动，说明那笔账是假的。三把尺（101 / 209 / 254）的关系写在预算旁边。
+
+`e359930` 才是第一块组件地基：
+
+| 新增 | 内容 |
+|---|---|
+| `core/designsystem/ScreenState.kt` | §6.3 的 Loading / Content / Empty / Error；状态由持有者算，组件不判 |
+| `core/designsystem/LbAsyncState.kt` | §6.1 组件表里的 `LbEmptyState` + `LbAsyncState` 两行 |
+| `FeedbackCasesScreen.kt` | 三个各自画一套的分支换成一处判定 + 一套版式；**534 → 500 行** |
+
+### 这一块地基是被自家闸逼着修对的，不是一遍写对的
+
+| 闸 | 抓到的东西 | 怎么修的 |
+|---|---|---|
+| 新组件自己的语义树用例 | 第一版只写 `heightIn`，短标签"重试"量出来 **40x48dp**——§6.5 的下限是 **48×48**，不是"高够就行" | 补 `widthIn(min = 48.dp)`；这条用例从此就是它的回归守卫 |
+| `check_lint_budget.sh` | `ModifierParameter` 8 → 9：`modifier` 不在第一个可选参数位 | 改签名 + 调用点全部具名（不抬预算） |
+| `lintDebug` | `SuspiciousIndentation` **Error**：为了"少动几行"把包进 `if` 的 78 行留着原来的缩进 | 整体退回正确缩进（−312 字节 = 78×4，逐行核过）。省 diff 不是理由 |
+
+包里再加一条依赖规则：`core` 不许 import `data` / `viewmodel` / `feature` / `org.koin` / `java.io.File`。
+它现在仍然 import `ui.theme` 拿 token（token 还没搬家），这条欠账写在规则旁边而不是藏起来。
+
+### 收尾实测（`e359930`）
+
+**1073 单测 / 132 套件 / 0 失败 / 0 错误 / 0 跳过**；lint **71 条 / 15 规则**与预算一致；
+文案预算 TEXT 随两处搬迁 **254 → 252**；跨层 **6** 条；工单编号 PASS。
+
 ## 3. 明确没做到 / 没法在本机做到的（不混进上面）
 
 1. **19 条真机 instrumentation 失败还在**。本轮只做到：把 7 条同源的夹具竞态改掉、

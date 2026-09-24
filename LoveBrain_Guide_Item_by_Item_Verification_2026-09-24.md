@@ -1,9 +1,10 @@
 # LoveBrain × 三阶段指导书 逐条对照（2026-09-24，本窗口）
 
 > 被对照的输入：`LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md`
-> 本窗口的提交：`cb44ceb` `6177cd0` `c927b2e` `9f4747a` `ead80c1` `2ef47ac` `f5aed70` `df1e802`
-> （8 个，接在交接文档 `c21b200` 之后；本地领先远端 `4795471` 的提交数请以
-> `git rev-list --count 4795471..HEAD` 当次输出为准）
+> 本窗口的提交（11 个，接在交接文档 `c21b200` 之后）：
+> `cb44ceb` `6177cd0` `c927b2e` `9f4747a` `ead80c1` `2ef47ac` `f5aed70` `df1e802` `1e1600c`
+> `cd7e1df` `e359930`。领先远端 `4795471` 的条数别抄这里，
+> 现算：`git rev-list --count 4795471..HEAD`。
 > 上一轮的过程证据：`LoveBrain_Three_Phase_Execution_Log_c0ff041_guide_2026-09-24.md`
 > 上一轮的交接：`LoveBrain_Handover_Unfinished_Work_2026-09-24.md`
 
@@ -19,7 +20,7 @@
 
 | 量 | 命令 | 本窗口实测 |
 |---|---|---|
-| 单测 | `./gradlew :app:testDebugUnitTest` + 逐 XML 解析 | **1067 tests / 131 套件 / 0 失败 / 0 错误 / 0 跳过**（无陈旧 XML：逐个比过 mtime；`df1e802` 之后） |
+| 单测 | `./gradlew :app:testDebugUnitTest` + 逐 XML 解析 | **1073 tests / 132 套件 / 0 失败 / 0 错误 / 0 跳过**（无陈旧 XML：逐个比过 mtime；`e359930` 之后。1045 → 1073 的 28 格全部来自本窗口） |
 | lint | `:app:lintDebug` + `check_lint_budget.sh` | **71 条 / 15 条规则，预算一致，0 新增债**；0 error |
 | androidTest 编译 | `:app:compileDebugAndroidTestKotlin` | 通过 |
 | 跨层越界 | `package_deps_report.sh --count` | **6**（与基线一致，没长） |
@@ -69,7 +70,9 @@ Robolectric 4.14.1 + Compose `ui-test-junit4`，走 `testDebugUnitTest` → **CI
 | **P1-02** 语义树边界断言，不许源码搜索 | **本窗口做了三处，仍不全** | 已覆盖：PanelHeader（12 格矩阵：48dp 下限 / selected / role / 标签 / 不重复播报）、空态入口、主操作区。实测值：改前 **84x18dp**（三段）与 **224x23dp**（空态蓝字），改后 ≥48dp。**还差**：`LoveBrainPanelScreen` 其余可点控件、Home/Provider/Feedback/知识库各页；已有 `stateDescription` 的那两处折叠控件（谈心/锦囊）没有断言；`SuggestPanel:452` 那种 `fillMaxWidth().clickable{}` 的展开条没量过高度 |
 | **P1-03** `GenerationActionButton` modifier 链重复 | 沿用上轮（未复验） | 本窗口读过该文件，NORMAL/DISABLED 只剩一条链（`size→graphics→shadow→clip→background→clickable→padding`），LOADING/STOP 分支各自一条——但这是**我读到的现状**，不是本轮改动 |
 | **P1-04** Koin 双 journal 注册 | 沿用上轮（未复验）+ 本窗口 grep 过 | `AppModule.kt:55` 现为 `single { TopicRecorder(get(), get(), get()) }`，`:51` 只有容器那一份 journal |
-| **P1-05** 209 处中文字面量 | **只还了 2 处，且发现尺子有盲区** | 搬进 `strings.xml`/`values-en`：`proactive_empty_send_one`、`proactive_empty_turn_off`。**盲区**：`UiStringLiteralBudgetTest` 的 TEXT 正则只认 `Text("…` / `Text(text = "…`，看不见 `Text(text = if (…) "中文" else "中文")`——我搬掉的这两处**本来就不在 209 的计数里**，所以预算数字没改（改了就是假账）。剩下 207+ 处没动 |
+| **P1-05** 209 处中文字面量 | **先修尺，再还 4 处** | 搬进 `strings.xml`/`values-en`：`proactive_empty_send_one`、`proactive_empty_turn_off`。**盲区**：`UiStringLiteralBudgetTest` 的 TEXT 正则只认 `Text("…` / `Text(text = "…`，看不见 `Text(text = if (…) "中文" else "中文")`——我搬掉的这两处**本来就不在 209 的计数里**，所以预算数字当时没改（改了就是假账）。本轮把尺换成按括号配对截整段实参，**209 → 254**：
+这 45 处不是新塞的中文，是原来漏量的。之后搬进资源 4 处（空态两种文案 + 反馈页的"重试"/"暂无反馈案例"），
+预算 **254 → 252**（棘轮只许往下）。剩下 252 处没动 |
 
 ## 3. §3.3 P2 五条
 
@@ -95,7 +98,7 @@ Robolectric 4.14.1 + Compose `ui-test-junit4`，走 `testDebugUnitTest` → **CI
 ## 5. §5 目标架构
 
 ### 5.1 目录
-`core/model`、**`core/designsystem`（未建，main 源下 `core/` 目录不存在）**、
+`core/model`、**`core/designsystem`（本窗口建了：`ScreenState.kt` + `LbAsyncState.kt`）**、
 `core/testing`（**本窗口建了，但在 test 源下**：`app/src/test/…/core/testing/` 三件）、
 `domain/port`（上轮）、`data/*`、`platform/*`（未做）、`feature/*`（上轮五个 store）。
 **还差**：`core/designsystem` 的 token 与组件（`grep "fun Lb[A-Z]"` 在生产源码 **0 命中**，实测）。
@@ -123,13 +126,18 @@ VM 本窗口实测 **2746 行**，与上轮交接同值（既没涨也没降，�
 ## 6. §6 UI 架构与交互
 
 ### 6.1 十一个 `Lb*` 基础组件
-**0 / 11。** `LbScreenScaffold` `LbTopBar` `LbSection` `LbPrimaryButton` `LbActionCard`
+**2 / 11**（`e359930`）：`LbEmptyState`、`LbAsyncState`——都带语义树用例，动作热区 ≥48dp 与 `Role.Button` 是量出来的。剩下九行没建： `LbScreenScaffold` `LbTopBar` `LbSection` `LbPrimaryButton` `LbActionCard`
 `LbSettingRow` `LbMetricCard/Grid` `LbEmptyState` `LbAsyncState` `LbModalSheet/Dialog` `LbStatusBadge`
 一个都没建（`grep "fun Lb"` 在生产源码零命中）。**这是阶段三"一行没动"的主体。**
 
 ### 6.2 首页固定四段 — 未做（本窗口没碰 Home）。
 
-### 6.3 `ScreenState` 四态统一 — 未做（`sealed interface ScreenState` 零命中）。
+### 6.3 `ScreenState` 四态统一 — **一个目的地已换，其余没动**（`e359930`）
+
+`ScreenState`（Loading/Content/Empty/Error）与 `LbAsyncState` 已建；**反馈案例页**换完：
+原来三个分支各画一套居中文版式，现在一处判定 + 一套版式，页面 **534 → 500 行**，两处中文进了资源。
+判定顺序与替换前逐字相同（Loading > Error > Empty > Content）。
+**还差**：Provider、知识库、捕获范围三个目的地。
 
 ### 6.4 ResultArea 拆独立 state holder + modal host — 未做，实测仍 **1305 行**。
 
@@ -158,7 +166,7 @@ VM 本窗口实测 **2746 行**，与上轮交接同值（既没涨也没降，�
 ## 7. §7 三步执行计划——每步"完成定义"逐条
 
 ### 第一步（恢复可信发布门禁）：**没完成**
-- unit ≥920、0 failures/errors → **本机已验**：1062 / 0 / 0。
+- unit ≥920、0 failures/errors → **本机已验**：1073 / 0 / 0。
 - AndroidTest compile success → **本机已验**。
 - 40 个 instrumentation 全运行且报告数与源码一致 → **只能等 CI**。
 - UI XML/HTML、截图、logcat 非空 → **只能等 CI**（截图仓库侧根本没有）。
@@ -174,9 +182,9 @@ VM 本窗口实测 **2746 行**，与上轮交接同值（既没涨也没降，�
 - 新代码无 >500 行、现存 >800 行持续下降 → **没下降**（18 / 10，与指导书报的持平）。本窗口新增的都是测试与 3 个既有文件的改动。
 
 ### 第三步（统一 UI 与交互）：**基本没开始，但有了一条能量尺寸的仪器**
-- 首页四段稳定 → 没做。
+- 首页四段稳定 → 没做（Home 一行未动）。
 - Provider/捕获/反馈同一套 row/card/state 语法 → 没做。
-- 反馈案例不内联堆叠 → 沿用上轮（已独立路由）。
+- 反馈案例不内联堆叠 → 沿用上轮（已独立路由）；本窗口另把它换成 §6.3 的四态语法（`e359930`）。
 - 主动发合同未变化 → **本窗口验证过并钉住了**（6 格 JVM 用例）。
 - 360dp + 2.0x 无裁切/无遮挡/无 <48dp 热区 → **热区那一半：PanelHeader 在 320dp+2.0x 下实测达标**；"无裁切/无遮挡"要像素，没做。
 - 关键屏幕 baseline 已 review → 没做。
@@ -205,10 +213,13 @@ prompt 零 diff + lock（**通过**）· P0/P1/P2 对应 commit（见本文各�
 **A. 指导书要求、本窗口一行没做**
 1. §5.2 第 6 步：删 VM facade（2746 行）。
 2. §5.3 剩余：catalog 的写侧（create/delete/setActive/updateDisplayName/ensureInitial）+ document / profile / memory / round 四格。
-3. §6.1 十一个 `Lb*` 组件 + `core/designsystem` token。
-4. §6.2 首页四段；§6.3 `ScreenState` 四态；§6.4 ResultArea 浮层拆分（1305 行）。
+3. §6.1 剩下九个 `Lb*` 组件（`LbScreenScaffold` `LbTopBar` `LbSection` `LbPrimaryButton`
+   `LbActionCard` `LbSettingRow` `LbMetricCard/Grid` `LbModalSheet/Dialog` `LbStatusBadge`）
+   + 把 token 从 `ui.theme` 迁进 `core/designsystem`（这条欠账登记在 `PackageDependencyTest` 的 core 规则旁边）。
+4. §6.2 首页四段；§6.3 余下三个目的地（Provider / 知识库 / 捕获范围）；
+   §6.4 ResultArea 浮层拆分（1305 行）。
 5. §6.5 截图工具与 baseline 人工 review 流程；⑦超长文案/极端数字那一格；⑧对比度；②里 stateDescription 那两处的断言。
-6. P1-05 剩下 207+ 处中文字面量（并且**先要把尺子的盲区补上**，否则搬了也不见账）。
+6. P1-05 剩下 **252** 处中文字面量。（尺子的盲区本轮已补：`cd7e1df`）
 7. §3.3 里"prompt 冻结"与验收包过期表述这两条文档改口。
 
 **B. 本窗口新留下没做的**
@@ -222,7 +233,9 @@ P0-01 三项 check 全绿、P0-02 的 10 格真链路 + requestCount + logcat、
 P0-04 egress 剩下 4 格（要 CI 的 tshark）、Service destroy 那 2 格（现在是 Assume 跳过，算 skipped 不算通过）、
 以及 §3.1 里那 3 格新加的语义树 instrumentation 断言（现在它们在 JVM 与仪器两边都有，本机这边已绿）。
 
-**一句话结论**：第一步仍然只差 CI 证据；第二步完成了五条 store + 端口 contract，仓库拆分停在 2/7 格；
-第三步从"一行没动"变成"有了一台能量尺寸、能读语义树的仪器，并用它抓到并修好三处无障碍缺陷、
-把交互合同钉进了每次必跑的 job"——但组件体系、首页四态、截图门禁仍未开始。
+**一句话结论**：第一步仍然只差 CI 证据（本机这边能验的都验了）；
+第二步 store 五条 + 端口 contract 成立，仓库拆分成 3/7 格（catalog 只出了枚举侧）；
+第三步从"一行没动"变成：一台能量尺寸、能读语义树的仪器 + 用它抓到并修好三处无障碍缺陷 +
+交互合同钉进每次必跑的 job + `ScreenState` 与两颗 `Lb*` 组件落地、一个目的地换完。
+仍未开始的是：首页四段、其余三个目的地、ResultArea 浮层拆分、截图门禁、facade 删除。
 **发布判定不变：NO-GO，且 worker 不自签。**
