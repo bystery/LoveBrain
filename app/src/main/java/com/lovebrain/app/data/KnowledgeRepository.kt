@@ -57,8 +57,19 @@ class KnowledgeRepository(
     private val migrator = KnowledgeMigrator(RepoStorage())
 
     /** 交给迁移器用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
-    private inner class RepoStorage : KbStorageAccess, BackupStorage {
+    private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage {
         override val root: File get() = knowledgeRoot
+        override val catalogRoot: File get() = knowledgeRoot
+
+        /** 枚举用的解析走本类那一份 Json 配置——不给第二个类另配一把尺 */
+        override fun decodeMeta(text: String): KnowledgeBase? =
+            runCatching { json.decodeFromString<KnowledgeBase>(text) }.getOrNull()
+
+        /** 目录被挡下的原因只有仓库知道该不该说、怎么说；观测留在这里，不在策略类里 */
+        override fun onMetaRejected(dirName: String, reason: String) {
+            com.lovebrain.app.util.L.w("知识库元数据异常已忽略：dir=$dirName reason=$reason")
+        }
+
         override fun atomicWrite(target: File, content: String) {
             // 迁移器只会写"不超纲"的库（判定在 KnowledgeMigrator 里提前 return），
             // 所以这里返回 false 一定是异常状况，必须留下痕迹而不是静默跳过。
@@ -87,6 +98,15 @@ class KnowledgeRepository(
      * （SingleOwnerContractTest 那条闸），仓库是这里唯一的启动者，把 launch 一起搬出去就违规。
      */
     private val backup = KnowledgeBackupService(RepoStorage())
+
+    /**
+     * 目录枚举（§5.3 catalog 第一刀）：读哪些目录、什么算一个库、按什么排，全在它里。
+     *
+     * 这格拆出来不是因为仓库大，而是因为这件事**以前在本类里写了两遍**——
+     * 公开的 `listAll()` 与无锁的 `listAllUnlocked()` 各一份，且只有一份会说话（记日志）。
+     * 现在两个入口共用一个实现。
+     */
+    private val catalog = KnowledgeCatalogStore(RepoStorage())
 
     /** 备份节流：记录最后一次写入时间，debounce 5s 后触发增量备份 */
     private val backupDebounceMs = 5_000L
@@ -534,22 +554,13 @@ class KnowledgeRepository(
         }
     }
 
-    /** 无锁版 listAll（调用方持有 fileMutex） */
-    private fun listAllUnlocked(): List<KnowledgeBase> {
-        return knowledgeRoot.listFiles()
-            ?.filter { it.isDirectory && !it.name.startsWith(".") }
-            ?.mapNotNull { dir ->
-                runCatching {
-                    val metaFile = File(dir, "kb.json")
-                    if (metaFile.exists()) {
-                        val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
-                        if (kb.name != dir.name) null else kb
-                    } else null
-                }.getOrNull()
-            }
-            ?.sortedByDescending { it.updatedAt }
-            ?: emptyList()
-    }
+    /**
+     * 无锁版 listAll（调用方持有 fileMutex）。
+     *
+     * 以前这里是**第二份**"扫目录 + 校验 name + 排序"的实现，和公开的 [listAll] 各写一遍，
+     * 差别只在这一份被挡下时什么都不说。现在两条路径共用 [KnowledgeCatalogStore]。
+     */
+    private fun listAllUnlocked(): List<KnowledgeBase> = catalog.list()
 
     /**
      * 检查知识库文件是否完整，补齐缺失文件（中断恢复）。
@@ -594,24 +605,12 @@ class KnowledgeRepository(
 
     // ═══════════ 公开 API ═══════════
 
+    /**
+     * 列出所有知识库。判定（隐藏目录、name 与目录名等值、坏元数据丢弃、按 updatedAt 倒序）
+     * 在 [KnowledgeCatalogStore]，与无锁路径同一条尺。
+     */
     suspend fun listAll(): List<KnowledgeBase> = withContext(Dispatchers.IO) {
-        knowledgeRoot.listFiles()
-            ?.filter { it.isDirectory && !it.name.startsWith(".") }
-            ?.mapNotNull { dir ->
-                runCatching {
-                    val metaFile = File(dir, "kb.json")
-                    if (metaFile.exists()) {
-                        val kb = json.decodeFromString<KnowledgeBase>(metaFile.readText())
-                        //  name 字段必须与目录名等值——防 kb.json 内容字段路径遍历（单一扼制点，所有消费端均源于 listAll）
-                        if (kb.name != dir.name) {
-                            com.lovebrain.app.util.L.w("知识库元数据异常已忽略：dir=${dir.name}")
-                            null
-                        } else kb
-                    } else null
-                }.getOrNull()
-            }
-            ?.sortedByDescending { it.updatedAt }
-            ?: emptyList()
+        catalog.list()
     }
 
     override suspend fun getActive(): KnowledgeBase? = withContext(Dispatchers.IO) {
