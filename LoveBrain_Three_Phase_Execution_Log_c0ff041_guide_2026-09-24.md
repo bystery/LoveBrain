@@ -70,7 +70,7 @@ scripts/test_verify_network_egress.sh        exit 2 = CANNOT-VERIFY（本机没�
 - 「KnowledgeRepository 不再是所有知识能力的唯一入口」→ **部分**：domain 已全部走端口，
   写只有 `transaction`/`KnowledgeTx` 一条路；但仓库对象自身仍是所有能力的唯一实现处，拆类未做。
 - 「每个 port 有 production/fake 共用 contract suite」→ `KnowledgePort`、`AiGateway` 达成；
-  **`Clock` 端口未建**（复核 §4 的 DIP 目标列了它）。
+  四个端口里 `KnowledgePort`、`AiGateway`、`Clock` 已达成（Clock 是第四轮补的，见 §2c）。
 - 「新增 feature 不修改已有 reducer」→ **无法验证**：reducer 还没抽出来。
 - 「新代码无 >500 行文件，现存 >800 行文件数量持续下降」→ 前半达成（本轮新增 8 个文件最大 188 行）；
   **后半未达成**：>500 行仍是 18 个、>800 行仍是 10 个，与被审提交测到的一样，
@@ -91,7 +91,7 @@ androidTest 编译通过；取消审计与工单编号 PASS；prompt 目录零 d
 | §3.3「lint 设新增 warning = 0，逐批消债」 | **完成** | `scripts/check_lint_budget.sh` + `scripts/lint-budget.txt`，按**每条规则**记 15 条预算。三道闸实测咬得住：预算抬高藏债 → FAIL；实际超出 → FAIL；超预算时 `--rewrite` 拒绝重写 |
 | P1-05「禁止新增用户可见字面量」 | **闸完成，搬运未做** | `UiStringLiteralBudgetTest` 4 格（含临时目录注入正反例）。**并纠正一个数**：报告的 101 是**下界** —— 那把尺只数 `Text("中文`，换成能识别 `Text(text = "中文…")` 与跨行写法的正则后实扫 **209** 处，差 108 |
 | P1-02「不允许用源码 grep 代替触摸边界测试」 | **完成（结果待 CI）** | `PanelHeaderTouchTargetsTest` 读每个可点击节点的 `boundsInRoot` 判 48dp，另两格判 selected/stateDescription 与 contentDescription；`ProductionUiContractTest` 的 KDoc 明确降级为"只证明源码里出现过这个数"。instrumentation 声明数 40 → 43 |
-| §4 的 `Clock` 端口 | **没做** | domain 里 26 个计时点：GenerationEngine 那 14 个是 PERF 日志（不进状态，不需要 Clock），进时间语义的 7 个分布在 TopicRecorder / PromptBuilder / OngoingContextSelector。半接不如不接 |
+| §4 的 `Clock` 端口 | **完成**（第四轮 `a05b395`） | domain 里 8 个"结果进文件或进 prompt"的时间点改为注入：TopicRecorder 的轮次块头与场景时间戳、OngoingContextSelector 的冷却时间、PromptBuilder 的「当前时间」段。GenerationEngine 那 14 个 PERF 计时**故意不套**（不进状态，套了是假抽象）。`ClockWiringTest` 4 格：注入的钟要出现在落盘内容里、未注入的系统时间不许出现、拨快 45 分钟第二轮块头要跟着变、不传时默认仍是真钟；把 TopicRecorder 改回 `TimeFmt.now()` 实测前两格红 |
 
 数字纠偏（同一个文件里前两节的数按这里为准）：
 
@@ -147,8 +147,7 @@ androidTest 编译通过；取消审计与工单编号 PASS；prompt 目录零 d
    新加的 3 格语义树断言（48dp / selected / contentDescription）**预期可能红**，
    那是把假绿换成真信号，不是回归。
 2. 阶段二剩下的两件事，顺序不能反：
-   ① `Clock` 端口 + 把 domain 里 7 个"进状态的时间点"接上；
-   ② 按 §5.2 顺序迁 feature store，从 `ReplyStore` 开始 —— 回复状态已经收在 `_replyUi`
+   ① 按 §5.2 顺序迁 feature store，从 `ReplyStore` 开始 —— 回复状态已经收在 `_replyUi`
       + `ReplyReducer` 单写入口，所以这一刀是"搬状态持有者"，不是重写状态机；
       然后才是 Suggest / Proactive / Counseling / Rewrite。每个 store 一次提交、一次全绿。
 3. KnowledgeRepository 按 §5.3 拆 catalog/document/profile/memory/migration/archive/round，
