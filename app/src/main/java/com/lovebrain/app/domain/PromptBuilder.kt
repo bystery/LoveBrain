@@ -277,7 +277,7 @@ class PromptBuilder(
             val intentBlock = buildIntentBlock(intentConfig)
             val ideaBlock = buildIdeaBlock(userHint)
             // R09: 无库分支也过预算，不再绕过
-            val prompt = applyBudgetByBlocks(knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
+            val prompt = PromptBudget.byBlocks(knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
             return PromptBuildResult(prompt, emptyList(), sourceAliasMap)
         }
 
@@ -290,7 +290,7 @@ class PromptBuilder(
         val (chatHeader, chatBody, sourceAliasMap) = buildChatBlockWithAliases(messages)
         val timestampBlock = buildTimestampPrompt()
 
-        val prompt = applyBudgetByBlocks(knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
+        val prompt = PromptBudget.byBlocks(knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
         // R06: refs 裁剪后再生 — 只保留实际在最终 prompt 中出现的引用
         val finalRefs = filterRefsByPrompt(refs, prompt)
         return PromptBuildResult(prompt, finalRefs, sourceAliasMap)
@@ -503,7 +503,7 @@ class PromptBuilder(
         // 经验段
         val lessons = knowledgeRepo.readFile(kb.name, "memory/lessons.md")
         if (lessons.isNotBlank()) {
-            val lessonText = lastH1Blocks(lessons, 3)
+            val lessonText = PromptBudget.lastH1Blocks(lessons, 3)
             val ref = makeRef(kb.name, MemoryKind.LESSON, "memory/lessons.md", lessonText)
             if (!isCorrected(ref.id, corrections, sb)) {
                 sb.append("# 【记忆】经验教训（仅供参考）\n")
@@ -538,7 +538,7 @@ class PromptBuilder(
         }
         val sceneChain = knowledgeRepo.readFile(kb.name, "moment/scene.md")
         if (sceneChain.isNotBlank()) {
-            val transformed = transformSceneChain(sceneChain)
+            val transformed = SceneChainInjection.transform(sceneChain)
             if (transformed.isNotBlank()) {
                 val ref = makeRef(kb.name, MemoryKind.SCENE, "moment/scene.md", transformed)
                 if (!isCorrected(ref.id, corrections, sb)) {
@@ -693,81 +693,6 @@ class PromptBuilder(
         }
     }
 
-    /**
-     * R09: 按区块优先级裁剪预算。
-     * 裁剪顺序：知识段尾部旧记忆 → 知识段中较旧 recent → 较旧 scene → 对话记录头部
-     * 完整 IDEA 和最新真实消息最后才动，结构围栏 <chat></chat> 不被截半。
-     * 新增 sceneBlock 参数——场景块短小，优先保留。
-     */
-    private fun applyBudgetByBlocks(
-        knowledgeBlock: String,
-        sceneBlock: String = "",
-        intentBlock: String,
-        ideaBlock: String,
-        chatHeader: String,
-        chatBody: String,
-        timestampBlock: String
-    ): String {
-        val fullText = knowledgeBlock + "\n\n" + sceneBlock + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
-        if (fullText.length <= AppConfig.TOTAL_BUDGET) return fullText
-
-        var knowledge = knowledgeBlock
-        var remaining = fullText.length - AppConfig.TOTAL_BUDGET
-
-        // R09: 1. 裁知识段尾部（旧记忆 raw_topic/raw_scene/lessons 在尾部）
-        if (remaining > 0 && knowledge.length > remaining + 200) {
-            val keepLen = knowledge.length - remaining
-            knowledge = knowledge.take(keepLen) + "\n…（旧记忆因长度限制已省略）…\n"
-        }
-
-        var result = knowledge + "\n\n" + sceneBlock + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
-        if (result.length <= AppConfig.TOTAL_BUDGET) return result
-
-        // R09: 2. 裁知识段中较旧 recent（保留最新对话段）
-        remaining = result.length - AppConfig.TOTAL_BUDGET
-        if (remaining > 0) {
-            val recentIdx = knowledge.indexOf("# 最近对话\n")
-            if (recentIdx >= 0 && recentIdx < knowledge.length - 200) {
-                val recentEnd = knowledge.length
-                val cutSize = minOf(remaining, recentEnd - recentIdx - 100)
-                if (cutSize > 0) {
-                    knowledge = knowledge.substring(0, recentIdx) +
-                        "# 最近对话\n…（较旧的对话因长度限制已省略）…\n"
-                    remaining -= cutSize
-                }
-            }
-        }
-
-        result = knowledge + "\n\n" + sceneBlock + intentBlock + ideaBlock + chatHeader + chatBody + "\n\n" + timestampBlock
-        if (result.length <= AppConfig.TOTAL_BUDGET) return result
-
-        // R09: 3. 裁对话记录头部（保留尾部最新消息和 </chat> 围栏闭合）
-        // 预算以完整 JSON 对象裁剪，不切半个 JSON 行
-        val overflow = result.length - AppConfig.TOTAL_BUDGET
-        val trimmedChat = if (chatBody.length > overflow + 100) {
-            // 保留 <chat> 开标签和 </chat> 闭标签完整
-            val chatOpen = "<chat>\n"
-            val chatClose = "</chat>\n"
-            val innerContent = chatBody.removePrefix(chatOpen).removeSuffix(chatClose)
-            // 按行裁剪——每行是一个完整的 JSON 对象，不切半个
-            val lines = innerContent.lines().filter { it.isNotBlank() }
-            val keepLen = lines.size - (overflow / 60).coerceAtLeast(1)  // 估算每行 ~60 字符
-            val keptLines = if (keepLen > 0) {
-                lines.takeLast(keepLen)
-            } else {
-                emptyList()
-            }
-            if (keptLines.isNotEmpty()) {
-                chatOpen + "…（较早的对话已省略）…\n" + keptLines.joinToString("\n") + "\n" + chatClose
-            } else {
-                chatOpen + "…（对话记录因长度限制已省略）…\n" + chatClose
-            }
-        } else {
-            chatBody
-        }
-
-        return knowledge + "\n\n" + sceneBlock + intentBlock + ideaBlock + chatHeader + trimmedChat + "\n\n" + timestampBlock
-    }
 
     // ═══════════ 时间注入 ═══════════
 
@@ -786,7 +711,7 @@ class PromptBuilder(
      * 段前空白由块自带，此处不再追加分隔，拼合结果逐字等于  规格。
      */
     suspend fun buildCounselingUserPrompt(kb: KnowledgeBase?, confessionTaskBlock: String): String = buildString {
-        append(applyBudget(buildCoreKnowledgeSubset(kb, emptyList())))
+        append(PromptBudget.applyBudget(buildCoreKnowledgeSubset(kb, emptyList())))
         append(confessionTaskBlock)
         append("\n\n")
         append(buildTimestampPrompt())
@@ -839,7 +764,7 @@ class PromptBuilder(
             // 4. 需要避开的已确认边界
             val lessons = knowledgeRepo.readFile(kb.name, "memory/lessons.md")
             if (lessons.isNotBlank()) {
-                val recentLessons = lastH1Blocks(lessons, 1)
+                val recentLessons = PromptBudget.lastH1Blocks(lessons, 1)
                 if (recentLessons.isNotBlank()) {
                     append("## 需要避开的经验\n")
                     append(recentLessons.take(400)).append("\n\n")
@@ -848,72 +773,10 @@ class PromptBuilder(
 
             append(buildTimestampPrompt())
         }
-        return trimSuggestToBudget(raw)
+        return PromptBudget.trimSuggestToBudget(raw)
     }
 
-    /** 结构化 section budget 裁剪——不再直接 take(N) 截断。
-     *  裁剪优先级：边界与当前事项 > 温度摘要 > 表达偏好 > 经验
-     *  按完整 section 裁剪，不截断半个 section。 */
-    private fun trimSuggestToBudget(text: String): String {
-        if (text.length <= AppConfig.SUGGEST_BUDGET) return text
-        // 按 "## " 分割为独立 section
-        val sections = text.split(Regex("(?=^## )", RegexOption.MULTILINE))
-        // 高优先 section（边界、事项）保留完整；低优先 section 按预算裁剪
-        var remaining = AppConfig.SUGGEST_BUDGET
-        val result = StringBuilder()
-        // 非分段前缀先加（如有）
-        val prefix = sections.firstOrNull { !it.startsWith("## ") }
-        if (prefix != null) {
-            result.append(prefix)
-            remaining -= prefix.length
-        }
-        // 高优先 section 先保留
-        val highPriority = listOf("## 与今天相关的事项", "## 需要避开的经验")
-        val lowPriority = listOf("## 温度摘要", "## 表达偏好", "## 关系阶段")
-        // 只在条目/段落边界裁剪，不做裸 take(N) 截断
-        for (section in sections.drop(if (prefix != null) 1 else 0)) {
-            val isHigh = highPriority.any { section.startsWith(it) }
-            if (isHigh && remaining > 0) {
-                val toAdd = trimToEntryBoundary(section, remaining)
-                result.append(toAdd)
-                remaining -= toAdd.length
-            }
-        }
-        // 低优先 section 按剩余预算裁剪
-        for (section in sections.drop(if (prefix != null) 1 else 0)) {
-            val isLow = lowPriority.any { section.startsWith(it) }
-            if (isLow && remaining > 0) {
-                val toAdd = trimToEntryBoundary(section, remaining)
-                result.append(toAdd)
-                remaining -= toAdd.length
-            }
-        }
-        // 其他 section（如时间戳等）按剩余预算裁剪
-        for (section in sections.drop(if (prefix != null) 1 else 0)) {
-            val isHandled = highPriority.any { section.startsWith(it) } || lowPriority.any { section.startsWith(it) }
-            if (!isHandled && remaining > 0) {
-                val toAdd = trimToEntryBoundary(section, remaining)
-                result.append(toAdd)
-                remaining -= toAdd.length
-            }
-        }
-        return result.toString()
-    }
 
-    /** 在条目/段落边界裁剪文本，不做裸 take(N) 截断。
-     *  按 \n\n 或 \n- 分割为完整条目，只追加完整条目。 */
-    private fun trimToEntryBoundary(text: String, maxLength: Int): String {
-        if (text.length <= maxLength) return text
-        // 按行分割，保留完整行
-        val lines = text.split("\n")
-        val result = StringBuilder()
-        for (line in lines) {
-            if (result.length + line.length + 1 > maxLength) break
-            if (result.isNotEmpty()) result.append("\n")
-            result.append(line)
-        }
-        return result.toString()
-    }
 
     /**
      * 润色 user prompt：仅草稿（无时间戳、无知识库、无场景）。
@@ -1016,7 +879,7 @@ val sb = StringBuilder()
         val lessons = knowledgeRepo.readFile(kbName, "memory/lessons.md")
         if (lessons.isNotBlank()) {
             append("# 【记忆】经验教训（仅供参考）\n")
-            append(lastH1Blocks(lessons, 3)).append("\n\n")
+            append(PromptBudget.lastH1Blocks(lessons, 3)).append("\n\n")
         }
     }
 
@@ -1066,8 +929,8 @@ val sb = StringBuilder()
             append("### me.md\n").append(me.trim()).append("\n\n")
             append("### her.md\n").append(her.trim()).append("\n\n")
             append("### warmth.md\n").append(warmth.trim()).append("\n\n")
-            if (lessons.isNotBlank()) { append("## 最近经验（最近2次提取）\n\n").append(lastH1Blocks(lessons, 2)).append("\n\n") }
-            if (rawTopic.isNotBlank()) { append("## 最近话题档案（最近5个话题）\n\n").append(lastH1Blocks(rawTopic, AppConfig.REFLECT_CONTEXT_TOPICS)).append("\n\n") }
+            if (lessons.isNotBlank()) { append("## 最近经验（最近2次提取）\n\n").append(PromptBudget.lastH1Blocks(lessons, 2)).append("\n\n") }
+            if (rawTopic.isNotBlank()) { append("## 最近话题档案（最近5个话题）\n\n").append(PromptBudget.lastH1Blocks(rawTopic, AppConfig.REFLECT_CONTEXT_TOPICS)).append("\n\n") }
             val counselingAnalysis = knowledgeRepo.readCounselingAnalysisBlocks(kbName, 2)
             if (counselingAnalysis.isNotBlank()) { append("## 谈心分析（最近2次）\n\n").append(counselingAnalysis as CharSequence).append("\n\n") }
             append("## 任务\n请根据以上经验和话题档案，按画像更新引擎的格式，输出 JSON 格式的完整覆写版本。")
@@ -1090,103 +953,9 @@ val sb = StringBuilder()
 
     // ═══════════ 工具方法 ═══════════
 
-    /** 倒取最近 N 个 H1 标题块（DRY：lessons/topics 共用） */
-    private fun lastH1Blocks(content: String, count: Int): String {
-        val blocks = content.split(Regex("(?<=\n)(?=# )")).map { it.trim() }.filter { it.startsWith("# ") }
-        return if (blocks.size <= count) blocks.joinToString("\n\n")
-        else "…（更早的已省略）\n\n" + blocks.takeLast(count).joinToString("\n\n")
-    }
 
-    /** 对外暴露的总预算截断（回复/谈心/锦囊 user 侧统一过 9000） */
-    fun applyBudget(text: String): String = enforceTotalBudget(text)
 
-    private fun enforceTotalBudget(text: String): String {
-        if (text.length <= AppConfig.TOTAL_BUDGET) return text
-        // 按区块优先级裁剪——先保留当前消息、最近真实回复和必要约束，再裁剪旧背景
-        // 优先保留头部（画像/阶段/约束）和尾部（当前对话/时间戳），裁剪中间旧记忆
-        val headLen = (AppConfig.TOTAL_BUDGET * 0.5).toInt()
-        val tailLen = (AppConfig.TOTAL_BUDGET * 0.4).toInt()
-        return text.take(headLen) + "\n\n…（中间旧记忆因长度限制已省略）…\n\n" + text.takeLast(tailLen)
-    }
 
-    /** 场景链注入转换——龄标注 + 精确去重 + 过期过滤 + 来源身份保留。
-     * 废弃 extractTopicKeyForInjection 关键词列表匹配。
-     *
-     * - 复用写入端的 `|src=...|spk=...|subj=...` 格式解析，不再拆分字符串。
-     * - 无来源新输出不作为可信状态注入；只保留有来源或旧数据。
-     * - 事实发生时间、证据时间与写盘时间分离。 */
-    private fun transformSceneChain(content: String): String {
-        val entryRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2}) (\\d{2}:\\d{2})]\\s*(.*)$")
-        val now = System.currentTimeMillis()
-        val todayStr = TimeFmt.today()
-        val maxAgeMs = AppConfig.SCENE_CHAIN_MAX_HOURS * 3600_000L
-
-        data class Entry(val ts: Long, val date: String, val labelAndFacts: String)
-
-        val entries = content.lines().mapNotNull { line ->
-            val match = entryRegex.find(line.trim()) ?: return@mapNotNull null
-            val ts = TimeFmt.parse("${match.groupValues[1]} ${match.groupValues[2]}")
-            Entry(ts, match.groupValues[1], match.groupValues[3])
-        }
-        if (entries.isEmpty()) return ""
-
-        // 过滤超龄条目——过期只表示不再注入，不代表事件已结束
-        val freshEntries = entries.filter { e ->
-            e.ts <= 0 || (now - e.ts) <= maxAgeMs
-        }
-        if (freshEntries.isEmpty()) return ""
-
-        // 精确文本去重——从最新到最旧，相同事实文本只保留最新版本
-        val seenFactTexts = mutableSetOf<String>()
-        val out = StringBuilder()
-        for (e in freshEntries) {
-            val ageH = if (e.ts > 0) ((now - e.ts) / 3600_000L).toInt() else 0
-            val ageLabel = when {
-                e.ts <= 0 -> "时间未知"
-                ageH < 1 -> "不到1小时前"
-                e.date != todayStr -> "${e.date.takeLast(5)} ${ageH}小时前"
-                else -> "${ageH}小时前"
-            }
-            val colonIdx = e.labelAndFacts.indexOf('：')
-            val label = if (colonIdx >= 0) e.labelAndFacts.substring(0, colonIdx).trim() else e.labelAndFacts.trim()
-            val factsRaw = if (colonIdx >= 0) e.labelAndFacts.substring(colonIdx + 1) else ""
-            val facts = factsRaw.split('；', ';').map { it.trim() }.filter { it.isNotBlank() }
-            val keptFacts = mutableListOf<String>()
-            for (f in facts) {
-                // 复用写入端格式解析，支持新旧两种格式
-                val cleanFact = cleanFactForInjection(f)
-                if (cleanFact.isNotBlank() && cleanFact !in seenFactTexts) {
-                    keptFacts.add(cleanFact)
-                    seenFactTexts.add(cleanFact)
-                }
-            }
-            if (keptFacts.isNotEmpty()) {
-                out.append("- [").append(ageLabel).append("] ").append(label)
-                out.append("：").append(keptFacts.joinToString("；"))
-                out.append("\n")
-            }
-        }
-        return out.toString().trim()
-    }
-
-    /**
-     * 从事实文本中剥离 src/spk/subj 标记，只保留事实文本用于注入。
-     * 复用与 TopicRecorder.parseStoredFact 相同的格式解析逻辑。
-     */
-    private fun cleanFactForInjection(factText: String): String {
-        // 新格式：事实文本|src=...|spk=...|subj=...
-        if (factText.contains("|src=") || factText.contains("|spk=") || factText.contains("|subj=")) {
-            val parts = factText.split("|").map { it.trim() }
-            return parts.firstOrNull()?.trim().orEmpty()
-        }
-        // 旧格式：事实文本⟨sourceIds⟩
-        val srcMatch = Regex("(.*)⟨.+⟩$").find(factText)
-        if (srcMatch != null) {
-            return srcMatch.groupValues[1].trim()
-        }
-        // 无标记：纯文本
-        return factText.trim()
-    }
 
     private suspend fun readFileCompat(kbName: String, newPath: String): String =
         knowledgeRepo.readFile(kbName, newPath)
