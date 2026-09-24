@@ -15,6 +15,7 @@ import com.lovebrain.app.domain.KnowledgeTriggerCoordinator
 import com.lovebrain.app.domain.MemoryCorrectionPolicy
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.ReplyPatch
+import com.lovebrain.app.domain.SuggestCachePolicy
 import com.lovebrain.app.domain.RewritePrompt
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.domain.toIdentity
@@ -1837,11 +1838,18 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         if (_activeKb.value == null) { applySuggestError("还没有知识库，请先到设置页创建"); return }
         viewModelScope.launch {
         val ctx = buildSuggestContext() ?: return@launch
-        val cached = securePrefs.loadSuggestion()?.let { cache ->
-            if (cache.date != ctx.date || cache.kbId != ctx.kbName ||
-                cache.contextFingerprint != ctx.contextFingerprint ||
-                cache.promptVersion != ctx.promptVersion
-            ) return@let null
+        val cache = securePrefs.loadSuggestion()
+        // 命中判据只有 SuggestCachePolicy 一处；JSON 解不开就当没命中，重新发一次请求
+        val cached = if (cache != null && SuggestCachePolicy.isHit(
+            SuggestCachePolicy.Cached(
+                kbId = cache.kbId, date = cache.date,
+                contextFingerprint = cache.contextFingerprint, promptVersion = cache.promptVersion
+            ),
+            SuggestCachePolicy.Request(
+                kbName = ctx.kbName, date = ctx.date,
+                contextFingerprint = ctx.contextFingerprint, promptVersion = ctx.promptVersion
+            )
+        )) {
             try {
                 Json.decodeFromString<com.lovebrain.app.model.DailySuggestion>(cache.json)
             } catch (e: kotlinx.coroutines.CancellationException) {
@@ -1850,7 +1858,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 L.w("SUGGEST cache parse failed: ${e.message}")
                 null
             }
-        }
+        } else null
         if (cached != null) {
             _suggestion.value = cached
             L.w("SUGGEST cache hit, skipping model request")
@@ -1945,8 +1953,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             )
         )
     }
-
-    /** 长文本取内容前缀指纹，避免把整篇文档拼进指纹输入 */
 
 
     private val kbName: String? get() = _activeKb.value?.name
