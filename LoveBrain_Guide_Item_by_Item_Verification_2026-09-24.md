@@ -721,6 +721,10 @@ kb.json 的 `updatedAt` 用 ISO-8601——合并任何一把都会悄悄换掉�
 
 ## 15.4 §5.3 现在准确的说法：七个名字都在，但 catalog 那格是半个
 
+> ⚠ 提交 `0c4d6d6` 的标题写的是"§5.3 7/7"，那是不该写的省话——按下面这张表，准确说法是
+> "七个格子都有、其中 catalog 只搬了一半、archive 那个名字由三个协作者凑成"。
+> 已发布的历史不改写（宁可多一笔更正），以这里为准。
+
 | 指导书点名的格 | 现状 |
 |---|---|
 | `KnowledgeCatalogStore` create/list/activate/delete/rename | **只搬了枚举侧**；`create`/`delete`/`setActive`/`updateDisplayName`/`ensureInitial` 仍在仓库。写侧接口要 ~10 个成员（违 §5.3 自己的 ISP），显式退回过一次 |
