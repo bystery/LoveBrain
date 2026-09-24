@@ -2485,7 +2485,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
                 // 复用供应商配置冻结
                 val config = if (ticket != null && !apiKey.isNullOrBlank() && ticket.model.isNotBlank()) {
-                    com.lovebrain.app.data.ProviderRequestConfig(
+                    com.lovebrain.app.model.ProviderRequestConfig(
                         ticketId = ticket.id,
                         apiKey = apiKey,
                         baseUrl = ticket.baseUrl,

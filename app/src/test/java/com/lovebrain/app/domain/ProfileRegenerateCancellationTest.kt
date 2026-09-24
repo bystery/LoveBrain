@@ -2,7 +2,7 @@ package com.lovebrain.app.domain
 
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
-import com.lovebrain.app.data.RawGenerationResult
+import com.lovebrain.app.model.RawGenerationResult
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

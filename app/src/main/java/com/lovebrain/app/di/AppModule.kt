@@ -35,6 +35,8 @@ val appModule = module {
     single<com.lovebrain.app.domain.port.KnowledgePort> { get<KnowledgeRepository>() }
     single<com.lovebrain.app.domain.port.KnowledgeReadPort> { get<KnowledgeRepository>() }
     single { DeepSeekRepository(get()) }
+    // 端口绑定必须显式写 get<具体类>()：写成 get() 会解析到自己，Koin 直接 StackOverflowError
+    single<com.lovebrain.app.domain.port.AiGateway> { get<DeepSeekRepository>() }
     single { FeedbackCaseRepository(androidContext()) }
 
     // 领域层（单例）

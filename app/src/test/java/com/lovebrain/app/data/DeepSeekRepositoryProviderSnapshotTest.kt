@@ -1,4 +1,6 @@
 package com.lovebrain.app.data
+import com.lovebrain.app.model.ProviderRequestConfig
+import com.lovebrain.app.model.RawGenerationResult
 
 import android.util.Log
 import com.lovebrain.app.model.ProviderTicket

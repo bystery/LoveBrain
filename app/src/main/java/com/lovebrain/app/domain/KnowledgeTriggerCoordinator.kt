@@ -1,9 +1,9 @@
 package com.lovebrain.app.domain
 
 import com.lovebrain.app.AppConfig
-import com.lovebrain.app.data.DeepSeekRepository
+import com.lovebrain.app.domain.port.AiGateway
 import com.lovebrain.app.domain.port.KnowledgePort
-import com.lovebrain.app.data.RawGenerationResult
+import com.lovebrain.app.model.RawGenerationResult
 import com.lovebrain.app.model.ProfileParseResult
 import com.lovebrain.app.model.ProfileParseStatus
 import com.lovebrain.app.model.ProfileSuggestion
@@ -94,7 +94,7 @@ sealed interface KnowledgeTriggerEvent {
  */
 class KnowledgeTriggerCoordinator(
     private val knowledgeRepo: KnowledgePort,
-    private val deepSeekRepo: DeepSeekRepository,
+    private val deepSeekRepo: AiGateway,
     private val promptBuilder: PromptBuilder,
     private val topicRecorder: TopicRecorder
 ) {

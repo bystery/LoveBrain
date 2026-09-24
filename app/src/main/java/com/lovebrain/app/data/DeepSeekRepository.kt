@@ -1,10 +1,13 @@
 package com.lovebrain.app.data
 
 import com.lovebrain.app.AppConfig
+import com.lovebrain.app.domain.port.AiGateway
 import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ProviderFailure
 import com.lovebrain.app.model.ProviderFailureException
+import com.lovebrain.app.model.ProviderRequestConfig
 import com.lovebrain.app.model.ProviderTicket
+import com.lovebrain.app.model.RawGenerationResult
 import com.lovebrain.app.model.ReplyFailureKind
 import com.lovebrain.app.model.StreamEvent
 import com.lovebrain.app.util.L
@@ -45,32 +48,6 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-
-/**
- * 非流式生成的完整结果——content + finish_reason + 错误信息。
- *
- * [finishReason] 遵循 OpenAI 兼容规范：
- * - "stop"：模型自然结束
- * - "length"：达到 max_tokens 导致截断
- * - "content_filter"：安全过滤
- * - null：未返回或请求失败
- *
- * [error] 非 null 表示网络/解析异常（此时 content 为空）。
- */
-data class RawGenerationResult(
-    val content: String,
-    val finishReason: String?,
-    val error: Exception? = null
-) {
-    /** 是否因达到 token 上限而截断 */
-    val isTruncatedByTokenLimit: Boolean get() = "length" == finishReason
-
-    /** 是否因安全过滤截断 */
-    val isContentFiltered: Boolean get() = "content_filter" == finishReason
-
-    /** 请求是否成功（有内容且无错误） */
-    val isSuccess: Boolean get() = error == null && content.isNotBlank()
-}
 
 /**
  * API 请求统计数据快照。
@@ -114,21 +91,6 @@ data class UsageCostEvent(
 )
 
 /**
- * 请求级不可变配置快照（）。
- *
- * 一次 API 请求从出生到结束的固定身份：ticket / apiKey / baseUrl / model / thinkingMode。
- * 请求开始时一次性冻结，后续 build body / build URL / Authorization / retry / usage 计费
- * 全部只使用此快照，用户之后切工单不影响已启动的请求。
- */
-data class ProviderRequestConfig(
-    val ticketId: String,
-    val apiKey: String,
-    val baseUrl: String,
-    val model: String,
-    val thinkingMode: Int
-)
-
-/**
  * 连接测试结果。
  *
  * 保存时自动探测 endpoint，成功后 [resolvedUrl] 携带完整 /chat/completions 地址。
@@ -146,7 +108,7 @@ data class ConnectionTestResult(
  * - JSON 解析使用 kotlinx.serialization，Kotlin 默认值正确生效。
  * - 内置请求统计计数器（线程安全 AtomicInteger/AtomicLong），摘要进日志（logStatsSummary）。
  */
-class DeepSeekRepository(private val securePrefs: SecurePrefs) {
+class DeepSeekRepository(private val securePrefs: SecurePrefs) : AiGateway {
 
     // ═══════════ 工单系统工具方法（ - ）════════════
 
@@ -239,7 +201,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
      * 后续所有 retry attempt 使用同一个 ProviderRequestConfig，不因用户切工单而漂移。
      * 返回 null = 配置不完整（调用方负责处理）。
      */
-    internal fun snapshotProviderConfig(): ProviderRequestConfig? =
+    override fun snapshotProviderConfig(): ProviderRequestConfig? =
         try { resolveRequestConfig() } catch (e: IllegalArgumentException) { null }
 
     /**
@@ -249,7 +211,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
      * 用户中途换工单时这里返回的是**冻结时那张工单**的配置，
      * Engine 再用非敏感字段比对，任何一项对不上就失败，而不是悄悄换供应商发请求。
      */
-    internal fun configForTicket(ticketId: String): ProviderRequestConfig? =
+    override fun configForTicket(ticketId: String): ProviderRequestConfig? =
         try { resolveRequestConfigFor(ticketId) } catch (e: IllegalArgumentException) { null }
 
     // ═══════════ API 统计计数器（线程安全） ═══════════
@@ -359,12 +321,12 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
      *        降级链：thinking(enabled) → timeout → thinking(disabled=0) → retry → fail
      * @param thinkingShapeIndex thinking 参数 wire shape 索引（ 降级链用）
      */
-    fun generateStream(
+    override fun generateStream(
         systemPrompt: String,
         userPrompt: String,
-        thinkingOverride: Int? = null,
-        thinkingShapeIndex: Int = 0,
-        config: ProviderRequestConfig? = null
+        thinkingOverride: Int?,
+        thinkingShapeIndex: Int,
+        config: ProviderRequestConfig?
     ): Flow<StreamEvent> = callbackFlow {
         // 一次性冻结请求配置快照——后续 build body / build URL / Authorization / logUsage 全用此快照
         val resolvedConfig = config ?: try {
@@ -536,7 +498,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
     /** 将累积文本解析为 LoveBrainResponse（单次调用：response + analysis）
      * R10: 至少一个真实非空风格才可作为回复成功；全空 response 被拒绝。
      * b3-9: 解析降级——当 response 全空但 directions 有非空项时，使用 directions 作为回复。 */
-    fun parseReplyResponse(content: String): LoveBrainResponse {
+    override fun parseReplyResponse(content: String): LoveBrainResponse {
         val jsonStr = com.lovebrain.app.util.Jsons.extractJsonBlock(content)
             ?: throw IllegalStateException("模型未返回有效 JSON，请重试")
 
@@ -562,7 +524,7 @@ class DeepSeekRepository(private val securePrefs: SecurePrefs) {
      * 内部自行 resolve 配置快照，请求身份冻结后不再读实时 activeTicket/Model。
      * CancellationException 重新抛出，不计入 failCount。
      */
-suspend fun generateRaw(systemPrompt: String, userPrompt: String): String {
+    override suspend fun generateRaw(systemPrompt: String, userPrompt: String): String {
     val config = try { resolveRequestConfig() } catch (e: IllegalArgumentException) { return "" }
     ?: return ""
     return generateRaw(config, systemPrompt, userPrompt)
@@ -572,7 +534,7 @@ suspend fun generateRaw(systemPrompt: String, userPrompt: String): String {
  * 带元数据的非流式生成便捷重载（内部自行 resolve 配置快照）。
  * 供 KnowledgeTriggerCoordinator 等不持有 config 快照的调用方使用。
  */
-suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): RawGenerationResult {
+    override suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): RawGenerationResult {
     val config = try { resolveRequestConfig() } catch (e: IllegalArgumentException) {
         return RawGenerationResult(content = "", finishReason = null, error = e)
     } ?: return RawGenerationResult(content = "", finishReason = null)

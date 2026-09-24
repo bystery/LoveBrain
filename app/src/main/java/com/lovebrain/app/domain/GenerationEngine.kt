@@ -1,8 +1,8 @@
 package com.lovebrain.app.domain
 
 import com.lovebrain.app.AppConfig
-import com.lovebrain.app.data.DeepSeekRepository
-import com.lovebrain.app.data.ProviderRequestConfig
+import com.lovebrain.app.domain.port.AiGateway
+import com.lovebrain.app.model.ProviderRequestConfig
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.CounselingChunk
 import com.lovebrain.app.model.CounselingEnded
@@ -189,7 +189,7 @@ object PartialTipsParser {
  * 所有事件都带产生时冻结的 requestId，reducer 只认同一个身份。
  */
 class GenerationEngine(
-    private val deepSeekRepo: DeepSeekRepository,
+    private val deepSeekRepo: AiGateway,
     private val promptBuilder: PromptBuilder
 ) {
 

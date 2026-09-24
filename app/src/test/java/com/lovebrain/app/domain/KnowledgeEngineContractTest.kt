@@ -1,4 +1,6 @@
 package com.lovebrain.app.domain
+import com.lovebrain.app.model.ProviderRequestConfig
+import com.lovebrain.app.model.RawGenerationResult
 
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.DeepSeekRepository
@@ -174,7 +176,7 @@ class KnowledgeEngineContractTest {
             events.add("start-$idx")
             delay(80)
             events.add("end-$idx")
-            com.lovebrain.app.data.RawGenerationResult(
+            com.lovebrain.app.model.RawGenerationResult(
                 content = "{\"message_to_user\":\"ok\",\"observations\":[],\"stage_changed\":false,\"new_stage\":\"\"}",
                 finishReason = "stop"
             )

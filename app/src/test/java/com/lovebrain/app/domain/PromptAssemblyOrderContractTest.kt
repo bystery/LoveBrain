@@ -11,7 +11,7 @@ import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.model.StreamEvent
-import com.lovebrain.app.data.ProviderRequestConfig
+import com.lovebrain.app.model.ProviderRequestConfig
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

@@ -44,14 +44,6 @@ class PackageDependencyTest {
      * 只想缩，不想长；要新增必须先在这里写清"为什么这次不得不过界"。
      */
     private val baseline: Map<String, List<String>> = mapOf(
-        "domain/GenerationEngine.kt" to listOf(
-            "com.lovebrain.app.data.DeepSeekRepository",
-            "com.lovebrain.app.data.ProviderRequestConfig"
-        ),
-        "domain/KnowledgeTriggerCoordinator.kt" to listOf(
-            "com.lovebrain.app.data.DeepSeekRepository",
-            "com.lovebrain.app.data.RawGenerationResult"
-        ),
         "domain/PromptBuilder.kt" to listOf("android.content.Context"),
         "model/ProfileUpdate.kt" to listOf("com.lovebrain.app.domain.StageCatalog"),
         "model/ProfileUpdateSchema.kt" to listOf("com.lovebrain.app.domain.StageCatalog"),
@@ -155,7 +147,7 @@ class PackageDependencyTest {
         assertTrue("domain 层必须禁止具体 data 仓库", forbidden.getValue("domain").contains("com.lovebrain.app.data."))
         assertTrue("ui 层必须禁止直接 import data 仓库", forbidden.getValue("ui").contains("com.lovebrain.app.data."))
         assertTrue("viewmodel 不许自己拼文件路径", forbidden.getValue("viewmodel").contains("java.io.File"))
-        assertEquals("基线条目数必须与 report 脚本同一次统计一致", 10, baseline.values.sumOf { it.size })
+        assertEquals("基线条目数必须与 report 脚本同一次统计一致", 6, baseline.values.sumOf { it.size })
     }
 
     /**
