@@ -28,6 +28,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +50,9 @@ private object SuggestDimens {
     const val PROGRESS_HEIGHT_DP = 6        // 阶段进度条高度
     const val EXAMPLE_MAX_HEIGHT_DP = 96    // 话术主体展开最大高度
     const val CROSS_MARK_TOP_PAD_DP = 1     // 避坑 ✗ 顶部对齐内边距
+
+    /** 卡片折叠入口的最小可点击边界——§6.5 的下限是 48×48dp */
+    const val FOLD_MIN_HEIGHT_DP = 48
 }
 
 /**
@@ -431,7 +436,7 @@ private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
  * 不再展示旧字段 slot/topic/expected；伪确定预测已移除。
  */
 @Composable
-private fun SuggestTipCard(tip: SuggestTip) {
+internal fun SuggestTipCard(tip: SuggestTip) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     val tipArrowRotation by animateFloatAsState(
         targetValue = if (expanded) 0f else -90f,
@@ -447,9 +452,21 @@ private fun SuggestTipCard(tip: SuggestTip) {
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
             .padding(Spacing.md)
     ) {
-        // 标题行：优先级由分组 header 体现
+        // 标题行：优先级由分组 header 体现。
+        // 改之前语义树实测这颗折叠入口是 344x17dp（最窄 + 2.0 倍字时 304x33dp）——
+        // 也就是它只有标题文字那么高，手指要正中那 17dp 才算点得到，故垫到 ≥48dp。
+        // stateDescription 是读屏唯一听得见"现在收起/展开"的地方：原来写成内联中文，
+        // 英文环境下照样念中文，而且文案预算那把尺当时根本看不见 stateDescription。
+        // 公告文案必须在 semantics 之外解析——那个 lambda 不是 composable 上下文。
+        val foldAnnouncement = stringResource(
+            if (expanded) R.string.state_expanded else R.string.state_collapsed
+        )
         Row(
-            modifier = Modifier.fillMaxWidth().semantics { stateDescription = if (expanded) "已展开" else "已收起" }.clickable { expanded = !expanded },
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = SuggestDimens.FOLD_MIN_HEIGHT_DP.dp)
+                .semantics { stateDescription = foldAnnouncement }
+                .clickable(role = Role.Button) { expanded = !expanded },
             verticalAlignment = Alignment.CenterVertically
         ) {
             // UI 只消费新模型字段

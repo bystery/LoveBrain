@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -352,6 +353,12 @@ fun CounselingPanel(
                     ) {
                         // 继续追问胶囊补按压反馈（胶囊类 0.92，对齐 RoleChip 先例）
                         val (followUpInteraction, followUpScale) = rememberPressScale(0.92f, "followUpScale")
+                        // 读屏公告走资源：原来这里是内联中文，英文环境下照样念中文，
+                        // 而文案预算那把尺当时连 stateDescription 都看不见（现已补上）。
+                        // 解析必须放在 semantics 之外——那个 lambda 不是 composable 上下文。
+                        val followUpAnnouncement = stringResource(
+                            if (showFollowUp) R.string.state_expanded else R.string.state_collapsed
+                        )
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
@@ -359,7 +366,7 @@ fun CounselingPanel(
                                 .background(PrimaryLight)
                                 .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.sm)
                                 .graphicsLayer { scaleX = followUpScale; scaleY = followUpScale }
-                                .semantics { stateDescription = if (showFollowUp) "已展开" else "已收起" }
+                                .semantics { stateDescription = followUpAnnouncement }
                                 .clickable(interactionSource = followUpInteraction, indication = null, onClick = { showFollowUp = !showFollowUp })
                                 .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
                         ) {

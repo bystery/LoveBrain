@@ -26,6 +26,16 @@ class UiStringLiteralBudgetTest {
 
         /** `contentDescription =` ——赋值右边那段表达式里带中文的字面量 */
         DESC("contentDescription", Regex("""\bcontentDescription\s*=\s*""")),
+
+        /**
+         * `stateDescription =` ——读屏公告"现在收起/展开"那一句。
+         *
+         * 这是第二个盲区：它既不是 `Text(` 也不是 `contentDescription`，
+         * 但同样是**用户听得见的话**（`SuggestPanel` 与 `CounselingPanel` 那两处折叠控件
+         * 原本写着内联中文，英文环境下照样念中文，而两把尺都看不见）。
+         * 起点就是 0——本轮把锦囊那处搬进资源了，谈心那处还欠着，见下方交接行。
+         */
+        STATE("stateDescription", Regex("""\bstateDescription\s*=\s*""")),
     }
 
     /** 一行以内、含中日韩字符的字符串字面量 */
@@ -41,7 +51,8 @@ class UiStringLiteralBudgetTest {
      * 所以这里按括号配对取范围，而不是按"紧跟不紧跟"。
      */
     private fun expressionAt(text: String, from: Int, kind: Kind): String {
-        var depth = if (kind == Kind.TEXT) 1 else 0
+        val anchorIsCall = kind == Kind.TEXT
+        var depth = if (anchorIsCall) 1 else 0
         var i = from
         while (i < text.length) {
             when (text[i]) {
@@ -51,8 +62,8 @@ class UiStringLiteralBudgetTest {
                     depth--
                     if (depth == 0) return text.substring(from, i)
                 }
-                ',' -> if (depth == 0 && kind == Kind.DESC) return text.substring(from, i)
-                '\n' -> if (kind == Kind.DESC && i + 1 < text.length &&
+                ',' -> if (depth == 0 && !anchorIsCall) return text.substring(from, i)
+                '\n' -> if (!anchorIsCall && i + 1 < text.length &&
                     text[i + 1] != '+' && text[i + 1] != '"'
                 ) {
                     // 赋值换行且下一行不是续着写的字符串/拼接 → 表达式到此为止
@@ -84,7 +95,8 @@ class UiStringLiteralBudgetTest {
      */
     private val budget = mapOf(
         Kind.TEXT to 252,
-        Kind.DESC to 10
+        Kind.DESC to 10,
+        Kind.STATE to 0
     )
 
     private fun countIn(root: File, kind: Kind): Int {
