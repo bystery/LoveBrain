@@ -11,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.gestures.scrollBy
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -30,6 +31,8 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -46,6 +49,9 @@ import kotlin.math.abs
 /** 消息列表内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object MessageDimens {
     const val ROLE_CHIP_HPAD_DP = 6    // 角色 chip 水平内边距
+
+    /** 空态那个蓝字入口的最小热区——它是一处操作，不是一行说明 */
+    const val EMPTY_ACTION_MIN_HEIGHT_DP = 48
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -105,17 +111,34 @@ LaunchedEffect(messages.size) {
                 modifier = Modifier.size(AppDimens.EMPTY_ICON_CONTAINER_DP.dp)
             )
             Spacer(Modifier.height(Spacing.md))
-            // 空态蓝字 = 主动发入口——点击召唤主动发，再点关闭
-            Text(
-                text = if (proactiveActive) "主动发模式已开启，点击关闭" else "还没有聊天记录，点这里主动发一条",
-                color = Primary,
-                style = AppTypography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center,
+            // 空态蓝字 = 主动发入口——点击召唤主动发，再点关闭。
+            // 这一行此前只有文字那一行高（语义树实测 224x23dp）：用户被引导去点的地方，
+            // 手指要正中那 23dp 才算点到。现在由外层 Box 承担 ≥48dp 的热区与按钮角色，
+            // 文字在里面居中；两种文案也一并进资源（原来写成 if/else 内联中文，
+            // 文案预算那把正则尺还看不见这种写法）。
+            Box(
                 modifier = Modifier
-                    .clickable { onEmptyAction?.invoke() }
-                    .padding(horizontal = Spacing.md, vertical = Spacing.xs)
-            )
+                    .heightIn(min = MessageDimens.EMPTY_ACTION_MIN_HEIGHT_DP.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        role = Role.Button,
+                        onClick = { onEmptyAction?.invoke() }
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(
+                        if (proactiveActive) R.string.proactive_empty_turn_off
+                        else R.string.proactive_empty_send_one
+                    ),
+                    color = Primary,
+                    style = AppTypography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = Spacing.md, vertical = Spacing.xs)
+                )
+            }
             // 空态副文案删除（捕获机制无需在空态重复提示），只保留主文案一行
             // 《手动输入》按钮完全去掉（输入区已有输入框，无需空状态冗余入口）
             // 原空态卡片内的控制条插槽整体删除（三件套常驻生成行，）

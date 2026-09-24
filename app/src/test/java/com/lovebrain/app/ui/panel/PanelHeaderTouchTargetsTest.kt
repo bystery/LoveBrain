@@ -15,6 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 
 /**
  * P1-02 的那一条：**真正被点到的那个节点**必须 ≥48dp。
@@ -31,6 +32,7 @@ import org.robolectric.annotation.Config
     application = UiProbeApplication::class,
     qualifiers = "sw600dp-w600dp-h1200dp-normal-long-mdpi"
 )
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 class PanelHeaderTouchTargetsTest {
 
     @get:Rule

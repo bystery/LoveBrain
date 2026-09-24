@@ -15,6 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 
 /**
  * P1-02 / §6.5：面板头部的触摸区、读屏标签、选中态——**在 JVM 上读语义树**。
@@ -33,6 +34,7 @@ import org.robolectric.annotation.Config
     application = UiProbeApplication::class,
     qualifiers = "sw600dp-w600dp-h1200dp-normal-long-mdpi"
 )
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 class PanelHeaderSemanticsTest {
 
     @get:Rule
