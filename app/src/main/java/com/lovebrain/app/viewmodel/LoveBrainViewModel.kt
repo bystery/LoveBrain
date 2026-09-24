@@ -8,6 +8,7 @@ import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.domain.AssetRegistry
 import com.lovebrain.app.domain.ForegroundOperationCoordinator
+import com.lovebrain.app.domain.GenerationFingerprints
 import com.lovebrain.app.domain.GenerationEngine
 import com.lovebrain.app.domain.KnowledgeTriggerCoordinator
 import com.lovebrain.app.domain.MemoryCorrectionPolicy
@@ -83,7 +84,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import java.security.MessageDigest
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -586,10 +586,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /**
-     * 计算输入指纹——纯函数，对顺序敏感。
-     * 使用 exact canonical representation（length-prefixed encoding），
-     * 不再依赖 Java 32-bit hashCode()。覆盖：KB identity、有序消息(id+role+exact content)、
-     * IDEA exact content、onlyThisRound、intent revision。
+     * 本轮输入指纹——算法在 `GenerationFingerprints.inputOf`：
+     * KB identity、有序消息(id+role+exact content)、想法原文、onlyThisRound、意图 revision。
+     * 不含温度等生成参数，所以它说的是"输入变没变"，不是"这次会不会生成出一样的话"。
      */
     private fun computeInputFingerprint(
         messages: List<ChatMessage>,
@@ -597,30 +596,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         kbName: String?,
         onlyThisRound: Boolean,
         intentRevision: Int
-    ): String {
-        val sb = StringBuilder()
-        // length-prefixed canonical encoding — 不使用 hashCode()
-        appendLengthPrefixed(sb, "kb", kbName ?: "")
-        appendLengthPrefixed(sb, "otr", onlyThisRound.toString())
-        appendLengthPrefixed(sb, "irev", intentRevision.toString())
-        appendLengthPrefixed(sb, "idea", ideaHint.trim())
-        sb.append("msgs=")
-        for (msg in messages) {
-            appendLengthPrefixed(sb, "m", msg.id)
-            sb.append(msg.role.name).append(",")
-            appendLengthPrefixed(sb, "c", msg.content)
-            sb.append(";")
-        }
-        // SHA-256 指纹——对 exact canonical representation 做哈希
-        val digest = MessageDigest.getInstance("SHA-256")
-        val hashBytes = digest.digest(sb.toString().toByteArray(Charsets.UTF_8))
-        return hashBytes.joinToString("") { "%02x".format(it) }.take(16)
-    }
-
-    /** length-prefixed append — 防止不同字符串产生相同 canonical representation */
-    private fun appendLengthPrefixed(sb: StringBuilder, key: String, value: String) {
-        sb.append(key).append("(").append(value.length).append("):").append(value).append(";")
-    }
+    ): String =
+        GenerationFingerprints.inputOf(messages, ideaHint, kbName, onlyThisRound, intentRevision)
 
     /**
      * 回退到上一轮生成结果。
@@ -1957,35 +1934,27 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 因此这里不谎称覆盖"温度"。
      */
     private suspend fun computeSuggestContextFingerprint(kbId: String, today: String): String {
-        val kb = _activeKb.value
-        val stage = kb?.stage ?: ""
-        val outputMode = _outputMode.value
-        val thinkingMode = securePrefs.thinkingMode
-        val onlyThisRound = _onlyThisRound.value
         val providerConfig = deepSeekRepo.snapshotProviderConfig()
-        val providerHost = providerConfig?.baseUrl ?: ""
-        val providerModel = providerConfig?.model ?: ""
-        val assetHash = promptBuilder.assetHashOf(AssetRegistry.SUGGEST)
-        val ongoingRevision = kbId.takeIf { it.isNotBlank() }
-            ?.let { readOrNull("") { knowledgeRepo.readFile(it, "moment/plan.md") } } ?: ""
-        val styleRevision = kbId.takeIf { it.isNotBlank() }
-            ?.let { readOrNull("") { knowledgeRepo.readFile(it, "understand/style.md") } } ?: ""
-
-        val fingerprintInput = buildString {
-            append(kbId).append('|').append(today).append('|').append(stage).append('|')
-            append(outputMode).append('|').append(thinkingMode).append('|').append(onlyThisRound).append('|')
-            append(assetHash).append('|').append(providerHost).append('|').append(providerModel).append('|')
-            append(ongoingRevision.sha256Prefix()).append('|').append(styleRevision.sha256Prefix())
-        }
-        return fingerprintInput.sha256Prefix(16)
+        // 只负责取当次输入；拼串与摘要规则在 GenerationFingerprints（可离线单测）
+        return GenerationFingerprints.suggestContextOf(
+            GenerationFingerprints.SuggestContext(
+                kbId = kbId,
+                today = today,
+                stage = _activeKb.value?.stage ?: "",
+                outputMode = _outputMode.value,
+                thinkingMode = securePrefs.thinkingMode,
+                onlyThisRound = _onlyThisRound.value,
+                assetHash = promptBuilder.assetHashOf(AssetRegistry.SUGGEST),
+                providerHost = providerConfig?.baseUrl ?: "",
+                providerModel = providerConfig?.model ?: "",
+                ongoingPlan = if (kbId.isBlank()) "" else readOrNull("") { knowledgeRepo.readFile(kbId, "moment/plan.md") },
+                styleContent = if (kbId.isBlank()) "" else readOrNull("") { knowledgeRepo.readFile(kbId, "understand/style.md") }
+            )
+        )
     }
 
     /** 长文本取内容前缀指纹，避免把整篇文档拼进指纹输入 */
-    private fun String.sha256Prefix(len: Int = 12): String {
-        if (isEmpty()) return "-"
-        val md = java.security.MessageDigest.getInstance("SHA-256")
-        return md.digest(toByteArray()).joinToString("") { "%02x".format(it) }.take(len)
-    }
+
 
     private val kbName: String? get() = _activeKb.value?.name
 
