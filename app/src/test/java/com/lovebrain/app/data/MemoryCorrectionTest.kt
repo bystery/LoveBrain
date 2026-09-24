@@ -155,4 +155,64 @@ class MemoryCorrectionTest {
         assertEquals("同一 id 只应有1条", 1, corrections.size)
         assertEquals("action 应为最新的 MUTED", CorrectionAction.MUTED, corrections["ref1"]?.action)
     }
+
+    /**
+     * 库外的纠正记录一次都不许被读进来。
+     *
+     * 独立复核 P0-03 末段的原话是"读取接口也必须走 safeKbFile，当前读取接口直接
+     * `File(dir, relativePath)`，canonical boundary 并未覆盖所有 String 入口"。
+     * 公开的 `readCorrections` 正是这么写的：库名里带 `..` 就能把纠正文件指到知识库根外面。
+     * 纠正是隐私数据（谁说过什么、哪条被判定记错了人），不能靠调用方自觉传对名字。
+     */
+    @Test
+    fun correctionsOutsideTheKnowledgeRootAreNeverRead() = runBlocking {
+        val repo = newRepo()
+        repo.saveCorrection("testkb", "ref-out", CorrectionAction.WRONG, replacementText = "补正内容")
+        assertEquals(
+            "前置：真库里应存下一条，否则下面那格会因为「本来就没数据」而假绿",
+            1, repo.readCorrections("testkb").size
+        )
+        val stored = File(File(root, "testkb"), "memory/corrections.json")
+        assertTrue("前置：纠正文件应真的落在库里", stored.exists())
+
+        // 同一份文件搬到知识库根**外面**，再用带 .. 的"库名"指过去
+        val outside = File(root.parentFile, "corrections_outside_" + System.nanoTime())
+        File(outside, "memory").mkdirs()
+        stored.copyTo(File(File(outside, "memory"), "corrections.json"))
+        try {
+            val leaked = repo.readCorrections("../${outside.name}")
+            assertEquals(
+                "带 .. 的库名把库外的纠正读进来了（实到 ${leaked.size} 条，" +
+                    "文件就在 ${outside.name}/memory/corrections.json）",
+                0, leaked.size
+            )
+            assertEquals("库外那份也不该被算进 revision", 0, repo.getCorrectionsRevision("../${outside.name}"))
+        } finally {
+            outside.deleteRecursively()
+        }
+    }
+
+    /** 撤销路径同样不许借库名跳出知识库根 */
+    @Test
+    fun undoingOutsideTheKnowledgeRootWritesNothing() = runBlocking {
+        val repo = newRepo()
+        val outside = File(root.parentFile, "corrections_target_" + System.nanoTime())
+        File(outside, "memory").mkdirs()
+        File(File(outside, "memory"), "corrections.json").writeText(
+            """[{"memoryId":"ghost","action":"WRONG","replacementText":"外面写的","revision":7}]""",
+            Charsets.UTF_8
+        )
+        try {
+            val ok = repo.undoCorrection("../${outside.name}", "ghost")
+
+            assertFalse("库外的纠正记录不该被「撤销」成功", ok)
+            val stillThere = File(File(outside, "memory"), "corrections.json").readText(Charsets.UTF_8)
+            assertTrue(
+                "撤销一旦真的落到库外，就是「改掉了不属于本库的文件」：$stillThere",
+                stillThere.contains("ghost")
+            )
+        } finally {
+            outside.deleteRecursively()
+        }
+    }
 }

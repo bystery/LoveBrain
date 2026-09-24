@@ -771,14 +771,8 @@ class KnowledgeRepository(
     // ═══════════ 记忆纠正（每 KB 一份，memory/corrections.json） ═══════════
 
     /** 读取纠正记录列表。返回 memoryId → correction 映射。 */
-    suspend fun readCorrections(kbName: String): Map<String, com.lovebrain.app.model.MemoryCorrection> = withContext(Dispatchers.IO) {
-        val file = File(File(knowledgeRoot, kbName), "memory/corrections.json")
-        if (!file.exists()) return@withContext emptyMap()
-        runCatching {
-            val list = json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(file.readText())
-            list.associateBy { it.memoryId }
-        }.getOrDefault(emptyMap())
-    }
+    suspend fun readCorrections(kbName: String): Map<String, com.lovebrain.app.model.MemoryCorrection> =
+        withContext(Dispatchers.IO) { readCorrectionsUnlocked(kbName) }
 
     /** 保存一条纠正记录。revision 单调递增（库级），不会因撤销倒退。
      * R07: 不再使用剩余记录的 max 推算 revision（撤销删除后可能倒退）。
@@ -813,7 +807,7 @@ class KnowledgeRepository(
             var written = false
             transactionUnlocked(kbName) {
                 written = write(
-                    "memory/corrections.json",
+                    CORRECTIONS_FILE,
                     json.encodeToString(
                         kotlinx.serialization.builtins.ListSerializer(
                             com.lovebrain.app.model.MemoryCorrection.serializer()
@@ -822,7 +816,7 @@ class KnowledgeRepository(
                     )
                 )
                 // R07: 持久化库级 revision（单调递增）
-                if (written) write("memory/.revision", newRevision.toString())
+                if (written) write(MEMORY_REVISION_FILE, newRevision.toString())
             }
             written
         }
@@ -840,7 +834,7 @@ class KnowledgeRepository(
             var written = false
             transactionUnlocked(kbName) {
                 written = write(
-                    "memory/corrections.json",
+                    CORRECTIONS_FILE,
                     json.encodeToString(
                         kotlinx.serialization.builtins.ListSerializer(
                             com.lovebrain.app.model.MemoryCorrection.serializer()
@@ -850,7 +844,7 @@ class KnowledgeRepository(
                 )
                 // R07: 撤销也递增 revision（防 0→1→0 倒退）
                 if (written) {
-                    write("memory/.revision", (readMemoryRevisionUnlocked(kbName) + 1).toString())
+                    write(MEMORY_REVISION_FILE, (readMemoryRevisionUnlocked(kbName) + 1).toString())
                 }
             }
             written
@@ -943,29 +937,25 @@ class KnowledgeRepository(
         }
     }
 
-    /** R07: 库级 memory revision 标记文件 */
-    private fun memoryRevisionFile(kbName: String): File =
-        File(File(knowledgeRoot, kbName), "memory/.revision")
+    /** R07: 读取库级 memory revision（无锁，调用方持有 fileMutex）
+     *
+     * 读走 [KnowledgeDocumentStore.read]：以前这里 `File(File(knowledgeRoot, kbName), MEMORY_REVISION_FILE)`
+     * 自己拼路径，等于绕开 canonical 守门。文件不存在时读得到空串 → revision 记 0，语义不变。
+     */
+    private fun readMemoryRevisionUnlocked(kbName: String): Int =
+        documents.read(kbName, MEMORY_REVISION_FILE).trim().toIntOrNull() ?: 0
 
-    /** R07: 读取库级 memory revision（无锁，调用方持有 fileMutex） */
-    private fun readMemoryRevisionUnlocked(kbName: String): Int {
-        val file = memoryRevisionFile(kbName)
-        if (!file.exists()) return 0
-        return runCatching { file.readText().trim().toIntOrNull() ?: 0 }.getOrDefault(0)
-    }
-
-    /** R07: 写入库级 memory revision（无锁，调用方持有 fileMutex） */
-    private fun writeMemoryRevisionUnlocked(kbName: String, revision: Int) {
-        transactionUnlocked(kbName) { write("memory/.revision", revision.toString()) }
-    }
 
     /** 无锁版读取（调用方持有 fileMutex） */
     private fun readCorrectionsUnlocked(kbName: String): Map<String, com.lovebrain.app.model.MemoryCorrection> {
-        val file = File(File(knowledgeRoot, kbName), "memory/corrections.json")
-        if (!file.exists()) return emptyMap()
+        // 读走文档格那道门。以前这里直接 File(File(knowledgeRoot, kbName), ...)：
+        // 库名里带 `..` 就能把纠正记录（隐私数据）从知识库根外面读进来，
+        // 而写那一侧走的是事务守门——同一个库的两种入口宽严不一。
+        val raw = documents.read(kbName, CORRECTIONS_FILE)
+        if (raw.isBlank()) return emptyMap()
         return runCatching {
-            val list = json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(file.readText())
-            list.associateBy { it.memoryId }
+            json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(raw)
+                .associateBy { it.memoryId }
         }.getOrDefault(emptyMap())
     }
 
@@ -1893,14 +1883,15 @@ class KnowledgeRepository(
             "memory/lessons.md", "memory/raw_topic.md", "memory/raw_scene.md", "memory/raw_chat.md"
         )
 
-        // 旧→新路径映射：readFile 与 KbEditActivity fallback 共用（ 去重，改这里一处即可）
-        val OLD_PATH_MAP = mapOf(
-            "understand/me.md" to "global/me.md",
-            "understand/her.md" to "global/her.md",
-            "understand/warmth.md" to "global/status.md",
-            "moment/recent.md" to "recent/chatlog.md",
-            "memory/lessons.md" to "general/lessons.md"
-        )
+        // 旧→新路径映射已随读路径一起归 KnowledgeDocumentStore，这里不再有第二份
+        /**
+         * 记忆格的两个文件相对路径。
+         *
+         * 只登记**名字**，不登记怎么拼：拼路径是文档格的守门职责（[KnowledgeDocumentStore.resolve]），
+         * 读写两侧都用这两个常量，免得又出现"读不过门、写走门"那种宽严不一。
+         */
+        const val MEMORY_REVISION_FILE = "memory/.revision"
+        const val CORRECTIONS_FILE = "memory/corrections.json"
     }
 
     /** 从 assets/schema/ 加载知识库初始化模板（标题骨架 = 单一数据源） */
