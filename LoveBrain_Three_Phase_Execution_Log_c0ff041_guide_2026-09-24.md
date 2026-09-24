@@ -4,10 +4,10 @@
 > 被审提交 `c0ff0415`；本轮起点 `4795471`（上一窗口的最后一个提交，它已停手并留了
 > `LoveBrain_Handover_CI_Evidence_2026-09-24.md`）。
 > 本轮 HEAD：`4a8f7f7`（谈心 store）→ `284463f`（协调器偶发红）→ `5e06cc9`（改写 store）
-> → `afbe303`（enum 进 model）→ `b1df35a`（主动发的模式归位）→ 本文件这条。
+> → `afbe303`（enum 进 model）→ `b1df35a`（主动发的模式归位）→ `41536ad`（观测补齐）→ 本文件这条。
 > **全部只在本地、未推送**：`git ls-remote origin main` 实测远端仍是起点
 > `4795471`；领先多少个提交**别抄这里的数**，现算：
-> `git rev-list --count 4795471..HEAD`（`b1df35a` 落地后测得 35，本条 docs 提交之后是 36）。
+> `git rev-list --count 4795471..HEAD`（`41536ad` 落地后测得 37）。
 > 阶段一的 P0-03/04/05 + 阶段二的 ports/棘轮/死 API/五个 store 与模式归属都在里面。
 > 本轮没有改 prompt：`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` → 零差异。
 
@@ -19,7 +19,7 @@
 + 三道"不许变差"的闸都落地了；§5.2 的五条 feature store **全部搬完（5/5），
 连§5.2 第 3 步列的"模式"也归位了**（两个 enum 先搬进 model，见 §2f）；
 但 VM 反而 2651 → 2732 行，"退成薄 facade 再删掉"（§5.2 第 6 步）还没做；
-KnowledgeRepository 按能力拆分**没做**。
+KnowledgeRepository 按能力拆分**没做**；搬 store 时被弄丢的"陈旧事件被拒"日志已全部补回（§2g）。
 阶段三（设计系统 10 个组件、截图矩阵）**没开始**。
 
 ## 1. 逐项进度表
@@ -263,6 +263,28 @@ still resets the result area` 钉的就是前者。
 `:app:compileDebugAndroidTestKotlin` BUILD SUCCESSFUL；取消审计 167 站点 NEEDS_REVIEW=0；
 工单编号 PASS；跨层 6 条。
 
+## 2g. 阶段二第七轮：把搬 store 时弄丢的观测补回来（§3 第 7 条结账）
+
+`41536ad`。现象是线上事故形状：面板没出字、logcat 里一句被拒记录都没有——
+闸还在，但拒绝不吭声。五次搬家一路弄丢 `L.w("… rejected (stale requestId)")`，
+本轮按"谁都能核、store 不知道有日志"补回四处：
+
+| 链 | 补法 |
+|---|---|
+| Suggest / Proactive / Counseling / Rewrite | 归属核对本来就是 VM 注入给 store 的闭包，统一走新的 `ownsAndLog(type, requestId, what)`——四处内联写法、四种措辞收成一处 |
+| Reply | 判据在 reducer 里（原样返回同一个对象才算被拒），闭包那套不适用 → `ReplyStore` 多一个 `onStaleEvent` 出口 |
+
+**为什么 reply 不用"accept 返回布尔"**（我先写成返回值，看到这条才换）：增量先收进缓冲、
+下一个节拍才归约，`accept` 那一刻还没判定，返回值会把真正的拒绝点整个漏掉。
+新格测试 `a rejected event is reported once, at the moment it is actually judged`
+锁的就是这个时机：投迟到 chunk 时断言"还没判"，推进一节后断言只报一次，
+再投合法 Completed 断言它不进这个出口。两个反证各自让它红（去掉 `onStaleEvent` 调用；
+把被拒分支短路成永不拒）。
+
+本机：1034 单测 / 125 套件 / 0 失败 0 跳过；lint 71 issues 0 error 预算 OK；
+取消审计 NEEDS_REVIEW=0；工单编号 PASS；跨层 6 条；androidTest 编译通过。
+`§3` 第 7 条因此结账，阶段二剩下的仍是那两件：facade 删除、KnowledgeRepository 按能力拆分。
+
 ## 3. 明确没做到 / 没法在本机做到的（不混进上面）
 
 1. **19 条真机 instrumentation 失败还在**。本轮只做到：把 7 条同源的夹具竞态改掉、
@@ -273,12 +295,13 @@ still resets the result area` 钉的就是前者。
    才算真判过；脚本没有"没装就跳过"的分支，装不上就是红。
 3. **Service destroy 那两格是 Assume 主动跳过的**（instrumentation 起不了悬浮窗/FGS）。
    报告里算 skipped，不算通过。
-4. **阶段二剩下三件**：①KnowledgeRepository 按
+4. **阶段二剩下两件**：①KnowledgeRepository 按
    catalog/document/profile/memory/migration/archive/round 拆（§5.3，且必须共用一个
    `KnowledgeTransactionManager`，不许每个新类各自 new Mutex）；
-   ②§5.2 第 6 步"VM 退成薄 facade 然后删掉"——五条链的状态持有者已经全部出去（§2e），
+   ②§5.2 第 6 步"VM 退成薄 facade 然后删掉"——五条链的状态持有者连同"模式"已经全部出去（§2f），
    但 VM 反而从 2651 涨到 2732 行，**这 81 行就是 facade 那一步要还的债**；
-   ③『两个 enum 仍在 VM 里、主动发的模式没搬完』—— 本轮做完（§2f：`afbe303` 搬 enum、`b1df35a` 把模式归 ProactiveStore）。
+   『两个 enum 仍在 VM 里、主动发的模式没搬完』那一条本轮做完（§2f：`afbe303` 搬 enum、
+   `b1df35a` 把模式归 ProactiveStore）。
    端口层已铺好（domain 不再 import data，越界 15→6），所以这些都是"往上搬"，
    不必边拆边补依赖。§5.1 的 `core/designsystem` / `core/testing` 目录也都还没建
    （`feature/` 下五个 store 算开了个头）。
@@ -290,11 +313,9 @@ still resets the result area` 钉的就是前者。
 6. P1-05 文案收口没动：这一条仍然成立（本轮一行文案都没改）。宽尺测到的数是 **209 处**
    用户可见中文字面量，见 §2c 对 "101 处" 的纠偏——101 只数了 `Text("中文`，是下界。
    `UiStringLiteralBudgetTest` 的闸已装上，剩下的是还债速度。
-7. **"陈旧事件被拒"的日志还差三处**。四次搬 stream store 一共带走 4 条
-   `L.w("… rejected (stale requestId)")`。现在谈心（§2d 补回）与改写（本轮新增——
-   旧代码在身份不合时是静默 `return@start`，一句都不报）会报，
-   **Reply / Suggest / Proactive 三处仍缺**。这不是功能缺陷（闸本身还在，只是拒绝时不吭声），
-   但线上排"为什么这轮没出字"时会少一条线索。修法已经验证可用，照抄即可。
+7. "陈旧事件被拒"的日志——**已补齐**（`41536ad`，见 §2g）。五次搬 store 一共带走 4 条
+   `L.w("… rejected (stale requestId)")`；现在 reply / suggest / proactive / counseling /
+   rewrite 五处在拒绝时都有一条，判据仍在 store 与 reducer 里，日志由 VM 写。
 
 ## 4. 脚本索引（本轮新增/改动的可执行件）
 
@@ -312,14 +333,12 @@ still resets the result area` 钉的就是前者。
    `ui-test` 若还红，用新加的诊断输出定位那 8 条"not displayed"是没测量、被裁还是出窗口；
    新加的 3 格语义树断言（48dp / selected / contentDescription）**预期可能红**，
    那是把假绿换成真信号，不是回归。
-2. 阶段二收尾（§5.2 五条链与"模式"都已归位，剩下两件按顺序做）：
-   ①~~enum 挪进 model + 模式搬进 ProactiveStore~~ —— 本轮做完（§2f）。
-   ②§5.2 第 6 步：VM 退成只组合 StateFlow 的 facade，然后**删 facade**——调用点直连 store。
-   这一刀才是把 VM 从 2732 行往下压的那一刀，前五步（加模式那一步）搬完它反而涨了 81 行。
-   ③三条链的"陈旧事件被拒"日志补齐（§3 第 7 条）。
-   另：`RewriteStore` 把"这轮改写算不算数"收进在途身份之后，
-   `ForegroundOperationCoordinator` 与它各持一半身份（requestId 同源两处判），
-   下一步若把协调器租约直接注进 store 的 `isCurrentRequest`，要顺带确认没有第二本账。
+2. 阶段二收尾（五条链与"模式"已归位、被拒日志已补齐，只剩一件大的）：
+   §5.2 第 6 步——VM 退成只组合 StateFlow 的 facade，然后**删 facade**（调用点直连 store）。
+   这一刀才是把 VM 从 2732 行往下压的那一刀：前面六步搬完它反而涨了 81 行。
+   做的时候顺手确认一件事——`RewriteStore` 把"这轮改写算不算数"收进在途身份之后，
+   coordinator 与它各持一半身份（requestId 同源、两处判）；若把租约直接注进 store 的
+   `isCurrentRequest`，别留下第二本账。
 3. KnowledgeRepository 按 §5.3 拆 catalog/document/profile/memory/migration/archive/round，
    共用一个 `KnowledgeTransactionManager`（不许每个新类各自 new Mutex）。
 4. P1-05 的真正收口：把宽尺测到的 209 处中文字面量搬进 strings.xml / values-en，
