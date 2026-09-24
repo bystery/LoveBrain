@@ -123,7 +123,8 @@ class StorageBoundaryOwnershipTest {
         )
         listOf(
             "KnowledgeRepository.kt", "KnowledgeDocumentStore.kt", "KnowledgeMigrator.kt",
-            "KnowledgeBackupService.kt", "KnowledgeCatalogStore.kt", "KbArchiveTransfer.kt"
+            "KnowledgeBackupService.kt", "KnowledgeCatalogStore.kt", "KbArchiveTransfer.kt",
+            "KnowledgeMemoryStore.kt", "KnowledgeProfileStore.kt"
         ).forEach { assertTrue("扫不到的文件说明尺指错了地方：$it", it in found) }
     }
 
@@ -184,6 +185,34 @@ class StorageBoundaryOwnershipTest {
         assertTrue(
             "锁只能由仓库在外面套（本类自持锁就等于第二把锁），实到 withLock $lockHits 处",
             lockHits == 0
+        )
+    }
+
+    /**
+     * §5.3 后续拆出去的格子一律**零存储能力**：不摸 File、不自持锁、不自己落盘。
+     *
+     * 与上面那条同一判据，只是覆盖到记忆格与画像格。这里按"恰好零"判而不登记所有者：
+     * 这些类本来就不该有这些能力，冒出一处就是搬错了东西或有人抄近路。
+     * 每格都先 `error` 确认扫得到文件——尺指错地方时报"零命中"最骗人。
+     */
+    @Test
+    fun theLaterStoresHoldNoStoragePowerAtAll() {
+        val found = sources()
+        val offenders = mutableListOf<String>()
+        for (name in listOf("KnowledgeMemoryStore.kt", "KnowledgeProfileStore.kt")) {
+            val text = found[name] ?: error("扫不到 $name，这条棘轮是瞎的，先修路径")
+            val lines = codeLines(text)
+            val powers = listOf(
+                "自己拼文件路径" to lines.count { it.contains("File(") },
+                "自持锁" to lines.count { it.contains("withLock") || it.contains("Mutex(") },
+                "直接写文件" to lines.count { touchesRawStream(it) || it.contains(".writeText(") }
+            ).filter { it.second > 0 }
+            if (powers.isNotEmpty()) offenders += "$name → " + powers.joinToString("; ")
+        }
+        assertTrue(
+            "记忆格与画像格必须把路径、锁、落盘三件都留在仓库，实到：\n" + offenders.joinToString("\n") +
+                "\n  任何一项冒头都等于第二份实现，行为会像复核报告报的那样分叉。",
+            offenders.isEmpty()
         )
     }
 }

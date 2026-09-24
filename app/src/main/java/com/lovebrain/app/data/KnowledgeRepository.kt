@@ -58,7 +58,7 @@ class KnowledgeRepository(
 
     /** 交给迁移器用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
     private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage, DocumentStorage,
-        MemoryStorage {
+        MemoryStorage, ProfileStorage {
         override val root: File get() = knowledgeRoot
         override val catalogRoot: File get() = knowledgeRoot
 
@@ -89,6 +89,24 @@ class KnowledgeRepository(
                 MemoryTx { relativePath, content -> write(relativePath, content) }.block()
             }
         }
+
+        /**
+         * 画像格只能经这一次**元数据**写事务改 kb.json。
+         *
+         * 与上面那条同一段事务语义（同一次 schema 判定），只是交出去的能力不同：
+         * 画像格拿到的是"读改写 kb.json"，不是"想写哪个文件就写哪个文件"。
+         * 名字与上面那条不同不是 stylistic：`MemoryTx.() -> Unit` 与 `ProfileTx.() -> Unit`
+         * 都擦除成 `Function1`，同名 overload 在 JVM 上是 platform declaration clash——
+         * 编译器报这一条要等编译，所以先把名字分开写清，别留给下一个人踩。
+         */
+        override fun writeMetaTransaction(kbName: String, block: ProfileTx.() -> Unit) {
+            transactionUnlocked(kbName) {
+                block(ProfileTx { transform -> updateMeta(transform) })
+            }
+        }
+
+        /** 画像格读 kb.json 用的就是本类那一份解码口径（坏 JSON 当没有），不开第二把尺 */
+        override fun metaOf(kbName: String): KnowledgeBase? = readMetaUnlocked(kbName)
 
         /** 编解码共用本类那一份 Json 配置：给第二个类另配一把尺就等于换了把判据 */
         override fun decodeCorrections(
@@ -174,6 +192,19 @@ class KnowledgeRepository(
      * kbExists / timestamp 五样能力。
      */
     private val memory = KnowledgeMemoryStore(RepoStorage())
+
+    /**
+     * 画像正文、内容修订、阶段、状态向量与温度文件里的阶段标签（§5.3 第六格）。
+     *
+     * 拆它的理由有两条，都不是"仓库太大"：
+     *  ① 同一份 warmth 内容以前有三种宽严——`readVector` 看得见旧布局回退、
+     *     `writeVectorUnlocked` 看不见于是静默不写、阶段标签那条又走公开读；
+     *  ② 九阶段白名单"拒绝时说不说、怎么说"在四处各写一遍，标签行改写两处各抄一份。
+     * 现在向量维度表、阶段行正则、修订号输入清单都只有一个所有者，
+     * `applyProfileUpdateAtomically` 的 strict 版也回来共用同一份改写规则。
+     * 锁、路径守门、落盘、kb.json 的解码仍然在本类。
+     */
+    private val profile = KnowledgeProfileStore(RepoStorage())
 
     /** 备份节流：记录最后一次写入时间，debounce 5s 后触发增量备份 */
     private val backupDebounceMs = 5_000L
@@ -1110,38 +1141,20 @@ class KnowledgeRepository(
      *
      * GenerationInput 的 `kbContext.profile` 历史上被写死成空串，
      * 于是"冻结输入"里根本没有画像，画像变化也就无从参与身份比对。
+     * 拼哪四份、按什么顺序，归 [KnowledgeProfileStore]。
      */
     suspend fun readProfile(kbName: String): String = withContext(Dispatchers.IO) {
-        buildString {
-            for (name in listOf("me", "her", "warmth", "style")) {
-                val text = readFile(kbName, "understand/$name.md").trim()
-                if (text.isNotBlank()) append(text).append('\n')
-            }
-        }
+        profile.profileText(kbName)
     }
 
-    /**
-     * 知识内容修订号——对回复链路真正会读到的知识文件取内容指纹。
-     *
-     * 不能用 turnCount 近似：turnCount 只统计"提交过几轮"，
-     * 同一 turnCount 可以对应完全不同的画像/场景/事项内容，
-     * 手工编辑画像也不会改 turnCount。
-     */
+    /** 知识内容修订号（判据与输入文件清单见 [KnowledgeProfileStore.contentRevision]） */
     suspend fun contentRevision(kbName: String): String = withContext(Dispatchers.IO) {
-        val digest = java.security.MessageDigest.getInstance("SHA-256")
-        for (path in REVISION_INPUT_PATHS) {
-            val text = readFile(kbName, path)
-            digest.update(path.toByteArray(Charsets.UTF_8))
-            digest.update(0)
-            digest.update(text.toByteArray(Charsets.UTF_8))
-            digest.update(0)
-        }
-        digest.digest().joinToString("") { "%02x".format(it) }.substring(0, 16)
+        profile.contentRevision(kbName)
     }
 
     /** 读取当前阶段（kb.json）；读不到或库在根外时给空串 */
     override suspend fun getCurrentStage(kbName: String): String = withContext(Dispatchers.IO) {
-        readMetaUnlocked(kbName)?.stage ?: ""
+        profile.stageOf(kbName)
     }
 
     /** 修改知识库显示名（在知识库管理页点击显示名编辑） */
@@ -1166,34 +1179,19 @@ class KnowledgeRepository(
         }
     }
 
-    /** updateStage 的无锁核心：调用方必须已持有文件互斥锁 */
-    private suspend fun updateStageUnlocked(kbName: String, stage: String) {
-        if (stage.isBlank()) return
-        val normalized = com.lovebrain.app.domain.StageCatalog.normalize(stage)
-        if (normalized == null) {
-            com.lovebrain.app.util.L.w("updateStage 拒绝非白名单阶段：'$stage'（九阶段见 StageCatalog）")
-            return
-        }
-        transactionUnlocked(kbName) {
-            updateMeta { kb -> kb.copy(stage = normalized, updatedAt = isoNow()) }
-        }
+    /**
+     * updateStage 的无锁核心：调用方必须已持有文件互斥锁。
+     *
+     * 判"能不能当阶段用"与"落不落盘"分家之后，这里只剩一次转发；
+     * 白名单、拒绝时的措辞、以及 `updatedAt` 都归 [KnowledgeProfileStore.setStage]。
+     */
+    private fun updateStageUnlocked(kbName: String, stage: String) {
+        profile.setStage(kbName, stage)
     }
-
-    private val vectorDims = listOf(
-        "亲密度" to "intimacy", "信任度" to "trust", "承诺度" to "commitment",
-        "激情" to "passion", "安全感" to "security"
-    )
 
     /** 读取 warmth.md 的五维状态向量（解析不到默认 50） */
     override suspend fun readVector(kbName: String): Map<String, Int> = withContext(Dispatchers.IO) {
-        val warmth = readFile(kbName, "understand/warmth.md")
-        val result = mutableMapOf<String, Int>()
-        for ((cn, en) in vectorDims) {
-            val v = Regex("$cn[^：:]*[：:]\\s*(\\d+)").find(warmth)?.groupValues?.get(1)?.toIntOrNull()
-            if (v == null) com.lovebrain.app.util.L.w("readVector 维度零匹配：$cn（文件长度=${warmth.length}）")
-            result[en] = v ?: 50
-        }
-        result
+        profile.vectorOf(kbName)
     }
 
     /** 就地更新 warmth.md 的五维状态向量数值
@@ -1221,17 +1219,7 @@ class KnowledgeRepository(
      * 真正的证据是 `StorageBoundaryOwnershipTest` 的计数棘轮：仓库里这种写法还剩几条。
      */
     private fun writeVectorUnlocked(kbName: String, values: Map<String, Int>) {
-        val path = "understand/warmth.md"
-        var warmth = documents.read(kbName, path)
-        if (warmth.isBlank()) return
-        for ((cn, en) in vectorDims) {
-            val v = values[en] ?: continue
-            // [^/\n]* 兼容占位值（如"待评估"）和已有数字，保留 "/100" 后缀
-            val dimRegex = Regex("($cn[^：:]*[：:]\\s*)[^/\\n]*")
-            if (!dimRegex.containsMatchIn(warmth)) com.lovebrain.app.util.L.w("writeVector 维度零匹配：$cn（文件长度=${warmth.length}）")
-            warmth = warmth.replaceFirst(dimRegex, "$1$v")
-        }
-        writeFileUnlocked(kbName, path, warmth)
+        profile.setVector(kbName, values)
     }
 
     /** 就地更新 warmth.md 的阶段标签行（阶段变化时用），保留旧值作为历史注释。写入前经 StageCatalog 归一化
@@ -1246,40 +1234,15 @@ class KnowledgeRepository(
         }
     }
 
-    /** updateWarmthStageLabel 的无锁核心：调用方必须已持有文件互斥锁 */
-    private suspend fun updateWarmthStageLabelUnlocked(kbName: String, newStage: String) {
-        if (newStage.isBlank()) return
-        val stage = com.lovebrain.app.domain.StageCatalog.normalize(newStage) ?: run {
-            com.lovebrain.app.util.L.w("updateWarmthStageLabel 拒绝非白名单阶段：'$newStage'")
-            return
-        }
-        val path = "understand/warmth.md"
-        val warmth = readFile(kbName, path)
-        if (warmth.isBlank()) return
-        //  加固：兼容 "- 阶段标签：" / "- 阶段：" / "阶段标签:" 等变体；找不到则在「当前状态」节首行插入
-        val regex = Regex("(-\\s*阶段(?:标签)?[：:])([^\n]*)")
-        val match = regex.find(warmth)
-        if (match == null) {
-            val header = "## 当前状态"
-            val idx = warmth.indexOf(header)
-            val updated = if (idx >= 0) {
-                warmth.substring(0, idx + header.length) + "\n- 阶段标签：$stage" + warmth.substring(idx + header.length)
-            } else {
-                "- 阶段标签：$stage\n" + warmth
-            }
-            if (updated != warmth) writeFileUnlocked(kbName, path, updated)
-            return
-        }
-        val oldValue = match.groupValues[2].trim()
-        // 提取旧阶段名（去掉已有的历史注释部分）
-        val oldStage = oldValue.split("；").firstOrNull()?.trim() ?: oldValue
-        val newValue = if (oldStage.isNotBlank() && oldStage != stage) {
-            "$stage；过去曾经是$oldStage"
-        } else {
-            stage
-        }
-        val updated = warmth.replaceFirst(regex, "${match.groupValues[1]}$newValue")
-        if (updated != warmth) writeFileUnlocked(kbName, path, updated)
+    /**
+     * updateWarmthStageLabel 的无锁核心：调用方必须已持有文件互斥锁。
+     *
+     * 阶段行怎么写（变体认法、「当前状态」节插入、旧值留成"过去曾经是…"）
+     * 与 strict 版共用 [KnowledgeProfileStore.rewriteStageLine] 那一份——
+     * 拆之前这两处各抄了 30 行，改一处就会漏另一处。
+     */
+    private fun updateWarmthStageLabelUnlocked(kbName: String, newStage: String) {
+        profile.setWarmthStageLabel(kbName, newStage)
     }
 
     // ═══════════ 画像事务性写入 ═══════════
@@ -1287,14 +1250,14 @@ class KnowledgeRepository(
     /**
      * updateStageUnlocked 的 strict 版本——IO 失败时抛出异常，不吞错误。
      * 供事务性 API 使用；非事务场景仍用 [updateStageUnlocked]（容错）。
+     *
+     * 白名单判定与拒绝对那半句日志已归画像格；这里只多一样：**拒的原因要能分得开**
+     * （非白名单 vs 写不进），所以两种失败各抛各的。
      */
-    private suspend fun updateStageUnlockedStrict(kbName: String, stage: String) {
+    private fun updateStageUnlockedStrict(kbName: String, stage: String) {
         if (stage.isBlank()) return
-        val normalized = com.lovebrain.app.domain.StageCatalog.normalize(stage)
-        if (normalized == null) {
-            com.lovebrain.app.util.L.w("updateStageStrict 拒绝非白名单阶段：'$stage'")
-            throw java.io.IOException("非法阶段：$stage")
-        }
+        val normalized = profile.normalizeStage(stage, "updateStageStrict")
+            ?: throw java.io.IOException("非法阶段：$stage")
         val written = transactionUnlocked(kbName) {
             updateMeta { kb -> kb.copy(stage = normalized, updatedAt = isoNow()) }
         }
@@ -1307,36 +1270,14 @@ class KnowledgeRepository(
      * updateWarmthStageLabelUnlocked 的 strict 版本——IO 失败时抛出异常。
      * 供事务性 API 使用。
      */
-    private suspend fun updateWarmthStageLabelUnlockedStrict(kbName: String, newStage: String) {
+    private fun updateWarmthStageLabelUnlockedStrict(kbName: String, newStage: String) {
         if (newStage.isBlank()) return
-        val stage = com.lovebrain.app.domain.StageCatalog.normalize(newStage) ?: run {
-            com.lovebrain.app.util.L.w("updateWarmthStageLabelStrict 拒绝非白名单阶段：'$newStage'")
-            throw java.io.IOException("非法阶段：$newStage")
-        }
-        val path = "understand/warmth.md"
+        val stage = profile.normalizeStage(newStage, "updateWarmthStageLabelStrict")
+            ?: throw java.io.IOException("非法阶段：$newStage")
+        val path = KnowledgeProfileStore.WARMTH_FILE
         val warmth = readFileUnlockedFast(kbName, path)
         if (warmth.isBlank()) return
-        val regex = Regex("(-\\s*阶段(?:标签)?[：:])([^\n]*)")
-        val match = regex.find(warmth)
-        if (match == null) {
-            val header = "## 当前状态"
-            val idx = warmth.indexOf(header)
-            val updated = if (idx >= 0) {
-                warmth.substring(0, idx + header.length) + "\n- 阶段标签：$stage" + warmth.substring(idx + header.length)
-            } else {
-                "- 阶段标签：$stage\n" + warmth
-            }
-            if (updated != warmth) writeFileUnlocked(kbName, path, updated)
-            return
-        }
-        val oldValue = match.groupValues[2].trim()
-        val oldStage = oldValue.split("；").firstOrNull()?.trim() ?: oldValue
-        val newValue = if (oldStage.isNotBlank() && oldStage != stage) {
-            "$stage；过去曾经是$oldStage"
-        } else {
-            stage
-        }
-        val updated = warmth.replaceFirst(regex, "${match.groupValues[1]}$newValue")
+        val updated = profile.rewriteStageLine(warmth, stage)
         if (updated != warmth) writeFileUnlocked(kbName, path, updated)
     }
 
@@ -1531,16 +1472,13 @@ class KnowledgeRepository(
         }
     }
 
-    /** 无锁快速读取向量（不加 mutex，调用方持有锁） */
-    private fun readVectorUnlockedFast(kbName: String): Map<String, Int> {
-        val warmth = readFileUnlockedFast(kbName, "understand/warmth.md")
-        val result = mutableMapOf<String, Int>()
-        for ((cn, en) in vectorDims) {
-            val v = Regex("$cn[^：:]*[：:]\\s*(\\d+)").find(warmth)?.groupValues?.get(1)?.toIntOrNull()
-            result[en] = v ?: 50
-        }
-        return result
-    }
+    /**
+     * 无锁快速读取向量（不加 mutex，调用方持有锁）。
+     *
+     * 拆画像格之前这是第三份"自己解析 warmth 里的五维"：与 `readVector` 少一条零匹配日志，
+     * 维度表还各自引用一份。现在解析与维度表都只有 [KnowledgeProfileStore.vectorOf] 一处。
+     */
+    private fun readVectorUnlockedFast(kbName: String): Map<String, Int> = profile.vectorOf(kbName)
 
 
     // ═══════════ 谈心日志（两段式） ═══════════
@@ -1883,12 +1821,7 @@ class KnowledgeRepository(
         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault()).format(Date())
 
     companion object {
-        /** 回复链路实际读取的知识文件——内容变化即构成一次新的可冻结修订（） */
-        private val REVISION_INPUT_PATHS = listOf(
-            "understand/me.md", "understand/her.md", "understand/warmth.md", "understand/style.md",
-            "moment/topic.md", "moment/scene.md", "moment/recent.md", "moment/plan.md",
-            "memory/lessons.md", "memory/raw_topic.md", "memory/raw_scene.md", "memory/raw_chat.md"
-        )
+        // 内容修订号的输入清单已随画像正文归 KnowledgeProfileStore，这里不再有第二份
 
         // 旧→新路径映射已随读路径一起归 KnowledgeDocumentStore，这里不再有第二份
         /**
