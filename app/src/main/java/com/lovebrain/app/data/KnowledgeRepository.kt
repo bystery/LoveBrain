@@ -58,7 +58,7 @@ class KnowledgeRepository(
 
     /** 交给迁移器用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
     private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage, DocumentStorage,
-        MemoryStorage, ProfileStorage {
+        MemoryStorage, ProfileStorage, ArchiveStorage {
         override val root: File get() = knowledgeRoot
         override val catalogRoot: File get() = knowledgeRoot
 
@@ -107,6 +107,35 @@ class KnowledgeRepository(
 
         /** 画像格读 kb.json 用的就是本类那一份解码口径（坏 JSON 当没有），不开第二把尺 */
         override fun metaOf(kbName: String): KnowledgeBase? = readMetaUnlocked(kbName)
+
+        /**
+         * 归档格的落盘：四类动作都从同一个事务对象取。
+         * 只读判定、锁、路径守门仍在本类那一侧（`transactionUnlocked` + [KnowledgeTx]）。
+         *
+         * 名字刻意不叫 `writeTransaction`：`MemoryTx.() -> Unit` 与 `ArchiveTx.() -> Unit`
+         * 都擦除成 `Function1`，同名就是 platform declaration clash（同一条坑这轮踩到第二次）。
+         */
+        override fun runTransaction(kbName: String, block: ArchiveTx.() -> Unit) {
+            transactionUnlocked(kbName) { ArchiveTxView(this).block() }
+        }
+
+        /**
+         * 归档格的两把时钟。
+         *
+         * 分成两个名字不是设计癖好，是既存事实：归档条目标题与 operationId 用 `TimeFmt.now()`
+         * （`2026-09-25 10:00`），而 kb.json 的 `updatedAt` 一直是 ISO-8601 带时区。
+         * 合成一把就会悄悄换掉某一份落盘格式。
+         */
+        override fun stamp(): String = com.lovebrain.app.util.TimeFmt.now()
+        override fun metaTimestamp(): String = isoNow()
+
+        /** 归档状态的编解码仍用本类那一份 Json 配置 */
+        override fun encodeState(state: ArchiveOperationState): String =
+            json.encodeToString(ArchiveOperationState.serializer(), state)
+
+        override fun decodeState(text: String): ArchiveOperationState? = runCatching {
+            json.decodeFromString<ArchiveOperationState>(text)
+        }.getOrNull()
 
         /** 编解码共用本类那一份 Json 配置：给第二个类另配一把尺就等于换了把判据 */
         override fun decodeCorrections(
@@ -205,6 +234,17 @@ class KnowledgeRepository(
      * 锁、路径守门、落盘、kb.json 的解码仍然在本类。
      */
     private val profile = KnowledgeProfileStore(RepoStorage())
+
+    /**
+     * 话题归档的四步状态机（§5.3 第七格）。
+     *
+     * `rotateTopic` 原先是仓库里一段 80 行的方法体：步骤判定、归档条目格式、状态文件读写删、
+     * kb.json 计数全混在一起，三件事没有名字。现在这四条规则在 [KnowledgeArchiveService]，
+     * 锁与事务仍在本类——归档格拿到的是七样能力（note / 两把时钟 / 守门读 / 一次写事务 /
+     * 状态编解码），没有 Mutex、没有 File、没有第二条落盘链。
+     * 它比画像格宽一样是因为它确实管四步与一个状态文件；再宽就要开始拆"初始化"了。
+     */
+    private val archive = KnowledgeArchiveService(RepoStorage())
 
     /** 备份节流：记录最后一次写入时间，debounce 5s 后触发增量备份 */
     private val backupDebounceMs = 5_000L
@@ -523,6 +563,20 @@ class KnowledgeRepository(
             if (migrator.isReadOnly(kb.value)) return@withLock WriteResult.RefusedNewerSchema
             WriteResult.Written(KnowledgeTx(kb.value).block())
         }
+    }
+
+    /**
+     * 把 [KnowledgeTx] 收窄成归档格能看见的四件事。
+     *
+     * 直接把 `KnowledgeTx` 交出去就等于把 `pathOf`（能拿 File）也交出去了——那正是复核报告
+     * 说的"第二个所有者"的起点。适配层薄，但它让"格子里没有 File"这件事能被静态检查。
+     */
+    private class ArchiveTxView(private val tx: KnowledgeTx) : ArchiveTx {
+        override fun write(relativePath: String, content: String): Boolean = tx.write(relativePath, content)
+        override fun append(relativePath: String, content: String): Boolean = tx.append(relativePath, content)
+        override fun delete(relativePath: String): Boolean = tx.deleteAt(relativePath)
+        override fun updateMeta(transform: (KnowledgeBase) -> KnowledgeBase): Boolean =
+            tx.updateMeta(transform)
     }
 
     /**
@@ -1669,181 +1723,41 @@ class KnowledgeRepository(
         ((System.currentTimeMillis() - updated) / 3600_000).toInt()
     }
 
-    // ═══════════ 累积操作状态（rotate/archive 幂等恢复） ═══════════
-
-    /**
-     * 归档操作状态——追踪 rotateTopic 的多步操作，支持中断恢复和幂等。
-     *
-     * 每一步完成后在 completedSteps 中追加，而不是每次从初始集合重新生成。
-     * 异常中断后重启读取此状态，跳过已完成步骤，只执行剩余部分。
-     */
-    @Serializable
-    private data class ArchiveOperationState(
-        val operationId: String,       // 唯一操作 ID（基于内容哈希）
-        val kbName: String,            // 目标知识库
-        val timestamp: String,         // 操作时间戳
-        val oldTopic: String,          // 旧话题名
-        val contentHash: String,       // 输入内容哈希（防重复归档不同内容）
-        val completedSteps: List<String> = emptyList()  // 已完成步骤（累积追加）
-    )
-
-    /** 归档操作步骤名称 */
-    private object ArchiveStep {
-        const val READ_INPUT = "read_input"           // 读取输入文件
-        const val APPEND_ARCHIVE = "append_archive"     // 追加到 raw_topic.md
-        const val INCREMENT_COUNT = "increment_count"   // topicCount + 1
-        const val CLEAR_SOURCES = "clear_sources"       // 清空四个源文件
-    }
-
-    /**
-     * 读取当前操作状态（无锁，调用方持有 fileMutex）。
-     *
-     * 第六处裸路径：`archiveOpFile` 自己拼 `File(File(knowledgeRoot, kbName), …)`，
-     * 读回来的状态会决定 rotateTopic **跳过哪些步骤**——读错库等于对真库少干活。
-     * 写与删本来就走事务，现在读也回到同一道门，那个 helper 函数随之删掉（不留第二条路）。
-     */
-    private fun readArchiveOpUnlocked(kbName: String): ArchiveOperationState? {
-        val raw = documents.read(kbName, ARCHIVE_OP_FILE)
-        if (raw.isBlank()) return null
-        return runCatching {
-            json.decodeFromString<ArchiveOperationState>(raw)
-        }.getOrNull()
-    }
-
-    /** 写入操作状态（无锁，调用方持有 fileMutex） */
-    private fun writeArchiveOpUnlocked(kbName: String, state: ArchiveOperationState) {
-        transactionUnlocked(kbName) {
-            write(ARCHIVE_OP_FILE, json.encodeToString(ArchiveOperationState.serializer(), state))
-        }
-    }
-
-    /** 删除操作状态（无锁，调用方持有 fileMutex） */
-    private fun deleteArchiveOpUnlocked(kbName: String) {
-        transactionUnlocked(kbName) { deleteAt(ARCHIVE_OP_FILE) }
-    }
+    // ═══════════ 话题归档（§5.3 第七格：实现见 KnowledgeArchiveService）═══════════
 
     /**
      * rotateTopic — 使用累积操作状态实现幂等和中断恢复。
      *
-     * 步骤顺序：
-     * 1. READ_INPUT: 读取 raw_chat/recent/raw_scene/scene 内容
-     * 2. APPEND_ARCHIVE: 追加归档条目到 raw_topic.md
-     * 3. INCREMENT_COUNT: topicCount + 1
-     * 4. CLEAR_SOURCES: 清空四个源文件
+     * 四步（读输入 → 追加归档条目 → 计数 +1 → 清空四个源文件）与"信任状态文件里记录的
+     * 已完成步骤"这套恢复判定，都在 [KnowledgeArchiveService.rotate]；这里只剩"一次锁 + 一次 IO 线程"。
      *
-     * 恢复逻辑：
-     * - 如果存在操作状态（无论是否完成），信任其中记录的已完成步骤，跳过它们
-     * - CLEAR_SOURCES 会修改源文件，因此恢复时不能用内容 hash 验证
-     * - 操作状态在创建时记录 contentHash，仅用于 operationId 唯一性
-     * - 所有步骤完成后删除状态文件
+     * 搬走的原因是三件事原先没有名字：哪些步骤算完成、归档条目长什么样、计数从哪回填——
+     * 它们与 kb.json 的读写挤在同一段 80 行的方法体里，只能连着临时目录和互斥锁间接测。
      */
     override suspend fun rotateTopic(kbName: String) = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            // 读取已有操作状态（优先恢复）
-            val existingOp = readArchiveOpUnlocked(kbName)
-
-            // 读取输入内容
-            val rawChat = readFile(kbName, "memory/raw_chat.md")
-            val recent = readFile(kbName, "moment/recent.md")
-            val rawScene = readFile(kbName, "memory/raw_scene.md")
-            val scene = readFile(kbName, "moment/scene.md")
-
-            // 如果存在未完成的操作状态，恢复它；否则创建新操作
-            val opState = if (existingOp != null) {
-                // 恢复已有操作状态——信任其中记录的已完成步骤
-                // contentHash 仅用于 operationId 唯一性，不用于恢复时验证
-                // （因为 CLEAR_SOURCES 会修改源文件，恢复时读取的内容可能已变化）
-                existingOp
-            } else {
-                // 创建新操作状态
-                val timestamp = com.lovebrain.app.util.TimeFmt.now()
-                val oldTopic = getCurrentTopic(kbName)
-                val inputHash = KbTextOps.contentHash(rawChat, recent, rawScene, scene, oldTopic)
-                val newState = ArchiveOperationState(
-                    operationId = "$timestamp-$inputHash",
-                    kbName = kbName,
-                    timestamp = timestamp,
-                    oldTopic = oldTopic,
-                    contentHash = inputHash
-                )
-                writeArchiveOpUnlocked(kbName, newState)
-                newState
-            }
-
-            val completed = opState.completedSteps.toMutableList()
-            val hasContent = rawChat.isNotBlank() || recent.isNotBlank() || rawScene.isNotBlank() || scene.isNotBlank()
-
-            // R02/R03: 步骤 2 — 追加归档条目（幂等：检查是否已完成）
-            // R03: 保留无法识别的原内容，标为 legacy，不因格式校验丢弃用户数据
-            if (hasContent && ArchiveStep.APPEND_ARCHIVE !in completed) {
-                val archiveEntry = buildString {
-                    append("\n# [${opState.timestamp}] ${opState.oldTopic}\n\n")
-                    append("## [${opState.timestamp}] 状态变化\n")
-                    // 合并策略见 KbTextOps.mergeSceneEntries：无合法时间戳的行不丢弃，标为 legacy 留在尾部
-                    append(KbTextOps.mergeSceneEntries(rawScene, scene))
-                    append("\n")
-                    append("### [${opState.timestamp}] 对话记录\n")
-                    if (rawChat.isNotBlank()) append(rawChat.trim()).append("\n")
-                    if (recent.isNotBlank()) append(recent.trim()).append("\n")
-                }
-                appendFileUnlocked(kbName, "memory/raw_topic.md", archiveEntry)
-                completed.add(ArchiveStep.APPEND_ARCHIVE)
-                writeArchiveOpUnlocked(kbName, opState.copy(completedSteps = completed.toList()))
-            }
-
-            // 步骤 3 — 增加计数（幂等：检查是否已完成）
-            if (hasContent && ArchiveStep.INCREMENT_COUNT !in completed) {
-                incrementTopicCountUnlocked(kbName)
-                completed.add(ArchiveStep.INCREMENT_COUNT)
-                writeArchiveOpUnlocked(kbName, opState.copy(completedSteps = completed.toList()))
-            }
-
-            // 步骤 4 — 清空源文件（幂等：检查是否已完成）
-            if (ArchiveStep.CLEAR_SOURCES !in completed) {
-                writeFileUnlocked(kbName, "memory/raw_chat.md", "")
-                writeFileUnlocked(kbName, "memory/raw_scene.md", "")
-                writeFileUnlocked(kbName, "moment/scene.md", "")
-                writeFileUnlocked(kbName, "moment/recent.md", "")
-                completed.add(ArchiveStep.CLEAR_SOURCES)
-                writeArchiveOpUnlocked(kbName, opState.copy(completedSteps = completed.toList()))
-            }
-
-            // 操作完成 — 删除状态文件
-            deleteArchiveOpUnlocked(kbName)
-        }
+        fileMutex.withLock { archive.rotate(kbName) }
     }
 
+    /**
+     * 归档计数：kb.json 的 `topicCount`；旧库还没记数时从 `memory/raw_topic.md` 回填一次并持久化。
+     *
+     * 两处改动是本轮显式决定的：
+     *  ① 原先"读 kb.json"与"回填"各自加一次锁，两次之间别人可以写完一份，回填就会拿旧口径
+     *     覆盖一次计数——现在整段在一次锁内完成（收紧，不是搬家）；
+     *  ② "怎么数一条归档"这条格式规则搬去 [KnowledgeArchiveService.countArchiveEntries]，
+     *     与 rotate 那一步的 `topicCount + 1` 同出一门。**事务编排仍在这里**：
+     *     归档格的能力接口已经七样，再为一次回填加"读 meta"就是第八样，那是拿拆类名义放宽端口。
+     */
     override suspend fun getLessonCount(kbName: String): Int = withContext(Dispatchers.IO) {
-        val counted = fileMutex.withLock {
-            transactionUnlocked(kbName) {
-                runCatching {
-                    json.decodeFromString<KnowledgeBase>(readTextAt("kb.json")).topicCount
-                }.getOrDefault(0)
-            }
-        }
-        if (counted > 0) return@withContext counted
-        // 兼容旧知识库：kb.json 还没有计数时，从 raw_topic.md 回填一次并持久化
-        val content = readFile(kbName, "memory/raw_topic.md")
-        val regexCount = Regex("^## \\[", RegexOption.MULTILINE).findAll(content).count()
-        if (regexCount > 0) {
-            fileMutex.withLock {
+        fileMutex.withLock {
+            val counted = readMetaUnlocked(kbName)?.topicCount ?: 0
+            if (counted > 0) return@withLock counted
+            val content = documents.read(kbName, KnowledgeArchiveService.ARCHIVE_FILE)
+            val regexCount = archive.countArchiveEntries(content)
+            if (regexCount > 0) {
                 transactionUnlocked(kbName) { updateMeta { kb -> kb.copy(topicCount = regexCount) } }
             }
-        }
-        regexCount
-    }
-
-    /** 话题归档计数 +1（写入 kb.json 的 topicCount 字段） */
-    private suspend fun incrementTopicCount(kbName: String) = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            incrementTopicCountUnlocked(kbName)
-        }
-    }
-
-    /** incrementTopicCount 的无锁核心：调用方必须已持有文件互斥锁 */
-    private suspend fun incrementTopicCountUnlocked(kbName: String) {
-        transactionUnlocked(kbName) {
-            updateMeta { kb -> kb.copy(topicCount = kb.topicCount + 1, updatedAt = isoNow()) }
+            regexCount
         }
     }
 
@@ -1869,9 +1783,7 @@ class KnowledgeRepository(
          */
         const val MEMORY_REVISION_FILE = "memory/.revision"
         const val CORRECTIONS_FILE = "memory/corrections.json"
-
-        /** rotateTopic 的幂等状态文件；读写删三处共用这一个名字（只登记名字，不登记怎么拼） */
-        private const val ARCHIVE_OP_FILE = "moment/.archive_op.json"
+        // rotateTopic 的状态文件名跟着归档格走（KnowledgeArchiveService.STATE_FILE），这里不留第二份
     }
 
     /** 从 assets/schema/ 加载知识库初始化模板（标题骨架 = 单一数据源） */

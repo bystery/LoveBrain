@@ -128,7 +128,7 @@ class StorageBoundaryOwnershipTest {
         listOf(
             "KnowledgeRepository.kt", "KnowledgeDocumentStore.kt", "KnowledgeMigrator.kt",
             "KnowledgeBackupService.kt", "KnowledgeCatalogStore.kt", "KbArchiveTransfer.kt",
-            "KnowledgeMemoryStore.kt", "KnowledgeProfileStore.kt"
+            "KnowledgeMemoryStore.kt", "KnowledgeProfileStore.kt", "KnowledgeArchiveService.kt"
         ).forEach { assertTrue("扫不到的文件说明尺指错了地方：$it", it in found) }
     }
 
@@ -203,7 +203,7 @@ class StorageBoundaryOwnershipTest {
     fun theLaterStoresHoldNoStoragePowerAtAll() {
         val found = sources()
         val offenders = mutableListOf<String>()
-        for (name in listOf("KnowledgeMemoryStore.kt", "KnowledgeProfileStore.kt")) {
+        for (name in listOf("KnowledgeMemoryStore.kt", "KnowledgeProfileStore.kt", "KnowledgeArchiveService.kt")) {
             val text = found[name] ?: error("扫不到 $name，这条棘轮是瞎的，先修路径")
             val lines = codeLines(text)
             val powers = listOf(
@@ -214,7 +214,7 @@ class StorageBoundaryOwnershipTest {
             if (powers.isNotEmpty()) offenders += "$name → " + powers.joinToString("; ")
         }
         assertTrue(
-            "记忆格与画像格必须把路径、锁、落盘三件都留在仓库，实到：\n" + offenders.joinToString("\n") +
+            "拆出来的格子必须把路径、锁、落盘三件都留在仓库，实到：\n" + offenders.joinToString("\n") +
                 "\n  任何一项冒头都等于第二份实现，行为会像复核报告报的那样分叉。",
             offenders.isEmpty()
         )
