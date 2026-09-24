@@ -148,15 +148,26 @@ fun GenerationActionButton(
         }
         else -> {
             // NORMAL / DISABLED
+            //
+            // modifier 只有一条顺序清晰的链：size → graphics → shadow → clip → background
+            // → clickable → 内容内边距。
+            //
+            // 这里原先把 shadow/clip/background/graphicsLayer 在 clickable 前后**各写了一遍**
+            // （独立复核 P1-03）：同一个盒子被裁两次、着色两次、缩放两次，
+            // 既多画一层，也让"这个按钮到底被什么裁掉了"没人能从代码上回答。
+            // padding 放在 clickable 之后，热区才是完整的 heightDp。
             Box(
                 modifier = baseModifier
-                    .then(if (enabled) Modifier.shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md) else Modifier)
+                    .graphicsLayer { scaleX = scale; scaleY = scale }
+                    .then(
+                        if (enabled) Modifier.shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md)
+                        else Modifier
+                    )
                     .clip(LoveBrainShape.md)
                     .background(
                         if (enabled) containerColor else SurfaceInset,
                         LoveBrainShape.md
                     )
-                    .graphicsLayer { scaleX = scale; scaleY = scale }
                     .clickable(
                         enabled = enabled,
                         interactionSource = interaction,
@@ -165,14 +176,7 @@ fun GenerationActionButton(
                         haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                         onClick()
                     }
-                    .padding(vertical = Spacing.xs)
-                    .then(if (enabled) Modifier.shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md) else Modifier)
-                    .clip(LoveBrainShape.md)
-                    .background(
-                        if (enabled) containerColor else SurfaceInset,
-                        LoveBrainShape.md
-                    )
-                    .graphicsLayer { scaleX = scale; scaleY = scale },
+                    .padding(vertical = Spacing.xs),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
