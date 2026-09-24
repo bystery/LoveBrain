@@ -12,6 +12,9 @@
 > 阶段一的 P0-03/04/05 + 阶段二的 ports/棘轮/死 API/五个 store 与模式归属都在里面。
 > 本轮没有改 prompt：`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` → 零差异。
 
+> **接手请从 `LoveBrain_Handover_Unfinished_Work_2026-09-24.md` 开始读**：
+> 那份是"还剩什么、为什么没做、怎么起手"的清单；本文件是已完成部分的逐项证据。
+
 ## 0. 一句话状态
 
 阶段一的 P0-03 / P0-04 / P0-05 已落地并本机验证；P0-01 / P0-02 的**真机那一半卡在
@@ -19,7 +22,7 @@
 阶段二：包边界棘轮 + 死 API + Koin 唯一 journal + 冻结注释改口 + ports 与双侧合同测试
 + 三道"不许变差"的闸都落地了；§5.2 的五条 feature store **全部搬完（5/5），
 连§5.2 第 3 步列的"模式"也归位了**（两个 enum 先搬进 model，见 §2f）；
-但 VM 反而 2651 → 2732 行，"退成薄 facade 再删掉"（§5.2 第 6 步）还没做；
+但 VM 反而 2651 → **2746** 行（逐提交实测，见 §2h 末尾那条链），"退成薄 facade 再删掉"（§5.2 第 6 步）还没做；
 KnowledgeRepository 按能力拆分**没做**；搬 store 时被弄丢的"陈旧事件被拒"日志已全部补回（§2g）。
 阶段三（设计系统 10 个组件、截图矩阵）**没开始**。
 
@@ -318,6 +321,26 @@ is not worked around` 那格把门关着再跑一次，要求"一个字都不许
 跨层 6 条；取消审计 167 站点 NEEDS_REVIEW=0；工单编号 PASS；androidTest 编译通过；
 prompt 目录零 diff。
 
+### 更正：VM 行数以前抄过一个过期的数，这里换成逐提交实测的链
+
+`git show <提交>:…/LoveBrainViewModel.kt | wc -l`：
+
+```
+4795471 2651   ← 本轮开工前
+9cbcbb1 2624   ← ReplyStore      （−27，这一步是真降的）
+d25bdb0 2647 … 8e911b8 2667       ← Suggest / Proactive 之后
+4a8f7f7 2661   ← CounselingStore
+5e06cc9 2734   ← RewriteStore     （+73：规则出去 223 行，效果落地留在 VM）
+b1df35a 2732   ← enum 进 model + 模式归位
+41536ad 2746   ← 被拒日志补齐     （+14：ownsAndLog 与五处闭包）
+HEAD  2746
+```
+
+两个错要认：①§2f/§2g 与 §0/§3 里那句"VM 2732 行、比开工前长 81 行"是 `41536ad`
+**之前**量的，量完没重测就写进下一节 —— 真值 2746 / +95，已在上面全部改掉；
+②"搬 store 不降体量"这句在第一步并不成立：`ReplyStore` 那一刀实打实 −27 行，
+是后面几步把编排与转发留在 VM 才涨回去的。下一格别照抄"反正不会降"这个结论。
+
 ## 3. 明确没做到 / 没法在本机做到的（不混进上面）
 
 1. **19 条真机 instrumentation 失败还在**。本轮只做到：把 7 条同源的夹具竞态改掉、
@@ -332,7 +355,7 @@ prompt 目录零 diff。
    catalog/document/profile/memory/migration/archive/round 拆（§5.3，且必须共用一个
    `KnowledgeTransactionManager`，不许每个新类各自 new Mutex）；
    ②§5.2 第 6 步"VM 退成薄 facade 然后删掉"——五条链的状态持有者连同"模式"已经全部出去（§2f），
-   但 VM 反而从 2651 涨到 2732 行，**这 81 行就是 facade 那一步要还的债**；
+   但 VM 反而从 2651 涨到 2746 行，**这 95 行就是 facade 那一步要还的债**；
    『两个 enum 仍在 VM 里、主动发的模式没搬完』那一条本轮做完（§2f：`afbe303` 搬 enum、
    `b1df35a` 把模式归 ProactiveStore）。
    端口层已铺好（domain 不再 import data，越界 15→6），所以这些都是"往上搬"，
@@ -369,7 +392,7 @@ prompt 目录零 diff。
    那是把假绿换成真信号，不是回归。
 2. 阶段二收尾（五条链与"模式"已归位、被拒日志已补齐，只剩一件大的）：
    §5.2 第 6 步——VM 退成只组合 StateFlow 的 facade，然后**删 facade**（调用点直连 store）。
-   这一刀才是把 VM 从 2732 行往下压的那一刀：前面六步搬完它反而涨了 81 行。
+   这一刀才是把 VM 从 2746 行往下压的那一刀：前面七步搬完它反而涨了 95 行。
    做的时候顺手确认一件事——`RewriteStore` 把"这轮改写算不算数"收进在途身份之后，
    coordinator 与它各持一半身份（requestId 同源、两处判）；若把租约直接注进 store 的
    `isCurrentRequest`，别留下第二本账。
