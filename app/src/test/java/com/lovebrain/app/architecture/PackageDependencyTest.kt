@@ -50,16 +50,9 @@ class PackageDependencyTest {
         ),
         "domain/KnowledgeTriggerCoordinator.kt" to listOf(
             "com.lovebrain.app.data.DeepSeekRepository",
-            "com.lovebrain.app.data.KnowledgeRepository",
             "com.lovebrain.app.data.RawGenerationResult"
         ),
-        "domain/OngoingContextSelector.kt" to listOf("com.lovebrain.app.data.KnowledgeRepository"),
-        "domain/PromptBuilder.kt" to listOf(
-            "android.content.Context",
-            "com.lovebrain.app.data.KnowledgeRepository"
-        ),
-        "domain/RoundCommitJournal.kt" to listOf("com.lovebrain.app.data.KnowledgeRepository"),
-        "domain/TopicRecorder.kt" to listOf("com.lovebrain.app.data.KnowledgeRepository"),
+        "domain/PromptBuilder.kt" to listOf("android.content.Context"),
         "model/ProfileUpdate.kt" to listOf("com.lovebrain.app.domain.StageCatalog"),
         "model/ProfileUpdateSchema.kt" to listOf("com.lovebrain.app.domain.StageCatalog"),
         "ui/SetupActivity.kt" to listOf("com.lovebrain.app.data.EventBus"),
@@ -162,7 +155,7 @@ class PackageDependencyTest {
         assertTrue("domain 层必须禁止具体 data 仓库", forbidden.getValue("domain").contains("com.lovebrain.app.data."))
         assertTrue("ui 层必须禁止直接 import data 仓库", forbidden.getValue("ui").contains("com.lovebrain.app.data."))
         assertTrue("viewmodel 不许自己拼文件路径", forbidden.getValue("viewmodel").contains("java.io.File"))
-        assertEquals("基线条目数必须与 report 脚本同一次统计一致", 15, baseline.values.sumOf { it.size })
+        assertEquals("基线条目数必须与 report 脚本同一次统计一致", 10, baseline.values.sumOf { it.size })
     }
 
     /**

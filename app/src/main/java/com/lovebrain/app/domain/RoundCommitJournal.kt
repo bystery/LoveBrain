@@ -1,6 +1,6 @@
 package com.lovebrain.app.domain
 
-import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.domain.port.KnowledgePort
 import com.lovebrain.app.model.OngoingItem
 import com.lovebrain.app.model.SceneFact
 import com.lovebrain.app.util.L
@@ -44,7 +44,7 @@ import java.security.MessageDigest
  * 它在遇到 `\` 转义时先丢弃反斜杠再二次 unescape，导致 recentEntry 丢失换行与 marker 结构。
  */
 class RoundCommitJournal(
-    private val knowledgeRepo: KnowledgeRepository
+    private val knowledgeRepo: KnowledgePort
 ) {
 
     companion object {

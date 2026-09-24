@@ -28,6 +28,12 @@ val appModule = module {
     // 数据层（单例）
     single { SecurePrefs(androidContext()) }
     single { KnowledgeRepository(File(androidContext().filesDir, "knowledge"), get(), androidContext(), (androidApplication() as LoveBrainApp).applicationScope) }
+    // 端口视图必须解析到**同一个**仓库实例：KnowledgeRepository 自己 implements
+    // KnowledgePort，所以这里只是给同一个对象开两个类型的门，不是再造一个包装。
+    // 如果哪天这里变成 `single { FileKnowledgePort(get()) }`，两个 get() 会拿到两个包装——
+    // 读写的还是同一个库，但"只有一个事务 owner"就不再能从图上读出来了。
+    single<com.lovebrain.app.domain.port.KnowledgePort> { get<KnowledgeRepository>() }
+    single<com.lovebrain.app.domain.port.KnowledgeReadPort> { get<KnowledgeRepository>() }
     single { DeepSeekRepository(get()) }
     single { FeedbackCaseRepository(androidContext()) }
 

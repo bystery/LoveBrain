@@ -4,6 +4,7 @@ import android.content.Context
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.KnowledgeSchemaVersion
+import com.lovebrain.app.domain.port.KnowledgePort
 import com.lovebrain.app.model.PreconditionReason
 import com.lovebrain.app.model.ProfileTransactionResult
 import kotlinx.coroutines.CancellationException
@@ -37,7 +38,7 @@ class KnowledgeRepository(
     private val securePrefs: SecurePrefs,
     private val context: Context,
     private val appScope: CoroutineScope
-) {
+) : KnowledgePort {
     private val json = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
@@ -651,7 +652,7 @@ class KnowledgeRepository(
             ?: emptyList()
     }
 
-    suspend fun getActive(): KnowledgeBase? = withContext(Dispatchers.IO) {
+    override suspend fun getActive(): KnowledgeBase? = withContext(Dispatchers.IO) {
         val all = listAll()
         val activeName = securePrefs.activeKbName
         all.firstOrNull { it.name == activeName && it.active }
@@ -870,7 +871,7 @@ class KnowledgeRepository(
     /** 获取纠正记录的全局 revision（用于后台防护）。
      * R07: 读取库级持久化 revision（单调递增），不依赖剩余记录 max。
      * b3-8: 加锁读取，保证一致性（原先无锁读可能读到半写状态） */
-    suspend fun getCorrectionsRevision(kbName: String): Int = withContext(Dispatchers.IO) {
+    override suspend fun getCorrectionsRevision(kbName: String): Int = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             readMemoryRevisionUnlocked(kbName)
         }
@@ -887,7 +888,7 @@ class KnowledgeRepository(
     /** b3-8: 带修订版本条件校验的原子追加——在锁内一次性完成 revision 检查和文件写入，
      * 消除 KnowledgeTriggerCoordinator 中先检查后写入的竞态窗口。
      * @return true = 写入成功，false = revision 已变或 KB 不存在 */
-    suspend fun appendFileWithRevisionCheck(
+    override suspend fun appendFileWithRevisionCheck(
         kbName: String,
         relativePath: String,
         content: String,
@@ -933,7 +934,7 @@ class KnowledgeRepository(
 
     /** b3-8: 带修订版本条件校验的向量写入——在锁内一次性完成 revision 检查和向量写入。
      * @return true = 写入成功，false = revision 已变或 KB 不存在 */
-    suspend fun writeVectorWithRevisionCheck(
+    override suspend fun writeVectorWithRevisionCheck(
         kbName: String,
         values: Map<String, Int>,
         expectedRevision: Int
@@ -1031,7 +1032,7 @@ class KnowledgeRepository(
      * 于是"canonical 边界覆盖了所有 String 入口"这句话对读路径并不成立——
      * `../` 或绝对路径照样能把打开的文件指到知识库目录外面。
      */
-    suspend fun readFile(kbName: String, relativePath: String): String = withContext(Dispatchers.IO) {
+    override suspend fun readFile(kbName: String, relativePath: String): String = withContext(Dispatchers.IO) {
         val newFile = safeKbFile(kbName, relativePath) ?: return@withContext ""
         if (newFile.exists()) return@withContext newFile.readText()
         val oldPath = OLD_PATH_MAP[relativePath]
@@ -1091,7 +1092,7 @@ class KnowledgeRepository(
 
     /** 线程安全的文件追加（fileMutex 锁 + I/O 线程；A2-5 合并原 appendFileSafe）
      *  目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
-    suspend fun appendFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
+    override suspend fun appendFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("appendFile skipped: kb no longer exists")
@@ -1102,7 +1103,7 @@ class KnowledgeRepository(
     }
 
     /** 线程安全的文件删除（fileMutex 锁 + I/O 线程） */
-    suspend fun deleteFile(kbName: String, relativePath: String): Boolean = withContext(Dispatchers.IO) {
+    override suspend fun deleteFile(kbName: String, relativePath: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) return@withLock false
             if (refusedByReadOnlySchema(kbName, "deleteFile", relativePath)) return@withLock false
@@ -1113,7 +1114,7 @@ class KnowledgeRepository(
 
     /** 线程安全的文件写入（fileMutex 锁 + I/O 线程；A2-5 合并原 writeFileSafe）
      *  目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
-    suspend fun writeFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
+    override suspend fun writeFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("writeFile skipped: kb no longer exists")
@@ -1176,7 +1177,7 @@ class KnowledgeRepository(
      * 恢复路径必须读事件里的 `turnCountIncrement` 值，
      * 而不是硬编码 +1——否则一次记录 2 轮的事务恢复后只补 1。
      */
-    suspend fun incrementTurnCountBy(kbName: String, delta: Int) = withContext(Dispatchers.IO) {
+    override suspend fun incrementTurnCountBy(kbName: String, delta: Int): Unit = withContext(Dispatchers.IO) {
         if (delta <= 0) return@withContext
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
@@ -1190,7 +1191,7 @@ class KnowledgeRepository(
     }
 
     /** 读取当前轮次数（kb.json 的 turnCount 字段），供 OngoingContextSelector 冷却逻辑使用 */
-    suspend fun getTurnCount(kbName: String): Int = withContext(Dispatchers.IO) {
+    override suspend fun getTurnCount(kbName: String): Int = withContext(Dispatchers.IO) {
         val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
         if (!metaFile.exists()) return@withContext 0
         runCatching {
@@ -1233,7 +1234,7 @@ class KnowledgeRepository(
     }
 
     /** 读取当前阶段（kb.json） */
-    suspend fun getCurrentStage(kbName: String): String = withContext(Dispatchers.IO) {
+    override suspend fun getCurrentStage(kbName: String): String = withContext(Dispatchers.IO) {
         val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
         runCatching {
             json.decodeFromString<KnowledgeBase>(metaFile.readText()).stage
@@ -1281,7 +1282,7 @@ class KnowledgeRepository(
     )
 
     /** 读取 warmth.md 的五维状态向量（解析不到默认 50） */
-    suspend fun readVector(kbName: String): Map<String, Int> = withContext(Dispatchers.IO) {
+    override suspend fun readVector(kbName: String): Map<String, Int> = withContext(Dispatchers.IO) {
         val warmth = readFile(kbName, "understand/warmth.md")
         val result = mutableMapOf<String, Int>()
         for ((cn, en) in vectorDims) {
@@ -1724,7 +1725,7 @@ class KnowledgeRepository(
     }
 
     /** 读取谈心日志「# 军师分析」节的最近 count 个 ## 块（供画像更新引擎） */
-    suspend fun readCounselingAnalysisBlocks(kbName: String, count: Int): String = withContext(Dispatchers.IO) {
+    override suspend fun readCounselingAnalysisBlocks(kbName: String, count: Int): String = withContext(Dispatchers.IO) {
         val content = readFile(kbName, "memory/counseling_log.md")
         val idx = content.indexOf(counselingH2)
         if (idx < 0) return@withContext ""
@@ -1737,19 +1738,19 @@ class KnowledgeRepository(
 
     // ═══════════ 话题管理 API ═══════════
 
-    suspend fun getCurrentTopic(kbName: String): String = withContext(Dispatchers.IO) {
+    override suspend fun getCurrentTopic(kbName: String): String = withContext(Dispatchers.IO) {
         val content = readFile(kbName, "moment/topic.md")
         val raw = content.lines().firstOrNull()?.trim()?.substringAfter("正在聊：") ?: ""
         raw.substringBefore(" | key：").trim()
     }
 
-    suspend fun setCurrentTopic(kbName: String, topicLabel: String) = withContext(Dispatchers.IO) {
+    override suspend fun setCurrentTopic(kbName: String, topicLabel: String) = withContext(Dispatchers.IO) {
         val time = com.lovebrain.app.util.TimeFmt.now()
         writeFile(kbName, "moment/topic.md", "- [$time] 正在聊：$topicLabel")
     }
 
     /** 读取 plan.md「## 进行中」分区的事项行（注入 prompt；已结束不注入） */
-    suspend fun readPlanActive(kbName: String): String = withContext(Dispatchers.IO) {
+    override suspend fun readPlanActive(kbName: String): String = withContext(Dispatchers.IO) {
         val content = readFile(kbName, "moment/plan.md")
         val sb = StringBuilder()
         var inActive = false
@@ -1774,7 +1775,7 @@ class KnowledgeRepository(
     }
 
     /** 获取当前话题的年龄（小时），用于时间衰减判断 */
-    suspend fun getTopicAgeHours(kbName: String): Int = withContext(Dispatchers.IO) {
+    override suspend fun getTopicAgeHours(kbName: String): Int = withContext(Dispatchers.IO) {
         val content = readFile(kbName, "moment/topic.md")
         val match = Regex("\\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})]").find(content) ?: return@withContext 99
         val updated = com.lovebrain.app.util.TimeFmt.parse(match.groupValues[1])
@@ -1848,7 +1849,7 @@ class KnowledgeRepository(
      * - 操作状态在创建时记录 contentHash，仅用于 operationId 唯一性
      * - 所有步骤完成后删除状态文件
      */
-    suspend fun rotateTopic(kbName: String) = withContext(Dispatchers.IO) {
+    override suspend fun rotateTopic(kbName: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             // 读取已有操作状态（优先恢复）
             val existingOp = readArchiveOpUnlocked(kbName)
@@ -1924,7 +1925,7 @@ class KnowledgeRepository(
         }
     }
 
-    suspend fun getLessonCount(kbName: String): Int = withContext(Dispatchers.IO) {
+    override suspend fun getLessonCount(kbName: String): Int = withContext(Dispatchers.IO) {
         val counted = fileMutex.withLock {
             transactionUnlocked(kbName) {
                 runCatching {

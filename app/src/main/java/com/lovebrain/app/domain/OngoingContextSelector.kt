@@ -1,7 +1,7 @@
 package com.lovebrain.app.domain
 
 import com.lovebrain.app.AppConfig
-import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.domain.port.KnowledgePort
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.ReplyDirective
 import com.lovebrain.app.util.L
@@ -31,7 +31,7 @@ import com.lovebrain.app.util.TimeFmt
  * 但不能单独成为注入理由。
  */
 class OngoingContextSelector(
-    private val knowledgeRepo: KnowledgeRepository
+    private val knowledgeRepo: KnowledgePort
 ) {
 
     /** 事项内部状态 */

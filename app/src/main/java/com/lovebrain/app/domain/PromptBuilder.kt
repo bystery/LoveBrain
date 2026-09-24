@@ -2,7 +2,7 @@ package com.lovebrain.app.domain
 
 import android.content.Context
 import com.lovebrain.app.AppConfig
-import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.domain.port.KnowledgeReadPort
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.KnowledgeBase
@@ -27,7 +27,7 @@ import java.io.File
  */
 class PromptBuilder(
     private val context: Context,
-    private val knowledgeRepo: KnowledgeRepository,
+    private val knowledgeRepo: KnowledgeReadPort,
     private val ongoingSelector: OngoingContextSelector? = null
 ) {
 

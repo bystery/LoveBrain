@@ -2,7 +2,7 @@ package com.lovebrain.app.domain
 
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.DeepSeekRepository
-import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.domain.port.KnowledgePort
 import com.lovebrain.app.data.RawGenerationResult
 import com.lovebrain.app.model.ProfileParseResult
 import com.lovebrain.app.model.ProfileParseStatus
@@ -93,7 +93,7 @@ sealed interface KnowledgeTriggerEvent {
  * 谁 collect 谁就是这段后台工作的唯一 owner，取消沿收集方协程传播。
  */
 class KnowledgeTriggerCoordinator(
-    private val knowledgeRepo: KnowledgeRepository,
+    private val knowledgeRepo: KnowledgePort,
     private val deepSeekRepo: DeepSeekRepository,
     private val promptBuilder: PromptBuilder,
     private val topicRecorder: TopicRecorder

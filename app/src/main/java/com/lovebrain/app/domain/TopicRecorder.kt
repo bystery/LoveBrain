@@ -1,7 +1,7 @@
 ﻿package com.lovebrain.app.domain
 
 import com.lovebrain.app.AppConfig
-import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.domain.port.KnowledgePort
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.EntityRef
 import com.lovebrain.app.model.KnowledgeBase
@@ -34,7 +34,7 @@ import com.lovebrain.app.domain.FactSubjectResolver
  * - 无法确定同一事项时保守不覆盖
  */
 class TopicRecorder(
-    private val knowledgeRepo: KnowledgeRepository,
+    private val knowledgeRepo: KnowledgePort,
     roundCommitJournal: RoundCommitJournal? = null
 ) {
 
