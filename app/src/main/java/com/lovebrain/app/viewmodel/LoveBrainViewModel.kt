@@ -12,6 +12,7 @@ import com.lovebrain.app.domain.GenerationEngine
 import com.lovebrain.app.domain.KnowledgeTriggerCoordinator
 import com.lovebrain.app.domain.MemoryCorrectionPolicy
 import com.lovebrain.app.domain.PromptBuilder
+import com.lovebrain.app.domain.ReplyPatch
 import com.lovebrain.app.domain.RewritePrompt
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.domain.toIdentity
@@ -1206,13 +1207,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val result = replyResult as? GenerateResult.Success ?: return null
         val ctx = replyGenerationContext ?: return null
         val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(identityKey) ?: return null
-        val allSchemes = when (identity.source) {
-            com.lovebrain.app.model.SchemeSource.STYLE -> result.response.schemes
-            com.lovebrain.app.model.SchemeSource.DIRECTION -> result.response.directionSchemes
-        }
-        val scheme = allSchemes.find { it.tag == identity.tag } ?: return null
+        val schemeText = ReplyPatch.textOf(result.response, identity) ?: return null
         return FeedbackCaseDraft(
-            schemeReply = scheme.reply,
+            schemeReply = schemeText,
             kbName = ctx.kbName ?: "",
             ideaHint = ctx.ideaHint,
             intentText = ctx.intentText.takeIf { ctx.intentEnabled } ?: "",
@@ -1440,13 +1437,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val candidateReply = linkedSchemeIdentityKey?.let { key ->
             val result = replyResult as? GenerateResult.Success
             val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(key)
-            if (result != null && identity != null) {
-                val allSchemes = when (identity.source) {
-                    com.lovebrain.app.model.SchemeSource.STYLE -> result.response.schemes
-                    com.lovebrain.app.model.SchemeSource.DIRECTION -> result.response.directionSchemes
-                }
-                allSchemes.find { it.tag == identity.tag }?.reply
-            } else null
+            if (result != null && identity != null) ReplyPatch.textOf(result.response, identity) else null
         }
 
         // upsert by generationVersionId——同一 generation version 再次确认时替换旧记录
@@ -2509,16 +2500,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         val result = replyResult as? GenerateResult.Success ?: return
         val response = result.response
-        // 根据 source 查找目标 scheme——STYLE 从 schemes 找，DIRECTION 从 directionSchemes 找
-        val allSchemes = when (source) {
-            com.lovebrain.app.model.SchemeSource.STYLE -> response.schemes
-            com.lovebrain.app.model.SchemeSource.DIRECTION -> response.directionSchemes
-        }
-        val scheme = allSchemes.find { it.tag == schemeTag && it.source == source } ?: return
-        if (scheme.reply.isBlank()) return
-
-        // 使用 identity key 区分 STYLE 和 DIRECTION
-        val identityKey = com.lovebrain.app.model.SchemeIdentity(source, schemeTag).key
+        // 身份键区分 STYLE 与 DIRECTION；目标正文只从 ReplyPatch 取一次
+        val identity = com.lovebrain.app.model.SchemeIdentity(source, schemeTag)
+        val identityKey = identity.key
+        val targetReply = ReplyPatch.textOf(response, identity) ?: return
+        if (targetReply.isBlank()) return
 
         // 锁定目标
         val ctx = replyGenerationContext ?: return
@@ -2530,7 +2516,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         rewriteContextId = contextId
 
         // 进"改写中"并把当前正文连同其反馈压进历史：撤销时两者要一起回来
-        rewriteLedger.begin(identityKey, option, scheme.reply, feedbackCases.feedbackFor(identityKey))
+        rewriteLedger.begin(identityKey, option, targetReply, feedbackCases.feedbackFor(identityKey))
 
         // 不再捕获 preRewriteFeedback 做后续清理——
         // 改写期间用户对旧文的反馈继续归旧版本；新版本独立 NONE。
@@ -2548,7 +2534,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 // 构建短请求——只包含最少必要上下文
                 val systemPrompt = buildRewriteSystemPrompt()
                 val userPrompt = buildRewriteUserPrompt(
-                    originalReply = scheme.reply,
+                    originalReply = targetReply,
                     option = instruction,
                     messages = ctx.messages,
                     intentText = ctx.intentText.takeIf { it.isNotBlank() && ctx.intentEnabled },
@@ -2586,38 +2572,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     return@start
                 }
 
-                // 只替换目标卡正文，不回写整个捕获的旧 response
-                // 根据 source 更新对应方案列表
+                // 只替换目标卡正文，不回写整个捕获的旧 response：
+                // 改写期间其他卡可能已经变了
                 val currentResult = replyResult as? GenerateResult.Success ?: return@start
-                val currentResponse = currentResult.response
-                val updatedResponse = if (source == com.lovebrain.app.model.SchemeSource.STYLE) {
-                    // STYLE: 更新 ReplySchemes
-                    val updatedSchemes = currentResponse.schemes.map { s ->
-                        if (s.tag == schemeTag && s.source == source) s.copy(reply = newReply) else s
-                    }
-                    currentResponse.copy(
-                        response = com.lovebrain.app.model.ReplySchemes(
-                            recommended = updatedSchemes.getOrNull(0)?.reply ?: "",
-                            badBoy = updatedSchemes.getOrNull(1)?.reply ?: "",
-                            playful = updatedSchemes.getOrNull(2)?.reply ?: "",
-                            warm = updatedSchemes.getOrNull(3)?.reply ?: ""
-                        )
-                    )
-                } else {
-                    // DIRECTION: 更新 directions 数组对应 index
-                    val dir = com.lovebrain.app.model.ReplyDirection.byTag(schemeTag)
-                    if (dir != null) {
-                        val updatedDirections = currentResponse.directions.toMutableList()
-                        // 确保 directions 列表足够长
-                        while (updatedDirections.size <= dir.index) {
-                            updatedDirections.add(null)
-                        }
-                        updatedDirections[dir.index] = newReply
-                        currentResponse.copy(directions = updatedDirections)
-                    } else {
-                        currentResponse
-                    }
-                }
+                val updatedResponse = ReplyPatch.withText(currentResult.response, identity, newReply)
                 replaceReplyResult(GenerateResult.Success(updatedResponse))
 
                 // 改写成功后——新正文独立 NONE，不自动继承旧赞/踩
@@ -2657,31 +2615,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val response = result.response
         // 从 identityKey 解析 source 和 tag
         val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(identityKey) ?: return
-        val updatedResponse = if (identity.source == com.lovebrain.app.model.SchemeSource.STYLE) {
-            val updatedSchemes = response.schemes.map { s ->
-                if (s.tag == identity.tag && s.source == identity.source) s.copy(reply = previousVersion.reply) else s
-            }
-            response.copy(
-                response = com.lovebrain.app.model.ReplySchemes(
-                    recommended = updatedSchemes.getOrNull(0)?.reply ?: "",
-                    badBoy = updatedSchemes.getOrNull(1)?.reply ?: "",
-                    playful = updatedSchemes.getOrNull(2)?.reply ?: "",
-                    warm = updatedSchemes.getOrNull(3)?.reply ?: ""
-                )
-            )
-        } else {
-            val dir = com.lovebrain.app.model.ReplyDirection.byTag(identity.tag)
-            if (dir != null) {
-                val updatedDirections = response.directions.toMutableList()
-                while (updatedDirections.size <= dir.index) {
-                    updatedDirections.add(null)
-                }
-                updatedDirections[dir.index] = previousVersion.reply
-                response.copy(directions = updatedDirections)
-            } else {
-                response
-            }
-        }
+        val updatedResponse = ReplyPatch.withText(response, identity, previousVersion.reply)
         replaceReplyResult(GenerateResult.Success(updatedResponse))
         // 撤销时恢复旧版本的反馈，不只是正文
         feedbackCases.putFeedback(identityKey, previousVersion.feedback)
