@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.core.testing.RenderIn
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -46,7 +47,7 @@ class PanelHeaderSemanticsTest {
     internal fun mount(matrix: UiMatrix = UiMatrix(412)) {
         rule.setContent {
             val deviceDensity = LocalDensity.current.density
-            matrix.renderIn(deviceDensity) {
+            matrix.RenderIn(deviceDensity) {
                 PanelHeader(
                     panelMode = 0,
                     onModeChange = {},

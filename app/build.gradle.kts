@@ -163,7 +163,9 @@ dependencies {
     testImplementation("androidx.test:core:1.6.1")
     testImplementation("androidx.test.ext:junit:1.2.1")
     testImplementation("androidx.compose.ui:ui-test-junit4")
-    testImplementation("androidx.compose.ui:ui-test-manifest")
+    // ui-test-manifest 走下面已有的 debugImplementation：Robolectric 读的是 debug 变体
+    // 合并后的 manifest，再声明一份 testImplementation 会被 lint 判成配置放错
+    //（TestManifestGradleConfiguration，本机实测）。
 
     // P1-5: Compose UI interaction test（需要 emulator）
     androidTestImplementation(platform(composeBom))
