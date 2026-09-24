@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -181,6 +182,12 @@ fun PanelTextInput(
         var tfModifier = Modifier
             .fillMaxWidth()
             .align(Alignment.CenterStart)
+            // 读屏标签：placeholder 那行 Text 是**兄弟节点**，只在草稿为空时画出来，
+            // TalkBack 不会把它算进输入框自己——于是这一颗只有 EditableText 语义，
+            // 念出来是"编辑框"，输入第一个字之后连那点提示都没了（§6.5 无障碍第②栏）。
+            // 这里把同一句话挂成 contentDescription：节点本身永远有名字，
+            // 名字随角色变（她/我/想法），但不写死在语义里——传进来什么就是什么。
+            .semantics { contentDescription = placeholder }
         if (focusRequester != null) tfModifier = tfModifier.focusRequester(focusRequester)
         if (onFocusChange != null) tfModifier = tfModifier.onFocusChanged { onFocusChange(it.isFocused) }
         BasicTextField(

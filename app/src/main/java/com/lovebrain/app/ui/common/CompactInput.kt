@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -68,6 +70,9 @@ fun CompactInput(
                 .fillMaxWidth()
                 .align(Alignment.CenterStart)
                 .padding(end = if (trailingAction != null) 56.dp else 0.dp)
+                // 与 PanelTextInput 同一个问题、同一个修法：placeholder 那行 Text 是兄弟节点，
+                // 读屏念不到输入框本身（问卷页与供应商弹窗共用这一颗）
+                .semantics { contentDescription = placeholder }
         )
         trailingAction?.let {
             Box(modifier = Modifier.align(Alignment.CenterEnd)) { it() }
