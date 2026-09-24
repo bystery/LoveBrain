@@ -1328,6 +1328,15 @@ class KnowledgeRepository(
                 )
             }
             val currentRevision = readMemoryRevisionUnlocked(kbName)
+            if (migrator.isReadOnly(kbName)) {
+                // 只读判定本来藏在每一次写里面（writeFileUnlocked 静默跳过），于是这一段
+                // 所有写都不落、也没有任何一步抛，函数一路走到 Success：磁盘没变、嘴里说成功。
+                // 与公开的 transaction() 同一把尺——只读是**前置条件**，在入口就报出来。
+                com.lovebrain.app.util.L.w("applyProfileUpdateAtomically refused: kb is read-only (schema newer)")
+                return@withLock ProfileTransactionResult.PreconditionFailed(
+                    PreconditionReason.LIBRARY_READ_ONLY
+                )
+            }
             if (currentRevision != expectedRevision) {
                 com.lovebrain.app.util.L.w("applyProfileUpdateAtomically: revision changed (expected=$expectedRevision, current=$currentRevision)")
                 return@withLock ProfileTransactionResult.PreconditionFailed(

@@ -1594,10 +1594,20 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     }
                     is ProfileTransactionResult.PreconditionFailed -> {
                         // Repository 层的二次检查——VM 层已检查过，这是竞态兜底
-                        _profileSuggestion.value = null
                         val msg = when (result.reason) {
-                            PreconditionReason.KB_NOT_FOUND -> "原知识库已删除，这条画像建议已失效"
-                            PreconditionReason.REVISION_CONFLICT -> "资料已变化，请重新生成"
+                            // 建议本身作废的两种：清卡
+                            PreconditionReason.KB_NOT_FOUND -> {
+                                _profileSuggestion.value = null
+                                "原知识库已删除，这条画像建议已失效"
+                            }
+                            PreconditionReason.REVISION_CONFLICT -> {
+                                _profileSuggestion.value = null
+                                "资料已变化，请重新生成"
+                            }
+                            // 只读保护不是建议作废：那是"这个 App 比库旧"，升级之后同一份建议仍然有效。
+                            // 跟着清卡会把用户这次攒的审核内容白丢一次。
+                            PreconditionReason.LIBRARY_READ_ONLY ->
+                                "这个知识库的结构版本比本 App 还新，已被设为只读，画像没有写入（可以先升级 App 再确认）"
                         }
                         showPanelWarning(msg)
                     }

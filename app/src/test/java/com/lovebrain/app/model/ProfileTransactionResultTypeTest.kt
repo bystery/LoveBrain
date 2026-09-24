@@ -59,10 +59,18 @@ class ProfileTransactionResultTypeTest {
         assertTrue(rolledBack::class != rollbackFailed::class)
     }
 
+    /**
+     * 这条不是"顺手数个数"：新增一种失败原因必须是一次显式的决定——
+     * 加进来就得同时回答"UI 拿它怎么办"（`ProfileTransactionResultTest` 三种各自一格）。
+     *
+     * `LIBRARY_READ_ONLY` 是本轮加的：只读库上画像事务以前会一路走到 `Success`。
+     * 它与前两种的分工要留住——前两种=建议作废（清卡），这一种=这次写不动（留着卡）。
+     */
     @Test
-    fun `PreconditionReason has exactly 2 values`() {
-        assertEquals(2, PreconditionReason.entries.size)
+    fun `PreconditionReason has exactly 3 values`() {
+        assertEquals(3, PreconditionReason.entries.size)
         assertEquals(PreconditionReason.KB_NOT_FOUND, PreconditionReason.entries[0])
         assertEquals(PreconditionReason.REVISION_CONFLICT, PreconditionReason.entries[1])
+        assertEquals(PreconditionReason.LIBRARY_READ_ONLY, PreconditionReason.entries[2])
     }
 }

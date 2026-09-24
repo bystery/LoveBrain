@@ -205,6 +205,41 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         assertEquals("资料已变化，请重新生成", vm.panelWarning.value)
     }
 
+    // ═══ 3b. PreconditionFailed(LIBRARY_READ_ONLY) → **不清卡** + 说清是只读 ═══
+
+    /**
+     * 只读保护是"本 App 比这个库旧"，不是"这条建议作废"。
+     *
+     * 另两种 PreconditionFailed 清卡是对的（库没了 / 资料变了，建议本身已失效）；
+     * 这里若跟着清卡，用户攒下来的那次审核就被一个环境问题吃掉了——升级 App 之后本该还能写。
+     */
+    @Test
+    fun `PreconditionFailed LIBRARY_READ_ONLY keeps the card and says why`() = runTest {
+        val repo = mockk<KnowledgeRepository>(relaxed = true)
+        coEvery { repo.getActive() } returns KnowledgeBase(name = "kb1", displayName = "她", active = true)
+        coEvery { repo.migrateIfNeeded(any()) } returns Unit
+        coEvery { repo.readVector(any()) } returns emptyMap()
+        coEvery { repo.listAll() } returns listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
+        coEvery { repo.getCorrectionsRevision(any()) } returns 0
+        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns
+            ProfileTransactionResult.PreconditionFailed(PreconditionReason.LIBRARY_READ_ONLY)
+
+        val vm = newViewModel(repoOverride = repo)
+        advanceUntilIdle()
+
+        val suggestion = makeSuggestion()
+        vm.feedProfileSuggestion(suggestion)
+        vm.confirmProfileUpdate()
+        waitForWarning(vm, this)
+
+        // 这里用的是 kotlin.test 的 assertEquals：message 在**最后一个**参数
+        assertEquals(suggestion, vm.profileSuggestion.value, "只读只是这次写不进去，建议要留着等升级后重试")
+        assertEquals(
+            "这个知识库的结构版本比本 App 还新，已被设为只读，画像没有写入（可以先升级 App 再确认）",
+            vm.panelWarning.value
+        )
+    }
+
     // ═══ 4. RolledBack → 保留卡片 + "已恢复原数据，可重试" ═══
 
     @Test

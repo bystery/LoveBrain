@@ -4,6 +4,8 @@ import android.content.Context
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.KnowledgeSchemaVersion
+import com.lovebrain.app.model.PreconditionReason
+import com.lovebrain.app.model.ProfileTransactionResult
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -158,6 +160,16 @@ class ReadOnlySchemaWriteGateTest {
         "updateStage" to { runBlocking { repo.updateStage("kb", "热恋期") } },
         "updateWarmthStageLabel" to { runBlocking { repo.updateWarmthStageLabel("kb", "热恋期") } },
         "writeVector" to { runBlocking { repo.writeVector("kb", mapOf("intimacy" to 12)) } },
+        // 画像事务：一次要写 me/her（可选 warmth）+ 可能改 kb.json，是这一族里唯一的跨文件事务。
+        // revision 用 3 —— 就是夹具 `memory/.revision` 里那个值，免得先撞 REVISION_CONFLICT
+        "applyProfileUpdateAtomically" to {
+            runBlocking {
+                repo.applyProfileUpdateAtomically(
+                    kbName = "kb", me = "v3 想覆盖的画像", her = "v3 想覆盖的她",
+                    warmth = null, stageChanged = false, newStage = null, expectedRevision = 3
+                )
+            }
+        },
         "setCurrentTopic" to { runBlocking { repo.setCurrentTopic("kb", "v3 写的新话题") } },
         "rotateTopic" to { runBlocking { repo.rotateTopic("kb") } },
         "appendCounselingEntries" to { runBlocking { repo.appendCounselingEntries("kb", "记录", "分析") } },
@@ -194,6 +206,35 @@ class ReadOnlySchemaWriteGateTest {
         )
 
         assertSameTree(before, snapshot())
+    }
+
+    /**
+     * 只读库上跑画像事务，返回值不许说"成功"。
+     *
+     * 上面那格钉的是磁盘（一个字节都没动），这一格钉的是**报给调用方的话**：
+     * 写之前只查了"库在不在"和"revision 对不对"，没查"这个库还写得动吗"，
+     * 于是 me/her 两次写全被只读判定静默挡下、没有任何一步会抛，函数就走到 `Success`。
+     * 用户看到的是"画像已更新"，磁盘上还是未来版本那份——这是比崩溃更坏的一种假绿。
+     */
+    @Test
+    fun `profile transaction does not claim success on a read-only library`() {
+        seedFutureKb()
+        openReadOnly()
+        val before = snapshot()
+
+        val result = runBlocking {
+            repo.applyProfileUpdateAtomically(
+                kbName = "kb", me = "想覆盖的画像", her = "想覆盖的她",
+                warmth = null, stageChanged = false, newStage = null, expectedRevision = 3
+            )
+        }
+
+        assertSameTree(before, snapshot())
+        assertTrue(
+            "只读库上这次事务一个字节都没写，返回值不许是 Success（实到 $result）",
+            result is ProfileTransactionResult.PreconditionFailed &&
+                result.reason == PreconditionReason.LIBRARY_READ_ONLY
+        )
     }
 
     /** 只读仍然可读：这是"只读保护"而不是"禁用知识库" */
