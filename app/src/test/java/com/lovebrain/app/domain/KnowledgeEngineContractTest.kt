@@ -1,6 +1,4 @@
 package com.lovebrain.app.domain
-import com.lovebrain.app.model.ProviderRequestConfig
-import com.lovebrain.app.model.RawGenerationResult
 
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.DeepSeekRepository
