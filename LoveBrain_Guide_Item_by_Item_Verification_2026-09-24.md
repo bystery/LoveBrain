@@ -3,7 +3,7 @@
 > 被对照的输入：`LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md`
 > 本窗口的提交（11 个，接在交接文档 `c21b200` 之后）：
 > `cb44ceb` `6177cd0` `c927b2e` `9f4747a` `ead80c1` `2ef47ac` `f5aed70` `df1e802` `1e1600c`
-> `cd7e1df` `e359930` `ca76bac`。领先远端 `4795471` 的条数别抄这里，
+> `cd7e1df` `e359930` `ca76bac` `d902514`。领先远端 `4795471` 的条数别抄这里，
 > 现算：`git rev-list --count 4795471..HEAD`。
 > 上一轮的过程证据：`LoveBrain_Three_Phase_Execution_Log_c0ff041_guide_2026-09-24.md`
 > 上一轮的交接：`LoveBrain_Handover_Unfinished_Work_2026-09-24.md`
@@ -20,7 +20,7 @@
 
 | 量 | 命令 | 本窗口实测 |
 |---|---|---|
-| 单测 | `./gradlew :app:testDebugUnitTest` + 逐 XML 解析 | **1077 tests / 133 套件 / 0 失败 / 0 错误 / 0 跳过**（无陈旧 XML：逐个比过 mtime；`ca76bac` 之后。1045 → 1077 的 32 格全部来自本窗口） |
+| 单测 | `./gradlew :app:testDebugUnitTest` + 逐 XML 解析 | **1082 tests / 134 套件 / 0 失败 / 0 错误 / 0 跳过**（无陈旧 XML：逐个比过 mtime；`ca76bac` 之后。1045 → 1077 的 32 格全部来自本窗口） |
 | lint | `:app:lintDebug` + `check_lint_budget.sh` | **71 条 / 15 条规则，预算一致，0 新增债**；0 error |
 | androidTest 编译 | `:app:compileDebugAndroidTestKotlin` | 通过 |
 | 跨层越界 | `package_deps_report.sh --count` | **6**（与基线一致，没长） |
@@ -67,12 +67,12 @@ Robolectric 4.14.1 + Compose `ui-test-junit4`，走 `testDebugUnitTest` → **CI
 | 条目 | 状态 | 证据 / 还差什么 |
 |---|---|---|
 | **P1-01** 18 个 >500 行、10 个 >800 行 | **数量没动**（本机已验） | 本窗口只改了 3 个文件的实现，没有一个靠"切文件"降行数（指导书 §6 硬约束：不许为行数机械拆文件）。`ResultArea` 仍 1305 行 → §6.4 那一格没做 |
-| **P1-02** 语义树边界断言，不许源码搜索 | **本窗口做了四处，仍不全** | 已覆盖：PanelHeader（12 格矩阵：48dp 下限 / selected / role / 标签 / 不重复播报）、空态入口、主操作区。实测值：改前 **84x18dp**（三段）与 **224x23dp**（空态蓝字），改后 ≥48dp。**还差**：`LoveBrainPanelScreen` 其余可点控件、Home/Provider/Feedback/知识库各页；锦囊卡片的折叠入口已量已修（`ca76bac`：实测 **344x17dp**，320dp+2.0 倍字时 304x33dp → `heightIn(min=48)` + `Role.Button`，并断言公告随状态变、展开后示例配文真出现）；**仍欠**谈心面板那颗『继续追问』胶囊——整页要 `LoveBrainViewModel` 才能组合，本机测不到（§5.2 第 6 步的下游之一） |
+| **P1-02** 语义树边界断言，不许源码搜索 | **本窗口做了四处，仍不全** | 已覆盖：PanelHeader（12 格矩阵）、空态入口、主操作区、锦囊折叠入口、**供应商页整页**（5 格，`d902514`）。实测值：改前 **84x18dp**（三段）与 **224x23dp**（空态蓝字），改后 ≥48dp。**还差**：`LoveBrainPanelScreen` 其余可点控件、Home/Provider/Feedback/知识库各页；锦囊卡片的折叠入口已量已修（`ca76bac`：实测 **344x17dp**，320dp+2.0 倍字时 304x33dp → `heightIn(min=48)` + `Role.Button`，并断言公告随状态变、展开后示例配文真出现）；**仍欠**谈心面板那颗『继续追问』胶囊——整页要 `LoveBrainViewModel` 才能组合，本机测不到（§5.2 第 6 步的下游之一） |
 | **P1-03** `GenerationActionButton` modifier 链重复 | 沿用上轮（未复验） | 本窗口读过该文件，NORMAL/DISABLED 只剩一条链（`size→graphics→shadow→clip→background→clickable→padding`），LOADING/STOP 分支各自一条——但这是**我读到的现状**，不是本轮改动 |
 | **P1-04** Koin 双 journal 注册 | 沿用上轮（未复验）+ 本窗口 grep 过 | `AppModule.kt:55` 现为 `single { TopicRecorder(get(), get(), get()) }`，`:51` 只有容器那一份 journal |
 | **P1-05** 209 处中文字面量 | **先修尺，再还 4 处** | 搬进 `strings.xml`/`values-en`：`proactive_empty_send_one`、`proactive_empty_turn_off`。**盲区**：`UiStringLiteralBudgetTest` 的 TEXT 正则只认 `Text("…` / `Text(text = "…`，看不见 `Text(text = if (…) "中文" else "中文")`——我搬掉的这两处**本来就不在 209 的计数里**，所以预算数字当时没改（改了就是假账）。本轮把尺换成按括号配对截整段实参，**209 → 254**：
 这 45 处不是新塞的中文，是原来漏量的。之后搬进资源 4 处（空态两种文案 + 反馈页的"重试"/"暂无反馈案例"），
-预算 **254 → 252**（棘轮只许往下）。剩下 252 处没动。
+预算 **254 → 252 → 250**（棘轮只许往下）。DESC 在第三次修尺后实测 **12**（此前那个 10 同样是下界：赋值锚点的切片会被 if 的内层括号截断）。剩下 250 处没动。
 **又发现第二个盲区并补上**：`stateDescription` 是念给用户听的话，TEXT/DESC 两把尺都看不见它——已加 STATE 判据，起点 0（`ca76bac`） |
 
 ## 3. §3.3 P2 五条
@@ -134,6 +134,8 @@ VM 本窗口实测 **2746 行**，与上轮交接同值（既没涨也没降，�
 ### 6.2 首页固定四段 — 未做（本窗口没碰 Home）。
 
 ### 6.3 `ScreenState` 四态统一 — **一个目的地已换，其余没动**（`e359930`）
+
+供应商页（`d902514`）只做到「被量到 + 修热区/本地化」，**它自己那套空态还没换成 `ScreenState`**。
 
 `ScreenState`（Loading/Content/Empty/Error）与 `LbAsyncState` 已建；**反馈案例页**换完：
 原来三个分支各画一套居中文版式，现在一处判定 + 一套版式，页面 **534 → 500 行**，两处中文进了资源。
@@ -220,7 +222,7 @@ prompt 零 diff + lock（**通过**）· P0/P1/P2 对应 commit（见本文各�
 4. §6.2 首页四段；§6.3 余下三个目的地（Provider / 知识库 / 捕获范围）；
    §6.4 ResultArea 浮层拆分（1305 行）。
 5. §6.5 截图工具与 baseline 人工 review 流程；⑦超长文案/极端数字那一格；⑧对比度；②里 stateDescription 那两处的断言。
-6. P1-05 剩下 **252** 处中文字面量。（尺子的盲区本轮已补：`cd7e1df`）
+6. P1-05 剩下 **250** 处中文字面量。（尺子的三个盲区已补：`cd7e1df` 与 `d902514`；STATE 判据起点 0）
 7. §3.3 里"prompt 冻结"与验收包过期表述这两条文档改口。
 
 **B. 本窗口新留下没做的**
