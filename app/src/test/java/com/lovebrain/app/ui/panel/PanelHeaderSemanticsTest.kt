@@ -87,4 +87,16 @@ class PanelHeaderSemanticsTest {
         mount()
         probe.assertAllActionableLabeled(rule, "PanelHeader")
     }
+
+    /**
+     * §6.5：同一个按钮不许念两遍。
+     *
+     * 这条断言立起来之前的实测值是 `Collapse panel+Collapse panel`——外层热区 Box 声明了
+     * contentDescription，里面的图标又声明了一遍，语义合并后拼成两遍。修法是图标显式当装饰。
+     */
+    @Test
+    fun `no clickable node announces its label twice`() {
+        mount()
+        probe.assertNoDuplicatedAnnouncement(rule, "PanelHeader")
+    }
 }

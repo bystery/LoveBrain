@@ -37,6 +37,13 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
         /** 读屏能念出点什么：文案或 contentDescription 至少有一个 */
         val labeled: Boolean get() = label.isNotBlank()
 
+        /** 合并语义后同一个名字出现两次以上 = 念两遍 */
+        val isDuplicatedAnnouncement: Boolean
+            get() {
+                val parts = label.split('+').map { it.trim() }.filter { it.isNotEmpty() }
+                return parts.size > 1 && parts.distinct().size < parts.size
+            }
+
         fun tooSmall(minDp: Float): Boolean =
             widthDp + 0.5f < minDp || heightDp + 0.5f < minDp
 
@@ -119,6 +126,31 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
                 "$screen$context 有 ${unlabeled.size}/${targets.size} 个可交互节点既没有文案也没有 " +
                     "contentDescription，读屏只会念「按钮」：\n" +
                     unlabeled.joinToString("\n") { "  " + it.describe() }
+            )
+        }
+        return targets
+    }
+
+    /**
+     * §6.5：同一个名字不许念两遍。
+     *
+     * 语义树合并时，父节点自己声明的 contentDescription 会和子图标的拼成
+     * `"X+X"` 这种串——读屏就把一个按钮念成两遍。修法是把子图标显式设为装饰
+     * （`contentDescription = null`），标签只在可点击那一处声明。
+     */
+    fun assertNoDuplicatedAnnouncement(
+        rule: ComposeTestRule,
+        screen: String,
+        context: String = ""
+    ): List<Target> {
+        val targets = actionableTargets(rule, screen)
+        val doubled = targets.filter { it.isDuplicatedAnnouncement }
+        if (doubled.isNotEmpty()) {
+            throw AssertionError(
+                "$screen$context 有 ${doubled.size}/${targets.size} 个可交互节点把标签念了两遍" +
+                    "（父节点与子图标各声明一次，合并后成了「X+X」）：\n" +
+                    doubled.joinToString("\n") { "  " + it.describe() } +
+                    "\n  修法：标签只在可点击的那个节点上声明一次，里面的图标写 contentDescription = null。"
             )
         }
         return targets

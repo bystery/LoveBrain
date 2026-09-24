@@ -117,7 +117,10 @@ fun PanelHeader(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_chevron_down),
-                    contentDescription = collapseDescription,
+                    // 标签只在上面那个热区 Box 上声明一次。这里再声明一遍，
+                    // 语义合并后会拼成「Collapse panel+Collapse panel」，读屏念两遍
+                    // （改之前实测到的就是这串）。图标在这颗按钮里是装饰。
+                    contentDescription = null,
                     tint = TextSecondary,
                     modifier = Modifier.size(HeaderDimens.CONTROL_HEIGHT_DP.dp)
                 )
