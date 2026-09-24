@@ -804,3 +804,60 @@ kb.json 的 `updatedAt` 用 ISO-8601——合并任何一把都会悄悄换掉�
 VM 还有一百多个公开成员、十几个命令式方法（`generate`/`nextRound`/`copyScheme`/`recordActualSentMessage`…）
 没有对应的 store intent，硬搬会把 `SecurePrefs`、coordinator、engine 全拖进 store 的端口里
 （与 catalog 写侧同一种"宽端口"陷阱）。
+
+---
+
+# 追加七：画像卡片那两件事并成一份快照（§2.2 第二处），并更正上一笔的一格计数
+
+提交 `6910098`。
+
+## 17.1 先更正我自己的数
+
+上一笔（§16.5）写的"VM 里 `MutableStateFlow` 39 → 30"差一格。用**同一把尺**（正则含带数字的变量名）
+在三个提交上各量一遍：
+
+| 位置 | 私有 `MutableStateFlow` 个数 |
+|---|---|
+| `3b86b03`（统计合并之前） | 39 |
+| `cf80b91`（九个统计并成一个之后） | **31**（不是我写的 30） |
+| `6910098`（画像卡片两件事并成一个之后） | **30** |
+
+上一笔那次正则漏的是带数字的名字，所以 39 那次没漏、31 那次漏了一个——**同一族计数换正则就等于换尺**，
+这条按"两侧同尺"的规矩记下来。已提交的提交信息不改写。
+
+## 17.2 这一格做了什么
+
+卡片"显示与否"看建议、"按钮与转圈"看 `isConfirming`，原先是两个 flow、VM 里 14 处各改各的。
+分两处就会拼出没人设计过的中间态（确认成功那一刻"建议已清空、confirming 还是 true"），
+以及两次请求同时通过 `if (isConfirming) return` 这道门。
+现在是一份不可变 `ProfileReview` + 五种事件的纯 reduce + 一个漏斗 `applyReview`，
+判据住在状态本身：`canAttemptConfirm`、`canConfirm`、重复点确认自己忽略、
+**清卡只清"我确认的那一份"**（`ClearedIfCurrent`——原先这条是调用点手写的"读 flow、比 id、再写 null"，
+最容易被下一个图省事的人写成无条件清，把确认期间到达的新卡片抹掉）。
+
+同一族的 `vectorUpdate` 与 `stageSuggestion` **没有**并进来：它们与这张卡片不需要同帧
+（一个顶部横幅、一个独立卡片），并进去只是把两件无关的事变成一次大快照复制。这是判断，不是没做完。
+
+调用点迁完：面板 2 次 collect 并成 1 次；三处测试只改读法、断言一字未动
+（`ProfileConfirmTest` 无效建议清卡、`ProfileTransactionResultTest` 五种 typed result 各自的卡片去向、
+`KbgBatch8Test`）。新纯函数 9 格，六处注入各自只红目标格：
+`P1` 去掉重复确认守卫、`P2` 清卡不比 id、`P3` 新建议顺手抹平 confirming、`P4` 可点性只看有没有卡片、
+`P5` 关卡片顺手停 spinner、`P6` 结束确认时连卡片一起清。
+
+## 17.3 实测
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | rc=0：**1181 tests / 147 套件 / 0 失败 / 0 错误 / 0 跳过**（最旧 XML 05:36:20 ≥ shell 记的起点 05:33:20） |
+| lint | 报告重生成（05:39；05:18 那份移进 `_temp/`）70 条 / 15 规则、进预算 **69 / 14**、advisory 1，rc=0；判据自测 27 格 rc=0 |
+| 其它 | androidTest 编译 rc=0；工单编号 rc=0；prompt 零 diff + lock `6dcde732…`；跨层 **6** 条 |
+| 行数 | `LoveBrainViewModel` 2732 → **2739**（+7，多了漏斗与判据注释），新文件 61 行；flow 数 31 → 30 |
+
+## 17.4 §2.2 那行还剩什么（本轮之后）
+
+已并两处（统计九个 → 1，画像两件 → 1），VM 里还剩 **30** 个私有 `MutableStateFlow`。
+按"必须同帧变化"这把判据看，下一处该并的是意图族（`intentConfig` + `showIntentEditor`，
+编辑面板打开时两者一起决定渲染）；消息编辑族（`messages`/`editingIndex`/`currentRole`）同理但要小心
+`messages` 已被多处命令读写。其余（`panelState`/`panelMode`/`outputMode`/`resultMode`/`draftText` 等）
+是各自独立的单选值，并成一份大快照只会让"改一个要复制全部"——那不是统一状态模型，那是结构体崇拜。
+`LoveBrainViewModel` 仍是 facade，§5.2 第 6 步的距离没有实质缩短。
