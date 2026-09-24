@@ -40,11 +40,18 @@ class StorageBoundaryOwnershipTest {
                 )
         }
 
-    /** 一条"能力"规则：叫什么、怎么认出碰过它的代码行、当前登记在谁名下 */
+    /**
+     * 一条"能力"规则：叫什么、怎么认出碰过它的代码行、当前登记在谁名下。
+     *
+     * `expectedTotal` 非空时还额外盯**条数**：用于"这一族写法本来就是欠账，
+     * 只是还得比登记慢"的场景。不盯条数的文件级相等挡不住同一个文件里的第 N+1 处——
+     * 所有者没变，命中数却悄悄长了。
+     */
     private data class Rule(
         val what: String,
         val lineMatches: (String) -> Boolean,
-        val owners: Set<String>
+        val owners: Set<String>,
+        val expectedTotal: Int? = null
     )
 
     /** 剥掉块注释与行注释：注释里写 `FileOutputStream(` 不算一处实现 */
@@ -89,6 +96,15 @@ class StorageBoundaryOwnershipTest {
             "自己判 canonical 越界",
             { line -> line.contains(".canonicalPath") },
             setOf("KnowledgeDocumentStore.kt", "KnowledgeRepository.kt", "KbArchiveTransfer.kt")
+        ),
+        // 归档那一处（archive_op 状态）已并入守门读；剩下的四条全在
+        // applyProfileUpdateAtomically 的备份快照里，那一格单独处理，
+        // 还掉一条就回来把这个数改小——它只许降不许升，升了必须是一次显式判断。
+        Rule(
+            "仓库里自己把库名与相对路径拼成文件（不过 canonical 守门）",
+            { line -> line.contains("File(File(knowledgeRoot,") },
+            setOf("KnowledgeRepository.kt"),
+            expectedTotal = 4
         )
     )
 
@@ -114,6 +130,7 @@ class StorageBoundaryOwnershipTest {
     /**
      * 每条规则都必须恰好命中它登记的那些文件：多了是"第二个所有者"，
      * 少了（包括变成 0）要么是"欠账已还"要么是"尺没量到东西"——两种都不许静默。
+     * 带 `expectedTotal` 的规则还要盯条数：同一个文件里多一处，所有者集合是不变的。
      */
     @Test
     fun eachPowerAppearsOnlyInItsRegisteredOwners() {
@@ -133,9 +150,17 @@ class StorageBoundaryOwnershipTest {
                 violations += "· ${rule.what}：登记的是 ${rule.owners}，实际命中 $perFile —— " +
                     parts.joinToString("；")
             }
+            rule.expectedTotal?.let { expected ->
+                val actual = perFile.values.sum()
+                if (actual != expected) {
+                    violations += "· ${rule.what}：登记的是 $expected 处，实际命中 $actual 处" +
+                        if (actual > expected) " —— 又长了，这一族的写法只许减" else
+                            " —— 欠账比登记的还少，回来把 expectedTotal 改小"
+                }
+            }
         }
         assertTrue(
-            "存储边界的所有者变了，这需要一次显式的判断：\n" + violations.joinToString("\n") +
+            "存储边界的所有者或条数变了，这需要一次显式的判断：\n" + violations.joinToString("\n") +
                 "\n  加所有者=又有一份独立实现，行为会像 P0-03 报的那样分叉；" +
                 "少所有者=欠账还得比登记的干净，回来把名字删掉。",
             violations.isEmpty()

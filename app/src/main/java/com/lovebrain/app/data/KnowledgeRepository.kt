@@ -758,13 +758,15 @@ class KnowledgeRepository(
 
     // ═══════════ 持续意图（每 KB 一份，moment/intent.json） ═══════════
 
-    /** 读取持续意图配置 */
+    /**
+     * 读取持续意图配置。
+     *
+     * §5.3 画像格量读路径时发现的第三处裸路径：以前这里 `File(File(knowledgeRoot, kbName),
+     * "moment/intent.json")` 自己拼，库名带 `..` 就能把库外那份意图读回调用方手里。
+     * 现在与公开读共用 [KnowledgeDocumentStore.read] 那一道门。
+     */
     suspend fun readIntent(kbName: String): IntentConfig = withContext(Dispatchers.IO) {
-        val file = File(File(knowledgeRoot, kbName), "moment/intent.json")
-        if (!file.exists()) return@withContext IntentConfig()
-        runCatching {
-            json.decodeFromString<IntentConfig>(file.readText())
-        }.getOrDefault(IntentConfig())
+        decodeIntent(documents.read(kbName, "moment/intent.json"))
     }
 
     /** 保存持续意图配置。每次保存 revision+1，用于生成时冻结快照识别旧请求。
@@ -798,12 +800,21 @@ class KnowledgeRepository(
         }
     }
 
-    /** 无锁版读取（调用方持有 fileMutex） */
-    private fun readIntentUnlocked(kbName: String): IntentConfig {
-        val file = File(File(knowledgeRoot, kbName), "moment/intent.json")
-        if (!file.exists()) return IntentConfig()
+    /**
+     * 无锁版读取（调用方持有 fileMutex）。
+     *
+     * 与 [readIntent] 同一个所有者、同一道门：以前这两处各写一遍裸路径，
+     * 而 `saveIntent` 恰好走的是这一条——它把外面读到的 revision 加一再**返回**给调用方，
+     * 于是"库外的数"会带着本库的身份进入生成快照比对。
+     */
+    private fun readIntentUnlocked(kbName: String): IntentConfig =
+        decodeIntent(documents.read(kbName, "moment/intent.json"))
+
+    /** 意图文件的解码口径：缺失、空、JSON 坏掉都回到"当前没有意图" */
+    private fun decodeIntent(text: String): IntentConfig {
+        if (text.isBlank()) return IntentConfig()
         return runCatching {
-            json.decodeFromString<IntentConfig>(file.readText())
+            json.decodeFromString<IntentConfig>(text)
         }.getOrDefault(IntentConfig())
     }
 
@@ -1075,13 +1086,23 @@ class KnowledgeRepository(
         }
     }
 
+    /**
+     * 读 kb.json（过 canonical 守门）。库不在、路径非法、JSON 坏掉都给 null。
+     *
+     * 这一个是 [getTurnCount] 与 [getCurrentStage] 共用的读入口。以前两处各自
+     * `File(File(knowledgeRoot, kbName), "kb.json")` + `readText()`，
+     * 而同一个文件的**写**侧走的是 `KnowledgeTx.updateMeta`（守门）——
+     * 一宽一严正是复核报告里 P0 那条读路径点名的形状。
+     */
+    private fun readMetaUnlocked(kbName: String): KnowledgeBase? {
+        val raw = documents.read(kbName, "kb.json")
+        if (raw.isBlank()) return null
+        return runCatching { json.decodeFromString<KnowledgeBase>(raw) }.getOrNull()
+    }
+
     /** 读取当前轮次数（kb.json 的 turnCount 字段），供 OngoingContextSelector 冷却逻辑使用 */
     override suspend fun getTurnCount(kbName: String): Int = withContext(Dispatchers.IO) {
-        val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
-        if (!metaFile.exists()) return@withContext 0
-        runCatching {
-            json.decodeFromString<KnowledgeBase>(metaFile.readText()).turnCount
-        }.getOrDefault(0)
+        readMetaUnlocked(kbName)?.turnCount ?: 0
     }
 
     /**
@@ -1118,12 +1139,9 @@ class KnowledgeRepository(
         digest.digest().joinToString("") { "%02x".format(it) }.substring(0, 16)
     }
 
-    /** 读取当前阶段（kb.json） */
+    /** 读取当前阶段（kb.json）；读不到或库在根外时给空串 */
     override suspend fun getCurrentStage(kbName: String): String = withContext(Dispatchers.IO) {
-        val metaFile = File(File(knowledgeRoot, kbName), "kb.json")
-        runCatching {
-            json.decodeFromString<KnowledgeBase>(metaFile.readText()).stage
-        }.getOrDefault("")
+        readMetaUnlocked(kbName)?.stage ?: ""
     }
 
     /** 修改知识库显示名（在知识库管理页点击显示名编辑） */
@@ -1190,11 +1208,21 @@ class KnowledgeRepository(
         }
     }
 
-    /** b3-8: writeVector 的无锁核心——调用方必须已持有 fileMutex */
+    /**
+     * b3-8: writeVector 的无锁核心——调用方必须已持有 fileMutex
+     *
+     * 读侧原来是这个函数体里最后一条裸路径：`File(File(knowledgeRoot, kbName), path).readText()`
+     * 之后才 `writeFileUnlocked` 落盘——**读不过守门、写守门**，同一个文件两种宽严。
+     * 这条改动带出一个真的行为差别：旧布局（只有 `global/status.md`）的库，
+     * `readVector` 一直读得到内容（公开读有回退），而这里读不到于是**静默不写**；
+     * 现在两边同一把尺，见 `writingVectorForALegacyLibraryActuallyLands`。
+     * 至于"库名带 .. "那一面，这里黑盒量不到（读到的内容不外露，写那一侧本来就拒），
+     * 所以 `ProfileReadBoundaryTest` 里那一格在修之前就是绿的，它是防回归而不是证据；
+     * 真正的证据是 `StorageBoundaryOwnershipTest` 的计数棘轮：仓库里这种写法还剩几条。
+     */
     private fun writeVectorUnlocked(kbName: String, values: Map<String, Int>) {
         val path = "understand/warmth.md"
-        val file = File(File(knowledgeRoot, kbName), path)
-        var warmth = file.takeIf { it.exists() }?.readText() ?: return
+        var warmth = documents.read(kbName, path)
         if (warmth.isBlank()) return
         for ((cn, en) in vectorDims) {
             val v = values[en] ?: continue
@@ -1692,29 +1720,31 @@ class KnowledgeRepository(
         const val CLEAR_SOURCES = "clear_sources"       // 清空四个源文件
     }
 
-    /** 操作状态文件路径 */
-    private fun archiveOpFile(kbName: String): File =
-        File(File(knowledgeRoot, kbName), "moment/.archive_op.json")
-
-    /** 读取当前操作状态（无锁，调用方持有 fileMutex） */
+    /**
+     * 读取当前操作状态（无锁，调用方持有 fileMutex）。
+     *
+     * 第六处裸路径：`archiveOpFile` 自己拼 `File(File(knowledgeRoot, kbName), …)`，
+     * 读回来的状态会决定 rotateTopic **跳过哪些步骤**——读错库等于对真库少干活。
+     * 写与删本来就走事务，现在读也回到同一道门，那个 helper 函数随之删掉（不留第二条路）。
+     */
     private fun readArchiveOpUnlocked(kbName: String): ArchiveOperationState? {
-        val file = archiveOpFile(kbName)
-        if (!file.exists()) return null
+        val raw = documents.read(kbName, ARCHIVE_OP_FILE)
+        if (raw.isBlank()) return null
         return runCatching {
-            json.decodeFromString<ArchiveOperationState>(file.readText())
+            json.decodeFromString<ArchiveOperationState>(raw)
         }.getOrNull()
     }
 
     /** 写入操作状态（无锁，调用方持有 fileMutex） */
     private fun writeArchiveOpUnlocked(kbName: String, state: ArchiveOperationState) {
         transactionUnlocked(kbName) {
-            write("moment/.archive_op.json", json.encodeToString(ArchiveOperationState.serializer(), state))
+            write(ARCHIVE_OP_FILE, json.encodeToString(ArchiveOperationState.serializer(), state))
         }
     }
 
     /** 删除操作状态（无锁，调用方持有 fileMutex） */
     private fun deleteArchiveOpUnlocked(kbName: String) {
-        transactionUnlocked(kbName) { deleteAt("moment/.archive_op.json") }
+        transactionUnlocked(kbName) { deleteAt(ARCHIVE_OP_FILE) }
     }
 
     /**
@@ -1869,6 +1899,9 @@ class KnowledgeRepository(
          */
         const val MEMORY_REVISION_FILE = "memory/.revision"
         const val CORRECTIONS_FILE = "memory/corrections.json"
+
+        /** rotateTopic 的幂等状态文件；读写删三处共用这一个名字（只登记名字，不登记怎么拼） */
+        private const val ARCHIVE_OP_FILE = "moment/.archive_op.json"
     }
 
     /** 从 assets/schema/ 加载知识库初始化模板（标题骨架 = 单一数据源） */
