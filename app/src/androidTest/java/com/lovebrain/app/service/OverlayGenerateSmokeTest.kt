@@ -36,6 +36,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import com.lovebrain.app.testing.assertIsDisplayedDiagnosed
 
 /**
  * S1-02 / S1-03（审计 §5.1、§8.1 第 4-6 条）：真实生产 Panel 主链 instrumentation 测试。
@@ -84,7 +85,7 @@ class OverlayGenerateSmokeTest {
      * Compose 1.6.8 无 Regex finder → 用恒定后缀定位 + 整串正则校验真实文案。
      */
     private fun assertLoadingStopBar(reason: String) {
-        composeRule.onNodeWithText(loadingStopSuffix, substring = true).assertIsDisplayed()
+        composeRule.onNodeWithText(loadingStopSuffix, substring = true).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         val node = composeRule
             .onNodeWithText(loadingStopSuffix, substring = true)
             .fetchSemanticsNode("未找到生成中的停止条：$reason")
@@ -150,8 +151,12 @@ class OverlayGenerateSmokeTest {
     private fun addMessageThroughRealUi(text: String) {
         composeRule.onNode(hasSetTextAction()).performTextInput(text)
         composeRule.onNodeWithContentDescription("添加").performClick()
-        composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
-        composeRule.onNodeWithText(text).assertIsDisplayed()
+        // mountPanel 关掉了主时钟的自动推进（LOADING 条有无限动画），所以"推一帧"
+        // 不等于"VM 的协程跑完了 + 组合测量完了"。以前这里只 advanceTimeBy 一次就断言，
+        // 真机上 7 个用例全死在同一句 "MessageList 应真收到 1 条消息 expected:<1> but was:<0>"。
+        pumpUntil("点过➕之后 MessageList 要有这一条") { vm.messages.value.isNotEmpty() }
+        composeRule.onNodeWithText(text)
+            .assertIsDisplayedDiagnosed("刚添加的那条消息")
         assertEquals("MessageList 应真收到 1 条消息", 1, vm.messages.value.size)
     }
 
@@ -173,7 +178,7 @@ class OverlayGenerateSmokeTest {
         mountPanel()
 
         val entryText = "还没有聊天记录，点这里主动发一条"
-        composeRule.onNodeWithText(entryText).assertIsDisplayed()
+        composeRule.onNodeWithText(entryText).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         assertEquals(
             "初始应为 REPLY 模式",
             LoveBrainViewModel.ComposerMode.REPLY,
@@ -188,7 +193,7 @@ class OverlayGenerateSmokeTest {
             LoveBrainViewModel.ComposerMode.PROACTIVE,
             vm.composerMode.value
         )
-        composeRule.onNodeWithText("生成开场").assertIsDisplayed()
+        composeRule.onNodeWithText("生成开场").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         assertFalse("切模式不得进入生成中", vm.isGenerating.value)
         assertNull("切模式不得产生结果", vm.result.value)
         assertEquals("切模式的 Engine/Provider 调用次数必须为 0", 0, s.requestCount)
@@ -225,7 +230,7 @@ class OverlayGenerateSmokeTest {
         val warning = vm.panelWarning.value
         assertNotNull("未配置 Provider 时点生成应给出面板告警", warning)
         assertTrue("告警文案应指向模型供应商配置，实际：$warning", warning!!.contains("模型供应商"))
-        composeRule.onNodeWithText(warning).assertIsDisplayed()
+        composeRule.onNodeWithText(warning).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         assertNull("未配置 Provider 不得产生结果", vm.result.value)
         assertFalse("未配置 Provider 不得进入生成中", vm.isGenerating.value)
         assertEquals("未配置 Provider 不得发出请求", 0, silent.requestCount)
@@ -293,8 +298,8 @@ class OverlayGenerateSmokeTest {
             s.lastRequestBody().contains("你最近是不是很忙")
         )
         // 有结果时生产主操作位换成「重试 | 记入知识库」
-        composeRule.onNodeWithText("重试").assertIsDisplayed()
-        composeRule.onNodeWithText("记入知识库").assertIsDisplayed()
+        composeRule.onNodeWithText("重试").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText("记入知识库").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         assertFalse("完成后不得留在生成中", vm.isGenerating.value)
     }
 
@@ -321,7 +326,7 @@ class OverlayGenerateSmokeTest {
             currentError()!!.message
         )
         // 生产 LOADING 分支文案由 GenerationActionButton 渲染；此处断言真实用户可见错误
-        composeRule.onNodeWithText(ReplyFailureKind.Auth.userMessage).assertIsDisplayed()
+        composeRule.onNodeWithText(ReplyFailureKind.Auth.userMessage).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         assertEquals("认证类配置错误不得重试", 1, s.requestCount)
         assertFalse("失败后不得留在生成中", vm.isGenerating.value)
     }
@@ -382,7 +387,7 @@ class OverlayGenerateSmokeTest {
             ReplyFailureKind.Parse.userMessage,
             currentError()!!.message
         )
-        composeRule.onNodeWithText(ReplyFailureKind.Parse.userMessage).assertIsDisplayed()
+        composeRule.onNodeWithText(ReplyFailureKind.Parse.userMessage).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         assertEquals("解析失败发生在流之后，只应有 1 个请求", 1, s.requestCount)
         assertFalse("失败后不得留在生成中", vm.isGenerating.value)
     }
@@ -409,7 +414,7 @@ class OverlayGenerateSmokeTest {
         assertFalse("停止后 isGenerating 必须为 false", vm.isGenerating.value)
         assertNull("停止不得留下结果", vm.result.value)
         assertEquals("停止不得清空消息", 1, vm.messages.value.size)
-        composeRule.onNodeWithText("生成回复 · 1条消息").assertIsDisplayed()
+        composeRule.onNodeWithText("生成回复 · 1条消息").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }
 
     // ═══════════════════════ 8. 快速双击 ═══════════════════════

@@ -16,6 +16,7 @@ import com.lovebrain.app.testing.MainChainHarness
 import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
+import com.lovebrain.app.testing.assertIsDisplayedDiagnosed
 
 /**
  * P1-5: Compose UI interaction test — 真实交互路径覆盖。
@@ -69,7 +70,7 @@ class ResultAreaInteractionTest {
             )
         }
         // 验证方案卡内容渲染
-        composeRule.onNodeWithText("推荐回复内容").assertIsDisplayed()
+        composeRule.onNodeWithText("推荐回复内容").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }
 
     // ═══ 2. 风格/方向切换 ═══
@@ -93,14 +94,14 @@ class ResultAreaInteractionTest {
             )
         }
         // 默认 STYLE 模式——推荐回复内容可见
-        composeRule.onNodeWithText("推荐回复内容").assertIsDisplayed()
+        composeRule.onNodeWithText("推荐回复内容").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         // 点击"方向"切换到 DIRECTION 模式
         composeRule.onNodeWithText("方向").performClick()
         // DIRECTION 模式下应显示 F reply
-        composeRule.onNodeWithText("F reply").assertIsDisplayed()
+        composeRule.onNodeWithText("F reply").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         // 切回风格
         composeRule.onNodeWithText("风格").performClick()
-        composeRule.onNodeWithText("推荐回复内容").assertIsDisplayed()
+        composeRule.onNodeWithText("推荐回复内容").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }
 
     // ═══ 3. Error 渲染 ═══
@@ -123,8 +124,8 @@ class ResultAreaInteractionTest {
                 generationRoundId = 0
             )
         }
-        composeRule.onNodeWithText("测试错误信息").assertIsDisplayed()
-        composeRule.onNodeWithText("点击重试").assertIsDisplayed()
+        composeRule.onNodeWithText("测试错误信息").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText("点击重试").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }
 
     // ═══ 4. 未配置供应商 ═══
@@ -147,8 +148,8 @@ class ResultAreaInteractionTest {
                 generationRoundId = 0
             )
         }
-        composeRule.onNodeWithText("还没有配置模型供应商").assertIsDisplayed()
-        composeRule.onNodeWithText("去设置").assertIsDisplayed()
+        composeRule.onNodeWithText("还没有配置模型供应商").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText("去设置").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }
 
     // ═══ 5. `⋯` 菜单可打开——"记入知识库"已移至主操作按钮，不再在 ⋯ 菜单中 ═══
@@ -286,10 +287,10 @@ class ResultAreaInteractionTest {
         // 切换到方向
         composeRule.onNodeWithText("方向").performClick()
         // 确认在 DIRECTION 模式
-        composeRule.onNodeWithText("F reply").assertIsDisplayed()
+        composeRule.onNodeWithText("F reply").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         // 风格 Tab 不应高亮选中——验证方向仍被选中
-        composeRule.onNodeWithText("方向").assertIsDisplayed()
+        composeRule.onNodeWithText("方向").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         // 确认仍显示方向内容
-        composeRule.onNodeWithText("F reply").assertIsDisplayed()
+        composeRule.onNodeWithText("F reply").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }
 }

@@ -16,6 +16,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicInteger
+import com.lovebrain.app.testing.assertIsDisplayedDiagnosed
 
 /**
  * S1-01 / S1-03（审计 §2、§5、§8.1 第 3 条）：生产 [ReplyPrimaryActions] 的
@@ -94,7 +95,7 @@ class ReplyPrimaryActionsTest {
             messageCount = 3,
             onGenerateReply = { generateClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText("生成回复 · 3条消息").assertIsDisplayed()
+        composeRule.onNodeWithText("生成回复 · 3条消息").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         composeRule.onNodeWithText("生成回复 · 3条消息").performClick()
         // 审计修订：JUnit 断言，不用裸 assert()
         assertEquals("生成回复回调应恰好触发 1 次", 1, generateClicks.get())
@@ -125,7 +126,7 @@ class ReplyPrimaryActionsTest {
             onGenerateReply = { generateClicks.incrementAndGet() }
         )
         // 0 条消息：无计数后缀
-        composeRule.onNodeWithText("生成回复").assertIsDisplayed()
+        composeRule.onNodeWithText("生成回复").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         composeRule.onNodeWithText("生成回复 · 0条消息").assertIsNotDisplayed()
         composeRule.onNodeWithText("生成回复").assertIsNotEnabled()
     }
@@ -143,7 +144,7 @@ class ReplyPrimaryActionsTest {
             messageCount = 0,
             onGenerateReply = { generateClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText("生成回复").assertIsDisplayed()
+        composeRule.onNodeWithText("生成回复").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         composeRule.onAllNodes(hasClickAction()).assertCountEquals(0)
         assertEquals("零消息时不得有任何生成回调", 0, generateClicks.get())
     }
@@ -161,8 +162,8 @@ class ReplyPrimaryActionsTest {
             onRetry = { retryClicks.incrementAndGet() },
             onSaveToKb = { saveClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText("重试").assertIsDisplayed()
-        composeRule.onNodeWithText("记入知识库").assertIsDisplayed()
+        composeRule.onNodeWithText("重试").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText("记入知识库").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         // 有结果时不得再出现「生成回复」主按钮（主动发/生成入口不能被挤掉）
         composeRule.onNodeWithText("生成回复 · 3条消息").assertIsNotDisplayed()
 
@@ -185,7 +186,7 @@ class ReplyPrimaryActionsTest {
             onGenerateProactive = { proactiveClicks.incrementAndGet() },
             onGenerateReply = { replyClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText("生成开场").assertIsDisplayed()
+        composeRule.onNodeWithText("生成开场").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         composeRule.onNodeWithText("生成开场").performClick()
 
         assertEquals("生成开场应恰好 1 次", 1, proactiveClicks.get())
@@ -214,7 +215,7 @@ class ReplyPrimaryActionsTest {
         // 推进若干帧完成组合 + LaunchedEffect
         composeRule.mainClock.advanceTimeBy(120L)
 
-        composeRule.onNodeWithText(loadingStopSuffix, substring = true).assertIsDisplayed()
+        composeRule.onNodeWithText(loadingStopSuffix, substring = true).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         // 整串校验真实文案（旧用例写死 onNodeWithText("停止") 就是在这里必挂）
         val bar = loadingStopBarText()
         assertTrue("生产 LOADING 停止条文案应完整匹配，实际：$bar", loadingStopText.matches(bar))
@@ -240,7 +241,7 @@ class ReplyPrimaryActionsTest {
             onGenerateProactive = {},
             onStop = { stopClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText("停止").assertIsDisplayed()
+        composeRule.onNodeWithText("停止").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         composeRule.onNodeWithText("生成开场").assertIsNotDisplayed()
         composeRule.onNodeWithText("停止").performClick()
         assertEquals("主动发停止应恰好触发 1 次", 1, stopClicks.get())
