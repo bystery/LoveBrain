@@ -504,15 +504,28 @@ class LoveBrainViewModel(
             .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
 
     /** ═══════════ 主动发起/润色 ═══════════ */
-    private val _proactiveOptions = MutableStateFlow<List<com.lovebrain.app.model.ProactiveOption>>(emptyList())
-    val proactiveOptions: StateFlow<List<com.lovebrain.app.model.ProactiveOption>> = _proactiveOptions.asStateFlow()
+
+    /**
+     * 主动发的 options / 错误 / 事件归约住在 [com.lovebrain.app.feature.proactive.ProactiveStore]
+     * （§5.2 第 3 步）。归属判断仍转发给 coordinator——"谁在跑"只有一本账。
+     */
+    private val proactiveStore = com.lovebrain.app.feature.proactive.ProactiveStore(
+        isCurrentRequest = { requestId ->
+            ownsOperation(ForegroundOperationCoordinator.OperationType.PROACTIVE, requestId)
+        }
+    ) { effect -> onProactiveEffect(effect) }
+
+    val proactiveOptions: StateFlow<List<com.lovebrain.app.model.ProactiveOption>> =
+        proactiveStore.uiState.map { it.options }
+            .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, emptyList())
 
     /** 主动开场是否在生成——从 coordinator 派生。模式开关是 composerMode，不是这个 */
     val isProactive: StateFlow<Boolean> =
         busyOf(ForegroundOperationCoordinator.OperationType.PROACTIVE)
 
-    private val _proactiveError = MutableStateFlow<String?>(null)
-    val proactiveError: StateFlow<String?> = _proactiveError.asStateFlow()
+    val proactiveError: StateFlow<String?> =
+        proactiveStore.uiState.map { it.error }
+            .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
 
     /** 结果模式——显式区分回复结果与主动发结果 */
     enum class ResultMode { REPLY, PROACTIVE }
@@ -522,7 +535,14 @@ class LoveBrainViewModel(
     /** Composer mode——UI 会话状态，单一事实源。
      * REPLY = 普通回复模式（默认）
      * PROACTIVE = 主动发模式（蓝字切换进入，不发网络请求）
-     * 替代之前分散的 local inputMode / resultMode / isProactive 三个变量各自推断。 */
+     * 替代之前分散的 local inputMode / resultMode / isProactive 三个变量各自推断。
+     *
+     * §5.2 把"模式"列进 ProactiveStore 的接管清单，本轮**没搬完**，原因说清楚：
+     * 这两个 enum 是 VM 的嵌套类型，UI 与 androidTest 都按 `LoveBrainViewModel.ComposerMode`
+     * 引用；而 feature 包不许 import viewmodel（包依赖棘轮里那条）。
+     * 要搬得先把 enum 挪进 model 并改掉所有引用点——那是一次独立的机械改动，
+     * 不该塞进这一刀里做成半成品。主动发的 options / 错误 / 事件归约已经出去，
+     * "结束且有可展示结果才退出模式"这条规则仍只有一处实现。 */
     enum class ComposerMode { REPLY, PROACTIVE }
     private val _composerMode = MutableStateFlow(ComposerMode.REPLY)
     val composerMode: StateFlow<ComposerMode> = _composerMode.asStateFlow()
@@ -536,8 +556,7 @@ class LoveBrainViewModel(
         // 退出主动发时清残留结果
         if (_composerMode.value == ComposerMode.REPLY) {
             _resultMode.value = ResultMode.REPLY
-            _proactiveOptions.value = emptyList()
-            _proactiveError.value = null
+            proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Clear)
         }
     }
 
@@ -2006,8 +2025,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     fun clearProactive() {
-        _proactiveOptions.value = emptyList()
-        _proactiveError.value = null
+        proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Clear)
     }
 
 
@@ -2131,19 +2149,21 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     // --- 主动发起 ---
 
     private fun applyProactiveEvent(event: ProactiveEvent) {
-        if (!ownsOperation(ForegroundOperationCoordinator.OperationType.PROACTIVE, event.requestId)) {
-            L.w("proactive event ${event::class.simpleName} rejected (stale requestId)")
-            return
-        }
-        when (event) {
-            is ProactiveStarted -> {
-                _proactiveOptions.value = emptyList()
-                _proactiveError.value = null
-            }
-            is ProactiveFirstToken -> _lastResponseMs.value = event.elapsedMs
-            is ProactiveOptions -> _proactiveOptions.value = event.options
-            is ProactiveFailed -> _proactiveError.value = event.message
-            is ProactiveEnded -> if (_proactiveOptions.value.isNotEmpty()) exitProactiveMode()
+        proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(event))
+    }
+
+    /**
+     * ProactiveStore 归约之后要**别人**做的事：跨 feature 的耗时统计，以及
+     * "真拿到可展示的开场之后要不要退出主动发模式"。
+     *
+     * 旧实现是 reducer 里直接调 exitProactiveMode()：状态持有者顺手改了 UI 会话状态，
+     * 两个所有者。现在模式仍然归 VM（为什么这轮没一起搬，写在 _composerMode 上方），
+     * "结束且有结果才退出"这条规则本身仍只有一处实现。
+     */
+    private fun onProactiveEffect(effect: com.lovebrain.app.feature.proactive.ProactiveStore.Effect) {
+        when (effect) {
+            is com.lovebrain.app.feature.proactive.ProactiveStore.Effect.FinishedWithResults -> exitProactiveMode()
+            is com.lovebrain.app.feature.proactive.ProactiveStore.Effect.FirstTokenObserved -> _lastResponseMs.value = effect.elapsedMs
         }
     }
 
