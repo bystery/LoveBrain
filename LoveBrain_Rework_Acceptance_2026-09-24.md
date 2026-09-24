@@ -1,7 +1,7 @@
 # LoveBrain 返工验收包（对齐 2026-09-23 全面独立复核报告）
 
 > 被审提交：`286c9406b40b79e4443f1db465bfa5b489f540fa`（报告结论 FAIL）
-> 本轮返工提交链：`8745a3d` → `ce89b86` → `5424e21` → `6d67b37` → `0abe572` → `73ed6a8` → `d390dc6` → `c51e443` → `a9ae136` → `42da306` → `aea24c5` → `4e1f2e4` → `eaba6af`(S2-05) → `73b3d08`(S2-07 错误类型) → `6597bd9`(S2-07 取消审计) → `9539dd2`(S2-07 工单编号) → `0da80d5`(修自己的伪门禁) → `dc1cb31`(SetupActivity 收口) → `316913f`(TriggerCoordinator 改冷流) → `4c1ec8b`(记账) → `50e4fb6`(Koin 图 JVM 解析) → `bac28b8`(仓库文本算法外提) → `db5cdf9`(schema/迁移→KnowledgeMigrator) → `690db96`(赞踩/点踩案例→FeedbackCaseController) → `c1293f1`(纠正判定与文案→MemoryCorrectionPolicy) → `752d34c`(改写台账与改写 prompt 外提) → `3871a25`(方案卡位置映射→ReplyPatch) → `63bcb48`(两处生成指纹→GenerationFingerprints) →（本文件所在提交）
+> 本轮返工提交链：`8745a3d` → `ce89b86` → `5424e21` → `6d67b37` → `0abe572` → `73ed6a8` → `d390dc6` → `c51e443` → `a9ae136` → `42da306` → `aea24c5` → `4e1f2e4` → `eaba6af`(S2-05) → `73b3d08`(S2-07 错误类型) → `6597bd9`(S2-07 取消审计) → `9539dd2`(S2-07 工单编号) → `0da80d5`(修自己的伪门禁) → `dc1cb31`(SetupActivity 收口) → `316913f`(TriggerCoordinator 改冷流) → `4c1ec8b`(记账) → `50e4fb6`(Koin 图 JVM 解析) → `bac28b8`(仓库文本算法外提) → `db5cdf9`(schema/迁移→KnowledgeMigrator) → `690db96`(赞踩/点踩案例→FeedbackCaseController) → `c1293f1`(纠正判定与文案→MemoryCorrectionPolicy) → `752d34c`(改写台账与改写 prompt 外提) → `3871a25`(方案卡位置映射→ReplyPatch) → `63bcb48`(两处生成指纹→GenerationFingerprints) → `74a263d`(预算裁剪与场景链→PromptBudget/SceneChainInjection) →（本文件所在提交）
 > 复核依据：`LoveBrain_Comprehensive_Reaudit_286c9406_2026-09-23.md`，逐节对照
 > 编写日期：2026-09-24（第二轮补：S2-05 与 S2-07 三项在初版里被记为"未做"，现已做完并重新实测）
 
@@ -18,7 +18,7 @@
 | 4 | §5.2 锦囊"真实费用基准" | **未产出数据** | 需要用户 API Key 与真实请求。已提供可重放脚本与输出契约（`scripts/suggest_cost_baseline.py`），未执行 = 无数字。 |
 | 5 | §7.2/§8.3.6 抓包证明零遥测 | **未执行** | 需要设备。已提供 `scripts/verify_network_egress.sh`；README 已改成"依据源码与依赖清单核对，抓包未执行"，不再拿未做的事当证据。 |
 | 6 | §8.3.7 v1.3.1 → 候选 APK 真机升级断言 | **脚本与门禁做，设备未跑** | `scripts/run_upgrade_test.sh` 全链存在且被 CI 调用，但覆盖安装、数据可读、主流程可用这三段都需要设备。 |
-| 7 | §6 S2-05 的"上帝类"这一项**只部分达成** | 部分 | `KnowledgeRepository` 已从 2283 降到 **1857**（低于报告基线 2118）：文本算法进 `KbTextOps`、schema 探测与旧库迁移进 `KnowledgeMigrator`。`LoveBrainViewModel` 2941 → **2678**（报告基线 2954，−9%）——赞踩/点踩案例进 `FeedbackCaseController`、纠正判定与文案进 `MemoryCorrectionPolicy`、改写台账与改写 prompt 进 `RewriteLedger`/`RewritePrompt`、方案卡位置映射进 `ReplyPatch`、两处生成指纹进 `GenerationFingerprints`，但**降幅仍在两位数以下**，剩下的单条改写链路 228 行、锦囊 163 行、Trigger 事件落点 188 行、持续意图 134 行还在同一个类里。`PromptBuilder` 1199 一行未动，仍比基线 1177 大。拆文件不等于拆职责，也不等于行数下降，这一格不给"完成"。 |
+| 7 | §6 S2-05 的"上帝类"这一项**只部分达成** | 部分 | `KnowledgeRepository` 已从 2283 降到 **1857**（低于报告基线 2118）：文本算法进 `KbTextOps`、schema 探测与旧库迁移进 `KnowledgeMigrator`。`LoveBrainViewModel` 2941 → **2678**（报告基线 2954，−9%）——赞踩/点踩案例进 `FeedbackCaseController`、纠正判定与文案进 `MemoryCorrectionPolicy`、改写台账与改写 prompt 进 `RewriteLedger`/`RewritePrompt`、方案卡位置映射进 `ReplyPatch`、两处生成指纹进 `GenerationFingerprints`，但**降幅仍在两位数以下**，剩下的单条改写链路 228 行、锦囊 155 行、Trigger 事件落点 188 行、持续意图 134 行还在同一个类里。`PromptBuilder` 已从 1199 降到 **968**（低于基线 1177）。拆文件不等于拆职责，也不等于行数下降，这一格不给"完成"。 |
 
 初版这里还列着五条"未做"：S2-05 的 Activity 迁移、S2-07 的字符串前缀推错误、S2-07 的工单编号，
 外加逐字复核时我自己抓出来的两处同病（SetupActivity 伸手进 VM 拿仓库、KnowledgeTriggerCoordinator
@@ -196,7 +196,7 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | `scripts/check_apk_metadata.sh` | OK：`com.lovebrain.app` / versionCode 9 / 1.4.0-rc1 / minSdk 26 / targetSdk 35 / launcher `ui.SetupActivity` / 2 808 376 bytes；R8 mapping 350 911 行、4485 条顶格重命名条目；`apksigner verify` 出证书 `c2986640bce6…2f7d`。**SHA-256 不写死**：同一份源码本机连跑两次 `assembleRelease` 得到两个不同值（大小一致，差在 zip 内时间戳，本轮这次是 `da04c7c6…c93d`），所以发布候选的 hash 只认 CI 那一次构建产出的 `dist/apk-metadata.txt`，本机数字只作当次证据 |
 | `scripts/verify_signing_continuity.sh` | OK：证书 SHA-256 `c2986640bce6…2f7d`，与已公开 v1.3.1 一致（同时用 `gh api` 对过 release 正文与 asset digest） |
 | `scripts/license_scan.sh` | OK：124/124，SBOM 产出且可 JSON 解析 |
-| `scripts/assert_artifacts.sh` | OK：真实 889 例 / 106 套件 / 0 failures / 0 errors / 0 skipped；空目录 → 1；篡改 XML 声明数 → 1 |
+| `scripts/assert_artifacts.sh` | OK：真实 906 例 / 108 套件 / 0 failures / 0 errors / 0 skipped；空目录 → 1；篡改 XML 声明数 → 1 |
 | `scripts/asset_hashes.sh --check` | OK：prompt 资产未漂移（`27abe25529deb47cb40366961998597c556c5184416fa038ff3ece81a2d6eb5c`） |
 | `scripts/audit_cancellation.py --check` | OK：168 站点（PROTECTED 53 / WAIVED 2 / SUSPEND-FREE 113），NEEDS_REVIEW=0；注入吞取消样例 → exit 1（已验证会红） |
 | `scripts/strip_ticket_ids.py --check` | OK：注释/代码/字面量三处工单编号均为 0；注入 `P0-9: probe` → exit 1（已验证会红） |
@@ -228,9 +228,10 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | +`MemoryCorrectionPolicy` 拆出（6 例）+ 撤销失败可见（VM 侧 +5 例） | 102 | 857 | 0 | 0 | 0 |
 | +改写台账 `RewriteLedger` 与改写 prompt 外提（8 + 6 例） | 104 | 871 | 0 | 0 | 0 |
 | +方案卡读/改映射收口 `ReplyPatch`（9 例） | 105 | 880 | 0 | 0 | 0 |
-| +两处生成指纹外提 `GenerationFingerprints`（9 例） | 106 | **889** | 0 | 0 | 0 |
+| +两处生成指纹外提 `GenerationFingerprints`（9 例） | 106 | 889 | 0 | 0 | 0 |
+| +PromptBuilder 拆出预算与场景链（9 + 8 例） | 108 | **906** | 0 | 0 | 0 |
 
-本轮新增/改写的用例（逐套件读 XML，全部 0 失败；总数按最后一列为 889 例 / 106 套件）：
+本轮新增/改写的用例（逐套件读 XML，全部 0 失败；总数按最后一列为 906 例 / 108 套件）：
 
 | 套件 | 用例数 | 钉住的东西 |
 |---|---:|---|
@@ -251,6 +252,8 @@ XML 声明的 `tests="N"` 与真实 `<testcase>` 元素个数完全相等。实�
 | `RewriteLedgerTest` | 8 | 改写压入 Loading+历史版本、正文与反馈成对压入并按 LIFO 弹回、身份互不串、弹空后 key 整个消失（不留 `key -> []`）、clearAll 一次清空两本 |
 | `RewritePromptTest` | 6 | 规则区固定 6 条不含用户数据、IDEA 草稿不进请求、只带最近 6 条、空段落整段省略不留占位标题、原回复里的"忽略以上规则"只落在数据行 |
 | `ReplyPatchTest` | 9 | A/B/C/D 与四个字段的位置映射逐个钉（并断"只有一条被改"）、改风格不动方向、改方向不动风格、缺位只补到目标位且读回空正文、analysis 不受影响、不认识的 tag 原样返回不抛错 |
+| `PromptBudgetTest` | 9 | 不超预算时逐字节不动；超预算先裁知识段尾部、最新一条真实消息与完整 IDEA 必须留下、对话按整行 JSON 裁剪且 <chat> 围栏不切半、什么都放不下时仍给省略说明并闭合围栏、锦囊高优先段保住且不出现粘连段名、兜底截断保头保尾、lastH1Blocks 带省略标记 |
+| `SceneChainInjectionTest` | 8 | 龄标注三种写法（不到1小时 / 当日 N 小时前 / 跨日带日期）、时间解析不出来记「时间未知」而不是丢弃、超过窗口整条不注入、同一条事实只注入最新版本、写入端 src/spk/subj 与旧 ⟨ids⟩ 标记都不外泄、无事实的条目与不匹配的行一律不出段 |
 | `GenerationFingerprintsTest` | 9 | 输入指纹对 9 类字段逐个敏感（含消息顺序/条数/身份/角色）、length-prefix 让 "ab"+"c" 与 "a"+"bc" 不撞（同时断裸拼接确实同串）、哈希显式 UTF-8、空段固定成 `-`、锦囊 11 段逐个改都必须换指纹（含冻结的发起日） |
 | `MechanismClosureTest`（本轮 +5） | 19 | 卡片撤销失败必须可见、两个撤销入口失败话术一致、撤瞬时 mute 不碰仓库、持久化纠话说清改了什么、抛异常变成提示而不是崩溃 |
 
@@ -279,9 +282,9 @@ instrumentation：`app/src/androidTest` 现有 40 个 `@Test`（5 个文件，�
 `scripts/audit_cancellation.py --check` 168 站点中 NEEDS_REVIEW 0（其余三档是已放行/已豁免/段内无挂起点，
 不是"没扫到"）；两者都用注入样例验证过"确实会红"（前者 `NEGATIVE-TEST exit=1`，后者 `NEGATIVE exit=1`）。
 
-本轮最后一次全量门禁（HEAD = `63bcb48`，同一棵树）：
+本轮最后一次全量门禁（HEAD = `74a263d`，同一棵树）：
 `:app:testDebugUnitTest` + `:app:lintDebug` + `:app:compileDebugAndroidTestKotlin` + `:app:assembleRelease`
-→ BUILD SUCCESSFUL（889 例 / 106 套件 / 0 failures；lint 72 issue、0 error、0 fatal）；
+→ BUILD SUCCESSFUL（906 例 / 108 套件 / 0 failures；lint 72 issue、0 error、0 fatal）；
 随后 `assert_artifacts.sh`（unit + lint）、`python scripts/strip_ticket_ids.py --check`、
 `python scripts/audit_cancellation.py --check`、`bash scripts/asset_hashes.sh --check docs/prompt-assets.lock`、
 `check_apk_metadata.sh` 全绿。
@@ -299,7 +302,7 @@ instrumentation：`app/src/androidTest` 现有 40 个 `@Test`（5 个文件，�
    都卡在同一件事上：**没有设备**。这不是理由的替代品，只是说明它们的共同前提。
    另外两项（真实费用基准、S2-05 上帝类）是本机就能继续做的，也照样列在 §0，没有被"等设备"这句盖掉。
 3. S2-05 只算部分达成：`KnowledgeRepository` 这轮真的降到了基线以下（2118 → **1857**），
-   但 `LoveBrainViewModel` 只从 2954 降到 **2678**（−9%），`PromptBuilder`（1177→1199）一行未动，
+   但 `LoveBrainViewModel` 只从 2954 降到 **2678**（−9%），`TopicRecorder`(1006→991) 本轮未再动，
    我不给"职责拆分完成"这个词盖章。
 4. worker 不得自签 PASS（报告 §8 第三步门禁）。这份文件是**交付给复核者的证据包**，不是通过证明。
 
@@ -310,14 +313,14 @@ worker 不能自签的另外一面也照做：上面每个"OK"都是命令输出
 
 ### 4.1 上帝类行数（报告 §6 S2-05 的表，本轮实测对照）
 
-报告给的被审行数与本轮 `wc -l` 实测（HEAD = `63bcb48`）：
+报告给的被审行数与本轮 `wc -l` 实测（HEAD = `74a263d`）：
 
 | 文件 | 报告 | 上一轮 | 现在 | 变化 |
 |---|---:|---:|---:|---|
 | `LoveBrainViewModel.kt` | 2954 | 2941 | **2678** | −276（−9%，仍是第一行，见下） |
 | `KnowledgeRepository.kt` | 2118 | 2283 | **1857** | **−426，已低于报告基线 261 行** |
 | `KnowledgeBaseActivity.kt` | 1214 | 1213 | **924** | **−290**（数据逻辑与 zip 归档全部下沉） |
-| `PromptBuilder.kt` | 1177 | 1199 | 1199 | +22（**未动**，仍比基线大） |
+| `PromptBuilder.kt` | 1177 | 1199 | **968** | **−231，已低于报告基线 209 行** |
 | `TopicRecorder.kt` | 1006 | 991 | 991 | −15 |
 | `GenerationEngine.kt` | 828 | 678 | 686 | −142 |
 | `KbEditActivity.kt` | 585 | 584 | **572** | −13（保存/读版本契约下沉） |
@@ -326,7 +329,7 @@ worker 不能自签的另外一面也照做：上面每个"OK"都是命令输出
 
 承接方（新增，全部可 JVM 单测）：`KnowledgeMigrator.kt` 413、`FeedbackCaseController.kt` 177、
 `RewriteLedger.kt` 87、`KbTextOps.kt` 121、`RewritePrompt.kt` 80、`MemoryCorrectionPolicy.kt` 81、
-`ReplyPatch.kt` 68、`GenerationFingerprints.kt` 96；上一批还有
+`ReplyPatch.kt` 68、`GenerationFingerprints.kt` 96、`SceneChainInjection.kt` 96、`PromptBudget.kt` 168；上一批还有
 `KnowledgeBaseViewModel.kt` 324、`KbArchiveTransfer.kt` 138、`KbEditViewModel.kt` 53、
 `OnboardingResultParser.kt` 51、`ProviderFailure.kt` 50。
 即仓库减掉的 426 行没有消失，而是搬到了可单测、可离线跑的位置——
@@ -342,8 +345,8 @@ worker 不能自签的另外一面也照做：上面每个"OK"都是命令输出
 结论：报告点名的两个"只写注释不整改"的 Activity 这次真改了，
 且 `app/src/main` 里四个 data 层类型在 ui 包的出现次数实测为 0（`UiLayerDependencyContractTest` 锁住）。
 `KnowledgeRepository` 这次真的降到了基线以下（两条结构合同钉住：持久层只有一把 Mutex、
-迁移器不得自己加锁）。但 `LoveBrainViewModel` 只降 6%、`PromptBuilder` 一行未动，
-S2-05 只算**部分达成**，不写成已完成。
+迁移器不得自己加锁）。报告点名的七个文件里已有四个降到基线以下（两个 Activity、`KnowledgeRepository`、
+`PromptBuilder`），但 `LoveBrainViewModel` 只降 9%，S2-05 只算**部分达成**，不写成已完成。
 报告说"记录技术债不等于修复技术债"，本轮不能一边批评它一边犯同样的错。
 ---
 
