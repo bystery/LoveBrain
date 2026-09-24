@@ -58,6 +58,11 @@ jobs:
         # Fatal severity and a non-stub HTML companion.
         run: bash scripts/assert_artifacts.sh --label "lint" --lint-xml app/build/reports/lint-results-debug.xml --lint-html app/build/reports/lint-results-debug.html
 
+      - name: Instrumentation sources must compile (same SHA, same job)
+        # ui-test 过去在 Gradle 之前就退出，androidTest 的编译问题会被双重遮蔽；
+        # 这里显式编一遍，编译不过就当场红，不等 emulator。
+        run: ./gradlew :app:compileDebugAndroidTestKotlin --no-daemon
+
       - name: Prompt asset lock must not have drifted
         # BENCHMARK.md quotes a real SHA-256 of the prompt assets; this is what
         # keeps that quote honest instead of decorative.
@@ -244,7 +249,8 @@ jobs:
   # 覆盖安装**签名/R8 Release** 候选、断言数据可读 + schema 已升级 + 主页面可用。
   upgrade-test:
     runs-on: ubuntu-latest
-    needs: verify
+    # UI 已经红的时候不该再造一套"看起来通过"的升级结果
+    needs: [verify, ui-test]
     steps:
       - uses: actions/checkout@v4
 
