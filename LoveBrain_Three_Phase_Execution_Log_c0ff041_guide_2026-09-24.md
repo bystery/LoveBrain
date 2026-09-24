@@ -341,12 +341,86 @@ HEAD  2746
 ②"搬 store 不降体量"这句在第一步并不成立：`ReplyStore` 那一刀实打实 −27 行，
 是后面几步把编排与转发留在 VM 才涨回去的。下一格别照抄"反正不会降"这个结论。
 
+## 2i. 阶段二第九轮（另一窗口接续）：先造仪器，再用它量三处无障碍缺陷
+
+> 本轮起点是交接文档 `c21b200`。逐项逐条对照结果另成一份：
+> `LoveBrain_Guide_Item_by_Item_Verification_2026-09-24.md`（含"本机已验 / 沿用上轮未复验 / 只能等 CI"三态标注）。
+> 提交：`cb44ceb` `6177cd0` `c927b2e` `9f4747a` `ead80c1` `2ef47ac`。
+
+### 为什么这一轮从 §5.3 改道去装仪器
+
+交接建议先拆 catalog。实际先做的是 §6.5 的**语义树那一半**，理由一条：
+指导书 §10 说下一次复核"不重复接受'代码看起来已经修了'"，而 UI 类断言此前唯一的真通道是
+instrumentation——本机跑不了、CI 上还压着 19 条真失败。没有这台仪器，后面每处 UI 改动都只能继续交"我看过了"。
+拆 store 不产生这类证据。
+
+### 仪器（`app/src/test/…/core/testing/`）
+
+`UiMatrix`（320/360/412/600dp × 字体 1.0/1.3/2.0，12 格）、`SemanticsProbe`（读语义树的尺）、
+`UiProbeApplication`（空壳 App）。Robolectric 4.14.1 + `ui-test-junit4`，走 `testDebugUnitTest`
+→ CI 的 verify job 每次都跑。两个坑（都是本机踩出来的，写进类注释）：
+
+1. **`@GraphicsMode(NATIVE)` 是前提**。legacy 模式下文字度量是假的：同一个节点
+   32x39dp（legacy）→ **224x23dp**（NATIVE）。少了这行，"实测"两个字对任何由文字撑开的尺寸都不成立。
+2. 真 Application 的 `onCreate` 会 `startKoin`，同一 JVM 沙箱第二个用例就
+   `KoinAppAlreadyStartedException`——四格红在装配阶段，与被测控件无关。空壳 App 顺便也成了
+   "这个控件没偷偷依赖全局单例"的证据。
+
+### 量到并修掉的三处
+
+| 处 | 改前实测 | 改后 | 提交 |
+|---|---|---|---|
+| 三段模式切换的可点击节点 | **84x18dp / 85x18dp / 85x18dp**，role=无（外层 48dp 的 Box 根本不可点） | 116x48dp 一整列，`Role.Tab`，selected 随模式走 | `c927b2e` |
+| 空态蓝字（主动发唯一入口） | **224x23dp**，role=无，两种文案还是 `Text(text = if (…) "中文" else "中文")` | ≥48dp 的 Box + `Role.Button`，文案进 strings 两份 | `9f4747a` |
+| 收起按钮的标签 | **`Collapse panel+Collapse panel`**（热区 Box 与内层 Icon 各声明一次，合并后念两遍） | 标签只在可点击那一处，图标显式装饰 | `ead80c1` |
+
+### §2.1 那张合同表挪到了必跑的地方
+
+`ReplyPrimaryActionsContractTest` 6 格：REPLY 无结果=全宽「生成回复 · N条消息」、
+N=0 **灰着不能点而不是消失**（所以要给"可交互"判据加上 `Disabled`：只认 `hasClickAction`
+的话这两种实现会一起判绿）、有结果=重试/记入知识库且主动发不得占位、PROACTIVE 空闲=全宽生成开场、
+任一生成中=唯一停止入口（LOADING 有无限脉冲动画，那一格把测试时钟改成手动推进）。
+守它的还是那批 instrumentation 的另一半，两边不互相替换。
+
+### 本轮的两笔自报
+
+1. **`UiStringLiteralBudgetTest` 的尺有盲区**：TEXT 正则只认 `Text("…` / `Text(text = "…`，
+   看不见 `text = if (…) "中文" else "…"`. 本轮搬进资源的那 2 处**本来就不在 209 里**，
+   所以预算数字没动——动了就是把没还的账记成还掉了。**209 这个数字因此是下界，不是全量。**
+2. **仪器自己带进来两条 lint 债**（`ComposableNaming`、`TestManifestGradleConfiguration`），
+   被 `check_lint_budget.sh` 当场拦下（73 > 71），没抬预算、改代码过关（`6177cd0`）。
+   顺带记一次：`P1-02` 这个编号被我写进生产注释，`strip_ticket_ids.py --check` 也红了——这两条闸有效。
+
+### 本轮能红的能力（变异反证）
+
+| 注入的反例 | 结果 |
+|---|---|
+| 未改动前的生产（真实缺陷） | 三段 48dp 那格红、空态两格红、"恰好一段选中"红 |
+| `selected = true` 写死 + 收起标签清空 | "念两遍/标签"与"恰好一段选中"红（本来已绿的断言证明不恒真） |
+| `replyEnabled = true`（N=0 也放开） | "N=0 必须带 disabled"红（实测 97x48dp） |
+| 生成按钮去掉 `fillMaxWidth()` | "全宽"那格红（实测 193x48dp） |
+
+四组都是字节级改写 + 跑完逐字节复原（前两组用 sha256 比对，后两组用 `git checkout --` 后 `git status` 干净）。
+
+### 本轮收尾实测
+
+**1062 单测 / 130 套件 / 0 失败 / 0 错误 / 0 跳过**（1045 → 1062 全部是本轮新增 17 格；
+XML 逐个比过 mtime，无陈旧报告冒充）；lint **71 条 / 15 规则**与预算一致、0 error；
+`compileDebugAndroidTestKotlin` 通过；跨层 **6** 条；取消审计 167 站点 NEEDS_REVIEW=0；
+工单编号 PASS；prompt 零 diff + lock 匹配 `6dcde732…`。
+行数没降：VM **2746**、仓库 **1942**、`ResultArea` **1305**；>500 行 **18** 个、>800 行 **10** 个——
+与指导书 P1-01 报的持平，本轮没靠切文件凑数。
+Robolectric 首次跑要在 CI 下载 android-all 与 native 运行时，**CI 侧时长本轮没实测**。
+
 ## 3. 明确没做到 / 没法在本机做到的（不混进上面）
 
 1. **19 条真机 instrumentation 失败还在**。本轮只做到：把 7 条同源的夹具竞态改掉、
    给 29 处可见性断言加几何诊断、把重复 modifier 链清掉。是不是转绿要等同一 SHA 的
    `ui-test` 产物；没看到 XML + logcat + 真实 requestCount 之前，
    "点击生成回复不崩溃"仍然不许写成已修复。
+   §2i 之后要补一句区分：**"合同成不成立"与"真链路上崩不崩"现在是两把尺**——
+   前者（四行主操作区 + 空态入口 + 三段热区/角色/标签）已有 JVM 用例，verify job 每次跑、本机已绿；
+   后者（请求数、重试次数、连接取消、崩溃）仍旧只能等 CI，两者不互相顶替。
 2. **egress 六格里有 4 格本机判不了**（没有 tshark）。CI 里 `apt-get install tshark` 之后
    才算真判过；脚本没有"没装就跳过"的分支，装不上就是红。
 3. **Service destroy 那两格是 Assume 主动跳过的**（instrumentation 起不了悬浮窗/FGS）。
@@ -364,12 +438,17 @@ HEAD  2746
    仍然要认的一条：KnowledgeRepository 拆类**才开始**——§2h 只搬出了 backup 一格（2001 → 1942 行），
    catalog/document/profile/memory/archive(导入导出部分)/round 还都在里面；
    它同时是"最大的一次性改动"和"最长文件之一"这件事没有变。
-5. **阶段三完全没开始**：设计 token + `Lb*` 基础组件、Home/Usage/Provider/Feedback 重写、
-   Panel/ResultArea 的 modal host、320/360/412/600dp × 1.0/1.3/2.0 字体 × 中英文的截图矩阵。
-   截图工具（Roborazzi 或 Paparazzi 二选一）也还没接。
-6. P1-05 文案收口没动：这一条仍然成立（本轮一行文案都没改）。宽尺测到的数是 **209 处**
+5. **阶段三：组件体系那一半仍然一行没动**（`grep "fun Lb[A-Z]"` 生产源码 0 命中，实测）。
+   本轮改动的部分是"验收它的那台仪器"：§6.5 的语义树/尺寸/角色/标签已能在 JVM 上跑
+   （见 §2i），截图工具（Roborazzi 或 Paparazzi 二选一）**仍没接**——1.24.0 的
+   `roborazzi`/`roborazzi-compose`/`roborazzi-junit-rule` 坐标本轮核过真实可取，
+   但没接进来、没 baseline、没有人工 review 流程。Home/Usage/Provider/Feedback 重写、
+   Panel/ResultArea 的 modal host、`ScreenState` 四态统一都还没开始。
+6. P1-05 文案收口基本没动（本轮除 §2i 搬掉那 2 处之外没搬过别的）。宽尺测到的数是 **209 处**
    用户可见中文字面量，见 §2c 对 "101 处" 的纠偏——101 只数了 `Text("中文`，是下界。
    `UiStringLiteralBudgetTest` 的闸已装上，剩下的是还债速度。
+   **§2i 又发现这把尺还有一层盲区**：`Text(text = if (…) "中文" else "中文")` 这种写法它看不见，
+   所以 **209 本身也是下界**；要先补判据再谈"还清"，否则搬掉的记不进账、留下的也数不全。
 7. "陈旧事件被拒"的日志——**已补齐**（`41536ad`，见 §2g）。五次搬 store 一共带走 4 条
    `L.w("… rejected (stale requestId)")`；现在 reply / suggest / proactive / counseling /
    rewrite 五处在拒绝时都有一条，判据仍在 store 与 reducer 里，日志由 VM 写。
@@ -404,4 +483,9 @@ HEAD  2746
    剩下六项按同一个形状往外搬即可。
 4. P1-05 的真正收口：把宽尺测到的 209 处中文字面量搬进 strings.xml / values-en，
    每搬一批就把 `UiStringLiteralBudgetTest` 的预算改小（闸已装上，剩下是还债速度）。
-5. 阶段三：先接截图工具（Roborazzi 或 Paparazzi 二选一），再谈 `Lb*` 组件收敛与首页四段结构。
+5. 阶段三：**语义树那半已经有一台能跑的仪器**（§2i），所以顺序改成
+   ①把这台仪器推到其余页面（`LoveBrainPanelScreen` 其它可点控件、Home/Provider/Feedback/知识库/捕获范围，
+   并补 `stateDescription` 与高度维度）→ ②`core/designsystem` token + 11 个 `Lb*` 组件 + `ScreenState` 四态
+   （每页一格提交，改完当场用语义树测尺寸/标签，不靠"看着对齐了"）→ ③最后才接截图工具做像素与 baseline
+   （现在接，baseline 会在组件收敛后整批作废）。
+   ④把文案那把尺的盲区补掉（`text = if …` 这种写法）再谈 P1-05 还了多少。

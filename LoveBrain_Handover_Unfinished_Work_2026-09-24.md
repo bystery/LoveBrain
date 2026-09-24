@@ -1,8 +1,11 @@
 # LoveBrain 交接：未完成清单（2026-09-24）
 
 > 写给**下一个窗口**。这份文档只讲"还没做什么、为什么没做、怎么起手"。
+> **本文件写完后又被下一个窗口改过状态**：`cb44ceb…2ef47ac`（6 个提交）装了一台
+> JVM 侧读语义树的仪器并修掉三处无障碍缺陷。**逐条最新对照请看**
+> `LoveBrain_Guide_Item_by_Item_Verification_2026-09-24.md`；本文件里标 ⚠️ 的行以那份为准。
 > 已完成部分的逐项证据在 `LoveBrain_Three_Phase_Execution_Log_c0ff041_guide_2026-09-24.md`
-> （§2b–§2h 是一轮一轮的实测记录）。输入指导书：
+> （§2b–§2i 是一轮一轮的实测记录）。输入指导书：
 > `LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md`。
 
 ## 0. 现状三句话 + 起手必查命令
@@ -10,7 +13,8 @@
 - 阶段一：P0-03 / P0-04 / P0-05 本机完成；**P0-01 / P0-02 的真机证据还没拿到**（要推送才能闭）。
 - 阶段二：§5.2 五条 feature store + "模式"全部归位；**§5.2 第 6 步（删 facade）没做**；
   **§5.3 只拆出 1 格**（backup）。
-- 阶段三：**一行没动**。
+- 阶段三：⚠️ 组件体系（`Lb*` / 首页四段 / `ScreenState` / ResultArea 拆分 / 截图工具）**仍一行没动**；
+  但 §6.5 的"语义树那一半"已有仪器，并据此修掉三处缺陷（`cb44ceb…2ef47ac`，详见执行记录 §2i）。
 
 ```bash
 git rev-parse --short HEAD && git rev-list --count 4795471..HEAD && git ls-remote origin main
@@ -21,8 +25,10 @@ rm -rf app/build/test-results/testDebugUnitTest && \
   ./gradlew :app:testDebugUnitTest :app:lintDebug :app:compileDebugAndroidTestKotlin --no-daemon
 ```
 
-本机实测（最后一次全量跑）：1045 单测 / 126 套件 / 0 失败 / 0 跳过；lint 71 issues、0 error；
-跨层越界 6 条；取消审计 167 站点 NEEDS_REVIEW=0；工单编号扫描 PASS；prompt 目录零 diff。
+本机实测（最后一次全量跑，`2ef47ac`）：**1062 单测 / 130 套件 / 0 失败 / 0 错误 / 0 跳过**（比上一轮的
+1045 多的 17 格全是 §2i 新增的语义树/合同用例）；lint 71 issues、0 error；
+跨层越界 6 条；取消审计 167 站点 NEEDS_REVIEW=0；工单编号扫描 PASS；prompt 目录零 diff；
+生产 Kotlin 125 个 / >500 行 18 个 / >800 行 10 个。
 
 **别信文档里任何写死的行数或计数**——本次交接就是因为一个数没重量产出了错误（见 §4 第 1 条）。
 
@@ -38,7 +44,7 @@ rm -rf app/build/test-results/testDebugUnitTest && \
 | 1.6 | §6.2 首页固定四段 + 不把编辑器/列表展开在首页 | §6.2 | Home 未按四段重排 | 四段：顶部 About / 军师状态主卡 / 快捷功能 `LbActionCard` / 设置概览 `LbSettingRow` + 三等分 `LbMetricGrid` |
 | 1.7 | §6.4 ResultArea 不再承载全部浮层，拆成独立 state holder + modal host | §6.4 | 未做。`ResultArea.kt` 仍 1305 行，菜单/纠正中心/发送记录/改写/版本历史/反馈原因都在里面 | 先把每个浮层的 state holder 从 `ResultArea` 的参数里剥出来，再谈 modal host；这一步做完 §6.2/§6.3 才有落点 |
 | 1.8 | §6.5 截图/视觉门禁：Roborazzi **或** Paparazzi 二选一接入 | §6.5 | 截图工具根本没接 | 先选型再写用例。矩阵维度：宽 320/360/412/600dp × 字体 1.0/1.3/2.0 × 中英文 × 深浅色（**若暂不支持深色就明确锁定浅色，不要做半套主题**）；用例要含长 Provider 名、超长模型名、`￥9999.999`、`100000 次生成`；**baseline 变更必须人工 review，禁止自动覆盖 baseline 后判绿** |
-| 1.9 | §6.5 无障碍自动化：TalkBack role / selected / disabled / stateDescription / contentDescription；bounds ≥48dp **不许用源码搜索代替** | §6.5 / P1-02 | 部分：`PanelHeaderTouchTargetsTest` 已经读语义树测 48dp / selected / contentDescription（3 格，结果待 CI）。**disabled、stateDescription 的其余节点没覆盖**，字体倍率与宽度矩阵完全没测 | 补的是 instrumentation，本机没有 system image → 要么在 CI 上跑，要么等真机；`ProductionUiContractTest` 那种源码 grep 门禁只能当"防回退"，不能当证据 |
+| 1.9 | §6.5 无障碍自动化：TalkBack role / selected / disabled / stateDescription / contentDescription；bounds ≥48dp **不许用源码搜索代替** | §6.5 / P1-02 | ⚠️ **本窗口推进了**：JVM 语义树仪器已建（`app/src/test/…/core/testing/`，走 `testDebugUnitTest`，CI verify 每次跑），PanelHeader 12 格矩阵 + 空态入口 + 主操作区共 **17 格**在跑，三处缺陷据此修掉。**仍缺**：`LoveBrainPanelScreen` 其它可点控件、Home/Provider/Feedback/知识库/捕获范围；`stateDescription` 那两处（谈心/锦囊折叠）无断言；高度维度与"超长文案/极端数字"没测 | 直接照 `PanelHeaderTouchTargetsTest` 的形状往其它页扩：`SemanticsProbe.assertAllActionableMeetTouchFloor / assertAllActionableLabeled / assertNoDuplicatedAnnouncement`。**两个前提别丢**：`@GraphicsMode(NATIVE)`（legacy 的文字度量是假的，32x39 与 224x23 之差）、纯控件用 `UiProbeApplication`（不然第二个用例撞 `KoinAppAlreadyStartedException`）。`ProductionUiContractTest` 那种源码 grep 门禁只能当"防回退"，不能当证据 |
 | 1.10 | P1-05 文案收口：209 处用户可见中文字面量搬进 `strings.xml` / `values-en` | §6.1 / P1-05 | 一行没搬。宽尺测到 **209 处**（报告里的 101 是只数 `Text("中文` 的下界） | 闸已经装上：`UiStringLiteralBudgetTest`（TEXT 209 / DESC 10 的预算）。每搬一批就把预算**改小**，不允许调大；一次提交搬一页，别混进组件改造 |
 | 1.11 | P1-01 18 个 >500 行文件、10 个 >800 行文件 | P1-01 | 数量没动（本轮只让 KnowledgeRepository 从 2001 降到 1942） | 每完成 1.2 的一格就少一个候选；`ResultArea` 1305、`FloatingService` 1153、`DeepSeekRepository` 1114 是下一批目标 |
 
@@ -66,7 +72,8 @@ rm -rf app/build/test-results/testDebugUnitTest && \
 |---|---|---|
 | P0-01 CI 总红 → 全绿 | 本机没有 system image，`ui-test` / `upgrade-test` 只能在 CI 跑 | 同一 SHA 的 `verify`(26 步) + `ui-test` + `upgrade-test` 全 ✓，产物含 XML / HTML / 截图 / logcat / upgrade 报告 / APK / SBOM |
 | P0-02 "点击生成回复不崩溃" 10 格真链路 | 同上：现在有 **19 条 instrumentation 真失败**（7 条同一个夹具竞态已修、8 条只报 "component is not displayed"、4 条各一因） | 未见 XML + logcat + 真实 requestCount 之前，这一格**不许写成已修复** |
-| 本轮新增 3 格语义树断言（48dp / selected / contentDescription） | 同上 | **预期可能红**——那是把假绿换成真信号，不是回归，别为了绿把它调软 |
+| §2i 新增 17 格 JVM 语义树/合同断言（48dp / role / selected / disabled / 标签 / 合同四行） | 本机已跑完并全绿 | **不需要等 CI 才算证据**，但 CI 的 verify 也要过（这些用例就在 `testDebugUnitTest` 里）。首次跑要在 CI 下载 android-all 与 native 运行时，**时长未实测** |
+| androidTest 里那 3 格语义树断言（48dp / selected / contentDescription） | 本机无 system image | PanelHeader 那处的缺陷已在 `c927b2e` 修掉，所以这 3 格**预期转绿**；若真机上仍红，说明是真机差异（density/字体）而不是"没修"，别为此把断言调软 |
 | P0-04 egress 六格里 4 格判不了 | 本机没有 tshark；脚本没有"没装就跳过"分支，装不上就是红 | CI `apt-get install tshark` 之后跑 `scripts/test_verify_network_egress.sh`，六格全判过 |
 | Service destroy 那两格 | instrumentation 起不了悬浮窗/FGS，是 `Assume` 主动跳过 | 报告里算 skipped，**不算通过**；要真闭需要设备侧安排 |
 
@@ -133,7 +140,11 @@ rm -rf app/build/test-results/testDebugUnitTest && \
 ## 7. 建议的下一个顺序（不跳步）
 
 1. §5.3 再拆 1–2 格（先 **catalog**，再 **document**）——形状照 `5a21ec2`。
-2. §6.4 拆 ResultArea 的浮层 state holder + modal host；顺手接截图工具（§6.5）。
+2. §6.4 拆 ResultArea 的浮层 state holder + modal host。**做之前先花 10 分钟**：
+   照 `PanelHeaderTouchTargetsTest` 给 ResultArea 现有的可点控件补一组语义树用例（本机就能跑），
+   这样"拆完没把热区/标签拆坏"是量出来的，不是看出来的。截图工具放在 §6.1–§6.4 之后接。
 3. §5.2 第 6 步删 facade（这时调用面已经跟着 §6 的重排收敛过一轮）。
 4. P1-05 按页搬字面量，每页把 `UiStringLiteralBudgetTest` 预算改小。
+   **先补那把尺的盲区**（`Text(text = if (…) "中文" …)` 现在数不到，见 §2i 自报），
+   否则搬掉的记不进账、留下的也数不全。
 5. 期间任意时点用户说「推送」→ 立刻去闭 §3 那五行 CI 证据（那才是真正的 NO-GO 卡点）。
