@@ -60,6 +60,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.LbEmptyState
+import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
@@ -208,10 +210,11 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
                         color = Border.copy(alpha = 0.5f)
                     )
                     if (tickets.isEmpty()) {
-                        Text(
-                            stringResource(R.string.provider_empty),
-                            style = AppTypography.bodySmall,
-                            color = TextHint,
+                        // §6.3：空态走统一版式，并且就地给出「添加供应商」这个动作。
+                        // 原来这里只有一句话，动作在下方另起一行——空态把决定权丢在半路。
+                        LbEmptyState(
+                            message = stringResource(R.string.provider_empty),
+                            action = ScreenAction(stringResource(R.string.provider_add)) { showAdd = true },
                             modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)
                         )
                     } else {
@@ -266,7 +269,8 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
                             }
                         }
                     }
-                    Text(
+                    // 空态已经有自己的添加动作了，这里不再摆第二个一模一样的入口
+                    if (tickets.isNotEmpty()) Text(
                         stringResource(R.string.provider_add),
                         style = AppTypography.labelLarge,
                         color = Primary,

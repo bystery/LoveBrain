@@ -146,6 +146,11 @@ class ProviderSectionSemanticsTest {
             "空态里应当有一个添加供应商的动作：" + targets.joinToString { it.describe() },
             true, addEntry.isNotEmpty()
         )
+        assertEquals(
+            "空态里只能有一个添加入口——页面下方再摆第二个一模一样的，" +
+                "说明这两处是各写各的，不是同一个空态版式：" + targets.joinToString { it.describe() },
+            1, addEntry.size
+        )
         val tooSmall = addEntry.filter { it.tooSmall(probe.floorDp) }
         assertTrue("添加动作的热区不足 48dp：" + tooSmall.joinToString { it.describe() }, tooSmall.isEmpty())
     }
