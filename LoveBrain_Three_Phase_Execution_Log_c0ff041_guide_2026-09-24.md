@@ -341,6 +341,10 @@ still resets the result area` 钉的就是前者。
    `isCurrentRequest`，别留下第二本账。
 3. KnowledgeRepository 按 §5.3 拆 catalog/document/profile/memory/migration/archive/round，
    共用一个 `KnowledgeTransactionManager`（不许每个新类各自 new Mutex）。
+   **已有的缝可以照抄，不要另起一套**：`KnowledgeMigrator` + `KbStorageAccess` 就是这条模式的
+   第一次落地——协作类不持锁、不碰路径拼接，所有文件动作经 `RepoStorage`（一个只暴露无锁原语的
+   受限内部视图）回到本类的唯一一把 `fileMutex`。migration 因此**已经算拆出去了**，
+   剩下六项按同一个形状往外搬即可。
 4. P1-05 的真正收口：把宽尺测到的 209 处中文字面量搬进 strings.xml / values-en，
    每搬一批就把 `UiStringLiteralBudgetTest` 的预算改小（闸已装上，剩下是还债速度）。
 5. 阶段三：先接截图工具（Roborazzi 或 Paparazzi 二选一），再谈 `Lb*` 组件收敛与首页四段结构。
