@@ -15,15 +15,15 @@ import kotlinx.coroutines.flow.asStateFlow
  * 主动发（开场白）这条链的状态持有者（§5.2 第 3 步）。
  *
  * 接管的是 **options、错误、事件归约与"停止/收尾"语义**。§5.2 还列了"模式"，
- * 那一样本轮**没搬完**，原因写在 [LoveBrainViewModel] 的 `_composerMode` 注释里，
- * 也在这里说明白：`ComposerMode` / `ResultMode` 是 ViewModel 的嵌套 enum，
- * UI 与 androidTest 都按 `LoveBrainViewModel.ComposerMode` 引用它，
- * 而棘轮里 "feature 包不许 import viewmodel" 那条规则挡住了这种写法
- * （Kotlin 的块注释会嵌套，所以这里不敢照抄那对斜杠加星号的写法）。
- * 要把模式一起搬，得先把两个 enum 挪进 model 并改掉所有引用点 ——
- * 那是一次独立的机械改动，不该塞进这一刀里半成品式地做。
+ * 那一样**到现在仍没搬进来**，但挡路的原因已经换了一个：
+ * 从前是 `ComposerMode` / `ResultMode` 长在 ViewModel 里、UI 与 androidTest 都按
+ * 嵌套类型名引用，而棘轮里"feature 包不许 import viewmodel"那条规则挡住了这种写法；
+ * 现在两个 enum 已经是 `model` 里的顶层类型（[com.lovebrain.app.model.ComposerMode]），
+ * 引用点也全部改过 —— 搬"模式"已经没有机械障碍，剩下的是一次真正的状态所有权迁移：
+ * 模式要变成 store 的 UiState 字段，而"什么时候退出"这条规则的归属要一起想清楚，
+ * 不该塞进别的改动里顺手做一半。
  *
- * 现在 store 负责的是"模式之外"的全部主动发状态；VM 在收到
+ * 在搬完之前，store 负责的是"模式之外"的全部主动发状态；VM 在收到
  * [Effect.FinishedWithResults] 时才决定要不要退出主动发模式，
  * 于是"生成成功后自动回普通模式"这条规则仍然只有一处实现。
  */

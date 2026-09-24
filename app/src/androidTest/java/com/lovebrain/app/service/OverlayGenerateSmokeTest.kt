@@ -17,6 +17,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ServiceTestRule
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.ReplyChunk
 import com.lovebrain.app.model.ReplyCompleted
@@ -181,7 +182,7 @@ class OverlayGenerateSmokeTest {
         composeRule.onNodeWithText(entryText).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         assertEquals(
             "初始应为 REPLY 模式",
-            LoveBrainViewModel.ComposerMode.REPLY,
+            ComposerMode.REPLY,
             vm.composerMode.value
         )
 
@@ -190,7 +191,7 @@ class OverlayGenerateSmokeTest {
 
         assertEquals(
             "点击蓝字应切到 PROACTIVE 模式",
-            LoveBrainViewModel.ComposerMode.PROACTIVE,
+            ComposerMode.PROACTIVE,
             vm.composerMode.value
         )
         composeRule.onNodeWithText("生成开场").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
@@ -204,7 +205,7 @@ class OverlayGenerateSmokeTest {
 
         assertEquals(
             "再次点击应回到 REPLY 模式",
-            LoveBrainViewModel.ComposerMode.REPLY,
+            ComposerMode.REPLY,
             vm.composerMode.value
         )
         assertEquals("两次点击后 Provider 调用次数仍为 0", 0, s.requestCount)

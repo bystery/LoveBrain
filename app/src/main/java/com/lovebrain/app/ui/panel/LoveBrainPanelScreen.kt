@@ -42,7 +42,8 @@ import com.lovebrain.app.ui.panel.counseling.CounselingPanel
 import com.lovebrain.app.ui.panel.reply.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
-import com.lovebrain.app.viewmodel.LoveBrainViewModel.ComposerMode
+import com.lovebrain.app.model.ComposerMode
+import com.lovebrain.app.model.ResultMode
 import com.lovebrain.app.model.StageSuggestion
 private const val KB_NOTICE_AUTO_DISMISS_MS = 3000L
 private const val PANEL_WARNING_AUTO_DISMISS_MS = 3000L
@@ -432,7 +433,7 @@ fun LoveBrainPanelScreen(
                 // Result area switches based on resultMode
                 Box(modifier = Modifier.weight(1f)) {
                     when (resultMode) {
-                        LoveBrainViewModel.ResultMode.PROACTIVE -> {
+                        ResultMode.PROACTIVE -> {
                             ProactiveResultArea(
                                 isProactive = isProactive,
                                 options = proactiveOptions,
@@ -441,7 +442,7 @@ fun LoveBrainPanelScreen(
                                 modifier = Modifier.fillMaxSize()
                             )
                         }
-                        LoveBrainViewModel.ResultMode.REPLY -> {
+                        ResultMode.REPLY -> {
                             ResultArea(
                                 result = result,
                                 isGenerating = isGenerating,

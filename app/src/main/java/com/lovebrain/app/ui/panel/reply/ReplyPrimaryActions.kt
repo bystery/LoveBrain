@@ -10,7 +10,7 @@ import com.lovebrain.app.R
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.theme.Primary
 import com.lovebrain.app.ui.theme.PrimaryDark
-import com.lovebrain.app.viewmodel.LoveBrainViewModel.ComposerMode
+import com.lovebrain.app.model.ComposerMode
 
 /**
  * ReplyPrimaryActions — 生产可测试组件（不再是 private）。

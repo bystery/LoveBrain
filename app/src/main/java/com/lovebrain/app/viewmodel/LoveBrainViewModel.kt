@@ -20,6 +20,7 @@ import com.lovebrain.app.domain.RewritePrompt
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.CounselingEnded
 import com.lovebrain.app.model.CounselingEvent
 import com.lovebrain.app.model.CounselingStarted
@@ -40,6 +41,7 @@ import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.model.ReplyChunk
 import com.lovebrain.app.model.ReplyCompleted
 import com.lovebrain.app.model.ReplyEvent
+import com.lovebrain.app.model.ResultMode
 import com.lovebrain.app.model.ReplyCleared
 import com.lovebrain.app.model.ReplyRequested
 import com.lovebrain.app.model.ReplyStopped
@@ -523,23 +525,16 @@ class LoveBrainViewModel(
         proactiveStore.uiState.map { it.error }
             .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
 
-    /** 结果模式——显式区分回复结果与主动发结果 */
-    enum class ResultMode { REPLY, PROACTIVE }
     private val _resultMode = MutableStateFlow(ResultMode.REPLY)
     val resultMode: StateFlow<ResultMode> = _resultMode.asStateFlow()
 
-    /** Composer mode——UI 会话状态，单一事实源。
-     * REPLY = 普通回复模式（默认）
-     * PROACTIVE = 主动发模式（蓝字切换进入，不发网络请求）
-     * 替代之前分散的 local inputMode / resultMode / isProactive 三个变量各自推断。
-     *
-     * §5.2 把"模式"列进 ProactiveStore 的接管清单，本轮**没搬完**，原因说清楚：
-     * 这两个 enum 是 VM 的嵌套类型，UI 与 androidTest 都按 `LoveBrainViewModel.ComposerMode`
-     * 引用；而 feature 包不许 import viewmodel（包依赖棘轮里那条）。
-     * 要搬得先把 enum 挪进 model 并改掉所有引用点——那是一次独立的机械改动，
-     * 不该塞进这一刀里做成半成品。主动发的 options / 错误 / 事件归约已经出去，
-     * "结束且有可展示结果才退出模式"这条规则仍只有一处实现。 */
-    enum class ComposerMode { REPLY, PROACTIVE }
+    /**
+     * Composer 模式与结果模式现在是 `model` 里的顶层 enum
+     * （[com.lovebrain.app.model.ComposerMode] / [com.lovebrain.app.model.ResultMode]）。
+     * 值域语义没变：REPLY 是默认，PROACTIVE 由蓝字切换进入且不发网络请求；
+     * 它仍然替代着早期"三个变量各自推断模式"的写法，只是不再长在 VM 身上——
+     * feature 包不许 import viewmodel，模式要归 ProactiveStore 就得先把这两个 enum 搬出去。
+     */
     private val _composerMode = MutableStateFlow(ComposerMode.REPLY)
     val composerMode: StateFlow<ComposerMode> = _composerMode.asStateFlow()
 
