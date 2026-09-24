@@ -680,7 +680,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         _currentVersionId.value = previous.versionId
         replyGenerationContext = previous.context
         feedbackCases.clearFeedbacks()
-        rewriteLedger.clearAll()
+        // 版本栈已经翻过去了，在飞的改写目标也就不存在了：一起作废
+        resetRewritePage()
 
         // 重新计算 stale——当前输入可能与 previous context 不一致
         checkInputChanged()
@@ -1380,9 +1381,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // 结果/流式态的清空也走 reducer，不再各自写四个 StateFlow
         applyReplyEvent(ReplyCleared(replyUi.value.ownerRequestId ?: ""))
         // 新轮次开始时清理改写状态和历史，作废旧改写请求
-        rewriteLedger.clearAll()
-        rewriteRequestId = null
-        rewriteContextId = null
+        resetRewritePage()
         // 新轮次恢复仅看本轮开关为默认关闭
         _onlyThisRound.value = false
     }
@@ -2387,17 +2386,37 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     val rewriteOptions: List<String> get() = com.lovebrain.app.model.RewriteCommand.PRESET_LABELS
 
     /**
-     * 改写卡片状态与被改写的版本历史。真源在 [RewriteLedger]，
-     * ViewModel 只把只读流转发给面板——和回复结果一样，一个状态只有一个可写处。
+     * 改写链的三样东西（卡片状态 / 版本历史 / "这次回调还算不算数"）住在
+     * [com.lovebrain.app.feature.rewrite.RewriteStore]（§5.2 第 5 步）。
+     *
+     * 原来这里是三本账：`RewriteLedger` 一份状态、`rewriteRequestId` 一个字符串、
+     * `rewriteContextId` 又一个字符串，两个字符串谁都能写、也没有一处能单独测。
+     * 现在发起时冻结成 `Identity`，终态事件必须把它带回来由 store 核对。
+     *
+     * `isRoundAlive` 要读的是本类的活状态（当前知识库 + 本轮消息集），
+     * store 不伸手来拿——由这里注入一个"这个指纹还作数吗"的判断。
      */
-    private val rewriteLedger = RewriteLedger()
-    val rewriteStates: StateFlow<Map<String, RewriteState>> = rewriteLedger.states
+    private val rewriteStore = com.lovebrain.app.feature.rewrite.RewriteStore(
+        isCurrentRequest = { requestId ->
+            val owns = ownsOperation(ForegroundOperationCoordinator.OperationType.REWRITE, requestId)
+            if (!owns) L.w("rewrite result rejected (stale requestId=$requestId)")
+            owns
+        },
+        isRoundAlive = { contextId -> rewriteContextIdOfNow() == contextId }
+    ) { effect -> onRewriteEffect(effect) }
 
-    /** 改写请求 ID（锁定目标，防跨轮写入） */
-    private var rewriteRequestId: String? = null
+    val rewriteStates: StateFlow<Map<String, RewriteState>> =
+        rewriteStore.uiState.map { it.cardStates }
+            .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, emptyMap())
 
-    /** 改写绑定轮次身份——新轮/切库/保存清空时作废旧改写请求 */
-    private var rewriteContextId: String? = null
+    /** 这一轮改写要绑上去的轮次指纹——知识库名 + 本轮消息集 */
+    private fun rewriteContextIdOfNow(): String =
+        (_activeKb.value?.name ?: "") + "_" + (replyGenerationContext?.messageIds?.hashCode() ?: 0)
+
+    /** 新轮 / 切库 / 保存清空 / 版本回退：这一页整个翻掉 */
+    private fun resetRewritePage() {
+        rewriteStore.accept(com.lovebrain.app.feature.rewrite.RewriteStore.Intent.RoundReset)
+    }
 
     /**
      * 对指定方案卡发起单条改写。
@@ -2458,17 +2477,17 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val targetReply = ReplyPatch.textOf(response, identity) ?: return
         if (targetReply.isBlank()) return
 
-        // 锁定目标
+        // 锁定目标 + 绑轮次身份：发起时一次冻结，之后只带回来给 store 核对
         val ctx = replyGenerationContext ?: return
-        val requestId = java.util.UUID.randomUUID().toString()
-        rewriteRequestId = requestId
-
-        // 绑定轮次身份——新轮/切库/保存后旧改写不写入
-        val contextId = (ctx.kbName ?: "") + "_" + ctx.messageIds.hashCode()
-        rewriteContextId = contextId
-
-        // 进"改写中"并把当前正文连同其反馈压进历史：撤销时两者要一起回来
-        rewriteLedger.begin(identityKey, option, targetReply, feedbackCases.feedbackFor(identityKey))
+        val rewriteIdentity = com.lovebrain.app.feature.rewrite.RewriteStore.Identity(
+            requestId = java.util.UUID.randomUUID().toString(),
+            contextId = rewriteContextIdOfNow(),
+            identityKey = identityKey,
+            option = option
+        )
+        // 被替换那一版的赞/踩在点击这一刻就取定：撤销时要连正文带反馈一起回来，
+        // 不能等任务体跑起来再看——那期间用户可能已经改了对旧文的反馈。
+        val previousFeedback = feedbackCases.feedbackFor(identityKey)
 
         // 不再捕获 preRewriteFeedback 做后续清理——
         // 改写期间用户对旧文的反馈继续归旧版本；新版本独立 NONE。
@@ -2480,8 +2499,18 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // 协调器完全不知道有这个任务，"六类前台操作统一协调"就是假的。
         val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.REWRITE,
-            requestId
+            rewriteIdentity.requestId
         ) {
+            // "改写中"与历史压栈放在任务体里、不在发起前做：
+            // 旧写法先 begin 再 start，而协调器**会**拒绝（前台槽位被占、或第二次点击同一类），
+            // 被拒的那次 body 一次都不跑，于是卡片永久转圈、在途身份也被一个不存在的请求占着。
+            rewriteStore.accept(
+                com.lovebrain.app.feature.rewrite.RewriteStore.Intent.Begin(
+                    identity = rewriteIdentity,
+                    previousReply = targetReply,
+                    previousFeedback = previousFeedback
+                )
+            )
             try {
                 // 构建短请求——只包含最少必要上下文
                 val systemPrompt = buildRewriteSystemPrompt()
@@ -2512,74 +2541,118 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     deepSeekRepo.generateRaw(systemPrompt, userPrompt)
                 }
 
-                // 校验请求身份——切库/新轮/清空后旧结果不写入
-                if (rewriteRequestId != requestId) return@start
-                // 校验轮次身份未变
-                val currentContextId = (_activeKb.value?.name ?: "") + "_" + (replyGenerationContext?.messageIds?.hashCode() ?: 0)
-                if (rewriteContextId != contextId || currentContextId != contextId) return@start
-
+                // 三道身份核对整个交回 store：被取代 / 协调器换人 / 轮次已翻页。
+                // 空正文与异常同样走 store，"这句文案归谁"不再靠这里手写 setState。
                 val newReply = raw.trim()
                 if (newReply.isBlank()) {
-                    rewriteLedger.setState(identityKey, RewriteState.Error("改写返回空结果"))
-                    return@start
+                    rewriteStore.accept(
+                        com.lovebrain.app.feature.rewrite.RewriteStore.Intent.Emptied(rewriteIdentity)
+                    )
+                } else {
+                    rewriteStore.accept(
+                        com.lovebrain.app.feature.rewrite.RewriteStore.Intent.Succeeded(
+                            identity = rewriteIdentity, newReply = newReply
+                        )
+                    )
                 }
-
-                // 只替换目标卡正文，不回写整个捕获的旧 response：
-                // 改写期间其他卡可能已经变了
-                val currentResult = replyResult as? GenerateResult.Success ?: return@start
-                val updatedResponse = ReplyPatch.withText(currentResult.response, identity, newReply)
-                replaceReplyResult(GenerateResult.Success(updatedResponse))
-
-                // 改写成功后——新正文独立 NONE，不自动继承旧赞/踩
-                // 旧赞保留在 rewriteHistory 中，撤销时恢复
-                feedbackCases.putFeedback(identityKey, SchemeFeedback.NONE)
-
-                // 递增累计改写次数
-                _totalRewriteCount.value += 1
-                securePrefs.totalRewriteCount = _totalRewriteCount.value
-
-                // 清除改写状态，保留撤销入口
-                rewriteLedger.setState(identityKey, RewriteState.Done(newReply))
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
                 L.e("rewriteScheme failed", e)
-                if (rewriteRequestId == requestId) {
-                    rewriteLedger.setState(identityKey, RewriteState.Error("改写失败，可重试"))
+                rewriteStore.accept(
+                    com.lovebrain.app.feature.rewrite.RewriteStore.Intent.Failed(rewriteIdentity)
+                )
+            }
+        }
+        if (lease == null) L.w("rewrite rejected: foreground slot taken")
+    }
+
+    /**
+     * RewriteStore 交出来的动作：贴正文、清反馈、计一次数、停任务、贴回旧版本。
+     *
+     * 只替换目标卡正文，不回写整个捕获的旧 response——改写期间其他卡可能已经变了。
+     * 新正文的赞踩独立从 NONE 开始，旧赞留在历史里，撤销时一起回来。
+     *
+     * internal 不为了好看：这条"store 交出来 → VM 落到结果上"的接缝是搬家时新长出来的，
+     * 全仓只有这里做这件事，而把它跑通本来要真机点一次改写。测试直接喂 Effect 钉住落地结果。
+     */
+    internal fun onRewriteEffect(effect: com.lovebrain.app.feature.rewrite.RewriteStore.Effect) {
+        when (effect) {
+            is com.lovebrain.app.feature.rewrite.RewriteStore.Effect.ApplyRewrite -> {
+                val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(effect.identityKey) ?: return
+                val current = replyResult as? GenerateResult.Success ?: run {
+                    // 走到这里说明身份核对后结果又被换掉了：不贴正文，也不装作贴了
+                    L.w("rewrite result dropped: no live result to patch")
+                    return
                 }
+                replaceReplyResult(
+                    GenerateResult.Success(
+                        ReplyPatch.withText(current.response, identity, effect.newReply)
+                    )
+                )
+            }
+
+            is com.lovebrain.app.feature.rewrite.RewriteStore.Effect.ResetFeedback ->
+                feedbackCases.putFeedback(effect.identityKey, SchemeFeedback.NONE)
+
+            com.lovebrain.app.feature.rewrite.RewriteStore.Effect.RewriteCounted -> {
+                _totalRewriteCount.value += 1
+                securePrefs.totalRewriteCount = _totalRewriteCount.value
+            }
+
+            is com.lovebrain.app.feature.rewrite.RewriteStore.Effect.StopRunningRewrite -> {
+                val current = operationCoordinator.current(
+                    ForegroundOperationCoordinator.OperationType.REWRITE
+                )
+                // 只停它自己那一个：卡片上点"取消"不该把别的在跑任务一起杀掉
+                if (current?.requestId == effect.requestId) {
+                    operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.REWRITE)
+                }
+            }
+
+            is com.lovebrain.app.feature.rewrite.RewriteStore.Effect.RestoreVersion -> {
+                val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(effect.identityKey) ?: return
+                val current = replyResult as? GenerateResult.Success ?: return
+                replaceReplyResult(
+                    GenerateResult.Success(
+                        ReplyPatch.withText(current.response, identity, effect.reply)
+                    )
+                )
+                // 撤销时恢复旧版本的反馈，不只是正文
+                feedbackCases.putFeedback(effect.identityKey, effect.feedback)
+                // 到这一步才算真撤销：store 这时才把那一版从历史里丢掉并清掉卡片状态
+                rewriteStore.accept(
+                    com.lovebrain.app.feature.rewrite.RewriteStore.Intent.UndoCommitted(effect.identityKey)
+                )
             }
         }
     }
 
     /** 取消正在进行的改写 —— 使用 identityKey */
     fun cancelRewrite(identityKey: String) {
-        // 只停 REWRITE 这一个 owner
-        operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.REWRITE)
-        rewriteRequestId = null
-        rewriteLedger.removeState(identityKey)
+        rewriteStore.accept(
+            com.lovebrain.app.feature.rewrite.RewriteStore.Intent.RequestCancel(identityKey)
+        )
     }
 
-    /** 撤销改写——恢复到上一版本（含正文和反馈）—— 使用 identityKey */
+    /**
+     * 撤销改写——恢复到上一版本（含正文和反馈）—— 使用 identityKey。
+     *
+     * 两步式：store 只 peek 并发 [com.lovebrain.app.feature.rewrite.RewriteStore.Effect.RestoreVersion]，
+     * 这里真的贴回去了才回 `UndoCommitted`。旧写法先 `pop()` 再检查"结果还在不在、
+     * key 解不解得开"，任何一步失败就直接 return——**弹掉的那一版永久丢了**，卡片还挂着 Done。
+     */
     fun undoRewrite(identityKey: String) {
-        val previousVersion = rewriteLedger.pop(identityKey) ?: return
-
-        val result = replyResult as? GenerateResult.Success ?: return
-        val response = result.response
-        // 从 identityKey 解析 source 和 tag
-        val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(identityKey) ?: return
-        val updatedResponse = ReplyPatch.withText(response, identity, previousVersion.reply)
-        replaceReplyResult(GenerateResult.Success(updatedResponse))
-        // 撤销时恢复旧版本的反馈，不只是正文
-        feedbackCases.putFeedback(identityKey, previousVersion.feedback)
-        rewriteLedger.removeState(identityKey)
+        rewriteStore.accept(
+            com.lovebrain.app.feature.rewrite.RewriteStore.Intent.UndoRequested(identityKey)
+        )
     }
 
     /** 清除改写状态（展开/收起时调用）—— 使用 identityKey */
     fun clearRewriteState(identityKey: String) {
-        val current = rewriteLedger.stateOf(identityKey)
-        if (current is RewriteState.Done || current is RewriteState.Error) {
-            rewriteLedger.removeState(identityKey)
-        }
+        rewriteStore.accept(
+            com.lovebrain.app.feature.rewrite.RewriteStore.Intent.Collapse(identityKey)
+        )
     }
 
     /** 改写系统提示——固定短规则，正文在 `RewritePrompt`（可离线单测） */
