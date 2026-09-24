@@ -138,4 +138,42 @@ class MessageListEmptyStateTest {
             probe.actionableTargets(rule, "消息列表空态").single().label
         )
     }
+    /**
+     * §6.5 的宽度 × 字体矩阵：空态这个入口在 12 格里都得保持 ≥48dp 且念得出来。
+     *
+     * 一个用例只能 setContent 一次，所以矩阵靠改 hoisted 的那格值来换尺寸。
+     */
+    @Test
+    fun `the empty state entry keeps its floor across the full width and font matrix`() {
+        val cell = androidx.compose.runtime.mutableStateOf(UiMatrix.FULL.first())
+        rule.setContent {
+            val deviceDensity = LocalDensity.current.density
+            cell.value.RenderIn(deviceDensity) {
+                MessageList(
+                    messages = emptyList(),
+                    editingIndex = -1,
+                    onReorder = { _, _ -> },
+                    onEdit = {},
+                    onDelete = {},
+                    onEmptyAction = {},
+                    proactiveActive = false
+                )
+            }
+        }
+        val widths = LinkedHashMap<String, Float>()
+        for (matrix in UiMatrix.FULL) {
+            rule.runOnIdle { cell.value = matrix }
+            rule.waitForIdle()
+            val targets = probe.assertAllActionableMeetTouchFloor(rule, "消息列表空态", "（${matrix.id}）")
+            probe.assertAllActionableLabeled(rule, "消息列表空态", "（${matrix.id}）")
+            assertEquals("每一格都只有一个入口：" + matrix.id, 1, targets.size)
+            widths[matrix.id] = targets.single().widthDp
+        }
+        // 这行是给「矩阵循环」本身兜底的：换配置如果没真的进组合（hoisted 值没生效、
+        // 或 RenderIn 读的还是旧值），12 格会量出同一个尺寸，而上面每条断言都照样绿。
+        assertTrue(
+            "同一宽度下 2.0 倍字必须比 1.0 倍字宽，否则这 12 格其实是同一格：" + widths,
+            checkNotNull(widths["360dp-font200"]) > checkNotNull(widths["360dp-font100"])
+        )
+    }
 }

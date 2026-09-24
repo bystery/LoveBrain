@@ -122,7 +122,7 @@ class LbAsyncStateTest {
     @Test
     fun `the action keeps its floor at 320dp with 2x font`() {
         // 一个用例只能 setContent 一次，所以矩阵靠改 hoisted 值换格子（顺便也测了换配置后重测）
-        val cell = androidx.compose.runtime.mutableStateOf(UiMatrix(320, fontScale = 2.0f))
+        val cell = androidx.compose.runtime.mutableStateOf(UiMatrix.FULL.first())
         rule.setContent {
             val deviceDensity = LocalDensity.current.density
             cell.value.RenderIn(deviceDensity) {
@@ -131,11 +131,7 @@ class LbAsyncStateTest {
                 ) { }
             }
         }
-        for (matrix in listOf(
-            UiMatrix(320, fontScale = 2.0f),
-            UiMatrix(320, fontScale = 1.3f),
-            UiMatrix(320, fontScale = 1.0f)
-        )) {
+        for (matrix in UiMatrix.FULL) {  // §6.5：4 宽 × 3 字 = 12 格全跑（320/360/412/600 × 1.0/1.3/2.0）
             rule.runOnIdle { cell.value = matrix }
             rule.waitForIdle()
             probe.assertAllActionableMeetTouchFloor(rule, "LbEmptyState", "（${matrix.id}）")
