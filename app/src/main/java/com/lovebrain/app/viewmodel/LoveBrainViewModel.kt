@@ -848,55 +848,43 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 按消息 id 删除（动画延迟回调里 index 会过期，id 是 data class 稳定值）。
      * editingIndex 修正下沉至 VM——VM 持数据真源，同帧连删串行执行永远看最新快照，
      * 消除 UI 侧依赖 composition 旧快照各自算 index 必错位的竞态。
+     *
+     * 具体怎么修正不再在这里推理：只有 [MessageListEditing.reindex] 一处（按身份重算）。
      */
     fun removeMessageById(id: String) {
         val list = _messages.value
         val index = list.indexOfFirst { it.id == id }
         if (index < 0) return
+        val nextList = list.filterNot { it.id == id }
         val editing = _editingIndex.value
-        if (editing >= 0) {
-            if (index < editing) {
-                _editingIndex.value = editing - 1
-            } else if (index == editing) {
-                _editingIndex.value = -1
-                _draftText.value = ""
-            }
-        }
-        _messages.value = list.filterNot { it.id == id }
+        val next = MessageListEditing.reindex(list, nextList, editing)
+        if (next != editing) _editingIndex.value = next
+        if (editing >= 0 && next < 0) _draftText.value = ""
+        _messages.value = nextList
         // 消息变更后标记旧结果为 stale
         markCurrentResultStaleIfNeeded()
     }
 
     /**
-     * 拖拽重排同步修正 editingIndex——与 removeMessageById 的  同源：
+     * 拖拽重排同步修正 editingIndex——与 [removeMessageById] 同源：
      * 修正下沉 VM（VM 持数据真源），不许 UI 侧依赖 composition 旧快照各自算 index。
-     * 推演基于 removeAt(from)+add(to, item) 后的真实位置（editing 为搬移前下标）：
-     * - 拖的就是编辑中消息（from == editing）→ 跟随到 to；
-     * - 向下拖且越过编辑位（from < editing <= to）→ 编辑位被挤前一位，-1；
-     * - 向上拖且越过编辑位（to <= editing < from）→ 编辑位被推后一位，+1。
-     * 反例一（验证下边界含等号）：[A,B,C]，编辑 B（editing=1），A 拖到 C 之后
-     * （from=0,to=2）→ [B,C,A]，B 落 0：1 in (0,2] → -1=0 正确；若写成 to > editing
-     * 会漏掉 to==editing 的跨越（如 [A,edit,C] from=0,to=1 → [A,C,edit] 应 -1）。
-     * 反例二（验证上边界含等号）：[X,edit,A,B]，editing=1，B 拖到 X 之后
-     * （from=3,to=1）→ [X,B,edit,A]，edit 落 2：1 in [1,3) → +1=2 正确；若写成
-     * to < editing 会漏掉 to==editing 的插入（item 插在编辑位前同样把编辑位后推）。
+     *
+     * 这里原来是一段带边界等号的三段推理（"拖的就是编辑位→跟随、向下拖越过→-1、
+     * 向上拖越过→+1"），还靠注释举了两个反例才说得清等号该不该含。
+     * 现在按身份重算（[MessageListEditing.reindex]），那两组边界用例改由穷举矩阵
+     * `MessageEditingIndexInvariantTest` 在每个 (长度, 编辑位, from, to) 组合上跑真方法守着。
      */
     fun reorderMessages(from: Int, to: Int) {
         if (from == to) return
-        val list = _messages.value.toMutableList()
+        val list = _messages.value
         if (from !in list.indices || to !in list.indices) return
+        val moved = list.toMutableList()
+        val item = moved.removeAt(from)
+        moved.add(to, item)
         val editing = _editingIndex.value
-        if (editing >= 0) {
-            _editingIndex.value = when {
-                from == editing -> to
-                from < editing && to >= editing -> editing - 1
-                from > editing && to <= editing -> editing + 1
-                else -> editing
-            }
-        }
-        val item = list.removeAt(from)
-        list.add(to, item)
-        _messages.value = list
+        val next = MessageListEditing.reindex(list, moved, editing)
+        if (next != editing) _editingIndex.value = next
+        _messages.value = moved
         // 消息变更后标记旧结果为 stale
         markCurrentResultStaleIfNeeded()
     }
@@ -1352,19 +1340,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val oldList = _messages.value
         val newList = oldList.filterNot { it.id in consumedMessageIds }
 
-        // 修正 editingIndex：如果编辑中的消息属于 consumedIds，清编辑态
+        // 修正 editingIndex：与前两处同一个判据（按身份重算），不在此重复推理
         val editing = _editingIndex.value
-        if (editing >= 0 && editing < oldList.size) {
-            val editingMsg = oldList[editing]
-            if (editingMsg.id in consumedMessageIds) {
-                _editingIndex.value = -1
-                _draftText.value = ""
-            } else {
-                // 编辑的消息不在 consumed 中，重算新 index
-                val newIdx = newList.indexOfFirst { it.id == editingMsg.id }
-                _editingIndex.value = newIdx
-            }
-        }
+        val next = MessageListEditing.reindex(oldList, newList, editing)
+        if (next != editing) _editingIndex.value = next
+        if (editing >= 0 && next < 0) _draftText.value = ""
 
         _messages.value = newList
         feedbackCases.clearFeedbacks()
