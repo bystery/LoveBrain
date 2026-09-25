@@ -10,19 +10,14 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.core.app.ApplicationProvider
-import com.lovebrain.app.core.designsystem.LbStatusTags
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
-import com.lovebrain.app.data.DeepSeekRepository
-import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.service.FloatingService
 import com.lovebrain.app.viewmodel.SetupViewModel
@@ -38,7 +33,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import java.io.File
 
 /**
  * §6.2 首页四段结构的第一条**自动**守卫（此前这一条完全靠人眼看）。
@@ -182,6 +176,55 @@ class HomeScreenStructureTest {
         setCombo(true, false, FloatingService.WindowState.STOPPED)
         assertEquals("服务没跑：隐藏入口不该在", 0, tagCount(LbHomeTags.HIDE_BUTTON))
         assertEquals("四段结构不随状态消失——主按钮仍然唯一", 1, tagCount(LbHomeTags.PRIMARY_BUTTON))
+    }
+
+    /**
+     * ②的续：**归所有者这一步不许把首页唯一主按钮缩窄。**
+     *
+     * 这一格量的是"调用点"，组件里那格（`LbPrimaryButtonStateTest`）量的是"组件自己"——
+     * 两格判据同一条，但换档跑各有必要：组件自己补了内边距，调用方仍可以用
+     * `Modifier.width(…)`/`weight(1f)` 把它压回去；反过来组件没这条性质时，
+     * 全仓所有"按内容排"的调用点一起贴边，而首页那颗正是这种排法。
+     *
+     * 旧证据（本机语义树）：这一颗归位之前是 Material `Button(containerColor = Primary)`，
+     * 量到 **119x48dp**（`4ee1514` 记的）；归进 `LbPrimaryButton` 之后同一颗量到
+     * **盒 87x48dp / 字 87x18dp** ⇒ 组件只写了 `padding(vertical = …)`，左右各 **0dp**。
+     * ⇒ **热区没破、几何却缩了一圈**，而读代码读不出来（Material 那侧的内边距不在本仓库源码里）。
+     * ⚠ 那 32dp 宽度差的成因本机没量过；量到的是「归位之后组件不留任何横向内边距」这一件。
+     */
+    @Test
+    fun `the home primary button keeps horizontal room around its label`() {
+        mount()
+        val boxNode = topLevel(LbHomeTags.PRIMARY_BUTTON)
+        val box = probe.of(boxNode)
+        val rect = boxNode.boundsInRoot
+        val texts = rule.onAllNodes(
+            SemanticsMatcher.keyIsDefined(SemanticsProperties.Text),
+            useUnmergedTree = true
+        ).fetchSemanticsNodes().filter {
+            // 注意：`Rect.contains` 只收点，不收矩形（编译器在这里报的就是"Offset 期待值"），
+            // 所以 containment 自己比四条边，留 0.5px 容差。
+            val r = it.boundsInRoot
+            r.left >= rect.left - 0.5f && r.top >= rect.top - 0.5f &&
+                r.right <= rect.right + 0.5f && r.bottom <= rect.bottom + 0.5f
+        }
+        val inkNode = checkNotNull(
+            texts.minByOrNull { it.boundsInRoot.width * it.boundsInRoot.height }
+        ) {
+            "主按钮矩形 (%.0f,%.0f,%.0f,%.0f)dp 里量不到文本节点 —— 这格就没在判那颗按钮".format(
+                rect.left / density, rect.top / density, rect.right / density, rect.bottom / density
+            )
+        }
+        // 认法：未合并树里"落在盒子矩形内 + 面积最小"的那一颗就是标签自己。
+        // 不靠字符串——tag 会被父链一起带上来，而合并树里文字又并进按钮自己身上。
+        val ink = probe.of(inkNode)
+        val slack = box.widthDp - ink.widthDp
+        assertTrue(
+            "首页唯一主按钮的标签左右合共只留出 ${slack.toInt()}dp" +
+                "（盒 ${box.widthDp.toInt()} − 字 ${ink.widthDp.toInt()}），" +
+                "字贴在品牌色底色边上；下限 24dp：" + box.describe() + " / " + ink.describe(),
+            slack >= 24f
+        )
     }
 
     /** ③：两个快捷功能入口是同一颗组件（同一 tag），都可点 */

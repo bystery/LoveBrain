@@ -136,19 +136,22 @@ class ProductionUiContractTest {
             dimenValue("LB_PRIMARY_MIN_HEIGHT_DP", action)?.let { it >= 48 } == true
         )
         // 关键顺序：padding 出现在 clickable 之前会把热区缩掉，这是 §7.1 点名的写法
-        val paddingAt = action.indexOf(".paddingVerticalInside()")
+        val paddingAt = action.indexOf(".paddingInside()")
         val clickableAt = action.indexOf(".clickable(")
         assertTrue("both must exist", paddingAt >= 0 && clickableAt >= 0)
         assertTrue(
-            "clickable 必须排在竖向内边距之前，否则热区被削掉",
+            "clickable 必须排在内边距之前，否则热区被削掉",
             clickableAt < paddingAt
         )
         // 四态各一条链：只有一条的话，"新加的那一态忘了垫内边距"这格就抓不到。
-        // 必须锚在"换行 + 缩进 + 点"上：定义那一行写的是 `Modifier.paddingVerticalInside()`，
-        // 只找 `.paddingVerticalInside(` 会把它也数进去（4 报成 5——本仓库第 4 号坑的老形状）。
+        // 必须锚在"换行 + 缩进 + 点"上：定义那一行写的是 `Modifier.paddingInside()`，
+        // 只找 `.paddingInside(` 会把它也数进去（4 报成 5——本仓库第 4 号坑的老形状）。
+        // ⚠ 这条链的名字跟着组件改过一次（`paddingVerticalInside` → `paddingInside`，
+        // 因为**横向**内边距也归它了）；名字里带"方向"的私有函数一旦改了口径，
+        // 这种源码级 grep 就要跟着改——所以权威判据在语义树那两格，这格只挡顺序排反。
         assertEquals(
             "四态各自走一遍这条链",
-            4, Regex("\n\\s+\\.paddingVerticalInside\\(\\)").findAll(action).count()
+            4, Regex("\n\\s+\\.paddingInside\\(\\)").findAll(action).count()
         )
         // 调用方不再持有高度旋钮：`heightDp` 只能把按钮改高、改不矮，是个不存在的自由度
         assertTrue(

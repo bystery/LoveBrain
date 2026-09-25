@@ -113,7 +113,7 @@ fun LbPrimaryButton(
                     .clip(LoveBrainShape.md)
                     .background(container, LoveBrainShape.md)
                     .clickable(role = Role.Button, onClick = onClick)
-                    .paddingVerticalInside(),
+                    .paddingInside(),
                 contentAlignment = Alignment.Center
             ) {
                 Box(
@@ -152,7 +152,7 @@ fun LbPrimaryButton(
                     role = Role.Button,
                     onClick = onClick
                 )
-                .paddingVerticalInside(),
+                .paddingInside(),
             contentAlignment = Alignment.Center
         ) {
             LbPrimaryLabel(label, Color.White)
@@ -172,7 +172,7 @@ fun LbPrimaryButton(
                     role = Role.Button,
                     onClick = onClick
                 )
-                .paddingVerticalInside(),
+                .paddingInside(),
             contentAlignment = Alignment.Center
         ) {
             LbPrimaryLabel(label, TextSecondary)
@@ -192,7 +192,7 @@ fun LbPrimaryButton(
                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                     onClick()
                 }
-                .paddingVerticalInside(),
+                .paddingInside(),
             contentAlignment = Alignment.Center
         ) {
             LbPrimaryLabel(label, Color.White)
@@ -213,8 +213,25 @@ private fun LbPrimaryLabel(text: String, color: Color) {
     )
 }
 
-/** 内容层的竖向内边距——**必须排在 `clickable` 之后**：
+/**
+ * 内容层的内边距——**必须排在 `clickable` 之后**：
  * 排在之前就只有 `48 - 2*xs` 能点到，等于自己把热区削掉一圈（§7.1 点名的写法）。
  * 抽成一个函数是为了让"四态都用同一条顺序"这件事写在名字里，而不是散在四段代码里。
+ *
+ * **横向这一条是后补的，别再删回去。** 组件原来只有 `vertical`，于是"按内容排"的调用点
+ * 量出**盒宽 == 字宽**：本机语义树实量首页那颗唯一主按钮 `87x48dp`（字 `87x18dp`，左右各 0dp），
+ * 组件自测那颗 `122x48dp`（字同样 122dp）。字直接涂在品牌色底色的边上。
+ * 这一条只在**不给宽度约束**的调用点上显形——整宽的那些（`fillMaxWidth()` / `weight(1f)`）
+ * 本来就有富余，所以前面几格都没看见它。
+ *
+ * 取 `Spacing.xl`（16dp）而不是页面边距那一档 `Spacing.xxxl`（24dp）：前者是本系统里
+ * 卡片/行的内边距档（`LbActionCard`、`LbMetricGrid`），后者是整页的水平留白，
+ * 一颗按钮不该比页面留白还宽。补完之后首页那颗量回 **119x48dp**，
+ * 与 `4ee1514` 归位之前那颗 Material `Button(containerColor = Primary)` 记下的同一个数。
+ * ⚠ **同一个总数不等于恢复原状**：现在量到的是标签自己 87dp + 两侧各 16dp = 119dp，
+ * 而 `4ee1514` 那个 119 是**归位之前的总宽**——当时那条标签多宽、Material 给了多少内边距，
+ * 本机都没量过（同一笔迁移还把字号从 `labelLarge` 长成 `titleMedium`+Bold，宽度一定会变，
+ * 但变多少没测）。所以这里只并排记两条读数，成因留空。
  */
-private fun Modifier.paddingVerticalInside(): Modifier = this.padding(vertical = Spacing.xs)
+private fun Modifier.paddingInside(): Modifier =
+    this.padding(horizontal = Spacing.xl, vertical = Spacing.xs)

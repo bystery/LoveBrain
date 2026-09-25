@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
@@ -159,6 +160,48 @@ class LbPrimaryButtonStateTest {
             )
         }
     }
+    /**
+     * **横向**内边距也是组件的性质，不是调用方的自觉。
+     *
+     * 上一条格子（`a short label…`）补的是"宽度有一条下限"，补完仍然留着一个洞：
+     * 组件里只有 `padding(vertical = Spacing.xs)`，**横向一条都没有**。
+     * 于是标签只要宽过 48dp，盒子的宽度就等于文字的宽度——字直接贴在品牌色底色的边上。
+     * 首页那颗唯一主按钮（`HomeComponents`，不给宽度约束、按内容排）撞的就是这一档：
+     * 归位之前那颗 Material `Button(containerColor = Primary)` 量到 **119x48dp**（`4ee1514` 记的），
+     * 归位之后同一颗量到 **盒 87x48dp / 字 87x18dp** ⇒ 左右各 0dp。
+     * ⚠ 那 32dp 宽度差的**成因没直接量过**（Material 那侧的内边距不在本仓库源码里，
+     * 本机只量过总宽）；能量到的只有两件事：归位之后组件不留任何横向内边距，
+     * 以及补上 16dp×2 之后总宽正好回到 119。**"改用统一组件这一步自己把主按钮缩了一圈"是量出来的，
+     * 至于缩的正是 Material 原来给的那份，那是解释、不是读数**（与 `4ee1514` 那次角色掉档同一族）。
+     *
+     * 判据刻意不钉"盒子该多宽"（那由标签文案决定，换个语言就红），钉的是
+     * **盒子比标签多留出的量**：左右合计不得少于 24dp（每侧 12dp = 本系统最小的按钮类内边距
+     * `Spacing.lg`，见 `LbTextAction`）。组件以后要更宽松照样绿，要收回 0 当场红。
+     */
+    @Test
+    fun `a content sized button keeps horizontal room around its label`() {
+        val longLabel = "Generate my reply"
+        rule.setContent {
+            UiMatrix(360).RenderIn(LocalDensity.current.density) {
+                // 故意**不给**宽度约束：这一格判的就是"按内容排"那一档的组件自己
+                LbPrimaryButton(state = state.value, label = longLabel, onClick = { clicks++ })
+            }
+        }
+        show(LbButtonState.Idle)
+        val box = targets().single()
+        val inkNodes = rule.onAllNodes(hasText(longLabel), useUnmergedTree = true)
+            .fetchSemanticsNodes()
+        assertEquals("标签节点应当唯一（不唯一就说明这格没在判那颗按钮）：", 1, inkNodes.size)
+        val ink = probe.of(inkNodes.single())
+        val slack = box.widthDp - ink.widthDp
+        assertTrue(
+            "标签左右合共只留出 ${slack.toInt()}dp（盒 ${box.widthDp.toInt()} − 字 " +
+                "${ink.widthDp.toInt()}）——字贴在底色边上。下限 24dp，" +
+                "这条性质在组件里，不在调用方：" + box.describe(),
+            slack >= 24f
+        )
+    }
+
     /** 合同第 1 行的那半个：禁用是"灰着不能点"，不是消失 */
     @Test
     fun `disabled stays in place and announces itself disabled`() {
