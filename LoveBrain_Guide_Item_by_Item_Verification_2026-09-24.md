@@ -2505,3 +2505,119 @@ V5 撤回后主格红（`expected null, but was:<439.0>`——行里多画一份
   那需要 ViewModel 与浮窗环境的替身，是另一件事。
 - 设备侧仍未跑（本机无 system image）。"遮罩盖住面板后底下的输入还在不在"这类
   真机交互，只能等 CI 或人工那一次。
+
+---
+
+# 追加二十三：§6.4 第三刀——纠正中心归持有者 + 模态宿主（提交 `b2c384c`）
+
+## 33.1 指导书那句话与这次动的范围
+
+:523（§6.4 悬浮面板交互）原话：
+
+> ResultArea 只负责结果内容，不再同时承载菜单、纠正中心、发送记录、改写、版本历史、
+> 反馈原因等所有浮层；这些拆成独立 state holder + modal host。
+
+上一格（§32）搬走的是「暂停时长／标记为错误」两颗。这一格搬**纠正中心**这一块。
+清单里还剩：发送记录（开关状态还在屏幕里）、反馈原因（`DislikeReasonPanel`，仍是内联块）。
+
+## 33.2 改之前先量：它连浮层都不是
+
+搬之前 `CorrectionCenter` 是 `LoveBrainPanelScreen` 顶层 `Box`（:168 起）里的一块
+`Column(fillMaxWidth)`，开关是屏幕里的 `var showCorrectionCenter`。
+
+这台仪器在同一块 360x900dp 挂载槽里的**第一次红**（断言写得比现状严，让失败信息把数吐出来）：
+
+```
+纠正中心 — 3/3 颗可交互节点小于 48dp（density=1.0）
+  「关闭」 尺寸 28x19dp @(324,8)
+  「撤销」 尺寸 28x19dp @(320,35)
+  「撤销」 尺寸 28x19dp @(320,66)
+```
+
+三颗全是 **28x19dp**。标题的 y 后来由探针 W1（把形状退回内联块）报回 **0dp**——
+贴顶、无遮罩，"盖住面板"这句话对它根本不成立。
+
+## 33.3 搬出来的形状
+
+- `CorrectionCenterHolder`——只持有一个 `isOpen`；`open()/close()`。
+- `rememberCorrectionCenterHolder()`——面板里唯一接线处。
+- `CorrectionCenterHost`——**唯一渲染处**，一颗 `LbModalSheet` + `LbModalSheetTitle`
+  + `LbModalSheetActions`。撤销走 `LbDialogAction(label = "撤销", tone = Accent)`，
+  所以它的热区下限和别人用的是同一个常量 `LB_SHEET_ACTION_MIN_DP`，不是又抄一个 48。
+- 数据仍由调用方喂进来（`corrections` 参数）。**没有**把
+  `viewModel.loadAllCorrections { … }` 那个异步回调塞进持有者——UI 状态类反向依赖 VM
+  会让 `UiLayerDependencyContractTest` 那条"不许伸手进 VM"的闸红。
+
+## 33.4 回扫：同一菜单的另一条分支
+
+§32 那格量热区时只点了「不对」那颗浮层。**「暂停时长」那三档用的是另一个实现**
+（`CorrectionSubmenuItem`），没被量过。这一格补一格守卫并当场量到：
+
+探针 W2 去掉 `heightIn` 后报回 **307x23dp**。
+
+> 我在这条注释里先写了个"35dp"——那是我**算**出来的（19 文字 + 上下各 8），不是量出来的，
+> 量到之前不该留在仓库里，已改成实测的 23dp。这正是"工具里的数不许写死"的又一次现场版：
+> 写死的数不只是会过期，它可以在落笔那一刻就是错的。
+
+## 33.5 新立的一把静态尺，以及两个我写错的数
+
+`UiLayerDependencyContractTest` 增一格：面板上的浮层归 holder，不许在屏幕函数里
+随手 `var showXxx by remember { mutableStateOf(false) }`。
+
+这一格**差点按我猜的数落盘**。我先在 KDoc 里写"holder 3 颗、杂散布尔 2 颗"，
+又在断言里写 `adHocBudget = 2 / holderFloor = 3`、还加了一条"合计 ≥ 5"。
+真去 `grep -o` 数的时候三处都不对：holder 只有 **2** 颗，杂散布尔有 **3** 颗
+（多出来那颗是 `showOnboard`，引导卡片、不是浮层，但按形状判就会被数进来），
+"合计 ≥ 5"更是我为了让两个数看起来有关系而编的。全部删掉重写成实测值。
+
+判据形状改成两把尺对看：杂散布尔只许往下（棘轮 3），holder 只许往上（下限 2）——
+后者同时是"这把尺没在扫空集"的证人。探针 W6/W7/W8 各咬一次：
+
+```
+[W6] red=['panel decision surfaces are held…']  numbers=[4,3,…]   # 加一颗 → 4 > 3
+[W7] red=['panel decision surfaces are held…']  numbers=[2,1]      # holder 证人掉到 1
+[W8] red=['panel decision surfaces are held…']  numbers=[3,2,…]    # 预算抬紧一格，吐回实测 3
+```
+
+W8 顺手把"Kotlin 那边到底数到几"钉死了：**3**，与 grep 一致，所以预算 3 是紧的、不是留了余量。
+
+## 33.6 字符串预算：合计没动，这笔要写清不是还债
+
+`UiStringLiteralBudgetTest` 两格当场红：TEXT 实测 **199 < 202**、COMPONENT 实测 **72 > 69**。
+
+四栏合计 **283 → 283**，一个字没变。原因是「记忆纠正中心」「关闭」「撤销」三条
+从 `Text(text = "…")` 换进 `LbModalSheetTitle(…)` / `LbDialogAction(label = …)`——
+换桶，不是还债；方向正是 §6.1/§6.4 要的，所以涨在 COMPONENT。
+
+这一格另外**真删掉**了 3 条中文（`[本轮]/[今天]/[恢复]` 三份手抄，改成复用
+跟着 enum 走的 `durationLabel()`），但它们**删之前就不在任何一栏里**：
+写在 `when` 分支上的字面量，`Text(` 和 `Lb*(` 两个锚点都看不见。
+（这条是**从实测反推**的：若它们算 TEXT，TEXT 该降 6 而不是 3。）
+
+## 33.7 探针
+
+W1–W5（`_temp/mut78_c64_3.py`）与 W6–W8（`_temp/mut79_holder_ratchet.py`），
+每笔单独应用、单独回滚，跑完 `cmp` 级字节核对，两轮都报 `CLEAN`。
+五笔各红在自己那一格，没有一笔是"编译失败被当成没咬"。
+W5 有第二次连带红（热区格因节点从 3 变 2 而红），那是真的连带，不追。
+
+## 33.8 实测（本机，变异全撤之后的树上复跑）
+
+- 全套：**170 套件 / 1299 单测 / 0 失败 / 0 错误 / 0 跳过**（上一格 169 / 1291；
+  +1 套件 = `CorrectionCenterTest`，+8 = 6 新格 + 时长热区 1 + holder 棘轮 1）。
+- lint 报告重新生成后实测 **68 条 / 15 规则**，进预算 **67 / 14**，advisory 1 —— 与上一格一字未动。
+- 包依赖 6；工单编号 PASS；prompt 资产锁 OK；门禁自测 27 格 OK；androidTest 编译 RC=0。
+
+## 33.9 这格没做的
+
+- :523 清单里还剩两块：**反馈原因**（`DislikeReasonPanel`，`LoveBrainPanelScreen:545`，
+  仍是 `Column(fillMaxWidth)` 内联块，形状和搬之前的纠正中心一模一样，
+  大概率同样量得到 <48dp 的动作，但**这格没量它，所以不替它报数**）；
+  **发送记录**（`RecordSentDialog` 已经是宿主形状，可开关仍是屏幕里的
+  `showSentDialog` / `sentDialogSaving`——就是 33.5 那把尺记下的那 2 颗）。
+- 时长菜单那三档现在是 48dp 了，但**读屏里念不念得出"当前选到哪一档"仍没判**
+  （`assertSelectableAnnounceState` 还没用到这颗浮层上）。
+- `showOnboard` 被棘轮数进来了，却没有对应的 holder；下一格若把它一并收进 holder，
+  这把尺的 `adHocBudget` 该从 3 降到 1，届时 holder 下限同时要抬——**别只降一边**，
+  那正是 33.5 里"归零之后扫空集恒绿"的那个坑。
+- 设备侧仍未跑（本机无 system image）。

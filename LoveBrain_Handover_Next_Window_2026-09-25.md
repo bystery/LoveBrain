@@ -6,11 +6,12 @@
 > 上一份开工单：`LoveBrain_Handover_Next_Window_2026-09-24.md`（它的 §2.1/§2.2 已由本轮做完，其余仍有效）
 > **账本最近三节**：「追加八」§18（编辑位判据）、「追加九」§19（量完两格决定不动 + 输入框读屏名字）、
 > 「追加十」§20（知识库页四态 + 页头 32dp 返回钮）。读本文件前先看完这三节。
-> **本文件的读法**：§0.1–§0.11 是一格一段的增量（§0.11 最新），§1 起手命令与现在值，
+> **本文件的读法**：§0.1–§0.21 是一格一段的增量（§0.21 最新，`b2c384c`），§1 起手命令与现在值，
 > §2 被证伪的旧话（含"注释承诺了一道不存在的闸"那类），§4 下一格顺序（6 = §6.1 剩余 8 行，
-> 6b = 便宜穿插格），§5 已做勿重复，§6 坑表（55–57 最新）。
-> 账本最近四节：§20 知识库四态、§21 捕获四态+输入框热区、§22 token 搬家、
-> §23 `LbStatusBadge` 与五处平行 when（含"性质格自己的强度边界"那条自我发现）。
+> 6b = 便宜穿插格），§5 已做勿重复，§6 坑表（**70–71 最新**：算出来的数写进注释、
+> 新闸的预算靠推理填）。
+> 账本最近三节：§31 输入框读屏名字、§32 §6.4 第二刀（纠正浮层归持有者）、
+> §33 §6.4 第三刀（纠正中心归持有者 + 模态宿主，含"合计没动是换桶不是还债"那笔对账）。
 
 ## 0. 一句话现状
 
@@ -494,6 +495,33 @@ HEAD `0c4d6d6`，仍未推。两笔：
   `menuOpen/showRefs/showAllRefs` 没动；"宿主真接错位置"不会被现有守卫抓到（要抓得把
   `LoveBrainPanelScreen` 接进仪器）。
 
+## 0.21 又一步：§6.4 第三刀——纠正中心归持有者 + 模态宿主（`b2c384c`）
+
+- :523 清单里的"纠正中心"搬完了：新增 `CorrectionCenterHolder`（只有 `isOpen`）
+  + `CorrectionCenterHost`（唯一渲染处，一颗 `LbModalSheet`），
+  撤销走 `LbDialogAction`，所以热区下限和别人共用 `LB_SHEET_ACTION_MIN_DP` 一个常量。
+  `LoveBrainPanelScreen` 里 `var showCorrectionCenter` 没了。
+- 改之前先量（这台仪器的第一次红就是尺寸格）：里面**每一颗**可点的东西
+  ——「关闭」和两条「撤销」——全是 **28x19dp**；探针 W1 把形状退回内联块时
+  标题 y 报回 **0dp**（贴顶、无遮罩）。搬完复量：动作 **48x48dp**、标题在槽位中部。
+- **回扫抓到的漏量**：上一格量热区只点了「不对」那颗，「暂停时长」那三档走的是
+  `CorrectionSubmenuItem`，另一个实现、没量过。W2 去掉 `heightIn` 后实量 **307x23dp**。
+  ⚠ 我一开始在注释里写了"35dp"——那是**算**出来的（19+8+8），不是量出来的（新坑 70）。
+- 新立一把静态尺：`panel decision surfaces are held by state holders, not ad-hoc booleans`。
+  杂散可见性布尔棘轮 **3**、holder 下限 **2**（后者兼作"尺没扫空集"的证人）。W6/W7/W8 各咬一次，
+  W8 顺带把 Kotlin 侧真实计数钉成 3，所以预算不是留了余量。
+- 字符串预算当场红两格：TEXT 202→**199**、COMPONENT 69→**72**，**四栏合计 283 一字未动**。
+  这**不是还债**，是「记忆纠正中心」「关闭」「撤销」三条从 `Text(` 换进组件实参（换桶）。
+  另真删 3 条中文（`[本轮]/[今天]/[恢复]` 手抄 → 复用 `durationLabel()`），但它们
+  删之前就不在任何一栏——`when` 分支上的字面量两个锚点都看不见（这条是从"TEXT 只降 3 不降 6"反推的）。
+- 实测：170 套件 / **1299 例** / 0 红；lint 重新生成后 **68/15**、进预算 **67/14**、advisory 1
+  （一字未动）；工单、资产锁、门禁自测 27 格、跨层 **6** 笔、androidTest 全 RC=0。
+- ⚠ 仍然欠着的：:523 清单剩两块——**反馈原因**（`DislikeReasonPanel:545`，仍是
+  `Column(fillMaxWidth)` 内联块，形状和搬之前的纠正中心一模一样，**但本格没量它，
+  所以不替它报数**）；**发送记录**（`RecordSentDialog` 已是宿主形状，开关却是屏幕里的
+  `showSentDialog`/`sentDialogSaving`，就是那把新尺记着的 2 颗）。
+  时长三档现在够 48dp，但**读屏念不念得出"选到哪一档"仍没判**。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -514,12 +542,17 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 #   只动 main 源文件时 testDebugUnitTest 会判 UP-TO-DATE 跳过、退出码仍然 0（见 §6 第 62 条）
 ```
 
-最近一轮实测基线（到 `7fc8150`）：**1291 单测 / 169 套件 / 0 失败 / 0 错误 / 0 跳过**
-（跑在变异全撤之后的树上）。与上一格对账：1283 → 1291 = +8，168 → 169 套 = +1（`MemoryCorrectionFlowTest`）。
-lint 报告**重新生成后**实测 **68 / 15**、进预算 **67 / 14**、advisory 1（这一格收了 11 处浮层，条数一字未动）。
-比上一格少的这 1 条是 `AutoboxingStateCreation` 6→5（退役按钮里那个 `mutableStateOf(0)` 计时器，
+最近一轮实测基线（到 `b2c384c`）：**1299 单测 / 170 套件 / 0 失败 / 0 错误 / 0 跳过**
+（跑在变异全撤之后的树上）。与上一格对账：1291 → 1299 = +8，169 → 170 套 = +1（`CorrectionCenterTest`）。
+那 +8 笔的出处要能对上：`CorrectionCenterTest` 6 格 + `MemoryCorrectionFlowTest` 时长热区 1 格
++ `UiLayerDependencyContractTest` holder 棘轮 1 格 = 8。**对不上就是有人加了套件却没加格**。
+lint 报告**重新生成后**实测 **68 / 15**、进预算 **67 / 14**、advisory 1（这一格换了浮层形状，条数一字未动）。
+上一格留下的那 1 条差量是 `AutoboxingStateCreation` 6→5（退役按钮里那个 `mutableStateOf(0)` 计时器，
 新代码写 `mutableIntStateOf`），逐条核过剩余 5 条位置都不在退役文件里才 `--rewrite`
 ⇒ **这是还掉了一条债，不是量的时刻不同**（还债后必须落账这件事，交接单 §0.15 有全程）。
+字符串四栏预算：TEXT **199** / DESC 12 / STATE 0 / COMPONENT **72**，合计 **283**。
+TEXT 与 COMPONENT 这一格各动一次但**合计没动**——那是换桶不是还债，账记在账本 §33.6，
+判据（"合计没变"到底是还债还是尺在漏，只有逐条对上这一种分辨法）也在那儿。
 跨层 **6** 条；工单编号 rc=0；prompt 资产 lock rc=0 且 `git diff --exit-code 286c9406..HEAD -- assets/engine` rc=0；
 判据自测 27 格 rc=0；`:app:assembleAndroidTest` rc=0。
 **目录现状**：`core/designsystem/` = Color / Dimens / Type / Spacing / Shapes / ScreenState /
@@ -613,21 +646,32 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
    **表里 11 行现在都有主人了**（`LbDialog` 半边见 §28/`38520b0`，`LbModalSheet` 半边见 §29/`cccabb0`，
    两格各修掉一条量出来的无障碍缺陷：对话框动作 40dp、浮层动作 26dp + 两颗无名节点）。
    **但"有主人"不等于"那行做完了"**，两件要紧的还欠着：
-   - :487 的**后半句**「不把展开内容直接插在原页面下方」仍然没闸——`ResultArea` 里
-     `MemoryRefItem` 还自己 `remember` 着 `menuOpen/showMuteSubmenu/showWrongDialog/wrongText`，
-     `CorrectionCenter`/`RecordSentDialog`/`DislikeReasonPanel` 也还各自挂遮罩。
-     这就是 §6.4 那条"ResultArea 只负责结果内容…拆成独立 state holder + modal host"，
-     **下一格做它**（`cccabb0` 只换了形状的所有者，没换状态的所有者，别混着报）。
+   - :487 的**后半句**「不把展开内容直接插在原页面下方」——**这一条改口，别照旧账做**。
+     `ResultArea` 已经不再自己 `remember` 那两颗纠正浮层（`showMuteSubmenu`/`showWrongDialog`/
+     `wrongText` 三行状态随 `7fc8150` 进了 `MemoryCorrectionFlow`），`CorrectionCenter`
+     也随 `b2c384c` 变成 `LbModalSheet` 了（本机实扫：`ResultArea.kt`/`SchemeCard.kt`/
+     `DislikeReasonPanel.kt`/`CorrectionCenter.kt` 四个文件里 `LbModalSheet(` 与 `Dialog(`
+     计数**均为 0**）。**还欠的是**：`ResultArea` 里仍有 `menuOpen`（结果卡与记忆行各一颗）、
+     `showRefs`、`showAllRefs` ——这些是文档流内容与低频次菜单，§6.4 :524 那句
+     "⋯ 菜单只放低频次操作"**我没去判**（要判得先定义"低频"，那是产品口径，不是我能自签的）；
+     以及 `DislikeReasonPanel` 仍是塞在面板顶层 `Box` 里的 `Column(fillMaxWidth)` 内联块
+     （它的显隐由 VM 的 `currentFeedbackCase` 驱动，不是屏幕布尔，所以问题只在**形状**不在状态）。
    - `LbScreenScaffold`（背景 / 安全区 / 统一水平边距）名字有了、**内容还没并**：
      各页仍各写自己的 `Box + background + padding`。
    - 两件小的：供应商编辑器那颗裸 `Dialog(`（闸里点名豁免，等并进 Sheet）；
      "对话框什么时候弹、返回键算不算取消"这类**可见性语义**一条断言都没有（§28.8、§29.6）。
-   - **§6.4 的下一刀 = 状态的所有者**（`5245788` 只收了形状）：`MemoryRefItem` 仍自己 `remember`
-     着 `menuOpen/showMuteSubmenu/showWrongDialog/wrongText`；`LoveBrainPanelScreen:131/152` 的
-     `showSentDialog/showCorrectionCenter/dislikeCase` 仍是散在 600 行 composable 里的局部状态。
-     `CorrectionCenter`/`DislikeReasonPanel` 更根本就不是浮层——它们是 `Column(fillMaxWidth)`
-     内容块被塞进 `Box(fillMaxSize)`（写作当时 `LoveBrainPanelScreen:540/572`；`7fc8150` 之后是 :545/577），
-     这才是 :487 后半句"把展开内容直接插在原页面下方"的字面现场。
+   - **§6.4 的下一刀 = 状态的所有者 + 剩下那块内联块**（`5245788`/`7fc8150`/`b2c384c`
+     之后重扫过，这段已改口）：`ResultArea.kt` 里现在还剩 **4** 颗局部可见性状态，
+     按所有者数是（`awk` 实扫，行号会漂所以只记所有者）：
+     `ResultArea` 的 `showRefs`、`ResultUtilityTrigger` 的 `menuOpen`、
+     `MemoryRefItem` 的 `menuOpen`、参考区的 `showAllRefs`。
+     这四处是文档流内容与低频菜单的开合，§6.4 :524 那句"⋯ 菜单只放低频次操作"**我没去判**
+     （要判得先定义"低频"，那是产品口径）。
+     `LoveBrainPanelScreen` 里剩 `showSentDialog`/`sentDialogSaving` 两颗散状态
+     ——**这正是新那把 holder 棘轮记下的 2 颗**，别在别处再加第三颗。
+     `CorrectionCenter` **已经搬完**（`b2c384c`）；**只剩 `DislikeReasonPanel` 仍是
+     `Column(fillMaxWidth)` 塞进 `Box(fillMaxSize)`**，那才是 :487 后半句
+     "把展开内容直接插在原页面下方"如今唯一的字面现场。
    - ~~5 处没名字的输入框~~ —— **代码已全修完**（`408d378`，见 §0.19 与账本 §31）。
      留下的真账是**那两屏还没接进 JVM 仪器**，所以它们的修复只算"改了没验"：
      `KbEditScreen`（private + 要 VM 和真实磁盘）与 `ResultArea`（从来没在 JVM 挂过）。
@@ -635,13 +679,20 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
      判据注意用 `contentDescription` **本身**（别写"a ?: b 取第一个非空"，见坑表 68）。
    - 同一族里还有一格没做：`DislikeReasonPanel` 的勾选行只挂 `clickable`，
      **读屏听不出某个原因是否已选中**（`assertSelectableAnnounceState` 那把尺还没用到这屏）。
-   - **§6.4 的下一刀（`7fc8150` 之后）**：还剩两颗内容块没搬——
-     `CorrectionCenter`（`LoveBrainPanelScreen:577` 起）与 `DislikeReasonPanel`（同一屏 :545 起）
-     仍是 `Column(fillMaxWidth)` 直接塞进面板顶层 `Box`，没有遮罩、没有点外关闭。
-     形状已经齐了：`MemoryCorrectionFlow`（持有者）+ `MemoryCorrectionFlowHost`（唯一渲染处）
-     就是照抄对象；`RecordSentDialog` 上一格已经是宿主形状。
-     ⚠ 搬这两颗时会碰到"面板 VM 的异步回调改状态"（`loadAllCorrections { … }`），
-     那是状态持有者该不该吸收 VM 回调的判断，别顺手把 VM 引用塞进 UI 状态类（分层那把闸会红）。
+   - **§6.4 的下一刀（`b2c384c` 之后）**：:523 那份清单只剩**反馈原因**一块——
+     `DislikeReasonPanel`（`LoveBrainPanelScreen` 顶层 `Box` 里，实扫仍是
+     `Column(fillMaxWidth).padding(...)`，**本格没量它的热区，所以不替它报数**；
+     它的形状和搬之前的 `CorrectionCenter` 一模一样，大概率同一族缺陷）。
+     照抄对象已经齐了三份：`MemoryCorrectionFlow`+`MemoryCorrectionFlowHost`（`7fc8150`）、
+     `CorrectionCenterHolder`+`CorrectionCenterHost`（`b2c384c`）。
+     注意这颗的显隐**不在屏幕手里**（由 VM 的 `currentFeedbackCase` 驱动），
+     所以要搬的是**形状**与动作热区，别为了"有个 holder"硬造一颗状态所有者——
+     那会把 VM 的单一真相源拆成两处。
+     同族的另一半小账：把 `showSentDialog`/`sentDialogSaving` 收进
+     `RecordSentDialog` 的持有者，那把棘轮就能从 3 降到 1；
+     **降的那一格必须同时把 holder 下限从 2 抬到 3**，只降一边就是把尺子拆了（坑表 71）。
+     ⚠ 搬的时候仍别把 VM 异步回调（`loadAllCorrections { … }` 那一族）塞进 UI 状态类
+     ——分层那把闸会红，`b2c384c` 里 `CorrectionCenterHolder` 只持 `isOpen` 就是这个原因。
    **主操作以外的重复按钮实现一处都还没收**（全表在账本 §27.7）：`ui/` 下"Primary 底色 + clickable"
    实扫 **17 处 / 11 个文件**。别按数量收口——哪些算"页面主动作"、哪些是 chip / 切换 / 次级动作，
    要一处一处判语义；`054c6e8` 那把归属棘轮只认**声明处**，抓不到"用同一颗组件却自造样式"。
@@ -995,6 +1046,25 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     ②界面格只保留界面真能到达的路径（关掉之后再开另一颗，这种"切换"是真的）；
     ③同一格里别混两种判据——"有名字"和"够大"挤在一格时，V3 红的是尺寸，
     报错却说出了一个没发生过的理由。
+
+70. **算出来的数不许写进注释——"我推出来的尺寸"和"量到的尺寸"在仓库里长得一模一样**
+    （`b2c384c`，W2 当场推翻）：我给 `CorrectionSubmenuItem` 写注释时先写了
+    "去掉 heightIn 后是 35dp"（19dp 文字 + 上下各 8dp 内边距）。跑探针才发现实量是
+    **307x23dp**。推导本身没错在哪一步都不重要——它一旦进了代码注释，就和实测值
+    用同一种字体、同一种口吻躺在那儿，下一个人无从分辨。
+    ⇒ ①注释里的尺寸/计数一律**先跑再写**；②拿不到实测值就写"守卫会报出来"，别写数；
+    ③"工具里的数不许写死"这条的加强版：**没量过的数连一次都不许写**。
+
+71. **新闸的预算数必须在落盘前实扫一遍；靠推理填的预算会同时错三个方向**
+    （`b2c384c`，写 holder 棘轮时一次填错三处）：我照"这一格做完应该是几颗"的心象写了
+    `adHocBudget = 2`、`holderFloor = 3`，还补了一条"合计 ≥ 5"来让两个数看起来有关系。
+    真去 `grep -o` 数：holder 只有 **2** 颗、杂散布尔有 **3** 颗（多出的 `showOnboard`
+    是引导卡片、不是浮层，但按形状判就会被数进来），"合计 ≥ 5"纯属编造。
+    三条都不改就跑，要么恒绿（预算填松）、要么开局就红（预算填紧）。
+    ⇒ 立一把新尺的**第一步是拿它扫现状并把数打印出来**，而不是先想"应该是几"。
+    这次还顺手抓到 `dir("panel")` 指错目录（真实路径是 `ui/panel`）——
+    因为那条断言里带了 `assertTrue(screen.isFile)`，路径写错会当场响；
+    **新闸要配一条"文件/目录还在不在"的反证**，否则它扫空集也是绿。
 
 65. **"探针没咬"和"探针没跑到"是两件事，混淆会把人推向改闸**（`38520b0` 那一格，N6/N7 两次）：
     我注入的 Kotlin 本身编译不过（`AlertDialog` 只给两个实参会解析到"自定义 content"那个 overload，
