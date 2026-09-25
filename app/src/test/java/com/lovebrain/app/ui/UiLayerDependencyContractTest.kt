@@ -456,35 +456,56 @@ class UiLayerDependencyContractTest {
      */
     @Test
     fun `hand-drawn brand-toned surfaces do not grow`() {
+        // ⚠ 这张表是**换过口径**重登记的（`471a512`）：旧口径 25 处 / 12 文件读不到
+        // "条件涂色"那一档（见 `brandTonedArgs` 那段），实扫是 **45 处 / 17 文件**。
+        // 这不是"债涨了 20 处"，是**以前漏了 20 处**——别拿 25 与 45 比涨跌。
+        // 表里每家的额度 = 本次实扫，`<=` 只挡长新的，下面那条等号证人挡"表比现实宽"。
         val perFileBudget = mapOf(
             "bubble/FloatingBubble.kt" to 1,
             "KnowledgeBaseActivity.kt" to 2,
+            "feedback/FeedbackCasesScreen.kt" to 2,
+            "home/ProviderSection.kt" to 4,
+            "onboarding/OnboardingOptionCard.kt" to 2,
             "panel/AiLoadingRow.kt" to 1,
-            "panel/counseling/CounselingPanel.kt" to 4,
             "panel/LoveBrainPanelScreen.kt" to 3,
             "panel/OnboardingFlow.kt" to 1,
             "panel/PanelHeader.kt" to 1,
+            "panel/SuggestPanel.kt" to 8,
+            "panel/counseling/CounselingPanel.kt" to 6,
             "panel/reply/CorrectionCenter.kt" to 1,
-            "panel/reply/MessageList.kt" to 1,
-            "panel/reply/ResultArea.kt" to 5,
-            "panel/reply/SchemeCard.kt" to 1,
-            "panel/SuggestPanel.kt" to 4
+            "panel/reply/DislikeReasonPanel.kt" to 2,
+            "panel/reply/MessageList.kt" to 2,
+            "panel/reply/ReplyInput.kt" to 2,
+            "panel/reply/ResultArea.kt" to 6,
+            "panel/reply/SchemeCard.kt" to 1
         )
         val total = perFileBudget.values.sum()
-        assertTrue("登记的就是本机实扫的 25 处，表本身错了要先修表", total == 25)
+        assertTrue("登记的就是本机实扫的 45 处，表本身错了要先修表", total == 45)
 
-        val pattern = Regex(
-            """\.background\(\s*(?:color\s*=\s*)?[^)]*\b(?:Primary|PrimaryDark|PrimaryLight)\b"""
-        )
         val uiRoot = dir("ui")
-        val found = kotlinFiles(uiRoot).map {
-            it.relativeTo(uiRoot).invariantSeparatorsPath to pattern.findAll(codeOf(it.readText())).count()
-        }.filter { it.second > 0 }.toMap()
+        val scanned = kotlinFiles(uiRoot).map {
+            it.relativeTo(uiRoot).invariantSeparatorsPath to brandTonedArgs(
+                codeOf(it.readText()),
+                Regex("""\.background\(\s*(?:color\s*=\s*)?"""),
+                brandToneNoSubtle
+            )
+        }.filter { it.second.isNotEmpty() }
+        val found = scanned.associate { it.first to it.second.size }
+
+        // 正向对照：两档写法都要认得。这把尺上一次就是瞎在"条件涂色"上，
+        // 任何一档变成 0 都得停下来分辨——是代码真没了，还是尺又漏了。
+        val conditional = scanned.flatMap { it.second }
+            .count { it.trimStart().startsWith("if") || it.trimStart().startsWith("when") }
+        val direct = scanned.flatMap { it.second }.count { it.trimStart().startsWith("Primary") }
+        assertTrue(
+            "条件涂色扫到 $conditional 处、直涂 $direct 处；任何一档归零都要先怀疑尺（旧口径正是断在 `if (…)` 的右括号）",
+            conditional > 0 && direct > 0
+        )
 
         val grew = found.filter { (path, n) -> (perFileBudget[path] ?: 0) < n }
         assertTrue(
             "这些文件里自己画品牌色底的数量涨了（§6.1 :490 要的是别再长新的）：$grew；" +
-                "登记的是 ${perFileBudget.filterKeys { k -> found[k] ?: 0 > 0 }}",
+                "登记的是 ${perFileBudget.filterKeys { k -> (found[k] ?: 0) > 0 }}",
             grew.isEmpty()
         )
         // 反证之一：表里登记的每一项都要真在盘上，别留一条指向不存在文件的额度当"管住了"
@@ -492,9 +513,15 @@ class UiLayerDependencyContractTest {
             assertTrue("$path 已不在 ui/ 下——表里这一行要一起删掉，别留着当已有闸",
                 File(uiRoot, path).isFile)
         }
-        // 反证之二：这把尺必须看得见东西，扫到 0 就是正则坏了
-        assertTrue("实扫到 ${found.values.sum()} 处，为 0 说明锚点失效（恒绿假闸）",
-            found.values.sum() > 0)
+        // 反证之二：等号——还了债就得回来把表改小，否则"预算填松"就是另一种恒绿
+        assertEquals(
+            "登记总数与实扫不一致（表比现实宽 = 恒绿的另一种写法）：实扫 $found",
+            total, found.values.sum()
+        )
+        found.keys.forEach { path ->
+            assertTrue("$path 实扫到 ${found[path]} 处、表里却没有这一行——要么加行、要么把写法收进组件",
+                perFileBudget.containsKey(path))
+        }
     }
 
     /**
@@ -711,8 +738,16 @@ class UiLayerDependencyContractTest {
      *
      * ⚠ 与另两把尺一样，**这一格只买"别再长新的"**，它判不了任何一处该不该搬：
      * `containerColor = PrimaryLight` 里既有该走组件的主动作，也有状态卡那种
-     * 本来就该是品牌浅底的表面。三把尺各扫各的（表面色 25 / 链上有 clickable 的 19 /
+     * 本来就该是品牌浅底的表面。三把尺各扫各的（表面色 25 / 链上有 clickable 的 18 /
      * 这扇门的 5），**三个数别合成一个**——这正是坑表 ⑫ 那条的第三次复发。
+     *
+     * **口径在 `471a512` 换过一次（新旧数不可比）**：旧尺写的是
+     * `containerColor\s*=\s*[^,)]*…`，那个字符类**在 `if (canProceed)` 的右括号处就断了**，
+     * 于是 `containerColor = if (canProceed) Primary else SurfaceInset` 这种"条件涂色"
+     * 从来没进过计数（本机两处：`KnowledgeBaseActivity:846`、`KbEditActivity:311`）。
+     * ⇒ 历史的 5 / 4 / 3 全是**下界**；现在改成按括号配对取那一段实参（`brandArgumentAt`），
+     * 并且下面加了一条**正向对照**证人：两档写法（直涂 / 条件）都得各扫得到——
+     * 漏写法这种毛病不会自己喊人（坑表 88 那一族：按形状认的尺要能把形状的变体认全）。
      *
      * 判据按文件记、只许往下（`<=`）；表里的行必须还在盘上（不留"指向不存在文件"的额度）；
      * 扫到 0 说明锚点坏了。
@@ -720,23 +755,34 @@ class UiLayerDependencyContractTest {
     @Test
     fun `brand tones painted through containerColor do not grow`() {
         val perFileBudget = mapOf(
-            "home/HomeComponents.kt" to 1,        // 状态卡那张 Card 的品牌浅底
-            "KnowledgeBaseActivity.kt" to 1,      // 只剩那颗"完成"大按钮（新建那颗已归 LbPrimaryButton）
-            "KbEditActivity.kt" to 1
+            "home/HomeComponents.kt" to 1,            // 状态卡那张 Card 的品牌浅底
+            "KbEditActivity.kt" to 2                  // 保存那颗 + 版本选中态那颗（条件涂色）
         )
-        // 登记总数由本次实扫定（`_temp/scan_container_color.py`）。
-        // ⚠ 这一格搬掉知识库那颗「新建」之后从 5 降到 **4**；`5477762` 之后表单那颗「保存」
-        //   归 `LbPrimaryButton`，再降到 **3**——表跟着改小是规矩，
-        //   不改小就是"预算填松 ⇒ 恒绿"（坑表 71 那一族），`<=` 方向本身不会提醒你。
+        // 登记总数由本次实扫定（`_temp/scan_container_color2.py`，剥注释 + 括号配对）。
+        // ⚠ **口径在 `471a512` 换过**（旧尺读不到"条件涂色"那一档，见 `brandTonedArgs`），
+        //   换口径之后：5 处 → 表单「保存」归位 → 3 处，`KnowledgeBaseActivity` 那两颗
+        //   （「下一步」「完成，AI 生成画像」）也归 `LbPrimaryButton` ⇒ 这一档现在整档不在表里。
+        //   别把 3 与历史的 5/4 放在一起比涨跌——那三个数都是**旧口径**的下界。
         assertTrue("登记的就是本机实扫的 3 处，表本身错了要先修表", perFileBudget.values.sum() == 3)
 
-        val pattern = Regex(
-            """containerColor\s*=\s*[^,)]*\b(?:Primary|PrimaryDark|PrimaryLight|PrimarySubtle)\b"""
-        )
         val uiRoot = dir("ui")
-        val found = kotlinFiles(uiRoot).map {
-            it.relativeTo(uiRoot).invariantSeparatorsPath to pattern.findAll(codeOf(it.readText())).count()
-        }.filter { it.second > 0 }.toMap()
+        val scanned = kotlinFiles(uiRoot).map {
+            it.relativeTo(uiRoot).invariantSeparatorsPath to
+                containerColorBrandHits(codeOf(it.readText()))
+        }.filter { it.second.isNotEmpty() }
+        val found = scanned.associate { it.first to it.second.size }
+
+        // 正向对照：这把尺**必须认得两种写法**。哪天其中一档扫不到，要么代码真没了
+        // （那要回来改这张表和这条证人），要么尺又漏了——两种都不能闷着绿。
+        val allArgs = scanned.flatMap { it.second }
+        val conditional = allArgs.filter { it.trimStart().startsWith("if") || it.trimStart().startsWith("when") }
+        val direct = allArgs.filter { it.trimStart().startsWith("Primary") }
+        assertTrue(
+            "条件涂色那一档扫到 ${conditional.size} 处、直涂 ${direct.size} 处。" +
+                "这把尺上一次就是瞎在条件涂色上（旧正则到 `if (…)` 的右括号就断），" +
+                "任何一档变成 0 都要停下来分辨是代码没了还是尺又漏了：$allArgs",
+            conditional.isNotEmpty() && direct.isNotEmpty()
+        )
 
         val grew = found.filter { (path, n) -> (perFileBudget[path] ?: 0) < n }
         assertTrue(
@@ -748,9 +794,64 @@ class UiLayerDependencyContractTest {
             assertTrue("$path 已不在 ui/ 下——表里这一行要一起删掉，别留着当已有闸",
                 File(uiRoot, path).isFile)
         }
+        // ⚠ 上面那条 `<=` 只挡"长新的"，**挡不住表比现实宽**：搬掉一处之后实扫 4、
+        // 表还写 5，`grew` 是空的、格子照绿。这条等号证人补上另一半——
+        // 还了债就得回来把表改小（与字面量预算那句"还掉了就来把数字改小"同一个规矩）。
+        // 它同时是"尺又被改瞎"的报警器：尺一漏数，等号当场不成立（探针 G5 就是钉这个的）。
+        assertEquals(
+            "登记总数与实扫不一致（表比现实宽 = 恒绿的另一种写法）：实扫 " + found,
+            perFileBudget.values.sum(), found.values.sum()
+        )
+        found.keys.forEach { path ->
+            assertTrue("$path 实扫到 ${found[path]} 处、表里却没有这一行——要么加行、要么把写法收进组件",
+                perFileBudget.containsKey(path))
+        }
         assertTrue("实扫到 ${found.values.sum()} 处，为 0 说明锚点失效（恒绿假闸）",
             found.values.sum() > 0)
     }
+
+    /**
+     * 从锚点往后取**那一段实参**，返回其中出现品牌色的实参——两把"按形状认"的尺共用这一把。
+     *
+     * 为什么不是一条正则搞定（这一条是 `471a512` 查出来的**真漏**）：
+     * 旧尺写成 `[^)]*` / `[^,)]*`，那种"在 `if (…)` 的右括号处断掉"的写法它们**全都看不见**——
+     * `.background(if (canProceed) Primary else SurfaceInset)` 里 `[^)]*` 走到 `if (canProceed)`
+     * 那个右括号就停了，后面那句 `Primary` 永远接不上锚点。
+     * 本机实扫（`_temp/scan_surface_ruler_check.py`）：
+     * **表面色那把尺旧口径 25 处 / 12 文件，括号配对口径 45 处 / 17 文件**——
+     * 少判 20 处，其中 `ProviderSection`(4)、`DislikeReasonPanel`(2)、`ReplyInput`(2)、
+     * `FeedbackCasesScreen`(2)、`OnboardingOptionCard`(2) 五个文件以前**整档不在表里**。
+     * ⇒ 历史那些"25 / 19 / 5 / 4"全是**下界**，新口径的数字与它们**不可比**。
+     *
+     * 口径：从锚点走到"顶层逗号"或"本段实参结束"为止（括号配对），中间的内层括号不拦。
+     * 与字面量预算那把尺的 `expressionAt` 同一个思路，注释也一并剥掉（坑表 88）。
+     */
+    private fun brandTonedArgs(code: String, anchor: Regex, tones: Regex): List<String> {
+        return anchor.findAll(code).map { m ->
+            val from = m.range.last + 1
+            var depth = 0
+            var i = from
+            while (i < code.length) {
+                when (code[i]) {
+                    '(' -> depth++
+                    ')' -> if (depth == 0) break else depth--
+                    ',' -> if (depth == 0) break
+                }
+                i++
+            }
+            code.substring(from, i)
+        }.toList().filter { tones.containsMatchIn(it) }
+    }
+
+    private val brandTone = Regex("""\b(?:Primary|PrimaryDark|PrimaryLight|PrimarySubtle)\b""")
+    private val brandToneNoSubtle = Regex("""\b(?:Primary|PrimaryDark|PrimaryLight)\b""")
+
+    /**
+     * 从 `containerColor =` 锚点往后取**那一段实参**，返回其中出现品牌色的实参。
+     */
+    private fun containerColorBrandHits(code: String): List<String> =
+        brandTonedArgs(code, Regex("""containerColor\s*=\s*"""), brandTone)
+
 
     /**
      * 供应商表单：**测量走本体，外壳只留一颗 Dialog**。

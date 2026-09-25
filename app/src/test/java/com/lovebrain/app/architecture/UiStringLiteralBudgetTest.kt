@@ -233,7 +233,10 @@ class UiStringLiteralBudgetTest {
         // （两条中文一起走 `values` + `values-en`）。⚠ 这处的账不好核：搬进 `Lb…()` 的实参
         // 之后 COMPONENT 那栏一度涨到 80——**同一条债从 TEXT 挪到 COMPONENT 不算还债**，
         // 只有换成资源才是。两栏一起看才不会把搬家当成还债（坑表 88 那一族的另一面）。
-        Kind.TEXT to 185,
+        // 185 → **183**：问卷那两颗主动作的标签（「下一步」「完成，AI 生成画像」）
+        // 归 `LbPrimaryButton` 时先变成 COMPONENT 栏的 80>78，再搬进资源才真的还掉——
+        // **同一条债换抽屉不算还**（账本 §48.3）。
+        Kind.TEXT to 183,
         Kind.DESC to 11,
         Kind.STATE to 0,
         Kind.COMPONENT to 78

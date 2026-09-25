@@ -2,15 +2,12 @@ package com.lovebrain.app.ui.home
 
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.semantics.SemanticsActions
-import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.swipeUp
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
+import com.lovebrain.app.core.testing.ScrollScan
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.SemanticsProbe.Target
 import com.lovebrain.app.core.testing.RenderIn
@@ -102,7 +99,6 @@ class ProviderFormSemanticsTest {
         rule.waitForIdle()
     }
 
-    private val scrollByMatcher = SemanticsMatcher("hasScrollBy") { it.config.contains(SemanticsActions.ScrollBy) }
 
     /**
      * 沿纵向**滚到底**，每档重扫整棵树，返回"每颗控件自己的尺寸"。
@@ -120,38 +116,15 @@ class ProviderFormSemanticsTest {
      * 这种版式问题，本格不假装覆盖。
      */
     /**
-     * 这把尺里怎么"认出同一颗控件"。
-     *
-     * 不能直接用 [Target.announced]：输入框那颗的文字与 `contentDescription` 是同一条
-     * placeholder，`announced` 会拼成「名称 / 名称」，覆盖清单就永远对不上——
-     * 第一版就红在这里，报的是"没量到 名称"，而它明明在屏上（读不出数不等于没数）。
+     * 逐档滚到底那把尺**不再写在这里**——它收进了 `core/testing/ScrollScan`（同一个口径
+     * 只许有一处：新的第三屏 `OnboardingScreenSemanticsTest` 要测的是同一件事，
+     * 复制一份就会有两把尺各自漂移）。这里只留一层转发。
      */
-    private fun keyOf(t: Target): String =
-        (listOf(t.label) + t.contentDescriptions).filter { it.isNotBlank() }.distinct().joinToString(" + ")
+    private val scan by lazy { ScrollScan(rule, probe) }
 
-    private fun scanToBottom(ticket: ProviderTicket?, matrix: UiMatrix): Map<String, Target> {
+    private fun scanToBottom(ticket: ProviderTicket?, matrix: UiMatrix): Map<String, SemanticsProbe.Target> {
         mount(ticket, matrix)
-        val best = LinkedHashMap<String, Target>()
-        var previous: String? = null
-        val maxSteps = 12
-        for (step in 0 until maxSteps) {
-            val targets = probe.actionableTargets(rule, "ProviderFormBody")
-            targets.forEach { t ->
-                val cur = best[keyOf(t)]
-                if (cur == null || cur.widthDp * cur.heightDp < t.widthDp * t.heightDp) best[keyOf(t)] = t
-            }
-            val fingerprint = targets.joinToString(";") { "${keyOf(it)}@${it.leftDp.toInt()},${it.topDp.toInt()}" }
-            if (fingerprint == previous) return best
-            previous = fingerprint
-            val nodes = rule.onAllNodes(scrollByMatcher).fetchSemanticsNodes()
-            check(nodes.isNotEmpty()) { "表单里找不到滚动容器：这一格没法逐档扫，先去查 verticalScroll 还在不在" }
-            rule.onAllNodes(scrollByMatcher)[0].performTouchInput { swipeUp() }
-            rule.waitForIdle()
-        }
-        throw AssertionError(
-            "滚了 $maxSteps 档还没到底（累计只量到 ${best.size} 类节点）——" +
-                "要么滚动没生效，要么表单长得没法扫，不能拿半截结果当全表单的证据"
-        )
+        return scan.toBottom("ProviderFormBody")
     }
 
     /** 这一屏该说得出名字的东西，全部来自 `ProviderFormBody` 里那些内联文案 */

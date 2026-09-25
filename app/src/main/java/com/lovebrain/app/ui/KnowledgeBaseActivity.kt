@@ -54,6 +54,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.LbButtonState
 import com.lovebrain.app.core.designsystem.LbPrimaryButton
 import com.lovebrain.app.core.designsystem.LbAsyncState
@@ -521,7 +522,7 @@ private fun KbCard(
 }
 
 @Composable
-private fun OnboardingScreen(
+internal fun OnboardingScreen(
     onDismiss: () -> Unit,
     onSkip: () -> Unit,
     onComplete: (com.lovebrain.app.domain.OnboardingSchema) -> Unit,
@@ -560,7 +561,11 @@ private fun OnboardingScreen(
         trailing = {
             TextButton(
                 onClick = onSkip,
-                enabled = !generating
+                enabled = !generating,
+                // 实量 **72x40dp**：M3 那颗"至少 48dp"是 `minimumInteractiveContainer`
+                // 装饰（挂在另一个节点上），带 `role=Button` 的这一颗自己只有 40 高（:531）。
+                // 同形缺陷已在表单「显示/隐藏」与捕获范围页各撞过一次——别再相信框架管好了。
+                modifier = Modifier.heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             ) {
                 Text(
                     "建空档案",
@@ -722,9 +727,16 @@ private fun OnboardingScreen(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
+                            // 实量 **87x22dp、role=无**。这一颗是从第 2 步才出现的，
+                            // 所以首屏那一档扫不到它——只测首屏会以为这一屏很干净。
+                            // `heightIn/widthIn` 排在 `clickable` **之前**、`padding` 之后：
+                            // 反过来写就是自己把热区削一圈（表单那颗「＋ 添加模型」同一修法）。
+                            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                             .clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null,
+                                role = Role.Button,
                                 onClick = { showCustomInput = !showCustomInput }
                             )
                             .padding(vertical = Spacing.xs)
@@ -804,7 +816,12 @@ private fun OnboardingScreen(
             }
         } else if (currentStep > totalSteps) {
             // Step6：完成按钮
-            Button(
+            // 同一颗槽位的另一档（`currentStep > totalSteps`），实量 **312x48dp role=Button** ⇒ 达标。
+            // 归 `LbPrimaryButton` 之后它才**能表达禁用与进行中**：原来 `enabled = true` 写死，
+            // 而同一位置在 generating 那一档会换成另一颗手写 Button——三档三种实现。
+            LbPrimaryButton(
+                state = LbButtonState.Idle,
+                label = stringResource(R.string.kb_finish_profile),
                 onClick = {
                     generating = true
                     val schema = com.lovebrain.app.domain.OnboardingSchemaBuilder.build(
@@ -812,13 +829,8 @@ private fun OnboardingScreen(
                     )
                     onComplete(schema)
                 },
-                enabled = true,
-                colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                shape = LoveBrainShape.md,
-                modifier = Modifier.fillMaxWidth().height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
-            ) {
-                Text("完成，AI 生成画像", style = AppTypography.titleMedium)
-            }
+                modifier = Modifier.fillMaxWidth()
+            )
         } else {
             // 答题阶段：下一步按钮（不自动跳页）
             val question = if (currentStep == 1) {
@@ -830,8 +842,19 @@ private fun OnboardingScreen(
                 ?: com.lovebrain.app.domain.OnboardingAnswer()
             val canProceed = currentAnswer.isAnswered(question)
 
-            Button(
+            // §6.1 :479——这一屏的唯一主动作归 `LbPrimaryButton`。
+            // 搬之前先量：实量 **312x48dp、role=Button、没答时报 disabled**，三项都达标 ⇒
+            // 又是**归所有者，不是修缺陷**（首页、知识库「新建」、表单「保存」同一结论第四次）。
+            // 搬的收益还是"两张表管一件事"收成一旋钮：原来 `enabled = canProceed` 与
+            // `containerColor = if (canProceed) Primary else SurfaceInset`
+            // 与 `color = if (canProceed) White else TextHint` **三处**各判一遍同一个条件。
+            LbPrimaryButton(
+                state = if (canProceed) LbButtonState.Idle else LbButtonState.Disabled,
+                label = stringResource(R.string.kb_next_step),
                 onClick = {
+                    // 不用再判一次 `canProceed`：`Disabled` 那一档的 `clickable(enabled = false)`
+                    // 已经吃不进点击了。原来这里是"条件写在三处"，收成一颗旋钮之后
+                    // 再留一份判断就是我自己反对的那种写法。
                     if (currentStep < totalSteps) {
                         currentStep++
                         showCustomInput = false
@@ -841,19 +864,8 @@ private fun OnboardingScreen(
                         showCustomInput = false
                     }
                 },
-                enabled = canProceed,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (canProceed) Primary else SurfaceInset
-                ),
-                shape = LoveBrainShape.md,
-                modifier = Modifier.fillMaxWidth().height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
-            ) {
-                Text(
-                    "下一步",
-                    style = AppTypography.titleMedium,
-                    color = if (canProceed) androidx.compose.ui.graphics.Color.White else TextHint
-                )
-            }
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
