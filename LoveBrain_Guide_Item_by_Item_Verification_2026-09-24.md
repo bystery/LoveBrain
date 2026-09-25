@@ -2295,7 +2295,7 @@ R3 把"空稿不许提交"退回 `onClick` 里的 if → `空稿时确认必须�
   `LoveBrainPanelScreen` 里 `showSentDialog`/`showCorrectionCenter`/`dislikeCase` 仍是散在 600 行
   composable 里的局部状态，没有 state holder，也没有统一的 modal host。
 - `CorrectionCenter`、`DislikeReasonPanel` 根本不是浮层：它们是 `Column(fillMaxWidth)` 内容块，
-  被塞在 `Box(fillMaxSize)` 里（`LoveBrainPanelScreen:540/572`）——这才是 :487 后半句
+  被塞在 `Box(fillMaxSize)` 里（`7fc8150` 之前是 `:540/572`，之后是 `:545/577`）——这才是 :487 后半句
   "把展开内容直接插在原页面下方"的字面现场，一处没改。
   **→ 部分已还：§32（`7fc8150`）搬走了「本轮参考记忆」的两颗纠正浮层；这两颗内容块仍在。**
 - 剩下 5 处没名字的输入框（§30.5 有行号）。
@@ -2494,7 +2494,7 @@ V5 撤回后主格红（`expected null, but was:<439.0>`——行里多画一份
 ## 32.7 这格没做的
 
 - **§6.4 只做了两颗浮层。** `CorrectionCenter` 与 `DislikeReasonPanel` 仍是
-  `Column(fillMaxWidth)` 内容块被塞进面板顶层 `Box`（`LoveBrainPanelScreen:540/572` 附近），
+  `Column(fillMaxWidth)` 内容块被塞进面板顶层 `Box`（`LoveBrainPanelScreen:545/577`，本格当场 `grep -n` 复核过），
   既不是遮罩也不是宿主——表里 :487 后半句"不把展开内容直接插在原页面下方"对它们**仍然成立**。
   下一格继续搬它们（`RecordSentDialog` 已经是宿主形状了，只需接进同一套）。
 - `ResultArea` 里剩下的 `menuOpen` / `showRefs` / `showAllRefs` 没动：菜单与"本轮参考"展开

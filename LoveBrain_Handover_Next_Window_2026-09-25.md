@@ -626,7 +626,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
      着 `menuOpen/showMuteSubmenu/showWrongDialog/wrongText`；`LoveBrainPanelScreen:131/152` 的
      `showSentDialog/showCorrectionCenter/dislikeCase` 仍是散在 600 行 composable 里的局部状态。
      `CorrectionCenter`/`DislikeReasonPanel` 更根本就不是浮层——它们是 `Column(fillMaxWidth)`
-     内容块被塞进 `Box(fillMaxSize)`（`LoveBrainPanelScreen:540/572`），
+     内容块被塞进 `Box(fillMaxSize)`（写作当时 `LoveBrainPanelScreen:540/572`；`7fc8150` 之后是 :545/577），
      这才是 :487 后半句"把展开内容直接插在原页面下方"的字面现场。
    - ~~5 处没名字的输入框~~ —— **代码已全修完**（`408d378`，见 §0.19 与账本 §31）。
      留下的真账是**那两屏还没接进 JVM 仪器**，所以它们的修复只算"改了没验"：
@@ -636,7 +636,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
    - 同一族里还有一格没做：`DislikeReasonPanel` 的勾选行只挂 `clickable`，
      **读屏听不出某个原因是否已选中**（`assertSelectableAnnounceState` 那把尺还没用到这屏）。
    - **§6.4 的下一刀（`7fc8150` 之后）**：还剩两颗内容块没搬——
-     `CorrectionCenter`（`LoveBrainPanelScreen:572` 起）与 `DislikeReasonPanel`（同一屏 :540 起）
+     `CorrectionCenter`（`LoveBrainPanelScreen:577` 起）与 `DislikeReasonPanel`（同一屏 :545 起）
      仍是 `Column(fillMaxWidth)` 直接塞进面板顶层 `Box`，没有遮罩、没有点外关闭。
      形状已经齐了：`MemoryCorrectionFlow`（持有者）+ `MemoryCorrectionFlowHost`（唯一渲染处）
      就是照抄对象；`RecordSentDialog` 上一格已经是宿主形状。
