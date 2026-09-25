@@ -236,10 +236,14 @@ class UiStringLiteralBudgetTest {
         // 185 → **183**：问卷那两颗主动作的标签（「下一步」「完成，AI 生成画像」）
         // 归 `LbPrimaryButton` 时先变成 COMPONENT 栏的 80>78，再搬进资源才真的还掉——
         // **同一条债换抽屉不算还**（账本 §48.3）。
-        Kind.TEXT to 183,
+        Kind.TEXT to 182,
         Kind.DESC to 11,
         Kind.STATE to 0,
-        Kind.COMPONENT to 78
+        // 78 → **77**：`KbEditScreen` 那四条保存/冲突提示搬进资源。
+        // ⚠ 这一栏上一格还涨过一次（78→81）：`LbPrimaryButton` 的锚点按括号配对取实参，
+        //   整段 `onClick = { … }` 都进了射程，于是**一直存在、从没被数过**的三条内联中文
+        //   当场被照出来。正确反应是把它们搬进资源，**不是把表填到 81**（坑表 95/98）。
+        Kind.COMPONENT to 77
     )
 
     /**

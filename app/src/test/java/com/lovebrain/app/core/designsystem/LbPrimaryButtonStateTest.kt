@@ -128,6 +128,37 @@ class LbPrimaryButtonStateTest {
         }
     }
 
+    /**
+     * 短标签那颗也得是**见方**的热区——不靠调用方记得加 `fillMaxWidth()`。
+     *
+     * 起因是一条实测红：`KbEditScreen` 编辑态那颗「保存」搬进本组件之后，
+     * 语义树量到 **33x48dp**。组件原来只写 `.height(48)`，宽度按内容走，
+     * 于是英文短标签（"Save"）自己就不够 48——:596 那句"无小于 48dp 的热区"
+     * 判的是两条边，不是只判高度。
+     * 这与 `LbTextAction` 的来历同一课（它第一版也只垫高度，被自家测试量出 40x48dp），
+     * 差别在于这次把它写回**组件本身**：四态共用同一个下限，调用方拿不到"只设高度"的旋钮。
+     */
+    @Test
+    fun `a short label still leaves a square hot zone in every state`() {
+        rule.setContent {
+            UiMatrix(360).RenderIn(LocalDensity.current.density) {
+                // 故意**不给**宽度约束：这一格判的就是组件自己的下限
+                LbPrimaryButton(
+                    state = state.value,
+                    label = "Save",
+                    onClick = { clicks++ }
+                )
+            }
+        }
+        LbButtonState.values().forEach { st ->
+            show(st)
+            val t = targets().single()
+            assertTrue(
+                "${st.name} 那一态短标签的热区不到 48dp 见方：" + t.describe(),
+                !t.tooSmall(probe.floorDp)
+            )
+        }
+    }
     /** 合同第 1 行的那半个：禁用是"灰着不能点"，不是消失 */
     @Test
     fun `disabled stays in place and announces itself disabled`() {

@@ -46,6 +46,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.lovebrain.app.R
 import androidx.compose.ui.res.stringResource
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.selected
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.LbButtonState
+import com.lovebrain.app.core.designsystem.LbPrimaryButton
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
@@ -65,12 +72,16 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private data class KbFile(val label: String, val path: String, val layer: String)
+internal data class KbFile(val label: String, val path: String, val layer: String)
 
 /** 知识库编辑页内部尺寸常量 */
 private object KbEditDimens {
     const val DIRTY_DOT_SIZE_DP = 6         // 脏标记小圆点尺寸
-    const val ACTION_BUTTON_HEIGHT_DP = 44  // 保存按钮高度
+    // ⚠ 本格之后**没人再引用它**（只留这一行记下"44 这一档是从哪来的"，别把它接回任何按钮）：
+    //   它原来把编辑态那颗「保存」钉在 44dp 高——语义树实量 **78x44dp**，
+    //   是 :596"无小于 48dp 的热区"在这一屏唯一没过的一处。主动作的高度现在归
+    //   `LB_PRIMARY_MIN_HEIGHT_DP`（全站那一颗），页面常量不许再自己开一档。
+    const val ACTION_BUTTON_HEIGHT_DP = 44
 }
 
 /** 脏标记小圆点 */
@@ -160,7 +171,7 @@ class KbEditActivity : ComponentActivity() {
 }
 
 @Composable
-private fun KbEditScreen(
+internal fun KbEditScreen(
     files: List<KbFile>,
     lastFile: String?,
     onLastFileChange: (String) -> Unit,
@@ -177,6 +188,15 @@ private fun KbEditScreen(
     val selected = files.first { it.path == selectedPath }
     // 读屏名字：semantics 的 lambda 不是 @Composable，所以这句在外面取好再闭包进去
     val editorName = stringResource(R.string.kb_edit_editor_hint, selected.label)
+    // 同理：下面那几处 `hint = … to true/false` 全在 `scope.launch { }` 里面，
+    // 不是 @Composable 位置，拿不到 `stringResource` ⇒ 在这取好、闭包进去。
+    // ⚠ 这四条原来是**内联中文**：`LbPrimaryButton` 那把锚点按括号配对取实参时，
+    //   整段 `onClick = { … }` 都落进射程里，于是"组件实参里的可见文案"当场从 78 涨到 81
+    //   ——**尺变严了，不是债涨了**，但正确的反应是把它们搬进资源，而不是把表填到 81。
+    val savedHint = stringResource(R.string.hint_saved)
+    val conflictKeptDraftHint = stringResource(R.string.hint_conflict_kept_draft)
+    val conflictReopenHint = stringResource(R.string.hint_conflict_reopen)
+    val saveFailedHint = stringResource(R.string.hint_save_failed)
 
     var drafts by remember { mutableStateOf(emptyMap<String, String>()) }
     var saved by remember { mutableStateOf(emptyMap<String, String>()) }
@@ -241,7 +261,7 @@ private fun KbEditScreen(
         scope.launch {
             val ok = autosave(selectedPath)
             if (!ok) {
-                hint = "保存失败，请重试" to true
+                hint = saveFailedHint to true
                 return@launch
             }
             selectedPath = target.path
@@ -257,7 +277,7 @@ private fun KbEditScreen(
             files.forEach { f ->
                 if (!autosave(f.path)) allOk = false
             }
-            if (allOk) onBack() else hint = "保存失败，请重试" to true
+            if (allOk) onBack() else hint = saveFailedHint to true
         }
     }
 
@@ -272,7 +292,12 @@ private fun KbEditScreen(
         onBack = { if (anyDirty) saveAllAndExit() else onBack() },
         trailing = {
             if ((drafts[selectedPath] ?: "").isNotBlank()) {
-                TextButton(onClick = { pendingClear = true }) {
+                TextButton(
+                    onClick = { pendingClear = true },
+                    // 实量 **58x40dp**：M3 的"至少 48dp"是 `minimumInteractiveContainer` 装饰，
+                    // 带 `role=Button` 的这一颗自己只有 40 高（坑表 92，同一族第四次撞）。
+                    modifier = Modifier.heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                ) {
                     Text("清空", color = Error, style = AppTypography.labelLarge)
                 }
             }
@@ -309,7 +334,18 @@ private fun KbEditScreen(
                             shape = LoveBrainShape.md,
                             colors = ButtonDefaults.textButtonColors(
                                 containerColor = if (isSel) PrimaryLight else SurfaceCard
-                            )
+                            ),
+                            // 两条一起补（本机实量这三颗是 `role=Button selected=null 60x40dp`）：
+                            // ① 热区垫到 48——和上面那颗同一个"框架的保证是装饰"的形状；
+                            // ② **哪一份正开着**原来只涂在底色上，读屏听不出来（:532 那一栏）。
+                            //    `role = Role.Tab` 是"这一排互斥、当前只有一个"的意思；
+                            //    `selected` 交布尔值，不能只交 true（那样谁都亮）。
+                            modifier = Modifier
+                                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                                .semantics {
+                                    this[SemanticsProperties.Role] = Role.Tab
+                                    this.selected = isSel
+                                }
                         ) {
                             Text(
                                 f.label,
@@ -371,7 +407,10 @@ private fun KbEditScreen(
                         color = TextHint,
                         maxLines = 1
                     )
-                    TextButton(onClick = { isPreview = !isPreview }) {
+                    TextButton(
+                        onClick = { isPreview = !isPreview },
+                        modifier = Modifier.heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                    ) {
                         Text(if (isPreview) "编辑" else "预览", style = AppTypography.labelLarge, color = Primary)
                     }
                 }
@@ -449,7 +488,9 @@ private fun KbEditScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         // 放弃修改：恢复进入编辑态前内容，落盘对齐后回预览
-                        TextButton(onClick = {
+                        TextButton(
+                            modifier = Modifier.heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp),
+                            onClick = {
                             val baseline = editBaseline
                             drafts = drafts + (selectedPath to baseline)
                             editorStates.remove(selectedPath)
@@ -471,7 +512,13 @@ private fun KbEditScreen(
                             Text("放弃修改", style = AppTypography.labelMedium, color = TextHint)
                         }
                         Spacer(Modifier.weight(1f))
-                        Button(
+                        // §6.1 :479——编辑态的唯一主动作归 `LbPrimaryButton`。
+                        // 先量：实量 **78x44dp** ⇒ 这一颗是**真缺陷**（:596"无小于 48dp 的热区"没过），
+                        // 与前面三处不同：它的高度由页面自己的常量 `ACTION_BUTTON_HEIGHT_DP` 钉死在 44，
+                        // 全站只有这一颗主动作是这样（所以第三把尺上它既算"换门涂色"又算热区缺陷）。
+                        LbPrimaryButton(
+                            state = LbButtonState.Idle,
+                            label = stringResource(R.string.kb_save),
                             onClick = {
                                 val text = editorValue.text
                                 scope.launch {
@@ -482,26 +529,21 @@ private fun KbEditScreen(
                                             saved = saved + (selectedPath to text)
                                             versions = versions + (selectedPath to newVer)
                                             editorStates.remove(selectedPath)
-                                            hint = "已保存" to false
+                                            hint = savedHint to false
                                             isPreview = true
                                         } else {
                                             L.w("KbEdit save conflict: ${selected.path}")
-                                            hint = "文件已被后台修改，已保留你的草稿，请重新打开查看" to true
+                                            hint = conflictKeptDraftHint to true
                                         }
                                     } catch (e: kotlinx.coroutines.CancellationException) {
                                         throw e
                                     } catch (e: Exception) {
                                         L.w("KbEdit manual save failed: ${selected.path}")
-                                        hint = "保存失败，请重试" to true
+                                        hint = saveFailedHint to true
                                     }
                                 }
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                            shape = LoveBrainShape.md,
-                            modifier = Modifier.height(KbEditDimens.ACTION_BUTTON_HEIGHT_DP.dp)
-                        ) {
-                            Text("保存", style = AppTypography.titleMedium)
-                        }
+                            }
+                        )
                     }
                 }
             }
@@ -528,7 +570,7 @@ private fun KbEditScreen(
                                 versions = versions + (path to newVer)
                             } else {
                                 L.w("KbEdit clear conflict: $path")
-                                hint = "文件已被后台修改，请重新打开" to true
+                                hint = conflictReopenHint to true
                             }
                         } catch (e: kotlinx.coroutines.CancellationException) {
                             throw e

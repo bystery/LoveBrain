@@ -756,14 +756,15 @@ class UiLayerDependencyContractTest {
     fun `brand tones painted through containerColor do not grow`() {
         val perFileBudget = mapOf(
             "home/HomeComponents.kt" to 1,            // 状态卡那张 Card 的品牌浅底
-            "KbEditActivity.kt" to 2                  // 保存那颗 + 版本选中态那颗（条件涂色）
+            "KbEditActivity.kt" to 1                  // 只剩版本选中态那颗（条件涂色）——
+                                                     // 「保存」已由 `f5d199d`/本格归 `LbPrimaryButton`
         )
         // 登记总数由本次实扫定（`_temp/scan_container_color2.py`，剥注释 + 括号配对）。
         // ⚠ **口径在 `471a512` 换过**（旧尺读不到"条件涂色"那一档，见 `brandTonedArgs`），
-        //   换口径之后：5 处 → 表单「保存」归位 → 3 处，`KnowledgeBaseActivity` 那两颗
-        //   （「下一步」「完成，AI 生成画像」）也归 `LbPrimaryButton` ⇒ 这一档现在整档不在表里。
+        //   换口径之后一路：5 → 3（表单「保存」）→ 2（问卷「下一步」「完成」）→ **2**
+        //   （`KbEditScreen` 那颗「保存」也归位；`KnowledgeBaseActivity` 整档不在表里）。
         //   别把 3 与历史的 5/4 放在一起比涨跌——那三个数都是**旧口径**的下界。
-        assertTrue("登记的就是本机实扫的 3 处，表本身错了要先修表", perFileBudget.values.sum() == 3)
+        assertTrue("登记的就是本机实扫的 2 处，表本身错了要先修表", perFileBudget.values.sum() == 2)
 
         val uiRoot = dir("ui")
         val scanned = kotlinFiles(uiRoot).map {

@@ -10,6 +10,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -84,7 +86,14 @@ fun LbPrimaryButton(
     // 放在之前就等于自己把热区削掉一圈（旧组件修过一次，别再改回去）。
     val haptics = LocalHapticFeedback.current
     val (interaction, scale) = rememberPressScale(0.96f, "lbPrimaryScale")
-    val base = modifier.height(LB_PRIMARY_MIN_HEIGHT_DP.dp)
+    // 两**条边**都得垫：原来只写 `.height(48)`，于是短标签的主动作量出 **33x48dp**
+    // ——`KbEditScreen` 编辑态那颗「保存」搬进来之后当场测红（:596 要的是"无小于 48dp 的热区"，
+    // 不是"无矮于 48dp"）。`LbTextAction` 上写着同一课（"只垫高度不够，短标签会量出 40x48dp"，
+    // 它的第一版就是被自家测试测红的），这一次轮到 `LbPrimaryButton` 自己。
+    // 整宽的那些（`fillMaxWidth` / `weight(1f)`）不受影响：min 只抬高不裁宽。
+    val base = modifier
+        .heightIn(min = LB_PRIMARY_MIN_HEIGHT_DP.dp)
+        .widthIn(min = LB_PRIMARY_MIN_HEIGHT_DP.dp)
     val container = tone.container
 
     when (state) {
