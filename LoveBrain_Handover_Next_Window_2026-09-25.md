@@ -408,6 +408,40 @@ HEAD `0c4d6d6`，仍未推。两笔：
 - 实测：166 套件 / **1274 例** / 0 红；受影响范围 125 例（含 `ui.panel.*` 那批一字未改）全绿；
   lint 68/15 一字未动；预算四栏 209/12/0/66 零差；工单、资源锁、自测、跨层 6 笔、androidTest 全 RC=0。
 
+## 0.18 又一步：§6.4 第一刀——两处自画遮罩归 `LbModalSheet`（`5245788`）＋ 一次工作区事故
+
+- 上一格只换了**形状的所有者**，这一格把"形状本身只有一处"变成事实：生产里自己画
+  `Color.Black.copy(alpha = …)` 整屏遮罩的文件实扫 **3 处**（所有者 + `RecordSentDialog` +
+  `FeedbackCasesScreen` 的导出 Loading）。后两处各挂了一次整屏 `clickable`，
+  语义树里就是"一颗 360x1000dp 的按钮"。§26 那把归属棘轮**抓不到这种坏法**（它判声明处），
+  所以新闸 `only the sheet owner draws a full window scrim` 盯着写法本身，并带一条
+  "所有者自己那一份必须还扫得到"的反空跑。
+- 迁移前实量（`SheetProbeTest` 留了原文）：`取消` **28x19dp**、`确认已发送并记录` **96x19dp**、
+  遮罩 360x1000dp 且把标题当成自己的名字。迁移后：48x48 / 120x48，整屏那颗不再是可交互节点。
+- 三处判断一并收紧：① 导出 Loading 走 `LbModalSheet(dismissable = false)`，
+  不再"点不动也没名字"地挂整屏 clickable；② 空稿不许提交只剩 `enabled` 一处
+  （以前是 `onClick` 里 `if (text.isNotBlank())`，按钮长得能点、点了没反应）；
+  ③ 保存中两个出口**灰着还在**，进度反馈留在正文行（以前"确认"整颗消失）。
+- **守卫比我的假设多看见一条**：新写的那格一上来红在输入框自己身上——
+  `OutlinedTextField` 既没文案也没 contentDescription（placeholder 不进语义树）。
+  顺着量全仓：**7 处输入框有 6 处读屏念不出名字**（`KbEditActivity:409`、`DislikeReasonPanel:190/211`、
+  `ResultArea:1180`、`SchemeCard:565` + 本格已修的那处）。这格只修自己范围内那一处，
+  剩下 5 处带行号进 §4 待办（`CompactInput`/`ReplyInput` 早就用过同一个修法，只是没人回头扫这一族）。
+- 字面量四栏：TEXT 209→**205**、COMPONENT 66→**69**、DESC 仍 12。3 条换形状进 COMPONENT（没还债），
+  1 条**真还掉了**（那颗输入框的提示语进了 `R.string.panel_record_sent_hint`，zh+en 两份——
+  占位符与读屏名要共用同一句，源码里写两遍就是新债）。合计 275 → 274。
+- ⚠ **R4 探针不咬是结论不是失误**：`dismissable = !saving` 改成恒 true，测试全绿——
+  遮罩没有语义节点、`performTouchInput` 这一版又拿不到 `click/clickTopLeft`，
+  所以"保存中不许点空白关闭"**现在没有任何守卫**。草稿留 `_temp/RecordSentScrimTapCell.kt.dropped`。
+- ⚠ **工作区事故（不是我做的，但我处理时又犯了一个错）**：这一格提交之后，
+  仓库根目录 7 个已跟踪的 `LoveBrain_*.md`（含账本、交接单）从磁盘上消失，
+  同时冒出两个别的项目的文件（`Guanjia_V4_...`、`PaperOps_2.3_...`，10:30/10:38 落盘）
+  ⇒ 有另一个窗口/进程在同一个目录里动手。7 个跟踪文件已用 `git restore --source=HEAD --worktree`
+  逐字恢复（`git diff HEAD` 对它们 0 差异）；指导书原件本来就没被 git 跟踪，从 `~/Downloads` 放回。
+  **我自己那条恢复命令写坏了**：循环用了 `LoveBrain_*.md` 通配，一口气从 Downloads 复制了 21 个进来，
+  已把多出的 19 个挪进 `_temp/stray-copied-backups-2026-09-25/`（没删），根目录回到事故前的形状。
+  教训进坑表 67：**恢复类批量命令必须点名文件，不许用通配符去猜"哪些是我需要的"**。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -428,8 +462,8 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 #   只动 main 源文件时 testDebugUnitTest 会判 UP-TO-DATE 跳过、退出码仍然 0（见 §6 第 62 条）
 ```
 
-最近一轮实测基线（到 `cccabb0`）：**1274 单测 / 166 套件 / 0 失败 / 0 错误 / 0 跳过**
-（跑在变异全撤之后的树上）。与上一格对账：1268 → 1274 = +6，164 → 166 套 = +2（`LbModalSheetTest`、`SheetProbeTest`）。
+最近一轮实测基线（到 `5245788`）：**1280 单测 / 167 套件 / 0 失败 / 0 错误 / 0 跳过**
+（跑在变异全撤之后的树上）。与上一格对账：1274 → 1280 = +6，166 → 167 套 = +1（`RecordSentDialogSheetTest`）。
 lint 报告**重新生成后**实测 **68 / 15**、进预算 **67 / 14**、advisory 1（这一格收了 11 处浮层，条数一字未动）。
 比上一格少的这 1 条是 `AutoboxingStateCreation` 6→5（退役按钮里那个 `mutableStateOf(0)` 计时器，
 新代码写 `mutableIntStateOf`），逐条核过剩余 5 条位置都不在退役文件里才 `--rewrite`
@@ -445,7 +479,7 @@ HomeAboutEntry / AssistantStatusCard）；`ui/panel/reply/GenerationActionButton
 `ui/panel/PanelModalHost.kt`（141 行）同样退役进 `_temp/PanelModalHost.kt.retired-2026-09-25`，
 浮层形状改由 `core/designsystem/LbModalSheet.kt` + `LbDialog.kt` 两家承担（对话框 / overlay 自画浮层各一家，共用同一份动作词表）。`HomeScreen.kt` 216 → 217 → 226 行（两个调用点、删死 import，
 再加两个默认值即原行为的 override 参数）。
-**字面量预算四栏**：TEXT 209 / DESC 12 / STATE 0 / COMPONENT 66（`38520b0` 两栏一起动过，逐条核账见 §28.5；`cccabb0` 又 +7 且 TEXT 不动，来源见 §29.4 与新坑 66；COMPONENT 已改成按区间去重）。
+**字面量预算四栏**：TEXT 205 / DESC 12 / STATE 0 / COMPONENT 69（`38520b0` 两栏一起动过，逐条核账见 §28.5；`cccabb0` 再 +7 且 TEXT 不动见 §29.4 + 新坑 66；`5245788` 是 −4/+3，且**合计第一次往下走**（275 → 274，那条真进了 strings.xml）见 §30.6；COMPONENT 已改成按区间去重）。
 VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件计数：>500 行 17 个、>800 行 10 个**。
 
 ## 2. 被证伪的判断（逐条累加，别再当依据；条数以此表实际行数为准）
@@ -536,6 +570,17 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
      各页仍各写自己的 `Box + background + padding`。
    - 两件小的：供应商编辑器那颗裸 `Dialog(`（闸里点名豁免，等并进 Sheet）；
      "对话框什么时候弹、返回键算不算取消"这类**可见性语义**一条断言都没有（§28.8、§29.6）。
+   - **§6.4 的下一刀 = 状态的所有者**（`5245788` 只收了形状）：`MemoryRefItem` 仍自己 `remember`
+     着 `menuOpen/showMuteSubmenu/showWrongDialog/wrongText`；`LoveBrainPanelScreen:131/152` 的
+     `showSentDialog/showCorrectionCenter/dislikeCase` 仍是散在 600 行 composable 里的局部状态。
+     `CorrectionCenter`/`DislikeReasonPanel` 更根本就不是浮层——它们是 `Column(fillMaxWidth)`
+     内容块被塞进 `Box(fillMaxSize)`（`LoveBrainPanelScreen:540/572`），
+     这才是 :487 后半句"把展开内容直接插在原页面下方"的字面现场。
+   - **一格能清完的无障碍小账**：全仓 7 处 `OutlinedTextField` 里 **5 处读屏念不出名字**
+     （`KbEditActivity:409` 整篇正文编辑器、`DislikeReasonPanel:190/211`、`ResultArea:1180`、
+     `SchemeCard:565`）。`5245788` 已修自己范围内那一处，修法是
+     `.semantics { contentDescription = stringResource(...) }`（占位符与读屏名共用同一条资源，
+     别内联写两遍）；每修一处配一格 `assertAllActionableLabeled`，否则下一格又会漂回去。
    **主操作以外的重复按钮实现一处都还没收**（全表在账本 §27.7）：`ui/` 下"Primary 底色 + clickable"
    实扫 **17 处 / 11 个文件**。别按数量收口——哪些算"页面主动作"、哪些是 chip / 切换 / 次级动作，
    要一处一处判语义；`054c6e8` 那把归属棘轮只认**声明处**，抓不到"用同一颗组件却自造样式"。
@@ -639,6 +684,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 | `d8f36d2` | §6.1 表里 B 类第一行：`ui/panel/reply/GenerationActionButton.kt`（196 行、两个平行旋钮 `mode:ButtonMode` + `enabled`）收成 `core/designsystem/LbPrimaryButton.kt` + 一颗 `LbButtonState`（Idle/Loading/Disabled/Stop，非法组合不可表达）；删掉三个死东西（`heightDp` 只能改高不能改矮、LOADING 那个传成 `""` 的 `text`、0 人传过的 `textColor`），颜色收进 `LbButtonTone{Primary,Deep}`，停止锚点进 `LbTags.PRIMARY_STOP` 而**值一字未改**（仍是 `generation_stop_action`）。**两件刻意留在 reply 层**：那句「分析对话 · 7s 点击停止」与 5s/15s 阶段规则（上一格刚犯过「设计系统认识了一个具体页面」），阶段规则顺手抽成纯函数 `generatingPhaseResFor` 才有 2 格穷举。新守卫 5 格语义树（四态同盒 `0/0/360/48` ×4、逐态 48dp、Disabled 不消失且带 disabled 语义、三态点得动而 Disabled 点不动、停止锚点只属 Loading）；**老 7 格 §2.1 合同一字未改仍然绿**才是「换实现没换行为」的主证。九发探针 M1-M9 各咬各的；M5 第一版用空串当替换文本 ⇒ revert 时 `count("")`=7379 把文件留在变异态，靠 apply 前先落盘的 `_temp/mut72-backup/` 还原（坑表 64）。lint `AutoboxingStateCreation` 6→5 逐条核过剩余 5 条位置才 `--rewrite`（diff 只动一行） |
 | `38520b0` | §6.1 :487 的 Dialog 半边：生产 11 处直接 call Material `AlertDialog` 全收进 `core/designsystem/LbDialog.kt`（标题/正文/动作样式一处决定，颜色进 `LbDialogActionTone`/`LbDialogMessageTone` 两张小表，长文与输入框走 `body`，次级出口上限 3 超限抛）。**先量后写量出真缺陷**：`DialogProbeTest` 实量 Material 对话框里的 `TextButton` 只有 188x40dp，低于 §6.5 的 48dp，而之前那把 48dp 的尺从没往对话框里看过——`LbDialog` 垫到 48dp，`LbDialogTest` 6 格读 `boundsInRoot` 钉住。新闸 `floating decision surfaces have exactly one owner`（`AlertDialog(` 只许一处、裸 `Dialog(` 逐处对豁免表计数，豁免不成立也要红）。字面量两栏一起动并逐条核账：TEXT 246→209（−37 换形状）、COMPONENT 16→59（+37 换进来 +6 是以前两栏都看不见的既有提示语）；顺手修掉这把尺的嵌套重复计数（按锚点求和 85 → 按区间去重 59）并补夹具 H 当牙。探针 N1-N7 各咬各的；**N6/N7 第一版是无效探针**（注入代码编译不过被误报成"没咬"），runner 已加分诊（坑表 65）。lint 68/15 一字未动、跨层 6 笔、全量 164/1268 |
 | `cccabb0` | §6.1 :487 的 Sheet 半边：`ui/panel/PanelModalHost`（141 行、`PanelModalHost`/`Title`/`Actions` 三颗公开组件）归 `core/designsystem/LbModalSheet.kt`，三处调用点跟进；面板在 overlay 窗口起不了 Dialog（BadTokenException）⇒ 第二种形状是平台约束，但两种形状共用 `LbDialogAction`/Tone 同一份词表。改之前先量：旧浮层 4 个可交互节点里 **2 个没可读名字、2 个低于 48dp**（`取消` 48x26、空标签那颗 24x22、遮罩 360x1000、卡片把标题念成 331x84 的按钮）——三条各自修掉（heightIn 48 且内边距排在 clickable 之后 / 空标签不入树 / 遮罩与拦截改 pointerInput）。并掉"保存"那颗的两重就绪判据（`confirmEnabled` + `if (!overLimit)` → 只剩 `enabled`）。新守卫 `LbModalSheetTest` 5 格读 boundsInRoot；探针 S1-S6 各咬各的（S3/S4 同格不同节点故分开跑）；归属棘轮登记到 11 对仍咬。字面量 TEXT 不动、COMPONENT 59→66（+7 全躲在非 Lb 锚点与**默认实参**里，新坑 66）。全量 166/1274 零红、lint 68/15 一字未动。**只换了形状的所有者，没换状态的所有者**——`MemoryRefItem` 仍自己 remember 浮层状态，表里那句"不插在原页面下方"仍没闸（§6.4 下一格） |
+| `5245788` | §6.4 第一刀：生产里 3 处自画整屏遮罩（`LbModalSheet` 自己 + `RecordSentDialog` + `FeedbackCasesScreen` 导出 Loading）收成 1 处，新闸 `only the sheet owner draws a full window scrim` 盯着**写法**而不是声明处（§26 那把棘轮抓不到"没新建组件、只是又抄一遍形状"）。`RecordSentDialog` 迁移前实量 `取消` 28x19dp、`确认…` 96x19dp、遮罩 360x1000dp 还把标题当名字；迁移后 48x48 / 120x48、整屏那颗不再是可交互节点。三处判断收紧：导出 Loading 走 `dismissable=false` 不挂整屏 clickable、空稿不许提交只剩 `enabled` 一处（以前点了没反应）、保存中出口灰着还在且进度留在正文行。**新守卫逮到我没假设的一条**：那颗 `OutlinedTextField` 既无文案也无 contentDescription ⇒ 顺量全仓 **7 处输入框有 6 处读屏念不出名字**（行号进 §4），本格只修自己那处，并把提示语送进 `R.string.panel_record_sent_hint`（zh+en），字面量 TEXT 209→205 / COMPONENT 66→69 / DESC 仍 12、合计 275→274（减的 1 条是真还掉的）。探针 R1-R3 各咬各的；**R4 实测不咬**（`dismissable` 这条行为 JVM 上量不到 ⇒ 无守卫，是结论不是失误）。另：R1 第一版是无效探针（缺 import ⇒ 编译失败被分诊出来），且还原工具把 CRLF 翻成 LF（内容对字节不对，`cmp` 逮到）——行尾标志改成"每个文件只在首次读时判定" |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -650,7 +696,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N 次才坏"的桩
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
-## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里）
+## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -845,8 +891,23 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     能还原只因为驱动在 apply **之前**就把三个被改文件复制进了 `_temp/mut72-backup/`。
     ⇒ ①探针表加启动期断言 `assert old and new`；要"删掉"就改换成一个等价无害的别的符号
     （本轮换成 `testTag(LbTags.SECTION)`——停止锚点数照样从 1 变 0，效果等价且可逆）；
+    ⇒ ①驱动的 PROBES 表加启动期断言：`assert old and new`；要"删掉"就换成一个等价无害的别的符号
+    （本轮换成 `testTag(LbTags.SECTION)`——停止锚点数照样从 1 变 0，效果等价且可逆）；
     ②每轮探针跑完拿备份逐文件 `cmp`，**别只看退出码**：这条与"记账必须在副作用之前落盘"
     （第 34 号那一族）是同一个病在变异工具上的复发。
+
+67. **恢复类批量命令必须点名文件，不许用通配符去猜"哪些是我需要的"**（`5245788` 之后那次事故）：
+    仓库根目录 7 个已跟踪文档被**另一个窗口/进程**删掉了（同时冒出两个别的项目的文件）。
+    跟踪的那 7 个用 `git restore --source=HEAD --worktree -- <逐个点名>` 精确恢复，`git diff HEAD` 复验 0 差异；
+    但指导书原件**从来没被 git 跟踪**，只能去 `~/Downloads` 找——我在那里用了一条
+    `for f in /c/Users/abyss/Downloads/LoveBrain_*.md; do cp -n ...` 的循环，
+    一口气往仓库根复制了 **21 个**文件（只需要 2 个）。多出来的 19 个已挪进
+    `_temp/stray-copied-backups-2026-09-25/`（按禁删协议只挪不删），根目录回到事故前的形状。
+    ⇒ ①恢复动作的输入要写成**清单**（先 `git status --short | grep '^ D'` 落一份 `_temp/deleted-tracked.txt`），
+    按清单逐项做，别按"文件名前缀像"批量搬；②未跟踪的用户原件要提醒用户纳入版本控制，
+    否则下一次删的就是**没有备份的那一份**（这次的指导书就差点永久丢失）；
+    ③同一个目录里可能有第二个写者：动手前 `git status`、动手后再 `git status`，
+    看到不属于自己的改动要先弄清来源，不要顺着自己的假设继续。
 
 65. **"探针没咬"和"探针没跑到"是两件事，混淆会把人推向改闸**（`38520b0` 那一格，N6/N7 两次）：
     我注入的 Kotlin 本身编译不过（`AlertDialog` 只给两个实参会解析到"自定义 content"那个 overload，

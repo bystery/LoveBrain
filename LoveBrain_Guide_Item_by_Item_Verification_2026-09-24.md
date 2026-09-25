@@ -2064,7 +2064,8 @@ ProviderSection 那颗自造 `Dialog(`（供应商编辑器）**没**并进来�
 ## 28.8 这格没做的
 
 - §6.1 这一行**只做了一半**：Dialog 半边收口，**`LbModalSheet` 半边没有**。
-  **→ Sheet 半边已还：见 §29（提交 `cccabb0`）**。但那句「不把展开内容直接插在原页面下方」
+  **→ Sheet 半边已还：见 §29（提交 `cccabb0`）；§30（`5245788`）又收了「整屏遮罩只有一个所有者」这一刀。**
+  但那句「不把展开内容直接插在原页面下方」
   仍然没闸——那一格只换了形状的所有者，没换状态的所有者。
   表里那句还有后半段"不把展开内容直接插在原页面下方"——那说的是面板里
   `DislikeReasonPanel`、`CorrectionCenter`、`RecordSentDialog` 这类"插在原页面下方"的展开内容，
@@ -2179,3 +2180,126 @@ TEXT 不动（209），COMPONENT 59 → **66**。这 7 条逐个对得上：
   是否成立（面板高度会变），要动它得配合 §6.5 的截图基线一起做。
 - 设备侧仍未跑（本机无 system image）。`PanelModal*` 那三颗的名字在 androidTest 里没有引用，
   所以改名不伤设备用例；但"overlay 窗口里点得到点不到"这句话还是要 CI 才算数。
+
+---
+
+# 追加二十：§6.4 第一刀——两处自画遮罩归 `LbModalSheet`，顺带逮到 6 处没名字的输入框（提交 `5245788`）
+
+## 30.1 这一格对着哪两句话
+
+指导书 :487 后半句与 §6.4 那一节：
+
+> | `LbModalSheet/Dialog` | 需要用户决策的浮层；不把展开内容直接插在原页面下方 |
+> ……ResultArea 只负责结果内容，不再同时承载菜单、纠正中心、发送记录、改写、版本历史、反馈原因等所有浮层；
+> 这些拆成独立 state holder + modal host。
+
+§29 换了**形状的所有者**（`PanelModal*` → `LbModalSheet*`），但这格之前"浮层只有一个形状"这句话是假的：
+生产里自己画整屏遮罩的文件实扫 **3 处**——
+
+```
+core/designsystem/LbModalSheet.kt:73          ← 所有者，应当的
+ui/feedback/FeedbackCasesScreen.kt:351        ← 导出 Loading 的遮罩 + clickable(enabled = false){}
+ui/panel/reply/RecordSentDialog.kt:48         ← 整颗浮层自己画遮罩 + 卡片 + 两颗裸 Text 当按钮
+```
+
+§26 那把归属棘轮**抓不到这种坏法**：它判的是"谁声明了组件"，而这里是"没人声明新组件，
+只是又抄了一遍那个形状"。所以要一把盯着**形状本身**的闸（§30.4）。
+
+## 30.2 改之前先量：那颗"确定"其实只有 19dp 高
+
+`SheetProbeTest` 加了一格专量 `RecordSentDialog`，改之前实跑输出（原文照抄）：
+
+```
+PROBE 记录实际发送：
+  「记录实际发送」        role=无 … 尺寸 360x1000dp @(0,0)
+  「粘贴或输入你实际发送的话」 … 尺寸 304x56dp @(28,480)
+  「取消」               … 尺寸 28x19dp @(204,544)
+  「确认已发送并记录」     … 尺寸 96x19dp @(236,544)
+```
+
+三条账：① 遮罩自己是一颗 360x1000dp 的可点击节点，还把标题合并成了自己的名字
+（读屏会念"记录实际发送，按钮"——一颗能关掉整屏的"按钮"）；② 两颗出口 **19dp 高**，
+比 §29 那套面板浮层的 26dp 还矮一半，离 §6.5 :531 的 48dp 差得最远；③ 那颗输入框在语义树里
+**既没有文案也没有 contentDescription**（`placeholder` 不进语义树），读屏只念"编辑框"。
+
+改完之后同一台仪器量到：`「取消」48x48dp`、`「确认已发送并记录」120x48dp`（此时正文为空所以带
+disabled，这是刻意的，见 §30.3②），那颗 360x1000 的整屏"按钮"不再出现在可交互节点里，
+输入框的名字来自资源。
+
+## 30.3 三处一并收紧的判断（都不是顺手改风格）
+
+1. **遮罩不再是"按钮"**：`FeedbackCasesScreen` 那颗导出 Loading 以前写
+   `clickable(enabled = false) {}`，等于往语义树塞一颗点不动也没名字的整屏节点；
+   现在走 `LbModalSheet(dismissable = false)`，与其余浮层同一族形状。
+2. **"不许提交"只留一处判据**：旧代码同时有 `confirmEnabled = !saving` 与
+   `onClick = { if (text.isNotBlank()) onConfirm(...) }`——空稿时那颗按钮**长得能点、点了没反应**。
+   现在只有 `enabled = !saving && text.isNotBlank()`，空稿是灰着还在（§2.1 那条合同同一个口径）。
+3. **保存中按钮不再消失**：旧形状在 `saving` 时把"确认"整颗换成 spinner + 「保存中…」，
+   于是"按钮忽然不见了"。现在两个出口都在且都带 disabled，进度反馈留在正文那一行。
+
+## 30.4 新闸：整屏遮罩只有一个所有者
+
+`only the sheet owner draws a full window scrim`：全仓扫 `Color.Black.copy(alpha`，
+除 `LbModalSheet.kt` 之外有一处就点名一处。判据取"画半透明黑底"这个具体写法而不是
+`fillMaxSize`——后者到处合法，用它当判据会把一堆正常布局报成违规（尺子太粗等于没有）。
+同一格里带了**反空跑**那一半：所有者自己那一份必须还扫得到，否则说明正则已经匹配不到任何写法、
+这把闸正在对着空集恒绿。
+
+## 30.5 这一格最大的收获：守卫比我的假设多看见一条
+
+`RecordSentDialogSheetTest` 的 `assertAllActionableLabeled` 一上来就红，红的不是我改坏的按钮，
+而是那颗**一直**没名字的输入框。顺着这条把全仓量了一遍：
+
+```
+生产里 OutlinedTextField 共 7 处
+  没有 label 参数的：6 处；其中连 contentDescription 也没有的：6 处
+     ui/KbEditActivity.kt:409            （整篇正文编辑器）
+     ui/panel/reply/DislikeReasonPanel.kt:190 / :211
+     ui/panel/reply/RecordSentDialog.kt  （本格已修）
+     ui/panel/reply/ResultArea.kt:1180   （"标记为错误"的输入）
+     ui/panel/reply/SchemeCard.kt:565    （自定义改写输入）
+```
+
+⇒ **7 个输入框里 6 个读屏念不出名字**，而且 `CompactInput`/`ReplyInput` 早就修过同一个问题
+（它们走 `.semantics { contentDescription = placeholder }`）——修法定了，只是没人回头扫这一族。
+本格只修自己范围内那一处，剩下 5 处按"一处一格"另开，行号已进交接单 §4。
+
+修法上有一条判断要记下来：给这颗输入框挂读屏名，最省事是把 placeholder 那句话**再抄一遍**内联字面量，
+但那是"源码里两处要同步维护"的新债；于是改成 `R.string.panel_record_sent_hint`（zh + en 两份），
+占位符与读屏名共用同一条。字面量账本因此**减 1**（§30.6 的算术里那条真还掉的债就是它）。
+
+## 30.6 实测
+
+| 项 | 结果 |
+|---|---|
+| `:app:compileDebugKotlin` / `UnitTestKotlin` / `compileDebugAndroidTestKotlin` | RC=0 / RC=0 / RC=0 |
+| `:app:testDebugUnitTest` 全量 | **167 套件 / 1280 例 / 0 红**（上一格 166/1274，+1 套 = `RecordSentDialogSheetTest`） |
+| lint（重生成后） | RC=0；`measured 68 / rules 15`、入预算 `67 / 14`、advisory 1 —— 与上一格一字未动（新增资源被引用，`UnusedResources` 没涨） |
+| 字面量四栏 | TEXT **205**（209−4）、DESC 12、STATE 0、COMPONENT **69**（66+3）；合计 275 → **274**，减的那 1 条是进了 `strings.xml` 的提示语 |
+| 其它闸 | 预算自测、工单编号、资源锁、跨层依赖 6 笔（同一批文件）、androidTest 编译全 RC=0 |
+
+探针四发：R1 再自画一层遮罩 → 所有者闸点名 `[ui/panel/reply/RecordSentDialog.kt]`；
+R2 摘掉读屏名 → `有 1/3 个可交互节点既没有文案也没有 contentDescription`；
+R3 把"空稿不许提交"退回 `onClick` 里的 if → `空稿时确认必须带 Disabled 语义` 红；
+**R4 把 `dismissable = !saving` 改成恒 true → 不咬**（GRADLE_RC=0，测试真跑了、全绿）。
+
+**R4 不是失败，是结论**：遮罩没有语义节点（那是 §29 刻意改的），`performTouchInput` 这一版
+又拿不到 `click/clickTopLeft`（两次尝试都 unresolved），所以"保存中不许点空白关闭"这条行为
+**现在没有任何守卫**。这一格写了草稿留在 `_temp/RecordSentScrimTapCell.kt.dropped`，
+要测它得先决定：给遮罩一个可定位的语义锚点（那就又回到"遮罩该不该有语义"），还是等设备上做。
+
+## 30.7 这格没做的
+
+- §6.4 那条只动了**第一刀**：形状的所有者收口了，**状态的所有者一点没动**。
+  `MemoryRefItem` 仍自己 `remember` 着 `menuOpen/showMuteSubmenu/showWrongDialog/wrongText`；
+  `LoveBrainPanelScreen` 里 `showSentDialog`/`showCorrectionCenter`/`dislikeCase` 仍是散在 600 行
+  composable 里的局部状态，没有 state holder，也没有统一的 modal host。
+- `CorrectionCenter`、`DislikeReasonPanel` 根本不是浮层：它们是 `Column(fillMaxWidth)` 内容块，
+  被塞在 `Box(fillMaxSize)` 里（`LoveBrainPanelScreen:540/572`）——这才是 :487 后半句
+  "把展开内容直接插在原页面下方"的字面现场，一处没改。
+- 剩下 5 处没名字的输入框（§30.5 有行号）。
+- `dismissable` 这个旋钮没有守卫（§30.6 R4 实测）。
+- `SHEET_MAX_HEIGHT_DP = 560` 仍是写死的旧值，没量过键盘弹起时它是否还成立。
+- 设备侧照旧未跑（本机无 system image）。这一格改的是浮层的**可见尺寸与语义名字**，
+  androidTest 里若有按文案找"取消"的用例仍能找到（字没改），但"19dp 变 48dp"这类
+  尺寸变化只有 CI 的截图/触摸断言能最终确认。
