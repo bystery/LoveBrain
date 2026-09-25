@@ -138,6 +138,9 @@ fun SuggestPanel(
                     color = if (isSuggesting) TextSecondary else Color.White,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier
+
+                        .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                        .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                         .clip(LoveBrainShape.md)
                         .background(if (isSuggesting) SurfaceInset else Primary)
                         .border(
@@ -146,7 +149,11 @@ fun SuggestPanel(
                             LoveBrainShape.md
                         )
                         .graphicsLayer { scaleX = regenScale; scaleY = regenScale }
-                        .clickable(interactionSource = regenInteraction, indication = null, onClick = {
+                        .clickable(
+                            interactionSource = regenInteraction,
+                            indication = null,
+                            role = Role.Button,
+                            onClick = {
                             if (isSuggesting) viewModel.stopSuggest()
                             else viewModel.regenerateSuggestion()
                         })
@@ -213,10 +220,17 @@ fun SuggestPanel(
                                 style = AppTypography.labelLarge,
                                 fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier
+                                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                                    .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                                     .clip(LoveBrainShape.md)
                                     .background(Primary)
                                     .graphicsLayer { scaleX = errRetryScale; scaleY = errRetryScale }
-                                    .clickable(interactionSource = errRetryInteraction, indication = null, onClick = { viewModel.generateSuggest() })
+                                    .clickable(
+                                    interactionSource = errRetryInteraction,
+                                    indication = null,
+                                    role = Role.Button,
+                                    onClick = { viewModel.generateSuggest() }
+                                )
                                     .padding(horizontal = Spacing.xl, vertical = Spacing.md)
                             )
                         }
@@ -257,10 +271,17 @@ fun SuggestPanel(
                             style = AppTypography.labelLarge,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
+                                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                                .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                                 .clip(LoveBrainShape.md)   // 按钮族圆角统一 md
                                 .background(Primary)
                                 .graphicsLayer { scaleX = genScale; scaleY = genScale }
-                                .clickable(interactionSource = genInteraction, indication = null, onClick = { viewModel.generateSuggest() })
+                                .clickable(
+                                    interactionSource = genInteraction,
+                                    indication = null,
+                                    role = Role.Button,
+                                    onClick = { viewModel.generateSuggest() }
+                                )
                                 .padding(horizontal = Spacing.xl, vertical = Spacing.md)
                         )
                     }

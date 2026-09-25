@@ -36,7 +36,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -79,6 +81,8 @@ fun CounselingPanel(
 
     var inputHeight by remember { mutableFloatStateOf(100f) }
     val density = LocalDensity.current.density
+    // 入口的占位文案与读屏名字共用一条资源（§6.5 第②栏的口径）
+    val inputLabel = stringResource(R.string.counseling_input_hint)
 
     Column(modifier = modifier.fillMaxWidth()) {
         Box(
@@ -110,6 +114,13 @@ fun CounselingPanel(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
+                    // §6.5 :532 第②栏：这颗输入框此前**没有任何可读名字**（本机实量
+                    // 336x76dp、文案与 contentDescription 两样都空，读屏只念「编辑框」）。
+                    // 它比输入框自己的那行占位文案更糟：占位文案只在草稿为空时才画，
+                    // 用户打了一个字之后连那句话都没了。
+                    // 名字与占位文案**共用同一条资源**（不是再编一份只给读屏看的副本）。
+                    // ⚠ `stringResource` 必须在 semantics 块**外面**先取好（那块不是 composable 上下文）。
+                    .semantics { contentDescription = inputLabel }
                     .onFocusChanged { state ->
                         onFocusChange(state.isFocused)
                     }
@@ -117,7 +128,7 @@ fun CounselingPanel(
 
             if (draft.isEmpty()) {
                 Text(
-                    text = "说说你的困惑，军师帮你分析…",
+                    text = inputLabel,
                     color = TextHint,
                     style = AppTypography.bodyMedium,
                     modifier = Modifier.padding(top = CounselingDimens.PLACEHOLDER_TOP_PAD_DP.dp)
@@ -583,8 +594,15 @@ private fun TemplateChip(text: String, onClick: () -> Unit) {
             .graphicsLayer { scaleX = templateChipScale; scaleY = templateChipScale }
             .clip(LoveBrainShape.sm)
             .background(SurfaceInset, LoveBrainShape.sm)
+            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.sm)
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+            .clickable(
+                interactionSource = interaction,
+                indication = null,
+                role = Role.Button,
+                onClick = onClick
+            )
             .padding(horizontal = Spacing.md, vertical = Spacing.sm) // 垂直内边距 xs→sm，热区 ≈20→24dp
     ) {
         Text(text = text, style = AppTypography.labelSmall, color = TextSecondary)

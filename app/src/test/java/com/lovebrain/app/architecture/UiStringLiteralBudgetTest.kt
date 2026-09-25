@@ -229,7 +229,7 @@ class UiStringLiteralBudgetTest {
     // `MiniSwitchRow` KDoc 里那句「原来这里画的是 Text("思考模式")」，
     // 它正好抵掉本格真还掉的那一处搬家。按形状认的尺不剥注释，就会这样自己吃自己。
     private val budget = mapOf(
-        Kind.TEXT to 188,
+        Kind.TEXT to 187,
         Kind.DESC to 11,
         Kind.STATE to 0,
         Kind.COMPONENT to 78
