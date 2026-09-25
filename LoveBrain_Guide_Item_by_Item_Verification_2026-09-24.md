@@ -2298,8 +2298,106 @@ R3 把"空稿不许提交"退回 `onClick` 里的 if → `空稿时确认必须�
   被塞在 `Box(fillMaxSize)` 里（`LoveBrainPanelScreen:540/572`）——这才是 :487 后半句
   "把展开内容直接插在原页面下方"的字面现场，一处没改。
 - 剩下 5 处没名字的输入框（§30.5 有行号）。
+  **→ 代码已全部修完：见 §31（提交 `408d378`）；其中 2 处本机没量到，见 §31.5。**
 - `dismissable` 这个旋钮没有守卫（§30.6 R4 实测）。
 - `SHEET_MAX_HEIGHT_DP = 560` 仍是写死的旧值，没量过键盘弹起时它是否还成立。
 - 设备侧照旧未跑（本机无 system image）。这一格改的是浮层的**可见尺寸与语义名字**，
   androidTest 里若有按文案找"取消"的用例仍能找到（字没改），但"19dp 变 48dp"这类
   尺寸变化只有 CI 的截图/触摸断言能最终确认。
+
+---
+
+# 追加二十一：§6.5 第②栏——5 处输入框的读屏名字（提交 `408d378`）
+
+## 31.1 指导书那两句，与仓库当时的形状
+
+:529-531（§6.5 必须自动化覆盖）：
+
+> - 所有 clickable/toggleable bounds ≥48×48dp；**不是在源码里搜索常量**。
+> - TalkBack role、selected、disabled、stateDescription、**contentDescription**。
+
+上一格（§30）新写的守卫一上来红在我没打算改的地方：那颗输入框既没有文案也没有 `contentDescription`。
+顺着量全仓：
+
+```
+生产里 OutlinedTextField 共 7 处
+  没有 label 参数的：6 处；其中连 contentDescription 也没有的：6 处
+     ui/KbEditActivity.kt:409            整篇正文编辑器
+     ui/panel/reply/DislikeReasonPanel.kt:190 / :211
+     ui/panel/reply/RecordSentDialog.kt  ← `5245788` 已修
+     ui/panel/reply/ResultArea.kt:1180   「标记为错误」的输入
+     ui/panel/reply/SchemeCard.kt:565    自定义改写
+```
+
+根因和 `CompactInput`/`ReplyInput` 那一次完全相同：**`placeholder` 是兄弟节点的一行 `Text`，
+不进可编辑节点的语义**；而且用户敲进第一个字之后连那行字都不在树上了。
+修法定了两年，只是没人回头扫这一族——所以 `ComposerInputLabelTest` 早就在钉那三颗，
+剩下 6 颗一直瞎着。这格一次清完。
+
+## 31.2 名字取什么，句子放哪
+
+| 那颗输入框 | 屏幕上原本的说明 | 读屏名字 |
+|---|---|---|
+| `KbEditActivity` 正文编辑器 | 无（只有分区标题行） | `编辑「《当前分区》」正文`（带分区名，动态） |
+| `DislikeReasonPanel` 之一 | 「补充说明（可选）」 | 与屏幕那行**同一条资源** |
+| `DislikeReasonPanel` 之二 | 「你期望怎么回？（可选）」 | 同上 |
+| `ResultArea`「标记为错误」 | 「输入正确内容（可选，留空仅停用）」 | 同上 |
+| `SchemeCard` 自定义改写 | 无（placeholder 是举例） | `自定义改写要求`（只给读屏，屏幕上不画） |
+
+判断口径：**placeholder 是"举个例子"，不是"这格是什么"**，所以不能拿它当名字；
+而屏幕上已有说明文字的地方，让学生节点与那行字共用同一条资源，
+而不是内联写两遍——两处各写一遍就是下一次改漏一处的根源。
+3 条真实存在的说明文字因此进了 `strings.xml` + `values-en`（中英各一份，
+`every zh string has an en counterpart` 那格同时盯着）。
+
+实现约束一条值得记：`Modifier.semantics { }` 的 lambda **不是** @Composable，
+`stringResource(...)` 必须在外面取好再闭包进去。第一版直接写在里面，编译报
+`@Composable invocations can only happen from the context of a @Composable function`。
+
+## 31.3 守卫：三格，且判据被我自己的探针收紧过一次
+
+`InputFieldLabelsTest` 全走语义树（:530 那句"不是在源码里搜索常量"是直接约束）：
+
+1. 点踩面板：量到**恰好 2 颗**可编辑节点、每颗都有名字；
+2. `SchemeCard`：先断"点开之前 0 颗"，点掉"自定义要求…"入口后再断"1 颗且有名字"
+   ——那颗输入框是条件存在的，不测这一层就会量到空集恒绿；
+3. 第三格**真敲字**之后再量一次，并要求名字来自节点自己的 `contentDescription`。
+
+第 3 格存在的原因就是我第一版写坏的判据：`nameOf` 当时写成
+"contentDescription 或 Text 或 EditableText 三者取第一个非空"，
+于是 **L2 探针（只摘掉第二颗输入框的名字）照样绿**——那颗节点从别的来源蹭到了字。
+收紧成"只认 contentDescription"之后三发各咬各的：
+
+| 探针 | 摘掉谁的名字 | 红了谁 |
+|---|---|---|
+| L1 | 「补充说明」那颗 | 面板格 + "敲字之后名字还在"格（同一处坏法的两面，都该红） |
+| L2 | 「期望怎么回」那颗 | **只**红面板格（第三格量的是第一颗） |
+| L3 | SchemeCard 那颗 | 红卡片那格 |
+
+`UiStringLiteralBudgetTest` 那格在这三发里都跟着红了一次——不是我改坏了字面量，
+是**上一格的资源搬迁还没落账**（TEXT 205 → 202 那 3 条）。这说明"预算与实扫不一致"
+这把尺连我自己的插入探针都会一起拦下来，归因时别把它算成探针的战果。
+
+## 31.4 实测
+
+| 项 | 结果 |
+|---|---|
+| `:app:compileDebugKotlin` / `UnitTestKotlin` / `compileDebugAndroidTestKotlin` | RC=0 / RC=0 / RC=0 |
+| `:app:testDebugUnitTest` 全量 | **168 套件 / 1283 例 / 0 红**（上一格 167/1280，+1 套 = `InputFieldLabelsTest`） |
+| lint 重生成后 | RC=0；`measured 68 / rules 15`、入预算 `67 / 14`、advisory 1（一字未动；新增 5 条资源全部被引用） |
+| 字面量四栏 | TEXT **202**（205−3）、DESC 12、STATE 0、COMPONENT 69；减的 3 条是屏幕上真实说明文字进了资源 ⇒ 真还债 |
+| 其它闸 | 预算自测、工单编号、资源锁、跨层 6 笔、androidTest 编译全 RC=0 |
+| 探针撤回核账 | `DislikeReasonPanel.kt`、`SchemeCard.kt` 与 `_temp/mut76-backup/` 逐字节 IDENTICAL |
+
+## 31.5 这格没做的
+
+- **5 颗里有 2 颗改了但本机没量到**：`KbEditActivity` 那颗（`KbEditScreen` 是 private，
+  且挂载要 VM + 真实磁盘文件）与 `ResultArea` 那颗（`ResultArea` 从来没在 JVM 挂过）。
+  它们只有代码改动 + 与已验三颗同构这个理由，**不能算已验**。要补就得先把那两屏接进仪器
+  （`ComposerInputLabelTest` 那套 `RenderIn` 可以照抄）。
+- `CategoryChipRow`/`ReasonChipGrid` 里的勾选行仍只挂 `clickable`，选中态靠 `Role.Checkbox` 计数为 0
+  这条负向断言守着"别在面板里放勾选框"，但**读屏能不能听出某个原因已被选中**仍没判
+  （`assertSelectableAnnounceState` 那把尺还没用到这屏上）。
+- 剩下那些没进 `strings.xml` 的可见文案（点踩面板的举例 placeholder、
+  `SchemeCard` 里那些内联中文）仍按"资源驱动"那一格处理，本格不动用户可见措辞。
+- 设备侧照旧未跑（本机无 system image）。TalkBack 里到底念成什么，要 CI 或人工那一次才算最终确认。
