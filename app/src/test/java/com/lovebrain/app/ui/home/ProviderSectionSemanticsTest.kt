@@ -3,8 +3,10 @@ package com.lovebrain.app.ui.home
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.R
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.RenderIn
@@ -55,6 +57,16 @@ class ProviderSectionSemanticsTest {
         every { vm.tickets } returns MutableStateFlow(tickets)
         every { vm.activeTicket } returns MutableStateFlow(active)
         every { vm.providerReady } returns MutableStateFlow(ready)
+        // ⚠ relaxed 桩**不覆盖所有返回类型**：表单里读的两条流都是 `StateFlow<String?>` /
+        // `StateFlow<Boolean>`，relaxed 交回的是"泛型 mock"，`.value` 一取就是
+        // `ClassCastException: java.lang.Object cannot be cast to java.lang.String`，
+        // 而且**栈顶指向被内联 lambda 的一个不存在的行号**（ProviderSection.kt:872，
+        // 这文件只有 583 行），看着像生产代码坏了。第一版两格就红在这儿。
+        // ⇒ 先查装配再查实现（坑表 75/73 那一族）；报错里的行号超出文件长度本身就是
+        //   "这是夹具/内联的问题，不是那一行坏了"的信号。
+        every { vm.formError } returns MutableStateFlow<String?>(null)
+        every { vm.saving } returns MutableStateFlow(false)
+        every { vm.getKeyMask(any()) } returns ""
         return vm
     }
 
@@ -153,5 +165,73 @@ class ProviderSectionSemanticsTest {
         )
         val tooSmall = addEntry.filter { it.tooSmall(probe.floorDp) }
         assertTrue("添加动作的热区不足 48dp：" + tooSmall.joinToString { it.describe() }, tooSmall.isEmpty())
+    }
+
+    /**
+     * 那颗"思考模式"开关，**直接挂载**量。
+     *
+     * 先记一条走不通的路（走不通的是夹具，不是生产）：本来的写法是
+     * 展开卡片 → 点 `R.string.provider_add`（**文案走资源**，写死「添加供应商」在本机
+     * en 环境下 matcher 直接 0 命中）→ 在表单里找 toggle。
+     * 结果两件事挡住：① relaxed 的 `SetupViewModel` 对 `StateFlow<String?>` 交回泛型 mock，
+     `.value` 一取就 `ClassCastException`，且栈顶是**内联 lambda 的行号**
+     * （`ProviderSection.kt:872`，而该文件只有 583 行）——看着像生产坏了，其实是桩不对；
+     * 补了 `formError`/`saving`/`getKeyMask` 三条桩之后 ②`AppNotIdleException`：
+     * Compose 在 60 秒内不空闲。
+     * ⇒ **这不是"已证明的生产缺陷"**：换成真实 VM 可能就会空闲。本格不再追这条路，
+     * 改直接挂载那颗开关——:531 判的是那颗控件自己的边界，控件本体量得到就是证据。
+     * （同一条路留下的账：`ProviderEditDialog` 在桩 VM 下不空闲，记进 §4 待查。）
+     *
+     * 而这一格的**正题**是：那颗开关的源码注释原来写着"扩大到 48×32，**满足** 48dp 无障碍下限"，
+     * :531 要的是 `bounds ≥48×48` ⇒ 宽度到了、**高度 32 没到**，那句话是假的。
+     * 上一格（`08b762d`）只把假话改成实话、把这处内联 `48.dp` 在棘轮里标成已知缺陷，**没量过**。
+     */
+    /**
+     * 挂"思考模式"那一整行，**不是**光挂那颗开关。
+     *
+     * 差别很重要：直接 `MiniSwitch(label = ...)` 等于**测试自己把名字喂进去**，
+     * 生产上调用点忘了起名也照样绿（恒绿假闸）。挂这一行，测的就是
+     * "屏幕上那行字与开关的名字由同一处配对"这件事本身。
+     */
+    private fun mountSwitch(checked: Boolean) {
+        rule.setContent {
+            val deviceDensity = LocalDensity.current.density
+            UiMatrix(360).RenderIn(deviceDensity) {
+                MiniSwitchRow(checked = checked, onCheckedChange = {})
+            }
+        }
+    }
+
+    @Test
+    fun `the thinking-mode switch meets the 48dp floor on both edges`() {
+        mountSwitch(checked = true)
+        val toggles = probe.actionableTargets(rule, "MiniSwitch").filter { it.isToggle }
+        assertEquals(
+            "直接挂载就该正好量到那颗开关：" +
+                probe.actionableTargets(rule, "MiniSwitch").joinToString { it.describe() },
+            1, toggles.size
+        )
+        val t = toggles.single()
+        assertTrue(
+            "开关的热区小于 48×48dp（源码注释曾称『满足 48dp 下限』）：" + t.describe(),
+            !t.tooSmall(probe.floorDp)
+        )
+    }
+
+    /**
+     * 那颗开关也得说得出自己是什么。
+     *
+     * "思考模式"那四个字是**旁边另一个节点**——眼睛看得见配对，读屏只念得出开关那颗。
+     * 判据只看 toggle 自己的 `labeled`，不拿"这一屏里有没有出现过那几个字"当证据
+     * （坑表 68 那一族：取第一个非空的判据会被旁边的标签蹭过去）。
+     */
+    @Test
+    fun `the thinking-mode switch names itself`() {
+        mountSwitch(checked = false)
+        val t = probe.actionableTargets(rule, "MiniSwitch").filter { it.isToggle }.single()
+        assertTrue(
+            "开关既没有 contentDescription 也没有文案，读屏只会念「开关」：" + t.describe(),
+            t.labeled
+        )
     }
 }

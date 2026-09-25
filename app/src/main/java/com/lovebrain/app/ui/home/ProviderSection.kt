@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -52,6 +53,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -382,9 +385,10 @@ private fun ProviderEditDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("思考模式", style = AppTypography.labelMedium, color = TextSecondary)
-                    Spacer(Modifier.weight(1f))
-                    MiniSwitch(checked = thinking, onCheckedChange = { thinking = it })
+                    // 那行字与开关的名字由 `MiniSwitchRow` 一处配对好——
+                    // 之前这两个东西散在调用点，"忘了给开关起名"在界面上一模一样、
+                    // 只有读屏的时候才看得出来。
+                    MiniSwitchRow(checked = thinking, onCheckedChange = { thinking = it })
                 }
 
                 Text("模型列表", style = AppTypography.labelMedium, color = TextSecondary)
@@ -528,38 +532,80 @@ private fun ProviderEditDialog(
 }
 
 /**
- * 小型开关（48x32 触摸区 + 20dp 圆球）
+ * 小型开关：48×48 的热区里画一颗 48×32 的胶囊。
  *
- * ⚠ 这个注释原来写的是"扩大到 48×32，**满足** 48dp 无障碍下限"——那句是假的：
- * §6.5 :531 要的是 `bounds ≥48×48`，高度 32 不达标。宽度这一维本来就有 token 可指，
- * 但整颗换成 `AppDimens.TOUCH_TARGET_MIN_DP` 会把"高也是 48"这件事说得更假，
- * 所以这一处**故意留在字面量上**（`UiLayerDependencyContractTest` 那把"48 只写一次"
- * 的闸把它登记成已知缺陷而不是放行），改它的那一格要先在 JVM 语义树里量到这颗开关
- * ——供应商页已经在页头那一格挂起来过，量得到。
+ * 这句注释原来写的是"触摸区扩大到 48×32，**满足** 48dp 无障碍下限"——那句是假的，
+ * 而现在有实测了：直接挂载量语义树，那颗 `toggleable` 报 **48x32dp**（§6.5 :531 要
+ * `bounds ≥48×48`）。同一次测量还报出第二个问题：**它没有任何可读名字**
+ * （`「」`、role=无）——"思考模式"那四个字是旁边的另一个节点，眼睛看得见配对，
+ * 读屏只念得出"开关"。
+ *
+ * 修法是这一格前面几颗已经用过两次的那条：**热区与视觉分两层**。
+ * 外面这颗 ≥48 见方的盒带 `toggleable`、`Role.Switch` 与 `contentDescription`；
+ * 里面那颗 48×32 只是画出来的胶囊（它不再参与点击，所以那处内联 `48.dp` 留在
+ * "48 只写一次"那把闸的白名单里，仍然标着"这里是版式尺寸"）。
  */
 @Composable
-private fun MiniSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+internal fun MiniSwitch(
+    checked: Boolean,
+    label: String,
+    onCheckedChange: (Boolean) -> Unit
+) {
     Box(
         modifier = Modifier
-            .size(width = 48.dp, height = 32.dp)   // ⚠ 高度 32 < 下限，见上面那段
-            .clip(LoveBrainShape.full)
-            .background(if (checked) Primary else Neutral300.copy(alpha = 0.5f))
+            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .toggleable(
                 value = checked,
+                role = Role.Switch,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
                 onValueChange = onCheckedChange
             )
+            .semantics { contentDescription = label },
+        contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
-                .align(if (checked) Alignment.CenterEnd else Alignment.CenterStart)
-                .padding(4.dp)
-                .size(20.dp)
-                .shadow(1.dp, CircleShape)
-                .clip(CircleShape)
-                .background(Color.White)
-        )
+                .size(width = 48.dp, height = 32.dp)   // 视觉胶囊，不参与点击（热区在外层那颗）
+                .clip(LoveBrainShape.full)
+                .background(if (checked) Primary else Neutral300.copy(alpha = 0.5f))
+        ) {
+            Box(
+                modifier = Modifier
+                    .align(if (checked) Alignment.CenterEnd else Alignment.CenterStart)
+                    .padding(4.dp)
+                    .size(20.dp)
+                    .shadow(1.dp, CircleShape)
+                    .clip(CircleShape)
+                    .background(Color.White)
+            )
+        }
+    }
+}
+
+/**
+ * "思考模式"那一行：标签 + 开关，**配对由这一处保证**。
+ *
+ * 原来这两样散在调用点：`Text("思考模式")` 画在左边，右边那颗开关一个名字都没有
+ * （语义树实量：`「」 role=无 48x32dp`）。眼睛看得见配对，读屏看不见——
+ * 而"忘了给开关起名"在界面上跟配好了**一模一样**，只有读屏的时候才看得出来。
+ * 所以把它收成一格，屏幕上那行字与开关的 `contentDescription` 共用同一条资源
+ * （§6.5 第②栏的口径：已有说明文字的让节点去指那句现成的话，不再编一份只给读屏看的副本）。
+ */
+@Composable
+internal fun MiniSwitchRow(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    val label = stringResource(R.string.provider_thinking_mode)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(label, style = AppTypography.labelMedium, color = TextSecondary)
+        Spacer(Modifier.weight(1f))
+        MiniSwitch(checked = checked, label = label, onCheckedChange = onCheckedChange)
     }
 }
 
