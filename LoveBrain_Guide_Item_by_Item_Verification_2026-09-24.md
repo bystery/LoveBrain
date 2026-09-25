@@ -3233,3 +3233,168 @@ U1（多一处自造表面色）、U2（登记指向已不存在的文件）、U
 - `PrimaryLight` 那三处判成"标签/提示面"是**读代码读出来的**，没有一条断言钉着。
 - :479 那处"返回/关于"是否偏离原文，仍等下一次连首页一起判（§37.9）。
 - 设备侧照旧未跑。
+---
+
+# 追加二十九：§6.1 后续账⑪a——那颗 48 写了 17 遍，与"页级文字动作"一直没有主人（提交 `08b762d`）
+
+## 39.1 这一格还的是上一格自己记的账
+
+上一格（§38）收尾时写了两条"本格没做的"，原话：
+
+> ⚠ 设计系统目前**没有**"页级弱化文字动作"这颗组件（48dp 这个下限在浮层动作
+> `LB_SHEET_ACTION_MIN_DP` 与主按钮 `LB_PRIMARY_MIN_HEIGHT_DP` 各有一份），
+> 所以这一处是借下限常量、不是复用组件。
+
+对着指导书再读一遍，"文字动作"这个词**是设计系统自己承认的**——§6.1 那张表
+`LbEmptyState` 那一行写着"图标、主说明、可选文字动作；动作热区 ≥48dp"。
+也就是说它一直在词表里，只是**只能长在 `LbEmptyState` 内部**：页面想要一颗别的
+文字动作就没有地方放。首次引导那颗「跳过」就是这么长出来的，本机实量 38x25dp
+（§38.3）。
+
+## 39.2 先量"这颗数被抄了几遍"，再决定收谁
+
+指导书 :596 那句"无小于 48dp 热区"是**全站**口径。要收它，第一步不是改代码，
+是把"这个数现在被写了几遍"量出来——两把尺一起量（`_temp/measure_touch_floor_owners.py`，
+剥注释只留代码，注释里那些"48dp"不参与计数）：
+
+| 尺 | 判据 | HEAD 实扫 | 本格改完 |
+|---|---|---|---|
+| 抄数 | `val NAME = 48`（字面量当值） | **17 处** | **2 处** |
+| 别名 | `val NAME = AppDimens.TOUCH_TARGET_MIN_DP` | **0 处** | **14 处** |
+| 内联 | 代码里直接写 `48.dp` | **8 处 / 4 个文件** | **3 处 / 3 个文件** |
+
+那 17 处的分布（同一把尺下的实扫，不是我数的）：`core/designsystem` 8 颗、
+`ui/common` 1 颗、页面私有 object 8 颗。**写 17 遍等于没有下限**：抬它要改 17 处，
+漏一处就只有那一屏偷偷不达标，而 :596 不会告诉你漏了哪一屏。
+
+留在白名单里的两处抄数都不是"下限"：`AppDimens.TOUCH_TARGET_MIN_DP` 自己是唯一
+那颗下限；`EMPTY_ICON_CONTAINER_DP` 是空态图标方块，**恰好**同数，下限改了它不该跟。
+`AppDimens.INPUT_ROW_HEIGHT_DP` 反而**跟着改了**——它的 KDoc 明写"36 → 48 不是审美调整，
+是 §6.5 那条硬规定"，既然数来自下限，就该写成引用（这一颗引用是同文件内的裸名字，
+所以别名那把尺看不见它，它也不需要被看见：它不抄数）。
+
+## 39.3 一处必须点名的对着干：`ProductionUiContractTest` 三条集体 `was null`
+
+收完数跑全套，三条同时红：
+
+```
+result utility trigger hit box is at least 48dp :: UTILITY_HITBOX_DP must be declared and >= 48, was null
+generate buttons are at least 48dp and clickable is not inset by padding :: LbPrimaryButton 的高度下限必须 >=48dp
+home trailing text action meets the touch floor :: RowActionButton must be >= 48dp tall, was null
+```
+
+它们写的是 `Regex("NAME\\s*=\\s*(\\d+)")`——**要求每个文件自己把 48 再抄一遍**，
+正好和本格相反。这不是"尺寸变小了"，是"数不写在这儿了"，`was null` 这个措辞
+差点把它读成前者。
+
+三条都改成顺着引用读（`dimenValue`：`NAME = 数字` 直接用；`NAME = AppDimens.X` 跳到
+Dimens.kt；`NAME = X` 先在同文件里找，最多跳四跳）。同时新加一格把全局那颗
+**自己钉死 ≥48**：全站现在只有那一处承重点，它要是被改成 32，所有跟着引用读的尺
+会集体"算得出 32"而集体绿——所以那一格读的是字面量。
+断言没有改软：从"这里必须写着 48"变成"这里必须算得出 ≥48"，算不出仍判失败。
+
+（顺带：`panel header collapse hotzone` 那一格原来写的是
+`if (value == "MIN_TOUCH_TARGET_DP") 48 else value!!.toInt()`——**把 48 硬编码在测试里
+替被测代码做翻译**。现在由 `dimenValue` 真去算，那行假翻译删了。）
+
+## 39.4 `LbTextAction`：两档语气，颜色和字号必须同进同退
+
+组件只保证三件事，调用方拿不到旋钮：热区垫到**见方**、`Role.Button`、全站那一处按压缩放。
+
+`tone` 只做两档（`Accent` = 空态/错误态那个引导动作，`Muted` = 「跳过」这类弱化出口），
+**颜色与字号绑在同一档上**（`ink` + `style` 两个扩展）。这不是洁癖：如果 `style` 不跟着走，
+「跳过」为了复用这颗组件就得从 `labelMedium` 长成 `labelLarge`——那等于"复用"顺手改了
+一次外观，而这正是 :490 末句要防的那种"看着不一样"。
+两个值都写成枚举外的 `internal val` 扩展：构造参数里写 `Accent(Primary)` 时那个 `Primary`
+会被解析成枚举项自己（`LbButtonTone` 上踩过，坑表里那条"枚举项遮同名 val"）。
+
+`LbEmptyState` 那颗原来自己画的 `Box + Text` 删掉，改为 call 它，并把
+`MIN_ACTION_HOT_ZONE_DP`（第 18 颗抄数，私有）一起删了。
+`testTag` 仍由 `LbEmptyState` 传进 `modifier`，所以它继续挂在**外层可点击盒**上——
+挪进里面的 Text 就成了"锚点找得到、按钮找不到"（§31 那一族）。
+文案「跳过」进 `strings.xml` / `values-en`：TEXT 桶 192 → 191，**是真还掉一处，
+不是换桶**（搬进 `LbTextAction(label = stringResource(...))` 两边都不计字面量）。
+
+## 39.5 实测那一格先是**尺错了**：四字标签量出 120 vs 112
+
+`LbTextActionTest` 第二格要证"换语气不许换热区"。第一版用「以后再说」四字标签，
+跑出来 Accent 120dp 宽、Muted 112dp 宽，我以为抓到了什么。实际是：
+**两档字号本来就差那 8dp，文字比下限宽，下限根本没成为约束**——拿一个由文案决定的数
+去比另一个由文案决定的数，永远会红。
+换成**单字**标签（"好"）后宽度由 `widthIn(min = 48)` 决定，这一格才真的在量下限。
+这和 `LbEmptyState` 第一版只垫高度、短标签量出 40x48dp 是同一件事（§38 记过）。
+反证 W8/W9 证实了它确实有牙：删 `widthIn` 或删 `heightIn`，两格**都**红。
+
+## 39.6 探针：12 发咬住，3 发无效（无效不等于没牙）
+
+`_temp/mut87_textaction.py`，每发单独应用→跑一个类→要求指定那格红→回滚→字节比对 `CLEAN`。
+
+| 发 | 注入 | 要求红的那格 |
+|---|---|---|
+| W1 | 新增 `private const val PROBE_FLOOR_DP = 48` | 48 只写一次 |
+| W2 | 一颗别名退回 `= 48` | 48 只写一次 |
+| W3 | 非白名单文件里出现 `min = 48.dp` | 48 只写一次 |
+| W4 | **把白名单那处还掉**而表没改 | 48 只写一次（证 `==` 不是 `<=`） |
+| W5 | 别名指到别的 token（推导逃出血尺） | 48 只写一次（别名计数 `== 14`） |
+| W6 | 正向对照：把"借用方"指向本来自己画 clickable 的文件 | 文字动作单一所有者 |
+| W7 | 调用点复制一份 `LbTextAction(` | 文字动作单一所有者 |
+| W8 | 删 `widthIn` | `LbTextActionTest` 两格 |
+| W9 | 删 `heightIn` | `LbTextActionTest` 两格 |
+| X1 | 全局下限改成 32 | 唯一承重点 + 所有跟着引用读的格 |
+| X2 | 叶子自己写 28 | RowActionButton 那一格 |
+| X3 | 叶子指到 `BORDER_WIDTH_DP`（=1，能编译） | RowActionButton 那一格 |
+
+三发一开始是**无效探针**（编译不过，不能算"闸没牙"）：
+① `androidx.compose.foundation.clickable(Modifier) {}` 按 FQN 显式接收者调不通；
+② `LbTextAction("x") {}` 尾 lambda 实参不匹配（换成 `label = / onClick =` 具名实参就过了）；
+③ `MIN_HEIGHT_DP = VISUAL_VERTICAL_INSET_DP` 撞前向引用（那颗声明在它后面）。
+W1 还另撞过一次：把 const 插在 `package` 与 `import` 之间 → "imports are only allowed
+at the beginning of file"；又撞过一次插在 `@Composable` 与 `fun` 之间 → 注解被 const 抢走。
+三条都换合法形式重跑，没有拿"没跑成"当"验过了"（坑表 65 那一族）。
+
+## 39.7 这格顺手照出来的两笔新账（都已开条目，没顺手改）
+
+1. **`MiniSwitch` 那句注释是假的**。`ui/home/ProviderSection.kt` 里写着
+   "触摸区从 36×20 扩大到 48×32，**满足 48dp 无障碍下限**"，而 :531 要的是
+   `bounds ≥48×48`——它是 `toggleable`，高度 32 不达标。
+   ⚠ 这一条我只**读了声明**（`.size(width = 48.dp, height = 32.dp)` + `toggleable` 挂在同一颗
+   Box 上），**没有在语义树里量过**，所以只把那句假话改成实话、并把这一处留在
+   "48 内联"白名单里标成已知缺陷；改尺寸那一格要先量它（供应商页在 §37 那格
+   已经挂进过仪器，量得到）。
+2. **§6.1 :490 那份清单漏了一整族**。它锚在"Modifier 链上的 `.background(品牌色)`"，
+   而 Material `Button(colors = ButtonDefaults.buttonColors(containerColor = Primary))`
+   是从**另一扇门**涂同一层底。本机实扫：`Button(` 共 7 处，其中 containerColor 带
+   品牌色的 **5 处**（`HomeComponents:227` 首页那颗唯一主按钮、`ProviderSection:495`、
+   `KbEditActivity:474`、`KnowledgeBaseActivity:324`、`:780`）。
+   所以 §38.1 那张两行表要加第三行，**别把三个数合成一个**：
+   表面色 25 处 / 12 文件、链上有 clickable 的自造按钮 19 处 / 8 文件、
+   **换了一扇门涂色的 Material Button 5 处 / 4 文件**。
+   这正是"还债后计数没动 = 尺在漏、掉了先查是否换形状逃出锚点"那一族的第 N 次复发。
+
+## 39.8 实测
+
+- 全套：**177 套件 / 1335 单测 / 0 失败 / 0 错误 / 0 跳过**（上一格 176 / 1330；
+  +1 套件 = `LbTextActionTest`，+5 = 它 2 格 + `UiLayerDependencyContractTest` 2 格 +
+  `ProductionUiContractTest` 那格新加的"唯一承重点"）。
+  读结果前比过 mtime：中途有一次 `gradle_exit=1`（编译失败）而我照 XML 会读到
+  上一轮"5 条全绿"——那次 STALE 全部被标出来排除了，这正是它该做的事。
+- lint 重生成 **68 / 15**、进预算 **67 / 14**、advisory 1 —— **一字未动**（新增资源
+  两处都带中英文，UnusedResources 没涨）。
+- 包依赖 6；工单 PASS；取消审计 165 站全分类；prompt 资产锁 OK；
+  lint 判据自检 27 格全对；androidTest 编译 rc=0。
+- 死导入：本格改出来的 4 条（`OnboardingFlow` 的 heightIn/widthIn/Role、
+  `LbAsyncState` 的 dp）已清。`FeedbackCasesScreen` 1 条、`HomeComponents` 13 条
+  **在 HEAD 上就已死**（同一把尺对 HEAD 复扫确认），不在这个目标里顺手清。
+
+## 39.9 这格没做的
+
+- §38.7 那条 7 处未量的自造按钮**一处没动**：这一格没去挂 `ResultArea`/`SuggestPanel`，
+  那仍是下一格的主线（不搬不是因为没问题，是因为证不了）。
+- `MessageDimens.EMPTY_ACTION_MIN_HEIGHT_DP` 与 `ResultActionButton` 那类"页面自己画的
+  文字动作"（链级扫描：`Text` 上挂 clickable 且无背景 20 处，含 `Box` 12、`Row` 8）
+  只把**数**接上了全局那颗，**形状**没搬进 `LbTextAction`。搬它们要先在 JVM 里挂起那些页。
+- 截图基线（:538）仍没做，所以"两档语气**长得**对不对"没有断言——
+  `LbTextActionTest` 自己写着只证"可点范围一样"，语义树里没有颜色与字号。
+- `LbEmptyState` 那颗动作现在会随按压缩放了（以前不会）。这是一处**有意的**最小视觉变化，
+  和 :479 那格改页头间距同性质，但同样**没有截图能证明它好看**。
+- 设备侧照旧未跑（本机无 system image）。
