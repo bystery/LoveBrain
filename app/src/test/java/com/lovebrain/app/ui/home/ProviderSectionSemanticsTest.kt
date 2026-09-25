@@ -225,6 +225,11 @@ class ProviderSectionSemanticsTest {
      * 判据只看 toggle 自己的 `labeled`，不拿"这一屏里有没有出现过那几个字"当证据
      * （坑表 68 那一族：取第一个非空的判据会被旁边的标签蹭过去）。
      */
+    /**
+     * 那颗开关也得说得出自己是什么（`MiniSwitchRow` 那一格的第二条断言）。
+     * 判据只看 toggle 自己的 `labeled`——"思考模式"那四个字在旁边另一个节点上，
+     * 屏幕上看得见配对不等于读屏听得见（坑表 68 那一族）。
+     */
     @Test
     fun `the thinking-mode switch names itself`() {
         mountSwitch(checked = false)
@@ -234,4 +239,25 @@ class ProviderSectionSemanticsTest {
             t.labeled
         )
     }
+
+    /**
+     * ⚠ **这三格没留下**，因为表单挂不起来，而挂着三格会每次白烧 3×60 秒的
+     * `AppNotIdleException`。本来要写的是：
+     * ①整张表单每个可交互节点过 48dp；②每个节点有名字；③那颗"保存"（§4 ⑬ 剩下
+     * 4 处 Material Button 里的第一处）几何与角色对不对。**三条一条都没量到**。
+     *
+     * 已排除的两个假设（都留证据给下一个窗口，别当"生产没回路"，也别当"生产有回路"）：
+     * - **不是光标闪烁**：同这台仪器下 `InputFieldLabelsTest`/`RecordSentDialogSheetTest`
+     *   都挂着文本框并且是绿的；
+     * - **不是 `ProviderEditDialog` 里那两颗 spinner**：它们都是条件渲染
+     *   （`testingModel == m`、`saving`），挂载时根本没画出来。
+     * 状态头部（307-341 行）也没有 composition 内写状态——13 个 `remember`，赋值全在回调里。
+     *
+     * 剩下的最可能原因是 **Material `Dialog` 窗口 + `BasicTextField` 焦点**这一组合
+     * （仪器里此前只单独见过其中之一：`LbDialogTest` 有 Dialog 无输入框，
+     * `RecordSentDialogSheetTest` 有输入框但是自画浮层不是 Dialog 窗口）。
+     * ⇒ 下一步不是继续调时钟，是**把表单内容抽成一颗可单挂的 internal 组件**
+     *   （照 `MiniSwitchRow`/`KbListScreen` 那两次的手法：先能挂上，再谈量到）。
+     *   关 `autoAdvance` 手动推帧这条路我试过，仍然不空闲，所以别照着再试一遍。
+     */
 }
