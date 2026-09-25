@@ -127,35 +127,31 @@ fun LoveBrainPanelScreen(
     // /: 点踩后展示原因面板——直接消费 VM 的 currentFeedbackCase，不再异步全库读取
     val dislikeCase by viewModel.currentFeedbackCase.collectAsStateWithLifecycle()
 
-    // 记录实际发送——编辑框
-    var showSentDialog by remember { mutableStateOf(false) }
-    var sentDialogSchemeKey by remember { mutableStateOf<String?>(null) }
-    var sentDialogPrefill by remember { mutableStateOf("") }
-    // Actual Sent Dialog 失败不丢输入——保存中不关闭 Dialog
+    // 记录实际发送——§6.4 :523：开合、保存中、草稿、绑定哪张候选都归持有者，
+    // 不再摊四颗 var 在这个 composable 中间。VM 那侧仍异步，跳变来了再告诉它结果。
+    val recordSent = rememberRecordSentFlow()
     val actualSentState by viewModel.actualSentState.collectAsStateWithLifecycle()
-    var sentDialogSaving by remember { mutableStateOf(false) }
 
-    // RECORDED 时才关闭 Dialog，失败时 Dialog 保持用户输入。
+    // RECORDED 时才关闭浮层，失败时浮层留着、用户输入还在。
     // 这里必须是**穷尽的 when**，不能是 if / else if 链：VM 这一族有五种结果，
     // 原先只写了三种，`NO_KB`（未激活知识库时真会吐）与 `IDLE` 落到"什么都不做"，
-    // 于是 sentDialogSaving 解不开——而浮层的取消与遮罩都是 enabled = !saving，
+    // 于是"保存中"解不开——而浮层的取消与遮罩都是 enabled = !saving，
     // 用户既关不掉也退不出。加一档新结果时让编译器来提醒，而不是靠人记得。
     LaunchedEffect(actualSentState) {
         when (actualSentState) {
-            LoveBrainViewModel.ActualSentState.RECORDED -> if (sentDialogSaving) {
-                sentDialogSaving = false
-                showSentDialog = false
+            LoveBrainViewModel.ActualSentState.RECORDED -> if (recordSent.saving) {
+                recordSent.recorded()
                 viewModel.dismissActualSentState()
             }
             LoveBrainViewModel.ActualSentState.KB_NOT_FOUND,
             LoveBrainViewModel.ActualSentState.NO_KB,
             LoveBrainViewModel.ActualSentState.IO_ERROR -> {
-                // 失败——浮层留着、输入还在，但要放开那把"保存中"的锁，允许重试或取消
-                sentDialogSaving = false
+                // 失败——放开那把"保存中"的锁，允许重试或取消；草稿留着
+                recordSent.saveRejected()
             }
             LoveBrainViewModel.ActualSentState.IDLE -> {
                 // 没有进行中的记录：也别让浮层停在一个不会来的跳变上
-                sentDialogSaving = false
+                recordSent.saveRejected()
             }
         }
     }
@@ -502,11 +498,7 @@ fun LoveBrainPanelScreen(
                                 inputChanged = inputChanged,
                                 onRegenerateWithNewInput = { viewModel.generate() },
                                 // 记录实际发送——: result-level 入口不自动绑定方案卡
-                                onRecordSent = {
-                                    sentDialogSchemeKey = null
-                                    sentDialogPrefill = ""
-                                    showSentDialog = true
-                                },
+                                onRecordSent = { recordSent.open() },
                                 // 打开记忆纠正中心
                                 onShowCorrectionCenter = {
                                     viewModel.loadAllCorrections { corrections ->
@@ -566,23 +558,17 @@ fun LoveBrainPanelScreen(
             )
         }
 
-        // 记录实际发送——编辑确认框
-        if (showSentDialog) {
-            com.lovebrain.app.ui.panel.reply.RecordSentDialog(
-                prefill = sentDialogPrefill,
-                saving = sentDialogSaving,
-                onConfirm = { text ->
-                    // 不立即关闭 Dialog——等 actualSentState 变 RECORDED 才关
-                    sentDialogSaving = true
-                    viewModel.recordActualSentMessage(text, sentDialogSchemeKey)
-                },
-                onDismiss = {
-                    showSentDialog = false
-                    sentDialogSaving = false
-                    viewModel.dismissActualSentState()
-                }
-            )
-        }
+        // 记录实际发送——§6.4 :523：状态在 recordSent 手里，这里是唯一渲染处。
+        // 确认时**不立刻关浮层**：等 actualSentState 报 RECORDED 才关，
+        // 失败则留着草稿放开"保存中"（那段 when 在文件上面）。
+        RecordSentFlowHost(
+            flow = recordSent,
+            onConfirm = { flow ->
+                recordSent.beginSaving()
+                viewModel.recordActualSentMessage(flow.draft.trim(), flow.schemeKey)
+            },
+            onDismissed = { viewModel.dismissActualSentState() }
+        )
 
         // §6.4 :523：记忆纠正中心——独立列出已停用／静音／隔离项，支持撤销。
         // 之前是面板顶层 Box 里一块 `Column(fillMaxWidth)` 内联展开区（无遮罩、不居中、

@@ -21,9 +21,10 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * `RecordSentDialog` 这一屏：**用户要点的那两颗出口，点得到吗？**
+ * `记录实际发送`这一屏：**用户要点的那两颗出口，点得到吗？**
  *
- * 它是 §29 那套 `LbModalSheet` 的第一个"由页面自己拼内容"的用户界面，
+ * 它是 §29 那套 `LbModalSheet` 的第一个"由页面自己拼内容"的用户界面
+ * （`5d6b71a` 之后组件叫 `RecordSentFlowHost`，状态在 `RecordSentFlow` 手里）。
  * 之前它自己画遮罩与按钮，本机语义树量到的是 `28x19dp` 与 `96x19dp`
  * （还有一颗 360x1000dp、把标题当成自己名字的"整屏按钮"）——旧值留在 `SheetProbeTest` 的注释里。
  * 这几格钉的是改完之后的形状，并且**逐颗读 `boundsInRoot`**，不读源码里的数字。
@@ -42,13 +43,34 @@ class RecordSentDialogSheetTest {
     private val app: Context get() = ApplicationProvider.getApplicationContext()
     private val probe by lazy { SemanticsProbe(app.resources.displayMetrics.density) }
 
-    private fun mount(prefill: String = "", saving: Boolean = false, confirm: (String) -> Unit = {}) {
+    /**
+     * 状态从"参数传进去"改成"持有者持有"之后，装配要和面板一致：
+     * 先造 flow、`open(prefill)`（要 saving 就再 `beginSaving()`），再组合。
+     * 这样这四格测的就是生产那一条路径，不是一个为测试留的旁门。
+     *
+     * ⚠ 顺序有讲究：**开状态要排在 `setContent` 之前**。
+     * 反过来写（先组合、再 `flow.open()`、再推进一帧）时，`while saving` 那一格
+     * 把 `autoAdvance` 关了，多出来的那一帧不会来，整棵浮层压根没进树——
+     * 探针于是报"一个可点击节点都没测到"，看着像实现被删了，其实是夹具慢了一帧。
+     */
+    private fun mount(
+        prefill: String = "",
+        saving: Boolean = false,
+        confirm: (String) -> Unit = {}
+    ): RecordSentFlow {
+        val flow = RecordSentFlow()
+        flow.open(prefill = prefill)
+        if (saving) flow.beginSaving()
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
-                RecordSentDialog(prefill = prefill, saving = saving, onConfirm = confirm, onDismiss = {})
+                RecordSentFlowHost(
+                    flow = flow,
+                    onConfirm = { f -> confirm(f.draft.trim()) }
+                )
             }
         }
         rule.mainClock.advanceTimeBy(16L)
+        return flow
     }
 
     /** 预填之后：两颗出口 + 那颗输入框都在、都有名字、都过下限，且**没有**整屏大的"按钮" */

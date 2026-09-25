@@ -274,11 +274,15 @@ class UiLayerDependencyContractTest {
      * 正则一旦失效，holders 数掉到 0 当场红。
      *
      * 本机实扫（`LoveBrainPanelScreen.kt`，去注释后按形状数）：
-     * - holder 声明 **2** 颗：`rememberMemoryCorrectionFlow(`、`rememberCorrectionCenterHolder(`
-     * - 杂散可见性布尔 **3** 颗：`showSentDialog`、`sentDialogSaving`（这两颗都属
-     *   "记录实际发送"那颗浮层——:523 清单里"发送记录"一块，还没搬），
-     *   外加 `showOnboard`（引导卡片，不是浮层，但按形状判就把它也数进来了；
+     * - holder 声明 **3** 颗：`rememberMemoryCorrectionFlow(`、`rememberCorrectionCenterHolder(`、
+     *   `rememberRecordSentFlow(`
+     * - 杂散可见性布尔 **1** 颗：`showOnboard`（引导卡片，不是浮层，但按形状判就会被数进来；
      *   记在这儿是为了"只许往下"，不是给它单独开后门）
+     *
+     * 这两个数是**成对改的**。`5d6b71a` 立这把尺时量到 3 / 2；上一格把
+     * `showSentDialog` + `sentDialogSaving` 收进 `RecordSentFlow` 之后才是 1 / 3。
+     * 只降杂散布尔那一侧、不抬 holder 下限的话，下限就停在"几颗都算过"上，
+     * 那把反证的尺当场失效——这正是坑表 71 说的那个坑的续集。
      */
     @Test
     fun `panel decision surfaces are held by state holders, not ad-hoc booleans`() {
@@ -292,8 +296,8 @@ class UiLayerDependencyContractTest {
                 .findAll(code).count()
         val holders = Regex("remember[A-Z]\\w*(Flow|Holder)\\(").findAll(code).count()
 
-        val adHocBudget = 3
-        val holderFloor = 2
+        val adHocBudget = 1
+        val holderFloor = 3
         assertTrue(
             "面板里杂散的可见性布尔 $adHoc 颗，棘轮 $adHocBudget——" +
                 "新的浮层请开一个 holder（§6.4 :523），别在屏幕函数里加 showXxx",

@@ -11,7 +11,8 @@ import com.lovebrain.app.core.designsystem.LbModalSheet
 import com.lovebrain.app.core.designsystem.LbModalSheetActions
 import com.lovebrain.app.core.designsystem.LbModalSheetTitle
 import com.lovebrain.app.core.testing.RenderIn
-import com.lovebrain.app.ui.panel.reply.RecordSentDialog
+import com.lovebrain.app.ui.panel.reply.RecordSentFlow
+import com.lovebrain.app.ui.panel.reply.RecordSentFlowHost
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
@@ -67,9 +68,14 @@ class SheetProbeTest {
      */
     @Test
     fun `measure what the record-sent float currently hands the user`() {
+        // 前身是 `RecordSentDialog(prefill=…, saving=…)`；`5d6b71a` 之后状态在
+        // `RecordSentFlow` 手里，所以这把探尺改测"面板真怎么装配它"，
+        // 而不是给旧签名留一个只为测试开的旁门。旧形状的实测数值留在上面那段注释里。
+        val flow = RecordSentFlow()
+        flow.open(prefill = "")
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
-                RecordSentDialog(prefill = "", saving = false, onConfirm = {}, onDismiss = {})
+                RecordSentFlowHost(flow = flow, onConfirm = {})
             }
         }
         rule.mainClock.advanceTimeBy(16L)
