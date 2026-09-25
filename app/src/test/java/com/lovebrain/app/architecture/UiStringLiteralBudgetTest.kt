@@ -188,6 +188,16 @@ class UiStringLiteralBudgetTest {
      *   所以同一次加了 COMPONENT 那一栏（起点 **16**，全仓实扫），246 + 1 那条落进新栏 =
      *   原来的 247，总数一笔没少。以后再把文案搬进组件参数，涨的是 COMPONENT，照样红。
      *
+     * - §6.4 第四刀（点踩原因面板改成 `LbModalSheet`）之后又是同一笔账：
+     *   **TEXT 199 → 194、COMPONENT 72 → 77，四栏合计仍 283**。
+     *   这 5 条就是「这条回复哪里不满意？」进 `LbModalSheetTitle`、
+     *   「跳过」「保存反馈」「去改消息」「去纠正记忆」进 `LbDialogAction`——
+     *   一字没动，从"页面自己画的 `Text(`"换进"设计系统的动作词表"。
+     *   顺手补一句免得下次对账对不上：那一屏的 chip 文案（「理解错误」「角色错」…）
+     *   是写在 `CategoryChipRow(label = "…")` 这种**普通函数实参**上的，
+     *   `Text(` 与 `Lb*(` 两个锚点从来都看不见它，所以它既没进 TEXT 也没进 COMPONENT，
+     *   这一格前后都一样——**不是又漏了，是它本来就在这把尺的射程之外**。
+     *
      * 注意上面那串 254 / 250 / 247 是**历史**，不是现在值：现在值只有一处真源，
      * 就是下面 `budget` 里那几个数（`the budget still reflects reality` 那格保证两边不一致时报红）。
      * 所以别往这段说明里续抄数字——历史可以记，读数一律看常量。
@@ -200,10 +210,10 @@ class UiStringLiteralBudgetTest {
      * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 199,
+        Kind.TEXT to 194,
         Kind.DESC to 12,
         Kind.STATE to 0,
-        Kind.COMPONENT to 72
+        Kind.COMPONENT to 77
     )
 
     private fun countIn(root: File, kind: Kind): Int {

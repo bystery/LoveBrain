@@ -540,17 +540,17 @@ fun LoveBrainPanelScreen(
             }
         }
 
-    // /: 点踩原因面板——直接消费 VM currentFeedbackCase
+    // /: 点踩原因面板——直接消费 VM currentFeedbackCase。
+    // §6.4 :523 最后一块：之前它是这块 Box 里的一坨 Column(fillMaxWidth)（实量
+    // 16 颗可点里 14 颗不到 48dp、标题贴顶 y=8dp），现在走宿主 → LbModalSheet。
+    // 显隐仍由 VM 说了算，这里不再造第二颗 isOpen。
     if (dislikeCase != null) {
-        com.lovebrain.app.ui.panel.reply.DislikeReasonPanel(
+        com.lovebrain.app.ui.panel.reply.DislikeReasonHost(
             case = dislikeCase,
                 onUpdateCase = { caseId, cats, reasons, note, better ->
                     viewModel.updateFeedbackCase(caseId, cats, reasons, note, better)
                 },
-                onDismiss = { viewModel.dismissFeedbackCase() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = Spacing.md, vertical = Spacing.sm)
+                onDismiss = { viewModel.dismissFeedbackCase() }
             )
         }
 

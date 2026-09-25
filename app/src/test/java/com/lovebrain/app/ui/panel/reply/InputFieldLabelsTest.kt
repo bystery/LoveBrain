@@ -101,7 +101,7 @@ class InputFieldLabelsTest {
     fun `the dislike reason panel's two optional inputs are named`() {
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
-                DislikeReasonPanel(
+                DislikeReasonHost(
                     case = dislikeCase(),
                     onUpdateCase = { _, _, _, _, _ -> },
                     onDismiss = {}
@@ -156,7 +156,7 @@ class InputFieldLabelsTest {
     fun `the name survives after the user starts typing`() {
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
-                DislikeReasonPanel(
+                DislikeReasonHost(
                     case = dislikeCase(),
                     onUpdateCase = { _, _, _, _, _ -> },
                     onDismiss = {}
