@@ -26,8 +26,8 @@ import androidx.compose.ui.platform.TextToolbarStatus
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
-import com.lovebrain.app.ui.theme.SurfaceCard
-import com.lovebrain.app.ui.theme.TextPrimary
+import com.lovebrain.app.core.designsystem.SurfaceCard
+import com.lovebrain.app.core.designsystem.TextPrimary
 
 /**
  * overlay 窗口专用 TextToolbar。

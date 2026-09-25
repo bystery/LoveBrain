@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.feedback.FeedbackCasesScreen
-import com.lovebrain.app.ui.theme.SurfaceBase
+import com.lovebrain.app.core.designsystem.SurfaceBase
 import com.lovebrain.app.viewmodel.SetupViewModel
 
 /** 根导航内容最大宽度 */

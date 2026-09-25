@@ -1,4 +1,4 @@
-package com.lovebrain.app.ui.theme
+package com.lovebrain.app.core.designsystem
 
 import androidx.compose.ui.graphics.Color
 

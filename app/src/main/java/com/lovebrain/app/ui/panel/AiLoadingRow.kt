@@ -27,12 +27,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.PrimaryLight
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.TextSecondary
-import com.lovebrain.app.ui.theme.AppTypography
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.PrimaryLight
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.TextSecondary
+import com.lovebrain.app.core.designsystem.AppTypography
 import kotlinx.coroutines.delay
 /** 加载文案轮换节奏 */
 private const val PHRASE_ROTATE_TICK_MS = 1000L

@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.lovebrain.app.R
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.PrimaryDark
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.PrimaryDark
 import com.lovebrain.app.model.ComposerMode
 
 /**

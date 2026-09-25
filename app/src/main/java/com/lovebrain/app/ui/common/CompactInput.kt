@@ -19,13 +19,13 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.AppTypography
-import com.lovebrain.app.ui.theme.Border
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.SurfaceInset
-import com.lovebrain.app.ui.theme.TextHint
-import com.lovebrain.app.ui.theme.TextPrimary
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.SurfaceInset
+import com.lovebrain.app.core.designsystem.TextHint
+import com.lovebrain.app.core.designsystem.TextPrimary
 
 /**
  * 紧凑圆角单行输入框（48dp 高、圆角灰底）：问卷页与供应商弹窗共用，
@@ -67,7 +67,7 @@ fun CompactInput(
             textStyle = textStyle,
             visualTransformation = if (passwordVisible) VisualTransformation.None
                 else PasswordVisualTransformation(),
-            cursorBrush = SolidColor(com.lovebrain.app.ui.theme.Primary),
+            cursorBrush = SolidColor(com.lovebrain.app.core.designsystem.Primary),
             modifier = Modifier
                 .fillMaxWidth()
                 // 可编辑节点自己也要垫够：外层 Box 有 48dp，点击/编辑语义却挂在里面这行 15dp 的字上，

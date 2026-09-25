@@ -1,4 +1,4 @@
-package com.lovebrain.app.ui.theme
+package com.lovebrain.app.core.designsystem
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

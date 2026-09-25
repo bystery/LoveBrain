@@ -4,34 +4,14 @@ import androidx.compose.foundation.Indication
 import androidx.compose.foundation.IndicationInstance
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.interaction.InteractionSource
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import com.lovebrain.app.core.designsystem.*
 import androidx.compose.ui.unit.dp
-
-// ═══ 间距标尺（section/touch 无调用方已删）═══
-object Spacing {
-    val xs = 2.dp
-    val sm = 4.dp
-    val md = 8.dp
-    val lg = 12.dp
-    val xl = 16.dp
-    val xxl = 20.dp
-    val xxxl = 24.dp
-}
-
-// ═══ 圆角标尺（柔和化：大圆角更显专业温和）═══
-object LoveBrainShape {
-    val sm = RoundedCornerShape(6.dp)
-    val md = RoundedCornerShape(10.dp)
-    val lg = RoundedCornerShape(16.dp)
-    val xl = RoundedCornerShape(24.dp)
-    val full = RoundedCornerShape(999.dp)
-}
 
 // ═══ 阴影/兼容别名（已删：LoveBrainShadow/AppShape/AppElevation 无调用方）═══
 

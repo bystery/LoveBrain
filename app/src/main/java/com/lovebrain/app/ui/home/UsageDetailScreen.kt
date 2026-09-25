@@ -24,13 +24,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.panel.rememberPressScale
-import com.lovebrain.app.ui.theme.AppTypography
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.SurfaceCard
-import com.lovebrain.app.ui.theme.TextPrimary
-import com.lovebrain.app.ui.theme.TextSecondary
+import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.SurfaceCard
+import com.lovebrain.app.core.designsystem.TextPrimary
+import com.lovebrain.app.core.designsystem.TextSecondary
 import com.lovebrain.app.viewmodel.SetupViewModel
 
 /**

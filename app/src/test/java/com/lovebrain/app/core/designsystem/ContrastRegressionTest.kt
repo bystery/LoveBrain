@@ -1,4 +1,5 @@
-package com.lovebrain.app.ui.theme
+package com.lovebrain.app.core.designsystem
+
 
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -22,7 +23,7 @@ class ContrastRegressionTest {
 
     private val colorSource: String by lazy {
         // 测试工作目录 = app/
-        File("src/main/java/com/lovebrain/app/ui/theme/Color.kt").readText()
+        File("src/main/java/com/lovebrain/app/core/designsystem/Color.kt").readText()
     }
 
     /** 解析 `val <name>: Color get() = Color.hsl(h, s, l)`，返回 (h, s, l)；h 为 THEME_HUE 时按 230f 计。 */

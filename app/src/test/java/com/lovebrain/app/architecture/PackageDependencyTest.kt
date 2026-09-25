@@ -46,12 +46,14 @@ class PackageDependencyTest {
         "viewmodel" to listOf("java.io.File"),
         // §5.1 第一层：core 不知道数据层、容器与 Android 侧的具体东西，否则"设计系统"
         // 就变成另一坨业务代码的附属品。
-        // 一条登记过的欠账（别藏）：core.designsystem.LbAsyncState 现在 import
-        // com.lovebrain.app.ui.theme.* 拿 token——token 还住在 ui 下面。等 theme 整体迁进
-        // core/designsystem，这里要再加一条前缀 "com.lovebrain.app.ui."。
+        // 这条以前只禁到 data/viewmodel/feature，因为 token 还住在 ui.theme 下面——
+        // `core.designsystem.LbAsyncState` 当时必须 import `ui.theme.*` 才拿得到 Spacing/颜色，
+        // 那条欠账是登记着过的（不是漏的）。第三步-1 把 token 整体迁进 core/designsystem 之后，
+        // "core 反过来依赖 ui"就没有借口了，所以这里把整条 `com.lovebrain.app.ui.` 前缀禁掉。
         "core" to listOf(
             "android.", "java.io.File", "org.koin.",
-            "com.lovebrain.app.data.", "com.lovebrain.app.viewmodel.", "com.lovebrain.app.feature."
+            "com.lovebrain.app.data.", "com.lovebrain.app.viewmodel.", "com.lovebrain.app.feature.",
+            "com.lovebrain.app.ui."
         )
     )
 

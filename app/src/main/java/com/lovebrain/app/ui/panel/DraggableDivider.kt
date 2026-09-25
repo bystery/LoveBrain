@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import com.lovebrain.app.ui.theme.Spacing
+import com.lovebrain.app.core.designsystem.Spacing
 
 /**
  * 可拖拽分隔条（透明化）。

@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.lovebrain.app.R
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 
 /** 无障碍触摸区下限（dp）——所有生成按钮的可点击盒子不得低于此值 */

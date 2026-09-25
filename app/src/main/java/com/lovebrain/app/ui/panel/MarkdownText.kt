@@ -20,13 +20,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.MarkdownBodyFontSize
-import com.lovebrain.app.ui.theme.MarkdownBodyLineHeight
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.TextHint
-import com.lovebrain.app.ui.theme.TextSecondary
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.MarkdownBodyFontSize
+import com.lovebrain.app.core.designsystem.MarkdownBodyLineHeight
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.TextHint
+import com.lovebrain.app.core.designsystem.TextSecondary
 
 /** 4 个解析 Regex 上提为文件级常量（模式串逐字节不变；避免流式热路径每次重组现编译） */
 private val RE_HTML_COMMENT = Regex("<!--.*?-->", RegexOption.DOT_MATCHES_ALL)

@@ -9,13 +9,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.AppTypography
-import com.lovebrain.app.ui.theme.Border
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.TextHint
-import com.lovebrain.app.ui.theme.TextSecondary
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.TextHint
+import com.lovebrain.app.core.designsystem.TextSecondary
 
 /**
  * 无障碍隐私披露 Dialog——用户首次开启消息捕获前展示。

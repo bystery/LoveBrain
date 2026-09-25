@@ -1,4 +1,4 @@
-package com.lovebrain.app.ui.theme
+package com.lovebrain.app.core.designsystem
 
 /**
  * 全局共享尺寸常量（/：复用方 ≥3 的尺寸上提全局， 规则）。

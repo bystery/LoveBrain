@@ -1,4 +1,5 @@
-package com.lovebrain.app.ui.theme
+package com.lovebrain.app.core.designsystem
+
 
 import androidx.compose.ui.unit.dp
 import org.junit.Assert.assertEquals

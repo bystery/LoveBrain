@@ -23,10 +23,10 @@ import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.AppConfig
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.Neutral400
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.SurfaceInset
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.Neutral400
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.SurfaceInset
 
 /** 手柄内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object GripDimens {

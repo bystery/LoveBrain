@@ -50,6 +50,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.common.ScreenHeader
 import com.lovebrain.app.ui.panel.MarkdownText
+import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.util.L
 import com.lovebrain.app.viewmodel.KbEditViewModel

@@ -34,17 +34,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.domain.SelectionMode
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.AppTypography
-import com.lovebrain.app.ui.theme.Border
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.PrimaryDark
-import com.lovebrain.app.ui.theme.PrimaryLight
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.SurfaceCard
-import com.lovebrain.app.ui.theme.TextHint
-import com.lovebrain.app.ui.theme.TextPrimary
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.PrimaryDark
+import com.lovebrain.app.core.designsystem.PrimaryLight
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.SurfaceCard
+import com.lovebrain.app.core.designsystem.TextHint
+import com.lovebrain.app.core.designsystem.TextPrimary
 
 /** 问卷选项卡尺寸令牌 */
 private object OnboardingDimens {

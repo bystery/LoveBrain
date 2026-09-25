@@ -36,14 +36,14 @@ import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.ui.common.CompactInput
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.AppTypography
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.TextHint
-import com.lovebrain.app.ui.theme.TextPrimary
-import com.lovebrain.app.ui.theme.TextSecondary
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.TextHint
+import com.lovebrain.app.core.designsystem.TextPrimary
+import com.lovebrain.app.core.designsystem.TextSecondary
 import com.lovebrain.app.viewmodel.SetupViewModel
 
 /**

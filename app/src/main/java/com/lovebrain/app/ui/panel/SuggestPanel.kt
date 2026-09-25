@@ -40,6 +40,7 @@ import com.lovebrain.app.R
 import com.lovebrain.app.model.DailyBriefUsage
 import com.lovebrain.app.model.DailySuggestion
 import com.lovebrain.app.model.SuggestTip
+import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 

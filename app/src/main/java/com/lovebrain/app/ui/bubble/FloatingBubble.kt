@@ -52,9 +52,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.R
-import com.lovebrain.app.ui.theme.Error
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.PrimaryLight
+import com.lovebrain.app.core.designsystem.Error
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.PrimaryLight
 import com.lovebrain.app.util.L
 import android.content.Context
 import android.provider.Settings

@@ -25,12 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.theme.AppTypography
-import com.lovebrain.app.ui.theme.Border
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.SurfaceBase
-import com.lovebrain.app.ui.theme.TextPrimary
-import com.lovebrain.app.ui.theme.TextSecondary
+import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.SurfaceBase
+import com.lovebrain.app.core.designsystem.TextPrimary
+import com.lovebrain.app.core.designsystem.TextSecondary
 
 /**
  * 全 App 唯一页头规格：

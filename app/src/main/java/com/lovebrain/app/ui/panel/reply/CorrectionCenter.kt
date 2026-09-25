@@ -21,6 +21,7 @@ import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.MemoryCorrection
 import com.lovebrain.app.model.MuteDuration
 import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 
 /**

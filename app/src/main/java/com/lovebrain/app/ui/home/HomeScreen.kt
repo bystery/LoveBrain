@@ -33,13 +33,13 @@ import androidx.compose.ui.res.stringResource
 import com.lovebrain.app.R
 import com.lovebrain.app.service.FloatingService
 import com.lovebrain.app.ui.KnowledgeBaseActivity
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.Border
-import com.lovebrain.app.ui.theme.Neutral300
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.SurfaceCard
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.Neutral300
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.viewmodel.SetupViewModel
 
 /**

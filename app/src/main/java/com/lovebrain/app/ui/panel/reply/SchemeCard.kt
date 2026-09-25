@@ -39,6 +39,7 @@ import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.model.SchemeIdentity
 import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import kotlinx.coroutines.launch
 

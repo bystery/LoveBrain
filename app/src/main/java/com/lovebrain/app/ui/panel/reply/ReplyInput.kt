@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.animation.core.animateFloatAsState
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 
 /** 输入区内部尺寸常量（ 令牌化：数值不变，仅外放命名） */

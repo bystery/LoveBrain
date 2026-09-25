@@ -41,6 +41,7 @@ import androidx.compose.ui.zIndex
 import com.lovebrain.app.R
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

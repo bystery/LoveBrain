@@ -23,11 +23,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.theme.AppTypography
-import com.lovebrain.app.ui.theme.Error
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.TextHint
 
 /** 动作热区下限（dp）——§6.1 对 `LbEmptyState` 明写的"动作热区 ≥48dp" */
 private const val MIN_ACTION_HOT_ZONE_DP = 48

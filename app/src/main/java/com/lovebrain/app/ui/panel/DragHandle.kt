@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.Spacing
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.Spacing
 
 /**
  * 顶部拖拽条 + 4dp 极简。

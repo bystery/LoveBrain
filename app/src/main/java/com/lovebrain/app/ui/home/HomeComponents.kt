@@ -39,20 +39,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.ui.panel.rememberPressScale
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.AppTypography
-import com.lovebrain.app.ui.theme.Border
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Neutral300
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.PrimaryDark
-import com.lovebrain.app.ui.theme.PrimaryLight
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.SurfaceCard
-import com.lovebrain.app.ui.theme.SurfaceInset
-import com.lovebrain.app.ui.theme.TextHint
-import com.lovebrain.app.ui.theme.TextPrimary
-import com.lovebrain.app.ui.theme.TextSecondary
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Neutral300
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.PrimaryDark
+import com.lovebrain.app.core.designsystem.PrimaryLight
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.SurfaceCard
+import com.lovebrain.app.core.designsystem.SurfaceInset
+import com.lovebrain.app.core.designsystem.TextHint
+import com.lovebrain.app.core.designsystem.TextPrimary
+import com.lovebrain.app.core.designsystem.TextSecondary
 
 // ═════════════════════════════════════════════════════════════
 // 首页统一组件集合
@@ -155,7 +155,7 @@ fun AssistantStatusCard(
         colors = CardDefaults.cardColors(containerColor = PrimaryLight),
         modifier = Modifier
             .fillMaxWidth()
-            .border(AppDimens.BORDER_WIDTH_DP.dp, com.lovebrain.app.ui.theme.PrimarySubtle, LoveBrainShape.xl)
+            .border(AppDimens.BORDER_WIDTH_DP.dp, com.lovebrain.app.core.designsystem.PrimarySubtle, LoveBrainShape.xl)
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             // 右上次级隐藏图标（不另起一行）

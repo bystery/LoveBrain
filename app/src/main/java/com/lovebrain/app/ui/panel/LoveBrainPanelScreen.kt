@@ -40,6 +40,7 @@ import com.lovebrain.app.model.SchemeFeedback
 import kotlinx.coroutines.delay
 import com.lovebrain.app.ui.panel.counseling.CounselingPanel
 import com.lovebrain.app.ui.panel.reply.*
+import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 import com.lovebrain.app.model.ComposerMode

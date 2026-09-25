@@ -19,6 +19,14 @@ FORBIDDEN = {
     # feature/* 只能碰 model 与 domain.port：与 PackageDependencyTest 保持同一套规则
     'feature': ['android.', 'androidx.', 'com.lovebrain.app.data.',
                 'com.lovebrain.app.ui.', 'com.lovebrain.app.viewmodel.'],
+    # 第三把门以前是瞎的：本文件顶上写着"规则与 PackageDependencyTest 里那份一一对应"，
+    # 但测试里从 §5.1 起就有 core 这条（core 不许知道 data/viewmodel/feature/ui），脚本却没有。
+    # 后果很具体——第三步-1 把 token 迁进 core/designsystem 并给 core 加上 "com.lovebrain.app.ui."
+    # 之后，谁把 core→ui 的 import 引回来，JVM 那把闸会红，而 --count 仍旧报同一个数，
+    # 于是"跨层条数没长"这句话在 CI 侧是空的。补齐，两边逐条对齐。
+    'core': ['android.', 'java.io.File', 'org.koin.',
+             'com.lovebrain.app.data.', 'com.lovebrain.app.viewmodel.',
+             'com.lovebrain.app.feature.', 'com.lovebrain.app.ui.'],
 }
 
 
