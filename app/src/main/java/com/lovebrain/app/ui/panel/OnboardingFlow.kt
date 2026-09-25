@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui.panel
 
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

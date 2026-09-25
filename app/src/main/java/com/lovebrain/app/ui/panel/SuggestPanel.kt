@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui.panel
 
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.FastOutSlowInEasing

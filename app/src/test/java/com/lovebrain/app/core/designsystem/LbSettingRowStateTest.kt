@@ -1,4 +1,4 @@
-package com.lovebrain.app.ui.home
+package com.lovebrain.app.core.designsystem
 
 import android.content.Context
 import androidx.compose.foundation.layout.Box
@@ -14,8 +14,6 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
-import com.lovebrain.app.core.designsystem.LbRowState
-import com.lovebrain.app.core.designsystem.LbRowTags
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
@@ -47,7 +45,7 @@ import org.robolectric.annotation.GraphicsMode
     qualifiers = "sw600dp-w600dp-h1200dp-normal-long-mdpi"
 )
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-class HomeSettingRowStateTest {
+class LbSettingRowStateTest {
 
     @get:Rule
     val rule = createComposeRule()
@@ -63,7 +61,7 @@ class HomeSettingRowStateTest {
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
                 Box {
-                    HomeSettingRow(
+                    LbSettingRow(
                         title = "ROW_TITLE_SENTINEL",
                         subtitle = "ROW_SUBTITLE_SENTINEL",
                         dot = dot.value,

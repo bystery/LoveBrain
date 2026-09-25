@@ -39,6 +39,11 @@ import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.LbRowState
+import com.lovebrain.app.core.designsystem.LbActionCard
+import com.lovebrain.app.core.designsystem.LbMetricGrid
+import com.lovebrain.app.core.designsystem.LbSection
+import com.lovebrain.app.core.designsystem.LbSettingRow
+import com.lovebrain.app.core.designsystem.LbTopBar
 import com.lovebrain.app.viewmodel.SetupViewModel
 
 /**
@@ -121,7 +126,11 @@ fun HomeScreen(
             .padding(horizontal = Spacing.xxxl),
         verticalArrangement = Arrangement.spacedBy(Spacing.xl)
     ) {
-        HomeTopBar(onNavigateAbout = onNavigateAbout)
+        LbTopBar(
+            title = "LoveBrain",
+            subtitle = "帮你更自然地表达",
+            trailing = { HomeAboutEntry(onNavigateAbout) }
+        )
 
         AssistantStatusCard(
             status = advisor,
@@ -129,12 +138,12 @@ fun HomeScreen(
             onHideClick = if (canHide) onTempHide else null
         )
 
-        HomeSectionHeader("快捷功能")
+        LbSection("快捷功能")
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(Spacing.lg)
         ) {
-            HomeActionCard(
+            LbActionCard(
                 modifier = Modifier.weight(1f),
                 iconRes = R.drawable.ic_feature_book,
                 title = "知识库",
@@ -143,7 +152,7 @@ fun HomeScreen(
                     context.startActivity(Intent(context, KnowledgeBaseActivity::class.java))
                 }
             )
-            HomeActionCard(
+            LbActionCard(
                 modifier = Modifier.weight(1f),
                 iconRes = R.drawable.ic_feature_feedback,
                 title = "反馈案例",
@@ -152,14 +161,14 @@ fun HomeScreen(
             )
         }
 
-        HomeSectionHeader("服务设置")
+        LbSection("服务设置")
         Card(
             shape = LoveBrainShape.lg,
             colors = CardDefaults.cardColors(containerColor = SurfaceCard),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column {
-                HomeSettingRow(
+                LbSettingRow(
                     title = "模型供应商",
                     subtitle = activeTicket?.let { "${it.name} · ${it.model.ifBlank { "未选模型" }}" }
                         ?: "未配置供应商",
@@ -172,7 +181,7 @@ fun HomeScreen(
                 )
                 HorizontalDivider(thickness = AppDimens.BORDER_WIDTH_DP.dp, color = Border.copy(alpha = 0.5f))
 
-                HomeSettingRow(
+                LbSettingRow(
                     title = stringResource(R.string.capture_apps_title),
                     subtitle = when {
                         !accessibilityGranted -> stringResource(R.string.home_capture_no_permission)
@@ -199,10 +208,10 @@ fun HomeScreen(
             }
         }
 
-        HomeSectionHeader("使用概览")
+        LbSection("使用概览")
         val costStr = if (viewModel.totalCostYuan < 0.01) "￥0" else "￥${String.format("%.2f", viewModel.totalCostYuan)}"
         val rateStr = if (viewModel.totalGenerateCount > 0) "${(viewModel.adoptRate * 100).toInt()}%" else "—"
-        UsageSummary(
+        LbMetricGrid(
             totalGenerate = "${viewModel.totalGenerateCount}",
             totalCost = costStr,
             adoptRate = rateStr,

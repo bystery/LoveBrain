@@ -54,7 +54,7 @@ import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.model.FeedbackCase
 import com.lovebrain.app.model.FeedbackCategory
-import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.Error

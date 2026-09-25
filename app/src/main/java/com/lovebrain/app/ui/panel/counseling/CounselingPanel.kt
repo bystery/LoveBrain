@@ -47,7 +47,7 @@ import com.lovebrain.app.ui.panel.AiLoadingRow
 import com.lovebrain.app.ui.panel.DraggableDivider
 import com.lovebrain.app.ui.panel.MarkdownText
 import com.lovebrain.app.ui.panel.TriangleArrow
-import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.LoveBrainViewModel

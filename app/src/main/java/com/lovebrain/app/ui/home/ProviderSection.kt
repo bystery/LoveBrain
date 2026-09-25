@@ -66,7 +66,7 @@ import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
-import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border

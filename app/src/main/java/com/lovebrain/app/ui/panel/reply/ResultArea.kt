@@ -53,7 +53,7 @@ import com.lovebrain.app.model.SchemeIdentity
 import com.lovebrain.app.model.SchemeSource
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.CorrectionAction
-import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.util.L

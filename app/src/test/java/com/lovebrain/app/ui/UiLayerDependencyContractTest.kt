@@ -111,6 +111,65 @@ class UiLayerDependencyContractTest {
     }
 
     /**
+     * §6.1：设计系统的组件必须**住在** core/designsystem，且旧名字不许回来。
+     *
+     * 为什么要有这条：搬家的失败模式不是"搬不过去"（编译会红），而是**搬完之后**
+     * 有人在 ui/home 里再声明一颗同名的 `HomeActionCard` 顶掉它——core 那份还在、
+     * 编译还绿，设计系统却重新退化成"目录里有个文件"。这正是本文件其它规则对付过的
+     * 同一类漂移：要看住的东西得真被扫到，而不是靠人记得。
+     *
+     * 三条判据（都是全仓扫，不限目录）：
+     * ① 旧名字（含 typealias）全仓声明数 = 0；
+     * ② 新名字全仓声明数 = 1（多了就是有人复制了一份分叉）；
+     * ③ 那唯一一处声明落在 core/designsystem 子树里。
+     *
+     * ②③ 必须分开：只写"core 里恰好一颗"的话，把整颗组件搬回 ui/home 会两半都绿
+     * （core 0 颗、ui 1 颗都不报错）；只写"全仓一颗"的话，搬出 core 又抓不到。
+     * 实测口径：②③ 各 6 个名字，① 各 6 个旧名，改前全为 0/1/命中。
+     *
+     * 已知边界：按 `fun 名字(`/`typealias 名字 =` 的形状判；写成
+     * `val X: (@Composable () -> Unit)` 这种函数值能躲过——那种写法本仓库没有先例。
+     */
+    @Test
+    fun `design system components live in core and their home-prefixed names stay retired`() {
+        val retired = mapOf(
+            // 旧名字 -> 现在的名字
+            "HomeTopBar" to "LbTopBar",
+            "HomeSectionHeader" to "LbSection",
+            "HomeActionCard" to "LbActionCard",
+            "HomeSettingRow" to "LbSettingRow",
+            "UsageSummary" to "LbMetricGrid",
+            "UsageMetric" to "LbMetricCard"
+        )
+        assertTrue("旧名字一个都不该有，新名字 6 颗，所以不能扫了个空目录", retired.size == 6)
+        val sources = kotlinFiles(appRoot).map {
+            it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
+        }
+
+        fun declarationsOf(name: String): List<String> = sources.flatMap { (path, code) ->
+            declaration(name).findAll(code).map { "$path" }
+        }
+
+        retired.keys.forEach { old ->
+            val back = declarationsOf(old)
+            assertTrue("这些名字已随组件搬进 core/designsystem，不许重新声明：$back", back.isEmpty())
+        }
+
+        retired.values.forEach { now ->
+            val at = declarationsOf(now)
+            assertTrue("$now 应当全仓只声明一次，实到 ${at.size}: $at", at.size == 1)
+            assertTrue(
+                "$now 的唯一声明应当在 core/designsystem 子树里，实到：$at",
+                at.single().startsWith("core/designsystem/")
+            )
+        }
+    }
+
+    /** `typealias` 后面跟 `=`，`fun` 后面跟 `(`，两个分支都得在尺子里 */
+    private fun declaration(name: String): Regex =
+        Regex("\\b(?:fun|typealias)\\s+`?$name`?\\s*[<(=]")
+
+    /**
      * 「伸手进 VM 拿仓库」等价于直接 inject 仓库。
      *
      * SetupActivity 原先写的是 `viewModel.securePrefs.hasCompletedOnboarding`——

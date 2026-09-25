@@ -22,7 +22,7 @@ import com.lovebrain.app.model.FeedbackCategory
 import com.lovebrain.app.model.FeedbackCase
 import com.lovebrain.app.model.ExpressionDislikeReasons
 import com.lovebrain.app.model.UnderstandingReasons
-import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 

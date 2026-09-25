@@ -36,6 +36,23 @@ class UiStringLiteralBudgetTest {
          * 起点就是 0——本轮把锦囊那处搬进资源了，谈心那处还欠着，见下方交接行。
          */
         STATE("stateDescription", Regex("""\bstateDescription\s*=\s*""")),
+
+        /**
+         * `Lb…(` ——设计系统组件的**具名实参**里写的中文。
+         *
+         * 这一栏是 §6.1 搬家逼出来的：`HomeTopBar` 通用化成 `LbTopBar(title =, subtitle =)` 之后，
+         * 「帮你更自然地表达」从 `Text("…")` 里挪进了组件参数，而 TEXT 那把尺的锚点是 `Text(`，
+         * 于是实扫从 247 掉到 246。**那不是我搬走了一处硬编码**，同一条字符串还在原处，
+         * 只是尺看不见了。按本文件自己的规矩（"搬掉两处而 DESC 一个没动"那次），
+         * 计数变了必须先证明变化是真的，才许动预算数字。
+         *
+         * 口径：整段实参里带中文的字面量，**减去已被前三栏区间覆盖的那些**——
+         * 所以 `LbCard { Text("中文") }` 只在 TEXT 记一次，不会两栏重复入账。
+         *
+         * 边界（仍然欠着的那半）：只认 `Lb` 前缀的设计系统组件。页面自造的子组件
+         * （`StatCell(label = "…")` 这种）依旧在盲区里，交接单 §4 有这一行。
+         */
+        COMPONENT("组件实参里的可见文案", Regex("""\bLb\w+\s*\(""")),
     }
 
     /** 一行以内、含中日韩字符的字符串字面量 */
@@ -51,7 +68,7 @@ class UiStringLiteralBudgetTest {
      * 所以这里按括号配对取范围，而不是按"紧跟不紧跟"。
      */
     private fun expressionAt(text: String, from: Int, kind: Kind): String {
-        val anchorIsCall = kind == Kind.TEXT
+        val anchorIsCall = kind == Kind.TEXT || kind == Kind.COMPONENT
         var depth = if (anchorIsCall) 1 else 0
         var i = from
         while (i < text.length) {
@@ -80,24 +97,32 @@ class UiStringLiteralBudgetTest {
         return text.substring(from)
     }
 
-    private fun countHanLiterals(text: String, kind: Kind): Int =
-        kind.anchor.findAll(text).sumOf { match ->
+    private fun countHanLiterals(text: String, kind: Kind): Int = when (kind) {
+        Kind.COMPONENT -> {
+            // 前三栏已经覆盖的字符区间（半开区间 [start, end)）：
+            // 落进去的字面量已经入过账，这里只记漏下来的
+            val covered: List<Pair<Int, Int>> = Kind.values()
+                .filter { it != Kind.COMPONENT }
+                .flatMap { other ->
+                    other.anchor.findAll(text).map { m ->
+                        val from = m.range.last + 1
+                        from to (from + expressionAt(text, from, other).length)
+                    }
+                }
+            Kind.COMPONENT.anchor.findAll(text).sumOf { m ->
+                val from = m.range.last + 1
+                HAN_LITERAL.findAll(expressionAt(text, from, Kind.COMPONENT)).count { lit ->
+                    val start = from + lit.range.first
+                    val end = from + lit.range.last + 1
+                    covered.none { (lo, hi) -> lo <= start && end <= hi }
+                }
+            }
+        }
+        else -> kind.anchor.findAll(text).sumOf { match ->
             HAN_LITERAL.findAll(expressionAt(text, match.range.last + 1, kind)).count()
         }
+    }
 
-    /**
-     * 实测基线。**数字来自本文件这把尺对 app/src/main 的一次实扫**，不是照抄复核报告的 101。
-     *
-     * 三把尺的关系（都留档，不然下一次又有人拿最小的那个数当全量）：
-     * - 复核报告的 **101**：只数 `Text("中文`，是下界；
-     * - 上一轮的正则 **209**：多认 `Text(text = "中文…")` 与跨行写法，
-     *   仍看不见 `Text(text = if (…) "中文" else "中文")`，还是下界；
-     * - 本轮换成按括号配对取整段实参（见 [expressionAt]）→ **实测 254**。
-     *
-     * 209 → 254 这 45 处**不是有人新塞了中文**，是原来量不到的那批。
-     * 换尺会让数字变大，这一条写在预算旁边，免得下一个窗口把它误读成"债涨了"、
-     * 或者干脆把正则改窄回去拿个好看的数。棘轮照旧：只许往下走。
-     */
     /**
      * 实测基线。**数字来自这把尺对 app/src/main 的一次实扫**，不是照抄复核报告的 101。
      *
@@ -105,12 +130,17 @@ class UiStringLiteralBudgetTest {
      * - 复核报告的 **101**：只数 `Text("中文`，是下界；
      * - 上一轮的正则 **209**：多认 `Text(text = "中文…")` 与跨行写法，仍看不见
      *   `Text(text = if (…) "中文" else "中文")`，还是下界；
-     * - 本轮换成按括号配对取整段实参 → TEXT **254**；搬掉 4 处后 **250**。
+     * - 换成按括号配对取整段实参 → TEXT **254**；搬掉 4 处后 **250**。
      * - §6.3 把知识库页那张自造空态卡换成共用组件，又搬掉 3 处（标题、指路文案、底部那颗
      *   "新建知识库"）→ **247**。DESC / STATE 两栏这次没动。
+     * - §6.1 把五颗首页组件搬进 core/designsystem 时，TEXT 掉到 **246**——
+     *   **这一条不是还债**：掉的那处是「帮你更自然地表达」，它只是从 `Text("…")`
+     *   变成了 `LbTopBar(subtitle = "…")`，字符串一个字没动，是锚点 `Text(` 看不见它了。
+     *   所以同一次加了 COMPONENT 那一栏（起点 **16**，全仓实扫），246 + 1 那条落进新栏 =
+     *   原来的 247，总数一笔没少。以后再把文案搬进组件参数，涨的是 COMPONENT，照样红。
      *
-     * 注意上面那串 254 / 250 是**换尺那一次的历史**，不是现在值：现在值只有一处真源，
-     * 就是下面 `budget` 里那个数（`the budget still reflects reality` 那格保证两边不一致时报红）。
+     * 注意上面那串 254 / 250 / 247 是**历史**，不是现在值：现在值只有一处真源，
+     * 就是下面 `budget` 里那几个数（`the budget still reflects reality` 那格保证两边不一致时报红）。
      * 所以别往这段说明里续抄数字——历史可以记，读数一律看常量。
      *
      * DESC 这一栏要单独记一笔：本轮第一次改尺时**赋值型锚点的切片被内层括号截断了**——
@@ -121,9 +151,10 @@ class UiStringLiteralBudgetTest {
      * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 247,
+        Kind.TEXT to 246,
         Kind.DESC to 12,
-        Kind.STATE to 0
+        Kind.STATE to 0,
+        Kind.COMPONENT to 16
     )
 
     private fun countIn(root: File, kind: Kind): Int {
@@ -240,6 +271,43 @@ class UiStringLiteralBudgetTest {
             assertEquals(
                 "隔着一层 if 的两处中文也必须数到（A 里 2 处 + D 里 2 处）",
                 4, countIn(tmp, Kind.TEXT)
+            )
+
+            // COMPONENT 这一栏是新加的，两头都要有反例：
+            //  ① 具名实参里的中文必须看见（搬家那次就是从这里漏出去的）；
+            //  ② 同一颗组件的 content 槽里套着 Text 时，那两处只能记一次（记 TEXT 名下）。
+            File(tmp, "F.kt").writeText(
+                """
+                package x
+                import androidx.compose.material3.Text
+                @Composable fun F() {
+                    LbTopBar(
+                        title = "页面标题",
+                        trailing = { Text("里面" + "那颗字") }
+                    )
+                }
+                """.trimIndent(), Charsets.UTF_8
+            )
+            assertEquals(
+                "组件具名实参里的中文要入账，套在里面的 Text 不许重复记",
+                1, countIn(tmp, Kind.COMPONENT)
+            )
+            assertEquals(
+                "F 里 Text 的两处仍归 TEXT 栏（4 + 2）",
+                6, countIn(tmp, Kind.TEXT)
+            )
+
+            // 恒真的另一种形状：如果锚点其实是 `Text(`，那 F 的 COMPONENT 会报 0——
+            // 上面那格因此同时是"锚点写错成什么样"的探测器。
+            File(tmp, "G.kt").writeText(
+                """
+                package x
+                @Composable fun G() { OtherCell(label = "别人的组件不算") }
+                """.trimIndent(), Charsets.UTF_8
+            )
+            assertEquals(
+                "非 Lb 前缀的组件仍在盲区里：这一格写明它「不数」，而不是假装数到了",
+                1, countIn(tmp, Kind.COMPONENT)
             )
         } finally {
             tmp.deleteRecursively()

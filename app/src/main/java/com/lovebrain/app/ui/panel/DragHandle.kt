@@ -73,20 +73,3 @@ fun TriangleArrow(
         drawPath(path, color)
     }
 }
-
-/**
- * A2-1：按压缩放标准件（27 处同构收编）——按下缩至 targetScale、松开回弹 1f；
- * tween(120, FastOutSlowInEasing) 全仓统一。返回 (interaction, scale)，
- * interaction 供 clickable(interactionSource=…) 复用，行为逐位等于原体。
- */
-@Composable
-fun rememberPressScale(targetScale: Float, label: String): Pair<MutableInteractionSource, Float> {
-    val interaction = remember { MutableInteractionSource() }
-    val pressed by interaction.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (pressed) targetScale else 1f,
-        animationSpec = tween(120, easing = FastOutSlowInEasing),
-        label = label
-    )
-    return interaction to scale
-}

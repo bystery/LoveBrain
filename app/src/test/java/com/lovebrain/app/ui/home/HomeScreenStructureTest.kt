@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui.home
 
+import com.lovebrain.app.core.designsystem.LbTags
 import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -135,21 +136,21 @@ class HomeScreenStructureTest {
         mount()
         // 未合并树里父链会带着同一个 tag 重复出现，所以按**不同的 top 坐标**数分区，
         // 而不是数节点个数——"有几个分区标题"这件事本来就是位置事实
-        val sections = rule.onAllNodesWithTag(LbHomeTags.SECTION, useUnmergedTree = true)
+        val sections = rule.onAllNodesWithTag(LbTags.SECTION, useUnmergedTree = true)
             .fetchSemanticsNodes().map { it.boundsInRoot.top }.distinct().size
         assertEquals("分区标题应当是 3 个（快捷功能 / 服务设置 / 使用概览），实到 $sections", 3, sections)
 
         val card = top(LbHomeTags.STATUS_CARD)
-        val firstSection = rule.onAllNodesWithTag(LbHomeTags.SECTION)
+        val firstSection = rule.onAllNodesWithTag(LbTags.SECTION)
             .fetchSemanticsNodes().minOf { it.boundsInRoot.top / density }
-        val secondSection = rule.onAllNodesWithTag(LbHomeTags.SETTING_ROW, useUnmergedTree = true)
+        val secondSection = rule.onAllNodesWithTag(LbTags.SETTING_ROW, useUnmergedTree = true)
             .fetchSemanticsNodes().minOf { it.boundsInRoot.top / density }
-        val metric = top(LbHomeTags.METRIC_CELL)
+        val metric = top(LbTags.METRIC_CELL)
 
         assertTrue("主卡要在第一个分区之上：主卡 $card，分区标题 $firstSection", card < firstSection)
         assertTrue("快捷功能卡片在服务设置之上", firstSection < secondSection)
         assertTrue("统计在最末（使用概览段）", secondSection < metric)
-        // 顶部段：About 那颗在页头里（HomeTopBar 自带 48dp 热区），量得到就说明第一段没被搬走
+        // 顶部段：About 那颗在页头里（LbTopBar 自带 48dp 热区），量得到就说明第一段没被搬走
         assertEquals("首页顶部那颗 About 入口", 1, tagCount(LbHomeTags.ABOUT))
         assertTrue("About 必须在主卡之上（第一段没被搬走）",
             top(LbHomeTags.ABOUT) < top(LbHomeTags.STATUS_CARD))
@@ -187,7 +188,7 @@ class HomeScreenStructureTest {
     @Test
     fun `quick actions are two of the same card and both are actionable`() {
         mount()
-        val all = rule.onAllNodesWithTag(LbHomeTags.ACTION_CARD).fetchSemanticsNodes()
+        val all = rule.onAllNodesWithTag(LbTags.ACTION_CARD).fetchSemanticsNodes()
         assertEquals("快捷功能必须是 2 张同颗组件的卡片，实到 ${all.size}", 2, all.size)
         // 可点性读语义树上的 OnClick **动作**（SemanticsActions，不是 Properties）
         val clickable = all.count { it.config.contains(SemanticsActions.OnClick) }
@@ -198,9 +199,9 @@ class HomeScreenStructureTest {
     @Test
     fun `settings hold two rows and the metrics split the row into three equal cells`() {
         mount()
-        assertEquals("模型供应商 + 消息捕获两行", 2, tagCount(LbHomeTags.SETTING_ROW))
+        assertEquals("模型供应商 + 消息捕获两行", 2, tagCount(LbTags.SETTING_ROW))
 
-        val cells = rule.onAllNodesWithTag(LbHomeTags.METRIC_CELL, useUnmergedTree = true)
+        val cells = rule.onAllNodesWithTag(LbTags.METRIC_CELL, useUnmergedTree = true)
             .fetchSemanticsNodes()
         assertEquals("统计必须是三格", 3, cells.size)
         val widths = cells.map { it.boundsInRoot.width / density }

@@ -40,7 +40,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
@@ -110,54 +110,33 @@ object LbHomeTags {
 }
 
 /**
- * 首页顶部栏——标题 + 副标题 + 关于入口
+ * 首页顶部那颗 About 入口。
+ *
+ * 它从 `core/designsystem/LbTopBar` 里搬回来：尾部动作是**页面**的决定
+ * （首页是 About，二级页是返回），而"关于"这个锚点也只对这一页有意义。
  */
 @Composable
-fun HomeTopBar(
-    onNavigateAbout: () -> Unit
-) {
-    Row(
+fun HomeAboutEntry(onNavigateAbout: () -> Unit) {
+    val (aboutInteraction, aboutScale) = rememberPressScale(0.94f, "aboutBtn")
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = Spacing.lg),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .size(48.dp)
+            .graphicsLayer { scaleX = aboutScale; scaleY = aboutScale }
+            .clip(LoveBrainShape.full)
+            .clickable(
+                interactionSource = aboutInteraction,
+                indication = null,
+                onClick = onNavigateAbout
+            )
+            .testTag(LbHomeTags.ABOUT),
+        contentAlignment = Alignment.Center
     ) {
-        Column {
-            Text(
-                "LoveBrain",
-                style = AppTypography.headlineLarge,
-                color = TextPrimary,
-                fontWeight = FontWeight.SemiBold
-            )
-            Text(
-                "帮你更自然地表达",
-                style = AppTypography.bodySmall,
-                color = TextHint
-            )
-        }
-        // 关于/设置图标
-        val (aboutInteraction, aboutScale) = rememberPressScale(0.94f, "aboutBtn")
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .graphicsLayer { scaleX = aboutScale; scaleY = aboutScale }
-                .clip(LoveBrainShape.full)
-                .clickable(
-                    interactionSource = aboutInteraction,
-                    indication = null,
-                    onClick = onNavigateAbout
-                )
-                .testTag(LbHomeTags.ABOUT),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "关于",
-                tint = TextHint,
-                modifier = Modifier.size(20.dp)
-            )
-        }
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = "关于",
+            tint = TextHint,
+            modifier = Modifier.size(20.dp)
+        )
     }
 }
 
@@ -266,280 +245,5 @@ internal fun AssistantStatusCard(
                 }
             }
         }
-    }
-}
-
-/** 分区标题 */
-@Composable
-fun HomeSectionHeader(title: String) {
-    Text(
-        title,
-        style = AppTypography.titleMedium,
-        color = TextPrimary,
-        fontWeight = FontWeight.SemiBold,
-        modifier = Modifier
-            .padding(start = Spacing.sm, bottom = Spacing.sm)
-            .testTag(LbHomeTags.SECTION)
-    )
-}
-
-/**
- * 快捷功能卡片——统一 HomeActionCard。
- * 标题、说明、图标容器、箭头、按压、禁用状态完全同源。
- */
-@Composable
-fun HomeActionCard(
-    modifier: Modifier = Modifier,
-    @androidx.annotation.DrawableRes iconRes: Int,
-    title: String,
-    subtitle: String,
-    onClick: () -> Unit
-) {
-    val (interaction, scale) = rememberPressScale(0.96f, "actionCard_$title")
-    Card(
-        shape = LoveBrainShape.lg,
-        colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-        modifier = modifier
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clip(LoveBrainShape.lg)
-            .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
-            .clickable(
-                interactionSource = interaction,
-                indication = null,
-                onClick = onClick
-            )
-            .testTag(LbHomeTags.ACTION_CARD)
-    ) {
-        Column(modifier = Modifier.padding(Spacing.xl)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                .size(48.dp)
-                .clip(LoveBrainShape.md)
-                .background(PrimaryLight),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(iconRes),
-                        contentDescription = title,
-                        tint = Primary,
-                        modifier = Modifier.size(22.dp)
-                    )
-                }
-                Spacer(Modifier.weight(1f))
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = null,
-                    tint = TextHint,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-            Spacer(Modifier.height(Spacing.md))
-            Text(
-                title,
-                style = AppTypography.titleMedium,
-                color = TextPrimary,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(Modifier.height(Spacing.xs))
-            Text(
-                subtitle,
-                style = AppTypography.labelSmall,
-                color = TextHint,
-                maxLines = 1
-            )
-        }
-    }
-}
-
-/**
- * 服务设置行——统一 `HomeSettingRow`（§6.1 表里的 `LbSettingRow` 那一行）。
- * 图标、标题、说明、状态、尾部动作。
- *
- * **这一版的"状态"槽才是通的。**旧签名是
- * `(statusText: String?, statusColor: Color = Neutral300)`，而组件里只写了
- * `if (statusText != null) { 画一颗 6dp 的点 }`——**statusText 的值从来没被画出来过**。
- * 于是 `HomeScreen` 那两行认真算出来的 `R.string.home_on` / `home_off`
- * （"开"/"关"）解析完就被丢掉；供应商行更离谱，传的是 `statusText = ""`，
- * 意思其实是"我只要一颗点"。两颗行的真实意图挤在一个参数上，其中一个还没接。
- *
- * 现在拆成两个旋钮：`dot` 决定画不画点、什么颜色（颜色住在 [LbRowState]，不由调用方交），
- * `statusText` 决定要不要在点旁边写那两个字。
- */
-@Composable
-fun HomeSettingRow(
-    icon: ImageVector? = null,
-    @androidx.annotation.DrawableRes iconRes: Int? = null,
-    title: String,
-    subtitle: String,
-    dot: LbRowState? = null,
-    statusText: String? = null,
-    trailingText: String? = null,
-    onTrailingClick: (() -> Unit)? = null,
-    onClick: (() -> Unit)? = null
-) {
-    val rowModifier = Modifier
-        .fillMaxWidth()
-        .let { if (onClick != null) it.clickable(
-            interactionSource = remember { MutableInteractionSource() },
-            indication = null,
-            onClick = onClick
-        ) else it }
-
-    Row(
-        modifier = rowModifier
-            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-            .testTag(LbHomeTags.SETTING_ROW),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // 图标
-        if (icon != null) {
-            Box(
-                modifier = Modifier
-                    .size(36.dp)
-                    .clip(LoveBrainShape.md)
-                    .background(SurfaceInset),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(imageVector = icon, contentDescription = null, tint = Primary, modifier = Modifier.size(18.dp))
-            }
-            Spacer(Modifier.width(Spacing.md))
-        } else if (iconRes != null) {
-            Box(
-                modifier = Modifier
-                    .size(36.dp)
-                    .clip(LoveBrainShape.md)
-                    .background(SurfaceInset),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(painter = painterResource(iconRes), contentDescription = null, tint = Primary, modifier = Modifier.size(18.dp))
-            }
-            Spacer(Modifier.width(Spacing.md))
-        }
-        // 标题 + 说明
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                title,
-                style = AppTypography.titleMedium,
-                color = TextPrimary,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1
-            )
-            Text(
-                subtitle,
-                style = AppTypography.labelSmall,
-                color = TextHint,
-                maxLines = 1
-            )
-        }
-        // 状态槽：一颗点（颜色来自 LbRowState）+ 可选两个字的词。
-        // 词以前根本不在这里画——见函数 KDoc 那段。
-        if (dot != null) {
-            Box(
-                modifier = Modifier
-                    .size(6.dp)
-                    .clip(CircleShape)
-                    .background(dot.color)
-                    .testTag(LbRowTags.DOT)
-            )
-            Spacer(Modifier.width(Spacing.sm))
-        }
-        if (!statusText.isNullOrBlank()) {
-            Text(
-                statusText,
-                style = AppTypography.labelSmall,
-                color = TextHint
-            )
-            Spacer(Modifier.width(Spacing.sm))
-        }
-        // 尾部动作
-        if (trailingText != null && onTrailingClick != null) {
-            val (trailInteraction, trailScale) = rememberPressScale(0.94f, "trailing_$title")
-            Box(
-                modifier = Modifier
-                    // 32 → 48：§6.5 :531 要所有 clickable ≥48×48。这颗"管理"是整行之外
-                    // 唯一另一个入口，32dp 是 `HomeSettingRowStateTest` 那把尺量出来的。
-                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                    .graphicsLayer { scaleX = trailScale; scaleY = trailScale }
-                    .clip(LoveBrainShape.md)
-                    .clickable(
-                        interactionSource = trailInteraction,
-                        indication = null,
-                        onClick = onTrailingClick
-                    )
-                    .padding(horizontal = Spacing.md, vertical = Spacing.xs),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    trailingText,
-                    style = AppTypography.labelMedium,
-                    color = Primary,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-        }
-    }
-}
-
-/**
- * 使用概览——3 个指标横排。
- * 默认只展示：累计生成、累计花费、采用率。
- */
-@Composable
-fun UsageSummary(
-    totalGenerate: String,
-    totalCost: String,
-    adoptRate: String,
-    onClick: (() -> Unit)? = null
-) {
-    Card(
-        shape = LoveBrainShape.lg,
-        colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-        modifier = Modifier
-            .fillMaxWidth()
-            .let { mod -> if (onClick != null) mod.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onClick
-            ) else mod }
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Spacing.xl),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            UsageMetric(label = "累计生成", value = totalGenerate, modifier = Modifier.weight(1f))
-            UsageMetric(label = "累计花费", value = totalCost, modifier = Modifier.weight(1f))
-            UsageMetric(label = "采用率", value = adoptRate, modifier = Modifier.weight(1f), highlight = true)
-        }
-    }
-}
-
-@Composable
-private fun UsageMetric(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier,
-    highlight: Boolean = false
-) {
-    Column(
-        modifier = modifier.testTag(LbHomeTags.METRIC_CELL),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            value,
-            style = AppTypography.titleLarge,
-            color = if (highlight) Primary else TextPrimary,
-            fontWeight = if (highlight) FontWeight.SemiBold else FontWeight.Medium,
-            textAlign = TextAlign.Center
-        )
-        Spacer(Modifier.height(Spacing.xs))
-        Text(
-            label,
-            style = AppTypography.labelSmall,
-            color = TextHint,
-            textAlign = TextAlign.Center
-        )
     }
 }
