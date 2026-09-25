@@ -1,107 +1,43 @@
 package com.lovebrain.app.ui.common
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.LbScreenScaffold
-import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.LbTopBar
+import com.lovebrain.app.core.designsystem.LbTopBarLevel
 import com.lovebrain.app.core.designsystem.Spacing
-import com.lovebrain.app.core.designsystem.TextPrimary
-import com.lovebrain.app.core.designsystem.TextSecondary
 
 /**
- * 全 App 唯一页头规格：
- *   顶部留白 24dp → 页头行（返回钮 + 18sp 标题）高 48dp → 1dp 浅分割线 → 内容距分割线 16dp。
- *   所有二级页（知识库管理/编辑知识库/设置页/新建知识库问卷）走 [ScreenPage]，不再各写各的。
- */
-private object ScreenHeaderDimens {
-    const val HEADER_ROW_HEIGHT_DP = 48   // 页头行固定高
-    // 返回箭头热区：原来是 32dp，低于 §6.5 那把尺的 48dp 下限。
-    // 这条不是顺手美化——`KbListScreenStatesTest` 第一次把整屏可交互节点交给
-    // SemanticsProbe 量，就量到了它（知识库管理/编辑知识库/设置页/问卷四个二级页共用这个页头，
-    // 而此前没有任何用例量过 ScreenHeader，只量过 PanelHeader）。
-    // 行高本来就是 48dp，所以热区垫满行高不改版式；字形仍是 22dp。
-    const val BACK_HOTZONE_DP = 48        // 返回箭头热区
-    const val BACK_ICON_DP = 22           // 返回箭头字形
-    const val TITLE_GAP_DP = 2            // 返回箭头与标题间距
-    const val DIVIDER_HEIGHT_DP = 1       // 标题下浅分割线
-}
-
-/**
- * 页头行：返回箭头 + 标题（18sp，左对齐）+ 可选尾部操作；下接 1dp 浅分割线。
- * 不直接使用——由 [ScreenPage] 统一承载，保证全站规格一致。
+ * 页头——**现在只是 `LbTopBar` 的一个薄壳**。
+ *
+ * §6.1 :479 要的是"标题、副标题、返回等单一尾部动作"归一颗组件。这一族以前是
+ * 全 App 页头的第二种写法（自己量行高、自己挂返回钮、自己画分割线），
+ * 而它那颗返回钮的名字是**硬编码中文** `"返回"`：
+ * 英文环境下资源已经翻成 "Back"，它还是念中文——
+ * `PageHeaderConsistencyTest` 就是照着这条写的红（实到 `"返回"`，期望 `"Back"`）。
+ *
+ * 留着这个函数只为少改四个调用点；规格、名字来源、热区全在
+ * `core/designsystem/LbTopBar.kt`。以前记在这里的那条历史（返回钮热区从 32dp
+ * 抬到 48dp，是 `KbListScreenStatesTest` 第一次量 `ScreenHeader` 量到的）
+ * 跟着实现一起搬过去了，别在这儿再长出一份。
  */
 @Composable
 fun ScreenHeader(
     title: String,
     onBack: () -> Unit,
-    trailing: (@Composable RowScope.() -> Unit)? = null
+    trailing: (@Composable () -> Unit)? = null
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().height(ScreenHeaderDimens.HEADER_ROW_HEIGHT_DP.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(
-                        width = ScreenHeaderDimens.BACK_HOTZONE_DP.dp,
-                        height = ScreenHeaderDimens.BACK_HOTZONE_DP.dp
-                    )
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = onBack
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = "返回",
-                    tint = TextSecondary,
-                    modifier = Modifier.size(ScreenHeaderDimens.BACK_ICON_DP.dp)
-                )
-            }
-            Spacer(modifier = Modifier.width(ScreenHeaderDimens.TITLE_GAP_DP.dp))
-            Text(
-                title,
-                style = AppTypography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = TextPrimary,
-                modifier = Modifier.weight(1f)
-            )
-            trailing?.let { it() }
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(ScreenHeaderDimens.DIVIDER_HEIGHT_DP.dp)
-                .background(Border.copy(alpha = 0.6f))
-        )
-    }
+    LbTopBar(
+        title = title,
+        level = LbTopBarLevel.Page,
+        onBack = onBack,
+        showsDivider = true,
+        trailing = trailing
+    )
 }
-
 /**
  * 带页头的那一类目的外框。
  *
@@ -119,7 +55,7 @@ fun ScreenPage(
     title: String,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    trailing: (@Composable RowScope.() -> Unit)? = null,
+    trailing: (@Composable () -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     LbScreenScaffold(modifier = modifier) {

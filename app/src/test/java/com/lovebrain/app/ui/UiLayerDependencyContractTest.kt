@@ -377,6 +377,56 @@ class UiLayerDependencyContractTest {
     }
 
     /**
+     * §6.1 :479：页头只有一个所有者。
+     *
+     * 判据取"谁自己画返回那颗"这个具体形状：箭头字形 `"←"` 或 `KeyboardArrowLeft`。
+     * 为什么不是数"有几个 Row"：`Row` 到处合法；而"自己拼一颗返回"必然要画那个字形，
+     * 抓得住。与 §36 那把"整屏底色只有一个所有者"同族，也是被同一条理由逼出来的——
+     * `PageHeaderConsistencyTest` 量到四式并存时，读屏名字有两派是**空串**。
+     *
+     * 本机实扫（去注释后）：所有者 1 处；**登记着的欠账 1 处**
+     * （`ui/feedback/FeedbackCasesScreen.kt`）。那一页没顺手一起搬的三个理由写在这儿：
+     * 它的栏还带一段"(N条)"计数与一条 `SurfaceCard` 底带，形状比"标题 + 一个尾部动作"多；
+     * 而且这一页要 `rememberLauncherForActivityResult`，**JVM 上挂不起来**——
+     * 搬一页却量不到搬的效果，等于自签。所以留在表里，判 `==`：
+     * 还完之后这一行必须删，不许留着一条已不成立的豁免当"管住了"（同 §36 那条规矩）。
+     */
+    @Test
+    fun `the page header has exactly one owner`() {
+        val owner = "core/designsystem/LbTopBar.kt"
+        val registeredDebt = mapOf("ui/feedback/FeedbackCasesScreen.kt" to 1)
+        val glyph = Regex(""""←"""")
+        val icon = Regex("\\bKeyboardArrowLeft\\b")
+
+        val sources = kotlinFiles(appRoot).map {
+            it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
+        }
+        val drawers = sources.filter { (_, code) -> glyph.containsMatchIn(code) || icon.containsMatchIn(code) }
+            .map { it.first }
+
+        val strays = drawers.filter { it != owner && !registeredDebt.containsKey(it) }
+        assertTrue(
+            "新的页头别自己拼返回那颗，走 LbTopBar（它把读屏名字挂在资源上）；违规：$strays",
+            strays.isEmpty()
+        )
+        assertTrue(
+            "$owner 必须自己用那个字形——实到 ${drawers.count { it == owner }}，" +
+                "为 0 说明这把尺已经扫不到任何东西了（恒绿假闸）",
+            drawers.count { it == owner } == 1
+        )
+        registeredDebt.forEach { (path, want) ->
+            val code = sources.firstOrNull { it.first == path }?.second
+                ?: error("$path 的欠账登记已不成立——搬完了把这一行从表里删掉")
+            val got = glyph.findAll(code).count() + icon.findAll(code).count()
+            assertTrue(
+                "$path 实到 $got 处，登记的是 $want。多了是新债；零了是还完了——" +
+                    "那就把这一行从表里删掉",
+                got == want
+            )
+        }
+    }
+
+    /**
      * 声明的形状：`fun X(`、`typealias X =`、`class|enum class|interface X {|<|(:`。
      *
      * 三支都得在：`typealias` 后面跟的是 `=` 不是 `(`（第一版就漏在这一支上，

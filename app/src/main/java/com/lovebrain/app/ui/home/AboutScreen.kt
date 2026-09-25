@@ -2,7 +2,6 @@ package com.lovebrain.app.ui.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -20,22 +17,20 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.BuildConfig
-import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.LbTopBar
+import com.lovebrain.app.core.designsystem.LbTopBarLevel
 import com.lovebrain.app.core.designsystem.LoveBrainShape
-import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.TextHint
@@ -57,34 +52,14 @@ fun AboutScreen(
             .padding(horizontal = Spacing.xxxl),
         verticalArrangement = Arrangement.spacedBy(Spacing.lg)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = Spacing.lg),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val (backInteraction, backScale) = rememberPressScale(0.94f, "aboutBack")
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .graphicsLayer { scaleX = backScale; scaleY = backScale }
-                    .clip(LoveBrainShape.md)
-                    .clickable(
-                        interactionSource = backInteraction,
-                        indication = null,
-                        onClick = onBack
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    "←",
-                    style = AppTypography.titleMedium,
-                    color = Primary
-                )
-            }
-            Spacer(Modifier.width(Spacing.sm))
-            Text("关于", style = AppTypography.titleLarge, color = TextPrimary, fontWeight = FontWeight.SemiBold)
-        }
+        // §6.1 :479：页头不再自己拼。原先这里是 `Row + Box(48).clickable + Text("←") + Text("关于")`，
+        // 那颗返回钮的 contentDescription 实测是**空串**——树里它的名字就是"←"那个箭头字形，
+        // 读屏念出什么由不得我们。归一之后名字走 R.string.common_back（中英各一份）。
+        LbTopBar(
+            title = "关于",
+            level = LbTopBarLevel.Page,
+            onBack = onBack
+        )
 
         Card(
             shape = LoveBrainShape.lg,

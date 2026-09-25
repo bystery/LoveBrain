@@ -39,17 +39,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
@@ -65,11 +64,12 @@ import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
-import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.Error
+import com.lovebrain.app.core.designsystem.LbTopBar
+import com.lovebrain.app.core.designsystem.LbTopBarLevel
 import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Neutral300
 import com.lovebrain.app.core.designsystem.Primary
@@ -120,39 +120,15 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
             .verticalScroll(rememberScrollState())
             .padding(horizontal = Spacing.xxxl)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = Spacing.lg),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val (backInteraction, backScale) = rememberPressScale(0.94f, "providerBack")
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .graphicsLayer { scaleX = backScale; scaleY = backScale }
-                    .clip(LoveBrainShape.md)
-                    .clickable(
-                        interactionSource = backInteraction,
-                        indication = null,
-                        onClick = onBack
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    "←",
-                    style = AppTypography.titleMedium,
-                    color = Primary
-                )
-            }
-            Spacer(Modifier.width(Spacing.sm))
-            Text(
-                "模型供应商",
-                style = AppTypography.titleLarge,
-                color = TextPrimary,
-                fontWeight = FontWeight.SemiBold
-            )
-        }
+        // §6.1 :479：同一族手拼页头，那颗返回钮的 contentDescription 实测是空串。
+        // 注意这一页的**水平边距仍是自己写的**（上面那个 `padding(horizontal = xxxl)`）：
+        // 它是 SetupRoot 的子页，背景与 insets 由宿主给，所以"整屏底色"那把闸看不见它，
+        // 而量边距那把尺今天达标只是因为它抄的数恰好等于 token（探针 S5 证过这一点）。
+        LbTopBar(
+            title = "模型供应商",
+            level = LbTopBarLevel.Page,
+            onBack = onBack
+        )
 
         Card(
             shape = LoveBrainShape.lg,

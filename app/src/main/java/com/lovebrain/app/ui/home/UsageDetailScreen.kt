@@ -1,32 +1,22 @@
 package com.lovebrain.app.ui.home
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.LbTopBar
+import com.lovebrain.app.core.designsystem.LbTopBarLevel
 import com.lovebrain.app.core.designsystem.LoveBrainShape
-import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.TextPrimary
@@ -49,34 +39,12 @@ fun UsageDetailScreen(
             .padding(horizontal = Spacing.xxxl),
         verticalArrangement = Arrangement.spacedBy(Spacing.lg)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = Spacing.lg),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val (backInteraction, backScale) = rememberPressScale(0.94f, "usageBack")
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .graphicsLayer { scaleX = backScale; scaleY = backScale }
-                    .clip(LoveBrainShape.md)
-                    .clickable(
-                        interactionSource = backInteraction,
-                        indication = null,
-                        onClick = onBack
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    "←",
-                    style = AppTypography.titleMedium,
-                    color = Primary
-                )
-            }
-            Spacer(Modifier.width(Spacing.sm))
-            Text("使用概览", style = AppTypography.titleLarge, color = TextPrimary, fontWeight = FontWeight.SemiBold)
-        }
+        // §6.1 :479：与"关于"页同一族手拼页头，那颗返回钮的 contentDescription 实测是空串。
+        LbTopBar(
+            title = "使用概览",
+            level = LbTopBarLevel.Page,
+            onBack = onBack
+        )
 
         Card(
             shape = LoveBrainShape.lg,

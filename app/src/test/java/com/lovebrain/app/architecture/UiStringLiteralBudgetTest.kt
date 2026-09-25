@@ -198,6 +198,21 @@ class UiStringLiteralBudgetTest {
      *   `Text(` 与 `Lb*(` 两个锚点从来都看不见它，所以它既没进 TEXT 也没进 COMPONENT，
      *   这一格前后都一样——**不是又漏了，是它本来就在这把尺的射程之外**。
      *
+     * - §6.1 页头归一（四式收成一颗 `LbTopBar`）之后：
+     *   **TEXT 194 → 192、DESC 12 → 11、COMPONENT 77 → 80，四栏合计仍 283**。
+     *   这一笔**不是三栏各自都对得上**，要说清：
+     *   ① DESC 那 −1 是**真还掉的**——`ScreenHeader` 里 `contentDescription = "返回"`
+     *     那串硬编码中文进了 `R.string.common_back`（zh + en）。它是本轮少数几条
+     *     "改完确实少了一条中文字面量"的，英文环境从此念 "Back" 不念中文。
+     *   ② 三页标题（「关于」「使用概览」「模型供应商」）从 `Text("…")` 搬进
+     *     `LbTopBar(title = "…")`，所以 COMPONENT +3；可 TEXT 只降了 2。
+     *     ⇒ **有一条我没能归给它原来的那一栏**：按锚点配对，那一条在改之前
+     *     既不在 TEXT 也不在 COMPONENT（改之后才落进 `Lb*(` 的实参切片里）。
+     *     我没有现扫证据能指认是哪一条，所以**只写"有一条没归上"**，不编一个解释。
+     *     总数仍然 283 不动，是因为 ① 少的那一条正好抵掉它。
+     *   ③ 结论与前两格同一句：换尺让数字变大不是债涨了；而"合计没动"这件事
+     *     每次都要这样逐栏对上才许写，对不上就写下对不上在哪一栏。
+     *
      * 注意上面那串 254 / 250 / 247 是**历史**，不是现在值：现在值只有一处真源，
      * 就是下面 `budget` 里那几个数（`the budget still reflects reality` 那格保证两边不一致时报红）。
      * 所以别往这段说明里续抄数字——历史可以记，读数一律看常量。
@@ -210,10 +225,10 @@ class UiStringLiteralBudgetTest {
      * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 194,
-        Kind.DESC to 12,
+        Kind.TEXT to 192,
+        Kind.DESC to 11,
         Kind.STATE to 0,
-        Kind.COMPONENT to 77
+        Kind.COMPONENT to 80
     )
 
     private fun countIn(root: File, kind: Kind): Int {
