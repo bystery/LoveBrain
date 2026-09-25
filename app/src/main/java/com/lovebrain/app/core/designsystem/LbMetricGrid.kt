@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +40,7 @@ fun LbMetricGrid(
             .let { mod -> if (onClick != null) mod.clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
+                role = Role.Button,   // §6.5 :532；见 `DesignSystemRolesTest`
                 onClick = onClick
             ) else mod }
     ) {

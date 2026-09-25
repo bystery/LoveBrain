@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -59,6 +60,7 @@ fun LbSettingRow(
         .let { if (onClick != null) it.clickable(
             interactionSource = remember { MutableInteractionSource() },
             indication = null,
+            role = Role.Button,   // §6.5 :532；见 `DesignSystemRolesTest`
             onClick = onClick
         ) else it }
 
@@ -141,6 +143,7 @@ fun LbSettingRow(
                     .clickable(
                         interactionSource = trailInteraction,
                         indication = null,
+                        role = Role.Button,   // §6.5 :532
                         onClick = onTrailingClick
                     )
                     .padding(horizontal = Spacing.md, vertical = Spacing.xs),

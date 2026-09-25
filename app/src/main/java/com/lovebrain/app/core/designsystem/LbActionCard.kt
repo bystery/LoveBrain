@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag
@@ -49,6 +50,9 @@ fun LbActionCard(
             .clickable(
                 interactionSource = interaction,
                 indication = null,
+                // §6.5 :532——整张卡就是一处操作，读屏得先说出"按钮"。
+                // 手画的 Box/Card + clickable 不会像 Material Button 那样自带角色。
+                role = Role.Button,
                 onClick = onClick
             )
             .testTag(LbTags.ACTION_CARD)

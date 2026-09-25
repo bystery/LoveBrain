@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -145,6 +146,7 @@ private fun BackControl(onBack: () -> Unit) {
             .clickable(
                 interactionSource = interaction,
                 indication = null,
+                role = Role.Button,   // §6.5 :532；见 `DesignSystemRolesTest`
                 onClick = onBack
             ),
         contentAlignment = Alignment.Center

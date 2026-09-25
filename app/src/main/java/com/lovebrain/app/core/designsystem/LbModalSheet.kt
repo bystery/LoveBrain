@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -166,6 +167,7 @@ private fun LbModalSheetActionCell(action: LbDialogAction) {
             .clickable(
                 interactionSource = interaction,
                 indication = null,
+                role = Role.Button,   // §6.5 :532；见 `DesignSystemRolesTest`
                 enabled = action.enabled
             ) {
                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
