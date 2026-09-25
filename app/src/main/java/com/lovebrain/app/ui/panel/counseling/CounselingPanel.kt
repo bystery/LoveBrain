@@ -310,19 +310,14 @@ fun CounselingPanel(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = err, color = Error, style = AppTypography.bodySmall)
                         Spacer(Modifier.height(Spacing.sm))
-                        // 点击重试补按压反馈（复用标准件 0.96 scale + 120ms）
-                        val (retryInteraction, retryScale) = rememberPressScale(0.96f, "counselRetryScale")
-                        Text(
-                            text = "点击重试",
-                            color = PrimaryDark,
-                            style = AppTypography.bodySmall,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier
-                                .graphicsLayer { scaleX = retryScale; scaleY = retryScale }
-                                .clickable(interactionSource = retryInteraction, indication = null, onClick = {
-                                    viewModel.generateCounseling(draft.trim())
-                                })
-                                .padding(horizontal = Spacing.lg, vertical = Spacing.sm) // 热区外扩至 ≥24dp（文字高约 16dp + 垂直内边距）
+                        // 与结果区那颗是**同一句话、同一个 26dp 热区**（本机两档各量一次：
+                        // 72x26dp、role=无）。同一条注释也一模一样地写着"≥24dp"——
+                        // 两页各抄一遍，就各自都以为 24dp 是标准。归 `LbTextAction` 之后只剩一处。
+                        LbTextAction(
+                            label = stringResource(R.string.panel_retry_tap),
+                            onClick = {
+                                viewModel.generateCounseling(draft.trim())
+                            }
                         )
                     }
                 }

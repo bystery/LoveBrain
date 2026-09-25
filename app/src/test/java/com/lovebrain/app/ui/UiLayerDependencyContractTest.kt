@@ -476,11 +476,13 @@ class UiLayerDependencyContractTest {
             "panel/reply/DislikeReasonPanel.kt" to 2,
             "panel/reply/MessageList.kt" to 2,
             "panel/reply/ReplyInput.kt" to 2,
-            "panel/reply/ResultArea.kt" to 6,
+            "panel/reply/ResultArea.kt" to 5,
             "panel/reply/SchemeCard.kt" to 1
         )
         val total = perFileBudget.values.sum()
-        assertTrue("登记的就是本机实扫的 45 处，表本身错了要先修表", total == 45)
+        // 45 → **44**：`ResultArea` 未配置档那颗「去设置」归 `LbPrimaryButton`
+        // （实量 68x34dp、`role=无`，见账本 §51），那一处自画 `background(Primary)` 当场少一条。
+        assertTrue("登记的就是本机实扫的 44 处，表本身错了要先修表", total == 44)
 
         val uiRoot = dir("ui")
         val scanned = kotlinFiles(uiRoot).map {

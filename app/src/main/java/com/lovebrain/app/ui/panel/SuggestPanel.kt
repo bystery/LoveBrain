@@ -215,7 +215,7 @@ fun SuggestPanel(
                             Spacer(Modifier.height(Spacing.md))
                             val (errRetryInteraction, errRetryScale) = rememberPressScale(0.96f, "suggestErrorRetryScale")
                             Text(
-                                "点击重试",
+                                stringResource(R.string.panel_retry_tap),
                                 color = Color.White,
                                 style = AppTypography.labelLarge,
                                 fontWeight = FontWeight.SemiBold,

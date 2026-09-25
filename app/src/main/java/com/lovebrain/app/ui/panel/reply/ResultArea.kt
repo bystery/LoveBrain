@@ -46,19 +46,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lovebrain.app.model.GenerateResult
-import com.lovebrain.app.model.ReplyDirection
 import com.lovebrain.app.model.RewriteCommand
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.model.SchemeIdentity
-import com.lovebrain.app.model.SchemeSource
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
-import com.lovebrain.app.util.L
 import kotlinx.coroutines.delay
 
 /** 结果区内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
@@ -294,17 +291,14 @@ fun ResultArea(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = result.message, color = Error, style = AppTypography.bodySmall)
                     Spacer(Modifier.height(Spacing.md))
-                    // #4：重试文本补标准件按压反馈（仿 CounselingPanel 错误分支先例）
-                    val (retryInteraction, retryScale) = rememberPressScale(0.96f, "retryScale")
-                    Text(
-                        text = "点击重试",
-                        color = PrimaryDark,
-                        style = AppTypography.bodySmall,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier
-                            .graphicsLayer { scaleX = retryScale; scaleY = retryScale }
-                            .clickable(interactionSource = retryInteraction, indication = null, onClick = onRetry)
-                            .padding(horizontal = Spacing.lg, vertical = Spacing.sm) // 热区外扩至 ≥24dp（文字高约 16dp + 垂直内边距）
+                    // 语义树实量 **72x26dp、role=无**：这一档是错误态，屏幕上唯一能自救的东西
+                    // 就是这颗重试，而它只有 26dp 高——旁边那行注释原来写的是
+                    // "热区外扩至 ≥24dp"，**把 24dp 当成达标**，:596 要的是 48。
+                    // 归 `LbTextAction`（设计系统里"文字动作"唯一一处）：热区见方、`Role.Button`、
+                    // 按压缩放都不用再各页自己抄一遍；标签走资源（本机 en 解析成 Tap to retry）。
+                    LbTextAction(
+                        label = stringResource(com.lovebrain.app.R.string.panel_retry_tap),
+                        onClick = onRetry
                     )
                 }
             }
@@ -330,18 +324,13 @@ fun ResultArea(
                         fontWeight = FontWeight.Medium
                     )
                     Spacer(Modifier.height(Spacing.md))
-                    val (settingsInteraction, settingsScale) = rememberPressScale(0.96f, "openSettingsScale")
-                    Text(
-                        text = "去设置",
-                        color = Color.White,
-                        style = AppTypography.labelLarge,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier
-                            .clip(LoveBrainShape.md)
-                            .background(Primary)
-                            .graphicsLayer { scaleX = settingsScale; scaleY = settingsScale }
-                            .clickable(interactionSource = settingsInteraction, indication = null, onClick = { onOpenSettings() })
-                            .padding(horizontal = Spacing.xl, vertical = Spacing.md)
+                    // 实量 **68x34dp、role=无**：同一族形状（自画 `Text + .background(Primary)`）。
+                    // 这一档只有这一颗动作 ⇒ 它就是这一态的唯一主动作（§6.1 :479），
+                    // 归 `LbPrimaryButton` 之后顺带第一次能表达禁用/进行中。
+                    LbPrimaryButton(
+                        state = LbButtonState.Idle,
+                        label = stringResource(com.lovebrain.app.R.string.provider_open_settings),
+                        onClick = { onOpenSettings() }
                     )
                 }
             }
@@ -914,9 +903,13 @@ private fun ResultUtilityTrigger(
             modifier = Modifier
                 .size(ResultDimens.UTILITY_HITBOX_DP.dp)
                 .semantics { contentDescription = menuDescription }
+                // :532 那一栏：点开下拉菜单的那颗要报 `DropdownList`，
+                // 不是"没有角色"。实量 48x48dp **尺寸早就够**，缺的只是角色——
+                // 上一格量这一屏时只判了热区与名字，没判角色，所以它一直漏着（坑表 96）。
                 .clickable(
                     interactionSource = triggerInteraction,
                     indication = null,
+                    role = Role.DropdownList,
                     onClick = { menuOpen = !menuOpen }
                 ),
             contentAlignment = Alignment.Center
