@@ -224,18 +224,74 @@ class UiStringLiteralBudgetTest {
      *
      * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
      */
+    // ⚠ 这四个数是**剥掉注释之后**量的（`maskComments`）。没剥之前是 191 / 80，
+    // 多出来的 3 条 TEXT、2 条 COMPONENT 全在注释里——其中一条就是本格新写的
+    // `MiniSwitchRow` KDoc 里那句「原来这里画的是 Text("思考模式")」，
+    // 它正好抵掉本格真还掉的那一处搬家。按形状认的尺不剥注释，就会这样自己吃自己。
     private val budget = mapOf(
-        Kind.TEXT to 191,
+        Kind.TEXT to 188,
         Kind.DESC to 11,
         Kind.STATE to 0,
-        Kind.COMPONENT to 80
+        Kind.COMPONENT to 78
     )
+
+    /**
+     * 把注释**按字符换成空格**（保住偏移量，后面的区间去重还要用原坐标）。
+     *
+     * ⚠ 这一层是这一格补上的，起因很具体：我把 `Text("思考模式")` 从调用点搬进资源之后,
+     * 又在 `MiniSwitchRow` 的 KDoc 里写了「原来这两样散在调用点：`Text("思考模式")` 画在左边」,
+     * 于是 TEXT **一格没动**——尺把注释里那串当成了一处真文案，正好抵掉那笔真还债。
+     * 四个锚点（`Text(`、`contentDescription =`、`stateDescription =`、`Lb…(`）
+     * 全都按源码语法位置匹配，**注释里出现同样的形状就会命中**，
+     * 而 KDoc 恰恰最容易写"原来这里长什么样"。
+     * ⇒ 只要尺是按形状认的，注释就必须先剥；不剥的话，一次搬家可以被自己写的说明书抵消掉。
+     */
+    private fun maskComments(src: String): String {
+        val out = src.toCharArray()
+        var i = 0
+        val n = out.size
+        while (i < n) {
+            val c = out[i]
+            if (c == '"') {
+                // 字符串字面量整体跳过（里面出现的 // 不是注释）
+                i++
+                while (i < n && out[i] != '"') {
+                    if (out[i] == '\\') i++
+                    i++
+                }
+                i++
+                continue
+            }
+            if (c == '/' && i + 1 < n && out[i + 1] == '/') {
+                while (i < n && out[i] != '\n') { out[i] = ' '; i++ }
+                continue
+            }
+            if (c == '/' && i + 1 < n && out[i + 1] == '*') {
+                var depth = 1
+                out[i] = ' '; out[i + 1] = ' '
+                i += 2
+                while (i < n && depth > 0) {
+                    if (i + 1 < n && out[i] == '/' && out[i + 1] == '*') {
+                        depth++; out[i] = ' '; out[i + 1] = ' '; i += 2; continue
+                    }
+                    if (i + 1 < n && out[i] == '*' && out[i + 1] == '/') {
+                        depth--; out[i] = ' '; out[i + 1] = ' '; i += 2; continue
+                    }
+                    if (out[i] != '\n') out[i] = ' '
+                    i++
+                }
+                continue
+            }
+            i++
+        }
+        return String(out)
+    }
 
     private fun countIn(root: File, kind: Kind): Int {
         if (!root.isDirectory) return -1
         return root.walkTopDown()
             .filter { it.isFile && it.extension == "kt" }
-            .sumOf { f -> countHanLiterals(f.readText(Charsets.UTF_8), kind) }
+            .sumOf { f -> countHanLiterals(maskComments(f.readText(Charsets.UTF_8)), kind) }
     }
 
     private fun mainRoot(): File {
@@ -306,6 +362,33 @@ class UiStringLiteralBudgetTest {
             )
             assertEquals("两个中文字面量都应被数到", 2, countIn(tmp, Kind.TEXT))
             assertEquals("走 stringResource 的不许被数进来", 0, countIn(tmp, Kind.DESC))
+
+            // ⚠ 注释里出现锚点形状，**一条都不许数**。
+            // 这一格是本格（搬「思考模式」那次）补的：我把 `Text("思考模式")` 搬进资源,
+            // 然后在 KDoc 里写"原来这里画的是 `Text("思考模式")`"——TEXT 一格没动，
+            // 那笔真还债被我自己写的说明书抵消了。按形状认的尺必须先剥注释。
+            File(tmp, "D.kt").writeText(
+                """
+                package x
+                // 原来这里画的是 Text("注释里的中文")，现在搬进资源了
+                @Composable fun D() {
+                    /** 见 Text("第二处注释中文") 那条 */
+                    Text(stringResource(R.string.panel_retry))
+                }
+                """.trimIndent(), Charsets.UTF_8
+            )
+            val onlyComments = java.nio.file.Files.createTempDirectory("literal_cmt").toFile()
+            File(tmp, "D.kt").copyTo(File(onlyComments, "D.kt"), overwrite = true)
+            assertEquals(
+                "注释里的 Text(…) 形状被当成了用户可见文案 ⇒ 一次真还债可以被自己的 KDoc 抵消掉",
+                0, countIn(onlyComments, Kind.TEXT)
+            )
+            // 同一份文本不剥注释时必须数到 2 —— 证明上面那条 0 是"剥掉了"，
+            // 不是"锚点在这份输入上压根不响"（恒绿的另一种形状）。
+            assertEquals(
+                "锚点本身对这两串是响的：不剥注释时应数到 2",
+                2, countHanLiterals(File(onlyComments, "D.kt").readText(Charsets.UTF_8), Kind.TEXT)
+            )
 
             File(tmp, "C.kt").writeText(
                 """
