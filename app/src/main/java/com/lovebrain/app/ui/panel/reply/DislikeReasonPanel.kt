@@ -13,6 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.lovebrain.app.R
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -182,15 +186,20 @@ fun DislikeReasonPanel(
         Spacer(Modifier.height(Spacing.sm))
 
         // 用户补充说明（可选）
+        // §6.5 第②栏：标题这行字是**兄弟节点**，不进可编辑节点的语义 → 读屏只念"编辑框"。
+        // 同一条串挂到节点自己身上（两处共用同一个资源，不各写一遍）
+        val noteLabel = stringResource(R.string.feedback_note_label)
         Text(
-            text = "补充说明（可选）",
+            text = noteLabel,
             style = AppTypography.labelSmall,
             color = TextSecondary
         )
         OutlinedTextField(
             value = userNote,
             onValueChange = { userNote = it },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics { contentDescription = noteLabel },
             placeholder = {
                 Text("如：把我想约会当成她已经答应了", style = AppTypography.labelSmall, color = TextHint)
             },
@@ -203,15 +212,18 @@ fun DislikeReasonPanel(
         Spacer(Modifier.height(Spacing.xs))
 
         // 用户提供的更好版本（可选）
+        val betterLabel = stringResource(R.string.feedback_better_label)
         Text(
-            text = "你期望怎么回？（可选）",
+            text = betterLabel,
             style = AppTypography.labelSmall,
             color = TextSecondary
         )
         OutlinedTextField(
             value = betterVersion,
             onValueChange = { betterVersion = it },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics { contentDescription = betterLabel },
             placeholder = {
                 Text("写你心目中更好的版本", style = AppTypography.labelSmall, color = TextHint)
             },

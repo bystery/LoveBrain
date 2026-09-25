@@ -166,6 +166,11 @@ class UiStringLiteralBudgetTest {
      *   ② 1 条**真的还掉了**：那颗输入框的提示语进了 `R.string.panel_record_sent_hint`（zh+en）。
      *   起因是守卫量到它"既没文案也没 contentDescription"，而修读屏名要让同一句话用两次——
      *   源码里写两遍是新的维护债，进资源才是收口。合计 275 → 274，减的就是这一条。
+     * - §6.5 输入框读屏名字那一格（§31）再搬掉 **3 条**：TEXT 205 → **202**。
+     *   这 3 条是屏幕上真实存在的说明文字（「补充说明（可选）」「你期望怎么回？（可选）」
+     *   「输入正确内容（可选，留空仅停用）」）——为了让学生输入框共用同一句话才进 strings.xml
+     *   （zh + en 各一份）⇒ 真还掉的债，不是换形状躲开锚点。同格新增的另外 2 条资源
+     *   （`kb_edit_editor_hint`、`scheme_custom_hint`）只给读屏用、屏幕上不画，所以不减 TEXT。
      * - §6.1 把五颗首页组件搬进 core/designsystem 时，TEXT 掉到 **246**——
      *   **这一条不是还债**：掉的那处是「帮你更自然地表达」，它只是从 `Text("…")`
      *   变成了 `LbTopBar(subtitle = "…")`，字符串一个字没动，是锚点 `Text(` 看不见它了。
@@ -184,7 +189,7 @@ class UiStringLiteralBudgetTest {
      * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 205,
+        Kind.TEXT to 202,
         Kind.DESC to 12,
         Kind.STATE to 0,
         Kind.COMPONENT to 69

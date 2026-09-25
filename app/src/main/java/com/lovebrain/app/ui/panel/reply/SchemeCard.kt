@@ -17,6 +17,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -489,6 +492,8 @@ fun SchemeCard(
                     // 调整态——替换内容：显示改写选项 + 自定义输入 + 取消
                     // 不显示方向 chips（方向属于 Result-level）
                     var customText by remember { mutableStateOf("") }
+                    // semantics 的 lambda 不是 @Composable：读屏名字在外面取好再闭包进去
+                    val customHint = stringResource(R.string.scheme_custom_hint)
                     var showCustomInput by remember { mutableStateOf(false) }
                     Column(
                         modifier = Modifier
@@ -562,10 +567,15 @@ fun SchemeCard(
                             }
                         } else {
                             // 自定义输入框
+                            // §6.5 第②栏：placeholder 是"举个例子"，不是这格**是什么**；
+                            // 而且用户敲进第一个字之后连举例那行都不在树上了。
+                            // 所以名字用"自定义改写要求"这句（只给读屏用，屏幕上不新增字）
                             androidx.compose.material3.OutlinedTextField(
                                 value = customText,
                                 onValueChange = { customText = it },
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .semantics { contentDescription = customHint },
                                 placeholder = {
                                     Text(
                                         "如：保留第一句，第二句不要",

@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
+import com.lovebrain.app.R
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -1171,8 +1172,11 @@ private fun MemoryRefItem(
             LbModalSheet(onDismissRequest = { showWrongDialog = false }) {
                 LbModalSheetTitle("标记为错误")
                 Spacer(Modifier.height(Spacing.sm))
+                // §6.5 第②栏：这句既是屏幕上那行说明、也是输入框自己的读屏名字——
+                // 用同一条资源，别两处各写一遍（写两遍就是下一次改漏一处的根源）
+                val wrongHint = stringResource(R.string.memory_wrong_input_hint)
                 Text(
-                    "输入正确内容（可选，留空仅停用）",
+                    text = wrongHint,
                     style = AppTypography.labelSmall,
                     color = TextSecondary
                 )
@@ -1180,7 +1184,9 @@ private fun MemoryRefItem(
                 OutlinedTextField(
                     value = wrongText,
                     onValueChange = { wrongText = it },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .semantics { contentDescription = wrongHint },
                     placeholder = {
                         Text("输入正确的内容", style = AppTypography.labelSmall, color = TextHint)
                     },

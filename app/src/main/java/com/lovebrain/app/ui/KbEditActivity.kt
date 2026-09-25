@@ -44,6 +44,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.lovebrain.app.R
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
@@ -167,6 +171,8 @@ private fun KbEditScreen(
 
     var selectedPath by remember { mutableStateOf(initialFile.path) }
     val selected = files.first { it.path == selectedPath }
+    // 读屏名字：semantics 的 lambda 不是 @Composable，所以这句在外面取好再闭包进去
+    val editorName = stringResource(R.string.kb_edit_editor_hint, selected.label)
 
     var drafts by remember { mutableStateOf(emptyMap<String, String>()) }
     var saved by remember { mutableStateOf(emptyMap<String, String>()) }
@@ -412,7 +418,14 @@ private fun KbEditScreen(
                             editorStates[selectedPath] = v
                             drafts = drafts + (selectedPath to v.text)
                         },
-                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        // §6.5 第②栏：这颗是全仓最大的一棵输入框（整篇正文编辑器），
+                        // 但它以前**既没有文案也没有 contentDescription**——读屏只念"编辑框"，
+                        // 用户听不出自己在编辑哪一格。名字取"编辑《当前分区》正文"，
+                        // 分区名就是屏幕上那行标题，不另造一套说法。
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .semantics { contentDescription = editorName },
                         textStyle = AppTypography.bodyLarge.copy(color = TextPrimary),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = PrimarySubtle,
