@@ -3533,3 +3533,114 @@ P5/P6 是**故意分开发**的：同一个回归要让"性质尺"和"实测尺"
 - 截图基线（§6.5 :538）仍故意没接 ⇒ "卡片宽 +6dp 会不会让某档挤"没有画面证据，
   只有 4 个宽度档 × 3 个字级的**几何**断言（本格那三格跑在 600dp 一档，没跑全矩阵）。
 - 设备侧照旧未跑（本机无 system image）。
+---
+
+# 追加三十一：§6.1 :490 的第三个锚点——首页那颗主按钮，与设计系统自己缺的角色（提交 `4ee1514`）
+
+## 41.1 一笔"不算缺陷"的账，为什么仍然要做
+
+上一格扫描照出来：:490 那份清单锚在 Modifier 链的 `.background(品牌色)` 上，
+而 Material 组件涂同一层底走的是**具名实参**——
+`ButtonDefaults.buttonColors(containerColor = Primary)`。本机实扫 `Button(` 7 处、
+涂品牌色 5 处，**一处都没进过清单**，而其中最要名的那处就是首页那颗唯一主按钮
+（`HomeComponents:227`）。
+
+先量再判（`HomeHeroActionTest` 第一版跑的就是搬家**之前**的树）：
+
+```
+「Open advisor」 role=Button selected=null state=null 尺寸 119x48dp @(121,82)
+```
+
+⇒ **它几何一直是合格的**。所以这一笔不能写成"修了缺陷"，它的理由只有语义归属：
+:479 把"页面唯一主动作"交给 `LbPrimaryButton`，:490 禁的是"同一语义在某一页长成另一样"。
+两处差别（`labelLarge`+SemiBold vs `titleMedium`+Bold、无阴影、无触感、没有四态）
+**不表达任何不同语义**。搬完，首页第一次能画 `Disabled` / `Loading` 那两态。
+
+⚠ 这类"量出来没坏所以不做"的判断最容易滑成两种反面错误：
+一是拿它当"清单已经完整"的证据（其实这一族根本不在射程里），
+二是为了有战果可报而把搬家写成修复。这里两样都不干。
+
+## 41.2 真量到的缺陷在设计系统那一侧：`LbPrimaryButton` 四态都没有角色
+
+搬完当场红：
+
+```
+主动作要有按钮角色：「Open advisor」 role=无 尺寸 87x48dp   expected:<[Button]> but was:<[无]>
+```
+
+`LbPrimaryButton` 是手画 `Box + clickable`，Material 的 `Button` 自带 role ——
+**"改用统一组件"这一步自己引入了一次 §6.5 :532 回归**。四态（Idle/Loading/Stop/Disabled）
+全都没声明。修法：四颗 `clickable` 各补 `role = Role.Button`（禁用态也要报，
+读屏用户得知道"这里是一颗按钮，只是现在不能按"，而不是听到一段没名字的文字），
+并把角色断言塞进 `LbPrimaryButtonStateTest` 那格**逐态**循环里。
+
+⇒ 为什么这条只能靠量：Material 那侧的角色**不在源码里**，
+读代码比对两边只会得出"我们那颗少了个参数、Material 那颗也少了"这种错结论。
+搬一次组件，就是把两边的**语义性质**（不只是尺寸）对表一次。
+
+一处**有意的视觉变化**记账：宽度 **119 → 87dp**（Material Button 有自带最小宽与内边距，
+我们的组件是内容宽）。这正是要的一致性，但只在 360dp 一档量过——
+更窄档会不会挤、变窄之后是否更好点，**没有画面证据**（截图基线仍未接）。
+
+## 41.3 第三把尺落闸，和"三个数别合成一个"
+
+新闸 `brand tones painted through containerColor do not grow`：判据
+`containerColor\s*=\s*[^,)]*\b(?:Primary|PrimaryDark|PrimaryLight|PrimarySubtle)\b`
+（剥注释后按文件计，只许往下 `<=`；表里的行必须还在盘上；扫到 0 判锚点坏）。
+本机实扫 **5 处 / 4 文件**：`HomeComponents` 1（状态卡那张 `Card` 的品牌浅底，
+不是按钮）、`ProviderSection` 1、`KnowledgeBaseActivity` 2、`KbEditActivity` 1。
+
+:490 的清单从此有三个数，各扫各的：
+
+| 尺 | 判据 | 实扫 |
+|---|---|---|
+| 表面色 | 任意 `.background(品牌色)`，不管可不可点 | 25 处 / 12 文件 |
+| 能按下去的自造按钮 | 同一条 Modifier 链上有 `.clickable` | 19 处 / 8 文件 |
+| 换一扇门涂色 | Material 组件的 `containerColor = 品牌色` | 5 处 / 4 文件 |
+
+⇒ 与坑表 ⑫ 同一族的**第三次**复发。任何一次"把 :490 收口了"的说法都必须带这三行。
+
+`48 只写一次` 那格的 `48.dp` 白名单里 `ui/home/HomeComponents.kt` 那一行随
+`.height(48.dp)` 一起删了——判 `==` ⇒ **还掉必须改表**，探针 Q4 就是测这条的。
+
+## 41.4 探针：6 发咬住，两发第一版无效（都记下来）
+
+| 发 | 注入 | 结果 |
+|---|---|---|
+| Q1 | 表里指向一个已不存在的文件 | 第一版**无效**：锚点 `"KnowledgeBaseActivity.kt" to 2,` 在**两张表里都出现**（hits=2 → apply 失败、什么都没跑）。加邻行去重后 BIT |
+| Q2 | 某文件额度**收紧**成 0 | BIT（正向对照证明 `grew` 比较会红。**放松**预算不算反证——坑表 74） |
+| Q3 | 登记总数改成 6 | BIT |
+| Q4 | 把已删的白名单行放回去 | BIT（表比现实宽也要红） |
+| Q5 | 摘掉 Stop 态的 `role` | `LbPrimaryButtonStateTest` BIT |
+| Q5b | 摘掉 Idle 态的 `role` | 第一版**无效**：摘的是 Stop 态，而首页走 Idle ⇒ 注定不咬。换锚到 Idle 那颗后 BIT |
+
+两发无效都不是小事：**"跑了并报了 NO-BITE"与"跑不了"是两回事**，
+Q1 那种 `hits≠1 → 什么都没跑` 如果被读成"验过了"，闸就是纸糊的。
+
+## 41.5 另一处自查工具立功
+
+清死导入的扫描器（上一格写的，带 `getValue/setValue` 排除）报 `HomeComponents` 13 → 搬家后 15。
+**先对 HEAD 跑同一把尺**：HEAD 是 13，所以本格造的是 2 条（`ButtonDefaults`、`Color`），
+清完回到 13。**剩下那 13 条在 HEAD 上就已死**，不是本格的账，也不在本格顺手清。
+
+## 41.6 实测
+
+- 全套：**179 套件 / 1341 单测 / 0 失败 / 0 错误 / 0 跳过**（上一格 178 / 1338；
+  +1 套件 = `HomeHeroActionTest`，+3 = 它 2 格 + 新闸 1 格）。
+- lint 重生成 **68 / 15**、进预算 **67 / 14**、advisory 1 —— 一字未动。
+  ⇒ **第四次**证明这道闸看不见 UI 事实（死导入、字面量搬家、热区/卡宽，这次是角色）。
+- 产物门 `1341 / 179 / 0 红`；跨层 6；工单 PASS；取消审计 165 站；prompt 零 diff；
+  资产锁 OK；27 格判据自检 OK；androidTest 编译 rc=0。
+
+## 41.7 这格没做的
+
+- 另外 4 处涂品牌色的 Material `Button`（`ProviderSection:495`、`KbEditActivity:474`、
+  `KnowledgeBaseActivity:324`、`:780`）**一处没搬**：这一格只做首页那颗，
+  因为每一颗都要先判"它是不是那一页的唯一主动作"（`ProviderSection:495` 是表单提交、
+  `KbEditActivity:474` 是保存版本、`KnowledgeBaseActivity:324` 是新建库——像，但没逐颗量过）。
+  ⇒ 棘轮只保证"别再长新的"，**这 4 处该不该搬仍未判**。
+- `LbMetricCard` / `LbSection` 等其它设计系统组件有没有同类"缺角色"，
+  只在被语义树量到的那些组件上确认过（`LbTextAction`、`LbModalSheet` 的动作、`LbTopBar` 返回）。
+  ⇒ 缺角色这件事大概率不止一处，但**没量到就不能说没有，也没量到就不能说有**。
+- 首页那颗在 320/412/600dp 各档的宽度没跑（本格只跑 360 与 320+2 倍字两档）。
+- 截图基线（:538）照旧故意没接；设备侧照旧未跑。
