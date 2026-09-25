@@ -1071,3 +1071,121 @@ M1+M4 一次跑（5 红 / 9 完成）、M2+M3 一次跑（5 红 / 15 完成）�
   下一格顺手注一份反例证明它恒绿（按"新断言必须先被坏实现打破"的规矩，届时要么给它牙，要么删掉它）。
 - 捕获范围那一格、§6.4 `ResultArea` 拆分、§6.1 那九个 `Lb*` 组件与令牌迁移。
 
+---
+
+# 追加十一：捕获范围页接上四态（§6.3 四家齐了），以及那颗 288×15dp 的输入框
+
+## 21.1 这一页替换前长什么样
+
+指导书 §6.3 点名的第四家，也是此前**一格用例都没有**的一家（全仓 grep `CaptureApp` 在
+`test/`、`androidTest/` 里零命中）。量到的形状是三处各说一遍同一件事：
+
+- `CaptureAppsScreen.kt:75` 自造一张 inset 卡片：「尚未选择任何 App，消息捕获实际处于关闭状态」；
+- `:101` 一行「已选 0 个」；
+- `:116` 列表过滤为空时一行内联 `Text`「没有匹配的 App」。
+
+前两处是同一个事实说两遍，而其中一遍正是 §6.3 点名的"每页自己发明卡片、内联文字"。
+现在：inset 卡片删掉；状态行改用**首页那两行同款文案**（`capture_apps_row_subtitle` / `_none`），
+0 的时候连后果一起说（"未选择 App · 不会捕获任何内容"），比"已选 0 个"多一句、比那张卡少一层；
+列表区走 `LbAsyncState`，判据并成一处纯函数 `captureScreenState`。
+
+## 21.2 只有三格：Loading 在这一格是装饰分支，就不画
+
+这一页两个数据源都是同步的——`captureAllowedPackages` 在 ViewModel 构造时就把 prefs 里那份读出来，
+`selectableCaptureTargets` 是组合期一次同步枚举 ⇒ 首帧就有答案。
+指导书说"每个目的地只允许这四类"，是**词表上限**，不是"四格必须都出现"；
+画一个永远不出现的转圈分支，等于给下一轮留一条没人走过的假路。
+真要让 Loading 有意义，得先把那次同步 IPC 挪到 IO 上——那笔属于主线程/性能账，写在 §21.7。
+
+## 21.3 Error 那一格：信号是真的，只是在上一层被吞掉了
+
+```kotlin
+// 替换前
+return runCatching { pm.queryIntentActivities(launchIntent, 0).orEmpty() }
+    .getOrDefault(emptyList())
+```
+
+抛异常、平台回 null、确实一台可启动的都没有——**三种答案压成一个空表**。
+于是页面对用户说"这台设备没有可授权的 App"，而真相可能是那次同步 IPC 失败了
+（装机量大时 `TransactionTooLargeException`、远端进程死亡都从这里过）。
+对一个默认 fail-closed 的采集功能，这是把用户往"我的 App 怎么都不见了"上误导，
+而且空态没有重试，因为系统以为没什么可重试。
+
+现在 `selectableCaptureTargets` 返回 `List<CaptureApp>?`：抛 → null（错误态 + 真会重扫的重试）；
+空表 → 仍然是空表（**不许升格成失败**，否则错误页+重试永远出不去——这条有反向用例钉着）。
+
+**为什么这页敢改签名、知识库那页不敢**：`selectableCaptureTargets` 全仓只有一个生产调用点
+（就是这页），改签名代价是一个文件；`listAll()` 实扫 59 处引用（生产真调用点 6 个），
+为省一个布尔去改返回形状不划算。两处共同守的规矩是同一条：*没有真信号就不画 Error 格*。
+
+一条**没验到**的要写清：平台真回 null 那条分支在本机构造不出反例——当前 compileSdk 把这个方法
+标成 `@NonNull`，mockk 连 `returns null` 都在编译期拒掉。所以那条 `?:` 是**防注解撒谎的兜底**，
+不当已验收益记账（留着的理由只有一个：注解拦不住 ROM 真回 null，漏出去就是组合期 NPE 崩整页）。
+
+## 21.4 又量到一条真缺陷：那颗输入框的可点节点是 288×15dp（`cbcdebe`）
+
+上一格给知识库页空态做整屏热区检查时暴露了页头 32dp；这一格给捕获页做**同一把尺**，
+暴露的是搜索框：外层 `Box` 有 `AppDimens.INPUT_ROW_HEIGHT_DP = 36`，
+而真正带点击/编辑语义的 `BasicTextField` 节点量出来 **288x15dp @(36,172)**。
+这恰是 `SemanticsProbe` 注释里写的那种形状——"只放大外层容器而点击仍挂在子节点上，等于没改"；
+指导书 :531 要的是"所有 clickable/toggleable bounds ≥48×48dp"，:596 验收线写"无小于 48dp 热区"。
+
+修法两步一起做才成立：
+
+1. 共享档 `INPUT_ROW_HEIGHT_DP` 36 → **48**（复用方：`CompactInput`、`PanelTextInput` 默认高、
+   `ProviderSection` 两行、`KbEditActivity` 一行）；
+2. `heightIn(min = TOUCH_TARGET_MIN_DP)` 挂到 `CompactInput` 与 `PanelTextInput`
+   **各自的可编辑节点**上——只抬外层那一档不改里面这颗，量出来还是 15dp。
+
+`UiBaselineRegressionTest` 那条锁 36 的断言按它自己写的规矩同步改 48，并注明**这是故意漂移**。
+上一格只给 `PanelTextInput` 加了读屏名字、没量尺寸；同一颗节点两笔账，这次补齐。
+两颗各自有牙：N1 只撤 `CompactInput` 的 heightIn ⇒ 它那格与捕获页整屏格同时红；
+N5 只撤 `PanelTextInput` 的 ⇒ 只有它那格红。**不是一张网蹭另一张网的绿。**
+
+## 21.5 lint：一条是我新增的（修代码），一条是还掉的债（落账）
+
+- `AutoboxingStateCreation` 实测 7 > 预算 6：是我那句 `mutableStateOf(0)`（`rescanTick`）。
+  改 `mutableIntStateOf(0)`，**没抬预算**——这条正是"禁止抬预算了事"那把尺当场拦下来的。
+- `PluralsCandidate` 实测 2 < 预算 3：删掉「已选 %1$d 个」这条重复文案顺带还掉的债。
+  闸要求"还了一条也要重跑，否则下一轮拿旧数当现状"，用 `--rewrite` 落账；
+  改完 `git diff scripts/lint-budget.txt` 看过——**只动了那一行**才敢写进账本。
+- 报告重生成后（09:53:20）实测 69 条 / 15 规则，进预算 68 / 14，advisory 1。
+
+## 21.6 用例与变异
+
+| 新用例 | 格数 | 钉什么 |
+|---|---|---|
+| `CaptureScreenStateMappingTest` | 7 | 读不出来≠真的没有；两个 Empty 各说各的话；过滤判据（标签/包名、忽略大小写、纯空格等于没搜）；四格可区分表 |
+| `CaptureAppsScreenStatesTest` | 5 | **整页**挂载走共用渲染器；重试那颗**确实又枚举了一次**（`verify` 数调用次数）；勾选仍落到 `setCaptureAllowed(包名, true)`；整屏每个可交互节点过 §6.5 尺 |
+| `CaptureTargetEnumerationFailureTest` | 4 | 抛 → null；空表 → 空表；排除自身/去重/排序不动；二次拒绝的类别仍列出但标灰 |
+| `ComposerInputLabelTest`（补 2 格） | +2 | 两颗输入框的可编辑节点自己 ≥48dp |
+
+变异五条，各自红在该红的那格（每条都要求"目标片段恰好命中一次"才算注入）：
+N1 撤 CompactInput 热区 → 2 格红；N2 把 Error 并进 Empty → 4 格红（含 3 格判据）；
+N3 重试不再触发重扫 → `Verification failed: call 1 of 1 … needs at least 2`（与 N2 的红不同形状，
+所以敢分开跑、不互相掩盖）；N4 抛异常退回空表 → 1 格红；N5 撤 PanelTextInput 热区 → 1 格红。
+
+## 21.7 §6.3 逐字对照：指导书点名的四家全部到位
+
+| 指导书原文 | 现在 |
+|---|---|
+| "Provider … 用同一套空态/错误态" | 已（`d902514`→`80bc78e`） |
+| "反馈案例 … 用同一套" | 已（`e359930`） |
+| "知识库 … 用同一套" | 已（`3dc2180`，账本 §20） |
+| "捕获范围 … 用同一套" | **本轮**（`054b789`）：inset 卡片与内联文字删掉，判据一处、版式一处 |
+| "而不是每页自己发明卡片、内联文字、弹窗或展开区" | 四家都不再有自造形状；本轮消掉的是"卡片 + 内联文字"各一处 |
+| "每个目的地只允许这四类顶层状态" | 词表上限已满足；**知识库/捕获两家的 Loading 与捕获家的 Empty/Error 是"有信号才画"**，各自理由写在 §20.2 / §21.2 |
+| 签名差异（`UiText`/`Action` vs `String`/`ScreenAction`） | 沿用既有判定：不另造 UiText，调用方解析资源后交出 String，由字面量预算管着 |
+
+## 21.8 这一格没做的（别当我顺手清了）
+
+- `capture_apps_back` 全仓零引用，**早就**是死资源（在 `UnusedResources` 既有计数里）。
+  本轮只删被自己的改动弄死的两条，不动这条——那是另一笔账。
+- 勾选行"现在有没有被勾上"读屏念不念得出来：本轮**只挂不断**（属 §6.5 第②栏）。
+  要判得先看语义树里到底有没有 `Selected`/`ToggleableState`，别顺手扩范围。
+- 候选枚举仍在主线程（同步 IPC，`remember` 只挡了每帧重算）。挪到 IO 之后 Loading 那格才有意义。
+- JVM 上 `ResolveInfo.loadLabel` 取不到标签 ⇒ 断言里 displayName 就是包名；
+  真机上排序键会随标签变，**这条差异本轮没有任何用例覆盖**（androidTest 里也没有捕获页的用例）。
+- §6.4 `ResultArea` 拆分、§6.1 那九颗 `Lb*` 组件与令牌迁移仍未动。
+
+

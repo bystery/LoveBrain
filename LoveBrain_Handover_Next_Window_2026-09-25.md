@@ -161,6 +161,29 @@ HEAD `0c4d6d6`，仍未推。两笔：
   回滚脚本要求"变异片段恰好命中一次"，**没改上不算证伪**。字面量预算 250 → **247**（那张卡搬走 3 处）。
 - **这是一处可见的视觉变化**：空态不再有 72dp 图标与两行标题。截图 baseline 那格回来时要认这笔。
 
+## 0.9 又一步：捕获范围页接上四态（§6.3 四家齐了）+ 又量到一颗 15dp 高的输入框（`054b789`、`cbcdebe`）
+
+- **这一页此前 0 格用例**（全仓 `test/`、`androidTest/` 里 grep `CaptureApp` 零命中），
+  所以本轮 16 格不是补强，是第一次有网。三处自造形状里删掉了两处：inset 卡片、内联"没有匹配的 App"；
+  状态行改用**首页同款**文案（`capture_apps_row_subtitle` / `_none`），"同一个事实说三遍"收成一遍。
+- **只有三格**：这页两个数据源都同步（allowlist 在 VM 构造时读 prefs、候选列表是组合期一次同步枚举），
+  首帧就有答案 ⇒ 画一个永远不出现的 Loading 分支就是装饰。§6.3 那句"只允许这四类"是**词表上限**，
+  不是"四格必须都出现"——这条判据写法下一轮别反过来用（少一格要当次量出理由并写进账本）。
+- **Error 那格的信号在上一层被吞掉**：`runCatching{ pm.queryIntentActivities(...) }.getOrDefault(emptyList())`
+  把"抛""平台回 null""真没有"压成同一个空表 ⇒ 页面把"读不动"说成"这台设备没有可授权的 App"。
+  改 `List<CaptureApp>?` 之后：抛 → null（错误态 + 真会重扫的重试），空表仍 → 空表
+  （否则错误页+重试永远出不去，这条有反向用例）。
+- **为什么这页敢改签名、知识库那页不敢**：这函数全仓只有**一个**生产调用点；`listAll()` 实扫 59 处引用。
+  两处共同守的是同一条：没有真信号就不画 Error 格。别把"上一格没做"读成"这一格也不该做"。
+- 又一条 §6.5 真缺陷（`cbcdebe`）：搜索框外层 Box 有 36dp，真正带点击/编辑语义的节点是
+  **288x15dp**。共享档 `INPUT_ROW_HEIGHT_DP` 36→48，并把 `heightIn(min=48)` 挂到
+  `CompactInput` 与 `PanelTextInput` **各自的可编辑节点**上——只抬外层等于没改。
+  基线锁那条断言同步改 48 并注明故意漂移。**下一格做 §6.5 别的栏时，先想想还有多少节点没被整屏量过。**
+- lint 两条：`AutoboxingStateCreation` 7>6 是 `mutableStateOf(0)` 招的，改 `mutableIntStateOf(0)`（**没抬预算**）；
+  `PluralsCandidate` 3→2 是删重复文案顺带还的债，`--rewrite` 落账后**看过 diff 只动那一行**才写进账本。
+- 平台回 null 那条分支**本机造不出反例**（compileSdk 标 `@NonNull`，mockk 编译期就拒 `returns null`）⇒
+  它记为"防注解撒谎的兜底、未验"，不算已验收益。同类情形以后都按这个写法记账。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -179,21 +202,18 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
 ```
 
-最近一轮实测基线（到 `3dc2180`）：**1213 单测 / 153 套件 / 0 失败 / 0 错误 / 0 跳过**
-（shell 记的起点 09:06:23，全部 XML mtime 09:09:15，`stale=0`）。
-与上一格对账：1198 → 1213 正好 +15（本轮新增 5+4+6），150 → 153 套正好 +3（新增三个测试类）——
-**两个增量互相咬得上，才敢说没少跑也没多跑**。
-lint 报告**重新生成后**（09:13:14）70 条 / 15 规则，其中 **进预算 69 条 / 14 规则**、advisory 1 条
-（与上一格同一组数 = 本轮没新增 lint 债）；`check_lint_budget.sh` 要**不带管道**单独取退出码
-（见 §6 第 44 条）；`:app:assembleAndroidTest` rc=0（androidTest 里没有一处引用被改签名，grep 过）；
-工单编号 rc=0；prompt 零 diff + lock `6dcde732…`；跨层 **6** 条（与基线同，没长）；lint 判据自测 27 格 rc=0。
-`KnowledgeRepository` 1941 → 1878 → 1844 → 1876 → **1793** 行（本轮没动它），
-`LoveBrainViewModel` 2746 → 2756 → 2732 → 2739 → **2719** 行（本轮没动它）；
-VM 里私有 `MutableStateFlow` 用同一把尺量：**39 → 31 → 30 → 30**（最后一格没动：那是"一条规则
-一个所有者"那笔，不是状态合并）。
-**大文件计数已变：>500 行从指导书的 18 个降到 17 个**（跨下来的是 `FeedbackCasesScreen.kt`，
-`e359930` 那次 534→500；没有一个新跨上去），>800 仍 10 个——别再把 18/10 当现状抄。
-本轮 `KnowledgeBaseActivity.kt` 924 → 918、`KnowledgeBaseViewModel.kt` 324 → 347，都还在同一档里。
+最近一轮实测基线（到 `054b789`）：**1231 单测 / 156 套件 / 0 失败 / 0 错误 / 0 跳过**
+（shell 记的起点 09:53:42，全部 XML 无陈旧件）。与上一格对账：1213 → 1231 = +18
+（本轮新增 7+5+4 加 ComposerInputLabel 补的 2），153 → 156 套 = +3。**两个增量互相咬得上**。
+lint 报告**重新生成后**（09:53:20）实测 **69 条 / 15 规则**，其中 **进预算 68 条 / 14 规则**、advisory 1 条。
+数字比上一格记的 70/69 各少 1：**不是债涨了也不是我抬了预算**，是删掉一条带 `%1$d` 的重复文案
+顺带还掉一条 `PluralsCandidate`，用 `--rewrite` 落了账（`git diff scripts/lint-budget.txt` 只动那一行）。
+`check_lint_budget.sh` rc=0；`:app:assembleAndroidTest` rc=0；工单编号 rc=0；prompt 零 diff + lock `6dcde732…`；
+跨层 **6** 条（与基线同，没长）；lint 判据自测 27 格 rc=0。
+`KnowledgeRepository` **1793** 行、`LoveBrainViewModel` **2719** 行（这两格都没动它们）；
+`KnowledgeBaseActivity.kt` 924 → 918、`CaptureAppsScreen.kt` 198 → 237（新增判据函数与列表区两颗）；
+VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 30**。
+**大文件计数：>500 行 17 个、>800 行 10 个**（本轮没有文件跨档；`CaptureAppsScreen` 198→251 仍在 <500 档）。
 
 ## 2. 被证伪的六条（前两批 + 最新一条，别再当依据）
 
@@ -205,8 +225,10 @@ VM 里私有 `MutableStateFlow` 用同一把尺量：**39 → 31 → 30 → 30**
    用默认 warn** 静默交了空产物。本轮 `e657778` 已修，并加了"两张图不许逐字节相同"的判据——
    而那两张本来就是同一屏。
 3. 「§2.1 二选一：真问题→改代码 ／ 平台产物→按平台各自登记」——两个前提都不成立，见上面 §0。
-4. 「本机 lint 71 条 / 15 规则」——现在报的是 70 条 / 15 规则，其中进预算 69 / 14；
-   口径变了不是债变多，比较前先看清 `STATS` 那行。
+4. 「本机 lint 71 条 / 15 规则」——**这类数每还一次债就会变**：`3dc2180` 那轮是 70 条 / 进预算 69，
+   `054b789` 之后是 **69 条 / 进预算 68**（删掉一条带 `%1$d` 的重复文案顺带还掉一条 `PluralsCandidate`）。
+   所以下面所有段落里出现的 lint 条数都只是**当时那一次**的读数，比较前一律看 §1 的现在值与 `STATS` 那行；
+   口径变了不是债变多，反过来也不是债变少——先确认是不是自己刚还了一条。
 5. 「P0-01/§3.1 的读路径已经全部过 canonical」——**没有**：无锁快速读自己拼 `File(File(root,kb),path)`。
    本轮 `adbf5f3` 归到一个所有者，并修掉一条被同行注释吞掉、因此从未生效的
    `KbRelativePath` 反斜杠校验（`understand\me.md` 在 Windows 上实测能解析到库目录外）。
@@ -257,28 +279,35 @@ VM 里私有 `MutableStateFlow` 用同一把尺量：**39 → 31 → 30 → 30**
    **留下的相邻账**：那三句 placeholder 提示仍是硬编码在 `ReplyInput` 里的中文字面量
    （资源驱动 / 中英 parity），本轮没动用户可见文案，测试也只钉语言无关的事实。
 4. ~~**§6.3 知识库页接四态**~~ —— **已做**（`3dc2180`，见 §0.8）。
-5. **§6.3 最后一格：捕获范围**（`ui/home/CaptureAppsScreen.kt`，198 行）。量过的形状：
-   `:75` 是 `if (allowed.isEmpty())` + 内联 `Text(stringResource(R.string.capture_apps_empty_hint))`
-   ——正是指导书点名的"每页自己发明内联文字"；`:115` 还有**第二处** `visible.isEmpty()`
-   （搜索/过滤后为空），那一处**不是**目的地的顶层空态，别一把梭并掉：
-   并进去会让"一个 App 都没勾"与"搜不到匹配项"共用同一句话，而那两件事该说的话不一样。
-   先判"这页有几格"再动手。四格里 Error 那格：**别照抄知识库页的答案**——
-   这里的读取是 `SetupViewModel` 的捕获开关与已装 App 列表，有没有真失败信号要当次读码定，
-   定不出来就如实记"这一格在本页无信号、不画"，不许装一个装饰性分支。
-6. **§5.1 `core/testing` 归位**：本轮新增 `app/src/androidTest/…/testing/UiText.kt`，
-   于是同一判据的夹具文本在两个测试源集各存一份（`ReplyPayloadShapeForUiFixtureTest` ↔
-   `ResultAreaInteractionTest`；`KnowledgeDocumentStoreTest` ↔ 生产文档格），
-   改一处必须改两处——这就是 §5.1 那张目录图要解决的。
-7. §6.1 剩 9 颗 `Lb*` 组件 + token 从 `ui.theme` 迁进 `core/designsystem`。
-8. §6.5 截图工具仍**故意没接**：理由未变（§6.1–§6.4 铺开前拍的 baseline 会整批作废）。
-   注意 `e657778` 已把"CI 交不出截图"这条产物洞补上，与"接 baseline 工具"是两件事。
-   接之前先认一笔账本 §20.8 的可见变化：知识库页空态的 72dp 图标与两行标题已经没了。
-9. **给一条没牙的闸做判决**：`UiLayerDependencyContractTest` 里
+5. ~~**§6.3 最后一格：捕获范围**~~ —— **已做**（`054b789`，见 §0.9 与账本 §21）。四家齐了；
+   顺带量出并修了那颗 288×15dp 的输入框（`cbcdebe`）。**留下的相邻账**见账本 §21.8：
+   勾选行的选中态读屏念不念得出来（只挂没判）、候选枚举仍在主线程、`capture_apps_back` 早就是死资源。
+6. **§6.1 剩 9 颗 `Lb*` 组件 + token 从 `ui.theme` 迁进 `core/designsystem`** —— §6.3 四家现在已经
+   全部走 `LbAsyncState` / `LbEmptyState`，所以这一格是**剩下的那张组件表**
+   （`LbSettingRow`、`LbMetricGrid`、`LbActionCard` 那批），指导书 §6.2 的首页四段结构也挂在它上面。
+   还有一件事绑在它身上：`UiStringLiteralBudgetTest` 的文件注释自己写着"把用户可见字面量搬进
+   strings.xml **是阶段三与 `Lb*` 组件一起做的工作**" ⇒ **别在它之前单开一笔"搬文案"的活**，
+   那会打乱指导书自己的顺序。面板那三句 placeholder 与主动发那三句就是等这一格一起办的；
+   届时顺手把 `ComposerInputLabelTest` 从"只钉语言无关事实"升级成钉原文
+   （资源驱动是前提——现在升级会把三句写死的中文钉进测试，那是假绿）。
+7. **§6.4 悬浮面板 `ResultArea` 拆分**：`ResultAreaStructureTest` 已经在看着它的结构，
+   拆开时那把尺不许松（拆完仍要能证明"结果区只有这一份"）。
+8. **§5.1 `core/testing` 归位**：`app/src/androidTest/…/testing/UiText.kt` 与 JVM 侧那份是同一判据的
+   两份夹具文本（`ReplyPayloadShapeForUiFixtureTest` ↔ `ResultAreaInteractionTest`；
+   `KnowledgeDocumentStoreTest` ↔ 生产文档格），改一处必须改两处——§5.1 那张目录图要解决的就是这个。
+9. **给一条没牙的闸做判决**（便宜、独立，适合当穿插格）：`UiLayerDependencyContractTest` 里
    `production sources carry no debt-note comments without a fix` 先用 `codeOf()` 剥掉注释，
    再拿剥完的代码去匹配"审计技术债 / 修复方向"——那两个词只可能出现在注释里 ⇒ **恒不命中**。
-   本轮只静态读出形状，**没注反例验证**。下一格顺手注一份反例（往任一生产文件的注释里塞
-   `审计技术债` 若它仍绿即证明恒绿），然后二选一：改成扫原文，或按"恒真形态"清单删掉它。
-   **别留着当"已经有闸"。**
+   账本 §20.8 只静态读出了形状，**没注反例验证**。先注反例证明它恒绿，再二选一：改成扫原文，
+   或按"恒真形态"清单删掉它。**别留着当"已经有闸"。**
+10. §6.5 截图工具仍**故意没接**：理由未变（§6.1–§6.4 铺开前拍的 baseline 会整批作废）。
+    `e657778` 已把"CI 交不出截图"那条产物洞补上，与"接 baseline 工具"是两件事，别混。
+    接之前要认两笔**可见变化**：知识库页空态的 72dp 图标与两行标题没了（账本 §20.8）、
+    两颗输入框的行高 36→48（账本 §21.4）。
+    **另一条更值钱的提醒**：这两格各扫出一次"整屏可交互节点"的真缺陷（页头 32dp、输入框 15dp）。
+    还有多少屏从没被整屏量过？`ScreenPage` 那批二级页里只剩 `KbEditActivity` 与设置页没量，
+    面板主路径也只有部分做过 —— 挑穿插活时这是最便宜的一条线（挂一份 mockk 的 VM 就能整页挂载，
+    见 `CaptureAppsScreenStatesTest` 那个写法）。
 
 拆格的形状照 `adbf5f3`（文档）、`a0fef45`（记忆）、`b6873cf`（画像）、`0c4d6d6`（归档）四格：
 窄接口（画像 6 个成员、归档 7 个——再宽就是拿拆类名义放宽端口，catalog 写侧因此退回）、
@@ -325,6 +354,8 @@ VM 里私有 `MutableStateFlow` 用同一把尺量：**39 → 31 → 30 → 30**
 | `26ecf95` | 编辑位重算三处并成一条判据 `MessageListEditing.reindex`；**先**用真实 VM 穷举 130 组不变式证明三处本来就一致（没找到 bug，但从此有网），**再**合并；悬空编辑位拧成"没有编辑位"；flow 数不变（那是规则不是状态） |
 | `0e83c95` | 输入框在语义树上有名字（§6.5 无障碍第②栏）：`PanelTextInput` + `CompactInput` 挂 `contentDescription = placeholder`，视觉未变；新 JVM 语义树 5 格，注入撤掉两处 → 五格全红。同轮量完回滚族：**判定不做**（缺口不可达），理由与判断强度记在账本 §19.1 |
 | `3dc2180` | §6.3 第三家：知识库页判据并成一处 `kbScreenState`、版式走 `LbAsyncState`，空态那颗动作真开向导；给 `loadState()` 一条诚实的读失败通道（原来抛出=永远转圈）；量出并修掉页头「返回」32→48dp；新 15 格 + 变异 M1–M4；字面量预算 250→247 |
+| `cbcdebe` | §6.5 那颗 288×15dp 的输入框：`INPUT_ROW_HEIGHT_DP` 36→48（共享档，复用方 4 处），并把 `heightIn(min=48)` 挂到 `CompactInput` 与 `PanelTextInput` **各自的可编辑节点**上；基线锁同步改 48 并注明故意漂移；补 2 格尺寸断言，N1/N5 两条变异各红各的节点（不是一张网蹭另一张网） |
+| `054b789` | §6.3 第四家（四家齐）：捕获范围页判据并成 `captureScreenState`、inset 卡片与内联文字删掉、状态行改用首页同款文案；`selectableCaptureTargets` 改可空，"读不出来"不再报成"没有 App"（空表仍不许升格成失败，反向用例钉着）；**只有三格并写明 Loading 无信号**；新 16 格 + 变异 N1–N5；`AutoboxingStateCreation` 7>6 用 `mutableIntStateOf` 修（没抬预算），`PluralsCandidate` 3→2 落账 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -336,7 +367,7 @@ VM 里私有 `MutableStateFlow` 用同一把尺量：**39 → 31 → 30 → 30**
 hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N 次才坏"的桩
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
-## 6. 坑表（编号接上一份的 1–15；16–25 CI 首跑后那批，26–31 画像格那批，32–35 回滚与只读那批，36–44 归档、状态统一与无障碍那批，45–48 四态与页头那批）
+## 6. 坑表（编号接上一份的 1–15；16–25 CI 首跑后那批，26–31 画像格那批，32–35 回滚与只读那批，36–44 归档、状态统一与无障碍那批，45–52 四态、输入框与 lint 落账那批）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -440,6 +471,25 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     两者都改 `kbScreenState` 且回滚片段会互相打断）必须分开跑。
     另外 `SemanticsProbe` 的中文失败信息在 GBK 控制台会糊：归因时把 XML 原文用 Python 写成
     UTF-8 文件再读，别在 stdout 上猜是哪一条变异。
+49. **`mutableStateOf(0)` 会被 lint 当场抓一条 `AutoboxingStateCreation`**：共享档 `INPUT_ROW_HEIGHT_DP`
+    那格我加了一颗 `rescanTick`，预算 6 条被顶到 7 → `check_lint_budget.sh` rc=1。
+    修法是用 `mutableIntStateOf(0)`，**不是抬预算**（这条正是那条"禁止抬预算了事"的规矩第一次真的拦人）。
+    以后往 Compose 里加任何原始类型 state，直接上 `mutableIntStateOf` / `mutableLongStateOf` 那一族。
+50. **还掉的债也要当次落账**：删掉一条带 `%1$d` 的重复文案，`PluralsCandidate` 实测 3 → 2，
+    闸报 `STALE`（预算虚高：还掉了却没落账）。跑 `--rewrite` 之后
+    **必须 `git diff scripts/lint-budget.txt` 看只动了那一行**才敢写进账本——
+    `--rewrite` 是整表重写，别的规则如果同时在漂，就会被它一起悄悄抹平。
+51. **`@NonNull` 注解会挡住你的反向用例**：`PackageManager.queryIntentActivities` 在当前 compileSdk
+    标 `@NonNull`，mockk 的 `returns null` 编译期就被拒（"Null can not be a value of a non-null type"），
+    所以生产代码里那条 `?: return null` 兜底**在本机造不出反例**。这种分支可以留（注解拦不住 ROM 真回 null），
+    但账必须记成"防注解撒谎的兜底、未验"，不许写进"已验收益"。
+    同族第一次踩是把不可达的性质当已验收益（坑表 31 条）。
+52. **裸 JVM 里 `Intent(...).addCategory(...)` 回 null**：`isReturnDefaultValues=true` 让 android.jar
+    的桩方法全都回默认值，于是四格用例全崩在**构造 Intent 那行**、根本走不到被测代码。
+    要走真实 `Intent` 语义（或 `queryIntentActivities` 之外的任何 framework 行为）就挂
+    `@RunWith(RobolectricTestRunner::class)` + `UiProbeApplication`，`PackageManager` 仍然用 mockk
+    （Robolectric 只负责让 `Intent` 是个真的 Intent）。
+    判据：报 `NullPointerException: addCategory(...) must not be null` 就是这一条，别去改被测代码。
 
 ## 7. 硬约束（一条没变）
 
