@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui
 
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -749,5 +750,40 @@ class UiLayerDependencyContractTest {
         }
         assertTrue("实扫到 ${found.values.sum()} 处，为 0 说明锚点失效（恒绿假闸）",
             found.values.sum() > 0)
+    }
+
+    /**
+     * 供应商表单：**测量走本体，外壳只留一颗 Dialog**。
+     *
+     * 这条不是 UI 事实的尺（那种一律读语义树），是一条**结构合同**：
+     * `ProviderFormBody` 被 `ProviderEditDialog` 那颗 `Dialog` 包着，用户看到的仍然是一扇浮层；
+     * 而本体自己**不许**再含 `Dialog(`——它一旦重新长出浮层，
+     * `ProviderFormSemanticsTest` 就会撞上"Dialog 窗口 + 文本框永不空闲"那堵墙（账本 §45.1），
+     * 整屏又会退回"一颗都量不到"的状态。这台机器量不了浮层窗口，所以这一半只能读结构，
+     * 并且要说清楚：读结构证明的是"没被搬坏"，不是"长得对"。
+     */
+    @Test
+    fun `the provider form body stays measurable and the dialog stays its only host`() {
+        val file = File(dir("ui"), "home/ProviderSection.kt")
+        assertTrue("ProviderSection.kt 不在了——这一格会恒绿", file.isFile)
+        val code = codeOf(file.readText())
+
+        val bodyDecl = Regex("""internal fun ProviderFormBody\(""").findAll(code).count()
+        assertEquals("表单本体必须是 internal 且只声明一次（测试要能直接挂它）", 1, bodyDecl)
+
+        val hostCalls = Regex("""ProviderFormBody\(""").findAll(code).count()
+        assertEquals("除声明外只许有一处调用（那一处必须在 Dialog 里面）", 2, hostCalls)
+
+        val dialogOpens = Regex("""Dialog\(\s*onDismissRequest""").findAll(code).count()
+        assertEquals("这一屏只许剩一扇浮层（表单本体里不该再嵌 Dialog）", 1, dialogOpens)
+
+        // 本体自己那一段里不能再出现浮层开口：从声明起，到下一个顶层 @Composable 前
+        val body = code.substringAfter("internal fun ProviderFormBody(")
+            .substringBefore("\n@Composable")
+        assertTrue(
+            "表单本体里又长出了浮层，测量路径会被「不空闲」那堵墙重新封死：" +
+                body.lines().filter { it.contains("Dialog(") },
+            !body.contains("Dialog(")
+        )
     }
 }

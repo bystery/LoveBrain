@@ -301,6 +301,36 @@ private fun ProviderEditDialog(
     ticket: ProviderTicket?,
     onDismiss: () -> Unit
 ) {
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            shape = LoveBrainShape.xl,
+            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            ProviderFormBody(viewModel = viewModel, ticket = ticket, onDismiss = onDismiss)
+        }
+    }
+}
+
+/**
+ * 供应商表单本体——`ProviderEditDialog` 里除了 `Dialog`/`Card` 那两层的**全部**内容。
+ *
+ * 原来这 190 行直接写在 Dialog 里面，于是这台仪器里量不到：`Dialog` 开的是独立窗口，
+ * 窗口里只要有文本框拿焦点，`waitForIdle` 就永不返回（账本 §45.1 用一次 15 行的诊断
+ * 把这条边界钉死——裸 `Dialog` + 一颗 `OutlinedTextField` 同样跑满 60 秒不空闲，
+ * 所以**不是**这里哪颗控件画坏了）。抽出来之后 Dialog 仍在原位、仍在原外壳里，
+ * 只是测量可以绕开那扇窗口直接挂这一格。
+ *
+ * ⚠ 抽的是**容器**，不是"顺手重构"：状态声明、`commitModelInput`/`deleteModel`
+ * 与 Column 里的每一行都逐字搬过来（只减缩进）。Dialog 关闭即销毁这些 `remember`
+ * 的行为跟搬之前一样——它们仍挂在这棵树的同一个位置上。
+ */
+@Composable
+internal fun ProviderFormBody(
+    viewModel: SetupViewModel,
+    ticket: ProviderTicket?,
+    onDismiss: () -> Unit
+) {
     val scope = rememberCoroutineScope()
     val formError by viewModel.formError.collectAsStateWithLifecycle()
 
@@ -340,191 +370,194 @@ private fun ProviderEditDialog(
         if (currentModel == removed) currentModel = newList.firstOrNull().orEmpty()
     }
 
-    Dialog(onDismissRequest = onDismiss) {
-        Card(
-            shape = LoveBrainShape.xl,
-            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+    Column(
+        modifier = Modifier
+            .padding(Spacing.xl)
+            .heightIn(max = 520.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(Spacing.md)
+    ) {
+        Text(
+            if (ticket == null) "添加供应商" else "编辑供应商",
+            style = AppTypography.titleLarge,
+            color = TextPrimary,
+            fontWeight = FontWeight.SemiBold
+        )
+        Text("供应商名称", style = AppTypography.labelMedium, color = TextSecondary)
+        CompactInput(value = name, onValueChange = { name = it }, placeholder = "名称")
+
+        Text("接口地址（自动补全）", style = AppTypography.labelMedium, color = TextSecondary)
+        CompactInput(value = baseUrl, onValueChange = { baseUrl = it }, placeholder = "https://api.example.com")
+        if (!formError.isNullOrEmpty()) {
+            Text("✗ $formError", style = AppTypography.labelSmall, color = Error)
+        }
+
+        Text("API Key", style = AppTypography.labelMedium, color = TextSecondary)
+        CompactInput(
+            value = key,
+            onValueChange = { key = it },
+            placeholder = if (ticket != null && viewModel.getKeyMask(ticket.id).isNotEmpty()) "留空保留原 Key" else "sk-…",
+            passwordVisible = keyVisible,
+            trailingAction = {
+                // 这颗原来实量 **58x40dp**：M3 的 `TextButton` 把"至少 48dp"做成了一层
+                // `minimumInteractiveContainer` 装饰，**带点击语义的那一颗自己还是 40dp**
+                // ——手指与读屏信的都是后者（:531）。所以要给它本人垫高度。
+                TextButton(
+                    onClick = { keyVisible = !keyVisible },
+                    modifier = Modifier.heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                ) {
+                    Text(if (keyVisible) "隐藏" else "显示", style = AppTypography.bodySmall, color = Primary)
+                }
+            }
+        )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(Spacing.xl)
-                    .heightIn(max = 520.dp)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(Spacing.md)
-            ) {
-                Text(
-                    if (ticket == null) "添加供应商" else "编辑供应商",
-                    style = AppTypography.titleLarge,
-                    color = TextPrimary,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text("供应商名称", style = AppTypography.labelMedium, color = TextSecondary)
-                CompactInput(value = name, onValueChange = { name = it }, placeholder = "名称")
+            // 那行字与开关的名字由 `MiniSwitchRow` 一处配对好——
+            // 之前这两个东西散在调用点，"忘了给开关起名"在界面上一模一样、
+            // 只有读屏的时候才看得出来。
+            MiniSwitchRow(checked = thinking, onCheckedChange = { thinking = it })
+        }
 
-                Text("接口地址（自动补全）", style = AppTypography.labelMedium, color = TextSecondary)
-                CompactInput(value = baseUrl, onValueChange = { baseUrl = it }, placeholder = "https://api.example.com")
-                if (!formError.isNullOrEmpty()) {
-                    Text("✗ $formError", style = AppTypography.labelSmall, color = Error)
-                }
-
-                Text("API Key", style = AppTypography.labelMedium, color = TextSecondary)
-                CompactInput(
-                    value = key,
-                    onValueChange = { key = it },
-                    placeholder = if (ticket != null && viewModel.getKeyMask(ticket.id).isNotEmpty()) "留空保留原 Key" else "sk-…",
-                    passwordVisible = keyVisible,
-                    trailingAction = {
-                        TextButton(onClick = { keyVisible = !keyVisible }) {
-                            Text(if (keyVisible) "隐藏" else "显示", style = AppTypography.bodySmall, color = Primary)
-                        }
+        Text("模型列表", style = AppTypography.labelMedium, color = TextSecondary)
+        models.forEachIndexed { i, m ->
+            if (editIndex == i) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                    CompactInput(
+                        value = modelInput,
+                        onValueChange = { modelInput = it },
+                        placeholder = "模型名称",
+                        modifier = Modifier.weight(1f)
+                    )
+                    IconAction(Icons.Filled.Check, "确认") { commitModelInput(i) }
+                    IconAction(Icons.Filled.Close, "取消", tint = TextHint) {
+                        modelInput = ""; editIndex = -1
                     }
-                )
-
+                }
+            } else {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(LoveBrainShape.md)
+                        .background(SurfaceInset)
+                        .padding(horizontal = Spacing.md, vertical = Spacing.xs)
                 ) {
-                    // 那行字与开关的名字由 `MiniSwitchRow` 一处配对好——
-                    // 之前这两个东西散在调用点，"忘了给开关起名"在界面上一模一样、
-                    // 只有读屏的时候才看得出来。
-                    MiniSwitchRow(checked = thinking, onCheckedChange = { thinking = it })
-                }
-
-                Text("模型列表", style = AppTypography.labelMedium, color = TextSecondary)
-                models.forEachIndexed { i, m ->
-                    if (editIndex == i) {
-                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                            CompactInput(
-                                value = modelInput,
-                                onValueChange = { modelInput = it },
-                                placeholder = "模型名称",
-                                modifier = Modifier.weight(1f)
-                            )
-                            IconAction(Icons.Filled.Check, "确认") { commitModelInput(i) }
-                            IconAction(Icons.Filled.Close, "取消", tint = TextHint) {
-                                modelInput = ""; editIndex = -1
-                            }
-                        }
-                    } else {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(LoveBrainShape.md)
-                                .background(SurfaceInset)
-                                .padding(horizontal = Spacing.md, vertical = Spacing.xs)
-                        ) {
-                            Text(
-                                m,
-                                style = AppTypography.bodyMedium,
-                                color = if (m == currentModel) PrimaryDark else TextPrimary,
-                                fontWeight = if (m == currentModel) FontWeight.SemiBold else FontWeight.Normal,
-                                maxLines = 1,
-                                modifier = Modifier.weight(1f)
-                            )
-                            IconAction(
-                                Icons.Filled.Star,
-                                "设为当前",
-                                tint = if (m == currentModel) Primary else TextHint
-                            ) {
-                                currentModel = m
-                                if (ticket != null) viewModel.setTicketModel(ticket.id, m)
-                            }
-                            IconAction(ImageVector.vectorResource(R.drawable.ic_unplug), "测试连接", tint = Primary) {
-                                testingModel = m
-                                testResult = null
-                                scope.launch {
-                                    val t = ticket ?: ProviderTicket(name = name.ifBlank { "未命名" }, baseUrl = baseUrl, model = m, models = models)
-                                    val result = viewModel.testConnection(t, m, key.trim())
-                                    testingModel = null
-                                    testResult = Triple(m, result.success, result.message)
-                                }
-                            }
-                            IconAction(Icons.Filled.Edit, "编辑", tint = TextSecondary) {
-                                modelInput = m
-                                editIndex = i
-                            }
-                            IconAction(Icons.Filled.Delete, "删除", tint = Error) { deleteModel(i) }
-                        }
-                    }
-                    if (testingModel == m) {
-                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = Spacing.md)) {
-                            CircularProgressIndicator(color = Primary, modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp), strokeWidth = Spacing.xs)
-                            Spacer(Modifier.width(Spacing.sm))
-                            Text("测试中…", style = AppTypography.labelSmall, color = TextHint)
-                        }
-                    }
-                }
-                if (addingModel) {
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                        CompactInput(
-                            value = modelInput,
-                            onValueChange = { modelInput = it },
-                            placeholder = "模型名称",
-                            modifier = Modifier.weight(1f)
-                        )
-                        IconAction(Icons.Filled.Check, "确认") { commitModelInput(-1) }
-                        IconAction(Icons.Filled.Close, "取消", tint = TextHint) {
-                            modelInput = ""; addingModel = false
-                        }
-                    }
-                } else {
                     Text(
-                        "＋ 添加模型",
-                        style = AppTypography.labelLarge,
-                        color = Primary,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier
-                            .clip(LoveBrainShape.md)
-                            .clickable { addingModel = true }
-                            .padding(horizontal = Spacing.md, vertical = Spacing.xs)
+                        m,
+                        style = AppTypography.bodyMedium,
+                        color = if (m == currentModel) PrimaryDark else TextPrimary,
+                        fontWeight = if (m == currentModel) FontWeight.SemiBold else FontWeight.Normal,
+                        maxLines = 1,
+                        modifier = Modifier.weight(1f)
                     )
-                }
-                testResult?.let { (m, ok, msg) ->
-                    Text(
-                        if (ok) "✓ 连接成功，接口已自动补全" else "✗ $m 连接失败：${msg ?: "请检查配置"}",
-                        style = AppTypography.labelSmall,
-                        color = if (ok) Success else Error
-                    )
-                }
-
-                Spacer(Modifier.height(Spacing.xs))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                    TextButton(
-                        onClick = onDismiss,
-                        modifier = Modifier.weight(1f).height(AppDimens.INPUT_ROW_HEIGHT_DP.dp)
-                    ) { Text("取消", style = AppTypography.labelLarge, color = TextSecondary) }
-                    val saving by viewModel.saving.collectAsStateWithLifecycle()
-                    Button(
-                        onClick = {
-                            scope.launch {
-                                val thinkingInt = if (thinking) 1 else 0
-                                val success = viewModel.saveTicketWithProbe(
-                                    ticket?.id, name, baseUrl, models, key.trim(), thinkingInt
-                                )
-                                if (success) onDismiss()
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White),
-                        shape = LoveBrainShape.md,
-                        enabled = !saving &&
-                            name.isNotBlank() &&
-                            baseUrl.isNotBlank() &&
-                            models.isNotEmpty() &&
-                            (ticket != null || key.isNotBlank()),
-                        modifier = Modifier.weight(1f).height(AppDimens.INPUT_ROW_HEIGHT_DP.dp)
+                    IconAction(
+                        Icons.Filled.Star,
+                        "设为当前",
+                        tint = if (m == currentModel) Primary else TextHint
                     ) {
-                        if (saving) {
-                            CircularProgressIndicator(
-                                color = Color.White,
-                                modifier = Modifier.size(16.dp),
-                                strokeWidth = 2.dp
-                            )
-                        } else {
-                            Text(if (ticket == null) "保存" else "保存修改", style = AppTypography.labelLarge)
+                        currentModel = m
+                        if (ticket != null) viewModel.setTicketModel(ticket.id, m)
+                    }
+                    IconAction(ImageVector.vectorResource(R.drawable.ic_unplug), "测试连接", tint = Primary) {
+                        testingModel = m
+                        testResult = null
+                        scope.launch {
+                            val t = ticket ?: ProviderTicket(name = name.ifBlank { "未命名" }, baseUrl = baseUrl, model = m, models = models)
+                            val result = viewModel.testConnection(t, m, key.trim())
+                            testingModel = null
+                            testResult = Triple(m, result.success, result.message)
                         }
                     }
+                    IconAction(Icons.Filled.Edit, "编辑", tint = TextSecondary) {
+                        modelInput = m
+                        editIndex = i
+                    }
+                    IconAction(Icons.Filled.Delete, "删除", tint = Error) { deleteModel(i) }
+                }
+            }
+            if (testingModel == m) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = Spacing.md)) {
+                    CircularProgressIndicator(color = Primary, modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp), strokeWidth = Spacing.xs)
+                    Spacer(Modifier.width(Spacing.sm))
+                    Text("测试中…", style = AppTypography.labelSmall, color = TextHint)
+                }
+            }
+        }
+        if (addingModel) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                CompactInput(
+                    value = modelInput,
+                    onValueChange = { modelInput = it },
+                    placeholder = "模型名称",
+                    modifier = Modifier.weight(1f)
+                )
+                IconAction(Icons.Filled.Check, "确认") { commitModelInput(-1) }
+                IconAction(Icons.Filled.Close, "取消", tint = TextHint) {
+                    modelInput = ""; addingModel = false
+                }
+            }
+        } else {
+            // 实量 **79x22dp、role=无**：这一行只有 22dp 高，读屏也只念得出字、念不出按钮。
+            // 仍是那条"热区与视觉分两层/垫本人"的修法——`clickable` 排在 `padding` 之前，
+            // 否则内边距落在热区外面，等于白垫（同形缺陷在两块面板上量到 10 处，账本 §44）。
+            Text(
+                "＋ 添加模型",
+                style = AppTypography.labelLarge,
+                color = Primary,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier
+                    .clip(LoveBrainShape.md)
+                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                    .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                    .clickable(role = Role.Button) { addingModel = true }
+                    .padding(horizontal = Spacing.md, vertical = Spacing.xs)
+            )
+        }
+        testResult?.let { (m, ok, msg) ->
+            Text(
+                if (ok) "✓ 连接成功，接口已自动补全" else "✗ $m 连接失败：${msg ?: "请检查配置"}",
+                style = AppTypography.labelSmall,
+                color = if (ok) Success else Error
+            )
+        }
+
+        Spacer(Modifier.height(Spacing.xs))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+            TextButton(
+                onClick = onDismiss,
+                modifier = Modifier.weight(1f).height(AppDimens.INPUT_ROW_HEIGHT_DP.dp)
+            ) { Text("取消", style = AppTypography.labelLarge, color = TextSecondary) }
+            val saving by viewModel.saving.collectAsStateWithLifecycle()
+            Button(
+                onClick = {
+                    scope.launch {
+                        val thinkingInt = if (thinking) 1 else 0
+                        val success = viewModel.saveTicketWithProbe(
+                            ticket?.id, name, baseUrl, models, key.trim(), thinkingInt
+                        )
+                        if (success) onDismiss()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White),
+                shape = LoveBrainShape.md,
+                enabled = !saving &&
+                    name.isNotBlank() &&
+                    baseUrl.isNotBlank() &&
+                    models.isNotEmpty() &&
+                    (ticket != null || key.isNotBlank()),
+                modifier = Modifier.weight(1f).height(AppDimens.INPUT_ROW_HEIGHT_DP.dp)
+            ) {
+                if (saving) {
+                    CircularProgressIndicator(
+                        color = Color.White,
+                        modifier = Modifier.size(16.dp),
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text(if (ticket == null) "保存" else "保存修改", style = AppTypography.labelLarge)
                 }
             }
         }
@@ -609,7 +642,16 @@ internal fun MiniSwitchRow(
     }
 }
 
-/** 弹窗内行尾图标操作钮——48dp 触摸区满足无障碍下限 */
+/**
+ * 弹窗内行尾图标操作钮——48dp 触摸区满足无障碍下限。
+ *
+ * ⚠ 这一格原来只有"够大"这一半：语义树实量 48x48dp **但 `role=无`**，
+ * 名字还是靠里面那颗 `Icon` 的 `contentDescription` 被合并上来才念得出的。
+ * 同一族形状（外层可点的 Box 不带角色、名字只写在内层图标上）在知识库那颗
+ * 18dp 删除图标上量到的是 **`role=Image`**（账本 §45.2）——"合并出来的角色"
+ * 根本不是读屏要的那个。所以角色与名字都改挂在**带点击的这一颗自己**上，
+ * 内层图标降级成装饰（`contentDescription = null`，否则合并成「X+X」念两遍）。
+ */
 @Composable
 private fun IconAction(
     icon: ImageVector,
@@ -621,9 +663,10 @@ private fun IconAction(
         modifier = Modifier
             .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .clip(LoveBrainShape.full)
-            .clickable(onClick = onClick),
+            .clickable(role = Role.Button, onClick = onClick)
+            .semantics { contentDescription = contentDesc },
         contentAlignment = Alignment.Center
     ) {
-        Icon(imageVector = icon, contentDescription = contentDesc, tint = tint, modifier = Modifier.size(20.dp))
+        Icon(imageVector = icon, contentDescription = null, tint = tint, modifier = Modifier.size(20.dp))
     }
 }

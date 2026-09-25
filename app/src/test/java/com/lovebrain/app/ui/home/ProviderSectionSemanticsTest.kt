@@ -3,7 +3,7 @@ package com.lovebrain.app.ui.home
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onFirst
+
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
@@ -241,13 +241,14 @@ class ProviderSectionSemanticsTest {
     }
 
     /**
-     * ⚠ **这三格没留下**，因为表单挂不起来，而挂着三格会每次白烧 3×60 秒的
-     * `AppNotIdleException`。本来要写的是：
-     * ①整张表单每个可交互节点过 48dp；②每个节点有名字；③那颗"保存"（§4 ⑬ 剩下
-     * 4 处 Material Button 里的第一处）几何与角色对不对。**三条一条都没量到**。
+     * ⚠ **这三格当时没留下**（本文件到此为止只是历史；现在的守卫在
+     * `ProviderFormSemanticsTest`，八格，已经跑起来了）。
+     * 当时写不下去的原因记在这里，别让下一个人重跑：
+     * ①整张表单每个可交互节点过 48dp；②每个节点有名字；③那颗"保存"的几何与角色。
      *
      * **原因已经做实验定下来了，不是猜**：一次性诊断件（已收档到
-     * `_temp/ZzDialogTextFieldIdleProbeTest.kt.retired`）把**裸 `Dialog` + 一颗
+     * `_temp/ZzProviderFormDumpTest.kt.retired-2026-09-26` 之前那一份
+     * `ZzDialogTextFieldIdleProbeTest.kt.retired`）把**裸 `Dialog` + 一颗
      * `OutlinedTextField`** 单独挂起来，`waitForIdle()` 报
      * `Compose did not get idle after 1,013,194 attempts in 60 SECONDS`。
      * 也就是说：这台仪器里"Dialog 窗口 + 文本框焦点"永不空闲，
@@ -260,11 +261,11 @@ class ProviderSectionSemanticsTest {
      * - 那两颗 spinner：**不是**（条件渲染，挂载时没画出来）；
      * - Dialog + 文本框这一组合：**是它**。
      *
-     * ⇒ 下一步也不是"继续调时钟"（`autoAdvance=false` 手动推帧试过，仍不空闲），
-     *   是**把表单内容抽成一颗可单挂的 internal 组件**（照 `MiniSwitchRow`/`KbListScreen`
-     *   的手法），让 `Dialog` 只剩一个外壳。那是一次约 230 行的机械搬动，
-     *   得单独一格做、搬完立刻用本文件这三格验收。
+     * ⇒ 出路也不是"继续调时钟"（`autoAdvance=false` 手动推帧试过，仍不空闲），
+     *   而是**把表单内容抽成一颗可单挂的 internal 组件**——这一条已经在 `c202da2` 之后
+     *   做完（`ProviderFormBody`，约 190 行的机械搬动），三格现在都在
+     *   `ProviderFormSemanticsTest` 里，且各自过了变异反证。
      *   报错线索留一条通用的：**栈顶行号超出文件长度**
-     *   （`ProviderSection.kt:872`，全文 583 行）＝是内联/夹具的问题，不是那一行坏了。
+     *   （`ProviderSection.kt:872`，当时全文 583 行）＝是内联/夹具的问题，不是那一行坏了。
      */
 }

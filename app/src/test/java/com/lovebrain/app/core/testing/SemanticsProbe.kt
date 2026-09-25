@@ -30,6 +30,16 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
         val isToggle: Boolean,
         val toggleState: String?,
         val disabled: Boolean,
+        /**
+         * 这一颗是**可编辑文本**吗（带 `SetText` 动作）？
+         *
+         * 加这一栏是因为有一条判据不能套在输入框上：本机实量供应商表单的三颗输入框，
+         * 尺寸与名字都对，`role` 却是 `无`——1.6.8 的 `BasicTextField` 根本不报角色。
+         * 拿"可交互就得有角色"去判输入框，得到的是一条**永远修不红**的假闸
+         * （与坑表 66 那一族同形：判据换了对象就不再成立）。
+         * 输入框那一面该判的是 §6.5 第②栏的"读屏说得出它是什么"。
+         */
+        val editable: Boolean,
         val widthDp: Float,
         val heightDp: Float,
         val leftDp: Float,
@@ -105,6 +115,7 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
             isToggle = node.config.contains(SemanticsProperties.ToggleableState),
             toggleState = node.config.getOrNull(SemanticsProperties.ToggleableState)?.toString(),
             disabled = node.config.contains(SemanticsProperties.Disabled),
+            editable = node.config.contains(SemanticsProperties.EditableText),
             widthDp = bounds.width / density,
             heightDp = bounds.height / density,
             leftDp = bounds.left / density,
