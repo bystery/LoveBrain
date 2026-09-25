@@ -55,11 +55,6 @@ import com.lovebrain.app.model.SchemeSource
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.core.designsystem.rememberPressScale
-import com.lovebrain.app.core.designsystem.LbModalSheet
-import com.lovebrain.app.core.designsystem.LbModalSheetTitle
-import com.lovebrain.app.core.designsystem.LbModalSheetActions
-import com.lovebrain.app.core.designsystem.LbDialogAction
-import com.lovebrain.app.core.designsystem.LbDialogActionTone
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.util.L
@@ -111,6 +106,10 @@ fun ResultArea(
     onRecordSent: () -> Unit = {},
     // 打开记忆纠正中心
     onShowCorrectionCenter: () -> Unit = {},
+    // §6.4：纠正浮层的状态与渲染归 MemoryCorrectionFlow。
+    // 面板顶层传进来时遮罩盖满面板；没传就在本地建一颗并就地渲染——
+    // 少一处接线不会变成"点了没反应"。
+    correctionFlow: MemoryCorrectionFlow? = null,
     // 稳定轮次身份——只在整轮 generate 成功时变化
     generationRoundId: Int = 0,
     modifier: Modifier = Modifier
@@ -192,6 +191,9 @@ fun ResultArea(
             // ResultUtilityTrigger 只负责 toggle 事件，MemoryRefsSection 在主 Column 中渲染。
             // 默认 showRefs=false 不增加高度；用户展开后正常增加高度。
             var showRefs by remember(generationRoundId) { mutableStateOf(false) }
+            // 谁持有 flow 谁渲染宿主：调用方给了就用人家的、不再就地画
+            val flow = correctionFlow ?: rememberMemoryCorrectionFlow()
+            val hostLocally = correctionFlow == null
 
             // Box 外层——ResultUtilityTrigger 用 align(TopEnd) 覆盖，
             // 不参与 Column measurement，默认状态额外纵向高度 = 0。
@@ -242,7 +244,8 @@ fun ResultArea(
                             memoryRefs = memoryRefs,
                             showRefs = showRefs,
                             onCorrection = onCorrection,
-                            onUndoCorrection = onUndoCorrection
+                            onUndoCorrection = onUndoCorrection,
+                            correctionFlow = flow
                         )
                     }
                 }
@@ -250,6 +253,21 @@ fun ResultArea(
                 // 结果级 utility trigger——右上角 overlay，不参与 Column measurement。
                 // 只负责：⋯ trigger + DropdownMenu + toggle 事件。
                 // 默认未展开状态额外纵向高度 = 0。
+                if (hostLocally) {
+                    MemoryCorrectionFlowHost(
+                        flow = flow,
+                        onMute = { id, duration ->
+                            onCorrection(id, CorrectionAction.MUTED, "", duration)
+                        },
+                        onWrong = { id, text ->
+                            onCorrection(
+                                id, CorrectionAction.WRONG, text,
+                                com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE
+                            )
+                        }
+                    )
+                }
+
                 ResultUtilityTrigger(
                     memoryRefs = memoryRefs,
                     showRefs = showRefs,
@@ -961,7 +979,8 @@ private fun MemoryRefsSection(
     memoryRefs: List<MemoryRef>,
     showRefs: Boolean,
     onCorrection: (String, CorrectionAction, String, com.lovebrain.app.model.MuteDuration) -> Unit,
-    onUndoCorrection: (String) -> Unit
+    onUndoCorrection: (String) -> Unit,
+    correctionFlow: MemoryCorrectionFlow
 ) {
     AnimatedVisibility(
         visible = showRefs && memoryRefs.isNotEmpty(),
@@ -985,12 +1004,7 @@ private fun MemoryRefsSection(
                     ref = ref,
                     onCorrection = onCorrection,
                     onUndoCorrection = onUndoCorrection,
-                    onCorrectionWithMute = { memoryId, duration ->
-                        onCorrection(memoryId, CorrectionAction.MUTED, "", duration)
-                    },
-                    onCorrectionWithReplacement = { memoryId, text ->
-                        onCorrection(memoryId, CorrectionAction.WRONG, text, com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
-                    }
+                    correctionFlow = correctionFlow
                 )
             }
             if (memoryRefs.size > maxInitialRefs && !showAllRefs) {
@@ -1048,18 +1062,14 @@ private fun UtilityMenuItem(
  * ⋯ 菜单内提供：不对 / 结束 / 暂时别提 / 不是她 / 撤销。
  */
 @Composable
-private fun MemoryRefItem(
+internal fun MemoryRefItem(
     ref: MemoryRef,
     onCorrection: (String, CorrectionAction, String, com.lovebrain.app.model.MuteDuration) -> Unit,
     onUndoCorrection: (String) -> Unit,
-    // 带时长的"暂时别提"和带输入的"不对"
-    onCorrectionWithMute: (String, com.lovebrain.app.model.MuteDuration) -> Unit = { id, _ -> onCorrection(id, CorrectionAction.MUTED, "", com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE) },
-    onCorrectionWithReplacement: (String, String) -> Unit = { id, text -> onCorrection(id, CorrectionAction.WRONG, text, com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE) }
+    /** §6.4：浮层的开关与草稿都归持有者，这一行只发意图 */
+    correctionFlow: MemoryCorrectionFlow
 ) {
     var menuOpen by remember { mutableStateOf(false) }
-    var showMuteSubmenu by remember { mutableStateOf(false) }
-    var showWrongDialog by remember { mutableStateOf(false) }
-    var wrongText by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -1089,22 +1099,32 @@ private fun MemoryRefItem(
                 modifier = Modifier.weight(1f)
             )
             // ⋯ 菜单入口
+            // §6.5 :531：可点击盒子必须 ≥48dp。这里以前是 `Box(size = 28.dp).clickable{}`——
+            // 字形 28dp 没问题，但点击挂在 28dp 的盒子上就是"点不到"（新守卫
+            // `MemoryCorrectionFlowTest` 实量到 28x28dp）。
+            // 形状与结果级那颗 utility trigger 一致：外层 48dp 承担点击，内层 28dp 只管字形。
             val (menuInteraction, menuScale) = rememberPressScale(0.92f, "refMenuScale")
             Box(
                 modifier = Modifier
-                    .size(28.dp)
-                    .graphicsLayer { scaleX = menuScale; scaleY = menuScale }
-                    .clip(LoveBrainShape.sm)
+                    .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
                     .clickable(interactionSource = menuInteraction, indication = null) {
                         menuOpen = !menuOpen
                     },
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    "⋯",
-                    style = AppTypography.labelLarge,
-                    color = TextHint
-                )
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .graphicsLayer { scaleX = menuScale; scaleY = menuScale }
+                        .clip(LoveBrainShape.sm),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "⋯",
+                        style = AppTypography.labelLarge,
+                        color = TextHint
+                    )
+                }
             }
         }
 
@@ -1119,7 +1139,7 @@ private fun MemoryRefItem(
             // "不对"——弹出输入框让用户输入正确内容
             CorrectionDropdownItem("不对", "标记为错误内容") {
                 menuOpen = false
-                showWrongDialog = true
+                correctionFlow.requestWrong(ref.id)
             }
             CorrectionDropdownItem("结束", "这件事已结束") {
                 onCorrection(ref.id, CorrectionAction.FINISHED, "", com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
@@ -1128,7 +1148,7 @@ private fun MemoryRefItem(
             // "暂时别提"——展开时长选择子菜单
             CorrectionDropdownItem("暂时别提", "暂停作为续聊素材") {
                 menuOpen = false
-                showMuteSubmenu = true
+                correctionFlow.requestMute(ref.id)
             }
             CorrectionDropdownItem("不是她", "归属错误，暂时隔离") {
                 onCorrection(ref.id, CorrectionAction.WRONG_PERSON, "", com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
@@ -1140,77 +1160,6 @@ private fun MemoryRefItem(
             }
         }
 
-        // "暂时别提"时长选择子菜单——§6.1：浮层归 LbModalSheet，这一档**没有主动作**
-        // （旧形状在这里传 `confirmLabel = ""`，于是画出一颗 24x22dp、没有任何名字的按钮）
-        if (showMuteSubmenu) {
-            LbModalSheet(onDismissRequest = { showMuteSubmenu = false }) {
-                LbModalSheetTitle("暂停时长")
-                Spacer(Modifier.height(Spacing.md))
-                Column {
-                    CorrectionSubmenuItem("仅本轮") {
-                        onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.THIS_ROUND)
-                        showMuteSubmenu = false
-                    }
-                    CorrectionSubmenuItem("今天剩余") {
-                        onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.TODAY)
-                        showMuteSubmenu = false
-                    }
-                    CorrectionSubmenuItem("直到手动恢复") {
-                        onCorrectionWithMute(ref.id, com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE)
-                        showMuteSubmenu = false
-                    }
-                }
-                LbModalSheetActions(
-                    listOf(LbDialogAction("取消", { showMuteSubmenu = false },
-                        tone = LbDialogActionTone.Muted))
-                )
-            }
-        }
-
-        // "不对"——输入正确内容
-        if (showWrongDialog) {
-            LbModalSheet(onDismissRequest = { showWrongDialog = false }) {
-                LbModalSheetTitle("标记为错误")
-                Spacer(Modifier.height(Spacing.sm))
-                // §6.5 第②栏：这句既是屏幕上那行说明、也是输入框自己的读屏名字——
-                // 用同一条资源，别两处各写一遍（写两遍就是下一次改漏一处的根源）
-                val wrongHint = stringResource(R.string.memory_wrong_input_hint)
-                Text(
-                    text = wrongHint,
-                    style = AppTypography.labelSmall,
-                    color = TextSecondary
-                )
-                Spacer(Modifier.height(Spacing.xs))
-                OutlinedTextField(
-                    value = wrongText,
-                    onValueChange = { wrongText = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .semantics { contentDescription = wrongHint },
-                    placeholder = {
-                        Text("输入正确的内容", style = AppTypography.labelSmall, color = TextHint)
-                    },
-                    textStyle = AppTypography.labelSmall.copy(color = TextPrimary),
-                    singleLine = false,
-                    maxLines = 3,
-                    shape = LoveBrainShape.sm
-                )
-                Spacer(Modifier.height(Spacing.md))
-                LbModalSheetActions(
-                    listOf(
-                        LbDialogAction("取消", { showWrongDialog = false },
-                            tone = LbDialogActionTone.Muted),
-                        LbDialogAction(
-                            label = "确认",
-                            onClick = {
-                                onCorrectionWithReplacement(ref.id, wrongText.trim())
-                                showWrongDialog = false
-                            }
-                        )
-                    )
-                )
-            }
-        }
     }
 }
 
@@ -1293,7 +1242,7 @@ private fun InputChangedBanner(
  * "暂时别提"时长选择子菜单项。
  */
 @Composable
-private fun CorrectionSubmenuItem(
+internal fun CorrectionSubmenuItem(
     label: String,
     onClick: () -> Unit
 ) {

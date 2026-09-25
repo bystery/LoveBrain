@@ -150,6 +150,9 @@ fun LoveBrainPanelScreen(
 
     // 记忆纠正中心
     var showCorrectionCenter by remember { mutableStateOf(false) }
+    // §6.4：本轮参考记忆的两颗纠正浮层（暂停时长 / 标记为错误）的状态与渲染
+    // 从结果区那一行里搬到这里——遮罩因此盖得住整个面板，而不是只盖住那一行
+    val memoryCorrectionFlow = rememberMemoryCorrectionFlow()
     var correctionCenterCorrections by remember { mutableStateOf<Map<String, com.lovebrain.app.model.MemoryCorrection>>(emptyMap()) }
 
     LaunchedEffect(Unit) {
@@ -454,6 +457,7 @@ fun LoveBrainPanelScreen(
                                 onRetry = { viewModel.generate() },
                                 // 本轮参考记忆 + 纠正回调
                                 memoryRefs = viewModel.getCurrentMemoryRefs(),
+                                correctionFlow = memoryCorrectionFlow,
                                 onCorrection = { memoryId, action, replacementText, muteDuration ->
                                     viewModel.applyMemoryCorrection(memoryId, action, replacementText, "", muteDuration)
                                 },
@@ -585,6 +589,26 @@ fun LoveBrainPanelScreen(
                     .padding(horizontal = Spacing.md, vertical = Spacing.sm)
             )
         }
+
+        // §6.4：纠正浮层的唯一渲染处，挂在面板这一层（不是结果行里）
+        MemoryCorrectionFlowHost(
+            flow = memoryCorrectionFlow,
+            onMute = { memoryId, duration ->
+                viewModel.applyMemoryCorrection(
+                    memoryId = memoryId,
+                    action = com.lovebrain.app.model.CorrectionAction.MUTED,
+                    muteDuration = duration
+                )
+            },
+            onWrong = { memoryId, text ->
+                viewModel.applyMemoryCorrection(
+                    memoryId = memoryId,
+                    action = com.lovebrain.app.model.CorrectionAction.WRONG,
+                    replacementText = text,
+                    muteDuration = com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE
+                )
+            }
+        )
 
         ResizeGrip(
             onResize = onResize,
