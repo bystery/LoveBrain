@@ -1535,9 +1535,9 @@ if (statusText != null) {
 
 - `HomeSettingRow` / `HomeActionCard` / `HomeSectionHeader` / `HomeTopBar` / `UsageSummary`
   的**改名 + 搬进 `core/designsystem`**（表里名字那半）仍没做，本轮只把它们其中一颗的语义修对了。
-- 首页四段（§6.2）**仍然没有任何自动守卫**：今天靠人眼看顺序。这格没顺手加，
+- 首页四段（§6.2）**当时仍然没有任何自动守卫**：顺序全靠人眼看。这格没顺手加，
   因为它需要挂整页 `HomeScreen`（要造 4 个 StateFlow + 动 `FloatingService.instance` 这个静态），
-  是一件独立事，别混在本格里做半套。
+  是一件独立事，别混在本格里做半套。**→ 下一格（§25，`11e121f`）做的正是它：守卫装在了改名之前。**
 - `LbRowState` 只有两档，是照今天真实存在的两种说法建的；
   出现"第三种就绪状态"时该新增还是换表，届时要判，不要顺手塞一个 `Pending`。
 - 上一格提的"字面量那把尺看不见自定义组件参数位"仍没动（`HomeSettingRow(title = "模型供应商",
