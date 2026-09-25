@@ -2778,3 +2778,108 @@ X8 没做：**"没有案例就什么都不画"那一格构造不出反例**—�
 - "返回键算不算取消""浮层出现时焦点在哪"这类**可见性语义**仍零断言（§28.8、§29.6 那两笔记过）。
 - `KbEditScreen` / 面板真屏仍未接进 JVM 仪器：本格测的是**测试里复刻的接法**。
 - 设备侧照旧未跑（本机无 system image）。TalkBack 里这颗 checkbox 到底念成什么，要 CI 或人工那一次才算最终确认。
+
+---
+
+# 追加二十五：§6.4 第五刀——「记录实际发送」归持有者，并修掉两条把用户关在浮层里的死路（提交 `6d2d45c` + `67c8dfa`）
+
+## 35.1 指导书那句话与这次动的范围
+
+:523（§6.4）那份清单里的**"发送记录"**。它跟前三块不一样：形状在 `5245788` 就归了
+`LbModalSheet`，欠的是**状态的所有者**——`LoveBrainPanelScreen` 中段摊着四颗
+`var … by remember { mutableStateOf(…) }`（开不开、保存中、草稿正文、绑哪张候选）。
+
+这一格分两笔提交，因为是**两个验收目标**：
+`6d2d45c` 先修那段接线量到的两条死路，`67c8dfa` 再收状态。
+
+## 35.2 收持有者之前先读到的两条真缺陷（两格先红后绿，不是我推的）
+
+① **枚举五种结果，那段接线只写三种。** `if / else if` 链漏了 `IDLE` 与 **`NO_KB`**，
+而 `NO_KB` 是真会发生的（`recordActualSentMessage` 在未激活知识库时就吐它）。
+漏掉的那一支落到"什么都不做" ⇒ `saving` 解不开 ⇒ 而浮层的取消与遮罩都是
+`enabled = !saving`——**用户既关不掉也退不出，只能杀掉悬浮窗**。
+
+② **重复失败不再发射。** `actualSentState` 是 `StateFlow`，同一个值连续两次不再发射。
+第一次 `IO_ERROR` 之后浮层停在"保存中"，用户改两个字再确认、又失败——第二次没有任何跳变可观察。
+实测收集到的整段序列就是证据：**`[IDLE, IO_ERROR]`**，两次尝试只有一颗失败信号。
+
+修法：①改成穷尽 `when`；②`recordActualSentMessage` 每次开头先回 `IDLE`，让每次尝试都可观察。
+
+**探针 Z1（Y1）顺带量到一件好事**：把 `when` 里某一支删掉，编译器当场报
+`'when' expression must be exhaustive`。所以"漏一支"这件事**编译器已经替我守着**了——
+我那条静态尺真正要防的是另一种形状：**用 `else -> {}` 满足编译器、却把一种结果悄悄吞掉**。
+
+## 35.3 那条静态尺的判据，是被自己的探针逼出来的
+
+第一版尺子读的是**原始源码**，于是"写一句 `// NO_KB 还没处理`"就能把它糊过去——
+那正是复核报告点名的"注释式修复"。改法：**先去注释再判**。
+
+反证探针（`_temp/mut82_else_swallow.py`）注入的是那个**能编译**的坏法：
+把 `NO_KB` 从列举里拿掉、末端补一个 `else -> {}`、再留一句 `// NO_KB 也走这里`。
+⇒ 编译器满意，尺照样红（`[Y1b] BIT`）。
+两把尺的枚举内容都是从 `ActualSentState.entries` **现算**的，不在测试里抄名单——
+抄一份的话以后加第六种状态它照样绿。
+
+## 35.4 为什么值得为这块做一个类
+
+这一屏的承诺写在它自己的文案里：**失败时浮层不关、用户已经敲进去的正文要留着**。
+放在四颗 `var` 里，这条承诺只能"读那段接线然后相信它"；收进 `RecordSentFlow` 之后
+它是 `RecordSentFlowTest` 里可以直接调的不变量（`saveRejected` 之后草稿还在、锁已放开）。
+§35.2 那两条死路正是这类承诺散在局部变量里才写得出来的。
+
+**持有者不认识 VM**：屏幕观察到跳变后调 `recorded()` / `saveRejected()`。
+让持有者自己订阅状态流会把分层穿破（`UiLayerDependencyContractTest` 那条闸会红）。
+
+`RecordSentDialog` 更名 `RecordSentFlowHost`（唯一渲染处），旧文件按禁删规矩
+rename 进 `_temp/RecordSentDialog.kt.retired-2026-09-25`（7058 字节，未删除）。
+
+## 35.5 棘轮成对改，以及它自己的续集
+
+`panel decision surfaces are held by state holders, not ad-hoc booleans`：
+`adHocBudget 3 → 1`（只剩 `showOnboard`，引导卡片、不是浮层，但按形状判会被数进来），
+`holderFloor 2 → 3`。**只降杂散布尔那一侧、不抬 holder 下限**的话，
+下限就停在"几颗都算过"，那把反证的尺当场失效——坑表 71 那个坑的续集。
+
+## 35.6 这一格我自己弄错的三处
+
+1. **Z4 第一版没咬。** 那格写的是 `open → beginSaving → saveRejected → cancel → open`，
+   把 `open` 里那句 `saving = false` 删掉照样全绿——因为 `saveRejected` 早就放开了锁，
+   走到第二次 `open` 时 `saving` 本来就是 false。**它从头到尾没构造出它声称要防的状态**
+   （坑表 69 第三次命中同一族）。改成直接 `open → beginSaving → 再 open` 之后 Z4 才咬。
+2. **"反空跑"那格我算错了数。** 我写"六个快照该有 5 种不同组合"，实到 4——
+   `beginSaving` 与随后被吞掉的 `editDraft` 本就是同一个状态（那正是要断言它没变）。
+   改成把六个观察值**逐个列出**比对，不再比我算出来的计数。
+3. **装配顺序慢一帧。** 把 `flow.open()` 写在 `setContent` 之后，`while saving` 那一格
+   关了 `autoAdvance`，多出来的那一帧不会来 ⇒ 整棵浮层不进树 ⇒
+   探针报"一个可点击节点都没测到"，**看着像实现被删，其实是夹具慢一帧**。
+   开状态改到 `setContent` 之前，并在注释里把这条写死。
+
+还有一处主动的取舍：探针表里我本来放了"把 `adHocBudget` 从 1 抬到 9"这一发。
+它**永远不可能咬**（预算放松只会让闸通过），记成"跑过了"就是假证据，所以删掉没跑。
+
+## 35.7 实测
+
+- 全套：**173 套件 / 1316 单测 / 0 失败 / 0 错误 / 0 跳过**。
+  与上一格（171 / 1307）对账：套件 +2 = `RecordSentFailurePathTest` 与 `RecordSentFlowTest`；
+  单测 +9 = 前者 2 格 + 后者 7 格。两笔提交各自的中途读数是 1309（第一笔之后）
+  与 1316（第二笔之后），差的 7 就是 `RecordSentFlowTest` 那七格。
+- lint 重生成后 **68 / 15**、进预算 **67 / 14**、advisory 1 —— 一字未动。
+- 包依赖 6；工单 PASS；`git diff --exit-code 286c9406..HEAD -- assets/engine` rc=0；
+  prompt 资产锁 OK；门禁自测 27 格 OK；`:app:assembleDebugAndroidTest` rc=0。
+- 探针 Z1–Z7 各咬自己那格（Z4 修好判据之后重跑确认），每笔单独应用回滚，
+  `cmp` 级核对报 `CLEAN`；Y1b 另跑一次确认注释糊不过去。
+
+## 35.8 这格没做的
+
+- **面板真屏仍没接进 JVM 仪器。** §35.2 那两条死路的**修法**里，
+  "穷尽 when"是编译器与静态尺守着、"每次尝试都可观察"是 VM 层测到，
+  但**"用户在浮层里点确认→失败→再确认→这次能取消"这一整条链没有端到端断言**
+  （要接 `LoveBrainPanelScreen` 连 VM 与悬浮窗环境）。这一格是拆成
+  "持有者不变量 + VM 可观察性 + 静态穷尽性"三块分别守的，合起来不等于链路验过。
+- `recordSent.open()` 今天只被结果级入口调用，`schemeIdentityKey`/`prefill` 恒为 `null`/`""`
+  ——**"从当前候选预填"这条能力在这一屏走不到**。持有者留了这两个参数（VM 那边
+  `recordActualSentMessage(text, linkedSchemeIdentityKey)` 本来就吃），
+  但**没有哪一格证明预填真能用**，别当成已实现的功能。
+- `showOnboard` 仍在棘轮的 1 里，它不是浮层、没有对应持有者；将来若收它，
+  `adHocBudget` 降到 0 那天**必须同时把 `holderFloor` 抬到 4**，否则反证那把尺归零。
+- 设备侧照旧未跑（本机无 system image）。
