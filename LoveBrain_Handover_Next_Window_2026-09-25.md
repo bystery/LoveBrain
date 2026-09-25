@@ -6,12 +6,12 @@
 > 上一份开工单：`LoveBrain_Handover_Next_Window_2026-09-24.md`（它的 §2.1/§2.2 已由本轮做完，其余仍有效）
 > **账本最近三节**：「追加八」§18（编辑位判据）、「追加九」§19（量完两格决定不动 + 输入框读屏名字）、
 > 「追加十」§20（知识库页四态 + 页头 32dp 返回钮）。读本文件前先看完这三节。
-> **本文件的读法**：§0.1–§0.21 是一格一段的增量（§0.21 最新，`b2c384c`），§1 起手命令与现在值，
+> **本文件的读法**：§0.1–§0.22 是一格一段的增量（§0.22 最新，`5d6b71a`），§1 起手命令与现在值，
 > §2 被证伪的旧话（含"注释承诺了一道不存在的闸"那类），§4 下一格顺序（6 = §6.1 剩余 8 行，
-> 6b = 便宜穿插格），§5 已做勿重复，§6 坑表（**70–71 最新**：算出来的数写进注释、
-> 新闸的预算靠推理填）。
-> 账本最近三节：§31 输入框读屏名字、§32 §6.4 第二刀（纠正浮层归持有者）、
-> §33 §6.4 第三刀（纠正中心归持有者 + 模态宿主，含"合计没动是换桶不是还债"那笔对账）。
+> 6b = 便宜穿插格），§5 已做勿重复，§6 坑表（**72–73 最新**：筛选键会被它正在测的那个性质改掉、
+> 报"探针没咬"的那段代码自己也要有反例；70–71 是"数没量就写"那一族）。
+> 账本最近三节：§32 §6.4 第二刀、§33 §6.4 第三刀、§34 §6.4 第四刀
+> （含"清单里那两项扫过之后：改写不是浮层、候选版本历史这个界面不存在"那条实情）。
 
 ## 0. 一句话现状
 
@@ -522,6 +522,43 @@ HEAD `0c4d6d6`，仍未推。两笔：
   `showSentDialog`/`sentDialogSaving`，就是那把新尺记着的 2 颗）。
   时长三档现在够 48dp，但**读屏念不念得出"选到哪一档"仍没判**。
 
+## 0.22 又一步：§6.4 第四刀——点踩原因面板归模态宿主，选中态挂上语义树（`5d6b71a`）
+
+- :523 那份清单**搬完了**（菜单／纠正中心／发送记录／反馈原因四块中能定位到的三块 + 上一格的纠正中心）。
+  `DislikeReasonPanel` → `DislikeReasonHost`，形状 `LbModalSheet`，四颗动作走 `LbModalSheetActions`，
+  chip 从 `clickable` 改成 `toggleable(value, role = Role.Checkbox)`。
+- 先量再搬，数比纠正中心难看得多（同一把尺、360x900dp 槽）：
+  **16 颗可交互节点里 14 颗不到 48dp**、清一色 **19dp 高**（「其他」「跳过」只有 28dp 宽）；
+  标题贴顶 **y=8dp**；**10/10 颗 chip 的 selected / stateDescription / toggleable 全无**——
+  "选中"在屏幕上唯一的载体是 `"✓ " + label` 这个字符串前缀。§6.5 :532 在这一屏原来是零覆盖。
+  搬完复量：动作 48x48 / 72x48dp，chip ≥48x48dp。
+- **这一格刻意没造 state holder**，理由记在账本 §34.4：它的显隐由
+  `viewModel.currentFeedbackCase` 驱动，再存一颗 `isOpen` 就是把同一个事实放两处。
+  ⇒ 别把 :523 那半句"独立 state holder"当成"每块浮层都要配一个持有者"照抄。
+- 四条守卫判据是**我自己先写错、被红抓回来**的（账本 §34.5，坑表 72）：
+  筛 chip 用中文标签枚举（漏掉带 ✓ 的那颗）；居中阈值照上一格那颗**很短的**浮层抄
+  （这张表单顶到 560dp 上限，居中后标题在 183dp，红的是我的阈值不是实现）；
+  查 chip 的键会被它自己的状态改掉（点完标签变「✓ 其他」，报错还写成"树里没有「其他」"）；
+  一格起了界面构造不出来的名字（"换一条案例"——一台仪器一个测试只能 `setContent` 一次）。
+- ⚠ **驱动脚本也会说谎**（坑表 73）：X4 明明咬中了却被报成 `NO-BITE`，
+  因为分类器用 `expect in red`（列表成员）而取信息的用了子串。改判据、重跑 X4 才确认。
+- 顺手清掉三条**死导入**（`clickable` / `animateContentSize` / `MutableInteractionSource`，
+  正文 0 次使用），而 `lintDebug` 一字未报（重生成后仍 68/15）⇒ **这道闸抓不到死导入，
+  "lint 没报"不等于"没有残留"**。
+- 字符串预算 `TEXT 199→194`、`COMPONENT 72→77`，**四栏合计仍 283**：5 条换桶不是还债。
+  另记一条射程边界：chip 文案写在 `CategoryChipRow(label = "…")` 这种普通函数实参上，
+  `Text(` 与 `Lb*(` 两个锚点从来都看不见——**它本来就在尺外，不是又漏了**。
+- 实测：171 套件 / **1307 例** / 0 红；lint **68/15**、进预算 **67/14**、advisory 1（一字未动）；
+  跨层 **6**；工单、资产零 diff、资产锁、门禁自测 27 格、androidTest 全 RC=0。
+- **清单里那两项终于扫清了**（以前只是没写）：全 `ui/panel/` 实扫剩 **6 处 `LbModalSheet(`**、
+  裸 `Dialog(`/`AlertDialog(` **为 0**。「改写」是 `SchemeCard` 里的 `RewriteState`（卡片状态，不是浮层），
+  **而"候选版本历史"这个界面在全 `app/src/main/java/` 里根本不存在**
+  （搜 `版本历史/VersionHistory/candidateHistory/schemeHistory` 只命中我抄指导书那句 KDoc）
+  ⇒ 这一项判**无从执行**，不写成做完了。
+- ⚠ 仍然欠着的：二级原因 chip 的超长文案/英文长词没进矩阵（:536），`FlowRow` 换行后的热区没量；
+  `SuggestPanel:741` 那颗 sheet 是唯一还没配持有者/宿主的一处（不在 :523 清单里，但同族）；
+  "返回键算不算取消"这类可见性语义仍零断言；`RecordSentDialog` 那两颗散布尔（棘轮账上的 2 颗）没收。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -542,17 +579,20 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 #   只动 main 源文件时 testDebugUnitTest 会判 UP-TO-DATE 跳过、退出码仍然 0（见 §6 第 62 条）
 ```
 
-最近一轮实测基线（到 `b2c384c`）：**1299 单测 / 170 套件 / 0 失败 / 0 错误 / 0 跳过**
-（跑在变异全撤之后的树上）。与上一格对账：1291 → 1299 = +8，169 → 170 套 = +1（`CorrectionCenterTest`）。
-那 +8 笔的出处要能对上：`CorrectionCenterTest` 6 格 + `MemoryCorrectionFlowTest` 时长热区 1 格
-+ `UiLayerDependencyContractTest` holder 棘轮 1 格 = 8。**对不上就是有人加了套件却没加格**。
-lint 报告**重新生成后**实测 **68 / 15**、进预算 **67 / 14**、advisory 1（这一格换了浮层形状，条数一字未动）。
-上一格留下的那 1 条差量是 `AutoboxingStateCreation` 6→5（退役按钮里那个 `mutableStateOf(0)` 计时器，
+最近一轮实测基线（到 `5d6b71a`）：**1307 单测 / 171 套件 / 0 失败 / 0 错误 / 0 跳过**
+（跑在变异全撤 + 死导入清完之后那棵树上）。与上一格对账：1299 → 1307 = +8，170 → 171 套 = +1
+（`DislikeReasonPanelTest`）。那 +8 要逐笔对得上：本格新守卫正好 8 格，一笔不多一笔不少。
+lint 报告**重新生成后**实测 **68 / 15**、进预算 **67 / 14**、advisory 1。
+⚠ 这一格删掉三条死导入（`clickable` / `animateContentSize` / `MutableInteractionSource`，
+正文 0 次使用）之后 lint 数**一字未动** ⇒ **这道闸抓不到死导入**，"lint 没报"不等于"没有残留"；
+残留要靠"去正文里数使用次数"那种自查（账本 §34.7）。
+再上一格那 1 条差量仍是 `AutoboxingStateCreation` 6→5（退役按钮里那个 `mutableStateOf(0)` 计时器，
 新代码写 `mutableIntStateOf`），逐条核过剩余 5 条位置都不在退役文件里才 `--rewrite`
 ⇒ **这是还掉了一条债，不是量的时刻不同**（还债后必须落账这件事，交接单 §0.15 有全程）。
-字符串四栏预算：TEXT **199** / DESC 12 / STATE 0 / COMPONENT **72**，合计 **283**。
-TEXT 与 COMPONENT 这一格各动一次但**合计没动**——那是换桶不是还债，账记在账本 §33.6，
-判据（"合计没变"到底是还债还是尺在漏，只有逐条对上这一种分辨法）也在那儿。
+字符串四栏预算：TEXT **194** / DESC 12 / STATE 0 / COMPONENT **77**，合计 **283**。
+连着两格 TEXT↓ COMPONENT↑ 而合计不动，**两格都是换桶不是还债**（逐条对账在账本 §33.6 / §34.8）。
+§34.8 另记一条射程边界：`CategoryChipRow(label = "…")` 这类**普通函数实参**上的中文，
+`Text(` 与 `Lb*(` 两个锚点从来都看不见——**它在尺外，不是又漏了**。
 跨层 **6** 条；工单编号 rc=0；prompt 资产 lock rc=0 且 `git diff --exit-code 286c9406..HEAD -- assets/engine` rc=0；
 判据自测 27 格 rc=0；`:app:assembleAndroidTest` rc=0。
 **目录现状**：`core/designsystem/` = Color / Dimens / Type / Spacing / Shapes / ScreenState /
@@ -660,39 +700,45 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
      各页仍各写自己的 `Box + background + padding`。
    - 两件小的：供应商编辑器那颗裸 `Dialog(`（闸里点名豁免，等并进 Sheet）；
      "对话框什么时候弹、返回键算不算取消"这类**可见性语义**一条断言都没有（§28.8、§29.6）。
-   - **§6.4 的下一刀 = 状态的所有者 + 剩下那块内联块**（`5245788`/`7fc8150`/`b2c384c`
-     之后重扫过，这段已改口）：`ResultArea.kt` 里现在还剩 **4** 颗局部可见性状态，
-     按所有者数是（`awk` 实扫，行号会漂所以只记所有者）：
-     `ResultArea` 的 `showRefs`、`ResultUtilityTrigger` 的 `menuOpen`、
-     `MemoryRefItem` 的 `menuOpen`、参考区的 `showAllRefs`。
-     这四处是文档流内容与低频菜单的开合，§6.4 :524 那句"⋯ 菜单只放低频次操作"**我没去判**
-     （要判得先定义"低频"，那是产品口径）。
-     `LoveBrainPanelScreen` 里剩 `showSentDialog`/`sentDialogSaving` 两颗散状态
-     ——**这正是新那把 holder 棘轮记下的 2 颗**，别在别处再加第三颗。
-     `CorrectionCenter` **已经搬完**（`b2c384c`）；**只剩 `DislikeReasonPanel` 仍是
-     `Column(fillMaxWidth)` 塞进 `Box(fillMaxSize)`**，那才是 :487 后半句
-     "把展开内容直接插在原页面下方"如今唯一的字面现场。
+   - **§6.4 :523 那份清单已经走完**（`5245788`→`7fc8150`→`b2c384c`→`5d6b71a`，这段已改口）。
+     现在 `ui/panel/` 全扫：**6 处 `LbModalSheet(`、裸 `Dialog(` 与 `AlertDialog(` 为 0**；
+     面板顶层 `Box` 的子项只剩 `DislikeReasonHost` / `RecordSentDialog` /
+     `CorrectionCenterHost` / `MemoryCorrectionFlowHost` + `ResizeGrip`
+     ——**再没有 `Column(fillMaxWidth)` 那种内联展开块**，所以 :487 后半句
+     "不把展开内容直接插在原页面下方"在这一屏如今是成立的（改之前它是字面反例）。
+     清单里那两项另有一条要交代的实情：**「改写」不是浮层**
+     （`SchemeCard` 里的 `RewriteState`，卡片的一种呈现状态），
+     而**「候选版本历史」这个界面在全 `app/src/main/java/` 里不存在**
+     （四个搜索词只命中我抄指导书那句 KDoc）⇒ 判**无从执行**，别写成做完了。
+   - **§6.4 剩下的真账**（下一格若还留在这条主线上就做这些）：
+     ① `showSentDialog` / `sentDialogSaving` 收进 `RecordSentDialog` 的持有者——
+     那把棘轮就能从 3 降到 1，**但同一格必须把 holder 下限从 2 抬到 3**，
+     只降一边等于把尺子拆了（坑表 71）。
+     ② `ResultArea` 里剩 **4** 颗局部可见性状态（`awk` 实扫，行号会漂所以只记所有者）：
+     `ResultArea.showRefs`、`ResultUtilityTrigger.menuOpen`、`MemoryRefItem.menuOpen`、
+     参考区 `showAllRefs`。这些是文档流内容与低频菜单，**:524 那句"⋯ 菜单只放低频次操作"
+     我仍然没判**——要判得先有"低频"的产品口径。
+     ③ `SuggestPanel:741` 那颗 `LbModalSheet` 是唯一还没配持有者/宿主的一处
+     （不在 :523 清单里，但同族）。
+     ④ 这一屏的二级原因 chip 够 48dp 了，但**超长原因名 / 英文长词没进矩阵**（:536），
+     `FlowRow` 换行之后的热区也没量。
+     ⚠ 搬 ① 时仍别把 VM 异步回调（`loadAllCorrections { … }` 那一族）塞进 UI 状态类
    - ~~5 处没名字的输入框~~ —— **代码已全修完**（`408d378`，见 §0.19 与账本 §31）。
      留下的真账是**那两屏还没接进 JVM 仪器**，所以它们的修复只算"改了没验"：
      `KbEditScreen`（private + 要 VM 和真实磁盘）与 `ResultArea`（从来没在 JVM 挂过）。
      下一格若要把它们接上，照抄 `ComposerInputLabelTest` 的 `UiMatrix(...).RenderIn(...)` 形状，
      判据注意用 `contentDescription` **本身**（别写"a ?: b 取第一个非空"，见坑表 68）。
-   - 同一族里还有一格没做：`DislikeReasonPanel` 的勾选行只挂 `clickable`，
-     **读屏听不出某个原因是否已选中**（`assertSelectableAnnounceState` 那把尺还没用到这屏）。
-   - **§6.4 的下一刀（`b2c384c` 之后）**：:523 那份清单只剩**反馈原因**一块——
-     `DislikeReasonPanel`（`LoveBrainPanelScreen` 顶层 `Box` 里，实扫仍是
-     `Column(fillMaxWidth).padding(...)`，**本格没量它的热区，所以不替它报数**；
-     它的形状和搬之前的 `CorrectionCenter` 一模一样，大概率同一族缺陷）。
-     照抄对象已经齐了三份：`MemoryCorrectionFlow`+`MemoryCorrectionFlowHost`（`7fc8150`）、
-     `CorrectionCenterHolder`+`CorrectionCenterHost`（`b2c384c`）。
-     注意这颗的显隐**不在屏幕手里**（由 VM 的 `currentFeedbackCase` 驱动），
-     所以要搬的是**形状**与动作热区，别为了"有个 holder"硬造一颗状态所有者——
-     那会把 VM 的单一真相源拆成两处。
-     同族的另一半小账：把 `showSentDialog`/`sentDialogSaving` 收进
-     `RecordSentDialog` 的持有者，那把棘轮就能从 3 降到 1；
-     **降的那一格必须同时把 holder 下限从 2 抬到 3**，只降一边就是把尺子拆了（坑表 71）。
-     ⚠ 搬的时候仍别把 VM 异步回调（`loadAllCorrections { … }` 那一族）塞进 UI 状态类
-     ——分层那把闸会红，`b2c384c` 里 `CorrectionCenterHolder` 只持 `isOpen` 就是这个原因。
+   - ~~`DislikeReasonPanel` 的勾选行只挂 `clickable`，读屏听不出某个原因是否已选中~~
+     ——**已做**（`5d6b71a`，见 §0.22 与账本 §34）：chip 改 `toggleable(role = Role.Checkbox)`，
+     `assertSelectableAnnounceState` 那把尺第一次用到这一屏，且两头都判
+     （选中的报 On、没选的报 Off；探针 X2 证明"把 value 写死"会红）。
+     **留下的相邻账**：那颗 `✓` 前缀字符串还在（眼睛要看），于是"标签"这个东西
+     会随选中态改变——查节点的判据必须容忍它（坑表 72 就是从这儿来的）。
+   - §6.4 这一族的**判断记录**（别再照旧账做）：`:523` 那半句"独立 state holder"
+     **不是每块浮层都要配一颗持有者**。`DislikeReasonHost` 这格就**刻意没配**——
+     它的显隐由 `viewModel.currentFeedbackCase` 驱动（点踩本身就是入口），
+     再存一颗 `isOpen` 等于把同一个事实放两处，第二天必然不同步。
+     要配的判据是"**这个开合是不是界面自己决定的**"：纠正中心/纠正浮层是，点踩面板不是。
    **主操作以外的重复按钮实现一处都还没收**（全表在账本 §27.7）：`ui/` 下"Primary 底色 + clickable"
    实扫 **17 处 / 11 个文件**。别按数量收口——哪些算"页面主动作"、哪些是 chip / 切换 / 次级动作，
    要一处一处判语义；`054c6e8` 那把归属棘轮只认**声明处**，抓不到"用同一颗组件却自造样式"。
@@ -1065,6 +1111,27 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     这次还顺手抓到 `dir("panel")` 指错目录（真实路径是 `ui/panel`）——
     因为那条断言里带了 `assertTrue(screen.isFile)`，路径写错会当场响；
     **新闸要配一条"文件/目录还在不在"的反证**，否则它扫空集也是绿。
+
+72. **筛选键不许用"会被被测性质改掉的那个值"**（`5d6b71a`，两条守卫都栽在这儿）：
+    我筛 chip 用的是"标签等于「理解错误」/「角色错」…"，可标签本身**就是选中态的载体**
+    （选中时前缀 `✓ `）。于是屏幕上恰好选中的那两颗一颗被查不到、一颗换了名字：
+    第一处漏掉「✓ 理解错误」（组里只剩 9 颗），第二处点完之后 `first { label == "其他" }`
+    直接抛"树里没有「其他」"——**报的是个没发生过的理由**（其实第一跳过了、第二跳丢）。
+    ⇒ ①筛"一组可选项"要用**性质**筛（这里 = `isToggle`），不要用文案枚举；
+    ②要按标签查一个**状态会变**的节点，判据取"去掉那个会变的装饰之后相等"；
+    ③凡是 `first { }` / `firstOrNull` 后面直接解引用的地方，换成带实到清单的报错——
+    `NoSuchElementException: Collection contains no element matching the predicate` 这一句
+    害我连着两轮把**测试的 bug 当成实现的 bug** 去猜（真正的原因是我自己写的注释里那个前提就不成立）。
+
+73. **报"探针没咬"的那段代码本身要有一条反例**（`5d6b71a`，X4 差点被记成没验）：
+    变异驱动的分类器写成 `expect in red`，而 `red` 里是**全格名**、`expect` 记的是**前缀**——
+    成员判断永远不成立，于是明明咬中了却打印 `NO-BITE`。
+    同一个函数里取失败信息那一段用的却是 `expect in tc.get("name")`（子串），两套判据不一致。
+    ⇒ 这类"仪器的仪表读错了"比仪器坏掉更贵：它会把**验过的**记成没验（浪费一轮），
+    更会把**没验的**记成验过（假证据）。改完 `any(expect in n for n in red)` 之后
+    **单独重跑那一发**确认，别只在注释里说"其实是咬中的"。
+    与坑表 65（编译失败要单独分诊）、62（Gradle UP-TO-DATE 让变异假绿）同一族：
+    **先怀疑读数装置，再怀疑被测对象。**
 
 65. **"探针没咬"和"探针没跑到"是两件事，混淆会把人推向改闸**（`38520b0` 那一格，N6/N7 两次）：
     我注入的 Kotlin 本身编译不过（`AlertDialog` 只给两个实参会解析到"自定义 content"那个 overload，
