@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -31,7 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -44,6 +42,8 @@ import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.LbButtonState
+import com.lovebrain.app.core.designsystem.LbPrimaryButton
 import com.lovebrain.app.core.designsystem.LbStatusBadge
 import com.lovebrain.app.core.designsystem.LbRowState
 import com.lovebrain.app.core.designsystem.LbRowTags
@@ -222,31 +222,21 @@ internal fun AssistantStatusCard(
                     textAlign = TextAlign.Center
                 )
                 Spacer(Modifier.height(Spacing.lg))
-                // 唯一主按钮
-                val (btnInteraction, btnScale) = rememberPressScale(0.96f, "heroBtn")
-                Button(
+                // 唯一主按钮。
+                //
+                // 原来这里是 Material `Button(colors = buttonColors(containerColor = Primary))`
+                // + `.height(48.dp)`——本机语义树实量 **119x48dp、role=Button、名字来自资源**，
+                // 也就是说**它几何一直是合格的**。所以这一笔不是修缺陷，是**归所有者**：
+                // §6.1 :479 把"页面唯一主动作"这颗交给了 `LbPrimaryButton`，
+                // 而 :490 禁的正是"同一语义在某一页长成另一样"。两处差别（`labelLarge`+SemiBold
+                // vs `titleMedium`+Bold、无阴影、无触感、没有四态可表达）**不表达任何不同语义**。
+                // 搬完之后首页也第一次能画"禁用/进行中"那两态（以前只能画 Idle）。
+                LbPrimaryButton(
+                    state = LbButtonState.Idle,
+                    label = buttonText,
                     onClick = onButtonClick,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Primary,
-                        contentColor = Color.White
-                    ),
-                    shape = LoveBrainShape.md,
-                    interactionSource = btnInteraction,
-                    modifier = Modifier
-                        // 首页那颗 Material Button 的行高。这一处**不是**版式自选：
-                        // 它是 :490"自造品牌色按钮"清单的漏网之族（清单的锚点是 Modifier 链上的
-                        // .background(品牌色)，而 Button 的底色走 containerColor 那扇门），
-                        // 归不归 LbPrimaryButton 单独一格判，届时这一行数字该跟着消失。
-                        .height(48.dp)
-                        .graphicsLayer { scaleX = btnScale; scaleY = btnScale }
-                        .testTag(LbHomeTags.PRIMARY_BUTTON)
-                ) {
-                    Text(
-                        buttonText,
-                        style = AppTypography.labelLarge,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
+                    modifier = Modifier.testTag(LbHomeTags.PRIMARY_BUTTON)
+                )
             }
         }
     }

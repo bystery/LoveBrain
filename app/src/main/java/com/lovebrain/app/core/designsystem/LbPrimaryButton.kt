@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -102,7 +103,7 @@ fun LbPrimaryButton(
                 modifier = base
                     .clip(LoveBrainShape.md)
                     .background(container, LoveBrainShape.md)
-                    .clickable(onClick = onClick)
+                    .clickable(role = Role.Button, onClick = onClick)
                     .paddingVerticalInside(),
                 contentAlignment = Alignment.Center
             ) {
@@ -136,7 +137,12 @@ fun LbPrimaryButton(
                 .graphicsLayer { scaleX = scale; scaleY = scale }
                 .clip(LoveBrainShape.md)
                 .background(Neutral200, LoveBrainShape.md)
-                .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+                .clickable(
+                    interactionSource = interaction,
+                    indication = null,
+                    role = Role.Button,
+                    onClick = onClick
+                )
                 .paddingVerticalInside(),
             contentAlignment = Alignment.Center
         ) {
@@ -152,6 +158,9 @@ fun LbPrimaryButton(
                     enabled = false,
                     interactionSource = interaction,
                     indication = null,
+                    // 禁用态也要报角色：读屏用户得知道"这里是一颗按钮，只是现在不能按"，
+                    // 而不是听到一段没有名字的文字。
+                    role = Role.Button,
                     onClick = onClick
                 )
                 .paddingVerticalInside(),
@@ -168,7 +177,8 @@ fun LbPrimaryButton(
                 .background(container, LoveBrainShape.md)
                 .clickable(
                     interactionSource = interaction,
-                    indication = null
+                    indication = null,
+                    role = Role.Button
                 ) {
                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                     onClick()

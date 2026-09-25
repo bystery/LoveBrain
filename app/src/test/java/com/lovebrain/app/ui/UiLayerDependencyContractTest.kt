@@ -591,7 +591,10 @@ class UiLayerDependencyContractTest {
         )
         val allowedInlineLiterals = mapOf(
             "core/designsystem/LbActionCard.kt" to 1,
-            "ui/home/HomeComponents.kt" to 1,
+            // `ui/home/HomeComponents.kt` 那一行原来是 1（首页那颗 Material Button 写死
+            // `.height(48.dp)`）。`91babe7` 之后它搬进了 `LbPrimaryButton`，数没了 ⇒
+            // **这一行按下面那条 `==` 的规矩必须删掉**。留着不算错，但留着就等于
+            // 承认"表可以比现实宽"——那正是坑表 71 那一族（预算填松 ⇒ 恒绿）。
             "ui/home/ProviderSection.kt" to 1        // ⚠ 已知缺陷，不是"允许这样"
         )
         val declaration = Regex("""\bval\s+(\w+)\s*=\s*48\b""")
@@ -692,5 +695,57 @@ class UiLayerDependencyContractTest {
         Regex("""\bLbTextAction\(""").findAll(host).count().let { got ->
             assertTrue("LbEmptyState 必须经 LbTextAction 画动作，实到 $got 处", got == 1)
         }
+    }
+
+    /**
+     * §6.1 :490 的**第三个锚点**：从 `containerColor` 那扇门涂进来的品牌色。
+     *
+     * 为什么单独一把尺：:490 那份清单一直锚在 Modifier 链的 `.background(品牌色)` 上，
+     * 而 Material 组件涂同层底走的是**具名实参**——
+     * `ButtonDefaults.buttonColors(containerColor = Primary)`、
+     * `CardDefaults.cardColors(containerColor = PrimaryLight)`。
+     * 前一格把首页那颗唯一主按钮搬进 `LbPrimaryButton` 时才发现它从没进过清单：
+     * 本机实扫 `Button(` 7 处、涂品牌色 5 处，**全在 `.background(` 那把尺的射程外**。
+     * 搬掉首页那颗之后是 4 处 Button + 1 处 Card。
+     *
+     * ⚠ 与另两把尺一样，**这一格只买"别再长新的"**，它判不了任何一处该不该搬：
+     * `containerColor = PrimaryLight` 里既有该走组件的主动作，也有状态卡那种
+     * 本来就该是品牌浅底的表面。三把尺各扫各的（表面色 25 / 链上有 clickable 的 19 /
+     * 这扇门的 5），**三个数别合成一个**——这正是坑表 ⑫ 那条的第三次复发。
+     *
+     * 判据按文件记、只许往下（`<=`）；表里的行必须还在盘上（不留"指向不存在文件"的额度）；
+     * 扫到 0 说明锚点坏了。
+     */
+    @Test
+    fun `brand tones painted through containerColor do not grow`() {
+        val perFileBudget = mapOf(
+            "home/HomeComponents.kt" to 1,        // 状态卡那张 Card 的品牌浅底
+            "home/ProviderSection.kt" to 1,
+            "KnowledgeBaseActivity.kt" to 2,
+            "KbEditActivity.kt" to 1
+        )
+        // 登记总数由本次实扫定（`_temp/scan_container_color.py`：5 处 / 4 文件）。
+        assertTrue("登记的就是本机实扫的 5 处，表本身错了要先修表", perFileBudget.values.sum() == 5)
+
+        val pattern = Regex(
+            """containerColor\s*=\s*[^,)]*\b(?:Primary|PrimaryDark|PrimaryLight|PrimarySubtle)\b"""
+        )
+        val uiRoot = dir("ui")
+        val found = kotlinFiles(uiRoot).map {
+            it.relativeTo(uiRoot).invariantSeparatorsPath to pattern.findAll(codeOf(it.readText())).count()
+        }.filter { it.second > 0 }.toMap()
+
+        val grew = found.filter { (path, n) -> (perFileBudget[path] ?: 0) < n }
+        assertTrue(
+            "这些文件从 containerColor 那扇门涂品牌色的写法涨了（§6.1 :490 要的是别再长新的）：$grew；" +
+                "登记的是 ${perFileBudget.filterKeys { k -> (found[k] ?: 0) > 0 }}",
+            grew.isEmpty()
+        )
+        perFileBudget.keys.forEach { path ->
+            assertTrue("$path 已不在 ui/ 下——表里这一行要一起删掉，别留着当已有闸",
+                File(uiRoot, path).isFile)
+        }
+        assertTrue("实扫到 ${found.values.sum()} 处，为 0 说明锚点失效（恒绿假闸）",
+            found.values.sum() > 0)
     }
 }
