@@ -498,7 +498,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     /** 更新通知文案以同步真实状态 */
     private fun updateNotification() {
         val text = when (windowState) {
-            WindowState.TEMP_HIDDEN -> "军师已暂时隐藏，点此恢复"
+            // 「已暂时隐藏」这句话首页状态卡也在说——旧代码两处各写一遍且用词不同
+            // （"点击恢复" / "点此恢复"），现在共用 status_hidden_desc 一条资源。
+            WindowState.TEMP_HIDDEN -> getString(R.string.status_hidden_desc)
             WindowState.VISIBLE_BUBBLE -> "悬浮球已开启，点此返回设置"
             WindowState.VISIBLE_PANEL -> "军师面板已打开，点此返回设置"
             WindowState.STOPPED -> "军师已停止"

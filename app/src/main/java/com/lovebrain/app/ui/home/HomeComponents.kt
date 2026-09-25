@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,11 +43,13 @@ import com.lovebrain.app.ui.panel.rememberPressScale
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.LbStatusBadge
 import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Neutral300
 import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.PrimaryDark
 import com.lovebrain.app.core.designsystem.PrimaryLight
+import com.lovebrain.app.core.designsystem.PrimarySubtle
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.SurfaceInset
@@ -137,25 +140,26 @@ fun HomeTopBar(
 }
 
 /**
- * 悬浮军师状态卡——唯一主卡。
+ * 悬浮军师状态卡——唯一主卡（§6.2 首页四段里的第 2 段）。
  *
- * 状态 Pill + 状态说明 + 唯一主按钮 + 右上次级隐藏图标。
+ * 交进来的是**一份** `AdvisorStatus`，不是 (statusText, statusColor) 两个参数：
+ * 旧签名允许调用方把"运行中"配成 Neutral300，编译器不拦、判据也不在一处。
+ * 现在文案与颜色都由 `LbStatus` 那一张表决定，这一颗组件只负责摆。
  */
 @Composable
-fun AssistantStatusCard(
-    statusText: String,
-    statusColor: Color,
-    description: String,
-    buttonText: String,
+internal fun AssistantStatusCard(
+    status: AdvisorStatus,
     onButtonClick: () -> Unit,
     onHideClick: (() -> Unit)? = null
 ) {
+    val description = stringResource(status.descriptionRes)
+    val buttonText = stringResource(status.buttonRes)
     Card(
         shape = LoveBrainShape.xl,
         colors = CardDefaults.cardColors(containerColor = PrimaryLight),
         modifier = Modifier
             .fillMaxWidth()
-            .border(AppDimens.BORDER_WIDTH_DP.dp, com.lovebrain.app.core.designsystem.PrimarySubtle, LoveBrainShape.xl)
+            .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.xl)
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             // 右上次级隐藏图标（不另起一行）
@@ -202,20 +206,9 @@ fun AssistantStatusCard(
                         fontWeight = FontWeight.SemiBold
                     )
                     Spacer(Modifier.width(Spacing.md))
-                    // 状态 Pill
-                    Box(
-                        modifier = Modifier
-                            .clip(LoveBrainShape.full)
-                            .background(statusColor.copy(alpha = 0.15f))
-                            .padding(horizontal = Spacing.md, vertical = Spacing.xs)
-                    ) {
-                        Text(
-                            statusText,
-                            style = AppTypography.labelSmall,
-                            color = statusColor,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
+                    // 状态胶囊：配方（状态色 15% 底 + 状态色字 + 读屏语义）在 LbStatusBadge 里，
+                    // 这里不再自己 `statusColor.copy(alpha = 0.15f)` 画一遍。
+                    LbStatusBadge(status = status.badge)
                 }
                 Spacer(Modifier.height(Spacing.lg))
                 // 状态说明

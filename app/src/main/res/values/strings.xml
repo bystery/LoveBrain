@@ -88,6 +88,22 @@
     <string name="home_manage">管理</string>
     <string name="home_off">关</string>
     <string name="home_on">开</string>
+    <!-- §6.1 LbStatusBadge：状态词与颜色只有 core/designsystem/LbStatusBadge.kt 一份 -->
+    <string name="status_running">运行中</string>
+    <string name="status_hidden">已隐藏</string>
+    <string name="status_off">未启动</string>
+    <string name="status_no_permission">未授权</string>
+    <string name="status_window_missing">窗口未出现</string>
+    <!-- 同一件事首页与前台通知共用一句，旧代码是两处各写一遍（"点击恢复" / "点此恢复"） -->
+    <string name="status_hidden_desc">军师已暂时隐藏，点击恢复</string>
+    <string name="home_desc_need_overlay">需要悬浮窗权限才能显示军师浮窗</string>
+    <string name="home_desc_not_started">点击启动军师悬浮窗</string>
+    <string name="home_desc_running">军师正在运行，长按消息即可捕获</string>
+    <string name="home_desc_window_missing">服务在运行，但悬浮窗没显示出来。点「打开军师」可直接唤起面板</string>
+    <string name="home_btn_grant_overlay">授权悬浮窗</string>
+    <string name="home_btn_start">启动军师悬浮窗</string>
+    <string name="home_btn_restore">恢复军师</string>
+    <string name="home_btn_open">打开军师</string>
     <string name="panel_phase_analysing">分析对话</string>
     <string name="panel_phase_drafting">生成方案</string>
     <string name="panel_phase_deep_analysing">深度分析</string>

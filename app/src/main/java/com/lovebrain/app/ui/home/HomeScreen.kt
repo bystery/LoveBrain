@@ -89,34 +89,19 @@ fun HomeScreen(
     val isServiceRunning = FloatingService.instance != null
     val currentWindowState by FloatingService.windowStateFlow.collectAsStateWithLifecycle()
 
-    val statusText = when {
-        !overlayGranted -> "未授权"
-        !isServiceRunning -> "未启动"
-        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> "已隐藏"
-        else -> "运行中"
-    }
-    val statusColor = when {
-        !overlayGranted || !isServiceRunning -> Neutral300
-        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> Neutral300
-        else -> Primary
-    }
-    val description = when {
-        !overlayGranted -> "需要悬浮窗权限才能显示军师浮窗"
-        !isServiceRunning -> "点击启动军师悬浮窗"
-        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> "军师已暂时隐藏，点击恢复"
-        else -> "军师正在运行，长按消息即可捕获"
-    }
-    val buttonText = when {
-        !overlayGranted -> "授权悬浮窗"
-        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> "恢复军师"
-        isServiceRunning -> "打开军师"
-        else -> "启动军师悬浮窗"
-    }
-    val buttonAction = when {
-        !overlayGranted -> onStartService
-        currentWindowState == FloatingService.WindowState.TEMP_HIDDEN -> onRestore
-        isServiceRunning -> { { onOpenPanel(0, false) } }
-        else -> onStartService
+    // 一份快照，不是五份平行判据。旧写法是 statusText / statusColor / description /
+    // buttonText / buttonAction 五个 `when` 各把同样三个条件重判一遍——五份判据可以各说各话，
+    // 而加状态时最容易忘的恰恰是"颜色那一份"。
+    // 唯一的行为差别见 advisorStatus 的注释（服务活着但窗口从未出现 → 不再说"运行中"）。
+    val advisor = advisorStatus(
+        overlayGranted = overlayGranted,
+        serviceRunning = isServiceRunning,
+        window = currentWindowState
+    )
+    val buttonAction = when (advisor.intent) {
+        AdvisorIntent.Start -> onStartService
+        AdvisorIntent.OpenPanel -> { { onOpenPanel(0, false) } }
+        AdvisorIntent.Restore -> onRestore
     }
     val canHide = isServiceRunning &&
         (currentWindowState == FloatingService.WindowState.VISIBLE_BUBBLE ||
@@ -132,10 +117,7 @@ fun HomeScreen(
         HomeTopBar(onNavigateAbout = onNavigateAbout)
 
         AssistantStatusCard(
-            statusText = statusText,
-            statusColor = statusColor,
-            description = description,
-            buttonText = buttonText,
+            status = advisor,
             onButtonClick = buttonAction,
             onHideClick = if (canHide) onTempHide else null
         )
