@@ -106,6 +106,8 @@ class UiStringLiteralBudgetTest {
      * - 上一轮的正则 **209**：多认 `Text(text = "中文…")` 与跨行写法，仍看不见
      *   `Text(text = if (…) "中文" else "中文")`，还是下界；
      * - 本轮换成按括号配对取整段实参 → TEXT **254**；搬掉 4 处后 **250**。
+     * - §6.3 把知识库页那张自造空态卡换成共用组件，又搬掉 3 处（标题、指路文案、底部那颗
+     *   "新建知识库"）→ **247**。DESC / STATE 两栏这次没动。
      *
      * DESC 这一栏要单独记一笔：本轮第一次改尺时**赋值型锚点的切片被内层括号截断了**——
      * `contentDescription = if (expanded) "收起" else "展开"` 里那对 if 条件括号提前收尾，
@@ -115,7 +117,7 @@ class UiStringLiteralBudgetTest {
      * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 250,
+        Kind.TEXT to 247,
         Kind.DESC to 12,
         Kind.STATE to 0
     )

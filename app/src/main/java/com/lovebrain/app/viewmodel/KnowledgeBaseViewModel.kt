@@ -68,11 +68,22 @@ enum class KbCreationOutcome {
     Cancelled
 }
 
-/** 知识库列表状态（唯一真源，取代 Activity 内的 remember 局部列表状态） */
+/**
+ * 知识库列表状态（唯一真源，取代 Activity 内的 remember 局部列表状态）。
+ *
+ * `loaded` / `loadFailed` 只由 [loadState] 写（[refresh] 与建库/导入/改名/删除成功后的那次
+ * 重读走的是同一个出口），别处不改——§6.3 那四格要的正是
+ * "这一次读完了没有、读成什么样"这两个事实，判据因此只有一处（见 ui 层 kbScreenState）。
+ */
 data class KbListState(
     val knowledgeBases: List<KnowledgeBase> = emptyList(),
     val activeName: String? = null,
-    val loaded: Boolean = false
+    val loaded: Boolean = false,
+    /**
+     * 上一次读取抛了。为真时 [knowledgeBases] 是**上一次成功的残留值**，不能当成"刚读到的"，
+     * 所以四格判定把 Error 排在 Content 之前。
+     */
+    val loadFailed: Boolean = false
 )
 
 /**
@@ -149,12 +160,24 @@ class KnowledgeBaseViewModel(
     }
 
     private suspend fun loadState() {
-        val kbs = repo.listAll()
-        _state.value = KbListState(
-            knowledgeBases = kbs,
-            activeName = repo.getActive()?.name,
-            loaded = true
-        )
+        try {
+            val kbs = repo.listAll()
+            _state.value = KbListState(
+                knowledgeBases = kbs,
+                activeName = repo.getActive()?.name,
+                loaded = true
+            )
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            // 这一格不是防御性摆设：抛出前一行是这个协程里**唯一**的读取路径，
+            // 而 viewModelScope 里没人接这个异常——页面就停在"第一次数据还没到"那一格
+            // （转圈转到用户退出），比"读到了 0 个库"更糟的是把失败说成空。
+            // 真实触发点：getActive() 读 EncryptedSharedPreferences.activeKbName，
+            // Keystore 里的值解不开时 getString 会抛（SecurePrefs 只在**构造**时兜了降级，逐次读没兜）。
+            L.e("knowledge base list load failed", e)
+            _state.value = _state.value.copy(loaded = true, loadFailed = true)
+        }
     }
 
     // ═══════════ 建库事务 ═══════════

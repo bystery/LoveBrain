@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -48,11 +47,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.ScreenAction
+import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
@@ -60,13 +62,12 @@ import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.KbCreationOutcome
 import com.lovebrain.app.viewmodel.KbEvent
+import com.lovebrain.app.viewmodel.KbListState
 import com.lovebrain.app.viewmodel.KnowledgeBaseViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /** 知识库管理页内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object KbDimens {
-    const val EMPTY_ICON_CONTAINER_DP = 72    // 空态图标容器（语义例外：大于通用 48）
-    const val EMPTY_ICON_SIZE_DP = 36         // 空态图标本体（语义例外）
     const val PRIMARY_ACTION_HEIGHT_DP = 48   // 新建/导入/完成大按钮高度
     const val EDIT_ICON_SIZE_DP = 14          // 重命名小铅笔图标
     const val ONBOARDING_SPINNER_SIZE_DP = 18 // 问卷生成中按钮内转圈尺寸
@@ -189,8 +190,15 @@ private fun KbManagementScreen(
     }
 
     KbListScreen(
-        kbs = state.knowledgeBases,
-        activeName = state.activeName,
+        screenState = kbScreenState(
+            state = state,
+            emptyMessage = stringResource(R.string.kb_empty_message),
+            errorMessage = stringResource(R.string.kb_load_failed),
+            // 空态那颗动作直接开向导：§6.1 对 LbEmptyState 写的是"动作是一处操作，
+            // 不是一行文字"，而替换前这里是一句"点下方「新建知识库」"的指路文案。
+            newKb = ScreenAction(stringResource(R.string.kb_empty_action)) { showOnboarding = true },
+            retry = ScreenAction(stringResource(R.string.action_retry)) { viewModel.refresh() }
+        ),
         onActivate = viewModel::setActive,
         onNewKb = { showOnboarding = true },
         onRename = viewModel::rename,
@@ -257,10 +265,32 @@ private fun KbManagementScreen(
 }
 
 
+/**
+ * §6.3：这一页"现在是哪一格"只在这里判一次，[LbAsyncState] 只负责把已经定好的那格画出来。
+ *
+ * 优先顺序 Loading > Error > Empty > Content 与反馈案例页、供应商区**同一副判据**——
+ * 指导书要的是三个目的地共用一套，而不是各页各定一副（替换前这一页根本没有 Error 这一格，
+ * 读取抛异常时它会一直转圈）。
+ *
+ * `message` / 动作标签由调用方把**已解析的资源字符串**传进来：`stringResource` 不能在语义
+ * 判定里现调，而且这样这个函数是纯的——四格可以用 [KbScreenStateMappingTest] 穷举。
+ */
+internal fun kbScreenState(
+    state: KbListState,
+    emptyMessage: String,
+    errorMessage: String,
+    newKb: ScreenAction,
+    retry: ScreenAction
+): ScreenState<KbListState> = when {
+    !state.loaded -> ScreenState.Loading
+    state.loadFailed -> ScreenState.Error(errorMessage, retry)
+    state.knowledgeBases.isEmpty() -> ScreenState.Empty(emptyMessage, newKb)
+    else -> ScreenState.Content(state)
+}
+
 @Composable
-private fun KbListScreen(
-    kbs: List<KnowledgeBase>,
-    activeName: String?,
+internal fun KbListScreen(
+    screenState: ScreenState<KbListState>,
     onActivate: (String) -> Unit,
     onNewKb: () -> Unit,
     onRename: (String, String) -> Unit,
@@ -278,51 +308,13 @@ private fun KbListScreen(
             modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(Spacing.xl)
         ) {
-        if (kbs.isEmpty()) {
-            // 空状态三要素：图标 + 友好文案 + 明确 CTA
-            Card(
-                shape = LoveBrainShape.lg,
-                colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-                // 阴影统一收进 2/4 令牌（6→4 为唯一超限修正）
-                modifier = Modifier.fillMaxWidth().shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.lg)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Spacing.xxxl),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(KbDimens.EMPTY_ICON_CONTAINER_DP.dp)
-                            .clip(LoveBrainShape.full)
-                            .background(PrimaryLight)
-                            .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.full),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_bubble),
-                            contentDescription = null,
-                            tint = Primary,
-                            modifier = Modifier.size(KbDimens.EMPTY_ICON_SIZE_DP.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(Spacing.lg))
-                    Text("还没有知识库", style = AppTypography.titleLarge, color = TextPrimary)
-                    Spacer(modifier = Modifier.height(Spacing.sm))
-                    Text(
-                        "点下方「新建知识库」，给她建一份专属档案，军师回复会更懂她。",
-                        style = AppTypography.bodySmall,
-                        color = TextSecondary,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                    )
-                }
-            }
-        } else {
-            kbs.forEach { kb ->
+        // 四态只在这里出现一次。替换前这里是一张自造的 40 行空态卡（图标 + 标题 + 一句
+        // "点下方「新建知识库」"的指路文字），版式与反馈案例页、供应商区各不相同。
+        LbAsyncState(screenState) { shown ->
+            shown.knowledgeBases.forEach { kb ->
                 KbCard(
                     kb = kb,
-                    isActive = kb.name == activeName,
+                    isActive = kb.name == shown.activeName,
                     onActivate = { onActivate(kb.name) },
                     onRename = { newName -> onRename(kb.name, newName) },
                     onEdit = { onEdit(kb.name) },
@@ -332,6 +324,8 @@ private fun KbListScreen(
             }
         }
 
+        // 底部这条大按钮是页面常驻工具条（导入只在这里），四态都保留：
+        // 空态那颗动作开的是向导，这条右边的按钮开的是文件选择器，两件事。
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(Spacing.md)
@@ -342,7 +336,7 @@ private fun KbListScreen(
                 shape = LoveBrainShape.md,
                 modifier = Modifier.weight(1f).height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
             ) {
-                Text("新建知识库", style = AppTypography.titleMedium)
+                Text(stringResource(R.string.kb_new_kb), style = AppTypography.titleMedium)
             }
             OutlinedButton(
                 onClick = onImport,

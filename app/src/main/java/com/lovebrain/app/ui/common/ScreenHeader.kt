@@ -39,7 +39,12 @@ import com.lovebrain.app.ui.theme.TextSecondary
  */
 private object ScreenHeaderDimens {
     const val HEADER_ROW_HEIGHT_DP = 48   // 页头行固定高
-    const val BACK_HOTZONE_DP = 32        // 返回箭头热区
+    // 返回箭头热区：原来是 32dp，低于 §6.5 那把尺的 48dp 下限。
+    // 这条不是顺手美化——`KbListScreenStatesTest` 第一次把整屏可交互节点交给
+    // SemanticsProbe 量，就量到了它（知识库管理/编辑知识库/设置页/问卷四个二级页共用这个页头，
+    // 而此前没有任何用例量过 ScreenHeader，只量过 PanelHeader）。
+    // 行高本来就是 48dp，所以热区垫满行高不改版式；字形仍是 22dp。
+    const val BACK_HOTZONE_DP = 48        // 返回箭头热区
     const val BACK_ICON_DP = 22           // 返回箭头字形
     const val TITLE_GAP_DP = 2            // 返回箭头与标题间距
     const val DIVIDER_HEIGHT_DP = 1       // 标题下浅分割线
