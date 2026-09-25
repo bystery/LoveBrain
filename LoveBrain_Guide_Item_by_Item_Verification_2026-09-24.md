@@ -1805,6 +1805,7 @@ P1-P4 打 §26.4 的新尺，P5 打 COMPONENT 栏，H1-H5（§25.6 那五发）*
 - §6.1 表 11 行仍欠三行有主的组件：`LbScreenScaffold`（背景/安全区/统一水平边距）、
   `LbPrimaryButton`（Idle/Loading/Disabled/Stop 四态）、`LbModalSheet/Dialog`。
   现在表里 8 行有主，别报成"§6.1 做完了"。
+  **→ 其中 `LbPrimaryButton` 已还：见 §27（提交 `d8f36d2`），表里还剩两行。**
 - §6.2 那句「**未来**新增功能仍走同组件」仍然没闸（§25.8 第二条照旧成立）。
   名字按表之后可以扫 `Lb*` 调用数了，但这一格没做。
 - COMPONENT 那栏只认 `Lb` 前缀；页面自造子组件的具名实参仍在盲区（§26.3 末尾量到 364 条
@@ -1814,3 +1815,134 @@ P1-P4 打 §26.4 的新尺，P5 打 COMPONENT 栏，H1-H5（§25.6 那五发）*
 - 五颗组件的**样式**没检查是否仍与 §6.5 基线一致（字号、圆角、间距那三张表）；
   这格只搬不改，行为等价性由 §25 那套结构守卫 + `UiBaselineRegressionTest` 撑着，
   截图基线仍未接。
+
+---
+
+# 追加十七：§6.1 表里 B 类第一行——`LbPrimaryButton` 四态（提交 `d8f36d2`）
+
+## 27.1 指导书那一行，与仓库里当时的形状
+
+指导书 :481：
+
+> | `LbPrimaryButton` | 页面唯一主动作，Idle/Loading/Disabled/Stop 四态 |
+
+仓库里对应的是 `ui/panel/reply/GenerationActionButton.kt`（196 行，1 个调用方 `ReplyPrimaryActions`）。
+它**已经有四态**，但那四态是**两个平行旋钮拼出来的**：
+
+```kotlin
+enum class ButtonMode { NORMAL, LOADING, STOP }            // 少一档"禁用"
+fun GenerationActionButton(
+    text: String, onClick: () -> Unit, ...,
+    enabled: Boolean = true,          // ← "禁用"在这里
+    mode: ButtonMode = ButtonMode.NORMAL,   // ← 其余三态在这里
+    containerColor: Color = Primary, textColor: Color = Color.White,
+    heightDp: Int = MIN_TOUCH_TARGET_DP
+)
+```
+
+两个旋钮拼四态的代价是三样东西没人定义过：`STOP + enabled=false` 在类型上完全合法；
+`Disabled` 其实是 `NORMAL` 里的一个 `if`，所以"禁用"和"主动作"这层语义只存在于实现细节里；
+而 `text` 在 LOADING 分支被传成 `""`（那一支根本不读它），是个假参数。
+
+## 27.2 收口后的形状
+
+| 表里要求的 | 现在 |
+|---|---|
+| 名字与归属 | `core/designsystem/LbPrimaryButton.kt`（旧名进棘轮黑名单） |
+| 四态一旋钮 | `enum class LbButtonState { Idle, Loading, Disabled, Stop }`，`mode`+`enabled` 双双退役 |
+| 页面唯一主动作 | 组件自己钉 48dp（`LB_PRIMARY_MIN_HEIGHT_DP`），调用方拿不到高度旋钮 |
+| 着色调性 | `LbButtonTone { Primary, Deep }` 两档小表，不再由调用方交 `containerColor` |
+| 停止锚点 | `LbTags.PRIMARY_STOP`，值仍是 `generation_stop_action`（换归属不换值） |
+
+**刻意没搬进设计系统的两件事**：
+
+1. "分析对话 · 7s 点击停止"这串字与 5s/15s 阶段规则 ⇒ 留在 reply 层新建的 `GeneratingLabel.kt`。
+   上一格 `LbTopBar` 犯的错（设计系统认识了一个具体页面）不能犯第二次。
+   计时从按钮里搬到调用方时语义保持：那个 composable 只在"生成中"分支被调用，
+   退出组合即失去 `remember`，下一次生成从 0 秒重数——与原先挂在按钮 `LaunchedEffect(Unit)` 上等价。
+2. 阶段规则顺手抽成纯函数 `generatingPhaseResFor(seconds)`。它原先焊在 composable 里 ⇒
+   **本机一格都量不到**，5s/15s 两个边界只能等设备上有人盯秒数。
+
+**删掉的三样死东西**：`heightDp` 参数（实现里写 `maxOf(heightDp, 48)`，只能改高不能改矮 =
+不存在的自由度）、LOADING 那个被传成 `""` 的 `text`、`textColor` 参数（0 个调用方传过）。
+退役件不在 git 里，落 `_temp/GenerationActionButton.kt.retired-2026-09-25`；
+git 侧 `git show HEAD~1:app/src/main/java/com/lovebrain/app/ui/panel/reply/GenerationActionButton.kt` 取得回。
+
+## 27.3 新守卫：五格语义树 + 两格纯函数
+
+`LbPrimaryButtonStateTest`（一次 `setContent` 挂四态、换态靠 hoisted 状态——本仓库仪器要求每测只挂一次）：
+
+| 格 | 判据 | 实到 |
+|---|---|---|
+| 四态同盒 | 四态 `boundsInRoot` 逐位相同 | `0/0/360/48` ×4 |
+| 四态过下限 | 每态 `assertAllActionableMeetTouchFloor` + 高度恰为下限 | 48dp |
+| 禁用不消失 | Disabled 仍画得出来、带 `SemanticsProperties.Disabled`；Idle 不带 | 通过 |
+| 点得动/点不动 | Idle·Stop·Loading 各恰好回调一次；Disabled 点下去回调次数不变 | 3 次 |
+| 锚点归属 | `LbTags.PRIMARY_STOP` 只在 Loading 出现（其余三态 0 个） | 通过 |
+
+`GeneratingPhaseTest` 穷举 `0/1/4/5/9/14/15/60/3600` 九个点 + 一条"三档都真能走到"的反空跑。
+
+**这一格最重要的证据不是新用例，是老用例一字未改仍然绿**：
+`ReplyPrimaryActionsContractTest` 那 7 格（§2.1 四行合同：无结果全宽带计数、N=0 灰着不消失、
+有结果是"重试|记入知识库"两颗、PROACTIVE 全宽、任一生成中唯一停止入口）
+读的是语义树标签、宽度与 disabled 位。换掉整颗按钮实现后它 7 格全绿 ⇒ 用户可见行为没变。
+
+## 27.4 写测试时自己踩的两个假前提（都是先红才知道的）
+
+1. **"四态占同一个盒子"一开始没红在实现上，红在我的测试上**：第一版没给 `fillMaxWidth()`，
+   量到 `Idle=63 / Loading=120 / Disabled=102 / Stop=71` dp。这颗按钮**本来就不铺满**，它按内容宽。
+   ⇒ §6.4 那句"模式切换不移动主操作按钮"是**调用方 + 组件**的联合性质：槽位宽度得由调用方钉死。
+   生产五个分支都带 `fillMaxWidth()` 或 `weight(1f)`，测试因此改成按同一种形状挂，
+   并把上面这四个实测数写进 KDoc 当证据——不然下一个人又会以为宽度是组件负责的。
+2. **`assertEquals(4, Regex("\\.paddingVerticalInside\\(").count())` 数到 5**：
+   定义那一行 `private fun Modifier.paddingVerticalInside()` 里 `Modifier.` 后面那个点也算命中。
+   改成锚在"换行 + 缩进 + 点"上。这就是本仓库第 4 号坑（正则漏写法）在同一格里的第二次现身。
+
+## 27.5 变异：九发，各咬各的
+
+| 探针 | 改了什么 | 红了谁 |
+|---|---|---|
+| M1 | Loading 分支绕开共用的 `base`、自己写 `.height(56.dp)` | 同盒格红（`[360x48, 360x56, 360x48, 360x48]`）；**下限格照绿**（56≥48）⇒ 两把尺判的不是同一件事 |
+| M2 | `LB_PRIMARY_MIN_HEIGHT_DP` 48→40 | 新守卫红 + §2.1 合同三格红 + 源码闸红（三处独立，同一根因） |
+| M3 | Disabled 分支去掉 `enabled = false` | disabled 语义格、回调次数格、合同"N=0 必须带 disabled"三处红 |
+| M5 | Loading 的锚点换成别的 tag | "只有 Loading 有停止锚点"红（`expected:<1> but was:<0>`）+ 资源闸红 |
+| M5B | 把停止锚点加到共用标签函数上 | "Idle 的停止锚点数 `expected:<0> but was:<1>`" 红 |
+| M6 | `seconds < 5` 改成 `<= 5` | 边界格红（第 5s 报了上一档）；可达性别报假红 |
+| M7 | `ui/home` 里复活 `enum class ButtonMode {…}` | 归属棘轮红 ⇒ 为此把尺的字符类补上 `class/interface/{`（只认 `fun`+`(` 时状态表整个逃出尺外） |
+| M8 | 删掉 Stop 那一行的 `.paddingVerticalInside()` | 链数 `expected:<4> but was:<3>` 红 |
+| M9 | `heightDp: Int` 参数回来 | "heightDp 这个死参数不许回来" 红 |
+
+**事故（当场报，不攒到最后）**：M5 第一版的"变异"是**把那行删掉**（替换文本 = 空串）。
+revert 时驱动去数 `t.count("")`，得到 7379（= 长度 + 1），"命中数必须为 1"的哨兵当场报错，
+**文件被留在变异态**。还原靠的是 apply 之前先落盘的 `_temp/mut72-backup/`——
+"记账与回滚件必须在副作用之前"这条这次是真的救了这一格。
+修法是驱动里禁止空串替换（启动期断言），M5 改成"换成别的 tag"：效果等价、且可逆。
+
+## 27.6 实测（数字全来自当次命令输出，退出码单独取）
+
+| 项 | 结果 |
+|---|---|
+| `:app:compileDebugKotlin` / `UnitTestKotlin` / `compileDebugAndroidTestKotlin` | RC=0 / RC=0 / RC=0 |
+| `:app:testDebugUnitTest` 全量 | **162 套件 / 1260 例 / 0 红 / 0 跳过**（上一格 160/1253；+2 套 +7 例 = 本格两个新文件） |
+| `:app:lintDebug` 重生成后 | RC=0，`measured_issues=68 measured_rules=15 gated_issues=67 gated_rules=14 advisory 1` |
+| `check_lint_budget.sh` | 先 RC=1：`STALE AutoboxingStateCreation: 实测 5 < 预算 6` → 逐条核过当次报告剩余 5 条分别在 `KnowledgeBaseActivity:525`、`OnboardingFlow:52`、`ProviderSection:340`、`ResultArea:646/765`，**没有一条在退役文件里**；退役文件里那行确实是 `mutableStateOf(0)`，新代码写的是 `mutableIntStateOf` ⇒ 确实是还掉一条，`--rewrite` 后 RC=0，diff 只动 `lint-budget.txt` 一行 |
+| `test_check_lint_budget.sh` / `strip_ticket_ids --check` / `asset_hashes --check` | RC=0 / RC=0 / RC=0 |
+| `package_deps_report.sh --count` | RC=0，仍是 6 笔同一批文件 |
+| 探针撤回后 | 三个被改文件与 `_temp/mut72-backup/` 逐字节 IDENTICAL |
+
+## 27.7 这格没做的
+
+- §6.1 表里 B 类还剩两行：**`LbModalSheet`/`LbDialog`**（各页各用 `AlertDialog`，浮层语法没收口）与
+  **`LbScreenScaffold`** 的安全区/统一水平边距部分。别把这一格报成"B 类做完了"。
+- **主操作以外的重复按钮实现没动**：`ui/` 下"Primary 底色 + clickable"这种自造实现实扫 **17 处 / 11 个文件**
+  （`KnowledgeBaseActivity:451`、`LoveBrainPanelScreen:213/923`、`OnboardingFlow:304`、`SuggestPanel:213/257`、
+  `CounselingPanel:205/367`、`CorrectionCenter:188`、`DislikeReasonPanel:111/125/253`、`RecordSentDialog:136`、
+  `ResultArea:316/397/1271`、`SchemeCard:515`）。这 17 处里有多少是"页面主动作"、多少是 chip/切换/次级动作，
+  **要一处一处判语义**才能定，不能按数量收口——本格只收了 `ReplyPrimaryActions` 那一处真主动作。
+- §6.4 那句「模式切换只改变内容区，不移动主要**输入**和主操作按钮」里，输入那一半仍没守卫
+  （本格只钉了按钮这半边）。
+- 设备侧那三条依赖 `PRIMARY_STOP` 与那句阶段文案的 androidTest（`OverlayGenerateSmokeTest`、
+  `ReplyPrimaryActionsTest`）**本机跑不了**：我只改了它们的 import 与常量指向，实扫证明
+  tag 的值一字未改、渲染节点仍是那颗标签，但"设备上仍然点得到"这句话要等 CI。
+- 截图基线（§6.5）照旧故意没接；这格改了按钮的着色来源与文本样式收敛，接基线时会看到
+  Stop 态标签多了 `maxLines=1/ellipsis`（四态共用一个标签函数），那是刻意的收敛。

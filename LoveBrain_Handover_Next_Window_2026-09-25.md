@@ -324,6 +324,33 @@ HEAD `0c4d6d6`，仍未推。两笔：
 - ⚠ 提交信息里写"537 → 249"是**凭记忆抄错的**，`git show HEAD~1:…HomeComponents.kt | wc -l` 实到 **545**；
   账本 §26.6 已就地改口，别再引 537 这个数。
 
+## 0.15 又一步：§6.1 表里 B 类第一行 `LbPrimaryButton` 落地（`d8f36d2`）
+
+- 表里那句「页面唯一主动作，Idle/Loading/Disabled/Stop 四态」以前是 `ui/panel/reply/GenerationActionButton.kt`：
+  **四态由两个平行旋钮拼出来**（`mode: ButtonMode{NORMAL,LOADING,STOP}` + `enabled: Boolean`），
+  代价是 `STOP + enabled=false` 类型合法而无人定义、"禁用"只是 NORMAL 里的一个 `if`、
+  LOADING 那一支的 `text` 参数被传成 `""`。现在是一颗 `LbButtonState`，非法组合不可表达。
+- **两件刻意留在 reply 层**：`generatingLabel()` 那串"分析对话 · 7s 点击停止"与 5s/15s 阶段规则
+  （上一格 `LbTopBar` 刚犯过"设计系统认识了一个具体页面"）；顺手把阶段规则抽成纯函数
+  `generatingPhaseResFor(seconds)`——它原先焊在 composable 里，**本机一格都量不到**。
+- **删掉三样死东西**：`heightDp`（实现是 `maxOf(heightDp, 48)`，只能改高不能改矮）、
+  LOADING 那个 `text=""`、`textColor`（0 个调用方传过）。颜色收成两档 `LbButtonTone{Primary,Deep}`。
+  停止锚点进 `LbTags.PRIMARY_STOP`，**值仍是 `generation_stop_action`**：换归属不换值，
+  设备侧选择器与 CI 那条链不受影响。
+- 新守卫 5 格语义树 + 2 格纯函数。**而这一格真正的"没改行为"证据是老用例一字未改仍然绿**：
+  `ReplyPrimaryActionsContractTest` 那 7 格读的是语义树上的标签、宽度、disabled 位。
+- 写测试时踩到自己两个假前提（值得下一个人先看）：
+  ① "四态同盒"第一版红在测试上——没给 `fillMaxWidth()` 时量到 `Idle=63/Loading=120/Disabled=102/Stop=71`dp，
+  这颗按钮**按内容宽**，所以 §6.4 那句"不移动主操作"是**调用方 + 组件**的联合性质；
+  ② `Regex("\\.paddingVerticalInside\\(")` 数到 5——定义行 `Modifier.paddingVerticalInside()` 里那个点也算命中。
+- ⚠ **事故一条（坑表 64）**：变异探针的替换文本**不许是空串**。M5 第一版是"把那行删掉"，
+  revert 时 `t.count("")` = 7379，驱动的"命中数须为 1"哨兵当场报错、**文件被留在变异态**；
+  还原靠 apply 之前先落盘的 `_temp/mut72-backup/`。驱动现已加启动期断言禁空串。
+- lint 少了一条：`AutoboxingStateCreation` 6→5，正是退役按钮里那个 `mutableStateOf(0)` 计时器
+  （新代码 `mutableIntStateOf`）。**逐条核过剩余 5 条的位置都不在退役文件里**才 `--rewrite`，diff 只动一行。
+- 实测：162 套件 / **1260 例** / 0 红；lint RC=0（68/15，入预算 67/14，advisory 1）；
+  工单、资源锁、预算自测、跨层 6 笔、androidTest 编译全 RC=0；九发探针各咬各的。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -344,16 +371,20 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 #   只动 main 源文件时 testDebugUnitTest 会判 UP-TO-DATE 跳过、退出码仍然 0（见 §6 第 62 条）
 ```
 
-最近一轮实测基线（到 `054c6e8`）：**1253 单测 / 160 套件 / 0 失败 / 0 错误 / 0 跳过**
-（起点 13:2x，跑在变异全撤之后的树上）。与上一格对账：1252 → 1253 = +1（新尺那一格），套件数不变。
-lint 报告**重新生成后**实测 **69 / 15**、进预算 **68 / 14**、advisory 1（连续五格同一组数——这格搬了 12 个文件也没动它）。
+最近一轮实测基线（到 `d8f36d2`）：**1260 单测 / 162 套件 / 0 失败 / 0 错误 / 0 跳过**
+（跑在变异全撤之后的树上）。与上一格对账：1253 → 1260 = +7，160 → 162 套 = +2（本格两个新文件）。
+lint 报告**重新生成后**实测 **68 / 15**、进预算 **67 / 14**、advisory 1。
+比上一格少的这 1 条是 `AutoboxingStateCreation` 6→5（退役按钮里那个 `mutableStateOf(0)` 计时器，
+新代码写 `mutableIntStateOf`），逐条核过剩余 5 条位置都不在退役文件里才 `--rewrite`
+⇒ **这是还掉了一条债，不是量的时刻不同**（还债后必须落账这件事，交接单 §0.15 有全程）。
 跨层 **6** 条；工单编号 rc=0；prompt 资产 lock rc=0 且 `git diff --exit-code 286c9406..HEAD -- assets/engine` rc=0；
 判据自测 27 格 rc=0；`:app:assembleAndroidTest` rc=0。
 **目录现状**：`core/designsystem/` = Color / Dimens / Type / Spacing / Shapes / ScreenState /
 LbAsyncState / LbStatusBadge / LbRowState **+ 这格新到的 LbTopBar / LbSection / LbActionCard /
 LbSettingRow / LbMetricGrid / LbTags / PressScale**；`ui/theme/` 只剩 `Theme.kt`。
 `HomeComponents.kt` 494 → 519 → 545 → **249** 行（§6.1 搬家；剩 HomeDestination / LbHomeTags /
-HomeAboutEntry / AssistantStatusCard）；`HomeScreen.kt` 216 → 217 → 226 行（两个调用点、删死 import，
+HomeAboutEntry / AssistantStatusCard）；`ui/panel/reply/GenerationActionButton.kt`（196 行）已退役进
+`_temp/GenerationActionButton.kt.retired-2026-09-25`，主动作改由 `core/designsystem/LbPrimaryButton.kt` 承担；`HomeScreen.kt` 216 → 217 → 226 行（两个调用点、删死 import，
 再加两个默认值即原行为的 override 参数）。
 **字面量预算现在是四栏**：TEXT 246 / DESC 12 / STATE 0 / **COMPONENT 16**（这格新加，见 §6 第 61 条）。
 VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件计数：>500 行 17 个、>800 行 10 个**。
@@ -434,11 +465,13 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
    全在 `core/designsystem/`。钉住它的是 `UiLayerDependencyContractTest` 新那格：
    旧名字全仓声明数 0 / 新名字全仓恰 1 / 那 1 处在 core 子树里（P1-P4 四发各咬一条，见账本 §26.5）。
    `LbRowState` 与 `LbStatus` 仍然没并（两张表各守一域，并了读屏会对着供应商行念「运行中」）。
-   **表里只剩 3 行没主人**，全是 B 类：
-   - **B 类「真没有同名物」（3 行）**：`LbPrimaryButton`（Idle/Loading/Disabled/Stop 四态——今天散在
-     `ReplyPrimaryActions` 一带，是唯一「要从行为里抽出来」而不是改名的行）、
-     `LbModalSheet`/`LbDialog`（今天各页各用 `AlertDialog`，禁 Toast 那条已锁但浮层语法没收口）、
-     `LbScreenScaffold` 的安全区部分。
+   **表里只剩 2 行没主人**（B 类第一行 `LbPrimaryButton` 已于 `d8f36d2` 落地，见 §0.15 与账本 §27；
+   它是四行里唯一「要从行为里抽出来」而不是改名的那一行）：
+   - **B 类「真没有同名物」（2 行）**：`LbModalSheet`/`LbDialog`（今天各页各用 `AlertDialog`，
+     禁 Toast 那条已锁但浮层语法没收口）、`LbScreenScaffold` 的安全区与统一水平边距部分。
+   **主操作以外的重复按钮实现一处都还没收**（全表在账本 §27.7）：`ui/` 下"Primary 底色 + clickable"
+   实扫 **17 处 / 11 个文件**。别按数量收口——哪些算"页面主动作"、哪些是 chip / 切换 / 次级动作，
+   要一处一处判语义；`054c6e8` 那把归属棘轮只认**声明处**，抓不到"用同一颗组件却自造样式"。
    **§6.2 四段本身已经有守卫了**（`11e121f`，见 §0.13）：顺序、分区数、唯一主按钮、
    "隐藏图标只在可隐藏时出现在右上角"、统计三等分——五格语义树用例逐条对着那五句话，
    改名搬包时它就是回归网。但「**未来**新增功能仍走同组件」这半句仍然没闸：
@@ -536,6 +569,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 | `634a9f0` | §6.1 的 `LbSettingRow` 语义修对：状态槽以前**只画点、不画词**（`statusText` 的值从来没被渲染，捕获行的「开/关」解析完就丢；供应商行用 `""` 表示"只要一颗点"）。拆成 `dot: LbRowState?` + `statusText: String?`，颜色进新的小表 `LbRowState`（Ready/NotReady）；**没复用 `LbStatus`**（军师词汇表，借用会让读屏对配置行念"运行中"）。顺手把尾部「管理」的 clickable 32→48dp（§6.5 :531）。4 格语义树用例 + 变异 T6/T7。**旧闸为什么绿**：`home trailing text action meets the touch floor` grep 的是另一个组件的常量；`dead parameters…` 是两个名字的黑名单 |
 | `11e121f` | §6.2 首页四段的第一条自动守卫：5 格语义树用例逐条对到那五句话（四段顺序 / 唯一主按钮 + 只在可隐藏时 + 右上角坐标 / 两张同颗快捷卡 / 两行设置 + 三等分宽度 / 子屏幕的东西没摊在首页，含反空跑断言）；`LbHomeTags` 八个锚点（同时是将来截图基线的定位点）；`HomeScreen` 加两个默认值即原行为的 override 参数（系统权限与进程内单例原本是藏在判据里的前提）；变异 H1–H5 各红该红那格，H2/H4/H5 同落第②条故分三跑 |
 | `054c6e8` | §6.1 五颗 A 类组件归 `core/designsystem` 并按表改名（`HomeTopBar`→`LbTopBar`、`HomeSectionHeader`→`LbSection`、`HomeActionCard`→`LbActionCard`、`HomeSettingRow`→`LbSettingRow`、`UsageSummary`/`UsageMetric`→`LbMetricGrid`/`LbMetricCard`）；`HomeComponents.kt` 545→249 行；`LbTopBar` 收成 `title/subtitle/trailing` 三槽（第一版把首页文案与关于图标搬进设计系统 = 设计系统认识了一个具体页面，已改回）；`rememberPressScale` 从 `ui/panel/DragHandle.kt` 抽进 core（22 处 import 改写，core 不该 import ui）；组件自持 tag 进 `LbTags.kt`（`lb_home_*`→`lb_*`），`LbSettingRowStateTest` 随组件搬包。**搬家照出三把瞎尺**（坑表 61–63）：TEXT 247→246 是串逃出锚点不是还债（补 `Kind.COMPONENT`，实扫 16，246+1 对齐旧 247）；Gradle 对读源码的门禁判 UP-TO-DATE 让变异假绿（从此 `--rerun` + 比 mtime）；`typealias` 分支的字符类写死、按文件去重数声明。**新尺**：旧名字全仓 0 / 新名字全仓恰 1 / 那 1 处在 core 子树里，P1–P4 各咬一条 + P5 咬 COMPONENT 增长；§25 那五发 H1–H5 搬家后重跑照红 |
+| `d8f36d2` | §6.1 表里 B 类第一行：`ui/panel/reply/GenerationActionButton.kt`（196 行、两个平行旋钮 `mode:ButtonMode` + `enabled`）收成 `core/designsystem/LbPrimaryButton.kt` + 一颗 `LbButtonState`（Idle/Loading/Disabled/Stop，非法组合不可表达）；删掉三个死东西（`heightDp` 只能改高不能改矮、LOADING 那个传成 `""` 的 `text`、0 人传过的 `textColor`），颜色收进 `LbButtonTone{Primary,Deep}`，停止锚点进 `LbTags.PRIMARY_STOP` 而**值一字未改**（仍是 `generation_stop_action`）。**两件刻意留在 reply 层**：那句「分析对话 · 7s 点击停止」与 5s/15s 阶段规则（上一格刚犯过「设计系统认识了一个具体页面」），阶段规则顺手抽成纯函数 `generatingPhaseResFor` 才有 2 格穷举。新守卫 5 格语义树（四态同盒 `0/0/360/48` ×4、逐态 48dp、Disabled 不消失且带 disabled 语义、三态点得动而 Disabled 点不动、停止锚点只属 Loading）；**老 7 格 §2.1 合同一字未改仍然绿**才是「换实现没换行为」的主证。九发探针 M1-M9 各咬各的；M5 第一版用空串当替换文本 ⇒ revert 时 `count("")`=7379 把文件留在变异态，靠 apply 前先落盘的 `_temp/mut72-backup/` 还原（坑表 64）。lint `AutoboxingStateCreation` 6→5 逐条核过剩余 5 条位置才 `--rewrite`（diff 只动一行） |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -547,7 +581,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N 次才坏"的桩
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
-## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺）
+## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64 变异探针不许用空串替换）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -734,6 +768,16 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     ⇒ 一条有多分支的正则/判据，**每个分支都要单独有一发探针**；"数量恰为 1"这种判据要
     同时能报 0 与 2（本轮把"core 里恰一颗"拆成"全仓恰 1 条 + 那 1 条在 core 子树里"两句，
     才各自能被 P4 与 P3 点名）。
+
+64. **变异探针的替换文本不许是空串——否则"撤回"这一步会把你留在变异态**（`d8f36d2` 那一格）：
+    M5 第一版把"删掉那一行"当变异（`old = 那一整行`，`new = ""`）。apply 正常，revert 时驱动去数
+    `t.count("")`，得到 **7379**（= 文本长度 + 1），"命中数必须为 1"那颗哨兵当场报错 ⇒
+    **文件被留在变异态**，而报错长得像"探针没问题、只是我锚点写坏了"，最容易就这样收工。
+    能还原只因为驱动在 apply **之前**就把三个被改文件复制进了 `_temp/mut72-backup/`。
+    ⇒ ①探针表加启动期断言 `assert old and new`；要"删掉"就改换成一个等价无害的别的符号
+    （本轮换成 `testTag(LbTags.SECTION)`——停止锚点数照样从 1 变 0，效果等价且可逆）；
+    ②每轮探针跑完拿备份逐文件 `cmp`，**别只看退出码**：这条与"记账必须在副作用之前落盘"
+    （第 34 号那一族）是同一个病在变异工具上的复发。
 
 ## 7. 硬约束（一条没变）
 
