@@ -1,6 +1,10 @@
 package com.lovebrain.app.ui.panel
 
 import com.lovebrain.app.core.designsystem.rememberPressScale
+import com.lovebrain.app.core.designsystem.LbModalSheet
+import com.lovebrain.app.core.designsystem.LbModalSheetActions
+import com.lovebrain.app.core.designsystem.LbDialogAction
+import com.lovebrain.app.core.designsystem.LbDialogActionTone
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -732,10 +736,9 @@ private fun IntentEditorDialog(
     var editStatus by remember { mutableStateOf(status) }
     val overLimit = editText.length > INTENT_MAX_LENGTH
 
-    // 使用 PanelModalHost 替代 AlertDialog——Service 宿主中安全
-    PanelModalHost(
-        onDismiss = onDismiss
-    ) {
+    // §6.1：浮层归 LbModalSheet——面板跑在 overlay 窗口里，Material 的 AlertDialog 会抛
+    // WindowManager.BadTokenException，所以这一套是同一棵 ComposeView 里自画的遮罩 + 卡片
+    LbModalSheet(onDismissRequest = onDismiss) {
         Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     "设置一个持续的对话目标（如\"约她周末看电影\"），军师每轮生成时都会参考。",
@@ -877,17 +880,19 @@ private fun IntentEditorDialog(
                     )
                 }
             }
-            // 统一操作行——PanelModalActions
+            // 统一操作行：超限时"保存"是**灰着还在**，不是消失——用户得知道少填了什么
             Spacer(Modifier.height(Spacing.md))
-            PanelModalActions(
-                confirmLabel = "保存",
-                confirmEnabled = !overLimit,
-                onConfirm = {
-                    if (!overLimit) {
-                        onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled, editExpiry, editExpiryDate.trim(), editStatus)
-                    }
-                },
-                onDismiss = onDismiss
+            LbModalSheetActions(
+                listOf(
+                    LbDialogAction("取消", onDismiss, tone = LbDialogActionTone.Muted),
+                    LbDialogAction(
+                        label = "保存",
+                        enabled = !overLimit,
+                        onClick = {
+                            onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled, editExpiry, editExpiryDate.trim(), editStatus)
+                        }
+                    )
+                )
             )
         }
     }

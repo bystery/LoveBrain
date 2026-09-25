@@ -125,7 +125,7 @@ class UiLayerDependencyContractTest {
      *
      * ②③ 必须分开：只写"core 里恰好一颗"的话，把整颗组件搬回 ui/home 会两半都绿
      * （core 0 颗、ui 1 颗都不报错）；只写"全仓一颗"的话，搬出 core 又抓不到。
-     * 实测口径：②③ 各 6 个名字，① 各 6 个旧名，改前全为 0/1/命中。
+     * 实测口径：① 11 个旧名全为 0；②③ 11 个新名各恰 1 处且在 core 子树里。
      *
      * 已知边界：按 `fun 名字(`/`typealias 名字 =` 的形状判；写成
      * `val X: (@Composable () -> Unit)` 这种函数值能躲过——那种写法本仓库没有先例。
@@ -142,10 +142,15 @@ class UiLayerDependencyContractTest {
             "UsageMetric" to "LbMetricCard",
             // §6.1 的 B 类第一行：两颗平行旋钮（mode + enabled）收成一颗状态
             "GenerationActionButton" to "LbPrimaryButton",
-            "ButtonMode" to "LbButtonState"
+            "ButtonMode" to "LbButtonState",
+            // §6.1 的 Sheet 半边：面板那套自画浮层归进设计系统。形状**必须**是自画的
+            // （overlay 窗口起不了 Dialog，会抛 BadTokenException），但"谁拥有这个形状"仍只许一处
+            "PanelModalHost" to "LbModalSheet",
+            "PanelModalTitle" to "LbModalSheetTitle",
+            "PanelModalActions" to "LbModalSheetActions"
         )
         assertTrue("旧名字一个都不该有，新名字 ${retired.size} 颗，所以不能扫了个空目录",
-            retired.size == 8)
+            retired.size == 11)
         val sources = kotlinFiles(appRoot).map {
             it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
         }

@@ -54,6 +54,11 @@ import com.lovebrain.app.model.SchemeSource
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.core.designsystem.rememberPressScale
+import com.lovebrain.app.core.designsystem.LbModalSheet
+import com.lovebrain.app.core.designsystem.LbModalSheetTitle
+import com.lovebrain.app.core.designsystem.LbModalSheetActions
+import com.lovebrain.app.core.designsystem.LbDialogAction
+import com.lovebrain.app.core.designsystem.LbDialogActionTone
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.util.L
@@ -1134,12 +1139,11 @@ private fun MemoryRefItem(
             }
         }
 
-        // "暂时别提"时长选择子菜单——: 改为 PanelModalHost
+        // "暂时别提"时长选择子菜单——§6.1：浮层归 LbModalSheet，这一档**没有主动作**
+        // （旧形状在这里传 `confirmLabel = ""`，于是画出一颗 24x22dp、没有任何名字的按钮）
         if (showMuteSubmenu) {
-            com.lovebrain.app.ui.panel.PanelModalHost(
-                onDismiss = { showMuteSubmenu = false }
-            ) {
-                com.lovebrain.app.ui.panel.PanelModalTitle("暂停时长")
+            LbModalSheet(onDismissRequest = { showMuteSubmenu = false }) {
+                LbModalSheetTitle("暂停时长")
                 Spacer(Modifier.height(Spacing.md))
                 Column {
                     CorrectionSubmenuItem("仅本轮") {
@@ -1155,22 +1159,17 @@ private fun MemoryRefItem(
                         showMuteSubmenu = false
                     }
                 }
-                com.lovebrain.app.ui.panel.PanelModalActions(
-                    confirmLabel = "",
-                    dismissLabel = "取消",
-                    confirmEnabled = false,
-                    onConfirm = {},
-                    onDismiss = { showMuteSubmenu = false }
+                LbModalSheetActions(
+                    listOf(LbDialogAction("取消", { showMuteSubmenu = false },
+                        tone = LbDialogActionTone.Muted))
                 )
             }
         }
 
-        // "不对"——输入正确内容——: 改为 PanelModalHost
+        // "不对"——输入正确内容
         if (showWrongDialog) {
-            com.lovebrain.app.ui.panel.PanelModalHost(
-                onDismiss = { showWrongDialog = false }
-            ) {
-                com.lovebrain.app.ui.panel.PanelModalTitle("标记为错误")
+            LbModalSheet(onDismissRequest = { showWrongDialog = false }) {
+                LbModalSheetTitle("标记为错误")
                 Spacer(Modifier.height(Spacing.sm))
                 Text(
                     "输入正确内容（可选，留空仅停用）",
@@ -1191,13 +1190,18 @@ private fun MemoryRefItem(
                     shape = LoveBrainShape.sm
                 )
                 Spacer(Modifier.height(Spacing.md))
-                com.lovebrain.app.ui.panel.PanelModalActions(
-                    confirmLabel = "确认",
-                    onConfirm = {
-                        onCorrectionWithReplacement(ref.id, wrongText.trim())
-                        showWrongDialog = false
-                    },
-                    onDismiss = { showWrongDialog = false }
+                LbModalSheetActions(
+                    listOf(
+                        LbDialogAction("取消", { showWrongDialog = false },
+                            tone = LbDialogActionTone.Muted),
+                        LbDialogAction(
+                            label = "确认",
+                            onClick = {
+                                onCorrectionWithReplacement(ref.id, wrongText.trim())
+                                showWrongDialog = false
+                            }
+                        )
+                    )
                 )
             }
         }

@@ -154,6 +154,11 @@ class UiStringLiteralBudgetTest {
      *   ③ 这一栏改成**按字符区间去重**再计数：嵌套调用（`LbDialog(…, confirm = LbDialogAction(…))`）
      *   外层与内层切片各含同一条字符串一次，按锚点求和会虚报（同一次实扫 85 vs 去重后 59）。
      *   不做这件事的话，"把一颗按钮拆成两颗 Lb 组件"都会让数字涨，那涨的是量具自己。
+     * - §6.1 的 Sheet 半边（`PanelModalHost`/`Title`/`Actions` → `LbModalSheet*`）之后
+     *   **COMPONENT 59 → 66（+7）、TEXT 不动**。这 7 条全是**既有的**用户可见文案：
+     *   「暂停时长」「标记为错误」「取消」×3、「确认」「保存」——原先写在 `PanelModalTitle("…")`
+     *   与 `PanelModalActions(confirmLabel = "…")` 这类**非 `Lb` 锚点**里（"取消"还是旧组件的默认实参），
+     *   三把老尺一条都看不见；换名进设计系统之后才被量到 ⇒ 涨的是量具新看见的既有债。
      * - §6.1 把五颗首页组件搬进 core/designsystem 时，TEXT 掉到 **246**——
      *   **这一条不是还债**：掉的那处是「帮你更自然地表达」，它只是从 `Text("…")`
      *   变成了 `LbTopBar(subtitle = "…")`，字符串一个字没动，是锚点 `Text(` 看不见它了。
@@ -175,7 +180,7 @@ class UiStringLiteralBudgetTest {
         Kind.TEXT to 209,
         Kind.DESC to 12,
         Kind.STATE to 0,
-        Kind.COMPONENT to 59
+        Kind.COMPONENT to 66
     )
 
     private fun countIn(root: File, kind: Kind): Int {
