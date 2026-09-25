@@ -1639,6 +1639,8 @@ serviceRunningOverride: Boolean? = null    // 默认仍读 FloatingService.insta
 - **§6.1 表里的改名与搬包仍没动**：`HomeTopBar` / `HomeSectionHeader` / `HomeActionCard` /
   `HomeSettingRow` / `UsageSummary`+`UsageMetric` 还在 `ui/home`，名字不按表。
   守卫已经就位，这一格是故意排在守卫之后。
+  **→ 已还：见 §26（提交 `054c6e8`）。** 名字与包都按表了，
+  §26.3 还顺手量出这次搬家把字面量预算照出了一个瞎点。
 - §6.2 那句「**未来**新增功能仍走同组件」还是没有闸：现在能证明"今天正好两张卡"，
   不能证明"第三张必须用同一颗"。要闸得住"新增"，得等名字按表齐了再扫 `Lb*` 调用数——
   或者扫"首页里 tag=ACTION_CARD 之外的可点卡片"。这条我没做，别以为守卫管住了它。
@@ -1647,3 +1649,168 @@ serviceRunningOverride: Boolean? = null    // 默认仍读 FloatingService.insta
 - 截图基线（§6.5）仍未接；这格把定位点备齐了而已。
 - `Settings.canDrawOverlays` 与 `FloatingService.instance` 这两个前提在生产上仍是从环境/单例读，
   我只加了 override，没有把它们提到 VM 里——"UI 不读进程单例"这件事归第二/三步的账。
+
+
+---
+
+# 追加十六：§6.1 五颗组件归 core 并改名，搬家照出两把尺的瞎点（提交 `054c6e8`）
+
+提交 `054c6e8`。这一格是 §25.8 第一条欠的那笔：名字按表、包也按表。
+
+## 26.1 指导书那两栏逐字对到
+
+指导书 :474 起（§6.1）：
+
+> 只保留以下基础组件：… | `LbTopBar` | 标题、副标题、返回/关于等单一尾部动作 | …
+> | `LbSection` | 标题 + 可选说明 + 内容，不允许每页另造标题样式 | …
+> | `LbActionCard` | 快捷功能入口；图标、标题、副标题、箭头统一 |
+> | `LbSettingRow` | 设置项；标题、说明、状态、尾部动作统一 |
+> | `LbMetricCard/Grid` | 使用统计；数值、单位、标签统一 |
+> 禁止创建"只在一个页面看起来不一样"的按钮/卡片…
+
+指导书 :494-499（§6.2）：
+
+> 3. **快捷功能**：知识库、反馈案例使用相同 `LbActionCard`；未来新增功能仍走同组件。
+> 4. **设置与使用概览**：模型供应商、消息捕获放 `LbSettingRow`；统计放三等分 `LbMetricGrid`。
+
+两段用的都是**组件名**，而仓库里当时叫 `HomeActionCard` / `HomeSettingRow` / `UsageSummary`，
+且住在 `ui/home/HomeComponents.kt`——名字和归属两样都不对。这一格把两样一起改过来。
+
+## 26.2 搬了什么，留在什么
+
+| 表里的名字 | 搬之前（ui/home/HomeComponents.kt） | 现在 |
+|---|---|---|
+| `LbTopBar` | `HomeTopBar`（把"LoveBrain"+副标题+关于图标烤进组件里） | `core/designsystem/LbTopBar.kt`（54 行，签名 `title/subtitle/trailing`） |
+| `LbSection` | `HomeSectionHeader` | `core/designsystem/LbSection.kt`（22 行） |
+| `LbActionCard` | `HomeActionCard` | `core/designsystem/LbActionCard.kt`（96 行） |
+| `LbSettingRow` | `HomeSettingRow` | `core/designsystem/LbSettingRow.kt`（158 行） |
+| `LbMetricCard/Grid` | `UsageSummary` + `UsageMetric` | `core/designsystem/LbMetricGrid.kt`（84 行） |
+
+`HomeComponents.kt` 545 → **249 行**，剩下的四样都是"首页自己的东西"，搬走就是撒谎：
+`HomeDestination`（导航密封类）、`LbHomeTags`（页面锚点）、`HomeAboutEntry`（关于入口，
+带 `contentDescription = "关于"` 这句首页文案）、`AssistantStatusCard`（军师状态主卡）。
+
+`LbTopBar` 第一次搬的时候我把"LoveBrain""帮你更自然地表达"和那颗关于图标一起挪进了
+`core/designsystem` —— 那是**设计系统认识了一个具体页面**。所以尾部改成 `trailing` 槽，
+具体内容和那句文案回到调用点（`HomeScreen` 里 `trailing = { HomeAboutEntry(onNavigateAbout) }`）。
+
+`rememberPressScale` 原先在 `ui/panel/DragHandle.kt` 里，五颗组件要用它就得让 core 去
+import ui ⇒ 单独抽成 `core/designsystem/PressScale.kt`（27 行），22 个文件的 import 改写。
+抽取时第一版把 `DragHandle` 和 `TriangleArrow` 一起删掉了——`git checkout --` 复原后按行精确切。
+
+tag 归属跟着搬：组件自持的 4 颗（SECTION / ACTION_CARD / SETTING_ROW / METRIC_CELL）
+进 `core/designsystem/LbTags.kt`，值从 `lb_home_*` 改成 `lb_*`（它们不再属于首页）；
+页面锚点（ABOUT / STATUS_CARD / PRIMARY_BUTTON / HIDE_BUTTON）留在 `ui/home` 的 `LbHomeTags`。
+`LbSettingRowStateTest` 也跟着组件搬进 `core/designsystem` 测试包（git 认出 rename，96% 相似）。
+
+## 26.3 这格真正的收获：搬家把一把尺照出了瞎点
+
+搬完之后 `UiStringLiteralBudgetTest` 报：
+
+```
+Text 可见文案: 实测 246 < 预算 247（还掉了就来把数字改小）
+```
+
+按棘轮的语义，改小数字了事是**合规**的。但"还掉了"这三个字要能作证：我没有搬走任何一条
+硬编码中文，一条都没有。于是用 `_temp/measure_text_delta.py` 把"搬家前后各看见哪些字面量"
+做成了**逐条差集**（不是比总数），结果是：
+
+```
+搬家前 TEXT 可见 = 2，搬家后 = 1
+看不见的（前 > 后）:  -1  "帮你更自然地表达"
+```
+
+同一条字符串还在原地，只是从 `Text("帮你更自然地表达")` 变成了
+`LbTopBar(subtitle = "帮你更自然地表达")`，而那把尺的锚点是 `Text(`。
+**计数掉了不等于债还了**——这是 §15 那条"还债后计数没动 = 尺在漏"的反向版本。
+
+修法不是改窄回去，是补一栏：`Kind.COMPONENT`，锚点 `\bLb\w+\s*\(`，
+口径写成"整段实参里的中文字面量 **减去已被前三栏区间覆盖的那些**"（按字符区间判，
+所以 `LbCard { Text("中文") }` 只记一次，不会两栏重复入账）。实扫 = **16**，起点就登记 16。
+账对上：246（TEXT）+ 那 1 条（现在在 COMPONENT 里）= 旧的 247，总数一笔没少。
+
+盲区还剩多少，也量了：`ui/` + `core/designsystem/` 里前三栏都看不见的内联中文 = **364 条**，
+但这个数不能当预算用——它里面大头是注释与日志（`LbRowState.kt` 7、`ScreenState.kt` 4 这类），
+把它登记成"用户可见文案"是假账。所以那 364 里的真文案（页面自造子组件的具名实参，
+如 `StatCell(label = "…")`）**仍然欠着**，写进 §4 待办，别当已覆盖。
+
+`the counters count what they claim and nothing else` 那格里补了三条夹具反例：
+`LbTopBar(title = "页面标题", trailing = { Text("里面" + "那颗字") })` ⇒
+COMPONENT 必须 1（具名实参那条要看见）、TEXT 必须 6（套在里面的两处不许重复记）；
+再加 `OtherCell(label = "别人的组件不算")` ⇒ COMPONENT 仍是 1，
+这一格明写"非 `Lb` 前缀不数"，免得下一个人以为这栏覆盖全部组件。
+
+## 26.4 新尺 `design system components live in core and … stay retired`
+
+放在 `UiLayerDependencyContractTest`（它就是管"东西该在哪一层"的）。三条判据都全仓扫：
+
+1. 六个旧名字（含 `typealias`）声明数 = 0；
+2. 六个新名字全仓声明数恰 = 1；
+3. 那唯一一处落在 `core/designsystem/` 子树里。
+
+②③ 必须分开写。只写"core 里恰好一颗"的话，把整颗组件搬回 `ui/home` 两个方向都不报
+（core 数到 0 颗不满足"恰一颗"？——第一版按**文件**去重数，搬走之后 core 里 0 颗、
+`assertTrue(size == 1)` 才红，但同一文件里复制一颗永远数不到）；只写"全仓一颗"的话，
+搬出 core 又抓不到。所以一条测数量、一条测位置。
+
+## 26.5 变异：七发，每发只咬该咬的那格
+
+P1-P4 打 §26.4 的新尺，P5 打 COMPONENT 栏，H1-H5（§25.6 那五发）**搬家后重跑一遍**，
+确认 §6.2 的守卫没被搬家弄成摆设。
+
+| 探针 | 改了什么 | 结果（消息点名） |
+|---|---|---|
+| P1 | `ui/home` 里重新声明 `@Composable fun HomeActionCard(…)` | 红：`不许重新声明：[ui/home/HomeComponents.kt]` |
+| P2 | `ui/home` 里 `typealias HomeTopBar = String` | 红（同一句，另一条正则分支） |
+| P3 | `core/designsystem/LbSettingRow.kt` 里再加一颗 `fun LbSettingRow(probeOnly: Int)` | 红：`应当全仓只声明一次，实到 2` |
+| P4 | 把 `LbMetricGrid.kt` 整颗搬回 `ui/home`（包名不动，编译照过） | 红：`唯一声明应当在 core/designsystem 子树里，实到：[ui/home/LbMetricGrid.kt]` |
+| P5 | `LbTopBar(title = "LoveBrain" + "新增中文", …)` | 红：`组件实参里的可见文案: 实测 17 > 预算 16` |
+| H1 | 三等分其中一格 `weight(2f)` | 红：`三等分不是修辞：实测宽度 [70.0, 140.0, 70.0]，差 70.0dp` |
+| H2 | 主卡里再放一颗 `PRIMARY_BUTTON` | 红：`状态卡里的主按钮必须唯一 expected:<1> but was:<2>` |
+| H3 | 首页插入一颗 `Checkbox` | 红：`首页不该出现捕获清单的勾选框 expected:<0> but was:<1>` |
+| H4 | `canHide` 放宽成只看服务在跑 | 红：`服务在跑但窗口是 STOPPED：不该给隐藏入口` |
+| H5 | 隐藏图标 `TopEnd` → `TopStart` | 红：`隐藏图标必须在卡片右上角：hide=(32.0,96.0) card=(24.0,88.0,336.0)` |
+
+**P1-P4 第一版全绿的其中两发是假的**：Gradle 不知道这条门禁在读磁盘源码，
+`:app:testDebugUnitTest UP-TO-DATE` 直接跳过测试任务、退出码 0。
+从此变异一律 `--rerun`，跑前 `touch marker`、跑完只认比 marker 新的 XML，
+日志里出现 `testDebugUnitTest UP-TO-DATE` 这一格作废重跑。
+另外 P2 那发还顺手证明了我自己写的正则分支是死的：`typealias` 后面跟 `=` 不跟 `(`，
+原来的字符类 `[<(]` 永远数不到 typealias。P3 那发证明"按文件去重"是错的口径。
+也就是说：**这三发探针的价值不在"新尺有牙"，在"把还没牙的三处照出来"**——牙是补完之后重新长的。
+
+复验：所有探针 revert 后与 `_temp/mut70-backup/` 逐字节比对 IDENTICAL，
+`grep 新增中文|probeOnly|SECONDARY|TopStart` 在生产源码里 0 命中。
+
+## 26.6 实测（数字全部来自当次命令输出，退出码单独取）
+
+| 项 | 结果 |
+|---|---|
+| `:app:compileDebugKotlin` / `:app:compileDebugUnitTestKotlin` | RC=0 / RC=0 |
+| `:app:testDebugUnitTest` 全量 | 160 套件 / **1253 例** / 0 红 / 0 跳过（上一格 1252，这格 +1 = 新尺那一格） |
+| `HomeScreenStructureTest` + `core/designsystem.*` + `ui.home.*` | 11 套件 / 57 例 / 0 红 |
+| `:app:lintDebug` + `check_lint_budget.sh` | RC=0 / RC=0：`measured_issues=69 measured_rules=15 gated_issues=68 gated_rules=14 advisory_issues=1 advisory_rules=1 budget_rules=14`（与搬家前同一组数，条数没动） |
+
+⚠ 提交信息 `054c6e8` 里写的"537 → 249"**是错的**：`git show HEAD~1:…HomeComponents.kt | wc -l`
+实到 **545**。537 是我上一格给设置行拆 `dot`/`statusText` **之前**记的数，我凭记忆抄进了提交信息。
+行数口径以这里为准（545 → 249）；提交信息不改写（`--amend` 会动已存在的历史），在此点名留档。
+| `test_check_lint_budget.sh` | RC=0 |
+| `strip_ticket_ids.py --check` | RC=0 |
+| `asset_hashes.sh --check docs/prompt-assets.lock` | RC=0 |
+| `package_deps_report.sh --count` | RC=0，**6 笔**，与搬家前同一批 6 个文件（不增不减，所以"计数没动"这次不是漏） |
+| `:app:compileDebugAndroidTestKotlin` | RC=0 |
+
+## 26.7 这格没做的
+
+- §6.1 表 11 行仍欠三行有主的组件：`LbScreenScaffold`（背景/安全区/统一水平边距）、
+  `LbPrimaryButton`（Idle/Loading/Disabled/Stop 四态）、`LbModalSheet/Dialog`。
+  现在表里 8 行有主，别报成"§6.1 做完了"。
+- §6.2 那句「**未来**新增功能仍走同组件」仍然没闸（§25.8 第二条照旧成立）。
+  名字按表之后可以扫 `Lb*` 调用数了，但这一格没做。
+- COMPONENT 那栏只认 `Lb` 前缀；页面自造子组件的具名实参仍在盲区（§26.3 末尾量到 364 条
+  里含真文案，但没法和注释/日志分桶，所以没登记）。
+- `HomeAboutEntry` 里 `contentDescription = "关于"` 与 `AssistantStatusCard` 里
+  `"暂时隐藏浮窗"` 仍是硬编码中文（在 DESC = 12 那笔里），英文环境读屏念中文，这格没动。
+- 五颗组件的**样式**没检查是否仍与 §6.5 基线一致（字号、圆角、间距那三张表）；
+  这格只搬不改，行为等价性由 §25 那套结构守卫 + `UiBaselineRegressionTest` 撑着，
+  截图基线仍未接。

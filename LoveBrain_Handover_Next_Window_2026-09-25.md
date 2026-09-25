@@ -293,6 +293,37 @@ HEAD `0c4d6d6`，仍未推。两笔：
   （现在只证明"今天正好两张卡"）；② `HomeTopBar` 的 `contentDescription = "关于"` 与
   `"暂时隐藏浮窗"`**仍是硬编码中文**（在 `DESC = 12` 那笔里），英文环境读屏会念中文。
 
+## 0.14 又一步：§6.1 五颗组件归 core 并改名，搬家照出两把尺的瞎点（`054c6e8`）
+
+- §6.1 表里点名的 `LbTopBar`/`LbSection`/`LbActionCard`/`LbSettingRow`/`LbMetricCard+Grid`
+  之前叫 `Home*`/`Usage*` 且住 `ui/home/HomeComponents.kt`（545 行）。这格把**名字和包**一起按表改：
+  五颗进 `core/designsystem/`，`HomeComponents.kt` 只剩首页自己的四样（249 行）。
+  组件自持的 tag 进 `core/designsystem/LbTags.kt`（值 `lb_home_*` → `lb_*`），页面锚点留 `LbHomeTags`。
+- 中途一次走偏值得记：`LbTopBar` 第一版把"LoveBrain"、副标题和那颗关于图标**一起搬进了设计系统**
+  ⇒ 设计系统认识了一个具体页面。改成 `title/subtitle/trailing` 三个槽，文案和 About 入口回调用点。
+  `rememberPressScale` 从 `ui/panel/DragHandle.kt` 抽进 `core/designsystem/PressScale.kt`
+  （core 不该 import ui，22 处 import 改写）；抽取第一版**删掉了 `DragHandle` 与 `TriangleArrow`**，
+  `git checkout --` 复原后按行精切。
+- **搬家逼出的尺伤 ①**：`UiStringLiteralBudgetTest` 的 TEXT 从 247 掉到 246，棘轮催我"把预算改小"。
+  逐条差集（`_temp/measure_text_delta.py`）证明掉的那条是 `"帮你更自然地表达"`——串没动，
+  只是从 `Text("…")` 变成 `LbTopBar(subtitle = "…")`，而锚点是 `Text(`。**没改小，补了 `COMPONENT` 一栏**
+  （锚点 `\bLb\w+\s*\(`，减去前三栏已覆盖的字符区间，实扫 **16** 登记为起点）：246 + 那 1 = 旧 247。
+  ⚠ 别把"计数掉了"当还债——这是坑表 55 那条的反向版本（新坑 61）。
+- **搬家逼出的尺伤 ②**：新尺 `UiLayerDependencyContractTest.design system components live in core…`
+  第一次注探针时 P2/P3"没咬"，查出来三件事：**(a) Gradle 不知道这条门禁在读磁盘源码，
+  `testDebugUnitTest` 判 UP-TO-DATE 直接跳过、退出码还是 0** ⇒ 变异一律 `--rerun` + 只认比 marker 新的 XML；
+  (b) `typealias X = …` 后面跟 `=` 不跟 `(`，我那个 `[<(]` 让 typealias 分支一直是死的；
+  (c) 按**文件**去重计数 ⇒ "同一个文件里再复制一颗"永远数不到。三个都修完才有牙（新坑 62、63）。
+- 判据三条：旧名字全仓声明数 0 / 新名字全仓恰 1 / 那 1 处在 `core/designsystem/` 子树里。
+  ②③ 分开写：合在一起的话"整颗搬回 ui/home"和"同文件复制一颗"各躲掉一半。
+- 变异 10 发全红且各咬各的（P1-P5 + §25 那五发 H1-H5 搬家后**重跑**）；
+  H1 那条现在还能报出 `实测宽度 [70.0, 140.0, 70.0]`，说明 §6.2 的守卫没被搬家弄成摆设。
+- 实测：160 套件 / **1253 例** / 0 红；lint RC=0（69 实扫 / 15 规则 / 68 入闸 / 1 advisory，与搬家前同组数）；
+  工单、资源锁、预算自测、`package_deps_report --count` = **6**（同一批 6 个文件，不增不减）、
+  androidTest 编译，全 RC=0。
+- ⚠ 提交信息里写"537 → 249"是**凭记忆抄错的**，`git show HEAD~1:…HomeComponents.kt | wc -l` 实到 **545**；
+  账本 §26.6 已就地改口，别再引 537 这个数。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -309,16 +340,22 @@ git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine; echo "RC=$?"
 PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # 少这个路径会撞 unbound variable
 ./gradlew :app:lintDebug --no-daemon; echo "RC=$?"  # 报告不重生成就别信 lint 的数，见 §6 第 28 条
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
+# 给"读磁盘源码"的静态门禁做变异反证时必须加 --rerun：Gradle 不知道它在读文件，
+#   只动 main 源文件时 testDebugUnitTest 会判 UP-TO-DATE 跳过、退出码仍然 0（见 §6 第 62 条）
 ```
 
-最近一轮实测基线（到 `11e121f`）：**1252 单测 / 160 套件 / 0 失败 / 0 错误 / 0 跳过**
-（起点 12:30:55，跑在变异全撤之后的树上）。与上一格对账：1247 → 1252 = +5，159 → 160 套 = +1。
-lint 报告**重新生成后**（12:37:17）实测 **69 / 15**、进预算 **68 / 14**、advisory 1（连续四格同一组数）。
+最近一轮实测基线（到 `054c6e8`）：**1253 单测 / 160 套件 / 0 失败 / 0 错误 / 0 跳过**
+（起点 13:2x，跑在变异全撤之后的树上）。与上一格对账：1252 → 1253 = +1（新尺那一格），套件数不变。
+lint 报告**重新生成后**实测 **69 / 15**、进预算 **68 / 14**、advisory 1（连续五格同一组数——这格搬了 12 个文件也没动它）。
 跨层 **6** 条；工单编号 rc=0；prompt 资产 lock rc=0 且 `git diff --exit-code 286c9406..HEAD -- assets/engine` rc=0；
 判据自测 27 格 rc=0；`:app:assembleAndroidTest` rc=0。
 **目录现状**：`core/designsystem/` = Color / Dimens / Type / Spacing / Shapes / ScreenState /
-LbAsyncState / LbStatusBadge / LbRowState；`ui/theme/` 只剩 `Theme.kt`。
-`HomeComponents.kt` 494 → 519 → 537 行（状态槽拆开、`LbHomeTags` 八个锚点）；`HomeScreen.kt` 216 → 217 → 226 行（两个调用点、删死 import，再加两个默认值即原行为的 override 参数）。
+LbAsyncState / LbStatusBadge / LbRowState **+ 这格新到的 LbTopBar / LbSection / LbActionCard /
+LbSettingRow / LbMetricGrid / LbTags / PressScale**；`ui/theme/` 只剩 `Theme.kt`。
+`HomeComponents.kt` 494 → 519 → 545 → **249** 行（§6.1 搬家；剩 HomeDestination / LbHomeTags /
+HomeAboutEntry / AssistantStatusCard）；`HomeScreen.kt` 216 → 217 → 226 行（两个调用点、删死 import，
+再加两个默认值即原行为的 override 参数）。
+**字面量预算现在是四栏**：TEXT 246 / DESC 12 / STATE 0 / **COMPONENT 16**（这格新加，见 §6 第 61 条）。
 VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件计数：>500 行 17 个、>800 行 10 个**。
 
 ## 2. 被证伪的判断（逐条累加，别再当依据；条数以此表实际行数为准）
@@ -392,13 +429,12 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 5. ~~**§6.3 最后一格：捕获范围**~~ —— **已做**（`054b789`，见 §0.9 与账本 §21）。四家齐了；
    顺带量出并修了那颗 288×15dp 的输入框（`cbcdebe`）。**留下的相邻账**见账本 §21.8：
    勾选行的选中态读屏念不念得出来（只挂没判）、候选枚举仍在主线程、`capture_apps_back` 早就是死资源。
-6. **§6.1 那张表：还剩 8 行**（`LbStatusBadge` 已于 `6b92617` 落地，见 §0.11）。剩下分两类，别混着做：
-   - **A 类「形状有主人、名字不按表」（5 行）**：`HomeTopBar`≈`LbTopBar`、`HomeSectionHeader`≈`LbSection`、
-     `HomeActionCard`≈`LbActionCard`、`HomeSettingRow`≈`LbSettingRow`、`UsageSummary`/`UsageMetric`≈
-     `LbMetricCard/Grid`。这一类是改名 + 搬进 `core/designsystem` + 把 §6.2 首页四段接上。
-     ~~设置行那套「颜色由调用方交进来」+「`statusText` 从来不画」已经修掉了~~（`634a9f0`，
-     见 §0.12 与账本 §24）：**剩下的仍然只是改名 + 搬包**。
-     改名时别把 `LbRowState` 并到 `LbStatus` 上——两张表各守一域，并了读屏会对着供应商行念"运行中"。
+6. ~~**§6.1 那张表：还剩 8 行**~~ → **A 类五行的改名 + 搬包已做**（`054c6e8`，见 §0.14 与账本 §26）：
+   五颗现在就叫 `LbTopBar`/`LbSection`/`LbActionCard`/`LbSettingRow`/`LbMetricCard+Grid`，
+   全在 `core/designsystem/`。钉住它的是 `UiLayerDependencyContractTest` 新那格：
+   旧名字全仓声明数 0 / 新名字全仓恰 1 / 那 1 处在 core 子树里（P1-P4 四发各咬一条，见账本 §26.5）。
+   `LbRowState` 与 `LbStatus` 仍然没并（两张表各守一域，并了读屏会对着供应商行念「运行中」）。
+   **表里只剩 3 行没主人**，全是 B 类：
    - **B 类「真没有同名物」（3 行）**：`LbPrimaryButton`（Idle/Loading/Disabled/Stop 四态——今天散在
      `ReplyPrimaryActions` 一带，是唯一「要从行为里抽出来」而不是改名的行）、
      `LbModalSheet`/`LbDialog`（今天各页各用 `AlertDialog`，禁 Toast 那条已锁但浮层语法没收口）、
@@ -407,20 +443,28 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
    "隐藏图标只在可隐藏时出现在右上角"、统计三等分——五格语义树用例逐条对着那五句话，
    改名搬包时它就是回归网。但「**未来**新增功能仍走同组件」这半句仍然没闸：
    现在的守卫只证明"今天正好两张卡"。
-   §6.1 末句那条闸（「禁止创建只在一个页面看起来不一样的按钮/卡片」）**别再装在名字上**：
-   按 `Lb*` 扫调用方今天扫到 0 个，装上去就是恒绿假闸（坑表 55 条那一族）。
+   §6.1 末句那条闸（「禁止创建只在一个页面看起来不一样的按钮/卡片」）**仍然别装在名字上**：
+   `054c6e8` 之后 `ui/` 里 `Lb*(` 调用点实扫 **14** 处（`LbActionCard` 2、`LbSettingRow` 2、
+   `LbSection` 3、`LbTopBar`/`LbMetricGrid`/`LbAsyncState` 等），名字不再是空集了——
+   但"名字有命中"不等于"闸有判别力"：那条禁令说的是**看起来不一样**，
+   拿"又新建了一颗没进表的 `Lb*`"当判据，抓不到"用 `LbActionCard` 却塞了套自定义样式"这种坏法，
+   仍然是一类恒绿假闸（坑表 55 那一族）。要闸就得挂在语义树上（尺寸/角色/样式来源），
+   或者挂在"这一屏每个可交互节点都过 §6.5 那把尺"那种全量遍历上。
    `634a9f0` 给出的替代做法已经验证过：把"这一屏每个可交互节点都过 §6.5 那把尺"挂到**语义树**上，
    它连着抓出两颗旧闸看不见的缺陷（页头 32dp、设置行尾部 32dp）——
    旧闸绿是因为它们 grep 的是别的文件的常量名（见坑表 58 条的推论）。
-6b. **穿插格（便宜、独立）：给字面量那把尺补第四个锚点**。`UiStringLiteralBudgetTest` 现在只认
-    `Text(` / `contentDescription =` / `stateDescription =` 三个锚点，**看不见自定义组件参数位上的中文**：
-    粗测 `ui/` 下约 70 条（含构造函数位的假阳），确认的形状有 `HomeSectionHeader(“快捷功能”)`、
-    `HomeSettingRow(title = “模型供应商”, trailingText = “管理”)`、`UsageMetric(“累计生成”)`、
-    `FilterChip(“全部”)`、`RowActionButton(“编辑”)`。最直白的一对：`R.string.home_manage` 定义了
-    **全仓零引用**，而 `HomeScreen.kt:161` 那儿写的是字面量 “管理”——字面量不进计数、资源躺在
-    `UnusedResources 33` 里当死账，两头都看不见这笔。补锚点会让 TEXT 从 247 跳到三位数，
-    **那是量到了以前漏的、不是债涨了**（209 → 254 换尺那次已经写过一遍，届时要照样说明，
-    且中英 parity 那两把尺看不见这类漏，别拿它们当证据）。
+6b. ~~**穿插格：给字面量那把尺补第四个锚点**~~ —— **做掉一半**（`054c6e8`，账本 §26.3）：
+    这一格不是穿插做的，是**搬家逼出来的**——`Text(「帮你更自然地表达」)` 变成
+    `LbTopBar(subtitle = …)` 之后 TEXT 从 247 掉到 246，棘轮催我把预算改小；
+    逐条差集证明那条串一个字没动，只是逃出了锚点。于是新增 `Kind.COMPONENT`
+    （锚点 `\bLb\w+\s*\(`，减去前三栏已覆盖的字符区间，实扫 **16** 登记为起点）：
+    246 + 那 1 = 旧 247，总数一笔没少。**别信「约 70 条」那个粗测**：它把 `FilterChip`、
+    `RowActionButton` 这类**非 `Lb` 前缀**的页面组件也算进去了，那一半仍然没锚点。
+    剩下的账（照旧欠着，且要先分桶才能登记）：`ui/` + `core/designsystem/` 里前三栏
+    都看不见的内联中文字面量实扫 **364** 条，但大头是注释与日志（`LbRowState` 7、
+    `ScreenState` 4 这类），直接登记成「用户可见文案」就是假账 ⇒ 要么先剥注释与 `Log.`
+    再数，要么按组件白名单数。另有那对旧账没动：`R.string.home_manage` 全仓零引用，
+    而调用点写的是字面量「管理」。
 7. **§6.4 悬浮面板 `ResultArea` 拆分**：`ResultAreaStructureTest` 已经在看着它的结构，
    拆开时那把尺不许松（拆完仍要能证明"结果区只有这一份"）。
 8. **§5.1 `core/testing` 归位**：`app/src/androidTest/…/testing/UiText.kt` 与 JVM 侧那份是同一判据的
@@ -491,6 +535,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 | `6b92617` | §6.1 `LbStatusBadge` 落地：`LbStatus`（labelRes + color 同源一张表）+ 组件带 `contentDescription`/`liveRegion=Polite`；首页五个平行 `when`（文案/颜色/说明/按钮/动作）并成 `advisorStatus` 一份不可变快照，卡片签名从 4 个参数收成 1 个。**两处是修不是搬**：服务活着但窗口从未出现（`wm.addView` 抛 + `stopSelf()` 异步）旧代码说"运行中"；实例已空而状态仍 TEMP_HIDDEN 时旧代码给一颗 `restoreFromTempHidden()` 第一行就 return 的**死按钮**。偏离表名两处：加第五档 `NoPermission`、`Error` 那档因同包颜色撞名改叫 `WindowMissing`。12 格新用例 + 变异 T1–T5；**T1 照出性质格自己的边界**（Hidden 只有一组输入走到 ⇒ 那条性质格对它无从比较），限制写进 KDoc |
 | `634a9f0` | §6.1 的 `LbSettingRow` 语义修对：状态槽以前**只画点、不画词**（`statusText` 的值从来没被渲染，捕获行的「开/关」解析完就丢；供应商行用 `""` 表示"只要一颗点"）。拆成 `dot: LbRowState?` + `statusText: String?`，颜色进新的小表 `LbRowState`（Ready/NotReady）；**没复用 `LbStatus`**（军师词汇表，借用会让读屏对配置行念"运行中"）。顺手把尾部「管理」的 clickable 32→48dp（§6.5 :531）。4 格语义树用例 + 变异 T6/T7。**旧闸为什么绿**：`home trailing text action meets the touch floor` grep 的是另一个组件的常量；`dead parameters…` 是两个名字的黑名单 |
 | `11e121f` | §6.2 首页四段的第一条自动守卫：5 格语义树用例逐条对到那五句话（四段顺序 / 唯一主按钮 + 只在可隐藏时 + 右上角坐标 / 两张同颗快捷卡 / 两行设置 + 三等分宽度 / 子屏幕的东西没摊在首页，含反空跑断言）；`LbHomeTags` 八个锚点（同时是将来截图基线的定位点）；`HomeScreen` 加两个默认值即原行为的 override 参数（系统权限与进程内单例原本是藏在判据里的前提）；变异 H1–H5 各红该红那格，H2/H4/H5 同落第②条故分三跑 |
+| `054c6e8` | §6.1 五颗 A 类组件归 `core/designsystem` 并按表改名（`HomeTopBar`→`LbTopBar`、`HomeSectionHeader`→`LbSection`、`HomeActionCard`→`LbActionCard`、`HomeSettingRow`→`LbSettingRow`、`UsageSummary`/`UsageMetric`→`LbMetricGrid`/`LbMetricCard`）；`HomeComponents.kt` 545→249 行；`LbTopBar` 收成 `title/subtitle/trailing` 三槽（第一版把首页文案与关于图标搬进设计系统 = 设计系统认识了一个具体页面，已改回）；`rememberPressScale` 从 `ui/panel/DragHandle.kt` 抽进 core（22 处 import 改写，core 不该 import ui）；组件自持 tag 进 `LbTags.kt`（`lb_home_*`→`lb_*`），`LbSettingRowStateTest` 随组件搬包。**搬家照出三把瞎尺**（坑表 61–63）：TEXT 247→246 是串逃出锚点不是还债（补 `Kind.COMPONENT`，实扫 16，246+1 对齐旧 247）；Gradle 对读源码的门禁判 UP-TO-DATE 让变异假绿（从此 `--rerun` + 比 mtime）；`typealias` 分支的字符类写死、按文件去重数声明。**新尺**：旧名字全仓 0 / 新名字全仓恰 1 / 那 1 处在 core 子树里，P1–P4 各咬一条 + P5 咬 COMPONENT 增长；§25 那五发 H1–H5 搬家后重跑照红 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -502,7 +547,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N 次才坏"的桩
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
-## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因）
+## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -667,6 +712,28 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 60. **变异要按"会撞哪一格"分组跑**：H2（第二颗主按钮）、H4（`canHide` 放宽）、H5（隐藏图标挪到左上）
     都只红在第 ② 条用例上，一起跑就只能得到"②红了"，说不出是哪种坏法。分三跑后各自
     `tests completed, 1 failed`，归因才成立。同一文件里的两处变异同理（M1 与 M3 那次是撞在同一个函数上）。
+
+61. **"字面量计数掉了一格"不等于"债还了一格"**（`054c6e8`）：把 `HomeTopBar` 通用化成
+    `LbTopBar(title =, subtitle =)` 之后，TEXT 那栏从 247 → 246，棘轮当场催我"把预算改小"。
+    逐条差集（`_temp/measure_text_delta.py`，比"搬家前后各看见哪些串"而不是比总数）量出掉的那条是
+    「帮你更自然地表达」——串一个字没动，只是从 `Text("…")` 挪进组件具名实参，而锚点是 `Text(`。
+    ⇒ 计数下降要先定位**掉的那一条去了哪里**；是换形状逃出锚点就补锚点重新纳账（本轮加了
+    `Kind.COMPONENT`，起点实扫 16，246+1 对齐旧 247），不许直接改小。
+    同族：坑表 55 条"还债后计数没动 = 尺在漏"——那是没动，这是动了但动错了方向。
+
+62. **Gradle 会把"读磁盘源码"的门禁判成 UP-TO-DATE，变异于是假绿**（同一格两次白跑）：
+    我只挪了一个 main 源文件（`.class` 内容不变、测试类没重编），`:app:testDebugUnitTest`
+    直接 `UP-TO-DATE` 跳过，**退出码 0**，看起来像"探针没咬"。四发探针里两发这样被误判。
+    ⇒ 对静态源扫描类测试做反向证明，一律 `--rerun`（或 `cleanTest`），跑前 `touch marker`、
+    跑完**只认比 marker 新的 XML**；日志里出现 `testDebugUnitTest UP-TO-DATE` 这一格作废重跑。
+    这条与"gradlew 别接管道、按 mtime 比新鲜度"是同一个病的第三个变体。
+
+63. **判据写错形状时，探针"没咬"是白送的两条缺陷**：`typealias X = …` 后面跟的是 `=` 不是 `(`，
+    我写的 `[<(]` 字符类让 typealias 那一支**一直是死的**；`filter{}` 按**文件**去重数声明，
+    让"同一个文件里再复制一颗"永远数不到（P3 那发就是这么发现口径错的）。
+    ⇒ 一条有多分支的正则/判据，**每个分支都要单独有一发探针**；"数量恰为 1"这种判据要
+    同时能报 0 与 2（本轮把"core 里恰一颗"拆成"全仓恰 1 条 + 那 1 条在 core 子树里"两句，
+    才各自能被 P4 与 P3 点名）。
 
 ## 7. 硬约束（一条没变）
 
