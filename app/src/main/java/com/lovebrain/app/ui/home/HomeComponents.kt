@@ -92,6 +92,24 @@ companion object {
 }
 
 /**
+ * 首页自动化锚点（§6.2 四段结构 + §6.5 视觉基线都靠它定位）。
+ *
+ * 为什么不按文案查：那四段的判据是**结构**（谁在第几段、一颗还是两颗主按钮、
+ * 三等分是不是真的三等分），拿中文当锚点的话，改一句文案就把结构守卫弄红，
+ * 而结构其实没动——那正是本仓库反复写过的"文字会变，tag 不会"。
+ */
+object LbHomeTags {
+    const val SECTION = "lb_home_section"
+    const val ABOUT = "lb_home_about"
+    const val STATUS_CARD = "lb_home_status_card"
+    const val PRIMARY_BUTTON = "lb_home_primary_button"
+    const val HIDE_BUTTON = "lb_home_hide_button"
+    const val ACTION_CARD = "lb_home_action_card"
+    const val SETTING_ROW = "lb_home_setting_row"
+    const val METRIC_CELL = "lb_home_metric_cell"
+}
+
+/**
  * 首页顶部栏——标题 + 副标题 + 关于入口
  */
 @Composable
@@ -129,7 +147,8 @@ fun HomeTopBar(
                     interactionSource = aboutInteraction,
                     indication = null,
                     onClick = onNavigateAbout
-                ),
+                )
+                .testTag(LbHomeTags.ABOUT),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -163,6 +182,7 @@ internal fun AssistantStatusCard(
         modifier = Modifier
             .fillMaxWidth()
             .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.xl)
+            .testTag(LbHomeTags.STATUS_CARD)
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             // 右上次级隐藏图标（不另起一行）
@@ -179,7 +199,8 @@ internal fun AssistantStatusCard(
                             interactionSource = hideInteraction,
                             indication = null,
                             onClick = onHideClick
-                        ),
+                        )
+                        .testTag(LbHomeTags.HIDE_BUTTON),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -235,6 +256,7 @@ internal fun AssistantStatusCard(
                     modifier = Modifier
                         .height(48.dp)
                         .graphicsLayer { scaleX = btnScale; scaleY = btnScale }
+                        .testTag(LbHomeTags.PRIMARY_BUTTON)
                 ) {
                     Text(
                         buttonText,
@@ -255,7 +277,9 @@ fun HomeSectionHeader(title: String) {
         style = AppTypography.titleMedium,
         color = TextPrimary,
         fontWeight = FontWeight.SemiBold,
-        modifier = Modifier.padding(start = Spacing.sm, bottom = Spacing.sm)
+        modifier = Modifier
+            .padding(start = Spacing.sm, bottom = Spacing.sm)
+            .testTag(LbHomeTags.SECTION)
     )
 }
 
@@ -284,6 +308,7 @@ fun HomeActionCard(
                 indication = null,
                 onClick = onClick
             )
+            .testTag(LbHomeTags.ACTION_CARD)
     ) {
         Column(modifier = Modifier.padding(Spacing.xl)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -363,7 +388,8 @@ fun HomeSettingRow(
 
     Row(
         modifier = rowModifier
-            .padding(horizontal = Spacing.lg, vertical = Spacing.md),
+            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+            .testTag(LbHomeTags.SETTING_ROW),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // 图标
@@ -498,7 +524,7 @@ private fun UsageMetric(
     highlight: Boolean = false
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.testTag(LbHomeTags.METRIC_CELL),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

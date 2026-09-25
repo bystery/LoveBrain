@@ -58,10 +58,18 @@ fun HomeScreen(
     onNavigateProviders: () -> Unit,
     onNavigateUsage: () -> Unit,
     onNavigateCaptureApps: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    /**
+     * 两个**默认值就是原行为**的入口：首页原先直接读系统权限与 `FloatingService` 这个进程内
+     * 单例（`instance != null`），那是四段结构的判据里两个看不见的前提——要证明"隐藏图标只在
+     * 可隐藏时出现在右上角"，就得能把四个组合都摆出来。声明成参数之后，生产调用方一字不改，
+     * 用例可以逐格喂。
+     */
+    overlayGrantedOverride: Boolean? = null,
+    serviceRunningOverride: Boolean? = null
 ) {
     val context = LocalContext.current
-    val overlayGranted = Settings.canDrawOverlays(context)
+    val overlayGranted = overlayGrantedOverride ?: Settings.canDrawOverlays(context)
     val activeTicket by viewModel.activeTicket.collectAsStateWithLifecycle()
     val providerReady by viewModel.providerReady.collectAsStateWithLifecycle()
 
@@ -85,7 +93,7 @@ fun HomeScreen(
     }
 
     val scrollState = rememberScrollState()
-    val isServiceRunning = FloatingService.instance != null
+    val isServiceRunning = serviceRunningOverride ?: (FloatingService.instance != null)
     val currentWindowState by FloatingService.windowStateFlow.collectAsStateWithLifecycle()
 
     // 一份快照，不是五份平行判据。旧写法是 statusText / statusColor / description /
