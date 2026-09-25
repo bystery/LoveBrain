@@ -961,3 +961,113 @@ placeholder 是**兄弟节点**的一行 `Text`，只在草稿为空时画；Tal
 连着看才是真实进度：**§2.2 那行只推进了两处，另两处是"查过、不动"**。
 下一处候选只剩消息编辑族（`messages`/`editingIndex`/`currentRole`——前两个已有穷举矩阵兜底，
 并成一份快照的收益要重新估），以及 §6.1–§6.4 那批 UI 结构活（本阶段没动）。
+
+---
+
+# 追加十：知识库页接上四态（§6.3 第三份），顺手量到页头那颗 32dp 的返回钮
+
+## 20.1 指导书这一格的原话
+
+> 每个目的地只允许这四类顶层状态：`Loading` / `Content<T>` / `Empty(message, action)` / `Error(message, retry)`
+> Provider、反馈案例、知识库、捕获范围都用同一套空态/错误态，**而不是每页自己发明卡片、内联文字、弹窗或展开区**。
+
+替换前的状态：反馈案例页已接（`e359930`）、供应商区已接（`d902514`→`80bc78e`），
+知识库页是第三家——它当时写的正是指导书点名的那两种形状：`ui/KnowledgeBaseActivity.kt:281`
+的 `if (kbs.isEmpty())` 就地画一张约 40 行的 `Card`（72dp 圆形图标 + `titleLarge` 标题 +
+一行指路文字"点下方「新建知识库」…"），外加页面自己的一套判定。
+§6.1 对 `LbEmptyState` 明写的是"**动作是一处操作，不是一行文字**"——那行指路文字正是被点名的那个形状。
+
+## 20.2 Error 那一格：先问有没有真信号，没有就不画
+
+四格里唯一不能"顺手编一个"的是 Error。我把读取链一路读到底：
+
+- `KnowledgeCatalogStore.list()` 把"根目录读不动"与"一个库都没有"**合并成同一个 `emptyList()`**
+  （`listFiles()` 返回 null → `?: emptyList()`），单库 `kb.json` 坏了也只是丢弃那一条并记日志。
+  → 从 `repo.listAll()` 的返回值里**读不出**失败，这条不能拿来当 Error 的来源。
+- 但 `loadState()` 里还有第二处读取：`repo.getActive()` → `securePrefs.activeKbName` →
+  `EncryptedSharedPreferences.getString`。`SecurePrefs` 只在**构造**时兜了降级路径
+  （`runCatching { EncryptedSharedPreferences.create(...) }` → 回落明文 prefs），**逐次读没兜**；
+  keystore 里那份值解不开时 `getString` 抛。这是真实故障类，不是我造的假想敌。
+- 抛出后今天的行为：`viewModelScope.launch` 里没人接，`_state` 停在初始值 →
+  页面永远落在"第一次数据还没到"那一格，转圈转到用户退出。**所以这一格改的是一条已有的死路**，
+  不是给四态凑数。
+
+没有为了这一格把 `listAll()` 改成可空/可抛：`grep -rn "listAll(" app/src | wc -l` 实扫
+**59 处引用**（测试里 50 处、生产 9 行——生产那 9 行还含 1 处定义与 2 处注释，真调用点 6 个），
+为省一个 `loadFailed` 布尔去改返回形状不划算，而且会把刚并完的 catalog 判据重新劈成两份。
+"根读不动 vs 真的空"这件事记在这里，归 §5.3 剩下的 catalog 写侧那一格一起处理。
+
+## 20.3 判据只有一处
+
+`internal fun kbScreenState(state, emptyMessage, errorMessage, newKb, retry)`：
+`Loading > Error > Empty > Content`，与另两家同一副顺序；纯函数，`KbScreenStateMappingTest` 5 格穷举
+（`loaded` × `loadFailed` × 列表长度 三个维度，含"失败 + 有残留列表"那格）。
+
+- `KbListState` 多一个 `loadFailed`，**只由 `loadState()` 写**；失败时同时置 `loaded = true`
+  （否则判据还要猜谁优先）。
+- 失败不清空列表：`knowledgeBases` 留着上一次读到的那份，但整份快照被标记为失败，
+  判据据此把 Error 排在 Content 之前——所以"留着"不会被画成"刚读到的"。
+- `Content` 交回**整份快照**而不是只有 `List`：卡片要不要标"当前激活"取决于 `activeName`，
+  只交 List 就得在 UI 里另拿一份状态，判据立刻变成两处。
+- 取消走 `throw e`（与建库事务同一判据），不算读失败。
+
+底部那颗"新建知识库 / 导入知识库"大按钮是页面常驻工具条，四态都留着：
+空态那颗动作开的是**问卷向导**，这条右边那颗开的是**文件选择器**，两件事，不算重复入口。
+
+## 20.4 顺手量到的一条：页头返回钮 32×32dp
+
+这轮第一次把整屏可交互节点交给 `SemanticsProbe` 量（此前只有 `PanelHeader` 有过用例，
+`ScreenHeader` 一颗都没有）。量到：`「返回」 role=无 … 尺寸 32x32dp @(24,32)`，
+低于 §6.5 的 48dp 下限，而四个二级页（知识库管理 / 编辑知识库 / 设置页 / 新建知识库问卷）共用这个页头。
+
+改法：`ScreenHeaderDimens.BACK_HOTZONE_DP` 32 → 48。行高本来就是 48dp，热区垫满行高不改版式，
+字形仍 22dp；唯一可见变化是标题右移 16dp。反向证明见 §20.5 的 M4。
+
+## 20.5 变异探针：四条，各自红在该红的那格
+
+| 变异 | 红在哪 | 实测 |
+|---|---|---|
+| M1 判据里把 Error 挪到 Empty 之后 | mapping 2 格 + 目的地 2 格 | `a failed read is Error even when a stale list is still in hand`、`the four slots are distinguishable…`、`the four cells … one renderer`（`Text contains 'KB_ERROR_SENTINEL'` 找不到节点）、`the error cell offers a retry…`（`expected:<1> but was:<0>`） |
+| M2 失败时不宣布 `loaded = true` | VM 2 格 | `loadFailed 必须与 loaded 同真`、`a throwing list read is recorded the same way` |
+| M3 空态那颗动作退回"一行文字" | mapping 1 格 + 目的地 2 格 | `Empty 必须带一个动作`、`空态没有动作入口`、`只量到 3 个可交互节点` |
+| M4 返回钮热区退回 32dp | 整屏热区那格 | `有 1/4 个可交互节点小于 48dp … 「返回」 32x32dp @(24,32)` |
+
+M1+M4 一次跑（5 红 / 9 完成）、M2+M3 一次跑（5 红 / 15 完成），互不掩盖：每条红的测试都点得出
+是哪一个变异造成的。回滚用 `_temp/mut63.py revert`，脚本要求"变异片段恰好命中 1 次"才回写，
+**没改上的变异不允许冒充已证伪**。全部回滚后复跑全量。
+
+## 20.6 实测（数字全部来自当次命令输出）
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | `GRADLE_RC=0`：**153 套件 / 1213 tests / 0 失败 / 0 错误 / 0 跳过**；起点 09:06:23，全部 XML mtime 09:09:15，`stale=0` |
+| 与上一格对账 | 1198 → 1213（+15 = 本轮 mapping 5 + 目的地 4 + VM 6），150 → 153 套（+3 = 我新写的三个类）。**两处增量互相对得上** |
+| 受影响既有类 | `KnowledgeBaseViewModelTest` 15 格、`LbAsyncStateTest` 6 格、`PackageDependencyTest` 6 格、`UiLayerDependencyContractTest` 6 格、`UiStringLiteralBudgetTest` 4 格：本轮改动没把它们挤红 |
+| lint | 报告 09:13:14 重生成；实测 70 条 / 15 规则，进预算 69 / 14，advisory 1；`check_lint_budget.sh` rc=0（**不带管道**单独取退出码） |
+| 其它闸 | 工单编号 `strip_ticket_ids.py --check` rc=0；prompt 资产 lock rc=0；跨层计数 **6** 条（与上一格同数）；lint 判据自测 27 格 rc=0 |
+| 文案 | 用户可见中文字面量 TEXT **250 → 247**（那张卡搬走 3 处），棘轮同步改小；DESC 12 / STATE 0 本轮没动。新 key 中英各 5 条 |
+
+## 20.7 §6.3 逐字对照（指导书点名的四个目的地）
+
+| 指导书原文 | 现在 |
+|---|---|
+| "Provider … 用同一套空态/错误态" | 已有（`d902514`→`80bc78e`）。本轮复跑其组件用例 6 格仍绿 |
+| "反馈案例 … 用同一套" | 已有（`e359930`） |
+| "知识库 … 用同一套" | **本轮**：四格全接，判据一处，空态带真动作；那张自造 Card 与那行指路文字一起删 |
+| "捕获范围 … 用同一套" | **未做**。`ui/home/CaptureAppsScreen.kt:75` 仍是 `if (allowed.isEmpty())` + 内联 `Text(capture_apps_empty_hint)`，:115 还有第二处（搜索后为空）。这是下一格 |
+| "而不是每页自己发明卡片、内联文字、弹窗或展开区" | 知识库页这一次同时少了"卡片"和"内联文字"两种形状；捕获范围那格还欠着 |
+| 四类状态的签名 | 仓库里是 `Empty(message: String, action: ScreenAction?)`，指导书写 `UiText` / `Action`。差异原因（不另造 UiText：调用方 `stringResource` 解析后交出 String，用户可见字面量由 §20.6 那把预算尺管着）此前已记，本轮沿用 |
+| "每个目的地**只允许**这四类顶层状态" | 判据函数 `kbScreenState` 是这一页唯一的四态出口；`Loading` 之外没有第五格 |
+
+## 20.8 这一格没做的
+
+- 页头那颗「返回」的 `contentDescription` 仍是硬编码中文（`ScreenHeader.kt:78`），英文环境下会念中文——
+  属于"资源驱动"那笔账，本轮只按 §6.5 改了热区，没顺手改文案。
+- 空态版式不再有 72dp 图标与两行标题（共用组件只有一段说明 + 一颗动作）。这是 §6.3 要的结果，
+  不是回归；但它**是一处可见的视觉变化**，截图基线那一格（§6.5，仍故意推后）回来时要认这笔。
+- `UiLayerDependencyContractTest` 里 `production sources carry no debt-note comments without a fix`
+  这条闸**看不见自己的目标**：判据先用 `codeOf()` 剥掉注释，再拿剥完的代码去匹配"审计技术债 / 修复方向"，
+  而这两个词只可能出现在注释里 → 恒不命中。本轮只静态读出这个形状，**没注反例验证**；
+  下一格顺手注一份反例证明它恒绿（按"新断言必须先被坏实现打破"的规矩，届时要么给它牙，要么删掉它）。
+- 捕获范围那一格、§6.4 `ResultArea` 拆分、§6.1 那九个 `Lb*` 组件与令牌迁移。
+
