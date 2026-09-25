@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui.panel.reply
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalDensity
@@ -14,7 +15,9 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.core.testing.RenderIn
+import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
 import com.lovebrain.app.model.ChatMessage
@@ -52,6 +55,12 @@ class ComposerInputLabelTest {
 
     @get:Rule
     val rule = createComposeRule()
+
+    private val density: Float
+        get() = ApplicationProvider.getApplicationContext<Context>()
+            .resources.displayMetrics.density
+
+    private val probe by lazy { SemanticsProbe(density) }
 
     private fun editable(): SemanticsNode =
         rule.onNode(hasSetTextAction())
@@ -171,7 +180,50 @@ class ComposerInputLabelTest {
         rule.mainClock.advanceTimeBy(16L)
 
         assertEquals("COMPACT_LABEL_SENTINEL", spokenLabel())
-        // 视觉上那行提示照旧画着（本轮只加语义名字，不改视觉）
+        // 视觉上那行提示照旧画着（那一格只加语义名字，不改视觉）
         rule.onNodeWithText("COMPACT_LABEL_SENTINEL").assertExists()
+    }
+
+    /**
+     * 同一颗节点的第二笔账：念得到之后，手指还得按得到（§6.5 :531 所有 clickable ≥48×48dp）。
+     *
+     * 上一格只解决了"名字"，没量过尺寸。这一格是捕获范围页整屏量下来之后回头补的：
+     * 那颗搜索框真正带点击/编辑语义的节点量出来 **288x15dp**——外层 Box 就算 36dp 也没用，
+     * 点击语义挂在里面的文字行上（`SemanticsProbe` 的失败信息把这层关系写得很直白）。
+     * 修法是把 `heightIn(min = TOUCH_TARGET_MIN_DP)` 挂到**可编辑节点自己身上**。
+     */
+    @Test
+    fun theComposerInputIsBigEnoughToBeItsOwnTouchTarget() {
+        val draft = mutableStateOf("")
+        val role = mutableStateOf(ChatMessage.Role.ME)
+        mountReply(draft, role)
+
+        val target = probe.of(editable())
+        assertTrue(
+            "面板输入框的可编辑节点不足 ${probe.floorDp.toInt()}dp：" + target.describe(),
+            !target.tooSmall(probe.floorDp)
+        )
+    }
+
+    /** 问卷页 / 供应商弹窗 / 知识库改名框共用这一颗，所以它也必须自己够大 */
+    @Test
+    fun compactInputIsBigEnoughToBeItsOwnTouchTarget() {
+        val draft = mutableStateOf("")
+        rule.setContent {
+            UiMatrix(360).RenderIn(LocalDensity.current.density) {
+                CompactInput(
+                    value = draft.value,
+                    onValueChange = { draft.value = it },
+                    placeholder = "COMPACT_SIZE_SENTINEL"
+                )
+            }
+        }
+        rule.mainClock.advanceTimeBy(16L)
+
+        val target = probe.of(editable())
+        assertTrue(
+            "CompactInput 的可编辑节点不足 ${probe.floorDp.toInt()}dp：" + target.describe(),
+            !target.tooSmall(probe.floorDp)
+        )
     }
 }

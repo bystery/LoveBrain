@@ -181,6 +181,9 @@ fun PanelTextInput(
         }
         var tfModifier = Modifier
             .fillMaxWidth()
+            // 与 CompactInput 同一个缺陷、同一个修法：外层那颗 Box 有 heightIn(min=INPUT_ROW_HEIGHT_DP)，
+            // 但点击/编辑语义全挂在里面这行字上——手指信的是后者（§6.5 :531"所有 clickable ≥48×48"）。
+            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .align(Alignment.CenterStart)
             // 读屏标签：placeholder 那行 Text 是**兄弟节点**，只在草稿为空时画出来，
             // TalkBack 不会把它算进输入框自己——于是这一颗只有 EditableText 语义，

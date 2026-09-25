@@ -14,7 +14,14 @@ object AppDimens {
      * Material 组件会自动补足，自定义盒子不会，所以统一取这个常量。
      */
     const val TOUCH_TARGET_MIN_DP = 48
-    const val INPUT_ROW_HEIGHT_DP = 36        // 输入行/按钮行统一高度（： 上提，≥3 复用方）
+    /**
+     * 输入行/按钮行统一高度。36 → **48** 不是审美调整，是 §6.5 那条硬规定：
+     * "所有 clickable/toggleable bounds ≥48×48dp"（指导书 :531、验收线 :596"无小于 48dp 热区"）。
+     * 起因是捕获范围页第一次被整屏量了一遍：那颗搜索框真正带点击/编辑语义的节点
+     * 只有 **288x15dp**——外面那层 Box 就算有 36dp 也没用，手指信的是里面那颗。
+     * 所以这一档抬到 48，并且两颗输入框的**可编辑节点自己**也垫到 TOUCH_TARGET_MIN_DP（见 CompactInput / PanelTextInput）。
+     */
+    const val INPUT_ROW_HEIGHT_DP = 48
     const val BORDER_WIDTH_DP = 1             // 细边框/分割线宽度（≥3 文件）
     const val ELEVATION_DEFAULT_DP = 2        // 默认阴影高度
     const val ELEVATION_MAX_DP = 4            // 阴影上限（，超限即缺陷）

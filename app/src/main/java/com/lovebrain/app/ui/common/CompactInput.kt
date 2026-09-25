@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
@@ -27,8 +28,9 @@ import com.lovebrain.app.ui.theme.TextHint
 import com.lovebrain.app.ui.theme.TextPrimary
 
 /**
- * 紧凑圆角单行输入框（36dp 高、圆角灰底）：问卷页与供应商弹窗共用，
+ * 紧凑圆角单行输入框（48dp 高、圆角灰底）：问卷页与供应商弹窗共用，
  * 取代问卷页 M3 OutlinedTextField——全 App 输入框长相统一。
+ * 48 这一档的原因写在 AppDimens.INPUT_ROW_HEIGHT_DP 上（§6.5：可点节点自己≥48×48）。
  */
 @Composable
 fun CompactInput(
@@ -68,6 +70,9 @@ fun CompactInput(
             cursorBrush = SolidColor(com.lovebrain.app.ui.theme.Primary),
             modifier = Modifier
                 .fillMaxWidth()
+                // 可编辑节点自己也要垫够：外层 Box 有 48dp，点击/编辑语义却挂在里面这行 15dp 的字上，
+                // 等于没改（这是捕获范围页整屏量出来的，见 AppDimens.INPUT_ROW_HEIGHT_DP 的注释）。
+                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                 .align(Alignment.CenterStart)
                 .padding(end = if (trailingAction != null) 56.dp else 0.dp)
                 // 与 PanelTextInput 同一个问题、同一个修法：placeholder 那行 Text 是兄弟节点，

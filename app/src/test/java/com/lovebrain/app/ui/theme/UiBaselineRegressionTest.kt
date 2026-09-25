@@ -37,7 +37,10 @@ class UiBaselineRegressionTest {
     // ═══ 全局尺寸常量 ═══
     @Test
     fun `app dimens baseline values are stable`() {
-        assertEquals(36, AppDimens.INPUT_ROW_HEIGHT_DP)
+        // 36 → 48：§6.5 :531 要求所有 clickable/toggleable 节点 bounds ≥48×48，
+        // 而捕获范围页第一次整屏量下来，搜索框真正带编辑/点击语义的节点只有 288x15dp。
+        // 这一档是**故意**漂移的，理由与被漂的那颗节点都写在 AppDimens.INPUT_ROW_HEIGHT_DP 上。
+        assertEquals(48, AppDimens.INPUT_ROW_HEIGHT_DP)
         assertEquals(1, AppDimens.BORDER_WIDTH_DP)
         assertEquals(2, AppDimens.ELEVATION_DEFAULT_DP)
         assertEquals(4, AppDimens.ELEVATION_MAX_DP)
