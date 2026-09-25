@@ -6,10 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.lovebrain.app.R
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.core.designsystem.Primary
-import com.lovebrain.app.core.designsystem.PrimaryDark
+import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.LbButtonState
+import com.lovebrain.app.core.designsystem.LbButtonTone
+import com.lovebrain.app.core.designsystem.LbPrimaryButton
 import com.lovebrain.app.model.ComposerMode
 
 /**
@@ -19,14 +20,17 @@ import com.lovebrain.app.model.ComposerMode
  * 1. REPLY 模式 + 无结果 → 全宽"生成回复 · N 条消息"（N=0 时显示"生成回复"并禁用）
  * 2. REPLY 模式 + 有结果 → "重试 | 记入知识库"
  * 3. PROACTIVE 模式 + 空闲 → 全宽"生成开场"
- * 4. 任意模式 + 生成中 → 全宽"停止"
+ * 4. 任意模式 + 生成中 → 唯一停止入口
  *
  * 删除 ReplyPrimaryActionsTestable 复制品，测试直接使用此生产组件。
+ *
+ * 这一屏**只画一颗主动作**（§6.1 的 `LbPrimaryButton`），状态由这里决定、壳由组件保证：
+ * 五个分支各自交一个 [LbButtonState]，不再由调用方拿 `mode` + `enabled` 两个旋钮凑。
+ * 第 2 行那"两颗"是有结果的并列出口，仍共用同一颗按钮组件——它不是第二颗主动作，
+ * 而是同一个主动作槽位在"有结果"时的两种说法。
  */
 
 private object ReplyActionsDimens {
-    /** 主操作按钮触摸区下限——旧值 40dp 达不到无障碍要求 */
-    const val TRIO_HEIGHT_DP = 48
     const val GENERATE_BUTTON_GAP_DP = 8
 }
 
@@ -45,34 +49,32 @@ fun ReplyPrimaryActions(
     onStop: () -> Unit
 ) {
     when {
-        // 生成中——回复或主动发都显示"停止"
+        // 生成中——回复或主动发都显示"停止"；点下去即停止，文案由 reply 层组
         isGenerating -> {
-            GenerationActionButton(
-                text = "",
+            LbPrimaryButton(
+                state = LbButtonState.Loading,
+                label = generatingLabel(),
                 onClick = onStop,
-                modifier = modifier.fillMaxWidth(),
-                mode = ButtonMode.LOADING,
-                heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
+                modifier = modifier.fillMaxWidth()
             )
         }
-        // 主动发生成中——显示"停止"
+        // 主动发生成中——简洁停止条（无计时那串字）
         isProactive -> {
-            GenerationActionButton(
-                text = stringResource(R.string.panel_stop),
+            LbPrimaryButton(
+                state = LbButtonState.Stop,
+                label = stringResource(R.string.panel_stop),
                 onClick = onStop,
-                modifier = modifier.fillMaxWidth(),
-                mode = ButtonMode.STOP,
-                heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
+                modifier = modifier.fillMaxWidth()
             )
         }
         // PROACTIVE 模式 + 空闲 → 全宽"生成开场"
         composerMode == ComposerMode.PROACTIVE -> {
-            GenerationActionButton(
-                text = stringResource(R.string.panel_generate_opening),
+            LbPrimaryButton(
+                state = LbButtonState.Idle,
+                label = stringResource(R.string.panel_generate_opening),
                 onClick = onGenerateProactive,
                 modifier = modifier.fillMaxWidth(),
-                containerColor = PrimaryDark,
-                heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
+                tone = LbButtonTone.Deep
             )
         }
         // REPLY 模式 + 有结果 → "重试 | 记入知识库"
@@ -81,34 +83,30 @@ fun ReplyPrimaryActions(
                 modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(ReplyActionsDimens.GENERATE_BUTTON_GAP_DP.dp)
             ) {
-                GenerationActionButton(
-                    text = stringResource(R.string.panel_retry),
+                LbPrimaryButton(
+                    state = LbButtonState.Idle,
+                    label = stringResource(R.string.panel_retry),
                     onClick = onRetry,
-                    modifier = Modifier.weight(1f),
-                    containerColor = Primary,
-                    heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
+                    modifier = Modifier.weight(1f)
                 )
-                GenerationActionButton(
-                    text = stringResource(R.string.panel_save_to_kb),
+                LbPrimaryButton(
+                    state = LbButtonState.Idle,
+                    label = stringResource(R.string.panel_save_to_kb),
                     onClick = onSaveToKb,
                     modifier = Modifier.weight(1f),
-                    containerColor = PrimaryDark,
-                    heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
+                    tone = LbButtonTone.Deep
                 )
             }
         }
-        // REPLY 模式 + 无结果 → 全宽"生成回复 · N 条消息"
+        // REPLY 模式 + 无结果 → 全宽"生成回复 · N 条消息"；N=0 是**灰着不能点**，不是消失
         else -> {
-            val replyEnabled = messageCount > 0
-            GenerationActionButton(
-                text = if (messageCount > 0)
+            LbPrimaryButton(
+                state = if (messageCount > 0) LbButtonState.Idle else LbButtonState.Disabled,
+                label = if (messageCount > 0)
                     stringResource(R.string.panel_generate_reply_with_count, messageCount)
                 else stringResource(R.string.panel_generate_reply),
                 onClick = onGenerateReply,
-                modifier = modifier.fillMaxWidth(),
-                enabled = replyEnabled,
-                containerColor = Primary,
-                heightDp = ReplyActionsDimens.TRIO_HEIGHT_DP
+                modifier = modifier.fillMaxWidth()
             )
         }
     }

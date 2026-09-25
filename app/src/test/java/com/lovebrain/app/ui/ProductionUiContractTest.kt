@@ -81,26 +81,44 @@ class ProductionUiContractTest {
         assertTrue("UTILITY_HITBOX_DP must be declared and >= 48, was $value", (value ?: 0) >= 48)
     }
 
+    /**
+     * 主动作的 48dp 与"padding 不许排在 clickable 前面"。
+     *
+     * ⚠ 这一格是**源码级**的，只证明"常量写着 48、顺序没排反"；
+     * 判"点得到点不到"的权威断言在语义树那边（`LbPrimaryButtonStateTest` 与
+     * `ReplyPrimaryActionsContractTest` 真读 `boundsInRoot`）。别拿这格当已验证行为
+     * ——独立复核 P1-02 点名的就是这个误读，而坑表 58 那条更是同一族：
+     * 这一格原先 grep 的是 `ui/panel/reply/GenerationActionButton.kt`，
+     * 组件搬进 `core/designsystem` 后它还绿着指旧路径，就会变成"看着在、其实不存在"。
+     */
     @Test
     fun `generate buttons are at least 48dp and clickable is not inset by padding`() {
-        val action = codeOf(source("ui", "panel", "reply", "GenerationActionButton.kt"))
+        val action = codeOf(source("core", "designsystem", "LbPrimaryButton.kt"))
         assertTrue(
-            "GenerationActionButton default height must meet the 48dp floor",
-            Regex("MIN_TOUCH_TARGET_DP\\s*=\\s*(\\d+)").find(action)?.groupValues?.get(1)
+            "LbPrimaryButton 的高度下限必须 >=48dp",
+            Regex("LB_PRIMARY_MIN_HEIGHT_DP\\s*=\\s*(\\d+)").find(action)?.groupValues?.get(1)
                 ?.let { it.toInt() >= 48 } == true
         )
         // 关键顺序：padding 出现在 clickable 之前会把热区缩掉，这是 §7.1 点名的写法
-        val paddingAt = action.indexOf(".padding(vertical = Spacing.xs)")
+        val paddingAt = action.indexOf(".paddingVerticalInside()")
         val clickableAt = action.indexOf(".clickable(")
         assertTrue("both must exist", paddingAt >= 0 && clickableAt >= 0)
         assertTrue(
-            "clickable must come before the vertical padding, otherwise the hit box is shrunk",
+            "clickable 必须排在竖向内边距之前，否则热区被削掉",
             clickableAt < paddingAt
         )
-
-        val trio = codeOf(source("ui", "panel", "reply", "ReplyPrimaryActions.kt"))
-        val trioHeight = Regex("TRIO_HEIGHT_DP\\s*=\\s*(\\d+)").find(trio)?.groupValues?.get(1)?.toInt()
-        assertTrue("primary action row must be >= 48dp, was $trioHeight", (trioHeight ?: 0) >= 48)
+        // 四态各一条链：只有一条的话，"新加的那一态忘了垫内边距"这格就抓不到。
+        // 必须锚在"换行 + 缩进 + 点"上：定义那一行写的是 `Modifier.paddingVerticalInside()`，
+        // 只找 `.paddingVerticalInside(` 会把它也数进去（4 报成 5——本仓库第 4 号坑的老形状）。
+        assertEquals(
+            "四态各自走一遍这条链",
+            4, Regex("\n\\s+\\.paddingVerticalInside\\(\\)").findAll(action).count()
+        )
+        // 调用方不再持有高度旋钮：`heightDp` 只能把按钮改高、改不矮，是个不存在的自由度
+        assertTrue(
+            "heightDp 这个死参数不许回来",
+            !Regex("heightDp\\s*:").containsMatchIn(action)
+        )
     }
 
     @Test
@@ -147,11 +165,31 @@ class ProductionUiContractTest {
         ).forEach { assertTrue("$it must be used by PanelHeader", code.contains(it)) }
     }
 
+    /**
+     * "生成中"那串可见文案：资源驱动 + 有稳定锚点。
+     *
+     * 这一格原来只 grep 一颗组件文件（文案与 tag 都在按钮里），§6.1 把壳搬进
+     * `core/designsystem` 后两件事分家了：**说什么**在 reply 层（`GeneratingLabel.kt`），
+     * **怎么画**在设计系统（`LbPrimaryButton.kt`）。所以判据也跟着拆两处——
+     * 留着一格指旧路径的 grep，它就成了一把只会绿的尺（坑表 58）。
+     */
     @Test
     fun `loading button text comes from a formatted resource and carries a test tag`() {
-        val code = codeOf(source("ui", "panel", "reply", "GenerationActionButton.kt"))
-        assertTrue("loading text must use the resource", code.contains("R.string.panel_analysing_with_seconds"))
-        assertTrue("loading text must expose a stable testTag", code.contains("GENERATE_STOP_TEST_TAG"))
+        val label = codeOf(source("ui", "panel", "reply", "GeneratingLabel.kt"))
+        assertTrue("生成中那句必须走资源", label.contains("R.string.panel_analysing_with_seconds"))
+        assertTrue(
+            "阶段词也不许写死在代码里",
+            listOf(
+                "R.string.panel_phase_analysing",
+                "R.string.panel_phase_drafting",
+                "R.string.panel_phase_deep_analysing"
+            ).all { label.contains(it) }
+        )
+        val button = codeOf(source("core", "designsystem", "LbPrimaryButton.kt"))
+        assertTrue(
+            "Loading 那颗标签必须带停止锚点（文字会变，tag 不会）",
+            button.contains("LbTags.PRIMARY_STOP")
+        )
     }
 
     @Test

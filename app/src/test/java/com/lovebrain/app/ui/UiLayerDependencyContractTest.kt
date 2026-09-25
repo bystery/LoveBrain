@@ -139,9 +139,13 @@ class UiLayerDependencyContractTest {
             "HomeActionCard" to "LbActionCard",
             "HomeSettingRow" to "LbSettingRow",
             "UsageSummary" to "LbMetricGrid",
-            "UsageMetric" to "LbMetricCard"
+            "UsageMetric" to "LbMetricCard",
+            // §6.1 的 B 类第一行：两颗平行旋钮（mode + enabled）收成一颗状态
+            "GenerationActionButton" to "LbPrimaryButton",
+            "ButtonMode" to "LbButtonState"
         )
-        assertTrue("旧名字一个都不该有，新名字 6 颗，所以不能扫了个空目录", retired.size == 6)
+        assertTrue("旧名字一个都不该有，新名字 ${retired.size} 颗，所以不能扫了个空目录",
+            retired.size == 8)
         val sources = kotlinFiles(appRoot).map {
             it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
         }
@@ -165,9 +169,16 @@ class UiLayerDependencyContractTest {
         }
     }
 
-    /** `typealias` 后面跟 `=`，`fun` 后面跟 `(`，两个分支都得在尺子里 */
-    private fun declaration(name: String): Regex =
-        Regex("\\b(?:fun|typealias)\\s+`?$name`?\\s*[<(=]")
+    /**
+     * 声明的形状：`fun X(`、`typealias X =`、`class|enum class|interface X {|<|(:`。
+     *
+     * 三支都得在：`typealias` 后面跟的是 `=` 不是 `(`（第一版就漏在这一支上，
+     * 探针"没咬"才发现它一直是死的）；`ButtonMode` 这类**状态表**是 `enum class`，
+     * 名字后面直接跟 `{`，只认 `fun` 或只认括号的话它整个逃出尺外。
+     */
+    private fun declaration(name: String): Regex = Regex(
+        "\\b(?:fun|typealias|class|interface)\\s+`?$name`?\\s*[<(=:{]"
+    )
 
     /**
      * 「伸手进 VM 拿仓库」等价于直接 inject 仓库。

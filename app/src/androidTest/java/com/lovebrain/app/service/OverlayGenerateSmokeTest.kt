@@ -18,6 +18,7 @@ import androidx.compose.ui.semantics.getOrNull
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ServiceTestRule
+import com.lovebrain.app.core.designsystem.LbTags
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.R
 import com.lovebrain.app.model.ChatMessage
@@ -30,7 +31,6 @@ import com.lovebrain.app.testing.FakeProviderServer
 import com.lovebrain.app.testing.MainChainHarness
 import com.lovebrain.app.testing.ProductionPanel
 import com.lovebrain.app.testing.UiText
-import com.lovebrain.app.ui.panel.reply.GENERATE_STOP_TEST_TAG
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -97,11 +97,11 @@ class OverlayGenerateSmokeTest {
      * 断言主操作位置就是生产 LOADING 停止条，并返回该节点文本。
      */
     private fun assertLoadingStopBar(reason: String) {
-        composeRule.onNodeWithTag(GENERATE_STOP_TEST_TAG)
+        composeRule.onNodeWithTag(LbTags.PRIMARY_STOP)
             .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         val bar = composeRule
-            .onNodeWithTag(GENERATE_STOP_TEST_TAG)
-            .fetchSemanticsNode("未找到生成中的停止条：$reason（tag=$GENERATE_STOP_TEST_TAG）")
+            .onNodeWithTag(LbTags.PRIMARY_STOP)
+            .fetchSemanticsNode("未找到生成中的停止条：$reason（tag=${LbTags.PRIMARY_STOP}）")
             .config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text.orEmpty()
         assertTrue("$reason：生产停止条文案应完整匹配，实际：$bar", loadingStopText.matches(bar))
     }
@@ -454,7 +454,7 @@ class OverlayGenerateSmokeTest {
         assertEquals("停止前应已发出 1 个请求", 1, s.requestCount)
 
         // 点生产停止动作：按生产留的 tag 定位文字节点，触摸注入由其可点击父节点接收
-        composeRule.onNodeWithTag(GENERATE_STOP_TEST_TAG).performClick()
+        composeRule.onNodeWithTag(LbTags.PRIMARY_STOP).performClick()
         composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
 
         pumpUntil("停止后应退出生成中") { !vm.isGenerating.value }

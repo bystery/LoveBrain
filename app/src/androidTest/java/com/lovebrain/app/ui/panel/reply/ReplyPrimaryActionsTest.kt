@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
+import com.lovebrain.app.core.designsystem.LbTags
 import com.lovebrain.app.R
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.testing.UiText
@@ -68,8 +69,8 @@ class ReplyPrimaryActionsTest {
     private fun loadingStopBarText(): String {
         // 用生产留的 tag 定位（文字会变，tag 不会），再取语义文本做整串校验
         val node = composeRule
-            .onNodeWithTag(GENERATE_STOP_TEST_TAG)
-            .fetchSemanticsNode("未找到生成中的停止条（tag=$GENERATE_STOP_TEST_TAG）")
+            .onNodeWithTag(LbTags.PRIMARY_STOP)
+            .fetchSemanticsNode("未找到生成中的停止条（tag=${LbTags.PRIMARY_STOP}）")
         return node.config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text.orEmpty()
     }
 
@@ -232,7 +233,7 @@ class ReplyPrimaryActionsTest {
         // 推进若干帧完成组合 + LaunchedEffect
         composeRule.mainClock.advanceTimeBy(120L)
 
-        composeRule.onNodeWithTag(GENERATE_STOP_TEST_TAG).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithTag(LbTags.PRIMARY_STOP).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         // 整串校验真实文案（旧用例写死 onNodeWithText("停止") 就是在这里必挂）
         val bar = loadingStopBarText()
         assertTrue("生产 LOADING 停止条文案应完整匹配，实际：$bar", loadingStopText.matches(bar))
