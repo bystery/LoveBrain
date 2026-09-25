@@ -35,11 +35,10 @@ import com.lovebrain.app.service.FloatingService
 import com.lovebrain.app.ui.KnowledgeBaseActivity
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.Border
-import com.lovebrain.app.core.designsystem.Neutral300
-import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.SurfaceCard
+import com.lovebrain.app.core.designsystem.LbRowState
 import com.lovebrain.app.viewmodel.SetupViewModel
 
 /**
@@ -156,8 +155,9 @@ fun HomeScreen(
                     title = "模型供应商",
                     subtitle = activeTicket?.let { "${it.name} · ${it.model.ifBlank { "未选模型" }}" }
                         ?: "未配置供应商",
-                    statusText = "",
-                    statusColor = if (providerReady) Primary else Neutral300,
+                    // 供应商行只要一颗点：以前用 statusText = "" 表达"没有词"，
+                    // 现在 dot 这一旋钮自己就能说这件事
+                    dot = if (providerReady) LbRowState.Ready else LbRowState.NotReady,
                     trailingText = "管理",
                     onTrailingClick = onNavigateProviders,
                     onClick = onNavigateProviders
@@ -172,12 +172,13 @@ fun HomeScreen(
                         captureEnabled -> stringResource(R.string.home_capture_status_on)
                         else -> stringResource(R.string.home_capture_status_off)
                     },
+                    dot = if (captureEnabled) LbRowState.Ready else LbRowState.NotReady,
+                    // 这两个字以前**根本不会被画出来**（组件里没有画 statusText 的那一行）
                     statusText = if (accessibilityGranted) {
                         stringResource(
                             if (captureEnabled) R.string.home_on else R.string.home_off
                         )
                     } else null,
-                    statusColor = if (captureEnabled) Primary else Neutral300,
                     trailingText = if (!accessibilityGranted) {
                         stringResource(R.string.home_grant_accessibility)
                     } else {

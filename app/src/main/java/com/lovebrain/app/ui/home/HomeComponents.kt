@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -44,6 +45,8 @@ import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.LbStatusBadge
+import com.lovebrain.app.core.designsystem.LbRowState
+import com.lovebrain.app.core.designsystem.LbRowTags
 import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Neutral300
 import com.lovebrain.app.core.designsystem.Primary
@@ -325,8 +328,18 @@ fun HomeActionCard(
 }
 
 /**
- * 服务设置行——统一 HomeSettingRow。
+ * 服务设置行——统一 `HomeSettingRow`（§6.1 表里的 `LbSettingRow` 那一行）。
  * 图标、标题、说明、状态、尾部动作。
+ *
+ * **这一版的"状态"槽才是通的。**旧签名是
+ * `(statusText: String?, statusColor: Color = Neutral300)`，而组件里只写了
+ * `if (statusText != null) { 画一颗 6dp 的点 }`——**statusText 的值从来没被画出来过**。
+ * 于是 `HomeScreen` 那两行认真算出来的 `R.string.home_on` / `home_off`
+ * （"开"/"关"）解析完就被丢掉；供应商行更离谱，传的是 `statusText = ""`，
+ * 意思其实是"我只要一颗点"。两颗行的真实意图挤在一个参数上，其中一个还没接。
+ *
+ * 现在拆成两个旋钮：`dot` 决定画不画点、什么颜色（颜色住在 [LbRowState]，不由调用方交），
+ * `statusText` 决定要不要在点旁边写那两个字。
  */
 @Composable
 fun HomeSettingRow(
@@ -334,8 +347,8 @@ fun HomeSettingRow(
     @androidx.annotation.DrawableRes iconRes: Int? = null,
     title: String,
     subtitle: String,
+    dot: LbRowState? = null,
     statusText: String? = null,
-    statusColor: Color = Neutral300,
     trailingText: String? = null,
     onTrailingClick: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null
@@ -393,13 +406,23 @@ fun HomeSettingRow(
                 maxLines = 1
             )
         }
-        // 状态点
-        if (statusText != null) {
+        // 状态槽：一颗点（颜色来自 LbRowState）+ 可选两个字的词。
+        // 词以前根本不在这里画——见函数 KDoc 那段。
+        if (dot != null) {
             Box(
                 modifier = Modifier
                     .size(6.dp)
                     .clip(CircleShape)
-                    .background(statusColor)
+                    .background(dot.color)
+                    .testTag(LbRowTags.DOT)
+            )
+            Spacer(Modifier.width(Spacing.sm))
+        }
+        if (!statusText.isNullOrBlank()) {
+            Text(
+                statusText,
+                style = AppTypography.labelSmall,
+                color = TextHint
             )
             Spacer(Modifier.width(Spacing.sm))
         }
@@ -408,7 +431,9 @@ fun HomeSettingRow(
             val (trailInteraction, trailScale) = rememberPressScale(0.94f, "trailing_$title")
             Box(
                 modifier = Modifier
-                    .heightIn(min = 32.dp)
+                    // 32 → 48：§6.5 :531 要所有 clickable ≥48×48。这颗"管理"是整行之外
+                    // 唯一另一个入口，32dp 是 `HomeSettingRowStateTest` 那把尺量出来的。
+                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                     .graphicsLayer { scaleX = trailScale; scaleY = trailScale }
                     .clip(LoveBrainShape.md)
                     .clickable(
