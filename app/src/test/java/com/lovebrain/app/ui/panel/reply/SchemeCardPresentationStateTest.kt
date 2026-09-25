@@ -1,7 +1,9 @@
 package com.lovebrain.app.ui.panel.reply
 
+import com.lovebrain.app.core.designsystem.AppDimens
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
@@ -81,7 +83,17 @@ class SchemeCardPresentationStateTest {
 
     @Test
     fun `SchemeCardDimens values are stable`() {
-        assertEquals(158, SchemeCardDimens.CARD_WIDTH_DP)
+        // 卡宽这一档**不钉具体数**，钉的是它必须满足的几何事实：
+        // 右下角三颗图标动作，每颗的可点击盒要 ≥ §6.5 :531 的下限，
+        // 卡内左右各 8dp 内边距（`Spacing.md`，实体卡与骨架屏同一份）。
+        // 原来写的是 `assertEquals(158, …)`——那只会把"放不下三颗下限"这件事
+        // 一起钉死，谁想修就得先说服这格；换成判性质之后，158 当场就是红的。
+        val innerWidth = SchemeCardDimens.CARD_WIDTH_DP - 2 * 8
+        assertTrue(
+            "卡内只剩 ${innerWidth}dp，放不下三颗 ${AppDimens.TOUCH_TARGET_MIN_DP}dp 的动作热区" +
+                "（实到 ${SchemeCardDimens.CARD_WIDTH_DP}dp 卡宽）",
+            innerWidth >= 3 * AppDimens.TOUCH_TARGET_MIN_DP
+        )
         assertEquals(150, SchemeCardDimens.CARD_HEIGHT_DP)
         assertEquals(200, SchemeCardDimens.CARD_MAX_HEIGHT_DP)
     }

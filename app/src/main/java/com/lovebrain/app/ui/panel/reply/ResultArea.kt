@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import com.lovebrain.app.R
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -563,7 +564,15 @@ private fun SchemeCardsRow(
     }
 }
 
-/** 方案筛选 Tab：选中态高亮 + 点击切换（与 ActionChip 样式统一） */
+/**
+ * 方案筛选 Tab：选中态高亮 + 点击切换（与 ActionChip 样式统一）
+ *
+ * 热区与视觉**分两层**：外面那颗 ≥48dp 见方的盒负责"点得中"和语义（role/selected），
+ * 里面那颗 28dp 胶囊负责"长什么样"。
+ * 以前只有里面那颗，它既画外观又当点击点，本机语义树实量 **46x28dp**
+ * （§6.5 :531 要的是 clickable 边界 ≥48×48）——这一屏第一次被挂进仪器就量到了。
+ * 胶囊高度保持不动，所以外观没变，变的是"要点多准才算点到"。
+ */
 @Composable
 private fun SchemeFilterTab(
     label: String,
@@ -575,26 +584,40 @@ private fun SchemeFilterTab(
     val scale by animateFloatAsState(if (pressed) 0.92f else 1f, label = "filterTabScale")
     Box(
         modifier = Modifier
-            .height(ResultDimens.FILTER_TAB_HEIGHT_DP.dp)
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clip(LoveBrainShape.md)
-            .background(if (isSelected) PrimaryLight else SurfaceInset, LoveBrainShape.md)
-            .border(
-                AppDimens.BORDER_WIDTH_DP.dp,
-                if (isSelected) PrimarySubtle else Border,
-                LoveBrainShape.md
+            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+            // clickable 排在 padding 之前：排后面等于自己把热区削掉一圈
+            .clickable(
+                interactionSource = interaction,
+                indication = null,
+                role = Role.Tab,
+                onClick = onClick
             )
             .semantics { selected = isSelected }
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
-            .padding(horizontal = Spacing.lg),
+            .padding(horizontal = Spacing.sm, vertical = Spacing.md),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = label,
-            style = AppTypography.labelMedium,
-            color = if (isSelected) PrimaryDark else TextHint,
-            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-        )
+        Box(
+            modifier = Modifier
+                .height(ResultDimens.FILTER_TAB_HEIGHT_DP.dp)
+                .graphicsLayer { scaleX = scale; scaleY = scale }
+                .clip(LoveBrainShape.md)
+                .background(if (isSelected) PrimaryLight else SurfaceInset, LoveBrainShape.md)
+                .border(
+                    AppDimens.BORDER_WIDTH_DP.dp,
+                    if (isSelected) PrimarySubtle else Border,
+                    LoveBrainShape.md
+                )
+                .padding(horizontal = Spacing.lg),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = label,
+                style = AppTypography.labelMedium,
+                color = if (isSelected) PrimaryDark else TextHint,
+                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+            )
+        }
     }
 }
 

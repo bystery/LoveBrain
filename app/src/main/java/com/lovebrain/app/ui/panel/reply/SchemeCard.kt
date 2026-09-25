@@ -18,7 +18,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -50,7 +52,16 @@ import kotlinx.coroutines.launch
  * 方案卡尺寸常量（骨架屏共用，值不变；公共对象供同包 ResultArea 引用）。
  */
 object SchemeCardDimens {
-    const val CARD_WIDTH_DP = 158     // 卡宽（骨架屏与实体卡共用）
+    /**
+     * 卡宽（骨架屏与实体卡共用）。
+     *
+     * 158 → **164** 不是改版式：卡片右下角是三颗图标动作，每颗的可点击盒要 ≥48dp
+     * （§6.5 :531），而卡内左右各 `Spacing.md`=8dp 内边距 ⇒ 里面只剩 142dp，
+     * 三颗 48 需要 144dp。原来 158 那一档放不下，实测最后一颗被压成 **46x48dp**。
+     * 加 6dp 是为了留 4dp 余量，不是随手凑整。
+     * 由 `SchemeCardDimens values are stable` 那格按"放得下三颗下限"判，不再钉这个数。
+     */
+    const val CARD_WIDTH_DP = 164
     const val CARD_HEIGHT_DP = 150    // 卡高（骨架屏 166->150 对齐实体，消除跳变）
     const val CARD_MAX_HEIGHT_DP = 200 // 最大高度上限，防止展开时无限增长
     const val TAG_HPAD_DP = 6         // 标签水平内边距
@@ -679,13 +690,15 @@ fun SchemeCard(
                                 icon = R.drawable.ic_thumb_up,
                                 desc = "赞",
                                 tint = if (feedback == SchemeFeedback.LIKED) Primary else TextHint,
-                                onClick = { onFeedback(scheme, SchemeFeedback.LIKED) }
+                                onClick = { onFeedback(scheme, SchemeFeedback.LIKED) },
+                                selected = feedback == SchemeFeedback.LIKED
                             )
                             CardActionIcon(
                                 icon = R.drawable.ic_thumb_down,
                                 desc = "踩",
                                 tint = if (feedback == SchemeFeedback.DISLIKED) Error else TextHint,
-                                onClick = { onFeedback(scheme, SchemeFeedback.DISLIKED) }
+                                onClick = { onFeedback(scheme, SchemeFeedback.DISLIKED) },
+                                selected = feedback == SchemeFeedback.DISLIKED
                             )
                         }
                     }
@@ -695,21 +708,50 @@ fun SchemeCard(
     }
 }
 
-/** 卡片操作小图标：视觉 20dp，点击热区外扩至 28dp（触控下限友好） */
+/**
+ * 卡片操作小图标：视觉 13dp 字形放在**下限那么大的热区**里。
+ *
+ * 这句注释原来写的是"点击热区外扩至 28dp（触控下限友好）"——**两头都是假的**：
+ * 热区其实只有 `Spacing.xxl` = 20dp（本机语义树实量 20x20dp），而 §6.5 :531 的下限是 48。
+ * 一颗卡片三颗这样的图标，四张卡就是 12 个不达标节点，而它们全在这一屏第一次
+ * 被挂进 JVM 仪器时一次性现形（`ResultAreaTouchTargetsTest`）。
+ * 字形尺寸 `ACTION_ICON_SIZE_DP` 没动 ⇒ 外观不变，变的是要点多准才算点到。
+ *
+ * 同一格还量到第二条：这三颗**既没有角色也没有选中态**。§6.5 :532 要的是
+ * "可交互控件在语义树里说得清自己是什么、现在是什么状态"，而「赞/踩」被点过之后
+ * 只有 `tint` 变了色——读屏用户听完那句"复制/赞/踩"之后，**没有任何一处能知道
+ * 这条方案已经表过态**。所以这里补 `Role.Button`，并让两颗表态图标把
+ * `selected` 挂上（只加语义、不改点击行为：现在重复点「赞」仍是发一次 LIKED，
+ * 没有"取消赞"这个动作，那是产品口径，不在这一格偷偷定）。
+ */
 @Composable
 internal fun CardActionIcon(
     icon: Int,
     desc: String,
     tint: Color,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    selected: Boolean? = null
 ) {
     val (iconInteraction, iconScale) = rememberPressScale(0.92f, "cardActionIconScale")
     Box(
         modifier = Modifier
-            .size(Spacing.xxl)
+            // 用 `size` 不用 `requiredSize`：后者会把三颗硬塞成 144dp 而**溢出**卡片，
+            // 卡片外面那层 `clip(...)` 会把第一颗裁掉一截——热区看着够大，边上一指按不到，
+            // 那是假修。真要 48 就得给卡片 48 的空间，所以这一格同时把 `CARD_WIDTH_DP`
+            // 从 158 抬到 164（放得下 3×48 + 左右各 8 内边距）。
+            .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .graphicsLayer { scaleX = iconScale; scaleY = iconScale }
             .clip(LoveBrainShape.sm)
-            .clickable(interactionSource = iconInteraction, indication = null, onClick = onClick)
+            .clickable(
+                interactionSource = iconInteraction,
+                indication = null,
+                role = Role.Button,
+                onClick = onClick
+            )
+            .then(
+                if (selected == null) Modifier
+                else Modifier.semantics { this.selected = selected }
+            )
             .padding(Spacing.sm),
         contentAlignment = Alignment.Center
     ) {
