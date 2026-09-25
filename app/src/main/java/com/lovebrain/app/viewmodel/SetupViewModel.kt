@@ -496,15 +496,39 @@ sealed class ExportState {
     private val _captureAllowedPackages = MutableStateFlow(securePrefs.captureAllowedPackages)
     val captureAllowedPackages: StateFlow<Set<String>> = _captureAllowedPackages.asStateFlow()
 
-    /** 本机可启动的 App（包名 → 显示名），已排除本应用与二次拒绝的敏感类别 */
-    fun selectableCaptureTargets(context: Context): List<CaptureApp> {
+    /**
+     * 本机可启动的 App（包名 → 显示名），已排除本应用与二次拒绝的敏感类别。
+     *
+     * **返回 null 表示"读不出来"，不是"没有 App"**。旧写法是
+     * `runCatching { pm.queryIntentActivities(...) }.getOrDefault(emptyList())`——
+     * 那把两件事合成了一件，于是捕获范围页会把"读不动"报成"这台机器上没有可授权的 App"。
+     * 对一个默认 fail-closed 的采集功能，这是把用户往"我的 App 怎么都不见了"上误导，
+     * 而且页面还给不出任何出口（空态没有重试，因为系统以为没什么可重试）。
+     *
+     * `queryIntentActivities` 是同步 IPC：装机量大时 `TransactionTooLargeException`、
+     * 远端进程死亡都从这里过，所以抛出来要当成一次读失败。
+     *
+     * 下面那条 `?: run { … }` 是**防注解撒谎的兜底**，不是已验行为：当前 compileSdk 把这个
+     * 方法标成 `@NonNull`（JVM 用例连 `returns null` 都编译不过），所以本机给它构造不出反例。
+     * 留着它的理由只有一个：注解拦不住 ROM 真回 null，而 null 漏出去就是组合期 NPE 崩整页。
+     */
+    fun selectableCaptureTargets(context: Context): List<CaptureApp>? {
         val pm = context.packageManager
         val launchIntent = android.content.Intent(
             android.content.Intent.ACTION_MAIN
         ).addCategory(android.content.Intent.CATEGORY_LAUNCHER)
-        return runCatching {
-            pm.queryIntentActivities(launchIntent, 0).orEmpty()
-        }.getOrDefault(emptyList()).asSequence()
+        val raw = try {
+            pm.queryIntentActivities(launchIntent, 0)
+        } catch (e: Exception) {
+            // 这是个非挂起函数（组合期同步调用），没有协程上下文要交代，所以不按类型分流取消；
+            // 隐私红线：不记包名，只记失败类型
+            L.e("capture target enumeration failed: ${e.javaClass.simpleName}")
+            return null
+        } ?: run {
+            L.e("capture target enumeration returned null")
+            return null
+        }
+        return raw.asSequence()
             .mapNotNull { info ->
                 val pkg = info.activityInfo?.packageName ?: return@mapNotNull null
                 if (pkg == context.packageName) return@mapNotNull null

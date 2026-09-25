@@ -51,7 +51,8 @@
     <!-- P3-05: 消息捕获 allowlist -->
     <string name="capture_apps_title">捕获范围</string>
     <string name="capture_apps_intro">只有你在这里勾选的 App 才会被读取。一个都不选时，LoveBrain 不捕获任何内容。</string>
-    <string name="capture_apps_empty_hint">尚未选择任何 App，消息捕获实际处于关闭状态。</string>
+    <string name="capture_apps_none_to_authorize">这台设备没有列出可启动的 App，暂时没有可授权的对象。</string>
+    <string name="capture_apps_scan_failed">读不出已安装的 App，请重试。</string>
     <string name="capture_apps_row_subtitle">已授权 %1$d 个 App</string>
     <string name="capture_apps_row_subtitle_none">未选择 App · 不会捕获任何内容</string>
     <string name="capture_apps_blocked">支付、银行、密码管理、浏览器等类型不允许授权</string>
@@ -59,7 +60,6 @@
     <string name="capture_apps_search">搜索 App</string>
     <string name="capture_apps_no_results">没有匹配的 App</string>
     <string name="capture_apps_back">返回设置</string>
-    <string name="capture_apps_selected_count">已选 %1$d 个</string>
 
     <!-- S1-01/P3-01: 面板主操作 -->
     <string name="panel_analysing_with_seconds">%1$s · %2$d 点击停止</string>

@@ -43,7 +43,8 @@ The header shows today / session / total spend and generation count
 Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</string>
     <string name="capture_apps_title">Capture scope</string>
     <string name="capture_apps_intro">Only the apps you tick here are ever read. With nothing selected, LoveBrain captures nothing at all.</string>
-    <string name="capture_apps_empty_hint">No app selected yet, so message capture is effectively off.</string>
+    <string name="capture_apps_none_to_authorize">This device lists no launchable apps, so there is nothing to allow yet.</string>
+    <string name="capture_apps_scan_failed">Couldn\'t read the installed apps. Please retry.</string>
     <string name="capture_apps_row_subtitle">%1$d app(s) allowed</string>
     <string name="capture_apps_row_subtitle_none">No app selected · nothing is captured</string>
     <string name="capture_apps_blocked">Payment, banking, password-manager and browser apps cannot be allowed</string>
@@ -51,7 +52,6 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="capture_apps_search">Search apps</string>
     <string name="capture_apps_no_results">No matching apps</string>
     <string name="capture_apps_back">Back to settings</string>
-    <string name="capture_apps_selected_count">%1$d selected</string>
     <string name="panel_analysing_with_seconds">%1$s · %2$ds, tap to stop</string>
     <string name="panel_voice_rewrite">Voice rewrite</string>
     <string name="panel_mode_reply">Reply</string>
