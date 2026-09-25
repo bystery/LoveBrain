@@ -24,12 +24,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -68,6 +66,10 @@ import com.lovebrain.app.core.designsystem.SurfaceInset
 import com.lovebrain.app.core.designsystem.TextHint
 import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
+import com.lovebrain.app.core.designsystem.LbDialog
+import com.lovebrain.app.core.designsystem.LbDialogAction
+import com.lovebrain.app.core.designsystem.LbDialogActionTone
+import com.lovebrain.app.core.designsystem.LbDialogMessageTone
 import com.lovebrain.app.viewmodel.SetupViewModel
 import kotlinx.coroutines.launch
 
@@ -357,17 +359,45 @@ fun FeedbackCasesScreen(
                 val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
                 // copiedFeedback 绑定 exportId
                 val isCopied = copiedExportId == state.exportId
-                AlertDialog(
+                LbDialog(
+                    title = "导出预览",
                     onDismissRequest = { viewModel.resetExportState() },
-                    title = {
-                        Text(
-                            "导出预览",
-                            style = AppTypography.titleMedium,
-                            color = TextPrimary,
-                            fontWeight = FontWeight.SemiBold
+                    confirm = LbDialogAction(
+                        // 保存按钮——真正写入文件
+                        label = "保存",
+                        onClick = {
+                            val fileName = "feedback_export.${exportFormat}"
+                            saveLauncher.launch(fileName)
+                        }
+                    ),
+                    secondary = listOf(
+                        // 分享按钮——捕获 ActivityNotFoundException
+                        LbDialogAction(
+                            label = "分享",
+                            onClick = {
+                                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                    type = if (exportFormat == "json") "application/json" else "text/markdown"
+                                    putExtra(Intent.EXTRA_TEXT, state.text)
+                                }
+                                try {
+                                    context.startActivity(Intent.createChooser(shareIntent, "分享到"))
+                                } catch (e: android.content.ActivityNotFoundException) {
+                                    saveError = "没有可用的分享应用"
+                                }
+                            }
+                        ),
+                        // 复制按钮
+                        LbDialogAction(
+                            label = if (isCopied) "✓ 已复制" else "复制",
+                            onClick = {
+                                clipboard.setPrimaryClip(android.content.ClipData.newPlainText("export", state.text))
+                                copiedExportId = state.exportId
+                            }
                         )
-                    },
-                    text = {
+                    ),
+                    dismiss = LbDialogAction("关闭", { viewModel.resetExportState() },
+                        tone = LbDialogActionTone.Muted),
+                    body = {
                         Column {
                             Text(
                                 state.text,
@@ -385,60 +415,16 @@ fun FeedbackCasesScreen(
                                 color = TextHint
                             )
                         }
-                    },
-                    confirmButton = {
-                        // 保存按钮——真正写入文件
-                        TextButton(onClick = {
-                            val fileName = "feedback_export.${exportFormat}"
-                            saveLauncher.launch(fileName)
-                        }) {
-                            Text("保存", color = Primary, fontWeight = FontWeight.SemiBold)
-                        }
-                    },
-                    dismissButton = {
-                        Row {
-                            // 分享按钮——捕获 ActivityNotFoundException
-                            TextButton(onClick = {
-                                val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                                    type = if (exportFormat == "json") "application/json" else "text/markdown"
-                                    putExtra(Intent.EXTRA_TEXT, state.text)
-                                }
-                                try {
-                                    context.startActivity(Intent.createChooser(shareIntent, "分享到"))
-                                } catch (e: android.content.ActivityNotFoundException) {
-                                    saveError = "没有可用的分享应用"
-                                }
-                            }) {
-                                Text("分享", color = Primary)
-                            }
-                            // 复制按钮
-                            TextButton(onClick = {
-                                clipboard.setPrimaryClip(android.content.ClipData.newPlainText("export", state.text))
-                                copiedExportId = state.exportId
-                            }) {
-                                Text(
-                                    if (isCopied) "✓ 已复制" else "复制",
-                                    color = Primary,
-                                    fontWeight = if (isCopied) FontWeight.Bold else FontWeight.Normal
-                                )
-                            }
-                            TextButton(onClick = { viewModel.resetExportState() }) {
-                                Text("关闭", color = TextSecondary)
-                            }
-                        }
                     }
                 )
             }
             is SetupViewModel.ExportState.Error -> {
-                AlertDialog(
+                LbDialog(
+                    title = "导出失败",
                     onDismissRequest = { viewModel.resetExportState() },
-                    title = { Text("导出失败", style = AppTypography.titleMedium) },
-                    text = { Text(state.message, color = Error, style = AppTypography.bodyMedium) },
-                    confirmButton = {
-                        TextButton(onClick = { viewModel.resetExportState() }) {
-                            Text("关闭", color = Primary)
-                        }
-                    }
+                    message = state.message,
+                    messageTone = LbDialogMessageTone.Error,
+                    confirm = LbDialogAction(label = "关闭", onClick = { viewModel.resetExportState() })
                 )
             }
             SetupViewModel.ExportState.Idle -> { /* nothing */ }
@@ -446,15 +432,12 @@ fun FeedbackCasesScreen(
 
         // 保存错误 Dialog
         if (saveError != null) {
-            AlertDialog(
+            LbDialog(
+                title = "操作失败",
                 onDismissRequest = { saveError = null },
-                title = { Text("操作失败", style = AppTypography.titleMedium) },
-                text = { Text(saveError.orEmpty(), color = Error, style = AppTypography.bodyMedium) },
-                confirmButton = {
-                    TextButton(onClick = { saveError = null }) {
-                        Text("关闭", color = Primary)
-                    }
-                }
+                message = saveError.orEmpty(),
+                messageTone = LbDialogMessageTone.Error,
+                confirm = LbDialogAction(label = "关闭", onClick = { saveError = null })
             )
         }
     }

@@ -2,6 +2,10 @@ package com.lovebrain.app.ui
 
 import android.os.Bundle
 import androidx.activity.compose.BackHandler
+import com.lovebrain.app.core.designsystem.LbDialog
+import com.lovebrain.app.core.designsystem.LbDialogAction
+import com.lovebrain.app.core.designsystem.LbDialogActionTone
+
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -21,7 +25,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -493,45 +496,38 @@ private fun KbEditScreen(
     }
 
     if (pendingClear) {
-        AlertDialog(
+        LbDialog(
+            title = "清空「${selected.label}」？",
             onDismissRequest = { pendingClear = false },
-            title = { Text("清空「${selected.label}」？", style = AppTypography.titleLarge) },
-            text = {
-                Text(
-                    "将清空《${selected.label}》全部内容，不可恢复。确定？",
-                    style = AppTypography.bodyMedium,
-                    color = TextSecondary
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = {
+            message = "将清空《${selected.label}》全部内容，不可恢复。确定？",
+            confirm = LbDialogAction(
+                label = "清空",
+                tone = LbDialogActionTone.Destructive,
+                onClick = {
                     pendingClear = false
                     val path = selectedPath
-                scope.launch {
-                                    try {
-                                        val newVer = saveFile(path, "", versions[path])
-                                        if (newVer != null) {
-                                            drafts = drafts + (path to "")
-                                            saved = saved + (path to "")
-                                            versions = versions + (path to newVer)
-                                        } else {
-                                            L.w("KbEdit clear conflict: $path")
-                                            hint = "文件已被后台修改，请重新打开" to true
-                                        }
-                                    } catch (e: kotlinx.coroutines.CancellationException) {
-                                        throw e
-                                    } catch (e: Exception) {
-                                        L.w("KbEdit clear failed: $path")
-                                        hint = "清空失败，请重试" to true
-                                    }
-                                }
-                }) { Text("清空", color = Error, style = AppTypography.titleMedium) }
-            },
-            dismissButton = {
-                TextButton(onClick = { pendingClear = false }) {
-                    Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
+                    scope.launch {
+                        try {
+                            val newVer = saveFile(path, "", versions[path])
+                            if (newVer != null) {
+                                drafts = drafts + (path to "")
+                                saved = saved + (path to "")
+                                versions = versions + (path to newVer)
+                            } else {
+                                L.w("KbEdit clear conflict: $path")
+                                hint = "文件已被后台修改，请重新打开" to true
+                            }
+                        } catch (e: kotlinx.coroutines.CancellationException) {
+                            throw e
+                        } catch (e: Exception) {
+                            L.w("KbEdit clear failed: $path")
+                            hint = "清空失败，请重试" to true
+                        }
+                    }
                 }
-            }
+            ),
+            dismiss = LbDialogAction("取消", { pendingClear = false },
+                tone = LbDialogActionTone.Muted)
         )
     }
 

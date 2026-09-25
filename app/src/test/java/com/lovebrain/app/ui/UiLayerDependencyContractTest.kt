@@ -170,6 +170,59 @@ class UiLayerDependencyContractTest {
     }
 
     /**
+     * §6.1 `LbModalSheet/Dialog`：浮层只有**一个所有者**。
+     *
+     * 为什么不是"数一下少了几处"就完事：`AlertDialog` 是 Material 的东西，谁都能直接 call，
+     * 编译永远不会红。上一格搬家时立的规矩在这里同样适用——收口之后真正要防的是
+     * "第二天有人在别的页面又直接 call 了一颗"，所以这把尺盯的是**调用点**。
+     *
+     * 判两条：
+     * ① `AlertDialog(` 在 main 里只许出现在 `core/designsystem/LbDialog.kt`，且恰 1 处；
+     * ② 裸 `Dialog(`（不是 AlertDialog）只许出现在下面这个**点名豁免表**里，且计数要逐处对上——
+     *    豁免必须看得见，而且它消失时这把尺也要红（不许留一条早已不成立的豁免当"管住了"）。
+     */
+    @Test
+    fun `floating decision surfaces have exactly one owner`() {
+        val owner = "core/designsystem/LbDialog.kt"
+        val exempt = mapOf(
+            // 文件 -> 允许的裸 Dialog( 处数。供应商编辑器是一张完整表单（十几个字段 + 模型列表），
+            // 属于 Sheet 那一类；§6.1 这行的 Sheet 半边还没做（见交接单 §4）——是欠账，不是漏网
+            "ui/home/ProviderSection.kt" to 1
+        )
+        val sources = kotlinFiles(appRoot).map {
+            it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
+        }
+        val alert = Regex("\\bAlertDialog\\s*\\(")
+        val bareDialog = Regex("(?<!Alert)\\bDialog\\s*\\(")
+
+        val strayAlert = sources.filter { (path, code) ->
+            alert.containsMatchIn(code) && path != owner
+        }.map { it.first }
+        assertTrue("生产里不许再绕过 LbDialog 直接 call AlertDialog，违规：$strayAlert",
+            strayAlert.isEmpty())
+        val owned = alert.findAll(sources.first { it.first == owner }.second).count()
+        assertTrue(
+            "$owner 应当恰好包一颗 AlertDialog（实到 $owned）；多一颗就说明有两种浮层形状" +
+                "被混进了同一个所有者", owned == 1
+        )
+
+        val strayDialog = sources.filter { (path, code) ->
+            bareDialog.containsMatchIn(code) && !exempt.containsKey(path) && path != owner
+        }.map { it.first }
+        assertTrue("新的裸 Dialog( 要么并进 LbDialog/LbModalSheet，要么在这里显式登记豁免：$strayDialog",
+            strayDialog.isEmpty())
+        exempt.forEach { (path, want) ->
+            val code = sources.firstOrNull { it.first == path }?.second
+                ?: error("豁免登记的 $path 已不在扫描范围内——豁免表要一起删，别留着当已有闸")
+            val got = bareDialog.findAll(code).count()
+            assertTrue(
+                "$path 的裸 Dialog( 实到 $got，豁免登记的是 $want（改了就把这里一起改对）",
+                got == want
+            )
+        }
+    }
+
+    /**
      * 声明的形状：`fun X(`、`typealias X =`、`class|enum class|interface X {|<|(:`。
      *
      * 三支都得在：`typealias` 后面跟的是 `=` 不是 `(`（第一版就漏在这一支上，

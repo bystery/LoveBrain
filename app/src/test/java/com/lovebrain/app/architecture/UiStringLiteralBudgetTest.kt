@@ -109,14 +109,20 @@ class UiStringLiteralBudgetTest {
                         from to (from + expressionAt(text, from, other).length)
                     }
                 }
-            Kind.COMPONENT.anchor.findAll(text).sumOf { m ->
+            // **按字符区间去重**再计数：`LbDialog(title = …, confirm = LbDialogAction(…))`
+            // 这种嵌套调用，外层实参切片与内层切片会各含同一条字符串一次。
+            // 按锚点求和的话，"把一颗按钮换成两颗 Lb 组件嵌套"就会凭空涨几笔——
+            // 涨的是量具的重复计数，不是债（§26.3 那次 247→246 的教训反过来同样成立）。
+            val ranges = LinkedHashSet<Pair<Int, Int>>()
+            Kind.COMPONENT.anchor.findAll(text).forEach { m ->
                 val from = m.range.last + 1
-                HAN_LITERAL.findAll(expressionAt(text, from, Kind.COMPONENT)).count { lit ->
+                HAN_LITERAL.findAll(expressionAt(text, from, Kind.COMPONENT)).forEach { lit ->
                     val start = from + lit.range.first
                     val end = from + lit.range.last + 1
-                    covered.none { (lo, hi) -> lo <= start && end <= hi }
+                    if (covered.none { (lo, hi) -> lo <= start && end <= hi }) ranges += start to end
                 }
             }
+            ranges.size
         }
         else -> kind.anchor.findAll(text).sumOf { match ->
             HAN_LITERAL.findAll(expressionAt(text, match.range.last + 1, kind)).count()
@@ -131,8 +137,23 @@ class UiStringLiteralBudgetTest {
      * - 上一轮的正则 **209**：多认 `Text(text = "中文…")` 与跨行写法，仍看不见
      *   `Text(text = if (…) "中文" else "中文")`，还是下界；
      * - 换成按括号配对取整段实参 → TEXT **254**；搬掉 4 处后 **250**。
-     * - §6.3 把知识库页那张自造空态卡换成共用组件，又搬掉 3 处（标题、指路文案、底部那颗
+     * - §6.1 把知识库页那张自造空态卡换成共用组件，又搬掉 3 处（标题、指路文案、底部那颗
      *   "新建知识库"）→ **247**。DESC / STATE 两栏这次没动。
+     * - §6.1 把五颗首页组件搬进 core/designsystem 时，TEXT 掉到 **246**——
+     *   **这一条不是还债**：掉的那处是「帮你更自然地表达」，它只是从 `Text("…")`
+     *   变成了 `LbTopBar(subtitle = "…")`，字符串一个字没动，是锚点 `Text(` 看不见它了。
+     *   所以同一次加了 COMPONENT 这一栏（起点 16，全仓实扫），246 + 1 对得上旧的 247。
+     * - §6.1 收浮层（11 处 `AlertDialog` → `LbDialog`）之后 **TEXT 209 / COMPONENT 59**。
+     *   这次两栏一起动，账要摊开说清：
+     *   ① 37 处从 TEXT 挪进 COMPONENT（`Text("取消")` → `LbDialogAction("取消")`），
+     *   246 − 37 = 209、16 + 37 = 53 —— 这 37 处**一条都没还**，只是换了形状；
+     *   ② COMPONENT 另外 +6 是**以前两栏都看不见的**：写在 `TextButton(onClick = { … })` 里的
+     *   提示语（"清空失败，请重试"、"文件已被后台修改，请重新打开"、"没有可用的分享应用"…），
+     *   它们搬进 `LbDialogAction(onClick = { … })` 之后才落进实参切片。总数 262 → 268，
+     *   **涨的 6 条是量具新看见的既有债，不是这次新塞的**（与 209 → 254 那次同一回事）；
+     *   ③ 这一栏改成**按字符区间去重**再计数：嵌套调用（`LbDialog(…, confirm = LbDialogAction(…))`）
+     *   外层与内层切片各含同一条字符串一次，按锚点求和会虚报（同一次实扫 85 vs 去重后 59）。
+     *   不做这件事的话，"把一颗按钮拆成两颗 Lb 组件"都会让数字涨，那涨的是量具自己。
      * - §6.1 把五颗首页组件搬进 core/designsystem 时，TEXT 掉到 **246**——
      *   **这一条不是还债**：掉的那处是「帮你更自然地表达」，它只是从 `Text("…")`
      *   变成了 `LbTopBar(subtitle = "…")`，字符串一个字没动，是锚点 `Text(` 看不见它了。
@@ -151,10 +172,10 @@ class UiStringLiteralBudgetTest {
      * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 246,
+        Kind.TEXT to 209,
         Kind.DESC to 12,
         Kind.STATE to 0,
-        Kind.COMPONENT to 16
+        Kind.COMPONENT to 59
     )
 
     private fun countIn(root: File, kind: Kind): Int {
@@ -308,6 +329,25 @@ class UiStringLiteralBudgetTest {
             assertEquals(
                 "非 Lb 前缀的组件仍在盲区里：这一格写明它「不数」，而不是假装数到了",
                 1, countIn(tmp, Kind.COMPONENT)
+            )
+
+            // 去重这一支必须有牙：`LbDialog(title = "外层标题", confirm = LbDialogAction("内层按钮"))`
+            // 里，外层实参切片同时含两条串、内层切片又含 "内层按钮" 一次。
+            // 按锚点求和 ⇒ 这里会数到 3（合计 4）；按字符区间去重 ⇒ 数到 2（合计 3）。
+            File(tmp, "H.kt").writeText(
+                """
+                package x
+                @Composable fun H() {
+                    LbDialog(
+                        title = "外层标题",
+                        confirm = LbDialogAction(label = "内层按钮", onClick = {})
+                    )
+                }
+                """.trimIndent(), Charsets.UTF_8
+            )
+            assertEquals(
+                "嵌套的两层 Lb 实参不许把同一条字符串记两遍（F 1 条 + H 2 条）",
+                3, countIn(tmp, Kind.COMPONENT)
             )
         } finally {
             tmp.deleteRecursively()

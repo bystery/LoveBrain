@@ -28,7 +28,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -83,6 +82,9 @@ import com.lovebrain.app.core.designsystem.SurfaceInset
 import com.lovebrain.app.core.designsystem.TextHint
 import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
+import com.lovebrain.app.core.designsystem.LbDialog
+import com.lovebrain.app.core.designsystem.LbDialogAction
+import com.lovebrain.app.core.designsystem.LbDialogActionTone
 import com.lovebrain.app.viewmodel.SetupViewModel
 import kotlinx.coroutines.launch
 
@@ -300,20 +302,16 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
     }
 
     pendingDelete?.let { t ->
-        AlertDialog(
+        LbDialog(
+            title = "删除「${t.name}」？",
             onDismissRequest = { pendingDelete = null },
-            title = { Text("删除「${t.name}」？", style = AppTypography.titleLarge) },
-            text = { Text("删除后不可恢复，需要重新填写全部配置。确定？", style = AppTypography.bodyMedium, color = TextSecondary) },
-            confirmButton = {
-                TextButton(onClick = { pendingDelete = null; viewModel.deleteTicket(t.id) }) {
-                    Text("删除", color = Error, style = AppTypography.titleMedium)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { pendingDelete = null }) {
-                    Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
-                }
-            }
+            message = "删除后不可恢复，需要重新填写全部配置。确定？",
+            confirm = LbDialogAction(
+                label = "删除",
+                tone = LbDialogActionTone.Destructive,
+                onClick = { pendingDelete = null; viewModel.deleteTicket(t.id) }
+            ),
+            dismiss = LbDialogAction("取消", { pendingDelete = null }, tone = LbDialogActionTone.Muted)
         )
     }
 }

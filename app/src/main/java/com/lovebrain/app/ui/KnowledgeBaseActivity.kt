@@ -24,7 +24,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -55,6 +54,9 @@ import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbAsyncState
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.core.designsystem.ScreenState
+import com.lovebrain.app.core.designsystem.LbDialog
+import com.lovebrain.app.core.designsystem.LbDialogAction
+import com.lovebrain.app.core.designsystem.LbDialogActionTone
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
@@ -226,41 +228,29 @@ private fun KbManagementScreen(
 
     // 未配置供应商二选一弹窗（继续 = 空模板库，取消 = 返回向导）
     if (showNoProviderDialog) {
-        AlertDialog(
+        LbDialog(
+            title = "未配置模型供应商",
             onDismissRequest = { showNoProviderDialog = false },
-            title = { Text("未配置模型供应商", style = AppTypography.titleLarge) },
-            text = {
-                Text(
-                    "未配置模型供应商，只能创建空模板库",
-                    style = AppTypography.bodyMedium,
-                    color = TextSecondary
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = {
+            message = "未配置模型供应商，只能创建空模板库",
+            confirm = LbDialogAction(
+                label = "继续",
+                onClick = {
                     showNoProviderDialog = false
                     viewModel.createEmptyKb()
-                }) { Text("继续", color = Primary, style = AppTypography.titleMedium) }
-            },
-            dismissButton = {
-                TextButton(onClick = { showNoProviderDialog = false }) {
-                    Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
                 }
-            }
+            ),
+            dismiss = LbDialogAction("取消", { showNoProviderDialog = false },
+                tone = LbDialogActionTone.Muted)
         )
     }
 
     // 建库/生成/导入导出结果反馈弹窗
     feedback?.let { msg ->
-        AlertDialog(
+        LbDialog(
+            title = "提示",
             onDismissRequest = { feedback = null },
-            title = { Text("提示", style = AppTypography.titleLarge) },
-            text = { Text(msg, style = AppTypography.bodyMedium, color = TextSecondary) },
-            confirmButton = {
-                TextButton(onClick = { feedback = null }) {
-                    Text("知道了", color = Primary, style = AppTypography.titleMedium)
-                }
-            }
+            message = msg,
+            confirm = LbDialogAction(label = "知道了", onClick = { feedback = null })
         )
     }
 }
@@ -351,47 +341,40 @@ internal fun KbListScreen(
     }
 
     pendingDelete?.let { kb ->
-        AlertDialog(
+        LbDialog(
+            title = "删除知识库「${kb.displayName}」？",
             onDismissRequest = { pendingDelete = null },
-            title = { Text("删除知识库「${kb.displayName}」？", style = AppTypography.titleLarge) },
-            text = {
-                Text("将物理删除该知识库的全部内容，不可恢复。确定删除？", style = AppTypography.bodyMedium, color = TextSecondary)
-            },
-            confirmButton = {
-                TextButton(onClick = {
+            message = "将物理删除该知识库的全部内容，不可恢复。确定删除？",
+            confirm = LbDialogAction(
+                label = "删除",
+                tone = LbDialogActionTone.Destructive,
+                onClick = {
                     val n = kb.name
                     pendingDelete = null
                     onDelete(n)
-                }) { Text("删除", color = Error, style = AppTypography.titleMedium) }
-            },
-            dismissButton = {
-                TextButton(onClick = { pendingDelete = null }) {
-                    Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
                 }
-            }
+            ),
+            dismiss = LbDialogAction("取消", { pendingDelete = null },
+                tone = LbDialogActionTone.Muted)
         )
     }
 
     // 导出警示 Compose 化（/：明文 zip 含全部画像/归档，先警示再启动；文案红线逐字不动）
     pendingExport?.let { kb ->
-        AlertDialog(
+        LbDialog(
+            title = "导出提醒",
             onDismissRequest = { pendingExport = null },
-            title = { Text("导出提醒", style = AppTypography.titleLarge) },
-            text = {
-                Text("导出文件是明文，包含她的全部画像、聊天归档与谈心记录。请妥善保管，不要分享给他人。", style = AppTypography.bodyMedium, color = TextSecondary)
-            },
-            confirmButton = {
-                TextButton(onClick = {
+            message = "导出文件是明文，包含她的全部画像、聊天归档与谈心记录。请妥善保管，不要分享给他人。",
+            confirm = LbDialogAction(
+                label = "仍要导出",
+                onClick = {
                     val n = kb.name
                     pendingExport = null
                     onConfirmExport(n)
-                }) { Text("仍要导出", color = Primary, style = AppTypography.titleMedium) }
-            },
-            dismissButton = {
-                TextButton(onClick = { pendingExport = null }) {
-                    Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
                 }
-            }
+            ),
+            dismiss = LbDialogAction("取消", { pendingExport = null },
+                tone = LbDialogActionTone.Muted)
         )
     }
 }
@@ -483,10 +466,10 @@ private fun KbCard(
     }
 
     if (showRename) {
-        AlertDialog(
+        LbDialog(
+            title = "修改显示名",
             onDismissRequest = { showRename = false },
-            title = { Text("修改显示名", style = AppTypography.titleLarge) },
-            text = {
+            body = {
                 OutlinedTextField(
                     value = renameText,
                     onValueChange = { renameText = it },
@@ -495,21 +478,17 @@ private fun KbCard(
                     modifier = Modifier.fillMaxWidth()
                 )
             },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showRename = false
-                        onRename(renameText.trim())
-                    },
-                    // 空名禁止保存，避免卡片标题变空白
-                    enabled = renameText.isNotBlank()
-                ) { Text("保存", color = Primary, style = AppTypography.titleMedium) }
-            },
-            dismissButton = {
-                TextButton(onClick = { showRename = false }) {
-                    Text("取消", color = TextSecondary, style = AppTypography.titleMedium)
+            confirm = LbDialogAction(
+                label = "保存",
+                // 空名禁止保存，避免卡片标题变空白
+                enabled = renameText.isNotBlank(),
+                onClick = {
+                    showRename = false
+                    onRename(renameText.trim())
                 }
-            }
+            ),
+            dismiss = LbDialogAction("取消", { showRename = false },
+                tone = LbDialogActionTone.Muted)
         )
     }
 }
