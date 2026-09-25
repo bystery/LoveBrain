@@ -246,18 +246,25 @@ class ProviderSectionSemanticsTest {
      * ①整张表单每个可交互节点过 48dp；②每个节点有名字；③那颗"保存"（§4 ⑬ 剩下
      * 4 处 Material Button 里的第一处）几何与角色对不对。**三条一条都没量到**。
      *
-     * 已排除的两个假设（都留证据给下一个窗口，别当"生产没回路"，也别当"生产有回路"）：
-     * - **不是光标闪烁**：同这台仪器下 `InputFieldLabelsTest`/`RecordSentDialogSheetTest`
-     *   都挂着文本框并且是绿的；
-     * - **不是 `ProviderEditDialog` 里那两颗 spinner**：它们都是条件渲染
-     *   （`testingModel == m`、`saving`），挂载时根本没画出来。
-     * 状态头部（307-341 行）也没有 composition 内写状态——13 个 `remember`，赋值全在回调里。
+     * **原因已经做实验定下来了，不是猜**：一次性诊断件（已收档到
+     * `_temp/ZzDialogTextFieldIdleProbeTest.kt.retired`）把**裸 `Dialog` + 一颗
+     * `OutlinedTextField`** 单独挂起来，`waitForIdle()` 报
+     * `Compose did not get idle after 1,013,194 attempts in 60 SECONDS`。
+     * 也就是说：这台仪器里"Dialog 窗口 + 文本框焦点"永不空闲，
+     * **`ProviderEditDialog` 无罪**——表单里没有回路、没有无限动画、
+     * 状态头部 13 个 `remember` 也都在回调里赋值。
      *
-     * 剩下的最可能原因是 **Material `Dialog` 窗口 + `BasicTextField` 焦点**这一组合
-     * （仪器里此前只单独见过其中之一：`LbDialogTest` 有 Dialog 无输入框，
-     * `RecordSentDialogSheetTest` 有输入框但是自画浮层不是 Dialog 窗口）。
-     * ⇒ 下一步不是继续调时钟，是**把表单内容抽成一颗可单挂的 internal 组件**
-     *   （照 `MiniSwitchRow`/`KbListScreen` 那两次的手法：先能挂上，再谈量到）。
-     *   关 `autoAdvance` 手动推帧这条路我试过，仍然不空闲，所以别照着再试一遍。
+     * 三条假设的死法都留证据，别当结论用：
+     * - 光标闪烁：**不是**（`InputFieldLabelsTest`/`RecordSentDialogSheetTest` 挂着文本框是绿的，
+     *   它们都不在 Dialog 窗口里）；
+     * - 那两颗 spinner：**不是**（条件渲染，挂载时没画出来）；
+     * - Dialog + 文本框这一组合：**是它**。
+     *
+     * ⇒ 下一步也不是"继续调时钟"（`autoAdvance=false` 手动推帧试过，仍不空闲），
+     *   是**把表单内容抽成一颗可单挂的 internal 组件**（照 `MiniSwitchRow`/`KbListScreen`
+     *   的手法），让 `Dialog` 只剩一个外壳。那是一次约 230 行的机械搬动，
+     *   得单独一格做、搬完立刻用本文件这三格验收。
+     *   报错线索留一条通用的：**栈顶行号超出文件长度**
+     *   （`ProviderSection.kt:872`，全文 583 行）＝是内联/夹具的问题，不是那一行坏了。
      */
 }

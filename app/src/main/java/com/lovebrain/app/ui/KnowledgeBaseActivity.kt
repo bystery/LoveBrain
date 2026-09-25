@@ -19,6 +19,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -51,6 +54,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.LbButtonState
+import com.lovebrain.app.core.designsystem.LbPrimaryButton
 import com.lovebrain.app.core.designsystem.LbAsyncState
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.core.designsystem.ScreenState
@@ -321,14 +326,17 @@ internal fun KbListScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(Spacing.md)
         ) {
-            Button(
-                onClick = { onNewKb() },
-                colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                shape = LoveBrainShape.md,
-                modifier = Modifier.weight(1f).height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
-            ) {
-                Text(stringResource(R.string.kb_new_kb), style = AppTypography.titleMedium)
-            }
+            // §6.1 :479——这一页的唯一主动作走那颗组件。
+            // 搬之前先量过：这颗 Material `Button(containerColor = Primary)` 实测
+            // **达标且有角色有名字**，所以这一笔是**归所有者，不是修缺陷**
+            // （同首页那颗一次；区别是这里连高度都写的是 `KbDimens.PRIMARY_ACTION_HEIGHT_DP`
+            // 那颗别名，搬完之后连这颗别名都不再需要了）。
+            LbPrimaryButton(
+                state = LbButtonState.Idle,
+                label = stringResource(R.string.kb_new_kb),
+                onClick = onNewKb,
+                modifier = Modifier.weight(1f)
+            )
             OutlinedButton(
                 onClick = onImport,
                 shape = LoveBrainShape.md,
@@ -407,10 +415,15 @@ private fun KbCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable {
-                        renameText = kb.displayName
-                        showRename = true
-                    }
+                    // §6.5 :531/:532：这颗"改名"入口原本挂在名字那一小条上（本机实量
+                    // **46x22dp、role=无**）——用户要点的是这一行，热区却只有字的尺寸。
+                    modifier = Modifier
+                        .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                        .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                        .clickable(role = Role.Button) {
+                            renameText = kb.displayName
+                            showRename = true
+                        }
                 ) {
                     Text(
                         kb.displayName,
@@ -438,15 +451,29 @@ private fun KbCard(
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    Icons.Filled.Delete,
-                    contentDescription = "删除知识库",
-                    tint = TextHint,
+                // 删除那颗：图标 18dp 是**画**，48dp 的盒才是**点**。
+                // 原来 clickable 直接挂在 Icon 上，本机实量 **18x18dp**，
+                // 而且 role 报成 **Image**（Icon 的 contentDescription 会带出图像角色）——
+                // 读屏念的是"删除知识库，图像"，用户听到的是一幅图而不是一个动作。
+                Box(
                     modifier = Modifier
-                        .size(AppDimens.ACTION_ICON_SIZE_DP.dp)
+                        .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
                         .clip(LoveBrainShape.sm)
-                        .clickable(onClick = onDelete)
-                )
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            role = Role.Button,
+                            onClick = onDelete
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Filled.Delete,
+                        contentDescription = "删除知识库",
+                        tint = TextHint,
+                        modifier = Modifier.size(AppDimens.ACTION_ICON_SIZE_DP.dp)
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(Spacing.md))
             // 第二行：阶段/对话信息 + 编辑/导出
