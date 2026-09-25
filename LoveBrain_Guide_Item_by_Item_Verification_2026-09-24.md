@@ -1187,5 +1187,115 @@ N3 重试不再触发重扫 → `Verification failed: call 1 of 1 … needs at l
 - JVM 上 `ResolveInfo.loadLabel` 取不到标签 ⇒ 断言里 displayName 就是包名；
   真机上排序键会随标签变，**这条差异本轮没有任何用例覆盖**（androidTest 里也没有捕获页的用例）。
 - §6.4 `ResultArea` 拆分、§6.1 那九颗 `Lb*` 组件与令牌迁移仍未动。
+---
 
+# 追加十二：design token 整体搬进 core/designsystem（第三步-1 的前半），两把尺一起收紧
 
+## 22.1 指导书把这一步和下一步都写好了
+
+- 第三步 1 号步骤原文：**「建 `core/designsystem` tokens + 10 个基础组件。」**
+- §5.1 目录图：`designsystem/  token、统一组件、语义规范`。
+- 而 `PackageDependencyTest` 里那条登记过的欠账，注释连**还法**都写着：
+  「等 theme 整体迁进 core/designsystem，这里要再加一条前缀 `"com.lovebrain.app.ui."`」。
+
+搬家之前只有后两样的一半：`core/designsystem/` 里躺着 `ScreenState.kt` 与 `LbAsyncState.kt`
+（含 `LbEmptyState`），而 token 全住在 `ui.theme` 下面——所以"设计系统"反过来依赖 UI 层。
+
+一处指导书自身对不上的地方，逐字对照时说明：§7 写「10 个基础组件」，§6.1 那张表实际是
+**11 行**（`LbMetricCard/Grid`、`LbModalSheet/Dialog` 各占一行；按名字展开是 13 个）。
+本轮按表为准，不按"10"这个数。
+
+## 22.2 搬了什么、为什么这么切
+
+| 原位置 | 现位置 | 说明 |
+|---|---|---|
+| `ui/theme/Color.kt` | `core/designsystem/Color.kt` | 整档（`git mv`，历史保留为 R） |
+| `ui/theme/Dimens.kt` | `core/designsystem/Dimens.kt` | 整档（`AppDimens`） |
+| `ui/theme/Type.kt` | `core/designsystem/Type.kt` | 整档（`AppTypography` + Markdown 两个字号） |
+| `ui/theme/Theme.kt` 里的 `object Spacing` | `core/designsystem/Spacing.kt` | 从 Material 包装里切出来 |
+| `ui/theme/Theme.kt` 里的 `object LoveBrainShape` | `core/designsystem/Shapes.kt` | **文件名跟着内容走**：装着形状的文件不许叫 Spacing |
+| `ui/theme/Theme.kt`（`LoveBrainTheme` + ColorScheme + 无水波 Indication） | 原地不动 | 它确实是 Compose 主题包装，不是 token |
+| `test/…/ui/theme/UiBaselineRegressionTest.kt`、`ContrastRegressionTest.kt` | `test/…/core/designsystem/` | 测试包跟着被测包走 |
+
+## 22.3 波及面是量出来的，不是估的
+
+清单 **48 个文件、实际改写 38 个、补 16 行通配 import**。另有两类是脚本第一轮没看见的：
+
+- **2 处不走 import 的全限定引用**——`SolidColor(com.lovebrain.app.ui.theme.Primary)`
+  （`CompactInput`）与 `com.lovebrain.app.ui.theme.PrimarySubtle`（`HomeComponents`）。
+  编译器当场报 `Unresolved reference: Primary`，所以"改完就漏"没发生。
+- **2 个与被测包同包的测试**一行 import 都没有（同包直接可见），搬包之后必须跟着搬。
+
+第一次跑脚本还 ABORT 在 `Theme.kt` 的切片正则上：本仓库 `Theme.kt`/`HomeComponents.kt` 是 **CRLF**
+而 `LbAsyncState.kt` 是 **LF**，按 `\n` 匹配直接扑空，而扑空之前已经把三个文件 `git mv` 走了。
+脚本因此改成全程按 LF 处理、写回时还原原行尾，并且**可重复跑**（源文件不在就只补 package 行）。
+这条记进坑表第 53 条。
+
+## 22.4 搬家撞红的那两格，都是承重的
+
+全量跑第一遍红两格，两格都是**按路径读源码**的断言：
+
+1. `ContrastRegressionTest` 直接读 `ui/theme/Color.kt` 正则解析 `Color.hsl(h, s, l)` 三元组
+   ——路径改了读不到文件。改成读 `core/designsystem/Color.kt`。
+2. `ResultAreaStructureTest > theme token files exist and are stable` 判的是
+   「`ui/theme` 下有 Color/Dimens/Theme/Type 四个文件」，搬家之后三个不在了 ⇒ 红。
+   **撞红说明它有牙**，但判据本身太弱：只判"文件名在不在"。顺着搬家升级成方向判据——
+   token 必须在 `core/designsystem`、`Theme.kt` 留在 `ui/theme`、并且**反向断言 token 不许再回
+   `ui/theme`**（搬家被 revert 一半是最难发现的那种坏法）。
+
+同时纠正一句**写在注释里的假话**：那格的注释是「SHA 校验由 CI 层完成」。
+`grep .github/workflows` 里 theme/Color.kt 的哈希计算**零命中**——CI 从来不算 token 的 SHA。
+注释承诺一道不存在的闸，比没有闸更坏（下一个人会以为已经有人看着）。注释改成判它真正判的东西。
+
+## 22.5 两把尺一起收紧（这才是这格的重点）
+
+- JVM 侧：`PackageDependencyTest.forbidden["core"]` 加上 `"com.lovebrain.app.ui."`。
+- 报告侧：`scripts/package_deps_report.py` 的 `FORBIDDEN` **原来根本没有 `core` 这一条**，
+  而它文件开头自己写着"规则与 PackageDependencyTest 里那份一一对应"。
+  不补的后果很具体：谁把 `core → ui` 的 import 引回来，JVM 闸会红，
+  而 `package_deps_report.sh --count` 仍旧报同一个数——"跨层条数没长"这句话在 CI 侧就是空的。
+
+变异 T1（往 `LbAsyncState.kt` 注入一行真实存在的 `import com.lovebrain.app.ui.theme.LoveBrainTheme`）：
+
+| 尺 | 注入后 | 撤掉后 |
+|---|---|---|
+| `package_deps_report.sh --count` | **7**（6 → 7） | 6 |
+| `PackageDependencyTest` | 6 格里 **3 格红**（无新增越界 / 基线仍对得上 / 条数对得上） | 全绿 |
+
+**两把尺同时看得见，才配叫"同一套规则"。**（坑表 47 条"本机与 CI 也会漂"的同族。）
+
+## 22.6 实测
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | `GRADLE_RC=0`：**156 套件 / 1231 tests / 0 失败 / 0 错误 / 0 跳过**，无陈旧 XML（起点 11:03:23） |
+| 与上一格对账 | 1231 / 156 **一字没动**——搬家不改行为，"测试数不变"本身就是这条声明的证据（数字变了才要怀疑） |
+| lint | 报告重生成（11:09:23）实测 69 / 15、进预算 **68 / 14**、advisory 1，`check_lint_budget.sh` rc=0（与搬家前同一组数：没新增也没误还） |
+| androidTest | `:app:assembleAndroidTest` rc=0 |
+| 其它闸 | 工单编号 rc=0；prompt 资产 lock rc=0 且 `git diff --exit-code 286c9406..HEAD -- assets/engine` rc=0；跨层 **6** 条；判据自测 27 格 rc=0 |
+| 历史 | 5 个文件记为 rename（R），不是删除+新增 |
+
+## 22.7 §6.1 与第三步-1 现在走到哪
+
+| 指导书 | 现在 |
+|---|---|
+| 第三步-1「建 `core/designsystem` **tokens**」 | **本轮完成**：Color / AppDimens / AppTypography / Spacing / LoveBrainShape 全部到位，且 core 不再允许 import ui |
+| 第三步-1「+ 10 个基础组件」 | 未完成。表里 11 行现在只有 `LbAsyncState`、`LbEmptyState` 两颗在位。其余 9 行的**形状其实早有主人**，只是名字与所在包不按表：`HomeTopBar`≈`LbTopBar`、`HomeSectionHeader`≈`LbSection`、`HomeActionCard`≈`LbActionCard`、`HomeSettingRow`≈`LbSettingRow`、`UsageSummary`/`UsageMetric`≈`LbMetricCard/Grid` ⇒ 下一格是"按表改名 + 搬进 core/designsystem + 接 §6.2 首页四段"，**不是从零造** |
+| §6.1 末句「禁止创建只在一个页面看起来不一样的按钮/卡片」 | 部分成立：同一形状在各页只有一个主人（上表可查），但**没有闸**在拦"新页面又画一张卡"。等它们按表改名搬齐，才好按 `Lb*` 名字扫调用方 |
+| §6.5「浅色/深色（若暂不支持深色，明确锁定浅色）」 | `Color.kt` 头部仍写着"暗色模式完全删除，全站固定亮色"——锁定的是**注释**，不是资源/主题。真要"明确锁定"得看 `values-night` 与 `LoveBrainTheme` 是否拒绝跟随系统，**本轮没查** |
+
+## 22.8 这格没做的
+
+- `Spacing.kt` / `Shapes.kt` 是**新增文件**（内容来自 `Theme.kt`），git 不记为 rename。
+  账在这里：两把标尺的原文在 `3605edd^:app/src/main/java/com/lovebrain/app/ui/theme/Theme.kt`。
+- `ui/theme/Theme.kt` 现在只剩一档 Material 包装 + 一个无水波 `Indication`；
+  是否并进 `core/designsystem` 或改名 `LoveBrainTheme.kt`，等 §6.1 那格一起判，别单独动。
+- §6.2 首页四段、§6.4 `ResultArea` 拆分、九颗组件改名搬包；以及那句
+  "还有多少屏没被整屏热区量过"（`KbEditActivity`、设置页两颗）仍未做。
+- `ContrastRegressionTest` 读的是 `Color.kt` 的**源码文本**再自己算 WCAG 对比度
+  （正则解析 `Color.hsl(h, s, l)` 三元组）。这格只把它读的路径挪了，没重划它的覆盖面：
+  它断言的是 TextHint vs 三个底、Success 与白字、Warning 两组 ≥4.5:1，
+  **不是全部颜色两两配对**——做 §6.5 颜色那一栏时要按这个边界说，别说成"全站对比度已锁"。
+- 顺带记一条界线，免得以后一刀切：这格读源码是正当的（token 定义本身就是被测对象），
+  而"别拿源码 grep 当 UI 证据"那条针对的是**尺寸/热区/层级**这类必须读语义树的事实。
+  同一种"读文件"的断言，一个该读、一个不该读，区别在被测事实是不是编译期常量。

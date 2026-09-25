@@ -6,8 +6,10 @@
 > 上一份开工单：`LoveBrain_Handover_Next_Window_2026-09-24.md`（它的 §2.1/§2.2 已由本轮做完，其余仍有效）
 > **账本最近三节**：「追加八」§18（编辑位判据）、「追加九」§19（量完两格决定不动 + 输入框读屏名字）、
 > 「追加十」§20（知识库页四态 + 页头 32dp 返回钮）。读本文件前先看完这三节。
-> **本文件的读法**：§0.1–§0.8 是一格一段的增量（§0.8 最新），§1 起手命令与现在值，§2 被证伪的旧话，
-> §4 下一格顺序，§5 已做勿重复，§6 坑表（45–48 最新）。
+> **本文件的读法**：§0.1–§0.10 是一格一段的增量（§0.10 最新），§1 起手命令与现在值，
+> §2 被证伪的旧话（含"注释承诺了一道不存在的闸"那类），§4 下一格顺序，§5 已做勿重复，
+> §6 坑表（53–54 最新）。账本最近三节：§20（知识库四态）、§21（捕获四态 + 输入框热区）、
+> §22（token 搬家 + 两把尺一起收紧）。
 
 ## 0. 一句话现状
 
@@ -184,6 +186,33 @@ HEAD `0c4d6d6`，仍未推。两笔：
 - 平台回 null 那条分支**本机造不出反例**（compileSdk 标 `@NonNull`，mockk 编译期就拒 `returns null`）⇒
   它记为"防注解撒谎的兜底、未验"，不算已验收益。同类情形以后都按这个写法记账。
 
+## 0.10 又一步：design token 整体搬进 core/designsystem（`3605edd`）
+
+指导书第三步 1 号步骤是「建 `core/designsystem` **tokens** + 10 个基础组件」。这格做前半。
+
+- 搬之前 `core/designsystem` 只有 `ScreenState` / `LbAsyncState`（含 `LbEmptyState`），
+  token 全住 `ui.theme` ⇒ "设计系统"反过来依赖 UI 层。`PackageDependencyTest` 的注释
+  连还法都写好了：「等 theme 整体迁进 core/designsystem，这里要再加一条前缀
+  `com.lovebrain.app.ui.`」——**这格就是照那句话做的**，不是我自己挑的活。
+- 切的界线：`Color/Dimens/Type` 整档搬；`Spacing` 与 `LoveBrainShape` 从 `Theme.kt` 里切出来，
+  并**按内容命名**拆成 `Spacing.kt` 与 `Shapes.kt`；`LoveBrainTheme` 留在 `ui/theme`（它是 Material 包装）。
+- 波及面当次实扫：清单 48 文件 / 改写 38 / 补 16 行通配 / **2 处全限定引用**（编译器抓的）/
+  **2 个同包测试跟着搬**。行为一字没改：全量 **1231 / 156 套件 / 0 失败**，与上一格同一组数
+  ——搬家之后"数字没变"本身就是证据。
+- **两把尺一起收紧才是重点**：JVM 的 `forbidden["core"]` 加了 `ui.` 前缀；报告脚本
+  `package_deps_report.py` 原本**根本没有 core 这条规则**（文件开头却写着"与测试一一对应"）。
+  注入一行 `core → ui` 的真实 import 验：脚本 6 → 7、JVM 三格红；撤掉回到 6。
+  下一格动依赖方向时先想这条：**只收紧一把尺 = 那句话在另一把尺上是空的。**
+- 搬家撞红两格（`ContrastRegressionTest` 按路径读 Color.kt；`theme token files exist`），
+  两格都**有牙**。顺手把那格的假注释「SHA 校验由 CI 层完成」改了——
+  grep `.github/workflows` 零命中，CI 从不哈希 token 文件。同时把它升级成方向判据
+  （token 必须在 core、且**不许回流 ui/theme**）。
+- **§6.1 的现状**：表里 11 行（注意指导书 §7 写"10 个"与表对不上，按表为准），
+  已到位 2 颗；其余 9 行的**形状早有主人**，只是名字/包位置不按表：
+  `HomeTopBar`≈`LbTopBar`、`HomeSectionHeader`≈`LbSection`、`HomeActionCard`≈`LbActionCard`、
+  `HomeSettingRow`≈`LbSettingRow`、`UsageSummary`/`UsageMetric`≈`LbMetricCard/Grid`。
+  ⇒ 下一格是"按表改名 + 搬进 core + 接 §6.2 四段"，**不是从零造**。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -202,20 +231,21 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
 ```
 
-最近一轮实测基线（到 `054b789`）：**1231 单测 / 156 套件 / 0 失败 / 0 错误 / 0 跳过**
-（shell 记的起点 09:53:42，全部 XML 无陈旧件）。与上一格对账：1213 → 1231 = +18
-（本轮新增 7+5+4 加 ComposerInputLabel 补的 2），153 → 156 套 = +3。**两个增量互相咬得上**。
-lint 报告**重新生成后**（09:53:20）实测 **69 条 / 15 规则**，其中 **进预算 68 条 / 14 规则**、advisory 1 条。
-数字比上一格记的 70/69 各少 1：**不是债涨了也不是我抬了预算**，是删掉一条带 `%1$d` 的重复文案
-顺带还掉一条 `PluralsCandidate`，用 `--rewrite` 落了账（`git diff scripts/lint-budget.txt` 只动那一行）。
-`check_lint_budget.sh` rc=0；`:app:assembleAndroidTest` rc=0；工单编号 rc=0；prompt 零 diff + lock `6dcde732…`；
-跨层 **6** 条（与基线同，没长）；lint 判据自测 27 格 rc=0。
-`KnowledgeRepository` **1793** 行、`LoveBrainViewModel` **2719** 行（这两格都没动它们）；
-`KnowledgeBaseActivity.kt` 924 → 918、`CaptureAppsScreen.kt` 198 → 237（新增判据函数与列表区两颗）；
+最近一轮实测基线（到 `3605edd`）：**1231 单测 / 156 套件 / 0 失败 / 0 错误 / 0 跳过**
+（shell 记的起点 11:03:23，全部 XML 无陈旧件）。**与上一格同一组数**——`3605edd` 是纯搬家，
+「测试数一字没动」本身就是「没改行为」那条声明的证据；哪天搬家类提交让数字动了，先解释为什么。
+lint 报告**重新生成后**（11:09:23）实测 **69 条 / 15 规则**，进预算 **68 条 / 14 规则**、advisory 1
+（与搬家前同一组数：没新增也没误还）。`check_lint_budget.sh` rc=0；`:app:assembleAndroidTest` rc=0；
+工单编号 rc=0；prompt 资产 lock rc=0 **且** `git diff --exit-code 286c9406..HEAD -- assets/engine` rc=0；
+跨层 **6** 条（给脚本补上 core 规则之后仍是 6 ⇒ core 侧 0 越界）；lint 判据自测 27 格 rc=0。
+**目录现状**：`core/designsystem/` = Color / Dimens / Type / Spacing / Shapes / ScreenState / LbAsyncState；
+`ui/theme/` 只剩 `Theme.kt`（Material 包装 + 无水波 Indication）。
+`KnowledgeRepository` **1793** 行、`LoveBrainViewModel` **2719** 行（近三格都没动它们）；
+`KnowledgeBaseActivity.kt` 918、`CaptureAppsScreen.kt` 237；`ui/theme/Theme.kt` 93 → 73 行。
 VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 30**。
-**大文件计数：>500 行 17 个、>800 行 10 个**（本轮没有文件跨档；`CaptureAppsScreen` 198→251 仍在 <500 档）。
+**大文件计数：>500 行 17 个、>800 行 10 个**（近两格没有文件跨档）。
 
-## 2. 被证伪的六条（前两批 + 最新一条，别再当依据）
+## 2. 被证伪的判断（逐条累加，别再当依据；条数以此表实际行数为准）
 
 1. 「远端已经是 `3d92488`，没有未推送提交」——现在远端仍是 `3d92488`，本地领先一截都没推。
    **这里不写条数**：文档提交自己也算一笔，任何写死的数在写完那一刻就错一位。
@@ -241,6 +271,10 @@ VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 
    当时仍剩 4 处在 `applyProfileUpdateAtomically` 的备份快照里，`007e4fd` 也还清了——
    **那条棘轮现在登记 0 处**（owners 是空集，注入一处会两条消息一起红）。所以"读路径全部过 canonical"
    这句现在才算立得住，但 `kbExistsUnlocked` 那个布尔泄露仍在（见 §4 第 1 条）。
+7. **「theme 文件的 SHA 校验由 CI 层完成」与「报告脚本的规则与测试一一对应」**——两句都是注释里的假话，
+   本轮搬家时一起撞出来：`grep .github/workflows` 里没有任何一处计算 theme/Color.kt 的哈希（CI 从不校验）；
+   `package_deps_report.py` 的 `FORBIDDEN` 里**压根没有 `core` 这一条**，而它文件开头写着与测试"一一对应"。
+   教训写成规矩：**注释承诺一道闸之前，先去把那道闸注入证一次**；否则注释本身就是下一个人的假依据。
 
 ## 3. 只剩"推送 + 读 CI"能闭的（本轮新留下）
 
@@ -282,13 +316,19 @@ VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 
 5. ~~**§6.3 最后一格：捕获范围**~~ —— **已做**（`054b789`，见 §0.9 与账本 §21）。四家齐了；
    顺带量出并修了那颗 288×15dp 的输入框（`cbcdebe`）。**留下的相邻账**见账本 §21.8：
    勾选行的选中态读屏念不念得出来（只挂没判）、候选枚举仍在主线程、`capture_apps_back` 早就是死资源。
-6. **§6.1 剩 9 颗 `Lb*` 组件 + token 从 `ui.theme` 迁进 `core/designsystem`** —— §6.3 四家现在已经
-   全部走 `LbAsyncState` / `LbEmptyState`，所以这一格是**剩下的那张组件表**
-   （`LbSettingRow`、`LbMetricGrid`、`LbActionCard` 那批），指导书 §6.2 的首页四段结构也挂在它上面。
-   还有一件事绑在它身上：`UiStringLiteralBudgetTest` 的文件注释自己写着"把用户可见字面量搬进
-   strings.xml **是阶段三与 `Lb*` 组件一起做的工作**" ⇒ **别在它之前单开一笔"搬文案"的活**，
-   那会打乱指导书自己的顺序。面板那三句 placeholder 与主动发那三句就是等这一格一起办的；
-   届时顺手把 `ComposerInputLabelTest` 从"只钉语言无关事实"升级成钉原文
+6. **§6.1 那张组件表：按表改名 + 搬进 core/designsystem**（第三步-1 的后半）——
+   tokens 已经到位（`3605edd`，见 §0.10），所以现在缺的就是组件那一半。
+   **别当成从零造**：表里 9 行的形状其实早有主人，只是名字与所在包不按表——
+   `HomeTopBar`≈`LbTopBar`、`HomeSectionHeader`≈`LbSection`、`HomeActionCard`≈`LbActionCard`、
+   `HomeSettingRow`≈`LbSettingRow`、`UsageSummary`/`UsageMetric`≈`LbMetricCard/Grid`，
+   另四行（`LbScreenScaffold`≈`ui/common/ScreenPage`+`ScreenHeader`、`LbPrimaryButton`、
+   `LbStatusBadge`、`LbModalSheet/Dialog`）是真的没有同名物，得从现有页面里认形状。
+   两处硬账要一起处理：① **§6.2 首页四段**（顶部 / 军师状态主卡 / 快捷功能 / 设置与使用概览）
+   现在只有形状没有语法名字；② 搬齐之后才装得上 §6.1 末句那条闸
+   （按 `Lb*` 名字扫调用方，拦“新页面又画一张卡”）。
+   还有一件事绑在它身上：`UiStringLiteralBudgetTest` 的文件注释自己写着“把用户可见字面量
+   搬进 strings.xml 是阶段三与 `Lb*` 组件一起做的工作” ⇒ 面板那三句 placeholder 与主动发那三句
+   就是等这一格一起办；届时顺手把 `ComposerInputLabelTest` 从“只钉语言无关事实”升级成钉原文
    （资源驱动是前提——现在升级会把三句写死的中文钉进测试，那是假绿）。
 7. **§6.4 悬浮面板 `ResultArea` 拆分**：`ResultAreaStructureTest` 已经在看着它的结构，
    拆开时那把尺不许松（拆完仍要能证明"结果区只有这一份"）。
@@ -356,6 +396,7 @@ VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 
 | `3dc2180` | §6.3 第三家：知识库页判据并成一处 `kbScreenState`、版式走 `LbAsyncState`，空态那颗动作真开向导；给 `loadState()` 一条诚实的读失败通道（原来抛出=永远转圈）；量出并修掉页头「返回」32→48dp；新 15 格 + 变异 M1–M4；字面量预算 250→247 |
 | `cbcdebe` | §6.5 那颗 288×15dp 的输入框：`INPUT_ROW_HEIGHT_DP` 36→48（共享档，实扫 4 个文件 / 5 处代码点：CompactInput 1、ProviderSection 2、KbEditActivity 1、ReplyInput 默认高 1），并把 `heightIn(min=48)` 挂到 `CompactInput` 与 `PanelTextInput` **各自的可编辑节点**上；基线锁同步改 48 并注明故意漂移；补 2 格尺寸断言，N1/N5 两条变异各红各的节点（不是一张网蹭另一张网） |
 | `054b789` | §6.3 第四家（四家齐）：捕获范围页判据并成 `captureScreenState`、inset 卡片与内联文字删掉、状态行改用首页同款文案；`selectableCaptureTargets` 改可空，"读不出来"不再报成"没有 App"（空表仍不许升格成失败，反向用例钉着）；**只有三格并写明 Loading 无信号**；新 16 格 + 变异 N1–N5；`AutoboxingStateCreation` 7>6 用 `mutableIntStateOf` 修（没抬预算），`PluralsCandidate` 3→2 落账 |
+| `3605edd` | 第三步-1 前半：token 整体从 `ui.theme` 搬进 `core/designsystem`（Color/Dimens/Type 整档 + `Spacing`/`LoveBrainShape` 从 Theme.kt 切出并按内容拆成 Spacing.kt/Shapes.kt；`LoveBrainTheme` 留在 ui）。波及 48 文件 / 改写 38 / 补 16 通配 / 2 处全限定引用 / 2 个同包测试搬包。闸**两把一起**收紧：测试 forbidden 加 `com.lovebrain.app.ui.`，报告脚本补上它缺的整条 core 规则；注入 core→ui 一行 import 验：脚本 6→7、JVM 三格红。顺带改掉一句假注释（「SHA 校验由 CI 层完成」，workflows 零命中）并把那格升级成方向判据。全量 1231/156 一字没动 = 没改行为的证据 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -367,7 +408,7 @@ VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 
 hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N 次才坏"的桩
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
-## 6. 坑表（编号接上一份的 1–15；16–25 CI 首跑后那批，26–31 画像格那批，32–35 回滚与只读那批，36–44 归档、状态统一与无障碍那批，45–52 四态、输入框与 lint 落账那批）
+## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -490,6 +531,18 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     `@RunWith(RobolectricTestRunner::class)` + `UiProbeApplication`，`PackageManager` 仍然用 mockk
     （Robolectric 只负责让 `Intent` 是个真的 Intent）。
     判据：报 `NullPointerException: addCategory(...) must not be null` 就是这一条，别去改被测代码。
+
+53. **仓库里 CRLF 与 LF 是混用的**：`ui/theme/Theme.kt`、`HomeComponents.kt` 是 CRLF，
+    `core/designsystem/LbAsyncState.kt` 是 LF。批量脚本按 `
+` 匹配就会**只对一半文件生效**——
+    第一版 `move_tokens.py` 就是这样：切片正则扑空前已经把三个文件 `git mv` 走了，现场只剩一半。
+    规矩：读的时候统一折成 LF、写回时按该文件原来的行尾还原（`newline=""` 保原样），
+    并且**脚本要能重复跑**（源文件已不在就只补 package 行）。崩在半路的批量搬家比不搬更糟。
+54. **"两把尺一一对应"这句话要用变异核一次**：`package_deps_report.py` 文件开头写着它的规则
+    「与 PackageDependencyTest 里那份一一对应」，实际上 `FORBIDDEN` 里**没有 core 这一条**——
+    于是 JVM 闸加了 `core 不许 import ui` 之后，脚本的 `--count` 对这条完全无感，
+    "跨层条数没长"在 CI 侧是空话。补上规则再用 T1（真注入一行 `core → ui` 的 import）核：
+    脚本 6→7、JVM 三格红，两边同时看得见才算同一套规则。**别信注释，信注入。**
 
 ## 7. 硬约束（一条没变）
 
