@@ -810,6 +810,7 @@ HEAD `0c4d6d6`，仍未推。两笔：
   （`HomeComponents` 那 1 处是状态卡 `Card` 的品牌浅底，不是按钮）。
   ⇒ :490 从此有**三个数**，各扫各的：表面色 25 / 链上有 clickable 的 19 / 换一扇门的 5。
   **任何"清单收口了"的说法都必须带上这三行**（同族错误第三次复发）。
+  ⚠ 上句的"5"是**当时的读数**，第三次量（`c202da2`）后是 **4**——照抄前先看 §0.33 与开工单 ⑬。
 - 守卫 `HomeHeroActionTest` 两格：没给隐藏图标时**整屏只有唯一主动作一颗可点**
   （"唯一"是量出来的，不是数源码标签数出来的）；320dp + 2 倍字那一档不许缩。
   ⚠ 第一版断言写成 `assertEquals("打开军师", …)`，红成 `was <[Open advisor]>`——
@@ -935,6 +936,34 @@ HEAD `0c4d6d6`，仍未推。两笔：
 - 实测：**181 套件 / 1351 例 / 0 红**；lint 68/15、进预算 67/14；产物门、跨层 6、工单、
   取消审计、prompt 零 diff、资产锁、27 格自检、androidTest 全 RC=0；三个被改文件死导入 0 条。
 
+## 0.33 又一步：Dialog 不空闲被实验定死 + 知识库页量到两颗点不中的入口（`c202da2`）
+
+- 上一格那条"挂不起来"我**没有**直接去抽组件（那是约 230 行的机械搬动，搬坏了比不搬更贵），
+  先做了一次性诊断：**裸 `Dialog` + 一颗 `OutlinedTextField`** ⇒
+  `Compose did not get idle after 1,013,194 attempts in 60 SECONDS`。
+  ⇒ **`ProviderEditDialog` 无罪**：这台仪器里"Dialog 窗口 + 文本框焦点"永不空闲。
+  三条候选解释里两条被排除（光标闪烁、那两颗条件渲染的 spinner），第三条被正面证实。
+  诊断件是红的不能留成测试，已收档 `_temp/ZzDialogTextFieldIdleProbeTest.kt.retired-2026-09-26`，
+  结论连同"别再试 `autoAdvance=false`"写进 `ProviderSectionSemanticsTest` 的注释。
+- 同一次"先挂起来"在**早就挂得上的** `KbListScreen` 上第一次逐颗量卡片，量到两颗：
+  `「甲库」改名入口 46x22dp role=无`、`「删除知识库」图标 18x18dp `**`role=Image`**。
+  ⚠ 后一条是 :532 的活教材：**`Icon` 的 `contentDescription` 会把角色带成 `Image`**，
+  读屏念的是「删除知识库，图像」——一个名词，不是一个动作。
+  **只量尺寸会放它过去**；尺寸与角色是两个独立性质。修法仍是热区与视觉分两层 + 声明角色。
+- :479 又归位一处：`KnowledgeBaseActivity:324`「新建知识库」是 Material `Button(containerColor=Primary)`，
+  先量——**达标、有角色、名字来自资源** ⇒ 又是**归所有者不是修缺陷**（与首页那颗同一结论），
+  搬进 `LbPrimaryButton` 后这一页第一次能表达禁用/进行中。
+  ⚠ 同一条 `Row` 里那颗 `OutlinedButton`「导入知识库」**故意没搬**：
+  §6.1 那张表**没有"次级动作"这一行**（表缺口，不是这处漏网），已开成 §4 一条，别当"还没搬"催。
+- 第三把尺登记跟着改小 **5 → 4 处**。⚠ 这把尺是 `<=`，**表填松不会自己报警**，
+  唯一提醒是那句 `sum == 4`；探针 K3（写回 5 必须红）就是钉它的。K1/K2/K3 各咬一次，回滚 `CLEAN`。
+- 实测：**182 套件 / 1353 例 / 0 红**；lint 68/15、进预算 67/14；产物门、跨层 6、工单、
+  取消审计、prompt 零 diff、资产锁、27 格自检、androidTest 全 RC=0；`KnowledgeBaseActivity` 死导入 0。
+- **还欠**：表单本身仍一颗没量（下一步=抽 `ProviderFormContent`，性质已从"不知道行不行"变成
+  "知道为什么"）；`KbEditActivity:474`、`KnowledgeBaseActivity:780` 那两处 Material `Button`
+  **还没量**（各自那一档没挂起来）；改名那颗现在过下限但**没有任何状态播报**，
+  `stateDescription` 整仓仍只有三处守卫。
+
 ## 1. 起手必查（照抄，别凭记忆）
 ```bash
 git fetch origin && git rev-parse --short HEAD && git rev-list --count FETCH_HEAD..HEAD
@@ -954,8 +983,8 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 #   只动 main 源文件时 testDebugUnitTest 会判 UP-TO-DATE 跳过、退出码仍然 0（见 §6 第 62 条）
 ```
 
-最近一轮实测基线（到 `692725b`）：**1351 单测 / 181 套件 / 0 失败 / 0 错误 / 0 跳过**
-（跑在变异全撤之后的树上）。上一格到 `7b6ce9c` 是 1348/180；本格 +3 格面板守卫。
+最近一轮实测基线（到 `c202da2`）：**1353 单测 / 182 套件 / 0 失败 / 0 错误 / 0 跳过**
+（跑在变异全撤之后的树上）。上一格到 `692725b` 是 1351/181；本格 +1 套件、+2 格。
 ⚠ 字面量预算这四个数**换过口径**（`7b6ce9c` 起先剥注释再数）：
 **TEXT 187 / DESC 11 / STATE 0 / COMPONENT 78**，合计 276；
 旧口径（不剥注释）下的 191/11/0/80 **别再引用**——那 3+2 条从来不是用户可见文案，
@@ -1159,25 +1188,30 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
      （卡片宽 +6dp 在 320dp 会不会挤，**没有画面证据**）。
      ⑫ 三把尺各扫各的，别再合成一个数：表面色 **25 处 / 12 文件**（棘轮登记的就是这把）、
      能按下去的自造按钮 **19 处 / 8 文件**（`_temp/scan_primary_buttons.py`）、
-     **换一扇门涂色的 Material `Button(containerColor = Primary)` 5 处 / 4 文件**
+     **换一扇门涂色的 Material `Button(containerColor = Primary)` 4 处 / 4 文件**（`c202da2` 把 `KnowledgeBaseActivity:324` 
+     归给 `LbPrimaryButton`，5→4）**
      （`_temp/scan_material_button.py`，见下面 ⑬）。
      旧账那个"17 处 / 11 文件"没有判据定义、**无法复现，别再引用**。
      ⑬ ~~**:490 的清单漏了一整族**~~ —— **清单已补、首页那颗已搬**（`4ee1514`，见 §0.29 与账本 §41）：
-     新闸 `brand tones painted through containerColor do not grow` 登记 **5 处 / 4 文件**；
+     新闸 `brand tones painted through containerColor do not grow` 登记 **4 处 / 4 文件**（`c202da2` 从 5 改小到 4；⚠ 这把尺是 `<=`，表填松不会自己报警，唯一提醒是那句 `sum == 4`）；
      `HomeComponents:227` 归 `LbPrimaryButton`。⚠ **搬家不是修缺陷**——量过它本来就
      119x48dp、有角色、有名字；真量到的缺陷是 **`LbPrimaryButton` 四态都没声明
      `Role.Button`**（"改用统一组件"自己引入的一次 :532 回归，四态各补）。
-     **剩 4 处仍未判**：`ProviderSection:495`、`KbEditActivity:474`、
-     `KnowledgeBaseActivity:324`/`:780`——每颗要先判"是不是那一页的唯一主动作"，
-     看着像不等于量过。
+     ~~**剩 4 处仍未判**~~ —— `KnowledgeBaseActivity:324`「新建知识库」**已量已搬**
+     （`c202da2`，见 §0.33 与账本 §45）：量到 118x48dp、有角色、名字来自资源 ⇒ 又是**归所有者不是修缺陷**。
+     **剩 3 处仍未判**：`ProviderSection:495`、`KbEditActivity:474`、`KnowledgeBaseActivity:780`——
+     每颗要先判"是不是那一页的唯一主动作"，看着像不等于量过；后两颗**连挂都没挂起来**。
      ⑭ ~~**`MiniSwitch` 的注释是假的**~~ —— **已量已修**（`aff3edf`，见 §0.31 与账本 §43）：
      语义树量到 `「」 role=无 48x32dp` —— **两条**缺陷（高度不达标 + 完全没有可读名字），
      修法仍是"热区与视觉分两层"+ 名字与屏幕那行字共用一条资源。
      ⚠ 测试挂的是新收的 `MiniSwitchRow` 整行，不是那颗开关本体（喂 label 给开关的测试等于自证）。
-     **新长出来的同类欠账（⑮）**：`ProviderEditDialog` 在桩 VM 下 `AppNotIdleException`
-     ⇒ 表单里其它控件（输入框、显示/隐藏 Key、模型增删、保存那颗）**一颗都没量过**；
-     结合 §0.30"设计系统五颗组件全都缺 role"，这一面屏上这些非设计系统控件**大概率同源**，
-     但目前**没有证据**——先把表单挂起来再说。`MiniSwitch` 进不进 §6.1 那张表也没定（表里没有"开关"这一行）。
+     **新长出来的同类欠账（⑮）——已被实验定死，别再试三条死路**（`c202da2`，账本 §45.1）：
+     `ProviderEditDialog` 在桩 VM 下 `AppNotIdleException`。一次性诊断给出判决：
+     **裸 `Dialog` + 一颗 `OutlinedTextField` 也永不空闲**（1,013,194 次 / 60 秒）
+     ⇒ 光标闪烁与那两颗条件渲染的 spinner 都被排除，**`ProviderEditDialog` 无罪**；
+     三条死路已实测：`autoAdvance=false`、去掉 spinner、换成 `LbDialog` 都不解决。
+     **下一步是唯一的门**：把表单内容从 Dialog 里抽成 `ProviderFormContent` 直接挂，
+     表单里那些控件（输入框、显示/隐藏 Key、模型增删、保存那颗）**仍一颗没量**。`MiniSwitch` 进不进 §6.1 那张表也没定（表里没有"开关"这一行）。
      ⑩ `systemBarsPadding` 的取值仍未决：全仓 12 个根只有 2 个加，而没有任何 Activity 做
      edge-to-edge；Robolectric 给的 insets 是 0，**本机判不了**。
      决定已经收在 `LbScreenScaffold(handlesSystemBarInsets = …)` 一个参数上，等设备/CI 定。
