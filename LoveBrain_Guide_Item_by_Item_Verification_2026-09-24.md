@@ -1542,3 +1542,108 @@ if (statusText != null) {
   出现"第三种就绪状态"时该新增还是换表，届时要判，不要顺手塞一个 `Pending`。
 - 上一格提的"字面量那把尺看不见自定义组件参数位"仍没动（`HomeSettingRow(title = "模型供应商",
   trailingText = "管理")` 这类，约 70 条粗测）。
+
+---
+
+# 追加十五：§6.2 首页四段的第一条自动守卫（改名字之前先有网）
+
+## 25.1 指导书那段话，与"今天由谁在看着"
+
+§6.2 原文是把首页**固定为四段**：
+
+1. 顶部：LoveBrain + 一句价值说明；右侧 About。
+2. 军师状态主卡：状态 badge、简短说明、**唯一主按钮**；隐藏图标**只在可隐藏时**出现于**右上角**。
+3. 快捷功能：知识库、反馈案例使用相同 `LbActionCard`；未来新增功能仍走同组件。
+4. 设置与使用概览：模型供应商、消息捕获放 `LbSettingRow`；统计放**三等分** `LbMetricGrid`。
+
+外加一句负向的：「不要把 Provider 编辑器、反馈案例列表、捕获 App 清单展开在首页；点击统一进入独立 screen」。
+
+这五件事**此前一句都没有守卫**：`HomeNavigationTest` 只管目的地枚举与保存/恢复，
+`ProductionUiContractTest` 只管几颗按钮的尺寸。也就是说四段顺序被人挪了、
+主卡里多塞一颗"次主按钮"、统计从三等分变成两等分——**没有一条用例会红**。
+这一格补的就是这条。
+
+## 25.2 判据的取法：tag 定位 + 坐标判位置
+
+- **锚点用 tag，不用中文**：`LbHomeTags`（SECTION / ABOUT / STATUS_CARD / PRIMARY_BUTTON /
+  HIDE_BUTTON / ACTION_CARD / SETTING_ROW / METRIC_CELL）。理由是本仓库写过的"文字会变，tag 不会"——
+  拿中文当锚点，改一句文案就把**结构**守卫弄红，而结构其实没动。
+  这些锚点同时是将来截图基线（§6.5）要用的定位点，不是只为测试临时造的。
+- **"右上角"与"三等分"只能用坐标判**：隐藏那颗的 `left` 要落在卡片右边界 80dp 之内、
+  `top` 要在卡片顶部 60dp 之内；三格 metric 的宽度极差要 < 1.5dp。
+  这两句在指导书里是形容词，在这里必须是数——不然"三等分"三个字可以靠 `SpaceEvenly` + 随便什么权重糊过去。
+- **负向那句用角色判**：首页上 `Role.Checkbox` 节点数必须为 0（那是捕获清单的标志），
+  带 `SetTextAction` 的节点数必须为 0（那是 Provider 编辑器/反馈列表展开时的标志）。
+  配一条"整棵树节点数 > 20"的反空跑断言——**没这条，两个 0 可能只是挂载失败**。
+
+## 25.3 两个"看不见的前提"变成声明的参数
+
+四段的判据里藏着两个输入：`Settings.canDrawOverlays(context)` 和进程内单例
+`FloatingService.instance != null`。要证明第 2 段那句"**只在**可隐藏时"，就必须能把
+权限 × 服务 × 窗口状态摆出来——挂在私有实现上就摆不出来。
+
+于是 `HomeScreen` 多两个**默认值就是原行为**的参数：
+
+```kotlin
+overlayGrantedOverride: Boolean? = null,   // 默认仍读 Settings.canDrawOverlays(context)
+serviceRunningOverride: Boolean? = null    // 默认仍读 FloatingService.instance != null
+```
+
+生产调用方一字不改。这不算"为测试改结构"：这两个值本来就是四段结构的**前提**，
+只是过去藏在函数体里，谁都不知道少了它们也能画出错页面。
+
+## 25.4 这格踩到的两把语义树细节
+
+- **同一个 LayoutNode 上会有两个带同一 tag 的节点**：`Modifier.clickable(…)`（合并语义）
+  与 `Modifier.testTag(…)`（不合并）各自成为一个语义节点，未合并树里两个都带那个 tag。
+  第一版 `tagCount` 因此数出 2 颗 About。改成**按 layoutNode 去重**，
+  并把 `top()` / `topLevel()` 从"取第一个"改成"取最外那个"——顺序依赖父链，是个隐藏地雷。
+- **分区个数按不同 top 坐标数**，不按节点个数：同上原因；"有几个分区标题"本来就是位置事实。
+
+## 25.5 五格用例逐条对到 §6.2
+
+| 用例 | 钉的是哪一句 |
+|---|---|
+| `the four segments sit in the order the guide fixes` | ①顶部在最上、②主卡在其下、③④两个分区标题与统计的上下次序；3 个分区 |
+| `the status card holds exactly one primary button and a conditional hide entry` | ②「唯一主按钮」+「隐藏图标只在可隐藏时出现于右上角」——四个组合（权限×服务×窗口）逐一摆，含"已隐藏时不该再有隐藏入口" |
+| `quick actions are two of the same card and both are actionable` | ③「知识库、反馈案例使用相同组件」：同 tag 2 张、都整卡可点 |
+| `settings hold two rows and the metrics split the row into three equal cells` | ④两行设置 + 统计**三等分**（宽度极差 <1.5dp） |
+| `nothing that belongs to a sub-screen is expanded on home` | 负向那句：无 Checkbox、无编辑框，并有反空跑断言 |
+
+## 25.6 变异：五发改生产代码，每发只红该红的那格
+
+| 变异（改的是生产代码） | 红了谁 |
+|---|---|
+| H1 三格 metric 中 one 的 `weight(1f)` → `2f` | `settings hold two rows and the metrics split…` |
+| H2 状态卡里再塞一颗同 tag 的主按钮 | `the status card holds exactly one primary button…` |
+| H3 首页放一个 `Checkbox` | `nothing that belongs to a sub-screen is expanded on home` |
+| H4 `canHide` 放宽成 `isServiceRunning`（已隐藏时也画隐藏入口） | `the status card holds exactly one primary button…` |
+| H5 隐藏图标 `TopEnd` → `TopStart` | `the status card holds exactly one primary button…` |
+
+**H2 / H4 / H5 都落在第 ② 条用例上，所以三发必须分开跑**——一起跑就只能知道"②红了"，
+不知道是哪一种坏法。分开发跑后各自 `tests completed, 1 failed`，可归因。
+每发变异都由脚本断言"目标片段恰好命中一次"才落刀，跑完立刻回滚并复跑全量。
+
+## 25.7 实测
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | `GRADLE_RC=0`：**1252 tests / 160 套件 / 0 失败 / 0 错误 / 0 跳过**（起点 12:30:55，跑在**变异全撤之后**的最终树上） |
+| 与上一格对账 | 1247 → 1252 = **+5**，159 → 160 套 = **+1** ⇒ 两处增量互相咬得上 |
+| lint | 报告重生成（12:37:17）实测 **69 / 15**、进预算 **68 / 14**、advisory 1，rc=0（连续四格同一组数） |
+| 其它闸 | 跨层 **6** 条；工单编号 rc=0；prompt 资产 lock rc=0；判据自测 27 格 rc=0；`:app:assembleAndroidTest` rc=0 |
+| 结构 | 首页四段第一次有自动守卫 ⇒ 下一格做 §6.1 的改名/搬包时才有回归网（这正是把它排在守卫之后的原因） |
+
+## 25.8 这格没做的
+
+- **§6.1 表里的改名与搬包仍没动**：`HomeTopBar` / `HomeSectionHeader` / `HomeActionCard` /
+  `HomeSettingRow` / `UsageSummary`+`UsageMetric` 还在 `ui/home`，名字不按表。
+  守卫已经就位，这一格是故意排在守卫之后。
+- §6.2 那句「**未来**新增功能仍走同组件」还是没有闸：现在能证明"今天正好两张卡"，
+  不能证明"第三张必须用同一颗"。要闸得住"新增"，得等名字按表齐了再扫 `Lb*` 调用数——
+  或者扫"首页里 tag=ACTION_CARD 之外的可点卡片"。这条我没做，别以为守卫管住了它。
+- `HomeTopBar` 里 `contentDescription = "关于"` 与 `"暂时隐藏浮窗"` **仍是硬编码中文**
+  （在 `DESC = 12` 那笔预算里），英文环境下读屏会念中文；本轮只加锚点没动文案。
+- 截图基线（§6.5）仍未接；这格把定位点备齐了而已。
+- `Settings.canDrawOverlays` 与 `FloatingService.instance` 这两个前提在生产上仍是从环境/单例读，
+  我只加了 override，没有把它们提到 VM 里——"UI 不读进程单例"这件事归第二/三步的账。

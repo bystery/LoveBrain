@@ -261,9 +261,37 @@ HEAD `0c4d6d6`，仍未推。两笔：
   它 6x6dp 实际尺寸。**没有**为了"合并树查得到"给它加 contentDescription（那是让 TalkBack 多念一句）。
 - 变异只跑了两发、也只记两发：T6 退回旧组件体 → 3 格红；T7 热区改回 32 → 那把整屏尺当场红。
   （本轮中途我差点把**没执行过**的探针结果写进结论，发现后按实际输出重记——见账本 §24.5 末句。）
-- 还欠着：`HomeSettingRow` 等五颗的**改名 + 搬进 core**（语义修对了，名字/位置还不按表）；
-  **§6.2 首页四段到今天仍然没有任何自动守卫**（要靠挂整页 HomeScreen + 造 4 个 StateFlow +
-  动 `FloatingService.instance` 静态，是件独立事，别顺手做半套）。
+- 还欠着：`HomeSettingRow` 等五颗的**改名 + 搬进 core**（语义修对了，名字/位置还不按表）。
+  当时另写了一句"§6.2 首页四段到今天仍然没有任何自动守卫"——**下一格就把这条补上了**（§0.13），
+  并且是先补守卫再动改名：改名会大量移动节点与文件，没有四段守卫，"页面还是那个页面"没人能证明。
+
+## 0.13 又一步：§6.2 首页四段第一次有自动守卫（`11e121f`）
+
+- 指导书把首页**固定成四段**（顶部 / 军师状态主卡 / 快捷功能同颗卡片 / 设置与使用概览三等分），
+  外加一句负向的「不要把 Provider 编辑器、反馈案例列表、捕获 App 清单展开在首页」。
+  **这五件事此前一句都没有守卫**：`HomeNavigationTest` 只管目的地枚举与保存恢复，
+  `ProductionUiContractTest` 只管几颗按钮的尺寸 ⇒ 四段被挪走、主卡多一颗"次主按钮"、
+  统计变成两等分，都不会有格红。
+- 判据取法：**tag 定位 + 坐标判位置**。锚点放进 `LbHomeTags`
+  （SECTION / ABOUT / STATUS_CARD / PRIMARY_BUTTON / HIDE_BUTTON / ACTION_CARD / SETTING_ROW /
+  METRIC_CELL）——"右上角"与"三等分"是形容词，只能用 `boundsInRoot` 判（隐藏那颗要落在卡片右边界
+  80dp 内、顶部 60dp 内；三格 metric 宽度极差 <1.5dp）。负向那句用**角色**判
+  （首页 `Role.Checkbox` 数 0、带 `SetTextAction` 的数 0），并配一条"整棵树 >20 个节点"的
+  反空跑断言——**没这条，两个 0 可能只是挂载失败**。
+- `HomeScreen` 多两个**默认值就是原行为**的参数（`overlayGrantedOverride` / `serviceRunningOverride`）：
+  四段判据里原本藏着两个看不见的前提（系统权限 + 进程内单例 `FloatingService.instance`），
+  不摆出来就没法证明第 2 段那句"**只在**可隐藏时"。生产调用方一字未改。
+- **两把语义树细节**（坑表 59）：同一个 `LayoutNode` 上 `clickable`（合并语义）与 `testTag`
+  （不合并）会各成一个语义节点 ⇒ 未合并树里同一 tag 命中 2 次，第一版因此数出 2 颗 About；
+  改成按 `layoutNode` 去重，并把"取第一个"换成"取最外层那个"（顺序依赖父链是隐藏地雷）。
+- 变异五发改**生产代码**：H1 破坏三等分 / H2 第二颗主按钮 / H3 首页塞 Checkbox /
+  H4 `canHide` 放宽 / H5 隐藏图标挪到左上。**H2/H4/H5 都落在第 ② 条用例上，所以必须分开跑**
+  （一起跑只知道"②红了"，不知道是哪种坏法）——这条方法写进坑表 60。
+- **为什么先做守卫再改名**：§6.1 那 5 行改名/搬包会大量移动节点与文件；
+  没有四段守卫，改完"页面还是那个页面"这句话没人能证明。现在这句话有 5 格用例撑着。
+- 仍然没做的两条要紧的：① §6.2 那句「**未来**新增功能仍走同组件」还是没闸
+  （现在只证明"今天正好两张卡"）；② `HomeTopBar` 的 `contentDescription = "关于"` 与
+  `"暂时隐藏浮窗"`**仍是硬编码中文**（在 `DESC = 12` 那笔里），英文环境读屏会念中文。
 
 ## 1. 起手必查（照抄，别凭记忆）
 
@@ -283,15 +311,14 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
 ```
 
-最近一轮实测基线（到 `634a9f0`）：**1247 单测 / 159 套件 / 0 失败 / 0 错误 / 0 跳过**
-（起点 11:56:13，无陈旧 XML）。与上一格对账：1243 → 1247 = +4，158 → 159 套 = +1 ⇒ 两处增量互相咬得上。
-死 import 清理后另跑了一次 `--tests "…ui.home.*" --tests "…ProductionUiContractTest"` rc=0。
-lint 报告**重新生成后**（12:02:45）实测 **69 / 15**、进预算 **68 / 14**、advisory 1（连续三格同一组数）。
+最近一轮实测基线（到 `11e121f`）：**1252 单测 / 160 套件 / 0 失败 / 0 错误 / 0 跳过**
+（起点 12:30:55，跑在变异全撤之后的树上）。与上一格对账：1247 → 1252 = +5，159 → 160 套 = +1。
+lint 报告**重新生成后**（12:37:17）实测 **69 / 15**、进预算 **68 / 14**、advisory 1（连续四格同一组数）。
 跨层 **6** 条；工单编号 rc=0；prompt 资产 lock rc=0 且 `git diff --exit-code 286c9406..HEAD -- assets/engine` rc=0；
 判据自测 27 格 rc=0；`:app:assembleAndroidTest` rc=0。
 **目录现状**：`core/designsystem/` = Color / Dimens / Type / Spacing / Shapes / ScreenState /
-LbAsyncState / LbStatusBadge / **LbRowState**；`ui/theme/` 只剩 `Theme.kt`。
-`HomeScreen.kt` 216 → 217 行（换两个调用点、删两个死 import），`HomeComponents.kt` 494 → 519 行（状态槽拆开 + 记账注释）。
+LbAsyncState / LbStatusBadge / LbRowState；`ui/theme/` 只剩 `Theme.kt`。
+`HomeComponents.kt` 494 → 519 → 537 行（状态槽拆开、`LbHomeTags` 八个锚点）；`HomeScreen.kt` 216 → 217 → 226 行（两个调用点、删死 import，再加两个默认值即原行为的 override 参数）。
 VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件计数：>500 行 17 个、>800 行 10 个**。
 
 ## 2. 被证伪的判断（逐条累加，别再当依据；条数以此表实际行数为准）
@@ -459,6 +486,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 | `3605edd` | 第三步-1 前半：token 整体从 `ui.theme` 搬进 `core/designsystem`（Color/Dimens/Type 整档 + `Spacing`/`LoveBrainShape` 从 Theme.kt 切出并按内容拆成 Spacing.kt/Shapes.kt；`LoveBrainTheme` 留在 ui）。波及 48 文件 / 改写 38 / 补 16 通配 / 2 处全限定引用 / 2 个同包测试搬包。闸**两把一起**收紧：测试 forbidden 加 `com.lovebrain.app.ui.`，报告脚本补上它缺的整条 core 规则；注入 core→ui 一行 import 验：脚本 6→7、JVM 三格红。顺带改掉一句假注释（「SHA 校验由 CI 层完成」，workflows 零命中）并把那格升级成方向判据。全量 1231/156 一字没动 = 没改行为的证据 |
 | `6b92617` | §6.1 `LbStatusBadge` 落地：`LbStatus`（labelRes + color 同源一张表）+ 组件带 `contentDescription`/`liveRegion=Polite`；首页五个平行 `when`（文案/颜色/说明/按钮/动作）并成 `advisorStatus` 一份不可变快照，卡片签名从 4 个参数收成 1 个。**两处是修不是搬**：服务活着但窗口从未出现（`wm.addView` 抛 + `stopSelf()` 异步）旧代码说"运行中"；实例已空而状态仍 TEMP_HIDDEN 时旧代码给一颗 `restoreFromTempHidden()` 第一行就 return 的**死按钮**。偏离表名两处：加第五档 `NoPermission`、`Error` 那档因同包颜色撞名改叫 `WindowMissing`。12 格新用例 + 变异 T1–T5；**T1 照出性质格自己的边界**（Hidden 只有一组输入走到 ⇒ 那条性质格对它无从比较），限制写进 KDoc |
 | `634a9f0` | §6.1 的 `LbSettingRow` 语义修对：状态槽以前**只画点、不画词**（`statusText` 的值从来没被渲染，捕获行的「开/关」解析完就丢；供应商行用 `""` 表示"只要一颗点"）。拆成 `dot: LbRowState?` + `statusText: String?`，颜色进新的小表 `LbRowState`（Ready/NotReady）；**没复用 `LbStatus`**（军师词汇表，借用会让读屏对配置行念"运行中"）。顺手把尾部「管理」的 clickable 32→48dp（§6.5 :531）。4 格语义树用例 + 变异 T6/T7。**旧闸为什么绿**：`home trailing text action meets the touch floor` grep 的是另一个组件的常量；`dead parameters…` 是两个名字的黑名单 |
+| `11e121f` | §6.2 首页四段的第一条自动守卫：5 格语义树用例逐条对到那五句话（四段顺序 / 唯一主按钮 + 只在可隐藏时 + 右上角坐标 / 两张同颗快捷卡 / 两行设置 + 三等分宽度 / 子屏幕的东西没摊在首页，含反空跑断言）；`LbHomeTags` 八个锚点（同时是将来截图基线的定位点）；`HomeScreen` 加两个默认值即原行为的 override 参数（系统权限与进程内单例原本是藏在判据里的前提）；变异 H1–H5 各红该红那格，H2/H4/H5 同落第②条故分三跑 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -470,7 +498,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N 次才坏"的桩
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
-## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了）
+## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -626,6 +654,15 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     以及"死参数黑名单"三把尺**全都看不见**。这类只能靠**语义树断言"那个词在不在屏上"**抓到
     （`onNodeWithText(...)` / 未合并树查装饰节点）。推论：以后要证明"某条文案真的会显示给用户"，
     别用"资源被引用了"当证据，那是本轮这个 bug 活了三格的直接原因。
+
+59. **未合并语义树里，一个 LayoutNode 能带同一个 tag 两次**：`Modifier.clickable(…)`（合并语义）与
+    `Modifier.testTag(…)`（不合并）各成一个语义节点，所以第一版 `onAllNodesWithTag(ABOUT, true)`
+    数出 2 颗 About。规矩：数之前**按 `layoutNode` 去重**；要"那一颗"就用合并树的
+    `onNodeWithTag(tag)`；只有装饰子节点（6dp 状态点那种被父行合并掉的）才必须走未合并树。
+    顺带一条：别拿 `fetchSemanticsNodes().first()` 当"那一个节点"——顺序依赖父链，改成取最外层那个。
+60. **变异要按"会撞哪一格"分组跑**：H2（第二颗主按钮）、H4（`canHide` 放宽）、H5（隐藏图标挪到左上）
+    都只红在第 ② 条用例上，一起跑就只能得到"②红了"，说不出是哪种坏法。分三跑后各自
+    `tests completed, 1 failed`，归因才成立。同一文件里的两处变异同理（M1 与 M3 那次是撞在同一个函数上）。
 
 ## 7. 硬约束（一条没变）
 
