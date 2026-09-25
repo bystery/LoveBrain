@@ -2064,6 +2064,8 @@ ProviderSection 那颗自造 `Dialog(`（供应商编辑器）**没**并进来�
 ## 28.8 这格没做的
 
 - §6.1 这一行**只做了一半**：Dialog 半边收口，**`LbModalSheet` 半边没有**。
+  **→ Sheet 半边已还：见 §29（提交 `cccabb0`）**。但那句「不把展开内容直接插在原页面下方」
+  仍然没闸——那一格只换了形状的所有者，没换状态的所有者。
   表里那句还有后半段"不把展开内容直接插在原页面下方"——那说的是面板里
   `DislikeReasonPanel`、`CorrectionCenter`、`RecordSentDialog` 这类"插在原页面下方"的展开内容，
   归 §6.4（`ResultArea` 拆分 + state holder + modal host），这格一处都没动。
@@ -2075,3 +2077,105 @@ ProviderSection 那颗自造 `Dialog(`（供应商编辑器）**没**并进来�
 - 截图基线（§6.5）照旧故意没接。这格之后接基线会看到的可见变化：对话框标题统一成 `titleLarge`
   （导出预览、导出失败、操作失败那三屏的标题变大）、按钮统一 SemiBold + 48dp 热区、
   复制那颗不再按状态换字重（文案仍换）。
+
+---
+
+# 追加十九：§6.1 Sheet 半边归 core，浮层里三条量出来的无障碍缺陷（提交 `cccabb0`）
+
+## 29.1 那一行的后半句与仓库当时的形状
+
+指导书 :487：
+
+> | `LbModalSheet/Dialog` | 需要用户决策的浮层；不把展开内容直接插在原页面下方 |
+
+上一格（§28）收了 `Dialog` 半边。这一格收 `Sheet` 半边：面板与气泡里的浮层原先是
+`ui/panel/PanelModalHost.kt`（141 行，三颗公开组件 `PanelModalHost` / `PanelModalTitle` /
+`PanelModalActions`），三处调用点（`ResultArea` 的时长子菜单与"标记为错误"、`SuggestPanel` 的目标编辑）。
+
+**为什么这里必须是第二种形状，而不是复用 `LbDialog`**：面板跑在
+`TYPE_ACCESSIBILITY_OVERLAY` 窗口里，没有合适的 activity token，Material 的 `AlertDialog`
+（内部起一棵 Dialog 窗口）会抛 `WindowManager.BadTokenException`。所以这一套是**同一棵
+ComposeView 里自画**的遮罩 + 居中卡片。这是平台约束，不是"又有人想自造一套"——
+这句话写进 KDoc，免得下一个窗口把它当成违规收掉。两种形状**共用同一份动作词表**
+（`LbDialogAction` / `LbDialogActionTone`），所以"同一颗取消"在对话框和浮层里至少同一个说法、同一种着色。
+
+## 29.2 先量后写：旧形状的四个可交互节点，两个没名字、两个不够大
+
+`SheetProbeTest` 在改之前量到的（原文照抄）：
+
+```
+PROBE 面板弹层可交互节点：
+   「」 role=无 selected=null state=null 尺寸 360x1000dp @(0,0)
+   「PROBE_SHEET_TITLE」 role=无 selected=null state=null 尺寸 331x84dp @(15,458)
+   「取消」 role=无 selected=null state=null disabled 尺寸 48x26dp @(262,504)
+   「」 role=无 selected=null state=null disabled 尺寸 24x22dp @(310,506)
+PROBE 没有可读名字的节点数 = 2；高度小于 48dp 的 = 2 / 4
+```
+
+三条缺陷，各自对应 §6.5 的一句话：
+
+| 缺陷 | 违反 | 旧形状为什么长这样 | 现在 |
+|---|---|---|---|
+| ① 动作 26dp / 22dp 高 | :531 所有可点击节点 ≥48×48dp | 按钮是裸 `Text` + `padding(vertical = Spacing.sm)` | `heightIn(min = LB_SHEET_ACTION_MIN_DP.dp)`，且内边距排在 `clickable` **之后** |
+| ② `confirmLabel = ""` 画出一颗 24x22 的**无名**可点节点 | :531 "可交互节点要有可读名字" | 时长子菜单没有主动作，调用方就用空串表达"这里没有" | 标签为空的动**不入树**；"没有主动作"就是不画那颗节点 |
+| ③ 遮罩（360x1000）与卡片（331x84，还把标题合并进去当成自己的标签）各是一颗 clickable 节点 | 同上 + 读屏多念两口没名字的按钮 | "点空白关闭"和"点内容不关闭"都用了 `clickable`，后者还写了一个空的 onClick | 两处改用 `pointerInput { detectTapGestures }`：手势照拦，不再对外声明"我是按钮" |
+
+顺带并掉一处**同一个规则的两重表达**：`SuggestPanel` 那颗"保存"原先同时写
+`confirmEnabled = !overLimit` 和 `onConfirm = { if (!overLimit) … }`——两处判同一个条件，
+改一处忘另一处就会"灰着却能点"。现在只有 `LbDialogAction.enabled` 一处。
+
+## 29.3 守卫与探针
+
+`LbModalSheetTest` 5 格（全部读 `boundsInRoot` 与语义属性，不看源码里的数字）：
+每颗出口 48dp 且**这个形状里就只有那两颗出口**、遮罩与卡片不许冒充按钮（宽度 >320dp 的可交互节点必须为 0）、
+空标签的动不入树、禁用那颗"灰着还在 + 带 Disabled 语义 + 仍有 48dp"、标题与正文各恰好一个节点。
+
+| 探针 | 改了什么 | 红了谁 |
+|---|---|---|
+| S1 | 摘掉动作的 `heightIn` | 下限格 + 禁用格（`expected:<48.0> but was:<22.0>`） |
+| S2 | 不再过滤空标签 | 报出多出来的 `24x48`、`33x48` 两颗无名节点 |
+| S3 | 遮罩换回 `clickable` | "不许冒充按钮"红：`「SHEET_TITLE_SENTINEL」…360x1000dp` |
+| S4 | 卡片拦截换回 `clickable` | 同一格、红在另一颗节点：`331x106dp`——正是旧形状把标题念成按钮的真实形状 |
+| S5 | 摘掉 `enabled` 透传 | 禁用语义格红 |
+| S6 | `ui/home` 里复活 `PanelModalTitle` | 归属棘轮点名（登记 11 对之后仍然咬） |
+
+S3 与 S4 落进同一格用例但**是两颗不同节点**，所以分开跑——这是坑表 60 那条口径的又一次应用
+（一起跑只知道"那格红了"，说不出是哪种坏法）。
+
+## 29.4 字面量：+7 条全是从"默认实参"和"非 Lb 锚点"里露出来的既有文案
+
+TEXT 不动（209），COMPONENT 59 → **66**。这 7 条逐个对得上：
+「暂停时长」「标记为错误」「确认」「保存」「取消」×3——它们原先写在
+`PanelModalTitle("…")` 与 `PanelModalActions(confirmLabel = "…")` 这类**非 `Lb` 锚点**的实参里，
+三把尺一条都看不见；其中「取消」更藏在前身组件的**默认实参** `dismissLabel: String = "取消"` 里
+（新坑 66：默认实参里的用户可见文案，比调用点写的更难被锚点看见）。
+⇒ 涨的是量具新看见的既有债，不是这一格新塞的字。
+
+## 29.5 实测
+
+| 项 | 结果 |
+|---|---|
+| `:app:compileDebugKotlin` / `UnitTestKotlin` / `compileDebugAndroidTestKotlin` | RC=0 / RC=0 / RC=0 |
+| `:app:testDebugUnitTest` 全量 | **166 套件 / 1274 例 / 0 红 / 0 跳过**（上一格 164/1268，+2 套 = `LbModalSheetTest`、`SheetProbeTest`） |
+| 受影响范围（`core.designsystem.*` + `ui.panel.*` + 归属棘轮） | 125 例 / 0 红——其中面板那批测试一字未改仍然绿，是"换所有者没换行为"的主要证据 |
+| lint | RC=0；`measured 68 / rules 15`、入预算 `67 / 14`、advisory 1（收了三处浮层 + 退役一个 141 行文件，条数一字未动） |
+| 预算四栏 | TEXT 209 / DESC 12 / STATE 0 / COMPONENT 66，与常量零差 |
+| 其它闸 | 预算自测、工单编号、资源锁、跨层依赖 **6** 笔（同一批文件）、androidTest 编译全 RC=0 |
+| 探针核账 | S1-S6 撤回后 `LbModalSheet.kt`、`HomeComponents.kt` 与 `_temp/mut74-backup/` 逐字节 IDENTICAL |
+
+## 29.6 这格没做的
+
+- §6.1 表 11 行现在**都有主人了**，但 `LbModalSheet/Dialog` 那行的**后半句仍然没闸**：
+  「不把展开内容直接插在原页面下方」。`ResultArea` 里的 `MemoryRefItem` 仍然**自己持有**浮层状态
+  （`menuOpen` / `showMuteSubmenu` / `showWrongDialog` / `wrongText` 全是它内部 `remember` 的），
+  这属于 §6.4 那条"ResultArea 只负责结果内容…拆成独立 state holder + modal host"——
+  这一格只换了**形状的所有者**，没动**状态的所有者**。别把两件事混着报。
+- 面板里剩下的浮层（`DislikeReasonPanel`、`CorrectionCenter`、`RecordSentDialog`）
+  仍不是 `LbModalSheet`：`CorrectionCenter` 与 `RecordSentDialog` 各挂自己的遮罩与卡片
+  （§29.7 未列全，因为这一格没去数它们的语义树）。要并进来是 §6.4 那一格的事。
+- 遮罩的**可达性**这格只做了"不冒充按钮"，没做"读屏知道点空白可以关闭"。
+  真要补，应该是给遮罩加 `contentDescription` 走资源（中英两份），而不是把它改回 clickable。
+- `SHEET_MAX_HEIGHT_DP = 560` 这条尺寸约束仍是**写死在组件里**的旧值，没量过它在不遮挡输入时
+  是否成立（面板高度会变），要动它得配合 §6.5 的截图基线一起做。
+- 设备侧仍未跑（本机无 system image）。`PanelModal*` 那三颗的名字在 androidTest 里没有引用，
+  所以改名不伤设备用例；但"overlay 窗口里点得到点不到"这句话还是要 CI 才算数。

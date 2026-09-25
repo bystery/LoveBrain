@@ -381,6 +381,33 @@ HEAD `0c4d6d6`，仍未推。两笔：
 - 实测：164 套件 / **1268 例** / 0 红；lint 68/15（条数一字未动）、各闸 RC=0、跨层 6 笔；
   七发探针 N1-N7 各咬各的，撤回后四个文件与备份逐字节 IDENTICAL。
 
+## 0.17 又一步：§6.1 Sheet 半边归 core，修掉浮层里三条量出来的无障碍缺陷（`cccabb0`）
+
+- 那行表 (:487) 的后半收了：面板/气泡的自画浮层 `ui/panel/PanelModalHost`（141 行、三颗公开组件）
+  归 `core/designsystem/LbModalSheet.kt`（`LbModalSheet` / `LbModalSheetTitle` / `LbModalSheetActions`），
+  三处调用点跟进。**为什么必须是第二种形状**：面板在 `TYPE_ACCESSIBILITY_OVERLAY` 窗口里，
+  Material `AlertDialog` 会抛 `BadTokenException` ⇒ 这是平台约束不是自造；两种形状共用同一份
+  动作词表（`LbDialogAction`/Tone），"同一颗取消"至少在两个世界里同一个说法、同一种着色。
+- 改之前先用 `SheetProbeTest` 量到旧形状的四个可交互节点：
+  `360x1000 无名字`、`331x84 把标题念成按钮`、`「取消」48x26`、`「」24x22` ⇒
+  **2 个没可读名字、2 个低于 48dp**（§6.5 :531 两条）。三条各自修掉：
+  ① 动作 `heightIn(min = 48)` 且内边距排在 `clickable` 之后；
+  ② `confirmLabel = ""` 那种"用空串表达这里没有主动作"不再入树（旧形状会画出一颗 24x22 的无名按钮）；
+  ③ 遮罩与卡片拦截改用 `pointerInput + detectTapGestures`，不再对外声明"我是一颗按钮"。
+- 顺手并掉一处**同一规则两重表达**：`SuggestPanel` 那颗"保存"原先 `confirmEnabled = !overLimit`
+  与 `onConfirm = { if (!overLimit) … }` 各判一次，现在只剩 `enabled` 一处。
+- 新守卫 `LbModalSheetTest` 5 格全读 `boundsInRoot`；探针 S1-S6 各咬各的，
+  S3/S4 落同一格但**是两颗不同节点**，所以分开跑（坑表 60 口径）。
+- 字面量 TEXT 不动、COMPONENT 59 → **66**：那 7 条（「暂停时长」「标记为错误」「取消」×3「确认」「保存」）
+  原先躲在非 `Lb` 锚点的实参里，其中「取消」还是旧组件的**默认实参** ⇒ 新坑 66：
+  默认实参里的用户可见文案比调用点写的更难被锚点看见。
+- ⚠ **别把两件事混着报**：这一格换的是**形状的所有者**，没换**状态的所有者**。
+  `ResultArea` 里 `MemoryRefItem` 仍自己 `remember` 着 `menuOpen/showMuteSubmenu/showWrongDialog/wrongText`，
+  表里那句「不把展开内容直接插在原页面下方」**仍然没闸**——那是 §6.4 的活（state holder + modal host），
+  连同 `CorrectionCenter`/`RecordSentDialog`/`DislikeReasonPanel` 一起，下一格做。
+- 实测：166 套件 / **1274 例** / 0 红；受影响范围 125 例（含 `ui.panel.*` 那批一字未改）全绿；
+  lint 68/15 一字未动；预算四栏 209/12/0/66 零差；工单、资源锁、自测、跨层 6 笔、androidTest 全 RC=0。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -401,8 +428,8 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 #   只动 main 源文件时 testDebugUnitTest 会判 UP-TO-DATE 跳过、退出码仍然 0（见 §6 第 62 条）
 ```
 
-最近一轮实测基线（到 `38520b0`）：**1268 单测 / 164 套件 / 0 失败 / 0 错误 / 0 跳过**
-（跑在变异全撤之后的树上）。与上一格对账：1260 → 1268 = +8，162 → 164 套 = +2（`LbDialogTest`、`DialogProbeTest`）。
+最近一轮实测基线（到 `cccabb0`）：**1274 单测 / 166 套件 / 0 失败 / 0 错误 / 0 跳过**
+（跑在变异全撤之后的树上）。与上一格对账：1268 → 1274 = +6，164 → 166 套 = +2（`LbModalSheetTest`、`SheetProbeTest`）。
 lint 报告**重新生成后**实测 **68 / 15**、进预算 **67 / 14**、advisory 1（这一格收了 11 处浮层，条数一字未动）。
 比上一格少的这 1 条是 `AutoboxingStateCreation` 6→5（退役按钮里那个 `mutableStateOf(0)` 计时器，
 新代码写 `mutableIntStateOf`），逐条核过剩余 5 条位置都不在退役文件里才 `--rewrite`
@@ -414,9 +441,11 @@ LbAsyncState / LbStatusBadge / LbRowState **+ 这格新到的 LbTopBar / LbSecti
 LbSettingRow / LbMetricGrid / LbTags / PressScale**；`ui/theme/` 只剩 `Theme.kt`。
 `HomeComponents.kt` 494 → 519 → 545 → **249** 行（§6.1 搬家；剩 HomeDestination / LbHomeTags /
 HomeAboutEntry / AssistantStatusCard）；`ui/panel/reply/GenerationActionButton.kt`（196 行）已退役进
-`_temp/GenerationActionButton.kt.retired-2026-09-25`，主动作改由 `core/designsystem/LbPrimaryButton.kt` 承担；`HomeScreen.kt` 216 → 217 → 226 行（两个调用点、删死 import，
+`_temp/GenerationActionButton.kt.retired-2026-09-25`，主动作改由 `core/designsystem/LbPrimaryButton.kt` 承担；
+`ui/panel/PanelModalHost.kt`（141 行）同样退役进 `_temp/PanelModalHost.kt.retired-2026-09-25`，
+浮层形状改由 `core/designsystem/LbModalSheet.kt` + `LbDialog.kt` 两家承担（对话框 / overlay 自画浮层各一家，共用同一份动作词表）。`HomeScreen.kt` 216 → 217 → 226 行（两个调用点、删死 import，
 再加两个默认值即原行为的 override 参数）。
-**字面量预算四栏**：TEXT 209 / DESC 12 / STATE 0 / COMPONENT 59（`38520b0` 两栏一起动过，逐条核账与 +6 的来源见账本 §28.5；COMPONENT 已改成按区间去重，见同节末）。
+**字面量预算四栏**：TEXT 209 / DESC 12 / STATE 0 / COMPONENT 66（`38520b0` 两栏一起动过，逐条核账见 §28.5；`cccabb0` 又 +7 且 TEXT 不动，来源见 §29.4 与新坑 66；COMPONENT 已改成按区间去重）。
 VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件计数：>500 行 17 个、>800 行 10 个**。
 
 ## 2. 被证伪的判断（逐条累加，别再当依据；条数以此表实际行数为准）
@@ -495,14 +524,18 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
    全在 `core/designsystem/`。钉住它的是 `UiLayerDependencyContractTest` 新那格：
    旧名字全仓声明数 0 / 新名字全仓恰 1 / 那 1 处在 core 子树里（P1-P4 四发各咬一条，见账本 §26.5）。
    `LbRowState` 与 `LbStatus` 仍然没并（两张表各守一域，并了读屏会对着供应商行念「运行中」）。
-   **表里只剩 1 行没主人**（`LbDialog` 半边已于 `38520b0` 收口，见 §0.16 与账本 §28：
-   生产 11 处 `AlertDialog` 全走组件，且量出并修掉"对话框里的按钮只有 40dp"这条缺陷）：
-   - **还欠 `LbScreenScaffold`**（页面背景 / 安全区 / 统一水平边距），以及 `LbModalSheet`
-     **那一半**——表里 :487 的后半句「不把展开内容直接插在原页面下方」说的是面板里
-     `DislikeReasonPanel`/`CorrectionCenter`/`RecordSentDialog` 这类展开内容，
-     归 §6.4 的 `ResultArea` 拆分 + state holder + modal host，`38520b0` 一处没动。
-   - 另外两件小的仍欠：供应商编辑器那颗裸 `Dialog(`（在闸里**点名豁免**，等 Sheet 出现再并）；
-     以及"对话框什么时候弹、返回键算不算取消"这类**可见性语义**一条断言都没有（§28.8）。
+   **表里 11 行现在都有主人了**（`LbDialog` 半边见 §28/`38520b0`，`LbModalSheet` 半边见 §29/`cccabb0`，
+   两格各修掉一条量出来的无障碍缺陷：对话框动作 40dp、浮层动作 26dp + 两颗无名节点）。
+   **但"有主人"不等于"那行做完了"**，两件要紧的还欠着：
+   - :487 的**后半句**「不把展开内容直接插在原页面下方」仍然没闸——`ResultArea` 里
+     `MemoryRefItem` 还自己 `remember` 着 `menuOpen/showMuteSubmenu/showWrongDialog/wrongText`，
+     `CorrectionCenter`/`RecordSentDialog`/`DislikeReasonPanel` 也还各自挂遮罩。
+     这就是 §6.4 那条"ResultArea 只负责结果内容…拆成独立 state holder + modal host"，
+     **下一格做它**（`cccabb0` 只换了形状的所有者，没换状态的所有者，别混着报）。
+   - `LbScreenScaffold`（背景 / 安全区 / 统一水平边距）名字有了、**内容还没并**：
+     各页仍各写自己的 `Box + background + padding`。
+   - 两件小的：供应商编辑器那颗裸 `Dialog(`（闸里点名豁免，等并进 Sheet）；
+     "对话框什么时候弹、返回键算不算取消"这类**可见性语义**一条断言都没有（§28.8、§29.6）。
    **主操作以外的重复按钮实现一处都还没收**（全表在账本 §27.7）：`ui/` 下"Primary 底色 + clickable"
    实扫 **17 处 / 11 个文件**。别按数量收口——哪些算"页面主动作"、哪些是 chip / 切换 / 次级动作，
    要一处一处判语义；`054c6e8` 那把归属棘轮只认**声明处**，抓不到"用同一颗组件却自造样式"。
@@ -605,6 +638,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 | `054c6e8` | §6.1 五颗 A 类组件归 `core/designsystem` 并按表改名（`HomeTopBar`→`LbTopBar`、`HomeSectionHeader`→`LbSection`、`HomeActionCard`→`LbActionCard`、`HomeSettingRow`→`LbSettingRow`、`UsageSummary`/`UsageMetric`→`LbMetricGrid`/`LbMetricCard`）；`HomeComponents.kt` 545→249 行；`LbTopBar` 收成 `title/subtitle/trailing` 三槽（第一版把首页文案与关于图标搬进设计系统 = 设计系统认识了一个具体页面，已改回）；`rememberPressScale` 从 `ui/panel/DragHandle.kt` 抽进 core（22 处 import 改写，core 不该 import ui）；组件自持 tag 进 `LbTags.kt`（`lb_home_*`→`lb_*`），`LbSettingRowStateTest` 随组件搬包。**搬家照出三把瞎尺**（坑表 61–63）：TEXT 247→246 是串逃出锚点不是还债（补 `Kind.COMPONENT`，实扫 16，246+1 对齐旧 247）；Gradle 对读源码的门禁判 UP-TO-DATE 让变异假绿（从此 `--rerun` + 比 mtime）；`typealias` 分支的字符类写死、按文件去重数声明。**新尺**：旧名字全仓 0 / 新名字全仓恰 1 / 那 1 处在 core 子树里，P1–P4 各咬一条 + P5 咬 COMPONENT 增长；§25 那五发 H1–H5 搬家后重跑照红 |
 | `d8f36d2` | §6.1 表里 B 类第一行：`ui/panel/reply/GenerationActionButton.kt`（196 行、两个平行旋钮 `mode:ButtonMode` + `enabled`）收成 `core/designsystem/LbPrimaryButton.kt` + 一颗 `LbButtonState`（Idle/Loading/Disabled/Stop，非法组合不可表达）；删掉三个死东西（`heightDp` 只能改高不能改矮、LOADING 那个传成 `""` 的 `text`、0 人传过的 `textColor`），颜色收进 `LbButtonTone{Primary,Deep}`，停止锚点进 `LbTags.PRIMARY_STOP` 而**值一字未改**（仍是 `generation_stop_action`）。**两件刻意留在 reply 层**：那句「分析对话 · 7s 点击停止」与 5s/15s 阶段规则（上一格刚犯过「设计系统认识了一个具体页面」），阶段规则顺手抽成纯函数 `generatingPhaseResFor` 才有 2 格穷举。新守卫 5 格语义树（四态同盒 `0/0/360/48` ×4、逐态 48dp、Disabled 不消失且带 disabled 语义、三态点得动而 Disabled 点不动、停止锚点只属 Loading）；**老 7 格 §2.1 合同一字未改仍然绿**才是「换实现没换行为」的主证。九发探针 M1-M9 各咬各的；M5 第一版用空串当替换文本 ⇒ revert 时 `count("")`=7379 把文件留在变异态，靠 apply 前先落盘的 `_temp/mut72-backup/` 还原（坑表 64）。lint `AutoboxingStateCreation` 6→5 逐条核过剩余 5 条位置才 `--rewrite`（diff 只动一行） |
 | `38520b0` | §6.1 :487 的 Dialog 半边：生产 11 处直接 call Material `AlertDialog` 全收进 `core/designsystem/LbDialog.kt`（标题/正文/动作样式一处决定，颜色进 `LbDialogActionTone`/`LbDialogMessageTone` 两张小表，长文与输入框走 `body`，次级出口上限 3 超限抛）。**先量后写量出真缺陷**：`DialogProbeTest` 实量 Material 对话框里的 `TextButton` 只有 188x40dp，低于 §6.5 的 48dp，而之前那把 48dp 的尺从没往对话框里看过——`LbDialog` 垫到 48dp，`LbDialogTest` 6 格读 `boundsInRoot` 钉住。新闸 `floating decision surfaces have exactly one owner`（`AlertDialog(` 只许一处、裸 `Dialog(` 逐处对豁免表计数，豁免不成立也要红）。字面量两栏一起动并逐条核账：TEXT 246→209（−37 换形状）、COMPONENT 16→59（+37 换进来 +6 是以前两栏都看不见的既有提示语）；顺手修掉这把尺的嵌套重复计数（按锚点求和 85 → 按区间去重 59）并补夹具 H 当牙。探针 N1-N7 各咬各的；**N6/N7 第一版是无效探针**（注入代码编译不过被误报成"没咬"），runner 已加分诊（坑表 65）。lint 68/15 一字未动、跨层 6 笔、全量 164/1268 |
+| `cccabb0` | §6.1 :487 的 Sheet 半边：`ui/panel/PanelModalHost`（141 行、`PanelModalHost`/`Title`/`Actions` 三颗公开组件）归 `core/designsystem/LbModalSheet.kt`，三处调用点跟进；面板在 overlay 窗口起不了 Dialog（BadTokenException）⇒ 第二种形状是平台约束，但两种形状共用 `LbDialogAction`/Tone 同一份词表。改之前先量：旧浮层 4 个可交互节点里 **2 个没可读名字、2 个低于 48dp**（`取消` 48x26、空标签那颗 24x22、遮罩 360x1000、卡片把标题念成 331x84 的按钮）——三条各自修掉（heightIn 48 且内边距排在 clickable 之后 / 空标签不入树 / 遮罩与拦截改 pointerInput）。并掉"保存"那颗的两重就绪判据（`confirmEnabled` + `if (!overLimit)` → 只剩 `enabled`）。新守卫 `LbModalSheetTest` 5 格读 boundsInRoot；探针 S1-S6 各咬各的（S3/S4 同格不同节点故分开跑）；归属棘轮登记到 11 对仍咬。字面量 TEXT 不动、COMPONENT 59→66（+7 全躲在非 Lb 锚点与**默认实参**里，新坑 66）。全量 166/1274 零红、lint 68/15 一字未动。**只换了形状的所有者，没换状态的所有者**——`MemoryRefItem` 仍自己 remember 浮层状态，表里那句"不插在原页面下方"仍没闸（§6.4 下一格） |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -616,7 +650,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N 次才坏"的桩
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
-## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑）
+## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -824,6 +858,16 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     日志里有 `e:`/`Compilation error` 就报"这一发无效"，并打印前三条编译错误，再谈红不红。
     同一族的另一半：注入形状要用**生产真会写的那种形状**（补齐 `text`/`confirmButton` 实参），
     不然测的是一个不存在的写法。
+
+66. **用户可见文案藏在「默认实参」里时，任何按调用点写的锚点都看不见它**（`cccabb0`）：
+    面板浮层旧组件签名是 `PanelModalActions(confirmLabel: String = "保存", dismissLabel: String = "取消", …)`
+    ——「取消」这两个字只出现在**被调用那一侧的默认值**里，所有调用点都没写它。
+    于是字面量预算的三把尺（`Text(`、`contentDescription =`、`stateDescription =`）
+    与后来加的 `Lb\w+(` 锚点全都对它瞎：调用点没实参、组件里它又不是 `Text(` 的实参。
+    这格把它并进 `LbDialogAction(label = "取消", …)` 之后，实扫才从 59 涨到 66（+7 条同一来源）。
+    ⇒ ①判"某段文案有没有被看着"，要按**渲染结果**核（语义树里那颗节点的 label），
+    不能只按"源码里它出现在哪种语法位置"；②把文案从默认值挪到调用点是**加可见性**，
+    不是加债——涨数字时要能把每一条说出来源，否则棘轮就会教下一个人把文案塞回默认值去"降债"。
 
 ## 7. 硬约束（一条没变）
 
