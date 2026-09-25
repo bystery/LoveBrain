@@ -386,7 +386,7 @@ HEAD `0c4d6d6`，仍未推。两笔：
 
 - 那行表 (:487) 的后半收了：面板/气泡的自画浮层 `ui/panel/PanelModalHost`（141 行、三颗公开组件）
   归 `core/designsystem/LbModalSheet.kt`（`LbModalSheet` / `LbModalSheetTitle` / `LbModalSheetActions`），
-  三处调用点跟进。**为什么必须是第二种形状**：面板在 `TYPE_ACCESSIBILITY_OVERLAY` 窗口里，
+  三处调用点跟进。**为什么必须是第二种形状**：面板在 `TYPE_ACCESSIBILITY_OVERLAY`【⚠ 类型名错了，实为 `TYPE_APPLICATION_OVERLAY`，见账本 §36；结论不变】窗口里，
   Material `AlertDialog` 会抛 `BadTokenException` ⇒ 这是平台约束不是自造；两种形状共用同一份
   动作词表（`LbDialogAction`/Tone），"同一颗取消"至少在两个世界里同一个说法、同一种着色。
 - 改之前先用 `SheetProbeTest` 量到旧形状的四个可交互节点：

@@ -30,8 +30,11 @@ import androidx.compose.ui.unit.dp
 /**
  * §6.1 表里 `LbModalSheet/Dialog` 的 **Sheet 半边**：悬浮窗世界里那套"需要用户决策的浮层"。
  *
- * 为什么它和 [LbDialog] 是两个形状而不是一个：面板与气泡跑在 `TYPE_ACCESSIBILITY_OVERLAY`
- * 窗口里，那里没有合适的 activity token，Material 的 `AlertDialog`（内部起一棵 Dialog 窗口）
+ * 为什么它和 [LbDialog] 是两个形状而不是一个：面板与气泡跑在
+ * `TYPE_APPLICATION_OVERLAY` 窗口里（`FloatingService.kt` 建那两个窗口各一处，
+ * 类型名以那里为准，别照这里的注释信——这一句原先写的是
+ * `TYPE_ACCESSIBILITY_OVERLAY`，是错的，账本 §36 记了怎么发现的），
+ * 那里没有合适的 activity token，Material 的 `AlertDialog`（内部起一棵 Dialog 窗口）
  * 会直接抛 `WindowManager.BadTokenException`。所以这一套是**在同一棵 ComposeView 里自画**的
  * 遮罩 + 居中卡片——它是被平台约束逼出来的第二种形状，不是"有人又想自造一套"。
  * 两种形状共用同一份动作词表（[LbDialogAction] / [LbDialogActionTone]），

@@ -2094,7 +2094,8 @@ ProviderSection 那颗自造 `Dialog(`（供应商编辑器）**没**并进来�
 `PanelModalActions`），三处调用点（`ResultArea` 的时长子菜单与"标记为错误"、`SuggestPanel` 的目标编辑）。
 
 **为什么这里必须是第二种形状，而不是复用 `LbDialog`**：面板跑在
-`TYPE_ACCESSIBILITY_OVERLAY` 窗口里，没有合适的 activity token，Material 的 `AlertDialog`
+（⚠ **这句里的窗口类型名是错的**：实为 `TYPE_APPLICATION_OVERLAY`，见 §36 勘误。结论不受影响——两种 overlay 类型都没有合法 activity token。）
+当时写的是 `TYPE_ACCESSIBILITY_OVERLAY` 窗口里，没有合适的 activity token，Material 的 `AlertDialog`
 （内部起一棵 Dialog 窗口）会抛 `WindowManager.BadTokenException`。所以这一套是**同一棵
 ComposeView 里自画**的遮罩 + 居中卡片。这是平台约束，不是"又有人想自造一套"——
 这句话写进 KDoc，免得下一个窗口把它当成违规收掉。两种形状**共用同一份动作词表**
