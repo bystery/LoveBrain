@@ -241,6 +241,30 @@ HEAD `0c4d6d6`，仍未推。两笔：
   4 行"形状有主人、名字不按表"，4 行**真没有同名物**（LbPrimaryButton / LbModalSheet+Dialog /
   LbScreenScaffold 的一部分 / LbTopBar 的副标题体系）。
 
+## 0.12 又一步：设置行那个"从来不画状态词"的状态槽（`634a9f0`）
+
+- §6.1 表里 `LbSettingRow` 写的是「标题、说明、**状态**、尾部动作统一」。组件签名确实收了
+  `statusText: String?`，函数体里却只写 `if (statusText != null) { 画一颗 6dp 的点 }`——
+  **值从来没被画出来**。捕获行认真判无障碍、解析「开/关」(`home_on`/`home_off`) 之后丢掉；
+  供应商行传 `statusText = ""` 表示"我只要一颗点"。
+- **为什么两把旧闸都是绿的（这条比 bug 本身值钱）**：
+  ① `home trailing text action meets the touch floor` grep 的是 `ui/common/RowAction.kt` 的
+  `MIN_HEIGHT_DP ≥ 48`——**另一个组件**；`HomeSettingRow` 尾部那颗"管理"是另写的 `heightIn(min = 32.dp)`。
+  ② `dead parameters removed by the audit do not come back` 是**两个名字的黑名单**
+  （`draftText`/`onSaveToKb`），而且 `statusText` 连"未使用"都不算——它在 null 判断里被读了，
+  只是**值被丢弃**。**引用了 ≠ 用上了**，未使用资源、未使用参数、名字黑名单三把尺对它全盲。
+- 改法：拆成 `dot: LbRowState?`（画不画点 + 颜色，新增两档小表 `Ready/NotReady`）与
+  `statusText: String?`（词，空白不画）。**没复用上一格的 `LbStatus`**——那是军师的词汇表，
+  供应商行借用它会让读屏对着配置念"运行中"。两张小表各守一域，好过凑一张会说假话的大表。
+- 两处**故意**的可见变化：捕获行现在真的显示「开/关」；尾部动作行高 32 → 48dp（§6.5 :531/:596）。
+- 那颗点是装饰（6dp、无读屏名），整行 clickable 会把它合并掉 ⇒ 用例走 `useUnmergedTree` 并核
+  它 6x6dp 实际尺寸。**没有**为了"合并树查得到"给它加 contentDescription（那是让 TalkBack 多念一句）。
+- 变异只跑了两发、也只记两发：T6 退回旧组件体 → 3 格红；T7 热区改回 32 → 那把整屏尺当场红。
+  （本轮中途我差点把**没执行过**的探针结果写进结论，发现后按实际输出重记——见账本 §24.5 末句。）
+- 还欠着：`HomeSettingRow` 等五颗的**改名 + 搬进 core**（语义修对了，名字/位置还不按表）；
+  **§6.2 首页四段到今天仍然没有任何自动守卫**（要靠挂整页 HomeScreen + 造 4 个 StateFlow +
+  动 `FloatingService.instance` 静态，是件独立事，别顺手做半套）。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -259,18 +283,16 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 ./gradlew :app:testDebugUnitTest --no-daemon; echo "RC=$?"   # 别接管道；完成后按 mtime 比新鲜度
 ```
 
-最近一轮实测基线（到 `6b92617`）：**1243 单测 / 158 套件 / 0 失败 / 0 错误 / 0 跳过**（起点 11:29:45，无陈旧 XML）。
-与上一格对账：1231 → 1243 = +12（判据矩阵 8 + 语义树 4），156 → 158 套 = +2 ⇒ 两处增量互相咬得上。
-lint 报告**重新生成后**（11:38:09）实测 **69 条 / 15 规则**、进预算 **68 / 14**、advisory 1
-（与上一格同一组数：新组件没带新增债）。`check_lint_budget.sh` rc=0；跨层 **6** 条；
-工单编号 rc=0；prompt 资产 lock rc=0；`:app:assembleAndroidTest` rc=0；变异全撤后目标类复跑 rc=0。
+最近一轮实测基线（到 `634a9f0`）：**1247 单测 / 159 套件 / 0 失败 / 0 错误 / 0 跳过**
+（起点 11:56:13，无陈旧 XML）。与上一格对账：1243 → 1247 = +4，158 → 159 套 = +1 ⇒ 两处增量互相咬得上。
+死 import 清理后另跑了一次 `--tests "…ui.home.*" --tests "…ProductionUiContractTest"` rc=0。
+lint 报告**重新生成后**（12:02:45）实测 **69 / 15**、进预算 **68 / 14**、advisory 1（连续三格同一组数）。
+跨层 **6** 条；工单编号 rc=0；prompt 资产 lock rc=0 且 `git diff --exit-code 286c9406..HEAD -- assets/engine` rc=0；
+判据自测 27 格 rc=0；`:app:assembleAndroidTest` rc=0。
 **目录现状**：`core/designsystem/` = Color / Dimens / Type / Spacing / Shapes / ScreenState /
-LbAsyncState / **LbStatusBadge**；`ui/theme/` 只剩 `Theme.kt`。
-`KnowledgeRepository` **1793** 行、`LoveBrainViewModel` **2719** 行；`HomeScreen.kt` 234 → 216 行
-（五个 when 并一份判据）；`HomeComponents.kt` 501 → 494 行；`CaptureAppsScreen.kt` 237、
-`KnowledgeBaseActivity.kt` 918、`ui/theme/Theme.kt` 73。
-VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 30**。
-**大文件计数：>500 行 17 个、>800 行 10 个**（本轮没有文件跨档）。
+LbAsyncState / LbStatusBadge / **LbRowState**；`ui/theme/` 只剩 `Theme.kt`。
+`HomeScreen.kt` 216 → 217 行（换两个调用点、删两个死 import），`HomeComponents.kt` 494 → 519 行（状态槽拆开 + 记账注释）。
+VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件计数：>500 行 17 个、>800 行 10 个**。
 
 ## 2. 被证伪的判断（逐条累加，别再当依据；条数以此表实际行数为准）
 
@@ -347,16 +369,18 @@ VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 
    - **A 类「形状有主人、名字不按表」（5 行）**：`HomeTopBar`≈`LbTopBar`、`HomeSectionHeader`≈`LbSection`、
      `HomeActionCard`≈`LbActionCard`、`HomeSettingRow`≈`LbSettingRow`、`UsageSummary`/`UsageMetric`≈
      `LbMetricCard/Grid`。这一类是改名 + 搬进 `core/designsystem` + 把 §6.2 首页四段接上。
-     顺手要办的一件事：设置行现在还是「颜色由调用方交进来」那一套
-     （`statusColor = if (…) Primary else Neutral300`），而且供应商行传的是 `statusText = ""`——
-     画一颗**没有字**的点。这个模式刚从状态卡上拿掉，两行设置行还留着；接到 `LbStatus` 之前
-     得先决定那颗空 statusText 是要文案还是不画点。
+     ~~设置行那套「颜色由调用方交进来」+「`statusText` 从来不画」已经修掉了~~（`634a9f0`，
+     见 §0.12 与账本 §24）：**剩下的仍然只是改名 + 搬包**。
+     改名时别把 `LbRowState` 并到 `LbStatus` 上——两张表各守一域，并了读屏会对着供应商行念"运行中"。
    - **B 类「真没有同名物」（3 行）**：`LbPrimaryButton`（Idle/Loading/Disabled/Stop 四态——今天散在
      `ReplyPrimaryActions` 一带，是唯一「要从行为里抽出来」而不是改名的行）、
      `LbModalSheet`/`LbDialog`（今天各页各用 `AlertDialog`，禁 Toast 那条已锁但浮层语法没收口）、
      `LbScreenScaffold` 的安全区部分。
-   §6.1 末句那条闸（「禁止创建只在一个页面看起来不一样的按钮/卡片」）要等 A 类名字按表齐了才装得上——
-   现在按 `Lb*` 名字扫调用方会扫到 0 个，那条闸装上去就是**恒绿的假闸**（坑表 55 条那一族）。
+   §6.1 末句那条闸（「禁止创建只在一个页面看起来不一样的按钮/卡片」）**别再装在名字上**：
+   按 `Lb*` 扫调用方今天扫到 0 个，装上去就是恒绿假闸（坑表 55 条那一族）。
+   `634a9f0` 给出的替代做法已经验证过：把"这一屏每个可交互节点都过 §6.5 那把尺"挂到**语义树**上，
+   它连着抓出两颗旧闸看不见的缺陷（页头 32dp、设置行尾部 32dp）——
+   旧闸绿是因为它们 grep 的是别的文件的常量名（见坑表 58 条的推论）。
 6b. **穿插格（便宜、独立）：给字面量那把尺补第四个锚点**。`UiStringLiteralBudgetTest` 现在只认
     `Text(` / `contentDescription =` / `stateDescription =` 三个锚点，**看不见自定义组件参数位上的中文**：
     粗测 `ui/` 下约 70 条（含构造函数位的假阳），确认的形状有 `HomeSectionHeader(“快捷功能”)`、
@@ -434,6 +458,7 @@ VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 
 | `054b789` | §6.3 第四家（四家齐）：捕获范围页判据并成 `captureScreenState`、inset 卡片与内联文字删掉、状态行改用首页同款文案；`selectableCaptureTargets` 改可空，"读不出来"不再报成"没有 App"（空表仍不许升格成失败，反向用例钉着）；**只有三格并写明 Loading 无信号**；新 16 格 + 变异 N1–N5；`AutoboxingStateCreation` 7>6 用 `mutableIntStateOf` 修（没抬预算），`PluralsCandidate` 3→2 落账 |
 | `3605edd` | 第三步-1 前半：token 整体从 `ui.theme` 搬进 `core/designsystem`（Color/Dimens/Type 整档 + `Spacing`/`LoveBrainShape` 从 Theme.kt 切出并按内容拆成 Spacing.kt/Shapes.kt；`LoveBrainTheme` 留在 ui）。波及 48 文件 / 改写 38 / 补 16 通配 / 2 处全限定引用 / 2 个同包测试搬包。闸**两把一起**收紧：测试 forbidden 加 `com.lovebrain.app.ui.`，报告脚本补上它缺的整条 core 规则；注入 core→ui 一行 import 验：脚本 6→7、JVM 三格红。顺带改掉一句假注释（「SHA 校验由 CI 层完成」，workflows 零命中）并把那格升级成方向判据。全量 1231/156 一字没动 = 没改行为的证据 |
 | `6b92617` | §6.1 `LbStatusBadge` 落地：`LbStatus`（labelRes + color 同源一张表）+ 组件带 `contentDescription`/`liveRegion=Polite`；首页五个平行 `when`（文案/颜色/说明/按钮/动作）并成 `advisorStatus` 一份不可变快照，卡片签名从 4 个参数收成 1 个。**两处是修不是搬**：服务活着但窗口从未出现（`wm.addView` 抛 + `stopSelf()` 异步）旧代码说"运行中"；实例已空而状态仍 TEMP_HIDDEN 时旧代码给一颗 `restoreFromTempHidden()` 第一行就 return 的**死按钮**。偏离表名两处：加第五档 `NoPermission`、`Error` 那档因同包颜色撞名改叫 `WindowMissing`。12 格新用例 + 变异 T1–T5；**T1 照出性质格自己的边界**（Hidden 只有一组输入走到 ⇒ 那条性质格对它无从比较），限制写进 KDoc |
+| `634a9f0` | §6.1 的 `LbSettingRow` 语义修对：状态槽以前**只画点、不画词**（`statusText` 的值从来没被渲染，捕获行的「开/关」解析完就丢；供应商行用 `""` 表示"只要一颗点"）。拆成 `dot: LbRowState?` + `statusText: String?`，颜色进新的小表 `LbRowState`（Ready/NotReady）；**没复用 `LbStatus`**（军师词汇表，借用会让读屏对配置行念"运行中"）。顺手把尾部「管理」的 clickable 32→48dp（§6.5 :531）。4 格语义树用例 + 变异 T6/T7。**旧闸为什么绿**：`home trailing text action meets the touch floor` grep 的是另一个组件的常量；`dead parameters…` 是两个名字的黑名单 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -445,7 +470,7 @@ VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 
 hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N 次才坏"的桩
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
-## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾）
+## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -595,6 +620,12 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     在构造参数位置上撞名（`Error(R.string.x, Error)` 里第一个 `Error` 既像 entry 又像颜色），
     编译器报的是难以定位的一串。改名 `WindowMissing` + 注释说含义不变。
     与坑表 27/36 条（`fun interface` 擦除撞名）是同一族：**先想名字，再想结构**。
+
+58. **"引用了"不等于"用上了"**：`statusText` 在 `if (statusText != null)` 里被读，值却被丢掉——
+    于是 Kotlin 的未使用参数检查、lint 的 `UnusedResources`（`home_on`/`home_off` 确实被引用）、
+    以及"死参数黑名单"三把尺**全都看不见**。这类只能靠**语义树断言"那个词在不在屏上"**抓到
+    （`onNodeWithText(...)` / 未合并树查装饰节点）。推论：以后要证明"某条文案真的会显示给用户"，
+    别用"资源被引用了"当证据，那是本轮这个 bug 活了三格的直接原因。
 
 ## 7. 硬约束（一条没变）
 

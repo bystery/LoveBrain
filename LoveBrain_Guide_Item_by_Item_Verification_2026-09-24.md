@@ -1436,3 +1436,109 @@ val buttonAction = when { !overlayGranted -> onStartService; TEMP_HIDDEN -> onRe
 - 首页四段（§6.2）结构本身没重排：本轮只换了第 2 段内部的判据；四段顺序今天已经是对的
   （顶部 / 军师状态主卡 / 快捷功能 / 服务设置 + 使用概览），但没有闸在看住它。
 - 深色/浅色那条（§6.5）仍**没查**：`values-night` 与 `LoveBrainTheme` 是否真的拒绝跟随系统。
+
+
+---
+
+# 追加十四：设置行那个"从来不画状态词"的状态槽（§6.1 `LbSettingRow`），以及一条看不见它的旧闸
+
+## 24.1 指导书那一行与组件实际做的事
+
+§6.1 表里：
+
+> `LbSettingRow` | 设置项；标题、说明、**状态**、尾部动作统一
+
+组件的签名确实收了 `statusText: String? = null`，函数体里却只写了这一句：
+
+```kotlin
+// 状态点
+if (statusText != null) {
+    Box(Modifier.size(6.dp).clip(CircleShape).background(statusColor))   // ← 只画点
+}
+```
+
+**`statusText` 的值从来没有被画出来过。**它唯一的用途是当"画不画点"的开关。
+两个调用方各自的后果：
+
+- 消息捕获那行：`if (accessibilityGranted) stringResource(if (captureEnabled) home_on else home_off) else null`
+  ——认真判了无障碍授权、解析了"开/关"，然后**丢掉**。而 `R.string.home_on` / `home_off`
+  在 lint 的 `UnusedResources` 里也不会被报，因为它们**确实被引用了**。
+  引用了 ≠ 用上了：这笔账在两把尺（资源未使用 / 参数未使用）上都是隐形的。
+- 模型供应商那行：`statusText = ""`，本意是"我只要一颗点"——用空串去顶一个不存在的开关，
+  顺带让"状态槽有没有词"这件事只能靠读调用方代码猜。
+
+## 24.2 为什么旧的那两条闸没抓住它
+
+| 旧闸 | 为什么是绿的 |
+|---|---|
+| `ProductionUiContractTest > home trailing text action meets the touch floor` | 它 grep 的是 `ui/common/RowAction.kt` 里的 `MIN_HEIGHT_DP ≥ 48`——**另一个组件**。`HomeSettingRow` 尾部那颗"管理"是另写的一处 `heightIn(min = 32.dp)`，不在它视野里。这正是指导书 :306 点名的形状（"只检查源码里出现常量名 ⇒ 错误判绿"）换了个文件 |
+| `dead parameters removed by the audit do not come back` | 那是**两个名字的黑名单**（`draftText`、`onSaveToKb`）。新死参数不在名单里就不会红；何况 `statusText` 连"未使用"都不算——它在 `if (…!= null)` 里被读了，只是**值被丢弃** |
+
+所以这格把两件事都换到语义树上做：整行的可交互节点交给 `SemanticsProbe` 量，
+状态词用 `onNodeWithText` 查它**在不在屏上**。旧写法在这组用例下必红（变异 T6 实测过）。
+
+## 24.3 拆成两个旋钮，颜色收进一张表
+
+- `dot: LbRowState?` —— 画不画点、什么颜色。新增 `core/designsystem/LbRowState`
+  只有两档：`Ready(Primary)` / `NotReady(Neutral300)`。
+  调用方从此不能各写一遍 `if (…) Primary else Neutral300`——上一格我刚从军师状态卡上
+  拿掉同一个模式，这两行设置行还留着，这格补齐。
+- `statusText: String?` —— 要不要在点旁边写那两个词；空白串不画（不留空文本节点）。
+
+**为什么不复用上一格的 `LbStatus`**：那是"军师"的词汇表（运行中/已隐藏/未启动/未授权/窗口未出现）。
+供应商行如果借用它，读屏就会对着一行配置念"运行中"——把一枚徽标说成另一件事实。
+所以这里是两张小表，各自守自己那一域的词与色，而不是硬凑成一张大表。
+
+## 24.4 可见变化与那条 32dp
+
+两处**故意**的视觉变化，写清楚：
+1. 捕获行现在真的会在点旁边显示「开 / 关」（以前那两个词是死数据）；
+2. 尾部那颗「管理」的行高 32 → 48dp（§6.5 :531 所有 clickable ≥48×48；:596 验收线"无小于 48dp 热区"）。
+
+那颗点是**装饰**：6dp、没有读屏名字，而且整行是 `clickable` ⇒ 语义合并会把子节点藏进父节点，
+合并树里查不到它。用例因此走 `useUnmergedTree = true` 并同时核它 `6x6dp` 的实际尺寸。
+**没有**为了"能被合并树查到"而给它加 `contentDescription`——那是让 TalkBack 多念一句废话。
+
+## 24.5 用例与变异（只写实际跑过的）
+
+`HomeSettingRowStateTest` 4 格（Robolectric + 语义树）：词画得出来 / 空串不留幽灵节点 /
+点与词是两个独立旋钮 / 整屏可交互节点过热区与读屏命名下限。
+
+| 变异 | 红了谁（实测） |
+|---|---|
+| T6 把组件体退回"一个参数两个用途、词不画" | 3 格红（词画不出来；两旋钮合并；空串那格失去依据） |
+| T7 把尾部热区改回 32dp | `every interactive node in the row meets the touch and labeling floor` 当场红 |
+
+本轮没有再跑别的变异——上一格我差点把没执行的探针结果写进账本，这里按实际输出记。
+
+## 24.6 实测
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | `GRADLE_RC=0`：**1247 tests / 159 套件 / 0 失败 / 0 错误 / 0 跳过**（起点 11:56:13，无陈旧 XML） |
+| 与上一格对账 | 1243 → 1247 = **+4**，158 → 159 套 = **+1** ⇒ 两处增量互相咬得上 |
+| 死 import 清理后复跑 | `:app:testDebugUnitTest --tests "…ui.home.*" --tests "…ProductionUiContractTest"` rc=0（删掉 `HomeScreen` 里两个不再被用的颜色 import） |
+| lint | 报告重生成（12:02:45）实测 **69 / 15**、进预算 **68 / 14**、advisory 1，rc=0（与上一格同数：没新增也没误还） |
+| 其它闸 | 跨层 **6** 条；工单编号 rc=0；prompt 资产 lock rc=0；判据自测 27 格 rc=0；`:app:assembleAndroidTest` rc=0 |
+
+## 24.7 §6.1 表 11 行现在走到哪
+
+| 行 | 状态 |
+|---|---|
+| `LbAsyncState`、`LbEmptyState`、`LbStatusBadge` | ✅ 已在 `core/designsystem`，四家目的地 / 首页状态卡各自接上 |
+| `LbSettingRow` | **本轮补齐语义**（状态槽真的能显示状态、颜色有唯一所有者），但**名字与所在包还不按表**（仍叫 `HomeSettingRow`，在 `ui/home`）⇒ 改名搬包仍欠着 |
+| `LbSection`、`LbActionCard`、`LbMetricCard/Grid`、`LbTopBar`、`LbScreenScaffold` | ❌ 形状各有主人，名字/包位置不按表 |
+| `LbPrimaryButton`、`LbModalSheet/Dialog` | ❌ 真没有同名物 |
+| 末句"禁止创建只在一个页面看起来不一样的按钮/卡片" | 仍**没有闸**。且现在能确定一件事：装在 `Lb*` 名字上会恒绿（今天按这些名字扫调用方是 0 个），装在"每屏可交互节点都过语义树"上才有牙——本轮就是这条路 |
+
+## 24.8 这格没做的
+
+- `HomeSettingRow` / `HomeActionCard` / `HomeSectionHeader` / `HomeTopBar` / `UsageSummary`
+  的**改名 + 搬进 `core/designsystem`**（表里名字那半）仍没做，本轮只把它们其中一颗的语义修对了。
+- 首页四段（§6.2）**仍然没有任何自动守卫**：今天靠人眼看顺序。这格没顺手加，
+  因为它需要挂整页 `HomeScreen`（要造 4 个 StateFlow + 动 `FloatingService.instance` 这个静态），
+  是一件独立事，别混在本格里做半套。
+- `LbRowState` 只有两档，是照今天真实存在的两种说法建的；
+  出现"第三种就绪状态"时该新增还是换表，届时要判，不要顺手塞一个 `Pending`。
+- 上一格提的"字面量那把尺看不见自定义组件参数位"仍没动（`HomeSettingRow(title = "模型供应商",
+  trailingText = "管理")` 这类，约 70 条粗测）。
