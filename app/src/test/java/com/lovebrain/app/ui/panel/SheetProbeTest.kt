@@ -11,6 +11,7 @@ import com.lovebrain.app.core.designsystem.LbModalSheet
 import com.lovebrain.app.core.designsystem.LbModalSheetActions
 import com.lovebrain.app.core.designsystem.LbModalSheetTitle
 import com.lovebrain.app.core.testing.RenderIn
+import com.lovebrain.app.ui.panel.reply.RecordSentDialog
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
@@ -48,6 +49,34 @@ class SheetProbeTest {
 
     private val app: Context get() = ApplicationProvider.getApplicationContext()
     private val probe by lazy { SemanticsProbe(app.resources.displayMetrics.density) }
+
+    /**
+     * 第二把探尺：**没并进 LbModalSheet 之前**，`RecordSentDialog` 自己那套遮罩与两颗按钮长什么样。
+     * 迁移会改变这一格量到的东西，所以**先跑一次把旧值抄在这里留档**（账本 §30.2）：
+     *   「记录实际发送」 360x1000dp ← 遮罩自己是一颗 clickable 节点，还把标题合并成了自己的名字
+     *   「粘贴或输入你实际发送的话」 304x56dp ← 输入框，这一颗是合格的
+     *   「取消」 **28x19dp**、「确认已发送并记录」 **96x19dp** ← 裸 Text + padding(vertical = xs)，
+     *     比 §29 那套面板浮层的 26dp 还矮一半
+     * （写这段注释之前我先填过 66x20/152x20 两个"看着像"的数——那没量过，已换成实跑输出。）
+     *
+     * **并进 LbModalSheet 之后重跑同一格**：
+     *   「粘贴或输入你实际发送的话」 307x56dp | 「取消」 **48x48dp** |
+     *   「确认已发送并记录」 **121x48dp**（此时正文为空，所以它带 disabled —— 这是刻意的：
+     *   旧形状那里它长得能点、点下去被 `if (text.isNotBlank())` 静默吞掉）
+     *   ⇒ 那颗 360x1000 的整屏"按钮"没了，两颗出口都到下限。
+     */
+    @Test
+    fun `measure what the record-sent float currently hands the user`() {
+        rule.setContent {
+            UiMatrix(360).RenderIn(LocalDensity.current.density) {
+                RecordSentDialog(prefill = "", saving = false, onConfirm = {}, onDismiss = {})
+            }
+        }
+        rule.mainClock.advanceTimeBy(16L)
+        val targets = probe.actionableTargets(rule, "记录实际发送")
+        println("PROBE 记录实际发送：" + targets.joinToString(" | ") { it.describe() })
+        assertTrue("量不到节点就别往下写", targets.isNotEmpty())
+    }
 
     @Test
     fun `measure what the panel modal currently hands the user`() {

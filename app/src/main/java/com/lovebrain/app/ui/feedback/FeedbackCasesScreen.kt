@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.LbModalSheet
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.model.FeedbackCase
@@ -342,16 +343,13 @@ fun FeedbackCasesScreen(
             }
         }
 
-        // 导出预览——使用 AlertDialog 替代伪全屏遮罩
+        // 导出预览——Loading / Success / Error 三态现在共用同一族浮层形状：
+        // Loading 走 LbModalSheet（不可点空白关），Success/Error 走 LbDialog。
+        // 原先这里自己画了一层全屏遮罩，还挂了一个 `clickable(enabled = false){}`——
+        // 那等于往语义树里塞一颗"点不动也没名字"的整屏按钮（§6.5 那两条都踩）。
         when (val state = exportState) {
             is SetupViewModel.ExportState.Loading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f))
-                        .clickable(enabled = false) {},
-                    contentAlignment = Alignment.Center
-                ) {
+                LbModalSheet(onDismissRequest = {}, dismissable = false) {
                     CircularProgressIndicator(color = Primary)
                 }
             }

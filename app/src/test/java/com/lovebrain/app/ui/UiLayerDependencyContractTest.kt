@@ -228,6 +228,42 @@ class UiLayerDependencyContractTest {
     }
 
     /**
+     * §6.4 / §6.1：**整屏遮罩只有一个所有者**。
+     *
+     * 这条是被量出来的：生产里原先有三处各自画 `Color.Black.copy(alpha = …)` 的全屏遮罩
+     * （`LbModalSheet` 自己、`RecordSentDialog`、`FeedbackCasesScreen` 的导出 Loading），
+     * 后两处还各带一个 `clickable` 挂在整屏上——于是语义树里多出一颗"360x1000 的按钮"，
+     * 其中一处把标题合并成了自己的名字（`SheetProbeTest` 留了改之前的实测原文）。
+     *
+     * "用同一颗组件却自造样式"这种坏法，§26 那把按声明处判的尺抓不到（它看的是谁**声明**了组件），
+     * 所以要有一把盯着**形状本身**的闸：谁再想自己画一层遮罩，就在这里红。
+     *
+     * 判据取"画半透明黑底"这个具体写法而不是"有没有 fillMaxSize"：后者到处合法。
+     */
+    @Test
+    fun `only the sheet owner draws a full window scrim`() {
+        val owner = "core/designsystem/LbModalSheet.kt"
+        val scrim = Regex("Color\\.Black\\.copy\\(\\s*alpha")
+        val drawers = kotlinFiles(appRoot).map {
+            it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
+        }.filter { (path, code) ->
+            scrim.containsMatchIn(code) && path != owner
+        }.map { it.first }
+        assertTrue(
+            "整屏遮罩只许由 $owner 画；这些文件自己画了一层（改走 LbModalSheet，" +
+                "它顺手修掉了遮罩冒充可点击节点的问题）：$drawers",
+            drawers.isEmpty()
+        )
+        // 反向确认这把尺看得见东西：所有者自己那一份必须还在，否则就是正则坏了
+        val ownerSource = File(appRoot, "core/designsystem/LbModalSheet.kt")
+        assertTrue("找不到 $owner——被搬走或改名了，这把尺就成了一把扫空集的闸", ownerSource.isFile)
+        assertTrue(
+            "$owner 应当还在画遮罩（实到 0 处说明正则匹配不到任何写法，恒绿）",
+            scrim.containsMatchIn(codeOf(ownerSource.readText()))
+        )
+    }
+
+    /**
      * 声明的形状：`fun X(`、`typealias X =`、`class|enum class|interface X {|<|(:`。
      *
      * 三支都得在：`typealias` 后面跟的是 `=` 不是 `(`（第一版就漏在这一支上，

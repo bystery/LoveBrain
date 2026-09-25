@@ -159,6 +159,13 @@ class UiStringLiteralBudgetTest {
      *   「暂停时长」「标记为错误」「取消」×3、「确认」「保存」——原先写在 `PanelModalTitle("…")`
      *   与 `PanelModalActions(confirmLabel = "…")` 这类**非 `Lb` 锚点**里（"取消"还是旧组件的默认实参），
      *   三把老尺一条都看不见；换名进设计系统之后才被量到 ⇒ 涨的是量具新看见的既有债。
+     * - §6.4 第一刀（`RecordSentDialog` 与导出 Loading 的自画遮罩并进 `LbModalSheet`）之后
+     *   **TEXT 209 → 205、COMPONENT 66 → 69、DESC 仍 12**。摊开说：
+     *   ① 3 条从 TEXT 进 COMPONENT（「记录实际发送」「取消」「确认已发送并记录」从 `Text("…")`
+     *   变成 `LbModalSheetTitle(…)` / `LbDialogAction(label = …)`）——换形状，没还债；
+     *   ② 1 条**真的还掉了**：那颗输入框的提示语进了 `R.string.panel_record_sent_hint`（zh+en）。
+     *   起因是守卫量到它"既没文案也没 contentDescription"，而修读屏名要让同一句话用两次——
+     *   源码里写两遍是新的维护债，进资源才是收口。合计 275 → 274，减的就是这一条。
      * - §6.1 把五颗首页组件搬进 core/designsystem 时，TEXT 掉到 **246**——
      *   **这一条不是还债**：掉的那处是「帮你更自然地表达」，它只是从 `Text("…")`
      *   变成了 `LbTopBar(subtitle = "…")`，字符串一个字没动，是锚点 `Text(` 看不见它了。
@@ -177,10 +184,10 @@ class UiStringLiteralBudgetTest {
      * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 209,
+        Kind.TEXT to 205,
         Kind.DESC to 12,
         Kind.STATE to 0,
-        Kind.COMPONENT to 66
+        Kind.COMPONENT to 69
     )
 
     private fun countIn(root: File, kind: Kind): Int {
