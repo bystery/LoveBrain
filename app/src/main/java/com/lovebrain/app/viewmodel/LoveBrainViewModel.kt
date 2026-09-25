@@ -1387,6 +1387,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         sentText: String,
         linkedSchemeIdentityKey: String? = null
     ) {
+        // 每一次尝试都要先回到 IDLE，面板那边靠的是"观察一次跳变"来解除「保存中」。
+        // 不重置的话，同一个失败结果连着来两次时 StateFlow 不再发射，
+        // 第二次尝试永远看不到回应——而浮层的取消与遮罩都是 enabled = !saving，用户会被关在里面。
+        _actualSentState.value = ActualSentState.IDLE
         if (sentText.isBlank()) {
             _actualSentState.value = ActualSentState.IO_ERROR
             return

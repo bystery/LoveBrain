@@ -135,16 +135,28 @@ fun LoveBrainPanelScreen(
     val actualSentState by viewModel.actualSentState.collectAsStateWithLifecycle()
     var sentDialogSaving by remember { mutableStateOf(false) }
 
-    // RECORDED 时才关闭 Dialog，失败时 Dialog 保持用户输入
+    // RECORDED 时才关闭 Dialog，失败时 Dialog 保持用户输入。
+    // 这里必须是**穷尽的 when**，不能是 if / else if 链：VM 这一族有五种结果，
+    // 原先只写了三种，`NO_KB`（未激活知识库时真会吐）与 `IDLE` 落到"什么都不做"，
+    // 于是 sentDialogSaving 解不开——而浮层的取消与遮罩都是 enabled = !saving，
+    // 用户既关不掉也退不出。加一档新结果时让编译器来提醒，而不是靠人记得。
     LaunchedEffect(actualSentState) {
-        if (actualSentState == LoveBrainViewModel.ActualSentState.RECORDED && sentDialogSaving) {
-            sentDialogSaving = false
-            showSentDialog = false
-            viewModel.dismissActualSentState()
-        } else if (actualSentState == LoveBrainViewModel.ActualSentState.KB_NOT_FOUND ||
-            actualSentState == LoveBrainViewModel.ActualSentState.IO_ERROR) {
-            // 失败——Dialog 保持，用户输入仍在，允许重试
-            sentDialogSaving = false
+        when (actualSentState) {
+            LoveBrainViewModel.ActualSentState.RECORDED -> if (sentDialogSaving) {
+                sentDialogSaving = false
+                showSentDialog = false
+                viewModel.dismissActualSentState()
+            }
+            LoveBrainViewModel.ActualSentState.KB_NOT_FOUND,
+            LoveBrainViewModel.ActualSentState.NO_KB,
+            LoveBrainViewModel.ActualSentState.IO_ERROR -> {
+                // 失败——浮层留着、输入还在，但要放开那把"保存中"的锁，允许重试或取消
+                sentDialogSaving = false
+            }
+            LoveBrainViewModel.ActualSentState.IDLE -> {
+                // 没有进行中的记录：也别让浮层停在一个不会来的跳变上
+                sentDialogSaving = false
+            }
         }
     }
 
