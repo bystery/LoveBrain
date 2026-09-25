@@ -4298,3 +4298,110 @@ prompt 零 diff、资产锁、27 格自检、androidTest 全 RC=0。
   那颗组件自带 `Spacing.lg` 横向内边距，2 倍字下会压到标题——归一要先解决槽宽，属视觉判断的一格。
 - 两颗主动作的外观变化（`titleMedium + Bold`）没有截图证据（:538 照旧欠着）；设备侧照旧未跑。
 - `LbButtonTone` 缺"灰底进行中"这一档（见 49.3 末条），已开进交接单 §4 的表缺口清单。
+
+---
+
+# 追加五十：知识库编辑屏量到手——保存 78x44dp、四颗 TextButton 全 40dp、文件标签不报选中（提交 `07e1463`）
+
+## 50.1 这一屏"要 VM 和真实磁盘"又是一条抄来的事实
+
+`KbEditScreen` 的签名是
+`KbEditScreen(files, lastFile, onLastFileChange, readFile, saveFile, onBack)`——
+**一个 ViewModel 都不收**，读盘走两个 `suspend` lambda。
+把 `private` 改成 `internal`（连带 `KbFile`）就挂得上，桩两个 lambda 就行。
+⇒ "要 VM 所以测不了"这条假理由第 5 次复发（坑表 84），而且这次连 VM 都不存在：
+旧账写的其实是"要真实磁盘"，而磁盘那条也在 lambda 后面。
+
+**这一屏必须扫两档**：预览态与**点过「编辑」之后**——那颗 `Button(containerColor = Primary)`
+的「保存」只在编辑态出现（先做一次性诊断确认，`_temp/ZzKbEditDumpTest.kt.retired-2026-09-26`）。
+只测首屏会漏掉它，正是坑表 97 那一族的第三种形态（横排裁 → 下一档才出现的按钮 → 状态切换才出现的按钮）。
+
+## 50.2 量到的（读语义树，360dp 档）
+
+| 节点 | 实量 | 判读 |
+|---|---|---|
+| 「保存」 | `role=Button **78x44dp** @(242,914)` | **真缺陷**：:596"无小于 48dp 的热区"在这一屏没过。高度由页面常量 `KbEditDimens.ACTION_BUTTON_HEIGHT_DP = 44` 钉死 |
+| 「清空」（页尾动作） | `role=Button 58x40dp` | M3 的 48dp 是 `minimumInteractiveContainer` 装饰（坑表 92 第 4 次撞） |
+| 「编辑」/「预览」 | `role=Button 58x40dp` | 同一形状 |
+| 「放弃修改」 | `role=Button 68x40dp` | 同一形状 |
+| 三颗文件标签 | `role=Button selected=null 60x40dp` | **两条**：热区不到 + **哪一份正开着只涂在底色上**，读屏听不出来（:532 那一栏） |
+| 「Edit 我是谁」 | `280x510dp`、有名字、`role=无` | 可编辑节点，按 `editable` 排除在角色判据外 ✓ |
+
+⇒ 一句话：**这一屏的可交互节点没有一颗自己够 48dp**（除了页头那颗 Back 48x48）。
+"改严一处要回扫同形状"（坑表 96）在这里得到验证：全仓 7 颗 `TextButton`，
+3 颗已在别处量过（1 修 2 达标），剩下 4 颗**全在这一屏**，一到手就全红。
+
+## 50.3 顺手抓到设计系统自己的缺陷：只垫了一条边
+
+「保存」搬进 `LbPrimaryButton` 之后，语义树量到 **33x48dp**——宽度塌了。
+原因在组件里：`val base = modifier.height(LB_PRIMARY_MIN_HEIGHT_DP.dp)`，**只有高度**。
+`LbTextAction` 的注释上明明写着同一课（"只垫高度不够，短标签会量出 40x48dp，
+`LbEmptyState` 的第一版就是这么被自家测试测红的"），主动作组件却没这条。
+⇒ 改成 `heightIn(min) + widthIn(min)`，**下限写回组件本身**，
+调用方拿不到"只设高度"的旋钮；`LbPrimaryButtonStateTest` 新加一格
+`a short label still leaves a square hot zone in every state`（四态都跑）。
+整宽的那些（`fillMaxWidth()` / `weight(1f)`）不受影响：`min` 只抬高不裁宽。
+
+## 50.4 尺变严的连带账：一把锚点吃下整段 onClick
+
+`Lb…()` 那把锚点改成括号配对之后，`LbPrimaryButton(onClick = { … })` 的**整段 lambda**
+都落进射程 ⇒ 四条**一直存在、从没被任何尺数过**的内联中文（保存成功/两种冲突/保存失败）
+当场照出来，COMPONENT 一栏 78 → **81**。
+
+两条路摆在面前：把表填到 81，或者把债还掉。选了后者——
+四条搬进 `values` + `values-en`（`hint_saved` / `hint_conflict_kept_draft` /
+`hint_conflict_reopen` / `hint_save_failed`），在 composable 作用域取好再闭包进 `launch`
+（这文件本来就有这条先例：`editorName`）。
+⇒ **COMPONENT 78→77、TEXT 183→182**，`sum == 77` 那条证人现在盯的是现实而不是旧账。
+⚠ 还有一处**没敢合**：`hint_conflict_kept_draft` 与 `hint_conflict_reopen` 是同一个事件
+（后台改过文件）的两句不同说法，一处保留草稿、一处只说重开。合并不只是文案问题，
+要判"两个入口该不该给同一句话"——留给人工，别让我在修热区的那格里顺手改掉。
+
+第三把尺跟着改小：`containerColor = <品牌色>` **3 → 2 处 / 2 文件**
+（`KbEditActivity` 只剩版本选中态那颗条件涂色；`HomeComponents` 那张状态卡浅底）。
+
+## 50.5 守卫与探针
+
+新增 7 格：`KbEditScreenSemanticsTest` 六格（两档走完的覆盖清单 / 热区 / 角色 / 名字 /
+文件标签报得出哪份开着（`Role.Tab` + `selected` 两头）/ 那颗「保存」够大且能按）
++ `LbPrimaryButtonStateTest` 见方下限一格。
+横排裁切按 `ResultArea` 的老办法：只判**整颗在视口内**的，排除项连尺寸打进失败信息，
+并压样本数下限（筛到只剩两三颗就是这格在空转）。
+
+| 发 | 注入 | 结果 |
+|---|---|---|
+| X1 | 「清空」撤掉高度垫 | BIT（热区那格红，点名「清空」） |
+| X2 | 文件标签撤掉 `selected` | **第一读"红了但没点名"** ⇒ 换 needle 之后 BIT（见下） |
+| X3 | 文件标签撤掉 `Role.Tab` | BIT（"得报成 Tab"） |
+| X4 | 「保存」的标签写死中文、不走资源 | BIT（2 格同时红） |
+| X5 | 组件只垫高度、撤掉宽度下限 | BIT（"短标签的热区不到"） |
+| X6 | 一条提示语写回内联中文 | BIT（COMPONENT 证人红，1 格） |
+
+⚠ X2 那一读要把规矩再钉一遍：**同一个格子里挂多条证人时，needle 必须对先炸的那条**。
+我这发先炸的是 `assertSelectableAnnounceState` 的"没 announce 自己的状态"，
+而 needle 抄的是我自己那句"没打开的那份要报 selected=false"——
+读数从"没牙"变成"有效咬中"只改了 needle，**代码一行没动**。
+另一处小账：X6 的针脚换成了只出现一次的 `conflictKeptDraftHint`，
+因为 `saveFailedHint` 有三处，一起点着会说不清是哪条照的。
+
+## 50.6 实测
+
+- 全套：**185 套件 / 1377 单测 / 0 失败 / 0 错误 / 0 跳过**（上一格 184 / 1370 ⇒ +1 套件、+7 格）。
+  跑在变异全撤之后的树上；探针每发回滚后逐字节核对（`全部逐字节相同`）。
+- lint 重生成 **68 / 15**、进预算 **67 / 14**、advisory 1；产物门 `1377 / 185 / 0 红`；跨层 6；
+  工单 PASS；取消审计 165 站；prompt 零 diff；资产锁 OK；27 格自检 OK；androidTest RC=0。
+- 被改文件死导入 0 条（`KbEditActivity` 68 条 import）。
+- ⚠ 一条流程账：去掉**未使用 import** 时字节码不变，Gradle 把 `testDebugUnitTest` 判
+  UP-TO-DATE 跳过、退出码仍 0——这是坑表 62 的又一形态（这次不是变异假绿，是"无害改动"假绿），
+  收口数一律 `--rerun` + 看全部 XML 同一时间戳。
+
+## 50.7 这一格没做的
+
+- `KbEditScreen` 的**版本列表 / 冲突对话框 / 清空确认**那一档没量（都在 `LbDialog` 里，
+  而这台仪器量不了浮层窗口——边界写在账本 §45.1）。
+- 那句 `死常量 ACTION_BUTTON_HEIGHT_DP` 只标注、没删（本仓库的规矩是不删，只记账）。
+- 两句冲突提示的**近义重复**留给人工判（见 50.4 末）。
+- 「清空」「编辑」「预览」「放弃修改」的**形状**仍未归设计系统：
+  §6.1 那张表里没有"次级文字动作 / 破坏性文字动作"这一行（表缺口，`LbTextActionTone` 只有 Accent/Muted），
+  本轮只补了热区与角色。
+- 截图基线（:538）照旧故意没接；设备侧照旧未跑。
