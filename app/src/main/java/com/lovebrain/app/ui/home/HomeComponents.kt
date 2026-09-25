@@ -120,7 +120,7 @@ fun HomeAboutEntry(onNavigateAbout: () -> Unit) {
     val (aboutInteraction, aboutScale) = rememberPressScale(0.94f, "aboutBtn")
     Box(
         modifier = Modifier
-            .size(48.dp)
+            .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .graphicsLayer { scaleX = aboutScale; scaleY = aboutScale }
             .clip(LoveBrainShape.full)
             .clickable(
@@ -171,7 +171,7 @@ internal fun AssistantStatusCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(Spacing.md)
-                        .size(48.dp)
+                        .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
                         .graphicsLayer { scaleX = hideScale; scaleY = hideScale }
                         .clip(LoveBrainShape.full)
                         .clickable(
@@ -233,6 +233,10 @@ internal fun AssistantStatusCard(
                     shape = LoveBrainShape.md,
                     interactionSource = btnInteraction,
                     modifier = Modifier
+                        // 首页那颗 Material Button 的行高。这一处**不是**版式自选：
+                        // 它是 :490"自造品牌色按钮"清单的漏网之族（清单的锚点是 Modifier 链上的
+                        // .background(品牌色)，而 Button 的底色走 containerColor 那扇门），
+                        // 归不归 LbPrimaryButton 单独一格判，届时这一行数字该跟着消失。
                         .height(48.dp)
                         .graphicsLayer { scaleX = btnScale; scaleY = btnScale }
                         .testTag(LbHomeTags.PRIMARY_BUTTON)

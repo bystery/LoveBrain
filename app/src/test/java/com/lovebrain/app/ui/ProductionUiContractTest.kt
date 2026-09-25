@@ -56,13 +56,50 @@ class ProductionUiContractTest {
 
     // ─── 触摸区下限 ────────────────────────────────────────────────
 
+    private val dimensCode by lazy { codeOf(source("core", "designsystem", "Dimens.kt")) }
+
+    /**
+     * 读一颗尺寸常量的**数值**，允许它写成"指回全局那颗"的别名（顺着引用最多跳四跳）。
+     *
+     * 这一格原来写的是 `NAME = (\d+)`，也就是**要求每个文件自己把 48 再抄一遍**。
+     * §6.5 那一格把 15 处抄数改成 `= AppDimens.TOUCH_TARGET_MIN_DP` 之后，
+     * 本文件三条集体报 `was null`——那不是"尺寸变小了"，是"数不写在这儿了"。
+     * 把它们改回抄一遍等于让两把尺互相打架，所以这里改成跟着引用走。
+     *
+     * ⚠ 读不出来仍然判失败（返回 null → 调用方那条 assertTrue 红）。
+     * 这一格不因此变软：它从"这里必须写着 48"变成"这里必须能算出 ≥48"。
+     */
+    private fun dimenValue(name: String, code: String): Int? {
+        var current = name
+        var scope = code
+        repeat(4) {
+            val rhs = Regex("\\b$current\\s*=\\s*([\\w.]+)").find(scope)?.groupValues?.get(1) ?: return null
+            if (rhs.isNotEmpty() && rhs.all { it.isDigit() }) return rhs.toInt()
+            if (rhs.contains('.')) scope = dimensCode      // AppDimens.X → 去全局那颗里找
+            current = rhs.substringAfterLast('.')
+        }
+        return null
+    }
+
+    /**
+     * 全站那颗下限自己得是个 ≥48 的数。
+     *
+     * 上面那个"跟着引用读"的机制让所有页面都指回 Dimens.kt 这一处，
+     * 于是**这一处就成了唯一承重点**：它要是被改成 32，全仓库的静态尺会集体变绿而集体不达标。
+     * 所以这里把它单独钉住——这一条不跟着引用走，读的就是那个字面量。
+     */
+    @Test
+    fun `the global touch floor itself is declared at least 48dp`() {
+        val declared = Regex("\\bTOUCH_TARGET_MIN_DP\\s*=\\s*(\\d+)").find(dimensCode)?.groupValues?.get(1)
+        assertTrue("Dimens.kt 里必须把下限写成字面量（它是全站唯一抄数的那一处）", declared != null)
+        assertTrue("下限必须 >=48dp，实到 $declared", declared!!.toInt() >= 48)
+    }
+
     @Test
     fun `panel header collapse hotzone is at least 48dp`() {
         val code = codeOf(source("ui", "panel", "PanelHeader.kt"))
-        val value = Regex("COLLAPSE_HOTZONE_DP\\s*=\\s*(\\w+)").find(code)?.groupValues?.get(1)
-        assertTrue("COLLAPSE_HOTZONE_DP must exist", value != null)
-        val dp = if (value == "MIN_TOUCH_TARGET_DP") 48 else value!!.toInt()
-        assertTrue("collapse hotzone must be >= 48dp, was $dp", dp >= 48)
+        val dp = dimenValue("COLLAPSE_HOTZONE_DP", code)
+        assertTrue("COLLAPSE_HOTZONE_DP must exist and be >= 48dp, was $dp", dp != null && dp >= 48)
     }
 
     @Test
@@ -77,8 +114,8 @@ class ProductionUiContractTest {
     @Test
     fun `result utility trigger hit box is at least 48dp`() {
         val code = codeOf(source("ui", "panel", "reply", "ResultArea.kt"))
-        val value = Regex("UTILITY_HITBOX_DP\\s*=\\s*(\\d+)").find(code)?.groupValues?.get(1)?.toInt()
-        assertTrue("UTILITY_HITBOX_DP must be declared and >= 48, was $value", (value ?: 0) >= 48)
+        val value = dimenValue("UTILITY_HITBOX_DP", code)
+        assertTrue("UTILITY_HITBOX_DP must resolve to a number >= 48, was $value", value != null && value >= 48)
     }
 
     /**
@@ -95,9 +132,8 @@ class ProductionUiContractTest {
     fun `generate buttons are at least 48dp and clickable is not inset by padding`() {
         val action = codeOf(source("core", "designsystem", "LbPrimaryButton.kt"))
         assertTrue(
-            "LbPrimaryButton 的高度下限必须 >=48dp",
-            Regex("LB_PRIMARY_MIN_HEIGHT_DP\\s*=\\s*(\\d+)").find(action)?.groupValues?.get(1)
-                ?.let { it.toInt() >= 48 } == true
+            "LbPrimaryButton 的高度下限必须 >=48dp（可以是指回全局那颗的别名）",
+            dimenValue("LB_PRIMARY_MIN_HEIGHT_DP", action)?.let { it >= 48 } == true
         )
         // 关键顺序：padding 出现在 clickable 之前会把热区缩掉，这是 §7.1 点名的写法
         val paddingAt = action.indexOf(".paddingVerticalInside()")
@@ -124,8 +160,8 @@ class ProductionUiContractTest {
     @Test
     fun `home trailing text action meets the touch floor`() {
         val code = codeOf(source("ui", "common", "RowAction.kt"))
-        val min = Regex("MIN_HEIGHT_DP\\s*=\\s*(\\d+)").find(code)?.groupValues?.get(1)?.toInt()
-        assertTrue("RowActionButton must be >= 48dp tall, was $min", (min ?: 0) >= 48)
+        val min = dimenValue("MIN_HEIGHT_DP", code)
+        assertTrue("RowActionButton must resolve to >= 48dp tall, was $min", min != null && min >= 48)
         val clickableAt = code.indexOf(".clickable(")
         val insetAt = code.indexOf(".padding(vertical = RowActionDimens.VISUAL_VERTICAL_INSET_DP.dp)")
         assertTrue(

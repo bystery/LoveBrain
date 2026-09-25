@@ -55,8 +55,12 @@ import androidx.compose.ui.unit.dp
 /** 浮层卡片的最大高度——超了就滚，不把面板顶出屏 */
 private const val SHEET_MAX_HEIGHT_DP = 560
 
-/** 动作热区下限：与 [LB_PRIMARY_MIN_HEIGHT_DP]、[LB_DIALOG_ACTION_MIN_DP] 同一个数 */
-const val LB_SHEET_ACTION_MIN_DP = 48
+/**
+ * 动作热区下限：**不自己抄一个数**，指回 [AppDimens.TOUCH_TARGET_MIN_DP]。
+ * 保留这个名字是因为读调用方时要看得出"这是浮层动作的下限"，
+ * 但 :596 那条验收线（"无小于 48dp 热区"）是全站口径——数写两遍就等于没有下限。
+ */
+const val LB_SHEET_ACTION_MIN_DP = AppDimens.TOUCH_TARGET_MIN_DP
 
 /**
  * 一薄层浮层宿主：遮罩 + 居中卡片。

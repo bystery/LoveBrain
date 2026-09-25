@@ -225,7 +225,7 @@ class UiStringLiteralBudgetTest {
      * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 192,
+        Kind.TEXT to 191,
         Kind.DESC to 11,
         Kind.STATE to 0,
         Kind.COMPONENT to 80

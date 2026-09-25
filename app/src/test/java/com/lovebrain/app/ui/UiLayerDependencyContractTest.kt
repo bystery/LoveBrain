@@ -559,4 +559,138 @@ class UiLayerDependencyContractTest {
             activitiesUsingViewModelStore >= 3
         )
     }
+
+    /**
+     * §6.5 :531 / 验收线 :596 那颗 48dp 下限——**这个数在仓库里只许写一次**。
+     *
+     * 为什么要买这一格：下限原先以 `const val … = 48` 的形式写了 17 遍
+     * （本机对 HEAD 实扫，尺见 `_temp/measure_touch_floor_owners.py`：
+     * DECL 17、内联 `48.dp` 8 处 / 4 个文件），另有 0 处写成"指回全局那颗"的别名。
+     * 数写 17 遍等于**没有下限**：抬它要改 17 处，漏一处就只有那一屏的热区偷偷不达标，
+     * 而 :596 那句"无小于 48dp 热区"是全站口径、不是逐组件口径。
+     * 现在 15 处改成 `= AppDimens.TOUCH_TARGET_MIN_DP`（名字都留着，读调用方仍看得出
+     * "这是哪一颗的下限"），2 处删掉，内联 8 处收进 token。
+     *
+     * ⚠ 这把尺**判不了任何一处尺寸对不对**，它只保证"改一次数就改全站"这件事成立。
+     * 真热区由 `SemanticsProbe` 那些格子量（`LbTextActionTest`、`LbAsyncStateTest`、
+     * `OnboardingPrimaryActionTest`），这一格只买"不许再长出第二个数"。
+     *
+     * 白名单里剩的都不是"下限"而是**恰好同数的版式尺寸**：
+     * [AppDimens.TOUCH_TARGET_MIN_DP] 是唯一那颗下限；`EMPTY_ICON_CONTAINER_DP` 是
+     * 空态图标方块，`LbActionCard` 那 1 处是卡片图标方块，`HomeComponents` 那 1 处是
+     * Material `Button` 的行高，`ProviderSection` 那 1 处是 `MiniSwitch` 的宽
+     * （**那一处是已知缺陷**：48x32 的开关高度不够下限，还写着"满足 48dp 下限"的注释——
+     * 单独一格处理，还完把表里那行删掉）。
+     */
+    @Test
+    fun `the touch-target floor is written as a number in exactly one place`() {
+        val ownerPath = "core/designsystem/Dimens.kt"
+        val allowedDeclarations = setOf(
+            ownerPath to "TOUCH_TARGET_MIN_DP",      // 唯一那颗下限
+            ownerPath to "EMPTY_ICON_CONTAINER_DP"   // 版式尺寸，恰好同数，不是下限
+        )
+        val allowedInlineLiterals = mapOf(
+            "core/designsystem/LbActionCard.kt" to 1,
+            "ui/home/HomeComponents.kt" to 1,
+            "ui/home/ProviderSection.kt" to 1        // ⚠ 已知缺陷，不是"允许这样"
+        )
+        val declaration = Regex("""\bval\s+(\w+)\s*=\s*48\b""")
+        val inlineLiteral = Regex("""48\.dp""")
+        val alias = Regex("""\bval\s+\w+\s*=\s*AppDimens\.TOUCH_TARGET_MIN_DP\b""")
+
+        val sources = kotlinFiles(appRoot).map {
+            it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
+        }
+        val declarations = mutableListOf<Pair<String, String>>()
+        val inlineCounts = mutableMapOf<String, Int>()
+        var aliasCount = 0
+        sources.forEach { (rel, code) ->
+            declaration.findAll(code).forEach { declarations.add(rel to it.groupValues[1]) }
+            val hits = inlineLiteral.findAll(code).count()
+            if (hits > 0) inlineCounts[rel] = hits
+            aliasCount += alias.findAll(code).count()
+        }
+
+        assertTrue(
+            "把 48 当数值写进 decl 的只许白名单那两处；多出的一律改成引用 AppDimens.TOUCH_TARGET_MIN_DP" +
+                "（版式尺寸也要自己说明它为什么不是下限）。实到：$declarations",
+            declarations.toSet() == allowedDeclarations
+        )
+        assertTrue(
+            "同一条声明被写了不止一次（尺按名字去重会看不见），实到 ${declarations.size} 条",
+            declarations.size == allowedDeclarations.size
+        )
+        // 反证之一：owner 必须在。扫不到就说明锚点或路径错了，整格会恒绿
+        assertTrue(
+            "$ownerPath 里必须还看得到 TOUCH_TARGET_MIN_DP = 48，扫不到说明这把尺已经瞎了",
+            declarations.contains(ownerPath to "TOUCH_TARGET_MIN_DP")
+        )
+        // 反证之二：别名机制得真的有人走，否则白名单会退化成"只有一处 48"的假象。
+        // 判 `==` 而不是 `>=`：14 是本机实扫（`_temp/measure_touch_floor_owners.py`）的数，
+        // 少了就是有人又开始各自抄数（或把 token 改了名而尺没跟着改），多了是加了新的一颗
+        // 下限——两种都该回来把这一行改掉，而不是让它默默地"还过得去"。
+        assertTrue(
+            "指回全局下限的别名登记 14 处，实到 $aliasCount 处",
+            aliasCount == 14
+        )
+        assertTrue(
+            "内联 48.dp 的分布变了：登记 $allowedInlineLiterals，实到 $inlineCounts。" +
+                "多出的是新债；少掉的是还完了——那就把表里那一行删掉",
+            inlineCounts.toMap() == allowedInlineLiterals
+        )
+        allowedInlineLiterals.keys.forEach { path ->
+            assertTrue("$path 已不在原位——表里这一行要一起删掉，别留着当已有闸",
+                File(appRoot, path).isFile)
+        }
+    }
+
+    /**
+     * "文字动作"在设计系统里只有一个所有者。
+     *
+     * §6.1 那张表在 `LbEmptyState` 那一行就写了"可选文字动作；动作热区 ≥48dp"，
+     * 但在这一格之前**这个词只在 `LbAsyncState.kt` 内部存在过**：页面想要一颗别的
+     * 文字动作没地方放，于是首次引导自己画了一颗，本机量到 38x25dp。
+     * 现在两处共用 `LbTextAction`，这一格看着别再分开长。
+     *
+     * ⚠ 这一格判不了"动作该不该在"：如果有人把 `LbEmptyState` 的动作整个删掉，
+     * 这里会绿——那是 `LbAsyncStateTest` 那两格（"必须正好一个动作、点了必须真的执行一次"）
+     * 的职责。两把尺各看一件事。
+     */
+    @Test
+    fun `the design-system text action has exactly one owner`() {
+        val ownerPath = "core/designsystem/LbTextAction.kt"
+        val hostPath = "core/designsystem/LbAsyncState.kt"
+        val sources = kotlinFiles(dir("core", "designsystem")).map {
+            it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
+        }
+        val owner = sources.firstOrNull { it.first == ownerPath }?.second
+            ?: error("$ownerPath 不在了——文字动作又回到没人负责的状态")
+        val host = sources.firstOrNull { it.first == hostPath }?.second
+            ?: error("$hostPath 不在了——四态那格还在测它，先修这一格的说法")
+
+        // 所有者这一侧：三件事各只声明一次（多了就是同一颗上叠了两层语义）
+        listOf(
+            Triple("clickable 挂点", Regex("""\.clickable\("""), 1),
+            Triple("按钮角色", Regex("""\bRole\.Button\b"""), 1),
+            Triple("热区下限", Regex("""heightIn\(min ="""), 1)
+        ).forEach { (what, regex, budget) ->
+            val got = regex.findAll(owner).count()
+            assertTrue(
+                "LbTextAction 里的「$what」应为 $budget 处，实到 $got 处" +
+                    "（0 = 那颗盒子不再自己保证热区；>1 = 同一颗上叠了语义）",
+                got == budget
+            )
+        }
+        // 借用方这一侧：不许再自己画一颗
+        Regex("""\.clickable\(""").findAll(host).count().let { got ->
+            assertTrue(
+                "LbEmptyState 又自己画了一颗动作（实到 $got 处）——它该 call LbTextAction，" +
+                    "否则页级那颗和空态那颗会再次长成两样",
+                got == 0
+            )
+        }
+        Regex("""\bLbTextAction\(""").findAll(host).count().let { got ->
+            assertTrue("LbEmptyState 必须经 LbTextAction 画动作，实到 $got 处", got == 1)
+        }
+    }
 }

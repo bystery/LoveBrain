@@ -92,7 +92,7 @@ import kotlinx.coroutines.launch
 private object ProviderDimens {
     const val STATUS_DOT_SIZE_DP = 6
     /** 添加供应商那一行的最小可点击边界——§6.5 的下限是 48×48dp */
-    const val ADD_ROW_MIN_HEIGHT_DP = 48
+    const val ADD_ROW_MIN_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP
     const val FEATURE_ARROW_SIZE_DP = 20
 }
 
@@ -527,13 +527,21 @@ private fun ProviderEditDialog(
     }
 }
 
-/** 小型开关（48×32 触摸区 + 20dp 圆球） */
+/**
+ * 小型开关（48x32 触摸区 + 20dp 圆球）
+ *
+ * ⚠ 这个注释原来写的是"扩大到 48×32，**满足** 48dp 无障碍下限"——那句是假的：
+ * §6.5 :531 要的是 `bounds ≥48×48`，高度 32 不达标。宽度这一维本来就有 token 可指，
+ * 但整颗换成 `AppDimens.TOUCH_TARGET_MIN_DP` 会把"高也是 48"这件事说得更假，
+ * 所以这一处**故意留在字面量上**（`UiLayerDependencyContractTest` 那把"48 只写一次"
+ * 的闸把它登记成已知缺陷而不是放行），改它的那一格要先在 JVM 语义树里量到这颗开关
+ * ——供应商页已经在页头那一格挂起来过，量得到。
+ */
 @Composable
 private fun MiniSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Box(
         modifier = Modifier
-            // 触摸区从 36×20 扩大到 48×32，满足 48dp 无障碍下限
-            .size(width = 48.dp, height = 32.dp)
+            .size(width = 48.dp, height = 32.dp)   // ⚠ 高度 32 < 下限，见上面那段
             .clip(LoveBrainShape.full)
             .background(if (checked) Primary else Neutral300.copy(alpha = 0.5f))
             .toggleable(
@@ -565,7 +573,7 @@ private fun IconAction(
 ) {
     Box(
         modifier = Modifier
-            .size(48.dp)
+            .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .clip(LoveBrainShape.full)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center

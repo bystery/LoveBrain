@@ -61,8 +61,11 @@ enum class LbTopBarLevel {
 }
 
 private object LbTopBarDimens {
-    /** 页头行高——同时也是返回那颗的热区边长（§6.5 :531 的 48dp 下限） */
-    const val ROW_HEIGHT_DP = 48
+    /**
+     * 页头行高——同时也是返回那颗的热区边长（§6.5 :531 的 48dp 下限）。
+     * 写成下限的别名：这一档**是**因为下限才从 44 抬到 48 的，不是版式自选。
+     */
+    const val ROW_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP
 
     /** 返回箭头字形；热区是整颗 48dp 的盒，不是这个字形 */
     const val BACK_ICON_DP = 22

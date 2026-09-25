@@ -57,6 +57,8 @@ fun LbActionCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = Modifier
+                // 图标方块：版式尺寸，恰好与触摸区下限同数，但**不跟随下限**改——
+                // 所以上面"48 只写一次"那把闸把它列进白名单而不是换成 token。
                 .size(48.dp)
                 .clip(LoveBrainShape.md)
                 .background(PrimaryLight),

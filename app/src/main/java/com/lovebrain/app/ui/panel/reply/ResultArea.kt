@@ -63,7 +63,7 @@ import kotlinx.coroutines.delay
 /** 结果区内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object ResultDimens {
     /** 结果区工具入口的可点击盒子下限（视觉字形仍 28dp） */
-    const val UTILITY_HITBOX_DP = 48
+    const val UTILITY_HITBOX_DP = AppDimens.TOUCH_TARGET_MIN_DP
     const val FILTER_TAB_HEIGHT_DP = 28      // 筛选 Tab 高度
     const val SKELETON_TAG_WIDTH_DP = 60     // 骨架标签条宽度
     const val CURSOR_START_PAD_DP = 1        // 打字机光标左间距

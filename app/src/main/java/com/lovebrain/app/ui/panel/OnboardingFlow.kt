@@ -3,6 +3,8 @@ package com.lovebrain.app.ui.panel
 import com.lovebrain.app.core.designsystem.rememberPressScale
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.res.stringResource
+import com.lovebrain.app.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,10 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
@@ -57,32 +56,18 @@ fun OnboardingFlow(
     LbScreenScaffold(handlesSystemBarInsets = true) {
             // 顶部——跳过。它**不能**换成 LbPrimaryButton：那一页的主动作已经有一颗，
             // §6.1 要的是"页面唯一主动作"，把跳过也做成实心大按钮反而更糟。
-            // 本机量到它原本是 **38x25dp**（:531 下限 48dp），这里只把热区垫到下限、
-            // 外观维持"一行弱化的文字"。⚠ 设计系统目前**没有**"页级弱化文字动作"这颗组件
-            // （48dp 这个下限在浮层动作 `LB_SHEET_ACTION_MIN_DP` 与主按钮
-            // `LB_PRIMARY_MIN_HEIGHT_DP` 各有一份），所以这一处是借下限常量、不是复用组件；
-            // 该补的那颗记在账本 §38.4 与交接单 §4，别当已经收口。
+            // 本机量到它原本是 **38x25dp**（:531 下限 48dp）。外观仍是"一行弱化的文字"，
+            // 但热区/角色/按压这三件事不再由本页自己写一遍——上一格这里只能"借浮层那颗
+            // 下限常量垫高度"（48 在页面级无处可依），现在设计系统有了 `LbTextAction`，
+            // 弱化那一档的语气（labelMedium + TextHint）与原样式逐位相同。
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                val (skipInteraction, skipScale) = rememberPressScale(0.96f, "onbSkip")
-                Text(
-                    text = "跳过",
-                    style = AppTypography.labelMedium,
-                    color = TextHint,
-                    modifier = Modifier
-                        .heightIn(min = LB_SHEET_ACTION_MIN_DP.dp)
-                        .widthIn(min = LB_SHEET_ACTION_MIN_DP.dp)
-                        .graphicsLayer { scaleX = skipScale; scaleY = skipScale }
-                        // clickable 必须排在 padding 之前，否则内边距把热区又削掉一圈
-                        .clickable(
-                            interactionSource = skipInteraction,
-                            indication = null,
-                            role = Role.Button,   // 裸 Text + clickable 时读屏不认它是按钮
-                            onClick = onSkip
-                        )
-                        .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                LbTextAction(
+                    label = stringResource(R.string.onboarding_skip),
+                    onClick = onSkip,
+                    tone = LbTextActionTone.Muted
                 )
             }
 

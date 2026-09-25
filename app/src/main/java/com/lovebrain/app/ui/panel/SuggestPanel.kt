@@ -57,8 +57,8 @@ private object SuggestDimens {
     const val EXAMPLE_MAX_HEIGHT_DP = 96    // 话术主体展开最大高度
     const val CROSS_MARK_TOP_PAD_DP = 1     // 避坑 ✗ 顶部对齐内边距
 
-    /** 卡片折叠入口的最小可点击边界——§6.5 的下限是 48×48dp */
-    const val FOLD_MIN_HEIGHT_DP = 48
+    /** 卡片折叠入口的最小可点击边界——数取自全局那颗下限，这里只留"这是折叠入口"这个名字 */
+    const val FOLD_MIN_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP
 }
 
 /**

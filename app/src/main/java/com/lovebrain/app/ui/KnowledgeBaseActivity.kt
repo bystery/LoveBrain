@@ -71,7 +71,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /** 知识库管理页内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object KbDimens {
-    const val PRIMARY_ACTION_HEIGHT_DP = 48   // 新建/导入/完成大按钮高度
+    const val PRIMARY_ACTION_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP   // 新建/导入/完成大按钮高度
     const val EDIT_ICON_SIZE_DP = 14          // 重命名小铅笔图标
     const val ONBOARDING_SPINNER_SIZE_DP = 18 // 问卷生成中按钮内转圈尺寸
     const val PROGRESS_BAR_HEIGHT_DP = 4     // 问卷答题进度条高度

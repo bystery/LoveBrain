@@ -54,6 +54,7 @@ import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.model.FeedbackCase
 import com.lovebrain.app.model.FeedbackCategory
 import com.lovebrain.app.core.designsystem.rememberPressScale
+import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.Error
@@ -159,7 +160,7 @@ fun FeedbackCasesScreen(
                     val (backInteraction, backScale) = rememberPressScale(0.94f, "backBtn")
                     Box(
                         modifier = Modifier
-                            .size(48.dp)
+                            .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
                             .graphicsLayer { scaleX = backScale; scaleY = backScale }
                             .clip(LoveBrainShape.md)
                             .clickable(
@@ -193,7 +194,7 @@ fun FeedbackCasesScreen(
                 val (exportInteraction, exportScale) = rememberPressScale(0.96f, "exportBtn")
                 Box(
                     modifier = Modifier
-                        .heightIn(min = 48.dp)
+                        .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                         .graphicsLayer { scaleX = exportScale; scaleY = exportScale }
                         .clip(LoveBrainShape.md)
                         .background(if (filtered.isNotEmpty()) Primary else SurfaceInset, LoveBrainShape.md)

@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
  */
 
 /** 对话框里那颗动作按钮的可点击盒子下限——实测 Material 自己只给到 40dp */
-const val LB_DIALOG_ACTION_MIN_DP = 48
+const val LB_DIALOG_ACTION_MIN_DP = AppDimens.TOUCH_TARGET_MIN_DP
 
 /**
  * 正文语气：失败那两类要念得比说明更重。

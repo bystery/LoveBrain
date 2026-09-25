@@ -34,7 +34,7 @@ import com.lovebrain.app.ui.theme.*
 
 /** 面板头部内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object HeaderDimens {
-    const val ROW_HEIGHT_DP = 48            // 头部整行高度——等于无障碍触摸区下限，见 MIN_TOUCH_TARGET_DP
+    const val ROW_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP   // 头部整行高度——等于无障碍触摸区下限，见 MIN_TOUCH_TARGET_DP
     const val CONTROL_HEIGHT_DP = 20        // 三段切换/收起按钮的**视觉字形**高度
     const val BORDER_WIDTH_DP = 1           // 细边框宽度
 
@@ -45,7 +45,7 @@ private object HeaderDimens {
      * 旧实现把 20dp 的胶囊和 24dp 的收起盒子直接当热区，
      * 而这是自定义 Box.clickable，不会由 Material 自动补齐触摸区。
      */
-    const val MIN_TOUCH_TARGET_DP = 48
+    const val MIN_TOUCH_TARGET_DP = AppDimens.TOUCH_TARGET_MIN_DP
     /** 收起按钮热区外包盒——满足 MIN_TOUCH_TARGET_DP */
     const val COLLAPSE_HOTZONE_DP = MIN_TOUCH_TARGET_DP
 }

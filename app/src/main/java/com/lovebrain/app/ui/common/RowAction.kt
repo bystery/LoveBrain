@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.core.designsystem.rememberPressScale
+import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Spacing
@@ -27,9 +28,10 @@ private object RowActionDimens {
      *
      * 旧值 32dp 且 clickable 挂在 vertical padding 之后，实际热区更小；
      * 这是自定义 Box.clickable，Material 不会自动补触摸区。
-     * 视觉胶囊仍按内边距画小，触摸盒补足到 48dp。
+     * 视觉胶囊仍按内边距画小，触摸盒补足到下限。
+     * 数取自 [AppDimens.TOUCH_TARGET_MIN_DP]——这颗数在本仓库只许写一次。
      */
-    const val MIN_HEIGHT_DP = 48
+    const val MIN_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP
     /** 视觉胶囊的垂直内缩 */
     const val VISUAL_VERTICAL_INSET_DP = 10
 }

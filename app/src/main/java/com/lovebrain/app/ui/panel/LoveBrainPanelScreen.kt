@@ -65,7 +65,7 @@ private object PanelDimens {
     const val BANNER_CLOSE_ICON_SIZE_DP = 14
     const val PILL_HEIGHT_DP = 14
     const val PILL_LABEL_GAP_DP = 3
-    const val TOUCH_TARGET_MIN_DP = 48  // 从 24dp 修正为 48dp 无障碍下限
+    const val TOUCH_TARGET_MIN_DP = AppDimens.TOUCH_TARGET_MIN_DP  // 从 24dp 修正为无障碍下限；数只写在全局那颗
     const val GENERATE_BUTTON_GAP_DP = 8
 }
 

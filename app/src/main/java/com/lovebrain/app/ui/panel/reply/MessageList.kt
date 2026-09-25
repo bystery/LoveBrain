@@ -52,7 +52,7 @@ private object MessageDimens {
     const val ROLE_CHIP_HPAD_DP = 6    // 角色 chip 水平内边距
 
     /** 空态那个蓝字入口的最小热区——它是一处操作，不是一行说明 */
-    const val EMPTY_ACTION_MIN_HEIGHT_DP = 48
+    const val EMPTY_ACTION_MIN_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP
 }
 
 @OptIn(ExperimentalFoundationApi::class)

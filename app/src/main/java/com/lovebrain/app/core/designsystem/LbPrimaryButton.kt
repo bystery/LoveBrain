@@ -50,8 +50,8 @@ import androidx.compose.ui.unit.dp
  * 那个参数只能把按钮改得**更高**，永远不能改矮，等于一个不存在的自由度（§7.1 那类死参数）。
  */
 
-/** §6.5 :531——主动作的可点击盒子下限；比它矮的写法在这一格里不可表达 */
-const val LB_PRIMARY_MIN_HEIGHT_DP = 48
+/** §6.5 :531——主动作的可点击盒子下限；比它矮的写法在这一格里不可表达。数指回全局那颗，不另抄一遍 */
+const val LB_PRIMARY_MIN_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP
 
 /** 四态：一旋钮，替代旧的 `ButtonMode` + `enabled` 两个平行旋钮 */
 enum class LbButtonState { Idle, Loading, Disabled, Stop }
