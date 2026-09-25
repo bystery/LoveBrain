@@ -1932,7 +1932,7 @@ revert 时驱动去数 `t.count("")`，得到 7379（= 长度 + 1），"命中�
 
 ## 27.7 这格没做的
 
-- §6.1 表里 B 类还剩两行：**`LbModalSheet`/`LbDialog`**（各页各用 `AlertDialog`，浮层语法没收口）与
+- §6.1 表里 B 类还剩两行（**→ `LbDialog` 半边已还：见 §28，提交 `38520b0`**）：**`LbModalSheet`/`LbDialog`**（各页各用 `AlertDialog`，浮层语法没收口）与
   **`LbScreenScaffold`** 的安全区/统一水平边距部分。别把这一格报成"B 类做完了"。
 - **主操作以外的重复按钮实现没动**：`ui/` 下"Primary 底色 + clickable"这种自造实现实扫 **17 处 / 11 个文件**
   （`KnowledgeBaseActivity:451`、`LoveBrainPanelScreen:213/923`、`OnboardingFlow:304`、`SuggestPanel:213/257`、
@@ -1946,3 +1946,132 @@ revert 时驱动去数 `t.count("")`，得到 7379（= 长度 + 1），"命中�
   tag 的值一字未改、渲染节点仍是那颗标签，但"设备上仍然点得到"这句话要等 CI。
 - 截图基线（§6.5）照旧故意没接；这格改了按钮的着色来源与文本样式收敛，接基线时会看到
   Stop 态标签多了 `maxLines=1/ellipsis`（四态共用一个标签函数），那是刻意的收敛。
+
+---
+
+# 追加十八：§6.1 浮层收口成 `LbDialog`，并量出 11 颗对话框按钮的 40dp 缺陷（提交 `38520b0`）
+
+## 28.1 指导书那一行与仓库当时的形状
+
+指导书 :487：
+
+> | `LbModalSheet/Dialog` | 需要用户决策的浮层；不把展开内容直接插在原页面下方 |
+
+实扫（`grep -c`，剥注释后）生产里直接 call Material 浮层的点：**`AlertDialog(` 11 处 / 6 个文件**
++ 裸 `Dialog(` 1 处（`ProviderSection` 的供应商编辑器）。11 处的写法互不相同：
+
+| 位置 | 标题样式 | 正文 | 动作着色 |
+|---|---|---|---|
+| `KbEditActivity:496` 清空 | `titleLarge` | `bodyMedium` | 清空 Error / 取消 TextSecondary |
+| `KnowledgeBaseActivity:229/255/354/377` | `titleLarge` | `bodyMedium` | Primary / Error / TextSecondary 混用 |
+| `KnowledgeBaseActivity:486` 改名 | `titleLarge` | **`OutlinedTextField`** | 保存带 `enabled` |
+| `FeedbackCasesScreen:360` 导出预览 | **`titleMedium` + SemiBold + 手写 color** | **`labelSmall` + 滚动 Column** | **4 颗**（保存 / 分享 / 复制 / 关闭），复制那颗还按状态换字重 |
+| `FeedbackCasesScreen:433/449` 失败 | `titleMedium` | **Error 色正文** | 关闭 Primary |
+| `AccessibilityDisclosureDialog` | `titleLarge` | Column 五行 + 分隔线 | 同意并继续 / 取消 |
+| `ProviderSection:303` 删除工单 | `titleLarge` | `bodyMedium` | 删除 Error / 取消 |
+
+## 28.2 先量后写：那一颗 40dp 的"确定"
+
+新建 `DialogProbeTest`（它不是守卫，是**探尺**：绿只证明仪器看得见对话框里的节点）量到：
+
+```
+PROBE 对话框按钮实测：「PROBE_CONFIRM_LABEL」 role=Button selected=null state=null 尺寸 188x40dp @(68,120)
+```
+
+⇒ §6.5 :531 要求"所有可点击节点 ≥48×48dp"，而 11 个浮层里的每一颗"确定/取消/删除"都是 **40dp 高**。
+之前那把 48dp 的尺（`SemanticsProbe.assertAllActionableMeetTouchFloor`）从没抓到过这件事，
+原因是它只被用在页面挂载上——**对话框是另一扇窗，没人把尺伸进去过**。
+`LbDialog` 的动作统一垫 `heightIn(min = 48dp)`，`LbDialogTest` 逐颗读 `boundsInRoot` 钉住；
+N1 探针（改成 `min = 8.dp`）当场报出 `3/3 个可交互节点小于 48dp`、
+禁用那颗 `expected:<48.0> but was:<34.0>`，说明这把尺这次是有牙的。
+
+## 28.3 形状上的四个决定（每个都有理由，别当成风格偏好）
+
+1. **颜色来自词表**：`LbDialogActionTone{Accent, Destructive, Muted}` + `LbDialogMessageTone{Plain, Error}`。
+   调用方不再交 `containerColor`/`color`，与 `LbSettingRow`、`LbPrimaryButton` 同一口径。
+2. **`body` 槽**：正文不是一句话的三处（隐私披露的五行长文、改名那颗的输入框、导出预览的滚动区）
+   走 `body`，其余走 `message`。`body` 有值时不再画 `message`——夹具那格要求空白正文节点数为 0。
+3. **`secondary` 上限 3 并抛**：`require(secondary.size <= 3)`。一个主动作 + 最多三个次级；
+   再多说明这不是对话框该装的东西（该走 Sheet 或独立 screen）。N3 探针把上限放宽到 9，
+   "拒绝第四颗"那格立刻红 ⇒ 这条不是注释而是行为。
+4. **`enabled` 留着，但与上一格删掉的 `mode`+`enabled` 不是一回事**：
+   主动作那两个旋钮编码的是**同一根轴**（我处在哪个状态）⇒ 并成一棵 `LbButtonState`；
+   对话框动作的 `enabled` 是**另一根轴**（表单此刻填没填满，比如"显示名不许为空"）⇒ 保留。
+   这个区别写在 KDoc 里，免得下一个人顺手把它也"收"掉。
+
+ProviderSection 那颗自造 `Dialog(`（供应商编辑器）**没**并进来：它是十几字段的完整表单，
+属于表里 Sheet 那一类，而 Sheet 半边这格没做。它在闸里被**点名豁免**并写明原因——是欠账，不是漏网。
+
+## 28.4 新闸：`floating decision surfaces have exactly one owner`
+
+`AlertDialog(` 全仓只许出现在 `core/designsystem/LbDialog.kt` 且恰 1 处；
+裸 `Dialog(` 只许出现在点名豁免表里、且**每处的计数要逐一对上**。
+第二条的后半是故意的：豁免登记 1 处，如果哪天那处被删了，`got != want` 也会红——
+**不成立的豁免比没有豁免更危险**（它会让人以为这件事已被管住）。
+
+顺带确认了 `\b` 在这把尺上的作用：`ProviderEditDialog(`、`LbDialog(` 都以 `Dialog(` 结尾，
+但 `\bDialog` 要的是词边界，所以它们不被算成"裸 `Dialog(`"。第一版没写 `\b` 的话豁免计数会是 3。
+
+## 28.5 字面量账本：两栏一起动，逐条核过没逃
+
+| 栏 | 上一格 | 这一格 | 差 |
+|---|---|---|---|
+| TEXT | 246 | 209 | −37 |
+| COMPONENT | 16 | 59 | +43 |
+| 合计 | 262 | 268 | **+6** |
+
+- **37 处换了形状**：`Text("取消")` → `LbDialogAction(label = "取消")`，从 TEXT 进 COMPONENT，一条没还。
+- **+6 是以前两栏都看不见的既有债**：写在 `TextButton(onClick = { … })` 里的提示语
+  （"清空失败，请重试"、"文件已被后台修改，请重新打开"、"没有可用的分享应用"、"分享到"…），
+  搬进 `LbDialogAction(onClick = { … })` 之后才落进实参切片 ⇒ 涨的是量具新看见的，不是这次新塞的
+  （与 209 → 254 那次换尺同一回事，写在预算旁边）。
+- 另外核到两条"看起来消失"的串是**转义写法变了**：
+  `"\u201c消息捕获\u201d"` 与 `“消息捕获”` 逐码点相同（60/60、56/56 字符），不是删了文案。
+- **这把尺自己也修了一处重复计数**：嵌套 `LbDialog(…, confirm = LbDialogAction(…))` 时
+  外层实参切片含内层那条串一次、内层锚点又数一次。按锚点求和 ⇒ 同一次实扫 **85**；
+  按字符区间去重 ⇒ **59**。不去重的话"把一颗按钮拆成两颗 Lb 组件"都会让数字涨，那涨的是量具。
+  夹具补了 H.kt 当牙（N5 退回求和版本，那格立刻 `expected:<3> but was:<4>`）。
+
+## 28.6 变异：七发，其中两发第一版是无效探针
+
+| 探针 | 改了什么 | 结果 |
+|---|---|---|
+| N1 | 动作 `heightIn(min = 8.dp)` | `对话框 有 3/3 个可交互节点小于 48dp`、禁用那颗 `expected:<48.0> but was:<34.0` |
+| N2 | `TextButton(enabled = true)` 不再透传 | `禁用那颗必须带 Disabled 语义` 红 |
+| N3 | 上限 3 放宽成 9 | `超过 3 颗次级出口应当抛，实到异常：null` 红 |
+| N4 | `text = null`（正文槽不接） | 标题/正文格 + body 格两格红 |
+| N5 | COMPONENT 退回按锚点求和 | 夹具 H 那格 `expected:<3> but was:<4` 红（顺带增长闸） |
+| N6 | 生产里再直接 call 一颗 `AlertDialog` | 所有者闸点名 `[ui/home/HomeComponents.kt]`（同时涨字面量闸） |
+| N7 | 豁免文件再加一颗裸 `Dialog(` | `实到 2，豁免登记的是 1` 红 |
+
+⚠ **N6/N7 第一版根本没跑到测试**：注入的 Kotlin 编译不过（只给两个实参时 `AlertDialog` 解析到了
+"自定义 content"那个 overload，`title` 就成了未知参数；`Dialog(properties = {})` 类型也不对）。
+读结果的脚本只看"有没有新鲜的失败 XML"，于是把这种情况报成 **"探针没咬（恒绿）"**——
+那是把"我的探针无效"误报成"我的闸没牙"，比假绿更坏，因为它会让人去改闸。
+现在 runner 先分诊：日志里有 `e:`/`Compilation error` 就报"这一发作废"，并打印前三条编译错误。
+
+## 28.7 实测
+
+| 项 | 结果 |
+|---|---|
+| `:app:compileDebugKotlin` / `UnitTestKotlin` / `compileDebugAndroidTestKotlin` | RC=0 / RC=0 / RC=0 |
+| `:app:testDebugUnitTest` 全量 | **164 套件 / 1268 例 / 0 红 / 0 跳过**（上一格 162/1260；+2 套 = `LbDialogTest`、`DialogProbeTest`） |
+| `:app:lintDebug` + `check_lint_budget.sh` | RC=0 / RC=0：`measured 68 / rules 15`、入预算 `67 / 14`、advisory 1（条数与上一格一字不动） |
+| `test_check_lint_budget.sh` / `strip_ticket_ids --check` / `asset_hashes --check` | RC=0 / RC=0 / RC=0 |
+| `package_deps_report.sh --count` | RC=0，仍是 **6** 笔同一批文件 |
+| 探针撤回后核账 | 四个被改文件与 `_temp/mut73-backup/` 逐字节 IDENTICAL |
+
+## 28.8 这格没做的
+
+- §6.1 这一行**只做了一半**：Dialog 半边收口，**`LbModalSheet` 半边没有**。
+  表里那句还有后半段"不把展开内容直接插在原页面下方"——那说的是面板里
+  `DislikeReasonPanel`、`CorrectionCenter`、`RecordSentDialog` 这类"插在原页面下方"的展开内容，
+  归 §6.4（`ResultArea` 拆分 + state holder + modal host），这格一处都没动。
+- 供应商编辑器那颗裸 `Dialog(` 仍在（已点名豁免）。它要并进去，得先有 Sheet 那一半。
+- 对话框的**可见性本身**仍无守卫：11 处浮层里"什么时候弹、弹了挡住什么操作、返回键算不算取消"
+  这些语义一条 JVM 断言都没有（这格只钉了"弹出来之后长什么样、点不点得到"）。
+- `LbDialogTest` 钉的是组件自己：11 个**调用点**没有逐屏用例（改名那颗的输入框、导出预览那四颗
+  按钮的实际渲染），只有组件层 + "只有一个所有者"那把闸在守。设备侧同样没跑（本机无 system image）。
+- 截图基线（§6.5）照旧故意没接。这格之后接基线会看到的可见变化：对话框标题统一成 `titleLarge`
+  （导出预览、导出失败、操作失败那三屏的标题变大）、按钮统一 SemiBold + 48dp 热区、
+  复制那颗不再按状态换字重（文案仍换）。

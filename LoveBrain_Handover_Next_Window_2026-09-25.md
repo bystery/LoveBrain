@@ -351,6 +351,36 @@ HEAD `0c4d6d6`，仍未推。两笔：
 - 实测：162 套件 / **1260 例** / 0 红；lint RC=0（68/15，入预算 67/14，advisory 1）；
   工单、资源锁、预算自测、跨层 6 笔、androidTest 编译全 RC=0；九发探针各咬各的。
 
+## 0.16 又一步：§6.1 浮层收口成 `LbDialog`，并量出 11 颗对话框按钮的 40dp 缺陷（`38520b0`）
+
+- 表里 :487 那一行的 **Dialog 半边**：生产原先 11 处直接 call Material `AlertDialog`
+  （标题三种写法、正文三种样式、按钮着色混用、导出预览那屏塞了 **4 颗按钮**），现在全走
+  `core/designsystem/LbDialog.kt`。裸 `Dialog(` 那一颗（供应商编辑器，十几字段的表单）
+  **没并进来**——它属于还没做的 Sheet 那一类，在闸里点名豁免并写明原因。
+- **先量后写量出一条真缺陷**：新加的 `DialogProbeTest`（探尺，不是守卫）实量 Material 对话框里的
+  `TextButton` 只有 **188x40dp**，而 §6.5 :531 的下限是 48dp ⇒ 仓库里 11 个浮层的"确定/取消/删除"
+  全都低于下限，而之前那把 48dp 的尺**从没往对话框里看过**（它扫页面节点，对话框是另一扇窗）。
+  `LbDialog` 把动作垫到 48dp，`LbDialogTest` 逐颗读 `boundsInRoot` 钉住。
+- 颜色进两张小表（`LbDialogActionTone{Accent,Destructive,Muted}`、`LbDialogMessageTone{Plain,Error}`），
+  不再让调用方交 color；长正文/输入框/滚动区走 `body` 槽；次级出口上限 3、超限直接 `require` 抛。
+  **`LbDialogAction.enabled` 保留**：主动作那格删掉的 `mode`+`enabled` 编码的是同一根轴，
+  这里的 `enabled` 是另一根轴（"显示名不许为空"这种表单就绪度）——区别写在 KDoc，别顺手也收掉。
+- 新闸 `floating decision surfaces have exactly one owner`：`AlertDialog(` 全仓只许 `LbDialog.kt` 且恰 1 处；
+  裸 `Dialog(` 只许点名豁免且**逐处计数对上**——豁免不成立时也要红（不成立的豁免比没豁免更危险）。
+  顺带一个正则细节：`\bDialog` 的词边界让 `LbDialog(`、`ProviderEditDialog(` 不被误算成裸 `Dialog(`。
+- 字面量账本两栏一起动，逐条核过：TEXT 246→209（−37 换形状）、COMPONENT 16→59（+37 换进来、
+  另 **+6 是以前两栏都看不见的既有提示语**，写在 `TextButton(onClick = { … })` 里那批）。
+  总数 262→268 涨的是量具新看见的既有债，不是这次新塞的。另外两条"看着消失"的串是
+  `\u201c` 改成直写弯引号，逐码点相同（60/60、56/56）。
+- **把自己一把尺的重复计数也修了**：嵌套 `LbDialog(…, confirm = LbDialogAction(…))` 按锚点求和会数两遍
+  （同一次实扫 85 vs 按区间去重 59），改成去重 + 补夹具 H 当牙。不去重的话"拆一颗按钮成两颗组件"都涨。
+- ⚠ **坑表 65 是新的一类**：N6/N7 第一版注入的 Kotlin 编译不过（`AlertDialog` 只给两个实参会解析到
+  "自定义 content" overload，`Dialog(properties = {})` 类型也不对），测试压根没跑，
+  而 runner 只看"有没有新鲜的失败 XML" ⇒ 报成 **"探针没咬（恒绿）"**。
+  那是把"我的探针无效"误报成"我的闸没牙"，比假绿更坏（会让人去改闸）。runner 现在先分诊编译失败。
+- 实测：164 套件 / **1268 例** / 0 红；lint 68/15（条数一字未动）、各闸 RC=0、跨层 6 笔；
+  七发探针 N1-N7 各咬各的，撤回后四个文件与备份逐字节 IDENTICAL。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -371,9 +401,9 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 #   只动 main 源文件时 testDebugUnitTest 会判 UP-TO-DATE 跳过、退出码仍然 0（见 §6 第 62 条）
 ```
 
-最近一轮实测基线（到 `d8f36d2`）：**1260 单测 / 162 套件 / 0 失败 / 0 错误 / 0 跳过**
-（跑在变异全撤之后的树上）。与上一格对账：1253 → 1260 = +7，160 → 162 套 = +2（本格两个新文件）。
-lint 报告**重新生成后**实测 **68 / 15**、进预算 **67 / 14**、advisory 1。
+最近一轮实测基线（到 `38520b0`）：**1268 单测 / 164 套件 / 0 失败 / 0 错误 / 0 跳过**
+（跑在变异全撤之后的树上）。与上一格对账：1260 → 1268 = +8，162 → 164 套 = +2（`LbDialogTest`、`DialogProbeTest`）。
+lint 报告**重新生成后**实测 **68 / 15**、进预算 **67 / 14**、advisory 1（这一格收了 11 处浮层，条数一字未动）。
 比上一格少的这 1 条是 `AutoboxingStateCreation` 6→5（退役按钮里那个 `mutableStateOf(0)` 计时器，
 新代码写 `mutableIntStateOf`），逐条核过剩余 5 条位置都不在退役文件里才 `--rewrite`
 ⇒ **这是还掉了一条债，不是量的时刻不同**（还债后必须落账这件事，交接单 §0.15 有全程）。
@@ -386,7 +416,7 @@ LbSettingRow / LbMetricGrid / LbTags / PressScale**；`ui/theme/` 只剩 `Theme.
 HomeAboutEntry / AssistantStatusCard）；`ui/panel/reply/GenerationActionButton.kt`（196 行）已退役进
 `_temp/GenerationActionButton.kt.retired-2026-09-25`，主动作改由 `core/designsystem/LbPrimaryButton.kt` 承担；`HomeScreen.kt` 216 → 217 → 226 行（两个调用点、删死 import，
 再加两个默认值即原行为的 override 参数）。
-**字面量预算现在是四栏**：TEXT 246 / DESC 12 / STATE 0 / **COMPONENT 16**（这格新加，见 §6 第 61 条）。
+**字面量预算四栏**：TEXT 209 / DESC 12 / STATE 0 / COMPONENT 59（`38520b0` 两栏一起动过，逐条核账与 +6 的来源见账本 §28.5；COMPONENT 已改成按区间去重，见同节末）。
 VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件计数：>500 行 17 个、>800 行 10 个**。
 
 ## 2. 被证伪的判断（逐条累加，别再当依据；条数以此表实际行数为准）
@@ -465,10 +495,14 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
    全在 `core/designsystem/`。钉住它的是 `UiLayerDependencyContractTest` 新那格：
    旧名字全仓声明数 0 / 新名字全仓恰 1 / 那 1 处在 core 子树里（P1-P4 四发各咬一条，见账本 §26.5）。
    `LbRowState` 与 `LbStatus` 仍然没并（两张表各守一域，并了读屏会对着供应商行念「运行中」）。
-   **表里只剩 2 行没主人**（B 类第一行 `LbPrimaryButton` 已于 `d8f36d2` 落地，见 §0.15 与账本 §27；
-   它是四行里唯一「要从行为里抽出来」而不是改名的那一行）：
-   - **B 类「真没有同名物」（2 行）**：`LbModalSheet`/`LbDialog`（今天各页各用 `AlertDialog`，
-     禁 Toast 那条已锁但浮层语法没收口）、`LbScreenScaffold` 的安全区与统一水平边距部分。
+   **表里只剩 1 行没主人**（`LbDialog` 半边已于 `38520b0` 收口，见 §0.16 与账本 §28：
+   生产 11 处 `AlertDialog` 全走组件，且量出并修掉"对话框里的按钮只有 40dp"这条缺陷）：
+   - **还欠 `LbScreenScaffold`**（页面背景 / 安全区 / 统一水平边距），以及 `LbModalSheet`
+     **那一半**——表里 :487 的后半句「不把展开内容直接插在原页面下方」说的是面板里
+     `DislikeReasonPanel`/`CorrectionCenter`/`RecordSentDialog` 这类展开内容，
+     归 §6.4 的 `ResultArea` 拆分 + state holder + modal host，`38520b0` 一处没动。
+   - 另外两件小的仍欠：供应商编辑器那颗裸 `Dialog(`（在闸里**点名豁免**，等 Sheet 出现再并）；
+     以及"对话框什么时候弹、返回键算不算取消"这类**可见性语义**一条断言都没有（§28.8）。
    **主操作以外的重复按钮实现一处都还没收**（全表在账本 §27.7）：`ui/` 下"Primary 底色 + clickable"
    实扫 **17 处 / 11 个文件**。别按数量收口——哪些算"页面主动作"、哪些是 chip / 切换 / 次级动作，
    要一处一处判语义；`054c6e8` 那把归属棘轮只认**声明处**，抓不到"用同一颗组件却自造样式"。
@@ -570,6 +604,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 | `11e121f` | §6.2 首页四段的第一条自动守卫：5 格语义树用例逐条对到那五句话（四段顺序 / 唯一主按钮 + 只在可隐藏时 + 右上角坐标 / 两张同颗快捷卡 / 两行设置 + 三等分宽度 / 子屏幕的东西没摊在首页，含反空跑断言）；`LbHomeTags` 八个锚点（同时是将来截图基线的定位点）；`HomeScreen` 加两个默认值即原行为的 override 参数（系统权限与进程内单例原本是藏在判据里的前提）；变异 H1–H5 各红该红那格，H2/H4/H5 同落第②条故分三跑 |
 | `054c6e8` | §6.1 五颗 A 类组件归 `core/designsystem` 并按表改名（`HomeTopBar`→`LbTopBar`、`HomeSectionHeader`→`LbSection`、`HomeActionCard`→`LbActionCard`、`HomeSettingRow`→`LbSettingRow`、`UsageSummary`/`UsageMetric`→`LbMetricGrid`/`LbMetricCard`）；`HomeComponents.kt` 545→249 行；`LbTopBar` 收成 `title/subtitle/trailing` 三槽（第一版把首页文案与关于图标搬进设计系统 = 设计系统认识了一个具体页面，已改回）；`rememberPressScale` 从 `ui/panel/DragHandle.kt` 抽进 core（22 处 import 改写，core 不该 import ui）；组件自持 tag 进 `LbTags.kt`（`lb_home_*`→`lb_*`），`LbSettingRowStateTest` 随组件搬包。**搬家照出三把瞎尺**（坑表 61–63）：TEXT 247→246 是串逃出锚点不是还债（补 `Kind.COMPONENT`，实扫 16，246+1 对齐旧 247）；Gradle 对读源码的门禁判 UP-TO-DATE 让变异假绿（从此 `--rerun` + 比 mtime）；`typealias` 分支的字符类写死、按文件去重数声明。**新尺**：旧名字全仓 0 / 新名字全仓恰 1 / 那 1 处在 core 子树里，P1–P4 各咬一条 + P5 咬 COMPONENT 增长；§25 那五发 H1–H5 搬家后重跑照红 |
 | `d8f36d2` | §6.1 表里 B 类第一行：`ui/panel/reply/GenerationActionButton.kt`（196 行、两个平行旋钮 `mode:ButtonMode` + `enabled`）收成 `core/designsystem/LbPrimaryButton.kt` + 一颗 `LbButtonState`（Idle/Loading/Disabled/Stop，非法组合不可表达）；删掉三个死东西（`heightDp` 只能改高不能改矮、LOADING 那个传成 `""` 的 `text`、0 人传过的 `textColor`），颜色收进 `LbButtonTone{Primary,Deep}`，停止锚点进 `LbTags.PRIMARY_STOP` 而**值一字未改**（仍是 `generation_stop_action`）。**两件刻意留在 reply 层**：那句「分析对话 · 7s 点击停止」与 5s/15s 阶段规则（上一格刚犯过「设计系统认识了一个具体页面」），阶段规则顺手抽成纯函数 `generatingPhaseResFor` 才有 2 格穷举。新守卫 5 格语义树（四态同盒 `0/0/360/48` ×4、逐态 48dp、Disabled 不消失且带 disabled 语义、三态点得动而 Disabled 点不动、停止锚点只属 Loading）；**老 7 格 §2.1 合同一字未改仍然绿**才是「换实现没换行为」的主证。九发探针 M1-M9 各咬各的；M5 第一版用空串当替换文本 ⇒ revert 时 `count("")`=7379 把文件留在变异态，靠 apply 前先落盘的 `_temp/mut72-backup/` 还原（坑表 64）。lint `AutoboxingStateCreation` 6→5 逐条核过剩余 5 条位置才 `--rewrite`（diff 只动一行） |
+| `38520b0` | §6.1 :487 的 Dialog 半边：生产 11 处直接 call Material `AlertDialog` 全收进 `core/designsystem/LbDialog.kt`（标题/正文/动作样式一处决定，颜色进 `LbDialogActionTone`/`LbDialogMessageTone` 两张小表，长文与输入框走 `body`，次级出口上限 3 超限抛）。**先量后写量出真缺陷**：`DialogProbeTest` 实量 Material 对话框里的 `TextButton` 只有 188x40dp，低于 §6.5 的 48dp，而之前那把 48dp 的尺从没往对话框里看过——`LbDialog` 垫到 48dp，`LbDialogTest` 6 格读 `boundsInRoot` 钉住。新闸 `floating decision surfaces have exactly one owner`（`AlertDialog(` 只许一处、裸 `Dialog(` 逐处对豁免表计数，豁免不成立也要红）。字面量两栏一起动并逐条核账：TEXT 246→209（−37 换形状）、COMPONENT 16→59（+37 换进来 +6 是以前两栏都看不见的既有提示语）；顺手修掉这把尺的嵌套重复计数（按锚点求和 85 → 按区间去重 59）并补夹具 H 当牙。探针 N1-N7 各咬各的；**N6/N7 第一版是无效探针**（注入代码编译不过被误报成"没咬"），runner 已加分诊（坑表 65）。lint 68/15 一字未动、跨层 6 笔、全量 164/1268 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -581,7 +616,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N 次才坏"的桩
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
-## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64 变异探针不许用空串替换）
+## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -778,6 +813,17 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     （本轮换成 `testTag(LbTags.SECTION)`——停止锚点数照样从 1 变 0，效果等价且可逆）；
     ②每轮探针跑完拿备份逐文件 `cmp`，**别只看退出码**：这条与"记账必须在副作用之前落盘"
     （第 34 号那一族）是同一个病在变异工具上的复发。
+
+65. **"探针没咬"和"探针没跑到"是两件事，混淆会把人推向改闸**（`38520b0` 那一格，N6/N7 两次）：
+    我注入的 Kotlin 本身编译不过（`AlertDialog` 只给两个实参会解析到"自定义 content"那个 overload，
+    `title` 就成了未知参数；`Dialog(properties = {})` 类型也不对），于是
+    `:app:compileDebugKotlin FAILED` → 测试任务根本没跑 → 结果目录里没有新鲜的失败 XML。
+    而读结果的脚本只看"有没有失败记录"，把这种情况报成 **"探针没咬（恒绿）"**。
+    ⇒ 那句话的意思会被读成"我的闸没牙"，而真实原因是"我的反例是废的"——**两者要的处理完全相反**
+    （前者该改闸，后者该改探针）。所以变异 runner 必须先把编译失败单独分诊出去：
+    日志里有 `e:`/`Compilation error` 就报"这一发无效"，并打印前三条编译错误，再谈红不红。
+    同一族的另一半：注入形状要用**生产真会写的那种形状**（补齐 `text`/`confirmButton` 实参），
+    不然测的是一个不存在的写法。
 
 ## 7. 硬约束（一条没变）
 
