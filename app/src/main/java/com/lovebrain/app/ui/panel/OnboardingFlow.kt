@@ -3,21 +3,15 @@ package com.lovebrain.app.ui.panel
 import com.lovebrain.app.core.designsystem.rememberPressScale
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,7 +19,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
@@ -58,7 +55,13 @@ fun OnboardingFlow(
     // insets 保持它原本有的那一份（显式传 true，不靠默认），真机上够不够、
     // 会不会加两遍仍只能等设备定，账本 §36 记着这条边界。
     LbScreenScaffold(handlesSystemBarInsets = true) {
-            // 顶部——跳过按钮
+            // 顶部——跳过。它**不能**换成 LbPrimaryButton：那一页的主动作已经有一颗，
+            // §6.1 要的是"页面唯一主动作"，把跳过也做成实心大按钮反而更糟。
+            // 本机量到它原本是 **38x25dp**（:531 下限 48dp），这里只把热区垫到下限、
+            // 外观维持"一行弱化的文字"。⚠ 设计系统目前**没有**"页级弱化文字动作"这颗组件
+            // （48dp 这个下限在浮层动作 `LB_SHEET_ACTION_MIN_DP` 与主按钮
+            // `LB_PRIMARY_MIN_HEIGHT_DP` 各有一份），所以这一处是借下限常量、不是复用组件；
+            // 该补的那颗记在账本 §38.4 与交接单 §4，别当已经收口。
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
@@ -69,9 +72,17 @@ fun OnboardingFlow(
                     style = AppTypography.labelMedium,
                     color = TextHint,
                     modifier = Modifier
+                        .heightIn(min = LB_SHEET_ACTION_MIN_DP.dp)
+                        .widthIn(min = LB_SHEET_ACTION_MIN_DP.dp)
                         .graphicsLayer { scaleX = skipScale; scaleY = skipScale }
-                        .clickable(interactionSource = skipInteraction, indication = null, onClick = onSkip)
-                        .padding(horizontal = Spacing.md, vertical = Spacing.sm)
+                        // clickable 必须排在 padding 之前，否则内边距把热区又削掉一圈
+                        .clickable(
+                            interactionSource = skipInteraction,
+                            indication = null,
+                            role = Role.Button,   // 裸 Text + clickable 时读屏不认它是按钮
+                            onClick = onSkip
+                        )
+                        .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                 )
             }
 
@@ -290,23 +301,20 @@ private fun ConfigItem(text: String, onClick: () -> Unit) {
 }
 
 @Composable
+/**
+ * 首次引导每一步的主动作——走 `LbPrimaryButton`。
+ *
+ * 之前它是一颗自己拼的 `Box.fillMaxWidth.background(Primary).clickable.padding(md)`，
+ * 本机量到 **312x34dp**（§6.5 :531 的下限是 48dp）。形状本身和
+ * `LbPrimaryButton` 一模一样（整宽、品牌底、白字加粗），也就是 :490
+ * "只在一个页面看起来不一样的按钮"的标准样本——它不是看起来不一样，
+ * 它是**同一个语义长出了第二份实现**，连热区都各修各的。
+ */
 private fun OnboardingButton(text: String, onClick: () -> Unit) {
-    val (interaction, scale) = rememberPressScale(0.96f, "onbBtn")
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(24.dp))
-            .background(Primary)
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
-            .padding(vertical = Spacing.md),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            style = AppTypography.labelLarge,
-            color = androidx.compose.ui.graphics.Color.White,
-            fontWeight = FontWeight.SemiBold
-        )
-    }
+    LbPrimaryButton(
+        state = LbButtonState.Idle,
+        label = text,
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth()
+    )
 }

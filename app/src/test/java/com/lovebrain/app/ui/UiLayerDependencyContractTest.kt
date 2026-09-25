@@ -427,6 +427,76 @@ class UiLayerDependencyContractTest {
     }
 
     /**
+     * §6.1 :490「禁止创建只在一个页面看起来不一样的按钮/卡片」——**只数趋势，不判对错**。
+     *
+     * 判据：`ui/` 下"在同一个 `.background(...)` 里出现品牌色"的出现次数，按文件记，
+     * 每个文件**只许往下**。
+     *
+     * ⚠ 这把尺**证明不了任何一处"该搬"**，这一点必须写在代码里而不只在注释里：
+     * 同样一串 `.background(Primary…)` 里，有页面主动作（该走 `LbPrimaryButton`）、
+     * 有选中态 chip（就该是那个样子）、有"生成中/停止"这种带状态的切换、
+     * 也有面板自身的表面色。谁算哪种是**逐处读语义**读出来的，那份判读在账本 §38
+     * （连同本机量到的两处真缺陷）。
+     * 所以这一格只买一样东西：**别再长新的**。热区/角色这类真性质
+     * 由 `SemanticsProbe` 那些格子判（`OnboardingPrimaryActionTest` 就是这么量到
+     * 38x25dp 与 312x34dp 的），不由这一格判。
+     *
+     * 本机实扫（`_temp/ratchet_counts.json`）：**25 处 / 12 个文件**。
+     *
+     * ⚠ 这把尺与"自造按钮清单"是**两把不同的尺，别混成一个数**：
+     * - 本格这把数的是"品牌色涂在某个 `.background(...)` 里"，**不管它可不可点**——
+     *   所以面板表面、加载条、行底色都算，实扫 **25 处 / 12 个文件**；
+     * - `_temp/scan_primary_buttons.py` 那把要求**同一条 Modifier 链上有 `.clickable`**，
+     *     才是"能按下去的自造按钮"，实扫 **19 处 / 8 个文件**（本格登记前是 20 处 / 9 个文件，
+     *   首次引导那颗主按钮搬进 `LbPrimaryButton` 后各减一处）。
+     * 两个数都对，只是量的不是同一件事——写成一个数就是假账。
+     *
+     * 上一格收首次引导那颗主按钮，就是从这两堆里各销掉的一处。
+     */
+    @Test
+    fun `hand-drawn brand-toned surfaces do not grow`() {
+        val perFileBudget = mapOf(
+            "bubble/FloatingBubble.kt" to 1,
+            "KnowledgeBaseActivity.kt" to 2,
+            "panel/AiLoadingRow.kt" to 1,
+            "panel/counseling/CounselingPanel.kt" to 4,
+            "panel/LoveBrainPanelScreen.kt" to 3,
+            "panel/OnboardingFlow.kt" to 1,
+            "panel/PanelHeader.kt" to 1,
+            "panel/reply/CorrectionCenter.kt" to 1,
+            "panel/reply/MessageList.kt" to 1,
+            "panel/reply/ResultArea.kt" to 5,
+            "panel/reply/SchemeCard.kt" to 1,
+            "panel/SuggestPanel.kt" to 4
+        )
+        val total = perFileBudget.values.sum()
+        assertTrue("登记的就是本机实扫的 25 处，表本身错了要先修表", total == 25)
+
+        val pattern = Regex(
+            """\.background\(\s*(?:color\s*=\s*)?[^)]*\b(?:Primary|PrimaryDark|PrimaryLight)\b"""
+        )
+        val uiRoot = dir("ui")
+        val found = kotlinFiles(uiRoot).map {
+            it.relativeTo(uiRoot).invariantSeparatorsPath to pattern.findAll(codeOf(it.readText())).count()
+        }.filter { it.second > 0 }.toMap()
+
+        val grew = found.filter { (path, n) -> (perFileBudget[path] ?: 0) < n }
+        assertTrue(
+            "这些文件里自己画品牌色底的数量涨了（§6.1 :490 要的是别再长新的）：$grew；" +
+                "登记的是 ${perFileBudget.filterKeys { k -> found[k] ?: 0 > 0 }}",
+            grew.isEmpty()
+        )
+        // 反证之一：表里登记的每一项都要真在盘上，别留一条指向不存在文件的额度当"管住了"
+        perFileBudget.keys.forEach { path ->
+            assertTrue("$path 已不在 ui/ 下——表里这一行要一起删掉，别留着当已有闸",
+                File(uiRoot, path).isFile)
+        }
+        // 反证之二：这把尺必须看得见东西，扫到 0 就是正则坏了
+        assertTrue("实扫到 ${found.values.sum()} 处，为 0 说明锚点失效（恒绿假闸）",
+            found.values.sum() > 0)
+    }
+
+    /**
      * 声明的形状：`fun X(`、`typealias X =`、`class|enum class|interface X {|<|(:`。
      *
      * 三支都得在：`typealias` 后面跟的是 `=` 不是 `(`（第一版就漏在这一支上，
