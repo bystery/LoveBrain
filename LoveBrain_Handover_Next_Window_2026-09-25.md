@@ -354,7 +354,7 @@ VM 里私有 `MutableStateFlow` 用同一把尺量仍是 **39 → 31 → 30 → 
 | `26ecf95` | 编辑位重算三处并成一条判据 `MessageListEditing.reindex`；**先**用真实 VM 穷举 130 组不变式证明三处本来就一致（没找到 bug，但从此有网），**再**合并；悬空编辑位拧成"没有编辑位"；flow 数不变（那是规则不是状态） |
 | `0e83c95` | 输入框在语义树上有名字（§6.5 无障碍第②栏）：`PanelTextInput` + `CompactInput` 挂 `contentDescription = placeholder`，视觉未变；新 JVM 语义树 5 格，注入撤掉两处 → 五格全红。同轮量完回滚族：**判定不做**（缺口不可达），理由与判断强度记在账本 §19.1 |
 | `3dc2180` | §6.3 第三家：知识库页判据并成一处 `kbScreenState`、版式走 `LbAsyncState`，空态那颗动作真开向导；给 `loadState()` 一条诚实的读失败通道（原来抛出=永远转圈）；量出并修掉页头「返回」32→48dp；新 15 格 + 变异 M1–M4；字面量预算 250→247 |
-| `cbcdebe` | §6.5 那颗 288×15dp 的输入框：`INPUT_ROW_HEIGHT_DP` 36→48（共享档，复用方 4 处），并把 `heightIn(min=48)` 挂到 `CompactInput` 与 `PanelTextInput` **各自的可编辑节点**上；基线锁同步改 48 并注明故意漂移；补 2 格尺寸断言，N1/N5 两条变异各红各的节点（不是一张网蹭另一张网） |
+| `cbcdebe` | §6.5 那颗 288×15dp 的输入框：`INPUT_ROW_HEIGHT_DP` 36→48（共享档，实扫 4 个文件 / 5 处代码点：CompactInput 1、ProviderSection 2、KbEditActivity 1、ReplyInput 默认高 1），并把 `heightIn(min=48)` 挂到 `CompactInput` 与 `PanelTextInput` **各自的可编辑节点**上；基线锁同步改 48 并注明故意漂移；补 2 格尺寸断言，N1/N5 两条变异各红各的节点（不是一张网蹭另一张网） |
 | `054b789` | §6.3 第四家（四家齐）：捕获范围页判据并成 `captureScreenState`、inset 卡片与内联文字删掉、状态行改用首页同款文案；`selectableCaptureTargets` 改可空，"读不出来"不再报成"没有 App"（空表仍不许升格成失败，反向用例钉着）；**只有三格并写明 Loading 无信号**；新 16 格 + 变异 N1–N5；`AutoboxingStateCreation` 7>6 用 `mutableIntStateOf` 修（没抬预算），`PluralsCandidate` 3→2 落账 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
