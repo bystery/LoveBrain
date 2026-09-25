@@ -1187,6 +1187,7 @@ N3 重试不再触发重扫 → `Verification failed: call 1 of 1 … needs at l
 - JVM 上 `ResolveInfo.loadLabel` 取不到标签 ⇒ 断言里 displayName 就是包名；
   真机上排序键会随标签变，**这条差异本轮没有任何用例覆盖**（androidTest 里也没有捕获页的用例）。
 - §6.4 `ResultArea` 拆分、§6.1 那九颗 `Lb*` 组件与令牌迁移仍未动。
+
 ---
 
 # 追加十二：design token 整体搬进 core/designsystem（第三步-1 的前半），两把尺一起收紧
@@ -1299,3 +1300,139 @@ N3 重试不再触发重扫 → `Verification failed: call 1 of 1 … needs at l
 - 顺带记一条界线，免得以后一刀切：这格读源码是正当的（token 定义本身就是被测对象），
   而"别拿源码 grep 当 UI 证据"那条针对的是**尺寸/热区/层级**这类必须读语义树的事实。
   同一种"读文件"的断言，一个该读、一个不该读，区别在被测事实是不是编译期常量。
+
+---
+
+# 追加十三：§6.1 的 `LbStatusBadge` 落地，首页那五处平行 `when` 并成一份判据
+
+## 23.1 表上那一行与搬家前的现实
+
+指导书 §6.1 表里这一行写的是：
+
+> `LbStatusBadge` | Running/Hidden/Off/Error 的**颜色和文案体系**
+
+搬家前没有这张表。首页 `HomeScreen.kt` 是**五个平行 `when`**，每个都把同样三个条件重判一遍：
+
+```kotlin
+val statusText  = when { !overlayGranted -> "未授权"; !isServiceRunning -> "未启动"; … }
+val statusColor = when { !overlayGranted || !isServiceRunning -> Neutral300; … }
+val description = when { !overlayGranted -> "需要悬浮窗权限才能显示军师浮窗"; … }
+val buttonText  = when { !overlayGranted -> "授权悬浮窗"; TEMP_HIDDEN -> "恢复军师"; … }
+val buttonAction = when { !overlayGranted -> onStartService; TEMP_HIDDEN -> onRestore; … }
+```
+
+而胶囊的**配方**（状态色 15% 底 + 状态色字）内联在 `AssistantStatusCard` 里，
+由调用方传一个 `Color` 进来决定。于是"这一档是什么颜色"和"这一档说什么话"分在 5 处，
+加一个状态时最容易漏的恰恰是颜色那一处——**而编译器一声不响**。
+
+现在：`LbStatus`（`labelRes` + `color` 同源的一张枚举表）+ `LbStatusBadge`（唯一画它的地方）+
+`advisorStatus(授权, 服务在不在, windowState)` 一次算出 `(badge, 说明, 按钮, 意图)` 一份不可变快照。
+`AssistantStatusCard` 的签名从四个参数收成**一个** `AdvisorStatus`——旧签名允许调用方把
+"运行中"配成灰色，新签名根本递不进去这种组合。
+
+## 23.2 两处不是搬运、是修（都有可达性证据，不是想象）
+
+穷举 16 组输入（2 授权 × 2 服务在不在 × 4 窗口状态）逐组比旧判据，差两格：
+
+1. **`serviceRunning && window == STOPPED`**：旧代码落 `else` ⇒ 说"运行中 · 军师正在运行，
+   长按消息即可捕获"。这一组真能读到：`showBubble()` 里 `wm.addView` 失败会 `stopSelf()`，
+   而 **`stopSelf()` 是异步的**——从抛出到 `onDestroy` 把 `instance` 置空之间，
+   首页看到的就是"实例在、窗口从没出现过"。现在这一档是 `WindowMissing` + Error 色 +
+   一句说明为什么按钮仍写"打开军师"：`EventBus.requestPanel` 那条路不依赖悬浮球，
+   服务活着就能 `showPanel()`（`openPanelFromHome` → `requestPanel` → 收集器里
+   `if (!isPanelShowing) showPanel()` 逐读过），**所以那颗按钮不是死的**。
+2. **`!serviceRunning && window == TEMP_HIDDEN`**：`onDestroy` 里 `instance = null` 先跑、
+   `setWindowState(STOPPED)` 后跑，所以这一刻"实例已空、状态仍写着已隐藏"能读到。
+   旧 `buttonText` / `buttonAction` 把 `TEMP_HIDDEN` 排在 `isServiceRunning` **之前**
+   ⇒ 卡片上是一颗「恢复军师」，点了发出 `ACTION_RESTORE`，新实例里
+   `restoreFromTempHidden()` 第一行 `if (windowState != TEMP_HIDDEN) return` —— **点了没反应**。
+   现在这一档判"未启动 · 启动军师悬浮窗"，走的真的能把球拉起来。
+
+## 23.3 两处对表名的偏离，写清楚而不是偷偷降信息量
+
+- **多了第五档 `NoPermission`**。表里只有 Running/Hidden/Off/Error；但旧代码把"未授权"与
+  "未启动"分开显示，而用户要做的事完全不同（去系统授权 vs 点一下启动）。
+  为了对上四个名字并成 `Off`，等于**少说一件事**——所以不并，并在这里记下偏离。
+- **`Error` 那一档 entry 叫 `WindowMissing`**。同包（`core.designsystem`）里已经有一个颜色叫
+  `Error`（`Color.kt`），枚举项再叫 `Error` 会在构造参数位置上撞名。含义不变。
+
+## 23.4 读屏与中英（§6.5 第②栏 + 第⑥栏各一条）
+
+- 胶囊带 `contentDescription`（父容器合并语义后孤立 `Text` 可能不被单独播报），
+  并且 **`liveRegion = Polite`**：状态从"运行中"变成"已隐藏"时 TalkBack **自己补播一句**，
+  用户不必去找那一格。`stringResource` 在 `semantics {}` 外面解析（语义 lambda 延后执行，
+  在里面现调资源是这仓库踩过并按进坑表的形状）。
+- 「军师已暂时隐藏，点击恢复」旧代码写了**两遍且用词不同**：首页是"点击恢复"、
+  前台通知是"点此恢复"（`FloatingService.updateNotification`）。收成一条 `status_hidden_desc`，
+  两处读同一份。通知其余三句（悬浮球/面板/已停止）**没有并进来**：它们说的是"点此返回设置"
+  这类通知专属动作，不是状态词，硬并会说出错话。
+- 五档状态词逐档比中英：`values-en` 少一条就静默回落到中文，这条断言当场红（变异 T5 验过）。
+
+## 23.5 用例与变异——**其中一条暴露了性质格自己的强度边界**
+
+12 格新用例：`AdvisorStatusTest` 8（16 组矩阵 + 逐分支标签 + 两处修复各一格 + 颜色两格）、
+`LbStatusBadgeTest` 4（语义树挂载：名字、liveRegion、换档换词、中英逐档互不相同）。
+
+变异五发，按"红格互不重叠"分三批跑：
+
+| 变异 | 红了谁 |
+|---|---|
+| T1 `Hidden` 档按钮换成"打开军师" | 逐分支比标签那格 |
+| T2 `WindowMissing` 退回 `Running` | 窗口那格 + 性质格（5 档变 4 档） |
+| T3 撤 `liveRegion` | 语义那格 |
+| T4 撤 `contentDescription` | 语义那格 + 换档换词那格 |
+| T5 删 `values-en` 一条状态词 | 中英那格 |
+
+**T1 把性质格自己的弱点照出来了**：`badge 决定其余三项` 这一格**照样绿**。原因是
+`Hidden` 全矩阵只有一组输入走到它，没有第二组来跟它比——同 badge 跨多组输入的不变式，
+只在 `NoPermission`（8 组）与 `Off`（4 组）这两档真的有牙，而那恰恰是旧五个 `when`
+最容易各说各话的两档。这条限制已经写进用例 KDoc（"别把'badge 决定其余三项'读成全覆盖"），
+逐分支那几格才是管单例档的。
+
+## 23.6 实测
+
+| 量 | 结果 |
+|---|---|
+| 全量单测 | `GRADLE_RC=0`：**1243 tests / 158 套件 / 0 失败 / 0 错误 / 0 跳过**，无陈旧 XML |
+| 与上一格对账 | 1231 → 1243 = **+12**（新增 8 + 4），156 → 158 套 = **+2**（新增两个类）⇒ 两处增量互相咬得上 |
+| lint | 报告重生成（11:38:09）实测 **69 / 15**、进预算 **68 / 14**、advisory 1 —— 与上一格同一组数（新组件没带新增债） |
+| 其它闸 | 跨层 **6** 条；工单编号 rc=0；prompt 资产 lock rc=0；`:app:assembleAndroidTest` rc=0；变异全撤后目标类复跑 rc=0 |
+
+## 23.7 §6.1 那张表现在走到哪（11 行逐行）
+
+| 表里的行 | 现在 |
+|---|---|
+| `LbAsyncState` / `LbEmptyState` | ✅ 已在 `core/designsystem`（§20/§21 四家全走它） |
+| `LbStatusBadge` | ✅ **本轮** |
+| `LbSection` | ❌ 形状有主人 `HomeSectionHeader`，名字/位置不按表 |
+| `LbTopBar` | ❌ 同上：`HomeTopBar` |
+| `LbScreenScaffold` | ❌ 同上：`ui/common/ScreenPage` + `ScreenHeader` |
+| `LbActionCard` | ❌ 同上：`HomeActionCard`（首页两处已在用同一颗，形状不重复） |
+| `LbSettingRow` | ❌ 同上：`HomeSettingRow` |
+| `LbMetricCard/Grid` | ❌ 同上：`UsageSummary` / `UsageMetric` |
+| `LbPrimaryButton`（Idle/Loading/Disabled/Stop 四态） | ❌ **真的没有同名物**：面板主按钮那四态散在 `ReplyPrimaryActions` 一带，是下一格里唯一"不是改名而是要抽出来"的行 |
+| `LbModalSheet/Dialog` | ❌ 同名物无；各页现在各自用 `AlertDialog`（禁 Toast 那条已锁，浮层语法未收口） |
+| §6.1 末句"禁止创建只在一个页面看起来不一样的按钮/卡片" | 部分成立：形状各有唯一主人，但**没有闸**拦"新页面又画一张卡"（主人名字不按表，装闸也扫不出来）⇒ 等改名搬齐 |
+
+## 23.8 这格没做的（含一条量出来的尺子盲区）
+
+- **字面量那把尺看不见"自定义组件参数位"**。粗测 `ui/` 下约 **70 条**含汉字的字面量落在
+  `Text(` / `contentDescription =` / `stateDescription =` 三个锚点之外（这个数含构造函数位的
+  假阳，如 `ProviderTicket(...)`），确认的形状是：
+  `HomeSectionHeader("快捷功能")`、`HomeSettingRow(title = "模型供应商", trailingText = "管理")`、
+  `UsageMetric("累计生成")`、`FilterChip("全部")`、`RowActionButton("编辑")`、`IconAction("确认")`。
+  最直白的一对：`R.string.home_manage`（"管理"）**定义了但全仓零引用**，
+  而 `HomeScreen.kt:161` 那儿写的是字面量 `"管理"`——字面量不进计数、资源躺在 `UnusedResources 33`
+  里当死账，两头都看不见这笔。这就是"资源驱动"没真落地的形状。
+  它们全是**用户听得见的话**，但预算的 TEXT 计数一个字都不涨——
+  这与指导书 P1-05"禁止 production composable 新增直接用户可见字面量"的本意不符。
+  下一格（或穿插格）给那把尺补第四个锚点：**任意大写开头的 composable 调用实参**。
+  换尺会让数字变大（209 → 254 那次一样），届时要说清是量到了以前漏的，不是债涨了。
+- 通知其余三句状态文案没并表（理由见 §23.4）。
+- **设置行还在用同一个旧模式**：`HomeSettingRow(statusText = …, statusColor = if (…) Primary
+  else Neutral300)`——"颜色由调用方交进来"这件事我刚从状态卡上拿掉，两行设置行还是它。
+  而且供应商行传的是 `statusText = ""`（画一颗**没有字**的点）。接到 `LbStatus` 那张表之前，
+  得先决定那颗空 statusText 是要文案还是不画点——归 §6.1 的 `LbSettingRow` 那一行。
+- 首页四段（§6.2）结构本身没重排：本轮只换了第 2 段内部的判据；四段顺序今天已经是对的
+  （顶部 / 军师状态主卡 / 快捷功能 / 服务设置 + 使用概览），但没有闸在看住它。
+- 深色/浅色那条（§6.5）仍**没查**：`values-night` 与 `LoveBrainTheme` 是否真的拒绝跟随系统。
