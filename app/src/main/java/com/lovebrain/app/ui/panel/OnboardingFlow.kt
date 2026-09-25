@@ -51,17 +51,13 @@ fun OnboardingFlow(
 ) {
     var currentStep by remember { mutableStateOf(0) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(SurfaceBase)
-            .systemBarsPadding()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(Spacing.xl)
-        ) {
+    // §6.1 表里 `LbScreenScaffold` 那一行说的四件事，这一页原先自己拼了三层：
+    // `Box(fillMaxSize).background(SurfaceBase).systemBarsPadding()` 套
+    // `Column(fillMaxSize).padding(Spacing.xl)`。本机量到它的水平边距是 **16dp**，
+    // 而另外两页是 **24dp**——"统一水平边距"这半句在改之前不成立，这一格把它收齐。
+    // insets 保持它原本有的那一份（显式传 true，不靠默认），真机上够不够、
+    // 会不会加两遍仍只能等设备定，账本 §36 记着这条边界。
+    LbScreenScaffold(handlesSystemBarInsets = true) {
             // 顶部——跳过按钮
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -97,7 +93,6 @@ fun OnboardingFlow(
                     onOpenSettings = onOpenSettings
                 )
             }
-        }
     }
 }
 

@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -26,9 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.LbScreenScaffold
 import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.Spacing
-import com.lovebrain.app.core.designsystem.SurfaceBase
 import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
 
@@ -105,8 +103,16 @@ fun ScreenHeader(
 }
 
 /**
- * 全 App 唯一页面骨架：背景 + 顶部 24dp 留白 + [ScreenHeader]（48dp 行 + 分割线）+ 16dp 内容距。
- * 调用方在 [content] 内自行滚动与布局（[ColumnScope] 便于用 weight 占满剩余空间）。
+ * 带页头的那一类目的外框。
+ *
+ * **外框本身已经不属于这里了**：§6.1 要求"页面背景、安全区、顶部栏、统一水平边距"
+ * 归一个所有者，那一个是 `core/designsystem/LbScreenScaffold`。
+ * 这一层只是它上面套的一个薄壳——留着的理由是三个调用点都只想要
+ * "标题 + 返回 + 一个尾部动作"这套组合，不是想再养一套外框。
+ *
+ * 今天那 24dp 的顶部留白与 24dp 底部留白用 `Spacer` 复现，而不是往外框上挂
+ * `padding(vertical = …)`：挂在外框上会排到 `background` 之内还是之外取决于链序，
+ * 排错了就是顶部一条没上色的带子——本机看不出来，真机才看得出来。
  */
 @Composable
 fun ScreenPage(
@@ -116,14 +122,11 @@ fun ScreenPage(
     trailing: (@Composable RowScope.() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(SurfaceBase)
-            .padding(horizontal = Spacing.xxxl, vertical = Spacing.xxxl)
-    ) {
+    LbScreenScaffold(modifier = modifier) {
+        Spacer(Modifier.height(Spacing.xxxl))
         ScreenHeader(title = title, onBack = onBack, trailing = trailing)
         Spacer(Modifier.height(Spacing.xl))
         content()
+        Spacer(Modifier.height(Spacing.xxxl))
     }
 }

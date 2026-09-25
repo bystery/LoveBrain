@@ -55,7 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.common.ScreenHeader
+import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.ui.panel.MarkdownText
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
@@ -132,11 +132,15 @@ class KbEditActivity : ComponentActivity() {
                 }
 
                 if (!loaded) {
-                    Box(
-                        modifier = Modifier.fillMaxSize().background(SurfaceBase),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = Primary)
+                    // 加载态也是一整屏，所以它的外框也归同一个所有者——
+                    // 之前这里第二个 `Box(fillMaxSize).background(SurfaceBase)` 是同一套东西的副本
+                    LbScreenScaffold {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(color = Primary)
+                        }
                     }
                 } else {
                     KbEditScreen(
@@ -259,25 +263,21 @@ private fun KbEditScreen(
 
     BackHandler(enabled = anyDirty) { saveAllAndExit() }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(SurfaceBase)
-            .padding(Spacing.xxxl)
-    ) {
-        // 页头：最新式（返回 + 标题 + 清空，48dp 行 + 分割线）
-        ScreenHeader(
-            title = "知识库编辑",
-            onBack = { if (anyDirty) saveAllAndExit() else onBack() }
-        ) {
+    // §6.1：外框原本是自己拼的 `Column.fillMaxSize.background(SurfaceBase).padding(xxxl)`
+    // ——和 `ScreenPage` 同一套东西的第二个副本。走 `ScreenPage`（它已 delegate 给
+    // `LbScreenScaffold`）之后这一页不再有第二套外框。
+    // 唯一有意的视觉差别：页头到内容的间距从 12dp 变成其它页统一的 16dp。
+    ScreenPage(
+        title = "知识库编辑",
+        onBack = { if (anyDirty) saveAllAndExit() else onBack() },
+        trailing = {
             if ((drafts[selectedPath] ?: "").isNotBlank()) {
                 TextButton(onClick = { pendingClear = true }) {
                     Text("清空", color = Error, style = AppTypography.labelLarge)
                 }
             }
         }
-        Spacer(modifier = Modifier.height(Spacing.lg))
-
+    ) {
         val layers = listOf("画像" to "你们是谁，走到哪了", "当下" to "当前话题和状态", "积累" to "经验和原始记录")
         layers.forEach { (layerName, layerDesc) ->
             Row(

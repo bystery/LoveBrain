@@ -311,6 +311,72 @@ class UiLayerDependencyContractTest {
     }
 
     /**
+     * §6.1 表最后一行：`LbScreenScaffold` —— **页面外框只有一个所有者**。
+     *
+     * 判据取"谁画整屏底色"这一个具体写法（`background(SurfaceBase`），
+     * 不取"有没有 fillMaxSize"——后者到处合法。理由与 §29/§30 那两把同源：
+     * "用了同一个 token 却各页自己拼一层外框"这种坏法，按声明处判的尺抓不到。
+     *
+     * 名单是**本机实扫**出来的（去注释之后），分两类，别混：
+     * - 所有者：`core/designsystem/LbScreenScaffold.kt`，1 处。
+     * - **不是页面的那几个**（登记在这里是因为它们本就不该走页面外框）：
+     *   `ui/home/SetupRoot.kt` 是路由宿主（它套着 600dp 限宽与 insets，
+     *   目标页在它里面再走一次脚手架）、
+     *   `ui/panel/LoveBrainPanelScreen.kt` 与 `ui/panel/SuggestPanel.kt`
+     *   跑在 `TYPE_APPLICATION_OVERLAY` 窗口里，没有系统栏也不受页面边距档管。
+     * - **欠账**：`ui/feedback/FeedbackCasesScreen.kt` 是一整页，今天还在自己画外框。
+     *   它没一起搬走不是因为不重要，是因为它内部一堆区块自己带 `Spacing.lg` 的边距，
+     *   直接套脚手架会变成"外面 24 里面又 12"叠两层——那一页要连着内部边距一起改，
+     *   是独立的一格。**这里的计数只许往下**：搬走之后必须把这一行删掉，
+     *   不许留着一条早已不成立的豁免当"管住了"。
+     */
+    @Test
+    fun `the page frame has exactly one owner`() {
+        val owner = "core/designsystem/LbScreenScaffold.kt"
+        val notAPage = setOf(
+            "ui/home/SetupRoot.kt",
+            "ui/panel/LoveBrainPanelScreen.kt",
+            "ui/panel/SuggestPanel.kt"
+        )
+        val registeredDebt = mapOf("ui/feedback/FeedbackCasesScreen.kt" to 1)
+
+        val sources = kotlinFiles(appRoot).map {
+            it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
+        }
+        val drawers = sources.filter { (_, code) -> code.contains("background(SurfaceBase") }
+            .map { it.first }
+
+        val strays = drawers.filter {
+            it != owner && !notAPage.contains(it) && !registeredDebt.containsKey(it)
+        }
+        assertTrue("新的整屏底色别在页面里自己画，走 LbScreenScaffold；违规：$strays", strays.isEmpty())
+
+        assertTrue(
+            "$owner 应当恰好画一次整屏底色（实到 ${drawers.count { it == owner }}）——" +
+                "多一次就是又长出第二种页面外框",
+            drawers.count { it == owner } == 1
+        )
+        // 反向确认这把尺看得见东西：所有者那份必须还在，否则是正则坏了
+        assertTrue(
+            "找不到 $owner——被搬走或改名了，这把尺就成了扫空集的闸",
+            File(appRoot, owner).isFile
+        )
+        registeredDebt.forEach { (path, want) ->
+            val code = sources.firstOrNull { it.first == path }?.second
+                ?: error("$path 的欠账登记已不成立——搬完了就把这一行从表里删掉，别留着当已有闸")
+            val got = Regex("background\\(SurfaceBase").findAll(code).count()
+            // 判 ==，不判 <=：登记着 1 处而实到 0 处，意思是**这笔债已经还了**，
+            // 表里那一行必须当场删掉。留一条早已不成立的豁免，比没有豁免更坏——
+            // 它会让下一个人以为这一页已经处理过了（§29 那把"点名豁免"的尺同一课）。
+            assertTrue(
+                "$path 实到 $got 处，登记的是 $want。多了是新债；" +
+                    "零了是已经还完——那就把这一行从表里删掉，别留着当已有闸",
+                got == want
+            )
+        }
+    }
+
+    /**
      * 声明的形状：`fun X(`、`typealias X =`、`class|enum class|interface X {|<|(:`。
      *
      * 三支都得在：`typealias` 后面跟的是 `=` 不是 `(`（第一版就漏在这一支上，
