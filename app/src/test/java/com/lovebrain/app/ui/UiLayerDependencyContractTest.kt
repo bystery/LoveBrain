@@ -721,14 +721,14 @@ class UiLayerDependencyContractTest {
     fun `brand tones painted through containerColor do not grow`() {
         val perFileBudget = mapOf(
             "home/HomeComponents.kt" to 1,        // 状态卡那张 Card 的品牌浅底
-            "home/ProviderSection.kt" to 1,
             "KnowledgeBaseActivity.kt" to 1,      // 只剩那颗"完成"大按钮（新建那颗已归 LbPrimaryButton）
             "KbEditActivity.kt" to 1
         )
         // 登记总数由本次实扫定（`_temp/scan_container_color.py`）。
-        // ⚠ 这一格搬掉知识库那颗「新建」之后从 5 降到 **4**——表跟着改小是规矩，
+        // ⚠ 这一格搬掉知识库那颗「新建」之后从 5 降到 **4**；`5477762` 之后表单那颗「保存」
+        //   归 `LbPrimaryButton`，再降到 **3**——表跟着改小是规矩，
         //   不改小就是"预算填松 ⇒ 恒绿"（坑表 71 那一族），`<=` 方向本身不会提醒你。
-        assertTrue("登记的就是本机实扫的 4 处，表本身错了要先修表", perFileBudget.values.sum() == 4)
+        assertTrue("登记的就是本机实扫的 3 处，表本身错了要先修表", perFileBudget.values.sum() == 3)
 
         val pattern = Regex(
             """containerColor\s*=\s*[^,)]*\b(?:Primary|PrimaryDark|PrimaryLight|PrimarySubtle)\b"""

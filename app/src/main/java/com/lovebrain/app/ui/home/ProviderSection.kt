@@ -29,10 +29,10 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import com.lovebrain.app.core.designsystem.LbButtonState
+import com.lovebrain.app.core.designsystem.LbPrimaryButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -525,41 +525,46 @@ internal fun ProviderFormBody(
         }
 
         Spacer(Modifier.height(Spacing.xs))
+        val saving by viewModel.saving.collectAsStateWithLifecycle()
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
             TextButton(
                 onClick = onDismiss,
                 modifier = Modifier.weight(1f).height(AppDimens.INPUT_ROW_HEIGHT_DP.dp)
             ) { Text("取消", style = AppTypography.labelLarge, color = TextSecondary) }
-            val saving by viewModel.saving.collectAsStateWithLifecycle()
-            Button(
+            // §6.1 :479「页面唯一主动作」——这一屏的主动作是「保存」，它原来是一颗
+            // 手写四态的 Material `Button(containerColor = Primary)`：`enabled` 里那条
+            // 与号串 + `if (saving) CircularProgressIndicator` 各管一半状态。
+            // 先量再搬（账本 §46.2）：**160x48dp、role=Button、有名字，全部达标**
+            // ⇒ 这一处又是**归所有者，不是修缺陷**；搬的收益是"非法组合从此不可表达"
+            // （原来 `saving = true` 同时字段没填完，Material 那颗会既转圈又灰着，
+            // 而现在 `when` 只有条出口）。
+            // ⚠ 两处**有意的改变**要认下来：
+            //   1) 标签样式从 `labelLarge` 变成那颗共用的 `titleMedium + Bold`——
+            //      这是"同一语义只长一个样"要的结果，但**本机没有截图证据**（:538 照旧欠着）；
+            //   2) `Loading` 那一档在设计系统里的原意是"点它=停止"，表单里**没有可停的活**，
+            //      所以点击必须自己吞掉：`if (saving) return@LbPrimaryButton` 那种"看着能按"
+            //      不能留，故 onClick 里显式再判一次 saving。
+            LbPrimaryButton(
+                state = when {
+                    saving -> LbButtonState.Loading
+                    !(name.isNotBlank() && baseUrl.isNotBlank() && models.isNotEmpty() &&
+                        (ticket != null || key.isNotBlank())) -> LbButtonState.Disabled
+                    else -> LbButtonState.Idle
+                },
+                label = stringResource(if (ticket == null) R.string.provider_save else R.string.provider_save_changes),
                 onClick = {
-                    scope.launch {
-                        val thinkingInt = if (thinking) 1 else 0
-                        val success = viewModel.saveTicketWithProbe(
-                            ticket?.id, name, baseUrl, models, key.trim(), thinkingInt
-                        )
-                        if (success) onDismiss()
+                    if (!saving) {
+                        scope.launch {
+                            val thinkingInt = if (thinking) 1 else 0
+                            val success = viewModel.saveTicketWithProbe(
+                                ticket?.id, name, baseUrl, models, key.trim(), thinkingInt
+                            )
+                            if (success) onDismiss()
+                        }
                     }
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White),
-                shape = LoveBrainShape.md,
-                enabled = !saving &&
-                    name.isNotBlank() &&
-                    baseUrl.isNotBlank() &&
-                    models.isNotEmpty() &&
-                    (ticket != null || key.isNotBlank()),
-                modifier = Modifier.weight(1f).height(AppDimens.INPUT_ROW_HEIGHT_DP.dp)
-            ) {
-                if (saving) {
-                    CircularProgressIndicator(
-                        color = Color.White,
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Text(if (ticket == null) "保存" else "保存修改", style = AppTypography.labelLarge)
-                }
-            }
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }

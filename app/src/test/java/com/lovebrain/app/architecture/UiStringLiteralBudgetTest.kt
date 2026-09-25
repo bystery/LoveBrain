@@ -229,7 +229,11 @@ class UiStringLiteralBudgetTest {
     // `MiniSwitchRow` KDoc 里那句「原来这里画的是 Text("思考模式")」，
     // 它正好抵掉本格真还掉的那一处搬家。按形状认的尺不剥注释，就会这样自己吃自己。
     private val budget = mapOf(
-        Kind.TEXT to 187,
+        // 187 → **185**：表单那颗「保存 / 保存修改」归 `LbPrimaryButton` 时顺手搬进资源
+        // （两条中文一起走 `values` + `values-en`）。⚠ 这处的账不好核：搬进 `Lb…()` 的实参
+        // 之后 COMPONENT 那栏一度涨到 80——**同一条债从 TEXT 挪到 COMPONENT 不算还债**，
+        // 只有换成资源才是。两栏一起看才不会把搬家当成还债（坑表 88 那一族的另一面）。
+        Kind.TEXT to 185,
         Kind.DESC to 11,
         Kind.STATE to 0,
         Kind.COMPONENT to 78

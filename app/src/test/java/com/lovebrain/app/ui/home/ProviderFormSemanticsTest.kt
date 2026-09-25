@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.R
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.SemanticsProbe.Target
 import com.lovebrain.app.core.testing.RenderIn
@@ -38,9 +39,10 @@ import org.robolectric.annotation.GraphicsMode
  * 生产上它仍然画在 `Dialog` + `Card` 里——那一半由
  * `UiLayerDependencyContractTest` 的结构格守（浮层窗口在本机量不了，只能读结构）。
  *
- * ⚠ 本文件的锚点用**中文字面量**（「添加模型」「取消」「保存修改」…）：这些文案现在还
- * 内联在代码里，换语言也不变，所以拿它们当锚点是稳的；它们同时是 §6.1 字面量预算
- * 记着的债，将来搬进资源时要回来把这里改成资源驱动。
+ * ⚠ 本文件的锚点分两类：**「添加模型」「取消」「显示」…仍是内联中文字面量**
+ * （这些文案还没还债，换语言也不变，拿它们当锚点是稳的）；
+ * 而「保存 / 保存修改」已经走了资源，判据必须 `getString` 取（见下面 `saveLabel`）。
+ * 前者是 §6.1 字面量预算记着的债，还一处就要回来把这里的锚点改成资源驱动。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -69,6 +71,17 @@ class ProviderFormSemanticsTest {
         every { vm.globalThinking } returns 0
         return vm
     }
+
+    /**
+     * 「保存」那颗现在走资源了（本格之后）。
+     *
+     * ⚠ 这台机器的环境解析出来是**英文**，判据不能写死"保存修改"四个字——
+     * 上一格「添加供应商」就栽在这里：matcher 直接 0 命中。
+     * 名字一律 `getString` 取；中文那份留在 `values/`，由资源覆盖保证两边一起改。
+     */
+    private val ctx get() = ApplicationProvider.getApplicationContext<Context>()
+    private val saveLabel: String get() = ctx.getString(R.string.provider_save)
+    private val saveChangesLabel: String get() = ctx.getString(R.string.provider_save_changes)
 
     private val threeModels = ProviderTicket(
         id = "t1",
@@ -144,7 +157,7 @@ class ProviderFormSemanticsTest {
     /** 这一屏该说得出名字的东西，全部来自 `ProviderFormBody` 里那些内联文案 */
     private val expectedControls = listOf(
         "名称", "https://api.example.com", "留空保留原 Key", "显示", "Thinking mode",
-        "设为当前", "测试连接", "编辑", "删除", "＋ 添加模型", "取消", "保存修改"
+        "设为当前", "测试连接", "编辑", "删除", "＋ 添加模型", "取消", saveChangesLabel
     )
 
     @Test
@@ -158,7 +171,7 @@ class ProviderFormSemanticsTest {
         // 「保存修改」在最底下：量到它就等于证明滚动真把表单体翻出来了，不是只在首屏转了一圈
         assertTrue(
             "滚到底也没量到表单的动作区，只量到：" + seen.keys,
-            seen.containsKey("取消") && seen.containsKey("保存修改")
+            seen.containsKey("取消") && seen.containsKey(saveChangesLabel)
         )
     }
 
@@ -239,9 +252,9 @@ class ProviderFormSemanticsTest {
     @Test
     fun `the empty form keeps the save action and marks it disabled`() {
         val seen = scanToBottom(null, UiMatrix(360))
-        val saves = seen.values.filter { it.label.contains("保存") }
+        val saves = seen.values.filter { it.label == saveLabel }
         assertEquals(
-            "空表单里「保存」应当恰好一颗（多出来就是两个入口各写各的）：" +
+            "空表单里「保存」（本机解析成" + saveLabel + "）应当恰好一颗（多出来就是两个入口各写各的）：" +
                 seen.values.joinToString { it.describe() },
             1, saves.size
         )
@@ -252,6 +265,33 @@ class ProviderFormSemanticsTest {
         assertTrue(
             "空态里得就地给出「＋ 添加模型」这个动作（§6.3：不能只留一句话）：" + seen.keys,
             seen.containsKey("＋ 添加模型")
+        )
+    }
+
+    /**
+     * 反过来那一半：填齐了「保存」必须**能按**。
+     *
+     * 上一格只判了"空表单里它灰着且还在"，于是把 `when` 写错成"永远 Disabled"
+     * 也能全绿（ Disabled 那格照样过、尺寸与角色那格照样过）——
+     * 禁用态与可用态必须**各有一格**，不然这条链只测了一半（坑表：局部收紧要回扫同一资源的其它属性）。
+     */
+    @Test
+    fun `a filled form leaves the save action enabled`() {
+        val seen = scanToBottom(threeModels, UiMatrix(360))
+        val saves = seen.values.filter { it.label == saveChangesLabel }
+        assertEquals(
+            "填好的表单里「保存修改」（本机解析成 $saveChangesLabel）应当恰好一颗：" +
+                seen.values.joinToString { it.describe() },
+            1, saves.size
+        )
+        val t = saves.single()
+        assertTrue(
+            "字段都齐了还报 Disabled，等于把这条链关死了：" + t.describe(),
+            !t.disabled
+        )
+        assertEquals(
+            "主动作得报成按钮，不能因为换了实现就丢掉角色：" + t.describe(),
+            "Button", t.role
         )
     }
 
