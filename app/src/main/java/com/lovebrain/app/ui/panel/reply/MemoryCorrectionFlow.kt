@@ -162,8 +162,9 @@ fun MemoryCorrectionFlowHost(
 }
 
 /** 时长选项的中文说法。原来散在三个手写的 `CorrectionSubmenuItem("仅本轮")` 里，
- *  少一档没人会发现；现在跟着 enum 走，加一档就多一行。 */
-private fun durationLabel(duration: MuteDuration): String = when (duration) {
+ *  少一档没人会发现；现在跟着 enum 走，加一档就多一行。
+ *  `internal` 是给守卫用的：测试要拿**同一份**标签去树里找，而不是自己抄一遍中文。 */
+internal fun durationLabel(duration: MuteDuration): String = when (duration) {
     MuteDuration.THIS_ROUND -> "仅本轮"
     MuteDuration.TODAY -> "今天剩余"
     MuteDuration.UNTIL_RESTORE -> "直到手动恢复"

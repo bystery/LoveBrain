@@ -1240,6 +1240,11 @@ private fun InputChangedBanner(
 
 /**
  * "暂时别提"时长选择子菜单项。
+ *
+ * §6.5 :531：这一档上一格没量过——那格只量了「不对」那颗浮层。回扫同一菜单的
+ * 另一条分支时量到 **307x23dp**（探针 W2：去掉下面那颗 `heightIn` 后守卫报出的实测值），
+ * 离 48dp 差着一整档手指。现在这一档和浮层动作共用同一个下限常量，
+ * 下次改设计系统的动作热区，这一档会跟着走，而不是留一个自己抄的数。
  */
 @Composable
 internal fun CorrectionSubmenuItem(
@@ -1250,6 +1255,7 @@ internal fun CorrectionSubmenuItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .heightIn(min = LB_SHEET_ACTION_MIN_DP.dp)
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .clickable(interactionSource = interaction, indication = null, onClick = onClick)
             .padding(vertical = Spacing.sm),

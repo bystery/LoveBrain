@@ -264,6 +264,49 @@ class UiLayerDependencyContractTest {
     }
 
     /**
+     * §6.4 :523：面板上的浮层必须各归**一个 state holder**，不许在屏幕函数里
+     * 随手 `var showXxx by remember { mutableStateOf(false) }`。
+     *
+     * 为什么不是"数到 0 就完事"：单看"杂散布尔还有几颗"这一把尺，归零之后它就变成
+     * 扫空集恒绿——下次有人新加一颗，它从 0 涨到 1 才红一次，而那已经是债；更糟的是
+     * 归零那天如果顺手把正则改坏，它永远绿着也没人知道。所以配**第二把反证的尺**：
+     * holder 的声明数只许往上，它同时是"这把尺看得见东西"的证人——
+     * 正则一旦失效，holders 数掉到 0 当场红。
+     *
+     * 本机实扫（`LoveBrainPanelScreen.kt`，去注释后按形状数）：
+     * - holder 声明 **2** 颗：`rememberMemoryCorrectionFlow(`、`rememberCorrectionCenterHolder(`
+     * - 杂散可见性布尔 **3** 颗：`showSentDialog`、`sentDialogSaving`（这两颗都属
+     *   "记录实际发送"那颗浮层——:523 清单里"发送记录"一块，还没搬），
+     *   外加 `showOnboard`（引导卡片，不是浮层，但按形状判就把它也数进来了；
+     *   记在这儿是为了"只许往下"，不是给它单独开后门）
+     */
+    @Test
+    fun `panel decision surfaces are held by state holders, not ad-hoc booleans`() {
+        val screen = File(dir("ui", "panel"), "LoveBrainPanelScreen.kt")
+        assertTrue("找不到 $screen——搬家了就要同步改这条", screen.isFile)
+        val code = codeOf(screen.readText())
+
+        val adHoc = Regex("var\\s+show[A-Z]\\w*\\s+by\\s+remember\\s*\\{\\s*mutableStateOf\\(")
+            .findAll(code).count() +
+            Regex("var\\s+\\w*(Saving|Expanded|Open)\\s+by\\s+remember\\s*\\{\\s*mutableStateOf\\(")
+                .findAll(code).count()
+        val holders = Regex("remember[A-Z]\\w*(Flow|Holder)\\(").findAll(code).count()
+
+        val adHocBudget = 3
+        val holderFloor = 2
+        assertTrue(
+            "面板里杂散的可见性布尔 $adHoc 颗，棘轮 $adHocBudget——" +
+                "新的浮层请开一个 holder（§6.4 :523），别在屏幕函数里加 showXxx",
+            adHoc <= adHocBudget
+        )
+        assertTrue(
+            "面板至少要认得出 $holderFloor 颗 holder，实到 $holders——" +
+                "变小说明持有者被拆回内联状态，或者这条正则已经扫不到东西了",
+            holders >= holderFloor
+        )
+    }
+
+    /**
      * 声明的形状：`fun X(`、`typealias X =`、`class|enum class|interface X {|<|(:`。
      *
      * 三支都得在：`typealias` 后面跟的是 `=` 不是 `(`（第一版就漏在这一支上，

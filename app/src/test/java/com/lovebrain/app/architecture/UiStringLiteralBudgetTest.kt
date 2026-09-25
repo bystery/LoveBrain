@@ -171,6 +171,17 @@ class UiStringLiteralBudgetTest {
      *   「输入正确内容（可选，留空仅停用）」）——为了让学生输入框共用同一句话才进 strings.xml
      *   （zh + en 各一份）⇒ 真还掉的债，不是换形状躲开锚点。同格新增的另外 2 条资源
      *   （`kb_edit_editor_hint`、`scheme_custom_hint`）只给读屏用、屏幕上不画，所以不减 TEXT。
+     * - §6.4 第三刀（纠正中心从内联展开区改成 `LbModalSheet`）之后
+     *   **TEXT 202 → 199、COMPONENT 69 → 72，四栏合计 283 → 283 一个字没变**。
+     *   摊开说：这**不是还债，是换桶**。「记忆纠正中心」「关闭」「撤销」三条从
+     *   `Text(text = "…")` 搬进 `LbModalSheetTitle(…)` / `LbDialogAction(label = …)`
+     *   ——文案原样，只是所有者从"页面自己画"变成"设计系统的动作词表"，
+     *   而这正是 §6.1/§6.4 要的方向，所以涨的是 COMPONENT 那一栏。
+     *   另外这一格还**真的删掉了 3 条**中文（`[本轮] / [今天] / [恢复]` 三份手抄，
+     *   改成复用纠正浮层那份跟着 enum 走的 `durationLabel()`），但它们在删之前
+     *   就**不在任何一栏里**——写在 `when` 分支上的字面量，`Text(` 和 `Lb*(` 两个锚点
+     *   都看不见。所以合计不动：**"合计没变"这次是真没变，不是尺子在漏**
+     *   （区分这两件事的办法就是上面这笔逐条对上，而不是只看总数）。
      * - §6.1 把五颗首页组件搬进 core/designsystem 时，TEXT 掉到 **246**——
      *   **这一条不是还债**：掉的那处是「帮你更自然地表达」，它只是从 `Text("…")`
      *   变成了 `LbTopBar(subtitle = "…")`，字符串一个字没动，是锚点 `Text(` 看不见它了。
@@ -189,10 +200,10 @@ class UiStringLiteralBudgetTest {
      * 结论：换尺让数字变大不是"债涨了"，是量到了以前漏的。棘轮照旧只许往下走。
      */
     private val budget = mapOf(
-        Kind.TEXT to 202,
+        Kind.TEXT to 199,
         Kind.DESC to 12,
         Kind.STATE to 0,
-        Kind.COMPONENT to 69
+        Kind.COMPONENT to 72
     )
 
     private fun countIn(root: File, kind: Kind): Int {

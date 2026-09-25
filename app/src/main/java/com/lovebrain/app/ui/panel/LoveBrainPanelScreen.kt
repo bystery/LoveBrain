@@ -148,8 +148,8 @@ fun LoveBrainPanelScreen(
         }
     }
 
-    // 记忆纠正中心
-    var showCorrectionCenter by remember { mutableStateOf(false) }
+    // 记忆纠正中心：开合归持有者（§6.4 :523），记录内容仍由 VM 异步喂进来
+    val correctionCenter = rememberCorrectionCenterHolder()
     // §6.4：本轮参考记忆的两颗纠正浮层（暂停时长 / 标记为错误）的状态与渲染
     // 从结果区那一行里搬到这里——遮罩因此盖得住整个面板，而不是只盖住那一行
     val memoryCorrectionFlow = rememberMemoryCorrectionFlow()
@@ -499,7 +499,7 @@ fun LoveBrainPanelScreen(
                                 onShowCorrectionCenter = {
                                     viewModel.loadAllCorrections { corrections ->
                                         correctionCenterCorrections = corrections
-                                        showCorrectionCenter = true
+                                        correctionCenter.open()
                                     }
                                 },
                                 onVoiceRewrite = { identity, transcript ->
@@ -572,23 +572,21 @@ fun LoveBrainPanelScreen(
             )
         }
 
-        // 记忆纠正中心——独立列出已停用／静音／隔离项，支持撤销
-        if (showCorrectionCenter) {
-            com.lovebrain.app.ui.panel.reply.CorrectionCenter(
-                corrections = correctionCenterCorrections,
-                onUndoCorrection = { memoryId ->
-                    viewModel.undoCorrectionFromCenter(memoryId)
-                    // 撤销后刷新列表
-                    viewModel.loadAllCorrections { corrections ->
-                        correctionCenterCorrections = corrections
-                    }
-                },
-                onDismiss = { showCorrectionCenter = false },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = Spacing.md, vertical = Spacing.sm)
-            )
-        }
+        // §6.4 :523：记忆纠正中心——独立列出已停用／静音／隔离项，支持撤销。
+        // 之前是面板顶层 Box 里一块 `Column(fillMaxWidth)` 内联展开区（无遮罩、不居中、
+        // 里面每颗可点的实量 28x19dp）；现在走 CorrectionCenterHost → LbModalSheet，
+        // 开合归 correctionCenter 持有者。
+        CorrectionCenterHost(
+            holder = correctionCenter,
+            corrections = correctionCenterCorrections,
+            onUndoCorrection = { memoryId ->
+                viewModel.undoCorrectionFromCenter(memoryId)
+                // 撤销后刷新列表
+                viewModel.loadAllCorrections { corrections ->
+                    correctionCenterCorrections = corrections
+                }
+            }
+        )
 
         // §6.4：纠正浮层的唯一渲染处，挂在面板这一层（不是结果行里）
         MemoryCorrectionFlowHost(

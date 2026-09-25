@@ -254,4 +254,27 @@ class MemoryCorrectionFlowTest {
             .first { it.label == "⋯" }
         assertEquals("行内 ⋯ 入口的热区下限", 48f, trigger.heightDp, 0.6f)
     }
+
+    /**
+     * 上一格只量了「不对」那颗。这一格回扫**同一菜单的另一条分支**：
+     * 「暂停时长」那颗浮层里的三档，走的是 `CorrectionSubmenuItem`——
+     * 一个和取消/确认完全不同的实现，尺寸自然也可能是另一个数。
+     *
+     * 局部收紧时必须回扫同一个资源的其它出口，否则"修好了 48dp"只对了一半的浮层成立。
+     */
+    @Test
+    fun `the duration menu items meet the touch floor too`() {
+        mount()
+        openMenuAndPick("暂时别提")
+        val targets = probe.actionableTargets(rule, "暂停时长浮层")
+            .filter { it.label in MuteDuration.entries.map { d -> durationLabel(d) } }
+        assertEquals("三档都该在树里：" + targets.joinToString { it.describe() }, 3, targets.size)
+        targets.forEach { t ->
+            assertTrue(
+                "「${t.label}」这一档的热区应当 ≥48dp，实到 " + t.describe() +
+                    "（上一格只量了「不对」那颗，没量这条分支）",
+                !t.tooSmall(48f)
+            )
+        }
+    }
 }
