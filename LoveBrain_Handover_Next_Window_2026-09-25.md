@@ -465,6 +465,35 @@ HEAD `0c4d6d6`，仍未推。两笔：
 - 实测：168 套件 / **1283 例** / 0 红；TEXT 205→**202**（那 3 条真进资源，是还债不是躲锚点）、
   DESC 仍 12、COMPONENT 69；lint 68/15 一字未动；工单、资源锁、自测、跨层 6 笔、androidTest 全 RC=0。
 
+## 0.20 又一步：§6.4 第二刀——记忆纠正浮层归 state holder + 单一宿主（`7fc8150`）
+
+- :523 那句"ResultArea 只负责结果内容…拆成独立 state holder + modal host"第一次真落地，
+  但**只动了两颗纠正浮层**（本轮参考记忆的"暂停时长"/"标记为错误"）：
+  新增 `ui/panel/reply/MemoryCorrectionFlow.kt`（持有者 + 唯一宿主），
+  `MemoryRefItem` 只发意图、不再自己 `remember` 浮层开关与草稿，`LoveBrainPanelScreen` 持有 flow
+  并把宿主挂在**面板层**。
+- 为什么值得做：改之前本机量到"遮罩只盖住那一行"——360x400dp 槽位里标题落在
+  **y=139–161dp**，`LbModalSheet` 的 `fillMaxSize()` 铺的是它的父容器（那一行）。
+  搬完之后同一台仪器要求标题落在 300–600dp，实到 **439dp**。
+- 一个刻意的设计：`ResultArea` 的 `correctionFlow` **可空**，没传就本地建一颗并就地渲染宿主。
+  这种拆分最容易引入的新缺陷是"调用方忘了接线 ⇒ 菜单项从此点了没反应"，
+  宁可退化成"遮罩只盖一行"。时长三档改为跟着 `MuteDuration.entries` 渲染（原来三行手写，枚举加一档界面不会跟）。
+- **顺手又修一条 §6.5**：守卫一跑就红——行内那颗 ⋯ 入口是 `Box(size=28).clickable{}`，
+  热区实量 **28x28dp**；结果级那颗 utility trigger 早就改成"外层 48dp 点击 + 内层 28dp 字形"了，
+  同族这一颗被漏掉（"改一处没回扫同族"又一次）。现在两颗同形，守卫钉住 48dp。
+- 两处判据是探针教出来的（新坑 69）：
+  ① "一次只一颗"第一版走界面路径（开→取消→开另一个），V1（不顶掉前一颗）照样绿——
+     那格从没让两颗**同时**存在过，而界面上也构造不出同时（遮罩挡住第二个入口）
+     ⇒ 持有者的不变量直接对持有者测；② "有名字"与"够大"挤在一格，V3 红的是尺寸、
+     格名却在说名字 ⇒ 拆成两格。
+- V5 第一版又是无效探针（锚点在文件里命中 2 处，apply 直接失败），runner 现在 apply 失败就报废。
+- 实测：169 套件 / **1291 例** / 0 红；lint 68/15、四栏预算一字未动；工单、资源锁、自测、
+  跨层 6 笔、androidTest 全 RC=0；受影响范围 12 套件 81 例含 §2.1 那 7 格合同一字未改仍然绿。
+- ⚠ 仍然欠着的：`CorrectionCenter` / `DislikeReasonPanel` 还是塞进面板 `Box` 的
+  `Column(fillMaxWidth)` 内容块（:487 后半句对它俩依然成立）；`ResultArea` 里
+  `menuOpen/showRefs/showAllRefs` 没动；"宿主真接错位置"不会被现有守卫抓到（要抓得把
+  `LoveBrainPanelScreen` 接进仪器）。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 ```bash
@@ -485,8 +514,8 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 #   只动 main 源文件时 testDebugUnitTest 会判 UP-TO-DATE 跳过、退出码仍然 0（见 §6 第 62 条）
 ```
 
-最近一轮实测基线（到 `408d378`）：**1283 单测 / 168 套件 / 0 失败 / 0 错误 / 0 跳过**
-（跑在变异全撤之后的树上）。与上一格对账：1280 → 1283 = +3，167 → 168 套 = +1（`InputFieldLabelsTest`）。
+最近一轮实测基线（到 `7fc8150`）：**1291 单测 / 169 套件 / 0 失败 / 0 错误 / 0 跳过**
+（跑在变异全撤之后的树上）。与上一格对账：1283 → 1291 = +8，168 → 169 套 = +1（`MemoryCorrectionFlowTest`）。
 lint 报告**重新生成后**实测 **68 / 15**、进预算 **67 / 14**、advisory 1（这一格收了 11 处浮层，条数一字未动）。
 比上一格少的这 1 条是 `AutoboxingStateCreation` 6→5（退役按钮里那个 `mutableStateOf(0)` 计时器，
 新代码写 `mutableIntStateOf`），逐条核过剩余 5 条位置都不在退役文件里才 `--rewrite`
@@ -606,6 +635,13 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
      判据注意用 `contentDescription` **本身**（别写"a ?: b 取第一个非空"，见坑表 68）。
    - 同一族里还有一格没做：`DislikeReasonPanel` 的勾选行只挂 `clickable`，
      **读屏听不出某个原因是否已选中**（`assertSelectableAnnounceState` 那把尺还没用到这屏）。
+   - **§6.4 的下一刀（`7fc8150` 之后）**：还剩两颗内容块没搬——
+     `CorrectionCenter`（`LoveBrainPanelScreen:572` 起）与 `DislikeReasonPanel`（同一屏 :540 起）
+     仍是 `Column(fillMaxWidth)` 直接塞进面板顶层 `Box`，没有遮罩、没有点外关闭。
+     形状已经齐了：`MemoryCorrectionFlow`（持有者）+ `MemoryCorrectionFlowHost`（唯一渲染处）
+     就是照抄对象；`RecordSentDialog` 上一格已经是宿主形状。
+     ⚠ 搬这两颗时会碰到"面板 VM 的异步回调改状态"（`loadAllCorrections { … }`），
+     那是状态持有者该不该吸收 VM 回调的判断，别顺手把 VM 引用塞进 UI 状态类（分层那把闸会红）。
    **主操作以外的重复按钮实现一处都还没收**（全表在账本 §27.7）：`ui/` 下"Primary 底色 + clickable"
    实扫 **17 处 / 11 个文件**。别按数量收口——哪些算"页面主动作"、哪些是 chip / 切换 / 次级动作，
    要一处一处判语义；`054c6e8` 那把归属棘轮只认**声明处**，抓不到"用同一颗组件却自造样式"。
@@ -711,6 +747,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 | `cccabb0` | §6.1 :487 的 Sheet 半边：`ui/panel/PanelModalHost`（141 行、`PanelModalHost`/`Title`/`Actions` 三颗公开组件）归 `core/designsystem/LbModalSheet.kt`，三处调用点跟进；面板在 overlay 窗口起不了 Dialog（BadTokenException）⇒ 第二种形状是平台约束，但两种形状共用 `LbDialogAction`/Tone 同一份词表。改之前先量：旧浮层 4 个可交互节点里 **2 个没可读名字、2 个低于 48dp**（`取消` 48x26、空标签那颗 24x22、遮罩 360x1000、卡片把标题念成 331x84 的按钮）——三条各自修掉（heightIn 48 且内边距排在 clickable 之后 / 空标签不入树 / 遮罩与拦截改 pointerInput）。并掉"保存"那颗的两重就绪判据（`confirmEnabled` + `if (!overLimit)` → 只剩 `enabled`）。新守卫 `LbModalSheetTest` 5 格读 boundsInRoot；探针 S1-S6 各咬各的（S3/S4 同格不同节点故分开跑）；归属棘轮登记到 11 对仍咬。字面量 TEXT 不动、COMPONENT 59→66（+7 全躲在非 Lb 锚点与**默认实参**里，新坑 66）。全量 166/1274 零红、lint 68/15 一字未动。**只换了形状的所有者，没换状态的所有者**——`MemoryRefItem` 仍自己 remember 浮层状态，表里那句"不插在原页面下方"仍没闸（§6.4 下一格） |
 | `5245788` | §6.4 第一刀：生产里 3 处自画整屏遮罩（`LbModalSheet` 自己 + `RecordSentDialog` + `FeedbackCasesScreen` 导出 Loading）收成 1 处，新闸 `only the sheet owner draws a full window scrim` 盯着**写法**而不是声明处（§26 那把棘轮抓不到"没新建组件、只是又抄一遍形状"）。`RecordSentDialog` 迁移前实量 `取消` 28x19dp、`确认…` 96x19dp、遮罩 360x1000dp 还把标题当名字；迁移后 48x48 / 120x48、整屏那颗不再是可交互节点。三处判断收紧：导出 Loading 走 `dismissable=false` 不挂整屏 clickable、空稿不许提交只剩 `enabled` 一处（以前点了没反应）、保存中出口灰着还在且进度留在正文行。**新守卫逮到我没假设的一条**：那颗 `OutlinedTextField` 既无文案也无 contentDescription ⇒ 顺量全仓 **7 处输入框有 6 处读屏念不出名字**（行号进 §4），本格只修自己那处，并把提示语送进 `R.string.panel_record_sent_hint`（zh+en），字面量 TEXT 209→205 / COMPONENT 66→69 / DESC 仍 12、合计 275→274（减的 1 条是真还掉的）。探针 R1-R3 各咬各的；**R4 实测不咬**（`dismissable` 这条行为 JVM 上量不到 ⇒ 无守卫，是结论不是失误）。另：R1 第一版是无效探针（缺 import ⇒ 编译失败被分诊出来），且还原工具把 CRLF 翻成 LF（内容对字节不对，`cmp` 逮到）——行尾标志改成"每个文件只在首次读时判定" |
 | `408d378` | §6.5 第②栏：把上一格量到的 5 处没名字的输入框一次清完（`KbEditActivity` 正文编辑器带分区名、`DislikeReasonPanel` 两颗、`ResultArea`「标记为错误」那颗、`SchemeCard` 自定义改写那颗；`RecordSentDialog` 上一格已修）。口径：placeholder 是举例不是名字；屏幕上已有说明文字的让节点与那行字**共用同一条资源**（3 条说明文字进 zh+en，另 2 条只给读屏用，屏幕上不画）⇒ TEXT 205→202 是真还债。踩到两个坑：① `Modifier.semantics{}` 的 lambda 不是 @Composable，`stringResource` 必须在外面取（编译报错抓住）；② **我自己的判据第一版太宽**——`nameOf` 写成 contentDescription/Text/EditableText 取第一个非空，于是 L2 探针（只摘第二颗的名字）照样绿，收紧成只认 contentDescription 后 L1/L2/L3 各咬各的（新坑 68）。守卫 `InputFieldLabelsTest` 3 格含"点开入口之前 0 颗、之后 1 颗"这种条件存在断言。⚠ 5 颗里 2 颗（`KbEditActivity`、`ResultArea`）改了但**本机没量到**——那两屏还没接进 JVM 仪器，不算已验 |
+| `7fc8150` | §6.4 第二刀：本轮参考记忆的两颗纠正浮层从 `MemoryRefItem` 那一行里搬出来——新增 `MemoryCorrectionFlow`（一次一颗 + 草稿）与 `MemoryCorrectionFlowHost`（唯一渲染处），面板层持有并渲染，`ResultArea` 的参数可空（没传就本地建一颗就地渲染，**避免"忘了接线 ⇒ 菜单点了没反应"这种拆分自带的新缺陷**）。改之前量到"遮罩只盖那一行"（360x400 槽位里标题 y=139–161dp），改之后要求 300–600、实到 439。时长三档改成跟 `MuteDuration.entries` 走。**守卫又当场逮到一条**：行内那颗 ⋯ 入口 `Box(size=28).clickable` 实量 28x28dp（结果级那颗早改成外 48 内 28 了，同族漏了这一颗）——同格修掉。`MemoryCorrectionFlowTest` 7 格，两处判据是探针教的：①"一次一颗"走界面路径永远构造不出两颗同时（遮罩挡住第二个入口）⇒ V1 恒绿，改成直接测持有者；②"有名字"与"够大"挤一格会让报错说错理由 ⇒ 拆开。V5 第一版锚点命中 2 处 = apply 失败的无效探针（runner 现在报废它）。⚠ 只搬了两颗：`CorrectionCenter`/`DislikeReasonPanel` 仍是塞进面板 Box 的 `Column(fillMaxWidth)` 内容块 |
 
 可复用的新零件：`UiText.current(id, vararg)`（设备当前配置下生产会渲染的那句）、
 `UiText.inTag("zh"|"en", id)`（盯回落）、`UiText.generatingBarPattern()`（生成中停止棒整串匹配）、
@@ -722,7 +759,7 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N 次才坏"的桩
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
-## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者，68 「取第一个非空」的判据会被别的来源蹭过去）
+## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者，68 「取第一个非空」的判据会被别的来源蹭过去，69 界面构造不出的状态要对着持有者测）
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -946,6 +983,18 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
     要先断"之前 0 颗"再断"之后 1 颗"，否则挂载失败也能让"都有名字"恒绿。
     同格的另一半：`Modifier.semantics { }` 的 lambda **不是** @Composable，
     `stringResource(...)` 得在外面取好再闭包进去。
+
+69. **状态不变量要用能真正构造出该状态的方式来测；界面路径构造不出时，别写一条永远走不到的断言**
+    （`7fc8150`，V1 探针当场证明）：我给"浮层一次只画一颗"写的是界面路径——
+    开「暂时别提」→ 点取消 → 再开「不对」，然后断言"两个标题不同时出现"。
+    看起来在测那条不变量，实际上那一步**从没让两颗同时存在过**；
+    而界面上也构造不出"同时"——第一颗的遮罩已经把槽位吞掉，第二个入口点不到。
+    于是 V1（把 `requestWrong` 里"顶掉前一颗"那行删掉）照样绿。
+    ⇒ ①写完一条"某状态不该同时成立"的断言，先问"**我能不能真的把两个都弄出来**"；
+    不能就把这条降到它真正的所有者那里测（这里就是 `MemoryCorrectionFlow` 这个纯对象）；
+    ②界面格只保留界面真能到达的路径（关掉之后再开另一颗，这种"切换"是真的）；
+    ③同一格里别混两种判据——"有名字"和"够大"挤在一格时，V3 红的是尺寸，
+    报错却说出了一个没发生过的理由。
 
 65. **"探针没咬"和"探针没跑到"是两件事，混淆会把人推向改闸**（`38520b0` 那一格，N6/N7 两次）：
     我注入的 Kotlin 本身编译不过（`AlertDialog` 只给两个实参会解析到"自定义 content"那个 overload，

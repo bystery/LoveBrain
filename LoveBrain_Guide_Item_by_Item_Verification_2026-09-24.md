@@ -2297,6 +2297,7 @@ R3 把"空稿不许提交"退回 `onClick` 里的 if → `空稿时确认必须�
 - `CorrectionCenter`、`DislikeReasonPanel` 根本不是浮层：它们是 `Column(fillMaxWidth)` 内容块，
   被塞在 `Box(fillMaxSize)` 里（`LoveBrainPanelScreen:540/572`）——这才是 :487 后半句
   "把展开内容直接插在原页面下方"的字面现场，一处没改。
+  **→ 部分已还：§32（`7fc8150`）搬走了「本轮参考记忆」的两颗纠正浮层；这两颗内容块仍在。**
 - 剩下 5 处没名字的输入框（§30.5 有行号）。
   **→ 代码已全部修完：见 §31（提交 `408d378`）；其中 2 处本机没量到，见 §31.5。**
 - `dismissable` 这个旋钮没有守卫（§30.6 R4 实测）。
@@ -2401,3 +2402,106 @@ R3 把"空稿不许提交"退回 `onClick` 里的 if → `空稿时确认必须�
 - 剩下那些没进 `strings.xml` 的可见文案（点踩面板的举例 placeholder、
   `SchemeCard` 里那些内联中文）仍按"资源驱动"那一格处理，本格不动用户可见措辞。
 - 设备侧照旧未跑（本机无 system image）。TalkBack 里到底念成什么，要 CI 或人工那一次才算最终确认。
+
+---
+
+# 追加二十二：§6.4 第二刀——记忆纠正浮层归 state holder + 单一宿主（提交 `7fc8150`）
+
+## 32.1 指导书那句话与这次动的范围
+
+:523（§6.4 悬浮面板交互）：
+
+> - ResultArea 只负责结果内容，不再同时承载菜单、纠正中心、发送记录、改写、版本历史、反馈原因等所有浮层；
+>   这些拆成独立 state holder + modal host。
+> - “⋯”菜单只放低频次操作；高频主任务最多 1–2 个直接按钮。
+
+这次只动**一颗菜单背后的两颗纠正浮层**（本轮参考记忆的"暂停时长"与"标记为错误"）。
+其余（`CorrectionCenter`、`DislikeReasonPanel`、`RecordSentDialog`、改写区）留给下一格——
+别把"这一格做了 §6.4"读成"§6.4 做完了"。
+
+## 32.2 改之前先量：遮罩铺的是"那一行"
+
+`MemoryRefItem` 自己 `remember` 三颗状态（`showMuteSubmenu` / `showWrongDialog` / `wrongText`），
+浮层也就画在这一行的肚子里。本机在 360x400dp 挂载槽里量到：
+
+```
+PROBE 点开「不对」之后：标题在 (27.0, 139.0)–(102.0, 161.0)dp，挂载槽是 360x400dp
+```
+
+`LbModalSheet` 的 `fillMaxSize()` 铺的是**它的父容器**——父容器是那一行，所以"遮罩"
+只盖住一行，行以外那一片还在下面可点。标题落在 y=139 而不是槽位中部，就是这件事的形状。
+
+搬完之后（守卫里用 900dp 高的槽位，把两种情况的差放大到几百 dp）：标题要求落在
+300–600dp 之间，实到 **439dp**。
+
+## 32.3 拆出来的形状
+
+```
+ui/panel/reply/MemoryCorrectionFlow.kt
+  class MemoryCorrectionFlow          // 一次一颗的开关 + 「标记为错误」的草稿
+    requestMute(id) / requestWrong(id) / editWrongDraft(v) / dismiss()
+  MemoryCorrectionFlowHost(flow, onMute, onWrong)   // 两颗浮层的唯一渲染处
+```
+
+- 行只发意图：`correctionFlow.requestWrong(ref.id)`，自己不再画任何东西。
+- `LoveBrainPanelScreen` 持有 flow，并把宿主挂在**面板层**（与 `CorrectionCenter`、
+  `RecordSentDialog` 同一层）——那才是"盖得住面板"的位置。
+- `ResultArea` 的参数**可空**：没传就在本地建一颗并就地渲染宿主。
+  这条是刻意的：这种拆分最容易引入的新缺陷就是"调用方忘了接线，菜单项从此静默失效"，
+  宁可退化成"遮罩只盖一行"也不要退化成"点了没反应"。
+- 时长三档改为跟着 `MuteDuration.entries` 渲染（原来是三行手写 `CorrectionSubmenuItem("仅本轮")…`，
+  枚举加一档界面不会跟着变，也没人会发现）。
+
+## 32.4 顺手修掉守卫当场量到的第二条 §6.5 缺陷
+
+`every actionable node ... meets the touch floor` 一跑就红：
+**行内那颗 ⋯ 入口是 `Box(size = 28.dp).clickable{}`，热区实量 28x28dp**。
+结果级那颗 utility trigger 早就按"外层 48dp 承担点击、内层 28dp 只管字形"改过（代码里还写着那句注释），
+但同一族里**这一颗被漏掉了**——又是一次"改一处没回扫同族"（局部收紧要回扫同一资源的其它属性）。
+现在两颗同形，守卫钉住"行内 ⋯ 的高度 = 48dp"。
+
+## 32.5 两处判据是探针教出来的
+
+1. **“一次一颗”第一版只能算恒绿。** 我写成界面路径：开「暂时别提」→ 取消 → 开「不对」，
+   断言不同时出现。V1 探针（`requestWrong` 不再把 `muteTargetId` 清空）**照样绿**——
+   那格从头到尾没让两颗同时存在过；而界面上**也构造不出**"同时"：第一颗的遮罩已经把槽位吞掉，
+   第二个入口点不到。⇒ 状态持有者的不变量就**直接对着持有者测**，别写一条界面永远走不到的断言
+   （新坑 69）。补了 `the holder keeps at most one request live`：V1 当场红。
+2. **“有名字”和“够大”不能挤在同一格。** V3（28dp 那发）红的是尺寸，格名却叫"still has a name"——
+   报错会说一件没发生过的理由。拆成两格之后 V3 只红尺寸那格。
+
+另外 V5 第一版是**无效探针**：锚点 `var menuOpen by remember…` 在文件里命中 2 次
+（`ResultUtilityTrigger` 与 `MemoryRefItem` 各一颗），apply 当场报错、什么都没改，
+而 runner 只看"有没有新鲜的失败记录" ⇒ 报成"探针没咬"。现在 apply 失败单独报"这一发作废"
+（坑表 65 的第三种表现：前两种是替换空串与编译失败）。
+
+V5 撤回后主格红（`expected null, but was:<439.0>`——行里多画一份，标题就出现在没有宿主的组合里）；
+**它同时把热区那格也弄红了，第二个红本轮没有继续追**（同一发坏法带出的另一个症状，
+不影响归因，但别当成"两个独立结论"）。
+
+## 32.6 实测
+
+| 项 | 结果 |
+|---|---|
+| `:app:compileDebugKotlin` / `UnitTestKotlin` / `compileDebugAndroidTestKotlin` | RC=0 / RC=0 / RC=0 |
+| `:app:testDebugUnitTest` 全量 | **169 套件 / 1291 例 / 0 红**（上一格 168/1283，+1 套 = `MemoryCorrectionFlowTest`） |
+| lint（重生成后） | RC=0；`measured 68 / rules 15`、入预算 `67 / 14`、advisory 1（一字未动） |
+| 字面量四栏 | TEXT 202 / DESC 12 / STATE 0 / COMPONENT 69（浮层搬走时句子跟着走，计数没动，所以这次不用改口） |
+| 其它闸 | 预算自测、工单编号、资源锁、跨层依赖 6 笔、androidTest 编译全 RC=0 |
+| 受影响范围 | `ui.panel.reply.*` + `SheetProbeTest` 12 套件 81 例 0 红（§2.1 那 7 行合同一字未改仍然绿） |
+| 探针撤回核账 | `MemoryCorrectionFlow.kt`、`ResultArea.kt` 与 `_temp/mut77-backup/` 逐字节 IDENTICAL |
+
+## 32.7 这格没做的
+
+- **§6.4 只做了两颗浮层。** `CorrectionCenter` 与 `DislikeReasonPanel` 仍是
+  `Column(fillMaxWidth)` 内容块被塞进面板顶层 `Box`（`LoveBrainPanelScreen:540/572` 附近），
+  既不是遮罩也不是宿主——表里 :487 后半句"不把展开内容直接插在原页面下方"对它们**仍然成立**。
+  下一格继续搬它们（`RecordSentDialog` 已经是宿主形状了，只需接进同一套）。
+- `ResultArea` 里剩下的 `menuOpen` / `showRefs` / `showAllRefs` 没动：菜单与"本轮参考"展开
+  属于文档流内容与低频次菜单，§6.4 那句“⋯ 菜单只放低频次操作”我也**没去判**
+  （要判得先定义"低频"，那是产品口径，不是我能自签的）。
+- "宿主由面板顶层渲染"这件事，守卫量的是**测试里复刻的接法**。面板真接错位置
+  （比如把宿主塞进一个小容器）不会被这格抓到 ⇒ 要抓就得把 `LoveBrainPanelScreen` 接进仪器，
+  那需要 ViewModel 与浮窗环境的替身，是另一件事。
+- 设备侧仍未跑（本机无 system image）。"遮罩盖住面板后底下的输入还在不在"这类
+  真机交互，只能等 CI 或人工那一次。
