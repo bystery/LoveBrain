@@ -5578,3 +5578,68 @@ lint 67 条 / 15 规则、进预算 66/14 **与上轮逐字相同**（新写的 
   `HomeComponents.kt:238` 那颗 tag 撞名——全部照旧。
 - 本窗口四笔**都没推**（远端仍 `9d2757f`）；要同一 SHA 的 CI 证据需要用户说「推送」。
 坑表 **137–140**、交接单 **§0.49–§0.50**。
+---
+
+# 追加六十五：搬**行为**才减行数——"确认已发送"那一族连状态一起离开 ViewModel（`3d84087`）
+
+坑表 140 的预测在这一格被验证：上一格搬五颗字段，VM 反而涨 6 行；这一格搬一段行为，
+`LoveBrainViewModel` **2642 → 2605 行**、私有状态流 **15 → 14 颗**。
+
+## 65.1 搬了什么
+
+`feature/roundcommit/ActualSentRecorder` 接管：upsert 身份（同一 generation version 再确认是**替换**）、
+五种结果的分岔、"每次尝试先回 IDLE"那条防死路判据、adopt 只在第一次确认时加、entry 的格式，
+连 `_actualSentState` 与那份 session 内的 `_actualSentEntries` 账一起。
+`enum class ActualSentState` 也从 VM 里搬出去了（它描述的是这个持有者的异步结果，不是 VM 的），
+消费点跟着改引用：面板 5 处、`MechanismClosureTest` 5 处、`RecordSentFailurePathTest` 5 处、
+`PanelHostSemanticsTest` 1 处。VM 只剩"三个读数 + 把落盘转给仓库（含 IO 调度）+ 把回执/警告/计数接回各自主人"。
+
+⚠ `ui/panel/RecordSentFailurePathTest` 那把静态尺**没被这次搬家弄瞎**：它现算 `ActualSentState.entries`
+再去面板源码里逐个找 `ActualSentState.<名字>`，剥掉 `LoveBrainViewModel.` 前缀之后仍然咬得住
+（同一格反过来还揭示了：那条判据读的是**面板**，不是持有者——所以"穷尽 when"的账仍在 UI 那一侧）。
+
+## 65.2 七格新测试 + 五发反证（`_temp/probe_actual_sent.py`，撤销后逐字节 cmp）
+
+| 发 | 变异 | 实读 |
+|---|---|---|
+| S1 | 删掉"每次尝试先回 IDLE"那一句 | 恰红 `a repeated identical failure still produces a fresh transition`，另 6 格绿 |
+| S2 | 每次都计一次 adopt | 恰红 `confirming the same version twice…`（报错：`adopt expected:<1> but was:<2>`） |
+| S3 | 把 `NO_KB` 并成 `IO_ERROR` | 恰红 `no context and no active library are two different results` |
+| S4 | 把 `catch (CE) { throw e }` 改成空 catch（吞掉取消） | 恰红 `cancellation is rethrown…`（**改判据之后**才咬，见 65.3-2） |
+| S5 | upsert 退化成永远追加 | 恰红 `confirming the same version twice…`（"第二次必须带着替换谁"） |
+
+结构闸那一侧另跑一发：`V3` 把已点名归 `ActualSentRecorder` 的 `_actualSentState` 搬回 VM →
+`ViewModelStateOwnershipTest` 红 2 格（点名倒退 + 清单对不上），绿 1 格。
+
+## 65.3 两条当场修的自身缺陷（都已进坑表）
+
+1. **反证读数脚本会把失败配到别的格子上**（坑表 141）：第一版用"从 `<testcase>` 往后找 `<failure`"
+   的正则，而绿色格子是自闭合 `<testcase …/>` ⇒ 匹配越过空格子落到后面那个真失败上，
+   五发变异全部报成同一格红、而唯一"没红"的那一发恰恰是该红的 S4。
+   真相是**仪表读错了**，不是"我的判据互相纠缠"。改成按 `<testcase ` 切块、每块自判之后，五发各自点名正确。
+2. **"为了测试交出 Job 不值"是一句自我安慰**（坑表 142）：取消那一格第一版只断三个可见面
+   （没走 `onError`、没警告、状态停 `IDLE`），S4 全绿当场证伪——吞掉取消与上抛在这三个面上长得一样。
+   改法是交出可观测物：`record()` 返回 `Job`，格子钉 `isCancelled == true`，
+   并在普通失败那一格加**正向对照** `isCancelled == false`（否则前者可能恒真）。
+   同一发顺带查出：`scripts/audit_cancellation.py --check` 对着"吞取消"的变异**仍然 PASS**
+   （站点 165、PROTECTED 54 一个没变）⇒ 它数的是站点形状，不看 catch 体里有没有上抛。
+   ⚠ 所以另外 53 个 PROTECTED 站点是否真上抛，**目前没测过**，不许拿审计当证据。
+
+## 65.4 这一格没做的
+
+- 本块只搬了一族。VM 里还剩 **14 颗**私有状态流 + 三段可搬的行为：
+  画像确认/重生成（约 150 行）、锦囊与主动发编排（约 150 行）、
+  本轮生成上下文与版本历史（`ReplyGenerationContext` + `_generationHistory` + `_currentVersionId` + stale 判定，约 150 行）。
+  **下一格按这三块排，不再按"几颗 flow"排**（坑表 140）。
+- 棘轮与 CI 那两步（大文件）在 `3d84087` 之后还没推，`upgrade-test` 仍等那四个 secret。
+- `>800` 仍 10 个；`KnowledgeWritePort` 构造注入仍 0 处；ResultArea 1286 行；2 格 `Assume`；
+  `HomeComponents.kt:238` 那颗 tag 撞名——全部照旧。
+
+## 65.5 本机读数（这一格实跑）
+
+JVM **196 套件 / 1445 格 / 0 失败 0 错误 0 跳过**（`--rerun-tasks`）；androidTest 编译 rc=0；
+lint `measured 67 / 15 rules`、进预算 **66 / 14**、advisory 1（与上轮逐字相同 ⇒ 新写的两个文件零 finding）；
+取消审计 165 站 PASS；工单号 PASS；prompt lock `6dcde732…` 未漂；
+大文件棘轮 holds：扫 **156** 个 .kt，`>500 17 / >800 10`（登记 7 + 10）。
+坑表 **141–142**、交接单 **§0.51**。
+
