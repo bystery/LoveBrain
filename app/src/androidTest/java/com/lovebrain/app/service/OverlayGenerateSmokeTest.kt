@@ -65,9 +65,11 @@ import com.lovebrain.app.testing.assertIsDisplayedDiagnosed
  * 断言只用 JUnit + Compose 断言（不用裸 Kotlin assert()：instrumentation 不保证开 -ea）。
  * 期望文案直接取生产 ReplyFailureKind.userMessage，避免测试自抄文案与生产漂移。
  *
- * ⚠ 两条「按合同断言」的用例在生产修复前预期为红（详见各自 KDoc 与交付报告）：
- *   1. [lateCallbacksFromSupersededRequest_doNotOverwriteCurrentRequest]
+ * ⚠ 两条「按合同断言」的用例以前标着"生产修复前预期为红"——**那个前提已经不成立了**，
+ *   两处 KDoc 里描述的机制在生产码里已经不存在（详见各自 KDoc 的改口段与账本「追加六十四」）。
+ *   现在它们是普通的合同钉子：1. [lateCallbacksFromSupersededRequest_doNotOverwriteCurrentRequest]
  *   2. [rapidDoubleTap_onRealGenerateButton_startsExactlyOneProviderRequest]
+ *   ⚠ 但"跟着 CI 一起绿"不等于"机制有人守着"——那要 JVM 侧那格真断言（见下面第二格 KDoc 的指路）。
  */
 @RunWith(AndroidJUnit4::class)
 class OverlayGenerateSmokeTest {
@@ -489,12 +491,23 @@ class OverlayGenerateSmokeTest {
     /**
      * 审计 §5.1「断言只启动一个网络请求」。
      *
-     * ⚠ 预期红：LoveBrainViewModel.kt:844-855 —— guard 查 operationCoordinator.isActive(REPLY)，
-     * 但租约要到 prep 协程 await 完 readIntent / readCorrections 之后（同文件 934 行）才注册，
-     * 而 `_replyRequestState.value = Preparing(requestId)` 是无条件覆盖写。
-     * 于是第二次点击：① 过得了 guard；② 覆盖掉第一个请求的 requestId 身份；
-     * ③ 两个 prep 都在 GenerationEngine.kt:321 的 callbacks.isGenerating() 处被 reject
-     * —— 净效果是 0 个请求（用户表现为「点了没反应」），而不是要求的 1 个。
+     * ⚠ **这一格原先标的"预期红"是假线索，前提在两处重构之后已经不成立了**（2026-09-27 对着码核过）：
+     * · 旧叙述说"租约要到 prep 协程 await 完 readIntent / readCorrections 之后才注册"——
+     *   现在 guard 与登记是**同一步**：`ForegroundOperationCoordinator.start`
+     *   （`domain/ForegroundOperationCoordinator.kt:119-161`）先建 `CoroutineStart.LAZY` 的 Job（不跑），
+     *   在 `lock.withLock` 里查互斥 + 写 `records` + 绑 `requestId`，**都成功了才 `job.start()`**；
+     *   被拒时直接 `job.cancel()` 返回 null，body 一次都不会执行。
+     *   `generate()` 是在自己那一帧里同步调它的，中间没有任何 await ⇒ 同帧第二次点击过不去。
+     * · 旧叙述说"`_replyRequestState.value = Preparing(requestId)` 是无条件覆盖写"——
+     *   `Preparing` 现在只能由 reducer 在收到 `ReplyRequested` 时产生
+     *   （`model/GenerationEvents.kt:201-202`，同时换 `ownerRequestId`），
+     *   而 `ReplyRequested` 只在**被接受的那个租约**的 body 里发出 ⇒ 第二次点击连自己的 Preparing 都没有。
+     *
+     * ⇒ 净效果因此是**旧叙述预测的 0 个请求不成立**：第一个请求正常出门并完成，第二次被当场拒。
+     * 这一格在 run 36249760044（`9d2757f`）里随全套 45 格一起绿；机制本身由 JVM 那格
+     * `ReplyRequestFaultInjectionTest > double generate does not produce two concurrent requests`
+     * 钉住（两次同步 `generate()` 之后立刻断"REPLY 租约恰有 1 个"+"Engine 恰被调一次"+"第一个请求不被抹掉"）。
+     * 那句话是本合同的真主人：设备侧红了要看的是它，不是这里。
      */
     @Test
     fun rapidDoubleTap_onRealGenerateButton_startsExactlyOneProviderRequest() {
@@ -531,14 +544,28 @@ class OverlayGenerateSmokeTest {
      * 审计 §5.1「断言旧请求迟到 chunk/result 不覆盖新请求」。
      *
      * 生产 GenerationEngine.Callbacks 不带 requestId（审计 §6 S2-03），
-     * 因此唯一确定性的注入点是直接调用 VM 的回调实现，模拟
+     * 因此确定性的注入点是**直接向唯一写入漏斗投一个身份不符的事件**
+     * （`vm.dispatchReply(ReplyChunk(STALE_REQUEST_ID, …))`），模拟
      * 「被取消的旧请求，其最后一个在途回调在新请求已开始后才到达」。
+     * 这不算是作弊：reducer 的判据本来就只看事件自己带的 requestId，
+     * 谁递进来的不重要——重要的是**从这里递进去必须被挡**。
      *
-     * ⚠ 预期红：
-     * · LoveBrainViewModel.kt:1996 onReplyStreamingCoreText 无任何所有权判定，
-     *   直接累加进当前请求的流式缓冲；
-     * · LoveBrainViewModel.kt:2060-2073 onReplyResult 只要 currentState.isBusy 就接受并直接写
-     *   `_result`，无法分辨事件属于哪个 requestId。
+     * ⚠ **这一格原先标的"预期红"同样是假线索**：它点名
+     * `LoveBrainViewModel.onReplyStreamingCoreText`"无任何所有权判定，直接累加"与
+     * `onReplyResult`"只要 isBusy 就接受"——**生产侧今天没有这两个方法**：
+     * `grep -rn "onReplyStreamingCoreText\|onReplyResult" app/src/main` 实到 **0 命中**；
+     * 14 处命中全在 JVM 测试夹具里（`viewmodel/GenerationEngineTestHelper.kt` 的 `EventRecorder`，
+     * 那些方法名只是留着让旧用例少改，做的事是**往通道里塞带 requestId 的 typed event**）。
+     * 回复状态现在只能经 `dispatchReply → ReplyStore.accept → ReplyReducer.reduce` 这一条路写，
+     * 而 reducer 每类事件都先过身份门禁：`model/GenerationEvents.kt:208-210`（ReplyStarted 要 owner 相符）、
+     * `:221`（ReplyCleared 要 owner 相符）、`:226-229`（其余事件"身份 + 活跃阶段"双重门禁），
+     * 不相干的事件**原样返回同一个 state 对象**，`ReplyStore` 据此把它报给 `onStaleEvent` 记一条被拒日志
+     * （就是坑表 127 里那条被我误读成"强相关线索"的 `rejected (stale requestId …)`）。
+     *
+     * ⇒ 这一格现在测的是"那道门禁真的挡得住"，而不是"有个已知漏洞没修"。
+     * 反证口径：把 `GenerationEvents.kt:227` 那行 `if (!current.request.isBusy) return current` 上面
+     * 那行身份判据去掉，这一格必须红（迟到事件盖掉当前请求）——**这一发探针留给下一次动 reducer 的人做**，
+     * 本窗口没有注入生产判据。
      */
     @Test
     fun lateCallbacksFromSupersededRequest_doNotOverwriteCurrentRequest() {
