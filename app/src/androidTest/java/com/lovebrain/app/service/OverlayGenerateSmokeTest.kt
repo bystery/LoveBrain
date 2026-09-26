@@ -135,6 +135,9 @@ class OverlayGenerateSmokeTest {
         val s = startSilentProvider(defaultScript)
         MainChainHarness.installFakeProvider(s)
         MainChainHarness.awaitProviderReady(vm, ready = true)
+        // 装好即打一次基线进 logcat：此时 accepted 必须是 0，
+        // systemProxy 那一栏直接回答"127.0.0.1 有没有被交给系统代理"
+        android.util.Log.w("LoveBrain", "PROVIDER-DIAG installed ${MainChainHarness.providerDiagnosis(s)}")
         return s
     }
 
@@ -157,8 +160,16 @@ class OverlayGenerateSmokeTest {
             }
             Thread.sleep(20L)
         }
-        throw AssertionError("等待超时（${timeoutMs}ms）：$reason")
+        // R1：等不到的时候必须当场说清"请求走到哪一段"，不许留一句超时让下一轮猜。
+        // CI run 36214822274 的 5 格超时全都停在 t2 之后、且 45 份 logcat 里
+        // 一条 API 回调日志都没有——这把尺把"没打出去/打出去没回/回了没上屏"切开。
+        throw AssertionError("等待超时（${timeoutMs}ms）：$reason\n  链路读数：${providerDiagnosis()}")
     }
+
+    /** 本格 fake Provider 的三段读数（TCP 连接数 / 可解析请求数 / 请求行原文 + 系统代理） */
+    private fun providerDiagnosis(): String = server
+        ?.let { MainChainHarness.providerDiagnosis(it) }
+        ?: "本格没装 fake Provider"
 
     /** 走真 UI 往 MessageList 放一条消息（生产：输入框 + ➕ 添加） */
     private fun addMessageThroughRealUi(text: String) {

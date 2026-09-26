@@ -55,6 +55,24 @@ class FakeProviderServer : AutoCloseable {
     private val counter = AtomicInteger(0)
     private val bodies = CopyOnWriteArrayList<String>()
 
+    /**
+     * 已建立到本服务的 **TCP 连接**数（还没解析请求行就先加）。
+     *
+     * 它和 [requestCount] 配对读才能把"请求没打出去"这件事切开：
+     * · accepted=0 且 requests=0 ⇒ 客户端一次连接都没开（链路在 OkHttp 之前/之中就断了）
+     * · accepted>0 且 requests=0 ⇒ 连上了但没收到可解析的请求行（协议/半开/被代理截走）
+     * · requests>0 ⇒ 请求真到了服务侧，红点在后半段
+     */
+    private val accepted = AtomicInteger(0)
+
+    /** 最后一条连接收到的请求行（诊断用：走代理时这里是绝对形式 URI） */
+    @Volatile
+    var lastRequestLine: String = ""
+        private set
+
+    /** 已建立的 TCP 连接数 */
+    val acceptedCount: Int get() = accepted.get()
+
     @Volatile
     var defaultScript: Script = Script.Stream(listOf(validReplyJson("默认回复")))
 
@@ -84,6 +102,8 @@ class FakeProviderServer : AutoCloseable {
     /** 清空计数器 / 队列 / body 记录，供同一实例复用 */
     fun reset(script: Script) {
         counter.set(0)
+        accepted.set(0)
+        lastRequestLine = ""
         bodies.clear()
         queue.clear()
         defaultScript = script
@@ -97,6 +117,7 @@ class FakeProviderServer : AutoCloseable {
                 return // close() 后 accept 抛异常，线程正常退出
             }
             // 每条连接独立线程：NoResponse 挂起时不能阻塞后续请求
+            accepted.incrementAndGet()
             Thread({ handle(socket) }, "FakeProviderConn").apply {
                 isDaemon = true
                 start()
@@ -179,6 +200,9 @@ class FakeProviderServer : AutoCloseable {
             if (prev == '\n'.code && headerText.endsWith("\r\n\r\n")) break
             prev = b
         }
+        // 诊断用：留下请求行原文。客户端走系统代理时这里是**绝对形式 URI**
+        // （"GET http://127.0.0.1:PORT/… HTTP/1.1"），一眼能看出请求被代理截走了
+        lastRequestLine = headerText.toString().lineSequence().firstOrNull()?.trim().orEmpty()
         val length = Regex("(?i)content-length:\\s*(\\d+)")
             .find(headerText.toString())
             ?.groupValues?.get(1)?.toIntOrNull() ?: 0

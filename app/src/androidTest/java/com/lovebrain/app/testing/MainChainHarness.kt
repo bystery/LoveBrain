@@ -109,6 +109,60 @@ object MainChainHarness {
     }
 
     /**
+     * R1 诊断：把"点过生成按钮之后请求到底走到哪一段"切成**可读的三段**，
+     * 不改生产代码、不猜因果。CI run 36214822274 上 5 格红都停在
+     * `PERF t2 request enqueued` 之后——而 `API onFailure` / `API error code=` /
+     * `API stats` 在全部 45 份逐格 logcat 里**一条都没有**（`CONNECT_TIMEOUT_SEC=15`
+     * 却没触发连接超时），所以必须先有一把尺能说清是下面哪一种：
+     *
+     * 1. fake 侧 accepted=0 requests=0 ⇒ OkHttp 连 TCP 都没开（请求被挂在别处、
+     *    被取消，或 `ProxySelector` 把 127.0.0.1 交给了系统代理）；
+     * 2. accepted>0 requests=0 ⇒ 连上了但没收到可解析的请求行；
+     * 3. requests>0 ⇒ 请求真到了服务侧，红点在响应回传 / 语义树那半边。
+     *
+     * 用 instrumentation 线程直接读 `ProxySelector.getDefault()`：生产
+     * `OkHttpClient.Builder()`（`DeepSeekRepository.kt:296`，没设 `proxy`）在设备上
+     * 走的就是这条选择逻辑，量的是同一个东西。
+     */
+    fun providerDiagnosis(server: FakeProviderServer): String {
+        val uri = java.net.URI(server.baseUrl)
+        val proxies = runCatching { java.net.ProxySelector.getDefault().select(uri) }
+            .fold(
+                { list -> if (list.isEmpty()) "空列表" else list.joinToString(" ") },
+                { e -> "查询失败(${e::class.java.simpleName}:${e.message})" }
+            )
+        return "fake[accepted=${server.acceptedCount} requests=${server.requestCount} " +
+            "lastRequestLine='${server.lastRequestLine}'] systemProxy=$proxies " +
+            "loopbackSelfTest=${loopbackSelfTest()}"
+    }
+
+    /**
+     * 本进程能不能做 loopback TCP —— 用**自己的一次性监听口**测，绝不拨 fake 服务的端口：
+     * 拨它就等于替被测链路制造一条连接，会把 `requestCount` 和应答队列污染掉。
+     */
+    private fun loopbackSelfTest(): String {
+        return try {
+            val loop = java.net.InetAddress.getByName("127.0.0.1")
+            val probeServer = java.net.ServerSocket(0, 4, loop)
+            val accepted = java.util.concurrent.CountDownLatch(1)
+            Thread({
+                runCatching { probeServer.accept()?.close() }
+                accepted.countDown()
+            }, "LoopbackProbe").apply { isDaemon = true; start() }
+            val result = runCatching {
+                java.net.Socket().use {
+                    it.connect(java.net.InetSocketAddress(loop, probeServer.localPort), 2_000)
+                }
+            }.fold({ "拨号ok" }, { e -> "拨号失败(${e::class.java.simpleName}:${e.message})" })
+            val heard = accepted.await(2, java.util.concurrent.TimeUnit.SECONDS)
+            runCatching { probeServer.close() }
+            "$result/监听端${if (heard) "收到" else "没收到"}"
+        } catch (e: Exception) {
+            "监听口都没开(${e::class.java.simpleName}:${e.message})"
+        }
+    }
+
+    /**
      * 轮询等待条件成立。生产状态由 Main/IO 协程推进，instrumentation 线程只能等。
      * 超时抛 AssertionError（带 reason），绝不「等不到就当通过」。
      */
