@@ -5643,3 +5643,58 @@ lint `measured 67 / 15 rules`、进预算 **66 / 14**、advisory 1（与上轮�
 大文件棘轮 holds：扫 **156** 个 .kt，`>500 17 / >800 10`（登记 7 + 10）。
 坑表 **141–142**、交接单 **§0.51**。
 
+---
+
+# 追加六十六：画像确认那 98 行离开 ViewModel——5 条用户可见分支第一次被钉住（`1ee8223`）
+
+§5.2 第 6 步第三块**行为**。VM **2605 → 2530 行**、私有状态流 **14 → 13 颗**；
+`ProfileReview.kt` 连文件搬进 `feature/profile/`（它描述这张卡，不是 VM 的）。
+搬之前 `confirmProfileUpdate()` 是**全文件最大的单个成员（98 行）**，
+每一条分支都要 mock 仓库 + 协调器 + 触发器才走得到，所以它一次也没被 JVM 量过。
+
+## 66.1 五条分支 = 五个用户可见差别（12 格新测试 + 五发反证）
+
+| 发 | 变异 | 实读 |
+|---|---|---|
+| T1 | 只读保护也跟着清卡（正是 §6.4 抓到的那个错法） | 恰红 `read-only protection warns but keeps the suggestion` |
+| T2 | 把 `RollbackFailed` 并成 `RolledBack` 那句话 | 恰红 `rolled back and rollback failed are two different sentences` |
+| T3 | 成功时清整张卡（不再 `ClearedIfCurrent`） | 恰红 `success clears only the confirmed suggestion, notifies and refreshes` |
+| T4 | 去掉 `finally` 里的确认位复位 | 红 3 格（全是"确认位必须复位"这一族） |
+| T5 | 去掉落盘前的 revision 前置检查 | 恰红 `revision drift clears the card before writing` |
+
+撤销后控制器逐字节 cmp 一致。**只读保护不清卡**这条区分不是文字游戏：
+它说的是"这个 App 比库旧"，升级之后同一份建议仍然有效；跟着作废两种一起清卡，
+用户这次攒的审核内容就白丢一次（账本「追加五十八」抓到过一次）。
+
+## 66.2 一处交叉核对：审计的数没变，但**不是**因为它看不见新目录
+
+`scripts/audit_cancellation.py` 搬前搬后都是 `站点 165 / PROTECTED=54 / SUSPEND-FREE=109 / NEEDS_REVIEW=0`。
+数不变的原因查过了：`--list` 里 `feature/profile/ProfileUpdateController.kt:139` 与
+`feature/roundcommit/ActualSentRecorder.kt:119` **都在 PROTECTED 列**
+⇒ VM 里少了两个站点、新文件里多了两个，**这两支是原样搬过去的**，保护没丢。
+（先怀疑"尺瞎了"是对的，但要用 `--list` 对上文件与行号才算数，不能只看总数没动就下结论。）
+
+## 66.3 写测试时踩到的三处（坑表 143）
+
+① 不钉瞬时值："确认位曾经为 true"随调度器合并与否而变，换成 Standard 就不成立 ⇒ 只断落定后的状态；
+② `runTest` 只能返回 `TestResult`，被测对象带不出来（第一版 `val c = run(...)` 被编译器抓住）
+   ⇒ 控制器存进 harness、断言读 `h.snapshot()`；
+③ 我自己写过一个 `reviewKeepsCard(): Boolean = true` 的**占位断言**——比不写更坏，
+   因为它让人以为那条性质有钉子。删掉换成真断言 `rolled back keeps the suggestion so the user can retry`。
+
+## 66.4 收口门禁实跑（本窗口第六次全量）
+
+JVM **197 套件 / 1457 格 / 0 失败 0 错误 0 跳过**（`--rerun-tasks`）；androidTest 编译 rc=0；
+lint `measured 67 / 15 rules` → 进预算 `66 / 14`、advisory 1（与上轮逐字相同 ⇒ 新写的三个文件零 finding）；
+工单号 PASS；取消审计 165 站 PASS；prompt lock `6dcde732…` 未漂；
+大文件棘轮 holds：扫 **157** 个 .kt，`>500 17 / >800 10`（登记 7 + 10）。
+
+## 66.5 没做的
+
+- VM 还剩 **13 颗**私有状态流（名字与各自归属登在 `ViewModelStateOwnershipTest` 的 KDoc 里）。
+  下一格按行为块排：锦囊与主动发编排（约 150 行）、本轮生成上下文与版本历史（约 150 行）。
+- 本窗口七笔**都没推**（远端仍 `9d2757f`）；`>800` 仍 10 个、`KnowledgeWritePort` 注入仍 0 处、
+  ResultArea 1286 行、2 格 `Assume`、`HomeComponents.kt:238`——全部照旧。
+坑表 **143**、交接单 **§0.52**。
+
+
