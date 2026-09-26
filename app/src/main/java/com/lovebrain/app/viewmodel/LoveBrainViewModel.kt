@@ -20,6 +20,7 @@ import com.lovebrain.app.domain.RewritePrompt
 import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.CounselingEnded
 import com.lovebrain.app.model.CounselingEvent
@@ -94,9 +95,6 @@ private const val TITLE_FIRST_LINE_LIMIT = 60
 /** 谈心记录标题截断：用户消息回退 */
 private const val TITLE_FALLBACK_LIMIT = 40
 
-/** 谈心草稿写盘防抖窗口——连续击键只在停顿后落盘一次（强杀最多丢 ≤600ms 输入；正常关闭经 dispose flush 零丢失） */
-private const val COUNSELING_DRAFT_DEBOUNCE_MS = 600L
-
 
 /**
  * 军师核心 ViewModel v4（ 后为状态壳：生成逻辑下沉到 GenerationEngine）。
@@ -124,11 +122,33 @@ class LoveBrainViewModel(
 
     val currentFeedbackCase: StateFlow<com.lovebrain.app.model.FeedbackCase?> = feedbackCases.currentCase
 
-    private val _panelState = MutableStateFlow(PanelState.KEYBOARD)
-    val panelState: StateFlow<PanelState> = _panelState.asStateFlow()
+    /**
+     * 输入区与消息列表的状态持有者（复核 §5.2 第 6 步"VM 不再持有状态"的第一块）。
+     *
+     * 这里接管的是九颗原本各写各的 `MutableStateFlow`：面板状态、消息列表、当前角色、
+     * 编辑位、《想法》chip 态、两条草稿、输入模式、输出模式、计划面板。
+     * VM 只留**同名的只读出口**（UI 与 Service 的调用点一字未改）+ 下面两条接线：
+     *  - `onContentChanged`：内容一变就去判"旧结果是否 stale"，这条判据不能靠每个写的人记得调用；
+     *  - 三个持久化回调：store 不知道有 `SecurePrefs` 这回事（§5.1：`feature` 不许 import `data`）。
+     */
+    private val composer = ComposerStore(
+        scope = viewModelScope,
+        initialOutputMode = securePrefs.outputMode,
+        onContentChanged = { markCurrentResultStaleIfNeeded() },
+        savePanelMode = { securePrefs.panelMode = it },
+        persistCounselingDraft = { securePrefs.counselingDraft = it },
+        saveOutputMode = { securePrefs.outputMode = it },
+        normalizeOutputMode = { mode ->
+            // 直出/思考的合法组合规则住在 prompt 配置层，这里不复制一份，只把警告照原样落日志
+            promptBuilder.validateConfig(securePrefs.thinkingMode, mode).let { r ->
+                r.warnings.forEach { L.w("⚠️ $it") }
+                r.outputMode
+            }
+        }
+    )
 
-    private val _messages = MutableStateFlow<List<ChatMessage>>(emptyList())
-    val messages: StateFlow<List<ChatMessage>> = _messages.asStateFlow()
+    val panelState: StateFlow<PanelState> = composer.panelState
+    val messages: StateFlow<List<ChatMessage>> = composer.messages
 
     // ═══ 回复流程唯一状态源 ═══
     /**
@@ -287,21 +307,8 @@ class LoveBrainViewModel(
         replyStore.accept(ReplyStore.Intent.ReplaceResult(result))
     }
 
-    /** 当前本轮想法文本（已提交 IDEA + 未提交草稿） */
-    internal fun getUserHint(): String = collectIdeaHintWithDraft(_messages.value)
-
-    /** IDEA 草稿 + 已提交 IDEA 合并成本轮想法文本 */
-    private fun collectIdeaHintWithDraft(messages: List<ChatMessage>): String {
-        val committed = messages.filter { it.role == ChatMessage.Role.IDEA }
-            .joinToString("\n") { it.content }
-            .trim()
-        val draft = _draftText.value.trim()
-        return when {
-            committed.isNotBlank() && draft.isNotBlank() -> "$committed\n$draft"
-            committed.isNotBlank() -> committed
-            else -> draft
-        }
-    }
+    /** 当前本轮想法文本（已提交 IDEA + 未提交草稿）。合并规则只住在 [ComposerStore] 一处。 */
+    internal fun getUserHint(): String = composer.ideaHint()
 
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
@@ -392,27 +399,15 @@ class LoveBrainViewModel(
 
     val feedbacks: StateFlow<Map<String, SchemeFeedback>> = feedbackCases.feedbacks
 
-    private val _draftText = MutableStateFlow("")
-    val draftText: StateFlow<String> = _draftText.asStateFlow()
+    val draftText: StateFlow<String> = composer.draftText
+    val counselingDraft: StateFlow<String> = composer.counselingDraft
+    val panelMode: StateFlow<Int> = composer.panelMode
 
-    private val _counselingDraft = MutableStateFlow("")
-    val counselingDraft: StateFlow<String> = _counselingDraft.asStateFlow()
-    /** 谈心草稿防抖写盘任务（取消旧任务 + 延迟 600ms 落盘，防每击键一次加密写盘） */
-    private var draftPersistJob: kotlinx.coroutines.Job? = null
-
-    private val _panelMode = MutableStateFlow(0) // 0=reply, 1=counseling
-    val panelMode: StateFlow<Int> = _panelMode.asStateFlow()
-
-    /** 输出模式二态（0=普通 1=进攻；悬浮窗切换，下次请求生效） */
-    private val _outputMode = MutableStateFlow(securePrefs.outputMode)
-    val outputMode: StateFlow<Int> = _outputMode.asStateFlow()
+    /** 输出模式二态（0=普通 1=进攻；悬浮窗切换，下次请求生效）。校验与落盘在 store 的回调里。 */
+    val outputMode: StateFlow<Int> = composer.outputMode
 
     fun setOutputMode(mode: Int) {
-        // 直出/思考悬浮窗切换面已移除（改工单级开关），思考值直读持久层参与校验
-        val result = promptBuilder.validateConfig(securePrefs.thinkingMode, mode)
-        result.warnings.forEach { L.w("⚠️ $it") }
-        _outputMode.value = result.outputMode
-        securePrefs.outputMode = result.outputMode
+        composer.accept(ComposerStore.Intent.SetOutputMode(mode))
     }
 
     /** ═══════════ 花费/耗时展示（§2.2：九个 flow 并成一份快照 + 一个 reduce） ═══════════ */
@@ -448,19 +443,14 @@ class LoveBrainViewModel(
     /** 本轮生成开始时间戳（用于计算首条可复制回复耗时） */
     private var generateStartTimeMs: Long = 0L
 
-    private val _currentRole = MutableStateFlow(ChatMessage.Role.HER)
-    val currentRole: StateFlow<ChatMessage.Role> = _currentRole.asStateFlow()
-
-    private val _editingIndex = MutableStateFlow(-1)
-    val editingIndex: StateFlow<Int> = _editingIndex.asStateFlow()
+    val currentRole: StateFlow<ChatMessage.Role> = composer.currentRole
+    val editingIndex: StateFlow<Int> = composer.editingIndex
 
     /** 输入行《想法》chip 态（：仅影响面板输入去向；捕获收口见 setCurrentRole） */
-    private val _ideaComposeMode = MutableStateFlow(false)
-    val ideaComposeMode: StateFlow<Boolean> = _ideaComposeMode.asStateFlow()
+    val ideaComposeMode: StateFlow<Boolean> = composer.ideaComposeMode
 
     /** 计划面板是否可见 */
-    private val _showPlanPanel = MutableStateFlow(false)
-    val showPlanPanel: StateFlow<Boolean> = _showPlanPanel.asStateFlow()
+    val showPlanPanel: StateFlow<Boolean> = composer.showPlanPanel
 
     /** ═══════════ 今日锦囊（AI 生成，参考性，不写知识库） ═══════════ */
 
@@ -616,8 +606,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // ctx.intentRevision 是生成时的快照值，如果用户随后修改了 intent，
         // 用旧 revision 自己跟自己比较当然发现不了变化。
         val currentFingerprint = computeInputFingerprint(
-            _messages.value,
-            collectIdeaHintWithDraft(_messages.value),
+            composer.messagesNow,
+            composer.ideaHint(),
             _activeKb.value?.name,
             _onlyThisRound.value,
             _intentConfig.value.revision
@@ -747,7 +737,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val persisted = promptBuilder.validateConfig(securePrefs.thinkingMode, securePrefs.outputMode)
         if (!persisted.isValid) {
             persisted.warnings.forEach { L.w("⚠️ 启动配置校验：$it") }
-            _outputMode.value = persisted.outputMode
+            composer.accept(ComposerStore.Intent.RestoreOutputMode(persisted.outputMode))
             securePrefs.thinkingMode = persisted.thinkingMode
             securePrefs.outputMode = persisted.outputMode
         }
@@ -791,108 +781,56 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // ═══════════ UI 状态 setters ═══════════
 
-    fun setPanelState(state: PanelState) { _panelState.value = state }
-    fun setDraft(text: String) {
-        _draftText.value = text
-        // 草稿变化后标记旧结果为 stale（草稿参与 buildMessageSnapshot）
-        markCurrentResultStaleIfNeeded()
-    }
+    fun setPanelState(state: PanelState) { composer.accept(ComposerStore.Intent.SetPanelState(state)) }
+    fun setDraft(text: String) { composer.accept(ComposerStore.Intent.SetDraft(text)) }
     fun setCounselingDraft(text: String) {
-        _counselingDraft.value = text
-        //  防抖：连击只落盘最后一次（行为差异：强杀最多丢 ≤600ms 输入；dispose 显式 flush 兜底）
-        draftPersistJob?.cancel()
-        draftPersistJob = viewModelScope.launch {
-            delay(COUNSELING_DRAFT_DEBOUNCE_MS)
-            securePrefs.counselingDraft = text
-        }
+        composer.accept(ComposerStore.Intent.SetCounselingDraft(text))
     }
-    fun setPanelMode(mode: Int) { _panelMode.value = mode; securePrefs.panelMode = mode }
+    fun setPanelMode(mode: Int) { composer.accept(ComposerStore.Intent.SetPanelMode(mode)) }
     //  捕获收口：FloatingService 捕获链以 currentRole 落消息角色（本文件外零触碰），
-    // _currentRole 恒 ∈ {HER, ME}——选《想法》只进入 ideaComposeMode，不落 _currentRole，真实聊天捕获永不误标 IDEA
+    // currentRole 恒 ∈ {HER, ME}——选《想法》只进入 ideaComposeMode，不落 currentRole，真实聊天捕获永不误标 IDEA
     fun setCurrentRole(role: ChatMessage.Role) {
-        if (role == ChatMessage.Role.IDEA) {
-            _ideaComposeMode.value = true
-        } else {
-            _ideaComposeMode.value = false
-            _currentRole.value = role
-        }
+        composer.accept(ComposerStore.Intent.SetCurrentRole(role))
     }
-    fun setEditingIndex(index: Int) { _editingIndex.value = index }
+    fun setEditingIndex(index: Int) { composer.accept(ComposerStore.Intent.SetEditingIndex(index)) }
 
-    // ═══════════ 消息管理 ═══════════
+    // ═══════════ 消息管理：状态与"改完之后编辑位该落到哪"都住在 [ComposerStore] ═══════════
 
     fun addMessage(role: ChatMessage.Role, content: String) {
-        if (content.isBlank()) return
-        _messages.value = _messages.value + ChatMessage(role = role, content = content.trim())
-        // 消息变更后标记旧结果为 stale
-        markCurrentResultStaleIfNeeded()
+        composer.accept(ComposerStore.Intent.AddMessage(role, content))
     }
 
     fun updateMessage(index: Int, role: ChatMessage.Role, content: String) {
-        if (content.isBlank()) return
-        val list = _messages.value.toMutableList()
-        if (index !in list.indices) return
-        list[index] = ChatMessage(id = list[index].id, role = role, content = content.trim())
-        _messages.value = list
-        // 消息变更后标记旧结果为 stale
-        markCurrentResultStaleIfNeeded()
+        composer.accept(ComposerStore.Intent.UpdateMessage(index, role, content))
     }
 
     fun removeMessage(index: Int) {
-        _messages.value = _messages.value.filterIndexed { i, _ -> i != index }
-        // 消息变更后标记旧结果为 stale
-        markCurrentResultStaleIfNeeded()
+        composer.accept(ComposerStore.Intent.RemoveMessage(index))
     }
 
     /**
      * 按消息 id 删除（动画延迟回调里 index 会过期，id 是 data class 稳定值）。
-     * editingIndex 修正下沉至 VM——VM 持数据真源，同帧连删串行执行永远看最新快照，
-     * 消除 UI 侧依赖 composition 旧快照各自算 index 必错位的竞态。
      *
-     * 具体怎么修正不再在这里推理：只有 [MessageListEditing.reindex] 一处（按身份重算）。
+     * 为什么修正编辑位这件事不在这里做：它是"列表变了"的后果，不是"谁调用"的后果。
+     * 删、拖、提交本轮三处都要求同一条判据，写在调用方便会变成三份各抄一份的算术
+     * （以前就是，见 [MessageListEditing.reindex] 的 KDoc）。
      */
     fun removeMessageById(id: String) {
-        val list = _messages.value
-        val index = list.indexOfFirst { it.id == id }
-        if (index < 0) return
-        val nextList = list.filterNot { it.id == id }
-        val editing = _editingIndex.value
-        val next = MessageListEditing.reindex(list, nextList, editing)
-        if (next != editing) _editingIndex.value = next
-        if (editing >= 0 && next < 0) _draftText.value = ""
-        _messages.value = nextList
-        // 消息变更后标记旧结果为 stale
-        markCurrentResultStaleIfNeeded()
+        composer.accept(ComposerStore.Intent.RemoveMessageById(id))
     }
 
     /**
-     * 拖拽重排同步修正 editingIndex——与 [removeMessageById] 同源：
-     * 修正下沉 VM（VM 持数据真源），不许 UI 侧依赖 composition 旧快照各自算 index。
-     *
-     * 这里原来是一段带边界等号的三段推理（"拖的就是编辑位→跟随、向下拖越过→-1、
-     * 向上拖越过→+1"），还靠注释举了两个反例才说得清等号该不该含。
-     * 现在按身份重算（[MessageListEditing.reindex]），那两组边界用例改由穷举矩阵
-     * `MessageEditingIndexInvariantTest` 在每个 (长度, 编辑位, from, to) 组合上跑真方法守着。
+     * 拖拽重排。编辑位与列表的联动同 [removeMessageById]：一次列表改动，一条判据。
+     * 穷举矩阵 `MessageEditingIndexInvariantTest` 在每个 (长度, 编辑位, from, to) 组合上跑真方法。
      */
     fun reorderMessages(from: Int, to: Int) {
-        if (from == to) return
-        val list = _messages.value
-        if (from !in list.indices || to !in list.indices) return
-        val moved = list.toMutableList()
-        val item = moved.removeAt(from)
-        moved.add(to, item)
-        val editing = _editingIndex.value
-        val next = MessageListEditing.reindex(list, moved, editing)
-        if (next != editing) _editingIndex.value = next
-        _messages.value = moved
-        // 消息变更后标记旧结果为 stale
-        markCurrentResultStaleIfNeeded()
+        composer.accept(ComposerStore.Intent.ReorderMessages(from, to))
     }
 
     // ═══════════ 状态持久化 ═══════════
 
     private fun restoreState() {
-        securePrefs.panelMode.let { if (it in 0..1) _panelMode.value = it }
+        securePrefs.panelMode.let { composer.accept(ComposerStore.Intent.RestorePanelMode(it)) }
         securePrefs.loadCounselingResult()?.let {
             if (it.isNotBlank()) {
                 counselingStore.accept(
@@ -900,7 +838,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 )
             }
         }
-        securePrefs.counselingDraft.takeIf { it.isNotEmpty() }?.let { _counselingDraft.value = it }
+        securePrefs.counselingDraft.let { composer.accept(ComposerStore.Intent.RestoreCounselingDraft(it)) }
         // 今日锦囊仅当天恢复（隔天不恢复旧锦囊）；消息/想法已改纯内存，杀进程即清
         securePrefs.loadSuggestion()?.let { (json, date) ->
             if (date == TimeFmt.today()) {
@@ -912,7 +850,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    // ═══════════ 唯一消息快照构建入口 ═══════════
+    // ═══════════ 唯一消息快照构建入口（实现住在 [ComposerStore.messageSnapshot]） ═══════════
 
     /**
      * 构建本轮生成的冻结消息快照。
@@ -922,24 +860,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * - 应用未提交的编辑草稿（角色 + 内容），防双身份问题（）。
      * - 按稳定消息ID操作，不依赖可能移动的下标。
      */
-    private fun buildMessageSnapshot(): List<ChatMessage> {
-        val messages = _messages.value.map { it.copy() }
-        val editingDraft = _draftText.value.trim()
-        val editingIdx = _editingIndex.value
-
-        if (editingDraft.isNotBlank() && editingIdx in messages.indices) {
-            val targetId = messages[editingIdx].id
-            val editingRole = if (_ideaComposeMode.value) ChatMessage.Role.IDEA else _currentRole.value
-            return messages.mapIndexed { idx, msg ->
-                if (idx == editingIdx && msg.id == targetId) {
-                    msg.copy(role = editingRole, content = editingDraft)
-                } else {
-                    msg
-                }
-            }
-        }
-        return messages
-    }
+    private fun buildMessageSnapshot(): List<ChatMessage> = composer.messageSnapshot()
 
     // ═══════════ 流式生成（委托 GenerationEngine） ═══════════
 
@@ -962,7 +883,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         _resultMode.value = ResultMode.REPLY
 
         val requestId = ReplyRequestState.newRequestId()
-        val userHint = collectIdeaHintWithDraft(snapshot)
+        val userHint = composer.ideaHintOf(snapshot)
 
         val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.REPLY,
@@ -1024,7 +945,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
             // 构建不可变 GenerationInput——冻结本轮全部输入，
             // 含 KB 内容修订、画像正文、Provider 完整非敏感身份与 prompt 资产 hash
-            val aggressive = _outputMode.value == 1
+            val aggressive = composer.outputModeNow == 1
             val providerConfig = deepSeekRepo.snapshotProviderConfig()
             val input = buildGenerationInput(
                 requestId = requestId,
@@ -1109,7 +1030,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      */
     private fun onReplyEffect(effect: ReplyStore.Effect) {
         when (effect) {
-            is ReplyStore.Effect.PanelStateChanged -> _panelState.value = effect.panelState
+            is ReplyStore.Effect.PanelStateChanged ->
+                composer.accept(ComposerStore.Intent.SetPanelState(effect.panelState))
 
             is ReplyStore.Effect.SuccessCommitted -> {
                 _generationRoundId.value++
@@ -1231,7 +1153,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     /**
      * 提交顺序改为「先写盘成功 → 再提交 UI」。
      * 写盘失败时保留所有本轮数据（消息/结果/反馈/context），用户可重试。
-     * 保存时使用 replyGenerationContext 中的快照消息和 KB 名，不用实时 _messages/_activeKb。
+     * 保存时使用 replyGenerationContext 中的快照消息和 KB 名，不用实时消息列表与实时激活库。
      */
     fun nextRound() {
         val response = (replyResult as? GenerateResult.Success)?.response ?: return
@@ -1337,16 +1259,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 同时修正 editingIndex/draftText 防止指向已删除的位置。
      */
     private fun commitReplyRound(consumedMessageIds: Set<String>) {
-        val oldList = _messages.value
-        val newList = oldList.filterNot { it.id in consumedMessageIds }
-
-        // 修正 editingIndex：与前两处同一个判据（按身份重算），不在此重复推理
-        val editing = _editingIndex.value
-        val next = MessageListEditing.reindex(oldList, newList, editing)
-        if (next != editing) _editingIndex.value = next
-        if (editing >= 0 && next < 0) _draftText.value = ""
-
-        _messages.value = newList
+        // 消息列表、编辑位与草稿的联动全部在 ComposerStore 那一处（三处列表改动共用同一条判据）
+        composer.accept(ComposerStore.Intent.ConsumeMessages(consumedMessageIds))
         feedbackCases.clearFeedbacks()
         // 结果/流式态的清空也走 reducer，不再各自写四个 StateFlow
         applyReplyEvent(ReplyCleared(replyUi.value.ownerRequestId ?: ""))
@@ -1743,9 +1657,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     fun clearCounselingAll() {
         counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Clear)
-        _counselingDraft.value = ""
-        // 先取消防抖尾再写空，防"清空后旧草稿被防抖任务写回"复活竞态
-        draftPersistJob?.cancel()
+        // ClearCounselingDraft 内部就是"先置空、再取消防抖尾"这个顺序——
+        // 反过来会留下"清空后旧草稿被防抖任务写回"的复活竞态
+        composer.accept(ComposerStore.Intent.ClearCounselingDraft)
         securePrefs.counselingDraft = ""
         securePrefs.clearCounselingHistory()
     }
@@ -1821,8 +1735,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // ═══════════ 今日锦囊（委托 GenerationEngine） ═══════════
 
-    fun openPlanPanel() { _showPlanPanel.value = true }
-    fun dismissPlanPanel() { _showPlanPanel.value = false }
+    fun openPlanPanel() { composer.accept(ComposerStore.Intent.ShowPlanPanel) }
+    fun dismissPlanPanel() { composer.accept(ComposerStore.Intent.DismissPlanPanel) }
 
     /** 一次锦囊请求冻结下来的身份——写缓存时用它，绝不回读实时 _activeKb */
     /**
@@ -1963,7 +1877,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 kbId = kbId,
                 today = today,
                 stage = _activeKb.value?.stage ?: "",
-                outputMode = _outputMode.value,
+                outputMode = composer.outputModeNow,
                 thinkingMode = securePrefs.thinkingMode,
                 onlyThisRound = _onlyThisRound.value,
                 assetHash = promptBuilder.assetHashOf(AssetRegistry.SUGGEST),
@@ -2687,8 +2601,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      */
     fun dispose() {
         // 取消防抖尾 + 同步直写最终草稿（正常关闭悬浮窗零丢失）
-        draftPersistJob?.cancel()
-        securePrefs.counselingDraft = _counselingDraft.value
+        composer.flushCounselingDraft()
         // 统一走 coordinator 关闭，不再逐个 cancel 手里的 Job 字段。
         // 旧写法会漏掉没被字段覆盖的任务（画像刷新、流式刷新定时器）。
         cancelPendingChunkFlush()

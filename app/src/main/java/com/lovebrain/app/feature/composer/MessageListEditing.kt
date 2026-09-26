@@ -1,4 +1,4 @@
-package com.lovebrain.app.viewmodel
+package com.lovebrain.app.feature.composer
 
 import com.lovebrain.app.model.ChatMessage
 

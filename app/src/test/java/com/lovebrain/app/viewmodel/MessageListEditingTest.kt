@@ -1,5 +1,6 @@
 package com.lovebrain.app.viewmodel
 
+import com.lovebrain.app.feature.composer.MessageListEditing
 import com.lovebrain.app.model.ChatMessage
 import org.junit.Assert.assertEquals
 import org.junit.Test
