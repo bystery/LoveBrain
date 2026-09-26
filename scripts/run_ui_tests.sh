@@ -33,6 +33,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=lib/gate_lib.sh
 . "$SCRIPT_DIR/lib/gate_lib.sh"
+# 截图这一段的三个设备动作（装包、干净地启动活动、读"此刻前台是谁"）共用升级测试
+# 那一套 helper —— 它们本来就会把 Error/Permission Denial/does not exist 判成失败，
+# 而 run_ui_tests.sh 里那份自己写的 `adb shell "am start …"` 不会（am 的退出码是 0）。
+# shellcheck source=lib/device_lib.sh
+. "$SCRIPT_DIR/lib/device_lib.sh"
 
 ATTEMPTS=2
 TASK="connectedDebugAndroidTest"
@@ -135,27 +140,50 @@ if ! adb logcat -d -v time >"$ARTIFACTS/logcat-final.txt"; then
 fi
 [ -s "$ARTIFACTS/logcat-final.txt" ] || die "the captured logcat dump is empty: $ARTIFACTS/logcat-final.txt"
 
+# ⚠ 拍屏之前必须先确认**被测包还在机器上**。CI run 36234389326 就是这么骗过所有人的：
+#   connected 测试跑完 AGP 把 com.lovebrain.app 卸了，脚本接着 `am start` 去拍"两块屏幕"，
+#   两次都报 `Error type 3: Activity class … does not exist`，而 **`am` 的退出码仍是 0** ⇒
+#   `if ! adb shell "am start …"` 一句都不红，前台其实是 launcher3，两张 PNG 逐字节相同。
+#   所以这里：①装回来（用 Gradle 这次构建出来的 debug APK，不许拿别的 APK 凑），
+#   ②装完再核一遍包在不在，③启动一律走 device_lib 的 device_start_activity（它会查
+#   Error/Exception/does not exist/Permission Denial 与 `Status:`），
+#   ④把"前台到底是谁"当断言用（device_resumed_component），不是当日志用。
+if [ "$(adb shell "pm list packages $PKG" | tr -d '\r' | grep -c "^package:$PKG\$")" = "0" ]; then
+  log "$PKG is not installed any more (AGP uninstalls after connected tests) — reinstalling this run's debug APK for the screenshots"
+  APP_APK="$(repo_root)/app/build/outputs/apk/debug/app-debug.apk"
+  [ -s "$APP_APK" ] ||
+    die "cannot reinstall the app for screenshots: $APP_APK is missing or empty — visual evidence must come from the APK this run built"
+  device_install "$APP_APK"
+  if [ "$(adb shell "pm list packages $PKG" | tr -d '\r' | grep -c "^package:$PKG\$")" != "1" ]; then
+    die "reinstalled $APP_APK but $PKG is still not listed by `pm list packages` — the screenshots would not be the app's screens"
+  fi
+fi
+
 for pair in "home:com.lovebrain.app/.ui.SetupActivity" "knowledge-base:com.lovebrain.app/.ui.KnowledgeBaseActivity"; do
   name="${pair%%:*}"
   comp="${pair#*:}"
   shot="$SCREENSHOT_DIR/$name.png"
   # The screens are captured as visual evidence for the release packet
   # (re-audit §9 item 9). A failed launch here is a real regression, so it dies.
-  if ! adb shell "am start -W -n $comp" >"$ARTIFACTS/am-start-$name.txt" 2>&1; then
-    cat "$ARTIFACTS/am-start-$name.txt" >&2
-    die "could not launch $comp to capture $shot — the main screen is not reachable"
-  fi
+  device_start_activity "$comp" >"$ARTIFACTS/am-start-$name.txt" 2>&1
   sleep 2
   # 这张图到底拍的是哪一屏，必须由产物自己说清楚：CI 上真出过 home.png 与
   # knowledge-base.png 逐字节相同（各 115128 B），也就是第二个 activity 其实没把
   # 前一层换掉（立刻 finish、被转走、或者压根没到前台）。光有 PNG 不算视觉证据。
-  adb shell dumpsys activity activities \
-    | grep -E "mResumedActivity|topResumedActivity|mFocusedApp" | head -3 \
-    >"$ARTIFACTS/foreground-$name.txt" || true
-  if [ ! -s "$ARTIFACTS/foreground-$name.txt" ]; then
+  resumed="$(device_resumed_component)"
+  {
+    printf 'expected=%s\n' "$comp"
+    printf 'resumed=%s\n' "$resumed"
+    adb shell dumpsys activity activities |
+      grep -E "mResumedActivity|topResumedActivity|mFocusedApp" | head -3
+  } >"$ARTIFACTS/foreground-$name.txt"
+  [ -s "$ARTIFACTS/foreground-$name.txt" ] ||
     die "could not read the foreground activity before capturing $shot — the screenshot has no provenance"
+  # 断言，不是日志：前台必须是刚启动的那一屏。launcher3 顶上来的"截图"是零信息证据。
+  if [ "$resumed" != "$comp" ] && [ "${resumed##*.}" != "${comp##*.}" ]; then
+    die "$shot 不是 $comp 的视觉证据：拍的那一刻前台是 $resumed（am start 的原文在 $ARTIFACTS/am-start-$name.txt）"
   fi
-  log "foreground for $name: $(tr -s ' \t' ' ' <"$ARTIFACTS/foreground-$name.txt")"
+  log "foreground for $name: $(tr -s ' \t' ' ' <"$ARTIFACTS/foreground-$name.txt" | head -2 | tr '\n' ' ')"
   if ! adb exec-out screencap -p >"$shot"; then
     die "screencap failed for $shot — visual evidence cannot be produced"
   fi
@@ -170,6 +198,8 @@ bash "$SCRIPT_DIR/assert_artifacts.sh" \
   --xml-dir "${XML_DIRS[0]}" \
   --html-dir "${HTML_DIRS[0]}" \
   --screenshots-dir "$SCREENSHOT_DIR" \
+  --shot-provenance "$ARTIFACTS" \
+  --foreground-pkg "$PKG" \
   --min-tests "$MIN_TESTS" || evidence_rc=$?
 
 if [ "$rc" -ne 0 ]; then

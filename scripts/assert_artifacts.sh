@@ -23,6 +23,18 @@
 #        --lint-xml app/build/reports/lint-results-debug.xml \
 #        [--lint-html app/build/reports/lint-results-debug.html]
 #
+#   --shot-provenance DIR + --foreground-pkg PKG 开启**视觉证据的来源证明**：
+#   每张 <name>.png 都必须在 DIR 里有 `foreground-<name>.txt`（拍那一刻的前台活动）
+#   与 `am-start-<name>.txt`（启动它的命令原文），并且
+#     * 前台活动属于 PKG（不是 launcher、不是别的应用、不是黑屏）；
+#     * am-start 的输出里没有 `Error` / `Exception` / `does not exist` / `Permission Denial`，
+#       有 `Status:` 行时必须是 `ok`。
+#   为什么需要这一条：CI run 36234389326 交出的两张"截图"**逐字节相同**，而产物里的
+#   `am-start-*.txt` 其实早就写着 `Error type 3: Activity class … does not exist`
+#   （connected 测试跑完 AGP 会把被测包卸掉），`foreground-*.txt` 写的是
+#   `com.android.launcher3/.Launcher`——两张都是桌面。`am` 遇到这种错误**退出码仍是 0**，
+#   所以"命令没失败"完全不能当证据用。
+#
 #   --lint-xml switches to LINT-EVIDENCE mode: the JUnit counters do not apply to
 #   a lint report, so instead of "tests ran" this proves "lint really produced a
 #   report with parseable content" (non-empty, <issues> root, issue elements, no
@@ -39,7 +51,8 @@ LABEL="artifacts"
 MIN_TESTS=1
 LINT_XML=""
 LINT_HTML=""
-declare -a XML_DIRS=() HTML_DIRS=() SHOT_DIRS=()
+FG_PKG=""
+declare -a XML_DIRS=() HTML_DIRS=() SHOT_DIRS=() PROV_DIRS=()
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -47,6 +60,8 @@ while [ $# -gt 0 ]; do
     --xml-dir) XML_DIRS+=("$2"); shift 2 ;;
     --html-dir) HTML_DIRS+=("$2"); shift 2 ;;
     --screenshots-dir) SHOT_DIRS+=("$2"); shift 2 ;;
+    --shot-provenance) PROV_DIRS+=("$2"); shift 2 ;;
+    --foreground-pkg) FG_PKG="$2"; shift 2 ;;
     --min-tests) MIN_TESTS="$2"; shift 2 ;;
     --lint-xml) LINT_XML="$2"; shift 2 ;;
     --lint-html) LINT_HTML="$2"; shift 2 ;;
@@ -215,5 +230,38 @@ for d in "${SHOT_DIRS[@]}"; do
     die "$LABEL: 这些截图与前面某张逐字节相同：$duplicates —— 同一屏拍两张不是两块屏幕的视觉证据（CI 上 home/knowledge-base 各 115128 字节正是这种）"
   log "$LABEL: $N screenshot(s) captured in $d, all $N distinct"
 done
+
+# ── 视觉证据的来源证明（每张截图都要说得出它拍的是哪一屏）─────────────────────
+# 上面那条"两两不同"只能证明不是同一张图，证明不了图里是被测应用：
+# CI run 36234389326 那两张桌面截图如果内容碰巧差一像素，就能带着"两两不同"过关。
+# 这里改成读**产物自己**说的两件事：启动命令的输出干净、拍的那一刻前台属于被测包。
+if [ "${#PROV_DIRS[@]}" -gt 0 ]; then
+  [ -n "$FG_PKG" ] ||
+    die "$LABEL: --shot-provenance 需要同时给 --foreground-pkg（否则没法判断前台是不是被测应用自己）"
+  for d in "${PROV_DIRS[@]}"; do
+    [ -d "$d" ] || die "$LABEL: provenance directory does not exist: $d"
+    for png_d in "${SHOT_DIRS[@]}"; do
+      while read -r png; do
+        [ -n "$png" ] || continue
+        nm="$(basename "$png" .png)"
+        fg="$d/foreground-$nm.txt"
+        am="$d/am-start-$nm.txt"
+        [ -f "$fg" ] ||
+          die "$LABEL: screenshot $png has no provenance file $fg —— 光有 PNG 不算视觉证据"
+        [ -f "$am" ] ||
+          die "$LABEL: screenshot $png has no launch record $am —— 没留下启动命令的输出，就无法判断它真到过前台"
+        [ -s "$fg" ] || die "$LABEL: $fg is empty — $nm.png 没有来源证明"
+        [ -s "$am" ] || die "$LABEL: $am is empty — 启动 $nm 的那条命令什么都没输出"
+        if grep -qE 'Error: |Exception|does not exist|Permission Denial' "$am"; then
+          die "$LABEL: $am 里写着启动失败（$(grep -m1 -E 'Error|Exception|Permission Denial' "$am" | tr -s ' \t' ' ')）—— $nm.png 不可能是那一屏的证据；am 的退出码是 0，别拿它当结论"
+        fi
+        if ! grep -q "$FG_PKG/" "$fg"; then
+          die "$LABEL: 拍 $nm.png 的那一刻前台不是 $FG_PKG，实到：$(tr -s ' \t' ' ' <"$fg" | head -c 200) —— 这张图拍的是别的界面（launcher/别的应用/黑屏），不能当视觉证据"
+        fi
+        log "$LABEL: provenance for $nm OK — $(tr -s ' \t' ' ' <"$fg" | grep -o "$FG_PKG/[^ }]*" | head -1)"
+      done < <(find "$png_d" -type f -name '*.png' 2>/dev/null)
+    done
+  done
+fi
 
 ok "$LABEL evidence gate passed: $TESTS tests, $CLASS_COUNT suite(s), 0 failures, 0 errors"

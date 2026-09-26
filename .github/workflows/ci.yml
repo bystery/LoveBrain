@@ -70,6 +70,13 @@ jobs:
         # 发现来自仓库之外的检查（上游版本清单 / 本机 SDK）不进预算，但每次打印条数与理由。
         run: bash scripts/check_lint_budget.sh
 
+      - name: Visual-evidence gate must be gradeable
+        # 截图那一路的判据自己也正反各跑一遍：CI run 36234389326 交出的两张"屏幕截图"其实都是
+        # 安卓桌面（am start 报 Error type 3 / does not exist，但 am 的退出码永远是 0），
+        # 而旧口径只断言"PNG 非空 + 两两不同"。夹具就是那一跑产物里的原文，
+        # 每格还同时跑 HEAD 那一版当"坏实现"对照——它在"两张不同的桌面截图"那格必须放绿。
+        run: bash scripts/test_assert_artifacts.sh
+
       - name: Instrumentation sources must compile (same SHA, same job)
         # ui-test 过去在 Gradle 之前就退出，androidTest 的编译问题会被双重遮蔽；
         # 这里显式编一遍，编译不过就当场红，不等 emulator。
