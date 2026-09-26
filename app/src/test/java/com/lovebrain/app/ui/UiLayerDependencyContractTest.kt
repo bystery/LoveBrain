@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui
 
+import com.lovebrain.app.core.testing.SourceScan
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -588,6 +589,79 @@ class UiLayerDependencyContractTest {
             "至少 3 处应经 viewModel() 取得 VM，实测 $activitiesUsingViewModelStore",
             activitiesUsingViewModelStore >= 3
         )
+    }
+
+    /**
+     * §6.1 :490 **第二把尺的唯一实现**：自画的、涂着品牌底的**可点**控件。
+     *
+     * 为什么现在收进仓库：这一族原先由 `_temp/scan_primary_buttons.py` 数——仓库外的脚本
+     * 不进 CI、没有证人、也没有正向对照，而且它**只看 `clickable` 自己那条链**。
+     * `d0b6358` 把面板那三颗角色 chip 与「添加」改成"热区与视觉分两层"
+     * （外层可点、里层涂底）之后，它从 17 处掉到 15 处——**一处债都没还，数字自己降了**。
+     * 这正是 :490 要防的那类"某一页看起来不一样"，而尺瞎了就会把它登记成进展。
+     *
+     * 判据的形状（每档都有正向对照，见 `SourceScanTest`）：
+     * ①`clickable` 所在的那次组合调用，**子树里**涂着品牌底——含尾随 lambda 里那层
+     * （Compose 的 `Box( … ) { … }`，内容在配对右括号**之外**，只按右括号取范围就认不出两层形状）；
+     * ②品牌底允许条件涂色（`if (selected) Primary else SurfaceInset`）；
+     * ③注释一律按字符掩成空格（长度不变 ⇒ 行号可信），而**字符串里的 `//` 不算注释**
+     *   ——同文件那把老尺用的 `codeOf` 会删注释且不分字符串，见下面"还欠"那条。
+     */
+    @Test
+    fun `hand-drawn brand-toned actionable widgets do not grow`() {
+        // ⚠ **这把尺比它替代的那把严**：python 那把实扫 15 处 / 7 文件，这把 **23 处 / 10 文件**。
+        // 多出来的 8 处**不是新债**，是以前看不见的形状（热区分层、以及"clickable 在外层品牌盒子的
+        // 尾随 lambda 里"这种嵌套）。⇒ 由此推论：**交接单上那句":490 已逐处判完"只对旧的 15 处成立**，
+        // 新增可见的这 8 处要按新清单逐处再判一遍语义（是不是那一页的唯一主动作、还是 chip/次级动作），
+        // 不许按数量收口，也不许在本格顺手宣布"判完了"。
+        val perFileBudget = mapOf(
+            "bubble/FloatingBubble.kt" to 1,             // :258
+            "feedback/FeedbackCasesScreen.kt" to 2,      // :201 :454
+            "home/ProviderSection.kt" to 2,              // :142 :215
+            "KnowledgeBaseActivity.kt" to 1,             // :412
+            "panel/counseling/CounselingPanel.kt" to 4,  // :217 :260 :377 :477
+            "panel/reply/MessageList.kt" to 1,           // :270
+            "panel/reply/ReplyInput.kt" to 2,            // :133「添加」 :257 三颗 chip 共用的那颗
+            "panel/reply/ResultArea.kt" to 3,            // :412 :579 :1247
+            "panel/reply/SchemeCard.kt" to 1,            // :532
+            "panel/SuggestPanel.kt" to 6                 // :152 :228 :279 :726 :786 :941
+        )
+        val total = perFileBudget.values.sum()
+
+        val uiRoot = dir("ui")
+        val scanned = kotlinFiles(uiRoot).map {
+            val masked = SourceScan.maskComments(it.readText())
+            it.relativeTo(uiRoot).invariantSeparatorsPath to
+                SourceScan.actionableBranded(masked).map { (click, _) -> SourceScan.lineOf(masked, click) }
+        }.filter { it.second.isNotEmpty() }
+        val found = scanned.associate { it.first to it.second.size }
+        val linesOf = scanned.toMap()
+
+        val grew = found.filter { (path, n) -> (perFileBudget[path] ?: 0) < n }
+        assertTrue(
+            "这些文件里自画的品牌底可点控件涨了（§6.1 :490 要的是别再长新的）：$grew\n" +
+                "实扫明细：" + scanned.joinToString { "${it.first}=${it.second}" },
+            grew.isEmpty()
+        )
+        assertEquals(
+            "登记的就是本机实扫的总数，表本身错了要先修表；实扫明细：" +
+                scanned.joinToString { "${it.first}=${it.second}" },
+            total, found.values.sum()
+        )
+        found.keys.forEach { path ->
+            assertTrue("$path 实扫到 ${found[path]} 处、表里却没有这一行", perFileBudget.containsKey(path))
+        }
+        perFileBudget.keys.forEach { path ->
+            assertTrue("$path 已不在 ui/ 下——表里这一行要一起删掉", File(uiRoot, path).isFile)
+        }
+        // 等号证人做到**逐文件**：只核总数的话，一家还了债、另一家长了一条，表照样绿
+        perFileBudget.forEach { (path, want) ->
+            assertEquals(
+                "$path 的额度对不上实扫（还了债就要回来把表改小，别只改总数）：" +
+                    "实扫行号 ${linesOf[path] ?: emptyList<Int>()}",
+                want, found[path] ?: 0
+            )
+        }
     }
 
     /**
