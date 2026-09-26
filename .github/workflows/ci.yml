@@ -52,12 +52,18 @@ jobs:
         # 重新生成基线是显式人工动作：`./gradlew :app:recordRoborazziDebug` + 人看过 + 单独一笔提交。
         run: ./gradlew :app:verifyRoborazziDebug --no-daemon
 
-      - name: Upload screenshot comparison report
+      - name: Upload screenshot comparison report and actual images
+        # 带实到图是刻意的：基线只能由**跑它的那台机器**生成。
+        # 实到教训：把在 Windows 上录的三张基线提交进去，CI 的 Ubuntu runner 上字体渲染不同
+        #   → run 36246805108 三格全红。所以重录基线的正确做法是：从这个产物里拿实到图
+        #   （`actual/` 下是 runner 自己画的那些），人看过再提交到 app/src/test/roborazzi/。
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: roborazzi-report
-          path: app/build/reports/roborazzi/
+          path: |
+            app/build/reports/roborazzi/
+            app/build/intermediates/roborazzi/
           if-no-files-found: error
           retention-days: 30
 
