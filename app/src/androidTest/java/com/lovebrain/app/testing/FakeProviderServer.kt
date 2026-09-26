@@ -240,17 +240,25 @@ class FakeProviderServer : AutoCloseable {
     /** 读 headers + Content-Length body；返回 body 文本 */
     private fun readRequest(input: java.io.InputStream): String {
         val headerText = StringBuilder()
-        var prev = -1
-        // ⚠ 诊断三件套必须放在 finally 里：连接被提前关掉时抛的就是这个读循环本身，
-        //    放在循环之后等于"只有成功时才留读数"——那正是坑表 128 骂的那把尺。
+        // ⚠ 这一行原来写的是 `prev == '\n'.code && headerText.endsWith("\r\n\r\n")`，而 `prev`
+        //    要到 check **之后**才更新 ⇒ 两半互斥、判据恒假：`endsWith("\r\n\r\n")` 成立时刚追加的
+        //    那个字节是 '\n'，它的上一个（也就是 check 时的 prev）必然是 '\r'，不可能是 '\n'。
+        //    ⇒ 这台 fake **从来没有**认过一次头块结束，只能等对端关闭（read() 返回 -1）
+        //    或本进程自己关掉它；而 `requestCount`（= 那五格断言的"请求有没有出门"）
+        //    恰恰只在 readRequest 正常返回之后才加。
+        //    实到证据（CI run 36231958338 = `86ca126`）：五格齐报
+        //    `accepted=1 requests=0 bytes=387 terminated=false err='SocketException:Socket closed'`
+        //    ——字节到齐了、头块始终没认全。局部证明见 `_temp/ZzHeaderTerminatorProbeTest.kt.retired-*`：
+        //    对 0..255 穷举 prev 那一字节，旧判据命中 0 次、去掉 `prev` 那半之后命中 >0 次。
+        // ⚠ 诊断三件套必须放在 finally 里：被提前关掉时抛的就是这个读循环本身，
+        //    写在循环之后等于"只有成功才留读数"（坑表 128 骂的正是那把尺）。
         try {
             while (true) {
                 val b = input.read()
                 if (b == -1) break
                 lastByteCount.incrementAndGet()
                 headerText.append(b.toChar())
-                if (prev == '\n'.code && headerText.endsWith("\r\n\r\n")) break
-                prev = b
+                if (headerText.endsWith("\r\n\r\n")) break
             }
         } finally {
             // 走系统代理时请求行是**绝对形式 URI**（"GET http://127.0.0.1:PORT/… HTTP/1.1"）
