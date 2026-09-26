@@ -24,10 +24,43 @@
 #   0  抓包存在且所有外连目的地都在白名单内
 #   1  发现表外目的地（即潜在遥测/后端）
 #   2  工具或输入缺失（tshark/pcap/设备）——这是"没能验证"，不是"验证通过"
-set -euo pipefail
+set -Eeuo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT/scripts/lib/gate_lib.sh"
+
+# ── 静默中止防护 ────────────────────────────────────────────────────────────
+# 这个脚本在 `set -e` + `pipefail` 下跑，而有一整类命令的**正常结果就是非 0**
+# （`grep -v` 一行没选中、`getent` 查不到主机）。这类命令一旦落在没有 `||` 兜住的位置，
+# 脚本就在那一行当场死掉：退出码看着像判决，报告却一个字都没写。
+# CI run 36206913392 就这么红掉四格：`allow-only`/`rogue-sni` 拿到 exit 2
+# （getent 查不到合成 fixture 里的假主机名）、`rogue-dns`/`bare-ip`/`empty-pcap` 拿到 exit 1
+# （post_process 里 `grep -v` 空选）。**P0-04 修的是"通配符放过一切"，这三格是同一类病的另一张脸**：
+# 结论长得像通过。所以修两处命令本身，再留这一条兜底——以后任何一处再静默中止，
+# 都会显式打印 CANNOT-VERIFY 并把退出码钉在 2，而不是留下一个像是判过的数字。
+# 生效范围到"打印汇总"为止：那之后的事（数表外条数、写报告）由自测试的
+# **退出码 + 条数 + 理由串**三件证人各自盯着，死了照样红。
+VERDICT=""
+die_unverified() {
+  VERDICT="cannot-verify"
+  printf '%s  CANNOT-VERIFY %s
+' "$GATE_LOG_PREFIX" "$*" >&2
+  exit 2
+}
+on_err() {
+  local rc="$1"
+  if [ -z "$VERDICT" ]; then
+    printf '%s  CANNOT-VERIFY the checker aborted with rc=%s **before printing any verdict**: ' \
+      "$GATE_LOG_PREFIX" "$rc" >&2
+    printf 'that is a tool bug, not a result — fix the abort, do not soften the assertions.\n' >&2
+    printf '%s  (本文件把这类死法定为 exit 2 的理由：P0-04 要防的就是"结论长得像通过"。' \
+      "$GATE_LOG_PREFIX" >&2
+    printf '查法：bash -x 这一份脚本，看最后一行落在哪条命令上。)\n' >&2
+    VERDICT="died"
+    exit 2
+  fi
+}
+trap 'on_err $?' ERR
 
 PCAP=""
 CAPTURE=0
@@ -88,8 +121,6 @@ run_tshark() {
     log "$what: $(wc -l <"$out" | tr -d ' ') row(s)"
   fi
 }
-die_unverified() { printf '%s  CANNOT-VERIFY %s
-' "$GATE_LOG_PREFIX" "$*" >&2; exit 2; }
 
 # adb 只在"要现场抓包"时才需要。--pcap 模式是离线分析，
 # 把它当成全局前置条件会让"没有 adb"盖住"没有 tshark"这一格，测试就分不开了。
@@ -134,8 +165,13 @@ run_tshark "DNS queries" "$WORK/dns.raw" -Y "dns.flags.response==0" -T fields -e
 
 post_process() {
   # post_process <raw-file> <separator-regex> <out> — 拆字段 + 去端口 + 去空 + 排序去重
+  #
+  # 去空这一步**用 `sed /d`，不用 `grep -v`**：`grep -v` 一行都没选中时返回 1，
+  # 在 `pipefail` 下会把整个脚本当场带走（CI 上 `bare-ip`/`rogue-dns`/`empty` 三格
+  # 就是这么拿到 exit 1 的——那一格里"这个视角没有行"是**正常输入**）。
+  # 空不空由后面的 `[ -s ]` 判，不是由命令的退出码判。
   local raw="$1" sep="$2" out="$3"
-  tr "$sep" '\n' <"$raw" | sed 's/:[0-9]*$//' | grep -v '^[[:space:]]*$' | sort -u >"$out"
+  tr "$sep" '\n' <"$raw" | sed 's/:[0-9]*$//' | sed '/^[[:space:]]*$/d' | sort -u >"$out"
 }
 post_process "$WORK/dst_ip.raw" '\t' "$WORK/dst_ip.txt"
 post_process "$WORK/sni.raw" ',' "$WORK/sni.txt"
@@ -157,11 +193,17 @@ for ip in ${ALLOW_IPS_EXTRA[@]+"${ALLOW_IPS_EXTRA[@]}"}; do
   printf '%s\n' "$ip" >>"$ALLOW_IPS"
 done
 for h in "${ALLOW_HOSTS[@]}"; do
+  # 两条探测都是"**查不到**是正常输入"：合成 fixture 里的主机名本来就是假的
+  # （TEST-NET 的 .test），离线环境也没有 DNS。`getent`/`python3` 查不到时返回非 0，
+  # 而这里以前没有兜底 —— CI 上 `allow-only`/`rogue-sni` 就是死在 getent 那行的 exit 2，
+  # 本机（Windows 的 python3 是商店占位符，返回 49）死在第二行。
+  # 吞掉的只是**探测命令的状态**；"一个允许 IP 都没解析出来"这件事仍由下面那条 warn
+  # 显式写进报告，判据没变软。
   if have getent; then
-    getent hosts "$h" | awk '{print $1}' >>"$ALLOW_IPS"
+    getent hosts "$h" | awk '{print $1}' >>"$ALLOW_IPS" || true
   fi
   if have python3; then
-    python3 - "$h" <<'PY' >>"$ALLOW_IPS"
+    python3 - "$h" <<'PY' >>"$ALLOW_IPS" || true
 import socket,sys
 try:
     for fam,_,_,_,sa in socket.getaddrinfo(sys.argv[1], None):
@@ -199,6 +241,25 @@ is_nonroutable() {
   return 1
 }
 
+# 表内主机名 = 与允许主机**完全相等**，或它是某个允许主机的**子域**。
+#
+# ⚠ 这一格是 CI 逼出来的第二版。第一版写成
+#       [ "$name" = "$h" ] || case "$name" in *".$h") ok=1 ;; esac
+#   读起来像"相等就放过，否则看后缀"，实际是：**相等时 `||` 短路，右边那句根本不执行，
+#   ok 一直是 0** ⇒ 完全匹配的那颗主机反而被判成表外。本机一句就能复现：
+#   `name=h=api.example.test` 走一遍 ⇒ ok 仍是 0。
+#   以前看不见这条，是因为五格 fixture 从没被 tshark 真读开过（pcap magic 写错，账本 §58）。
+#   SNI 与 DNS 两派当时**各抄了一遍**这一句，所以同一个 bug 会点亮两条视角；
+#   现在收成一处——同一条判据不许有两份实现。
+matches_allow_host() {
+  local name="$1" h
+  for h in "${ALLOW_HOSTS[@]}"; do
+    if [ "$name" = "$h" ]; then return 0; fi
+    case "$name" in *".$h") return 0 ;; esac
+  done
+  return 1
+}
+
 while read -r ip; do
   [ -n "$ip" ] || continue
   if is_nonroutable "$ip"; then continue; fi
@@ -206,12 +267,7 @@ while read -r ip; do
 done <"$WORK/dst_ip.txt"
 while read -r name; do
   [ -n "$name" ] || continue
-  ok=0
-  for h in "${ALLOW_HOSTS[@]}"; do
-    [ "$name" = "$h" ] || case "$name" in *".$h") ok=1 ;; esac
-    [ "$ok" = 1 ] && break
-  done
-  [ "$ok" = 1 ] || printf 'sni\t%s\n' "$name" >>"$UNEXPECTED"
+  matches_allow_host "$name" || printf 'sni\t%s\n' "$name" >>"$UNEXPECTED"
 done <"$WORK/sni.txt"
 PTR_SKIPPED=0
 while read -r name; do
@@ -224,12 +280,7 @@ while read -r name; do
       continue
       ;;
   esac
-  ok=0
-  for h in "${ALLOW_HOSTS[@]}"; do
-    [ "$name" = "$h" ] || case "$name" in *".$h") ok=1 ;; esac
-    [ "$ok" = 1 ] && break
-  done
-  [ "$ok" = 1 ] || printf 'dns\t%s\n' "$name" >>"$UNEXPECTED"
+  matches_allow_host "$name" || printf 'dns\t%s\n' "$name" >>"$UNEXPECTED"
 done <"$WORK/dns.txt"
 
 SUMMARY="$WORK/summary.txt"
@@ -242,6 +293,9 @@ SUMMARY="$WORK/summary.txt"
   echo "reverse (PTR) queries    : $PTR_SKIPPED  (skipped by policy, counted on purpose)"
   echo "out-of-list destinations : $(wc -l <"$UNEXPECTED" | tr -d ' ')"
 } >"$SUMMARY"
+# 从这里开始，"死了没人知道"那一段就结束了：报告要打印，后面的每一步
+# （数表外条数、写 --out/--json、出判决）都由自测试的退出码+条数+理由串三件证人盯着。
+VERDICT="summary"
 cat "$SUMMARY"
 if [ -s "$UNEXPECTED" ]; then
   echo "[gate] out-of-list destinations:" >&2
