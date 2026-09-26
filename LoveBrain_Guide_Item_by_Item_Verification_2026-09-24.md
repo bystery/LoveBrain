@@ -4795,3 +4795,81 @@ Upload 那三步在前置产物缺失时才失败。`--log-failed` 只给了报�
 - lint 报告重生成后：measured_issues=67 measured_rules=15 gated_issues=66 gated_rules=14 advisory_issues=1（预算登记 14 条规则；`UnusedResources` 由 33 降到 32，因为 `a11y_close_onboarding` 这一格第一次真的被引用了）
 - 跨层 `6`；lint 预算判据 `27 格全对`；资产锁 `6dcde732fab602813559370dd6af3b774ca24fda86ce28f2c0cfd88a8be95831`；取消审计 PROTECTED=54 WAIVED=2 SUSPEND-FREE=109 NEEDS_REVIEW=0
 - 唯一合法安静的一步是 `prompt`（`git diff --exit-code` 零输出就是它的通过信号）。
+
+# 追加五十五：把"自造品牌底可点控件"那把尺收进仓库——它比原来那把严，23 处对 15 处（提交 `1f980d4`）
+
+## 55.1 起因：一把仓库外的尺
+
+§6.1 :490 的三个数里，"能按下去的自造按钮"那一档一直由 `_temp/scan_primary_buttons.py` 数——
+**不进 CI、没有等号证人、也没有正向对照**。`d0b6358` 把面板三颗角色 chip 与「添加」改成
+"热区与视觉分两层"之后，它从 17 处掉到 15 处：**一处债都没还，数字自己降了**。
+那一次如果不是我把两条站点都在场的 `ReplyInput` 又改了一遍，谁都不会去重看这把尺。
+⇒ 尺收进 `app/src/test/.../core/testing/SourceScan.kt`，判定进
+`UiLayerDependencyContractTest."hand-drawn brand-toned actionable widgets do not grow"`，
+python 那把退役（`_temp/gates107/scan_primary_buttons.py.retired-2026-09-26`，**没删**）。
+
+## 55.2 新尺认得而旧尺不认的两种形状
+
+| 形状 | 旧尺 | 新尺 |
+|---|---|---|
+| `Box(.background(Primary).clickable{…})` 同一条链 | 认得 | 认得 |
+| 热区/视觉分两层：外层 `.clickable`、里层 `Box(.background(Primary))` | **看不见** | 认得 |
+| `clickable` 在外层品牌盒的**尾随 lambda** 里：`Box(.background(Primary)) { Box(clickable) }` | 看不见 | 认得 |
+| 条件涂色 `if (sel) Primary else SurfaceInset` | 认得（上一格刚修） | 认得 |
+
+实现上两条值得记：
+- **尾随 lambda 不在圆括号里**。第一发按"配对右括号"取调用范围，两层对照仍然量到 0——
+  `Box( … ) { …涂底色… }` 的内容在右括号**之外**，于是加了 `callEnd()`：配对右括号之后若紧跟
+  `{`，就把那个花括号块也算进子树。⚠ 这就是"按形状认"的尺最典型的两类断点之一（另一类是
+  `[^)]*` 在 `if (…)` 的右括号处断，坑表 95）。
+- 括号栈而不是"正则扫 `Name(` 挑最小跨度"：正则那版会把 `modifier = Modifier` 那里断掉的
+  半截跨度当候选（同一族）。栈里剩下的左括号天然就是"真正包住这个偏移的那些"。
+
+## 55.3 数字与新账
+
+- 实扫 **23 处 / 10 文件**（逐文件行号钉进表里，等号证人做到**逐文件**——只核总数的话，
+  一家还了债、另一家长了一条，表照样绿）：
+  `FloatingBubble 1(:258)`、`FeedbackCasesScreen 2(:201 :454)`、`ProviderSection 2(:142 :215)`、
+  `KnowledgeBaseActivity 1(:412)`、`CounselingPanel 4(:217 :260 :377 :477)`、
+  `MessageList 1(:270)`、`ReplyInput 2(:133 :257)`、`ResultArea 3(:412 :579 :1247)`、
+  `SchemeCard 1(:532)`、`SuggestPanel 6(:152 :228 :279 :726 :786 :941)`。
+- ⚠ **推论要说到底**：这 23 里有 8 处是旧尺看不见的 ⇒ 交接单上那句"§6.1 :490 那张清单已逐处判完"
+  **只对旧的 15 处成立**。本格没把"判完"擅自扩到新清单，也没按数量收口；
+  **下一格的任务就是按这张行号表逐处判语义**（是不是那一页的唯一主动作 / 还是 chip、次级动作、选中态底色）。
+- ⚠ 顺带一条引信（今天没咬到，但它是同一族）：同文件那两把老尺用的 `codeOf()` **删注释且不区分字符串**，
+  所以 `placeholder = "https://api.example.com"`（`ProviderSection:390`）里那个 `//` 会把该行后半段吃掉。
+  本机扫过：`ui/` 里带 `"http` 的行只有这一条，且该行没有别的判据形状 ⇒ **今天是潜在而非现伤**。
+  新尺用 `SourceScan.maskComments`（分字符串、三引号、嵌套块注释，且**长度不变**所以行号可信）。
+
+## 55.4 这一格自己的牙
+
+- 尺本身 10 格对照（`SourceScanTest`）：3 档正向（同链 / 两层 / 条件涂色）+ 3 档反向
+  （中性底不算品牌、可点无底色不算、静态涂色不算本尺）+ 掩码等长与行号 + 嵌套块注释 +
+  一次调用里两颗 clickable 算两处 + `enclosingCall` 取最内层。
+- 闸的牙是**先红后绿**：空表跑第一次当场红，并把 23 处明细打在失败信息里（所以登记不是抄的）。
+- `_temp/scan_primary_buttons.py` 退役而不是删除（禁删协议）。
+
+## 55.5 实测
+
+门禁一批：`bash _temp/run_gates107.sh _temp/gates40`（这一版每步记 **RC + 输出字节数**，开跑前先验 python 与 `/usr/bin/env` 包装真的会执行）
+
+| 步 | RC | 输出字节 |
+|---|---|---|
+| SANITY | 0 | — |
+| unit | 0 | 2413 |
+| lint | 0 | 1855 |
+| budget | 0 | 1161 |
+| self27 | 0 | 2147 |
+| deps | 0 | 3 |
+| ticket | 0 | 72 |
+| prompt | 0 | 0 |
+| assetlock | 0 | 132 |
+| art | 0 | 338 |
+| canc | 0 | 80 |
+| atest | 0 | 3316 |
+| dead | 0 | 424 |
+
+- 单测：**188 套件 / 1399 例 / 0 失败 / 0 错误 / 0 跳过**，188 份 XML 全在 08:25:30（同一秒 ⇒ 同一批，不是上一轮的陈旧件）
+- lint 报告重生成后：measured_issues=67 measured_rules=15 gated_issues=66 gated_rules=14 advisory_issues=1（预算登记 14 条规则；`UnusedResources` 由 33 降到 32，因为 `a11y_close_onboarding` 这一格第一次真的被引用了）
+- 跨层 `6`；lint 预算判据 `27 格全对`；资产锁 `6dcde732fab602813559370dd6af3b774ca24fda86ce28f2c0cfd88a8be95831`；取消审计 PROTECTED=54 WAIVED=2 SUSPEND-FREE=109 NEEDS_REVIEW=0
+- 唯一合法安静的一步是 `prompt`（`git diff --exit-code` 零输出就是它的通过信号）。
