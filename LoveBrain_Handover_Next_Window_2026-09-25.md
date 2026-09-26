@@ -1384,7 +1384,12 @@ HEAD `0c4d6d6`，仍未推。两笔：
   **两万一千字节全被吞进 `headerText`**，而 `tailHex`/`err` 是空的正说明
   `readRequest()` 的 `finally` **还没跑**（读循环一直卡在 `input.read()` 等 EOF）。
   ⇒ 死锁形状完全对上：fake 等客户端关连接才应答，OkHttp 等应答才关连接。
-  **可证伪的预期**（run 36233588797 见分晓）：`authFailure401`/`providerTimeout`/`parseFailure`/`successStream`
+  **判决已回（run 36233588797 = `a8349eb`）：`tests=45 failures=3 errors=0 skipped=2`——本窗口 8 红 → 7 → 3。**
+  `authFailure401`、`providerTimeout`、`parseFailure`、`successStream` **四格全绿**：它们的红从头到尾就是
+  这台 fake 没应答，**生产链路一行没错**。本窗口轨迹：`49aac07` 关 1 红（A 组锚点）→ `86ca126` 仍 7 红
+  （只加读数、判决不动 = 对新尺自身的交叉核对）→ `a6d3e51` 读到 `bytes=21892 terminated=false`（恒假坐实）
+  → `a8349eb` **3 红**。
+  ⚠ 原判据文本（留档，说明预期是什么）：`authFailure401`/`providerTimeout`/`parseFailure`/`successStream`
   应当至少收到应答（要么直接绿，要么往后红到"应答内容/上屏"）；`stopDuringGeneration` 的
   `requests` 应当变成 1；而 `rapidDoubleTap`/`lateCallbacks` 仍该是 `accepted=0`、仍该红——
   那是 VM/Engine **之前**的生产竞态（`LoveBrainViewModel.kt:844-855`），**修完这一发不许把它俩一起宣布结案**。
@@ -1879,7 +1884,7 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 ## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者，68 「取第一个非空」的判据会被别的来源蹭过去，69 界面构造不出的状态要对着持有者测，
     70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑，124–125 假账销账与口径冲突不许择一自裁，126–128 合并树里的锚点/贴着 teardown 的假相关/只数成功的尺）
     ⚠ 正文按**加入顺序**排，不严格递增（102 后面接着 95、90 那批是补记的）——
-    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 129**
+    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 130**
     （116–120 是出口判据那一格与"销账之后要重借一次"那一格补的，
     121–123 是 P0-03 那把新尺那一格补的：作用域栈的同级互清、复算尺自己会吞代码、一句要求两半句两把尺；
     124–125 是销"注释比实现新"那一格补的：**"已改口"必须点名到哪一份文件**（注释改口≠文档改口）、
@@ -2684,6 +2689,16 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
      ②凡是"计数只在成功路径上增加"的断言，红之前先问：**是谁在数？它凭什么数得着？**
      这一发如果不先量 `bytes=`/`terminated=`，我们会一直以为要修的是 `DeepSeekRepository`。
 
+130. **不等就读的异步计数断言，会把"还没发生"报成"永远不会发生"**（`dd9368d`）：
+     `isGenerating` 在 prep 阶段就翻 true，而 TCP 连接要到 `PERF t2 request enqueued` 之后才建；
+     那三句 `requestCount` 断言恰好打在状态刚翻的那一帧上 ⇒ 三格齐报 `accepted=0 requests=0 bytes=0`，
+     看起来像"请求根本没出门"的生产缺陷。更阴的是：**修 fake 之前**同一句读到的是 `accepted=1`——
+     不是链路变好了，是旧 fake 把连接一直吊着，反而**盖住**了这个读太早的竞态。
+     ⇒ 凡是"数一下异步世界发生了几次"的断言，先给一个**上限明确的等待**再钉数量：
+     "等满了还是 0"与"拿起来就是 0"是两个不同的结论，只有前者能指向生产。
+     另一条一般化：**修好一处仪器之后，别只看"红变少了几个"，要把剩下每一格的原始消息重读一遍**——
+     本格那处"读太早"就是这么被 `accepted=1 → accepted=0` 的形状变化暴露出来的。
+
 ## 7. 硬约束（一条没变）
 
 不许改 prompt 内容（`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` 必须零差异）；
@@ -2698,11 +2713,16 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 
 **NO-GO。** 判据是指导书 §10：新 SHA 的三项 required checks 全绿且 artifacts 齐全。
 
-**第 13 窗口结束时（远端 `main` = `a6d3e51`，`git ls-remote` 现读）的三项状态**：
+**第 13 窗口结束时（远端 `main` = `dd9368d`，`git ls-remote` 现读；`85d2d42..HEAD` 共 14 笔，本窗口 8 笔）的三项状态**：
 `verify` **success**（run 36230978438 / 36231958338 两跑都是；产物门自报 unit `1424/191/0/0/0`，
 与本机 `--rerun-tasks` 那跑逐字相同 ⇒ **HEAD 第一次有同一 SHA 的 CI 证据**，R0 那半句立住了）；
-`ui-test` **failure**：`tests=45 failures=7 errors=0 skipped=2`（上一窗口是 8 红，本格关掉 1 红、
-另 2 红往后各退一步 ⇒ 见 §0.46）；`upgrade-test` **skipped**（needs ui-test 绿，v1.3.1 覆盖安装**仍零证据**）。
-所以卡点没消失，只是**从 8 条变成 7 条 + 一条从没跑过的升级测试**，且 B/C 两组已确认是两码事。
+`ui-test` **failure**：到 `a8349eb` 为止 `tests=45 failures=3 errors=0 skipped=2`（起点 8 红：
+锚点那一笔关 1、fake 判据那一笔关 4 ⇒ 见 §0.46 ⑤⑦）；`upgrade-test` **skipped**
+（needs ui-test 绿 ⇒ v1.3.1 覆盖安装**至今零证据**）。
+所以卡点没消失，但从 **8 条压到 3 条 + 一条从没跑过的升级测试**；那三条里两格是 VM/Engine 之前的生产竞态
+（`rapidDoubleTap`、`lateCallbacks`），一格是**断言下得太早**（`stopDuringGeneration`：`isGenerating` 在 prep
+就翻 true，连接要到 `PERF t2` 之后才建，一锤子读必然读在连接前面）——这一句在 `dd9368d` 改成先等再判，
+判决只能等 run 36234389326。
 本窗口不签 PASS，下一窗口在拿到同一 SHA 的三项全绿之前也不签；
-`a6d3e51` 那一跑（`terminated=`/`tailHex=` 那把新尺）回来之前，**不许动 `DeepSeekRepository`/`GenerationEngine` 的判据**。
+`a6d3e51`/`a8349eb` 两跑已经证明：**那五格红的是测试夹具，不是 `DeepSeekRepository`**。
+下一跑（`dd9368d`，run 36234389326）回来之前，仍然**不许动生产判据**。
