@@ -2,7 +2,6 @@ package com.lovebrain.app.architecture
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 import org.junit.Test
 import java.io.File
 
@@ -11,8 +10,12 @@ import java.io.File
  * §7 第二步第 4 条「建 package dependency test，禁止 UI import data、domain import Android」，
  * 以及 §4 表里 DIP/迪米特那两行的 FAIL）。
  *
- * 为什么不是"现在就全绿"：今天的真实存量是 **15 条越界 import，分布在 11 个文件**
- * （数字来自 `bash scripts/package_deps_report.sh` 的一次实扫，不是凭印象写的）。
+ * 为什么不是"现在就全绿"：今天的真实存量是 **6 条越界 import，分布在 6 个文件**
+ * （2026-09-26 本机两把尺同时报这个数：`bash scripts/package_deps_report.sh --count` 报 6，
+ * 而下面那份 baseline 登记的是 6 条 / 6 个键；`assertEquals(6, …)` 那格每次都在核它）。
+ * ⚠ 这一句原来写的是"15 条 / 11 个文件"——那是两笔还债之前的存量（`2dd94c0` 15→10、
+ * `ab7457a` 10→6，两次都在提交信息里写了数），**但注释一个字没跟着动**。
+ * 同一个坑在本仓库是第 N 次：还了债要顺手扫"注释里的存量叙述"。
  * 直接把规则写成硬门禁会让 CI 永久红，然后被人用 `|| true` 关掉——
  * 复核 §9 第 6 条禁止的正是这个，那比没有门禁更糟。
  *
@@ -23,8 +26,10 @@ import java.io.File
  * 3. 条目总数也比一次，防止"文件登记对了但漏了第二条"。
  *
  * 还债顺序（复核 §7 第二步第 1 条）：先给这些具体类建端口（AiGateway /
- * KnowledgeReadPort / KnowledgeWritePort），把 domain 的 6 处 data.* 换掉，
- * 再动 viewmodel。每换掉一处，就重跑 report 脚本、把基线改小。
+ * KnowledgeReadPort / KnowledgeWritePort）。**原计划第一站"把 domain 的 6 处 `data.*` 换掉"已经做完了**
+ * （现在 domain 只剩 `PromptBuilder` 一处 `android.content.Context`），
+ * 剩下的 6 条按上面那份登记走：model 撞 domain 两处、ui 撞 data 一处、viewmodel 撞 `java.io.File` 两处。
+ * 每换掉一处，就重跑 report 脚本、把基线改小。
  */
 class PackageDependencyTest {
 
