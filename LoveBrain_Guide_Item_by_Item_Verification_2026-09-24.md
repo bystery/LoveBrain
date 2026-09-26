@@ -5442,3 +5442,63 @@ rm -rf app/build/test-results/testDebugUnitTest
 ★ 两条必须记下的更正：①"字体渲染不同"不成立（实到图与基线逐字节相同，真原因是
   verify 的原图读 `build/outputs/roborazzi/`，干净检出没有，坑表 134）；
   ②我第一版"注入后 verify 红"的证明作废（比的是 build/ 残留），已在显式 staging 脚本下重做：注入 48dp→64dp → 脚本 rc=1、三格全红 + `_actual`/`_compare` 各 3 张；撤回 → rc=0。
+
+---
+
+# 追加六十三：三项 CI 在同一 SHA 上各自落定——`ui-test` 首次全绿，`upgrade-test` 头一回真跑并红在配置（run 36249760044 = 远端 `9d2757f`）
+
+## 63.1 原文读数（`gh run view --log`，不是本机推断）
+
+| job | 结论 | 自报的那一行 |
+|---|---|---|
+| `verify` | **success**（33 步全跑、0 skipped） | `[gate] unit: tests=1427 failures=0 errors=0 skipped=0 suites=192` · `[gate] OK screenshot baselines match: 3 golden(s) verified`（`actual images: 0`）· `[gate] lint: 78 issue element(s), 0 Error, 0 Fatal` · `versionCode=9 versionName=1.4.0-rc1 sha256=126861e5e9d3fdcc…` · SBOM `124/124 allowed` · R8 mapping 352303 行 |
+| `ui-test` | **success** | `[gate] ui-test: tests=45 failures=0 errors=0 skipped=2 suites=1` |
+| `upgrade-test` | **failure**（历史上第一次真执行） | `[gate] FAIL required secret KEYSTORE_BASE64 is empty or unset`（+ `KEYSTORE_PASSWORD` / `KEY_ALIAS` / `KEY_PASSWORD` 同）退出码 3；其后 signed APK / v1.3.1 fixture / 覆盖安装三步 **skipped** |
+
+⇒ 本机与 CI **两侧同尺没漂**：本机现读 `app/build/test-results/testDebugUnitTest` = 192 份 XML / 1427 / 0 / 0 / 0。
+⇒ 发布卡点从三件（设备红 / 视觉证据 / 升级）收敛成两件：**①四个 release secret 未配（外部配置，不是代码）；
+②那 2 格 `Assume` 跳过**（日志点名 `floatingService_repeatedStartAndStop_neverLeaksInstance`、
+`floatingService_destroyWhileGenerationInFlight_releasesInstanceAndChainStaysUsable` ＝指导书 :212 第 9 场景）。
+`rapidDoubleTap` 也在 `failures=0` 里 ⇒ KDoc 自陈的 `LoveBrainViewModel.kt:844-855` 租约竞态
+**在 CI 这台设备上没复现**，但它是"未被证明"，不是"已排除"（要一发 JVM 最小复现）。
+
+## 63.2 一条撤销的假事实（我自己上一版交接单写的）
+
+`~~仍只能等 CI：SetupActivity / KnowledgeBaseActivity 是否各自真的到前台~~` ⇒ **这条不是"验过才撤的"**：
+`scripts/run_ui_tests.sh` 里拍屏那一段整块删掉了（`FLAG_SECURE` 之下拿不到证据），
+所以那条"前台组件"断言**随之不再执行**，run 36249760044 的 `ui-test` success **不包含它**。
+现有读数只到：run 36236822959 前台确认为 `com.lovebrain.app/.ui.SetupActivity`、`screencap` 交回 0 字节；
+**`KnowledgeBaseActivity`（`exported="false"`）的前台从没验过** ⇒ 判"无从执行"，不许判"已验"。
+（同类：撤掉一个取证动作 ≠ 那个问题有了答案。坑表 136 的另一半。）
+
+## 63.3 另一条自己抓自己的过程账（不改历史）
+
+提交 `99ddc17` 的 message 写着"§0.47 补最后一跑状态"，但那一笔的 patch 实际**没落地那一行**
+（补丁驱动当时报 `MISS 0 handover status bullet`，我看见却仍按原计划提交了）。
+⇒ 规矩照旧：**不改历史**，由后续 `44d6dd2`（§0.48）把那句话补上，并在此处记勘误。
+同一笔里我还差点把未跟踪的《剩余工作》一起 `git add` 进来（那份"要不要入库"是用户的决定），
+已用 `git reset --soft HEAD~1` + 撤回该文件的暂存重做，**文件内容一字未丢**。
+
+## 63.4 这一格没做的
+
+- 生产码一行未动（本窗口生产侧唯一改动仍是那颗停止锚点，属第 13 窗口）。
+- 那 2 格 `Assume` 没想办法跑；四个 secret 没配（也不该我配）。
+- `HomeComponents.kt:238` 调用方 tag 盖掉组件自带 tag，**只登记没自裁**。
+- R2/R3/R4/R6 四块（写端口零注入、VM 30 个私有 `MutableStateFlow`、异形组件 39 处 / 21 文件、
+  `>800` 行仍 10 个）一笔没动——现算读数见交接单 §4 与本节下方的 §63.5。
+
+## 63.5 现算读数（2026-09-26 本窗口命令输出，别引旧数）
+
+- 生产 Kotlin：**152 文件 / 36616 行**；`>500` 行 **17** 个、`>800` 行 **10** 个
+  （`LoveBrainViewModel 2723 / KnowledgeRepository 1793 / ResultArea 1286 / FloatingService 1155 /
+  LoveBrainPanelScreen 1114 / DeepSeekRepository 1114 / TopicRecorder 1008 / PromptBuilder 974 /
+  SuggestPanel 944 / KnowledgeBaseActivity 937`）。
+- `KnowledgeWritePort`：`app/src/main` 内 **5 处命中、3 个文件**，全部是 KDoc 与接口声明本身
+  （`KnowledgePorts.kt:36` 定义、`:58` 组合接口，另两处在 `AiGateway.kt:10` / `Clock.kt:10` 的注释里）
+  ⇒ **构造注入 0 处**，P0-03 前半句字面上仍未开工。
+- `LoveBrainViewModel` 私有 `MutableStateFlow` **30** 处（§5.2 第 6 步"统一 UiState/Reducer"的账）。
+- 深色模式：`app/src/main/res/` 下 `values-night` **0** 个、`isSystemInDarkTheme|dynamicColor` **0** 命中
+  ⇒ §6.5 第 5 条实际是"锁浅色"，但**没有任何测试钉住这个锁**。
+- 视觉基线：committed golden **3 张**（`LbPrimaryButton` 三态）⇒ 12 颗组件里只有 1 颗有基线。
+- 设备侧 `Assume`：**2** 处（`app/src/androidTest`）。
+坑表 **136**、剩余工作那份 **V18**、交接单 **§0.48 + §8 第 14 窗口复判**。
