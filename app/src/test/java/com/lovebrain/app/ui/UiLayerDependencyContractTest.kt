@@ -313,6 +313,16 @@ class UiLayerDependencyContractTest {
     }
 
     /**
+     * "谁画整屏底色"那把尺的口径。
+     *
+     * 三种写法都要认得：`.background(SurfaceBase)`、`.background(color = SurfaceBase)`、
+     * `.background(com.lovebrain...SurfaceBase)`。P5 那发变异证明只认第一种会漏后两种
+     * （见 `the page frame has exactly one owner` 里那段正向对照）。
+     */
+    private val pageFrameDraw =
+        Regex("""background\(\s*(?:color\s*=\s*)?(?:[\w.]+\.)?SurfaceBase\b""")
+
+    /**
      * §6.1 表最后一行：`LbScreenScaffold` —— **页面外框只有一个所有者**。
      *
      * 判据取"谁画整屏底色"这一个具体写法（`background(SurfaceBase`），
@@ -349,8 +359,23 @@ class UiLayerDependencyContractTest {
         val sources = kotlinFiles(appRoot).map {
             it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
         }
-        val drawers = sources.filter { (_, code) -> code.contains("background(SurfaceBase") }
+        val drawers = sources.filter { (_, code) -> pageFrameDraw.containsMatchIn(code) }
             .map { it.first }
+
+        // ⚠ 这把尺**换过口径**，是被 P5 那发变异打出来的（账本 §58.5）：原来写成
+        //   `code.contains("background(SurfaceBase")`，于是两种合法写法它都看不见——
+        //   `background(color = SurfaceBase)`（具名实参）与
+        //   `background(com.lovebrain.app.core.designsystem.SurfaceBase)`（全限定）。
+        //   注入后者时这一格**照样绿**：删掉豁免之后闸是空的，比留着豁免更危险。
+        assertTrue(
+            "整屏底色那把尺必须同时认得直涂与具名/全限定两种写法，任一档归零就是尺又瞎了",
+            pageFrameDraw.containsMatchIn("Modifier.fillMaxSize().background(SurfaceBase)") &&
+                pageFrameDraw.containsMatchIn("Modifier.background(color = SurfaceBase)") &&
+                pageFrameDraw.containsMatchIn(
+                    "Modifier.background(com.lovebrain.app.core.designsystem.SurfaceBase)"
+                ) &&
+                !pageFrameDraw.containsMatchIn("Modifier.background(SurfaceCard)")
+        )
 
         val strays = drawers.filter {
             it != owner && !notAPage.contains(it) && !registeredDebt.containsKey(it)
@@ -370,7 +395,7 @@ class UiLayerDependencyContractTest {
         registeredDebt.forEach { (path, want) ->
             val code = sources.firstOrNull { it.first == path }?.second
                 ?: error("$path 的欠账登记已不成立——搬完了就把这一行从表里删掉，别留着当已有闸")
-            val got = Regex("background\\(SurfaceBase").findAll(code).count()
+            val got = pageFrameDraw.findAll(code).count()
             // 判 ==，不判 <=：登记着 1 处而实到 0 处，意思是**这笔债已经还了**，
             // 表里那一行必须当场删掉。留一条早已不成立的豁免，比没有豁免更坏——
             // 它会让下一个人以为这一页已经处理过了（§29 那把"点名豁免"的尺同一课）。
