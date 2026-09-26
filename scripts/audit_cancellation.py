@@ -40,6 +40,11 @@ SITE_RE = re.compile(
     r"|\brunCatching\s*\{"
 )
 CANCEL_RE = re.compile(r"CancellationException")
+# `catch (e: CancellationException)` 自己也是一类站点：块内没有 `throw` 就是把取消咽下去
+# ——任务会以"正常完成"收场，`job.isCancelled` 变成 false，等它的人会以为真的跑完了。
+CE_CATCH_RE = re.compile(
+    r"catch\s*\(\s*\w+\s*:\s*(?:kotlinx\.coroutines\.)?CancellationException\s*\)")
+THROW_RE = re.compile(r"\bthrow\b")
 WAIVE_RE = re.compile(r"cancel-safe[:：]\s*(\S.*)")
 SUSPEND_DECL_RE = re.compile(r"\bsuspend\s+(?:inline\s+)?fun\s+(?:<[^>]+>\s*)?(?:\w+\s*\.\s*)?(\w+)")
 # 调用位：`name(` / `name<` / `name {`。刻意不排除 `a.foo(` 这种带限定的调用——
@@ -180,6 +185,36 @@ def catch_chain_end(lines, try_start, try_end):
     return i
 
 
+def collect_ce_catches(main_root):
+    """扫每一处 `catch (:CancellationException)`，判它有没有把取消重抛出去。
+
+    这一类不看挂起点、也不看 try 链——站点本身就是取消的落点，咽掉就是咽掉。
+    故意咽掉（例如"这一处取消等于正常收尾"）要走 `cancel-safe:` 豁免，别静默改判据。
+    """
+    out = []
+    for path in kotlin_files(main_root):
+        lines = read(path)
+        for i, line in enumerate(lines):
+            code, comment = strip_line_comment(line)
+            if not CE_CATCH_RE.search(code):
+                continue
+            end = block_end(lines, i)
+            body = chr(10).join(lines[i + 1:end + 1])
+            waived = None
+            for probe in (comment, lines[i - 1] if i > 0 else ''):
+                m = WAIVE_RE.search(probe)
+                if m and m.group(1).strip():
+                    waived = m.group(1).strip()
+            out.append({
+                'path': path, 'line': i + 1, 'end': end,
+                'kind': 'ce-catch',
+                'propagated': bool(THROW_RE.search(body)),
+                'waived': waived,
+                'protected': False, 'suspend_call': None,
+            })
+    return out
+
+
 def collect(main_root, suspend_names):
     sites = []
     for path in kotlin_files(main_root):
@@ -226,6 +261,12 @@ def collect(main_root, suspend_names):
 
 
 def verdict(site):
+    if site.get('kind') == 'ce-catch':
+        if site['propagated']:
+            return 'PROPAGATED'
+        if site['waived']:
+            return 'WAIVED'
+        return 'CANCEL-SWALLOWED'
     if site['protected']:
         return 'PROTECTED'
     if site['waived']:
@@ -249,7 +290,8 @@ def main():
         return 2
 
     suspend_names = collect_suspend_names(main_root)
-    sites = collect(main_root, suspend_names)
+    sites = collect(main_root, suspend_names) + collect_ce_catches(main_root)
+    sites.sort(key=lambda x: (x['path'], x['line']))
     if not sites:
         print('[cancel-audit] FAIL 扫到 0 个站点：扫描器或路径坏了')
         return 2
@@ -257,7 +299,7 @@ def main():
     counts = {}
     for s in sites:
         counts[verdict(s)] = counts.get(verdict(s), 0) + 1
-    bad = [s for s in sites if verdict(s) == 'NEEDS_REVIEW']
+    bad = [s for s in sites if verdict(s) in ('NEEDS_REVIEW', 'CANCEL-SWALLOWED')]
     rel = lambda p: os.path.relpath(p, root).replace('\\', '/')
 
     if args.report:
@@ -271,6 +313,8 @@ def main():
             ('WAIVED', '带 `cancel-safe:` 理由的人工豁免'),
             ('SUSPEND-FREE', '块体内无挂起点，吞掉 Exception 不等于吞掉取消'),
             ('NEEDS_REVIEW', '协程可挂起处吞掉取消信号 —— 必须修'),
+            ('PROPAGATED', '`catch (CancellationException)` 块内确实重抛 —— 取消继续往上传'),
+            ('CANCEL-SWALLOWED', '接住取消却没重抛：任务以"正常完成"收场 —— 必须修或写明豁免理由'),
         ]
         for k, why in rows:
             print('| %s | %d | %s |' % (k, counts.get(k, 0), why))
@@ -279,6 +323,10 @@ def main():
         print('[cancel-audit] 站点 %d：PROTECTED=%d WAIVED=%d SUSPEND-FREE=%d NEEDS_REVIEW=%d'
               % (len(sites), counts.get('PROTECTED', 0), counts.get('WAIVED', 0),
                  counts.get('SUSPEND-FREE', 0), counts.get('NEEDS_REVIEW', 0)))
+        print('[cancel-audit] 其中 catch (CancellationException) 站点 %d：PROPAGATED=%d '
+              'CANCEL-SWALLOWED=%d'
+              % (sum(1 for x in sites if x.get('kind') == 'ce-catch'),
+                 counts.get('PROPAGATED', 0), counts.get('CANCEL-SWALLOWED', 0)))
     if args.list:
         for s in sites:
             print('  %-13s %s:%d%s%s' % (
@@ -298,10 +346,13 @@ def main():
             '',
             '## 判据',
             '',
-            '扫描范围：`app/src/main` 下所有 `catch (:Exception)` / `catch (:Throwable)` / `runCatching {`。',
+            '扫描范围：`app/src/main` 下所有 `catch (:Exception)` / `catch (:Throwable)` / `runCatching {`，'
+            '**外加每一处 `catch (:CancellationException)`**（后者不看挂起点：站点本身就是取消的落点）。',
             '',
             '| 判定 | 含义 |',
             '|---|---|',
+            '| PROPAGATED | `catch (:CancellationException)` 块内有 `throw` —— 取消继续传播 |',
+            '| CANCEL-SWALLOWED | 接住取消却没重抛：`job.isCancelled` 会变成 false，等它的人以为跑完了 —— `--check` 直接失败 |',
             '| PROTECTED | 块内、紧邻上下文或同一条 try 链上显式处理 `CancellationException` |',
             '| WAIVED | 站点旁写了 `cancel-safe:` + 非空理由，人工复核过 |',
             '| SUSPEND-FREE | 受保护代码段内没有挂起点，且所在函数不是 suspend：吞异常不等于吞取消 |',
@@ -316,12 +367,14 @@ def main():
             '| 判定 | 站点数 |',
             '|---|---:|',
         ]
-        for k in ('PROTECTED', 'WAIVED', 'SUSPEND-FREE', 'NEEDS_REVIEW'):
+        for k in ('PROTECTED', 'WAIVED', 'SUSPEND-FREE', 'NEEDS_REVIEW',
+                  'PROPAGATED', 'CANCEL-SWALLOWED'):
             lines.append('| %s | %d |' % (k, counts.get(k, 0)))
         lines.append('| 合计 | %d |' % len(sites))
         lines += [
             '',
-            '`--check` 结论：%s' % ('**PASS**（没有未处置的可挂起吞取消站点）' if not bad
+            '`--check` 结论：%s' % ('**PASS**（没有未处置的可挂起吞取消站点，'
+                                     '且每一处 `catch (CancellationException)` 都重抛了）' if not bad
                                      else '**FAIL**（%d 个待处置）' % len(bad)),
             '',
             '## 逐站点',
@@ -342,11 +395,14 @@ def main():
     if not args.check:
         return 0
     if bad:
-        print('[cancel-audit] FAIL 有 %d 个可挂起站点会吞掉取消信号：' % len(bad))
+        print('[cancel-audit] FAIL 有 %d 个站点会吞掉取消信号：' % len(bad))
         for s in bad[:60]:
-            print('  %s:%d  [挂起点 %s]' % (rel(s['path']), s['line'], s['suspend_call']))
+            print('  %-17s %s:%d  %s' % (
+                verdict(s), rel(s['path']), s['line'],
+                '[挂起点 %s]' % s['suspend_call'] if s.get('suspend_call') else '[取消未重抛]'))
         return 1
-    print('[cancel-audit] PASS 每个可挂起的吞异常站点都显式放行了取消信号')
+    print('[cancel-audit] PASS 每个可挂起的吞异常站点都显式放行了取消信号，'
+          '且每一处 catch (CancellationException) 都重抛了')
     return 0
 
 

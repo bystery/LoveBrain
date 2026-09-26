@@ -290,9 +290,10 @@ class KnowledgeBaseViewModel(
                 output.use { KbArchiveTransfer.export(folder, kbName, it) }
                 true
             } catch (e: CancellationException) {
-                // 页面已销毁不是"导出失败"：不回事件，让上层协程处理取消
+                // 页面已销毁不是"导出失败"：不回事件，也不许把这次收场写成"正常完成"——
+                // 咽掉取消会让 job.isCancelled=false，等它的人以为真导出完了。
                 L.w("knowledge export cancelled")
-                return@launch
+                throw e
             } catch (e: Exception) {
                 L.e("knowledge export failed", e)
                 false
@@ -323,8 +324,9 @@ class KnowledgeBaseViewModel(
                 true
             } catch (e: CancellationException) {
                 // active 修正是挂起调用：取消必须原样上抛，不能被算成"导入失败"再提示用户
+                // （原来这里 return@launch 让协程以"正常完成"收场，与注释的说法相反）
                 L.w("knowledge import cancelled")
-                return@launch
+                throw e
             } catch (e: Exception) {
                 L.e("knowledge import failed", e)
                 false
