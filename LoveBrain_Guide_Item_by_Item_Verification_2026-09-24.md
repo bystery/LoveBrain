@@ -4873,3 +4873,41 @@ python 那把退役（`_temp/gates107/scan_primary_buttons.py.retired-2026-09-26
 - lint 报告重生成后：measured_issues=67 measured_rules=15 gated_issues=66 gated_rules=14 advisory_issues=1（预算登记 14 条规则；`UnusedResources` 由 33 降到 32，因为 `a11y_close_onboarding` 这一格第一次真的被引用了）
 - 跨层 `6`；lint 预算判据 `27 格全对`；资产锁 `6dcde732fab602813559370dd6af3b774ca24fda86ce28f2c0cfd88a8be95831`；取消审计 PROTECTED=54 WAIVED=2 SUSPEND-FREE=109 NEEDS_REVIEW=0
 - 唯一合法安静的一步是 `prompt`（`git diff --exit-code` 零输出就是它的通过信号）。
+
+# 追加五十六：:490 新增可见的那 8 处逐处判完——结论是 0 处该搬，但照出 5 条 :531/:532 缺口（`1f980d4`）
+
+## 56.1 差集怎么算的
+
+旧尺退役前最后一次的清单（`_temp/gates107/scan_primary_buttons.py.retired-2026-09-26` 的产物
+`_temp/scan_pb_after.txt`）与新尺登记的 23 处**逐文件比条数**，差出来的 8 处就是"以前看不见"的：
+
+| # | 站点 | 它是什么 | 判 :490（要不要归 `LbPrimaryButton`） | 判完顺手照到的 |
+|---|---|---|---|---|
+| 1 | `bubble/FloatingBubble.kt:258` | 浮球自己那颗 `clickable(onClick = { })`——**空 lambda**，点击由父级 drag 判定 | **不搬**（不是一颗按钮动作） | ⚠ 树里它是"能点但什么都不做"的节点：`performClick` 静默无效、读屏念得出按钮却点不出东西（坑表 113） |
+| 2 | `feedback/FeedbackCasesScreen.kt:201` | 「导出」按钮（列表非空才启用） | **不搬**：这一页的主动作不是它，`enabled=…` 也写对了 | ⚠ `clickable` 没声明 `role` ⇒ :532 缺；且只写 `heightIn`，**宽度没垫** |
+| 3 | `home/ProviderSection.kt:142` | 供应商那张**整卡可点 = 展开/折叠** | **不搬**（整卡折叠是次级交互，且"整卡可点"的主人是 `LbActionCard`，那颗表达的是"进一页"不是"展开"） | ⚠ 同样没 `role`；本机这一屏有夹具，可量 |
+| 4 | `KnowledgeBaseActivity.kt:412` | 知识库卡片**整卡可点 = 激活**（`enabled = !isActive`） | **不搬**（同上；禁用式表达"当前库不用再点"是对的） | ⚠ 没 `role`；`KbListPrimaryActionTest` 已经能扫到它，下一格直接量 |
+| 5 | `panel/counseling/CounselingPanel.kt:477` | 回答之后那颗「继续追问」提交钮 | **不搬**：这一屏的主动作是 CTA 那颗（`:217`/`:260` 一族），追问是行内次级 | ⚠ 三条：无 `role`、**无 48 热区下限**（只有 `clip`+`background`）、`if (非空) Modifier.clickable(...) else Modifier` 的**消失式门控**（同「添加」那一族，那条合同归它自己的守卫） |
+| 6 | `panel/reply/ReplyInput.kt:133` | 「添加」➕（`d0b6358` 改成热区分层后旧尺看不见它） | **不搬**，且它的门控合同已由 `ComposerAddButtonGatingTest` 守着 | 已补 `Role.Button` + 48 见方 ✓ |
+| 7 | `panel/reply/ReplyInput.kt:257` | 三颗角色 chip 共用的那颗 | **不搬**（互斥选项，不是按钮） | 已补 `Role.Tab` + 48 见方 ✓ |
+| 8 | `panel/reply/ResultArea.kt:579` | 方案过滤 `SchemeFilterTab` | **不搬**（选项） | 本来就有 `Role.Tab` + `heightIn/widthIn` 见方 ✓ 只是旧尺没算它 |
+
+⇒ **:490 的"该不该搬"这一族到此判完（对 23 处这份清单而言）**，结论是**一处都不该搬**：
+这八处没有一处是"那一页的唯一主动作"。真正剩下的活全部落在 :531/:532（热区与角色），
+而且**要先把它们挂进语义树量一遍**再改——上一格的教训是"看着像缺陷不等于量到"，
+"量过才发现是归所有者"也同样是常态。
+
+## 56.2 下一格的清单（可执行、都能在本机量）
+
+- `KbListPrimaryActionTest` 已经能扫到知识库那张整卡 ⇒ 先给它加 `role`（卡片语义应报 `Role.Button`？
+  还是 `Role.Tab`？——整卡=激活一个库，是**选项**形状，这一处**先量后判**，不许照抄）。
+- 反馈案例页「导出」与供应商页那张折叠卡同理：先量（两屏都已有 JVM 夹具）。
+- `CounselingPanel:477` 那颗要先把"有回答结果"那一档挂进面板整屏守卫（`counselingResult` 给非空），
+  否则又回到"注释里说热区够、实际没人量过"。
+- 浮球那颗**空 onClick** 要不要撤掉 clickable、把点击完全交给父级判定：**属交互归属判断**，
+  不自签（撤了读屏还会不会念出"按钮"也要一起量）。
+
+## 56.3 一句话记法
+
+**"判完"必须带口径版本**：同一句 :490 的"判完"，在链上同色口径下是 15 处、在形状口径下是 23 处；
+不写口径，下一窗口会把"23 处"读成"又长了 8 处新债"。
