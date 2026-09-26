@@ -123,14 +123,13 @@ class ReplyPrimaryActionsTest {
      * 审计 §2 明确要求：「ReplyPrimaryActionsTest 的零消息用例只检查文字，
      * 没有 assertIsNotEnabled()」——本用例补上该断言。
      *
-     * ⚠ 预期红：生产 GenerationActionButton 的禁用分支（GenerationActionButton.kt:132-151）
-     * 只是「不挂 clickable」+ 换底色/文字色，从未写 `SemanticsProperties.Disabled`
-     * （也没有 role / stateDescription）。所以禁用态对 TalkBack 与 Compose 断言都不可见，
-     * assertIsNotEnabled() 拿不到 Disabled 属性。
-     * 修复属 app/src/main 范围（本任务禁止改生产码）：在该 Box 上补
-     * `.semantics { disabled = true }`（或改用 `clickable(enabled = replyEnabled)`），
-     * 之后本用例即转绿。行为层面的禁用证据见
-     * [replyMode_zeroMessages_noClickActionExistsAnywhere]，那条现在是绿的。
+     * ⚠ 这段 KDoc 原来写的是"**预期红**：生产 `GenerationActionButton` 的禁用分支
+     * 从未写 `SemanticsProperties.Disabled`……本用例以后才会转绿"。那句话**已经过期**：
+     * `GenerationActionButton` 早被 `LbPrimaryButton` 取代（`d8f36d2`），而那颗的 Disabled
+     * 是写进语义树的——本机量到 `「Generate reply」 role=Button disabled 尺寸 129x48dp`，
+     * `assertIsNotEnabled()` 现在拿得到 Disabled，这一格是**绿的**。
+     * 留着那段"预期红"就是给下一窗口埋一条误判（"这格红是生产没修"）。
+     * 行为那一半的证据见 [replyMode_zeroMessages_theDisabledGenerateFiresNoCallback]。
      */
     @Test
     fun replyMode_noResult_zeroMessages_buttonLabelHasNoCountAndIsNotEnabled() {
@@ -150,21 +149,34 @@ class ReplyPrimaryActionsTest {
     }
 
     /**
-     * 禁用态的「行为」证据：整棵子树不存在任何可点击语义节点，
-     * 所以即使点击也发不出 onGenerateReply —— 与 [replyMode_noResult_zeroMessages_buttonLabelHasNoCountAndIsNotEnabled]
-     * 的语义可见性断言互补（后者当前为红，见其 KDoc）。
+     * 禁用那颗「行为」证据：**点它发不出回调**。
+     *
+     * ⚠ 原来这一格断的是 `onAllNodes(hasClickAction()).assertCountEquals(0)`，
+     * 也就是拿"整棵树没有任何点击语义"当"不能生成"的代理。那个代理**已经被设计系统换掉了**：
+     * 这一颗现在是 `LbPrimaryButton(state = Disabled)`，它内部写的是
+     * `clickable(enabled = false, role = Role.Button)` —— 禁用态**故意**保留点击语义与角色，
+     * 这样读屏才念得出"这里是一颗按钮，只是现在不能按"（:532 那条，
+     * `LbPrimaryButtonStateTest."every state meets the touch floor"` 就在断言它报 `Button`）。
+     * 本机语义树实测：`onAllNodes(hasClickAction()) = 1`、`OnClick 动作存在 = true`、
+     * `disabled 尺寸 129x48dp role=Button`。
+     *
+     * 所以这一格改成直接判**行为**，判据没有变软，反而更严：那颗必须在、必须报 Disabled、
+     * 必须被真实点一次、回调必须一次都不发。"代理指标坏了就说行为坏了"是复核点名的误读之一。
+     * 同一条性质在 JVM 那边也有守卫（`LbPrimaryButtonStateTest` 的四态点击那格），两边不互相顶替。
      */
     @Test
-    fun replyMode_zeroMessages_noClickActionExistsAnywhere() {
+    fun replyMode_zeroMessages_theDisabledGenerateFiresNoCallback() {
         val generateClicks = AtomicInteger(0)
         setActions(
             composerMode = ComposerMode.REPLY,
             messageCount = 0,
             onGenerateReply = { generateClicks.incrementAndGet() }
         )
-        composeRule.onNodeWithText(generateReply).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        composeRule.onAllNodes(hasClickAction()).assertCountEquals(0)
-        assertEquals("零消息时不得有任何生成回调", 0, generateClicks.get())
+        val button = composeRule.onNodeWithText(generateReply)
+        button.assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        button.assertIsNotEnabled()   // 1.6.8 没有 assertIsDisabled：这一条判的就是 Disabled 语义
+        button.performClick()
+        assertEquals("零消息时点那颗禁用按钮也不得发出回调", 0, generateClicks.get())
     }
 
     // ═══════════ 2. REPLY + 有结果 ═══════════

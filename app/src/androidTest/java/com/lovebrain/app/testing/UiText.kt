@@ -66,6 +66,20 @@ object UiText {
      * `%2$d` 换成任意秒数，其余字符按字面量转义。这样英文环境能匹配
      * "Reading the conversation · 3s, tap to stop"，中文环境能匹配 "分析对话 · 3 点击停止"，
      * 而模板被人改动时它会当场红。
+     *
+     * ⚠ **原来那一版是坏的**，而且是 CI run 36199686779 三条红的同一个根因
+     * （`PanelUiTextLocaleParityTest.theGeneratingBarTemplateStillBuildsAMatchingPattern`、
+     * `ReplyPrimaryActionsTest.generating_showsProductionLoadingStopAffordanceAndCallsOnStopOnce`、
+     * `OverlayGenerateSmokeTest.stopDuringGeneration_cancelsCurrentRequestAndReturnsToIdle`）。
+     * 原来的写法是 `Regex.escape(template).replace(Regex.escape("%1\\$s"), phases)`：
+     * `String.replace` 是**字面量**替换，而 `Regex.escape("%1\\$s")` 交回去的是
+     * `\Q%1$s\E` 这 8 个字符——转义后的模板里根本没有这串东西 ⇒ 替换从未发生，
+     * 发出去的是一条把 `%1$s` 当字面量去匹配的 regex，**永远配不上任何真实文案**。
+     * 一句话教训：**拿 `Regex.escape` 的产物去找占位符，就是把正则当字符串用了**；
+     * 而它唯一的线索是那句"配不上自己拼出来的模式"。
+     *
+     * 现在按段拼：三段字面量（占位符之前、两个占位符之间、之后）**各自只转义一次**，
+     * 中间插入要展开的那两截。占位符找不到就当场抛——不许退化成"静默失配"。
      */
     fun generatingBarPattern(tag: String? = null): Regex {
         val template = resolve(tag, R.string.panel_analysing_with_seconds)
@@ -74,10 +88,21 @@ object UiText {
             R.string.panel_phase_drafting,
             R.string.panel_phase_deep_analysing
         ).joinToString("|") { Regex.escape(resolve(tag, it)) }
-        return Regex(
-            Regex.escape(template)
-                .replace(Regex.escape("%1\$s"), phases)
-                .replace(Regex.escape("%2\$d"), """\d+""")
-        )
+
+        val i1 = template.indexOf(PHASE_TOKEN)
+        val i2 = template.indexOf(SECONDS_TOKEN)
+        check(i1 >= 0 && i2 > i1) {
+            "模板 `$template`（语言 ${tag ?: "当前"}）里找不到有序的两个占位符 " +
+                "$PHASE_TOKEN / $SECONDS_TOKEN —— 停止棒的文案形状被改过了，" +
+                "这条整串匹配不能再凭旧假设拼"
+        }
+        val pre = Regex.escape(template.substring(0, i1))
+        val mid = Regex.escape(template.substring(i1 + PHASE_TOKEN.length, i2))
+        val post = Regex.escape(template.substring(i2 + SECONDS_TOKEN.length))
+        return Regex("$pre($phases)$mid\\d+$post")
     }
+
+    /** 资源里的位置参数写法（`$` 在 Kotlin 字符串里必须转义，值本身就是 `%1$s`） */
+    private const val PHASE_TOKEN = "%1\$s"
+    private const val SECONDS_TOKEN = "%2\$d"
 }

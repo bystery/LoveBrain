@@ -17,6 +17,8 @@ import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
 import com.lovebrain.app.testing.assertIsDisplayedDiagnosed
+import com.lovebrain.app.R
+import com.lovebrain.app.testing.UiText
 
 /**
  * P1-5: Compose UI interaction test — 真实交互路径覆盖。
@@ -128,7 +130,11 @@ class ResultAreaInteractionTest {
             )
         }
         composeRule.onNodeWithText("测试错误信息").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        composeRule.onNodeWithText("点击重试").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        // ⚠ 锚点不能写"点击重试"四个字：`856d485` 把那颗搬进 `LbTextAction` 并让标签走
+        //   `R.string.panel_retry_tap` ⇒ 英文模拟器上渲染的是 "Tap to retry"，
+        //   写死中文的锚点从此永远找不到节点（CI run 36199686779 这一格的红就是"已显示断言失败"）。
+        composeRule.onNodeWithText(UiText.current(R.string.panel_retry_tap))
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }
 
     // ═══ 4. 未配置供应商 ═══
@@ -151,8 +157,13 @@ class ResultAreaInteractionTest {
                 generationRoundId = 0
             )
         }
+        // 这一句生产仍然是**内联中文**（`ResultArea:321` 的 `Text("还没有配置模型供应商")`，
+        // 字面量预算记着这笔债）⇒ 英文模拟器上也画中文，锚点按字面量配得上。
+        // ⚠ 等这句搬进资源，这里的锚点必须跟着换成 `UiText.current(...)`，否则又变成
+        //   下一格"永远找不到节点"——和「去设置」那一发同一个成因。
         composeRule.onNodeWithText("还没有配置模型供应商").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        composeRule.onNodeWithText("去设置").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(UiText.current(R.string.provider_open_settings))
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }
 
     // ═══ 5. `⋯` 菜单可打开——"记入知识库"已移至主操作按钮，不再在 ⋯ 菜单中 ═══

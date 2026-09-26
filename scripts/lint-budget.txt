@@ -20,7 +20,10 @@ RedundantLabel 1
 ReturnFromAwaitPointerEventScope 3
 StaticFieldLeak 1
 SwitchIntDef 1
-UnusedResources 33
+# 33 → 32：`a11y_close_onboarding`（中英两份一直都在、从没被引用）接上面板引导卡片
+# 那颗关闭按钮的 contentDescription ⇒ 少一条未用资源。同格还顺手把那句内联中文从
+# `contentDescription` 里拿掉（字面量预算 DESC 栏 11→10），两边是同一笔债。
+UnusedResources 32
 
 # ── advisory：不进预算比对的规则（每次仍然打印条数与理由）──
 # 只允许「发现来自仓库之外」的检查走这里；名单写死在 check_lint_budget.sh 的
