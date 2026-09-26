@@ -7,6 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -81,6 +83,30 @@ class LbPrimaryButtonStateTest {
     }
 
     private fun labelFor(s: LbButtonState) = "LBL_" + s.name.uppercase()
+
+    /**
+     * 与 [mountPrimary] 同形，但**调用方不再往这颗按钮身上贴自己的 tag**。
+     *
+     * 实到证据（`ZzStopTagProbeTest` 探针 dump 出来的语义树）：同一个节点上出现两个
+     * `Modifier.testTag` 时，**外面那个（调用方的）赢**——组件自己贴的
+     * `LbTags.PRIMARY_STOP` 直接消失，合并树和未合并树都查不到。
+     * 生产里浮层这条链（`LoveBrainPanelScreen.kt:428` → `ReplyPrimaryActions.kt:54+`）
+     * 只往下传 `fillMaxWidth()`，没有撞名；首页 `HomeComponents.kt:238` 是撞的那一个，
+     * 它把 `LbHomeTags.PRIMARY_BUTTON` 贴在了同一颗节点上。
+     * 所以"停止锚点在不在树上"这一条必须按生产的形状测，不能被夹具自己的 tag 顶掉。
+     */
+    private fun mountBare() {
+        rule.setContent {
+            UiMatrix(360).RenderIn(LocalDensity.current.density) {
+                LbPrimaryButton(
+                    state = state.value,
+                    label = labelFor(state.value),
+                    onClick = { clicks++ }
+                )
+            }
+        }
+        rule.mainClock.advanceTimeBy(16L)
+    }
 
     private fun show(next: LbButtonState) {
         rule.runOnIdle { state.value = next }
@@ -237,7 +263,7 @@ class LbPrimaryButtonStateTest {
     /** 停止锚点只属于"生成中"那一态：别的态冒出可停止的节点，自动化就会点错 */
     @Test
     fun `only the loading state carries the stop anchor`() {
-        mountPrimary()
+        mountBare()
         LbButtonState.values().forEach { s ->
             show(s)
             val found = rule.onAllNodesWithTag(LbTags.PRIMARY_STOP, useUnmergedTree = true)
@@ -245,5 +271,42 @@ class LbPrimaryButtonStateTest {
             val want = if (s == LbButtonState.Loading) 1 else 0
             assertEquals("$s 的停止锚点数", want, found)
         }
+    }
+
+    /**
+     * 设备侧那三格红的形状，本机第一次把它钉住：`onNodeWithTag`/`onAllNodesWithTag`
+     * **默认查的是合并后的语义树**，而 LOADING 那颗 `clickable` Box 会把后代合并进自己。
+     * tag 原先只挂在被合并掉的子 Text 上 ⇒ 合并树里根本没有带这个 tag 的节点，
+     * CI run 36214822274 上 `OverlayGenerateSmokeTest > successStream_…` /
+     * `stopDuringGeneration_…` 与 `ReplyPrimaryActionsTest >
+     * generating_showsProductionLoadingStopAffordance…` 三格都停在
+     * 「断言「已显示」失败 / 节点：节点不存在（fetchSemanticsNode 失败）」。
+     * 上一格用 `useUnmergedTree = true` 查，量的恰好是合并**之后**看不见的另一半，
+     * 所以本机一直绿、设备一直红。
+     */
+    @Test
+    fun `the stop anchor is reachable in the merged tree the device queries`() {
+        mountBare()
+        show(LbButtonState.Loading)
+
+        val merged = rule.onAllNodesWithTag(LbTags.PRIMARY_STOP).fetchSemanticsNodes()
+        assertEquals(
+            "合并树里也必须恰有 1 颗停止条——设备侧默认就查合并树，" +
+                "tag 挂在被合并掉的子节点上设备就找不到它：实到 ${merged.size} 颗",
+            1, merged.size
+        )
+
+        // 设备侧不止"找得到"：它读这条语义文本校验 LOADING 文案，再对这个节点注入点击
+        val texts = merged.single().config
+            .getOrNull(SemanticsProperties.Text)?.map { it.text }.orEmpty()
+        assertTrue(
+            "合并树里那颗停止条必须自己带 LOADING 文案（设备侧按 Text.first() 校验），实到：$texts",
+            texts.contains(labelFor(LbButtonState.Loading))
+        )
+
+        val before = clicks
+        rule.onNodeWithTag(LbTags.PRIMARY_STOP).performClick()
+        repeat(3) { rule.mainClock.advanceTimeByFrame() }
+        assertEquals("按停止条的 tag 点下去应当恰好触发一次回调", before + 1, clicks)
     }
 }

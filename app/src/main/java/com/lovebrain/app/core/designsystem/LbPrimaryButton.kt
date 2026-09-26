@@ -113,6 +113,14 @@ fun LbPrimaryButton(
                     .clip(LoveBrainShape.md)
                     .background(container, LoveBrainShape.md)
                     .clickable(role = Role.Button, onClick = onClick)
+                    // 文字会变，tag 不会：自动化找的是这颗停止条，不是那句中文。
+                    // ⚠ tag 必须挂在这颗**带 clickable 的盒子上**，不能挂在里面那行文字上：
+                    // clickable 会把后代的语义合并进自己，子节点在**合并后的语义树**里根本不存在，
+                    // 而 `onNodeWithTag` 默认查的就是合并树——设备侧三格红
+                    // （OverlayGenerateSmokeTest > successStream_… / stopDuringGeneration_…、
+                    // ReplyPrimaryActionsTest > generating_showsProductionLoadingStopAffordance…）
+                    // 全都停在「节点不存在」。读屏同理：停止这条动作得自己带名字。
+                    .testTag(LbTags.PRIMARY_STOP)
                     .paddingInside(),
                 contentAlignment = Alignment.Center
             ) {
@@ -131,8 +139,6 @@ fun LbPrimaryButton(
                     Spacer(Modifier.width(Spacing.md))
                     Text(
                         text = label,
-                        // 文字会变，tag 不会：自动化找的是这颗停止条，不是那句中文
-                        modifier = Modifier.testTag(LbTags.PRIMARY_STOP),
                         color = Color.White,
                         style = AppTypography.titleMedium,
                         fontWeight = FontWeight.Bold
