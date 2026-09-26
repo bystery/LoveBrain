@@ -4,7 +4,8 @@
 前面十一个窗口的账本。所有数字都是 2026-09-26 这一轮实测出来的，**注明了是哪条命令的输出**；
 凡本机量不到的，一律标"只能等 CI/设备"，不当已解决。
 
-- 本地 HEAD：`e3c2015`（纯文档一笔，未推）；远端 `main` = `85d2d42`。
+- 本地 HEAD：**第一笔已落 `aa29950`**（A1 那把新尺，纯测试码）；开工时是 `9fc81dc`（这份文档本身），
+  开工前远端 `main` = `85d2d42`，本窗口至今**没推过**。
 - 那份"还差多少活"的判断在第 3 节，**先看 3.A 和 3.B 就够了**。
 
 ---
@@ -35,8 +36,8 @@ CI 的产物门自报同一个数 ⇒ 这一轮两侧没漂。
 |---|---|---|
 | `LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md` | **就是这份要照着干的指导书**（664 行） | **未跟踪 `??`** |
 | `LoveBrain_Comprehensive_Reaudit_286c9406_2026-09-23.md` | 上一轮综合复核报告 | 未跟踪 `??` |
-| `LoveBrain_Guide_Item_by_Item_Verification_2026-09-24.md` | 逐条对照表（账本，5127 行，最新一节「追加五十八」在 4977 行起） | 已入库 |
-| `LoveBrain_Handover_Next_Window_2026-09-25.md` | 十一轮的开工单（§0.43 最新、§1 起手命令、§6 坑表 1–120） | 已入库 |
+| `LoveBrain_Guide_Item_by_Item_Verification_2026-09-24.md` | 逐条对照表（账本，5219 行，最新一节「追加五十九」在 5129 行起） | 已入库 |
+| `LoveBrain_Handover_Next_Window_2026-09-25.md` | 十一轮的开工单（§0.44 最新、§1 起手命令、§6 坑表 1–123） | 已入库 |
 
 ⚠ **前两份至今没入 git**：谁 clone 这个仓库都拿不到它们，只剩工作目录里这一份。要不要入库是**用户的决定**（见第 8 节），
 所以本节把指导书的结构抄成行号地图，让你不用那份文件也知道每条要求在哪：
@@ -87,14 +88,18 @@ gh run view <run-id> --json conclusion,jobs --jq '.jobs[]|"\(.name)=\(.conclusio
 bash scripts/assert_artifacts.sh --label unit \
   --xml-dir app/build/test-results/testDebugUnitTest \
   --html-dir app/build/reports/tests/testDebugUnitTest
-bash _temp/run_gates108.sh                          # 全套 12 步门禁，每步记 RC + 字节数
+bash _temp/run_gates109.sh                          # 全套 12 步门禁，每步记 RC + 字节数（换格子要换死导入清单）
 ```
 
-Windows 上必踩的四条（详见交接单 §6 坑表 107 / 116–120）：
+Windows 上必踩的六条（原来四条，详见交接单 §6 坑表 107 / 116–120；本窗口又补了 121–123 与下面两条）：
 `PYTHON=` 要写成 `bash -c 'PYTHON=/d/anaconda/python bash …'`，**别用 `env VAR=… cmd`**（PATH 上有个空壳会吞参数还返回 0）；
 `python3` 是商店占位符（返回 49），一律用 `/d/anaconda/python`；
 Python 脚本走 stdout 要 `PYTHONIOENCODING=utf-8`（默认 GBK 会因中文崩）；
 写盘脚本先归一成 LF、按原口径写回、**写完回读比对**。
+本窗口再补两条同一族的：**`python - <<'PY'` 连脚本源码都按 ANSI 码页解码**——
+脚本里写中文注释/中文替换文本会当场 `SyntaxError: invalid character '…'`（`PYTHONIOENCODING` 管不到它），
+正解是把中文内容用写文件工具落成 UTF-8 件，再让一个**纯 ASCII** 的脚本按路径读它；
+以及**后台命令的重定向前要先 `mkdir -p` 目标目录**，否则整条命令连脚本都没启动（RC=1、只有一句 No such file）。
 
 ---
 
@@ -111,6 +116,14 @@ Python 脚本走 stdout 要 `PYTHONIOENCODING=utf-8`（默认 GBK 会因中文�
 - 第一步：**先数、先红，别先改**。新写一格静态尺：扫 `codeOf(KnowledgeRepository.kt)` 里 `atomicWriteText(` 的调用点，按"是否在 `KnowledgeTx` 作用域内"分两堆，登记 `tx 内=4 / 裸=30` 两个数，判 `==`（还债就要回来改小），再用注入反例证明它有牙。
 - 验收：新格 + 变异两发（把一处裸写改成 tx 内 → 表必须红；把 tx 内那 4 处撤掉 → 必须红）。
 - ⚠ 我这轮差点把这条当成"已清零"——原因见第 5 节。别信"读/写边界已清零"这句话，它说的是拼接那把尺。
+- ✅ **本窗口已收（`aa29950`，只造尺没改生产码）**：新格 `data/KnowledgeTxMutationEntryTest.kt`（8 格）
+  登记 **总数 34 = 唯一写链 4 + 裸写 30**，并另钉逐作用域明细表、定义必须留 `private`、
+  不许出现 `::atomicWriteText` 引用、`data/` 别家不许调用它。
+  变异反证**跑了八发**（开工单要求的两发是 M1/M2），全符合预期；
+  最值钱的一发是 M1：**把一处裸写挪进写链，总数一点不动**，只钉总数的棘轮对"搬家"是瞎的。
+  ⚠ 口径修正：那 4 处的"在 `KnowledgeTx` 之内"在这把尺里定义为"落在四个锁内写核里"
+  （`KnowledgeTx` 类体自己不直接调 `atomicWriteText`，它调那四个核）——细节与读数在**账本 §59**。
+  **剩下的活是还这 30 处**（建议从 `ensureKbFilesCompleteUnlocked` 那 2 处开手），每还一批回来把三个数改小。
 
 **A2 ｜ §6.5 的极端值矩阵**（指导书 527 行第 6 条："长 Provider 名、超长模型名、￥9999.999、100000 次生成"）
 - 实测：只有 `ProviderSectionSemanticsTest.kt` 用了长供应商名；**全仓没有任何一格**含 `9999` 或 `100000`（`grep -rl "9999\|100000" app/src/test app/src/androidTest` 空）。
@@ -138,6 +151,18 @@ Python 脚本走 stdout 要 `PYTHONIOENCODING=utf-8`（默认 GBK 会因中文�
 **A7 ｜ 两笔纯文档假账（十分钟的活，但都是"注释比实现新"）**
 - `PackageDependencyTest.kt:14-15` 仍写"真实存量是 **15 条越界 import，分布在 11 个文件**"，而它自己的基线是 **6 条 / 6 文件**（`assertEquals(6, …)`）。
 - `LoveBrain_Rework_Acceptance_2026-09-24.md:76` 仍写"漂移只记诊断、**仍用冻结 prompt**"、`:81` 仍写"**所有写路径统一拒**"——指导书 §3.3（341 行）点名的就是这两句与实现不符；A1 修完之后第二句才真的成立，**别先改字**。
+  ⚠ 第一句**本窗口已对着实现核过**：`GenerationEngine.kt:256-264` 那里注释自己写着
+  "以前这行注释写的是'仍用冻结时的 prompt 文本'，那是没有实现的说法"——资产 hash 漂移只 `L.w` 一句，
+  随后 `val user = buildResult.prompt` 用的就是**现读资产拼出来的**文本。所以"只记诊断"对、"仍用冻结 prompt"错。
+
+**A8 ｜ 本窗口新登记的行为空白（账本 §59.6）：只读库走"补缺文件"那条路径没量过**
+- `ReadOnlySchemaWriteGateTest` 那份 24 条公开 mutation 的目录树比对**不含建库两条路径**
+  （`create` / `ensureInitialKnowledgeBase`）。而 `ensureInitialKnowledgeBase` 在"已有库"分支里
+  会调 `ensureKbFilesCompleteUnlocked(kb.name)`（`KnowledgeRepository.kt:652-655`），那个 kb 完全可能是
+  schema 过新的只读库，`ensureKbFilesCompleteUnlocked` 里两处是**裸写**（A1 那把尺登记的 2 处）。
+- 按代码读它会被出口判定（`atomicWriteText` 里按 `kbOwning` 统一拒）挡下，但**这句只是读出来的形状**：
+  第一步是给那格补一档夹具——"未来库缺 `memory/lessons.md`"，跑 `ensureInitialKnowledgeBase`
+  后判"文件没被创建 + 目录树逐字节不变"。先红（现在多半会创建出来）再决定要不要改代码。
 
 ### 3.B 大块，要拆成好几格（别一口气做）
 
@@ -196,6 +221,8 @@ Python 脚本走 stdout 要 `PYTHONIOENCODING=utf-8`（默认 GBK 会因中文�
 ## 6. 最新一轮读数快照（数只在这里给，别抄进生产代码）
 
 - 单测：**1409 / 189 套件 / 0 失败 / 0 错误 / 0 跳过**（`--rerun`，XML 同一批 0.04s）。CI 产物门自报同一个数。
+  ⚠ **本窗口第一笔之后已涨到 1417 / 190**（+8 格 +1 套件 = 新尺 `KnowledgeTxMutationEntryTest`，`aa29950`）；
+  上面那两个数是"开工时"的基线，别再拿它当现在值。
 - 门禁 12 步全 rc=0（除 `prompt` 合法 0 字节）：lint `measured_issues=67 measured_rules=15 gated_issues=66 gated_rules=14 advisory_issues=1`；
   预算自测 27 格全对；跨层依赖 6；工单号 PASS；取消审计 165 站（PROTECTED 54 / WAIVED 2 / SUSPEND-FREE 109 / NEEDS_REVIEW 0）；
   prompt 资产锁 OK（`6dcde732…`）；`assembleAndroidTest` rc=0；被改文件死导入 0 条。
@@ -232,3 +259,12 @@ Python 脚本走 stdout 要 `PYTHONIOENCODING=utf-8`（默认 GBK 会因中文�
 交接单 §0.42 / §0.43 与坑表 114–120（`LoveBrain_Handover_Next_Window_2026-09-25.md`）。
 本轮新造的探针与差分桩都留在 `_temp/`：`probe42.py`（七发变异驱动）、`stub_tshark_from_fixtures.py` + `stub_tshark.sh`（出口判据差分桩）、
 `probe_egress_no_guard.sh`、`dupcase_probe.sh`、`run_gates108.sh`（12 步门禁）、收档的 `gates107/ZzRoleGapProbeTest.kt.retired-2026-09-26` 与读数 `gates107/role_gap_probe.txt`。
+
+**本窗口（第 12 格）已经做掉的在这里，别重复劳动**：账本「追加五十九」（同一份账本 5129 行起）——
+P0-03 前半句那把新尺的口径、34/4/30 三张读数表、八发变异反证的逐发实读、
+以及两处"绿着的错表"是怎么被仪器自己造出来的。
+交接单 §0.44 与坑表 121–123（同一份开工单）。
+本窗口新增的留档在 `_temp/`：`a1_mutate_probe.py`（八发变异驱动，跑前先把原件与 sha256 清单落盘、
+每发跑完立刻还原并逐字节核对）、`a1_mutate/readings.txt`（八发实读 + 收尾核对）、
+`run_gates109.sh`（12 步门禁，死导入清单换成本格那个新测试文件）、`a1_measure1.log`/`a1_measure2.log`/`a1_green1.log`
+（造尺过程中"先跑红拿实测数"那三次读数）。

@@ -5125,3 +5125,95 @@ CI run 36205285000 上 `Egress checker must be gradeable against synthetic captu
   ⚠ 这是**读代码看到的形状**，不是量到的行为（没有设备就量不到）；
   要么下次接上设备时顺手验一次，要么改成"合并两条 trap"再验——别拿它当已修。
 
+
+# 追加五十九：给 P0-03 那半句装上会红的尺——34 处落盘调用登记成"写链 4 / 裸写 30"（`aa29950`）
+
+## 59.1 这条要求为什么至今一把尺都没有
+
+指导书 217 行（独立复核报告 §3.1 P0-03）的修复方式写了两半句：
+
+> 所有 mutation 只能从 `KnowledgeTx` 取得安全路径与原子写能力；future schema 在 transaction 入口拒绝。
+> **Repository 内禁止出现第二条 `atomicWriteText` 公共链。**
+
+上一轮的判断是"后半句做到了"，依据是 `ReadOnlySchemaWriteGateTest` 那条源码绊线
+（`rawAtomicWriteText` 定义 1 / 调用 1 / `FileOutputStream` 1）与 `StorageBoundaryOwnershipTest`
+里 `File(File(knowledgeRoot,` 那条 owners 已是空集的规则。**两把尺量的都不是前半句**：
+前者钉"字节只从一条链落盘"，后者钉"不许自己拼库目录"，
+而"谁绕过 `KnowledgeTx` 直接调 `atomicWriteText`"这件事**没有任何一格在数**。
+⇒ 新格 `app/src/test/java/com/lovebrain/app/data/KnowledgeTxMutationEntryTest.kt`（8 格）。
+
+**"在唯一写链上"的口径**（写死在那一格的 `WRITE_CHAIN`）：调用点落在四个"锁内写核"之一。
+`KnowledgeTx` 的类体自己**不**直接调 `atomicWriteText`，它调这四个核，
+所以"作用域内"按这条委托链认，不按花括号包没包住认——改这条定义必须连着改基线与注入证据。
+
+## 59.2 实扫读数（数字全来自这把尺跑红时报出的明细，并与 `grep -n` 的行号逐个对上）
+
+| 堆 | 处数 | 落点（`KnowledgeRepository.kt`） |
+|---|---|---|
+| 唯一写链 | **4** | `writeFileUnlocked` L473、`appendFileUnlocked` L483、`writeFileCheckedUnlocked` L595、`appendFileCheckedUnlocked` L606 |
+| 裸写 | **30** | `create` 13（L825–L842）、`ensureInitialKnowledgeBase` 13（L684–L703）、`ensureKbFilesCompleteUnlocked` 2（L750 L757）、`RepoStorage.atomicWrite` L166 / `guardedWrite` L173 |
+| 合计 | **34** | 三个判据（总数、两堆分类、逐作用域明细表）一律 `==`，只许往下 |
+
+另外钉了三条例外形状：`atomicWriteText` 的定义只许一处且必须留 `private`；
+不许出现 `::atomicWriteText` 函数引用（把能力当值传出去，静态调用图上看不到）；
+`data/` 里除仓库自己之外不许有人调用它。
+
+⚠ **本格报的是结构债，不是 30 个漏洞。** 这 30 处今天仍然过同一道出口判定
+（`atomicWriteText` 里按 `kbOwning(file)` 统一拒，见 `KnowledgeRepository.kt:325-337`），
+路径侧也没有穿越口（`create` 自己把库名洗成 `[a-z0-9_一-龥-]`，`/`、`\`、`.` 全剥）。
+行为层的只读证明仍是 `ReadOnlySchemaWriteGateTest` 那套"整个目录树逐字节比对"。
+
+## 59.3 八发变异反证（`_temp/a1_mutate/readings.txt`；每发跑完立刻还原 + sha256 逐字节核对）
+
+| 发 | 反例 | 预期红 | 实读 |
+|---|---|---|---|
+| M1 | 把一处裸写挪进写链（`ensureKbFilesCompleteUnlocked` 少一处、`appendFileUnlocked` 多一处） | 分类格 + 明细表格 | **符合**，且**总数那格仍绿（34→34）** |
+| M2 | 撤掉写链那四处（四个核各自不再落盘） | 总数格 + 分类格 | **符合**，裸写 30 一格没动 |
+| M3 | 正向对照：注释里写满 `atomicWriteText(` | 必须全绿 | **符合**（剥注释有牙） |
+| M4 | 正向对照：多调一次 `rawAtomicWriteText(` | 必须全绿 | **符合**（边界排 `raw` 前缀有牙） |
+| M5 | 定义放宽成 `internal fun atomicWriteText` | private 那格 | **符合** |
+| M6 | 插一行 `private val probeWriterRef = this::atomicWriteText` | 函数引用那格 | **符合** |
+| M7 | 文档格里自己冒出一条同名调用链 | 跨文件那格 | **符合** |
+| M8 | 顶层声明前插一个 `object`（换掉"剥第一段"的对象） | 证人那格 | **符合** |
+
+M1 是这一格里最值钱的一发：**债搬家时总数一点不动**，只钉总数的棘轮对它完全是瞎的。
+还原后核对：`KnowledgeRepository.kt` sha256 `3c01c9dfb8983ff0…`、`KnowledgeDocumentStore.kt`
+`6ed7c6e830aa6cae…`，八发跑完两个数一个没变；`git diff -- app/src/main` 空。
+
+## 59.4 造尺路上撞到的三处形状（都是"绿着的错"，坑表 121–123）
+
+1. **体无花括号的声明会赖在作用域栈上。** 第一版只在 `}` 时出栈，
+   于是 `private fun isWritable(k): Boolean = …` 这种表达式体函数永远等不到属于自己的那个 `}`，
+   把 `writeFileUnlocked` 报成 `isWritable.writeFileUnlocked`、把 `RepoStorage.atomicWrite`
+   报成三个函数名叠在一起——**总数 34、分类 4/30 两格照样全绿，只有明细表是错的**。
+   ⇒ 压栈前先按"声明深度 ≥ 当前深度"清一遍（同级兄弟互清），并且**明细表也要钉成断言**。
+2. **`fun <T> name(` 与三引号原始字符串**：泛型返回类型要让声明正则跳过 `<…>`；
+   剥非代码那把工具第一版遇到 `"""` 直接抛，而 `data/` 里真有用它的源文件
+   （跨文件那一格当场 `IllegalStateException`）⇒ 改成整段按字符抹成空格、**长度与行号 1:1 不变**。
+3. **"另一把尺"自己会造假阴性。** 为了交叉核对写了一把分步正则剥注释/字符串的 python 尺，
+   它报 **13 处**（行号还整体错一行）——因为先剥行注释、后剥字符串时某行剩下奇数个引号，
+   字符串正则把后半个区间的代码整片吞掉。⇒ 交叉核对用的是最笨那条：
+   `grep -n` 直接列出的 34 个行号与这把尺报的 34 个行号**逐个对上**；
+   复算尺报得比主尺少时，第一嫌疑是复算尺瞎了，不是主尺虚高。
+
+## 59.5 本机收口读数（`_temp/gates109/all.txt`，12 步全 rc=0）
+
+- 单测：**190 套件 / 1417 单测 / 0 失败 / 0 错误 / 0 跳过**（`--rerun`；基线 189/1409，
+  +1 套件 +8 格全部来自本文件，产物门自报同一个数）。
+- lint：`measured_issues=67 measured_rules=15 gated_issues=66 gated_rules=14 advisory_issues=1`
+  —— 与开工单 §6 逐字相同，新格一条 lint 都没添；预算判据自测 27 格全对；跨层依赖 6；工单号 PASS。
+- prompt 目录对 `286c9406` 零 diff（那一步 0 字节是它的通过信号）、资产锁 OK（`6dcde732…`）、
+  取消审计 165 站（PROTECTED 54 / WAIVED 2 / SUSPEND-FREE 109 / NEEDS_REVIEW 0）、
+  `assembleAndroidTest` rc=0、本文件 4 条显式 import / 死导入 0 条。
+- 全套门禁跑法已换到 `_temp/run_gates109.sh`（第 109 版：死导入清单改成本格新增的那一个测试文件）。
+
+## 59.6 这一格没做的（照例不当已解决）
+
+- **30 处裸写一处没还**（本格只造尺、不改生产码，照开工单 3.A1 的"先数、先红，别先改"）。
+  还的时候多半走 `transactionUnlocked(kbName) { write(…) }`，每还一批回来把三个数改小。
+- `ReadOnlySchemaWriteGateTest` 那份 24 条公开 mutation 的目录树比对**不含建库两条路径**
+  （`create` / `ensureInitialKnowledgeBase`）。`ensureInitialKnowledgeBase` 在"已有库"分支里
+  会调 `ensureKbFilesCompleteUnlocked(kb.name)`，而那个 kb 可能是只读的未来库——
+  按代码读它会被出口判定拒掉，但**这一条行为本机没量过**，登记成下一格候选，不当已证。
+- 开工单 3.A 的 A2–A7、3.B 的 facade 归零、3.C 的六项设备侧证据，全部照旧未动。
+- 同一 SHA 的 CI 三项结果**只能等 CI**：本机读数等价不等于 `verify` 会绿，不签任何东西。
