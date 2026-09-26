@@ -5502,3 +5502,79 @@ rm -rf app/build/test-results/testDebugUnitTest
 - 视觉基线：committed golden **3 张**（`LbPrimaryButton` 三态）⇒ 12 颗组件里只有 1 颗有基线。
 - 设备侧 `Assume`：**2** 处（`app/src/androidTest`）。
 坑表 **136**、剩余工作那份 **V18**、交接单 **§0.48 + §8 第 14 窗口复判**。
+
+---
+
+# 追加六十四：批量搬巨石的头四格——VM 私有状态流 30 → 15，并撤掉两条腐烂的"预期红"（`29625d5` → `083ec85`）
+
+用户 2026-09-27 对"剩下的 61% 用什么节奏"表态：**批量搬巨石，收口才验**。这一节是那个模式下的前四格。
+
+## 64.1 四格各买了什么（全部对着命令输出写，不是计划）
+
+| 提交 | 那一格 | 实到读数 |
+|---|---|---|
+| `29625d5` | 输入区与消息列表的**十颗**私有状态流 → `feature/composer/ComposerStore`；`MessageListEditing` 随 `feature 不许 import viewmodel` 这条既有规则搬进 composer 包 | VM **2723 → 2636 行**；私有流 **30 → 20**；UI/Service 调用点零改动（消费面实扫：`messages` 165、`editingIndex` 46、`panelMode` 36、`counselingDraft` 34、`draftText` 20） |
+| `74dad55` | P1-01 的大文件棘轮（**这道闸此前不存在**）+ 两份登记清单 + 7 格自测 + CI 两步 | 扫 153 个 .kt：>500 共 17 = 500–800 档 7 + >800 档 10；自测 7/7 |
+| `a63994c` | 撤掉 `OverlayGenerateSmokeTest` 上两条"预期红"（它们点名的生产方法 `grep` 在 `app/src/main` **0 命中**） | 见 64.3 |
+| `083ec85` | 三条临时提示 → `feature/notice/NoticeBoard`；工单+就绪位 → `feature/provider/ProviderTicketStore` | 私有流 **20 → 15**；VM **2636 → 2642 行（涨了）**；新测试 8 格 |
+
+本机全套 JVM：`193 套件 / 1430`（第一格后）→ **`195 套件 / 1438 单测 / 0 失败 0 错误 0 跳过`**（`--rerun-tasks`，改前后各一跑）；
+lint 67 条 / 15 规则、进预算 66/14 **与上轮逐字相同**（新写的 Kotlin 零 finding）；
+取消审计 165 站 PASS、prompt lock `6dcde732…` 未漂、androidTest 编译 rc=0。
+
+## 64.2 反证逐发实读（三态分开报，撤销后逐字节 cmp）
+
+`ViewModelStateOwnershipTest`（三格）+ 八格 store 测试，用 `_temp/probe_vm_state_gate.sh` 与 `_temp/probe_block_b.py` 注坏实现：
+
+- X1 把 `_panelState` 搬回 VM → 结构闸两格同红（点名 + 登记清单对不上）；
+- X2 新造一颗没登记的私有流 → **只有登记那格红**，且点名的是 `_probeExtra` 本身；
+- X3 把登记名改错一个 → 红在"已经不归 ViewModel 了"那一支；
+- V1 把 `_kbNotice` 搬回 VM → 同 X1 形状（第二块同样有牙）；
+- N1 把 `dismissVolatileNotices` 改成"连面板警告一起清" → `NoticeBoardTest` 恰红那一格，另两格仍绿；
+- P1 就绪判据改恒真 → 红两格（缺 Key / 模型空白）；P2 只丢掉 Key 那一半 → 恰红"缺 Key"那一格。
+  ⇒ 这三发的目的是证明**三条条件各自都在起作用**，而不是其中一条恒假把整格撑住（恒假形态见 user 域"证明断言会红"第 1 条）。
+
+## 64.3 两条"预期红"为什么是假线索（这是 §7 第二步第 5 条"清理历史描述性注释"的实体）
+
+- `rapidDoubleTap`：旧叙述称"租约要到 prep await 完 `readIntent`/`readCorrections` 之后才注册"、
+  "`Preparing` 是无条件覆盖写"、"净效果 0 个请求"。实到 `ForegroundOperationCoordinator.start`（`:119-161`）
+  非 suspend：先建 `CoroutineStart.LAZY` 的 Job（不跑）→ `lock.withLock` 里查互斥 + 写 records + 绑 requestId →
+  全部成功才 `job.start()`；被拒时 `job.cancel()` 返回 null，body 一次都不执行。
+  `Preparing` 只能由 reducer 在 `ReplyRequested` 时产生（`model/GenerationEvents.kt:201-202`），
+  而该事件只在被接受的那个租约 body 内发 ⇒ 第二次点击既过不了 guard 也覆盖不了身份。
+- `lateCallbacksFromSupersededRequest`：旧叙述点名 `onReplyStreamingCoreText` / `onReplyResult` "无所有权判定直接写"。
+  实到：`grep -rn "onReplyStreamingCoreText\|onReplyResult" app/src/main` = **0 命中**；14 处命中全在 JVM 夹具
+  （`GenerationEngineTestHelper.EventRecorder` 保留方法名，做的是"塞进带 requestId 的 typed event"）。
+  生产写入只剩 `dispatchReply → ReplyStore.accept → ReplyReducer.reduce` 一条路，
+  reducer 每类事件先过身份门禁（`GenerationEvents.kt:208-210`、`:221`、`:226-229`）。
+- ⇒ 真正钉住"双击只发一次"的一直是 **JVM 那格** `ReplyRequestFaultInjectionTest > double generate does not produce
+  two concurrent requests`（两次同步 `generate()` 之后立刻断 REPLY 租约恰 1 + Engine 恰一次 + 第一个请求不被抹掉），
+  设备侧那格只是复证。**交接单 §8 上"这条租约竞态未证明"那句可以划掉了**——划它的依据是上面两格加一次对着码的读，
+  不是"CI 绿了"。⚠ 但"去掉 reducer 那行身份判据 → 该格必须红"这一发反证**留给下一次动 reducer 的人做**，
+  本窗口没注入生产判据，因此这里不许写"验过了"。
+
+## 64.4 这一节当场修的自身缺陷（四条，全在同一个模式下复发）
+
+1. 结构闸头版判据写 `MutableStateFlow(`，**只数得到 20 颗里的 10 颗**（本仓库多数声明是 `MutableStateFlow<类型>(初值)`）——
+   被抓到不是因为我看了一眼，而是"少一颗也红"那一支当场报出"登记 20、量到 10"。⇒ 数形状的尺必须先扫现状并打印数。
+2. 该闸"登记数量"版本会给出**没发生过的理由**：注入 `_probeExtra` 时它报"新增项：[_showIntentEditor]"（拿集合尾部当新增）
+   ⇒ 改成**逐颗点名登记**（与坑表 135"点名取决于遍历顺序"同族）。
+3. **自测驱动自己会"什么都没跑却报合规"**：`test_check_big_files.sh` 第一版六格齐报退出码 0、日志 0 字节
+   （Windows 下 `subprocess(shell=True)` 传 list / bash 函数里那次 cd 都会这样）⇒ 反证驱动每格必须同时断
+   **退出码 + 点名字样 + 输出字节数 >0**；旧 bash 驱动不删，改名留 `_temp/`（坑表 137）。
+4. 我清探针残留时跑了 `git checkout -- <VM>`，那会把整块**未提交**的搬家一起回滚；靠探针开机时留的点名备份
+   `cp` + 逐字节 `cmp` 才救回来 ⇒ 有未提交搬家时撤销一律 cp+cmp，禁止 checkout/restore（坑表 138）。
+   同一趟另一条：`a63994c` 的提交信息里写"至少五个窗口"没数过——实测 `git log -S"预期红" -- <该文件>`
+   只有 **1 笔**引入它（`2cf4e43`，2026-09-24），到今天 4 个日历日。历史不改，勘误在此。
+
+## 64.5 这一格没做的（下一格接着搬）
+
+- **搬状态不减行数**：`083ec85` 让 VM 从 2636 **涨到 2642** 行。store 只接管"谁持有"，VM 还留着同名出口 + 接线。
+  ⇒ 排下一块必须按**行为块**（本轮提交 `recordActualSentMessage` 一族约 90 行、画像确认/重生成约 150 行、
+  锦囊与主动发编排约 150 行），不能再按"几颗 flow"（坑表 140）。
+- VM 里剩下 **15 颗**私有状态流，逐颗名字 + 该去哪一族已登在 `ViewModelStateOwnershipTest` 的清单里。
+- `>800` 行仍是那 **10 个**文件；`KnowledgeWritePort` 构造注入仍 **0 处**（R2 那块一笔没动）；
+  ResultArea 1286 行没拆（R4/§6.4）；`SuggestPanel` 那颗还没配宿主的 sheet、2 格 `Assume` 跳过、
+  `HomeComponents.kt:238` 那颗 tag 撞名——全部照旧。
+- 本窗口四笔**都没推**（远端仍 `9d2757f`）；要同一 SHA 的 CI 证据需要用户说「推送」。
+坑表 **137–140**、交接单 **§0.49–§0.50**。

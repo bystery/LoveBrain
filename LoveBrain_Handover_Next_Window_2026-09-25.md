@@ -1547,7 +1547,7 @@ HEAD `0c4d6d6`，仍未推。两笔：
 
 ### 这一节剩下的账（下一格接着搬，别当成已收口）
 
-- VM 里还剩 **20 颗**私有状态流，**逐颗名字已经登在 `ViewModelStateOwnershipTest` 的清单里**，
+- VM 里还剩 **20 颗**私有状态流（⚠ **这一行已被 `083ec85` 推进到 15 颗，见 §0.50**；留着原文是为了让"当时剩多少"可查），**逐颗名字已经登在 `ViewModelStateOwnershipTest` 的清单里**，
   并写好各自该去的地方：回复版本与 stale 那一族（`_generationRoundId/_inputChanged/_generationHistory/_currentVersionId`）、
   知识库与画像（`_activeKb/_profileReview/_kbNotice/_vectorUpdate/_vectorDelta/_currentVector/_stageSuggestion`）、
   供应商与提示（`_panelWarning/_activeTicket/_providerReady`）、本轮提交（`_resultMode/_onlyThisRound/_actualSentState`）、
@@ -1556,6 +1556,60 @@ HEAD `0c4d6d6`，仍未推。两笔：
 - 本模式的两笔都**没推**（远端仍 `9d2757f`）；要 CI 证据需要用户说「推送」。
 - 打分卡的严格完成定义数**没变（7/18）**：这两格把两条"零机器判据"变成"有闸且反证跑过"，
   但 §7 第二步那两条按结果判的（VM 不再持状态、`>800` 持续下降）要到搬家做完才翻绿。
+
+## 0.50 批量模式第三、四格：又搬走五颗状态流（VM 私有流 30→15）＋ 撤掉两条腐烂的"预期红"（`a63994c` → `083ec85`）
+
+### 第三格（`a63994c`）：两条"预期红"注释描述的生产机制已经不存在
+
+`OverlayGenerateSmokeTest` 上挂着两条 `⚠ 预期红`，写得像"已知缺陷待修"。今天对着码读了一遍：**两条都是假线索**。
+- `rapidDoubleTap` 那条说"租约要到 prep await 完 `readIntent`/`readCorrections` 之后才注册"、"`Preparing` 是无条件覆盖写"、
+  "净效果 0 个请求"。实到：`ForegroundOperationCoordinator.start`（`:119-161`）**非 suspend**，
+  先建 `CoroutineStart.LAZY` 的 Job（不跑），在 `lock.withLock` 里查互斥 + 写 `records` + 绑 `requestId`，
+  **全部成功才 `job.start()`**；被拒时 `job.cancel()` 返回 null，body 一次都不执行。
+  `Preparing` 现在只能由 reducer 在 `ReplyRequested` 时产生（`model/GenerationEvents.kt:201-202`），
+  而该事件只在被接受的那个租约的 body 里发 ⇒ 第二次点击既过不了 guard，也不会覆盖身份。
+- `lateCallbacksFromSupersededRequest` 那条点名 `onReplyStreamingCoreText` / `onReplyResult`"无所有权判定直接写"。
+  实到：`grep -rn "onReplyStreamingCoreText\|onReplyResult" app/src/main` = **0 命中**；
+  14 处命中全在 JVM 夹具（`GenerationEngineTestHelper.EventRecorder` 只是保留方法名，做的是"塞进带 requestId 的 typed event"）。
+  生产写入只有一条路 `dispatchReply → ReplyStore.accept → ReplyReducer.reduce`，
+  reducer 每类事件先过身份门禁（`GenerationEvents.kt:208-210`、`:221`、`:226-229`）。
+
+⇒ 钉"双击只发一次"这条性质的其实是 **JVM 那格** `ReplyRequestFaultInjectionTest > double generate does not produce two concurrent requests`
+（两次同步 `generate()` 之后立刻断 REPLY 租约恰 1 个 + Engine 恰一次 + 第一个请求不被抹掉）——它一直在那 1430 格里跑着。
+设备侧那格只是复证。**这条从 §8"未证明"名单里划掉了**，但划它的依据是上面那两格 + 一次对着码的读，不是"CI 绿了"。
+⚠ 我在注释里明写了"去掉 reducer 那行身份判据 → 该格必须红"这一发反证**留给下一次动 reducer 的人做**；
+本窗口没注入生产判据，所以不许说"验过了"。
+
+### 第四格（`083ec85`）：三条临时提示 + 工单就绪位搬出 VM（§5.2 第 6 步第二块）
+
+- 新主人：`feature/notice/NoticeBoard`（知识库回执 / 面板级警告 / 五维重估摘要）、
+  `feature/provider/ProviderTicketStore`（激活工单 + 就绪三条件）。**VM 私有状态流 20 → 15 颗**（开工至今 30 → 15）。
+- 这两块买的不是"少五行"，是两条本来没有主人的判据：
+  ①**换库该清哪几条提示**——搬前 VM 里 10 处直写回执，"切库要清"只在 `refreshKnowledgeBases` 中间写了三行；
+     现在它叫 `dismissVolatileNotices`，而且**故意不清面板级警告**（警告说的是这台设备的配置状态，与切库无关——
+     这条区分是搬之前的实际行为，今天由 `volatile reset deliberately keeps the panel warning` 那一格钉住）。
+  ②**"就绪"到底是哪三条**（工单在 && 模型非空 && Key 非空）——以前悬浮窗自己算一份、VM 再算一份，现在只有一处；
+     读配置走三个注入 lambda ⇒ `feature` 不知道有 `SecurePrefs`（§5.1 包边界）。
+- 八格新测试 + **四发反证各咬中不同格子**（`_temp/probe_block_b.py`，撤销后三份文件逐字节 `cmp` 一致）：
+  N1 整族清改成"连警告一起清" → 恰红那一格；P1 就绪恒真 → 红两格；P2 只丢 Key 那一半 → 恰红"缺 Key"那一格
+  （这三发是为了证明**三条条件各自都在起作用**，而不是其中一条恒假把整格撑住）；
+  V1 把 `_kbNotice` 搬回 VM → 结构闸两格同时红（点名倒退 + 登记清单对不上）。
+- 本机全套 JVM **195 套件 / 1438 单测 / 0 失败 0 错误 0 跳过**；驱动改 `shell=False` + 显式 `bash ./gradlew`
+  （上一版在 Windows 用 `shell=True` 传 list = 什么都没跑却拿到退出码，正是坑表 137 的形状）。
+
+### ⚠ 这一格最重要的一条教训：**搬状态不减行数**
+
+`LoveBrainViewModel` 2636 → **2642 行（涨了 6 行）**。因为"把状态搬进 store"只换掉*谁持有*，
+VM 还留着同名只读出口和接线；**行数要等行为搬走才会降**。
+⇒ 下一块开始按**行为块**挑，不按"几颗 flow"挑：本轮提交 `recordActualSentMessage` 那一族（约 90 行）、
+画像确认/重生成（约 150 行）、锦囊与主动发编排（约 150 行）。
+只按 flow 数挑会得到一个"搬了五块、VM 反而更大"的假进度。
+
+### 一处我自己没验就写进提交信息的话（记下来，别学）
+
+第三格的提交信息里写了"这两条注释挂了**至少五个窗口**"——那句没数过。
+实测：`git log -S"预期红" -- <该文件>` 只有 **1 笔**引入它的提交 `2cf4e43`（2026-09-24），
+到今天撤销跨 4 个日历日。历史不改，勘误记在这里。
 
 ## 1. 起手必查（照抄，别凭记忆）
 
@@ -2039,7 +2093,7 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 ## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者，68 「取第一个非空」的判据会被别的来源蹭过去，69 界面构造不出的状态要对着持有者测，
     70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑，124–125 假账销账与口径冲突不许择一自裁，126–128 合并树里的锚点/贴着 teardown 的假相关/只数成功的尺，129–131 恒假的协议退出判据/不等就读的异步计数断言/退出码 0 + 文件非空仍什么都不断、132 坏实现对照的基线写成活引用、133 默认模式只重录不比对、134 工具的原图在构建目录里、135 夹具造了两处缺失、136 从没跑过的 job 第一次跑会红在仓库配置
     ⚠ 正文按**加入顺序**排，不严格递增（102 后面接着 95、90 那批是补记的）——
-    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 136**
+    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 140**
     （116–120 是出口判据那一格与"销账之后要重借一次"那一格补的，
     121–123 是 P0-03 那把新尺那一格补的：作用域栈的同级互清、复算尺自己会吞代码、一句要求两半句两把尺；
     124–125 是销"注释比实现新"那一格补的：**"已改口"必须点名到哪一份文件**（注释改口≠文档改口）、
@@ -2933,6 +2987,26 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
      这次能救回来只因为探针开机先 `cp` 了一份 `_temp/probe-bak`，还原后逐字节 `cmp` 才对上。
      ⇒ 探针/变异脚本的收尾一步固定为：**用点名备份 `cp` 还原 + `cmp` 证明逐字节相同**；
      `git checkout` / `git restore` 在有未提交工作时一律禁止（与"禁止 `git add -A`"是同一条纪律的两面）。
+
+139. **"预期红"这类注释是会腐烂的债务，而且比一般注释贵**（`a63994c`）：
+     `OverlayGenerateSmokeTest` 上两条 `⚠ 预期红` 各自点名了具体的生产方法与行号
+     （"租约要到 prep await 完才注册"、"`onReplyStreamingCoreText` 无所有权判定直接累加"）。
+     两处描述的生产代码在 §5.2 那两轮里已经不存在了（`grep -rn` 那两个方法名在 `app/src/main` 里 **0 命中**），
+     于是这两格 CI 一起绿、注释却说"等着看它红"——**下一个窗口会被派去找一个不存在的 bug**，
+     而且找不到的时候还会怀疑是自己没读懂。
+     ⇒ 三条规矩：①写"预期红/已知缺陷"必须带上**能被一条命令证伪的锚点**（文件+方法名，不是行号，行号漂得最快）；
+     ②每次让 CI 全绿时，顺手 `grep` 一遍仓库里所有"预期红"，红着的没出现就要当场判"缺陷已修"或"注释已烂"；
+     ③撤销一条注释要留下"为什么它当时会写成那样"的一句话（这里当时是真的缺 owner 判定，后来 `ReplyStore`+reducer 补上了），
+     否则下一个人会以为这句是凭空写的。
+
+140. **搬状态不减行数——按"几颗 flow"挑下一块会做出一个变大的巨石**（`083ec85`）：
+     把五颗 `MutableStateFlow` 搬进两个 store 之后，`LoveBrainViewModel` 从 2636 行**涨到 2642 行**：
+     store 只接管"谁持有"，VM 还留着同名只读出口、构造接线和 setter 委托。
+     如果按"搬几颗 flow"来排下一格，会得到一条越走越不像 progress 的曲线，最后对外只能说"我拆了三次，它更大了"。
+     ⇒ 排巨石的下一次切割单位必须是**行为块**（一段带判据的读写集合），量的是"这段逻辑离开 VM 还能被测吗"；
+     行数只作为收口指标之一，配合 `ViewModelStateOwnershipTest` 那份逐颗点名清单一起看。
+     同一格另一条：反证驱动在 Windows 上必须 `shell=False` + 显式 `bash ./gradlew`——
+     上一版 `shell=True` 传 list 什么都没跑却拿到退出码（坑表 137 的第三次复发，这次是在我自己的探针里）。
 
 ## 7. 硬约束（一条没变）
 
