@@ -88,6 +88,25 @@ class FakeProviderServer : AutoCloseable {
     var lastHandleError: String = ""
         private set
 
+    /**
+     * 最后一条连接上：**头块结束符到底出现过没有**，以及**收到的最后 24 字节的 hex**。
+     *
+     * 为什么还要这一对：`86ca126` 那跑 B 组五格齐报
+     * `accepted=1 requests=0 bytes=387 err='SocketException:Socket closed'`——
+     * 字节到齐了、fake 却始终没认出头块结束，而 387 这一-模-一样五格同一个数。
+     * 只剩两种可能：①OkHttp 那次 flush 本身就停在半截（查客户端为什么停在 387）；
+     * ②头块其实完整、是**这台仪器自己的判据**不认（那五格红的就不是生产链路，是 fake）。
+     * 现有读数分不开这两条：`terminated=false + 结尾就是 \r\n\r\n` 指②；
+     * `terminated=false + 结尾停在半行` 指①。
+     */
+    @Volatile
+    var sawHeaderTerminator: Boolean = false
+        private set
+
+    @Volatile
+    var lastBytesHex: String = ""
+        private set
+
     /** 最后一条连接读到的字节数 */
     val lastBytesSeen: Int get() = lastByteCount.get()
 
@@ -150,6 +169,9 @@ class FakeProviderServer : AutoCloseable {
         socket.use { s ->
             lastByteCount.set(0)
             lastHandleError = ""
+            sawHeaderTerminator = false
+            lastBytesHex = ""
+            lastRequestLine = ""
             try {
                 val input = s.getInputStream()
                 val body = readRequest(input)
@@ -219,17 +241,27 @@ class FakeProviderServer : AutoCloseable {
     private fun readRequest(input: java.io.InputStream): String {
         val headerText = StringBuilder()
         var prev = -1
-        while (true) {
-            val b = input.read()
-            if (b == -1) break
-            lastByteCount.incrementAndGet()
-            headerText.append(b.toChar())
-            if (prev == '\n'.code && headerText.endsWith("\r\n\r\n")) break
-            prev = b
+        // ⚠ 诊断三件套必须放在 finally 里：连接被提前关掉时抛的就是这个读循环本身，
+        //    放在循环之后等于"只有成功时才留读数"——那正是坑表 128 骂的那把尺。
+        try {
+            while (true) {
+                val b = input.read()
+                if (b == -1) break
+                lastByteCount.incrementAndGet()
+                headerText.append(b.toChar())
+                if (prev == '\n'.code && headerText.endsWith("\r\n\r\n")) break
+                prev = b
+            }
+        } finally {
+            // 走系统代理时请求行是**绝对形式 URI**（"GET http://127.0.0.1:PORT/… HTTP/1.1"）
+            lastRequestLine = headerText.toString().lineSequence().firstOrNull()?.trim().orEmpty()
+            // 头块结束符到没到 + 收到的最后 24 字节 hex：
+            // terminated=false 而结尾就是 `0d 0a 0d 0a` ⇒ 仪器自己的判据不认；
+            // terminated=false 且结尾停在半行 ⇒ 客户端那一次 flush 本身就停在半截
+            sawHeaderTerminator = headerText.endsWith("\r\n\r\n")
+            lastBytesHex = headerText.takeLast(24).map { it.code.toString(16).padStart(2, '0') }
+                .joinToString(" ")
         }
-        // 诊断用：留下请求行原文。客户端走系统代理时这里是**绝对形式 URI**
-        // （"GET http://127.0.0.1:PORT/… HTTP/1.1"），一眼能看出请求被代理截走了
-        lastRequestLine = headerText.toString().lineSequence().firstOrNull()?.trim().orEmpty()
         val length = Regex("(?i)content-length:\\s*(\\d+)")
             .find(headerText.toString())
             ?.groupValues?.get(1)?.toIntOrNull() ?: 0

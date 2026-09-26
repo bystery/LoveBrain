@@ -120,6 +120,12 @@ object MainChainHarness {
      * 2. accepted>0 requests=0 ⇒ 连上了但没收到可解析的请求行；
      * 3. requests>0 ⇒ 请求真到了服务侧，红点在响应回传 / 语义树那半边。
      *
+     * `86ca126` 那一跑把 2 又切了一刀，实到读数是
+     * `accepted=1 requests=0 bytes=387 err='SocketException:Socket closed'`（五格同一个 387）
+     * ⇒ 字节到了、头块却一直没被认全。于是加 `bytes=` / `terminated=` / `tailHex=` 三个字段：
+     * `terminated=false` 而 `tailHex` 结尾就是 `0d 0a 0d 0a` ⇒ **fake 自己的判据不认**（红点在仪器）；
+     * `terminated=false` 且结尾停在半行 ⇒ 客户端那次 flush 本身就停在半截（红点在链路）。
+     *
      * 用 instrumentation 线程直接读 `ProxySelector.getDefault()`：生产
      * `OkHttpClient.Builder()`（`DeepSeekRepository.kt:296`，没设 `proxy`）在设备上
      * 走的就是这条选择逻辑，量的是同一个东西。
@@ -132,7 +138,8 @@ object MainChainHarness {
                 { e -> "查询失败(${e::class.java.simpleName}:${e.message})" }
             )
         return "fake[accepted=${server.acceptedCount} requests=${server.requestCount} " +
-            "bytes=${server.lastBytesSeen} err='${server.lastHandleError}' " +
+            "bytes=${server.lastBytesSeen} terminated=${server.sawHeaderTerminator} " +
+            "tailHex='${server.lastBytesHex}' err='${server.lastHandleError}' " +
             "lastRequestLine='${server.lastRequestLine}'] systemProxy=$proxies " +
             "loopbackSelfTest=${loopbackSelfTest()}"
     }
