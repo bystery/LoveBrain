@@ -108,6 +108,19 @@ jobs:
         # 发现来自仓库之外的检查（上游版本清单 / 本机 SDK）不进预算，但每次打印条数与理由。
         run: bash scripts/check_lint_budget.sh
 
+      - name: Big-file ratchet must be gradeable
+        # 复核 §7 第二步完成定义第 5 条里"新代码无 >500 行 / 现存 >800 持续下降"这一半
+        # 从来没被任何机器判过——只在文档里抄数。这里补闸，并且闸自己先正反各跑一遍：
+        # 七格里五格是"喂坏实现看它红不红、且点名的是谁"，两格是"清单缺失/根接错必须
+        # 报 CANNOT-VERIFY 而不是零违例通过"。
+        run: python3 scripts/test_check_big_files.py
+
+      - name: Big-file ratchet must not grow
+        # 新增跨线文件要红；登记过的搬走了也要红（还了债不改账本，清单会腐烂）。
+        # 已登记的变长变短**不**红：这一格要的是"别新增巨石"，按行数奖惩会把人推向
+        # 机械切文件（§9 第 8 条明确禁止）。
+        run: bash scripts/check_big_files.sh
+
       - name: Visual-evidence gate must be gradeable
         # 截图那一路的判据自己也正反各跑一遍：CI run 36234389326 交出的两张"屏幕截图"其实都是
         # 安卓桌面（am start 报 Error type 3 / does not exist，但 am 的退出码永远是 0），
