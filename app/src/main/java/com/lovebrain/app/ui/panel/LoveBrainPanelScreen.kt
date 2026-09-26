@@ -25,6 +25,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -57,6 +59,16 @@ private object PanelStrings {
 }
 private object PanelDimens {
     const val MESSAGE_LIST_DEFAULT_HEIGHT_DP = 80
+
+    /**
+     * 空态那一档的列表槽位 = 图标容器 48 + 间距 8 + 那颗动作的热区下限 48
+     * + `MessageList` 空态 Column 自己的 `padding(vertical = Spacing.md)` 上下各 8 = **120**。
+     *
+     * 这个数不是审美选的：槽位再小，`MessageList` 里那条"动作热区 ≥48dp"就会被父约束**夹掉**
+     * ——本机第一发量到 8dp（104 那一档还量到 32dp：漏算了那 16dp 的内边距）。
+     * 有消息时仍然用用户拖出来的 `MESSAGE_LIST_DEFAULT_HEIGHT_DP`。
+     */
+    const val MESSAGE_LIST_EMPTY_HEIGHT_DP = 120
     const val MESSAGE_LIST_MIN_HEIGHT_DP = 64
     const val MESSAGE_LIST_MAX_HEIGHT_DP = 400
     const val TRIO_HEIGHT_DP = 40
@@ -236,6 +248,7 @@ fun LoveBrainPanelScreen(
                                 .clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = null,
+                                    role = Role.Button,
                                     onClick = {
                                         onboardPrefs.edit().putBoolean("done", true).apply()
                                         showOnboard = false
@@ -245,7 +258,9 @@ fun LoveBrainPanelScreen(
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_close),
-                                contentDescription = "关闭使用提示",
+                                // 原来这里是内联中文 `"关闭使用提示"`，而 `a11y_close_onboarding`
+                                // 中英两份资源都在、从没被引用 ⇒ 英文环境念中文（面板整屏量到的）
+                                contentDescription = stringResource(R.string.a11y_close_onboarding),
                                 tint = TextHint,
                                 modifier = Modifier.size(Spacing.xl)
                             )
@@ -367,6 +382,11 @@ fun LoveBrainPanelScreen(
 
                 val density = androidx.compose.ui.platform.LocalDensity.current
                 var messageListHeight by remember { mutableStateOf(PanelDimens.MESSAGE_LIST_DEFAULT_HEIGHT_DP.dp) }
+                // ⚠ 空态那一档**不能**沿用用户拖出来的列表高度：空态自己需要
+                //   图标 48 + 间距 8 + 动作热区 48 = 104dp（`MessageList` 里那条
+                //   `heightIn(min = EMPTY_ACTION_MIN_HEIGHT_DP)` 是 48），
+                //   而默认槽位只有 80dp ⇒ 父约束把 min 夹到 max 以下，那颗动作被压成
+                //   **8dp 高**（面板整屏第一次量到，账本 §53）。拖拽那一档只管"有消息"的时候。
                 MessageList(
                     messages = messages,
                     editingIndex = editingIndex,
@@ -381,7 +401,10 @@ fun LoveBrainPanelScreen(
                     onDelete = { id ->
                         viewModel.removeMessageById(id)
                     },
-                    modifier = Modifier.height(messageListHeight),
+                    modifier = Modifier.height(
+                        if (messages.isEmpty()) PanelDimens.MESSAGE_LIST_EMPTY_HEIGHT_DP.dp
+                        else messageListHeight
+                    ),
                     onEmptyAction = {
                         // 恢复空态入口——点击蓝字只切换到主动发模式，不发网络请求
                         viewModel.toggleProactiveMode()

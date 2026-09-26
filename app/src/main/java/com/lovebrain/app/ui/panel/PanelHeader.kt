@@ -112,6 +112,9 @@ fun PanelHeader(
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
+                        // 角色要自己声明：这是自定义 Box.clickable，Material 不会替我补
+                        // （面板整屏第一次进仪器量到：热区 48x48 达标、`role=无`）
+                        role = Role.Button,
                         onClick = onCollapse
                     ),
                 contentAlignment = Alignment.Center

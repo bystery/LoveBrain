@@ -240,7 +240,11 @@ class UiStringLiteralBudgetTest {
         // ⚠ 三处「点击重试」原来在三个文件里各写一遍、还各自带一条写着"热区 ≥24dp"的注释——
         //   同一句话抄三遍，连"多少算达标"都各自抄了一遍。
         Kind.TEXT to 178,
-        Kind.DESC to 11,
+        // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
+        // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
+        // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是
+        // "Collapse panel"）。接上资源是真的还了一处，不是换桶。
+        Kind.DESC to 10,
         Kind.STATE to 0,
         // 78 → **77**：`KbEditScreen` 那四条保存/冲突提示搬进资源。
         // ⚠ 这一栏上一格还涨过一次（78→81）：`LbPrimaryButton` 的锚点按括号配对取实参，
