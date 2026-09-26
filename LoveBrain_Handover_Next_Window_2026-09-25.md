@@ -1459,6 +1459,45 @@ HEAD `0c4d6d6`，仍未推。两笔：
   全套 JVM `191 套件 / 1424 单测 / 0 失败 0 错误 0 跳过` 未受影响（这一格没动 Kotlin）。
   坑表 **131–135**。
 
+## 0.48 同 SHA 的三项 CI 实读：`verify` 全绿、`ui-test` 首次全绿、`upgrade-test` 头一回真跑起来（run 36249760044 = `9d2757f`）
+
+**这一节全部是 `gh run view --log` 里的原文，不是本机推断。**
+
+- **`verify` success，33 步全跑、0 skipped**，其中本窗口新加的两步都在里面且都是绿的：
+  - `Screenshot baselines must match (verify only — never record)` →
+    `[gate] goldens in git: 3 file(s), all with a PNG signature` /
+    `[gate] verify exit=0; actual images …: 0` /
+    `[gate]  OK   screenshot baselines match: 3 golden(s) verified against this run's actual images`
+    ⇒ **§6.5 那条"baseline + 人工 review"第一次有机器判据在 CI 上跑**（判的是 JVM 侧 roborazzi，见 §0.47 末尾对"设备截图"的改口）。
+  - `Visual-evidence gate must be gradeable` → 那道自测 8 格（含"拿门合入前那一版当坏实现对照"，基线钉 `9f29539`）。
+  - 产物门自报 `unit: tests=1427 failures=0 errors=0 skipped=0 suites=192`
+    ⇒ **与本机 `--rerun` 那跑逐字相同**（本机现读目录：192 份 XML / 1427 / 0 / 0 / 0），两侧同尺没漂。
+  - `lint: 78 issue element(s), 0 Error, 0 Fatal`；APK 元数据 `versionCode=9 versionName=1.4.0-rc1
+    minSdk=26 targetSdk=35 size=2849116 sha256=126861e5e9d3fdcc…`；R8 mapping 352303 行；SBOM `124/124 allowed`。
+- **`ui-test` success：`[gate] ui-test: tests=45 failures=0 errors=0 skipped=2 suites=1`**。
+  跳过的两格点名（日志原文，就是 §8 一直挂着的那笔）：
+  `OverlayGenerateSmokeTest > floatingService_repeatedStartAndStop_neverLeaksInstance` SKIPPED、
+  `floatingService_destroyWhileGenerationInFlight_releasesInstanceAndChainStaysUsable` SKIPPED
+  ⇒ **指导书 :212 第 9 个场景仍是 `Assume` 跳过，算 skipped 不算通过**，这一条没被这次的"绿"洗掉。
+- **`upgrade-test` 第一次真的执行**（此前我查过的每个 SHA 全是 skipped，因为它 `needs: [verify, ui-test]`）：
+  红在第 6 步 `Require the release signing secrets`，退出码 **3**，四条原文
+  `[gate]  FAIL required secret KEYSTORE_BASE64 is empty or unset`（`KEYSTORE_PASSWORD` / `KEY_ALIAS` / `KEY_PASSWORD` 同）。
+  后面三步 `Build candidate release APK (signed + R8)`、`Download and verify v1.3.1 fixture APK`、
+  `Upgrade install, fixture write and smoke test` 因此全 skipped ⇒ **v1.3.1 覆盖安装至今零证据**这一点**没有变**。
+  ⚠ 变的是它的性质：从"从没跑到过"变成"跑到门口、卡在仓库配置"。
+  **这不是代码缺陷，也不许用 `continue-on-error` / 退回 debug 签名 / 拿 unsigned 当 release 蒙过去**——
+  那道闸自己写的就是"release 永远不许退回 debug key 或冒充 release 的未签名产物"（坑表 136）。
+  要它绿只有两条路，都不是我能自签的：①用户在仓库配那四个 secret；②用户明确决定"CI 里不做 signed release"，
+  那时该改的是**需求本身**并留书面口径，而不是把闸调软。
+- **本窗口那两处"卡点"因此各自落定**：①视觉证据 ⇒ 已换成 JVM 基线，CI 上绿；设备侧那两张 PNG 不再产出
+  （实到：run 36236822959 在前台确认为 `com.lovebrain.app/.ui.SetupActivity` 之后 `screencap` 交回 **0 字节**，
+  根因是三个 Activity 全设 `FLAG_SECURE`；脚本改为写 `build/gate-artifacts/ui-test/visual-evidence.md` 说明实情）。
+  ⚠ 撤掉拍屏 = 那条"前台组件"断言也随之不跑 ⇒ `KnowledgeBaseActivity`（`exported="false"`）的前台**从没验过**，
+  这条记"无从执行"，**不许记"已验"**。
+  ②`ui-test` 那 8 条红 ⇒ 0。**新的唯一 CI 卡点只剩 `upgrade-test` 的 secrets（外部配置）+ 那 2 格 `Assume`。**
+- 仍欠（别当成已做）：`HomeComponents.kt:238` 那颗 tag 撞名没改；`LoveBrainViewModel.kt:844-855` 的
+  "双击只发一次"在 CI 设备上绿了但**未证明**（要一条 JVM 最小复现）；两份指导书要不要入库仍是用户的决定。
+  坑表 +1（**136**）。
 
 ## 1. 起手必查（照抄，别凭记忆）
 
@@ -1614,16 +1653,19 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
 
 （以下为前几轮遗留，一条没闭）
 
-- `verify` 是否转绿：本轮之后 lint 那一步两侧同尺了；后面还有 R8/APK 元数据、SBOM、
-  费用 dry-run、egress 证据四件**从没跑到过**，第一次跑到可能再爆新问题。
-- `ui-test`：改过的 22 格（12+7+3）是否真绿；`lateCallbacks` 那格现在会自己报
-  "R1 有没有出门 / R2 累计几次"，红也要红得能读出原因。
-- **截图证据这一格本身**：产物路径改对之后才会第一次真的交出 PNG；同时新加的
-  "两两不同"判据会发现那两张是同一屏——**下一轮 ui-test 很可能因为这条而红**，
-  那是要的结论（`am start` 没把第二块屏幕换上来），不是回归。届时看
-  `ui-test-evidence/foreground-*.txt` 就知道当时前台是哪一屏。
-- `upgrade-test`：needs `[verify, ui-test]`，前两个不绿它永远 skipped。
-- 2 格 Service destroy 仍是 `Assume` 跳过（算 skipped 不算通过）。
+> ★ **第 14 窗口之后：这一组里的前四条已经全部闭合并有同 SHA 证据，只剩最后一条（那 2 格 `Assume`）。
+> 读数见 §0.48，判定见 §8「第 14 窗口结束时的复判」。下面的原文保留，是为了让"当初怎么判的"可查，
+> 别再照着它重做一遍。**
+
+- ~~`verify` 是否转绿~~ ⇒ **已闭**：run 36249760044（`9d2757f`）`verify` success、33 步全跑 0 skipped，
+  R8/APK 元数据、SBOM、费用 dry-run、egress 证据那四件"从没跑到过"的**都跑到了**（各自读数在 §0.48）。
+- ~~`ui-test`：改过的 22 格是否真绿~~ ⇒ **已闭**：`tests=45 failures=0 errors=0 skipped=2`。
+- ~~截图证据这一格~~ ⇒ **已改口径并闭**：设备侧不再产 PNG（`FLAG_SECURE` 之下 `screencap` 恒 0 字节，
+  "两屏同图"那个问法本身不成立），改成写 `visual-evidence.md` 说明实情；真判由 `verify` 里的
+  JVM roborazzi 基线那一步做（3 golden 比对通过）。⇒ **别再去"修那两张截图"。**
+- ~~`upgrade-test` 永远 skipped~~ ⇒ **不再成立**：它头一回真跑起来，红在四个 release secret 未配置（坑表 136）。
+  升级证据仍然为零，但**下一步动作从"等 CI"变成"要用户配 secret 或改需求"**。
+- 2 格 Service destroy 仍是 `Assume` 跳过（算 skipped 不算通过）——**这条没动，是本节唯一剩下的**。
 
 ## 4. 下一格建议顺序（本机就能做的那批，B 类）
 
@@ -1937,9 +1979,9 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
 ## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者，68 「取第一个非空」的判据会被别的来源蹭过去，69 界面构造不出的状态要对着持有者测，
-    70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑，124–125 假账销账与口径冲突不许择一自裁，126–128 合并树里的锚点/贴着 teardown 的假相关/只数成功的尺，129–131 恒假的协议退出判据/不等就读的异步计数断言/退出码 0 + 文件非空仍什么都不断、132 坏实现对照的基线写成活引用、133 默认模式只重录不比对、134 工具的原图在构建目录里、135 夹具造了两处缺失
+    70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑，124–125 假账销账与口径冲突不许择一自裁，126–128 合并树里的锚点/贴着 teardown 的假相关/只数成功的尺，129–131 恒假的协议退出判据/不等就读的异步计数断言/退出码 0 + 文件非空仍什么都不断、132 坏实现对照的基线写成活引用、133 默认模式只重录不比对、134 工具的原图在构建目录里、135 夹具造了两处缺失、136 从没跑过的 job 第一次跑会红在仓库配置
     ⚠ 正文按**加入顺序**排，不严格递增（102 后面接着 95、90 那批是补记的）——
-    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 135**
+    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 136**
     （116–120 是出口判据那一格与"销账之后要重借一次"那一格补的，
     121–123 是 P0-03 那把新尺那一格补的：作用域栈的同级互清、复算尺自己会吞代码、一句要求两半句两把尺；
     124–125 是销"注释比实现新"那一格补的：**"已改口"必须点名到哪一份文件**（注释改口≠文档改口）、
@@ -2807,6 +2849,17 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
      ⇒ 断言"报错里要点名 X"的格子，夹具必须让 X 成为**唯一**的缺陷；否则你测的是遍历顺序而不是判据。
      另一条同型教训：**本机全绿不等于跨平台一致**，这类格子第一次就该在 CI 上跑一遍再说"有牙"。
 
+136. **一个从没跑起来的 job，第一次跑起来时红的大概率是仓库配置而不是代码——这不许被当成"我的改动引入的回归"，更不许调软**（run 36249760044 = `9d2757f`）：
+     `upgrade-test` 历史每个 SHA 都 skipped（`needs: [verify, ui-test]`），所以它内部**没有任何一步被机器验证过**。
+     `ui-test` 转绿之后它头一回执行，红在第 6 步 `Require the release signing secrets` 退出码 3，
+     理由四条：`KEYSTORE_BASE64` / `KEYSTORE_PASSWORD` / `KEY_ALIAS` / `KEY_PASSWORD` 全空。
+     ⇒ ①读到这种红先分诊：**它红在"环境没配"还是"实现不满足判据"**，前者要的是用户配置或明确改需求，
+     不是改代码；把它记成"代码回归"会让下一窗口去改一个没坏的东西。
+     ②**别顺手加 `continue-on-error`、别让它退回 debug keystore、别拿 `verify` 里那份 unsigned APK 当 release 交差**——
+     闸自己的注释就是这三条不许（§7 硬约束）。
+     ③一个 job"绿了很久"和"从没绿过"是同一类盲区：前者的判据可能已经静默失效（坑表 132），
+     后者的判据永远没被验证过。列"还剩什么"时要分开写**跑过且绿 / 跑过且红 / 从没跑过**三态。
+
 ## 7. 硬约束（一条没变）
 
 不许改 prompt 内容（`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` 必须零差异）；
@@ -2840,3 +2893,23 @@ job 红在**另一件事**上：`[gate] FAIL ui-test: 这些截图与前面某�
 `a6d3e51`/`a8349eb` 两跑已经证明：**那五格红的是测试夹具，不是 `DeepSeekRepository`**。
 `dd9368d` 已回：生产码零改动之下 8 条清零 ⇒ **R1 那批"生成崩溃"从头到尾没有生产缺陷**（除了 A 组那颗
 锚点位置，它既影响自动化也影响读屏）。下一窗口动 `ui-test` 绿路之前，先读 §0.46 的 ★ 段。
+
+### 第 14 窗口结束时的复判（远端 `main` = `9d2757f`，`git ls-remote` 现读；本地领先 1 笔纯文档；run 36249760044）
+
+**仍然 NO-GO**，但卡点的构成变了，而且**第一次只剩"外部配置"和"两格主动跳过"两类**：
+
+| job | 结论 | 实读 |
+| --- | --- | --- |
+| `verify` | **success** | 33 步全跑、0 skipped；`unit: tests=1427 failures=0 errors=0 skipped=0 suites=192`（与本机逐字相同）；本窗口新加的两步（`Screenshot baselines must match`、`Visual-evidence gate must be gradeable`）都在里面且绿；3 张 golden 比对通过、`actual images: 0` |
+| `ui-test` | **success** | `tests=45 failures=0 errors=0 skipped=2 suites=1`；跳过的两格点名 `floatingService_repeatedStartAndStop_neverLeaksInstance`、`floatingService_destroyWhileGenerationInFlight_releasesInstanceAndChainStaysUsable` |
+| `upgrade-test` | **failure（头一回真跑）** | 红在第 6 步 `Require the release signing secrets` 退出码 3，四条 secret 全空（`KEYSTORE_BASE64`/`KEYSTORE_PASSWORD`/`KEY_ALIAS`/`KEY_PASSWORD`）；signed APK、v1.3.1 fixture、覆盖安装三步全 skipped |
+
+⇒ **"required checks 全绿"这一条现在只差 `upgrade-test`，而它挡在仓库配置上，不挡在代码上。**
+我不会为了让它绿而加 `continue-on-error`、退回 debug 签名或拿 unsigned 当 release（§7 硬约束 + 坑表 136）；
+要么用户配那四个 secret，要么用户书面决定"CI 不做 signed release"并改需求本身。
+
+两条不许被这次绿洗掉的账：
+①那 **2 格 `Assume` 跳过**＝指导书 :212 第 9 个场景（Service destroy 与并发生成链路）仍无证据，`skipped` 不是 `passed`；
+②`rapidDoubleTap` 那格"双击只发一次"在 CI 设备上绿了，**不等于** `LoveBrainViewModel.kt:844-855` 那条租约竞态被排除——
+它仍是一条未证明的性质，要一条 JVM 最小复现（构造得出那个状态）才算钉住。
+
