@@ -5391,3 +5391,50 @@ rm -rf app/build/test-results/testDebugUnitTest
 `app/src/test/java/com/lovebrain/app/viewmodel/GenerationRollbackTest.kt:144-167`、
 `ReplyRequestFaultInjectionTest.kt:92,123`）。
 坑表接着读：**1–129**（本格新增 126–128）+ 剩余工作那份的 **V1–V13**。
+
+# 追加六十二：两张"屏幕截图"其实是安卓桌面——把"有 PNG"和"有视觉证据"分开（同窗口续格）
+
+## 62.1 实到读数（全部是产物原文，`gh run download 36234389326 --name ui-test-evidence`）
+
+- `am-start-home.txt` / `am-start-knowledge-base.txt`：`Error type 3` +
+  `Error: Activity class {com.lovebrain.app/…} does not exist.`
+- `foreground-home.txt` / `foreground-knowledge-base.txt`：
+  `mResumedActivity: ActivityRecord{dcb9e4f u0 com.android.launcher3/.Launcher t5}`
+- 两张 PNG **各 114996 字节、同一个 sha256 `23d2c502b8fd38d1…`**
+⇒ 拍的是**桌面**。根因：**connected 测试跑完 AGP 把被测包卸了**，脚本随后才去 `am start` 拍屏。
+
+## 62.2 为什么上一版三处判据一起漏
+
+1. `if ! adb shell "am start …"` —— **`am` 报 Error 时退出码仍是 0**，那一支永远不进；
+2. provenance 文件是 `dumpsys | grep … || true` 写的，只检查"非空" ⇒ launcher 也算合法；
+3. 真正拦住它的是**恰好**两张图逐字节相同。只要桌面差一个像素（时钟、动画），
+   这份产物就能全绿交出去 ⇒ 旧口径证明的是"有 PNG"，不是"拍到了那一屏"。
+
+## 62.3 这一格动了什么（生产码零改动；三处都在测试与门禁）
+
+- `scripts/run_ui_tests.sh`：拍屏前 `pm list packages` 核包 → 不在就重装**本次构建的**
+  `app/build/outputs/apk/debug/app-debug.apk`（装完再核，装不回来就死）；启动改走
+  `scripts/lib/device_lib.sh::device_start_activity`（本来就查 `Error:`/`Exception`/
+  `does not exist`/`Permission Denial`/`Status:`）；前台用 `device_resumed_component` **当断言**：
+  不是刚启动那一屏就死。⇒ ui-test 里那份"自己写的 am 判断"与升级测试那份能查错的 helper 归并成一套。
+- `scripts/assert_artifacts.sh`：新增 `--shot-provenance DIR --foreground-pkg PKG`（每张 PNG 必须有
+  `foreground-<name>.txt` + `am-start-<name>.txt`，前台属于被测包，启动输出里不许有失败字样）。
+- `.github/workflows/ci.yml`：verify 里加一步 `bash scripts/test_assert_artifacts.sh`。
+
+## 62.4 新判据被坏实现打破过（两层，都是当次命令输出）
+
+- `scripts/test_assert_artifacts.sh` **8 格全对**（每格断言退出码 + 输出里点名的理由），
+  其中第 3b 格是全部意义所在：**两张互不相同的桌面截图**喂给 **门合入前那一版**（`BAD_GATE_REF=9f29539`，CI 刚用过的判据）**放绿**，
+  喂给新门当场红 ⇒ 新判据抓的是旧口径抓不到的东西。
+- 再拿**真产物**对一次（`_temp/realci/`：真 XML/HTML + 那两张 114996 字节的 PNG + `_temp/shots` 的 provenance）：
+  原样喂 → 红在"逐字节相同"；把 `knowledge-base.png` 末尾**翻一个字节**让两张不同 →
+  红在 `拍 knowledge-base.png 的那一刻前台不是 com.lovebrain.app，实到：…launcher3/.Launcher…`。
+
+## 62.5 这一格没做的
+
+- **真机上是否真的拍到两屏，只能等 CI**：`KnowledgeBaseActivity` 是 `exported="false"`，
+  若 `am start` 被 Permission Denial 挡下，新脚本会当场红并留原文（不会再拿桌面蒙）。
+- §6.5 那条 **screenshot baseline + 人工 review** 仍然没做（roborazzi/paparazzi 一个都没引入，
+  仓库里也没有 baseline 目录）⇒ 这一格堵的是"假证据"，不是"补上基线"。
+- 全套 JVM 数没变：191 套件 / 1424 单测 / 0 失败（这一格没动 Kotlin）。
+坑表 **131–132**、剩余工作那份 **V15–V16**、交接单 **§0.47**。

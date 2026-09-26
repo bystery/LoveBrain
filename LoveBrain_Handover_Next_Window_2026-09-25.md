@@ -1410,6 +1410,56 @@ HEAD `0c4d6d6`，仍未推。两笔：
   → 2 格 `Assume` 跳过的 Service destroy（指导书 :212 第 9 场景，**不许用 skipped 冒充通过**）
   → 才轮到 R2 那 30 处裸写。
 
+## 0.47 截图证据这一路：两张"屏幕截图"其实都是安卓桌面，而旧口径看不见（`dd9368d` 之后同窗口）
+
+本格只做一件事：**把"有 PNG"和"有视觉证据"这两件事分开**。产物已下到
+`_temp/shots/`（`gh run download 36234389326 --name ui-test-evidence`）。
+
+- **实到读数（run 36234389326 = `dd9368d` 的产物，全部是文件原文，不是推断）**：
+  - `am-start-home.txt` / `am-start-knowledge-base.txt` 都是
+    `Error type 3` + `Error: Activity class {com.lovebrain.app/…} does not exist.`
+  - `foreground-home.txt` / `foreground-knowledge-base.txt` 都是
+    `mResumedActivity: ActivityRecord{dcb9e4f u0 com.android.launcher3/.Launcher t5}`
+  - 两张 PNG **各 114996 字节、同一个 sha256 `23d2c502b8fd38d1…`**
+  ⇒ 那两张"home / knowledge-base"截图拍的是**桌面**；根因是 **connected 测试跑完 AGP 把被测包卸了**，
+  脚本随后 `am start` 去拍屏。
+- **为什么上一版没抓住**：`run_ui_tests.sh` 写的是 `if ! adb shell "am start -W -n $comp" …; then die`，
+  而 **`am` 遇到 `Error type 3` 退出码仍然是 0** ⇒ 那一支永远不进；provenance 文件也只被
+  "非空"检查过（里面有 `|| true`），launcher 也算非空。真正拦住它的是**恰好**两张图逐字节相同，
+  才撞上"两两不同"那条旧规则。⇒ 只要桌面差一个像素（时钟/动画），这份产物就能全绿交出去。
+- **这一格改了什么（三处，全部只动测试与门禁，生产码零改动）**：
+  1. `scripts/run_ui_tests.sh`：拍屏前先 `pm list packages` 核包在不在，不在就**重装本次构建的
+     `app/build/outputs/apk/debug/app-debug.apk`**（装完再核一次，装不回来就死）；
+     启动一律走 `scripts/lib/device_lib.sh` 的 `device_start_activity`
+     （它本来就查 `Error:`/`Exception`/`does not exist`/`Permission Denial` 与 `Status:`），
+     前台用 `device_resumed_component` 读回来**当断言**：不是刚启动那一屏就死，不再当日志。
+     ⚠ 之前 ui-test 里那份"自己写的 am 判断"和升级测试那份**能查错的**helper 是两套——归并成一套。
+  2. `scripts/assert_artifacts.sh` 新增 `--shot-provenance DIR --foreground-pkg PKG`：
+     每张 `<name>.png` 必须有 `foreground-<name>.txt` + `am-start-<name>.txt`，
+     前台必须属于被测包，`am-start` 里不许出现启动失败的字样。
+  3. `.github/workflows/ci.yml`：verify 里新增一步 `bash scripts/test_assert_artifacts.sh`（没装依赖，纯本机可跑）。
+- **新判据被"坏实现"打破过（两层证据）**：
+  - `scripts/test_assert_artifacts.sh` **8 格**全对（退出码 + 输出里点名的理由都断），
+    其中第 3b 格是关键：同一份"两张**互不相同**的桌面截图"喂给 **门合入前那一版**（`9f29539`，CI 刚用过的判据）**放绿**，
+    喂给新门当场红 ⇒ 新判据抓的是旧口径抓不到的东西，不是我给自己补的仪式。
+    跑法：`bash scripts/test_assert_artifacts.sh`（`WORK_DIR=…` 可留档，本次留 `_temp/ui_prov_selftest/`）。
+    ⚠ 对照基线**钉死在 `9f29539`**（`BAD_GATE_REF` 可覆盖），不写成 HEAD：
+    门一合进 main，`git show HEAD:…` 取到的就是"已经会红的版本"，那一格会从"旧版放绿"
+    悄悄变成"新旧同版"，满格通过但证明力为零（坑表 132）。脚本开跑前会证它是 HEAD 的祖先，
+    并把 `bad-implementation baseline: <sha>` 打在开头。
+  - 拿**真产物**再对一次：`_temp/realci/`（真 XML/HTML/那两张 114996 字节的 PNG + `_temp/shots` 的 provenance）。
+    原样喂 → 红在"逐字节相同"；把 `knowledge-base.png` 末尾翻一个字节让两张不同 → **红在 launcher**：
+    `FAIL real-ci: 拍 knowledge-base.png 的那一刻前台不是 com.lovebrain.app，实到：…launcher3/.Launcher…`
+    ⇒ 这就是"桌面差一像素就能全绿"那一格，本机已经能抓住了。
+- **还欠 / 只能等 CI**：真机上重装之后 `SetupActivity` 与 `KnowledgeBaseActivity` 是否各自真的到前台
+  （`KnowledgeBaseActivity` 是 `exported="false"`，若 `am start` 被 Permission Denial 挡下，
+  新脚本会**当场红并留下原文**，不会再用桌面图蒙过去）⇒ 这一条判不了绿，只能等下一跑 CI；
+  以及"两张真·不同屏幕"之后 §6.5 那条 **baseline + 人工 review** 仍然没做（roborazzi/paparazzi 一个都没引入）。
+- 本机读数：`bash -n` 三个脚本全过；`test_assert_artifacts.sh` 8/8；
+  全套 JVM `191 套件 / 1424 单测 / 0 失败 0 错误 0 跳过` 未受影响（这一格没动 Kotlin）。
+  坑表 **131–132**。
+
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 
@@ -1887,9 +1937,9 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
 ## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者，68 「取第一个非空」的判据会被别的来源蹭过去，69 界面构造不出的状态要对着持有者测，
-    70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑，124–125 假账销账与口径冲突不许择一自裁，126–128 合并树里的锚点/贴着 teardown 的假相关/只数成功的尺）
+    70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑，124–125 假账销账与口径冲突不许择一自裁，126–128 合并树里的锚点/贴着 teardown 的假相关/只数成功的尺，129–131 恒假的协议退出判据/不等就读的异步计数断言/退出码 0 + 文件非空仍什么都不断、132 坏实现对照的基线写成活引用）
     ⚠ 正文按**加入顺序**排，不严格递增（102 后面接着 95、90 那批是补记的）——
-    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 130**
+    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 132**
     （116–120 是出口判据那一格与"销账之后要重借一次"那一格补的，
     121–123 是 P0-03 那把新尺那一格补的：作用域栈的同级互清、复算尺自己会吞代码、一句要求两半句两把尺；
     124–125 是销"注释比实现新"那一格补的：**"已改口"必须点名到哪一份文件**（注释改口≠文档改口）、
@@ -2703,6 +2753,28 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
      "等满了还是 0"与"拿起来就是 0"是两个不同的结论，只有前者能指向生产。
      另一条一般化：**修好一处仪器之后，别只看"红变少了几个"，要把剩下每一格的原始消息重读一遍**——
      本格那处"读太早"就是这么被 `accepted=1 → accepted=0` 的形状变化暴露出来的。
+
+131. **`am` 的退出码永远是 0，"文件非空"永远不等于"文件说真话"——两条凑在一起可以什么都不断**（`dd9368d` 之后那一格）：
+     拍屏脚本写的是 `if ! adb shell "am start -W -n …"; then die`，而 `am` 报
+     `Error type 3: Activity class … does not exist` 时**退出码仍是 0** ⇒ 那一支永远不进；
+     provenance 文件又是 `dumpsys | grep … || true` 写的，只检查"非空"，
+     于是 `com.android.launcher3/.Launcher` 也算合法来源 ⇒ **两张桌面截图带着全套产物全绿交出去**，
+     只因为桌面那一帧的时钟没变，才被"两张 PNG 逐字节相同"这条恰好拦住。
+     ⇒ ①调外部命令当证据时，**读它打印的字**（`Error`/`Exception`/`Permission Denial`/`does not exist`/`Status:`），
+     别只取退出码；②凡是"来源证明"类文件，要把**语义字段做成断言**（前台必须是刚启动那一屏），
+     不是当日志留着；③新加判据必须配"坏实现"对照——本仓库那一格的对照是
+     **两张互不相同的桌面截图**：HEAD 那版放绿、新门当场红（`scripts/test_assert_artifacts.sh` 第 3/3b 格），
+     外加拿真产物翻一个字节再喂一次（`_temp/realci/`）。
+
+132. **"坏实现对照"的基线写成 HEAD/最新引用，门一合进去对照就静默消失**（`38b3e0f`）：
+     `test_assert_artifacts.sh` 第一版拿 `git show HEAD:scripts/assert_artifacts.sh` 当"旧门"，
+     在合并之前那一跑它是对的（HEAD 还没有新判据）；**门合进 main 之后同一格继续绿**，
+     但它比的是"新门 vs 新门"——一个证明力为零的对照，看起来仍然满格通过。
+     同族：计数棘轮归零之后不再咬、"取第一个非空"的判据被别的来源蹭过去、
+     只数总数的尺看不见"搬家"（坑表 123/128）。
+     ⇒ 凡是"和旧版比"的对照，基线必须是**钉死的提交/标签**（这里是 `BAD_GATE_REF=9f29539`），
+     并且开跑前证一次它是 HEAD 的祖先、取不到就 `CANNOT-VERIFY` 失败而不是跳过；
+     把基线打在输出第一行（`bad-implementation baseline: 9f29539`），下一个人一眼看得见比的是谁。
 
 ## 7. 硬约束（一条没变）
 
