@@ -185,7 +185,11 @@ Error: Activity class {$PKG/$PKG.ui.SetupActivity} does not exist."
 expect "4 am 报了 does not exist → 该红" "$NEW_GATE" nonzero "启动失败" "$D"
 
 # ── 5. 缺来源证明文件 ────────────────────────────────────────────────────────
-D="$WORK/no-prov"; mk_suite "$D"; rm -f "$D/foreground-home.txt"
+# 只制造**一处**缺失：先把两份 provenance 都写全，再只删 home 那份。
+# 第一版这里没调 mk_prov（两份都缺），于是"点名哪个文件"取决于 find 的遍历顺序：
+# 本机先 home（像正确）、CI 先 knowledge-base（run 36249148671 那一格就这么判错）。
+D="$WORK/no-prov"; mk_suite "$D"; mk_prov "$D" "$REAL_APP_HOME_FG" "$REAL_APP_KB_FG"
+rm -f "$D/foreground-home.txt"
 expect "5 少了 foreground-home.txt → 该红" "$NEW_GATE" nonzero "foreground-home.txt" "$D"
 
 # ── 6. 不传 provenance 时，旧行为不变（别的门禁不受影响）─────────────────────
