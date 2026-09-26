@@ -1499,6 +1499,64 @@ HEAD `0c4d6d6`，仍未推。两笔：
   "双击只发一次"在 CI 设备上绿了但**未证明**（要一条 JVM 最小复现）；两份指导书要不要入库仍是用户的决定。
   坑表 +1（**136**）。
 
+## 0.49 批量搬巨石模式下的前两格：VM 第一次变小 + P1-01 那道闸头一次存在（`29625d5` → `74dad55`）
+
+用户 2026-09-27 表态：**剩下的按"批量搬巨石，收口才验"推进**（不再每 200 行配一把新尺）。
+这一节就是那个模式下的前两格。
+
+### 第一格（`29625d5`）：输入区与消息列表的状态不再住在 VM 里（§5.2 第 6 步第一块）
+
+- 搬走 VM 里那**十颗**各自可写的 `MutableStateFlow`（面板状态、消息列表、当前角色、编辑位、
+  《想法》chip 态、两条草稿、输入模式、输出模式、计划面板），新主人 `feature/composer/ComposerStore`（301 行）。
+  **VM 只留同名只读出口 + setter 的一行委托** ⇒ UI 与 FloatingService 调用点一字未改
+  （实扫消费数：`messages` 165、`editingIndex` 46、`panelMode` 36、`counselingDraft` 34、`draftText` 20）。
+- 搬的过程带走的三条判据（不是"搬不动就抄一份"）：①编辑位修正从 `removeMessageById`/`reorderMessages`/
+  `commitReplyRound` 三处并成 store 里一处，`MessageListEditing` 随之从 `viewmodel` 包搬进 `feature/composer` 包
+  （`PackageDependencyTest` 早就禁止 `feature` import `viewmodel`，这条规则等的就是这一刻）；
+  ②"内容一变就判 stale"改成同步回调，写的人不再需要记得调用；③谈心草稿防抖 + "清空后不许被旧任务写回"
+  那个顺序收进 `ClearCounselingDraft`。持久化仍以回调注入 ⇒ store 不知道有 `SecurePrefs`（否则 `feature` 就 import `data`）。
+- 新闸 `ViewModelStateOwnershipTest` 三格，**三发反证各自咬中不同的格子**（`_temp/probe_vm_state_gate.sh`，
+  撤销后逐字节 cmp）：X1 把 `_panelState` 搬回 VM → 两格红；X2 新造一颗没登记的 flow → 只有登记那格红
+  且点名 `_probeExtra` 本身；X3 把登记名改错一个 → 红在"已经不归 ViewModel 了"那一支。
+- ⚠ **两处当场修的自身缺陷**（都是"我以为量过其实没有"）：
+  ①判据第一版写 `MutableStateFlow(`，只数得到 20 颗里的 10 颗——本仓库多数声明是 `MutableStateFlow<类型>(初值)`，
+  字面量 `MutableStateFlow(` 根本不存在。**是"少一颗也红"那一支当场抓住的**（登记 20、量到 10），不是我看出来的；
+  ②"登记数量"版本会给出没发生过的理由：注入 `_probeExtra` 时它报"新增项：[_showIntentEditor]"（拿集合尾部当新增）
+  ⇒ 改成**逐颗点名登记**，报错才指向真正的嫌疑人（与坑表 135"点名取决于遍历顺序"同族）。
+- ⚠ **我自己下错命令一次**：清探针时用了 `git checkout -- <VM>`，那会把这一整块**未提交的搬家**一起回滚。
+  已用探针开机时留的 `_temp/probe-bak` 逐字节还原（2636 行 / `composer.accept` 20 处 / 探针残留 0 处）。
+  ⇒ 规矩补齐：**工作树里有未提交搬家时，撤销一律用点名备份 `cmp`，禁止 `git checkout`/`git restore`**。
+- `LoveBrainViewModel` **2723 → 2636 行**（开工以来第一次变小；此前它一直单调增长，最惨的一版 +72）。
+  本机全套 JVM **193 套件 / 1430 单测 / 0 失败 0 错误 0 跳过**（`--rerun-tasks`，改动前后各一跑）。
+
+### 第二格（`74dad55`）：P1-01 从没被机器判过的那一半，闸头一次存在
+
+- 复核 §7 第二步完成定义第 5 条"新代码无 >500 行 / 现存 >800 持续下降"里，**闸是零**：
+  `scripts/` 下从来没有这道判据，那个数只躺在文档里被人抄来抄去。
+- `scripts/check_big_files.sh`：实到对两份登记清单。新增跨线文件红（点名是谁、多少行、撞哪条线、该登在哪）；
+  登记的条目已经不跨线也红（还了债不改账本 ⇒ 清单腐烂）；**已登记的变长变短不红**——
+  这一格要的是"别新增巨石"，按行数奖惩会把人推向机械切文件（§9 第 8 条禁止）。
+  键写成相对 `app/src/main/java/com/lovebrain/app/` 的路径 ⇒ 同一把尺能拿小夹具跑，CI 与本机同判据。
+- 现算登记（`find app/src/main -name '*.kt' | xargs wc -l`）：扫 **153 个** .kt，**>500 共 17 个 = 500–800 档 7 个 + >800 档 10 个**。
+- `scripts/test_check_big_files.py` **7 格全绿**（C1 干净合规 / C2 新 1200 行巨石红且点名 / C3 新 520 行红 /
+  C4 幽灵条目红 / C5 缺清单 `CANNOT-VERIFY(2)` / C6 根接错 `CANNOT-VERIFY(2)` / C7 正向对照：对真仓库必须报出"扫了 153 个"）。
+- ⚠ **第一版驱动是 bash 写的，六格齐报"退出码 0、日志 0 字节"**——那是驱动自己没把子进程跑起来，
+  不是闸没牙。旧驱动不删，改名留在 `_temp/test_check_big_files.sh.abandoned-bash-driver-2026-09-27`；
+  换成显式传 env、显式收 stdout/stderr、**并把输出字节数打出来**的 python 驱动，才第一次真跑到（坑表 137）。
+- CI verify 加两步：`Big-file ratchet must be gradeable` + `Big-file ratchet must not grow`。
+
+### 这一节剩下的账（下一格接着搬，别当成已收口）
+
+- VM 里还剩 **20 颗**私有状态流，**逐颗名字已经登在 `ViewModelStateOwnershipTest` 的清单里**，
+  并写好各自该去的地方：回复版本与 stale 那一族（`_generationRoundId/_inputChanged/_generationHistory/_currentVersionId`）、
+  知识库与画像（`_activeKb/_profileReview/_kbNotice/_vectorUpdate/_vectorDelta/_currentVector/_stageSuggestion`）、
+  供应商与提示（`_panelWarning/_activeTicket/_providerReady`）、本轮提交（`_resultMode/_onlyThisRound/_actualSentState`）、
+  持续意图（`_intentConfig/_showIntentEditor`）。**这 20 颗才是 VM 下不去 800 行的原因**，
+  `>800` 现在仍是 10 个——棘轮只是不许它变长，不会自己变短。
+- 本模式的两笔都**没推**（远端仍 `9d2757f`）；要 CI 证据需要用户说「推送」。
+- 打分卡的严格完成定义数**没变（7/18）**：这两格把两条"零机器判据"变成"有闸且反证跑过"，
+  但 §7 第二步那两条按结果判的（VM 不再持状态、`>800` 持续下降）要到搬家做完才翻绿。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 
@@ -2859,6 +2917,22 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
      闸自己的注释就是这三条不许（§7 硬约束）。
      ③一个 job"绿了很久"和"从没绿过"是同一类盲区：前者的判据可能已经静默失效（坑表 132），
      后者的判据永远没被验证过。列"还剩什么"时要分开写**跑过且绿 / 跑过且红 / 从没跑过**三态。
+
+137. **自测驱动自己会"什么都没跑却报合规"——它必须把输出字节数打出来**（`74dad55`）：
+     `scripts/test_check_big_files.sh` 第一版六格齐报"退出码 0"，看起来像"闸恒绿"；
+     实际是那层 `run_gate` 根本没把子进程跑起来（**日志 0 字节**）。
+     只看退出码就会把"没跑"记成"跑过且通过"，而这一族坑（61/65/107/130）在本仓库已反复付过钱。
+     ⇒ 反证驱动每格必须同时断三件事：**退出码、输出里点名的字样、输出字节数 >0**；
+     任一为 0 就报"这一发没跑到"，不许落到"通过/没咬"两个标签里。
+     换成 python `subprocess`（显式传 env、显式收 stdout/stderr）之后 7 格才第一次真跑到；
+     旧 bash 驱动不删，改名留档 `_temp/test_check_big_files.sh.abandoned-bash-driver-2026-09-27`。
+
+138. **工作树里有未提交的搬家时，`git checkout -- <文件>` 不是"撤销探针"，是"撤销今天"**（`29625d5` 那一格）：
+     我为了清掉注入的探针残留，习惯性跑了 `git checkout -- app/src/main/…/LoveBrainViewModel.kt`——
+     那一笔会把整块**未提交**的 composer 搬家（243 行改动）一起回滚，而且不会有任何提示。
+     这次能救回来只因为探针开机先 `cp` 了一份 `_temp/probe-bak`，还原后逐字节 `cmp` 才对上。
+     ⇒ 探针/变异脚本的收尾一步固定为：**用点名备份 `cp` 还原 + `cmp` 证明逐字节相同**；
+     `git checkout` / `git restore` 在有未提交工作时一律禁止（与"禁止 `git add -A`"是同一条纪律的两面）。
 
 ## 7. 硬约束（一条没变）
 
