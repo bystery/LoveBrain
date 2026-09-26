@@ -5302,3 +5302,87 @@ M1 是这一格里最值钱的一发：**债搬家时总数一点不动**，只�
 - 30 处裸写、3.A2 极端值矩阵、3.A3 深色口径、3.A4 新增代码 >800 行硬门禁、3.A5/A6/A8 全部照旧未动。
 - 同一 SHA 的 CI 三项：本窗口三笔提交（`aa29950`/`777a887`/`d6dc1a1`）**一笔都没推**，
   所以"CI 会不会因为新尺变红"这件事**只能等 CI**，本机等价读数不等于 verify 会绿。
+
+
+# 追加六十一：R0 半收 + R1 那条"强相关"被证伪，八条红重切成 3+3+2，其中 A 组当场修掉（`2fc4d60` → `a6d3e51`）
+
+> 第 13 窗口。照的是 `LoveBrain_Guide_Remaining_Work_c0ff0415_2026-09-26.md`（本文件之外那句"还剩什么"的唯一入口），
+> 顺序按它写的 **R0 必须先做**。本格四笔代码/文档提交推上去了，
+> 远端 `main` 用 `git ls-remote` 现读 = `a6d3e51`（⚠ 本机这副本没配 `remote.origin.fetch`，
+> `git log origin/main..HEAD` 会安静地骗人——交接单 §1 开头那条 again 生效）。
+
+## 61.1 一句话
+
+台账按名找回来了、HEAD 第一次拿到**同一 SHA** 的 CI 证据（`verify` success，产物门自报 unit
+`tests=1424 failures=0 errors=0 skipped=0 suites=191`，与本机 `--rerun-tasks` 那跑**逐字相同**）；
+上一轮写进账本与开工包的那条"stale requestId 与 7 格红强相关"**是 teardown 自己写的日志**，作废；
+八条红重切成 **A(3)+B(3→5)+C(2)**，A 组那一刀当场修掉并在真机上验证（`ui-test` 8 红 → **7 红**，
+且另两格各往后退了一步）；B/C 两组第一次拿到能分叉的读数，**确认不是同一个病**。
+
+## 61.2 逐字对照（只做本格碰过的行；三态标注照 §9 第 4 条口径）
+
+| 指导书行 | 要求原文（逐字，从 :215/:490/:531 抄） | 本格动了什么 | 三态 |
+|---|---|---|---|
+| :215（P0-02） | "没有同一 SHA 的 XML、logcat 和真实 requestCount，不得写'生成崩溃已修复'。" | **没有写那句话**。本格把"同一 SHA 的 XML/logcat/requestCount"三件第一次凑齐（run 36230978438 / 36231958338 两跑的 `test-xml-report`+`logcat`+`ui-test-evidence`），并据此**否掉了上一轮那条线索** | 本机已验 + CI 已回（`gh run view` 现读） |
+| :200–215 的第 8 条 | `ReplyPrimaryActionsTest > generating_showsProductionLoadingStopAffordanceAndCallsOnStopOnce` | 该格**转绿**（`49aac07` 那跑不再出现在 FAILED 列表） | CI 已验（run 36230978438） |
+| :155/:212 的第 9 场景 | "Service destroy 后所有前台 job 结束" | **未动**：两格仍是 `Assume` 跳过，CI 自报 `skipped=2`。不许用 skipped 冒充通过这句继续生效 | 只能等设备（本格没找到能起 FGS/悬浮窗的跑法） |
+| :490（§6.1 末句） | "禁止创建'只在一个页面看起来不一样'的按钮/卡片…" | 本格没归并异形组件，但**改了一颗设计系统组件的语义锚点位置**（`LbPrimaryButton` LOADING 那颗 `testTag` 从子 Text 挪到带 clickable 的盒子）——这是"同一语义必须同一可寻址形状"的下方那一半 | 本机已验（新格子先红后绿）+ CI 已验（三格越过原断言） |
+| :531/:532（§6.5 触摸/读屏） | bounds ≥48dp 非源码搜索、TalkBack role/selected | **未动**，但本格量到一条会影响它的缺陷：锚点挂在被合并掉的子节点上时，"按 tag 找热区"这类判据在合并树里**根本取不到节点**（V11）。首页那颗主按钮的 tag 现在会**顶掉**组件自己的停止锚点（`HomeComponents.kt:238`） | 本机已验（缺陷本身），修与判定**未做**（等用户排序） |
+| :629（§9 第 3 条） | "先写会失败的回归测试，且测试必须进 CI 真跑" | 新格子 `the stop anchor is reachable in the merged tree the device queries` **先被坏实现打破**（`实到 0 颗 expected:<1> but was:<0>`）再转绿；且这笔已随 `571c651` 上过 CI | 本机已验 + CI 已验 |
+| :630（§9 第 4 条） | "不许用源码 grep 代替 UI 行为/触摸边界/可访问性测试" | 本格**没有**新增任何源码字符串尺；A 组的定性用的是语义树（合并树 vs 未合并树）与 CI 原始消息第二行 | 本机已验 |
+| :633（§9 第 7 条） | 文档里的行数/测试数/hash/SHA 全部来自当次命令输出 | 本节所有数都是本格命令输出：`191 套件 / 1424 / 0 / 0 / 0`（`--rerun-tasks`，XML 跨度 0.06 秒）、CI 侧 `1424/191`、`tests=45 failures=7 skipped=2`、`bytes=387` | 本机已验 |
+
+## 61.3 量到但只登记、没自裁的三笔
+
+1. **同节点两个 `Modifier.testTag` 时调用方那个赢**（探针 dump 原文：
+   `TestTag : PRIMARY_SLOT, Role : Button, OnClick : …`，组件自己的 `generation_stop_action` 整个消失）。
+   浮层那条链只往下传 `fillMaxWidth()`，没撞名；撞的是 `HomeComponents.kt:238`。
+   ⇒ 要不要把首页那颗的挂法改成"槽位 tag 放外层容器"，等用户排序，本格不动。
+2. **B 组五格的真正根因在仪器里，已当场抓到并修掉**（`a8349eb`）：
+   `readRequest()` 的头块退出判据 `prev == '\n' && headerText.endsWith("\r\n\r\n")` 两半互斥
+   （`endsWith` 成立那一刻刚追加的字节是 `\n`，check 时的 `prev` 必然是 `\r`），而且 `prev` 是在 check
+   **之后**才更新的 ⇒ **这台 fake 从来没认过一次头块结束**，只能等对端关闭或本进程关掉它；
+   而 `requestCount`（那五格断言"请求有没有出门"的数）恰恰只在 `readRequest` 正常返回之后才加。
+   实到两条读数把它钉死：`86ca126` 五格齐报 `accepted=1 requests=0 bytes=387 terminated=false`；
+   `a6d3e51`（run 36233067058）同一批变成 `bytes=21892 terminated=false tailHex='' err=''`
+   ——**两万一千字节全进了 `headerText`、`finally` 却还没跑**，说明读循环一直卡在 `input.read()` 等 EOF。
+   局部证明（对前一字节做 0..255 穷举：旧判据命中 **0** 次，去掉 `prev` 那半之后命中 **>0** 次，
+   反空跑对照同发给出）随 `_temp/ZzHeaderTerminatorProbeTest.kt.retired-2026-09-26` 留档。⇒ 坑表 129。
+   ⇒ **口径改口**：R1 那五格"生产链路把请求弄丢了"这句话，从本格起**不成立**——丢请求的是测试夹具。
+   生产码到 `a8349eb` 为止只动过 `LbPrimaryButton.kt` 那一处锚点。
+3. **C 组两格 `accepted=0`** ＝一次 TCP 都没开，与"连 `PERF t0` 都没打"对得上
+   ⇒ 红点在 VM/Engine **之前**，与 B 组不是同一个病；`rapidDoubleTap` 那格 KDoc 自陈的生产竞态
+   （`LoveBrainViewModel.kt:844-855`）本格**没碰**。
+
+## 61.4 这一格没做的
+
+- 本地那套 12 步门禁（lint 预算、产物门、egress 自测、跨层计数、prompt 锁…）**没复跑**：
+  本格只动了一颗 UI 组件的语义锚点位置与 androidTest 夹具，没动 lint 面与脚本面。
+  ⇒ 这一条按 §9 口径标 **沿用上轮未复验**，不写 PASS。
+- 红是切开了、A 组也修掉了，但**到本文件写完为止没有一条 B 组格子拿到"改绿"的 CI 判决**：
+  `a8349eb`（恒假判据修好那一跑）还在路上；`upgrade-test` 仍 skipped。
+  ⇒ 指导书 :215 那句话仍然**不允许**说：没有同一 SHA 的 XML、logcat、真实 requestCount。
+- R2 的 30 处裸写、`KnowledgeWritePort` 零注入、R3 的 VM 30 个可变流、R4 的 39 颗异形、
+  R5 的截图基线器、R6 的 >800 行那 10 个文件——全部照旧未动。
+- 两份指导书（本文件之外的"剩余工作唯一入口"与 09-24 原文）**仍未跟踪**，要不要入库是用户的决定。
+
+## 61.5 下一格开工包（可直接粘贴，Git Bash）
+
+```bash
+cd /d/LoveBrain
+git ls-remote origin -h refs/heads/main            # 远端现读（本机没配 fetch refspec）
+gh run list --branch main --limit 3                 # a6d3e51 那一跑回来没有
+# 只读这三行就够决定 B 组的因果：
+gh run view <RUN_ID> --log | grep -aE "链路读数|terminated=|tailHex=" | head -8
+# 本机基线（跑前删旧 XML，否则读到上一发残留）
+rm -rf app/build/test-results/testDebugUnitTest
+./gradlew :app:testDebugUnitTest --rerun --console=plain
+```
+
+判据读法（`a8349eb` 之后）：B 组那五格应当**至少开始收到应答**——要么直接绿，
+要么往后红到"应答内容 / 上屏"那一步；`stopDuringGeneration` 的 `requests` 应当变成 1。
+仍然该红的是 `accepted=0` 那两格，与 B 组无关；另开一格做 VM prep 顺序的最小复现（现成夹具：
+`accepted=0` 那两格与 B 组无关，另开一格做 VM prep 顺序的最小复现（现成夹具：
+`app/src/test/java/com/lovebrain/app/viewmodel/GenerationRollbackTest.kt:144-167`、
+`ReplyRequestFaultInjectionTest.kt:92,123`）。
+坑表接着读：**1–129**（本格新增 126–128）+ 剩余工作那份的 **V1–V13**。

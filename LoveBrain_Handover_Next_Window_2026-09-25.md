@@ -10,7 +10,7 @@
 > **账本最近三节**：「追加五十六」§56（:490 新增可见的 8 处逐处判完）、「追加五十七」§57（三屏语义树实量，
 > §56 那张读源码写的表比量到的窄一大截）、「追加五十八」§58（出口判据三发修到 verify 全绿 + 反馈案例页一次销两笔）。
 > 读本文件前先看完这三节。
-> **本文件的读法**：§0.1–§0.45 是一格一段的增量（§0.45 最新，`aa29950`/`777a887`/`d6dc1a1`），§1 起手命令与现在值，
+> **本文件的读法**：§0.1–§0.46 是一格一段的增量（§0.46 最新，`2fc4d60`/`571c651`/`49aac07`/`86ca126`），§1 起手命令与现在值，
 > §2 被证伪的旧话（含"注释承诺了一道不存在的闸"那类），§4 下一格顺序（6 = §6.1 那张表：**表里 11 行全有主**、
 > 另补一颗 `LbTextAction` 承接表内"可选文字动作"那半句；:478/:479 已归一（含第五式反馈案例页）、:490 搬三处并补到第三个锚点、那颗 48 收成一处，只剩 insets 待设备定，
 > 6b = 便宜穿插格），§5 已做勿重复，§6 坑表（**120 最新**：写在豁免注释里的"做不了"越具体越像真的；
@@ -1325,7 +1325,83 @@ HEAD `0c4d6d6`，仍未推。两笔：
 - **下一格顺序没变**：3.A1 的 30 处还债（第一刀建议 `ensureKbFilesCompleteUnlocked` 那 2 处）、
   3.A2 极端值矩阵、3.A3 深色口径、3.A4 新增代码 >800 行硬门禁、3.A5/3.A6/3.A8。
 
+## 0.46 R0 半收：八份台账按名找回、六笔推上去；R1 那条"强相关"被证伪，八条红重切成 3+3+2，A 组当场修掉（`2fc4d60` → `a8349eb`）
+
+第 13 窗口。照的是 `LoveBrain_Guide_Remaining_Work_c0ff0415_2026-09-26.md`（R0 必须先做）。
+本窗口 6 笔：`2fc4d60`、`571c651`、`49aac07`、`86ca126`、`a6d3e51`、`a8349eb`；
+`git log --oneline 85d2d42..HEAD` 现数 **12 笔**（上一窗口 6 + 本格 6）。
+
+- **① R0 做到哪**：工作区里那 8 份处于未提交删除态的跟踪 md **按名恢复**回盘（逐条对照表 5304 行、
+  第 12 窗口开工包 285 行、三份交接单、验收包 443 行、执行日志 628 行）——逐份与
+  `git show HEAD:<名>` `cmp` 过，**字节相同**，不是"看起来在"。恢复之前一次 `git add -A`
+  就能把整个台账以"已删除"入库（坑表 V8/125 那一族）。
+  ⚠ 恢复之后**不要**再对它们做任何 `git add`：这 8 份现在与 HEAD 一致，工作区干净。
+- **② 上一窗口从没提交的** `UsageExtremeValuesSemanticsTest.kt`（482 行 / 1 套件 / 6 格）落进 `2fc4d60`。
+- **③ 推上去了**：远端 `main` 现读 `git ls-remote` = `a8349eb`。
+  ⚠ 本机这副本**没配 `remote.origin.fetch`**（§1 开头那条 again 生效）⇒
+  `git log origin/main..HEAD` 会安静地骗人，判"远端 == 本地"只认 `git ls-remote`。
+  **还欠两件**：两份 09-24/09-26 指导书仍是未跟踪（要不要入库是用户的决定，本窗口没动）；
+  `upgrade-test` 依旧 skipped（needs ui-test 绿 ⇒ v1.3.1 覆盖安装**至今零证据**）。
+- **④ 上一轮那条"stale requestId 与 7 格红强相关"是假线索**（本文件 §0.44、开工包 R1、
+  那份"剩余工作"指导书都指着它，账本里也记着）：那行日志是**每格 `@After` 无条件
+  `vm.stopGeneration()`** 写的（`OverlayGenerateSmokeTest.kt:117-119`）——
+  `successStream` 那格它出现在 `t2` 之后 **20 毫秒**，`authFailure401` 那格在 `t2` 之后 **14.94 秒**，
+  两处都正好贴着该格自己的结束点（同一份 logcat 里就有 `TestRunner: started/terminated`）。
+  而 owner 登记写在 `ReplyRequested`（`LoveBrainViewModel.kt:988`），**严格早于** t0/t1/t2
+  （`GenerationEngine.kt:243/269` → `DeepSeekRepository.kt:382`）⇒ 候选①"登记晚于事件产生"物理上不成立；
+  候选②"被意外发出"也不成立（停止事件只有 `VM:1157` 用户停止与 `VM:1064` 取消两处，都取协调器租约里的 id）。
+  它与那 7 格同分布，只因为"按过真生成按钮、teardown 时还持有 REPLY 租约"的就是那 7 格。⇒ 坑表 127。
+  ⚠ **`ReplyRequested` 不切 owner 槽**这条**没证成**：`ForegroundOperationCoordinator.bind`
+  的 `previousRequestId` 恒为 null，链子断在哪一环还没读出来（**本格只登记、没往下修**）。
+- **⑤ 八条红重切成 3 + 3 + 2**（原来记的"7+1"把两件事并成了一件），并且 A 组当场修掉：
+  `LbTags.PRIMARY_STOP` 原先挂在 LOADING 那棵 `clickable` Box 的**子 Text** 上，clickable 把后代语义
+  合并进自己 ⇒ 子节点在**合并后的语义树**里不存在，而 `onNodeWithTag` 默认查的就是合并树 ⇒
+  设备侧按 tag 找停止条必然落空，读屏也拿不到这颗动作的名字。本机一直绿的缘故：
+  `LbPrimaryButtonStateTest` 那格用 `useUnmergedTree = true` 查，量的恰好是合并之后看不见的另一半
+  （⇒ 坑表 126）。新增那格**先红**（`实到 0 颗 expected:<1> but was:<0>`）**后绿**。
+  CI `49aac07` 现读：`ReplyPrimaryActionsTest > generating_showsProductionLoadingStopAffordance…`
+  **转绿**（`failures` 8 → **7**），`successStream` 往后红到"应渲染成功结果"、
+  `stopDuringGeneration` 红到"停止前应已发出 1 个请求"。
+  ⚠ A 组真正的根因不在 tag 挂载位置，而在 **fake 自己**（见 ⑦）。
+- **⑥ 量到但只登记、本笔未修**：同一节点上两个 `Modifier.testTag` 时**调用方那个赢**
+  （探针 dump 原文 `TestTag : PRIMARY_SLOT`，组件自己的 `generation_stop_action` 整个消失）。
+  浮层这条链（`LoveBrainPanelScreen.kt:428` → `ReplyPrimaryActions.kt:54+`）只往下传 `fillMaxWidth()`，
+  没撞名；撞的是 `HomeComponents.kt:238` 那颗 `LbHomeTags.PRIMARY_BUTTON`——首页主按钮若进 Loading 态
+  就没有停止锚点。要不要改首页那颗的挂法，等用户对 R4/R1 排序表态，本窗口不自裁。
+- **⑦ 本格最大的一笔：B 组那五格有一半是仪器自己瞎了**（`a8349eb`）。
+  `86ca126` 那跑（run 36231958338）五格齐报**同一个数**
+  `accepted=1 requests=0 bytes=387 terminated=false err='SocketException:Socket closed'`
+  （`systemProxy=DIRECT`、`loopbackSelfTest=拨号ok/监听端收到`），C 组那 2 格报 `accepted=0 bytes=0`
+  ⇒ 代理排除、loopback 通、字节确实到了服务侧；顺着 `terminated=false` 去读 `readRequest()`，
+  它的头块退出判据 `prev == '\n' && headerText.endsWith("\r\n\r\n")` **两半互斥、恒假**
+  （`endsWith` 成立那一刻刚追加的字节是 `\n`，check 时的 `prev` 必然是 `\r`），而且 `prev` 还是
+  在 check **之后**才更新的 ⇒ **这台 fake 从来没认过一次头块结束**，只能等对端关闭或本进程关掉它；
+  而 `requestCount`（那五格用来断言"请求有没有出门"的数）偏偏只在 `readRequest` 正常返回之后才加。
+  局部证明（0..255 穷举前一字节：旧判据命中 **0** 次、去掉 `prev` 那半之后 **>0** 次，
+  反空跑对照同发）随 `_temp/ZzHeaderTerminatorProbeTest.kt.retired-2026-09-26` 留档。⇒ 坑表 129。
+  ⚠ **`a6d3e51` 那一跑（run 36233067058）把这条钉死了**：五格超时时的读数变成
+  `accepted=1 requests=0 bytes=21892 terminated=false tailHex='' err=''`——
+  **两万一千字节全被吞进 `headerText`**，而 `tailHex`/`err` 是空的正说明
+  `readRequest()` 的 `finally` **还没跑**（读循环一直卡在 `input.read()` 等 EOF）。
+  ⇒ 死锁形状完全对上：fake 等客户端关连接才应答，OkHttp 等应答才关连接。
+  **可证伪的预期**（run 36233588797 见分晓）：`authFailure401`/`providerTimeout`/`parseFailure`/`successStream`
+  应当至少收到应答（要么直接绿，要么往后红到"应答内容/上屏"）；`stopDuringGeneration` 的
+  `requests` 应当变成 1；而 `rapidDoubleTap`/`lateCallbacks` 仍该是 `accepted=0`、仍该红——
+  那是 VM/Engine **之前**的生产竞态（`LoveBrainViewModel.kt:844-855`），**修完这一发不许把它俩一起宣布结案**。
+- **本机读数**（都是当次命令输出）：`191 套件 / 1424 单测 / 0 失败 0 错误 0 跳过`，
+  191 份 XML 同批、跨度 0.04–0.06 秒；`:app:compileDebugAndroidTestKotlin` 通过；
+  恢复的 8 份 md 逐份与 HEAD 字节相同；**生产代码到 `a8349eb` 为止只动过 `LbPrimaryButton.kt` 一处**。
+  本窗口**没跑**的：lint 预算、产物门、egress 自测那批本地门禁（`_temp/run_gates110.sh` 那一套）——
+  改的是 UI 组件与 androidTest 夹具，没动 lint 面与脚本面，**这一条标"沿用上轮未复验"**，不写 PASS。
+- **下一格第一动作**：读 `a8349eb` 那一跑的 `链路读数`（`gh run view <id> --log | grep -a "链路读数"`）
+  ① 确认 B 组四格是否开始收到应答；② 确认 `rapidDoubleTap`/`lateCallbacks` 是否仍 `accepted=0`。
+  然后按顺序：**C 组最小复现**（现成夹具 `app/src/test/.../viewmodel/GenerationRollbackTest.kt:144-167`、
+  `ReplyRequestFaultInjectionTest.kt:92,123`）→ `ForegroundOperationCoordinator.bind` 的 owner 切换
+  → 2 格 `Assume` 跳过的 Service destroy（指导书 :212 第 9 场景，**不许用 skipped 冒充通过**）
+  → 才轮到 R2 那 30 处裸写。
+
 ## 1. 起手必查（照抄，别凭记忆）
+
 
 > ⚠ **这台工作副本没配 `remote.origin.fetch`**（`branch.main.remote/merge` 有，refspec 没有）。
 > 后果实测：`git fetch origin` 安静成功但**不写** `refs/remotes/origin/*` ⇒
@@ -1450,8 +1526,33 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
    本轮搬家时一起撞出来：`grep .github/workflows` 里没有任何一处计算 theme/Color.kt 的哈希（CI 从不校验）；
    `package_deps_report.py` 的 `FORBIDDEN` 里**压根没有 `core` 这一条**，而它文件开头写着与测试"一一对应"。
    教训写成规矩：**注释承诺一道闸之前，先去把那道闸注入证一次**；否则注释本身就是下一个人的假依据。
+8. **「45 份逐格 logcat 里 `rejected (stale requestId …)` 与那 7 格红完全同分布 ⇒ 它是根因线索」**
+   ——**是 teardown 的产物**（`OverlayGenerateSmokeTest.kt:117-119` 每格无条件 `vm.stopGeneration()`）。
+   证伪用的是时间点：那行在 `successStream` 落在 t2 之后 20ms、在 `authFailure401` 落在 t2 之后 14.94 秒，
+   两处都是该格结束的时刻；而 owner 登记（`LoveBrainViewModel.kt:988` 的 `ReplyRequested`）
+   严格早于 t0/t1/t2 ⇒ "登记晚于事件"这条候选物理上不成立。
+   ⇒ 同分布的相关性可以整个来自测试脚手架本身。**下一条纪律**：凡是"只在红格子里出现"的日志，
+   先问它是不是 `@After`/`tearDown`/框架钩子写的，判据是时间戳贴着该格的结束点。
+9. **「三格「断言已显示」失败＝停止条被裁切/滚出屏幕」**（开工包 R1 把第 8 条单独算成"显示/布局问题"）
+   ——**都不是**：CI 的原始消息下一行就写着 `节点：节点不存在（fetchSemanticsNode 失败）`，
+   节点根本没进合并树（tag 挂在被 `clickable` 合并掉的子 Text 上）。
+   ⇒ 引用一个诊断结论前先把它**下面那行**读完；"已显示失败"有三种成因（不存在 / 0 尺寸 / 被裁），
+   本仓库的 `assertIsDisplayedDiagnosed` 已经把区分信息打出来了，别只用第一行。
 
 ## 3. 只剩"推送 + 读 CI"能闭的（本轮新留下）
+
+**第 13 窗口（`86ca126`）新增，先读这四条**：
+- **B/C 组五格的分诊读数**：`gh run view 36231958338 --log | grep -E "链路读数|AssertionError"`。
+  要看的只有 `bytes=` 与 `err=` 两个字段：`bytes=0` ⇒ 请求根本没写出去（查 OkHttp 侧）；
+  `bytes>0` 且 `err=SocketException…` ⇒ 写了但对端提前重置＝**这条流在 t2 之后被取消了**，
+  与"45 份 logcat 里一条 `API onFailure` 都没有"（`if (call.isCanceled()) return` 是静默的）吻合。
+- **A 组（停止条锚点）已在 CI 上验过**：`49aac07` 那跑 8→7 红，且三格全部越过原断言
+  ⇒ `571c651` 的改法在真设备上成立，这一条不用再等。
+- **首页那颗主按钮**（`HomeComponents.kt:238` 把调用方 tag 贴在组件自己的可点节点上）
+  要不要一起改，等用户对 R4/R1 优先级表态；本窗口只登记。
+- 两份指导书（09-24 原文、09-26 剩余工作）**仍未跟踪**，要不要入库是用户的决定。
+
+（以下为前几轮遗留，一条没闭）
 
 - `verify` 是否转绿：本轮之后 lint 那一步两侧同尺了；后面还有 R8/APK 元数据、SBOM、
   费用 dry-run、egress 证据四件**从没跑到过**，第一次跑到可能再爆新问题。
@@ -1776,9 +1877,9 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
 ## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者，68 「取第一个非空」的判据会被别的来源蹭过去，69 界面构造不出的状态要对着持有者测，
-    70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑）
+    70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑，124–125 假账销账与口径冲突不许择一自裁，126–128 合并树里的锚点/贴着 teardown 的假相关/只数成功的尺）
     ⚠ 正文按**加入顺序**排，不严格递增（102 后面接着 95、90 那批是补记的）——
-    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 125**
+    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 129**
     （116–120 是出口判据那一格与"销账之后要重借一次"那一格补的，
     121–123 是 P0-03 那把新尺那一格补的：作用域栈的同级互清、复算尺自己会吞代码、一句要求两半句两把尺；
     124–125 是销"注释比实现新"那一格补的：**"已改口"必须点名到哪一份文件**（注释改口≠文档改口）、
@@ -2542,6 +2643,47 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
      ⇒ 遇到这种冲突，正确动作是把**两句各自的判据并排写下来**、留着等该做的债还完再改字，
      不是挑一个顺眼的口径宣布结案（这与坑表 123 是同一族：一句要求里的两半句，各自要有各自的尺）。
 
+126. **锚点 tag 挂在被 `clickable` 合并掉的子节点上，设备侧必查不到；而 JVM 那格用 `useUnmergedTree=true` 查会一路绿**（`571c651`）：
+     `LbTags.PRIMARY_STOP` 写在 LOADING 那棵 `clickable` Box 的子 `Text` 上 ⇒ 合并树里没有这颗节点，
+     `onNodeWithTag` 默认查合并树 ⇒ 真机三格全停在「节点：节点不存在」。同一台仪器上另一格
+     （`LbPrimaryButtonStateTest > only the loading state carries the stop anchor`）用未合并树查，
+     量的恰好是合并**之后**看不见的另一半，于是本机绿、CI 红了两个窗口。
+     ⇒ 三条规矩：①自动化锚点必须挂在**带 clickable 的那颗节点自己**身上（读屏拿到的也就是这颗）；
+     ②测"锚点可达"要按**消费方的查法**查一遍（谁在用合并树，就别只测未合并树）；
+     ③同一节点上两个 `Modifier.testTag` 时**调用方那个赢**——探针 dump 出来是
+     `TestTag : PRIMARY_SLOT`，组件自己的 `generation_stop_action` 整个消失（首页
+     `HomeComponents.kt:238` 正撞着，浮层那条链没撞）。所以"组件自带锚点"这类性质必须**按生产形状挂**测。
+
+127. **"只在红格子里出现"的日志，先问是不是 `tearDown` 写的**（`85d2d42` 那份复核 + 本窗口重测）：
+     45 份逐格 logcat 里 `rejected (stale requestId …)` 精确分布在 7 份红格子，账本与开工包都据此写了"强相关"。
+     实际它是 `OverlayGenerateSmokeTest.kt:117-119` 每格 `@After` 无条件 `vm.stopGeneration()` 的产物——
+     `successStream` 那格它在 t2 之后 **20ms**、`authFailure401` 那格 **14.94 秒**，两处都贴着该格结束点；
+     owner 登记又严格早于 t0/t1/t2，物理上不可能是"登记晚了"。
+     ⇒ 拿相关性当线索时先做这一步：**把这行的时间戳与该格自己的开始/结束时刻对齐**（`TestRunner: started/failed`
+     就在同一份 logcat 里），贴结束点的默认怀疑脚手架；跨两个窗口写进账本的结论也要重测，**账本不是证据**。
+
+128. **只数成功的计数器 + 被 catch 吞掉的异常 ＝ 一把把两件事说成一件的尺**（`86ca126`）：
+     `FakeProviderServer.requestCount` 只在 `readRequest()` 正常返回之后才 `incrementAndGet()`，
+     而 `handle()` 的 `catch (e: Exception) { }` 什么都不留。于是 CI 读到
+     `accepted=1 requests=0 lastRequestLine=''` 时，**"客户端一个字都没写"与"写了但对端在头块读完前重置了连接
+     （＝被取消）"这两种完全不同的因果，在同一把尺上长得一模一样**——而后者恰好能和
+     "45 份 logcat 里一条 `API onFailure` 都没有"（`onFailure` 开头 `if (call.isCanceled()) return` 是静默的）对上。
+     ⇒ 补的不再是"再多断言几条"，而是补**两个读数**：最后一条连接的实际字节数、被吞异常的类名+message。
+     凡新增"只在成功路径上计数"的门禁，同时问一句：失败长什么样我能看见吗？看不见就先去装眼睛。
+
+129. **手写协议解析里一条恒假的退出判据，会把"仪器自己瞎了"读成"生产有五个缺陷"**（`a8349eb`）：
+     `FakeProviderServer.readRequest()` 的 `prev == '\n' && headerText.endsWith("\r\n\r\n")` 两半互斥
+     （`endsWith` 成立那一刻刚追加的字节是 `\n`，它的上一个——也就是 check 时的 `prev`——必然是 `\r`），
+     而且 `prev` 还是**在 check 之后**才更新的。于是 fake **从来没认过一次头块结束**，
+     只能等对端关闭或本进程自己关掉；而 `requestCount`（那五格用来断言"请求有没有出门"的数）
+     偏偏只在 `readRequest` 正常返回之后才加 ⇒ 五格齐报 `accepted=1 requests=0 bytes=387`，
+     看起来像"生产链路把请求弄丢了"，实际是**这台仪器从来没接听过请求**。
+     ⇒ ①手写解析的退出判据必须配一发探针：**喂一整块真字节进去，断言它 break 在正确位置**；
+     判据里带"上一个字节"这类前瞻/后顾条件时，直接**对前一字节做 0..255 穷举**——
+     恒假会当场现形（本仓库那发：旧写法命中 0 次，去掉 `prev` 那半之后 >0 次，反空跑对照同发给出）；
+     ②凡是"计数只在成功路径上增加"的断言，红之前先问：**是谁在数？它凭什么数得着？**
+     这一发如果不先量 `bytes=`/`terminated=`，我们会一直以为要修的是 `DeepSeekRepository`。
+
 ## 7. 硬约束（一条没变）
 
 不许改 prompt 内容（`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` 必须零差异）；
@@ -2555,6 +2697,12 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 ## 8. 发布判定
 
 **NO-GO。** 判据是指导书 §10：新 SHA 的三项 required checks 全绿且 artifacts 齐全。
-本轮结束时的最后一笔代码提交从没上过 CI（笔笔现算：`git log --oneline 3d92488..HEAD`），
-`ui-test` 那 23 条的判决仍来自 `3d92488`。
-本窗口不签 PASS，下一窗口在拿到同一 SHA 的三项结果之前也不签。
+
+**第 13 窗口结束时（远端 `main` = `a6d3e51`，`git ls-remote` 现读）的三项状态**：
+`verify` **success**（run 36230978438 / 36231958338 两跑都是；产物门自报 unit `1424/191/0/0/0`，
+与本机 `--rerun-tasks` 那跑逐字相同 ⇒ **HEAD 第一次有同一 SHA 的 CI 证据**，R0 那半句立住了）；
+`ui-test` **failure**：`tests=45 failures=7 errors=0 skipped=2`（上一窗口是 8 红，本格关掉 1 红、
+另 2 红往后各退一步 ⇒ 见 §0.46）；`upgrade-test` **skipped**（needs ui-test 绿，v1.3.1 覆盖安装**仍零证据**）。
+所以卡点没消失，只是**从 8 条变成 7 条 + 一条从没跑过的升级测试**，且 B/C 两组已确认是两码事。
+本窗口不签 PASS，下一窗口在拿到同一 SHA 的三项全绿之前也不签；
+`a6d3e51` 那一跑（`terminated=`/`tailHex=` 那把新尺）回来之前，**不许动 `DeepSeekRepository`/`GenerationEngine` 的判据**。
