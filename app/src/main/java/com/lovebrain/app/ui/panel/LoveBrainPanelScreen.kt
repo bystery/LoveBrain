@@ -46,6 +46,7 @@ import com.lovebrain.app.ui.panel.reply.*
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
+import com.lovebrain.app.feature.roundcommit.ActualSentState
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.ResultMode
 import com.lovebrain.app.model.StageSuggestion
@@ -151,17 +152,17 @@ fun LoveBrainPanelScreen(
     // 用户既关不掉也退不出。加一档新结果时让编译器来提醒，而不是靠人记得。
     LaunchedEffect(actualSentState) {
         when (actualSentState) {
-            LoveBrainViewModel.ActualSentState.RECORDED -> if (recordSent.saving) {
+            ActualSentState.RECORDED -> if (recordSent.saving) {
                 recordSent.recorded()
                 viewModel.dismissActualSentState()
             }
-            LoveBrainViewModel.ActualSentState.KB_NOT_FOUND,
-            LoveBrainViewModel.ActualSentState.NO_KB,
-            LoveBrainViewModel.ActualSentState.IO_ERROR -> {
+            ActualSentState.KB_NOT_FOUND,
+            ActualSentState.NO_KB,
+            ActualSentState.IO_ERROR -> {
                 // 失败——放开那把"保存中"的锁，允许重试或取消；草稿留着
                 recordSent.saveRejected()
             }
-            LoveBrainViewModel.ActualSentState.IDLE -> {
+            ActualSentState.IDLE -> {
                 // 没有进行中的记录：也别让浮层停在一个不会来的跳变上
                 recordSent.saveRejected()
             }

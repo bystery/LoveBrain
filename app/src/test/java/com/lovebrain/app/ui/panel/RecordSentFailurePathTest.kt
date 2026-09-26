@@ -1,4 +1,5 @@
 package com.lovebrain.app.ui.panel
+import com.lovebrain.app.feature.roundcommit.ActualSentState
 
 import android.util.Log
 import com.lovebrain.app.data.SecurePrefs
@@ -117,7 +118,7 @@ class RecordSentFailurePathTest {
     @Test
     fun `a repeated identical failure is still observable to the panel`() {
         val vm = newViewModel()
-        val seen = mutableListOf<LoveBrainViewModel.ActualSentState>()
+        val seen = mutableListOf<ActualSentState>()
         val job = kotlinx.coroutines.CoroutineScope(testDispatcher).launch {
             vm.actualSentState.collect { seen.add(it) }
         }
@@ -126,7 +127,7 @@ class RecordSentFailurePathTest {
         vm.recordActualSentMessage("第二次尝试")
 
         job.cancel()
-        val failures = seen.count { it == LoveBrainViewModel.ActualSentState.IO_ERROR }
+        val failures = seen.count { it == ActualSentState.IO_ERROR }
         assertEquals(
             "两次尝试都失败，面板就该观察到两次失败信号；实到 $failures 次，" +
                 "整段收集到的序列是 $seen —— 少于两次意味着第二次没有任何跳变，" +
@@ -153,7 +154,7 @@ class RecordSentFailurePathTest {
         assertTrue("找不到 $screen——搬家了要同步改这条", screen.isFile)
         val code = withoutComments(screen.readText(Charsets.UTF_8))
 
-        val unhandled = LoveBrainViewModel.ActualSentState.entries
+        val unhandled = ActualSentState.entries
             .map { it.name }
             .filterNot { code.contains("ActualSentState.$it") }
         assertTrue(
@@ -164,9 +165,9 @@ class RecordSentFailurePathTest {
         )
         // 反证：这把尺必须真看得见东西，而不是扫了个空集恒绿
         assertTrue(
-            "枚举只数出 ${LoveBrainViewModel.ActualSentState.entries.size} 种结果，" +
+            "枚举只数出 ${ActualSentState.entries.size} 种结果，" +
                 "少于 3 说明量具接错了类型",
-            LoveBrainViewModel.ActualSentState.entries.size >= 3
+            ActualSentState.entries.size >= 3
         )
     }
 

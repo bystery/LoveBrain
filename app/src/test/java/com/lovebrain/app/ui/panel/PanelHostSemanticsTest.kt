@@ -1,4 +1,5 @@
 package com.lovebrain.app.ui.panel
+import com.lovebrain.app.feature.roundcommit.ActualSentState
 
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
@@ -80,7 +81,7 @@ class PanelHostSemanticsTest {
         every { vm.dismissPlanPanel() } answers { showPlanPanelFlow.value = false }
         every { vm.activeKb } returns MutableStateFlow(null)
         every { vm.actualSentState } returns
-            MutableStateFlow(LoveBrainViewModel.ActualSentState.IDLE)
+            MutableStateFlow(ActualSentState.IDLE)
         every { vm.composerMode } returns MutableStateFlow(ComposerMode.REPLY)
         every { vm.counselingDraft } returns MutableStateFlow("")
         every { vm.counselingError } returns MutableStateFlow(null)

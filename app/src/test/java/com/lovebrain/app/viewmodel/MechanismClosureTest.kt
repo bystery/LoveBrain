@@ -1,4 +1,5 @@
 package com.lovebrain.app.viewmodel
+import com.lovebrain.app.feature.roundcommit.ActualSentState
 
 import android.util.Log
 import com.lovebrain.app.data.KnowledgeRepository
@@ -393,7 +394,7 @@ class MechanismClosureTest {
         // P0-2: actualSentState 应变为 RECORDED（异步写盘成功后）
         assertEquals(
             "actualSentState should be RECORDED after successful write",
-            LoveBrainViewModel.ActualSentState.RECORDED,
+            ActualSentState.RECORDED,
             vm.actualSentState.value
         )
         // P0-4: adopt count +1（第一次确认）
@@ -430,7 +431,7 @@ class MechanismClosureTest {
         // P0-2: actualSentState 应为 KB_NOT_FOUND
         assertEquals(
             "actualSentState should be KB_NOT_FOUND",
-            LoveBrainViewModel.ActualSentState.KB_NOT_FOUND,
+            ActualSentState.KB_NOT_FOUND,
             vm.actualSentState.value
         )
         assertEquals("Adopt count should not increase", initialAdopt, vm.usageStats.value.totalAdoptCount)
@@ -462,7 +463,7 @@ class MechanismClosureTest {
         // P0-2: actualSentState 应为 IO_ERROR
         assertEquals(
             "actualSentState should be IO_ERROR",
-            LoveBrainViewModel.ActualSentState.IO_ERROR,
+            ActualSentState.IO_ERROR,
             vm.actualSentState.value
         )
         assertEquals("Adopt count should not increase on IO error", initialAdopt, vm.usageStats.value.totalAdoptCount)
@@ -491,7 +492,7 @@ class MechanismClosureTest {
         vm.recordActualSentMessage("I sent version 1")
         delay(300)
         val adoptAfterFirst = vm.usageStats.value.totalAdoptCount
-        assertEquals(LoveBrainViewModel.ActualSentState.RECORDED, vm.actualSentState.value)
+        assertEquals(ActualSentState.RECORDED, vm.actualSentState.value)
 
         // 同一 generation version 再次确认（更新正文）→ 不重复 +1
         vm.recordActualSentMessage("I sent version 2")
@@ -501,7 +502,7 @@ class MechanismClosureTest {
             adoptAfterFirst,
             vm.usageStats.value.totalAdoptCount
         )
-        assertEquals(LoveBrainViewModel.ActualSentState.RECORDED, vm.actualSentState.value)
+        assertEquals(ActualSentState.RECORDED, vm.actualSentState.value)
     }
 
     // ═══════════ F06: DATE expiry at generation time ═══════════

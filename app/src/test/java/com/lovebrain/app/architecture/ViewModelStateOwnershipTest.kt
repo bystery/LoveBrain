@@ -42,14 +42,16 @@ class ViewModelStateOwnershipTest {
             "_draftText", "_counselingDraft", "_panelMode", "_outputMode", "_showPlanPanel"
         ),
         "NoticeBoard" to listOf("_kbNotice", "_panelWarning", "_vectorUpdate"),
-        "ProviderTicketStore" to listOf("_activeTicket", "_providerReady")
+        "ProviderTicketStore" to listOf("_activeTicket", "_providerReady"),
+        "ActualSentRecorder" to listOf("_actualSentState")
     )
 
     /** VM 通过哪个前缀访问那一家子（反向判据：不许绕开 store 另写一条路） */
     private val accessors = mapOf(
         "ComposerStore" to "composer.accept(",
         "NoticeBoard" to "notices.",
-        "ProviderTicketStore" to "ticketStore."
+        "ProviderTicketStore" to "ticketStore.",
+        "ActualSentRecorder" to "actualSent."
     )
 
     private fun sourceOf(rel: String): String = File(appRoot(), rel).readText()
@@ -102,14 +104,14 @@ class ViewModelStateOwnershipTest {
      * · 知识库工作区：`_activeKb` `_currentVector` `_vectorDelta` `_stageSuggestion` `_profileReview`
      * —— 这一族是"换库要一起复位"的（`refreshKnowledgeBases` 里那一段就是它的复位判据），
      *    所以它该一起走，不许一颗一颗零散搬；
-     * · 本轮提交：`_resultMode` `_onlyThisRound` `_actualSentState`；
+     * · 本轮提交：`_resultMode` `_onlyThisRound`（`_actualSentState` 已搬进 `ActualSentRecorder`）；
      * · 持续意图：`_intentConfig` `_showIntentEditor`；
      * · 计费与用量：`_usageStats`（reduce 已经在 `UsageStats` 里，剩落盘那一半）。
      */
     private val stillInViewModel = setOf(
         "_generationRoundId", "_inputChanged", "_generationHistory", "_currentVersionId",
         "_activeKb", "_profileReview", "_stageSuggestion", "_currentVector", "_vectorDelta",
-        "_usageStats", "_resultMode", "_onlyThisRound", "_actualSentState",
+        "_usageStats", "_resultMode", "_onlyThisRound",
         "_intentConfig", "_showIntentEditor"
     )
 

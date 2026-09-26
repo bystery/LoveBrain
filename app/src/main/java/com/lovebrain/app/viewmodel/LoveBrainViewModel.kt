@@ -22,6 +22,8 @@ import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.notice.NoticeBoard
+import com.lovebrain.app.feature.roundcommit.ActualSentRecorder
+import com.lovebrain.app.feature.roundcommit.ActualSentState
 import com.lovebrain.app.feature.provider.ProviderTicketStore
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.CounselingEnded
@@ -1284,93 +1286,54 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 不再从 displaySchemes 自动推断。
      * 同一 generationVersionId 的记录使用 upsert（替换），不 append 多条。
      */
-    /** 实际发送记录状态——异步写盘的真实 typed result */
-    enum class ActualSentState { IDLE, RECORDED, KB_NOT_FOUND, NO_KB, IO_ERROR }
-    private val _actualSentState = MutableStateFlow(ActualSentState.IDLE)
-    val actualSentState: StateFlow<ActualSentState> = _actualSentState.asStateFlow()
-    fun dismissActualSentState() { _actualSentState.value = ActualSentState.IDLE }
+    /**
+     * "我确认这条真的发出去了"这一族的**行为与状态**都住在 [ActualSentRecorder]
+     * （复核 §5.2 第 6 步：这一块搬的是行为，不是几颗字段）。
+     *
+     * VM 在这里只剩三件事，每件都是"别人家的知识"：交出本轮上下文的三个读数、
+     * 把落盘转给仓库（含 IO 调度）、把回执/面板警告/adopt 计数接回它们各自的主人。
+     * 原来这里还写着 upsert 身份、五种结果的分岔、"每次尝试先回 IDLE"那条防死路判据——
+     * 那些判据现在只有一处，并且能在 JVM 上直接测（`ActualSentRecorderTest`）。
+     */
+    private val actualSent = ActualSentRecorder(
+        scope = viewModelScope,
+        readContext = {
+            replyGenerationContext?.let { ActualSentRecorder.AttemptContext(it.kbName) }
+        },
+        readVersionKey = { _currentVersionId.value?.value },
+        readCandidateText = { key ->
+            key?.let {
+                val result = replyResult as? GenerateResult.Success
+                val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(it)
+                if (result != null && identity != null) ReplyPatch.textOf(result.response, identity) else null
+            }
+        },
+        writeRecord = { kbName, entry, replaces ->
+            withContext(Dispatchers.IO) {
+                if (replaces != null) {
+                    // 替换旧记录——先删旧 entry 再追加新的（仓库那边是两步，这里只表达"替换"）
+                    knowledgeRepo.replaceActualSentRecord(kbName, replaces, entry)
+                } else {
+                    knowledgeRepo.appendActualSentRecord(kbName, entry)
+                }
+            }
+        },
+        onWarning = { msg -> showPanelWarning(msg) },
+        onNotice = { msg -> notices.show(NoticeBoard.Channel.Knowledge, msg) },
+        onAdopted = { applyUsage(UsageStats.Event.Adopted) },
+        onError = { e -> L.e("recordActualSentMessage failed", e) }
+    )
 
+    /** 五种结果的原样转发：面板订阅它、并靠"一次跳变"解除「保存中」 */
+    val actualSentState: StateFlow<ActualSentState> = actualSent.state
+
+    fun dismissActualSentState() = actualSent.dismiss()
+
+    /** 返回这一次尝试的任务句柄；语义与 `ActualSentRecorder.record` 一致（取消要看得见） */
     fun recordActualSentMessage(
         sentText: String,
         linkedSchemeIdentityKey: String? = null
-    ) {
-        // 每一次尝试都要先回到 IDLE，面板那边靠的是"观察一次跳变"来解除「保存中」。
-        // 不重置的话，同一个失败结果连着来两次时 StateFlow 不再发射，
-        // 第二次尝试永远看不到回应——而浮层的取消与遮罩都是 enabled = !saving，用户会被关在里面。
-        _actualSentState.value = ActualSentState.IDLE
-        if (sentText.isBlank()) {
-            _actualSentState.value = ActualSentState.IO_ERROR
-            return
-        }
-        val ctx = replyGenerationContext ?: run {
-            _actualSentState.value = ActualSentState.IO_ERROR
-            return
-        }
-        val kbName = ctx.kbName ?: run {
-            showPanelWarning("未激活知识库，无法记录已发送消息")
-            _actualSentState.value = ActualSentState.NO_KB
-            return
-        }
-
-        // 冻结候选版本快照——绑定版本 ID 和候选正文
-        val versionId = _currentVersionId.value
-        val candidateReply = linkedSchemeIdentityKey?.let { key ->
-            val result = replyResult as? GenerateResult.Success
-            val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(key)
-            if (result != null && identity != null) ReplyPatch.textOf(result.response, identity) else null
-        }
-
-        // upsert by generationVersionId——同一 generation version 再次确认时替换旧记录
-        val time = com.lovebrain.app.util.TimeFmt.now()
-        val sentEntry = buildString {
-            append("<!-- sent:").append(time)
-                .append(" linked:").append(linkedSchemeIdentityKey ?: "null")
-                .append(" version:").append(versionId?.value ?: "null")
-                .append(" candidate:").append(candidateReply?.let { java.net.URLEncoder.encode(it, "UTF-8").take(200) } ?: "null")
-                .append(" -->\n")
-            append("我（确认已发送）：").append(sentText.trim()).append("\n")
-        }
-        // 检查是否已有同一 generationVersionId 的记录
-        val existingEntry = _actualSentEntries[versionId?.value]
-        val isUpdate = existingEntry != null
-        _actualSentState.value = ActualSentState.IDLE
-        viewModelScope.launch {
-            try {
-                val success = withContext(Dispatchers.IO) {
-                    if (isUpdate) {
-                        // 替换旧记录——先删旧 entry 再追加新的
-                        knowledgeRepo.replaceActualSentRecord(kbName, existingEntry!!, sentEntry)
-                    } else {
-                        knowledgeRepo.appendActualSentRecord(kbName, sentEntry)
-                    }
-                }
-                if (success) {
-                    // 只有第一次确认才计 adopt；同一 version 更新不重复 +1
-                    if (!isUpdate) {
-                        applyUsage(UsageStats.Event.Adopted)
-                    }
-                    _actualSentEntries[versionId?.value] = sentEntry
-                    _actualSentState.value = ActualSentState.RECORDED
-                    notices.show(
-                        NoticeBoard.Channel.Knowledge,
-                        if (isUpdate) "已更新实际发送记录" else "已记录实际发送的消息"
-                    )
-                } else {
-                    _actualSentState.value = ActualSentState.KB_NOT_FOUND
-                    showPanelWarning("本轮保存失败：知识库已被删除")
-                }
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                L.e("recordActualSentMessage failed", e)
-                _actualSentState.value = ActualSentState.IO_ERROR
-                showPanelWarning("记录发送失败，内容已保留，请重试")
-            }
-        }
-    }
-
-    /** 跟踪当前 session 中已记录的 actual sent entries by versionId，用于 upsert 判断 */
-    private val _actualSentEntries = mutableMapOf<String?, String>()
+    ): kotlinx.coroutines.Job = actualSent.record(sentText, linkedSchemeIdentityKey)
 
     // ═══════════ KnowledgeTriggerCoordinator 事件的唯一落点 ═══════════
 
