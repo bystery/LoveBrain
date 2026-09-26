@@ -119,4 +119,21 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="kb_new_kb">New knowledge base</string>
     <string name="kb_load_failed">Couldn\'t load your knowledge bases. Please retry.</string>
     <string name="action_retry">Retry</string>
+
+    <!-- 与 values/strings.xml 同一族（账本 §58）。类别名两边都得有，
+         否则英文环境下 Android 静默回落到中文，而"没翻"与"翻好了"长得一模一样。 -->
+    <string name="feedback_cases_title">Feedback cases</string>
+    <plurals name="feedback_case_count">
+        <item quantity="one">%1$d case</item>
+        <item quantity="other">%1$d cases</item>
+    </plurals>
+    <string name="feedback_export_markdown">Export MD</string>
+    <string name="feedback_export_json">Export JSON</string>
+    <string name="feedback_filter_all">All</string>
+    <string name="feedback_category_understanding_error">Misunderstood</string>
+    <string name="feedback_category_expression_dislike">Disliked the wording</string>
+    <string name="feedback_category_other">Other</string>
+    <string name="feedback_format_markdown">Markdown</string>
+    <string name="feedback_format_json">JSON</string>
+    <string name="feedback_format_selected">✓ %1$s</string>
 </resources>

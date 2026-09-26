@@ -238,13 +238,22 @@ class ProductionUiContractTest {
         val en = File("src/main/res/values-en/strings.xml").takeIf { it.isFile }
             ?: File("app/src/main/res/values-en/strings.xml")
         assertTrue("values-en/strings.xml must exist", en.isFile)
+        // ⚠ 键表同时收 `<string name=` 与 `<plurals name=`：这一格原先只认前者，
+        // 而 `feedback_case_count`（页头那句"N 条"，账本 §58）是复数档——
+        // 只认 `<string` 的话，plurals 少翻一边照样绿，正是这一格要防的那件事。
         val names = { f: File ->
-            Regex("<string name=\"([^\"]+)\"").findAll(f.readText()).map { it.groupValues[1] }.toSet()
+            Regex("<(?:string|plurals) name=\"([^\"]+)\"")
+                .findAll(f.readText()).map { it.groupValues[1] }.toSet()
         }
         val missing = names(zh) - names(en)
         val extra = names(en) - names(zh)
         assertEquals("strings missing in values-en: $missing", emptySet<String>(), missing)
         assertEquals("values-en defines strings absent from values: $extra", emptySet<String>(), extra)
+        assertTrue(
+            "两边键数必须相等（实到 zh=${names(zh).size} en=${names(en).size}）——" +
+                "上面两条差集判空之外，再钉一颗总量证人：两边同时少同一批键时差集也是空的",
+            names(zh).size == names(en).size
+        )
     }
 
     // ─── 死 API 不得复活 ───────────────────────────────────────────

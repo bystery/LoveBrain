@@ -138,4 +138,22 @@
     <string name="kb_new_kb">新建知识库</string>
     <string name="kb_load_failed">读不出知识库列表，请重试</string>
     <string name="action_retry">重试</string>
+
+    <!-- §6.1 反馈案例页归一（账本 §58）：页头、导出、类别与格式芯片这一族名字进资源。
+         之前它们散在 Kotlin 里，英文环境下读屏照样念中文；类别名现在只有一个来源
+         （页头芯片与卡片首行共用 `categoryDisplayName`，不再各写一遍）。 -->
+    <string name="feedback_cases_title">反馈案例</string>
+    <plurals name="feedback_case_count">
+        <item quantity="one">%1$d 条</item>
+        <item quantity="other">%1$d 条</item>
+    </plurals>
+    <string name="feedback_export_markdown">导出 MD</string>
+    <string name="feedback_export_json">导出 JSON</string>
+    <string name="feedback_filter_all">全部</string>
+    <string name="feedback_category_understanding_error">理解错误</string>
+    <string name="feedback_category_expression_dislike">表达不喜欢</string>
+    <string name="feedback_category_other">其他</string>
+    <string name="feedback_format_markdown">Markdown</string>
+    <string name="feedback_format_json">JSON</string>
+    <string name="feedback_format_selected">✓ %1$s</string>
 </resources>

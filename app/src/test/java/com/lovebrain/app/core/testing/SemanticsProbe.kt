@@ -77,6 +77,30 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
     val floorDp: Float get() = minTouchDp
 
     /**
+     * 语义树里**根本没摆出来**的节点：`0x0dp @(0,0)`。
+     *
+     * 本机实量的来源：反馈案例页那族横排芯片（`horizontalScroll`）滚出视口的最后一颗
+     * 「JSON」——账本 §58。滚动容器会把它压成 0x0（贴在边上的那颗则被压成"看得见的那半截"，
+     * 例如 15x48），两种都不是控件自己的尺寸。
+     * 留着这种读数，三格会同时红在没发生过的话上（"页头有三颗"、"水平边距 0dp"、
+     * "热区 0dp"），而且 @(0,0) 会顶掉任何"取最靠上/最靠左"的锚点。
+     *
+     * ⚠ 排除必须**看得见**：调用方要把 [unlaid] 那一份连尺寸一起打进失败信息或读数里。
+     *   默默筛掉就是拿过滤藏读数（坑表 91：读不出数不等于没数）。
+     */
+    fun unlaid(targets: List<Target>): List<Target> =
+        targets.filter { it.widthDp <= 0f || it.heightDp <= 0f }
+
+    /** 摆得出来的那些（判尺寸、判角色、认锚点都用这一份） */
+    fun laid(targets: List<Target>): List<Target> {
+        val dropped = unlaid(targets)
+        check(targets.size - dropped.size > 0) {
+            "一颗粒都没摆出来（全被压成 0x0）：${targets.joinToString { it.describe() }}"
+        }
+        return targets - dropped.toSet()
+    }
+
+    /**
      * "可交互"的判据：带点击动作、带切换状态，或者**被禁用**的点击控件。
      *
      * 把 Disabled 也算进来不是为了多抓几个节点：`clickable(enabled = false)` 的按钮

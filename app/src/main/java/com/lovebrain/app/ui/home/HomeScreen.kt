@@ -155,7 +155,11 @@ fun HomeScreen(
             LbActionCard(
                 modifier = Modifier.weight(1f),
                 iconRes = R.drawable.ic_feature_feedback,
-                title = "反馈案例",
+                // 这一条进资源、旁边那两条（「知识库」「她的专属记忆」等）暂时留着，不是手抖改一半：
+                // `feedback_cases_title` 是反馈案例页页头**已经有**的那一份（账本 §58），
+                // 入口卡片与目标页页头念同一个名字，抄第二份就迟早会漂；
+                // 那两条还没有第二份，等它们自己长出资源时再一起收。
+                title = stringResource(R.string.feedback_cases_title),
                 subtitle = "点踩记录与导出",
                 onClick = onNavigateFeedback
             )

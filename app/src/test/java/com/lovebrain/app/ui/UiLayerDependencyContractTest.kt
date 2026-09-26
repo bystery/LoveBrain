@@ -326,11 +326,13 @@ class UiLayerDependencyContractTest {
      *   目标页在它里面再走一次脚手架）、
      *   `ui/panel/LoveBrainPanelScreen.kt` 与 `ui/panel/SuggestPanel.kt`
      *   跑在 `TYPE_APPLICATION_OVERLAY` 窗口里，没有系统栏也不受页面边距档管。
-     * - **欠账**：`ui/feedback/FeedbackCasesScreen.kt` 是一整页，今天还在自己画外框。
-     *   它没一起搬走不是因为不重要，是因为它内部一堆区块自己带 `Spacing.lg` 的边距，
-     *   直接套脚手架会变成"外面 24 里面又 12"叠两层——那一页要连着内部边距一起改，
-     *   是独立的一格。**这里的计数只许往下**：搬走之后必须把这一行删掉，
-     *   不许留着一条早已不成立的豁免当"管住了"。
+     *
+     * **欠账清零**（`04259ef` 之后那一格，账本 §58）：`ui/feedback/FeedbackCasesScreen.kt`
+     * 曾是表里唯一一条"这一页还在自己画外框"的豁免，现已搬进脚手架、那一行从表里删了。
+     * 删掉的理由写在这儿，别让下一个人以为豁免还在：它内部一堆区块原本自带 `Spacing.lg`，
+     * 搬的时候必须连着把芯片行与列表的 `contentPadding` 一起归零，
+     * 否则就是"外面 24 里面又 12"叠两层——那件事做完了，量到的水平边距从 12dp 变 24dp
+     * （证人：`ScreenScaffoldFrameTest` 第四格）。
      */
     @Test
     fun `the page frame has exactly one owner`() {
@@ -340,7 +342,9 @@ class UiLayerDependencyContractTest {
             "ui/panel/LoveBrainPanelScreen.kt",
             "ui/panel/SuggestPanel.kt"
         )
-        val registeredDebt = mapOf("ui/feedback/FeedbackCasesScreen.kt" to 1)
+        // 曾经这里是 `mapOf("ui/feedback/FeedbackCasesScreen.kt" to 1)`——那一页已搬进
+        // 脚手架，**债还了就得把表改小**（留着一条不成立的豁免比没有豁免更坏）。
+        val registeredDebt: Map<String, Int> = emptyMap()
 
         val sources = kotlinFiles(appRoot).map {
             it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
@@ -386,17 +390,25 @@ class UiLayerDependencyContractTest {
      * 抓得住。与 §36 那把"整屏底色只有一个所有者"同族，也是被同一条理由逼出来的——
      * `PageHeaderConsistencyTest` 量到四式并存时，读屏名字有两派是**空串**。
      *
-     * 本机实扫（去注释后）：所有者 1 处；**登记着的欠账 1 处**
-     * （`ui/feedback/FeedbackCasesScreen.kt`）。那一页没顺手一起搬的三个理由写在这儿：
-     * 它的栏还带一段"(N条)"计数与一条 `SurfaceCard` 底带，形状比"标题 + 一个尾部动作"多；
-     * 而且这一页要 `rememberLauncherForActivityResult`，**JVM 上挂不起来**——
-     * 搬一页却量不到搬的效果，等于自签。所以留在表里，判 `==`：
+     * 本机实扫（去注释后）：所有者 1 处；**登记的欠账 0 处**。
+     *
+     * ⚠ **勘误（账本 §58）**：这一格的注释以前写着"反馈案例页没顺手一起搬的理由之一：
+     * 这一页要 `rememberLauncherForActivityResult`，**JVM 上挂不起来**——搬一页却量不到搬的效果，
+     * 等于自签"。**那条理由是错的**：`createComposeRule` 下注册 launcher 不报错，
+     * §57 的一次性探针就是挂着这一页量到 9 颗节点的；挂不起来的是**触发**那一步
+     * （`saveLauncher.launch()` 要起真 Activity 选择器）。用一条没验过的"测不到"
+     * 给一笔欠账签字，欠账就会一直活着——这一格本身就是坑表那条"「要 VM」不是测不到的理由"的
+     * 又一个形状。
+     *
+     * 搬完之后：`(N条)` 那句与页头那颗导出的标签进了资源（英文环境不再念中文），
+     * 量到的读屏名字由 `FeedbackCasesSemanticsTest` 那几格钉住
+     * （返回那颗现在念 `R.string.common_back`，不再念「←」这个字形）。
      * 还完之后这一行必须删，不许留着一条已不成立的豁免当"管住了"（同 §36 那条规矩）。
      */
     @Test
     fun `the page header has exactly one owner`() {
         val owner = "core/designsystem/LbTopBar.kt"
-        val registeredDebt = mapOf("ui/feedback/FeedbackCasesScreen.kt" to 1)
+        val registeredDebt: Map<String, Int> = emptyMap()
         val glyph = Regex(""""←"""")
         val icon = Regex("\\bKeyboardArrowLeft\\b")
 

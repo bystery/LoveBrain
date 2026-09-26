@@ -10,7 +10,9 @@ import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.model.FeedbackCase
 import com.lovebrain.app.model.ProviderTicket
+import com.lovebrain.app.ui.feedback.FeedbackCasesScreen
 import com.lovebrain.app.ui.home.AboutScreen
 import com.lovebrain.app.ui.home.CaptureAppsScreen
 import com.lovebrain.app.ui.home.ProviderSection
@@ -38,6 +40,8 @@ import org.robolectric.annotation.GraphicsMode
  * 改之前全 App 的页头是**四式并存**（本机实扫，账本 §37 有出处）：
  * `LbTopBar`（只有首页）、`ScreenHeader`（`ScreenPage` 那一族 + 知识库编辑）、
  * 手写 `←` + 标题的 `Row`（关于 / 使用概览 / 供应商）、`SurfaceCard` 底手写栏（反馈案例）。
+ * ⚠ §57 挂载量完之后这一句要补一笔：反馈案例那一式当时**不在**读源码列出的四式里，
+ * 它是量出来才发现的"第五式"；那一页现已归一（账本 §58），下面第五格就是它的证人。
  *
  * 这四式里最要紧的差别不是好不好看，是**读屏念不念得出来**：
  * `ScreenHeader` 给返回那颗挂了 `contentDescription`，
@@ -75,24 +79,36 @@ class PageHeaderConsistencyTest {
     }
 
     /**
-     * 页头那颗返回钮 = 树里**最靠上**的可点节点。
+     * 页头那颗返回钮 = **最靠上、并列时最靠左**的那颗可点节点。
      *
-     * ⚠ 这一格的锚点换过一次。原本取"最左"，改完 `LbTopBar` 之后三格全红，
-     * 但红的不是实现——报出来的节点是 @(24,297) 那种 312dp 宽的内容块：
-     * `LbTopBar` 在返回盒前面留了 2dp 间距，于是返回钮的左边缘是 26，
-     * "最左"就变成了一整行内容。**锚点一错，报的话说的是个没发生过的理由。**
+     * ⚠ 这一格的锚点换过三次，三次都是锚点自己错、不是实现错：
+     * 1. 原本取全树"最左"。改完 `LbTopBar` 之后三格全红，报出来的节点是 @(24,297)
+     *    那种 312dp 宽的内容块——`LbTopBar` 在返回盒前面留了 2dp 间距，
+     *    返回钮的左边缘是 26，"最左"就变成了一整行内容。
+     *    **锚点一错，报的话说的是个没发生过的理由。**
+     * 2. 于是改成"全树最靠上"。反馈案例页搬进 `LbTopBar` 之后这一版也不成立了：
+     *    那一页页头是**两颗**（返回 48x48 与尾部那颗导出 58x48），同一行、同一个 top，
+     *    `minBy { topDp }` 遇到并列时取树里第一个——顺序对了才算对，顺序不是判据。
+     * 3. 中途试过"先用 y<60 圈出页头那一带，再在那一带里取最靠左"。这一版**被实测打掉**：
+     *    供应商页第一张卡片顶到 y≈50，它的左边缘 24 比返回钮的 26 更靠左，
+     *    于是"最左"抓到整行宽的卡片，红在宽度那条判据上
+     *    （读数：`the provider page names its back control FAILED — PageHeaderConsistencyTest.kt:113`）。
+     *    ⇒ 现在两条一起排：**先最靠上，只在并列时才比左**。
+     *    "靠上"排掉下面的内容，"并列看左"排掉同一行的第二颗尾部动作——
+     *    两把各挡一种歧义，谁都不单独作数。
      *
-     * "最靠上"才是页头那颗控件的定义，而且它对水平间距不敏感。
      * 再加两条前提，免得哪天页面顶部冒出别的控件把判据顶掉：
-     * 它必须落在页头那一带（y < 60dp），并且宽度不超过一颗图标的量级（< 80dp）——
+     * 它必须落在页头那一带（y < 60dp），并且宽度不超过一颗按钮的量级（< 80dp）——
      * 整行宽的东西不可能是页头那颗返回钮。
      */
     private fun headerControl(page: String): SemanticsProbe.Target {
-        val targets = probe.actionableTargets(rule, page)
-        val candidate = targets.minBy { it.topDp }
+        val targets = probe.laid(probe.actionableTargets(rule, page))
+        val candidate = targets.minWithOrNull(
+            compareBy<SemanticsProbe.Target>({ it.topDp }, { it.leftDp })
+        )!!
         assertTrue(
             "$page 页头那颗控件应当落在 y<60dp 那一带，实到 " + candidate.describe() +
-                "；树里最靠上的可点节点都不是它的话，这一格量的就不是页头",
+                "；全树最靠上的那颗都不是它的话，这一格量的就不是页头",
             candidate.topDp < 60f
         )
         assertTrue(
@@ -157,6 +173,28 @@ class PageHeaderConsistencyTest {
     fun `the ScreenPage family names its back control from resources`() {
         mount { CaptureAppsScreen(viewModel = fakeVm(), onBack = {}) }
         assertBackIsNamed("捕获范围页", headerControl("捕获范围页"))
+    }
+
+    /**
+     * 第五式（账本 §57 量出来的那一个）：`SurfaceCard` 底带 + 箭头字形当名字，
+     * 热区靠 `size(48)` 垫够。反馈案例页现已归一 `LbTopBar`（账本 §58）。
+     *
+     * 这一格同时是那把锚点的证人：这一页页头**有两颗**（返回 48x48、尾部导出 58x48），
+     * 旧的"全树最靠上"在并列时会取树里第一个——顺序变了这格就会换一个理由红。
+     */
+    @Test
+    fun `the feedback cases page names its back control`() {
+        mount { FeedbackCasesScreen(viewModel = feedbackVm(), onBack = {}) }
+        assertBackIsNamed("反馈案例页", headerControl("反馈案例页"))
+    }
+
+    /** 反馈案例页那四条流（relaxed 桩扛不住泛型流，同一笔账见 `ProviderSectionSemanticsTest`） */
+    private fun feedbackVm(): SetupViewModel = mockk<SetupViewModel>(relaxed = true).also {
+        every { it.feedbackCases } returns MutableStateFlow(emptyList<FeedbackCase>())
+        every { it.feedbackLoading } returns MutableStateFlow(false)
+        every { it.feedbackError } returns MutableStateFlow<String?>(null)
+        every { it.exportState } returns
+            MutableStateFlow<SetupViewModel.ExportState>(SetupViewModel.ExportState.Idle)
     }
 
     /**

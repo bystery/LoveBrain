@@ -82,7 +82,11 @@ class ScreenScaffoldFrameTest {
      * 所以量出来的数仍要一格一格对，不能拿"都是可点节点的最小左边缘"糊成一个定义。
      */
     private fun contentLeftInset(): Float {
-        val targets = SemanticsProbe(density).actionableTargets(rule, "页面外框")
+        val probe = SemanticsProbe(density)
+        // `laid` 那一层是反馈案例页逼出来的：那一页有 `horizontalScroll` 的芯片行，
+        // 滚出视口的那颗在树里是 `0x0 @(0,0)`——不筛掉它，"最左边那颗可点节点的左边缘"
+        // 就永远是 **0dp**，报出来的话是"这一页水平边距 0dp"，而它明明在 24 那一档。
+        val targets = probe.laid(probe.actionableTargets(rule, "页面外框"))
         val leftMost = targets.minBy { it.leftDp }
         // 要说清量的是哪一颗，否则红了看不出是被哪个节点顶出来的数
         measuredAnchor = leftMost
@@ -141,6 +145,35 @@ class ScreenScaffoldFrameTest {
     fun `the onboarding root insets content by the scaffold margin`() {
         mount { OnboardingFlow(onSkip = {}, onComplete = {}, onOpenSettings = {}) }
         assertScaffoldMargin("首次引导", contentLeftInset())
+    }
+
+    /**
+     * 反馈案例页——表里那句"搬走之后必须把这一行删掉"说的就是它（账本 §57.3 第 1 格）。
+     *
+     * 搬之前这一页的水平边距是**自己写的 `Spacing.lg` = 12dp**，量到 12；
+     * 期望值仍从脚手架那档读，不在这格写 24。
+     */
+    @Test
+    fun `the feedback cases page insets content by the scaffold margin`() {
+        val vm = mockk<SetupViewModel>(relaxed = true).also {
+            every { it.feedbackCases } returns MutableStateFlow(
+                listOf(
+                    com.lovebrain.app.model.FeedbackCase(
+                        caseId = "c1", schemeIdentityKey = "STYLE:B",
+                        candidateReply = "那你想我怎么做",
+                        categories = listOf(com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR),
+                        reasons = listOf("角色错")
+                    )
+                )
+            )
+            every { it.feedbackLoading } returns MutableStateFlow(false)
+            every { it.feedbackError } returns MutableStateFlow<String?>(null)
+            every { it.exportState } returns MutableStateFlow<SetupViewModel.ExportState>(
+                SetupViewModel.ExportState.Idle
+            )
+        }
+        mount { com.lovebrain.app.ui.feedback.FeedbackCasesScreen(viewModel = vm, onBack = {}) }
+        assertScaffoldMargin("反馈案例页", contentLeftInset())
     }
 
     companion object {

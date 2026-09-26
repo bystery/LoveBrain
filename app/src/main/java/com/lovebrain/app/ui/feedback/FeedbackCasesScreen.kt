@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +19,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -42,13 +42,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbAsyncState
 import com.lovebrain.app.core.designsystem.LbModalSheet
+import com.lovebrain.app.core.designsystem.LbScreenScaffold
+import com.lovebrain.app.core.designsystem.LbTopBar
+import com.lovebrain.app.core.designsystem.LbTopBarLevel
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.model.FeedbackCase
@@ -62,11 +69,9 @@ import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.PrimaryDark
 import com.lovebrain.app.core.designsystem.Spacing
-import com.lovebrain.app.core.designsystem.SurfaceBase
 import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.SurfaceInset
 import com.lovebrain.app.core.designsystem.TextHint
-import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
 import com.lovebrain.app.core.designsystem.LbDialog
 import com.lovebrain.app.core.designsystem.LbDialogAction
@@ -141,93 +146,53 @@ fun FeedbackCasesScreen(
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(SurfaceBase)
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            // 顶部栏
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(SurfaceCard)
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.md),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    val (backInteraction, backScale) = rememberPressScale(0.94f, "backBtn")
-                    Box(
-                        modifier = Modifier
-                            .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                            .graphicsLayer { scaleX = backScale; scaleY = backScale }
-                            .clip(LoveBrainShape.md)
-                            .clickable(
-                                interactionSource = backInteraction,
-                                indication = null,
-                                onClick = onBack
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            "←",
-                            style = AppTypography.titleMedium,
-                            color = Primary
-                        )
-                    }
-                    Spacer(Modifier.width(Spacing.sm))
-                    Text(
-                        "反馈案例",
-                        style = AppTypography.titleLarge,
-                        color = TextPrimary,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Spacer(Modifier.width(Spacing.sm))
-                    Text(
-                        "(${filtered.size}条)",
-                        style = AppTypography.labelMedium,
-                        color = TextHint
-                    )
-                }
-                // 导出按钮
-                val (exportInteraction, exportScale) = rememberPressScale(0.96f, "exportBtn")
-                Box(
-                    modifier = Modifier
-                        .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                        .graphicsLayer { scaleX = exportScale; scaleY = exportScale }
-                        .clip(LoveBrainShape.md)
-                        .background(if (filtered.isNotEmpty()) Primary else SurfaceInset, LoveBrainShape.md)
-                        .clickable(
-                            interactionSource = exportInteraction,
-                            indication = null,
-                            enabled = filtered.isNotEmpty()
+    // 这一层 Box 只当浮层的叠放父节点：不画底色、不加边距。
+    // 整屏底色与水平边距归 `LbScreenScaffold` 所有（§6.1 :478）。搬之前这一页是
+    // `Box.fillMaxSize().background(SurfaceBase)` + 各区块自己 `Spacing.lg`，
+    // 语义树量到的水平边距是 **12dp**，而脚手架那一档是 24dp（账本 §57.1、§58）。
+    Box(modifier = Modifier.fillMaxSize()) {
+        LbScreenScaffold(
+            topBar = {
+                // 页头归一 `LbTopBar`（§6.1 :479）。搬之前它是"第五式"：
+                // `SurfaceCard` 底带 + 箭头字形当返回那颗的名字，`role=无`，
+                // 英文环境下读屏念的是「←」这个字形本身。
+                LbTopBar(
+                    title = stringResource(R.string.feedback_cases_title),
+                    level = LbTopBarLevel.Page,
+                    // 「(N条)」也进资源：数出来多少条就传多少，不写死。
+                    subtitle = pluralStringResource(
+                        R.plurals.feedback_case_count, filtered.size, filtered.size
+                    ),
+                    onBack = onBack,
+                    trailing = {
+                        ExportAction(
+                            enabled = filtered.isNotEmpty(),
+                            label = if (exportFormat == "markdown") {
+                                stringResource(R.string.feedback_export_markdown)
+                            } else {
+                                stringResource(R.string.feedback_export_json)
+                            }
                         ) {
                             // 新导出自动重置 copied 状态
                             copiedExportId = null
                             viewModel.exportFeedback(filtered, exportFormat)
                         }
-                        .padding(horizontal = Spacing.md, vertical = Spacing.sm),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        if (exportFormat == "markdown") "导出 MD" else "导出 JSON",
-                        style = AppTypography.labelMedium,
-                        color = if (filtered.isNotEmpty()) Color.White else TextSecondary,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
+                    }
+                )
             }
-
-            // 筛选芯片
+        ) {
+            // 筛选芯片：水平边距由脚手架给，这一行只留垂直那一档
+            // （原来是 `padding(horizontal = Spacing.lg)`，套上脚手架就成 24+12 叠两层）
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState())
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+                    .padding(vertical = Spacing.sm),
                 horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
             ) {
-                FilterChip("全部", filterCategory == null) { filterCategory = null }
+                FilterChip(stringResource(R.string.feedback_filter_all), filterCategory == null) {
+                    filterCategory = null
+                }
                 FeedbackCategory.entries.forEach { cat ->
                     FilterChip(
                         categoryDisplayName(cat),
@@ -235,12 +200,22 @@ fun FeedbackCasesScreen(
                     ) { filterCategory = cat }
                 }
                 Spacer(Modifier.width(Spacing.md))
+                val markdownLabel = stringResource(R.string.feedback_format_markdown)
+                val jsonLabel = stringResource(R.string.feedback_format_json)
                 FilterChip(
-                    if (exportFormat == "markdown") "✓ Markdown" else "Markdown",
+                    if (exportFormat == "markdown") {
+                        stringResource(R.string.feedback_format_selected, markdownLabel)
+                    } else {
+                        markdownLabel
+                    },
                     exportFormat == "markdown"
                 ) { exportFormat = "markdown" }
                 FilterChip(
-                    if (exportFormat == "json") "✓ JSON" else "JSON",
+                    if (exportFormat == "json") {
+                        stringResource(R.string.feedback_format_selected, jsonLabel)
+                    } else {
+                        jsonLabel
+                    },
                     exportFormat == "json"
                 ) { exportFormat = "json" }
             }
@@ -263,8 +238,11 @@ fun FeedbackCasesScreen(
                 val casesToShow = screenState.value
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
+                    // 水平那一档**归零**：脚手架已经把整列往里推了一档，
+                    // 这里再写 Spacing.lg 就是 24+12 叠两层（这一页搬进来最容易踩的那脚）。
+                    // 只留垂直档：列表首尾要呼吸，滚动条不贴页头。
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                        start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.xl
+                        top = Spacing.sm, bottom = Spacing.xl
                     ),
                     verticalArrangement = Arrangement.spacedBy(Spacing.sm)
                 ) {
@@ -276,13 +254,13 @@ fun FeedbackCasesScreen(
                             colors = CardDefaults.cardColors(containerColor = SurfaceCard),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable {
+                                .clickable(role = Role.Button) {
                                     expandedCaseId = if (isExpanded) null else c.caseId
                                 }
                         ) {
                             Column(modifier = Modifier.padding(Spacing.md)) {
                                 Text(
-                                    "【${c.categories.joinToString(", ") { categoryDisplayName(it) }}】 ${c.reasons.joinToString(", ")}",
+                                    "【${categoryNamesOf(c.categories)}】 ${c.reasons.joinToString(", ")}",
                                     style = AppTypography.labelMedium,
                                     color = PrimaryDark,
                                     fontWeight = FontWeight.SemiBold
@@ -442,36 +420,113 @@ fun FeedbackCasesScreen(
     }
 }
 
+/**
+ * 页头尾部那颗导出。形状照搬之前那一份（实心品牌底，零结果时灰），只补两件事：
+ * `role = Role.Button`（§6.5 :532——本机量到 58x48dp、热区够、`role=无`），
+ * 以及"禁用仍留在树上、并报得出 disabled"这条合同（由 `FeedbackCasesSemanticsTest` 钉）。
+ *
+ * ⚠ 它**没有**换成 `LbPrimaryButton`。那是 :479"页面唯一主动作"的判断，换过去要连带动作
+ * 形状与字号；这一格的验收线是外框/页头归一 + 热区与角色补齐，不顺手改形状
+ * （§51 那次"顺手改形状"留下的教训：视觉变化没有截图基线可核，只能留给人工）。
+ */
+@Composable
+private fun ExportAction(enabled: Boolean, label: String, onClick: () -> Unit) {
+    val (interaction, scale) = rememberPressScale(0.96f, "exportBtn")
+    Box(
+        modifier = Modifier
+            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .clip(LoveBrainShape.md)
+            .background(if (enabled) Primary else SurfaceInset, LoveBrainShape.md)
+            .clickable(
+                interactionSource = interaction,
+                indication = null,
+                enabled = enabled,
+                role = Role.Button,
+                onClick = onClick
+            )
+            .padding(horizontal = Spacing.md, vertical = Spacing.sm),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            label,
+            style = AppTypography.labelMedium,
+            color = if (enabled) Color.White else TextSecondary,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+}
+
+/**
+ * 芯片。两层：**点击挂在 48 见方的外盒上，视觉仍是那颗小胶囊**。
+ *
+ * §57 本机量到这族六颗是 15–19dp 高（「JSON」34x15、「全部」28x19…），而 §6.5 :531
+ * 要的是手指能点中的那一颗 ≥48dp。只在原来那条链上加 `heightIn` 是不够的——
+ * 那台仪器反复量到的一条：外层容器变大了、点击仍挂在子里面，等于没改
+ * （所以 `clickable` 与 `semantics` 都排在外盒上，版式与按压缩放留在内盒）。
+ *
+ * 互斥单选 ⇒ `Role.Tab` + `selected`（与 `ReplyInput.RoleChip`、面板那三档模式同一写法）。
+ * 「✓ Markdown」那个对勾留着：它不是颜色之外的第二种选中提示，去掉会让低视力用户只剩底色可辨；
+ * 规范位是 `selected`，字形是给眼睛看的。
+ */
 @Composable
 private fun FilterChip(label: String, isSelected: Boolean, onClick: () -> Unit) {
     val (interaction, scale) = rememberPressScale(0.94f, "filterChip_$label")
     Box(
         modifier = Modifier
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clip(LoveBrainShape.sm)
-            .background(if (isSelected) Primary else SurfaceInset, LoveBrainShape.sm)
-            .border(1.dp, if (isSelected) Primary else Border, LoveBrainShape.sm)
+            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .clickable(
                 interactionSource = interaction,
                 indication = null,
+                role = Role.Tab,
                 onClick = onClick
             )
-            .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
+            .semantics { selected = isSelected },
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            label,
-            style = AppTypography.labelSmall,
-            color = if (isSelected) Color.White else TextSecondary,
-            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-        )
+        Box(
+            modifier = Modifier
+                .graphicsLayer { scaleX = scale; scaleY = scale }
+                .clip(LoveBrainShape.sm)
+                .background(if (isSelected) Primary else SurfaceInset, LoveBrainShape.sm)
+                .border(1.dp, if (isSelected) Primary else Border, LoveBrainShape.sm)
+                .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                label,
+                style = AppTypography.labelSmall,
+                color = if (isSelected) Color.White else TextSecondary,
+                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+            )
+        }
     }
 }
 
-private fun categoryDisplayName(cat: com.lovebrain.app.model.FeedbackCategory): String = when (cat) {
-    com.lovebrain.app.model.FeedbackCategory.UNDERSTANDING_ERROR -> "理解错误"
-    com.lovebrain.app.model.FeedbackCategory.EXPRESSION_DISLIKE -> "表达不喜欢"
-    com.lovebrain.app.model.FeedbackCategory.OTHER -> "其他"
+/**
+ * 类别名。之前是非 composables 的 `when` 直接返回内联中文，于是英文环境下
+ * 页头芯片与卡片首行一起念中文；现在两边都读这一处（同一条判据不许有两份实现）。
+ */
+@Composable
+private fun categoryDisplayName(cat: FeedbackCategory): String = when (cat) {
+    FeedbackCategory.UNDERSTANDING_ERROR -> stringResource(R.string.feedback_category_understanding_error)
+    FeedbackCategory.EXPRESSION_DISLIKE -> stringResource(R.string.feedback_category_expression_dislike)
+    FeedbackCategory.OTHER -> stringResource(R.string.feedback_category_other)
+}
+
+/**
+ * 卡片首行那句「【类别、类别】 原因、原因」。
+ *
+ * 为什么不是 `cats.joinToString { categoryDisplayName(it) }`：`joinToString` 的转换 lambda
+ * 是普通 inline lambda，**里面调 @Composable 编译不过**。这一层用普通 for 循环把名字取出来，
+ * 判据仍只有一份（[categoryDisplayName]）。
+ */
+@Composable
+private fun categoryNamesOf(cats: List<FeedbackCategory>): String {
+    val names = ArrayList<String>(cats.size)
+    for (cat in cats) names.add(categoryDisplayName(cat))
+    return names.joinToString(", ")
 }
 
 private fun statusDisplayName(status: com.lovebrain.app.model.CaseStatus): String = when (status) {
