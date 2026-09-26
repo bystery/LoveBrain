@@ -20,7 +20,7 @@ import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.ResultMode
 import com.lovebrain.app.ui.theme.LoveBrainTheme
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
-import com.lovebrain.app.viewmodel.ProfileReview
+import com.lovebrain.app.feature.profile.ProfileReview
 import com.lovebrain.app.viewmodel.UsageStats
 import io.mockk.every
 import io.mockk.mockk

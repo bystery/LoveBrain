@@ -22,6 +22,8 @@ import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.notice.NoticeBoard
+import com.lovebrain.app.feature.profile.ProfileReview
+import com.lovebrain.app.feature.profile.ProfileUpdateController
 import com.lovebrain.app.feature.roundcommit.ActualSentRecorder
 import com.lovebrain.app.feature.roundcommit.ActualSentState
 import com.lovebrain.app.feature.provider.ProviderTicketStore
@@ -318,20 +320,38 @@ class LoveBrainViewModel(
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
 
     /**
-     * 画像建议卡片：一份快照、一个写入漏斗（§2.2 "没有统一 Reducer/UiState" 的第二处落地）。
+     * 画像建议卡片：快照 + "确认"这一次尝试的全部判据，主人是 [ProfileUpdateController]
+     * （复核 §5.2 第 6 步搬的第二块**行为**，原来那是本文件最大的单个成员、98 行）。
      *
-     * 原先是 `profileSuggestion` 与 `isProfileConfirming` 两个 flow、VM 里 14 处各改各的；
-     * 这两件事必须同帧（卡片看不看建议、按钮与转圈看在不在确认），分两处就会拼出
-     * "建议已清空但 confirming 还是 true"这种没人设计过的中间态。
-     * 判定与"重复点确认要忽略"都住在 [ProfileReview] 里，见那个文件的说明。
+     * VM 在这里只做两件事：交出"库在不在 / 纠正 revision / 原子事务"三个读数（都带 IO 调度，
+     * 与搬之前一致），以及把警告/回执/"盘改了要刷新"接回各自主人。
      */
-    private val _profileReview = MutableStateFlow(ProfileReview())
-    val profileReview: StateFlow<ProfileReview> = _profileReview.asStateFlow()
+    private val profileUpdates = ProfileUpdateController(
+        scope = viewModelScope,
+        libraryExists = { kb -> withContext(Dispatchers.IO) { knowledgeRepo.listAll().any { it.name == kb } } },
+        readCorrectionsRevision = { kb -> withContext(Dispatchers.IO) { knowledgeRepo.getCorrectionsRevision(kb) } },
+        applyUpdate = { kb, payload, expectedRevision ->
+            knowledgeRepo.applyProfileUpdateAtomically(
+                kbName = kb,
+                me = payload.me,
+                her = payload.her,
+                warmth = payload.warmth,
+                stageChanged = payload.stageChanged,
+                newStage = payload.newStage,
+                expectedRevision = expectedRevision
+            )
+        },
+        onApplied = { refreshKnowledgeBases() },
+        onWarning = { msg -> showPanelWarning(msg) },
+        onNotice = { msg -> notices.show(NoticeBoard.Channel.Knowledge, msg) },
+        onError = { msg, e -> L.e(msg, e) },
+        stopRegeneration = {
+            operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH)
+        }
+    )
 
-    /** 想动卡片上那两件事，只有这一条路 */
-    private fun applyReview(event: ProfileReview.Event) {
-        _profileReview.value = _profileReview.value.reduce(event)
-    }
+    /** 卡片唯一真源（一份快照同帧带"建议 + 在不在确认"，判定住在 ProfileReview 里） */
+    val profileReview: StateFlow<ProfileReview> = profileUpdates.review
 
     /**
      * 悬浮窗上那三条"会自己消失的话"：知识库后台操作的回执、面板级警告、五维重估摘要。
@@ -1361,7 +1381,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 notices.show(NoticeBoard.Channel.Knowledge, event.message)
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.ProfileReady ->
                 // 画像建议绑定 originating kbName，确认时也用 suggestion.kbName 而不是 _activeKb
-                applyReview(ProfileReview.Event.Arrived(event.suggestion))
+                profileUpdates.accept(ProfileReview.Event.Arrived(event.suggestion))
         }
     }
 
@@ -1379,109 +1399,14 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * - IO 失败必须抛出（strict 版本），不吞错误
      * - 任一步失败自动 rollback——rollback 成功/失败分别返回不同 typed result
      */
-    fun confirmProfileUpdate() {
-        val review = _profileReview.value
-        // "有建议且没在确认中"这条判据住在 ProfileReview 里，不在这里重复写一遍
-        if (!review.canAttemptConfirm) return
+    /**
+     * 确认这张画像建议卡。判据与分支都在 [ProfileUpdateController.confirm] 里——
+     * 那里每一条分支都是一个用户可见差别（三种前置条件失败的话不一样，
+     * 只读保护那一支**不清卡**；回滚成功与回滚失败的措辞也不能合并）。
+     */
+    fun confirmProfileUpdate() = profileUpdates.confirm()
 
-        val suggestion = review.suggestion ?: return
-        val payload = suggestion.profileUpdate
-        if (payload == null || !payload.valid) {
-            showPanelWarning("建议格式无效，请重新生成")
-            applyReview(ProfileReview.Event.Dismissed)
-            return
-        }
-
-        val kbName = suggestion.kbName
-        val suggestionId = suggestion.suggestionId
-
-        viewModelScope.launch {
-            applyReview(ProfileReview.Event.ConfirmStarted)
-
-            try {
-                val exists = withContext(Dispatchers.IO) {
-                    knowledgeRepo.listAll().any { it.name == kbName }
-                }
-                if (!exists) {
-                    applyReview(ProfileReview.Event.Dismissed)
-                    showPanelWarning("原知识库已删除，这条画像建议已失效")
-                    return@launch
-                }
-
-                val currentRev = withContext(Dispatchers.IO) {
-                    knowledgeRepo.getCorrectionsRevision(kbName)
-                }
-                if (currentRev != suggestion.correctionsRevision) {
-                    applyReview(ProfileReview.Event.Dismissed)
-                    showPanelWarning("资料已变化，请重新生成")
-                    return@launch
-                }
-
-                // 委托 Repository 执行原子事务——返回 typed result
-                val result = knowledgeRepo.applyProfileUpdateAtomically(
-                    kbName = kbName,
-                    me = payload.me,
-                    her = payload.her,
-                    warmth = payload.warmth,
-                    stageChanged = payload.stageChanged,
-                    newStage = payload.newStage,
-                    expectedRevision = suggestion.correctionsRevision
-                )
-
-                // 按 typed result 分支给出精确反馈
-                when (result) {
-                    is ProfileTransactionResult.Success -> {
-                        // 确认期间可能有新建议到达；只清"我确认的这一份"，这条判据在事件里
-                        applyReview(ProfileReview.Event.ClearedIfCurrent(suggestionId))
-                        notices.show(NoticeBoard.Channel.Knowledge, "画像已更新")
-                        refreshKnowledgeBases()
-                    }
-                    is ProfileTransactionResult.PreconditionFailed -> {
-                        // Repository 层的二次检查——VM 层已检查过，这是竞态兜底
-                        val msg = when (result.reason) {
-                            // 建议本身作废的两种：清卡
-                            PreconditionReason.KB_NOT_FOUND -> {
-                                applyReview(ProfileReview.Event.Dismissed)
-                                "原知识库已删除，这条画像建议已失效"
-                            }
-                            PreconditionReason.REVISION_CONFLICT -> {
-                                applyReview(ProfileReview.Event.Dismissed)
-                                "资料已变化，请重新生成"
-                            }
-                            // 只读保护不是建议作废：那是"这个 App 比库旧"，升级之后同一份建议仍然有效。
-                            // 跟着清卡会把用户这次攒的审核内容白丢一次。
-                            PreconditionReason.LIBRARY_READ_ONLY ->
-                                "这个知识库的结构版本比本 App 还新，已被设为只读，画像没有写入（可以先升级 App 再确认）"
-                        }
-                        showPanelWarning(msg)
-                    }
-                    is ProfileTransactionResult.RolledBack -> {
-                        // 写入失败但 rollback 完整成功——数据已恢复，可安全重试
-                        L.e("confirmProfileUpdate: transaction rolled back", result.cause)
-                        showPanelWarning("画像写入失败，已恢复原数据，可重试")
-                    }
-                    is ProfileTransactionResult.RollbackFailed -> {
-                        // 写入失败且 rollback 也失败——数据可能不一致，不可轻描淡写
-                        L.e("confirmProfileUpdate: CRITICAL rollback failed for paths=${result.failedPaths}", result.cause)
-                        showPanelWarning("画像写入失败且恢复异常，数据可能已损坏，请检查知识库")
-                    }
-                }
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                L.e("confirmProfileUpdate unexpected error", e)
-                showPanelWarning("画像写入发生异常，请重试")
-            } finally {
-                applyReview(ProfileReview.Event.ConfirmFinished)
-            }
-        }
-    }
-
-    fun dismissProfileUpdate() {
-        // 取消正在进行的重新生成，使旧请求的回调不再被接受
-        operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.PROFILE_REFRESH)
-        applyReview(ProfileReview.Event.Dismissed)
-    }
+    fun dismissProfileUpdate() = profileUpdates.dismiss()
 
     /**
      * 画像重新生成——原地显示 loading，卡片位置不变。
@@ -1496,7 +1421,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     /** 画像重新生成——见下方 regenerateProfileUpdate 的 说明 */
     fun regenerateProfileUpdate() {
-        val suggestion = _profileReview.value.suggestion ?: return
+        val suggestion = profileUpdates.review.value.suggestion ?: return
         val kbName = suggestion.kbName
 
         // 取消上一次未完成的重新生成（同类去重由 coordinator 保证，这里只是显式让位）
@@ -1516,9 +1441,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     when (event) {
                         is com.lovebrain.app.domain.KnowledgeTriggerEvent.Notice ->
                             // 重新生成失败：清掉旧建议，让"重新生成"按钮回到可点状态
-                            applyReview(ProfileReview.Event.Dismissed)
+                            profileUpdates.accept(ProfileReview.Event.Dismissed)
                         is com.lovebrain.app.domain.KnowledgeTriggerEvent.ProfileReady ->
-                            applyReview(ProfileReview.Event.Arrived(event.suggestion))
+                            profileUpdates.accept(ProfileReview.Event.Arrived(event.suggestion))
                         else -> Unit
                     }
                 }

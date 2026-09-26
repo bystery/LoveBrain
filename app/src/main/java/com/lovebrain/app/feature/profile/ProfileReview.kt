@@ -1,4 +1,4 @@
-package com.lovebrain.app.viewmodel
+package com.lovebrain.app.feature.profile
 
 import com.lovebrain.app.model.ProfileSuggestion
 

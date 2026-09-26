@@ -1,4 +1,5 @@
 package com.lovebrain.app.viewmodel
+import com.lovebrain.app.feature.profile.ProfileReview
 
 import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.ProfileUpdate
