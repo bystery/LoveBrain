@@ -462,7 +462,12 @@ class OverlayGenerateSmokeTest {
 
         pumpUntil("应进入生成中") { vm.isGenerating.value }
         assertLoadingStopBar("停止前")
-        assertEquals("停止前应已发出 1 个请求", 1, s.requestCount)
+        // 这句红过两次（`85d2d42` 与 `49aac07`）都只报 expected/was，读不出请求走到哪一段，
+        // 所以把三段读数直接拼进消息：没出门 / 出门就被取消 / 真到了服务侧，是三件事
+        assertTrue(
+            "停止前应已发出 1 个请求（实到 ${s.requestCount}）\n  链路读数：${providerDiagnosis()}",
+            s.requestCount == 1
+        )
 
         // 点生产停止动作：按生产留的 tag 定位文字节点，触摸注入由其可点击父节点接收
         composeRule.onNodeWithTag(LbTags.PRIMARY_STOP).performClick()
@@ -502,7 +507,12 @@ class OverlayGenerateSmokeTest {
         tapGenerateReplyButton(1)
         composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
 
-        assertEquals("快速双击只允许产生 1 个 Provider 请求", 1, s.requestCount)
+        assertTrue(
+            "快速双击只允许产生 1 个 Provider 请求（实到 ${s.requestCount}）\n" +
+                "  链路读数：${providerDiagnosis()}（这一格另有生产竞态：见本文件 KDoc 与" +
+                "LoveBrainViewModel.kt:844-855 的租约登记顺序）",
+            s.requestCount == 1
+        )
         pumpUntil("双击后仍应渲染成功结果") { vm.result.value is GenerateResult.Success }
         assertEquals("最终只应有 1 个请求落网", 1, s.requestCount)
         assertFalse("完成后不得留在生成中", vm.isGenerating.value)
@@ -544,7 +554,7 @@ class OverlayGenerateSmokeTest {
         assertTrue(
             "R1 应已向 Provider 发出请求（fake 服务端实收 ${s.requestCount} 次；" +
                 "isGenerating=${vm.isGenerating.value} providerReady=${vm.providerReady.value} " +
-                "result=${vm.result.value} baseUrl=${s.baseUrl}）",
+                "result=${vm.result.value} baseUrl=${s.baseUrl}）\n  链路读数：${providerDiagnosis()}",
             s.requestCount >= 1
         )
         vm.stopGeneration()

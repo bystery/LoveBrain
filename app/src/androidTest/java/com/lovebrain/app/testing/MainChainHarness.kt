@@ -132,6 +132,7 @@ object MainChainHarness {
                 { e -> "查询失败(${e::class.java.simpleName}:${e.message})" }
             )
         return "fake[accepted=${server.acceptedCount} requests=${server.requestCount} " +
+            "bytes=${server.lastBytesSeen} err='${server.lastHandleError}' " +
             "lastRequestLine='${server.lastRequestLine}'] systemProxy=$proxies " +
             "loopbackSelfTest=${loopbackSelfTest()}"
     }

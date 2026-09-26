@@ -70,6 +70,27 @@ class FakeProviderServer : AutoCloseable {
     var lastRequestLine: String = ""
         private set
 
+    /**
+     * 最后一条连接**实际读到的字节数**与**读崩在哪**（诊断用）。
+     *
+     * 为什么非要这两个数：CI run 36230978438 上四格读到
+     * `accepted=1 requests=0 lastRequestLine=''`，而 `requests` 只在
+     * `readRequest` **正常返回**之后才加——`handle()` 那个 catch 是吞掉的。
+     * 所以"accepted=1 requests=0"其实有两种完全不同的读法：
+     * · bytes=0 ⇒ 客户端连上就一个字没写（请求没出门）；
+     * · bytes>0 且 err=SocketException ⇒ 请求写了、连接被对端重置（**被取消**），
+     *   读线程抛异常后被 catch 吞掉，`requests` 才停在 0。
+     * 前者查 OkHttp 为什么不发，后者查谁在 t2 之后立刻取消这条流——两码事。
+     */
+    private val lastByteCount = AtomicInteger(0)
+
+    @Volatile
+    var lastHandleError: String = ""
+        private set
+
+    /** 最后一条连接读到的字节数 */
+    val lastBytesSeen: Int get() = lastByteCount.get()
+
     /** 已建立的 TCP 连接数 */
     val acceptedCount: Int get() = accepted.get()
 
@@ -127,6 +148,8 @@ class FakeProviderServer : AutoCloseable {
 
     private fun handle(socket: Socket) {
         socket.use { s ->
+            lastByteCount.set(0)
+            lastHandleError = ""
             try {
                 val input = s.getInputStream()
                 val body = readRequest(input)
@@ -171,7 +194,10 @@ class FakeProviderServer : AutoCloseable {
                     }
                 }
             } catch (e: Exception) {
-                // fake 内部异常不外抛（取消导致的 socket 关闭属正常路径）
+                // fake 内部异常不外抛（取消导致的 socket 关闭属正常路径），但**必须留下读数**：
+                // requests 停不停在 0 全看这里，吞掉异常等于把"请求没出门"和"被取消了"抹成一样
+                lastHandleError = "${e::class.java.simpleName}:${e.message} " +
+                    "bytes=${lastByteCount.get()}"
             } finally {
                 runCatching { socket.close() }
             }
@@ -196,6 +222,7 @@ class FakeProviderServer : AutoCloseable {
         while (true) {
             val b = input.read()
             if (b == -1) break
+            lastByteCount.incrementAndGet()
             headerText.append(b.toChar())
             if (prev == '\n'.code && headerText.endsWith("\r\n\r\n")) break
             prev = b
@@ -212,6 +239,7 @@ class FakeProviderServer : AutoCloseable {
         while (read < length) {
             val n = input.read(bytes, read, length - read)
             if (n == -1) break
+            lastByteCount.addAndGet(n)
             read += n
         }
         return String(bytes, 0, read, Charsets.UTF_8)
