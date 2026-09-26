@@ -5438,3 +5438,4 @@ rm -rf app/build/test-results/testDebugUnitTest
   仓库里也没有 baseline 目录）⇒ 这一格堵的是"假证据"，不是"补上基线"。
 - 全套 JVM 数没变：191 套件 / 1424 单测 / 0 失败（这一格没动 Kotlin）。
 坑表 **131–132**、剩余工作那份 **V15–V16**、交接单 **§0.47**。
+★ **同窗口继格（`0bc1597`）**：视觉证据改走 JVM 基线。实到 run 36236822959：装回去、前台确认是 `com.lovebrain.app/.ui.SetupActivity` 之后，`screencap` 交回 **0 字节**；根因是三个 Activity 全设了 `FLAG_SECURE`（防 API Key / 关系数据在最近任务截图泄露）⇒ 设备截图这条要求在 app 现状下结构性拿不到证据。用户拍板改走 roborazzi（:610 的二选一）：钉 1.30.0（往上的 1.7x 要 Kotlin 2.0.21，本仓库 1.9.24），基线三张提交在 `app/src/test/roborazzi/`，CI 只跑 `verifyRoborazziDebug`。坏实现打破：注入主按钮 `heightIn(min=)` 48dp→64dp → **verify 三格红**（同时既有的 touch-floor 那格也红，交叉核对），撤回转绿；⚠ 而**带着同一份回归跑普通单测是 rc=0 全绿**（默认模式只重录不比对，但也不覆盖基线——单测跑完三个哈希未变）⇒ 比对必须独立成一步（坑表 133）。另两条形状：compose 的真实签名要 `javap` 看（1.30 是把内容包起来的 composable，不是语义节点扩展）；传相对文件名会落到 `app/` 根目录（已挪 `_temp/roborazzi-stray-first-run/`）。本机：192 套件 / 1427 单测 / 0 失败；lint 预算 67/15、进预算 66/14（与上轮逐字相同）；CI 判决（含 verifyRoborazziDebug 第一次真跑）等推上去那一跑。
