@@ -58,10 +58,12 @@ jobs:
         run: bash scripts/verify_visual_baseline.sh
 
       - name: Upload screenshot comparison report and actual images
-        # 带实到图是刻意的：基线只能由**跑它的那台机器**生成。
-        # 实到教训：把在 Windows 上录的三张基线提交进去，CI 的 Ubuntu runner 上字体渲染不同
-        #   → run 36246805108 三格全红。所以重录基线的正确做法是：从这个产物里拿实到图
-        #   （`actual/` 下是 runner 自己画的那些），人看过再提交到 app/src/test/roborazzi/。
+        # 带实到图是刻意的：红的时候人要能看见 runner 自己画出来的那张，而不是只看见一句失败。
+        # ⚠ 两次更正（都是当次产物原文，别再引旧说法）：
+        #   · 第一次红不是"字体渲染不同"：实到图与仓库基线逐字节相同，真原因是
+        #     `The original file(app/build/outputs/roborazzi/…) was not found`（verify 读的原图在 build/ 里）；
+        #   · 那一发"注入后 verify 红"的证明也不成立——它比的是上一发 record 留在 build/ 的残对象。
+        #   现在的契约写在 scripts/verify_visual_baseline.sh 里（先清残留、再把仓库基线放到位置）。
         if: always()
         uses: actions/upload-artifact@v4
         with:
