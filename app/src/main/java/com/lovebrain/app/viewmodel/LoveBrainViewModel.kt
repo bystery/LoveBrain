@@ -32,7 +32,10 @@ import com.lovebrain.app.model.CounselingEnded
 import com.lovebrain.app.model.CounselingEvent
 import com.lovebrain.app.model.CounselingStarted
 import com.lovebrain.app.model.DailySuggestion
+import com.lovebrain.app.feature.reply.GenerationVersionId
 import com.lovebrain.app.feature.reply.ReplyStore
+import com.lovebrain.app.feature.reply.ReplyVersionStack
+import com.lovebrain.app.feature.reply.RollbackOutcome
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.KnowledgeBase
@@ -254,33 +257,21 @@ class LoveBrainViewModel(
     private val _inputChanged = MutableStateFlow(false)
     val inputChanged: StateFlow<Boolean> = _inputChanged.asStateFlow()
 
-    /** /: 生成版本 ID——每轮成功生成的唯一身份 */
-    data class GenerationVersionId(val value: String) {
-        companion object {
-            fun next(): GenerationVersionId = GenerationVersionId(java.util.UUID.randomUUID().toString())
-        }
-    }
+    /**
+     * 回复的版本栈（复核 §5.2 第 6 步搬出来的第三块**行为**，主人是 [ReplyVersionStack]）。
+     *
+     * 四条判据都不在 VM 了：单向回退（被丢弃的版本永不复活）、按知识库分栈、KB 边界拒绝、
+     * session 内上限。VM 只留"翻完之后要做的那几件事"（见 rollbackToPreviousGeneration）。
+     * 结果 / 上下文 / 版本身份装在同一个快照里一起走，所以没人能只翻一半——
+     * 以前最容易出的错就是"结果翻回去了、上下文还停在被丢弃那一轮"。
+     */
+    private val versions = ReplyVersionStack<ReplyGenerationContext, GenerateResult.Success>()
 
-    /** /: 生成历史——每轮成功生成时保存的版本快照，携带完整版本身份
-     * 注意：这是 session-only 内存历史，杀进程即消失。不声称跨重启完整版本历史。
-     * snapshot 保存完整 immutable ReplyGenerationContext，
-     * rollback 时原子恢复 result + versionId + context，避免 result/context 错配。 */
-    private data class GenerationSnapshot(
-        val versionId: GenerationVersionId,
-        val result: GenerateResult.Success,
-        val context: ReplyGenerationContext,
-        val kbName: String?,
-        val createdAt: Long = System.currentTimeMillis()
-    )
-    /** /: session 生成历史——内存 StateFlow，杀进程即消失。不声称跨重启完整版本历史。
-     * 最多保留最近 20 个版本，防止长 session 无限增长。 */
-    private val _generationHistory = MutableStateFlow<List<GenerationSnapshot>>(emptyList())
-    val generationHistorySize: Int get() = _generationHistory.value.size
-    private val MAX_HISTORY_SIZE = 20
+    /** 当前活跃版本 ID——最新成功生成的版本身份，用于绑定点踩 / 发送 / 改写 */
+    val currentVersionId: StateFlow<GenerationVersionId?> = versions.currentVersionId
 
-    /** 当前活跃版本 ID——最新成功生成的版本身份，用于绑定点踩/发送/改写 */
-    private val _currentVersionId = MutableStateFlow<GenerationVersionId?>(null)
-    val currentVersionId: StateFlow<GenerationVersionId?> = _currentVersionId.asStateFlow()
+    /** session 内已记录的版本数（内存态，杀进程即清；不声称跨重启的完整版本历史） */
+    val generationHistorySize: Int get() = versions.size
 
     /**
      * 流式正文 / 方案卡——从 [replyStore] 的 uiState 派生，不再有独立可写的 StateFlow。
@@ -662,24 +653,16 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      *   如果用户当前输入与旧版本不同，stale 必须 true。
      */
     fun rollbackToPreviousGeneration() {
-        // KB 边界——result context 必须与 active KB 一致
-        val activeKbName = _activeKb.value?.name
-        val contextKbName = replyGenerationContext?.kbName
-        if (contextKbName == null || contextKbName != activeKbName) return
+        // 谁能回退、回退到哪、栈怎么改，都在 ReplyVersionStack 那一处（含 KB 边界与"按库分栈"）
+        val out = versions.rollback(
+            activeKbName = _activeKb.value?.name,
+            contextKbName = replyGenerationContext?.kbName
+        )
+        if (out !is RollbackOutcome.Applied) return
+        val previous = out.restored
 
-        // 只筛选当前 KB 的 snapshots
-        val kbHistory = _generationHistory.value.filter { it.kbName == activeKbName }
-        if (kbHistory.size < 2) return
-
-        val currentSnapshot = kbHistory.last()
-        val previous = kbHistory[kbHistory.size - 2]
-
-        // 删除 current snapshot（不是 previous），恢复 previous
-        _generationHistory.value = _generationHistory.value.filterNot { it.versionId == currentSnapshot.versionId }
-
-        // 原子恢复 result + versionId + context
+        // 原子恢复 result + versionId + context（三者来自同一个快照，不会错配）
         replaceReplyResult(previous.result)
-        _currentVersionId.value = previous.versionId
         replyGenerationContext = previous.context
         feedbackCases.clearFeedbacks()
         // 版本栈已经翻过去了，在飞的改写目标也就不存在了：一起作废
@@ -693,14 +676,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /** 是否可以回退到上一版本 — 以当前 active KB 为权限边界 */
+    /** 判据本身在栈里（KB 边界 + 这一块库至少两条）；这里只把两个读数递过去 */
     val canRollbackGeneration: Boolean
-        get() {
-            // result context 必须与 active KB 一致
-            val activeKbName = _activeKb.value?.name
-            val contextKbName = replyGenerationContext?.kbName
-            if (contextKbName == null || contextKbName != activeKbName) return false
-            return _generationHistory.value.count { it.kbName == activeKbName } >= 2
-        }
+        get() = versions.canRollback(
+            activeKbName = _activeKb.value?.name,
+            contextKbName = replyGenerationContext?.kbName
+        )
 
     // ═══════════ 谈心模式 ═══════════
     /**
@@ -1051,9 +1032,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             is ReplyStore.Effect.SuccessCommitted -> {
                 _generationRoundId.value++
                 val versionId = GenerationVersionId.next()
-                _currentVersionId.value = versionId
-                replyGenerationContext?.let { ctx ->
-                    val snapshot = GenerationSnapshot(
+                // 有本轮上下文才写历史：记的是"结果 + 上下文 + 版本身份"三条一起，
+                // 上限（session 内最多留几条）由栈负责，搬之前是那个 20
+                val ctx = replyGenerationContext
+                if (ctx == null) {
+                    versions.advanceVersionOnly(versionId)
+                } else {
+                    versions.record(
                         versionId = versionId,
                         result = effect.result,
                         context = ctx.copy(
@@ -1062,8 +1047,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                         ),
                         kbName = ctx.kbName
                     )
-                    // 限制 session history 最多 20 条
-                    _generationHistory.value = (_generationHistory.value + snapshot).takeLast(MAX_HISTORY_SIZE)
                 }
                 // 生成成功后重置输入变化标记
                 _inputChanged.value = false
@@ -1320,7 +1303,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         readContext = {
             replyGenerationContext?.let { ActualSentRecorder.AttemptContext(it.kbName) }
         },
-        readVersionKey = { _currentVersionId.value?.value },
+        readVersionKey = { versions.currentVersionIdNow?.value },
         readCandidateText = { key ->
             key?.let {
                 val result = replyResult as? GenerateResult.Success

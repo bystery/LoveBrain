@@ -44,7 +44,8 @@ class ViewModelStateOwnershipTest {
         "NoticeBoard" to listOf("_kbNotice", "_panelWarning", "_vectorUpdate"),
         "ProviderTicketStore" to listOf("_activeTicket", "_providerReady"),
         "ActualSentRecorder" to listOf("_actualSentState"),
-        "ProfileUpdateController" to listOf("_profileReview")
+        "ProfileUpdateController" to listOf("_profileReview"),
+        "ReplyVersionStack" to listOf("_generationHistory", "_currentVersionId")
     )
 
     /** VM 通过哪个前缀访问那一家子（反向判据：不许绕开 store 另写一条路） */
@@ -53,7 +54,8 @@ class ViewModelStateOwnershipTest {
         "NoticeBoard" to "notices.",
         "ProviderTicketStore" to "ticketStore.",
         "ActualSentRecorder" to "actualSent.",
-        "ProfileUpdateController" to "profileUpdates."
+        "ProfileUpdateController" to "profileUpdates.",
+        "ReplyVersionStack" to "versions."
     )
 
     private fun sourceOf(rel: String): String = File(appRoot(), rel).readText()
@@ -101,8 +103,10 @@ class ViewModelStateOwnershipTest {
      * 当场绿过去；而且真涨的时候报不出是谁（本仓库有过一次：报错点名了一个根本没错的名字）。
      *
      * 每一颗后面都跟着它该去的地方，就是这张表剩下的账（按行为块分，不按"哪颗先搬方便"分）：
-     * · 回复版本与 stale 判定：`_generationRoundId` `_inputChanged` `_generationHistory` `_currentVersionId`
-     * —— 这四颗与 `ReplyStore` 之间还隔着 VM 的快照账（§5.2 第 6 步剩下的主体那块）；
+     * · 回复版本与 stale 判定：`_generationRoundId` `_inputChanged`
+     * —— 版本栈本身（`_generationHistory` `_currentVersionId`）已经跟着四条判据一起搬进
+     *    `ReplyVersionStack`，剩这两颗才是"stale 判定"那半块：`_inputChanged` 是结果标记、
+     *    `_generationRoundId` 是 ResultArea 重置 viewMode 的轮次身份，两者都要读 VM 的上下文账；
      * · 知识库工作区：`_activeKb` `_currentVector` `_vectorDelta` `_stageSuggestion`
      * —— 这一族是"换库要一起复位"的（`refreshKnowledgeBases` 里那一段就是它的复位判据），
      *    所以它该一起走，不许一颗一颗零散搬（`_profileReview` 是个例外：它跟着**整段确认行为**一起搬进了 ProfileUpdateController，那一段本来就是这张卡的唯一写入者）；
@@ -111,7 +115,7 @@ class ViewModelStateOwnershipTest {
      * · 计费与用量：`_usageStats`（reduce 已经在 `UsageStats` 里，剩落盘那一半）。
      */
     private val stillInViewModel = setOf(
-        "_generationRoundId", "_inputChanged", "_generationHistory", "_currentVersionId",
+        "_generationRoundId", "_inputChanged",
         "_activeKb", "_stageSuggestion", "_currentVector", "_vectorDelta",
         "_usageStats", "_resultMode", "_onlyThisRound",
         "_intentConfig", "_showIntentEditor"
