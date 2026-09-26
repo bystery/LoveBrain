@@ -4971,3 +4971,157 @@ python 那把退役（`_temp/gates107/scan_primary_buttons.py.retired-2026-09-26
 读数留在 `_temp/gates107/role_gap_probe.txt`。三屏各挂一次 `setContent`（坑表 3），
 `FeedbackCasesScreen` 只要 4 条 flow（`feedbackCases`/`feedbackLoading`/`feedbackError`/
 `exportState`），面板整屏那 47 条的桩法见 `PanelHostSemanticsTest`。
+
+---
+
+# 追加五十八：出口判据三发修复让 verify 第一次全绿；反馈案例页一次销两笔（`04259ef` → `8456199`）
+
+## 58.1 出口那一格：一个 magic 修完，底下还压着两条从没跑到过的病
+
+CI run 36205285000 上 `Egress checker must be gradeable against synthetic captures` 红，
+后面**十二步全 skipped**（取消审计、工单号、R8 release、APK metadata、费用基线、SBOM、三个 Upload）。
+根因是分三发挖出来的，每一发都要等上一发修好才看得见：
+
+| 发 | 病 | 为什么以前看不见 |
+|---|---|---|
+| 一 | fixture 的 pcap 全局头写成 `0xA1B2C213`（带内校验和的 pcap 变体），tshark 直接拒收 | 生成器自带的 `inspect()` **比的是同一个错常数**——写方与读方共用一个魔数就是自证，本机永远绿 |
+| 二 | `post_process` 里 `grep -v` 一行没选中返回 1、`getent hosts <假主机名>` 查不到返回 2，两处都没兜底 ⇒ `set -e` + `pipefail` 把整个脚本当场带走，**退出码像判过、报告一个字没写** | 五格 fixture 从没被真解析器读开过，那四行代码从没执行到 |
+| 三 | 表内主机名判据 `[ "$name" = "$h" ] \|\| case …ok=1… ;; esac`：相等时 `\|\|` 短路，右边那句根本不执行 ⇒ **完全匹配的主机反被判成表外**，只有子域放过 | 同上一发：这条路从没跑到；而且 SNI 与 DNS 各抄一遍，一次点亮两条 |
+
+第二发最阴的地方：`rogue-dns`/`bare-ip` 两格**恰好**拿到期望的 exit 1，
+只有"报告里那一行"没读到——**假绿长在期望 FAIL 的格子上**。修法不是把断言改软：
+去空改 `sed /d`（空不空由后面的 `[ -s ]` 判）、两条 DNS 探测加 `|| true`
+（"一个允许 IP 都没解析到"仍由那一条 warn 显式写进报告），再合成一颗
+`matches_allow_host` 让 SNI/DNS 共用一份判据，最后加一条 `set -E` + ERR 兜底：
+**以后任何一处再静默中止，都会打印 CANNOT-VERIFY 并把退出码钉在 2**。
+
+自测试那六格也修了：`check_case no-tshark` 原来没覆盖 `TSHARK_BIN`，就是第 1 格的重复
+（所以 `RAN=7` 撞守卫 6）；三格 CANNOT-VERIFY 原来共用 `"CANNOT-VERIFY"` 一个 needle，
+于是"文件读不开"能把"没装 tshark"那格**顶成 PASS**——现在三格各点自己的理由串，
+并新增第 7 格 `bad-magic.pcap`（包体一个字节没改、只有全局头是旧 bug 的标本），
+格子名查重直接 die。`--tshark` 走子 shell 里的 `export`，**不走 `env VAR=… cmd`**
+（这台机器 PATH 上那个 `~/.local/bin/env` 空壳会把赋值前缀整个吞掉还返回 0，坑表 107）。
+
+**结果**：CI run 36208159365 上 `verify` **33 步全跑、0 skipped、conclusion=success**（历史上第一次），
+`ui-test` 仍是那 8 格（45/8，与改前逐格同一集合，见 58.8）。
+
+## 58.2 本机拿到的独立证据（没有 tshark 也不空等）
+
+- **libmagic 当外部读者**：`file` 与 tshark 用的虽是同一族 magic 表，但它不是我写的尺。
+  修前 5 个 fixture 全报 `data`；修后 5 个报
+  `pcap capture file, microsecond ts (little-endian) - version 2.4 (Ethernet, capture length 65535)`，
+  故意留的坏标本 `bad-magic.pcap` 仍然报 `data`。
+- **差分桩**：`_temp/stub_tshark_from_fixtures.py` 照 CI 的**行形状**吐数据（每个包一行、没有该字段就吐空行），
+  不假装会 dissect。它在本机**逐格复现**了 CI 那四格死亡的退出码（本机那条探测是商店占位符 `python3` 返回 49，
+  CI 是 `getent` 返回 2——同一类死法、不同的命令）。修完七格全过、`harness_rc=0`。
+  ⚠ 桩自己先造过一次假读数：Windows 文本模式把 `\n` 翻成 `\r\n`，`\r` 顺着 `post_process`
+  一路进到白名单比对，于是 `"api.example.test\r" = "api.example.test"` 不成立——改走 `sys.stdout.buffer`。
+- 真 tshark 的判决**只能等 CI**：fixture 的包体（DNS 查询、TLS ClientHello）到这一格才第一次被真解析器看过。
+
+## 58.3 反馈案例页：改前改后，同一台仪器对照（`6f0bc6e`）
+
+| 节点 | 改前（§57 实量） | 改后（本格实量） |
+|---|---|---|
+| 页头返回那颗 | 「←」`48x48 @(12,8)`、`role=无`、名字就是箭头字形 | 「Back」`48x48 @(26,0)`、`role=Button`、名字来自 `R.string.common_back` |
+| 页头尾部那颗 | 「导出 MD」`58x48 @(290,8)`、`role=无` | 「Export MD」`69x48 @(267,0)`、`role=Button` |
+| 芯片六颗 | `28x19 / 48x19 / 58x19 / 28x19 / 66x18 / 34x15`，全 `role=无`、selected 全 null | 外盒 ≥48×48、`role=Tab`、`selected` 报得出来（360 槽横扫之后 6/6 仍达标） |
+| 整卡（展开/折叠） | `336x68 @(12,95)`、`role=无` | 同尺寸、`role=Button` |
+| 水平边距 | **12dp**（`Spacing.lg` 各区块自己写） | **24dp**（脚手架那一档，`ScreenScaffoldFrameTest` 第四格证人） |
+
+一次销两笔登记：`UiLayerDependencyContractTest` 里"页面外框只有一个所有者"与
+"页头只有一个所有者"那两格的 `registeredDebt` 各自清空。
+芯片是**两层做法**：`clickable` 与 `semantics{selected}` 挂在 48 见方的外盒上，
+视觉那颗 19dp 胶囊一个字没改（同一写法见 `ReplyInput.RoleChip`）。
+「✓ Markdown」那个对勾**留着**——它是颜色之外的第二种选中提示，去掉就只剩底色可辨；
+规范位是 `selected`，字形是给眼睛看的。
+页头那颗导出**没有**顺手换成 `LbPrimaryButton`（那是 :479 的判断，会连带动作形状，
+而 :538 的截图基线还欠着，改样子这件事本机核不了）。
+
+## 58.4 一条被证伪的旧理由（写在豁免注释里的那种）
+
+页头那一格的注释原来写着：这一页"要 `rememberLauncherForActivityResult`，
+**JVM 上挂不起来**——搬一页却量不到搬的效果，等于自签"。**这句话是错的**：
+`createComposeRule` 下注册 launcher 不报错，§57 的探针就是挂着它量到 9 颗节点的；
+挂不起来的是**触发**那一步（`launch()` 要起真 Activity 选择器）。
+一条没验过的"做不了"给一笔欠账续了三个窗期的命——这是坑表里
+"「要 VM」不是测不到的理由"的又一形态：**理由越具体（点名某个 API）越容易骗过自己**。
+
+## 58.5 两台仪器的锚点被这一页打掉重画
+
+1. `PageHeaderConsistencyTest.headerControl` 三易其稿：
+   全树最左（被 `LbTopBar` 那 2dp 间距打掉，抓到整行宽的内容块）→
+   全树最靠上（反馈案例页页头**两颗同一行**，`minBy` 遇并列取树序第一个，顺序不是判据）→
+   中途那版"y<60 带内最左"也被**实测**打掉：供应商页第一张卡片顶到 y≈50、左边缘 24
+   比返回那颗的 26 更靠左 ⇒ 红在宽度那条判据上（`PageHeaderConsistencyTest.kt:113`）。
+   现在：**先最靠上，并列时才比左**。
+2. `SemanticsProbe` 新增 `laid/unlaid`：`horizontalScroll` 滚出视口那颗在树里是
+   `0x0 @(0,0)`，会把任何"最左/最上"锚点顶成 0dp。判"每颗自己的尺寸"另有两条路：
+   给够挂载宽度（这一页的格子挂 600dp）**或**横扫取最大面积（另有一格挂 360dp 横扫）——
+   两档都得有格子，只在宽槽全绿说明不了是"修好了"还是"终于放得下了"。
+   ⚠ 排除必须看得见：`laid()` 会带样本、P7 证明过滤做成恒不筛时那两格当场红。
+
+## 58.6 探针表（每一发都是把生产/夹具改坏，看哪格红）
+
+| 发 | 注入 | 结果 |
+|---|---|---|
+| P1 | 芯片外盒撤掉 48dp 热区下限 | **BIT**（热区那格 + 360 横扫那格同时红） |
+| P2 | 芯片撤掉 `role = Role.Tab` | **BIT**（Tab 分组那格 + 横扫那格） |
+| P3 | 整卡撤掉 `role = Role.Button` | **BIT**（`the case card is a button`） |
+| P4 | 页头那颗导出撤掉 role | **BIT**（`the header actions declare a role`） |
+| P5 | 页面重新自己画整屏底色（**全限定写法**） | **第一读 NO-TEETH** ⇒ 尺换口径 + 加三档正向对照 ⇒ 复跑 **BIT**（见 58.7） |
+| P6 | 把 `values-en` 里那份 `<plurals>` 整块删掉 | **BIT**（`every zh string has an en counterpart`——旧写法只认 `<string>`，这一发会假绿） |
+| P7 | 把 `laid/unlaid` 做成恒不筛 | **BIT**（`ScreenScaffoldFrameTest` + `PageHeaderConsistencyTest` 各红一格） |
+| E1 | 出口判据里摘掉一个 `\|\| true` | **BIT**（打印 `CANNOT-VERIFY … aborted with rc=49 before printing any verdict`、退出码 2） |
+
+驱动与桩都留在 `_temp/`（`probe42.py`、`stub_tshark_from_fixtures.py`、`stub_tshark.sh`、
+`dupcase_probe.sh`、`probe_egress_no_guard.sh`），**一个都没删**。
+`probe42.py` 第一版崩过一次：Windows 的 `CreateProcess` 不能直接执行 shell 脚本 `gradlew`
+（`WinError 193`）——**崩在注入之后**，靠"每发先备份、`finally` 还原并逐字节核对"把树保住了。
+
+## 58.7 P5 那一发值一整格：删了豁免的闸正好是瞎的
+
+`the page frame has exactly one owner` 原来写 `code.contains("background(SurfaceBase")`，
+所以 `background(color = SurfaceBase)` 与全限定那两种合法写法它**都看不见**。
+我注入的正是全限定版 ⇒ 那一格照样绿。
+时序上最难看的地方：**我刚把这一页的豁免从表里删掉**，同一发的检查就证明"新的违规也不会被抓"——
+这比留着一条不成立的豁免更危险。尺改成
+`background\(\s*(?:color\s*=\s*)?(?:[\w.]+\.)?SurfaceBase\b`，
+并在同一格内加正向对照：三档写法都要认得、`background(SurfaceCard)` 必须不认（8456199）。
+
+## 58.8 登记跟着动的表与实测
+
+| 表 | 上一格 | 本格 | 为什么 |
+|---|---|---|---|
+| 字面量 TEXT | 178 | **174** | 页头标题、`(N条)`、两颗导出标签进资源（真少一条，不是换桶） |
+| 字面量 COMPONENT | 77 | **76** | 首页入口卡片接上页面那份 `feedback_cases_title`（消重复） |
+| 页面外框豁免 | 1 处 | **0** | 反馈案例页搬进脚手架 |
+| 页头豁免 | 1 处 | **0** | 同上（那条"挂不起来"的理由一并作废） |
+| 出口自测试 | 6 格（含 1 格重复） | **7 格** | 新增"有 tshark 但文件读不开"那一格 |
+
+- 全套实测：**189 套件 / 1409 单测 / 0 失败 / 0 错误 / 0 跳过**（`--rerun`，189 份 XML 跨度 0.04s）。
+  上一格基线是 188 / 1399 ⇒ +1 套件、+10 格。
+- 门禁 12 步全 RC=0、除 `prompt` 外全部非零输出：lint **67 / 15**，进预算 **66 / 14**，advisory 1；
+  产物门 `1409 / 189 / 0 红`；跨层依赖 6；预算判据自检 27 格全对；工单号 PASS；
+  取消审计 165 站（PROTECTED=54 / WAIVED=2 / SUSPEND-FREE=109 / NEEDS_REVIEW=0）；
+  prompt 资产零 diff；资产锁 OK；`assembleAndroidTest` RC=0；被改文件死导入 0 条
+  （顺手清掉 `HomeScreen.kt` 一条**本格改之前就死着**的 `material3.Text`）。
+- ⚠ lint 那一栏本格没动：新资源全都被引用，`UnusedResources` 仍是 32。
+
+## 58.9 这一格没做的（照例不当已解决）
+
+- 反馈案例页只量了 **Content 档**：`Loading` / `Error` / `Empty` 三档在这一页的语义树还没读过
+  （§6.3 那四态别的页都齐了，这一页缺一半——`Empty` 只在"导出灰着还在"那一格里被路过）。
+- 卡片正文那十几句内联中文（「补充：」「期望版本：」「真实对话：」「记忆引用：」…）
+  与 `statusDisplayName` 那四个状态名**没进资源**；英文环境下读屏仍念中文。
+- 页头那一带的 `y < 60`、宽度 `< 80dp` 两档仍是硬编码常量（改成从设计系统读，是另一格）。
+- 设备侧照旧 8 格红（7 格 `OverlayGenerateSmokeTest` + 1 格 `ReplyPrimaryActionsTest.generating_shows…`），
+  与本轮改动无因果：集合、条数与改前逐格相同。
+- :538 截图基线照旧故意没接；`DropdownMenu` 内容、生成中/流式那两档的天花板照旧。
+- 出口判据还剩一条**从没跑到过的路径**：`--capture-on-device` 那一整段（要设备 + adb + tcpdump）。
+  本机没有设备，CI 也没跑它，所以那一段里发现的一处可疑只记账不修：
+  `verify_network_egress.sh` 现场抓包时先 `trap '…kill tcpdump…' EXIT`（约 108 行），
+  后面解析阶段又 `trap 'rm -rf "$WORK"' EXIT` —— **后一条把前一条顶掉了**，
+  若在 pull 之前脚本死掉，设备上的 tcpdump 不会被这个 trap 收掉。
+  ⚠ 这是**读代码看到的形状**，不是量到的行为（没有设备就量不到）；
+  要么下次接上设备时顺手验一次，要么改成"合并两条 trap"再验——别拿它当已修。
+
