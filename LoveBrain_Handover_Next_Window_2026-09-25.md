@@ -1271,6 +1271,20 @@ HEAD `0c4d6d6`，仍未推。两笔：
   账本 §58.9 记了一行）。
 
 ## 1. 起手必查（照抄，别凭记忆）
+
+> ⚠ **这台工作副本没配 `remote.origin.fetch`**（`branch.main.remote/merge` 有，refspec 没有）。
+> 后果实测：`git fetch origin` 安静成功但**不写** `refs/remotes/origin/*` ⇒
+> `git log origin/main..HEAD` 直接 `unknown revision`，`git status` 也不显示 ahead/behind。
+> ⇒ 比"本地领先几条"只能 `git ls-remote origin main` 拿远端 SHA，再 `git rev-list --count <那个SHA>..HEAD` 现算。
+> 修它是一行 `git config`，**属于改用户 git 配置，要用户点头**（本仓库至今没动）。
+
+**同一 SHA 的 CI 实况（`85d2d42`，纯文档那一笔，用户说「推送」后已上远端）**：
+`verify` **success（33 步全跑、0 skipped）**，产物门自报
+`1409 tests, 189 suite(s), 0 failures, 0 errors` ⇒ **与本机基线逐字相同，两侧同尺这一回没漂**；
+`ui-test` **failure**：`tests=45 failures=8 errors=0 skipped=2`，
+就是那 7 格 `OverlayGenerateSmokeTest` + 1 格 `ReplyPrimaryActionsTest.generating_shows…`；
+`upgrade-test` 按条件跳过。⇒ **发布判定仍 NO-GO**（required checks 没全绿），
+但"verify 通道打不开、后面 12 步被 skip"这一族**已经闭合**，不再是待查项。
 ```bash
 git fetch origin && git rev-parse --short HEAD && git rev-list --count FETCH_HEAD..HEAD
 gh run list --limit 3
