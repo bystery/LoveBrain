@@ -462,8 +462,11 @@ class OverlayGenerateSmokeTest {
 
         pumpUntil("应进入生成中") { vm.isGenerating.value }
         assertLoadingStopBar("停止前")
-        // 这句红过两次（`85d2d42` 与 `49aac07`）都只报 expected/was，读不出请求走到哪一段，
-        // 所以把三段读数直接拼进消息：没出门 / 出门就被取消 / 真到了服务侧，是三件事
+        // ⚠ 原来这里是一句"当下读一次"的 assertEquals(1, requestCount)：`isGenerating` 在 prep
+        //    阶段就翻 true，而 TCP 连接是在 t2 之后才建的——读得太早会把"还没发出"报成"没发出"。
+        //    `a8349eb` 那一跑三格齐报 `accepted=0 requests=0 bytes=0` 就是这个形状。
+        //    先等到真发出（或超时），再钉数量；超时消息里带链路读数。
+        pumpUntil("停止前请求应已出门", timeoutMs = 6_000L) { s.requestCount >= 1 }
         assertTrue(
             "停止前应已发出 1 个请求（实到 ${s.requestCount}）\n  链路读数：${providerDiagnosis()}",
             s.requestCount == 1
@@ -507,6 +510,10 @@ class OverlayGenerateSmokeTest {
         tapGenerateReplyButton(1)
         composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
 
+        // ⚠ 这句原来是一锤子 assertEquals：双击若真如本文件 KDoc 所说"两个 prep 都被 reject"，
+        //    那等多久都是 0；但"还没发出"与"根本不会发出"必须分开报，否则下一轮又要猜。
+        //    先给它 6 秒真出门，再钉数量；超时消息自带链路读数（accepted/requests/bytes/terminated）。
+        pumpUntil("双击后应至少发出 1 个 Provider 请求", timeoutMs = 6_000L) { s.requestCount >= 1 }
         assertTrue(
             "快速双击只允许产生 1 个 Provider 请求（实到 ${s.requestCount}）\n" +
                 "  链路读数：${providerDiagnosis()}（这一格另有生产竞态：见本文件 KDoc 与" +
@@ -551,8 +558,11 @@ class OverlayGenerateSmokeTest {
         // 而 requestCount 是累计的：R1 若也没出门，那句 R2 断言说的其实一直是 R1 的事。
         // 这一条早一步红，就能把「请求根本没发出」与「被取代请求的迟到事件污染新请求」
         // 两类原因分开——后者要等前者过了才轮到它说话。
+        // ⚠ 等一等再判：`isGenerating` 在 prep 阶段就翻 true，连接要到 t2 之后才建，
+        //    一锤子读会把"还没发出"报成"根本没发出"（`a8349eb` 那跑三格同形就是这么来的）。
+        pumpUntil("R1 的请求应已出门", timeoutMs = 6_000L) { s.requestCount >= 1 }
         assertTrue(
-            "R1 应已向 Provider 发出请求（fake 服务端实收 ${s.requestCount} 次；" +
+            "R1 应已向 Provider 发出请求（等满 6 秒后实收 ${s.requestCount} 次；" +
                 "isGenerating=${vm.isGenerating.value} providerReady=${vm.providerReady.value} " +
                 "result=${vm.result.value} baseUrl=${s.baseUrl}）\n  链路读数：${providerDiagnosis()}",
             s.requestCount >= 1
@@ -563,10 +573,13 @@ class OverlayGenerateSmokeTest {
         // R2：新请求，被 fake 挂住不会自己完成
         vm.generate()
         pumpUntil("R2 应进入生成中") { vm.isGenerating.value }
+        // 同样先等出门再判累计：R2 的连接也发生在 prep 之后
+        pumpUntil("R2 应已向 Provider 发出请求（累计应 ≥2）", timeoutMs = 6_000L) { s.requestCount >= 2 }
         assertTrue(
-            "R2 应已向 Provider 发出请求（累计实收 ${s.requestCount} 次，" +
+            "R2 应已向 Provider 发出请求（等满 6 秒后累计实收 ${s.requestCount} 次，" +
                 "R1 那一次之后没有新增；isGenerating=${vm.isGenerating.value} " +
-                "providerReady=${vm.providerReady.value} result=${vm.result.value}）",
+                "providerReady=${vm.providerReady.value} result=${vm.result.value}）\n" +
+                "  链路读数：${providerDiagnosis()}",
             s.requestCount >= 2
         )
         assertNull("R2 在途时不得已有结果", vm.result.value)
