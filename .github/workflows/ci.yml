@@ -50,7 +50,12 @@ jobs:
         #   （基线本身在 app/src/test/roborazzi/，默认模式不会覆盖它——所以"自动覆盖 baseline"
         #   这条路本来就不存在，但"默默不比对"这条路存在，得用这一步堵掉。）
         # 重新生成基线是显式人工动作：`./gradlew :app:recordRoborazziDebug` + 人看过 + 单独一笔提交。
-        run: ./gradlew :app:verifyRoborazziDebug --no-daemon
+        # ⚠ 不能直接跑 gradle task：roborazzi 在 verify 模式读的是
+        #   app/build/outputs/roborazzi/<类名>.方法>.png 作为"原图"，干净检出里那个目录是空的
+        #   → run 36247435793 三格全红在「The original file(…) was not found」。脚本把仓库里的基线
+        #   放到它真正会读的位置，并且**先清 build/ 残留**——否则开发机上上一发 record 的图
+        #   会冒充基线（本仓库第一次接线就把"红/绿"证明做在了那些残留上，算不数，已重做）。
+        run: bash scripts/verify_visual_baseline.sh
 
       - name: Upload screenshot comparison report and actual images
         # 带实到图是刻意的：基线只能由**跑它的那台机器**生成。
