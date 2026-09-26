@@ -4598,3 +4598,200 @@ prompt 零 diff、资产锁、27 格自检、androidTest 全 RC=0。
   `LbPrimaryButton` 现在用 `Spacing.xl`（16dp）写在盒子上。它没有底色，贴边不可见 ⇒ 本格不动它，
   但这条不一致**没进任何表**，下次统一 UI 语法时要判。
 - 首页那颗仍不归 `LbButtonTone` 的"进行中灰色"那一档（老账，没新进展）。
+
+# 追加五十三：面板整屏第一次进这台 JVM 仪器——"整页要 VM 所以测不到"第 6 次被否证（提交 `d0b6358`）
+
+## 53.1 先做判决实验，再谈"测不到"
+
+旧账（好几处）写着谈心那颗「继续追问」测不到，理由是"整页要 `LoveBrainViewModel`"。
+这一格先量入参：`LoveBrainPanelScreen` 收的是**一个 VM + 八个回调**，VM 用
+`mockk(relaxed = true)` 再逐条桩住它 collect 的 **47 条 StateFlow** 就能整屏挂起来、也能空闲。
+⇒ 那条归因又是"我没做"被写成"做不到"（坑表 84 那一族第 6 次）。
+
+两发自己绊自己的：
+
+- ⚠ `every { vm.panelMode } returns MutableStateFlow(panelMode.value)` 把值**冻结在构造那一刻** ⇒
+  三档一次都没切过，而"页头没动"照样看起来绿。改成持有 `MutableStateFlow` 并让生产的回调写它
+  （`setPanelMode` / `openPlanPanel` / `dismissPlanPanel`），界面读的才确实是那个持有者。
+- ⚠ 面板那三档**不是** `panelMode = 0/1/2`：`PanelHeader:88-93` 的映射是
+  `panelMode == 1 → 谈心`、`showPlanPanel → 锦囊`、`else → 回复`。凭直觉摆数字会量到
+  "第三档没变化"的假象（本机第一发就是这样：`panelMode=2` 仍是 Reply selected）。
+
+## 53.2 一挂起来就量到的（六处，全修）
+
+| 节点 | 修前实量 | 修后（本机） |
+|---|---|---|
+| 角色 chip「她」「我」 | `29x28dp`、role=无 | `48x48dp`、role=Tab |
+| 角色 chip「想法」 | `40x28dp`、role=无 | `48x48dp`、role=Tab |
+| 「添加」➕ | `24x24dp`、role=无 | `48x48dp`、role=Button |
+| 空态那颗动作 | `254x`**8**`dp`（被父槽位夹了） | ≥48 见方（整屏热区守卫绿） |
+| 页头折叠那颗 | `48x48dp`、**role=无** | role=Button |
+| 引导卡片关闭那颗 | `48x48dp`、role=无，且名字是**内联中文**「关闭使用提示」 | role=Button，名字走 `a11y_close_onboarding` |
+
+- 那颗 chip 的"下限"抄的是**胶囊字形高度 28**（`ROLE_CHIP_HEIGHT_DP = 28`），不是手指高度：
+  一个名字混了两件事。修法仍是**热区与视觉分两层**——外层可点的自己 48 见方，胶囊在里面按 28 画，
+  并且 `clickable` 排在 `padding` **之前**（原来就是 `clickable(…).padding(horizontal = 9.dp)`）。
+- 空态那一发值得记两条：①`MessageList` 被宿主钉成 `height(80dp)`，而空态自己要
+  图标 48 + 间距 8 + 动作 48 + 那个 Column 的 `padding(vertical = Spacing.md)` 上下 16 = **120**；
+  第一发改成 104 之后仍量到 **32dp**（漏算了那 16dp），第二发 120 才过。
+  ②`heightIn(min = 48)` 在 `maxHeight < 48` 的约束里会被夹到 max ⇒ **min 不是保证**，
+  注释里那句"外层 Box 承担 ≥48dp 热区"在被夹掉时就是假话（`MiniSwitch` 同一族）。
+- 那条 `role=无` 的两颗都是自画 `Box.clickable`：Material 不替自定义节点补角色，
+  :532 那一栏只能靠量发现（同 `4ee1514` 那次"角色从 Button 掉回无"）。
+
+## 53.3 我越界的一次，退了
+
+把「添加」写成 `clickable(enabled = canAdd)`（想让它"灰着还在"）之后，
+`ComposerAddButtonGatingTest` **两格当场红**——那两格守着"空草稿时 ➕ 不许带点击语义"，
+而其中一格的 KDoc 还写着"没推帧时它已经带上点击语义 ⇒ CI 那 7 格的成因不是这条"，
+也就是**它同时是一条诊断件**。
+⇒ "禁用是灰着还在"管的是**页面唯一主动作**（:479 / §2.1 主动发回退合同）；
+次级入口的门控归它自己的守卫。生产侧退回原合同（只保留热区与角色），我配的那格删掉，
+并在测试文件里留下这段理由——别让下一窗口把它当"漏掉的覆盖面"再补回来。
+
+## 53.4 连带的一条：输入框被挤窄（记账，没自签）
+
+chips 与 ➕ 补到 48 见方之后，360dp 那一行变成 3×48 + 2×4 + ➕48 = **200dp** 固定，
+留给输入框 **128dp**（本机单挂 `ReplyInput` 量到 `128x48dp @(168,0)`；改前同一颗是 166dp）。
+生产里没有"输入框最小宽度"这条判据 ⇒ 我没自签"够不够"，只把 **−38dp** 记在账上；
+⚠ 面板宽度设备上可由用户拖，320dp 那一档更紧，这一条**只能靠截图基线（:538 仍欠）或人工**。
+
+## 53.5 §6.4 那半边：钉住了什么、什么没判
+
+- **钉住**（新守卫 `PanelHostSemanticsTest`，走生产的点击路径换档）：三档之间页头三颗 segment 的
+  盒子一字不动（`88x48 @(24/112/200, 20)`）、恰好一段报 `selected` 且就是刚点的那段、三段都是
+  `Role.Tab`；折叠那颗三档同位、≥48、报 `Button`；整屏每一颗能按的东西 ≥48 见方。
+- **没判**：回复档主输入量到 `166x48 @(138,261)`，谈心档那颗是 `304x76 @(28,273)`——
+  **不是同一颗、也不在同一格**。§6.4 那句"模式切换不移动主要输入"照字面读**不成立**；
+  把它修平要么两档共用一个输入槽位、要么改谈心那块布局，**是产品/布局口径，没自签**。
+- 三颗锦囊胶囊量到 `0x0dp @(0,0)` = 横向滚出去的裁切读数 ⇒ 筛掉、把筛掉的打进失败信息，
+  并压一条 `MIN_JUDGED = 12` 的样本下限防空转（坑表 85/90/97 那一族）。
+
+## 53.6 实测
+
+门禁一批：`bash _temp/run_gates107.sh _temp/gates38b`（这一版每步记 **RC + 输出字节数**，开跑前先验 python 与 `/usr/bin/env` 包装真的会执行）
+
+| 步 | RC | 输出字节 |
+|---|---|---|
+| SANITY | 0 | — |
+| unit | 0 | 2412 |
+| lint | 0 | 1918 |
+| budget | 0 | 1161 |
+| self27 | 0 | 2147 |
+| deps | 0 | 3 |
+| ticket | 0 | 72 |
+| prompt | 0 | 0 |
+| assetlock | 0 | 132 |
+| art | 0 | 338 |
+| canc | 0 | 80 |
+| atest | 0 | 3404 |
+| dead | 0 | 424 |
+
+- 单测：**187 套件 / 1388 例 / 0 失败 / 0 错误 / 0 跳过**，187 份 XML 全在 08:00:32（同一秒 ⇒ 同一批，不是上一轮的陈旧件）
+- lint 报告重生成后：measured_issues=67 measured_rules=15 gated_issues=66 gated_rules=14 advisory_issues=1（预算登记 14 条规则；`UnusedResources` 由 33 降到 32，因为 `a11y_close_onboarding` 这一格第一次真的被引用了）
+- 跨层 `6`；lint 预算判据 `27 格全对`；资产锁 `6dcde732fab602813559370dd6af3b774ca24fda86ce28f2c0cfd88a8be95831`；取消审计 PROTECTED=54 WAIVED=2 SUSPEND-FREE=109 NEEDS_REVIEW=0
+- 唯一合法安静的一步是 `prompt`（`git diff --exit-code` 零输出就是它的通过信号）。
+
+
+# 追加五十四：CI run 36199686779 的 12 红——一条根因吃掉三格（提交 `45c71d8`）
+
+## 54.1 总数与分类
+
+`cfca8bb` 推上去（run `36199686779`）：**verify 红 / ui-test 红 / upgrade-test 跳过**。
+`[gate] ui-test: tests=45 failures=12 errors=0 skipped=2` —— 上一轮 23 红 → 本轮 12 红。
+
+| 类别 | 条数 | 是哪几条 |
+|---|---|---|
+| 测试侧坏了（判据/锚点/代理指标） | 6 | §54.2 的 3 条 + §54.3 的 2 条 + §54.4 的 1 条 |
+| 只有设备/CI 能判 | 6 | `OverlayGenerateSmokeTest` 其余 6 条（§54.5） |
+| 要改生产 / 要产品口径 | **0** | 本轮 12 条里没有一条需要动 `app/src/main` |
+
+## 54.2 一条根因吃掉三格：`UiText.generatingBarPattern`
+
+三条症状：`theGeneratingBarTemplateStillBuildsAMatchingPattern`（"配不上自己拼出来的模式"）、
+`ReplyPrimaryActionsTest.generating_showsProductionLoadingStopAffordance…`（"已显示"断言失败）、
+`OverlayGenerateSmokeTest.stopDuringGeneration…`（同）。
+
+根因在测试侧的构建器里：`Regex.escape(template).replace(Regex.escape("%1$s"), phases)`——
+`String.replace` 是**字面量**替换，而 `Regex.escape("%1$s")` 交回去的是 `\Q%1$s\E` 这 8 个字符，
+转义后的模板里没有这串 ⇒ 替换从未发生，发出去的 regex 把 `%1$s` 当字面量匹配，
+**永远配不上任何真实文案**。
+⇒ 一句话教训：**拿 `Regex.escape` 的产物去找占位符，就是把正则当字符串用**；
+唯一的线索是那句"配不上自己拼出来的模式"。
+
+修法是按段拼：三段字面量（占位符前、两占位符之间、之后）各自转义一次，
+中间插入 `($phases)` 与 `\d+`；再加一条 `check(两个占位符都找得到)`——
+占位符被挪走就**当场抛**，不许退化成静默失配。
+⚠ 上一轮我把 `stopDuringGeneration` 归到"夹具点早了"那一类，**归错了**：
+本轮按读数改判为模式构建器坏了。分类也是要重验的，不是写一次就完。
+
+## 54.3 中文锚点两格（我自己上一格制造的）
+
+`resultArea_showsError_whenError` / `resultArea_showsProviderSetup_whenNotReady` 的锚点写着
+「点击重试」「去设置」，而 `856d485` 把这两颗搬进 `LbTextAction` / `LbPrimaryButton` 并让标签走
+`panel_retry_tap` / `provider_open_settings` ⇒ 英文模拟器渲染 "Tap to retry" / "Open settings"，
+节点永远找不到。修法：锚点一律 `UiText.current(R.string.…)`。
+⚠ 同格那句 `"还没有配置模型供应商"` **仍按字面量**——生产 `ResultArea:321` 那句还是内联中文
+（字面量预算记着这笔债），注释里写明"这句搬进资源时锚点必须跟着换"。
+
+## 54.4 代理指标那一格
+
+`replyMode_zeroMessages_noClickActionExistsAnywhere` 断 `onAllNodes(hasClickAction()).assertCountEquals(0)`。
+本机语义树量到：`LbPrimaryButton(state = Disabled)` 的 `OnClick` **存在**、`hasClickAction()` 命中 1 颗、
+读数 `「Generate reply」 role=Button disabled 尺寸 129x48dp @(0,0)`。
+⇒ 那颗被设计系统换掉之后，"整棵树没有点击语义"这个**代理**就不再等价于"点它不会生成"了
+（Disabled 态**故意**保留点击语义与角色，读屏才说得出"这里是一颗按钮，只是现在不能按"）。
+改成直接判行为：那颗必须在、必须 `assertIsNotEnabled()`、`performClick()` 之后回调必须 0 次，
+并改名 `replyMode_zeroMessages_theDisabledGenerateFiresNoCallback`。
+⚠ 两条工具事实：①Compose 1.6.8 **没有** `assertIsDisabled`（写上去 unresolved），只有
+`assertIsEnabled` / `assertIsNotEnabled`；②这一格的红是 `Failed to assert count of nodes.`，
+不带实际计数 ⇒ 代理指标坏了的时候，报错不会告诉你它数到了几（读结果要自己补一条计数）。
+
+顺带删掉邻格 KDoc 里那句"预期红：生产从没写 `SemanticsProperties.Disabled`"——
+那颗早就是 `LbPrimaryButton`，Disabled 写在语义树里，这一格现在是**绿的**；
+留着那句就是给下一窗口埋一条误判。
+
+## 54.5 剩下 6 条 `OverlayGenerateSmokeTest`：本轮没动
+
+症状：4 条 `pumpUntil` 超时（401 / 解析失败 / 超时的错误结果没在 15–20 秒内出现）、
+`lateCallbacks…` 报"R1 应已向 Provider 发出请求（fake 服务端实收 0 次）"、
+`rapidDoubleTap…` 期望 1 收到 0。
+- 已知线索：`FakeProviderServer` 在**设备进程内** listen 127.0.0.1（同进程，拓扑不是问题）；
+  `isGenerating=true` 而服务端 0 次 ⇒ 请求卡在连接或状态机上，不是"没点到按钮"那么简单。
+- 本轮只修了其中一条（`stopDuringGeneration`，§54.2）。**剩下这些要等新 SHA 的 CI 重新计数**
+  再动它们的装配——同一轮里改装配 + 改判据会让根因分不清（坑表 94 那一族）。
+- ⚠ 本机没有 system image，这 6 条**永远不可能在本机复现或验证**。
+
+## 54.6 verify 那 4 步（读了，没动）
+
+`Egress checker must be gradeable against synthetic captures` 的日志有 4 行
+`[gate] tshark failed while computing destination IPs`；另外三步是 Upload
+（suggest-baseline dry-run / SBOM+license / APK checksum+metadata）。
+⚠ 这四步都不属于"改代码能消掉"的那一类：egress 那步依赖 CI 上的 tshark 与合成 pcap，
+Upload 那三步在前置产物缺失时才失败。`--log-failed` 只给了报错行，
+要判得先取那几步的完整日志——记在账上，下一步单独取。
+
+## 54.7 实测
+
+门禁一批：`bash _temp/run_gates107.sh _temp/gates38b`（这一版每步记 **RC + 输出字节数**，开跑前先验 python 与 `/usr/bin/env` 包装真的会执行）
+
+| 步 | RC | 输出字节 |
+|---|---|---|
+| SANITY | 0 | — |
+| unit | 0 | 2412 |
+| lint | 0 | 1918 |
+| budget | 0 | 1161 |
+| self27 | 0 | 2147 |
+| deps | 0 | 3 |
+| ticket | 0 | 72 |
+| prompt | 0 | 0 |
+| assetlock | 0 | 132 |
+| art | 0 | 338 |
+| canc | 0 | 80 |
+| atest | 0 | 3404 |
+| dead | 0 | 424 |
+
+- 单测：**187 套件 / 1388 例 / 0 失败 / 0 错误 / 0 跳过**，187 份 XML 全在 08:00:32（同一秒 ⇒ 同一批，不是上一轮的陈旧件）
+- lint 报告重生成后：measured_issues=67 measured_rules=15 gated_issues=66 gated_rules=14 advisory_issues=1（预算登记 14 条规则；`UnusedResources` 由 33 降到 32，因为 `a11y_close_onboarding` 这一格第一次真的被引用了）
+- 跨层 `6`；lint 预算判据 `27 格全对`；资产锁 `6dcde732fab602813559370dd6af3b774ca24fda86ce28f2c0cfd88a8be95831`；取消审计 PROTECTED=54 WAIVED=2 SUSPEND-FREE=109 NEEDS_REVIEW=0
+- 唯一合法安静的一步是 `prompt`（`git diff --exit-code` 零输出就是它的通过信号）。

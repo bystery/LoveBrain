@@ -1116,6 +1116,79 @@ HEAD `0c4d6d6`，仍未推。两笔：
   （`paddingVerticalInside` → `paddingInside`）——又一处"名字里带方向/尺寸的私有函数改了口径，
   就得回扫谁在按字面量读它"。
 
+## 0.38 面板整屏第一次进这台仪器（`d0b6358`）——"整页要 VM 所以测不到"第 6 次被否证
+
+- 旧账写着谈心那颗「继续追问」测不到，理由"整页要 `LoveBrainViewModel`"。这一格量了入参：
+  `LoveBrainPanelScreen` = **一个 VM + 八个回调**，VM `mockk(relaxed=true)` + 逐条桩住它 collect 的
+  **47 条 StateFlow** ⇒ 整屏挂得起来、能空闲。又是"我没做"被写成"做不到"（坑表 84）。
+- ⚠ 两发自己绊自己：①`returns MutableStateFlow(panelMode.value)` 把值**冻结在构造那一刻**，
+  三档一次都没切而守卫看着正常（坑表 110）；②这一屏的档位**不是** `panelMode=0/1/2`——
+  `PanelHeader:88-93` 是 `panelMode==1 → 谈心`、`showPlanPanel → 锦囊`、`else → 回复`，
+  所以守卫改成**走生产的点击路径**（点段 → `setPanelMode` → 我持有的 flow → 重组）。
+- 一挂起来就量到六处，全修：角色 chip「她/我」`29x28dp`、「想法」`40x28dp`（`role=无`）→
+  `48x48dp` + `Role.Tab`；「添加」`24x24dp` → `48x48dp` + `Role.Button`；
+  空态那颗动作 `254x`**8**`dp` → ≥48；页头折叠与引导卡片关闭两颗 `role=无` → `Button`，
+  后者名字原来是**内联中文**「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源都在、
+  **从没被引用** ⇒ 英文环境念中文（DESC 栏 11→**10**，这是真还了一处不是换桶）。
+- ⚠ 两颗 chip 那条 `.heightIn(min = ROLE_CHIP_HEIGHT_DP)` 里的常量是 **28**——
+  "下限"抄的是**胶囊字形高度**，不是手指高度。修法仍是热区与视觉分两层。
+- ⚠ 空态那一发值得记两件事：`heightIn(min=48)` 在 `maxHeight<48` 的约束里会被**夹到 max**，
+  `min` 不是保证；第一发改成 104 还量到 **32dp**（漏算了空态 Column 自己的 `padding(vertical=md)` 16dp），
+  第二发 120 才过。`MessageList` 里那句"外层 Box 承担 ≥48dp 热区"的注释在被夹掉时是假话（坑表 108）。
+- ⚠ **我越界了一次，退了**：把「添加」写成 `clickable(enabled = canAdd)`（想让它"灰着还在"），
+  `ComposerAddButtonGatingTest` 两格当场红——那两格守着"空草稿不许带点击语义"，其中一格还是
+  **CI 那批红的诊断件**。"禁用是灰着还在"管的是页面唯一主动作（:479 / §2.1），
+  次级入口归它自己的守卫。生产退回，我配的守卫格删掉，理由写进测试文件（别再"补回来"）。
+- 连带账（有数、没自签）：chips 与 ➕ 补到 48 见方后，360dp 那一行固定占 200dp，
+  **输入框从 166dp 缩到 128dp**（本机单挂 `ReplyInput` 量到 `128x48 @(168,0)`）。
+  生产没有"输入框最小宽度"这条判据 ⇒ 只记 −38dp，够不够要**截图基线（:538 仍欠）或人工**。
+- §6.4 那半边：钉住了"三档之间页头三颗盒子一字不动（`88x48 @(24/112/200,20)`）、恰好一段报
+  `selected`、三段都是 `Role.Tab`、折叠那颗三档同位"。**没判的**：回复档主输入 `166x48 @(138,261)`
+  与谈心档那颗 `304x76 @(28,273)` **不是同一颗、也不在同一格** ⇒ 那句"不移动主要输入"照字面不成立，
+  修平要动布局，**产品/布局口径，没自签**。三颗锦囊胶囊量到 `0x0 @(0,0)`=横向裁切读数 ⇒ 筛掉 +
+  样本下限 `MIN_JUDGED=12` 防空转。
+- ⚠ **换桶的一发（这次是尺瞎了）**：第二把尺（自造按钮，`_temp/scan_primary_buttons.py`）从
+  **17 处 / 8 文件**掉到 **15 处 / 7 文件**，少的两条正是 `ReplyInput:123` 与 `ReplyInput:219`——
+  我把 `clickable` 从带 `.background(品牌色)` 的那条链挪到了外层盒子，这把尺的"同一条链上既有
+  clickable 又有品牌底"的认法就看不见它们了 ⇒ **一处债都没还，数字却降了**。
+  这条瞎点要写进"三把尺统一"那一格（还欠）；在那之前**不许把 15 念成进展**。
+- 实测：**1388 单测 / 187 套件 / 0 红**，新守卫 `PanelHostSemanticsTest` 四格
+  （覆盖三档 + 页头盒子不动 + 折叠同位 + 整屏热区下限），一次性诊断收档 `_temp/gates107/`。
+
+## 0.39 推上去之后读 CI：45 跑 12 红（上一轮 23），一条根因吃掉三格（`45c71d8`）
+
+- run `36199686779`（SHA `cfca8bb`）：**verify 红 / ui-test 红 / upgrade-test 跳过**；
+  `[gate] ui-test: tests=45 failures=12 errors=0 skipped=2`。分类：**测试侧坏了 6 格、
+  只有设备能判 6 格、需要动生产的 0 格**。
+- ⚠ **一条根因吃掉三格**，而且上一轮我把其中一格**归错过**（记成"夹具点早了"）：
+  `UiText.generatingBarPattern` 写的是
+  `Regex.escape(template).replace(Regex.escape("%1$s"), phases)` —— `String.replace` 是**字面量**替换，
+  而 `Regex.escape("%1$s")` 交回去的是 `\Q%1$s\E` 那 8 个字符，转义后的模板里没有这串 ⇒
+  **替换从未发生**，发出的 regex 把 `%1$s` 当字面量匹配，永远配不上任何真实文案（坑表 109）。
+  三条红：`theGeneratingBarTemplateStillBuildsAMatchingPattern`、
+  `ReplyPrimaryActionsTest.generating_shows…`、`OverlayGenerateSmokeTest.stopDuringGeneration…`。
+  修法按段拼 + `check(两个占位符都找得到)`（占位符被挪走要当场抛，不许静默失配）。
+- 中文锚点两格是我自己上一格造的：`856d485` 把「点击重试」「去设置」搬进资源 ⇒ 英文模拟器渲染
+  "Tap to retry" / "Open settings"，夹具按中文字面量永远找不到节点。改 `UiText.current(R.string.…)`。
+  ⚠ 同格 `"还没有配置模型供应商"` **仍按字面量**（生产 `ResultArea:321` 那句还是内联中文），
+  注释里写明这句搬进资源时锚点必须跟着换。
+- 代理指标一格：`replyMode_zeroMessages_noClickActionExistsAnywhere` 断
+  `onAllNodes(hasClickAction()).assertCountEquals(0)`，而本机量到 `LbPrimaryButton(state=Disabled)`
+  的 `OnClick` **存在**（`hasClickAction()=1`、`「Generate reply」 role=Button disabled 129x48dp @(0,0)`）
+  —— 禁用态**故意**保留点击语义与角色。改成直接判行为（在、`assertIsNotEnabled()`、真点一次、回调 0 次），
+  改名 `…_theDisabledGenerateFiresNoCallback`。两条工具事实：1.6.8 **没有** `assertIsDisabled`；
+  这一格的红只报 `Failed to assert count of nodes.`、**不带实际计数**。
+- ⚠ 顺手删掉邻格 KDoc 里那句"预期红：生产从没写 `SemanticsProperties.Disabled`"——那颗早就是
+  `LbPrimaryButton`、Disabled 写在语义树里、这一格现在是绿的；留着就是给下一窗口埋误判（坑表 108）。
+- **剩下 6 条 `OverlayGenerateSmokeTest` 本轮没动**：4 条 `pumpUntil` 超时 +
+  `lateCallbacks…`（"fake 服务端实收 0 次"、`isGenerating=true`）+ `rapidDoubleTap…`（期望 1 收到 0）。
+  已知线索：`FakeProviderServer` 在**设备进程内** listen 127.0.0.1（同进程，拓扑不是问题），
+  所以卡在连接或状态机上，不是"没点到按钮"。本轮只修了同一根因的那条 ⇒
+  **要等新 SHA 重新计数再动它们的装配**（同一轮里改装配 + 改判据会让根因分不清，坑表 94）。
+- verify 那 4 步（egress tshark + 三个 Upload）读了没动：都不属于"改代码能消掉"那一类，
+  `--log-failed` 只给了报错行，要判得先取那几步的完整日志。
+- ⚠ 这些都**只能证明 CI 会跑到哪一格**，不构成发布判定：NO-GO 不变，worker 不自签。
+
 ## 1. 起手必查（照抄，别凭记忆）
 ```bash
 git fetch origin && git rev-parse --short HEAD && git rev-list --count FETCH_HEAD..HEAD
@@ -1139,17 +1212,19 @@ PYTHON=python bash scripts/asset_hashes.sh --check docs/prompt-assets.lock   # �
 #   只动 main 源文件时 testDebugUnitTest 会判 UP-TO-DATE 跳过、退出码仍然 0（见 §6 第 62 条）
 ```
 
-最近一轮实测基线（到 `16e4bd6`）：**1384 单测 / 186 套件 / 0 失败 / 0 错误 / 0 跳过**；
-往上依次是 `856d485` 1382/186、`07e1463` 1377/185、`f5d199d` 1370/184。
-（+2 = `LbPrimaryButtonStateTest` 与 `HomeScreenStructureTest` 各一颗"盒宽 − 字宽 ≥24dp"。）
+最近一轮实测基线（到 `d0b6358`）：**1388 单测 / 187 套件 / 0 失败 / 0 错误 / 0 跳过**；
+往上依次是 `16e4bd6` 1384/186、`856d485` 1382/186、`07e1463` 1377/185。
+（+4 = `PanelHostSemanticsTest` 四格：覆盖三档 / 页头盒子不动 / 折叠同位 / 整屏热区下限。）
 ⚠ 数单测一律用 `--rerun` + 看全部 XML 是不是同一时间戳（本次 184 份同批）——
 去掉一条**未使用 import** 时字节码不变，Gradle 会把 `testDebugUnitTest` 判 UP-TO-DATE 跳过、
 退出码仍然 0，那是坑表 62 的又一形态（这次不是变异，是我自己的一次「无害改动」）。
 ⚠ 字面量预算这四个数**换过口径**（`7b6ce9c` 起先剥注释再数）：
-**TEXT 178 / DESC 11 / STATE 0 / COMPONENT 77**，合计 266；
+**TEXT 178 / DESC 10 / STATE 0 / COMPONENT 77**，合计 265；
 （187→185 是表单「保存」两条中文进资源；185→182 是问卷两颗主动作的标签 +
 编辑屏「保存」那条；COMPONENT 78→77 是编辑屏那四条保存/冲突提示；
-182→178 是三处「点击重试」并成一条资源 + 「去设置」进资源——
+182→178 是三处「点击重试」并成一条资源 + 「去设置」进资源；
+DESC 11→10 是引导卡片那颗关闭的 `contentDescription` 接上 `a11y_close_onboarding`
+（中英两份资源一直都在、从没被引用 ⇒ 英文环境念中文）——
 它们**一直都在**，只是 `Lb…()` 锚点改成括号配对之后整段 `onClick = { … }` 进了射程。
 ⚠ **同一条债从 TEXT 换到 COMPONENT 不算还债**：搬进 `LbPrimaryButton(label = "…")` 那一步
 让 COMPONENT 一度涨到 80 > 78，两条栏一起看才不会被「降了一栏」骗过去，见坑表 98。）
@@ -1355,8 +1430,12 @@ VM 里私有 `MutableStateFlow` 仍是 **39 → 31 → 30 → 30**。**大文件
      ⑫ 三把尺各扫各的，别再合成一个数。**⚠ `f5d199d` 起其中两把换了口径**（旧尺在 `if (…)` 的右括号处断掉，条件涂色整档没被数过——见 §0.35 与坑表 95）：
      表面色 **44 处 / 17 文件**（旧口径 25 是下界，**别拿 44 与 25 比涨跌**；
      45→44 是 `856d485` 把「去设置」那颗自画 `background(Primary)` 归 `LbPrimaryButton`；
-     本格补内边距之后**现扫仍是 44**，不是顺手改上去的）、
-     能按下去的自造按钮 **17 处 / 8 文件**（`_temp/scan_primary_buttons.py` 现算；**这把尺没跟着改口径**，见下一行的 ⚠）⚠ 上一格登记的 18 是 `856d485` **之前**的读数、更早的 19 是 `bba6159` **之前**的读数：那颗「下一步」归进 `LbPrimaryButton` 之后就不在这把尺里了，**代码还了债、表没跟着改**（坑表 71 那一族的反向复发）。
+     本格补内边距之后**现扫仍是 44**，不是顺手改上去的；`d0b6358` 把面板两颗 chip 与「添加」
+     改成热区分层之后**现扫仍是 44**（品牌底那一处没消失，只是不再同链挂 clickable））、
+     能按下去的自造按钮 **15 处 / 7 文件**（`_temp/scan_primary_buttons.py` 现算；
+     ⚠ **17→15 一处债都没还**：少的两条正是 `ReplyInput:123`/`:219`，`clickable` 被我挪到外层盒子之后
+     这把尺的"同一条链上既有 clickable 又有品牌底"就看不见它们 ⇒ **这是尺瞎了，不是进展**；
+     统一三把尺那一格要把"热区与视觉分两层"这种形状认下来。**这把尺没跟着改口径**，见下一行的 ⚠）⚠ 上一格登记的 18 是 `856d485` **之前**的读数、更早的 19 是 `bba6159` **之前**的读数：那颗「下一步」归进 `LbPrimaryButton` 之后就不在这把尺里了，**代码还了债、表没跟着改**（坑表 71 那一族的反向复发）。
      ⚠ 这把尺**没走** `codeOf()`/剥注释（坑表 88 只落在字面量预算与 `hand-drawn…` 那格）——这次它没误数 KDoc 里那句 `Box.fillMaxWidth.background(Primary).clickable`，但口径上读的是裸原文，**动它之前先把注释剥上**。
      **换一扇门涂色的 `containerColor = <品牌色>` 2 处 / 2 文件**（`_temp/scan_container_color2.py`，剥注释 + 括号配对口径；见下面 ⑬）。
      ⚠ `_temp/scan_material_button.py` 那把旧尺**口径已经过期**（它按 `containerColor = Primary` 找，读不到条件涂色），**别再引它的数**。
@@ -1545,7 +1624,7 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 ## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者，68 「取第一个非空」的判据会被别的来源蹭过去，69 界面构造不出的状态要对着持有者测，
     70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑）
     ⚠ 正文按**加入顺序**排，不严格递增（102 后面接着 95、90 那批是补记的）——
-    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 107**。
+    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 110**。
 
 16. **`python -` 读 heredoc 按 ANSI 码页解码**：正则里的中文自己先坏（"unterminated character set"）。
     写成文件再执行，或用 `\u` 转义；`PYTHONUTF8=1` 救不了这条。
@@ -2153,6 +2232,32 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
      ⇒ 判"红"之前先分清红的是**断言**还是**文件锁**（误判就会去改一条根本没坏的守卫）。
      与坑表 62 同一族（"无害改动"后 Gradle 判 UP-TO-DATE 跳过、退出码仍 0）：
      **RC=0 只说明没人报错，不说明有人干过活**；能自证"这一步真的执行了"的只有它自己的输出。
+
+108. **注释里的"下限"和"预期红"都会过期，过期就是误导**（`d0b6358`/`45c71d8` 两发）：
+     ①`MessageList` 空态那段注释写着"外层 Box 承担 ≥48dp 的热区"，而宿主把列表槽位钉成
+     `height(80dp)` ⇒ `heightIn(min=48)` 被父约束**夹到 max**，实际量到 8dp。
+     ⇒ **`min` 不是保证**：只要祖先给死 maxHeight，注释那句就得由断言来证，不能靠组件里写了 min。
+     ②`ReplyPrimaryActionsTest` 邻格 KDoc 写着"预期红：生产从没写 `SemanticsProperties.Disabled`"——
+     那颗早已换成 `LbPrimaryButton`，Disabled 是写进语义树的，那一格现在是**绿的**。
+     ⇒ 改生产时要**回扫注释里的判决句**（"某处保证了 X""这格预期红"），
+     它们和坑表 104 的"注释里的数"是同族：都是**没有主人的口径**，只是这次藏在判断里。
+
+109. **拿 `Regex.escape` 的产物去 `String.replace`，就是把正则当字符串用**（`45c71d8`，一条根因吃三格）：
+     `Regex.escape(template).replace(Regex.escape("%1$s"), phases)` —— `String.replace` 按**字面量**找，
+     而 `Regex.escape("%1$s")` 给出去的是 `\Q%1$s\E` 那 8 个字符，转义后的模板里没有这串 ⇒
+     替换从未发生，发出的模式把 `%1$s` 当字面量匹配，**永远配不上任何真实文案**；
+     症状分散在三个文件里（一处"配不上自己拼出来的模式"、两处"已显示断言失败"），
+     而且上一轮我把其中一条归成"夹具点早了"——**分类结论也要能被读数推翻**，不是写一次就完。
+     ⇒ 拼"模板 + 占位符"的正要**按段转义再插入展开段**，并 `check(占位符找得到)`：
+     模板被改动时当场抛，不许退化成静默失配。
+
+110. **桩 `StateFlow` 时 `returns MutableStateFlow(x.value)` 会把值冻结在构造那一刻**（`d0b6358`）：
+     面板三档一次都没切，而守卫看起来一切正常（页头没动、内容也没变，全绿）。
+     ⇒ 要**持有那条 flow**、让生产的写方法（`setPanelMode` / `openPlanPanel`）接到它上面，
+     判据才真的经过持有者；否则测的是"我以为界面会读的那个值"。
+     另一半同族教训：**一屏的档位常常不由一个字段决定**——这一屏是
+     `panelMode == 1 → 谈心`、`showPlanPanel → 锦囊`、`else → 回复`（`PanelHeader:88-93`），
+     照字段名摆 0/1/2 会量到"第三档没变化"的假象。**先读映射，再摆状态**。
 
 ## 7. 硬约束（一条没变）
 
