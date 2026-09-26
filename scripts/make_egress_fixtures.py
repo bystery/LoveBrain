@@ -18,11 +18,20 @@ gate can make:
     rogue-dns.pcap    表外 DNS 查询             -> exit 1 (kind=dns)
     bare-ip.pcap      表外直连 IP，无 DNS/SNI   -> exit 1 (kind=ip)   <- 旧脚本会放行
     empty.pcap        只有全局头，零个包        -> exit 2 CANNOT-VERIFY
+    bad-magic.pcap    包体合法、全局头 magic 是"校验和 pcap"变体
+                                              -> exit 2 CANNOT-VERIFY（tshark 根本不开这个文件）
 
 The byte layouts are written by hand (no scapy dependency) and use TEST-NET
 documentation addresses (192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24), which is
 exactly what tshark needs to see: ordinary routable IPv4 with a real DNS query and
 a real TLS ClientHello.
+
+一份"能被 tshark 打开"的 fixture 才有资格当尺。到 `78fec29` 之前这里写的是
+`0xA1B2C213`（带内校验和的 pcap 变体，不是标准抓包文件），CI run 36205285000 上
+`tshark: ... isn't a capture file in a format TShark understands`——五格 fixture 全废，
+而第 6 格"没有 tshark"因为 needle 只写了 `CANNOT-VERIFY`，反而**因为文件读不开而蒙对**。
+本机的 `--inspect` 一直是绿的，因为它和写方比的是同一个错常数。所以下面把魔数提成
+命名常数，并让解析器**点名拒绝**已知的错变体；bad-magic.pcap 就是那个旧 bug 的标本。
 
 Usage:
     python3 scripts/make_egress_fixtures.py --out build/gate-fixtures/network-egress
@@ -47,6 +56,19 @@ ROUGE_IP = "198.51.100.77"         # 表外直连 IP（无 DNS、无 SNI）
 ALLOW_HOST = "api.example.test"
 ROGUE_SNI = "telemetry.example.test"
 ROGUE_DNS = "ads.example.test"
+
+# pcap 全局头 magic（小端写入文件）。0xA1B2C3D4 = 微秒时间戳的经典 pcap，
+# 这是 libpcap / tshark / libmagic(`file`) 三家都认的那一个。
+PCAP_MAGIC_US = 0xA1B2C3D4
+# 点名拒绝的"看着像 pcap 但不是"的 magic。写这些名字的用途只有一个：
+# 下一次再写错时，报错里要直接说出它写成了什么，而不是笼统一句 not a pcap。
+# 三家来历里只有 0xA1B2C213 那条是**本机以外测到的**（CI run 36205285000 的 tshark 拒收）；
+# 另两条是格式常识，用来挡住"顺手换成纳秒/pcapng"。
+BAD_MAGICS = {
+    0xA1B2C213: "带内校验和的 pcap 变体 —— CI 上的 tshark 实测拒收",
+    0xA1B23C4D: "纳秒时间戳 pcap —— 本脚本按微秒写，别换成它",
+    0x0A0D0D0A: "pcapng —— 另一种文件格式，本脚本只写 classic pcap",
+}
 
 
 # ── 校验和 ────────────────────────────────────────────────────────────────
@@ -118,8 +140,8 @@ def tls_client_hello(sni: str) -> bytes:
 
 
 # ── pcap ──────────────────────────────────────────────────────────────────
-def to_pcap(packets: list[bytes]) -> bytes:
-    out = [struct.pack("<IHHIIII", 0xA1B2C213, 2, 4, 0, 0, 65535, 1)]
+def to_pcap(packets: list[bytes], magic: int = PCAP_MAGIC_US) -> bytes:
+    out = [struct.pack("<IHHIIII", magic, 2, 4, 0, 0, 65535, 1)]
     for i, pkt in enumerate(packets):
         out.append(struct.pack("<IIII", 1_700_000_000 + i, i * 1000, len(pkt), len(pkt)))
         out.append(pkt)
@@ -149,10 +171,10 @@ def build(out_dir: str) -> dict[str, dict]:
     os.makedirs(out_dir, exist_ok=True)
     fixtures: dict[str, dict] = {}
 
-    def write(name: str, packets: list[bytes], purpose: str):
+    def write(name: str, packets: list[bytes], purpose: str, magic: int = PCAP_MAGIC_US):
         path = os.path.join(out_dir, name)
         with open(path, "wb") as fh:
-            fh.write(to_pcap(packets))
+            fh.write(to_pcap(packets, magic))
         fixtures[name] = {"path": path, "packets": len(packets), "purpose": purpose}
 
     write("allow-only.pcap", [
@@ -171,16 +193,33 @@ def build(out_dir: str) -> dict[str, dict]:
         packet_tcp_syn(ROUGE_IP),
     ], "表外直连 IP，无 DNS、无 SNI（旧脚本的 |*) continue 会放行这一格）")
     write("empty.pcap", [], "只有全局头，零个包")
+    # 标本：包体一个字节都不改，只把全局头写成 `78fec29` 当时那个 magic。
+    # 有了它，"tshark 打不开文件"才第一次和"这台机器没装 tshark"分成两格——
+    # 在那之前第 6 格因为文件读不开而**蒙对**过（见模块 docstring）。
+    write("bad-magic.pcap", [packet_dns_query(ALLOW_HOST)],
+          "全局头是 checksummed-pcap 变体：tshark 根本不打开它", magic=0xA1B2C213)
     return fixtures
 
 
 # ── 自带解析器：在没有 tshark 的机器上复述 fixture 内容 ─────────────────────
 def inspect(path: str) -> int:
+    """复述 fixture 的**内容**（哪台->哪台、DNS 查了什么、SNI 是什么）。
+
+    它**不能**证明"tshark 认这个文件"——到 `78fec29` 为止它就是这样被误用的：
+    它比的常数与 to_pcap() 写的是同一个，于是写错时两边一起错，本机永远绿。
+    现在魔数只有 PCAP_MAGIC_US 一个来源，且下面点名拒绝已知变体；
+    "认不认"由两个外部读者判：`file`(libmagic) 在本机量，tshark 在 CI 量。
+    """
     with open(path, "rb") as fh:
         blob = fh.read()
     magic, _ma, _mi, _tz, _sig, _snap, net = struct.unpack("<IHHIIII", blob[:24])
-    if magic != 0xA1B2C213 or net != 1:
-        print("not a LINKTYPE_ETHERNET microsecond pcap: %08x/%d" % (magic, net), file=sys.stderr)
+    if magic != PCAP_MAGIC_US:
+        why = BAD_MAGICS.get(magic, "未知 magic")
+        print("%08x: not a microsecond LINKTYPE_ETHERNET pcap —— %s（net=%d）"
+              % (magic, why, net), file=sys.stderr)
+        return 1
+    if net != 1:
+        print("LINKTYPE=%d，不是 LINKTYPE_ETHERNET(1)" % net, file=sys.stderr)
         return 1
     off, idx, found = 24, 0, []
     while off + 16 <= len(blob):
