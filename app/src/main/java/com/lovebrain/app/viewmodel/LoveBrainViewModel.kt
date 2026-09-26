@@ -21,6 +21,8 @@ import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.feature.composer.ComposerStore
+import com.lovebrain.app.feature.notice.NoticeBoard
+import com.lovebrain.app.feature.provider.ProviderTicketStore
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.CounselingEnded
 import com.lovebrain.app.model.CounselingEvent
@@ -329,21 +331,21 @@ class LoveBrainViewModel(
         _profileReview.value = _profileReview.value.reduce(event)
     }
 
-    /** 知识库后台操作的临时提示（如经验提取完成），在悬浮窗内短暂展示 */
-    private val _kbNotice = MutableStateFlow<String?>(null)
-    val kbNotice: StateFlow<String?> = _kbNotice.asStateFlow()
-    fun dismissKbNotice() { _kbNotice.value = null }
+    /**
+     * 悬浮窗上那三条"会自己消失的话"：知识库后台操作的回执、面板级警告、五维重估摘要。
+     * 持有者与"换知识库该清哪几条"这条判据都在 [NoticeBoard]，这里只留同名只读出口
+     * （搬之前 VM 里有 10 处直写那第一格回执，而"切库要清"只写在其中一处）。
+     */
+    private val notices = NoticeBoard()
 
-    /** 面板级临时警告（未配置引导/未记入提示），悬浮窗内短暂展示 */
-    private val _panelWarning = MutableStateFlow<String?>(null)
-    val panelWarning: StateFlow<String?> = _panelWarning.asStateFlow()
-    fun showPanelWarning(msg: String) { _panelWarning.value = msg }
-    fun dismissPanelWarning() { _panelWarning.value = null }
+    val kbNotice: StateFlow<String?> = notices.knowledge
+    val panelWarning: StateFlow<String?> = notices.warning
+    val vectorUpdate: StateFlow<String?> = notices.vector
 
-    /** 五维向量最近一次重估的变化摘要（面板短暂展示） */
-    private val _vectorUpdate = MutableStateFlow<String?>(null)
-    val vectorUpdate: StateFlow<String?> = _vectorUpdate.asStateFlow()
-    fun dismissVectorUpdate() { _vectorUpdate.value = null }
+    fun dismissKbNotice() { notices.dismiss(NoticeBoard.Channel.Knowledge) }
+    fun showPanelWarning(msg: String) { notices.show(NoticeBoard.Channel.Warning, msg) }
+    fun dismissPanelWarning() { notices.dismiss(NoticeBoard.Channel.Warning) }
+    fun dismissVectorUpdate() { notices.dismiss(NoticeBoard.Channel.Vector) }
 
     /** 向量重估触发的阶段调整建议（用户确认后生效） */
     private val _stageSuggestion = MutableStateFlow<StageSuggestion?>(null)
@@ -360,32 +362,23 @@ class LoveBrainViewModel(
 
     // ════════ -: 激活工单 + 模型选择 ═══════════
     
-    /** 当前激活的工单 */
-    private val _activeTicket = MutableStateFlow<com.lovebrain.app.model.ProviderTicket?>(null)
-    val activeTicket: StateFlow<com.lovebrain.app.model.ProviderTicket?> = _activeTicket.asStateFlow()
+    /**
+     * 激活工单 + 就绪位（复核 §2.2"就绪态下沉、面板不再本地计算"那半句的主人）。
+     * 三条件判据只住在 [ProviderTicketStore.refresh] 一处；读配置靠三个注入的 lambda，
+     * 因为 `feature` 不许 import `data`（§5.1 包边界，`PackageDependencyTest` 在看着）。
+     */
+    private val ticketStore = ProviderTicketStore(
+        readTickets = { securePrefs.getWorkerTickets() },
+        readActiveTicketId = { securePrefs.activeTicketId },
+        readApiKey = { id -> securePrefs.getWorkerApiKey(id) }
+    )
 
-    /** 供应商就绪态下沉（面板不再本地计算）：工单存在 && 模型非空 && Key 非空 */
-    private val _providerReady = MutableStateFlow(false)
-    val providerReady: StateFlow<Boolean> = _providerReady.asStateFlow()
+    val activeTicket: StateFlow<com.lovebrain.app.model.ProviderTicket?> = ticketStore.activeTicket
+    val providerReady: StateFlow<Boolean> = ticketStore.ready
 
     /** 刷新激活工单（面板重新可见时调用，解决 Service 长生命周期下配置后不刷新问题） */
     fun refreshTicketState() {
-        viewModelScope.launch {
-            val tickets = securePrefs.getWorkerTickets()
-            val activeId = securePrefs.activeTicketId
-            if (activeId != null && activeId.isNotEmpty()) {
-                val ticket = tickets.find { it.id == activeId }
-                if (ticket != null) {
-                    _activeTicket.value = ticket
-                    // 就绪三条件（含 Key 非空）在 VM 统一判定，面板只订阅结果
-                    _providerReady.value = ticket.model.isNotBlank() &&
-                        !securePrefs.getWorkerApiKey(ticket.id).isNullOrBlank()
-                    return@launch
-                }
-            }
-            _activeTicket.value = null
-            _providerReady.value = false
-        }
+        viewModelScope.launch { ticketStore.refresh() }
     }
     // ========================================================
 
@@ -1125,7 +1118,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 },
             contextMode = if (ctx.onlyThisRound) "only-this-round" else "full",
             promptVersion = ctx.promptVersion,
-            modelId = _activeTicket.value?.model ?: "",
+            modelId = ticketStore.activeTicketNow?.model ?: "",
             costYuan = _usageStats.value.lastCostYuan ?: 0.0
         )
     }
@@ -1358,7 +1351,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     }
                     _actualSentEntries[versionId?.value] = sentEntry
                     _actualSentState.value = ActualSentState.RECORDED
-                    _kbNotice.value = if (isUpdate) "已更新实际发送记录" else "已记录实际发送的消息"
+                    notices.show(
+                        NoticeBoard.Channel.Knowledge,
+                        if (isUpdate) "已更新实际发送记录" else "已记录实际发送的消息"
+                    )
                 } else {
                     _actualSentState.value = ActualSentState.KB_NOT_FOUND
                     showPanelWarning("本轮保存失败：知识库已被删除")
@@ -1394,12 +1390,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             }
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.VectorSummary -> {
                 if (_activeKb.value?.name != event.kbName) return
-                _vectorUpdate.value = event.summary
+                notices.show(NoticeBoard.Channel.Vector, event.summary)
             }
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.StageSuggested ->
                 _stageSuggestion.value = event.suggestion
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.Notice ->
-                _kbNotice.value = event.message
+                notices.show(NoticeBoard.Channel.Knowledge, event.message)
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.ProfileReady ->
                 // 画像建议绑定 originating kbName，确认时也用 suggestion.kbName 而不是 _activeKb
                 applyReview(ProfileReview.Event.Arrived(event.suggestion))
@@ -1474,7 +1470,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     is ProfileTransactionResult.Success -> {
                         // 确认期间可能有新建议到达；只清"我确认的这一份"，这条判据在事件里
                         applyReview(ProfileReview.Event.ClearedIfCurrent(suggestionId))
-                        _kbNotice.value = "画像已更新"
+                        notices.show(NoticeBoard.Channel.Knowledge, "画像已更新")
                         refreshKnowledgeBases()
                     }
                     is ProfileTransactionResult.PreconditionFailed -> {
@@ -1698,8 +1694,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 val newKb = knowledgeRepo.getActive()
                 if (oldKbName != newKb?.name) {
                     _vectorDelta.value = emptyMap()
-                    _vectorUpdate.value = null
-                    _kbNotice.value = null
+                    // 上一块库的瞬时 UI（重估摘要 + 后台回执）整族清掉；面板级警告不属于这一族，
+                    // 它说的是这台设备的配置状态，与切到哪块库无关——判据写在 NoticeBoard 里
+                    notices.dismissVolatileNotices()
                     // 切库时复位仅看本轮开关——属于当前工作轮次
                     _onlyThisRound.value = false
                     // 切库时清除旧 KB 的意图配置，防止旧意图泄漏到新 KB
@@ -2158,7 +2155,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 // KB identity guard：只有当前 active KB 仍是保存目标的 KB 时才更新 UI
                 if (_activeKb.value?.name == kbName) {
                     _intentConfig.value = updated
-                    _kbNotice.value = if (enabled) "持续意图已开启" else "持续意图已关闭"
+                    notices.show(
+                        NoticeBoard.Channel.Knowledge,
+                        if (enabled) "持续意图已开启" else "持续意图已关闭"
+                    )
                     _showIntentEditor.value = false
                     markCurrentResultStaleIfNeeded()
                 }
@@ -2217,7 +2217,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     timestamp = com.lovebrain.app.util.TimeFmt.now()
                 )
             )
-            _kbNotice.value = MemoryCorrectionPolicy.roundMuteApplied()
+            notices.show(NoticeBoard.Channel.Knowledge, MemoryCorrectionPolicy.roundMuteApplied())
             return
         }
         viewModelScope.launch {
@@ -2232,7 +2232,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 L.w("saveCorrection threw: ${e::class.simpleName}")
                 false
             }
-            _kbNotice.value = if (ok) MemoryCorrectionPolicy.applied(action) else MemoryCorrectionPolicy.applyFailed()
+            notices.show(
+                NoticeBoard.Channel.Knowledge,
+                if (ok) MemoryCorrectionPolicy.applied(action) else MemoryCorrectionPolicy.applyFailed()
+            )
         }
     }
 
@@ -2272,7 +2275,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      */
     private fun undoCorrection(memoryId: String, allowActiveKbFallback: Boolean) {
         if (roundCorrections.remove(memoryId)) {
-            _kbNotice.value = MemoryCorrectionPolicy.roundMuteUndone()
+            notices.show(NoticeBoard.Channel.Knowledge, MemoryCorrectionPolicy.roundMuteUndone())
             return
         }
         val kbName = replyGenerationContext?.kbName
@@ -2287,7 +2290,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 L.w("undoCorrection threw: ${e::class.simpleName}")
                 false
             }
-            _kbNotice.value = if (ok) MemoryCorrectionPolicy.undone() else MemoryCorrectionPolicy.undoFailed()
+            notices.show(
+                NoticeBoard.Channel.Knowledge,
+                if (ok) MemoryCorrectionPolicy.undone() else MemoryCorrectionPolicy.undoFailed()
+            )
         }
     }
 
@@ -2401,7 +2407,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // 不再捕获 preRewriteFeedback 做后续清理——
         // 改写期间用户对旧文的反馈继续归旧版本；新版本独立 NONE。
 
-        val ticket = _activeTicket.value
+        val ticket = ticketStore.activeTicketNow
         val apiKey = ticket?.let { securePrefs.getWorkerApiKey(it.id) }
 
         // 改写也进 coordinator 账本。旧实现只把 Job 存进 rewriteJob 字段，
