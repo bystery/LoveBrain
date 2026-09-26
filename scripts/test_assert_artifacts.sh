@@ -13,9 +13,10 @@
 # 本脚本测的是补上的那条判据：**每张截图必须有"拍的那一刻前台是谁"的来源证明，
 # 且前台必须属于被测包**。它必须能被"坏实现"打破，所以每一格都跑两遍：
 #   * 对**工作树里的新门**（scripts/assert_artifacts.sh）——假证据要红；
-#   * 对 **HEAD 那一版**（`git show HEAD:…`，也就是 CI 刚刚用过的版本）——
+#   * 对 **门合入前那一版**（`git show $BAD_GATE_REF:…`，基线钉在 `9f29539`，不是活引用）——
 #     第 3 格（两张不同的桌面截图 + 前台是 launcher）它必须**放绿**，
 #     这一格就是"新判据真有牙"的证据；它要是也红了，说明我加的判据其实早就存在。
+# ⚠ 基线不许写成 HEAD：门合进去之后 HEAD 自己就带着新判据，那一格会从"旧版放绿"变成"旧版也红"，把自己的对照搞没。
 #
 # 每一格断言两件事：退出码 + 输出里点名的那句理由（只断退出码不够——
 # 一份产物会因为**别的原因**失败，看起来就像新判据起作用了）。
@@ -44,13 +45,22 @@ fi
 
 # HEAD 那一版（CI 实际跑过的判据）——取不到就**失败**，不许跳过：
 # 跳过等于"坏实现对照"这一半没跑，而那正是本脚本存在的理由。
+# "坏实现"必须钉在**新判据落地之前**那一笔，不能跟着 HEAD 走：
+# 这一格合并之后 HEAD 就带着新门了，`git show HEAD:…` 会取到"已经会红的那一版"，
+# 于是"旧版放绿"这条对照**自己变成红**——报的还是"判据有 bug"，其实是我把基线写成了活引用。
+BAD_GATE_REF="${BAD_GATE_REF:-9f29539}"   # = ddb2153 的父亲（visual-evidence 门合入前的最后一笔）
 HEAD_DIR="$WORK/head"
 mkdir -p "$HEAD_DIR/lib"
 OLD_GATE="$HEAD_DIR/assert_artifacts.sh"
-if ! git -C "$(dirname "$SCRIPT_DIR")" show HEAD:scripts/assert_artifacts.sh >"$OLD_GATE" 2>/dev/null ||
-   ! git -C "$(dirname "$SCRIPT_DIR")" show HEAD:scripts/lib/gate_lib.sh >"$HEAD_DIR/lib/gate_lib.sh" 2>/dev/null; then
-  die "CANNOT-VERIFY: could not read scripts/assert_artifacts.sh (and lib/gate_lib.sh) from HEAD — the 'bad implementation' half of this test cannot run"
+if ! git -C "$(dirname "$SCRIPT_DIR")" cat-file -e "${BAD_GATE_REF}^{commit}" 2>/dev/null ||
+   ! git -C "$(dirname "$SCRIPT_DIR")" merge-base --is-ancestor "$BAD_GATE_REF" HEAD; then
+  die "CANNOT-VERIFY: $BAD_GATE_REF 不是 HEAD 的祖先（或不存在）——'坏实现'对照不能跑，本脚本不许算通过"
 fi
+if ! git -C "$(dirname "$SCRIPT_DIR")" show "$BAD_GATE_REF:scripts/assert_artifacts.sh" >"$OLD_GATE" 2>/dev/null ||
+   ! git -C "$(dirname "$SCRIPT_DIR")" show "$BAD_GATE_REF:scripts/lib/gate_lib.sh" >"$HEAD_DIR/lib/gate_lib.sh" 2>/dev/null; then
+  die "CANNOT-VERIFY: could not read scripts/assert_artifacts.sh (and lib/gate_lib.sh) from $BAD_GATE_REF — the 'bad implementation' half of this test cannot run"
+fi
+printf 'bad-implementation baseline: %s\n' "$(git -C "$(dirname "$SCRIPT_DIR")" rev-parse --short "$BAD_GATE_REF")"
 
 # ── 造一份"看起来完全合法"的产物 ══════════════════════════════════════════
 # 一张 1 个用例的 JUnit XML + HTML + 两张**互不相同**、签名正确的 PNG。
@@ -158,13 +168,13 @@ D="$WORK/ci-identical"; mk_suite "$D"
 cp "$D/screenshots/home.png" "$D/screenshots/knowledge-base.png"
 mk_prov "$D" "$REAL_LAUNCHER_FG" "$REAL_LAUNCHER_FG"
 expect "2 两张同图（CI 原样）→ 该红" "$NEW_GATE" nonzero "逐字节相同" "$D"
-expect "2b 同一份产物 HEAD 那版也红（同图规则是旧的）" "$OLD_GATE" nonzero "逐字节相同" "$D" noprov
+expect "2b 同一份产物钉的那一版也红（同图规则是旧的）" "$OLD_GATE" nonzero "逐字节相同" "$D" noprov
 
 # ── 3. 关键一格：两张**不同**的桌面截图（同图规则抓不到） ────────────────────
 D="$WORK/launcher-distinct"; mk_suite "$D"
 mk_prov "$D" "$REAL_LAUNCHER_FG" "$REAL_LAUNCHER_FG_LATER"
 expect "3 两张不同桌面图 → 新门该红" "$NEW_GATE" nonzero "launcher" "$D"
-expect "3b 同一份产物 HEAD 那版放绿（新判据真有牙）" "$OLD_GATE" 0 "" "$D" noprov
+expect "3b 同一份产物钉的那一版放绿（新判据真有牙）" "$OLD_GATE" 0 "" "$D" noprov
 
 # ── 4. am start 里写着 does not exist，但退出码是 0 ──────────────────────────
 D="$WORK/am-error"; mk_suite "$D"
@@ -184,4 +194,4 @@ expect "6 不开 provenance → 仍按旧口径绿" "$NEW_GATE" 0 "" "$D" noprov
 
 printf -- '----\n%d cell(s) as expected, %d not\n' "$PASS_CELLS" "$FAIL_CELLS"
 [ "$FAIL_CELLS" -eq 0 ] || die "assert_artifacts.sh 的视觉证据判据有 $FAIL_CELLS 格不符合预期"
-ok "assert_artifacts evidence-provenance self-test passed ($PASS_CELLS cells, HEAD version compared cell by cell)"
+ok "assert_artifacts evidence-provenance self-test passed ($PASS_CELLS cells, $BAD_GATE_REF compared cell by cell as the bad implementation)"

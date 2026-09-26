@@ -74,7 +74,8 @@ jobs:
         # 截图那一路的判据自己也正反各跑一遍：CI run 36234389326 交出的两张"屏幕截图"其实都是
         # 安卓桌面（am start 报 Error type 3 / does not exist，但 am 的退出码永远是 0），
         # 而旧口径只断言"PNG 非空 + 两两不同"。夹具就是那一跑产物里的原文，
-        # 每格还同时跑 HEAD 那一版当"坏实现"对照——它在"两张不同的桌面截图"那格必须放绿。
+        # 每格还同时跑"门合入前那一版"当坏实现对照（基线钉在固定提交，不写成 HEAD——
+        # 否则门合进去之后 HEAD 自己就带着新判据，这一格会静默变成"新旧同版"而什么也不对照）。
         run: bash scripts/test_assert_artifacts.sh
 
       - name: Instrumentation sources must compile (same SHA, same job)
