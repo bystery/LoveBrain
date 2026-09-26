@@ -140,66 +140,62 @@ if ! adb logcat -d -v time >"$ARTIFACTS/logcat-final.txt"; then
 fi
 [ -s "$ARTIFACTS/logcat-final.txt" ] || die "the captured logcat dump is empty: $ARTIFACTS/logcat-final.txt"
 
-# ⚠ 拍屏之前必须先确认**被测包还在机器上**。CI run 36234389326 就是这么骗过所有人的：
-#   connected 测试跑完 AGP 把 com.lovebrain.app 卸了，脚本接着 `am start` 去拍"两块屏幕"，
-#   两次都报 `Error type 3: Activity class … does not exist`，而 **`am` 的退出码仍是 0** ⇒
-#   `if ! adb shell "am start …"` 一句都不红，前台其实是 launcher3，两张 PNG 逐字节相同。
-#   所以这里：①装回来（用 Gradle 这次构建出来的 debug APK，不许拿别的 APK 凑），
-#   ②装完再核一遍包在不在，③启动一律走 device_lib 的 device_start_activity（它会查
-#   Error/Exception/does not exist/Permission Denial 与 `Status:`），
-#   ④把"前台到底是谁"当断言用（device_resumed_component），不是当日志用。
-if [ "$(adb shell "pm list packages $PKG" | tr -d '\r' | grep -c "^package:$PKG\$")" = "0" ]; then
-  log "$PKG is not installed any more (AGP uninstalls after connected tests) — reinstalling this run's debug APK for the screenshots"
-  APP_APK="$(repo_root)/app/build/outputs/apk/debug/app-debug.apk"
-  [ -s "$APP_APK" ] ||
-    die "cannot reinstall the app for screenshots: $APP_APK is missing or empty — visual evidence must come from the APK this run built"
-  device_install "$APP_APK"
-  if [ "$(adb shell "pm list packages $PKG" | tr -d '\r' | grep -c "^package:$PKG\$")" != "1" ]; then
-    die "reinstalled $APP_APK but $PKG is still not listed by `pm list packages` — the screenshots would not be the app's screens"
-  fi
-fi
-
-for pair in "home:com.lovebrain.app/.ui.SetupActivity" "knowledge-base:com.lovebrain.app/.ui.KnowledgeBaseActivity"; do
-  name="${pair%%:*}"
-  comp="${pair#*:}"
-  shot="$SCREENSHOT_DIR/$name.png"
-  # The screens are captured as visual evidence for the release packet
-  # (re-audit §9 item 9). A failed launch here is a real regression, so it dies.
-  device_start_activity "$comp" >"$ARTIFACTS/am-start-$name.txt" 2>&1
-  sleep 2
-  # 这张图到底拍的是哪一屏，必须由产物自己说清楚：CI 上真出过 home.png 与
-  # knowledge-base.png 逐字节相同（各 115128 B），也就是第二个 activity 其实没把
-  # 前一层换掉（立刻 finish、被转走、或者压根没到前台）。光有 PNG 不算视觉证据。
-  resumed="$(device_resumed_component)"
-  {
-    printf 'expected=%s\n' "$comp"
-    printf 'resumed=%s\n' "$resumed"
-    adb shell dumpsys activity activities |
-      grep -E "mResumedActivity|topResumedActivity|mFocusedApp" | head -3
-  } >"$ARTIFACTS/foreground-$name.txt"
-  [ -s "$ARTIFACTS/foreground-$name.txt" ] ||
-    die "could not read the foreground activity before capturing $shot — the screenshot has no provenance"
-  # 断言，不是日志：前台必须是刚启动的那一屏。launcher3 顶上来的"截图"是零信息证据。
-  if [ "$resumed" != "$comp" ] && [ "${resumed##*.}" != "${comp##*.}" ]; then
-    die "$shot 不是 $comp 的视觉证据：拍的那一刻前台是 $resumed（am start 的原文在 $ARTIFACTS/am-start-$name.txt）"
-  fi
-  log "foreground for $name: $(tr -s ' \t' ' ' <"$ARTIFACTS/foreground-$name.txt" | head -2 | tr '\n' ' ')"
-  if ! adb exec-out screencap -p >"$shot"; then
-    die "screencap failed for $shot — visual evidence cannot be produced"
-  fi
-  [ -s "$shot" ] || die "screenshot is empty: $shot"
-  log "captured $shot ($(wc -c <"$shot" | tr -d ' ') bytes)"
+# ── 视觉证据：**设备侧不再产 PNG，理由写进产物** ───────────────────
+#
+# 这里曾经拍两张"am start 到两块屏幕再 screencap"的图。两次实到把它判死：
+#   · run 36234389326：两张图逐字节相同，而产物里 `am-start-*.txt` 写着
+#     `Error type 3: Activity class … does not exist`（connected 测试跑完 AGP 会卸掉被测包），
+#     `foreground-*.txt` 写着 `com.android.launcher3/.Launcher` —— **拍的是桌面**；
+#   · run 36236822959：按规矩修好（装回去、前台做成断言）之后，前台确认是
+#     `com.lovebrain.app/.ui.SetupActivity`，`adb exec-out screencap -p` 却交回 **0 字节**。
+# 根因不是拿错机器：这三个 Activity 全部设了 `FLAG_SECURE`
+#   （`SetupActivity.kt:89`、`KnowledgeBaseActivity.kt:113`、`KbEditActivity.kt:125`，
+#   注释写着理由：防止 API Key / 关系数据在最近任务截图里泄露）。
+#   `FLAG_SECURE` 就是让系统拒绝把这一屏画进截图 ⇒ "设备拍两张真屏幕"这条要求
+#   在这个 app 上结构性拿不到证据；继续要 PNG 只会再次收下一张假证据。
+#
+# 取代它的是 **JVM 截图基线**（指导书 :610 点名的 roborazzi / paparazzi 二选一，这里选 roborazzi）：
+#   基线在 `app/src/test/roborazzi/`，CI 只跑 `:app:verifyRoborazziDebug`（不匹配即红）；
+#   重新生成是显式人工动作（`./gradlew :app:recordRoborazziDebug` + 人看过 + 单独一笔提交）。
+#   ⚠ 它不能靠普通单测那一步：实测带着一次真实视觉回归（主按钮 min 高度 48dp → 64dp）
+#   跑 `:app:testDebugUnitTest` 仍然 rc=0 全绿——roborazzi 默认模式只重录不比对。
+#
+# 这个文件本身**被断言存在、非空、且写清两件事**（缺一句就红），
+# 不许把"不再要 PNG"写成一个看不见的空白。
+VISUAL_STATEMENT="$ARTIFACTS/visual-evidence.md"
+{
+  printf '# 视觉证据口径\n\n'
+  printf -- '- **设备侧不产 PNG（有意为之，不是没做）**：三个 Activity 全部设了 `FLAG_SECURE`\n'
+  printf -- '  （`SetupActivity.kt:89` / `KnowledgeBaseActivity.kt:113` / `KbEditActivity.kt:125`），\n'
+  printf -- '  注释写着理由：防止 API Key 与关系数据在最近任务截图里泄露。\n'
+  printf -- '  实到：run 36236822959 在前台确认为 `com.lovebrain.app/.ui.SetupActivity` 之后，\n'
+  printf -- '  `adb exec-out screencap -p` 交回 **0 字节**；再之前（run 36234389326）那两张\n'
+  printf -- '  "114996 字节的截图"拍的是 `com.android.launcher3/.Launcher`（桌面）。\n'
+  printf -- '- **取代它的是 JVM 截图基线**：基线在 `app/src/test/roborazzi/`，\n'
+  printf -- '  CI 只跑 `verifyRoborazziDebug`（不匹配即红）；重新生成是显式人工动作 + 单独一笔提交。\n'
+  printf -- '  普通单测那一步看不见视觉回归（实测：改高度之后 `testDebugUnitTest` 仍 rc=0）。\n'
+  printf -- '- :538 的人工 review 规矩：节点只能由人跑 record、看过图、再提交；CI 永远只跑 verify。\n'
+} >"$VISUAL_STATEMENT"
+[ -s "$VISUAL_STATEMENT" ] ||
+  die "视觉证据口径没写出来（$VISUAL_STATEMENT 为空）——不允许留着空白继续跑"
+for needle in 'FLAG_SECURE' 'verifyRoborazziDebug'; do
+  grep -q -- "$needle" "$VISUAL_STATEMENT" ||
+    die "$VISUAL_STATEMENT 里没写清楚「$needle」—— 撤掉设备截图要求必须连理由一起交"
 done
+log "visual evidence statement: $VISUAL_STATEMENT (device PNGs intentionally not produced)"
 
-# ── the evidence gate ────────────────────────────────────────────────────────
+# ── the evidence gate ──────────────────────────────────────────────────────────
+# 注意：这里**不再传** --screenshots-dir / --shot-provenance。
+#   不是把判据改软——拍屏那一路已被证明拿不到证据（FLAG_SECURE），
+#   继续要 PNG 只会让下一跑继续交桌面图。取代它的是上面那份被断言非空的口径声明
+#   + CI 里独立的一步 verifyRoborazziDebug。
+#   那套额外的截图判据（非空 / 尺寸 / PNG 魔数 / 两两不同 / provenance）保留在
+#   assert_artifacts.sh 里继维护，脚本自测 8 格照旧；谁要恢复设备侧截图，把参数加回来即可。
 evidence_rc=0
 bash "$SCRIPT_DIR/assert_artifacts.sh" \
   --label "ui-test" \
   --xml-dir "${XML_DIRS[0]}" \
   --html-dir "${HTML_DIRS[0]}" \
-  --screenshots-dir "$SCREENSHOT_DIR" \
-  --shot-provenance "$ARTIFACTS" \
-  --foreground-pkg "$PKG" \
   --min-tests "$MIN_TESTS" || evidence_rc=$?
 
 if [ "$rc" -ne 0 ]; then

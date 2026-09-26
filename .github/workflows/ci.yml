@@ -42,6 +42,25 @@ jobs:
       - name: Unit tests
         run: ./gradlew :app:testDebugUnitTest --no-daemon
 
+      - name: Screenshot baselines must match (verify only — never record)
+        # §6.5 :538「screenshot baseline 变更必须人工 review，不允许自动覆盖 baseline 后直接绿」。
+        # ⚠ 实测为什么这一步必须单独存在：带着一次真实的视觉回归
+        #   （把主按钮 min 高度 48dp 改成 64dp）跑普通 `:app:testDebugUnitTest` 是 **rc=0 全绿**——
+        #   roborazzi 的默认模式只把"实到图"重录进 build/，不比对；比对只在 verify 模式发生。
+        #   （基线本身在 app/src/test/roborazzi/，默认模式不会覆盖它——所以"自动覆盖 baseline"
+        #   这条路本来就不存在，但"默默不比对"这条路存在，得用这一步堵掉。）
+        # 重新生成基线是显式人工动作：`./gradlew :app:recordRoborazziDebug` + 人看过 + 单独一笔提交。
+        run: ./gradlew :app:verifyRoborazziDebug --no-daemon
+
+      - name: Upload screenshot comparison report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: roborazzi-report
+          path: app/build/reports/roborazzi/
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Assert unit test evidence is real
         # An empty/absent XML result set is a failure, not a warning.
         run: bash scripts/assert_artifacts.sh --label "unit" --min-tests auto --xml-dir app/build/test-results/testDebugUnitTest --html-dir app/build/reports/tests/testDebugUnitTest

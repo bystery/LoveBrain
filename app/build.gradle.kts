@@ -4,6 +4,10 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
+    // §6.5 的截图基线：JVM 渲染（Robolectric + Compose），不依赖设备截屏——
+    // 三个 Activity 都设了 FLAG_SECURE，设备侧 screencap 结构上拍不到那一屏
+    // （CI run 36236822959 实测：装回去、前台确认是 app 之后，screencap 交回 0 字节）。
+    id("io.github.takahirom.roborazzi")
 }
 
 // 正式签名：仓库根目录的 keystore.properties（已 gitignore，不入库）提供 keystore 路径与密码。
@@ -160,6 +164,12 @@ dependencies {
     // 而复核 §9 第 4 条禁止用源码 grep 顶替它。Robolectric 让同一批断言在 CI 之前就能红。
     testImplementation(platform(composeBom))
     testImplementation("org.robolectric:robolectric:4.14.1")
+    // §6.5 截图基线（JVM 渲染）：见上面的 roborazzi 插件。
+    // 钉版本的理由：1.7x 用 Kotlin 2.0.21 编，本仓库还是 Kotlin 1.9.24。
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-core:1.30.0")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi:1.30.0")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-junit-rule:1.30.0")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:1.30.0")
     testImplementation("androidx.test:core:1.6.1")
     testImplementation("androidx.test.ext:junit:1.2.1")
     testImplementation("androidx.compose.ui:ui-test-junit4")
