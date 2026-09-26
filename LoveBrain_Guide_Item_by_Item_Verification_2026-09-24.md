@@ -5697,4 +5697,41 @@ lint `measured 67 / 15 rules` → 进预算 `66 / 14`、advisory 1（与上轮�
   ResultArea 1286 行、2 格 `Assume`、`HomeComponents.kt:238`——全部照旧。
 坑表 **143**、交接单 **§0.52**。
 
+---
+
+# 追加六十七：取消审计的盲区补上，当场扫出两处真咽掉取消（`23a55e2`）
+
+## 67.1 触发点是一发反证，不是新想法
+
+上一格我用"`audit_cancellation.py --check` PASS"当作"取消信号都被正确处理"的证据。
+把 `ActualSentRecorder` 里的 `throw e` 删掉之后**它仍然 PASS** ⇒ 那次引用是错的（坑表 142 记的就是这个）。
+两条根因叠在一起：①扫描集只有 `catch (:Exception|Throwable)` 与 `runCatching {`，
+`catch (:CancellationException)` 不在内；②PROTECTED 的判据是"链上出现过 `CancellationException` 这个词"
+——"接住取消然后什么都不做"因此被判成安全。
+
+## 67.2 补的判据与扫出来的两处
+
+新增一类站点：每处 `catch (:CancellationException)`，块内没有 `throw` 判 **CANCEL-SWALLOWED**
+（要故意咽必须写 `cancel-safe:` + 理由，走已有的豁免通道）；与吞 Exception 那一族**分开报数**。
+补完直接 `--check` 红两处（生产真码，不是夹具）：
+`viewmodel/KnowledgeBaseViewModel.kt:292`（导出被取消）、`:324`（导入被取消）。
+两处的注释都写着"不回事件，让上层协程处理取消"，代码是 `return@launch` ⇒
+协程以"正常完成"收场：`job.isCancelled` 为 false、等它的人以为跑完了，
+而 `viewModelScope` 里没有"上层协程"会去处理这次取消。改成 `throw e`（用户可见行为不变：两种写法都不发事件）。
+
+## 67.3 这一格没做的（写在明处）
+
+- **那两处没加行为测试**：可观察差别只在 `job.isCancelled`，而 `KnowledgeBaseViewModel` 没交出句柄。
+  这里的证据是静态判据 + 变异读数（`CE-1`：咽掉一处 → `--check rc=1` 且点名
+  `feature/roundcommit/ActualSentRecorder.kt:116`；还原 → `rc=0`）。
+  行为级钉子留给以后真交出句柄的那次改动，别把它记成"测过了"。
+- 读数对照：站点 **165 → 215**（+50 处 CE-catch），`PROPAGATED=50 / CANCEL-SWALLOWED=0`；
+  `PROTECTED=54 WAIVED=2 SUSPEND-FREE=109 NEEDS_REVIEW=0` 与补判据前**逐字相同**
+  ⇒ 新判据没有改动旧结论，只是把原来看不见的摆出来。
+- 本机门禁实跑：JVM 197/1457 全绿、lint 67/15 → 进预算 66/14（未变）、androidTest rc=0、
+  工单号 PASS、大文件棘轮 holds + 自测 7 格。
+
+坑表 **144**、交接单 **§0.53**。
+
+
 
