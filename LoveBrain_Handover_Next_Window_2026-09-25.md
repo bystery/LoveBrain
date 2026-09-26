@@ -1398,6 +1398,11 @@ HEAD `0c4d6d6`，仍未推。两笔：
   恢复的 8 份 md 逐份与 HEAD 字节相同；**生产代码到 `a8349eb` 为止只动过 `LbPrimaryButton.kt` 一处**。
   本窗口**没跑**的：lint 预算、产物门、egress 自测那批本地门禁（`_temp/run_gates110.sh` 那一套）——
   改的是 UI 组件与 androidTest 夹具，没动 lint 面与脚本面，**这一条标"沿用上轮未复验"**，不写 PASS。
+- **★ 最后一跑（`dd9368d`，run 36234389326）判决**：`tests=45 failures=0 errors=0 skipped=2 suites=1`——**本窗口 8 条设备红清零**，且三句 `requestCount` 断言改成先等再判之后连 `rapidDoubleTap` 都绿了
+  （⇒ KDoc 自陈的那条租约竞态**在这台 CI 设备上没复现**，它现在是一条"未被证明"的性质，不是"已修"）。
+  `ui-test` job 仍红，红在证据门：`home.png` 与 `knowledge-base.png` 逐字节相同（同 sha256、各 114996 字节）
+  ⇒ 第二块屏幕没换上来；这条上一轮账本就预告过，**是要的结论，不是回归**。
+  ⇒ 卡点从此变成 R5（视觉证据）+ `skipped=2`（指导书 :212 第 9 场景）+ `upgrade-test` 永远 skipped。
 - **下一格第一动作**：读 `a8349eb` 那一跑的 `链路读数`（`gh run view <id> --log | grep -a "链路读数"`）
   ① 确认 B 组四格是否开始收到应答；② 确认 `rapidDoubleTap`/`lateCallbacks` 是否仍 `accepted=0`。
   然后按顺序：**C 组最小复现**（现成夹具 `app/src/test/.../viewmodel/GenerationRollbackTest.kt:144-167`、
@@ -2716,13 +2721,19 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 **第 13 窗口结束时（远端 `main` = `dd9368d`，`git ls-remote` 现读；`85d2d42..HEAD` 共 14 笔，本窗口 8 笔）的三项状态**：
 `verify` **success**（run 36230978438 / 36231958338 两跑都是；产物门自报 unit `1424/191/0/0/0`，
 与本机 `--rerun-tasks` 那跑逐字相同 ⇒ **HEAD 第一次有同一 SHA 的 CI 证据**，R0 那半句立住了）；
-`ui-test` **failure**：到 `a8349eb` 为止 `tests=45 failures=3 errors=0 skipped=2`（起点 8 红：
-锚点那一笔关 1、fake 判据那一笔关 4 ⇒ 见 §0.46 ⑤⑦）；`upgrade-test` **skipped**
-（needs ui-test 绿 ⇒ v1.3.1 覆盖安装**至今零证据**）。
-所以卡点没消失，但从 **8 条压到 3 条 + 一条从没跑过的升级测试**；那三条里两格是 VM/Engine 之前的生产竞态
-（`rapidDoubleTap`、`lateCallbacks`），一格是**断言下得太早**（`stopDuringGeneration`：`isGenerating` 在 prep
-就翻 true，连接要到 `PERF t2` 之后才建，一锤子读必然读在连接前面）——这一句在 `dd9368d` 改成先等再判，
-判决只能等 run 36234389326。
+`ui-test` **仍 failure，但已经不是设备侧测试红**：最后一跑 `dd9368d`（run 36234389326）报
+ `[gate] ui-test: tests=45 failures=0 errors=0 skipped=2 suites=1` —— **本窗口起点那 8 条红清零**
+（锚点那一笔关 1、fake 头块判据那一笔关 4、先等再判那一笔关最后 3）。
+job 红在**另一件事**上：`[gate] FAIL ui-test: 这些截图与前面某张逐字节相同： home.png`——
+`knowledge-base.png` 与 `home.png` 都是 114996 字节、同一个 sha256 `23d2c502b8fd38d1…`，
+即**第二块屏幕根本没换上来**，而这条正是上一轮账本预告过的（"下一轮很可能因为这条而红，那是要的结论"）。
+`upgrade-test` **skipped**（needs ui-test 绿 ⇒ v1.3.1 覆盖安装**至今零证据**）。
+所以卡点从"**8 条设备红**"换成三件别的：**①视觉证据**（两张截图同图 ⇒ R5 那块空白，现在它挡在 `ui-test` 绿路上）；
+**②`skipped=2`** 那两格 Service destroy（指导书 :212 第 9 场景）仍没跑，不许用跳过冒充通过；
+**③升级安装**仍零证据。而那三句 `requestCount` 断言"先等再判"之后全绿——连 `rapidDoubleTap` 的
+"双击只发一次"也是绿的，说明 KDoc 里那条 `LoveBrainViewModel.kt:844-855` 租约竞态**在 CI 这台设备上没复现出来**；
+它仍是一个未证明的性质，不能宣布已排除（要一条 JVM 侧的最小复现才算钉住）。
 本窗口不签 PASS，下一窗口在拿到同一 SHA 的三项全绿之前也不签；
 `a6d3e51`/`a8349eb` 两跑已经证明：**那五格红的是测试夹具，不是 `DeepSeekRepository`**。
-下一跑（`dd9368d`，run 36234389326）回来之前，仍然**不许动生产判据**。
+`dd9368d` 已回：生产码零改动之下 8 条清零 ⇒ **R1 那批"生成崩溃"从头到尾没有生产缺陷**（除了 A 组那颗
+锚点位置，它既影响自动化也影响读屏）。下一窗口动 `ui-test` 绿路之前，先读 §0.46 的 ★ 段。
