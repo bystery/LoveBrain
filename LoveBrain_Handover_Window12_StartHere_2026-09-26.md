@@ -4,8 +4,9 @@
 前面十一个窗口的账本。所有数字都是 2026-09-26 这一轮实测出来的，**注明了是哪条命令的输出**；
 凡本机量不到的，一律标"只能等 CI/设备"，不当已解决。
 
-- 本地 HEAD：**第一笔已落 `aa29950`**（A1 那把新尺，纯测试码）；开工时是 `9fc81dc`（这份文档本身），
-  开工前远端 `main` = `85d2d42`，本窗口至今**没推过**。
+- 本地 HEAD：**本窗口已落三笔** —— `aa29950`（A1 那把新尺，纯测试码）→ `777a887`（它的账）→
+  `d6dc1a1`（A7 两笔"注释比实现新"的假账）；开工时是 `9fc81dc`（这份文档本身），
+  开工前远端 `main` = `85d2d42`，本窗口至今**没推过**（所以同一 SHA 的 CI 三项**只能等推上去**才知道）。
 - 那份"还差多少活"的判断在第 3 节，**先看 3.A 和 3.B 就够了**。
 
 ---
@@ -36,8 +37,8 @@ CI 的产物门自报同一个数 ⇒ 这一轮两侧没漂。
 |---|---|---|
 | `LoveBrain_Three_Phase_Reaudit_and_Six_Principles_UI_Architecture_Guide_c0ff0415_2026-09-24.md` | **就是这份要照着干的指导书**（664 行） | **未跟踪 `??`** |
 | `LoveBrain_Comprehensive_Reaudit_286c9406_2026-09-23.md` | 上一轮综合复核报告 | 未跟踪 `??` |
-| `LoveBrain_Guide_Item_by_Item_Verification_2026-09-24.md` | 逐条对照表（账本，5219 行，最新一节「追加五十九」在 5129 行起） | 已入库 |
-| `LoveBrain_Handover_Next_Window_2026-09-25.md` | 十一轮的开工单（§0.44 最新、§1 起手命令、§6 坑表 1–123） | 已入库 |
+| `LoveBrain_Guide_Item_by_Item_Verification_2026-09-24.md` | 逐条对照表（账本，5304 行，最新一节「追加六十」在 5222 行起；上一节「追加五十九」在 5129 行起） | 已入库 |
+| `LoveBrain_Handover_Next_Window_2026-09-25.md` | 十一轮的开工单（§0.45 最新、§1 起手命令、§6 坑表 1–125） | 已入库 |
 
 ⚠ **前两份至今没入 git**：谁 clone 这个仓库都拿不到它们，只剩工作目录里这一份。要不要入库是**用户的决定**（见第 8 节），
 所以本节把指导书的结构抄成行号地图，让你不用那份文件也知道每条要求在哪：
@@ -91,7 +92,7 @@ bash scripts/assert_artifacts.sh --label unit \
 bash _temp/run_gates109.sh                          # 全套 12 步门禁，每步记 RC + 字节数（换格子要换死导入清单）
 ```
 
-Windows 上必踩的六条（原来四条，详见交接单 §6 坑表 107 / 116–120；本窗口又补了 121–123 与下面两条）：
+Windows 上必踩的六条（原来四条，详见交接单 §6 坑表 107 / 116–120；本窗口又补了 121–125 与下面两条）：
 `PYTHON=` 要写成 `bash -c 'PYTHON=/d/anaconda/python bash …'`，**别用 `env VAR=… cmd`**（PATH 上有个空壳会吞参数还返回 0）；
 `python3` 是商店占位符（返回 49），一律用 `/d/anaconda/python`；
 Python 脚本走 stdout 要 `PYTHONIOENCODING=utf-8`（默认 GBK 会因中文崩）；
@@ -148,12 +149,18 @@ Python 脚本走 stdout 要 `PYTHONIOENCODING=utf-8`（默认 GBK 会因中文�
 - 第一步：把 `FeedbackCasesSemanticsTest` 加三档夹具（`feedbackLoading=true` / `feedbackError=MutableStateFlow("…")` / 案例为空），照 `PanelErrorStatesSemanticsTest` 的形状判"这一档里还剩几颗动作、那颗能不能按"。
 - ⚠ 挂档时注意：**"挂的是哪一档"自己要有证人**（账本 §51.1：`when` 里 `Success` 排在 `!providerReady` 前面，挂错档照样全绿）。
 
-**A7 ｜ 两笔纯文档假账（十分钟的活，但都是"注释比实现新"）**
+**A7 ｜ 两笔纯文档假账（十分钟的活，但都是"注释比实现新"）—— ✅ 本窗口已收 `d6dc1a1`**
 - `PackageDependencyTest.kt:14-15` 仍写"真实存量是 **15 条越界 import，分布在 11 个文件**"，而它自己的基线是 **6 条 / 6 文件**（`assertEquals(6, …)`）。
+  ✅ 已按实测改成 6/6，并补上还债来路（`2dd94c0` 15→10、`ab7457a` 10→6，两次提交信息里都有数、只有注释没动）；
+  同段那句"把 domain 的 6 处 `data.*` 换掉"也已改口——**那 6 处早换完了**，domain 现在只剩一处 `android.content.Context`。
 - `LoveBrain_Rework_Acceptance_2026-09-24.md:76` 仍写"漂移只记诊断、**仍用冻结 prompt**"、`:81` 仍写"**所有写路径统一拒**"——指导书 §3.3（341 行）点名的就是这两句与实现不符；A1 修完之后第二句才真的成立，**别先改字**。
-  ⚠ 第一句**本窗口已对着实现核过**：`GenerationEngine.kt:256-264` 那里注释自己写着
+  ✅ **第一句本窗口已改口（`d6dc1a1`）**——改之前对着实现核过：`GenerationEngine.kt:256-264` 那里注释自己写着
   "以前这行注释写的是'仍用冻结时的 prompt 文本'，那是没有实现的说法"——资产 hash 漂移只 `L.w` 一句，
   随后 `val user = buildResult.prompt` 用的就是**现读资产拼出来的**文本。所以"只记诊断"对、"仍用冻结 prompt"错。
+  ⚠ **第二句 :81 依旧没动**（30 处裸写一处没还）。这一格还顺手挖出两笔**只登记没自裁**的，见账本 §60.3：
+  执行记录 :49 说"已改口"其实改的是引擎注释（那份验收包文件 `git log` 停在 `c0ff041`）；
+  同一行又说 :81"现在变成真的了"，与本节"别先改字"**互相矛盾**——摊开口径后不当我裁。
+  另：`PackageDependencyTest.kt` 里扫出**一条改前就死着的 import**（`Assert.fail`），已清（坑表 124）。
 
 **A8 ｜ 本窗口新登记的行为空白（账本 §59.6）：只读库走"补缺文件"那条路径没量过**
 - `ReadOnlySchemaWriteGateTest` 那份 24 条公开 mutation 的目录树比对**不含建库两条路径**
@@ -226,6 +233,9 @@ Python 脚本走 stdout 要 `PYTHONIOENCODING=utf-8`（默认 GBK 会因中文�
 - 门禁 12 步全 rc=0（除 `prompt` 合法 0 字节）：lint `measured_issues=67 measured_rules=15 gated_issues=66 gated_rules=14 advisory_issues=1`；
   预算自测 27 格全对；跨层依赖 6；工单号 PASS；取消审计 165 站（PROTECTED 54 / WAIVED 2 / SUSPEND-FREE 109 / NEEDS_REVIEW 0）；
   prompt 资产锁 OK（`6dcde732…`）；`assembleAndroidTest` rc=0；被改文件死导入 0 条。
+  ⚠ 本窗口把那套门禁复跑过两遍（`_temp/gates109`、`_temp/gates110`）：**190 套件 / 1417 单测 / 0 失败 0 错误 0 跳过**、
+  lint 与其余读数**两遍逐字相同**（`d6dc1a1` 只动注释与一条死导入，格子数本来就不该动）；
+  门禁脚本按格子换死导入清单，现在是 `_temp/run_gates110.sh`。
 - 字面量四栏（剥注释口径）：**TEXT 174 / DESC 10 / STATE 0 / COMPONENT 76**。
 - §6.1 :490 那三把尺：**表面色 44 处/17 文件；自造品牌底可点控件 23 处/10 文件；经 containerColor 2 处/2 文件**（旧数 25/19/5 是换口径前的下界，**不许拿来比涨跌**）。
 - 大文件实测：**>500 行 17 个；>800 行 10 个** —— 2723 `viewmodel/LoveBrainViewModel.kt`、1793 `data/KnowledgeRepository.kt`、1286 `ui/panel/reply/ResultArea.kt`、1155 `service/FloatingService.kt`、1114 `ui/panel/LoveBrainPanelScreen.kt`、1114 `data/DeepSeekRepository.kt`、1008 `domain/TopicRecorder.kt`、974 `domain/PromptBuilder.kt`、944 `ui/panel/SuggestPanel.kt`、937 `ui/KnowledgeBaseActivity.kt`。
@@ -264,7 +274,12 @@ Python 脚本走 stdout 要 `PYTHONIOENCODING=utf-8`（默认 GBK 会因中文�
 P0-03 前半句那把新尺的口径、34/4/30 三张读数表、八发变异反证的逐发实读、
 以及两处"绿着的错表"是怎么被仪器自己造出来的。
 交接单 §0.44 与坑表 121–123（同一份开工单）。
+账本「追加六十」（同一份账本 5222 行起）＝本节 3.A7 那两笔假账的销账过程，
+外加两笔**只登记没自裁**的发现（执行记录那行"已改口"改的是引擎注释、:81 两句口径互相矛盾）；
+交接单 §0.45 与坑表 124–125。
 本窗口新增的留档在 `_temp/`：`a1_mutate_probe.py`（八发变异驱动，跑前先把原件与 sha256 清单落盘、
 每发跑完立刻还原并逐字节核对）、`a1_mutate/readings.txt`（八发实读 + 收尾核对）、
-`run_gates109.sh`（12 步门禁，死导入清单换成本格那个新测试文件）、`a1_measure1.log`/`a1_measure2.log`/`a1_green1.log`
-（造尺过程中"先跑红拿实测数"那三次读数）。
+`run_gates109.sh` / `run_gates110.sh`（12 步门禁，死导入清单换成本窗口改过的那两个测试文件）、
+`gates109/all.txt` 与 `gates110/all.txt`（两遍逐字相同的读数）、
+`a1_measure1.log`/`a1_measure2.log`/`a1_green1.log`/`a7_test.log`/`a7_test2.log`
+（"先跑红拿实测数"与改注释前后各一次的复跑读数）。
