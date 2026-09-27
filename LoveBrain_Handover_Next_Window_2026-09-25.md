@@ -1972,7 +1972,10 @@ lint 实测 66/14、进预算 65/13 未变；大文件棘轮 holds（KR 1802 →
 本机读数：**205 套件 / 1528 格 / 0-0-0**（`--rerun-tasks`，205 份 mtime 同为 13:25）；androidTest 编译 rc=0；
 大文件棘轮 holds（`KnowledgeRepository` 1811 → 1824，账本已按实测更新）；取消审计 / 工单号 /
 `asset_hashes --check` 全 rc=0；`app/src/main/assets/**` 零改动。
-`scripts/check_lint_budget.sh` 这一拍**没重跑 lint**（改了生产码，下一步补）——记为未验，不记为通过。
+`scripts/check_lint_budget.sh` 在写这一节时**还没重跑**（改了生产码），所以当时先记"未验"；
+13:33 补跑 `:app:lintDebug` 再过闸：实测 **66 条 / 14 规则**、进预算 **65 / 13**，与批次一逐字相同、gate rc=0
+（`assert_artifacts.sh --label lint` 同一份产物也 OK）。⇒ 顺序照旧留着：**先落"未验"、后补读数**，
+没有把"应该没变"当成一次测量。
 
 ## 1. 起手必查（照抄，别凭记忆）
 
