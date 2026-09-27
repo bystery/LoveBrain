@@ -1,10 +1,11 @@
 # 现存 >500 行但未过 800 的生产 Kotlin 文件——登记（独立复核 §3.2 P1-01、§7 第二步完成定义第 5 条）
 # 键 = 相对 app/src/main/java/com/lovebrain/app/ 的路径；判据与它为什么只登记不惩罚行数见 scripts/check_big_files.sh 顶部。
-# 这份清单是 2026-09-27 用 find + wc -l 实扫出来的（>500 共 17 个，其中 >800 的 10 个另登一档）。
+# 这份清单是 2026-09-27 用 find + wc -l 实扫出来的（>500 共 16 个，其中 >800 的 8 个另登一档）。
 ui/feedback/FeedbackCasesScreen.kt  # 537 行
 viewmodel/SetupViewModel.kt  # 611 行
 ui/KbEditActivity.kt  # 624 行
 ui/panel/counseling/CounselingPanel.kt  # 624 行
 ui/home/ProviderSection.kt  # 677 行
 domain/GenerationEngine.kt  # 690 行
+ui/panel/reply/ResultArea.kt  # 768 行
 ui/panel/reply/SchemeCard.kt  # 789 行

@@ -1,9 +1,13 @@
 package com.lovebrain.app.ui.panel.reply
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,22 +15,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.LB_SHEET_ACTION_MIN_DP
 import com.lovebrain.app.core.designsystem.LbDialogAction
 import com.lovebrain.app.core.designsystem.LbDialogActionTone
 import com.lovebrain.app.core.designsystem.LbModalSheet
 import com.lovebrain.app.core.designsystem.LbModalSheetActions
 import com.lovebrain.app.core.designsystem.LbModalSheetTitle
 import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.PrimaryDark
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.TextHint
 import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.model.MuteDuration
 
 /**
@@ -168,4 +179,38 @@ internal fun durationLabel(duration: MuteDuration): String = when (duration) {
     MuteDuration.THIS_ROUND -> "仅本轮"
     MuteDuration.TODAY -> "今天剩余"
     MuteDuration.UNTIL_RESTORE -> "直到手动恢复"
+}
+
+/**
+ * "暂时别提"时长选择子菜单项。
+ *
+ * 它唯一的调用者就是本文件那颗暂停时长浮层，所以它跟着宿主住，而不是留在结果区。
+ *
+ * §6.5 :531：这一档上一格没量过——那格只量了「不对」那颗浮层。回扫同一菜单的
+ * 另一条分支时量到 **307x23dp**（探针 W2：去掉下面那颗 `heightIn` 后守卫报出的实测值），
+ * 离 48dp 差着一整档手指。现在这一档和浮层动作共用同一个下限常量，
+ * 下次改设计系统的动作热区，这一档会跟着走，而不是留一个自己抄的数。
+ */
+@Composable
+internal fun CorrectionSubmenuItem(
+    label: String,
+    onClick: () -> Unit
+) {
+    val (interaction, scale) = rememberPressScale(0.96f, "muteSubmenu_$label")
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = LB_SHEET_ACTION_MIN_DP.dp)
+            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+            .padding(vertical = Spacing.sm),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            label,
+            style = AppTypography.labelSmall,
+            color = PrimaryDark,
+            fontWeight = FontWeight.Medium
+        )
+    }
 }
