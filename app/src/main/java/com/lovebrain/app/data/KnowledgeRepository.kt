@@ -757,20 +757,25 @@ class KnowledgeRepository(
             "memory/counseling_log.md" to ""
         )
 
-        requiredFiles.forEach { (path, defaultContent) ->
-            val file = File(dir, path)
-            if (!file.exists()) {
-                atomicWriteText(file, defaultContent)
+        // 补齐缺失的必需文件（不覆盖已有内容）。
+        // 判"存不存在"必须用 `exists()` 而不是 `readTextAt().isEmpty()`——后者会把
+        // "文件在、内容为空"误判成缺失，于是给一个用户故意留空的 plan.md 盖回 schema 模板。
+        // 上链之后路径仍由 `KnowledgeTx.pathOf` 给（同一个 safeKbFile 判定），
+        // 写仍走 `write` → writeFileCheckedUnlocked，这里不再有裸 `atomicWriteText`。
+        transactionUnlocked(kbName) {
+            requiredFiles.forEach { (path, defaultContent) ->
+                val file = pathOf(path)
+                if (file != null && !file.exists()) write(path, defaultContent)
             }
-        }
 
-        // topic.md 特殊处理：不存在时写入初始行
-        val topicFile = File(dir, "moment/topic.md")
-        if (!topicFile.exists()) {
-            atomicWriteText(
-                topicFile,
-                KbTextOps.topicLine(com.lovebrain.app.util.TimeFmt.now(), KbTextOps.TOPIC_INITIAL_LABEL)
-            )
+            // topic.md 特殊处理：不存在时写入初始行
+            val topicFile = pathOf("moment/topic.md")
+            if (topicFile != null && !topicFile.exists()) {
+                write(
+                    "moment/topic.md",
+                    KbTextOps.topicLine(com.lovebrain.app.util.TimeFmt.now(), KbTextOps.TOPIC_INITIAL_LABEL)
+                )
+            }
         }
     }
 

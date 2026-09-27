@@ -76,21 +76,24 @@ class KnowledgeTxMutationEntryTest {
      * `KB_NAME_MAX_LENGTH`，`create` 入口先拒过长名，13 处随之上链
      * （证据与新旧行为各自钉在 `KnowledgeSeedWriteBytesBaselineTest`）。
      *
-     * 剩下两笔各自的原因：
-     * - `ensureKbFilesCompleteUnlocked` 2 处（L762 L769）**仍然搬不动**，而且原因是新的：
-     *   `KbArchiveTransfer.import` 不校验库名长度（实测该文件里 0 处 `KbName` / 长度判定），
-     *   所以一个 101+ 字符的库目录**可以由导入 zip 造出来**，`create` 补判定挡不住这条路；
-     *   把这两处上链会让"给已存在的库补齐缺失文件"对那种遗留目录静默失效。⇒ 要搬得先给导入路径补守门。
-     * - `RepoStorage` 那 2 处是存储适配器自己（管道，不是欠账）。
+     * 2026-09-27 批次三还掉 `ensureKbFilesCompleteUnlocked` 那 2 处：它以前给"已存在的库"补文件时
+     * 自己拼 `File(dir, path)` 再裸写。现在路径仍由 `KnowledgeTx.pathOf` 给（同一个 `safeKbFile` 判定），
+     * 写改走 `write`。**判"存在"刻意保留 `exists()`**：换成 `readTextAt().isEmpty()` 会把
+     * "文件在、内容为空"误判成缺失，给一个用户故意留空的 `moment/plan.md` 盖回 schema 模板（那是改行为）。
+     *
+     * 一条要说清的语义变化：库名非法（>100 字符等）的**遗留目录**从今天起不再被补齐——
+     * 那种库本来就每一读都被 `safeKbFile` 判非法、拿回空串，补了也没人读得到。
+     * 新的非法名现在有三条入口都被堵：`create` 的 require、导入的 `KbName` 守门、以及路径守门本身。
+     *
+     * 剩下两笔：`RepoStorage` 那 2 处是存储适配器自己（管道，不是欠账）。
      */
     private val expectedRawBreakdown = mapOf(
-        "ensureKbFilesCompleteUnlocked" to 2,
         "RepoStorage.atomicWrite" to 1,
         "RepoStorage.guardedWrite" to 1
     )
 
-    /** 调用点总数（写链 4 + 裸写 4）：动一条也要撞到这里 */
-    private val expectedTotalSites = 8
+    /** 调用点总数（写链 4 + 裸写 2，且那 2 处是管道）：动一条也要撞到这里 */
+    private val expectedTotalSites = 6
 
     // ═══════════ 扫描工具 ═══════════
 

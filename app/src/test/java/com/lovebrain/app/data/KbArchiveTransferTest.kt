@@ -238,4 +238,62 @@ class KbArchiveTransferTest {
         }
         assertEquals(listOf("kb_x/deep/a.md", "kb_x/kb.json"), names)
     }
+
+    // ═══════════ 库名形状守门（导入是 `create` 之外的第二条建库入口）═══════════
+
+    /**
+     * 导入以前只查"name 与目录名一致"，**不查这个名字合不合法**：
+     * 顶层目录由 zip 说了算，于是能导进一本 `KbName` 认不下的库——
+     * 它落在盘上、被 `listAll()` 列出来，但每一次读都被 `safeKbFile` 判成非法路径拿到空串。
+     * 这一格钉的是"那种包现在会被拒，且一个字节都不许留在 knowledge/ 里"。
+     */
+    @Test
+    fun `library name the path guard cannot accept is rejected on import`() {
+        val bad = "kb..x"
+        assertTrue(
+            "前提：`KbName` 确实认不下这个名字（不然这一格测的是空气）",
+            runCatching { com.lovebrain.app.model.KbName(bad) }.isFailure
+        )
+        val root = knowledgeRoot()
+        val thrown = runCatching { import(validKbZip(bad), root) }.exceptionOrNull()
+        assertTrue("应抛 TransferException，实到 $thrown", thrown is KbArchiveTransfer.TransferException)
+        assertFalse("被拒的包不许在 knowledge/ 下留下任何东西", File(root, bad).exists())
+        assertEquals("knowledge/ 必须仍然为空", emptyList<String>(), root.list()?.sorted() ?: emptyList<String>())
+    }
+
+    /** 上限同源：101 字符的库名以前能导入（`create` 那条路补了，导入这条是漏的） */
+    @Test
+    fun `library name longer than the shared limit is rejected on import`() {
+        val tooLong = "k".repeat(101)
+        assertTrue(
+            "前提：`KbName` 卡的正是这个长度（改上限要两边一起改，别只改一边）",
+            runCatching { com.lovebrain.app.model.KbName(tooLong) }.isFailure
+        )
+        val root = knowledgeRoot()
+        val thrown = runCatching { import(validKbZip(tooLong), root) }.exceptionOrNull()
+        assertTrue("101 字符库名应被导入拒掉，实到 $thrown", thrown is KbArchiveTransfer.TransferException)
+        assertEquals("不许留下半本库", emptyList<String>(), root.list()?.sorted() ?: emptyList<String>())
+    }
+
+    /** 边界另一侧：恰好到上限的名字必须还能导——防止有人把守门改得比 `KbName` 还紧 */
+    @Test
+    fun `library name exactly at the limit still imports`() {
+        val atLimit = "k".repeat(com.lovebrain.app.model.KB_NAME_MAX_LENGTH)
+        val root = knowledgeRoot()
+        assertEquals("到上限的库名应当照常导入", atLimit, import(validKbZip(atLimit), root))
+        assertTrue("库目录应已原子搬入", File(root, atLimit).isDirectory)
+    }
+
+    /**
+     * 固定文案这条是本文件顶部立的规矩（库名可以是任意长/任意字符，
+     * 拼进消息会把噪音带回 UI）。它同时也是一个正向对照：上一格若红在"消息里没有名字"，
+     * 说明判据其实咬得住的是文案而不是拒绝本身。
+     */
+    @Test
+    fun `rejection message stays fixed and does not echo the archive name`() {
+        val weird = "kb..x"
+        val msg = runCatching { import(validKbZip(weird)) }.exceptionOrNull()?.message ?: ""
+        assertTrue("文案不该把包里的库名甩出来：$msg", !msg.contains(weird))
+        assertTrue("应给出可读的中文原因：$msg", msg.contains("命名规则"))
+    }
 }

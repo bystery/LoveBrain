@@ -1,5 +1,6 @@
 package com.lovebrain.app.data
 
+import com.lovebrain.app.model.KbName
 import com.lovebrain.app.model.KnowledgeBase
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -63,6 +64,16 @@ object KbArchiveTransfer {
             val kb = readMetadata(topDir)
             if (kb.name != topDir.name) {
                 throw TransferException("知识库元数据校验失败：name 与目录名不一致")
+            }
+            // 名字一致还不够——它之后要能过 `KbName` 那道路径守门。
+            // 否则导进来的是一本"落得了盘、读不回来"的库：`safeKbFile` 会把它的每一次读
+            // 判成非法路径拿到空串，而 `listAll()` 还照样把它列在库管理页上。
+            // `create` 已经用同一个判定（`KB_NAME_MAX_LENGTH`），导入这条路以前是漏的：
+            // 顶层目录名由 zip 说了算，长度与字符集都没人管。
+            runCatching { KbName(kb.name) }.getOrElse {
+                // 固定文案，不拼接用户输入（本文件顶部立的规矩）：
+                // 库名可能任意长，甩进消息里会把噪音带回 UI。
+                throw TransferException("知识库名不符合本机命名规则（长度或字符非法），导入中止")
             }
             val target = File(knowledgeRoot, topDir.name)
             if (target.exists()) {

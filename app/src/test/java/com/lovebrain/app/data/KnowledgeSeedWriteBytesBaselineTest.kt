@@ -358,6 +358,32 @@ class KnowledgeSeedWriteBytesBaselineTest {
         )
     }
 
+    /**
+     * "给已存在的库补齐缺失文件"那一族上链之后的两条语义（批次三）：
+     * ① 真缺的文件要按默认值补出来；
+     * ② **内容恰好为空的已有文件不许被盖回模板**——判"存在"必须用 `exists()`。
+     *    把它换成"读出来是空串就算缺"是上链时最顺手的一种改法，
+     *    而那会把用户故意清空的 `moment/plan.md` 覆盖成 schema 模板（改行为）。所以单独钉住。
+     */
+    @Test
+    fun `repair fills missing files but never overwrites an intentionally empty one`() = runBlocking {
+        val repo = newRepo()
+        repo.create("repairme", "修补测试")
+        val dir = File(root, "repairme")
+        val plan = File(dir, "moment/plan.md")
+        assertTrue("前置：建库之后 plan.md 应当在盘上", plan.isFile)
+        assertTrue("前置：它默认不是空的（否则这一格没有牙）", plan.readText().isNotEmpty())
+        plan.writeText("")                                       // 用户自己把它清空
+        assertTrue("前置：另一格要造成真的缺失", File(dir, "memory/lessons.md").delete())
+
+        repo.ensureInitialKnowledgeBase()                        // 已有库 → 走补齐那条分支
+
+        assertEquals("内容为空的 plan.md 不许被盖回 schema 模板", "", plan.readText())
+        val lessons = File(dir, "memory/lessons.md")
+        assertTrue("真的缺失的 lessons.md 应当被补出来", lessons.isFile)
+        assertEquals("补出来的应是该格登记的那份默认内容（空串）", "", lessons.readText())
+    }
+
     private companion object {
         const val CLOCK = "<CLOCK>"
     }
