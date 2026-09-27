@@ -684,26 +684,35 @@ class KnowledgeRepository(
                 topicCount = 0,
                 active = true
             )
-            atomicWriteText(File(defaultDir, "kb.json"), json.encodeToString(KnowledgeBase.serializer(), kb))
+            // seed 的 13 格全走唯一写链：transactionUnlocked → KnowledgeTx.write →
+            // writeFileCheckedUnlocked（只读判定 + safeKbFile 路径守门 + atomicWriteText）。
+            // 2026-09-27 之前这里是自己拼 `File(defaultDir, …)` 再裸调 atomicWriteText，
+            // 于是"绕过 KnowledgeTx 拿路径"的裸写点在这儿挂了 13 处。
+            // 锁已由外层 fileMutex.withLock 持有；[transactionUnlocked] 不要求"库已存在"，
+            // 所以对刚 mkdirs 出来的新目录照样可用。落盘字节由 `KnowledgeSeedWriteBytesBaselineTest`
+            // 逐格钉住（路径 + 内容 + 文件集合），搬运前后那张清单必须一致。
+            transactionUnlocked(defaultName) {
+                write("kb.json", json.encodeToString(KnowledgeBase.serializer(), kb))
 
-            // 画像默认真实空内容（非 schema 模板占位文字）
-            atomicWriteText(File(defaultDir, "understand/me.md"), "")
-            atomicWriteText(File(defaultDir, "understand/her.md"), "")
-            atomicWriteText(File(defaultDir, "understand/warmth.md"), "")
-            // 此刻层：topic 有初始行，其余空
-            atomicWriteText(
-                File(defaultDir, "moment/topic.md"),
-                KbTextOps.topicLine(com.lovebrain.app.util.TimeFmt.now(), KbTextOps.TOPIC_INITIAL_LABEL)
-            )
-            atomicWriteText(File(defaultDir, "moment/recent.md"), "")
-            atomicWriteText(File(defaultDir, "moment/scene.md"), "")
-            atomicWriteText(File(defaultDir, "moment/plan.md"), loadSchema("plan"))
-            // 记忆层：全部空
-            atomicWriteText(File(defaultDir, "memory/lessons.md"), "")
-            atomicWriteText(File(defaultDir, "memory/raw_chat.md"), "")
-            atomicWriteText(File(defaultDir, "memory/raw_topic.md"), "")
-            atomicWriteText(File(defaultDir, "memory/raw_scene.md"), "")
-            atomicWriteText(File(defaultDir, "memory/counseling_log.md"), "")
+                // 画像默认真实空内容（非 schema 模板占位文字）
+                write("understand/me.md", "")
+                write("understand/her.md", "")
+                write("understand/warmth.md", "")
+                // 此刻层：topic 有初始行，其余空
+                write(
+                    "moment/topic.md",
+                    KbTextOps.topicLine(com.lovebrain.app.util.TimeFmt.now(), KbTextOps.TOPIC_INITIAL_LABEL)
+                )
+                write("moment/recent.md", "")
+                write("moment/scene.md", "")
+                write("moment/plan.md", loadSchema("plan"))
+                // 记忆层：全部空
+                write("memory/lessons.md", "")
+                write("memory/raw_chat.md", "")
+                write("memory/raw_topic.md", "")
+                write("memory/raw_scene.md", "")
+                write("memory/counseling_log.md", "")
+            }
 
             // 全部写入成功才标完成
             securePrefs.activeKbName = defaultName

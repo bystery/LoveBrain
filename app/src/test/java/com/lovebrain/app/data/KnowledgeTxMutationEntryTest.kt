@@ -67,20 +67,27 @@ class KnowledgeTxMutationEntryTest {
     /**
      * 登记在册的裸写：作用域 → 处数。还掉一批就删一项或把一项改小，**不许往上加**。
      *
-     * 2026-09-26 本机实测（就是本文件跑红时报出来的那张表，行号对着 `KnowledgeRepository.kt`）：
-     * `ensureInitialKnowledgeBase` 13 处（L684–L703）、`create` 13 处（L825–L842）、
-     * `ensureKbFilesCompleteUnlocked` 2 处（L750 L757）、`RepoStorage` 的两个委托各 1 处（L166 L173）。
+     * 2026-09-26 首次实测：`ensureInitialKnowledgeBase` 13 处、`create` 13 处、
+     * `ensureKbFilesCompleteUnlocked` 2 处、`RepoStorage` 的两个委托各 1 处，共 30。
+     *
+     * 2026-09-27 批次一还掉 `ensureInitialKnowledgeBase` 那 13 处（seed 写入改走
+     * `transactionUnlocked` + `KnowledgeTx.write`），本表随之删一项。剩下两笔各自的原因：
+     * - `create` 13 处（L837–L854）**搬不动**，不是没搬：`create` 的 sanitizer 只过滤字符集不限长度，
+     *   而 `KbName` 卡 100 字符 ⇒ 101 字符以上的库名今天照样 13 格落盘，搬上链就变成
+     *   守门拒掉、一个字节不写、seed 段又不读返回值。证据见
+     *   `KnowledgeSeedWriteBytesBaselineTest.create still seeds bytes for names the tx guard would reject`。
+     * - `ensureKbFilesCompleteUnlocked` 2 处（L762 L769）是批次二。
+     * - `RepoStorage` 那 2 处是存储适配器自己（管道，不是欠账）。
      */
     private val expectedRawBreakdown = mapOf(
         "create" to 13,
-        "ensureInitialKnowledgeBase" to 13,
         "ensureKbFilesCompleteUnlocked" to 2,
         "RepoStorage.atomicWrite" to 1,
         "RepoStorage.guardedWrite" to 1
     )
 
-    /** 调用点总数（写链 4 + 裸写 30）：动一条也要撞到这里 */
-    private val expectedTotalSites = 34
+    /** 调用点总数（写链 4 + 裸写 17）：动一条也要撞到这里 */
+    private val expectedTotalSites = 21
 
     // ═══════════ 扫描工具 ═══════════
 
