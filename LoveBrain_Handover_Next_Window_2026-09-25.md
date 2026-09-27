@@ -2157,8 +2157,20 @@ CI 在 UTC（`...Z`，20 字符）。于是两头同时错开：① 时刻归一
 反证两发我自己跑的：O-P1 往壳里塞一个 `Box(` → 红 3 格；O-P2 文件末尾新写一颗自画 `ProbeRowBanner`
 → **只红**异形账本那格并点名新 site。之后逐字还原。
 
-本机：全量 **208 套件 / 1546 格 / 0-0-0**；工单号、取消审计 rc=0；lint 未重跑（只加/改测试码，
-下一拍补，别当已验）。
+本机：全量 **208 套件 / 1546 格 / 0-0-0**；工单号、取消审计 rc=0。
+（lint 在写这段时确实没重跑；下面 CI 那一跑里 `Lint`/`Lint budget` 两步都过了，
+所以"未验"已经被 CI 替我关掉——但那是 CI 的读数，不是本机的，两条分开记。）
+
+### 0.62.2 第二跑的逐 job 结论（SHA `0286645` = run 36309670963）
+
+| job | 结论 | 读数 |
+| --- | --- | --- |
+| `verify` | **success** | 38 步无一失败（含 `Unit tests`、`Lint`、`Lint budget`×2、`Big-file`×2、新上的 §6.1 异形闸、各证据门） |
+| `ui-test` | **success** | 修好的字节基线在 Linux/UTC 下也绿 ⇒ 那一类漂移这一 SHA 算闭环 |
+| `upgrade-test` | **failure** | 红在第一步，且只红在仓库配置：`KEYSTORE_BASE64`/`KEYSTORE_PASSWORD`/`KEY_ALIAS`/`KEY_PASSWORD` 四个 secret 全空，闸门原文 "A release must never fall back to a debug key or an unsigned artifact presented as a release. Configure the four secrets."，exit 3；`Upload upgrade evidence` 因没有产物而连带红 |
+
+⇒ 本窗口第一次拿到**同一 SHA 的三 job 实况**：代码侧两道闸全绿，发布侧只剩"人去配四个 secret"这一件我做不了的事
+（不绕：不给 `continue-on-error`、不把 secret 缺失写成通过）。
 
 ## 1. 起手必查（照抄，别凭记忆）
 
