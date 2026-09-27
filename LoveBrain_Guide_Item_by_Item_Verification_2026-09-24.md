@@ -5857,3 +5857,73 @@ PROTECTED 与 PROPAGATED 一类没少，少的 10 处全是 SUSPEND-FREE（`runC
 - 探针跑完 `git diff -- app/src scripts docs` **为空**，并复跑那两个套件确认还原态 6 + 4 格全绿。
 ⇒ 那两笔提交里的"未验"标记从这一刻起划掉。合并两拍的欠账口径：并行档新增 55 格里，
   **55 格全部有过一次被坏实现打破的记录**（第二拍 45 格 10 发 + 第一拍 10 格 10 发）。
+
+# 追加七十：三个 ViewModel 不再按具体仓库类型注入（`3c3d0cf`）——顺手纠正一笔记错方向的债
+
+## 70.1 先纠一处**我自己写错的判断**（这段是第一版收口时写错的，当场对着盘上改）
+
+我把"这笔债记错方向"的证据写成两条，其中第二条**是我自己新造的错**：
+
+| 说法 | 判据 | 结论 |
+| --- | --- | --- |
+| "Repository 内不许出现**第二条公共写链**"已满足 | `atomicWriteText` 是 `KnowledgeRepository.kt:325` 的 **private**；37 处文本命中（1 定义 + 34 调用 + 1 写链适配器）全在这一文件 | ✅ **对** |
+| "所以那 **30 处裸写**不存在" | `KnowledgeTxMutationEntryTest` 把口径钉成 **总 34 / 写链 4 / 裸写 30**，三条计数判 `==`，还带"哪个作用域几处"的明细表 | ❌ **错——那 30 处是真的，且一直有主** |
+
+⇒ 错因很具体：我 grep 的是"`atomicWriteText(` 在**哪些文件**"，而欠账问的是"**哪些调用点在 `KnowledgeTx` 之外**"——
+**两个不是同一个问题**。那 30 处确实都会过出口那道只读判定，欠的是**事务包装**（多半该走 `transactionUnlocked`），
+不是"没保护"。`3c3d0cf` 的提交信息里带了这句错话，**不改历史**，勘误落在这里（坑表 151）。
+
+所以这一拍的账要这样记：**做了两件**（VM 不再按具体类型注入 + 把这条违例拉进门禁），
+**没做的两件照旧**（30 处裸写一处没动；`KnowledgeWritePort` 作为被注入类型仍 **0 次**——
+这次收窄的是**页面侧**，domain 侧调用方拿的还是读写合集 `KnowledgePort`）。
+
+## 70.2 落地的判据性质（不是"换了个类型名"）
+
+`domain/port/KnowledgeBaseCapabilityPorts.kt`(152) 三颗端口，成员按**逐个 VM 实扫的调用点**开：
+`KnowledgeDocumentPort` 6 / `KnowledgeBaseCatalogPort` 8 / `KnowledgeRuntimePort` 21。
+⇒ 买到一条以前只能靠自觉的性质：**首页删不掉一本库、盖不掉用户正在编辑的文件**——
+`KnowledgeRuntimePort` 里没有 `delete` / `setActive` / `create` / 无版本校验的 `writeFile`。
+仓库侧加 4 个 supertype、**24 处 `override`**（`git show` 实点）、实现体零改动；
+`saveIntent` / `saveCorrection` 的形参默认值按 Kotlin 规矩上移到端口。
+`di/AppModule.kt` 三个端口视图全部 `get<KnowledgeRepository>()`——**同一个仓库实例**，没造第二个持有文件系统的对象。
+
+派活时被纠正一次：我给的"VM 用到哪些方法"清单**不完整**（`LoveBrainViewModel` 实调 21 颗，我那份只覆盖一小半），
+子代理靠 grep 把它拆成三族而不是我预设的两族。⇒ 清单要自己数过再交，交出去也要允许被盘上的数纠正。
+
+## 70.3 门禁 + 两发我自己跑的反证
+
+`viewmodel` 的禁 import 前缀补上具体仓库类型（baseline 仍 **6 条 / 未涨**），另加一颗**无基线可登记**的零断言：
+按"代码里出没出现这个类型名"判、先剥注释。这颗不重复——`SetupViewModel.kt:36` 生产里**已经**在用全限定名注
+`FeedbackCaseRepository`，说明"不 import 直接写全名"这条绕法真实存在。
+
+- **P-A** 注 `import + 短名使用` → 红 **3 格**（棘轮 + 总数 + never-names）；
+- **P-B** 只用全限定名 → **只红 never-names 那一格** ⇒ 两颗闸各自有独立的牙，不是一把的两半。
+
+**P-A 第一发是废的，而驱动的三分类救了下一次判断**：仓库源文件是 CRLF，我的
+`replace("import …\n", …)` 静默不命中 ⇒ import 没加进去、短名解析不到 ⇒ 编译失败 ⇒ 没新 XML；
+驱动报的是 `CANNOT-VERIFY / 编译失败(探针无效)`，**不是**"探针没咬"。
+⇒ 坑表 150：Windows 上做文本注入，锚点要么走 `\r?\n`、要么不含行尾；**插完立刻 assert 文本变了**。
+
+## 70.4 本机读数（主线程复跑，不采信自述）
+
+**204 套件 / 1522 格 / 0 失败 0 错误 0 跳过**（`--rerun-tasks`、跑前删净、204 份 mtime 同为 11:53）；
+androidTest 编译 rc=0；**`AppModuleGraphTest > every view model in the production graph can be constructed` 在场并通过**
+——这是"新端口绑定真接得上"的运行时证据；既有测试一字未改；lint 进预算 **65 / 13** 未变；
+大文件棘轮 holds（175 个 .kt，>500 16 / >800 6）；取消审计 205 站未变；`asset_hashes --check` OK；
+prompt 资产 `git diff c0ff0415..HEAD` 仍空；工单号 PASS。
+
+## 70.5 这一拍**没有**做到的（别记成已还）
+
+- `KnowledgeWritePort` 作为被注入类型**仍然 0 次**——domain 侧调用方拿的还是读写合集 `KnowledgePort`，
+  这次收窄的是**页面侧**，读侧/写侧分离在 domain 里没动；
+- `viewmodel → data` 还剩 **10 条 import 边**（`SecurePrefs`×4、`DeepSeekRepository`×2 等）：
+  禁整条前缀会让基线一次 **+10（涨）**，所以这次只禁那一颗具体仓库，那 10 条要单独一轮还；
+- `KnowledgeRuntimePort` 21 颗里 **15 颗是迪米特债**（运行时直接伸手进仓库读意图/纠正/画像/日志），
+  这次只是让它**可见**，没消除；
+- `migrateIfNeeded` / `ensureInitialKnowledgeBase` 仍由 VM 调（"第一本库由对话页创建"按原行为搬）；
+- 新增文件 152 行、`LoveBrainViewModel` **2513 → 2517（+4）**——又一次坑表 140：**换注入类型不减行，行为搬走才减行**；
+- `stripComments` 现在有两份（`PackageDependencyTest` + `StorageBoundaryOwnershipTest`），按纪律该归并成一套；
+- `OverlayGenerateSmokeTest.kt:533` 的断言消息里那句 `LoveBrainViewModel.kt:844-855` 又漂了 4 行
+  （既有测试不许改，登记不修）。
+
+坑表 **150–151**、交接单 **§0.56**。远端仍 `9d2757f`，本地 **23 笔**（`git rev-list --count 9d2757f..HEAD`，本段落账文档 +1）。
