@@ -1,8 +1,8 @@
 package com.lovebrain.app.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.port.KnowledgeDocumentPort
 
 /**
  * 知识库编辑页 ViewModel。
@@ -10,11 +10,14 @@ import com.lovebrain.app.data.SecurePrefs
  * 分层规则：KbEditActivity 只负责窗口标记、Intent 校验与 Compose 承载；
  * Repository / SecurePrefs 一律经此转发（ 职责拆分：此前 Activity 直接 inject 两者）。
  *
- * 保存契约与 [KnowledgeRepository.writeFileWithVersion] 一致：
+ * 这里注入的是端口而不是具体仓库：编辑页只需要"一篇文档的版本化读写"这一族，
+ * 所以它拿不到删库、切库这类能力（见 [KnowledgeDocumentPort] 那份 KDoc）。
+ *
+ * 保存契约与 [KnowledgeDocumentPort.writeFileWithVersion] 一致：
  * 返回新版本号 = 落盘成功，返回 null = 版本冲突或库已删除，调用方必须保留草稿而不是静默覆盖。
  */
 class KbEditViewModel(
-    private val repo: KnowledgeRepository,
+    private val repo: KnowledgeDocumentPort,
     private val securePrefs: SecurePrefs
 ) : ViewModel() {
 

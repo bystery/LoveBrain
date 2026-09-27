@@ -34,6 +34,12 @@ val appModule = module {
     // 读写的还是同一个库，但"只有一个事务 owner"就不再能从图上读出来了。
     single<com.lovebrain.app.domain.port.KnowledgePort> { get<KnowledgeRepository>() }
     single<com.lovebrain.app.domain.port.KnowledgeReadPort> { get<KnowledgeRepository>() }
+    // 页面侧那三颗端口（viewmodel 注入的类型）同上：每个都只是给**同一个**仓库对象再开一扇门。
+    // 判据不是"少写几行"：这三颗里任何一颗换成 `single { SomeWrapper(get()) }`，
+    // 图上就会出现两个持有文件系统的对象，"只有一个事务 owner"就不再能从图上读出来了。
+    single<com.lovebrain.app.domain.port.KnowledgeDocumentPort> { get<KnowledgeRepository>() }
+    single<com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort> { get<KnowledgeRepository>() }
+    single<com.lovebrain.app.domain.port.KnowledgeRuntimePort> { get<KnowledgeRepository>() }
     single { DeepSeekRepository(get()) }
     // 端口绑定必须显式写 get<具体类>()：写成 get() 会解析到自己，Koin 直接 StackOverflowError
     single<com.lovebrain.app.domain.port.AiGateway> { get<DeepSeekRepository>() }

@@ -48,7 +48,14 @@ class PackageDependencyTest {
             "android.", "androidx.", "com.lovebrain.app.data.",
             "com.lovebrain.app.ui.", "com.lovebrain.app.viewmodel."
         ),
-        "viewmodel" to listOf("java.io.File"),
+        "viewmodel" to listOf(
+            "java.io.File",
+            // 知识库仓库是**具体实现类**：ViewModel 按它的类型注入，就等于页面层直接认了数据层，
+            // 端口那一层（domain/port）在页面上完全不生效。这条以前不在尺的视野里——
+            // viewmodel 只禁 java.io.File，所以三个 VM 一直按 `KnowledgeRepository` 注入也没人红。
+            // 现在三个 VM 都改成了端口视图，这条就是 0 违例的硬门禁（不需要基线，见上面 feature 那格的规矩）。
+            "com.lovebrain.app.data.KnowledgeRepository"
+        ),
         // §5.1 第一层：core 不知道数据层、容器与 Android 侧的具体东西，否则"设计系统"
         // 就变成另一坨业务代码的附属品。
         // 这条以前只禁到 data/viewmodel/feature，因为 token 还住在 ui.theme 下面——
@@ -171,6 +178,67 @@ class PackageDependencyTest {
         assertTrue("ui 层必须禁止直接 import data 仓库", forbidden.getValue("ui").contains("com.lovebrain.app.data."))
         assertTrue("viewmodel 不许自己拼文件路径", forbidden.getValue("viewmodel").contains("java.io.File"))
         assertEquals("基线条目数必须与 report 脚本同一次统计一致", 6, baseline.values.sumOf { it.size })
+    }
+
+    /**
+     * 上一条只扫 `import` 行，于是有一条便宜的绕法：把类型写成全限定名
+     * `private val repo: com.lovebrain.app.data.KnowledgeRepository` 就不用 import 了。
+     * 这条按"代码里出没出现这个类型名"判，注释先剥掉——
+     * KDoc 里指名道姓解释"为什么这里不用具体仓库"是好事，不该被当成依赖。
+     *
+     * 与棘轮的分工：上面那条走 baseline（可以登记存量、只许缩），
+     * 这条**没有基线可登记**，因为它今天就是 0；出现任何一处都是新账。
+     */
+    @Test
+    fun `view model layer never names the concrete knowledge repository type`() {
+        // 规则本身不许被删掉来"通过"（与 `the rules are not silently emptied` 同一口径，
+        // 只是那条是既有断言、不该被后来的改动续写，所以这条新违例的自证留在这里）
+        assertTrue(
+            "viewmodel 的禁 import 前缀里必须有具体仓库类型",
+            forbidden.getValue("viewmodel").contains("com.lovebrain.app.data.KnowledgeRepository")
+        )
+        val dir = File(mainRoot(), "viewmodel")
+        assertTrue("找不到 $dir —— 尺接错了目录会'零违例通过'", dir.isDirectory)
+        val files = dir.walkTopDown().filter { it.isFile && it.extension == "kt" }.toList()
+        assertTrue("viewmodel 下扫到 0 个文件，这条等于没跑", files.isNotEmpty())
+
+        fun offendingCode(src: String) = stripComments(src).contains("KnowledgeRepository")
+        val offenders = files.filter { offendingCode(it.readText(Charsets.UTF_8)) }.map { it.name }
+        assertTrue(
+            "viewmodel 层不许出现具体仓库类型 KnowledgeRepository（改注入 domain.port 的端口；" +
+                "端口视图在 di/AppModule.kt 里指回同一个仓库实例）。违规：\n$offenders",
+            offenders.isEmpty()
+        )
+
+        // 尺自证：同一段判据必须咬得住"全限定名注入"，也不能咬注释与端口注入
+        assertTrue("尺没抓到全限定名注入", offendingCode("class V { val r: com.lovebrain.app.data.KnowledgeRepository = x }"))
+        assertTrue(
+            "抓到注释里的类名了——KDoc 允许解释为什么不用它",
+            !offendingCode("/** 不用 KnowledgeRepository 因为要收窄 */\nclass V { val r: KnowledgeRuntimePort = x }")
+        )
+        assertTrue("端口注入被误报", !offendingCode("import com.lovebrain.app.domain.port.KnowledgeRuntimePort\nclass V"))
+    }
+
+    /** 剥掉块注释与行注释（块注释允许跨行；未闭合的块注释吃到文件尾） */
+    private fun stripComments(src: String): String = buildString {
+        var i = 0
+        while (i < src.length) {
+            when {
+                src.startsWith("/*", i) -> {
+                    val end = src.indexOf("*/", i + 2)
+                    i = if (end >= 0) end + 2 else src.length
+                }
+
+                src.startsWith("//", i) -> {
+                    val end = src.indexOf('\n', i)
+                    i = if (end >= 0) end else src.length
+                }
+
+                else -> {
+                    append(src[i]); i++
+                }
+            }
+        }
     }
 
     /**

@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KbArchiveTransfer
-import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.domain.AssetRegistry
 import com.lovebrain.app.domain.OnboardingResultParser
 import com.lovebrain.app.domain.OnboardingSchema
+import com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.util.L
 import kotlinx.coroutines.CancellationException
@@ -91,10 +91,13 @@ data class KbListState(
  *
  * 分层规则：KnowledgeBaseActivity 只负责窗口标记、Activity Result 启动与 Compose 承载，
  * Repository / Provider / 归档 IO 一律经此转发。
+ *
+ * 仓库这一格注入的是 [KnowledgeBaseCatalogPort]（库的清单与元信息 + 建库要写的画像三段），
+ * 不是具体仓库类：这一页不需要版本化保存那条链，也不该拿到它。
  */
 class KnowledgeBaseViewModel(
     private val appContext: Context,
-    private val repo: KnowledgeRepository,
+    private val repo: KnowledgeBaseCatalogPort,
     private val deepSeek: DeepSeekRepository,
     /** 归档 IO 的调度上下文；默认真实 IO，单测可注入虚拟时间调度器 */
     private val ioContext: CoroutineContext = Dispatchers.IO

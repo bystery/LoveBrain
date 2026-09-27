@@ -4,7 +4,10 @@ import android.content.Context
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.KnowledgeSchemaVersion
+import com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort
+import com.lovebrain.app.domain.port.KnowledgeDocumentPort
 import com.lovebrain.app.domain.port.KnowledgePort
+import com.lovebrain.app.domain.port.KnowledgeRuntimePort
 import com.lovebrain.app.model.PreconditionReason
 import com.lovebrain.app.model.ProfileTransactionResult
 import kotlinx.coroutines.CancellationException
@@ -38,7 +41,7 @@ class KnowledgeRepository(
     private val securePrefs: SecurePrefs,
     private val context: Context,
     private val appScope: CoroutineScope
-) : KnowledgePort {
+) : KnowledgePort, KnowledgeDocumentPort, KnowledgeBaseCatalogPort, KnowledgeRuntimePort {
     private val json = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
@@ -622,7 +625,7 @@ class KnowledgeRepository(
     }
 
     /** 进入知识库前补齐/迁移结构；整段在文件互斥锁内执行 */
-    suspend fun migrateIfNeeded(kbName: String) = withContext(Dispatchers.IO) {
+    override suspend fun migrateIfNeeded(kbName: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock { migrator.migrateUnlocked(kbName) }
     }
 
@@ -640,7 +643,7 @@ class KnowledgeRepository(
      * 6. 全部写入成功才标完成
      * 7. 无网络、无模型配置也成功
      */
-    suspend fun ensureInitialKnowledgeBase() = withContext(Dispatchers.IO) {
+    override suspend fun ensureInitialKnowledgeBase() = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             val initMarker = File(knowledgeRoot, ".kb_initialized")
             val existingKbs = listAllUnlocked()
@@ -767,7 +770,7 @@ class KnowledgeRepository(
      * 列出所有知识库。判定（隐藏目录、name 与目录名等值、坏元数据丢弃、按 updatedAt 倒序）
      * 在 [KnowledgeCatalogStore]，与无锁路径同一条尺。
      */
-    suspend fun listAll(): List<KnowledgeBase> = withContext(Dispatchers.IO) {
+    override suspend fun listAll(): List<KnowledgeBase> = withContext(Dispatchers.IO) {
         catalog.list()
     }
 
@@ -779,7 +782,7 @@ class KnowledgeRepository(
             ?: all.firstOrNull()
     }
 
-    suspend fun setActive(name: String) = withContext(Dispatchers.IO) {
+    override suspend fun setActive(name: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             setActiveUnlocked(name)
         }
@@ -802,7 +805,7 @@ class KnowledgeRepository(
             }
     }
 
-    suspend fun create(name: String, displayName: String): KnowledgeBase = withContext(Dispatchers.IO) {
+    override suspend fun create(name: String, displayName: String): KnowledgeBase = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             val safeName = name.trim().lowercase(Locale.ROOT).replace(Regex("[^a-z0-9\\u4e00-\\u9fa5_-]"), "")
             require(safeName.isNotEmpty()) { "知识库名不能为空" }
@@ -856,19 +859,21 @@ class KnowledgeRepository(
      * "moment/intent.json")` 自己拼，库名带 `..` 就能把库外那份意图读回调用方手里。
      * 现在与公开读共用 [KnowledgeDocumentStore.read] 那一道门。
      */
-    suspend fun readIntent(kbName: String): IntentConfig = withContext(Dispatchers.IO) {
+    override suspend fun readIntent(kbName: String): IntentConfig = withContext(Dispatchers.IO) {
         decodeIntent(documents.read(kbName, "moment/intent.json"))
     }
 
     /** 保存持续意图配置。每次保存 revision+1，用于生成时冻结快照识别旧请求。
-     *  支持有效期和完成状态。 */
-    suspend fun saveIntent(
+     *  支持有效期和完成状态。
+     *  ⚠ 形参的默认值住在端口那一侧（`KnowledgeRuntimePort.saveIntent`）：
+     *  Kotlin 不许覆写方再写一遍默认值，省略参数的调用点仍会拿到同一组默认。 */
+    override suspend fun saveIntent(
         kbName: String,
         text: String,
         enabled: Boolean,
-        expiry: com.lovebrain.app.model.IntentExpiry = com.lovebrain.app.model.IntentExpiry.UNTIL_DONE,
-        expiryDate: String = "",
-        status: com.lovebrain.app.model.IntentStatus = com.lovebrain.app.model.IntentStatus.ACTIVE
+        expiry: com.lovebrain.app.model.IntentExpiry,
+        expiryDate: String,
+        status: com.lovebrain.app.model.IntentStatus
     ): IntentConfig = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             val current = readIntentUnlocked(kbName)
@@ -912,7 +917,7 @@ class KnowledgeRepository(
     // ═══════════ 记忆纠正（每 KB 一份，memory/corrections.json） ═══════════
 
     /** 读取纠正记录列表。返回 memoryId → correction 映射。 */
-    suspend fun readCorrections(kbName: String): Map<String, com.lovebrain.app.model.MemoryCorrection> =
+    override suspend fun readCorrections(kbName: String): Map<String, com.lovebrain.app.model.MemoryCorrection> =
         withContext(Dispatchers.IO) { memory.corrections(kbName) }
 
     /** 保存一条纠正记录。revision 单调递增（库级），不会因撤销倒退。
@@ -923,14 +928,16 @@ class KnowledgeRepository(
      *
      * revision 单调、"纠正文件写成了才允许写 revision"这条顺序都在 [KnowledgeMemoryStore.save]；
      * 被只读保护挡下时如实返回 false，不报"成功却没落盘"。
+     *
+     * ⚠ 形参的默认值住在端口那一侧（`KnowledgeRuntimePort.saveCorrection`），理由同 saveIntent。
      */
-    suspend fun saveCorrection(
+    override suspend fun saveCorrection(
         kbName: String,
         memoryId: String,
         action: com.lovebrain.app.model.CorrectionAction,
-        replacementText: String = "",
-        targetKbId: String = "",
-        muteDuration: com.lovebrain.app.model.MuteDuration = com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE
+        replacementText: String,
+        targetKbId: String,
+        muteDuration: com.lovebrain.app.model.MuteDuration
     ): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             memory.save(kbName, memoryId, action, replacementText, targetKbId, muteDuration)
@@ -943,7 +950,7 @@ class KnowledgeRepository(
      * 撤销一条纠正。撤销同样递增 revision（0→1→0 是最容易被破的单调性），
      * 规则住在 [KnowledgeMemoryStore.undo] 里，这里只保留锁与转发。
      */
-    suspend fun undoCorrection(kbName: String, memoryId: String): Boolean = withContext(Dispatchers.IO) {
+    override suspend fun undoCorrection(kbName: String, memoryId: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock { memory.undo(kbName, memoryId) }
     }
 
@@ -956,7 +963,7 @@ class KnowledgeRepository(
 
     /** R07: 原子读取纠正记录和 revision——用于生成准备阶段一次性快照。
      * 消除读取纠正和读取 revision 之间的竞态窗口。 */
-    suspend fun readCorrectionsAndRevision(kbName: String): Pair<Map<String, com.lovebrain.app.model.MemoryCorrection>, Int> = withContext(Dispatchers.IO) {
+    override suspend fun readCorrectionsAndRevision(kbName: String): Pair<Map<String, com.lovebrain.app.model.MemoryCorrection>, Int> = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             memory.correctionSnapshot(kbName)
         }
@@ -1040,7 +1047,7 @@ class KnowledgeRepository(
 
     /** 删除知识库（/：物理删除——UI 已有确认步骤，不再进 .trash 永久残留隐私数据）
      *  delete 成功后同时删除该 KB 的全部 backup，防止私密副本残留 */
-    suspend fun delete(name: String): Boolean = withContext(Dispatchers.IO) {
+    override suspend fun delete(name: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             val dir = File(knowledgeRoot, name)
             //  canonical 纵深守卫——删除目标必须落在 knowledge/ 树内（与 unzipToKnowledge entry 防护同写法）
@@ -1137,7 +1144,7 @@ class KnowledgeRepository(
      *
      * @return 新版本号（SHA-256）=写入成功，null=版本冲突或 KB 不存在
      */
-    suspend fun writeFileWithVersion(
+    override suspend fun writeFileWithVersion(
         kbName: String, relativePath: String, content: String, expectedVersion: String
     ): String? = withContext(Dispatchers.IO) {
         fileMutex.withLock {
@@ -1149,11 +1156,11 @@ class KnowledgeRepository(
      * 读取文件并返回内容 + 版本号（SHA-256）。
      * 调用方持有版本号，写入时传给 [writeFileWithVersion] 做冲突检测。
      */
-    suspend fun readFileWithVersion(kbName: String, relativePath: String): Pair<String, String> =
+    override suspend fun readFileWithVersion(kbName: String, relativePath: String): Pair<String, String> =
         withContext(Dispatchers.IO) { documents.readWithVersion(kbName, relativePath) }
 
     /** 对外暴露的内容哈希——供 KbEdit 无版本校验路径生成新版本号 */
-    fun hashContent(text: String): String = documents.hashContent(text)
+    override fun hashContent(text: String): String = documents.hashContent(text)
 
     /**  目标 KB 已删除时 no-op */
     suspend fun incrementTurnCount(kbName: String) = incrementTurnCountBy(kbName, 1)
@@ -1203,12 +1210,12 @@ class KnowledgeRepository(
      * 于是"冻结输入"里根本没有画像，画像变化也就无从参与身份比对。
      * 拼哪四份、按什么顺序，归 [KnowledgeProfileStore]。
      */
-    suspend fun readProfile(kbName: String): String = withContext(Dispatchers.IO) {
+    override suspend fun readProfile(kbName: String): String = withContext(Dispatchers.IO) {
         profile.profileText(kbName)
     }
 
     /** 知识内容修订号（判据与输入文件清单见 [KnowledgeProfileStore.contentRevision]） */
-    suspend fun contentRevision(kbName: String): String = withContext(Dispatchers.IO) {
+    override suspend fun contentRevision(kbName: String): String = withContext(Dispatchers.IO) {
         profile.contentRevision(kbName)
     }
 
@@ -1217,8 +1224,10 @@ class KnowledgeRepository(
         profile.stageOf(kbName)
     }
 
-    /** 修改知识库显示名（在知识库管理页点击显示名编辑） */
-    suspend fun updateDisplayName(kbName: String, newDisplay: String) = withContext(Dispatchers.IO) {
+    /** 修改知识库显示名（在知识库管理页点击显示名编辑）
+     *  返回类型显式写 Unit 与端口对齐（同 incrementTurnCountBy 那一格的先例）：
+     *  不写的话它会跟着事务块里最后一个表达式推断成 Boolean，端口那头就对不上。 */
+    override suspend fun updateDisplayName(kbName: String, newDisplay: String): Unit = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (newDisplay.isBlank()) return@withLock
             transactionUnlocked(kbName) {
@@ -1229,7 +1238,7 @@ class KnowledgeRepository(
 
     /** 设置知识库阶段标签（onboarding 推断 / 向量重估触发阶段变化时用）。写入前经 StageCatalog 归一化
      *  目标 KB 已删除时 no-op */
-    suspend fun updateStage(kbName: String, stage: String) = withContext(Dispatchers.IO) {
+    override suspend fun updateStage(kbName: String, stage: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("updateStage skipped: kb no longer exists")
@@ -1284,7 +1293,7 @@ class KnowledgeRepository(
 
     /** 就地更新 warmth.md 的阶段标签行（阶段变化时用），保留旧值作为历史注释。写入前经 StageCatalog 归一化
      *  目标 KB 已删除时 no-op */
-    suspend fun updateWarmthStageLabel(kbName: String, newStage: String) = withContext(Dispatchers.IO) {
+    override suspend fun updateWarmthStageLabel(kbName: String, newStage: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("updateWarmthStageLabel skipped: kb no longer exists")
@@ -1371,7 +1380,7 @@ class KnowledgeRepository(
      *
      * @return typed result——调用方据此给出精确的 UI 反馈
      */
-    suspend fun applyProfileUpdateAtomically(
+    override suspend fun applyProfileUpdateAtomically(
         kbName: String,
         me: String?,
         her: String?,
@@ -1583,7 +1592,7 @@ class KnowledgeRepository(
      * 固定代码写入、全量不截断。旧格式文件（没有两个 # 大标题）自动迁移：旧内容并入第一节。
      *  目标 KB 已删除时 no-op
      */
-    suspend fun appendCounselingEntries(kbName: String, recordEntry: String, analysisEntry: String) = withContext(Dispatchers.IO) {
+    override suspend fun appendCounselingEntries(kbName: String, recordEntry: String, analysisEntry: String) = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("appendCounselingEntries skipped: kb no longer exists")
@@ -1630,7 +1639,7 @@ class KnowledgeRepository(
      *
      * 消除 ViewModel 中 listAll → readFile → writeFile 的 TOCTOU 竞态。
      */
-    suspend fun appendActualSentRecord(kbName: String, entry: String): Boolean = withContext(Dispatchers.IO) {
+    override suspend fun appendActualSentRecord(kbName: String, entry: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("appendActualSentRecord skipped: kb no longer exists")
@@ -1646,7 +1655,7 @@ class KnowledgeRepository(
     /** 替换同一 generationVersionId 的旧 actual sent 记录（upsert）。
      * 在单次 fileMutex.withLock 中完成：检查 KB → 读取 → 替换 → 写入 → 返回 Boolean。
      * 如果 oldEntry 在 recent.md 中不存在，返回 false（不执行无效写入）。 */
-    suspend fun replaceActualSentRecord(kbName: String, oldEntry: String, newEntry: String): Boolean = withContext(Dispatchers.IO) {
+    override suspend fun replaceActualSentRecord(kbName: String, oldEntry: String, newEntry: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("replaceActualSentRecord skipped: kb no longer exists")

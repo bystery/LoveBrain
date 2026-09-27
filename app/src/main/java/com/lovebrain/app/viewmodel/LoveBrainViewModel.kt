@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lovebrain.app.data.CostScope
 import com.lovebrain.app.data.DeepSeekRepository
-import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.domain.AssetRegistry
 import com.lovebrain.app.domain.ForegroundOperationCoordinator
@@ -18,6 +17,7 @@ import com.lovebrain.app.domain.ReplyPatch
 import com.lovebrain.app.domain.SuggestCachePolicy
 import com.lovebrain.app.domain.RewritePrompt
 import com.lovebrain.app.domain.TopicRecorder
+import com.lovebrain.app.domain.port.KnowledgeRuntimePort
 import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.feature.composer.ComposerStore
@@ -107,11 +107,15 @@ private const val TITLE_FALLBACK_LIMIT = 40
 
 /**
  * 军师核心 ViewModel v4（ 后为状态壳：生成逻辑下沉到 GenerationEngine）。
+ *
+ * 仓库这一格注入 [KnowledgeRuntimePort]：对话运行时对知识库要的那一族（在用库、文档读、
+ * 画像/意图/纠正/咨询日志）——**不含** delete、setActive、create 与无校验覆盖，
+ * 所以首页删不掉一本库、也盖不掉用户正在编辑的文件（见那颗端口的 KDoc）。
  */
 
 class LoveBrainViewModel(
     private val deepSeekRepo: DeepSeekRepository,
-    private val knowledgeRepo: KnowledgeRepository,
+    private val knowledgeRepo: KnowledgeRuntimePort,
     private val promptBuilder: PromptBuilder,
     private val topicRecorder: TopicRecorder,
     private val securePrefs: SecurePrefs,
