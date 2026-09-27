@@ -1736,6 +1736,78 @@ lint 67/15 → 进预算 66/14（未变）；取消审计 215 站 + CE-catch 50 
 本地 15 笔，**一笔都没推**。下一格候选：锦囊与主动发编排（约 150 行，剩 `suggestStore`/`proactiveStore`
 的接线与缓存策略），或 `HomeComponents.kt:238` 那颗 tag 撞名 + 2 格 `Assume`（都是小而真实的账）。
 
+## 0.55 并行档第二拍收口：`FloatingService` 与 `DeepSeekRepository` 出 `>800` 名单（8 → **6**，`8e6700c`）
+
+两发并行子代理各自在独立 worktree 里拆，主线程只做"核对 → 合并 → 复验 → 反证"。
+合并前先确认两个 worktree 的**改动文件集不相交**（实扫：`service/` 五个 vs `data/` 五个），
+再逐文件 `cp` + `cmp` 进主干（14 个文件全部逐字一致），
+主干原件先点名备份进 `_temp/FloatingService.before-round2-merge.bak` / `_temp/DeepSeekRepository.before-round2-merge.bak`。
+
+**拆出来的所有者**（行数为 `wc -l` 实扫）：
+`service/FloatingService.kt` **1155 → 573**，新增 `OverlayWindowHost` 152（两扇窗共用的挂载/摘除/改布局/IME/透明背景）、
+`OverlayBubbleWindow` 373、`OverlayPanelWindow` 374、`PanelInputFocusOwner` 165（焦点状态机 + `panelFlagsFor` 纯函数）；
+`data/DeepSeekRepository.kt` **1114 → 608**，新增 `ProviderConfigResolver` 130、`ApiUsageTracker` 216、
+`OpenAiChatWire` 271、`CancellableHttpTransport` 122。仓库的构造参数表与对外方法签名逐字未变、调用点零改动。
+
+**主线程自己对着 diff 复验的语义等价**（不采信子代理自述）：`stopSelf()` 调用点 **6 → 4**，
+少的那两处改成 `ensureCreated()` / `attach()` 交回 `OverlayAttach.PERMISSION_REVOKED / FAILED` 再由 Service 停服
+（"停服"这句话现在只有 Service 会说）；`setPanelFocusMode` 写失败回滚 `mode` 那句原样保留在 `setMode`；
+`ensurePanelCreated` 失败时 `composeView = null` 保留；`onDestroy` 里 `instance = null` / `bubble.remove()` /
+`panel.destroy()` 三句都在；`FLAG_SECURE` 三个 Activity 零改动；提示词资产零改动。
+
+**反证：10 发变异探针，头一遍 9 咬中 1 落空**（`_temp/probe_round2.py` → `_temp/probe_round2_report.txt`，
+每发之后当场还原源码并逐字比对，`RESTORE: OK`）。落空的是 R2-P7：把 `resolveFor` 的工单查找改成
+"查不到就回退 active"，那一格 16 发全绿——根因见坑表 149。**改强夹具之后**（`_temp/probe_round2_p7.py`）：
+好实现 rc=0 / 16 格 0 红，坏实现 rc=1 且红的正是 `blank_or_unknown_ticketId_yields_null_not_the_active_config`
+⇒ 10/10 咬中。新增 45 格（4 个新套件：16 + 7 + 10 + 12）。
+
+**这一拍顺手还掉的三笔账**——都是拆分自己作废的东西，不算扩范围：
+`app/src/androidTest/.../MainChainHarness.kt` 的取证注释、`scripts/suggest_cost_baseline.py` 的来源清单、
+`docs/ARCHITECTURE.md` "悬浮球"那行，原先都指着 `DeepSeekRepository.kt:296` / `:900-963` /
+`FloatingService.kt:209-444` 这类**已随搬家失效的行号** ⇒ 一律改成"文件名 + 符号名"（坑表 147）；
+`LbModalSheet.kt` / `LbScreenScaffold.kt` 里"那两个窗口由 `FloatingService` 建"的注释同步指向 `service/Overlay*`。
+顺手把 agent 写进 `CancellableHttpTransport` 注释里的"45 格链路证据"改成不随套件数腐烂的写法（点名 harness 本身）。
+
+**账本被工具吃掉的一行**：`check_lint_budget.sh --rewrite` 只重写它认识的 `规则 数字` 行，
+把 `UnusedResources 32` 上面那三行"为什么是 32"的注释一起抹了 ⇒ 手工补回并把这条行为写进账本（坑表 148）。
+`StaticFieldLeak 1 → 出账`：lint 那条只看一跳，`bubbleView` 搬进窗口类之后静态链变成两跳它就不报了——
+**这是 detector 不再命中，不是我们证明了无泄漏**，账本按这个措辞出账，真正的兜底仍是 `onDestroy` 那三句。
+
+本机读数（全部本次实测）：JVM **204 套件 / 1521 格 / 0 失败 0 错误 0 跳过**（`--rerun-tasks`，跑前删净 XML，
+204 份产物 mtime 同为 10:33）；`assert_artifacts.sh --label unit` 在同一份产物上 OK；
+debug + androidTest 编译 rc=0；lint 实测 **66 条 / 14 规则**，进预算 **65 / 13**（上一拍 67/15 → 66/14）；
+`test_check_lint_budget.sh` 27 格全对；取消审计 **205 站** + CE-catch 50 全 PROPAGATED、`--check` rc=0，
+`--write` 已重写 `docs/CANCELLATION-AUDIT.md`；大文件 **>500 共 16 / >800 共 6**（两档登记清单同步重生成，棘轮 holds）；
+`test_check_big_files.py` 7 格全对；`asset_hashes --check docs/prompt-assets.lock` OK（`6dcde732…`）；工单号 PASS。
+
+**"215 → 205 站"不是丢了保护**：用 `git archive HEAD` 把合并前源码快照单列出来跑 `--list` 对比 ⇒
+那两个文件自己 **28 站 → 18 站**，PROTECTED 与 PROPAGATED 两类**一处没少**，
+少的 10 处全是 SUSPEND-FREE（合并范围内 `runCatching` 22 → 13）——
+窗口操作的保护收进 host 的 4 只 helper，14 个调用点仍然全部经过保护。
+
+**仍未做**：`KnowledgeWritePort` 构造注入 0 处；UI 采纳 39 处异形；截图基线仍只有 `LbPrimaryButton`；
+`HomeComponents.kt:238` tag 撞名；2 格 `Assume`；四个 release secret。
+**没推**：远端仍 `9d2757f`，本地 **20 笔**（`git rev-list --count 9d2757f..HEAD`，本笔落账文档再 +1）；
+子代理的 worktree 一律不动（`git worktree list` 现算）。
+
+### 0.55.1 顺手把第一拍欠的那 10 发反证补上了（`_temp/probe_round1_debt.py`）
+
+第一拍合并时明记过"新增那 10 格只验证了通过、**没做反证** ⇒ 记'未验'"。这一拍机器是热的，跑了它：
+**10/10 咬中**（`_temp/probe_round1_report.txt`），每发之后当场还原源码，跑完 `git diff -- app/src scripts docs` 为空，
+再复跑那两个套件确认还原态仍是 6 格 + 4 格全绿。
+
+- R 组 6 发是**行为探针**（`TopicRecorderStoreOwnershipTest`）：窗口多留两轮 / 去掉 marker 去重 /
+  场景链永不过期 / 来源不再核对冻结快照 / 去掉"无新证据不许复活已结束事项" / 话题归档不截断，各红自己那一格。
+- S 组 4 发是**形状探针**（`ResultAreaOwnershipTest`）：那四格钉的是"声明处唯一 / 不许长出菜单状态"这类文本形状，
+  所以反证只能用文本注入（顶层追加 `private val showAllRefs`、`private fun OngoingSection(unused: Int)` 等）。
+  **读数要说准**：这四处证明的是"那把尺咬得住、不是扫空集恒绿"，**不证明行为正确**——
+  行为那一半的证据是既有的 1466 格一字未改仍然全绿。
+- 一条操作细节：顶层声明**不能**插在 `package` 与 `import` 之间（"imports are only allowed at the beginning of file"，
+  坑表 135 的第 ④ 种形状复发一次），所以形状探针一律追加到文件末尾。
+
+⇒ 第一拍留下的"未验"标记从这一刻起可以划掉；§0.55 上面那段与追加六十九里凡是写"TopicRecorder/ResultArea 的新格未反证"的地方，
+以这一小节为准。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 
@@ -2219,9 +2291,9 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 （`throws e andThen v` 能不能链我没验过，别赌）。
 
 ## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者，68 「取第一个非空」的判据会被别的来源蹭过去，69 界面构造不出的状态要对着持有者测，
-    70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑，124–125 假账销账与口径冲突不许择一自裁，126–128 合并树里的锚点/贴着 teardown 的假相关/只数成功的尺，129–131 恒假的协议退出判据/不等就读的异步计数断言/退出码 0 + 文件非空仍什么都不断、132 坏实现对照的基线写成活引用、133 默认模式只重录不比对、134 工具的原图在构建目录里、135 夹具造了两处缺失、136 从没跑过的 job 第一次跑会红在仓库配置、137 反证驱动什么都没跑却报合规、138 有未提交搬家时不许 git checkout、139 腐烂的"预期红"注释、140 搬状态不减行数、141 反证读数脚本把失败配到别的格子、142 交出句柄与静态审计看不见吞取消、143 测持有者时钉瞬时值/带不出被测对象/占位断言、144 拿审计 PASS 当证据前先问它扫哪些形状、145 拒绝类判据要其它条件都放行、146 读数代码不许写聪明表达式
+    70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑，124–125 假账销账与口径冲突不许择一自裁，126–128 合并树里的锚点/贴着 teardown 的假相关/只数成功的尺，129–131 恒假的协议退出判据/不等就读的异步计数断言/退出码 0 + 文件非空仍什么都不断、132 坏实现对照的基线写成活引用、133 默认模式只重录不比对、134 工具的原图在构建目录里、135 夹具造了两处缺失、136 从没跑过的 job 第一次跑会红在仓库配置、137 反证驱动什么都没跑却报合规、138 有未提交搬家时不许 git checkout、139 腐烂的"预期红"注释、140 搬状态不减行数、141 反证读数脚本把失败配到别的格子、142 交出句柄与静态审计看不见吞取消、143 测持有者时钉瞬时值/带不出被测对象/占位断言、144 拿审计 PASS 当证据前先问它扫哪些形状、145 拒绝类判据要其它条件都放行、146 读数代码不许写聪明表达式、147 搬文件会作废别人写的行号引用、148 `--rewrite` 会连注释一起吃掉、149 mock 默认值会替坏实现兜住第二道顺手闸
     ⚠ 正文按**加入顺序**排，不严格递增（102 后面接着 95、90 那批是补记的）——
-    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 146**
+    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 149**
     （116–120 是出口判据那一格与"销账之后要重借一次"那一格补的，
     121–123 是 P0-03 那把新尺那一格补的：作用域栈的同级互清、复算尺自己会吞代码、一句要求两半句两把尺；
     124–125 是销"注释比实现新"那一格补的：**"已改口"必须点名到哪一份文件**（注释改口≠文档改口）、
@@ -3199,6 +3271,42 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
      ⇒ 驱动/读数代码的写法纪律：**只用最直白的 `if` + 独立语句做副作用**，
      并且每格同时打印"红了几格、分别叫什么、绿了几格"——名字要打出来，
      否则"红 0"既可能是尺没牙，也可能是我压根没读到。
+
+147. **搬文件会作废"别人"写的行号引用——它们不在改动的 diff 里，所以没人红**（`8e6700c`）：
+     拆完 `FloatingService` / `DeepSeekRepository` 之后测试全绿、门禁全绿，
+     但三处**指向被搬走的那几行**的引用已经悄悄指错了地方：
+     ①`app/src/androidTest/.../MainChainHarness.kt:130` 的取证注释写着 `DeepSeekRepository.kt:296`
+     （那里现在是一句毫不相干的代码，而 `OkHttpClient.Builder()` 搬进了 `CancellableHttpTransport.client()`）；
+     ②`scripts/suggest_cost_baseline.py` 的"复刻的生产链路"清单写着 `DeepSeekRepository.kt:900-963`；
+     ③`docs/ARCHITECTURE.md` "悬浮球"那行写着 `FloatingService.kt:209-444`。
+     ①最贵：它是"链路证据读不出时该往哪看"的操作说明，指错就等于下次事故定位拿到一张假地图。
+     ⇒ 搬家收口固定跑一把 `grep -rn "<被搬文件>\.kt:[0-9]" app scripts docs .github`，
+        并把引用一律改成**文件名 + 符号名**（行号在任何一次编辑后都会烂，符号名不会）。
+        同族：坑表 96（回扫时连注释一起扫——注释里的数与指针也是口径）。
+
+148. **`--rewrite` 类工具只重写它认识的行，会把账本里的注释一起吃掉**（`8e6700c`）：
+     `check_lint_budget.sh --rewrite` 把 `StaticFieldLeak 1` 正确删掉的同时，
+     连带抹了 `UnusedResources 32` 上面那三行"这笔数为什么是 32"的来由——
+     那三行不是装饰，是当时用来挡住"要不要再把它调回 33"的争论的。
+     数字本身没动（32 → 32），所以任何"只比数字"的自检都发现不了**丢的是解释**。
+     ⇒ ①跑完任何 `--rewrite` 必查 `git diff` 的**删除行**，凡是解释性注释被顺手带走就手工补回；
+        ②补回时把那一段的"为什么"写全：`StaticFieldLeak` 出账的原因是 lint 那条只看一跳、
+           `bubbleView` 搬到窗口类后静态链变成两跳——**detector 不再命中 ≠ 泄漏已修好**，
+           账本必须按这个措辞记，兜底证据是 `onDestroy` 里 `instance = null` + `bubble.remove()` + `panel.destroy()`。
+
+149. **变异探针没红，先找"第二道顺手闸"——mock 的默认值会替被测对象把错误实现兜住**（`8e6700c`）：
+     R2-P7 把 `ProviderConfigResolver.resolveFor` 的工单查找改成"查不到就回退 active 工单"，
+     钉这条判据的格子 16 发全绿。原因不是探针没改到东西：
+     坏实现确实拿到了 active 那张工单，但紧接着 `getWorkerApiKey(ticketId)` 用的是**用户要的那个 id**（"NOPE"），
+     而夹具只桩了 `"A"`/`"B"` 两个键，relaxed mock 对其它键返回空串 ⇒ 配置被判不完整 ⇒ 照样返回 null。
+     也就是说"不回退 active"这件事一直由两道闸共同拦着，**测试看到的是次要的那道**，
+     而我要钉的是主要的那道；两道闸同时在，删掉任何一道都测不出来。
+     ⇒ ①探针落空时的排查顺序：先确认改动真的到了盘上 → 再找**是不是别的默认值把坏实现救回来了**
+        （mock relaxed 默认值、`?:` 链、`firstOrNull()`、下游的 `isBlank()` 校验都是常见的"顺手闸"）；
+       ②修法是把夹具改强而不是把断言改弱：那一格里补 `every { prefs.getWorkerApiKey(any()) } returns "…"`，
+        让回退只剩工单查找一处能拦 ⇒ 同一发探针当场红，好实现仍 16 格全绿；
+       ③这条与坑表 145 是同一族的另一面：145 是"别的**闸门条件**处于拒绝位"，
+        149 是"别的**默认值**处于放行位"——两者都让拒绝类判据在被观察到之前就先通过了。
 
 ## 7. 硬约束（一条没变）
 

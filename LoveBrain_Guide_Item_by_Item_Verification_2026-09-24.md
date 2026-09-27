@@ -5778,3 +5778,82 @@ JVM 1427 → **1466 格**（198 套件，0 失败 0 错误 0 跳过）；lint 67
 
 
 
+
+# 追加六十九：两块巨石一起出 `>800` 名单——`FloatingService` 与 `DeepSeekRepository`（并行档第二拍，`8e6700c`）
+
+指导书 §5.2 第 6 步与 §9 第 8 条要的"巨石按行为拆开、不许为行数机械切文件"，这一拍交两块：
+
+| 文件 | 拆前 | 拆后 | 拆出去的所有者（实扫 `wc -l`） |
+| --- | --- | --- | --- |
+| `service/FloatingService.kt` | 1155 | **573** | `OverlayWindowHost` 152 / `OverlayBubbleWindow` 373 / `OverlayPanelWindow` 374 / `PanelInputFocusOwner` 165 |
+| `data/DeepSeekRepository.kt` | 1114 | **608** | `ProviderConfigResolver` 130 / `ApiUsageTracker` 216 / `OpenAiChatWire` 271 / `CancellableHttpTransport` 122 |
+
+拆的口径不是"哪段先搬方便"，而是**各有变化理由**：窗口怎么挂（平台约束）／球画什么／面板画什么／
+抢不抢输入焦点（`panelFlagsFor` 是纯函数）；一张工单怎样冻结成请求身份／用量与计费口径／
+OpenAI 兼容协议的读写／一次 HTTP 交换怎样在协程取消时真断掉。
+`DeepSeekRepository` 的构造参数表与对外方法签名逐字未变，调用点零改动。
+
+## 69.1 主线程复验的是"搬家没换语义"，不是子代理的自述
+
+对着 diff 逐条对上（`git archive HEAD` 出合并前快照做比对，不动工作树）：
+`stopSelf()` 调用点 6 → 4，另两处改成交回 `OverlayAttach.PERMISSION_REVOKED/FAILED` 由 Service 停服；
+写 flags 失败回滚 `mode` 那句、`ensurePanelCreated` 失败清 `composeView` 那句、
+`onDestroy` 的 `instance = null` / `bubble.remove()` / `panel.destroy()` 三句都在；
+`FLAG_SECURE` 三个 Activity 零改动；提示词资产 `git diff c0ff0415..HEAD -- assets/engine assets/schema` 仍空。
+
+新增 45 格（4 套件：`ProviderCollaboratorOwnershipTest` 16、`PanelInputFocusOwnerTest` 12、
+`OverlayPanelWindowTest` 10、`OverlayBubbleWindowTest` 7）——这是"拆完才谈得上单独测"的那笔收益。
+
+## 69.2 十发反证：头一遍 9 咬中、1 落空，落空那发才是这一拍最值钱的读数
+
+R2-P7 把 `resolveFor` 的工单查找改成"查不到就回退 active"，钉这条的格子 16 发全绿。
+根因：坏实现确实拿到了 active 工单，但 Key 是按**用户要的那个 id**（"NOPE"）取的，
+夹具只桩了 `"A"`/`"B"`，relaxed mock 对其余键返回空串 ⇒ 配置被判不完整 ⇒ 照样返回 null。
+"不回退 active"一直由两道闸共同拦着，测试看到的是次要的那道。
+把夹具改强（那一格内补 `getWorkerApiKey(any())`）之后同一发探针当场红，好实现仍 16 格全绿 ⇒ 10/10 咬中。
+记坑表 149（与 145 同族另一面：145 是别的**闸门条件**处于拒绝位，149 是别的**默认值**处于放行位）。
+
+## 69.3 这一拍顺手清掉的三笔"搬家作废的引用"
+
+`MainChainHarness.kt` 的取证注释（`DeepSeekRepository.kt:296`）、`suggest_cost_baseline.py` 的复刻清单
+（`:900-963`）、`docs/ARCHITECTURE.md` "悬浮球"行（`FloatingService.kt:209-444`）全都指到了搬走后的空位——
+测试与门禁都不会为这种红，只有下次事故定位会撞上了才知道（坑表 147）⇒ 一律改成"文件名 + 符号名"。
+另两处：`check_lint_budget.sh --rewrite` 连 `UnusedResources 32` 上面"为什么是 32"的注释一起吃掉，已手工补回（坑表 148）；
+`StaticFieldLeak 1 → 出账`按"detector 只看一跳、搬到窗口类后变两跳"记，不记成"泄漏已修好"。
+
+## 69.4 本机读数（本次实测，不是沿用）
+
+JVM **204 套件 / 1521 格 / 0 失败 0 错误 0 跳过**（`--rerun-tasks`、跑前删净产物、204 份 mtime 同为 10:33）；
+`assert_artifacts.sh --label unit` 同一份产物 OK；debug + androidTest 编译 rc=0；
+lint 实测 66 条 / 14 规则，进预算 **65 / 13**（上一拍 66 / 14）；`test_check_lint_budget.sh` 27 格全对；
+取消审计 **205 站**（上一拍 215）+ CE-catch 50 全 PROPAGATED，`--check` rc=0，报告已 `--write` 重写；
+大文件 **>500 共 16 / >800 共 6**（两档清单重生成，棘轮 holds，自测 7 格全对）；
+`asset_hashes --check docs/prompt-assets.lock` OK；工单号 PASS。
+
+**215 → 205 这一格必须自己解释清楚**：合并前快照跑 `--list` 对比 ⇒ 那两个文件 **28 站 → 18 站**，
+PROTECTED 与 PROPAGATED 一类没少，少的 10 处全是 SUSPEND-FREE（`runCatching` 22 → 13），
+窗口操作收进 host 的 4 只 helper、14 个调用点仍全部经过保护。计数下降**不是**保护变少。
+
+## 69.5 `>800` 名单剩下的六座（本次实扫）
+
+`ui/KnowledgeBaseActivity.kt` 937 / `ui/panel/SuggestPanel.kt` 944 / `domain/PromptBuilder.kt` 974 /
+`ui/panel/LoveBrainPanelScreen.kt` 1115 / `data/KnowledgeRepository.kt` 1793 / `viewmodel/LoveBrainViewModel.kt` 2513。
+其中 `domain/PromptBuilder.kt` 那一座的下一刀有一道**现成的护栏**而不是死路：
+`scripts/asset_hashes.sh` 锁的不只是资产文件本身，还有"回复链路 system prompt 按拼装顺序算出的组合 hash"
+（`docs/prompt-assets.lock`，本次 `--check` OK），所以拆它时顺序一动当场就红——先改锁必须先拿到明确授权。
+
+坑表 **147–149**、交接单 **§0.55 / §0.55.1**。远端仍 `9d2757f`，本地 **20 笔**一笔没推（`git rev-list --count 9d2757f..HEAD`）。
+
+## 69.6 补账：第一拍欠的 10 发反证跑完了，10/10 咬中
+
+第一拍（`dd4a08e` / `8798f4f`）合并时在提交信息里明记"新增那 10 格只验证了通过、没做反证 ⇒ 记未验"。
+这一拍机器是热的，把那 10 发补上（`_temp/probe_round1_debt.py` → `_temp/probe_round1_report.txt`）：
+
+- **行为探针 6 发全咬中**（`TopicRecorderStoreOwnershipTest`）：窗口多留两轮 / 去掉 marker 去重 / 场景链永不过期 /
+  来源不再核对冻结快照 / 去掉"无新证据不许复活已结束事项"那道闸 / 话题归档不截断——各红自己那一格。
+- **形状探针 4 发全咬中**（`ResultAreaOwnershipTest`）：那四格钉的是"声明处唯一 / 不许长出菜单状态"这类**文本形状**，
+  反证只能用文本注入。⇒ 读数要说准：这四处证明的是"尺咬得住、不是扫空集恒绿"，**不证明行为正确**；
+  行为那一半的证据仍然是既有 1466 格一字未改仍然全绿。
+- 探针跑完 `git diff -- app/src scripts docs` **为空**，并复跑那两个套件确认还原态 6 + 4 格全绿。
+⇒ 那两笔提交里的"未验"标记从这一刻起划掉。合并两拍的欠账口径：并行档新增 55 格里，
+  **55 格全部有过一次被坏实现打破的记录**（第二拍 45 格 10 发 + 第一拍 10 格 10 发）。
