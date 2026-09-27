@@ -103,7 +103,16 @@ internal class KnowledgeMigrator(private val io: KbStorageAccess) {
      */
     private fun writeSchemaVersion(kbName: String, version: Int) {
         val dir = File(io.root, kbName)
-        io.atomicWriteAt(kbName, ".schema_version", version.toString())
+        // 顺序不能反：**先**把新版本号落下去，落成了才清 legacy marker。
+        // 端口返回 false 意味着一个字节都没写（守门认不下的库名），这时把 marker 删掉就是
+        // 「新状态没写下、旧证据先销毁」——那种库下次启动连自己原本是 v 几都猜不回来。
+        // 合法库这一条写得动，所以这条改动只作用在"本来就被拒"的那一类上，行为对正常路径不变。
+        if (!io.atomicWriteAt(kbName, ".schema_version", version.toString())) {
+            com.lovebrain.app.util.L.w(
+                "schema version not persisted for $kbName — legacy markers kept (nothing was written)"
+            )
+            return
+        }
         // 清理 legacy marker 文件
         for ((markerName, _) in KnowledgeSchemaVersion.legacyMarkers) {
             val marker = File(dir, markerName)

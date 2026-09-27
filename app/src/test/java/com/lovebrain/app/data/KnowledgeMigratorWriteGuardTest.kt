@@ -172,11 +172,13 @@ class KnowledgeMigratorWriteGuardTest {
      * 同族判定在批次二（`create` 拒长名）与批次三（`ensureKbFilesCompleteUnlocked` 不再补长名库）
      * 已各拍过一次，这次是把第三条入口对齐到同一把尺，不是新发明的宽严。
      *
-     * 一件要如实交代的**残留不对称**（本次没动，动它就是改行为）：
-     * `writeSchemaVersion` 清 legacy marker 用的是 `File(dir, markerName).delete()`，
-     * 从来不经过端口，所以那一格照旧被删——名字非法的库现在会「marker 被清、版本号文件没落」。
-     * 那种库读写两头都不通，这条差异落在一个谁都打不开的目录里；要收紧就得让删除也看返回值，
-     * 而那会连带改合法库的行为（写失败时不再清 marker），不在这次搬运的范围里。
+     * 曾经交代之后的**下一步**（就在这一拍做掉了）：
+     * `writeSchemaVersion` 以前无条件清 legacy marker（`File(dir, markerName).delete()` 不经端口），
+     * 于是名字非法的库会「marker 被清、版本号文件没落」——新状态没写下、旧证据先销毁。
+     * 现在改成**落成才清**：`atomicWriteAt` 返回 false 时一格都没写，marker 原样留着。
+     * 合法库那一条永远写得动，所以这条改动只作用在"本来就被拒"的那一类上；
+     * 反面证据钉在 `a legitimate library still loses its legacy markers once the version lands`，
+     * 防的是有人把"保留证据"做过头成"永远不清"。
      */
     @Test
     fun `a legacy library whose name the guard refuses is left unwritten but says so out loud`() {
@@ -206,10 +208,11 @@ class KnowledgeMigratorWriteGuardTest {
             val thrown = runCatching { runBlocking { repo.migrateIfNeeded(longName) } }.exceptionOrNull()
             assertNull("守门拒绝不许抛穿到调用方（那是崩，不是没写成），实到 $thrown", thrown)
 
-            // 正文一格都不许多：`.schema_version` 与那批补齐文件都不许出现
+            // 正文一格都不许多：`.schema_version` 与那批补齐文件都不许出现；
+            // 而 legacy marker `.migrated_v2` **必须还在**——版本号没落成就不许销毁旧证据。
             assertEquals(
-                "名字非法的库，迁移之后盘上只许剩原有正文（多出来的每一格都是守门该挡住的）",
-                listOf("global/me.md", "kb.json"),
+                "名字非法的库：迁移之后盘上只许剩原有正文与原有 marker",
+                listOf(".migrated_v2", "global/me.md", "kb.json"),
                 relativeFiles(dir)
             )
 
@@ -230,6 +233,33 @@ class KnowledgeMigratorWriteGuardTest {
         } finally {
             unmockkStatic(Log::class)
         }
+    }
+
+    /**
+     * 反面证据：把 `writeSchemaVersion` 改成"版本号落成了才清 marker"之后，
+     * **合法库**那条路径必须照旧清掉 marker 并写下 `.schema_version`——
+     * 不然"保留旧证据"就做过头成了"永远不清"，每次启动都得重新靠 marker 猜版本
+     * （那正是这段代码当初写下来的理由）。
+     */
+    @Test
+    fun `a legitimate library still loses its legacy markers once the version lands`() {
+        val name = "kb"
+        seedKb(name)
+        val dir = File(root, name)
+        File(dir, "global").mkdirs()
+        File(dir, "global/me.md").writeText("旧画像", Charsets.UTF_8)
+        File(dir, ".migrated_v2").writeText("", Charsets.UTF_8)
+
+        runBlocking { repo.migrateIfNeeded(name) }
+
+        assertTrue(
+            "前提：合法库的版本号文件必须真落下去",
+            File(dir, ".schema_version").isFile
+        )
+        assertTrue(
+            "合法库：版本号落成之后 legacy marker 照旧要清掉，实到 ${relativeFiles(dir)}",
+            relativeFiles(dir).none { it == ".migrated_v2" }
+        )
     }
 
     private companion object {
