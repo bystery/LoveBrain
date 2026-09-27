@@ -1977,6 +1977,43 @@ lint 实测 66/14、进预算 65/13 未变；大文件棘轮 holds（KR 1802 →
 （`assert_artifacts.sh --label lint` 同一份产物也 OK）。⇒ 顺序照旧留着：**先落"未验"、后补读数**，
 没有把"应该没变"当成一次测量。
 
+
+## 0.59 批次三：导入也认库名守门，最后 2 处裸写上链（`484c5f3`，裸写 → **2**）
+
+上一拍查出来的真正入口这次堵掉了：`KbArchiveTransfer.import` 以前只查"name 与顶层目录名一致"，
+不查**这个名字合不合法**（顶层目录由 zip 说了算）。于是能导进一本 `KbName` 认不下的库：
+落在盘上、被 `listAll()` 列在库管理页里，而每一次读都被 `safeKbFile` 判非法、拿回空串。
+
+- 导入侧复用同一个 value object：`runCatching { KbName(kb.name) }` 过不了就抛**固定文案**（不拼接库名）。
+  被拒时 `KnowledgeBaseViewModel.import` 收进 `KbEvent.ImportFailed`（`:333-338`），用户看得见、不崩。
+- 守门之后 `ensureKbFilesCompleteUnlocked` 那 2 处才谈得上等价上链：路径由 `KnowledgeTx.pathOf` 给
+  （与 `safeKbFile` 同一个判定），写走 `write` → `writeFileCheckedUnlocked`。
+  **判"存在"保留 `exists()`**：换成 `readTextAt().isEmpty()` 会把用户故意清空的 `moment/plan.md`
+  盖回 schema 模板 ⇒ 那是改行为，单独写一格钉住并注反例证过（B3-P3）。
+- 尺的 pin：总点数 8 → **6**、裸写 4 → **2**，明细表只剩 `RepoStorage.atomicWrite` / `guardedWrite` 各 1。
+  `WRITE_CHAIN` 从头到尾一字未动。
+
+**R2 到此的账面**：34 → 21 → 8 → **6** 个调用点，裸写 30 → 17 → 4 → **2**，
+剩下这 2 处是写链适配器自己（`guardedWrite` 就是 `KnowledgeTx` 通往磁盘那一层）。
+⇒ 留一个判断给下一拍：**要不要把它们重新分类成"管道"**。按尺现在的口径它们挂着欠账名；
+但改口径必须连着改基线与注入证据（尺 KDoc 明写），所以这一拍**没有**顺手做。
+
+## 0.59.1 五格新断言 + 三发反证（这一拍的牙是逐格验过的）
+
+- **C-P1** 删掉整段导入守门 → 红的**正好**是「非法名被拒」「超长名被拒」「固定文案」三格，
+  而边界格「恰好到上限仍能导入」保持绿 ⇒ 那格不依赖守门存在，它专防有人把门改得比 `KbName` 还紧。
+- **C-P2** 固定文案改成拼接库名 → **只红**文案那一格。
+- **B3-P3** `exists()` 换成 `readTextAt().isEmpty()` → **只红**补齐那一格，
+  红口原文就是被盖回的 `# 事项计划 …` 模板内容。
+- 三发之后都逐字还原（`cmp` 通过）。**C-P2 第一发是我自己的变异漏了个右括号** → 编译不过，
+  驱动按"无效"分类报出来、没冒充"探针没咬"（坑表 10.6 的形态，这台机器上第四次）。
+
+本机读数：**205 套件 / 1533 格 / 0-0-0**（`--rerun-tasks`、205 份 mtime 同为 13:54:35）、
+`assert_artifacts --label unit` OK；androidTest 编译 rc=0；lint 实测 66/14、进预算 **65/13**（与批次二逐字相同）、
+gate rc=0、`assert_artifacts --label lint` OK；大文件棘轮 holds；取消审计 / 工单号 / `asset_hashes --check` 全 rc=0；
+`app/src/main/assets/**` 零改动。自测里我自己写坏过一次 Kotlin（中文文案里用了 ASCII 引号，编译器当场红）——
+那是坑表里"中文字符串"那条的复发，代价是一轮编译，不算漏检。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 
