@@ -5927,3 +5927,56 @@ prompt 资产 `git diff c0ff0415..HEAD` 仍空；工单号 PASS。
   （既有测试不许改，登记不修）。
 
 坑表 **150–151**、交接单 **§0.56**。远端仍 `9d2757f`，本地 **23 笔**（`git rev-list --count 9d2757f..HEAD`，本段落账文档 +1）。
+
+# 追加七十一：R2 批次一——13 处 seed 裸写搬上唯一写链，另 13 处实测**搬不动**（`fbe1d1d`）
+
+指导书 :234 那句"建立唯一写边界 / 所有 mutation 只能从 `KnowledgeTx` 取得安全路径与原子写能力"，
+这一拍第一次把**调用点层面**的欠账还掉一段：`KnowledgeTxMutationEntryTest` 的三个 pin
+**总点数 34 → 21、裸写 30 → 17、作用域明细删一项**。`WRITE_CHAIN` 与扫描逻辑一字未动。
+
+## 71.1 还掉的是形状最容易的那 13 处
+
+`ensureInitialKnowledgeBase` 的 13 个 `atomicWriteText(File(defaultDir, "…"), …)`
+→ `transactionUnlocked(defaultName) { write("…", …) }`。
+链上多得到两样以前没有的东西：`safeKbFile` 路径守门、`refusedByReadOnlySchema` 判定（以前只在出口判）。
+
+## 71.2 剩下那 13 处的价值：**它证伪了"再搬一批就搬完"这个假设**
+
+`create` 上链会把"库名 ≥101 字符"那次调用从 **13 格照常落盘** 变成
+**守门拒掉 → 一个字节不写 → 而 seed 段没人读 `write()` 的返回值**。根因是两处判定本来就不同宽严：
+
+| 位置 | 判定 |
+| --- | --- |
+| `KnowledgeRepository.kt:809`（`create` 的 sanitizer） | 只过滤字符集 `[^a-z0-9一-龥_-]`，**不限长度** |
+| `KnowledgeSchemaVersion.kt:63`（`KbName`） | `require(value.length <= 100)` |
+
+UI 侧 `KnowledgeBaseActivity.kt:761` 恰好 `take(100)` 挡着——**另一层的巧合**，而 `repo.create` 是公开端口。
+⇒ 于是这一拍**没有**把它搬上去，而是：留在裸写 + 把原因写进尺的 breakdown KDoc +
+钉一格**现行行为**证据。这格的作用是：**谁将来要搬，必须先在三条路里显式选一条**（见交接单 §0.57.1 末）。
+
+**而且第二个发现来自这一格**：批次二的 `ensureKbFilesCompleteUnlocked` 那 2 处撞的是**同一个**长度不一致
+（它给"已存在的库"补文件，而"过名太长还能存在"的库正是 `create` 造出来的）
+⇒ 剩下 15 处可还的裸写**系在同一个决定上**，不是两批独立的活。
+
+## 71.3 主线程自己跑的三发（不采信子代理读数）
+
+- **V1** 把尺的总点数 pin 改回旧值 34 → 红 1 格，红口原文印着"**实测 21**"并逐点列行号
+  ⇒ 新 pin 是我量的 + 尺仍有牙。
+- **V2** 给 `create` 补上候选修法 `.take(100)` → **点名红** `create still seeds bytes for names the tx guard would reject`，
+  原文 `create-over-long-name：kb.json 没落盘（清单：[]）` ⇒ 那格钉的是真行为，也说明"补长度判定"**确实改现行可观察行为**。
+- **字节一致我用最硬的口径复跑**：把新测试（5 格）**对着改之前的生产文件**跑（`git show HEAD~1:…` → 1802 行临时盖回工作树）
+  ⇒ **5 格全绿**（rc=0、XML 13:08 新），复完逐字节还原、`git status` 干净。
+  ⇒ 那 5 格期望的确实是**旧行为**，不是"照着新实现写的测试"。（子代理另交的 52 行清单前后对比是它的读数，两种都要，但别混着记。）
+
+## 71.4 本机读数
+
+**205 套件 / 1527 格 / 0-0-0**（`--rerun-tasks`、跑前删净、205 份 mtime 同为 12:57）；androidTest 编译 rc=0；
+lint 实测 66 / 14、进预算 65 / 13 未变；大文件棘轮 holds（`KnowledgeRepository` 1802 → 1811，账本按实测更新）；
+取消审计 205 站、工单号、`asset_hashes --check` 全 rc=0；`app/src/main/assets/**` 零改动；
+生产码新增行 0 处工单号；两发探针之后源码逐字还原。
+
+账上残留（尺盯着、不许往上加）：`create` 13（搬不动，见上）、`ensureKbFilesCompleteUnlocked` 2（同一决定）、
+`RepoStorage.atomicWrite` / `guardedWrite` 各 1（存储适配器管道，不是欠账）。
+另：子代理留下的 4 处日期写成 `2026-09-28`，本机 `date` 实测是 2026-09-27，已改（日期也是账）。
+
+坑表 **150–151**、交接单 **§0.57**。

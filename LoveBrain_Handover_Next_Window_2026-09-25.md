@@ -1880,6 +1880,55 @@ androidTest 编译 rc=0；`AppModuleGraphTest > every view model in the producti
 大文件棘轮 holds（175 个 .kt，>500 16 / >800 6，账本按实测把 `KnowledgeRepository` 1793→1802、VM 2513→2517 更新）；
 取消审计 **205 站**未变、`--check` rc=0；`asset_hashes --check` OK；prompt 资产 `git diff c0ff0415..HEAD` 仍空；工单号 PASS。
 **没推**：远端仍 `9d2757f`，本地 **22 笔**（`git rev-list --count 9d2757f..HEAD`，本段落账文档再 +1）。
+## 0.57 第四拍：建库 seed 的 13 处裸写搬上唯一写链（`fbe1d1d`），另 13 处**实测搬不动**
+
+R2 批次一。搬运由 worktree 里的 subagent 做，主线程合并 + 复验 + 自己跑反证。
+
+**还掉的 13 处**：`ensureInitialKnowledgeBase` 里 `atomicWriteText(File(defaultDir, "…"), …)`
+→ `transactionUnlocked(defaultName) { write("…", …) }`，于是这 13 处经
+`KnowledgeTx.write` → `writeFileCheckedUnlocked`（只读判定 + `safeKbFile` 路径守门 + 唯一原子写）。
+尺的三个 pin 只往下：**总点数 34 → 21、裸写 30 → 17、明细表删一项**。
+`WRITE_CHAIN` 集合与那把尺的扫描逻辑一个字没动（那正是尺 KDoc 警告的假账形态）。
+
+**没还的 13 处不是"没做"，是做不得**（这是这一拍最值钱的读数）：`create` 上链会把
+"库名 ≥101 字符"那次调用从**13 格照常落盘**变成**守门拒掉、一个字节不写、而 seed 段没人读返回值**。
+根因是两处判定本来就不同宽严：`create` 的 sanitizer（`KnowledgeRepository.kt:809`）只过滤字符集**不限长度**，
+而 `KbName`（`KnowledgeSchemaVersion.kt:63`）卡 `length <= 100`。
+UI 那侧 `KnowledgeBaseActivity.kt:761` 恰好 `take(100)` 挡着——**那是另一层的巧合**，
+而 `repo.create` 是公开端口（`KnowledgeBaseCapabilityPorts.kt:67`）。
+⇒ 处理办法：留在裸写、原因写进尺的 breakdown KDoc、并钉一格**现行行为**证据
+（`KnowledgeSeedWriteBytesBaselineTest > create still seeds bytes for names the tx guard would reject`）。
+**这一格把我自己引到第二个发现**：`ensureKbFilesCompleteUnlocked` 那 2 处（批次二）撞的是**同一个**
+长度不一致（它给"已存在的库"补文件，而"能存在但过名太长"的库正是 `create` 造出来的），
+所以剩下 15 处可还的裸写**系在同一个决定上**，不是两批独立的活。
+
+## 0.57.1 主线程自己跑的三发证据
+
+- **V1**｜把尺的总点数 pin 改回旧值 34 → 红 1 格，红口原文印着"实测 21"并逐点列出行号
+  ⇒ 同时证明两件事：新的 pin 是我量出来的、那把尺仍然咬得住。
+- **V2**｜给 `create` 的 sanitizer 补上候选修法 `.take(100)` → **点名红**那一格，
+  原文 `create-over-long-name：kb.json 没落盘（清单：[]）`
+  ⇒ 那格钉的是真行为，不是空概念；也正说明"补长度判定"这件事**会改现行可观察行为**。
+- 字节一致的证据我自己复跑了一次，用的是**最硬的那种办法**：把新测试
+  （`KnowledgeSeedWriteBytesBaselineTest`，5 格）**对着改之前的生产文件**跑
+  （`git show HEAD~1:…KnowledgeRepository.kt` → 1802 行，临时盖回工作树）⇒ **5 格全绿**（rc=0，XML 13:08 新）；
+  复完立刻逐字节还原（`cmp` 通过，`git status` 干净）。
+  ⇒ 这证明那 5 格期望的**确实是旧行为**，不是"照着新实现写出来的测试"。
+  子代理另外还交过一份 52 行清单的前后对比（raw sha256 只有 5 站不同、全是含时钟的 `kb.json.updatedAt`
+  与 `moment/topic.md` 时间戳，归一后一致）——那是**它的**读数，我这次复核用的是上面那一发。
+- 顺带改掉子代理留下的 4 处错误日期 `2026-09-28` → `2026-09-27`（本机 `date` 实测 12:51）。
+
+本机读数：**205 套件 / 1527 格 / 0-0-0**（`--rerun-tasks`、205 份 mtime 同为 12:57）；androidTest 编译 rc=0；
+lint 实测 66/14、进预算 65/13 未变；大文件棘轮 holds（KR 1802 → 1811，账本已按实测更新）；
+取消审计 205 站、工单号、`asset_hashes --check` 全 rc=0；`app/src/main/assets/**` 零改动。
+两发探针之后源码逐字还原，`git diff` 相对 HEAD 只剩那一笔的净改动。
+
+**待他拍板的一件事**（我没自作主张改行为）：`create` 的库名判定要不要与 `KbName` 对齐？
+①给 `create` 补长度判定（`.take(100)` 或 `require`）——与 UI 现有行为一致，但**改变公开端口的现行行为**；
+②放宽 `KbName` 的 100 上限——影响所有走 `KbName` 的读路径；
+③维持现状——13 + 2 处裸写留在账上，由那把尺盯着不许往上加。
+
+## 1. 起手必查（照抄，别凭记忆）
 ## 1. 起手必查（照抄，别凭记忆）
 
 
