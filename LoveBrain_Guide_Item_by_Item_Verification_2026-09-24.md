@@ -5980,3 +5980,54 @@ lint 实测 66 / 14、进预算 65 / 13 未变；大文件棘轮 holds（`Knowle
 另：子代理留下的 4 处日期写成 `2026-09-28`，本机 `date` 实测是 2026-09-27，已改（日期也是账）。
 
 坑表 **150–151**、交接单 **§0.57**。
+
+# 追加七十二：批次二——库名上限收成一个常数，`create` 的 13 处随之上链（`0d01c80`，裸写 17 → 4）
+
+指导书 :234 那句"唯一写边界"到现在为止的账面：**34 → 21 → 8 个 `atomicWriteText` 调用点，裸写 30 → 17 → 4**。
+`WRITE_CHAIN` 自始至终没动过一个字（那条假账路径被尺的 KDoc 明令禁止，也确实没被走过）。
+
+## 72.1 这次做的是"改行为"，而且是用户拍板之后才做的
+
+上一拍留下的 STOP（`create` 搬不动）由用户选定"给 `create` 补长度判定"，于是：
+`KbName` 的字面量 100 抽成 `KB_NAME_MAX_LENGTH`，`create` 的 sanitizer 之后补
+`require(safeName.length <= KB_NAME_MAX_LENGTH)`（**在 mkdirs 之前**），13 处 seed 随之上链。
+
+两格新断言各钉一件事（反证都是我自己跑的）：
+- `create rejects … and leaves nothing on disk`：上一拍那格的**前身**按它自己 KDoc 的预言换岗——
+  它当年写"谁搬谁撞红，届时必须显式选一条路"，现在真的撞红过（B2 前置那一发 `.take(100)`），
+  然后才被改成钉**新行为**（拒 + 盘上零残留）。
+- `the … length limit lives in exactly one place`：钉**同源**不钉数字。
+  **B2-P1** 删掉 require → 红 2 格（牵连合理：删判定也删掉常数引用）；
+  **B2-P2** 把常数换成抄来的 100 → **只红同源那一格** ⇒ 两格分辨的是两件不同的事。
+
+## 72.2 这一拍真正的产出是两条新事实
+
+1. **剩下 2 处搬不动，原因换了**：`KbArchiveTransfer.import` **完全不校验库名长度**
+   （该文件里 `KbName` / 长度判定 0 命中，直接往 `knowledgeRoot` 下建目录）
+   ⇒ 101+ 字符的库目录能由**导入 zip** 造出来，`create` 补判定挡不住这条路；
+   `ensureKbFilesCompleteUnlocked` 上链会让"给已存在的库补齐缺失文件"对那种遗留目录**静默失效**。
+   ⇒ 批次三第一步是**给导入路径补守门**，不是继续搬写点。这条是从"为什么搬不动"倒查出来的，
+   不是先想到的——**STOP 处往往连着下一条债的真实入口**。
+2. **我抄了一条没打开看的引用**（坑表 152）：`fbe1d1d` 与 §0.57 里那句
+   "UI 侧 `KnowledgeBaseActivity.kt:761` 恰好 `take(100)` 挡着"**是错的**——那行钳的是问卷答案文本。
+   UI 触发不到的真实原因是两个建库入口都用 `autoKbName()` 生成名字（~15 字符），
+   且 `createKnowledgeBase`（`:260-269`）把任何异常收进 `*CreateFailed` 事件。
+   ⇒ 结论没错、依据错了，而它当时正被用来支撑一个 STOP 决定。
+
+## 72.3 仪器自己的两处错（都是我先写坏、被读数打回来）
+
+- `tearDown` 无条件 cancel 一个只在 `newRepo()` 里赋值的 `appScope` ⇒ 一格**纯源码判据**的格子被报成红
+  （身体绿的、tearDown 才炸）。加 `if (::appScope.isInitialized)`。
+- "拒绝不许留东西"我先写成"根目录必须与调用前逐项一致" ⇒ 红在 `.backup` / `.last_backup`
+  （仓库自己的备份脚手架，出现时机随调度变）。改成**白名单差集**，判据从"会随机红"变成"钉得住残留"。
+- 另：`File(root)` 不是合法构造（`root` 已是 `File`）、`?: emptyList()` 在该实参位置推不出类型——
+  两处都是编译器告的我，不是我想到的。
+
+## 72.4 本机读数
+
+**205 套件 / 1528 格 / 0-0-0**（`--rerun-tasks`、跑前删净、205 份 mtime 同为 13:25）；androidTest 编译 rc=0；
+大文件棘轮 holds（`KnowledgeRepository` 1811 → 1824，账本按实测更新）；取消审计 / 工单号 / `asset_hashes --check` 全 rc=0；
+`app/src/main/assets/**` 零改动；两发探针之后源码逐字还原（`cmp` 通过）。
+
+账上剩余：裸写 **4** = `ensureKbFilesCompleteUnlocked` 2（等导入守门）+ `RepoStorage` 2（管道，不是欠账）。
+坑表 **150–152**、交接单 **§0.58**。
