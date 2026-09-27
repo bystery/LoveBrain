@@ -92,7 +92,10 @@ class KnowledgeSeedWriteBytesBaselineTest {
 
     @After
     fun tearDown() {
-        appScope.cancel()
+        // `appScope` 是在 newRepo() 里赋值的：纯源码判据那类格子根本不建仓库，
+        // 不加这个守卫就会在 tearDown 抛 UninitializedPropertyAccessException，
+        // 把一格其实通过了的断言报成红（仪器错报，比不测更坏）。
+        if (::appScope.isInitialized) appScope.cancel()
         root.deleteRecursively()
     }
 
@@ -283,29 +286,76 @@ class KnowledgeSeedWriteBytesBaselineTest {
     }
 
     /**
-     * `create` 那 13 处**今天为什么还留在裸写**的证人，钉的是现行真实行为：
+     * 这一格的**前身**是"create 那 13 处今天为什么搬不动"的证人：
+     * `create` 的 sanitizer 只按字符集过滤、不限长度，而 [KbName] 卡 100 字符，
+     * 于是 101+ 字符的库名"建得出来、读不回来"（每次读都被 `safeKbFile` 判非法、拿回空串）。
      *
-     * `create` 的 sanitizer 只按字符集过滤、不限长度，而 [KbName] 卡 100 字符——
-     * 两者形状不一致。于是 101 字符以上的库名今天照样 13 格全落盘，
-     * 换成 `KnowledgeTx.write` 就变成"守门拒掉 → 一个字节都不写 → 目录空着 → 库里查不到这个库"，
-     * 而 seed 段没人读 `write` 的返回值，连报错都不会有。
-     *
-     * ⚠ 谁哪天把 create 那 13 处搬上链，这一格一定红。那时两条路都得**显式**走：
-     * 要么在 `create` 入口补上长度判定（那是改行为，单独判断、单独落账），
-     * 要么放宽 [KbName]（把守门改松，绝不允许顺手做）。
+     * 2026-09-27 用户拍板走那条"改行为"的路：`create` 入口补上长度判定，两处读同一个常数
+     * [com.lovebrain.app.model.KB_NAME_MAX_LENGTH]，那 13 处 seed 随之搬上唯一写链。
+     * ⇒ 前身那一格当时预言"谁搬谁一定撞红"，它确实撞红了（主线程注入 `.take(100)` 复跑过），
+     *   现在换成钉**新行为**：过长直接拒，且**一个目录、一个字节都不留下**（判定在 mkdirs 之前）。
      */
     @Test
-    fun `create still seeds bytes for names the tx guard would reject`() = runBlocking {
+    fun `create rejects names the tx guard would reject and leaves nothing on disk`() = runBlocking {
         val repo = newRepo()
         val tooLongForTheGuard = "a".repeat(101)
         assertTrue(
-            "前提变了：KbName 现在不再卡 100 字符，这条'形状不一致'的证据失效了",
+            "前提：KbName 仍然卡着这个名字（放宽守门从来不是选项）",
             runCatching { KbName(tooLongForTheGuard) }.isFailure
         )
-        repo.create(tooLongForTheGuard, "长名库")
-        checkManifest("create-over-long-name", File(root, tooLongForTheGuard), createdKbManifest(
-            tooLongForTheGuard, "长名库"
-        ))
+        // 建库之前盘上已有什么就留什么：仓库自己会在根下挂 .backup / .last_backup 这类目录，
+        // 那是它自己的账，与这次拒绝无关——所以判据是"集合不许变"，不是"根目录必须空"。
+        val before = root.listFiles()?.map { f -> f.name }?.sorted() ?: emptyList<String>()
+        val thrown = runCatching { repo.create(tooLongForTheGuard, "长名库") }.exceptionOrNull()
+        assertTrue("create 应当用 IllegalArgumentException 拒过长库名，实到 $thrown",
+            thrown is IllegalArgumentException)
+        assertTrue(
+            "拒绝要发生在建目录之前——不许留下一个空目录或半套 seed 文件：" +
+                "盘上现在有 ${root.listFiles()?.map { f -> f.name } ?: emptyList<String>()}",
+            !File(root, tooLongForTheGuard).exists()
+        )
+        // 允许的"新增"只有仓库自己的备份脚手架（它在构造/后台调度里就会挂出来，与这次拒绝无关，
+        // 而且出现时机随调度变——所以用白名单差集判，不用"必须与调用前完全一致"那种会随机红的判据）。
+        // 除这两项之外多出来的任何一个条目，都说明拒绝发生在建目录之后、留下了半套。
+        val allowedNoise = setOf(".backup", ".last_backup")
+        val leftover = (root.listFiles()?.map { f -> f.name }?.toSet() ?: emptySet())
+            .minus(before.toSet())
+            .minus(allowedNoise)
+        assertEquals("被拒的那次 create 不许在盘上留下任何东西，实到 $leftover", emptySet<String>(), leftover)
+    }
+
+    /**
+     * 这次事故的根因是**同一个上限住在两个地方**（`KbName` 的 100 与 `create` sanitizer 的"没有上限"），
+     * 所以这条钉的是"两处必须读同一个常数"——不是钉数字，是钉**同源**。
+     *
+     * 判据用正向对照自证：真去仓库源码里找 `KB_NAME_MAX_LENGTH`，找不到就红；
+     * 反过来仓库里若出现字面量 `length <= 100`（有人绕开常数自己抄一份）也红。
+     */
+    @Test
+    fun `the knowledge base name length limit lives in exactly one place`() {
+        val mainRoot = File("src/main/java/com/lovebrain/app").takeIf { it.isDirectory }
+            ?: File("app/src/main/java/com/lovebrain/app")
+        val repoSrc = File(mainRoot, "data/KnowledgeRepository.kt").readText(Charsets.UTF_8)
+        val nameSrc = File(mainRoot, "model/KnowledgeSchemaVersion.kt").readText(Charsets.UTF_8)
+
+        assertTrue("找不到被测文件——这条会恒绿，比不测更坏", repoSrc.isNotBlank() && nameSrc.isNotBlank())
+        assertTrue(
+            "`KbName` 不再引用共用的长度常数（实到：" +
+                Regex("length <= (\\S+)").find(nameSrc)?.groupValues?.get(1) + "）",
+            nameSrc.contains("value.length <= KB_NAME_MAX_LENGTH")
+        )
+        assertTrue(
+            "`create` 的长度判定必须引用同一个常数，别自己抄一个数",
+            repoSrc.contains("safeName.length <= KB_NAME_MAX_LENGTH")
+        )
+        assertTrue(
+            "`create` 里不许再出现第二处硬编码的 100 长度判定",
+            !repoSrc.contains("length <= 100")
+        )
+        assertEquals(
+            "这个数全仓只许有一处定义（多了就说明有人又开始各抄一份）",
+            1, Regex("const val KB_NAME_MAX_LENGTH").findAll(nameSrc).count()
+        )
     }
 
     private companion object {

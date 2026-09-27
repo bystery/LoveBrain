@@ -53,6 +53,11 @@ object KnowledgeSchemaVersion {
 /**
  * KB 名称/路径 value object——验证 canonical boundary。
  * 上层不能传任意路径，必须通过此 value object。
+ *
+ * 长度上限抽成同文件里的 [KB_NAME_MAX_LENGTH]：`KnowledgeRepository.create` 的 sanitizer
+ * 以前**只过滤字符集、不限长度**，于是 101 字符以上的库名能建出来、却过不了这里，
+ * 结果那种库"建得出来、读不回来"（每次读都被 `safeKbFile` 判成非法路径拿到空串）。
+ * 两处判定现在共用同一个数，并由 `KnowledgeSeedWriteBytesBaselineTest` 钉住"不许各抄一份 100"。
  */
 @JvmInline
 value class KbName(val value: String) {
@@ -60,9 +65,12 @@ value class KbName(val value: String) {
         require(value.isNotBlank()) { "KB name must not be blank" }
         require(!value.contains("/") && !value.contains("\\")) { "KB name must not contain path separators" }
         require(!value.contains("..")) { "KB name must not contain path traversal" }
-        require(value.length <= 100) { "KB name too long (max 100)" }
+        require(value.length <= KB_NAME_MAX_LENGTH) { "KB name too long (max $KB_NAME_MAX_LENGTH)" }
     }
 }
+
+/** 库名长度上限——`KbName` 与 `KnowledgeRepository.create` 的 sanitizer 必须读同一个数 */
+const val KB_NAME_MAX_LENGTH = 100
 
 /**
  * KB 相对路径 value object——验证 canonical boundary。

@@ -70,24 +70,27 @@ class KnowledgeTxMutationEntryTest {
      * 2026-09-26 首次实测：`ensureInitialKnowledgeBase` 13 处、`create` 13 处、
      * `ensureKbFilesCompleteUnlocked` 2 处、`RepoStorage` 的两个委托各 1 处，共 30。
      *
-     * 2026-09-27 批次一还掉 `ensureInitialKnowledgeBase` 那 13 处（seed 写入改走
-     * `transactionUnlocked` + `KnowledgeTx.write`），本表随之删一项。剩下两笔各自的原因：
-     * - `create` 13 处（L837–L854）**搬不动**，不是没搬：`create` 的 sanitizer 只过滤字符集不限长度，
-     *   而 `KbName` 卡 100 字符 ⇒ 101 字符以上的库名今天照样 13 格落盘，搬上链就变成
-     *   守门拒掉、一个字节不写、seed 段又不读返回值。证据见
-     *   `KnowledgeSeedWriteBytesBaselineTest.create still seeds bytes for names the tx guard would reject`。
-     * - `ensureKbFilesCompleteUnlocked` 2 处（L762 L769）是批次二。
+     * 2026-09-27 批次二还掉 `create` 那 13 处：它以前搬不动**不是没做**，是真的不等价——
+     * `create` 的 sanitizer 不限长度而 `KbName` 卡 100，上链会让 101+ 字符名从"13 格照常落盘"
+     * 变成"守门拒掉、一个字节不写"。用户拍板走"改行为"那条：两处改读同一个常数
+     * `KB_NAME_MAX_LENGTH`，`create` 入口先拒过长名，13 处随之上链
+     * （证据与新旧行为各自钉在 `KnowledgeSeedWriteBytesBaselineTest`）。
+     *
+     * 剩下两笔各自的原因：
+     * - `ensureKbFilesCompleteUnlocked` 2 处（L762 L769）**仍然搬不动**，而且原因是新的：
+     *   `KbArchiveTransfer.import` 不校验库名长度（实测该文件里 0 处 `KbName` / 长度判定），
+     *   所以一个 101+ 字符的库目录**可以由导入 zip 造出来**，`create` 补判定挡不住这条路；
+     *   把这两处上链会让"给已存在的库补齐缺失文件"对那种遗留目录静默失效。⇒ 要搬得先给导入路径补守门。
      * - `RepoStorage` 那 2 处是存储适配器自己（管道，不是欠账）。
      */
     private val expectedRawBreakdown = mapOf(
-        "create" to 13,
         "ensureKbFilesCompleteUnlocked" to 2,
         "RepoStorage.atomicWrite" to 1,
         "RepoStorage.guardedWrite" to 1
     )
 
-    /** 调用点总数（写链 4 + 裸写 17）：动一条也要撞到这里 */
-    private val expectedTotalSites = 21
+    /** 调用点总数（写链 4 + 裸写 4）：动一条也要撞到这里 */
+    private val expectedTotalSites = 8
 
     // ═══════════ 扫描工具 ═══════════
 

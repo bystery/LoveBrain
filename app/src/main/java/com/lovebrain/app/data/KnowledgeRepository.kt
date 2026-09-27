@@ -2,6 +2,7 @@ package com.lovebrain.app.data
 
 import android.content.Context
 import com.lovebrain.app.model.IntentConfig
+import com.lovebrain.app.model.KB_NAME_MAX_LENGTH
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.KnowledgeSchemaVersion
 import com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort
@@ -818,6 +819,12 @@ class KnowledgeRepository(
         fileMutex.withLock {
             val safeName = name.trim().lowercase(Locale.ROOT).replace(Regex("[^a-z0-9\\u4e00-\\u9fa5_-]"), "")
             require(safeName.isNotEmpty()) { "知识库名不能为空" }
+            // 长度判定以前只住在 `KbName` 那一侧，而这里的 sanitizer 只过滤字符集不限长度，
+            // 于是 101+ 字符的名字能建出库、却每次读都被 `safeKbFile` 判非法（拿回空串）。
+            // 现在两处读同一个常数 `KB_NAME_MAX_LENGTH`：建不出来的那种库，也不会有半套文件落在盘上。
+            require(safeName.length <= KB_NAME_MAX_LENGTH) {
+                "知识库名过长（最多 $KB_NAME_MAX_LENGTH 个字符）"
+            }
             val dir = File(knowledgeRoot, safeName)
             require(!dir.exists()) { "知识库 '$safeName' 已存在" }
 
@@ -834,24 +841,30 @@ class KnowledgeRepository(
                 turnCount = 0,
                 active = listAll().isEmpty()
             )
-            atomicWriteText(File(dir, "kb.json"), json.encodeToString(KnowledgeBase.serializer(), kb))
+            // 建库的 13 格 seed 全走唯一写链（与 `ensureInitialKnowledgeBase` 同一形状）：
+            // KnowledgeTx.write → writeFileCheckedUnlocked（入口侧只读判定 + safeKbFile 路径守门 + 唯一原子写）。
+            // 上面的长度判定是这次上链的**前提**：没有它，链下与链上的行为对 101+ 字符名并不等价。
+            // 每格落盘什么字节由 `KnowledgeSeedWriteBytesBaselineTest` 逐格钉住（含 schema 正文与 assets 原字节比）。
+            transactionUnlocked(safeName) {
+                write("kb.json", json.encodeToString(KnowledgeBase.serializer(), kb))
 
-            // 全部文件从 assets/schema/ 加载（schema 是知识库结构的唯一来源）
-            // 懂得层（慢变量画像）
-            atomicWriteText(File(dir, "understand/me.md"), loadSchema("me"))
-            atomicWriteText(File(dir, "understand/her.md"), loadSchema("her"))
-            atomicWriteText(File(dir, "understand/warmth.md"), loadSchema("warmth"))
-            // 此刻层（快变量上下文）
-            atomicWriteText(File(dir, "moment/topic.md"), loadSchema("topic"))
-            atomicWriteText(File(dir, "moment/recent.md"), loadSchema("recent"))
-            atomicWriteText(File(dir, "moment/scene.md"), loadSchema("scene"))
-            atomicWriteText(File(dir, "moment/plan.md"), loadSchema("plan"))
-            // 记忆层（长期归档）
-            atomicWriteText(File(dir, "memory/lessons.md"), loadSchema("lessons"))
-            atomicWriteText(File(dir, "memory/raw_chat.md"), loadSchema("raw_chat"))
-            atomicWriteText(File(dir, "memory/raw_topic.md"), loadSchema("raw_topic"))
-            atomicWriteText(File(dir, "memory/raw_scene.md"), loadSchema("raw_scene"))
-            atomicWriteText(File(dir, "memory/counseling_log.md"), loadSchema("counseling_log"))
+                // 全部文件从 assets/schema/ 加载（schema 是知识库结构的唯一来源）
+                // 懂得层（慢变量画像）
+                write("understand/me.md", loadSchema("me"))
+                write("understand/her.md", loadSchema("her"))
+                write("understand/warmth.md", loadSchema("warmth"))
+                // 此刻层（快变量上下文）
+                write("moment/topic.md", loadSchema("topic"))
+                write("moment/recent.md", loadSchema("recent"))
+                write("moment/scene.md", loadSchema("scene"))
+                write("moment/plan.md", loadSchema("plan"))
+                // 记忆层（长期归档）
+                write("memory/lessons.md", loadSchema("lessons"))
+                write("memory/raw_chat.md", loadSchema("raw_chat"))
+                write("memory/raw_topic.md", loadSchema("raw_topic"))
+                write("memory/raw_scene.md", loadSchema("raw_scene"))
+                write("memory/counseling_log.md", loadSchema("counseling_log"))
+            }
 
             if (kb.active) securePrefs.activeKbName = safeName
             scheduleDebouncedBackup()
