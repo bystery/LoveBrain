@@ -127,8 +127,8 @@ object MainChainHarness {
      * `terminated=false` 且结尾停在半行 ⇒ 客户端那次 flush 本身就停在半截（红点在链路）。
      *
      * 用 instrumentation 线程直接读 `ProxySelector.getDefault()`：生产
-     * `OkHttpClient.Builder()`（`DeepSeekRepository.kt:296`，没设 `proxy`）在设备上
-     * 走的就是这条选择逻辑，量的是同一个东西。
+     * `OkHttpClient.Builder()`（`data/CancellableHttpTransport.kt` 的 `client()`，没设 `proxy`）
+     * 在设备上走的就是这条选择逻辑，量的是同一个东西。
      */
     fun providerDiagnosis(server: FakeProviderServer): String {
         val uri = java.net.URI(server.baseUrl)

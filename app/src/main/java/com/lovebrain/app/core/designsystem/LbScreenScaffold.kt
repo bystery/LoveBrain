@@ -46,7 +46,8 @@ import androidx.compose.ui.unit.dp
  *
  * ## 谁不在这儿
  *
- * 悬浮面板与气泡跑在 `TYPE_APPLICATION_OVERLAY` 窗口里（`FloatingService` 建那两个窗口），
+ * 悬浮面板与气泡跑在 `TYPE_APPLICATION_OVERLAY` 窗口里（建窗口的是 `service/OverlayWindowHost`
+ * 那一套，气泡 `OverlayBubbleWindow`、面板 `OverlayPanelWindow` 各调一次），
  * 没有系统栏、也不该被页面的边距档管着——它们不走这里。
  */
 

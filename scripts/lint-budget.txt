@@ -6,6 +6,15 @@
 #
 # 这份账本记的是**仓库自己欠的债**，所以每一条都得在同一份代码上量出同一个数。
 # 量不出同一个数的规则不配进这里 —— 见文件末尾的 advisory 段。
+#
+# 已出账：StaticFieldLeak（原来 1 条，2026-09-27 实测 0 条后删行）。
+#   那条报的是"静态 `FloatingService.instance` → 实例字段 `bubbleView`（View）"，
+#   而 lint 只看一跳。FloatingService 拆分把 `bubbleView` 搬进 `service/OverlayBubbleWindow.kt`
+#   之后，链子变成静态 → 窗口对象 → View，两跳，它就不报了——**这不是我们把泄漏修好了**，
+#   是那条检查的宽度只有一跳。真正兜底的是 `onDestroy` 里那三句，拆分前后都在：
+#   `instance = null`、`bubble.remove()`（把 bubbleView 置空）、`panel.destroy()`（把 composeView 置空）。
+#   所以这一行按" detector 不再命中"出账，不按"已证明无泄漏"出账；
+#   服务存活期内静态 instance 拿着自己那两扇窗的引用仍然是一个待判断的设计选择，别把这条当成已还。
 
 AutoboxingStateCreation 5
 ClickableViewAccessibility 1
@@ -18,11 +27,12 @@ ModifierParameter 8
 PluralsCandidate 2
 RedundantLabel 1
 ReturnFromAwaitPointerEventScope 3
-StaticFieldLeak 1
 SwitchIntDef 1
 # 33 → 32：`a11y_close_onboarding`（中英两份一直都在、从没被引用）接上面板引导卡片
 # 那颗关闭按钮的 contentDescription ⇒ 少一条未用资源。同格还顺手把那句内联中文从
 # `contentDescription` 里拿掉（字面量预算 DESC 栏 11→10），两边是同一笔债。
+# 这一档原来被 --rewrite 顺手抹掉过：那一步只重写它认识的 `规则 数字` 行，
+# 注释块跟着没了。账还在（32 没动），所以手工补回，并把"--rewrite 会吃掉注释"记进坑表。
 UnusedResources 32
 
 # ── advisory：不进预算比对的规则（每次仍然打印条数与理由）──

@@ -28,7 +28,8 @@ JVM 单测只能证明 usage 绑定与校验逻辑，永远证明不了"一次�
             (PromptBuilder.kt:806-850) —— 关系阶段 / 温度摘要(300) / 与今天相关的事项(800) /
             表达偏好(300) / 需要避开的经验(lastH1Blocks 1, 400) / 时间戳垫底，再过 3500 预算
   body    = DeepSeekRepository.buildRequestBodyWithConfig(..., AppConfig.TEMPERATURE_MAIN, stream=true)
-            (app/src/main/java/com/lovebrain/app/data/DeepSeekRepository.kt:900-963)
+            (app/src/main/java/com/lovebrain/app/data/DeepSeekRepository.kt 里的同名方法；
+             协议字段形状已拆到 data/OpenAiChatWire.kt，两处都要跟着看)
   usage   = 流式最后一个带 usage 的 chunk（stream_options.include_usage=true）
   cost    = util/UsagePricer.kt（三元组计价 + 北京高峰判定 + deepseek.com 双条件）
   校验    = domain/SuggestValidator.kt（6-8 条、action 去重、ID 去重、分类白名单、<6 判 partial）

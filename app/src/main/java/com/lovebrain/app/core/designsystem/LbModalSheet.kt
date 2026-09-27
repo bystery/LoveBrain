@@ -32,7 +32,8 @@ import androidx.compose.ui.unit.dp
  * §6.1 表里 `LbModalSheet/Dialog` 的 **Sheet 半边**：悬浮窗世界里那套"需要用户决策的浮层"。
  *
  * 为什么它和 [LbDialog] 是两个形状而不是一个：面板与气泡跑在
- * `TYPE_APPLICATION_OVERLAY` 窗口里（`FloatingService.kt` 建那两个窗口各一处，
+ * `TYPE_APPLICATION_OVERLAY` 窗口里（建窗口那两处在 `service/OverlayBubbleWindow.kt`
+ * 与 `service/OverlayPanelWindow.kt`，共用的挂载样板在 `service/OverlayWindowHost.kt`；
  * 类型名以那里为准，别照这里的注释信——这一句原先写的是
  * `TYPE_ACCESSIBILITY_OVERLAY`，是错的，账本 §36 记了怎么发现的），
  * 那里没有合适的 activity token，Material 的 `AlertDialog`（内部起一棵 Dialog 窗口）
