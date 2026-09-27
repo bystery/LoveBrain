@@ -53,12 +53,23 @@ class KnowledgeRepository(
     private val fileMutex = Mutex()
 
     /**
+     * 迁移器那份受限视图的**实例**：只暴露 [KbStorageAccess] 上这几样能力。
+     *
+     * 类型写成端口而不是 `RepoStorage`，所以交出去的东西不超过迁移器本来就有的那些
+     * （`RepoStorage` 自己是 private，模块内也认不出这个类型，转不成别的存储接口）。
+     *
+     * internal 只为测试能直接开「新入口」这一刀——越界相对路径经 [KbStorageAccess.atomicWriteAt]
+     * 到底写不写得出去、返回值报不报得准，端口自己没别的调用方，产品码一行都不必碰它。
+     */
+    internal val migratorStorage: KbStorageAccess = RepoStorage()
+
+    /**
      * schema 探测与旧库迁移。
      *
      * 它不持锁也不碰路径拼接，所有文件动作都经 [RepoStorage] 回到本类，
      * 所以"同一时刻只有一个写者"这条不变量不会因为拆类而散成两把锁。
      */
-    private val migrator = KnowledgeMigrator(RepoStorage())
+    private val migrator = KnowledgeMigrator(migratorStorage)
 
     /** 交给迁移器用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
     private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage, DocumentStorage,
@@ -164,14 +175,18 @@ class KnowledgeRepository(
         override fun writeUnlocked(kbName: String, relativePath: String, content: String) =
             writeFileUnlocked(kbName, relativePath, content)
 
-        override fun atomicWrite(target: File, content: String) {
-            // 迁移器只会写"不超纲"的库（判定在 KnowledgeMigrator 里提前 return），
-            // 所以这里返回 false 一定是异常状况，必须留下痕迹而不是静默跳过。
-            if (!atomicWriteText(target, content)) {
-                com.lovebrain.app.util.L.e(
-                    "migration write was refused by the schema guard: ${target.name}", null
-                )
-            }
+        override fun atomicWriteAt(kbName: String, relativePath: String, content: String): Boolean {
+            // 路径与落盘都交给仓库已有的那两样：safeKbFile（与公开读写同一个判定）+
+            // writeFileCheckedUnlocked（唯一写链上登记的写核）。这里刻意不再新写一条
+            // atomicWriteText、也不再自己拼 File——判定只有一处，宽严不可能分叉。
+            //
+            // 返回 false 从「异常状况」变成了「可以发生的拒绝」（守门认不下的库名/路径、
+            // 只读库），但一条不留痕的拒绝等于静默跳过，所以照旧记一条错误级日志再报出去。
+            if (writeFileCheckedUnlocked(kbName, relativePath, content)) return true
+            com.lovebrain.app.util.L.e(
+                "migration write refused by the guard: $kbName/$relativePath", null
+            )
+            return false
         }
         /** 备份写 `.last_backup` 走同一道门；"有没有真写进去"原样报回去 */
         override fun guardedWrite(target: File, content: String): Boolean = atomicWriteText(target, content)

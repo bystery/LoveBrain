@@ -85,15 +85,23 @@ class KnowledgeTxMutationEntryTest {
      * 那种库本来就每一读都被 `safeKbFile` 判非法、拿回空串，补了也没人读得到。
      * 新的非法名现在有三条入口都被堵：`create` 的 require、导入的 `KbName` 守门、以及路径守门本身。
      *
-     * 剩下两笔：`RepoStorage` 那 2 处是存储适配器自己（管道，不是欠账）。
+     * 2026-09-27 批次四还掉 `RepoStorage.atomicWrite` 那 1 处：它不是仓库自己的写路径，而是**第二个路径
+     * 所有者**的落盘口——`KnowledgeMigrator` 自己拼 `File(root, kbName)` 再拼相对路径，然后把一个
+     * `File` 交给端口写进库里（14 处）。仓库这一侧新加的不是第三条写链，而是把端口那道
+     * 「交出一个 File 就想写哪儿写哪儿」的门换成 `atomicWriteAt(kbName, relativePath, content)`，
+     * 实现体直接复用已有的 `safeKbFile` + `writeFileCheckedUnlocked`（所以链上的数一点没长）。
+     * 端口上再没有不收路径的写口，那 14 处的字节由 `KnowledgeMigratorBytesBaselineTest` 逐格钉住。
+     *
+     * 剩下一笔：`RepoStorage.guardedWrite` 是备份适配器写根目录 `.last_backup` 标记的管道——
+     * 那个文件按设计不属于任何库（`kbOwning` 对点开头目录返回 null），`safeKbFile` 根本表达不了它，
+     * 所以它不在「 mutation 只能从 KnowledgeTx 取路径」这条要求的射程里，这一轮不动它。
      */
     private val expectedRawBreakdown = mapOf(
-        "RepoStorage.atomicWrite" to 1,
         "RepoStorage.guardedWrite" to 1
     )
 
-    /** 调用点总数（写链 4 + 裸写 2，且那 2 处是管道）：动一条也要撞到这里 */
-    private val expectedTotalSites = 6
+    /** 调用点总数（写链 4 + 裸写 1，且那 1 处是管道）：动一条也要撞到这里 */
+    private val expectedTotalSites = 5
 
     // ═══════════ 扫描工具 ═══════════
 

@@ -11,13 +11,25 @@ import java.io.File
  * 抽出来的类（迁移、备份等）不再各自拿一把锁、各自拼路径，
  * 而是共用仓库这一份实现：单写者互斥仍然只有 `KnowledgeRepository.fileMutex` 一把，
  * 抽类不会把"同一时刻只有一个写者"这个不变量拆散。
+ *
+ * 写能力只有 [atomicWriteAt] 一条，而且是**带守门**的那条：本接口上不再有
+ * 「拿到一个 File 就想写哪儿写哪儿」那道口子（2026-09-27 批次四关掉的 `atomicWrite(File, …)`）。
  */
 internal interface KbStorageAccess {
     /** knowledge/ 根目录 */
     val root: File
 
-    /** 原子写入（临时文件 → rename），失败不清空原文件 */
-    fun atomicWrite(target: File, content: String)
+    /**
+     * 守门原子写入：只报「库名 + 库内相对路径」，路径由仓库那一侧的 `safeKbFile` 给，
+     * 落盘走唯一那条写链（只读 schema 判定与备份节流都在那里）。
+     *
+     * 这里**不收 `File`**：端口一旦接受一个外部拼好的 `File`，调用方就成了第二个路径所有者，
+     * 「写不出库外」这件事就得靠每个人自觉。2026-09-27 之前这里挂的是
+     * `atomicWrite(target: File, …)`，迁移器因此自己拼 `File(root, kbName)` 再拼相对路径。
+     *
+     * 返回 false = 一个字节都没落：库名或相对路径过不了守门，或该库因 schema 比本 App 还新而只读。
+     */
+    fun atomicWriteAt(kbName: String, relativePath: String, content: String): Boolean
 
     /** 读取 schema 模板 */
     fun schema(name: String): String
@@ -91,7 +103,7 @@ internal class KnowledgeMigrator(private val io: KbStorageAccess) {
      */
     private fun writeSchemaVersion(kbName: String, version: Int) {
         val dir = File(io.root, kbName)
-        io.atomicWrite(File(dir, ".schema_version"), version.toString())
+        io.atomicWriteAt(kbName, ".schema_version", version.toString())
         // 清理 legacy marker 文件
         for ((markerName, _) in KnowledgeSchemaVersion.legacyMarkers) {
             val marker = File(dir, markerName)
@@ -146,26 +158,29 @@ internal class KnowledgeMigrator(private val io: KbStorageAccess) {
         if (dir.exists()) {
             File(dir, "moment").mkdirs()
             File(dir, "memory").mkdirs()
-            val sceneFile = File(dir, "moment/scene.md")
-            if (!sceneFile.exists()) io.atomicWrite(sceneFile, "")
-            val rawChat = File(dir, "memory/raw_chat.md")
-            if (!rawChat.exists()) io.atomicWrite(rawChat, "")
-            val rawTopic = File(dir, "memory/raw_topic.md")
-            if (!rawTopic.exists()) io.atomicWrite(rawTopic, "")
-            val rawScene = File(dir, "memory/raw_scene.md")
-            if (!rawScene.exists()) io.atomicWrite(rawScene, "")
-            val planFile = File(dir, "moment/plan.md")
-            if (!planFile.exists()) io.atomicWrite(planFile, io.schema("plan"))
+            // 每一格只写一份相对路径字面量：判存在用拼出来的 File，落盘把同一个字符串交给守门，
+            // 于是「检查 A、写 B」这种抄歪没有可发生的地方。
+            val sceneRel = "moment/scene.md"
+            if (!File(dir, sceneRel).exists()) io.atomicWriteAt(kbName, sceneRel, "")
+            val rawChatRel = "memory/raw_chat.md"
+            if (!File(dir, rawChatRel).exists()) io.atomicWriteAt(kbName, rawChatRel, "")
+            val rawTopicRel = "memory/raw_topic.md"
+            if (!File(dir, rawTopicRel).exists()) io.atomicWriteAt(kbName, rawTopicRel, "")
+            val rawSceneRel = "memory/raw_scene.md"
+            if (!File(dir, rawSceneRel).exists()) io.atomicWriteAt(kbName, rawSceneRel, "")
+            val planRel = "moment/plan.md"
+            val planFile = File(dir, planRel)
+            if (!planFile.exists()) io.atomicWriteAt(kbName, planRel, io.schema("plan"))
             // 旧版 plan.md 的裸"格式/示例"说明行包进注释（编辑可见、预览隐藏、不进 prompt）
             if (planFile.exists()) {
                 val planText = runCatching { planFile.readText() }.getOrDefault("")
                 val fixed = KbTextOps.wrapPlanMetaLines(planText)
-                if (fixed != planText) io.atomicWrite(planFile, fixed)
+                if (fixed != planText) io.atomicWriteAt(kbName, planRel, fixed)
             }
-            val counselingLog = File(dir, "memory/counseling_log.md")
-            if (!counselingLog.exists()) io.atomicWrite(counselingLog, "")
-            val reflectHistory = File(dir, "memory/reflect_history.md")
-            if (!reflectHistory.exists()) io.atomicWrite(reflectHistory, "")
+            val counselingLogRel = "memory/counseling_log.md"
+            if (!File(dir, counselingLogRel).exists()) io.atomicWriteAt(kbName, counselingLogRel, "")
+            val reflectHistoryRel = "memory/reflect_history.md"
+            if (!File(dir, reflectHistoryRel).exists()) io.atomicWriteAt(kbName, reflectHistoryRel, "")
             // 兼容：旧知识库把"她"的画像存为 understand/you.md，统一改名为 her.md
             val oldYou = File(dir, "understand/you.md")
             val newHer = File(dir, "understand/her.md")
@@ -237,24 +252,26 @@ internal class KnowledgeMigrator(private val io: KbStorageAccess) {
         }
         val moments = File(dir, "general/moments.md")
         val details = File(dir, "general/details.md")
-        val archiveFile = File(dir, "memory/archive.md")
+        val archiveRel = "memory/archive.md"
+        val archiveFile = File(dir, archiveRel)
         val archiveContent = buildString {
             if (moments.exists()) append(moments.readText()).append("\n\n")
             if (details.exists()) append(details.readText())
         }
         if (archiveContent.isNotBlank() && (!archiveFile.exists() || archiveFile.readText().isBlank())) {
-            io.atomicWrite(archiveFile, archiveContent)
+            io.atomicWriteAt(kbName, archiveRel, archiveContent)
         }
 
         // A项修复：topic.md 和 topic_log.md 只在迁移完成时初始化一次
-        val topicFile = File(dir, "moment/topic.md")
+        val topicRel = "moment/topic.md"
+        val topicFile = File(dir, topicRel)
         if (!topicFile.exists() || topicFile.readText().isBlank()) {
             val initTime = com.lovebrain.app.util.TimeFmt.now()
-            io.atomicWrite(topicFile, KbTextOps.topicLine(initTime, KbTextOps.TOPIC_INITIAL_LABEL))
+            io.atomicWriteAt(kbName, topicRel, KbTextOps.topicLine(initTime, KbTextOps.TOPIC_INITIAL_LABEL))
         }
-        val topicLogFile = File(dir, "memory/topic_log.md")
-        if (!topicLogFile.exists()) {
-            io.atomicWrite(topicLogFile, "")
+        val topicLogRel = "memory/topic_log.md"
+        if (!File(dir, topicLogRel).exists()) {
+            io.atomicWriteAt(kbName, topicLogRel, "")
         }
 
         // v1→v2 迁移完成后，执行 v2→v3 plan 数据迁移
@@ -283,7 +300,8 @@ internal class KnowledgeMigrator(private val io: KbStorageAccess) {
         val currentVersion = detectSchemaVersion(kbName)
         if (currentVersion >= 3) return  // plan v3 迁移已完成
 
-        val planFile = File(dir, "moment/plan.md")
+        val planRel = "moment/plan.md"
+        val planFile = File(dir, planRel)
         val planContent = if (planFile.exists()) planFile.readText() else ""
         if (planContent.isBlank()) {
             // 空文件——无需迁移，直接标记为已迁移
@@ -292,7 +310,8 @@ internal class KnowledgeMigrator(private val io: KbStorageAccess) {
         }
 
         // 1. 备份旧 plan.md 到归档
-        val archiveFile = File(dir, "memory/plan_archive_v2.md")
+        val archiveRel = "memory/plan_archive_v2.md"
+        val archiveFile = File(dir, archiveRel)
         val backupContent = buildString {
             append("<!-- plan 结构迁移 v2 备份: ${io.timestamp()} -->\n")
             append("<!-- 原始 plan.md 内容（迁移前快照） -->\n")
@@ -303,7 +322,7 @@ internal class KnowledgeMigrator(private val io: KbStorageAccess) {
                 append(archiveFile.readText())
             }
         }
-        io.atomicWrite(archiveFile, backupContent)
+        io.atomicWriteAt(kbName, archiveRel, backupContent)
 
         // 2. 解析旧格式事项
         val items = mutableListOf<MigratablePlanItem>()
@@ -383,7 +402,7 @@ internal class KnowledgeMigrator(private val io: KbStorageAccess) {
                 }
             }
         }
-        io.atomicWrite(planFile, newPlan)
+        io.atomicWriteAt(kbName, planRel, newPlan)
 
         // 写入 schema version 3，标记 plan 迁移完成
         writeSchemaVersion(kbName, 3)
