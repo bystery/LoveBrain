@@ -53,6 +53,9 @@ class KnowledgeSeedWriteBytesBaselineTest {
     }
 
     private lateinit var root: File
+
+    /** 见 [FixedClockZone]：CI 与本机默认时区不同会让字节基线两头都漂 */
+    private var savedZone: java.util.TimeZone? = null
     private lateinit var appScope: CoroutineScope
     private var activeKbName: String = ""
 
@@ -86,6 +89,7 @@ class KnowledgeSeedWriteBytesBaselineTest {
 
     @Before
     fun setUp() {
+        savedZone = FixedClockZone.install()
         root = Files.createTempDirectory("seed_bytes").toFile()
         activeKbName = ""
     }
@@ -97,6 +101,8 @@ class KnowledgeSeedWriteBytesBaselineTest {
         // 把一格其实通过了的断言报成红（仪器错报，比不测更坏）。
         if (::appScope.isInitialized) appScope.cancel()
         root.deleteRecursively()
+        FixedClockZone.restore(savedZone)
+        savedZone = null
     }
 
     // ═══════════ 清单工具 ═══════════
@@ -106,7 +112,7 @@ class KnowledgeSeedWriteBytesBaselineTest {
      * 只认这两个形状，不许顺手把别的数字也抹掉——抹多了"内容写歪"也能过。
      */
     private fun scrubClock(text: String): String = text
-        .replace(Regex("""\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}"""), CLOCK)
+        .replace(Regex("""\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[+-]\d{2}:\d{2}|Z)"""), CLOCK)
         .replace(Regex("""\d{4}-\d{2}-\d{2} \d{2}:\d{2}"""), CLOCK)
 
     private fun sha256(bytes: ByteArray): String =

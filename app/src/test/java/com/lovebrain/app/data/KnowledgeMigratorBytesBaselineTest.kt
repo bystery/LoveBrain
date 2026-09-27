@@ -75,8 +75,12 @@ class KnowledgeMigratorBytesBaselineTest {
         )
     }
 
+    /** 见 [FixedClockZone]：CI 跑在 UTC、本机在 +08:00，时刻串一长一短，哈希与字节数会两头漂 */
+    private var savedZone: java.util.TimeZone? = null
+
     @Before
     fun setUp() {
+        savedZone = FixedClockZone.install()
         root = Files.createTempDirectory("kb_migrator_bytes").toFile()
     }
 
@@ -85,6 +89,8 @@ class KnowledgeMigratorBytesBaselineTest {
         // 仓库构造时会在 appScope 上挂备份调度，不取消就是漏一个协程
         if (::appScope.isInitialized) appScope.cancel()
         root.deleteRecursively()
+        FixedClockZone.restore(savedZone)
+        savedZone = null
     }
 
     private val kbDir get() = File(root, "kb")
@@ -113,7 +119,7 @@ class KnowledgeMigratorBytesBaselineTest {
      * 「ISO-8601 带时区」是 `timestamp()`/kb.json 的那一把，「yyyy-MM-dd HH:mm」是 `topic.md` 那一把。
      */
     private fun scrubClock(text: String): String = text
-        .replace(Regex("""\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}"""), CLOCK)
+        .replace(Regex("""\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[+-]\d{2}:\d{2}|Z)"""), CLOCK)
         .replace(Regex("""\d{4}-\d{2}-\d{2} \d{2}:\d{2}"""), CLOCK)
 
     private fun sha256(bytes: ByteArray): String =
