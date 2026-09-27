@@ -2075,6 +2075,50 @@ M-P1 / M-P2 见上。
 
 坑表 **150–154**、交接单 **§0.59 / §0.60**。本地 **33 笔**未推（远端仍 `9d2757f`）。
 
+
+## 0.61 转 §6.1：把"39 颗异形"从一个大数字拆成逐颗判定（本机现量，未动任何 UI 码）
+
+被质问"巨石搬了好多为什么还 44%"之后先认一句：**那 18 条完成定义里只有一条跟文件大小有关**，
+它已经翻成 ✅（39% → 44%）；剩下的都在别的维度上，搬行数推不动。所以这一格起转做 §6.1。
+先量，不改码（改前先量的老规矩）：`odd_composables=39 / 23 files`（与上轮同一把尺，剥注释、认 `@Composable` 紧邻声明）。
+
+### 0.61.1 家族分布（每颗的机器可见特征：边框宽度、圆角 token、有没有 48dp 热区、背景怎么上色）
+
+| 家族 | 颗数 | 实测形状差异 | 对应 §6.1 那张表的哪一行 |
+| --- | --- | --- | --- |
+| 交互小胶囊 chip | **7**（RoleChip / TemplateChip / FilterChip / IntentChip / IntentExpiryChip / CategoryChipRow / ReasonChipGrid） | 边框宽度三种（`1.dp` 与 `AppDimens.BORDER_WIDTH_DP` 并存）、圆角 token 两种（`LoveBrainShape.sm` / `.md`）、选中态各自 `if (isSelected)` 现算颜色，**7 颗里 5 颗写了 48dp 热区，`IntentChip` / `IntentExpiryChip` 没有** | **清单里没有这一行** |
+| 非交互向量 pill | 2（VectorPillsRow / VectorPill） | `color.copy(alpha = 0.18f)` 自算底色，无 border | 清单里没有 |
+| Material `Card(` 内容/入口卡 | **9**（SchemeCard / SuggestStageCard / SuggestTipCard / InviteSuggestionCard / StageSuggestionCard / ProfileSuggestionCard / AssistantStatusCard / KbCard / OnboardingOptionCard） | 全部直接 `Card(`，5/9 另套 Surface，热区与点击边界各写各的 | 第 5 行 `LbActionCard` 只覆盖"快捷功能入口"；**内容卡没有对应行** |
+| 自画浮层 Dialog | **3**（ProviderEditDialog / IntentEditorDialog / AccessibilityDisclosureDialog） | `Dialog( + Card( 自己拼壳 | **第 10 行 `LbModalSheet/Dialog` 有主**，这 3 颗是它的第二个实现 |
+| 行 row | **7**（CaptureAppRow / CorrectionRecordRow / UsageStatsRow / MiniSwitchRow / RowActionButton / AiLoadingRow / ListRow） | 只有 4/7 声明了 `heightIn(min=…)`；`UsageStatsRow` 其实是统计格 | **第 6 行 `LbSettingRow` / 第 7 行 `LbMetricGrid` 都在清单里** |
+| 标题/分段 header | 3（ScreenHeader / PanelHeader / TipCategoryHeader） | `ScreenHeader` **已经只是 `LbTopBar` 的薄壳**（实现全在 designsystem）；`PanelHeader` 是"三段模式切换 + 拖拽 + 收起"，语义与标题条不同 | 第 2 行 `LbTopBar`；PanelHeader 属"表达了不同语义" |
+| 折叠 section | 2（MemoryRefsSection / OngoingSection） | 各自 `click + bg + Surface` 的展开卡 | 第 3 行 `LbSection`（明文"不允许每页另造标题样式"） |
+| 通知条 banner | 2（KbNoticeBanner / InputChangedBanner） | 一颗有 border 一颗没有 | 清单里没有 |
+| 其它容器 | 2（SchemeCardsRow / ProviderSection） | 列表/区块容器 | 清单里没有 |
+
+（8 个家族合计 39，与那把尺的数一致。）
+
+### 0.61.2 三种处置，以及只有他能定的那一种
+
+- **命中清单、可直接归并**（不需要新决定）：`ProviderEditDialog` → `LbDialog`（它已经支持 `body:` 槽，
+  而表单自带的 "添加/编辑供应商" 标题正好是 `LbDialog(title=…)`，字符串不新增、字面量预算不动）；
+  `IntentEditorDialog` → `LbModalSheet`（它在 overlay 窗口里，用 Material `AlertDialog` 会撞 BadToken，那正是 `LbModalSheet` 存在的理由）；
+  `UsageStatsRow` → `LbMetricGrid`；`MemoryRefsSection` / `OngoingSection` / `TipCategoryHeader` → `LbSection`；
+  `ScreenHeader` 是薄壳，内联掉即可让尺少数一颗（不改任何形状）。
+- **写明"不同语义、就地保留"**（§6.1 那句"除非设计说明明确…"）：`PanelHeader`（模式切换 + 拖拽）、
+  `VectorPill`（五维颜色编码，非交互）、`AiLoadingRow` / `ListRow`（渲染内部件）、`SchemeCard`（方案内容卡，
+  与"快捷功能入口"不是一件事）。
+- **需要他改清单才能做**：**chip 那 7 颗 + 内容卡 5–6 颗 + banner 2 颗在 §6.1 那 11 行里没有主人**。
+  要么给那张表加第 12/13 行（`LbChoiceChip` / 内容卡），要么规定它们并进某一行现有组件。
+  我不自加清单外的维度 ⇒ 这一类**一颗都不动**，等他一句话。
+
+### 0.61.3 顺手量到的一条无障碍缺陷（不是判定，是读数）
+
+7 颗交互 chip 里 **5 颗**写了 `heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)`，
+`IntentChip` / `IntentExpiryChip` 两颗没有（`SuggestPanel.kt` 全文只在 142 / 223 / 274 行出现 `heightIn`，
+都在这两颗之前，属别的组件）。而 §6.5 的下限是"无小于 48dp 热区"。
+⇒ 这条与"归并到哪"无关，先登记为现状（本轮未改任何 UI 码，也没顺手补下限——那属于改视觉行为，另拍）。
+
 ## 1. 起手必查（照抄，别凭记忆）
 
 
