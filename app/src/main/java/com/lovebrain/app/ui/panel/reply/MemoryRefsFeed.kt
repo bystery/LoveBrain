@@ -24,9 +24,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.LoveBrainShape
@@ -179,13 +184,26 @@ internal fun MemoryRefItem(
             // 字形 28dp 没问题，但点击挂在 28dp 的盒子上就是"点不到"（新守卫
             // `MemoryCorrectionFlowTest` 实量到 28x28dp）。
             // 形状与结果级那颗 utility trigger 一致：外层 48dp 承担点击，内层 28dp 只管字形。
+            //
+            // ⚠ 这一颗**不走 `LbTextAction` 的图标档**，两条都是事实不是偏好：
+            // ① 它画的是文字字形 `⋯`，不是 `Icon`（图标档那一支交的是字形资源）；
+            // ② 它是**开菜单**那颗，要报的角色是 `DropdownList`，而图标档按契约只报
+            //    `Role.Button`（给它开一个 `role:` 旋钮就等于允许每页自选角色）。
+            // 但它原来缺的正是同一格里结果级那颗已经有的两样：`role=无`、且没有名字
+            // （读屏只念得出那个字形「⋯」）。现在与兄弟那颗同名同角色，
+            // 名字走 `R.string.panel_result_menu`，中英各一份。
             val (menuInteraction, menuScale) = rememberPressScale(0.92f, "refMenuScale")
+            val menuDescription = stringResource(R.string.panel_result_menu)
             Box(
                 modifier = Modifier
                     .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                    .clickable(interactionSource = menuInteraction, indication = null) {
-                        menuOpen = !menuOpen
-                    },
+                    .semantics { contentDescription = menuDescription }
+                    .clickable(
+                        interactionSource = menuInteraction,
+                        indication = null,
+                        role = Role.DropdownList,
+                        onClick = { menuOpen = !menuOpen }
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Box(

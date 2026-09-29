@@ -344,22 +344,20 @@ LaunchedEffect(messages.size) {
 
                 if (!isDragged) {
                     // × = 直接删除；只保留删除按钮，全 App 禁 Toast
-                    val (deleteInteraction, deleteScale) = rememberPressScale(0.96f, "deleteScale")
-                    Box(
-                        modifier = Modifier
-                            .clip(LoveBrainShape.sm)
-                            .graphicsLayer { scaleX = deleteScale; scaleY = deleteScale }
-                            .clickable(interactionSource = deleteInteraction, indication = null, onClick = { deletingIds[msg.id] = true })
-                            .padding(horizontal = Spacing.md, vertical = Spacing.sm),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_close),
-                            contentDescription = "删除消息",
-                            tint = if (isEditing) Error else TextHint,
-                            modifier = Modifier.size(Spacing.xl)
-                        )
-                    }
+                    //
+                    // ⚠ 旧读数留档（形状现在归 `LbTextAction` 的图标档，这一处只留语气与 tag 之外的事）：
+                    // `clickable` 挂在"字形 16dp + 左右各 12、上下各 8 的内边距"那一颗盒上，
+                    // 本机语义树量到 **40x32dp**——两轴都不到全站那颗下限，而且 `role=无`，
+                    // 名字还写死成内联中文（英文环境下资源翻好了、读屏仍念中文）。
+                    // 字形从 16dp 进到那一档的 20dp，其余（点击落点、什么时候出现、
+                    // 由 `isEditing` 决定红还是灰）一个字没动。
+                    LbTextAction(
+                        iconRes = R.drawable.ic_close,
+                        description = stringResource(R.string.a11y_delete_message),
+                        tone = if (isEditing) LbTextActionTone.Destructive else LbTextActionTone.Muted,
+                        glyph = LbTextActionGlyph.Inline,
+                        onClick = { deletingIds[msg.id] = true }
+                    )
                 }
             }
             }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -22,15 +21,12 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,11 +34,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.core.designsystem.rememberPressScale
+import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.LbButtonState
+import com.lovebrain.app.core.designsystem.LbTextAction
+import com.lovebrain.app.core.designsystem.LbTextActionGlyph
+import com.lovebrain.app.core.designsystem.LbTextActionTone
 import com.lovebrain.app.core.designsystem.LbPrimaryButton
 import com.lovebrain.app.core.designsystem.LbStatusBadge
 import com.lovebrain.app.core.designsystem.LbRowState
@@ -114,30 +113,23 @@ object LbHomeTags {
  *
  * 它从 `core/designsystem/LbTopBar` 里搬回来：尾部动作是**页面**的决定
  * （首页是 About，二级页是返回），而"关于"这个锚点也只对这一页有意义。
+ *
+ * 形状本身不是页面的决定，所以它现在走 [LbTextAction] 的图标档。旧的那一份
+ * 是 `Box(48).clip(full).clickable {}` 里塞一枚 20dp 箭头，本机语义树读到的形状是
+ * **热区够（48x48）但 `role=无`**，名字写死成内联中文 `"关于"`——
+ * 英文环境下 `values-en` 早就翻成 "About" 了，读屏仍念中文。
+ * 这两样现在由那一颗组件统一保证，这一处只留页级才有的 testTag。
  */
 @Composable
 fun HomeAboutEntry(onNavigateAbout: () -> Unit) {
-    val (aboutInteraction, aboutScale) = rememberPressScale(0.94f, "aboutBtn")
-    Box(
-        modifier = Modifier
-            .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .graphicsLayer { scaleX = aboutScale; scaleY = aboutScale }
-            .clip(LoveBrainShape.full)
-            .clickable(
-                interactionSource = aboutInteraction,
-                indication = null,
-                onClick = onNavigateAbout
-            )
-            .testTag(LbHomeTags.ABOUT),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = "关于",
-            tint = TextHint,
-            modifier = Modifier.size(20.dp)
-        )
-    }
+    LbTextAction(
+        icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+        description = stringResource(R.string.a11y_home_about),
+        tone = LbTextActionTone.Muted,            // 墨色仍是 TextHint，一档没换
+        glyph = LbTextActionGlyph.Inline,         // 字形仍是 20dp，外观不变
+        onClick = onNavigateAbout,
+        modifier = Modifier.testTag(LbHomeTags.ABOUT)
+    )
 }
 
 /**
@@ -191,29 +183,23 @@ internal fun AssistantStatusCard(
         Box(modifier = Modifier.fillMaxWidth()) {
             // 右上次级隐藏图标（不另起一行）
             if (onHideClick != null) {
-                val (hideInteraction, hideScale) = rememberPressScale(0.92f, "hideBtn")
-                Box(
+                // 形状走图标档；旧那一份是 `Box(48).clickable {}`（`role=无`、名字是内联中文）。
+                // ⚠ 归并带走两处外观，都如实记在这儿：
+                // ① 墨色从 `PrimaryDark` 落进词表里的 [LbTextActionTone.Accent]（`Primary`）——
+                //    图标档没有 `tint` 旋钮，而为一个页面加一档颜色就是"不许只在一页长得不一样"那条拦的事；
+                // ② 字形从 18dp 进到图标档那一档的 20dp（与首页那颗 About 箭头同数）。
+                // 热区（48x48）与点击行为一个字没动，动的只有这一层色与这两个 dp。
+                LbTextAction(
+                    icon = Icons.Filled.Close,
+                    description = stringResource(R.string.a11y_home_hide_bubble),
+                    tone = LbTextActionTone.Accent,
+                    glyph = LbTextActionGlyph.Inline,
+                    onClick = onHideClick,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(Spacing.md)
-                        .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                        .graphicsLayer { scaleX = hideScale; scaleY = hideScale }
-                        .clip(LoveBrainShape.full)
-                        .clickable(
-                            interactionSource = hideInteraction,
-                            indication = null,
-                            onClick = onHideClick
-                        )
-                        .testTag(LbHomeTags.HIDE_BUTTON),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Close,
-                        contentDescription = "暂时隐藏浮窗",
-                        tint = PrimaryDark,
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
+                        .testTag(LbHomeTags.HIDE_BUTTON)
+                )
             }
 
             Column(

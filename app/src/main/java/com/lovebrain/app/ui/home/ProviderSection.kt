@@ -71,6 +71,9 @@ import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.Error
 import com.lovebrain.app.core.designsystem.LbTopBar
+import com.lovebrain.app.core.designsystem.LbTextAction
+import com.lovebrain.app.core.designsystem.LbTextActionGlyph
+import com.lovebrain.app.core.designsystem.LbTextActionTone
 import com.lovebrain.app.core.designsystem.LbTopBarLevel
 import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Neutral300
@@ -444,10 +447,19 @@ internal fun ProviderFormBody(
                         placeholder = "模型名称",
                         modifier = Modifier.weight(1f)
                     )
-                    IconAction(Icons.Filled.Check, "确认") { commitModelInput(i) }
-                    IconAction(Icons.Filled.Close, "取消", tint = TextHint) {
-                        modelInput = ""; editIndex = -1
-                    }
+                    LbTextAction(
+                        icon = Icons.Filled.Check,
+                        description = stringResource(R.string.a11y_action_confirm),
+                        onClick = { commitModelInput(i) }
+                    )
+                    LbTextAction(
+                        icon = Icons.Filled.Close,
+                        description = stringResource(R.string.a11y_action_cancel),
+                        tone = LbTextActionTone.Muted,
+                        onClick = {
+                            modelInput = ""; editIndex = -1
+                        }
+                    )
                 }
             } else {
                 Row(
@@ -466,29 +478,48 @@ internal fun ProviderFormBody(
                         maxLines = 1,
                         modifier = Modifier.weight(1f)
                     )
-                    IconAction(
-                        Icons.Filled.Star,
-                        "设为当前",
-                        tint = if (m == currentModel) Primary else TextHint
-                    ) {
-                        currentModel = m
-                        if (ticket != null) viewModel.setTicketModel(ticket.id, m)
-                    }
-                    IconAction(ImageVector.vectorResource(R.drawable.ic_unplug), "测试连接", tint = Primary) {
-                        testingModel = m
-                        testResult = null
-                        scope.launch {
-                            val t = ticket ?: ProviderTicket(name = name.ifBlank { "未命名" }, baseUrl = baseUrl, model = m, models = models)
-                            val result = viewModel.testConnection(t, m, key.trim())
-                            testingModel = null
-                            testResult = Triple(m, result.success, result.message)
+                    LbTextAction(
+                        icon = Icons.Filled.Star,
+                        description = stringResource(R.string.a11y_set_current_model),
+                        tone = if (m == currentModel) {
+                            LbTextActionTone.Accent
+                        } else {
+                            LbTextActionTone.Muted
+                        },
+                        onClick = {
+                            currentModel = m
+                            if (ticket != null) viewModel.setTicketModel(ticket.id, m)
                         }
-                    }
-                    IconAction(Icons.Filled.Edit, "编辑", tint = TextSecondary) {
-                        modelInput = m
-                        editIndex = i
-                    }
-                    IconAction(Icons.Filled.Delete, "删除", tint = Error) { deleteModel(i) }
+                    )
+                    LbTextAction(
+                        icon = ImageVector.vectorResource(R.drawable.ic_unplug),
+                        description = stringResource(R.string.a11y_test_connection),
+                        tone = LbTextActionTone.Accent,
+                        onClick = {
+                            testingModel = m
+                            testResult = null
+                            scope.launch {
+                                val t = ticket ?: ProviderTicket(name = name.ifBlank { "未命名" }, baseUrl = baseUrl, model = m, models = models)
+                                val result = viewModel.testConnection(t, m, key.trim())
+                                testingModel = null
+                                testResult = Triple(m, result.success, result.message)
+                            }
+                        }
+                    )
+                    LbTextAction(
+                        icon = Icons.Filled.Edit,
+                        description = stringResource(R.string.a11y_action_edit),
+                        onClick = {
+                            modelInput = m
+                            editIndex = i
+                        }
+                    )
+                    LbTextAction(
+                        icon = Icons.Filled.Delete,
+                        description = stringResource(R.string.a11y_action_delete),
+                        tone = LbTextActionTone.Destructive,
+                        onClick = { deleteModel(i) }
+                    )
                 }
             }
             if (testingModel == m) {
@@ -507,10 +538,19 @@ internal fun ProviderFormBody(
                     placeholder = "模型名称",
                     modifier = Modifier.weight(1f)
                 )
-                IconAction(Icons.Filled.Check, "确认") { commitModelInput(-1) }
-                IconAction(Icons.Filled.Close, "取消", tint = TextHint) {
-                    modelInput = ""; addingModel = false
-                }
+                LbTextAction(
+                    icon = Icons.Filled.Check,
+                    description = stringResource(R.string.a11y_action_confirm),
+                    onClick = { commitModelInput(-1) }
+                )
+                LbTextAction(
+                    icon = Icons.Filled.Close,
+                    description = stringResource(R.string.a11y_action_cancel),
+                    tone = LbTextActionTone.Muted,
+                    onClick = {
+                        modelInput = ""; addingModel = false
+                    }
+                )
             }
         } else {
             // 实量 **79x22dp、role=无**：这一行只有 22dp 高，读屏也只念得出字、念不出按钮。
@@ -660,31 +700,3 @@ internal fun MiniSwitchRow(
     }
 }
 
-/**
- * 弹窗内行尾图标操作钮——48dp 触摸区满足无障碍下限。
- *
- * ⚠ 这一格原来只有"够大"这一半：语义树实量 48x48dp **但 `role=无`**，
- * 名字还是靠里面那颗 `Icon` 的 `contentDescription` 被合并上来才念得出的。
- * 同一族形状（外层可点的 Box 不带角色、名字只写在内层图标上）在知识库那颗
- * 18dp 删除图标上量到的是 **`role=Image`**（账本 §45.2）——"合并出来的角色"
- * 根本不是读屏要的那个。所以角色与名字都改挂在**带点击的这一颗自己**上，
- * 内层图标降级成装饰（`contentDescription = null`，否则合并成「X+X」念两遍）。
- */
-@Composable
-private fun IconAction(
-    icon: ImageVector,
-    contentDesc: String,
-    tint: Color = TextSecondary,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .clip(LoveBrainShape.full)
-            .clickable(role = Role.Button, onClick = onClick)
-            .semantics { contentDescription = contentDesc },
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(imageVector = icon, contentDescription = null, tint = tint, modifier = Modifier.size(20.dp))
-    }
-}

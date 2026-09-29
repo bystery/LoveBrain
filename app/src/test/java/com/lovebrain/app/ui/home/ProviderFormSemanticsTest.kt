@@ -38,7 +38,8 @@ import org.robolectric.annotation.GraphicsMode
  *
  * ⚠ 本文件的锚点分两类：**「添加模型」「取消」「显示」…仍是内联中文字面量**
  * （这些文案还没还债，换语言也不变，拿它们当锚点是稳的）；
- * 而「保存 / 保存修改」已经走了资源，判据必须 `getString` 取（见下面 `saveLabel`）。
+ * 而「保存 / 保存修改」与行尾那四颗图标动作的名字已经走了资源，判据必须 `getString` 取
+ * （见下面 `saveLabel` 与 `setModelLabel` 那一组）。
  * 前者是 §6.1 字面量预算记着的债，还一处就要回来把这里的锚点改成资源驱动。
  */
 @RunWith(RobolectricTestRunner::class)
@@ -79,6 +80,15 @@ class ProviderFormSemanticsTest {
     private val ctx get() = ApplicationProvider.getApplicationContext<Context>()
     private val saveLabel: String get() = ctx.getString(R.string.provider_save)
     private val saveChangesLabel: String get() = ctx.getString(R.string.provider_save_changes)
+
+    /**
+     * 表单行尾那四颗图标动作的读屏名字也走资源了（图标档接管那一格）——于是这里的锚点
+     * 同样得 `getString` 取，判据一个字没动：还是"滚到底必须量到这四颗、两轴都过下限"。
+     */
+    private val setModelLabel: String get() = ctx.getString(R.string.a11y_set_current_model)
+    private val testConnectionLabel: String get() = ctx.getString(R.string.a11y_test_connection)
+    private val editLabel: String get() = ctx.getString(R.string.a11y_action_edit)
+    private val deleteLabel: String get() = ctx.getString(R.string.a11y_action_delete)
 
     private val threeModels = ProviderTicket(
         id = "t1",
@@ -127,10 +137,10 @@ class ProviderFormSemanticsTest {
         return scan.toBottom("ProviderFormBody")
     }
 
-    /** 这一屏该说得出名字的东西，全部来自 `ProviderFormBody` 里那些内联文案 */
+    /** 这一屏该说得出名字的东西，全部来自 `ProviderFormBody`：内联的那几处 + 已经走资源的那几处 */
     private val expectedControls = listOf(
         "名称", "https://api.example.com", "留空保留原 Key", "显示", "Thinking mode",
-        "设为当前", "测试连接", "编辑", "删除", "＋ 添加模型", "取消", saveChangesLabel
+        setModelLabel, testConnectionLabel, editLabel, deleteLabel, "＋ 添加模型", "取消", saveChangesLabel
     )
 
     @Test

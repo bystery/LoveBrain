@@ -1,26 +1,19 @@
 package com.lovebrain.app.core.designsystem
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -63,13 +56,13 @@ enum class LbTopBarLevel {
 
 private object LbTopBarDimens {
     /**
-     * 页头行高——同时也是返回那颗的热区边长（§6.5 :531 的 48dp 下限）。
+     * 页头行高（§6.5 :531 的 48dp 下限）。
      * 写成下限的别名：这一档**是**因为下限才从 44 抬到 48 的，不是版式自选。
+     *
+     * 返回那颗的热区边长以前也读这一个数；现在它由 [LbTextAction] 的图标档给，
+     * 同一个数、同一个所有者，这一处只管页头那一行本身。
      */
     const val ROW_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP
-
-    /** 返回箭头字形；热区是整颗 48dp 的盒，不是这个字形 */
-    const val BACK_ICON_DP = 22
 
     /** 返回箭头与标题之间 */
     const val TITLE_GAP_DP = 2
@@ -129,34 +122,26 @@ fun LbTopBar(
 }
 
 /**
- * 那颗返回钮。
+ * 那颗返回钮——**这一格之前它是设计系统里私藏的第二颗图标动作**。
  *
- * 热区是整颗 48dp 的盒（`clickable` 挂在盒上、`size` 排在它之前），
- * 字形只有 22dp——垫在外层而点击仍挂在字上等于没改，这是本仓库那台仪器反复量到的那条。
- * 名字走资源，不走硬编码中文，也不靠箭头字形当标签。
+ * 原来这里画的是 `Box(size = 48).clickable(role = Button) { Icon(22dp) }`，热区、角色、
+ * 名字三件事都由这一份自己保证，而同一族形状在卡片里、在供应商表单里又各画了一遍，
+ * 每一遍都要重新想起来垫一次宽度。现在**形状归 [LbTextAction] 的图标档**，
+ * 这一处只留页头才有的两件事：字形尺寸那一档（[LbTextActionGlyph.Header]）
+ * 与标题左右那两个间距。
+ *
+ * 名字仍走资源、不走硬编码中文，也不靠箭头字形当标签——那一条是这一格最早的债，
+ * 换了主人它不许跟着换（判据在 `DesignSystemRolesTest` 与 `PageHeaderConsistencyTest`）。
  */
 @Composable
 private fun BackControl(onBack: () -> Unit) {
-    val backLabel = stringResource(R.string.common_back)
-    val interaction = remember { MutableInteractionSource() }
     Spacer(Modifier.width(LbTopBarDimens.TITLE_GAP_DP.dp))
-    Box(
-        modifier = Modifier
-            .size(LbTopBarDimens.ROW_HEIGHT_DP.dp)
-            .clickable(
-                interactionSource = interaction,
-                indication = null,
-                role = Role.Button,   // §6.5 :532；见 `DesignSystemRolesTest`
-                onClick = onBack
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-            contentDescription = backLabel,
-            tint = TextSecondary,
-            modifier = Modifier.size(LbTopBarDimens.BACK_ICON_DP.dp)
-        )
-    }
+    LbTextAction(
+        icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+        description = stringResource(R.string.common_back),
+        onClick = onBack,
+        tone = LbTextActionTone.RowSecondary,
+        glyph = LbTextActionGlyph.Header
+    )
     Spacer(Modifier.width(LbTopBarDimens.TITLE_GAP_DP.dp))
 }

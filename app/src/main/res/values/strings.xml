@@ -160,4 +160,20 @@
     <string name="feedback_format_markdown">Markdown</string>
     <string name="feedback_format_json">JSON</string>
     <string name="feedback_format_selected">✓ %1$s</string>
+
+    <!-- 图标型动作的读屏名字（LbTextAction 图标档）：屏幕上只有字形，这一句是读屏唯一听得见的
+         "这颗在干什么"。之前它们散在 Kotlin 里写成内联中文，英文环境下资源翻好了、读屏仍念中文。
+         ⚠ 「赞」「踩」两条刻意保持与被替换的那两个内联字面量**逐字相同**：
+         `ResultAreaTouchTargetsTest` 钉的就是树上那两个字，判据不能顺手改宽。 -->
+    <string name="a11y_home_about">关于</string>
+    <string name="a11y_home_hide_bubble">暂时隐藏浮窗</string>
+    <string name="a11y_delete_message">删除消息</string>
+    <string name="a11y_scheme_like">赞</string>
+    <string name="a11y_scheme_dislike">踩</string>
+    <string name="a11y_action_confirm">确认</string>
+    <string name="a11y_action_cancel">取消</string>
+    <string name="a11y_action_edit">编辑</string>
+    <string name="a11y_action_delete">删除</string>
+    <string name="a11y_set_current_model">设为当前</string>
+    <string name="a11y_test_connection">测试连接</string>
 </resources>

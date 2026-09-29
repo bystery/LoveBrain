@@ -154,7 +154,6 @@ class OddShapeOwnershipTest {
         "ProviderSection.kt#MiniSwitchRow",
         "ProviderSection.kt#ProviderSection",
         "ResultArea.kt#SchemeCardsRow",
-        "SchemeCard.kt#CardActionIcon",
         "SchemeCard.kt#SchemeCard",
         "SuggestPanel.kt#IntentExpiryChip",
         "SuggestPanel.kt#InviteSuggestionCard",

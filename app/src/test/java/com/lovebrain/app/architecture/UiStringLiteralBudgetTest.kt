@@ -272,7 +272,11 @@ class UiStringLiteralBudgetTest {
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是
         // "Collapse panel"）。接上资源是真的还了一处，不是换桶。
         // 10 → **9**：同一笔——`contentDescription = "关闭通知"` 接上 `a11y_close_notice`。
-        Kind.DESC to 9,
+        // 9 → **6**（图标型动作归并进 `LbTextAction` 的图标档）：三处内联中文的
+        //   `contentDescription` 接上 `res/values` + `res/values-en` 两份资源
+        //   （新增 11 条 `a11y_*` key，中英逐条对齐：134 / 134）。这是**真还**：
+        //   英文环境里读屏以前念的是中文，而屏幕上完全看不出来。
+        Kind.DESC to 6,
         Kind.STATE to 0,
         // 78 → **77**：`KbEditScreen` 那四条保存/冲突提示搬进资源。
         // ⚠ 这一栏上一格还涨过一次（78→81）：`LbPrimaryButton` 的锚点按括号配对取实参，
@@ -303,7 +307,10 @@ class UiStringLiteralBudgetTest {
         //     **没有一个是新写的文案**，是搬家 + 补账。
         // 87 → **88**：上面那一句落进来的那一栏（TEXT −1 / COMPONENT +1，四栏合计不动）。
         //   新增用户可见字面量 **0 条**：这一拍生产改动只有 `ProviderSection` 的一行 `heightIn(min = …)` 与两处所有者换人。
-        Kind.COMPONENT to 88
+        // 88 → **89**：图标档那颗转进组件实参的一条标签（TEXT 少一处、这一栏多一处，合计没动
+        //   ⇒ 换桶不是还债）。⚠ 两把尺同读数：本文件实扫 166/6/0/89，
+        //   独立 Python 尺 `_temp/bucket_clone.py` 同一棵树也是 166/6/0/89。
+        Kind.COMPONENT to 89
     )
 
     /**

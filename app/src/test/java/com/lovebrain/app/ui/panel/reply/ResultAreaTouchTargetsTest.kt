@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.R
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
@@ -62,6 +63,17 @@ class ResultAreaTouchTargetsTest {
             .resources.displayMetrics.density
 
     private val probe by lazy { SemanticsProbe(density) }
+
+    /**
+     * 卡片右下角那三颗的读屏名字**走资源**（图标档那一颗不给内联字面量留位置），
+     * 所以这里的锚点也得从资源取——这台机器的环境解析出来是英文，
+     * 写死中文那四个字只会命中 0 颗（同 `ProviderFormSemanticsTest` 里 `saveChangesLabel`
+     * 那条教训）。判据没变：还是"这屏说得出名字、报得出按钮角色、两轴够下限"。
+     */
+    private val ctx get() = ApplicationProvider.getApplicationContext<Context>()
+    private val copyLabel: String get() = ctx.getString(R.string.panel_copy)
+    private val likeLabel: String get() = ctx.getString(R.string.a11y_scheme_like)
+    private val dislikeLabel: String get() = ctx.getString(R.string.a11y_scheme_dislike)
 
     /** 四风格 + 四方向各给两条真实长度的文案；方向里的 null = "本轮不适合"（生产就有这一态） */
     private fun fixture(): GenerateResult.Success = GenerateResult.Success(
@@ -192,7 +204,7 @@ class ResultAreaTouchTargetsTest {
                 "这一格就只是在首屏转圈",
             seen.containsAll(
                 listOf(
-                    "复制|Button", "赞|Button", "踩|Button",
+                    "$copyLabel|Button", "$likeLabel|Button", "$dislikeLabel|Button",
                     "风格|Tab", "方向|Tab"
                 )
             )
@@ -220,8 +232,8 @@ class ResultAreaTouchTargetsTest {
             feedbacks = mapOf(firstScheme.identity.key to SchemeFeedback.LIKED)
         )
         val targets = probe.actionableTargets(rule, "ResultArea 表态图标")
-        val liked = targets.filter { it.label == "赞" }
-        val disliked = targets.filter { it.label == "踩" }
+        val liked = targets.filter { it.label == likeLabel }
+        val disliked = targets.filter { it.label == dislikeLabel }
         assertTrue("一屏里至少该有两颗「赞」（${liked.size} 颗）——少了就是卡没渲染出来", liked.size >= 2)
         assertTrue(
             "表过态那颗的「赞」必须把 selected 播报出来，实到 " + liked.joinToString { it.describe() },

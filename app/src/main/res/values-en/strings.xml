@@ -138,4 +138,19 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="feedback_format_markdown">Markdown</string>
     <string name="feedback_format_json">JSON</string>
     <string name="feedback_format_selected">✓ %1$s</string>
+
+    <!-- 与 values/strings.xml 同一族：图标型动作的读屏名字。英文环境里 TalkBack 念的就是这一栏，
+         所以每一条都必须真的翻——留中文等于"没翻"，而屏幕上根本看不出来。
+         「Like / Dislike」对应中文那两条的短标签（屏幕上只有拇指字形）。 -->
+    <string name="a11y_home_about">About</string>
+    <string name="a11y_home_hide_bubble">Hide the overlay for now</string>
+    <string name="a11y_delete_message">Delete message</string>
+    <string name="a11y_scheme_like">Like</string>
+    <string name="a11y_scheme_dislike">Dislike</string>
+    <string name="a11y_action_confirm">Confirm</string>
+    <string name="a11y_action_cancel">Cancel</string>
+    <string name="a11y_action_edit">Edit</string>
+    <string name="a11y_action_delete">Delete</string>
+    <string name="a11y_set_current_model">Set as current model</string>
+    <string name="a11y_test_connection">Test connection</string>
 </resources>

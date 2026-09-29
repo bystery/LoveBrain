@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -31,7 +29,6 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -67,7 +64,6 @@ object SchemeCardDimens {
     const val TAG_HPAD_DP = 6         // 标签水平内边距
     const val TAG_VPAD_DP = 3         // 标签垂直内边距
     const val TAG_TO_BODY_GAP_DP = 6  // 标签到正文间距
-    const val ACTION_ICON_SIZE_DP = 13 // 操作图标视觉尺寸
 }
 
 /** 方案卡正文排版常量 */
@@ -674,29 +670,54 @@ fun SchemeCard(
                     Spacer(Modifier.height(Spacing.sm))
 
                     // 操作行：右下角（空回复不显示操作按钮）
+                    //
+                    // ⚠ 旧读数留档（这三颗原来的形状现在归 `LbTextAction` 的图标档）：
+                    // 热区本机语义树实量 **20x20dp**（那句注释原先写"外扩至 28dp（触控下限友好）"，
+                    // 两头都是假的），而且**既没有角色也没有选中态**。无障碍那条要的是
+                    // "可交互控件说得清自己是什么、现在是什么状态"，而「赞/踩」被点过之后
+                    // 只有 `tint` 变了色——读屏用户听完那句"复制/赞/踩"之后，没有任何一处
+                    // 能知道这条方案已经表过态。现在两件事都由图标档一次给齐（热区见方 +
+                    // `Role.Button` + `selected`），字形仍是 13dp ⇒ 外观没动，
+                    // 动的只是"要点多准才算点到"。
+                    //
+                    // 为什么这一格当初不能只 `size(48)`：`requiredSize` 会把三颗硬塞成 144dp
+                    // 而**溢出**卡片，卡外那层 `clip(...)` 会把第一颗裁掉一截——热区看着够大，
+                    // 边上一指按不到，那是假修。真要 48 就得给卡片 48 的空间，所以那一格
+                    // 同时把 `CARD_WIDTH_DP` 从 158 抬到 164（放得下 3×48 + 左右各 8 内边距）。
                     if (!isEmpty) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.End,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            CardActionIcon(
-                                icon = R.drawable.ic_copy,
-                                desc = "复制",
-                                tint = TextSecondary,
+                            LbTextAction(
+                                iconRes = R.drawable.ic_copy,
+                                description = stringResource(R.string.panel_copy),
+                                tone = LbTextActionTone.RowSecondary,
+                                glyph = LbTextActionGlyph.Compact,
                                 onClick = { onCopy(scheme) }
                             )
-                            CardActionIcon(
-                                icon = R.drawable.ic_thumb_up,
-                                desc = "赞",
-                                tint = if (feedback == SchemeFeedback.LIKED) Primary else TextHint,
+                            LbTextAction(
+                                iconRes = R.drawable.ic_thumb_up,
+                                description = stringResource(R.string.a11y_scheme_like),
+                                tone = if (feedback == SchemeFeedback.LIKED) {
+                                    LbTextActionTone.Accent
+                                } else {
+                                    LbTextActionTone.Muted
+                                },
+                                glyph = LbTextActionGlyph.Compact,
                                 onClick = { onFeedback(scheme, SchemeFeedback.LIKED) },
                                 selected = feedback == SchemeFeedback.LIKED
                             )
-                            CardActionIcon(
-                                icon = R.drawable.ic_thumb_down,
-                                desc = "踩",
-                                tint = if (feedback == SchemeFeedback.DISLIKED) Error else TextHint,
+                            LbTextAction(
+                                iconRes = R.drawable.ic_thumb_down,
+                                description = stringResource(R.string.a11y_scheme_dislike),
+                                tone = if (feedback == SchemeFeedback.DISLIKED) {
+                                    LbTextActionTone.Destructive
+                                } else {
+                                    LbTextActionTone.Muted
+                                },
+                                glyph = LbTextActionGlyph.Compact,
                                 onClick = { onFeedback(scheme, SchemeFeedback.DISLIKED) },
                                 selected = feedback == SchemeFeedback.DISLIKED
                             )
@@ -705,62 +726,6 @@ fun SchemeCard(
                 }
             }
         }
-    }
-}
-
-/**
- * 卡片操作小图标：视觉 13dp 字形放在**下限那么大的热区**里。
- *
- * 这句注释原来写的是"点击热区外扩至 28dp（触控下限友好）"——**两头都是假的**：
- * 热区其实只有 `Spacing.xxl` = 20dp（本机语义树实量 20x20dp），而 §6.5 :531 的下限是 48。
- * 一颗卡片三颗这样的图标，四张卡就是 12 个不达标节点，而它们全在这一屏第一次
- * 被挂进 JVM 仪器时一次性现形（`ResultAreaTouchTargetsTest`）。
- * 字形尺寸 `ACTION_ICON_SIZE_DP` 没动 ⇒ 外观不变，变的是要点多准才算点到。
- *
- * 同一格还量到第二条：这三颗**既没有角色也没有选中态**。§6.5 :532 要的是
- * "可交互控件在语义树里说得清自己是什么、现在是什么状态"，而「赞/踩」被点过之后
- * 只有 `tint` 变了色——读屏用户听完那句"复制/赞/踩"之后，**没有任何一处能知道
- * 这条方案已经表过态**。所以这里补 `Role.Button`，并让两颗表态图标把
- * `selected` 挂上（只加语义、不改点击行为：现在重复点「赞」仍是发一次 LIKED，
- * 没有"取消赞"这个动作，那是产品口径，不在这一格偷偷定）。
- */
-@Composable
-internal fun CardActionIcon(
-    icon: Int,
-    desc: String,
-    tint: Color,
-    onClick: () -> Unit,
-    selected: Boolean? = null
-) {
-    val (iconInteraction, iconScale) = rememberPressScale(0.92f, "cardActionIconScale")
-    Box(
-        modifier = Modifier
-            // 用 `size` 不用 `requiredSize`：后者会把三颗硬塞成 144dp 而**溢出**卡片，
-            // 卡片外面那层 `clip(...)` 会把第一颗裁掉一截——热区看着够大，边上一指按不到，
-            // 那是假修。真要 48 就得给卡片 48 的空间，所以这一格同时把 `CARD_WIDTH_DP`
-            // 从 158 抬到 164（放得下 3×48 + 左右各 8 内边距）。
-            .size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .graphicsLayer { scaleX = iconScale; scaleY = iconScale }
-            .clip(LoveBrainShape.sm)
-            .clickable(
-                interactionSource = iconInteraction,
-                indication = null,
-                role = Role.Button,
-                onClick = onClick
-            )
-            .then(
-                if (selected == null) Modifier
-                else Modifier.semantics { this.selected = selected }
-            )
-            .padding(Spacing.sm),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = desc,
-            tint = tint,
-            modifier = Modifier.size(SchemeCardDimens.ACTION_ICON_SIZE_DP.dp)
-        )
     }
 }
 
