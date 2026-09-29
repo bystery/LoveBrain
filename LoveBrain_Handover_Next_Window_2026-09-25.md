@@ -4061,3 +4061,41 @@ Provider 名保存链路只有 `SetupViewModel.kt:216` 的 `isBlank()`，**没�
 `LoveBrainPanelScreen:831`），这三条渲染路径**一个都没有** ⇒ M3 默认 `TextClip`：
 长名被**静默切掉、连省略号都没有**，且全 App 只有"删除确认标题"与"表单输入框"两处还能看到全名，
 都不是浏览面。面板头部根本不画 Provider 名（开工包把它列为第三个落点，是不成立的，代理已上报）。
+
+## 0.66 用户书面改需求：CI 只做"构建 + 测试"，签名与覆盖安装改由本地手动跑（`9ec728e` 之后）
+
+**原话（2026-09-29）**："CI 不做 release 签名发布，只做构建和测试；覆盖安装验证不作为 CI 必过项。
+release 签名和覆盖安装验证由我本地手动执行。"
+
+**这一条改的是什么、不是什么**（这条容易被误读成"把门拆了"，所以逐句写清）：
+- **移出必过项**：`upgrade-test` 加了 `if: github.event_name == 'workflow_dispatch'` ⇒ push / PR 不再跑它；
+  同时给 workflow 加了 `workflow_dispatch` 触发入口，手动想跑随时能跑。
+- **不是** `continue-on-error`、**不是**"secret 缺失算通过"、**不是**删步骤：
+  那道 `Require the release signing secrets`（`prepare_release_keystore.sh --baseline scripts/signing-baseline.txt`）
+  **一个字没改**，手动触发时四个 secret 缺任何一个照样响亮失败（exit 3）。
+- **CI 现在的必过项只剩两件**：`verify`（构建 + 单测 + lint + 各证据门 + 截图基线比对）与 `ui-test`（设备侧 45 格）。
+  分支保护实测**未开启**（`gh api …/branches/main/protection` 返回 Branch not protected），
+  所以"必过项"这件事在这个仓库里是**约定 + workflow 结果**，不是 GitHub 强制——这条也记在这儿，免得下次误判成"被 required check 挡住"。
+- **指导书里那两条完成定义的判据跟着改口径**（不是我自签 ✅）：
+  "v1.3.1 覆盖安装" 由 **CI 未验证** 改为 **用户本地手动执行、产物由他交**；
+  我这边仍把它列在"未完成/等外部证据"那一档，**直到他把那一跑的结果交回来**才谈得上闭。
+
+**本地那一跑的命令**（脚本本来就齐，这是把 CI 里那几步原样搬到手边）：
+```bash
+cd /d/LoveBrain
+# ① 用真钥Materialise keystore.properties（四个环境变量按你本地的值给）
+KEYSTORE_BASE64=… KEYSTORE_PASSWORD=… KEY_ALIAS=… KEY_PASSWORD=…   bash scripts/prepare_release_keystore.sh --baseline scripts/signing-baseline.txt
+# ② 出签名 + R8 的候选包，并验它真是签过名的
+./gradlew :app:assembleRelease
+bash scripts/resolve_release_apk.sh --require-signed --path-file fixtures/candidate-apk-path.txt
+# ③ 取上一版公开发布的 v1.3.1 APK 当"老包"
+GH_TOKEN=… bash scripts/download_release_apk.sh v1.3.1 fixtures   --repo mysteryclown/LoveBrain --path-file fixtures/old-apk-path.txt
+# ④ 覆盖安装那一跑：装老包 → 写真数据 → -r 装候选 → 断言旧数据读得回 / 迁移生效 / 界面起得来 / logcat 无致命
+bash scripts/run_upgrade_test.sh   --old-apk "$(cat fixtures/old-apk-path.txt)"   --candidate-apk "$(cat fixtures/candidate-apk-path.txt)" --out-dir fixtures
+```
+⚠ **两个会当场红的前提，不是脚本挑剔**：
+①老/新包**必须由同一把 key 签名**（`run_upgrade_test.sh` 第一步就比签名证书），否则 `-r` 覆盖安装会被系统拒；
+②候选包是 **non-debuggable 的 release 包** ⇒ 写测试数据那步需要 `adb root`
+   （CI 用的是 google_apis 那台模拟器；普通用户机 / 非 root 设备上 `run-as` 进不去
+   `/data/data/com.lovebrain.app`，那一跑会红——**这是仪器要求，不是产品缺陷**）。
+产物落在 `fixtures/`，交回来我就按 §6 的三态口径记账（"本机已验 / 沿用上轮 / 只能等外部"）。
