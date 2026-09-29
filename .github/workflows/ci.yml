@@ -21,13 +21,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ⚠ 这一份 checkout 必须带历史：`test_assert_artifacts.sh` 要拿"证据门合入前那一版"
-      #   当坏实现对照（基线钉在固定提交、不写成 HEAD），而 actions/checkout@v4 默认
+      # ⚠ 这一份 checkout 必须带**全量**历史：`test_assert_artifacts.sh` 要拿"证据门合入前那一版"
+      #   当坏实现对照（基线钉在固定提交 `9f29539`、不写成 HEAD），而 actions/checkout@v4 默认
       #   fetch-depth=1 —— 浅克隆里那个提交取不到，脚本按自己的规矩报 CANNOT-VERIFY 红
       #   （run 36236822959 正是这样：不是判据坏，是对照跑不了）。
+      # ⚠ **50 也过期了**（run 36544123782 = `451b611`）：`git rev-list --count 9f29539..HEAD` 现读 **53**，
+      #   那颗对照提交刚好滑出窗口。同一个判据在本地是绿的（本机有全历史），所以这是**仪器窗口**问题，
+      #   不是判据问题——但红得对：拿不到坏实现，它就不许自称通过。
+      #   ⇒ 不要再回到任何有限深度：钉死基线的那一刻起，"它还在不在窗口里"就成了会自己烂的隐含前提。
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 50
+          fetch-depth: 0
 
       - uses: actions/setup-java@v4
         with:
