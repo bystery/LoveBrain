@@ -2744,7 +2744,7 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
 ## 6. 坑表（编号连续：1–15 上一份，16–25 CI 首跑，26–31 画像格，32–35 回滚与只读，36–44 归档/状态统一/无障碍，45–52 四态与输入框，53–54 搬家与两把尺，55–57 状态表与异步收尾，58 引用了≠用上了，59–60 语义树锚点与变异归因，61–63 搬家照出的三把瞎尺，64–65 变异工具自己的两个坑，66 文案藏在默认实参里，67 恢复要点名、同一目录可能有第二个写者，68 「取第一个非空」的判据会被别的来源蹭过去，69 界面构造不出的状态要对着持有者测，
     70–89 尺自己瞎了的第二茬，90–107 滚动/组件内边距/交付物里的假事实/门禁自己空跑，124–125 假账销账与口径冲突不许择一自裁，126–128 合并树里的锚点/贴着 teardown 的假相关/只数成功的尺，129–131 恒假的协议退出判据/不等就读的异步计数断言/退出码 0 + 文件非空仍什么都不断、132 坏实现对照的基线写成活引用、133 默认模式只重录不比对、134 工具的原图在构建目录里、135 夹具造了两处缺失、136 从没跑过的 job 第一次跑会红在仓库配置、137 反证驱动什么都没跑却报合规、138 有未提交搬家时不许 git checkout、139 腐烂的"预期红"注释、140 搬状态不减行数、141 反证读数脚本把失败配到别的格子、142 交出句柄与静态审计看不见吞取消、143 测持有者时钉瞬时值/带不出被测对象/占位断言、144 拿审计 PASS 当证据前先问它扫哪些形状、145 拒绝类判据要其它条件都放行、146 读数代码不许写聪明表达式、147 搬文件会作废别人写的行号引用、148 `--rewrite` 会连注释一起吃掉、149 mock 默认值会替坏实现兜住第二道顺手闸、150 CRLF 让文本注入静默不命中、151 把"某处不存在"推广成"那笔债不存在"、152 引用别人给的行号没打开看、153 声明跑在实现前面（heredoc 报错被串联的 commit 盖掉）、154 一句"都是管道"放走一处真账、155 期望值里含默认时区 ⇒ 本机绿 CI 红
     ⚠ 正文按**加入顺序**排，不严格递增（102 后面接着 95、90 那批是补记的）——
-    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 158（156–158 是 §6.1 归并收口那一拍补的：复算尺被模板串里的嵌套引号吞掉真代码、代理把单页词表写进设计系统并给自己写了句辩护、按形状认的尺用裸子串当 tell 会把归并报成欠账**
+    要按号找条目就搜 `^\d+\. `，别假设它是升序的。**编号到 161（159–161 是并行档第三拍补的：有限 fetch-depth 与钉死对照提交会自己烂、只写不跑的代理得给 API 白名单、turn 上限把作业杀在半途）（156–158 是 §6.1 归并收口那一拍补的：复算尺被模板串里的嵌套引号吞掉真代码、代理把单页词表写进设计系统并给自己写了句辩护、按形状认的尺用裸子串当 tell 会把归并报成欠账**
     （116–120 是出口判据那一格与"销账之后要重借一次"那一格补的，
     121–123 是 P0-03 那把新尺那一格补的：作用域栈的同级互清、复算尺自己会吞代码、一句要求两半句两把尺；
     124–125 是销"注释比实现新"那一格补的：**"已改口"必须点名到哪一份文件**（注释改口≠文档改口）、
@@ -3863,6 +3863,33 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
        ③"尺报红"有三种成因（真债 / 尺瞎了 / 尺误判），**先看红的是哪一格、原始消息怎么说的**，
         别一上来就改账本。
 
+159. **钉死"坏实现对照"的提交 + 有限 `fetch-depth` = 一个会自己烂的隐含前提**（`8d2699d`，run 36544123782）：
+     `verify` 红在 `Visual-evidence gate must be gradeable` ⇒ `CANNOT-VERIFY: 9f29539 不是 HEAD 的祖先（或不存在）`。
+     不是判据坏、不是产物坏：`git rev-list --count 9f29539..HEAD` 现读 **53**，那份 checkout 写的是 `fetch-depth: 50`
+     ——对照提交刚好滑出克隆窗口。**每一笔新提交都在把这个门往红的那边推，而本地永远看不见**（本机有全历史）。
+     ⇒ ①凡是"跟历史某一刻比"的门，`fetch-depth` 只有 0 这一种正确写法；
+        ②这类门必须把"对照取不到"显式判成 CANNOT-VERIFY 失败（它就是这么设计的，红得对）——
+           千万别改成"取不到就跳过"，那才是把门关掉；
+        ③修法要当场 A/B 复现，不要靠推理：`git clone --depth 53` ⇒ RC=1 同原文；全克隆 ⇒ RC=0、8 格全对。
+
+160. **代理写的测试用"看着像"的 API，本栈根本不存在**（`LongProviderNameSemanticsTest`，581 行 / 8 个编译错误）：
+     `rule.onRoot(...)`、`SemanticsProperties.ClickActions`、`captureToImage`（它以为节点交互有这个方法）、
+     `performTouchInput { click(...) }` 里的 `click`/`size` ——**全仓库 0 处用过**，一行都编译不过。
+     它不是没查（报告里写了"javap 证实 `asAndroidBitmap` 在 AAR 里"），查的是**库里有没有**，
+     而不是**本仓库这套封装用不用得动**；禁止它跑 Gradle 之后，这类错误只能由主线程合并时买单。
+     ⇒ 派"只写不跑"的代理时，工单里必须给：①**API 白名单**（哪些符号本仓库已在用），
+        ②一个**今天就能编译通过并跑绿的邻居文件**让它照抄 harness，③明写"白名单表达不了的判据就**放弃并上报**，
+        不许发明 API"。重派时这三条我都给了（第二发只错 0 处）。
+
+161. **一只代理的 turn 上限会把它杀死在半篇作业里，而它已经写下的东西是资产也是陷阱**（芯片那一族）：
+     第一只（150 turn 上限）刚写完共用组件 `LbChip.kt` 就死，报告里最后一句是"现在开始写调用点"——
+     盘上留下 345 行组件 + 4 份测试 + 6 个文件的半途改写，**没人验过**。
+     直接合并会拿到未编译的 6 处调用点；丢掉又浪费它已经做对的形状映射（每档 radius/padding/颜色都逐行核过）。
+     ⇒ 处置：把它的组件与测试当"参考件"留在原 worktree，重派一只**只做调用点**的代理，
+        并在工单里写死"组件不许重设计、缺陷只上报"。第二只交了 13 个文件、编译一次过、
+        还主动上报了两处"归并之后视觉会变"（标签对齐、按压曲线）和一处它自己删掉的格子。
+        教训：**给代理的活儿要按"一次能做完 + 能单独验收"切**，不要按"这一族都归你"切。
+
 ## 7. 硬约束（一条没变）
 
 不许改 prompt 内容（`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` 必须零差异）；
@@ -3915,4 +3942,89 @@ job 红在**另一件事**上：`[gate] FAIL ui-test: 这些截图与前面某�
 ①那 **2 格 `Assume` 跳过**＝指导书 :212 第 9 个场景（Service destroy 与并发生成链路）仍无证据，`skipped` 不是 `passed`；
 ②`rapidDoubleTap` 那格"双击只发一次"在 CI 设备上绿了，**不等于** `LoveBrainViewModel.kt:844-855` 那条租约竞态被排除——
 它仍是一条未证明的性质，要一条 JVM 最小复现（构造得出那个状态）才算钉住。
+
+
+## 0.65 并行档第三拍：四批一起进主干（视觉基线 / 写端口 / 芯片 / 浅色锁）
+
+这一拍同时放了五只代理（本机空闲内存实测 **0.78 GB**，所以只有两只被允许自己跑 Gradle，
+其余只写不跑，编译与验牙由主线程串行收口——这条限制是量出来的，不是偏好）。
+
+### 0.65.1 视觉基线：1 颗组件 → 12 颗 / 42 张
+
+§6.5 那句"baseline 变更必须人工 review"的机制早就在，缺的是广度。现在
+Dialog 5、ModalSheet 5、StatusBadge 5、AsyncState 4、SettingRow 4、TopBar 3、EmptyState 3、
+TextAction 3、ActionCard 2、Section 1、MetricGrid 4（+ 原有 LbPrimaryButton 3 张）= **42 张**，生产码零改动。
+每颗都注入过真回归：供应方两轮回注 35 张全咬中；我补的 MetricGrid 4 张，
+值/标签间距 xs→xxl 只红 3 张 Card 档（Inline 那张不动，因为它不走那个 Spacer），
+行尾热区下限 48→40 只红 `shortTrailingWord` 一张——**差异化的红法**比"全红"更能说明尺在盯什么。
+
+⚠ **跨机器复证拿到了**（CI 原文，run 36549301226 = `f936311`）：
+`[gate] OK screenshot baselines match: 42 golden(s) verified against this run's actual images`
+——Windows 上录的基线在 ubuntu-latest 上逐张对上。在此之前"基线会不会跨机器漂"只能算推测。
+
+⚠ **一张是我重录的，等他签**：`LbSettingRow / shortTrailingWord`。归并给行尾动作补了
+`widthIn(min = 48dp)`，那一格右侧 x 544..679、y 56..72 的像素带变了（1103/92160 = 1.2%）。
+旧图、新图、roborazzi 的 compare 图都在 `_archive/visual-review-2026-09-29/`。
+指导书 :538 要的是"人看过"，所以这一格记**待签**，不许记"已过"。
+
+### 0.65.2 写端口 + 分层：R2 那句字面判据收掉，10 条边还到 6 条
+
+`KnowledgeWritePort` 从"只在定义文件里出现 2 次"变成 **10 次命中、注入点 ≥1**：
+domain 协作件 `OngoingPlanStore` 按两个视口拿仓库（`read: KnowledgeReadPort` + `write: KnowledgeWritePort`，
+`domain/OngoingPlanStore.kt:24`），并且 `write.writeFile(...)` 落在真的 mutation 上（:185，`mergeOngoing`）。
+归档与加密偏好各开一口（`KbArchivePort` / `SettingsStorePort`，实现 `FileKbArchiveTransfer` / `SecurePrefs`），
+四个 VM 改按端口注入，`viewmodel → data` 的 import 边 **10 → 6**。
+登记债 6 → 5（`KnowledgeBaseViewModel` 的 `java.io.File` 随归档 IO 出账），
+`package_deps_report.py` 一起改，两把尺逐条对得上。
+牙我自己咬过：给 `KbEditViewModel` 加回那条被禁 import ⇒ 三格红（未登记越界 / 新跨层依赖 / 实扫 6 与登记 5 不符），
+`cmp` 还原后 RC=0。两口还各带了合同套件（同一份断言跑生产实现与内存假件），
+过程中抓出假件自己的 bug（`FakeSharedPreferences.remove()` 不生效）。
+
+### 0.65.3 芯片一族：6 处自画转成委托壳
+
+`TemplateChip / CategoryChipRow / ReasonChipGrid / FilterChip / RoleChip / IntentChip`
+现在都转进新增的共用组件 `core/designsystem/LbChip.kt`（三档交互：`Action`=Button 不播选中、
+`Single`=Tab+Selected、`Multi`=Checkbox+toggleable；形状是参数、词表一律留在调用方）。
+账本随之翻面：**自画 31 → 25、委托壳 7 → 13**（这两把清单都取自格子打印的实测，不是手抄）。
+`UiLayerDependencyContractTest` 那两把品牌底尺也重登：表面 **44 → 39**、可点控件 **23 → 20**。
+⚠ 供应方代理预测的是 40，实测 39——它把 `CounselingPanel` 那一档算重了一处。
+⇒ 又一次印证：**报告里的预测数是线索，账本只认格子打印的明细**。
+
+两处"归并之后视觉会变"的地方没有藏：① `CounselingPanel` 那颗模板芯片的标签原本贴在 48dp 药丸的
+**左上**，共用组件永远居中 ⇒ 标签下移约 10dp，缺的旋钮是"标签对齐档"；
+② `ReplyInput` 的角色芯片按压曲线从 `animateFloatAsState` 默认弹簧变成 `tween(120)`（目标值同为 0.92）。
+两处都记在这儿等判，不在这一拍顺手改组件。
+
+### 0.65.4 浅色锁四格 + 一条被 park 的格子
+
+`LightThemeLockTest` 四格（源码级 / 资源级 / **夜档哨兵**判"仪器通电" / 夜档下解析到的五条 token + 三条亮度性质）。
+反证：把 `LoveBrainTheme` 改成夜档取 `darkColorScheme()` ⇒ 红在①与④，②③不动——正是应有的分布。
+首跑 2 红的原因是我这边的事：Robolectric 拒绝解析 `…-long-mdpi-night` 这种**限定串顺序**（`night` 必须排在密度之前）。
+
+同一只代理写的 `LongProviderNameSemanticsTest`（581 行，"超长 Provider 名"那一栏）**编译不过**，
+8 个错误全是本栈不存在的 API（`rule.onRoot`、`SemanticsProperties.ClickActions`、`captureToImage` 等，
+本仓库 0 处用过）。已连同它的"像素级那一格"一起收进 `_temp/drafts/`（不删），
+重派时把**允许用的 API 白名单**和一个今天就能编译通过的邻居文件一起写进工单（坑表 160）。
+顺带量到两条产品实情：Provider 名保存链路只 `trim()` 判空、**无长度上限**；
+三处渲染都 `maxLines = 1` 且不写 `overflow`（M3 默认 `TextClip`）⇒ 长名被**静默切掉、连省略号都没有**，
+全 App 没有任何地方能看到完整名字。
+
+### 0.65.5 CI 那一跑红在仪器窗口（坑表 159）
+
+`verify` 红在 `Visual-evidence gate must be gradeable` ⇒
+`[gate] FAIL CANNOT-VERIFY: 9f29539 不是 HEAD 的祖先（或不存在）`。
+现读 `git rev-list --count 9f29539..HEAD` = **53**，而那份 checkout 写的是 `fetch-depth: 50`：
+**钉死的"坏实现对照"提交刚好滑出克隆窗口**。A/B 复现过：`git clone --depth 53` ⇒ RC=1、原文同上；
+全克隆（414 条历史）⇒ RC=0、8 格全对。⇒ 改 `fetch-depth: 0`（`8d2699d`）。
+判据一个字没动，也没有加"取不到就跳过"——红得对，修的是仪器看得见对照组这件事。
+`ui-test` 那两跑都是 success（`tests=45 failures=0 skipped=2`），`upgrade-test` 仍 skipped（等那四个 secret）。
+
+### 0.65.6 这一拍的数
+
+全量：****236 套件 / 1675 格 / 0 失败 / 0 错误 / 0 跳过**（236 份 XML 同批，`--rerun-tasks`，BUILD SUCCESSFUL in 5m47s，RC=0）**；lint 进预算 65/13 未变；androidTest 编译 RC=0；
+大文件棘轮 holds；prompt 资产零差异；`verify_visual_baseline.sh` 全跑 42 张对上。
+指导书 §7 那 18 条完成定义里，这一拍真正翻过去的是两条：
+**"所有 mutation 只能从 KnowledgeTx 取得安全路径 / 端口零注入"那一族的字面半句**（写端口真被注入），
+以及**"视觉证据覆盖 12 颗组件"那一半**（基线广度 + CI 跨机器复证）。
+不自签：`>800` 数量、`LbEmptyState` 采用仍 0、矩阵跑满、像素对比度、那 2 格 Assume、四个 secret 都还在原处。
 

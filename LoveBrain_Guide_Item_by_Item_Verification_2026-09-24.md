@@ -6248,3 +6248,123 @@ Kotlin 分类器：自画 **37 → 31**、委托壳 **2 → 7**。
 ②剩下 31 颗自画里，卡片/横幅一族（content cards、banners 2 颗）要不要开第 12 号组件，等他在 §6.1 那张表上拍；
 ③代理并行档仍在改的三件（视觉基线广度、`KnowledgeWritePort` 注入 + `viewmodel→data` 10 条边、芯片一族归并）
 本轮不判，落进主干时另记。
+
+# 追加七十六：并行档第三拍四批一起进主干——视觉基线 12 颗 / 写端口真注入 / 胶囊一族归并 / 浅色锁
+
+第 17 窗口下半程。同一时刻在场 **5 只代理**（本机空闲内存实测 **0.78 GB**，因此只有 2 只允许自己跑
+Gradle，其余"只写不跑"，编译与验牙由主线程串行做——这条限制是量出来的，不是偏好）。
+四批成果依次是：视觉基线广度、DIP（写端口 + 分层）、胶囊一族归并、§6.5 浅色锁。
+
+## 76.1 视觉基线：1 颗组件 / 3 张 → 12 颗 / 42 张（并拿到 CI 跨机器复证）
+
+`LbDialog` 5、`LbModalSheet` 5、`LbStatusBadge` 5、`LbAsyncState` 4、`LbSettingRow` 4、`LbTopBar` 3、
+`LbEmptyState` 3、`LbTextAction` 3、`LbActionCard` 2、`LbSection` 1、`LbMetricGrid` 4，加原有
+`LbPrimaryButton` 3 张。生产码零改动。这些组件的职责就是"怎么排、什么色"，语义树读不出来
+（`LbMetricGrid` 的数值在上标签在下、三格等分、highlight 换 Primary；`LbStatusBadge` 的状态色 15% 底），
+所以必须落像素。
+
+牙：供应方两轮回注 **35 张全咬中**；我补的 4 张——值/标签间距 `xs → xxl` 只红 3 张 Card 档
+（Inline 那张不动，因为它不走那个 Spacer），行尾热区下限 `48 → 40` 只红 `shortTrailingWord` 一张。
+**差异化的红法**比"全红"更能证明尺在盯什么。
+⚠ 第一发探针本来选的是 `Arrangement.SpaceEvenly → Start`，结果 **42 张全绿**——
+不是尺坏，是那句本身不做任何事（每个孩子都带 `weight(1f)`）：量到一条死旋钮，登记未改。
+
+**跨机器复证（CI 原文，run 36549301226 = `f936311`）**：
+`[gate] OK screenshot baselines match: 42 golden(s) verified against this run's actual images`
+⇒ Windows 上录的基线在 ubuntu-latest 逐张对上。在此之前"基线会不会跨机器漂"只能算推测（坑表 155 那一族）。
+
+⚠ **一张是我重录的，等他签**：`LbSettingRow / shortTrailingWord`。归并给行尾动作补了
+`widthIn(min = 48dp)`，x 544..679、y 56..72 那条像素带变了（1103/92160 = **1.2%**）。
+旧图 / 新图 / roborazzi 自己的 compare 图都在 `_archive/visual-review-2026-09-29/`。
+指导书 :538 要的是"人看过"，所以这一格记**待签**，不记"已过"。
+
+⚠ **这台机器上 `:app:recordRoborazziDebug` 一张图都不写**（三轮 RC=0、mtime 全不动），
+而 `scripts/verify_visual_baseline.sh:74` 让人去跑 `scripts/record_visual_baseline.sh`——**那脚本不存在**。
+这次提升基线用的是 verify 写出的 `_actual.png`，并逐张对过哈希。
+⇒ "人工重录"这条路目前是**文档在、工具不在**，要单独修（本轮没有假装它可用）。
+
+## 76.2 DIP：`KnowledgeWritePort` 第一次真的被注入，边 10 → 6
+
+R2 那句字面判据（"所有 mutation 只能从 `KnowledgeTx` 取得安全路径"）此前缺的是后半句——
+端口是装饰品：全仓命中 2 次，都在自己的定义文件里，注入点 **0**。
+现在 domain 协作件 `OngoingPlanStore` 按两个视口拿仓库
+（`read: KnowledgeReadPort` + `write: KnowledgeWritePort`，`domain/OngoingPlanStore.kt:24`），
+`write.writeFile(...)` 落在真的 mutation 上（:185，`mergeOngoing` 那条落盘）。
+复扫：`KnowledgeWritePort` 命中 **2 → 10**，注入点 ≥1 且不是"声明了没人用"。
+归档与加密偏好各开一口（`KbArchivePort` / `SettingsStorePort`），四个 VM 改按端口注入，
+`viewmodel → data` 的 import 边 **10 → 6**（`SecurePrefs` 3、`KbArchiveTransfer` 1 清零）。
+登记债 **6 → 5**（`KnowledgeBaseViewModel` 的 `java.io.File` 随归档 IO 出账），
+`package_deps_report.py` 同批改，两把尺逐条对得上。两口各带**合同套件**
+（同一份断言分别跑生产实现与内存假件）——过程中抓出假件自己的 bug（`FakeSharedPreferences.remove()` 不生效）。
+牙我自己咬：给 `KbEditViewModel` 加回被禁 import ⇒ **三格红**
+（未登记越界 / 新跨层依赖 / 实扫 6 与登记 5 不符），`cmp` 还原后 RC=0。
+
+## 76.3 胶囊一族：6 处自画 → 委托壳，账本翻面
+
+新增 `core/designsystem/LbChip.kt`（345 行）：`Action`=Button 且不播选中、`Single`=Tab+`Selected`、
+`Multi`=Checkbox+`toggleable`——**多选与单选在语义树里是两个不同的槽**，混了读屏会把"还能再选几个"
+念成"现在在哪一格"。形状（radius / textStyle / padding / 颜色 / 描边 / 按压曲线 / 对勾）全是参数，
+**词表一律留在调用方**。归并点：`TemplateChip`、`CategoryChipRow`、`ReasonChipGrid`、`FilterChip`、
+`RoleChip`、`IntentChip`。
+账本：**自画 31 → 25、委托壳 7 → 13**；品牌底两把尺 **表面 44 → 39、可点控件 23 → 20**。
+⚠ 供应方代理预测 40，实测 39（它把 `CounselingPanel` 一档算重一处）⇒ **账本只认格子打印的明细**，
+报告里的预测数是线索不是依据。
+牙：`Multi` 角色 Checkbox→Tab 红 2 格；`Single` 的 `selected` 钉成 false 红 5 格（组件 1、反馈案例 2、回复输入 2）。
+两处视觉变化没藏：模板芯片标签从药丸左上移到居中（约 10dp，缺"标签对齐档"这个旋钮）、
+角色芯片按压曲线由默认弹簧变 `tween(120)`。另：意图胶囊以前 `clickable` 不声明角色，现在有 `Role.Button`
+（§6.5 被满足，不是静默升级），它那 22dp 视觉高与不足 48dp 的热区是**旧账照搬、本轮未修**。
+
+## 76.4 §6.5 的两栏：浅色锁落了，超长名那一栏被我自己退回重做
+
+`LightThemeLockTest` 四格：源码级（掩注释后不得出现 `darkColorScheme`/`isSystemInDarkTheme`/`dynamic*`/`DayNight`）、
+资源级（不得有 `values*night`，`Theme.*` 父档必须点名 `.Light`）、**夜档哨兵**（判"这台仪器通电"）、
+组合解析级（五条 token 逐条等值 + 三条亮度性质）。反证：`LoveBrainTheme` 夜档取 `darkColorScheme()`
+⇒ 红在源码级与解析级两格、②③不动——正是应有的分布。
+首跑 2 红是限定串顺序错（`…-long-mdpi-night` 被 Robolectric 拒绝解析，`night` 必须排在密度之前）。
+
+同一只代理写的 `LongProviderNameSemanticsTest`（581 行）**编译不过**，8 个错误全是本栈不存在的 API
+（`rule.onRoot`、`SemanticsProperties.ClickActions`、`captureToImage` 等，本仓库 0 处用过）——
+它查的是"库里有没有"，不是"本仓库这套封装用不用得动"。已连同它的像素级那一格一起收进
+`_temp/drafts/`（不删）重派，重派工单里写死 **API 白名单 + 一个今天就能跑绿的邻居文件 +
+"白名单表达不了的判据就放弃并上报，不许发明 API"**（坑表 160）。
+顺带量到两条产品实情（只登记不改）：Provider 名保存链路只 `trim()` 判空、**无长度上限**；
+三处渲染都 `maxLines = 1` 且不写 `overflow`（M3 默认 `TextClip`）⇒ 长名**静默被切、连省略号都没有**，
+且全 App 没有任何地方能看到完整名字。
+
+## 76.5 CI：门红在仪器窗口，而不是红在代码
+
+run 36544123782（`451b611`）`verify` 红在 `Visual-evidence gate must be gradeable` ⇒
+`[gate] FAIL CANNOT-VERIFY: 9f29539 不是 HEAD 的祖先（或不存在）`。
+现读 `git rev-list --count 9f29539..HEAD` = **53**，那份 checkout 写的是 `fetch-depth: 50`
+——钉死的"坏实现对照"提交刚好滑出克隆窗口；本地永远看不见（本机有全历史）。
+A/B 复现：`git clone --depth 53` ⇒ RC=1 同原文；全克隆（414 条历史）⇒ RC=0、8 格全对。
+⇒ `fetch-depth: 0`（`8d2699d`）。判据一个字没动，也没加"取不到就跳过"。
+`ui-test` 两跑都 success（`tests=45 failures=0 errors=0 skipped=2`）；
+`upgrade-test` 仍 skipped（仍等那四个 secret，人配，不绕）。
+
+## 76.6 收口数（全部当场跑）
+
+- 合并四批后的全量：**236 套件 / 1675 格 / 0 失败 / 0 错误 / 0 跳过**（`--rerun-tasks`、BUILD SUCCESSFUL 5m47s、RC=0）
+- `verify_visual_baseline.sh` 全跑：RC=0，**42 golden(s) verified**、0 张 `_actual`
+- lint：66 处 / 14 规则，进预算 **65/13** 未变；androidTest 编译 RC=0
+- 大文件棘轮 holds：扫 **180** 个 .kt，>500 **16**、>800 **6**
+- 工单号扫描 PASS；`asset_hashes --check` OK；`assets/engine|schema` 对 `286c9406` 零差异
+- §6.1 采用率（状态机尺，同尺两侧）：`LbChip` 新点 **6**，`LbSettingRow` 4、`LbSection` 4、
+  `LbTextAction` 4、`LbDialog` 12、`LbMetricGrid` 2；`LbEmptyState` 仍 **0**
+
+## 76.7 这一拍对指导书那 18 条的影响，以及明确欠的账
+
+能对上一句原话的新增项只有两条：**写侧端口真的被注入**（R2 后半句的字面半句），
+以及**视觉基线覆盖到 §6.1 那 12 颗组件**（R5 的"广度"那一半，且拿到 CI 跨机器复证）。
+分数口径：**8/18 = 44% → 10/18 = 56%**？不——我不用自己扩的口径宣布翻格：
+`>800 数量持续下降` 那条早已 ✅，这两条分别是"完成定义"里的**半句**（端口注入的那条完成定义还要求
+"新增裸写被门禁禁住"，仍差 1 处 root 级 marker 的口径决定；视觉那条仍要求 baseline 变更有人签，
+而这一拍那 1 张是我重录的、还没人看）。⇒ **本轮不涨分，仍是 8/18 = 44%**，涨不涨由他判。
+
+明确欠着、没混进"已完成"的：①那 **1 张重录基线等他签**；②牙债按实测记：从 `451b611` 到本拍结束 JVM 格子 **1584 → 1675**（+91 格 / +20 套件，两次都是同批 XML 现读）。
+主线程**亲自**注入的反证共 5 发，看见红过的格子 13 格
+（MetricGrid 间距 3、行尾下限 1、`Multi` 角色 2、`Single` selected 5、浅色分支 2）；
+其余新格（含供应方代理自证的 35 张像素——我只复跑了其中 2 发）**没有被坏实现打破过**；③"超长 Provider 名"那一栏仍未落（重派中）；
+④`record_visual_baseline.sh` 不存在、这台机器 `recordRoborazziDebug` 不写图；
+⑤`LbEmptyState` 采用 0、矩阵 4 宽 × 3 字未跑满、`ContrastRegressionTest` 仍是 token 数学不是像素对；
+⑥四个 release secret 与那 2 格 `Assume` 一条没动。
