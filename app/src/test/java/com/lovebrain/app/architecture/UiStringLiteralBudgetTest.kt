@@ -263,12 +263,16 @@ class UiStringLiteralBudgetTest {
         //   **换桶，不是还债**（同一条字面量一个字没改，只是从 TEXT 那栏落进 COMPONENT 那栏）；
         //   主动发那一处交的是 `PanelStrings.PROACTIVE_EMPTY_HINT`（标识符，不是字面量），所以两栏都不动。
         //   ⇒ 交叉核对：独立 Python 尺 `_temp/bucket_clone.py` 在同一棵树上报 **168 / 88**，与本尺逐字相同。
-        Kind.TEXT to 168,
+        // 168 → **166**：提示条归并时把两处内联中文接上资源（`panel_input_changed`、
+        //   `a11y_close_notice` 那颗关闭钮——**资源里中英两份一直都在、从没被引用过**，
+        //   于是英文环境读屏念中文）。这一笔是**真还**，不是换桶。
+        Kind.TEXT to 166,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是
         // "Collapse panel"）。接上资源是真的还了一处，不是换桶。
-        Kind.DESC to 10,
+        // 10 → **9**：同一笔——`contentDescription = "关闭通知"` 接上 `a11y_close_notice`。
+        Kind.DESC to 9,
         Kind.STATE to 0,
         // 78 → **77**：`KbEditScreen` 那四条保存/冲突提示搬进资源。
         // ⚠ 这一栏上一格还涨过一次（78→81）：`LbPrimaryButton` 的锚点按括号配对取实参，

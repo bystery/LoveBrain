@@ -202,39 +202,19 @@ fun SuggestPanel(
             // 锦囊错误态（无 KB 引导/弱网超时/解析失败）——显示错因 + 重试
             suggestError != null -> {
                 item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(LoveBrainShape.lg)
-                            .background(ErrorBg)
-                            .padding(Spacing.xl),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(suggestError.orEmpty(), color = Error, style = AppTypography.bodySmall)
-                            Spacer(Modifier.height(Spacing.md))
-                            val (errRetryInteraction, errRetryScale) = rememberPressScale(0.96f, "suggestErrorRetryScale")
-                            Text(
-                                stringResource(R.string.panel_retry_tap),
-                                color = Color.White,
-                                style = AppTypography.labelLarge,
-                                fontWeight = FontWeight.SemiBold,
-                                modifier = Modifier
-                                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                                    .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                                    .clip(LoveBrainShape.md)
-                                    .background(Primary)
-                                    .graphicsLayer { scaleX = errRetryScale; scaleY = errRetryScale }
-                                    .clickable(
-                                    interactionSource = errRetryInteraction,
-                                    indication = null,
-                                    role = Role.Button,
-                                    onClick = { viewModel.generateSuggest() }
-                                )
-                                    .padding(horizontal = Spacing.xl, vertical = Spacing.md)
-                            )
+                    // 这一档原来整块都是自己画的：`Box + .background(ErrorBg)` 里一列
+                    // 居中 `Text`，尾部那颗重试还是本页唯一一处实心 `Text + background(Primary)`。
+                    // 说法、标签（资源）、回调三样照旧，交回设计系统的是容器与那颗动作。
+                    // ⚠ 行为差异要认账：原先那颗重试走的是 `generateSuggest()`
+                    // （第一次生成那条路径），这里**保持不变**，没有顺手换成 regenerate。
+                    LbEmptyState(
+                        message = suggestError.orEmpty(),
+                        tone = LbStateTone.Error,
+                        container = LbStateContainer.Strip,
+                        action = ScreenAction(stringResource(R.string.panel_retry_tap)) {
+                            viewModel.generateSuggest()
                         }
-                    }
+                    )
                 }
             }
 

@@ -94,6 +94,10 @@
     <string name="counseling_input_hint">说说你的困惑，军师帮你分析…</string>
     <string name="panel_mode_proactive">主动发</string>
     <string name="panel_result_menu">更多操作</string>
+    <!-- §6.1 通知条归进 LbEmptyState：这两句原来写死在 ResultArea 的自画条里（TEXT 那把尺
+         数着的那两处），归并时一起进资源，中英各一份。中文逐字照旧。 -->
+    <string name="panel_input_changed">输入已修改，当前答案基于修改前内容</string>
+    <string name="panel_regenerate_with_new_input">按新输入生成</string>
     <string name="panel_expand">展开</string>
     <string name="panel_dislike">点踩</string>
     <string name="panel_like">点赞</string>

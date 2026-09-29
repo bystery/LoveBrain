@@ -74,7 +74,6 @@ private object PanelDimens {
     const val TRIO_HEIGHT_DP = 40
     const val STYLE_DIVIDER_HEIGHT_DP = 16
     const val PROFILE_CARD_MAX_HEIGHT_DP = 180
-    const val BANNER_CLOSE_ICON_SIZE_DP = 14
     const val PILL_HEIGHT_DP = 14
     const val PILL_LABEL_GAP_DP = 3
     const val TOUCH_TARGET_MIN_DP = AppDimens.TOUCH_TARGET_MIN_DP  // 从 24dp 修正为无障碍下限；数只写在全局那颗
@@ -316,13 +315,26 @@ fun LoveBrainPanelScreen(
             }
             when {
                 kbNotice != null -> {
-                    KbNoticeBanner(text = kbNotice.orEmpty(), onDismiss = { viewModel.dismissKbNotice() })
+                    KbNoticeBanner(
+                        text = kbNotice.orEmpty(),
+                        tone = LbStateTone.Success,
+                        onDismiss = { viewModel.dismissKbNotice() }
+                    )
                 }
                 panelWarning != null -> {
-                    KbNoticeBanner(text = panelWarning.orEmpty(), onDismiss = { viewModel.dismissPanelWarning() }, container = WarningBg, textColor = Warning)
+                    // 这一张原先是自己填一对颜色（`WarningBg` + `Warning`），现在填一档语气
+                    KbNoticeBanner(
+                        text = panelWarning.orEmpty(),
+                        tone = LbStateTone.Warning,
+                        onDismiss = { viewModel.dismissPanelWarning() }
+                    )
                 }
                 vectorUpdate != null -> {
-                    KbNoticeBanner(text = vectorUpdate.orEmpty(), onDismiss = { viewModel.dismissVectorUpdate() })
+                    KbNoticeBanner(
+                        text = vectorUpdate.orEmpty(),
+                        tone = LbStateTone.Success,
+                        onDismiss = { viewModel.dismissVectorUpdate() }
+                    )
                 }
             }
 
@@ -808,44 +820,46 @@ private fun ProfileSuggestionCard(
     }
 }
 
+/**
+ * 面板顶部那一张通知条（知识库已保存 / 本轮警告 / 画像有更新，三处共用）。
+ *
+ * 原来它是异形账本里 `LoveBrainPanelScreen.kt#KbNoticeBanner` 那一颗，而且带着两个
+ * **颜色旋钮**：`container: Color = SuccessBg`、`textColor: Color = Success`，
+ * 第二处调用再现场填一对 `WarningBg`/`Warning`——"这条通知是什么语气"由调用方
+ * 自选颜色，下一对颜色没有任何地方拦得住（§6.1 :490 末句要挡的正是这个形状）。
+ * 现在语气走 [LbStateTone] 那张词表（字色与浅底成对，都只在 `LbAsyncState.kt` 里写一次），
+ * 容器走 [LbStateContainer.Strip]，那颗关闭转成设计系统里唯一的文字动作。
+ *
+ * 随归并变掉/补齐的三件事，如实记在这儿：
+ * - 关闭那颗原来是裸 `Box.clickable`：**没有声明 `role`**，盒子已经 48dp 见方，
+ *   但读屏只念图标名、说不出它是按钮；现在角色与两轴热区都由那一处文字动作保证，
+ *   名字改用 `R.string.a11y_close_notice`——那串中文原先是**内联字面量**，
+ *   英文环境下读屏照念中文（DESC 那把尺数到的就是它，中英两份资源其实一直都在）。
+ * - 说明文字从 `labelSmall` 抬到组件那一档 `bodyMedium`（同 `RowActionButton` 归进
+ *   `LbTextAction` 那次：不换所有者就自己定字号，要留住字号就得给组件开旋钮）。
+ * - 原先那句 `maxLines = 1 + Ellipsis` 不再由组件提供：这三条话都有下半句
+ *   （例如「已暂停本轮提及，下次生成将过滤此条记忆」），裁掉的正好是要看的那半句。
+ *
+ * 自动收起那三档时间、`dismiss*` 回调、三条文案的来源，一个字没动。
+ *
+ * `internal` 不是给页面用的：这一条通知要由语义树测试**直接挂生产这一颗**，
+ * 而不是在测试里再抄一份私有副本——同一件事在本文件的 [ProactiveResultArea] 与
+ * `ProviderFormBody` 上都记过账（双轨的那一轨不会跟着改）。
+ * 面板本体挂不动这一档还有第二个理由：`kbNotice` 挂着 3 秒自动收起，
+ * 测试一 `waitForIdle` 就把时间喂完、条子自己消失了，量到的那一屏根本没有它。
+ */
 @Composable
-private fun KbNoticeBanner(
+internal fun KbNoticeBanner(
     text: String,
-    onDismiss: () -> Unit,
-    container: Color = SuccessBg,
-    textColor: Color = Success
+    tone: LbStateTone,
+    onDismiss: () -> Unit
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(container, LoveBrainShape.sm)
-            .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
-    ) {
-        Text(
-            text,
-            style = AppTypography.labelSmall,
-            color = textColor,
-            maxLines = 1,
-            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f)
-        )
-        // touch target
-        Box(
-            modifier = Modifier
-                .padding(start = Spacing.sm)
-                .size(PanelDimens.TOUCH_TARGET_MIN_DP.dp)
-                .clickable { onDismiss() },
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_close),
-                contentDescription = "关闭通知",
-                tint = TextHint,
-                modifier = Modifier.size(PanelDimens.BANNER_CLOSE_ICON_SIZE_DP.dp)
-            )
-        }
-    }
+    LbEmptyState(
+        message = text,
+        tone = tone,
+        container = LbStateContainer.Strip,
+        action = ScreenAction(stringResource(R.string.a11y_close_notice), onDismiss)
+    )
 }
 
 /** Vector pills row */
@@ -1043,15 +1057,16 @@ internal fun ProactiveResultArea(
                 )
             }
             error != null && options.isEmpty() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(LoveBrainShape.md)
-                        .background(ErrorBg)
-                        .padding(Spacing.lg)
-                ) {
-                    Text(error, color = Error, style = AppTypography.bodySmall)
-                }
+                // 这一档原来是一颗自画的 `Box + .background(ErrorBg) + Text`，本页对"出事
+                // 了长什么样"因此有自己的第四种答案。说法一个字没改，容器交回 `LbEmptyState`。
+                // 这里**不给动作**：主动发失败时这一屏唯一的主操作是下面那颗「生成开场」，
+                // 在这一格再塞一颗重试就会出现两颗出口（§6.3 要的是就地有出口，不是要有两颗）。
+                // 下面那格 `options.isEmpty() ->` 走的也是同一颗组件，只是换成空态那一档。
+                LbEmptyState(
+                    message = error,
+                    tone = LbStateTone.Error,
+                    container = LbStateContainer.Strip
+                )
             }
             // 还没开场子 = 空态：版式交回设计系统里那唯一一处（这一页原来自己画一颗 Box + 居中
             // Text，于是"空的时候长什么样"每页一个答案）。说法、槽位与内边距一个字没改，

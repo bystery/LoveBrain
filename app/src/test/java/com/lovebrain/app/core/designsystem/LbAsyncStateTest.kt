@@ -137,4 +137,48 @@ class LbAsyncStateTest {
             probe.assertAllActionableMeetTouchFloor(rule, "LbEmptyState", "（${matrix.id}）")
         }
     }
+
+    /**
+     * 换了**容器**不许顺便换那颗动作（§6.1「同一形状只有一处画法」在语义树侧的证人）。
+     *
+     * 为什么要有这一格：`LbEmptyState` 加了 `LbStateContainer.Strip` 之后，两档容器各画各的
+     * 说明与动作。语义树读不出底色与圆角（那是截图那一格的事），读得出**这一颗点不点得到、
+     * 报不报得出自己是按钮**——那正是这一族每次都长歪的地方（`LbTextAction.kt` 记着的两发：
+     * 只垫高度量出 40x48dp、行内那颗只垫高度量出 32x48dp）。
+     * 所以这一格判"两档容器的动作节点**同一个尺寸、同一个角色**"：
+     * 有人把 Strip 那一档的动作换成另一颗自画胶囊（哪怕它看起来一模一样），
+     * 只要热区或角色不同，这里就红。
+     */
+    @Test
+    fun `switching the container must not switch the action's floor or role`() {
+        val container = androidx.compose.runtime.mutableStateOf(LbStateContainer.Block)
+        rule.setContent {
+            UiMatrix(360, 400).RenderIn(LocalDensity.current.density) {
+                LbEmptyState(
+                    message = "还没有聊天记录",
+                    action = ScreenAction("点这里发一条") {},
+                    container = container.value
+                )
+            }
+        }
+        val sizes = LinkedHashMap<String, Pair<Float, Float>>()
+        for (tier in listOf(LbStateContainer.Block, LbStateContainer.Strip)) {
+            rule.runOnIdle { container.value = tier }
+            rule.waitForIdle()
+            val target = probe.actionableTargets(rule, "LbEmptyState·${tier.name}").single()
+            sizes[tier.name] = target.widthDp to target.heightDp
+            assertEquals(
+                "${tier.name} 那一档的动作也得报按钮角色：" + target.describe(),
+                "Button", target.role
+            )
+            assertTrue(
+                "${tier.name} 那一档也得两轴都 ≥${probe.floorDp.toInt()}dp：" + target.describe(),
+                !target.tooSmall(probe.floorDp)
+            )
+        }
+        val (blockW, blockH) = sizes.getValue("Block")
+        val (stripW, stripH) = sizes.getValue("Strip")
+        assertEquals("两档容器的动作热区宽度不一致：$blockW vs $stripW", blockW, stripW, 0.5f)
+        assertEquals("两档容器的动作热区高度不一致：$blockH vs $stripH", blockH, stripH, 0.5f)
+    }
 }

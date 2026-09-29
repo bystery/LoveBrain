@@ -142,7 +142,6 @@ class OddShapeOwnershipTest {
         "AiLoadingRow.kt#AiLoadingRow",
         "HomeComponents.kt#AssistantStatusCard",
         "KnowledgeBaseActivity.kt#KbCard",
-        "LoveBrainPanelScreen.kt#KbNoticeBanner",
         "LoveBrainPanelScreen.kt#ProfileSuggestionCard",
         "LoveBrainPanelScreen.kt#StageSuggestionCard",
         "LoveBrainPanelScreen.kt#VectorPill",
@@ -154,7 +153,6 @@ class OddShapeOwnershipTest {
         "PanelHeader.kt#PanelHeader",
         "ProviderSection.kt#MiniSwitchRow",
         "ProviderSection.kt#ProviderSection",
-        "ResultArea.kt#InputChangedBanner",
         "ResultArea.kt#SchemeCardsRow",
         "SchemeCard.kt#CardActionIcon",
         "SchemeCard.kt#SchemeCard",
@@ -167,19 +165,21 @@ class OddShapeOwnershipTest {
 
     /** 已经退化成"只转一次参数"的壳——不是异形，但也不该再长出新形状 */
     private val expectedShells = setOf(
+        "CaptureAppsScreen.kt#CaptureAppRow",
+        "CorrectionCenter.kt#CorrectionRecordRow",
         "CounselingPanel.kt#TemplateChip",
         "DislikeReasonPanel.kt#CategoryChipRow",
         "DislikeReasonPanel.kt#ReasonChipGrid",
         "FeedbackCasesScreen.kt#FilterChip",
-        "ReplyInput.kt#RoleChip",
-        "SuggestPanel.kt#IntentChip",
-        "CaptureAppsScreen.kt#CaptureAppRow",
-        "CorrectionCenter.kt#CorrectionRecordRow",
+        "LoveBrainPanelScreen.kt#KbNoticeBanner",
         "OnboardingFlow.kt#OnboardingButton",
         "ProviderSection.kt#ProviderEditDialog",
+        "ReplyInput.kt#RoleChip",
+        "ResultArea.kt#InputChangedBanner",
         "RowAction.kt#RowActionButton",
         "ScreenHeader.kt#ScreenHeader",
-        "SuggestPanel.kt#IntentEditorDialog"
+        "SuggestPanel.kt#IntentChip",
+        "SuggestPanel.kt#IntentEditorDialog",
     )
 
 

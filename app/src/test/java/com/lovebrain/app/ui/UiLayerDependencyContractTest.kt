@@ -508,12 +508,12 @@ class UiLayerDependencyContractTest {
             "panel/LoveBrainPanelScreen.kt" to 3,
             "panel/OnboardingFlow.kt" to 1,
             "panel/PanelHeader.kt" to 1,
-            "panel/SuggestPanel.kt" to 7,
+            "panel/SuggestPanel.kt" to 6,
             "panel/counseling/CounselingPanel.kt" to 6,
             "panel/reply/CorrectionCenter.kt" to 1,
             "panel/reply/MessageList.kt" to 2,
             "panel/reply/ReplyInput.kt" to 1,
-            "panel/reply/ResultArea.kt" to 5,
+            "panel/reply/ResultArea.kt" to 4,
             "panel/reply/SchemeCard.kt" to 1
         )
         val total = perFileBudget.values.sum()
@@ -524,7 +524,11 @@ class UiLayerDependencyContractTest {
         //   `FeedbackCasesScreen` 2 → 1、`ReplyInput` 2 → 1、`SuggestPanel` 8 → 7。
         //   ⚠ 供应方代理预测的是 44 → 40，实测 **39**——它把 `CounselingPanel` 那一档算重了一处。
         //   ⇒ 账本一律取本格打印的实扫明细，不取报告里的预测数。
-        assertTrue("登记的就是本机实扫的 39 处，表本身错了要先修表", total == 39)
+        // 39 → **37**（提示条/横幅一族归并）：`panel/reply/ResultArea.kt` 5 → 4、`panel/SuggestPanel.kt` 7 → 6。
+        //   归并方式仍是**复用已有主人**（`LbEmptyState` 新加的是有名字的容器档与语气档，不是又一颗组件、
+        //   也不是一个 `containerColor` 旋钮）；`ui/` 里剩下的 `ErrorBg` 自画从 5 处降到 1 处，
+        //   那 1 处是 `SuggestPanel` 的「要避开的说法」内容块（多行 ✗ 列表，不是状态条），代理判它不该进状态组件、已拒。
+        assertTrue("登记的就是本机实扫的 37 处，表本身错了要先修表", total == 37)
         val uiRoot = dir("ui")
         val scanned = kotlinFiles(uiRoot).map {
             it.relativeTo(uiRoot).invariantSeparatorsPath to brandTonedArgs(
@@ -662,14 +666,18 @@ class UiLayerDependencyContractTest {
             "panel/counseling/CounselingPanel.kt" to 4,  // :217 :260 :377 :477
             "panel/reply/MessageList.kt" to 1,           // :270
             "panel/reply/ReplyInput.kt" to 1,            // 只剩「添加」那颗；三颗角色 chip 已转进 LbChip
-            "panel/reply/ResultArea.kt" to 3,            // :412 :579 :1247
+            "panel/reply/ResultArea.kt" to 2,            // :412 :579 :1247
             "panel/reply/SchemeCard.kt" to 1,            // :532
-            "panel/SuggestPanel.kt" to 5                 // 归并掉意图那颗胶囊
+            "panel/SuggestPanel.kt" to 4                 // 归并掉意图那颗胶囊
         )
         // 23 → **20**：同一批归并拿走三处（`FeedbackCasesScreen` −1、`ReplyInput` −1、`SuggestPanel` −1）。
         //   剩下这 20 处仍是"每处逐条判语义"的存量，本格只挡长新的与表虚高的。
         val total = perFileBudget.values.sum()
-        assertTrue("登记的就是本机实扫的 20 处，表本身错了要先修表", total == 20)
+        // 20 → **18**：`ResultArea` 3 → 2（输入已变化那条提示条并进 `LbEmptyState` 的 Strip 档，
+        //   它以前是 `Row + background(WarningBg) + 自画 Text.clickable`，**读屏念不出角色、热区两轴都不够**）、
+        //   `SuggestPanel` 5 → 4（锦囊错误条并进同一颗；那颗动作本来就画在页面上）。
+        //   ⇒ 这两处不是"数字变小"，是"两处自画动作从此由唯一主人保证角色与见方热区"。
+        assertTrue("登记的就是本机实扫的 18 处，表本身错了要先修表", total == 18)
         val uiRoot = dir("ui")
         val scanned = kotlinFiles(uiRoot).map {
             val masked = SourceScan.maskComments(it.readText())

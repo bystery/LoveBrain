@@ -299,27 +299,20 @@ fun CounselingPanel(
 
             error != null -> {
                 val err = error ?: return
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(LoveBrainShape.md)
-                        .background(ErrorBg)
-                        .padding(Spacing.lg)
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = err, color = Error, style = AppTypography.bodySmall)
-                        Spacer(Modifier.height(Spacing.sm))
-                        // 与结果区那颗是**同一句话、同一个 26dp 热区**（本机两档各量一次：
-                        // 72x26dp、role=无）。同一条注释也一模一样地写着"≥24dp"——
-                        // 两页各抄一遍，就各自都以为 24dp 是标准。归 `LbTextAction` 之后只剩一处。
-                        LbTextAction(
-                            label = stringResource(R.string.panel_retry_tap),
-                            onClick = {
-                                viewModel.generateCounseling(draft.trim())
-                            }
-                        )
+                // 这一档原来是自画的 `Box + .background(ErrorBg)`：说明 + 那颗重试已经归过
+                // 一次 `LbTextAction`，整块版式现在一起交回 `LbEmptyState`（Strip + Error），
+                // 与结果区那一档从此同一处画法。
+                // ⚠ 两页各抄一遍的那条"热区 ≥24dp"注释也跟着没了——同一句话抄两遍时，
+                // 连"多少算达标"都会被各自抄一次（本机两档当时都量到 72x26dp、role=无）。
+                // 重试仍是原来那颗：拿当前草稿重新发起 `generateCounseling`，一字未改。
+                LbEmptyState(
+                    message = err,
+                    tone = LbStateTone.Error,
+                    container = LbStateContainer.Strip,
+                    action = ScreenAction(stringResource(R.string.panel_retry_tap)) {
+                        viewModel.generateCounseling(draft.trim())
                     }
-                }
+                )
             }
 
             result != null -> {

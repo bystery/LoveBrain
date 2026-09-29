@@ -30,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import com.lovebrain.app.R
@@ -275,27 +274,17 @@ fun ResultArea(
         }
 
         result is GenerateResult.Error -> {
-            Box(
+            // 这一档原来是自画的 `Box + .background(ErrorBg) + 居中 Column`，那颗重试
+            // 已经归进 `LbTextAction`（本机当时实量 72x26dp、role=无）。整块版式现在也
+            // 交回设计系统：`LbEmptyState` 的 Strip 容器 + Error 语气——错因、标签文案、
+            // 点击回调三者逐字照旧，改的只是"这一条谁画"。契约变化见 LbAsyncState.kt。
+            LbEmptyState(
+                message = result.message,
+                tone = LbStateTone.Error,
+                container = LbStateContainer.Strip,
+                action = ScreenAction(stringResource(R.string.panel_retry_tap), onRetry),
                 modifier = modifier
-                    .fillMaxWidth()
-                    .clip(LoveBrainShape.lg)
-                    .background(ErrorBg)
-                    .padding(Spacing.xl)
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = result.message, color = Error, style = AppTypography.bodySmall)
-                    Spacer(Modifier.height(Spacing.md))
-                    // 语义树实量 **72x26dp、role=无**：这一档是错误态，屏幕上唯一能自救的东西
-                    // 就是这颗重试，而它只有 26dp 高——旁边那行注释原来写的是
-                    // "热区外扩至 ≥24dp"，**把 24dp 当成达标**，:596 要的是 48。
-                    // 归 `LbTextAction`（设计系统里"文字动作"唯一一处）：热区见方、`Role.Button`、
-                    // 按压缩放都不用再各页自己抄一遍；标签走资源（本机 en 解析成 Tap to retry）。
-                    LbTextAction(
-                        label = stringResource(com.lovebrain.app.R.string.panel_retry_tap),
-                        onClick = onRetry
-                    )
-                }
-            }
+            )
         }
 
         // 未配置供应商——空态不做死路，引导去设置页（可点通）
@@ -724,45 +713,25 @@ private fun CoreLoadingIndicator(
 }
 
 /**
- * 输入已变化提示——结果来自修改前内容时展示。
- * 主按钮为"按新输入生成"。
+ * 输入已变化提示——结果来自修改前内容时展示，主操作是"按新输入生成"。
+ *
+ * 形状原来是自己画的：一条 `Row` + `WarningBg` 底 + 1dp `Warning` 描边，尾部那颗实心
+ * 胶囊是裸 `Text.clickable`——本机语义树读得到的是 **role=无**、两轴都没垫到下限
+ * （它就是异形账本里 `ResultArea.kt#InputChangedBanner` 那一颗）。
+ * 现在转进 `LbEmptyState` 的 Strip 容器 + Warning 语气：说法、回调、语气三样照旧，
+ * 补齐的是热区与按钮角色，随归并一起消失的是那条描边与那颗胶囊底——留住它们就得给
+ * 组件开一个 `borderColor`/`containerColor` 旋钮，代价写在 `LbAsyncState.kt` 的契约段
+ * （同一处置在 `LbTextAction` 收编 `RowActionButton` 时记过一次：归并换的是所有者）。
+ * 文案两条都进了 `res/values` + `values-en`，英文环境下不再念中文。
  */
 @Composable
 private fun InputChangedBanner(
     onRegenerate: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(LoveBrainShape.md)
-            .background(WarningBg)
-            .border(1.dp, Warning, LoveBrainShape.md)
-            .padding(horizontal = Spacing.md, vertical = Spacing.sm),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = "输入已修改，当前答案基于修改前内容",
-            style = AppTypography.labelSmall,
-            color = Warning,
-            modifier = Modifier.weight(1f)
-        )
-        Spacer(Modifier.width(Spacing.sm))
-        val (regenInteraction, regenScale) = rememberPressScale(0.96f, "regenInputScale")
-        Text(
-            text = "按新输入生成",
-            style = AppTypography.labelSmall,
-            color = Color.White,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier
-                .graphicsLayer { scaleX = regenScale; scaleY = regenScale }
-                .clip(LoveBrainShape.sm)
-                .background(Primary)
-                .clickable(
-                    interactionSource = regenInteraction,
-                    indication = null,
-                    onClick = onRegenerate
-                )
-                .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
-        )
-    }
+    LbEmptyState(
+        message = stringResource(R.string.panel_input_changed),
+        tone = LbStateTone.Warning,
+        container = LbStateContainer.Strip,
+        action = ScreenAction(stringResource(R.string.panel_regenerate_with_new_input), onRegenerate)
+    )
 }
