@@ -40,11 +40,17 @@ val appModule = module {
     // 写口视图同样指回**同一个**仓库实例：OngoingPlanStore 这类只要写能力的 domain 协作者
     // 因此能拿到"只有写成员"的最窄视角，而落盘边界仍是仓库那一处，不是第二条链。
     single<com.lovebrain.app.domain.port.KnowledgeWritePort> { get<KnowledgeRepository>() }
-    // 页面侧那三颗端口（viewmodel 注入的类型）同上：每个都只是给**同一个**仓库对象再开一扇门。
-    // 判据不是"少写几行"：这三颗里任何一颗换成 `single { SomeWrapper(get()) }`，
+    // 页面侧那三颗端口（viewmodel 注入的类型）里，文档与运行时这两颗仍是给**同一个**仓库对象
+    // 再开一扇门。判据不是"少写几行"：这两颗里任何一颗换成 `single { SomeWrapper(get()) }`，
     // 图上就会出现两个持有文件系统的对象，"只有一个事务 owner"就不再能从图上读出来了。
     single<com.lovebrain.app.domain.port.KnowledgeDocumentPort> { get<KnowledgeRepository>() }
-    single<com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort> { get<KnowledgeRepository>() }
+    // 目录那颗不一样：实现者是仓库持有的协作者 `catalogWrites`（KnowledgeCatalogWriteStore），
+    // 不是仓库本身。它是"库的存在性"的写侧主人——建、删、切当前库、改显示名第一次可以在
+    // **不抱着整个仓库**的情况下被调用（§5.3 那条完成定义）。
+    // 这不算第二个持有文件系统的对象：它不持锁、不摸 File、不落盘，四件承重的事都经
+    // CatalogWriteStorage 问回仓库（唯一那把 fileMutex、唯一那条写链、唯一那道路径守门）。
+    // 换成 `get<KnowledgeRepository>()` 就等于把这格又塞回唯一入口，那才是回退。
+    single<com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort> { get<KnowledgeRepository>().catalogWrites }
     single<com.lovebrain.app.domain.port.KnowledgeRuntimePort> { get<KnowledgeRepository>() }
     // 归档能力交给一个只搬流的小适配器：它把目录归属（knowledge/ 根、cache 暂存）收在实现侧，
     // 转手仍用那唯一的 KbArchiveTransfer——不是第二条写链，只是把页面从具体类名解耦。

@@ -25,13 +25,15 @@ import com.lovebrain.app.model.ProfileTransactionResult
  *
  * **与 [KnowledgeReadPort] / [KnowledgeWritePort] 的分工**：那一对是给 domain 用的，
  * domain 只碰正文、WAL 与主题轮转；这里的三颗是给页面用的，页面还要管库的生命周期与内容台账。
- * 三颗端口与那一对都由同一个具体仓库实现，
- * 容器里每个端口视图都解析到**同一个仓库实例**（见 di/AppModule.kt 那段警告）——
- * 所以这里没有第二条写链，落盘边界仍然只有仓库里那一处。
+ * [KnowledgeDocumentPort] 与 [KnowledgeRuntimePort] 由同一个具体仓库实现；
+ * [KnowledgeBaseCatalogPort] 由仓库持有的那位目录写侧主人实现（`data/KnowledgeCatalogWriteStore`，
+ * 绑定见 di/AppModule.kt 那段说明）——它不持锁、不摸 File、不落盘，锁、路径守门、落盘、编解码
+ * 四件承重的事都问回仓库，所以这里仍然没有第二条写链，落盘边界仍然只有仓库里那一处。
  *
  * 成员重叠（readFile / writeFile / listAll / getActive / updateStage / migrateIfNeeded 出现在两颗端口里）
  * 是有意的：接口的形状跟着**调用方**走，两个调用方各自需要时才各自声明一次，
- * 而不是为了去重把两边并成一颗谁都能调谁的口子。实现方（仓库）一处实现覆盖两边。
+ * 而不是为了去重把两边并成一颗谁都能调谁的口子。实现方（仓库）一处实现覆盖两边，
+ * 目录写侧对重叠那几员是**转手**而不是又写一份判据。
  */
 
 /**

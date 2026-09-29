@@ -54,7 +54,7 @@ class RepositoryRollbackFaultInjectionTest {
     }
 
     private suspend fun setupKb(repo: KnowledgeRepository, kbName: String = "kb1") {
-        repo.create(kbName, "测试")
+        repo.catalogWrites.create(kbName, "测试")
         val dir = File(root, kbName)
         File(dir, "understand").mkdirs()
         File(dir, "understand/me.md").writeText("original me")

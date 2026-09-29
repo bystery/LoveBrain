@@ -2,10 +2,8 @@ package com.lovebrain.app.data
 
 import android.content.Context
 import com.lovebrain.app.model.IntentConfig
-import com.lovebrain.app.model.KB_NAME_MAX_LENGTH
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.KnowledgeSchemaVersion
-import com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort
 import com.lovebrain.app.domain.port.KnowledgeDocumentPort
 import com.lovebrain.app.domain.port.KnowledgePort
 import com.lovebrain.app.domain.port.KnowledgeRuntimePort
@@ -36,13 +34,23 @@ import java.util.Locale
  *
  * 所有公开方法 suspend + withContext(Dispatchers.IO) 确保主线程无磁盘 IO；
  * read-modify-write 路径经 fileMutex.withLock 保护，防止并发读写冲突。
+ *
+ * 本类是**落盘边界**的唯一持有者：唯一的原子写、唯一的 canonical 守门、唯一的写者锁都留在这里，
+ * 各格子（迁移、备份、枚举、文档、记忆、画像、归档、目录写侧）一律经自己那一份
+ * 窄能力接口回到这三件，没有第二份实现。
+ *
+ * 「库的存在性」的写侧（建/删/切/改名）不在本类，归 [KnowledgeCatalogWriteStore]：
+ * 页面要管库只需要那颗 [com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort]，
+ * 不需要抱着整个仓库。首次启动那格也搬过去了，这里只留
+ * [ensureInitialKnowledgeBase] 一行转手——它挂在 `KnowledgeRuntimePort` 上，
+ * 调用方是首页启动流程，端口删不掉它。
  */
 class KnowledgeRepository(
     private val knowledgeRoot: File,
     private val securePrefs: SecurePrefs,
     private val context: Context,
     private val appScope: CoroutineScope
-) : KnowledgePort, KnowledgeDocumentPort, KnowledgeBaseCatalogPort, KnowledgeRuntimePort {
+) : KnowledgePort, KnowledgeDocumentPort, KnowledgeRuntimePort {
     private val json = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
@@ -71,9 +79,9 @@ class KnowledgeRepository(
      */
     private val migrator = KnowledgeMigrator(migratorStorage)
 
-    /** 交给迁移器用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
+    /** 交给各格子用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
     private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage, DocumentStorage,
-        MemoryStorage, ProfileStorage, ArchiveStorage {
+        MemoryStorage, ProfileStorage, ArchiveStorage, CatalogWriteStorage {
         override val root: File get() = knowledgeRoot
         override val catalogRoot: File get() = knowledgeRoot
 
@@ -197,6 +205,85 @@ class KnowledgeRepository(
         override suspend fun setWarmthStageLabel(kbName: String, stage: String): Unit =
             updateWarmthStageLabelUnlocked(kbName, stage)
         override fun timestamp(): String = isoNow()
+
+        // ═══ 目录写侧那一格（KnowledgeCatalogWriteStore）拿到的能力 ═══
+        // 三件承重的事一件都没交出去：锁还是这一把（inWriteLock 只是把调用方请进来）、
+        // 路径还是 safeKbFile 那一道（事务块里交出去的是 CatalogTx 而不是 File）、
+        // 落盘还是唯一那条写链（transactionUnlocked → KnowledgeTx → writeFileCheckedUnlocked）。
+
+        override suspend fun <T> inWriteLock(block: suspend () -> T): T = fileMutex.withLock { block() }
+
+        override fun writeCatalogTransaction(kbName: String, block: CatalogTx.() -> Unit) {
+            transactionUnlocked(kbName) { CatalogTxView(this).block() }
+        }
+
+        /** 根下所有非隐藏目录：切库要逐库改 kb.json，含还没元数据的那类目录，所以不经枚举格 */
+        override fun catalogDirNames(): List<String> = visibleKbDirs().map { it.name }
+
+        override fun newestCatalogDirName(): String? =
+            visibleKbDirs().maxByOrNull { it.lastModified() }?.name
+
+        override fun catalogDirPresent(kbName: String): Boolean = File(knowledgeRoot, kbName).exists()
+
+        /** 库目录 + 三层子目录；幂等，"新建"与"补齐"共用这一个形状定义 */
+        override fun makeCatalogSkeleton(kbName: String) {
+            val dir = File(knowledgeRoot, kbName)
+            dir.mkdirs()
+            CATALOG_LAYERS.forEach { File(dir, it).mkdirs() }
+        }
+
+        /**
+         * 删除整库目录。canonical 守卫刻意留在这里：判"这个目录在不在 knowledge/ 树内"
+         * 全仓只许有一处口径，目录写侧想删就得问这一处，不许自己抄一份。
+         */
+        override fun removeCatalogDir(kbName: String): Boolean {
+            val dir = File(knowledgeRoot, kbName)
+            val canonicalDirPath = dir.canonicalPath
+            val canonicalRootPath = knowledgeRoot.canonicalPath
+            if (!canonicalDirPath.startsWith(canonicalRootPath + File.separator)) return false
+            if (!dir.exists()) return false
+            val ok = dir.deleteRecursively()
+            // 清理旧版本遗留的 .trash（若存在），一次性腾空
+            File(knowledgeRoot, LEGACY_TRASH_DIR).takeIf { it.exists() }?.deleteRecursively()
+            return ok
+        }
+
+        override fun deleteCatalogBackups(kbName: String) = backup.deleteBackupsFor(kbName)
+
+        override fun initMarkerPresent(): Boolean = File(knowledgeRoot, INIT_MARKER_FILE).exists()
+
+        /** 全部 seed 落成了才由写侧调用；半套文件 + 标记 = 下次启动不再补 */
+        override fun markInitialized() {
+            File(knowledgeRoot, INIT_MARKER_FILE).writeText("done")
+        }
+
+        /** 枚举判据只有目录读侧那一份 */
+        override fun entries(): List<KnowledgeBase> = catalog.list()
+
+        /** 编解码共用本类那一份 Json 配置：给第二个类另配一把尺就等于换了判据 */
+        override fun encodeMeta(kb: KnowledgeBase): String =
+            json.encodeToString(KnowledgeBase.serializer(), kb)
+
+        override fun template(name: String): String = loadSchema(name)
+
+        override var activeKbName: String
+            get() = securePrefs.activeKbName
+            set(value) { securePrefs.activeKbName = value }
+
+        override suspend fun migrateCatalogEntry(kbName: String) = migrator.migrateUnlocked(kbName)
+
+        /** 节流备份的启动者仍是本类（外部 CoroutineScope 只能由协调器持有） */
+        override fun scheduleBackup() = scheduleDebouncedBackup()
+
+        /** 当前库那三级回退的判据住在 [getActive]，目录写侧不抄第二份 */
+        override suspend fun activeEntry(): KnowledgeBase? = getActive()
+
+        /** 阶段标签的主人画像格，白名单归一化与拒绝措辞都在那里 */
+        override suspend fun writeStage(kbName: String, stage: String) = updateStage(kbName, stage)
+
+        /** 正文写回到 [writeFile]：只读判定、"库没了别复活"那两条都还在原处 */
+        override suspend fun writeDocument(kbName: String, relativePath: String, content: String) =
+            writeFile(kbName, relativePath, content)
     }
 
     /**
@@ -212,8 +299,9 @@ class KnowledgeRepository(
      * 目录枚举（§5.3 catalog 第一刀）：读哪些目录、什么算一个库、按什么排，全在它里。
      *
      * 这格拆出来不是因为仓库大，而是因为这件事**以前在本类里写了两遍**——
-     * 公开的 `listAll()` 与无锁的 `listAllUnlocked()` 各一份，且只有一份会说话（记日志）。
-     * 现在两个入口共用一个实现。
+     * 公开的 `listAll()` 与无锁的枚举各一份，且只有一份会说话（记日志）。
+     * 现在两个入口（本类的 [listAll] 与目录写侧经 [CatalogWriteStorage.entries] 的那一次）
+     * 共用这一个实现。
      */
     private val catalog = KnowledgeCatalogStore(RepoStorage())
 
@@ -264,6 +352,19 @@ class KnowledgeRepository(
      * 它比画像格宽一样是因为它确实管四步与一个状态文件；再宽就要开始拆"初始化"了。
      */
     private val archive = KnowledgeArchiveService(RepoStorage())
+
+    /**
+     * 「库的存在性」的写侧（§5.3 catalog 那一格的后半）：建、删、切当前库、改显示名、首次启动 seed。
+     *
+     * 交出去的是这个**对象**而不是仓库上的一层转手方法——页面注入
+     * [com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort] 时拿到的就是它，
+     * 于是"管库"这件事不再要求调用方抱着整个仓库（"KnowledgeRepository 不再是所有知识能力的唯一入口"）。
+     * 它拿到的能力清单见 [CatalogWriteStorage]：锁、路径、落盘三件都仍在本类。
+     *
+     * internal 只为测试与 di/AppModule.kt 能直接拿到那位主人——绑定端口时指回这里，
+     * 而不是再造一个包装（两个持有文件系统的对象就等于没有唯一入口）。
+     */
+    internal val catalogWrites = KnowledgeCatalogWriteStore(RepoStorage())
 
     /** 备份节流：记录最后一次写入时间，debounce 5s 后触发增量备份 */
     private val backupDebounceMs = 5_000L
@@ -599,6 +700,30 @@ class KnowledgeRepository(
     }
 
     /**
+     * 把 [KnowledgeTx] 收窄成目录写侧能看见的三件事（seed 写、改 meta、判某一格在不在）。
+     *
+     * 与 [ArchiveTxView] 同一用意，而且这里更要紧：建库与补齐原本都习惯先 `File(dir, path)`
+     * 再问一句 `exists()`——那一步就是"第二个路径所有者"。现在判存在性也只能问
+     * [KnowledgeTx.pathOf] 那一道守门，越界路径既写不进、也判不出存在。
+     */
+    private class CatalogTxView(private val tx: KnowledgeTx) : CatalogTx {
+        override fun write(relativePath: String, content: String): Boolean = tx.write(relativePath, content)
+        override fun updateMeta(transform: (KnowledgeBase) -> KnowledgeBase): Boolean =
+            tx.updateMeta(transform)
+        override fun exists(relativePath: String): Boolean = tx.pathOf(relativePath)?.exists() == true
+    }
+
+    /**
+     * 根下"看着像一个库目录"的那些：是目录、名字不以 `.` 开头。
+     *
+     * 比枚举格 [KnowledgeCatalogStore.list] 宽，而且必须宽：切库要把 `active` 写回**每一个**
+     * 目录里的 kb.json（含元数据坏掉、名字对不上而列不进清单的那些），否则磁盘上会出现
+     * 两个 active=true。枚举判据归枚举格，这里只回答"根下有哪些目录"。
+     */
+    private fun visibleKbDirs(): List<File> =
+        knowledgeRoot.listFiles()?.filter { it.isDirectory && !it.name.startsWith(".") } ?: emptyList()
+
+    /**
      * 给"已经持有 [fileMutex]"的内部路径用。
      *
      * 判定与 [transaction] 完全同一把尺；Mutex 非重入，锁内不能再调 [transaction]。
@@ -645,154 +770,17 @@ class KnowledgeRepository(
         fileMutex.withLock { migrator.migrateUnlocked(kbName) }
     }
 
-    // ═══════════ 默认知识库初始化 ═══════════
+    // ═══════════ 默认知识库初始化（判断与 seed 归 KnowledgeCatalogWriteStore）═══════════
 
     /**
      * 确保应用至少有一个合法知识库。应用初始化唯一入口。
      *
-     * 规则：
-     * 1. 有库沿用原激活项；不创建新库
-     * 2. 首次无库创建恰好一个"默认知识库"，阶段"待确定"，画像空
-     * 3. 用户主动删除最后一个库后不重复创建（通过 .kb_initialized 标记区分）
-     * 4. 导入优先：有导入的库存在时不创建默认库
-     * 5. 中断恢复优先补齐缺失文件，不 deleteRecursively 后重建
-     * 6. 全部写入成功才标完成
-     * 7. 无网络、无模型配置也成功
+     * 七条规则与那 13 格 seed 的判定现在都在 [catalogWrites] 里，这里只剩一次转手——
+     * 留这一行不是舍不得删，是这颗口挂在 `KnowledgeRuntimePort` 上：调用它的是首页启动流程
+     * （`LoveBrainViewModel`），不是管理页那颗目录端口。端口不动它，本类就不能把它撤了。
+     * 只读判定、锁、路径守门、落盘四件仍然一样在本类那一侧（见 [CatalogWriteStorage]）。
      */
-    override suspend fun ensureInitialKnowledgeBase() = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            val initMarker = File(knowledgeRoot, ".kb_initialized")
-            val existingKbs = listAllUnlocked()
-
-            if (existingKbs.isNotEmpty()) {
-                // R11: 已有库——先完成旧格式迁移，再补缺失文件。
-                // 旧顺序：先 ensureKbFilesComplete 创建空文件，再 migrateIfNeeded——
-                // 空文件遮住迁移（migrateIfNeeded 以 understand 已存在为提前返回条件）。
-                existingKbs.forEach { kb -> 
-                    migrator.migrateUnlocked(kb.name)
-                    ensureKbFilesCompleteUnlocked(kb.name)
-                }
-                initMarker.writeText("done")
-                return@withLock
-            }
-
-            // 无库——区分"首次启动"和"用户删除最后一个库后"
-            if (initMarker.exists()) {
-                // 用户已初始化过，之后删除了所有库——不重复创建
-                return@withLock
-            }
-
-            // 首次启动——创建默认知识库
-            val defaultName = "default"
-            val defaultDir = File(knowledgeRoot, defaultName)
-            defaultDir.mkdirs()
-            File(defaultDir, "understand").mkdirs()
-            File(defaultDir, "moment").mkdirs()
-            File(defaultDir, "memory").mkdirs()
-
-            val now = isoNow()
-            val kb = KnowledgeBase(
-                name = defaultName,
-                displayName = "默认知识库",
-                updatedAt = now,
-                stage = "待确定",
-                turnCount = 0,
-                topicCount = 0,
-                active = true
-            )
-            // seed 的 13 格全走唯一写链：transactionUnlocked → KnowledgeTx.write →
-            // writeFileCheckedUnlocked（只读判定 + safeKbFile 路径守门 + atomicWriteText）。
-            // 2026-09-27 之前这里是自己拼 `File(defaultDir, …)` 再裸调 atomicWriteText，
-            // 于是"绕过 KnowledgeTx 拿路径"的裸写点在这儿挂了 13 处。
-            // 锁已由外层 fileMutex.withLock 持有；[transactionUnlocked] 不要求"库已存在"，
-            // 所以对刚 mkdirs 出来的新目录照样可用。落盘字节由 `KnowledgeSeedWriteBytesBaselineTest`
-            // 逐格钉住（路径 + 内容 + 文件集合），搬运前后那张清单必须一致。
-            transactionUnlocked(defaultName) {
-                write("kb.json", json.encodeToString(KnowledgeBase.serializer(), kb))
-
-                // 画像默认真实空内容（非 schema 模板占位文字）
-                write("understand/me.md", "")
-                write("understand/her.md", "")
-                write("understand/warmth.md", "")
-                // 此刻层：topic 有初始行，其余空
-                write(
-                    "moment/topic.md",
-                    KbTextOps.topicLine(com.lovebrain.app.util.TimeFmt.now(), KbTextOps.TOPIC_INITIAL_LABEL)
-                )
-                write("moment/recent.md", "")
-                write("moment/scene.md", "")
-                write("moment/plan.md", loadSchema("plan"))
-                // 记忆层：全部空
-                write("memory/lessons.md", "")
-                write("memory/raw_chat.md", "")
-                write("memory/raw_topic.md", "")
-                write("memory/raw_scene.md", "")
-                write("memory/counseling_log.md", "")
-            }
-
-            // 全部写入成功才标完成
-            securePrefs.activeKbName = defaultName
-            initMarker.writeText("done")
-            scheduleDebouncedBackup()
-        }
-    }
-
-    /**
-     * 无锁版 listAll（调用方持有 fileMutex）。
-     *
-     * 以前这里是**第二份**"扫目录 + 校验 name + 排序"的实现，和公开的 [listAll] 各写一遍，
-     * 差别只在这一份被挡下时什么都不说。现在两条路径共用 [KnowledgeCatalogStore]。
-     */
-    private fun listAllUnlocked(): List<KnowledgeBase> = catalog.list()
-
-    /**
-     * 检查知识库文件是否完整，补齐缺失文件（中断恢复）。
-     * 不 deleteRecursively，只补缺失。调用方持有 fileMutex。
-     */
-    private fun ensureKbFilesCompleteUnlocked(kbName: String) {
-        val dir = File(knowledgeRoot, kbName)
-        if (!dir.isDirectory) return
-
-        File(dir, "understand").mkdirs()
-        File(dir, "moment").mkdirs()
-        File(dir, "memory").mkdirs()
-
-        // 补齐缺失的必需文件（不覆盖已有内容）
-        val requiredFiles = listOf(
-            "understand/me.md" to "",
-            "understand/her.md" to "",
-            "understand/warmth.md" to "",
-            "moment/recent.md" to "",
-            "moment/scene.md" to "",
-            "moment/plan.md" to loadSchema("plan"),
-            "memory/lessons.md" to "",
-            "memory/raw_chat.md" to "",
-            "memory/raw_topic.md" to "",
-            "memory/raw_scene.md" to "",
-            "memory/counseling_log.md" to ""
-        )
-
-        // 补齐缺失的必需文件（不覆盖已有内容）。
-        // 判"存不存在"必须用 `exists()` 而不是 `readTextAt().isEmpty()`——后者会把
-        // "文件在、内容为空"误判成缺失，于是给一个用户故意留空的 plan.md 盖回 schema 模板。
-        // 上链之后路径仍由 `KnowledgeTx.pathOf` 给（同一个 safeKbFile 判定），
-        // 写仍走 `write` → writeFileCheckedUnlocked，这里不再有裸 `atomicWriteText`。
-        transactionUnlocked(kbName) {
-            requiredFiles.forEach { (path, defaultContent) ->
-                val file = pathOf(path)
-                if (file != null && !file.exists()) write(path, defaultContent)
-            }
-
-            // topic.md 特殊处理：不存在时写入初始行
-            val topicFile = pathOf("moment/topic.md")
-            if (topicFile != null && !topicFile.exists()) {
-                write(
-                    "moment/topic.md",
-                    KbTextOps.topicLine(com.lovebrain.app.util.TimeFmt.now(), KbTextOps.TOPIC_INITIAL_LABEL)
-                )
-            }
-        }
-    }
+    override suspend fun ensureInitialKnowledgeBase() = catalogWrites.ensureInitialKnowledgeBase()
 
     // ═══════════ 公开 API ═══════════
 
@@ -812,85 +800,13 @@ class KnowledgeRepository(
             ?: all.firstOrNull()
     }
 
-    override suspend fun setActive(name: String) = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            setActiveUnlocked(name)
-        }
-    }
-
-    /**
-     * setActive 的无锁核心：调用方必须已持有文件互斥锁（Mutex 非重入，锁内再抢=永久挂起）
-     *
-     * 写边界：切库要重写**每个**库的 kb.json。旧实现直接 `atomicWriteText(metaFile, …)`，
-     * 于是 schema 过新的只读库也会在这里被改掉 active 字段。现在逐库走 [KnowledgeTx]。
-     */
-    private fun setActiveUnlocked(name: String) {
-        securePrefs.activeKbName = name
-        knowledgeRoot.listFiles()
-            ?.filter { it.isDirectory && !it.name.startsWith(".") }
-            ?.forEach { dir ->
-                transactionUnlocked(dir.name) {
-                    updateMeta { kb -> kb.copy(active = kb.name == name) }
-                }
-            }
-    }
-
-    override suspend fun create(name: String, displayName: String): KnowledgeBase = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            val safeName = name.trim().lowercase(Locale.ROOT).replace(Regex("[^a-z0-9\\u4e00-\\u9fa5_-]"), "")
-            require(safeName.isNotEmpty()) { "知识库名不能为空" }
-            // 长度判定以前只住在 `KbName` 那一侧，而这里的 sanitizer 只过滤字符集不限长度，
-            // 于是 101+ 字符的名字能建出库、却每次读都被 `safeKbFile` 判非法（拿回空串）。
-            // 现在两处读同一个常数 `KB_NAME_MAX_LENGTH`：建不出来的那种库，也不会有半套文件落在盘上。
-            require(safeName.length <= KB_NAME_MAX_LENGTH) {
-                "知识库名过长（最多 $KB_NAME_MAX_LENGTH 个字符）"
-            }
-            val dir = File(knowledgeRoot, safeName)
-            require(!dir.exists()) { "知识库 '$safeName' 已存在" }
-
-            File(dir, "understand").mkdirs()
-            File(dir, "moment").mkdirs()
-            File(dir, "memory").mkdirs()
-
-            val now = isoNow()
-            val kb = KnowledgeBase(
-                name = safeName,
-                displayName = displayName.ifBlank { safeName },
-                updatedAt = now,
-                stage = "待确定",
-                turnCount = 0,
-                active = listAll().isEmpty()
-            )
-            // 建库的 13 格 seed 全走唯一写链（与 `ensureInitialKnowledgeBase` 同一形状）：
-            // KnowledgeTx.write → writeFileCheckedUnlocked（入口侧只读判定 + safeKbFile 路径守门 + 唯一原子写）。
-            // 上面的长度判定是这次上链的**前提**：没有它，链下与链上的行为对 101+ 字符名并不等价。
-            // 每格落盘什么字节由 `KnowledgeSeedWriteBytesBaselineTest` 逐格钉住（含 schema 正文与 assets 原字节比）。
-            transactionUnlocked(safeName) {
-                write("kb.json", json.encodeToString(KnowledgeBase.serializer(), kb))
-
-                // 全部文件从 assets/schema/ 加载（schema 是知识库结构的唯一来源）
-                // 懂得层（慢变量画像）
-                write("understand/me.md", loadSchema("me"))
-                write("understand/her.md", loadSchema("her"))
-                write("understand/warmth.md", loadSchema("warmth"))
-                // 此刻层（快变量上下文）
-                write("moment/topic.md", loadSchema("topic"))
-                write("moment/recent.md", loadSchema("recent"))
-                write("moment/scene.md", loadSchema("scene"))
-                write("moment/plan.md", loadSchema("plan"))
-                // 记忆层（长期归档）
-                write("memory/lessons.md", loadSchema("lessons"))
-                write("memory/raw_chat.md", loadSchema("raw_chat"))
-                write("memory/raw_topic.md", loadSchema("raw_topic"))
-                write("memory/raw_scene.md", loadSchema("raw_scene"))
-                write("memory/counseling_log.md", loadSchema("counseling_log"))
-            }
-
-            if (kb.active) securePrefs.activeKbName = safeName
-            scheduleDebouncedBackup()
-            kb
-        }
-    }
+    // ═══════════ 库的存在性（建 / 删 / 切当前 / 改名）归 KnowledgeCatalogWriteStore ═══════════
+    //
+    // 这四个不再在本类上露面：`create` / `delete` / `setActive` / `updateDisplayName` 连同
+    // "切库要逐库改 kb.json""删成功才删备份""名字过长先拒"三套判断一起搬进 [catalogWrites]。
+    // 页面与测试都从 `KnowledgeBaseCatalogPort` 拿它们，那颗端口现在由 [catalogWrites] 实现。
+    // 本类留下的是它们要问的四件：唯一那把锁、唯一那条写链、唯一那道路径守门、唯一的编解码尺
+    // （见 [CatalogWriteStorage] 那份实现）。
 
     // ═══════════ 持续意图（每 KB 一份，moment/intent.json） ═══════════
 
@@ -1087,37 +1003,6 @@ class KnowledgeRepository(
      */
     private fun readMemoryRevisionUnlocked(kbName: String): Int = memory.revisionOf(kbName)
 
-    /** 删除知识库（/：物理删除——UI 已有确认步骤，不再进 .trash 永久残留隐私数据）
-     *  delete 成功后同时删除该 KB 的全部 backup，防止私密副本残留 */
-    override suspend fun delete(name: String): Boolean = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            val dir = File(knowledgeRoot, name)
-            //  canonical 纵深守卫——删除目标必须落在 knowledge/ 树内（与 unzipToKnowledge entry 防护同写法）
-            val canonicalDirPath = dir.canonicalPath
-            val canonicalRootPath = knowledgeRoot.canonicalPath
-            if (!canonicalDirPath.startsWith(canonicalRootPath + File.separator)) return@withLock false
-            if (!dir.exists()) return@withLock false
-            val ok = dir.deleteRecursively()
-            // 清理旧版本遗留的 .trash（若存在），一次性腾空
-            File(knowledgeRoot, ".trash").takeIf { it.exists() }?.deleteRecursively()
-            // 正式目录删除成功后才删 backup，防止删 backup 后正式目录删失败导致备份丢失
-            if (ok) {
-                backup.deleteBackupsFor(name)
-            }
-            if (ok && securePrefs.activeKbName == name) {
-                val next = knowledgeRoot.listFiles()
-                    ?.filter { it.isDirectory && !it.name.startsWith(".") }
-                    ?.maxByOrNull { it.lastModified() }
-                if (next != null) {
-                    setActiveUnlocked(next.name)
-                } else {
-                    securePrefs.activeKbName = ""
-                }
-            }
-            ok
-        }
-    }
-
     /**
      * 读取文件（自动兼容新旧路径）。
      *
@@ -1264,18 +1149,6 @@ class KnowledgeRepository(
     /** 读取当前阶段（kb.json）；读不到或库在根外时给空串 */
     override suspend fun getCurrentStage(kbName: String): String = withContext(Dispatchers.IO) {
         profile.stageOf(kbName)
-    }
-
-    /** 修改知识库显示名（在知识库管理页点击显示名编辑）
-     *  返回类型显式写 Unit 与端口对齐（同 incrementTurnCountBy 那一格的先例）：
-     *  不写的话它会跟着事务块里最后一个表达式推断成 Boolean，端口那头就对不上。 */
-    override suspend fun updateDisplayName(kbName: String, newDisplay: String): Unit = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            if (newDisplay.isBlank()) return@withLock
-            transactionUnlocked(kbName) {
-                updateMeta { kb -> kb.copy(displayName = newDisplay.trim(), updatedAt = isoNow()) }
-            }
-        }
     }
 
     /** 设置知识库阶段标签（onboarding 推断 / 向量重估触发阶段变化时用）。写入前经 StageCatalog 归一化
@@ -1835,6 +1708,18 @@ class KnowledgeRepository(
         const val MEMORY_REVISION_FILE = "memory/.revision"
         const val CORRECTIONS_FILE = "memory/corrections.json"
         // rotateTopic 的状态文件名跟着归档格走（KnowledgeArchiveService.STATE_FILE），这里不留第二份
+
+        /**
+         * 根级标记与库目录的三层形状。
+         *
+         * 这三个名字只有本类认得到：`.kb_initialized` 与 `.trash` 不属于任何库
+         * （`kbOwning` 对点开头的根级条目返回 null，所以它们不受只读保护），
+         * 三层目录是"一个库长什么样"的唯一口径——建库与补齐都问 [makeCatalogSkeleton]，
+         * 别处再抄一份目录名列表就等于第二个所有者。
+         */
+        const val INIT_MARKER_FILE = ".kb_initialized"
+        private const val LEGACY_TRASH_DIR = ".trash"
+        private val CATALOG_LAYERS = listOf("understand", "moment", "memory")
     }
 
     /** 从 assets/schema/ 加载知识库初始化模板（标题骨架 = 单一数据源） */

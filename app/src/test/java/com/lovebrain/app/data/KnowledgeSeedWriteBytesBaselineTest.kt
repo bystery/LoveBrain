@@ -252,7 +252,7 @@ class KnowledgeSeedWriteBytesBaselineTest {
     @Test
     fun `create seeds exactly the baseline bytes`() = runBlocking {
         val repo = newRepo()
-        val kb = repo.create("Seed KB-1", "显示名")
+        val kb = repo.catalogWrites.create("Seed KB-1", "显示名")
         assertEquals("库名要先过 sanitizer", "seedkb-1", kb.name)
         val dir = File(root, "seedkb-1")
         checkManifest("create", dir, createdKbManifest("seedkb-1", "显示名"))
@@ -265,7 +265,7 @@ class KnowledgeSeedWriteBytesBaselineTest {
     @Test
     fun `create with blank display name seeds the name fallback bytes`() = runBlocking {
         val repo = newRepo()
-        repo.create("fallback", "   ")
+        repo.catalogWrites.create("fallback", "   ")
         // 显示名为空时 displayName 回落成库名，其余 12 格与上面那张表同一份字节
         val expected = createdKbManifest("fallback", "fallback")
         checkManifest("create-blank-display", File(root, "fallback"), expected)
@@ -312,7 +312,7 @@ class KnowledgeSeedWriteBytesBaselineTest {
         // 建库之前盘上已有什么就留什么：仓库自己会在根下挂 .backup / .last_backup 这类目录，
         // 那是它自己的账，与这次拒绝无关——所以判据是"集合不许变"，不是"根目录必须空"。
         val before = root.listFiles()?.map { f -> f.name }?.sorted() ?: emptyList<String>()
-        val thrown = runCatching { repo.create(tooLongForTheGuard, "长名库") }.exceptionOrNull()
+        val thrown = runCatching { repo.catalogWrites.create(tooLongForTheGuard, "长名库") }.exceptionOrNull()
         assertTrue("create 应当用 IllegalArgumentException 拒过长库名，实到 $thrown",
             thrown is IllegalArgumentException)
         assertTrue(
@@ -341,23 +341,41 @@ class KnowledgeSeedWriteBytesBaselineTest {
     fun `the knowledge base name length limit lives in exactly one place`() {
         val mainRoot = File("src/main/java/com/lovebrain/app").takeIf { it.isDirectory }
             ?: File("app/src/main/java/com/lovebrain/app")
+        // ⚠ 这一格原本钉的是"仓库文件里那一处 require"。本拍建库那条路径整段搬进了
+        //   `data/KnowledgeCatalogWriteStore.kt`（§5.3：仓库不再是所有知识能力的唯一入口），
+        //   所以判据改成**跨这两个所有者一起扫**：谁持有 `create` 的 require 都认，
+        //   但只要出现"自己抄一个 100"或"两处都没引用常数"就红——覆盖面比原来宽，不是放宽。
         val repoSrc = File(mainRoot, "data/KnowledgeRepository.kt").readText(Charsets.UTF_8)
+        val storeSrc = File(mainRoot, "data/KnowledgeCatalogWriteStore.kt").readText(Charsets.UTF_8)
         val nameSrc = File(mainRoot, "model/KnowledgeSchemaVersion.kt").readText(Charsets.UTF_8)
 
-        assertTrue("找不到被测文件——这条会恒绿，比不测更坏", repoSrc.isNotBlank() && nameSrc.isNotBlank())
+        assertTrue(
+            "找不到被测文件——这条会恒绿，比不测更坏",
+            repoSrc.isNotBlank() && storeSrc.isNotBlank() && nameSrc.isNotBlank()
+        )
         assertTrue(
             "`KbName` 不再引用共用的长度常数（实到：" +
                 Regex("length <= (\\S+)").find(nameSrc)?.groupValues?.get(1) + "）",
             nameSrc.contains("value.length <= KB_NAME_MAX_LENGTH")
         )
-        assertTrue(
-            "`create` 的长度判定必须引用同一个常数，别自己抄一个数",
-            repoSrc.contains("safeName.length <= KB_NAME_MAX_LENGTH")
+        val holders = listOf("data/KnowledgeRepository.kt" to repoSrc, "data/KnowledgeCatalogWriteStore.kt" to storeSrc)
+            .filter { (_, src) -> src.contains("safeName.length <= KB_NAME_MAX_LENGTH") }
+        assertEquals(
+            "`create` 的长度判定必须**恰好一处**引用同一个常数（0 = 搬走时把判定弄丢了；>1 = 两处各写一份）",
+            1, holders.size
         )
         assertTrue(
-            "`create` 里不许再出现第二处硬编码的 100 长度判定",
-            !repoSrc.contains("length <= 100")
+            "持有 require 的那一处必须在真的建库路径上（现在归 " +
+                "data/KnowledgeCatalogWriteStore.kt）；实到：${holders.map { it.first }}",
+            storeSrc.contains("safeName.length <= KB_NAME_MAX_LENGTH")
         )
+        listOf("data/KnowledgeRepository.kt" to repoSrc, "data/KnowledgeCatalogWriteStore.kt" to storeSrc)
+            .forEach { (name, src) ->
+                assertTrue(
+                    "$name 里不许再出现第二处硬编码的 100 长度判定（同源那条规矩）",
+                    !src.contains("length <= 100")
+                )
+            }
         assertEquals(
             "这个数全仓只许有一处定义（多了就说明有人又开始各抄一份）",
             1, Regex("const val KB_NAME_MAX_LENGTH").findAll(nameSrc).count()
@@ -374,7 +392,7 @@ class KnowledgeSeedWriteBytesBaselineTest {
     @Test
     fun `repair fills missing files but never overwrites an intentionally empty one`() = runBlocking {
         val repo = newRepo()
-        repo.create("repairme", "修补测试")
+        repo.catalogWrites.create("repairme", "修补测试")
         val dir = File(root, "repairme")
         val plan = File(dir, "moment/plan.md")
         assertTrue("前置：建库之后 plan.md 应当在盘上", plan.isFile)

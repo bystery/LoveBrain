@@ -80,11 +80,11 @@ class KbgBatch8Test {
             )
 
             // create KB "A"
-            repo.create("a", "KB-A")
+            repo.catalogWrites.create("a", "KB-A")
             assertTrue(File(tmpRoot, "a/kb.json").exists())
 
             // delete KB "A"
-            repo.delete("a")
+            repo.catalogWrites.delete("a")
             assertFalse(File(tmpRoot, "a").exists())
 
             // late write attempt should NOT recreate directory
@@ -109,10 +109,10 @@ class KbgBatch8Test {
                 appScope = kotlinx.coroutines.CoroutineScope(testDispatcher)
             )
 
-            repo.create("a", "KB-A")
+            repo.catalogWrites.create("a", "KB-A")
             assertTrue(File(tmpRoot, "a/kb.json").exists())
 
-            repo.delete("a")
+            repo.catalogWrites.delete("a")
             assertFalse(File(tmpRoot, "a").exists())
 
             // late append attempt should NOT recreate directory
@@ -137,10 +137,10 @@ class KbgBatch8Test {
                 appScope = kotlinx.coroutines.CoroutineScope(testDispatcher)
             )
 
-            repo.create("a", "KB-A")
+            repo.catalogWrites.create("a", "KB-A")
             assertTrue(File(tmpRoot, "a/kb.json").exists())
 
-            repo.delete("a")
+            repo.catalogWrites.delete("a")
             assertFalse(File(tmpRoot, "a").exists())
 
             repo.writeVector("a", mapOf("intimacy" to 60))
@@ -164,8 +164,8 @@ class KbgBatch8Test {
                 appScope = kotlinx.coroutines.CoroutineScope(testDispatcher)
             )
 
-            repo.create("a", "KB-A")
-            repo.delete("a")
+            repo.catalogWrites.create("a", "KB-A")
+            repo.catalogWrites.delete("a")
             assertFalse(File(tmpRoot, "a").exists())
 
             repo.updateStage("a", "暧昧期")
@@ -190,7 +190,7 @@ class KbgBatch8Test {
             )
 
             // create should still work (not blocked by existence guard)
-            repo.create("fresh", "Fresh KB")
+            repo.catalogWrites.create("fresh", "Fresh KB")
             assertTrue("create() 应正常工作", File(tmpRoot, "fresh/kb.json").exists())
         } finally {
             tmpRoot.deleteRecursively()
@@ -210,7 +210,7 @@ class KbgBatch8Test {
                 appScope = kotlinx.coroutines.CoroutineScope(testDispatcher)
             )
 
-            repo.create("migrate-test", "Migrate Test")
+            repo.catalogWrites.create("migrate-test", "Migrate Test")
             // migrateIfNeeded should work on existing KB
             repo.migrateIfNeeded("migrate-test")
             assertTrue("migrateIfNeeded() 应正常工作", File(tmpRoot, "migrate-test/kb.json").exists())
@@ -232,7 +232,7 @@ class KbgBatch8Test {
                 appScope = kotlinx.coroutines.CoroutineScope(testDispatcher)
             )
 
-            repo.create("alive", "Alive KB")
+            repo.catalogWrites.create("alive", "Alive KB")
             repo.writeFile("alive", "understand/me.md", "new content")
 
             val content = repo.readFile("alive", "understand/me.md")

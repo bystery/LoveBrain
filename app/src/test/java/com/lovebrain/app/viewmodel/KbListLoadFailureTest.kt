@@ -3,7 +3,7 @@ package com.lovebrain.app.viewmodel
 import android.content.Context
 import android.content.res.AssetManager
 import com.lovebrain.app.data.DeepSeekRepository
-import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort
 import com.lovebrain.app.model.KnowledgeBase
 import io.mockk.coEvery
 import io.mockk.every
@@ -57,7 +57,7 @@ class KbListLoadFailureTest {
 
     private val kb = KnowledgeBase(name = "kb_a", displayName = "她", active = true)
 
-    private fun repoStub(): KnowledgeRepository = mockk<KnowledgeRepository>(relaxed = true).also {
+    private fun repoStub(): KnowledgeBaseCatalogPort = mockk<KnowledgeBaseCatalogPort>(relaxed = true).also {
         coEvery { it.listAll() } returns listOf(kb)
         coEvery { it.getActive() } returns kb
     }
@@ -68,7 +68,7 @@ class KbListLoadFailureTest {
         every { it.assets } returns mockk<AssetManager>(relaxed = true)
     }
 
-    private fun newVm(repo: KnowledgeRepository) =
+    private fun newVm(repo: KnowledgeBaseCatalogPort) =
         KnowledgeBaseViewModel(
             contextStub(), repo, providerStub(),
             // 这一组只测列表读取失败，不碰归档；给个宽松桩端口即可
@@ -84,7 +84,7 @@ class KbListLoadFailureTest {
      * 不然重新桩一次就看不出重试到底有没有真的再读一遍。
      */
     private fun failActiveOn(
-        repo: KnowledgeRepository,
+        repo: KnowledgeBaseCatalogPort,
         failing: Set<Int>,
         calls: IntArray
     ) {

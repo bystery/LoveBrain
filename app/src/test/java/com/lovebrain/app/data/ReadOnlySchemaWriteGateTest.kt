@@ -146,7 +146,7 @@ class ReadOnlySchemaWriteGateTest {
         "writeVectorWithRevisionCheck" to {
             runBlocking { repo.writeVectorWithRevisionCheck("kb", mapOf("intimacy" to 99), 0) }
         },
-        "setActive" to { runBlocking { repo.setActive("kb") } },
+        "setActive" to { runBlocking { repo.catalogWrites.setActive("kb") } },
         "saveIntent" to { runBlocking { repo.saveIntent("kb", "持续的意图", true) } },
         "saveCorrection" to {
             runBlocking {
@@ -156,7 +156,7 @@ class ReadOnlySchemaWriteGateTest {
         "undoCorrection" to { runBlocking { repo.undoCorrection("kb", "mem-1") } },
         "incrementTurnCount" to { runBlocking { repo.incrementTurnCount("kb") } },
         "incrementTurnCountBy" to { runBlocking { repo.incrementTurnCountBy("kb", 3) } },
-        "updateDisplayName" to { runBlocking { repo.updateDisplayName("kb", "被 v3 改掉的显示名") } },
+        "updateDisplayName" to { runBlocking { repo.catalogWrites.updateDisplayName("kb", "被 v3 改掉的显示名") } },
         "updateStage" to { runBlocking { repo.updateStage("kb", "热恋期") } },
         "updateWarmthStageLabel" to { runBlocking { repo.updateWarmthStageLabel("kb", "热恋期") } },
         "writeVector" to { runBlocking { repo.writeVector("kb", mapOf("intimacy" to 12)) } },

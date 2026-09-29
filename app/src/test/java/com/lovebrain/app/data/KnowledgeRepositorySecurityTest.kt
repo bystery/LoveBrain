@@ -111,7 +111,7 @@ class KnowledgeRepositorySecurityTest {
                 val outsideFile = File(outsideDir, "precious.txt").apply { writeText("data") }
                 File(root, "gift").mkdirs()
                 try {
-                    val ok = newRepo().delete("../${outsideDir.name}")
+                    val ok = newRepo().catalogWrites.delete("../${outsideDir.name}")
 
                     assertFalse("遍历删除必须被拒绝", ok)
                     assertTrue("root 外目录不得受损", outsideDir.exists())
@@ -137,7 +137,7 @@ class KnowledgeRepositorySecurityTest {
                 File(dir, "understand").mkdirs()
                 File(dir, "understand/me.md").writeText("x")
 
-                val ok = newRepo().delete("kb")
+                val ok = newRepo().catalogWrites.delete("kb")
 
                 assertTrue("正常删除应成功", ok)
                 assertFalse("知识库目录应被物理删除", dir.exists())

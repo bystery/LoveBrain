@@ -87,7 +87,7 @@ class KnowledgeRepositoryDeleteBackupTest {
                 // 关键：kb-ab 的备份不应被 kb-a 的删除误伤
                 makeBackup("kb-ab", "20260913_0000")
 
-                val ok = newRepo().delete("kb-a")
+                val ok = newRepo().catalogWrites.delete("kb-a")
 
                 assertTrue("删除应成功", ok)
                 assertFalse("kb-a 正式目录应不存在", dirA.exists())

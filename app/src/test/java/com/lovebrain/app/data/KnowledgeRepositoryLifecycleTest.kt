@@ -157,7 +157,7 @@ class KnowledgeRepositoryLifecycleTest {
                 val repo = newRepo(activeKbName = "kba")
 
                 // 删除 active KB（kba）
-                val ok = repo.delete("kba")
+                val ok = repo.catalogWrites.delete("kba")
                 assertTrue("删除应成功", ok)
 
                 // 读取剩余库列表
@@ -193,7 +193,7 @@ class KnowledgeRepositoryLifecycleTest {
                 every { prefs.activeKbName = any<String>() } answers { activeName = arg(0) }
                 val repo = newRepoWithPrefs(prefs)
 
-                repo.delete("only")
+                repo.catalogWrites.delete("only")
 
                 assertEquals("删除最后一个库后 activeKbName 应为空", "", activeName)
             }

@@ -5,7 +5,7 @@ import android.content.res.AssetManager
 import android.net.Uri
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.FileKbArchiveTransfer
-import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort
 import com.lovebrain.app.domain.OnboardingSchema
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.ProviderTicket
@@ -87,7 +87,7 @@ class KnowledgeBaseViewModelTest {
 
     private fun vm(
         ctx: Context,
-        repo: KnowledgeRepository,
+        repo: KnowledgeBaseCatalogPort,
         deepSeek: DeepSeekRepository
     ) = KnowledgeBaseViewModel(
         ctx, repo, deepSeek,
@@ -102,8 +102,8 @@ class KnowledgeBaseViewModelTest {
         every { deepSeek.getActiveApiKey() } returns "sk-test"
     }
 
-    private fun newRepo(): KnowledgeRepository {
-        val repo = mockk<KnowledgeRepository>(relaxed = true)
+    private fun newRepo(): KnowledgeBaseCatalogPort {
+        val repo = mockk<KnowledgeBaseCatalogPort>(relaxed = true)
         coEvery { repo.create(any(), any()) } returns mockk<KnowledgeBase>(relaxed = true)
         coEvery { repo.listAll() } returns emptyList()
         coEvery { repo.getActive() } returns null
