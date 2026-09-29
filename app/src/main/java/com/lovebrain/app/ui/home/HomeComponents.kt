@@ -146,6 +146,31 @@ fun HomeAboutEntry(onNavigateAbout: () -> Unit) {
  * 交进来的是**一份** `AdvisorStatus`，不是 (statusText, statusColor) 两个参数：
  * 旧签名允许调用方把"运行中"配成 Neutral300，编译器不拦、判据也不在一处。
  * 现在文案与颜色都由 `LbStatus` 那一张表决定，这一颗组件只负责摆。
+ *
+ * ## 它仍在异形账本里：这一层"表达了什么不同语义"（§6.1 末句要求逐处点名判读）
+ *
+ * `OddShapeOwnershipTest` 把它登记成 HAND_DRAWN，这是那一条要的"写明它为什么不是异形归并的漏网"。
+ * 判的是**现有主人表达不了**，不是"懒得搬"：
+ *
+ * - `LbActionCard` —— 整张卡合并成**一处**操作，而 §6.2 第 2 段这一段里有**两处**独立出口
+ *   （主按钮 + 只在可隐藏时出现的右上角那颗）。交给它，第二处要么被吞进卡的名字里
+ *   （读屏把「打开军师」念成卡片的名字），要么在卡里再叠一层 `clickable` ——那正是
+ *   `CaptureAppRowSemanticsTest` 盯着的"一颗变成两颗可点"的形状。签名里也没有状态胶囊槽与主动作槽。
+ * - `LbSettingRow` —— 一行一处操作 + 一颗状态点 + 尾部弱动作，管的是"设置项"那种横排；
+ *   这一段要的是居中的一段说明加一整颗主按钮，塞不进它的槽位。
+ * - [com.lovebrain.app.core.designsystem.LbSection] —— 只管标题与内容的关系，
+ *   它的 KDoc 自己写明"区块的底色与圆角不在这里"。
+ * - 卡底那一档（`LoveBrainShape.xl` + `PrimaryLight` + `PrimarySubtle` 描边）全仓只此一处，
+ *   而且它走的是 `containerColor` 那扇门 ⇒ 记在
+ *   `UiLayerDependencyContractTest > brand tones painted through containerColor` 的 `home/HomeComponents.kt` 那一行。
+ *   现在就把它抬进设计系统，等于为**一个**页面新增一颗只有一页用的组件——那是 §6.1 末句反着的形状。
+ *
+ * 这一层已经**不是**原样：那颗主按钮先前是自己画的 Material `Button`（品牌底从 `containerColor`
+ * 进来，从没进过 :490 那份清单），已交回 [LbPrimaryButton]；状态胶囊先前自己写
+ * `statusColor.copy(alpha = 0.15f)` 画一遍，已交回 [LbStatusBadge]；四段的判据先前是五份平行
+ * `when`，已收成 [advisorStatus] 一份快照。剩下的这一层只持有"把这三样摆进同一张卡、
+ * 并在角上挂第二颗出口"这个形状本身。等第二个页面真要同一张卡时，那一格连着把
+ * `containerColor` 那笔账改小——不是在这一格先造主人。
  */
 @Composable
 internal fun AssistantStatusCard(
