@@ -10,6 +10,7 @@ import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.feature.intent.IntentController
 import com.lovebrain.app.model.DailySuggestion
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
@@ -64,10 +65,23 @@ class SuggestIntentChipTest {
 
     private val probe by lazy { SemanticsProbe(density) }
 
+    /**
+     * 意图那两格读数现在住在 [IntentController] 里，面板经 `vm.intents` 读它们。
+     * 替身要把控制器本身交出来：点下去那一下验的也是它，不是 ViewModel 上的同名门面。
+     */
+    private fun fakeIntents(
+        intent: MutableStateFlow<IntentConfig>,
+        showEditor: Boolean
+    ): IntentController = mockk<IntentController>(relaxed = true).also {
+        every { it.config } returns intent
+        every { it.showEditor } returns MutableStateFlow(showEditor)
+    }
+
     private fun fakeVm(
         intent: MutableStateFlow<IntentConfig>,
         activeKb: KnowledgeBase?,
-        showEditor: Boolean
+        showEditor: Boolean,
+        intents: IntentController = fakeIntents(intent, showEditor)
     ): LoveBrainViewModel = mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
         // 一条流都不留给 relaxed：带泛型的 StateFlow 不显式桩就会在 .value 上炸
         every { vm.suggestion } returns MutableStateFlow<DailySuggestion?>(null)
@@ -75,8 +89,7 @@ class SuggestIntentChipTest {
         every { vm.currentVector } returns MutableStateFlow(emptyMap())
         every { vm.streamingTips } returns MutableStateFlow<List<SuggestTip>>(emptyList())
         every { vm.suggestError } returns MutableStateFlow<String?>(null)
-        every { vm.intentConfig } returns intent
-        every { vm.showIntentEditor } returns MutableStateFlow(showEditor)
+        every { vm.intents } returns intents
         every { vm.activeKb } returns MutableStateFlow(activeKb)
     }
 
@@ -141,11 +154,12 @@ class SuggestIntentChipTest {
     @Test
     fun `tapping the intent entry goes through the view model even when the intent is off`() {
         val intent = MutableStateFlow(IntentConfig(text = "周末见她", enabled = false))
-        val vm = fakeVm(intent, KnowledgeBase(name = "kb"), false)
+        val intents = fakeIntents(intent, false)
+        val vm = fakeVm(intent, KnowledgeBase(name = "kb"), false, intents)
         mount(vm)
 
         rule.onAllNodes(hasText("意图·关"))[0].performClick()
         rule.mainClock.advanceTimeBy(16L)
-        verify(exactly = 1) { vm.openIntentEditor() }
+        verify(exactly = 1) { intents.openEditor() }
     }
 }

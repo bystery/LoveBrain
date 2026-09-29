@@ -1,4 +1,5 @@
 package com.lovebrain.app.ui.panel
+import com.lovebrain.app.feature.intent.IntentController
 import com.lovebrain.app.feature.roundcommit.ActualSentState
 
 import android.content.Context
@@ -71,6 +72,12 @@ class PanelHostSemanticsTest {
     private val draft = MutableStateFlow("今晚怎么回她")
     private val showPlanPanelFlow = MutableStateFlow(false)
 
+    /** 意图那两格读数现在住在 [IntentController] 里，面板经 `vm.intents` 读它们 */
+    private fun fakeIntents(): IntentController = mockk<IntentController>(relaxed = true).also {
+        every { it.config } returns MutableStateFlow(IntentConfig())
+        every { it.showEditor } returns MutableStateFlow(false)
+    }
+
     private fun fakeVm(): LoveBrainViewModel {
         val vm = mockk<LoveBrainViewModel>(relaxed = true)
         every { vm.panelMode } returns panelModeFlow
@@ -96,7 +103,7 @@ class PanelHostSemanticsTest {
         every { vm.generationRoundId } returns MutableStateFlow(1)
         every { vm.ideaComposeMode } returns MutableStateFlow(false)
         every { vm.inputChanged } returns MutableStateFlow(false)
-        every { vm.intentConfig } returns MutableStateFlow(IntentConfig())
+        every { vm.intents } returns fakeIntents()
         every { vm.isCounseling } returns MutableStateFlow(false)
         every { vm.isGenerating } returns MutableStateFlow(false)
         every { vm.isGeneratingCore } returns MutableStateFlow(false)
@@ -114,7 +121,6 @@ class PanelHostSemanticsTest {
         every { vm.result } returns MutableStateFlow(null)
         every { vm.resultMode } returns MutableStateFlow(ResultMode.REPLY)
         every { vm.rewriteStates } returns MutableStateFlow(emptyMap())
-        every { vm.showIntentEditor } returns MutableStateFlow(false)
         every { vm.stageSuggestion } returns MutableStateFlow(null)
         every { vm.streamingCoreText } returns MutableStateFlow("")
         every { vm.streamingSchemes } returns MutableStateFlow(emptyList())

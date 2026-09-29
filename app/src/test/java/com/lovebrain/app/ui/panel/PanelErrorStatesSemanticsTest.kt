@@ -8,6 +8,7 @@ import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.feature.intent.IntentController
 import com.lovebrain.app.model.DailySuggestion
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.IntentConfig
@@ -57,6 +58,18 @@ class PanelErrorStatesSemanticsTest {
 
     private val probe by lazy { SemanticsProbe(density) }
 
+    /**
+     * 意图那一段（配置 + 编辑器可见性 + 开在哪块库）现在住在 [IntentController] 里，
+     * 面板经 `vm.intents` 读那两格——测试给它一颗替身，一条流仍不留给 relaxed。
+     */
+    private fun fakeIntents(
+        config: IntentConfig = IntentConfig(),
+        showEditor: Boolean = false
+    ): IntentController = mockk<IntentController>(relaxed = true).also {
+        every { it.config } returns MutableStateFlow(config)
+        every { it.showEditor } returns MutableStateFlow(showEditor)
+    }
+
     private fun fakeVm(suggestError: String?, counselingError: String?): LoveBrainViewModel =
         mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
             // 泛型流一条都不留给 relaxed（relaxed 交回泛型 mock，`.value` 一取就 ClassCastException）
@@ -65,8 +78,7 @@ class PanelErrorStatesSemanticsTest {
             every { vm.currentVector } returns MutableStateFlow(emptyMap())
             every { vm.streamingTips } returns MutableStateFlow(emptyList())
             every { vm.suggestError } returns MutableStateFlow(suggestError)
-            every { vm.intentConfig } returns MutableStateFlow(IntentConfig())
-            every { vm.showIntentEditor } returns MutableStateFlow(false)
+            every { vm.intents } returns fakeIntents()
             every { vm.activeKb } returns MutableStateFlow(null)
             every { vm.counselingDraft } returns MutableStateFlow("")
             every { vm.counselingResult } returns MutableStateFlow<String?>(null)

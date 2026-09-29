@@ -80,8 +80,8 @@ fun SuggestPanel(
     val currentVector by viewModel.currentVector.collectAsStateWithLifecycle()
     val streamingTips by viewModel.streamingTips.collectAsStateWithLifecycle()
     val suggestError by viewModel.suggestError.collectAsStateWithLifecycle()
-    val intentConfig by viewModel.intentConfig.collectAsStateWithLifecycle()
-    val showIntentEditor by viewModel.showIntentEditor.collectAsStateWithLifecycle()
+    val intentConfig by viewModel.intents.config.collectAsStateWithLifecycle()
+    val showIntentEditor by viewModel.intents.showEditor.collectAsStateWithLifecycle()
     val activeKb by viewModel.activeKb.collectAsStateWithLifecycle()
 
     // 锦囊加载文案改为「军师正在 xxx」轮换（AI 应用加载话术风格，参考"深度睡眠舱"AI 生成加载）
@@ -123,7 +123,7 @@ fun SuggestPanel(
                         IntentChip(
                             enabled = intentConfig.enabled,
                             text = intentConfig.text,
-                            onClick = { viewModel.openIntentEditor() }
+                            onClick = { viewModel.intents.openEditor() }
                         )
                     }
                 }
@@ -382,9 +382,9 @@ fun SuggestPanel(
             expiryDate = intentConfig.expiryDate,
             status = intentConfig.status,
             onSave = { text, enabled, expiry, expiryDate, status ->
-                viewModel.saveIntent(text, enabled, expiry, expiryDate, status)
+                viewModel.intents.save(text, enabled, expiry, expiryDate, status)
             },
-            onDismiss = { viewModel.dismissIntentEditor() }
+            onDismiss = { viewModel.intents.dismissEditor() }
         )
     }
     } // close Box

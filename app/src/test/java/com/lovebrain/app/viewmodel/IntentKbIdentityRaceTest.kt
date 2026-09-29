@@ -109,14 +109,14 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         delay(200)
 
         assertEquals("initial kb-a", "kb-a", vm.activeKb.value?.name)
-        assertEquals("initial intent A", "intentA", vm.intentConfig.value.text)
+        assertEquals("initial intent A", "intentA", vm.intents.config.value.text)
 
         coEvery { knowledgeRepo.getActive() } returns kbB
         vm.refreshKnowledgeBases()
         delay(200)
 
         assertEquals("after switch kb-b", "kb-b", vm.activeKb.value?.name)
-        assertEquals("after switch intent B", "intentB", vm.intentConfig.value.text)
+        assertEquals("after switch intent B", "intentB", vm.intents.config.value.text)
     }
 
     @Test
@@ -145,7 +145,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.refreshKnowledgeBases()
         delay(200)
 
-        vm.openIntentEditor()
+        vm.intents.openEditor()
         assertEquals("editor bound to kb-a", "kb-a", vm.activeKb.value?.name)
 
         coEvery { knowledgeRepo.getActive() } returns kbB
@@ -153,15 +153,15 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         delay(200)
 
         assertEquals("now kb-b", "kb-b", vm.activeKb.value?.name)
-        assertEquals("UI intent should be B", "intentB", vm.intentConfig.value.text)
+        assertEquals("UI intent should be B", "intentB", vm.intents.config.value.text)
 
-        vm.saveIntent("newA", true, IntentExpiry.UNTIL_DONE)
+        vm.intents.save("newA", true, IntentExpiry.UNTIL_DONE)
         delay(200)
 
         coVerify { knowledgeRepo.saveIntent("kb-a", "newA", true, IntentExpiry.UNTIL_DONE, any(), IntentStatus.ACTIVE) }
 
         assertEquals("after save A, UI still B", "kb-b", vm.activeKb.value?.name)
-        assertEquals("after save A, UI intent still B", "intentB", vm.intentConfig.value.text)
+        assertEquals("after save A, UI intent still B", "intentB", vm.intents.config.value.text)
     }
 
     @Test
@@ -189,19 +189,19 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         delay(200)
 
         assertEquals("initial kb-a", "kb-a", vm.activeKb.value?.name)
-        assertEquals("initial intent A", "intentA", vm.intentConfig.value.text)
+        assertEquals("initial intent A", "intentA", vm.intents.config.value.text)
 
         coEvery { knowledgeRepo.getActive() } returns kbB
         vm.refreshKnowledgeBases()
         delay(200)
         assertEquals("switched to kb-b", "kb-b", vm.activeKb.value?.name)
-        assertEquals("intent should be B", "intentB", vm.intentConfig.value.text)
+        assertEquals("intent should be B", "intentB", vm.intents.config.value.text)
 
         coEvery { knowledgeRepo.getActive() } returns kbA
         vm.refreshKnowledgeBases()
         delay(200)
         assertEquals("switched back to kb-a", "kb-a", vm.activeKb.value?.name)
-        assertEquals("intent should restore A", "intentA", vm.intentConfig.value.text)
+        assertEquals("intent should restore A", "intentA", vm.intents.config.value.text)
     }
 
     @Test
@@ -225,7 +225,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         delay(200)
 
         assertEquals("kb-a", vm.activeKb.value?.name)
-        assertEquals("", vm.intentConfig.value.text)
+        assertEquals("", vm.intents.config.value.text)
     }
 
     /**
@@ -287,7 +287,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
 
         // Verify B has committed
         assertEquals("B should be active before A completes", "kb-b", vm.activeKb.value?.name)
-        assertEquals("intent should be B before A completes", "intentB", vm.intentConfig.value.text)
+        assertEquals("intent should be B before A completes", "intentB", vm.intents.config.value.text)
 
         // Phase 3: release A's gate — A's readIntent finally returns intentA
         aGate.complete(Unit)
@@ -295,7 +295,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
 
         // A's late result must NOT overwrite B's committed UI
         assertEquals("after A completes, active KB must still be B", "kb-b", vm.activeKb.value?.name)
-        assertEquals("after A completes, intent must still be B", "intentB", vm.intentConfig.value.text)
-        assertFalse("A's intent must not leak", vm.intentConfig.value.text == "intentA")
+        assertEquals("after A completes, intent must still be B", "intentB", vm.intents.config.value.text)
+        assertFalse("A's intent must not leak", vm.intents.config.value.text == "intentA")
     }
 }

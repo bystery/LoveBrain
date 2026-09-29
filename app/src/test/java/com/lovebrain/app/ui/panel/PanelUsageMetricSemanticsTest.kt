@@ -17,6 +17,7 @@ import com.lovebrain.app.core.designsystem.LbTags
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.feature.intent.IntentController
 import com.lovebrain.app.feature.profile.ProfileReview
 import com.lovebrain.app.feature.roundcommit.ActualSentState
 import com.lovebrain.app.model.ChatMessage
@@ -81,6 +82,12 @@ class PanelUsageMetricSemanticsTest {
      * 与 `PanelHostSemanticsTest` 同一套桩：泛型流一条都不留给 relaxed
      * （relaxed 交回泛型 mock，`.value` 一取就 ClassCastException）。
      */
+    /** 意图那两格读数现在住在 [IntentController] 里，面板经 `vm.intents` 读它们 */
+    private fun fakeIntents(): IntentController = mockk<IntentController>(relaxed = true).also {
+        every { it.config } returns MutableStateFlow(IntentConfig())
+        every { it.showEditor } returns MutableStateFlow(false)
+    }
+
     private fun fakeVm(usage: UsageStats): LoveBrainViewModel =
         mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
             every { vm.panelMode } returns MutableStateFlow(0)
@@ -101,7 +108,7 @@ class PanelUsageMetricSemanticsTest {
             every { vm.generationRoundId } returns MutableStateFlow(1)
             every { vm.ideaComposeMode } returns MutableStateFlow(false)
             every { vm.inputChanged } returns MutableStateFlow(false)
-            every { vm.intentConfig } returns MutableStateFlow(IntentConfig())
+            every { vm.intents } returns fakeIntents()
             every { vm.isCounseling } returns MutableStateFlow(false)
             every { vm.isGenerating } returns MutableStateFlow(false)
             every { vm.isGeneratingCore } returns MutableStateFlow(false)
@@ -119,7 +126,6 @@ class PanelUsageMetricSemanticsTest {
             every { vm.result } returns MutableStateFlow(null)
             every { vm.resultMode } returns MutableStateFlow(ResultMode.REPLY)
             every { vm.rewriteStates } returns MutableStateFlow(emptyMap())
-            every { vm.showIntentEditor } returns MutableStateFlow(false)
             every { vm.stageSuggestion } returns MutableStateFlow(null)
             every { vm.streamingCoreText } returns MutableStateFlow("")
             every { vm.streamingSchemes } returns MutableStateFlow(emptyList())

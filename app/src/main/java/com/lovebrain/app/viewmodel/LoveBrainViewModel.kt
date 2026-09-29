@@ -21,6 +21,7 @@ import com.lovebrain.app.domain.port.KnowledgeRuntimePort
 import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.feature.composer.ComposerStore
+import com.lovebrain.app.feature.intent.IntentController
 import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.feature.profile.ProfileReview
 import com.lovebrain.app.feature.profile.ProfileUpdateController
@@ -416,10 +417,6 @@ class LoveBrainViewModel(
     /** 输出模式二态（0=普通 1=进攻；悬浮窗切换，下次请求生效）。校验与落盘在 store 的回调里。 */
     val outputMode: StateFlow<Int> = composer.outputMode
 
-    fun setOutputMode(mode: Int) {
-        composer.accept(ComposerStore.Intent.SetOutputMode(mode))
-    }
-
     /** ═══════════ 花费/耗时展示（§2.2：九个 flow 并成一份快照 + 一个 reduce） ═══════════ */
 
     /**
@@ -449,9 +446,6 @@ class LoveBrainViewModel(
         // 计费事件每次都存今日数（与改前一致：即便这一笔是 0 元也照存，不省那次写）
         if (event is UsageStats.Event.Costed) securePrefs.saveTodayCost(after.todayDate, after.todayCostYuan)
     }
-
-    /** 本轮生成开始时间戳（用于计算首条可复制回复耗时） */
-    private var generateStartTimeMs: Long = 0L
 
     val currentRole: StateFlow<ChatMessage.Role> = composer.currentRole
     val editingIndex: StateFlow<Int> = composer.editingIndex
@@ -554,11 +548,6 @@ class LoveBrainViewModel(
         proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.ToggleComposer)
     }
 
-    /** 退出主动发模式（供生成成功后或取消时调用）：模式退回，已经拿到的开场留着 */
-    fun exitProactiveMode() {
-        proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.ExitProactive)
-    }
-
 /** 前台任务互斥——从 operationCoordinator 派生，不再拼多个 boolean */
 val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
@@ -572,12 +561,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     fun toggleOnlyThisRound() {
         _onlyThisRound.value = !_onlyThisRound.value
-        // 切换 onlyThisRound 后已有旧结果立即 stale
-        checkInputChanged()
-    }
-
-    fun setOnlyThisRound(value: Boolean) {
-        _onlyThisRound.value = value
         // 切换 onlyThisRound 后已有旧结果立即 stale
         checkInputChanged()
     }
@@ -620,7 +603,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             composer.ideaHint(),
             _activeKb.value?.name,
             _onlyThisRound.value,
-            _intentConfig.value.revision
+            intents.currentRevision()
         )
         _inputChanged.value = currentFingerprint != ctx.inputFingerprint
     }
@@ -781,7 +764,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // ═══════════ UI 状态 setters ═══════════
 
-    fun setPanelState(state: PanelState) { composer.accept(ComposerStore.Intent.SetPanelState(state)) }
     fun setDraft(text: String) { composer.accept(ComposerStore.Intent.SetDraft(text)) }
     fun setCounselingDraft(text: String) {
         composer.accept(ComposerStore.Intent.SetCounselingDraft(text))
@@ -1151,6 +1133,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     // ═══════════ 下一轮（存 KB + 清空） ═══════════
 
     private var recordingRound = false
+    /* private val _probeFakeInBlock = MutableStateFlow(0)
+       private var probeFakeInBlockVar = 0 */
+    // private val _probeFakeInLine = MutableSharedFlow<Int>()
 
     /**
      * 提交顺序改为「先写盘成功 → 再提交 UI」。
@@ -1521,11 +1506,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    fun clearCounseling() {
-        counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Clear)
-        securePrefs.clearCounselingResult()
-    }
-
     fun clearCounselingAll() {
         counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Clear)
         // ClearCounselingDraft 内部就是"先置空、再取消防抖尾"这个顺序——
@@ -1560,7 +1540,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     fun refreshKnowledgeBases() {
         viewModelScope.launch {
-            // refreshIntentConfigForKb 现在是结构化 child（suspend），
+            // intents.refreshForKb 现在是结构化 child（suspend），
             // 不再是 fire-and-forget sibling coroutine。
             // CancellationException 正常重抛；普通 IO 异常捕获不崩 scope。
             try {
@@ -1575,7 +1555,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     // 切库时复位仅看本轮开关——属于当前工作轮次
                     _onlyThisRound.value = false
                     // 切库时清除旧 KB 的意图配置，防止旧意图泄漏到新 KB
-                    _intentConfig.value = com.lovebrain.app.model.IntentConfig()
+                    intents.resetForKbSwitch()
                     // 切库时清空本轮瞬时纠正
                     roundCorrections.clear()
                 }
@@ -1586,8 +1566,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     topicRecorder.recoverIfNeeded(it.name)
                     _currentVector.value = knowledgeRepo.readVector(it.name)
                     // 结构化 child——在当前协程内直接 await，不再 fire-and-forget。
-                    // refreshIntentConfigForKb 内部有 KB identity guard 保护 UI commit。
-                    refreshIntentConfigForKb(it.name)
+                    // intents.refreshForKb 内部有 KB identity guard 保护 UI commit。
+                    intents.refreshForKb(it.name)
                 }
                 // CARRY-09：删除最后一个 KB 时 newKb==null，旧 _currentVector 未被清空
                 if (newKb == null) {
@@ -1762,8 +1742,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
 
-    private val kbName: String? get() = _activeKb.value?.name
-
     fun stopSuggest() {
         val current = operationCoordinator.current(
             ForegroundOperationCoordinator.OperationType.SUGGEST
@@ -1812,10 +1790,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         ) ?: return
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.PROACTIVE)
         applyProactiveEvent(ProactiveEnded(current.requestId))
-    }
-
-    fun clearProactive() {
-        proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Clear)
     }
 
 
@@ -1931,7 +1905,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * ProactiveStore 归约之后要**别人**做的事：跨 feature 的耗时统计，以及
      * "真拿到可展示的开场之后要不要退出主动发模式"。
      *
-     * 旧实现是 reducer 里直接调 exitProactiveMode()：状态持有者顺手改了 UI 会话状态，
+     * 旧实现是 reducer 里直接调"退出主动发模式"那个成员：状态持有者顺手改了 UI 会话状态，
      * 两个所有者。现在模式归 store、结果区模式归本类，两边各写各的：
      * "结束且有结果才退出"这条规则本身仍只有一处实现。
      */
@@ -1943,116 +1917,32 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    // ═══════════ 持续意图 UI 状态 ═══════════
+    // ═══════════ 持续意图（读取 / 到期改写 / 保存 / 编辑器绑定） ═══════════
 
-    /** 当前 KB 的持续意图配置（面板 chip 展示 + 编辑入口） */
-    private val _intentConfig = MutableStateFlow(com.lovebrain.app.model.IntentConfig())
-    val intentConfig: StateFlow<com.lovebrain.app.model.IntentConfig> = _intentConfig.asStateFlow()
-
-    /** 持续意图编辑面板可见性 */
-    private val _showIntentEditor = MutableStateFlow(false)
-    val showIntentEditor: StateFlow<Boolean> = _showIntentEditor.asStateFlow()
-
-    /** /: 刷新持续意图配置（切库/面板可见时调用）
-     *  自动检测到期——TODAY 跨日自动标记 EXPIRED，DATE 过期也标记。
-     *  委托给 refreshIntentConfigForKb，绑定实际 KB 名防竞态。 */
-    fun refreshIntentConfig() {
-        val kbName = _activeKb.value?.name ?: return
-        viewModelScope.launch {
-            refreshIntentConfigForKb(kbName)
-        }
-    }
-
-    /** 绑定 KB 名刷新意图配置——suspend 函数，由调用方在结构化协程中 await。
-     *  不再内部 viewModelScope.launch（fire-and-forget sibling），消除切库竞态。
-     *  KB identity guard：commit UI 前验证当前 active KB 仍是目标 KB。
-     *  CancellationException 正常重抛（协程取消）；IO 异常捕获不崩 scope。 */
-    private suspend fun refreshIntentConfigForKb(kbName: String) {
-        val config = try {
-            knowledgeRepo.readIntent(kbName)
-        } catch (e: kotlinx.coroutines.CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            L.w("refreshIntentConfigForKb read failed: ${e::class.simpleName}")
-            return
-        }
-        // 自动到期检测——判定规则在 IntentPolicy（可离线单测）；改写失败不改变屏上判定
-        val finalConfig = if (IntentPolicy.shouldAutoExpire(config, com.lovebrain.app.util.TimeFmt.today())) {
-            val updated = config.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
-            try {
-                knowledgeRepo.saveIntent(
-                    kbName, config.text, false,
-                    config.expiry, config.expiryDate,
-                    com.lovebrain.app.model.IntentStatus.EXPIRED
-                )
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                L.w("refreshIntentConfigForKb expire save failed: ${e::class.simpleName}")
-            }
-            updated
-        } else {
-            config
-        }
-        // KB identity guard：只有当前 active KB 仍是目标 KB 时才更新 UI
-        if (_activeKb.value?.name == kbName) {
-            _intentConfig.value = finalConfig
-        }
-    }
-
-    /** R08: 保存持续意图配置。绑定编辑时冻结的 KB，不读当前 active KB。
-     *  持久化失败保留编辑状态并提示。旧请求因 revision 变化而作废。
-     *  支持有效期和完成状态。
-     *  TODAY 时自动写 expiryDate=today()，不依赖 UI 填写。 */
-    fun saveIntent(
-        text: String,
-        enabled: Boolean,
-        expiry: com.lovebrain.app.model.IntentExpiry = com.lovebrain.app.model.IntentExpiry.UNTIL_DONE,
-        expiryDate: String = "",
-        status: com.lovebrain.app.model.IntentStatus = com.lovebrain.app.model.IntentStatus.ACTIVE
-    ) {
-        // R08: 绑定编辑器打开时的 KB，不读当前 active KB
-        val kbName = intentEditorKbName ?: _activeKb.value?.name ?: return
-        // TODAY 自动写当天；同一次保存里的所有日期判定共用这一个 today，
-        // 不再一边用 TimeFmt.today() 填日期、一边用 LocalDate.now() 判过去
-        val today = com.lovebrain.app.util.TimeFmt.today()
-        val effectiveExpiryDate = IntentPolicy.effectiveExpiryDate(expiry, expiryDate, today)
-        // DATE 类型严格校验——blank / malformed / past 都必须拒绝
-        IntentPolicy.validateSave(expiry, effectiveExpiryDate, status, today)?.let { reason ->
-            showPanelWarning(reason)
-            return
-        }
-        viewModelScope.launch {
-            try {
-                val updated = withContext(Dispatchers.IO) {
-                    knowledgeRepo.saveIntent(kbName, text, enabled, expiry, effectiveExpiryDate, status)
-                }
-                // KB identity guard：只有当前 active KB 仍是保存目标的 KB 时才更新 UI
-                if (_activeKb.value?.name == kbName) {
-                    _intentConfig.value = updated
-                    notices.show(
-                        NoticeBoard.Channel.Knowledge,
-                        if (enabled) "持续意图已开启" else "持续意图已关闭"
-                    )
-                    _showIntentEditor.value = false
-                    markCurrentResultStaleIfNeeded()
-                }
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                showPanelWarning("意图保存失败，内容已保留，请重试")
-            }
-        }
-    }
-
-    /** R08: 编辑器绑定创建时 KB，防切库写错人 */
-    private var intentEditorKbName: String? = null
-
-    fun openIntentEditor() {
-        intentEditorKbName = _activeKb.value?.name
-        _showIntentEditor.value = true
-    }
-    fun dismissIntentEditor() { _showIntentEditor.value = false }
+    /**
+     * 持续意图那一段行为的主人：状态与判据一起离开 ViewModel，这里不再持有 feature 的内部状态。
+     *
+     * 这一家子**没有**留同名出口：屏上那份配置、编辑器可见性、"编辑器开在哪块库"三条账，
+     * 连同到期改写、KB 身份守卫、"绑定打开那一刻的库"三条判据一起走（[IntentController]）。
+     * 面板从此读 `intents.config`、写 `intents.save(...)`——留一颗同名只读出口就是
+     * 上一轮"搬字段不减行"的复现，这次不重复它。
+     *
+     * VM 这一侧只剩两处**跨块协调**的窄口子：stale 判定要的意图 revision、
+     * 切库时的复位与刷新；仓库读写仍由这里注入（`feature` 不许 import `data`）。
+     */
+    val intents = IntentController(
+        scope = viewModelScope,
+        readActiveKbName = { _activeKb.value?.name },
+        readIntent = { kb -> knowledgeRepo.readIntent(kb) },
+        writeIntent = { kb, text, enabled, expiry, expiryDate, status ->
+            // 仓库那一侧自己 withContext(IO)，这里不再套第二层（与搬之前的线程形状一致）
+            knowledgeRepo.saveIntent(kb, text, enabled, expiry, expiryDate, status)
+        },
+        onSaved = { markCurrentResultStaleIfNeeded() },
+        onWarning = { msg -> showPanelWarning(msg) },
+        onNotice = { msg -> notices.show(NoticeBoard.Channel.Knowledge, msg) },
+        onLog = { msg -> L.w(msg) }
+    )
 
     // ═══════════ 记忆纠正（绑定生成时冻结的 KB） ═══════════
 
@@ -2173,9 +2063,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     // ═══════════ 单条改写（卡片内部展开 2×2 操作区） ═══════════
-
-    /** DRY: 改写操作选项文案统一使用 RewriteCommand.PRESET_LABELS，不在 VM 重复定义 */
-    val rewriteOptions: List<String> get() = com.lovebrain.app.model.RewriteCommand.PRESET_LABELS
 
     /**
      * 改写链的三样东西（卡片状态 / 版本历史 / "这次回调还算不算数"）住在

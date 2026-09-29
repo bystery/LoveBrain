@@ -8,6 +8,7 @@ import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.feature.intent.IntentController
 import com.lovebrain.app.model.DailySuggestion
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.ui.panel.counseling.CounselingPanel
@@ -53,6 +54,12 @@ class SuggestCounselingTargetsTest {
 
     private val probe by lazy { SemanticsProbe(density) }
 
+    /** 意图那两格读数现在住在 [IntentController] 里，面板经 `vm.intents` 读它们 */
+    private fun fakeIntents(): IntentController = mockk<IntentController>(relaxed = true).also {
+        every { it.config } returns MutableStateFlow(IntentConfig())
+        every { it.showEditor } returns MutableStateFlow(false)
+    }
+
     private fun fakeVm(
         suggestion: DailySuggestion?,
         isSuggesting: Boolean,
@@ -63,8 +70,7 @@ class SuggestCounselingTargetsTest {
         every { vm.currentVector } returns MutableStateFlow(emptyMap())
         every { vm.streamingTips } returns MutableStateFlow(emptyList())
         every { vm.suggestError } returns MutableStateFlow(suggestError)
-        every { vm.intentConfig } returns MutableStateFlow(IntentConfig())
-        every { vm.showIntentEditor } returns MutableStateFlow(false)
+        every { vm.intents } returns fakeIntents()
         every { vm.activeKb } returns MutableStateFlow(null)
         // 谈心那侧的几条流同理：一条都不留给 relaxed
         every { vm.counselingDraft } returns MutableStateFlow("")
