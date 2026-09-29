@@ -69,7 +69,12 @@ class KbListLoadFailureTest {
     }
 
     private fun newVm(repo: KnowledgeRepository) =
-        KnowledgeBaseViewModel(contextStub(), repo, providerStub(), dispatcher)
+        KnowledgeBaseViewModel(
+            contextStub(), repo, providerStub(),
+            // 这一组只测列表读取失败，不碰归档；给个宽松桩端口即可
+            mockk<com.lovebrain.app.domain.port.KbArchivePort>(relaxed = true),
+            dispatcher
+        )
 
     /**
      * 让第 [failing] 里的序号那次 `getActive()` 抛，并把每次调用记进 [calls]。

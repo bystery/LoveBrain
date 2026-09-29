@@ -46,7 +46,7 @@ import com.lovebrain.app.util.L
  *
  * 拆动公共 API 的地方一个也没有：类名、构造参数表、被外部调用的方法签名都原样留着，
  * 上面这四个协作者由本类自建（构造参数不许变，DI 与调用点都在别的文件里），
- * 它们只依赖 [KnowledgePort] 与 [Clock] 两个端口，不碰 data/android 的具体实现。
+ * 它们只依赖知识库的读/写端口与 [Clock] 端口（同一本仓库、同一组实例），不碰 data/android 的具体实现。
  */
 class TopicRecorder(
     private val knowledgeRepo: KnowledgePort,
@@ -74,7 +74,9 @@ class TopicRecorder(
      */
     private val recentStore = RecentRoundStore(knowledgeRepo)
     private val sceneStore = SceneChainStore(knowledgeRepo, clock)
-    private val planStore = OngoingPlanStore(knowledgeRepo)
+    // 计划格只要"读旧 plan + 写新 plan"，所以把它要的读、写两条门分别递给它：
+    // knowledgeRepo 这本仓库同时 implements 读口与写口，同一实例、同一条写链，只是视角收窄。
+    private val planStore = OngoingPlanStore(knowledgeRepo, knowledgeRepo)
     private val contextReader = KnowledgeContextReader(knowledgeRepo)
 
     /**

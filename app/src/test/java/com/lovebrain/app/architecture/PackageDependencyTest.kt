@@ -10,12 +10,11 @@ import java.io.File
  * §7 第二步第 4 条「建 package dependency test，禁止 UI import data、domain import Android」，
  * 以及 §4 表里 DIP/迪米特那两行的 FAIL）。
  *
- * 为什么不是"现在就全绿"：今天的真实存量是 **6 条越界 import，分布在 6 个文件**
- * （2026-09-26 本机两把尺同时报这个数：`bash scripts/package_deps_report.sh --count` 报 6，
- * 而下面那份 baseline 登记的是 6 条 / 6 个键；`assertEquals(6, …)` 那格每次都在核它）。
- * ⚠ 这一句原来写的是"15 条 / 11 个文件"——那是两笔还债之前的存量（`2dd94c0` 15→10、
- * `ab7457a` 10→6，两次都在提交信息里写了数），**但注释一个字没跟着动**。
- * 同一个坑在本仓库是第 N 次：还了债要顺手扫"注释里的存量叙述"。
+ * 为什么不是"现在就全绿"：今天的真实存量是 **5 条越界 import，分布在 5 个文件**
+ * （本轮 `SecurePrefs` / `KbArchiveTransfer` 端口化后，viewmodel 少掉一处 `java.io.File`：
+ * `2dd94c0` 15→10、`ab7457a` 10→6、本轮 6→5；下面那份 baseline 登记 5 条 / 5 个键；
+ * `assertEquals(5, …)` 那格每次都在核它）。
+ * ⚠ 这一段原来写的是"6 条 / 6 个文件"——还债时顺手把存量叙述也扫了，别再留"注释比实现旧"的假账。
  * 直接把规则写成硬门禁会让 CI 永久红，然后被人用 `|| true` 关掉——
  * 复核 §9 第 6 条禁止的正是这个，那比没有门禁更糟。
  *
@@ -28,7 +27,8 @@ import java.io.File
  * 还债顺序（复核 §7 第二步第 1 条）：先给这些具体类建端口（AiGateway /
  * KnowledgeReadPort / KnowledgeWritePort）。**原计划第一站"把 domain 的 6 处 `data.*` 换掉"已经做完了**
  * （现在 domain 只剩 `PromptBuilder` 一处 `android.content.Context`），
- * 剩下的 6 条按上面那份登记走：model 撞 domain 两处、ui 撞 data 一处、viewmodel 撞 `java.io.File` 两处。
+ * 剩下的 5 条按上面那份登记走：model 撞 domain 两处、ui 撞 data 一处、viewmodel 撞 `java.io.File` 一处
+ * （KnowledgeBaseViewModel 那处 `java.io.File` 本轮随 `SecurePrefs` / `KbArchiveTransfer` 端口化还掉了）。
  * 每换掉一处，就重跑 report 脚本、把基线改小。
  */
 class PackageDependencyTest {
@@ -54,7 +54,12 @@ class PackageDependencyTest {
             // 端口那一层（domain/port）在页面上完全不生效。这条以前不在尺的视野里——
             // viewmodel 只禁 java.io.File，所以三个 VM 一直按 `KnowledgeRepository` 注入也没人红。
             // 现在三个 VM 都改成了端口视图，这条就是 0 违例的硬门禁（不需要基线，见上面 feature 那格的规矩）。
-            "com.lovebrain.app.data.KnowledgeRepository"
+            "com.lovebrain.app.data.KnowledgeRepository",
+            // 加密偏好与归档传输也各自端口化后（[com.lovebrain.app.domain.port.SettingsStorePort] /
+            // [com.lovebrain.app.domain.port.KbArchivePort]），这两颗具体类同样不该再被页面 import。
+            // 与仓库那条同口径：端口化完成后就是 0 违例的硬门禁，任何一处回潮当场变红。
+            "com.lovebrain.app.data.SecurePrefs",
+            "com.lovebrain.app.data.KbArchiveTransfer"
         ),
         // §5.1 第一层：core 不知道数据层、容器与 Android 侧的具体东西，否则"设计系统"
         // 就变成另一坨业务代码的附属品。
@@ -78,7 +83,8 @@ class PackageDependencyTest {
         "model/ProfileUpdate.kt" to listOf("com.lovebrain.app.domain.StageCatalog"),
         "model/ProfileUpdateSchema.kt" to listOf("com.lovebrain.app.domain.StageCatalog"),
         "ui/SetupActivity.kt" to listOf("com.lovebrain.app.data.EventBus"),
-        "viewmodel/KnowledgeBaseViewModel.kt" to listOf("java.io.File"),
+        // viewmodel/KnowledgeBaseViewModel.kt 的 `java.io.File` 已随归档端口化还掉：
+        // 归档 IO 挪进 data/FileKbArchiveTransfer，页面只交出流，不再自己拼路径。
         "viewmodel/SetupViewModel.kt" to listOf("java.io.File")
     )
 
@@ -177,7 +183,7 @@ class PackageDependencyTest {
         assertTrue("domain 层必须禁止具体 data 仓库", forbidden.getValue("domain").contains("com.lovebrain.app.data."))
         assertTrue("ui 层必须禁止直接 import data 仓库", forbidden.getValue("ui").contains("com.lovebrain.app.data."))
         assertTrue("viewmodel 不许自己拼文件路径", forbidden.getValue("viewmodel").contains("java.io.File"))
-        assertEquals("基线条目数必须与 report 脚本同一次统计一致", 6, baseline.values.sumOf { it.size })
+        assertEquals("基线条目数必须与 report 脚本同一次统计一致", 5, baseline.values.sumOf { it.size })
     }
 
     /**

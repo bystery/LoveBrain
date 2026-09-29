@@ -19,7 +19,10 @@ FORBIDDEN = {
                   # 页面按具体仓库类型注入知识库 = 端口那一层在页面上不生效。与
                   # PackageDependencyTest 里 viewmodel 那条一一对应（本文件顶上写的就是"一一对应"，
                   # 两边错开的代价有前例：core 那条曾经只有 JVM 那把闸看得见）。
-                  'com.lovebrain.app.data.KnowledgeRepository'],
+                  'com.lovebrain.app.data.KnowledgeRepository',
+                  # SecurePrefs / KbArchiveTransfer 端口化后同仓库那条：页面只认端口，具体类回潮当场变红。
+                  'com.lovebrain.app.data.SecurePrefs',
+                  'com.lovebrain.app.data.KbArchiveTransfer'],
     # feature/* 只能碰 model 与 domain.port：与 PackageDependencyTest 保持同一套规则
     'feature': ['android.', 'androidx.', 'com.lovebrain.app.data.',
                 'com.lovebrain.app.ui.', 'com.lovebrain.app.viewmodel.'],

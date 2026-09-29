@@ -5,10 +5,10 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lovebrain.app.data.DeepSeekRepository
-import com.lovebrain.app.data.KbArchiveTransfer
 import com.lovebrain.app.domain.AssetRegistry
 import com.lovebrain.app.domain.OnboardingResultParser
 import com.lovebrain.app.domain.OnboardingSchema
+import com.lovebrain.app.domain.port.KbArchivePort
 import com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.util.L
@@ -25,7 +25,6 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import java.io.File
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.coroutineContext
 
@@ -99,6 +98,8 @@ class KnowledgeBaseViewModel(
     private val appContext: Context,
     private val repo: KnowledgeBaseCatalogPort,
     private val deepSeek: DeepSeekRepository,
+    /** 归档导出/导入走端口：库目录、暂存区、zip 解包的路径归属都在实现侧，本类不再拼 File */
+    private val archive: KbArchivePort,
     /** 归档 IO 的调度上下文；默认真实 IO，单测可注入虚拟时间调度器 */
     private val ioContext: CoroutineContext = Dispatchers.IO
 ) : ViewModel() {
@@ -287,10 +288,9 @@ class KnowledgeBaseViewModel(
     fun export(kbName: String, target: Uri) {
         viewModelScope.launch(ioContext) {
             val ok = try {
-                val folder = File(appContext.filesDir, "knowledge/$kbName")
                 val output = appContext.contentResolver.openOutputStream(target)
                     ?: error("无法打开导出文件")
-                output.use { KbArchiveTransfer.export(folder, kbName, it) }
+                output.use { archive.exportTo(kbName, it) }
                 true
             } catch (e: CancellationException) {
                 // 页面已销毁不是"导出失败"：不回事件，也不许把这次收场写成"正常完成"——
@@ -312,16 +312,9 @@ class KnowledgeBaseViewModel(
     fun import(source: Uri) {
         viewModelScope.launch(ioContext) {
             val ok = try {
-                val staging = File(appContext.cacheDir, "kb_import_${System.currentTimeMillis()}")
                 val input = appContext.contentResolver.openInputStream(source)
                     ?: error("无法打开导入文件")
-                input.use {
-                    KbArchiveTransfer.import(
-                        it,
-                        staging,
-                        File(appContext.filesDir, "knowledge")
-                    )
-                }
+                input.use { archive.importFrom(it) }
                 val currentActive = repo.getActive()?.name ?: repo.listAll().firstOrNull()?.name
                 if (currentActive != null) repo.setActive(currentActive)
                 true

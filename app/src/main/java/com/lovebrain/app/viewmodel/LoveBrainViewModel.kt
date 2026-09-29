@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lovebrain.app.data.CostScope
 import com.lovebrain.app.data.DeepSeekRepository
-import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.port.SettingsStorePort
 import com.lovebrain.app.domain.AssetRegistry
 import com.lovebrain.app.domain.ForegroundOperationCoordinator
 import com.lovebrain.app.domain.GenerationFingerprints
@@ -118,7 +118,7 @@ class LoveBrainViewModel(
     private val knowledgeRepo: KnowledgeRuntimePort,
     private val promptBuilder: PromptBuilder,
     private val topicRecorder: TopicRecorder,
-    private val securePrefs: SecurePrefs,
+    private val securePrefs: SettingsStorePort,
     private val triggerCoordinator: KnowledgeTriggerCoordinator,
     private val generationEngine: GenerationEngine,
     // 统一前台任务协调器——管理所有 AI 前台流程的互斥和生命周期

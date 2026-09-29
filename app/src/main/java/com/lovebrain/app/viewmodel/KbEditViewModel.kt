@@ -1,8 +1,8 @@
 package com.lovebrain.app.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.domain.port.KnowledgeDocumentPort
+import com.lovebrain.app.domain.port.SettingsStorePort
 
 /**
  * 知识库编辑页 ViewModel。
@@ -18,7 +18,7 @@ import com.lovebrain.app.domain.port.KnowledgeDocumentPort
  */
 class KbEditViewModel(
     private val repo: KnowledgeDocumentPort,
-    private val securePrefs: SecurePrefs
+    private val securePrefs: SettingsStorePort
 ) : ViewModel() {
 
     /** 上次编辑的文件（跨会话记忆）；null = 从未编辑过 */

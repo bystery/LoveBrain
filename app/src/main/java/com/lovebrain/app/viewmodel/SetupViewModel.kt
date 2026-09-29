@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.HttpsTrustGuard
-import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.port.SettingsStorePort
 import com.lovebrain.app.domain.CapturePolicy
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.util.L
@@ -31,7 +31,7 @@ import java.io.File
  * 也不通过 viewModel.securePrefs 这种「伸手进 VM 拿仓库」的方式间接直连。
  */
 class SetupViewModel(
-    private val securePrefs: SecurePrefs,
+    private val securePrefs: SettingsStorePort,
     private val deepSeekRepo: DeepSeekRepository,
     private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null,
     /** 只为"本机是否已有知识库"这一项判断存在；测试里可不给，此时按"没有"处理 */
@@ -410,7 +410,7 @@ sealed class ExportState {
 
     /**
      * toggleTicketThinking——直出/思考两态切换：0=直出 1=思考，
-     * copy 写值经 [SecurePrefs.setWorkerTickets] 落盘。
+     * copy 写值经 [SettingsStorePort.setWorkerTickets] 落盘。
      * 老工单（null）先读全局设置作当前生效态再翻转（继承契约，）。
      */
     fun toggleTicketThinking(id: String) {

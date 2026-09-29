@@ -27,6 +27,9 @@ val appModule = module {
 
     // 数据层（单例）
     single { SecurePrefs(androidContext()) }
+    // 页面注入这颗端口视图、DeepSeekRepository 注入具体 SecurePrefs——两者解析到**同一个**实例，
+    // 加密与降级判据仍只有 SecurePrefs 一处，端口没有开出第二条落盘口。
+    single<com.lovebrain.app.domain.port.SettingsStorePort> { get<SecurePrefs>() }
     single { KnowledgeRepository(File(androidContext().filesDir, "knowledge"), get(), androidContext(), (androidApplication() as LoveBrainApp).applicationScope) }
     // 端口视图必须解析到**同一个**仓库实例：KnowledgeRepository 自己 implements
     // KnowledgePort，所以这里只是给同一个对象开两个类型的门，不是再造一个包装。
@@ -34,12 +37,23 @@ val appModule = module {
     // 读写的还是同一个库，但"只有一个事务 owner"就不再能从图上读出来了。
     single<com.lovebrain.app.domain.port.KnowledgePort> { get<KnowledgeRepository>() }
     single<com.lovebrain.app.domain.port.KnowledgeReadPort> { get<KnowledgeRepository>() }
+    // 写口视图同样指回**同一个**仓库实例：OngoingPlanStore 这类只要写能力的 domain 协作者
+    // 因此能拿到"只有写成员"的最窄视角，而落盘边界仍是仓库那一处，不是第二条链。
+    single<com.lovebrain.app.domain.port.KnowledgeWritePort> { get<KnowledgeRepository>() }
     // 页面侧那三颗端口（viewmodel 注入的类型）同上：每个都只是给**同一个**仓库对象再开一扇门。
     // 判据不是"少写几行"：这三颗里任何一颗换成 `single { SomeWrapper(get()) }`，
     // 图上就会出现两个持有文件系统的对象，"只有一个事务 owner"就不再能从图上读出来了。
     single<com.lovebrain.app.domain.port.KnowledgeDocumentPort> { get<KnowledgeRepository>() }
     single<com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort> { get<KnowledgeRepository>() }
     single<com.lovebrain.app.domain.port.KnowledgeRuntimePort> { get<KnowledgeRepository>() }
+    // 归档能力交给一个只搬流的小适配器：它把目录归属（knowledge/ 根、cache 暂存）收在实现侧，
+    // 转手仍用那唯一的 KbArchiveTransfer——不是第二条写链，只是把页面从具体类名解耦。
+    single<com.lovebrain.app.domain.port.KbArchivePort> {
+        com.lovebrain.app.data.FileKbArchiveTransfer(
+            knowledgeRoot = File(androidContext().filesDir, "knowledge"),
+            stagingBase = androidContext().cacheDir
+        )
+    }
     single { DeepSeekRepository(get()) }
     // 端口绑定必须显式写 get<具体类>()：写成 get() 会解析到自己，Koin 直接 StackOverflowError
     single<com.lovebrain.app.domain.port.AiGateway> { get<DeepSeekRepository>() }
@@ -67,6 +81,6 @@ val appModule = module {
     // ViewModel（每次获取新实例）
     viewModel { LoveBrainViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SetupViewModel(get(), get(), get(), androidContext()) }  // securePrefs, DeepSeekRepository, FeedbackCaseRepository, Context
-    viewModel { com.lovebrain.app.viewmodel.KnowledgeBaseViewModel(androidContext(), get(), get()) }
+    viewModel { com.lovebrain.app.viewmodel.KnowledgeBaseViewModel(androidContext(), get(), get(), get()) }
     viewModel { com.lovebrain.app.viewmodel.KbEditViewModel(get(), get()) }
 }

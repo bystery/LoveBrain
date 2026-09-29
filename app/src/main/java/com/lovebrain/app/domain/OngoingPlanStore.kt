@@ -1,6 +1,7 @@
 package com.lovebrain.app.domain
 
-import com.lovebrain.app.domain.port.KnowledgePort
+import com.lovebrain.app.domain.port.KnowledgeReadPort
+import com.lovebrain.app.domain.port.KnowledgeWritePort
 import com.lovebrain.app.model.OngoingItem
 
 /**
@@ -13,9 +14,14 @@ import com.lovebrain.app.model.OngoingItem
  *
  * 从 [TopicRecorder] 拆出，判据与文案逐字保留。时间串仍由调用方传入
  * （就是 WAL 事件里的 `timestamp`），所以恢复路径与首提写到链上的时间一致。
+ *
+ * 读与写分成两颗端口：本类只在 [mergeOngoing] 里读一次旧 plan、写一次新 plan，
+ * 所以给它 [KnowledgeReadPort] + [KnowledgeWritePort] 两条最窄的门即可，
+ * 拿不到 deleteFile / 版本化写那类它根本不该碰的能力（端口只按调用方真正用到的开）。
  */
 class OngoingPlanStore(
-    private val knowledgeRepo: KnowledgePort
+    private val read: KnowledgeReadPort,
+    private val write: KnowledgeWritePort
 ) {
 
     /**
@@ -39,7 +45,7 @@ class OngoingPlanStore(
      */
     internal suspend fun mergeOngoing(kbName: String, items: List<OngoingItem>, timeStr: String) {
         val planPath = "moment/plan.md"
-        val content = knowledgeRepo.readFile(kbName, planPath)
+        val content = read.readFile(kbName, planPath)
 
         // 解析两个分区，兼容新旧格式（新格式: itemId~name|status|chain；旧格式: name|status|chain）
         val activeLines = mutableListOf<String>()
@@ -176,7 +182,7 @@ class OngoingPlanStore(
             } else stillActive.add(p)
         }
 
-        knowledgeRepo.writeFile(kbName, planPath, renderPlan(stillActive, ended))
+        write.writeFile(kbName, planPath, renderPlan(stillActive, ended))
     }
 
     /**

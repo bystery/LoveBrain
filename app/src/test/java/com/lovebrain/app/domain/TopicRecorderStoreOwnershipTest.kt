@@ -137,7 +137,7 @@ class TopicRecorderStoreOwnershipTest {
     @Test
     fun `plan merge is idempotent on unchanged state and respects the ended section`() = runBlocking {
         val p = port("moment/plan.md" to "# 事项计划\n\n## 进行中\n\n## 已结束\n")
-        val store = OngoingPlanStore(p)
+        val store = OngoingPlanStore(p, p)
         suspend fun merge(status: String, state: String, sourceIds: List<String> = listOf("m1")) =
             store.mergeOngoing(
                 "kb",

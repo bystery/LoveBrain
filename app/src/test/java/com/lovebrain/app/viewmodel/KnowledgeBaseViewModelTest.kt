@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.net.Uri
 import com.lovebrain.app.data.DeepSeekRepository
+import com.lovebrain.app.data.FileKbArchiveTransfer
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.domain.OnboardingSchema
 import com.lovebrain.app.model.KnowledgeBase
@@ -88,7 +89,11 @@ class KnowledgeBaseViewModelTest {
         ctx: Context,
         repo: KnowledgeRepository,
         deepSeek: DeepSeekRepository
-    ) = KnowledgeBaseViewModel(ctx, repo, deepSeek, dispatcher)
+    ) = KnowledgeBaseViewModel(
+        ctx, repo, deepSeek,
+        FileKbArchiveTransfer(knowledgeRoot = kbRoot, stagingBase = cacheRoot),
+        dispatcher
+    )
 
     private fun readyProvider(deepSeek: DeepSeekRepository) {
         every { deepSeek.getActiveTicket() } returns ProviderTicket(
