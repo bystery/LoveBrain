@@ -15,8 +15,15 @@ internal interface BackupStorage {
     /** knowledge/ 根目录 */
     val root: File
 
-    /** 唯一落盘出口——真正的写边界仍住在仓库里；false 表示什么都没写 */
-    fun guardedWrite(target: File, content: String): Boolean
+    /**
+     * 唯一落盘出口——真正的写边界仍住在仓库里；false 表示什么都没写。
+     *
+     * 收的是**裸文件名**而不是 `File`：端口一旦收一个调用方拼好的 File，备份格就成了
+     * 第二个路径所有者，"写不出 knowledge/ 之外"得靠每个调用方自觉——
+     * 那条「所有 mutation 只能从 KnowledgeTx 取安全路径与原子写能力」的要求点名的正是这形状。
+     * 根级 marker 不属于任何库，所以仓库那侧用与 `safeKbFile` 同宽严的**根级守门**给它解析路径。
+     */
+    fun writeRootMarker(fileName: String, content: String): Boolean
 }
 
 /**
@@ -28,7 +35,7 @@ internal interface BackupStorage {
  * 第一版就把我拦下来了（我原本把节流备份的 launch 也搬了进来）。所以"什么时候要备份"
  * 的调度留在仓库——它是这里唯一的启动者；本类只管**给定时刻该备份什么、留几份、删哪些**。
  * 文件动作要么直接对 `File` 做（备份是整目录复制，走不了 kbName+relativePath 那套），
- * 要么经 [BackupStorage] 回到仓库唯一的 `atomicWriteText`。
+ * 要么经 [BackupStorage.writeRootMarker] 交出一个**文件名**，回到仓库那唯一的写链。
  *
  * ## 三条语义必须原样保住
  * 1. 两次备份间隔 ≥ 12 小时，靠 `.last_backup` 这个标记文件判，不靠内存；
@@ -86,8 +93,8 @@ internal class KnowledgeBackupService(
 
         pruneBackups()
 
-        // 更新备份时间标记——走仓库那道写门，本类不自建落盘出口
-        storage.guardedWrite(marker, now.toString())
+        // 更新备份时间标记——交出去的是文件名，路径与落盘都由仓库那道门给，本类不自建落盘出口
+        storage.writeRootMarker(MARKER_FILE, now.toString())
     }
 
     /** 修剪旧备份：每个知识库只保留最近 [maxCount] 份 */

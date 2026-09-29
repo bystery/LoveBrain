@@ -28,10 +28,11 @@ class KnowledgeBackupServiceTest {
         override val root: File = root
         val writes = mutableListOf<Pair<String, String>>()
         var acceptWrites = true
-        override fun guardedWrite(target: File, content: String): Boolean {
+        // 端口收的是**裸文件名**（原来是 File）：这里按名字落到根下，语义与仓库那侧的根级守门一致
+        override fun writeRootMarker(fileName: String, content: String): Boolean {
             if (!acceptWrites) return false
-            writes += target.name to content
-            target.writeText(content)
+            writes += fileName to content
+            File(root, fileName).writeText(content)
             return true
         }
     }

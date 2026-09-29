@@ -116,6 +116,68 @@ class KnowledgeDocumentStoreTest {
         assertNull(s.resolve("她", "../global/me.md"))
     }
 
+    // ═══ 根级 marker 的安全路径（不属于任何库的文件也得有边界）═══
+
+    /**
+     * 为什么要有第二道门而不是复用 [KnowledgeDocumentStore.resolve]：`.last_backup` 这类根级 marker
+     * 按设计不属于任何一本库，`resolve(kbName, relativePath)` 表达不了它——
+     * 但"表达不了"不等于"可以不守门"。这三格盯的就是那道新门本身：
+     * 合法名解析在根下、十二种错形全拒且每一次都说得出原因、而这扇门一个字节都不写。
+     */
+    @Test
+    fun aBareMarkerNameResolvesInsideTheKnowledgeRoot() {
+        val s = store()
+        for (good in listOf(".last_backup", ".kb_initialized", "plain_marker.txt")) {
+            val resolved = s.resolveRoot(good)
+            assertNotNull("根级 marker 名字「$good」被自己的守门挡下了", resolved)
+            assertTrue(
+                "解析结果跑到了 knowledge/ 根外面：$good → " + resolved!!.canonicalPath,
+                resolved.canonicalPath.startsWith(folder.root.canonicalPath + File.separator)
+            )
+            assertEquals("根级 marker 就许落在根下这一层", good, resolved.name)
+        }
+    }
+
+    @Test
+    fun everyShapeOfRootLevelEscapeIsRefusedAndSaidOutLoud() {
+        val s = store()
+        val escapes = listOf(
+            "../.last_backup",            // 相对上跳
+            "sub/../x",                   // 上跳藏在中间
+            "a/b.md",                     // 带斜杠的"文件名"
+            "a\\b.md",                    // 带反斜杠的"文件名"（Windows 上那就是分隔符）
+            "/etc/passwd",                // POSIX 绝对路径
+            "C:\\Windows\\win.ini",       // Windows 盘符 + 反斜杠
+            "C:x",                        // 盘符但一个分隔符都没有
+            "\\\\server\\share\\x",       // UNC
+            "..",                         // 上一级不是文件
+            ".",                          // 当前目录不是文件
+            "",                           // 空名
+            "   "                         // 全空白
+        )
+        for (bad in escapes) {
+            assertNull("根级文件名「$bad」竟然被接受", s.resolveRoot(bad))
+        }
+        assertEquals("每一次拒绝都要留下一句原因", escapes.size, notes.size)
+        assertTrue("说的都得是根级名字这一层的错，实到 $notes",
+            notes.all { it.contains("rejected root marker name") })
+        // 这一格自己也要有"门没把合法名一起关死"的证人：上面两条若靠"一律拒绝"来绿，这里就红
+        assertNotNull(store().resolveRoot(".last_backup"))
+    }
+
+    /** 这扇门只管给路径，不许顺手写字：写只有一条路，就是从注入的写链回去 */
+    @Test
+    fun resolvingARootMarkerNeverReachesTheWriteChain() {
+        val s = store()
+        assertNotNull(s.resolveRoot(".last_backup"))
+        assertNull(s.resolveRoot("../.last_backup"))
+        s.resolve("她", "understand/me.md"); s.read("她", "understand/me.md")
+
+        assertTrue("解析根级路径不许产生任何写入", writes.isEmpty())
+        assertEquals("也不许在盘上留下任何文件", emptyList<String>(),
+            folder.root.walkTopDown().filter { it.isFile }.map { it.name }.toList())
+    }
+
     // ═══ 版本化读写 ═══
 
     @Test

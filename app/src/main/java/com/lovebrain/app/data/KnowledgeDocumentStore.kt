@@ -83,6 +83,48 @@ internal class KnowledgeDocumentStore(private val storage: DocumentStorage) {
         return file
     }
 
+    /**
+     * 根级 marker 文件的安全路径：判据与 [resolve] 同宽严，只是解析基准从「某个库目录」换成 knowledge/ 根。
+     *
+     * 为什么要单开一道而不复用 [resolve]：`.last_backup` 这一族根级 marker **不属于任何一本库**
+     * （仓库那侧的 `kbOwning` 对点开头条目返回 null），`resolve(kbName, relativePath)` 表达不了它——
+     * 硬要表达就得编一个不存在的库名，那是把叙事改好看而没改事实。
+     * 「表达不了」也不等于「可以不守门」，所以这里只收**裸文件名**：空名、`.`、含 `..`、
+     * 任何分隔符（POSIX 的 `/` 与 Windows 的 `\`）、盘符形式 `C:x` 一律拒绝；
+     * 收下之后还要再核一次 canonical 仍在根下（畸形输入在 Windows 上会让 canonicalPath 直接抛，
+     * 边界函数不能让异常穿出去——抛不出去就当拒绝，与 [resolve] 同一处理）。
+     */
+    fun resolveRoot(fileName: String): File? {
+        rootNameRejection(fileName)?.let { reason ->
+            storage.note("rejected root marker name: $reason")
+            return null
+        }
+        val root = storage.root
+        val file = File(root, fileName)
+        val escaped = runCatching {
+            !file.canonicalPath.startsWith(root.canonicalPath + File.separator)
+        }.getOrElse {
+            storage.note("root path could not be canonicalised, refused: ${it.message}")
+            true
+        }
+        if (escaped) {
+            storage.note("root marker resolves outside knowledge root, refused")
+            return null
+        }
+        return file
+    }
+
+    /** 裸文件名的拒绝判据：返回 null = 收下，返回一句话 = 拒绝原因（以 `.` 开头的正常 marker 名是收的） */
+    private fun rootNameRejection(fileName: String): String? = when {
+        fileName.isBlank() -> "name must not be blank"
+        fileName == "." -> "'.' is not a file name"
+        fileName.contains("..") -> "name must not contain path traversal"
+        fileName.contains('/') || fileName.contains('\\') -> "must be a bare file name, no separator"
+        fileName.length >= 2 && fileName[1] == ':' && fileName[0].isLetter() ->
+            "name must not be a windows drive-absolute path"
+        else -> null
+    }
+
     /** 读一个文档（自动兼容旧路径）。非法路径与不存在的文件都给空串，不给异常 */
     fun read(kbName: String, relativePath: String): String {
         val file = resolve(kbName, relativePath) ?: return ""

@@ -196,8 +196,14 @@ class KnowledgeRepository(
             )
             return false
         }
-        /** 备份写 `.last_backup` 走同一道门；"有没有真写进去"原样报回去 */
-        override fun guardedWrite(target: File, content: String): Boolean = atomicWriteText(target, content)
+        /**
+         * 备份写根级 marker：端口这一侧只交得出**文件名**，路径由仓库这侧的根级守门给。
+         *
+         * 原来那道 `guardedWrite(target: File, …)` 收的是调用方拼好的 File——与批次四关掉的
+         * 迁移器那扇门同形，也是这笔欠账一直挂着的真正原因（不是因为它写 root 级文件，是因为它的**入参**是路径）。
+         */
+        override fun writeRootMarker(fileName: String, content: String): Boolean =
+            writeRootFileGuarded(fileName, content)
         override fun schema(name: String): String = loadSchema(name)
         override suspend fun currentStage(kbName: String): String = getCurrentStage(kbName)
         override suspend fun setStage(kbName: String, stage: String): Unit =
@@ -651,6 +657,22 @@ class KnowledgeRepository(
         fun append(relativePath: String, content: String): Boolean =
             appendFileCheckedUnlocked(kbName, relativePath, content)
 
+        /**
+         * 根级 marker（`.last_backup` 那一族）的安全路径：与 [pathOf] 同一条纪律、同一位所有者，
+         * 只是解析基准换成 knowledge/ 根。那个文件按设计不属于任何库，`safeKbFile` 表达不了它，
+         * 而"表达不了"从今天起不再等于"可以不守门"：只收裸文件名，越界一律 null。
+         */
+        fun rootFile(fileName: String): File? = safeRootFile(fileName)
+
+        /**
+         * 写一个根级 marker。false = 名字被守门挡下，一个字节都没落（并且留一条错误级日志）。
+         *
+         * 落盘仍在唯一写链上（[writeFileCheckedUnlocked] 的「路径已解析」那一支），只读判定在它下游的
+         * [atomicWriteText] 里按归属判——根级文件不属于任何库，那道判定与搬之前一样是放行。
+         */
+        fun writeRootMarker(fileName: String, content: String): Boolean =
+            writeRootFileGuarded(fileName, content)
+
         /** 删除。false = 没删（被挡、越界或本来就不存在）。 */
         fun deleteAt(relativePath: String): Boolean {
             if (migrator.isReadOnly(kbName)) return false
@@ -735,10 +757,38 @@ class KnowledgeRepository(
     private fun writeFileCheckedUnlocked(kbName: String, relativePath: String, content: String): Boolean {
         if (refusedByReadOnlySchema(kbName, "writeFile", relativePath)) return false
         val file = safeKbFile(kbName, relativePath) ?: return false
-        file.parentFile?.mkdirs()
-        if (!atomicWriteText(file, content)) return false
+        if (!writeFileCheckedUnlocked(file, content)) return false
         scheduleDebouncedBackup()
         return true
+    }
+
+    /**
+     * 同一个登记在册的写核，另一支入口：目标文件**已由某道守门解析好**时用这一支
+     * （库内路径来自 `safeKbFile`，根级 marker 来自 [safeRootFile]）。
+     *
+     * 这不是第三条链：落盘只有 [atomicWriteText] 那一处，只读判定也在它里面按归属判。
+     * 只读**入口**判定与备份节流留在库内那一支——根级文件不属于任何库，硬给它套一个 kbName
+     * 就得编一个不存在的库；而 marker 自己就是备份的产物，写完再排一次备份只会空转（那是改行为）。
+     */
+    private fun writeFileCheckedUnlocked(file: File, content: String): Boolean {
+        file.parentFile?.mkdirs()
+        return atomicWriteText(file, content)
+    }
+
+    /** 根级文件的统一守门：与 [safeKbFile] 同一位所有者、同宽严，判据住在 [KnowledgeDocumentStore.resolveRoot] */
+    private fun safeRootFile(fileName: String): File? = documents.resolveRoot(fileName)
+
+    /**
+     * 根级 marker 的唯一写路径：根级守门给路径 → 唯一写核落盘。
+     * 拒绝必须留痕——一次不出声的 false 与静默跳过没法区分（与 [RepoStorage.atomicWriteAt] 同一口径）。
+     */
+    private fun writeRootFileGuarded(fileName: String, content: String): Boolean {
+        val file = safeRootFile(fileName)
+        if (file == null) {
+            com.lovebrain.app.util.L.e("root marker write refused by the guard: $fileName", null)
+            return false
+        }
+        return writeFileCheckedUnlocked(file, content)
     }
 
     /** [appendFileUnlocked] 的"有没有真的写"版本 */

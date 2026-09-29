@@ -92,16 +92,29 @@ class KnowledgeTxMutationEntryTest {
      * 实现体直接复用已有的 `safeKbFile` + `writeFileCheckedUnlocked`（所以链上的数一点没长）。
      * 端口上再没有不收路径的写口，那 14 处的字节由 `KnowledgeMigratorBytesBaselineTest` 逐格钉住。
      *
-     * 剩下一笔：`RepoStorage.guardedWrite` 是备份适配器写根目录 `.last_backup` 标记的管道——
-     * 那个文件按设计不属于任何库（`kbOwning` 对点开头目录返回 null），`safeKbFile` 根本表达不了它，
-     * 所以它不在「 mutation 只能从 KnowledgeTx 取路径」这条要求的射程里，这一轮不动它。
+     * 2026-09-29 批次五还掉最后一笔 `RepoStorage.guardedWrite` 那 1 处。**为什么它此前还不动**：
+     * 它写的是根级 marker `.last_backup`，那个文件按设计不属于任何库（`kbOwning` 对点开头条目返回 null），
+     * 而 `safeKbFile(kbName, relativePath)` 只会表达「某本库里的某个路径」——所以它挂在这本账上
+     * 挂的是**结构性**的缺，不是"忘了走事务"。欠账的形状其实和批次四一模一样：
+     * 端口那道 `guardedWrite(target: File, content)` 收的是一个外部拼好的 `File`，
+     * 备份格想写哪儿就写哪儿（`KnowledgeBackupService` 里那句 `File(root, MARKER_FILE)` 就是路径来源）。
+     *
+     * 这一轮还的是那半句"公共链"：端口换成 `writeRootMarker(fileName: String, content: String)`，
+     * 名字先过一道**根级守门**（`KnowledgeDocumentStore.resolveRoot`：只收裸文件名，
+     * 分隔符 / `..` / 绝对路径 / 盘符 / `.` / 空名一律拒，收下之后再核一次 canonical 仍在 knowledge/ 根下），
+     * 落盘进登记在册的那个写核（`writeFileCheckedUnlocked` 的「路径已解析」那一支，
+     * 与库内那一支同一个 `atomicWriteText`）。事务那侧同时长出 `KnowledgeTx.rootFile` 与
+     * `KnowledgeTx.writeRootMarker`，根级 marker 的写由此只能从事务对象取。
+     * 两条捷径都没走：`WRITE_CHAIN` 一个字没动（链上的数还是 4，不是 5），也没为根级 marker 编一个假库名。
+     *
+     * 账面：**总点数 5 → 4、唯一写链 4 → 4（没长）、裸写 1 → 0**。
+     * 牙由 `KnowledgeRootWriteGuardTest` 五格行为 + 一格形状钉住（含"合法名仍然写得动"那一格，
+     * 防的是把门全关死这种假安全），只读判定在分两支之后仍在原处。
      */
-    private val expectedRawBreakdown = mapOf(
-        "RepoStorage.guardedWrite" to 1
-    )
+    private val expectedRawBreakdown = emptyMap<String, Int>()
 
-    /** 调用点总数（写链 4 + 裸写 1，且那 1 处是管道）：动一条也要撞到这里 */
-    private val expectedTotalSites = 5
+    /** 调用点总数（写链 4 + 裸写 0——裸写这一族从今天起是空集）：动一条也要撞到这里 */
+    private val expectedTotalSites = 4
 
     // ═══════════ 扫描工具 ═══════════
 
