@@ -6368,3 +6368,170 @@ A/B 复现：`git clone --depth 53` ⇒ RC=1 同原文；全克隆（414 条历�
 ④`record_visual_baseline.sh` 不存在、这台机器 `recordRoborazziDebug` 不写图；
 ⑤`LbEmptyState` 采用 0、矩阵 4 宽 × 3 字未跑满、`ContrastRegressionTest` 仍是 token 数学不是像素对；
 ⑥四个 release secret 与那 2 格 `Assume` 一条没动。
+
+## 77.1 CI 那一格是掷硬币掷出来的，而掷硬币的起因是我写在 KDoc 里的一条假前提
+
+run 36590772693（`28315e9`）`verify` **failure**，红的步骤写着 `Screenshot baselines must match`——
+但那一步只是贴着 gradle 的退出码：`[gate] verify exit=1; actual images …: 0`，真正的红在
+`1738 tests completed, 1 failed`，格子是 `KnowledgeRootWriteGuardTest > escaping root names are refused by
+the guard and nothing lands`，实到（从 CI 下来的 HTML 报告里逐字读）：
+
+```
+被拒的名字竟然落了盘：[.backup/kb_20260929_1537/kb.json, .last_backup, .probe_warmup, kb/kb.json]
+expected:<[.probe_warmup, kb/kb.json]>
+```
+
+同一份树、只多一笔纯文档（`58776ef`）的 run 36590897784 **三 job 全绿**，产物门自报
+`unit: tests=1738 failures=0 errors=0 skipped=0 suites=243`、`42 golden(s) verified`
+⇒ 这是 **flake**，不是"Linux 与 Windows 判据分歧"。差别只在 init 那一发备份落在 `before` 快照之前还是之后。
+
+根因是我自己在类 KDoc 里写的一句假前提：**"夹具给的是已经取消的 scope——仓库构造时就会 launch 一次
+启动备份，它会抢着往同一棵树上写"**。它不成立：`KnowledgeRepository.init` 里那句
+`appScope.launch(Dispatchers.IO + SupervisorJob())` **往上下文塞了一枚全新的 Job**，
+那一发因此不是 `appScope` 的孩子，`cancel()` 传不到它（kotlinx 的语境规则，不是我推理——
+新格 `the detached startup backup outlives a cancelled appScope` 用 0.077s 实测到 `.last_backup` 落地）。
+登记的读数是三件事：①夹具那句注释是错的（已改）；②本格当时是**判据取错对照点**，不是守卫漏了
+——被拒的 13 个名字一个都没落盘，落盘的是合法的备份；③**生产侧真的存在一笔"取消之后仍会落盘"**
+（本格只登记，没动：把 launch 接回 scope 的孩子位是改取消行为，要口径）。
+
+修法用生产自己那道节流，不加测试开关、也不把判据改成"容忍树上多几行"：`setUp` 在**构造仓库之前**
+把 `.last_backup` 预置成"刚刚备份过"这一秒 ⇒ `backupIfNeededUnlocked` 在间隔判定处直接返回；
+根级写又不排 debounce（`writeFileCheckedUnlocked(file, content)` 的 KDoc 明写"marker 自己就是备份的产物"）
+⇒ 这棵树上除了本格就没别人。判据一句没软：那 13 形仍然要全拒、`before == after` 仍然逐字比。
+
+牙（正向对照，**这台 Windows 第一发就红**，说明"本机一直是绿的"只是硬币的另一面）：
+删掉预置那两行 ⇒ 新加的那句健康检查先开口——
+`夹具失效：节流标记挡不住那个游离的启动备份，对照点不可信，实到 [.backup/kb_20260930_0005/kb.json, …]`，
+比 CI 原来那句"被拒的名字竟然落了盘"说得准（那是把仪器坏了读成守卫漏了）。
+
+## 77.2 两发反证查出来的第二件事：那 13 种形只压得住两道门里的一道
+
+`resolveRoot` 有两道判据：名字判据（裸文件名、无分隔符、无 `..`、非盘符开头）+ canonical 归属复核。
+按"每个分支要有自己的对照物"这条自家规矩去实测：
+
+- 只摘掉名字判据里 `".."` 那一支 ⇒ **8 格全绿**（canonical 那道兜住：`File(root, "..")` 的规范化在根外）。
+- 只把 canonical 判定关掉 ⇒ **8 格全绿**（名字那道兜住：13 形里有 `".."` 字面、也有分隔符）。
+- 两道同时关 ⇒ 两格红：`根级守门竟然交得出路径：[../lb_root_escape_394187261995100]`、
+  `非法名字必须写不成`。
+
+⇒ 本格对"守门整体"有牙，对"第二层单独"**没有牙**——两道互为冗余。补一格
+`whatever the second layer hands back is strictly inside the knowledge root`。
+让第二层单独开火需要"名字合法、文件系统却解析到别处"的形：符号链接最干净，**这台机器造不出来**
+（`os.symlink` → WinError 1314「客户端没有所需的特权」），于是拿控制字符当对照，读数现测：
+`a<U+0000>b` 走 `getOrElse`（note = "root path could not be canonicalised, refused: Invalid file path"）、
+`a<U+0001>b` 走归属判定（note = "root marker resolves outside knowledge root, refused"）。
+**两条都是 Windows 侧行为**：Linux 上 U+0001 是完全合法的文件名，会被收下。
+所以那一格判的是**契约**（交得出的每条路径必须严格在根内，等于根目录本身也算违例），
+而不是某个平台的读数；关掉第二层这台机器当场红。
+第一版让它 `java.io.IOException: Invalid file path` 直接穿出去当判决——那是**仪器错报成产品崩溃**，
+改成 `runCatching` 接住 + 自己说人话，实到
+`守门交出了一条归属都判不出的路径（规范化就抛了）：[a?b] -> …?b，异常：java.io.IOException: Invalid file path`。
+"两层各有独立对照物"这句不成立，成立的是"第一层有 13 形、第二层只有 Windows 侧一发 + 一条契约"。
+
+## 77.3 "裸写 0"今天是**按词面**成立的——那把尺只认 `atomicWriteText` 一个词
+
+`KnowledgeTxMutationEntryTest` 的账面是"总点数 4 / 唯一写链 4 / 裸写 0"，可它扫的只有
+`atomicWriteText(` 这一个词。2026-09-30 用一把状态机尺现扫 `data/`（剥注释与字符串字面量之后数
+落盘原语，`_temp/scan_write_primitives.py`）：
+
+```
+FeedbackCaseRepository.kt   .writeText( 2          // :58 tmp、:61 正式文件
+KbArchiveTransfer.kt        FileOutputStream( 1    // :115 解压暂存壳
+KnowledgeRepository.kt      .writeText( 1 / FileOutputStream( 1 / atomicWriteText( 5
+                                                   // .writeText = markInitialized 那一颗 `.kb_initialized`
+                                                   // FileOutputStream 在 rawAtomicWriteText 自己体内
+```
+
+⇒ 指导书 P0-03 前半句"所有 mutation 只能从 `KnowledgeTx` 取得安全路径与原子写能力"，
+在 `.kb_initialized` 这一颗上**字面就没做到**：它自己拼 `File(knowledgeRoot, INIT_MARKER_FILE)`
+再裸 `writeText`，既不从事务取路径、也不过根级守门。旧尺看不见它，因为它不叫 `atomicWriteText`。
+
+新格 `DataWritePrimitiveLedgerTest`（10 格）：六族落盘原语、按 `(文件, 作用域) → 处置` 具名账，
+`blankNonCode` 逐字符照抄邻居那把尺（同一口径），键集合判等 + 每键处数与原语判等 + 逐族合计判等 +
+**今天恒为 0 的三族也判 ==0**（量程不许有名无实）+ 每条 REGISTERED_EXCEPTION 必须带一句为什么、
+非例外族不许带口供。处置三档：`WRITE_CORE`（`rawAtomicWriteText` 体内那 1 处 `FileOutputStream`）、
+`ON_CHAIN`（四个写核各 1，作用域名与 `WRITE_CHAIN` 逐字相同）、`REGISTERED_EXCEPTION`（3 处，各带理由）。
+还掉 `markInitialized` 之后的账面：`.writeText( 3 → 2`、例外 4 → 3、键 8 → 7、总处数 9 → 8，
+**`WRITE_CHAIN` 没扩（链上还是 4）、端口签名没动、`.last_backup` 那道门没放宽**。
+
+`markInitialized` 走的是**今天已经在跑**的那道根级门（`writeRootFileGuarded` → `resolveRoot` → 唯一写核），
+不是第三条链。它把"写不成"从裸 `writeText` 的抛异常换成 `writeRootFileGuarded` 的 false——
+false 直接丢掉就是一次不出声的跳过，所以判掉：留一条错误级日志再抛 `IllegalStateException`
+（本包已有此形状；搬之前调用方本来就会看见异常，这条语义原样留着）。
+
+两处例外是我自己回源核过的，不是抄代理的话：`FeedbackCaseRepository` 的目标是
+`context.filesDir/feedback/cases.json`（`:38-39`），根本不在 knowledge/ 树里；
+`KbArchiveTransfer.extractToStaging` 写的是 `stagingBase`，而 `di/AppModule.kt:58-61` 把
+`stagingBase` 接的是 `cacheDir`——按设计就不许写进 knowledge/（"暂存 → 校验 → 原子搬入"三段式）。
+
+牙（主线程**亲自**补的两发，代理那 8 发我未逐发重跑）：
+- 把 `markInitialized` 原样搬回裸 `File.writeText` ⇒ 新尺 **4 格红**
+  （逐族合计、键集合、每键处数、以及那格形态判据 `markInitialized 只许从根级守门取路径落盘（一处），实测体：… expected:<1> but was:<0>`），
+  而 **`KnowledgeTxMutationEntryTest` 8 格全绿** ⇒ 这把新尺补的正是那把瞎掉的这一段，这条对照比"红了几格"更有说服力。
+- 在从没写过盘的 `KnowledgeBackupService.kt` 里加一颗 `lbProbeLeak { File(where, ".lb_probe_leak").writeText("x") }`
+  ⇒ **3 格红**，并且键集合那句直接点名 `KnowledgeBackupService.kt::lbProbeLeak`（不是只报"多了一处"）。
+两发都 `cp` 还原 + `cmp` 逐字节相同。
+
+代理自己上报的没做到（我复述、不改写）：`markInitialized` 的 false 那一支**在产品码里触发不到**
+（`INIT_MARKER_FILE` 是合法裸名），所以"注入一次失败路径看它红"用的是**静态那发**（丢弃返回值 ⇒ 形态格红），
+没有真运行时失败格；port-shape 那格四条只证红了"不许带参数"一条。
+
+## 77.4 CI：三 job 实况，以及"红的那一步不等于那一步坏了"
+
+`58776ef`（本拍推上去的最后一笔）：**`verify` success、`ui-test` success、`upgrade-test` skipped**；
+产物门自报 `unit: tests=1738 failures=0 errors=0 skipped=0 suites=243`、
+`42 golden(s) verified`。`upgrade-test` 在 push 上不再跑——那是上一拍 `c14408e` 按用户书面口径改的（只随 `workflow_dispatch` 触发），本拍只是**第一次在同一棵树上把三 job 读数与本机对齐**。
+
+`28315e9` 那一发 verify 红的读法记一条经验：**红的步骤是 `Screenshot baselines must match`，
+坏的是别的东西**——那一步只是贴着 `testDebugUnitTest` 的退出码走（`verify exit=1; actual images: 0`，
+零张 `_actual` 已经说明像素没漂）。判红要先读 `1738 tests completed, 1 failed` 那一行。
+另：这台工作副本 `gh run view --json` 没有 `artifacts` 字段，失败消息要从
+`unit-test-report` 那份 HTML 产物里读（`classes/<类名>.html`），控制台只给到"类 + 行号"。
+
+## 77.5 收口数（本机当场跑，全部取自当次命令输出）
+
+- 全量单测（合并两批 + 注释修完之后的树，`--rerun-tasks`）：**244 套件 / 1750 格 / 0 失败 / 0 错误 / 0 跳过**，
+  244 份 XML 同一批、跨度 0.07s，BUILD SUCCESSFUL 6m02s、RC=0。
+  对上一格 `58776ef` 的 1738：**+12 格 / +1 套件** = 根级守门那两格新牙（+2）与新尺 `DataWritePrimitiveLedgerTest`（+10）。
+- lint 报告**重生成后**才敢读（`lintDebug` 报 BUILD SUCCESSFUL 而 `app/build/reports/lint-results-debug.xml`
+  的 mtime 还停在 23:15 —— 坑表 28 的又一形态；这次是把旧报告**改名**进 `_temp/lint-stale-2026-09-30/` 再跑，
+  不删）：**measured 64 / 14 规则，进预算 63 / 13，advisory 1 / 1**，判据自测 27 格全对，RC=0。
+- `verify_visual_baseline.sh`：RC=0，**42 golden(s) verified**、`actual images: 0`（这一拍没动任何 UI 源码）。
+- 大文件棘轮 holds：扫 **182** 个 .kt，>500 **16**、>800 **6**；它自己的 7 格反证全过。
+  顺手把两份登记清单里**过期的行数注释**按现读刷了一遍（10 条，保留旧值）：
+  `KnowledgeRepository 1844 → 1794`、`LoveBrainViewModel 2517 → 2404`、`SuggestPanel 944 → 968`、
+  `LoveBrainPanelScreen 1115 → 1105`、`ProviderSection 677 → 702`、`SchemeCard 789 → 754`、`ResultArea 768 → 737`、
+  `CounselingPanel 624 → 611`、`FeedbackCasesScreen 537 → 525`、`FloatingService 573 → 574`。
+  ⚠ 这些数**不影响判据**（键在 `#` 之前，阈值判的是实测行数），修的只是"下一个窗口读到的说明是不是真的"。
+- 四栏字面量（独立状态机尺复算，剥注释口径）：**TEXT 166 / DESC 6 / STATE 0 / COMPONENT 89**；
+  异形账：**自画 22 / 委托壳 15**。这一拍一个 UI 文件都没碰，两把尺都只作交叉核对。
+- 工单号扫描 PASS；`asset_hashes --check` OK（lock `6dcde732…`）；`assets/engine|schema` 对 `286c9406` 零差异；
+  跨层依赖 **5** 条未变；androidTest 编译 RC=0。
+- 新尺的量程要说清：它扫的是 `app/src/main/.../data/`。整棵 `app/src/main` 用同一把尺扫出来，
+  `data/` 之外还有 **4 处**落盘（`util/L.kt` 2、`service/CopyCaptureService.kt` 2），
+  两处落点我回源核过都是 `context.filesDir` 直属（`lb_log.txt`、诊断文件），**不在 knowledge/ 树里**，
+  但"今天没有任何一格判这个范围"这句必须一起说（尺：`_temp/scan_writes_outside_data.py`）。
+
+## 77.6 这一拍对指导书那 18 条的影响，以及明确欠的账
+
+**分数口径不动，仍 8/18 = 44%**，而且这次连"半句"都没往上挪一格——理由两条，都不是我谦虚：
+① P0-03 那条完成定义要的是"所有 mutation 只能从 `KnowledgeTx` 取安全路径与原子写能力"，
+   `markInitialized` 现在确实走那道门了，但同一把新尺上仍挂着 **3 处 `REGISTERED_EXCEPTION`**
+   （反馈案例落盘 2 处、导入暂存解压 1 处）+ 读侧 `File(knowledgeRoot, ".kb_initialized").exists()` 仍自己拼路径。
+   那 3 处的落点不在 knowledge/ 树里（我回源核过），所以"要不要把它们算进这条要求的射程"**是产品/指导书口径问题，
+   不是我自签得了的**；② 视觉那条仍要求 baseline 变更有人签，那张 `LbSettingRow/shortTrailingWord` 还是我重录的。
+
+明确欠着、没混进"已完成"的：
+- **生产侧一笔新登记**：`KnowledgeRepository.init` 里 `appScope.launch(Dispatchers.IO + SupervisorJob())`
+  使那一发启动备份脱离 `appScope` 的取消 ⇒ 取消之后仍可能落盘。本格只把它钉成读数
+  （`the detached startup backup outlives a cancelled appScope`），**没改**——改法是把它接回 scope 的孩子位，
+  那是改取消语义，要口径。
+- 第二层（canonical 归属复核）在 **Linux 侧没有独立对照物**：符号链接造不出来（WinError 1314），
+  控制字符那一发只在 Windows 开火。那一格判契约，CI 那侧它只是契约检查。
+- 新尺只覆盖 `data/`；`data/` 之外那 4 处落盘没人判（见 77.5 最后一条）。
+- 代理自报的没做到（我复述）：`markInitialized` 的 false 那一支在产品码里触发不到，
+  只用静态那发（丢弃返回值）证红，没有真运行时失败格；port-shape 四条断言只证红了"不许带参数"一条。
+- 牙债仍在：这一拍新格 12 格，我**亲自**补了 5 发反证（预置删掉 ⇒ 红在"夹具失效"；裸写搬回 ⇒ 新尺 4 格红 /
+  老尺全绿；未登记新落盘 ⇒ 3 格红并点名新键；只关第二层 ⇒ 契约格红；只关第一层的 `".."` 支 ⇒ 全绿，
+  那条"绿"本身是读数不是战果）。代理自证的 8 发我未逐发重跑。
+- 四个 release secret 与那 2 格 `Assume` 跳过，一条没动。

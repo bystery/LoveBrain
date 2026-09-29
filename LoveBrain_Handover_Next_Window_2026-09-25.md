@@ -3890,6 +3890,36 @@ hoisted slot 换四格）、`failActiveOn(repo, failing, calls)` 这种"第 N �
         还主动上报了两处"归并之后视觉会变"（标签对齐、按压曲线）和一处它自己删掉的格子。
         教训：**给代理的活儿要按"一次能做完 + 能单独验收"切**，不要按"这一族都归你"切。
 
+162. **写在 KDoc 里的夹具前提也是一条断言，它同样要有一发实测钉着**（根级守门那一格在 CI 上掷硬币）：
+     类注释原写"夹具给的是已经取消的 scope——仓库构造时那发启动备份不会跑"。它不成立：
+     `appScope.launch(Dispatchers.IO + SupervisorJob())` 往上下文里塞了一枚**全新的 Job**，
+     那一发因此不是 `appScope` 的孩子，`cancel()` 传不到它（kotlinx 的语境规则）。
+     后果是 `before = tree()` 这个对照点随那发备份落在前/后而变——同一份树两个 run 一红一绿。
+     ⇒ 三条动作：①注释改成实话，并把"取消挡不住它"本身写成一格（0.077s 实测到落盘）；
+        ②静树用**生产自己那道节流**（构造前预置 `.last_backup` = 刚刚备份过），不加测试专用开关、
+          不把判据改成"容忍树上多几行"；③给对照点加一句健康检查（树上有 `.backup/` 就红在"夹具失效"），
+          这样仪器坏了说仪器，不要把"合法备份落盘"读成"守卫漏了"。
+     顺带登记一笔**生产侧**读数（本轮没动）：取消 appScope 之后仍可能有一次备份落盘。
+
+163. **两道互为冗余的门，各自都要有独立对照物**（`resolveRoot`：名字判据 + canonical 归属复核）：
+     只摘掉名字判据里 `".."` 那一支 ⇒ 全绿；只关掉 canonical 那道 ⇒ 也全绿；两道同时关 ⇒ 才红。
+     那 13 种逃逸形**只压得住第一道**——它们要么带分隔符、要么带 `..` 字面，第二道从来轮不到它判。
+     ⇒ 补一格判"契约"的（守门交出的每条路径必须严格在根内，等于根目录本身也算违例），
+        对照物是控制字符：这台 Windows 上 `a<U+0000>b` 走 `getOrElse`、`a<U+0001>b` 走归属判定，
+        关掉第二层当场红。**别把这种红做成异常穿出去**——第一版让 `IOException: Invalid file path`
+        当判决，那是仪器错报成产品崩溃；要 `runCatching` 接住再用格子自己的话说出来。
+     读出来的口径要一起写：Linux 上 U+0001 是合法文件名 ⇒ 第二层在 CI 那侧只是契约检查，
+     "两层各有独立对照物"这句不成立，就不许写成交了。
+
+164. **CI 红的步骤名不等于坏掉的东西；flake 的证人是"同一棵树两个 run"**：
+     `verify` 红在 `Screenshot baselines must match`，但那一步只是贴着 `testDebugUnitTest` 的退出码
+     （`verify exit=1; actual images: 0` — 零张 `_actual` 已经说明像素没漂），
+     真红是 `1738 tests completed, 1 failed`。判红先读那一行，再看步骤名。
+     取失败消息：这台工作副本 `gh run view --json` **没有 `artifacts` 字段**，
+     控制台只给"类 + 行号"，逐字消息在 `unit-test-report` 那份 HTML 产物里（`classes/<类名>.html`）。
+     证明是 flake 而不是平台分歧：找**只差一笔纯文档**的下一个 run 与它对比（这里 `58776ef` 全绿、
+     自报同一套 1738/243）——差的是文档，红的是时序，结论只能是"这格不可信"，不是"Linux 有问题"。
+
 ## 7. 硬约束（一条没变）
 
 不许改 prompt 内容（`git diff --exit-code 286c9406..HEAD -- app/src/main/assets/engine` 必须零差异）；
@@ -4068,6 +4098,19 @@ Provider 名保存链路只有 `SetupViewModel.kt:216` 的 `isBlank()`，**没�
 长名被**静默切掉、连省略号都没有**，且全 App 只有"删除确认标题"与"表单输入框"两处还能看到全名，
 都不是浏览面。面板头部根本不画 Provider 名（开工包把它列为第三个落点，是不成立的，代理已上报）。
 
+### 0.65.8 超长名那一发落主干的收口数（本机当场跑）
+
+- 新文件 `app/src/test/java/com/lovebrain/app/ui/home/LongProviderNameSemanticsTest.kt`：**3 格 / 493→约 500 行**，
+  12 格矩阵（4 宽 × 3 字）逐格判，参照全部用 `requiredWidth` 放开的控制组，判几何不判文本
+  （这一仓库已记过：`maxLines + Ellipsis` 裁切时语义树仍报完整原串，文本判据全没牙）。
+- 生产改动只有一处：`ui/home/ProviderSection.kt` 那颗可点宿主接回 `AppDimens.TOUCH_TARGET_MIN_DP`
+  （`heightIn(min = …)` 一行 + 5 行说明为什么）。
+- 反证两发（都 `cmp` 字节级还原）：标题钉 `widthIn(max = 60.dp)` ⇒ 卡片那一格红；
+  宿主垫到 48dp ⇒ 只有"钉现行行为"那一格红、实到 `{1.0=48, 1.3=56, 2.0=74}`。
+- 全量 **237 套件 / 1678 格 / 0 失败 0 错误 0 跳过**（237 份 XML 同批、跨度 0.06s；BUILD SUCCESSFUL 6m34s）；
+  lint 66 处 / 14 规则、进预算 **65/13** 未变；`verify_visual_baseline.sh` **42 golden(s) verified**；
+  大文件棘轮 holds；androidTest 编译 RC=0；工单号 PASS；prompt 资产零差异。
+
 ## 0.66 用户书面改需求：CI 只做"构建 + 测试"，签名与覆盖安装改由本地手动跑（`9ec728e` 之后）
 
 **原话（2026-09-29）**："CI 不做 release 签名发布，只做构建和测试；覆盖安装验证不作为 CI 必过项。
@@ -4106,19 +4149,6 @@ bash scripts/run_upgrade_test.sh   --old-apk "$(cat fixtures/old-apk-path.txt)" 
    `/data/data/com.lovebrain.app`，那一跑会红——**这是仪器要求，不是产品缺陷**）。
 产物落在 `fixtures/`，交回来我就按 §6 的三态口径记账（"本机已验 / 沿用上轮 / 只能等外部"）。
 
-### 0.65.8 超长名那一发落主干的收口数（本机当场跑）
-
-- 新文件 `app/src/test/java/com/lovebrain/app/ui/home/LongProviderNameSemanticsTest.kt`：**3 格 / 493→约 500 行**，
-  12 格矩阵（4 宽 × 3 字）逐格判，参照全部用 `requiredWidth` 放开的控制组，判几何不判文本
-  （这一仓库已记过：`maxLines + Ellipsis` 裁切时语义树仍报完整原串，文本判据全没牙）。
-- 生产改动只有一处：`ui/home/ProviderSection.kt` 那颗可点宿主接回 `AppDimens.TOUCH_TARGET_MIN_DP`
-  （`heightIn(min = …)` 一行 + 5 行说明为什么）。
-- 反证两发（都 `cmp` 字节级还原）：标题钉 `widthIn(max = 60.dp)` ⇒ 卡片那一格红；
-  宿主垫到 48dp ⇒ 只有"钉现行行为"那一格红、实到 `{1.0=48, 1.3=56, 2.0=74}`。
-- 全量 **237 套件 / 1678 格 / 0 失败 0 错误 0 跳过**（237 份 XML 同批、跨度 0.06s；BUILD SUCCESSFUL 6m34s）；
-  lint 66 处 / 14 规则、进预算 **65/13** 未变；`verify_visual_baseline.sh` **42 golden(s) verified**；
-  大文件棘轮 holds；androidTest 编译 RC=0；工单号 PASS；prompt 资产零差异。
-
 ## 0.67 并行档第四拍：知识库写侧出账 + 裸写归零 + 图标/提示条/首页三段归并（远端 `28315e9`）
 
 用户三条书面指令落在这拍里：①能复用就不重造；②图标型动作并进现有文字动作组件；③按指导书最大并发。
@@ -4148,3 +4178,44 @@ bash scripts/run_upgrade_test.sh   --old-apk "$(cat fixtures/old-apk-path.txt)" 
 本轮**没修**、只登记的：`KnowledgeRepository.markInitialized()` 还在用
 `File(knowledgeRoot, ".kb_initialized").writeText("done")`——第二颗根级标记，不原子、也不在那把尺射程内（它只数 `atomicWriteText`）；
 同一条守门现成能用，但要避嵌套事务，留下一刀。
+
+## 0.68 并行档第五拍收口：把上一拍说过的两句话重测了（远端仍 `58776ef`，本地这一批**未推**）
+
+这一拍没搬新块，干的是"复核自己"：上一拍我在账本里写过两句听起来像结论的话，两句当场被实测推翻半句、修正一句。
+
+| 重测的那句话 | 实测结果 | 动作 |
+|---|---|---|
+| 「CI 那格红是 Linux 与 Windows 的像素/平台分歧」 | **不成立**：同一棵树只差一笔纯文档的两个 run 一红一绿 ⇒ race。真红在 `testDebugUnitTest`（1738 格里 1 格），而红的**步骤名**是像素门 | 查明 + 修夹具对照点 + 补两格牙（坑表 162/164、剩余工作 V20/V21） |
+| 「裸写 0」 | **只在词面上成立**：那把尺只数 `atomicWriteText(` 一个词，而 `markInitialized()` 一直用 `File(…).writeText("done")` 写 `.kb_initialized` | 造一把按六族落盘原语扫的新尺（10 格）并把那一处还掉；账面 9→8 处、键 8→7、`.writeText` 3→2 |
+
+**根级守门那一族的现状**（`KnowledgeRootWriteGuardTest` 现在 8 格）：
+- 静树手法从"取消 scope"（假前提）换成**借生产自己那道节流**：`setUp` 构造仓库前预置 `.last_backup`；
+  判据一句没软，13 形仍全拒、`before == tree()` 仍逐字比。
+- 新格 `the detached startup backup outlives a cancelled appScope` 钉住那个假前提为什么是假的（0.077s 实测落盘）。
+- 新格 `whatever the second layer hands back is strictly inside the knowledge root` 钉第二道门；
+  ⚠ 它在这台 Windows 有牙（只关第二层当场红），**Linux 侧只是契约检查**——符号链接造不出来（WinError 1314）。
+- ⚠ 登记未改：`appScope.launch(Dispatchers.IO + SupervisorJob())` 让那一发备份脱离取消 ⇒ 取消之后仍可能落盘。
+
+**这一拍的数**（本机当场跑；CI 那侧见剩余工作 §1c）：
+244 套件 / **1750 格** / 0 失败 0 错误 0 跳过（XML 同批 0.07s）；lint 报告**重生成后** measured 64/14、
+进预算 **63/13**、advisory 1/1，判据自测 27 格；`42 golden(s) verified`、`actual images: 0`；
+大文件 holds（182 .kt、>500 16、>800 6）+ 它自己 7 格反证；四栏字面量 TEXT 166 / DESC 6 / STATE 0 / COMPONENT 89；
+异形账 自画 22 / 委托壳 15；跨层 **5**；工单号 PASS；prompt 零差异 + lock `6dcde732…`；androidTest 编译 RC=0。
+`KnowledgeRepository` **1794** 行、`LoveBrainViewModel` **2404** 行。
+
+顺手修的两处文档腐烂（都在这一拍的 diff 里，不改判据）：
+①`scripts/big-file-500.txt` / `-800.txt` 里 **10 条过期的行数注释**按现读刷新（保留旧值可对比）；
+②`§0.65.8` 那一节原本被插在 `## 0.66` 之后（上一拍我补丁错位，读起来像 0.66 的子节）——已整段移回 `0.65.7` 之后，
+  纯搬位、字节数不变（`_temp/handover_before_reorder.md` 留着对照）。
+
+**下一格该做什么**（不在这一拍做，因为都要用户先拍板或属于另一族）：
+1. 那 **3 处 `REGISTERED_EXCEPTION`** 算不算 P0-03 这条要求的射程（反馈案例 2 处、导入暂存 1 处；
+   落点我核过都不在 knowledge/ 树里）——这是口径问题，不是我能自签的；
+2. 读侧 `File(knowledgeRoot, ".kb_initialized").exists()` 仍自己拼路径（只读，泄露一个布尔）；
+3. 新尺量程只有 `data/`：`util/L.kt` 2 处、`service/CopyCaptureService.kt` 2 处落盘没人判；
+4. 那张 `LbSettingRow/shortTrailingWord` 重录基线**仍等他签**（产物在 `_archive/visual-review-2026-09-29/`）；
+5. 生产侧那笔脱离取消的备份 launch（要改就是改取消语义）。
+
+**远端状态**：`git ls-remote origin main` 现读 `58776ef`；这一拍的改动分成**三笔提交**落在本地
+（①根级守门那格的 race 修正 + 两格牙，②新尺与 `markInitialized` 归还 + 登记清单刷新，③文档），**一笔没推**，等「推送」。
+
