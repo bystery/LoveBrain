@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +18,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -45,13 +43,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.LbChip
+import com.lovebrain.app.core.designsystem.LbChipInteraction
+import com.lovebrain.app.core.designsystem.LbChipStyles
 import com.lovebrain.app.core.designsystem.LbModalSheet
 import com.lovebrain.app.core.designsystem.LbScreenScaffold
 import com.lovebrain.app.core.designsystem.LbTopBar
@@ -63,7 +62,6 @@ import com.lovebrain.app.model.FeedbackCategory
 import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
-import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.Error
 import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Primary
@@ -458,50 +456,40 @@ private fun ExportAction(enabled: Boolean, label: String, onClick: () -> Unit) {
 }
 
 /**
- * 芯片。两层：**点击挂在 48 见方的外盒上，视觉仍是那颗小胶囊**。
+ * 芯片——形状归设计系统那颗 [LbChip]（`Single` 一档）。两层：**点击挂在 48 见方的外盒上，
+ * 视觉仍是那颗小胶囊**。
  *
  * §57 本机量到这族六颗是 15–19dp 高（「JSON」34x15、「全部」28x19…），而 §6.5 :531
  * 要的是手指能点中的那一颗 ≥48dp。只在原来那条链上加 `heightIn` 是不够的——
  * 那台仪器反复量到的一条：外层容器变大了、点击仍挂在子里面，等于没改
  * （所以 `clickable` 与 `semantics` 都排在外盒上，版式与按压缩放留在内盒）。
+ * 这一族原来就是两层的，归并时选的是组件里 `layeredTouch` 那一档，不是把它压成单层。
  *
  * 互斥单选 ⇒ `Role.Tab` + `selected`（与 `ReplyInput.RoleChip`、面板那三档模式同一写法）。
  * 「✓ Markdown」那个对勾留着：它不是颜色之外的第二种选中提示，去掉会让低视力用户只剩底色可辨；
- * 规范位是 `selected`，字形是给眼睛看的。
+ * 规范位是 `selected`，字形是给眼睛看的。⚠ 那个勾**已经写进标签自己**
+ * （`R.string.feedback_format_selected` = 「✓ %1$s」），所以这一档要把组件那个
+ * `markSelectedWithCheck` 关掉，否则选中那颗会念成「✓ ✓ Markdown」。
+ *
+ * 档位 = 改之前那条链逐项抄过来：圆角 `LoveBrainShape.sm`、字 `labelSmall`、
+ * 选中实心 `Primary` + 白字 `SemiBold`、未选中 `SurfaceInset` + `Border` 描边 + `Normal` 字重、
+ * 内边距左右 [Spacing.sm] / 上下 [Spacing.xs]、按压 0.94、胶囊高由内容定（原来也没钉）。
  */
 @Composable
 private fun FilterChip(label: String, isSelected: Boolean, onClick: () -> Unit) {
-    val (interaction, scale) = rememberPressScale(0.94f, "filterChip_$label")
-    Box(
-        modifier = Modifier
-            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .clickable(
-                interactionSource = interaction,
-                indication = null,
-                role = Role.Tab,
-                onClick = onClick
-            )
-            .semantics { selected = isSelected },
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .graphicsLayer { scaleX = scale; scaleY = scale }
-                .clip(LoveBrainShape.sm)
-                .background(if (isSelected) Primary else SurfaceInset, LoveBrainShape.sm)
-                .border(1.dp, if (isSelected) Primary else Border, LoveBrainShape.sm)
-                .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                label,
-                style = AppTypography.labelSmall,
-                color = if (isSelected) Color.White else TextSecondary,
-                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-            )
-        }
-    }
+    LbChip(
+        label = label,
+        selected = isSelected,
+        onClick = onClick,
+        interaction = LbChipInteraction.Single,
+        style = LbChipStyles.filled.copy(
+            background = SurfaceInset,
+            paddingHorizontal = Spacing.sm,
+            paddingVertical = Spacing.xs,
+            markSelectedWithCheck = false,
+            layeredTouch = true
+        )
+    )
 }
 
 /**

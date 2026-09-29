@@ -36,7 +36,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -579,29 +578,24 @@ fun CounselingPanel(
     }
 }
 
-/** 谈心模板 chip（需求11：折叠后仍保持统一 chip 样式） */
+/**
+ * 谈心模板 chip（需求11：折叠后仍保持统一 chip 样式）——形状归设计系统那颗 [LbChip]。
+ *
+ * 点下去是把模板填进输入框，不是"在哪一格" ⇒ [LbChipInteraction.Action]：
+ * `Role.Button`（与改之前那条链上写的同一个角色），语义树里不发 `selected`。
+ * 档位是把改之前那条链逐项抄进来的：圆角 `LoveBrainShape.sm`、底 `SurfaceInset`、
+ * 描边 `Border`、字 `labelSmall`（它自带 Medium，前后同值 = 不靠字重表达状态）、
+ * 内边距左右 [Spacing.md] / 上下 [Spacing.sm]、按压 0.92（原 `#1` 那一档）、
+ * 下限 48 见方垫在可点那颗自己身上（原来就垫在 `clickable` 之前，归并后仍是那颗）。
+ */
 @Composable
 private fun TemplateChip(text: String, onClick: () -> Unit) {
-    // #1：模板 chip 补按压反馈（标准件 0.92 scale + 120ms）
-    val (interaction, templateChipScale) = rememberPressScale(0.92f, "templateChipScale")
-    Box(
-        modifier = Modifier
-            .graphicsLayer { scaleX = templateChipScale; scaleY = templateChipScale }
-            .clip(LoveBrainShape.sm)
-            .background(SurfaceInset, LoveBrainShape.sm)
-            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.sm)
-            .clickable(
-                interactionSource = interaction,
-                indication = null,
-                role = Role.Button,
-                onClick = onClick
-            )
-            .padding(horizontal = Spacing.md, vertical = Spacing.sm) // 垂直内边距 xs→sm，热区 ≈20→24dp
-    ) {
-        Text(text = text, style = AppTypography.labelSmall, color = TextSecondary)
-    }
+    LbChip(
+        label = text,
+        onClick = onClick,
+        interaction = LbChipInteraction.Action,
+        style = LbChipStyles.neutral
+    )
 }
 
 /** 谈心加载动画（需求19）：统一 AiLoadingRow——三点跳动 + 轮换文案（首 token 前展示） */

@@ -3,8 +3,6 @@ package com.lovebrain.app.ui.panel.reply
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -26,12 +24,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.animation.core.animateFloatAsState
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.*
@@ -230,7 +226,7 @@ fun PanelTextInput(
 }
 
 /**
- * 一颗角色 chip（她/我/想法）。
+ * 一颗角色 chip（她/我/想法）——形状归设计系统那颗 [LbChip]（`Single` 一档）。
  *
  * ⚠ **热区与视觉分两层**。这一颗原来只有一层，写的还是
  * `.heightIn(min = ReplyDimens.ROLE_CHIP_HEIGHT_DP)`——那颗常量是 **28**，
@@ -238,51 +234,39 @@ fun PanelTextInput(
  * 量到 **29x28dp**（「想法」40x28dp），:531 那句"无小于 48dp 的热区"当场不成立；
  * 而分开量各块的守卫全都绿着——因为这一屏从没被当成"一整屏"量过。
  *
- * 现在外层那颗**可点的**自己垫到 48dp 见方，胶囊在里面按原来的 28dp 画：视觉一字不改，
- * 手指与读屏拿到的都是 48。角色补 `Role.Tab`——三颗是互斥的一组，`selected` 早就写了，
- * 但没有角色时 TalkBack 只念那一个字，听不出"这是个选项、现在在哪一格"（:532 那一栏）。
+ * 外层那颗**可点的**自己垫到 48dp 见方，胶囊在里面按原来的 28dp 画：视觉一字不改，
+ * 手指与读屏拿到的都是 48——这一族原来就是两层的，归并时选的是组件里
+ * `layeredTouch` 那一档，不是把它压成单层（压成单层会把胶囊撑到 48dp 见方，那是换脸）。
+ * 角色 `Role.Tab` + 语义里的 `Selected` 由 `Single` 这一档发（与页头那三档模式同一写法）。
+ *
+ * 档位 = 改之前那条链逐项抄过来：圆角 `LoveBrainShape.md`、字 `labelMedium`、
+ * 选中实心 `Primary` + 白字 `Bold`、未选中 `SurfaceInset` + `Border` 描边 + `Normal` 字重、
+ * 左右内边距 9dp（留更多空间给输入框）、竖直内边距 0（这颗的盒子由它自己的高度定）、
+ * 胶囊高 [ReplyDimens.ROLE_CHIP_HEIGHT_DP]、按压 0.92。
+ * 选中那一档今天**不描边**：组件的描边色与底色同色时像素不变，于是那条
+ * `if (!selected) Modifier.border(...)` 的分叉收成一条直链，画出来还是同一张脸。
  *
  * ⚠ `clickable` 排在任何内边距**之前**：原来这段就是 `clickable(...).padding(horizontal = 9.dp)`，
- * 内边距排在后面等于自己把热区又削掉一圈（§7.1 点名的写法）。
+ * 内边距排在后面等于自己把热区又削掉一圈（§7.1 点名的写法）。组件里也是同一顺序。
  */
 @Composable
 private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
-    val interaction = remember { MutableInteractionSource() }
-    val pressed by interaction.collectIsPressedAsState()
-    val scale by animateFloatAsState(if (pressed) 0.92f else 1f, label = "roleChipScale")
-    Box(
-        modifier = Modifier
-            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .clickable(
-                interactionSource = interaction,
-                indication = null,
-                role = Role.Tab,
-                onClick = onClick
-            )
-            .semantics { this.selected = selected },
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .height(ReplyDimens.ROLE_CHIP_HEIGHT_DP.dp)
-                .graphicsLayer { scaleX = scale; scaleY = scale }
-                .clip(LoveBrainShape.md)
-                .background(if (selected) Primary else SurfaceInset, LoveBrainShape.md)
-                .then(
-                    if (!selected) Modifier.border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
-                    else Modifier
-                )
-                // 左右内边距 9dp，留更多空间给输入框
-                .padding(horizontal = 9.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = label,
-                color = if (selected) Color.White else TextSecondary,
-                style = AppTypography.labelMedium,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
-            )
-        }
-    }
+    LbChip(
+        label = label,
+        selected = selected,
+        onClick = onClick,
+        interaction = LbChipInteraction.Single,
+        style = LbChipStyles.filled.copy(
+            radius = LoveBrainShape.md,
+            textStyle = AppTypography.labelMedium,
+            fontWeightSelected = FontWeight.Bold,
+            background = SurfaceInset,
+            paddingHorizontal = 9.dp,
+            paddingVertical = 0.dp,
+            pressedScale = 0.92f,
+            markSelectedWithCheck = false,
+            layeredTouch = true,
+            pillHeight = ReplyDimens.ROLE_CHIP_HEIGHT_DP.dp
+        )
+    )
 }

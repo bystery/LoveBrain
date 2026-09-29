@@ -697,43 +697,49 @@ private fun InviteSuggestionCard(signal: String, suggestion: String) {
 
 // ═══════════ 持续意图 UI 组件（锦囊面板内紧凑入口） ═══════════
 
-/** 持续意图 chip — 紧凑入口，复用标题行空档。
- *  enabled=true 时高亮显示，点击打开编辑弹窗。 */
+/**
+ * 持续意图 chip — 紧凑入口，复用标题行空档。归进设计系统那颗 [LbChip]。
+ * enabled=true 时高亮显示，点击打开编辑弹窗。
+ *
+ * 它是**入口**不是**选项**：点下去开编辑器，这一颗自己从不"在哪一格" ⇒
+ * [LbChipInteraction.Action]。角色这一颗原来**一个都没声明**（`clickable` 没写 `role`），
+ * 归并后由组件发 `Role.Button`——那是 §6.5 :532 要的那一栏，不是顺手升级；
+ * 语义树里仍然**不发** `selected`：「开/关」这件事本来就写在自己的名字里
+ * （`意图·xxx` / `意图·关`），那里才是它的规范位。
+ *
+ * ⚠ 名字里的 `enabled` 走的是组件的 `selected` **颜色分支**（选中档 = 开着那一套底/描边/字色），
+ * 不能交成组件的 `enabled`：意图关掉时这颗仍然点得动、仍然要开得编辑器——那是今天的交互。
+ *
+ * 档位 = [LbChipStyles.pill]（标题行里那颗紧凑胶囊）再钉上它自己的高度：
+ * 圆角 `LoveBrainShape.full`、胶囊高 22dp、字 `labelSmall`、文案钉一行、
+ * 开着 `PrimaryLight` 底 + `PrimarySubtle` 描边 + `PrimaryDark` 字、
+ * 关着 `SurfaceInset` 底 + `Border` 描边 + `TextHint` 字、左右内边距 [Spacing.sm]、
+ * 竖直内边距 0、按压 0.92、不加对勾。
+ *
+ * ⚠ 这一颗**没接**全局那颗 48dp 下限（`touchFloor = false` 就是 pill 那一档的形状，
+ * 也是它改之前的形状——那条链上从来只有一个钉死的 `height(22.dp)`，没有 `heightIn`）。
+ * 热区仍是 22dp 高，归并按原样交出去：垫上去会把这张标题行的版式换掉，
+ * 那是换脸不是归并。这一笔是**既有欠账**，登记着，与有效期那一排同一处理。
+ */
 @Composable
 private fun IntentChip(
     enabled: Boolean,
     text: String,
     onClick: () -> Unit
 ) {
-    val (interaction, scale) = rememberPressScale(0.92f, "intentChipScale")
     val label = if (enabled) {
         if (text.isNotBlank()) "意图·${text.take(8)}${if (text.length > 8) "…" else ""}"
         else "意图·未设"
     } else {
         "意图·关"
     }
-    Box(
-        modifier = Modifier
-            .height(22.dp)
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clip(LoveBrainShape.full)
-            .background(if (enabled) PrimaryLight else SurfaceInset, LoveBrainShape.full)
-            .border(
-                AppDimens.BORDER_WIDTH_DP.dp,
-                if (enabled) PrimarySubtle else Border,
-                LoveBrainShape.full
-            )
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
-            .padding(horizontal = Spacing.sm),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = label,
-            style = AppTypography.labelSmall,
-            color = if (enabled) PrimaryDark else TextHint,
-            maxLines = 1
-        )
-    }
+    LbChip(
+        label = label,
+        selected = enabled,
+        onClick = onClick,
+        interaction = LbChipInteraction.Action,
+        style = LbChipStyles.pill.copy(pillHeight = 22.dp)
+    )
 }
 
 /**

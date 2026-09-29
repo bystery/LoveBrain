@@ -1,31 +1,18 @@
 package com.lovebrain.app.ui.panel.reply
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.lovebrain.app.R
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.lovebrain.app.model.FeedbackCategory
 import com.lovebrain.app.model.FeedbackCase
 import com.lovebrain.app.model.ExpressionDislikeReasons
 import com.lovebrain.app.model.UnderstandingReasons
-import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 
@@ -241,6 +228,13 @@ fun DislikeReasonHost(
  * §6.5 :531 那半句：热区原来是 chip 文字 + 上下各 `Spacing.xs`，实量 **19dp 高**
  * （「其他」宽也只剩 28dp）。下限直接取 `AppDimens.TOUCH_TARGET_MIN_DP`，
  * 而且垫在 `toggleable` **之前**——垫在外面那颗可点节点还是 19dp。
+ *
+ * 本轮归并进设计系统那颗 [LbChip]（`Multi` 一档：`toggleable` + `Role.Checkbox` ⇒
+ * 语义树里是 `ToggleableState`，上面两栏判据一个字没改）。档位是把改之前那条
+ * Modifier 链逐项抄进来的：圆角 `LoveBrainShape.sm`、字 `labelMedium`、
+ * 选中实心 `Primary` + 白字 `SemiBold`、未选中 `SurfaceCard` + `Border` 描边、
+ * 内边距左右 [Spacing.lg] / 上下 [Spacing.sm]、按压 0.96、下限垫在可点那颗自己身上。
+ * 上下那档 `Spacing.xs` 留在调用方——它是这一行与下一行之间的间隔，不是胶囊的内边距。
  */
 @Composable
 private fun CategoryChipRow(
@@ -248,91 +242,41 @@ private fun CategoryChipRow(
     isSelected: Boolean,
     onToggle: () -> Unit
 ) {
-    val (interaction, scale) = rememberPressScale(0.96f, "catChip_$label")
-    Box(
-        modifier = Modifier
-            .padding(vertical = Spacing.xs)
-            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clip(LoveBrainShape.sm)
-            .background(
-                if (isSelected) Primary else SurfaceCard,
-                LoveBrainShape.sm
-            )
-            .border(
-                1.dp,
-                if (isSelected) Primary else Border,
-                LoveBrainShape.sm
-            )
-            .toggleable(
-                value = isSelected,
-                role = Role.Checkbox,
-                interactionSource = interaction,
-                indication = null,
-                onValueChange = { onToggle() }
-            )
-            .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = if (isSelected) "✓ $label" else label,
-            style = AppTypography.labelMedium,
-            color = if (isSelected) Color.White else TextSecondary,
-            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+    LbChip(
+        label = label,
+        selected = isSelected,
+        onClick = onToggle,
+        modifier = Modifier.padding(vertical = Spacing.xs),
+        interaction = LbChipInteraction.Multi,
+        style = LbChipStyles.filled.copy(
+            textStyle = AppTypography.labelMedium,
+            pressedScale = 0.96f
         )
-    }
+    )
 }
 
-/** 二级原因 chip 网格——与一级 chip 同一套语义（`toggleable` + 48dp 下限） */
-@OptIn(ExperimentalLayoutApi::class)
+/**
+ * 二级原因 chip 网格——与一级 chip 同一套语义（`toggleable` + 48dp 下限）。
+ *
+ * 换行容器一起交给 [LbChipGroup]："芯片排不下就换行、行距等于列距"属于芯片族，
+ * 不属于这一屏，留在页面里就长成第八颗异形。档位 = 改之前那条链：
+ * 选中走浅底那一档（`PrimaryLight` 底 + `PrimaryDark` 字 + `Primary` 描边）、
+ * 未选中 `SurfaceCard` + `Border`、字 `labelSmall`、内边距左右 [Spacing.lg] /
+ * 上下 [Spacing.sm]、按压 0.94、列距与行距都是 [Spacing.xs]。
+ */
 @Composable
 private fun ReasonChipGrid(
     reasons: List<String>,
     selectedReasons: Set<String>,
     onToggle: (String) -> Unit
 ) {
-    FlowRow(
+    LbChipGroup(
+        labels = reasons,
+        isSelected = { it in selectedReasons },
+        onToggle = onToggle,
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = Spacing.md, top = Spacing.xs, bottom = Spacing.xs),
-        horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
-        verticalArrangement = Arrangement.spacedBy(Spacing.xs)
-    ) {
-        reasons.forEach { reason ->
-            val isSelected = reason in selectedReasons
-            val (interaction, scale) = rememberPressScale(0.94f, "reason_$reason")
-            Box(
-                modifier = Modifier
-                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                    .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                    .graphicsLayer { scaleX = scale; scaleY = scale }
-                    .clip(LoveBrainShape.sm)
-                    .background(
-                        if (isSelected) PrimaryLight else SurfaceCard,
-                        LoveBrainShape.sm
-                    )
-                    .border(
-                        1.dp,
-                        if (isSelected) Primary else Border,
-                        LoveBrainShape.sm
-                    )
-                    .toggleable(
-                        value = isSelected,
-                        role = Role.Checkbox,
-                        interactionSource = interaction,
-                        indication = null,
-                        onValueChange = { onToggle(reason) }
-                    )
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = if (isSelected) "✓ $reason" else reason,
-                    style = AppTypography.labelSmall,
-                    color = if (isSelected) PrimaryDark else TextSecondary
-                )
-            }
-        }
-    }
+        style = LbChipStyles.soft
+    )
 }

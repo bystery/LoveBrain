@@ -501,27 +501,30 @@ class UiLayerDependencyContractTest {
         val perFileBudget = mapOf(
             "bubble/FloatingBubble.kt" to 1,
             "KnowledgeBaseActivity.kt" to 2,
-            "feedback/FeedbackCasesScreen.kt" to 2,
+            "feedback/FeedbackCasesScreen.kt" to 1,
             "home/ProviderSection.kt" to 4,
             "onboarding/OnboardingOptionCard.kt" to 2,
             "panel/AiLoadingRow.kt" to 1,
             "panel/LoveBrainPanelScreen.kt" to 3,
             "panel/OnboardingFlow.kt" to 1,
             "panel/PanelHeader.kt" to 1,
-            "panel/SuggestPanel.kt" to 8,
+            "panel/SuggestPanel.kt" to 7,
             "panel/counseling/CounselingPanel.kt" to 6,
             "panel/reply/CorrectionCenter.kt" to 1,
-            "panel/reply/DislikeReasonPanel.kt" to 2,
             "panel/reply/MessageList.kt" to 2,
-            "panel/reply/ReplyInput.kt" to 2,
+            "panel/reply/ReplyInput.kt" to 1,
             "panel/reply/ResultArea.kt" to 5,
             "panel/reply/SchemeCard.kt" to 1
         )
         val total = perFileBudget.values.sum()
         // 45 → **44**：`ResultArea` 未配置档那颗「去设置」归 `LbPrimaryButton`
         // （实量 68x34dp、`role=无`，见账本 §51），那一处自画 `background(Primary)` 当场少一条。
-        assertTrue("登记的就是本机实扫的 44 处，表本身错了要先修表", total == 44)
-
+        // 44 → **39**（§6.1 胶囊一族归并，6 处自画改成转进 `LbChip`）：
+        //   `DislikeReasonPanel` 2 → 0（那颗多选与那格网格都转进去了，整行清零）、
+        //   `FeedbackCasesScreen` 2 → 1、`ReplyInput` 2 → 1、`SuggestPanel` 8 → 7。
+        //   ⚠ 供应方代理预测的是 44 → 40，实测 **39**——它把 `CounselingPanel` 那一档算重了一处。
+        //   ⇒ 账本一律取本格打印的实扫明细，不取报告里的预测数。
+        assertTrue("登记的就是本机实扫的 39 处，表本身错了要先修表", total == 39)
         val uiRoot = dir("ui")
         val scanned = kotlinFiles(uiRoot).map {
             it.relativeTo(uiRoot).invariantSeparatorsPath to brandTonedArgs(
@@ -653,18 +656,20 @@ class UiLayerDependencyContractTest {
         // 不许按数量收口，也不许在本格顺手宣布"判完了"。
         val perFileBudget = mapOf(
             "bubble/FloatingBubble.kt" to 1,             // :258
-            "feedback/FeedbackCasesScreen.kt" to 2,      // :201 :454
+            "feedback/FeedbackCasesScreen.kt" to 1,      // 归并掉筛选行那一颗；实到行号由本格打印
             "home/ProviderSection.kt" to 2,              // :142 :215
             "KnowledgeBaseActivity.kt" to 1,             // :412
             "panel/counseling/CounselingPanel.kt" to 4,  // :217 :260 :377 :477
             "panel/reply/MessageList.kt" to 1,           // :270
-            "panel/reply/ReplyInput.kt" to 2,            // :133「添加」 :257 三颗 chip 共用的那颗
+            "panel/reply/ReplyInput.kt" to 1,            // 只剩「添加」那颗；三颗角色 chip 已转进 LbChip
             "panel/reply/ResultArea.kt" to 3,            // :412 :579 :1247
             "panel/reply/SchemeCard.kt" to 1,            // :532
-            "panel/SuggestPanel.kt" to 6                 // :152 :228 :279 :726 :825 :979
+            "panel/SuggestPanel.kt" to 5                 // 归并掉意图那颗胶囊
         )
+        // 23 → **20**：同一批归并拿走三处（`FeedbackCasesScreen` −1、`ReplyInput` −1、`SuggestPanel` −1）。
+        //   剩下这 20 处仍是"每处逐条判语义"的存量，本格只挡长新的与表虚高的。
         val total = perFileBudget.values.sum()
-
+        assertTrue("登记的就是本机实扫的 20 处，表本身错了要先修表", total == 20)
         val uiRoot = dir("ui")
         val scanned = kotlinFiles(uiRoot).map {
             val masked = SourceScan.maskComments(it.readText())

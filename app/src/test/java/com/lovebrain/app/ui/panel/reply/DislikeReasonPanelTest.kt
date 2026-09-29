@@ -150,6 +150,41 @@ class DislikeReasonPanelTest {
     }
 
     /**
+     * 归并到 `LbChip`（`Multi` 一档）之后重读这两族 chip 的**角色**与**下限**。
+     *
+     * 上一格判的是"选没选中"（`ToggleableState`），这一格判的是"它是什么"
+     * （`Role.Checkbox`）与"点得中多大"。三件事各自是 §6.5 的一栏，拆开写才不会
+     * 出现"其中一条被另一条顺便顶绿"：
+     *
+     * - 多选那一族必须报 Checkbox。归并时最容易写成 `Tab`（同一颗组件、参数选错一位），
+     *   那会把"还能再选几个"念成"现在在哪一格"——语义树里两个不同的槽，读屏两种念法；
+     * - 一级 chip 与二级原因 chip 原来是**自己**把 48 见方垫在可点那颗身上的
+     *   （账本 §34 那 14/16 不达标里的两族），归并后仍必须是那颗自己。
+     */
+    @Test
+    fun `the merged chips announce themselves as checkboxes and keep the floor`() {
+        mount(aCase(listOf(FeedbackCategory.UNDERSTANDING_ERROR), listOf("角色错")))
+        val group = probe.actionableTargets(rule, "点踩原因面板").filter { it.isToggle }
+        assertEquals(
+            "一级 3 颗 + 二级 ${UnderstandingReasons.ALL.size} 颗都该在组里，实到 ${group.size}：" +
+                group.joinToString { it.describe() },
+            3 + UnderstandingReasons.ALL.size, group.size
+        )
+        val wrongRole = group.filter { it.role != "Checkbox" }
+        assertTrue(
+            "多选 chip 的角色必须报 Checkbox（报成 Tab 就是把多选念成单选）：" +
+                wrongRole.joinToString { it.describe() },
+            wrongRole.isEmpty()
+        )
+        val small = group.filter { it.tooSmall(probe.floorDp) }
+        assertTrue(
+            "chip 的可点节点自己低于 ${probe.floorDp.toInt()}dp：" + small.joinToString { it.describe() },
+            small.isEmpty()
+        )
+        probe.assertAllActionableLabeled(rule, "点踩原因面板")
+    }
+
+    /**
      * §6.4 :523——它是浮层，不是往页面里插一块。
      *
      * ⚠ 第一版写的是"标题落在 300–600dp"，那是照上一格那颗**很短的**「不对」浮层抄的阈值。

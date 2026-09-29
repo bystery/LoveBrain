@@ -133,17 +133,13 @@ class OddShapeOwnershipTest {
 
     /**
      * 账本来源：**这一版是 1583 格那一次运行打印出来的实测清单，不是手数的。**
-     * 31 颗异形 + 7 颗委托壳；上一轮记的是 39 颗，本轮 §6.1 归并掉 8 颗
+     * 25 颗异形 + 13 颗委托壳；上一轮记的是 39 颗，本轮 §6.1 两拍共归并掉 12 颗
      * （`ProviderEditDialog`/`IntentEditorDialog`/`UsageStatsRow`/`UsageStatCell`/
      * `RowActionButton` 本体/`CaptureAppRow` 本体/`CorrectionRecordRow` 本体/`LbSection` 折叠行）。
      */
     private val expectedHandDrawn = setOf(
         "AccessibilityDisclosureDialog.kt#AccessibilityDisclosureDialog",
         "AiLoadingRow.kt#AiLoadingRow",
-        "CounselingPanel.kt#TemplateChip",
-        "DislikeReasonPanel.kt#CategoryChipRow",
-        "DislikeReasonPanel.kt#ReasonChipGrid",
-        "FeedbackCasesScreen.kt#FilterChip",
         "HomeComponents.kt#AssistantStatusCard",
         "KnowledgeBaseActivity.kt#KbCard",
         "LoveBrainPanelScreen.kt#KbNoticeBanner",
@@ -158,12 +154,10 @@ class OddShapeOwnershipTest {
         "PanelHeader.kt#PanelHeader",
         "ProviderSection.kt#MiniSwitchRow",
         "ProviderSection.kt#ProviderSection",
-        "ReplyInput.kt#RoleChip",
         "ResultArea.kt#InputChangedBanner",
         "ResultArea.kt#SchemeCardsRow",
         "SchemeCard.kt#CardActionIcon",
         "SchemeCard.kt#SchemeCard",
-        "SuggestPanel.kt#IntentChip",
         "SuggestPanel.kt#IntentExpiryChip",
         "SuggestPanel.kt#InviteSuggestionCard",
         "SuggestPanel.kt#SuggestStageCard",
@@ -173,6 +167,12 @@ class OddShapeOwnershipTest {
 
     /** 已经退化成"只转一次参数"的壳——不是异形，但也不该再长出新形状 */
     private val expectedShells = setOf(
+        "CounselingPanel.kt#TemplateChip",
+        "DislikeReasonPanel.kt#CategoryChipRow",
+        "DislikeReasonPanel.kt#ReasonChipGrid",
+        "FeedbackCasesScreen.kt#FilterChip",
+        "ReplyInput.kt#RoleChip",
+        "SuggestPanel.kt#IntentChip",
         "CaptureAppsScreen.kt#CaptureAppRow",
         "CorrectionCenter.kt#CorrectionRecordRow",
         "OnboardingFlow.kt#OnboardingButton",

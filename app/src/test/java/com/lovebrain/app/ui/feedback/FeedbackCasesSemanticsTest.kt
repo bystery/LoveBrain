@@ -180,6 +180,61 @@ class FeedbackCasesSemanticsTest {
     }
 
     /**
+     * 归并到 `LbChip`（`Single` 一档）之后，把"选中"这一槽收到 `Selected` 本身。
+     *
+     * 上一格用的 `assertSelectableAnnounceState` 只要求 selected / stateDescription /
+     * toggleable **三槽里有一槽**——那是 §6.5 :532 的下界，不是这一族的规范位。
+     * 这一格把判据收紧成两头都要量：报 `Selected = true` 的必须恰好是"当前那一档"，
+     * 其余必须报 `false`（把 `selected` 写死成 true 或写死成 false 的坏实现都红）。
+     *
+     * ⚠ 这一行里其实有**两组**互斥选项共用同一条 chip 带：筛哪个类别、导出哪种格式。
+     * 两组各自恰好一颗报选中，所以这里是 2 颗而不是 1 颗——写成 1 颗的话，
+     * 下一次有人把"选中"整行清掉（只留类别那组）就会红在没发生过的缺陷上。
+     */
+    @Test
+    fun `each chip group reports its own selected one through the Selected flag`() {
+        mount(listOf(understandingCase, expressionCase))
+        val all = context.getString(R.string.feedback_filter_all)
+        val markdown = context.getString(
+            R.string.feedback_format_selected,
+            context.getString(R.string.feedback_format_markdown)
+        )
+        val tabs = targets("反馈案例页·选中态").filter { it.role == "Tab" }
+        assertEquals("六颗芯片都该在树里：" + tabs.joinToString { it.describe() }, 6, tabs.size)
+        assertEquals(
+            "起始报选中的应是「全部」与导出格式那一档：" + tabs.joinToString { it.describe() },
+            setOf(all, markdown), tabs.filter { it.selected == true }.map { it.label }.toSet()
+        )
+        assertEquals("其余四颗必须报未选中", 4, tabs.count { it.selected == false })
+        // 名字仍然读得出来：归并只换所有者，不换这一族的词表
+        assertTrue(
+            "有芯片既没名字也没 contentDescription：" + tabs.joinToString { it.describe() },
+            tabs.all { it.labeled }
+        )
+    }
+
+    /** 点一颗芯片：`Selected` 必须跟着挪过去，而不是只换个底色 */
+    @Test
+    fun `tapping a chip moves the Selected flag onto it`() {
+        mount(listOf(understandingCase, expressionCase))
+        val all = context.getString(R.string.feedback_filter_all)
+        val label = context.getString(R.string.feedback_category_understanding_error)
+        tapNode(chip(label), "类别芯片")
+
+        val tabs = targets("反馈案例页·点后").filter { it.role == "Tab" }
+        val markdown = context.getString(
+            R.string.feedback_format_selected,
+            context.getString(R.string.feedback_format_markdown)
+        )
+        assertEquals(
+            "报选中的应换成刚点那一颗（导出格式那一组不受影响）：" +
+                tabs.joinToString { it.describe() },
+            setOf(label, markdown), tabs.filter { it.selected == true }.map { it.label }.toSet()
+        )
+        assertEquals("「全部」那一颗要跟着报未选中", false, tabs.first { it.label == all }.selected)
+    }
+
+    /**
      * 返回那颗的**名字**不在这儿判——它归 `PageHeaderConsistencyTest`（那一族五页一页一格，
      * 期望值同样现读 `R.string.common_back`）。这一格只判页头两颗的**角色**：
      * §57 量到的是 `role=无`，而名字那一半已经有主了，两处各写一份就是给自己埋重复账。
