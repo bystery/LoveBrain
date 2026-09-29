@@ -31,7 +31,21 @@ enum class LbTextActionTone {
     Accent,
 
     /** 次要到可以忽略：「跳过」「以后再说」 */
-    Muted
+    Muted,
+
+    /**
+     * 行/卡里那一颗次级动作：「编辑」「导出」。
+     *
+     * 这一档是为 §6.1 归并 `RowActionButton` 加的，理由要写清：那颗小按钮自己画
+     * `Box + Text + clickable`，热区只垫了高度（短标签本机实量 **32x48dp**），
+     * 而且 `clickable` 没声明角色 —— 读屏只念那两个字，不念"按钮"。
+     * 这两样正是本组件已经替全站修过一遍的。加一档**语气**而不是给它开一个
+     * `color:` 旋钮，是因为旋钮一开就会长出第三种颜色（:490 末句）。
+     */
+    RowSecondary,
+
+    /** 会把东西删掉/停用的那一行内动作：「删除」——字用错误色，热区与角色与上一档**完全一样** */
+    Destructive
 }
 
 // 底色与字号写成扩展而不是枚举构造参数：构造参数里写 `Accent(Primary)` 时那个 `Primary`
@@ -40,6 +54,8 @@ internal val LbTextActionTone.ink: Color
     get() = when (this) {
         LbTextActionTone.Accent -> Primary
         LbTextActionTone.Muted -> TextHint
+        LbTextActionTone.RowSecondary -> TextSecondary
+        LbTextActionTone.Destructive -> Error
     }
 
 /**
@@ -47,11 +63,16 @@ internal val LbTextActionTone.ink: Color
  *
  * 不这么做的话，「跳过」为了复用这颗组件就得从 `labelMedium` 长成 `labelLarge`——
  * 那就是"复用"顺手改了一次外观。字号与颜色同属一种语气，就该同进同退。
+ *
+ * `RowSecondary` / `Destructive` 两档沿用被合并那颗原来的 `bodyMedium`（13sp）：
+ * 归并换的是**所有者**，不是把行内动作顺手改成引导动作的字号。
  */
 internal val LbTextActionTone.style: TextStyle
     get() = when (this) {
         LbTextActionTone.Accent -> AppTypography.labelLarge
         LbTextActionTone.Muted -> AppTypography.labelMedium
+        LbTextActionTone.RowSecondary -> AppTypography.bodyMedium
+        LbTextActionTone.Destructive -> AppTypography.bodyMedium
     }
 
 /**
@@ -70,6 +91,14 @@ internal val LbTextActionTone.style: TextStyle
  * 3. 按压缩放走全站那一处 [rememberPressScale]。
  *
  * `clickable` 必须排在任何 `padding` **之前**：排在后面等于自己把热区又削掉一圈。
+ *
+ * **现在这一颗是"文字动作"唯一的主人**（§6.1 归并）：`ui/common/RowAction.kt` 那颗
+ * 行内小按钮（`RowActionButton`）已经改成转进这里，于是它上面那三条一起补齐。
+ * 代价如实记在这儿：那一颗原来有一层浅灰胶囊底（`TextSecondary` 8% 不透明），
+ * 本组件的契约是"只有文字、没有底色"——要把底色带进来就得开一个 `containerColor` 旋钮，
+ * 而那一开就等于同意"下一颗可以再长一种底色"。所以底色随归并一起消失，
+ * 字号与颜色则留在语气词表里（[LbTextActionTone.RowSecondary] / [LbTextActionTone.Destructive]），
+ * 同进同退那条规矩一个字没破。
  */
 @Composable
 fun LbTextAction(

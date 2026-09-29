@@ -736,17 +736,63 @@ private fun IntentChip(
     }
 }
 
-/** 持续意图编辑弹窗 — 输入意图文本 + 开关 + 保存/取消。
- *  长度限制可见校验（超过 200 字提示截断），不静默截断。 */
+/**
+ * 意图编辑浮层的长度上限——超限要**看得见地**提示，不许静默吞掉。
+ */
 private const val INTENT_MAX_LENGTH = 200
 
+/**
+ * 持续意图编辑弹窗（§6.1 归并）——浮层那一半的形状归设计系统的 `LbModalSheet`，这一层只转参数。
+ *
+ * 为什么这一族不能用 Material 的 `AlertDialog`：面板跑在 `TYPE_APPLICATION_OVERLAY` 窗口里，
+ * 那里没有合适的 activity token，起 Dialog 窗口会直接抛 `WindowManager.BadTokenException`——
+ * 那正是 `LbModalSheet` 存在的理由（见它文件头的 KDoc 与 `SheetProbeTest`）。
+ * 归并之前这里已经站对了所有者，但**壳里还自己排了一遍版面**：标题、表单、两颗出口
+ * 全摊在这颗浮层里，于是它既画浮层又管排版。现在壳只负责"起一扇浮层"，
+ * 标题与表单交给 [IntentEditorBody]——与 `ProviderEditDialog` + `ProviderFormBody` 同一分工。
+ *
+ * `internal` 是为了让 `IntentEditorSheetMergeTest` 挂**生产那一颗**（连同它的浮层壳），
+ * 而不是给测试另开一只旁门（同一形见 `ProviderFormBody`）。
+ */
 @Composable
-private fun IntentEditorDialog(
+internal fun IntentEditorDialog(
     text: String,
     enabled: Boolean,
     expiry: com.lovebrain.app.model.IntentExpiry = com.lovebrain.app.model.IntentExpiry.UNTIL_DONE,
     expiryDate: String = "",
     status: com.lovebrain.app.model.IntentStatus = com.lovebrain.app.model.IntentStatus.ACTIVE,
+    onSave: (String, Boolean, com.lovebrain.app.model.IntentExpiry, String, com.lovebrain.app.model.IntentStatus) -> Unit,
+    onDismiss: () -> Unit
+) {
+    LbModalSheet(onDismissRequest = onDismiss) {
+        IntentEditorBody(
+            text = text,
+            enabled = enabled,
+            expiry = expiry,
+            expiryDate = expiryDate,
+            status = status,
+            onSave = onSave,
+            onDismiss = onDismiss
+        )
+    }
+}
+
+/**
+ * 意图编辑器本体——浮层里除了遮罩与卡片那两层的**全部**内容：标题、启用开关、有效期、
+ * 日期与正文输入框、两颗出口。
+ *
+ * 标题原来没有槽位（这一格的第一句就是那段说明文字），归并时把它抬进 `LbModalSheetTitle`，
+ * 于是这一扇与 `RecordSentFlowHost`、纠正中心、点踩原因面板长成同一个形状：
+ * 标题 + 正文 + `LbModalSheetActions`，动作仍是同一份 `LbDialogAction` 词表。
+ * ⚠ **没有新增任何文案**：那句话只是换了槽位（账记在 `UiStringLiteralBudgetTest` 的两栏）。
+ */
+@Composable
+internal fun IntentEditorBody(
+    text: String,
+    enabled: Boolean,
+    expiry: com.lovebrain.app.model.IntentExpiry,
+    expiryDate: String,
+    status: com.lovebrain.app.model.IntentStatus,
     onSave: (String, Boolean, com.lovebrain.app.model.IntentExpiry, String, com.lovebrain.app.model.IntentStatus) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -757,166 +803,158 @@ private fun IntentEditorDialog(
     var editStatus by remember { mutableStateOf(status) }
     val overLimit = editText.length > INTENT_MAX_LENGTH
 
-    // §6.1：浮层归 LbModalSheet——面板跑在 overlay 窗口里，Material 的 AlertDialog 会抛
-    // WindowManager.BadTokenException，所以这一套是同一棵 ComposeView 里自画的遮罩 + 卡片
-    LbModalSheet(onDismissRequest = onDismiss) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    "设置一个持续的对话目标（如\"约她周末看电影\"），军师每轮生成时都会参考。",
-                    style = AppTypography.labelMedium,
-                    color = TextSecondary
-                )
-                Spacer(Modifier.height(Spacing.md))
-                // 开关行
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("启用", style = AppTypography.labelLarge, color = TextPrimary)
-                    val (toggleInteraction, toggleScale) = rememberPressScale(0.92f, "intentToggleScale")
-                    Box(
-                        modifier = Modifier
-                            .width(44.dp)
-                            .height(24.dp)
-                            .graphicsLayer { scaleX = toggleScale; scaleY = toggleScale }
-                            .clip(LoveBrainShape.full)
-                            .background(if (editEnabled) Primary else SurfaceInset, LoveBrainShape.full)
-                            .border(AppDimens.BORDER_WIDTH_DP.dp, if (editEnabled) Primary else Border, LoveBrainShape.full)
-                            .clickable(interactionSource = toggleInteraction, indication = null) { editEnabled = !editEnabled },
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        Box(
-                            Modifier
-                                .offset(x = if (editEnabled) 20.dp else 2.dp)
-                                .size(20.dp)
-                                .clip(LoveBrainShape.full)
-                                .background(Color.White)
-                        )
-                    }
-                }
-                Spacer(Modifier.height(Spacing.md))
-                // 有效期选择
-                Text("有效期", style = AppTypography.labelMedium, color = TextSecondary)
-                Spacer(Modifier.height(Spacing.xs))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
-                ) {
-                    IntentExpiryChip("直到完成", editExpiry == com.lovebrain.app.model.IntentExpiry.UNTIL_DONE) {
-                        editExpiry = com.lovebrain.app.model.IntentExpiry.UNTIL_DONE
-                    }
-                    IntentExpiryChip("仅今天", editExpiry == com.lovebrain.app.model.IntentExpiry.TODAY) {
-                        editExpiry = com.lovebrain.app.model.IntentExpiry.TODAY
-                    }
-                    IntentExpiryChip("指定日期", editExpiry == com.lovebrain.app.model.IntentExpiry.DATE) {
-                        editExpiry = com.lovebrain.app.model.IntentExpiry.DATE
-                    }
-                }
-                // 指定日期时显示日期输入框
-                if (editExpiry == com.lovebrain.app.model.IntentExpiry.DATE) {
-                    Spacer(Modifier.height(Spacing.xs))
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(SurfaceCard, LoveBrainShape.md)
-                            .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.md)
-                            .padding(Spacing.md)
-                    ) {
-                        if (editExpiryDate.isEmpty()) {
-                            Text("输入日期（如 2026-12-31）", color = TextHint, style = AppTypography.bodyMedium)
-                        }
-                        BasicTextField(
-                            value = editExpiryDate,
-                            onValueChange = { editExpiryDate = it },
-                            textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
-                            cursorBrush = androidx.compose.ui.graphics.SolidColor(Primary),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                }
-                // 状态操作——已完成时可标记完成
-                if (editEnabled && editStatus == com.lovebrain.app.model.IntentStatus.ACTIVE) {
-                    Spacer(Modifier.height(Spacing.sm))
-                    val (completeInteraction, completeScale) = rememberPressScale(0.96f, "intentCompleteScale")
-                    Text(
-                        "标记为已完成",
-                        style = AppTypography.labelSmall,
-                        color = TextHint,
-                        modifier = Modifier
-                            .graphicsLayer { scaleX = completeScale; scaleY = completeScale }
-                            .clickable(interactionSource = completeInteraction, indication = null) {
-                                editStatus = com.lovebrain.app.model.IntentStatus.COMPLETED
-                                editEnabled = false
-                            }
-                            .padding(vertical = Spacing.xs)
-                    )
-                }
-                Spacer(Modifier.height(Spacing.md))
-                // 文本输入框
+    Column(modifier = Modifier.fillMaxWidth()) {
+        LbModalSheetTitle("设置一个持续的对话目标（如\"约她周末看电影\"），军师每轮生成时都会参考。")
+        Spacer(Modifier.height(Spacing.md))
+        // 开关行
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("启用", style = AppTypography.labelLarge, color = TextPrimary)
+            val (toggleInteraction, toggleScale) = rememberPressScale(0.92f, "intentToggleScale")
+            Box(
+                modifier = Modifier
+                    .width(44.dp)
+                    .height(24.dp)
+                    .graphicsLayer { scaleX = toggleScale; scaleY = toggleScale }
+                    .clip(LoveBrainShape.full)
+                    .background(if (editEnabled) Primary else SurfaceInset, LoveBrainShape.full)
+                    .border(AppDimens.BORDER_WIDTH_DP.dp, if (editEnabled) Primary else Border, LoveBrainShape.full)
+                    .clickable(interactionSource = toggleInteraction, indication = null) { editEnabled = !editEnabled },
+                contentAlignment = Alignment.CenterStart
+            ) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 72.dp)
-                        .background(SurfaceCard, LoveBrainShape.md)
-                        .border(
-                            AppDimens.BORDER_WIDTH_DP.dp,
-                            if (overLimit) Error else PrimarySubtle,
-                            LoveBrainShape.md
-                        )
-                        .padding(Spacing.md)
-                ) {
-                    if (editText.isEmpty()) {
-                        Text(
-                            "输入你的持续意图…",
-                            color = TextHint,
-                            style = AppTypography.bodyMedium
-                        )
-                    }
-                    BasicTextField(
-                        value = editText,
-                        onValueChange = { editText = it },
-                        textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
-                        cursorBrush = androidx.compose.ui.graphics.SolidColor(Primary),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-                // 字数 + 超限提示
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(top = Spacing.xs),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Text(
-                        text = "${editText.length}/$INTENT_MAX_LENGTH",
-                        style = AppTypography.labelSmall,
-                        color = if (overLimit) Error else TextHint
-                    )
-                }
-                if (overLimit) {
-                    Text(
-                        "意图过长，请精简到 $INTENT_MAX_LENGTH 字以内",
-                        style = AppTypography.labelSmall,
-                        color = Error,
-                        modifier = Modifier.padding(top = Spacing.xs)
-                    )
-                }
-            }
-            // 统一操作行：超限时"保存"是**灰着还在**，不是消失——用户得知道少填了什么
-            Spacer(Modifier.height(Spacing.md))
-            LbModalSheetActions(
-                listOf(
-                    LbDialogAction("取消", onDismiss, tone = LbDialogActionTone.Muted),
-                    LbDialogAction(
-                        label = "保存",
-                        enabled = !overLimit,
-                        onClick = {
-                            onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled, editExpiry, editExpiryDate.trim(), editStatus)
-                        }
-                    )
+                    Modifier
+                        .offset(x = if (editEnabled) 20.dp else 2.dp)
+                        .size(20.dp)
+                        .clip(LoveBrainShape.full)
+                        .background(Color.White)
                 )
+            }
+        }
+        Spacer(Modifier.height(Spacing.md))
+        // 有效期选择
+        Text("有效期", style = AppTypography.labelMedium, color = TextSecondary)
+        Spacer(Modifier.height(Spacing.xs))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
+        ) {
+            IntentExpiryChip("直到完成", editExpiry == com.lovebrain.app.model.IntentExpiry.UNTIL_DONE) {
+                editExpiry = com.lovebrain.app.model.IntentExpiry.UNTIL_DONE
+            }
+            IntentExpiryChip("仅今天", editExpiry == com.lovebrain.app.model.IntentExpiry.TODAY) {
+                editExpiry = com.lovebrain.app.model.IntentExpiry.TODAY
+            }
+            IntentExpiryChip("指定日期", editExpiry == com.lovebrain.app.model.IntentExpiry.DATE) {
+                editExpiry = com.lovebrain.app.model.IntentExpiry.DATE
+            }
+        }
+        // 指定日期时显示日期输入框
+        if (editExpiry == com.lovebrain.app.model.IntentExpiry.DATE) {
+            Spacer(Modifier.height(Spacing.xs))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(SurfaceCard, LoveBrainShape.md)
+                    .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.md)
+                    .padding(Spacing.md)
+            ) {
+                if (editExpiryDate.isEmpty()) {
+                    Text("输入日期（如 2026-12-31）", color = TextHint, style = AppTypography.bodyMedium)
+                }
+                BasicTextField(
+                    value = editExpiryDate,
+                    onValueChange = { editExpiryDate = it },
+                    textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
+                    cursorBrush = androidx.compose.ui.graphics.SolidColor(Primary),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+        // 状态操作——已完成时可标记完成
+        if (editEnabled && editStatus == com.lovebrain.app.model.IntentStatus.ACTIVE) {
+            Spacer(Modifier.height(Spacing.sm))
+            val (completeInteraction, completeScale) = rememberPressScale(0.96f, "intentCompleteScale")
+            Text(
+                "标记为已完成",
+                style = AppTypography.labelSmall,
+                color = TextHint,
+                modifier = Modifier
+                    .graphicsLayer { scaleX = completeScale; scaleY = completeScale }
+                    .clickable(interactionSource = completeInteraction, indication = null) {
+                        editStatus = com.lovebrain.app.model.IntentStatus.COMPLETED
+                        editEnabled = false
+                    }
+                    .padding(vertical = Spacing.xs)
             )
         }
+        Spacer(Modifier.height(Spacing.md))
+        // 文本输入框
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 72.dp)
+                .background(SurfaceCard, LoveBrainShape.md)
+                .border(
+                    AppDimens.BORDER_WIDTH_DP.dp,
+                    if (overLimit) Error else PrimarySubtle,
+                    LoveBrainShape.md
+                )
+                .padding(Spacing.md)
+        ) {
+            if (editText.isEmpty()) {
+                Text(
+                    "输入你的持续意图…",
+                    color = TextHint,
+                    style = AppTypography.bodyMedium
+                )
+            }
+            BasicTextField(
+                value = editText,
+                onValueChange = { editText = it },
+                textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
+                cursorBrush = androidx.compose.ui.graphics.SolidColor(Primary),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        // 字数 + 超限提示
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = Spacing.xs),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Text(
+                text = "${editText.length}/$INTENT_MAX_LENGTH",
+                style = AppTypography.labelSmall,
+                color = if (overLimit) Error else TextHint
+            )
+        }
+        if (overLimit) {
+            Text(
+                "意图过长，请精简到 $INTENT_MAX_LENGTH 字以内",
+                style = AppTypography.labelSmall,
+                color = Error,
+                modifier = Modifier.padding(top = Spacing.xs)
+            )
+        }
+        // 统一操作行：超限时「保存」是**灰着还在**，不是消失——用户得知道少填了什么
+        Spacer(Modifier.height(Spacing.md))
+        LbModalSheetActions(
+            listOf(
+                LbDialogAction("取消", onDismiss, tone = LbDialogActionTone.Muted),
+                LbDialogAction(
+                    label = "保存",
+                    enabled = !overLimit,
+                    onClick = {
+                        onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled, editExpiry, editExpiryDate.trim(), editStatus)
+                    }
+                )
+            )
+        )
     }
+}
 
 /**
  * 有效期选择 chip。

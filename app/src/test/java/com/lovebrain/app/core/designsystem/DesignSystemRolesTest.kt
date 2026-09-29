@@ -80,9 +80,11 @@ class DesignSystemRolesTest {
             val d = LocalDensity.current.density
             UiMatrix(360).RenderIn(d) {
                 LbMetricGrid(
-                    totalGenerate = "128",
-                    totalCost = "¥3.40",
-                    adoptRate = "62%",
+                    metrics = listOf(
+                        LbMetric(label = "累计生成", value = "128"),
+                        LbMetric(label = "累计花费", value = "¥3.40"),
+                        LbMetric(label = "采用率", value = "62%", highlight = true)
+                    ),
                     onClick = {}
                 )
             }

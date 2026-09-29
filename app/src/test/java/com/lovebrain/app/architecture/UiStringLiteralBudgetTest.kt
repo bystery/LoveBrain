@@ -243,7 +243,23 @@ class UiStringLiteralBudgetTest {
         //   ——页头标题、「(N条)」、两颗导出标签。⚠ 这一笔是**真还**，不是换桶：
         //   搬进 `LbTopBar(title = "…")` 只会把它们从 TEXT 挪到 COMPONENT（同一格 COMPONENT 没涨），
         //   只有换成 `stringResource` 才算少一条中文字面量。
-        Kind.TEXT to 174,
+        // 174 → **170**：§6.1 组件归并那两颗（`ProviderEditDialog` → `LbDialog`、
+        //   `IntentEditorDialog` → `LbModalSheet`）。⚠ **这一笔不是还债，是换桶**：
+        //   「添加供应商 / 编辑供应商」从表单本体的 `Text(…)` 抬进 `LbDialog(title = …)`，
+        //   那段说明文字从 `Text(…)` 抬进 `LbModalSheetTitle(…)`——四条字面量（那句说明里带
+        //   转义引号，`HAN_LITERAL` 按字符切成两条，改前改后都是两条，笔数没动）
+        //   一个字没改，只是从 TEXT 那一栏落进 COMPONENT 那一栏。
+        // 170 → **169**：上面那一笔归并真正合进主干之后**复测**的结果，比预测少一条。
+        //   少的这一条不是还掉的：`OngoingSection` 那颗折叠标题也换了桶（TEXT 6 → 5、
+        //   COMPONENT 0 → 1），写预测那一版时它还在另一只 worktree 里、没进这一栏。
+        //   ⇒ 逐文件实测（HEAD `ba3a20b` vs 工作区，剥注释）：TEXT −5 =
+        //     `ProviderSection` −2、`SuggestPanel` −2、`OngoingSection` −1，
+        //     **五条全部落进 COMPONENT，一条都没少**——换桶不是还债，这一栏降 5 不代表
+        //     债少了 5，别拿它当战果（坑表 88 那一族）。
+        //   ⚠ 交叉核对：另用一把独立写的 Python 尺（`_temp/bucket_clone.py`，同样剥注释、
+        //     同样按括号配对取实参、同样按字符区间去重）在同一棵树上量到 **169 / 87**，
+        //     与本文件 Kotlin 尺的读数逐字相同 ⇒ 这两栏的差值不是某一把尺自己抖出来的。
+        Kind.TEXT to 169,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是
@@ -259,7 +275,25 @@ class UiStringLiteralBudgetTest {
         //   迟早漂；这一条是真的少了一条字面量。
         //   ⚠ 旁边那两条（「知识库」「她的专属记忆」）**没**跟着搬：它们目前只有这一份，
         //   没有第二处要合并；搬一半的目的是"消重复"，不是把这一栏的数字做小。
-        Kind.COMPONENT to 76
+        // 76 → **80**（预测值，随 TEXT 那一笔一起写的）→ 实测 **87**：+11 而不是 +4。
+        //   逐文件对 HEAD 复算，这 +11 分成两笔，性质完全不同，必须分开记：
+        //   ① **+5 是换桶**：上面 TEXT 少的那五条落进来的（`ProviderSection` 两条标题进
+        //     `LbDialog(title = …)`、`SuggestPanel` 两条进 `LbModalSheet(…)`/`LbDialogAction(…)`、
+        //     `OngoingSection` 一条进 `LbSection(…)`）。字面量一个字没多，抽屉换了。
+        //   ② **+6 是这把尺第一次看得见**：面板顶部那条使用统计原本写作
+        //     `UsageStatCell("今日", …)` ——**页面自造的子组件不在这把尺的锚点里**
+        //     （本栏 KDoc 早就承认的这一半个盲区：只认 `Lb` 前缀）。归并进 `LbMetric(label = …)`
+        //     之后那六条（今日 / 本次 / 首字 / 累计 ×2，加 `"${次数}次"` 那条带"次"的数值串）
+        //     才进了账。⇒ **这一栏涨 6 不是债涨 6，是账本终于记全了**；
+        //     把它们搬进 `res/values` 之前，它们会一直算在这里。
+        //   ③ `LbMetricGrid.kt` 里 −3、`HomeScreen.kt` 里 +3：同一批标签从**设计系统**退回**调用方**
+        //     （那一版把首页的词表写死进了组件，等于让设计系统认识某一页——本轮归并顺手造出的
+        //     新债，已删掉那条旧口；这一笔是净 0，只是债的主人换了）。
+        //   ⚠ 新增字面量条数 = **0**：逐文件比对 HEAD 与工作区的中文串**集合**，
+        //     全仓只多两条，且都在 `LbMetricGrid` 的 `require(…)` 里给开发者看，
+        //     不在四个锚点的射程内。⇒ 这一栏从 76 涨到 87 的十一个字，
+        //     **没有一个是新写的文案**，是搬家 + 补账。
+        Kind.COMPONENT to 87
     )
 
     /**

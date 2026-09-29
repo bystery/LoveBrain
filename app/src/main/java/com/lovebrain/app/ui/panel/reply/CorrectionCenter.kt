@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -15,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +24,7 @@ import com.lovebrain.app.core.designsystem.LbDialogActionTone
 import com.lovebrain.app.core.designsystem.LbModalSheet
 import com.lovebrain.app.core.designsystem.LbModalSheetActions
 import com.lovebrain.app.core.designsystem.LbModalSheetTitle
+import com.lovebrain.app.core.designsystem.LbSettingRow
 import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.PrimaryLight
 import com.lovebrain.app.core.designsystem.Spacing
@@ -117,50 +115,39 @@ fun CorrectionCenterHost(
 }
 
 /**
- * 单条纠正记录：类型标签 + 记忆 ID + 补正内容 +（静音时的）时长，右边一颗撤销。
+ * 单条纠正记录 ⇒ 归 §6.1 表里"行"那一族的主人 [LbSettingRow]：
+ * 行首是类型标签，标题是"哪一条记忆"，说明是补正内容，尾部那颗动作是「撤销」。
  *
  * 撤销必须在这里，不能只放在"已消失的那条引用的菜单"里——被过滤掉的引用
  * 根本不会再出现，用户就没有回头路了。这也是纠正中心存在的理由。
+ *
+ * 归并前后交出去的三样东西逐字不变（`CorrectionRecordRowSemanticsTest` 在看着）：
+ * 跟着 enum 推出来的标签文案、`→ 补正内容`那一行、尾部那颗「撤销」的可访问名与按钮角色。
+ *
+ * 类型标签仍然由这一页画（走 `leading` 槽，不在设计系统里）：那颗胶囊的颜色是
+ * 从 [CorrectionAction] 推出来的（Error / Warning / TextHint），是纠正这个词表的事，
+ * 不是"行"的事——把它搬进组件就得在组件里再抄一份 enum。
+ *
+ * ⚠ 两处如实的形状变化，都是为了让归并**不把 §6.5 那把尺改小**：
+ *  - 「撤销」以前由浮层动作词表画（48 见方）。行组件的尾部槽只垫了高度，
+ *    两字标签会量出 38x48dp，所以那颗的宽度下限一起补进了 [LbSettingRow]；
+ *  - 没有补正内容的那一条，说明槽空白就不画（旧写法是 `if` 包着那颗文本，
+ *    归并时如果组件永远画，列表里就会多出一行看不见的空白）。
  */
 @Composable
 private fun CorrectionRecordRow(
     memoryId: String,
     correction: MemoryCorrection,
-    onUndo: () -> Unit,
-    modifier: Modifier = Modifier
+    onUndo: () -> Unit
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
-    ) {
-        CorrectionActionTag(correction)
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = memoryId.takeLast(30),
-                style = AppTypography.labelSmall,
-                color = TextSecondary,
-                maxLines = 1
-            )
-            if (correction.replacementText.isNotBlank()) {
-                Text(
-                    text = "→ ${correction.replacementText.take(20)}",
-                    style = AppTypography.labelSmall,
-                    color = TextHint,
-                    maxLines = 1
-                )
-            }
-        }
-        LbModalSheetActions(
-            listOf(
-                LbDialogAction(
-                    label = "撤销",
-                    onClick = onUndo,
-                    tone = LbDialogActionTone.Accent
-                )
-            )
-        )
-    }
+    LbSettingRow(
+        leading = { CorrectionActionTag(correction) },
+        title = memoryId.takeLast(30),
+        subtitle = if (correction.replacementText.isBlank()) ""
+        else "→ ${correction.replacementText.take(20)}",
+        trailingText = "撤销",
+        onTrailingClick = onUndo
+    )
 }
 
 /**

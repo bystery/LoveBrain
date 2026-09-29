@@ -58,7 +58,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbAsyncState
@@ -295,25 +294,39 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
     }
 }
 
+/**
+ * 「添加 / 编辑供应商」那扇浮层——§6.1 归并：形状归设计系统的 `LbDialog`，这一层只转参数。
+ *
+ * 改之前这里是自己画的两层壳（`Dialog` + `Card(shape = xl, containerColor = SurfaceCard)`），
+ * 而标题画在表单本体里——于是「标题 + 一块卡片」在这一台仪器里有两种长法：
+ * 对话框那一族走 `AlertDialog` 的 title 槽，这一颗是页面自己排的 `Text(titleLarge, SemiBold)`。
+ * 现在标题进 `title=` 槽、表单进 `body=` 槽，**字符串一条都没新增也没少**
+ * （只是从 Text 那一栏换到组件实参那一栏，账记在 `UiStringLiteralBudgetTest`）。
+ *
+ * 这一层壳**保留**、没有内联到两处调用点：`ProviderFormBody(` 的调用数被
+ * `UiLayerDependencyContractTest` 的结构格钉着（除声明外只许一处），
+ * 内联要么把表单挂两遍、要么再抽一层，都不比这只转参数的壳少。
+ */
 @Composable
 private fun ProviderEditDialog(
     viewModel: SetupViewModel,
     ticket: ProviderTicket?,
     onDismiss: () -> Unit
 ) {
-    Dialog(onDismissRequest = onDismiss) {
-        Card(
-            shape = LoveBrainShape.xl,
-            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-            modifier = Modifier.fillMaxWidth()
-        ) {
+    LbDialog(
+        title = if (ticket == null) "添加供应商" else "编辑供应商",
+        onDismissRequest = onDismiss,
+        body = {
             ProviderFormBody(viewModel = viewModel, ticket = ticket, onDismiss = onDismiss)
         }
-    }
+    )
 }
 
 /**
- * 供应商表单本体——`ProviderEditDialog` 里除了 `Dialog`/`Card` 那两层的**全部**内容。
+ * 供应商表单本体——`ProviderEditDialog` 那扇浮层里、**除了外壳与标题之外**的全部内容。
+ *
+ * 标题（「添加供应商 / 编辑供应商」）原来画在这一格的第一行，§6.1 归并时抬进了
+ * `LbDialog` 的 `title=` 槽，这里**不留第二份**——证人见 `ProviderDialogMergeTest`。
  *
  * 原来这 190 行直接写在 Dialog 里面，于是这台仪器里量不到：`Dialog` 开的是独立窗口，
  * 窗口里只要有文本框拿焦点，`waitForIdle` 就永不返回（账本 §45.1 用一次 15 行的诊断
@@ -377,12 +390,6 @@ internal fun ProviderFormBody(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(Spacing.md)
     ) {
-        Text(
-            if (ticket == null) "添加供应商" else "编辑供应商",
-            style = AppTypography.titleLarge,
-            color = TextPrimary,
-            fontWeight = FontWeight.SemiBold
-        )
         Text("供应商名称", style = AppTypography.labelMedium, color = TextSecondary)
         CompactInput(value = name, onValueChange = { name = it }, placeholder = "名称")
 

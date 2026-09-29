@@ -191,11 +191,11 @@ class UiLayerDependencyContractTest {
     @Test
     fun `floating decision surfaces have exactly one owner`() {
         val owner = "core/designsystem/LbDialog.kt"
-        val exempt = mapOf(
-            // 文件 -> 允许的裸 Dialog( 处数。供应商编辑器是一张完整表单（十几个字段 + 模型列表），
-            // 属于 Sheet 那一类；§6.1 这行的 Sheet 半边还没做（见交接单 §4）——是欠账，不是漏网
-            "ui/home/ProviderSection.kt" to 1
-        )
+        // 这里原本是 `mapOf("ui/home/ProviderSection.kt" to 1)`——那颗供应商编辑器已在 §6.1
+        // 归并进 `LbDialog`（标题走 title= 槽、表单走 body= 槽），自画的浮层外壳没有了 ⇒
+        // **这一行按下面那条"豁免消失也要红"的规矩必须删掉**。
+        // 留着不算错，但留着就等于承认"表可以比现实宽"（坑表 71 那一族）。
+        val exempt: Map<String, Int> = emptyMap()
         val sources = kotlinFiles(appRoot).map {
             it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
         }
@@ -661,7 +661,7 @@ class UiLayerDependencyContractTest {
             "panel/reply/ReplyInput.kt" to 2,            // :133「添加」 :257 三颗 chip 共用的那颗
             "panel/reply/ResultArea.kt" to 3,            // :412 :579 :1247
             "panel/reply/SchemeCard.kt" to 1,            // :532
-            "panel/SuggestPanel.kt" to 6                 // :152 :228 :279 :726 :786 :941
+            "panel/SuggestPanel.kt" to 6                 // :152 :228 :279 :726 :825 :979
         )
         val total = perFileBudget.values.sum()
 
@@ -770,12 +770,17 @@ class UiLayerDependencyContractTest {
             declarations.contains(ownerPath to "TOUCH_TARGET_MIN_DP")
         )
         // 反证之二：别名机制得真的有人走，否则白名单会退化成"只有一处 48"的假象。
-        // 判 `==` 而不是 `>=`：14 是本机实扫（`_temp/measure_touch_floor_owners.py`）的数，
+        // 判 `==` 而不是 `>=`：13 是本机实扫（`_temp/measure_touch_floor_owners.py`）的数，
         // 少了就是有人又开始各自抄数（或把 token 改了名而尺没跟着改），多了是加了新的一颗
         // 下限——两种都该回来把这一行改掉，而不是让它默默地"还过得去"。
+        // 14 → **13**（§6.1 归并这一批）：少的那一颗是 `ui/common/RowAction.kt` 的
+        //   `MIN_HEIGHT_DP`。`RowActionButton` 归并进 `LbTextAction` 之后它不再有热区旋钮，
+        //   那颗别名随之消失——**下限本身一处没少**（`LbTextAction.LB_TEXT_ACTION_MIN_DP`
+        //   仍在表里，`ProductionUiContractTest > home trailing text action…` 现在直接钉新主人）。
+        //   ⇒ 这一格降 1 是"抄数的地方少了一处"，不是"还了一笔债"，别当战果写。
         assertTrue(
-            "指回全局下限的别名登记 14 处，实到 $aliasCount 处",
-            aliasCount == 14
+            "指回全局下限的别名登记 13 处，实到 $aliasCount 处",
+            aliasCount == 13
         )
         assertTrue(
             "内联 48.dp 的分布变了：登记 $allowedInlineLiterals，实到 $inlineCounts。" +
@@ -968,14 +973,19 @@ class UiLayerDependencyContractTest {
 
 
     /**
-     * 供应商表单：**测量走本体，外壳只留一颗 Dialog**。
+     * 供应商表单：**测量走本体，外壳只留一颗浮层**。
      *
      * 这条不是 UI 事实的尺（那种一律读语义树），是一条**结构合同**：
-     * `ProviderFormBody` 被 `ProviderEditDialog` 那颗 `Dialog` 包着，用户看到的仍然是一扇浮层；
-     * 而本体自己**不许**再含 `Dialog(`——它一旦重新长出浮层，
+     * `ProviderFormBody` 挂在 `ProviderEditDialog` 交给 `LbDialog` 的 `body=` 槽里，
+     * 用户看到的仍然是一扇浮层；而本体自己**不许**再含 `Dialog(`——它一旦重新长出浮层，
      * `ProviderFormSemanticsTest` 就会撞上"Dialog 窗口 + 文本框永不空闲"那堵墙（账本 §45.1），
      * 整屏又会退回"一颗都量不到"的状态。这台机器量不了浮层窗口，所以这一半只能读结构，
      * 并且要说清楚：读结构证明的是"没被搬坏"，不是"长得对"。
+     *
+     * ⚠ 归并到 `LbDialog` 之后本格的两个数都**换了口径**（1 → 0 与 0 → 2），
+     * 那是还债不是放宽：原来"这一屏一扇浮层"量的是**自画**的 `Dialog(`，
+     * 现在自画的归零了，尺改成"自画的必须为 0 **并且** 两扇浮层都走同一个所有者"——
+     * 两头都判，比原来只数一头的旧口径更紧。
      */
     @Test
     fun `the provider form body stays measurable and the dialog stays its only host`() {
@@ -987,10 +997,15 @@ class UiLayerDependencyContractTest {
         assertEquals("表单本体必须是 internal 且只声明一次（测试要能直接挂它）", 1, bodyDecl)
 
         val hostCalls = Regex("""ProviderFormBody\(""").findAll(code).count()
-        assertEquals("除声明外只许有一处调用（那一处必须在 Dialog 里面）", 2, hostCalls)
+        assertEquals("除声明外只许有一处调用（那一处必须在浮层的 body 槽里）", 2, hostCalls)
 
-        val dialogOpens = Regex("""Dialog\(\s*onDismissRequest""").findAll(code).count()
-        assertEquals("这一屏只许剩一扇浮层（表单本体里不该再嵌 Dialog）", 1, dialogOpens)
+        val selfDrawnDialogs = Regex("""\bDialog\(\s*onDismissRequest""").findAll(code).count()
+        assertEquals("归并后这一屏不再自己开窗（浮层归 LbDialog 所有）", 0, selfDrawnDialogs)
+        val ownedDialogs = Regex("""LbDialog\(""").findAll(code).count()
+        assertEquals(
+            "这一屏两扇浮层：删除确认 + 表单，两扇都必须走同一个所有者（实到 $ownedDialogs）",
+            2, ownedDialogs
+        )
 
         // 本体自己那一段里不能再出现浮层开口：从声明起，到下一个顶层 @Composable 前
         val body = code.substringAfter("internal fun ProviderFormBody(")

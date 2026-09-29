@@ -40,11 +40,29 @@ class OddShapeOwnershipTest {
             "[A-Za-z0-9_]*)[ \\t]*\\("
     )
 
-    /** 自画容器 / 自挂交互：出现任何一条就不是"委托壳" */
-    private val handDrawnTells = listOf(
-        "Box(", "Column(", "Row(", "Card(", "Surface(", "Dialog(", "IconButton(",
-        ".background(", ".border(", ".clickable", ".selectable", "BasicTextField"
+    /**
+     * 自画容器 / 自挂交互：出现任何一条就不是"委托壳"。
+     *
+     * ⚠ 调用形状必须按**词边界**判，不能按子串判。第一版这里是裸子串，于是
+     * `LbDialog(` 命中 tell `Dialog(`、`LbSettingRow(` 命中 tell `Row(`、`SchemeCard(` 命中 `Card(`
+     * ——**任何一颗归并成功的设计系统委托都会被误判成异形**，尺会把"修好了"报成"还在欠"。
+     * 这个误判是两个并行代理各自独立报上来的（不是我复跑发现的），所以判据改完还加了一格反向证人。
+     * 点号开头的（`.background(` 等）保持子串：`Modifier.background(` 本来就该算。
+     */
+    private val callShapes = listOf(
+        "Box", "Column", "Row", "Card", "Surface", "Dialog", "IconButton", "BasicTextField"
     )
+
+    /** 一条 tell 的正则：词边界 + 左括号；预先编好，避免每行重复编译（原始字符串，反斜杠不 escapes） */
+    private val callTells = callShapes.map {
+        Regex("""(?<![\w.])""" + it + """\s*\(""")
+    }
+
+    private val dotTells = listOf(".background(", ".border(", ".clickable", ".selectable")
+
+    /** 体里是否出现任何"自画"信号 */
+    private fun hasHandDrawnTell(text: String): Boolean =
+        callTells.any { it.containsMatchIn(text) } || dotTells.any { it in text }
 
     private enum class Shape { SHELL, HAND_DRAWN }
 
@@ -83,7 +101,7 @@ class OddShapeOwnershipTest {
             closed || body.isNotEmpty()
         )
         val text = body.toString()
-        val shape = if (handDrawnTells.any { it in text }) Shape.HAND_DRAWN else Shape.SHELL
+        val shape = if (hasHandDrawnTell(text)) Shape.HAND_DRAWN else Shape.SHELL
         if (shape == Shape.SHELL) {
             assertTrue(
                 "被判成委托壳，但体里没调用任何 Lb* 组件：${lines[declIndex].trim()}",
@@ -113,12 +131,15 @@ class OddShapeOwnershipTest {
         return out
     }
 
-    /** 键 = `文件名#组件名`。还掉一颗就删一项并写清归到哪儿了；新长一颗必须先登记并写明它表达了什么不同语义。 */
+    /**
+     * 账本来源：**这一版是 1583 格那一次运行打印出来的实测清单，不是手数的。**
+     * 31 颗异形 + 7 颗委托壳；上一轮记的是 39 颗，本轮 §6.1 归并掉 8 颗
+     * （`ProviderEditDialog`/`IntentEditorDialog`/`UsageStatsRow`/`UsageStatCell`/
+     * `RowActionButton` 本体/`CaptureAppRow` 本体/`CorrectionRecordRow` 本体/`LbSection` 折叠行）。
+     */
     private val expectedHandDrawn = setOf(
         "AccessibilityDisclosureDialog.kt#AccessibilityDisclosureDialog",
         "AiLoadingRow.kt#AiLoadingRow",
-        "CaptureAppsScreen.kt#CaptureAppRow",
-        "CorrectionCenter.kt#CorrectionRecordRow",
         "CounselingPanel.kt#TemplateChip",
         "DislikeReasonPanel.kt#CategoryChipRow",
         "DislikeReasonPanel.kt#ReasonChipGrid",
@@ -128,7 +149,6 @@ class OddShapeOwnershipTest {
         "LoveBrainPanelScreen.kt#KbNoticeBanner",
         "LoveBrainPanelScreen.kt#ProfileSuggestionCard",
         "LoveBrainPanelScreen.kt#StageSuggestionCard",
-        "LoveBrainPanelScreen.kt#UsageStatsRow",
         "LoveBrainPanelScreen.kt#VectorPill",
         "LoveBrainPanelScreen.kt#VectorPillsRow",
         "MarkdownText.kt#ListRow",
@@ -137,16 +157,13 @@ class OddShapeOwnershipTest {
         "OngoingSection.kt#OngoingSection",
         "PanelHeader.kt#PanelHeader",
         "ProviderSection.kt#MiniSwitchRow",
-        "ProviderSection.kt#ProviderEditDialog",
         "ProviderSection.kt#ProviderSection",
         "ReplyInput.kt#RoleChip",
         "ResultArea.kt#InputChangedBanner",
         "ResultArea.kt#SchemeCardsRow",
-        "RowAction.kt#RowActionButton",
         "SchemeCard.kt#CardActionIcon",
         "SchemeCard.kt#SchemeCard",
         "SuggestPanel.kt#IntentChip",
-        "SuggestPanel.kt#IntentEditorDialog",
         "SuggestPanel.kt#IntentExpiryChip",
         "SuggestPanel.kt#InviteSuggestionCard",
         "SuggestPanel.kt#SuggestStageCard",
@@ -156,8 +173,13 @@ class OddShapeOwnershipTest {
 
     /** 已经退化成"只转一次参数"的壳——不是异形，但也不该再长出新形状 */
     private val expectedShells = setOf(
+        "CaptureAppsScreen.kt#CaptureAppRow",
+        "CorrectionCenter.kt#CorrectionRecordRow",
         "OnboardingFlow.kt#OnboardingButton",
-        "ScreenHeader.kt#ScreenHeader"
+        "ProviderSection.kt#ProviderEditDialog",
+        "RowAction.kt#RowActionButton",
+        "ScreenHeader.kt#ScreenHeader",
+        "SuggestPanel.kt#IntentEditorDialog"
     )
 
 
@@ -198,6 +220,37 @@ class OddShapeOwnershipTest {
         assertTrue("扫不到 ScreenHeader 壳——同上", shell != null)
         assertEquals("PanelHeader 自己画 Box/Row，必须是异形", Shape.HAND_DRAWN, header!!.shape)
         assertEquals("ScreenHeader 只转参数给 LbTopBar，必须是委托壳", Shape.SHELL, shell!!.shape)
+    }
+
+    /**
+     * 反向证人（这一格专门钉上面那个误判）：
+     * 三颗**真委托**必须判成 SHELL，一颗**真自画**必须判成 HAND_DRAWN。
+     * 判据是拿分类器本体跑的，不是我手数的——把词边界退回子串，这三颗当场被误判成异形。
+     */
+    @Test
+    fun `delegating calls to design-system widgets are not mistaken for hand-drawn ones`() {
+        fun shapeOf(body: String) = hasHandDrawnTell(body)
+
+        assertTrue(
+            "LbDialog( 不该被当成自画 Dialog(，LbSettingRow( 不该被当成自画 Row(，SchemeCard( 不该被当成自画 Card(",
+            !shapeOf("    LbDialog(title = t, onDismissRequest = d) { }") &&
+                !shapeOf("    LbSettingRow(title = t, subtitle = s) { }") &&
+                !shapeOf("    SchemeCard(data) { }")
+        )
+        assertTrue("真自画的 Dialog/Row/Card 必须仍然算异形",
+            shapeOf("    Dialog(onDismissRequest = d) { }") &&
+                shapeOf("    Row(horizontalArrangement = null) { }") &&
+                shapeOf("    Card(colors = c) { }"))
+        assertTrue(".background( 这种修饰符仍然算异形", shapeOf("    Modifier.background(Primary)"))
+        // 分类器真跑一遍：这两颗是生产里的真委托，形状必须是 SHELL
+        val measured = scan().filter { it.name == "ScreenHeader" || it.name == "OnboardingButton" }
+            .associate { "${it.file}#${it.name}" to it.shape }
+        assertEquals(
+            "生产里这两颗必须是委托壳",
+            mapOf("ScreenHeader.kt#ScreenHeader" to Shape.SHELL,
+                "OnboardingFlow.kt#OnboardingButton" to Shape.SHELL),
+            measured
+        )
     }
 
     @Test

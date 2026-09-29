@@ -1,15 +1,10 @@
 package com.lovebrain.app.ui.home
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,13 +16,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
@@ -38,11 +30,10 @@ import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
-import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.LbSettingRow
 import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.TextHint
-import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
 import com.lovebrain.app.viewmodel.SetupViewModel
 
@@ -187,10 +178,20 @@ internal fun CaptureAppListRegion(
 }
 
 /**
- * 一行 = 一个可授权 App。
+ * 一行 = 一个可授权 App ⇒ 归 §6.1 表里"行"那一族的主人 [LbSettingRow]（标题、说明、状态、尾部动作统一）。
  *
- * 整行可点，高度 ≥48dp；被二次拒绝的类别不可勾选，但仍然显示出来，
- * 让用户看得见"为什么它不能选"，而不是假装列表里只有这些 App。
+ * 归并前后交给语义树的四样东西逐字不变：App 名（标题）、包名（说明）、
+ * 整行一处操作、`Role.Checkbox`（点下去是切一个勾选框，不是打开一个按钮）；
+ * 被二次拒绝的类别仍然显示、仍然按不动，并且仍然**读得出**按不动（`rowEnabled = false`
+ * 会把 `Disabled` 挂上去——旧写法靠"不给 onClick"表达同一件事，那样整行会退化成一颗哑行）。
+ *
+ * 那颗 `Checkbox` 留在调用方（走新的 `leading` 槽），不是偷懒：
+ * 它是"这一行授权了没有"唯一的视觉来源，而设计系统不该认识 Checkbox 这个具体控件，
+ * 更不该为捕获页这一族开一个 `checked:` 旋钮——那样"行"就长出了第二种状态说法。
+ *
+ * ⚠ 一行如实的形状变化：整行内边距从"自写的 8/4dp"变成行组件那一档（12/8dp），
+ * 于是行高从本机实量 56dp 变成 64dp 上下。这一页第一次有语义树用例在看着它
+ * （`CaptureAppRowSemanticsTest`）。
  */
 @Composable
 private fun CaptureAppRow(
@@ -201,37 +202,19 @@ private fun CaptureAppRow(
     onToggle: () -> Unit
 ) {
     val rowLabel = stringResource(R.string.capture_apps_allow)
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .clip(LoveBrainShape.sm)
-            .clickable(
+    LbSettingRow(
+        leading = {
+            Checkbox(
+                checked = checked,
+                onCheckedChange = null,
                 enabled = !blocked,
-                role = Role.Checkbox,
-                onClick = onToggle
+                modifier = Modifier.size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
             )
-            .padding(horizontal = Spacing.md, vertical = Spacing.sm),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Checkbox(
-            checked = checked,
-            onCheckedChange = null,
-            enabled = !blocked,
-            modifier = Modifier.size(AppDimens.TOUCH_TARGET_MIN_DP.dp)
-        )
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = displayName,
-                style = AppTypography.bodyLarge,
-                color = if (blocked) TextHint else TextPrimary,
-                fontWeight = FontWeight.Medium
-            )
-            Text(
-                text = if (blocked) rowLabel + " — " + packageName else packageName,
-                style = AppTypography.labelMedium,
-                color = TextHint
-            )
-        }
-    }
+        },
+        title = displayName,
+        subtitle = if (blocked) rowLabel + " — " + packageName else packageName,
+        onClick = onToggle,
+        rowRole = Role.Checkbox,
+        rowEnabled = !blocked
+    )
 }

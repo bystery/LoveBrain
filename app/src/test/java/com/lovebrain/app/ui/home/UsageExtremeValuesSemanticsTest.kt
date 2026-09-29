@@ -17,6 +17,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.core.designsystem.LbMetric
 import com.lovebrain.app.core.designsystem.LbMetricGrid
 import com.lovebrain.app.core.designsystem.LbTags
 import com.lovebrain.app.core.testing.RenderIn
@@ -96,15 +97,20 @@ class UsageExtremeValuesSemanticsTest {
 
     // ═══════════ 挂载 ═══════════
 
+    /**
+     * 三格极端值。标签由调用方给（`LbMetricGrid` 现在只有 `metrics` 一个内容来源），
+     * 所以"页面上念得出这三个词"这件事的证人就落在本文件——组件不再认识首页的词表。
+     */
+    private fun extremeMetrics(highlightAdoptRate: Boolean = true) = listOf(
+        LbMetric(label = "累计生成", value = "$extremeGenerations"),
+        LbMetric(label = "累计花费", value = "￥10000.00"),
+        LbMetric(label = "采用率", value = "100%", highlight = highlightAdoptRate)
+    )
+
     private fun mountGrid(cell: MutableState<UiMatrix>) {
         rule.setContent {
             cell.value.RenderIn(LocalDensity.current.density) {
-                LbMetricGrid(
-                    totalGenerate = "$extremeGenerations",
-                    totalCost = "￥10000.00",
-                    adoptRate = "100%",
-                    onClick = {}
-                )
+                LbMetricGrid(metrics = extremeMetrics(), onClick = {})
             }
         }
         rule.waitForIdle()
@@ -122,19 +128,9 @@ class UsageExtremeValuesSemanticsTest {
     private fun mountGridWithControl(cell: MutableState<UiMatrix>) {
         rule.setContent {
             cell.value.RenderIn(LocalDensity.current.density) {
-                LbMetricGrid(
-                    totalGenerate = "$extremeGenerations",
-                    totalCost = "￥10000.00",
-                    adoptRate = "100%",
-                    onClick = {}
-                )
+                LbMetricGrid(metrics = extremeMetrics(), onClick = {})
                 Box(Modifier.testTag(CONTROL_TAG).requiredWidth(1200.dp)) {
-                    LbMetricGrid(
-                        totalGenerate = "$extremeGenerations",
-                        totalCost = "￥10000.00",
-                        adoptRate = "100%",
-                        onClick = null
-                    )
+                    LbMetricGrid(metrics = extremeMetrics(), onClick = null)
                 }
             }
         }

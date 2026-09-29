@@ -39,6 +39,7 @@ import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.LbRowState
 import com.lovebrain.app.core.designsystem.LbActionCard
+import com.lovebrain.app.core.designsystem.LbMetric
 import com.lovebrain.app.core.designsystem.LbMetricGrid
 import com.lovebrain.app.core.designsystem.LbSection
 import com.lovebrain.app.core.designsystem.LbSettingRow
@@ -215,9 +216,11 @@ fun HomeScreen(
         val costStr = if (viewModel.totalCostYuan < 0.01) "￥0" else "￥${String.format("%.2f", viewModel.totalCostYuan)}"
         val rateStr = if (viewModel.totalGenerateCount > 0) "${(viewModel.adoptRate * 100).toInt()}%" else "—"
         LbMetricGrid(
-            totalGenerate = "${viewModel.totalGenerateCount}",
-            totalCost = costStr,
-            adoptRate = rateStr,
+            metrics = listOf(
+                LbMetric(label = "累计生成", value = "${viewModel.totalGenerateCount}"),
+                LbMetric(label = "累计花费", value = costStr),
+                LbMetric(label = "采用率", value = rateStr, highlight = true)
+            ),
             onClick = onNavigateUsage
         )
 

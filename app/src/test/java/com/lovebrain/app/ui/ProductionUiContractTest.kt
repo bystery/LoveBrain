@@ -160,16 +160,42 @@ class ProductionUiContractTest {
         )
     }
 
+    /**
+     * 首页/知识库那两族行尾的文字动作，热区下限与点击顺序。
+     *
+     * ⚠ **源码级**：它只证明"下限指回全站那一颗、`clickable` 排在装饰性内边距之前"。
+     * 真读 `boundsInRoot` 的权威断言在 `RowActionSemanticsTest`（语义树那侧）。
+     *
+     * 归并之后这一格的**主人换了**：`ui/common/RowAction.kt` 里的 `RowActionButton`
+     * 已经退化成转进设计系统的一颗壳，`MIN_HEIGHT_DP` 那三条（下限、`clickable` 顺序）
+     * 全部搬到 `core/designsystem/LbTextAction.kt`。上一版还钉着 `RowAction.kt` 里那个
+     * 已经不存在的常量，于是它报 `was null`——**这不是"热区退化"，是尺指错了人**
+     * （坑表 58 那一族"组件搬走了、尺还指着旧路径"的反向形状：旧路径没了，它当场红而不是假绿，
+     * 红得对）。这里同时钉两件事：新主人确实把下限接住了，而且旧调用方确实走的是新主人。
+     */
     @Test
     fun `home trailing text action meets the touch floor`() {
-        val code = codeOf(source("ui", "common", "RowAction.kt"))
-        val min = dimenValue("MIN_HEIGHT_DP", code)
-        assertTrue("RowActionButton must resolve to >= 48dp tall, was $min", min != null && min >= 48)
-        val clickableAt = code.indexOf(".clickable(")
-        val insetAt = code.indexOf(".padding(vertical = RowActionDimens.VISUAL_VERTICAL_INSET_DP.dp)")
+        val owner = codeOf(source("core", "designsystem", "LbTextAction.kt"))
+        val min = dimenValue("LB_TEXT_ACTION_MIN_DP", owner)
         assertTrue(
-            "clickable must precede the visual inset",
-            clickableAt in 0 until insetAt
+            "LbTextAction 的热区下限必须解析到 >=48dp（指回全局那颗也算），实到 $min",
+            min != null && min >= 48
+        )
+        val clickableAt = owner.indexOf(".clickable(")
+        val insetAt = owner.indexOf(".padding(horizontal = Spacing.lg)")
+        assertTrue(
+            "clickable 必须排在装饰性内边距之前，否则热区被自己削掉（两处都得存在）",
+            clickableAt >= 0 && insetAt >= 0 && clickableAt < insetAt
+        )
+        // 调用方不许绕过新主人自己画一颗：壳里只许转参数，那颗组件名必须真的出现在体里
+        val shell = codeOf(source("ui", "common", "RowAction.kt"))
+        assertTrue(
+            "RowActionButton 必须转进 LbTextAction，而不是自己再画一颗",
+            Regex("(?<![\\w.])LbTextAction\\s*\\(").containsMatchIn(shell)
+        )
+        assertTrue(
+            "壳里不许再自带热区旋钮（下限只能由主人持有）",
+            !Regex("MIN_HEIGHT_DP|heightIn\\(|widthIn\\(").containsMatchIn(shell)
         )
     }
 

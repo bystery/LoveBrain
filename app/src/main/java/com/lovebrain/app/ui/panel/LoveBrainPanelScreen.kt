@@ -198,8 +198,20 @@ fun LoveBrainPanelScreen(
         ) {
             Box(modifier = Modifier.fillMaxWidth().height(Spacing.sm)) {
                 DragHandle(onMove = onMove)
-                UsageStatsRow(
-                    usage = usage,
+                // §6.1 表第 7 行：使用统计的「数值 / 单位 / 标签」排布归 `LbMetricGrid`（Inline 档），
+                // 页面不再自己画那一横条。渲染口径一格没改：五格、首字那格的 >0 条件、「—」占位都原样，
+                // 标签与带单位的数值串也逐字照搬——变的只是**谁**来排它们，以及每格从此有了组件的锚点。
+                LbMetricGrid(
+                    metrics = buildList {
+                        add(LbMetric("今日", "¥${LoveBrainViewModel.formatYuan(usage.todayCostYuan)}"))
+                        add(LbMetric("本次", usage.lastCostYuan?.let { "¥${LoveBrainViewModel.formatYuan(it)}" } ?: "—"))
+                        if (usage.lastResponseMs > 0) {
+                            add(LbMetric("首字", "%.1fs".format(usage.lastResponseMs / 1000.0)))
+                        }
+                        add(LbMetric("累计", "${usage.totalGenerateCount}次"))
+                        add(LbMetric("累计", "¥${LoveBrainViewModel.formatYuan(usage.totalCostYuan)}"))
+                    },
+                    density = LbMetricDensity.Inline,
                     modifier = Modifier.fillMaxWidth().wrapContentHeight(unbounded = true).align(Alignment.Center)
                 )
             }
@@ -999,40 +1011,6 @@ private fun StageSuggestionCard(
                     .padding(horizontal = Spacing.lg, vertical = Spacing.md)
             )
         }
-    }
-}
-
-/**
- * Usage stats row
- *
- */
-@Composable
-private fun UsageStatsRow(
-    usage: com.lovebrain.app.viewmodel.UsageStats,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(Spacing.lg, Alignment.CenterHorizontally)
-    ) {
-        // 渲染口径一格没改：五个格子、首字那格的 >0 条件、"—" 占位都原样
-        UsageStatCell("今日", "¥${LoveBrainViewModel.formatYuan(usage.todayCostYuan)}")
-        UsageStatCell("本次", usage.lastCostYuan?.let { "¥${LoveBrainViewModel.formatYuan(it)}" } ?: "—")
-        if (usage.lastResponseMs > 0) {
-            UsageStatCell("首字", "%.1fs".format(usage.lastResponseMs / 1000.0))
-        }
-        // 累计统计
-        UsageStatCell("累计", "${usage.totalGenerateCount}次")
-        UsageStatCell("累计", "¥${LoveBrainViewModel.formatYuan(usage.totalCostYuan)}")
-    }
-}
-
-/** Single stat cell */
-@Composable
-private fun UsageStatCell(label: String, value: String) {
-    Row {
-        Text("$label ", style = AppTypography.labelSmall, color = TextHint)
-        Text(value, style = AppTypography.labelSmall, color = Primary)
     }
 }
 
