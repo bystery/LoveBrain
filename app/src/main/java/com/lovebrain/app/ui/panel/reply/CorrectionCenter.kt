@@ -21,6 +21,7 @@ import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Error
 import com.lovebrain.app.core.designsystem.LbDialogAction
 import com.lovebrain.app.core.designsystem.LbDialogActionTone
+import com.lovebrain.app.core.designsystem.LbEmptyState
 import com.lovebrain.app.core.designsystem.LbModalSheet
 import com.lovebrain.app.core.designsystem.LbModalSheetActions
 import com.lovebrain.app.core.designsystem.LbModalSheetTitle
@@ -29,7 +30,6 @@ import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.PrimaryLight
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.TextHint
-import com.lovebrain.app.core.designsystem.TextSecondary
 import com.lovebrain.app.core.designsystem.Warning
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.MemoryCorrection
@@ -90,11 +90,11 @@ fun CorrectionCenterHost(
         Spacer(Modifier.height(Spacing.md))
 
         if (corrections.isEmpty()) {
-            Text(
-                text = "暂无纠正记录。在「本轮参考」中可对记忆发起纠正。",
-                style = AppTypography.labelSmall,
-                color = TextSecondary
-            )
+            // 空态交回设计系统里那唯一一处：这里原来是一行自己画的文字，说法一个字没改，
+            // 改的是所有者——同一个"没有记录"不该每页长一个样。
+            // 这一档没有动作（出口就是浮层那颗「关闭」），所以不传 action：
+            // 空态里再长一颗可点的东西，就是给同一个决定修第二条路。
+            LbEmptyState(message = "暂无纠正记录。在「本轮参考」中可对记忆发起纠正。")
         } else {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 corrections.forEach { (memoryId, correction) ->

@@ -259,7 +259,11 @@ class UiStringLiteralBudgetTest {
         //   ⚠ 交叉核对：另用一把独立写的 Python 尺（`_temp/bucket_clone.py`，同样剥注释、
         //     同样按括号配对取实参、同样按字符区间去重）在同一棵树上量到 **169 / 87**，
         //     与本文件 Kotlin 尺的读数逐字相同 ⇒ 这两栏的差值不是某一把尺自己抖出来的。
-        Kind.TEXT to 169,
+        // 169 → **168**：纠正中心那句空态说明从自己画的 `Text("…")` 抬进 `LbEmptyState(message = …)`。
+        //   **换桶，不是还债**（同一条字面量一个字没改，只是从 TEXT 那栏落进 COMPONENT 那栏）；
+        //   主动发那一处交的是 `PanelStrings.PROACTIVE_EMPTY_HINT`（标识符，不是字面量），所以两栏都不动。
+        //   ⇒ 交叉核对：独立 Python 尺 `_temp/bucket_clone.py` 在同一棵树上报 **168 / 88**，与本尺逐字相同。
+        Kind.TEXT to 168,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是
@@ -293,7 +297,9 @@ class UiStringLiteralBudgetTest {
         //     全仓只多两条，且都在 `LbMetricGrid` 的 `require(…)` 里给开发者看，
         //     不在四个锚点的射程内。⇒ 这一栏从 76 涨到 87 的十一个字，
         //     **没有一个是新写的文案**，是搬家 + 补账。
-        Kind.COMPONENT to 87
+        // 87 → **88**：上面那一句落进来的那一栏（TEXT −1 / COMPONENT +1，四栏合计不动）。
+        //   新增用户可见字面量 **0 条**：这一拍生产改动只有 `ProviderSection` 的一行 `heightIn(min = …)` 与两处所有者换人。
+        Kind.COMPONENT to 88
     )
 
     /**

@@ -30,7 +30,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
@@ -1016,9 +1015,13 @@ private fun StageSuggestionCard(
 
 /**
  * Proactive result area - now with copy support
+ *
+ * `internal` 不是给页面用的：空态那一档要由语义树测试**直接挂生产这一颗**，
+ * 而不是在测试里再抄一份私有副本（同一件事在 `ReplyPrimaryActions` 与 `ProviderFormBody`
+ * 上都记过账——双轨的那一轨不会跟着改）。
  */
 @Composable
-private fun ProactiveResultArea(
+internal fun ProactiveResultArea(
     isProactive: Boolean,
     options: List<ProactiveOption>,
     error: String?,
@@ -1050,19 +1053,13 @@ private fun ProactiveResultArea(
                     Text(error, color = Error, style = AppTypography.bodySmall)
                 }
             }
-            options.isEmpty() -> {
-                Box(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = Spacing.xxl),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        PanelStrings.PROACTIVE_EMPTY_HINT,
-                        color = TextHint,
-                        style = AppTypography.bodySmall,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
+            // 还没开场子 = 空态：版式交回设计系统里那唯一一处（这一页原来自己画一颗 Box + 居中
+            // Text，于是"空的时候长什么样"每页一个答案）。说法、槽位与内边距一个字没改，
+            // 改的只是所有者。
+            options.isEmpty() -> LbEmptyState(
+                message = PanelStrings.PROACTIVE_EMPTY_HINT,
+                modifier = Modifier.fillMaxWidth().padding(vertical = Spacing.xxl)
+            )
             else -> {
                 options.forEach { opt ->
                     Column(
