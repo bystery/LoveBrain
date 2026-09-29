@@ -108,7 +108,7 @@ class KnowledgeTxMutationEntryTest {
      * 两条捷径都没走：`WRITE_CHAIN` 一个字没动（链上的数还是 4，不是 5），也没为根级 marker 编一个假库名。
      *
      * 账面：**总点数 5 → 4、唯一写链 4 → 4（没长）、裸写 1 → 0**。
-     * 牙由 `KnowledgeRootWriteGuardTest` 五格行为 + 一格形状钉住（含"合法名仍然写得动"那一格，
+     * 牙由 `KnowledgeRootWriteGuardTest` 那一族行为格 + 一格形状钉住（含"合法名仍然写得动"那一格，
      * 防的是把门全关死这种假安全），只读判定在分两支之后仍在原处。
      */
     private val expectedRawBreakdown = emptyMap<String, Int>()

@@ -258,9 +258,24 @@ class KnowledgeRepository(
 
         override fun initMarkerPresent(): Boolean = File(knowledgeRoot, INIT_MARKER_FILE).exists()
 
-        /** 全部 seed 落成了才由写侧调用；半套文件 + 标记 = 下次启动不再补 */
+        /**
+         * 全部 seed 落成了才由写侧调用；半套文件 + 标记 = 下次启动不再补。
+         *
+         * 路径与落盘都从根级守门取（[writeRootFileGuarded] → [safeRootFile] → 登记在册的写核），
+         * 这里不再自己拼 `File(knowledgeRoot, …)` 再裸 `writeText`：那颗标记写的是 knowledge/ 根下，
+         * 而根级那道门本来就在账上跑着（`.last_backup` 那一族用的就是它）。
+         *
+         * 返回 false = 名字被守门挡下、一个字节都没落。「没落」与「已经初始化过了」从此看不出差别，
+         * 那正是一次不留痕的跳过，所以判掉它：留一条错误级日志，再把失败交给调用方。
+         * 抛 [IllegalStateException] 而不是新增异常类型：本包已经是这个形状（见 DeepSeekRepository），
+         * 而搬之前 `File.writeText` 失败就直接抛，「调用方会失败」这条语义得原样留着——
+         * 调用方是 KnowledgeCatalogWriteStore 里那两处事务内调用，异常会穿过 inWriteLock 上抛。
+         */
         override fun markInitialized() {
-            File(knowledgeRoot, INIT_MARKER_FILE).writeText("done")
+            if (!writeRootFileGuarded(INIT_MARKER_FILE, "done")) {
+                com.lovebrain.app.util.L.e("init marker did not land: $INIT_MARKER_FILE", null)
+                throw IllegalStateException("init marker did not land: $INIT_MARKER_FILE")
+            }
         }
 
         /** 枚举判据只有目录读侧那一份 */
