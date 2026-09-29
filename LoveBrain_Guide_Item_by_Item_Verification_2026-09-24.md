@@ -6140,3 +6140,111 @@ lint 实测 66/14 与进预算 **65/13** 均未变；大文件棘轮 holds（`Kn
 探针驱动里给 Python 写嵌套 ASCII 引号 → `SyntaxError`、第一次运行什么都没跑（坑表 153 的 Python 侧）。
 
 坑表 **150–154**、交接单 **§0.60**。
+
+# 追加七十五：§6.1 归并批次落进主干，三本账按实测重登，以及我自己造的一笔新债
+
+第 17 窗口。四只 worktree 的 §6.1 归并成果合并进主干（19 个文件，逐文件 `cmp` 与 worktree 原件一致、
+零同名冲突、全部 fork 自 `ba3a20b`）。合并后**第一跑全量 216 套件 / 1583 格 / 6 红**——
+六红的原始消息逐条读过，没有一条是"界面被归并弄坏"：4 条是我新写的账本还没回填，
+1 条是源码级尺还指着搬走之前的旧主人，1 条是归并顺手把单页词表写进了设计系统。
+
+## 75.1 那一笔我自己造出来的债（坑表 157）
+
+`LbMetricGrid` 归并那一拍留了一条"三件套"旧口：`totalGenerate / totalCost / adoptRate`
+三个参数，标签 `累计生成 / 累计花费 / 采用率` **写死在 `core/designsystem/LbMetricGrid.kt` 里**，
+KDoc 还写着"这三颗是设计系统自己的词，不是首页的词"。三问当场证伪这句话：
+
+- 调用方点名：全仓只有 `HomeScreen.kt:217` 一处走三件套；另外五个词（今日/本次/首字/累计/累计）走 `metrics`。
+- 同一份文件里 `LbMetric` 自己的注释写着"[label] 由调用方给：这一颗组件管排布，不认识某一页的词表"。
+- §6.1 表末那句要挡的形状是"只在一个页面看起来不一样"，这里是它的**反向**：设计系统认识某一页。
+
+处置：删掉三件套整条，`metrics` 成为唯一内容来源，三个标签退回 `HomeScreen`。
+复算 `core/designsystem` 里中文字面量：**用户可见 0 条**，剩 3 条在
+`LbDialog` / `LbMetricGrid` / `LbSection` 的 `require(…)` 里，给开发者看，不在四个锚点射程内。
+⇒ 这一条只登记读数，**没有为它新写一格断言**（清单外维度不自加）。
+
+## 75.2 连带的两格改对，没有一格被删
+
+| 那格红的原话 | 真实成因 | 处置 |
+|---|---|---|
+| `OddShapeOwnershipTest` 两格账本不一致 | 新写的异形闸账本是空的（设计上就该红到回填） | 空账本跑一遍让它打印实测清单，逐字贴回：**自画 31 / 壳 7** |
+| `ProductionUiContractTest > home trailing text action meets the touch floor`：`RowActionButton must resolve to >= 48dp tall, was null` | **尺指错人**，不是热区退化：`RowAction.kt` 已退化成壳，下限与点击顺序都在 `LbTextAction.kt` | 重指新主人（`LB_TEXT_ACTION_MIN_DP` 解析到 ≥48、`clickable` 早于装饰性内边距），并**加两条**：壳必须真的转进 `LbTextAction(`、壳里不许再自带 `heightIn/widthIn/MIN_HEIGHT_DP` |
+| `UiStringLiteralBudgetTest` 两格（87>80、169<170） | 换桶 + 这把尺以前看不见的 6 条 | 按实测重登，见 75.3 |
+| `UiLayerDependencyContractTest`：别名登记 14、实到 13 | 少的是 `RowAction.kt` 那颗 `MIN_HEIGHT_DP` | 14 → 13，并注明"抄数的地方少了一处"≠ 还债 |
+
+`PanelUsageMetricSemanticsTest > the inline density refuses a mixed content source` 这一格判的
+"两种内容来源混给"随三件套一起消失了。**没有删它**，而是改成判同一件事的另一半
+（`refuses an empty content source`：空内容不许静默画一张空卡），并**新加一格反向证人**
+（`the same guard does not fire on a real content source`）——因为把 `require` 写反也能让"空就抛"照常绿。
+
+变异两发（都在 `LbMetricGrid.kt` 上，注入后以 `_temp/LbMetricGrid.probe.bak` + `cmp` 证明字节级还原）：
+
+| 反例 | 红掉的格子 | 判定 |
+|---|---|---|
+| 判据改成恒真（`require(true)`） | **1 格**：`refuses an empty content source` | 咬中，且只红该红的 |
+| 判据写反（`require(metrics.isEmpty())`） | **7 格全红**（含反向证人） | 咬中——反向证人这一格证明了自己不是摆设 |
+
+## 75.3 两栏字面量：搬家 + 补账，新增 0 条
+
+`UiStringLiteralBudgetTest` 实测（剥注释）：**TEXT 174 → 169、COMPONENT 76 → 87、DESC 10、STATE 0**，
+四栏合计 260 → 266。上一版代理预测的 170/80 差在两处：`OngoingSection` 那颗折叠标题也换了桶
+（写预测时它还在另一只 worktree）。逐文件对 HEAD `ba3a20b` 复算：
+
+- TEXT −5 = `ProviderSection` −2、`SuggestPanel` −2、`OngoingSection` −1 ⇒ 五条**全部**落进 COMPONENT；
+- COMPONENT +11 = ①那 5 条换桶 + ②**6 条这把尺以前根本看不见**的：面板那条使用统计原本写作
+  `UsageStatCell("今日", …)`，页面自造子组件不在 `Lb…(` 锚点射程内（本栏 KDoc 早就承认的半个盲区），
+  归并进 `LbMetric(label = …)` 才进了账 + ③`LbMetricGrid.kt` −3 / `HomeScreen.kt` +3 的词表退回（净 0）；
+- **新增用户可见字面量 0 条**：逐文件比对两棵树的中文字符串**集合**，全仓只多 2 条，
+  都在 `require(…)` 里，不是文案。
+
+交叉核对（坑表 156 那一族）：另写一把独立 Python 尺 `_temp/bucket_clone.py`（状态机剥注释、
+括号配对取实参、按字符区间去重）在同一棵树上报 **169 / 87**，与 Kotlin 尺逐字相同。
+
+## 75.4 复算尺自己坏了这件事（坑表 156）
+
+交接单 §4 那段"采用率 + 异形"脚本的剥注释顺序是 块注释 → 行注释 → 字符串。
+`HomeScreen.kt` 里写着 `"￥${String.format("%.2f", x)}"`——字符串模板里套引号对，
+先剥注释再配引号就会从错处起头，**把后头真代码整段当成字符串吞掉**。
+实测：那颗 `LbMetricGrid(` 消失，§4 的尺报"全仓 1 处"，状态机尺报 **2 处**。
+⇒ 新增 `_temp/adoption_ruler.py`（先认字符串、注释只换空格、不删文本），两侧（HEAD / 工作区）都用它，
+本节下面的采用率差值才是同尺读数。
+
+**同尺读数（本机现扫，非 CI）**：异形名形状 39 → 38 颗 / 23 文件；
+Kotlin 分类器：自画 **37 → 31**、委托壳 **2 → 7**。
+采用率 `LbSection 3→4`、`LbSettingRow 2→4`、`LbMetricGrid 1→2`、`LbTextAction 3→4`、`LbDialog 11→12`；
+`LbScreenScaffold 3`、`LbStatusBadge 1`、`LbEmptyState 0` 未动。
+
+## 75.5 R3 那一节顺手重测（工作单 `_temp/workorder-R3-vm-facade-2026-09-29.md`）
+
+派了一只**只读**代理量 VM，结论我自己复跑对上了：`LoveBrainViewModel.kt` **2517 行**，
+私有可写状态 **15 颗** = 11 颗 `private val _x = MutableStateFlow(…)` + **4 颗裸 `private var`**
+（`replyGenerationContext` :248、`generateStartTimeMs` :454、`recordingRound` :1153、`intentEditorKbName` :2049），
+`MutableSharedFlow` 0 颗。交接单里"~13 颗 / 2513 行"两个数**都已过期**。
+闸**已经存在**（`architecture/ViewModelStateOwnershipTest.kt`，恰好登记那 11 颗 flow），
+但它对裸 `var`、非 `_` 名字、`MutableSharedFlow` **全盲**且**不剥注释**——
+今天 raw 与 stripped 都等于 11，是碰巧对。⇒ 指导书 :578 那句"VM 不许再新增可变状态字段"现在是**半满足**。
+
+另量到一条真缺陷（我对着一份文件两段读过的）：`:435` 的 KDoc 写"唯一的写入漏斗：想改这九个数没有第二条路"，
+`:747` 在 `init` 里直接 `_usageStats.value = UsageStats.loaded(…)` ⇒ **第二条写路在同一颗状态上**。
+本轮未修（属 B4 那一族），先登记。
+
+## 75.6 收口数（本机，全部当场跑）
+
+- 全量：**216 套件 / 1584 格 / 0 失败 / 0 错误 / 0 跳过**（216 份 XML 同批、跨度 0.06s；
+  命令 `./gradlew :app:testDebugUnitTest --rerun-tasks`，RC=0，BUILD SUCCESSFUL in 6m9s）
+- androidTest 编译：`--tests` 无关，`:app:compileDebugAndroidTestKotlin` **RC=0**
+- lint：**67 issue element、0 Error、0 Fatal**；预算门 measured 66/14、gated **65/13**、advisory 1 ⇒ 与上一窗口**同一数**
+  （中途新加的一格 `ComposableNaming` 警告是测试夹具 `foldedSection` 的小写名，改名出账，未抬预算）
+- `check_lint_budget.sh` 判据自测 27 格全对；`assert_artifacts.sh --label unit / --label lint` 各 RC=0；
+  `test_assert_artifacts.sh` 8 格全对（坏实现对照基线仍钉 `9f29539`）
+- 大文件棘轮 holds：扫 **175** 个 .kt，>500 **16** 个、>800 **6** 个，清单与实到一致
+- 工单号扫描 PASS；`asset_hashes.sh --check` OK；`git diff 286c9406..HEAD -- assets/engine assets/schema` **零差异**
+
+## 75.7 三态与本节欠账
+
+上面所有数 **本机已验**；`>800` 数量、CI 三项结论属 **只能等 CI**（本笔尚未推之前不适用）。
+**本节明确欠的三件**：①归并带来的 37 格新语义树断言里，只有 `LbMetricGrid` 那两格补了变异（2 发），
+**其余 35 格的牙还欠着**——下一窗口先补牙再动新的 UI 码；
+②剩下 31 颗自画里，卡片/横幅一族（content cards、banners 2 颗）要不要开第 12 号组件，等他在 §6.1 那张表上拍；
+③代理并行档仍在改的三件（视觉基线广度、`KnowledgeWritePort` 注入 + `viewmodel→data` 10 条边、芯片一族归并）
+本轮不判，落进主干时另记。
