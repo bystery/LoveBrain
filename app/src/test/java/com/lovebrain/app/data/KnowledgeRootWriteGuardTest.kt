@@ -36,9 +36,13 @@ import java.nio.file.Files
  * 判据与库内那道同宽严（只收裸文件名，收下之后再核一次 canonical 仍在 knowledge/ 根下），
  * 落盘仍走登记在册的那个写核。两条捷径都不许走：不扩 `WRITE_CHAIN`、不编一个假库名。
  *
- * 五格各自盯一件事：
+ * 八格各自盯一件事：
  * - [escaping root names are refused by the guard and nothing lands]：守门本身——十三种逃逸形全拒，
  *   而且拒了之后整棵树逐文件对得上（只看返回值会被"退而求其次当文件名写下去"骗过去）。
+ * - [the detached startup backup outlives a cancelled appScope]：**夹具自己的前提**——
+ *   那一发启动备份确实活在 scope 之外，所以 [setUp] 必须预置节流标记（少了这一格，上面那格就是一次掷硬币）。
+ * - [whatever the second layer hands back is strictly inside the knowledge root]：第二道门
+ *   （canonical 归属复核）的独立对照物——十三种形全被第一道挡住，这一格判的是"交出来的必须严格在根内"。
  * - [a refused root name is said out loud twice and names the file]：多出来的这层判断不许做成不出声的
  *   return false。
  * - [a legitimate root marker still lands and touches no library]：防"为了安全把门全关死"的假安全。
@@ -46,10 +50,17 @@ import java.nio.file.Files
  *   还是"上一次备份发生在什么时候"的唯一事实源。
  * - [the read only judgement survives the split core]：写核分成两支之后，库内那一支的只读拒绝还在原处；
  *   而根级这一支不替任何库代判，也不许往库里写。
+ * - [the port no longer hands out a path and the backup cell still holds no write power]：**形状**——
+ *   行为那些格看不见"端口收一个外部拼好的 File"这件事本身，所以另钉一条静态判据。
  *
- * 注：夹具给的是**已经取消**的 scope——仓库构造时就会 launch 一次启动备份，它会抢着往同一棵树上写
- * `.last_backup`，那时"这一格写下去的内容"就成了掷硬币。节流与备份策略本身归
- * [KnowledgeBackupServiceTest]，这里不重复测。
+ * 注：**这棵树必须靠生产自己那道节流来静，不能靠取消 scope**（这条是 2026-09-29 被 CI 逼出来的修正，
+ * 原先这里写的是"夹具给的是已经取消的 scope，所以启动备份不会跑"——那句是假的，见
+ * [the detached startup backup outlives a cancelled appScope]）。
+ * `KnowledgeRepository.init` 里那句 `appScope.launch(Dispatchers.IO + SupervisorJob())` 往上下文里
+ * 塞了一枚**全新的 Job**，启动备份因此不是 `appScope` 的孩子，`cancel()` 传不到它。
+ * [setUp] 于是先把 `.last_backup` 预置成"刚刚备份过"：`backupIfNeededUnlocked` 在间隔判定处直接返回，
+ * 根级写又不排 debounce（见 `writeFileCheckedUnlocked(file, content)` 的 KDoc），这棵树上除了本格就没别人。
+ * 节流与备份策略本身归 [KnowledgeBackupServiceTest]，这里不重复测。
  */
 class KnowledgeRootWriteGuardTest {
 
@@ -61,6 +72,11 @@ class KnowledgeRootWriteGuardTest {
     fun setUp() {
         root = Files.createTempDirectory("kb_root_write_guard").toFile()
         appScope = CoroutineScope(SupervisorJob() + Dispatchers.IO).also { it.cancel() }
+        // 构造仓库**之前**预置节流标记：init 那一发备份是在 scope 之外跑的（上面那段说明），
+        // 而它判"要不要备份"读的就是这个文件。写下"刚刚备份过"这一秒，那一发就在间隔判定处返回，
+        // 一个字节都不落。用生产的机制静生产的树——不加测试专用开关、也不把判据改成"容忍多几行"。
+        File(root, KnowledgeBackupService.MARKER_FILE)
+            .writeText(System.currentTimeMillis().toString(), Charsets.UTF_8)
         repo = KnowledgeRepository(
             knowledgeRoot = root,
             securePrefs = mockk<SecurePrefs>(relaxed = true),
@@ -149,8 +165,15 @@ class KnowledgeRootWriteGuardTest {
         assertTrue("热身那一次合法根级写竟然失败", rootWrite(".probe_warmup", "0"))
         val before = tree()
         assertTrue(
-            "前提：热身后这一棵树上只许有种子库、备份与那两颗根级文件，实到 $before",
+            "前提：热身后这棵树上只许有种子库、预置的节流标记与热身那颗文件，实到 $before",
             before.contains("kb/kb.json") && before.contains(".probe_warmup")
+        )
+        // 夹具自己的健康检查（CI run 36590772693 就是红在这里没做才炸的）：
+        // 树上有 `.backup/` 就说明节流没挡住那个 scope 之外的写者，那么"before == after"这条对照点
+        // 根本不可信——它会把一次合法的备份算成"被拒的名字落了盘"。宁可红在这一句、说清是夹具坏了。
+        assertFalse(
+            "夹具失效：节流标记挡不住那个游离的启动备份，对照点不可信，实到 $before",
+            before.any { it.startsWith("${KnowledgeBackupService.BACKUP_DIR_NAME}/") }
         )
         // 名字带一次运行的唯一后缀：万一反证注入真的把文件写到共享临时目录里，
         // 残骸不会让下一次跑"假红"——这一格判的是"这次有没有写出去"。
@@ -168,7 +191,104 @@ class KnowledgeRootWriteGuardTest {
             listOf("kb.json"), tree(kbDir))
     }
 
+    // ═══════════ ①′ 夹具的前提：那一发启动备份真的活在 scope 之外 ═══════════
+
+    /**
+     * 这一格不测产品性质，测的是 [setUp] 那套静树手法成立与否。它的起因是 CI 上的一次掷硬币：
+     * 同一份树（`daff711`+`28315e9`）连着两个 run——run 36590772693 红在
+     * [escaping root names are refused by the guard and nothing lands]，实到多出
+     * `.backup/kb_20260929_1537/kb.json` 与 `.last_backup`；run 36590897784 全绿。
+     * 差别只在 init 那一发备份落在 `before` 快照**之前还是之后**。
+     *
+     * 判据：给一个**没预置 marker** 的空根 + 已取消的 scope，构造仓库，有界地等 `.last_backup`。
+     * 它落得下来 ⇒ 那个写者确实在 appScope 之外，"取消 scope 就没人写"是假的，预置才是必要的。
+     * 反过来，哪天生产把 launch 接回 scope 的孩子位（那是好事），这一格先红，
+     * 上面那些格与 [setUp] 的说明要一起改——红在这里比红在对照点上说得清。
+     */
+    @Test
+    fun `the detached startup backup outlives a cancelled appScope`() {
+        val looseRoot = Files.createTempDirectory("kb_root_detached_writer").toFile()
+        val looseScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+        try {
+            looseScope.cancel()
+            KnowledgeRepository(
+                knowledgeRoot = looseRoot,
+                securePrefs = mockk<SecurePrefs>(relaxed = true),
+                context = mockk<Context>(relaxed = true),
+                appScope = looseScope
+            )
+            val marker = File(looseRoot, KnowledgeBackupService.MARKER_FILE)
+            val deadline = System.currentTimeMillis() + 15_000L
+            while (!marker.isFile && System.currentTimeMillis() < deadline) Thread.sleep(50L)
+            assertTrue(
+                "取消掉的 scope 竟然真挡得住启动备份——那 [setUp] 预置 marker 就没必要了，" +
+                    "本格与 [setUp] 的说明要一起改（等满 15s，根下没有 ${KnowledgeBackupService.MARKER_FILE}）",
+                marker.isFile
+            )
+            assertTrue(
+                "落下来这颗必须是备份自己写的时间戳（裸毫秒数），实到「${marker.readText()}」",
+                marker.readText().toLongOrNull()?.let { it > 1_000_000_000_000L } == true
+            )
+        } finally {
+            looseScope.cancel()
+            looseRoot.deleteRecursively()
+        }
+    }
+
     // ═══════════ ② 拒绝要出声，而且要说清是哪个名字 ═══════════
+
+    /**
+     * 第二层（canonical 归属复核）**自己那一格**。上面那 13 种形压不到它：2026-09-30 两发反证实测——
+     * 只摘掉名字判据里 `".."` 那一支、或只把 canonical 判定关掉，13 种形仍然全拒；
+     * 两道判据互为冗余（只有同时关掉，`../lb_root_escape_…` 才当场落盘、本格才红）。
+     * 要让第二层单独开火，得交出一个"名字合法、文件系统却解析到别处"的形：符号链接最干净，
+     * 但这台 Windows 造不出来（WinError 1314「客户端没有所需的特权」），于是拿控制字符当对照——
+     * 实到 NUL 那一条走 `getOrElse`（note = "root path could not be canonicalised, refused: Invalid file path"），
+     * U+0001 那一条走归属判定（note = "root marker resolves outside knowledge root, refused"）。
+     * 而这两条都是 **Windows 侧**的行为：Linux 上 U+0001 是一个完全合法的文件名字符，会被收下。
+     *
+     * 所以本格判的是**契约**而不是某个平台的读数：守门交得出的每一条路径都必须**严格**在 knowledge/ 根下
+     * （等于根目录本身也算越界——那正是关掉第二层后 U+0001 那条被规范成的东西），交不出来就是 null。
+     * ⇒ 这台 Windows 上它有牙；Linux 侧它只是契约检查。这句话同时记进账本，不写成"两层各有独立对照物"。
+     */
+    @Test
+    fun `whatever the second layer hands back is strictly inside the knowledge root`() {
+        seedKb()
+        val rootCanonical = root.canonicalPath
+        val inside = rootCanonical + File.separator
+        val nasty = listOf(
+            "a\u0000b",                       // Windows：规范化直接拒
+            "a\u0001b",                       // Windows：规范化成根目录本身
+            "con", "nul", "aux.txt",                      // Windows 保留名，Linux 当普通文件名
+            "x:", "C:", "..", ".", "", "   ",
+            "sub/../.last_backup", "C:\\etc"
+        )
+        val handedBack = mutableListOf<Pair<String, String>>()
+        for (name in nasty) {
+            val file = rootPath(name) ?: continue
+            // 规范化自己也要接住：关掉第二层之后这道门会交出「连规范化都做不到」的一条路径
+            // （`File(root, "a` + U+0000 + `b")` 当场抛 IOException: Invalid file path）。
+            // 那同样是违例，而且必须由本格**说人话**地红——让异常穿出去会把仪器错报成产品崩溃。
+            val canonical = runCatching { file.canonicalPath }
+            assertTrue(
+                "守门交出了一条归属都判不出的路径（规范化就抛了）：[$name] -> " + file.path +
+                    "，异常：" + canonical.exceptionOrNull(),
+                canonical.isSuccess
+            )
+            val path = canonical.getOrNull()!!
+            assertTrue(
+                "守门交出了一条不在 knowledge/ 根**之内**的路径：[$name] -> " + path,
+                path.startsWith(inside) && path != rootCanonical
+            )
+            handedBack += name to path
+        }
+        // `handedBack` 是读数不是判据：这台机器上它含 "con"/"nul"/"aux.txt"（名字合法、写不写得动另说），
+        // Linux 上还会多一条 U+0001。真正的判据是循环里那两句——每一台机器都必须守"严格在里面"。
+        assertTrue(
+            "根目录本身不许当成一个 marker 交出来：" + handedBack.map { it.first }.joinToString(),
+            handedBack.none { (_, path) -> path == rootCanonical }
+        )
+    }
 
     /**
      * 原来那句 `guardedWrite` 收一个现成 File，所以它没有"名字非法"这一层，也就没有这一层的声音。
@@ -330,7 +450,7 @@ class KnowledgeRootWriteGuardTest {
     }
 
     /**
-     * 行为那五格看不见这一族：把 `guardedWrite(target: File, …)` 原样搬回来，五格照样全绿
+     * 行为那些格看不见这一族：把 `guardedWrite(target: File, …)` 原样搬回来，它们照样全绿
      * ——因为"端口收一个外部拼好的 File"这件事本身就不是行为，是**形状**。
      * 判据按词面判（与 `StorageBoundaryOwnershipTest` 同一套：注释先剥掉，命中数判相等）。
      */
