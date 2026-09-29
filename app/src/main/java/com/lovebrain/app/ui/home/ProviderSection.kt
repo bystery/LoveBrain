@@ -137,6 +137,12 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
             colors = CardDefaults.cardColors(containerColor = SurfaceCard),
             modifier = Modifier
                 .fillMaxWidth()
+                // §6.5 第一行要的是"可点边界真实 ≥48dp"。这一颗以前由内容排出来：
+                // 默认字号下语义树量到 **46dp**（320/360/412 三档全 46、600 档 45），
+                // 到 1.3 倍字号才涨到 56 —— 也就是**平时就不达标**，不是窄屏才不达标。
+                // 数不抄第二份：指回全站唯一那一颗 `AppDimens.TOUCH_TARGET_MIN_DP`。
+                // 证人：`LongProviderNameSemanticsTest`（热区那一问在这一条路径上是开着的）。
+                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                 .clip(LoveBrainShape.lg)
                 .clickable { expanded = !expanded }
         ) {
