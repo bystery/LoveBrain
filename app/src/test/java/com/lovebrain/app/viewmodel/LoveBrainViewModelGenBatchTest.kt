@@ -392,7 +392,7 @@ class LoveBrainViewModelGenBatchTest {
         assertEquals(
             "实时消息列表应有 A+B+C",
             listOf("A", "B", "C"),
-            vm.messages.value.map { it.content }
+            vm.composer.messages.value.map { it.content }
         )
 
         vm.stopGeneration()
@@ -409,7 +409,7 @@ class LoveBrainViewModelGenBatchTest {
         val vm = newViewModelWithKb()
         vm.refreshKnowledgeBases()
         // 等待 init 完成
-        vm.messages.value
+        vm.composer.messages.value
         delay(100)
 
         vm.addMessage(ChatMessage.Role.HER, "A")
@@ -433,7 +433,7 @@ class LoveBrainViewModelGenBatchTest {
         assertEquals(
             "保存成功后应只保留 C",
             listOf("C"),
-            vm.messages.value.map { it.content }
+            vm.composer.messages.value.map { it.content }
         )
     }
 
@@ -538,7 +538,7 @@ class LoveBrainViewModelGenBatchTest {
         val vm = newViewModelWithKb(recorder = failRecorder)
         vm.refreshKnowledgeBases()
         delay(100)
-        vm.messages.value
+        vm.composer.messages.value
 
         vm.addMessage(ChatMessage.Role.HER, "A")
         vm.addMessage(ChatMessage.Role.ME, "B")
@@ -556,7 +556,7 @@ class LoveBrainViewModelGenBatchTest {
         assertEquals(
             "record 失败后消息应保留",
             listOf("A", "B"),
-            vm.messages.value.map { it.content }
+            vm.composer.messages.value.map { it.content }
         )
         assertTrue("result 应仍为 Success", vm.result.value is GenerateResult.Success)
         assertEquals("feedbacks 应保留", SchemeFeedback.LIKED, vm.feedbacks.value["A"])
@@ -578,7 +578,7 @@ class LoveBrainViewModelGenBatchTest {
         val vm = newViewModelWithKb(recorder = slowRecorder)
         vm.refreshKnowledgeBases()
         delay(100)
-        vm.messages.value
+        vm.composer.messages.value
 
         vm.addMessage(ChatMessage.Role.HER, "A")
 
@@ -595,7 +595,7 @@ class LoveBrainViewModelGenBatchTest {
         assertEquals(
             "record 挂起期间消息应保留",
             listOf("A"),
-            vm.messages.value.map { it.content }
+            vm.composer.messages.value.map { it.content }
         )
         assertTrue("record 挂起期间 result 应仍在", vm.result.value is GenerateResult.Success)
 
@@ -606,7 +606,7 @@ class LoveBrainViewModelGenBatchTest {
         assertEquals(
             "record 成功后消息应被消费",
             emptyList<String>(),
-            vm.messages.value.map { it.content }
+            vm.composer.messages.value.map { it.content }
         )
         assertNull("record 成功后 result 应清空", vm.result.value)
     }
@@ -676,7 +676,7 @@ class LoveBrainViewModelGenBatchTest {
         assertEquals(
             "停止后消息应保留",
             listOf("A", "B"),
-            vm.messages.value.map { it.content }
+            vm.composer.messages.value.map { it.content }
         )
         assertFalse("isGenerating 应为 false", vm.isGenerating.value)
         // S2-03：停止是一个终态迁移而不是"伪造一条失败结果"——
@@ -685,7 +685,7 @@ class LoveBrainViewModelGenBatchTest {
             "停止后请求状态应为 Idle",
             vm.replyRequestState.value is ReplyRequestState.Idle
         )
-        assertEquals("停止后应回到键盘态", PanelState.KEYBOARD, vm.panelState.value)
+        assertEquals("停止后应回到键盘态", PanelState.KEYBOARD, vm.composer.panelState.value)
         assertNull("被停止的请求不得留下任何结果", vm.result.value)
     }
 
@@ -782,7 +782,7 @@ class LoveBrainViewModelGenBatchTest {
         vm.nextRound()
         delay(200)
 
-        assertEquals("无 KB 时消息仍应被消费", emptyList<String>(), vm.messages.value.map { it.content })
+        assertEquals("无 KB 时消息仍应被消费", emptyList<String>(), vm.composer.messages.value.map { it.content })
         assertEquals("未激活知识库，本轮对话未记入", vm.panelWarning.value)
         coVerify(exactly = 0) { topicRecorder.record(any(), any(), any(), any(), any(), any(), any(), any(), any()) }
     }

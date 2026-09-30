@@ -98,7 +98,7 @@ class MessageEditingIndexInvariantTest {
     private fun seed(vm: LoveBrainViewModel, n: Int, editing: Int): List<String> {
         repeat(n) { vm.addMessage(ChatMessage.Role.HER, "第${it}条") }
         if (editing >= 0) vm.setEditingIndex(editing)
-        return vm.messages.value.map { it.id }
+        return vm.composer.messages.value.map { it.id }
     }
 
     private fun editedId(vm: LoveBrainViewModel, before: List<String>, editing: Int): String? =
@@ -106,8 +106,8 @@ class MessageEditingIndexInvariantTest {
 
     /** 不变式：编辑位必须还指着那条消息；越界直接判失败 */
     private fun assertStillPointingAt(vm: LoveBrainViewModel, label: String, wantId: String?) {
-        val now = vm.editingIndex.value
-        val list = vm.messages.value
+        val now = vm.composer.editingIndex.value
+        val list = vm.composer.messages.value
         if (wantId == null) {
             assertTrue("$label：没有编辑位时不该冒出索引，实到 $now", now < 0)
             return
@@ -152,10 +152,10 @@ class MessageEditingIndexInvariantTest {
                     vm.removeMessageById(before[victim])
 
                     if (victim == editing) {
-                        assertEquals("删掉正在编辑的那条应清编辑位", -1, vm.editingIndex.value)
+                        assertEquals("删掉正在编辑的那条应清编辑位", -1, vm.composer.editingIndex.value)
                         assertEquals("清编辑位要连草稿一起清，否则下一次编辑继承残留",
-                            "", vm.draftText.value)
-                        assertEquals("删一条少一条", n - 1, vm.messages.value.size)
+                            "", vm.composer.draftText.value)
+                        assertEquals("删一条少一条", n - 1, vm.composer.messages.value.size)
                     } else {
                         assertStillPointingAt(
                             vm, "n=$n editing=$editing 删第 $victim 条", editedId(vm, before, editing)
@@ -175,14 +175,14 @@ class MessageEditingIndexInvariantTest {
         advanceUntilIdle()
         cases += 1
         vm.reorderMessages(0, 2)
-        assertTrue("无编辑位时重排不该冒出编辑位，实到 ${vm.editingIndex.value}", vm.editingIndex.value < 0)
+        assertTrue("无编辑位时重排不该冒出编辑位，实到 ${vm.composer.editingIndex.value}", vm.composer.editingIndex.value < 0)
 
         val vm2 = newVm()
         seed(vm2, 3, -1)
         advanceUntilIdle()
         cases += 1
-        vm2.removeMessageById(vm2.messages.value.first().id)
-        assertTrue("无编辑位时删除不该冒出编辑位，实到 ${vm2.editingIndex.value}", vm2.editingIndex.value < 0)
+        vm2.removeMessageById(vm2.composer.messages.value.first().id)
+        assertTrue("无编辑位时删除不该冒出编辑位，实到 ${vm2.composer.editingIndex.value}", vm2.composer.editingIndex.value < 0)
     }
 
     /**
@@ -203,9 +203,9 @@ class MessageEditingIndexInvariantTest {
 
         assertEquals(
             "悬空索引该判成\"没有编辑位\"",
-            -1, vm.editingIndex.value
+            -1, vm.composer.editingIndex.value
         )
-        assertTrue("列表本身不受影响", vm.messages.value.size == 3)
+        assertTrue("列表本身不受影响", vm.composer.messages.value.size == 3)
     }
 
     @Test

@@ -1,4 +1,5 @@
 package com.lovebrain.app.ui.panel
+import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.intent.IntentController
 import com.lovebrain.app.feature.roundcommit.ActualSentState
 
@@ -79,9 +80,12 @@ class PanelHostSemanticsTest {
     }
 
     private fun fakeVm(): LoveBrainViewModel {
-        val vm = mockk<LoveBrainViewModel>(relaxed = true)
-        every { vm.panelMode } returns panelModeFlow
-        every { vm.showPlanPanel } returns showPlanPanelFlow
+        val vm = mockk<LoveBrainViewModel>(relaxed = true)
+        // §5.2 第 6 步：VM 上那 10 条纯转发口已删，状态归 ComposerStore 自己
+        val composer = mockk<ComposerStore>(relaxed = true)
+        every { vm.composer } returns composer
+        every { composer.panelMode } returns panelModeFlow
+        every { composer.showPlanPanel } returns showPlanPanelFlow
         // 点页头那三段走的就是这两个方法：把它们接到上面的 flow 上，界面才会真的换档
         every { vm.setPanelMode(any()) } answers { panelModeFlow.value = firstArg() }
         every { vm.openPlanPanel() } answers { showPlanPanelFlow.value = true }
@@ -90,18 +94,18 @@ class PanelHostSemanticsTest {
         every { vm.actualSentState } returns
             MutableStateFlow(ActualSentState.IDLE)
         every { vm.composerMode } returns MutableStateFlow(ComposerMode.REPLY)
-        every { vm.counselingDraft } returns MutableStateFlow("")
+        every { composer.counselingDraft } returns MutableStateFlow("")
         every { vm.counselingError } returns MutableStateFlow(null)
         every { vm.counselingResult } returns MutableStateFlow(null)
         every { vm.counselingStreaming } returns MutableStateFlow("")
         every { vm.currentFeedbackCase } returns MutableStateFlow(null)
-        every { vm.currentRole } returns MutableStateFlow(ChatMessage.Role.HER)
+        every { composer.currentRole } returns MutableStateFlow(ChatMessage.Role.HER)
         every { vm.currentVector } returns MutableStateFlow(emptyMap())
-        every { vm.draftText } returns draft
-        every { vm.editingIndex } returns MutableStateFlow(-1)
+        every { composer.draftText } returns draft
+        every { composer.editingIndex } returns MutableStateFlow(-1)
         every { vm.feedbacks } returns MutableStateFlow(emptyMap())
         every { vm.generationRoundId } returns MutableStateFlow(1)
-        every { vm.ideaComposeMode } returns MutableStateFlow(false)
+        every { composer.ideaComposeMode } returns MutableStateFlow(false)
         every { vm.inputChanged } returns MutableStateFlow(false)
         every { vm.intents } returns fakeIntents()
         every { vm.isCounseling } returns MutableStateFlow(false)
@@ -110,7 +114,7 @@ class PanelHostSemanticsTest {
         every { vm.isProactive } returns MutableStateFlow(false)
         every { vm.isSuggesting } returns MutableStateFlow(false)
         every { vm.kbNotice } returns MutableStateFlow(null)
-        every { vm.messages } returns MutableStateFlow(emptyList())
+        every { composer.messages } returns MutableStateFlow(emptyList())
         every { vm.onlyThisRound } returns MutableStateFlow(false)
         every { vm.panelWarning } returns MutableStateFlow(null)
         every { vm.proactiveError } returns MutableStateFlow(null)

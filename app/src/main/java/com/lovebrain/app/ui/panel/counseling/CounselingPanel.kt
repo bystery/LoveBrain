@@ -72,7 +72,7 @@ fun CounselingPanel(
     onFollowUpInputIntent: (() -> Unit)? = null,
     inputId: String = "counseling_main"
 ) {
-    val draft by viewModel.counselingDraft.collectAsStateWithLifecycle()
+    val draft by viewModel.composer.counselingDraft.collectAsStateWithLifecycle()
     val result by viewModel.counselingResult.collectAsStateWithLifecycle()
     val error by viewModel.counselingError.collectAsStateWithLifecycle()
     val isCounseling by viewModel.isCounseling.collectAsStateWithLifecycle()

@@ -97,21 +97,21 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.setDraft("editing-B")
 
         vm.reorderMessages(0, 1) // A 跨过 B：[A,B,C] → [B,A,C]，B 落 0 → 修正 -1
-        assertEquals(0, vm.editingIndex.value)
+        assertEquals(0, vm.composer.editingIndex.value)
         vm.reorderMessages(1, 2) // A 继续后移：[B,A,C] → [B,C,A]，未再跨越 → 不动
-        assertEquals(0, vm.editingIndex.value)
-        assertEquals(listOf("B", "C", "A"), vm.messages.value.map { it.content })
-        assertEquals("B", vm.messages.value[vm.editingIndex.value].content)
+        assertEquals(0, vm.composer.editingIndex.value)
+        assertEquals(listOf("B", "C", "A"), vm.composer.messages.value.map { it.content })
+        assertEquals("B", vm.composer.messages.value[vm.composer.editingIndex.value].content)
 
         // ── 幕②：拖动 B 本身到末尾 → editingIndex 逐步跟随（from == editing 分支） ──
         // 接幕①终态 [B,C,A]，B 在 0
         vm.setDraft("editing-B-2")
         vm.reorderMessages(0, 1) // B 与 C 交换：[B,C,A] → [C,B,A]
-        assertEquals(1, vm.editingIndex.value)
+        assertEquals(1, vm.composer.editingIndex.value)
         vm.reorderMessages(1, 2) // B 与 A 交换：[C,B,A] → [C,A,B]
-        assertEquals(2, vm.editingIndex.value)
-        assertEquals(listOf("C", "A", "B"), vm.messages.value.map { it.content })
-        assertEquals("B", vm.messages.value[vm.editingIndex.value].content)
+        assertEquals(2, vm.composer.editingIndex.value)
+        assertEquals(listOf("C", "A", "B"), vm.composer.messages.value.map { it.content })
+        assertEquals("B", vm.composer.messages.value[vm.composer.editingIndex.value].content)
 
         // ── 幕③：反向跨越 +1——干净列表 [X,B,A]，编辑 B(k=1)，B 之后的 A 拖到最前 ──
         val vm3 = newViewModel()
@@ -123,10 +123,10 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm3.setDraft("editing-B-3")
 
         vm3.reorderMessages(2, 1) // A 跨过 B：[X,B,A] → [X,A,B]，B 落 2 → 修正 +1（to==editing 边界）
-        assertEquals(2, vm3.editingIndex.value)
+        assertEquals(2, vm3.composer.editingIndex.value)
         vm3.reorderMessages(1, 0) // A 继续前移：[X,A,B] → [A,X,B]，未再跨越 → 不动
-        assertEquals(2, vm3.editingIndex.value)
-        assertEquals(listOf("A", "X", "B"), vm3.messages.value.map { it.content })
-        assertEquals("B", vm3.messages.value[vm3.editingIndex.value].content)
+        assertEquals(2, vm3.composer.editingIndex.value)
+        assertEquals(listOf("A", "X", "B"), vm3.composer.messages.value.map { it.content })
+        assertEquals("B", vm3.composer.messages.value[vm3.composer.editingIndex.value].content)
     }
 }

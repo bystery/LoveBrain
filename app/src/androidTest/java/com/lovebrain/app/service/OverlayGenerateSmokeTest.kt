@@ -187,10 +187,10 @@ class OverlayGenerateSmokeTest {
         // 机理与这条修法在 ComposerAddButtonGatingTest（JVM 用例，本机可跑且做过变异检查）。
         awaitAddEntryActionable(text)
         composeRule.onNodeWithContentDescription(ADD_ENTRY_DESCRIPTION).performClick()
-        pumpUntil("点过➕之后 MessageList 要有这一条") { vm.messages.value.isNotEmpty() }
+        pumpUntil("点过➕之后 MessageList 要有这一条") { vm.composer.messages.value.isNotEmpty() }
         composeRule.onNodeWithText(text)
             .assertIsDisplayedDiagnosed("刚添加的那条消息")
-        assertEquals("MessageList 应真收到 1 条消息", 1, vm.messages.value.size)
+        assertEquals("MessageList 应真收到 1 条消息", 1, vm.composer.messages.value.size)
     }
 
     /**
@@ -266,7 +266,7 @@ class OverlayGenerateSmokeTest {
             vm.composerMode.value
         )
         assertEquals("两次点击后 Provider 调用次数仍为 0", 0, s.requestCount)
-        assertEquals("入口点击不得产生任何消息", 0, vm.messages.value.size)
+        assertEquals("入口点击不得产生任何消息", 0, vm.composer.messages.value.size)
     }
 
     // ═══════════════════════ 2. 无 Provider ═══════════════════════
@@ -312,7 +312,7 @@ class OverlayGenerateSmokeTest {
         assertEquals(
             "前置条件：必须已有 1 条消息（否则生产 Engine 直接 reject）",
             1,
-            vm.messages.value.size
+            vm.composer.messages.value.size
         )
 
         vm.generate()
@@ -481,7 +481,7 @@ class OverlayGenerateSmokeTest {
         pumpUntil("停止后应退出生成中") { !vm.isGenerating.value }
         assertFalse("停止后 isGenerating 必须为 false", vm.isGenerating.value)
         assertNull("停止不得留下结果", vm.result.value)
-        assertEquals("停止不得清空消息", 1, vm.messages.value.size)
+        assertEquals("停止不得清空消息", 1, vm.composer.messages.value.size)
         composeRule.onNodeWithText(UiText.current(R.string.panel_generate_reply_with_count, 1))
             .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }

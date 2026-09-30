@@ -118,7 +118,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.addMessage(ChatMessage.Role.IDEA, "哄她")
         assertEquals("哄她", vm.getUserHint())
 
-        val ideaId = vm.messages.value.first { it.role == ChatMessage.Role.IDEA }.id
+        val ideaId = vm.composer.messages.value.first { it.role == ChatMessage.Role.IDEA }.id
         vm.removeMessageById(ideaId)
         assertEquals("", vm.getUserHint())
     }

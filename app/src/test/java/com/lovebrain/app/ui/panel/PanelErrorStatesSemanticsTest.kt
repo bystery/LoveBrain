@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui.panel
 
+import com.lovebrain.app.feature.composer.ComposerStore
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -71,7 +72,10 @@ class PanelErrorStatesSemanticsTest {
     }
 
     private fun fakeVm(suggestError: String?, counselingError: String?): LoveBrainViewModel =
-        mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
+        mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
+            // §5.2 第 6 步：VM 上那 10 条纯转发口已删，状态归 ComposerStore 自己
+            val composer = mockk<ComposerStore>(relaxed = true)
+            every { vm.composer } returns composer
             // 泛型流一条都不留给 relaxed（relaxed 交回泛型 mock，`.value` 一取就 ClassCastException）
             every { vm.suggestion } returns MutableStateFlow<DailySuggestion?>(null)
             every { vm.isSuggesting } returns MutableStateFlow(false)
@@ -80,7 +84,7 @@ class PanelErrorStatesSemanticsTest {
             every { vm.suggestError } returns MutableStateFlow(suggestError)
             every { vm.intents } returns fakeIntents()
             every { vm.activeKb } returns MutableStateFlow(null)
-            every { vm.counselingDraft } returns MutableStateFlow("")
+            every { composer.counselingDraft } returns MutableStateFlow("")
             every { vm.counselingResult } returns MutableStateFlow<String?>(null)
             every { vm.counselingError } returns MutableStateFlow(counselingError)
             every { vm.isCounseling } returns MutableStateFlow(false)

@@ -95,18 +95,18 @@ fun LoveBrainPanelScreen(
     onOpenSettings: () -> Unit,
     onCollapse: () -> Unit
 ) {
-    val panelMode by viewModel.panelMode.collectAsStateWithLifecycle()
+    val panelMode by viewModel.composer.panelMode.collectAsStateWithLifecycle()
     val resultMode by viewModel.resultMode.collectAsStateWithLifecycle()
     val composerMode by viewModel.composerMode.collectAsStateWithLifecycle()
-    val messages by viewModel.messages.collectAsStateWithLifecycle()
+    val messages by viewModel.composer.messages.collectAsStateWithLifecycle()
     val result by viewModel.result.collectAsStateWithLifecycle()
     val isGenerating by viewModel.isGenerating.collectAsStateWithLifecycle()
     val feedbacks by viewModel.feedbacks.collectAsStateWithLifecycle()
-    val draftText by viewModel.draftText.collectAsStateWithLifecycle()
-    val currentRole by viewModel.currentRole.collectAsStateWithLifecycle()
-    val ideaComposeMode by viewModel.ideaComposeMode.collectAsStateWithLifecycle()
+    val draftText by viewModel.composer.draftText.collectAsStateWithLifecycle()
+    val currentRole by viewModel.composer.currentRole.collectAsStateWithLifecycle()
+    val ideaComposeMode by viewModel.composer.ideaComposeMode.collectAsStateWithLifecycle()
     val composeRole = if (ideaComposeMode) ChatMessage.Role.IDEA else currentRole
-    val editingIndex by viewModel.editingIndex.collectAsStateWithLifecycle()
+    val editingIndex by viewModel.composer.editingIndex.collectAsStateWithLifecycle()
     val review by viewModel.profileReview.collectAsStateWithLifecycle()
     val activeKb by viewModel.activeKb.collectAsStateWithLifecycle()
     val kbNotice by viewModel.kbNotice.collectAsStateWithLifecycle()
@@ -115,7 +115,7 @@ fun LoveBrainPanelScreen(
     val stageSuggestion by viewModel.stageSuggestion.collectAsStateWithLifecycle()
     val currentVector by viewModel.currentVector.collectAsStateWithLifecycle()
     val vectorDelta by viewModel.vectorDelta.collectAsStateWithLifecycle()
-    val showPlanPanel by viewModel.showPlanPanel.collectAsStateWithLifecycle()
+    val showPlanPanel by viewModel.composer.showPlanPanel.collectAsStateWithLifecycle()
 
     // 花费与累计统计：九个数字一份快照、一次收集（原先这里 collect 了五把 flow）
     val usage by viewModel.usageStats.collectAsStateWithLifecycle()

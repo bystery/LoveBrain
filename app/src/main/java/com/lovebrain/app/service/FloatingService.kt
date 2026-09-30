@@ -233,7 +233,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             EventBus.capturedMessages.collect { event ->
                 // CAP-01：严格 session 边界——早于 sessionStart 的一律是上一 session 的 replay，丢弃
                 if (event.ts < sessionStart) return@collect
-                val stored = addClipIfNew(event.text, viewModel.currentRole.value)
+                val stored = addClipIfNew(event.text, viewModel.composer.currentRole.value)
                 // A4 修复：只在消息真正入库时才亮红点（去重丢弃时不亮）
                 if (stored && bubble.isPresent) {
                     bubble.markCaptured()
@@ -296,7 +296,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     }
 
     /** 返回是否真正入库，调用方据此决定是否亮红点；只拦 1.5s 内的同文本洪峰，间隔更久的重捕一律入库 */
-    private fun addClipIfNew(text: String?, role: ChatMessage.Role = viewModel.currentRole.value): Boolean {
+    private fun addClipIfNew(text: String?, role: ChatMessage.Role = viewModel.composer.currentRole.value): Boolean {
         if (text.isNullOrEmpty()) return false
         val now = SystemClock.uptimeMillis()
         if (text == lastClipText && now - lastClipTime <= AppConfig.BURST_DEDUP_WINDOW_MS) return false

@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui.panel
 
+import com.lovebrain.app.feature.composer.ComposerStore
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -64,7 +65,10 @@ class SuggestCounselingTargetsTest {
         suggestion: DailySuggestion?,
         isSuggesting: Boolean,
         suggestError: String?
-    ): LoveBrainViewModel = mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
+    ): LoveBrainViewModel = mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
+        // §5.2 第 6 步：VM 上那 10 条纯转发口已删，状态归 ComposerStore 自己
+        val composer = mockk<ComposerStore>(relaxed = true)
+        every { vm.composer } returns composer
         every { vm.suggestion } returns MutableStateFlow(suggestion)
         every { vm.isSuggesting } returns MutableStateFlow(isSuggesting)
         every { vm.currentVector } returns MutableStateFlow(emptyMap())
@@ -73,7 +77,7 @@ class SuggestCounselingTargetsTest {
         every { vm.intents } returns fakeIntents()
         every { vm.activeKb } returns MutableStateFlow(null)
         // 谈心那侧的几条流同理：一条都不留给 relaxed
-        every { vm.counselingDraft } returns MutableStateFlow("")
+        every { composer.counselingDraft } returns MutableStateFlow("")
         every { vm.counselingResult } returns MutableStateFlow<String?>(null)
         every { vm.counselingError } returns MutableStateFlow<String?>(null)
         every { vm.isCounseling } returns MutableStateFlow(false)

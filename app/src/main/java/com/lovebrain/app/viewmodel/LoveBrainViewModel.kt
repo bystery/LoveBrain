@@ -40,7 +40,6 @@ import com.lovebrain.app.feature.reply.RollbackOutcome
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.KnowledgeBase
-import com.lovebrain.app.model.PanelState
 import com.lovebrain.app.model.ProactiveEnded
 import com.lovebrain.app.model.ProactiveEvent
 import com.lovebrain.app.model.ProactiveFailed
@@ -141,11 +140,13 @@ class LoveBrainViewModel(
      *
      * 这里接管的是九颗原本各写各的 `MutableStateFlow`：面板状态、消息列表、当前角色、
      * 编辑位、《想法》chip 态、两条草稿、输入模式、输出模式、计划面板。
-     * VM 只留**同名的只读出口**（UI 与 Service 的调用点一字未改）+ 下面两条接线：
+     * 这一家子**没有**留同名出口（§5.2 第 6 步"调用点迁完后删除 facade"）：面板与 Service
+     * 直接读 `composer.panelState` 那十颗只读流，写法同下面 `intents` 那一族。
+     * VM 这一侧只剩下面两条接线：
      *  - `onContentChanged`：内容一变就去判"旧结果是否 stale"，这条判据不能靠每个写的人记得调用；
      *  - 三个持久化回调：store 不知道有 `SecurePrefs` 这回事（§5.1：`feature` 不许 import `data`）。
      */
-    private val composer = ComposerStore(
+    val composer = ComposerStore(
         scope = viewModelScope,
         initialOutputMode = securePrefs.outputMode,
         onContentChanged = { markCurrentResultStaleIfNeeded() },
@@ -160,9 +161,6 @@ class LoveBrainViewModel(
             }
         }
     )
-
-    val panelState: StateFlow<PanelState> = composer.panelState
-    val messages: StateFlow<List<ChatMessage>> = composer.messages
 
     // ═══ 回复流程唯一状态源 ═══
     /**
@@ -410,13 +408,6 @@ class LoveBrainViewModel(
 
     val feedbacks: StateFlow<Map<String, SchemeFeedback>> = feedbackCases.feedbacks
 
-    val draftText: StateFlow<String> = composer.draftText
-    val counselingDraft: StateFlow<String> = composer.counselingDraft
-    val panelMode: StateFlow<Int> = composer.panelMode
-
-    /** 输出模式二态（0=普通 1=进攻；悬浮窗切换，下次请求生效）。校验与落盘在 store 的回调里。 */
-    val outputMode: StateFlow<Int> = composer.outputMode
-
     /** ═══════════ 花费/耗时展示（§2.2：九个 flow 并成一份快照 + 一个 reduce） ═══════════ */
 
     /**
@@ -446,15 +437,6 @@ class LoveBrainViewModel(
         // 计费事件每次都存今日数（与改前一致：即便这一笔是 0 元也照存，不省那次写）
         if (event is UsageStats.Event.Costed) securePrefs.saveTodayCost(after.todayDate, after.todayCostYuan)
     }
-
-    val currentRole: StateFlow<ChatMessage.Role> = composer.currentRole
-    val editingIndex: StateFlow<Int> = composer.editingIndex
-
-    /** 输入行《想法》chip 态（：仅影响面板输入去向；捕获收口见 setCurrentRole） */
-    val ideaComposeMode: StateFlow<Boolean> = composer.ideaComposeMode
-
-    /** 计划面板是否可见 */
-    val showPlanPanel: StateFlow<Boolean> = composer.showPlanPanel
 
     /** ═══════════ 今日锦囊（AI 生成，参考性，不写知识库） ═══════════ */
 
@@ -675,7 +657,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 谈心的流式正文、结果、错误与"日志命令"的触发住在
      * [com.lovebrain.app.feature.counseling.CounselingStore]（§5.2 第 4 步）。
      *
-     * 谈心**草稿**（[counselingDraft]）仍在这里：它是用户输入 + SecurePrefs 的防抖落盘，
+     * 谈心**草稿**（[composer] 的 `counselingDraft`）仍在这一家子：它是用户输入 + SecurePrefs 的防抖落盘，
      * 不是这条生成链的状态；混进 store 只会让 store 再去碰 prefs。
      */
     private val counselingStore = com.lovebrain.app.feature.counseling.CounselingStore(

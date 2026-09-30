@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui.panel
 
+import com.lovebrain.app.feature.composer.ComposerStore
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.hasText
@@ -63,8 +64,11 @@ class CounselingTemplateChipTest {
     private val firstTemplate = "她突然冷淡了怎么办"
     private val secondTemplate = "我们吵架了该谁先低头"
 
-    private fun fakeVm(): LoveBrainViewModel = mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
-        every { vm.counselingDraft } returns MutableStateFlow("")
+    private fun fakeVm(): LoveBrainViewModel = mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
+        // §5.2 第 6 步：VM 上那 10 条纯转发口已删，状态归 ComposerStore 自己
+        val composer = mockk<ComposerStore>(relaxed = true)
+        every { vm.composer } returns composer
+        every { composer.counselingDraft } returns MutableStateFlow("")
         every { vm.counselingResult } returns MutableStateFlow<String?>(null)
         every { vm.counselingError } returns MutableStateFlow<String?>(null)
         every { vm.isCounseling } returns MutableStateFlow(false)

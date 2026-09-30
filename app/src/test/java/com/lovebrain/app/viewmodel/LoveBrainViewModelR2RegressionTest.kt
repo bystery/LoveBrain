@@ -139,19 +139,19 @@ class LoveBrainViewModelR2RegressionTest {
         vm.addMessage(ChatMessage.Role.HER, "m0")
         vm.addMessage(ChatMessage.Role.ME, "m1")
         vm.addMessage(ChatMessage.Role.HER, "m2")
-        val ids = vm.messages.value.map { it.id }
+        val ids = vm.composer.messages.value.map { it.id }
 
         vm.setEditingIndex(1)
         vm.setDraft("editing-m1")
 
         // 删编辑位之前的一条 → 编辑下标前移
         vm.removeMessageById(ids[0])
-        assertEquals(0, vm.editingIndex.value)
+        assertEquals(0, vm.composer.editingIndex.value)
 
         // 再删编辑位本身（同一帧内第二次回调）→ 编辑态清零 + 草稿清空
         vm.removeMessageById(ids[1])
-        assertEquals(-1, vm.editingIndex.value)
-        assertEquals("", vm.draftText.value)
-        assertEquals(listOf("m2"), vm.messages.value.map { it.content })
+        assertEquals(-1, vm.composer.editingIndex.value)
+        assertEquals("", vm.composer.draftText.value)
+        assertEquals(listOf("m2"), vm.composer.messages.value.map { it.content })
     }
 }
