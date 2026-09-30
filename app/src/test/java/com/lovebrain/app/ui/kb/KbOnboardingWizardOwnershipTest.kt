@@ -84,14 +84,16 @@ class KbOnboardingWizardOwnershipTest {
             listOf("KbDimens.kt" to "PRIMARY_ACTION_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP"),
             declarations
         )
-        // 反向证人：两家都还在读它（页面那颗「导入知识库」+ 向导那三颗大按钮）
+        // 反向证人：两家都还在读它（页面那颗「导入知识库」+ 向导进度条）
         assertTrue(
             "页面必须还在读 KbDimens（等号是删引用删出来的假绿）",
             codeOf(pageFile).contains("KbDimens.PRIMARY_ACTION_HEIGHT_DP")
         )
+        // 向导那三颗大按钮归 `LbPrimaryButton` 之后，向导读 KbDimens 的那一处是进度条
+        // （`PROGRESS_BAR_HEIGHT_DP`）——只要它还在读这一族尺寸表，就证明它没被搬回 Activity。
         assertTrue(
             "向导必须还在读 KbDimens",
-            codeOf(File(kbDir, "KbOnboardingWizard.kt")).contains("KbDimens.PRIMARY_ACTION_HEIGHT_DP")
+            codeOf(File(kbDir, "KbOnboardingWizard.kt")).contains("KbDimens.PROGRESS_BAR_HEIGHT_DP")
         )
     }
 }

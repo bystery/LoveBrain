@@ -22,12 +22,16 @@ import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.intent.IntentController
+import com.lovebrain.app.feature.mode.ModeController
 import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.feature.profile.ProfileReview
 import com.lovebrain.app.feature.profile.ProfileUpdateController
 import com.lovebrain.app.feature.roundcommit.ActualSentRecorder
 import com.lovebrain.app.feature.roundcommit.ActualSentState
 import com.lovebrain.app.feature.provider.ProviderTicketStore
+import com.lovebrain.app.feature.roundstate.RoundStateStore
+import com.lovebrain.app.feature.stage.StageSuggestionStore
+import com.lovebrain.app.feature.vector.VectorStore
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.CounselingEnded
 import com.lovebrain.app.model.CounselingEvent
@@ -204,11 +208,15 @@ class LoveBrainViewModel(
     val isGeneratingCore: StateFlow<Boolean> = replyUi.map { it.isBusy }
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, false)
 
+    /** 稳定的轮次身份 + 仅看本轮开关的持有者（状态搬出 VM，复核 §5.2 第 6 步） */
+    private val roundStateStore = RoundStateStore(
+        onOnlyThisRoundChanged = { checkInputChanged() }
+    )
+
     /** 稳定的轮次身份——只在真正完成一次新的整轮 generate 时变化。
      * 单条改写、undo、feedback 等原地操作不改变它。
      * ResultArea 的 viewMode 只以 round id 重置。 */
-    private val _generationRoundId = MutableStateFlow(0)
-    val generationRoundId: StateFlow<Int> = _generationRoundId.asStateFlow()
+    val generationRoundId: StateFlow<Int> = roundStateStore.generationRoundId
 
     // ═══ 前台任务不在 ViewModel 里留 Job 字段 ═══
     // 旧实现在这里放 generateJob / counselingJob / suggestJob，各自挂 invokeOnCompletion 清引用，
@@ -256,9 +264,11 @@ class LoveBrainViewModel(
 
     // ═══════════ 输入变化提示 + 生成历史 ═══════════
 
+    /** 结果区模式 + 输入变化标记的持有者（状态搬出 VM，复核 §5.2 第 6 步） */
+    private val modeController = ModeController()
+
     /** 输入已变化——result 存在但 messages/ideaHint 与生成时快照不一致 */
-    private val _inputChanged = MutableStateFlow(false)
-    val inputChanged: StateFlow<Boolean> = _inputChanged.asStateFlow()
+    val inputChanged: StateFlow<Boolean> = modeController.inputChanged
 
     /**
      * 回复的版本栈（复核 §5.2 第 6 步搬出来的第三块**行为**，主人是 [ReplyVersionStack]）。
@@ -360,16 +370,18 @@ class LoveBrainViewModel(
     fun dismissPanelWarning() { notices.dismiss(NoticeBoard.Channel.Warning) }
     fun dismissVectorUpdate() { notices.dismiss(NoticeBoard.Channel.Vector) }
 
+    /** 向量重估触发的阶段调整建议的持有者（状态搬出 VM，复核 §5.2 第 6 步） */
+    private val stageSuggestionStore = StageSuggestionStore()
+
     /** 向量重估触发的阶段调整建议（用户确认后生效） */
-    private val _stageSuggestion = MutableStateFlow<StageSuggestion?>(null)
-    val stageSuggestion: StateFlow<StageSuggestion?> = _stageSuggestion.asStateFlow()
-    fun dismissStageChange() { _stageSuggestion.value = null }
+    val stageSuggestion: StateFlow<StageSuggestion?> = stageSuggestionStore.stageSuggestion
+    fun dismissStageChange() { stageSuggestionStore.accept(StageSuggestionStore.Intent.Clear) }
     fun confirmStageChange() {
-        val s = _stageSuggestion.value ?: return
+        val s = stageSuggestionStore.current ?: return
         viewModelScope.launch {
             knowledgeRepo.updateStage(s.kbName, s.newStage)
             knowledgeRepo.updateWarmthStageLabel(s.kbName, s.newStage)
-            _stageSuggestion.value = null
+            stageSuggestionStore.accept(StageSuggestionStore.Intent.Clear)
         }
     }
 
@@ -395,13 +407,14 @@ class LoveBrainViewModel(
     }
     // ========================================================
 
+    /** 五维向量状态 + 重估变化量的持有者（状态搬出 VM，复核 §5.2 第 6 步） */
+    private val vectorStore = VectorStore()
+
     /** 当前知识库的五维状态向量（供面板状态卡片展示） */
-    private val _currentVector = MutableStateFlow<Map<String, Int>>(emptyMap())
-    val currentVector: StateFlow<Map<String, Int>> = _currentVector.asStateFlow()
+    val currentVector: StateFlow<Map<String, Int>> = vectorStore.currentVector
 
     /** 最近一次重估的五维变化量（新值 - 旧值，供卡片显示涨跌箭头） */
-    private val _vectorDelta = MutableStateFlow<Map<String, Int>>(emptyMap())
-    val vectorDelta: StateFlow<Map<String, Int>> = _vectorDelta.asStateFlow()
+    val vectorDelta: StateFlow<Map<String, Int>> = vectorStore.vectorDelta
 
     val feedbacks: StateFlow<Map<String, SchemeFeedback>> = feedbackCases.feedbacks
 
@@ -412,27 +425,29 @@ class LoveBrainViewModel(
      *
      * 原先是九个 `MutableStateFlow` 加一个不在任何 flow 里的 `private var todayCostDate`
      * （跨天清零的第二份状态），十二处语句各改各的、其中五处还顺手把值抄回 `SecurePrefs`。
-     * 现在：转移在 [UsageStats.reduce]（纯函数，JVM 直接测），落盘只在 [applyUsage]。
+     * 现在：转移在 [UsageStats.reduce]（纯函数，JVM 直接测），状态持有在 [usageStatsStore]，
+     * 落盘只在 [onPersist] 这一处。
      */
-    private val _usageStats = MutableStateFlow(UsageStats())
-    val usageStats: StateFlow<UsageStats> = _usageStats.asStateFlow()
+    private val usageStatsStore = UsageStatsStore(
+        onPersist = { before, after, event ->
+            if (after.totalGenerateCount != before.totalGenerateCount) {
+                securePrefs.totalGenerateCount = after.totalGenerateCount
+            }
+            if (after.totalCostYuan != before.totalCostYuan) securePrefs.totalCostYuan = after.totalCostYuan
+            if (after.totalCopyCount != before.totalCopyCount) securePrefs.totalCopyCount = after.totalCopyCount
+            if (after.totalAdoptCount != before.totalAdoptCount) securePrefs.totalAdoptCount = after.totalAdoptCount
+            if (after.totalRewriteCount != before.totalRewriteCount) {
+                securePrefs.totalRewriteCount = after.totalRewriteCount
+            }
+            // 计费事件每次都存今日数（与改前一致：即便这一笔是 0 元也照存，不省那次写）
+            if (event is UsageStats.Event.Costed) securePrefs.saveTodayCost(after.todayDate, after.todayCostYuan)
+        }
+    )
+    val usageStats: StateFlow<UsageStats> = usageStatsStore.stats
 
     /** 唯一的写入漏斗：想改这九个数没有第二条路 */
     private fun applyUsage(event: UsageStats.Event) {
-        val before = _usageStats.value
-        val after = before.reduce(event)
-        _usageStats.value = after
-        if (after.totalGenerateCount != before.totalGenerateCount) {
-            securePrefs.totalGenerateCount = after.totalGenerateCount
-        }
-        if (after.totalCostYuan != before.totalCostYuan) securePrefs.totalCostYuan = after.totalCostYuan
-        if (after.totalCopyCount != before.totalCopyCount) securePrefs.totalCopyCount = after.totalCopyCount
-        if (after.totalAdoptCount != before.totalAdoptCount) securePrefs.totalAdoptCount = after.totalAdoptCount
-        if (after.totalRewriteCount != before.totalRewriteCount) {
-            securePrefs.totalRewriteCount = after.totalRewriteCount
-        }
-        // 计费事件每次都存今日数（与改前一致：即便这一笔是 0 元也照存，不省那次写）
-        if (event is UsageStats.Event.Costed) securePrefs.saveTodayCost(after.todayDate, after.todayCostYuan)
+        usageStatsStore.accept(event)
     }
 
     /** ═══════════ 今日锦囊（AI 生成，参考性，不写知识库） ═══════════ */
@@ -496,15 +511,8 @@ class LoveBrainViewModel(
         proactiveStore.uiState.map { it.error }
             .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
 
-    private val _resultMode = MutableStateFlow(ResultMode.REPLY)
-
-    /**
-     * 结果区当前展示哪一类结果。写它的有两条链：回复（[generate]）与主动发
-     * （[generateProactive]、以及退出模式时收到的那条效果），所以它留在本类，
-     * 不下沉进 [com.lovebrain.app.feature.proactive.ProactiveStore]——
-     * 那会让回复链反过来写主动发的状态。
-     */
-    val resultMode: StateFlow<ResultMode> = _resultMode.asStateFlow()
+    /** 结果区当前展示哪一类结果（状态搬出 VM，复核 §5.2 第 6 步）。 */
+    val resultMode: StateFlow<ResultMode> = modeController.resultMode
 
     /**
      * 输入区的模式归 [com.lovebrain.app.feature.proactive.ProactiveStore]
@@ -534,14 +542,13 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     /** 仅看本轮开关——默认关闭。开启后只携带通用生成规则、本轮真实消息和本轮想法。
      * 排除旧画像、关系阶段、历史对话、场景、事项、经验与持续意图。
-     * 开关属于当前工作轮次；本轮重生成保留，开启新轮次或切档案后恢复默认。 */
-    private val _onlyThisRound = MutableStateFlow(false)
-    val onlyThisRound: StateFlow<Boolean> = _onlyThisRound.asStateFlow()
+     * 开关属于当前工作轮次；本轮重生成保留，开启新轮次或切档案后恢复默认。
+     * 状态在 [roundStateStore]，VM 只留只读出口与切换入口。 */
+    val onlyThisRound: StateFlow<Boolean> = roundStateStore.onlyThisRound
 
     fun toggleOnlyThisRound() {
-        _onlyThisRound.value = !_onlyThisRound.value
-        // 切换 onlyThisRound 后已有旧结果立即 stale
-        checkInputChanged()
+        // 切换走 store：翻转状态后 store 同步回调 checkInputChanged()，让旧结果标 stale
+        roundStateStore.accept(RoundStateStore.Intent.ToggleOnlyThisRound)
     }
 
     // ═══════════ 输入变化提示 + 生成历史与版本回退 ═══════════
@@ -581,10 +588,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             composer.messagesNow,
             composer.ideaHint(),
             _activeKb.value?.name,
-            _onlyThisRound.value,
+            roundStateStore.onlyThisRoundNow,
             intents.currentRevision()
         )
-        _inputChanged.value = currentFingerprint != ctx.inputFingerprint
+        modeController.accept(ModeController.Intent.SetInputChanged(currentFingerprint != ctx.inputFingerprint))
     }
 
     /**
@@ -638,7 +645,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         checkInputChanged()
 
         // 生成新的 roundId 值以触发 viewMode 重置——不递减，不使用 magic number
-        _generationRoundId.value = _generationRoundId.value + 1
+        roundStateStore.accept(RoundStateStore.Intent.BumpRoundId)
     }
 
     /** 是否可以回退到上一版本 — 以当前 active KB 为权限边界 */
@@ -706,7 +713,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         // 今日花费载入（跨天清零）+ 订阅计费事件流（ 口径）
         val savedCost = securePrefs.loadTodayCost()
-        _usageStats.value = UsageStats.loaded(
+        usageStatsStore.load(UsageStats.loaded(
             today = java.time.LocalDate.now().toString(),
             savedTodayCost = savedCost,
             totalGenerateCount = securePrefs.totalGenerateCount,
@@ -714,7 +721,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             totalCopyCount = securePrefs.totalCopyCount,
             totalAdoptCount = securePrefs.totalAdoptCount,
             totalRewriteCount = securePrefs.totalRewriteCount
-        )
+        ))
         viewModelScope.launch {
             // SharedFlow 收集不应崩面板
             try {
@@ -829,7 +836,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         if (snapshot.none { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }) return
 
         // 设置结果模式
-        _resultMode.value = ResultMode.REPLY
+        modeController.accept(ModeController.Intent.SetResultMode(ResultMode.REPLY))
 
         val requestId = ReplyRequestState.newRequestId()
         val userHint = composer.ideaHintOf(snapshot)
@@ -904,7 +911,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 intentConfig = effectiveIntent,
                 corrections = mergedCorrections,
                 correctionsRevision = correctionsRevision,
-                onlyThisRound = _onlyThisRound.value,
+                onlyThisRound = roundStateStore.onlyThisRoundNow,
                 aggressive = aggressive,
                 providerIdentity = providerConfig?.toIdentity(),
                 kbProfile = kbName?.let { readOrNull("") { knowledgeRepo.readProfile(it) } } ?: "",
@@ -922,9 +929,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 intentRevision = effectiveIntent.revision,
                 correctionsRevision = correctionsRevision,
                 inputFingerprint = computeInputFingerprint(
-                    snapshot, userHint, kbName, _onlyThisRound.value, effectiveIntent.revision
+                    snapshot, userHint, kbName, roundStateStore.onlyThisRoundNow, effectiveIntent.revision
                 ),
-                onlyThisRound = _onlyThisRound.value,
+                onlyThisRound = roundStateStore.onlyThisRoundNow,
                 promptVersion = promptBuilder.replyPromptAssetHash()
             )
 
@@ -983,7 +990,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 composer.accept(ComposerStore.Intent.SetPanelState(effect.panelState))
 
             is ReplyStore.Effect.SuccessCommitted -> {
-                _generationRoundId.value++
+                roundStateStore.accept(RoundStateStore.Intent.BumpRoundId)
                 val versionId = GenerationVersionId.next()
                 // 有本轮上下文才写历史：记的是"结果 + 上下文 + 版本身份"三条一起，
                 // 上限（session 内最多留几条）由栈负责，搬之前是那个 20
@@ -1002,7 +1009,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     )
                 }
                 // 生成成功后重置输入变化标记
-                _inputChanged.value = false
+                modeController.accept(ModeController.Intent.SetInputChanged(false))
                 // 递增累计生成次数
                 applyUsage(UsageStats.Event.Generated)
             }
@@ -1033,7 +1040,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // /: stopGeneration 不清 roundCorrections——
         // 停止生成不等于结束当前工作轮。用户 mute → stop → retry 时，
         // 本轮 mute 应继续有效。roundCorrections 只在 nextRound / switch KB 时清。
-        _inputChanged.value = false
+        modeController.accept(ModeController.Intent.SetInputChanged(false))
     }
 
     // ═══════════ 赞踩反馈 ═══════════
@@ -1077,7 +1084,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             contextMode = if (ctx.onlyThisRound) "only-this-round" else "full",
             promptVersion = ctx.promptVersion,
             modelId = ticketStore.activeTicketNow?.model ?: "",
-            costYuan = _usageStats.value.lastCostYuan ?: 0.0
+            costYuan = usageStatsStore.current.lastCostYuan ?: 0.0
         )
     }
 
@@ -1221,7 +1228,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // 新轮次开始时清理改写状态和历史，作废旧改写请求
         resetRewritePage()
         // 新轮次恢复仅看本轮开关为默认关闭
-        _onlyThisRound.value = false
+        roundStateStore.accept(RoundStateStore.Intent.SetOnlyThisRound(false))
     }
 
     fun copyScheme(scheme: Scheme): String {
@@ -1307,15 +1314,14 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         when (event) {
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.VectorUpdated -> {
                 if (_activeKb.value?.name != event.kbName) return
-                _currentVector.value = event.newVector
-                _vectorDelta.value = event.delta
+                vectorStore.accept(VectorStore.Intent.UpdateVector(event.newVector, event.delta))
             }
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.VectorSummary -> {
                 if (_activeKb.value?.name != event.kbName) return
                 notices.show(NoticeBoard.Channel.Vector, event.summary)
             }
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.StageSuggested ->
-                _stageSuggestion.value = event.suggestion
+                stageSuggestionStore.accept(StageSuggestionStore.Intent.Set(event.suggestion))
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.Notice ->
                 notices.show(NoticeBoard.Channel.Knowledge, event.message)
             is com.lovebrain.app.domain.KnowledgeTriggerEvent.ProfileReady ->
@@ -1515,12 +1521,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 val oldKbName = _activeKb.value?.name
                 val newKb = knowledgeRepo.getActive()
                 if (oldKbName != newKb?.name) {
-                    _vectorDelta.value = emptyMap()
+                    vectorStore.accept(VectorStore.Intent.ClearDelta)
                     // 上一块库的瞬时 UI（重估摘要 + 后台回执）整族清掉；面板级警告不属于这一族，
                     // 它说的是这台设备的配置状态，与切到哪块库无关——判据写在 NoticeBoard 里
                     notices.dismissVolatileNotices()
                     // 切库时复位仅看本轮开关——属于当前工作轮次
-                    _onlyThisRound.value = false
+                    roundStateStore.accept(RoundStateStore.Intent.SetOnlyThisRound(false))
                     // 切库时清除旧 KB 的意图配置，防止旧意图泄漏到新 KB
                     intents.resetForKbSwitch()
                     // 切库时清空本轮瞬时纠正
@@ -1531,14 +1537,14 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     knowledgeRepo.migrateIfNeeded(it.name)
                     // WAL 崩溃恢复——检查未完成的 round commit 事务并 roll-forward
                     topicRecorder.recoverIfNeeded(it.name)
-                    _currentVector.value = knowledgeRepo.readVector(it.name)
+                    vectorStore.accept(VectorStore.Intent.SetCurrent(knowledgeRepo.readVector(it.name)))
                     // 结构化 child——在当前协程内直接 await，不再 fire-and-forget。
                     // intents.refreshForKb 内部有 KB identity guard 保护 UI commit。
                     intents.refreshForKb(it.name)
                 }
-                // CARRY-09：删除最后一个 KB 时 newKb==null，旧 _currentVector 未被清空
+                // CARRY-09：删除最后一个 KB 时 newKb==null，旧 currentVector 未被清空
                 if (newKb == null) {
-                    _currentVector.value = emptyMap()
+                    vectorStore.accept(VectorStore.Intent.SetCurrent(emptyMap()))
                 }
                 // KB 切换后检测 stale——如果当前结果来自旧 KB，标记为 stale
                 if (oldKbName != null && oldKbName != newKb?.name) {
@@ -1698,7 +1704,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 stage = _activeKb.value?.stage ?: "",
                 outputMode = composer.outputModeNow,
                 thinkingMode = securePrefs.thinkingMode,
-                onlyThisRound = _onlyThisRound.value,
+                onlyThisRound = roundStateStore.onlyThisRoundNow,
                 assetHash = promptBuilder.assetHashOf(AssetRegistry.SUGGEST),
                 providerHost = providerConfig?.baseUrl ?: "",
                 providerModel = providerConfig?.model ?: "",
@@ -1727,7 +1733,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     fun generateProactive(draft: String = "", scene: String = "") {
         // 主动发生成入口——模式由 store 持有，结果区那一半仍归本类
         proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.EnterProactive)
-        _resultMode.value = ResultMode.PROACTIVE
+        modeController.accept(ModeController.Intent.SetResultMode(ResultMode.PROACTIVE))
 
         val requestId = ReplyRequestState.newRequestId()
         val kbSnapshot = _activeKb.value
@@ -1878,7 +1884,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      */
     private fun onProactiveEffect(effect: com.lovebrain.app.feature.proactive.ProactiveStore.Effect) {
         when (effect) {
-            com.lovebrain.app.feature.proactive.ProactiveStore.Effect.ExitedProactiveMode -> _resultMode.value = ResultMode.REPLY
+            com.lovebrain.app.feature.proactive.ProactiveStore.Effect.ExitedProactiveMode ->
+                modeController.accept(ModeController.Intent.SetResultMode(ResultMode.REPLY))
             is com.lovebrain.app.feature.proactive.ProactiveStore.Effect.FirstTokenObserved ->
                 applyUsage(UsageStats.Event.Timed(firstTokenMs = effect.elapsedMs))
         }

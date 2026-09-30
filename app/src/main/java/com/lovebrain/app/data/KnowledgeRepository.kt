@@ -80,7 +80,8 @@ class KnowledgeRepository(
 
     /** 交给各格子用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
     private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage, DocumentStorage,
-        MemoryStorage, ProfileStorage, ArchiveStorage, CatalogWriteStorage, ProfileTxStorage {
+        MemoryStorage, ProfileStorage, ArchiveStorage, CatalogWriteStorage, ProfileTxStorage,
+        CounselingStorage, IntentStorage, TopicTextStorage, RevisionCheckStorage {
         override val root: File get() = knowledgeRoot
         override val catalogRoot: File get() = knowledgeRoot
 
@@ -109,6 +110,17 @@ class KnowledgeRepository(
         override fun writeTransaction(kbName: String, block: MemoryTx.() -> Unit) {
             transactionUnlocked(kbName) {
                 MemoryTx { relativePath, content -> write(relativePath, content) }.block()
+            }
+        }
+
+        /**
+         * 意图格的一次写事务——与 [writeTransaction] 同形，名字刻意不同：
+         * `MemoryTx.() -> Unit` 与 `IntentTx.() -> Unit` 都擦除成 `Function1`，
+         * 同名就是 platform declaration clash。
+         */
+        override fun runWrite(kbName: String, block: IntentTx.() -> Unit) {
+            transactionUnlocked(kbName) {
+                IntentTx { relativePath, content -> write(relativePath, content) }.block()
             }
         }
 
@@ -181,6 +193,18 @@ class KnowledgeRepository(
          */
         override fun writeUnlocked(kbName: String, relativePath: String, content: String) =
             writeFileUnlocked(kbName, relativePath, content)
+
+        /** revision-check 格的追加写：回到本类的 [appendFileUnlocked]（唯一写链） */
+        override fun appendUnlocked(kbName: String, relativePath: String, content: String) =
+            appendFileUnlocked(kbName, relativePath, content)
+
+        /** revision-check 格的向量写：回到画像格那一份 [KnowledgeProfileStore.setVector] */
+        override fun writeVectorUnlocked(kbName: String, values: Map<String, Int>) {
+            profile.setVector(kbName, values)
+        }
+
+        /** revision-check 格读 revision：回到记忆格那一份 [KnowledgeMemoryStore.revisionOf] */
+        override fun revisionOf(kbName: String): Int = memory.revisionOf(kbName)
 
         override fun atomicWriteAt(kbName: String, relativePath: String, content: String): Boolean {
             // 路径与落盘都交给仓库已有的那两样：safeKbFile（与公开读写同一个判定）+
@@ -413,6 +437,30 @@ class KnowledgeRepository(
      * 而不是再造一个包装（两个持有文件系统的对象就等于没有唯一入口）。
      */
     internal val catalogWrites = KnowledgeCatalogWriteStore(RepoStorage())
+
+    /**
+     * 谈心日志格（§5.3 后续）：两段式追加 + 实际发送记录 upsert + 分析节读取。
+     * 锁、路径守门、落盘仍在本类（见 [CounselingStorage] 那份实现）。
+     */
+    private val counseling = KnowledgeCounselingService(RepoStorage())
+
+    /**
+     * 持续意图格（§5.3 后续）：`moment/intent.json` 的读/写 + revision 递增。
+     * 锁、路径守门、落盘仍在本类（见 [IntentStorage] 那份实现）。
+     */
+    private val intent = KnowledgeIntentService(RepoStorage())
+
+    /**
+     * 话题文本格（§5.3 后续）：话题标签读写 + 计划事项解析 + 话题年龄。
+     * 锁、路径守门、落盘仍在本类（见 [TopicTextStorage] 那份实现）。
+     */
+    private val topicText = KnowledgeTopicTextService(RepoStorage())
+
+    /**
+     * revision-check 写入格（§5.3 后续）：带修订版本条件校验的原子写入。
+     * 锁、路径守门、落盘仍在本类（见 [RevisionCheckStorage] 那份实现）。
+     */
+    private val revisionCheck = KnowledgeRevisionCheckedWriteService(RepoStorage())
 
     /** 备份节流：记录最后一次写入时间，debounce 5s 后触发增量备份 */
     private val backupDebounceMs = 5_000L
@@ -919,7 +967,7 @@ class KnowledgeRepository(
      * 现在与公开读共用 [KnowledgeDocumentStore.read] 那一道门。
      */
     override suspend fun readIntent(kbName: String): IntentConfig = withContext(Dispatchers.IO) {
-        decodeIntent(documents.read(kbName, "moment/intent.json"))
+        intent.read(kbName)
     }
 
     /** 保存持续意图配置。每次保存 revision+1，用于生成时冻结快照识别旧请求。
@@ -934,43 +982,7 @@ class KnowledgeRepository(
         expiryDate: String,
         status: com.lovebrain.app.model.IntentStatus
     ): IntentConfig = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            val current = readIntentUnlocked(kbName)
-            val updated = IntentConfig(
-                text = text,
-                enabled = enabled,
-                revision = current.revision + 1,
-                expiry = expiry,
-                expiryDate = expiryDate,
-                status = status
-            )
-            var persisted = false
-            transactionUnlocked(kbName) {
-                persisted = write("moment/intent.json", json.encodeToString(IntentConfig.serializer(), updated))
-            }
-            if (!persisted) {
-                com.lovebrain.app.util.L.w("saveIntent 未落盘：$kbName 只读（schema 过新）或目录不可用")
-            }
-            updated
-        }
-    }
-
-    /**
-     * 无锁版读取（调用方持有 fileMutex）。
-     *
-     * 与 [readIntent] 同一个所有者、同一道门：以前这两处各写一遍裸路径，
-     * 而 `saveIntent` 恰好走的是这一条——它把外面读到的 revision 加一再**返回**给调用方，
-     * 于是"库外的数"会带着本库的身份进入生成快照比对。
-     */
-    private fun readIntentUnlocked(kbName: String): IntentConfig =
-        decodeIntent(documents.read(kbName, "moment/intent.json"))
-
-    /** 意图文件的解码口径：缺失、空、JSON 坏掉都回到"当前没有意图" */
-    private fun decodeIntent(text: String): IntentConfig {
-        if (text.isBlank()) return IntentConfig()
-        return runCatching {
-            json.decodeFromString<IntentConfig>(text)
-        }.getOrDefault(IntentConfig())
+        fileMutex.withLock { intent.save(kbName, text, enabled, expiry, expiryDate, status) }
     }
 
     // ═══════════ 记忆纠正（每 KB 一份，memory/corrections.json） ═══════════
@@ -1037,19 +1049,7 @@ class KnowledgeRepository(
         content: String,
         expectedRevision: Int
     ): Boolean = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            if (!kbExistsUnlocked(kbName)) {
-                com.lovebrain.app.util.L.w("appendFileWithRevisionCheck skipped: kb no longer exists")
-                return@withLock false
-            }
-            val currentRevision = readMemoryRevisionUnlocked(kbName)
-            if (currentRevision != expectedRevision) {
-                com.lovebrain.app.util.L.w("appendFileWithRevisionCheck skipped: revision changed (expected=$expectedRevision, current=$currentRevision)")
-                return@withLock false
-            }
-            appendFileUnlocked(kbName, relativePath, content)
-            true
-        }
+        fileMutex.withLock { revisionCheck.appendFileWithRevisionCheck(kbName, relativePath, content, expectedRevision) }
     }
 
     /** b3-8: 带修订版本条件校验的原子写入——在锁内一次性完成 revision 检查和文件写入。
@@ -1060,19 +1060,7 @@ class KnowledgeRepository(
         content: String,
         expectedRevision: Int
     ): Boolean = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            if (!kbExistsUnlocked(kbName)) {
-                com.lovebrain.app.util.L.w("writeFileWithRevisionCheck skipped: kb no longer exists")
-                return@withLock false
-            }
-            val currentRevision = readMemoryRevisionUnlocked(kbName)
-            if (currentRevision != expectedRevision) {
-                com.lovebrain.app.util.L.w("writeFileWithRevisionCheck skipped: revision changed (expected=$expectedRevision, current=$currentRevision)")
-                return@withLock false
-            }
-            writeFileUnlocked(kbName, relativePath, content)
-            true
-        }
+        fileMutex.withLock { revisionCheck.writeFileWithRevisionCheck(kbName, relativePath, content, expectedRevision) }
     }
 
     /** b3-8: 带修订版本条件校验的向量写入——在锁内一次性完成 revision 检查和向量写入。
@@ -1082,27 +1070,8 @@ class KnowledgeRepository(
         values: Map<String, Int>,
         expectedRevision: Int
     ): Boolean = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            if (!kbExistsUnlocked(kbName)) {
-                com.lovebrain.app.util.L.w("writeVectorWithRevisionCheck skipped: kb no longer exists")
-                return@withLock false
-            }
-            val currentRevision = readMemoryRevisionUnlocked(kbName)
-            if (currentRevision != expectedRevision) {
-                com.lovebrain.app.util.L.w("writeVectorWithRevisionCheck skipped: revision changed (expected=$expectedRevision, current=$currentRevision)")
-                return@withLock false
-            }
-            writeVectorUnlocked(kbName, values)
-            true
-        }
+        fileMutex.withLock { revisionCheck.writeVectorWithRevisionCheck(kbName, values, expectedRevision) }
     }
-
-    /** R07: 读取库级 memory revision（无锁，调用方持有 fileMutex）
-     *
-     * 读走 [KnowledgeDocumentStore.read]：以前这里 `File(File(knowledgeRoot, kbName), MEMORY_REVISION_FILE)`
-     * 自己拼路径，等于绕开 canonical 守门。文件不存在时读得到空串 → revision 记 0，语义不变。
-     */
-    private fun readMemoryRevisionUnlocked(kbName: String): Int = memory.revisionOf(kbName)
 
     /**
      * 读取文件（自动兼容新旧路径）。
@@ -1331,17 +1300,6 @@ class KnowledgeRepository(
     }
 
     /**
-     * 无锁快速读取（调用方持有 mutex）。
-     *
-     * ⚠ 这一行是**行为收紧**不是搬家：以前它直接 `File(File(root, kbName), path)` 不过守门，
-     * 现在走 [KnowledgeDocumentStore.read]，与公开读共用同一道门。画像事务格搬走后这一份留在仓库，
-     * 因为谈心日志那两段（`appendActualSentRecord` / `replaceActualSentRecord`）也用它；
-     * 画像事务格那一份改成经 [ProfileTxStorage.read] 回到这里。
-     */
-    private fun readFileUnlockedFast(kbName: String, relativePath: String): String =
-        documents.read(kbName, relativePath)
-
-    /**
      * 画像更新事务性写入——只剩一次转手：锁 + IO 线程 + 转给画像事务格。跨文件事务、备份、回滚、
      * 回滚后校验都在 [KnowledgeProfileTransactionService.apply]。**写链未变**：落盘仍经
      * `writeFileUnlocked` → `atomicWriteText`，路径仍经 `safeKbFile`，只读判定仍在入口。
@@ -1361,10 +1319,7 @@ class KnowledgeRepository(
     }
 
 
-    // ═══════════ 谈心日志（两段式） ═══════════
-
-    private val counselingH1 = "# 谈心记录"
-    private val counselingH2 = "# 军师分析"
+    // ═══════════ 谈心日志（两段式）— 逻辑见 KnowledgeCounselingService ═══════════
 
     /**
      * 谈心日志两段式追加：recordEntry 写入「# 谈心记录」节，analysisEntry 写入「# 军师分析」节。
@@ -1372,40 +1327,7 @@ class KnowledgeRepository(
      *  目标 KB 已删除时 no-op
      */
     override suspend fun appendCounselingEntries(kbName: String, recordEntry: String, analysisEntry: String) = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            if (!kbExistsUnlocked(kbName)) {
-                com.lovebrain.app.util.L.w("appendCounselingEntries skipped: kb no longer exists")
-                return@withLock
-            }
-            val path = "memory/counseling_log.md"
-            val lines = readFile(kbName, path).lines()
-            val idx1 = lines.indexOfFirst { it.trim() == counselingH1 }
-            val idx2 = lines.indexOfFirst { it.trim() == counselingH2 }
-
-            val newContent = if (idx1 >= 0 && idx2 > idx1) {
-                val section1 = lines.subList(0, idx2).joinToString("\n")
-                val section2 = lines.subList(idx2, lines.size).joinToString("\n")
-                buildString {
-                    append(section1.trimEnd())
-                    if (recordEntry.isNotBlank()) append("\n\n").append(recordEntry.trim())
-                    append("\n\n")
-                    append(section2.trimEnd())
-                    if (analysisEntry.isNotBlank()) append("\n\n").append(analysisEntry.trim())
-                    append("\n")
-                }
-            } else {
-                // 旧格式/无标题：重建两段结构，旧内容整体并入第一节
-                val old = lines.joinToString("\n").trim()
-                buildString {
-                    append(counselingH1).append("\n")
-                    if (old.isNotBlank()) append("\n").append(old).append("\n")
-                    if (recordEntry.isNotBlank()) append("\n").append(recordEntry.trim()).append("\n")
-                    append("\n").append(counselingH2).append("\n")
-                    if (analysisEntry.isNotBlank()) append("\n").append(analysisEntry.trim()).append("\n")
-                }
-            }
-            writeFileUnlocked(kbName, path, newContent)
-        }
+        fileMutex.withLock { counseling.appendCounselingEntries(kbName, recordEntry, analysisEntry) }
     }
 
     /**
@@ -1419,96 +1341,40 @@ class KnowledgeRepository(
      * 消除 ViewModel 中 listAll → readFile → writeFile 的 TOCTOU 竞态。
      */
     override suspend fun appendActualSentRecord(kbName: String, entry: String): Boolean = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            if (!kbExistsUnlocked(kbName)) {
-                com.lovebrain.app.util.L.w("appendActualSentRecord skipped: kb no longer exists")
-                return@withLock false
-            }
-            val recentPath = "moment/recent.md"
-            val existing = readFileUnlockedFast(kbName, recentPath)
-            writeFileUnlocked(kbName, recentPath, existing + entry)
-            true
-        }
+        fileMutex.withLock { counseling.appendActualSentRecord(kbName, entry) }
     }
 
     /** 替换同一 generationVersionId 的旧 actual sent 记录（upsert）。
      * 在单次 fileMutex.withLock 中完成：检查 KB → 读取 → 替换 → 写入 → 返回 Boolean。
      * 如果 oldEntry 在 recent.md 中不存在，返回 false（不执行无效写入）。 */
     override suspend fun replaceActualSentRecord(kbName: String, oldEntry: String, newEntry: String): Boolean = withContext(Dispatchers.IO) {
-        fileMutex.withLock {
-            if (!kbExistsUnlocked(kbName)) {
-                com.lovebrain.app.util.L.w("replaceActualSentRecord skipped: kb no longer exists")
-                return@withLock false
-            }
-            val recentPath = "moment/recent.md"
-            val existing = readFileUnlockedFast(kbName, recentPath)
-            // oldEntry 不存在时返回 false，不执行无效写入
-            if (!existing.contains(oldEntry)) {
-                com.lovebrain.app.util.L.w("replaceActualSentRecord: oldEntry not found in recent.md")
-                return@withLock false
-            }
-            val updated = existing.replace(oldEntry, newEntry)
-            writeFileUnlocked(kbName, recentPath, updated)
-            true
-        }
+        fileMutex.withLock { counseling.replaceActualSentRecord(kbName, oldEntry, newEntry) }
     }
 
     /** 读取谈心日志「# 军师分析」节的最近 count 个 ## 块（供画像更新引擎） */
     override suspend fun readCounselingAnalysisBlocks(kbName: String, count: Int): String = withContext(Dispatchers.IO) {
-        val content = readFile(kbName, "memory/counseling_log.md")
-        val idx = content.indexOf(counselingH2)
-        if (idx < 0) return@withContext ""
-        val section = content.substring(idx + counselingH2.length)
-        val blocks = section.split(Regex("(?m)^(?=## )"))
-            .map { it.trim() }
-            .filter { it.startsWith("## ") }
-        blocks.takeLast(count).joinToString("\n\n")
+        counseling.readAnalysisBlocks(kbName, count)
     }
 
-    // ═══════════ 话题管理 API ═══════════
+    // ═══════════ 话题管理 API — 逻辑见 KnowledgeTopicTextService ═══════════
 
     /** 话题行的读法在 [KbTextOps.topicLabel]，与四处写侧同一个所有者 */
     override suspend fun getCurrentTopic(kbName: String): String = withContext(Dispatchers.IO) {
-        KbTextOps.topicLabel(readFile(kbName, "moment/topic.md"))
+        topicText.currentTopic(kbName)
     }
 
     override suspend fun setCurrentTopic(kbName: String, topicLabel: String) = withContext(Dispatchers.IO) {
-        val time = com.lovebrain.app.util.TimeFmt.now()
-        writeFile(kbName, "moment/topic.md", KbTextOps.topicLine(time, topicLabel))
+        fileMutex.withLock { topicText.setCurrentTopic(kbName, topicLabel) }
     }
 
     /** 读取 plan.md「## 进行中」分区的事项行（注入 prompt；已结束不注入） */
     override suspend fun readPlanActive(kbName: String): String = withContext(Dispatchers.IO) {
-        val content = readFile(kbName, "moment/plan.md")
-        val sb = StringBuilder()
-        var inActive = false
-        var inComment = false
-        for (line in content.lines()) {
-            val t = line.trim()
-            // 跨行注释块跟踪（注释里的格式/示例绝不注入）
-            if (inComment) {
-                if (t.contains("-->")) inComment = false
-                continue
-            }
-            when {
-                t.startsWith("<!--") -> if (!t.contains("-->")) inComment = true
-                t.startsWith("## 进行中") -> inActive = true
-                t.startsWith("##") -> inActive = false
-                // 旧数据防御：裸的"格式/示例"说明行不当事项注入
-                t.startsWith("格式") || t.startsWith("示例") -> Unit
-                inActive && t.contains("|") -> sb.append(t).append("\n")
-            }
-        }
-        sb.toString().trim()
+        topicText.readPlanActive(kbName)
     }
 
     /** 获取当前话题的年龄（小时），用于时间衰减判断 */
     override suspend fun getTopicAgeHours(kbName: String): Int = withContext(Dispatchers.IO) {
-        val content = readFile(kbName, "moment/topic.md")
-        val match = Regex("\\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})]").find(content) ?: return@withContext 99
-        val updated = com.lovebrain.app.util.TimeFmt.parse(match.groupValues[1])
-        if (updated <= 0) return@withContext 99
-        ((System.currentTimeMillis() - updated) / 3600_000).toInt()
+        topicText.topicAgeHours(kbName)
     }
 
     // ═══════════ 话题归档（§5.3 第七格：实现见 KnowledgeArchiveService）═══════════

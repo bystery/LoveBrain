@@ -43,6 +43,7 @@ import kotlinx.coroutines.delay
 import com.lovebrain.app.ui.panel.counseling.CounselingPanel
 import com.lovebrain.app.ui.panel.host.ProfileSuggestionCard
 import com.lovebrain.app.ui.panel.host.StageSuggestionCard
+import com.lovebrain.app.ui.panel.host.VectorPillsRow
 import com.lovebrain.app.ui.panel.reply.*
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
@@ -73,8 +74,6 @@ private object PanelDimens {
     const val MESSAGE_LIST_MIN_HEIGHT_DP = 64
     const val MESSAGE_LIST_MAX_HEIGHT_DP = 400
     const val TRIO_HEIGHT_DP = 40
-    const val PILL_HEIGHT_DP = 14
-    const val PILL_LABEL_GAP_DP = 3
     const val TOUCH_TARGET_MIN_DP = AppDimens.TOUCH_TARGET_MIN_DP  // 从 24dp 修正为无障碍下限；数只写在全局那颗
     const val GENERATE_BUTTON_GAP_DP = 8
 }
@@ -116,7 +115,7 @@ fun LoveBrainPanelScreen(
     val vectorDelta by viewModel.vectorDelta.collectAsStateWithLifecycle()
     val showPlanPanel by viewModel.composer.showPlanPanel.collectAsStateWithLifecycle()
 
-    // 花费与累计统计：九个数字一份快照、一次收集（原先这里 collect 了五把 flow）
+    // 花费与累计统计：九个数字一份快照、一次收集
     val usage by viewModel.usageStats.collectAsStateWithLifecycle()
     val isProviderReady by viewModel.providerReady.collectAsStateWithLifecycle()
 
@@ -321,7 +320,6 @@ fun LoveBrainPanelScreen(
                     )
                 }
                 panelWarning != null -> {
-                    // 这一张原先是自己填一对颜色（`WarningBg` + `Warning`），现在填一档语气
                     KbNoticeBanner(
                         text = panelWarning.orEmpty(),
                         tone = LbStateTone.Warning,
@@ -701,124 +699,6 @@ internal fun KbNoticeBanner(
         container = LbStateContainer.Strip,
         action = ScreenAction(stringResource(R.string.a11y_close_notice), onDismiss)
     )
-}
-
-/** Vector pills row */
-@Composable
-private fun VectorPillsRow(vector: Map<String, Int>, delta: Map<String, Int>) {
-    // light theme
-    // colors from Color.kt
-    val dims = listOf(
-        Triple("intimacy", "亲密", VectorIntimacy),
-        Triple("trust", "信任", VectorTrust),
-        Triple("commitment", "承诺", VectorCommitment),
-        Triple("passion", "激情", VectorPassion),
-        Triple("security", "安全", VectorSecurity)
-    )
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = Spacing.xs),
-        horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        dims.forEach { (key, label, color) ->
-            VectorPill(
-                label = label,
-                value = (vector[key] ?: 50).coerceIn(0, 100),
-                delta = delta[key] ?: 0,
-                color = color,
-                modifier = Modifier.weight(1f)
-            )
-        }
-    }
-}
-
-/** Single vector pill */
-@Composable
-private fun VectorPill(
-    label: String,
-    value: Int,
-    delta: Int,
-    color: Color,
-    modifier: Modifier = Modifier
-) {
-    val animatedFraction by animateFloatAsState(
-        targetValue = nonlinearFraction(value),
-        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing),
-        label = "vectorPill_$label"
-    )
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .semantics(mergeDescendants = true) {
-                contentDescription = buildString {
-                    append(label).append(' ').append(value).append("分")
-                    if (delta > 0) append("，上升 ").append(delta).append(" 分")
-                    else if (delta < 0) append("，下降 ").append(-delta).append(" 分")
-                }
-            }
-    ) {
-        // label left
-        Text(
-            text = label,
-            fontSize = 9.sp,
-            color = TextHint,
-            maxLines = 1,
-            style = androidx.compose.ui.text.TextStyle(
-                platformStyle = androidx.compose.ui.text.PlatformTextStyle(includeFontPadding = false)
-            )
-        )
-        Spacer(Modifier.width(PanelDimens.PILL_LABEL_GAP_DP.dp))
-        // pill body
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .height(PanelDimens.PILL_HEIGHT_DP.dp)
-                .clip(LoveBrainShape.full)
-                .background(color.copy(alpha = 0.18f)),
-            contentAlignment = Alignment.Center
-        ) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .fillMaxWidth(animatedFraction)
-                    .height(PanelDimens.PILL_HEIGHT_DP.dp)
-                    .background(color, LoveBrainShape.full)
-            )
-            // value inside
-            Text(
-                text = "$value",
-                fontSize = 8.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (animatedFraction > 0.4f) Color.White else color,
-                style = androidx.compose.ui.text.TextStyle(
-                    platformStyle = androidx.compose.ui.text.PlatformTextStyle(includeFontPadding = false)
-                )
-            )
-        }
-        if (delta != 0) {
-            Spacer(Modifier.width(Spacing.xs))
-            Text(
-                text = if (delta > 0) "+$delta" else "$delta",
-                fontSize = 8.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (delta > 0) Success else Error,
-                style = androidx.compose.ui.text.TextStyle(
-                    platformStyle = androidx.compose.ui.text.PlatformTextStyle(includeFontPadding = false)
-                )
-            )
-        }
-    }
-}
-
-/** nonlinear mapping */
-private fun nonlinearFraction(value: Int): Float {
-    return when {
-        value <= 40 -> (value / 40f) * 0.20f
-        value <= 80 -> 0.20f + ((value - 40) / 40f) * 0.70f
-        else -> 0.90f + ((value - 80) / 20f) * 0.10f
-    }
 }
 
 /**

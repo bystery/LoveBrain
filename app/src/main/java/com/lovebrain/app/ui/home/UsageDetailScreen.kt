@@ -2,7 +2,6 @@ package com.lovebrain.app.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -14,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.LbScreenScaffold
 import com.lovebrain.app.core.designsystem.LbTopBar
 import com.lovebrain.app.core.designsystem.LbTopBarLevel
 import com.lovebrain.app.core.designsystem.LoveBrainShape
@@ -42,35 +42,41 @@ fun UsageDetailScreen(
     onBack: () -> Unit
 ) {
     val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(horizontal = Spacing.xxxl),
-        verticalArrangement = Arrangement.spacedBy(Spacing.lg)
-    ) {
-        // §6.1 :479：与"关于"页同一族手拼页头，那颗返回钮的 contentDescription 实测是空串。
-        LbTopBar(
-            title = "使用概览",
-            level = LbTopBarLevel.Page,
-            onBack = onBack
-        )
-
-        Card(
-            shape = LoveBrainShape.lg,
-            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-            modifier = Modifier.fillMaxWidth()
+    // §6.1 :478：外框（整屏底色 + 统一水平边距）交回 `LbScreenScaffold`。
+    // 改之前这一页自己拼 `Column(fillMaxSize).verticalScroll().padding(horizontal = xxxl)`，
+    // 与首页同一族手拼外框；24dp 那一档与脚手架恰好同数却不是同一个所有者。
+    // 页头仍留在滚动柱子里（与首页同款"整页一起滚"），不交去 topBar= 槽。
+    LbScreenScaffold {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.spacedBy(Spacing.lg)
         ) {
-            Column(modifier = Modifier.padding(Spacing.xl), verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                Text("累计统计", style = AppTypography.titleMedium, color = TextPrimary, fontWeight = FontWeight.SemiBold)
-                Text("生成次数：${viewModel.totalGenerateCount}", style = AppTypography.bodyMedium, color = TextSecondary)
-                Text("复制次数：${viewModel.totalCopyCount}", style = AppTypography.bodyMedium, color = TextSecondary)
-                Text("采用次数：${viewModel.totalAdoptCount}", style = AppTypography.bodyMedium, color = TextSecondary)
-                Text("改写次数：${viewModel.totalRewriteCount}", style = AppTypography.bodyMedium, color = TextSecondary)
-                val costStr = if (viewModel.totalCostYuan < 0.01) "￥0" else "￥${String.format("%.2f", viewModel.totalCostYuan)}"
-                Text("累计花费：$costStr", style = AppTypography.bodyMedium, color = TextSecondary)
-                val rateStr = if (viewModel.totalGenerateCount > 0) "${(viewModel.adoptRate * 100).toInt()}%" else "—"
-                Text("采用率：$rateStr", style = AppTypography.bodyMedium, color = TextSecondary)
+            // §6.1 :479：与"关于"页同一族手拼页头，那颗返回钮的 contentDescription 实测是空串。
+            LbTopBar(
+                title = "使用概览",
+                level = LbTopBarLevel.Page,
+                onBack = onBack
+            )
+
+            Card(
+                shape = LoveBrainShape.lg,
+                colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(Spacing.xl), verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                    Text("累计统计", style = AppTypography.titleMedium, color = TextPrimary, fontWeight = FontWeight.SemiBold)
+                    Text("生成次数：${viewModel.totalGenerateCount}", style = AppTypography.bodyMedium, color = TextSecondary)
+                    Text("复制次数：${viewModel.totalCopyCount}", style = AppTypography.bodyMedium, color = TextSecondary)
+                    Text("采用次数：${viewModel.totalAdoptCount}", style = AppTypography.bodyMedium, color = TextSecondary)
+                    Text("改写次数：${viewModel.totalRewriteCount}", style = AppTypography.bodyMedium, color = TextSecondary)
+                    val costStr = if (viewModel.totalCostYuan < 0.01) "￥0" else "￥${String.format("%.2f", viewModel.totalCostYuan)}"
+                    Text("累计花费：$costStr", style = AppTypography.bodyMedium, color = TextSecondary)
+                    val rateStr = if (viewModel.totalGenerateCount > 0) "${(viewModel.adoptRate * 100).toInt()}%" else "—"
+                    Text("采用率：$rateStr", style = AppTypography.bodyMedium, color = TextSecondary)
+                }
             }
         }
     }

@@ -1,7 +1,5 @@
-# 复核点名的那份“巨石名单”：>800 行的生产 Kotlin 文件（实扫 6 个，2026-09-27）。
+# 复核点名的那份"巨石名单"：>800 行的生产 Kotlin 文件（实扫 2 个，2026-09-30）。
 # 每搬走一个就把那行删掉，并在提交信息里写明它为什么能出去；
 # 不许为了出名单机械切文件（§9 第 8 条），也不许把新写的东西塞进已有那一行。
-domain/PromptBuilder.kt  # 856 行（2026-09-30 现读；上一登 974，两块搬进 domain/prompt/）
-ui/panel/LoveBrainPanelScreen.kt  # 1105 行（2026-09-30 现读；上一登 1115）
-data/KnowledgeRepository.kt  # 1794 行（2026-09-30 现读；上一登 1844）
-viewmodel/LoveBrainViewModel.kt  # 2386 行（2026-09-30 现读；上一登 2404，§5.2 第 6 步删掉 10 条只读转发口）
+data/KnowledgeRepository.kt  # 1484 行（2026-09-30 现读；上一登 1794，拆出 Counseling/Intent/TopicText 三服务）
+viewmodel/LoveBrainViewModel.kt  # 2378 行（2026-09-30 现读；上一登 2386，8 颗状态搬进 feature store）

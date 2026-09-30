@@ -7,6 +7,8 @@ import com.lovebrain.app.domain.port.Clock
 import com.lovebrain.app.domain.port.SystemClock
 import com.lovebrain.app.domain.prompt.ChatTranscriptBlock
 import com.lovebrain.app.domain.prompt.CurrentSceneInjection
+import com.lovebrain.app.domain.prompt.IntentIdeaBlock
+import com.lovebrain.app.domain.prompt.MemoryRefPolicy
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.KnowledgeBase
@@ -14,7 +16,6 @@ import com.lovebrain.app.model.MemoryCorrection
 import com.lovebrain.app.model.MemoryKind
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.ProfileUpdateSchema
-import com.lovebrain.app.util.TimeFmt
 import java.io.File
 
 /**
@@ -230,8 +231,8 @@ class PromptBuilder(
             val sceneBlock = CurrentSceneInjection.block(CurrentSceneInjection.infer(messages))
             val chatBlock = ChatTranscriptBlock.render(messages)
             val timestampBlock = buildTimestampPrompt()
-            val intentBlock = buildIntentBlock(intentConfig)
-            val ideaBlock = buildIdeaBlock(userHint)
+            val intentBlock = IntentIdeaBlock.buildIntentBlock(intentConfig)
+            val ideaBlock = IntentIdeaBlock.buildIdeaBlock(userHint)
             // R09: 无库分支也过预算，不再绕过
             val prompt = PromptBudget.byBlocks(
                 knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatBlock.header, chatBlock.body, timestampBlock
@@ -243,8 +244,8 @@ class PromptBuilder(
         val knowledgeBlock = buildKnowledgeInsertionWithRefs(kb, aggressive, corrections, refs, messages)
         // 推断当前场景并注入——场景是本轮属性，不永久改档案
         val sceneBlock = CurrentSceneInjection.block(CurrentSceneInjection.infer(messages))
-        val intentBlock = buildIntentBlock(intentConfig)
-        val ideaBlock = buildIdeaBlock(userHint)
+        val intentBlock = IntentIdeaBlock.buildIntentBlock(intentConfig)
+        val ideaBlock = IntentIdeaBlock.buildIdeaBlock(userHint)
         val chatBlock = ChatTranscriptBlock.render(messages)
         val timestampBlock = buildTimestampPrompt()
 
@@ -252,7 +253,7 @@ class PromptBuilder(
             knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatBlock.header, chatBlock.body, timestampBlock
         )
         // R06: refs 裁剪后再生 — 只保留实际在最终 prompt 中出现的引用
-        val finalRefs = filterRefsByPrompt(refs, prompt)
+        val finalRefs = MemoryRefPolicy.filterRefsByPrompt(refs, prompt)
         return PromptBuildResult(prompt, finalRefs, chatBlock.sourceAliasMap)
     }
 
@@ -265,7 +266,7 @@ class PromptBuilder(
         userHint: String
     ): PromptBuildResult {
         val chatBlock = ChatTranscriptBlock.render(messages)
-        val ideaBlock = buildIdeaBlock(userHint)
+        val ideaBlock = IntentIdeaBlock.buildIdeaBlock(userHint)
         val timestampBlock = buildTimestampPrompt()
         // 仅看本轮也注入当前场景——场景是本轮属性，不属于旧记忆
         val sceneBlock = CurrentSceneInjection.block(CurrentSceneInjection.infer(messages))
@@ -283,61 +284,12 @@ class PromptBuilder(
     // 「对话记录围栏」（header + `<chat>` 正文 + 来源别名表）已整块搬进
     // `com.lovebrain.app.domain.prompt.ChatTranscriptBlock`——它不读库、不读资产、不读时钟，
     // 是本轮消息的纯表示层；这里只留三处对它的调用（`PromptBuildResult.sourceAliasMap` 也由此交出）。
-
-    /** R-DRY: 持续意图区块
-     *  应用有效期与完成状态——到期或完成的意图不注入。
-     *  使用设备本地时区判断 TODAY 和 DATE 过期。 */
-    private fun buildIntentBlock(intentConfig: com.lovebrain.app.model.IntentConfig): String {
-        if (!intentConfig.enabled || intentConfig.text.isBlank()) return ""
-        // 检查意图状态——COMPLETED/EXPIRED 不注入
-        if (intentConfig.status == com.lovebrain.app.model.IntentStatus.COMPLETED ||
-            intentConfig.status == com.lovebrain.app.model.IntentStatus.EXPIRED) return ""
-        // PAUSED 保留文本但不注入
-        if (intentConfig.status == com.lovebrain.app.model.IntentStatus.PAUSED) return ""
-        // 检查有效期
-        val today = TimeFmt.today()
-        when (intentConfig.expiry) {
-            com.lovebrain.app.model.IntentExpiry.TODAY -> {
-                // 仅今天——使用设备本地日期，不硬编码 UTC
-                // 今天创建的意图今天有效，明天自动到期
-                // 由于我们不知道创建日期，依赖 status 字段——已过期时 status=EXPIRED
-            }
-            com.lovebrain.app.model.IntentExpiry.DATE -> {
-                // 指定日期过期
-                if (intentConfig.expiryDate.isNotBlank() && intentConfig.expiryDate < today) {
-                    return ""  // 已过期，不注入
-                }
-            }
-            com.lovebrain.app.model.IntentExpiry.UNTIL_DONE -> {
-                // 直到手动完成——依赖 status 字段
-            }
-        }
-        return "【持续意图】\n${intentConfig.text.trim()}\n\n"
-    }
-
-    /** R-DRY: IDEA 区块 */
-    private fun buildIdeaBlock(userHint: String): String {
-        return if (userHint.isNotBlank()) {
-            "# 用户的回复想法\n用户想这样回：「${userHint.trim()}」\n请基于这个方向润色出4种方案。\n\n"
-        } else ""
-    }
-
-    /** R06/R09: refs 裁剪后过滤 — 只保留实际出现在最终 prompt 中的引用。
-     * R09改进：不再仅靠子串猜测，而是检查 ref 的首行（标志性内容）
-     * 是否完整出现在 prompt 中且不在省略标记区域内。 */
-    private fun filterRefsByPrompt(refs: List<MemoryRef>, prompt: String): List<MemoryRef> {
-        return refs.filter { ref ->
-            val marker = ref.text.lineSequence()
-                .firstOrNull { it.isNotBlank() }?.take(80) ?: return@filter false
-            val idx = prompt.indexOf(marker)
-            // 必须在 prompt 中找到，且上下文不是省略标记
-            if (idx < 0) return@filter false
-            val ctxStart = maxOf(0, idx - 30)
-            val ctxEnd = minOf(prompt.length, idx + marker.length + 30)
-            val ctx = prompt.substring(ctxStart, ctxEnd)
-            !ctx.contains("…（")
-        }
-    }
+    //
+    // 「持续意图区块」「想法区块」已整块搬进 `com.lovebrain.app.domain.prompt.IntentIdeaBlock`——
+    // 它不读库、不读资产、不读时钟，是意图配置 / 想法文本的纯表示层；这里只留对它的调用。
+    // 「记忆引用与纠正过滤」（makeRef / isCorrected / isMuteExpired / filterRefsByPrompt）已整块搬进
+    // `com.lovebrain.app.domain.prompt.MemoryRefPolicy`——它只接收已读出的文本与纠正表，不碰任何端口；
+    // 这里只留对它的调用。搬前搬后的字节证据：`domain/prompt/PromptByteFreezeBaselineTest` 的冻结表。
 
     /**
      * 构建知识段并收集 MemoryRef。纠正记录在注入前过滤。
@@ -487,8 +439,8 @@ class PromptBuilder(
         return sb.toString()
     }
 
-    /** R06/: 生成 MemoryRef — id 为 kind+sourcePath 的稳定 ID
-     * scene 和 ongoing 不再用整段文本 hash——
+    /** R06/: 生成 MemoryRef 委托给 `MemoryRefPolicy`——文件级 / 条目级稳定 ID，纠正绑文件而非内容快照。
+     *  scene 和 ongoing 不再用整段文本 hash——
      * 旧实现用内容 hash 做 ID，导致画像添一句、经验多一块、事项有更新
      * 都会改变 ID，旧纠正全部失效。改为文件级稳定 ID，
      * 纠正绑定到文件而非内容快照。
@@ -497,26 +449,17 @@ class PromptBuilder(
      * 对于 ongoing 事项，可以传入 entryId 来精确定位某条事项，
      * 而不是整份 plan.md。纠正 A 不影响 B。
      * 档案整体操作可以保留（无 entryId），但 UI 必须说清"整份档案"。 */
-    private fun makeRef(kbId: String, kind: MemoryKind, sourcePath: String, text: String, entryId: String = ""): MemoryRef {
-        val stableId = if (entryId.isNotBlank()) "${kind.name}:$sourcePath:$entryId" else "${kind.name}:$sourcePath"
-        return MemoryRef(
-            id = stableId,
-            kbId = kbId,
-            kind = kind,
-            text = text.take(500),  // 截断防过大
-            sourcePath = sourcePath
-        )
-    }
+    private fun makeRef(kbId: String, kind: MemoryKind, sourcePath: String, text: String, entryId: String = ""): MemoryRef =
+        MemoryRefPolicy.makeRef(kbId, kind, sourcePath, text, entryId)
 
     /**
      * 为 ongoing 事项生成条目级 MemoryRef。
      * 每条事项有自己的 entryId（事项名），纠正只影响该条。
      */
-    private fun makeOngoingEntryRef(kbId: String, itemName: String, text: String): MemoryRef {
-        return makeRef(kbId, MemoryKind.ONGOING, "moment/plan.md", text, entryId = itemName)
-    }
+    private fun makeOngoingEntryRef(kbId: String, itemName: String, text: String): MemoryRef =
+        MemoryRefPolicy.makeOngoingEntryRef(kbId, itemName, text)
 
-    /** R06: 检查 memoryId 是否被纠正。如果被纠正，按 action 类型处理。
+    /** R06: 检查 memoryId 是否被纠正——委托给 `MemoryRefPolicy.isCorrected`。
      * MUTED: 真正限制——不注入原始内容，只保留被动回应能力。
      * MUTED 支持时长过期——THIS_ROUND 仅本轮有效，TODAY 跨天后恢复，UNTIL_RESTORE 永久。
      *
@@ -527,69 +470,7 @@ class PromptBuilder(
         memoryId: String,
         corrections: Map<String, MemoryCorrection>,
         sb: StringBuilder
-    ): Boolean {
-        // 1. 精确匹配
-        val correction = corrections[memoryId]
-            // 2. R06 兼容：回退到旧格式文件级 ID（去掉 :hash 后缀）
-            ?: run {
-                val lastColon = memoryId.lastIndexOf(':')
-                if (lastColon > 0) {
-                    val oldFormatId = memoryId.substring(0, lastColon)
-                    corrections[oldFormatId]
-                } else null
-            } ?: return false
-        return when (correction.action) {
-            CorrectionAction.WRONG -> {
-                // 停止可信注入，如果有 replacementText 则注入补正内容
-                if (correction.replacementText.isNotBlank()) {
-                    sb.append("（已纠正：").append(correction.replacementText.trim()).append("）\n")
-                }
-                true  // 跳过原始内容
-            }
-            CorrectionAction.FINISHED -> true  // 事项已结束，跳过
-            CorrectionAction.MUTED -> {
-                // 检查静音是否已过期
-                if (isMuteExpired(correction)) {
-                    // 静音已过期——恢复正常注入
-                    return false
-                }
-                // R06: MUTED 真正限制——不注入原始内容，
-                // 但在末尾标记可被动回应（模型可回答相关提问但不主动提）
-                sb.append("（此条记忆已暂停主动提及，但仍可被动回应相关提问）\n")
-                true  // 跳过原始内容
-            }
-            CorrectionAction.WRONG_PERSON -> true  // 隔离，跳过
-        }
-    }
-
-    /**
-     * 检查 MUTED 纠正是否已过期。
-     * - THIS_ROUND: 持久 corrections.json 中的 THIS_ROUND 记录视为 legacy expired。
-     *   旧版本可能持久化了 THIS_ROUND，升级后不应变成永久静音。
-     *   THIS_ROUND 的真实生命周期由 ViewModel roundCorrections transient map 管理。
-     * - TODAY: 今天剩余时间。跨天后恢复。
-     * - UNTIL_RESTORE: 永不过期，只能手动撤销。
-     * 旧数据无 muteDuration 字段时默认为 UNTIL_RESTORE，保持原语义。
-     */
-    private fun isMuteExpired(correction: MemoryCorrection): Boolean {
-        if (correction.muteTimestamp.isBlank()) return false
-        return when (correction.muteDuration) {
-            com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE -> false
-            com.lovebrain.app.model.MuteDuration.THIS_ROUND -> {
-                // 持久层不应存在 THIS_ROUND 记录；如果存在，视为 legacy expired。
-                // 旧版本持久化的 THIS_ROUND 升级后不应变成永久静音。
-                true
-            }
-            com.lovebrain.app.model.MuteDuration.TODAY -> {
-                // 今天剩余——跨天后恢复
-                val muteTime = runCatching {
-                    java.time.OffsetDateTime.parse(correction.muteTimestamp)
-                }.getOrNull() ?: return false
-                val now = java.time.OffsetDateTime.now()
-                muteTime.toLocalDate() != now.toLocalDate()
-            }
-        }
-    }
+    ): Boolean = MemoryRefPolicy.isCorrected(memoryId, corrections, sb)
 
 
     // ═══════════ 时间注入 ═══════════

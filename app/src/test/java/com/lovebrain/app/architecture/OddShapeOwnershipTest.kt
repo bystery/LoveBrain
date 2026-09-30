@@ -142,8 +142,8 @@ class OddShapeOwnershipTest {
         "AiLoadingRow.kt#AiLoadingRow",
         "HomeComponents.kt#AssistantStatusCard",
         "KnowledgeBaseActivity.kt#KbCard",
-        "LoveBrainPanelScreen.kt#VectorPill",
-        "LoveBrainPanelScreen.kt#VectorPillsRow",
+        "VectorPills.kt#VectorPill",
+        "VectorPills.kt#VectorPillsRow",
         "PanelSuggestionCards.kt#ProfileSuggestionCard",
         "PanelSuggestionCards.kt#StageSuggestionCard",
         "MarkdownText.kt#ListRow",
@@ -155,7 +155,6 @@ class OddShapeOwnershipTest {
         "ProviderSection.kt#ProviderSection",
         "ResultArea.kt#SchemeCardsRow",
         "SchemeCard.kt#SchemeCard",
-        "SuggestPanel.kt#IntentExpiryChip",
         // 2026-09-30：锦囊结果态那一整块从 `SuggestPanel.kt` 搬进 `ui/panel/suggest/SuggestResultContent.kt`
         // （§7 第二步"巨石按行为块下降"那一格），四处只是换了文件，一处没少。
         "SuggestResultContent.kt#InviteSuggestionCard",
@@ -186,6 +185,9 @@ class OddShapeOwnershipTest {
         "ScreenHeader.kt#ScreenHeader",
         "SuggestPanel.kt#IntentChip",
         "SuggestPanel.kt#IntentEditorDialog",
+        // 2026-09-30：有效期那三颗单选 chip 从自画那条 Modifier 链归进 `LbChip`（Single 互斥），
+        // 留下"只转一次参数"的壳——`LbChipStyles.filled.copy(...)` 调数，不是在页面里再画一条链。
+        "SuggestPanel.kt#IntentExpiryChip",
     )
 
 

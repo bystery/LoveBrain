@@ -1,7 +1,7 @@
 package com.lovebrain.app.domain
 
 import com.lovebrain.app.AppConfig
-import com.lovebrain.app.domain.port.KnowledgePort
+import com.lovebrain.app.domain.port.KnowledgeReadPort
 
 /**
  * 知识库读侧上下文装配的所有者——"要把哪些文件、按什么顺序拼给下游"。
@@ -12,9 +12,13 @@ import com.lovebrain.app.domain.port.KnowledgePort
  * 那些管落盘/事务的类住在一起——想调 prompt 上下文时不该翻 WAL 的判据。
  *
  * 从 [TopicRecorder] 拆出，分节文案与 `lastTopics` 的截断口径逐字保留。
+ *
+ * 端口收窄：本类只读不写，所以只依赖 [KnowledgeReadPort]——拿不到 deleteFile /
+ * writeFile 那类它根本不该碰的写能力（与 [OngoingPlanStore] 把读、写两条门分别
+ * 注入同一思路：端口只按调用方真正用到的开）。
  */
 class KnowledgeContextReader(
-    private val knowledgeRepo: KnowledgePort
+    private val knowledgeRepo: KnowledgeReadPort
 ) {
 
     /** 获取经验提取的完整上下文：当前话题 + 场景链 + 最近对话 + 暂存 + 话题档案（最近N个） */

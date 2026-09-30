@@ -12,13 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -338,23 +334,17 @@ internal fun OnboardingScreen(
 
         // ── 底部按钮 ──
         if (generating) {
-            Button(
+            // 同一槽位的第三档（generating）原来自己画了一颗 Material `Button` + 手摆 spinner/字距，
+            // 是这一屏唯一没归 `LbPrimaryButton` 的一颗——本文件:361 那段注释早就记着这一笔。
+            // 归并的代价如实记着：底色从 `TextHint`（灰）变成 `Primary`（品牌蓝）、高度从 44 变成下限 48，
+            // spinner 与标签的字号/字重都收进 `LbButtonState.Loading` 那一档里，调用方拿不到旋钮。
+            // 这正是 §6.1 末句要的「不让同一颗主动作在各页各写一种实现」——三档现在一颗旋钮。
+            LbPrimaryButton(
+                state = LbButtonState.Loading,
+                label = "点击取消（军师还在生成画像…）",
                 onClick = { onCancelGenerating() },
-                enabled = true,
-                colors = ButtonDefaults.buttonColors(containerColor = TextHint),
-                shape = LoveBrainShape.md,
-                modifier = Modifier.fillMaxWidth().height(KbDimens.PRIMARY_ACTION_HEIGHT_DP.dp)
-            ) {
-                CircularProgressIndicator(
-                    color = androidx.compose.ui.graphics.Color.White,
-                    modifier = Modifier
-                        .height(KbDimens.ONBOARDING_SPINNER_SIZE_DP.dp)
-                        .width(KbDimens.ONBOARDING_SPINNER_SIZE_DP.dp),
-                    strokeWidth = Spacing.xs
-                )
-                Spacer(modifier = Modifier.width(Spacing.md))
-                Text("点击取消（军师还在生成画像…）", style = AppTypography.titleMedium)
-            }
+                modifier = Modifier.fillMaxWidth()
+            )
         } else if (currentStep > totalSteps) {
             // Step6：完成按钮
             // 同一颗槽位的另一档（`currentStep > totalSteps`），实量 **312x48dp role=Button** ⇒ 达标。

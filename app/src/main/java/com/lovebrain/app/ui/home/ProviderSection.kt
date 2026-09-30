@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -71,6 +70,7 @@ import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.Error
+import com.lovebrain.app.core.designsystem.LbScreenScaffold
 import com.lovebrain.app.core.designsystem.LbTopBar
 import com.lovebrain.app.core.designsystem.LbTextAction
 import com.lovebrain.app.core.designsystem.LbTextActionGlyph
@@ -119,168 +119,171 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
         label = "providerChevron"
     )
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(Spacing.xs),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = Spacing.xxxl)
-    ) {
-        // §6.1 :479：同一族手拼页头，那颗返回钮的 contentDescription 实测是空串。
-        // 注意这一页的**水平边距仍是自己写的**（上面那个 `padding(horizontal = xxxl)`）：
-        // 它是 SetupRoot 的子页，背景与 insets 由宿主给，所以"整屏底色"那把闸看不见它，
-        // 而量边距那把尺今天达标只是因为它抄的数恰好等于 token（探针 S5 证过这一点）。
-        LbTopBar(
-            title = "模型供应商",
-            level = LbTopBarLevel.Page,
-            onBack = onBack
-        )
-
-        Card(
-            shape = LoveBrainShape.lg,
-            colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+    // §6.1 :478：外框（整屏底色 + 统一水平边距）交回 `LbScreenScaffold`。
+    // 改之前这一页自己拼 `Column(fillMaxSize).verticalScroll().padding(horizontal = xxxl)`，
+    // 24dp 那一档与脚手架恰好同数却不是同一个所有者。insets 仍由 SetupRoot 那一层给
+    // （`handlesSystemBarInsets` 留默认 false）；页头留在滚动柱子里（与首页同款"整页一起滚"）。
+    LbScreenScaffold {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Spacing.xs),
             modifier = Modifier
                 .fillMaxWidth()
-                // §6.5 第一行要的是"可点边界真实 ≥48dp"。这一颗以前由内容排出来：
-                // 默认字号下语义树量到 **46dp**（320/360/412 三档全 46、600 档 45），
-                // 到 1.3 倍字号才涨到 56 —— 也就是**平时就不达标**，不是窄屏才不达标。
-                // 数不抄第二份：指回全站唯一那一颗 `AppDimens.TOUCH_TARGET_MIN_DP`。
-                // 证人：`LongProviderNameSemanticsTest`（热区那一问在这一条路径上是开着的）。
-                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                .clip(LoveBrainShape.lg)
-                .clickable { expanded = !expanded }
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
         ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-                ) {
-                    // §6.1：点的"就绪 ↔ 颜色"这一对归 LbRowState（它的 KDoc 点名
-                    // `if (providerReady) Primary else Neutral300` 就是它要替掉的旧写法）。
-                    // 点的形状仍由这一处画——设计系统没有独立的 LbDot，唯一画这颗点的
-                    // LbSettingRow 的行布局（点在尾、无 chevron）对不上这一行，所以只搬颜色、不搬形状。
-                    Box(
+            // §6.1 :479：同一族手拼页头，那颗返回钮的 contentDescription 实测是空串。
+            LbTopBar(
+                title = "模型供应商",
+                level = LbTopBarLevel.Page,
+                onBack = onBack
+            )
+
+            Card(
+                shape = LoveBrainShape.lg,
+                colors = CardDefaults.cardColors(containerColor = SurfaceCard),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    // §6.5 第一行要的是"可点边界真实 ≥48dp"。这一颗以前由内容排出来：
+                    // 默认字号下语义树量到 **46dp**（320/360/412 三档全 46、600 档 45），
+                    // 到 1.3 倍字号才涨到 56 —— 也就是**平时就不达标**，不是窄屏才不达标。
+                    // 数不抄第二份：指回全站唯一那一颗 `AppDimens.TOUCH_TARGET_MIN_DP`。
+                    // 证人：`LongProviderNameSemanticsTest`（热区那一问在这一条路径上是开着的）。
+                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                    .clip(LoveBrainShape.lg)
+                    .clickable { expanded = !expanded }
+            ) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .size(ProviderDimens.STATUS_DOT_SIZE_DP.dp)
-                            .clip(CircleShape)
-                            .background(
-                                (if (providerReady) LbRowState.Ready else LbRowState.NotReady).color
-                            )
-                    )
-                    Spacer(Modifier.width(Spacing.md))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            activeTicket?.name ?: "未配置供应商",
-                            style = AppTypography.titleMedium,
-                            color = TextPrimary,
-                            fontWeight = FontWeight.SemiBold,
-                            maxLines = 1
+                            .fillMaxWidth()
+                            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                    ) {
+                        // §6.1：点的"就绪 ↔ 颜色"这一对归 LbRowState（它的 KDoc 点名
+                        // `if (providerReady) Primary else Neutral300` 就是它要替掉的旧写法）。
+                        // 点的形状仍由这一处画——设计系统没有独立的 LbDot，唯一画这颗点的
+                        // LbSettingRow 的行布局（点在尾、无 chevron）对不上这一行，所以只搬颜色、不搬形状。
+                        Box(
+                            modifier = Modifier
+                                .size(ProviderDimens.STATUS_DOT_SIZE_DP.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    (if (providerReady) LbRowState.Ready else LbRowState.NotReady).color
+                                )
                         )
-                        Text(
-                            if (activeTicket == null) "点右侧展开添加"
-                            else if (!providerReady) "配置不完整"
-                            else activeTicket?.model?.ifBlank { "未选模型" } ?: "未选模型",
-                            style = AppTypography.labelSmall,
-                            color = TextHint,
-                            maxLines = 1
+                        Spacer(Modifier.width(Spacing.md))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                activeTicket?.name ?: "未配置供应商",
+                                style = AppTypography.titleMedium,
+                                color = TextPrimary,
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1
+                            )
+                            Text(
+                                if (activeTicket == null) "点右侧展开添加"
+                                else if (!providerReady) "配置不完整"
+                                else activeTicket?.model?.ifBlank { "未选模型" } ?: "未选模型",
+                                style = AppTypography.labelSmall,
+                                color = TextHint,
+                                maxLines = 1
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = stringResource(
+                                        if (expanded) R.string.action_collapse else R.string.action_expand
+                                    ),
+                            tint = TextHint,
+                            modifier = Modifier
+                                .size(ProviderDimens.FEATURE_ARROW_SIZE_DP.dp)
+                                .rotate(chevronRotation)
                         )
                     }
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = stringResource(
-                                    if (expanded) R.string.action_collapse else R.string.action_expand
-                                ),
-                        tint = TextHint,
-                        modifier = Modifier
-                            .size(ProviderDimens.FEATURE_ARROW_SIZE_DP.dp)
-                            .rotate(chevronRotation)
-                    )
-                }
 
-                if (expanded) {
-                    HorizontalDivider(
-                        thickness = AppDimens.BORDER_WIDTH_DP.dp,
-                        color = Border.copy(alpha = 0.5f)
-                    )
-                    // §6.3：空 / 有内容两格由同一个 ScreenState 判定，由 LbAsyncState 画。
-                    // 上一版是 if/else 两边各画一次（空态那格虽然已经用了统一组件，
-                    // 但"哪一格"仍是这一页自己判的）；现在判定只有一处，版式也只有一处。
-                    val listState: ScreenState<List<ProviderTicket>> =
-                        if (tickets.isEmpty()) {
-                            ScreenState.Empty(
-                                message = stringResource(R.string.provider_empty),
-                                action = ScreenAction(stringResource(R.string.provider_add)) { showAdd = true }
-                            )
-                        } else {
-                            ScreenState.Content(tickets)
-                        }
-                    LbAsyncState(listState) { shownTickets ->
-                        Column(modifier = Modifier.fillMaxWidth()) {
-                            shownTickets.forEachIndexed { index, t ->
-                                val active = activeTicket?.id == t.id
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(if (active) PrimaryLight.copy(alpha = 0.5f) else Color.Transparent)
-                                        .clickable { viewModel.activateTicket(t.id) }
-                                        .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
-                                ) {
-                                    Box(
+                    if (expanded) {
+                        HorizontalDivider(
+                            thickness = AppDimens.BORDER_WIDTH_DP.dp,
+                            color = Border.copy(alpha = 0.5f)
+                        )
+                        // §6.3：空 / 有内容两格由同一个 ScreenState 判定，由 LbAsyncState 画。
+                        // 上一版是 if/else 两边各画一次（空态那格虽然已经用了统一组件，
+                        // 但"哪一格"仍是这一页自己判的）；现在判定只有一处，版式也只有一处。
+                        val listState: ScreenState<List<ProviderTicket>> =
+                            if (tickets.isEmpty()) {
+                                ScreenState.Empty(
+                                    message = stringResource(R.string.provider_empty),
+                                    action = ScreenAction(stringResource(R.string.provider_add)) { showAdd = true }
+                                )
+                            } else {
+                                ScreenState.Content(tickets)
+                            }
+                        LbAsyncState(listState) { shownTickets ->
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                shownTickets.forEachIndexed { index, t ->
+                                    val active = activeTicket?.id == t.id
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
                                         modifier = Modifier
-                                            .size(ProviderDimens.STATUS_DOT_SIZE_DP.dp)
-                                            .clip(CircleShape)
-                                            .background(if (active) Primary else Color.Transparent)
-                                            .border(
-                                                if (active) 0.dp else AppDimens.BORDER_WIDTH_DP.dp,
-                                                Neutral300,
-                                                CircleShape
-                                            )
-                                    )
-                                    Spacer(Modifier.width(Spacing.md))
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Text(
-                                            t.name,
-                                            style = AppTypography.bodyMedium,
-                                            color = TextPrimary,
-                                            fontWeight = FontWeight.Medium,
-                                            maxLines = 1
+                                            .fillMaxWidth()
+                                            .background(if (active) PrimaryLight.copy(alpha = 0.5f) else Color.Transparent)
+                                            .clickable { viewModel.activateTicket(t.id) }
+                                            .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(ProviderDimens.STATUS_DOT_SIZE_DP.dp)
+                                                .clip(CircleShape)
+                                                .background(if (active) Primary else Color.Transparent)
+                                                .border(
+                                                    if (active) 0.dp else AppDimens.BORDER_WIDTH_DP.dp,
+                                                    Neutral300,
+                                                    CircleShape
+                                                )
                                         )
-                                        Text(
-                                            t.model.ifBlank { "未配置模型" },
-                                            style = AppTypography.labelSmall,
-                                            color = TextHint,
-                                            maxLines = 1
+                                        Spacer(Modifier.width(Spacing.md))
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(
+                                                t.name,
+                                                style = AppTypography.bodyMedium,
+                                                color = TextPrimary,
+                                                fontWeight = FontWeight.Medium,
+                                                maxLines = 1
+                                            )
+                                            Text(
+                                                t.model.ifBlank { "未配置模型" },
+                                                style = AppTypography.labelSmall,
+                                                color = TextHint,
+                                                maxLines = 1
+                                            )
+                                        }
+                                        RowActionButton("编辑") { editing = t }
+                                        Spacer(Modifier.width(Spacing.sm))
+                                        RowActionButton("删除", tint = Error) { pendingDelete = t }
+                                    }
+                                    if (index < shownTickets.lastIndex) {
+                                        HorizontalDivider(
+                                            thickness = AppDimens.BORDER_WIDTH_DP.dp,
+                                            color = Border.copy(alpha = 0.5f)
                                         )
                                     }
-                                    RowActionButton("编辑") { editing = t }
-                                    Spacer(Modifier.width(Spacing.sm))
-                                    RowActionButton("删除", tint = Error) { pendingDelete = t }
-                                }
-                                if (index < shownTickets.lastIndex) {
-                                    HorizontalDivider(
-                                        thickness = AppDimens.BORDER_WIDTH_DP.dp,
-                                        color = Border.copy(alpha = 0.5f)
-                                    )
                                 }
                             }
                         }
+                        // 空态已经有自己的添加动作了，这里不再摆第二个一模一样的入口
+                        if (tickets.isNotEmpty()) Text(
+                            stringResource(R.string.provider_add),
+                            style = AppTypography.labelLarge,
+                            color = Primary,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = ProviderDimens.ADD_ROW_MIN_HEIGHT_DP.dp)
+                                .clip(LoveBrainShape.md)
+                                .clickable(role = Role.Button) { showAdd = true }
+                                .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                        )
                     }
-                    // 空态已经有自己的添加动作了，这里不再摆第二个一模一样的入口
-                    if (tickets.isNotEmpty()) Text(
-                        stringResource(R.string.provider_add),
-                        style = AppTypography.labelLarge,
-                        color = Primary,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = ProviderDimens.ADD_ROW_MIN_HEIGHT_DP.dp)
-                            .clip(LoveBrainShape.md)
-                            .clickable(role = Role.Button) { showAdd = true }
-                            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-                    )
                 }
             }
         }

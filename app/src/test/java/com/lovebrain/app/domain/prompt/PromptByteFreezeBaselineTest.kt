@@ -884,7 +884,11 @@ class PromptByteFreezeBaselineTest {
         assertTrue("找不到 $root——这条会恒绿", root.isDirectory)
         val promptDir = java.io.File(root, "prompt")
         val files = promptDir.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.name }.toList().sorted()
-        assertEquals("domain/prompt 下只许有被搬出来的那两颗", listOf("ChatTranscriptBlock.kt", "CurrentSceneInjection.kt"), files)
+        assertEquals(
+            "domain/prompt 下只许有被搬出来的那几颗",
+            listOf("ChatTranscriptBlock.kt", "CurrentSceneInjection.kt", "IntentIdeaBlock.kt", "MemoryRefPolicy.kt"),
+            files
+        )
     }
 
     private fun correction(

@@ -96,7 +96,13 @@ class ViewModelStateOwnershipTest {
         "ProfileUpdateController" to listOf("_profileReview"),
         "ReplyVersionStack" to listOf("_generationHistory", "_currentVersionId"),
         // 持续意图那一族：两颗流 + 一颗**旧尺看不见的裸 var** 一起走
-        "IntentController" to listOf("_intentConfig", "_showIntentEditor", "intentEditorKbName")
+        "IntentController" to listOf("_intentConfig", "_showIntentEditor", "intentEditorKbName"),
+        // 第 20 窗口搬出：轮次上下文 + 模式 + 向量 + 阶段建议 + 用量
+        "RoundStateStore" to listOf("_generationRoundId", "_onlyThisRound"),
+        "ModeController" to listOf("_inputChanged", "_resultMode"),
+        "VectorStore" to listOf("_currentVector", "_vectorDelta"),
+        "StageSuggestionStore" to listOf("_stageSuggestion"),
+        "UsageStatsStore" to listOf("_usageStats")
     )
 
     /** VM 通过哪个前缀访问那一家子（反向判据：不许绕开 store 另写一条路） */
@@ -107,52 +113,29 @@ class ViewModelStateOwnershipTest {
         "ActualSentRecorder" to "actualSent.",
         "ProfileUpdateController" to "profileUpdates.",
         "ReplyVersionStack" to "versions.",
-        "IntentController" to "intents."
+        "IntentController" to "intents.",
+        "RoundStateStore" to "roundStateStore.",
+        "ModeController" to "modeController.",
+        "VectorStore" to "vectorStore.",
+        "StageSuggestionStore" to "stageSuggestionStore.",
+        "UsageStatsStore" to "usageStatsStore."
     )
 
     /**
      * 还留在 ViewModel 里的可写状态——**逐颗点名登记**。
      *
-     * 登记口径：把 `ledger` 清空跑一次这一格，把它**打印出来的实到清单**原样抄进来，
-     * 再逐条写它该去的地方（下面的值就是那么来的，不是照叙述推的）。
-     *
-     * 为什么登记 `(形状, 名字)` 而不是登记一个数：只比数量的话"涨一颗 + 搬走一颗"数量不变、
-     * 当场绿过去；而且真涨的时候报不出是谁（本仓库有过一次：报错点名了一个根本没错的名字）。
-     *
-     * 剩下的账按**行为块**分，不按"哪颗先搬方便"分：
-     * · 持续意图那一族已经整块走了（连同到期改写、KB 身份守卫、"绑定打开那一刻的库"三条判据）。
-     *   这一家子留下的经验就是本仓库那条教训：**搬字段不减行、搬行为才减行**——
-     *   留一组同名只读出口的话 VM 一行都省不下来；
-     * · 回复轮次上下文与 stale 判定：`_generationRoundId` `_inputChanged` `replyGenerationContext`
-     *   —— 读写都在本文件的生成链上，是六个块的公共上游，所以排在最后；
-     * · 知识库工作区：`_activeKb` `_currentVector` `_vectorDelta` `_stageSuggestion`
-     *   —— 这一族是"换库要一起复位"的，该一起走，不许一颗一颗零散搬；
-     * · 本轮提交：`_resultMode` `_onlyThisRound` `recordingRound`；
-     * · 计费与用量：`_usageStats`。
+     * 第 20 窗口搬走了八颗（轮次上下文、模式、向量、阶段建议、用量），
+     * 剩下三颗是台账标 ★不搬 / 排在最后搬的：
+     * · `_activeKb`——激活库是中心读数，六个块都读它，不属于任何单个 feature；
+     * · `replyGenerationContext`——一轮生成的不可变快照，是所有块的公共上游；
+     * · `recordingRound`——本轮提交的重入闩。
      */
     private val ledger: Map<VmStateSite, String> = mapOf(
-        VmStateSite(VmMutableShape.FLOW, "_generationRoundId") to
-            "→ 轮次上下文那一块：ResultArea 重置 viewMode 的轮次身份，读写都在本文件的生成链上（回退那一路也改它）",
-        VmStateSite(VmMutableShape.VAR, "replyGenerationContext") to
-            "→ 轮次上下文那一块：一轮生成的不可变快照，十几个成员读它、是所有块的公共上游，所以排在最后搬",
-        VmStateSite(VmMutableShape.FLOW, "_inputChanged") to
-            "→ 轮次上下文那一块：stale 判定的结果标记，跟着 checkInputChanged 那条链一起走",
         VmStateSite(VmMutableShape.FLOW, "_activeKb") to
             "★不搬：激活库是中心读数（生成 / 锦囊 / 主动发 / 谈心 / 纠正 / 改写 / 意图六个块都读它），" +
                 "不属于任何单个 feature；单独搬它就是『搬字段不减行』那条教训的复现",
-        VmStateSite(VmMutableShape.FLOW, "_stageSuggestion") to
-            "→ 知识库工作区那一块：confirmStageChange 那几行判据要一起走",
-        VmStateSite(VmMutableShape.FLOW, "_currentVector") to
-            "→ 知识库工作区那一块：与 _vectorDelta、切库复位同一族",
-        VmStateSite(VmMutableShape.FLOW, "_vectorDelta") to
-            "→ 知识库工作区那一块：同上，不许一颗一颗零散搬",
-        VmStateSite(VmMutableShape.FLOW, "_usageStats") to
-            "→ 用量落盘那一块：reduce 已经在 UsageStats 里，剩『落盘 + 载入 + 订阅』那一半；" +
-                "init 里的载入是第二条写路径，搬的时候要么收进同一个漏斗要么把说明改对",
-        VmStateSite(VmMutableShape.FLOW, "_resultMode") to
-            "★不搬：写者是回复链与主动发链两个所有者，本文件那段论证经复核成立",
-        VmStateSite(VmMutableShape.FLOW, "_onlyThisRound") to
-            "★不单独搬：读者在发起生成 / 输入指纹 / stale 三处，都在本文件里；跟着下一轮那一块一起走才有意义",
+        VmStateSite(VmMutableShape.VAR, "replyGenerationContext") to
+            "→ 轮次上下文那一块：一轮生成的不可变快照，十几个成员读它、是所有块的公共上游，所以排在最后搬",
         VmStateSite(VmMutableShape.VAR, "recordingRound") to
             "→ 本轮提交那一块：下一轮的重入闩，只有那条链读写"
     )
