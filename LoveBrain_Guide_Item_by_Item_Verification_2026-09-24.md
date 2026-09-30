@@ -6535,3 +6535,126 @@ false 直接丢掉就是一次不出声的跳过，所以判掉：留一条错�
   老尺全绿；未登记新落盘 ⇒ 3 格红并点名新键；只关第二层 ⇒ 契约格红；只关第一层的 `".."` 支 ⇒ 全绿，
   那条"绿"本身是读数不是战果）。代理自证的 8 发我未逐发重跑。
 - 四个 release secret 与那 2 格 `Assume` 跳过，一条没动。
+
+## 77.7 用户把两条口径拍了（2026-09-30），外加两处**我自己给错的读数**要当场收回
+
+**口径一（P0-03 前半句的射程）**：用户判「**都不算，只登记**」——
+指导书那句"所有 mutation 只能从 `KnowledgeTx` 取得安全路径与原子写能力"，射程只到 **knowledge/ 树内的文档 mutation**；
+`filesDir/feedback/cases.json`、导入的暂存解压、导出写到调用方交进来的 `OutputStream`、
+以及读侧两处自己拼 `File` 判存在/判标记，**都留在账上带理由，不改生产码**。
+⇒ 那么"新增裸写被门禁禁住"这半句现在由 `DataWritePrimitiveLedgerTest`（六族落盘原语 + 键集合判等）承担：
+**按用户的口径这一行成立；按指导书 :217 那句字面（"所有 mutation"没有加树内限定）仍挂着 3 处带理由的登记例外。**
+两句话一起写，翻不翻格由他判，我不自签。
+
+**口径二（那发脱离取消的备份 launch）**：用户判「**先不改，只把风险钉成读数**」。
+⇒ `the detached startup backup outlives a cancelled appScope` 那一格就是那颗钉子：
+生产码一行没动，`appScope.launch(Dispatchers.IO + SupervisorJob())` 依然让那一发不是 scope 的孩子，
+而"取消之后仍可能落一次盘"从此是**有读数的事实**，不是待查项，也不是已修项。
+
+**我自己给错的两条，当场收回**（都在上一条消息里，写在给用户选的那张对照表上）：
+① 我把反馈案例写成「**3 处**」—— 现读 `FeedbackCaseRepository.kt` 只有 **2 处** `writeText(`（`:58` 临时、`:61` 正式），
+   新尺的账面也是 2；
+② 我编了一条**不存在的**「`MigrationRuntime` 用写库自己的权限落 `.migration_done`」——
+   `grep -rn "migration_done" app/src/main` **0 命中**，全仓没这个文件、没这个类。
+   ⇒ 这是第 5 次"当初不是量出来的事实"（前三次是写错的行数、过期的行号、`TYPE_ACCESSIBILITY_OVERLAY` 那个错名字，
+      第 4 次是 `16e4bd6` 提交信息里那句没落盘的内边距）。
+   **错因很具体：我把"这条要求大概还会指向哪里"当成了"我扫到过哪里"。**
+   规矩照旧：选项表里每一行都要有当次命令的出处；答不出来先去跑一遍。
+
+**另两处过期读数一并修正**（现读 `app/src/main/java/com/lovebrain/app/ui/`，按"文件名里有 Screen/Activity 的 @Composable"扫）：
+`CaptureAppsScreen.kt:124` 已经有 `captureScreenState(...)` 四格判定并交 `LbAsyncState` 画，
+`KnowledgeBaseActivity.kt:275` 已经有 `kbScreenState(...)` 并配 `KbScreenStateMappingTest` 穷举
+⇒ 账本与剩余工作里那句"**§6.3 还剩知识库、捕获范围两个目的地**"**是旧窗口留下的过期读数**，
+9 个屏幕文件里已有 **5 个**走这套（其余 4 个：`KbEditScreen` / `AboutScreen` / `HomeScreen` / `UsageDetailScreen`
+**到底有没有 loading/error/empty 这条流**还没逐页判——不判就搬是假造状态，判完才知道 §6.3 真还剩多少）。
+
+## 78.1 并行档第六拍：六只一次发出去，收回五份能用、一只死在半路（合并后本机 256 套件 / 1815 格 / 0-0-0）
+
+用户口径两句先落账（详见 §77.7）：**①P0-03 的射程只到 knowledge/ 树内的 mutation，其余"都不算、只登记"；
+②那发脱离取消的备份 launch"先不改、只钉成读数"**。
+这一拍因此不必再等口径，直接按指导书剩余行开六只：§6.3 四屏、§6.4 输入位移、§5.2 第 6 步、两座巨石、
+di/service 门禁、LbChip 两档。
+
+| 批次 | 实测前 → 后 | 谁量的 / 有没有跑到编译 |
+|---|---|---|
+| §6.3 四屏判定 | **判完**：`KbEditScreen` **有**四态真流 ⇒ 接 `kbEditFileScreenState` + `LbAsyncState`（16 格穷举 + 4 格真读开火）；`AboutScreen`（`BuildConfig` 常量）、`UsageDetailScreen`（`SecurePrefs` 同步属性、坏值自退成 0）、`HomeScreen`（4 条 flow 全部构造期灌好 + `runCatching` 把失败落成一行文案）**没有**这条流 ⇒ 明写依据、不假造档位 | 代理跑到编译 RC=0（3m37s）+ 过滤 57 格；主线程复跑全量 |
+| §6.4 输入位移 | 量出**真缺陷**：两档之间有主输入的那两颗，宽差 **208–222dp**、高差 **28dp**、左差 **156–170dp**；换档来回逐值回位（无残留）；谈心档 `304x76 @(28,273)` 与账本 §53.5 那两个数逐值复现 ⇒ 仪器口径对上了 | 代理跑到 RC=0；**位移未修**——钉落位的是 `ReplyInput` 与 `CounselingPanel`，都在它地盘外，硬修就得塞固定高度（正是禁的糊法）⇒ 交回读数 + 三条守得住的格子，修法写进 KDoc |
+| §5.2 第 6 步（facade） | `LoveBrainViewModel` **2404 → 2386**；composer 那一族 **10 条只读转发口删掉**。分组实到：A 直接转发 20（删 10 余 10）、B `.map{}.stateIn(Eagerly,初值)` 20（**不能删**：删了把一份热共享换成 N 条冷链 = 改行为）、C `_x.asStateFlow()` 9（私有流仍在账）、D 函数/`get()` 形 3（待收） | 代理**没跑到编译**（它不许动 `ui/**`，主编译必红——那一发红的文件集与它交回的清单**一字不差**，这既是它的反证也是它的边界）⇒ 主线程接 13 处生产调用点 + 35 处测试替身（两种形状）+ 5 处设备测试，再接完复跑 |
+| 两座巨石 | `KnowledgeBaseActivity` **937 → 509**、`SuggestPanel` **968 → 604** ⇒ **>800 从 6 座降到 4 座**；新格 `ui/kb/KbOnboardingWizard.kt`(478)、`ui/panel/suggest/SuggestResultContent.kt`(439)，搬走的 414 / 304 行与 HEAD 逐行全等 | 代理跑到 RC=0（28 格 0 失败，含注毒那发 18 红）；`持续意图`那一块它**主动没搬**——那一族的格子按文件路径钉结构，搬它就要改已有判据 |
+| di/service 门禁 | `PackageDependencyTest` 新格：两包实扫 **23 条跨层引用 / 5 个文件** ⇒ 拆 `entryAssembly` 18（装配必需，逐颗点名）+ `entryDebt` 5（真越界，每条带理由）。最重一条已写进理由：`CopyCaptureService` 自己 `SecurePrefs(this)` new 了一个 = 第二个加密/降级判据持有者 | 代理跑到 RC=0（9 格）；证伪那一发跑过（注入一条越界 import ⇒ 红并点名，还原 `cmp` 相同；**同一发对旧那把尺完全隐形**） |
+| LbChip 两档 | 补 `LbChipLabelAlignment{Center,TopStart}` 与 `LbChipPressFeedback{Standard,Spring}`（**枚举档**，不开自由 `Modifier`/`Alignment`/`FiniteAnimationSpec`）⇒ 上一拍"登记未修"的两处外观**改回原位**（模板芯片标签回左上、角色芯片接回默认弹簧）；`lbPressCurve` 收成一处具名值 | 代理**死在 150 轮上限**（公共件写完、没跑到编译）⇒ 主线程合并、接 `RoleChip` 那一处、复跑 |
+
+合并的代价要说清（这是并行模式的真实账，不是挑好看的数）：主线程做了 **13 处生产调用点 + 35 处测试替身改写**
+（`every { vm.X } returns flow` ⇒ `every { composer.X } …`，两种形状：`val vm = mockk…` 与 `.also { vm ->`），
+外加台账四处重登（四栏 TEXT 166→165、异形账 4 处换文件 + 1 处新看见、品牌底两家换文件、两份大文件清单）。
+**没有一处判据被改软**；红着的格子全部靠"把债接完"或"按打印值重登"消掉。
+
+## 78.2 第二波两只（PromptBuilder 拆块 + §6.5 像素/矩阵），以及一次"我把尺的量法改了"的自纠
+
+`PromptBuilder` **974 → 866**：搬出 `domain/prompt/CurrentSceneInjection.kt`(79) 与
+`domain/prompt/ChatTranscriptBlock.kt`(88)。这一格的主证据是**字节冻结表**
+（`PromptByteFreezeBaselineTest` 105 行：A 组 71 行 = 发给 Provider 的 prompt 全文，
+B 组 34 行 = 被搬两块的直接产物），顺序也合规：**先跑搬前取数、再动生产码**。
+它自己上报的一条反证值得留着：`"</chat>\n"` 改成 `"</chat>"`（**一个字节**）⇒ 三格红，
+其中一格说的是"闭合围栏被顶到时间戳之前"，这就是字节尺比"看起来一样"强的地方。
+
+`>800` 从 6 座降到 **4 座**（`KnowledgeBaseActivity` 937→509、`SuggestPanel` 968→604 出名单，
+两份登记清单同步刷：`check_big_files.sh` RC=0、它自己的 7 格反证全过）。
+`KnowledgeRepository 1794 / LoveBrainViewModel 2386 / LoveBrainPanelScreen 1105 / PromptBuilder 866` 还在榜上。
+
+**§6.5 的像素那一半第一次落地，红的是产品**：新仪器 `core/testing/PixelContrastMeter.kt`
+（底=不透明像素的众数，墨=与底反差最大的那颗，**最宽松的取法，只会低估危险**）先做通电对照：
+黑/白 21.00（理论 21.00）、Neutral300/白 4.02（理论 4.02）、纯色无墨 1.00（不许凭空造对比度）、
+实心白 on Primary 像素 4.75 = token 4.75（两把尺同一条线）。然后量九档真实组合：
+**五档状态徽标 3.34–4.07 < AA 正文 4.5**（Running 3.84 / Hidden·Off·NoPermission 3.34 / WindowMissing 4.07），
+Stop 6.16、Disabled 7.05、芯片选中 4.75、未选中 8.32 过。
+⇒ 同一批组合在 `ContrastRegressionTest`（token 数学）里**一直绿**：token 尺算的是"字色对干净卡片底"= 4.63，
+量不到"状态色 15% 透明底与字色实际混出来的东西"。这就是 §6.5 为什么要像素。
+**处置**：`aaFloor` 仍是 4.5、九档一档没删、也不留一条永远红的格子砸别人门禁
+——改成具名缺陷账 `registeredAaDefects`（读数一动就红、修好了不划账也红）；
+那一格的牙我当场验过：把账上一个数从 3.84 改成 3.90 ⇒ 红在"配色被人动过"那句上。
+**真修法在配色那一侧（提透明度 / 换墨色 / 加描边）——那是产品口径，等用户拍，我没动。**
+
+矩阵那一半：`UiMatrixFullSweepTest` 把 4 颗公共件（芯片 / 徽标 / 主动作 / 设置行）跑满 4 宽 × 3 字 = 12 格，
+外加**两颗哨兵**（字号换了盒子必须换；宽度从 320 到 600 行宽必须真跟着变）。
+注入"把 fontScale 写成常数"⇒ **只有哨兵①红**、其余十二格全绿——这正是"没有哨兵就是假覆盖面"的现场证据。
+
+⚠ **一次我自己的错，按纪律记下来**：合并 `PromptByteFreezeBaselineTest` 之后主树这一格红了
+（`reply/normal` 期望 2954、实到 2970），我第一反应是"代理的表抄错了"。实测三件事才看清：
+①两个字节数对应的**字符数一模一样（1240）**；②`app/src/main/assets/**` 在主树里是 CRLF、
+在 `git worktree` 与 Linux CI 里是 LF（`.gitattributes` 的 `* text=auto` + `core.autocrlf=true`）；
+③prompt 是把资产正文**原样**拼进去的 ⇒ 一把按字节钉的尺会随"这台机器怎么检出"漂 16 个 `\r`。
+**红的是尺在量平台，不是 prompt 变了。**
+处置：`checkGroup` 先把 `\r\n` 归一成 `\n` 再算 sha 与字节数（钉内容），
+START 那行加 `crlfRows=`（这台机器实测 40 行含 CRLF，把平台差异打在读数里而不是藏起来），
+并新加一格 `the freeze table measures content, not the checkout line endings`
+（① CRLF 与 LF 归一后同 sha/同字节；② 归一之前两者必须不同——这句是"归一真在承重"的证人；
+③ 真正多一个换行的内容必须仍然不同——防归一把一切抹平）。
+第 5 次"当初不是量出来的事实"：**我差点把一次平台检出差异写成代理的失误。**
+
+## 78.3 合并这一波我又欠了一笔"验证债"，如实记
+
+六只代理交回来的东西，我**亲自**跑的只有：全量单测（每批合并后一次）、`check_big_files.sh` + 它自己的 7 格、
+`RenderedPixelContrastTest` + `UiMatrixFullSweepTest` 两跑、`PromptByteFreezeBaselineTest` 四跑（含归一那发的对照）、
+字面量/异形/分层/包依赖四把尺一跑。代理自报的反证（G2 三发、G6 六发、W-A 两发、W-D 八发、W-E 一发、W-C 一发）**没有逐发复跑**。
+按上一拍定下的口径，这些格子的状态是"验过通过、未证伪"，牙债仍在。
+
+## 78.4 收口数（本机当场跑；这一拍新格 +19 颗，全部由主线程复跑过）
+
+- 全量单测（合并全部六批之后、`--rerun-tasks`）：**256 套件 / 1815 格 / 0 失败 / 0 错误 / 0 跳过**
+  （244 份 XML 同批、跨度 0.08s；对上一格 `06e177f` 的 244/1750 = **+12 套件 / +65 格**）
+- lint 报告**重生成后**读：measured 64 / 14 规则，进预算 **63 / 13**，advisory 1 / 1（重生成报告后才读）（这一拍没动依赖版本，也没新增 lint 债）；判据自测 27 格 RC=0
+- `verify_visual_baseline.sh`：RC=0，**42 golden(s) verified**、`actual images` 目录里 0 张 ⇒ **42 张像素基线一张都没重录**（12 颗公共件的外观没被这一拍改坏）。
+  ⚠ 但**`LbChip` 不在这 42 张里**（`ls app/src/test/roborazzi/ | grep -i chip` 实到 0 张）
+  ⇒ 这一拍把模板芯片标签与角色芯片曲线**改回原位**，靠的是档位本身 + 语义树格子，**不是像素基线验的**；
+  要像素验它，得先有人给 `LbChip` 录基线（那是新增人工签核项，我没自录）
+- 四栏字面量（独立状态机尺复算，剥注释口径）：TEXT 165 / DESC 6 / STATE 0 / COMPONENT 89；
+  `TEXT` 166 → **165** 是**真还**（`KbEditActivity` 卡内那颗自画空态的文案进了 `values` + `values-en`），
+  同一次改动 `COMPONENT` 没跟着涨（版式交 `LbAsyncState` 画，不是把文案搬进 `Lb…()` 的实参）
+- 异形账（剥注释后数登记项）：**自画 23 / 委托壳 15**
+  （22 → 23 那一颗是 `SuggestResultContent.kt#SuggestAvoidHeader`——**搬家才让它第一次被尺看见**，
+  它从前是函数体里的内联代码；这一处该不该搬属于 H2 那张判决表，还没判）
+- `check_big_files.sh` RC=0：扫 **187** 个 .kt，>500 **16**、>800 **4**；它自己的 7 格反证全过
+- 工单号 PASS；`asset_hashes --check` OK；`assets/engine|schema` 对 `286c9406` 零差异；跨层 `--count` **5**；
+  androidTest 编译 RC=0；`--tests` 过滤跑过的新格：`PixelContrastMeter` 那一族 5 格、矩阵 6 格、
+  冻结表 8 格、`KbEdit` 两族 10 格、`LbChip` 两档 + 词表归属 若干

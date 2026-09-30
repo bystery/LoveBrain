@@ -4219,3 +4219,47 @@ bash scripts/run_upgrade_test.sh   --old-apk "$(cat fixtures/old-apk-path.txt)" 
 **远端状态**：`git ls-remote origin main` 现读 `58776ef`；这一拍的改动分成**三笔提交**落在本地
 （①根级守门那格的 race 修正 + 两格牙，②新尺与 `markInitialized` 归还 + 登记清单刷新，③文档），**一笔没推**，等「推送」。
 
+## 0.69 并行档第六、七拍：八只代理两次并发，把"还剩什么"从七块压到四块（远端仍 `58776ef`，本地这批**未推**）
+
+**用户口径两句先落地**（都"只登记、不改生产码"）：P0-03 那句的射程 = **knowledge/ 树内的文档 mutation**，
+树外落盘（反馈案例 2 处、导入暂存 1 处、导出写到调用方交进来的流）与读侧两处自拼 `File` 判存在
+——**不算这条的债**，带理由挂在 `DataWritePrimitiveLedgerTest` 的账上；
+那发脱离取消的备份 launch **先不改**，已由 `the detached startup backup outlives a cancelled appScope` 钉成读数。
+⚠ 我给这两个选项时把清单写错过两处（反馈案例写"3 处"实为 **2 处**；还凭空写了一条不存在的 `.migration_done`，
+`grep -rn "migration_done" app/src/main` **0 命中**）——第 5 次"当初不是量出来的事实"，
+当场收回并记进 §77.7。**给用户的选项表，每一行都要有当次命令的出处。**
+
+| 这一拍落的账 | 实测前 → 后 | 谁验的 / 有没有跑到编译 |
+|---|---|---|
+| §6.3 每屏四态只判一次 | 剩下四屏**判完**：`KbEditScreen` 有真流 ⇒ 接 `kbEditFileScreenState` + `LbAsyncState`（16 格穷举 + 4 格真读开火）；`AboutScreen`/`UsageDetailScreen`/`HomeScreen` **没有这条流** ⇒ 明写依据、不假造档位 | 代理跑到 RC=0；主线程复跑全量 |
+| §6.4 不移动主要**输入** | 守卫有了，并**量出真缺陷**：那颗主输入宽差 **208–222dp**、高差 **28dp**、左差 **156–170dp**；换档来回逐值回位 ⇒ 无残留。**位移没修**（钉落位的是 `ReplyInput` 与 `CounselingPanel`，在代理地盘外）⇒ **这是 §6.4 现在唯一的真账**，已排进 H1 | 代理跑到 RC=0 |
+| §5.2 第 6 步 facade | `LoveBrainViewModel` **2404 → 2386**：composer 那一族 **10 条纯转发口删掉**；A 组余 10 条 + D 组 3 条待收；**B 组 20 条 `.map{}.stateIn(Eagerly, 初值)` 不能删**（删了 = 把一份热共享换成 N 条冷链，是改行为） | 代理**没跑到编译**（它不许动 `ui/**`）⇒ 主线程接 13 处生产调用点 + 35 处测试替身 + 5 处设备测试，再接完复跑 |
+| 巨石 | **>800 从 6 座降到 4 座**：`KnowledgeBaseActivity 937→509`、`SuggestPanel 968→604` 出名单；`PromptBuilder 974→866`（两块搬进 `domain/prompt/`，**105 行字节冻结表**前后逐字节相同） | 代理各自跑到 RC=0；主线程 `check_big_files.sh` RC=0 + 它自己 7 格反证 |
+| §4 DIP 的盲区 | `di/` 与 `service/` 第一次进尺：实扫 **23 条跨层引用 / 5 个文件** ⇒ 拆成装配必需 18 + 真越界 5（每条带理由）；注入一条越界 import ⇒ 当场红并点名 | 代理跑到 RC=0（9 格） |
+| §6.1 缺的两档 | `LbChipLabelAlignment{Center,TopStart}` + `LbChipPressFeedback{Standard,Spring}`（**枚举档，不开自由 `Modifier`/`Alignment`/`FiniteAnimationSpec`**）⇒ 上一拍"登记未修"的两处外观改回原位；`lbPressCurve` 收成一处具名值 | 代理**死在 150 轮上限**（公共件写完、没跑到编译）⇒ 主线程合并 + 接 `RoleChip` + 复跑 |
+| §6.5 像素那一半 | 新仪器 `PixelContrastMeter` 先做通电对照（黑/白 21.00、Neutral300/白 4.02、纯色无墨 1.00、白 on Primary 像素 4.75 = token 4.75），再量九档真实组合 ⇒ **五档状态徽标 3.34–4.07 < AA 4.5**（Running 3.84 / Hidden·Off·NoPermission 3.34 / WindowMissing 4.07），而 token 尺对这些组合**一直绿**。矩阵那半：4 颗公共件跑满 12 格 + 两颗哨兵（把 fontScale 写成常数 ⇒ **只有哨兵红**，这就是"没哨兵就是假覆盖面"的现场证据） | 主线程复跑到 RC=0（5 格 + 6 格 + 冻结表 8 格），并验了具名缺陷账的牙（账上改 0.06 ⇒ 红） |
+
+**两次当场自纠，都写进账本**：
+① §77.7 那份选项表里的两处假事实；
+② §78.2 那次"我以为代理的表抄错了"——`PromptByteFreezeBaselineTest` 在主树红，
+实为**资产行尾**：`app/src/main/assets/**` 在主树是 CRLF、在 `git worktree` 与 Linux CI 是 LF
+（`.gitattributes` 的 `* text=auto` + `core.autocrlf=true`），而 prompt 把资产正文原样拼进去
+⇒ 同一份码量出 2954 / 2970 而**字符数完全相同（1240）**。
+处置：sha 与字节数前先归一（钉**内容**），`PROMPT-FREEZE-START` 打印 `crlfRows=40`（把平台差摆在读数里而不是藏起来），
+新格 `the freeze table measures content, not the checkout line endings` 三条各开火
+（归一前必须不同 = 归一真在承重；多一个换行必须仍不同 = 不许把内容抹平）。
+
+**这一拍的数**（本机当场跑）：全量 **256 套件 / 1815 格 / 0 失败 0 错误 0 跳过**（对 `06e177f` 的 244/1750 = +12 套件 / +65 格）；
+`check_big_files.sh` RC=0（187 个 .kt、>500 16、>800 **4**，两份清单已按实到对齐）；
+lint 报告**重生成后** measured 64 / 14 → 进预算 **63 / 13**、advisory 1 / 1，判据自测 27 格；
+四栏字面量 **TEXT 165 / DESC 6 / STATE 0 / COMPONENT 89**（166→165 是真还：编辑页那颗自画空态的文案进了中英两份资源）；
+异形账 **自画 23 / 委托壳 15**（22→23 那颗是搬家才让尺第一次看见的 `SuggestResultContent.kt#SuggestAvoidHeader`，还没判该不该搬）；
+跨层 `--count` **5**；工单号 PASS；prompt 资产零差异 + lock `6dcde732…`；androidTest 编译 RC=0。
+像素基线 **42 张未重录、比对通过**（12 颗公共件的外观没被改坏）。
+⚠ 但 `LbChip` **不在这 42 张里**（`ls app/src/test/roborazzi/ | grep -i chip` 实到 0）
+⇒ 这一拍"把两处外观改回原位"只由档位与语义树格子守着，**没有像素证人**——这是覆盖缺口，不许写成"已验无变化"。
+
+**下一格做什么**（第四波工单已写好：`_temp/workorder-WAVE3-2026-09-30.md`，H1–H5 五节，所有权互不重叠）：
+H1 面板屏 1105 + §6.4 位移真修｜H2 屏幕级异形逐处判决｜H3 VM facade 余量（A 组 10 条 + D 组 3 条）｜
+H4 `KnowledgeRepository` 1794 再搬一格｜H5 屏幕级矩阵跑满（3 个屏幕面 × 12 格）。
+**三件不是我能推进的**：五档徽标配色（等用户拍）、那张重录基线的签字、设备侧那 2 格 `Assume`。
