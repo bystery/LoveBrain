@@ -31,8 +31,9 @@ local.properties
 !/docs/RELEASE_CHECKLIST.md
 !/docs/CANCELLATION-AUDIT.md
 
-# 内部阶段审计/指导书（只存项目管理系统，不入公开仓库）
-LoveBrain_Phase*_*.md
+# 内部阶段审计/指导书/交接单/验收单（只存本地 + 项目管理系统，不入公开仓库）
+# 通配所有 LoveBrain_ 前缀的内部文档，避免每种新命名都得补一条
+LoveBrain_*.md
 
 # AI tool cache
 /.qoder/*
