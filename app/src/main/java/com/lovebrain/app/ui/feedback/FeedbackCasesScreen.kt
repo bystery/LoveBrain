@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -433,6 +434,7 @@ private fun ExportAction(enabled: Boolean, label: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .clip(LoveBrainShape.md)
             .background(if (enabled) Primary else SurfaceInset, LoveBrainShape.md)

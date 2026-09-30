@@ -259,17 +259,20 @@ class UiStringLiteralBudgetTest {
         //   ⚠ 交叉核对：另用一把独立写的 Python 尺（`_temp/bucket_clone.py`，同样剥注释、
         //     同样按括号配对取实参、同样按字符区间去重）在同一棵树上量到 **169 / 87**，
         //     与本文件 Kotlin 尺的读数逐字相同 ⇒ 这两栏的差值不是某一把尺自己抖出来的。
-        // 169 → **168**：纠正中心那句空态说明从自己画的 `Text("…")` 抬进 `LbEmptyState(message = …)`。
-        //   **换桶，不是还债**（同一条字面量一个字没改，只是从 TEXT 那栏落进 COMPONENT 那栏）；
-        //   主动发那一处交的是 `PanelStrings.PROACTIVE_EMPTY_HINT`（标识符，不是字面量），所以两栏都不动。
-        //   ⇒ 交叉核对：独立 Python 尺 `_temp/bucket_clone.py` 在同一棵树上报 **168 / 88**，与本尺逐字相同。
+        // 169 → **168**：纠正中心那句空态说明从自己画的 `Text("…")` 抬进 `LbEmptyState(message = …)`。
+        //   **换桶，不是还债**（同一条字面量一个字没改，只是从 TEXT 那栏落进 COMPONENT 那栏）；
+        //   主动发那一处交的是 `PanelStrings.PROACTIVE_EMPTY_HINT`（标识符，不是字面量），所以两栏都不动。
+        //   ⇒ 交叉核对：独立 Python 尺 `_temp/bucket_clone.py` 在同一棵树上报 **168 / 88**，与本尺逐字相同。
         // 168 → **166**：提示条归并时把两处内联中文接上资源（`panel_input_changed`、
         //   `a11y_close_notice` 那颗关闭钮——**资源里中英两份一直都在、从没被引用过**，
         //   于是英文环境读屏念中文）。这一笔是**真还**，不是换桶。
         // 166 → **165**：`KbEditActivity` 接 §6.3 四态时，卡内那颗自画空态的文案进了
         // `values` + `values-en` 两份资源（账本 §78）。⚠ 这一笔是**真还**不是换桶：
         // 同一次改动里 COMPONENT 一栏没跟着涨（版式交 `LbAsyncState` 画，文案不再写在页面的 `Text(` 里）。
-        Kind.TEXT to 165,
+        // 165 → **162**：§6.1 三处胶囊归并进 `LbChip`（IntentExpiryChip /「清空重聊」/「继续追问」），
+        //   三处中文标签从 `Text("…")` 落进 `LbChip(label = …)`——**换桶不是还债**
+        //   （字面量一个字没改，只是从 TEXT 那栏落进 COMPONENT 那栏；COMPONENT +3 = TEXT −3，合计 0）。
+        Kind.TEXT to 162,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是
@@ -308,12 +311,16 @@ class UiStringLiteralBudgetTest {
         //     全仓只多两条，且都在 `LbMetricGrid` 的 `require(…)` 里给开发者看，
         //     不在四个锚点的射程内。⇒ 这一栏从 76 涨到 87 的十一个字，
         //     **没有一个是新写的文案**，是搬家 + 补账。
-        // 87 → **88**：上面那一句落进来的那一栏（TEXT −1 / COMPONENT +1，四栏合计不动）。
-        //   新增用户可见字面量 **0 条**：这一拍生产改动只有 `ProviderSection` 的一行 `heightIn(min = …)` 与两处所有者换人。
+        // 87 → **88**：上面那一句落进来的那一栏（TEXT −1 / COMPONENT +1，四栏合计不动）。
+        //   新增用户可见字面量 **0 条**：这一拍生产改动只有 `ProviderSection` 的一行 `heightIn(min = …)` 与两处所有者换人。
         // 88 → **89**：图标档那颗转进组件实参的一条标签（TEXT 少一处、这一栏多一处，合计没动
         //   ⇒ 换桶不是还债）。⚠ 两把尺同读数：本文件实扫 166/6/0/89，
         //   独立 Python 尺 `_temp/bucket_clone.py` 同一棵树也是 166/6/0/89。
-        Kind.COMPONENT to 89
+        // 89 → **92**：§6.1 三处胶囊归并进 `LbChip`（`SuggestPanel` 的 IntentExpiryChip、
+        //   `CounselingPanel` 的「清空重聊」与「继续追问」）——三处中文标签从页面自画
+        //   落进 `LbChip(label = …)` 的组件实参，是**换桶不是还债**（字面量一个字没改，只是
+        //   从 TEXT/自画 那栏落进 COMPONENT 那栏）。三处都是已有文案搬主人，零新增用户可见字面量。
+        Kind.COMPONENT to 92
     )
 
     /**

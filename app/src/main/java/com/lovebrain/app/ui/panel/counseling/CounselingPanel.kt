@@ -357,52 +357,62 @@ fun CounselingPanel(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // 继续追问胶囊补按压反馈（胶囊类 0.92，对齐 RoleChip 先例）
-                        val (followUpInteraction, followUpScale) = rememberPressScale(0.92f, "followUpScale")
-                        // 读屏公告走资源：原来这里是内联中文，英文环境下照样念中文，
-                        // 而文案预算那把尺当时连 stateDescription 都看不见（现已补上）。
-                        // 解析必须放在 semantics 之外——那个 lambda 不是 composable 上下文。
+                        // 继续追问胶囊归进设计系统那颗 [LbChip]：胶囊形状（clip/sm + PrimaryLight 底 +
+                        // PrimarySubtle 描边 + labelMedium/PrimaryDark/SemiBold 字 + lg/sm 内边距 + 0.92 按压）
+                        // 逐项抄进 [LbChipStyles.soft] 的 `.copy`，不在页面里另画一条 Modifier 链。
+                        // ⚠ 这是**动作入口**（点下去开/收追问区），不是"在哪一格"——故选
+                        // [LbChipInteraction.Action]：`Role.Button`，语义树不发 `selected`；
+                        // 展开/收起那句话仍走 `stateDescription`，与改前完全同一槽位。
+                        // ⚠ 三角箭头仍留在胶囊**外**（[LbChip] 的标签是纯文案，没有 trailing-icon 槽，
+                        // 开一个就是发明 API——红线）：改前箭头在胶囊右内边距里，改后在胶囊右沿外
+                        // 一个 `Spacing.xs`——这是归并这一颗的已知外观变化，登记在此，不另开槽。
                         val followUpAnnouncement = stringResource(
                             if (showFollowUp) R.string.state_expanded else R.string.state_collapsed
                         )
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .clip(LoveBrainShape.sm)
-                                .background(PrimaryLight)
-                                .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.sm)
-                                .graphicsLayer { scaleX = followUpScale; scaleY = followUpScale }
-                                .semantics { stateDescription = followUpAnnouncement }
-                                .clickable(interactionSource = followUpInteraction, indication = null, onClick = { showFollowUp = !showFollowUp })
-                                .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
-                        ) {
-                            Text(
-                                text = "继续追问",
-                                style = AppTypography.labelMedium,
-                                color = PrimaryDark,
-                                fontWeight = FontWeight.SemiBold
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            LbChip(
+                                label = "继续追问",
+                                onClick = { showFollowUp = !showFollowUp },
+                                interaction = LbChipInteraction.Action,
+                                modifier = Modifier.semantics { stateDescription = followUpAnnouncement },
+                                style = LbChipStyles.soft.copy(
+                                    radius = LoveBrainShape.sm,
+                                    textStyle = AppTypography.labelMedium,
+                                    textColorSelected = PrimaryDark,
+                                    textColor = PrimaryDark,
+                                    fontWeightSelected = FontWeight.SemiBold,
+                                    fontWeight = FontWeight.SemiBold,
+                                    backgroundSelected = PrimaryLight,
+                                    background = PrimaryLight,
+                                    borderSelected = PrimarySubtle,
+                                    border = PrimarySubtle,
+                                    pressedScale = 0.92f,
+                                    markSelectedWithCheck = false
+                                )
                             )
                             Spacer(Modifier.width(Spacing.xs))
                             // A2-2：共享三角箭头（原 Canvas Path 块与锦囊处逐字相同）
                             TriangleArrow(color = Primary, rotation = followUpArrowRotation)
                         }
-                        // 清空重聊胶囊补按压反馈（胶囊类 0.92，对齐 RoleChip 先例）
-                        val (clearInteraction, clearScale) = rememberPressScale(0.92f, "clearScale")
-                        Text(
-                            text = "清空重聊",
-                            color = TextHint,
-                            style = AppTypography.labelMedium,
-                            modifier = Modifier
-                                .clip(LoveBrainShape.sm)
-                                .background(SurfaceInset)
-                                .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.sm)
-                                .graphicsLayer { scaleX = clearScale; scaleY = clearScale }
-                                .clickable(interactionSource = clearInteraction, indication = null, onClick = {
-                                    counselingHistory = emptyList()
-                                    showFollowUp = false
-                                    viewModel.clearCounselingAll()
-                                })
-                                .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+                        // 清空重聊胶囊归进设计系统那颗 [LbChip]（动作入口，点下去清空历史）。
+                        // 档位用 [LbChipStyles.neutral] 再 `.copy`：字色 `TextHint`、字号 `labelMedium`、
+                        // 标签居中、内边距 `lg/sm`——逐项抄改前那条链，不在页面里另画一条 Modifier。
+                        LbChip(
+                            label = "清空重聊",
+                            onClick = {
+                                counselingHistory = emptyList()
+                                showFollowUp = false
+                                viewModel.clearCounselingAll()
+                            },
+                            interaction = LbChipInteraction.Action,
+                            style = LbChipStyles.neutral.copy(
+                                textStyle = AppTypography.labelMedium,
+                                textColor = TextHint,
+                                textColorSelected = TextHint,
+                                labelAlignment = LbChipLabelAlignment.Center,
+                                paddingHorizontal = Spacing.lg,
+                                paddingVertical = Spacing.sm
+                            )
                         )
                     }
                     // 追问输入区（展开时显示，跟随操作行置顶）

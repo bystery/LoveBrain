@@ -579,7 +579,17 @@ internal fun IntentEditorBody(
 }
 
 /**
- * 有效期选择 chip。
+ * 有效期选择 chip——归进设计系统那颗 [LbChip]。
+ *
+ * 语义是**一组里互斥的单选**（"直到完成 / 仅今天 / 指定日期"三选一）：原来自己画的
+ * 那条链上把"现在选哪一档"写进字面前缀（`✓ $label`）与底色（Primary / SurfaceCard），
+ * 归并后这两件事分别由 [LbChipInteraction.Single] 在语义树里发 `Selected`、由
+ * [LbChipStyles.filled] 画实心选中档——同一件事只剩一份。
+ *
+ * 档位用 [LbChipStyles.filled] 再 `.copy` 两处：字色未选那一档原来是 `TextHint`（比
+ * `filled` 默认的 `TextSecondary` 还浅一档），左右内边距原来是 `Spacing.sm`、上下 `Spacing.xs`
+ * （比 `filled` 默认的 `lg / sm` 更紧凑——这组三颗挤在一行）。两处都是调用方用 `.copy`
+ * 调数，不是在页面里再画一条 Modifier 链（同 `IntentChip` 用 `pill.copy(pillHeight = ...)`）。
  */
 @Composable
 private fun IntentExpiryChip(
@@ -587,18 +597,15 @@ private fun IntentExpiryChip(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val (interaction, scale) = rememberPressScale(0.94f, "expiryChip_$label")
-    Text(
-        text = if (isSelected) "✓ $label" else label,
-        style = AppTypography.labelSmall,
-        color = if (isSelected) Color.White else TextSecondary,
-        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-        modifier = Modifier
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clip(LoveBrainShape.sm)
-            .background(if (isSelected) Primary else SurfaceCard, LoveBrainShape.sm)
-            .border(AppDimens.BORDER_WIDTH_DP.dp, if (isSelected) Primary else Border, LoveBrainShape.sm)
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
-            .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+    LbChip(
+        label = label,
+        selected = isSelected,
+        onClick = onClick,
+        interaction = LbChipInteraction.Single,
+        style = LbChipStyles.filled.copy(
+            textColor = TextHint,
+            paddingHorizontal = Spacing.sm,
+            paddingVertical = Spacing.xs
+        )
     )
 }
