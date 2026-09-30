@@ -264,6 +264,10 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
             paddingHorizontal = 9.dp,
             paddingVertical = 0.dp,
             pressedScale = 0.92f,
+            // 归并前这一颗走的是 `animateFloatAsState` 的默认弹簧；共用组件统一成 120ms 那条
+            // 曲线时它被一起换掉了（账本 §76.3 登记的第二处外观变化）。档位补上之后接回原位：
+            // 换的是**档**，不是在这页自己画一条曲线。
+            pressFeedback = LbChipPressFeedback.Spring,
             markSelectedWithCheck = false,
             layeredTouch = true,
             pillHeight = ReplyDimens.ROLE_CHIP_HEIGHT_DP.dp

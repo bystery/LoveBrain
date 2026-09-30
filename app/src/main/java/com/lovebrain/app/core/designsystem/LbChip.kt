@@ -1,5 +1,7 @@
 package com.lovebrain.app.core.designsystem
 
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -49,6 +51,65 @@ import androidx.compose.ui.unit.dp
 enum class LbChipInteraction { Action, Single, Multi }
 
 /**
+ * 标签在胶囊自己那个盒子里**贴哪儿**的那一档。
+ *
+ * 为什么这也是一颗参数而不是组件里写死的一句：归并那六处芯片时，模板那颗原来用的是
+ * `Box` 的默认对齐——标签贴在 48dp 见方药丸的**左上沿**；共用组件一律居中，于是
+ * "形状收进公共件"顺手把那一带的标签往下挪了约十 dp（账本 §76.3 如实登记的那处外观变化）。
+ * 这一档买的就是**形状归并能不改变外观**：收得掉链，收不掉脸。
+ *
+ * ⚠ 只有这两档，而且**不是一张自由的 `Alignment`**：给调用方一个 `Alignment` 参数，
+ * 等于允许下一颗芯片在页面里自己再摆一次标签——那正是 §6.1 要拦的写法。
+ * 摆放只在 [labelPlacement] 这一处映射，`LbChip` 里没有第二条分支。
+ */
+enum class LbChipLabelAlignment {
+    /** 标签落在胶囊的中轴上——这是这一族**今天**的形状，也是 [LbChipStyle] 的默认档 */
+    Center,
+
+    /** 标签贴胶囊左上角——归并前模板那颗就是这个形状，[LbChipStyles.neutral] 选的正是这一档 */
+    TopStart
+}
+
+/**
+ * 档位 → 摆放。写法照 `LbTextActionGlyph.glyphSize`：枚举项只带名字，形状写在扩展里，
+ * 于是"换一档"在调用点上是一个词，不是一条链。
+ */
+internal val LbChipLabelAlignment.labelPlacement: Alignment
+    get() = when (this) {
+        LbChipLabelAlignment.Center -> Alignment.Center
+        LbChipLabelAlignment.TopStart -> Alignment.TopStart
+    }
+
+/**
+ * 按下去到回弹这一段时间里，缩放**沿哪条曲线**走的那一档。
+ *
+ * 它管的不是"缩到多少"（那是 [LbChipStyle.pressedScale]），也不是"点下去算什么角色"
+ * （那是 [LbChipInteraction]）。归并那六处时，回复输入行那三颗角色芯片走的是
+ * `animateFloatAsState` 不指定 animationSpec 时那条**默认弹簧**，而共用组件统一走
+ * 全站那条 120ms 的 tween（账本 §76.3 登记的第二处外观变化）——没有这一档，归并就得换脸。
+ *
+ * ⚠ 同样不许开成自由的 `FiniteAnimationSpec` 参数：曲线只能从名字里选。
+ * 页面要是能自己交一条曲线，"按压反馈"就又有 N 份了，而这颗组件存在的理由就是它只有一份。
+ */
+enum class LbChipPressFeedback {
+    /** 全站那条曲线（120ms + FastOutSlowIn）——[LbChipStyle] 的默认档，也是这一族今天的曲线 */
+    Standard,
+
+    /** 默认弹簧：`animateFloatAsState` 不写 animationSpec 时走的那一条 */
+    Spring
+}
+
+/**
+ * 档位 → 曲线。`Standard` 交出去的是 [lbPressCurve] 那**一颗对象**，不是照抄它的两个数：
+ * 这样"全站曲线被改了"与"芯片默认档跟没跟上"永远不可能分家。
+ */
+internal val LbChipPressFeedback.pressCurve: FiniteAnimationSpec<Float>
+    get() = when (this) {
+        LbChipPressFeedback.Standard -> lbPressCurve
+        LbChipPressFeedback.Spring -> spring()
+    }
+
+/**
  * 一颗芯片的全部**形状参数**（颜色、圆角、内边距、字号、热区结构）。
  *
  * 为什么要把这些写成参数而不是写死一档：这七处芯片的圆角从 6dp 到 999dp、
@@ -63,6 +124,8 @@ enum class LbChipInteraction { Action, Single, Multi }
  * @param radius 圆角档位
  * @param textStyle 字号档（`labelSmall` / `labelMedium` 两档在本仓库各有主）
  * @param labelMaxLines 文案行数上限；默认不限，紧凑胶囊那颗要钉成一行
+ * @param labelAlignment 标签在胶囊里贴哪儿（[LbChipLabelAlignment]）；默认居中 =
+ *        这一族今天的形状，只有 [LbChipStyles.neutral] 换档（它归并前那一条链就是贴左上的）
  * @param textColorSelected 选中时的字色
  * @param textColor 未选中时的字色
  * @param fontWeightSelected 选中时的字重（`Neutral` 一档里前后同值 = 不靠字重表达状态）
@@ -75,6 +138,8 @@ enum class LbChipInteraction { Action, Single, Multi }
  * @param paddingHorizontal 文案左右内边距
  * @param paddingVertical 文案上下内边距
  * @param pressedScale 按压时的缩放（标准件那三档 0.92/0.94/0.96）
+ * @param pressFeedback 这个缩放**沿哪条曲线**走到（[LbChipPressFeedback]）；默认
+ *        [LbChipPressFeedback.Standard] = 全站那条 120ms，也就是这一族今天的曲线
  * @param markSelectedWithCheck 选中时在文案前加一个对勾。这个勾**不是**"选中的第二种
  *        表达"：规范位是语义树里的 `Selected`/`ToggleableState`，勾是画给眼睛的
  * @param touchFloor 要不要把这颗自己的可点节点垫到全局那颗下限
@@ -88,6 +153,7 @@ data class LbChipStyle(
     val radius: Shape = LoveBrainShape.sm,
     val textStyle: TextStyle = AppTypography.labelSmall,
     val labelMaxLines: Int = Int.MAX_VALUE,
+    val labelAlignment: LbChipLabelAlignment = LbChipLabelAlignment.Center,
     val textColorSelected: Color = Color.White,
     val textColor: Color = TextSecondary,
     val fontWeightSelected: FontWeight = FontWeight.SemiBold,
@@ -99,6 +165,7 @@ data class LbChipStyle(
     val paddingHorizontal: Dp = Spacing.lg,
     val paddingVertical: Dp = Spacing.sm,
     val pressedScale: Float = 0.94f,
+    val pressFeedback: LbChipPressFeedback = LbChipPressFeedback.Standard,
     val markSelectedWithCheck: Boolean = true,
     val touchFloor: Boolean = true,
     val layeredTouch: Boolean = false,
@@ -124,7 +191,16 @@ object LbChipStyles {
         fontWeight = FontWeight.Medium
     )
 
-    /** 无选中态的动作芯片：点下去有结果，底色与描边不随状态变 */
+    /**
+     * 无选中态的动作芯片：点下去有结果，底色与描边不随状态变。
+     *
+     * 这一档是把归并前那一条链**逐项**抄过来的，包括标签的摆放：那颗的盒子写着
+     * `heightIn(min = 48)` 而 `Box` 没写 `contentAlignment`，于是标签贴在药丸的左上沿。
+     * 归并那一拍没有"标签对齐"这一档，标签被组件的居中挪走了约十 dp
+     * （账本 §76.3 登记的那处外观变化），[LbChipLabelAlignment.TopStart] 补上这一档之后
+     * 这里把它接回原位——**这一档的名字管的是"没有选中态"，标签贴左上属于它的形状**。
+     * 要一颗居中的动作芯片请新长一档，不要在这里改数。
+     */
     val neutral = LbChipStyle(
         backgroundSelected = SurfaceInset,
         textColorSelected = TextSecondary,
@@ -135,6 +211,7 @@ object LbChipStyles {
         paddingHorizontal = Spacing.md,
         paddingVertical = Spacing.sm,
         pressedScale = 0.92f,
+        labelAlignment = LbChipLabelAlignment.TopStart,
         markSelectedWithCheck = false
     )
 
@@ -182,6 +259,11 @@ private const val LB_CHIP_CHECK = "✓ "
  * ⚠ [LbChipStyle.layeredTouch] 与 [LbChipStyle.pillHeight] 是两条既有的"热区分层"形状，
  * 不是偷懒：那两处原来就是外层触摸盒 + 内层胶囊，改成单层会把胶囊撑到 48dp 见方，
  * 那是换脸不是归并。
+ *
+ * ⚠ [LbChipStyle.labelAlignment] 与 [LbChipStyle.pressFeedback] 这两档是为同一件事补的：
+ * 归并那六处时缺了这两个旋钮，于是"收链"顺手挪走了标签（约 10dp）、换掉了按压曲线，
+ * 两处都只能"登记未修"。判据不变——**归并的产物必须与归并前逐像素相同**，
+ * 需要另一种脸就得先有另一种档，不许让调用方自己画。
  */
 @Composable
 fun LbChip(
@@ -193,7 +275,11 @@ fun LbChip(
     interaction: LbChipInteraction = LbChipInteraction.Action,
     style: LbChipStyle = LbChipStyles.filled
 ) {
-    val (pressSource, scale) = rememberPressScale(style.pressedScale, "lbChip_$label")
+    val (pressSource, scale) = rememberPressScale(
+        style.pressedScale,
+        "lbChip_$label",
+        curve = style.pressFeedback.pressCurve
+    )
     val shownLabel =
         if (selected && style.markSelectedWithCheck) LB_CHIP_CHECK + label else label
     val backgroundNow =
@@ -261,7 +347,8 @@ fun LbChip(
                         horizontal = style.paddingHorizontal,
                         vertical = style.paddingVertical
                     ),
-                contentAlignment = Alignment.Center
+                // 标签贴哪儿由档位说，不由这一颗盒子自己想
+                contentAlignment = style.labelAlignment.labelPlacement
             ) {
                 ChipLabel(shownLabel, style, textColorNow, textWeightNow)
             }
@@ -282,7 +369,7 @@ fun LbChip(
                     vertical = style.paddingVertical
                 )
                 .testTag(LbTags.CHIP),
-            contentAlignment = Alignment.Center
+            contentAlignment = style.labelAlignment.labelPlacement
         ) {
             ChipLabel(shownLabel, style, textColorNow, textWeightNow)
         }
