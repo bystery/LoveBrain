@@ -126,6 +126,7 @@ fun ProfileSuggestionCard(
                         onClick = { onDismiss() }
                     )
                     .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             )
             when {
                 isRegenerating -> {
@@ -169,6 +170,7 @@ fun ProfileSuggestionCard(
                                 onConfirm()
                             })
                             .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                     )
                 }
                 else -> {

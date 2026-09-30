@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -26,6 +27,7 @@ import androidx.compose.ui.platform.TextToolbarStatus
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.TextPrimary
 
@@ -112,6 +114,7 @@ class OverlayTextToolbar(
                                 hide()
                             }
                             .padding(horizontal = 12.dp, vertical = 8.dp)
+                            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                     )
                 }
             }

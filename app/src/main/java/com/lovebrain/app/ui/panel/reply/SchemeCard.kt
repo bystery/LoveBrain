@@ -414,6 +414,7 @@ fun SchemeCard(
                                 indication = null,
                                 onClick = { onCancelRewrite(identity) }
                             ).padding(Spacing.xs)
+                                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                         )
                     }
                 }
@@ -447,6 +448,7 @@ fun SchemeCard(
                                         onToggleRewriteExpand(identity)
                                     }
                                 ).padding(Spacing.xs)
+                                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                             )
                         }
                     }
@@ -482,6 +484,7 @@ fun SchemeCard(
                                 indication = null,
                                 onClick = { onUndoRewrite(identity) }
                             ).padding(horizontal = Spacing.xs, vertical = Spacing.xs)
+                                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                         )
                         Text(
                             "用这版",
@@ -492,6 +495,7 @@ fun SchemeCard(
                                 indication = null,
                                 onClick = { onClearRewriteState(identity) }
                             ).padding(horizontal = Spacing.xs, vertical = Spacing.xs)
+                                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                         )
                     }
                 }
@@ -612,6 +616,7 @@ fun SchemeCard(
                                             }
                                         }
                                     ).padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                                        .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                                 )
                             }
                         }
@@ -630,6 +635,7 @@ fun SchemeCard(
                                     indication = null,
                                     onClick = { onToggleRewriteExpand(identity) }
                                 ).padding(horizontal = Spacing.sm, vertical = Spacing.xs)
+                                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                             )
                         }
                     }
