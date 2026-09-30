@@ -14,6 +14,8 @@ import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.SemanticsProbe.Target
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+// 建库向导已搬进 ui/kb（工单 W-D）：判据一颗没动，只是这一颗的家在别的包了
+import com.lovebrain.app.ui.kb.OnboardingScreen
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule

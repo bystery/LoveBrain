@@ -10,6 +10,8 @@ import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.UiProbeApplication
 import com.lovebrain.app.model.SuggestTip
+// 建议卡已跟着锦囊结果内容块搬进 ui/panel/suggest（工单 W-D）：判据一颗没动
+import com.lovebrain.app.ui.panel.suggest.SuggestTipCard
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue

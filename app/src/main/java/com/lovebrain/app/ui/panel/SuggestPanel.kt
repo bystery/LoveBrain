@@ -5,28 +5,18 @@ import com.lovebrain.app.core.designsystem.LbModalSheet
 import com.lovebrain.app.core.designsystem.LbModalSheetActions
 import com.lovebrain.app.core.designsystem.LbDialogAction
 import com.lovebrain.app.core.designsystem.LbDialogActionTone
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 // AlertDialog 已替换为 PanelModalHost，避免 Service 宿主 BadTokenException
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,31 +25,22 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
-import com.lovebrain.app.model.DailyBriefUsage
-import com.lovebrain.app.model.DailySuggestion
-import com.lovebrain.app.model.SuggestTip
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
+import com.lovebrain.app.ui.panel.suggest.InviteSuggestionCard
+import com.lovebrain.app.ui.panel.suggest.SuggestAvoidHeader
+import com.lovebrain.app.ui.panel.suggest.SuggestAvoidList
+import com.lovebrain.app.ui.panel.suggest.SuggestStageCard
+import com.lovebrain.app.ui.panel.suggest.SuggestTipCard
+import com.lovebrain.app.ui.panel.suggest.SuggestUsageBar
+import com.lovebrain.app.ui.panel.suggest.TipCategoryHeader
+import com.lovebrain.app.ui.panel.suggest.groupTipsByCategory
+import com.lovebrain.app.ui.panel.suggest.vectorMean
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
-
-/** 锦囊面板内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
-private object SuggestDimens {
-    const val PRIORITY_BADGE_HPAD_DP = 6    // 优先级/时机徽章水平内边距
-    const val SECTION_GAP_DP = 6            // 卡内区块间距
-    const val PROGRESS_HEIGHT_DP = 6        // 阶段进度条高度
-    const val EXAMPLE_MAX_HEIGHT_DP = 96    // 话术主体展开最大高度
-    const val CROSS_MARK_TOP_PAD_DP = 1     // 避坑 ✗ 顶部对齐内边距
-
-    /** 卡片折叠入口的最小可点击边界——数取自全局那颗下限，这里只留"这是折叠入口"这个名字 */
-    const val FOLD_MIN_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP
-}
 
 /**
  * 今日锦囊面板（v2）。
@@ -304,50 +285,10 @@ fun SuggestPanel(
 
                 // avoid 保留但为可选（suggest.md 不再默认长篇避雷）
                 if (plan.avoid.isNotEmpty()) {
-                    item {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = Spacing.sm),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                "该阶段避坑",
-                                style = AppTypography.labelLarge,
-                                color = Error,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-                    }
-                    item {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(LoveBrainShape.md)
-                                .background(ErrorBg)
-                                .border(AppDimens.BORDER_WIDTH_DP.dp, Error, LoveBrainShape.md)
-                                .padding(Spacing.lg),
-                            verticalArrangement = Arrangement.spacedBy(Spacing.sm)
-                        ) {
-                            plan.avoid.forEach { avoidText ->
-                                Row(verticalAlignment = Alignment.Top) {
-                                    Text(
-                                        "✗",
-                                        style = AppTypography.labelMedium,
-                                        color = Error,
-                                        fontWeight = FontWeight.Bold,
-                                        modifier = Modifier.padding(end = Spacing.sm, top = SuggestDimens.CROSS_MARK_TOP_PAD_DP.dp)
-                                    )
-                                    Text(
-                                        avoidText,
-                                        color = TextSecondary,
-                                        style = AppTypography.bodySmall,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    // 内容本体在 `ui/panel/suggest/SuggestResultContent.kt`；这里**仍按两格 item**摆：
+                    // 标题一行、清单一张卡。合成一格就少算一档 `spacedBy(Spacing.md)`——那是改版式。
+                    item { SuggestAvoidHeader() }
+                    item { SuggestAvoidList(plan.avoid) }
                 }
             }
         }
@@ -368,311 +309,6 @@ fun SuggestPanel(
         )
     }
     } // close Box
-}
-
-/** 五维向量均值（0-100）→ 阶段进度百分比 */
-private fun vectorMean(v: Map<String, Int>): Float {
-    if (v.isEmpty()) return 0f
-    return v.values.average().toFloat() / 100f
-}
-
-/** 阶段卡片——阶段名 + 五维均值进度 + 本阶段目标（可选） */
-@Composable
-private fun SuggestStageCard(plan: DailySuggestion, vectorMean: Float) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(LoveBrainShape.lg)
-            .background(PrimaryLight)
-            .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.lg)
-            .padding(Spacing.lg)
-    ) {
-        // stage 可能为空（suggest.md 不再强制输出 stage）
-        if (plan.stage.isNotBlank()) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("当前阶段", style = AppTypography.labelSmall, color = TextSecondary)
-                Spacer(Modifier.width(Spacing.md))
-                Text(
-                    plan.stage,
-                    style = AppTypography.labelLarge,
-                    color = PrimaryDark,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Spacer(Modifier.height(Spacing.md))
-        }
-        // 阶段进度 = 五维向量均值（方案 B）
-        LinearProgressIndicator(
-            progress = { vectorMean.coerceIn(0f, 1f) },
-            color = Primary,
-            trackColor = PrimarySubtle,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(SuggestDimens.PROGRESS_HEIGHT_DP.dp)
-                .clip(LoveBrainShape.full)
-        )
-        Spacer(Modifier.height(Spacing.xs))
-        Text(
-            "关系温度 ${(vectorMean * 100).toInt()}%",
-            style = AppTypography.labelSmall,
-            color = TextHint
-        )
-        // goal 为可选字段
-        if (plan.goal.isNotBlank()) {
-            Spacer(Modifier.height(Spacing.md))
-            Text(
-                "本阶段目标",
-                style = AppTypography.labelSmall,
-                color = TextSecondary,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(Modifier.height(Spacing.xs))
-            Text(
-                plan.goal,
-                style = AppTypography.bodySmall,
-                color = TextPrimary
-            )
-        }
-    }
-}
-
-/** 单条日常行动建议卡片
- *
- * 展示新语义字段：action（做什么）+ timing（什么时候适合）。
- * 点击展开显示：materialNeeded（需要素材）+ example（示例配文）+ reason（理由）。
- * 不再展示旧字段 slot/topic/expected；伪确定预测已移除。
- */
-@Composable
-internal fun SuggestTipCard(tip: SuggestTip) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-    val tipArrowRotation by animateFloatAsState(
-        targetValue = if (expanded) 0f else -90f,
-        animationSpec = tween(300, easing = FastOutSlowInEasing),
-        label = "tipArrow"
-    )
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(LoveBrainShape.md)
-            .background(SurfaceCard)
-            .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
-            .padding(Spacing.md)
-    ) {
-        // 标题行：优先级由分组 header 体现。
-        // 改之前语义树实测这颗折叠入口是 344x17dp（最窄 + 2.0 倍字时 304x33dp）——
-        // 也就是它只有标题文字那么高，手指要正中那 17dp 才算点得到，故垫到 ≥48dp。
-        // stateDescription 是读屏唯一听得见"现在收起/展开"的地方：原来写成内联中文，
-        // 英文环境下照样念中文，而且文案预算那把尺当时根本看不见 stateDescription。
-        // 公告文案必须在 semantics 之外解析——那个 lambda 不是 composable 上下文。
-        val foldAnnouncement = stringResource(
-            if (expanded) R.string.state_expanded else R.string.state_collapsed
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = SuggestDimens.FOLD_MIN_HEIGHT_DP.dp)
-                .semantics { stateDescription = foldAnnouncement }
-                .clickable(role = Role.Button) { expanded = !expanded },
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // UI 只消费新模型字段
-            Text(
-                text = tip.action,
-                style = AppTypography.labelMedium,
-                color = Primary,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f)
-            )
-            Spacer(Modifier.width(Spacing.xs))
-            TriangleArrow(color = TextHint, rotation = tipArrowRotation)
-        }
-
-        // timing（什么时候适合）——折叠态也显示，帮助用户判断
-        if (tip.timing.isNotBlank()) {
-            Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
-            Text(
-                text = "适合：${tip.timing}",
-                style = AppTypography.labelSmall,
-                color = TextSecondary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-
-        // 可折叠详情区：materialNeeded + example + reason
-        AnimatedVisibility(
-            visible = expanded,
-            enter = expandVertically(),
-            exit = shrinkVertically()
-        ) {
-            Column {
-                // materialNeeded（需要的素材或前提）
-                if (tip.materialNeeded.isNotBlank()) {
-                    Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
-                    Text(
-                        text = "需要：${tip.materialNeeded}",
-                        style = AppTypography.labelSmall,
-                        color = Warning,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-                // example（示例配文）
-                if (tip.example.isNotBlank()) {
-                    Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
-                    Text(
-                        text = "\u201C${tip.example}\u201D",
-                        style = AppTypography.bodyMedium,
-                        color = TextPrimary,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(max = SuggestDimens.EXAMPLE_MAX_HEIGHT_DP.dp)
-                            .verticalScroll(rememberScrollState())
-                    )
-                }
-                // reason（为什么建议这个）
-                if (tip.reason.isNotBlank()) {
-                    Spacer(Modifier.height(SuggestDimens.SECTION_GAP_DP.dp))
-                    Text(
-                        text = tip.reason,
-                        style = AppTypography.labelSmall,
-                        color = TextHint
-                    )
-                }
-            }
-        }
-    }
-}
-
-/** 按 timingCategory 分组 tips。
- * 顺序："现在可用" → "今天可准备" → "有机会再做" → 其他（无分类的排末尾）。 */
-private fun groupTipsByCategory(tips: List<SuggestTip>): List<Pair<String, List<SuggestTip>>> {
-    val order = listOf("现在可用", "今天可准备", "有机会再做")
-    val grouped = tips.groupBy { it.timingCategory }
-    val result = mutableListOf<Pair<String, List<SuggestTip>>>()
-    for (cat in order) {
-        (grouped[cat] ?: emptyList()).takeIf { it.isNotEmpty() }?.let {
-            result.add(cat to it)
-        }
-    }
-    // 未分类的 tips
-    val uncategorized = tips.filter { it.timingCategory.isBlank() || it.timingCategory !in order }
-    if (uncategorized.isNotEmpty()) {
-        result.add("更多建议" to uncategorized)
-    }
-    return result
-}
-
-/** 分类标题 */
-@Composable
-private fun TipCategoryHeader(category: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = Spacing.sm, bottom = Spacing.xs),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = category,
-            style = AppTypography.labelLarge,
-            color = PrimaryDark,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-/** 锦囊 usage 与 partial 状态展示。
- *  Provider 返回 usage 时显示 token/费用/耗时；无值显示"未知"。
- *  partial=true 时显示不完整标识。 */
-@Composable
-private fun SuggestUsageBar(usage: DailyBriefUsage?, isPartial: Boolean) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(LoveBrainShape.md)
-            .background(if (isPartial) WarningBg else SurfaceInset, LoveBrainShape.md)
-            .border(
-                AppDimens.BORDER_WIDTH_DP.dp,
-                if (isPartial) Warning else Border,
-                LoveBrainShape.md
-            )
-            .padding(horizontal = Spacing.md, vertical = Spacing.sm),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // 左侧：token 信息
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            if (isPartial) {
-                Text("不完整", style = AppTypography.labelSmall, color = Warning, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.width(Spacing.sm))
-            }
-            val tokens = usage?.let {
-                listOfNotNull(
-                    it.promptTokens?.let { p -> "↑$p" },
-                    it.completionTokens?.let { c -> "↓$c" }
-                ).joinToString("  ")
-            } ?: ""
-            if (tokens.isNotBlank()) {
-                Text(tokens, style = AppTypography.labelSmall, color = TextSecondary)
-            } else {
-                Text("token 未知", style = AppTypography.labelSmall, color = TextHint)
-            }
-        }
-        // 右侧：费用 + 耗时
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            val cost = usage?.costYuan
-            if (cost != null) {
-                Text("≈${"%.4f".format(cost)}元", style = AppTypography.labelSmall, color = TextSecondary)
-            } else {
-                Text("费用未知", style = AppTypography.labelSmall, color = TextHint)
-            }
-            Spacer(Modifier.width(Spacing.md))
-            usage?.elapsedMs?.let { ms ->
-                Text("${ms / 1000}s", style = AppTypography.labelSmall, color = TextHint)
-            }
-        }
-    }
-}
-
-/** 邀约窗口卡片（：简约化；：去复制按钮，纯展示） */
-@Composable
-private fun InviteSuggestionCard(signal: String, suggestion: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(LoveBrainShape.lg)
-            .background(SurfaceCard)
-            .border(AppDimens.BORDER_WIDTH_DP.dp, SuccessBorder, LoveBrainShape.lg)
-            .padding(Spacing.lg)
-    ) {
-        // 标题行 + 时机成熟徽章
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("邀约窗口", style = AppTypography.labelLarge, color = Success, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.width(Spacing.sm))
-            Box(
-                modifier = Modifier
-                    .clip(LoveBrainShape.sm)
-                    .background(Success, LoveBrainShape.sm)
-                    .padding(horizontal = SuggestDimens.PRIORITY_BADGE_HPAD_DP.dp, vertical = Spacing.xs)
-            ) {
-                Text("✓ 时机成熟", style = AppTypography.labelSmall, color = Color.White, fontWeight = FontWeight.Bold)
-            }
-        }
-        // 信号依据（删除硬编码假数据"信号检测 5/5"，只展示真实依据）
-        if (signal.isNotBlank()) {
-            Spacer(Modifier.height(Spacing.sm))
-            Text(
-                "依据：$signal",
-                style = AppTypography.labelSmall,
-                color = TextHint
-            )
-        }
-        Spacer(Modifier.height(Spacing.sm))
-        Text(suggestion, style = AppTypography.bodySmall, color = TextPrimary)
-    }
 }
 
 // ═══════════ 持续意图 UI 组件（锦囊面板内紧凑入口） ═══════════

@@ -500,7 +500,9 @@ class UiLayerDependencyContractTest {
         // 表里每家的额度 = 本次实扫，`<=` 只挡长新的，下面那条等号证人挡"表比现实宽"。
         val perFileBudget = mapOf(
             "bubble/FloatingBubble.kt" to 1,
-            "KnowledgeBaseActivity.kt" to 2,
+            "kb/KbOnboardingWizard.kt" to 1,                    // 2026-09-30 搬家新登记表的一家（上面 KBA 少一处，总数不变）
+            "panel/suggest/SuggestResultContent.kt" to 1,       // 同上：锦囊结果态那一处
+            "KnowledgeBaseActivity.kt" to 1,             // 2 → 1：建库向导那一处随搬家进 kb/KbOnboardingWizard.kt
             "feedback/FeedbackCasesScreen.kt" to 1,
             "home/ProviderSection.kt" to 4,
             "onboarding/OnboardingOptionCard.kt" to 2,
@@ -508,7 +510,7 @@ class UiLayerDependencyContractTest {
             "panel/LoveBrainPanelScreen.kt" to 3,
             "panel/OnboardingFlow.kt" to 1,
             "panel/PanelHeader.kt" to 1,
-            "panel/SuggestPanel.kt" to 6,
+            "panel/SuggestPanel.kt" to 5,               // 6 → 5：锦囊结果态那一处搬进 panel/suggest/SuggestResultContent.kt
             "panel/counseling/CounselingPanel.kt" to 6,
             "panel/reply/CorrectionCenter.kt" to 1,
             "panel/reply/MessageList.kt" to 2,

@@ -156,10 +156,17 @@ class OddShapeOwnershipTest {
         "ResultArea.kt#SchemeCardsRow",
         "SchemeCard.kt#SchemeCard",
         "SuggestPanel.kt#IntentExpiryChip",
-        "SuggestPanel.kt#InviteSuggestionCard",
-        "SuggestPanel.kt#SuggestStageCard",
-        "SuggestPanel.kt#SuggestTipCard",
-        "SuggestPanel.kt#TipCategoryHeader"
+        // 2026-09-30：锦囊结果态那一整块从 `SuggestPanel.kt` 搬进 `ui/panel/suggest/SuggestResultContent.kt`
+        // （§7 第二步"巨石按行为块下降"那一格），四处只是换了文件，一处没少。
+        "SuggestResultContent.kt#InviteSuggestionCard",
+        "SuggestResultContent.kt#SuggestStageCard",
+        "SuggestResultContent.kt#SuggestTipCard",
+        "SuggestResultContent.kt#TipCategoryHeader",
+        // ⚠ 这一处是**新看见的**，不是新长出来的：「要避开的说法」那两格的表头以前写在函数体里，
+        // 搬家之后成为顶层 @Composable，才被这把按"顶层声明"认形状的尺扫到。
+        // 语义：它是**内容块的表头**（多行 ✗ 列表的标题），不是状态条、不是按钮；
+        // 公共件里 `LbSection` 管的是"一节"的外壳，对不上这一处 ⇒ 暂留账上，等 §6.1 那一批判决走完再定。
+        "SuggestResultContent.kt#SuggestAvoidHeader"
     )
 
     /** 已经退化成"只转一次参数"的壳——不是异形，但也不该再长出新形状 */
