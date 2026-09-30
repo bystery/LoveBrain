@@ -53,9 +53,10 @@ abstract class KnowledgeDocumentPortContract {
     @Test
     fun `version-checked write rejects a stale caller and accepts the current one`() {
         val p = newPort()
-        // 首写：absent 文件的当前版本是空串
-        val first = runBlocking { p.writeFileWithVersion("kb", "moment/scene.md", "v1", "") }
-        assertNotNull("expectedVersion 与空版本匹配时首写必须成功", first)
+        // 先读 absent/已有文件的当前版本——fake 用空串、生产侧用 SHA-256，各返回各的
+        val (_, initialVersion) = runBlocking { p.readFileWithVersion("kb", "moment/scene.md") }
+        val first = runBlocking { p.writeFileWithVersion("kb", "moment/scene.md", "v1", initialVersion) }
+        assertNotNull("expectedVersion 与当前版本匹配时首写必须成功", first)
         // 过期调用：传错版本必须返回 null 且不改动内容
         assertNull(runBlocking { p.writeFileWithVersion("kb", "moment/scene.md", "stale", "wrong-version") })
         assertEquals("v1", runBlocking { p.readFile("kb", "moment/scene.md") })
@@ -156,10 +157,10 @@ abstract class KnowledgeBaseCatalogPortContract {
         val p = newPort()
         runBlocking { p.create("a", "A") }
         runBlocking { p.updateDisplayName("a", "新名字") }
-        runBlocking { p.updateStage("a", "升温") }
+        runBlocking { p.updateStage("a", "暧昧期") }
         val kb = runBlocking { p.listAll() }.single()
         assertEquals("新名字", kb.displayName)
-        assertEquals("升温", kb.stage)
+        assertEquals("暧昧期", kb.stage)
     }
 }
 
@@ -260,13 +261,13 @@ abstract class KnowledgeRuntimePortContract {
             PreconditionReason.REVISION_CONFLICT,
             (stale as ProfileTransactionResult.PreconditionFailed).reason
         )
-        assertEquals("前置失败不得改动画像", "", runBlocking { p.readProfile("kb") })
+        assertEquals("前置失败不得改动画像", "", runBlocking { p.readProfile("kb") }.trim())
         val ok = runBlocking {
             p.applyProfileUpdateAtomically("kb", me = "我喜欢直球", her = null, warmth = null,
                 stageChanged = false, newStage = null, expectedRevision = 0)
         }
         assertEquals(ProfileTransactionResult.Success, ok)
-        assertEquals("我喜欢直球", runBlocking { p.readProfile("kb") })
+        assertEquals("我喜欢直球", runBlocking { p.readProfile("kb") }.trim())
     }
 
     @Test
