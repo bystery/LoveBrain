@@ -224,26 +224,13 @@ fun SuggestPanel(
                             style = AppTypography.bodySmall
                         )
                         Spacer(Modifier.height(Spacing.lg))
-                        // 生成锦囊补按压反馈（复用标准件 0.96 scale + 120ms）
-                        val (genInteraction, genScale) = rememberPressScale(0.96f, "genScale")
-                        Text(
-                            "生成锦囊",
-                            color = SurfaceCard,
-                            style = AppTypography.labelLarge,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                                .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                                .clip(LoveBrainShape.md)   // 按钮族圆角统一 md
-                                .background(Primary)
-                                .graphicsLayer { scaleX = genScale; scaleY = genScale }
-                                .clickable(
-                                    interactionSource = genInteraction,
-                                    indication = null,
-                                    role = Role.Button,
-                                    onClick = { viewModel.generateSuggest() }
-                                )
-                                .padding(horizontal = Spacing.xl, vertical = Spacing.md)
+                        // 生成锦囊：空态唯一主动作，归 LbPrimaryButton（与 ResultArea「去设置」同族——
+                        // 空态那颗单主动作由设计系统那颗四态按钮拥有，热区/角色由它一处保证）。
+                        // 改之前是自画 `Text + .background(Primary)`，那一处品牌底自此由唯一主人画。
+                        LbPrimaryButton(
+                            state = LbButtonState.Idle,
+                            label = "生成锦囊",
+                            onClick = { viewModel.generateSuggest() }
                         )
                     }
                 }

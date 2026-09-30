@@ -2,23 +2,17 @@ package com.lovebrain.app.ui.panel.counseling
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -26,9 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
@@ -44,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.R
-import com.lovebrain.app.ui.panel.AiLoadingRow
 import com.lovebrain.app.ui.panel.DraggableDivider
 import com.lovebrain.app.ui.panel.MarkdownText
 import com.lovebrain.app.ui.panel.TriangleArrow
@@ -55,9 +46,6 @@ import com.lovebrain.app.viewmodel.LoveBrainViewModel
 
 /** 谈心面板内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object CounselingDimens {
-    const val CTA_HEIGHT_DP = 40            // 脉冲条/开始谈心按钮高度（2 文件各自私有）
-    const val FADE_MASK_WIDTH_DP = 24       // 模板 chip 尾部渐隐遮罩宽
-    const val FADE_MASK_HEIGHT_DP = 28      // 模板 chip 尾部渐隐遮罩高
     const val PLACEHOLDER_TOP_PAD_DP = 1    // 输入框占位文字顶部对齐内边距
 }
 
@@ -153,36 +141,7 @@ fun CounselingPanel(
         // 只要不在谈心中且无结果就全部展示；点击模板直接填入输入框。
         if (!isCounseling && result == null && error == null) {
             Spacer(Modifier.height(Spacing.xs))
-            val templates = listOf(
-                "她突然冷淡了怎么办",
-                "我们吵架了该谁先低头",
-                "她说了这句话什么意思",
-                "怎么判断她喜不喜欢我",
-                "暧昧期怎么推进关系",
-                "她嫌我不够浪漫"
-            )
-            // 尾部渐隐遮罩，提示后面还有可滑动的 chip
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
-                    horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
-                ) {
-                    templates.forEach { template ->
-                        TemplateChip(text = template) { viewModel.setCounselingDraft(template) }
-                    }
-                }
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .width(CounselingDimens.FADE_MASK_WIDTH_DP.dp)
-                        .height(CounselingDimens.FADE_MASK_HEIGHT_DP.dp)
-                        .background(
-                            Brush.horizontalGradient(
-                                colors = listOf(Color.Transparent, SurfaceBase)
-                            )
-                        )
-                )
-            }
+            CounselingTemplateChips(onTemplateSelect = { viewModel.setCounselingDraft(it) })
         }
 
         // 字数提示：超过 100 字时显示，超过 500 字变橙色提醒
@@ -199,83 +158,13 @@ fun CounselingPanel(
         }
 
         val canStart = draft.isNotBlank() && !isCounseling
-        // 谈心中脉冲动画（与 GenerateButton 一致的视觉反馈）——
-        // 仅在 isCounseling 时创建 rememberInfiniteTransition，非谈心状态不运行动画（避免无谓重组开销）
-        if (isCounseling) {
-            // 实底 Primary + PrimaryDark 叠层呼吸（对比度优于整条 alpha 脉冲）
-            val pulseTransition = rememberInfiniteTransition(label = "counselingPulse")
-            val overlayAlpha by pulseTransition.animateFloat(
-                initialValue = 0f,
-                targetValue = 0.22f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(800),
-                    repeatMode = RepeatMode.Reverse
-                ),
-                label = "counselingPulseOverlay"
-            )
-            // 整个加载条可点击 = 强行停止谈心
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(CounselingDimens.CTA_HEIGHT_DP.dp)
-                    .clip(LoveBrainShape.md)
-                    .background(Primary, LoveBrainShape.md)
-                    .clickable { viewModel.stopCounseling() },
-                contentAlignment = Alignment.Center
-            ) {
-                // PrimaryDark 叠层呼吸（不透明度 0~0.22 循环），实底之上做明暗脉动
-                Box(
-                    Modifier
-                        .matchParentSize()
-                        .graphicsLayer { alpha = overlayAlpha }
-                        .background(PrimaryDark, LoveBrainShape.md)
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    CircularProgressIndicator(
-                        color = Color.White,
-                        modifier = Modifier.size(Spacing.xl),
-                        strokeWidth = Spacing.xs
-                    )
-                    Spacer(Modifier.width(Spacing.md))
-                    Text(
-                        text = "军师聆听中…",
-                        color = Color.White,
-                        style = AppTypography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(Modifier.width(Spacing.md))
-                    Text(
-                        text = "点击停止",
-                        color = Color.White,
-                        style = AppTypography.labelSmall,
-                        maxLines = 1
-                    )
-                }
-            }
-        } else {
-            // 开始谈心 CTA 补按压反馈（复用标准件 0.96 scale + 120ms；条件 clickable 结构保留）
-            val (ctaInteraction, ctaScale) = rememberPressScale(0.96f, "ctaScale")
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(CounselingDimens.CTA_HEIGHT_DP.dp)
-                    .graphicsLayer { scaleX = ctaScale; scaleY = ctaScale }
-                    .then(if (canStart) Modifier.shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md) else Modifier)
-                    // 禁用态对齐 GenerateButton 先例（SurfaceInset 底 + TextSecondary 文字，WCAG 对比度）
-                    .background(if (canStart) Primary else SurfaceInset, LoveBrainShape.md)
-                    .then(if (canStart) Modifier.clickable(interactionSource = ctaInteraction, indication = null, onClick = {
-                        viewModel.generateCounseling(draft.trim())
-                    }) else Modifier),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "开始谈心",
-                    color = if (canStart) Color.White else TextSecondary,
-                    style = AppTypography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-        }
+        // 谈心 CTA（脉冲条 / 开始按钮）已抽出到 CounselingLoadingSection.kt
+        CounselingPulseCta(
+            isCounseling = isCounseling,
+            canStart = canStart,
+            onStart = { viewModel.generateCounseling(draft.trim()) },
+            onStop = { viewModel.stopCounseling() }
+        )
 
         Spacer(Modifier.height(Spacing.md))
 
@@ -586,43 +475,4 @@ fun CounselingPanel(
             }
         }
     }
-}
-
-/**
- * 谈心模板 chip（需求11：折叠后仍保持统一 chip 样式）——形状归设计系统那颗 [LbChip]。
- *
- * 点下去是把模板填进输入框，不是"在哪一格" ⇒ [LbChipInteraction.Action]：
- * `Role.Button`（与改之前那条链上写的同一个角色），语义树里不发 `selected`。
- * 档位是把改之前那条链逐项抄进来的：圆角 `LoveBrainShape.sm`、底 `SurfaceInset`、
- * 描边 `Border`、字 `labelSmall`（它自带 Medium，前后同值 = 不靠字重表达状态）、
- * 内边距左右 [Spacing.md] / 上下 [Spacing.sm]、按压 0.92（原 `#1` 那一档）、
- * 下限 48 见方垫在可点那颗自己身上（原来就垫在 `clickable` 之前，归并后仍是那颗）。
- */
-@Composable
-private fun TemplateChip(text: String, onClick: () -> Unit) {
-    LbChip(
-        label = text,
-        onClick = onClick,
-        interaction = LbChipInteraction.Action,
-        style = LbChipStyles.neutral
-    )
-}
-
-/** 谈心加载动画（需求19）：统一 AiLoadingRow——三点跳动 + 轮换文案（首 token 前展示） */
-@Composable
-private fun CounselingLoading(modifier: Modifier = Modifier) {
-    val phrases = remember {
-        listOf(
-            "军师正在倾听…",
-            "军师正在梳理你的情绪…",
-            "军师正在还原事情的全貌…",
-            "军师正在权衡公正的裁决…",
-            "军师正在为你斟酌词句…"
-        )
-    }
-    AiLoadingRow(
-        phrases = phrases,
-        modifier = modifier,
-        background = SurfaceInset
-    )
 }

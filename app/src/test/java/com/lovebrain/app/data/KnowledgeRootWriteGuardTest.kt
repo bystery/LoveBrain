@@ -462,8 +462,6 @@ class KnowledgeRootWriteGuardTest {
         assertTrue("扫不到 data/ 目录——这一族的判据会恒绿", allData.size >= 10)
         val backup = allData["KnowledgeBackupService.kt"]
             ?: error("扫不到 KnowledgeBackupService.kt，路径指错了地方")
-        val repository = allData["KnowledgeRepository.kt"]
-            ?: error("扫不到 KnowledgeRepository.kt，路径指错了地方")
 
         // ① 旧门关上：整个 data/ 里不该再有人声明、调用、或在端口上留着那句收 File 的写口
         val oldDoor = allData.mapValues { (_, code) -> Regex("guardedWrite").findAll(code).count() }
@@ -507,10 +505,14 @@ class KnowledgeRootWriteGuardTest {
         assertEquals("尺是死的：旧形状必须被这四条各咬住一次", tells.map { it.first }, bitten)
 
         // ④ 仓库这一侧的落盘出口仍然只有一个定义，而且没被放宽成公共的
+        // 2026-10-01：atomicWriteText 从 KnowledgeRepository.kt 拆进 KnowledgeRepoIO.kt
+        // （internal 扩展函数），落盘出口仍只有这一处，只是换了文件与可见性层级。
+        val repoIO = allData["KnowledgeRepoIO.kt"]
+            ?: error("扫不到 KnowledgeRepoIO.kt，路径指错了地方")
         assertEquals("仓库里不许出现第二个 atomicWriteText 定义", 1,
-            Regex("(?m)^[ \\t]*(?:\\w+\\s+)*fun\\s+atomicWriteText\\(").findAll(repository).count())
-        assertTrue("唯一出口必须一直是 private",
-            Regex("(?m)^[ \\t]*private fun atomicWriteText\\(").containsMatchIn(repository))
+            Regex("(?m)^[ \\t]*(?:\\w+\\s+)*fun\\s+(?:[A-Za-z_]\\w*\\.)?atomicWriteText\\(").findAll(repoIO).count())
+        assertTrue("唯一出口必须一直是 internal 或 private（不许放宽成公共的）",
+            Regex("(?m)^[ \\t]*(?:internal|private)\\s+fun\\s+(?:[A-Za-z_]\\w*\\.)?atomicWriteText\\(").containsMatchIn(repoIO))
     }
 
     private companion object {

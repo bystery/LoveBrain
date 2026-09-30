@@ -272,7 +272,7 @@ class UiStringLiteralBudgetTest {
         // 165 → **162**：§6.1 三处胶囊归并进 `LbChip`（IntentExpiryChip /「清空重聊」/「继续追问」），
         //   三处中文标签从 `Text("…")` 落进 `LbChip(label = …)`——**换桶不是还债**
         //   （字面量一个字没改，只是从 TEXT 那栏落进 COMPONENT 那栏；COMPONENT +3 = TEXT −3，合计 0）。
-        Kind.TEXT to 162,
+        Kind.TEXT to 161,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是
@@ -320,7 +320,7 @@ class UiStringLiteralBudgetTest {
         //   `CounselingPanel` 的「清空重聊」与「继续追问」）——三处中文标签从页面自画
         //   落进 `LbChip(label = …)` 的组件实参，是**换桶不是还债**（字面量一个字没改，只是
         //   从 TEXT/自画 那栏落进 COMPONENT 那栏）。三处都是已有文案搬主人，零新增用户可见字面量。
-        Kind.COMPONENT to 92
+        Kind.COMPONENT to 93
     )
 
     /**

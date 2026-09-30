@@ -45,19 +45,19 @@ import java.util.Locale
  * 调用方是首页启动流程，端口删不掉它。
  */
 class KnowledgeRepository(
-    private val knowledgeRoot: File,
-    private val securePrefs: SecurePrefs,
+    internal val knowledgeRoot: File,
+    internal val securePrefs: SecurePrefs,
     private val context: Context,
     private val appScope: CoroutineScope
 ) : KnowledgePort, KnowledgeDocumentPort, KnowledgeRuntimePort {
-    private val json = Json {
+    internal val json = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
         prettyPrint = true
     }
 
     /** 文件操作互斥锁，防止多协程并发读写同一文件——全仓库唯一的一把 */
-    private val fileMutex = Mutex()
+    internal val fileMutex = Mutex()
 
     /**
      * 迁移器那份受限视图的**实例**：只暴露 [KbStorageAccess] 上这几样能力。
@@ -68,7 +68,7 @@ class KnowledgeRepository(
      * internal 只为测试能直接开「新入口」这一刀——越界相对路径经 [KbStorageAccess.atomicWriteAt]
      * 到底写不写得出去、返回值报不报得准，端口自己没别的调用方，产品码一行都不必碰它。
      */
-    internal val migratorStorage: KbStorageAccess = RepoStorage()
+    internal val migratorStorage: KnowledgeRepoStorage = KnowledgeRepoStorage(this)
 
     /**
      * schema 探测与旧库迁移。
@@ -76,280 +76,8 @@ class KnowledgeRepository(
      * 它不持锁也不碰路径拼接，所有文件动作都经 [RepoStorage] 回到本类，
      * 所以"同一时刻只有一个写者"这条不变量不会因为拆类而散成两把锁。
      */
-    private val migrator = KnowledgeMigrator(migratorStorage)
+    internal val migrator = KnowledgeMigrator(migratorStorage)
 
-    /** 交给各格子用的受限视图：只暴露无锁原语，公开 API 仍然只在本类上 */
-    private inner class RepoStorage : KbStorageAccess, BackupStorage, CatalogStorage, DocumentStorage,
-        MemoryStorage, ProfileStorage, ArchiveStorage, CatalogWriteStorage, ProfileTxStorage,
-        CounselingStorage, IntentStorage, TopicTextStorage, RevisionCheckStorage {
-        override val root: File get() = knowledgeRoot
-        override val catalogRoot: File get() = knowledgeRoot
-
-        /** 枚举用的解析走本类那一份 Json 配置——不给第二个类另配一把尺 */
-        override fun decodeMeta(text: String): KnowledgeBase? =
-            runCatching { json.decodeFromString<KnowledgeBase>(text) }.getOrNull()
-
-        /** 目录被挡下的原因只有仓库知道该不该说、怎么说；观测留在这里，不在策略类里 */
-        override fun onMetaRejected(dirName: String, reason: String) {
-            com.lovebrain.app.util.L.w("知识库元数据异常已忽略：dir=$dirName reason=$reason")
-        }
-
-        /** 文档格的观测出口：同一个日志器，不给第二个类开一条自己的日志通道 */
-        override fun note(message: String) {
-            com.lovebrain.app.util.L.w(message)
-        }
-
-        /** 文档格判断"库还在不在"用无锁那一份——锁由调用方在外面套 */
-        override fun kbExists(kbName: String): Boolean = kbExistsUnlocked(kbName)
-
-        /** 记忆格的读也走文档格那道守门：两个格子共用同一个路径边界，不各写一套 */
-        override fun read(kbName: String, relativePath: String): String =
-            documents.read(kbName, relativePath)
-
-        /** 记忆格只能经这一次写事务落盘：只读判定与"一批要么都写要么都不写"都在这 */
-        override fun writeTransaction(kbName: String, block: MemoryTx.() -> Unit) {
-            transactionUnlocked(kbName) {
-                MemoryTx { relativePath, content -> write(relativePath, content) }.block()
-            }
-        }
-
-        /**
-         * 意图格的一次写事务——与 [writeTransaction] 同形，名字刻意不同：
-         * `MemoryTx.() -> Unit` 与 `IntentTx.() -> Unit` 都擦除成 `Function1`，
-         * 同名就是 platform declaration clash。
-         */
-        override fun runWrite(kbName: String, block: IntentTx.() -> Unit) {
-            transactionUnlocked(kbName) {
-                IntentTx { relativePath, content -> write(relativePath, content) }.block()
-            }
-        }
-
-        /**
-         * 画像格只能经这一次**元数据**写事务改 kb.json。
-         *
-         * 与上面那条同一段事务语义（同一次 schema 判定），只是交出去的能力不同：
-         * 画像格拿到的是"读改写 kb.json"，不是"想写哪个文件就写哪个文件"。
-         * 名字与上面那条不同不是 stylistic：`MemoryTx.() -> Unit` 与 `ProfileTx.() -> Unit`
-         * 都擦除成 `Function1`，同名 overload 在 JVM 上是 platform declaration clash——
-         * 编译器报这一条要等编译，所以先把名字分开写清，别留给下一个人踩。
-         */
-        override fun writeMetaTransaction(kbName: String, block: ProfileTx.() -> Unit) {
-            transactionUnlocked(kbName) {
-                block(ProfileTx { transform -> updateMeta(transform) })
-            }
-        }
-
-        /** 画像格读 kb.json 用的就是本类那一份解码口径（坏 JSON 当没有），不开第二把尺 */
-        override fun metaOf(kbName: String): KnowledgeBase? = readMetaUnlocked(kbName)
-
-        /**
-         * 归档格的落盘：四类动作都从同一个事务对象取。
-         * 只读判定、锁、路径守门仍在本类那一侧（`transactionUnlocked` + [KnowledgeTx]）。
-         *
-         * 名字刻意不叫 `writeTransaction`：`MemoryTx.() -> Unit` 与 `ArchiveTx.() -> Unit`
-         * 都擦除成 `Function1`，同名就是 platform declaration clash（同一条坑这轮踩到第二次）。
-         */
-        override fun runTransaction(kbName: String, block: ArchiveTx.() -> Unit) {
-            transactionUnlocked(kbName) { ArchiveTxView(this).block() }
-        }
-
-        /**
-         * 归档格的两把时钟。
-         *
-         * 分成两个名字不是设计癖好，是既存事实：归档条目标题与 operationId 用 `TimeFmt.now()`
-         * （`2026-09-25 10:00`），而 kb.json 的 `updatedAt` 一直是 ISO-8601 带时区。
-         * 合成一把就会悄悄换掉某一份落盘格式。
-         */
-        override fun stamp(): String = com.lovebrain.app.util.TimeFmt.now()
-        override fun metaTimestamp(): String = isoNow()
-
-        /** 归档状态的编解码仍用本类那一份 Json 配置 */
-        override fun encodeState(state: ArchiveOperationState): String =
-            json.encodeToString(ArchiveOperationState.serializer(), state)
-
-        override fun decodeState(text: String): ArchiveOperationState? = runCatching {
-            json.decodeFromString<ArchiveOperationState>(text)
-        }.getOrNull()
-
-        /** 编解码共用本类那一份 Json 配置：给第二个类另配一把尺就等于换了把判据 */
-        override fun decodeCorrections(
-            text: String
-        ): List<com.lovebrain.app.model.MemoryCorrection>? = runCatching {
-            json.decodeFromString<List<com.lovebrain.app.model.MemoryCorrection>>(text)
-        }.getOrNull()
-
-        override fun encodeCorrections(
-            corrections: List<com.lovebrain.app.model.MemoryCorrection>
-        ): String = json.encodeToString(
-            kotlinx.serialization.builtins.ListSerializer(
-                com.lovebrain.app.model.MemoryCorrection.serializer()
-            ),
-            corrections
-        )
-
-        /**
-         * 文档格的唯一写出口：回到本类的 [writeFileUnlocked]。
-         * 那里带着只读 schema 拒绝与备份节流，所以新版本写也不可能绕开它们。
-         */
-        override fun writeUnlocked(kbName: String, relativePath: String, content: String) =
-            writeFileUnlocked(kbName, relativePath, content)
-
-        /** revision-check 格的追加写：回到本类的 [appendFileUnlocked]（唯一写链） */
-        override fun appendUnlocked(kbName: String, relativePath: String, content: String) =
-            appendFileUnlocked(kbName, relativePath, content)
-
-        /** revision-check 格的向量写：回到画像格那一份 [KnowledgeProfileStore.setVector] */
-        override fun writeVectorUnlocked(kbName: String, values: Map<String, Int>) {
-            profile.setVector(kbName, values)
-        }
-
-        /** revision-check 格读 revision：回到记忆格那一份 [KnowledgeMemoryStore.revisionOf] */
-        override fun revisionOf(kbName: String): Int = memory.revisionOf(kbName)
-
-        override fun atomicWriteAt(kbName: String, relativePath: String, content: String): Boolean {
-            // 路径与落盘都交给仓库已有的那两样：safeKbFile（与公开读写同一个判定）+
-            // writeFileCheckedUnlocked（唯一写链上登记的写核）。这里刻意不再新写一条
-            // atomicWriteText、也不再自己拼 File——判定只有一处，宽严不可能分叉。
-            //
-            // 返回 false 从「异常状况」变成了「可以发生的拒绝」（守门认不下的库名/路径、
-            // 只读库），但一条不留痕的拒绝等于静默跳过，所以照旧记一条错误级日志再报出去。
-            if (writeFileCheckedUnlocked(kbName, relativePath, content)) return true
-            com.lovebrain.app.util.L.e(
-                "migration write refused by the guard: $kbName/$relativePath", null
-            )
-            return false
-        }
-        /**
-         * 备份写根级 marker：端口这一侧只交得出**文件名**，路径由仓库这侧的根级守门给。
-         *
-         * 原来那道 `guardedWrite(target: File, …)` 收的是调用方拼好的 File——与批次四关掉的
-         * 迁移器那扇门同形，也是这笔欠账一直挂着的真正原因（不是因为它写 root 级文件，是因为它的**入参**是路径）。
-         */
-        override fun writeRootMarker(fileName: String, content: String): Boolean =
-            writeRootFileGuarded(fileName, content)
-        override fun schema(name: String): String = loadSchema(name)
-        override suspend fun currentStage(kbName: String): String = getCurrentStage(kbName)
-        override suspend fun setStage(kbName: String, stage: String): Unit =
-            updateStageUnlocked(kbName, stage)
-        override suspend fun setWarmthStageLabel(kbName: String, stage: String): Unit =
-            updateWarmthStageLabelUnlocked(kbName, stage)
-        override fun timestamp(): String = isoNow()
-
-        // ═══ 目录写侧那一格（KnowledgeCatalogWriteStore）拿到的能力 ═══
-        // 三件承重的事一件都没交出去：锁还是这一把（inWriteLock 只是把调用方请进来）、
-        // 路径还是 safeKbFile 那一道（事务块里交出去的是 CatalogTx 而不是 File）、
-        // 落盘还是唯一那条写链（transactionUnlocked → KnowledgeTx → writeFileCheckedUnlocked）。
-
-        override suspend fun <T> inWriteLock(block: suspend () -> T): T = fileMutex.withLock { block() }
-
-        override fun writeCatalogTransaction(kbName: String, block: CatalogTx.() -> Unit) {
-            transactionUnlocked(kbName) { CatalogTxView(this).block() }
-        }
-
-        /** 根下所有非隐藏目录：切库要逐库改 kb.json，含还没元数据的那类目录，所以不经枚举格 */
-        override fun catalogDirNames(): List<String> = visibleKbDirs().map { it.name }
-
-        override fun newestCatalogDirName(): String? =
-            visibleKbDirs().maxByOrNull { it.lastModified() }?.name
-
-        override fun catalogDirPresent(kbName: String): Boolean = File(knowledgeRoot, kbName).exists()
-
-        /** 库目录 + 三层子目录；幂等，"新建"与"补齐"共用这一个形状定义 */
-        override fun makeCatalogSkeleton(kbName: String) {
-            val dir = File(knowledgeRoot, kbName)
-            dir.mkdirs()
-            CATALOG_LAYERS.forEach { File(dir, it).mkdirs() }
-        }
-
-        /**
-         * 删除整库目录。canonical 守卫刻意留在这里：判"这个目录在不在 knowledge/ 树内"
-         * 全仓只许有一处口径，目录写侧想删就得问这一处，不许自己抄一份。
-         */
-        override fun removeCatalogDir(kbName: String): Boolean {
-            val dir = File(knowledgeRoot, kbName)
-            val canonicalDirPath = dir.canonicalPath
-            val canonicalRootPath = knowledgeRoot.canonicalPath
-            if (!canonicalDirPath.startsWith(canonicalRootPath + File.separator)) return false
-            if (!dir.exists()) return false
-            val ok = dir.deleteRecursively()
-            // 清理旧版本遗留的 .trash（若存在），一次性腾空
-            File(knowledgeRoot, LEGACY_TRASH_DIR).takeIf { it.exists() }?.deleteRecursively()
-            return ok
-        }
-
-        override fun deleteCatalogBackups(kbName: String) = backup.deleteBackupsFor(kbName)
-
-        override fun initMarkerPresent(): Boolean = File(knowledgeRoot, INIT_MARKER_FILE).exists()
-
-        /**
-         * 全部 seed 落成了才由写侧调用；半套文件 + 标记 = 下次启动不再补。
-         *
-         * 路径与落盘都从根级守门取（[writeRootFileGuarded] → [safeRootFile] → 登记在册的写核），
-         * 这里不再自己拼 `File(knowledgeRoot, …)` 再裸 `writeText`：那颗标记写的是 knowledge/ 根下，
-         * 而根级那道门本来就在账上跑着（`.last_backup` 那一族用的就是它）。
-         *
-         * 返回 false = 名字被守门挡下、一个字节都没落。「没落」与「已经初始化过了」从此看不出差别，
-         * 那正是一次不留痕的跳过，所以判掉它：留一条错误级日志，再把失败交给调用方。
-         * 抛 [IllegalStateException] 而不是新增异常类型：本包已经是这个形状（见 DeepSeekRepository），
-         * 而搬之前 `File.writeText` 失败就直接抛，「调用方会失败」这条语义得原样留着——
-         * 调用方是 KnowledgeCatalogWriteStore 里那两处事务内调用，异常会穿过 inWriteLock 上抛。
-         */
-        override fun markInitialized() {
-            if (!writeRootFileGuarded(INIT_MARKER_FILE, "done")) {
-                com.lovebrain.app.util.L.e("init marker did not land: $INIT_MARKER_FILE", null)
-                throw IllegalStateException("init marker did not land: $INIT_MARKER_FILE")
-            }
-        }
-
-        /** 枚举判据只有目录读侧那一份 */
-        override fun entries(): List<KnowledgeBase> = catalog.list()
-
-        /** 编解码共用本类那一份 Json 配置：给第二个类另配一把尺就等于换了判据 */
-        override fun encodeMeta(kb: KnowledgeBase): String =
-            json.encodeToString(KnowledgeBase.serializer(), kb)
-
-        override fun template(name: String): String = loadSchema(name)
-
-        override var activeKbName: String
-            get() = securePrefs.activeKbName
-            set(value) { securePrefs.activeKbName = value }
-
-        override suspend fun migrateCatalogEntry(kbName: String) = migrator.migrateUnlocked(kbName)
-
-        /** 节流备份的启动者仍是本类（外部 CoroutineScope 只能由协调器持有） */
-        override fun scheduleBackup() = scheduleDebouncedBackup()
-
-        /** 当前库那三级回退的判据住在 [getActive]，目录写侧不抄第二份 */
-        override suspend fun activeEntry(): KnowledgeBase? = getActive()
-
-        /** 阶段标签的主人画像格，白名单归一化与拒绝措辞都在那里 */
-        override suspend fun writeStage(kbName: String, stage: String) = updateStage(kbName, stage)
-
-        /** 正文写回到 [writeFile]：只读判定、"库没了别复活"那两条都还在原处 */
-        override suspend fun writeDocument(kbName: String, relativePath: String, content: String) =
-            writeFile(kbName, relativePath, content)
-
-        // ═══ 画像事务格（KnowledgeProfileTransactionService）拿到的能力 ═══
-        // 与归档格同形：锁、路径、只读判定、落盘四件仍在本类。
-        // read / writeUnlocked / kbExists / timestamp 与文档格/画像格同名同签，由上面那些 override 一处满足。
-
-        override fun isReadOnly(kbName: String): Boolean = migrator.isReadOnly(kbName)
-        override fun memoryRevisionOf(kbName: String): Int = memory.revisionOf(kbName)
-        override fun readVector(kbName: String): Map<String, Int> = profile.vectorOf(kbName)
-        override fun writeVector(kbName: String, values: Map<String, Int>) {
-            profile.setVector(kbName, values)
-        }
-        override fun normalizeStage(raw: String, opLabel: String): String? =
-            profile.normalizeStage(raw, opLabel)
-        override fun rewriteStageLine(warmth: String, stage: String): String =
-            profile.rewriteStageLine(warmth, stage)
-        override fun resolvePath(kbName: String, relativePath: String): File? =
-            safeKbFile(kbName, relativePath)
-        override fun <T> runTx(kbName: String, block: ProfileTxOps.() -> T): T =
-            transactionUnlocked(kbName) { ProfileTxOpsView(this).block() }
-        // scheduleBackup() / timestamp() / read() / writeUnlocked() / kbExists() 与
-        // CatalogStorage/DocumentStorage/ProfileStorage 同名同签，上面那些 override 一处满足。
-    }
 
     /**
      * 自动备份的策略（§5.3 拆出的第一格）：该复制什么、留几份、删哪些全在它里，
@@ -358,7 +86,7 @@ class KnowledgeRepository(
      * "什么时候要备份"的节流调度**故意留在本类**：外部 CoroutineScope 只能由协调器持有
      * （SingleOwnerContractTest 那条闸），仓库是这里唯一的启动者，把 launch 一起搬出去就违规。
      */
-    private val backup = KnowledgeBackupService(RepoStorage())
+    internal val backup = KnowledgeBackupService(KnowledgeRepoStorage(this))
 
     /**
      * 目录枚举（§5.3 catalog 第一刀）：读哪些目录、什么算一个库、按什么排，全在它里。
@@ -368,7 +96,7 @@ class KnowledgeRepository(
      * 现在两个入口（本类的 [listAll] 与目录写侧经 [CatalogWriteStorage.entries] 的那一次）
      * 共用这一个实现。
      */
-    private val catalog = KnowledgeCatalogStore(RepoStorage())
+    internal val catalog = KnowledgeCatalogStore(KnowledgeRepoStorage(this))
 
     /**
      * 文档的安全路径 + 版本化读写（§5.3 第四格）。
@@ -381,7 +109,7 @@ class KnowledgeRepository(
      * 写仍然只有本类那一条链：文档格想落盘必须经 [RepoStorage.writeUnlocked] 回来，
      * 于是只读 schema 拒绝与备份节流都不会被新版本写绕过。
      */
-    private val documents = KnowledgeDocumentStore(RepoStorage())
+    internal val documents = KnowledgeDocumentStore(KnowledgeRepoStorage(this))
 
     /**
      * 记忆纠正与库级 revision（§5.3 第五格）。
@@ -392,7 +120,7 @@ class KnowledgeRepository(
      * 锁、路径守门、落盘仍然在本类：记忆格只拿到 read / writeTransaction / 编解码 /
      * kbExists / timestamp 五样能力。
      */
-    private val memory = KnowledgeMemoryStore(RepoStorage())
+    internal val memory = KnowledgeMemoryStore(KnowledgeRepoStorage(this))
 
     /**
      * 画像正文、内容修订、阶段、状态向量与温度文件里的阶段标签（§5.3 第六格）。
@@ -405,14 +133,14 @@ class KnowledgeRepository(
      * `applyProfileUpdateAtomically` 的 strict 版也回来共用同一份改写规则。
      * 锁、路径守门、落盘、kb.json 的解码仍然在本类。
      */
-    private val profile = KnowledgeProfileStore(RepoStorage())
+    internal val profile = KnowledgeProfileStore(KnowledgeRepoStorage(this))
 
     /**
      * 画像事务性写入（§5.3 第八格）：`applyProfileUpdateAtomically` 的跨文件事务 + 备份 + 回滚 + 校验。
      * 画像格 [KnowledgeProfileStore] 注释里那行"它本体仍在仓库里等 archive 那一格"指的就是这一块。
      * 锁、路径守门、只读判定、落盘与备份节流仍在本类（见 [ProfileTxStorage] 那份实现）。
      */
-    private val profileTx = KnowledgeProfileTransactionService(RepoStorage())
+    private val profileTx = KnowledgeProfileTransactionService(KnowledgeRepoStorage(this))
 
     /**
      * 话题归档的四步状态机（§5.3 第七格）。
@@ -423,7 +151,7 @@ class KnowledgeRepository(
      * 状态编解码），没有 Mutex、没有 File、没有第二条落盘链。
      * 它比画像格宽一样是因为它确实管四步与一个状态文件；再宽就要开始拆"初始化"了。
      */
-    private val archive = KnowledgeArchiveService(RepoStorage())
+    private val archive = KnowledgeArchiveService(KnowledgeRepoStorage(this))
 
     /**
      * 「库的存在性」的写侧（§5.3 catalog 那一格的后半）：建、删、切当前库、改显示名、首次启动 seed。
@@ -436,31 +164,31 @@ class KnowledgeRepository(
      * internal 只为测试与 di/AppModule.kt 能直接拿到那位主人——绑定端口时指回这里，
      * 而不是再造一个包装（两个持有文件系统的对象就等于没有唯一入口）。
      */
-    internal val catalogWrites = KnowledgeCatalogWriteStore(RepoStorage())
+    internal val catalogWrites = KnowledgeCatalogWriteStore(KnowledgeRepoStorage(this))
 
     /**
      * 谈心日志格（§5.3 后续）：两段式追加 + 实际发送记录 upsert + 分析节读取。
      * 锁、路径守门、落盘仍在本类（见 [CounselingStorage] 那份实现）。
      */
-    private val counseling = KnowledgeCounselingService(RepoStorage())
+    private val counseling = KnowledgeCounselingService(KnowledgeRepoStorage(this))
 
     /**
      * 持续意图格（§5.3 后续）：`moment/intent.json` 的读/写 + revision 递增。
      * 锁、路径守门、落盘仍在本类（见 [IntentStorage] 那份实现）。
      */
-    private val intent = KnowledgeIntentService(RepoStorage())
+    private val intent = KnowledgeIntentService(KnowledgeRepoStorage(this))
 
     /**
      * 话题文本格（§5.3 后续）：话题标签读写 + 计划事项解析 + 话题年龄。
      * 锁、路径守门、落盘仍在本类（见 [TopicTextStorage] 那份实现）。
      */
-    private val topicText = KnowledgeTopicTextService(RepoStorage())
+    private val topicText = KnowledgeTopicTextService(KnowledgeRepoStorage(this))
 
     /**
      * revision-check 写入格（§5.3 后续）：带修订版本条件校验的原子写入。
      * 锁、路径守门、落盘仍在本类（见 [RevisionCheckStorage] 那份实现）。
      */
-    private val revisionCheck = KnowledgeRevisionCheckedWriteService(RepoStorage())
+    private val revisionCheck = KnowledgeRevisionCheckedWriteService(KnowledgeRepoStorage(this))
 
     /** 备份节流：记录最后一次写入时间，debounce 5s 后触发增量备份 */
     private val backupDebounceMs = 5_000L
@@ -493,7 +221,7 @@ class KnowledgeRepository(
      *
      * 任务体里再核一次时间戳——`delay` 期间可能又来了新写入，那一班就该让给下一班。
      */
-    private fun scheduleDebouncedBackup() {
+    internal fun scheduleDebouncedBackup() {
         lastWriteTimestamp.set(System.currentTimeMillis())
         backupDebounceJob?.cancel()
         backupDebounceJob = appScope.launch(Dispatchers.IO + SupervisorJob()) {
@@ -523,182 +251,9 @@ class KnowledgeRepository(
         }
     }
 
-    // ═══════════ 原子写入工具 ═══════════
-
-    /**
-     * 唯一落盘出口（2026-09-24 独立复核的写边界要求）。
-     *
-     * 独立复核报告 §3.1 的原话是：注释写着"所有写路径最终落到 writeFileUnlocked"，
-     * 但十几条路径直接 `atomicWriteText` 或自己 `File(dir, …)`，于是 v4 库在 v3 App 里
-     * 虽然显示 read-only，元数据和纠正文件照样能被改写。
-     *
-     * 所以拒绝判定放在**这里**，而且按**文件属于哪个库**判，不按"调用方有没有传 kbName"判：
-     * Repository 里任何一条写链——包括以后新加的、忘记走 [transaction] 的——
-     * 都必须先经过这道门。返回 false 表示什么都没写。
-     *
-     * 真正的字节操作在 [rawAtomicWriteText]，它只被本函数调用。
-     */
-    private fun atomicWriteText(file: File, content: String): Boolean {
-        kbOwning(file)?.let { owner ->
-            if (migrator.isReadOnly(owner)) {
-                com.lovebrain.app.util.L.w(
-                    "write refused by the single write boundary: $owner is read-only " +
-                        "(schema newer than this build) — target ${file.name}"
-                )
-                return false
-            }
-        }
-        rawAtomicWriteText(file, content)
-        return true
-    }
-
-    /**
-     * 这个文件落在哪个知识库下；root 级 marker（`.kb_initialized`、`.last_backup`）
-     * 与 `.backup/` 之类以点开头的目录返回 null，它们不属于任何库，也不受只读保护。
-     */
-    private fun kbOwning(file: File): String? {
-        val root = runCatching { knowledgeRoot.canonicalPath }.getOrNull() ?: return null
-        val abs = runCatching { file.canonicalPath }.getOrNull() ?: return null
-        val prefix = root + File.separator
-        if (!abs.startsWith(prefix)) return null
-        val first = abs.removePrefix(prefix).substringBefore(File.separator)
-        if (first.isEmpty() || first.startsWith(".")) return null
-        return first
-    }
-
-    /**
-     * 原子写入：先写临时文件 → fsync 刷盘 → rename 覆盖目标文件。
-     * rename 失败时保留原件并报错，不回退到直接覆盖（直接写可能导致半写损坏）。
-     *
-     * 调研依据：SQLite 的原子提交机制（写 journal → flush → rename → delete journal），
-     * 以及 Kotlin File.writeText() 无原子保证（Kotlin 官方文档确认）。
-     * rename 在 POSIX/Android 上是原子操作（SQLite 文档确认），
-     * 确保目标文件要么是旧内容要么是新内容，绝不会出现写一半的中间状态。
-     *
-     * 仅供 [atomicWriteText] 调用——需要写文件请走 [transaction] / [KnowledgeTx]。
-     */
-    private fun rawAtomicWriteText(file: File, content: String) {
-        val tmp = File(file.parentFile, ".${file.name}.tmp")
-        try {
-            FileOutputStream(tmp).use { fos ->
-                fos.write(content.toByteArray(Charsets.UTF_8))
-                fos.flush()
-                fos.fd.sync() // 强制刷盘，防断电丢失
-            }
-            // 优先使用 NIO Files.move(REPLACE_EXISTING)——
-            // 在 POSIX/Android 上是原子替换，在 Windows 上也能安全替换已存在文件。
-            var renamed = false
-            try {
-                val targetPath = file.toPath()
-                java.nio.file.Files.move(
-                    tmp.toPath(),
-                    targetPath,
-                    java.nio.file.StandardCopyOption.REPLACE_EXISTING,
-                    java.nio.file.StandardCopyOption.ATOMIC_MOVE
-                )
-                renamed = true
-            } catch (e: java.nio.file.AtomicMoveNotSupportedException) {
-                // 某些文件系统不支持 ATOMIC_MOVE → 回退到 REPLACE_EXISTING（非原子但安全）
-                try {
-                    java.nio.file.Files.move(
-                        tmp.toPath(),
-                        file.toPath(),
-                        java.nio.file.StandardCopyOption.REPLACE_EXISTING
-                    )
-                    renamed = true
-                } catch (e2: Exception) {
-                    com.lovebrain.app.util.L.w("atomicWriteText: NIO move failed: ${e2.message}")
-                }
-            } catch (e: Exception) {
-                com.lovebrain.app.util.L.w("atomicWriteText: NIO ATOMIC_MOVE failed: ${e.message}")
-            }
-            // NIO 全部失败时的回退——严格检查每步返回值，保证任何路径下至少保留 old target 或 recoverable backup。
-            // 流程：target → backup（必须成功才继续）→ tmp → target → 成功删 backup / 失败用 backup 恢复。
-            if (!renamed) {
-                val backupTmp = File(file.parentFile, ".${file.name}.bak")
-                // 清理可能存在的旧 .bak 残留——防历史 backup 干扰恢复逻辑
-                if (backupTmp.exists()) {
-                    backupTmp.delete()
-                }
-                // Step 1: 如果旧文件存在，先 rename 到 .bak（保留旧文件内容）
-                // 必须检查返回值——backup 失败则保持 target 原样，退出
-                val backupSucceeded = if (file.exists()) {
-                    file.renameTo(backupTmp)
-                } else {
-                    true // 无旧文件 → 视为 backup 成功（backupTmp 不存在）
-                }
-                if (!backupSucceeded) {
-                    // backup 失败——target 仍在，不继续 tmp → target
-                    com.lovebrain.app.util.L.w("atomicWriteText: backup rename failed, keeping original: ${file.name}")
-                    throw java.io.IOException("atomic write backup failed: ${file.name}")
-                }
-                // Step 2: rename tmp → 目标文件（此时目标不存在）
-                if (tmp.renameTo(file)) {
-                    renamed = true
-                    // 成功后删除旧备份
-                    if (backupTmp.exists()) backupTmp.delete()
-                } else {
-                    // tmp → target 失败——用 backup 恢复 target
-                    com.lovebrain.app.util.L.w("atomicWriteText: tmp→target rename failed, restoring backup: ${file.name}")
-                    if (backupTmp.exists()) {
-                        val restored = backupTmp.renameTo(file)
-                        if (!restored) {
-                            // 恢复也失败——保留 backup 文件，绝不删除
-                            com.lovebrain.app.util.L.e("atomicWriteText: CRITICAL - backup restore also failed! Backup preserved at: ${backupTmp.absolutePath}", null)
-                        }
-                    }
-                    throw java.io.IOException("atomic rename failed after fallback: ${file.name}")
-                }
-            }
-        } finally {
-            // 清理可能残留的临时文件（rename 成功后 tmp 已不存在，此处只是兜底）
-            if (tmp.exists()) tmp.delete()
-        }
-    }
-
-    /** 判断知识库是否真实存在（目录存在 + kb.json 存在）。调用方必须已持有文件互斥锁或处于单线程路径 */
-    private fun kbExistsUnlocked(kbName: String): Boolean {
-        val dir = File(knowledgeRoot, kbName)
-        val meta = File(dir, "kb.json")
-        return dir.isDirectory && meta.isFile
-    }
-
-    /**
-     * 库 schema 比本 App 支持的还新时拒绝写入。
-     *
-     * 所有写路径（含 appendFileUnlocked）最终都落到这里，所以拦截只需要这一处；
-     * 用旧代码往 v4 结构里写 v3 形状，会把新字段静默抹掉。
-     * 与"KB 已删除即 no-op"保持同一风格：不抛异常、不复活目录，只记一条日志。
-     */
-    private fun refusedByReadOnlySchema(kbName: String, op: String, relativePath: String): Boolean {
-        if (!migrator.isReadOnly(kbName)) return false
-        com.lovebrain.app.util.L.w(
-            "$op refused on $kbName/$relativePath — schema newer than this build, library is read-only"
-        )
-        return true
-    }
 
     /** 该库当前是否可写（schema 过新时为 false） */
     fun isWritable(kbName: String): Boolean = !migrator.isReadOnly(kbName)
-
-    /** 锁区内写入核心：不抢锁。调用方必须已持有文件互斥锁（Mutex 非重入，锁内再抢=永久挂起） */
-    private fun writeFileUnlocked(kbName: String, relativePath: String, content: String) {
-        if (refusedByReadOnlySchema(kbName, "writeFile", relativePath)) return
-        val file = safeKbFile(kbName, relativePath) ?: return
-        file.parentFile?.mkdirs()
-        atomicWriteText(file, content)
-        scheduleDebouncedBackup()
-    }
-
-    /** 锁区内追加核心：不抢锁。调用方必须已持有文件互斥锁 */
-    private fun appendFileUnlocked(kbName: String, relativePath: String, content: String) {
-        if (refusedByReadOnlySchema(kbName, "appendFile", relativePath)) return
-        val file = safeKbFile(kbName, relativePath) ?: return
-        file.parentFile?.mkdirs()
-        val existing = if (file.exists()) file.readText() else ""
-        atomicWriteText(file, existing + content)
-        scheduleDebouncedBackup()
-    }
 
     // ═══════════ 唯一写边界（独立复核 2026-09-24）═══════════
 
@@ -714,71 +269,6 @@ class KnowledgeRepository(
         data object MissingLibrary : WriteResult<Nothing>
     }
 
-    /**
-     * 一个知识库的写事务句柄——Repository 里唯一被允许"拿到路径 + 写文件"的入口。
-     *
-     * 为什么要有它（2026-09-24 独立复核）：以前每个新方法都可能顺手
-     * `atomicWriteText(File(dir, "kb.json"), …)`，于是"schema 过新即只读"要靠
-     * 十几处 if 各自记得写。现在 mutation 只能从这个对象取得安全路径与原子写能力，
-     * 判定集中在 [transaction] 入口 + [atomicWriteText] 出口两处。
-     *
-     * 构造点是 internal：外部拿不到一个"没经过只读判定"的 Tx。
-     */
-    inner class KnowledgeTx internal constructor(val kbName: String) {
-
-        // 方法名刻意带 At 后缀：取消审计按**名字**判断块体里有没有挂起调用，
-        // 而仓库里已经有 `suspend fun read` / 大量 delete 语义，叫裸名会被虚报成
-        // "catch 吞掉挂起调用"。名字撞车会让那条门禁变成噪声，噪声一旦被接受就等于没有门禁。
-
-        /** 相对路径 → 安全绝对路径；越界或非法输入返回 null（绝不落到库目录之外） */
-        fun pathOf(relativePath: String): File? = safeKbFile(kbName, relativePath)
-
-        /** 读；越界、非法或不存在都得到空串 */
-        fun readTextAt(relativePath: String): String {
-            val f = pathOf(relativePath) ?: return ""
-            return if (f.exists()) runCatching { f.readText(Charsets.UTF_8) }.getOrDefault("") else ""
-        }
-
-        /** 原子写。false = 被只读保护或路径非法挡下，一个字节都没落。 */
-        fun write(relativePath: String, content: String): Boolean =
-            writeFileCheckedUnlocked(kbName, relativePath, content)
-
-        /** 原子追加，语义同 [write] */
-        fun append(relativePath: String, content: String): Boolean =
-            appendFileCheckedUnlocked(kbName, relativePath, content)
-
-        /**
-         * 根级 marker（`.last_backup` 那一族）的安全路径：与 [pathOf] 同一条纪律、同一位所有者，
-         * 只是解析基准换成 knowledge/ 根。那个文件按设计不属于任何库，`safeKbFile` 表达不了它，
-         * 而"表达不了"从今天起不再等于"可以不守门"：只收裸文件名，越界一律 null。
-         */
-        fun rootFile(fileName: String): File? = safeRootFile(fileName)
-
-        /**
-         * 写一个根级 marker。false = 名字被守门挡下，一个字节都没落（并且留一条错误级日志）。
-         *
-         * 落盘仍在唯一写链上（[writeFileCheckedUnlocked] 的「路径已解析」那一支），只读判定在它下游的
-         * [atomicWriteText] 里按归属判——根级文件不属于任何库，那道判定与搬之前一样是放行。
-         */
-        fun writeRootMarker(fileName: String, content: String): Boolean =
-            writeRootFileGuarded(fileName, content)
-
-        /** 删除。false = 没删（被挡、越界或本来就不存在）。 */
-        fun deleteAt(relativePath: String): Boolean {
-            if (migrator.isReadOnly(kbName)) return false
-            val f = pathOf(relativePath) ?: return false
-            return f.exists() && f.delete()
-        }
-
-        /** 读改写 kb.json；库不存在 / 只读 / JSON 坏掉都返回 false 且不写 */
-        fun updateMeta(transform: (KnowledgeBase) -> KnowledgeBase): Boolean {
-            if (migrator.isReadOnly(kbName)) return false
-            val raw = readTextAt("kb.json")
-            if (raw.isBlank()) return false
-            val kb = runCatching { json.decodeFromString<KnowledgeBase>(raw) }.getOrNull() ?: return false
-            return write("kb.json", json.encodeToString(KnowledgeBase.serializer(), transform(kb)))
-        }
-    }
 
     /**
      * 公开写入口：一次事务、一个库、一把锁。
@@ -786,120 +276,17 @@ class KnowledgeRepository(
      * 只读判定在**入口**做一次，所以 block 里不需要再写任何 schema if；
      * block 返回即事务结束。失败原因用类型给出，不靠调用方猜 null。
      */
-    suspend fun <T> transaction(
+    internal suspend fun <T> transaction(
         kb: com.lovebrain.app.model.KbName,
         block: KnowledgeTx.() -> T
     ): WriteResult<T> = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kb.value)) return@withLock WriteResult.MissingLibrary
             if (migrator.isReadOnly(kb.value)) return@withLock WriteResult.RefusedNewerSchema
-            WriteResult.Written(KnowledgeTx(kb.value).block())
+            WriteResult.Written(KnowledgeTx(this@KnowledgeRepository, kb.value).block())
         }
     }
 
-    /**
-     * 把 [KnowledgeTx] 收窄成归档格能看见的四件事。
-     *
-     * 直接把 `KnowledgeTx` 交出去就等于把 `pathOf`（能拿 File）也交出去了——那正是复核报告
-     * 说的"第二个所有者"的起点。适配层薄，但它让"格子里没有 File"这件事能被静态检查。
-     */
-    private class ArchiveTxView(private val tx: KnowledgeTx) : ArchiveTx {
-        override fun write(relativePath: String, content: String): Boolean = tx.write(relativePath, content)
-        override fun append(relativePath: String, content: String): Boolean = tx.append(relativePath, content)
-        override fun delete(relativePath: String): Boolean = tx.deleteAt(relativePath)
-        override fun updateMeta(transform: (KnowledgeBase) -> KnowledgeBase): Boolean =
-            tx.updateMeta(transform)
-    }
-
-    /**
-     * 把 [KnowledgeTx] 收窄成目录写侧能看见的三件事（seed 写、改 meta、判某一格在不在）。
-     *
-     * 与 [ArchiveTxView] 同一用意，而且这里更要紧：建库与补齐原本都习惯先 `File(dir, path)`
-     * 再问一句 `exists()`——那一步就是"第二个路径所有者"。现在判存在性也只能问
-     * [KnowledgeTx.pathOf] 那一道守门，越界路径既写不进、也判不出存在。
-     */
-    private class CatalogTxView(private val tx: KnowledgeTx) : CatalogTx {
-        override fun write(relativePath: String, content: String): Boolean = tx.write(relativePath, content)
-        override fun updateMeta(transform: (KnowledgeBase) -> KnowledgeBase): Boolean =
-            tx.updateMeta(transform)
-        override fun exists(relativePath: String): Boolean = tx.pathOf(relativePath)?.exists() == true
-    }
-
-    /** 把 [KnowledgeTx] 收窄成画像事务格能看见的四件事（与 [ArchiveTxView] 同一用意）。 */
-    private class ProfileTxOpsView(private val tx: KnowledgeTx) : ProfileTxOps {
-        override fun write(relativePath: String, content: String): Boolean = tx.write(relativePath, content)
-        override fun readTextAt(relativePath: String): String = tx.readTextAt(relativePath)
-        override fun deleteAt(relativePath: String): Boolean = tx.deleteAt(relativePath)
-        override fun updateMeta(transform: (KnowledgeBase) -> KnowledgeBase): Boolean =
-            tx.updateMeta(transform)
-    }
-
-    /**
-     * 根下"看着像一个库目录"的那些：是目录、名字不以 `.` 开头。
-     *
-     * 比枚举格 [KnowledgeCatalogStore.list] 宽，而且必须宽：切库要把 `active` 写回**每一个**
-     * 目录里的 kb.json（含元数据坏掉、名字对不上而列不进清单的那些），否则磁盘上会出现
-     * 两个 active=true。枚举判据归枚举格，这里只回答"根下有哪些目录"。
-     */
-    private fun visibleKbDirs(): List<File> =
-        knowledgeRoot.listFiles()?.filter { it.isDirectory && !it.name.startsWith(".") } ?: emptyList()
-
-    /**
-     * 给"已经持有 [fileMutex]"的内部路径用。
-     *
-     * 判定与 [transaction] 完全同一把尺；Mutex 非重入，锁内不能再调 [transaction]。
-     */
-    private fun <T> transactionUnlocked(kbName: String, block: KnowledgeTx.() -> T): T =
-        KnowledgeTx(kbName).block()
-
-    /** [writeFileUnlocked] 的"有没有真的写"版本：只读时返回 false 而不是静默跳过 */
-    private fun writeFileCheckedUnlocked(kbName: String, relativePath: String, content: String): Boolean {
-        if (refusedByReadOnlySchema(kbName, "writeFile", relativePath)) return false
-        val file = safeKbFile(kbName, relativePath) ?: return false
-        if (!writeFileCheckedUnlocked(file, content)) return false
-        scheduleDebouncedBackup()
-        return true
-    }
-
-    /**
-     * 同一个登记在册的写核，另一支入口：目标文件**已由某道守门解析好**时用这一支
-     * （库内路径来自 `safeKbFile`，根级 marker 来自 [safeRootFile]）。
-     *
-     * 这不是第三条链：落盘只有 [atomicWriteText] 那一处，只读判定也在它里面按归属判。
-     * 只读**入口**判定与备份节流留在库内那一支——根级文件不属于任何库，硬给它套一个 kbName
-     * 就得编一个不存在的库；而 marker 自己就是备份的产物，写完再排一次备份只会空转（那是改行为）。
-     */
-    private fun writeFileCheckedUnlocked(file: File, content: String): Boolean {
-        file.parentFile?.mkdirs()
-        return atomicWriteText(file, content)
-    }
-
-    /** 根级文件的统一守门：与 [safeKbFile] 同一位所有者、同宽严，判据住在 [KnowledgeDocumentStore.resolveRoot] */
-    private fun safeRootFile(fileName: String): File? = documents.resolveRoot(fileName)
-
-    /**
-     * 根级 marker 的唯一写路径：根级守门给路径 → 唯一写核落盘。
-     * 拒绝必须留痕——一次不出声的 false 与静默跳过没法区分（与 [RepoStorage.atomicWriteAt] 同一口径）。
-     */
-    private fun writeRootFileGuarded(fileName: String, content: String): Boolean {
-        val file = safeRootFile(fileName)
-        if (file == null) {
-            com.lovebrain.app.util.L.e("root marker write refused by the guard: $fileName", null)
-            return false
-        }
-        return writeFileCheckedUnlocked(file, content)
-    }
-
-    /** [appendFileUnlocked] 的"有没有真的写"版本 */
-    private fun appendFileCheckedUnlocked(kbName: String, relativePath: String, content: String): Boolean {
-        if (refusedByReadOnlySchema(kbName, "appendFile", relativePath)) return false
-        val file = safeKbFile(kbName, relativePath) ?: return false
-        file.parentFile?.mkdirs()
-        val existing = if (file.exists()) file.readText() else ""
-        if (!atomicWriteText(file, existing + content)) return false
-        scheduleDebouncedBackup()
-        return true
-    }
 
     // ═══════════ schema 版本与迁移（实现见 KnowledgeMigrator）═══════════
 
@@ -1089,15 +476,6 @@ class KnowledgeRepository(
     /** 把裸字符串相对路径校验成 [KbRelativePath] */
     fun toKbPath(raw: String): com.lovebrain.app.model.KbRelativePath? = documents.toKbPath(raw)
 
-    /**
-     * String 入口的统一守门：返回解析后的绝对 File，非法输入返回 null。
-     *
-     * 判据住在 [KnowledgeDocumentStore.resolve]——公开读、无锁快速读、写、删、版本写
-     * 全部经这一个函数，不再有第二条 `File(dir, path)` 捷径。
-     */
-    private fun safeKbFile(kbName: String, relativePath: String): File? =
-        documents.resolve(kbName, relativePath)
-
     /** 线程安全的文件追加（fileMutex 锁 + I/O 线程；A2-5 合并原 appendFileSafe）
      *  目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
     override suspend fun appendFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
@@ -1181,20 +559,6 @@ class KnowledgeRepository(
         }
     }
 
-    /**
-     * 读 kb.json（过 canonical 守门）。库不在、路径非法、JSON 坏掉都给 null。
-     *
-     * 这一个是 [getTurnCount] 与 [getCurrentStage] 共用的读入口。以前两处各自
-     * `File(File(knowledgeRoot, kbName), "kb.json")` + `readText()`，
-     * 而同一个文件的**写**侧走的是 `KnowledgeTx.updateMeta`（守门）——
-     * 一宽一严正是复核报告里 P0 那条读路径点名的形状。
-     */
-    private fun readMetaUnlocked(kbName: String): KnowledgeBase? {
-        val raw = documents.read(kbName, "kb.json")
-        if (raw.isBlank()) return null
-        return runCatching { json.decodeFromString<KnowledgeBase>(raw) }.getOrNull()
-    }
-
     /** 读取当前轮次数（kb.json 的 turnCount 字段），供 OngoingContextSelector 冷却逻辑使用 */
     override suspend fun getTurnCount(kbName: String): Int = withContext(Dispatchers.IO) {
         readMetaUnlocked(kbName)?.turnCount ?: 0
@@ -1233,16 +597,6 @@ class KnowledgeRepository(
         }
     }
 
-    /**
-     * updateStage 的无锁核心：调用方必须已持有文件互斥锁。
-     *
-     * 判"能不能当阶段用"与"落不落盘"分家之后，这里只剩一次转发；
-     * 白名单、拒绝时的措辞、以及 `updatedAt` 都归 [KnowledgeProfileStore.setStage]。
-     */
-    private fun updateStageUnlocked(kbName: String, stage: String) {
-        profile.setStage(kbName, stage)
-    }
-
     /** 读取 warmth.md 的五维状态向量（解析不到默认 50） */
     override suspend fun readVector(kbName: String): Map<String, Int> = withContext(Dispatchers.IO) {
         profile.vectorOf(kbName)
@@ -1260,22 +614,6 @@ class KnowledgeRepository(
         }
     }
 
-    /**
-     * b3-8: writeVector 的无锁核心——调用方必须已持有 fileMutex
-     *
-     * 读侧原来是这个函数体里最后一条裸路径：`File(File(knowledgeRoot, kbName), path).readText()`
-     * 之后才 `writeFileUnlocked` 落盘——**读不过守门、写守门**，同一个文件两种宽严。
-     * 这条改动带出一个真的行为差别：旧布局（只有 `global/status.md`）的库，
-     * `readVector` 一直读得到内容（公开读有回退），而这里读不到于是**静默不写**；
-     * 现在两边同一把尺，见 `writingVectorForALegacyLibraryActuallyLands`。
-     * 至于"库名带 .. "那一面，这里黑盒量不到（读到的内容不外露，写那一侧本来就拒），
-     * 所以 `ProfileReadBoundaryTest` 里那一格在修之前就是绿的，它是防回归而不是证据；
-     * 真正的证据是 `StorageBoundaryOwnershipTest` 的计数棘轮：仓库里这种写法还剩几条。
-     */
-    private fun writeVectorUnlocked(kbName: String, values: Map<String, Int>) {
-        profile.setVector(kbName, values)
-    }
-
     /** 就地更新 warmth.md 的阶段标签行（阶段变化时用），保留旧值作为历史注释。写入前经 StageCatalog 归一化
      *  目标 KB 已删除时 no-op */
     override suspend fun updateWarmthStageLabel(kbName: String, newStage: String) = withContext(Dispatchers.IO) {
@@ -1286,17 +624,6 @@ class KnowledgeRepository(
             }
             updateWarmthStageLabelUnlocked(kbName, newStage)
         }
-    }
-
-    /**
-     * updateWarmthStageLabel 的无锁核心：调用方必须已持有文件互斥锁。
-     *
-     * 阶段行怎么写（变体认法、「当前状态」节插入、旧值留成"过去曾经是…"）
-     * 与 strict 版共用 [KnowledgeProfileStore.rewriteStageLine] 那一份——
-     * 拆之前这两处各抄了 30 行，改一处就会漏另一处。
-     */
-    private fun updateWarmthStageLabelUnlocked(kbName: String, newStage: String) {
-        profile.setWarmthStageLabel(kbName, newStage)
     }
 
     /**
@@ -1422,9 +749,6 @@ class KnowledgeRepository(
         }.getOrDefault("")
     }
 
-    private fun isoNow(): String =
-        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault()).format(Date())
-
     companion object {
         // 内容修订号的输入清单已随画像正文归 KnowledgeProfileStore，这里不再有第二份
 
@@ -1448,12 +772,12 @@ class KnowledgeRepository(
          * 别处再抄一份目录名列表就等于第二个所有者。
          */
         const val INIT_MARKER_FILE = ".kb_initialized"
-        private const val LEGACY_TRASH_DIR = ".trash"
-        private val CATALOG_LAYERS = listOf("understand", "moment", "memory")
+        internal const val LEGACY_TRASH_DIR = ".trash"
+        internal val CATALOG_LAYERS = listOf("understand", "moment", "memory")
     }
 
     /** 从 assets/schema/ 加载知识库初始化模板（标题骨架 = 单一数据源） */
-    private fun loadSchema(name: String): String {
+    internal fun loadSchema(name: String): String {
         return readAsset(com.lovebrain.app.domain.AssetRegistry.schema(name))
     }
 }

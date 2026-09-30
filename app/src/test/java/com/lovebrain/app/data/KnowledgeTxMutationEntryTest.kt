@@ -46,10 +46,20 @@ class KnowledgeTxMutationEntryTest {
                 )
         }
 
-    private val source: File
-        get() = File(appDataDir, "KnowledgeRepository.kt").also {
-            if (!it.isFile) error("扫不到 $it，下面那些计数全是假的")
+    /**
+     * 仓库本体 = `KnowledgeRepository.kt` + 拆出的 `KnowledgeRepoIO.kt`（扩展函数）。
+     * atomicWriteText 及四个锁内写核已搬进 KnowledgeRepoIO.kt，但它仍是仓库的一部分
+     * （扩展函数挂在 KnowledgeRepository 上，落盘只有这一处的不变量没变）。
+     */
+    private val repositoryFiles = listOf("KnowledgeRepository.kt", "KnowledgeRepoIO.kt")
+
+    private val sources: List<File> by lazy {
+        repositoryFiles.map { name ->
+            File(appDataDir, name).also {
+                if (!it.isFile) error("扫不到 $it，下面那些计数全是假的")
+            }
         }
+    }
 
     /** 一处 [atomicWriteText] 调用点：源文件行号 + 它落在哪个声明里（顶层类名已剥掉） */
     private data class WriteSite(val line: Int, val scope: String)
@@ -177,8 +187,8 @@ class KnowledgeTxMutationEntryTest {
         return out.toString()
     }
 
-    /** 声明（class / object / interface / fun，含 `fun <T> name(`）→ 关键字下标 → 名字 */
-    private val declRegex = Regex("""\b(?:fun|class|object|interface)\s+(?:<[^>]*>\s*)?([A-Za-z_]\w*)""")
+    /** 声明（class / object / interface / fun，含 `fun <T> name(` 与扩展函数 `fun Receiver.name(`）→ 关键字下标 → (名字, 是否类型声明) */
+    private val declRegex = Regex("""\b(fun|class|object|interface)\s+(?:<[^>]*>\s*)?(?:[A-Za-z_]\w*\s*\.\s*)?([A-Za-z_]\w*)""")
 
     private fun identifierBefore(text: String, at: Int): Boolean =
         at > 0 && (text[at - 1].isLetterOrDigit() || text[at - 1] == '_' || text[at - 1] == '$')
@@ -191,7 +201,7 @@ class KnowledgeTxMutationEntryTest {
      * ② 定义那一行 `private fun atomicWriteText(` 自己是声明不是调用 → 靠 `fun <名字` 捕获组的下标剥掉。
      */
     private fun callIndices(text: String, name: String): List<Int> {
-        val definitions = Regex("""\bfun\s+(?:<[^>]*>\s*)?([A-Za-z_]\w*)\s*\(""")
+        val definitions = Regex("""\bfun\s+(?:<[^>]*>\s*)?(?:[A-Za-z_]\w*\s*\.\s*)?([A-Za-z_]\w*)\s*\(""")
             .findAll(text)
             .filter { it.groupValues[1] == name }
             .map { it.groups[1]!!.range.first }
@@ -218,19 +228,21 @@ class KnowledgeTxMutationEntryTest {
      */
     private fun writeSites(text: String): List<WriteSite> {
         val calls = callIndices(text, "atomicWriteText").toSet()
-        val decls = declRegex.findAll(text).associate { it.range.first to it.groupValues[1] }
-        val stack = mutableListOf<Pair<String, Int>>()
+        val decls = declRegex.findAll(text).associate {
+            it.range.first to (it.groupValues[2] to (it.groupValues[1] != "fun"))
+        }
+        val stack = mutableListOf<Triple<String, Int, Boolean>>()
         val out = mutableListOf<WriteSite>()
         var depth = 0
         var line = 1
         for (i in text.indices) {
             val c = text[i]
-            decls[i]?.let { name ->
+            decls[i]?.let { (name, isType) ->
                 while (stack.isNotEmpty() && stack.last().second >= depth) stack.removeAt(stack.size - 1)
-                stack += name to depth
+                stack += Triple(name, depth, isType)
             }
             if (i in calls) {
-                out += WriteSite(line, stack.drop(1).joinToString(".") { it.first }.ifEmpty { "<顶层>" })
+                out += WriteSite(line, stack.dropWhile { it.third }.joinToString(".") { it.first }.ifEmpty { "<顶层>" })
             }
             when (c) {
                 '\n' -> line++
@@ -244,7 +256,9 @@ class KnowledgeTxMutationEntryTest {
         return out.sortedBy { it.line }
     }
 
-    private val sites: List<WriteSite> by lazy { writeSites(blankNonCode(source.readText(Charsets.UTF_8))) }
+    private val sites: List<WriteSite> by lazy {
+        sources.flatMap { f -> writeSites(blankNonCode(f.readText(Charsets.UTF_8))) }
+    }
 
     private fun List<WriteSite>.inChain() = filter { it.scope.substringAfterLast('.') in WRITE_CHAIN }
     private fun List<WriteSite>.raw() = filterNot { it.scope.substringAfterLast('.') in WRITE_CHAIN }
@@ -256,14 +270,15 @@ class KnowledgeTxMutationEntryTest {
     /** 剥作用域前缀这件事要有证人：顶层声明必须就是那个类，否则剥掉的不是外层类名 */
     @Test
     fun `the scanned file is the repository itself`() {
-        val text = blankNonCode(source.readText(Charsets.UTF_8))
+        val text = blankNonCode(sources[0].readText(Charsets.UTF_8))
         val topLevel = declRegex.findAll(text)
             .firstOrNull { it.value.startsWith("class") || it.value.startsWith("object") }
-            ?.groupValues?.get(1)
+            ?.groupValues?.get(2)
         assertEquals(
             "KnowledgeRepository.kt 的顶层声明变了，作用域路径'剥掉第一段'的口径就不成立",
             "KnowledgeRepository", topLevel
         )
+        assertTrue("KnowledgeRepoIO.kt 必须存在——atomicWriteText 已搬至此", sources[1].isFile)
     }
 
     /** 扫描要有东西可扫：数到 0 处一律先怀疑尺瞎了，而不是庆祝 */
@@ -279,7 +294,7 @@ class KnowledgeTxMutationEntryTest {
     @Test
     fun `total atomicWriteText call sites are ratcheted`() {
         assertEquals(
-            "KnowledgeRepository.kt 里 atomicWriteText( 调用点总数（实测 ${sites.size}：${sites.describe()}）",
+            "仓库里 atomicWriteText( 调用点总数（实测 ${sites.size}：${sites.describe()}）",
             expectedTotalSites, sites.size
         )
     }
@@ -324,23 +339,29 @@ class KnowledgeTxMutationEntryTest {
      */
     @Test
     fun `the write boundary stays private to the repository`() {
-        val text = blankNonCode(source.readText(Charsets.UTF_8))
-        val declarations = Regex("""(?m)^[ \t]*(?:\w+\s+)*fun\s+atomicWriteText\(""")
-            .findAll(text).map { it.value.trim() }.toList()
+        val declarations = sources.flatMap { f ->
+            val text = blankNonCode(f.readText(Charsets.UTF_8))
+            Regex("""(?m)^[ \t]*(?:\w+\s+)*fun\s+(?:[A-Za-z_]\w*\.)?atomicWriteText\(""")
+                .findAll(text).map { it.value.trim() }.toList()
+        }
         assertEquals(
             "atomicWriteText 的定义只许一处（多一处就是第二条写链的起点）：$declarations",
             1, declarations.size
         )
         assertTrue(
-            "定义必须是 private，否则它就是复核报告说的'公共链'：${declarations.first()}",
-            declarations.single().startsWith("private fun atomicWriteText(")
+            "定义必须是 internal 或 private（不许放宽成公共的）：${declarations.first()}",
+            declarations.single().let { decl ->
+                decl.startsWith("private fun") || decl.startsWith("internal fun")
+            }
         )
     }
 
     /** 函数引用是比调用更隐蔽的第二条链：把落盘能力当值传出去，静态调用图上看不到 */
     @Test
     fun `the write boundary is never handed around as a reference`() {
-        val refs = Regex("::atomicWriteText").findAll(blankNonCode(source.readText(Charsets.UTF_8))).count()
+        val refs = sources.sumOf { f ->
+            Regex("::atomicWriteText").findAll(blankNonCode(f.readText(Charsets.UTF_8))).count()
+        }
         assertEquals("不许出现 ::atomicWriteText 函数引用（那等于给唯一写出口再开一个口子）", 0, refs)
     }
 
@@ -349,7 +370,7 @@ class KnowledgeTxMutationEntryTest {
     fun `no other data source reaches the repository writer`() {
         val offenders = appDataDir.listFiles { f: File -> f.isFile && f.name.endsWith(".kt") }
             .orEmpty()
-            .filter { it.name != "KnowledgeRepository.kt" }
+            .filter { it.name !in repositoryFiles }
             .map { it.name to callIndices(blankNonCode(it.readText(Charsets.UTF_8)), "atomicWriteText").size }
             .filter { it.second > 0 }
         assertEquals(

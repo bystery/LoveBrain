@@ -312,19 +312,19 @@ class ReadOnlySchemaWriteGateTest {
      */
     @Test
     fun `raw byte writer has exactly one caller inside the repository`() {
-        val src = File("src/main/java/com/lovebrain/app/data/KnowledgeRepository.kt")
+        val src = File("src/main/java/com/lovebrain/app/data/KnowledgeRepoIO.kt")
         assertTrue("cannot find $src — this test must run from the :app module", src.exists())
         val code = src.readLines().filterNot { it.trimStart().startsWith("*") || it.trimStart().startsWith("//") }
         val text = code.joinToString("\n")
 
         assertEquals(
             "rawAtomicWriteText must be defined exactly once",
-            1, code.count { it.contains("private fun rawAtomicWriteText(") }
+            1, code.count { it.contains("fun") && it.contains("rawAtomicWriteText(") }
         )
         assertEquals(
             "raw bytes may only be written through atomicWriteText, which is the guarded boundary",
             1, code.count {
-                it.contains("rawAtomicWriteText(") && !it.contains("private fun rawAtomicWriteText(")
+                it.contains("rawAtomicWriteText(") && !(it.contains("fun") && it.contains("rawAtomicWriteText("))
             }
         )
         assertEquals(

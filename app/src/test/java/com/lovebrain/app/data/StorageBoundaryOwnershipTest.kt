@@ -85,17 +85,20 @@ class StorageBoundaryOwnershipTest {
         Rule("拼接调用方给的相对路径", ::joinsCallerPath, setOf("KnowledgeDocumentStore.kt")),
         // 仓库那一处是唯一的原子写；KbArchiveTransfer 那一处写的是**导入暂存区**
         // （解包出来的文件），不是知识库正文——登记在此，而不是假装没看见
+        // 2026-10-01：原子写工具与 canonical 判定从 `KnowledgeRepository.kt` 拆进
+        // `KnowledgeRepoIO.kt`（扩展函数）、`markInitialized` 与库目录 canonical 判定
+        // 拆进 `KnowledgeRepoStorage.kt`——拆文件不变「落盘只有这一处」这条不变量。
         Rule(
             "直接开流落盘",
             ::touchesRawStream,
-            setOf("KnowledgeRepository.kt", "KbArchiveTransfer.kt")
+            setOf("KnowledgeRepoIO.kt", "KbArchiveTransfer.kt")
         ),
         // canonical 越界判断：文档路径一处（文档格）、库目录与暂存区各一处。
         // 三处守的是不同的根，先登记，别让它悄悄变四处
         Rule(
             "自己判 canonical 越界",
             { line -> line.contains(".canonicalPath") },
-            setOf("KnowledgeDocumentStore.kt", "KnowledgeRepository.kt", "KbArchiveTransfer.kt")
+            setOf("KnowledgeDocumentStore.kt", "KnowledgeRepoIO.kt", "KnowledgeRepoStorage.kt", "KbArchiveTransfer.kt")
         ),
         // P0-03 的读侧欠账：仓库里"自己把库名和相对路径拼成 File"的写法。
         // 从 10 处一路还到 **0 处**（document/memory/profile/rollback 四批），所以这条现在是

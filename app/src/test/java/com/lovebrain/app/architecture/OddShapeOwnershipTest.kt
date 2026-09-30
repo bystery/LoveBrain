@@ -165,14 +165,18 @@ class OddShapeOwnershipTest {
         // 搬家之后成为顶层 @Composable，才被这把按"顶层声明"认形状的尺扫到。
         // 语义：它是**内容块的表头**（多行 ✗ 列表的标题），不是状态条、不是按钮；
         // 公共件里 `LbSection` 管的是"一节"的外壳，对不上这一处 ⇒ 暂留账上，等 §6.1 那一批判决走完再定。
-        "SuggestResultContent.kt#SuggestAvoidHeader"
+        "SuggestResultContent.kt#SuggestAvoidHeader",
+        // 2026-10-01：谈心模板 chip 行从 CounselingPanel.kt 搬进 CounselingTemplateChips.kt，
+        // 成为顶层 @Composable 才被这把按"顶层声明"认形状的尺扫到——
+        // 它画 Box + Row + 渐隐遮罩，是内容容器不是委托壳。
+        "CounselingTemplateChips.kt#CounselingTemplateChips"
     )
 
     /** 已经退化成"只转一次参数"的壳——不是异形，但也不该再长出新形状 */
     private val expectedShells = setOf(
         "CaptureAppsScreen.kt#CaptureAppRow",
         "CorrectionCenter.kt#CorrectionRecordRow",
-        "CounselingPanel.kt#TemplateChip",
+        "CounselingTemplateChips.kt#TemplateChip",
         "DislikeReasonPanel.kt#CategoryChipRow",
         "DislikeReasonPanel.kt#ReasonChipGrid",
         "FeedbackCasesScreen.kt#FilterChip",

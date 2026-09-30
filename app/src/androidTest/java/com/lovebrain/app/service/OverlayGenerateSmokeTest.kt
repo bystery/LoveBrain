@@ -15,8 +15,10 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
+import android.os.ParcelFileDescriptor
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ServiceTestRule
 import com.lovebrain.app.core.designsystem.LbTags
 import com.lovebrain.app.AppConfig
@@ -222,6 +224,31 @@ class OverlayGenerateSmokeTest {
     }
 
     private fun currentError(): GenerateResult.Error? = vm.result.value as? GenerateResult.Error
+
+    /**
+     * 把悬浮窗权限（SYSTEM_ALERT_WINDOW AppOp）作为前置条件主动设好，而不是用 Assume 跳过。
+     *
+     * 旧版这两格一律 Assume 跳过，理由写的是「悬浮窗权限 / FGS 后台策略」。但前者其实可由测试
+     * instrumentation 持有的 shell 身份直接 `appops set ... allow` 授上——这才是 STEP 2 要的
+     * 「设好前置条件」而不是「假设环境不支持」。授完之后再 [ServiceTestRule.startService]，
+     * 服务 onCreate 里 `bubble.attach()` 才拿得到 addView 权限。
+     *
+     * 剩下确实设不上的只有 Android 14+ 在个别受限设备上对 FGS 后台启动的策略拦截——
+     * 那一类环境才落到下面的 [Assume.assumeTrue]，并在 KDoc 里点明「overlay 已授、仍起不来」，
+     * 不再让本可在 CI emulator 上真跑的用例被一句空泛的「权限不可用」整格跳过。
+     */
+    private fun grantOverlayAppOp() {
+        val packageName = app.packageName
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val pfd: ParcelFileDescriptor = instrumentation.uiAutomation
+            .executeShellCommand("appops set $packageName SYSTEM_ALERT_WINDOW allow")
+        try {
+            // 读到 EOF 才算 shell 命令真正执行完；不读的话 appops 可能还没落盘就去 startService
+            java.io.FileInputStream(pfd.fileDescriptor).use { it.readBytes() }
+        } finally {
+            pfd.close()
+        }
+    }
 
     // ═══════════════ 1. 空态蓝字 = 只切模式、零 Provider 调用 ═══════════════
 
@@ -632,17 +659,19 @@ class OverlayGenerateSmokeTest {
     /**
      * 审计 §8.1 第 5 条「Service destroy」。
      *
-     * 悬浮窗权限与 Android 14+ 后台 FGS 策略在 instrumentation 下不保证可用，
-     * 服务起不来时按环境不支持处理（Assume 明确报 skipped），不伪装成通过；
+     * 悬浮窗权限作为前置条件由 [grantOverlayAppOp] 在起服务前主动授上（STEP 2：设好前置条件，
+     * 不再用 Assume 跳过）。授完仍起不来的只剩 Android 14+ 个别受限设备对 FGS 后台启动的策略
+     * 拦截——那一种环境才落到下面的 [Assume.assumeTrue]（明确报 skipped，不伪装成通过），
      * 起得来就断言真实合同：instance 发布 → onDestroy 释放 instance → 在途生成不受污染。
      */
     @Test
     fun floatingService_destroyWhileGenerationInFlight_releasesInstanceAndChainStaysUsable() {
+        grantOverlayAppOp()
         val intent = Intent(app, FloatingService::class.java)
         val started = runCatching { serviceRule.startService(intent) }.isSuccess
         Assume.assumeTrue(
-            "FloatingService 未能在本 instrumentation 环境启动（悬浮窗权限 / FGS 后台策略）；" +
-                "在具备条件的设备上本用例是真跑的",
+            "FloatingService 未能在本 instrumentation 环境启动（overlay 已由 appops 授予；" +
+                "仍起不来只可能是 Android 14+ FGS 后台策略拦截）；在具备条件的设备上本用例是真跑的",
             started
         )
 
@@ -679,9 +708,14 @@ class OverlayGenerateSmokeTest {
     /** 反复起停不泄漏实例（P3-02「Service 开关」的 instrumentation 侧证据） */
     @Test
     fun floatingService_repeatedStartAndStop_neverLeaksInstance() {
+        grantOverlayAppOp()
         val intent = Intent(app, FloatingService::class.java)
         val started = runCatching { serviceRule.startService(intent) }.isSuccess
-        Assume.assumeTrue("FloatingService 在本环境不可启动，跳过（见类 KDoc）", started)
+        Assume.assumeTrue(
+            "FloatingService 在本环境不可启动（overlay 已由 appops 授予；" +
+                "仍起不来只可能是 Android 14+ FGS 后台策略拦截，见类 KDoc）",
+            started
+        )
         try {
             repeat(5) { round ->
                 runCatching { serviceRule.startService(intent) }

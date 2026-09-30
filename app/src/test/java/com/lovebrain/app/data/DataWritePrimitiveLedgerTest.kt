@@ -118,35 +118,35 @@ class DataWritePrimitiveLedgerTest {
      */
     private val ledger: List<LedgerRow> = listOf(
         LedgerRow(
-            file = "KnowledgeRepository.kt",
+            file = "KnowledgeRepoIO.kt",
             scope = "rawAtomicWriteText",
             primitive = "FileOutputStream(",
             count = 1,
             disposition = Disposition.WRITE_CORE
         ),
         LedgerRow(
-            file = "KnowledgeRepository.kt",
+            file = "KnowledgeRepoIO.kt",
             scope = "writeFileUnlocked",
             primitive = "atomicWriteText(",
             count = 1,
             disposition = Disposition.ON_CHAIN
         ),
         LedgerRow(
-            file = "KnowledgeRepository.kt",
+            file = "KnowledgeRepoIO.kt",
             scope = "appendFileUnlocked",
             primitive = "atomicWriteText(",
             count = 1,
             disposition = Disposition.ON_CHAIN
         ),
         LedgerRow(
-            file = "KnowledgeRepository.kt",
+            file = "KnowledgeRepoIO.kt",
             scope = "writeFileCheckedUnlocked",
             primitive = "atomicWriteText(",
             count = 1,
             disposition = Disposition.ON_CHAIN
         ),
         LedgerRow(
-            file = "KnowledgeRepository.kt",
+            file = "KnowledgeRepoIO.kt",
             scope = "appendFileCheckedUnlocked",
             primitive = "atomicWriteText(",
             count = 1,
@@ -246,8 +246,8 @@ class DataWritePrimitiveLedgerTest {
         return out.toString()
     }
 
-    /** 声明（class / object / interface / fun，含 `fun <T> name(`）→ 关键字下标 → 名字 */
-    private val declRegex = Regex("""\b(?:fun|class|object|interface)\s+(?:<[^>]*>\s*)?([A-Za-z_]\w*)""")
+    /** 声明（class / object / interface / fun，含 `fun <T> name(` 与扩展函数 `fun Receiver.name(`）→ 关键字下标 → (名字, 是否类型声明) */
+    private val declRegex = Regex("""\b(fun|class|object|interface)\s+(?:<[^>]*>\s*)?(?:[A-Za-z_]\w*\s*\.\s*)?([A-Za-z_]\w*)""")
 
     private fun identifierBefore(text: String, at: Int): Boolean =
         at > 0 && (text[at - 1].isLetterOrDigit() || text[at - 1] == '_' || text[at - 1] == '$')
@@ -273,7 +273,7 @@ class DataWritePrimitiveLedgerTest {
             return hits
         }
         val name = needle.removeSuffix("(")
-        val definitions = Regex("""\bfun\s+(?:<[^>]*>\s*)?([A-Za-z_]\w*)\s*\(""")
+        val definitions = Regex("""\bfun\s+(?:<[^>]*>\s*)?(?:[A-Za-z_]\w*\s*\.\s*)?([A-Za-z_]\w*)\s*\(""")
             .findAll(text)
             .filter { it.groupValues[1] == name }
             .map { it.groups[1]!!.range.first }
@@ -291,19 +291,21 @@ class DataWritePrimitiveLedgerTest {
     private fun scan(fileName: String, text: String): List<Site> {
         val hits = mutableMapOf<Int, MutableList<String>>()
         for (p in primitives) for (at in hitIndices(text, p)) hits.getOrPut(at) { mutableListOf() } += p
-        val decls = declRegex.findAll(text).associate { it.range.first to it.groupValues[1] }
-        val stack = mutableListOf<Pair<String, Int>>()
+        val decls = declRegex.findAll(text).associate {
+            it.range.first to (it.groupValues[2] to (it.groupValues[1] != "fun"))
+        }
+        val stack = mutableListOf<Triple<String, Int, Boolean>>()
         val out = mutableListOf<Site>()
         var depth = 0
         var line = 1
         for (i in text.indices) {
             val c = text[i]
-            decls[i]?.let { name ->
+            decls[i]?.let { (name, isType) ->
                 while (stack.isNotEmpty() && stack.last().second >= depth) stack.removeAt(stack.size - 1)
-                stack += name to depth
+                stack += Triple(name, depth, isType)
             }
             hits[i]?.forEach { p ->
-                out += Site(fileName, line, p, stack.drop(1).joinToString(".") { it.first }.ifEmpty { "<顶层>" })
+                out += Site(fileName, line, p, stack.dropWhile { it.third }.joinToString(".") { it.first }.ifEmpty { "<顶层>" })
             }
             when (c) {
                 '\n' -> line++
@@ -472,14 +474,14 @@ class DataWritePrimitiveLedgerTest {
      */
     @Test
     fun `the init marker write takes the root guard and does not swallow a refusal`() {
-        val body = declarationBody("KnowledgeRepository.kt", "override fun markInitialized()")
+        val body = declarationBody("KnowledgeRepoStorage.kt", "override fun markInitialized()")
         assertEquals(
             "markInitialized 只许从根级守门取路径落盘（一处），实测体：$body",
             1, body.split("writeRootFileGuarded(").size - 1
         )
         assertEquals(
             "返回值必须被 if 判掉再处理；`writeRootFileGuarded(...)` 光当一句执行就是丢弃 false：" + body,
-            1, Regex("""if\s*\(\s*!\s*writeRootFileGuarded\s*\(""").findAll(body).count()
+            1, Regex("""if\s*\(\s*!\s*(?:\w+\.)?writeRootFileGuarded\s*\(""").findAll(body).count()
         )
         assertTrue(
             "拒收要留痕并且让调用方失败——体里没有 throw 就是一次不留痕的跳过：" + body,
@@ -495,7 +497,7 @@ class DataWritePrimitiveLedgerTest {
     /** 端口签名不许被这一处改动捎带上：markInitialized 还是那个无参、非 suspend 的一处定义 */
     @Test
     fun `the init marker port keeps its shape`() {
-        val text = blankNonCode(File(appDataDir, "KnowledgeRepository.kt").readText(Charsets.UTF_8))
+        val text = blankNonCode(File(appDataDir, "KnowledgeRepoStorage.kt").readText(Charsets.UTF_8))
         assertEquals(
             "markInitialized 的定义在仓库里只许一处（多一处就是给第二个落盘面开转手）",
             1, Regex("""override fun markInitialized\(\)""").findAll(text).count()
