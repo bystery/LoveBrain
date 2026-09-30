@@ -56,6 +56,18 @@ import com.lovebrain.app.viewmodel.SetupViewModel
  * `HomeScreenStructureTest`（四段的顺序与数量）、`HomeScaffoldFrameSemanticsTest`（外框的尺寸与出口）。
  *
  * 不直接操作 Repository；所有数据通过 [SetupViewModel] 获取。
+ *
+ * §6.3 那四格在这一屏**没有对应的流**，判过所以不接 `LbAsyncState`（判据取自代码）：
+ * 页面读的四条 `StateFlow`（`activeTicket` / `providerReady` / `captureEnabled` /
+ * `captureAllowedPackages`）全都在 `SetupViewModel` 构造时用 `MutableStateFlow(securePrefs.…)`
+ * 同步灌好，没有"第一次数据还没到"那一格；`null` / `false` / 空集在这屏各自**就是一个产品状态**
+ * （没配供应商 / 没给无障碍权限 / 一个 App 都没授权），由那一行自己的文案说清楚，不是待补的占位。
+ * 剩下两路是同步系统查询：`Settings.canDrawOverlays`，以及 `isCaptureServiceEnabled`
+ * （读不到就 fail-closed 报"没权限"，失败已经落成一行文案，不是一条会失败的流）；
+ * 统计那三格又是上面那族同步属性。首页是枢纽页——它的"内容"就是这些入口本身，永远不空，
+ * 也没有一条能把整屏打失败的读。硬铺四格就是造三档产品走不到的状态。
+ * 这一屏真正需要"只判一次"的那处判据是军师状态卡，它已经收在 `advisorStatus` 一处
+ * （四档穷举见 `AdvisorStatusTest`），本页不再出现第二份判据。
  */
 @Composable
 fun HomeScreen(

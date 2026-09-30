@@ -266,7 +266,10 @@ class UiStringLiteralBudgetTest {
         // 168 → **166**：提示条归并时把两处内联中文接上资源（`panel_input_changed`、
         //   `a11y_close_notice` 那颗关闭钮——**资源里中英两份一直都在、从没被引用过**，
         //   于是英文环境读屏念中文）。这一笔是**真还**，不是换桶。
-        Kind.TEXT to 166,
+        // 166 → **165**：`KbEditActivity` 接 §6.3 四态时，卡内那颗自画空态的文案进了
+        // `values` + `values-en` 两份资源（账本 §78）。⚠ 这一笔是**真还**不是换桶：
+        // 同一次改动里 COMPONENT 一栏没跟着涨（版式交 `LbAsyncState` 画，文案不再写在页面的 `Text(` 里）。
+        Kind.TEXT to 165,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是

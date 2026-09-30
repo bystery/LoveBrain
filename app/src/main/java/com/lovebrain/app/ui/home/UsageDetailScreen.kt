@@ -25,6 +25,16 @@ import com.lovebrain.app.viewmodel.SetupViewModel
 
 /**
  * 使用概览详情页——累计统计指标。
+ *
+ * §6.3 那四格在这一屏**没有对应的流**，判过所以不接 `LbAsyncState`：六个数全部走
+ * `SetupViewModel` 那一族同步属性（`totalGenerateCount` … `adoptRate`，实现是
+ * `get() = securePrefs.…`，底下是 `prefs.getInt(key, 0)` 与 `toDoubleOrNull() ?: 0.0`），
+ * 组合期一次读完就有答案——没有"第一次数据还没到"的窗口，也没有会失败的读
+ * （坏值自己退成 0，不往外抛）。而"全 0"在这屏是**一个答案**（这台机器还没生成过），
+ * 不是成功但为空：画一张空态图等于把"你还没用过"说成"这里读不到东西"。
+ * 这屏的数归数据层那一侧的 `SecurePrefs` 计数字段，页只负责把数念出来。
+ * ⚠ 同一族属性**没被观察**（不是 `StateFlow`），计数字段变了这一屏不会自己重组——
+ *   那是"这里没有流"的另一半证据，也是它自己的账，不归 §6.3 这一格动。
  */
 @Composable
 fun UsageDetailScreen(

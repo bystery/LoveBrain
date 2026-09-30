@@ -39,6 +39,15 @@ import com.lovebrain.app.core.designsystem.TextSecondary
 
 /**
  * 关于页——版本信息、隐私说明与诊断信息。
+ *
+ * §6.3 那四格在这一屏**没有对应的流**，判过所以不接 `LbAsyncState`（判据取自代码，不是推测）：
+ * 屏上每一个字都来自编译期常量——`BuildConfig.VERSION_NAME`、`BuildConfig.GIT_SHA`、
+ * `BuildConfig.BUILD_TYPE`，加上几段写死的说明；既没有 `StateFlow`，也没有一次会回来得晚的读，
+ * 更没有会失败的读（编译期常量不抛异常），首帧就是终帧。
+ * 给它铺"还在读 / 读坏了 / 成功但为空"三格，等于造三个产品永远走不到的档位——
+ * 那比少一格更坏（同 `CaptureScreenStateMappingTest` 为捕获页"刻意没有 Loading 格"立的写法）。
+ * 这屏内容的真正主人在**构建那一侧**（gradle 灌进 BuildConfig 的那三个字段），不在数据层；
+ * 页上唯一的交互（折叠诊断信息）是本地 `remember` 的一个布尔，与数据流无关。
  */
 @Composable
 fun AboutScreen(

@@ -37,6 +37,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -197,12 +198,23 @@ internal fun KbEditScreen(
     val conflictKeptDraftHint = stringResource(R.string.hint_conflict_kept_draft)
     val conflictReopenHint = stringResource(R.string.hint_conflict_reopen)
     val saveFailedHint = stringResource(R.string.hint_save_failed)
+    // 下面三句给状态件那一格用（`ScreenState` 收已解析的 String，不收资源 id）
+    val emptyDocHint = stringResource(R.string.kb_edit_empty_hint)
+    val readFailedHint = stringResource(R.string.kb_edit_read_failed)
+    val retryLabel = stringResource(R.string.action_retry)
 
     var drafts by remember { mutableStateOf(emptyMap<String, String>()) }
     var saved by remember { mutableStateOf(emptyMap<String, String>()) }
     // 版本快照——每个文件读取时的 SHA-256，保存时做冲突检测
     var versions by remember { mutableStateOf(emptyMap<String, String>()) }
     var loaded by remember { mutableStateOf(false) }
+    // 这一次读**有没有读出来**。分开两颗是有原因的：合成一颗（旧写法只有 `loaded`）时，
+    // 读失败就退化成"永远在转圈"——用户分不清"还在读"与"读不出来"，
+    // 而知识库列表页修的正是同一副形状（见 `kbScreenState` 那份 KDoc）。
+    var readFailed by remember { mutableStateOf(false) }
+    // 错误态那颗重试唯一真的出口。用 `mutableIntStateOf`：`mutableStateOf(0)` 走装箱，
+    // lint 的 AutoboxingStateCreation 当场报，而 lint 预算那把闸不许新增债。
+    var reloadTick by remember { mutableIntStateOf(0) }
     var isPreview by remember { mutableStateOf(true) }
     var pendingClear by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -212,12 +224,25 @@ internal fun KbEditScreen(
     var editBaseline by remember { mutableStateOf("") }
     var hint by remember { mutableStateOf<Pair<String, Boolean>?>(null) }  // msg to isError；错误持续，成功 2s 消失
 
-    // 异步加载所有文件内容
-    LaunchedEffect(files) {
-        val initial = files.associate { it.path to readFile(it.path) }
-        drafts = initial.mapValues { it.value.first }
-        saved = initial.mapValues { it.value.first }
-        versions = initial.mapValues { it.value.second }
+    // 异步加载所有文件内容。这一格是整屏唯一真异步的流：`readFile` 转给
+    // `KbEditViewModel.read` → `KnowledgeRepository.readFileWithVersion`（Dispatchers.IO 上真读盘）。
+    // 读不出来必须落成 `readFailed`，不能让 `loaded` 永远为假——那等于把失败画成"还在读"。
+    // `CancellationException` 原样抛（与本页其余三处 catch 同一写法）：吞掉它 = 退出/切库静默半程。
+    LaunchedEffect(files, reloadTick) {
+        val initial = try {
+            files.associate { it.path to readFile(it.path) }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            L.w("KbEdit read failed: $selectedPath")
+            null
+        }
+        if (initial != null) {
+            drafts = initial.mapValues { it.value.first }
+            saved = initial.mapValues { it.value.first }
+            versions = initial.mapValues { it.value.second }
+        }
+        readFailed = initial == null
         loaded = true
     }
 
@@ -282,6 +307,21 @@ internal fun KbEditScreen(
     }
 
     BackHandler(enabled = anyDirty) { saveAllAndExit() }
+
+    // §6.3：这一篇"现在是哪一格"只判一次，交 [kbEditFileScreenState]；下面只负责画那一格。
+    val bodyState = kbEditFileScreenState(
+        loaded = loaded,
+        readFailed = readFailed,
+        text = drafts[selectedPath] ?: "",
+        isPreview = isPreview,
+        emptyMessage = emptyDocHint,
+        errorMessage = readFailedHint,
+        retry = ScreenAction(retryLabel) {
+            loaded = false
+            readFailed = false
+            reloadTick++
+        }
+    )
 
     // §6.1：外框原本是自己拼的 `Column.fillMaxSize.background(SurfaceBase).padding(xxxl)`
     // ——和 `ScreenPage` 同一套东西的第二个副本。走 `ScreenPage`（它已 delegate 给
@@ -381,16 +421,11 @@ internal fun KbEditScreen(
             // 阴影统一收进 2/4 令牌（6→4 为唯一超限修正）
             modifier = Modifier.fillMaxWidth().weight(1f).shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.lg)
         ) {
-            Column(modifier = Modifier.padding(Spacing.xl)) cardContent@{
-                if (!loaded) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = Primary)
-                    }
-                    return@cardContent
-                }
+            Column(modifier = Modifier.padding(Spacing.xl)) {
+                // 页头那一行（标题 + 「编辑 / 预览」那颗）画在状态件**外面**，四格都在。
+                // 这不是顺手：空态那句"点右上「编辑」添加"指的正是这一行里那颗 toggle，
+                // 它要是跟着 Content 一起消失，就等于把用户指向一个屏幕上没有的按钮。
+                // 与改之前唯一的视觉差别：那一次读还没回来时这一行也画出来了（原先整张卡只剩一个转圈）。
                 val savedText = drafts[selectedPath] ?: ""
                 val editorValue = editorStates[selectedPath] ?: TextFieldValue(savedText)
                 val liveLen = if (isPreview) savedText.length else editorValue.text.length
@@ -415,18 +450,12 @@ internal fun KbEditScreen(
                     }
                 }
 
-                if (isPreview) {
-                    if (savedText.isBlank()) {
-                        Box(
-                            modifier = Modifier.fillMaxWidth().weight(1f),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text("还没有内容，点右上「编辑」添加", style = AppTypography.bodySmall, color = TextHint)
-                        }
-                    } else {
+                // 四格只在这一处出口画：Loading / Error / Empty 交共用状态件，Content 才进下面两分支。
+                LbAsyncState(state = bodyState, modifier = Modifier.fillMaxWidth().weight(1f)) { shown ->
+                    if (isPreview) {
                         // 大文件分块懒渲染（点开不卡的根因修复：只组合可见块）
-                        val previewText = remember(selectedPath, savedText) {
-                            prettyForPreview(selected.path, savedText)
+                        val previewText = remember(selectedPath, shown) {
+                            prettyForPreview(selected.path, shown)
                         }
                         val previewChunks = remember(previewText) {
                             previewText.split(Regex("\n\\s*\n"))
@@ -448,102 +477,102 @@ internal fun KbEditScreen(
                                 )
                             }
                         }
-                    }
-                } else {
-                    // 编辑态：TextFieldValue（光标/选区记忆）；输入实时写 drafts + 字数联动
-                    OutlinedTextField(
-                        value = editorValue,
-                        onValueChange = { v ->
-                            editorStates[selectedPath] = v
-                            drafts = drafts + (selectedPath to v.text)
-                        },
-                        // §6.5 第②栏：这颗是全仓最大的一棵输入框（整篇正文编辑器），
-                        // 但它以前**既没有文案也没有 contentDescription**——读屏只念"编辑框"，
-                        // 用户听不出自己在编辑哪一格。名字取"编辑《当前分区》正文"，
-                        // 分区名就是屏幕上那行标题，不另造一套说法。
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                            .semantics { contentDescription = editorName },
-                        textStyle = AppTypography.bodyLarge.copy(color = TextPrimary),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = PrimarySubtle,
-                            unfocusedBorderColor = Border,
-                            cursorColor = Primary
+                    } else {
+                        // 编辑态：TextFieldValue（光标/选区记忆）；输入实时写 drafts + 字数联动
+                        OutlinedTextField(
+                            value = editorValue,
+                            onValueChange = { v ->
+                                editorStates[selectedPath] = v
+                                drafts = drafts + (selectedPath to v.text)
+                            },
+                            // §6.5 第②栏：这颗是全仓最大的一棵输入框（整篇正文编辑器），
+                            // 但它以前**既没有文案也没有 contentDescription**——读屏只念"编辑框"，
+                            // 用户听不出自己在编辑哪一格。名字取"编辑《当前分区》正文"，
+                            // 分区名就是屏幕上那行标题，不另造一套说法。
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                                .semantics { contentDescription = editorName },
+                            textStyle = AppTypography.bodyLarge.copy(color = TextPrimary),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = PrimarySubtle,
+                                unfocusedBorderColor = Border,
+                                cursorColor = Primary
+                            )
                         )
-                    )
-                    Spacer(modifier = Modifier.height(Spacing.sm))
-                    // 页内提示行（禁 Toast 铁律：成功小字 2s 消失，失败红字常驻）
-                    hint?.let { (msg, isError) ->
-                        Text(
-                            msg,
-                            style = AppTypography.labelSmall,
-                            color = if (isError) Error else TextHint,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(Spacing.md),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        // 放弃修改：恢复进入编辑态前内容，落盘对齐后回预览
-                        TextButton(
-                            modifier = Modifier.heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp),
-                            onClick = {
-                            val baseline = editBaseline
-                            drafts = drafts + (selectedPath to baseline)
-                            editorStates.remove(selectedPath)
-                            scope.launch {
-                                try {
-                                    val newVer = saveFile(selectedPath, baseline, versions[selectedPath])
-                                    if (newVer != null) {
-                                        saved = saved + (selectedPath to baseline)
-                                        versions = versions + (selectedPath to newVer)
-                                    }
-                                } catch (e: kotlinx.coroutines.CancellationException) {
-                                    throw e
-                                } catch (e: Exception) {
-                                    L.w("KbEdit discard save failed: $selectedPath")
-                                }
-                                isPreview = true
-                            }
-                        }) {
-                            Text("放弃修改", style = AppTypography.labelMedium, color = TextHint)
+                        Spacer(modifier = Modifier.height(Spacing.sm))
+                        // 页内提示行（禁 Toast 铁律：成功小字 2s 消失，失败红字常驻）
+                        hint?.let { (msg, isError) ->
+                            Text(
+                                msg,
+                                style = AppTypography.labelSmall,
+                                color = if (isError) Error else TextHint,
+                                modifier = Modifier.fillMaxWidth()
+                            )
                         }
-                        Spacer(Modifier.weight(1f))
-                        // §6.1 :479——编辑态的唯一主动作归 `LbPrimaryButton`。
-                        // 先量：实量 **78x44dp** ⇒ 这一颗是**真缺陷**（:596"无小于 48dp 的热区"没过），
-                        // 与前面三处不同：它的高度由页面自己的常量 `ACTION_BUTTON_HEIGHT_DP` 钉死在 44，
-                        // 全站只有这一颗主动作是这样（所以第三把尺上它既算"换门涂色"又算热区缺陷）。
-                        LbPrimaryButton(
-                            state = LbButtonState.Idle,
-                            label = stringResource(R.string.kb_save),
-                            onClick = {
-                                val text = editorValue.text
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(Spacing.md),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            // 放弃修改：恢复进入编辑态前内容，落盘对齐后回预览
+                            TextButton(
+                                modifier = Modifier.heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp),
+                                onClick = {
+                                val baseline = editBaseline
+                                drafts = drafts + (selectedPath to baseline)
+                                editorStates.remove(selectedPath)
                                 scope.launch {
-                                    val ver = versions[selectedPath]
                                     try {
-                                        val newVer = saveFile(selectedPath, text, ver)
+                                        val newVer = saveFile(selectedPath, baseline, versions[selectedPath])
                                         if (newVer != null) {
-                                            saved = saved + (selectedPath to text)
+                                            saved = saved + (selectedPath to baseline)
                                             versions = versions + (selectedPath to newVer)
-                                            editorStates.remove(selectedPath)
-                                            hint = savedHint to false
-                                            isPreview = true
-                                        } else {
-                                            L.w("KbEdit save conflict: ${selected.path}")
-                                            hint = conflictKeptDraftHint to true
                                         }
                                     } catch (e: kotlinx.coroutines.CancellationException) {
                                         throw e
                                     } catch (e: Exception) {
-                                        L.w("KbEdit manual save failed: ${selected.path}")
-                                        hint = saveFailedHint to true
+                                        L.w("KbEdit discard save failed: $selectedPath")
+                                    }
+                                    isPreview = true
+                                }
+                            }) {
+                                Text("放弃修改", style = AppTypography.labelMedium, color = TextHint)
+                            }
+                            Spacer(Modifier.weight(1f))
+                            // §6.1 :479——编辑态的唯一主动作归 `LbPrimaryButton`。
+                            // 先量：实量 **78x44dp** ⇒ 这一颗是**真缺陷**（:596"无小于 48dp 的热区"没过），
+                            // 与前面三处不同：它的高度由页面自己的常量 `ACTION_BUTTON_HEIGHT_DP` 钉死在 44，
+                            // 全站只有这一颗主动作是这样（所以第三把尺上它既算"换门涂色"又算热区缺陷）。
+                            LbPrimaryButton(
+                                state = LbButtonState.Idle,
+                                label = stringResource(R.string.kb_save),
+                                onClick = {
+                                    val text = editorValue.text
+                                    scope.launch {
+                                        val ver = versions[selectedPath]
+                                        try {
+                                            val newVer = saveFile(selectedPath, text, ver)
+                                            if (newVer != null) {
+                                                saved = saved + (selectedPath to text)
+                                                versions = versions + (selectedPath to newVer)
+                                                editorStates.remove(selectedPath)
+                                                hint = savedHint to false
+                                                isPreview = true
+                                            } else {
+                                                L.w("KbEdit save conflict: ${selected.path}")
+                                                hint = conflictKeptDraftHint to true
+                                            }
+                                        } catch (e: kotlinx.coroutines.CancellationException) {
+                                            throw e
+                                        } catch (e: Exception) {
+                                            L.w("KbEdit manual save failed: ${selected.path}")
+                                            hint = saveFailedHint to true
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
@@ -586,6 +615,41 @@ internal fun KbEditScreen(
         )
     }
 
+}
+
+/**
+ * §6.3：编辑页"这一篇现在是哪一格"只判这一处，版式交 [LbAsyncState]。
+ *
+ * 先按代码取证：这一屏**只有一条真流**。左边那一排文件标签不是流——[KB_FILES] 是编译期常量，
+ * 13 条，不读盘、不会失败、也不会为空；唯一真异步的是 `LaunchedEffect` 里那一次 `readFile`，
+ * 它转给 `KbEditViewModel.read` → `KnowledgeRepository.readFileWithVersion`（IO 线程上真读盘）。
+ * 四档因此各有各的真输入：
+ * - Loading = 那一次读还没回来；
+ * - Error = 那次读抛了。`KnowledgeDocumentStore.read` 对**不存在**的文件给空串、不抛，
+ *   但对**存在却读不动**的文件走 `File.readText()`，IOException 照抛；改之前这条路上没人接，
+ *   异常从 `LaunchedEffect` 穿到组合作用域，而 `loaded` 永远是假 ⇒ 失败被画成"还在读"；
+ * - Empty = 读成功而这一篇是空的（新建库刚 seed 出来的 md 就是空的，产品天天走这一格）；
+ * - Content = 有正文。
+ *
+ * 两处与同族两页（[kbScreenState]、[captureScreenState]）不同，都记的是现场行为不是新档位：
+ * 1. [isPreview] 进判据。编辑态下"正文为空"是用户正往空框里敲字，画一张空态图会把输入框换掉，
+ *    那才是真的把人关死；所以 Empty 只在预览那一档成立。
+ * 2. 失败优先于空。读失败时 `drafts` 里是上一轮的残留值，拿残留值判"这篇是空的"
+ *    等于对用户撒谎（与 [kbScreenState] 那条"带残留列表也不许画 Content"同一笔）。
+ */
+internal fun kbEditFileScreenState(
+    loaded: Boolean,
+    readFailed: Boolean,
+    text: String,
+    isPreview: Boolean,
+    emptyMessage: String,
+    errorMessage: String,
+    retry: ScreenAction
+): ScreenState<String> = when {
+    !loaded -> ScreenState.Loading
+    readFailed -> ScreenState.Error(errorMessage, retry)
+    isPreview && text.isBlank() -> ScreenState.Empty(emptyMessage)
+    else -> ScreenState.Content(text)
 }
 
 private fun prettyForPreview(path: String, content: String): String {
