@@ -307,16 +307,7 @@ class LoveBrainViewModel(
     /** 读当前结果——所有内部读取走这里，不再有一个可写的 _result */
     private val replyResult: GenerateResult? get() = replyStore.currentResult
 
-    /**
-     * 原地替换结果文本（单条改写 / undo / 版本回退用）。
-     *
-     * 这些操作不属于任何一次生成请求，所以它们不伪装成 request 事件走 reducer，
-     * 但仍然只能投给 [replyStore] 这一个状态持有者——不存在第二本结果账。
-     */
-    private fun replaceReplyResult(result: GenerateResult) {
-        replyStore.accept(ReplyStore.Intent.ReplaceResult(result))
-    }
-
+    /** 当前激活知识库——跨所有 feature 共享的唯一可变状态（回复/锦囊/主动发/谈心/改写/意图/纠正/向量/画像/触发事件全部读它），无法移入单一 feature store。 */
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
 
@@ -365,17 +356,17 @@ class LoveBrainViewModel(
     val panelWarning: StateFlow<String?> = notices.warning
     val vectorUpdate: StateFlow<String?> = notices.vector
 
-    fun dismissKbNotice() { notices.dismiss(NoticeBoard.Channel.Knowledge) }
-    fun showPanelWarning(msg: String) { notices.show(NoticeBoard.Channel.Warning, msg) }
-    fun dismissPanelWarning() { notices.dismiss(NoticeBoard.Channel.Warning) }
-    fun dismissVectorUpdate() { notices.dismiss(NoticeBoard.Channel.Vector) }
+    fun dismissKbNotice() { notices.dismiss(NoticeBoard.Channel.Knowledge) } // facade — delegates to NoticeBoard
+    fun showPanelWarning(msg: String) { notices.show(NoticeBoard.Channel.Warning, msg) } // facade — delegates to NoticeBoard
+    fun dismissPanelWarning() { notices.dismiss(NoticeBoard.Channel.Warning) } // facade — delegates to NoticeBoard
+    fun dismissVectorUpdate() { notices.dismiss(NoticeBoard.Channel.Vector) } // facade — delegates to NoticeBoard
 
     /** 向量重估触发的阶段调整建议的持有者（状态搬出 VM，复核 §5.2 第 6 步） */
     private val stageSuggestionStore = StageSuggestionStore()
 
     /** 向量重估触发的阶段调整建议（用户确认后生效） */
     val stageSuggestion: StateFlow<StageSuggestion?> = stageSuggestionStore.stageSuggestion
-    fun dismissStageChange() { stageSuggestionStore.accept(StageSuggestionStore.Intent.Clear) }
+    fun dismissStageChange() { stageSuggestionStore.accept(StageSuggestionStore.Intent.Clear) } // facade — delegates to StageSuggestionStore
     fun confirmStageChange() {
         val s = stageSuggestionStore.current ?: return
         viewModelScope.launch {
@@ -444,11 +435,6 @@ class LoveBrainViewModel(
         }
     )
     val usageStats: StateFlow<UsageStats> = usageStatsStore.stats
-
-    /** 唯一的写入漏斗：想改这九个数没有第二条路 */
-    private fun applyUsage(event: UsageStats.Event) {
-        usageStatsStore.accept(event)
-    }
 
     /** ═══════════ 今日锦囊（AI 生成，参考性，不写知识库） ═══════════ */
 
@@ -635,11 +621,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val previous = out.restored
 
         // 原子恢复 result + versionId + context（三者来自同一个快照，不会错配）
-        replaceReplyResult(previous.result)
+        replyStore.accept(ReplyStore.Intent.ReplaceResult(previous.result))
         replyGenerationContext = previous.context
         feedbackCases.clearFeedbacks()
         // 版本栈已经翻过去了，在飞的改写目标也就不存在了：一起作废
-        resetRewritePage()
+        rewriteStore.accept(com.lovebrain.app.feature.rewrite.RewriteStore.Intent.RoundReset)
 
         // 重新计算 stale——当前输入可能与 previous context 不一致
         checkInputChanged()
@@ -726,7 +712,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             // SharedFlow 收集不应崩面板
             try {
                 deepSeekRepo.costEvents.collect { ev ->
-                    applyUsage(
+                    usageStatsStore.accept(
                         UsageStats.Event.Costed(
                             today = java.time.LocalDate.now().toString(),
                             yuan = ev.yuan,
@@ -750,29 +736,29 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // ═══════════ UI 状态 setters ═══════════
 
-    fun setDraft(text: String) { composer.accept(ComposerStore.Intent.SetDraft(text)) }
-    fun setCounselingDraft(text: String) {
+    fun setDraft(text: String) { composer.accept(ComposerStore.Intent.SetDraft(text)) } // facade — delegates to ComposerStore
+    fun setCounselingDraft(text: String) { // facade — delegates to ComposerStore
         composer.accept(ComposerStore.Intent.SetCounselingDraft(text))
     }
-    fun setPanelMode(mode: Int) { composer.accept(ComposerStore.Intent.SetPanelMode(mode)) }
+    fun setPanelMode(mode: Int) { composer.accept(ComposerStore.Intent.SetPanelMode(mode)) } // facade — delegates to ComposerStore
     //  捕获收口：FloatingService 捕获链以 currentRole 落消息角色（本文件外零触碰），
     // currentRole 恒 ∈ {HER, ME}——选《想法》只进入 ideaComposeMode，不落 currentRole，真实聊天捕获永不误标 IDEA
-    fun setCurrentRole(role: ChatMessage.Role) {
+    fun setCurrentRole(role: ChatMessage.Role) { // facade — delegates to ComposerStore
         composer.accept(ComposerStore.Intent.SetCurrentRole(role))
     }
-    fun setEditingIndex(index: Int) { composer.accept(ComposerStore.Intent.SetEditingIndex(index)) }
+    fun setEditingIndex(index: Int) { composer.accept(ComposerStore.Intent.SetEditingIndex(index)) } // facade — delegates to ComposerStore
 
     // ═══════════ 消息管理：状态与"改完之后编辑位该落到哪"都住在 [ComposerStore] ═══════════
 
-    fun addMessage(role: ChatMessage.Role, content: String) {
+    fun addMessage(role: ChatMessage.Role, content: String) { // facade — delegates to ComposerStore
         composer.accept(ComposerStore.Intent.AddMessage(role, content))
     }
 
-    fun updateMessage(index: Int, role: ChatMessage.Role, content: String) {
+    fun updateMessage(index: Int, role: ChatMessage.Role, content: String) { // facade — delegates to ComposerStore
         composer.accept(ComposerStore.Intent.UpdateMessage(index, role, content))
     }
 
-    fun removeMessage(index: Int) {
+    fun removeMessage(index: Int) { // facade — delegates to ComposerStore
         composer.accept(ComposerStore.Intent.RemoveMessage(index))
     }
 
@@ -783,7 +769,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 删、拖、提交本轮三处都要求同一条判据，写在调用方便会变成三份各抄一份的算术
      * （以前就是，见 [MessageListEditing.reindex] 的 KDoc）。
      */
-    fun removeMessageById(id: String) {
+    fun removeMessageById(id: String) { // facade — delegates to ComposerStore
         composer.accept(ComposerStore.Intent.RemoveMessageById(id))
     }
 
@@ -791,7 +777,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 拖拽重排。编辑位与列表的联动同 [removeMessageById]：一次列表改动，一条判据。
      * 穷举矩阵 `MessageEditingIndexInvariantTest` 在每个 (长度, 编辑位, from, to) 组合上跑真方法。
      */
-    fun reorderMessages(from: Int, to: Int) {
+    fun reorderMessages(from: Int, to: Int) { // facade — delegates to ComposerStore
         composer.accept(ComposerStore.Intent.ReorderMessages(from, to))
     }
 
@@ -965,14 +951,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         replyStore.accept(ReplyStore.Intent.Apply(event))
     }
 
-    /** 旧调用点的语义保持不变：投事件。停止用的 ReplyStopped 也走 reducer。 */
-    private fun applyReplyEvent(event: ReplyEvent) = dispatchReply(event)
-
-    /** 放弃未发布的增量（停止/换请求时） */
-    private fun cancelPendingChunkFlush() {
-        replyStore.accept(ReplyStore.Intent.DiscardPendingChunks)
-    }
-
     /**
      * ReplyStore 归约成功之后，需要**别人**做的事：面板外壳状态、历史版本快照、
      * 跨轮计数与耗时上报。
@@ -1011,11 +989,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 // 生成成功后重置输入变化标记
                 modeController.accept(ModeController.Intent.SetInputChanged(false))
                 // 递增累计生成次数
-                applyUsage(UsageStats.Event.Generated)
+                usageStatsStore.accept(UsageStats.Event.Generated)
             }
 
             is ReplyStore.Effect.TimingSampled -> {
-                applyUsage(UsageStats.Event.Timed(effect.firstReplyMs, effect.firstTokenMs))
+                usageStatsStore.accept(UsageStats.Event.Timed(effect.firstReplyMs, effect.firstTokenMs))
             }
         }
     }
@@ -1033,8 +1011,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         )
         // 先取消任务，再落 Idle——避免任务在 Idle 之后又写入状态
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.REPLY)
-        cancelPendingChunkFlush()
-        current?.let { applyReplyEvent(ReplyStopped(it.requestId)) }
+        replyStore.accept(ReplyStore.Intent.DiscardPendingChunks)
+        current?.let { dispatchReply(ReplyStopped(it.requestId)) }
         // 停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
         // /: stopGeneration 不清 roundCorrections——
@@ -1102,10 +1080,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /** 清除当前反馈案例展示（UI dismiss 时调用）；已落盘的案例不动 */
-    fun dismissFeedbackCase() = feedbackCases.dismissCase()
+    fun dismissFeedbackCase() = feedbackCases.dismissCase() // facade — delegates to FeedbackCaseController
 
     // ═══════════ 下一轮（存 KB + 清空） ═══════════
 
+    /** nextRound 重入保护——仅在 nextRound() 内读写，但它编排 7+ feature store（composer/feedback/replyStore/roundState/roundCorrections/topicRecorder/triggerCoordinator），无法移入单一 store。 */
     private var recordingRound = false
     /* private val _probeFakeInBlock = MutableStateFlow(0)
        private var probeFakeInBlockVar = 0 */
@@ -1224,16 +1203,16 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         composer.accept(ComposerStore.Intent.ConsumeMessages(consumedMessageIds))
         feedbackCases.clearFeedbacks()
         // 结果/流式态的清空也走 reducer，不再各自写四个 StateFlow
-        applyReplyEvent(ReplyCleared(replyUi.value.ownerRequestId ?: ""))
+        dispatchReply(ReplyCleared(replyUi.value.ownerRequestId ?: ""))
         // 新轮次开始时清理改写状态和历史，作废旧改写请求
-        resetRewritePage()
+        rewriteStore.accept(com.lovebrain.app.feature.rewrite.RewriteStore.Intent.RoundReset)
         // 新轮次恢复仅看本轮开关为默认关闭
         roundStateStore.accept(RoundStateStore.Intent.SetOnlyThisRound(false))
     }
 
     fun copyScheme(scheme: Scheme): String {
         // 统计复制次数
-        applyUsage(UsageStats.Event.Copied)
+        usageStatsStore.accept(UsageStats.Event.Copied)
         return scheme.reply
     }
 
@@ -1286,14 +1265,14 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         },
         onWarning = { msg -> showPanelWarning(msg) },
         onNotice = { msg -> notices.show(NoticeBoard.Channel.Knowledge, msg) },
-        onAdopted = { applyUsage(UsageStats.Event.Adopted) },
+        onAdopted = { usageStatsStore.accept(UsageStats.Event.Adopted) },
         onError = { e -> L.e("recordActualSentMessage failed", e) }
     )
 
     /** 五种结果的原样转发：面板订阅它、并靠"一次跳变"解除「保存中」 */
     val actualSentState: StateFlow<ActualSentState> = actualSent.state
 
-    fun dismissActualSentState() = actualSent.dismiss()
+    fun dismissActualSentState() = actualSent.dismiss() // facade — delegates to ActualSentRecorder
 
     /** 返回这一次尝试的任务句柄；语义与 `ActualSentRecorder.record` 一致（取消要看得见） */
     fun recordActualSentMessage(
@@ -1349,9 +1328,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 那里每一条分支都是一个用户可见差别（三种前置条件失败的话不一样，
      * 只读保护那一支**不清卡**；回滚成功与回滚失败的措辞也不能合并）。
      */
-    fun confirmProfileUpdate() = profileUpdates.confirm()
+    fun confirmProfileUpdate() = profileUpdates.confirm() // facade — delegates to ProfileUpdateController
 
-    fun dismissProfileUpdate() = profileUpdates.dismiss()
+    fun dismissProfileUpdate() = profileUpdates.dismiss() // facade — delegates to ProfileUpdateController
 
     /**
      * 画像重新生成——原地显示 loading，卡片位置不变。
@@ -1415,12 +1394,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.COUNSELING, requestId
         ) {
-            applyCounselingEvent(CounselingStarted(requestId))
+            counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Apply(CounselingStarted(requestId)))
             try {
                 generationEngine.counselingStream(requestId, userMessage, kbSnapshot)
-                    .collect { applyCounselingEvent(it) }
+                    .collect { counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Apply(it)) }
             } catch (e: kotlinx.coroutines.CancellationException) {
-                applyCounselingEvent(CounselingEnded(requestId))
+                counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Apply(CounselingEnded(requestId)))
                 throw e
             }
         }
@@ -1432,8 +1411,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             ForegroundOperationCoordinator.OperationType.COUNSELING
         ) ?: return
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.COUNSELING)
-        cancelPendingCounselingFlush()
-        applyCounselingEvent(CounselingEnded(current.requestId))
+        counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.DiscardPendingChunks)
+        counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Apply(CounselingEnded(current.requestId)))
         L.w("user stopped counseling")
         if (counselingStore.currentResult == null) {
             counselingStore.accept(
@@ -1560,8 +1539,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // ═══════════ 今日锦囊（委托 GenerationEngine） ═══════════
 
-    fun openPlanPanel() { composer.accept(ComposerStore.Intent.ShowPlanPanel) }
-    fun dismissPlanPanel() { composer.accept(ComposerStore.Intent.DismissPlanPanel) }
+    fun openPlanPanel() { composer.accept(ComposerStore.Intent.ShowPlanPanel) } // facade — delegates to ComposerStore
+    fun dismissPlanPanel() { composer.accept(ComposerStore.Intent.DismissPlanPanel) } // facade — delegates to ComposerStore
 
     /** 一次锦囊请求冻结下来的身份——写缓存时用它，绝不回读实时 _activeKb */
     /**
@@ -1587,7 +1566,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     )
 
     /** 同步 guard 由 coordinator 承担——Engine reject → null → 旧任务保持。 */
-    fun generateSuggest() {
+    fun generateSuggest() { // facade — delegates to showTodaySuggestion
         showTodaySuggestion()
     }
 
@@ -1658,11 +1637,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             ForegroundOperationCoordinator.OperationType.SUGGEST, ctx.requestId
         ) {
             suggestStore.accept(com.lovebrain.app.feature.suggest.SuggestStore.Intent.Begin(ctx))
-            applySuggestEvent(SuggestStarted(ctx.requestId))
+            suggestStore.accept(com.lovebrain.app.feature.suggest.SuggestStore.Intent.Apply(SuggestStarted(ctx.requestId)))
             try {
-                generationEngine.suggestStream(ctx.requestId, ctx.kb).collect { applySuggestEvent(it) }
+                generationEngine.suggestStream(ctx.requestId, ctx.kb).collect { suggestStore.accept(com.lovebrain.app.feature.suggest.SuggestStore.Intent.Apply(it)) }
             } catch (e: kotlinx.coroutines.CancellationException) {
-                applySuggestEvent(SuggestEnded(ctx.requestId))
+                suggestStore.accept(com.lovebrain.app.feature.suggest.SuggestStore.Intent.Apply(SuggestEnded(ctx.requestId)))
                 throw e
             } finally {
                 suggestStore.accept(com.lovebrain.app.feature.suggest.SuggestStore.Intent.Settle(ctx.requestId))
@@ -1720,7 +1699,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             ForegroundOperationCoordinator.OperationType.SUGGEST
         ) ?: return
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.SUGGEST)
-        applySuggestEvent(SuggestEnded(current.requestId))
+        suggestStore.accept(com.lovebrain.app.feature.suggest.SuggestStore.Intent.Apply(SuggestEnded(current.requestId)))
         suggestStore.accept(
             com.lovebrain.app.feature.suggest.SuggestStore.Intent.StoppedByUser
         )
@@ -1741,12 +1720,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.PROACTIVE, requestId
         ) {
-            applyProactiveEvent(ProactiveStarted(requestId))
+            proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(ProactiveStarted(requestId)))
             try {
                 generationEngine.proactiveStream(requestId, draft, kbSnapshot, messages)
-                    .collect { applyProactiveEvent(it) }
+                    .collect { proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(it)) }
             } catch (e: kotlinx.coroutines.CancellationException) {
-                applyProactiveEvent(ProactiveEnded(requestId))
+                proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(ProactiveEnded(requestId)))
                 throw e
             }
         }
@@ -1762,7 +1741,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             ForegroundOperationCoordinator.OperationType.PROACTIVE
         ) ?: return
         operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.PROACTIVE)
-        applyProactiveEvent(ProactiveEnded(current.requestId))
+        proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(ProactiveEnded(current.requestId)))
     }
 
 
@@ -1795,15 +1774,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     // --- 谈心 ---
 
-    private fun applyCounselingEvent(event: CounselingEvent) {
-        counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.Apply(event))
-    }
-
-    /** 用户停止/换轮时丢掉未发布的半截增量 */
-    private fun cancelPendingCounselingFlush() {
-        counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.DiscardPendingChunks)
-    }
-
     /**
      * CounselingStore 交出来的两件事：结果落盘 + 写 counseling_log.md，以及首字耗时。
      *
@@ -1824,17 +1794,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             }
 
             is com.lovebrain.app.feature.counseling.CounselingStore.Effect.FirstTokenObserved ->
-                applyUsage(UsageStats.Event.Timed(firstTokenMs = effect.elapsedMs))
+                usageStatsStore.accept(UsageStats.Event.Timed(firstTokenMs = effect.elapsedMs))
         }
     }
 
     // --- 锦囊 ---
-
-    private fun applySuggestEvent(event: SuggestEvent) {
-        suggestStore.accept(
-            com.lovebrain.app.feature.suggest.SuggestStore.Intent.Apply(event)
-        )
-    }
 
     /**
      * SuggestStore 归约后需要**别人**做的事：缓存落盘、跨 feature 的耗时统计。
@@ -1858,7 +1822,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 )
 
             is com.lovebrain.app.feature.suggest.SuggestStore.Effect.FirstTokenObserved ->
-                applyUsage(UsageStats.Event.Timed(firstTokenMs = effect.elapsedMs))
+                usageStatsStore.accept(UsageStats.Event.Timed(firstTokenMs = effect.elapsedMs))
         }
     }
 
@@ -1869,10 +1833,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     // --- 主动发起 ---
-
-    private fun applyProactiveEvent(event: ProactiveEvent) {
-        proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(event))
-    }
 
     /**
      * ProactiveStore 归约之后要**别人**做的事：跨 feature 的耗时统计，以及
@@ -1887,7 +1847,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             com.lovebrain.app.feature.proactive.ProactiveStore.Effect.ExitedProactiveMode ->
                 modeController.accept(ModeController.Intent.SetResultMode(ResultMode.REPLY))
             is com.lovebrain.app.feature.proactive.ProactiveStore.Effect.FirstTokenObserved ->
-                applyUsage(UsageStats.Event.Timed(firstTokenMs = effect.elapsedMs))
+                usageStatsStore.accept(UsageStats.Event.Timed(firstTokenMs = effect.elapsedMs))
         }
     }
 
@@ -2064,11 +2024,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     private fun rewriteContextIdOfNow(): String =
         (_activeKb.value?.name ?: "") + "_" + (replyGenerationContext?.messageIds?.hashCode() ?: 0)
 
-    /** 新轮 / 切库 / 保存清空 / 版本回退：这一页整个翻掉 */
-    private fun resetRewritePage() {
-        rewriteStore.accept(com.lovebrain.app.feature.rewrite.RewriteStore.Intent.RoundReset)
-    }
-
     /**
      * 对指定方案卡发起单条改写。
      *
@@ -2236,18 +2191,18 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     L.w("rewrite result dropped: no live result to patch")
                     return
                 }
-                replaceReplyResult(
+                replyStore.accept(ReplyStore.Intent.ReplaceResult(
                     GenerateResult.Success(
                         ReplyPatch.withText(current.response, identity, effect.newReply)
                     )
-                )
+                ))
             }
 
             is com.lovebrain.app.feature.rewrite.RewriteStore.Effect.ResetFeedback ->
                 feedbackCases.putFeedback(effect.identityKey, SchemeFeedback.NONE)
 
             com.lovebrain.app.feature.rewrite.RewriteStore.Effect.RewriteCounted -> {
-                applyUsage(UsageStats.Event.Rewritten)
+                usageStatsStore.accept(UsageStats.Event.Rewritten)
             }
 
             is com.lovebrain.app.feature.rewrite.RewriteStore.Effect.StopRunningRewrite -> {
@@ -2263,11 +2218,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             is com.lovebrain.app.feature.rewrite.RewriteStore.Effect.RestoreVersion -> {
                 val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(effect.identityKey) ?: return
                 val current = replyResult as? GenerateResult.Success ?: return
-                replaceReplyResult(
+                replyStore.accept(ReplyStore.Intent.ReplaceResult(
                     GenerateResult.Success(
                         ReplyPatch.withText(current.response, identity, effect.reply)
                     )
-                )
+                ))
                 // 撤销时恢复旧版本的反馈，不只是正文
                 feedbackCases.putFeedback(effect.identityKey, effect.feedback)
                 // 到这一步才算真撤销：store 这时才把那一版从历史里丢掉并清掉卡片状态
@@ -2279,7 +2234,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     /** 取消正在进行的改写 —— 使用 identityKey */
-    fun cancelRewrite(identityKey: String) {
+    fun cancelRewrite(identityKey: String) { // facade — delegates to RewriteStore
         rewriteStore.accept(
             com.lovebrain.app.feature.rewrite.RewriteStore.Intent.RequestCancel(identityKey)
         )
@@ -2292,14 +2247,14 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 这里真的贴回去了才回 `UndoCommitted`。旧写法先 `pop()` 再检查"结果还在不在、
      * key 解不解得开"，任何一步失败就直接 return——**弹掉的那一版永久丢了**，卡片还挂着 Done。
      */
-    fun undoRewrite(identityKey: String) {
+    fun undoRewrite(identityKey: String) { // facade — delegates to RewriteStore
         rewriteStore.accept(
             com.lovebrain.app.feature.rewrite.RewriteStore.Intent.UndoRequested(identityKey)
         )
     }
 
     /** 清除改写状态（展开/收起时调用）—— 使用 identityKey */
-    fun clearRewriteState(identityKey: String) {
+    fun clearRewriteState(identityKey: String) { // facade — delegates to RewriteStore
         rewriteStore.accept(
             com.lovebrain.app.feature.rewrite.RewriteStore.Intent.Collapse(identityKey)
         )
@@ -2346,8 +2301,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         composer.flushCounselingDraft()
         // 统一走 coordinator 关闭，不再逐个 cancel 手里的 Job 字段。
         // 旧写法会漏掉没被字段覆盖的任务（画像刷新、流式刷新定时器）。
-        cancelPendingChunkFlush()
-        cancelPendingCounselingFlush()
+        replyStore.accept(ReplyStore.Intent.DiscardPendingChunks)
+        counselingStore.accept(com.lovebrain.app.feature.counseling.CounselingStore.Intent.DiscardPendingChunks)
         operationCoordinator.shutdownAll()
     }
 

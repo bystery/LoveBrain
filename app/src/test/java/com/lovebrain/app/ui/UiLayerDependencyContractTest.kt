@@ -517,7 +517,7 @@ class UiLayerDependencyContractTest {
             "panel/reply/MessageList.kt" to 2,
             "panel/reply/ReplyInput.kt" to 1,
             "panel/reply/ResultArea.kt" to 4,
-            "panel/reply/SchemeCard.kt" to 1
+            "panel/reply/SchemeAdjustingBlock.kt" to 1  // 从 SchemeCard.kt 搬来（§7 拆分）
         )
         val total = perFileBudget.values.sum()
         // 45 → **44**：`ResultArea` 未配置档那颗「去设置」归 `LbPrimaryButton`
@@ -670,7 +670,7 @@ class UiLayerDependencyContractTest {
             "panel/reply/MessageList.kt" to 1,           // :270
             "panel/reply/ReplyInput.kt" to 1,            // 只剩「添加」那颗；三颗角色 chip 已转进 LbChip
             "panel/reply/ResultArea.kt" to 2,            // :412 :579 :1247
-            "panel/reply/SchemeCard.kt" to 1,            // :532
+            "panel/reply/SchemeAdjustingBlock.kt" to 1,  // 从 SchemeCard.kt 搬来（§7 拆分）
             "panel/SuggestPanel.kt" to 3                 // 归并掉意图胶囊 + IntentExpiryChip 归 LbChip
         )
         // 23 → **20**：同一批归并拿走三处（`FeedbackCasesScreen` −1、`ReplyInput` −1、`SuggestPanel` −1）。

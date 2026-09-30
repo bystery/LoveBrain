@@ -886,7 +886,9 @@ class PromptByteFreezeBaselineTest {
         val files = promptDir.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.name }.toList().sorted()
         assertEquals(
             "domain/prompt 下只许有被搬出来的那几颗",
-            listOf("ChatTranscriptBlock.kt", "CurrentSceneInjection.kt", "IntentIdeaBlock.kt", "MemoryRefPolicy.kt"),
+            listOf("ChatTranscriptBlock.kt", "CurrentSceneInjection.kt", "IntentIdeaBlock.kt", "MemoryRefPolicy.kt",
+                "PromptCoreKnowledgeSection.kt", "PromptKnowledgeSection.kt", "PromptProactiveSection.kt",
+                "PromptReflectSection.kt", "PromptSuggestSection.kt", "PromptVectorSection.kt"),
             files
         )
     }

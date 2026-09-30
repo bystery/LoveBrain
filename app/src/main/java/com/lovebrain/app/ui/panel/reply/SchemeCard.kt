@@ -66,8 +66,8 @@ object SchemeCardDimens {
     const val TAG_TO_BODY_GAP_DP = 6  // 标签到正文间距
 }
 
-/** 方案卡正文排版常量 */
-private object SchemeTextDimens {
+/** 方案卡正文排版常量（internal：同包抽离的展示子组件共用） */
+internal object SchemeTextDimens {
     val BODY_FONT_SIZE = 13.sp       // 话术正文字号
     val BODY_LINE_HEIGHT = 18.sp     // 话术正文行高
 }
@@ -356,379 +356,57 @@ fun SchemeCard(
             Spacer(Modifier.height(SchemeCardDimens.TAG_TO_BODY_GAP_DP.dp))
 
             // 根据 cardState 渲染卡片内容——替换而非追加
+            // 各状态内容层已抽离为同包纯展示子组件（Scheme*Block.kt），此处只做分发。
+            // modifier 中的 weight(1f) 让子组件根节点在 Column 中撑开剩余空间，
+            // 与原内联实现的布局权重完全一致。
             when (cardState) {
                 is SchemeCardPresentationState.Recording, SchemeCardPresentationState.Recognizing -> {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(14.dp),
-                                strokeWidth = 2.dp,
-                                color = Primary
-                            )
-                            Spacer(Modifier.height(Spacing.xs))
-                            Text(
-                                text = if (cardState is SchemeCardPresentationState.Recognizing) "识别中..." else "正在录音...",
-                                style = AppTypography.labelSmall,
-                                color = PrimaryDark
-                            )
-                            Spacer(Modifier.height(Spacing.xs))
-                            Text(
-                                text = "松手后用语音修改",
-                                style = AppTypography.labelSmall,
-                                color = TextHint
-                            )
-                        }
-                    }
+                    SchemeRecordingBlock(
+                        isRecognizing = cardState is SchemeCardPresentationState.Recognizing,
+                        modifier = Modifier.weight(1f).fillMaxWidth()
+                    )
                 }
                 SchemeCardPresentationState.Rewriting -> {
-                    Row(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(14.dp),
-                            strokeWidth = 2.dp,
-                            color = Primary
-                        )
-                        Spacer(Modifier.width(Spacing.xs))
-                        Text(
-                            "正在改写...",
-                            style = AppTypography.labelSmall,
-                            color = PrimaryDark
-                        )
-                        Spacer(Modifier.weight(1f))
-                        Text(
-                            "取消",
-                            style = AppTypography.labelSmall,
-                            color = TextHint,
-                            modifier = Modifier.clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                onClick = { onCancelRewrite(identity) }
-                            ).padding(Spacing.xs)
-                                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                        )
-                    }
+                    SchemeRewritingBlock(
+                        onCancelRewrite = { onCancelRewrite(identity) },
+                        modifier = Modifier.weight(1f).fillMaxWidth()
+                    )
                 }
                 is SchemeCardPresentationState.RewriteError -> {
-                    // 改写错误——替换内容显示错误+重试
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                text = cardState.message,
-                                style = AppTypography.labelSmall,
-                                color = Error,
-                                textAlign = TextAlign.Center,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            Spacer(Modifier.height(Spacing.xs))
-                            Text(
-                                "重试",
-                                style = AppTypography.labelSmall,
-                                color = PrimaryDark,
-                                modifier = Modifier.clickable(
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    indication = null,
-                                    onClick = {
-                                        onClearRewriteState(identity)
-                                        onToggleRewriteExpand(identity)
-                                    }
-                                ).padding(Spacing.xs)
-                                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                            )
-                        }
-                    }
+                    SchemeRewriteErrorBlock(
+                        message = cardState.message,
+                        onClearRewriteState = { onClearRewriteState(identity) },
+                        onToggleRewriteExpand = { onToggleRewriteExpand(identity) },
+                        modifier = Modifier.weight(1f).fillMaxWidth()
+                    )
                 }
                 SchemeCardPresentationState.RewriteDone -> {
-                    // 改写成功——显示新正文+用这版/返回原版
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth()
-                            .verticalScroll(rememberScrollState())
-                    ) {
-                        Text(
-                            text = scheme.reply,
-                            color = bodyColor,
-                            style = AppTypography.bodyMedium,
-                            fontSize = SchemeTextDimens.BODY_FONT_SIZE,
-                            lineHeight = SchemeTextDimens.BODY_LINE_HEIGHT
-                        )
-                    }
-                    // 明确的"用这版"/"返回原版"按钮
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            "返回原版",
-                            style = AppTypography.labelSmall,
-                            color = TextHint,
-                            modifier = Modifier.clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                onClick = { onUndoRewrite(identity) }
-                            ).padding(horizontal = Spacing.xs, vertical = Spacing.xs)
-                                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                        )
-                        Text(
-                            "用这版",
-                            style = AppTypography.labelSmall,
-                            color = PrimaryDark,
-                            modifier = Modifier.clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                onClick = { onClearRewriteState(identity) }
-                            ).padding(horizontal = Spacing.xs, vertical = Spacing.xs)
-                                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                        )
-                    }
+                    SchemeRewriteDoneBlock(
+                        reply = scheme.reply,
+                        bodyColor = bodyColor,
+                        onUndoRewrite = { onUndoRewrite(identity) },
+                        onClearRewriteState = { onClearRewriteState(identity) },
+                        modifier = Modifier.weight(1f).fillMaxWidth()
+                    )
                 }
                 SchemeCardPresentationState.Adjusting -> {
-                    // 调整态——替换内容：显示改写选项 + 自定义输入 + 取消
-                    // 不显示方向 chips（方向属于 Result-level）
-                    var customText by remember { mutableStateOf("") }
-                    // semantics 的 lambda 不是 @Composable：读屏名字在外面取好再闭包进去
-                    val customHint = stringResource(R.string.scheme_custom_hint)
-                    var showCustomInput by remember { mutableStateOf(false) }
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth()
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(Spacing.xs)
-                    ) {
-                        // 预设选项
-                        val presetCommands = RewriteCommand.entries.filter { it != RewriteCommand.CUSTOM }
-                        val chunkedRows = presetCommands.chunked(2)
-                        chunkedRows.forEachIndexed { rowIndex, rowOptions ->
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
-                            ) {
-                                rowOptions.forEach { command ->
-                                    val (interaction, optScale) = rememberPressScale(0.94f, "optScale${command.label}")
-                                    Box(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .graphicsLayer { scaleX = optScale; scaleY = optScale }
-                                            .clip(LoveBrainShape.sm)
-                                            .background(PrimaryLight, LoveBrainShape.sm)
-                                            .clickable(
-                                                interactionSource = interaction,
-                                                indication = null,
-                                                onClick = { onRewrite(identity, command) }
-                                            )
-                                            .padding(vertical = Spacing.xs, horizontal = Spacing.sm),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Text(
-                                            command.label,
-                                            style = AppTypography.labelSmall,
-                                            color = PrimaryDark,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis
-                                        )
-                                    }
-                                }
-                            }
-                            if (rowIndex < chunkedRows.lastIndex) {
-                                Spacer(Modifier.height(Spacing.xs))
-                            }
-                        }
-                        // 自定义改写入口
-                        if (!showCustomInput) {
-                            val (customInteraction, customScale) = rememberPressScale(0.94f, "customBtnScale")
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .graphicsLayer { scaleX = customScale; scaleY = customScale }
-                                    .clip(LoveBrainShape.sm)
-                                    .background(SurfaceInset, LoveBrainShape.sm)
-                                    .border(1.dp, Border, LoveBrainShape.sm)
-                                    .clickable(
-                                        interactionSource = customInteraction,
-                                        indication = null,
-                                        onClick = { showCustomInput = true }
-                                    )
-                                    .padding(vertical = Spacing.xs, horizontal = Spacing.sm),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    "自定义要求…",
-                                    style = AppTypography.labelSmall,
-                                    color = TextHint,
-                                    maxLines = 1
-                                )
-                            }
-                        } else {
-                            // 自定义输入框
-                            // §6.5 第②栏：placeholder 是"举个例子"，不是这格**是什么**；
-                            // 而且用户敲进第一个字之后连举例那行都不在树上了。
-                            // 所以名字用"自定义改写要求"这句（只给读屏用，屏幕上不新增字）
-                            androidx.compose.material3.OutlinedTextField(
-                                value = customText,
-                                onValueChange = { customText = it },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .semantics { contentDescription = customHint },
-                                placeholder = {
-                                    Text(
-                                        "如：保留第一句，第二句不要",
-                                        style = AppTypography.labelSmall,
-                                        color = TextHint
-                                    )
-                                },
-                                textStyle = AppTypography.labelSmall.copy(color = TextPrimary),
-                                singleLine = false,
-                                maxLines = 3,
-                                shape = LoveBrainShape.sm
-                            )
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End
-                            ) {
-                                Text(
-                                    "确认改写",
-                                    style = AppTypography.labelSmall,
-                                    color = if (customText.isNotBlank()) PrimaryDark else TextHint,
-                                    modifier = Modifier.clickable(
-                                        interactionSource = remember { MutableInteractionSource() },
-                                        indication = null,
-                                        onClick = {
-                                            if (customText.isNotBlank()) {
-                                                onCustomRewrite(identity, customText.trim())
-                                            }
-                                        }
-                                    ).padding(horizontal = Spacing.sm, vertical = Spacing.xs)
-                                        .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                                )
-                            }
-                        }
-                        Spacer(Modifier.weight(1f))
-                        // 取消/返回
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                "取消",
-                                style = AppTypography.labelSmall,
-                                color = TextHint,
-                                modifier = Modifier.clickable(
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    indication = null,
-                                    onClick = { onToggleRewriteExpand(identity) }
-                                ).padding(horizontal = Spacing.sm, vertical = Spacing.xs)
-                                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                            )
-                        }
-                    }
+                    SchemeAdjustingBlock(
+                        onRewrite = { command -> onRewrite(identity, command) },
+                        onCustomRewrite = { text -> onCustomRewrite(identity, text) },
+                        onCancel = { onToggleRewriteExpand(identity) },
+                        modifier = Modifier.weight(1f).fillMaxWidth()
+                    )
                 }
                 SchemeCardPresentationState.Collapsed -> {
-                    // 默认态——v1.3.1 简洁：标签 + 正文 + 操作行
-                    if (isEmpty) {
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "本轮不适合",
-                                color = TextHint,
-                                style = AppTypography.labelMedium,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    } else {
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxWidth()
-                                .verticalScroll(rememberScrollState())
-                        ) {
-                            Text(
-                                text = scheme.reply,
-                                color = bodyColor,
-                                style = AppTypography.bodyMedium,
-                                fontSize = SchemeTextDimens.BODY_FONT_SIZE,
-                                lineHeight = SchemeTextDimens.BODY_LINE_HEIGHT
-                            )
-                        }
-                    }
-
-                    Spacer(Modifier.height(Spacing.sm))
-
-                    // 操作行：右下角（空回复不显示操作按钮）
-                    //
-                    // ⚠ 旧读数留档（这三颗原来的形状现在归 `LbTextAction` 的图标档）：
-                    // 热区本机语义树实量 **20x20dp**（那句注释原先写"外扩至 28dp（触控下限友好）"，
-                    // 两头都是假的），而且**既没有角色也没有选中态**。无障碍那条要的是
-                    // "可交互控件说得清自己是什么、现在是什么状态"，而「赞/踩」被点过之后
-                    // 只有 `tint` 变了色——读屏用户听完那句"复制/赞/踩"之后，没有任何一处
-                    // 能知道这条方案已经表过态。现在两件事都由图标档一次给齐（热区见方 +
-                    // `Role.Button` + `selected`），字形仍是 13dp ⇒ 外观没动，
-                    // 动的只是"要点多准才算点到"。
-                    //
-                    // 为什么这一格当初不能只 `size(48)`：`requiredSize` 会把三颗硬塞成 144dp
-                    // 而**溢出**卡片，卡外那层 `clip(...)` 会把第一颗裁掉一截——热区看着够大，
-                    // 边上一指按不到，那是假修。真要 48 就得给卡片 48 的空间，所以那一格
-                    // 同时把 `CARD_WIDTH_DP` 从 158 抬到 164（放得下 3×48 + 左右各 8 内边距）。
-                    if (!isEmpty) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            LbTextAction(
-                                iconRes = R.drawable.ic_copy,
-                                description = stringResource(R.string.panel_copy),
-                                tone = LbTextActionTone.RowSecondary,
-                                glyph = LbTextActionGlyph.Compact,
-                                onClick = { onCopy(scheme) }
-                            )
-                            LbTextAction(
-                                iconRes = R.drawable.ic_thumb_up,
-                                description = stringResource(R.string.a11y_scheme_like),
-                                tone = if (feedback == SchemeFeedback.LIKED) {
-                                    LbTextActionTone.Accent
-                                } else {
-                                    LbTextActionTone.Muted
-                                },
-                                glyph = LbTextActionGlyph.Compact,
-                                onClick = { onFeedback(scheme, SchemeFeedback.LIKED) },
-                                selected = feedback == SchemeFeedback.LIKED
-                            )
-                            LbTextAction(
-                                iconRes = R.drawable.ic_thumb_down,
-                                description = stringResource(R.string.a11y_scheme_dislike),
-                                tone = if (feedback == SchemeFeedback.DISLIKED) {
-                                    LbTextActionTone.Destructive
-                                } else {
-                                    LbTextActionTone.Muted
-                                },
-                                glyph = LbTextActionGlyph.Compact,
-                                onClick = { onFeedback(scheme, SchemeFeedback.DISLIKED) },
-                                selected = feedback == SchemeFeedback.DISLIKED
-                            )
-                        }
-                    }
+                    SchemeCollapsedBlock(
+                        isEmpty = isEmpty,
+                        reply = scheme.reply,
+                        bodyColor = bodyColor,
+                        feedback = feedback,
+                        onCopy = { onCopy(scheme) },
+                        onFeedback = { fb -> onFeedback(scheme, fb) },
+                        modifier = Modifier.weight(1f).fillMaxWidth()
+                    )
                 }
             }
         }

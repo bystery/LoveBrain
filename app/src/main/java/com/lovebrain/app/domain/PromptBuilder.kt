@@ -9,14 +9,17 @@ import com.lovebrain.app.domain.prompt.ChatTranscriptBlock
 import com.lovebrain.app.domain.prompt.CurrentSceneInjection
 import com.lovebrain.app.domain.prompt.IntentIdeaBlock
 import com.lovebrain.app.domain.prompt.MemoryRefPolicy
+import com.lovebrain.app.domain.prompt.PromptCoreKnowledgeSection
+import com.lovebrain.app.domain.prompt.PromptKnowledgeSection
+import com.lovebrain.app.domain.prompt.PromptProactiveSection
+import com.lovebrain.app.domain.prompt.PromptReflectSection
+import com.lovebrain.app.domain.prompt.PromptSuggestSection
+import com.lovebrain.app.domain.prompt.PromptVectorSection
 import com.lovebrain.app.model.ChatMessage
-import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.MemoryCorrection
-import com.lovebrain.app.model.MemoryKind
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.ProfileUpdateSchema
-import java.io.File
 
 /**
  * Prompt 组装器 v4（ 缓存锚点前置重排）。
@@ -29,6 +32,12 @@ import java.io.File
  *
  * System（回复） = core + naturalness_check + redline + format + 安全声明（ 注入防御）
  * （普通/进攻两模式字节级相同；aggressive.md 在 user 知识段：记忆之后、此刻之前）
+ *
+ * 本类是**薄编排器**：知识段 / 锦囊段 / 主动开场段 / 反思维段 / 向量段 / 核心子集段
+ * 的纯装配逻辑已分别搬进 `domain.prompt` 下的同名 object（`PromptKnowledgeSection` 等），
+ * 它们只接收已读出的文本与纠正表，返回 String。本类只负责读资产 / 读库 / 调 selector /
+ * 拼装最终 prompt，不再内联大段格式化逻辑。搬前搬后的字节证据：
+ * `domain/prompt/PromptByteFreezeBaselineTest` 的冻结表。
  */
 class PromptBuilder(
     private val context: Context,
@@ -44,17 +53,14 @@ class PromptBuilder(
     private val clock: Clock = SystemClock
 ) {
 
-    // ═══════════ 配置校验 ═══════════
+    // ═══════════ 配置校验 → `domain/PromptConfigValidator` ═══════════
 
-    /** 校验 thinkingMode/outputMode 范围，无效值回退默认并给出警告 */
-    fun validateConfig(thinkingMode: Int, outputMode: Int): ConfigValidationResult {
-        val warnings = mutableListOf<String>()
-        var fixedThinking = thinkingMode
-        var fixedOutput = outputMode
-        if (thinkingMode !in 0..1) { warnings.add("thinkingMode=$thinkingMode 无效，已回退 0"); fixedThinking = 0 } // 两态化：直出/思考，旧三态值 2 被 SecurePrefs.clampThinkingMode() 钳制为 0
-        if (outputMode !in 0..1) { warnings.add("outputMode=$outputMode 无效，已回退 0"); fixedOutput = 0 }
-        return ConfigValidationResult(fixedThinking, fixedOutput, warnings)
-    }
+    /** 校验 thinkingMode/outputMode 范围，无效值回退默认并给出警告。
+     *  纯函数逻辑已搬进 [PromptConfigValidator]——这里只留薄包装，保持旧调用点签名不变。 */
+    fun validateConfig(thinkingMode: Int, outputMode: Int): ConfigValidationResult =
+        PromptConfigValidator.validate(thinkingMode, outputMode).let {
+            ConfigValidationResult(it.thinkingMode, it.outputMode, it.warnings)
+        }
 
     data class ConfigValidationResult(
         val thinkingMode: Int,
@@ -137,12 +143,12 @@ class PromptBuilder(
 
     /**
      * 回复系知识段（user 侧）：懂得 + 阶段节选 + 记忆 [+ 进攻] + 此刻 + 最近对话 + 进行中事项。
-     * 委托给 buildKnowledgeInsertionWithRefs，不再维护两套实现。
+     * 委托给 [PromptKnowledgeSection]，本类只负责把文本读出来 + 调 selector。
      */
     suspend fun buildKnowledgeInsertion(kb: KnowledgeBase?, aggressive: Boolean = false, messages: List<ChatMessage> = emptyList()): String {
         // 统一入口——委托给 buildKnowledgeInsertionWithRefs
         if (kb == null) return "（暂无知识库，按通用策略处理）\n\n"
-        return buildKnowledgeInsertionWithRefs(kb, aggressive, emptyMap(), mutableListOf(), messages)
+        return buildKnowledgeSection(kb, aggressive, emptyMap(), messages).text
     }
 
     /**
@@ -176,7 +182,6 @@ class PromptBuilder(
 
     // 「本轮属于哪一种场景」与「场景段怎么写进 prompt」是纯函数行为块（不读库、不读资产、不读时钟），
     // 已整块搬进 `com.lovebrain.app.domain.prompt.CurrentSceneInjection`——这里只留调用。
-    // 搬前搬后的字节证据：`app/src/test/.../domain/prompt/PromptByteFreezeBaselineTest` 的冻结表。
 
     // ═══════════ 回复 User Prompt ═══════════
 
@@ -213,9 +218,10 @@ class PromptBuilder(
     /**
      * 构建回复 user prompt + MemoryRef 清单。
      *
-     * 与 [buildReplyUserPrompt] 逻辑一致，但额外收集每段注入内容的 MemoryRef。
-     * 纠正记录在注入前过滤：WRONG 跳过，FINISHED 跳过事项，MUTED 标记不主动提，
-     * WRONG_PERSON 跳过并隔离。纠正后的 MemoryRef 不出现在清单中。
+     * 知识段的纯装配逻辑已搬进 [PromptKnowledgeSection]——本类读出文本 / 调 selector 后把
+     * [PromptKnowledgeSection.Input] 交给它，拿回段文本与注入的 MemoryRef。纠正记录在注入前
+     * 过滤：WRONG 跳过，FINISHED 跳过事项，MUTED 标记不主动提，WRONG_PERSON 跳过并隔离。
+     * 纠正后的 MemoryRef 不出现在清单中。
      */
     suspend fun buildReplyUserPromptWithRefs(
         kb: KnowledgeBase?,
@@ -240,8 +246,7 @@ class PromptBuilder(
             return PromptBuildResult(prompt, emptyList(), chatBlock.sourceAliasMap)
         }
 
-        val refs = mutableListOf<MemoryRef>()
-        val knowledgeBlock = buildKnowledgeInsertionWithRefs(kb, aggressive, corrections, refs, messages)
+        val knowledgeOutput = buildKnowledgeSection(kb, aggressive, corrections, messages)
         // 推断当前场景并注入——场景是本轮属性，不永久改档案
         val sceneBlock = CurrentSceneInjection.block(CurrentSceneInjection.infer(messages))
         val intentBlock = IntentIdeaBlock.buildIntentBlock(intentConfig)
@@ -250,10 +255,10 @@ class PromptBuilder(
         val timestampBlock = buildTimestampPrompt()
 
         val prompt = PromptBudget.byBlocks(
-            knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatBlock.header, chatBlock.body, timestampBlock
+            knowledgeOutput.text, sceneBlock, intentBlock, ideaBlock, chatBlock.header, chatBlock.body, timestampBlock
         )
         // R06: refs 裁剪后再生 — 只保留实际在最终 prompt 中出现的引用
-        val finalRefs = MemoryRefPolicy.filterRefsByPrompt(refs, prompt)
+        val finalRefs = MemoryRefPolicy.filterRefsByPrompt(knowledgeOutput.refs, prompt)
         return PromptBuildResult(prompt, finalRefs, chatBlock.sourceAliasMap)
     }
 
@@ -281,197 +286,50 @@ class PromptBuilder(
         return PromptBuildResult(prompt, emptyList(), chatBlock.sourceAliasMap)
     }
 
-    // 「对话记录围栏」（header + `<chat>` 正文 + 来源别名表）已整块搬进
-    // `com.lovebrain.app.domain.prompt.ChatTranscriptBlock`——它不读库、不读资产、不读时钟，
-    // 是本轮消息的纯表示层；这里只留三处对它的调用（`PromptBuildResult.sourceAliasMap` 也由此交出）。
-    //
-    // 「持续意图区块」「想法区块」已整块搬进 `com.lovebrain.app.domain.prompt.IntentIdeaBlock`——
-    // 它不读库、不读资产、不读时钟，是意图配置 / 想法文本的纯表示层；这里只留对它的调用。
-    // 「记忆引用与纠正过滤」（makeRef / isCorrected / isMuteExpired / filterRefsByPrompt）已整块搬进
-    // `com.lovebrain.app.domain.prompt.MemoryRefPolicy`——它只接收已读出的文本与纠正表，不碰任何端口；
-    // 这里只留对它的调用。搬前搬后的字节证据：`domain/prompt/PromptByteFreezeBaselineTest` 的冻结表。
-
+    // 「对话记录围栏」→ `domain.prompt.ChatTranscriptBlock`；「持续意图/想法区块」→ `IntentIdeaBlock`；
+    // 「记忆引用与纠正过滤」→ `MemoryRefPolicy`；回复知识段/锦囊段/主动开场段/反思维段/向量段/核心子集段
+    // → `PromptKnowledgeSection` 等同名 object。均为纯函数（只接收已读出文本与纠正表，返回 String），
+    // 本类只负责读资产/读库/调 selector/拼装最终 prompt。字节证据：`PromptByteFreezeBaselineTest` 冻结表。
     /**
-     * 构建知识段并收集 MemoryRef。纠正记录在注入前过滤。
+     * 读取回复系知识段所需的全部输入并委托 [PromptKnowledgeSection] 装配。
+     * 纠正记录在注入前过滤。
      */
-    private suspend fun buildKnowledgeInsertionWithRefs(
+    private suspend fun buildKnowledgeSection(
         kb: KnowledgeBase,
         aggressive: Boolean,
         corrections: Map<String, MemoryCorrection>,
-        refs: MutableList<MemoryRef>,
-        messages: List<ChatMessage> = emptyList()
-): String {
-// migrateIfNeeded 不再在 PromptBuilder 热路径调用——迁移只在打开/升级知识库时运行
-
-        val sb = StringBuilder()
-
-        // 画像段（me/her/warmth 各一条 MemoryRef）
+        messages: List<ChatMessage>
+    ): PromptKnowledgeSection.Output {
         val me = readFileCompat(kb.name, "understand/me.md")
         val her = readFileCompat(kb.name, "understand/her.md")
         val warmth = readFileCompat(kb.name, "understand/warmth.md")
-        sb.append("# 【懂得】关系画像\n")
-        if (me.isNotBlank()) {
-            val ref = makeRef(kb.name, MemoryKind.PROFILE, "understand/me.md", me)
-            if (!isCorrected(ref.id, corrections, sb)) {
-                sb.append("## 我\n").append(me.trim()).append("\n")
-                refs.add(ref)
-            }
-        }
-        if (her.isNotBlank()) {
-            val ref = makeRef(kb.name, MemoryKind.PROFILE, "understand/her.md", her)
-            if (!isCorrected(ref.id, corrections, sb)) {
-                sb.append("## 她\n").append(her.trim()).append("\n")
-                refs.add(ref)
-            }
-        }
-        if (warmth.isNotBlank()) {
-            val ref = makeRef(kb.name, MemoryKind.PROFILE, "understand/warmth.md", warmth)
-            if (!isCorrected(ref.id, corrections, sb)) {
-                sb.append("## 我们\n").append(warmth.trim()).append("\n")
-                refs.add(ref)
-            }
-        }
-        // 个人表达偏好——独立于画像，生成都注入
         val style = readFileCompat(kb.name, "understand/style.md")
-        if (style.isNotBlank()) {
-            val ref = makeRef(kb.name, MemoryKind.PROFILE, "understand/style.md", style)
-            if (!isCorrected(ref.id, corrections, sb)) {
-                sb.append("## 我的表达偏好\n").append(style.trim()).append("\n")
-                refs.add(ref)
-            }
-        }
-        sb.append("\n")
-
-        // 阶段节选
         val stageSection = extractStageSection(AssetRegistry.STAGE, kb)
-        if (stageSection.isNotBlank()) {
-            sb.append("## 当前阶段策略（仅提取当前阶段，严格遵守；不是当前阶段的内容一律忽略）\n")
-            sb.append(stageSection)
-            sb.append("\n\n")
-        }
-
-        // 经验段
         val lessons = knowledgeRepo.readFile(kb.name, "memory/lessons.md")
-        if (lessons.isNotBlank()) {
-            val lessonText = PromptBudget.lastH1Blocks(lessons, 3)
-            val ref = makeRef(kb.name, MemoryKind.LESSON, "memory/lessons.md", lessonText)
-            if (!isCorrected(ref.id, corrections, sb)) {
-                sb.append("# 【记忆】经验教训（仅供参考）\n")
-                sb.append(lessonText).append("\n\n")
-                refs.add(ref)
-            }
-        }
-
-        // 进攻模式
-        if (aggressive) {
-            sb.append("\n\n---\n\n")
-            sb.append(readAsset(AssetRegistry.AGGRESSIVE))
-            sb.append("\n\n---\n\n")
-        }
-
-        // 场景段
-        sb.append("# 【此刻】场景上下文（仅供参考，以本次对话为准）\n")
+        val aggressiveText = if (aggressive) readAsset(AssetRegistry.AGGRESSIVE) else ""
         val topicAge = knowledgeRepo.getTopicAgeHours(kb.name)
-        if (topicAge < 99) {
-            if (topicAge < 1) sb.append("距上次对话：不到1小时前\n")
-            else {
-                sb.append("距上次对话：约").append(topicAge).append("小时前")
-                if (topicAge > 4) sb.append("（间隔较久，话题可能已切换）")
-                sb.append("\n")
-            }
-        }
         val topic = knowledgeRepo.getCurrentTopic(kb.name)
-        if (topic.isNotBlank() && topic != "（等待第一次对话）") {
-            sb.append("当前话题：").append(topic)
-            if (topicAge > 6) sb.append("（⚠️ 此信息来自").append(topicAge).append("小时前，可能已过时）")
-            sb.append("\n")
-        }
         val sceneChain = knowledgeRepo.readFile(kb.name, "moment/scene.md")
-        if (sceneChain.isNotBlank()) {
-            val transformed = SceneChainInjection.transform(sceneChain)
-            if (transformed.isNotBlank()) {
-                val ref = makeRef(kb.name, MemoryKind.SCENE, "moment/scene.md", transformed)
-                if (!isCorrected(ref.id, corrections, sb)) {
-                    sb.append("## 场景状态链（条目后括号内为距今时间；同一事实只在最新条目保留一次）\n")
-                        .append(transformed).append("\n")
-                    refs.add(ref)
-                }
-            }
-        }
-        sb.append("\n")
-
-        // 最近对话
         val recent = knowledgeRepo.readFile(kb.name, "moment/recent.md")
-        if (recent.isNotBlank()) sb.append("# 最近对话\n").append(recent.trim()).append("\n\n")
-
-        // 进行中事项段——经过 OngoingContextSelector relevance gating
-        // 默认拒绝注入；只有满足明确相关信号才进入回复生成 Prompt
-        // 传入 replyDirective 作为 relevance signal
-        // 传入 effectiveIntent 作为冻结快照
         val (_, directive) = com.lovebrain.app.model.splitMessages(messages)
-        val plan: String = selectOngoingForInjection(kb.name, messages, directive)
+        val ongoingPlan = selectOngoingForInjection(kb.name, messages, directive)
 
-        if (plan.isNotBlank()) {
-            // 事项使用条目级 MemoryRef——纠正 A 不影响 B
-            // 每条事项单独生成 MemoryRef，纠正只影响该条事项
-            val planLines = plan.lines().filter { it.contains("|") }
-            for (line in planLines) {
-                val parts = line.split("|").map { it.trim() }
-                if (parts.size >= 2 && parts[0].isNotBlank()) {
-                    // 检查 itemId~ 前缀
-                    val tildeIdx = parts[0].indexOf('~')
-                    val entryName = if (tildeIdx > 0) parts[0].substring(tildeIdx + 1) else parts[0]
-                    val ref = makeOngoingEntryRef(kb.name, entryName, line)
-                    val correction = corrections[ref.id]
-                    if (correction?.action == CorrectionAction.FINISHED) {
-                        // 事项已结束，不注入活跃列表
-                    } else if (!isCorrected(ref.id, corrections, sb)) {
-                        if (!sb.contains("# 【进行中事项】")) {
-                            sb.append("# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n")
-                        }
-                        sb.append(line).append("\n")
-                        refs.add(ref)
-                    }
-                }
-            }
-        }
-
-        return sb.toString()
+        return PromptKnowledgeSection.build(
+            PromptKnowledgeSection.Input(
+                kbName = kb.name,
+                me = me, her = her, warmth = warmth, style = style,
+                stageSection = stageSection,
+                lessons = lessons,
+                aggressiveText = aggressiveText,
+                topicAge = topicAge,
+                topic = topic,
+                sceneChain = sceneChain,
+                recent = recent,
+                ongoingPlan = ongoingPlan,
+                corrections = corrections
+            )
+        )
     }
-
-    /** R06/: 生成 MemoryRef 委托给 `MemoryRefPolicy`——文件级 / 条目级稳定 ID，纠正绑文件而非内容快照。
-     *  scene 和 ongoing 不再用整段文本 hash——
-     * 旧实现用内容 hash 做 ID，导致画像添一句、经验多一块、事项有更新
-     * 都会改变 ID，旧纠正全部失效。改为文件级稳定 ID，
-     * 纠正绑定到文件而非内容快照。
-     *
-     * 增加条目级 ID 支持——
-     * 对于 ongoing 事项，可以传入 entryId 来精确定位某条事项，
-     * 而不是整份 plan.md。纠正 A 不影响 B。
-     * 档案整体操作可以保留（无 entryId），但 UI 必须说清"整份档案"。 */
-    private fun makeRef(kbId: String, kind: MemoryKind, sourcePath: String, text: String, entryId: String = ""): MemoryRef =
-        MemoryRefPolicy.makeRef(kbId, kind, sourcePath, text, entryId)
-
-    /**
-     * 为 ongoing 事项生成条目级 MemoryRef。
-     * 每条事项有自己的 entryId（事项名），纠正只影响该条。
-     */
-    private fun makeOngoingEntryRef(kbId: String, itemName: String, text: String): MemoryRef =
-        MemoryRefPolicy.makeOngoingEntryRef(kbId, itemName, text)
-
-    /** R06: 检查 memoryId 是否被纠正——委托给 `MemoryRefPolicy.isCorrected`。
-     * MUTED: 真正限制——不注入原始内容，只保留被动回应能力。
-     * MUTED 支持时长过期——THIS_ROUND 仅本轮有效，TODAY 跨天后恢复，UNTIL_RESTORE 永久。
-     *
-     * R06 修复：所有 kind 现在都用文件级稳定 ID（kind:sourcePath），
-     * 不再有 :hash 后缀，无需旧格式回退兼容。
-     * 历史纠正记录中带 :hash 的 ID 仍可通过去掉后缀匹配到新格式。 */
-    private fun isCorrected(
-        memoryId: String,
-        corrections: Map<String, MemoryCorrection>,
-        sb: StringBuilder
-    ): Boolean = MemoryRefPolicy.isCorrected(memoryId, corrections, sb)
-
 
     // ═══════════ 时间注入 ═══════════
 
@@ -490,7 +348,7 @@ class PromptBuilder(
      * 段前空白由块自带，此处不再追加分隔，拼合结果逐字等于  规格。
      */
     suspend fun buildCounselingUserPrompt(kb: KnowledgeBase?, confessionTaskBlock: String): String = buildString {
-        append(PromptBudget.applyBudget(buildCoreKnowledgeSubset(kb, emptyList())))
+        append(PromptBudget.applyBudget(buildCoreKnowledgeSubset(kb)))
         append(confessionTaskBlock)
         append("\n\n")
         append(buildTimestampPrompt())
@@ -508,50 +366,26 @@ class PromptBuilder(
      * 裁剪优先级：边界与当前事项 > 近期对话 > 画像摘要 > 旧经验
      */
     suspend fun buildSuggestUserPrompt(kb: KnowledgeBase?): String {
-        val raw = buildString {
-            if (kb == null) {
-                append("（暂无知识库，按通用策略处理）\n\n")
-                append(buildTimestampPrompt())
-                return@buildString
-            }
-            // migrateIfNeeded removed from prompt hot path
-
-            // 1. 关系阶段/温度摘要（简短）
-            val stage = kb.stage?.trim()
-            if (!stage.isNullOrBlank() && stage != "待确定" && stage != "阶段未确定") {
-                append("## 关系阶段\n").append(stage).append("\n\n")
-            }
-            val warmth = readFileCompat(kb.name, "understand/warmth.md")
-            if (warmth.isNotBlank()) {
-                append("## 温度摘要\n").append(warmth.trim().take(300)).append("\n\n")
-            }
-
-            // 2. 与今天相关的有效事项最多 3 条（精简版，不含完整进行中事项历史）
-            val plan = selectOngoingForInjection(kb.name, emptyList(),
-                effectiveIntent = com.lovebrain.app.model.IntentConfig())
-            if (plan.isNotBlank()) {
-                append("## 与今天相关的事项\n")
-                append(plan.take(800)).append("\n\n")
-            }
-
-            // 3. 表达偏好摘要
-            val style = readFileCompat(kb.name, "understand/style.md")
-            if (style.isNotBlank()) {
-                append("## 表达偏好\n").append(style.trim().take(300)).append("\n\n")
-            }
-
-            // 4. 需要避开的已确认边界
-            val lessons = knowledgeRepo.readFile(kb.name, "memory/lessons.md")
-            if (lessons.isNotBlank()) {
-                val recentLessons = PromptBudget.lastH1Blocks(lessons, 1)
-                if (recentLessons.isNotBlank()) {
-                    append("## 需要避开的经验\n")
-                    append(recentLessons.take(400)).append("\n\n")
-                }
-            }
-
-            append(buildTimestampPrompt())
+        if (kb == null) {
+            return PromptBudget.trimSuggestToBudget(
+                "（暂无知识库，按通用策略处理）\n\n" + buildTimestampPrompt()
+            )
         }
+        val warmth = readFileCompat(kb.name, "understand/warmth.md")
+        val plan = selectOngoingForInjection(kb.name, emptyList(),
+            effectiveIntent = com.lovebrain.app.model.IntentConfig())
+        val style = readFileCompat(kb.name, "understand/style.md")
+        val lessons = knowledgeRepo.readFile(kb.name, "memory/lessons.md")
+
+        val raw = PromptSuggestSection.build(
+            PromptSuggestSection.Input(
+                stage = kb.stage.orEmpty(),
+                warmth = warmth,
+                ongoingPlan = plan,
+                style = style,
+                lessons = lessons
+            )
+        ) + buildTimestampPrompt()
         return PromptBudget.trimSuggestToBudget(raw)
     }
 
@@ -580,101 +414,35 @@ class PromptBuilder(
         kb: KnowledgeBase? = null,
         messages: List<ChatMessage> = emptyList()
     ): String {
-        val sb = StringBuilder()
-
-        // 用户草稿
-        val trimmedDraft = draft.trim()
-        if (trimmedDraft.isNotBlank()) {
-            sb.append("## 用户草稿\n").append(trimmedDraft).append("\n\n")
-        } else {
-            sb.append("## 用户草稿\n（无草稿，请主动给出开场话题）\n\n")
-        }
-
-        // 对方画像简要
-if (kb != null) {
-// migrateIfNeeded removed from prompt hot path
-val herProfile = knowledgeRepo.readFile(kb.name, "understand/her.md")
-            if (herProfile.isNotBlank()) {
-                // 只取前 500 字，避免注入过多
-                sb.append("## 对方画像\n").append(herProfile.take(500))
-                if (herProfile.length > 500) sb.append("…（略）")
-                sb.append("\n\n")
-            }
-        }
-
-        // 近期对话（最近 2-3 轮真实聊天）
+        val herProfile = if (kb != null) knowledgeRepo.readFile(kb.name, "understand/her.md") else ""
         val recent = if (kb != null) knowledgeRepo.readFile(kb.name, "moment/recent.md") else ""
-        if (recent.isNotBlank()) {
-            // 只取最近的记录
-            val lines = recent.lines().filter { it.isNotBlank() }
-            val recentLines = lines.takeLast(20)
-            sb.append("## 近期对话\n").append(recentLines.joinToString("\n")).append("\n\n")
-        }
 
+        val section = PromptProactiveSection.build(
+            PromptProactiveSection.Input(draft = draft, herProfile = herProfile, recent = recent)
+        )
         // 时间戳垫底
-        sb.append("## 当前时间\n").append(clock.wallClock()).append("\n")
-
-        return sb.toString()
+        return section + "## 当前时间\n" + clock.wallClock() + "\n"
     }
 
     /**
      * 核心知识子集（谈心与锦囊共用，DRY）：画像 + 记忆（最近3块） + 进行中事项。
-     * 无阶段节选、无此刻、无最近对话。
+     * 无阶段节选、无此刻、无最近对话。装配逻辑在 [PromptCoreKnowledgeSection]。
      */
-    private suspend fun buildCoreKnowledgeSubset(kb: KnowledgeBase?, messages: List<ChatMessage> = emptyList()): String {
-if (kb == null) return "（暂无知识库，按通用策略处理）\n\n"
-// migrateIfNeeded removed from prompt hot path
-val sb = StringBuilder()
+    private suspend fun buildCoreKnowledgeSubset(kb: KnowledgeBase?): String {
+        if (kb == null) return "（暂无知识库，按通用策略处理）\n\n"
+        val me = readFileCompat(kb.name, "understand/me.md")
+        val her = readFileCompat(kb.name, "understand/her.md")
+        val warmth = readFileCompat(kb.name, "understand/warmth.md")
+        val style = readFileCompat(kb.name, "understand/style.md")
+        val lessons = knowledgeRepo.readFile(kb.name, "memory/lessons.md")
+        val plan = selectOngoingForInjection(kb.name, emptyList())
 
-        // # 【懂得】关系画像（A2-6：三段拼接与回复知识段逐字相同，抽 helper 消重）
-        sb.appendProfileSection(kb.name)
-
-        // # 【记忆】经验教训（最近3块）
-        sb.appendLessonsSection(kb.name)
-
-        // # 【进行中事项】
-        sb.appendPlanSection(kb.name, messages)
-
-        return sb.toString()
-    }
-
-    /** A2-6：# 【懂得】关系画像段（我/她/我们非空才拼；与核心子集逐字同源）
-     *  增加"我的表达偏好"（understand/style.md）——非空时追加到画像段末尾 */
-    private suspend fun StringBuilder.appendProfileSection(kbName: String) {
-        val me = readFileCompat(kbName, "understand/me.md")
-        val her = readFileCompat(kbName, "understand/her.md")
-        val warmth = readFileCompat(kbName, "understand/warmth.md")
-        val style = readFileCompat(kbName, "understand/style.md")
-        append("# 【懂得】关系画像\n")
-        if (me.isNotBlank()) append("## 我\n").append(me.trim()).append("\n")
-        if (her.isNotBlank()) append("## 她\n").append(her.trim()).append("\n")
-        if (warmth.isNotBlank()) append("## 我们\n").append(warmth.trim()).append("\n")
-        if (style.isNotBlank()) append("## 我的表达偏好\n").append(style.trim()).append("\n")
-        append("\n")
-    }
-
-    /** A2-6：# 【记忆】经验教训段（最近 3 块；非空才拼） */
-    private suspend fun StringBuilder.appendLessonsSection(kbName: String) {
-        val lessons = knowledgeRepo.readFile(kbName, "memory/lessons.md")
-        if (lessons.isNotBlank()) {
-            append("# 【记忆】经验教训（仅供参考）\n")
-            append(PromptBudget.lastH1Blocks(lessons, 3)).append("\n\n")
-        }
-    }
-
-    /** A2-6：# 【进行中事项】段——经过 OngoingContextSelector relevance gating
-     * 核心原则：记住 ≠ 每轮喂给模型。默认拒绝注入。
-     * 传入 effectiveIntent 作为冻结快照 */
-    private suspend fun StringBuilder.appendPlanSection(
-        kbName: String,
-        messages: List<ChatMessage> = emptyList(),
-        effectiveIntent: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()
-    ) {
-        val plan = selectOngoingForInjection(kbName, messages, effectiveIntent = effectiveIntent)
-        if (plan.isNotBlank()) {
-            append("# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n")
-            append(plan).append("\n")
-        }
+        return PromptCoreKnowledgeSection.build(
+            PromptCoreKnowledgeSection.Input(
+                me = me, her = her, warmth = warmth, style = style,
+                lessons = lessons, ongoingPlan = plan
+            )
+        )
     }
 
     // ═══════════ 辅助引擎（经验/画像/向量） ═══════════
@@ -703,38 +471,22 @@ val sb = StringBuilder()
         val warmth = readFileCompat(kbName, "understand/warmth.md")
         val lessons = knowledgeRepo.readFile(kbName, "memory/lessons.md")
         val rawTopic = knowledgeRepo.readFile(kbName, "memory/raw_topic.md")
-        return buildString {
-            append("## 当前画像\n\n")
-            append("### me.md\n").append(me.trim()).append("\n\n")
-            append("### her.md\n").append(her.trim()).append("\n\n")
-            append("### warmth.md\n").append(warmth.trim()).append("\n\n")
-            if (lessons.isNotBlank()) { append("## 最近经验（最近2次提取）\n\n").append(PromptBudget.lastH1Blocks(lessons, 2)).append("\n\n") }
-            if (rawTopic.isNotBlank()) { append("## 最近话题档案（最近5个话题）\n\n").append(PromptBudget.lastH1Blocks(rawTopic, AppConfig.REFLECT_CONTEXT_TOPICS)).append("\n\n") }
-            val counselingAnalysis = knowledgeRepo.readCounselingAnalysisBlocks(kbName, 2)
-            if (counselingAnalysis.isNotBlank()) { append("## 谈心分析（最近2次）\n\n").append(counselingAnalysis as CharSequence).append("\n\n") }
-            append("## 任务\n请根据以上经验和话题档案，按画像更新引擎的格式，输出 JSON 格式的完整覆写版本。")
-        }
+        val counselingAnalysis = knowledgeRepo.readCounselingAnalysisBlocks(kbName, 2)
+        return PromptReflectSection.build(
+            PromptReflectSection.Input(
+                me = me, her = her, warmth = warmth,
+                lessons = lessons, rawTopic = rawTopic,
+                counselingAnalysis = counselingAnalysis
+            )
+        )
     }
 
     fun buildVectorSystemPrompt(): String = readAsset(AssetRegistry.VECTOR)
 
-    fun buildVectorUserPrompt(currentVector: Map<String, Int>, currentStage: String, context: String): String = buildString {
-        append("## 当前五维向量\n")
-        append("- 亲密度：").append(currentVector["intimacy"] ?: 50).append("\n")
-        append("- 信任度：").append(currentVector["trust"] ?: 50).append("\n")
-        append("- 承诺度：").append(currentVector["commitment"] ?: 50).append("\n")
-        append("- 激情：").append(currentVector["passion"] ?: 50).append("\n")
-        append("- 安全感：").append(currentVector["security"] ?: 50).append("\n\n")
-        append("## 当前阶段：").append(currentStage.ifBlank { "待确定" }).append("\n\n")
-        append("## 最近的对话与场景\n").append(context.trim()).append("\n\n")
-        append("请按输出格式重估五维向量并给出阶段建议。")
-    }
+    fun buildVectorUserPrompt(currentVector: Map<String, Int>, currentStage: String, context: String): String =
+        PromptVectorSection.build(currentVector, currentStage, context)
 
     // ═══════════ 工具方法 ═══════════
-
-
-
-
 
     private suspend fun readFileCompat(kbName: String, newPath: String): String =
         knowledgeRepo.readFile(kbName, newPath)
