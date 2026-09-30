@@ -5,6 +5,8 @@ import com.lovebrain.app.AppConfig
 import com.lovebrain.app.domain.port.KnowledgeReadPort
 import com.lovebrain.app.domain.port.Clock
 import com.lovebrain.app.domain.port.SystemClock
+import com.lovebrain.app.domain.prompt.ChatTranscriptBlock
+import com.lovebrain.app.domain.prompt.CurrentSceneInjection
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.KnowledgeBase
@@ -169,63 +171,11 @@ class PromptBuilder(
         }
     }
 
-    // ═══════════ 当前场景推断 ═══════════
+    // ═══════════ 当前场景推断 → `domain/prompt/CurrentSceneInjection` ═══════════
 
-    /**
-     * 从本轮消息内容推断当前场景。
-     * 不调用模型，仅基于关键词和消息模式的简单规则判断。
-     * 返回场景名称，供 prompt 注入。
-     */
-    fun inferCurrentScene(messages: List<ChatMessage>): String {
-        val realMessages = messages.filter {
-            it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME
-        }
-        if (realMessages.isEmpty()) return ""
-        val lastHer = realMessages.lastOrNull { it.role == ChatMessage.Role.HER }
-        val allText = realMessages.joinToString(" ") { it.content }.lowercase()
-
-        // 收尾判断——对方说要睡、要忙、暂时不聊
-        if (lastHer != null) {
-            val herText = lastHer.content.lowercase()
-            val closingKeywords = listOf("睡了", "睡觉", "晚安", "先忙", "去忙", "不聊了", "下次再聊", "明天再说", "去洗澡", "去洗漱", "先走了", "去吃饭")
-            if (closingKeywords.any { herText.contains(it) }) return "收尾"
-        }
-
-        // 争执判断——语气冲突、负面情绪
-        val conflictKeywords = listOf("生气", "烦死", "不想理", "随便你", "你总是", "你每次", "又来", "有意思吗", "懒得说", "你能不能", "为什么总是", "你到底", "不是你的错难道是我的错")
-        if (conflictKeywords.any { allText.contains(it) }) return "争执"
-
-        // 解释/认错判断——用户需要道歉
-        val apologyKeywords = listOf("对不起", "抱歉", "我的错", "我错了", "原谅", "不应该", "是我不好", "是我没做好")
-        val userMessages = realMessages.filter { it.role == ChatMessage.Role.ME }.joinToString(" ") { it.content }.lowercase()
-        if (apologyKeywords.any { userMessages.contains(it) }) return "解释或认错"
-
-        // 主动邀约判断——对方提出见面或活动
-        if (lastHer != null) {
-            val inviteKeywords = listOf("见面", "约", "一起", "出来", "去吃", "去看", "周末", "有空吗", "能不能", "方便吗")
-            if (inviteKeywords.any { lastHer.content.lowercase().contains(it) }) return "主动邀约"
-        }
-
-        // 认真沟通判断——表达情绪、认真讨论
-        val seriousKeywords = listOf("难过", "不开心", "压力大", "焦虑", "想哭", "委屈", "不知道怎么办", "纠结", "在想", "其实我", "说实话", "心里")
-        if (seriousKeywords.any { allText.contains(it) }) return "认真沟通"
-
-        // 轻松互逗判断——玩笑、表情
-        val playfulKeywords = listOf("哈哈", "笑死", "233", "狗子", "笨蛋", "讨厌", "哼", "略略", "😏", "😂", "嘻")
-        if (playfulKeywords.any { allText.contains(it) }) return "轻松互逗"
-
-        // 默认——日常分享
-        return "日常分享"
-    }
-
-    /**
-     * 构建当前场景注入块。
-     * 场景是本轮属性，不永久改档案，只影响本轮生成策略。
-     */
-    private fun buildSceneBlock(scene: String): String {
-        if (scene.isBlank()) return ""
-        return "# 【当前场景】（本轮属性，不改变长期阶段档案）\n场景：$scene\n\n"
-    }
+    // 「本轮属于哪一种场景」与「场景段怎么写进 prompt」是纯函数行为块（不读库、不读资产、不读时钟），
+    // 已整块搬进 `com.lovebrain.app.domain.prompt.CurrentSceneInjection`——这里只留调用。
+    // 搬前搬后的字节证据：`app/src/test/.../domain/prompt/PromptByteFreezeBaselineTest` 的冻结表。
 
     // ═══════════ 回复 User Prompt ═══════════
 
@@ -277,29 +227,33 @@ class PromptBuilder(
         if (kb == null) {
             val knowledgeBlock = "（暂无知识库，按通用策略处理）\n\n"
             // 无库时也注入当前场景
-            val sceneBlock = buildSceneBlock(inferCurrentScene(messages))
-            val (chatHeader, chatBody, sourceAliasMap) = buildChatBlockWithAliases(messages)
+            val sceneBlock = CurrentSceneInjection.block(CurrentSceneInjection.infer(messages))
+            val chatBlock = ChatTranscriptBlock.render(messages)
             val timestampBlock = buildTimestampPrompt()
             val intentBlock = buildIntentBlock(intentConfig)
             val ideaBlock = buildIdeaBlock(userHint)
             // R09: 无库分支也过预算，不再绕过
-            val prompt = PromptBudget.byBlocks(knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
-            return PromptBuildResult(prompt, emptyList(), sourceAliasMap)
+            val prompt = PromptBudget.byBlocks(
+                knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatBlock.header, chatBlock.body, timestampBlock
+            )
+            return PromptBuildResult(prompt, emptyList(), chatBlock.sourceAliasMap)
         }
 
         val refs = mutableListOf<MemoryRef>()
         val knowledgeBlock = buildKnowledgeInsertionWithRefs(kb, aggressive, corrections, refs, messages)
         // 推断当前场景并注入——场景是本轮属性，不永久改档案
-        val sceneBlock = buildSceneBlock(inferCurrentScene(messages))
+        val sceneBlock = CurrentSceneInjection.block(CurrentSceneInjection.infer(messages))
         val intentBlock = buildIntentBlock(intentConfig)
         val ideaBlock = buildIdeaBlock(userHint)
-        val (chatHeader, chatBody, sourceAliasMap) = buildChatBlockWithAliases(messages)
+        val chatBlock = ChatTranscriptBlock.render(messages)
         val timestampBlock = buildTimestampPrompt()
 
-        val prompt = PromptBudget.byBlocks(knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatHeader, chatBody, timestampBlock)
+        val prompt = PromptBudget.byBlocks(
+            knowledgeBlock, sceneBlock, intentBlock, ideaBlock, chatBlock.header, chatBlock.body, timestampBlock
+        )
         // R06: refs 裁剪后再生 — 只保留实际在最终 prompt 中出现的引用
         val finalRefs = filterRefsByPrompt(refs, prompt)
-        return PromptBuildResult(prompt, finalRefs, sourceAliasMap)
+        return PromptBuildResult(prompt, finalRefs, chatBlock.sourceAliasMap)
     }
 
     /**
@@ -310,87 +264,25 @@ class PromptBuilder(
         messages: List<ChatMessage>,
         userHint: String
     ): PromptBuildResult {
-        val (chatHeader, chatBody, sourceAliasMap) = buildChatBlockWithAliases(messages)
+        val chatBlock = ChatTranscriptBlock.render(messages)
         val ideaBlock = buildIdeaBlock(userHint)
         val timestampBlock = buildTimestampPrompt()
         // 仅看本轮也注入当前场景——场景是本轮属性，不属于旧记忆
-        val sceneBlock = buildSceneBlock(inferCurrentScene(messages))
+        val sceneBlock = CurrentSceneInjection.block(CurrentSceneInjection.infer(messages))
         val prompt = buildString {
             append("（本轮仅看模式：不携带画像、记忆、意图和偏好）\n\n")
             append(sceneBlock)
             append(ideaBlock)
-            append(chatHeader)
-            append(chatBody)
+            append(chatBlock.header)
+            append(chatBlock.body)
             append(timestampBlock)
         }
-        return PromptBuildResult(prompt, emptyList(), sourceAliasMap)
+        return PromptBuildResult(prompt, emptyList(), chatBlock.sourceAliasMap)
     }
 
-    /** R-DRY: 构建对话记录区块，返回 (header, body)
-     * B项修复：每行带来源别名前缀 [her-0]/[me-1]，模型可据此返回 source_ids。
-     * sourceAliasMap 映射别名→实际消息ID，供 TopicRecorder 校验。 */
-    private fun buildChatBlock(messages: List<ChatMessage>): Pair<String, String> {
-        val (header, body, _) = buildChatBlockWithAliases(messages)
-        return header to body
-    }
-
-    /** 构建对话记录区块并附带来源别名映射。
-     * 使用 JSON 序列化替代字符串拼接，保护角色边界。
-     *
-     * 旧问题：`[m0] PARTNER: ${content}` 格式中，正文包含换行、`[m1] USER:`、`</chat>` 时
-     * 会造成表示层歧义；预算裁剪又用 takeLast，可能切掉来源与 speaker。
-     *
-     * 每条消息使用 JSON 对象格式，正文通过序列化转义。
-     * PARTNER/USER 是数据中的人物身份，不机械映射成 API 的 assistant/system 消息角色。
-     *
-     * 来源映射仅保留最终真正发送的消息，最新消息不可切掉 speaker。
-     * 预算以完整消息裁剪，不切半个 JSON 对象。 */
-    private fun buildChatBlockWithAliases(messages: List<ChatMessage>): Triple<String, String, Map<String, String>> {
-        val chatHeader = "# 本次对话记录\n" +
-            "（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每条消息的 id 为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n"
-        val chatMessages = messages.filter { it.role != ChatMessage.Role.IDEA }
-        val effectiveMessages = if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
-            chatMessages.takeLast(AppConfig.REPLY_MAX_MESSAGES)
-        } else {
-            chatMessages
-        }
-        // 统一编号 m0, m1, m2...
-        val sourceAliasMap = mutableMapOf<String, String>()
-        val msgToAlias = mutableMapOf<String, String>()
-        var msgIdx = 0
-        for (msg in effectiveMessages) {
-            val alias = when (msg.role) {
-                ChatMessage.Role.HER -> "m$msgIdx".also { msgIdx++ }
-                ChatMessage.Role.ME -> "m$msgIdx".also { msgIdx++ }
-                else -> continue
-            }
-            sourceAliasMap[alias] = msg.id
-            msgToAlias[msg.id] = alias
-        }
-        // 使用 JSON 数组格式——每条消息是独立 JSON 对象，正文通过序列化转义
-        val chatBody = StringBuilder("<chat>\n")
-        if (chatMessages.size > AppConfig.REPLY_MAX_MESSAGES) {
-            chatBody.append("（注：对话记录超过 ${AppConfig.REPLY_MAX_MESSAGES} 条，仅保留最近 ${AppConfig.REPLY_MAX_MESSAGES} 条）\n\n")
-        }
-        // 每条消息渲染为 JSON 行——`{"id":"m0","speaker":"PARTNER","text":"..."}`
-        for (msg in effectiveMessages) {
-            val alias = msgToAlias[msg.id] ?: continue
-            val speakerLabel = when (msg.role) {
-                ChatMessage.Role.HER -> "PARTNER"
-                ChatMessage.Role.ME -> "USER"
-                else -> continue
-            }
-            // 使用 JSON 序列化转义正文——防止换行、特殊字符、注入攻击
-            val escapedText = kotlinx.serialization.json.Json.encodeToString(
-                kotlinx.serialization.serializer<String>(),
-                msg.content
-            )
-            chatBody.append("{\"id\":\"").append(alias).append("\",\"speaker\":\"")
-                .append(speakerLabel).append("\",\"text\":").append(escapedText).append("}\n")
-        }
-        chatBody.append("</chat>\n")
-        return Triple(chatHeader, chatBody.toString(), sourceAliasMap)
-    }
+    // 「对话记录围栏」（header + `<chat>` 正文 + 来源别名表）已整块搬进
+    // `com.lovebrain.app.domain.prompt.ChatTranscriptBlock`——它不读库、不读资产、不读时钟，
+    // 是本轮消息的纯表示层；这里只留三处对它的调用（`PromptBuildResult.sourceAliasMap` 也由此交出）。
 
     /** R-DRY: 持续意图区块
      *  应用有效期与完成状态——到期或完成的意图不注入。
