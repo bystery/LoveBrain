@@ -307,9 +307,6 @@ class LoveBrainViewModel(
         replyStore.accept(ReplyStore.Intent.ReplaceResult(result))
     }
 
-    /** 当前本轮想法文本（已提交 IDEA + 未提交草稿）。合并规则只住在 [ComposerStore] 一处。 */
-    internal fun getUserHint(): String = composer.ideaHint()
-
     private val _activeKb = MutableStateFlow<KnowledgeBase?>(null)
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
 
@@ -814,18 +811,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    // ═══════════ 唯一消息快照构建入口（实现住在 [ComposerStore.messageSnapshot]） ═══════════
-
-    /**
-     * 构建本轮生成的冻结消息快照。
-     * 供 chat、想法、来源映射及保存共用，确保所有路径使用同一份不可变快照。
-     *
-     * - 深拷贝当前消息列表，防止外部修改影响快照。
-     * - 应用未提交的编辑草稿（角色 + 内容），防双身份问题（）。
-     * - 按稳定消息ID操作，不依赖可能移动的下标。
-     */
-    private fun buildMessageSnapshot(): List<ChatMessage> = composer.messageSnapshot()
-
     // ═══════════ 流式生成（委托 GenerationEngine） ═══════════
 
     /**
@@ -839,7 +824,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 因此这里不需要"先起再回滚"，也不会有不受管理的前台任务。
      */
     fun generate() {
-        val snapshot = buildMessageSnapshot()
+        val snapshot = composer.messageSnapshot()
         // 生产前置条件：没有真实对话（HER/ME）不发起请求
         if (snapshot.none { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }) return
 
@@ -1746,7 +1731,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         val requestId = ReplyRequestState.newRequestId()
         val kbSnapshot = _activeKb.value
-        val messages = buildMessageSnapshot()
+        val messages = composer.messageSnapshot()
         val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.PROACTIVE, requestId
         ) {

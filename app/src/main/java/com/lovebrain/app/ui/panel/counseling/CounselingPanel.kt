@@ -78,16 +78,21 @@ fun CounselingPanel(
     val isCounseling by viewModel.isCounseling.collectAsStateWithLifecycle()
     val streaming by viewModel.counselingStreaming.collectAsStateWithLifecycle()
 
-    var inputHeight by remember { mutableFloatStateOf(100f) }
+    var inputHeight by remember { mutableFloatStateOf(48f) }
     val density = LocalDensity.current.density
     // 入口的占位文案与读屏名字共用一条资源（§6.5 第②栏的口径）
     val inputLabel = stringResource(R.string.counseling_input_hint)
 
     Column(modifier = modifier.fillMaxWidth()) {
+        // §6.4 位移修复：输入框高度从固定 100dp 改为 heightIn(min = ...)，
+        // 与回复档的 PanelTextInput（heightIn(min = INPUT_ROW_HEIGHT_DP)）同一写法。
+        // 之前 100dp 固定高度 vs 回复档 48dp 最小高度 = 高差 28dp（实测 76dp vs 48dp）。
+        // 现在两档都走 heightIn，高度由内容决定，最小值统一。
+        // DraggableDivider 仍调整 inputHeight（最小高度），用户可以往上拖让输入框更高。
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(inputHeight.dp)
+                .heightIn(min = inputHeight.dp)
                 .clip(LoveBrainShape.lg)
                 .background(SurfaceCard)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
@@ -103,7 +108,7 @@ fun CounselingPanel(
                         }
                     }
                 } else Modifier)
-                .padding(Spacing.lg)
+                .padding(horizontal = Spacing.lg)
         ) {
             BasicTextField(
                 value = draft,
@@ -111,7 +116,8 @@ fun CounselingPanel(
                 textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
                 cursorBrush = SolidColor(Primary),
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                     .verticalScroll(rememberScrollState())
                     // §6.5 :532 第②栏：这颗输入框此前**没有任何可读名字**（本机实量
                     // 336x76dp、文案与 contentDescription 两样都空，读屏只念「编辑框」）。
@@ -130,6 +136,7 @@ fun CounselingPanel(
                     text = inputLabel,
                     color = TextHint,
                     style = AppTypography.bodyMedium,
+                    maxLines = 1,
                     modifier = Modifier.padding(top = CounselingDimens.PLACEHOLDER_TOP_PAD_DP.dp)
                 )
             }
@@ -137,7 +144,7 @@ fun CounselingPanel(
 
         DraggableDivider(
             onDragDelta = { delta ->
-                inputHeight = (inputHeight + delta / density).coerceIn(60f, 200f)
+                inputHeight = (inputHeight + delta / density).coerceIn(48f, 200f)
             }
         )
 

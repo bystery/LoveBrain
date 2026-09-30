@@ -504,10 +504,11 @@ class UiLayerDependencyContractTest {
             "panel/suggest/SuggestResultContent.kt" to 1,       // 同上：锦囊结果态那一处
             "KnowledgeBaseActivity.kt" to 1,             // 2 → 1：建库向导那一处随搬家进 kb/KbOnboardingWizard.kt
             "feedback/FeedbackCasesScreen.kt" to 1,
-            "home/ProviderSection.kt" to 4,
+            "home/ProviderSection.kt" to 3,              // 4 → 3：头点颜色走 LbRowState，少一处自画品牌色底
             "onboarding/OnboardingOptionCard.kt" to 2,
             "panel/AiLoadingRow.kt" to 1,
-            "panel/LoveBrainPanelScreen.kt" to 3,
+            "panel/LoveBrainPanelScreen.kt" to 1,        // 3 → 1：ProfileSuggestionCard + StageSuggestionCard 搬到 host/PanelSuggestionCards.kt
+            "panel/host/PanelSuggestionCards.kt" to 2,   // 搬来的两张建议卡各一处 PrimaryLight 底
             "panel/OnboardingFlow.kt" to 1,
             "panel/PanelHeader.kt" to 1,
             "panel/SuggestPanel.kt" to 5,               // 6 → 5：锦囊结果态那一处搬进 panel/suggest/SuggestResultContent.kt
@@ -530,7 +531,7 @@ class UiLayerDependencyContractTest {
         //   归并方式仍是**复用已有主人**（`LbEmptyState` 新加的是有名字的容器档与语气档，不是又一颗组件、
         //   也不是一个 `containerColor` 旋钮）；`ui/` 里剩下的 `ErrorBg` 自画从 5 处降到 1 处，
         //   那 1 处是 `SuggestPanel` 的「要避开的说法」内容块（多行 ✗ 列表，不是状态条），代理判它不该进状态组件、已拒。
-        assertTrue("登记的就是本机实扫的 37 处，表本身错了要先修表", total == 37)
+        assertTrue("登记的就是本机实扫的 36 处，表本身错了要先修表", total == 36)
         val uiRoot = dir("ui")
         val scanned = kotlinFiles(uiRoot).map {
             it.relativeTo(uiRoot).invariantSeparatorsPath to brandTonedArgs(

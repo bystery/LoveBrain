@@ -41,6 +41,8 @@ import com.lovebrain.app.model.ProactiveOption
 import com.lovebrain.app.model.SchemeFeedback
 import kotlinx.coroutines.delay
 import com.lovebrain.app.ui.panel.counseling.CounselingPanel
+import com.lovebrain.app.ui.panel.host.ProfileSuggestionCard
+import com.lovebrain.app.ui.panel.host.StageSuggestionCard
 import com.lovebrain.app.ui.panel.reply.*
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
@@ -54,7 +56,6 @@ private const val PANEL_WARNING_AUTO_DISMISS_MS = 3000L
 private const val VECTOR_UPDATE_AUTO_DISMISS_MS = 5000L
 
 private object PanelStrings {
-    const val STAGE_SUGGESTION_TITLE = "阶段调整建议"
     const val PROACTIVE_EMPTY_HINT = "输入想说的话，点击下方「生成开场」让军师帮你找话题"
 }
 private object PanelDimens {
@@ -72,8 +73,6 @@ private object PanelDimens {
     const val MESSAGE_LIST_MIN_HEIGHT_DP = 64
     const val MESSAGE_LIST_MAX_HEIGHT_DP = 400
     const val TRIO_HEIGHT_DP = 40
-    const val STYLE_DIVIDER_HEIGHT_DP = 16
-    const val PROFILE_CARD_MAX_HEIGHT_DP = 180
     const val PILL_HEIGHT_DP = 14
     const val PILL_LABEL_GAP_DP = 3
     const val TOUCH_TARGET_MIN_DP = AppDimens.TOUCH_TARGET_MIN_DP  // 从 24dp 修正为无障碍下限；数只写在全局那颗
@@ -663,164 +662,6 @@ fun LoveBrainPanelScreen(
 }
 
 /**
- * 画像建议卡——原地重新生成，卡片位置不变。
- *
- * 状态：
- * - Ready: 正常展示建议，可确认/忽略/重新生成
- * - Regenerating: 原地显示"正在重新生成…"，禁用确认
- * - Confirming: 写入中，禁用所有操作
- * - Error: 建议格式无效，显示重新生成
- *
- * 禁止整张卡消失再重新出现导致页面跳动。
- */
-@Composable
-private fun ProfileSuggestionCard(
-    suggestion: String,
-    canConfirm: Boolean = true,
-    isConfirming: Boolean = false,
-    isRegenerating: Boolean = false,
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
-    onRegenerate: () -> Unit = {}
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-        .background(PrimaryLight, LoveBrainShape.lg)
-        .padding(Spacing.lg)
-    ) {
-        Text("AI 画像更新建议", style = AppTypography.labelLarge, color = PrimaryDark)
-        Spacer(Modifier.height(Spacing.md))
-        // 真正的 overlay——正文始终留在 layout 中撑高度，loading 覆盖在上层
-        // 不用 if/else 替换正文，避免高度跳变
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = PanelDimens.PROFILE_CARD_MAX_HEIGHT_DP.dp)
-                .background(SurfaceCard, LoveBrainShape.md)
-        ) {
-            // 正文始终存在于 layout 中——负责撑高
-            Text(
-                text = suggestion,
-                style = AppTypography.labelMedium,
-                color = if (isRegenerating) TextHint else TextPrimary,
-                modifier = Modifier
-                    .padding(Spacing.md)
-                    .verticalScroll(rememberScrollState())
-            )
-            // loading 覆盖层——不替换正文，覆盖在上方
-            if (isRegenerating) {
-                Box(
-                    modifier = Modifier
-                        .matchParentSize()
-                        .background(SurfaceCard.copy(alpha = 0.85f))
-                        .padding(Spacing.md),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(14.dp),
-                            strokeWidth = 2.dp,
-                            color = Primary
-                        )
-                        Spacer(Modifier.width(Spacing.xs))
-                        Text(
-                            "正在重新生成…",
-                            style = AppTypography.labelMedium,
-                            color = PrimaryDark
-                        )
-                    }
-                }
-            }
-        }
-        Spacer(Modifier.height(Spacing.md))
-        Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-            // regenerating 时禁用忽略和确认
-            val actionsEnabled = !isConfirming && !isRegenerating
-            // press scale feedback
-            val (dismissInteraction, dismissScale) = rememberPressScale(0.96f, "profileDismissScale")
-            Text(
-                "忽略",
-                style = AppTypography.labelLarge,
-                color = if (actionsEnabled) TextSecondary else TextHint,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = dismissScale; scaleY = dismissScale }
-                    .clickable(
-                        interactionSource = dismissInteraction,
-                        indication = null,
-                        enabled = actionsEnabled,
-                        onClick = { onDismiss() }
-                    )
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-            )
-            when {
-                isRegenerating -> {
-                    // 重新生成中原地显示 loading，不额外显示按钮
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            "重新生成中…",
-                            style = AppTypography.labelLarge,
-                            color = TextHint,
-                            modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)
-                        )
-                    }
-                }
-                isConfirming -> {
-                    // 提交中：禁用并显示进度
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(14.dp),
-                            strokeWidth = 2.dp,
-                            color = Primary
-                        )
-                        Spacer(Modifier.width(Spacing.xs))
-                        Text(
-                            "写入中…",
-                            style = AppTypography.labelLarge,
-                            color = PrimaryDark,
-                            modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)
-                        )
-                    }
-                }
-                canConfirm -> {
-                    val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "profileConfirmScale")
-                    Text(
-                        "确认更新",
-                        style = AppTypography.labelLarge,
-                        color = PrimaryDark,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier
-                            .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
-                            .clickable(interactionSource = confirmInteraction, indication = null, onClick = {
-                                onConfirm()
-                            })
-                            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-                    )
-                }
-                else -> {
-                    // 无效建议——显示重新生成，点击真正发起新的画像生成请求
-                    val (regenInteraction, regenScale) = rememberPressScale(0.96f, "profileRegenScale")
-                    Text(
-                        "建议格式无效，重新生成",
-                        style = AppTypography.labelLarge,
-                        color = Error,
-                        modifier = Modifier
-                            .graphicsLayer { scaleX = regenScale; scaleY = regenScale }
-                            .clickable(interactionSource = regenInteraction, indication = null, onClick = {
-                                onRegenerate()
-                            })
-                            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-                    )
-                }
-            }
-        }
-    }
-}
-
-/**
  * 面板顶部那一张通知条（知识库已保存 / 本轮警告 / 画像有更新，三处共用）。
  *
  * 原来它是异形账本里 `LoveBrainPanelScreen.kt#KbNoticeBanner` 那一颗，而且带着两个
@@ -977,53 +818,6 @@ private fun nonlinearFraction(value: Int): Float {
         value <= 40 -> (value / 40f) * 0.20f
         value <= 80 -> 0.20f + ((value - 40) / 40f) * 0.70f
         else -> 0.90f + ((value - 80) / 20f) * 0.10f
-    }
-}
-
-@Composable
-private fun StageSuggestionCard(
-    suggestion: StageSuggestion,
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-        .background(PrimaryLight, LoveBrainShape.lg)
-        .padding(Spacing.lg)
-    ) {
-        Text(PanelStrings.STAGE_SUGGESTION_TITLE, style = AppTypography.labelLarge, color = PrimaryDark)
-        Spacer(Modifier.height(Spacing.md))
-        Text(
-            text = "建议调整为「${suggestion.newStage}」\n依据：${suggestion.reason}",
-            style = AppTypography.labelMedium,
-            color = TextPrimary
-        )
-        Spacer(Modifier.height(Spacing.md))
-        Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-            // press scale
-            val (dismissInteraction, dismissScale) = rememberPressScale(0.96f, "stageDismissScale")
-            Text(
-                "忽略",
-                style = AppTypography.labelLarge,
-                color = TextSecondary,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = dismissScale; scaleY = dismissScale }
-                    .clickable(interactionSource = dismissInteraction, indication = null, onClick = { onDismiss() })
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-            )
-            val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "stageConfirmScale")
-            Text(
-                "确认调整",
-                style = AppTypography.labelLarge,
-                color = PrimaryDark,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
-                    .clickable(interactionSource = confirmInteraction, indication = null, onClick = { onConfirm() })
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-            )
-        }
     }
 }
 

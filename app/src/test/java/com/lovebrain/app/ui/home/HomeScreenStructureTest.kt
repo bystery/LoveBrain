@@ -106,6 +106,80 @@ class HomeScreenStructureTest {
         rule.waitForIdle()
     }
 
+    /**
+     * §6.5 矩阵：把首页从固定 360dp 推到 4 宽 × 3 字号（`UiMatrix.FULL`）。
+     * 量具，不是闸：热区 < 48dp、越槽只登记不改码（工单明文），打 stdout 进交付表。
+     * 硬断言只有哨兵（十二格各量到一次）+ 样本下限（防空转）。
+     * 换格子靠 hoisted 状态（一个用例只 `setContent` 一次，同 `UiMatrixFullSweepTest`）。
+     */
+    private val matrixCell: MutableState<UiMatrix> = mutableStateOf(UiMatrix.FULL.first())
+
+    private fun mountSweep(accessible: Boolean = true) {
+        rule.setContent {
+            matrixCell.value.RenderIn(LocalDensity.current.density) {
+                HomeScreen(
+                    viewModel = vm(accessible),
+                    onStartService = {}, onOpenPanel = { _, _ -> }, onTempHide = {},
+                    onRestore = {}, onNavigateFeedback = {}, onNavigateAbout = {},
+                    onNavigateProviders = {}, onNavigateUsage = {}, onNavigateCaptureApps = {},
+                    onBack = {},
+                    overlayGrantedOverride = granted.value,
+                    serviceRunningOverride = running.value
+                )
+            }
+        }
+        rule.waitForIdle()
+    }
+
+    private fun useCell(next: UiMatrix) {
+        rule.runOnIdle { matrixCell.value = next }
+        rule.waitForIdle()
+    }
+
+    @Test
+    fun `the touch floor is recorded across four widths and three font scales`() {
+        mountSweep(accessible = true)
+        val table = StringBuilder()
+        val visited = LinkedHashMap<String, String>()
+        var judged = 0
+        for (m in UiMatrix.FULL) {
+            useCell(m)
+            val targets = probe.actionableTargets(rule, "首页·${m.id}")
+            val inside = targets.filter {
+                it.widthDp > 0f && it.heightDp > 0f &&
+                    it.leftDp >= 0f && it.topDp >= 0f &&
+                    it.leftDp + it.widthDp <= m.widthDp + 0.5f &&
+                    it.topDp + it.heightDp <= m.heightDp + 0.5f
+            }
+            judged += inside.size
+            val small = inside.filter { it.tooSmall(probe.floorDp) }
+            val over = targets.filter { it.leftDp + it.widthDp > m.widthDp + 0.5f }
+            table.append("PROBE64 首页·${m.id} 判 ${inside.size}/${targets.size} 颗；")
+                .append("热区<${probe.floorDp.toInt()}dp ${small.size} 颗：")
+                .append(small.joinToString(" | ") { it.describe() }).append("；")
+                .append("越槽 ${over.size} 颗：")
+                .append(over.joinToString(" | ") { it.describe() }).append('\n')
+            visited[m.id] = "${inside.size}/${targets.size}"
+        }
+        println("§6.5 矩阵·首页·实到读数（4 宽 × 3 字号）")
+        println(table.toString())
+        assertEquals(
+            "矩阵只量到 ${visited.size} 格（应为 ${UiMatrix.FULL.size}）：${visited.keys}" +
+                " —— 覆盖面不能靠循环写法自称",
+            UiMatrix.FULL.map { it.id }, visited.keys.toList()
+        )
+        assertTrue(
+            "十二格一共只判到 $judged 颗，低于样本下限 $MIN_SWEEP_JUDGED —— 这格在空转，" +
+                "别把它读成「全达标」",
+            judged >= MIN_SWEEP_JUDGED
+        )
+    }
+
+    companion object {
+        /** 十二格至少该判到这么多颗；低于它就是这格没扫到东西，不是「全达标」 */
+        private const val MIN_SWEEP_JUDGED = 12
+    }
+
     /** 统一走未合并树：tag 打在哪个节点上，就一定在那一个节点查得到，不受父容器合并语义影响 */
     private fun tagCount(tag: String) =
         rule.onAllNodesWithTag(tag, useUnmergedTree = true).fetchSemanticsNodes().size

@@ -28,7 +28,7 @@ import org.junit.Test
  * ① 枚举 label = "想法"（MessageList chip / PromptBuilder 记录段渲染共用）；
  * ② 多条 IDEA 按序以 \n 拼接，空列表返回 ""（PromptBuilder isNotBlank 分支天然兜底）；
  * ③ HER/ME 消息不混入收集（只认 Role.IDEA）；
- * ④ 收集源 = 实时消息列表（无独立残留快照）：消息移除后 getUserHint 同步归空。
+ * ④ 收集源 = 实时消息列表（无独立残留快照）：消息移除后 composer.ideaHint() 同步归空。
  *    （演进表原措辞 "nextRound 清空后返回 ''" 需预置 GenerateResult.Success 才能驱动 nextRound，
  *     纯 JVM 不可直接构造；④ 以等价契约替代——收集无残留快照正是"清空后必空"的根源，
  *     语义覆盖一致，偏差已在转交单向 checker 说明。）
@@ -92,11 +92,11 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
     fun idea_messages_join_with_newline_and_empty_when_none() = runTest {
         val vm = newViewModel()
         advanceUntilIdle()
-        assertEquals("", vm.getUserHint())
+        assertEquals("", vm.composer.ideaHint())
 
         vm.addMessage(ChatMessage.Role.IDEA, "别讲道理")
         vm.addMessage(ChatMessage.Role.IDEA, "先哄她")
-        assertEquals("别讲道理\n先哄她", vm.getUserHint())
+        assertEquals("别讲道理\n先哄她", vm.composer.ideaHint())
     }
 
     /** ③：HER/ME 消息不混入收集（只认 Role.IDEA） */
@@ -107,7 +107,7 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         vm.addMessage(ChatMessage.Role.HER, "今天真的好累啊")
         vm.addMessage(ChatMessage.Role.IDEA, "别讲道理，哄她")
         vm.addMessage(ChatMessage.Role.ME, "那早点休息吧")
-        assertEquals("别讲道理，哄她", vm.getUserHint())
+        assertEquals("别讲道理，哄她", vm.composer.ideaHint())
     }
 
     /** ④：收集源 = 实时消息列表，无独立残留快照（lifecycle 契约等价锁，见类 KDoc） */
@@ -116,10 +116,10 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         val vm = newViewModel()
         advanceUntilIdle()
         vm.addMessage(ChatMessage.Role.IDEA, "哄她")
-        assertEquals("哄她", vm.getUserHint())
+        assertEquals("哄她", vm.composer.ideaHint())
 
         val ideaId = vm.composer.messages.value.first { it.role == ChatMessage.Role.IDEA }.id
         vm.removeMessageById(ideaId)
-        assertEquals("", vm.getUserHint())
+        assertEquals("", vm.composer.ideaHint())
     }
 }

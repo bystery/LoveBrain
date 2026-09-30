@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.LbRowState
 import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.model.ProviderTicket
@@ -156,12 +157,16 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
                         .fillMaxWidth()
                         .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                 ) {
+                    // §6.1：点的"就绪 ↔ 颜色"这一对归 LbRowState（它的 KDoc 点名
+                    // `if (providerReady) Primary else Neutral300` 就是它要替掉的旧写法）。
+                    // 点的形状仍由这一处画——设计系统没有独立的 LbDot，唯一画这颗点的
+                    // LbSettingRow 的行布局（点在尾、无 chevron）对不上这一行，所以只搬颜色、不搬形状。
                     Box(
                         modifier = Modifier
                             .size(ProviderDimens.STATUS_DOT_SIZE_DP.dp)
                             .clip(CircleShape)
                             .background(
-                                if (providerReady) Primary else Neutral300
+                                (if (providerReady) LbRowState.Ready else LbRowState.NotReady).color
                             )
                     )
                     Spacer(Modifier.width(Spacing.md))

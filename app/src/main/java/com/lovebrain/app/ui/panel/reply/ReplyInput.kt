@@ -68,29 +68,40 @@ fun ReplyInput(
 ) {
     val isEditing = editingIndex >= 0
 
-    // 单行布局：她 | 我 | 想法 | 输入框(weight 1f) | 添加；主动发态 chips/添加钮隐藏（-⑥）
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    // §6.4 位移修复：角色 chips 单独一行，不再与输入框抢同一行。
+    // 之前 chips（3×48dp + 3×8dp spacer = 168dp）把输入框挤到只剩 96dp，
+    // 而谈心档输入框独占整行 304dp——跨档位移 208–222dp。
+    // chips 移到上方后，输入框拿到几乎整行宽度，与谈心档的宽度差降到 ~32dp（add button 那一截）。
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = Spacing.md)
     ) {
         if (showRoleChips) {
-            RoleChip("她", currentRole == ChatMessage.Role.HER) {
-                onRoleChange(ChatMessage.Role.HER)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth().padding(bottom = Spacing.sm)
+            ) {
+                RoleChip("她", currentRole == ChatMessage.Role.HER) {
+                    onRoleChange(ChatMessage.Role.HER)
+                }
+                Spacer(Modifier.width(Spacing.sm))
+                RoleChip("我", currentRole == ChatMessage.Role.ME) {
+                    onRoleChange(ChatMessage.Role.ME)
+                }
+                Spacer(Modifier.width(Spacing.sm))
+                // 想法 = 第三种消息（Role.IDEA）；VM 侧收口保证捕获链不受此选择影响
+                RoleChip("想法", currentRole == ChatMessage.Role.IDEA) {
+                    onRoleChange(ChatMessage.Role.IDEA)
+                }
             }
-            Spacer(Modifier.width(Spacing.sm))
-            RoleChip("我", currentRole == ChatMessage.Role.ME) {
-                onRoleChange(ChatMessage.Role.ME)
-            }
-            Spacer(Modifier.width(Spacing.sm))
-            // 想法 = 第三种消息（Role.IDEA）；VM 侧收口保证捕获链不受此选择影响
-            RoleChip("想法", currentRole == ChatMessage.Role.IDEA) {
-                onRoleChange(ChatMessage.Role.IDEA)
-            }
-            Spacer(Modifier.width(Spacing.sm))
         }
 
+        // 输入框 + 添加按钮同一行
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
         // 输入框（DRY：共享 PanelTextInput；高度与 chips 一致（）；placeholder 随角色联动）
         PanelTextInput(
             value = draftText,
@@ -151,6 +162,7 @@ fun ReplyInput(
                     )
                 }
             }
+        }
         }
     }
 }

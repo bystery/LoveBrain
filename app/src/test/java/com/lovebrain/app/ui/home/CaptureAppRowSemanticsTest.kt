@@ -1,6 +1,8 @@
 package com.lovebrain.app.ui.home
 
 import android.content.Context
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -79,6 +81,76 @@ class CaptureAppRowSemanticsTest {
             }
         }
         rule.waitForIdle()
+    }
+
+    /**
+     * §6.5 矩阵：把这一屏从固定 360dp 推到 4 宽 × 3 字号（`UiMatrix.FULL`）。
+     *
+     * 这一格是**量具**，不是闸：热区 < 48dp、越槽这类违规**只登记不改码**
+     * （工单明文），打 stdout 进交付表。硬断言只有两条——
+     * ①哨兵：十二格必须各量到一次（循环没被谁悄悄短路）；
+     * ②样本下限：判到的节点数低于下限就是这格在空转，别读成「全达标」。
+     * 换格子靠 hoisted 状态（一个用例只 `setContent` 一次，同 `UiMatrixFullSweepTest`）。
+     */
+    private val matrixCell: MutableState<UiMatrix> = mutableStateOf(UiMatrix.FULL.first())
+
+    private fun mountSweep(model: SetupViewModel) {
+        rule.setContent {
+            matrixCell.value.RenderIn(LocalDensity.current.density) {
+                CaptureAppsScreen(viewModel = model, onBack = {})
+            }
+        }
+        rule.waitForIdle()
+    }
+
+    private fun useCell(next: UiMatrix) {
+        rule.runOnIdle { matrixCell.value = next }
+        rule.waitForIdle()
+    }
+
+    @Test
+    fun `the touch floor is recorded across four widths and three font scales`() {
+        val model = vm(listOf(alfred, cyrus, bear), allowed = setOf("PACKET_ALFRED"))
+        mountSweep(model)
+        val table = StringBuilder()
+        val visited = LinkedHashMap<String, String>()
+        var judged = 0
+        for (m in UiMatrix.FULL) {
+            useCell(m)
+            val targets = probe.actionableTargets(rule, "捕获范围页·${m.id}")
+            val inside = targets.filter {
+                it.widthDp > 0f && it.heightDp > 0f &&
+                    it.leftDp >= 0f && it.topDp >= 0f &&
+                    it.leftDp + it.widthDp <= m.widthDp + 0.5f &&
+                    it.topDp + it.heightDp <= m.heightDp + 0.5f
+            }
+            judged += inside.size
+            val small = inside.filter { it.tooSmall(probe.floorDp) }
+            val over = targets.filter { it.leftDp + it.widthDp > m.widthDp + 0.5f }
+            table.append("PROBE64 捕获范围页·${m.id} 判 ${inside.size}/${targets.size} 颗；")
+                .append("热区<${probe.floorDp.toInt()}dp ${small.size} 颗：")
+                .append(small.joinToString(" | ") { it.describe() }).append("；")
+                .append("越槽 ${over.size} 颗：")
+                .append(over.joinToString(" | ") { it.describe() }).append('\n')
+            visited[m.id] = "${inside.size}/${targets.size}"
+        }
+        println("§6.5 矩阵·捕获范围页·实到读数（4 宽 × 3 字号）")
+        println(table.toString())
+        assertEquals(
+            "矩阵只量到 ${visited.size} 格（应为 ${UiMatrix.FULL.size}）：${visited.keys}" +
+                " —— 覆盖面不能靠循环写法自称",
+            UiMatrix.FULL.map { it.id }, visited.keys.toList()
+        )
+        assertTrue(
+            "十二格一共只判到 $judged 颗，低于样本下限 $MIN_SWEEP_JUDGED —— 这格在空转，" +
+                "别把它读成「全达标」",
+            judged >= MIN_SWEEP_JUDGED
+        )
+    }
+
+    companion object {
+        /** 十二格至少该判到这么多颗；低于它就是这格没扫到东西，不是「全达标」 */
+        private const val MIN_SWEEP_JUDGED = 12
     }
 
     /** 按行标题找那一行的可交互节点——一行必须**恰好**一颗，多出来就是有人又画了一层点击 */
