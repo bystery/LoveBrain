@@ -39,7 +39,7 @@ enum class SchemeSource { STYLE, DIRECTION }
 /**
  * 方案操作身份——稳定 typed identity，区分 STYLE(A/B/C/D) 与 DIRECTION(F/E/X/S)。
  *
- * 改写、语音改写、反馈、撤销、history、loading state 均统一使用此身份作为 key，
+ * 改写、反馈、撤销、history、loading state 均统一使用此身份作为 key，
  * 避免 A 与 F 因 tag 撞车导致方向卡操作失效。
  *
  * 序列化为 "STYLE:A" / "DIRECTION:F" 格式，兼容 Map<String, ...> 存储。
