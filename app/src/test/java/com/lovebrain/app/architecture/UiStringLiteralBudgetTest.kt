@@ -279,7 +279,11 @@ class UiStringLiteralBudgetTest {
         //   ProviderSection / SetupViewModel / AppConfig），改完读到 160/6/0/92，
         //   两条差值一一对上这一拍的两次搬家（这里 −1 TEXT、`HomeScreen` 那颗标签 −1 COMPONENT）。
         //   另一拍若再动中文字面量，那两个数由那一拍自己续账。
-        Kind.TEXT to 160,
+        // 160 → **157**：语音模式整体删除（`SchemeRecordingBlock.kt` 整块消失、
+        //   `SchemeCard.kt` 的手势注释与 `LoveBrainPanelScreen.kt` 的两条麦克风提示与引导语半句一起走）。
+        //   这一档是**真删**：那些字面量所属的界面不再存在，不是搬家，所以 COMPONENT 一栏没跟着动
+        //   （实测 92 → 92）。
+        Kind.TEXT to 157,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是

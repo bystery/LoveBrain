@@ -7,7 +7,9 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -24,9 +26,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.text.font.FontWeight
@@ -78,15 +77,12 @@ internal object SchemeTextDimens {
  * 状态决定卡片内容层显示什么：
  * - Collapsed: 标签 + 正文 + 操作行（默认态）
  * - Adjusting: 标签 + 改写选项 + 取消（调整态，替换内容不追加）
- * - Recording/Recognizing: 录音/识别中
  * - Rewriting: 改写 API 调用中
  * - RewriteError/RewriteDone: 改写结果
  */
 sealed class SchemeCardPresentationState {
     data object Collapsed : SchemeCardPresentationState()
     data object Adjusting : SchemeCardPresentationState()
-    data object Recording : SchemeCardPresentationState()
-    data object Recognizing : SchemeCardPresentationState()
     data object Rewriting : SchemeCardPresentationState()
     data class RewriteError(val message: String) : SchemeCardPresentationState()
     data object RewriteDone : SchemeCardPresentationState()
@@ -100,8 +96,7 @@ sealed class SchemeCardPresentationState {
  *
  * 卡片展开 = 进入调整态，替换内容而非在正文下方追加
  * 方向 chips 移出卡片——方向属于 Result-level
- * 使用 pointerInput 实现真实手势生命周期
- * 权限反馈移出卡片——通过 onPermissionEvent 回调通知 Panel
+ * 普通点击展开调整区（长按录音已随语音模式删除）
  */
 @Composable
 fun SchemeCard(
@@ -116,9 +111,6 @@ fun SchemeCard(
     onUndoRewrite: (SchemeIdentity) -> Unit = {},
     onToggleRewriteExpand: (SchemeIdentity) -> Unit = {},
     isExpanded: Boolean = false,
-    onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
-    // 权限事件回调——Panel/ViewModel 复用 panelWarning/banner
-    onPermissionEvent: (PermissionEvent) -> Unit = {},
     // 自定义改写回调
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
@@ -153,55 +145,30 @@ fun SchemeCard(
     val rewriteError = (rewriteState as? RewriteState.Error)?.message
     val rewriteDone = rewriteState is RewriteState.Done
 
-    // 语音改写控制器——只负责 STT
-    // 权限结果通过回调上抛，不在卡片内展示
-    val voiceController = rememberVoiceRewriteController(
-        schemeTag = identityKey,
-        onVoiceRewrite = { tag, transcript -> onVoiceRewrite(identity, transcript) },
-        onPermissionGranted = {
-            onPermissionEvent(PermissionEvent.Granted)
-        },
-        onPermissionDenied = { permanently ->
-            onPermissionEvent(PermissionEvent.Denied(permanently))
-        }
-    )
-    val voiceState = voiceController.state
-    val isRecording = voiceState == VoiceRewriteState.RECORDING || voiceState == VoiceRewriteState.PROCESSING
 
     // 统一状态推导——使用抽离的纯函数
     val cardState: SchemeCardPresentationState = deriveCardPresentationState(
-        isRecording = isRecording,
-        voiceState = voiceState,
         isRewriting = isRewriting,
         rewriteError = rewriteError,
         rewriteDone = rewriteDone,
         isExpanded = isExpanded
     )
 
-    // pointerInput 手势生命周期——真实 PRESSING 状态 + 移出取消
-    // DOWN -> PRESSING（未达阈值）
-    // 达到长按阈值 -> RECORDING
-    // RECORDING 中正常 UP -> RELEASED -> stopListening
-    // RECORDING 中 pointer 离开有效区域 -> CANCELLED -> cancel，不发 API
-    // PRESSING 中 UP（未达阈值）-> 普通 click
-    val longPressThresholdMs = 300L
-    var longPressTriggered by remember { mutableStateOf(false) }
-    var gesturePhase by remember { mutableStateOf(GesturePhase.IDLE) }
+    // 按压缩放——录音长按手势随语音模式一起删除，这里只留 InteractionSource 的 pressed 态
+    val pressSource = remember { MutableInteractionSource() }
+    val isPressed by pressSource.collectIsPressedAsState()
 
-    // touch slop——拖动超过此距离时取消长按等待，避免横滑/纵滚误触录音
-    val touchSlopPx = with(androidx.compose.ui.platform.LocalDensity.current) { 8.dp.toPx() }
-
-    // 录音中或改写中——卡片边框高亮
-    val effectiveBorderWidth = if (isRecording || isRewriting) 2f else borderWidth
+    // 改写中——卡片边框高亮
+    val effectiveBorderWidth = if (isRewriting) 2f else borderWidth
     val effectiveBorderColor = when {
-        isRecording || isRewriting -> Primary
+        isRewriting -> Primary
         feedback != SchemeFeedback.NONE -> borderColor
         else -> Border
     }
 
     // 按压缩放
     val scale by animateFloatAsState(
-        targetValue = if (longPressTriggered || isRecording || gesturePhase == GesturePhase.PRESSING) 0.97f else 1f,
+        targetValue = if (isPressed || isRewriting) 0.97f else 1f,
         animationSpec = tween(durationMillis = 100),
         label = "cardScale"
     )
@@ -216,120 +183,10 @@ fun SchemeCard(
             .clip(LoveBrainShape.lg)
             .background(cardBg)
             .border(effectiveBorderWidth.dp, effectiveBorderColor, LoveBrainShape.lg)
-            .then(if (isEmpty) Modifier else Modifier.pointerInput(identityKey) {
-                // 手势状态机由 reduceGesturePhase 纯函数驱动——
-                // pointerInput 事件喂给 reducer，所有状态转换通过 reducer 完成。
-                // longPressReached 从 reducer 状态推导（RECORDING/RELEASED/CANCELLED 意味着已达到长按阈值）。
-                // JVM reducer test 真正保护生产逻辑。
-                kotlinx.coroutines.coroutineScope {
-                    awaitEachGesture {
-                        val down = awaitFirstDown(requireUnconsumed = true)
-                        // DOWN 事件 → reducer 驱动到 PRESSING
-                        gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.DOWN)
-
-                        // longPressReached 从 reducer 状态推导——不再维护并行变量
-                        fun hasReachedLongPress(): Boolean =
-                            gesturePhase == GesturePhase.RECORDING ||
-                            gesturePhase == GesturePhase.RELEASED ||
-                            gesturePhase == GesturePhase.CANCELLED
-
-                        var pointerLeftBounds = false
-                        var dragCancelled = false
-                        val downPos = down.position
-
-                        val longPressJob = launch {
-                            kotlinx.coroutines.delay(longPressThresholdMs)
-                            // 达到长按阈值 → LONG_PRESS_REACHED 事件喂给 reducer
-                            if (gesturePhase == GesturePhase.PRESSING && !isRewriting && rewriteError == null && !isRecording && !dragCancelled) {
-                                val result = voiceController.startListening()
-                                val canStart = result == StartListeningResult.STARTED
-                                gesturePhase = reduceGesturePhase(
-                                    gesturePhase, GestureEvent.LONG_PRESS_REACHED, canStart
-                                )
-                                if (canStart) {
-                                    longPressTriggered = true
-                                }
-                            }
-                        }
-
-                        try {
-                            while (true) {
-                                val event = awaitPointerEvent()
-                                val change = event.changes.firstOrNull() ?: break
-
-                                if (!change.pressed) {
-                                    // 手指抬起
-                                    longPressJob.cancel()
-                                    val stillInside = change.position.x >= 0f &&
-                                        change.position.x <= size.width &&
-                                        change.position.y >= 0f &&
-                                        change.position.y <= size.height
-
-                                    // upEvent 从 reducer 状态推导——hasReachedLongPress() 替代局部变量
-                                    val upEvent = if (hasReachedLongPress() && !pointerLeftBounds) {
-                                        if (stillInside) GestureEvent.UP_IN_BOUNDS
-                                        else GestureEvent.UP_OUT_OF_BOUNDS
-                                    } else if (hasReachedLongPress() && pointerLeftBounds) {
-                                        GestureEvent.UP_OUT_OF_BOUNDS
-                                    } else {
-                                        GestureEvent.UP_IN_BOUNDS
-                                    }
-                                    gesturePhase = reduceGesturePhase(gesturePhase, upEvent)
-
-                                    if (gesturePhase == GesturePhase.RELEASED) {
-                                        // 正常松手 → release() 内部完成 stop + rendezvous 提交
-                                        voiceController.release()
-                                        gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.DOWN) // RELEASED → IDLE
-                                    } else if (!hasReachedLongPress() && !dragCancelled) {
-                                        // 未达到长按阈值 → 普通 click
-                                        if (!isRecording && !isRewriting) {
-                                            onToggleRewriteExpand(identity)
-                                        }
-                                    }
-                                    break
-                                }
-
-                                // touch slop 检测——拖动超过阈值时取消 PRESSING
-                                if (!dragCancelled && !hasReachedLongPress() && gesturePhase == GesturePhase.PRESSING) {
-                                    val dx = change.position.x - downPos.x
-                                    val dy = change.position.y - downPos.y
-                                    val dragDist = kotlin.math.sqrt(dx * dx + dy * dy)
-                                    if (dragDist > touchSlopPx) {
-                                        dragCancelled = true
-                                        gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.DRAG_CANCELLED)
-                                        longPressJob.cancel()
-                                    }
-                                }
-
-                                // 检查手指是否仍在卡片边界内
-                                val stillInsideBounds = change.position.x >= 0f &&
-                                    change.position.x <= size.width &&
-                                    change.position.y >= 0f &&
-                                    change.position.y <= size.height
-
-                                if (!stillInsideBounds && hasReachedLongPress() && !pointerLeftBounds) {
-                                    // 手指移出卡片有效区域 → UP_OUT_OF_BOUNDS 或 SYSTEM_CANCEL
-                                    pointerLeftBounds = true
-                                    gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.UP_OUT_OF_BOUNDS)
-                                    voiceController.cancel()
-                                }
-                            }
-                        } finally {
-                            longPressJob.cancel()
-                            // 确保状态归位——RELEASED/CANCELLED → IDLE
-                            if (gesturePhase == GesturePhase.RELEASED || gesturePhase == GesturePhase.CANCELLED) {
-                                gesturePhase = reduceGesturePhase(gesturePhase, GestureEvent.DOWN)
-                            }
-                            longPressTriggered = false
-                            // 如果手势结束时仍在 RECORDING（未正常 RELEASED），确保 cancel 清理
-                            if (gesturePhase == GesturePhase.RECORDING || dragCancelled) {
-                                voiceController.cancel()
-                                gesturePhase = GesturePhase.IDLE
-                            }
-                        }
-                    }
-                }
-            })
+            .then(if (isEmpty) Modifier else Modifier.clickable(
+                interactionSource = pressSource,
+                indication = null
+            ) { if (!isRewriting && rewriteError == null) onToggleRewriteExpand(identity) })
     ) {
         Column(
             modifier = Modifier
@@ -360,12 +217,6 @@ fun SchemeCard(
             // modifier 中的 weight(1f) 让子组件根节点在 Column 中撑开剩余空间，
             // 与原内联实现的布局权重完全一致。
             when (cardState) {
-                is SchemeCardPresentationState.Recording, SchemeCardPresentationState.Recognizing -> {
-                    SchemeRecordingBlock(
-                        isRecognizing = cardState is SchemeCardPresentationState.Recognizing,
-                        modifier = Modifier.weight(1f).fillMaxWidth()
-                    )
-                }
                 SchemeCardPresentationState.Rewriting -> {
                     SchemeRewritingBlock(
                         onCancelRewrite = { onCancelRewrite(identity) },
@@ -413,14 +264,6 @@ fun SchemeCard(
     }
 }
 
-/**
- * 权限事件——SchemeCard 上抛给 Panel/ViewModel。
- * Panel 复用 panelWarning/KbNoticeBanner 展示，不在卡片内造通知。
- */
-sealed class PermissionEvent {
-    data object Granted : PermissionEvent()
-    data class Denied(val permanently: Boolean) : PermissionEvent()
-}
 
 /**
  * 兼容封装：颜色动画状态。
