@@ -83,8 +83,6 @@ fun ResultArea(
     onClearRewriteState: (SchemeIdentity) -> Unit = {},
     onCancelRewrite: (SchemeIdentity) -> Unit = {},
     onUndoRewrite: (SchemeIdentity) -> Unit = {},
-    onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
-    onPermissionEvent: (PermissionEvent) -> Unit = {},
     // 自定义改写回调
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     // 仅看本轮开关
@@ -126,8 +124,6 @@ fun ResultArea(
                             onClearRewriteState = onClearRewriteState,
                             onCancelRewrite = onCancelRewrite,
                             onUndoRewrite = onUndoRewrite,
-                            onVoiceRewrite = onVoiceRewrite,
-                            onPermissionEvent = onPermissionEvent,
                             onCustomRewrite = onCustomRewrite
                         )
                     }
@@ -215,8 +211,6 @@ fun ResultArea(
                         onClearRewriteState = onClearRewriteState,
                         onCancelRewrite = onCancelRewrite,
                         onUndoRewrite = onUndoRewrite,
-                        onVoiceRewrite = onVoiceRewrite,
-                        onPermissionEvent = onPermissionEvent,
                         onCustomRewrite = onCustomRewrite,
                         onlyThisRound = onlyThisRound,
                         onToggleOnlyThisRound = onToggleOnlyThisRound
@@ -367,8 +361,6 @@ private fun SchemeCardsRow(
     onClearRewriteState: (SchemeIdentity) -> Unit = {},
     onCancelRewrite: (SchemeIdentity) -> Unit = {},
     onUndoRewrite: (SchemeIdentity) -> Unit = {},
-    onVoiceRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
-    onPermissionEvent: (PermissionEvent) -> Unit = {},
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     // 仅看本轮开关
     onlyThisRound: Boolean = false,
@@ -524,8 +516,6 @@ private fun SchemeCardsRow(
                                     expandedRewriteTag = null
                                 }
                             },
-                            onVoiceRewrite = onVoiceRewrite,
-                            onPermissionEvent = onPermissionEvent,
                             onCustomRewrite = onCustomRewrite
                         )
                     }

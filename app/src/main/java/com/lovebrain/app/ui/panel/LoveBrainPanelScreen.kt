@@ -291,7 +291,7 @@ fun LoveBrainPanelScreen(
                     Spacer(Modifier.height(Spacing.xs))
                     Text(
                         "添加对话 -> 生成回复 -> 查看回复方案\n" +
-                            "点击方案卡可调整单条措辞，长按可语音修改\n" +
+                            "点击方案卡可调整单条措辞\n" +
                             "点踩可记录原因并导出，便于后续复盘和调整\n" +
                             "顶部显示今日/本次/累计花费与生成次数\n" +
                             "困惑时可切「谈心」模式，军师用公正视角帮你分析",
@@ -561,22 +561,6 @@ fun LoveBrainPanelScreen(
                                     viewModel.loadAllCorrections { corrections ->
                                         correctionCenterCorrections = corrections
                                         correctionCenter.open()
-                                    }
-                                },
-                                onVoiceRewrite = { identity, transcript ->
-                                    viewModel.rewriteScheme(
-                                        identity.source,
-                                        identity.tag,
-                                        transcript
-                                    )
-                                },
-                                onPermissionEvent = { event ->
-                                    when (event) {
-                                        is PermissionEvent.Granted -> viewModel.showPanelWarning("麦克风权限已开启，请再次长按说话")
-                                        is PermissionEvent.Denied -> viewModel.showPanelWarning(
-                                            if (event.permanently) "需要麦克风权限才能语音修改，请到设置中开启。仍可点击卡片使用文字调整。"
-                                            else "需要麦克风权限才能语音修改，仍可点击卡片使用文字调整。"
-                                        )
                                     }
                                 },
                                 generationRoundId = viewModel.generationRoundId.collectAsStateWithLifecycle().value,
