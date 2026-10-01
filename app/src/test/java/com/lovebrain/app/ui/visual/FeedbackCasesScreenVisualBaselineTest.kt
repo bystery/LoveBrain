@@ -1,8 +1,16 @@
 package com.lovebrain.app.ui.visual
 
+import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.test.core.app.ApplicationProvider
 import com.github.takahirom.roborazzi.captureRoboImage
+import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.LbAsyncTags
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
@@ -13,6 +21,7 @@ import com.lovebrain.app.viewmodel.SetupViewModel
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,17 +45,36 @@ import org.robolectric.annotation.GraphicsMode
  *
  * 挂载方式逐字照 `FeedbackCasesSemanticsTest`：四条流桩住 + `ExportState.Idle`，
  * 宽槽 600dp（360 那一档装不下这族芯片、会横排裁切，那份裁切由语义测试那一侧钉）。
+ *
+ * ⚠ **拍法与上一版不同，是判据逼出来的**：`captureRoboImage { content }` 那个 composable
+ * 形态会把 content 装进**另一颗 `RoborazziTransparentActivity` 的 composition**（本机实量：
+ * 这样拍时 `rule.onRoot()` 的语义树 `children=0`，屏幕上却照样有字）——那条通道下
+ * "录制前的状态断言"读的是**没被拍的那一棵**，判据就是假的。所以这里先 `setContent`
+ * → `waitForIdle` → 判状态 → `rule.onRoot().captureRoboImage()`，断言与像素出自同一棵
+ * 已落定的树；落盘文件名仍走 roborazzi 默认命名（`<类名>.<方法名>.png`，与其余 42 张同一规则）。
+ *
+ * `zh-rCN` 固定 locale（1.4 只面向中文，用户已定）：上一版没有那一段，Robolectric 落 en-US，
+ * 卡首行就成了「【Misunderstood】 角色错」那种半英半中——类别名来自资源（英）、
+ * 原因来自夹具（中）。固定之后同一行两头都是中文。
+ *
+ * 落盘之前先过 [assertTwoCasesAreOnScreen]：这一格的名字承诺的是**两条案例都在屏上**，
+ * 空列表（Empty 档）与转圈（Loading 档）都长得像别的基线，钉进来就是把两格混成一格。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
     application = UiProbeApplication::class,
-    qualifiers = "sw600dp-w600dp-h1200dp-normal-long-mdpi"
+    // zh-rCN 固定 locale（1.4 只面向中文）：上一版没有这一段，Robolectric 落 en-US，
+    // 卡首行就成了「【Misunderstood】 角色错」那种半英半中——类别名来自资源（英）、
+    // 原因来自夹具（中）。固定之后同一行两头都是中文，混排这条从夹具里消失。
+    qualifiers = "zh-rCN-sw600dp-w600dp-h1200dp-normal-long-mdpi"
 )
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class FeedbackCasesScreenVisualBaselineTest {
 
     @get:Rule
     val rule = createComposeRule()
+
+    private val app: Context get() = ApplicationProvider.getApplicationContext()
 
     private val understandingCase = FeedbackCase(
         caseId = "c_understand",
@@ -74,16 +102,77 @@ class FeedbackCasesScreenVisualBaselineTest {
         }
         rule.setContent {
             UiMatrix(600, heightDp = 1000).RenderIn(LocalDensity.current.density) {
-                captureRoboImage {
-                    FeedbackCasesScreen(viewModel = vm, onBack = {})
-                }
+                FeedbackCasesScreen(viewModel = vm, onBack = {})
             }
         }
-        rule.mainClock.advanceTimeBy(16L)
+        rule.waitForIdle()
+        assertTwoCasesAreOnScreen()
+        rule.onRoot().captureRoboImage()
+    }
+
+    /**
+     * 录制前的状态断言：这一格必须到了「Content·两条案例」那一档。
+     *
+     * 四条各咬一种坏实现：
+     * - spinner 还在 = Loading 档；说明锚点还在 = Empty / Error 档
+     *   （`LbAsyncTags` 那两个锚点"状态换了 tag 不换"，正是这里能判的原因）；
+     * - 两张卡的**首行整句**「【类别】 原因」各自必须在树里——类别名从**资源**取
+     *   （`FeedbackCasesScreen.kt:262` 那一句拼法），原因从夹具取，
+     *   locale 一换这句就跟着换，所以这里判的是"这一格这一屏"的那两句；
+     * - 两条正文（卡第二行）各在树里：只有首行没有正文 = 列表只画了一行占位；
+     * - 带「【」的卡首行**恰好两颗**：多一颗少一颗都不是这一格承诺的那一屏。
+     */
+    private fun assertTwoCasesAreOnScreen() {
+        assertRecordedLocaleIsZhCn()
+        assertEquals(
+            "还在转圈：那一屏是 Loading 档，不是 Content",
+            0,
+            rule.onAllNodesWithTag(LbAsyncTags.LOADING).fetchSemanticsNodes().size
+        )
+        assertEquals(
+            "状态件还挂着一句说明：那一屏是 Empty / Error 档",
+            0,
+            rule.onAllNodesWithTag(LbAsyncTags.MESSAGE).fetchSemanticsNodes().size
+        )
+
+        rule.onNodeWithText(firstLineOf(understandingCase)).assertExists()
+        rule.onNodeWithText(firstLineOf(expressionCase)).assertExists()
+        rule.onNodeWithText(understandingCase.candidateReply).assertExists()
+        rule.onNodeWithText(expressionCase.candidateReply).assertExists()
+
+        assertEquals(
+            "卡首行（带「【」的那一句）必须是 2 颗",
+            2,
+            rule.onAllNodes(hasText(CASE_PREFIX, substring = true)).fetchSemanticsNodes().size
+        )
+    }
+
+    /** 与生产码同一句拼法（`FeedbackCasesScreen.kt:262`）：类别名走资源，原因走夹具。 */
+    private fun firstLineOf(c: FeedbackCase): String {
+        val names = c.categories.joinToString(", ") { cat ->
+            app.getString(
+                when (cat) {
+                    FeedbackCategory.UNDERSTANDING_ERROR -> R.string.feedback_category_understanding_error
+                    FeedbackCategory.EXPRESSION_DISLIKE -> R.string.feedback_category_expression_dislike
+                    FeedbackCategory.OTHER -> R.string.feedback_category_other
+                }
+            )
+        }
+        return "$CASE_PREFIX${names}】 ${c.reasons.joinToString(", ")}"
+    }
+
+    /** 基线固定 zh-CN：locale 一漂，屏上的字整批变，这张就不是同一格。 */
+    private fun assertRecordedLocaleIsZhCn() {
+        val locales = app.resources.configuration.locales
+        assertEquals("截图基线要求 zh-CN", "zh-CN", locales.toLanguageTags())
     }
 
     /** Content·两条案例：每张卡首行那句「【类别】 原因」在像素里完整出现。 */
     @Test
     fun twoCasesHasACommittedVisualBaseline() =
         mount(listOf(understandingCase, expressionCase))
+
+    private companion object {
+        const val CASE_PREFIX = "【"
+    }
 }
