@@ -154,6 +154,15 @@ if [ "$EXPECT_RELEASE" -eq 1 ]; then
     DEBUGGABLE="absent"
   fi
   ok "release build verified: android:debuggable is $DEBUGGABLE in $APK"
+  # 语音模式已整体删除（连 android.permission.RECORD_AUDIO 一起撤掉）。这一格钉的是
+  # **装进 APK 的最终事实**而不是源码：改 gradle 合并、换依赖带进权限、手滑加回 uses-permission，
+  # 都会在这里红——而不是等用户在系统设置里看见一个不存在的功能在要麦克风。
+  # 判据只认精确符号名，不认「voice / 语音」这个词：无障碍读屏（TalkBack）语境里的 voice 与本功能无关。
+  if printf '%s\n' "$XMLTREE" | grep -q "android\.permission\.RECORD_AUDIO"; then
+    printf '%s\n' "$(first_match 'android.permission.RECORD_AUDIO[^$]*' "$XMLTREE")" >&2
+    die "$APK declares android.permission.RECORD_AUDIO — this app has no audio-input feature any more, so the microphone permission must not come back via the manifest, a merged library manifest or a gradle change."
+  fi
+  ok "microphone permission absent: RECORD_AUDIO is not in the merged manifest"
   if [ -n "$R8_MAPPING" ]; then
     require_file "$R8_MAPPING" "R8 mapping.txt"
     # 两件事都要成立，缺一就是伪门禁：
