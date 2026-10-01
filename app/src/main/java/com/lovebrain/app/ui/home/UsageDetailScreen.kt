@@ -11,7 +11,9 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.LbScreenScaffold
 import com.lovebrain.app.core.designsystem.LbTopBar
@@ -22,6 +24,7 @@ import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
 import com.lovebrain.app.viewmodel.SetupViewModel
+import com.lovebrain.app.viewmodel.costReadout
 
 /**
  * 使用概览详情页——累计统计指标。
@@ -72,8 +75,19 @@ fun UsageDetailScreen(
                     Text("复制次数：${viewModel.totalCopyCount}", style = AppTypography.bodyMedium, color = TextSecondary)
                     Text("采用次数：${viewModel.totalAdoptCount}", style = AppTypography.bodyMedium, color = TextSecondary)
                     Text("改写次数：${viewModel.totalRewriteCount}", style = AppTypography.bodyMedium, color = TextSecondary)
-                    val costStr = if (viewModel.totalCostYuan < 0.01) "￥0" else "￥${String.format("%.2f", viewModel.totalCostYuan)}"
-                    Text("累计花费：$costStr", style = AppTypography.bodyMedium, color = TextSecondary)
+                    // P1-2：与首页那一格**同一颗判据**（`viewmodel/UsageStats.kt` 的 `costReadout`）。
+                    // 一笔可计价记录都没有 ⇒ 念「—」；以前 `< 0.01` 一律念「￥0」，
+                    // 对拿不到 usage / 没有价格表的自定义 Provider 就是把"不知道"说成"免费"。
+                    val costStr = costReadout(
+                        yuan = viewModel.totalCostYuan,
+                        unknownText = stringResource(R.string.cost_unknown),
+                        belowCentText = stringResource(R.string.cost_below_cent, HOME_COST_CURRENCY),
+                        amountText = { HOME_COST_CURRENCY + String.format("%.2f", it) }
+                    )
+                    Text(
+                        stringResource(R.string.cost_stated_row, costStr),
+                        style = AppTypography.bodyMedium, color = TextSecondary
+                    )
                     val rateStr = if (viewModel.totalGenerateCount > 0) "${(viewModel.adoptRate * 100).toInt()}%" else "—"
                     Text("采用率：$rateStr", style = AppTypography.bodyMedium, color = TextSecondary)
                 }

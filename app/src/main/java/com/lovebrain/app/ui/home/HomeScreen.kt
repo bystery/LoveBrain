@@ -45,6 +45,10 @@ import com.lovebrain.app.core.designsystem.LbSection
 import com.lovebrain.app.core.designsystem.LbSettingRow
 import com.lovebrain.app.core.designsystem.LbTopBar
 import com.lovebrain.app.viewmodel.SetupViewModel
+import com.lovebrain.app.viewmodel.costReadout
+
+/** 首页与「使用概览」详情页那两格用的货币符号（面板那一格走半角 `¥`，两边各有守卫钉着，本轮不并） */
+const val HOME_COST_CURRENCY = "￥"
 
 /**
  * 首页——悬浮军师状态卡、快捷功能、服务设置与使用概览。
@@ -260,12 +264,21 @@ fun HomeScreen(
             }
 
             LbSection("使用概览")
-            val costStr = if (viewModel.totalCostYuan < 0.01) "￥0" else "￥${String.format("%.2f", viewModel.totalCostYuan)}"
+            // P1-2：这一格与「使用概览」详情页、面板顶部那条**共用同一颗判据** `costReadout`
+            // （`viewmodel/UsageStats.kt`）。一笔可计价记录都没有时念「—」——
+            // 以前 `< 0.01` 一律念「￥0」，对拿不到 usage / 没有价格表的自定义 Provider
+            // 等于把"不知道"说成"免费"。金额仍走这一页原来的两位小数口径（账本 §61.4）。
+            val costStr = costReadout(
+                yuan = viewModel.totalCostYuan,
+                unknownText = stringResource(R.string.cost_unknown),
+                belowCentText = stringResource(R.string.cost_below_cent, HOME_COST_CURRENCY),
+                amountText = { HOME_COST_CURRENCY + String.format("%.2f", it) }
+            )
             val rateStr = if (viewModel.totalGenerateCount > 0) "${(viewModel.adoptRate * 100).toInt()}%" else "—"
             LbMetricGrid(
                 metrics = listOf(
                     LbMetric(label = "累计生成", value = "${viewModel.totalGenerateCount}"),
-                    LbMetric(label = "累计花费", value = costStr),
+                    LbMetric(label = stringResource(R.string.cost_stated_label), value = costStr),
                     LbMetric(label = "采用率", value = rateStr, highlight = true)
                 ),
                 modifier = Modifier.heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp),

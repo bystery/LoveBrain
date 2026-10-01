@@ -272,7 +272,14 @@ class UiStringLiteralBudgetTest {
         // 165 → **162**：§6.1 三处胶囊归并进 `LbChip`（IntentExpiryChip /「清空重聊」/「继续追问」），
         //   三处中文标签从 `Text("…")` 落进 `LbChip(label = …)`——**换桶不是还债**
         //   （字面量一个字没改，只是从 TEXT 那栏落进 COMPONENT 那栏；COMPONENT +3 = TEXT −3，合计 0）。
-        Kind.TEXT to 161,
+        // 161 → **160**：外部复核 P1-2（累计费用把"未知"说成"免费"）把「使用概览」详情页那一行
+        //   从 `Text("累计花费：$costStr")` 换成 `Text(stringResource(R.string.cost_stated_row, …))`。
+        //   **真还一条**（zh + en 两份资源都给了），不是换桶：同一格里 COMPONENT 没跟着涨。
+        //   ⚠ 归属：改动前同一棵树实扫是绿的 161/6/0/93（那棵树已含另一拍在改的
+        //   ProviderSection / SetupViewModel / AppConfig），改完读到 160/6/0/92，
+        //   两条差值一一对上这一拍的两次搬家（这里 −1 TEXT、`HomeScreen` 那颗标签 −1 COMPONENT）。
+        //   另一拍若再动中文字面量，那两个数由那一拍自己续账。
+        Kind.TEXT to 160,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是
@@ -320,7 +327,11 @@ class UiStringLiteralBudgetTest {
         //   `CounselingPanel` 的「清空重聊」与「继续追问」）——三处中文标签从页面自画
         //   落进 `LbChip(label = …)` 的组件实参，是**换桶不是还债**（字面量一个字没改，只是
         //   从 TEXT/自画 那栏落进 COMPONENT 那栏）。三处都是已有文案搬主人，零新增用户可见字面量。
-        Kind.COMPONENT to 93
+        // 93 → **92**：P1-2 把首页那格「累计花费」的标签换成 `stringResource(R.string.cost_stated_label)`
+        //   （值那一半换成共用判据 `costReadout`，里面不再有中文）——**真还一条**，不是换桶。
+        //   面板顶部那条只把标签的字面量从「累计」换成「已统计」（同栏同数，一条没还）：
+        //   那一条小字整排都还是内联中文，属既有欠账，本拍不做全仓 i18n 清洗。
+        Kind.COMPONENT to 92
     )
 
     /**

@@ -92,3 +92,61 @@ data class UsageStats(
         )
     }
 }
+
+/** 一分 = 0.01 元。低于这一档，两位小数会被念成 `0.00` ⇒ 另走 [CostKnowledge.BelowCent] 那一句 */
+const val COST_CENT_YUAN = 0.01
+
+/**
+ * 一笔记账金额的**可读性**（外部复核 P1-2）：已知 / 已知但不足一分 / 根本不知道。
+ *
+ * 为什么 `Unknown` 不等于"免费"（这一格的全部理由）：
+ * 钱进 [UsageStats.totalCostYuan] 只有两条路——[Event.Costed] 累加，
+ * 或 [UsageStats.loaded] 从 `SecurePrefs` 原样载入（那份存档本身也只由前者写）。
+ * 而 [Event.Costed] 的唯一发射点是 `ApiUsageTracker.logUsage` 里
+ * `if (cost > 0.0)` 那一道（`data/ApiUsageTracker.kt`），
+ * `UsagePricer.shouldBill` 不满足（自定义 Provider 不给 usage、地址不含 deepseek.com）
+ * 或 `priceTier` 落在 `UNKNOWN` 档时压根不发射。
+ * ⇒ 每一笔记进来的账都是**严格为正**的，`totalCostYuan == 0.0` 与"一条可计价记录都没有"
+ *   是同一件事的两种说法；反过来它**推不出**"这家 Provider 免费"。
+ * ⇒ 所以这里不需要再挂一个"已计价请求数"的计数器：那是同一件事的第二份账
+ *   （而它还没法跟着 `SecurePrefs` 那份存档活过冷启——载入路径在禁区里）。
+ */
+enum class CostKnowledge {
+    /** 一条可计价记录都没入过账：不知道，不是 0 元 */
+    Unknown,
+
+    /** 有可计价记录，但合计不足一分 */
+    BelowCent,
+
+    /** 有可计价记录且已足一分 */
+    Known
+}
+
+/** 判据只有一个所有者：三处显示点（首页、使用概览详情、面板顶部那条）都调这一颗 */
+fun costKnowledge(yuan: Double): CostKnowledge = when {
+    yuan <= 0.0 -> CostKnowledge.Unknown
+    yuan < COST_CENT_YUAN -> CostKnowledge.BelowCent
+    else -> CostKnowledge.Known
+}
+
+/**
+ * 把一笔记账金额念成用户看得见的那一串——**分岔只在这一个函数里**（P1-2 要求三处一致）：
+ *  - [CostKnowledge.Unknown] → [unknownText]（各页给「—」）
+ *  - [CostKnowledge.BelowCent] → [belowCentText]（"不足 ¥0.01"那种不撒谎的写法，**不写 0、不写免费**）
+ *  - [CostKnowledge.Known] → [amountText]
+ *
+ * ⚠ [amountText] 由调用方给，**不是**忘了收口：首页/详情页是两位小数且不锁 Locale，
+ * 面板走 `LoveBrainViewModel.formatYuan`（三位小数、锁 `Locale.US`）。
+ * 这两条口径的差异是账本 §61.4 里记着的既有欠账，
+ * `UsageExtremeValuesSemanticsTest` 与 `CostDisplayTest` 各钉着一头，本轮不并（并了就是顺手改 §61.4）。
+ */
+fun costReadout(
+    yuan: Double,
+    unknownText: String,
+    belowCentText: String,
+    amountText: (Double) -> String
+): String = when (costKnowledge(yuan)) {
+    CostKnowledge.Unknown -> unknownText
+    CostKnowledge.BelowCent -> belowCentText
+    CostKnowledge.Known -> amountText(yuan)
+}

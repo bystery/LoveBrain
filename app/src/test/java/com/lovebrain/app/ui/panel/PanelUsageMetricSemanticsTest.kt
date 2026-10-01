@@ -51,11 +51,13 @@ import org.robolectric.annotation.GraphicsMode
  *
  * 判的四件事（每件事都有下面的反例能对撞）：
  * 1. **每格两条都读得回来**：每格同时读得到「标签」与「带单位的数值」两条文本，一条都不许少；
- * 2. **逐格逐字**：五格的标签顺序与数值串一字不差地对上（今日 / 本次 / 首字 / 累计 / 累计）；
+ * 2. **逐格逐字**：五格的标签顺序与数值串一字不差地对上（今日 / 本次 / 首字 / 累计 / 已统计）；
  * 3. **热区与可访问名不为空**：每格盒子宽高都 >0，格内两条文本都非空白；
  *    并且这条小条**没有**多出点击语义（归并不顺手把一排只读的小字变成按钮）；
  * 4. **条件槽与占位**：「首字」只在有耗时时存在——缺的是那一格，不是一个 `0.0s` 的假数；
- *    「本次」没有数时仍念「—」，不是 `¥0.000`。
+ *    「本次」没有数时仍念「—」，不是 `¥0.000`；
+ *    「今日」「已统计」在**一条可计价记录都没有**时同样念「—」（P1-2：未知 ≠ 免费，
+ *    判据是 `viewmodel/UsageStats.kt` 的 `costReadout`，与首页/使用概览页同一颗）。
  *
  * ⚠ 一条读数的边界，别把下面的判据读成「面板排版没问题」：这条小字挂在 `DragHandle`
  * 那 4dp 高的锚点上（`wrapContentHeight(unbounded = true)`），**归并前后都是同一个锚点、
@@ -90,7 +92,7 @@ class PanelUsageMetricSemanticsTest {
     }
 
     private fun fakeVm(usage: UsageStats): LoveBrainViewModel =
-        mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
+        mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
             // §5.2 第 6 步：VM 上那 10 条纯转发口已删，状态归 ComposerStore 自己
             val composer = mockk<ComposerStore>(relaxed = true)
             every { vm.composer } returns composer
@@ -269,12 +271,14 @@ class PanelUsageMetricSemanticsTest {
         assertEquals(
             "五格的标签顺序与内容变了（每格的标签都得在自己那一格里，一条都不许丢）：" +
                 cells.map { it.texts }.joinToString(" | ") { it.joinToString("/") },
-            listOf("今日", "本次", "首字", "累计", "累计"), cells.map { it.texts.first().trim() }
+            listOf("今日", "本次", "首字", "累计", "已统计"), cells.map { it.texts.first().trim() }
         )
-        // 整串逐字对：标签与数值之间那颗空格是组件自己放的分隔符（归并前后同一颗）
+        // 整串逐字对：标签与数值之间那颗空格是组件自己放的分隔符（归并前后同一颗）。
+        // 末格标签是「已统计」不是「累计」：P1-2 起这一格念的是"已统计出来的那部分费用"，
+        // 与前面那颗「累计 N 次」（次数）分开，别再让两格共用一个词。
         assertEquals(
             "四格（除「首字」）念回来的整串变了：" + cells.joinToString { it.describe() },
-            listOf("今日 ¥1.230", "本次 ¥0.500", "累计 42次", "累计 ¥8.900"),
+            listOf("今日 ¥1.230", "本次 ¥0.500", "累计 42次", "已统计 ¥8.900"),
             listOf(cells[0], cells[1], cells[3], cells[4]).map { it.announced }
         )
         // 数值那一半单独钉：单位跟着数值整串走，谁把它拆走这里就红
@@ -296,14 +300,16 @@ class PanelUsageMetricSemanticsTest {
         assertEquals(
             "没有首字耗时就该少那一格，而不是摆一个 0.0s 的假数；实到 " +
                 cells.joinToString { it.describe() },
-            listOf("今日 ¥1.230", "本次 ¥0.500", "累计 42次", "累计 ¥8.900"),
+            listOf("今日 ¥1.230", "本次 ¥0.500", "累计 42次", "已统计 ¥8.900"),
             cells.map { it.announced }
         )
     }
 
     /**
      * 全默认那份快照（`PanelHostSemanticsTest` 挂的就是它）：
-     * 「本次」没有数时念「—」，不是 `¥0.000`；今日与累计那三格是真的零。
+     * 「本次」没有数时念「—」，不是 `¥0.000`；
+     * **P1-2 之后「今日」「已统计」那两格也念「—」**——空快照意味着一条可计价记录都没入过账，
+     * 那是"不知道"，不是"这台机器上的 AI 全免费"（`costReadout` 的 `Unknown` 那一档）。
      */
     @Test
     fun `an unused session still reads the dash placeholder for last cost`() {
@@ -311,8 +317,8 @@ class PanelUsageMetricSemanticsTest {
         val cells = usageCells()
         assertCellsReadable(cells, "面板·使用统计·空快照")
         assertEquals(
-            "空快照该有 4 格（首字那格没有数），实到 " + cells.joinToString { it.describe() },
-            listOf("今日 ¥0.000", "本次 —", "累计 0次", "累计 ¥0.000"),
+            "空快照该有 4 格（首字那格没有数），且三格费用都念占位符不是 0；实到 " + cells.joinToString { it.describe() },
+            listOf("今日 —", "本次 —", "累计 0次", "已统计 —"),
             cells.map { it.announced }
         )
     }

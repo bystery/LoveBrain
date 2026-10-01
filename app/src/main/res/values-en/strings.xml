@@ -65,6 +65,11 @@ Tap an option to reword it; long-press to change it by voice
 A thumbs down records why, and can be exported for review
 The header shows today / session / total spend and generation count
 Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</string>
+    <!-- P1-2: cumulative cost tells apart "known" / "under a cent" / "nothing priceable at all". %1$s = the currency sign each screen uses -->
+    <string name="cost_stated_label">Costs counted</string>
+    <string name="cost_stated_row">Costs counted: %1$s</string>
+    <string name="cost_unknown">—</string>
+    <string name="cost_below_cent">Under %1$s0.01</string>
     <string name="onboarding_skip">Skip</string>
     <string name="capture_apps_title">Capture scope</string>
     <string name="capture_apps_intro">Only the apps you tick here are ever read. With nothing selected, LoveBrain captures nothing at all.</string>

@@ -48,6 +48,7 @@ import com.lovebrain.app.ui.panel.reply.*
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
+import com.lovebrain.app.viewmodel.costReadout
 import com.lovebrain.app.feature.roundcommit.ActualSentState
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.ResultMode
@@ -55,6 +56,9 @@ import com.lovebrain.app.model.StageSuggestion
 private const val KB_NOTICE_AUTO_DISMISS_MS = 3000L
 private const val PANEL_WARNING_AUTO_DISMISS_MS = 3000L
 private const val VECTOR_UPDATE_AUTO_DISMISS_MS = 5000L
+
+/** 面板数值串那半角货币符号（首页/详情页是全角 `￥`，两边各有守卫钉着，本轮不并——账本 §61.4） */
+private const val PANEL_COST_CURRENCY = "¥"
 
 private object PanelStrings {
     const val PROACTIVE_EMPTY_HINT = "输入想说的话，点击下方「生成开场」让军师帮你找话题"
@@ -197,15 +201,24 @@ fun LoveBrainPanelScreen(
                 // §6.1 表第 7 行：使用统计的「数值 / 单位 / 标签」排布归 `LbMetricGrid`（Inline 档），
                 // 页面不再自己画那一横条。渲染口径一格没改：五格、首字那格的 >0 条件、「—」占位都原样，
                 // 标签与带单位的数值串也逐字照搬——变的只是**谁**来排它们，以及每格从此有了组件的锚点。
+                // P1-2：「今日」「累计」那两格的费用现在走**与首页/使用概览页同一颗判据**
+                // `costReadout`（`viewmodel/UsageStats.kt`）：一笔可计价记录都没入过账时念「—」，
+                // 不再念 `¥0.000` —— 那是对拿不到 usage / 没有价格表的自定义 Provider 说"这一家免费"。
+                // 标签跟着改短形式的「已统计」（全名「已统计费用」，这条 10sp 的小条放不下五个字；
+                // 整条小字的中文是既有欠账，本轮不做全仓 i18n 清洗）。
+                // 「本次」那格本来就是 `Double?`：没有数就念「—」，占位串从此与另两格同一份资源。
+                val costUnknown = stringResource(R.string.cost_unknown)
+                val costBelowCent = stringResource(R.string.cost_below_cent, PANEL_COST_CURRENCY)
+                val panelYuanText: (Double) -> String = { PANEL_COST_CURRENCY + LoveBrainViewModel.formatYuan(it) }
                 LbMetricGrid(
                     metrics = buildList {
-                        add(LbMetric("今日", "¥${LoveBrainViewModel.formatYuan(usage.todayCostYuan)}"))
-                        add(LbMetric("本次", usage.lastCostYuan?.let { "¥${LoveBrainViewModel.formatYuan(it)}" } ?: "—"))
+                        add(LbMetric("今日", costReadout(usage.todayCostYuan, costUnknown, costBelowCent, panelYuanText)))
+                        add(LbMetric("本次", usage.lastCostYuan?.let(panelYuanText) ?: costUnknown))
                         if (usage.lastResponseMs > 0) {
                             add(LbMetric("首字", "%.1fs".format(usage.lastResponseMs / 1000.0)))
                         }
                         add(LbMetric("累计", "${usage.totalGenerateCount}次"))
-                        add(LbMetric("累计", "¥${LoveBrainViewModel.formatYuan(usage.totalCostYuan)}"))
+                        add(LbMetric("已统计", costReadout(usage.totalCostYuan, costUnknown, costBelowCent, panelYuanText)))
                     },
                     density = LbMetricDensity.Inline,
                     modifier = Modifier.fillMaxWidth().wrapContentHeight(unbounded = true).align(Alignment.Center)

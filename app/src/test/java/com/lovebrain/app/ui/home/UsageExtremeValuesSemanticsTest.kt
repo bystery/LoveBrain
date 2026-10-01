@@ -460,12 +460,36 @@ class UsageExtremeValuesSemanticsTest {
                 .fetchSemanticsNodes().flatMap {
                     it.config.getOrNull(SemanticsProperties.Text).orEmpty().map { a -> a.text }
                 }
-            // 六行一行都不许少：最后一行「采用率」离视口顶端最远，最先被顶出去
-            listOf("生成次数", "复制次数", "采用次数", "改写次数", "累计花费", "采用率").forEach { row ->
+            // 六行一行都不许少：最后一行「采用率」离视口顶端最远，最先被顶出去。
+            // 第五行现在叫「已统计费用」（P1-2：这一格只念得出**已计价**的那部分钱），
+            // 标签走 `strings.xml` ⇒ 从资源里取，免得这台机器的默认语言一变它就假红；
+            // 资源本身那句话由下面 `stated label copy is the stated one` 那一格钉住。
+            val statedLabel = app.getString(com.lovebrain.app.R.string.cost_stated_label)
+            listOf("生成次数", "复制次数", "采用次数", "改写次数", statedLabel, "采用率").forEach { row ->
                 assertTrue("详情页在 ${matrix.id} 少了一行「$row」，实到文本 $texts", texts.any { it.contains(row) })
             }
             assertTrue("详情页在 ${matrix.id} 没把 100000 次念全：$texts", texts.any { it.contains("$extremeGenerations") })
         }
+    }
+
+    /**
+     * 上面那格用 `getString` 取那一行的标签，是为了不让这台机器的默认语言把它变成假红；
+     * 代价是"取回来的到底是哪一句"就没人判了——这一格补上那一半。
+     * 两句都只许是"已统计"这个意思，且**不许**念回旧的那句「累计花费」
+     * （旧词把"计不了价"和"花了多少钱"混成一格，正是复核 P1-2 要分开的两件事）。
+     */
+    @Test
+    fun `the stated cost copy is the one that separates known from unknown`() {
+        val label = app.getString(com.lovebrain.app.R.string.cost_stated_label)
+        assertTrue("详情页那一行的标签换掉了：「$label」", label in listOf("已统计费用", "Costs counted"))
+        val unknown = app.getString(com.lovebrain.app.R.string.cost_unknown)
+        val belowCent = app.getString(com.lovebrain.app.R.string.cost_below_cent, "￥")
+        assertTrue("无法计价的占位不是破折号：「$unknown」", unknown == "—")
+        assertTrue(
+            "不足一分那一句把金额说成了零或免费：「$belowCent」",
+            !belowCent.startsWith("￥0") && !belowCent.startsWith("¥0") &&
+                !belowCent.contains("免费") && belowCent.contains("0.01")
+        )
     }
 
     /*
