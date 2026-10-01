@@ -28,13 +28,12 @@
 |---|---|---|
 | 无障碍捕获长按消息 | `service/CopyCaptureService.kt` | `domain/CapturePolicy`：**默认 fail-closed allowlist**，未点选的 App 一律不采；即使命中 allowlist，系统窗口、`isPassword` 节点、支付/银行/密码管理/浏览器/医疗/企业 SSO 类别仍二次拒绝 |
 | 手动粘贴/输入 | `ui/panel/reply/*` | 用户显式输入 |
-| 语音改写 | `ui/panel/reply/VoiceRewrite.kt` | 本地录音→用户配置的 Provider |
 
 ## 3. 出口（数据离开设备的全部已知路径）
 
 | # | 目的 | 触发条件 | 目标主机 | 内容 | 可关闭 |
 |---|---|---|---|---|---|
-| E1 | 生成回复 / 谈心 / 锦囊 / 主动开场 / 语音改写 | 用户点击对应按钮 | **只有用户在设置里配置的 Provider baseUrl** | system prompt + 知识段 + 本轮对话 + 想法 | 不点就不发；清除供应商即无法发送 |
+| E1 | 生成回复 / 谈心 / 锦囊 / 主动开场 | 用户点击对应按钮 | **只有用户在设置里配置的 Provider baseUrl** | system prompt + 知识段 + 本轮对话 + 想法 | 不点就不发；清除供应商即无法发送 |
 | E2 | 连接测试 | 用户在供应商页点「测试」 | 用户配置的 baseUrl | 最小探测请求，不含知识库 | 是 |
 | E3 | TLS 证书有效性 | 任一请求 | OCSP/CA 存储 | 域名级，不含聊天正文 | 不可（HTTPS 固有） |
 
