@@ -1,264 +1,318 @@
-# Release 自动构建工作流
-# 触发：推送 v* 格式 tag（如 v1.3.0, v1.4.0-rc1）
-# 产物：正式签名 assembleRelease APK 上传到对应 GitHub Release，附证据索引
+# 人工发布辅助工作流（Release assistant）
 #
-# 签名说明：
-#   CI 通过 GitHub Secrets 注入 keystore（KEYSTORE_BASE64 / KEYSTORE_PASSWORD /
-#   KEY_ALIAS / KEY_PASSWORD）。scripts/prepare_release_keystore.sh 解码后会
-#   立刻把证书指纹与 scripts/signing-baseline.txt 比对，密钥不对就在任何
-#   Gradle 任务跑起来之前失败；绝不回退到 debug 签名。
+# 发布模型（2026-09-29 用户书面改需求；2026-09-30 复核 §1 P0-3 / §8 第 3 条把本文件对齐到它）：
+#   · GitHub Actions 只做**构建与测试** —— 全部在 .github/workflows/ci.yml
+#     （`verify` + `ui-test` 必过；`upgrade-test` 只在 workflow_dispatch 跑）。
+#   · R8 签名 APK、覆盖安装验证、签名连续性核对 **全部本地手动**：
+#     命令见 docs/RELEASE_CHECKLIST.md 第 4/5/6/7 步，产物交回仓库
+#     `docs/release-evidence/<tag>/`（只交文本证据，APK 二进制不进仓库）。
+#   · 发布是**一条人工命令**：APK 与证据由人一起 `gh release create` 上传。
 #
-# 质量门禁（对齐 2026-09-23 独立复核 §3 / §8 第 3 步）：
-#   - 必须等同一 SHA 的 CI verify + ui-test + upgrade-test 全绿
-#   - tag 必须等于 v${versionName}
-#   - 产物必须是签名 + R8 的 release APK，不是 debug 包
-#   - 必须与已公开 v1.3.1 的签名证书指纹连续
-#   - 必须通过真实许可证扫描 / SBOM 门禁
-#   - 必须验证全新安装与覆盖安装
-#   - 必须产出可核对的证据索引，缺任何一项就不发布
+# ⚠ 签名与覆盖安装**不在 CI 内**。本文件因此不再做下面三件事
+#   （这三件正是复核 §1 P0-3 点名"无法同时成立"的三处）：
+#   1. 不再由 `push: tags: v*` 自动触发 ⇒ 改成 workflow_dispatch：人不点就不跑；
+#      跑完也**不碰 Release 页**（permissions 只有 contents: read，没有 publish 动作）。
+#   2. 不再在 CI 里 assembleRelease 造签名 APK、不再引用任何签名 secret：
+#      `grep -c 'secrets\.' .github/workflows/release.yml` 现在读 **2**，
+#      两处都是只读取证用的 `secrets.GITHUB_TOKEN`；KEYSTORE_* / KEY_* 一个都不引用
+#      （本段注释里出现的那几个名字是名字，不是引用）。
+#   3. 不再等待 `upgrade-test` check，也不再需要 lewagon/wait-on-check-action：
+#      自 2026-09-29 起 push 事件里那个 job 的结论就是 `skipped`（run 36730225255 实测），
+#      等它 = 永远等不到；签名/覆盖安装的证据改由清单第 4-7 步在**本地**产出并交回仓库。
+#
+# 取证命令修正（§1 P0-3 后半）：
+#   旧代码 `gh run download "$GITHUB_SHA" --name ...` 把 commit SHA 当位置参数，而
+#   `gh run download` 要的是 workflow run **database ID** ⇒ 即使 CI 全绿也取不到证据。
+#   现在唯一实现在 scripts/resolve_ci_run.sh：按 (repo, ci.yml, head_sha[, event/branch])
+#   解析出**恰好一个**已完成的 run id，再拿那个 id 去下 artifact。
+#   解析判据与失败出口（都不静默回退，也不"替人挑最新一发"）：
+#     命中 0 发 → exit 1，并列出 API 对该 commit 实际看到的所有 run；
+#     命中 >1 发 → exit 1，列出每个候选 id，要求人显式填下面的 `ci_run` 输入；
+#     显式给了 ci_run → 仍校验它属于 ci.yml、head_sha == commit、且已完成，否则 exit 1；
+#     之后再按 job 名要求 verify / ui-test 结论为 success（那个 job 名**不存在**也算失败）。
+#
+# 本文件能独立核对的（机器判据，红得起）：
+#   · tag == v${versionName}@那个 build commit，且证据提交在这之后（祖先关系实测）；
+#   · 该 commit 的 CI run 唯一、且 verify + ui-test 全绿；
+#   · CI 交出的插桩 XML/HTML 与 lint 报告**非空且自洽**（scripts/assert_artifacts.sh）；
+#   · 本地证据目录与 CI 记录互洽：签名者指纹 == scripts/signing-baseline.txt 钉的公开
+#     发布指纹、versionName/versionCode == CI 那一发 R8 构建的记录、SHA-256 逐条对上。
+# 本文件**核对不到**的（诚实写明，不当作已过闸）：
+#   "这个签名 APK 确实由该 commit 构建" —— 本 workflow 里没有、也不该有签名 secret，APK 字节不进本 workflow。
+#   这条只有本地构建者能主张，所以清单第 9/10 步要真人把那个 APK 装到真机上验一次。
 
 name: Release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '要发布的 tag，例如 v1.4.0-rc1（必须等于 v${versionName}）'
+        required: true
+      commit:
+        description: '本地签名 APK 构建自的完整 commit SHA（40 位小写）'
+        required: true
+      ref:
+        description: '证据文件所在引用（清单第 8 步把 docs/release-evidence/<tag>/ 提交上去的那个）'
+        required: false
+        default: 'main'
+      ci_run:
+        description: '可选：CI run database ID。留空=按 commit 唯一解析；同一 commit 跑过多发时必须填'
+        required: false
+        default: ''
+      ci_event:
+        description: '解析 CI run 时限定的事件（push / workflow_dispatch；留空=不限）'
+        required: false
+        default: 'push'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  # 发布 job 必须依赖同一 commit SHA 的全部 CI 成功。
-  # upgrade-test 以前不在这里，等于升级门禁可以整条红灯照样发布。
-  wait-ci:
+  release-assistant:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Wait for CI verify to pass
-        uses: lewagon/wait-on-check-action@v1.3.4
-        with:
-          ref: ${{ github.sha }}
-          check-name: 'verify'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 30
-
-      - name: Wait for CI ui-test to pass
-        uses: lewagon/wait-on-check-action@v1.3.4
-        with:
-          ref: ${{ github.sha }}
-          check-name: 'ui-test'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 30
-
-      - name: Wait for CI upgrade-test to pass
-        uses: lewagon/wait-on-check-action@v1.3.4
-        with:
-          ref: ${{ github.sha }}
-          check-name: 'upgrade-test'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 30
-
-  build:
-    needs: wait-ci
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
+      - name: Checkout the evidence ref with full history
+        # fetch-depth 0：第 3 步要用 `git merge-base --is-ancestor` 证明"APK 构建 commit
+        # 在证据 commit 之前"，浅克隆里这条只能报"不知道"（run 36544123782 那类窗口坑）。
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref }}
+          fetch-depth: 0
 
-      # 校验 tag 与 versionName 一致；RC tag 标记为 pre-release
-      - name: Verify tag matches versionName
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh scripts/lib/*.sh
+
+      - name: Inputs well formed, tag matches versionName at the build commit
         id: tagcheck
+        env:
+          TAG: ${{ github.event.inputs.tag }}
+          BUILD_COMMIT: ${{ github.event.inputs.commit }}
+          EVIDENCE_REF: ${{ github.ref_name }}
         run: |
-          TAG_NAME="${GITHUB_REF_NAME}"
-          VERSION_NAME=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*versionName\s*=\s*"\([^"]*\)".*/\1/')
-          echo "Tag: $TAG_NAME, versionName: v$VERSION_NAME"
-          if [ "$TAG_NAME" != "v$VERSION_NAME" ]; then
-            echo "ERROR: Tag $TAG_NAME does not match versionName v$VERSION_NAME"
+          set -euo pipefail
+          printf 'tag=%s\ncommit=%s\nevidence ref=%s\n' "$TAG" "$BUILD_COMMIT" "$EVIDENCE_REF"
+          case "$TAG" in
+            v*) ;;
+            *) printf 'TAG must look like v1.2.3 / v1.4.0-rc1, got: %s\n' "$TAG" >&2; exit 1 ;;
+          esac
+          if ! printf '%s' "$BUILD_COMMIT" | grep -Eq '^[0-9a-f]{40}$'; then
+            printf 'commit must be a full 40-hex sha (an abbreviated one silently matches nothing), got: %s\n' "$BUILD_COMMIT" >&2
             exit 1
           fi
-          if echo "$TAG_NAME" | grep -q '\-rc'; then
+          # The build commit must be an ancestor of this checkout: the evidence files are committed
+          # AFTER the commit the APK was built from, and a release citing a commit off this line is
+          # citing somebody else's build.
+          if ! git cat-file -e "${BUILD_COMMIT}^{commit}" 2>/dev/null; then
+            printf 'commit %s is not reachable from %s — push it first\n' "$BUILD_COMMIT" "$EVIDENCE_REF" >&2
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$BUILD_COMMIT" HEAD; then
+            printf 'commit %s is not an ancestor of %s — the本地证据 commit sits on another line\n' \
+              "$BUILD_COMMIT" "$EVIDENCE_REF" >&2
+            exit 1
+          fi
+          version_at() {
+            git show "$1:app/build.gradle.kts" |
+              sed -n 's/^[[:space:]]*versionName[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' | head -1
+          }
+          VERSION_AT_COMMIT="$(version_at "$BUILD_COMMIT")"
+          VERSION_AT_HEAD="$(version_at HEAD)"
+          if [ -z "$VERSION_AT_COMMIT" ]; then
+            printf 'no versionName read from app/build.gradle.kts at %s\n' "$BUILD_COMMIT" >&2
+            exit 1
+          fi
+          if [ "$VERSION_AT_COMMIT" != "$VERSION_AT_HEAD" ]; then
+            printf 'versionName moved between the build commit (%s) and the evidence commit (%s) — the APK and the checklist would describe two different builds\n' \
+              "$VERSION_AT_COMMIT" "$VERSION_AT_HEAD" >&2
+            exit 1
+          fi
+          if [ "$TAG" != "v$VERSION_AT_COMMIT" ]; then
+            printf 'ERROR: tag %s does not match versionName %s at %s\n' "$TAG" "$VERSION_AT_COMMIT" "$BUILD_COMMIT" >&2
+            exit 1
+          fi
+          if printf '%s' "$TAG" | grep -q -- '-rc'; then
             echo "IS_PRERELEASE=true" >> "$GITHUB_OUTPUT"
-            echo "RC tag detected — will create as pre-release"
+            printf 'RC tag detected — the handoff command creates a pre-release\n'
           else
             echo "IS_PRERELEASE=false" >> "$GITHUB_OUTPUT"
           fi
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          echo "BUILD_COMMIT=$BUILD_COMMIT" >> "$GITHUB_ENV"
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-
-      - name: Make scripts executable
-        run: chmod +x gradlew scripts/*.sh scripts/lib/*.sh
-
-      # 缺 secret 直接失败；四个都必须非空。
-      - name: Require release signing secrets
-        # Four non-empty secrets or the pipeline stops here — no debug key, no
-        # unsigned artifact presented as a release.
+      - name: Resolve the CI run of the build commit and require build+tests green
+        # 唯一实现就是脚本，checklist 里人跑的是同一条命令（不写第二份解析逻辑）。
+        # 只要求 verify + ui-test：`upgrade-test` 会印出来但**不门禁**——2026-09-29 起
+        # 签名与覆盖安装是本地动作，push 那一发里它天然是 skipped。
         env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI_RUN: ${{ github.event.inputs.ci_run }}
+          CI_EVENT: ${{ github.event.inputs.ci_event }}
         run: |
-          missing=0
-          for name in KEYSTORE_BASE64 KEYSTORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
-            if [ -z "${!name}" ]; then
-              printf 'missing required secret: %s\n' "$name"
-              missing=$((missing + 1))
-            fi
-          done
-          if [ "$missing" -ne 0 ]; then
-            printf 'refusing to build a release with %d missing signing secret(s)\n' "$missing"
-            exit 1
-          fi
+          set -euo pipefail
+          ARGS=(--commit "$BUILD_COMMIT" --workflow ci.yml
+                --require-job verify --require-job ui-test
+                --id-file dist/ci-run-id.txt)
+          [ -z "$CI_EVENT" ] || ARGS+=(--event "$CI_EVENT")
+          [ -z "$CI_RUN" ] || ARGS+=(--run-id "$CI_RUN")
+          bash scripts/resolve_ci_run.sh "${ARGS[@]}"
+          printf 'CI_RUN_ID=%s\n' "$(cat dist/ci-run-id.txt)" >> "$GITHUB_ENV"
 
-      # 解码 keystore 并立刻验证证书指纹 == 已公开 v1.3.1 的指纹。
-      # 密钥被轮换或放错时，这一步在任何构建发生前就失败。
-      # 默认写入仓库根 keystore.properties + keystore/release.jks（0600），
-      # 因为 app/build.gradle.kts 只认根目录那一个路径。
-      - name: Prepare and verify release keystore
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          bash scripts/prepare_release_keystore.sh \
-            --baseline scripts/signing-baseline.txt \
-            --keystore-path keystore/release.jks \
-            --properties-path keystore.properties
-
-      - name: Run unit tests
-        run: ./gradlew :app:testDebugUnitTest --no-daemon
-
-      - name: Assert unit test evidence is real
-        run: bash scripts/assert_artifacts.sh --label "release/unit" --min-tests auto --xml-dir app/build/test-results/testDebugUnitTest --html-dir app/build/reports/tests/testDebugUnitTest
-
-      - name: Run lint
-        run: ./gradlew :app:lintDebug --no-daemon
-
-      - name: Assert lint evidence is real
-        run: bash scripts/assert_artifacts.sh --label "release/lint" --lint-xml app/build/reports/lint-results-debug.xml --lint-html app/build/reports/lint-results-debug.html
-
-      - name: Prompt asset lock must not have drifted
-        run: bash scripts/asset_hashes.sh --check docs/prompt-assets.lock
-
-      - name: Build release APK (signed + R8)
-        run: |
-          ./gradlew :app:assembleRelease --no-daemon
-          bash scripts/resolve_release_apk.sh --require-signed --path-file dist/release-apk-path.txt
-
-      # 证书连续性：候选 APK 的签名者必须与 v1.3.1 已公开指纹一致。
-      # 旧流程只 apksigner verify 自身签名，换一把 key 也照样"通过"。
-      - name: Verify signing continuity with published v1.3.1
-        run: |
-          bash scripts/verify_signing_continuity.sh \
-            "$(cat dist/release-apk-path.txt)" \
-            --baseline scripts/signing-baseline.txt \
-            --properties dist/signing.properties \
-            --report dist/signing.md
-
-      - name: Verify APK metadata (SHA-256 / versionCode / versionName)
-        id: meta
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          bash scripts/check_apk_metadata.sh \
-            "$(cat dist/release-apk-path.txt)" \
-            --expected-package com.lovebrain.app \
-            --expected-version-name "$VERSION" \
-            --min-version-code 1 \
-            --expect-release \
-            --r8-mapping app/build/outputs/mapping/release/mapping.txt \
-            --properties dist/apk-metadata.txt \
-            --report dist/apk-metadata.md
-          cat dist/apk-metadata.txt
-
-      - name: Dependency license scan and SBOM
-        run: |
-          bash scripts/license_scan.sh \
-            --configuration releaseRuntimeClasspath \
-            --policy scripts/license-policy.txt \
-            --overrides scripts/license-overrides.txt \
-            --spdx dist/sbom.spdx.json \
-            --csv dist/dependency-licenses.csv \
-            --report dist/dependency-license-report.md
-
-      - name: Download the CI instrumentation evidence for this SHA
-        # 证据索引必须引用真正跑出来的东西，所以这里把 ui-test / upgrade-test
-        # 的工件取回来；取不到就说明门禁没跑，emit_release_evidence.sh 会失败。
+      - name: Download this run's CI evidence artifacts by resolved run id
+        # `gh run download` 的位置参数是 run database id，不是 commit SHA（本文件以前写错过）。
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p evidence
-          gh run download "$GITHUB_SHA" --repo "$GITHUB_REPOSITORY" \
-            --name test-xml-report --dir evidence/ui-xml || {
-              echo "instrumentation XML for this SHA is missing"; exit 1; }
-          gh run download "$GITHUB_SHA" --repo "$GITHUB_REPOSITORY" \
-            --name instrumentation-test-report --dir evidence/ui-html || {
-              echo "instrumentation HTML for this SHA is missing"; exit 1; }
-          gh run download "$GITHUB_SHA" --repo "$GITHUB_REPOSITORY" \
-            --name upgrade-evidence --dir evidence/upgrade || {
-              echo "upgrade evidence for this SHA is missing"; exit 1; }
+          set -euo pipefail
+          mkdir -p evidence/ci
+          for a in unit-test-report test-xml-report instrumentation-test-report \
+                   lint-report sbom-and-licenses apk-metadata; do
+            if ! gh run download "$CI_RUN_ID" --repo "$GITHUB_REPOSITORY" \
+                 --name "$a" --dir "evidence/ci/$a"; then
+              printf 'artifact "%s" is not on run %s — a release citing a run that never produced\n' "$a" "$CI_RUN_ID" >&2
+              printf 'it is exactly the pseudo-gate this file used to be. Failing, not warning.\n' >&2
+              exit 1
+            fi
+          done
+          find evidence/ci -type f | sed 's/^/  /'
+
+      - name: Assert the downloaded instrumentation and lint evidence is real
+        # 空/缺证据是失败不是警告（旧实现靠 if-no-files-found: warn + `|| echo` 放行）。
+        # 单测 XML 不在 ci.yml 的产物清单里（只上传了 HTML 报告），所以那一半的门留在
+        # `verify` job 内部——上一步已经要求它结论为 success，这里不假装重跑。
+        run: |
+          set -euo pipefail
           bash scripts/assert_artifacts.sh --label "release/ui-test" --min-tests auto \
-            --xml-dir evidence/ui-xml --html-dir evidence/ui-html
+            --xml-dir evidence/ci/test-xml-report \
+            --html-dir evidence/ci/instrumentation-test-report
+          LINT_XML="$(find evidence/ci/lint-report -type f -name 'lint-results*.xml' | head -1)"
+          LINT_HTML="$(find evidence/ci/lint-report -type f -name 'lint-results*.html' | head -1)"
+          if [ -z "$LINT_XML" ] || [ -z "$LINT_HTML" ]; then
+            printf 'the lint artifact of run %s carries no lint-results-*.{xml,html} — nothing to assert\n' "$CI_RUN_ID" >&2
+            exit 1
+          fi
+          bash scripts/assert_artifacts.sh --label "release/lint" \
+            --lint-xml "$LINT_XML" --lint-html "$LINT_HTML"
 
-      - name: Rename APK with version
-        id: ver
+      - name: Cross-check the local release evidence against the CI records
+        # "本地手动"模型下 CI 还能替人做的那半件事：把人交回来的记录，跟 CI 自己的记录、
+        # 跟 scripts/signing-baseline.txt 钉的公开指纹逐条对上。对不上就红。
+        # 读 scripts/signing-baseline.txt 不涉及 secret：那是 v1.3.1 发布页上本来就公开的证书指纹。
+        env:
+          PRERELEASE: ${{ steps.tagcheck.outputs.IS_PRERELEASE }}
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          set -euo pipefail
           mkdir -p dist
-          cp "$(cat dist/release-apk-path.txt)" "dist/LoveBrain-${VERSION}.apk"
-          sha256sum "dist/LoveBrain-${VERSION}.apk" > dist/SHA256.txt
-          cat dist/SHA256.txt
-          echo "VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
+          EVID="docs/release-evidence/$TAG"
+          prop() {
+            local v
+            if ! v="$(grep -m1 "^$2=" "$1" | sed "s/^$2=//" | tr -d '\r')"; then
+              printf 'no key "%s" in %s — that file is not the record our own scripts write\n' "$2" "$1" >&2
+              exit 1
+            fi
+            printf '%s\n' "$v"
+          }
+          {
+            printf '# Release assistant report — %s\n\n' "$TAG"
+            printf '| item | value | where it came from |\n|---|---|---|\n'
+            printf '| build commit | `%s` | workflow input; checked as an ancestor of `%s` |\n' "$BUILD_COMMIT" "$GITHUB_REF_NAME"
+            printf '| CI run | `%s` | scripts/resolve_ci_run.sh, unique match required |\n' "$CI_RUN_ID"
+          } > dist/release-assistant-report.md
+          if [ ! -d "$EVID" ]; then
+            printf 'no local evidence directory: %s\n' "$EVID" >&2
+            printf '  本地那一跑要交回哪些文件，写在 docs/RELEASE_CHECKLIST.md 第 5-7 步。\n' >&2
+            exit 1
+          fi
+          for f in apk-metadata.txt signing.properties SHA256.txt \
+                   upgrade-evidence.md upgrade-fixture-manifest.txt release-evidence.md; do
+            if [ ! -s "$EVID/$f" ]; then
+              printf 'evidence file missing or empty: %s/%s\n' "$EVID" "$f" >&2
+              exit 1
+            fi
+          done
+          VERSION="${TAG#v}"
+          PKG="$(prop "$EVID/apk-metadata.txt" package)"
+          L_NAME="$(prop "$EVID/apk-metadata.txt" version_name)"
+          L_CODE="$(prop "$EVID/apk-metadata.txt" version_code)"
+          L_SHA="$(prop "$EVID/apk-metadata.txt" sha256)"
+          L_DEBUG="$(prop "$EVID/apk-metadata.txt" debuggable)"
+          L_RELEASE="$(prop "$EVID/apk-metadata.txt" expect_release)"
+          [ "$PKG" = "com.lovebrain.app" ] || { printf 'evidence says package %s, not com.lovebrain.app\n' "$PKG" >&2; exit 1; }
+          [ "$L_NAME" = "$VERSION" ] || { printf 'evidence APK is versionName %s, the tag is %s\n' "$L_NAME" "$VERSION" >&2; exit 1; }
+          [ "$L_RELEASE" = "1" ] || { printf 'the evidence APK was never checked with --expect-release\n' >&2; exit 1; }
+          case "$L_DEBUG" in
+            absent | false) ;;
+            *) printf 'evidence APK debuggable=%s — that is not a release build\n' "$L_DEBUG" >&2; exit 1 ;;
+          esac
+          SHA_IN_LIST="$(awk '{ print $1; exit }' "$EVID/SHA256.txt" | tr -d '\r')"
+          [ "$SHA_IN_LIST" = "$L_SHA" ] || { printf 'SHA256.txt (%s) disagrees with apk-metadata.txt (%s)\n' "$SHA_IN_LIST" "$L_SHA" >&2; exit 1; }
+          printf '%s' "$L_SHA" | grep -Eq '^[0-9a-f]{64}$' || { printf 'the evidence sha256 is not 64 hex\n' >&2; exit 1; }
+          # 签名连续性：按本地记录核，核的是"和公开发布的指纹同一个"，不是"自己跟自己一致"。
+          SIG="$(prop "$EVID/signing.properties" signer_cert_sha256)"
+          SIG_BASE="$(prop "$EVID/signing.properties" baseline_cert_sha256)"
+          CONT="$(prop "$EVID/signing.properties" signing_continuity)"
+          PINNED="$(prop scripts/signing-baseline.txt cert_sha256)"
+          [ "$CONT" = "PASS" ] || { printf 'signing.properties says signing_continuity=%s, not PASS\n' "$CONT" >&2; exit 1; }
+          [ "$SIG" = "$SIG_BASE" ] || { printf 'recorded signer (%s) != recorded baseline (%s)\n' "$SIG" "$SIG_BASE" >&2; exit 1; }
+          [ "$SIG" = "$PINNED" ] || { printf 'recorded signer %s is not the pinned published certificate — 签名连续性断了\n' "$SIG" >&2; exit 1; }
+          # CI 在同一 commit 上 R8 构建出来的版本，必须就是本地这个 APK 声称的版本。
+          CI_META="$(find evidence/ci/apk-metadata -type f -name 'apk-metadata.txt' | head -1)"
+          if [ -z "$CI_META" ]; then
+            printf 'run %s carries no apk-metadata.txt — the CI R8 build did not run\n' "$CI_RUN_ID" >&2
+            exit 1
+          fi
+          C_NAME="$(prop "$CI_META" version_name)"
+          C_CODE="$(prop "$CI_META" version_code)"
+          if [ "$C_NAME" != "$L_NAME" ] || [ "$C_CODE" != "$L_CODE" ]; then
+            printf 'CI built versionCode %s / versionName %s at this commit, but the本地 APK record says %s / %s\n' \
+              "$C_CODE" "$C_NAME" "$L_CODE" "$L_NAME" >&2
+            exit 1
+          fi
+          ROWS="$(grep -c '^files/' "$EVID/upgrade-fixture-manifest.txt")" || ROWS=0
+          [ "$ROWS" -gt 0 ] || { printf 'the覆盖安装 manifest lists no seeded file — nothing was upgraded onto\n' >&2; exit 1; }
+          grep -q -- "$L_SHA" "$EVID/release-evidence.md" || { printf 'release-evidence.md does not cite the APK SHA-256 it claims to\n' >&2; exit 1; }
+          {
+            printf '| APK versionName / versionCode | `%s` / `%s` | %s/apk-metadata.txt |\n' "$L_NAME" "$L_CODE" "$EVID"
+            printf '| APK SHA-256 | `%s` | matched against %s/SHA256.txt |\n' "$L_SHA" "$EVID"
+            printf '| CI R8 build of the same commit | versionName `%s` / versionCode `%s` | artifact apk-metadata of run %s |\n' "$C_NAME" "$C_CODE" "$CI_RUN_ID"
+            printf '| signer certificate | `%s` | equal to the pin in scripts/signing-baseline.txt |\n' "$SIG"
+            printf '| 覆盖安装 seeded files | %s | %s/upgrade-fixture-manifest.txt |\n' "$ROWS" "$EVID"
+            printf '| pre-release | %s | tag contains "-rc" |\n' "$PRERELEASE"
+          } >> dist/release-assistant-report.md
+          printf 'All cross-checks passed. Evidence directory: %s\n' "$EVID"
 
-      - name: Build the release evidence index
+      - name: Hand the last metre back to a human (CI does not publish)
+        # 签名 APK 的字节在本地，不在 CI；所以 publish 这一枪由人来开。
+        # 这一步只印出**可直接粘贴**的命令和已经核过的数，绝不改动 Release 页。
+        env:
+          PRERELEASE: ${{ steps.tagcheck.outputs.IS_PRERELEASE }}
         run: |
-          bash scripts/emit_release_evidence.sh \
-            --out dist/release-evidence.md \
-            --title "${GITHUB_REF_NAME}" \
-            --apk "dist/LoveBrain-${GITHUB_REF_NAME#v}.apk" \
-            --metadata dist/apk-metadata.txt \
-            --signing dist/signing.properties \
-            --sbom dist/sbom.spdx.json \
-            --sbom-csv dist/dependency-licenses.csv \
-            --license-report dist/dependency-license-report.md \
-            --upgrade-evidence evidence/upgrade/upgrade-evidence.md \
-            --upgrade-manifest evidence/upgrade/upgrade-fixture-manifest.txt \
-            --ui-xml-dir evidence/ui-xml \
-            --extra "commit=${GITHUB_SHA}" \
-            --extra "tag=${GITHUB_REF_NAME}" \
-            --extra "upgrade-test=${{ github.server_url }}/${{ github.repository }}/actions/workflows/ci.yml"
+          set -euo pipefail
+          EVID="docs/release-evidence/$TAG"
+          L_SHA="$(grep -m1 '^sha256=' "$EVID/apk-metadata.txt" | sed 's/^sha256=//' | tr -d '\r')"
+          PREREL=""
+          [ "$PRERELEASE" != "true" ] || PREREL="--prerelease"
+          {
+            printf '\n## 发布命令（人来跑，CI 不跑）\n\n'
+            printf '签名 APK 只在本地：`bash scripts/resolve_release_apk.sh --require-signed` 印出的那个路径。\n\n'
+            printf '```bash\n'
+            printf 'APK="$(bash scripts/resolve_release_apk.sh --require-signed | tail -1)"\n'
+            printf 'sha256sum "$APK"   # 必须等于 %s\n' "$L_SHA"
+            printf 'gh release create %s "$APK" --target %s --title "%s" %s--notes-file %s/release-evidence.md\n' \
+              "$TAG" "$BUILD_COMMIT" "$TAG" "${PREREL:+$PREREL }" "$EVID"
+            printf '```\n\n'
+            printf 'SHA-256 不等就别发：这一步是人唯一还能自己核字节的地方。\n'
+            printf '发完把 Release 页 URL 记回 docs/RELEASE_CHECKLIST.md 第 12 步。\n'
+          } >> dist/release-assistant-report.md
+          cat dist/release-assistant-report.md
+          cat dist/release-assistant-report.md >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload release evidence bundle
+      - name: Upload the assistant's own report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: release-evidence
-          path: |
-            dist/release-evidence.md
-            dist/apk-metadata.*
-            dist/signing.*
-            dist/sbom.spdx.json
-            dist/dependency-licenses.csv
-            dist/dependency-license-report.md
-            dist/SHA256.txt
+          name: release-assistant-report
+          path: dist/release-assistant-report.md
           if-no-files-found: error
           retention-days: 90
-
-      - name: Create GitHub Release and upload artifacts
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            dist/LoveBrain-*.apk
-            dist/SHA256.txt
-            dist/release-evidence.md
-            dist/sbom.spdx.json
-            app/build/outputs/mapping/release/mapping.txt
-          body_path: dist/release-evidence.md
-          prerelease: ${{ steps.tagcheck.outputs.IS_PRERELEASE == 'true' }}

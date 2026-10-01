@@ -367,6 +367,11 @@ jobs:
     #     不是 `continue-on-error`，不是把 secret 缺失判成通过，也不是删掉这一步——
     #     下面那道"没有四个 secret 就响亮失败"的门**一个字没改**，手触发时照样拦。
     #   ⇒ 本地那一条路怎么做、产物往哪儿放，写在交接单 §0.66；CI 侧的判据现在只到"构建 + 测试"。
+    #   ⇒ 2026-10-01 把这条要求结清到 release.yml（复核 §1 P0-3）：那边"等 upgrade-test check"
+    #     的 wait-ci job 已取消 —— push 事件里这里永远是 skipped，等它 = 永远发不出去；
+    #     release.yml 现在只做人工触发（workflow_dispatch）的"发布前机器复核 + 命令交接"，
+    #     签名与覆盖安装的证据由本地交回 docs/release-evidence/<tag>/，见 docs/RELEASE_CHECKLIST.md 第 4-8 步。
+    #     （本 job 的结构、if 条件、四道 secret 门：**一字未动**。）
     if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
