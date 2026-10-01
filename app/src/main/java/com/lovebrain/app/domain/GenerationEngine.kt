@@ -298,7 +298,7 @@ class GenerationEngine(
                     deepSeekRepo.generateStream(
                         system, user, thinkingOverride, thinkingShapeIndex, config = providerConfig
                     ),
-                    // 主生成总超时按**这张工单**的档位走（Issue #5：慢速兼容服务被 120 秒盖住）。
+                    // 主生成总超时按**这张工单**的档位走（慢速兼容服务会被固定 120 秒盖住）。
                     // 档位是有界白名单，最大 300 秒——不是无限等待。
                     providerConfig.generateTimeoutMs,
                     onChunk = { chunk ->
@@ -490,7 +490,7 @@ class GenerationEngine(
             L.w("SUGGEST t0 request enqueued, user=${user.length} chars")
             val sr = collectStream(
                 deepSeekRepo.generateStream(system, user, config = providerConfig),
-                // 锦囊**故意不吃工单档位**，仍是固定 45 秒（复核 §2 P1-1 只要主生成放开）：
+                // 锦囊**故意不吃工单档位**，仍是固定 45 秒（放开的只是主生成这一条长链路）：
                 // 这一屏的产品合同是"别让用户对着锦囊转一分钟"（AppConfig.SUGGEST_TIMEOUT_MS
                 // 那条注释原话），而且它跑完就缓存成当日简报、不在对话关键路径上。
                 AppConfig.SUGGEST_TIMEOUT_MS,

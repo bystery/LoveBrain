@@ -97,7 +97,7 @@ data class UsageStats(
 const val COST_CENT_YUAN = 0.01
 
 /**
- * 一笔记账金额的**可读性**（外部复核 P1-2）：已知 / 已知但不足一分 / 根本不知道。
+ * 一笔记账金额的**可读性**：已知 / 已知但不足一分 / 根本不知道。
  *
  * 为什么 `Unknown` 不等于"免费"（这一格的全部理由）：
  * 钱进 [UsageStats.totalCostYuan] 只有两条路——[Event.Costed] 累加，
@@ -130,7 +130,7 @@ fun costKnowledge(yuan: Double): CostKnowledge = when {
 }
 
 /**
- * 把一笔记账金额念成用户看得见的那一串——**分岔只在这一个函数里**（P1-2 要求三处一致）：
+ * 把一笔记账金额念成用户看得见的那一串——**分岔只在这一个函数里**（三处显示点必须一致）：
  *  - [CostKnowledge.Unknown] → [unknownText]（各页给「—」）
  *  - [CostKnowledge.BelowCent] → [belowCentText]（"不足 ¥0.01"那种不撒谎的写法，**不写 0、不写免费**）
  *  - [CostKnowledge.Known] → [amountText]

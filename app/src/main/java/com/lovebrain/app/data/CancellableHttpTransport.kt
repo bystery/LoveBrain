@@ -44,7 +44,7 @@ internal object CancellableHttpTransport {
      * 线程池都在 client 里，每轮生成 new 一颗等于把连接复用全扔掉）。
      *
      * 档位从哪来：`ProviderRequestConfig.streamReadTimeoutSec`——也就是这张工单上那一档
-     * （[com.lovebrain.app.GenerationTimeoutTier] 的有界白名单，Issue #5）。**这里能放开的只有读**：
+     * （[com.lovebrain.app.GenerationTimeoutTier] 的有界白名单）。**这里能放开的只有读**：
      * 连接与写超时仍走上面那两颗固定常量，慢服务不该把"根本联系不上"拖成 300 秒。
      */
     fun streamClient(readTimeoutSec: Long): OkHttpClient =

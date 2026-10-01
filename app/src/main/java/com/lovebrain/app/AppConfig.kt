@@ -14,7 +14,7 @@ object AppConfig {
     const val GENERATE_TIMEOUT_MS = 120_000L
     const val SUGGEST_TIMEOUT_MS = 45_000L   // 锦囊独立超时：45s（比主生成短，避免"1 分钟还在转圈"）
     const val GENERATE_MAX_ATTEMPTS = 4   // 主生成总尝试次数（1 次初始 +3 次重试； 预算 3→4 使候选④none 可达）
-    // 主生成总超时的可选档位住在本文件尾部的 [GenerationTimeoutTier]（Issue #5 / 复核 §2 P1-1）：
+    // 主生成总超时的可选档位住在本文件尾部的 [GenerationTimeoutTier]：
     // 默认档就是上面的 GENERATE_TIMEOUT_MS，逐工单可调，连接/写超时不跟着放开。
 
     // ═══ 模型参数 ═══
@@ -84,9 +84,9 @@ object AppConfig {
 
 /**
  * 主生成总超时的**有界白名单**：只有这四档，用户填不进别的数。
- * （Issue #5 / 外部复核 `LoveBrain_Full_Audit_4f0dc77_2026-09-30` §2 P1-1）
+ * （来自用户反馈：非官方兼容服务的速度与内容长度都超过固定 120 秒）
  *
- * 为什么要档位而不是一个自由输入框：Issue #5 反馈的是非官方 OpenAI-compatible 服务
+ * 为什么要档位而不是一个自由输入框：用户反馈的是非官方 OpenAI-compatible 服务
  * 的速度与内容长度都超过固定 120 秒；但把总超时交给用户随手写一个数，
  * 就等于允许"卡死的请求变成无限等待"——那正是复核点名不要的东西。
  *

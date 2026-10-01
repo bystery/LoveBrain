@@ -14,7 +14,7 @@ import java.util.UUID
  * @property thinkingMode 思考模式开关（0=关 1=开；null=升级前老数据未写值，消费时兜底回全局设置）
  * @property generateTimeoutSec 主生成总超时的档位（秒）。**只存 [com.lovebrain.app.GenerationTimeoutTier]
  *   白名单里的四个数之一**；null = 升级前的老数据没写过这一项，消费侧（`ProviderConfigResolver`）
- *   一律回落到默认档 120 秒。慢速非官方兼容服务在 Provider 高级设置里调这一档（Issue #5）。
+ *   一律回落到默认档 120 秒。慢速非官方兼容服务在 Provider 高级设置里调这一档。
  *
  * **设计决策**：
  * - **Key 不在结构内**——配置与凭据分离，API Key 通过 SecurePrefs 的加密分条存储

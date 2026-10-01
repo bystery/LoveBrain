@@ -10,7 +10,7 @@ import com.lovebrain.app.AppConfig
  * `import com.lovebrain.app.data.ProviderRequestConfig` —— 也就是**端口自己**成了
  * 跨层依赖的来源，DIP 越抽象越脏。搬进 model 之后端口签名只引用 model 类型。
  *
- * 搬迁那一次是原样搬（字段、默认值、校验都没动）。之后 Issue #5 那一档给
+ * 搬迁那一次是原样搬（字段、默认值、校验都没动）。之后超时档位那一笔给
  * `ProviderRequestConfig` 加了 [ProviderRequestConfig.generateTimeoutMs] 一项
  * ——带默认值，所以既有构造点与身份比对一个都没受影响。
  */

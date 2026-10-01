@@ -53,8 +53,8 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
 
     /**
      * 非流式（经验提取 / 画像 / 连接探测）用的客户端：读超时保持全局固定
-     * [AppConfig.READ_TIMEOUT_SEC]——这一档**故意不跟着工单的超时档位走**，理由记在
-     * 复核 §2 P1-1 的收尾那句：改动面要可控。那些任务都在后台跑、没有"用户对着转圈"的
+     * [AppConfig.READ_TIMEOUT_SEC]——这一档**故意不跟着工单的超时档位走**：改动面要可控。
+     * 那些任务都在后台跑、没有"用户对着转圈"的
      * 体感压力，把它们一起放开只会让后台队列在坏服务上挂得更久。
      */
     private val client = CancellableHttpTransport.client(AppConfig.READ_TIMEOUT_SEC)

@@ -75,7 +75,7 @@ fun UsageDetailScreen(
                     Text("复制次数：${viewModel.totalCopyCount}", style = AppTypography.bodyMedium, color = TextSecondary)
                     Text("采用次数：${viewModel.totalAdoptCount}", style = AppTypography.bodyMedium, color = TextSecondary)
                     Text("改写次数：${viewModel.totalRewriteCount}", style = AppTypography.bodyMedium, color = TextSecondary)
-                    // P1-2：与首页那一格**同一颗判据**（`viewmodel/UsageStats.kt` 的 `costReadout`）。
+                    // 与首页那一格**同一颗判据**（`viewmodel/UsageStats.kt` 的 `costReadout`）。
                     // 一笔可计价记录都没有 ⇒ 念「—」；以前 `< 0.01` 一律念「￥0」，
                     // 对拿不到 usage / 没有价格表的自定义 Provider 就是把"不知道"说成"免费"。
                     val costStr = costReadout(

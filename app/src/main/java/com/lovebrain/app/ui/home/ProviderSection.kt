@@ -456,7 +456,7 @@ internal fun ProviderFormBody(
             MiniSwitchRow(checked = thinking, onCheckedChange = { thinking = it })
         }
 
-        // ── 高级：这一张工单愿意等多久（Issue #5 / 复核 §2 P1-1）──────────────────
+        // ── 高级：这一张工单愿意等多久 ──────────────────────────────────────────
         //
         // 档位挂在**这张工单**上，不是全局一个值：官方 Key 与自建慢服务各留各的等待预算。
         // 初值直接读传进来的 `ticket`（表单已有的那份工单快照），于是这台机器既不多一份状态、
