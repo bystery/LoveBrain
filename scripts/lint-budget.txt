@@ -38,7 +38,13 @@ SwitchIntDef 1
 #   `panel_copy`（结果区那颗复制）。两把尺同时各降一格：lint 的 UnusedResources 与
 #   `UiStringLiteralBudgetTest` 的 DESC 栏（9 → 6）——**同一笔债的两侧读数**，不是一笔债记两次。
 #   ⚠ 这一档**不许用 `--rewrite` 生成**：那一步只重写它认识的 `规则 数字` 行，会把下面这些注释吃掉（坑表 148）。
-UnusedResources 30
+# 30 → 29（第 22 窗口，语音模式整体删除）：`panel_voice_rewrite`（"语音改写" / "Voice rewrite"）
+#   随功能一起从两份资源里删掉，它本来就是 lint 记着的一条未引用资源——**真删一条，不是搬家**。
+#   实测出处：本机 `./gradlew :app:lintDebug --offline` 后
+#   `PYTHON=python bash scripts/check_lint_budget.sh` 报 `STALE UnusedResources: 实测 29 < 预算 30`
+#   （低于预算也判红，理由同下一档："只剩多少"要有人知道）。
+#   ⚠ 同样不许 --rewrite。
+UnusedResources 29
 
 # ── advisory：不进预算比对的规则（每次仍然打印条数与理由）──
 # 只允许「发现来自仓库之外」的检查走这里；名单写死在 check_lint_budget.sh 的
