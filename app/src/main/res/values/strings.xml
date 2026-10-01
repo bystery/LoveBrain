@@ -55,6 +55,10 @@
     <string name="error_auth">API Key 无效或已过期，请检查设置</string>
     <string name="error_network">网络连接失败，请检查网络后重试</string>
     <string name="error_timeout">请求超时，请重试</string>
+    <!-- Issue #5 / 复核 §2 P1-1：自定义 Provider 高级设置里的生成超时档位（有界白名单 60/120/180/300，默认 120） -->
+    <string name="provider_timeout_title">生成超时上限（高级）</string>
+    <string name="provider_timeout_hint">慢速的兼容服务可以把等待调长；只放宽读回复的时间，连接超时不变</string>
+    <string name="provider_timeout_tier_label">%1$d 秒</string>
     <string name="error_rate_limited">请求过于频繁，请稍后再试</string>
     <string name="error_prompt_read">读取配置时出错，请重试</string>
     <string name="error_parse">解析回复失败，请重试</string>

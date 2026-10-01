@@ -1,5 +1,6 @@
 package com.lovebrain.app.data
 
+import com.lovebrain.app.GenerationTimeoutTier
 import com.lovebrain.app.model.ProviderRequestConfig
 import com.lovebrain.app.model.ProviderTicket
 
@@ -90,7 +91,10 @@ internal class ProviderConfigResolver(private val securePrefs: SecurePrefs) {
             apiKey = apiKey,
             baseUrl = baseUrl,
             model = ticket.model,
-            thinkingMode = thinkingMode
+            thinkingMode = thinkingMode,
+            // 工单上那一档过一遍白名单再冻结成毫秒：老数据（null）与任何非档位值都落回默认档，
+            // 这条回落只住在这里（[GenerationTimeoutTier.fromSecondsOrDefault]），不在消费侧各写一遍。
+            generateTimeoutMs = GenerationTimeoutTier.fromSecondsOrDefault(ticket.generateTimeoutSec).millis
         )
     }
 }

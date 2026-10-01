@@ -298,7 +298,9 @@ class GenerationEngine(
                     deepSeekRepo.generateStream(
                         system, user, thinkingOverride, thinkingShapeIndex, config = providerConfig
                     ),
-                    AppConfig.GENERATE_TIMEOUT_MS,
+                    // 主生成总超时按**这张工单**的档位走（Issue #5：慢速兼容服务被 120 秒盖住）。
+                    // 档位是有界白名单，最大 300 秒——不是无限等待。
+                    providerConfig.generateTimeoutMs,
                     onChunk = { chunk ->
                         emit(ReplyChunk(requestId, chunk))
                         // 只把新增文本交给扫描器，不再 toString() 全量重扫
@@ -416,7 +418,9 @@ class GenerationEngine(
         try {
             fullText = collectStream(
                 deepSeekRepo.generateStream(system, user, config = providerConfig),
-                AppConfig.GENERATE_TIMEOUT_MS,
+                // 谈心与主生成同一个等待预算：它走的也是这一条长回复链路，
+                // 工单调到 300 秒时不该只有主生成放开、谈心还在 120 秒上截。
+                providerConfig.generateTimeoutMs,
                 onChunk = { emit(CounselingChunk(requestId, it)) },
                 onError = { failure = it },
                 onFirstChunk = { emit(CounselingFirstToken(requestId, System.currentTimeMillis() - t0)) }
@@ -486,6 +490,9 @@ class GenerationEngine(
             L.w("SUGGEST t0 request enqueued, user=${user.length} chars")
             val sr = collectStream(
                 deepSeekRepo.generateStream(system, user, config = providerConfig),
+                // 锦囊**故意不吃工单档位**，仍是固定 45 秒（复核 §2 P1-1 只要主生成放开）：
+                // 这一屏的产品合同是"别让用户对着锦囊转一分钟"（AppConfig.SUGGEST_TIMEOUT_MS
+                // 那条注释原话），而且它跑完就缓存成当日简报、不在对话关键路径上。
                 AppConfig.SUGGEST_TIMEOUT_MS,
                 onChunk = { chunk ->
                     if (firstChunkAt < 0) {
@@ -561,6 +568,8 @@ class GenerationEngine(
         try {
             fullText = collectStream(
                 deepSeekRepo.generateStream(system, user, config = providerConfig),
+                // 主动发与锦囊同一档固定 45 秒，理由同上：都不是"她在等一条长回复"的关键路径，
+                // 放开只会让悬浮球在坏服务上多转半分钟。工单档位只管主生成与谈心。
                 AppConfig.SUGGEST_TIMEOUT_MS,
                 onChunk = { chunk ->
                     if (!firstToken && chunk.isNotBlank()) {
@@ -606,6 +615,11 @@ class GenerationEngine(
      *
      * 回调全部是 suspend：它们直接往同一条事件流上 emit，
      * 不再有"从后台线程反向写 ViewModel"的通道。
+     *
+     * ⚠ [timeoutMs] 的默认值只是"忘了传"时的保险丝（= 默认档 120 秒）。
+     * 三个长链路调用点现在都**显式交**这张工单冻结出来的预算
+     * （`ProviderRequestConfig.generateTimeoutMs`，见 `GenerationTimeoutTier`），
+     * 主生成/谈心靠的是那条显式实参，不是这里。
      */
     private suspend fun collectStream(
         flow: Flow<StreamEvent>,

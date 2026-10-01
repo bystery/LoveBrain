@@ -51,10 +51,17 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
     /** 请求计数、token 用量与双条件计费；构造时即从持久化存储恢复统计 */
     private val usageTracker = ApiUsageTracker(securePrefs)
 
+    /**
+     * 非流式（经验提取 / 画像 / 连接探测）用的客户端：读超时保持全局固定
+     * [AppConfig.READ_TIMEOUT_SEC]——这一档**故意不跟着工单的超时档位走**，理由记在
+     * 复核 §2 P1-1 的收尾那句：改动面要可控。那些任务都在后台跑、没有"用户对着转圈"的
+     * 体感压力，把它们一起放开只会让后台队列在坏服务上挂得更久。
+     */
     private val client = CancellableHttpTransport.client(AppConfig.READ_TIMEOUT_SEC)
 
-    /** 流式专用 client：更长读超时（SSE 间隔可能较大） */
-    private val streamClient = CancellableHttpTransport.client(AppConfig.STREAM_READ_TIMEOUT_SEC)
+    // 流式客户端**不再是一颗固定的 120 秒**：每轮按这张工单冻结的档位向
+    // `CancellableHttpTransport.streamClient(...)` 要（档位白名单见 `GenerationTimeoutTier`，
+    // 默认档 120 秒与旧的 `AppConfig.STREAM_READ_TIMEOUT_SEC` 逐字相同）。见 generateStream 里那一行。
 
     private val json = Json {
         ignoreUnknownKeys = true
@@ -184,7 +191,11 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
         val request = buildRequestWithConfig(resolvedConfig, requestBody)
         val accumulated = StringBuilder()
 
-        val call = streamClient.newCall(request)
+        // 读超时按**这张工单**冻结的档位取（档位只走白名单，见 GenerationTimeoutTier）。
+        // 连接/写超时不在这里——那两颗仍是 AppConfig 的固定值，见 CancellableHttpTransport.client。
+        val call = CancellableHttpTransport
+            .streamClient(resolvedConfig.streamReadTimeoutSec)
+            .newCall(request)
         val t2 = System.currentTimeMillis()
         L.w("PERF t2 request enqueued")
 

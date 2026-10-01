@@ -4,6 +4,7 @@ import android.content.Context
 import android.provider.Settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lovebrain.app.GenerationTimeoutTier
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.HttpsTrustGuard
 import com.lovebrain.app.domain.port.SettingsStorePort
@@ -203,6 +204,10 @@ sealed class ExportState {
      * 验证通过后自动探测 endpoint：
      * - 成功 → 保存完整 endpoint 到 ProviderTicket.baseUrl，关闭弹窗
      * - 失败 → 弹窗不关闭，formError 显示具体原因
+     *
+     * [generateTimeoutSec] 是这张工单的生成超时档位（秒），只认
+     * [com.lovebrain.app.GenerationTimeoutTier] 白名单里那四个数：非法值与 null（没这一项）
+     * 一律落成默认档，落盘的就是档位本身，不留脏值给下游再判一遍。
      */
     suspend fun saveTicketWithProbe(
         ticketId: String?,
@@ -210,7 +215,8 @@ sealed class ExportState {
         baseUrl: String,
         models: List<String>,
         apiKey: String,
-        thinkingMode: Int
+        thinkingMode: Int,
+        generateTimeoutSec: Int? = null
     ): Boolean = withContext(Dispatchers.IO) {
         // ── 基础验证 ──
         if (name.isBlank()) {
@@ -266,6 +272,9 @@ sealed class ExportState {
         } else {
             thinkingMode
         }
+        // 档位过白名单：表单交来的只能是四档之一，脏值（含 null）在这里落回默认档，
+        // 盘上因此永远存得到 60/120/180/300 四个数之一——下游读取时那层回落是兜第二道。
+        val effectiveTimeoutSec = GenerationTimeoutTier.fromSecondsOrDefault(generateTimeoutSec).seconds
 
         if (ticketId == null) {
             // 新建
@@ -274,7 +283,8 @@ sealed class ExportState {
                 baseUrl = resolvedUrl,
                 model = cleanModels.first(),
                 models = cleanModels,
-                thinkingMode = effectiveThinking
+                thinkingMode = effectiveThinking,
+                generateTimeoutSec = effectiveTimeoutSec
             )
             val updated = _tickets.value + ticket
             securePrefs.setWorkerTickets(updated)
@@ -294,7 +304,8 @@ sealed class ExportState {
                         name = name.trim(),
                         baseUrl = resolvedUrl,
                         models = cleanModels,
-                        model = if (t.model in cleanModels) t.model else cleanModels.first()
+                        model = if (t.model in cleanModels) t.model else cleanModels.first(),
+                        generateTimeoutSec = effectiveTimeoutSec
                     )
                 } else t
             }

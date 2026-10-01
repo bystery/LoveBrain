@@ -1,5 +1,7 @@
 package com.lovebrain.app.model
 
+import com.lovebrain.app.AppConfig
+
 /**
  * Provider 侧的纯数据类型。
  *
@@ -8,7 +10,9 @@ package com.lovebrain.app.model
  * `import com.lovebrain.app.data.ProviderRequestConfig` —— 也就是**端口自己**成了
  * 跨层依赖的来源，DIP 越抽象越脏。搬进 model 之后端口签名只引用 model 类型。
  *
- * 这里是原样搬迁，没有改字段、没有改默认值、没有加校验。
+ * 搬迁那一次是原样搬（字段、默认值、校验都没动）。之后 Issue #5 那一档给
+ * `ProviderRequestConfig` 加了 [ProviderRequestConfig.generateTimeoutMs] 一项
+ * ——带默认值，所以既有构造点与身份比对一个都没受影响。
  */
 
 /**
@@ -40,14 +44,33 @@ data class RawGenerationResult(
 /**
  * 请求级不可变配置快照。
  *
- * 一次 API 请求从出生到结束的固定身份：ticket / apiKey / baseUrl / model / thinkingMode。
+ * 一次 API 请求从出生到结束的固定身份：ticket / apiKey / baseUrl / model / thinkingMode，
+ * 再加上这一张工单的**等待预算** [generateTimeoutMs]。
  * 请求开始时一次性冻结，后续 build body / build URL / Authorization / retry / usage 计费
  * 全部只使用此快照，用户之后切工单不影响已启动的请求。
+ *
+ * @property generateTimeoutMs 主生成总超时（毫秒），由 `ProviderConfigResolver` 从工单档位
+ *             （[com.lovebrain.app.GenerationTimeoutTier]，有界白名单）换算而来。
+ *             默认值就是档位放开之前那个全局固定值 [AppConfig.GENERATE_TIMEOUT_MS]，
+ *             所以老调用点（不点名这一项的构造）行为逐字不变。
  */
 data class ProviderRequestConfig(
     val ticketId: String,
     val apiKey: String,
     val baseUrl: String,
     val model: String,
-    val thinkingMode: Int
-)
+    val thinkingMode: Int,
+    val generateTimeoutMs: Long = AppConfig.GENERATE_TIMEOUT_MS
+) {
+    /**
+     * 这一档对应的流式（SSE）读超时，单位秒——`CancellableHttpTransport.streamClient` 吃它。
+     *
+     * 为什么总超时放开了、读超时也必须跟着走：OkHttp 的读超时是"**两个 token 之间**最多等多久"，
+     * 停在 120 秒的话，档位给到 180/300 也只是纸面值——慢服务只要有一次超过 120 秒没吐字就被掐断。
+     *
+     * 取 `maxOf` 而不是直接等于档位：**读超时不因为选了小档位而比历史值更短**。
+     * 档位管的是"这一轮总共愿意等多久"（总超时），不该反过来把一次正常停顿判成故障。
+     */
+    val streamReadTimeoutSec: Long
+        get() = maxOf(AppConfig.STREAM_READ_TIMEOUT_SEC, generateTimeoutMs / 1000)
+}

@@ -40,6 +40,19 @@ internal object CancellableHttpTransport {
         .build()
 
     /**
+     * 流式客户端按**读超时档位**复用：一个档位一颗，建过就不再建（OkHttp 自己的连接池与
+     * 线程池都在 client 里，每轮生成 new 一颗等于把连接复用全扔掉）。
+     *
+     * 档位从哪来：`ProviderRequestConfig.streamReadTimeoutSec`——也就是这张工单上那一档
+     * （[com.lovebrain.app.GenerationTimeoutTier] 的有界白名单，Issue #5）。**这里能放开的只有读**：
+     * 连接与写超时仍走上面那两颗固定常量，慢服务不该把"根本联系不上"拖成 300 秒。
+     */
+    fun streamClient(readTimeoutSec: Long): OkHttpClient =
+        streamClients.getOrPut(readTimeoutSec) { client(readTimeoutSec) }
+
+    private val streamClients = java.util.concurrent.ConcurrentHashMap<Long, OkHttpClient>()
+
+    /**
      * 携带 HTTP 状态码的异常，供连通性探测区分 404/405 与其他错误。
      */
     class HttpCodeException(val code: Int, message: String) : Exception(message)

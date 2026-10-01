@@ -8,6 +8,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -59,7 +61,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
+import com.lovebrain.app.GenerationTimeoutTier
 import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.LbChip
+import com.lovebrain.app.core.designsystem.LbChipInteraction
 import com.lovebrain.app.core.designsystem.LbRowState
 import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.core.designsystem.ScreenAction
@@ -355,6 +360,7 @@ private fun ProviderEditDialog(
  * 与 Column 里的每一行都逐字搬过来（只减缩进）。Dialog 关闭即销毁这些 `remember`
  * 的行为跟搬之前一样——它们仍挂在这棵树的同一个位置上。
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun ProviderFormBody(
     viewModel: SetupViewModel,
@@ -369,6 +375,11 @@ internal fun ProviderFormBody(
     var key by remember { mutableStateOf("") }
     var keyVisible by remember { mutableStateOf(false) }
     var thinking by remember { mutableStateOf((ticket?.thinkingMode ?: viewModel.globalThinking) == 1) }
+    // 生成超时档位：初值走白名单那道回落（老数据 / null → 默认档 120 秒），
+    // 与读取侧 `ProviderConfigResolver` 同一个函数，界面上因此不可能显示出一个下游不认的档位。
+    var timeoutTier by remember {
+        mutableStateOf(GenerationTimeoutTier.fromSecondsOrDefault(ticket?.generateTimeoutSec))
+    }
     var models by remember { mutableStateOf(ticket?.models.orEmpty()) }
     var currentModel by remember { mutableStateOf(ticket?.model.orEmpty()) }
 
@@ -443,6 +454,42 @@ internal fun ProviderFormBody(
             // 之前这两个东西散在调用点，"忘了给开关起名"在界面上一模一样、
             // 只有读屏的时候才看得出来。
             MiniSwitchRow(checked = thinking, onCheckedChange = { thinking = it })
+        }
+
+        // ── 高级：这一张工单愿意等多久（Issue #5 / 复核 §2 P1-1）──────────────────
+        //
+        // 档位挂在**这张工单**上，不是全局一个值：官方 Key 与自建慢服务各留各的等待预算。
+        // 初值直接读传进来的 `ticket`（表单已有的那份工单快照），于是这台机器既不多一份状态、
+        // 也不碰 `viewModel.tickets`（这颗 StateFlow 在本表单里从来没被读过）。
+        //
+        // ⚠ 四档是**白名单**，界面上没有输入框：用户能选的只有这四颗，
+        //    非法值与老数据在 `GenerationTimeoutTier.fromSecondsOrDefault` 那一行落回默认档。
+        Text(
+            stringResource(R.string.provider_timeout_title),
+            style = AppTypography.labelMedium,
+            color = TextSecondary
+        )
+        Text(
+            stringResource(R.string.provider_timeout_hint),
+            style = AppTypography.labelSmall,
+            color = TextHint
+        )
+        // 互斥单选 ⇒ 设计系统那颗的 [LbChipInteraction.Single]：
+        // Role.Tab + Selected 进语义树（读屏念得出"这是选项、现在在哪一档"），
+        // 48dp 见方热区由 LbChipStyle.touchFloor 垫在**可点那颗自己身上**——
+        // 本表单的逐颗量尺（ProviderFormSemanticsTest）量的就是这一族，自己画一条链会当场红。
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
+            verticalArrangement = Arrangement.spacedBy(Spacing.xs)
+        ) {
+            GenerationTimeoutTier.options.forEach { tier ->
+                LbChip(
+                    label = stringResource(R.string.provider_timeout_tier_label, tier.seconds),
+                    selected = tier.seconds == timeoutTier.seconds,
+                    onClick = { timeoutTier = tier },
+                    interaction = LbChipInteraction.Single
+                )
+            }
         }
 
         Text("模型列表", style = AppTypography.labelMedium, color = TextSecondary)
@@ -618,7 +665,8 @@ internal fun ProviderFormBody(
                         scope.launch {
                             val thinkingInt = if (thinking) 1 else 0
                             val success = viewModel.saveTicketWithProbe(
-                                ticket?.id, name, baseUrl, models, key.trim(), thinkingInt
+                                ticket?.id, name, baseUrl, models, key.trim(), thinkingInt,
+                                timeoutTier.seconds
                             )
                             if (success) onDismiss()
                         }

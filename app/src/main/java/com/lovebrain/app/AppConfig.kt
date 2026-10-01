@@ -14,6 +14,8 @@ object AppConfig {
     const val GENERATE_TIMEOUT_MS = 120_000L
     const val SUGGEST_TIMEOUT_MS = 45_000L   // 锦囊独立超时：45s（比主生成短，避免"1 分钟还在转圈"）
     const val GENERATE_MAX_ATTEMPTS = 4   // 主生成总尝试次数（1 次初始 +3 次重试； 预算 3→4 使候选④none 可达）
+    // 主生成总超时的可选档位住在本文件尾部的 [GenerationTimeoutTier]（Issue #5 / 复核 §2 P1-1）：
+    // 默认档就是上面的 GENERATE_TIMEOUT_MS，逐工单可调，连接/写超时不跟着放开。
 
     // ═══ 模型参数 ═══
     const val TEMPERATURE_MAIN = 0.7
@@ -78,4 +80,54 @@ object AppConfig {
     const val LESSON_CONTEXT_TOPICS = 25      // 经验提取时从话题档案倒取最近 25 个话题
     const val REFLECT_TRIGGER_INTERVAL = 5   // 每积累 5 个话题触发一次画像更新
     const val REFLECT_CONTEXT_TOPICS = 5     // 画像更新时从话题档案倒取最近 5 个话题
+}
+
+/**
+ * 主生成总超时的**有界白名单**：只有这四档，用户填不进别的数。
+ * （Issue #5 / 外部复核 `LoveBrain_Full_Audit_4f0dc77_2026-09-30` §2 P1-1）
+ *
+ * 为什么要档位而不是一个自由输入框：Issue #5 反馈的是非官方 OpenAI-compatible 服务
+ * 的速度与内容长度都超过固定 120 秒；但把总超时交给用户随手写一个数，
+ * 就等于允许"卡死的请求变成无限等待"——那正是复核点名不要的东西。
+ *
+ * 这一档**只放开读的那一侧**：
+ * - [AppConfig.GENERATE_TIMEOUT_MS] 的两个消费点（主生成 + 谈心的 `withTimeout`）按档位取；
+ * - 流式 SSE 的读超时（[AppConfig.STREAM_READ_TIMEOUT_SEC]）跟着同一档走，
+ *   否则总超时放开到 300 秒、而 120 秒没有新 token 就被 OkHttp 掐断，档位等于白给；
+ * - [AppConfig.CONNECT_TIMEOUT_SEC] 与 [AppConfig.WRITE_TIMEOUT_SEC] **不跟着走**：
+ *   联系不上服务器时该快速失败，不该让用户对着转圈等 300 秒。
+ *
+ * 档位挂在**每一张工单**上（`ProviderTicket.generateTimeoutSec`），不是全局唯一值：
+ * 官方 Key 与自建慢服务可以各留各的等待预算。
+ */
+enum class GenerationTimeoutTier(val seconds: Int) {
+    SEC_60(60),
+    SEC_120(120),
+    SEC_180(180),
+    SEC_300(300);
+
+    /** 这一档换算成毫秒——`withTimeout` 吃这个数。换算在本仓库只写这一处。 */
+    val millis: Long get() = seconds * 1000L
+
+    companion object {
+
+        /** UI 画的就是这四颗（列表顺序即展示顺序） */
+        val options: List<GenerationTimeoutTier> get() = listOf(SEC_60, SEC_120, SEC_180, SEC_300)
+
+        /** 精确命中白名单才算有效：`null`（升级前的老数据里根本没写过这一项）与任何非档位值都是 null */
+        fun fromSecondsOrNull(seconds: Int?): GenerationTimeoutTier? =
+            if (seconds == null) null else options.firstOrNull { it.seconds == seconds }
+
+        /**
+         * 回落口——复核要求"在代码里能看出这条回落"指的就是这一行：
+         * 脏数据 / 老数据 / 从没配过 ⇒ 默认档，绝不把原样照抄的数字用出去，
+         * 也绝不因为读不出而退回 0 秒或无限等待。
+         */
+        fun fromSecondsOrDefault(seconds: Int?): GenerationTimeoutTier =
+            fromSecondsOrNull(seconds) ?: DEFAULT
+
+        /** 默认档跟着 [AppConfig.GENERATE_TIMEOUT_MS] 取：两处那个 120 不可能分家 */
+        val DEFAULT: GenerationTimeoutTier =
+            fromSecondsOrNull((AppConfig.GENERATE_TIMEOUT_MS / 1000).toInt()) ?: SEC_120
+    }
 }

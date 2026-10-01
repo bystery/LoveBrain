@@ -47,6 +47,10 @@
     <string name="error_auth">API key is invalid or expired, please check settings</string>
     <string name="error_network">Network request failed, check your connection and retry</string>
     <string name="error_timeout">Request timed out, please retry</string>
+    <!-- Issue #5 / audit §2 P1-1: per-provider generation timeout tier (bounded 60/120/180/300, default 120) -->
+    <string name="provider_timeout_title">Generation timeout (advanced)</string>
+    <string name="provider_timeout_hint">Raise the wait for slow compatible providers; only the reply read timeout grows, the connect timeout stays fixed</string>
+    <string name="provider_timeout_tier_label">%1$d s</string>
     <string name="error_rate_limited">Too many requests, please try again later</string>
     <string name="error_prompt_read">Failed to read configuration, please retry</string>
     <string name="error_parse">Failed to parse the reply, please retry</string>

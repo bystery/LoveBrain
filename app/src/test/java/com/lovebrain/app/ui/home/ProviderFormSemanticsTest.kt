@@ -2,10 +2,15 @@ package com.lovebrain.app.ui.home
 
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.GenerationTimeoutTier
 import com.lovebrain.app.R
 import com.lovebrain.app.core.testing.ScrollScan
 import com.lovebrain.app.core.testing.SemanticsProbe
@@ -15,8 +20,10 @@ import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.viewmodel.SetupViewModel
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -59,7 +66,7 @@ class ProviderFormSemanticsTest {
 
     private val probe by lazy { SemanticsProbe(density) }
 
-    private fun fakeVm(): SetupViewModel {
+    private fun fakeVm(save: ((Int?) -> Unit)? = null): SetupViewModel {
         val vm = mockk<SetupViewModel>(relaxed = true)
         // ⚠ 四条显式桩一条都不能省：relaxed 对 `StateFlow<String?>` 交回泛型 mock，
         //   `.value` 一取就 ClassCastException，而栈顶会指向一个不存在的行号（坑表 75/84）。
@@ -67,6 +74,17 @@ class ProviderFormSemanticsTest {
         every { vm.saving } returns MutableStateFlow(false)
         every { vm.getKeyMask(any()) } returns "sk-…3f9a"
         every { vm.globalThinking } returns 0
+        // 只有要看"表单把什么交给了 VM"的格子才挂这颗桩；其余格子仍走 relaxed 的 false。
+        // 第七颗实参就是这张工单的生成超时档位（Issue #5）。
+        // ⚠ 这里**不能**用 `lastArg()`：`saveTicketWithProbe` 是 suspend，mockk 收到的运行期
+        //   参数尾巴上还挂着一枚 Continuation，`lastArg()` 交回的是那个 lambda，
+        //   一取就 ClassCastException（本机第一次跑就是这么红的）。按槽捕获才对准声明位。
+        if (save != null) {
+            val tier = slot<Int>()
+            coEvery {
+                vm.saveTicketWithProbe(any(), any(), any(), any(), any(), any(), capture(tier))
+            } answers { save(tier.captured); true }
+        }
         return vm
     }
 
@@ -99,11 +117,11 @@ class ProviderFormSemanticsTest {
         thinkingMode = 1
     )
 
-    private fun mount(ticket: ProviderTicket?, matrix: UiMatrix) {
+    private fun mount(ticket: ProviderTicket?, matrix: UiMatrix, vm: SetupViewModel = fakeVm()) {
         rule.setContent {
             val deviceDensity = LocalDensity.current.density
             matrix.RenderIn(deviceDensity) {
-                ProviderFormBody(viewModel = fakeVm(), ticket = ticket, onDismiss = {})
+                ProviderFormBody(viewModel = vm, ticket = ticket, onDismiss = {})
             }
         }
         rule.waitForIdle()
@@ -309,6 +327,62 @@ class ProviderFormSemanticsTest {
                 "否则读屏永远念的是旧状态：点完之后量到 " +
                 probe.actionableTargets(rule, "表单-点过一次").joinToString { it.describe() },
             after.isNotEmpty()
+        )
+    }
+
+    /**
+     * 生成超时档位那一排（Issue #5 / 外部复核 §2 P1-1）：界面上只有白名单那四颗、
+     * 互斥单选、**手指点哪一颗就把哪一颗交给 VM**。
+     *
+     * 为什么必须有这一格（本机实测出来的缺口，不是猜的）：
+     * `ProviderGenerateTimeoutTierTest` 那 14 格量的是白名单 → 请求配置 → OkHttp 读超时
+     * → `withTimeout` 这条链，它从表单**下面**经过。把保存那一行的实参写死成 `120`
+     * （用户点了 300、盘上仍是 120）时，那 14 格与本文件其余各格（尺寸/角色/命名/覆盖）**全部照绿**
+     * ——本机注入 `120` 后 `ProviderFormSemanticsTest` 退出码 0。
+     * 这一格补的就是"手指到 VM"那一段，写法照 `the key visibility action ...` 那一格：
+     * 先判存在与选中位，再点一次看状态真的移动，最后把交出去的账钉死。
+     */
+    @Test
+    fun `the tier row offers exactly four bounded options and saving hands the tapped one over`() {
+        val sent = mutableListOf<Int?>()
+        val vm = fakeVm(save = { sent.add(it) })
+        mount(threeModels, UiMatrix(360), vm)
+
+        val labels = GenerationTimeoutTier.options.map {
+            ctx.getString(R.string.provider_timeout_tier_label, it.seconds)
+        }
+        assertEquals("档位标签按白名单顺序取，四颗一颗不多一颗不少", 4, labels.size)
+        // 子串匹配：选中那一颗的名字带对勾前缀（`LbChipStyle.markSelectedWithCheck`），
+        // 判据要认的是"这一档在不在"，不是对勾画没画——对勾由 LbChip 自己的组件格钉。
+        labels.forEach { l ->
+            rule.onAllNodesWithText(l, substring = true).assertCountEquals(1)
+        }
+        // 这张工单从没配过档位 ⇒ 选中的必须是默认档那一个（120 秒）
+        val defaultIdx = GenerationTimeoutTier.options.indexOf(GenerationTimeoutTier.DEFAULT)
+        rule.onAllNodesWithText(labels[defaultIdx], substring = true)[0]
+            .performScrollTo().assertIsSelected()
+        labels.forEachIndexed { i, l ->
+            if (i != defaultIdx) {
+                rule.onAllNodesWithText(l, substring = true)[0].performScrollTo().assertIsNotSelected()
+            }
+        }
+
+        // 点最大那一档：选中位必须**移动**，且同一组里只许剩一颗选中
+        val topIdx = GenerationTimeoutTier.options.lastIndex
+        rule.onAllNodesWithText(labels[topIdx], substring = true)[0].performScrollTo().performClick()
+        rule.waitForIdle()
+        rule.onAllNodesWithText(labels[topIdx], substring = true)[0].assertIsSelected()
+        rule.onAllNodesWithText(labels[defaultIdx], substring = true)[0].assertIsNotSelected()
+
+        // 保存：VM 收到的那第七颗实参必须就是刚点的那一档
+        rule.onAllNodesWithText(saveChangesLabel)[0].performScrollTo().performClick()
+        rule.waitForIdle()
+        assertEquals("点过一次保存就该恰好交一次账，实到：$sent", 1, sent.size)
+        assertEquals(
+            "手指点在 " + GenerationTimeoutTier.options[topIdx].seconds + " 秒那一颗，" +
+                "VM 收到的必须是它——写死成默认档的实现在这一格红",
+            GenerationTimeoutTier.options[topIdx].seconds,
+            sent.single()
         )
     }
 }
