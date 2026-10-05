@@ -23,12 +23,12 @@ import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.AppConfig
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.Neutral400
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.SurfaceInset
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.Neutral400
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.SurfaceInset
 
-/** 手柄内部尺寸常量（令牌化：数值不变，仅外放命名） */
+/** 手柄内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object GripDimens {
     const val GRIP_SIZE_DP = 36      // 整体触控目标（语义例外：缩放热区，不与输入行 36dp 混用）
     const val LINE_STROKE_DP = 1.5f  // 斜线/箭头线宽
@@ -48,7 +48,7 @@ private object GripDimens {
 @Composable
 fun ResizeGrip(
     onResize: (Int, Int) -> Unit,
-    onResizeEnd:  -> Unit = {},
+    onResizeEnd: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val view = LocalView.current
@@ -71,23 +71,23 @@ fun ResizeGrip(
                     CustomAccessibilityAction("放大面板") {
                         val density = view.resources.displayMetrics.density
                         onResize(
-                            (view.width + GripDimens.RESIZE_STEP_DP * density).toInt
-                                .coerceAtMost((AppConfig.PANEL_MAX_W * density).toInt),
-                            (view.height + GripDimens.RESIZE_STEP_DP * density).toInt
-                                .coerceAtMost((AppConfig.PANEL_MAX_H * density).toInt)
+                            (view.width + GripDimens.RESIZE_STEP_DP * density).toInt()
+                                .coerceAtMost((AppConfig.PANEL_MAX_W * density).toInt()),
+                            (view.height + GripDimens.RESIZE_STEP_DP * density).toInt()
+                                .coerceAtMost((AppConfig.PANEL_MAX_H * density).toInt())
                         )
-                        onResizeEnd
+                        onResizeEnd()
                         true
                     },
                     CustomAccessibilityAction("缩小面板") {
                         val density = view.resources.displayMetrics.density
                         onResize(
-                            (view.width - GripDimens.RESIZE_STEP_DP * density).toInt
-                                .coerceAtLeast((AppConfig.PANEL_MIN_W * density).toInt),
-                            (view.height - GripDimens.RESIZE_STEP_DP * density).toInt
-                                .coerceAtLeast((AppConfig.PANEL_MIN_H * density).toInt)
+                            (view.width - GripDimens.RESIZE_STEP_DP * density).toInt()
+                                .coerceAtLeast((AppConfig.PANEL_MIN_W * density).toInt()),
+                            (view.height - GripDimens.RESIZE_STEP_DP * density).toInt()
+                                .coerceAtLeast((AppConfig.PANEL_MIN_H * density).toInt())
                         )
-                        onResizeEnd
+                        onResizeEnd()
                         true
                     }
                 )
@@ -102,31 +102,31 @@ fun ResizeGrip(
                         accumY = 0f
                     },
                     onDrag = { change, dragAmount ->
-                        change.consume
+                        change.consume()
                         accumX += dragAmount.x
                         accumY += dragAmount.y
                         val density = view.resources.displayMetrics.density
                         // 面板边界硬编码 → AppConfig 常量（与上方无障碍动作同源，值不变）
-                        val minW = (AppConfig.PANEL_MIN_W * density).toInt
-                        val maxW = (AppConfig.PANEL_MAX_W * density).toInt
-                        val minH = (AppConfig.PANEL_MIN_H * density).toInt
-                        val maxH = (AppConfig.PANEL_MAX_H * density).toInt
-                        val newW = (startW + accumX).toInt.coerceIn(minW, maxW)
-                        val newH = (startH + accumY).toInt.coerceIn(minH, maxH)
+                        val minW = (AppConfig.PANEL_MIN_W * density).toInt()
+                        val maxW = (AppConfig.PANEL_MAX_W * density).toInt()
+                        val minH = (AppConfig.PANEL_MIN_H * density).toInt()
+                        val maxH = (AppConfig.PANEL_MAX_H * density).toInt()
+                        val newW = (startW + accumX).toInt().coerceIn(minW, maxW)
+                        val newH = (startH + accumY).toInt().coerceIn(minH, maxH)
                         onResize(newW, newH)
                     },
                     //  拖拽结束才触发持久化回调，避免 onDrag 每帧写 SecurePrefs
                     onDragEnd = {
                         isActive = false
-                        onResizeEnd
+                        onResizeEnd()
                     },
                     onDragCancel = { isActive = false }
                 )
             }
     ) {
-        Canvas(modifier = Modifier.fillMaxSize) {
-            val stroke = GripDimens.LINE_STROKE_DP.dp.toPx
-            val inset = GripDimens.LINE_INSET_DP.dp.toPx
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val stroke = GripDimens.LINE_STROKE_DP.dp.toPx()
+            val inset = GripDimens.LINE_INSET_DP.dp.toPx()
             for (i in 1..3) {
                 val offset = i * (size.width / 4.5f)
                 drawLine(
@@ -150,7 +150,7 @@ fun ResizeGrip(
                 val w = size.width
                 val h = size.height
                 // 绘制对角箭头（从左上到右下），表示拖拽可调整大小
-                val path = Path.apply {
+                val path = Path().apply {
                     moveTo(0f, 0f)
                     lineTo(w, h)
                     // 箭头头部：右下角的两条短线
@@ -159,7 +159,7 @@ fun ResizeGrip(
                     moveTo(w, h)
                     lineTo(w, h * 0.4f)
                 }
-                drawPath(path, Primary, style = androidx.compose.ui.graphics.drawscope.Stroke(width = GripDimens.LINE_STROKE_DP.dp.toPx, cap = StrokeCap.Round))
+                drawPath(path, Primary, style = androidx.compose.ui.graphics.drawscope.Stroke(width = GripDimens.LINE_STROKE_DP.dp.toPx(), cap = StrokeCap.Round))
             }
         }
     }

@@ -1,7 +1,9 @@
 package com.lovebrain.app.ui.panel
 
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,9 +12,11 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,302 +26,544 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.lovebrain.app.PanelBackdropOpacity
 import com.lovebrain.app.R
+import com.lovebrain.app.feature.composer.ComposerInputKind
+import com.lovebrain.app.feature.composer.ComposerStore
+import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.ProactiveOption
+import com.lovebrain.app.model.SchemeFeedback
 import kotlinx.coroutines.delay
 import com.lovebrain.app.ui.panel.counseling.CounselingPanel
+import com.lovebrain.app.ui.panel.host.ProfileSuggestionCard
+import com.lovebrain.app.ui.panel.host.StageSuggestionCard
+import com.lovebrain.app.ui.panel.host.VectorPillsRow
 import com.lovebrain.app.ui.panel.reply.*
+import com.lovebrain.app.ui.panel.settings.LoveBrainSettingsContent
+import com.lovebrain.app.ui.panel.stats.UsageStatBar
+import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
+import com.lovebrain.app.viewmodel.costReadout
+import com.lovebrain.app.model.ComposerMode
+import com.lovebrain.app.model.ResultMode
 import com.lovebrain.app.model.StageSuggestion
-/** LoveBrainPanelScreen 横幅自动消失/驻留时长（魔法数字命名：值不变） */
-/** 知识库横幅自动消失时长 */
-private const val KB_NOTICE_AUTO_DISMISS_MS = 3000L
-/** 面板警告横幅自动消失时长 */
-private const val PANEL_WARNING_AUTO_DISMISS_MS = 3000L
-/** 向量更新横幅自动消失时长 */
-private const val VECTOR_UPDATE_AUTO_DISMISS_MS = 5000L
 
-/** LoveBrainPanelScreen 内部使用的字符串常量（避免字面量散落） */
+/** 面板数值串那半角货币符号（首页/详情页是全角 `￥`，两边各有守卫钉着，本轮不并——账本 第61节第4条） */
+private const val PANEL_COST_CURRENCY = "¥"
+
 private object PanelStrings {
-    const val STAGE_SUGGESTION_TITLE = "阶段调整建议"
-    const val PROACTIVE_EMPTY_HINT = "输入想说的话（或留空），点《生成》拿 1-3 条可直接发的开场"
+    const val PROACTIVE_EMPTY_HINT = "输入想说的话，点击下方「生成开场」让军师帮你找话题"
+
+    /** 三条发起路径（点击生成 / 长按生成 / 生成开场）与那颗重试共用这一句引导 */
+    const val NO_PROVIDER_HINT = "还没有配置模型供应商，请先去设置"
 }
-/** LoveBrainPanelScreen 内部尺寸常量（令牌化：数值不变，仅外放命名） */
 private object PanelDimens {
-    const val MESSAGE_LIST_DEFAULT_HEIGHT_DP = 160 // 消息列表初始高度
-    const val MESSAGE_LIST_MIN_HEIGHT_DP = 80      // 消息列表拖拽下限
-    const val MESSAGE_LIST_MAX_HEIGHT_DP = 400     // 消息列表拖拽上限
-    const val TRIO_HEIGHT_DP = 40                  // 生成行三件套统一高度（-⑧）
-    const val STYLE_DIVIDER_HEIGHT_DP = 16         // 生成行风格区中缝细分隔线高（主人选型 7A）
-    const val PROFILE_CARD_MAX_HEIGHT_DP = 180     // 画像建议卡内容最大高度
-    const val BANNER_CLOSE_ICON_SIZE_DP = 14       // 通知横幅关闭图标尺寸
-    const val PILL_HEIGHT_DP = 14                  // 五维圆柱高度
-    const val PILL_LABEL_GAP_DP = 3                // 圆柱与汉字标签间距
-    const val TOUCH_TARGET_MIN_DP = 24             // 触控热区下限（项目自有基线， 口径；）
+    /**
+     * 消息列表槽位：初始 160 / 最小 80 / 最大 400（用户合同表里那一行的三个数）。
+     *
+     * 之前初始是 80——那是"能滚就行"的读法，用户要的是旧版那一屏：两三条消息加想法区
+     * 应当一眼看完而不是一进来就滚动。拖动调整的能力不变，仍然只有这三档边界。
+     */
+    const val MESSAGE_LIST_DEFAULT_HEIGHT_DP = 160
+
+    /**
+     * 空态那一档的列表槽位 = 图标容器 48 + 间距 8 + 那颗动作的热区下限 48
+     * + `MessageList` 空态 Column 自己的 `padding(vertical = Spacing.md)` 上下各 8 = **120**。
+     *
+     * 这个数不是审美选的：槽位再小，`MessageList` 里那条"动作热区 ≥48dp"就会被父约束**夹掉**
+     * ——本机第一发量到 8dp（104 那一档还量到 32dp：漏算了那 16dp 的内边距）。
+     * 有消息时仍然用用户拖出来的 `MESSAGE_LIST_DEFAULT_HEIGHT_DP`。
+     */
+    const val MESSAGE_LIST_EMPTY_HEIGHT_DP = 120
+    const val MESSAGE_LIST_MIN_HEIGHT_DP = 80
+    const val MESSAGE_LIST_MAX_HEIGHT_DP = 400
+    const val TRIO_HEIGHT_DP = 40
+    const val TOUCH_TARGET_MIN_DP = AppDimens.TOUCH_TARGET_MIN_DP  // 从 24dp 修正为无障碍下限；数只写在全局那颗
+    const val GENERATE_BUTTON_GAP_DP = 8
 }
 
-/** 引导文案行高（外放：值不变，仅外放命名） */
 private val OnboardGuideLineHeight = 20.sp
+
+/**
+ * 这一屏"哪一面在上面"与那一层背景浓度的**视图态持有者**。
+ *
+ * 里面只有两件事，而且都只在画的时候用：
+ * · `settingsOpen`——齿轮那一扇整窗设置页开不开（换的是这一窗的内容，不是弹窗、不是半屏 Sheet、
+ *   也不跳外部 Activity）；
+ * · `backdropPercent`——拖动滑杆期间的实时预览值，只喂给面板底那一层颜色的 alpha。
+ *
+ * 它**不认识 ViewModel、也不碰盘**：落盘那一句由面板在 `onOpacityCommit` 里调
+ * `setPanelBackdropOpacityPercent`（与首页同一份落盘口，这里不开第二条）。
+ * 之所以做成一颗持有者而不是两颗局部布尔：本仓对"屏幕函数中间摊一堆局部可见性状态"
+ * 是有账的（`UiLayerDependencyContractTest` 那一族），设置页这一格是新增的第 4 面。
+ */
+private class PanelSurfaceHolder(initialBackdropPercent: Int) {
+    var settingsOpen: Boolean by mutableStateOf(false)
+        private set
+    var backdropPercent: Int by mutableIntStateOf(PanelBackdropOpacity.snapPercent(initialBackdropPercent))
+        private set
+
+    fun openSettings() { settingsOpen = true }
+    fun closeSettings() { settingsOpen = false }
+
+    /** 预览：越界与刻度外的值先落回合法刻度，画出去的永远就是盘上可能存着的那一档 */
+    fun setBackdropPreview(percent: Int) {
+        backdropPercent = PanelBackdropOpacity.snapPercent(percent)
+    }
+}
+
+@Composable
+private fun rememberPanelSurfaceHolder(initialBackdropPercent: Int): PanelSurfaceHolder =
+    remember { PanelSurfaceHolder(initialBackdropPercent) }
+
+/**
+ * 齿轮那一扇**整窗设置页**的宿主接线：正文本体住在 `ui/panel/settings/LoveBrainSettingsContent`，
+ * 这一格只做两件事——把背景层当前浓度交出去、把预览与写盘两条口接回来。
+ *
+ * 这一页只剩透明度一项是用户定的（"别的都不要弄"）。撤出去的三段没有失去入口：
+ * 供应商/模型/超时在首页"模型供应商"那一格，捕获范围在首页"消息捕获"那一格。
+ *
+ * ⚠ 以前这一格会在**组合阶段同步枚举整机安装包**（`selectableCaptureTargets(context)`）并为了
+ * 供应商那一行 `koinViewModel()` 依赖容器——那是"第一次点击设置卡一下"最可疑的一处（**是否真是它，
+ * 要用点击前后耗时量过才算**，见 tasks\ ）。现在这一页既不碰 PackageManager，
+ * 也不碰供应商状态源。
+ *
+ * · **透明度**拖动期间只改 `surface.backdropPercent`（背景层实时预览、不落盘），
+ *   松手那一次才写盘——这条通道与窗口淡入淡出动画各管各的。
+ */
+@Composable
+private fun PanelSettingsPage(
+    viewModel: LoveBrainViewModel,
+    surface: PanelSurfaceHolder,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LoveBrainSettingsContent(
+        onBack = onBack,
+        opacityPercent = surface.backdropPercent,
+        onOpacityPreview = { percent -> surface.setBackdropPreview(percent) },
+        onOpacityCommit = { percent ->
+            surface.setBackdropPreview(percent)
+            viewModel.setPanelBackdropOpacityPercent(percent)
+        },
+        modifier = modifier
+    )
+}
 
 @Composable
 fun LoveBrainPanelScreen(
     viewModel: LoveBrainViewModel,
     onInputFocusChange: (String, Boolean) -> Unit,
     onInputIntent: (String) -> Unit,
-    onClearComposeFocus: (( -> Unit) -> Unit),
+    onClearComposeFocus: ((() -> Unit) -> Unit),
     onResize: (Int, Int) -> Unit,
-    onResizeEnd:  -> Unit = {},
+    onResizeEnd: () -> Unit = {},
     onMove: (Float, Float) -> Unit,
     onCopy: (String) -> Unit,
-    onOpenSettings:  -> Unit,
-    // 头部收起按钮回调（FloatingService 传 dismissPanelToBubble）
-    onCollapse:  -> Unit
+    onCollapse: () -> Unit
 ) {
-    val panelMode by viewModel.panelMode.collectAsStateWithLifecycle
-    val outputMode by viewModel.outputMode.collectAsStateWithLifecycle
-    // 主动发态（主人重构：空态蓝字召唤/关闭）；提前声明供 PanelHeader 齿轮禁用判断
-    var inputMode by remember { mutableStateOf(0) } // 0=回复 1=主动发
-    val messages by viewModel.messages.collectAsStateWithLifecycle
-    val result by viewModel.result.collectAsStateWithLifecycle
-    val isGenerating by viewModel.isGenerating.collectAsStateWithLifecycle
-    val feedbacks by viewModel.feedbacks.collectAsStateWithLifecycle
-    val draftText by viewModel.draftText.collectAsStateWithLifecycle
-    val currentRole by viewModel.currentRole.collectAsStateWithLifecycle
-    // 《想法》chip 态——输入去向 = composeRole（想法态 → Role.IDEA）；捕获链不受影响（VM setCurrentRole 收口）
-    val ideaComposeMode by viewModel.ideaComposeMode.collectAsStateWithLifecycle
+    val panelMode by viewModel.composer.panelMode.collectAsStateWithLifecycle()
+    val resultMode by viewModel.resultMode.collectAsStateWithLifecycle()
+    val composerMode by viewModel.composerMode.collectAsStateWithLifecycle()
+    val messages by viewModel.composer.messages.collectAsStateWithLifecycle()
+    val result by viewModel.result.collectAsStateWithLifecycle()
+    val isGenerating by viewModel.isGenerating.collectAsStateWithLifecycle()
+    val feedbacks by viewModel.feedbacks.collectAsStateWithLifecycle()
+    val draftText by viewModel.composer.draftText.collectAsStateWithLifecycle()
+    val currentRole by viewModel.composer.currentRole.collectAsStateWithLifecycle()
+    val ideaComposeMode by viewModel.composer.ideaComposeMode.collectAsStateWithLifecycle()
+    //  三轴之一：**输入对象**（她/我/补充）。它与上面那颗 `currentRole`（自动捕获角色）是两件事，
+    // 必须各读各的——"选补充把捕获角色也改掉"就是这一屏原来那条错标路径。
+    val inputKind by viewModel.composer.inputKind.collectAsStateWithLifecycle()
+    // ：仅看本轮。状态源在 RoundStateStore，面板只读；写口只有 toggle 那一条（长按那条隐蔽入口已废）。
+    val onlyThisRound by viewModel.onlyThisRound.collectAsStateWithLifecycle()
     val composeRole = if (ideaComposeMode) ChatMessage.Role.IDEA else currentRole
-    val editingIndex by viewModel.editingIndex.collectAsStateWithLifecycle
-    val profileSuggestion by viewModel.profileSuggestion.collectAsStateWithLifecycle
-    val activeKb by viewModel.activeKb.collectAsStateWithLifecycle
-    val kbNotice by viewModel.kbNotice.collectAsStateWithLifecycle
-    val panelWarning by viewModel.panelWarning.collectAsStateWithLifecycle
-    val vectorUpdate by viewModel.vectorUpdate.collectAsStateWithLifecycle
-    val stageSuggestion by viewModel.stageSuggestion.collectAsStateWithLifecycle
-    val currentVector by viewModel.currentVector.collectAsStateWithLifecycle
-    val vectorDelta by viewModel.vectorDelta.collectAsStateWithLifecycle
-    val showPlanPanel by viewModel.showPlanPanel.collectAsStateWithLifecycle
+    val editingIndex by viewModel.composer.editingIndex.collectAsStateWithLifecycle()
+    val review by viewModel.profileReview.collectAsStateWithLifecycle()
+    val activeKb by viewModel.activeKb.collectAsStateWithLifecycle()
+    // 通知位上**正在显示的那一条**：三条通道的排队、"等待期间不倒计时"这两条判据都在
+    // `feature/notice/NoticeBoard`（VM 只投递），面板这一侧只读这一颗、只起一张表。
+    // 以前是三条流各读各的 + 三个 `LaunchedEffect` 各计各的，于一屏能挤两条、后到的盖掉正在读的。
+    val notice by viewModel.currentNotice.collectAsStateWithLifecycle()
+    val stageSuggestion by viewModel.stageSuggestion.collectAsStateWithLifecycle()
+    val currentVector by viewModel.currentVector.collectAsStateWithLifecycle()
+    val vectorDelta by viewModel.vectorDelta.collectAsStateWithLifecycle()
+    // 持续意图：入口那颗 chip 与编辑器浮层各读一位（ 删掉锦囊页之后，这一屏是它们唯一的宿主）
+    val intentConfig by viewModel.intents.config.collectAsStateWithLifecycle()
+    val showIntentEditor by viewModel.intents.showEditor.collectAsStateWithLifecycle()
 
-    // 花费/耗时展示状态（VM 聚合；本次花费 null = 未计费 → 占位"—"）
-    val todayCostYuan by viewModel.todayCostYuan.collectAsStateWithLifecycle
-    val lastCostYuan by viewModel.lastCostYuan.collectAsStateWithLifecycle
-    val lastResponseMs by viewModel.lastResponseMs.collectAsStateWithLifecycle
+    // 花费与累计统计：九个数字一份快照、一次收集
+    val usage by viewModel.usageStats.collectAsStateWithLifecycle()
+    val isProviderReady by viewModel.providerReady.collectAsStateWithLifecycle()
 
-    // 供应商就绪态订阅 VM（原面板本地 remember 计算已删，三条件含 Key 非空）
-    val isProviderReady by viewModel.providerReady.collectAsStateWithLifecycle
+    // proactive state collected at top level
+    val isProactive by viewModel.isProactive.collectAsStateWithLifecycle()
+    val proactiveOptions by viewModel.proactiveOptions.collectAsStateWithLifecycle()
+    val proactiveError by viewModel.proactiveError.collectAsStateWithLifecycle()
 
-    // + 修复：面板每次进入组合时刷新工单状态（Service 长生命周期下配置后不刷新）
+    // 单条改写状态
+    val rewriteStates by viewModel.rewriteStates.collectAsStateWithLifecycle()
+
+    // 输入已变化——**不再在方案周围插一条横幅**：这句黄色提示走通知队列的 Warning 通道，
+    // 与另外两条同位置、同顺序（下面那格 `LaunchedEffect(inputChanged)` 就是这一句的上车点）。
+    val inputChanged by viewModel.inputChanged.collectAsStateWithLifecycle()
+
+    // （用户 2026-10-03："点击踩之后出来的界面太难看了，而且成本太高了，就点踩就不要弹窗全部删除！！记入就行了"）：
+    // 点踩不再挂任何面板/弹窗；这里**故意不收集** `currentFeedbackCase`——一收集就把 UI 状态拉回面板这一侧。
+    // 当前真实的保存通路（2026-10-03 接线完成，面板这一侧一个字不用改）：
+    //   `LoveBrainViewModel.setFeedback` → `FeedbackCaseController.toggle`（点击当刻同步建案例）
+    //   → `feature/feedback/recordDislikeCase`（先按「方案 identity + 本轮生成版本身份」查重，再落盘）
+    //   → `FeedbackCaseController.persistCase`（**把成败返回给调用方**，不再吞成成功）
+    //   → 回执那一格 `LoveBrainViewModel.reportDislikeCaseSave`：`Recorded` / `AlreadyRecorded` 走绿色成功格
+    //     （`showSuccessNotice` → `NoticeBoard.Channel.Knowledge` → `LbStateTone.Success`，3 秒自动消失）；
+    //     `Failed` 走既有警告格（`showPanelWarning` → `Channel.Warning` → `LbStateTone.Warning`），
+    //     并且留着当前候选、回复与用户刚点的那一下踩。两句文案就是 `R.string.notice_recorded` /
+    //     `notice_record_failed` 本身（中英两份都在盘上，串里没有 ✅——这一格成功从不画成黄色警告）。
+
+    // 「记录实际发送」这一条用户可见通路整体退场（弹层、专属状态持有者、与它的成败回执）。
+    // VM 那侧 `recordActualSentMessage` / 点赞 / 记入知识库的语义一个字没动，既有数据不清理、
+    // 不迁移；「复制」也**不**被标成"已发送"——那件事从来不是这个入口的含义。
+    // 本体留在 ，专属用例随件一起归档。
+
+    // 记忆纠正中心：开合归持有者（第6节第4条 :523），记录内容仍由 VM 异步喂进来
+    val correctionCenter = rememberCorrectionCenterHolder()
+    // 第6节第4条：本轮参考记忆的两颗纠正浮层（暂停时长 / 标记为错误）的状态与渲染
+    // 从结果区那一行里搬到这里——遮罩因此盖得住整个面板，而不是只盖住那一行
+    val memoryCorrectionFlow = rememberMemoryCorrectionFlow()
+    var correctionCenterCorrections by remember { mutableStateOf<Map<String, com.lovebrain.app.model.MemoryCorrection>>(emptyMap()) }
+
+    // 齿轮那扇整窗设置页的开合 + 面板背景浓度的实时预览：这一屏"哪一面在上面"只认这一颗持有者。
+    // 背景浓度**不**走 `ComposeView.alpha`（那条通道归窗口淡入淡出动画所有，服务侧会把它复位），
+    // 预览值只影响下面那层底色，正文一个字都不乘它。
+    val surface = rememberPanelSurfaceHolder(viewModel.panelBackdropOpacityPercent)
+
+    // 稳定轮次身份：整轮 generate 成功时才变。它同时是「本轮参考」展开态的键——
+    // 换一整轮就归零，参考信息从来不是跨轮共享的那一份。
+    val generationRoundId by viewModel.generationRoundId.collectAsStateWithLifecycle()
+    // 「本轮参考」那份清单的展开态：入口在每张卡下面、清单画在结果区里，状态得住在两者之上才翻得动。
+    // 默认收起；这一格从结果区里那行搬上来，是为了让"切去设置页再切回来"不至于把用户翻开的清单丢掉。
+    var memoryRefsExpanded by rememberSaveable(generationRoundId) { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
-        viewModel.refreshTicketState
+        viewModel.refreshTicketState()
     }
 
-    // 注册 Compose 焦点清理回调：FloatingService.releasePanelInput 时调用
-    // 清理 Compose 输入焦点，避免 Panel 隐藏后输入框仍为逻辑 Focused
+    // 通知位上**只有一张表**，而且它跟着"正在显示的那一条"起：
+    // `NoticeBoard` 只在条目顶到通知位那一刻才盖时间戳，排队期间条目身上没有任何时间，
+    // 所以"还在等就被判过期"这个形状在这条链路上写不出来。
+    // key 是 `notice?.id`：换下一条、或同通道被刷新都会换号 ⇒ 表重起；
+    // 通知位空着（null）就没有表。`remainingMillis` 交 null 的是**需要用户确认**那类——
+    // 那种不自动过期，这里就不起表，等确认/忽略之后由那一格自己的回调回报 `endCurrentNotice()`。
+    LaunchedEffect(notice?.id) {
+        val shown = notice ?: return@LaunchedEffect
+        val remaining = shown.remainingMillis(System.currentTimeMillis()) ?: return@LaunchedEffect
+        delay(remaining)
+        viewModel.endCurrentNotice()
+    }
+
+    // 「输入已变化」那句黄色提示不再插在方案周围：它上通知队列的 Warning 通道，
+    // 与另外两条同位置、同顺序播放。只在**跳变**那一次投递（判据在 VM 的 stale 检测里），
+    // 出口仍是那颗「重试」，这里不给第二个按钮、也不给"以后不再提示"。
+    // 判据回到"没变"时把**这一句**摘掉（按文案摘、不按通道整条关），否则它会挂在队列里
+    // 在一个已经不成立的条件上继续播一次。
+    val inputChangedHint = stringResource(R.string.panel_input_changed)
+    LaunchedEffect(inputChanged) {
+        if (inputChanged) viewModel.showPanelWarning(inputChangedHint)
+        else viewModel.dismissPanelNotice(inputChangedHint)
+    }
+
+    // 待确认的建议卡进队：Store 里出现一张就按它的稳定身份投一次，Store 里没了就把它摘掉。
+    // 只在**身份跳变**那一次调——放在组合体里直接调会每次 recompose 都投一次，
+    // 队列会被同一张卡淹掉。身份用 Store 给的那颗 id（画像用 suggestionId，
+    // 阶段用"库名|新阶段"），确认/忽略的业务仍在各 Store 里，这里只管"轮到谁"。
+    val profileNoticeKey = review.suggestion
+        ?.takeIf { it.kbName == activeKb?.name }
+        ?.suggestionId
+    LaunchedEffect(profileNoticeKey) {
+        val key = profileNoticeKey
+        if (key != null) viewModel.showProfileSuggestion(key) else viewModel.dismissProfileSuggestion()
+    }
+
+    val stageNoticeKey = stageSuggestion
+        ?.takeIf { it.kbName == activeKb?.name }
+        ?.let { "${it.kbName}|${it.newStage}" }
+    LaunchedEffect(stageNoticeKey) {
+        val key = stageNoticeKey
+        if (key != null) viewModel.showStageSuggestion(key) else viewModel.dismissStageSuggestion()
+    }
+
     val focusManager = LocalFocusManager.current
     DisposableEffect(onClearComposeFocus) {
-        onClearComposeFocus { focusManager.clearFocus }
+        onClearComposeFocus { focusManager.clearFocus() }
         onDispose { }
     }
 
-    Box(modifier = Modifier.fillMaxSize) {
+    // 第12节第2条「输入焦点和 IME 状态在切页时明确移交」。两页都留在组合里（切页要保留各自草稿），
+    // 于是同一棵树里**同时**挂着回复那格的 `PanelTextInput` 与谈心那格的 `BasicTextField`——
+    // 不交接的话，用户已经滑到谈心那一面，键盘与 `PanelInputFocusOwner.activeInputId`
+    // 还停在 "reply" 那根光标上（窗口 flags 也还挂在 EDITING，服务侧据此决定软键盘）。
+    // 这一句只做**交出**：焦点一交回，两格各自的 `onFocusChanged(false)` 会把 activeInputId
+    // 清空、窗口落回 PASSIVE、IME 收起。**不**替下一页抢焦点——抢了就是"滑一下键盘自己弹出来"，
+    // 那是用户没要求的第二件事；他要在那一面打字就点那一面的输入框（原有的直接获焦路径）。
+    // 首次组合也会走这一句，那时没有任何焦点，`clearFocus` 是空操作。
+    LaunchedEffect(panelMode) {
+        focusManager.clearFocus(force = true)
+    }
+
+    // 面板背景浓度送进子树的**唯一**一处接线：只包这一层 provider，里面每一行原样不动。
+    // 这棵子树里的大面积卡片经 `panelBackdropCardColor()` 读浓度（换算口仍是
+    // `PanelBackdropOpacity`，这里不提供数字）；面板底那一层照旧直接读 `surface.backdropPercent`。
+    CompositionLocalProvider(LocalPanelBackdropDensity provides surface.backdropPercent) {
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
-                .fillMaxSize
-                // 矩形阴影修复：去掉面板外层 shadow（延伸到矩形 bounds 外看起来像矩形阴影）
+                .fillMaxSize()
+                // shadow fix
                 .clip(LoveBrainShape.xl)
-                .background(SurfaceBase)
+                // 面板背景浓度**唯一**的作用点就是这一层颜色的 alpha：`PanelBackdropOpacity.alphaOf`
+                // 把盘上那个整数（40..100，默认 100 = 与从前逐字同形）换成 alpha。
+                // 不借 `ComposeView.alpha` ——那条通道归窗口淡入淡出动画所有（服务侧在 present/hide
+                // 路径上会把它复位成 1），借它画浓度第一次收起面板就会把设置抹掉；
+                // 也不压正文：下面所有文字、图标、卡片都保持满不透明度。
+                .background(SurfaceBase.copy(alpha = PanelBackdropOpacity.alphaOf(surface.backdropPercent)))
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border.copy(alpha = 0.5f), LoveBrainShape.xl)
                 .padding(horizontal = Spacing.xl, vertical = Spacing.lg)
         ) {
-            // 主人纠正：展示条叠加在拖拽条上——主人原话（Q6）"总刘海高度不要变"，
-            // 上一版误作为独立新行插入致刘海整体增高约 20dp，现回归原话"字体覆盖在透明拖拽条上"：
-            // 外层盒高钉死 4dp（拖拽条原高），小字居中溢出绘制，刘海总高不变（不裁剪，面板顶部留白容纳）
-            Box(modifier = Modifier.fillMaxWidth.height(Spacing.sm)) {
-                DragHandle(onMove = onMove)
-                // 回归修复（d40ff53 后小字被 4dp 约束截断）：wrapContentHeight(unbounded=true) 让文字
-                // 按自身高度测量、居中溢出绘制，外层盒高仍钉死 4dp 刘海不变（截断根因：钉高盒会把 4dp 约束传给子级）
-                UsageStatsRow(
-                    todayCostYuan = todayCostYuan,
-                    lastCostYuan = lastCostYuan,
-                    lastResponseMs = lastResponseMs,
-                    modifier = Modifier.fillMaxWidth.wrapContentHeight(unbounded = true).align(Alignment.Center)
+            // 齿轮那一扇：整窗内容换成设置页。
+            // 会话、输入、卡片展开态与通知位上那条表都**不在这两支里**——它们住在这一 Column
+            // 之外声明的那颗 ViewModel 与那批 holder 上，所以"切去设置页"既不清空会话、
+            // 也不取消已经发出的请求；返回时恢复的就是离开前的那一面（含未提交的输入）。
+            if (surface.settingsOpen) {
+                PanelSettingsPage(
+                    viewModel = viewModel,
+                    surface = surface,
+                    onBack = { surface.closeSettings() },
+                    modifier = Modifier.fillMaxWidth().weight(1f)
                 )
-            }
+            } else {
+                Box(modifier = Modifier.fillMaxWidth().height(Spacing.sm)) {
+                    DragHandle(onMove = onMove)
+                    // 顶部使用统计：**永远只占一行**。每一格是"标签＋值"合并成的**一段** Text
+                    // （`maxLines=1`、`softWrap=false`）——旧 Inline 档把一格拆成标签与数值两颗
+                    // 可各自换行的 Text，那正是"冒出第二行"的来源；分组、轮播与渐隐都归 `stats` 那一族。
+                    // 但**换组与横向查看**归 `UsageStatBar`：一行放得下就把五格平铺、不轮播也不渐隐；
+                    // 放不下就按现有字段切出的完整分组整组换，两侧用淡渐隐表示"那边还有内容"。
+                    // 渲染口径一格没改：五格、首字那格的 >0 条件、「—」占位都原样，
+                    // 标签与带单位的数值串也逐字照搬；「今日」「累计」两格的费用仍走**与首页/使用概览页
+                    // 同一颗判据** `costReadout`（`viewmodel/UsageStats.kt`）：一笔可计价记录都没入过账时
+                    // 念「—」，绝不念成 `¥0.000`（未知 ≠ 免费）。页面这一侧不重算任何钱。
+                    // 「本次」那格本来就是 `Double?`：没有数就念「—」，占位串与另两格同一份资源。
+                    // 槽位仍是页头上面那 4dp 那一档：组件按自己一行的高度居中溢出绘制（`unbounded = true`），
+                    // 所以它既挤不出第二行，也不会被那一档夹掉。
+                    val costUnknown = stringResource(R.string.cost_unknown)
+                    val costBelowCent = stringResource(R.string.cost_below_cent, PANEL_COST_CURRENCY)
+                    val panelYuanText: (Double) -> String = { PANEL_COST_CURRENCY + LoveBrainViewModel.formatYuan(it) }
+                    UsageStatBar(
+                        fields = buildList {
+                            add(LbMetric("今日", costReadout(usage.todayCostYuan, costUnknown, costBelowCent, panelYuanText)))
+                            add(LbMetric("本次", usage.lastCostYuan?.let(panelYuanText) ?: costUnknown))
+                            if (usage.lastResponseMs > 0) {
+                                add(LbMetric("首字", "%.1fs".format(usage.lastResponseMs / 1000.0)))
+                            }
+                            add(LbMetric("累计", "${usage.totalGenerateCount}次"))
+                            add(LbMetric("已统计", costReadout(usage.totalCostYuan, costUnknown, costBelowCent, panelYuanText)))
+                        },
+                        modifier = Modifier.fillMaxWidth().wrapContentHeight(unbounded = true).align(Alignment.Center)
+                    )
+                }
 
-            Spacer(Modifier.height(Spacing.sm))
+                Spacer(Modifier.height(Spacing.sm))
 
-            PanelHeader(
-                panelMode = panelMode,
-                onModeChange = { viewModel.setPanelMode(it) },
-                // 顶部三段切换（回复/锦囊/谈心），锦囊=回复模式下锦囊面板
-                showPlanPanel = showPlanPanel,
-                onPlanVisibility = { show ->
-                    if (show) viewModel.openPlanPanel else viewModel.dismissPlanPanel
-                },
-                // 头部收起按钮（直出/思考按钮与胶囊已随/4 迁出）
-                onCollapse = onCollapse,
+                PanelHeader(
+                    panelMode = panelMode,
+                    onModeChange = { viewModel.setPanelMode(it) },
+                    // 顶部只剩两段（回复/谈心）：锦囊那一格连同它的可见性开关一起退场，
+                    // 头部不再持有第二颗"哪一页在上面"的账——panelMode 就是唯一那一颗。
+                    // collapse button
+                    onCollapse = onCollapse,
 
-                // 修复 2.2：顶部整行（含切换器左侧空白）可拖动悬浮窗
-                // 主人 2026-08-31：进攻开关随齿轮一并移除（逻辑留 VM：outputMode/setOutputMode）
-                onHeaderDrag = onMove
-            )
+                    // drag fix
+                    // outputMode in VM
+                    onHeaderDrag = onMove,
+                    // 左上角齿轮：整窗切设置页（弹窗、半屏 Sheet、外部 Activity 都不是这一格的答案）
+                    onOpenSettings = { surface.openSettings() }
+                )
 
-            Spacer(Modifier.height(Spacing.xs))
+                Spacer(Modifier.height(Spacing.xs))
 
-            // ═══ 首次使用引导（轻量化内联卡片，替代原全屏遮罩引导） ═══
-            val onboardContext = androidx.compose.ui.platform.LocalContext.current
-            val onboardPrefs = remember { onboardContext.getSharedPreferences("lovebrain_onboarding", android.content.Context.MODE_PRIVATE) }
-            var showOnboard by remember { mutableStateOf(!onboardPrefs.getBoolean("done", false)) }
-            if (showOnboard) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth
-                        .padding(vertical = Spacing.sm)
-                        .clip(LoveBrainShape.md)
-                        .background(PrimaryLight, LoveBrainShape.md)
-                        .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth
+                // Onboarding card
+                val onboardContext = androidx.compose.ui.platform.LocalContext.current
+                val onboardPrefs = remember { onboardContext.getSharedPreferences("lovebrain_onboarding", android.content.Context.MODE_PRIVATE) }
+                var showOnboard by remember { mutableStateOf(!onboardPrefs.getBoolean("done", false)) }
+                if (showOnboard) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = Spacing.sm)
+                            .clip(LoveBrainShape.md)
+                            .background(PrimaryLight, LoveBrainShape.md)
+                            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                     ) {
-                        Text("使用提示", style = AppTypography.labelLarge, color = PrimaryDark, fontWeight = FontWeight.Bold)
-                        Spacer(Modifier.weight(1f))
-                        // 热区扩至 24dp（外包盒，图标视觉尺寸不变）
-                        Box(
-                            modifier = Modifier
-                                .size(PanelDimens.TOUCH_TARGET_MIN_DP.dp)
-                                .clickable(
-                                    interactionSource = remember { MutableInteractionSource },
-                                    indication = null,
-                                    onClick = {
-                                        onboardPrefs.edit.putBoolean("done", true).apply
-                                        showOnboard = false
-                                    }
-                                ),
-                            contentAlignment = Alignment.Center
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_close),
-                                contentDescription = "关闭使用提示",
-                                tint = TextHint,
-                                modifier = Modifier.size(Spacing.xl)
-                            )
+                            Text("使用提示", style = AppTypography.labelLarge, color = PrimaryDark, fontWeight = FontWeight.Bold)
+                            Spacer(Modifier.weight(1f))
+                            Box(
+                                modifier = Modifier
+                                    .size(PanelDimens.TOUCH_TARGET_MIN_DP.dp)
+                                    .clickable(
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = null,
+                                        role = Role.Button,
+                                        onClick = {
+                                            onboardPrefs.edit().putBoolean("done", true).apply()
+                                            showOnboard = false
+                                        }
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_close),
+                                    // 原来这里是内联中文 `"关闭使用提示"`，而 `a11y_close_onboarding`
+                                    // 中英两份资源都在、从没被引用 ⇒ 英文环境念中文（面板整屏量到的）
+                                    contentDescription = stringResource(R.string.a11y_close_onboarding),
+                                    tint = TextHint,
+                                    modifier = Modifier.size(Spacing.xl)
+                                )
+                            }
                         }
-                    }
-                    Spacer(Modifier.height(Spacing.xs))
-                    Text(
-                        "① 添加对话 → ② 生成回复 → ③ 查看回复方案，长按预览话术\n困惑时可切「谈心」模式，军师用公正视角帮你分析",
-                        style = AppTypography.labelMedium,
-                        color = TextSecondary,
-                        lineHeight = OnboardGuideLineHeight
-                    )
-                }
-            }
-
-            // 《回复/今日锦囊》这一行去掉（切换入口并入顶部模式切换器：回复/锦囊/谈心，
-
-            // 五维向量：常驻展示五个小圆柱（胶囊标签），去掉下拉框；字体与圆柱整体缩小
-            VectorPillsRow(vector = currentVector, delta = vectorDelta)
-            Spacer(Modifier.height(Spacing.xs))
-
-            LaunchedEffect(kbNotice) {
-                if (kbNotice != null) {
-                    delay(KB_NOTICE_AUTO_DISMISS_MS)
-                    viewModel.dismissKbNotice
-                }
-            }
-            LaunchedEffect(panelWarning) {
-                if (panelWarning != null) {
-                    delay(PANEL_WARNING_AUTO_DISMISS_MS)
-                    viewModel.dismissPanelWarning
-                }
-            }
-            LaunchedEffect(vectorUpdate) {
-                if (vectorUpdate != null) {
-                    delay(VECTOR_UPDATE_AUTO_DISMISS_MS)
-                    viewModel.dismissVectorUpdate
-                }
-            }
-            // Banner 合并显示：同一时间只显示一个通知，避免多个 Banner 同时出现拥挤
-            // 优先级：kbNotice > panelWarning > vectorUpdate（：知识库通知最前，面板警告次之）
-            when {
-                kbNotice != null -> {
-                    KbNoticeBanner(text = "✓ ${kbNotice.orEmpty}", onDismiss = { viewModel.dismissKbNotice })
-                }
-                panelWarning != null -> {
-                    KbNoticeBanner(text = "⚠ ${panelWarning.orEmpty}", onDismiss = { viewModel.dismissPanelWarning }, container = WarningBg, textColor = Warning)
-                }
-                vectorUpdate != null -> {
-                    KbNoticeBanner(text = "◆ ${vectorUpdate.orEmpty}", onDismiss = { viewModel.dismissVectorUpdate })
-                }
-            }
-
-            // KBUI-01：suggestion 仅在所属 KB 为当前激活 KB 时显示
-            if (profileSuggestion != null && profileSuggestion?.kbName == activeKb?.name) {
-                ProfileSuggestionCard(
-                    suggestion = profileSuggestion?.display.orEmpty,
-                    onConfirm = { viewModel.confirmProfileUpdate },
-                    onDismiss = { viewModel.dismissProfileUpdate }
-                )
-                Spacer(Modifier.height(Spacing.md))
-            }
-
-            // KBUI-01：stage suggestion 同样按 kbName 过滤
-            stageSuggestion?.let { suggestion ->
-                if (suggestion.kbName == activeKb?.name) {
-                    StageSuggestionCard(
-                        suggestion = suggestion,
-                        onConfirm = { viewModel.confirmStageChange },
-                        onDismiss = { viewModel.dismissStageChange }
-                    )
-                    Spacer(Modifier.height(Spacing.md))
-                }
-            }
-
-            if (panelMode == 0) {
-                if (showPlanPanel) {
-                    // 崩溃修复：weight 放在固定 Box 上，滚动组件拿到确定约束（不出现 Infinity）
-                    Box(modifier = Modifier.weight(1f)) {
-                        SuggestPanel(
-                            viewModel = viewModel,
-                            modifier = Modifier.fillMaxSize
+                        Spacer(Modifier.height(Spacing.xs))
+                        Text(
+                            "添加对话 -> 生成回复 -> 查看回复方案\n" +
+                                "点击方案卡可调整单条措辞\n" +
+                                "点踩可记录原因并导出，便于后续复盘和调整\n" +
+                                "顶部显示今日/本次/累计花费与生成次数\n" +
+                                "困惑时可切「谈心」模式，军师用公正视角帮你分析",
+                            style = AppTypography.labelMedium,
+                            color = TextSecondary,
+                            lineHeight = OnboardGuideLineHeight
                         )
                     }
-                } else {
-                val inputFocusRequester = remember { FocusRequester }
-                // ═══ 方案 A：说话方向切换上提至常驻控制条，此处只保留状态消费 ═══
-                val isProactive by viewModel.isProactive.collectAsStateWithLifecycle
-                val proactiveOptions by viewModel.proactiveOptions.collectAsStateWithLifecycle
-                val proactiveError by viewModel.proactiveError.collectAsStateWithLifecycle
+                }
 
-                // 主动发态复用同一输入行——chips 隐藏/添加钮隐藏/placeholder 换（-⑥ 默认）；
-                // 草稿复用 draftText 通道（切态不清空，生成开场后清空），原独立主动发输入行删除
+                // 通知位排在五维**上面**（字符图那一列的顺序：通知 → 已有内容 → 输入行）：
+                // 通知是要被看见的一次性消息，压在五维下面等于第一条就被内容顶出视线。
+                // 通知位上只有**一格**：轮到哪一条就画哪一条，其余在队列里等。
+                // 文字回执与待确认的建议卡**共用这一格**——两张卡各自单独占位的话，
+                // "同一时间只显示一条"就只剩名义：一屏会同时出现一条回执加一张待确认卡。
+                // 卡的内容与"现在能不能确认"仍从各自 Store 的那份快照读，队列只管"现在轮到谁"；
+                // 所以下面分支的条件是队列给的 kind，正文条件仍是原有的 active-KB 过滤。
+                // 关闭一律点名到 id：晚到的旧回调不能把刚顶上来那条一起误杀。
+                notice?.let { current ->
+                    when (current.suggestion?.kind) {
+                        NoticeBoard.SuggestionKind.Profile -> {
+                            val profileSuggestion = review.suggestion
+                            if (profileSuggestion != null && profileSuggestion.kbName == activeKb?.name) {
+                                val isRegenerating = viewModel.profileRegenerating.collectAsStateWithLifecycle().value
+                                ProfileSuggestionCard(
+                                    suggestion = profileSuggestion.display,
+                                    canConfirm = review.canConfirm,
+                                    isConfirming = review.isConfirming,
+                                    isRegenerating = isRegenerating,
+                                    onConfirm = { viewModel.confirmProfileUpdate() },
+                                    onDismiss = { viewModel.dismissProfileUpdate() },
+                                    onRegenerate = { viewModel.regenerateProfileUpdate() }
+                                )
+                                Spacer(Modifier.height(Spacing.md))
+                            }
+                        }
+
+                        NoticeBoard.SuggestionKind.Stage -> {
+                            val pendingStage = stageSuggestion
+                            if (pendingStage != null && pendingStage.kbName == activeKb?.name) {
+                                StageSuggestionCard(
+                                    suggestion = pendingStage,
+                                    onConfirm = { viewModel.confirmStageChange() },
+                                    onDismiss = { viewModel.dismissStageChange() }
+                                )
+                                Spacer(Modifier.height(Spacing.md))
+                            }
+                        }
+
+                        null -> KbNoticeBanner(
+                            text = current.message,
+                            tone = if (current.channel == NoticeBoard.Channel.Warning) {
+                                LbStateTone.Warning
+                            } else {
+                                LbStateTone.Success
+                            },
+                            onDismiss = { viewModel.endCurrentNotice(current.id) }
+                        )
+                    }
+                }
+
+                // 关系五维那一排挪到通知位**下面**：它属于"已有内容"那一带，
+                // 不该把一次性消息挤到自己的位置之上（本轮之前正是这个顺序反了）。
+                VectorPillsRow(vector = currentVector, delta = vectorDelta)
+                Spacer(Modifier.height(Spacing.xs))
+
+                // ── 回复(0) ↔ 谈心(1)：两页左右滑互切（第12节第2条） ──────────────────
+                // 页索引只有**一颗真 owner**：`viewModel.composer.panelMode`（上面那行 collect）。
+                // · 点 tab：`onModeChange` → `setPanelMode` → 这一颗变 → 画哪一页跟着变；
+                // · 左右滑：手势结束时也只投一次 `setPanelMode`，宿主里没有第二颗"现在在哪一页"；
+                // · `panelMode ↔ 页索引` 的换算只有一对函数（`panelModeToPage`/`panelPageToMode`，
+                //   住在 `PanelPagePager.kt`），页头那两段读的是同一对——所以"tab 指着谈心、
+                //   身体还画着回复"这种两本账对不上的形状在这棵树上写不出来。
+                // 挂上就不再卸（见 `PanelPagePager` 文件头）：谈心那页的本地草稿与历史
+                // （`counseling/CounselingPanel.kt:237/240` 的 `remember`）、回复这页正在收的
+                // 流式结果与列表展开态都不随切页丢，这一格也不发起、不取消任何东西。
+                PanelPagePager(
+                    currentPage = panelModeToPage(panelMode),
+                    onPageChange = { page -> viewModel.setPanelMode(panelPageToMode(page)) },
+                    modifier = Modifier.fillMaxWidth().weight(1f)
+                ) { page ->
+                if (page == 0) {
+                // 回复侧只剩这一格：锦囊页与它的 showPlanPanel 开关已随  整删（PRODUCT_SPEC 第2节「确实删除」）
+                // 原来这一支挂在页外层 Column 上，现在整支搬进页槽位，正文一行没改；
+                // 下面这些行的缩进**故意**留在原来的档位（跟着 `if` 一起再缩一层会把 240 行
+                // 正文全拖进纯缩进 diff，复核时看不见真改动）。
+                Column(modifier = Modifier.fillMaxSize()) {
+                val inputFocusRequester = remember { FocusRequester() }
                 ReplyInput(
                     draftText = draftText,
                     currentRole = composeRole,
                     editingIndex = editingIndex,
-                    showRoleChips = inputMode == 0,
-                    showAddButton = inputMode == 0,
-                    placeholderOverride = if (inputMode == 1) "想说什么？留空让军师找话题" else null,
+                    showRoleChips = composerMode == ComposerMode.REPLY,
+                    showAddButton = composerMode == ComposerMode.REPLY,
+                    placeholderOverride = if (composerMode == ComposerMode.PROACTIVE) "想说什么？留空让军师找话题" else null,
                     onDraftChange = { viewModel.setDraft(it) },
                     onRoleChange = { viewModel.setCurrentRole(it) },
+                    // ：输入对象与自动捕获角色分轴。投 SetInputKind 只改"这一格在写谁"，
+                    // 不动 captureRole —— 这正是"选《补充》后新增消息被标成上一个角色"那条原话的修法。
+                    inputKind = inputKind,
+                    onInputKindChange = { viewModel.composer.accept(ComposerStore.Intent.SetInputKind(it)) },
+                    // ：仅看本轮常驻在角色行右侧（给了回调才画；不传就等于这一屏没有这颗入口）。
+                    onlyThisRound = onlyThisRound,
+                    onOnlyThisRoundChange = { viewModel.toggleOnlyThisRound() },
                     onAdd = {
-                        val text = draftText.trim
-                        if (text.isNotEmpty) {
+                        val text = draftText.trim()
+                        if (text.isNotEmpty()) {
                             if (editingIndex >= 0) {
                                 viewModel.updateMessage(editingIndex, composeRole, text)
                                 viewModel.setEditingIndex(-1)
+                            } else if (inputKind == ComposerInputKind.SUPPLEMENT) {
+                                // 等：这一格写的是"给军师的话"，不是第 4 条聊天消息。
+                                // 走 SubmitNote，绝不进 messages（进了就会被记成"我说过这句话"）。
+                                viewModel.composer.accept(ComposerStore.Intent.SubmitNote(text))
                             } else {
                                 viewModel.addMessage(composeRole, text)
                             }
@@ -330,17 +576,38 @@ fun LoveBrainPanelScreen(
                     focusRequester = inputFocusRequester
                 )
 
-                //BUG 修复：消息列表与《想法》之间的拖拽块实际未插入，加回 8dp 透明 DraggableDivider
-                // 拖拽即可实时调整消息列表高度（向下拖=增高、向上拖=减小），区间 80dp-400dp
+                // ── 持续意图入口（ 之后它唯一的宿主） ──
+                // 这颗原来长在「今日锦囊」页的标题行里，而它**从来不是**锦囊的一部分：回复链每次
+                // 生成都读 `intents.config` 拼进 prompt，PRODUCT_SPEC 第2节 把持续意图列在"保留、不许
+                // 借简化删"那一栏，第4节 要它和主动发那颗同区相邻。锦囊页删掉之后这一颗必须换宿主活着，
+                // 于是落在输入行的下一行（第4节 短宽度处理：次级入口移到第二行）。
+                // 守卫沿用改前那一颗：没有活动知识库就不画——意图是按库隔离的，没有"这一块库"就无处可存。
+                if (activeKb != null) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IntentChip(
+                            enabled = intentConfig.enabled,
+                            text = intentConfig.text,
+                            onClick = { viewModel.intents.openEditor() }
+                        )
+                    }
+                }
+
                 val density = androidx.compose.ui.platform.LocalDensity.current
                 var messageListHeight by remember { mutableStateOf(PanelDimens.MESSAGE_LIST_DEFAULT_HEIGHT_DP.dp) }
-                // 原"有消息自动退回主动发"补丁删除——主动发开关随生成行常驻，随时可切
+                // ⚠ 空态那一档**不能**沿用用户拖出来的列表高度：空态自己需要
+                //   图标 48 + 间距 8 + 动作热区 48 = 104dp（`MessageList` 里那条
+                //   `heightIn(min = EMPTY_ACTION_MIN_HEIGHT_DP)` 是 48），
+                //   而默认槽位只有 80dp ⇒ 父约束把 min 夹到 max 以下，那颗动作被压成
+                //   **8dp 高**（面板整屏第一次量到，账本 第53节）。拖拽那一档只管"有消息"的时候。
                 MessageList(
                     messages = messages,
                     editingIndex = editingIndex,
                     onReorder = { from, to -> viewModel.reorderMessages(from, to) },
                     onEdit = { index ->
-                        //  防越界：删除/重排竞态下 index 可能失效
                         messages.getOrNull(index)?.let { msg ->
                             viewModel.setEditingIndex(index)
                             viewModel.setDraft(msg.content)
@@ -348,94 +615,154 @@ fun LoveBrainPanelScreen(
                         }
                     },
                     onDelete = { id ->
-                        // editingIndex 修正已下沉 VM（持数据真源，同帧连删无旧快照竞态）
                         viewModel.removeMessageById(id)
                     },
-                    // 回归修复（d40ff53 后空态拖拽失效）：空态恢复吃拖拽可调高——主人要"拖动控制高度"，
-                    // 空态包高会让 messageListHeight 拖动落空；内容已垂直居中（空白对称分布，嫌高直接拖小）
-                    modifier = Modifier.height(messageListHeight),
-                    // 主人重构（本轮）：空态蓝字 = 主动发入口（点击召唤/再点关闭）
-                    onEmptyAction = { inputMode = if (inputMode == 1) 0 else 1 },
-                    proactiveActive = inputMode == 1
+                    modifier = Modifier.height(
+                        if (messages.isEmpty()) PanelDimens.MESSAGE_LIST_EMPTY_HEIGHT_DP.dp
+                        else messageListHeight
+                    ),
+                    onEmptyAction = {
+                        // 恢复空态入口——点击蓝字只切换到主动发模式，不发网络请求
+                        viewModel.toggleProactiveMode()
+                    },
+                    proactiveActive = composerMode == ComposerMode.PROACTIVE,
+                    // 军师备注（等）：读 ComposerStore 那唯一一颗出口（含未提交草稿），
+                    // 页面不另存第二本账；渲染点在消息卡内、最后一个真实气泡下面那一行灰字，
+                    // 它不是聊天消息，也不进真实对话列表。点它进同一个编辑器（BeginNoteEdit）。
+                    noteText = viewModel.composer.ideaHint().takeIf { it.isNotBlank() },
+                    onEditNote = { viewModel.composer.accept(ComposerStore.Intent.BeginNoteEdit) }
                 )
                 DraggableDivider(
                     onDragDelta = { dyPx ->
-                        // 像素转 dp：向下拖（dyPx>0）→ 列表增高；向上拖 → 减小
                         val deltaDp = (dyPx / density.density).dp
                         val newHeight = (messageListHeight + deltaDp).coerceIn(PanelDimens.MESSAGE_LIST_MIN_HEIGHT_DP.dp, PanelDimens.MESSAGE_LIST_MAX_HEIGHT_DP.dp)
                         if (newHeight != messageListHeight) messageListHeight = newHeight
                     }
                 )
 
-                // 原"想法"toggle 行与独立 userHint 输入框整块删除——想法成为输入行第三枚 chip（Role.IDEA），
-                // 生成时由 VM 从消息列表收集（getUserHint 换源 collectIdeaHint），userHint 状态链路废除
-
-                // 主人重构（本轮）：生成行只剩生成按钮独占——主动发入口挪到空态蓝字（点击召唤/关闭），
-                // 进攻收进页头小齿轮弹窗（HeaderDimens 齿轮）；行面干净，无并排开关
-                GenerateButton(
-                    modifier = Modifier.fillMaxWidth,
-                    proactiveMode = inputMode == 1,
-                    isProactive = isProactive,
-                    count = messages.size,
+                // 替换 DualGenerateRow——使用 ComposerMode 驱动的 ReplyPrimaryActions
+                // 4 种按钮状态完全匹配要求：
+                // 1. 普通回复、无结果 → 全宽"生成回复 · N 条消息"
+                // 2. 普通回复、有结果 → "重试 | 记入知识库"
+                // 3. 主动发模式 → 全宽"生成开场"；生成中 → "停止"
+                // 4. 回复生成中 → "停止"
+                ReplyPrimaryActions(
+                    modifier = Modifier.fillMaxWidth(),
+                    composerMode = composerMode,
                     isGenerating = isGenerating,
-                    hasResult = result is GenerateResult.Success,
-                    onGenerate = {
-                        if (inputMode == 1) {
-                            // 无供应商引导在两条生成路径均保留
-                            if (isProviderReady) {
-                                viewModel.generateProactive(draftText.trim)
-                                viewModel.setDraft("")
-                            } else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置")
-                        } else {
-                            if (isProviderReady) viewModel.generate else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置")
-                        }
+                    isProactive = isProactive,
+                    hasReplyResult = result is GenerateResult.Success,
+                    messageCount = messages.size,
+                    onGenerateReply = {
+                        if (isProviderReady) viewModel.generate()
+                        else viewModel.showPanelWarning(PanelStrings.NO_PROVIDER_HINT)
                     },
-                    onRetry = { if (isProviderReady) viewModel.generate else viewModel.showPanelWarning("还没有配置模型供应商，请先去设置") },
-                    onNextRound = {
-                        viewModel.nextRound
+                    onGenerateProactive = {
+                        if (isProviderReady) {
+                            viewModel.generateProactive(draftText.trim())
+                        } else viewModel.showPanelWarning(PanelStrings.NO_PROVIDER_HINT)
+                    },
+                    onRetry = { if (isProviderReady) viewModel.retryCurrentReply() else viewModel.showPanelWarning(PanelStrings.NO_PROVIDER_HINT) },
+                    onSaveToKb = {
+                        viewModel.nextRound()
                         onCopy("")
                     },
-                    onStop = { if (inputMode == 1) viewModel.stopProactive else viewModel.stopGeneration }
+                    onStop = {
+                        if (isProactive) viewModel.stopProactive()
+                        else viewModel.stopGeneration()
+                    }
                 )
 
-                // 收集新增的状态流
-                val streamingCoreText by viewModel.streamingCoreText.collectAsStateWithLifecycle
-                val isGeneratingCore by viewModel.isGeneratingCore.collectAsStateWithLifecycle
-                val streamingSchemes by viewModel.streamingSchemes.collectAsStateWithLifecycle
+                // Collect streaming state
+                val streamingCoreText by viewModel.streamingCoreText.collectAsStateWithLifecycle()
+                val isGeneratingCore by viewModel.isGeneratingCore.collectAsStateWithLifecycle()
+                val streamingSchemes by viewModel.streamingSchemes.collectAsStateWithLifecycle()
 
-                // 崩溃修复：weight 放在固定 Box 上，ResultArea 内部 verticalScroll 拿到确定约束
-                // 方案 A：主动发模式下结果区切换为开场方案列表
+                // Result area switches based on resultMode
                 Box(modifier = Modifier.weight(1f)) {
-                    if (inputMode == 1) {
-                        ProactiveResultArea(
-                            isProactive = isProactive,
-                            options = proactiveOptions,
-                            error = proactiveError,
-                            modifier = Modifier.fillMaxSize
-                        )
-                    } else {
-                        ResultArea(
-                            result = result,
-                            isGenerating = isGenerating,
-                            streamingCoreText = streamingCoreText,
-                            isGeneratingCore = isGeneratingCore,
-                            streamingSchemes = streamingSchemes,
-                            feedbacks = feedbacks,
-                            onFeedback = { tag, fb -> viewModel.setFeedback(tag, fb) },
-                            onCopyScheme = { scheme ->
-                                val reply = viewModel.copyScheme(scheme)
-                                onCopy(reply)
-                            },
-                            onRetry = { viewModel.generate },
-                            providerReady = isProviderReady,
-                            onOpenSettings = onOpenSettings,
-                            modifier = Modifier.fillMaxSize
-                        )
+                    when (resultMode) {
+                        ResultMode.PROACTIVE -> {
+                            ProactiveResultArea(
+                                isProactive = isProactive,
+                                options = proactiveOptions,
+                                error = proactiveError,
+                                onCopy = onCopy,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                        ResultMode.REPLY -> {
+                            ResultArea(
+                                result = result,
+                                isGenerating = isGenerating,
+                                streamingCoreText = streamingCoreText,
+                                isGeneratingCore = isGeneratingCore,
+                                streamingSchemes = streamingSchemes,
+                                feedbacks = feedbacks,
+            onFeedback = { scheme, fb ->
+            viewModel.setFeedback(scheme.identity.key, fb)
+            // ：点踩即建案例并落盘，这里不再展示原因面板、也不再消费"当前案例"那颗展示状态
+            },
+                                onCopyScheme = { scheme ->
+                                    val reply = viewModel.copyScheme(scheme)
+                                    onCopy(reply)
+                                },
+                                onRetry = { viewModel.retryCurrentReply() },
+                                // 本轮参考记忆 + 纠正回调
+                                memoryRefs = viewModel.getCurrentMemoryRefs(),
+                                // （）：显示侧保险传**生成时冻结**的那份「仅看本轮」，
+                                // 不传 :556 那颗实时开关——开关是这一轮之后才拨的。
+                                frozenOnlyThisRound = viewModel.replyResultOnlyThisRound,
+                                correctionFlow = memoryCorrectionFlow,
+                                onCorrection = { memoryId, action, replacementText, muteDuration ->
+                                    viewModel.applyMemoryCorrection(memoryId, action, replacementText, "", muteDuration)
+                                },
+                                onUndoCorrection = { memoryId ->
+                                    viewModel.undoMemoryCorrection(memoryId)
+                                },
+                                providerReady = isProviderReady,
+                                // 「去设置」与左上角齿轮必须是同一扇门：整窗切设置页，
+                                // 不把用户从没准备去的 Activity 里拽出去
+                                onOpenSettings = { surface.openSettings() },
+                                // 单条改写
+                                rewriteStates = rewriteStates,
+                                onRewrite = { identity, command -> viewModel.rewriteScheme(
+                                    identity.source,
+                                    identity.tag,
+                                    command.label
+                                ) },
+                                onClearRewriteState = { identity -> viewModel.clearRewriteState(identity.key) },
+                                onCancelRewrite = { identity -> viewModel.cancelRewrite(identity.key) },
+                                onUndoRewrite = { identity -> viewModel.undoRewrite(identity.key) },
+                                onCustomRewrite = { identity, customText ->
+                                    viewModel.rewriteSchemeCustom(
+                                        identity.source,
+                                        identity.tag,
+                                        customText
+                                    )
+                                },
+                                // 「本轮参考」那份清单的展开态：入口在卡片下方、清单在结果区里，
+                                // 所以这一格住在两者之上（换一整轮归零，见上面那颗 key 的说明）
+                                memoryRefsExpanded = memoryRefsExpanded,
+                                onToggleMemoryRefs = { memoryRefsExpanded = !memoryRefsExpanded },
+                                // 打开记忆纠正中心
+                                onShowCorrectionCenter = {
+                                    viewModel.loadAllCorrections { corrections ->
+                                        correctionCenterCorrections = corrections
+                                        correctionCenter.open()
+                                    }
+                                },
+                                generationRoundId = generationRoundId,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
                     }
                 }
                 }
-            } else {
-                Box(modifier = Modifier.weight(1f)) {
+                } else {
+                // 页 1 = 谈心：正文一个字没改，只是从"切档即卸载另一页"的那支 else
+                // 换成页槽位里的一页。`weight(1f)` 那一档高度现在由滑页宿主给（上面那行
+                // `modifier = Modifier.fillMaxWidth().weight(1f)`），这一格照旧铺满页。
+                Box(modifier = Modifier.fillMaxSize()) {
                     CounselingPanel(
                         viewModel = viewModel,
                         inputId = "counseling_main",
@@ -443,11 +770,76 @@ fun LoveBrainPanelScreen(
                         onInputIntent = { onInputIntent("counseling_main") },
                         onFollowUpFocusChange = { focused -> onInputFocusChange("counseling_followup", focused) },
                         onFollowUpInputIntent = { onInputIntent("counseling_followup") },
-                        modifier = Modifier.fillMaxSize
+                        modifier = Modifier.fillMaxSize()
                     )
+                }
+                }
                 }
             }
         }
+
+    // ：点踩原因面板整块摘除（宿主 `DislikeReasonHost`/`DislikeReasonPanel` 已删，原件在 git `67dca22`）。
+    // 保存链保留：`viewModel.setFeedback(...)` 那一句仍会建案例并落盘，空原因合法，
+    // 落盘成功/失败由统一通知那一格报（见 `showSuccessNotice` 与 `FeedbackCaseController`）。
+
+        // 持续意图编辑浮层——**面板根部**渲染，不挂在输入行那一列里面（遮罩要盖得住整屏，
+        // 同 `CorrectionCenterHost` / `MemoryCorrectionFlowHost` 那两扇的处理）。
+        // 显隐只有 `IntentController.showEditor` 一本账：开在哪块库由它自己冻结（openEditor 先绑库
+        // 再翻可见性），保存回 `intents.save(...)`，关闭点名到 `dismissEditor()`。
+        // 这一扇在  之前借住在锦囊页里；那一页删掉之后宿主换成这里，能力一个字没减。
+        if (showIntentEditor) {
+            IntentEditorDialog(
+                text = intentConfig.text,
+                enabled = intentConfig.enabled,
+                expiry = intentConfig.expiry,
+                expiryDate = intentConfig.expiryDate,
+                status = intentConfig.status,
+                onSave = { text, enabled, expiry, expiryDate, status ->
+                    viewModel.intents.save(text, enabled, expiry, expiryDate, status)
+                },
+                onDismiss = { viewModel.intents.dismissEditor() }
+            )
+        }
+
+        // 「记录实际发送」那扇浮层连同它的状态接线一起退场（本体与专属用例进 _archive）。
+        // 点赞 / 采用 / 记入知识库这三条机制原样保留；VM 的 `recordActualSentMessage` 也原样留着，
+        // 只是界面不再替用户手写"我实际发了什么"——那件事从来不是应用检测到的发送。
+
+        // 第6节第4条 :523：记忆纠正中心——独立列出已停用／静音／隔离项，支持撤销。
+        // 之前是面板顶层 Box 里一块 `Column(fillMaxWidth)` 内联展开区（无遮罩、不居中、
+        // 里面每颗可点的实量 28x19dp）；现在走 CorrectionCenterHost → LbModalSheet，
+        // 开合归 correctionCenter 持有者。
+        CorrectionCenterHost(
+            holder = correctionCenter,
+            corrections = correctionCenterCorrections,
+            onUndoCorrection = { memoryId ->
+                viewModel.undoCorrectionFromCenter(memoryId)
+                // 撤销后刷新列表
+                viewModel.loadAllCorrections { corrections ->
+                    correctionCenterCorrections = corrections
+                }
+            }
+        )
+
+        // 第6节第4条：纠正浮层的唯一渲染处，挂在面板这一层（不是结果行里）
+        MemoryCorrectionFlowHost(
+            flow = memoryCorrectionFlow,
+            onMute = { memoryId, duration ->
+                viewModel.applyMemoryCorrection(
+                    memoryId = memoryId,
+                    action = com.lovebrain.app.model.CorrectionAction.MUTED,
+                    muteDuration = duration
+                )
+            },
+            onWrong = { memoryId, text ->
+                viewModel.applyMemoryCorrection(
+                    memoryId = memoryId,
+                    action = com.lovebrain.app.model.CorrectionAction.WRONG,
+                    replacementText = text,
+                    muteDuration = com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE
+                )
+            }
+        )
 
         ResizeGrip(
             onResize = onResize,
@@ -456,366 +848,113 @@ fun LoveBrainPanelScreen(
         )
 
     }
-}
-
-@Composable
-private fun ProfileSuggestionCard(
-    suggestion: String,
-    onConfirm:  -> Unit,
-    onDismiss:  -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth
-        .background(PrimaryLight, LoveBrainShape.lg)
-        .padding(Spacing.lg)
-    ) {
-        Text("AI 画像更新建议", style = AppTypography.labelLarge, color = PrimaryDark)
-        Spacer(Modifier.height(Spacing.md))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth
-                .heightIn(max = PanelDimens.PROFILE_CARD_MAX_HEIGHT_DP.dp)
-                .background(SurfaceCard, LoveBrainShape.md)
-                .padding(Spacing.md)
-        ) {
-            Text(
-                text = suggestion,
-                style = AppTypography.labelMedium,
-                color = TextPrimary,
-                modifier = Modifier.verticalScroll(rememberScrollState)
-            )
-        }
-        Spacer(Modifier.height(Spacing.md))
-        Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth) {
-            // 忽略/确认更新补按压反馈（复用标准件 0.96 scale + 120ms）
-            val (dismissInteraction, dismissScale) = rememberPressScale(0.96f, "profileDismissScale")
-            Text(
-                "忽略",
-                style = AppTypography.labelLarge,
-                color = TextSecondary,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = dismissScale; scaleY = dismissScale }
-                    .clickable(interactionSource = dismissInteraction, indication = null, onClick = {
-                        onDismiss
-                    })
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-            )
-            val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "profileConfirmScale")
-            Text(
-                "确认更新",
-                style = AppTypography.labelLarge,
-                color = PrimaryDark,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
-                    .clickable(interactionSource = confirmInteraction, indication = null, onClick = {
-                        onConfirm
-                    })
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-            )
-        }
     }
 }
 
+/**
+ * 面板顶部那一张通知条（知识库回执 / 面板级警告 / 五维重估摘要，**同一格一次只画一条**）。
+ *
+ * 原来它是异形账本里 `LoveBrainPanelScreen.kt#KbNoticeBanner` 那一颗，而且带着两个
+ * **颜色旋钮**：`container: Color = SuccessBg`、`textColor: Color = Success`，
+ * 第二处调用再现场填一对 `WarningBg`/`Warning`——"这条通知是什么语气"由调用方
+ * 自选颜色，下一对颜色没有任何地方拦得住（第6节第1条 :490 末句要挡的正是这个形状）。
+ * 现在语气走 [LbStateTone] 那张词表（字色与浅底成对，都只在 `LbAsyncState.kt` 里写一次），
+ * 容器走 [LbStateContainer.Strip]，那颗关闭转成设计系统里唯一的文字动作。
+ *
+ * 随归并变掉/补齐的三件事，如实记在这儿：
+ * - 关闭那颗原来是裸 `Box.clickable`：**没有声明 `role`**，盒子已经 48dp 见方，
+ *   但读屏只念图标名、说不出它是按钮；现在角色与两轴热区都由那一处文字动作保证，
+ *   名字改用 `R.string.a11y_close_notice`——那串中文原先是**内联字面量**，
+ *   英文环境下读屏照念中文（DESC 那把尺数到的就是它，中英两份资源其实一直都在）。
+ * - 说明文字从 `labelSmall` 抬到组件那一档 `bodyMedium`（同 `RowActionButton` 归进
+ *   `LbTextAction` 那次：不换所有者就自己定字号，要留住字号就得给组件开旋钮）。
+ * - 原先那句 `maxLines = 1 + Ellipsis` 不再由组件提供：这三条话都有下半句
+ *   （例如「已暂停本轮提及，下次生成将过滤此条记忆」），裁掉的正好是要看的那半句。
+ *
+ * 自动收起那三档时间现在由 `NoticeBoard` 那条队列自己带着（每条通知随身一个时限），
+ * 这一颗只管画**正在显示的那一条**；三条文案的来源一个字没动。
+ *
+ * `internal` 不是给页面用的：这一条通知要由语义树测试**直接挂生产这一颗**，
+ * 而不是在测试里再抄一份私有副本——同一件事在本文件的 [ProactiveResultArea] 与
+ * `ProviderFormBody` 上都记过账（双轨的那一轨不会跟着改）。
+ * 面板本体挂不动这一档还有第二个理由：通知位上的那一条挂着自动收起的那张表，
+ * 测试一 `waitForIdle` 就把时间喂完、条子自己消失了，量到的那一屏根本没有它。
+ */
 @Composable
-private fun KbNoticeBanner(
+internal fun KbNoticeBanner(
     text: String,
-    onDismiss:  -> Unit,
-    container: Color = SuccessBg,
-    textColor: Color = Success
+    tone: LbStateTone,
+    onDismiss: () -> Unit
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth
-            .background(container, LoveBrainShape.sm)
-            .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
-    ) {
-        Text(
-            text,
-            style = AppTypography.labelSmall,
-            color = textColor,
-            maxLines = 1,
-            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f)
-        )
-        // 热区扩至 24dp（外包盒，图标视觉仍 14dp； 在册清偿）
-        Box(
-            modifier = Modifier
-                .padding(start = Spacing.sm)
-                .size(PanelDimens.TOUCH_TARGET_MIN_DP.dp)
-                .clickable { onDismiss },
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_close),
-                contentDescription = "关闭通知",
-                tint = TextHint,
-                modifier = Modifier.size(PanelDimens.BANNER_CLOSE_ICON_SIZE_DP.dp)
-            )
-        }
-    }
-}
-
-/** 五维小圆柱胶囊行：去掉下拉框，常驻直接展示；字体与圆柱整体缩小） */
-@Composable
-private fun VectorPillsRow(vector: Map<String, Int>, delta: Map<String, Int>) {
-    // 暗色已删，固定亮色低饱和深色文字（对比度：8-9sp 小字≥4.5:1）
-    // 五维色收编进 Color.kt 令牌（HSL 值逐位不变）
-    val dims = listOf(
-        Triple("intimacy", "亲密", VectorIntimacy),
-        Triple("trust", "信任", VectorTrust),
-        Triple("commitment", "承诺", VectorCommitment),
-        Triple("passion", "激情", VectorPassion),
-        Triple("security", "安全", VectorSecurity)
+    LbEmptyState(
+        message = text,
+        tone = tone,
+        container = LbStateContainer.Strip,
+        action = ScreenAction(stringResource(R.string.a11y_close_notice), onDismiss)
     )
-    Row(
-        modifier = Modifier
-            .fillMaxWidth
-            .padding(vertical = Spacing.xs),
-        horizontalArrangement = Arrangement.spacedBy(Spacing.sm), // 恢复：用户要求改回 4dp
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        dims.forEach { (key, label, color) ->
-            VectorPill(
-                label = label,
-                value = (vector[key] ?: 50).coerceIn(0, 100),
-                delta = delta[key] ?: 0,
-                color = color,
-                modifier = Modifier.weight(1f)
-            )
-        }
-    }
-}
-
-/** 单个小圆柱胶囊：汉字标签放圆柱体左边；数字放圆柱体内部（类似电量显示）；圆柱尺寸缩小 */
-@Composable
-private fun VectorPill(
-    label: String,
-    value: Int,
-    delta: Int,
-    color: Color,
-    modifier: Modifier = Modifier
-) {
-    val animatedFraction by animateFloatAsState(
-        targetValue = nonlinearFraction(value),
-        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing),
-        label = "vectorPill_$label"
-    )
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .semantics(mergeDescendants = true) {
-                contentDescription = buildString {
-                    append(label).append(' ').append(value).append("分")
-                    if (delta > 0) append("，上升 ").append(delta).append(" 分")
-                    else if (delta < 0) append("，下降 ").append(-delta).append(" 分")
-                }
-            }
-    ) {
-        // 汉字标签放圆柱体左边（9sp，与圆柱垂直居中）
-        Text(
-            text = label,
-            fontSize = 9.sp,
-            color = TextHint,
-            maxLines = 1,
-            style = androidx.compose.ui.text.TextStyle(
-                platformStyle = androidx.compose.ui.text.PlatformTextStyle(includeFontPadding = false)
-            )
-        )
-        Spacer(Modifier.width(PanelDimens.PILL_LABEL_GAP_DP.dp))
-        // 小圆柱（胶囊）：尺寸缩小，彩色填充 + 内部数字（类似电量显示）——恢复 14dp（用户要求改回）
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .height(PanelDimens.PILL_HEIGHT_DP.dp)
-                .clip(LoveBrainShape.full)
-                .background(color.copy(alpha = 0.18f)),
-            contentAlignment = Alignment.Center
-        ) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .fillMaxWidth(animatedFraction)
-                    .height(PanelDimens.PILL_HEIGHT_DP.dp)
-                    .background(color, LoveBrainShape.full)
-            )
-            // 数字放圆柱体内部：填充 >40% 时白字（落在彩色底），否则用主题色
-            Text(
-                text = "$value",
-                fontSize = 8.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (animatedFraction > 0.4f) Color.White else color,
-                style = androidx.compose.ui.text.TextStyle(
-                    platformStyle = androidx.compose.ui.text.PlatformTextStyle(includeFontPadding = false)
-                )
-            )
-        }
-        if (delta != 0) {
-            Spacer(Modifier.width(Spacing.xs))
-            Text(
-                text = if (delta > 0) "↑$delta" else "↓${-delta}",
-                fontSize = 8.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (delta > 0) Success else Error,
-                style = androidx.compose.ui.text.TextStyle(
-                    platformStyle = androidx.compose.ui.text.PlatformTextStyle(includeFontPadding = false)
-                )
-            )
-        }
-    }
-}
-
-/** 非线性映射：0-40→0~20%, 40-80→20~90%, 80-100→90~100% */
-private fun nonlinearFraction(value: Int): Float {
-    return when {
-        value <= 40 -> (value / 40f) * 0.20f
-        value <= 80 -> 0.20f + ((value - 40) / 40f) * 0.70f
-        else -> 0.90f + ((value - 80) / 20f) * 0.10f
-    }
-}
-
-@Composable
-private fun StageSuggestionCard(
-    suggestion: StageSuggestion,
-    onConfirm:  -> Unit,
-    onDismiss:  -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth
-        .background(PrimaryLight, LoveBrainShape.lg)
-        .padding(Spacing.lg)
-    ) {
-        Text(PanelStrings.STAGE_SUGGESTION_TITLE, style = AppTypography.labelLarge, color = PrimaryDark)
-        Spacer(Modifier.height(Spacing.md))
-        Text(
-            text = "建议调整为「${suggestion.newStage}」\n依据：${suggestion.reason}",
-            style = AppTypography.labelMedium,
-            color = TextPrimary
-        )
-        Spacer(Modifier.height(Spacing.md))
-        Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth) {
-            // 忽略/确认调整补按压反馈（复用标准件 0.96 scale + 120ms）
-            val (dismissInteraction, dismissScale) = rememberPressScale(0.96f, "stageDismissScale")
-            Text(
-                "忽略",
-                style = AppTypography.labelLarge,
-                color = TextSecondary,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = dismissScale; scaleY = dismissScale }
-                    .clickable(interactionSource = dismissInteraction, indication = null, onClick = { onDismiss })
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-            )
-            val (confirmInteraction, confirmScale) = rememberPressScale(0.96f, "stageConfirmScale")
-            Text(
-                "确认调整",
-                style = AppTypography.labelLarge,
-                color = PrimaryDark,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .graphicsLayer { scaleX = confirmScale; scaleY = confirmScale }
-                    .clickable(interactionSource = confirmInteraction, indication = null, onClick = { onConfirm })
-                    .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-            )
-        }
-    }
 }
 
 /**
- * 花费/耗时展示条：今日花费 / 本次花费 / 首字耗时。
- * labelSmall 固定字号；本次未计费（null）显示"—"；首字耗时 ≤0 不显示。
+ * Proactive result area - now with copy support
+ *
+ * `internal` 不是给页面用的：空态那一档要由语义树测试**直接挂生产这一颗**，
+ * 而不是在测试里再抄一份私有副本（同一件事在 `ReplyPrimaryActions` 与 `ProviderFormBody`
+ * 上都记过账——双轨的那一轨不会跟着改）。
  */
 @Composable
-private fun UsageStatsRow(
-    todayCostYuan: Double,
-    lastCostYuan: Double?,
-    lastResponseMs: Long,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth,
-        horizontalArrangement = Arrangement.spacedBy(Spacing.lg, Alignment.CenterHorizontally)
-    ) {
-        UsageStatCell("今日", "¥${LoveBrainViewModel.formatYuan(todayCostYuan)}")
-        UsageStatCell("本次", lastCostYuan?.let { "¥${LoveBrainViewModel.formatYuan(it)}" } ?: "—")
-        if (lastResponseMs > 0) {
-            UsageStatCell("首字", "%.1fs".format(lastResponseMs / 1000.0))
-        }
-    }
-}
-
-/** 展示条单格：标签 TextHint + 数值 Primary（字号钉死 labelSmall） */
-@Composable
-private fun UsageStatCell(label: String, value: String) {
-    Row {
-        Text("$label ", style = AppTypography.labelSmall, color = TextHint)
-        Text(value, style = AppTypography.labelSmall, color = Primary)
-    }
-}
-
-/**
- * 主动发起结果区（方案 A）：加载/错误/开场方案列表。
- * 与 ReplyInput 的"主动发"模式配套，替换旧 ProactiveSection 折叠块。
- */
-@Composable
-private fun ProactiveResultArea(
+internal fun ProactiveResultArea(
     isProactive: Boolean,
     options: List<ProactiveOption>,
     error: String?,
+    onCopy: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState),
+        modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(Spacing.sm)
     ) {
         when {
-            isProactive && options.isEmpty -> {
+            isProactive && options.isEmpty() -> {
                 AiLoadingRow(
                     phrases = listOf(
-                        "军师正在看你们的近况…",
-                        "军师正在找合适的切入点…",
-                        "军师正在为你准备开场白…"
+                        "军师正在看你们的近况。",
+                        "军师正在找合适的切入点。",
+                        "军师正在为你准备开场白。"
                     )
                 )
             }
-            error != null && options.isEmpty -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth
-                        .clip(LoveBrainShape.md)
-                        .background(ErrorBg)
-                        .padding(Spacing.lg)
-                ) {
-                    Text(error, color = Error, style = AppTypography.bodySmall)
-                }
+            error != null && options.isEmpty() -> {
+                // 这一档原来是一颗自画的 `Box + .background(ErrorBg) + Text`，本页对"出事
+                // 了长什么样"因此有自己的第四种答案。说法一个字没改，容器交回 `LbEmptyState`。
+                // 这里**不给动作**：主动发失败时这一屏唯一的主操作是下面那颗「生成开场」，
+                // 在这一格再塞一颗重试就会出现两颗出口（第6节第3条 要的是就地有出口，不是要有两颗）。
+                // 下面那格 `options.isEmpty() ->` 走的也是同一颗组件，只是换成空态那一档。
+                LbEmptyState(
+                    message = error,
+                    tone = LbStateTone.Error,
+                    container = LbStateContainer.Strip
+                )
             }
-            options.isEmpty -> {
-                Box(
-                    modifier = Modifier.fillMaxWidth.padding(vertical = Spacing.xxl),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        PanelStrings.PROACTIVE_EMPTY_HINT,
-                        color = TextHint,
-                        style = AppTypography.bodySmall,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
+            // 还没开场子 = 空态：版式交回设计系统里那唯一一处（这一页原来自己画一颗 Box + 居中
+            // Text，于是"空的时候长什么样"每页一个答案）。说法、槽位与内边距一个字没改，
+            // 改的只是所有者。
+            options.isEmpty() -> LbEmptyState(
+                message = PanelStrings.PROACTIVE_EMPTY_HINT,
+                modifier = Modifier.fillMaxWidth().padding(vertical = Spacing.xxl)
+            )
             else -> {
                 options.forEach { opt ->
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth
+                            .fillMaxWidth()
                             .clip(LoveBrainShape.md)
                             .background(SurfaceCard, LoveBrainShape.md)
                             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
                             .padding(Spacing.lg)
+                            .clickable { onCopy(opt.text) }
                     ) {
                         Text(opt.text, style = AppTypography.bodyMedium, color = TextPrimary)
-                        if (opt.angle.isNotBlank) {
+                        if (opt.angle.isNotBlank()) {
                             Spacer(Modifier.height(Spacing.xs))
                             Text("角度：${opt.angle}", style = AppTypography.labelSmall, color = TextHint)
                         }
@@ -828,3 +967,6 @@ private fun ProactiveResultArea(
         }
     }
 }
+
+// ReplyPrimaryActions 已提取为 reply/ReplyPrimaryActions.kt 中的公共可测试组件。
+// 不再在 LoveBrainPanelScreen 中维护 private 副本——测试直接使用生产组件，消除双轨。

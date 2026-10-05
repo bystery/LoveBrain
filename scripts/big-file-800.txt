@@ -1,0 +1,15 @@
+# 复核点名的那份"巨石名单"：>800 行的生产 Kotlin 文件（本账 2026-10-04 19:06 find+wc -l 复核后续登 2 颗）。
+# 每搬走一个就把那行删掉，并在提交信息里写明它为什么能出去；
+# 不许为了出名单机械切文件（ 第 8 条），也不许把新写的东西塞进已有那一行。
+# 2026-10-04 实扫口径：全仓 >800 行共 6 颗（本账 2 颗 + .txt 里已过 800 仍按
+# "已过 800 在册不新增"既有惯例原地留账的 4 颗：LoveBrainPanelScreen 980 / ProviderSection 940 /
+# ResultArea 933 / KnowledgeRepository 836，均在那本账逐颗带本次读数）。
+# 本轮只"账跟着盘走"改数字：所有巨石的"拆不拆"是用户拍板项——拍板未做，一个文件都没拆。
+viewmodel/LoveBrainViewModel.kt  # 2338 行（2026-10-04 19:29 wc -l 落盘前复测，与 19:06 两次读数一致； 2333（2026-10-01）， 18:0x 读到 2330、19 点后回到 2338——P1 窗口此刻正在改这颗，数字仍在动；未拆——拆不拆属用户拍板，拍板未做）
+# 2026-10-05 摘：domain/KnowledgeTriggerCoordinator.kt 926 → 拆三件（用户拍板「拆」，本 session ）：
+#   - domain/LessonDoc.kt 419 行（LessonDoc object + countLessonSections）
+#   - domain/KnowledgeTriggerEvent.kt 33 行（sealed interface）
+#   - domain/KnowledgeTriggerCoordinator.kt 479 行（三引擎 class + 顶部常量/助手）
+# 三件全 <500，不进这本也不进 .txt——按本账顶部「每搬走一个就把那行删掉」的规矩摘行。
+# 2026-10-03 首次登记的 856 行→ 2026-10-04 涨到 926 行→ 2026-10-05 拆完摘账，见本节。
+

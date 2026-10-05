@@ -7,6 +7,16 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- : 消息捕获改为「用户点选的聊天 App」allowlist。
+         要在设置页列出候选 App，需要看到已安装的 launcher 目标；
+         这里只声明 LAUNCHER 可见性，不用 QUERY_ALL_PACKAGES。 -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
     <application
         android:name=".LoveBrainApp"
         android:allowBackup="false"
@@ -16,11 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoveBrain">
         <!-- /：allowBackup=false——画像/聊天归档/日志不进 Android 云备份
-             （EncryptedSharedPreferences 密文恢复到新机也解不开，备份无意义徒增泄漏面）-->
+             （EncryptedSharedPreferences 密文恢复到新机也解不开，备份无意义徒增泄漏面） -->
 
-        <!-- 悬浮窗服务：改为 specialUse 前台服务，Android 14+ 合规声明。
+        <!-- 悬浮窗服务：RA-01 改为 specialUse 前台服务，Android 14+ 合规声明。
              仍然 START_NOT_STICKY / onTaskRemoved stopSelf / 无保活 / 无自重启。
-             2026-08-12 修复矩形外露：加透明主题 → 窗口背景透明，圆角组件四角不再露出矩形底-->
+             2026-08-12 修复矩形外露：加透明主题 → 窗口背景透明，圆角组件四角不再露出矩形底 -->
         <service
             android:name=".service.FloatingService"
             android:exported="false"
@@ -31,7 +41,7 @@
                 android:value="User-visible floating assistant overlay that remains active while the user switches to chat apps" />
         </service>
 
-        <!-- 无障碍服务：感知微信"复制"点击，实现复制多条自动累积-->
+        <!-- 无障碍服务：感知微信"复制"点击，实现复制多条自动累积 -->
         <service
             android:name=".service.CopyCaptureService"
             android:exported="false"
@@ -44,7 +54,7 @@
                 android:resource="@xml/accessibility_config" />
         </service>
 
-        <!-- 设置/引导 Activity-->
+        <!-- 设置/引导 Activity -->
         <activity
             android:name=".ui.SetupActivity"
             android:exported="true"
@@ -56,14 +66,14 @@
             </intent-filter>
         </activity>
 
-        <!-- 知识库列表页（.3）-->
+        <!-- 知识库列表页（.3） -->
         <activity
             android:name=".ui.KnowledgeBaseActivity"
             android:exported="false"
             android:label="知识库管理"
             android:theme="@style/Theme.LoveBrain" />
 
-        <!-- 知识库详情/编辑页（.4）-->
+        <!-- 知识库详情/编辑页（.4） -->
         <activity
             android:name=".ui.KbEditActivity"
             android:exported="false"

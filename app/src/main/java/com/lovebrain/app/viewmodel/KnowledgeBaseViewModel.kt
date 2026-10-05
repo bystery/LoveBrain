@@ -1,0 +1,345 @@
+package com.lovebrain.app.viewmodel
+
+import android.content.Context
+import android.net.Uri
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.lovebrain.app.data.DeepSeekRepository
+import com.lovebrain.app.domain.AssetRegistry
+import com.lovebrain.app.domain.OnboardingResultParser
+import com.lovebrain.app.domain.OnboardingSchema
+import com.lovebrain.app.domain.port.KbArchivePort
+import com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort
+import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.util.L
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
+
+/**
+ * 知识库管理页的一次性事件（导入/导出/删除/建库结果）。
+ *
+ * 事件不带文案：提示语属于 UI 层，ViewModel 只回传事实，由 Activity 选词。
+ */
+sealed interface KbEvent {
+    /** 建库事务结果 */
+    data class Creation(val outcome: KbCreationOutcome) : KbEvent
+    data object Exported : KbEvent
+    data object ExportFailed : KbEvent
+    data object Imported : KbEvent
+    data object ImportFailed : KbEvent
+    data object DeleteFailed : KbEvent
+}
+
+/** 建库事务结果 */
+enum class KbCreationOutcome {
+    /** 空模板库已创建（无需提示） */
+    EmptyCreated,
+
+    /** 知识库已创建且 AI 画像三段齐全 */
+    ProfileCreated,
+
+    /** 知识库已创建但画像不完整——降级为模板库，需告知用户可稍后补充 */
+    TemplateOnlyCreated,
+
+    /** 空模板建库失败（名称碰撞/IO 失败） */
+    EmptyCreateFailed,
+
+    /** AI 建库落盘失败 */
+    OnboardingCreateFailed,
+
+    /** 未配置供应商：UI 应弹二选一，确认后改走 [KnowledgeBaseViewModel.createEmptyKb] */
+    ProviderNotConfigured,
+
+    /** 生成中被取消：不提示、不建库 */
+    Cancelled
+}
+
+/**
+ * 知识库列表状态（唯一真源，取代 Activity 内的 remember 局部列表状态）。
+ *
+ * `loaded` / `loadFailed` 只由 [loadState] 写（[refresh] 与建库/导入/改名/删除成功后的那次
+ * 重读走的是同一个出口），别处不改——第6节第3条 那四格要的正是
+ * "这一次读完了没有、读成什么样"这两个事实，判据因此只有一处（见 ui 层 kbScreenState）。
+ */
+data class KbListState(
+    val knowledgeBases: List<KnowledgeBase> = emptyList(),
+    val activeName: String? = null,
+    val loaded: Boolean = false,
+    /**
+     * 上一次读取抛了。为真时 [knowledgeBases] 是**上一次成功的残留值**，不能当成"刚读到的"，
+     * 所以四格判定把 Error 排在 Content 之前。
+     */
+    val loadFailed: Boolean = false
+)
+
+/**
+ * 知识库管理页 ViewModel。
+ *
+ * 分层规则：KnowledgeBaseActivity 只负责窗口标记、Activity Result 启动与 Compose 承载，
+ * Repository / Provider / 归档 IO 一律经此转发。
+ *
+ * 仓库这一格注入的是 [KnowledgeBaseCatalogPort]（库的清单与元信息 + 建库要写的画像三段），
+ * 不是具体仓库类：这一页不需要版本化保存那条链，也不该拿到它。
+ */
+class KnowledgeBaseViewModel(
+    private val appContext: Context,
+    private val repo: KnowledgeBaseCatalogPort,
+    private val deepSeek: DeepSeekRepository,
+    /** 归档导出/导入走端口：库目录、暂存区、zip 解包的路径归属都在实现侧，本类不再拼 File */
+    private val archive: KbArchivePort,
+    /** 归档 IO 的调度上下文；默认真实 IO，单测可注入虚拟时间调度器 */
+    private val ioContext: CoroutineContext = Dispatchers.IO
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(KbListState())
+    val state: StateFlow<KbListState> = _state.asStateFlow()
+
+    private val _events = MutableSharedFlow<KbEvent>(extraBufferCapacity = 16)
+    val events: SharedFlow<KbEvent> = _events.asSharedFlow()
+
+    /** 建库/AI 生成协程 = 事务唯一 owner；isActive 即互斥标记，不另设 boolean 台账 */
+    private var creationJob: Job? = null
+
+    val isCreating: Boolean get() = creationJob?.isActive == true
+
+    // ═══════════ 列表读写 ═══════════
+
+    fun refresh() {
+        viewModelScope.launch { loadState() }
+    }
+
+    fun setActive(name: String) {
+        viewModelScope.launch {
+            try {
+                repo.setActive(name)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("setActive failed", e)
+            }
+            loadState()
+        }
+    }
+
+    fun rename(name: String, newDisplayName: String) {
+        viewModelScope.launch {
+            try {
+                repo.updateDisplayName(name, newDisplayName)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("updateDisplayName failed", e)
+            }
+            loadState()
+        }
+    }
+
+    /** 删除失败不再静默（旧实现留了两个空 if 分支） */
+    fun delete(name: String) {
+        viewModelScope.launch {
+            val ok = try {
+                repo.delete(name)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("delete failed", e)
+                false
+            }
+            if (!ok) _events.tryEmit(KbEvent.DeleteFailed)
+            loadState()
+        }
+    }
+
+    private suspend fun loadState() {
+        try {
+            val kbs = repo.listAll()
+            _state.value = KbListState(
+                knowledgeBases = kbs,
+                activeName = repo.getActive()?.name,
+                loaded = true
+            )
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            // 这一格不是防御性摆设：抛出前一行是这个协程里**唯一**的读取路径，
+            // 而 viewModelScope 里没人接这个异常——页面就停在"第一次数据还没到"那一格
+            // （转圈转到用户退出），比"读到了 0 个库"更糟的是把失败说成空。
+            // 真实触发点：getActive() 读 EncryptedSharedPreferences.activeKbName，
+            // Keystore 里的值解不开时 getString 会抛（SecurePrefs 只在**构造**时兜了降级，逐次读没兜）。
+            L.e("knowledge base list load failed", e)
+            _state.value = _state.value.copy(loaded = true, loadFailed = true)
+        }
+    }
+
+    // ═══════════ 建库事务 ═══════════
+
+    /** 供应商就绪判定：激活工单有模型 + 有 Key */
+    private fun isProviderReady(): Boolean =
+        deepSeek.getActiveTicket()?.model?.isNotBlank() == true &&
+            !deepSeek.getActiveApiKey().isNullOrBlank()
+
+    /** AI 建库入口：未配置供应商时只回传事实，由 UI 弹二选一 */
+    fun createKbWithOnboarding(schema: OnboardingSchema) {
+        if (isCreating) return
+        if (!isProviderReady()) {
+            _events.tryEmit(KbEvent.Creation(KbCreationOutcome.ProviderNotConfigured))
+            return
+        }
+        creationJob = viewModelScope.launch {
+            // cancel-safe: 取消不吞——finishCreation 按 exceptionOrNull() 的**类型**把
+            // CancellationException 分流成 KbCreationOutcome.Cancelled（不建库、不报失败），
+            // 由 KnowledgeBaseViewModelTest 的 cancelling generation 用例钉住
+            val outcome = runCatching { runOnboardingCreation(schema) }
+            finishCreation(outcome)
+        }
+    }
+
+    private suspend fun runOnboardingCreation(schema: OnboardingSchema): KbCreationOutcome {
+        val name = autoKbName()
+        val system = readEngineAsset(AssetRegistry.ONBOARDING)
+        // 问卷输入以 JSON Schema 传给引擎（取代文本拼接块）
+        val user = Json.encodeToString(OnboardingSchema.serializer(), schema)
+        val raw = try {
+            withContext(ioContext) { deepSeek.generateRaw(system, user) }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            L.e("onboarding generation failed", e)
+            ""
+        }
+        // 取消竞态：IO 期间被 cancel 时不再落盘
+        if (!coroutineContext.isActive) throw CancellationException("onboarding cancelled")
+
+        val parsed = OnboardingResultParser.parse(raw)
+        val display = parsed.display.ifBlank {
+            schema.names.counterpart.ifBlank { "我的她" }
+        }
+        val stage = parsed.stage.ifBlank { "待确定" }
+
+        if (!createKnowledgeBase(name, display)) return KbCreationOutcome.OnboardingCreateFailed
+        // 只有对应段非空才覆盖模板，空段保留 schema 模板内容
+        if (parsed.me.isNotBlank()) repo.writeFile(name, "understand/me.md", parsed.me)
+        if (parsed.her.isNotBlank()) repo.writeFile(name, "understand/her.md", parsed.her)
+        if (parsed.warmth.isNotBlank()) repo.writeFile(name, "understand/warmth.md", parsed.warmth)
+        repo.updateStage(name, stage)
+        return if (parsed.hasUsableProfile) KbCreationOutcome.ProfileCreated
+        else KbCreationOutcome.TemplateOnlyCreated
+    }
+
+    /** 空模板建库 */
+    fun createEmptyKb() {
+        if (isCreating) return
+        creationJob = viewModelScope.launch {
+            // cancel-safe: 同上——取消经 finishCreation 转成 Cancelled，不伪装成 CreateFailed
+            val outcome = runCatching {
+                if (createKnowledgeBase(autoKbName(), "新知识库")) KbCreationOutcome.EmptyCreated
+                else KbCreationOutcome.EmptyCreateFailed
+            }
+            finishCreation(outcome)
+        }
+    }
+
+    /** 生成中取消：cancel 协程，不落盘、不提示 */
+    fun cancelOnboarding() {
+        creationJob?.cancel()
+        creationJob = null
+    }
+
+    private suspend fun createKnowledgeBase(name: String, displayName: String): Boolean =
+        try {
+            repo.create(name, displayName)
+            true
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            L.e("kb create failed", e)
+            false
+        }
+
+    private fun finishCreation(outcome: Result<KbCreationOutcome>) {
+        creationJob = null
+        val event = when {
+            outcome.isSuccess -> outcome.getOrThrow()
+            outcome.exceptionOrNull() is CancellationException -> KbCreationOutcome.Cancelled
+            else -> KbCreationOutcome.OnboardingCreateFailed
+        }
+        _events.tryEmit(KbEvent.Creation(event))
+    }
+
+    // ═══════════ 归档导出 / 导入 ═══════════
+
+    /**
+     * 导出到用户选定的 [target]。zip 打包在 IO 线程执行（大库不阻塞主线程），
+     * 输出流由本类打开并关闭——调用方（Activity）只交出一个 Uri。
+     */
+    fun export(kbName: String, target: Uri) {
+        viewModelScope.launch(ioContext) {
+            val ok = try {
+                val output = appContext.contentResolver.openOutputStream(target)
+                    ?: error("无法打开导出文件")
+                output.use { archive.exportTo(kbName, it) }
+                true
+            } catch (e: CancellationException) {
+                // 页面已销毁不是"导出失败"：不回事件，也不许把这次收场写成"正常完成"——
+                // 咽掉取消会让 job.isCancelled=false，等它的人以为真导出完了。
+                L.w("knowledge export cancelled")
+                throw e
+            } catch (e: Exception) {
+                L.e("knowledge export failed", e)
+                false
+            }
+            _events.tryEmit(if (ok) KbEvent.Exported else KbEvent.ExportFailed)
+        }
+    }
+
+    /**
+     * 从 [source] 导入。解压+校验在 IO 线程；成功后强制修正 active，
+     * 防止导入库自带 active=true 造成双激活。
+     */
+    fun import(source: Uri) {
+        viewModelScope.launch(ioContext) {
+            val ok = try {
+                val input = appContext.contentResolver.openInputStream(source)
+                    ?: error("无法打开导入文件")
+                input.use { archive.importFrom(it) }
+                val currentActive = repo.getActive()?.name ?: repo.listAll().firstOrNull()?.name
+                if (currentActive != null) repo.setActive(currentActive)
+                true
+            } catch (e: CancellationException) {
+                // active 修正是挂起调用：取消必须原样上抛，不能被算成"导入失败"再提示用户
+                // （原来这里 return@launch 让协程以"正常完成"收场，与注释的说法相反）
+                L.w("knowledge import cancelled")
+                throw e
+            } catch (e: Exception) {
+                L.e("knowledge import failed", e)
+                false
+            }
+            if (ok) loadState()
+            _events.tryEmit(if (ok) KbEvent.Imported else KbEvent.ImportFailed)
+        }
+    }
+
+    // ═══════════ 内部工具 ═══════════
+
+    /** 时间戳全量 + 随机后缀（不取模，避免每 16.7 分钟循环碰撞） */
+    private fun autoKbName(): String =
+        "kb_" + System.currentTimeMillis().toString(36) + "_" + (0..9999).random().toString(36)
+
+    private fun readEngineAsset(path: String): String = runCatching {
+        appContext.assets.open(path).bufferedReader().use { it.readText() }
+    }.onFailure { L.e("readEngineAsset missing/failed: $path", it) }
+        .getOrDefault("")
+}

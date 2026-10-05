@@ -7,7 +7,7 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 /**
- * pathData 契约单测：
+ * pathData 契约单测（2026-09-03 图标 pathData 截断事故回归防线）：
  * res 下各 drawable 目录（drawable、drawable-v24 等限定符目录）的 XML 中，每条
  * android:pathData 必须语法完整——以 M/m 移动命令开头、命令参数个数符合 SVG path 语法、
  * 无非法字符残留。
@@ -42,22 +42,22 @@ class VectorPathDataContractTest {
 
     /** 主契约：res 下各 drawable 目录的 XML，每条 pathData 语法完整 */
     @Test
-    fun `every drawable pathData is syntactically complete` {
-        val resDir = locateResDir
+    fun `every drawable pathData is syntactically complete`() {
+        val resDir = locateResDir()
         val xmlFiles = resDir.listFiles { f -> f.isDirectory && f.name.startsWith("drawable") }
-            .orEmpty
-            .flatMap { dir -> dir.listFiles { f -> f.isFile && f.name.endsWith(".xml") }.orEmpty.toList }
+            .orEmpty()
+            .flatMap { dir -> dir.listFiles { f -> f.isFile && f.name.endsWith(".xml") }.orEmpty().toList() }
         assertTrue(
             "res/ 下未找到 drawable 目录——user.dir=${System.getProperty("user.dir")}",
-            xmlFiles.isNotEmpty
+            xmlFiles.isNotEmpty()
         )
 
-        val factory = DocumentBuilderFactory.newInstance.apply { isNamespaceAware = true }
-        val violations = mutableListOf<String>
+        val factory = DocumentBuilderFactory.newInstance().apply { isNamespaceAware = true }
+        val violations = mutableListOf<String>()
         var checked = 0
         for (file in xmlFiles) {
             val doc = try {
-                factory.newDocumentBuilder.parse(file)
+                factory.newDocumentBuilder().parse(file)
             } catch (e: Exception) {
                 violations += "${file.name}: XML 解析失败（${e.message}）"
                 continue
@@ -66,7 +66,7 @@ class VectorPathDataContractTest {
             for (i in 0 until nodes.length) {
                 val el = nodes.item(i) as? Element ?: continue
                 val pd = el.getAttributeNS("http://schemas.android.com/apk/res/android", "pathData")
-                if (pd.isNullOrBlank) continue
+                if (pd.isNullOrBlank()) continue
                 checked++
                 validate(pd)?.let { reason -> violations += "${file.name}: $reason" }
             }
@@ -74,13 +74,13 @@ class VectorPathDataContractTest {
         assertTrue("未扫到任何 pathData——drawable 结构异常？", checked > 0)
         assertTrue(
             "pathData 契约被破坏（${violations.size} 条）：\n  " + violations.joinToString("\n  "),
-            violations.isEmpty
+            violations.isEmpty()
         )
     }
 
     /** 校验器自检：历史损坏样本必须被拦截，已知正常样本必须通过 */
     @Test
-    fun `validator rejects historical corruption and accepts known good paths` {
+    fun `validator rejects historical corruption and accepts known good paths`() {
         // 坑#1 实锤损坏形态：开头 M 命令丢失（ic_close 原损坏串）
         assertInvalid(",6.41L17.59,5 12,10.59 6.41,5 5,6.41 10.59,12 5,17.59 6.41,19 19,12z")
         // 参数个数不足（L 需 2 的倍数）
@@ -97,12 +97,12 @@ class VectorPathDataContractTest {
 
     /** 返回违规原因；null = 通过 */
     private fun validate(pathData: String): String? {
-        val s = pathData.trim
-        if (s.isEmpty) return "pathData 为空"
+        val s = pathData.trim()
+        if (s.isEmpty()) return "pathData 为空"
         if (s[0] !in "Mm") return "不以 M/m 开头（开头片段=${s.take(20)}）"
         val leftover = TOKEN.replace(s, "").filter { it !in SEPARATORS }
-        if (leftover.isNotEmpty) return "含非法字符「$leftover」"
-        val tokens = TOKEN.findAll(s).map { it.value }.toList
+        if (leftover.isNotEmpty()) return "含非法字符「$leftover」"
+        val tokens = TOKEN.findAll(s).map { it.value }.toList()
         var i = 0
         while (i < tokens.size) {
             val cmd = tokens[i][0]
@@ -128,7 +128,7 @@ class VectorPathDataContractTest {
         assertTrue("样本应被拦截却通过：$pd", validate(pd) != null)
     }
 
-    private fun locateResDir: File = sequenceOf(
+    private fun locateResDir(): File = sequenceOf(
         File("src/main/res"),         // Gradle 单测默认工作目录 = 模块目录
         File("app/src/main/res"),     // 工作目录 = 仓库根
         File("../app/src/main/res")   // 工作目录位于模块子目录的情形

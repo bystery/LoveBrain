@@ -48,14 +48,14 @@ data class OnboardingQuestion(
 
 /** 统一答案对象：支持多选 + 自定义补充并存 */
 data class OnboardingAnswer(
-    val selectedIndices: Set<Int> = emptySet,
+    val selectedIndices: Set<Int> = emptySet(),
     val customText: String = ""
 ) {
     /** SINGLE：选了 1 个；MULTIPLE：至少选了 1 个或有 customText */
     fun isAnswered(question: OnboardingQuestion): Boolean {
         return when (question.selectionMode) {
             SelectionMode.SINGLE -> selectedIndices.size == 1
-            SelectionMode.MULTIPLE -> selectedIndices.isNotEmpty || customText.isNotBlank
+            SelectionMode.MULTIPLE -> selectedIndices.isNotEmpty() || customText.isNotBlank()
         }
     }
 }
@@ -99,7 +99,7 @@ data class OnboardingSchema(
 object OnboardingStateMachine {
 
     /** Q1 答案(选项 index 0-4)确定分支字母 */
-    fun branchFromQ1(answerIndex: Int): String = ('A' + answerIndex).toString
+    fun branchFromQ1(answerIndex: Int): String = ('A' + answerIndex).toString()
 
     /** stage 粗分类映射（Q1 选项 → 英文 stage） */
     private val stageMap = mapOf(
@@ -128,7 +128,7 @@ object OnboardingStateMachine {
 
     /** Stage5 红线触发时，哪些选项被隐藏（A=0 和 B=1） */
     fun hiddenOptionIndices(redline: Boolean): Set<Int> {
-        if (!redline) return emptySet
+        if (!redline) return emptySet()
         return setOf(0, 1)
     }
 
@@ -154,7 +154,7 @@ object OnboardingStateMachine {
                 }
             }
             SelectionMode.MULTIPLE -> {
-                val current = answer.selectedIndices.toMutableSet
+                val current = answer.selectedIndices.toMutableSet()
                 if (index in current) {
                     // 取消已选
                     current.remove(index)
@@ -206,8 +206,8 @@ object OnboardingSchemaBuilder {
         herName: String
     ): OnboardingSchema {
         val q1Answer = answers[1]
-        val branch = if (q1Answer != null && q1Answer.selectedIndices.isNotEmpty) {
-            OnboardingStateMachine.branchFromQ1(q1Answer.selectedIndices.first)
+        val branch = if (q1Answer != null && q1Answer.selectedIndices.isNotEmpty()) {
+            OnboardingStateMachine.branchFromQ1(q1Answer.selectedIndices.first())
         } else "A"
         val stage = OnboardingStateMachine.stageFromBranch(branch)
         val redline = OnboardingStateMachine.isRedlineTriggered(answers, branch)
@@ -226,8 +226,8 @@ object OnboardingSchemaBuilder {
             stage = stage,
             meta = OnboardingSchema.Meta(total_answered = totalAnswered, path = path),
             names = OnboardingSchema.Names(
-                self = myName.trim,
-                counterpart = herName.trim
+                self = myName.trim(),
+                counterpart = herName.trim()
             ),
             tags = tags,
             profile = profile,
@@ -237,7 +237,7 @@ object OnboardingSchemaBuilder {
     }
 
     private fun buildPath(branch: String): List<String> {
-        val path = mutableListOf<String>
+        val path = mutableListOf<String>()
         path.add("Q1")
         for (step in 2..5) {
             path.add("Q${step}-${branch}")
@@ -249,7 +249,7 @@ object OnboardingSchemaBuilder {
         answers: Map<Int, OnboardingAnswer>,
         branch: String
     ): List<String> {
-        val tags = mutableListOf<String>
+        val tags = mutableListOf<String>()
         for (step in 2..5) {
             val answer = answers[step] ?: continue
             val question = OnboardingBank.question(step, branch)
@@ -258,7 +258,7 @@ object OnboardingSchemaBuilder {
                 tags.add(option.tag)
             }
         }
-        return tags.distinct
+        return tags.distinct()
     }
 
     private fun buildProfile(
@@ -268,15 +268,15 @@ object OnboardingSchemaBuilder {
         fun field(step: Int): String {
             val answer = answers[step] ?: return ""
             val question = OnboardingBank.question(step, branch)
-            val parts = mutableListOf<String>
+            val parts = mutableListOf<String>()
             // 固定选项文案
             for (idx in answer.selectedIndices) {
                 val option = question.options.getOrNull(idx) ?: continue
                 parts.add(option.text)
             }
             // 自定义补充（与固定选项并存）
-            val custom = answer.customText.trim
-            if (custom.isNotEmpty) {
+            val custom = answer.customText.trim()
+            if (custom.isNotEmpty()) {
                 parts.add("补充：$custom")
             }
             return parts.joinToString("；")

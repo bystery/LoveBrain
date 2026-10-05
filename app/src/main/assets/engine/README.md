@@ -31,7 +31,6 @@
 | 资产 | 用途 | 读者 | 改动约束 |
 |---|---|---|---|
 | `counseling.md` | 谈心流程全文 system（含输出裁剪规则与 `===分析===` 分析块标尺） | 大模型 | `===分析===` 标记名被 GenerationEngine.splitCounselingAnalysis 硬引用；分析块标尺变更须同步检查存档读取侧 |
-| `suggest.md` | 锦囊流程全文 system（按阶段分节） | 大模型 | 阶段节与 `StageCatalog` 一致 |
 | `polish.md` | 润色流程全文 system | 大模型 | 纯文案，改动跑构建与契约单测 |
 
 ## 知识引擎资产（engine/knowledge_prompt/）

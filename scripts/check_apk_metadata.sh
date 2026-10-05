@@ -1,0 +1,227 @@
+#!/usr/bin/env bash
+#
+# scripts/check_apk_metadata.sh
+#
+# Extracts and VERIFIES release APK metadata: SHA-256, package, versionCode,
+# versionName, minSdk/targetSdk and launchable activity.
+#
+#  2026-09-23 (第3节, 第8节 step 3.8): "APK SHA-256、versionCode/versionName"
+# must be real evidence, not a comment. Any expectation mismatch fails the job.
+#
+# Usage:
+#   bash scripts/check_apk_metadata.sh <apk> \
+#        [--expected-package com.lovebrain.app] \
+#        [--expected-version-name 1.4.0-rc1] \
+#        [--expected-version-code 9] \
+#        [--min-version-code 1] \
+#        [--expected-sha256 <hex>] \
+#        [--expect-release] \
+#        [--r8-mapping app/build/outputs/mapping/release/mapping.txt] \
+#        [--properties <key=value out file>] \
+#        [--report <markdown out file>]
+#
+#   --expect-release  additionally proves the artifact is NOT a debug build:
+#                     android:debuggable must be absent/false. The 2026-09-23
+#                      (第3节) flagged the upgrade gate for installing an
+#                     assembleDebug APK as if it were the shipped candidate.
+#   --r8-mapping      path that must exist and be non-empty, i.e. R8 actually ran.
+#
+# Exit codes: 0 verified, 1 verification failed, 2 usage / missing tooling.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib/gate_lib.sh
+. "$SCRIPT_DIR/lib/gate_lib.sh"
+
+APK=""
+EXPECTED_PACKAGE="com.lovebrain.app"
+EXPECTED_VERSION_NAME=""
+EXPECTED_VERSION_CODE=""
+MIN_VERSION_CODE=""
+EXPECTED_SHA256=""
+EXPECT_RELEASE=0
+R8_MAPPING=""
+PROPERTIES=""
+REPORT=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --expected-package) EXPECTED_PACKAGE="$2"; shift 2 ;;
+    --expected-version-name) EXPECTED_VERSION_NAME="$2"; shift 2 ;;
+    --expected-version-code) EXPECTED_VERSION_CODE="$2"; shift 2 ;;
+    --min-version-code) MIN_VERSION_CODE="$2"; shift 2 ;;
+    --expected-sha256) EXPECTED_SHA256="$2"; shift 2 ;;
+    --r8-mapping) R8_MAPPING="$2"; shift 2 ;;
+    --expect-release) EXPECT_RELEASE=1; shift ;;
+    --properties) PROPERTIES="$2"; shift 2 ;;
+    --report) REPORT="$2"; shift 2 ;;
+    -h | --help) die_usage "see header of $0" ;;
+    -*) die_usage "unknown option: $1" ;;
+    *)
+      [ -z "$APK" ] || die_usage "more than one APK argument given"
+      APK="$1"
+      shift
+      ;;
+  esac
+done
+
+[ -n "$APK" ] || die_usage "an APK path is required"
+require_file "$APK" "APK"
+
+AAPT2="$(find_build_tool aapt2)"
+log "using aapt2: $AAPT2"
+
+BADGING="$("$AAPT2" dump badging "$(to_native_path "$APK")" 2>/dev/null)" ||
+  die "aapt2 failed to read $APK"
+[ -n "$BADGING" ] || die "aapt2 produced no badging output for $APK"
+
+parse_pkg_field() {
+  # The `package:` line lists `name='…' versionCode='…' versionName='…'` first;
+  # require a field boundary before the key so that trailing keys such as
+  # `compileSdkVersionCodename` cannot be matched by the `name` lookup.
+  local key="$1" line frag
+  line="$(first_match '^package:.*$' "$BADGING")"
+  [ -n "$line" ] || return 0
+  frag="$(first_match "(^|[[:space:]])${key}='[^']*'" "$line")"
+  printf '%s\n' "$frag" | sed "s/^[[:space:]]*//; s/^${key}='//; s/'$//"
+}
+
+digits_only() {
+  local line
+  line="$(first_match "^$1.*\$" "$BADGING")"
+  [ -n "$line" ] || return 0
+  printf '%s\n' "$line" | sed 's/[^0-9]//g'
+}
+
+PACKAGE="$(parse_pkg_field name)"
+VERSION_CODE="$(parse_pkg_field versionCode)"
+VERSION_NAME="$(parse_pkg_field versionName)"
+MIN_SDK="$(digits_only 'minSdkVersion:')"
+TARGET_SDK="$(digits_only 'targetSdkVersion:')"
+LAUNCHABLE_LINE="$(first_match '^launchable-activity:.*$' "$BADGING")"
+LAUNCHABLE="$(printf '%s\n' "$LAUNCHABLE_LINE" | sed -n "s/^[^']*'\([^']*\)'.*/\1/p")"
+SHA256="$(sha256_of "$APK")"
+BYTES="$(wc -c <"$APK" | tr -d ' ')"
+
+for pair in "package:$PACKAGE" "versionCode:$VERSION_CODE" "versionName:$VERSION_NAME"; do
+  [ -n "${pair#*:}" ] || die "aapt2 did not report ${pair%%:*} for $APK — refusing to publish unknown metadata"
+done
+
+[ "$PACKAGE" = "$EXPECTED_PACKAGE" ] \
+  || die "applicationId mismatch: APK says '$PACKAGE', expected '$EXPECTED_PACKAGE'"
+
+if [ -n "$EXPECTED_VERSION_NAME" ] && [ "$VERSION_NAME" != "$EXPECTED_VERSION_NAME" ]; then
+  die "versionName mismatch: APK says '$VERSION_NAME', expected '$EXPECTED_VERSION_NAME'"
+fi
+if [ -n "$EXPECTED_VERSION_CODE" ] && [ "$VERSION_CODE" != "$EXPECTED_VERSION_CODE" ]; then
+  die "versionCode mismatch: APK says '$VERSION_CODE', expected '$EXPECTED_VERSION_CODE'"
+fi
+if [ -n "$MIN_VERSION_CODE" ]; then
+  [ "$VERSION_CODE" -ge "$MIN_VERSION_CODE" ] \
+    || die "versionCode $VERSION_CODE is lower than the required minimum $MIN_VERSION_CODE — an upgrade install would be rejected by Android"
+fi
+if [ -n "$EXPECTED_SHA256" ]; then
+  normalized_expected="$(normalize_fingerprint "$EXPECTED_SHA256")"
+  [ "$SHA256" = "$normalized_expected" ] \
+    || die "APK SHA-256 mismatch: got $SHA256, expected $normalized_expected (artifact was swapped, truncated or rebuilt differently)"
+fi
+
+log "APK        : $APK"
+log "package    : $PACKAGE"
+log "versionCode: $VERSION_CODE"
+log "versionName: $VERSION_NAME"
+log "minSdk     : $MIN_SDK"
+log "targetSdk  : $TARGET_SDK"
+log "launcher   : ${LAUNCHABLE:-<none reported>}"
+log "size       : $BYTES bytes"
+log "sha256     : $SHA256"
+
+# ── release-build evidence (audit 第3节: the audited gate installed a debug APK) ─
+DEBUGGABLE="not-declared"
+if [ "$EXPECT_RELEASE" -eq 1 ]; then
+  XMLTREE="$("$AAPT2" dump xmltree --file AndroidManifest.xml "$(to_native_path "$APK")" 2>/dev/null)" ||
+    die "aapt2 could not dump the binary AndroidManifest.xml of $APK — the release-build check cannot run"
+  DEBUGGABLE_LINE="$(first_match 'android:debuggable[^$]*' "$XMLTREE")"
+  if [ -n "$DEBUGGABLE_LINE" ]; then
+    case "$DEBUGGABLE_LINE" in
+      *"(Raw: \"true\")"* | *"0x000000ffffffff"* | *"=true"*)
+        printf '%s\n' "$DEBUGGABLE_LINE" >&2
+        die "$APK declares android:debuggable=true — it is a DEBUG build. The upgrade gate and the release must run against the R8 release APK (./gradlew :app:assembleRelease); a debug candidate proves nothing about the shipped artifact."
+        ;;
+    esac
+    DEBUGGABLE="false"
+  else
+    DEBUGGABLE="absent"
+  fi
+  ok "release build verified: android:debuggable is $DEBUGGABLE in $APK"
+  # 语音模式已整体删除（连 android.permission.RECORD_AUDIO 一起撤掉）。这一格钉的是
+  # **装进 APK 的最终事实**而不是源码：改 gradle 合并、换依赖带进权限、手滑加回 uses-permission，
+  # 都会在这里红——而不是等用户在系统设置里看见一个不存在的功能在要麦克风。
+  # 判据只认精确符号名，不认「voice / 语音」这个词：无障碍读屏（TalkBack）语境里的 voice 与本功能无关。
+  if printf '%s\n' "$XMLTREE" | grep -q "android\.permission\.RECORD_AUDIO"; then
+    printf '%s\n' "$(first_match 'android.permission.RECORD_AUDIO[^$]*' "$XMLTREE")" >&2
+    die "$APK declares android.permission.RECORD_AUDIO — this app has no audio-input feature any more, so the microphone permission must not come back via the manifest, a merged library manifest or a gradle change."
+  fi
+  ok "microphone permission absent: RECORD_AUDIO is not in the merged manifest"
+  if [ -n "$R8_MAPPING" ]; then
+    require_file "$R8_MAPPING" "R8 mapping.txt"
+    # 两件事都要成立，缺一就是伪门禁：
+    # 1) 用 -E。BRE 里的 '+' 是字面加号，`X -> a` 这种正常重映射行永远匹配不上，
+    #    这道检查对任何真 mapping 都会误判"R8 没跑"（本机实测踩过，exit 1 而 R8 其实跑了）。
+    # 2) 至少要有一条左右名字不同的行。只要求"存在映射行"不够——-dontobfuscate
+    #    同样产出 mapping，只不过全是 `com.foo.Bar -> com.foo.Bar:` 自映射。
+    R8_RENAMED="$(awk -F' -> ' '
+      /^#/ { next }
+      NF == 2 {
+        left = $1; right = $2
+        gsub(/[[:space:]]/, "", left)
+        sub(/[[:space:]]*:$/, "", right)
+        gsub(/[[:space:]]/, "", right)
+        # 成员行在 mapping 里以空白缩进开头，且左侧带类型前缀（"int x -> a"），
+        # 只统计顶格的类行，否则一个 "int x -> x" 就会被当成"发生过重命名"。
+        if ($0 !~ /^[[:space:]]/ && left != "" && right != "" && left != right) n++
+      }
+      END { print n + 0 }' "$R8_MAPPING")"
+    if [ "${R8_RENAMED:-0}" -lt 1 ]; then
+      die "$R8_MAPPING has no entry whose obfuscated name differs from the original — R8 renaming did not actually run (a -dontobfuscate mapping looks exactly like this)"
+    fi
+    ok "R8 mapping present: $R8_MAPPING ($(wc -l <"$R8_MAPPING" | tr -d ' ') lines, $R8_RENAMED renamed entries)"
+  else
+    log "no --r8-mapping supplied: minification is NOT asserted here, only the non-debug flag"
+  fi
+fi
+
+if [ -n "$PROPERTIES" ]; then
+  mkdir -p "$(dirname "$PROPERTIES")"
+  {
+    printf 'apk=%s\n' "$APK"
+    printf 'package=%s\n' "$PACKAGE"
+    printf 'version_code=%s\n' "$VERSION_CODE"
+    printf 'version_name=%s\n' "$VERSION_NAME"
+    printf 'min_sdk=%s\n' "$MIN_SDK"
+    printf 'target_sdk=%s\n' "$TARGET_SDK"
+    printf 'launchable_activity=%s\n' "$LAUNCHABLE"
+    printf 'size_bytes=%s\n' "$BYTES"
+    printf 'sha256=%s\n' "$SHA256"
+    printf 'expect_release=%s\n' "$EXPECT_RELEASE"
+    printf 'debuggable=%s\n' "$DEBUGGABLE"
+  } >"$PROPERTIES"
+  ok "properties written: $PROPERTIES"
+fi
+
+if [ -n "$REPORT" ]; then
+  mkdir -p "$(dirname "$REPORT")"
+  {
+    printf '| APK file | `%s` |\n' "$(basename "$APK")"
+    printf '| package | `%s` |\n' "$PACKAGE"
+    printf '| versionCode | `%s` |\n' "$VERSION_CODE"
+    printf '| versionName | `%s` |\n' "$VERSION_NAME"
+    printf '| minSdk / targetSdk | `%s` / `%s` |\n' "$MIN_SDK" "$TARGET_SDK"
+    printf '| launchable activity | `%s` |\n' "${LAUNCHABLE:-?}"
+    printf '| size | `%s` bytes |\n' "$BYTES"
+    printf '| SHA-256 | `%s` |\n' "$SHA256"
+  } >"$REPORT"
+  ok "report written: $REPORT"
+fi
+
+ok "APK metadata verified"

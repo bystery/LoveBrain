@@ -42,35 +42,34 @@ class LoveBrainViewModelR5RegressionTest {
     private lateinit var prefs: SecurePrefs
 
     @Before
-    fun setUp {
+    fun setUp() {
         mockkStatic(Log::class)
-        every { Log.w(any, any<String>) } returns 0
-        every { Log.e(any, any<String>) } returns 0
-        Dispatchers.setMain(StandardTestDispatcher)
+        every { Log.w(any(), any<String>()) } returns 0
+        every { Log.e(any(), any<String>()) } returns 0
+        Dispatchers.setMain(StandardTestDispatcher())
     }
 
     @After
-    fun tearDown {
-        Dispatchers.resetMain
+    fun tearDown() {
+        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
     /** 构造 LoveBrainViewModel：init 读取面显式桩（同 R2RegressionTest 先例） */
-    private fun newViewModel: LoveBrainViewModel {
+    private fun newViewModel(): LoveBrainViewModel {
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0
         every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
-        every { prefs.loadCounselingResult } returns null
-        every { prefs.loadSuggestion } returns null
-        // init 新增今日花费读取面（relaxed 默认返 Object 会 CCE，显式桩 null）
-        every { prefs.loadTodayCost } returns null
-        every { prefs.getWorkerTickets } returns emptyList
+        every { prefs.loadCounselingResult() } returns null
+        // ：init 新增今日花费读取面（relaxed 默认返 Object 会 CCE，显式桩 null）
+        every { prefs.loadTodayCost() } returns null
+        every { prefs.getWorkerTickets() } returns emptyList()
         every { prefs.activeTicketId } returns null
-        val promptBuilder = mockk<PromptBuilder>
-        every { promptBuilder.validateConfig(any, any) } returns
-            ConfigValidationResult(0, 0, emptyList)
+        val promptBuilder = mockk<PromptBuilder>()
+        every { promptBuilder.validateConfig(any(), any()) } returns
+            ConfigValidationResult(0, 0, emptyList())
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = mockk(relaxed = true),
@@ -78,15 +77,16 @@ class LoveBrainViewModelR5RegressionTest {
             topicRecorder = mockk(relaxed = true),
             securePrefs = prefs,
             triggerCoordinator = mockk(relaxed = true),
-            generationEngine = mockk(relaxed = true)
+            generationEngine = mockk(relaxed = true),
+operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
         )
     }
 
     /** F-1：reorder 修正 editingIndex——三幕覆盖跨越 -1 / 自身跟随 / 反向跨越 +1 */
     @Test
-    fun reorder_corrects_editing_index = runTest {
-        val vm = newViewModel
-        advanceUntilIdle
+    fun reorder_corrects_editing_index() = runTest {
+        val vm = newViewModel()
+        advanceUntilIdle()
 
         // ── 幕①：编辑 B(k=1)，把 B 之前的 A 拖到 B 之后（两次相邻交换，首跳命中 to==editing 边界） ──
         vm.addMessage(ChatMessage.Role.HER, "A")
@@ -96,25 +96,25 @@ class LoveBrainViewModelR5RegressionTest {
         vm.setDraft("editing-B")
 
         vm.reorderMessages(0, 1) // A 跨过 B：[A,B,C] → [B,A,C]，B 落 0 → 修正 -1
-        assertEquals(0, vm.editingIndex.value)
+        assertEquals(0, vm.composer.editingIndex.value)
         vm.reorderMessages(1, 2) // A 继续后移：[B,A,C] → [B,C,A]，未再跨越 → 不动
-        assertEquals(0, vm.editingIndex.value)
-        assertEquals(listOf("B", "C", "A"), vm.messages.value.map { it.content })
-        assertEquals("B", vm.messages.value[vm.editingIndex.value].content)
+        assertEquals(0, vm.composer.editingIndex.value)
+        assertEquals(listOf("B", "C", "A"), vm.composer.messages.value.map { it.content })
+        assertEquals("B", vm.composer.messages.value[vm.composer.editingIndex.value].content)
 
         // ── 幕②：拖动 B 本身到末尾 → editingIndex 逐步跟随（from == editing 分支） ──
         // 接幕①终态 [B,C,A]，B 在 0
         vm.setDraft("editing-B-2")
         vm.reorderMessages(0, 1) // B 与 C 交换：[B,C,A] → [C,B,A]
-        assertEquals(1, vm.editingIndex.value)
+        assertEquals(1, vm.composer.editingIndex.value)
         vm.reorderMessages(1, 2) // B 与 A 交换：[C,B,A] → [C,A,B]
-        assertEquals(2, vm.editingIndex.value)
-        assertEquals(listOf("C", "A", "B"), vm.messages.value.map { it.content })
-        assertEquals("B", vm.messages.value[vm.editingIndex.value].content)
+        assertEquals(2, vm.composer.editingIndex.value)
+        assertEquals(listOf("C", "A", "B"), vm.composer.messages.value.map { it.content })
+        assertEquals("B", vm.composer.messages.value[vm.composer.editingIndex.value].content)
 
         // ── 幕③：反向跨越 +1——干净列表 [X,B,A]，编辑 B(k=1)，B 之后的 A 拖到最前 ──
-        val vm3 = newViewModel
-        advanceUntilIdle
+        val vm3 = newViewModel()
+        advanceUntilIdle()
         vm3.addMessage(ChatMessage.Role.HER, "X")
         vm3.addMessage(ChatMessage.Role.ME, "B")
         vm3.addMessage(ChatMessage.Role.HER, "A")
@@ -122,10 +122,10 @@ class LoveBrainViewModelR5RegressionTest {
         vm3.setDraft("editing-B-3")
 
         vm3.reorderMessages(2, 1) // A 跨过 B：[X,B,A] → [X,A,B]，B 落 2 → 修正 +1（to==editing 边界）
-        assertEquals(2, vm3.editingIndex.value)
+        assertEquals(2, vm3.composer.editingIndex.value)
         vm3.reorderMessages(1, 0) // A 继续前移：[X,A,B] → [A,X,B]，未再跨越 → 不动
-        assertEquals(2, vm3.editingIndex.value)
-        assertEquals(listOf("A", "X", "B"), vm3.messages.value.map { it.content })
-        assertEquals("B", vm3.messages.value[vm3.editingIndex.value].content)
+        assertEquals(2, vm3.composer.editingIndex.value)
+        assertEquals(listOf("A", "X", "B"), vm3.composer.messages.value.map { it.content })
+        assertEquals("B", vm3.composer.messages.value[vm3.composer.editingIndex.value].content)
     }
 }

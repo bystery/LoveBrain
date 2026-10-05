@@ -20,11 +20,11 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.Spacing
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.Spacing
 
 /**
- * 顶部拖拽条迭代 + 4dp 极简）。
+ * 顶部拖拽条 + 4dp 极简。
  *
  * 去掉 <-> 图标，按住悬浮窗顶部即可拖拽移动；顶部高度 22dp → 14dp → 8dp → 4dp（用户明确要求 8→4）。
  * 视觉：完全透明的细条，不画任何箭头/横线装饰——更克制，把视觉焦点让给内容。
@@ -37,12 +37,12 @@ fun DragHandle(
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth
+            .fillMaxWidth()
             .height(Spacing.sm)
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDrag = { change, dragAmount ->
-                        change.consume
+                        change.consume()
                         onMove(dragAmount.x, dragAmount.y)
                     }
                 )
@@ -64,29 +64,12 @@ fun TriangleArrow(
     ) {
         val w = size.width
         val h = size.height
-        val path = Path.apply {
+        val path = Path().apply {
             moveTo(w / 2f, h)
             lineTo(w, 0f)
             lineTo(0f, 0f)
-            close
+            close()
         }
         drawPath(path, color)
     }
-}
-
-/**
- * ：按压缩放标准件（27 处同构收编）——按下缩至 targetScale、松开回弹 1f；
- * tween(120, FastOutSlowInEasing) 全仓统一。返回 (interaction, scale)，
- * interaction 供 clickable(interactionSource=…) 复用，行为逐位等于原体。
- */
-@Composable
-fun rememberPressScale(targetScale: Float, label: String): Pair<MutableInteractionSource, Float> {
-    val interaction = remember { MutableInteractionSource }
-    val pressed by interaction.collectIsPressedAsState
-    val scale by animateFloatAsState(
-        targetValue = if (pressed) targetScale else 1f,
-        animationSpec = tween(120, easing = FastOutSlowInEasing),
-        label = label
-    )
-    return interaction to scale
 }

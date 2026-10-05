@@ -39,8 +39,8 @@ object L {
         runCatching {
             val f = logFile ?: return
             // 控制文件大小：超过 512KB 就清空重写
-            if (f.exists && f.length > 512 * 1024) f.writeText("")
-            f.appendText("${timeFmt.format(Date)} $msg\n")
+            if (f.exists() && f.length() > 512 * 1024) f.writeText("")
+            f.appendText("${timeFmt.format(Date())} $msg\n")
         }
     }
 }

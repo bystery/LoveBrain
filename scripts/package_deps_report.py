@@ -1,0 +1,75 @@
+"""实测 app/src/main 的跨层 import，供 PackageDependencyTest 的基线使用。
+
+规则与 PackageDependencyTest 里那份一一对应。默认按"文件 -> 违规 import 列表"
+打成 Kotlin 源码片段，直接可以贴进测试。--count 只给总数。
+"""
+import argparse
+import os
+import sys
+
+ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                    'app', 'src', 'main', 'java', 'com', 'lovebrain', 'app')
+
+FORBIDDEN = {
+    'model': ['android.', 'androidx.', 'com.lovebrain.app.data.', 'com.lovebrain.app.domain.'],
+    'domain': ['android.', 'androidx.', 'com.lovebrain.app.ui.', 'com.lovebrain.app.viewmodel.',
+               'com.lovebrain.app.data.'],
+    'ui': ['com.lovebrain.app.data.', 'java.io.File'],
+    'viewmodel': ['java.io.File',
+                  # 页面按具体仓库类型注入知识库 = 端口那一层在页面上不生效。与
+                  # PackageDependencyTest 里 viewmodel 那条一一对应（本文件顶上写的就是"一一对应"，
+                  # 两边错开的代价有前例：core 那条曾经只有 JVM 那把闸看得见）。
+                  'com.lovebrain.app.data.KnowledgeRepository',
+                  # SecurePrefs / KbArchiveTransfer 端口化后同仓库那条：页面只认端口，具体类回潮当场变红。
+                  'com.lovebrain.app.data.SecurePrefs',
+                  'com.lovebrain.app.data.KbArchiveTransfer'],
+    # feature/* 只能碰 model 与 domain.port：与 PackageDependencyTest 保持同一套规则
+    'feature': ['android.', 'androidx.', 'com.lovebrain.app.data.',
+                'com.lovebrain.app.ui.', 'com.lovebrain.app.viewmodel.'],
+    # 第三把门以前是瞎的：本文件顶上写着"规则与 PackageDependencyTest 里那份一一对应"，
+    # 但测试里从 第5节第1条 起就有 core 这条（core 不许知道 data/viewmodel/feature/ui），脚本却没有。
+    # 后果很具体——第三步-1 把 token 迁进 core/designsystem 并给 core 加上 "com.lovebrain.app.ui."
+    # 之后，谁把 core→ui 的 import 引回来，JVM 那把闸会红，而 --count 仍旧报同一个数，
+    # 于是"跨层条数没长"这句话在 CI 侧是空的。补齐，两边逐条对齐。
+    'core': ['android.', 'java.io.File', 'org.koin.',
+             'com.lovebrain.app.data.', 'com.lovebrain.app.viewmodel.',
+             'com.lovebrain.app.feature.', 'com.lovebrain.app.ui.'],
+}
+
+def scan():
+    found = {}
+    for pkg, prefixes in FORBIDDEN.items():
+        base = os.path.join(ROOT, pkg)
+        if not os.path.isdir(base):
+            continue
+        for dirpath, _, files in os.walk(base):
+            for fn in files:
+                if not fn.endswith('.kt'):
+                    continue
+                path = os.path.join(dirpath, fn)
+                for line in open(path, encoding='utf-8', errors='replace'):
+                    t = line.strip()
+                    if not t.startswith('import '):
+                        continue
+                    name = t[len('import '):].split()[0]
+                    if any(name.startswith(p) for p in prefixes):
+                        rel = pkg + '/' + os.path.relpath(path, base).replace(os.sep, '/')
+                        found.setdefault(rel, set()).add(name)
+    return {k: sorted(v) for k, v in found.items()}
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--count', action='store_true')
+    args = ap.parse_args()
+    found = scan()
+    total = sum(len(v) for v in found.values())
+    if args.count:
+        print(total)
+        return 0
+    for k in sorted(found):
+        print('        "%s" to listOf(%s),' % (k, ', '.join('"%s"' % x for x in found[k])))
+    print('        // 合计 %d 条越界 import，分布在 %d 个文件' % (total, len(found)))
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main())

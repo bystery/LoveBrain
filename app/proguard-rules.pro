@@ -26,7 +26,7 @@
 # Koin
 -keep class org.koin.** { *; }
 
-# Compose：AndroidCompositionLocals_androidKt.getLocalLifecycleOwner 被 R8 移除后，
+# Compose：AndroidCompositionLocals_androidKt.getLocalLifecycleOwner() 被 R8 移除后，
 # lifecycle-runtime-compose 的条件 keep 失效 → LocalLifecycleOwner 注册器丢失 → release 崩溃
 -keep class androidx.compose.ui.platform.AndroidCompositionLocals_androidKt { *; }
 

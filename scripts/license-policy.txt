@@ -1,0 +1,54 @@
+# LoveBrain dependency license policy — consumed by scripts/license_scan.sh
+#
+# Format (first match wins, case-insensitive, `_` is treated as a space):
+#   allow|deny  <substring-of-declared-license-name>  <SPDX-id-to-record>
+#
+# Anything that does not match a rule is DENIED with NOASSERTION, so adding a
+# dependency with an unusual licence fails the build until it is reviewed here.
+# The app itself is Apache-2.0 (see LICENSE), so runtime dependencies must be
+# compatible with redistributing a closed-source-ish binary distribution of it.
+
+# ── permissive / clearly compatible ─────────────────────────────────────────
+allow   Apache-2.0                                  Apache-2.0
+allow   Apache_License_2.0                          Apache-2.0
+allow   Apache_License,_Version_2.0                 Apache-2.0
+allow   Apache_Software_License                     Apache-2.0
+allow   The_Apache_License                          Apache-2.0
+allow   MIT_License                                 MIT
+allow   The_MIT_License                             MIT
+allow   BSD_License                                 BSD-3-Clause
+allow   BSD_2-Clause                                BSD-2-Clause
+allow   BSD_3-Clause                                BSD-3-Clause
+allow   The_BSD_License                             BSD-3-Clause
+allow   Eclipse_Distribution_License                BSD-3-Clause
+allow   EDL_1.0                                     BSD-3-Clause
+allow   Eclipse_Public_License_v._2.0               EPL-2.0
+allow   Eclipse_Public_License_v2.0                 EPL-2.0
+allow   Eclipse_Public_License_-_v_2.0              EPL-2.0
+allow   Eclipse_Public_License_v._1.0               EPL-1.0
+allow   Eclipse_Public_License_-_v_1.0              EPL-1.0
+allow   EPL_2.0                                     EPL-2.0
+allow   EPL_1.0                                     EPL-1.0
+allow   CDDL/GPLv2+CE                               CDDL-1.1-GPL-2.0-with-classpath-exception
+allow   CDDL_1.1                                    CDDL-1.1
+allow   CDDL_1.0                                    CDDL-1.0
+allow   GNU_General_Public_License,_version_2_with_the_GNU_Classpath_Exception GPL-2.0-with-classpath-exception
+allow   GPL_2.0_with_Classpath_Exception            GPL-2.0-with-classpath-exception
+allow   Classpath_Exception                         GPL-2.0-with-classpath-exception
+allow   Unlicense                                   Unlicense
+allow   CC0                         CC0-1.0
+allow   Public_Domain                               CC0-1.0
+
+# ── explicit denials (kept above the generic GPL rules on purpose) ───────────
+# Strong copyleft: linking it into a distributed APK requires source disclosure
+# obligations this project has not accepted. Review with the owner before
+# flipping any of these to `allow`.
+deny    GNU_Lesser_General_Public_License           LGPL
+deny    LGPL                                        LGPL
+deny    GPL_v._3                                    GPL-3.0
+deny    GNU_General_Public_License_v._3             GPL-3.0
+deny    GPL_3                                       GPL-3.0
+deny    GNU_General_Public_License                  GPL-2.0
+deny    GPL_v._2                                    GPL-2.0
+deny    Affero                                      AGPL-3.0
+deny    Android_SDK_Terms_of_License                Android-SDK

@@ -5,15 +5,15 @@ import java.time.Instant
 import java.time.ZoneId
 
 /**
- * 用量计价器（计算核心，计价规则为主人拍板、写死入码）。
+ * 用量计价器——根据 Provider 返回的 usage 计算费用。
  *
- * 计费口径（账本  ）：
+ * 计费口径：
  * - 双条件计费：工单地址含 deepseek.com 且 API 返回的 usage 带缓存命中/未命中字段；
- * - 档位按工单模型名含 flash / pro 匹配（flash 判定优先，）；
+ * - 档位按工单模型名含 flash / pro 匹配（flash 判定优先）；
  * - 高峰时段 = 北京时间周一至周五 9:00-12:00、14:00-18:00（左闭右开），其余为低谷；
  * - 价格表单位 = 元/百万 tokens；其他模型（UNKNOWN 档）不计费返回 0。
  *
- * 纯函数、无 Android 依赖，由 UsagePricerTest 回归钉死。
+ * 纯函数、无 Android 依赖（），由 UsagePricerTest 回归钉死。
  * 展示口径：双条件不满足或非闪/PRO 档 → 本次花费位显示占位符（步骤 6 消费侧处理）。
  */
 internal object UsagePricer {
@@ -33,7 +33,7 @@ internal object UsagePricer {
 
     /** 档位判定（：flash 优先，防双关键词模型名互扰） */
     fun priceTier(model: String): PriceTier {
-        val s = model.lowercase
+        val s = model.lowercase()
         return when {
             s.contains("flash") -> PriceTier.FLASH
             s.contains("pro") -> PriceTier.PRO
@@ -65,7 +65,7 @@ internal object UsagePricer {
         return (cacheHitTokens * hit + cacheMissTokens * miss + outputTokens * out) / PER_MILLION
     }
 
-    /** 计费双条件（主人拍板）：地址含 deepseek.com 且 usage 带缓存字段 */
+    /** 计费双条件：地址含 deepseek.com 且 usage 带缓存字段 */
     fun shouldBill(baseUrl: String, usageHasCacheFields: Boolean): Boolean =
         baseUrl.contains("deepseek.com") && usageHasCacheFields
 }

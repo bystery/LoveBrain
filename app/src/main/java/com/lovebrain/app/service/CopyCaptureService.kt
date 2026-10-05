@@ -8,7 +8,15 @@ import android.view.accessibility.AccessibilityNodeInfo
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.EventBus
 import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.CapturePolicy
 import com.lovebrain.app.util.L
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 import java.io.File
 
 /**
@@ -19,8 +27,9 @@ import java.io.File
  * - 使用 AppConfig 常量
  * - ：消息捕获总开关（captureEnabled）在事件入口前置判断；不再主动 startService 重启悬浮窗
  * - ：捕获链路本地诊断文件（capture_diag.log），只记类型/长度/毫秒，不记内容
+ * - 诊断日志进有界 channel，由 IO worker 批量写；release 默认关闭或只保留脱敏环形计数
  */
-class CopyCaptureService : AccessibilityService {
+class CopyCaptureService : AccessibilityService() {
 
     companion object {
         /** 当前隐私披露版本。递增此值可强制用户重新确认。 */
@@ -38,8 +47,11 @@ class CopyCaptureService : AccessibilityService {
         /** 诊断文件大小上限 */
         private const val DIAG_MAX_BYTES = 200 * 1024L
 
+        /** 凭据节点探测最多访问多少个节点——大页面不无限遍历 */
+        private const val CREDENTIAL_SCAN_MAX_NODES = 120
+
         /** CAP-04：关闭捕获时主动废弃 pending，无需等下一条 AccessibilityEvent */
-        fun discardPendingCapture {
+        fun discardPendingCapture() {
             instance?.clearPending("capture_toggle_off")
         }
     }
@@ -48,6 +60,11 @@ class CopyCaptureService : AccessibilityService {
     private var pendingTime = 0L
     /** H1 包名锁定：pending 来自哪个 App，窗口事件须同包名才消费（防跨 App 幽灵捕获） */
     private var pendingPkg: String? = null
+
+    /** 诊断日志异步写入——有界 channel + IO worker，不阻塞主回调线程 */
+    private val diagScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val diagChannel = Channel<String>(capacity = 64, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private var diagWorkerStarted = false
 
     /** CAP-02：统一清理 pending 捕获事务，避免多路径手写三字段清理遗漏 */
     internal fun clearPending(reason: String) {
@@ -65,8 +82,8 @@ class CopyCaptureService : AccessibilityService {
     /** SecurePrefs 实例（用于读取 captureEnabled 开关） */
     private var securePrefs: SecurePrefs? = null
 
-    override fun onServiceConnected {
-        super.onServiceConnected
+    override fun onServiceConnected() {
+        super.onServiceConnected()
         clearPending("service_connected_reset")
         instance = this
         isRunning = true
@@ -76,24 +93,40 @@ class CopyCaptureService : AccessibilityService {
         appendDiag("SERVICE_CONNECTED")
     }
 
-    override fun onDestroy {
+    override fun onDestroy() {
         clearPending("service_destroy")
         instance = null
         isRunning = false
-        super.onDestroy
+        // 取消诊断 IO scope
+        diagScope.cancel()
+        super.onDestroy()
     }
 
-    /** 追加诊断记录：格式 `uptimeMs|TAG|detail`，仅记类型/布尔/长度/毫秒 */
+    /** 追加诊断记录——异步写入，不阻塞主回调线程。
+     * 格式 `uptimeMs|TAG|detail`，仅记类型/布尔/长度/毫秒，不记内容 */
     private fun appendDiag(line: String) {
-        runCatching {
-            val file = File(filesDir, DIAG_FILE)
-            if (file.exists && file.length > DIAG_MAX_BYTES) {
-                // 超过 200KB：清空重写（只保留当前这行）
-                file.writeText("")
+        val ts = SystemClock.uptimeMillis()
+        val entry = "$ts|$line\n"
+        // 启动 IO worker（只启动一次）
+        if (!diagWorkerStarted) {
+            diagWorkerStarted = true
+            diagScope.launch {
+                val file = File(filesDir, DIAG_FILE)
+                while (true) {
+                    val data = diagChannel.receive()
+                    try {
+                        if (file.exists() && file.length() > DIAG_MAX_BYTES) {
+                            file.writeText("")
+                        }
+                        file.appendText(data)
+                    } catch (e: Exception) {
+                        L.e("appendDiag async write failed", e)
+                    }
+                }
             }
-            val ts = SystemClock.uptimeMillis
-            file.appendText("$ts|$line\n")
         }
+        // 非阻塞投递——channel 满时丢弃最旧条目
+        diagChannel.trySend(entry)
     }
 
     /**
@@ -101,27 +134,36 @@ class CopyCaptureService : AccessibilityService {
      * 新版微信消息文本常挂在子节点上，长按的容器节点本身不带字 → 直接取 event.text 取不到。
      * 深度限制 4 层防性能问题，取最长的一条（最可能是完整消息内容）。
      *
+     * 增加节点数预算（maxNodes）和截止时间（deadline），超限 fail closed。
+     *
      * 注意：入参 node（通常 = event.source）的生命周期由系统管理，调用方不应 recycle 它。
      * 本方法只 recycle 自己创建的子节点（node.getChild(i)）。
      * 本方法仅在 TYPE_VIEW_LONG_CLICKED 事件中调用，与 collectAllTextFromTree（WINDOW 事件）
      * 不会在同一次事件中执行，不存在对同一子节点重复 recycle 的问题。
      */
     private fun collectTextFromChildren(node: AccessibilityNodeInfo?, depth: Int = 0, maxDepth: Int = 4): String? {
+        return collectTextFromChildrenBounded(node, depth, maxDepth, IntArray(1).apply { this[0] = 256 }, SystemClock.uptimeMillis() + 100L)
+    }
+
+    private fun collectTextFromChildrenBounded(node: AccessibilityNodeInfo?, depth: Int, maxDepth: Int, nodeCount: IntArray, deadline: Long): String? {
         if (node == null || depth > maxDepth) return null
+        if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) return null
+        nodeCount[0]--
         var best: String? = null
-        node.text?.toString?.trim?.let { t ->
-            if (t.isNotEmpty) best = t
+        node.text?.toString()?.trim()?.let { t ->
+            if (t.isNotEmpty()) best = t
         }
         for (i in 0 until node.childCount) {
-            val child = runCatching { node.getChild(i) }.getOrNull ?: continue
-            val childText = collectTextFromChildren(child, depth + 1, maxDepth)
+            if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) break
+            val child = runCatching { node.getChild(i) }.getOrNull() ?: continue
+            val childText = collectTextFromChildrenBounded(child, depth + 1, maxDepth, nodeCount, deadline)
             if (childText != null) {
                 val currentBest = best
                 if (currentBest == null || childText.length > currentBest.length) {
                     best = childText
                 }
             }
-            child.recycle
+            child.recycle()
         }
         return best
     }
@@ -136,23 +178,45 @@ class CopyCaptureService : AccessibilityService {
      * 与 collectTextFromChildren（LONGCLICK 事件）不会在同一次事件中执行。
      */
     private fun collectAllTextFromTree(node: AccessibilityNodeInfo?, depth: Int = 0, maxDepth: Int = 4): String {
+        return collectAllTextFromTreeBounded(node, depth, maxDepth, IntArray(1).apply { this[0] = 256 }, SystemClock.uptimeMillis() + 100L)
+    }
+
+    private fun collectAllTextFromTreeBounded(node: AccessibilityNodeInfo?, depth: Int, maxDepth: Int, nodeCount: IntArray, deadline: Long): String {
         if (node == null || depth > maxDepth) return ""
-        val sb = StringBuilder
-        node.text?.toString?.trim?.let { if (it.isNotEmpty) sb.append(it).append("|") }
-        node.contentDescription?.toString?.trim?.let { if (it.isNotEmpty) sb.append(it).append("|") }
+        if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) return ""
+        nodeCount[0]--
+        val sb = StringBuilder()
+        node.text?.toString()?.trim()?.let { if (it.isNotEmpty()) sb.append(it).append("|") }
+        node.contentDescription?.toString()?.trim()?.let { if (it.isNotEmpty()) sb.append(it).append("|") }
         for (i in 0 until node.childCount) {
-            val child = runCatching { node.getChild(i) }.getOrNull ?: continue
-            sb.append(collectAllTextFromTree(child, depth + 1, maxDepth))
-            child.recycle
+            if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) break
+            val child = runCatching { node.getChild(i) }.getOrNull() ?: continue
+            sb.append(collectAllTextFromTreeBounded(child, depth + 1, maxDepth, nodeCount, deadline))
+            child.recycle()
         }
-        return sb.toString
+        return sb.toString()
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
       try {
-        // 支持全部 App（不再限定微信/抖音），后续逻辑已有文本特征校验兑底
-        val pkg = event.packageName?.toString ?: return
-        if (pkg == packageName) return // 忽略自身进程的事件
+        // 默认 fail-closed 的 allowlist——只有用户明确选过的聊天 App 才进入捕获，
+        // 且即使命中 allowlist，密码/验证码节点与系统窗口仍做二次拒绝。
+        val pkg = event.packageName?.toString() ?: return
+        val decision = CapturePolicy.decide(
+            CapturePolicy.Observation(
+                sourcePackage = pkg,
+                allowedPackages = securePrefs?.captureAllowedPackages ?: emptySet(),
+                ownPackage = packageName,
+                windowIsSystemLevel = isSystemLevelWindow(event),
+                hasPasswordNode = hasCredentialNode(event.source)
+            )
+        )
+        if (decision is CapturePolicy.Decision.Deny) {
+            // 只记录裁决原因，绝不记录正文或节点文本
+            clearPending("capture_denied:${decision.reason}")
+            appendDiag("DENY|pkg=${pkg.takeLast(24)}|reason=${decision.reason}")
+            return
+        }
 
         val type = event.eventType
 
@@ -177,11 +241,11 @@ class CopyCaptureService : AccessibilityService {
             return
         }
 
-        val texts = ArrayList<String>
+        val texts = ArrayList<String>()
         runCatching {
-            event.text?.forEach { it?.let { t -> texts.add(t.toString) } }
-            event.contentDescription?.let { texts.add("evDesc:" + it.toString) }
-            event.source?.contentDescription?.let { texts.add("srcDesc:" + it.toString) }
+            event.text?.forEach { it?.let { t -> texts.add(t.toString()) } }
+            event.contentDescription?.let { texts.add("evDesc:" + it.toString()) }
+            event.source?.contentDescription?.let { texts.add("srcDesc:" + it.toString()) }
         }
         var joined = texts.joinToString("|")
         //  修复：弹窗菜单项文本常在子节点里——直取不含"复制"时补查子节点树
@@ -205,27 +269,27 @@ class CopyCaptureService : AccessibilityService {
 
         when (type) {
             AccessibilityEvent.TYPE_VIEW_LONG_CLICKED -> {
-                var content = event.contentDescription?.toString?.trim
-                if (content.isNullOrEmpty) {
-                    content = event.text?.firstOrNull { !it.isNullOrEmpty }?.toString?.trim
+                var content = event.contentDescription?.toString()?.trim()
+                if (content.isNullOrEmpty()) {
+                    content = event.text?.firstOrNull { !it.isNullOrEmpty() }?.toString()?.trim()
                 }
-                if (content.isNullOrEmpty) {
+                if (content.isNullOrEmpty()) {
                     content = runCatching {
-                        event.source?.text?.toString?.trim
-                    }.getOrNull
+                        event.source?.text?.toString()?.trim()
+                    }.getOrNull()
                 }
                 //  修复：三处都取不到时，递归遍历子节点树取最长文本
-                if (content.isNullOrEmpty) {
+                if (content.isNullOrEmpty()) {
                     content = runCatching {
                         collectTextFromChildren(event.source)
-                    }.getOrNull
-                    if (!content.isNullOrEmpty) {
+                    }.getOrNull()
+                    if (!content.isNullOrEmpty()) {
                         appendDiag("LONGCLICK_TEXT_FROM_CHILDREN|len=${content.length}")
                     }
                 }
-                if (!content.isNullOrEmpty && content.length >= 1) {
+                if (!content.isNullOrEmpty() && content.length >= 1) {
                     pendingContent = content
-                    pendingTime = SystemClock.uptimeMillis
+                    pendingTime = SystemClock.uptimeMillis()
                     pendingPkg = pkg
                     L.w("long-press stored pending: len=${content.length}")
                     appendDiag("LONGCLICK_ARRIVE|len=${content.length}")
@@ -240,7 +304,7 @@ class CopyCaptureService : AccessibilityService {
                 // 消息菜单 = 弹窗文字含「复制」即可确认；转发/删除/多选等七词门槛已删（分享/拷贝类菜单也能捕）
                 val isMessageMenu = joined.contains("复制")
                 val pending = pendingContent
-                val now = SystemClock.uptimeMillis
+                val now = SystemClock.uptimeMillis()
                 val sinceLongClick = if (pendingTime > 0L) now - pendingTime else -1L
                 if (pending != null) {
                     appendDiag("WINDOW_ARRIVE|menuMatch=$isMessageMenu|pkgMatch=${pendingPkg == pkg}|sinceLong=${sinceLongClick}ms|pendingLen=${pending.length}")
@@ -280,15 +344,62 @@ class CopyCaptureService : AccessibilityService {
       }
     }
 
-    override fun onInterrupt {
+    override fun onInterrupt() {
         clearPending("service_interrupted")
         L.w("CopyCaptureService interrupted")
+    }
+
+    /**
+     * 二次拒绝——即使用户把某个 App 加进 allowlist，
+     * 系统级窗口（通知栏/锁屏/系统选择器）仍然不采。
+     *
+     * 只看窗口类型与包名，不读正文。
+     */
+    private fun isSystemLevelWindow(event: AccessibilityEvent): Boolean {
+        val pkg = event.packageName?.toString().orEmpty()
+        return pkg == "com.android.systemui" || pkg == "android"
+    }
+
+    /**
+     * 事件源子树里是否存在凭据输入节点。
+     *
+     * 判定只用 isPassword 布尔位与 className，绝不把节点正文带进判断，
+     * 因此聊天正文里出现"password"字样不会被误杀。
+     */
+    private fun hasCredentialNode(root: AccessibilityNodeInfo?): Boolean {
+        if (root == null) return false
+        var found = false
+        runCatching {
+            val queue = ArrayDeque<AccessibilityNodeInfo>()
+            queue.add(root)
+            var visited = 0
+            while (queue.isNotEmpty() && !found && visited < CREDENTIAL_SCAN_MAX_NODES) {
+                val node = queue.removeFirst()
+                visited++
+                // AccessibilityNodeInfo 在 API 30 之前不暴露 inputType，
+                // 所以这里能用的凭据信号就是 isPassword 布尔位本身；
+                // 第三参数留给能拿到 inputType 的调用方，这里不假装知道更多。
+                if (CapturePolicy.looksLikeCredentialNode(
+                        className = node.className?.toString(),
+                        isPassword = node.isPassword,
+                        textHintsPasswordInputType = false
+                    )
+                ) {
+                    found = true
+                    break
+                }
+                for (i in 0 until node.childCount) node.getChild(i)?.let { queue.add(it) }
+            }
+        }
+        return found
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
         clearPending("service_unbind")
         isRunning = false
         instance = null
+        // 取消诊断 IO scope
+        diagScope.cancel()
         L.w("CopyCaptureService unbound")
         return super.onUnbind(intent)
     }

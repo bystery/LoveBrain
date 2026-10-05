@@ -1,0 +1,742 @@
+package com.lovebrain.app.service
+
+import android.app.Application
+import android.content.Intent
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasSetTextAction
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getOrNull
+import android.os.ParcelFileDescriptor
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ServiceTestRule
+import com.lovebrain.app.core.designsystem.LbTags
+import com.lovebrain.app.AppConfig
+import com.lovebrain.app.R
+import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.model.ComposerMode
+import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.ReplyChunk
+import com.lovebrain.app.model.ReplyCompleted
+import com.lovebrain.app.model.ReplyFailureKind
+import com.lovebrain.app.testing.FakeProviderServer
+import com.lovebrain.app.testing.MainChainHarness
+import com.lovebrain.app.testing.ProductionPanel
+import com.lovebrain.app.testing.UiText
+import com.lovebrain.app.viewmodel.LoveBrainViewModel
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Assume
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import com.lovebrain.app.testing.assertIsDisplayedDiagnosed
+
+/**
+ * （审计 第5节第1条、第8节第1条 第 4-6 条）：真实生产 Panel 主链 instrumentation 测试。
+ *
+ * 审计原判 → 本类对应修复：
+ * · 「Overlay 测试没有挂载并点击生产按钮」→ 用 [ProductionPanel] 挂载生产
+ *   LoveBrainPanelScreen（与 FloatingService.setContent 同一组件、同一 LoveBrainTheme）；
+ *   消息经真输入框 + 真「➕ 添加」进入 MessageList；生成由真
+ *   「生成回复 · N条消息」按钮点击触发。
+ * · 「没有先添加任何消息；生产 generateReply() 在 dialogue.isEmpty() 时直接返回 null，
+ *   因此该测试预期 RecoverableError 与生产前置条件冲突」→ 所有无 Provider 用例都先满足
+ *   「MessageList 已有消息」这一生产前置条件，再断言生产实际给出的可恢复错误
+ *   （GenerateResult.Error + 结果区文案），不再断言生产永远不会产生的
+ *   ReplyRequestState.RecoverableError。
+ * · 「没有成功 Provider 流」→ 成功流 / 401 / 超时 / 解析失败 / 停止 / 快速双击 /
+ *   旧请求迟到 / Service destroy 全部由 [FakeProviderServer]（loopback SSE）驱动，
+ *   s.requestCount 就是审计要的「Engine/Provider 实际调用次数」。
+ *
+ * 断言只用 JUnit + Compose 断言（不用裸 Kotlin assert()：instrumentation 不保证开 -ea）。
+ * 期望文案直接取生产 ReplyFailureKind.userMessage，避免测试自抄文案与生产漂移。
+ *
+ * ⚠ 两条「按合同断言」的用例以前标着"生产修复前预期为红"——**那个前提已经不成立了**，
+ *   两处 KDoc 里描述的机制在生产码里已经不存在（详见各自 KDoc 的改口段与账本「追加六十四」）。
+ *   现在它们是普通的合同钉子：1. [lateCallbacksFromSupersededRequest_doNotOverwriteCurrentRequest]
+ *   2. [rapidDoubleTap_onRealGenerateButton_startsExactlyOneProviderRequest]
+ *   ⚠ 但"跟着 CI 一起绿"不等于"机制有人守着"——那要 JVM 侧那格真断言（见下面第二格 KDoc 的指路）。
+ */
+@RunWith(AndroidJUnit4::class)
+class OverlayGenerateSmokeTest {
+
+    @get:Rule
+    val composeRule: ComposeContentTestRule = createComposeRule()
+
+    @get:Rule
+    val serviceRule = ServiceTestRule()
+
+    private val app: Application get() = ApplicationProvider.getApplicationContext()
+
+    private lateinit var vm: LoveBrainViewModel
+    private var server: FakeProviderServer? = null
+
+    /**
+     * 生成中那条停止棒的整串匹配模式。
+     *
+     * 旧写法把中文写死在这里（`(分析对话|生成方案|深度分析) · \d+s\s+点击停止`），
+     * 而生产早就改成 panel_analysing_with_seconds(阶段词, 秒数) + 三个资源阶段词，
+     * 英文模拟器上渲染的是 "Reading the conversation · 3s, tap to stop" —— 于是永远配不上。
+     * 现在模式与定位锚点都不再从测试这边抄文案：锚点用生产留的 tag，模式由资源现拼。
+     */
+    private val loadingStopText: Regex get() = UiText.generatingBarPattern()
+
+    /**
+     * 断言主操作位置就是生产 LOADING 停止条，并返回该节点文本。
+     */
+    private fun assertLoadingStopBar(reason: String) {
+        composeRule.onNodeWithTag(LbTags.PRIMARY_STOP)
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        val bar = composeRule
+            .onNodeWithTag(LbTags.PRIMARY_STOP)
+            .fetchSemanticsNode("未找到生成中的停止条：$reason（tag=${LbTags.PRIMARY_STOP}）")
+            .config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text.orEmpty()
+        assertTrue("$reason：生产停止条文案应完整匹配，实际：$bar", loadingStopText.matches(bar))
+    }
+
+    @Before
+    fun setUp() {
+        MainChainHarness.skipOnboarding()
+        MainChainHarness.clearProviderConfig()
+        // 每个用例一个新 VM 实例（appModule 里 viewModel 定义是工厂）
+        vm = MainChainHarness.newViewModel()
+    }
+
+    @After
+    fun tearDown() {
+        runCatching { vm.stopGeneration() }
+        server?.let { runCatching { it.close() } }
+        server = null
+        MainChainHarness.clearProviderConfig()
+    }
+
+    // ═══════════════════════ 脚手架 ═══════════════════════
+
+    private fun mountPanel() {
+        composeRule.mainClock.autoAdvance = false
+        composeRule.setContent { ProductionPanel(viewModel = vm) }
+        composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
+    }
+
+    /** 装 fake Provider 并等 providerReady 变 true */
+    private fun installProvider(defaultScript: FakeProviderServer.Script): FakeProviderServer {
+        val s = startSilentProvider(defaultScript)
+        MainChainHarness.installFakeProvider(s)
+        MainChainHarness.awaitProviderReady(vm, ready = true)
+        // 装好即打一次基线进 logcat：此时 accepted 必须是 0，
+        // systemProxy 那一栏直接回答"127.0.0.1 有没有被交给系统代理"
+        android.util.Log.w("LoveBrain", "PROVIDER-DIAG installed ${MainChainHarness.providerDiagnosis(s)}")
+        return s
+    }
+
+    /** 只起 fake Provider 服务、不配置工单：这样「零请求」是可观测的事实而不是空话 */
+    private fun startSilentProvider(script: FakeProviderServer.Script): FakeProviderServer {
+        val s = FakeProviderServer()
+        s.defaultScript = script
+        server = s
+        return s
+    }
+
+    /** 推帧 + 真实时间片：让生产协程与 Compose 组合都往前走 */
+    private fun pumpUntil(reason: String, timeoutMs: Long = 15_000L, condition: () -> Boolean) {
+        val deadline = System.currentTimeMillis() + timeoutMs
+        while (System.currentTimeMillis() < deadline) {
+            composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
+            if (condition()) {
+                composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS) // 补一帧，确保最新状态已重绘
+                return
+            }
+            Thread.sleep(20L)
+        }
+        // R1：等不到的时候必须当场说清"请求走到哪一段"，不许留一句超时让下一轮猜。
+        //  的 5 格超时全都停在 t2 之后、且 45 份 logcat 里
+        // 一条 API 回调日志都没有——这把尺把"没打出去/打出去没回/回了没上屏"切开。
+        throw AssertionError("等待超时（${timeoutMs}ms）：$reason\n  链路读数：${providerDiagnosis()}")
+    }
+
+    /** 本轮 fake Provider 的三段读数（TCP 连接数 / 可解析请求数 / 请求行原文 + 系统代理） */
+    private fun providerDiagnosis(): String = server
+        ?.let { MainChainHarness.providerDiagnosis(it) }
+        ?: "本轮没装 fake Provider"
+
+    /** 走真 UI 往 MessageList 放一条消息（生产：输入框 + ➕ 添加） */
+    private fun addMessageThroughRealUi(text: String) {
+        composeRule.onNode(hasSetTextAction()).performTextInput(text)
+        // 关键一步：先等 ➕ 真的带上点击语义，再点它。
+        // mountPanel() 为了伺候生成中那条无限动画关掉了 mainClock.autoAdvance，
+        // 而关掉之后**没有帧就没有重组**：performTextInput 写进状态的这句草稿，
+        // 还没变成 canAdd=true 的那一次重组，生产 ReplyInput 的
+        // `.then(if (canAdd) Modifier.clickable(...) else Modifier)` 这时仍不给 clickable。
+        // 偏偏 performClick() 只做触摸注入、不检查节点有没有点击语义，
+        // 于是这一拳打在空处：不抛异常、不报错，消息永远是空的——
+        // CI 上 7 格全卡在同一句"点过➕之后 MessageList 要有这一条"就是这么来的。
+        // 机理与这条修法在 ComposerAddButtonGatingTest（JVM 用例，本机可跑且做过变异检查）。
+        awaitAddEntryActionable(text)
+        composeRule.onNodeWithContentDescription(ADD_ENTRY_DESCRIPTION).performClick()
+        pumpUntil("点过➕之后 MessageList 要有这一条") { vm.composer.messages.value.isNotEmpty() }
+        composeRule.onNodeWithText(text)
+            .assertIsDisplayedDiagnosed("刚添加的那条消息")
+        assertEquals("MessageList 应真收到 1 条消息", 1, vm.composer.messages.value.size)
+    }
+
+    /**
+     * 推进帧，直到 ➕ 真的带上点击语义；推不到就红——不许闷头把点击送给一个点不动的东西。
+     *
+     * 「添加」这句 contentDescription 目前仍是生产里的内联中文（ReplyInput），还没进资源，
+     * 所以这里也只能照它写死；把它搬进 strings.xml 时这一处要一起换成
+     * UiText.current(...)。
+     */
+    private fun awaitAddEntryActionable(text: String, timeoutMs: Long = 3_000L) {
+        val wanted = hasClickAction().and(hasContentDescription(ADD_ENTRY_DESCRIPTION))
+        var pumped = 0L
+        while (composeRule.onAllNodes(wanted).fetchSemanticsNodes().isEmpty() && pumped < timeoutMs) {
+            composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
+            pumped += FRAME_PUMP_MS
+        }
+        assertTrue(
+            "推了 ${pumped}ms 帧，➕ 仍带不上点击语义（草稿=「$text」）——" +
+                "要么生产的置灰逻辑真没解开，要么这个面板已经不再靠帧推进；" +
+                "两种都得查，不许绕过这一步直接点",
+            composeRule.onAllNodes(wanted).fetchSemanticsNodes().isNotEmpty()
+        )
+    }
+
+    private fun tapGenerateReplyButton(messageCount: Int) {
+        composeRule.onNodeWithText(
+            UiText.current(R.string.panel_generate_reply_with_count, messageCount)
+        ).performClick()
+    }
+
+    private fun currentError(): GenerateResult.Error? = vm.result.value as? GenerateResult.Error
+
+    /**
+     * 把悬浮窗权限（SYSTEM_ALERT_WINDOW AppOp）作为前置条件主动设好，而不是用 Assume 跳过。
+     *
+     * 旧版这两格一律 Assume 跳过，理由写的是「悬浮窗权限 / FGS 后台策略」。但前者其实可由测试
+     * instrumentation 持有的 shell 身份直接 `appops set ... allow` 授上——这才是 STEP 2 要的
+     * 「设好前置条件」而不是「假设环境不支持」。授完之后再 [ServiceTestRule.startService]，
+     * 服务 onCreate 里 `bubble.attach()` 才拿得到 addView 权限。
+     *
+     * 剩下确实设不上的只有 Android 14+ 在个别受限设备上对 FGS 后台启动的策略拦截——
+     * 那一类环境才落到下面的 [Assume.assumeTrue]，并在 KDoc 里点明「overlay 已授、仍起不来」，
+     * 不再让本可在 CI emulator 上真跑的用例被一句空泛的「权限不可用」整格跳过。
+     */
+    private fun grantOverlayAppOp() {
+        val packageName = app.packageName
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val pfd: ParcelFileDescriptor = instrumentation.uiAutomation
+            .executeShellCommand("appops set $packageName SYSTEM_ALERT_WINDOW allow")
+        try {
+            // 读到 EOF 才算 shell 命令真正执行完；不读的话 appops 可能还没落盘就去 startService
+            java.io.FileInputStream(pfd.fileDescriptor).use { it.readBytes() }
+        } finally {
+            pfd.close()
+        }
+    }
+
+    // ═══════════════ 1. 空态蓝字 = 只切模式、零 Provider 调用 ═══════════════
+
+    /**
+     * 审计 第2节 / 第8节第1条 第 4 条：「点击 MessageList 空态蓝字只切模式、Engine 调用次数仍为 0」。
+     * 这里的调用次数 = fake Provider 实收请求数（真链路计数器，不是自造计数）。
+     */
+    @Test
+    fun emptyState_blueProactiveEntryClick_onlyFlipsComposerMode_withZeroProviderCalls() {
+        val s = installProvider(FakeProviderServer.Script.Stream(listOf("不该被用到的响应")))
+        mountPanel()
+
+        val entryText = UiText.current(R.string.proactive_empty_send_one)
+        composeRule.onNodeWithText(entryText).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        assertEquals(
+            "初始应为 REPLY 模式",
+            ComposerMode.REPLY,
+            vm.composerMode.value
+        )
+
+        composeRule.onNodeWithText(entryText).performClick()
+        composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
+
+        assertEquals(
+            "点击蓝字应切到 PROACTIVE 模式",
+            ComposerMode.PROACTIVE,
+            vm.composerMode.value
+        )
+        composeRule.onNodeWithText(UiText.current(R.string.panel_generate_opening))
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        assertFalse("切模式不得进入生成中", vm.isGenerating.value)
+        assertNull("切模式不得产生结果", vm.result.value)
+        assertEquals("切模式的 Engine/Provider 调用次数必须为 0", 0, s.requestCount)
+
+        // 再点一次 = 关闭主动发，仍然零请求
+        composeRule.onNodeWithText(UiText.current(R.string.proactive_empty_turn_off)).performClick()
+        composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
+
+        assertEquals(
+            "再次点击应回到 REPLY 模式",
+            ComposerMode.REPLY,
+            vm.composerMode.value
+        )
+        assertEquals("两次点击后 Provider 调用次数仍为 0", 0, s.requestCount)
+        assertEquals("入口点击不得产生任何消息", 0, vm.composer.messages.value.size)
+    }
+
+    // ═══════════════════════ 2. 无 Provider ═══════════════════════
+
+    /**
+     * 生产 LoveBrainPanelScreen.kt:408-411 的入口守卫：providerReady=false 时点主按钮
+     * 只给面板内可消失告警，绝不发请求。
+     */
+    @Test
+    fun noProvider_realGenerateButtonTap_showsRecoverableWarningAndCallsNothing() {
+        val silent = startSilentProvider(FakeProviderServer.Script.Stream(listOf("不该到达的响应")))
+        MainChainHarness.awaitProviderReady(vm, ready = false)
+        mountPanel()
+
+        addMessageThroughRealUi("在吗")
+        tapGenerateReplyButton(1)
+        composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
+
+        val warning = vm.panelWarning.value
+        assertNotNull("未配置 Provider 时点生成应给出面板告警", warning)
+        assertTrue("告警文案应指向模型供应商配置，实际：$warning", warning!!.contains("模型供应商"))
+        composeRule.onNodeWithText(warning).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        assertNull("未配置 Provider 不得产生结果", vm.result.value)
+        assertFalse("未配置 Provider 不得进入生成中", vm.isGenerating.value)
+        assertEquals("未配置 Provider 不得发出请求", 0, silent.requestCount)
+    }
+
+    /**
+     * 审计 第5节第1条 点名的破损用例修复版：先满足生产前置条件（dialogue 非空），
+     * 再断言生产真正给出的可恢复错误。
+     *
+     * 旧用例断言 ReplyRequestState.RecoverableError 有两处与生产冲突：
+     * · 无消息时 GenerationEngine.kt:321 直接 return null，状态只会被 CAS 清回 Idle；
+     * · 有消息且无 Provider 时，生产走 GenerationEngine.kt:395-400 的
+     *   GenerateResult.Error("请先配置一个可用的模型供应商")，由 ResultArea 渲染，
+     *   根本不写 RecoverableError。
+     * 所以旧断言永远不成立，只能靠超时失败。
+     */
+    @Test
+    fun noProvider_afterAddingMessage_generateSurfacesProviderMissingError() {
+        val silent = startSilentProvider(FakeProviderServer.Script.Stream(listOf("不该到达的响应")))
+        vm.addMessage(ChatMessage.Role.ME, "在吗")
+        assertEquals(
+            "前置条件：必须已有 1 条消息（否则生产 Engine 直接 reject）",
+            1,
+            vm.composer.messages.value.size
+        )
+
+        vm.generate()
+
+        MainChainHarness.await("无 Provider 时应给出错误结果") { vm.result.value != null }
+        val error = currentError()
+        assertNotNull("结果应为 GenerateResult.Error", error)
+        assertEquals(
+            "无 Provider 文案应取生产 ReplyFailureKind.ProviderMissing",
+            ReplyFailureKind.ProviderMissing.userMessage,
+            error!!.message
+        )
+        assertFalse("失败后不得留在生成中", vm.isGenerating.value)
+        assertEquals("未配置 Provider 时不得发出任何网络请求", 0, silent.requestCount)
+    }
+
+    // ═══════════════════════ 3. 成功流 ═══════════════════════
+
+    @Test
+    fun successStream_realGenerateChain_rendersResultWithExactlyOneProviderRequest() {
+        val marker = "FAKE_OK_REPLY_MAIN_CHAIN"
+        val s = installProvider(
+            FakeProviderServer.Script.Stream(FakeProviderServer.validReplyJsonChunks(marker), chunkDelayMs = 20L)
+        )
+        mountPanel()
+
+        addMessageThroughRealUi("你最近是不是很忙")
+        tapGenerateReplyButton(1)
+
+        pumpUntil("应进入生成中") { vm.isGenerating.value }
+        // 生成中主操作位置必须是 LOADING 停止条（生产真实文案，不是裸「停止」）
+        assertLoadingStopBar("成功流生成中")
+
+        pumpUntil("应渲染成功结果") { vm.result.value is GenerateResult.Success }
+
+        val result = vm.result.value as GenerateResult.Success
+        assertTrue("成功结果必须带 fake Provider 的文本", result.response.toString().contains(marker))
+        assertEquals("一次点击只允许 1 个 Provider 请求", 1, s.requestCount)
+        assertTrue(
+            "新加的消息必须真的进入 Provider prompt",
+            s.lastRequestBody().contains("你最近是不是很忙")
+        )
+        // 有结果时生产主操作位换成「重试 | 记入知识库」
+        composeRule.onNodeWithText(UiText.current(R.string.panel_retry))
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        composeRule.onNodeWithText(UiText.current(R.string.panel_save_to_kb))
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        assertFalse("完成后不得留在生成中", vm.isGenerating.value)
+    }
+
+    // ═══════════════════════ 4. 401 认证失败 ═══════════════════════
+
+    /** CONFIG_ERROR 族不重试（GenerationEngine.kt:476）——请求数必须恰好为 1 */
+    @Test
+    fun authFailure401_showsAuthErrorWithoutRetrying() {
+        val s = installProvider(
+            FakeProviderServer.Script.HttpStatus(
+                401,
+                "{\"error\":{\"message\":\"Authentication Fails, your api key is invalid\"}}"
+            )
+        )
+        mountPanel()
+
+        addMessageThroughRealUi("在吗")
+        tapGenerateReplyButton(1)
+
+        pumpUntil("401 应给出错误结果") { currentError() != null }
+        assertEquals(
+            "401 文案应取生产 ReplyFailureKind.Auth",
+            ReplyFailureKind.Auth.userMessage,
+            currentError()!!.message
+        )
+        // 生产 LOADING 分支文案由 GenerationActionButton 渲染；此处断言真实用户可见错误
+        composeRule.onNodeWithText(ReplyFailureKind.Auth.userMessage).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        assertEquals("认证类配置错误不得重试", 1, s.requestCount)
+        assertFalse("失败后不得留在生成中", vm.isGenerating.value)
+    }
+
+    // ═══════════════════════ 5. 超时 ═══════════════════════
+
+    /**
+     * 超时分类 + 重试预算。
+     *
+     * 为什么用「Provider 回 500 + timeout 文案」而不是真把连接挂死：
+     * 生产硬超时是 AppConfig.GENERATE_TIMEOUT_MS = 120s，且 GENERATE_MAX_ATTEMPTS = 4，
+     * 真挂连接最坏要 ~8 分钟才出终态，无法进 CI 门禁。
+     * 本用例覆盖同一条终态链路：collectStream 错误 → ReplyFailureKind.fromErrorMessage
+     * → Timeout → 用户可重试文案 + 用满重试预算。
+     * 「socket 真超时 120s」只能人工带外验证，已写进交付报告，不伪称跑过。
+     */
+    @Test
+    fun providerTimeout_showsRetryableTimeoutErrorAndUsesWholeRetryBudget() {
+        val s = installProvider(
+            FakeProviderServer.Script.HttpStatus(500, "{\"error\":{\"message\":\"upstream timeout\"}}")
+        )
+        mountPanel()
+
+        addMessageThroughRealUi("在吗")
+        tapGenerateReplyButton(1)
+
+        pumpUntil("超时应给出可重试错误", timeoutMs = 20_000L) { currentError() != null }
+
+        assertEquals(
+            "超时文案应取生产 ReplyFailureKind.Timeout",
+            ReplyFailureKind.Timeout.userMessage,
+            currentError()!!.message
+        )
+        assertTrue("超时必须可重试", ReplyFailureKind.Timeout.retryable)
+        assertEquals(
+            "非配置类错误应用满生产重试预算",
+            AppConfig.GENERATE_MAX_ATTEMPTS,
+            s.requestCount
+        )
+        assertFalse("终态不得留在生成中", vm.isGenerating.value)
+    }
+
+    // ═══════════════════════ 6. 解析失败 ═══════════════════════
+
+    @Test
+    fun parseFailure_garbageStream_showsParseError() {
+        val s = installProvider(
+            FakeProviderServer.Script.Stream(listOf(FakeProviderServer.UNPARSEABLE_TEXT))
+        )
+        mountPanel()
+
+        addMessageThroughRealUi("在吗")
+        tapGenerateReplyButton(1)
+
+        pumpUntil("解析失败应给出错误结果") { currentError() != null }
+        assertEquals(
+            "解析失败文案应取生产 ReplyFailureKind.Parse",
+            ReplyFailureKind.Parse.userMessage,
+            currentError()!!.message
+        )
+        composeRule.onNodeWithText(ReplyFailureKind.Parse.userMessage).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+        assertEquals("解析失败发生在流之后，只应有 1 个请求", 1, s.requestCount)
+        assertFalse("失败后不得留在生成中", vm.isGenerating.value)
+    }
+
+    // ═══════════════════════ 7. 停止 ═══════════════════════
+
+    @Test
+    fun stopDuringGeneration_cancelsCurrentRequestAndReturnsToIdle() {
+        val s = installProvider(FakeProviderServer.Script.NoResponse)
+        mountPanel()
+
+        addMessageThroughRealUi("在吗")
+        tapGenerateReplyButton(1)
+
+        pumpUntil("应进入生成中") { vm.isGenerating.value }
+        assertLoadingStopBar("停止前")
+        // ⚠ 原来这里是一句"当下读一次"的 assertEquals(1, requestCount)：`isGenerating` 在 prep
+        //    阶段就翻 true，而 TCP 连接是在 t2 之后才建的——读得太早会把"还没发出"报成"没发出"。
+        //    `a8349eb` 那一跑三格齐报 `accepted=0 requests=0 bytes=0` 就是这个形状。
+        //    先等到真发出（或超时），再钉数量；超时消息里带链路读数。
+        pumpUntil("停止前请求应已出门", timeoutMs = 6_000L) { s.requestCount >= 1 }
+        assertTrue(
+            "停止前应已发出 1 个请求（实到 ${s.requestCount}）\n  链路读数：${providerDiagnosis()}",
+            s.requestCount == 1
+        )
+
+        // 点生产停止动作：按生产留的 tag 定位文字节点，触摸注入由其可点击父节点接收
+        composeRule.onNodeWithTag(LbTags.PRIMARY_STOP).performClick()
+        composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
+
+        pumpUntil("停止后应退出生成中") { !vm.isGenerating.value }
+        assertFalse("停止后 isGenerating 必须为 false", vm.isGenerating.value)
+        assertNull("停止不得留下结果", vm.result.value)
+        assertEquals("停止不得清空消息", 1, vm.composer.messages.value.size)
+        composeRule.onNodeWithText(UiText.current(R.string.panel_generate_reply_with_count, 1))
+            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
+    }
+
+    // ═══════════════════════ 8. 快速双击 ═══════════════════════
+
+    /**
+     * 审计 第5节第1条「断言只启动一个网络请求」。
+     *
+     * ⚠ **这一格原先标的"预期红"是假线索，前提在两处重构之后已经不成立了**（2026-09-27 对着码核过）：
+     * · 旧叙述说"租约要到 prep 协程 await 完 readIntent / readCorrections 之后才注册"——
+     *   现在 guard 与登记是**同一步**：`ForegroundOperationCoordinator.start`
+     *   （`domain/ForegroundOperationCoordinator.kt:119-161`）先建 `CoroutineStart.LAZY` 的 Job（不跑），
+     *   在 `lock.withLock` 里查互斥 + 写 `records` + 绑 `requestId`，**都成功了才 `job.start()`**；
+     *   被拒时直接 `job.cancel()` 返回 null，body 一次都不会执行。
+     *   `generate()` 是在自己那一帧里同步调它的，中间没有任何 await ⇒ 同帧第二次点击过不去。
+     * · 旧叙述说"`_replyRequestState.value = Preparing(requestId)` 是无条件覆盖写"——
+     *   `Preparing` 现在只能由 reducer 在收到 `ReplyRequested` 时产生
+     *   （`model/GenerationEvents.kt:201-202`，同时换 `ownerRequestId`），
+     *   而 `ReplyRequested` 只在**被接受的那个租约**的 body 里发出 ⇒ 第二次点击连自己的 Preparing 都没有。
+     *
+     * ⇒ 净效果因此是**旧叙述预测的 0 个请求不成立**：第一个请求正常出门并完成，第二次被当场拒。
+     * 这一格在 （`9d2757f`）里随全套 45 格一起绿；机制本身由 JVM 那格
+     * `ReplyRequestFaultInjectionTest > double generate does not produce two concurrent requests`
+     * 钉住（两次同步 `generate()` 之后立刻断"REPLY 租约恰有 1 个"+"Engine 恰被调一次"+"第一个请求不被抹掉"）。
+     * 那句话是本合同的真主人：设备侧红了要看的是它，不是这里。
+     */
+    @Test
+    fun rapidDoubleTap_onRealGenerateButton_startsExactlyOneProviderRequest() {
+        val marker = "FAKE_OK_DOUBLE_TAP"
+        val s = installProvider(
+            FakeProviderServer.Script.Stream(FakeProviderServer.validReplyJsonChunks(marker), chunkDelayMs = 30L)
+        )
+        mountPanel()
+
+        addMessageThroughRealUi("在吗")
+        // 同一帧内连点两次 = 真实快速双击
+        tapGenerateReplyButton(1)
+        tapGenerateReplyButton(1)
+        composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
+
+        // ⚠ 这句原来是一锤子 assertEquals：双击若真如本文件 KDoc 所说"两个 prep 都被 reject"，
+        //    那等多久都是 0；但"还没发出"与"根本不会发出"必须分开报，否则下一轮又要猜。
+        //    先给它 6 秒真出门，再钉数量；超时消息自带链路读数（accepted/requests/bytes/terminated）。
+        pumpUntil("双击后应至少发出 1 个 Provider 请求", timeoutMs = 6_000L) { s.requestCount >= 1 }
+        assertTrue(
+            "快速双击只允许产生 1 个 Provider 请求（实到 ${s.requestCount}）\n" +
+                "  链路读数：${providerDiagnosis()}（这一格另有生产竞态：见本文件 KDoc 与" +
+                "LoveBrainViewModel.kt:844-855 的租约登记顺序）",
+            s.requestCount == 1
+        )
+        pumpUntil("双击后仍应渲染成功结果") { vm.result.value is GenerateResult.Success }
+        assertEquals("最终只应有 1 个请求落网", 1, s.requestCount)
+        assertFalse("完成后不得留在生成中", vm.isGenerating.value)
+    }
+
+    // ═══════════════════ 9. 被取代请求的迟到回调 ═══════════════════
+
+    /**
+     * 审计 第5节第1条「断言旧请求迟到 chunk/result 不覆盖新请求」。
+     *
+     * 生产 GenerationEngine.Callbacks 不带 requestId（审计 第6节 ），
+     * 因此确定性的注入点是**直接向唯一写入漏斗投一个身份不符的事件**
+     * （`vm.dispatchReply(ReplyChunk(STALE_REQUEST_ID, …))`），模拟
+     * 「被取消的旧请求，其最后一个在途回调在新请求已开始后才到达」。
+     * 这不算是作弊：reducer 的判据本来就只看事件自己带的 requestId，
+     * 谁递进来的不重要——重要的是**从这里递进去必须被挡**。
+     *
+     * ⚠ **这一格原先标的"预期红"同样是假线索**：它点名
+     * `LoveBrainViewModel.onReplyStreamingCoreText`"无任何所有权判定，直接累加"与
+     * `onReplyResult`"只要 isBusy 就接受"——**生产侧今天没有这两个方法**：
+     * `grep -rn "onReplyStreamingCoreText\|onReplyResult" app/src/main` 实到 **0 命中**；
+     * 14 处命中全在 JVM 测试夹具里（`viewmodel/GenerationEngineTestHelper.kt` 的 `EventRecorder`，
+     * 那些方法名只是留着让旧用例少改，做的事是**往通道里塞带 requestId 的 typed event**）。
+     * 回复状态现在只能经 `dispatchReply → ReplyStore.accept → ReplyReducer.reduce` 这一条路写，
+     * 而 reducer 每类事件都先过身份门禁：`model/GenerationEvents.kt:208-210`（ReplyStarted 要 owner 相符）、
+     * `:221`（ReplyCleared 要 owner 相符）、`:226-229`（其余事件"身份 + 活跃阶段"双重门禁），
+     * 不相干的事件**原样返回同一个 state 对象**，`ReplyStore` 据此把它报给 `onStaleEvent` 记一条被拒日志
+     * （就是坑表 127 里那条被我误读成"强相关线索"的 `rejected (stale requestId …)`）。
+     *
+     * ⇒ 这一格现在测的是"那道门禁真的挡得住"，而不是"有个已知漏洞没修"。
+     * 反证口径：把 `GenerationEvents.kt:227` 那行 `if (!current.request.isBusy) return current` 上面
+     * 那行身份判据去掉，这一格必须红（迟到事件盖掉当前请求）——**这一发探针留给下一次动 reducer 的人做**，
+     * 没有注入生产判据。
+     */
+    @Test
+    fun lateCallbacksFromSupersededRequest_doNotOverwriteCurrentRequest() {
+        val staleChunk = "STALE_CHUNK_FROM_SUPERSEDED_REQUEST"
+        val staleMessage = "STALE_RESULT_FROM_SUPERSEDED_REQUEST"
+        // R1 的 requestId 在 VM 内部，测试拿不到也不需要——任何不等于当前 owner 的身份都该被拒
+        val STALE_REQUEST_ID = "00000000-0000-4000-8000-000000000001"
+
+        // 请求都挂住不下发：R1 用于被停止取代，R2 用于保持「当前请求在途」
+        val s = installProvider(FakeProviderServer.Script.NoResponse)
+
+        // R1：发起后停止 —— R1 被取代
+        vm.addMessage(ChatMessage.Role.ME, "在吗")
+        vm.generate()
+        pumpUntil("R1 应进入生成中") { vm.isGenerating.value }
+        // 先把"请求有没有出门"钉在这里。CI 上这个用例红在 R2 那句，
+        // 而 requestCount 是累计的：R1 若也没出门，那句 R2 断言说的其实一直是 R1 的事。
+        // 这一条早一步红，就能把「请求根本没发出」与「被取代请求的迟到事件污染新请求」
+        // 两类原因分开——后者要等前者过了才轮到它说话。
+        // ⚠ 等一等再判：`isGenerating` 在 prep 阶段就翻 true，连接要到 t2 之后才建，
+        //    一锤子读会把"还没发出"报成"根本没发出"（`a8349eb` 那跑三格同形就是这么来的）。
+        pumpUntil("R1 的请求应已出门", timeoutMs = 6_000L) { s.requestCount >= 1 }
+        assertTrue(
+            "R1 应已向 Provider 发出请求（等满 6 秒后实收 ${s.requestCount} 次；" +
+                "isGenerating=${vm.isGenerating.value} providerReady=${vm.providerReady.value} " +
+                "result=${vm.result.value} baseUrl=${s.baseUrl}）\n  链路读数：${providerDiagnosis()}",
+            s.requestCount >= 1
+        )
+        vm.stopGeneration()
+        pumpUntil("停止 R1 后应回到空闲") { !vm.isGenerating.value }
+
+        // R2：新请求，被 fake 挂住不会自己完成
+        vm.generate()
+        pumpUntil("R2 应进入生成中") { vm.isGenerating.value }
+        // 同样先等出门再判累计：R2 的连接也发生在 prep 之后
+        pumpUntil("R2 应已向 Provider 发出请求（累计应 ≥2）", timeoutMs = 6_000L) { s.requestCount >= 2 }
+        assertTrue(
+            "R2 应已向 Provider 发出请求（等满 6 秒后累计实收 ${s.requestCount} 次，" +
+                "R1 那一次之后没有新增；isGenerating=${vm.isGenerating.value} " +
+                "providerReady=${vm.providerReady.value} result=${vm.result.value}）\n" +
+                "  链路读数：${providerDiagnosis()}",
+            s.requestCount >= 2
+        )
+        assertNull("R2 在途时不得已有结果", vm.result.value)
+
+        // 注入 R1 的迟到事件——之后 reducer 是唯一写入口，
+        // 身份不属于当前 R2 的事件必须整条被拒。
+        vm.dispatchReply(ReplyChunk(STALE_REQUEST_ID, staleChunk))
+        vm.dispatchReply(ReplyCompleted(STALE_REQUEST_ID, GenerateResult.Error(staleMessage)))
+
+        assertNull("被取代请求的迟到 result 不得写进当前请求", vm.result.value)
+        // 生产流式文本按 50ms 合并发布，给足时间暴露污染
+        Thread.sleep(400L)
+        composeRule.mainClock.advanceTimeBy(FRAME_PUMP_MS)
+        assertFalse(
+            "被取代请求的迟到 chunk 不得混进当前请求的流式文本，实际：${vm.streamingCoreText.value}",
+            vm.streamingCoreText.value.contains(staleChunk)
+        )
+        assertTrue("当前请求不应被迟到回调踢出在途状态", vm.isGenerating.value)
+    }
+
+    // ═══════════════════════ 10. Service destroy ═══════════════════════
+
+    /**
+     * 审计 第8节第1条 第 5 条「Service destroy」。
+     *
+     * 悬浮窗权限作为前置条件由 [grantOverlayAppOp] 在起服务前主动授上（STEP 2：设好前置条件，
+     * 不再用 Assume 跳过）。授完仍起不来的只剩 Android 14+ 个别受限设备对 FGS 后台启动的策略
+     * 拦截——那一种环境才落到下面的 [Assume.assumeTrue]（明确报 skipped，不伪装成通过），
+     * 起得来就断言真实合同：instance 发布 → onDestroy 释放 instance → 在途生成不受污染。
+     */
+    @Test
+    fun floatingService_destroyWhileGenerationInFlight_releasesInstanceAndChainStaysUsable() {
+        grantOverlayAppOp()
+        val intent = Intent(app, FloatingService::class.java)
+        val started = runCatching { serviceRule.startService(intent) }.isSuccess
+        Assume.assumeTrue(
+            "FloatingService 未能在本 instrumentation 环境启动（overlay 已由 appops 授予；" +
+                "仍起不来只可能是 Android 14+ FGS 后台策略拦截）；在具备条件的设备上本用例是真跑的",
+            started
+        )
+
+        try {
+            assertNotNull("启动后 FloatingService.instance 应存在", FloatingService.instance)
+
+            // destroy 期间必须有一个前台生成在途（复用同一套 Koin 单例）
+            val s = installProvider(
+                FakeProviderServer.Script.Stream(listOf("不该完成的响应"), chunkDelayMs = 200L)
+            )
+            vm.addMessage(ChatMessage.Role.ME, "在吗")
+            vm.generate()
+            pumpUntil("destroy 前应有一个在途请求") { vm.isGenerating.value }
+
+            app.stopService(intent)
+            val deadline = System.currentTimeMillis() + 5_000L
+            while (FloatingService.instance != null && System.currentTimeMillis() < deadline) {
+                Thread.sleep(50L)
+            }
+            assertNull("onDestroy 必须释放 FloatingService.instance", FloatingService.instance)
+
+            // destroy 不得打断在途请求的所有权：要么正常出结果，要么可干净停止
+            pumpUntil("destroy 后在途请求应出结果或可停止", timeoutMs = 12_000L) {
+                vm.result.value != null || !vm.isGenerating.value
+            }
+            runCatching { vm.stopGeneration() }
+            pumpUntil("停止后必须回到空闲") { !vm.isGenerating.value }
+            assertTrue("在途请求至少发过一次 Provider", s.requestCount >= 1)
+        } finally {
+            runCatching { app.stopService(intent) }
+        }
+    }
+
+    /** 反复起停不泄漏实例（「Service 开关」的 instrumentation 侧证据） */
+    @Test
+    fun floatingService_repeatedStartAndStop_neverLeaksInstance() {
+        grantOverlayAppOp()
+        val intent = Intent(app, FloatingService::class.java)
+        val started = runCatching { serviceRule.startService(intent) }.isSuccess
+        Assume.assumeTrue(
+            "FloatingService 在本环境不可启动（overlay 已由 appops 授予；" +
+                "仍起不来只可能是 Android 14+ FGS 后台策略拦截，见类 KDoc）",
+            started
+        )
+        try {
+            repeat(5) { round ->
+                runCatching { serviceRule.startService(intent) }
+                assertNotNull("第 ${round + 1} 轮启动后应有实例", FloatingService.instance)
+                runCatching { app.stopService(intent) }
+                val deadline = System.currentTimeMillis() + 3_000L
+                while (FloatingService.instance != null && System.currentTimeMillis() < deadline) {
+                    Thread.sleep(50L)
+                }
+                assertNull("第 ${round + 1} 轮起停后 instance 应被释放", FloatingService.instance)
+            }
+        } finally {
+            runCatching { app.stopService(intent) }
+        }
+    }
+
+    companion object {
+        /** 每次推帧推进的测试时钟毫秒数 */
+        private const val FRAME_PUMP_MS = 120L
+
+        /** ➕ 那句 contentDescription —— 生产目前仍是内联中文（ReplyInput），尚未进资源 */
+        private const val ADD_ENTRY_DESCRIPTION = "添加"
+    }
+}

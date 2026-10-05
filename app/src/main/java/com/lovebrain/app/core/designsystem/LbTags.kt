@@ -1,0 +1,31 @@
+package com.lovebrain.app.core.designsystem
+
+/**
+ * 统一组件自己的自动化锚点。
+ *
+ * 锚点属于组件，不属于某一个页面：这里只放设计系统组件的锚点，页面专属的锚点
+ * （军师状态卡、About 入口）留在页面自己那边，命名也不许用 `lb_home_*` 这种"住在 core 却叫 home"的名字。
+ */
+object LbTags {
+    const val SECTION = "lb_section"
+    const val ACTION_CARD = "lb_action_card"
+    const val SETTING_ROW = "lb_setting_row"
+    const val METRIC_CELL = "lb_metric_cell"
+
+    /**
+     * 芯片（单选/多选/动作同一颗）的锚点。
+     *
+     * 只挂在**带语义的那一层**：热区分两层的形状里，外面那颗才是手指与读屏的信的节点，
+     * 里面的胶囊是装饰性的视觉层——锚点跟着所有者走，不跟着像素走。
+     */
+    const val CHIP = "lb_chip"
+
+    /**
+     * 主动作"生成中 = 点它就是停止"那颗条的锚点。
+     *
+     * 值故意仍是 `generation_stop_action`（不跟着改名）：设备侧选择器与 CI 脚本按这个字面量找节点，
+     * 改值等于把那条链一起换掉，而这一格只想换**归属**（从 `ui/panel/reply` 的常量搬进设计系统）。
+     * 这正是"文字会变，tag 不会"要防的那件事反过来用——tag 也别随手改。
+     */
+    const val PRIMARY_STOP = "generation_stop_action"
+}

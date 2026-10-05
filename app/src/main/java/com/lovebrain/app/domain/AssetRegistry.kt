@@ -7,7 +7,7 @@ package com.lovebrain.app.domain
 object AssetRegistry {
 
     // ═══ 回复系 system = core + naturalness_check + redline + format（组装顺序即缓存锚点顺序，禁止乱序）═══
-    // 谈心/锦囊/润色各以 counseling/suggest/polish 全文为 system；动态内容（知识段/消息/时间戳）一律在 user，
+    // 谈心/主动开场/润色各以 counseling/proactive/polish 全文为 system；动态内容（知识段/消息/时间戳）一律在 user，
     // 保证 system 前缀稳定以命中上下文缓存
     const val CORE = "engine/system_prompt/core.md"
     const val STAGE = "engine/system_prompt/stage.md"
@@ -15,11 +15,10 @@ object AssetRegistry {
     const val NATURALNESS = "engine/system_prompt/naturalness_check.md"
     const val AGGRESSIVE = "engine/system_prompt/aggressive.md"
     const val FORMAT = "engine/system_prompt/format.md"
-
     // ═══ 引擎附加段 ═══
     const val COUNSELING = "engine/counseling.md"
-    const val SUGGEST = "engine/suggest.md"
     const val POLISH = "engine/polish.md"
+    const val PROACTIVE = "engine/proactive.md"  // 主动开场引擎（含从锦囊并入的话题切入点能力）
 
     // ═══ 知识引擎 ═══
     const val LESSONS = "engine/knowledge_prompt/lessons.md"
@@ -40,7 +39,7 @@ object AssetRegistry {
     /** 全部注册资产（启动自检用；新增资产必须登记于此，否则自检覆盖不到） */
     val ALL: List<String> = listOf(
         CORE, STAGE, REDLINE, NATURALNESS, AGGRESSIVE, FORMAT,
-        COUNSELING, SUGGEST, POLISH,
+        COUNSELING, POLISH, PROACTIVE,
         LESSONS, ONBOARDING, REFLECT, VECTOR, ENGINE_README
     ) + SCHEMA_NAMES.map { schema(it) }
 }

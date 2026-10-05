@@ -27,25 +27,25 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.PrimaryLight
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.TextSecondary
-import com.lovebrain.app.ui.theme.AppTypography
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.PrimaryLight
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.TextSecondary
+import com.lovebrain.app.core.designsystem.AppTypography
 import kotlinx.coroutines.delay
 /** 加载文案轮换节奏 */
 private const val PHRASE_ROTATE_TICK_MS = 1000L
 /** 超时计时步进（与 delay 耦合，必须同值） */
 private const val ELAPSED_TICK_MS = 1000L
 
-/** 加载行内部尺寸常量（令牌化：数值不变，仅外放命名） */
+/** 加载行内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object AiLoadingDimens {
     const val DOT_SIZE_DP = 6    // 跳动圆点直径
 }
 
 /**
- * AI 加载行（新建）。
+ * AI 加载行（ 新建）。
  *
  * 统一锦囊/谈心/回复区的加载样式，替代各处 CircularProgressIndicator 转圈：
  * 三点跳动（错开 140ms，1.4s 循环）+ 轮换文案（"军师正在 xxx"）+ 可选超时提示。
@@ -80,7 +80,7 @@ fun AiLoadingRow(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .fillMaxWidth
+            .fillMaxWidth()
             .clip(LoveBrainShape.md)
             .background(background)
             .padding(horizontal = Spacing.lg, vertical = Spacing.lg)

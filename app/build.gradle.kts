@@ -4,14 +4,18 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
+    //  的截图基线：JVM 渲染（Robolectric + Compose），不依赖设备截屏——
+    // 三个 Activity 都设了 FLAG_SECURE，设备侧 screencap 结构上拍不到那一屏
+    // （CI run 36236822959 实测：装回去、前台确认是 app 之后，screencap 交回 0 字节）。
+    id("io.github.takahirom.roborazzi")
 }
 
 // 正式签名：仓库根目录的 keystore.properties（已 gitignore，不入库）提供 keystore 路径与密码。
 // 贡献者本地没有该文件时，release 构建产出 unsigned APK（仍可验证 R8/资源裁剪/编译），
 // 绝不静默回退 debug 签名冒充正式发布。
 val keystorePropsFile = rootProject.file("keystore.properties")
-val keystoreProps = Properties.apply {
-    if (keystorePropsFile.exists) keystorePropsFile.inputStream.use { load(it) }
+val keystoreProps = Properties().apply {
+    if (keystorePropsFile.exists()) keystorePropsFile.inputStream().use { load(it) }
 }
 
 android {
@@ -22,13 +26,27 @@ android {
         applicationId = "com.lovebrain.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "1.3.1"
+versionCode = 9
+versionName = "1.4.0-rc1"
+        // : Compose UI test runner
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // F03: 构建可追溯性——注入 git SHA 和构建类型
+        val gitSha = try {
+            val process = Runtime.getRuntime().exec(arrayOf("git", "rev-parse", "--short", "HEAD"))
+            val text = process.inputStream.bufferedReader().readText().trim()
+            process.waitFor()
+            if (text.length >= 7) text else "unknown"
+        } catch (e: Exception) {
+            "unknown"
+        }
+        buildConfigField("String", "GIT_SHA", "\"$gitSha\"")
+        buildConfigField("String", "BUILD_TYPE", "\"debug\"")
     }
 
     signingConfigs {
         create("release") {
-            if (keystorePropsFile.exists) {
+            if (keystorePropsFile.exists()) {
                 storeFile = file(keystoreProps.getProperty("storeFile"))
                 storePassword = keystoreProps.getProperty("storePassword")
                 keyAlias = keystoreProps.getProperty("keyAlias")
@@ -47,9 +65,15 @@ android {
             )
             // 有 keystore.properties 时用正式签名发布；没有时不指定 signingConfig，
             // 产出 unsigned release APK（可用于 R8/资源裁剪/CI 编译验证），绝不回退 debug key。
-            if (keystorePropsFile.exists) {
+            if (keystorePropsFile.exists()) {
                 signingConfig = signingConfigs.getByName("release")
             }
+            // F03: Release 构建覆盖 BUILD_TYPE
+            buildConfigField("String", "BUILD_TYPE", "\"release\"")
+        }
+        debug {
+            // F03: Debug 构建显式标记
+            buildConfigField("String", "BUILD_TYPE", "\"debug\"")
         }
     }
     compileOptions {
@@ -68,6 +92,9 @@ android {
             // JVM 单测放行 android.util.Log 等框架调用（返回默认值不抛异常）：
             // L.* 直调 Log，Linux CI 上删除路径触发未 mock 的 Log → RuntimeException（v1.1.0 CI 实测）
             isReturnDefaultValues = true
+            // Robolectric（ / ）要读合并后的 manifest 与资源才能组合 Compose 树，
+            // 没有这一行 createComposeRule() 在 JVM 上直接起不来。
+            isIncludeAndroidResources = true
         }
     }
     composeOptions {
@@ -97,7 +124,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.activity:activity-compose:1.9.0")
 
-    // Lifecycle / ViewModel
+    // Lifecycle / ViewModel（2026-08-17：lifecycle-service 死依赖已删，零引用）
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.2")
 
@@ -130,4 +157,31 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.24")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
     testImplementation("io.mockk:mockk:1.13.11")
+
+    //  + ：在 JVM 上真跑 Compose 语义树。
+    // 为什么要在 unitTest 里再来一条 UI 测试通道：instrumentation 只在 CI 的 emulator 上跑，
+    // 本机没有 system image → "48dp / TalkBack 属性"这类断言在本机永远是"没测过"，
+    // 而复核  第 4 条禁止用源码 grep 顶替它。Robolectric 让同一批断言在 CI 之前就能红。
+    testImplementation(platform(composeBom))
+    testImplementation("org.robolectric:robolectric:4.14.1")
+    //  截图基线（JVM 渲染）：见上面的 roborazzi 插件。
+    // 钉版本的理由：1.7x 用 Kotlin 2.0.21 编，本仓库还是 Kotlin 1.9.24。
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-core:1.30.0")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi:1.30.0")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-junit-rule:1.30.0")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:1.30.0")
+    testImplementation("androidx.test:core:1.6.1")
+    testImplementation("androidx.test.ext:junit:1.2.1")
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    // ui-test-manifest 走下面已有的 debugImplementation：Robolectric 读的是 debug 变体
+    // 合并后的 manifest，再声明一份 testImplementation 会被 lint 判成配置放错
+    //（TestManifestGradleConfiguration，本机实测）。
+
+    // : Compose UI interaction test（需要 emulator）
+    androidTestImplementation(platform(composeBom))
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

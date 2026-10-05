@@ -1,0 +1,129 @@
+name: Manual
+
+# 手动触发的慢/设备级门禁（从 ci.yml 挪出，见 /.md）。
+# 目的：push CI 不再为像素比对与覆盖安装买单；这两个 job 只在 workflow_dispatch 时跑。
+# 语义守恒：upgrade-test 的 if 条件、四道 secret 门、脚本调用一字未改，只是换了承载文件。
+#   · 原 ci.yml 里 upgrade-test 的 needs: [verify, ui-test] 跨文件失效 → 这里去掉 needs；
+#     如需"UI 先绿再跑升级"，在 dispatch 后按顺序手点即可。
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # 视觉基线：只在 verify 模式比对，绝不自动覆盖 baseline（ :538）。
+  # 重新生成基线是显式人工动作：./gradlew :app:recordRoborazziDebug + 人看过 + 单独提交。
+  visual-baseline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Make scripts executable
+        run: chmod +x gradlew scripts/*.sh scripts/lib/*.sh
+
+      - name: Screenshot baselines must match (verify only — never record)
+        # ⚠ 这一步必须单独存在：带着一次真实视觉回归跑普通 testDebugUnitTest 是 rc=0 全绿——
+        #   roborazzi 默认模式只重录不比对，比对只在 verify 模式发生。
+        # ⚠ 不能直接跑 gradle task：roborazzi 在 verify 模式读 app/build/outputs/roborazzi/ 作原图，
+        #   干净检出里那目录为空。脚本把仓库基线放到它真正会读的位置，并先清 build/ 残留。
+        run: bash scripts/verify_visual_baseline.sh
+
+      - name: Upload screenshot comparison report and actual images
+        # 带实到图是刻意的：红的时候人要能看见 runner 自己画出来的那张，而不是只看见一句失败。
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: roborazzi-report
+          path: |
+            app/build/reports/roborazzi/
+            app/build/intermediates/roborazzi/
+          if-no-files-found: error
+          retention-days: 30
+
+  # : 升级安装测试——下载并校验 v1.3.1、安装旧版、真实写夹具、
+  # 覆盖安装**签名/R8 Release** 候选、断言数据可读 + schema 已升级 + 主页面可用。
+  upgrade-test:
+    runs-on: ubuntu-latest
+    # ⚠ **2026-09-29 用户书面改需求**：CI 不做 release 签名发布，签名与覆盖安装本地手动执行。
+    #   ⇒ 这一 job 只在 workflow_dispatch 时执行：不是 continue-on-error，不是把 secret 缺失判成通过，
+    #     下面那道"没有四个 secret 就响亮失败"的门**一个字没改**，手触发时照样拦。
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0777", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Require the release signing secrets
+        # An upgrade gate on an UNSIGNED candidate proves nothing about the artifact
+        # users will actually receive, so this job fails loudly instead of falling
+        # back to assembleDebug (the audited behaviour) or skipping.
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: bash scripts/prepare_release_keystore.sh --baseline scripts/signing-baseline.txt
+
+      - name: Build candidate release APK (signed + R8)
+        # keystore.properties was just materialised, so :app:assembleRelease now
+        # emits the signed app-release.apk — the same artifact class Release publishes.
+        run: |
+          chmod +x gradlew scripts/*.sh scripts/lib/*.sh
+          ./gradlew :app:assembleRelease --no-daemon
+          bash scripts/resolve_release_apk.sh --require-signed --path-file fixtures/candidate-apk-path.txt
+
+      - name: Download and verify v1.3.1 fixture APK
+        # A failed download is a hard failure. The previous version of this step
+        # swallowed the failure and marked the whole upgrade gate as skipped.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bash scripts/download_release_apk.sh v1.3.1 fixtures \
+            --repo "$GITHUB_REPOSITORY" \
+            --path-file fixtures/old-apk-path.txt
+
+      - name: Upgrade install, fixture write and smoke test
+        # `default`/google_apis image: scripts/write_upgrade_fixture.sh needs a root
+        # adb shell because the candidate is a NON-debuggable release APK, so run-as
+        # cannot reach /data/data/<pkg>. A playstore image would fail loudly there.
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          target: google_apis
+          script: |
+            bash scripts/run_upgrade_test.sh \
+              --old-apk "$(cat fixtures/old-apk-path.txt)" \
+              --candidate-apk "$(cat fixtures/candidate-apk-path.txt)" \
+              --out-dir fixtures
+          disable-animations: true
+
+      - name: Upload upgrade evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: upgrade-evidence
+          path: fixtures/
+          if-no-files-found: error
+          retention-days: 30

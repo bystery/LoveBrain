@@ -37,20 +37,5 @@
 
 ### 异常输出处理
 - JSON 字符串内的引号转义为 `\"`，反斜杠转义为 `\\`。
-- 字段内容为空时写"待积累"，不能是空字符串。
 - JSON 中换行用 `\n` 转义。
 - 输出前确认括号匹配、所有字符串闭合。
-
----
-## 输出格式
-
-{
-  "me": "完整新内容",
-  "her": "完整新内容",
-  "warmth": "完整新内容",
-  "stage_changed": true/false,
-  "new_stage": "仅在 stage_changed=true 时有效",
-  "observations": [],
-  "message_to_user": "仅在 stage_changed=true 或新增关键事件时输出，否则为空字符串"
-}
-

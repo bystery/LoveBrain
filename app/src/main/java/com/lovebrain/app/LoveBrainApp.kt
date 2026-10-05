@@ -11,10 +11,10 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class LoveBrainApp : Application {
+class LoveBrainApp : Application() {
 
     /**
-     * 应用级协程异常兜底（/ ）：
+     * 应用级协程异常兜底（ / ）：
      * 后台作业（备份、知识库触发等）抛未捕获异常时记日志不崩。
      * SupervisorJob 已防兄弟取消，此 Handler 兜底未被 runCatching 包住的漏网异常。
      */
@@ -28,11 +28,11 @@ class LoveBrainApp : Application {
      * 调研依据：Kotlin 官方文档明确建议避免 GlobalScope（无法管理生命周期、易泄漏）。
      */
     val applicationScope: CoroutineScope = CoroutineScope(
-        SupervisorJob + Dispatchers.Default + appCrashHandler
+        SupervisorJob() + Dispatchers.Default + appCrashHandler
     )
 
-    override fun onCreate {
-        super.onCreate
+    override fun onCreate() {
+        super.onCreate()
 
         // 初始化 Koin 依赖注入
         startKoin {

@@ -31,8 +31,8 @@ class KnowledgeRepositoryDeleteBackupTest {
     private lateinit var root: File
     private lateinit var appScope: CoroutineScope
 
-    private fun newRepo: KnowledgeRepository {
-        appScope = CoroutineScope(SupervisorJob + Dispatchers.IO)
+    private fun newRepo(): KnowledgeRepository {
+        appScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         return KnowledgeRepository(
             knowledgeRoot = root,
             securePrefs = mockk<SecurePrefs>(relaxed = true),
@@ -42,9 +42,9 @@ class KnowledgeRepositoryDeleteBackupTest {
     }
 
     private fun writeKbJson(dir: File, name: String) {
-        dir.mkdirs
+        dir.mkdirs()
         File(dir, "kb.json").writeText(
-            Json.encodeToString(KnowledgeBase.serializer,
+            Json.encodeToString(KnowledgeBase.serializer(),
                 KnowledgeBase(name = name, displayName = name, updatedAt = "2026-09-13T10:00:00+08:00")),
             Charsets.UTF_8
         )
@@ -52,19 +52,19 @@ class KnowledgeRepositoryDeleteBackupTest {
 
     private fun makeBackup(kbName: String, timestamp: String) {
         val backupDir = File(root, ".backup/${kbName}_$timestamp")
-        backupDir.mkdirs
+        backupDir.mkdirs()
         File(backupDir, "kb.json").writeText("backup of $kbName at $timestamp")
     }
 
     @Before
-    fun setUp {
-        root = Files.createTempDirectory("kr_delete_backup").toFile
+    fun setUp() {
+        root = Files.createTempDirectory("kr_delete_backup").toFile()
     }
 
     @After
-    fun tearDown {
-        appScope.cancel
-        root.deleteRecursively
+    fun tearDown() {
+        appScope.cancel()
+        root.deleteRecursively()
     }
 
     /**
@@ -74,7 +74,7 @@ class KnowledgeRepositoryDeleteBackupTest {
      * - kb-ab 的 backup 仍然存在（防 prefix collision 误删）
      */
     @Test
-    fun delete_removes_backups_for_kb_but_not_similar_prefix = runTest {
+    fun delete_removes_backups_for_kb_but_not_similar_prefix() = runTest {
         withContext(Dispatchers.IO) {
             withTimeout(10_000) {
                 // 创建正式库
@@ -87,16 +87,16 @@ class KnowledgeRepositoryDeleteBackupTest {
                 // 关键：kb-ab 的备份不应被 kb-a 的删除误伤
                 makeBackup("kb-ab", "20260913_0000")
 
-                val ok = newRepo.delete("kb-a")
+                val ok = newRepo().catalogWrites.delete("kb-a")
 
                 assertTrue("删除应成功", ok)
-                assertFalse("kb-a 正式目录应不存在", dirA.exists)
+                assertFalse("kb-a 正式目录应不存在", dirA.exists())
                 assertFalse("kb-a backup 1 应被删除",
-                    File(root, ".backup/kb-a_20260912_1200").exists)
+                    File(root, ".backup/kb-a_20260912_1200").exists())
                 assertFalse("kb-a backup 2 应被删除",
-                    File(root, ".backup/kb-a_20260913_0000").exists)
+                    File(root, ".backup/kb-a_20260913_0000").exists())
                 assertTrue("kb-ab backup 不应被误删",
-                    File(root, ".backup/kb-ab_20260913_0000").exists)
+                    File(root, ".backup/kb-ab_20260913_0000").exists())
             }
         }
     }

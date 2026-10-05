@@ -1,0 +1,162 @@
+package com.lovebrain.app.ui.panel.reply
+
+import android.content.Context
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.performClick
+import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.core.designsystem.LbButtonHeightTier
+import com.lovebrain.app.core.testing.RenderIn
+import com.lovebrain.app.core.testing.SemanticsProbe
+import com.lovebrain.app.core.testing.UiMatrix
+import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.model.ComposerMode
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import java.util.concurrent.atomic.AtomicInteger
+
+/**
+ * 「生成回复」那一格的**长按热区层**在语义树与无障碍这一面的判据。
+ *
+ * 手指时序那两格（点一下 / 按住不放各自只发一次）归 instrumentation 通道
+ * （`ReplyPrimaryActionsTest` 的长按四格）：本机这台仪器上注入时序判不稳
+ * （同一件事见 `MessageRowSwipeDeleteTest` 的开头说明），不拿假绿的时序格子冒充。
+ * 这一格判的是**同一台仪器上量得准**的三件事，每一件都能被一种具体的坏实现打破：
+ *
+ * · [the_generate_slot_stays_one_actionable_node] ——
+ *   热区层如果改用 `clickable` / `combinedClickable`（而不是 `pointerInput`），
+ *   语义树里就会多出**第二颗**节点（还是颗没有名字的），可交互数从 1 变 2，这一格红。
+ *   这也是"这一屏不得再多画一颗仅看本轮开关"的可执行版本：开关一旦被画回来同样红在这里。
+ * · [the_generate_slot_keeps_the_old_footprint] ——
+ *   为了套这一格而自己画的那颗盒子不许改按钮的外观：仍是全宽、仍是面板主动作那一档
+ *   （[LbButtonHeightTier.PanelPrimaryAction]，40dp）；把 `heightIn` 从带 clickable 的节点上挪走、
+ *   或把热区做成"外层变大、点击仍挂在矮节点"的写法都会红，档位填错（还是 48、或矮过 40）同样红。
+ * · [the_accessibility_click_is_the_plain_generate] ——
+ *   读屏双击走语义 onClick，那条路必须仍是**普通生成**，而且只发一次。
+ *   把长按接成"顺手把长期开关拨上去"的实现里，无障碍这条路会跟着变味，这一格红。
+ */
+@RunWith(RobolectricTestRunner::class)
+@Config(
+    application = UiProbeApplication::class,
+    qualifiers = "sw600dp-w600dp-h1200dp-normal-long-mdpi"
+)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+class ReplyGenerateLongPressLayerTest {
+
+    @get:Rule
+    val rule = createComposeRule()
+
+    private val density: Float
+        get() = ApplicationProvider.getApplicationContext<Context>()
+            .resources.displayMetrics.density
+
+    private val probe by lazy { SemanticsProbe(density) }
+
+    /**
+     * 按**档**开一把尺：`SemanticsProbe` 读的还是同一个 `boundsInRoot`，只是那两条边的数取这一档的。
+     * 默认档（48dp 下限）不在这里判——那一档由 `LbPrimaryButtonStateTest` 钉着。
+     */
+    private fun probeAt(tier: LbButtonHeightTier) =
+        SemanticsProbe(density, tier.minHeightDp.toFloat())
+
+    private val plainClicks = AtomicInteger(0)
+    private val currentRoundOnlyClicks = AtomicInteger(0)
+
+    private fun mount(messageCount: Int) {
+        plainClicks.set(0)
+        currentRoundOnlyClicks.set(0)
+        rule.setContent {
+            val deviceDensity = LocalDensity.current.density
+            UiMatrix(360).RenderIn(deviceDensity) {
+                ReplyPrimaryActions(
+                    composerMode = ComposerMode.REPLY,
+                    isGenerating = false,
+                    isProactive = false,
+                    hasReplyResult = false,
+                    messageCount = messageCount,
+                    onGenerateReply = { plainClicks.incrementAndGet() },
+                    onGenerateThisRound = { currentRoundOnlyClicks.incrementAndGet() },
+                    onGenerateProactive = {},
+                    onRetry = {},
+                    onSaveToKb = {},
+                    onStop = {}
+                )
+            }
+        }
+        rule.mainClock.advanceTimeBy(16L)
+    }
+
+    /** 热区层不往语义树里加东西：这一格永远只有一颗可交互节点，就是那颗按钮 */
+    @Test
+    fun `the generate slot stays one actionable node`() {
+        mount(messageCount = 3)
+        val targets = probe.actionableTargets(rule, "主操作区")
+        assertEquals(
+            "「生成回复」这一格只该有一颗可交互节点（长按是手势，不是第二颗控件）：" +
+                targets.joinToString { it.describe() },
+            1, targets.size
+        )
+        assertTrue(
+            "那颗必须是带名字的按钮，不是热区层那颗无名盒子：" + targets.single().describe(),
+            targets.single().label.isNotBlank()
+        )
+    }
+
+    /** 套了这一层之后外观逐字不变：仍全宽、仍落在面板主动作那一档（40dp） */
+    @Test
+    fun `the generate slot keeps the old footprint`() {
+        mount(messageCount = 3)
+        // 判据数值跟着这一档走：这一格测的是 [LbButtonHeightTier.PanelPrimaryAction]（40dp），
+        // 不是默认档那 48dp（下限本身没动，仍由 `LbPrimaryButtonStateTest` 钉着）。
+        // 两条边仍然真读 boundsInRoot，再钉一次"读到的可见高度正好是这一档"：
+        // heightIn 从带 clickable 的节点挪走 → 量到内容那 26dp → 红；档没接上（还是 48）→ 红。
+        val tier = LbButtonHeightTier.PanelPrimaryAction
+        val targets = probeAt(tier).assertAllActionableMeetTouchFloor(rule, "主操作区")
+        val button = targets.single()
+        assertTrue(
+            "按钮仍要铺满这一行的宽度（360dp 槽位），实测 " + button.describe(),
+            button.widthDp > 300f
+        )
+        assertEquals(
+            "这一档的可见高度应当正好是 ${tier.name} = ${tier.minHeightDp}dp，实测 " + button.describe(),
+            tier.minHeightDp.toFloat(), button.heightDp, 0.6f
+        )
+        assertEquals(
+            "只画一颗：" + targets.joinToString { it.describe() },
+            1, targets.size
+        )
+    }
+
+    /** 读屏那条出口 = 普通生成，一次、且只一次；长按那条不被语义点击触发 */
+    @Test
+    fun `the accessibility click is the plain generate`() {
+        mount(messageCount = 3)
+        rule.onNode(hasClickAction()).performClick()
+        assertEquals("无障碍点击应恰好发起一次普通生成", 1, plainClicks.get())
+        assertEquals("语义点击不该走到\"仅看本轮\"那一路", 0, currentRoundOnlyClicks.get())
+    }
+
+    /**
+     * 0 条消息那格**不画**热区层：那颗是灰的禁用按钮，
+     * 语义点击（读屏）与真实手指都得发不出请求——
+     * "禁用态仍然画得出来"这条既有合同不变，但长按也不许绕过它。
+     */
+    @Test
+    fun `the disabled generate has no press layer behind it`() {
+        mount(messageCount = 0)
+        val targets = probe.actionableTargets(rule, "主操作区")
+        assertEquals("0 条消息时仍只有一颗（灰着的）按钮：" + targets.joinToString { it.describe() },
+            1, targets.size)
+        assertTrue("那颗必须报禁用：" + targets.single().describe(), targets.single().disabled)
+        rule.onNode(hasClickAction()).performClick()
+        assertEquals("禁用那颗发不出普通生成", 0, plainClicks.get())
+        assertEquals("禁用那颗也发不出仅看本轮生成", 0, currentRoundOnlyClicks.get())
+    }
+}

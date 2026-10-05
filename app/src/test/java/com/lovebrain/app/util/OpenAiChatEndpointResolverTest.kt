@@ -18,14 +18,14 @@ class OpenAiChatEndpointResolverTest {
     // ═══ 已含 /chat/completions → 唯一候选 ═══
 
     @Test
-    fun full_endpoint_returns_single_candidate {
+    fun full_endpoint_returns_single_candidate() {
         val result = OpenAiChatEndpointResolver.candidates("https://xxx.com/v1/chat/completions")
         assertEquals(1, result.size)
         assertEquals("https://xxx.com/v1/chat/completions", result[0])
     }
 
     @Test
-    fun full_endpoint_with_trailing_slash_returns_single_candidate {
+    fun full_endpoint_with_trailing_slash_returns_single_candidate() {
         val result = OpenAiChatEndpointResolver.candidates("https://xxx.com/v1/chat/completions/")
         assertEquals(1, result.size)
         assertEquals("https://xxx.com/v1/chat/completions", result[0])
@@ -34,21 +34,21 @@ class OpenAiChatEndpointResolverTest {
     // ═══ /v1 结尾 → 只补 /chat/completions ═══
 
     @Test
-    fun v1_suffix_appends_only_chat_completions {
+    fun v1_suffix_appends_only_chat_completions() {
         val result = OpenAiChatEndpointResolver.candidates("https://api.openai.com/v1")
         assertEquals(1, result.size)
         assertEquals("https://api.openai.com/v1/chat/completions", result[0])
     }
 
     @Test
-    fun api_v1_suffix_appends_only_chat_completions {
+    fun api_v1_suffix_appends_only_chat_completions() {
         val result = OpenAiChatEndpointResolver.candidates("https://openrouter.ai/api/v1")
         assertEquals(1, result.size)
         assertEquals("https://openrouter.ai/api/v1/chat/completions", result[0])
     }
 
     @Test
-    fun custom_v1_suffix_appends_only_chat_completions {
+    fun custom_v1_suffix_appends_only_chat_completions() {
         val result = OpenAiChatEndpointResolver.candidates("https://xxx.com/openai/v1")
         assertEquals(1, result.size)
         assertEquals("https://xxx.com/openai/v1/chat/completions", result[0])
@@ -57,7 +57,7 @@ class OpenAiChatEndpointResolverTest {
     // ═══ 普通地址 → 三个候选 ═══
 
     @Test
-    fun deepseek_root_generates_three_candidates {
+    fun deepseek_root_generates_three_candidates() {
         val result = OpenAiChatEndpointResolver.candidates("https://api.deepseek.com")
         assertEquals(3, result.size)
         assertEquals("https://api.deepseek.com/chat/completions", result[0])
@@ -66,7 +66,7 @@ class OpenAiChatEndpointResolverTest {
     }
 
     @Test
-    fun openai_root_generates_three_candidates {
+    fun openai_root_generates_three_candidates() {
         val result = OpenAiChatEndpointResolver.candidates("https://api.openai.com")
         assertEquals(3, result.size)
         // OpenAI: 第一个 404，第二个成功
@@ -76,7 +76,7 @@ class OpenAiChatEndpointResolverTest {
     }
 
     @Test
-    fun openrouter_root_generates_three_candidates {
+    fun openrouter_root_generates_three_candidates() {
         val result = OpenAiChatEndpointResolver.candidates("https://openrouter.ai")
         assertEquals(3, result.size)
         // OpenRouter: 前两个 404，第三个成功
@@ -88,7 +88,7 @@ class OpenAiChatEndpointResolverTest {
     // ═══ 路径子目录 ═══
 
     @Test
-    fun custom_path_generates_three_candidates {
+    fun custom_path_generates_three_candidates() {
         val result = OpenAiChatEndpointResolver.candidates("https://xxx.com/openai")
         assertEquals(3, result.size)
         assertEquals("https://xxx.com/openai/chat/completions", result[0])
@@ -99,7 +99,7 @@ class OpenAiChatEndpointResolverTest {
     // ═══ trim / 尾部斜杠 ═══
 
     @Test
-    fun trailing_slash_is_trimmed {
+    fun trailing_slash_is_trimmed() {
         val result = OpenAiChatEndpointResolver.candidates("https://api.deepseek.com/")
         assertEquals(3, result.size)
         assertEquals("https://api.deepseek.com/chat/completions", result[0])
@@ -108,15 +108,15 @@ class OpenAiChatEndpointResolverTest {
     // ═══ 空输入 ═══
 
     @Test
-    fun blank_input_returns_empty_list {
-        assertTrue(OpenAiChatEndpointResolver.candidates("").isEmpty)
-        assertTrue(OpenAiChatEndpointResolver.candidates("   ").isEmpty)
+    fun blank_input_returns_empty_list() {
+        assertTrue(OpenAiChatEndpointResolver.candidates("").isEmpty())
+        assertTrue(OpenAiChatEndpointResolver.candidates("   ").isEmpty())
     }
 
     // ═══ http:// loopback ═══
 
     @Test
-    fun localhost_root_generates_three_candidates {
+    fun localhost_root_generates_three_candidates() {
         val result = OpenAiChatEndpointResolver.candidates("http://127.0.0.1:8080")
         assertEquals(3, result.size)
         assertEquals("http://127.0.0.1:8080/chat/completions", result[0])

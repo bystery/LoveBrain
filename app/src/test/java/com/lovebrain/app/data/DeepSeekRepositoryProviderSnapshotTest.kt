@@ -1,4 +1,6 @@
 package com.lovebrain.app.data
+import com.lovebrain.app.model.ProviderRequestConfig
+import com.lovebrain.app.model.RawGenerationResult
 
 import android.util.Log
 import com.lovebrain.app.model.ProviderTicket
@@ -56,36 +58,36 @@ class DeepSeekRepositoryProviderSnapshotTest {
     )
 
     @Before
-    fun setUp {
+    fun setUp() {
         mockkStatic(Log::class)
-        every { Log.w(any, any<String>) } returns 0
-        every { Log.e(any, any<String>) } returns 0
-        every { Log.e(any, any<String>, any) } returns 0
+        every { Log.w(any(), any<String>()) } returns 0
+        every { Log.e(any(), any<String>()) } returns 0
+        every { Log.e(any(), any<String>(), any()) } returns 0
 
         prefs = mockk(relaxed = true)
         // 默认激活 Ticket-A
         every { prefs.activeTicketId } returns "A"
-        every { prefs.getWorkerTickets } returns listOf(ticketA, ticketB)
+        every { prefs.getWorkerTickets() } returns listOf(ticketA, ticketB)
         every { prefs.getWorkerApiKey("A") } returns "key-A"
         every { prefs.getWorkerApiKey("B") } returns "key-B"
         every { prefs.thinkingMode } returns 0
-        every { prefs.loadApiStats } returns null
-        every { prefs.saveApiStats(any) } returns Unit
+        every { prefs.loadApiStats() } returns null
+        every { prefs.saveApiStats(any()) } returns Unit
 
         repo = DeepSeekRepository(prefs)
     }
 
     @After
-    fun tearDown {
+    fun tearDown() {
         unmockkStatic(Log::class)
     }
 
     // ═══════════ Test 1: snapshot 切工单后不变 ═══════════
 
     @Test
-    fun snapshot_config_is_frozen_after_ticket_switch {
+    fun snapshot_config_is_frozen_after_ticket_switch() {
         // 初始 active=A
-        val config = repo.snapshotProviderConfig
+        val config = repo.snapshotProviderConfig()
         assertNotNull("snapshot 不应为 null", config)
 
         // 切 active=B
@@ -102,9 +104,9 @@ class DeepSeekRepositoryProviderSnapshotTest {
     // ═══════════ Test 2: 请求构造不读实时 active ticket ═══════════
 
     @Test
-    fun buildRequest_uses_snapshot_not_active_ticket {
+    fun buildRequest_uses_snapshot_not_active_ticket() {
         // 拿 config A
-        val configA = repo.snapshotProviderConfig!!
+        val configA = repo.snapshotProviderConfig()!!
         assertEquals("A", configA.ticketId)
 
         // 切 active=B
@@ -130,9 +132,9 @@ class DeepSeekRepositoryProviderSnapshotTest {
     // ═══════════ Test 3: thinking 固定 + override 优先 ═══════════
 
     @Test
-    fun thinkingMode_uses_snapshot_when_no_override {
+    fun thinkingMode_uses_snapshot_when_no_override() {
         // Ticket-A thinkingMode=1
-        val configA = repo.snapshotProviderConfig!!
+        val configA = repo.snapshotProviderConfig()!!
         assertEquals(1, configA.thinkingMode)
 
         // 切 B（thinkingMode=0）
@@ -154,9 +156,9 @@ class DeepSeekRepositoryProviderSnapshotTest {
     }
 
     @Test
-    fun thinkingOverride_takes_priority_over_snapshot {
+    fun thinkingOverride_takes_priority_over_snapshot() {
         // Ticket-A thinkingMode=1
-        val configA = repo.snapshotProviderConfig!!
+        val configA = repo.snapshotProviderConfig()!!
 
         // 传 override=0 → 应按 override=0（直出）
         val body = repo.buildRequestBodyWithConfig(
@@ -176,9 +178,9 @@ class DeepSeekRepositoryProviderSnapshotTest {
     // ═══════════ Test 4: retry 不切 Provider ═══════════
 
     @Test
-    fun retry_chain_uses_same_provider_snapshot {
+    fun retry_chain_uses_same_provider_snapshot() {
         // 整轮生成开始时冻结一次
-        val configA = repo.snapshotProviderConfig!!
+        val configA = repo.snapshotProviderConfig()!!
         assertEquals("A", configA.ticketId)
 
         // 切到 B
@@ -215,7 +217,7 @@ class DeepSeekRepositoryProviderSnapshotTest {
     // ═══════════ Test 5: usage 按原 config 计价 ═══════════
 
     @Test
-    fun usage_billing_uses_request_config_not_active_ticket {
+    fun usage_billing_uses_request_config_not_active_ticket() {
         // 请求使用 Ticket-B（deepseek.com → 可计费）
         val configB = ProviderRequestConfig(
             ticketId = "B",
@@ -249,7 +251,7 @@ class DeepSeekRepositoryProviderSnapshotTest {
     // ═══════════ Test 6: CostScope 区分 ═══════════
 
     @Test
-    fun costScope_enum_distinguishes_foreground_and_background {
+    fun costScope_enum_distinguishes_foreground_and_background() {
         // FOREGROUND 和 BACKGROUND 是不同的枚举值
         assertFalse(CostScope.FOREGROUND == CostScope.BACKGROUND)
 
@@ -267,7 +269,7 @@ class DeepSeekRepositoryProviderSnapshotTest {
     // 这里通过构造一个 null config 场景间接验证 generateRaw 在无配置时返回空字符串而非 crash。
 
     @Test
-    fun generateRaw_returns_empty_when_no_config = kotlinx.coroutines.test.runTest {
+    fun generateRaw_returns_empty_when_no_config() = kotlinx.coroutines.test.runTest {
         // 无 active ticket
         every { prefs.activeTicketId } returns null
         val result = repo.generateRaw("sys", "usr")
@@ -275,23 +277,23 @@ class DeepSeekRepositoryProviderSnapshotTest {
     }
 
     @Test
-    fun generateRaw_returns_empty_when_blank_ticketId = kotlinx.coroutines.test.runTest {
+    fun generateRaw_returns_empty_when_blank_ticketId() = kotlinx.coroutines.test.runTest {
         every { prefs.activeTicketId } returns ""
         val result = repo.generateRaw("sys", "usr")
         assertEquals("", result)
     }
 
     @Test
-    fun generateRaw_returns_empty_when_no_apiKey = kotlinx.coroutines.test.runTest {
+    fun generateRaw_returns_empty_when_no_apiKey() = kotlinx.coroutines.test.runTest {
         every { prefs.getWorkerApiKey("A") } returns null
         val result = repo.generateRaw("sys", "usr")
         assertEquals("", result)
     }
 
     @Test
-    fun generateRaw_returns_empty_when_blank_model = kotlinx.coroutines.test.runTest {
+    fun generateRaw_returns_empty_when_blank_model() = kotlinx.coroutines.test.runTest {
         val ticketNoModel = ticketA.copy(model = "")
-        every { prefs.getWorkerTickets } returns listOf(ticketNoModel, ticketB)
+        every { prefs.getWorkerTickets() } returns listOf(ticketNoModel, ticketB)
         val result = repo.generateRaw("sys", "usr")
         assertEquals("", result)
     }
@@ -299,47 +301,47 @@ class DeepSeekRepositoryProviderSnapshotTest {
     // ═══════════ Test 8: snapshot 返回 null 的场景 ═══════════
 
     @Test
-    fun snapshot_returns_null_when_no_active_ticket {
+    fun snapshot_returns_null_when_no_active_ticket() {
         every { prefs.activeTicketId } returns null
-        assertNull(repo.snapshotProviderConfig)
+        assertNull(repo.snapshotProviderConfig())
     }
 
     @Test
-    fun snapshot_returns_null_when_ticket_not_found {
+    fun snapshot_returns_null_when_ticket_not_found() {
         every { prefs.activeTicketId } returns "NONEXISTENT"
-        assertNull(repo.snapshotProviderConfig)
+        assertNull(repo.snapshotProviderConfig())
     }
 
     @Test
-    fun snapshot_returns_null_when_apiKey_missing {
+    fun snapshot_returns_null_when_apiKey_missing() {
         every { prefs.getWorkerApiKey("A") } returns null
-        assertNull(repo.snapshotProviderConfig)
+        assertNull(repo.snapshotProviderConfig())
     }
 
     @Test
-    fun snapshot_returns_null_when_baseUrl_blank {
+    fun snapshot_returns_null_when_baseUrl_blank() {
         val ticketNoUrl = ticketA.copy(baseUrl = "")
-        every { prefs.getWorkerTickets } returns listOf(ticketNoUrl, ticketB)
-        assertNull(repo.snapshotProviderConfig)
+        every { prefs.getWorkerTickets() } returns listOf(ticketNoUrl, ticketB)
+        assertNull(repo.snapshotProviderConfig())
     }
 
     @Test
-    fun snapshot_returns_null_when_model_blank {
+    fun snapshot_returns_null_when_model_blank() {
         val ticketNoModel = ticketA.copy(model = "")
-        every { prefs.getWorkerTickets } returns listOf(ticketNoModel, ticketB)
-        assertNull(repo.snapshotProviderConfig)
+        every { prefs.getWorkerTickets() } returns listOf(ticketNoModel, ticketB)
+        assertNull(repo.snapshotProviderConfig())
     }
 
     // ═══════════ Test: thinking fallback 到全局设置 ═══════════
 
     @Test
-    fun thinkingMode_falls_back_to_global_when_ticket_null {
+    fun thinkingMode_falls_back_to_global_when_ticket_null() {
         // ticket.thinkingMode = null → 应回退 securePrefs.thinkingMode
         val ticketNullThinking = ticketA.copy(thinkingMode = null)
-        every { prefs.getWorkerTickets } returns listOf(ticketNullThinking, ticketB)
+        every { prefs.getWorkerTickets() } returns listOf(ticketNullThinking, ticketB)
         every { prefs.thinkingMode } returns 1
 
-        val config = repo.snapshotProviderConfig
+        val config = repo.snapshotProviderConfig()
         assertNotNull("config 不应为 null", config)
         assertEquals(1, config!!.thinkingMode)
     }
@@ -347,15 +349,15 @@ class DeepSeekRepositoryProviderSnapshotTest {
     // ═══════════ Test: ticket 和 apiKey 来自同一 ticketId ═══════════
 
     @Test
-    fun ticket_and_apikey_come_from_same_ticketId {
+    fun ticket_and_apikey_come_from_same_ticketId() {
         // 确保 apiKey 读取的 ticketId 和 ticket 查找的 ticketId 一致
-        val config = repo.snapshotProviderConfig!!
+        val config = repo.snapshotProviderConfig()!!
         assertEquals("A", config.ticketId)
         assertEquals("key-A", config.apiKey)
 
         // 切到 B，新的 snapshot 应返回 B 的 key
         every { prefs.activeTicketId } returns "B"
-        val configB = repo.snapshotProviderConfig!!
+        val configB = repo.snapshotProviderConfig()!!
         assertEquals("B", configB.ticketId)
         assertEquals("key-B", configB.apiKey)
     }
@@ -363,8 +365,8 @@ class DeepSeekRepositoryProviderSnapshotTest {
     // ═══════════ Test: buildRequestWithConfig URL 已 normalize ═══════════
 
     @Test
-    fun buildRequestWithConfig_url_is_already_normalized {
-        val config = repo.snapshotProviderConfig!!
+    fun buildRequestWithConfig_url_is_already_normalized() {
+        val config = repo.snapshotProviderConfig()!!
         // 构造 request 验证不抛异常（URL 已在 resolveRequestConfig 中 normalize）
         repo.buildRequestWithConfig(config, "{}")
         // normalizeBaseUrl 去掉尾部 /
@@ -374,7 +376,7 @@ class DeepSeekRepositoryProviderSnapshotTest {
     // ═══════════ Test: buildRequestBodyWithConfig model 来自 config ═══════════
 
     @Test
-    fun buildRequestBodyWithConfig_model_from_config {
+    fun buildRequestBodyWithConfig_model_from_config() {
         val config = ProviderRequestConfig(
             ticketId = "X",
             apiKey = "key-X",

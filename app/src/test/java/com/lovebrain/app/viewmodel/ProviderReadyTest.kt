@@ -33,16 +33,16 @@ import kotlin.test.assertTrue
 class ProviderReadyTest {
 
     @Before
-    fun setUp {
+    fun setUp() {
         mockkStatic(Log::class)
-        every { Log.w(any, any<String>) } returns 0
-        every { Log.e(any, any<String>) } returns 0
-        Dispatchers.setMain(StandardTestDispatcher)
+        every { Log.w(any(), any<String>()) } returns 0
+        every { Log.e(any(), any<String>()) } returns 0
+        Dispatchers.setMain(StandardTestDispatcher())
     }
 
     @After
-    fun tearDown {
-        Dispatchers.resetMain
+    fun tearDown() {
+        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -53,15 +53,14 @@ class ProviderReadyTest {
         every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
-        every { prefs.loadCounselingResult } returns null
-        every { prefs.loadSuggestion } returns null
-        every { prefs.loadTodayCost } returns null
-        every { prefs.getWorkerTickets } returns listOfNotNull(ticket)
+        every { prefs.loadCounselingResult() } returns null
+        every { prefs.loadTodayCost() } returns null
+        every { prefs.getWorkerTickets() } returns listOfNotNull(ticket)
         every { prefs.activeTicketId } returns ticket?.id
-        every { prefs.getWorkerApiKey(any) } returns apiKey
-        val promptBuilder = mockk<PromptBuilder>
-        every { promptBuilder.validateConfig(any, any) } returns
-            ConfigValidationResult(0, 0, emptyList)
+        every { prefs.getWorkerApiKey(any()) } returns apiKey
+        val promptBuilder = mockk<PromptBuilder>()
+        every { promptBuilder.validateConfig(any(), any()) } returns
+            ConfigValidationResult(0, 0, emptyList())
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = mockk(relaxed = true),
@@ -69,25 +68,26 @@ class ProviderReadyTest {
             topicRecorder = mockk(relaxed = true),
             securePrefs = prefs,
             triggerCoordinator = mockk(relaxed = true),
-            generationEngine = mockk(relaxed = true)
+            generationEngine = mockk(relaxed = true),
+operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob()))
         )
     }
 
     @Test
-    fun ticket_without_key_not_ready = runTest {
+    fun ticket_without_key_not_ready() = runTest {
         val ticket = ProviderTicket(name = "t", baseUrl = "https://x.com", model = "m")
         val vm = newViewModel(ticket, apiKey = null)
-        advanceUntilIdle // init 内 refreshTicketState 排空
+        advanceUntilIdle() // init 内 refreshTicketState 排空
         assertFalse(vm.providerReady.value, "有工单无 Key 不得就绪")
-        vm.dispose
+        vm.dispose()
     }
 
     @Test
-    fun ticket_with_key_ready = runTest {
+    fun ticket_with_key_ready() = runTest {
         val ticket = ProviderTicket(name = "t", baseUrl = "https://x.com", model = "m")
         val vm = newViewModel(ticket, apiKey = "sk-test")
-        advanceUntilIdle
+        advanceUntilIdle()
         assertTrue(vm.providerReady.value, "工单+模型+Key 齐备应就绪")
-        vm.dispose
+        vm.dispose()
     }
 }

@@ -33,7 +33,7 @@
 #       requires all of these POSIX shell features:
 #         * functions;
 #         * expansions «$var», «${var}», «${var:-default}», «${var+SET}»,
-#           «${var#prefix}», «${var%suffix}», and «$(cmd )»;
+#           «${var#prefix}», «${var%suffix}», and «$( cmd )»;
 #         * compound commands having a testable exit status, especially «case»;
 #         * various built-in commands including «command», «set», and «ulimit».
 #
@@ -89,11 +89,11 @@ APP_HOME=$( cd "${APP_HOME:-./}" > /dev/null && pwd -P ) || exit
 # Use the maximum available, or set MAX_FD != -1 to use that value.
 MAX_FD=maximum
 
-warn  {
+warn () {
     echo "$*"
 } >&2
 
-die  {
+die () {
     echo
     echo "$*"
     echo
@@ -224,7 +224,7 @@ fi
 #
 # In Bash we could simply go:
 #
-#   readarray ARGS < <(xargs -n1 <<<"$var" ) &&
+#   readarray ARGS < <( xargs -n1 <<<"$var" ) &&
 #   set -- "${ARGS[@]}" "$@"
 #
 # but POSIX shell has neither arrays nor command substitution, so instead we

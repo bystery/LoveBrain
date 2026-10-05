@@ -1,0 +1,318 @@
+package com.lovebrain.app.ui.home
+
+import android.content.Context
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.R
+import com.lovebrain.app.core.testing.RenderIn
+import com.lovebrain.app.core.testing.SemanticsProbe
+import com.lovebrain.app.core.testing.TouchTier
+import com.lovebrain.app.core.testing.UiMatrix
+import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.viewmodel.SetupViewModel
+import com.lovebrain.app.viewmodel.SetupViewModel.CaptureApp
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import kotlinx.coroutines.flow.MutableStateFlow
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+
+/**
+ * 第6节第1条 第 6 行（`LbSettingRow` = 行这一族的统一所有者）归并 `CaptureAppRow` 之后，
+ * **用户从这一行读到的东西不许变少**：App 名、包名、勾没勾上、它是不是按钮/勾选框、
+ * 被二次拒绝的那一行还能不能读成"现在点不动"。
+ *
+ * 这一格刻意只用语义树读数，不读源码（`ProductionUiContractTest` 那种 grep 会被
+ * "换个写法"骗过去，账本 第39节第3条 已经为这件事翻过一次车）。
+ * 断言全部写成**归并前后都该成立**的形状，并且在本机对**归并之前**的实现先跑过一次：
+ * 五格全绿（"LABEL_ALFRED" 那行 `role=Checkbox`、`312x56dp @(24,217)`）。
+ * 所以这一组用例判的是"归并有没有把已经在的东西弄丢"，不是"顺手替这一页补判据"。
+ *
+ * 文案一律 `getString(资源 id)`，不抄中文（中英任一边改版式都不会假红）。
+ */
+@RunWith(RobolectricTestRunner::class)
+@Config(
+    application = UiProbeApplication::class,
+    qualifiers = "sw600dp-w600dp-h1200dp-normal-long-mdpi"
+)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+class CaptureAppRowSemanticsTest {
+
+    @get:Rule
+    val rule = createComposeRule()
+
+    private val app: Context get() = ApplicationProvider.getApplicationContext()
+    private val probe by lazy { SemanticsProbe(app.resources.displayMetrics.density) }
+
+    private val alfred = CaptureApp(
+        packageName = "PACKET_ALFRED", displayName = "LABEL_ALFRED", secondRejected = false
+    )
+    private val cyrus = CaptureApp(
+        packageName = "PACKET_CYRUS", displayName = "LABEL_CYRUS", secondRejected = false
+    )
+    private val bear = CaptureApp(
+        packageName = "PACKET_BEAR", displayName = "LABEL_BEAR", secondRejected = true
+    )
+
+    private fun vm(
+        candidates: List<CaptureApp>,
+        allowed: Set<String> = emptySet()
+    ): SetupViewModel = mockk<SetupViewModel>(relaxed = true).also {
+        every { it.captureAllowedPackages } returns MutableStateFlow(allowed)
+        every { it.captureEnabled } returns MutableStateFlow(false)
+        every { it.isCaptureServiceEnabled(any()) } returns true
+        every { it.selectableCaptureTargets(any()) } returns candidates
+    }
+
+    private fun mount(model: SetupViewModel) {
+        rule.setContent {
+            UiMatrix(360).RenderIn(LocalDensity.current.density) {
+                CaptureAppsScreen(viewModel = model, onBack = {})
+            }
+        }
+        rule.waitForIdle()
+    }
+
+    /**
+     * 第6节第5条 矩阵：把这一屏从固定 360dp 推到 4 宽 × 3 字号（`UiMatrix.FULL`）。
+     *
+     * 这一格是**量具**，不是闸：热区 < 48dp、越槽这类违规**只登记不改码**
+     * （工单明文），打 stdout 进交付表。硬断言只有两条——
+     * ①哨兵：十二格必须各量到一次（循环没被谁悄悄短路）；
+     * ②样本下限：判到的节点数低于下限就是这格在空转，别读成「全达标」。
+     * 换格子靠 hoisted 状态（一个用例只 `setContent` 一次，同 `UiMatrixFullSweepTest`）。
+     */
+    private val matrixCell: MutableState<UiMatrix> = mutableStateOf(UiMatrix.FULL.first())
+
+    private fun mountSweep(model: SetupViewModel) {
+        rule.setContent {
+            matrixCell.value.RenderIn(LocalDensity.current.density) {
+                CaptureAppsScreen(viewModel = model, onBack = {})
+            }
+        }
+        rule.waitForIdle()
+    }
+
+    private fun useCell(next: UiMatrix) {
+        rule.runOnIdle { matrixCell.value = next }
+        rule.waitForIdle()
+    }
+
+    @Test
+    fun `the touch floor is recorded across four widths and three font scales`() {
+        val model = vm(listOf(alfred, cyrus, bear), allowed = setOf("PACKET_ALFRED"))
+        mountSweep(model)
+        val table = StringBuilder()
+        val visited = LinkedHashMap<String, String>()
+        var judged = 0
+        for (m in UiMatrix.FULL) {
+            useCell(m)
+            val targets = probe.actionableTargets(rule, "捕获范围页·${m.id}")
+            val inside = targets.filter {
+                it.widthDp > 0f && it.heightDp > 0f &&
+                    it.leftDp >= 0f && it.topDp >= 0f &&
+                    it.leftDp + it.widthDp <= m.widthDp + 0.5f &&
+                    it.topDp + it.heightDp <= m.heightDp + 0.5f
+            }
+            judged += inside.size
+            val small = inside.filter { it.tooSmall(probe.floorDp) }
+            val over = targets.filter { it.leftDp + it.widthDp > m.widthDp + 0.5f }
+            table.append("PROBE64 捕获范围页·${m.id} 判 ${inside.size}/${targets.size} 颗；")
+                .append("热区<${probe.floorDp.toInt()}dp ${small.size} 颗：")
+                .append(small.joinToString(" | ") { it.describe() }).append("；")
+                .append("越槽 ${over.size} 颗：")
+                .append(over.joinToString(" | ") { it.describe() }).append('\n')
+            visited[m.id] = "${inside.size}/${targets.size}"
+        }
+        println(" 矩阵·捕获范围页·实到读数（4 宽 × 3 字号）")
+        println(table.toString())
+        assertEquals(
+            "矩阵只量到 ${visited.size} 格（应为 ${UiMatrix.FULL.size}）：${visited.keys}" +
+                " —— 覆盖面不能靠循环写法自称",
+            UiMatrix.FULL.map { it.id }, visited.keys.toList()
+        )
+        assertTrue(
+            "十二格一共只判到 $judged 颗，低于样本下限 $MIN_SWEEP_JUDGED —— 这格在空转，" +
+                "别把它读成「全达标」",
+            judged >= MIN_SWEEP_JUDGED
+        )
+    }
+
+    companion object {
+        /** 十二格至少该判到这么多颗；低于它就是这格没扫到东西，不是「全达标」 */
+        private const val MIN_SWEEP_JUDGED = 12
+    }
+
+    /** 按行标题找那一行的可交互节点——一行必须**恰好**一颗，多出来就是有人又画了一层点击 */
+    private fun rowTarget(label: String): SemanticsProbe.Target {
+        val hits = probe.actionableTargets(rule, "捕获范围页").filter { it.label == label }
+        assertEquals(
+            "按「$label」应当正好量到一行，实到 ${hits.size} 颗：" + hits.joinToString { it.describe() },
+            1, hits.size
+        )
+        return hits.single()
+    }
+
+    /** 标题/说明在不在树上（合并树里父节点带着子文案，所以判整棵子树都算） */
+    private fun textNodes(vararg values: String): Int = values.count { v ->
+        rule.onAllNodes(hasText(v)).fetchSemanticsNodes().isNotEmpty()
+    }
+
+    /**
+     * 行说自己叫什么 = App 名；**包名不再上屏**（ 点名的内部标识）。
+     *
+     * 反例一：包名被当成说明留着 → 第二句红。
+     * 反例二：把包名一删顺手把整行说明也做没了（连 App 名都读不出） → 第一句红。
+     * "包名仍然是这一行的操作实参"由下面那格 `each row toggles its own package` 钉，
+     * 这一格只管**屏上**那一栏。
+     */
+    @Test
+    fun `the row reads its app name and keeps the package name off the screen`() {
+        mount(vm(listOf(alfred), allowed = setOf("PACKET_ALFRED")))
+
+        assertEquals("App 名必须在树里", 1, textNodes("LABEL_ALFRED"))
+        assertEquals(
+            "内部包名不许出现在这一屏：" + textNodes("PACKET_ALFRED"),
+            0, textNodes("PACKET_ALFRED")
+        )
+
+        val row = rowTarget("LABEL_ALFRED")
+        assertEquals(
+            "整行是一处操作，读屏得说出它是勾选框：" + row.describe(),
+            "Checkbox", row.role
+        )
+        assertTrue(
+            "整行热区不足 ${probe.floorDp.toInt()}dp：" + row.describe(),
+            !row.tooSmall(probe.floorDp)
+        )
+    }
+
+    /**
+     * "状态"这一槽在这行数到的是什么，如实记在这里。
+     *
+     * 本机实量（归并前后同一份读数，来自 `describe()`）：整行 `role=Checkbox`、
+     * `selected=null`、`state=null`，而未合并树里带 `ToggleableState` 的节点 **0 颗**——
+     * 那颗 `Checkbox(onCheckedChange = null)` 只是画出来的，**勾没勾从来没进语义树**。
+     *
+     * 这一格因此不判"读屏听不听得出一行授权了没有"：既有账
+     * `CaptureAppsScreenStatesTest` 的注释已经把这件事写成"第6节第5条 第②栏的账，这格只挂不判"，
+     * 本轮也不顺手扩范围（要修它得给那一槽一个能念出来的状态来源，那是另一格）。
+     * 这里判的是归并**会不会再弄丢**已经存在的那三样：行说自己是一个勾选框、
+     * 没被禁用时能按、被禁用时报得出禁用。
+     */
+    @Test
+    fun `every allowed row still reads as an enabled checkbox`() {
+        mount(vm(listOf(alfred, cyrus), allowed = setOf("PACKET_ALFRED")))
+
+        listOf("LABEL_ALFRED", "LABEL_CYRUS").forEach { name ->
+            val row = rowTarget(name)
+            assertEquals("这一行要说得出自己是勾选框：" + row.describe(), "Checkbox", row.role)
+            assertEquals("可授权的行不该是灰的：" + row.describe(), false, row.disabled)
+        }
+    }
+
+    /**
+     * 被二次拒绝的类别：**仍然显示**，但说得出"现在点不动"，且按下去真的没有回调。
+     *
+     * `assertAllActionable…` 那把尺把 Disabled 也算可交互节点，就是为了这一格：
+     * "灰着画出来"与"干脆不画"两种实现都得被区分开。
+     */
+    @Test
+    fun `a blocked app stays on screen, announces disabled and cannot be toggled`() {
+        val model = vm(listOf(bear))
+        mount(model)
+
+        val row = rowTarget("LABEL_BEAR")
+        assertTrue("被拒绝的行要报出不可用：" + row.describe(), row.disabled)
+        assertEquals(
+            "热区也不能因为禁用就缩掉：" + row.describe(),
+            false, row.tooSmall(probe.floorDp)
+        )
+        // 被拒的原因不再用一句解释文字写在行里（那一族说明整段删了）：
+        // "点不动"这件事由 disabled 这一槽说，包名也不在这里出现
+        rule.onNodeWithText(app.getString(R.string.capture_apps_allow) + " — PACKET_BEAR")
+            .assertDoesNotExist()
+        assertEquals("被拒的行也不许把内部包名摆上屏", 0, textNodes("PACKET_BEAR"))
+
+        rule.onAllNodes(hasText("LABEL_BEAR"))[0].performClick()
+        rule.waitForIdle()
+        verify(exactly = 0) { model.setCaptureAllowed("PACKET_BEAR", any()) }
+    }
+
+    /** 归并最容易弄丢的一件事：一行交回的是**它自己**的包名 */
+    @Test
+    fun `each row toggles its own package, not the first one in the list`() {
+        val model = vm(listOf(alfred, cyrus))
+        mount(model)
+
+        rule.onAllNodes(hasText("LABEL_CYRUS"))[0].performClick()
+        rule.waitForIdle()
+        verify(exactly = 1) { model.setCaptureAllowed("PACKET_CYRUS", true) }
+        verify(exactly = 0) { model.setCaptureAllowed("PACKET_ALFRED", any()) }
+    }
+
+    /**
+     * 反空跑证人：这把尺得真看得见这一屏的东西，而且**每行只有一颗**可点节点。
+     *
+     * 归并成 `LbSettingRow` 时如果有人在行里又留了一层 `clickable`（外层壳 + 里面那一行），
+     * `rows.size` 就会涨——那正是"点击挂在被合并掉的子节点上"那一族缺陷的形状。
+     *
+     * ⚠ 那一排里住着一颗**输入框**（这一页顶上的搜索框），它按整屏那把 48 尺量必然红，
+     * 而红的原因不是"热区被缩"：语义树里那一条只是它**那一行字**（本机实量
+     * 「Search apps」288x15dp @(36,178)），36dp 的可见胶囊与外层那颗 48dp 的热区盒都不带语义节点
+     * （热区盒只转焦点、故意不声明点击语义）。把它算进"每行一颗可点"的颗数、或拿 48 去判它，
+     * 量的都不是手指那一个盒子。所以这颗摘出来按输入框那一族判：
+     * **恰好一颗、名字就是资源里那一句、宽度不许被挤成一条 sliver**；
+     * 行与出口那一族仍然整颗按全站 48 下限，一格没松。
+     */
+    @Test
+    fun `the screen exposes exactly one actionable node per row plus the header back`() {
+        mount(vm(listOf(alfred, cyrus, bear), allowed = setOf("PACKET_ALFRED")))
+
+        val targets = probe.actionableTargets(rule, "捕获范围页")
+        val fields = targets.filter { it.editable }
+        assertEquals(
+            "这一页顶上应当恰好一颗搜索输入框（多出来就是同一件事两个入口），实到 " +
+                fields.joinToString { it.describe() },
+            1, fields.size
+        )
+        val search = fields.single()
+        assertTrue(
+            "输入框得让读屏说得出它是什么，而且名字必须由资源给（这台 JVM 解析成英文）：" +
+                search.describe(),
+            search.contentDescriptions.contains(app.getString(R.string.capture_apps_search))
+        )
+        assertTrue(
+            "搜索框的宽被挤到比全站下限还窄就没法打字了：" + search.describe(),
+            search.widthDp + 0.5f >= TouchTier.SITE_FLOOR
+        )
+        probe.assertTargetsMeetFloor(
+            targets - fields.toSet(), TouchTier.SITE_FLOOR, "捕获范围页·行与出口（输入框那一族另判）"
+        )
+        probe.assertAllActionableLabeled(rule, "捕获范围页")
+        probe.assertNoDuplicatedAnnouncement(rule, "捕获范围页")
+        val rows = targets.filter { it.label.startsWith("LABEL_") }
+        assertEquals(
+            "三行该是三颗可点节点：" + targets.joinToString { it.describe() },
+            3, rows.size
+        )
+        // 被禁用的那一行也要还在尺里（"灰着画出来"与"干脆不画"是两种实现）
+        assertEquals(
+            "禁用那一行也得到尺：" + targets.joinToString { it.describe() },
+            1, rows.count { it.disabled }
+        )
+    }
+}

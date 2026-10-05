@@ -1,57 +1,41 @@
 package com.lovebrain.app.ui.common
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.lovebrain.app.ui.panel.rememberPressScale
-import com.lovebrain.app.ui.theme.AppTypography
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.TextSecondary
-import androidx.compose.ui.graphics.graphicsLayer
-
-/** 行内次级操作按钮规格（主人选型问题3：整体放大一号） */
-private object RowActionDimens {
-    const val MIN_HEIGHT_DP = 32  // 最小高度（原≈24 提到 32）
-}
+import com.lovebrain.app.core.designsystem.Error
+import com.lovebrain.app.core.designsystem.LbTextAction
+import com.lovebrain.app.core.designsystem.LbTextActionSize
+import com.lovebrain.app.core.designsystem.LbTextActionTone
+import com.lovebrain.app.core.designsystem.TextSecondary
 
 /**
- * 行内次级操作小按钮（/ 统一样式）：浅灰胶囊底 + 13sp 小字，供应商行与知识库卡片共用。
- * 主人选型问题3：内边距加厚、字号 11sp→13sp、最小高度 32dp（两处调用方自动同步，无需改调用侧）。
- * 按压反馈沿用全局标准件（0.94 scale）。
+ * 行内次级操作：供应商行、知识库卡片那两族共用的一颗小动作。
+ *
+ * 自己不画任何东西，转进设计系统的文字动作 [LbTextAction]，并交 v1.3.1 那一档形状
+ * [LbTextActionSize.RowCapsule]（32dp 最小高 + 浅灰胶囊 + full 圆角 + 水平 12/垂直 4dp 留白）。
+ * 新写的行内动作请直接 call [LbTextAction] 并交 `tone` 与 `size`。
+ *
+ * ⚠ `tint` 是留给两个旧调用点的兼容口子，只用来**选语气档**（见 [rowActionTone]），不再直接当颜色用。
  */
 @Composable
 fun RowActionButton(
     text: String,
     tint: Color = TextSecondary,
-    onClick:  -> Unit
+    onClick: () -> Unit
 ) {
-    val (interaction, scale) = rememberPressScale(0.94f, "rowActionScale$text")
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .heightIn(min = RowActionDimens.MIN_HEIGHT_DP.dp)
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clip(LoveBrainShape.full)
-            .background(TextSecondary.copy(alpha = 0.08f))
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
-            .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
-    ) {
-        Text(
-            text = text,
-            style = AppTypography.bodyMedium, // 13sp（原 labelMedium 11sp）
-            color = tint,
-            fontWeight = FontWeight.Medium
-        )
-    }
+    LbTextAction(
+        label = text,
+        onClick = onClick,
+        tone = rowActionTone(tint),
+        size = LbTextActionSize.RowCapsule
+    )
 }
+
+/**
+ * 旧 `tint` → 语气档。全仓两个调用点只有两支：默认（`TextSecondary`）与 `tint = Error`。
+ *
+ * 单列成一颗纯函数是为了能被直接判：语义树里没有颜色与字号这两栏，
+ * "删除那颗走错误色"这个说法在树上量不到，只能这样留下证人。
+ */
+internal fun rowActionTone(tint: Color): LbTextActionTone =
+    if (tint == Error) LbTextActionTone.Destructive else LbTextActionTone.RowSecondary

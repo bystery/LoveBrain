@@ -1,0 +1,421 @@
+package com.lovebrain.app.ui
+
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Test
+import java.io.File
+
+/**
+ * 用户文案资源化与触摸区的源码级合同。
+ *
+ * 为什么用源码扫描而不是行为断言：
+ *  第6节 与 第7节第1条 给的都是**可静态核对**的事实断言
+ * （"strings.xml 仅约 38 行""新增资源没有被生产组件使用""多个 20/24/28/40dp 自定义 clickable"）。
+ * 触摸区在 compose 测试里要跑 emulator（本机没有 system image，跑不了），
+ * 所以这里用一条能进 CI 的静态门禁锁住已经改好的数值，防止被改回去；
+ * 真正的 TalkBack / 2.0x 字体 / 360dp 截图矩阵仍然是需要设备的人工验收项，
+ * 在验收报告里如实标注为未执行。
+ *
+ * ⚠ 但别把本文件当"触摸区已验证"（ 指出的正是这个误读）：
+ * 这里只能证明"某一档的数写在源码里、而且真的挂在那条 Modifier 链上"。
+ * PanelHeader 外面套 48dp 的 Box、真正 clickable 仍挂在 20dp 的内层标签上时，
+ * 本文件那两格头部判据照样会绿。判"点得到点不到"的权威断言在语义树侧
+ * （`ui/panel/PanelHeaderSemanticsTest`、androidTest 的 `PanelHeaderTouchTargetsTest`、
+ * `LbPrimaryButtonStateTest`、`ReplyPrimaryActionsContractTest`：它们读组合后每个可点击节点的
+ * boundsInRoot）。两条都要，但只有后者能证明用户行为。
+ *
+ * ⚠ 本轮合同（ 第3节第2条 尺寸表）把面板头部那一族从"全都垫到 48"改成 **30 行 / 24 外包盒 /
+ * 20 与 16 字形**，所以头部那两格从">=48"换成"钉死这一档 + 反向不许抄回 48"。
+ * 全站那颗下限一个字没动（[AppDimens.TOUCH_TARGET_MIN_DP]），本文件其余格子仍按它判。
+ */
+class ProductionUiContractTest {
+
+    private val mainRoot = File("src/main/java/com/lovebrain/app")
+        .takeIf { it.isDirectory }
+        ?: File("app/src/main/java/com/lovebrain/app")
+
+    private fun source(vararg parts: String): String {
+        val f = File(mainRoot, parts.joinToString(File.separator))
+        assertTrue("production source missing: $f", f.isFile)
+        return f.readText()
+    }
+
+    /** 去掉注释与 KDoc，只留真正的代码，避免文档里引用的旧数值误判 */
+    private fun codeOf(src: String): String = buildString {
+        var i = 0
+        while (i < src.length) {
+            when {
+                src.startsWith("/*", i) -> {
+                    val end = src.indexOf("*/", i + 2).takeIf { it >= 0 } ?: src.length
+                    i = minOf(end + 2, src.length)
+                }
+                src.startsWith("//", i) -> {
+                    val end = src.indexOf('\n', i).takeIf { it >= 0 } ?: src.length
+                    i = end
+                }
+                else -> { append(src[i]); i++ }
+            }
+        }
+    }
+
+    // ─── 触摸区下限 ────────────────────────────────────────────────
+
+    private val dimensCode by lazy { codeOf(source("core", "designsystem", "Dimens.kt")) }
+
+    /**
+     * 读一颗尺寸常量的**数值**，允许它写成"指回全局那颗"的别名（顺着引用最多跳四跳）。
+     *
+     * 这一格原来写的是 `NAME = (\d+)`，也就是**要求每个文件自己把 48 再抄一遍**。
+     * 第6节第5条 那一格把 15 处抄数改成 `= AppDimens.TOUCH_TARGET_MIN_DP` 之后，
+     * 本文件三条集体报 `was null`——那不是"尺寸变小了"，是"数不写在这儿了"。
+     * 把它们改回抄一遍等于让两把尺互相打架，所以这里改成跟着引用走。
+     *
+     * ⚠ 读不出来仍然判失败（返回 null → 调用方那条 assertTrue 红）。
+     * 这一格不因此变软：它从"这里必须写着 48"变成"这里必须能算出 ≥48"。
+     */
+    private fun dimenValue(name: String, code: String): Int? {
+        var current = name
+        var scope = code
+        repeat(4) {
+            val rhs = Regex("\\b$current\\s*=\\s*([\\w.]+)").find(scope)?.groupValues?.get(1) ?: return null
+            if (rhs.isNotEmpty() && rhs.all { it.isDigit() }) return rhs.toInt()
+            if (rhs.contains('.')) scope = dimensCode      // AppDimens.X → 去全局那颗里找
+            current = rhs.substringAfterLast('.')
+        }
+        return null
+    }
+
+    /**
+     * 全站那颗下限自己得是个 ≥48 的数。
+     *
+     * 上面那个"跟着引用读"的机制让所有页面都指回 Dimens.kt 这一处，
+     * 于是**这一处就成了唯一承重点**：它要是被改成 32，全仓库的静态尺会集体变绿而集体不达标。
+     * 所以这里把它单独钉住——这一条不跟着引用走，读的就是那个字面量。
+     */
+    @Test
+    fun `the global touch floor itself is declared at least 48dp`() {
+        val declared = Regex("\\bTOUCH_TARGET_MIN_DP\\s*=\\s*(\\d+)").find(dimensCode)?.groupValues?.get(1)
+        assertTrue("Dimens.kt 里必须把下限写成字面量（它是全站唯一抄数的那一处）", declared != null)
+        assertTrue("下限必须 >=48dp，实到 $declared", declared!!.toInt() >= 48)
+    }
+
+    /**
+     * 同一颗数**既要有声明、又要在 Modifier 链上被引用**，否则这把尺没牙。
+     *
+     * 只查声明：有人把 `.size(24.dp)` 内联写死、常量留在 object 里骗过正则 ⇒ 假绿。
+     * 只查引用：把 object 里那颗删掉、链上写死数字 ⇒ 另一种假绿。
+     * 这一族格子所以两条一起要，并各自再钉一条**反向**守卫（不许把这一档改回全局下限）。
+     */
+    private fun assertTier(name: String, expected: Int, code: String, use: Regex, what: String) {
+        val got = dimenValue(name, code)
+        assertTrue(
+            "$what：`$name` 必须解析到 $expected，实到 $got——数不在这一处，或根本没人声明它",
+            got == expected
+        )
+        assertTrue(
+            "$what：`$name` 声明着却没挂在那条 Modifier 链上（正则找得到数、手指摸不到）",
+            use.containsMatchIn(code)
+        )
+    }
+
+    /**
+     * 面板头部那一行按本轮界面合同：整行 **30dp**、收起外包盒 **24dp**、收起字形 **20dp**。
+     *
+     * 这一格原来判的是 `COLLAPSE_HOTZONE_DP >= 48`，那是"所有小件都垫到 48"的口径。
+     * 本轮合同（ 第3节第2条 尺寸表）明写 30/24/20，且它是**明写的例外**：
+     * 全站那颗下限 [AppDimens.TOUCH_TARGET_MIN_DP] 一个字没改，页面主体、列表行、弹窗按钮照旧走它，
+     * 所以这里同时钉反向那条——48 那一档不许回到这一行。
+     * 判"手指到底点不点得到"的权威断言在语义树侧（`ui/panel/PanelHeaderSemanticsTest`、
+     * androidTest 的 `PanelHeaderTouchTargetsTest`）；这一格只买"档位来源与数值"。
+     */
+    @Test
+    fun `panel header keeps the 30dp row with a 24dp collapse box and a 20dp glyph`() {
+        val code = codeOf(source("ui", "panel", "PanelHeader.kt"))
+        assertTier("ROW_HEIGHT_DP", 30, code,
+            Regex("\\.height\\(HeaderDimens\\.ROW_HEIGHT_DP\\.dp\\)"), "头部整行 30dp")
+        assertTier("COLLAPSE_HOTZONE_DP", 24, code,
+            Regex("\\.size\\(HeaderDimens\\.COLLAPSE_HOTZONE_DP\\.dp\\)"), "收起外包盒 24dp")
+        assertTier("CONTROL_HEIGHT_DP", 20, code,
+            Regex("\\.size\\(HeaderDimens\\.CONTROL_HEIGHT_DP\\.dp\\)"), "收起字形 20dp")
+        assertTier("SETTINGS_HOTZONE_DP", 24, code,
+            Regex("\\.size\\(HeaderDimens\\.SETTINGS_HOTZONE_DP\\.dp\\)"), "齿轮外包盒 24dp")
+        assertTier("GEAR_GLYPH_DP", 16, code,
+            Regex("\\.size\\(HeaderDimens\\.GEAR_GLYPH_DP\\.dp\\)"), "齿轮字形 16dp")
+        assertTrue(
+            "头部这一族不许再把 48 那一档抄回来（下限本身仍住在 Dimens.kt 一处）：" +
+                Regex("TOUCH_TARGET_MIN_DP|MIN_TOUCH_TARGET|48\\.dp").findAll(code).joinToString(),
+            !Regex("TOUCH_TARGET_MIN_DP|MIN_TOUCH_TARGET|48\\.dp").containsMatchIn(code)
+        )
+    }
+
+    /**
+     * 三段模式切换器：**可点的那一层吃整行（30dp）高，20dp 只是胶囊的视觉高度**。
+     *
+     * 这一格原来找的是 `height(HeaderDimens.MIN_TOUCH_TARGET_DP.dp)`——那颗常量本轮已被删
+     * （头部改按 30/20/24/16），所以它一度红在"指错人"上。判据换成合同真正在意的那件事：
+     * 曾经"外层套 48dp 盒、clickable 仍挂在 20dp 胶囊里的标签上"，语义树量到 84x18dp，
+     * 手指点不到你以为点得到的那块。三条一起要：
+     * ①交互层自己 `.fillMaxHeight()` 之后紧跟 `.clickable(`（点击不挂在窄带上）；
+     * ②承载胶囊 + 高亮 + 三段的那一栏整段都不许有 clickable（点击所有者只有一层）；
+     * ③视觉层那一截必须真的画着 20dp 那一档——否则②会因为"根本没有视觉层"而自动成立。
+     * ⚠ 它仍然**测不到真实热区**（源码级）：树上那三段的边界由
+     * `ui/panel/PanelHeaderSemanticsTest` 与 androidTest 那边量 `boundsInRoot`。
+     *
+     * 视觉层那一截**按结构认，不按注释文字认**。上一版在这里找的是 `// ── 视觉层` 那样的锚点，
+     * 而本文件的 [codeOf] 先把注释剥光再交给判据 ⇒ 那种锚点**永远找不到**，
+     * 这一格于是恒红，红的还是"仪器自己坏了"那一族（锚点在生产里活得好好的）。
+     * 就算改读未剥注释的原文，注释也是一句随时能被人改写的话，撑不住一条判据。
+     * 现在的切点是"这一栏把哪一段交给了 `ModeSegmentLabel`"：那之前的就是视觉层。
+     */
+    @Test
+    fun `the mode segments are clickable on the full row height, not on the 20dp capsule`() {
+        val code = codeOf(source("ui", "panel", "PanelHeader.kt"))
+        val label = Regex("(?s)private fun ModeSegmentLabel[\\s\\S]*?\\n}").find(code)?.value
+            ?: error("找不到 ModeSegmentLabel——这一格没有证人，交互层是谁画的都读不出来")
+        assertTrue(
+            "交互层必须先撑满整行再挂 clickable（撑不住就等于点击仍挂在一条窄带上）：" +
+                label.lineSequence().filter { "fillMaxHeight" in it || ".clickable(" in it }.joinToString(" | "),
+            Regex("(?s)\\.fillMaxHeight\\(\\)[\\s\\S]{0,300}\\.clickable\\(").containsMatchIn(label)
+        )
+        // 证人名字跟着生产走：顶栏第三段（锦囊）随 等 整删后这颗改名 `ModeSegmentTwo`。
+        // 判据本身一个字没放松——它认的是"胶囊与分段同住的那一栏"，不是段数。
+        val segment = Regex("(?s)private fun ModeSegmentTwo[\\s\\S]*?\\n}").find(code)?.value
+            ?: error("找不到 ModeSegmentTwo——胶囊与分段同住的那一栏读不出来，两条判据都没有对象")
+        val handedOverAt = Regex("ModeSegmentLabel\\s*\\(").find(segment)?.range?.first
+            ?: error("ModeSegmentTwo 里没有一段交给 ModeSegmentLabel——交互层是谁画的都读不出来，判据换成坐标猜就是不判")
+        val visual = segment.substring(0, handedOverAt)
+        // 证人先站稳：视觉层这一截必须真的画了 20dp 那一档胶囊，否则下面那句"它不吃点击"
+        // 会因为"根本没有视觉层"而自动成立（把胶囊搬走/删掉就成了假绿）。
+        assertTrue(
+            "视觉层那一截必须画着 20dp 的胶囊底（实到 " +
+                visual.lineSequence().filter { ".height(" in it }.joinToString(" | ") + "）",
+            Regex("\\.height\\(HeaderDimens\\.CONTROL_HEIGHT_DP\\.dp\\)").containsMatchIn(visual)
+        )
+        assertTrue(
+            "整栏（胶囊底 + 滑动高亮 + 承载三段的那一层）都不许自带点击：" +
+                "点击的所有者只能是撑满整行的那一颗，两层都吃点击就是手势互抢。实到 " +
+                segment.lineSequence().filter { Regex("\\.(clickable|toggleable|selectable)\\(").containsMatchIn(it) }.joinToString(" | "),
+            !Regex("\\.(clickable|toggleable|selectable)\\(").containsMatchIn(segment)
+        )
+        assertTier("CONTROL_HEIGHT_DP", 20, code,
+            Regex("\\.height\\(HeaderDimens\\.CONTROL_HEIGHT_DP\\.dp\\)"), "胶囊视觉高度 20dp")
+    }
+
+    /**
+     * 结果区下方那颗**「纠正记忆」文字入口**的热区：48 见方的外盒 + 里面的字按文字档画。
+     *
+     * 这一格原先叫 `result utility trigger hit box…`，而那颗 `…/⋯` 总工具菜单本轮已按合同删除
+     * （连同"记录实际发送"的独立入口）。`UTILITY_HITBOX_DP` 现在真正被读它的地方只剩这一处：
+     * 结果区下面那条「纠正记忆」。所以**改名 + 换档对象**，不删守卫——
+     * 文字入口的热区仍是全站下限那一档（本轮没给它开例外）。
+     */
+    @Test
+    fun `the memory correction text entry keeps a 48dp hit box around a text-sized label`() {
+        val code = codeOf(source("ui", "panel", "reply", "ResultArea.kt"))
+        val value = dimenValue("UTILITY_HITBOX_DP", code)
+        assertTrue("UTILITY_HITBOX_DP 必须解析到一个数（指回全局那颗也算），实到 $value", value != null)
+        assertTrue("文字入口的热区仍是全站下限 >=48dp，实到 $value", value!! >= 48)
+        // 牙：数不仅要写着，还要挂在那一条 Modifier 链上（两轴都要）
+        assertTrue(
+            "纠正记忆那颗的外盒必须真的用 UTILITY_HITBOX_DP 垫两轴",
+            Regex("\\.heightIn\\(\\s*min = ResultDimens\\.UTILITY_HITBOX_DP\\.dp\\)").containsMatchIn(code) &&
+                Regex("\\.widthIn\\(\\s*min = ResultDimens\\.UTILITY_HITBOX_DP\\.dp\\)").containsMatchIn(code)
+        )
+        // 反向：那颗总工具菜单与"记录实际发送"的可见入口不许借这个名字复活
+        assertTrue(
+            "ResultUtilityMenu / RecordSentFlow 不许回来（本轮合同删的正是它们）",
+            !Regex("ResultUtilityMenu|RecordSentFlow").containsMatchIn(code)
+        )
+    }
+
+    /**
+     * 主动作的 48dp 与"padding 不许排在 clickable 前面"。
+     *
+     * ⚠ 这一格是**源码级**的，只证明"常量写着 48、顺序没排反"；
+     * 判"点得到点不到"的权威断言在语义树那边（`LbPrimaryButtonStateTest` 与
+     * `ReplyPrimaryActionsContractTest` 真读 `boundsInRoot`）。别拿这格当已验证行为
+     * —— 点名的就是这个误读，而坑表 58 那条更是同一族：
+     * 这一格原先 grep 的是 `ui/panel/reply/GenerationActionButton.kt`，
+     * 组件搬进 `core/designsystem` 后它还绿着指旧路径，就会变成"看着在、其实不存在"。
+     */
+    @Test
+    fun `generate buttons are at least 48dp and clickable is not inset by padding`() {
+        val action = codeOf(source("core", "designsystem", "LbPrimaryButton.kt"))
+        assertTrue(
+            "LbPrimaryButton 的高度下限必须 >=48dp（可以是指回全局那颗的别名）",
+            dimenValue("LB_PRIMARY_MIN_HEIGHT_DP", action)?.let { it >= 48 } == true
+        )
+        // 关键顺序：padding 出现在 clickable 之前会把热区缩掉，这是复核点名的写法。
+        // ⚠ 上一版这里比的是 `indexOf(".clickable(")` 与 `indexOf(".paddingInside()")` 两个
+        // **整文件首次出现**的位置——那只有第一态在被判，"四态里排好一态、另外三态排反"
+        // 照样绿（一把看着有闸、实际只拦一条链的尺）。这里把两个 token 按文件先后串成序列，
+        // 要求它们成对交替：每一态自己那条链都得是"先点击、后内边距"。
+        // 仍然锚在"换行 + 缩进 + 点"上：定义那一行写的是 `Modifier.paddingInside()`，
+        // 不锚就会把定义也数进去（本仓库第 4 号坑的老形状）。
+        val chainOrder = Regex("\n\\s+\\.(clickable|paddingInside)\\(")
+            .findAll(action).joinToString("") { if (it.groupValues[1] == "clickable") "C" else "P" }
+        assertEquals(
+            "四态各自那条链都必须是 clickable 在前、内边距在后（C=点击、P=内边距），实到 $chainOrder",
+            "CPCPCPCP", chainOrder
+        )
+        // 四态各一条链：只有一条的话，"新加的那一态忘了垫内边距"这格就抓不到。
+        // 必须锚在"换行 + 缩进 + 点"上：定义那一行写的是 `Modifier.paddingInside()`，
+        // 只找 `.paddingInside(` 会把它也数进去（4 报成 5——本仓库第 4 号坑的老形状）。
+        // ⚠ 这条链的名字跟着组件改过一次（`paddingVerticalInside` → `paddingInside`，
+        // 因为**横向**内边距也归它了）；名字里带"方向"的私有函数一旦改了口径，
+        // 这种源码级 grep 就要跟着改——所以权威判据在语义树那两格，这格只挡顺序排反。
+        assertEquals(
+            "四态各自走一遍这条链",
+            4, Regex("\n\\s+\\.paddingInside\\(\\)").findAll(action).count()
+        )
+        // 调用方不再持有高度旋钮：`heightDp` 只能把按钮改高、改不矮，是个不存在的自由度
+        assertTrue(
+            "heightDp 这个死参数不许回来",
+            !Regex("heightDp\\s*:").containsMatchIn(action)
+        )
+    }
+
+    /**
+     * 首页/知识库那两族行尾的文字动作，热区下限与点击顺序。
+     *
+     * ⚠ **源码级**：它只证明"下限指回全站那一颗、`clickable` 排在装饰性内边距之前"。
+     * 真读 `boundsInRoot` 的权威断言在 `RowActionSemanticsTest`（语义树那侧）。
+     *
+     * 归并之后这一格的**主人换了**：`ui/common/RowAction.kt` 里的 `RowActionButton`
+     * 已经退化成转进设计系统的一颗壳，`MIN_HEIGHT_DP` 那三条（下限、`clickable` 顺序）
+     * 全部搬到 `core/designsystem/LbTextAction.kt`。上一版还钉着 `RowAction.kt` 里那个
+     * 已经不存在的常量，于是它报 `was null`——**这不是"热区退化"，是尺指错了人**
+     * （坑表 58 那一族"组件搬走了、尺还指着旧路径"的反向形状：旧路径没了，它当场红而不是假绿，
+     * 红得对）。这里同时钉两件事：新主人确实把下限接住了，而且旧调用方确实走的是新主人。
+     */
+    @Test
+    fun `home trailing text action meets the touch floor`() {
+        val owner = codeOf(source("core", "designsystem", "LbTextAction.kt"))
+        val min = dimenValue("LB_TEXT_ACTION_MIN_DP", owner)
+        assertTrue(
+            "LbTextAction 的热区下限必须解析到 >=48dp（指回全局那颗也算），实到 $min",
+            min != null && min >= 48
+        )
+        val clickableAt = owner.indexOf(".clickable(")
+        val insetAt = owner.indexOf(".padding(horizontal = Spacing.lg)")
+        assertTrue(
+            "clickable 必须排在装饰性内边距之前，否则热区被自己削掉（两处都得存在）",
+            clickableAt >= 0 && insetAt >= 0 && clickableAt < insetAt
+        )
+        // 调用方不许绕过新主人自己画一颗：壳里只许转参数，那颗组件名必须真的出现在体里
+        val shell = codeOf(source("ui", "common", "RowAction.kt"))
+        assertTrue(
+            "RowActionButton 必须转进 LbTextAction，而不是自己再画一颗",
+            Regex("(?<![\\w.])LbTextAction\\s*\\(").containsMatchIn(shell)
+        )
+        assertTrue(
+            "壳里不许再自带热区旋钮（下限只能由主人持有）",
+            !Regex("MIN_HEIGHT_DP|heightIn\\(|widthIn\\(").containsMatchIn(shell)
+        )
+    }
+
+    // ─── 文案资源化：资源必须真的被组件调用 ──────────────────────
+
+    @Test
+    fun `primary reply actions resolve their labels from resources not literals`() {
+        val code = codeOf(source("ui", "panel", "reply", "ReplyPrimaryActions.kt"))
+        listOf(
+            "R.string.panel_generate_reply",
+            "R.string.panel_generate_reply_with_count",
+            "R.string.panel_generate_opening",
+            "R.string.panel_retry",
+            "R.string.panel_save_to_kb",
+            "R.string.panel_stop"
+        ).forEach {
+            assertTrue("$it must be used by ReplyPrimaryActions", code.contains(it))
+        }
+        // 反向门禁：不允许再出现中文 UI 字面量
+        val literals = Regex("""text\s*=\s*"[^"]*[一-龥][^"]*"""").findAll(code).map { it.value }.toList()
+        assertEquals("no hardcoded CJK Text literals left: $literals", emptyList<String>(), literals)
+    }
+
+    @Test
+    fun `panel header labels come from resources`() {
+        val code = codeOf(source("ui", "panel", "PanelHeader.kt"))
+        listOf(
+            "R.string.panel_collapse",
+            "R.string.panel_mode_reply",
+            "R.string.panel_mode_counseling"
+        ).forEach { assertTrue("$it must be used by PanelHeader", code.contains(it)) }
+        // 反向门禁：头部只剩两段（回复/谈心）。第三段"锦囊"按用户原话整删，
+        // 它的资源键也已从两份 strings 里摘掉——这里再出现就是让已删功能回流。
+        assertFalse(
+            "R.string.panel_mode_suggest 已随锦囊整删，PanelHeader 不许再引用它",
+            code.contains("R.string.panel_mode_suggest")
+        )
+    }
+
+    /**
+     * "生成中"那串可见文案：资源驱动 + 有稳定锚点。
+     *
+     * 这一格原来只 grep 一颗组件文件（文案与 tag 都在按钮里），第6节第1条 把壳搬进
+     * `core/designsystem` 后两件事分家了：**说什么**在 reply 层（`GeneratingLabel.kt`），
+     * **怎么画**在设计系统（`LbPrimaryButton.kt`）。所以判据也跟着拆两处——
+     * 留着一格指旧路径的 grep，它就成了一把只会绿的尺（坑表 58）。
+     */
+    @Test
+    fun `loading button text comes from a formatted resource and carries a test tag`() {
+        val label = codeOf(source("ui", "panel", "reply", "GeneratingLabel.kt"))
+        assertTrue("生成中那句必须走资源", label.contains("R.string.panel_analysing_with_seconds"))
+        assertTrue(
+            "阶段词也不许写死在代码里",
+            listOf(
+                "R.string.panel_phase_analysing",
+                "R.string.panel_phase_drafting",
+                "R.string.panel_phase_deep_analysing"
+            ).all { label.contains(it) }
+        )
+        val button = codeOf(source("core", "designsystem", "LbPrimaryButton.kt"))
+        assertTrue(
+            "Loading 那颗标签必须带停止锚点（文字会变，tag 不会）",
+            button.contains("LbTags.PRIMARY_STOP")
+        )
+    }
+
+    @Test
+    fun `every zh string has an en counterpart`() {
+        val zh = File("src/main/res/values/strings.xml").takeIf { it.isFile }
+            ?: File("app/src/main/res/values/strings.xml")
+        val en = File("src/main/res/values-en/strings.xml").takeIf { it.isFile }
+            ?: File("app/src/main/res/values-en/strings.xml")
+        assertTrue("values-en/strings.xml must exist", en.isFile)
+        // ⚠ 键表同时收 `<string name=` 与 `<plurals name=`：这一格原先只认前者，
+        // 而 `feedback_case_count`（页头那句"N 条"，账本 第58节）是复数档——
+        // 只认 `<string` 的话，plurals 少翻一边照样绿，正是这一格要防的那件事。
+        val names = { f: File ->
+            Regex("<(?:string|plurals) name=\"([^\"]+)\"")
+                .findAll(f.readText()).map { it.groupValues[1] }.toSet()
+        }
+        val missing = names(zh) - names(en)
+        val extra = names(en) - names(zh)
+        assertEquals("strings missing in values-en: $missing", emptySet<String>(), missing)
+        assertEquals("values-en defines strings absent from values: $extra", emptySet<String>(), extra)
+        assertTrue(
+            "两边键数必须相等（实到 zh=${names(zh).size} en=${names(en).size}）——" +
+                "上面两条差集判空之外，再钉一颗总量证人：两边同时少同一批键时差集也是空的",
+            names(zh).size == names(en).size
+        )
+    }
+
+    // ─── 死 API 不得复活 ───────────────────────────────────────────
+
+    @Test
+    fun `dead parameters removed by the audit do not come back`() {
+        val actions = codeOf(source("ui", "panel", "reply", "ReplyPrimaryActions.kt"))
+        assertTrue(
+            "draftText was never read by ReplyPrimaryActions; it must not return",
+            !Regex("""draftText\s*:""").containsMatchIn(actions)
+        )
+        val resultArea = codeOf(source("ui", "panel", "reply", "ResultArea.kt"))
+        assertTrue(
+            "onSaveToKb was dead inside ResultUtilityTrigger; the whole chain stays deleted",
+            !resultArea.contains("onSaveToKb")
+        )
+    }
+}

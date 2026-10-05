@@ -20,7 +20,7 @@ object StageCatalog {
      * @return 白名单内的规范阶段名；不在白名单返回 null（调用方应拒绝写入）
      */
     fun normalize(raw: String): String? {
-        val trimmed = raw.trim
+        val trimmed = raw.trim()
         if (trimmed in ALL) return trimmed
         if ("${trimmed}期" in ALL) return "${trimmed}期"
         return null

@@ -23,50 +23,50 @@ class MessageTruncationTest {
         }
 
     @Test
-    fun `messages under limit are not truncated` {
+    fun `messages under limit are not truncated`() {
         val msgs = makeMessages(10)
         assertEquals(10, msgs.size)
         assertTrue(msgs.size <= AppConfig.REPLY_MAX_MESSAGES)
     }
 
     @Test
-    fun `messages at limit are not truncated` {
+    fun `messages at limit are not truncated`() {
         val msgs = makeMessages(AppConfig.REPLY_MAX_MESSAGES)
         assertEquals(AppConfig.REPLY_MAX_MESSAGES, msgs.size)
         assertTrue(msgs.size <= AppConfig.REPLY_MAX_MESSAGES)
     }
 
     @Test
-    fun `messages over limit are truncated to last N` {
+    fun `messages over limit are truncated to last N`() {
         val limit = AppConfig.REPLY_MAX_MESSAGES
         val total = limit + 20
         val msgs = makeMessages(total)
         val truncated = msgs.takeLast(limit)
         assertEquals(limit, truncated.size)
         // 保留的是最后 N 条，第一个是第 (total - limit + 1) 条
-        assertEquals("msg${total - limit + 1}", truncated.first.content)
-        assertEquals("msg$total", truncated.last.content)
+        assertEquals("msg${total - limit + 1}", truncated.first().content)
+        assertEquals("msg$total", truncated.last().content)
     }
 
     @Test
-    fun `counseling history over 6 rounds is truncated to last 6` {
+    fun `counseling history over 6 rounds is truncated to last 6`() {
         val history = (1..10).map { "q$it" to "a$it" }
         val truncated = history.takeLast(AppConfig.COUNSELING_MAX_HISTORY_ROUNDS)
         assertEquals(AppConfig.COUNSELING_MAX_HISTORY_ROUNDS, truncated.size)
-        assertEquals("q5", truncated.first.first)
-        assertEquals("q10", truncated.last.first)
+        assertEquals("q5", truncated.first().first)
+        assertEquals("q10", truncated.last().first)
     }
 
     @Test
-    fun `counseling history at exactly 6 rounds is not truncated` {
+    fun `counseling history at exactly 6 rounds is not truncated`() {
         val history = (1..6).map { "q$it" to "a$it" }
         val truncated = history.takeLast(AppConfig.COUNSELING_MAX_HISTORY_ROUNDS)
         assertEquals(6, truncated.size)
-        assertEquals("q1", truncated.first.first)
+        assertEquals("q1", truncated.first().first)
     }
 
     @Test
-    fun `counseling history under 6 rounds is not truncated` {
+    fun `counseling history under 6 rounds is not truncated`() {
         val history = (1..3).map { "q$it" to "a$it" }
         val truncated = history.takeLast(AppConfig.COUNSELING_MAX_HISTORY_ROUNDS)
         assertEquals(3, truncated.size)

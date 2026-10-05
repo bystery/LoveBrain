@@ -1,0 +1,54 @@
+# lint 预算基线：每条规则允许的最大 issue 数。
+# 生成/更新：bash scripts/check_lint_budget.sh --rewrite
+# 语义：任何一条超过预算 = 新增债；任何一条低于预算 = 债还掉了，必须回来把数字改小。
+# 用每条规则单独记账而不是只记一个总数：修掉 3 条 UnusedResources 同时新加 3 条
+# ModifierParameter 会让总数不变，只看总数就看不见这种"债务搬家"。
+#
+# 这份账本记的是**仓库自己欠的债**，所以每一条都得在同一份代码上量出同一个数。
+# 量不出同一个数的规则不配进这里 —— 见文件末尾的 advisory 段。
+#
+# 已出账：StaticFieldLeak（原来 1 条，2026-09-27 实测 0 条后删行）。
+#   那条报的是"静态 `FloatingService.instance` → 实例字段 `bubbleView`（View）"，
+#   而 lint 只看一跳。FloatingService 拆分把 `bubbleView` 搬进 `service/OverlayBubbleWindow.kt`
+#   之后，链子变成静态 → 窗口对象 → View，两跳，它就不报了——**这不是我们把泄漏修好了**，
+#   是那条检查的宽度只有一跳。真正兜底的是 `onDestroy` 里那三句，拆分前后都在：
+#   `instance = null`、`bubble.remove()`（把 bubbleView 置空）、`panel.destroy()`（把 composeView 置空）。
+#   所以这一行按" detector 不再命中"出账，不按"已证明无泄漏"出账；
+#   服务存活期内静态 instance 拿着自己那两扇窗的引用仍然是一个待判断的设计选择，别把这条当成已还。
+
+AutoboxingStateCreation 5
+ClickableViewAccessibility 1
+DataExtractionRules 1
+DefaultLocale 2
+IconLauncherShape 5
+IconLocation 2
+InlinedApi 1
+ModifierParameter 8
+PluralsCandidate 2
+RedundantLabel 1
+ReturnFromAwaitPointerEventScope 3
+SwitchIntDef 1
+# 33 → 32：`a11y_close_onboarding`（中英两份一直都在、从没被引用）接上面板引导卡片
+# 那颗关闭按钮的 contentDescription ⇒ 少一条未用资源。同格还顺手把那句内联中文从
+# `contentDescription` 里拿掉（字面量预算 DESC 栏 11→10），两边是同一笔债。
+# 这一档原来被 --rewrite 顺手抹掉过：那一步只重写它认识的 `规则 数字` 行，
+# 注释块跟着没了。账还在（32 没动），所以手工补回，并把"--rewrite 会吃掉注释"记进坑表。
+# 32 → 30（第 17 窗口，提示条归并 + 图标档）：又有两条**资源本来就在、只是从没被引用**的接上了使用点——
+#   `a11y_close_notice`（面板那条通知的关闭按钮，代码里写的是内联中文「关闭通知」）与
+#   `panel_copy`（结果区那颗复制）。两把尺同时各降一格：lint 的 UnusedResources 与
+#   `UiStringLiteralBudgetTest` 的 DESC 栏（9 → 6）——**同一笔债的两侧读数**，不是一笔债记两次。
+#   ⚠ 这一档**不许用 `--rewrite` 生成**：那一步只重写它认识的 `规则 数字` 行，会把下面这些注释吃掉（坑表 148）。
+# 30 → 29（第 22 窗口，语音模式整体删除）：`panel_voice_rewrite`（"语音改写" / "Voice rewrite"）
+#   随功能一起从两份资源里删掉，它本来就是 lint 记着的一条未引用资源——**真删一条，不是搬家**。
+#   实测出处：本机 `./gradlew :app:lintDebug --offline` 后
+#   `PYTHON=python bash scripts/check_lint_budget.sh` 报 `STALE UnusedResources: 实测 29 < 预算 30`
+#   （低于预算也判红，理由同下一档："只剩多少"要有人知道）。
+#   ⚠ 同样不许 --rewrite。
+UnusedResources 29
+
+# ── advisory：不进预算比对的规则（每次仍然打印条数与理由）──
+# 只允许「发现来自仓库之外」的检查走这里；名单写死在 check_lint_budget.sh 的
+# EXTERNAL_RULES 里，仓库自己欠的债想用这条路免检会被当场拒绝。
+# 格式：advisory <规则> <理由>（理由不能空）
+advisory GradleDependency 报的是"上游又有新版可升"，量的是这台机器解析到的 Maven 清单：同一句 androidx.test.ext:junit:1.1.5 声明，CI run 36019334520 说可升到 1.3.0、本机说可升到 1.2.1。条数既不随平台稳定也不随时间稳定，锁进预算等于给门禁装定时引信；要不要升依赖另行决策，不记成工程债。
+advisory OldTargetApi 报的是"targetSdk 不是这台机器所知的最新"，触发与否取决于本机 SDK 里装了多新的平台（同一份代码 CI 报 1 条、本机报 0 条）。targetSdk=35 是产品决定，不是工程债；要改就按兼容性评估单独改，别借 lint 数字推动。

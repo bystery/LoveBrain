@@ -2,23 +2,17 @@ package com.lovebrain.app.ui.panel.counseling
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -26,35 +20,32 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.R
-import com.lovebrain.app.ui.panel.AiLoadingRow
 import com.lovebrain.app.ui.panel.DraggableDivider
 import com.lovebrain.app.ui.panel.MarkdownText
 import com.lovebrain.app.ui.panel.TriangleArrow
-import com.lovebrain.app.ui.panel.rememberPressScale
+import com.lovebrain.app.core.designsystem.rememberPressScale
+import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 
-/** 谈心面板内部尺寸常量（令牌化：数值不变，仅外放命名） */
+/** 谈心面板内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object CounselingDimens {
-    const val CTA_HEIGHT_DP = 40            // 脉冲条/开始谈心按钮高度（2 文件各自私有）
-    const val FADE_MASK_WIDTH_DP = 24       // 模板 chip 尾部渐隐遮罩宽
-    const val FADE_MASK_HEIGHT_DP = 28      // 模板 chip 尾部渐隐遮罩高
     const val PLACEHOLDER_TOP_PAD_DP = 1    // 输入框占位文字顶部对齐内边距
 }
 
@@ -62,27 +53,34 @@ private object CounselingDimens {
 fun CounselingPanel(
     viewModel: LoveBrainViewModel,
     onFocusChange: (Boolean) -> Unit,
-    onInputIntent: ( -> Unit)? = null,
+    onInputIntent: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     // LB-LIFE-01：追问输入框独立焦点回调与输入意图
     onFollowUpFocusChange: ((Boolean) -> Unit)? = null,
-    onFollowUpInputIntent: ( -> Unit)? = null,
+    onFollowUpInputIntent: (() -> Unit)? = null,
     inputId: String = "counseling_main"
 ) {
-    val draft by viewModel.counselingDraft.collectAsStateWithLifecycle
-    val result by viewModel.counselingResult.collectAsStateWithLifecycle
-    val error by viewModel.counselingError.collectAsStateWithLifecycle
-    val isCounseling by viewModel.isCounseling.collectAsStateWithLifecycle
-    val streaming by viewModel.counselingStreaming.collectAsStateWithLifecycle
+    val draft by viewModel.composer.counselingDraft.collectAsStateWithLifecycle()
+    val result by viewModel.counselingResult.collectAsStateWithLifecycle()
+    val error by viewModel.counselingError.collectAsStateWithLifecycle()
+    val isCounseling by viewModel.isCounseling.collectAsStateWithLifecycle()
+    val streaming by viewModel.counselingStreaming.collectAsStateWithLifecycle()
 
-    var inputHeight by remember { mutableFloatStateOf(100f) }
+    var inputHeight by remember { mutableFloatStateOf(48f) }
     val density = LocalDensity.current.density
+    // 入口的占位文案与读屏名字共用一条资源（第6节第5条 第②栏的口径）
+    val inputLabel = stringResource(R.string.counseling_input_hint)
 
-    Column(modifier = modifier.fillMaxWidth) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        // 第6节第4条 位移修复：输入框高度从固定 100dp 改为 heightIn(min = ...)，
+        // 与回复档的 PanelTextInput（heightIn(min = INPUT_ROW_HEIGHT_DP)）同一写法。
+        // 之前 100dp 固定高度 vs 回复档 48dp 最小高度 = 高差 28dp（实测 76dp vs 48dp）。
+        // 现在两档都走 heightIn，高度由内容决定，最小值统一。
+        // DraggableDivider 仍调整 inputHeight（最小高度），用户可以往上拖让输入框更高。
         Box(
             modifier = Modifier
-                .fillMaxWidth
-                .height(inputHeight.dp)
+                .fillMaxWidth()
+                .heightIn(min = inputHeight.dp)
                 .clip(LoveBrainShape.lg)
                 .background(SurfaceCard)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
@@ -91,14 +89,14 @@ fun CounselingPanel(
                 .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
                     awaitPointerEventScope {
                         while (true) {
-                            val event = awaitPointerEvent
+                            val event = awaitPointerEvent()
                             if (event.changes.any { it.pressed }) {
-                                onInputIntent
+                                onInputIntent()
                             }
                         }
                     }
                 } else Modifier)
-                .padding(Spacing.lg)
+                .padding(horizontal = Spacing.lg)
         ) {
             BasicTextField(
                 value = draft,
@@ -106,18 +104,27 @@ fun CounselingPanel(
                 textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
                 cursorBrush = SolidColor(Primary),
                 modifier = Modifier
-                    .fillMaxSize
-                    .verticalScroll(rememberScrollState)
+                    .fillMaxWidth()
+                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                    .verticalScroll(rememberScrollState())
+                    // 第6节第5条 :532 第②栏：这颗输入框此前**没有任何可读名字**（本机实量
+                    // 336x76dp、文案与 contentDescription 两样都空，读屏只念「编辑框」）。
+                    // 它比输入框自己的那行占位文案更糟：占位文案只在草稿为空时才画，
+                    // 用户打了一个字之后连那句话都没了。
+                    // 名字与占位文案**共用同一条资源**（不是再编一份只给读屏看的副本）。
+                    // ⚠ `stringResource` 必须在 semantics 块**外面**先取好（那块不是 composable 上下文）。
+                    .semantics { contentDescription = inputLabel }
                     .onFocusChanged { state ->
                         onFocusChange(state.isFocused)
                     }
             )
 
-            if (draft.isEmpty) {
+            if (draft.isEmpty()) {
                 Text(
-                    text = "说说你的困惑，军师帮你分析…",
+                    text = inputLabel,
                     color = TextHint,
                     style = AppTypography.bodyMedium,
+                    maxLines = 1,
                     modifier = Modifier.padding(top = CounselingDimens.PLACEHOLDER_TOP_PAD_DP.dp)
                 )
             }
@@ -125,45 +132,16 @@ fun CounselingPanel(
 
         DraggableDivider(
             onDragDelta = { delta ->
-                inputHeight = (inputHeight + delta / density).coerceIn(60f, 200f)
+                inputHeight = (inputHeight + delta / density).coerceIn(48f, 200f)
             }
         )
 
         // 谈心快速模板：未在谈心中、无结果时，显示常见困惑模板 chip（全部 6 个，一行横向滚动）
-        //（用户实测"示例没了"）：不再要求 draft.isEmpty，也不折叠成 2 个——
+        //（用户实测"示例没了"）：不再要求 draft.isEmpty()，也不折叠成 2 个——
         // 只要不在谈心中且无结果就全部展示；点击模板直接填入输入框。
         if (!isCounseling && result == null && error == null) {
             Spacer(Modifier.height(Spacing.xs))
-            val templates = listOf(
-                "她突然冷淡了怎么办",
-                "我们吵架了该谁先低头",
-                "她说了这句话什么意思",
-                "怎么判断她喜不喜欢我",
-                "暧昧期怎么推进关系",
-                "她嫌我不够浪漫"
-            )
-            // 尾部渐隐遮罩，提示后面还有可滑动的 chip
-            Box(modifier = Modifier.fillMaxWidth) {
-                Row(
-                    modifier = Modifier.fillMaxWidth.horizontalScroll(rememberScrollState),
-                    horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
-                ) {
-                    templates.forEach { template ->
-                        TemplateChip(text = template) { viewModel.setCounselingDraft(template) }
-                    }
-                }
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .width(CounselingDimens.FADE_MASK_WIDTH_DP.dp)
-                        .height(CounselingDimens.FADE_MASK_HEIGHT_DP.dp)
-                        .background(
-                            Brush.horizontalGradient(
-                                colors = listOf(Color.Transparent, SurfaceBase)
-                            )
-                        )
-                )
-            }
+            CounselingTemplateChips(onTemplateSelect = { viewModel.setCounselingDraft(it) })
         }
 
         // 字数提示：超过 100 字时显示，超过 500 字变橙色提醒
@@ -179,101 +157,38 @@ fun CounselingPanel(
             )
         }
 
-        val canStart = draft.isNotBlank && !isCounseling
-        // 谈心中脉冲动画（与 GenerateButton 一致的视觉反馈）——
-        // 仅在 isCounseling 时创建 rememberInfiniteTransition，非谈心状态不运行动画（避免无谓重组开销）
-        if (isCounseling) {
-            // 实底 Primary + PrimaryDark 叠层呼吸（对比度优于整条 alpha 脉冲）
-            val pulseTransition = rememberInfiniteTransition(label = "counselingPulse")
-            val overlayAlpha by pulseTransition.animateFloat(
-                initialValue = 0f,
-                targetValue = 0.22f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(800),
-                    repeatMode = RepeatMode.Reverse
-                ),
-                label = "counselingPulseOverlay"
-            )
-            // 整个加载条可点击 = 强行停止谈心
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth
-                    .height(CounselingDimens.CTA_HEIGHT_DP.dp)
-                    .clip(LoveBrainShape.md)
-                    .background(Primary, LoveBrainShape.md)
-                    .clickable { viewModel.stopCounseling },
-                contentAlignment = Alignment.Center
-            ) {
-                // PrimaryDark 叠层呼吸（不透明度 0~0.22 循环），实底之上做明暗脉动
-                Box(
-                    Modifier
-                        .matchParentSize
-                        .graphicsLayer { alpha = overlayAlpha }
-                        .background(PrimaryDark, LoveBrainShape.md)
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    CircularProgressIndicator(
-                        color = Color.White,
-                        modifier = Modifier.size(Spacing.xl),
-                        strokeWidth = Spacing.xs
-                    )
-                    Spacer(Modifier.width(Spacing.md))
-                    Text(
-                        text = "军师聆听中…",
-                        color = Color.White,
-                        style = AppTypography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(Modifier.width(Spacing.md))
-                    Text(
-                        text = "点击停止",
-                        color = Color.White,
-                        style = AppTypography.labelSmall,
-                        maxLines = 1
-                    )
-                }
-            }
-        } else {
-            // 开始谈心 CTA 补按压反馈（复用标准件 0.96 scale + 120ms；条件 clickable 结构保留）
-            val (ctaInteraction, ctaScale) = rememberPressScale(0.96f, "ctaScale")
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth
-                    .height(CounselingDimens.CTA_HEIGHT_DP.dp)
-                    .graphicsLayer { scaleX = ctaScale; scaleY = ctaScale }
-                    .then(if (canStart) Modifier.shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.md) else Modifier)
-                    // 禁用态对齐 GenerateButton 先例（SurfaceInset 底 + TextSecondary 文字，WCAG 对比度）
-                    .background(if (canStart) Primary else SurfaceInset, LoveBrainShape.md)
-                    .then(if (canStart) Modifier.clickable(interactionSource = ctaInteraction, indication = null, onClick = {
-                        viewModel.generateCounseling(draft.trim)
-                    }) else Modifier),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "开始谈心",
-                    color = if (canStart) Color.White else TextSecondary,
-                    style = AppTypography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-        }
+        val canStart = draft.isNotBlank() && !isCounseling
+        // 谈心 CTA（脉冲条 / 开始按钮）已抽出到 CounselingLoadingSection.kt
+        CounselingPulseCta(
+            isCounseling = isCounseling,
+            canStart = canStart,
+            onStart = { viewModel.generateCounseling(draft.trim()) },
+            onStop = { viewModel.stopCounseling() }
+        )
 
         Spacer(Modifier.height(Spacing.md))
 
         when {
-            isCounseling -> {
-                if (streaming.isBlank) {
-                    CounselingLoading(Modifier.fillMaxWidth)
+            // 流式中的正文与"这一轮没落定结果、但屏幕上已经出现过正文"（超时/失败留下的
+            // 那一段）共用下面这张卡，所以这里把两档并成一条：轮次结束时正文不撤、不重排、
+            // 也不闪回占位。`result == null` 是故意的前提——有完整结果时仍由下面那一档接管，
+            // 这里不许留上一条的残影。
+            // 失败提示只补在这段正文**下面一行**，用的还是原来那条错误状态条的画法与同一颗
+            // 重试回调：不替换正文、不新增警告块、不改错误条的措辞（措辞由生成侧给）。
+            // "还在等第一个字"那格占位只在生成中画，所以它单独留 `isCounseling` 这个条件。
+            isCounseling || (result == null && streaming.isNotBlank()) -> {
+                if (isCounseling && streaming.isBlank()) {
+                    CounselingLoading(Modifier.fillMaxWidth())
                 } else {
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth
+                            .fillMaxWidth()
                             .weight(1f)
                             .clip(LoveBrainShape.lg)
                             .background(SurfaceCard)
                             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
                             .padding(Spacing.xl)
-                            .verticalScroll(rememberScrollState)
+                            .verticalScroll(rememberScrollState())
                     ) {
                         MarkdownText(
                             text = streaming,
@@ -283,36 +198,36 @@ fun CounselingPanel(
                         )
                     }
                 }
+                val endedError = error
+                if (!isCounseling && endedError != null) {
+                    Spacer(Modifier.height(Spacing.md))
+                    LbEmptyState(
+                        message = endedError,
+                        tone = LbStateTone.Error,
+                        container = LbStateContainer.Strip,
+                        action = ScreenAction(stringResource(R.string.panel_retry_tap)) {
+                            viewModel.generateCounseling(draft.trim())
+                        }
+                    )
+                }
             }
 
             error != null -> {
                 val err = error ?: return
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth
-                        .clip(LoveBrainShape.md)
-                        .background(ErrorBg)
-                        .padding(Spacing.lg)
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = err, color = Error, style = AppTypography.bodySmall)
-                        Spacer(Modifier.height(Spacing.sm))
-                        // 点击重试补按压反馈（复用标准件 0.96 scale + 120ms）
-                        val (retryInteraction, retryScale) = rememberPressScale(0.96f, "counselRetryScale")
-                        Text(
-                            text = "点击重试",
-                            color = PrimaryDark,
-                            style = AppTypography.bodySmall,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier
-                                .graphicsLayer { scaleX = retryScale; scaleY = retryScale }
-                                .clickable(interactionSource = retryInteraction, indication = null, onClick = {
-                                    viewModel.generateCounseling(draft.trim)
-                                })
-                                .padding(horizontal = Spacing.lg, vertical = Spacing.sm) // 热区外扩至 ≥24dp（文字高约 16dp + 垂直内边距）
-                        )
+                // 这一档原来是自画的 `Box + .background(ErrorBg)`：说明 + 那颗重试已经归过
+                // 一次 `LbTextAction`，整块版式现在一起交回 `LbEmptyState`（Strip + Error），
+                // 与结果区那一档从此同一处画法。
+                // ⚠ 两页各抄一遍的那条"热区 ≥24dp"注释也跟着没了——同一句话抄两遍时，
+                // 连"多少算达标"都会被各自抄一次（本机两档当时都量到 72x26dp、role=无）。
+                // 重试仍是原来那颗：拿当前草稿重新发起 `generateCounseling`，一字未改。
+                LbEmptyState(
+                    message = err,
+                    tone = LbStateTone.Error,
+                    container = LbStateContainer.Strip,
+                    action = ScreenAction(stringResource(R.string.panel_retry_tap)) {
+                        viewModel.generateCounseling(draft.trim())
                     }
-                }
+                )
             }
 
             result != null -> {
@@ -323,7 +238,7 @@ fun CounselingPanel(
                 // 谈心多轮历史：从磁盘恢复，实现重启不丢失
                 // 调研依据：NN/G 10 Heuristics #1 Visibility of System Status——用户应能看到之前的对话上下文
                 var counselingHistory by remember {
-                    mutableStateOf(viewModel.loadCounselingHistory)
+                    mutableStateOf(viewModel.loadCounselingHistory())
                 }
                 // 操作行（继续追问/重新开始）移到卡片顶部文字前方
                 var showFollowUp by remember { mutableStateOf(false) }
@@ -336,72 +251,88 @@ fun CounselingPanel(
 
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth
+                        .fillMaxWidth()
                         .weight(1f)
                         .clip(LoveBrainShape.lg)
                         .background(SurfaceCard)
                         .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
                         .padding(Spacing.xl)
-                        .verticalScroll(rememberScrollState)
+                        .verticalScroll(rememberScrollState())
                 ) {
                     // ═══ 操作行置顶：继续追问 toggle + 重新开始（移到文字前方）═══
                     Row(
-                        modifier = Modifier.fillMaxWidth,
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // 继续追问胶囊补按压反馈（胶囊类 0.92，对齐 RoleChip 先例）
-                        val (followUpInteraction, followUpScale) = rememberPressScale(0.92f, "followUpScale")
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .clip(LoveBrainShape.sm)
-                                .background(PrimaryLight)
-                                .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.sm)
-                                .graphicsLayer { scaleX = followUpScale; scaleY = followUpScale }
-                                .semantics { stateDescription = if (showFollowUp) "已展开" else "已收起" }
-                                .clickable(interactionSource = followUpInteraction, indication = null, onClick = { showFollowUp = !showFollowUp })
-                                .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
-                        ) {
-                            Text(
-                                text = "继续追问",
-                                style = AppTypography.labelMedium,
-                                color = PrimaryDark,
-                                fontWeight = FontWeight.SemiBold
+                        // 继续追问胶囊归进设计系统那颗 [LbChip]：胶囊形状（clip/sm + PrimaryLight 底 +
+                        // PrimarySubtle 描边 + labelMedium/PrimaryDark/SemiBold 字 + lg/sm 内边距 + 0.92 按压）
+                        // 逐项抄进 [LbChipStyles.soft] 的 `.copy`，不在页面里另画一条 Modifier 链。
+                        // ⚠ 这是**动作入口**（点下去开/收追问区），不是"在哪一格"——故选
+                        // [LbChipInteraction.Action]：`Role.Button`，语义树不发 `selected`；
+                        // 展开/收起那句话仍走 `stateDescription`，与改前完全同一槽位。
+                        // ⚠ 三角箭头仍留在胶囊**外**（[LbChip] 的标签是纯文案，没有 trailing-icon 槽，
+                        // 开一个就是发明 API——红线）：改前箭头在胶囊右内边距里，改后在胶囊右沿外
+                        // 一个 `Spacing.xs`——这是归并这一颗的已知外观变化，登记在此，不另开槽。
+                        val followUpAnnouncement = stringResource(
+                            if (showFollowUp) R.string.state_expanded else R.string.state_collapsed
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            LbChip(
+                                label = "继续追问",
+                                onClick = { showFollowUp = !showFollowUp },
+                                interaction = LbChipInteraction.Action,
+                                modifier = Modifier.semantics { stateDescription = followUpAnnouncement },
+                                style = LbChipStyles.soft.copy(
+                                    radius = LoveBrainShape.sm,
+                                    textStyle = AppTypography.labelMedium,
+                                    textColorSelected = PrimaryDark,
+                                    textColor = PrimaryDark,
+                                    fontWeightSelected = FontWeight.SemiBold,
+                                    fontWeight = FontWeight.SemiBold,
+                                    backgroundSelected = PrimaryLight,
+                                    background = PrimaryLight,
+                                    borderSelected = PrimarySubtle,
+                                    border = PrimarySubtle,
+                                    pressedScale = 0.92f,
+                                    markSelectedWithCheck = false
+                                )
                             )
                             Spacer(Modifier.width(Spacing.xs))
                             // ：共享三角箭头（原 Canvas Path 块与锦囊处逐字相同）
                             TriangleArrow(color = Primary, rotation = followUpArrowRotation)
                         }
-                        // 清空重聊胶囊补按压反馈（胶囊类 0.92，对齐 RoleChip 先例）
-                        val (clearInteraction, clearScale) = rememberPressScale(0.92f, "clearScale")
-                        Text(
-                            text = "清空重聊",
-                            color = TextHint,
-                            style = AppTypography.labelMedium,
-                            modifier = Modifier
-                                .clip(LoveBrainShape.sm)
-                                .background(SurfaceInset)
-                                .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.sm)
-                                .graphicsLayer { scaleX = clearScale; scaleY = clearScale }
-                                .clickable(interactionSource = clearInteraction, indication = null, onClick = {
-                                    counselingHistory = emptyList
-                                    showFollowUp = false
-                                    viewModel.clearCounselingAll
-                                })
-                                .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+                        // 清空重聊胶囊归进设计系统那颗 [LbChip]（动作入口，点下去清空历史）。
+                        // 档位用 [LbChipStyles.neutral] 再 `.copy`：字色 `TextHint`、字号 `labelMedium`、
+                        // 标签居中、内边距 `lg/sm`——逐项抄改前那条链，不在页面里另画一条 Modifier。
+                        LbChip(
+                            label = "清空重聊",
+                            onClick = {
+                                counselingHistory = emptyList()
+                                showFollowUp = false
+                                viewModel.clearCounselingAll()
+                            },
+                            interaction = LbChipInteraction.Action,
+                            style = LbChipStyles.neutral.copy(
+                                textStyle = AppTypography.labelMedium,
+                                textColor = TextHint,
+                                textColorSelected = TextHint,
+                                labelAlignment = LbChipLabelAlignment.Center,
+                                paddingHorizontal = Spacing.lg,
+                                paddingVertical = Spacing.sm
+                            )
                         )
                     }
                     // 追问输入区（展开时显示，跟随操作行置顶）
                     AnimatedVisibility(
                         visible = showFollowUp,
-                        enter = expandVertically,
-                        exit = shrinkVertically
+                        enter = expandVertically(),
+                        exit = shrinkVertically()
                     ) {
                         Column(modifier = Modifier.padding(top = Spacing.md)) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Box(
                                     modifier = Modifier
@@ -414,16 +345,16 @@ fun CounselingPanel(
                                         .then(if (onFollowUpInputIntent != null) Modifier.pointerInput(Unit) {
                                             awaitPointerEventScope {
                                                 while (true) {
-                                                    val event = awaitPointerEvent
+                                                    val event = awaitPointerEvent()
                                                     if (event.changes.any { it.pressed }) {
-                                                        onFollowUpInputIntent
+                                                        onFollowUpInputIntent()
                                                     }
                                                 }
                                             }
                                         } else Modifier)
                                         .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                                 ) {
-                                    if (followUpText.isEmpty) {
+                                    if (followUpText.isEmpty()) {
                                         Text(
                                             text = "想继续追问…",
                                             color = TextHint,
@@ -438,7 +369,7 @@ fun CounselingPanel(
                                         textStyle = AppTypography.bodySmall.copy(color = TextPrimary),
                                         cursorBrush = SolidColor(Primary),
                                         modifier = Modifier
-                                            .fillMaxWidth
+                                            .fillMaxWidth()
                                             .then(
                                                 if (onFollowUpFocusChange != null) {
                                                     Modifier.onFocusChanged { state ->
@@ -455,13 +386,13 @@ fun CounselingPanel(
                                     modifier = Modifier
                                         .clip(LoveBrainShape.md)
                                         .background(
-                                            if (followUpText.isNotBlank) Primary else SurfaceInset,
+                                            if (followUpText.isNotBlank()) Primary else SurfaceInset,
                                             LoveBrainShape.md
                                         )
                                         .graphicsLayer { scaleX = askScale; scaleY = askScale }
                                         // 禁用态三件套——空输入时不可点（对齐  先例）
-                                        .then(if (followUpText.isNotBlank) Modifier.clickable(interactionSource = askInteraction, indication = null, onClick = {
-                                            if (followUpText.isNotBlank) {
+                                        .then(if (followUpText.isNotBlank()) Modifier.clickable(interactionSource = askInteraction, indication = null, onClick = {
+                                            if (followUpText.isNotBlank()) {
                                                 // 保存当前问答对到历史
                                                 counselingHistory = counselingHistory + (draft to res)
                                                 // 持久化历史到磁盘（重启不丢失）
@@ -472,14 +403,14 @@ fun CounselingPanel(
                                                 val contextMsg = buildString {
                                                     append("【前情提要】\n")
                                                     recentHistory.forEach { (q, a) ->
-                                                        append("我问：").append(q.trim).append("\n")
-                                                        append("军师回复：").append(a.trim).append("\n\n")
+                                                        append("我问：").append(q.trim()).append("\n")
+                                                        append("军师回复：").append(a.trim()).append("\n\n")
                                                     }
-                                                    append("我问：").append(draft.trim).append("\n")
-                                                    append("军师回复：").append(res.trim).append("\n\n")
-                                                    append("【追问】").append(followUpText.trim)
+                                                    append("我问：").append(draft.trim()).append("\n")
+                                                    append("军师回复：").append(res.trim()).append("\n\n")
+                                                    append("【追问】").append(followUpText.trim())
                                                 }
-                                                viewModel.setCounselingDraft(followUpText.trim)
+                                                viewModel.setCounselingDraft(followUpText.trim())
                                                 followUpText = ""
                                                 showFollowUp = false
                                                 viewModel.generateCounseling(contextMsg)
@@ -490,7 +421,7 @@ fun CounselingPanel(
                                 ) {
                                     Text(
                                         text = "追问",
-                                        color = if (followUpText.isNotBlank) Color.White else TextSecondary,
+                                        color = if (followUpText.isNotBlank()) Color.White else TextSecondary,
                                         style = AppTypography.labelLarge,
                                         fontWeight = FontWeight.SemiBold
                                     )
@@ -522,7 +453,7 @@ fun CounselingPanel(
             else -> {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth
+                        .fillMaxWidth()
                         .weight(1f)
                         .clip(LoveBrainShape.lg)
                         .background(SurfaceInset)
@@ -563,41 +494,4 @@ fun CounselingPanel(
             }
         }
     }
-}
-
-/** 谈心模板 chip（需求11：折叠后仍保持统一 chip 样式） */
-@Composable
-private fun TemplateChip(text: String, onClick:  -> Unit) {
-    // #1：模板 chip 补按压反馈（标准件 0.92 scale + 120ms）
-    val (interaction, templateChipScale) = rememberPressScale(0.92f, "templateChipScale")
-    Box(
-        modifier = Modifier
-            .graphicsLayer { scaleX = templateChipScale; scaleY = templateChipScale }
-            .clip(LoveBrainShape.sm)
-            .background(SurfaceInset, LoveBrainShape.sm)
-            .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.sm)
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
-            .padding(horizontal = Spacing.md, vertical = Spacing.sm) // 垂直内边距 xs→sm，热区 ≈20→24dp
-    ) {
-        Text(text = text, style = AppTypography.labelSmall, color = TextSecondary)
-    }
-}
-
-/** 谈心加载动画（需求19）：统一 AiLoadingRow——三点跳动 + 轮换文案（首 token 前展示） */
-@Composable
-private fun CounselingLoading(modifier: Modifier = Modifier) {
-    val phrases = remember {
-        listOf(
-            "军师正在倾听…",
-            "军师正在梳理你的情绪…",
-            "军师正在还原事情的全貌…",
-            "军师正在权衡公正的裁决…",
-            "军师正在为你斟酌词句…"
-        )
-    }
-    AiLoadingRow(
-        phrases = phrases,
-        modifier = modifier,
-        background = SurfaceInset
-    )
 }

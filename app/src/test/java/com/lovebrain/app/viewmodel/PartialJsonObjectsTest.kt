@@ -16,24 +16,24 @@ class PartialJsonObjectsTest {
     // ═══ extractObjects ═══
 
     @Test
-    fun `empty buffer returns empty list` {
-        assertTrue(PartialJsonObjects.extractObjects("", "tips").isEmpty)
+    fun `empty buffer returns empty list`() {
+        assertTrue(PartialJsonObjects.extractObjects("", "tips").isEmpty())
     }
 
     @Test
-    fun `key not found returns empty list` {
+    fun `key not found returns empty list`() {
         val raw = """{"other":[{"a":1}]}"""
-        assertTrue(PartialJsonObjects.extractObjects(raw, "tips").isEmpty)
+        assertTrue(PartialJsonObjects.extractObjects(raw, "tips").isEmpty())
     }
 
     @Test
-    fun `array start not yet arrived returns empty` {
+    fun `array start not yet arrived returns empty`() {
         val raw = """{"tips""" // key present but no [
-        assertTrue(PartialJsonObjects.extractObjects(raw, "tips").isEmpty)
+        assertTrue(PartialJsonObjects.extractObjects(raw, "tips").isEmpty())
     }
 
     @Test
-    fun `one complete object extracted` {
+    fun `one complete object extracted`() {
         val raw = """{"tips":[{"example":"hi","topic":"greet"}]}"""
         val result = PartialJsonObjects.extractObjects(raw, "tips")
         assertEquals(1, result.size)
@@ -41,7 +41,7 @@ class PartialJsonObjectsTest {
     }
 
     @Test
-    fun `two complete objects extracted` {
+    fun `two complete objects extracted`() {
         val raw = """{"tips":[{"a":1},{"b":2}]}"""
         val result = PartialJsonObjects.extractObjects(raw, "tips")
         assertEquals(2, result.size)
@@ -50,7 +50,7 @@ class PartialJsonObjectsTest {
     }
 
     @Test
-    fun `incomplete second object not returned` {
+    fun `incomplete second object not returned`() {
         // 第二个对象未闭合（流式中途）
         val raw = """{"tips":[{"a":1},{"b":2"""
         val result = PartialJsonObjects.extractObjects(raw, "tips")
@@ -59,7 +59,7 @@ class PartialJsonObjectsTest {
     }
 
     @Test
-    fun `markdown json fence stripped before extracting` {
+    fun `markdown json fence stripped before extracting`() {
         val raw = "```json\n{\"tips\":[{\"x\":1}]}\n```"
         val result = PartialJsonObjects.extractObjects(raw, "tips")
         assertEquals(1, result.size)
@@ -67,7 +67,7 @@ class PartialJsonObjectsTest {
     }
 
     @Test
-    fun `nested object braces counted correctly` {
+    fun `nested object braces counted correctly`() {
         val raw = """{"tips":[{"meta":{"deep":true},"example":"ok"}]}"""
         val result = PartialJsonObjects.extractObjects(raw, "tips")
         assertEquals(1, result.size)
@@ -75,7 +75,7 @@ class PartialJsonObjectsTest {
     }
 
     @Test
-    fun `braces inside string literals ignored` {
+    fun `braces inside string literals ignored`() {
         val raw = """{"tips":[{"example":"he said {hi}"}]}"""
         val result = PartialJsonObjects.extractObjects(raw, "tips")
         assertEquals(1, result.size)
@@ -83,7 +83,7 @@ class PartialJsonObjectsTest {
     }
 
     @Test
-    fun `escaped quote inside string does not break parsing` {
+    fun `escaped quote inside string does not break parsing`() {
         val raw = """{"tips":[{"example":"a\"b"}]}"""
         val result = PartialJsonObjects.extractObjects(raw, "tips")
         assertEquals(1, result.size)
@@ -91,7 +91,7 @@ class PartialJsonObjectsTest {
     }
 
     @Test
-    fun `whitespace and commas between objects skipped` {
+    fun `whitespace and commas between objects skipped`() {
         val raw = """{"tips": [ {"a":1} , {"b":2} ] }"""
         val result = PartialJsonObjects.extractObjects(raw, "tips")
         assertEquals(2, result.size)
@@ -100,7 +100,7 @@ class PartialJsonObjectsTest {
     // ═══ extractKeyObject ═══
 
     @Test
-    fun `extractKeyObject returns complete object when closed` {
+    fun `extractKeyObject returns complete object when closed`() {
         val raw = """{"response":{"recommended":"hi"}}"""
         val obj = PartialJsonObjects.extractKeyObject(raw, "response")
         assertNotNull(obj)
@@ -108,18 +108,18 @@ class PartialJsonObjectsTest {
     }
 
     @Test
-    fun `extractKeyObject returns null when incomplete` {
+    fun `extractKeyObject returns null when incomplete`() {
         val raw = """{"response":{"recommended":"hi""""
         assertNull(PartialJsonObjects.extractKeyObject(raw, "response"))
     }
 
     @Test
-    fun `extractKeyObject returns null when key absent` {
+    fun `extractKeyObject returns null when key absent`() {
         assertNull(PartialJsonObjects.extractKeyObject("""{"other":1}""", "response"))
     }
 
     @Test
-    fun `extractKeyObject handles markdown fence` {
+    fun `extractKeyObject handles markdown fence`() {
         val raw = "```json\n{\"response\":{\"warm\":\"stay\"}}\n```"
         val obj = PartialJsonObjects.extractKeyObject(raw, "response")
         assertNotNull(obj)
@@ -127,7 +127,7 @@ class PartialJsonObjectsTest {
     }
 
     @Test
-    fun `extractKeyObject nested braces balanced` {
+    fun `extractKeyObject nested braces balanced`() {
         val raw = """{"analysis":{"ongoing":[{"item":"x"}]}}"""
         val obj = PartialJsonObjects.extractKeyObject(raw, "analysis")
         assertNotNull(obj)

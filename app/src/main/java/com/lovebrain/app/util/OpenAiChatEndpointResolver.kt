@@ -28,8 +28,8 @@ object OpenAiChatEndpointResolver {
      * 输入应为已经 trim + 去尾 / 的合法 http(s) URL。
      */
     fun candidates(rawInput: String): List<String> {
-        val base = rawInput.trim.trimEnd('/')
-        if (base.isBlank) return emptyList
+        val base = rawInput.trim().trimEnd('/')
+        if (base.isBlank()) return emptyList()
 
         // 1. 已含 /chat/completions → 唯一候选
         if (base.endsWith(CHAT_COMPLETIONS, ignoreCase = true)) {
@@ -37,8 +37,8 @@ object OpenAiChatEndpointResolver {
         }
 
         // 2. 结尾是 /v1 或 /api/v1 或 /xxx/v1 → 只补 /chat/completions
-        val path = runCatching { java.net.URI(base).path.orEmpty }.getOrDefault("")
-        if (path.isNotEmpty && path.endsWith("/v1", ignoreCase = true)) {
+        val path = runCatching { java.net.URI(base).path.orEmpty() }.getOrDefault("")
+        if (path.isNotEmpty() && path.endsWith("/v1", ignoreCase = true)) {
             return listOf(base + CHAT_COMPLETIONS)
         }
 

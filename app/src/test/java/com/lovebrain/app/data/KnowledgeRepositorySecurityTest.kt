@@ -33,8 +33,8 @@ class KnowledgeRepositorySecurityTest {
     private lateinit var root: File
     private lateinit var appScope: CoroutineScope
 
-    private fun newRepo: KnowledgeRepository {
-        appScope = CoroutineScope(SupervisorJob + Dispatchers.IO)
+    private fun newRepo(): KnowledgeRepository {
+        appScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         return KnowledgeRepository(
             knowledgeRoot = root,
             securePrefs = mockk<SecurePrefs>(relaxed = true),
@@ -44,55 +44,55 @@ class KnowledgeRepositorySecurityTest {
     }
 
     private fun writeKbJson(dir: File, kb: KnowledgeBase) {
-        File(dir, "kb.json").writeText(Json.encodeToString(KnowledgeBase.serializer, kb), Charsets.UTF_8)
+        File(dir, "kb.json").writeText(Json.encodeToString(KnowledgeBase.serializer(), kb), Charsets.UTF_8)
     }
 
     @Before
-    fun setUp {
-        root = Files.createTempDirectory("kr_security").toFile
+    fun setUp() {
+        root = Files.createTempDirectory("kr_security").toFile()
     }
 
     @After
-    fun tearDown {
-        appScope.cancel
-        root.deleteRecursively
+    fun tearDown() {
+        appScope.cancel()
+        root.deleteRecursively()
     }
 
-    /** kb.json name 字段 ≠ 目录名（遍历载荷）→ listAll 过滤，不进任何消费端 */
+    /** ：kb.json name 字段 ≠ 目录名（遍历载荷）→ listAll 过滤，不进任何消费端 */
     @Test
-    fun listAll_filters_kb_with_mismatched_name = runTest {
+    fun listAll_filters_kb_with_mismatched_name() = runTest {
         withContext(Dispatchers.IO) {
             withTimeout(10_000) {
-                val evil = File(root, "gift").apply { mkdirs }
+                val evil = File(root, "gift").apply { mkdirs() }
                 writeKbJson(evil, KnowledgeBase(
                     name = "../../..",
                     displayName = "TA 的小本本",
                     updatedAt = "2026-08-27T09:00:00+08:00"
                 ))
 
-                val all = newRepo.listAll
+                val all = newRepo().listAll()
 
                 assertTrue("遍历库应被过滤（name）", all.none { it.name == "../../.." })
                 assertTrue("遍历库应被过滤（攻击者可控 displayName 不得出现）", all.none { it.displayName == "TA 的小本本" })
                 // 过滤 ≠ 删除：目录本体仍在磁盘（仅从列表掐断）
-                assertTrue("过滤不应删目录", evil.exists)
+                assertTrue("过滤不应删目录", evil.exists())
             }
         }
     }
 
     /** T2：正常库（name==目录名）零误伤 */
     @Test
-    fun listAll_keeps_normal_kb = runTest {
+    fun listAll_keeps_normal_kb() = runTest {
         withContext(Dispatchers.IO) {
             withTimeout(10_000) {
-                val dir = File(root, "kb").apply { mkdirs }
+                val dir = File(root, "kb").apply { mkdirs() }
                 writeKbJson(dir, KnowledgeBase(
                     name = "kb",
                     displayName = "她的档案",
                     updatedAt = "2026-08-27T09:00:00+08:00"
                 ))
 
-                val all = newRepo.listAll
+                val all = newRepo().listAll()
 
                 assertEquals("正常库应恰好 1 个", 1, all.size)
                 assertEquals("kb", all[0].name)
@@ -103,21 +103,21 @@ class KnowledgeRepositorySecurityTest {
 
     /** T3：delete 收到遍历名 → 返回 false，且 root 之外的目录/文件无损 */
     @Test
-    fun delete_rejects_traversal_name_and_outside_dirs_intact = runTest {
+    fun delete_rejects_traversal_name_and_outside_dirs_intact() = runTest {
         withContext(Dispatchers.IO) {
             withTimeout(10_000) {
                 // 在 root 外构造"受害目录"（模拟 app 私有数据树的兄弟目录）
-                val outsideDir = File(root.parentFile, "kr_security_outside_${System.nanoTime}").apply { mkdirs }
+                val outsideDir = File(root.parentFile, "kr_security_outside_${System.nanoTime()}").apply { mkdirs() }
                 val outsideFile = File(outsideDir, "precious.txt").apply { writeText("data") }
-                File(root, "gift").mkdirs
+                File(root, "gift").mkdirs()
                 try {
-                    val ok = newRepo.delete("../${outsideDir.name}")
+                    val ok = newRepo().catalogWrites.delete("../${outsideDir.name}")
 
                     assertFalse("遍历删除必须被拒绝", ok)
-                    assertTrue("root 外目录不得受损", outsideDir.exists)
-                    assertTrue("root 外文件不得受损", outsideFile.exists)
+                    assertTrue("root 外目录不得受损", outsideDir.exists())
+                    assertTrue("root 外文件不得受损", outsideFile.exists())
                 } finally {
-                    runCatching { outsideDir.deleteRecursively }
+                    runCatching { outsideDir.deleteRecursively() }
                 }
             }
         }
@@ -125,22 +125,22 @@ class KnowledgeRepositorySecurityTest {
 
     /** T4：正常库删除行为不变（守卫对 name==目录名路径零影响） */
     @Test
-    fun delete_normal_kb_still_works = runTest {
+    fun delete_normal_kb_still_works() = runTest {
         withContext(Dispatchers.IO) {
             withTimeout(10_000) {
-                val dir = File(root, "kb").apply { mkdirs }
+                val dir = File(root, "kb").apply { mkdirs() }
                 writeKbJson(dir, KnowledgeBase(
                     name = "kb",
                     displayName = "kb",
                     updatedAt = "2026-08-27T09:00:00+08:00"
                 ))
-                File(dir, "understand").mkdirs
+                File(dir, "understand").mkdirs()
                 File(dir, "understand/me.md").writeText("x")
 
-                val ok = newRepo.delete("kb")
+                val ok = newRepo().catalogWrites.delete("kb")
 
                 assertTrue("正常删除应成功", ok)
-                assertFalse("知识库目录应被物理删除", dir.exists)
+                assertFalse("知识库目录应被物理删除", dir.exists())
             }
         }
     }

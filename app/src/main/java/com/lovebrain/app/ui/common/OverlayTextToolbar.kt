@@ -20,14 +20,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.platform.TextToolbar
 import androidx.compose.ui.platform.TextToolbarStatus
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
-import com.lovebrain.app.ui.theme.SurfaceCard
-import com.lovebrain.app.ui.theme.TextPrimary
+import androidx.compose.ui.window.PopupProperties
+import com.lovebrain.app.core.designsystem.SurfaceCard
+import com.lovebrain.app.core.designsystem.TextPrimary
 
 /**
  * overlay 窗口专用 TextToolbar。
@@ -49,20 +51,20 @@ class OverlayTextToolbar(
     private var statusState = mutableStateOf(TextToolbarStatus.Hidden)
 
     /** 待展示的菜单项（label → action），由 showMenu 注入 */
-    private val itemsState = mutableStateOf<List<Pair<String,  -> Unit>>>(emptyList)
+    private val itemsState = mutableStateOf<List<Pair<String, () -> Unit>>>(emptyList())
 
     /** 菜单锚定区域（窗口坐标） */
     private val rectState = mutableStateOf(Rect.Zero)
 
     override val status: TextToolbarStatus
-        get = statusState.value
+        get() = statusState.value
 
     override fun showMenu(
         rect: Rect,
-        onCopy: ( -> Unit)?,
-        onPaste: ( -> Unit)?,
-        onCut: ( -> Unit)?,
-        onSelectAll: ( -> Unit)?
+        onCopy: (() -> Unit)?,
+        onPaste: (() -> Unit)?,
+        onCut: (() -> Unit)?,
+        onSelectAll: (() -> Unit)?
     ) {
         rectState.value = rect
         val items = buildList {
@@ -75,9 +77,9 @@ class OverlayTextToolbar(
         statusState.value = TextToolbarStatus.Shown
     }
 
-    override fun hide {
+    override fun hide() {
         statusState.value = TextToolbarStatus.Hidden
-        itemsState.value = emptyList
+        itemsState.value = emptyList()
     }
 
     /**
@@ -85,16 +87,28 @@ class OverlayTextToolbar(
      * 必须挂在悬浮窗的根组合里才能让 Popup 定位到正确坐标。
      */
     @Composable
-    fun Content {
+    fun Content() {
         if (statusState.value != TextToolbarStatus.Shown) return
         val items = itemsState.value
-        if (items.isEmpty) return
+        if (items.isEmpty()) return
         val rect = rectState.value
 
-        // Popup 定位到选区附近：topLeft 像素坐标直接转为 IntOffset
+        // Popup 定位到选区附近：topLeft 像素坐标直接转为 IntOffset。
+        // 往上抬的那一档按 **dp 经当前 Density 换算**，不写死像素——硬编码 44px 在低密度屏
+        // 会抬过头、在高密度屏几乎贴着选区，两版代码都是照抄那个像素数。
+        val liftPx = with(LocalDensity.current) { 44.dp.toPx().toInt() }
         Popup(
             alignment = Alignment.TopStart,
-            offset = IntOffset(rect.left.toInt, rect.top.toInt - 44)
+            offset = IntOffset(rect.left.toInt(), (rect.top - liftPx).toInt()),
+            // 外点/返回要收得起来：没有 onDismissRequest 时菜单点别处不消失。
+            onDismissRequest = { hide() },
+            properties = PopupProperties(
+                // 不抢焦点：这是一枚 overlay 自绘菜单，抢了焦点就把底下输入框的选区弄丢了，
+                // 复制/剪切/粘贴的回调本身也就没对象了。
+                focusable = false,
+                dismissOnClickOutside = true,
+                dismissOnBackPress = true
+            )
         ) {
             Row(
                 modifier = Modifier
@@ -108,8 +122,8 @@ class OverlayTextToolbar(
                         color = TextPrimary,
                         modifier = Modifier
                             .clickable {
-                                action.invoke
-                                hide
+                                action.invoke()
+                                hide()
                             }
                             .padding(horizontal = 12.dp, vertical = 8.dp)
                     )
@@ -134,7 +148,7 @@ class OverlayTextToolbar(
  * 返回工具栏实例，便于调用方持有并传给 [OverlayTextToolbarHost]。
  */
 @Composable
-fun rememberOverlayTextToolbar: OverlayTextToolbar {
+fun rememberOverlayTextToolbar(): OverlayTextToolbar {
     val context = LocalContext.current
     return remember { OverlayTextToolbar(context) }
 }
@@ -146,14 +160,14 @@ fun rememberOverlayTextToolbar: OverlayTextToolbar {
 @Composable
 fun OverlayTextToolbarHost(
     toolbar: OverlayTextToolbar,
-    content: @Composable  -> Unit
+    content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
         androidx.compose.ui.platform.LocalTextToolbar provides toolbar
     ) {
         Box {
-            content
-            toolbar.Content
+            content()
+            toolbar.Content()
         }
     }
 }

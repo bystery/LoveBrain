@@ -1,0 +1,130 @@
+package com.lovebrain.app.ui.home
+
+import android.app.Activity
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.compose.ui.unit.dp
+import com.lovebrain.app.core.designsystem.SurfaceBase
+import com.lovebrain.app.ui.feedback.FeedbackCasesScreen
+import com.lovebrain.app.viewmodel.HomeStatusViewModel
+import com.lovebrain.app.viewmodel.SetupViewModel
+import org.koin.androidx.compose.koinViewModel
+
+/** 根导航内容最大宽度 */
+private const val CONTENT_MAX_WIDTH_DP = 600
+
+/**
+ * 首页目的地——根级导航。
+ *
+ * 合同点名的四入口各自落到哪一格都写在这里：知识库是**另一个 Activity**（不在这棵树里），
+ * 已踩案例 / 消息捕获 / 模型供应商是这三格。`About` 与 `Usage` 两格已随首页那几段一起删：
+ * 全仓唯一的入口就是首页那两行，入口没了这两页就没有任何动态入口（Manifest 只有三个
+ * Activity、DI 里没有页面注册、导航表也只有这一颗 `when`、资源里那两条 `usage_*` /
+ * `about_*` 文案不再被任何生产代码引用），所以是"完全不可达"，按清理流程物理删除。
+ */
+sealed class HomeDestination {
+    data object Home : HomeDestination()
+    data object FeedbackCases : HomeDestination()
+    data object Providers : HomeDestination()
+    data object CaptureApps : HomeDestination()
+
+    companion object {
+        /** Saver for rememberSaveable */
+        val Saver = androidx.compose.runtime.saveable.Saver<HomeDestination, String>(
+            save = { it::class.simpleName ?: "Home" },
+            restore = { name ->
+                when (name) {
+                    "FeedbackCases" -> FeedbackCases
+                    "Providers" -> Providers
+                    "CaptureApps" -> CaptureApps
+                    else -> Home
+                }
+            }
+        )
+    }
+}
+
+/**
+ * 设置页根导航——按 destination 切 Home / FeedbackCases / Providers / CaptureApps。
+ *
+ * 用 [HomeDestination.Saver] + [rememberSaveable]，旋转/进程重建后恢复 destination。
+ * 旧版这里 `when` 里同一个 `CaptureApps` 分支写了两遍（重复的那一份永远不会被执行），
+ * 现在只剩一份；`About` / `Usage` 两格随首页那几段一起撤。
+ *
+ * ⚠ `onOpenPanel` / `onTempHide` / `onRestore` 这三颗回调本轮**不再被使用**：
+ * 首页重做后没有"打开军师/临时隐藏"那两处出口了，而签名由宿主 `SetupActivity` 持有、
+ * 那一页不归。签名留着不动，收口写进"需"。
+ */
+@Composable
+fun SetupRoot(
+    viewModel: SetupViewModel,
+    onStartService: () -> Unit,
+    onOpenPanel: (Int, Boolean) -> Unit,
+    onTempHide: () -> Unit,
+    onRestore: () -> Unit
+) {
+    var destination by rememberSaveable(stateSaver = HomeDestination.Saver) {
+        mutableStateOf(HomeDestination.Home)
+    }
+    val context = LocalContext.current
+    // 首页那盏灯的状态机：**容器注册**（di/AppModule.kt 那颗 viewModel {}），挂 Activity 那一棵
+    // ViewModelStore 上——所以子页来回、旋转都拿到同一颗，不会因为换 owner 而重建。
+    // 重建本身也不会发请求（探针只在按 ▶ 时走），但共用一颗才让"上一次检查属于哪一组身份"
+    // 这件事在整趟导航里连续有效。
+    val storeOwner = checkNotNull(LocalViewModelStoreOwner.current) {
+        "SetupRoot 必须住在有 ViewModelStore 的宿主里（生产就是 SetupActivity 那一棵）"
+    }
+    val homeStatus: HomeStatusViewModel = koinViewModel<HomeStatusViewModel>(
+        viewModelStoreOwner = storeOwner
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SurfaceBase)
+            .systemBarsPadding(),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Box(modifier = Modifier.fillMaxWidth().widthIn(max = CONTENT_MAX_WIDTH_DP.dp)) {
+            when (destination) {
+                HomeDestination.Home -> HomeScreen(
+                    homeStatus = homeStatus,
+                    onStartService = onStartService,
+                    onNavigateFeedback = { destination = HomeDestination.FeedbackCases },
+                    onNavigateProviders = { destination = HomeDestination.Providers },
+                    onNavigateCaptureApps = { destination = HomeDestination.CaptureApps },
+                    onBack = { (context as? Activity)?.finish() }
+                )
+                HomeDestination.FeedbackCases -> {
+                    BackHandler { destination = HomeDestination.Home }
+                    FeedbackCasesScreen(
+                        viewModel = viewModel,
+                        onBack = { destination = HomeDestination.Home }
+                    )
+                }
+                HomeDestination.Providers -> {
+                    BackHandler { destination = HomeDestination.Home }
+                    ProviderSection(viewModel = viewModel, onBack = { destination = HomeDestination.Home })
+                }
+                HomeDestination.CaptureApps -> {
+                    BackHandler { destination = HomeDestination.Home }
+                    CaptureAppsScreen(viewModel = viewModel, onBack = { destination = HomeDestination.Home })
+                }
+            }
+        }
+    }
+}

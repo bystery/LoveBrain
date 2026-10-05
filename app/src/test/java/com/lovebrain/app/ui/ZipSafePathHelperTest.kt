@@ -27,22 +27,22 @@ class ZipSafePathHelperTest {
     }
 
     @Test
-    fun safe_entry_inside_root_is_allowed {
-        val root = Files.createTempDirectory("zip_safe").toFile
+    fun safe_entry_inside_root_is_allowed() {
+        val root = Files.createTempDirectory("zip_safe").toFile()
         try {
             assertTrue(isSafeEntry(root, "kb_a/kb.json"))
         } finally {
-            root.deleteRecursively
+            root.deleteRecursively()
         }
     }
 
     @Test
-    fun traversal_entry_is_rejected {
-        val root = Files.createTempDirectory("zip_safe").toFile
+    fun traversal_entry_is_rejected() {
+        val root = Files.createTempDirectory("zip_safe").toFile()
         try {
             assert(!isSafeEntry(root, "../evil"))
         } finally {
-            root.deleteRecursively
+            root.deleteRecursively()
         }
     }
 
@@ -55,15 +55,15 @@ class ZipSafePathHelperTest {
      * 新 startsWith("/tmp/xxx_kb_import_123/") = false → 正确拒绝
      */
     @Test
-    fun prefix_collision_entry_is_rejected {
-        val root = Files.createTempDirectory("kb_import_123").toFile
+    fun prefix_collision_entry_is_rejected() {
+        val root = Files.createTempDirectory("kb_import_123").toFile()
         try {
             val evilEntry = "../${root.name}_evil/pwn"
             assert(!isSafeEntry(root, evilEntry)) {
                 "prefix collision entry should be rejected: $evilEntry"
             }
         } finally {
-            root.deleteRecursively
+            root.deleteRecursively()
         }
     }
 
@@ -73,15 +73,15 @@ class ZipSafePathHelperTest {
      * 不实际触发 2048 限制（成本太高且无意义）。
      */
     @Test
-    fun zip_stream_can_be_enumerated {
-        val baos = ByteArrayOutputStream
+    fun zip_stream_can_be_enumerated() {
+        val baos = ByteArrayOutputStream()
         ZipOutputStream(baos).use { zos ->
             zos.putNextEntry(ZipEntry("kb_test/kb.json"))
-            zos.write("{\"name\":\"kb_test\"}".toByteArray)
-            zos.closeEntry
+            zos.write("{\"name\":\"kb_test\"}".toByteArray())
+            zos.closeEntry()
         }
-        val zipBytes = baos.toByteArray
-        ZipInputStream(zipBytes.inputStream).use { zis ->
+        val zipBytes = baos.toByteArray()
+        ZipInputStream(zipBytes.inputStream()).use { zis ->
             var count = 0
             var entry = zis.nextEntry
             while (entry != null) {

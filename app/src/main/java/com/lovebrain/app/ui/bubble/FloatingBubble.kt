@@ -52,9 +52,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.R
-import com.lovebrain.app.ui.theme.Error
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.PrimaryLight
+import com.lovebrain.app.core.designsystem.Error
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.PrimaryLight
 import com.lovebrain.app.util.L
 import android.content.Context
 import android.provider.Settings
@@ -71,7 +71,7 @@ import android.view.accessibility.AccessibilityManager
 // · 小米悬浮球：单击/拖拽分级手势
 // ══════════════════════════════════════════════════════════════════
 
-/** 悬浮球内部尺寸常量（令牌化：数值不变，仅外放命名） */
+/** 悬浮球内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object BubbleDimens {
     const val BADGE_SIZE_DP = 10     // 未读红点直径
     const val BADGE_SHADOW_DP = 2    // 红点阴影高度
@@ -90,9 +90,9 @@ data class BubbleUiState(
 @Composable
 fun FloatingBubble(
     state: BubbleUiState,
-    onBubbleClick:  -> Unit,
+    onBubbleClick: () -> Unit,
     onDragDelta: (Float, Float) -> Unit,
-    onDragEnd:  -> Unit
+    onDragEnd: () -> Unit
 ) {
     val appContext = LocalContext.current
 
@@ -123,8 +123,8 @@ fun FloatingBubble(
     val mainSize = AppConfig.BUBBLE_SIZE
 
     // ═══ 主球按压/拖拽反馈 ═══
-    val interaction = remember { MutableInteractionSource }
-    val pressed by interaction.collectIsPressedAsState
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
     val pressScale by animateFloatAsState(
         targetValue = when {
             state.dragging -> 1.08f   // 拖拽中："抓起"放大
@@ -220,27 +220,27 @@ fun FloatingBubble(
                 .size(mainSize.dp)
                 .pointerInput(Unit) {
                     // 自定义 点击 vs 拖拽：累计位移 ≥ 20dp 才算拖拽，否则抬起视为点击
-                    val slopPx = AppConfig.BUBBLE_DRAG_THRESHOLD_DP.dp.toPx
+                    val slopPx = AppConfig.BUBBLE_DRAG_THRESHOLD_DP.dp.toPx()
                     awaitEachGesture {
                         val down = awaitFirstDown(requireUnconsumed = false)
                         var dragging = false
                         var accumulated = Offset.Zero
                         while (true) {
-                            val event = awaitPointerEvent
+                            val event = awaitPointerEvent()
                             val change = event.changes.firstOrNull { it.id == down.id } ?: break
                             if (!change.pressed) {
                                 L.w("bubble: up/cancel dragging=$dragging -> ${if (dragging) "snap" else "openPanel"}")
-                                if (dragging) onDragEnd else onBubbleClick
+                                if (dragging) onDragEnd() else onBubbleClick()
                                 break
                             }
                             if (!dragging) {
                                 accumulated += change.position - change.previousPosition
-                                if (accumulated.getDistance >= slopPx) {
+                                if (accumulated.getDistance() >= slopPx) {
                                     dragging = true
-                                    change.consume
+                                    change.consume()
                                 }
                             } else {
-                                change.consume
+                                change.consume()
                                 val d = change.position - change.previousPosition
                                 onDragDelta(d.x, d.y)
                             }
@@ -271,7 +271,7 @@ fun FloatingBubble(
                         }
                     role = Role.Button
                     onClick(label = "打开军师悬浮窗") {
-                        onBubbleClick
+                        onBubbleClick()
                         true
                     }
                 }

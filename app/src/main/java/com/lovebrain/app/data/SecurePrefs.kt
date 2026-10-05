@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.lovebrain.app.AppConfig
+import com.lovebrain.app.PanelBackdropOpacity
+import com.lovebrain.app.domain.port.SettingsStorePort
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.util.L
 import kotlinx.serialization.json.Json
@@ -13,10 +15,13 @@ import kotlinx.serialization.serializer
 /**
  * 加密存储：API key 等敏感配置。
  * 使用 AndroidX Security 的 EncryptedSharedPreferences（AES256）。
+ *
+ * 它同时是 [SettingsStorePort] 的实现：页面侧按端口注入、拿到的是同一实例（见 di/AppModule.kt），
+ * 加密与 Keystore 降级的判据只有这里一处，端口视图不额外开第二条落盘口。
  */
-class SecurePrefs(context: Context) {
+class SecurePrefs(context: Context) : SettingsStorePort {
 
-    /** 加密是否可用。不可用时 apiKey 仅存内存，绝不落明文（安全加固）。 */
+    /** 加密是否可用。不可用时 apiKey 仅存内存，绝不落明文（ 安全加固）。 */
     private val isEncrypted: Boolean
     private val prefs: SharedPreferences
     private var memoryKey: String = ""
@@ -29,7 +34,7 @@ class SecurePrefs(context: Context) {
         prefs = runCatching {
             val masterKey = MasterKey.Builder(context)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                .build
+                .build()
             EncryptedSharedPreferences.create(
                 context,
                 "lovebrain_secure_prefs",
@@ -45,128 +50,118 @@ class SecurePrefs(context: Context) {
 
         // 初始化内存 Map（降级路径用）
         if (!isEncrypted) {
-            memoryTicketKeyMap = mutableMapOf
+            memoryTicketKeyMap = mutableMapOf()
+        }
+
+        // 一次性内存迁移——如果旧明文 prefs 中有 provider_key_*，
+        // 迁移到加密存储后立即删除明文残留。
+        // 只在加密可用时执行——降级路径中不存在明文 Key（已不写入）。
+        if (isEncrypted) {
+            migrateAndDeleteOldPlaintextKeys(context)
         }
 
         // 消息/想法改纯内存（杀进程即清）——启动顺手移除旧残留键，键不再使用
-        prefs.edit
+        prefs.edit()
             .remove("saved_messages")
             .remove("saved_user_hint")
-            .apply
+            .apply()
     }
 
     // ═══════════ 旧单 Key 兼容字段（过渡期保留）═══════════
 
     var apiKey: String
-        get = if (isEncrypted) prefs.getString(KEY_API_KEY, "") ?: "" else memoryKey
+        get() = if (isEncrypted) prefs.getString(KEY_API_KEY, "") ?: "" else memoryKey
         set(value) {
-            if (isEncrypted) prefs.edit.putString(KEY_API_KEY, value).apply
+            if (isEncrypted) prefs.edit().putString(KEY_API_KEY, value).apply()
             else memoryKey = value  // 加密不可用：仅内存，不落明文
         }
 
     var model: String
-        get = prefs.getString(KEY_MODEL, AppConfig.DEFAULT_MODEL) ?: AppConfig.DEFAULT_MODEL
-        set(value) = prefs.edit.putString(KEY_MODEL, value).apply
+        get() = prefs.getString(KEY_MODEL, AppConfig.DEFAULT_MODEL) ?: AppConfig.DEFAULT_MODEL
+        set(value) = prefs.edit().putString(KEY_MODEL, value).apply()
 
     var baseUrl: String
-        get = prefs.getString(KEY_BASE_URL, AppConfig.API_BASE_URL) ?: AppConfig.API_BASE_URL
-        set(value) = prefs.edit.putString(KEY_BASE_URL, value).apply
+        get() = prefs.getString(KEY_BASE_URL, AppConfig.API_BASE_URL) ?: AppConfig.API_BASE_URL
+        set(value) = prefs.edit().putString(KEY_BASE_URL, value).apply()
 
     var activeKbName: String
-        get = prefs.getString(KEY_ACTIVE_KB, "") ?: ""
-        set(value) = prefs.edit.putString(KEY_ACTIVE_KB, value).apply
+        get() = prefs.getString(KEY_ACTIVE_KB, "") ?: ""
+        set(value) = prefs.edit().putString(KEY_ACTIVE_KB, value).apply()
 
     /**
      * 思考模式两态：0=直出 (thinking disabled) 1=思考·轻 (effort low)
      * 旧值 2→降级为 0（工单系统通用化，不同供应商支持程度统一）
      * 默认 0（话术生成任务实测直出更快更省更稳）
      */
-    var thinkingMode: Int
-        get = prefs.getInt(KEY_THINKING, 0).coerceIn(0, 1)  // ← 越界钳制为 0 或 1
-        set(value) = prefs.edit.putInt(KEY_THINKING, value.coerceIn(0, 1)).apply  // ← 写入时钳制
+    override var thinkingMode: Int
+        get() = prefs.getInt(KEY_THINKING, 0).coerceIn(0, 1)  // ← 越界钳制为 0 或 1
+        set(value) = prefs.edit().putInt(KEY_THINKING, value.coerceIn(0, 1)).apply()  // ← 写入时钳制
 
     /**
      * 输出模式二态：0=普通 1=进攻（进攻模式在 system prompt 追加 aggressive.md）
      * 默认 0
      */
-    var outputMode: Int
-        get = prefs.getInt(KEY_OUTPUT_MODE, 0)
-        set(value) = prefs.edit.putInt(KEY_OUTPUT_MODE, value).apply
+    override var outputMode: Int
+        get() = prefs.getInt(KEY_OUTPUT_MODE, 0)
+        set(value) = prefs.edit().putInt(KEY_OUTPUT_MODE, value).apply()
 
     // ═══ 状态持久化（重启不丢失）═══
 
-    /** 今日锦囊持久化（JSON + 日期，仅当天恢复；） */
-    fun saveSuggestion(json: String, dateStr: String) {
-        prefs.edit.putString(KEY_SUGGESTION, json).putString(KEY_SUGGESTION_DATE, dateStr).apply
-    }
-
-    /** 读取今日锦囊（json to dateStr；无则 null） */
-    fun loadSuggestion: Pair<String, String>? {
-        val json = prefs.getString(KEY_SUGGESTION, null) ?: return null
-        val date = prefs.getString(KEY_SUGGESTION_DATE, null) ?: return null
-        return json to date
-    }
-
-    /** 清除今日锦囊 */
-    fun clearSuggestion {
-        prefs.edit.remove(KEY_SUGGESTION).remove(KEY_SUGGESTION_DATE).apply
-    }
-
     /** 面板模式 (0=reply, 1=counseling) */
-    var panelMode: Int
-        get = prefs.getInt(KEY_PANEL_MODE, 0)
-        set(value) = prefs.edit.putInt(KEY_PANEL_MODE, value).apply
+    override var panelMode: Int
+        get() = prefs.getInt(KEY_PANEL_MODE, 0)
+        set(value) = prefs.edit().putInt(KEY_PANEL_MODE, value).apply()
 
     /** 谈心结果持久化（重启不丢失） */
-    fun saveCounselingResult(json: String) {
-        prefs.edit.putString(KEY_COUNSELING_RESULT, json).apply
+    override fun saveCounselingResult(json: String) {
+        prefs.edit().putString(KEY_COUNSELING_RESULT, json).apply()
     }
 
-    fun loadCounselingResult: String? = prefs.getString(KEY_COUNSELING_RESULT, null)
+    override fun loadCounselingResult(): String? = prefs.getString(KEY_COUNSELING_RESULT, null)
 
-    fun clearCounselingResult {
-        prefs.edit.remove(KEY_COUNSELING_RESULT).apply
+    override fun clearCounselingResult() {
+        prefs.edit().remove(KEY_COUNSELING_RESULT).apply()
     }
 
     /** 谈心草稿持久化 */
-    var counselingDraft: String
-        get = prefs.getString(KEY_COUNSELING_DRAFT, "") ?: ""
-        set(value) = prefs.edit.putString(KEY_COUNSELING_DRAFT, value).apply
+    override var counselingDraft: String
+        get() = prefs.getString(KEY_COUNSELING_DRAFT, "") ?: ""
+        set(value) = prefs.edit().putString(KEY_COUNSELING_DRAFT, value).apply()
 
     /** 谈心多轮历史持久化（JSON 格式，重启不丢失） */
-    fun saveCounselingHistory(json: String) {
-        prefs.edit.putString(KEY_COUNSELING_HISTORY, json).apply
+    override fun saveCounselingHistory(json: String) {
+        prefs.edit().putString(KEY_COUNSELING_HISTORY, json).apply()
     }
 
     /** 读取谈心多轮历史 */
-    fun loadCounselingHistory: String? = prefs.getString(KEY_COUNSELING_HISTORY, null)
+    override fun loadCounselingHistory(): String? = prefs.getString(KEY_COUNSELING_HISTORY, null)
 
     /** 清除谈心多轮历史 */
-    fun clearCounselingHistory {
-        prefs.edit.remove(KEY_COUNSELING_HISTORY).apply
+    override fun clearCounselingHistory() {
+        prefs.edit().remove(KEY_COUNSELING_HISTORY).apply()
     }
 
     /** API 统计持久化 */
     fun saveApiStats(json: String) {
-        prefs.edit.putString(KEY_API_STATS, json).apply
+        prefs.edit().putString(KEY_API_STATS, json).apply()
     }
 
-    fun loadApiStats: String? = prefs.getString(KEY_API_STATS, null)
+    fun loadApiStats(): String? = prefs.getString(KEY_API_STATS, null)
 
-    // ═══ 今日花费持久化（仿锦囊 date+value 双键，非敏感金额）═══
+    // ═══ 今日花费持久化（date+value 双键，非敏感金额）═══
 
     /** 保存今日花费（日期 + 金额；跨天清零由消费侧 rollTodayCost 判定） */
-    fun saveTodayCost(dateStr: String, yuan: Double) {
-        prefs.edit
+    override fun saveTodayCost(dateStr: String, yuan: Double) {
+        prefs.edit()
             .putString(KEY_TODAY_COST_DATE, dateStr)
-            .putString(KEY_TODAY_COST_YUAN, yuan.toString)
-            .apply
+            .putString(KEY_TODAY_COST_YUAN, yuan.toString())
+            .apply()
     }
 
     /** 读取今日花费（dateStr to yuan；无存档返回 null） */
-    fun loadTodayCost: Pair<String, Double>? {
+    override fun loadTodayCost(): Pair<String, Double>? {
         val date = prefs.getString(KEY_TODAY_COST_DATE, null) ?: return null
-        val yuan = prefs.getString(KEY_TODAY_COST_YUAN, null)?.toDoubleOrNull ?: return null
+        val yuan = prefs.getString(KEY_TODAY_COST_YUAN, null)?.toDoubleOrNull() ?: return null
         return date to yuan
     }
 
@@ -174,20 +169,34 @@ class SecurePrefs(context: Context) {
 
     /** 悬浮窗面板宽度（dp，默认 0 表示使用 AppConfig 默认值） */
     var panelWidth: Int
-        get = prefs.getInt(KEY_PANEL_WIDTH, 0)
-        set(value) = prefs.edit.putInt(KEY_PANEL_WIDTH, value).apply
+        get() = prefs.getInt(KEY_PANEL_WIDTH, 0)
+        set(value) = prefs.edit().putInt(KEY_PANEL_WIDTH, value).apply()
 
     /** 悬浮窗面板高度（dp，默认 0 表示使用 AppConfig 默认值） */
     var panelHeight: Int
-        get = prefs.getInt(KEY_PANEL_HEIGHT, 0)
-        set(value) = prefs.edit.putInt(KEY_PANEL_HEIGHT, value).apply
+        get() = prefs.getInt(KEY_PANEL_HEIGHT, 0)
+        set(value) = prefs.edit().putInt(KEY_PANEL_HEIGHT, value).apply()
 
-    // ═══ 消息捕获开关（问题 4）═══
+    /**
+     * 面板**背景层**浓度：整数百分比，100 = 完全不透明（滑杆没动过的那一档，外观与从前逐字相同）。
+     *
+     * 这一格是 [PanelBackdropOpacity] 读写通路的那一对，键名、区间与刻度全归那颗 object，
+     * 这里不复制字面量、也不另发明一套回落：读写两侧共用同一个 [PanelBackdropOpacity.snapPercent]，
+     * 盘上因此只可能出现合法刻度值，越界脏值与升级前"根本没写过这一项"都落回同一格。
+     * 它作用的是背景层颜色的 alpha，不是窗口的 `ComposeView.alpha`（那条通道归淡入淡出动画）。
+     */
+    var panelBackdropOpacityPercent: Int
+        get() = PanelBackdropOpacity.snapPercent(
+            prefs.getInt(PanelBackdropOpacity.PREF_KEY, PanelBackdropOpacity.DEFAULT_PERCENT))
+        set(value) = prefs.edit()
+            .putInt(PanelBackdropOpacity.PREF_KEY, PanelBackdropOpacity.snapPercent(value)).apply()
+
+    // ═══ 消息捕获开关（ 问题 4）═══
 
     /** 消息捕获总开关：关闭后 CopyCaptureService 在事件入口直接忽略一切捕获，默认开 */
-    var captureEnabled: Boolean
-        get = prefs.getBoolean(KEY_CAPTURE_ENABLED, true)
-        set(value) = prefs.edit.putBoolean(KEY_CAPTURE_ENABLED, value).apply
+    override var captureEnabled: Boolean
+        get() = prefs.getBoolean(KEY_CAPTURE_ENABLED, true)
+        set(value) = prefs.edit().putBoolean(KEY_CAPTURE_ENABLED, value).apply()
 
     // ═══ 无障碍隐私披露 consent 版本号 ═══
 
@@ -195,59 +204,84 @@ class SecurePrefs(context: Context) {
      * 无障碍隐私披露 consent 版本号。用户明确点击「同意并继续」后写入当前版本。
      * 披露内容发生重要变化时递增 CURRENT_DISCLOSURE_VERSION 即可重新要求确认。
      */
-    var accessibilityDisclosureVersion: Int
-        get = prefs.getInt(KEY_ACCESSIBILITY_DISCLOSURE_VERSION, 0)
-        set(value) = prefs.edit.putInt(KEY_ACCESSIBILITY_DISCLOSURE_VERSION, value).apply
+    override var accessibilityDisclosureVersion: Int
+        get() = prefs.getInt(KEY_ACCESSIBILITY_DISCLOSURE_VERSION, 0)
+        set(value) = prefs.edit().putInt(KEY_ACCESSIBILITY_DISCLOSURE_VERSION, value).apply()
 
-    // ═══════════ 工单系统字段（- ）════════════
+    // ═══ 无障碍抓取 allowlist（默认 fail-closed）═══
+
+    /**
+     * 用户明确允许抓取的聊天 App 包名集合。
+     *
+     * 空集 = 什么都不抓。这是有意的默认值：上一版只有关键词 blocklist，
+     * 没命中关键词的任意 App（地区银行、企业内聊、医疗、WebView 登录页）都会进入捕获逻辑。
+     * allowlist 才能把边界收敛到用户真正授权的那几个聊天 App。
+     */
+    override var captureAllowedPackages: Set<String>
+        get() = prefs.getStringSet(KEY_CAPTURE_ALLOWED_PACKAGES, emptySet())?.toSet() ?: emptySet()
+        set(value) =
+            prefs.edit().putStringSet(KEY_CAPTURE_ALLOWED_PACKAGES, value.toSet()).apply()
+
+    /** 追加一个允许抓取的包名 */
+    fun addCaptureAllowedPackage(pkg: String) {
+        if (pkg.isBlank()) return
+        captureAllowedPackages = captureAllowedPackages + pkg
+    }
+
+    /** 移除一个允许抓取的包名 */
+    fun removeCaptureAllowedPackage(pkg: String) {
+        captureAllowedPackages = captureAllowedPackages - pkg
+    }
+
+    // ═══════════ 工单系统字段（ - ）════════════
 
     /** 工单列表 JSON（非敏感元数据） */
-    fun getWorkerTicketsJson: String? = prefs.getString(KEY_TICKER_LIST_JSON, null)
+    fun getWorkerTicketsJson(): String? = prefs.getString(KEY_TICKER_LIST_JSON, null)
     fun saveWorkerTicketsJson(json: String) {
-        prefs.edit.putString(KEY_TICKER_LIST_JSON, json).apply
+        prefs.edit().putString(KEY_TICKER_LIST_JSON, json).apply()
     }
 
     /** 解析工单列表（老 JSON 的旧字段经 ignoreUnknownKeys 忽略；老数据只有 model 时迁移 models = [model]，多模型批） */
-    fun getWorkerTickets: List<ProviderTicket> {
-        val raw = getWorkerTicketsJson ?: return emptyList
+    override fun getWorkerTickets(): List<ProviderTicket> {
+        val raw = getWorkerTicketsJson() ?: return emptyList()
         return runCatching {
             val migrationJson = Json { ignoreUnknownKeys = true }
             migrationJson.decodeFromString<List<ProviderTicket>>(raw)
                 .map { t ->
                     when {
                         // 老数据：models 空 + model 非空 → models = [model]
-                        t.models.isEmpty && t.model.isNotBlank -> t.copy(models = listOf(t.model))
-                        // 老迁移兜底：model 空时用原 selectedModel 分条数据（遗留通道）
-                        t.model.isBlank && t.models.isEmpty -> {
-                            val legacy = getSelectedModel(t.id).orEmpty
-                            if (legacy.isNotBlank) t.copy(model = legacy, models = listOf(legacy)) else t
+                        t.models.isEmpty() && t.model.isNotBlank() -> t.copy(models = listOf(t.model))
+                        // 老迁移兜底：model 空时用原 selectedModel 分条数据（ 遗留通道）
+                        t.model.isBlank() && t.models.isEmpty() -> {
+                            val legacy = getSelectedModel(t.id).orEmpty()
+                            if (legacy.isNotBlank()) t.copy(model = legacy, models = listOf(legacy)) else t
                         }
                         // 当前模型不在列表内（编辑被删光/删掉当前项）→ 回退列表首个
-                        t.model !in t.models && t.models.isNotEmpty -> t.copy(model = t.models.first)
+                        t.model !in t.models && t.models.isNotEmpty() -> t.copy(model = t.models.first())
                         else -> t
                     }
                 }
         }.getOrElse { e ->
             L.w("解析工单列表失败：${e.javaClass.simpleName}")
-            emptyList
+            emptyList()
         }
     }
 
     /** 保存工单列表 */
-    fun setWorkerTickets(tickets: List<ProviderTicket>) {
-        val json = Json.encodeToString(serializer<List<ProviderTicket>>, tickets)
+    override fun setWorkerTickets(tickets: List<ProviderTicket>) {
+        val json = Json.encodeToString(serializer<List<ProviderTicket>>(), tickets)
         saveWorkerTicketsJson(json)
     }
 
     /** 激活工单 ID */
-    var activeTicketId: String?
-        get = prefs.getString(KEY_ACTIVE_TICKET_ID, null)
-        set(value) = prefs.edit.putString(KEY_ACTIVE_TICKET_ID, value).apply
+    override var activeTicketId: String?
+        get() = prefs.getString(KEY_ACTIVE_TICKET_ID, null)
+        set(value) = prefs.edit().putString(KEY_ACTIVE_TICKET_ID, value).apply()
 
     /** 知识库编辑页记忆：上次打开的文件路径（切页/重启后恢复，编辑页抽屉方案） */
-    var lastKbEditFile: String?
-        get = prefs.getString("kb_edit_last_file", null)
-        set(value) = prefs.edit.putString("kb_edit_last_file", value).apply
+    override var lastKbEditFile: String?
+        get() = prefs.getString("kb_edit_last_file", null)
+        set(value) = prefs.edit().putString("kb_edit_last_file", value).apply()
 
     /**
      * 每工单的 selectedModel（分条存储）——仅供老数据迁移读取（：一工单 = 一模型后不再写入）
@@ -256,31 +290,29 @@ class SecurePrefs(context: Context) {
 
     /**
      * 获取工单的 API Key（加密分条存储 / 降级内存 Map）
-     * 优先级：memoryMap → encrypted → fallback 空串
+     * 优先级：memoryMap → encrypted → fallback null
+     * 降级路径不再从明文 prefs 读 provider_key_*——旧明文 Key 已在迁移后删除
      */
-    fun getWorkerApiKey(ticketId: String): String? {
+    override fun getWorkerApiKey(ticketId: String): String? {
         // 先查内存 Map（Keystore 降级路径）
         if (!isEncrypted) {
             memoryTicketKeyMap?.let { map ->
-                map[ticketId]?.takeIf { it.isNotEmpty }?.also { return it }
+                map[ticketId]?.takeIf { it.isNotEmpty() }?.also { return it }
             }
+            // 降级路径不再从明文 prefs 读旧 Key——返回 null，用户需重新输入
+            return null
         }
 
-        // 再查加密存储
+        // 加密存储路径
         val key = prefs.getString("provider_key_$ticketId", null)
-
-        // 降级路径同步：如果从加密区读到且内存 Map 为空，回填内存 Map
-        if (!isEncrypted && !key.isNullOrEmpty) {
-            memoryTicketKeyMap?.set(ticketId, key)
-        }
 
         return key
     }
 
     /** 保存工单的 API Key（加密分条存储 / 降级内存 Map） */
-    fun saveWorkerApiKey(ticketId: String, apiKey: String) {
+    override fun saveWorkerApiKey(ticketId: String, apiKey: String) {
         if (isEncrypted) {
-            prefs.edit.putString("provider_key_$ticketId", apiKey).apply
+            prefs.edit().putString("provider_key_$ticketId", apiKey).apply()
         } else {
             // 绝不明文落盘！仅存内存
             memoryTicketKeyMap?.set(ticketId, apiKey)
@@ -288,11 +320,69 @@ class SecurePrefs(context: Context) {
     }
 
     /** 删除工单的 API Key（/：deleteTicket 时对称清理——加密分条与降级内存双通道皆清，防孤立密文残留） */
-    fun deleteWorkerApiKey(ticketId: String) {
+    override fun deleteWorkerApiKey(ticketId: String) {
         if (isEncrypted) {
-            prefs.edit.remove("provider_key_$ticketId").apply
+            prefs.edit().remove("provider_key_$ticketId").apply()
         }
         memoryTicketKeyMap?.remove(ticketId)
+    }
+
+    // ═══ 性能统计持久化 ═══
+
+    /** 累计生成次数 */
+    override var totalGenerateCount: Int
+        get() = prefs.getInt(KEY_TOTAL_GEN_COUNT, 0)
+        set(value) = prefs.edit().putInt(KEY_TOTAL_GEN_COUNT, value).apply()
+
+    /** 累计花费（元） */
+    override var totalCostYuan: Double
+        get() = prefs.getString(KEY_TOTAL_COST_YUAN, "0")?.toDoubleOrNull() ?: 0.0
+        set(value) = prefs.edit().putString(KEY_TOTAL_COST_YUAN, value.toString()).apply()
+
+    /** 累计复制次数 */
+    override var totalCopyCount: Int
+        get() = prefs.getInt(KEY_TOTAL_COPY_COUNT, 0)
+        set(value) = prefs.edit().putInt(KEY_TOTAL_COPY_COUNT, value).apply()
+
+    /** 累计采用次数（记录实际发送） */
+    override var totalAdoptCount: Int
+        get() = prefs.getInt(KEY_TOTAL_ADOPT_COUNT, 0)
+        set(value) = prefs.edit().putInt(KEY_TOTAL_ADOPT_COUNT, value).apply()
+
+    /** 累计改写次数 */
+    override var totalRewriteCount: Int
+        get() = prefs.getInt(KEY_TOTAL_REWRITE_COUNT, 0)
+        set(value) = prefs.edit().putInt(KEY_TOTAL_REWRITE_COUNT, value).apply()
+
+    /** 是否已完成引导（已有用户不强制重走） */
+    override var hasCompletedOnboarding: Boolean
+        get() = prefs.getBoolean(KEY_ONBOARDING_DONE, false)
+        set(value) = prefs.edit().putBoolean(KEY_ONBOARDING_DONE, value).apply()
+
+    /**
+     * 一次性内存迁移——将旧明文 prefs 中的 provider_key_* 迁移到加密存储后删除。
+     * 在 init 中调用，只执行一次（迁移后明文 key 已删除，后续不再命中）。
+     */
+    private fun migrateAndDeleteOldPlaintextKeys(context: Context) {
+        // 读取可能的旧明文 prefs（降级路径使用的 fallback prefs）
+        val fallbackPrefs = context.getSharedPreferences("lovebrain_prefs_fallback", Context.MODE_PRIVATE)
+        val allEntries = fallbackPrefs.all
+        val keysToDelete = mutableListOf<String>()
+        for ((key, value) in allEntries) {
+            if (key.startsWith("provider_key_") && value is String && value.isNotEmpty()) {
+                // 迁移到加密存储
+                val ticketId = key.removePrefix("provider_key_")
+                prefs.edit().putString(key, value).apply()
+                keysToDelete.add(key)
+                L.w("migrated plaintext key for ticket=$ticketId to encrypted store")
+            }
+        }
+        if (keysToDelete.isNotEmpty()) {
+            val editor = fallbackPrefs.edit()
+            keysToDelete.forEach { editor.remove(it) }
+            editor.apply()
+            L.w("deleted ${keysToDelete.size} old plaintext keys from fallback prefs")
+        }
     }
 
     companion object {
@@ -304,8 +394,6 @@ class SecurePrefs(context: Context) {
         private const val KEY_OUTPUT_MODE = "output_mode"
         // 状态持久化
         private const val KEY_PANEL_MODE = "saved_panel_mode"
-        private const val KEY_SUGGESTION = "saved_suggestion"
-        private const val KEY_SUGGESTION_DATE = "saved_suggestion_date"
         private const val KEY_API_STATS = "saved_api_stats"
         // 今日花费（日期 + 金额双键）
         private const val KEY_TODAY_COST_DATE = "today_cost_date"
@@ -317,8 +405,17 @@ class SecurePrefs(context: Context) {
         private const val KEY_PANEL_HEIGHT = "panel_height"
         // 消息捕获开关
         private const val KEY_CAPTURE_ENABLED = "capture_enabled"
+        // 性能统计
+        private const val KEY_TOTAL_GEN_COUNT = "total_gen_count"
+        private const val KEY_TOTAL_COST_YUAN = "total_cost_yuan"
+        private const val KEY_TOTAL_COPY_COUNT = "total_copy_count"
+        private const val KEY_TOTAL_ADOPT_COUNT = "total_adopt_count"
+        private const val KEY_TOTAL_REWRITE_COUNT = "total_rewrite_count"
+        private const val KEY_ONBOARDING_DONE = "onboarding_done"
         // 无障碍隐私披露 consent 版本号
         private const val KEY_ACCESSIBILITY_DISCLOSURE_VERSION = "accessibility_disclosure_version"
+        // 无障碍抓取 allowlist（默认空集 = 不抓任何 App）
+        private const val KEY_CAPTURE_ALLOWED_PACKAGES = "capture_allowed_packages"
 
         // 工单系统键
         private const val KEY_TICKER_LIST_JSON = "worker_tickets_json"

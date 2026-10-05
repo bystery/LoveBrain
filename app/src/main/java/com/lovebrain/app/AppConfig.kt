@@ -12,8 +12,11 @@ object AppConfig {
     const val STREAM_READ_TIMEOUT_SEC = 120L
     const val WRITE_TIMEOUT_SEC = 15L
     const val GENERATE_TIMEOUT_MS = 120_000L
-    const val SUGGEST_TIMEOUT_MS = 45_000L   // 锦囊独立超时：45s（比主生成短，避免"1 分钟还在转圈"）
     const val GENERATE_MAX_ATTEMPTS = 4   // 主生成总尝试次数（1 次初始 +3 次重试； 预算 3→4 使候选④none 可达）
+    // 主生成总超时的可选档位住在本文件尾部的 [GenerationTimeoutTier]：
+    // 默认档就是上面的 GENERATE_TIMEOUT_MS，逐工单可调，连接/写超时不跟着放开。
+    // 三条生成链路（主回复 / 谈心 / 主动开场）**共用**这一张快照上的预算，
+    // 也就是共用 [GenerationTimeoutTier] 这一把尺——不再有任何一条留自己的固定秒数。
 
     // ═══ 模型参数 ═══
     const val TEMPERATURE_MAIN = 0.7
@@ -27,24 +30,26 @@ object AppConfig {
     const val PANEL_MIN_H = 300
     const val PANEL_MAX_W = 350
     const val PANEL_MAX_H = 680
+    // 面板背景的透明程度**不在这一段**：那是用户可设的持久化项，不是尺寸常量，
+    // 住在文件尾部的 [PanelBackdropOpacity]。
 
     // ═══ 悬浮球（纯主球形态：单击开面板、拖拽吸附、闲置半透明/半隐藏）═══
     const val BUBBLE_SIZE = 56               // 主球直径 56dp（M3 FAB 标准尺寸，触控达标）
     const val BUBBLE_EDGE_MARGIN = 2         // 吸附后距屏幕边缘留白（2dp，近乎贴边又不被系统手势区遮挡）
-    const val BUBBLE_SNAP_MS = 250           // 边缘吸附动画时长：去掉吸附震动，保留平滑滑向动画）
+    const val BUBBLE_SNAP_MS = 250           // 边缘吸附动画时长——去掉吸附震动，保留平滑滑向动画
     const val BUBBLE_DRAG_THRESHOLD_DP = 20  // 点击 vs 拖拽判定阈值（累计位移≥20dp 才算拖拽，否则抬起=点击）
 
-    // ═══ 悬浮球迭代：闲置降遮挡 + 入场动画）═══
+    // ═══ 悬浮球：闲置降遮挡 + 入场动画 ═══
     const val BUBBLE_IDLE_DIM_MS = 4000L     // 闲置 4s 无交互 → 半透明（AssistiveTouch 降遮挡思路）
     const val BUBBLE_IDLE_ALPHA = 0.78f      // 闲置半透明 alpha（保持 3:1 对比度下限）
     const val BUBBLE_ENTRANCE_STIFFNESS = 300f   // 入场 spring 刚度（慢而稳的浮入）
     const val BUBBLE_ENTRANCE_DAMPING = 0.7f     // 入场 spring 阻尼（轻微过冲）
 
-    // ═══ 悬浮球迭代：侧边半隐藏 + 无障碍降动画）═══
+    // ═══ 悬浮球：侧边半隐藏 + 无障碍降动画 ═══
     const val BUBBLE_HIDE_IDLE_MS = 8000L    // 闲置 8s（半透明之后）→ 滑出侧边半隐藏（QQ 悬挂思路）
     const val BUBBLE_HIDE_EDGE_DP = 12       // 半隐藏后露边宽度（可点击回弹）
 
-    // ═══ 悬浮球角标（令牌化：spring 参数外放，数值不变）═══
+    // ═══ 悬浮球角标（ 令牌化：spring 参数外放，数值不变）═══
     const val BUBBLE_BADGE_ENTER_DAMPING = 0.45f   // 角标入场 spring 阻尼（轻微弹跳）
     const val BUBBLE_BADGE_ENTER_STIFFNESS = 900f  // 角标入场 spring 刚度
     const val BUBBLE_BADGE_EXIT_DAMPING = 0.85f    // 角标退出 spring 阻尼（接近临界，无弹跳）
@@ -77,4 +82,145 @@ object AppConfig {
     const val LESSON_CONTEXT_TOPICS = 25      // 经验提取时从话题档案倒取最近 25 个话题
     const val REFLECT_TRIGGER_INTERVAL = 5   // 每积累 5 个话题触发一次画像更新
     const val REFLECT_CONTEXT_TOPICS = 5     // 画像更新时从话题档案倒取最近 5 个话题
+}
+
+/**
+ * 生成总超时的**有界白名单**：只有这四档，用户填不进别的数。
+ * 主回复、谈心、主动开场三条链路共用它，谁的秒数都不另立一颗。
+ * （来自用户反馈：非官方兼容服务的速度与内容长度都超过固定 120 秒）
+ *
+ * 为什么要档位而不是一个自由输入框：用户反馈的是非官方 OpenAI-compatible 服务
+ * 的速度与内容长度都超过固定 120 秒；但把总超时交给用户随手写一个数，
+ * 就等于允许"卡死的请求变成无限等待"——那正是复核点名不要的东西。
+ *
+ * 这一档**只放开读的那一侧**：
+ * - 三条生成链路的总超时（主回复、谈心、主动开场的 `withTimeout`）都按档位取；
+ *   它们吃的是同一份请求快照里的 `ProviderRequestConfig.generateTimeoutMs`，
+ *   所以"这一张工单等多久"在全局只有一份答案，不存在按屏另配一套秒数的第二条尺；
+ * - 流式 SSE 的读超时（[AppConfig.STREAM_READ_TIMEOUT_SEC]）跟着同一档走，
+ *   否则总超时放开到 300 秒、而 120 秒没有新 token 就被 OkHttp 掐断，档位等于白给；
+ * - [AppConfig.CONNECT_TIMEOUT_SEC] 与 [AppConfig.WRITE_TIMEOUT_SEC] **不跟着走**：
+ *   联系不上服务器时该快速失败，不该让用户对着转圈等 300 秒。
+ *
+ * 主动开场**以前留着一颗固定 45 秒**，当时的理由是"这一屏不是她在等一条长回复
+ * 的关键路径，坏服务上别多转半分钟"。这颗固定值本轮被删掉，改吃工单快照，理由是：
+ * 用户要的是"超时时间"这一项设置对**所有生成**成立——同一张慢速工单下，主回复能等到 300 秒、
+ * 主动开场却在 45 秒截断，等于设置页上那颗选择只有一半为真，而"哪一半为真"在界面上读不出来。
+ * 副作用写在调用点注释里，不在这里藏。
+ *
+ * 档位挂在**每一张工单**上（`ProviderTicket.generateTimeoutSec`），不是全局唯一值：
+ * 官方 Key 与自建慢服务可以各留各的等待预算。
+ */
+enum class GenerationTimeoutTier(val seconds: Int) {
+    SEC_60(60),
+    SEC_120(120),
+    SEC_180(180),
+    SEC_300(300);
+
+    /** 这一档换算成毫秒——`withTimeout` 吃这个数。换算在本仓库只写这一处。 */
+    val millis: Long get() = seconds * 1000L
+
+    companion object {
+
+        /** UI 画的就是这四颗（列表顺序即展示顺序） */
+        val options: List<GenerationTimeoutTier> get() = listOf(SEC_60, SEC_120, SEC_180, SEC_300)
+
+        /** 精确命中白名单才算有效：`null`（升级前的老数据里根本没写过这一项）与任何非档位值都是 null */
+        fun fromSecondsOrNull(seconds: Int?): GenerationTimeoutTier? =
+            if (seconds == null) null else options.firstOrNull { it.seconds == seconds }
+
+        /**
+         * 回落口——复核要求"在代码里能看出这条回落"指的就是这一行：
+         * 脏数据 / 老数据 / 从没配过 ⇒ 默认档，绝不把原样照抄的数字用出去，
+         * 也绝不因为读不出而退回 0 秒或无限等待。
+         */
+        fun fromSecondsOrDefault(seconds: Int?): GenerationTimeoutTier =
+            fromSecondsOrNull(seconds) ?: DEFAULT
+
+        /** 默认档跟着 [AppConfig.GENERATE_TIMEOUT_MS] 取：两处那个 120 不可能分家 */
+        val DEFAULT: GenerationTimeoutTier =
+            fromSecondsOrNull((AppConfig.GENERATE_TIMEOUT_MS / 1000).toInt()) ?: SEC_120
+    }
+}
+
+/**
+ * 面板**背景层**的不透明度——设置页那颗滑杆背后唯一的真值。
+ *
+ * 量纲：整数百分比，越大越不透明（越"实"）。盘上存整数，`0f..1f` 那个浮点只在画的那一帧出现，
+ * 是派生量不是持久量。选整数而不是 float 落盘的三条理由：
+ * - 界面给用户看的本来就是"百分比"这个整数刻度，读盘 → 画滑杆 → 回写必须逐字往返；
+ *   浮点存盘要么带回误差（`0.78f` 读回来还是不是 `0.78f`），要么退化成字符串再解析；
+ * - 脏值判定（"这在不在合法区间内"）是整数比较，回落那一行肉眼可读；
+ * - 与本仓已有的 [GenerationTimeoutTier] 同一种形状：有界区间 + 一个显式回落口，
+ *   绝不把盘上读到的原样数字直接画出去。
+ *
+ * 区间 `60..100`，默认 `100`，刻度 5%：
+ * - 默认 100% 就是今天的样子（面板底是一整块实色），这一笔上线时没人会发现界面变了；
+ * - 下限取 60%：这是实施书对"面板背景不透明度"划的那条线（`0.6..1.0`）。再往下调，
+ *   面板压在白色聊天界面上和压在深色照片上只差在底那一层，字与宿主的字会糊成一团；
+ *   曾经放到 40% 是滑得爽但越过了这条线，现在按规格收回 60。
+ *
+ * ⚠ **压的是背景与大面积卡底，不是整扇窗**。把整棵 `ComposeView.alpha` 一起降下来会连正文一起洗淡
+ * （文字先于背景失去可读性），而且那条 alpha 归面板的淡入淡出动画所有
+ * （`service/OverlayPanelWindow` 里淡出结束与再次打开时都会把它复位）。
+ * 作用点有两处，且共用这一把尺：面板根那层 `.background(SurfaceBase.copy(alpha = [alphaOf]))`，
+ * 以及压在它上面的大面积容器走 `core/designsystem/panelBackdropCardColor()` ——
+ * 只把根调淡、白卡仍然满不透明，等于没有这个设置。
+ * 底色自身的 alpha 通道与 `View.alpha` 是两层乘积：动画淡出时两者相乘，动画复位碰不到颜色。
+ */
+object PanelBackdropOpacity {
+
+    /**
+     * SecurePrefs 的键名（整数存盘）。键面只在这里出现一次，别处不许再抄字面量。
+     *
+     * 读写通路就一条，接法固定（`data/SecurePrefs.kt` 里加这一对，别再开第二个 getter）：
+     * ```
+     * var panelBackdropOpacityPercent: Int
+     *     get() = PanelBackdropOpacity.snapPercent(
+     *         prefs.getInt(PanelBackdropOpacity.PREF_KEY, PanelBackdropOpacity.DEFAULT_PERCENT))
+     *     set(value) = prefs.edit()
+     *         .putInt(PanelBackdropOpacity.PREF_KEY, PanelBackdropOpacity.snapPercent(value)).apply()
+     * ```
+     * 画的那一侧取 [alphaOf]，滑杆上显示的那个数取 [transparencyOf]。
+     */
+    const val PREF_KEY = "panel_backdrop_opacity_percent"
+
+    const val MIN_PERCENT = 60
+    const val MAX_PERCENT = 100
+
+    /** 默认 = 完全不透明：面板外观与这一笔之前逐字相同，滑杆没被动过的用户不该看到变化 */
+    const val DEFAULT_PERCENT = 100
+
+    /** 滑杆刻度。存盘前对齐刻度，界面上的数字与盘上的数字才可能一模一样。 */
+    const val STEP_PERCENT = 5
+
+    /** 给滑杆用的合法取值序列（从小到大，展示顺序即此顺序）。 */
+    val steps: List<Int> get() = (MIN_PERCENT..MAX_PERCENT step STEP_PERCENT).toList()
+
+    /**
+     * 读盘与写盘共用的唯一一格：
+     * - `null`（这台机器从没滑过 / 升级前的老数据里根本没这一项）⇒ [DEFAULT_PERCENT]；
+     * - 越界的脏值 ⇒ 钳到最近的合法端点，而不是照抄出去。区间的两端本身就是
+     *   "看得见"与"读得清"那两条线，所以钳到端点永远比原样用一个非法值安全；
+     *   这一格与本仓 `thinkingMode` 读写两侧都 `coerceIn` 是同一个形状。
+     * - 区间内的非刻度值 ⇒ 就近对齐到 [STEP_PERCENT]。
+     *
+     * 无论进来的是什么，出去的值一定落在 `steps` 里：0 与负数不可能变成"面板看不见"。
+     */
+    fun snapPercent(raw: Int?): Int {
+        if (raw == null) return DEFAULT_PERCENT
+        val clamped = raw.coerceIn(MIN_PERCENT, MAX_PERCENT)
+        val tick = (clamped - MIN_PERCENT + STEP_PERCENT / 2) / STEP_PERCENT
+        return (MIN_PERCENT + tick * STEP_PERCENT).coerceIn(MIN_PERCENT, MAX_PERCENT)
+    }
+
+    /** 画的那一步唯一的换算口：盘上的整数 → 颜色 alpha。非法值同路回落，最暗也就到 [MIN_PERCENT]。 */
+    fun alphaOf(raw: Int?): Float = snapPercent(raw) / 100f
+
+    /** 界面上那颗标着"透明度"的滑杆要显示的数字：不透明度 100% 就是透明度 0%。 */
+    fun transparencyOf(raw: Int?): Int = MAX_PERCENT - snapPercent(raw)
+
+    /** 反向换算口：界面交来的是"透明度百分比"时走这里。镜像关系只写这一处，别在界面上手算 `100 - x`。 */
+    fun fromTransparencyPercent(transparency: Int?): Int =
+        snapPercent(transparency?.let { MAX_PERCENT - it })
 }

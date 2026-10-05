@@ -20,20 +20,20 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.MarkdownBodyFontSize
-import com.lovebrain.app.ui.theme.MarkdownBodyLineHeight
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.TextHint
-import com.lovebrain.app.ui.theme.TextSecondary
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.MarkdownBodyFontSize
+import com.lovebrain.app.core.designsystem.MarkdownBodyLineHeight
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.TextHint
+import com.lovebrain.app.core.designsystem.TextSecondary
 
 /** 4 个解析 Regex 上提为文件级常量（模式串逐字节不变；避免流式热路径每次重组现编译） */
 private val RE_HTML_COMMENT = Regex("<!--.*?-->", RegexOption.DOT_MATCHES_ALL)
 private val RE_HR = Regex("^[-*]{2,}$")
 private val RE_ORDERED_LIST = Regex("^\\d+[.、)]\\s.*")
 private val RE_TABLE_SEPARATOR = Regex("^[-: ]+$")
-/** Markdown 排版常量（外放：值不变，仅外放命名） */
+/** Markdown 排版常量（ 外放：值不变，仅外放命名） */
 private object MarkdownTypeDimens {
     val H1_FONT_SIZE = 15.sp            // 一级标题字号
     val H2_FONT_SIZE = 14.sp            // 二级标题字号
@@ -42,7 +42,7 @@ private object MarkdownTypeDimens {
     val TABLE_LINE_HEIGHT = 18.sp       // 表格行高
 }
 
-/** Markdown 布局常量（令牌化：数值不变，仅外放命名） */
+/** Markdown 布局常量（  令牌化：数值不变，仅外放命名） */
 private object MarkdownDimens {
     const val BLOCK_GAP_DP = 6               // 分割线/空行块间距
     const val QUOTE_RADIUS_DP = 4            // 引用块圆角
@@ -73,15 +73,15 @@ fun MarkdownText(
     listSingleLine: Boolean = true
 ) {
     // 去除 HTML 注释（<!-- ... -->），避免预览时显示为乱码
-    val cleanText = text.replace(RE_HTML_COMMENT, "").trim
-    val lines = cleanText.lines
+    val cleanText = text.replace(RE_HTML_COMMENT, "").trim()
+    val lines = cleanText.lines()
     Column(modifier = modifier) {
         var i = 0
         var renderedLines = 0
         var truncated = false
         while (i < lines.size && renderedLines < maxLines) {
             val line = lines[i]
-            val trimmed = line.trim
+            val trimmed = line.trim()
 
             when {
                 // --- 或 *** 或 -- 分割线
@@ -99,7 +99,7 @@ fun MarkdownText(
                 trimmed.length > 1 && trimmed.startsWith("#") -> {
                     val level = trimmed.takeWhile { it == '#' }.length
                     if (level in 1..6) {
-                        val content = parseInline(trimmed.drop(level).trim)
+                        val content = parseInline(trimmed.drop(level).trim())
                         val (size, top, bottom) = when (level.coerceAtMost(3)) {
                             1 -> Triple(MarkdownTypeDimens.H1_FONT_SIZE, Spacing.md, Spacing.sm)
                             2 -> Triple(MarkdownTypeDimens.H2_FONT_SIZE, MarkdownTypeDimens.H2_MARGIN_TOP_DP.dp, MarkdownTypeDimens.H2_MARGIN_BOTTOM_DP.dp)
@@ -134,7 +134,7 @@ fun MarkdownText(
                     val content = trimmed.removePrefix("> ").removePrefix(">")
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth
+                            .fillMaxWidth()
                             .padding(vertical = Spacing.xs)
                             .background(
                                 TextHint.copy(alpha = 0.1f),
@@ -162,22 +162,22 @@ fun MarkdownText(
 
                 // 1. 有序列表（：与无序列表共用 ListRow，标记加粗为原行为）
                 trimmed.matches(RE_ORDERED_LIST) -> {
-                    val num = trimmed.takeWhile { it.isDigit || it == '.' || it == '、' || it == ')' }
-                    val content = trimmed.removePrefix(num).trim
+                    val num = trimmed.takeWhile { it.isDigit() || it == '.' || it == '、' || it == ')' }
+                    val content = trimmed.removePrefix(num).trim()
                     ListRow(num, content, color, fontSize, lineHeight, listSingleLine, FontWeight.Medium)
                     renderedLines++
                 }
 
                 // 空行
-                trimmed.isEmpty -> {
+                trimmed.isEmpty() -> {
                     Spacer(Modifier.height(MarkdownDimens.BLOCK_GAP_DP.dp))
                 }
 
                 // 表格（| 开头的连续行）
                 trimmed.startsWith("|") -> {
-                    val tableLines = mutableListOf<String>
-                    while (i < lines.size && lines[i].trim.startsWith("|")) {
-                        tableLines.add(lines[i].trim)
+                    val tableLines = mutableListOf<String>()
+                    while (i < lines.size && lines[i].trim().startsWith("|")) {
+                        tableLines.add(lines[i].trim())
                         i++
                     }
                     i-- // 回退一步，外层 while 会 i++
@@ -262,26 +262,26 @@ private fun ListRow(
 private fun RenderTable(tableLines: List<String>, color: Color, fontSize: TextUnit) {
     // 解析行 → 单元格列表，跳过分隔行（只含 - | : 空格）
     val rows = tableLines.mapNotNull { line ->
-        val cells = line.trim.removePrefix("|").removeSuffix("|")
-            .split("|").map { it.trim }
+        val cells = line.trim().removePrefix("|").removeSuffix("|")
+            .split("|").map { it.trim() }
         // 分隔行：所有单元格只含 -/:/空格
         if (cells.all { it.matches(RE_TABLE_SEPARATOR) }) null
         else cells
     }
-    if (rows.isEmpty) return
+    if (rows.isEmpty()) return
 
     val colCount = rows.maxOf { it.size }
     Spacer(Modifier.height(Spacing.sm))
     Column(
         modifier = Modifier
-            .fillMaxWidth
+            .fillMaxWidth()
             .background(TextHint.copy(alpha = 0.06f), LoveBrainShape.sm)
             .padding(Spacing.md)
     ) {
         rows.forEachIndexed { idx, cells ->
             Row(
                 modifier = Modifier
-                    .fillMaxWidth
+                    .fillMaxWidth()
                     .padding(vertical = MarkdownDimens.TABLE_ROW_VPAD_DP.dp)
             ) {
                 for (c in 0 until colCount) {

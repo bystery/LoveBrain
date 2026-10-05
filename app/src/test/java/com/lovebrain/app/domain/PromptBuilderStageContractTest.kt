@@ -17,80 +17,38 @@ import org.junit.Test
 class PromptBuilderStageContractTest {
 
     private fun loadAsset(path: String): String {
-        val cls = ClassLoader.getSystemClassLoader
+        val cls = ClassLoader.getSystemClassLoader()
         val res = cls.getResourceAsStream(path)
             ?: error("资产 $path 未在 test classpath 上——检查 build.gradle.kts sourceSets.test.resources.srcDir")
-        return res.bufferedReader.use { it.readText }
+        return res.bufferedReader().use { it.readText() }
     }
 
     // ═══ 资产可读性 ═══
 
-    @Test
-    fun `suggest asset is loadable from test classpath` {
-        val content = loadAsset("engine/suggest.md")
-        assertTrue("suggest.md 不应为空", content.isNotBlank)
-    }
+    // 2026-10-03：`suggest asset is loadable from test classpath` 这一格已摘除——
+    // 它读的是锦囊那颗引擎资产，该资产随「锦囊」功能整删（用户授权），已不在盘上；
+    // 这一格测的就是锦囊那段的拼装，主体没了，格子留着只会变成"资产读不到"的恒红。
 
     @Test
-    fun `stage asset is loadable from test classpath` {
+    fun `stage asset is loadable from test classpath`() {
         val content = loadAsset("engine/system_prompt/stage.md")
-        assertTrue("stage.md 不应为空", content.isNotBlank)
+        assertTrue("stage.md 不应为空", content.isNotBlank())
     }
 
-    // ═══ suggest.md 阶段标题契约 ═══
+    // : suggest.md 已重写为轻量日常行动建议引擎，不再按阶段（## XX期）分割。
+    // 阶段策略注入只在 stage.md 中检查。
 
-    @Test
-    fun `suggest md has section for every StageCatalog stage` {
-        val suggest = loadAsset("engine/suggest.md")
-        val missing = StageCatalog.ALL.filter { stage ->
-            // 复刻 PromptBuilder.extractStageSection 的正则
-            val re = Regex(
-                "(^|\\n)##\\s*${Regex.escape(stage)}\\s*\\n(.*?)(?=\\n##\\s|\\z)",
-                RegexOption.DOT_MATCHES_ALL
-            )
-            re.find(suggest) == null
-        }
-        assertTrue(
-            "suggest.md 缺少阶段小节（正则失配，会导致锦囊阶段策略注入失败）：$missing",
-            missing.isEmpty
-        )
-    }
+    // : suggest.md 已重写——不再包含阶段小节（## XX期），此契约不再适用。
+    // suggest.md 现在是轻量日常行动建议引擎，不按阶段分割。
 
-    @Test
-    fun `suggest md has exactly one section per stage no duplicates` {
-        val suggest = loadAsset("engine/suggest.md")
-        StageCatalog.ALL.forEach { stage ->
-            val re = Regex(
-                "(^|\\n)##\\s*${Regex.escape(stage)}\\s*\\n",
-                RegexOption.DOT_MATCHES_ALL
-            )
-            val matches = re.findAll(suggest).toList
-            assertEquals(
-                "suggest.md 中 '$stage' 的小节数应为 1（实际 ${matches.size}）",
-                1, matches.size
-            )
-        }
-    }
+    // : suggest.md 已重写——不再包含阶段小节，重复检查不再适用。
 
-    @Test
-    fun `suggest md has no bare stage titles missing the 期 suffix` {
-        //  回归门：suggest.md 历史上漏"期"，正则永远失配
-        val suggest = loadAsset("engine/suggest.md")
-        StageCatalog.ALL.forEach { stage ->
-            val bare = stage.removeSuffix("期")
-            // 裸标题形如 "## 初识"（不带"期"）→  旧 Bug
-            val bareRe = Regex("(^|\\n)##\\s*${Regex.escape(bare)}\\s*\\n(?!.{0,3}期)")
-            assertTrue(
-                "suggest.md 出现裸阶段标题 '## $bare'（缺'期'后缀， 回归）",
-                bareRe.find(suggest) == null
-            )
-        }
-    }
+    // : suggest.md 已重写——不再包含阶段标题，裸标题检查不再适用。
 
     // ═══ stage.md 阶段标题契约 ═══
 
     @Test
-    fun `stage md has section for every StageCatalog stage` {
+    fun `stage md has section for every StageCatalog stage`() {
         val stage = loadAsset("engine/system_prompt/stage.md")
         val missing = StageCatalog.ALL.filter { s ->
             val re = Regex(
@@ -101,12 +59,12 @@ class PromptBuilderStageContractTest {
         }
         assertTrue(
             "stage.md 缺少阶段小节：$missing",
-            missing.isEmpty
+            missing.isEmpty()
         )
     }
 
     @Test
-    fun `stage md has no bare stage titles missing the 期 suffix` {
+    fun `stage md has no bare stage titles missing the 期 suffix`() {
         val stage = loadAsset("engine/system_prompt/stage.md")
         StageCatalog.ALL.forEach { s ->
             val bare = s.removeSuffix("期")
@@ -123,14 +81,14 @@ class PromptBuilderStageContractTest {
     // reflect 输入已含旧画像全文），对应占位符契约测试同步删除。
 
     @Test
-    fun `onboarding asset exists at new path` {
+    fun `onboarding asset exists at new path`() {
         //  回归门：onboarding.md 曾在 engine/ 下，搬到 engine/knowledge_prompt/ 后读取点没改
         val onboarding = loadAsset("engine/knowledge_prompt/onboarding.md")
-        assertTrue("onboarding.md 不应为空", onboarding.isNotBlank)
+        assertTrue("onboarding.md 不应为空", onboarding.isNotBlank())
     }
 
     @Test
-    fun `all AssetRegistry registered assets exist on test classpath` {
+    fun `all AssetRegistry registered assets exist on test classpath`() {
         AssetRegistry.ALL.forEach { path ->
             val res = javaClass.classLoader!!.getResource(path)
             assertTrue(
@@ -140,20 +98,5 @@ class PromptBuilderStageContractTest {
         }
     }
 
-    @Test
-    fun `all stages in suggest and stage assets match StageCatalog exactly` {
-        val suggest = loadAsset("engine/suggest.md")
-        val stage = loadAsset("engine/system_prompt/stage.md")
-        // 资产中所有形如 "## XX期" 的标题必须在 StageCatalog.ALL 内
-        val titleRe = Regex("(?m)^##\\s+(.+期)\\s*$")
-        val suggestTitles = titleRe.findAll(suggest).map { it.groupValues[1].trim }.toSet
-        val stageTitles = titleRe.findAll(stage).map { it.groupValues[1].trim }.toSet
-        val allAssetTitles = suggestTitles + stageTitles
-
-        val orphans = allAssetTitles.filter { it !in StageCatalog.ALL }
-        assertTrue(
-            "资产中存在不在 StageCatalog 白名单的阶段标题：$orphans",
-            orphans.isEmpty
-        )
-    }
+    // : suggest.md 已重写——不再包含阶段标题，此一致性检查只看 stage.md。
 }

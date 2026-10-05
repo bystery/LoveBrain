@@ -34,17 +34,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.domain.SelectionMode
-import com.lovebrain.app.ui.theme.AppDimens
-import com.lovebrain.app.ui.theme.AppTypography
-import com.lovebrain.app.ui.theme.Border
-import com.lovebrain.app.ui.theme.LoveBrainShape
-import com.lovebrain.app.ui.theme.Primary
-import com.lovebrain.app.ui.theme.PrimaryDark
-import com.lovebrain.app.ui.theme.PrimaryLight
-import com.lovebrain.app.ui.theme.Spacing
-import com.lovebrain.app.ui.theme.SurfaceCard
-import com.lovebrain.app.ui.theme.TextHint
-import com.lovebrain.app.ui.theme.TextPrimary
+import com.lovebrain.app.core.designsystem.AppDimens
+import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.PrimaryDark
+import com.lovebrain.app.core.designsystem.PrimaryLight
+import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.SurfaceCard
+import com.lovebrain.app.core.designsystem.TextHint
+import com.lovebrain.app.core.designsystem.TextPrimary
 
 /** 问卷选项卡尺寸令牌 */
 private object OnboardingDimens {
@@ -61,7 +61,7 @@ private object OnboardingDimens {
  * 判断当前是否应使用单列布局（大字体 / 窄屏自适应）。
  */
 @Composable
-fun shouldUseSingleColumn: Boolean {
+fun shouldUseSingleColumn(): Boolean {
     val fontScale = LocalDensity.current.fontScale
     return fontScale >= OnboardingDimens.SINGLE_COL_FONT_SCALE_THRESHOLD
 }
@@ -90,12 +90,12 @@ fun OnboardingOptionCard(
     selected: Boolean,
     selectionMode: SelectionMode,
     enabled: Boolean,
-    onClick:  -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     useSingleColumn: Boolean = false
 ) {
-    val interaction = remember { MutableInteractionSource }
-    val pressed by interaction.collectIsPressedAsState
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
     val scale by animateFloatAsState(
         if (pressed && enabled) 0.98f else 1f,
         label = "obOptionScale"
@@ -114,7 +114,7 @@ fun OnboardingOptionCard(
 
     val cardModifier = if (useSingleColumn) {
         modifier
-            .fillMaxWidth
+            .fillMaxWidth()
             .heightIn(min = OnboardingDimens.OPTION_HEIGHT_MIN_DP.dp)
     } else {
         modifier.height(OnboardingDimens.OPTION_HEIGHT_DP.dp)
@@ -143,7 +143,7 @@ fun OnboardingOptionCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Spacing.md),
-            modifier = Modifier.fillMaxWidth
+            modifier = Modifier.fillMaxWidth()
         ) {
             // 左侧选择指示符
             SelectionIndicator(

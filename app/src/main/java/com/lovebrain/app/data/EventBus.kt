@@ -25,7 +25,7 @@ object EventBus {
     // replay = 1——collector 未就绪的窗口不丢事件；服务重建后的旧重放由
     // FloatingService 按 ts 做 session 过滤（早于本次启动的一律丢弃）
     private val _capturedMessages = MutableSharedFlow<CapturedMessage>(replay = 1, extraBufferCapacity = 16)
-    val capturedMessages: SharedFlow<CapturedMessage> = _capturedMessages.asSharedFlow
+    val capturedMessages: SharedFlow<CapturedMessage> = _capturedMessages.asSharedFlow()
 
     /**
      * CAP-03：返回投递结果，修正无订阅者诊断。
@@ -36,7 +36,7 @@ object EventBus {
     fun emitCapturedMessage(text: String): Boolean {
         val event = CapturedMessage(
             text = text,
-            ts = SystemClock.uptimeMillis
+            ts = SystemClock.uptimeMillis()
         )
 
         val accepted = _capturedMessages.tryEmit(event)
@@ -52,20 +52,27 @@ object EventBus {
 
     /**
      * 面板打开请求：App 首页功能卡片 → FloatingService。
-     * mode: 0=回复, 1=谈心；showPlan: 是否同时切到今日锦囊 Tab。
+     * mode: 0=回复, 1=谈心——顶栏只剩这两段（PRODUCT_SPEC 第4节）。
      * 用 StateFlow 实现 replay=1：服务尚未启动时发出的请求，服务订阅后仍能消费到（消费后置空）。
+     *
+     * 原来这一条还带着第二位 `showPlan`（"同时切到今日锦囊 Tab"）。锦囊整功能按  删除之后
+     * 这一位**不再有任何状态**：`PanelRequest` 里没有它，FloatingService 也不读它。
+     * ⚠ `requestPanel` 那一位只留作**编译兼容的槽位**——首页调用方 `ui/SetupActivity.kt`
+     * 与 `ui/home/SetupRoot.kt` 的 `onOpenPanel: (Int, Boolean)` 不归可写清单（首页正在整片重写），
+     * 它们把 `(mode, showPlan)` 一路传到这里。首页收成 `onOpenPanel: (Int)` 之后，这一位就该删掉。
      */
-    data class PanelRequest(val mode: Int, val showPlan: Boolean)
+    data class PanelRequest(val mode: Int)
 
     private val _panelRequest = MutableStateFlow<PanelRequest?>(null)
-    val panelRequest: StateFlow<PanelRequest?> = _panelRequest.asStateFlow
+    val panelRequest: StateFlow<PanelRequest?> = _panelRequest.asStateFlow()
 
+    @Suppress("UNUSED_PARAMETER")
     fun requestPanel(mode: Int, showPlan: Boolean = false) {
-        _panelRequest.value = PanelRequest(mode, showPlan)
+        _panelRequest.value = PanelRequest(mode)
     }
 
     /** 服务消费后置空，避免下次启动服务重复触发 */
-    fun consumePanelRequest: PanelRequest? {
+    fun consumePanelRequest(): PanelRequest? {
         val r = _panelRequest.value
         _panelRequest.value = null
         return r
