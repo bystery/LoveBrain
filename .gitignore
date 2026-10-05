@@ -1,110 +1,60 @@
-# Gradle / Android
-.gradle
-/build
+# Gradle / Android build outputs
+.gradle/
+build/
 /app/build
 /captures
 .externalNativeBuild
-.cxx
+.cxx/
 *.iml
+app/release/
+app/debug/
 
 # Local configuration (machine-specific)
-/local.properties
 local.properties
+/local.properties
 
 # IDE
-/.idea
+/.idea/
+/.vscode/
+/.cursor/
 .DS_Store
+Thumbs.db
 
 # Logs / temp
 *.log
 *.tmp
+__pycache__/
 
-# Local docs (kept out of the public tree)
-/docs/
-LoveBrain_*.md
-
-# Editor / assistant caches
-/.trae/
-/.vscode/
-/.cursor/
-
-# Debug screenshots (may contain real chat content - privacy, never commit)
-/scr1.png
-*.png.tmp
-
-# Local knowledge base data (contains real chat content - privacy redline)
-/knowledge_base/
-
-# Gate/build scratch (never commit)
-/._build/
-/.baseline_*/
-/.worker_rework/
-/待补物料/
-
-# Assistant workspace data (never commit)
-/.workbuddy/
-/.workbuddy-ai/
-
-# Marketing drafts (never commit)
-/marketing/
-
-# Signing material (never commit)
-/keystore/
-/keystore.properties
-*.keystore
-
-# Local scratch directories (never commit)
-//
-/evidence/
-/requests/
-
-# Node / OS
-node_modules/
-Thumbs.db
-
-# Gradle fallback build outputs
-app/release/
-app/debug/
-
-# Benchmark local assets (only BENCHMARK.md is tracked)
-/benchmark/
-
-# Cloud-drive chunk temp
-/.tmp.driveupload/
-
-# APK release artifacts (delivered via GitHub Releases)
-/dist/
-*.apk
-
-# Local build/test logs
-/lint_results.txt
-/release_results.txt
-/test_results.txt
-/test_results2.txt
-
-# Secrets & local credentials: never commit
-api_key.txt
-**/api_key.txt
+# Secrets & signing material — never commit
 *.key
 *.pem
 *.jks
+*.keystore
+keystore.properties
+/keystore/
 .env
 .env.*
 *_token
 secrets.*
 **/secrets/
+api_key.txt
+**/api_key.txt
 
-# Benchmark raw outputs and grouped local data
-benchmarks/**/raw/
-benchmark/results.jsonl
-benchmark/kb_*/
+# On-device data that must never leave the machine (privacy)
+/knowledge_base/
+/scr1.png
+*.png.tmp
 
-# CI-fixture APKs (regenerated externally)
-/fixtures/
+# Local-only docs and drafts
+/docs/
+LoveBrain_*.md
 
-# Python bytecode from running local scripts
-__pycache__/
-
-# Rename-only archive protocol: never delete, just move here
+# Local scratch / archives (rename-only, never committed)
 /_temp/
 /_archive/
+
+# Python tooling caches
+/fixtures/
+
+# Node
+node_modules/
