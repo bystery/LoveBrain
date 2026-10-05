@@ -457,8 +457,29 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                         copyToClipboard(text)
                     }
                 },
+                // 原话第 8 条：缺模型供应商时那颗「去设置」→ **App 主页面**。
+                // 悬浮窗没有 Activity 前台，所以必须 NEW_TASK；CLEAR_TOP 让已在栈里的设置页
+                // 回到干净的主面，而不是叠第二份。与常驻通知的 contentIntent 同一颗目标
+                // （`buildOverlayNotification`，:527 那一处），不另起第二种进主面的写法。
+                onOpenAppPage = { openAppMainPage() },
                 // 头部收起按钮 → 统一走 dismissPanelToBubble
                 onCollapse = { dismissPanelToBubble("collapse_button") }
+            )
+        }
+    }
+
+    /**
+     * 从悬浮窗回到 App 主页面（原话第 8 条那颗「去设置」的唯一出口）。
+     *
+     * 有 `SYSTEM_ALERT_WINDOW` 的悬浮服务可以从后台拉起 Activity（Android 10+ 的后台启动限制对
+     * 持有悬浮窗权限的应用放行），所以这里不再借通知的 `PendingIntent` 绕路。
+     * ⚠ 真机放行与否本轮**无设备可验**，已登记"未验证-需真机"。
+     */
+    private fun openAppMainPage() {
+        runCatching {
+            startActivity(
+                Intent(this, SetupActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             )
         }
     }

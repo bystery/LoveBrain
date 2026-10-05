@@ -184,6 +184,7 @@ class PanelUsageMetricSemanticsTest {
                         onResize = { _, _ -> },
                         onMove = { _, _ -> },
                         onCopy = { },
+                        onOpenAppPage = { },
                         onCollapse = { }
                     )
                 }
@@ -541,6 +542,7 @@ class PanelUsageMetricSemanticsTest {
                         onResize = { _, _ -> },
                         onMove = { _, _ -> },
                         onCopy = { },
+                        onOpenAppPage = { },
                         onCollapse = { }
                     )
                 }

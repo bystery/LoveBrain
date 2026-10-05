@@ -116,7 +116,11 @@ class HomeScaffoldFrameSemanticsTest {
 
     /**
      * 段顺序从上到下：状态卡 →（黄灯才有）那一行 → 第一排 → 第二排。
-     * 反例：把黄字挪到四入口下面 ⇒ "黄字在入口之前"那句红。
+     * 顺带量那一行的**左边缘**：本轮给它加了浅底容器，容器自己不许再补一道水平边距
+     * （水平边距的唯一主人还是 `LbScreenScaffold`；卡内那 12dp 是内距，落在容器里侧）。
+     * 反例：把黄字挪到四入口下面 ⇒ "黄字在入口之前"那句红；
+     * 反例：给浅底容器外面再写一次 `padding(horizontal = …)` ⇒ 左边缘不再是"边距 + 内距"那一个数；
+     * 反例：容器干脆贴着屏幕左沿画（把 scaffold 那道边距吃掉）⇒ 同一句红。
      */
     @Test
     fun `the hint line lands between the card and the entries only when it exists`() {
@@ -135,6 +139,15 @@ class HomeScaffoldFrameSemanticsTest {
         assertEquals("黄档才有那一行", 1, hintCount())
         assertTrue("那一行在状态卡之后", topOf(LbHomeTags.SETUP_HINT) > topOf(LbHomeTags.STATUS_CARD))
         assertTrue("那一行在入口之前", topOf(LbHomeTags.SETUP_HINT) < topOf(LbHomeTags.ENTRY_KNOWLEDGE))
+
+        // 文字那一格的左边缘 = 公共边距 + 容器内距**一层**（12dp），不多不少
+        val margin = com.lovebrain.app.core.designsystem.LB_SCREEN_HORIZONTAL_MARGIN.value
+        val textLeft = rule.onAllNodesWithTag(LbHomeTags.SETUP_HINT, useUnmergedTree = true)
+            .fetchSemanticsNodes().first().boundsInRoot.left / density
+        assertEquals(
+            "缺项那一行的水平边距只有一个主人：实到 ${textLeft.toInt()}dp，应为 边距 + 12dp 内距",
+            margin + 12f, textLeft, 1f
+        )
     }
 
     private fun hintCount(): Int =
@@ -145,7 +158,12 @@ class HomeScaffoldFrameSemanticsTest {
 
     /**
      * 读屏不重复念：这一屏每个可点节点自己说一次名字，卡片标题不与图标名字重复入账。
-     * 反例：给整卡可点的入口又补一句 `contentDescription = 标题` ⇒ `isDuplicatedAnnouncement` 那句红。
+     * 反例：给整卡可点的入口又补一句 `contentDescription = 标题` ⇒ `isDuplicatedAnnouncement` 那句红；
+     * 反例：黄字末尾那颗「去设置」自己说成空名（只画字不报名）⇒ `labeled` 那句红；
+     * 反例：把那颗去处与四入口里的「模型供应商」并成一颗 ⇒ 名字撞一份，distinct 那句红。
+     *
+     * ⚠ 绿档 5 颗、黄档 6 颗是**两格**：多出来的那一颗只在黄灯（有缺项可指路）时存在，
+     * 常驻一颗"去设置"就是旧版那行黄警告的另一种形状。
      */
     @Test
     fun `the screen announces each actionable node once`() {
@@ -153,10 +171,27 @@ class HomeScaffoldFrameSemanticsTest {
         harness.parkReady()
         mount(harness)
         val targets = probe.actionableTargets(rule, "首页外框")
-        assertEquals("五颗可点节点", 5, targets.size)
+        assertEquals("绿档五颗可点节点", 5, targets.size)
         targets.forEach { assertTrue("每颗都要有名字：" + it.describe(), it.labeled) }
         val names = targets.map { it.announced }
         assertEquals("名字不许两颗撞一份（撞了就是要念两遍）：$names", names.size, names.distinct().size)
+
+        val yellow = HomeStatusHarness()
+        yellow.provider.ref = null
+        yellow.service.markRunning()
+        rule.runOnIdle { harnessHolder.value = yellow }
+        rule.runOnIdle { yellow.vm.playClicked(overlayGranted = true) }
+        rule.waitForIdle()
+        val withWayOut = probe.actionableTargets(rule, "首页外框·黄档")
+        assertEquals("黄档只多一颗去处，一共六颗：" + withWayOut.joinToString { it.describe() }, 6, withWayOut.size)
+        withWayOut.forEach { assertTrue("每颗都要有名字：" + it.describe(), it.labeled) }
+        withWayOut.forEach {
+            assertTrue("这颗把名字念了两遍：" + it.describe(), !it.isDuplicatedAnnouncement)
+        }
+        assertEquals(
+            "那颗去处屏幕上写的与读屏报的是同一串", 1,
+            withWayOut.count { it.label == "去设置" }
+        )
     }
 
     /**

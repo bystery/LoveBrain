@@ -167,6 +167,7 @@ class PanelHostSemanticsTest {
                         onResize = { _, _ -> },
                         onMove = { _, _ -> },
                         onCopy = { },
+                        onOpenAppPage = { },
                         onCollapse = { }
                     )
                 }

@@ -3,6 +3,7 @@ package com.lovebrain.app.ui
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onFirst
@@ -131,30 +132,39 @@ class KbEditScreenSemanticsTest {
      * 横排裁切筛掉"露出视口右边"的那些，并**把排除项说清楚**。
      * 左边贴边的那些留下：页头那颗正常控件在 x=0 也在这儿，一刀切会把真缺陷筛掉。
      *
+     * **拿不到数就失败（§7.1 / 原始第 1 条 改的一处）**：旧写法把两类一起丢进 `excluded`——
+     * ① "确实摆出来、只是滚出视口右/左缘"的横排裁切项；② `widthDp<=0 || heightDp<=0` 的**塌陷项**
+     * （矮视口下编辑动作整排被纵向挤没、塌成 `0x0dp @(0,0)`）。把 ② 也静默排除，就等于
+     * **矮视口一旦塌陷，判据自动把塌掉的那些筛走、反而更"干净"地绿过去**（这正是"矮视口被判据静默排除"）。
+     * 现在**只**排除 ①；塌成 0x0 的留在 `reachable` 里，由下面逐颗按档的 `tooSmall` 当场判成不合格。
+     *
      * 热区**逐颗按自己那一档量**，不是整屏一把尺（第16节第2条 禁全局放宽）：
      * 这一屏的分区标签排与「编辑/预览」那颗走 /第3节第1条 明写的紧凑档（[compactTierDp]，
      * 依据见 [tierOf]），「放弃修改」与它们同族同档（依据同在 [tierOf]），
-     * 其余——页头 Back、「保存」——仍是全站下限 48dp。
+     * 其余——页头 Back、「保存」——仍是全站下限 48dp。**40dp 这一档本轮不许涨回 48。**
      */
     private fun assertReachableMeetFloor(all: Map<String, Target>, context: String) {
-        val (reachable, excluded) = all.values.partition { t ->
-            t.widthDp > 0f && t.heightDp > 0f && t.leftDp >= 0f &&
-                t.leftDp + t.widthDp < matrix.widthDp - 0.5f
+        val horizontallyClipped = all.values.filter { t ->
+            // 只排除"摆了但被横排/纵向滚裁出视口缘"的那些（宽或高为正的整颗摆出来的控件才谈得上滚出视口）
+            t.widthDp > 0f && t.heightDp > 0f &&
+                (t.leftDp < 0f || t.leftDp + t.widthDp >= matrix.widthDp - 0.5f)
         }
+        val reachable = all.values - horizontallyClipped.toSet()
         assertTrue(
-            "$context 视口内只量到 ${reachable.size} 颗（整表 ${all.size} 颗）——" +
-                "筛到这么少，热区这格就退化成空转：" + excluded.joinToString { it.describe() },
+            "$context 视口内只数到 ${reachable.size} 颗（整表 ${all.size} 颗）——" +
+                "筛到这么少，热区这格就退化成空转：" + horizontallyClipped.joinToString { it.describe() },
             reachable.size >= 6
         )
         val offenders = reachable.filter { it.tooSmall(tierOf(it)) }
         assertTrue(
             "知识库编辑屏$context 有 ${offenders.size}/${reachable.size} 个可交互节点不到**自己那一档**" +
-                "的下限（紧凑档 ${compactTierDp.toInt()}dp，其余全站下限 ${probe.floorDp.toInt()}dp）：\n" +
+                "的下限（紧凑档 ${compactTierDp.toInt()}dp，其余全站下限 ${probe.floorDp.toInt()}dp；" +
+                "塌成 0x0 也算不到档——拿不到数即不合格，不再静默排除）：\n" +
                 offenders.joinToString("\n") {
                     "  ${"%.0f".format(tierOf(it))}dp 档 → " + it.describe()
                 } +
-                "\n  （另排除 ${excluded.size} 颗被横排/纵向滚动裁掉的：" +
-                excluded.joinToString { it.describe() } + "）",
+                "\n  （另排除 ${horizontallyClipped.size} 颗被横排/纵向滚动裁出视口缘的：" +
+                horizontallyClipped.joinToString { it.describe() } + "）",
             offenders.isEmpty()
         )
     }
@@ -260,5 +270,63 @@ class KbEditScreenSemanticsTest {
         assertEquals("主动作得报成按钮：" + t.describe(), "Button", t.role)
         assertTrue("热区不到 ${probe.floorDp.toInt()}dp：" + t.describe(), !t.tooSmall(probe.floorDp))
         assertTrue("编辑态里「保存」不该是灰的：" + t.describe(), !t.disabled)
+    }
+
+    /**
+     * **拿不到数就失败的另一半（§7.1 / 原始第 1 条）：矮视口塌陷这一档现在量得到。**
+     *
+     * 旧的 [assertReachableMeetFloor] 把塌成 `0x0` 的那些和"横排滚出视口"的那些一起静默筛掉，
+     * 于是矮视口一旦把编辑动作整排挤没，判据反而"筛干净了"绿过去。上面已把那条改成
+     * "0x0 留在 reachable 里、逐颗按档当场不合格"。这一格再拿一台**键盘等效矮视口**正面开火：
+     * 640dp 是"窗口已被键盘压过一截"的等效高度（`RenderIn` 把父约束直接钉到 640，
+     * Robolectric 的 ime inset 恒 0，等价于 §A1 里 H_page 变小），进编辑态后编辑器与「保存」
+     * 都**必须摆得出来**（有限视口 ≥120dp + 没被挤出 640）。
+     *
+     * 尺寸直接读盒子几何（`boundsInRoot`→[Target]），不靠文案：`maxLines+Ellipsis` 那族语义树永远
+     * 报完整原文（文本判据无牙），塌不塌只能问盒子。
+     *
+     * 回退成什么会红：
+     * - `LbAsyncState` 的 Content 支又不接传入 `modifier`、且内部不再各自带权重 → 编辑器塌成 0x0 →
+     *   高度 <120dp，红；
+     * - 固定占位（分区三排 / 卡头 toggle）涨回 48 档 → 「保存」被顶出 640 视口（bottom>640）
+     *   或挤成 0x0，红。
+     */
+    @Test
+    fun `a keyboard-equivalent short viewport still lays the editor and keeps save on screen`() {
+        val shortMatrix = UiMatrix(360, 640)
+        rule.setContent {
+            shortMatrix.RenderIn(density) {
+                KbEditScreen(
+                    files = files,
+                    lastFile = "understand/me.md",
+                    onLastFileChange = {},
+                    readFile = { path -> "«$path» 的内容，够长以证编辑器是被撑开而不是溢出" to "sha-of-$path" },
+                    saveFile = { _, _, _ -> "new-version" },
+                    onBack = {}
+                )
+            }
+        }
+        rule.waitForIdle()
+        rule.onAllNodes(hasClickAction() and hasText("编辑")).onFirst().performClick()
+        rule.waitForIdle()
+
+        val editor = probe.of(
+            rule.onNode(hasSetTextAction())
+                .fetchSemanticsNode("矮视口编辑态没有输入框 = 整卡塌陷")
+        )
+        val save = probe.of(
+            rule.onNode(hasText(saveLabel))
+                .fetchSemanticsNode("「保存」没摆出来 = 被固定占位挤出屏幕")
+        )
+        assertTrue(
+            "键盘等效 640dp 视口里编辑器只有 ${editor.heightDp.toInt()}dp（<120 = 塌成空白 / 被 96 地板焊死）：" +
+                editor.describe(),
+            editor.heightDp >= 120f
+        )
+        assertTrue(
+            "「保存」塌成 ${save.heightDp.toInt()}dp、或底缘 ${(save.topDp + save.heightDp).toInt()}dp 掉出 640 视口" +
+                "（固定占位涨回来会把它顶出去）：" + save.describe(),
+            save.heightDp >= 40f && save.topDp + save.heightDp <= 640f + 0.5f
+        )
     }
 }

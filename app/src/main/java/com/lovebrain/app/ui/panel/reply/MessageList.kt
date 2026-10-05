@@ -10,6 +10,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -31,7 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -155,6 +156,18 @@ internal fun foldAdvisorNote(ideaContents: List<String>, noteText: String?): Str
     return if (lines.isEmpty()) null else lines.joinToString("\n")
 }
 
+/**
+ * 真实对话行的唯一判据（宿主与 [MessageList] 内部分支**必须**同用这一颗）：
+ * 列表里存不存在 HER/ME 消息（`Role.IDEA` 是内容种类、不是对话，见 [foldAdvisorNote]）。
+ *
+ * 为什么单列出来：次级控制（意图 / 仅看本轮）按"有没有真实消息"在两个地方二选一挂载——
+ * 有消息时挂输入区行 2（[ReplyInput.hasRealMessages]），无消息时收进消息卡空态分支。
+ * 空/非空的边界帧若两处各算各的口径，就会两帧里都画或都不画。判据收成这一个纯函数、
+ * 输入同一份 `messages` ⇒ 两处必然同一口径（source-01 §2.3 点名的可疑时序在此结清）。
+ */
+internal fun hasRealDialogueRows(messages: List<ChatMessage>): Boolean =
+    messages.any { it.role != ChatMessage.Role.IDEA }
+
 /** 拖拽中一格在列表里的槽位（展示位 + 布局偏移 + 高度），全 px */
 internal data class DragSlot(val index: Int, val offsetPx: Int, val sizePx: Int)
 
@@ -193,6 +206,50 @@ internal fun dragSwapStep(
 }
 
 /**
+ * 「上一次交换在布局里落地了没有」（纯函数，长按拖拽发重排的唯一闸门）：
+ * [pendingSwapFromIndex] < 0 = 没有待落地的交换；否则**被拖那一条还站在发那次交换时的那一格**
+ * 就意味着列表还没追上上一次改动（组合/布局是帧边界才跑的，一帧里可以来好几记移动事件）。
+ *
+ * 为什么这一档必须存在（原话第 19 条"最终顺序 = prompt 顺序"的那一半）：落库那一步是
+ * "从 from 摘下、插到 to"，同一帧里对**同一对下标**发两次会把第一次那一步整个**抵消**
+ * （[A,B,C] → [B,A,C] → [A,B,C]），屏幕上手指已经把那条拖下去了、列表却回到了原点——
+ * 于是喂给模型的顺序和用户拖出来的顺序不是一件事。布局一旦挪过（不管是挪到目标格还是
+ * 被别处的增删挪去别处），这里一律判"落地了"，所以闸门不会把拖拽锁死。
+ */
+internal fun dragSwapIsSettled(draggedLayoutIndex: Int, pendingSwapFromIndex: Int): Boolean =
+    pendingSwapFromIndex < 0 || draggedLayoutIndex != pendingSwapFromIndex
+
+/**
+ * 拖拽位移的**视口夹持**（纯函数）：手指控制那一条"画出来的中心"必须留在视口里。
+ * 手指滑出列表那一段（备注行、输入区；长按起势后 pointerInput 仍在收事件，位置在列表外也照收）时，
+ * 那一行停在边缘、至少半个身位在眼睛底下，而不是跟着手指飞出屏幕。
+ *
+ * 为什么钉的是**中心**而不是整条：交换判据 [dragSwapStep] 量的是"越过相邻行的中心线"。
+ * 夹成"整条不许出视口"，顶边就永远上不到首行中心线以上 ⇒ **第一条那一格再也拖不进去**，
+ * 用户看到的是"拖不到最上面"——比半条出界严重得多。夹中心则两端各还剩半个身位可以越线，
+ * 首格与末格都进得去（`MessageListDragOrderTest` 拿时间线钉这一档）。
+ * 行比视口高（大字体 + 展开的长消息）时同理：中心在视口内 ⇒ 视口被它盖掉一半以上，仍能上下拖。
+ *
+ * 视口或行高没量到时（0 / 倒挂）原样交回：第一帧不许凭空造一个位置
+ * （与 [edgeAutoScrollSpeedPx] 的"视口没量到就不许有速度"同一规矩）。
+ */
+internal fun clampDragOffsetInsideViewport(
+    offsetPx: Float,
+    itemLayoutOffsetPx: Int,
+    itemSizePx: Int,
+    viewportStartPx: Int,
+    viewportEndPx: Int
+): Float {
+    if (itemSizePx <= 0 || viewportEndPx <= viewportStartPx) return offsetPx
+    val half = itemSizePx / 2f
+    // 下限 = 中心顶到视口上沿、上限 = 中心贴到视口下沿（end > start 在这一颗里是前置条件，
+    // 所以这对端点天然有序，`coerceIn` 不会被喂进 min>max）
+    val min = viewportStartPx - half - itemLayoutOffsetPx
+    val max = viewportEndPx - half - itemLayoutOffsetPx
+    return offsetPx.coerceIn(min, max)
+}
+
+/**
  * 边缘自动滚动的速度（px/帧，带符号）：手指落在视口上下边缘 [edgeZonePx] 以内才给速度，
  * 越靠边越快；上边缘为负、下边缘为正、中间是 **0**。
  * 0 就是"立刻停"——那颗唯一的自动滚动任务读到 0 就退出，不需要额外的取消信号。
@@ -225,6 +282,43 @@ private fun depthSpeed(distancePx: Float, edgeZonePx: Float): Float =
 
 private fun LazyListItemInfo.asDragSlot() = DragSlot(index, offset, size)
 
+/**
+ * 一次手势的观察结果：横向越过触控 slop 就置位。
+ * 备注行用它把"擦过去"与"真点它"分开（见 [noteSwipeIsNotATap]）——它只是一格读数，不是第二本状态账。
+ */
+private class NoteSwipeFlag {
+    var crossedSlop = false
+}
+
+/**
+ * 备注行那道"擦过不是点击"的闸门：**只观察、一个事件都不消费**。
+ *
+ * 为什么必须有：`Modifier.clickable` 的判据是"抬指时还在本节点范围内"，**不看走了多远**。
+ * 备注那一行铺满整行宽（344dp），一记横滑的起与止都落在它自己身上 ⇒ 抬指被当成点击，
+ * 编辑入口就这么被擦着了。`AdvisorNoteLine` 自己那颗 `draggable` 只在传了 `onSwipeClear` 时存在，
+ * 宿主没接清除出口时（`onClearNote == null`）这一路没有人挡。
+ * 钉它的格子：`MessageRowSwipeDeleteTest`.`the note line is an edit entry, not a swipe delete target`。
+ *
+ * 为什么不消费事件：被撤掉的旧 `swipeIsNotATap` 在 Initial pass 无条件吃事件，代价是把备注行
+ * 变成父层切页的死区（原话第 15 条一起撤的正是这一档）。这里只读坐标：横滑清除仍归备注自己的
+ * `draggable`，纵向滚动与切页照常收得到事件。
+ */
+private fun Modifier.noteSwipeIsNotATap(flag: NoteSwipeFlag): Modifier = pointerInput(flag) {
+    // slop 在 PointerInputScope 这一层读（`viewConfiguration` 挂在这颗上，手势那一层没有这一颗）
+    val slopPx = viewConfiguration.touchSlop
+    awaitEachGesture {
+        val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+        flag.crossedSlop = false
+        val startX = down.position.x
+        while (true) {
+            val event = awaitPointerEvent(PointerEventPass.Initial)
+            val change = event.changes.firstOrNull { it.id == down.id } ?: break
+            if (abs(change.position.x - startX) > slopPx) flag.crossedSlop = true
+            if (!change.pressed) break
+        }
+    }
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MessageList(
@@ -240,9 +334,16 @@ fun MessageList(
     //  那行灰字的正文真源（宿主从 `ComposerStore.ideaHint()` 现读，含未提交的草稿）。
     // null = 宿主还没接线 → 只把列表里残留的旧想法行折进备注；两边都空时这一行**根本不画**。
     noteText: String? = null,
-    // 点那行灰字 = 去编辑完整备注（宿主投 `ComposerStore.Intent.BeginNoteEdit`）。
+    // 点那行黄字 = 去编辑完整备注（宿主投 `ComposerStore.Intent.BeginNoteEdit`）。
     // 默认值是"未接线"那一档：这颗入口没接线时 noteText 也不会有内容，画不出点了没反应的东西。
-    onEditNote: () -> Unit = {}
+    onEditNote: () -> Unit = {},
+    // 侧滑清除备注（宿主投 `ComposerStore.Intent.ClearNote`）。null = 没接线 ⇒ 备注不留侧滑出口
+    //（沿用"不给没接线的屏留半截手势"的旧规矩）；传进来后备注像消息一样可侧滑删，
+    // 被删对象与回调分离：这里落的是"清备注"，绝不走 onDelete 那条消息删除链。
+    onClearNote: (() -> Unit)? = null,
+    // 无真实消息时收进消息卡内的次级控制（意图 + 仅看本轮）。宿主把 [ReplySecondaryControls]
+    // 灌进来；与输入区行 2 二选一挂载、读同一份状态（见 ReplyInput.hasRealMessages）。
+    secondaryControls: (@Composable () -> Unit)? = null
 ) {
     val listState = rememberLazyListState()
     val haptics = LocalHapticFeedback.current
@@ -264,11 +365,35 @@ fun MessageList(
     var dragSession by remember { mutableIntStateOf(0) }
     // 当帧的边缘滚动速度（px/帧）。0 = 不在边缘 = 那颗任务立刻退出
     var edgeSpeedPx by remember { mutableFloatStateOf(0f) }
+    // 上一次交换发出时，被拖那一条站的那一格；< 0 = 没有待落地的交换（见 [dragSwapIsSettled]）
+    var pendingSwapFromIndex by remember { mutableIntStateOf(-1) }
 
     val endDrag: () -> Unit = {
         draggedId = null
         edgeSpeedPx = 0f
         dragOffsetY = 0f
+        pendingSwapFromIndex = -1
+    }
+
+    // 画在手指下的那一夹回视口（长按每一记事件都过这一颗；边缘滚动那一颗靠"补偿 = 滚动量"
+    // 把画位钉在原地，不在这儿夹，理由见下面那颗任务上的记录）。
+    // 指下那颗量不到时（列表被别处改过 / 还没布局）交回速度归零——不许拿着上一帧的速度自己滚下去，
+    // 那正是"我没动、它自己跑"的那一种。
+    val clampDraggedRowIntoViewport: () -> Unit = {
+        val id = draggedId
+        val layout = listState.layoutInfo
+        val item = id?.let { key -> layout.visibleItemsInfo.firstOrNull { it.key == key } }
+        if (item == null) {
+            edgeSpeedPx = 0f
+        } else {
+            dragOffsetY = clampDragOffsetInsideViewport(
+                offsetPx = dragOffsetY,
+                itemLayoutOffsetPx = item.offset,
+                itemSizePx = item.size,
+                viewportStartPx = layout.viewportStartOffset,
+                viewportEndPx = layout.viewportEndOffset
+            )
+        }
     }
 
     // 同一份列表派生两件事：聊天行只有 HER/ME 两列，且**带着原始下标**——onEdit/onReorder 的
@@ -299,10 +424,15 @@ fun MessageList(
 
     // 边缘自动滚动的**唯一**一颗任务：速度变了就重启（上一颗随之取消），速度归零就退出。
     // 滚出去多少才补偿多少——滚不动（已经到顶/到底）时一分都不补，被拖行不会自己飘走。
+    // 这一颗**只补位移、不夹视口**：`layoutInfo` 要到下一次布局才反映刚滚掉的那一截，
+    // 在这儿夹一次会拿旧槽位算新边界，画出来的位置每帧漂一格；夹的活由 [clampDragOffsetInsideViewport]
+    // 在每一记手指事件上做（那里读到的就是上一帧的布局），而"补偿 = 滚动量"这一条本来就把
+    // 画出来的位置钉在原地，视口内进得来的、滚动中也出不去。
+    // 循环条件带"还在拖 + 还在边缘"：手指抬了、或者那颗已经归零，就不许再多滚一帧。
     LaunchedEffect(dragSession, edgeSpeedPx) {
         val speed = edgeSpeedPx
         if (speed == 0f) return@LaunchedEffect
-        while (true) {
+        while (draggedId != null && edgeSpeedPx != 0f) {
             val consumed = speed - listState.scrollBy(speed)
             dragOffsetY += consumed
             delay(MessageDimens.DRAG_SCROLL_FRAME_MS)
@@ -326,12 +456,23 @@ fun MessageList(
         expandedMessages[id] = !(expandedMessages[id] ?: false)
     }
 
-    // 备注那一行的**尺寸档**由 `AdvisorNoteLine` 自己管（48dp 热区 + 单行省略），
-    // 旧 IdeaSection 那套"按列表槽算限高"随它一起没了。横滑不当点击这一道闸门（[swipeIsNotATap]）
-    // 挂在**调用点**交进去：组件本体归 ReplyInput 那一侧，这一轮的删除/手势合同都在这个文件里判。
+    // 备注那一行的**尺寸档与侧滑清除**由 `AdvisorNoteLine` 自己管（一行黄色小字 + 单行省略 +
+    // 传入 onSwipeClear 时可像消息一样侧滑删）。旧的 `swipeIsNotATap`（Initial pass 无条件吃事件、
+    // 把备注变成切页死区又没有删除出口）随原话第 15 条一起撤：备注行的横滑现在**归备注**（走清除），
+    // 纵向滚动交给 [draggable] 的方向门自然放行，不再被误记为"已消费"。
+    // 撤掉那道闸门后剩下一格真空：`clickable` 只看抬指在不在自己范围内，而备注行有整行宽
+    // ⇒ 宿主没接清除出口时（没有 draggable 接横滑），擦过去就把编辑入口点着。
+    // 补回来的这一颗只观察不消费（见 [noteSwipeIsNotATap]），两个分支共用同一份读数与同一个出口。
+    val noteSwipeFlag = remember { NoteSwipeFlag() }
+    val editNoteFromTap: () -> Unit = { if (!noteSwipeFlag.crossedSlop) onEditNote() }
     if (dialogueDisplayed.isEmpty()) {
+        // 空态也坐进同一块圆角底：原话要的是"无消息时这一组（意图 / 仅看本轮）收进消息卡内"，
+        // 所以空态分支补上与非空分支同一档容器（SurfaceInset + LoveBrainShape.lg）。
         Column(
-            modifier = modifier.fillMaxWidth().padding(vertical = Spacing.md),
+            modifier = modifier
+                .fillMaxWidth()
+                .background(SurfaceInset, LoveBrainShape.lg)
+                .padding(Spacing.md),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -369,11 +510,22 @@ fun MessageList(
                     modifier = Modifier.padding(horizontal = Spacing.md, vertical = Spacing.xs)
                 )
             }
-            // 只有备注、还没聊天的那一轮：那一行灰字照常钉在最下面
-            //（ 原话要的就是这一格——备注不能因为没聊天就整个不见）
+            // 只有备注、还没聊天的那一轮：那一行黄字照常钉在最下面，仍可侧滑清除
+            //（原话第 15 条——备注不能因为没聊天就整个不见，也不能失去删除出口）
             if (advisorNoteText != null) {
                 Spacer(Modifier.height(Spacing.md))
-                AdvisorNoteLine(noteText = advisorNoteText, onClick = onEditNote, modifier = Modifier.swipeIsNotATap())
+                AdvisorNoteLine(
+                    noteText = advisorNoteText,
+                    onClick = editNoteFromTap,
+                    onSwipeClear = onClearNote,
+                    modifier = Modifier.fillMaxWidth().noteSwipeIsNotATap(noteSwipeFlag)
+                )
+            }
+            // 意图 + 仅看本轮：无真实消息时这一组一起收进这块卡内（与输入区行 2 二选一，
+            // 同一份状态由宿主灌进来；见 ReplyInput.hasRealMessages 那一份判据同源）
+            if (secondaryControls != null) {
+                Spacer(Modifier.height(Spacing.sm))
+                secondaryControls()
             }
         }
         return
@@ -402,6 +554,7 @@ fun MessageList(
                                 draggedId = hitItem.key as? String
                                 dragOffsetY = 0f
                                 edgeSpeedPx = 0f
+                                pendingSwapFromIndex = -1
                                 dragSession++
                                 // 长按这一下手震一次；此后只在真的换了一格时再震（不每像素震）
                                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -418,6 +571,11 @@ fun MessageList(
                             val draggedItem = items.firstOrNull { it.key == id }
                             if (draggedItem != null) {
                                 val slot = draggedItem.asDragSlot()
+                                // 布局追上上一次交换了才接着发：还站在发那次交换的那一格 = 列表还没重组，
+                                // 这一帧既不发第二次重排、也**不扣补偿**（扣了就是凭空瞬移）
+                                if (dragSwapIsSettled(slot.index, pendingSwapFromIndex)) {
+                                    pendingSwapFromIndex = -1
+                                }
                                 val swap = dragSwapStep(
                                     dragged = slot,
                                     offsetPx = dragOffsetY,
@@ -429,10 +587,12 @@ fun MessageList(
                                 val toPair = swap?.let { shown.getOrNull(it.newIndex) }
                                 // 只有"这一格此刻确实还是被拖那一条"才发重排：列表还没追上上一次交换时
                                 // 映射是旧的，那种帧宁可不动作，也不按旧下标发一次假的重排
-                                if (swap != null && fromPair != null && toPair != null &&
+                                if (swap != null && pendingSwapFromIndex < 0 &&
+                                    fromPair != null && toPair != null &&
                                     fromPair.second.id == id
                                 ) {
                                     onReorder(fromPair.first, toPair.first)
+                                    pendingSwapFromIndex = slot.index
                                     // ② 扣掉交换产生的布局偏移：画在手指下的位置一步都不跳
                                     dragOffsetY += swap.offsetCompensationPx
                                     haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
@@ -445,6 +605,9 @@ fun MessageList(
                                     edgeZonePx = MessageDimens.DRAG_EDGE_ZONE_DP * density
                                 )
                             }
+                            // ④ 最后把画出来的那一夹回视口：手指划到列表外面（备注行、输入区）时
+                            // 长按仍收得到事件，不夹这条就是"消息飞出屏幕"
+                            clampDraggedRowIntoViewport()
                         },
                         onDragEnd = { endDrag() },
                         onDragCancel = { endDrag() }
@@ -480,15 +643,24 @@ fun MessageList(
                     onExitFinished = { finishDelete(msg.id) },
                     // 被手指控制的那一行**不许**再吃 placement 动画：它会对着手指正在占的那一格反向插值，
                     // 于是"拖到一半弹回去"。其余行照常 animateItemPlacement，看得出位置让开了。
-                    modifier = if (isDragged) Modifier else Modifier.animateItemPlacement()
+                    // ⚠ 这一颗挂在**条目根节点**上（MessageRow 里它落到 AnimatedVisibility 那一层）：
+                    // zIndex 只管同一颗粒度内的兄弟，挂在行内的子节点上就等于没挂——被拖那一条会被
+                    // 后面那些不透明气泡整个盖住，"手指底下那条看不见"量的就是这一档。
+                    modifier = if (isDragged) Modifier.zIndex(1f) else Modifier.animateItemPlacement()
                 )
             }
         }
-        //  那一句原话："放在最后一个聊天气泡下面，一行灰色的提示性小字"——
-        // 挂在 LazyColumn **之外**，所以它既不在聊天顺序里、也拖不进聊天顺序
+        // 原话第 15 条："放在最后一条真实消息下面，一行黄色小字"——
+        // 挂在 LazyColumn **之外**，所以它既不在聊天顺序里、也拖不进聊天顺序（重排数组碰不到它）。
+        // 侧滑清除走 onClearNote（→ ClearNote），被删对象与回调分离：绝不落 onDelete 那条消息链。
         if (advisorNoteText != null) {
             Spacer(Modifier.height(Spacing.sm))
-            AdvisorNoteLine(noteText = advisorNoteText, onClick = onEditNote, modifier = Modifier.swipeIsNotATap())
+            AdvisorNoteLine(
+                noteText = advisorNoteText,
+                onClick = editNoteFromTap,
+                onSwipeClear = onClearNote,
+                modifier = Modifier.fillMaxWidth().noteSwipeIsNotATap(noteSwipeFlag)
+            )
         }
     }
 }
@@ -510,6 +682,11 @@ fun MessageList(
  * 同时被 reorderActive 关掉；首个方向是纵向 → 水平拖不起势，事件留给列表滚动；
  * 没越过 slop 的起落 → 仍是原来的单击编辑。垂直浏览因此不会被误判成删除。
  * 横滑在这一行**自己**的孩子节点上消费，父层（回复/谈心切页）拿不到已经越轴的移动量。
+ *
+ * [modifier] 是**条目级**那一份（被手指控制那一条的浮起 / 其余行的位移动画），它落在
+ * `AnimatedVisibility` 那一颗粒上——也就是列表条目的根节点。这一档不许搬回行内：
+ * `zIndex` 只在同一颗粒度的兄弟之间排序，挂在行内的子节点上等于没挂，被拖那一条会被后面
+ * 那些不透明气泡整个盖住（"手指底下那条看不见"）。
  */
 @Composable
 private fun MessageRow(
@@ -561,6 +738,19 @@ private fun MessageRow(
 
     AnimatedVisibility(
         visible = !isDeleting,
+        // 条目级那三件事（浮起 / 位移动画 / 手势位移）都挂在这一颗粒上：这一颗才是列表条目的
+        // 根节点。挂在它下面的 BoxWithConstraints 只在这颗的内部排序，既管不着"压住哪一条"，
+        // 位移也归退场动画那一层管——被裁在哪一档 JVM 量不出来（记在台账，真机验）。
+        // 位移读取仍留在 graphicsLayer 里：逐帧只重画图层，不重组整棵列表
+        //（重组每一次事件都跑一遍 items，正是"看着不跟手"的另一半成因）。
+        modifier = modifier.graphicsLayer {
+            translationX = swipeX.value
+            // 被手指控制那一条按**累计位移**画（不是 index 换算出来的位置）；那颗累计位移
+            // 在长按那一支已经过了一遍视口夹持，所以画出来的中心不会离开视口
+            translationY = if (isDragged) draggedOffsetY() else 0f
+            scaleX = lift
+            scaleY = lift
+        },
         exit = slideOutHorizontally(
             targetOffsetX = { it * (swipeExitDir ?: 1) },
             animationSpec = tween(MessageDimens.EXIT_DURATION_MS.toInt())
@@ -571,18 +761,6 @@ private fun MessageRow(
         BoxWithConstraints(
             modifier = Modifier
                 .fillMaxWidth()
-                // 被手指控制的那一行浮在其他消息之上
-                .zIndex(if (isDragged) 1f else 0f)
-                .graphicsLayer {
-                    translationX = swipeX.value
-                    // 被手指控制那一条按**累计位移**画（不是 index 换算出来的位置）。
-                    // 这两处读取都留在 graphicsLayer 里：逐帧只重画图层，不重组整棵列表
-                    //（重组每一次事件都跑一边 items，正是"看着不跟手"的另一半成因）。
-                    translationY = if (isDragged) draggedOffsetY() else 0f
-                    scaleX = lift
-                    scaleY = lift
-                }
-                .then(modifier)
                 .then(
                     // 拖拽态阴影收敛至上限 4dp
                     if (isDragged) Modifier.shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.md)
@@ -688,57 +866,6 @@ private fun MessageBody(
                     .clickable { onToggleExpanded() }
                     .padding(vertical = Spacing.xs)
             )
-        }
-    }
-}
-
-/**
- * 横滑不是点击——给"只有一个点击出口的整行"（尾部那行军师备注）挂一道触控 slop 闸门。
- *
- * 为什么必须有这一道：`Modifier.clickable` 的判据是"抬起时人还在本节点范围内"，
- * **它不看走了多远**。于是"从右往左擦过整行"这一记（第5节第3条 手势优先级里这一档属于
- * 非气泡区域 → 横滑切回复/谈心）会被当成"点中了备注"而把编辑器打开：用户只是想切页，
- * 结果备注被拉进输入框。合同要的是"点它 = 去编辑完整备注"，擦过去不该是点击。
- *
- * 实现走 `PointerEventPass.Initial`：同一条链上先声明的修饰符在 Initial 通道**先于**子节点
- *（这里的子节点就是 `AdvisorNoteLine` 内部那颗 `clickable`）拿到同一批 `PointerInputChange`，
- * 消费掉它们，子节点的点击检测按 Compose 的常规收到"被别人接走"就取消——这正是父层滚动
- * 容器抢走按钮点击的同一套机制，不是新发明。
- *
- * 两条克制：① **只有横向主导**且累计行程越过 slop 才开始消费——纵向浏览照旧交给列表滚动，
- * 原地起落的真点击一个事件都不消费；② 只在事件仍被按住时消费，抬起即收手，不留悬挂状态。
- *（消费写在这一行的节点上，不在面板最外层无条件吃事件——那是 第5节第3条 明令禁止的形状。）
- */
-private fun Modifier.swipeIsNotATap(): Modifier = pointerInput(Unit) {
-    val slop = viewConfiguration.touchSlop
-    // ⚠ 整段必须包在 awaitPointerEventScope 里：`awaitPointerEvent` 是那个 scope 的成员，
-    //   直接写在 PointerInputScope 上编不过（编译时才抓到这一条）。
-    awaitPointerEventScope {
-        while (true) {
-            var pending: PointerInputChange? = null
-            while (pending == null) {
-                pending = awaitPointerEvent(PointerEventPass.Initial)
-                    .changes.firstOrNull { it.pressed }
-            }
-            val pressed = pending!!
-            val pointerId = pressed.id
-            val originX = pressed.position.x
-            val originY = pressed.position.y
-            var stealing = false
-            var tracking = true
-            while (tracking) {
-                val event = awaitPointerEvent(PointerEventPass.Initial)
-                val pointer = event.changes.firstOrNull { it.id == pointerId }
-                if (pointer == null) {
-                    tracking = false
-                } else {
-                    val dx = pointer.position.x - originX
-                    val dy = pointer.position.y - originY
-                    if (!stealing && abs(dx) > slop && abs(dx) > abs(dy)) stealing = true
-                    if (stealing) event.changes.forEach { moved -> moved.consume() }
-                    if (!pointer.pressed) tracking = false
-                }
-            }
         }
     }
 }

@@ -2,6 +2,8 @@ package com.lovebrain.app.ui
 
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
@@ -11,6 +13,7 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbAsyncTags
@@ -211,5 +214,153 @@ class KbEditScreenStatesTest {
         assertEquals("换成空态之后那颗说明锚点必须还在（tag 不随文字换）", 1, messageCount())
         rule.onNodeWithText(app.getString(R.string.kb_edit_empty_hint)).assertExists()
         rule.onNodeWithText(app.getString(R.string.kb_edit_read_failed)).assertDoesNotExist()
+    }
+
+    // ═══════════ ⑤ 结构那一格：正文编辑器吃满有限视口，不塌成空白（§7.1 / 原始第 1 条）═══════════
+
+    /**
+     * **旧两格在结构上测不到这一条**：本类与 `KbEditScreenSemanticsTest` 全跑在 1000/1200dp 高视口，
+     * 塌陷那两档（`H_page ≤ 322` 整卡 0 高、`322 < H_page ≤ 454` 保存被挤出）永远撞不到。
+     * 这一格把同一棵 `KbEditScreen` 挂进**两档矮视口**去量编辑器那一棵的真实高度。
+     *
+     * JVM 怎么模拟"键盘压矮"：`UiMatrix.RenderIn`（`core/testing/UiMatrix.kt:68-76`）用
+     * `Modifier.size(w, H)` 把整棵子树的**父约束**钉死；Robolectric 的 `ime` inset 恒 0，
+     * 于是 §A1 算式里"H_page 被键盘吃掉一截"就落成"直接把 H_page 调小"（本条的键盘实拍仍归真机）。
+     *
+     * 判的是**相对关系**，不用绝对坐标把常数钉死（`F_page/F_card` 里的分隔线、M3 `TextButton` 在本仓
+     * 版本下的真实高度、字体回退行高都要真机 Layout Inspector 校准，本机给不出可信常数）：
+     * - 高视口：编辑器实测 ≥ 120dp——**高于 96 地板**，说明这一格是被外层 `weight` 撑开的真空间，
+     *   不是 `heightIn(min)` 撑出来的溢出；
+     * - 窗口压矮 66dp：编辑器高度**跟着变小**（两档差 ≥ 40dp）——只有"高度来自权重"才成立；
+     * - 「保存」那颗 bottom 仍在 640 视口内：没被固定占位挤出屏幕。
+     *
+     * 尺寸为什么直接读 `boundsInRoot` 而不靠文案：`maxLines+Ellipsis` 那族在本项目语义树里永远报**完整原文**
+     * （文本判据无牙），这一格判的是**盒子的几何**（编辑器有没有真的占到位），不是"树里有没有那串字"。
+     *
+     * 回退成什么会红：
+     * - `LbAsyncState` 的 Content 支又不接传入 `modifier`、内部子项也不各自带权重 → 编辑器拿不到那一格 →
+     *   高视口档就 < 120dp（塌回空白），红；
+     * - 回来给编辑器再垫 `heightIn(min=…)` 当"修复"（把地板焊成高度）→ 两档编辑器高度差不再随视口变（<40），红；
+     * - 给分区三排 / 卡头 toggle 加回 `heightIn(min=48)` 把固定占位涨回去 → 矮视口那档「保存」被顶出视口，红。
+     */
+    @Test
+    fun `the editor takes a real finite viewport and shrinks with the window instead of collapsing`() {
+        val heightDp = androidx.compose.runtime.mutableStateOf(640)
+        rule.setContent {
+            UiMatrix(360, heightDp.value).RenderIn(LocalDensity.current.density) {
+                KbEditScreen(
+                    files = files,
+                    lastFile = "understand/me.md",
+                    onLastFileChange = {},
+                    readFile = { _ ->
+                        "SENTINEL 一整段足够长的正文，用来证明编辑器是被权重撑开的、不是溢出" to "sha"
+                    },
+                    saveFile = { _, _, _ -> "v" },
+                    onBack = {}
+                )
+            }
+        }
+        rule.waitForIdle()
+        rule.onAllNodes(hasClickAction() and hasText("编辑")).onFirst().performClick()
+        rule.waitForIdle()
+
+        val editorTall = rule.onNode(hasSetTextAction()).fetchSemanticsNode().boundsInRoot
+        val saveTall = rule.onNode(hasText(app.getString(R.string.kb_save)))
+            .fetchSemanticsNode().boundsInRoot
+        val tallHeight = editorTall.height / density
+        val saveBottom = saveTall.bottom / density
+
+        rule.runOnIdle { heightDp.value = 574 } // 把窗口压矮 66dp（键盘等效）
+        rule.waitForIdle()
+        val shortHeight =
+            rule.onNode(hasSetTextAction()).fetchSemanticsNode().boundsInRoot.height / density
+
+        assertTrue(
+            "高视口编辑器实测 ${tallHeight.toInt()}dp：拿不到 ≥120dp 就是塌成空白、或被 96 地板焊死" +
+                "（回退成：Content 支不接 modifier 又没子项权重）",
+            tallHeight >= 120f
+        )
+        assertTrue(
+            "视口 640→574（压矮 66dp）编辑器只从 ${tallHeight.toInt()} 变到 ${shortHeight.toInt()}dp，" +
+                "差 ${(tallHeight - shortHeight).toInt()}dp（<40）——这一格高度不是外层权重给的，" +
+                "是 heightIn 地板焊出来的溢出（回退成：拿再垫 heightIn 当修复）",
+            tallHeight - shortHeight >= 40f
+        )
+        assertTrue(
+            "「保存」bottom=${saveBottom.toInt()}dp 掉到 640 视口之外：固定占位又涨回来了" +
+                "（回退成：给分区排/卡头 toggle 加回 heightIn(min=48)）",
+            saveBottom <= 640f + 0.5f
+        )
+    }
+
+    // ═══════════ ⑥ 缺陷一：编辑态不依赖读成功，失败也能进编辑并保住已写的字 ═══════════
+
+    /**
+     * 旧状态机 `readFailed -> Error` 判在 `isPreview` 之前 ⇒ 读失败时那颗「编辑」画在状态件外面（点得到），
+     * 但点下去编辑态还是被 `readFailed` 抢先画成 Error，屏幕上没有输入框——"连输入框都打不开"。
+     * 现在编辑态永远落 Content：失败也打得开、打得开就写得进、写了切走再切回来字还在。
+     *
+     * 回退成什么会红：把 `kbEditFileScreenState` 改回 `readFailed -> Error`（不分预览/编辑）→
+     * 点「编辑」后 `hasSetTextAction` 不存在 / `messageCount` 仍为 1，红。
+     */
+    @Test
+    fun `a failed read still lets the user open the editor and keeps what they typed`() {
+        mount { _ -> throw IOException("模拟磁盘读不动") }
+        // 预览那一档：失败仍然报成共用错误态（既不谎报成空态，也不画成"还在读"）
+        assertEquals("预览档读失败要走共用错误态", 1, messageCount())
+        rule.onNodeWithText(app.getString(R.string.kb_edit_read_failed)).assertExists()
+
+        // 点卡头那颗「编辑」：修完之后这一趟必须真的打开输入框
+        rule.onAllNodes(hasClickAction() and hasText("编辑")).onFirst().performClick()
+        rule.waitForIdle()
+        assertEquals("读失败时进编辑态不许还挂着错误态说明", 0, messageCount())
+        rule.onNode(hasSetTextAction()).assertExists()
+
+        // 保住用户已写的字：输入 → 切预览 → 切回编辑，字一个字不许丢
+        rule.onNode(hasSetTextAction()).performTextInput("手敲的一句话")
+        rule.onAllNodes(hasClickAction() and hasText("预览")).onFirst().performClick()
+        rule.waitForIdle()
+        rule.onAllNodes(hasClickAction() and hasText("编辑")).onFirst().performClick()
+        rule.waitForIdle()
+        // 读数走语义树那一份 `EditableText`（本仓库没有 `assertTextContains` 那颗公共 API，
+        // 且 `maxLines+Ellipsis` 时 Text 那栏会报完整原文、只有 EditableText 才是真输入值）。
+        val kept = rule.onNode(hasSetTextAction()).fetchSemanticsNode()
+            .config.getOrNull(SemanticsProperties.EditableText) ?: ""
+        assertTrue("切走再切回必须保住手敲的字，实读「$kept」", kept.contains("手敲的一句话"))
+    }
+
+    // ═══════════ ⑦ 缺陷二：放弃修改回到真正的原文，不是脏草稿 ═══════════
+
+    /**
+     * 旧记账 `editBaselines[path] = drafts[path]` 只在"从预览进编辑"那一刻写，且取的是 `drafts`。
+     * 预览→编辑→（改几笔、不保存）→预览→再编辑 之后，`drafts` 已带着上一轮没保存的改动，
+     * 于是基线被刷成**脏草稿**，那颗「放弃修改」回的是脏草稿而不是原文——与"放弃恢复原文"不符。
+     * 现在基线每次进编辑都对齐 `saved`（最后一次落盘/读回的正文），"放弃"回的是真原文。
+     *
+     * 回退成什么会红：把进编辑那行改回 `editBaselines[selectedPath] = drafts[selectedPath] ?: ""` →
+     * 这一串之后「放弃」落回"原文的改动"（5 字），断言"｜ 2 字"当场红。
+     */
+    @Test
+    fun `discarding after a preview-edit round trip returns the committed text, not the dirty draft`() {
+        mount { _ -> "原文" to "sha-v1" } // 已落盘的正文 = 原文（2 字）
+        rule.waitForIdle()
+
+        rule.onAllNodes(hasClickAction() and hasText("编辑")).onFirst().performClick()
+        rule.waitForIdle()
+        rule.onNode(hasSetTextAction()).performTextInput("的改动") // 草稿 = 原文的改动（5 字），未保存
+        rule.waitForIdle()
+
+        // 编辑 → 预览（不保存）→ 预览 → 编辑：这一趟就是旧记账被刷脏的那一步
+        rule.onAllNodes(hasClickAction() and hasText("预览")).onFirst().performClick()
+        rule.waitForIdle()
+        rule.onAllNodes(hasClickAction() and hasText("编辑")).onFirst().performClick()
+        rule.waitForIdle()
+
+        rule.onAllNodes(hasClickAction() and hasText("放弃修改")).onFirst().performClick()
+        rule.waitForIdle()
+
+        // 回到预览，卡头字数行按当前草稿长度：真原文 = 2 字；脏草稿才是 5 字
+        rule.onNode(hasText("｜ 2 字", substring = true)).assertExists()
+        rule.onNode(hasText("｜ 5 字", substring = true)).assertDoesNotExist()
     }
 }

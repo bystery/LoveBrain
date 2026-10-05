@@ -94,7 +94,8 @@ private object KbEditDimens {
     /**
      * 正文编辑器那一棵的**地板**高度（dp），不是它的高度。
      *
-     * 它真正的尺寸由外层 `weight(1f)` 给：键盘压矮窗口多少它就矮多少。
+     * 它真正的尺寸由外层那一档 `weight(1f)` 给：键盘把外框 `imePadding()` 撑高多少，
+     * 加权的那一格就矮多少，这一棵跟着矮（本页键盘责任已单一化，见 `onCreate`）。
      * 这一颗只挡"被压成一粒"那种情况，所以取小而不要取大——取大了会在小屏 + 键盘弹起时
      * 把「保存 / 放弃修改」那一排挤出可视区，那是用另一个缺陷换一个缺陷。
      *
@@ -169,20 +170,27 @@ class KbEditActivity : ComponentActivity() {
             android.view.WindowManager.LayoutParams.FLAG_SECURE,
             android.view.WindowManager.LayoutParams.FLAG_SECURE
         )
-        //  键盘遮挡这一条的第一颗旋钮：**这一扇窗口自己**把键盘当成"改尺寸"而不是"平移"。
+        //  键盘遮挡这一条只有一个责任人：外框 `ScreenPage` 已经吃了 `imePadding()`
+        // （`ui/common/ScreenHeader.kt:63`，那一层是禁区、也不许在这一页再垫第二遍），
+        // 所以这一扇窗口自己**不再让位**——用 `SOFT_INPUT_ADJUST_NOTHING` 明确关掉
+        // 系统对窗口的"改尺寸/平移"猜测，让键盘高度**只由 Compose 的 `imePadding()` 吃一次**。
         //
-        // 为什么写在这里而不写进 manifest：manifest 不归这一格管，而这条只有这一页需要
-        // （它是全站唯一一棵"整篇正文"编辑器）。`android:windowSoftInputMode` 没登记过的
-        // Activity 走的是 `adjustUnspecified`——系统自己猜，猜成 `adjustPan` 就把整扇窗口往上顶，
-        // 光标那一行照样藏在键盘后面，而且 Compose 这边量到的窗口尺寸一个字没变，
-        // `weight(1f)` 那套版式也就不会缩。猜成 `adjustResize` 才是我们要的形状：
-        // 窗口高度真的变矮，正文编辑器那一档跟着缩，保存/放弃那一行留在键盘上方。
+        // 为什么是 ADJUST_NOTHING 而不是 ADJUST_RESIZE：`ADJUST_RESIZE` 会让系统先把窗口压矮，
+        // 外框的 `imePadding()` 又按 `WindowInsets.ime` 再减一次 ⇒ 同一段键盘空白**扣了两遍**
+        // （这正是原始反馈"点进去正文塌成空白、摸黑打字"的结构性成因：`H_page` 被吃了两个键盘高，
+        // 一减到固定占位以下，正文编辑器那一档就归零）。分责口径照 `ui/home/ProviderSection.kt:518-525`
+        // 那句"这里再让一次就是把同一段空白扣两遍"。
         //
-        // ⚠ 另一半（"会不会与 `ScreenPage` 已有的 `imePadding()` 撞成两遍内边距"）
-        // 本机看不出来：Robolectric 给的 insets 恒为 0。这一条与正文编辑器那一处
-        // （下面 `weight(1f)` 那棵 `OutlinedTextField` 的注释）一起，只能真机验。
+        // 为什么也不退回 `adjustUnspecified`/`adjustPan`：`adjustPan` 是整扇窗口往上平移，
+        // Compose 量到的尺寸一个字没变，`weight(1f)` 那套版式压根不会缩；`adjustUnspecified`
+        // 让系统自己猜，可能猜成上面任一种。`ADJUST_NOTHING` 把"谁吃键盘"这一件事交回
+        // Compose 一侧唯一的那层 `imePadding()`，窗口尺寸不再被系统改动，
+        // `WindowInsets.ime` 也才会真的把键盘高度报进来（下面编辑器的 `bringIntoView` 依赖它）。
+        //
+        // ⚠ 这半条（非 edge-to-edge 窗口里 `imePadding()` 究竟收到几个像素的 ime inset）
+        // 本机看不出来：Robolectric 给的 insets 恒为 0，`adb devices` 也空。只能真机 + Layout Inspector 验。
         window.setSoftInputMode(
-            android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+            android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
         )
         // KbName value object 验证——UI 不直接传递任意路径
         val rawName = intent.getStringExtra("kb_name") ?: run { finish(); return }
@@ -485,7 +493,11 @@ internal fun KbEditScreen(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(Spacing.lg))
+        //  卡前留白从 12dp（Spacing.lg）压到 4dp（Spacing.sm）：这一格是"分区三排"到"正文卡"之间
+        //  唯一一处**纯占位**（不承载信息、不承载热区）。矮视口 + 键盘弹起时，页级固定那 322dp 里
+        //  能安全省下的就是它——省下的每一 dp 都直接回到正文编辑器的可用高度上（H_editor = H_page − 固定项）。
+        //  页头段(112)、分区三排(198)按紧凑档不许涨、卡内固定(132)是标题行/动作排/内边距，都不在这一格射程里。
+        Spacer(modifier = Modifier.height(Spacing.sm))
 
         Card(
             shape = LoveBrainShape.lg,
@@ -516,10 +528,15 @@ internal fun KbEditScreen(
                     )
                     TextButton(
                         onClick = {
-                            // 进编辑态那一刻存一份基线，「放弃修改」才有一个真的地方可回
-                            // （改之前那份基线从来没被赋过值，"放弃"等于把这一篇写空）。
+                            // 每次**从预览进编辑**都把基线对齐"这一篇当前已落盘的正文"（`saved`），
+                            // 而不是 `drafts`。改之前这里存的是 `drafts`：预览→编辑→预览（不保存）
+                            // →再编辑这一串之后，`drafts` 已经带着上一轮没保存的改动，于是基线被刷成
+                            // **脏草稿**，那颗「放弃修改」回的是脏草稿而不是原文，与"放弃恢复原文"不符。
+                            // `saved` 才是"最后一次成功落盘/读回的内容"，切分区/自动保存也会同步它，
+                            // 所以拿 `saved` 当基线让"放弃"回到真正的原文。编辑→预览这一趟不重写基线，
+                            // 纯切渲染，编辑器里的字仍归 editorStates/drafts，一个字都不清。
                             if (isPreview) {
-                                editBaselines[selectedPath] = drafts[selectedPath] ?: ""
+                                editBaselines[selectedPath] = saved[selectedPath] ?: ""
                             }
                             isPreview = !isPreview
                         }
@@ -545,7 +562,13 @@ internal fun KbEditScreen(
                                 .filter { it.isNotBlank() }
                         }
                         LazyColumn(
-                            modifier = Modifier.fillMaxWidth().weight(1f),
+                            // 编辑/预览两支的**根**都改成 `fillMaxSize()`：`:536` 传下去的
+                            // `Modifier.fillMaxWidth().weight(1f)` 由（本批并行的）`LbAsyncState`
+                            // Content 支接到那一格的容器上，容器拿到 `weight` 之后，这一支把容器填满即可。
+                            // 旧写法在这里自己再写一遍 `weight(1f)` 是"Content 支吞掉传入 modifier"逼出来的
+                            // 兜底；一旦状态件把 modifier 接上，这棵就不该再抢一份权重（否则 `weight`
+                            // 落进 Box 的 BoxScope 直接失效）。见 handoff《2026-10-05-I3b-LbAsyncState接线单》。
+                            modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(Spacing.sm)
                         ) {
                             items(previewChunks.size) { i ->
@@ -563,21 +586,25 @@ internal fun KbEditScreen(
                         // 编辑态：TextFieldValue（光标/选区记忆）；输入实时写 drafts + 字数联动
                         //
                         //  键盘遮挡这一条里，这一棵编辑器管的是"有限高度 + 自己会滚"：
-                        // - 高度由外层 `weight(1f)` 给（窗口被键盘压矮多少，这一棵就跟着矮多少），
-                        //   [KbEditDimens.EDITOR_MIN_HEIGHT_DP] 只是地板，免得它被压成一粒；
+                        // - 这一支的**根**是一棵 `Column(Modifier.fillMaxSize())`：`:536` 交给 `LbAsyncState`
+                        //   的 `weight(1f)` 由（本批并行的）Content 支接到那一格容器上，容器定高后这一棵
+                        //   把容器填满，其中 `OutlinedTextField` 用 `weight(1f)` 吃掉"除固定排以外"的高度；
+                        //   [KbEditDimens.EDITOR_MIN_HEIGHT_DP] 只是地板，免得它被压成一粒
+                        //   （⚠ 地板不是修复：父层真给 0 时它只会溢出，见 §7.1 那句告诫）；
                         // - 文本超出这一棵自己的视口时，`OutlinedTextField` 内部滚动，
                         //   并由 [bringIntoViewRequester] 在键盘弹起/光标移动时把当前行要回来。
                         //
-                        // ⚠ 与窗口那一条 `SOFT_INPUT_ADJUST_RESIZE` 是**一对**，两半都要真机验：
-                        // 页头那层 `ScreenPage` 已经吃了 `imePadding()`（`ui/common/ScreenHeader.kt:67`，
-                        // 不许在这一页再垫第二遍，那才是"又多一大片空白"）。键盘弹起后
-                        // 若卡体下方出现一条按不到的空白，说明 resize 与 imePadding 两头各让了一次，
-                        // 那时该动的是"哪一层吃 inset"这一处，不是回来给编辑器加高度。
+                        // ⚠ 键盘责任**只有一层**（本页已单一化，见 onCreate 里 `SOFT_INPUT_ADJUST_NOTHING`）：
+                        // 外框 `ScreenPage` 已经吃了 `imePadding()`（`ui/common/ScreenHeader.kt:63`，禁区），
+                        // 这一页不再自己垫第二遍，也不靠给编辑器加高度去"补" —— 那样只会把同一段键盘空白
+                        // 扣两遍或把保存挤出屏。窗口尺寸不由系统改，`WindowInsets.ime` 才报得进键盘高度，
+                        // 下面那棵编辑器的 `bringIntoView` 才有触发条件。两半都要真机验（本机 insets 恒 0）。
                         val bringIntoViewRequester = remember { BringIntoViewRequester() }
                         val imeBottomPx = WindowInsets.ime.getBottom(LocalDensity.current)
                         LaunchedEffect(imeBottomPx, editorValue.selection, selectedPath) {
                             if (imeBottomPx > 0) bringIntoViewRequester.bringIntoView()
                         }
+                        Column(modifier = Modifier.fillMaxSize()) {
                         OutlinedTextField(
                             value = editorValue,
                             onValueChange = { v ->
@@ -679,6 +706,7 @@ internal fun KbEditScreen(
                                 }
                             )
                         }
+                        } // ← Column(fillMaxSize) 这一支的根闭合
                     }
                 }
             }
@@ -705,8 +733,13 @@ internal fun KbEditScreen(
  * 两处与同族两页（[kbScreenState]、[captureScreenState]）不同，都记的是现场行为不是新档位：
  * 1. [isPreview] 进判据。编辑态下"正文为空"是用户正往空框里敲字，画一张空态图会把输入框换掉，
  *    那才是真的把人关死；所以 Empty 只在预览那一档成立。
- * 2. 失败优先于空。读失败时 `drafts` 里是的残留值，拿残留值判"这篇是空的"
- *    等于对用户撒谎（与 [kbScreenState] 那条"带残留列表也不许画 Content"同一笔）。
+ * 2. **失败只在预览那一档报，编辑态不落 Error**。旧写法 `readFailed -> Error` 判在 [isPreview] 之前，
+ *    于是读失败时连「编辑」都点不开——那颗 toggle 画在状态件**外面**（点得到），但一落到编辑态还是被
+ *    `readFailed` 抢先画成 Error，屏幕上根本没有输入框，用户点半天"打不出字"，与塌陷叠加时更像"页面坏了"。
+ *    现在编辑态（`!isPreview`）永远交回 Content：`drafts` 里有残留就保住那已有文字继续编辑，读失败也不清空、
+ *    不挡输入。失败优先这条**仍然保留在预览那一档**（`readFailed && isPreview -> Error`）：
+ *    预览时用残留值去判"这篇是空的"等于对用户撒谎（与 [kbScreenState] 那条"带残留列表也不许画 Content"同一笔），
+ *    所以预览落 Error 带重试；用户想自救就点那颗「编辑」进编辑态直接改、改完保存。
  */
 internal fun kbEditFileScreenState(
     loaded: Boolean,
@@ -718,7 +751,8 @@ internal fun kbEditFileScreenState(
     retry: ScreenAction
 ): ScreenState<String> = when {
     !loaded -> ScreenState.Loading
-    readFailed -> ScreenState.Error(errorMessage, retry)
+    // 失败只在预览那一格报；编辑态（!isPreview）绝不落 Error，见上面第 2 条。
+    readFailed && isPreview -> ScreenState.Error(errorMessage, retry)
     isPreview && text.isBlank() -> ScreenState.Empty(emptyMessage)
     else -> ScreenState.Content(text)
 }

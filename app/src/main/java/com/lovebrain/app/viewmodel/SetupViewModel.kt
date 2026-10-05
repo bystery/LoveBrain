@@ -20,6 +20,13 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 /**
+ * 介绍层一共四格（0…3）——步号钳制的那把尺（`restoreIntroStep` / `saveIntroStep`）。
+ * 顶层而不是类里：Kotlin 的 `const val` 不许长在普通类里。
+ * 只有本 VM 读它，页面拿的是钳好之后的值（`OnboardingFlow` 与 `SetupActivity` 都不抄这个数）。
+ */
+internal const val INTRO_STEP_MAX = 3
+
+/**
  * 设置页 ViewModel（：工单式模型供应商管理）。
  *
  * 职责：封装 SetupActivity 的供应商管理逻辑（ 分层治理：ui → ViewModel → data）
@@ -41,12 +48,18 @@ class SetupViewModel(
 
     // ═══════════ 首次引导（原先由 Activity 直接读写 securePrefs，现已收在这里）═══════════
 
+    // ═══════════ 首次引导（原先由 Activity 直接读写 securePrefs，现已收在这里）═══════════
+
     /**
      * 本次启动是否应该显示引导流程。
      *
      * 老用户（已配供应商 / 已生成过 / 已有知识库）在第一次进设置页时就把完成标记补上，
      * 免得被当成新人重走一遍。判定逻辑与"补标记"这个写动作都在 ViewModel 里，
      * Activity 只拿一个布尔结果。
+     *
+     * ⚠ 2026-10-05 基线 v1 §6.8 后本颗**只作旧合同兼容**留在树上（`SetupViewModelOnboardingTest`
+     * 前五格钉的就是它）；Activity 的引导闸门已改走 [shouldShowIntro] + [currentGuideCursor]，
+     * "点了去配置"这一格从此不再有任何写成完成的通道。
      */
     fun shouldShowOnboarding(): Boolean {
         if (securePrefs.hasCompletedOnboarding) return false
@@ -57,9 +70,132 @@ class SetupViewModel(
         return true
     }
 
-    /** 用户跳过 / 完成 / 转去设置，三种出口都算引导结束 */
+    /** 用户跳过 / 完成 / 转去设置，三种出口都算引导结束（⚠ 旧口径，见 [shouldShowIntro] 上方注释） */
     fun completeOnboarding() {
         securePrefs.hasCompletedOnboarding = true
+    }
+
+    /**
+     * 本次启动是否应该显示**介绍页**（引导四步的第一格，其余三步走首页遮罩）。
+     *
+     * 三条出口各是谁：看过或明确跳过 → [markIntroSeen] 只写 `introSeen`；
+     * 老用户（旧旗标或真状态命中）→ 补写 `introSeen + cursor=DONE`，
+     * **升级上来的用户既不会被拽回介绍，也不会被遮罩追着重配**（基线 §6.8"已有用户不能被强制重看"）。
+     */
+    fun shouldShowIntro(): Boolean {
+        if (securePrefs.introSeen) return false
+        if (securePrefs.hasCompletedOnboarding) {
+            // 迁移：旧旗标为真 = 介绍层与指引都收工（只补一次，之后本颗不再读旧键）
+            securePrefs.introSeen = true
+            securePrefs.guideCursor = GuideCursor.DONE.name
+            return false
+        }
+        if (isExistingUser()) {
+            securePrefs.hasCompletedOnboarding = true
+            securePrefs.introSeen = true
+            securePrefs.guideCursor = GuideCursor.DONE.name
+            return false
+        }
+        return true
+    }
+
+    /**
+     * 介绍看完/跳过。**这只豁免介绍层**——不写完成旗标、不写游标 DONE，
+     * 后续"配模型/给权限/开捕获"仍由派生状态决定是否起罩。
+     */
+    fun markIntroSeen() {
+        securePrefs.introSeen = true
+    }
+
+    /** 四步的派生事实：全从真状态读，与"点过什么按钮"无关 */
+    data class GuideFacts(
+        val introSeen: Boolean,
+        val providerReady: Boolean,
+        val accessibilityGranted: Boolean,
+        val captureOn: Boolean
+    )
+
+    fun guideFacts(context: android.content.Context): GuideFacts = GuideFacts(
+        introSeen = securePrefs.introSeen,
+        providerReady = _providerReady.value,
+        accessibilityGranted = isCaptureServiceEnabled(context),
+        // "捕获已开启"= 权限已给 **且** 开关意图 **且** 披露同意记录 **且** 范围非空（四件都得真）。
+        // CAP1（2026-10-06，A1 source-10 候选①）：旧账少了第三件——服务侧 `CapturePolicy` 对空
+        // allowlist 是 fail-closed 全拒（`allowlist_empty`，那是对的隐私默认，保持不动），
+        // 而引导层曾对同样的机器念"捕获已开启"。判据从此与页面六格 `captureTruthOf` 同源同料：
+        // 界面绿只发生在服务真能抓的那一格。
+        // CAP3/CAP4（2026-10-06，用户原话"第一次进来开关就是开的"那一族）补第四件：
+        // 无障碍**没授予**时服务一条正文都收不到（`onServiceConnected` 都进不来），
+        // 引导却可以拿着"旗标 + 同意 + 范围"三件真判 DONE ——两张嘴对同一台机器念相反的话。
+        // 这一颗加进来之后，`guideFacts.captureOn` 是 `captureTruthOf` 五颗读数的**严格子集**：
+        // 少的那一颗只有悬浮窗（`floatingRunning`），它是投递闸、不是同意闸，
+        // 引导不该因为"服务还没起来"把用户卡在 CAPTURE 那一格（那一格用户已经全给完了）。
+        captureOn = isCaptureServiceEnabled(context) && _captureEnabled.value &&
+            isAccessibilityDisclosureConfirmed() &&
+            _captureAllowedPackages.value.isNotEmpty()
+    )
+
+    /**
+     * 当前指引位置：读盘上存量游标 + 派生事实算出，顺带把该落盘的推进落盘。
+     * 每次首页组合/ON_RESUME 都该重算一遍——权限被撤销时它会自己退回未完成那一格。
+     */
+    fun currentGuideCursor(context: android.content.Context): GuideCursor {
+        val resolved = resolveGuideCursor(
+            stored = GuideCursor.from(securePrefs.guideCursor),
+            facts = guideFacts(context)
+        )
+        if (resolved.name != securePrefs.guideCursor) {
+            securePrefs.guideCursor = resolved.name
+        }
+        if (resolved == GuideCursor.DONE && !securePrefs.hasCompletedOnboarding) {
+            // 派生 DONE 时把旧旗标一并补真，两面旗标自此只剩"介绍已看 + 游标"这一本新账
+            securePrefs.hasCompletedOnboarding = true
+        }
+        return resolved
+    }
+
+    /** 每步的"稍后"：收罩、缺项交回首页黄字行，游标可经 [resumeGuide] 恢复 */
+    fun deferGuide() {
+        if (GuideCursor.from(securePrefs.guideCursor) != GuideCursor.DONE) {
+            securePrefs.guideCursor = GuideCursor.DEFERRED_TO_HINT.name
+        }
+    }
+
+    /** 从黄字行/缺项提示点回来：清掉"稍后"，按派生事实重新定位 */
+    fun resumeGuide(context: android.content.Context) {
+        if (GuideCursor.from(securePrefs.guideCursor) == GuideCursor.DEFERRED_TO_HINT) {
+            securePrefs.guideCursor = ""
+        }
+        currentGuideCursor(context)
+    }
+
+    /** 用户明确"不再指引"：唯一一条把游标钉死在 DONE 的人工通道（不要求重装、不清任何数据） */
+    fun stopBeingGuided() {
+        securePrefs.introSeen = true
+        securePrefs.guideCursor = GuideCursor.DONE.name
+        securePrefs.hasCompletedOnboarding = true
+    }
+
+    /**
+     * 介绍层第几格的**唯一读写口**（G1b 接线单 §4）。
+     *
+     * 钳制放在这里而不是 `SecurePrefs`：盘上那一份只是"存了一个整数"，
+     * "这一本一共几格"是产品知识（介绍层四格 ⇒ 0…3），归 VM。
+     * 脏值（旧版本残留、手改过的偏好）读回来落回 0 = 从第一格重走，
+     * 不抛异常——介绍页读不到步号不该让首页起不来。
+     */
+    fun restoreIntroStep(): Int = securePrefs.introStep.coerceIn(0, INTRO_STEP_MAX)
+
+    fun saveIntroStep(step: Int) {
+        securePrefs.introStep = step.coerceIn(0, INTRO_STEP_MAX)
+    }
+
+    /**
+     * 从系统设置/子页返回（ON_RESUME）时重读落盘事实：
+     * 捕获开关可能在别的进程里被改过，StateFlow 不自愈，这里按唯一真源补一次。
+     */
+    fun refreshGuideFactsFromStore() {
+        _captureEnabled.value = securePrefs.captureEnabled
     }
 
     private fun isExistingUser(): Boolean {

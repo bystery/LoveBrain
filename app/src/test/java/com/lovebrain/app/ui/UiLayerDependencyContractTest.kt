@@ -299,6 +299,22 @@ class UiLayerDependencyContractTest {
      *
      * 判据取"画半透明黑底"这个具体写法而不是"有没有 fillMaxSize"：后者到处合法。
      */
+    /**
+     * 遮罩的**登记式豁免**（不是把扫描范围调小）：路径 → 为什么这一层不是"LbModalSheet 那一族浮层"。
+     *
+     * 每一颗豁免都要同时过第二把尺：那一层**不许挂 `clickable`**。这条闸当初的起因就是
+     * "遮罩冒充一颗 360x1000 的按钮"，豁免只豁免"自己画一层半透明黑"这一件事，
+     * 不豁免语义树那半——所以以后谁在豁免文件里给全屏层加可点，这里照样红。
+     */
+    private val scrimExemptions: Map<String, String> = mapOf(
+        "ui/home/HomeCoachMarks.kt" to
+            "覆盖式引导的那一层不是浮层，是**挖洞的聚光罩**：它要的是" +
+                "\"整屏压暗 + 目标格那块透明\"（Path 挖洞），而 LbModalSheet 给的是" +
+                "\"整屏压暗 + 一块居中卡\"，把罩子塞进那颗组件就得先给设计系统加一档带洞的遮罩——" +
+                "那是 core 的地盘，缺件已登记（见 2026-10-06-G1b 接线单）。" +
+                "这一层零 `clickable`：目标格之外那点被有意让给手指，罩子自己不当按钮"
+    )
+
     @Test
     fun `only the sheet owner draws a full window scrim`() {
         val owner = "core/designsystem/LbModalSheet.kt"
@@ -306,13 +322,28 @@ class UiLayerDependencyContractTest {
         val drawers = kotlinFiles(appRoot).map {
             it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
         }.filter { (path, code) ->
-            scrim.containsMatchIn(code) && path != owner
+            scrim.containsMatchIn(code) && path != owner && !scrimExemptions.containsKey(path)
         }.map { it.first }
         assertTrue(
-            "整屏遮罩只许由 $owner 画；这些文件自己画了一层（改走 LbModalSheet，" +
-                "它顺手修掉了遮罩冒充可点击节点的问题）：$drawers",
+            "整屏遮罩只许由 $owner 画（豁免要写理由，见 scrimExemptions）；这些文件自己画了一层" +
+                "（改走 LbModalSheet，它顺手修掉了遮罩冒充可点击节点的问题）：$drawers",
             drawers.isEmpty()
         )
+        // 豁免不是空白支票：被豁免的那一层必须还在"不可点"这条线上，且文件确实还画着遮罩
+        // （文件被搬走/改名 ⇒ 这条豁免就成了幽灵，同样红）。
+        scrimExemptions.forEach { (path, why) ->
+            val exempt = File(appRoot, path)
+            assertTrue("豁免登记指向的文件不在了：$path（理由：$why）", exempt.isFile)
+            val code = codeOf(exempt.readText())
+            assertTrue(
+                "$path 画了遮罩就许它画遮罩；正则看不见 `Color.Black.copy(alpha` 说明这颗豁免已经没主人认领了：$why",
+                scrim.containsMatchIn(code)
+            )
+            assertTrue(
+                "豁免只豁免\u201c自己画一层半透明黑\u201d，不豁免语义树：$path 的可点遮罩回来就是当初那个\u201c360x1000 的按钮\u201d",
+                !Regex("\\.clickable\\b").containsMatchIn(code)
+            )
+        }
         // 反向确认这把尺看得见东西：所有者自己那一份必须还在，否则就是正则坏了
         val ownerSource = File(appRoot, "core/designsystem/LbModalSheet.kt")
         assertTrue("找不到 $owner——被搬走或改名了，这把尺就成了一把扫空集的闸", ownerSource.isFile)
@@ -474,7 +505,8 @@ class UiLayerDependencyContractTest {
      * 抓得住。与 第36节 那把"整屏底色只有一个所有者"同族，也是被同一条理由逼出来的——
      * `PageHeaderConsistencyTest` 量到四式并存时，读屏名字有两派是**空串**。
      *
-     * 本机实扫（去注释后）：所有者 1 处；**登记的欠账 0 处**。
+     * 本机实扫（去注释后）：所有者 1 处；**登记的欠账 1 个文件 2 处**（面板设置那一格紧凑页头，
+     * 见下面 `registeredDebt` 那段——收口条件写在那儿，不许把它读成"已处理"）。
      *
      * ⚠ **勘误（账本 第58节）**：这一格的注释以前写着"反馈案例页没顺手一起搬的理由之一：
      * 这一页要 `rememberLauncherForActivityResult`，**JVM 上挂不起来**——搬一页却量不到搬的效果，
@@ -492,7 +524,17 @@ class UiLayerDependencyContractTest {
     @Test
     fun `the page header has exactly one owner`() {
         val owner = "core/designsystem/LbTopBar.kt"
-        val registeredDebt: Map<String, Int> = emptyMap()
+        // 2026-10-06 S1b 登记一笔欠账（**不是**放宽判据，这把尺照旧按"字形出现几处"数）：
+        // 面板设置那一格的页头走的是基线 v1.2 的紧凑档（整行 30dp），它确实没有自己拼箭头——
+        // 它把 `Icons.AutoMirrored.Filled.KeyboardArrowLeft` 交给设计系统唯一主人 `LbTextAction`
+        // 的 `RowIcon` 档画（16dp 字形 / 28 见方热区）。但这把尺按**字形读数**判，看不见"交给了谁"，
+        // 于是 import 一行 + 用法一行 = 2 处，按实到登记。
+        // 收口条件（写死在这里，别让它当"已处理"）：要么这一格改读 `LbTopBar` 的紧凑档
+        // （那需要 core 给 LbTopBar 加一档，属 core 席），要么这把尺改成"只认自画箭头"
+        // （那就得先有反例证人，证明改窄之后仍然抓得住自己拼返回的那一族）。
+        val registeredDebt: Map<String, Int> = mapOf(
+            "ui/panel/settings/LoveBrainSettingsContent.kt" to 2
+        )
         val glyph = Regex(""""←"""")
         val icon = Regex("\\bKeyboardArrowLeft\\b")
 
@@ -1271,11 +1313,10 @@ class UiLayerDependencyContractTest {
         // 首页 Hero 那一排（HERO_ICON_SIZE_DP 16 / HERO_BUTTON_HEIGHT_DP 40）已从可点链上消失：
         // Agent F 把四入口卡并进 LbActionCard、Hero 主动作归 LbPrimaryButton 之后，HomeComponents
         // 里没有这两颗数写在链上了（实扫 0 处）。按本文件"并掉了就把这一行删掉"的规矩删行。
-        SubFloorNumber(
-            "ui/KnowledgeBaseActivity.kt#KbDimens.EDIT_ICON_SIZE_DP.dp", 14, null,
-            "缺档：行内小字形（既不是 ACTION_ICON_SIZE_DP 那颗 18 的用途，也不是 spinner 那颗 14）",
-            "编辑笔字形是装饰；同一行那颗 48 见方盒才是热区"
-        ),
+        // `ui/KnowledgeBaseActivity.kt#KbDimens.EDIT_ICON_SIZE_DP.dp`（14）这一行于 2026-10-06 L1b **删掉**：
+        // 母版页那张卡的动作行改由 `core/designsystem/LbListCard.kt` 那一族动作件画，字形档由公共件读
+        // `LbTextAction` 的具名档，页面里那颗 14dp 字形不在任何可点链上了（实扫 0 处）。
+        // 按本文件"并掉了就把这一行删掉，别留着当已有闸"的规矩删行。
         SubFloorNumber(
             "ui/home/ProviderSection.kt#ProviderDimens.STATUS_DOT_SIZE_DP.dp", 6, null,
             "缺档：状态点直径",
@@ -1330,11 +1371,12 @@ class UiLayerDependencyContractTest {
             "缺档：开关轨道里那枚圆钮的字形",
             "装饰字形，热区是那颗 44×24 的轨道盒"
         ),
-        SubFloorNumber(
-            "ui/home/HomeComponents.kt#HomeDimens.LAMP_VISIBLE_DP.dp", 12, null,
-            "缺档：状态卡那颗指示灯的可见圆点直径（合同 12dp）",
-            "灯只读不点、是装饰；它坐在 AdvisorLampRow 那一整行里，行的可点热区另由 48dp 那档承担"
-        ),
+        // `ui/home/HomeComponents.kt#HomeDimens.LAMP_VISIBLE_DP.dp`（12）这一行于 2026-10-06 **删掉**：
+        // 那颗指示灯今天住在 `AdvisorLampDot`（`HomeComponents.kt:174-181`）——一条
+        // `Modifier.size().clip().background().testTag()` 的**纯装饰链**，体里没有 clickable、没有角色，
+        // 也不再带 contentDescription（同一个名字写在旁边那颗可见文字上）。
+        // 这本账钉的是"可点链上的低于下限的数"，它不在这条链上了 ⇒ 按"对不上实就删行"处理；
+        // 12dp 那颗数本身仍然由 `HomeDimens` 拥有，没有换成第二把尺，也没有换成内联字面量。
         SubFloorNumber(
             "ui/panel/reply/ReplyInput.kt#ReplyDimens.ROLE_CHIP_HEIGHT_DP.dp-8.dp", 20, null,
             "缺档：➕ 添加胶囊里的加号字形（角色 chip 28 视觉高减 8 得到的字形档）",
@@ -1372,14 +1414,14 @@ class UiLayerDependencyContractTest {
 
     /** 页面直读 core 矮档的落点：这一屏该改读哪一颗具名档（登记着等收口，不是给它发合格证） */
     private val compactTierPageReaders = mapOf(
-        "ui/common/CompactInput.kt#INPUT_ROW_HEIGHT_DP" to
-            "这一层是\"外层透明热区 + 内层 36 外框\"的两层写法宿主，本身该整体搬进 core/designsystem；" +
-            "搬完它就成了主人、这条登记要跟着删",
-        "ui/home/ProviderSection.kt#INPUT_ROW_HEIGHT_DP" to
-            "Key 显隐那颗尾部按钮：它坐在 CompactInput 中层那颗 36dp 的可见字段胶囊里，父约束 maxHeight=36 " +
-            "让它**自己**只能到 36（这句登记是因为本轮把那句永远赢不了父约束的 min(48) 死码改成了如实的 36 档，" +
-            "不是新增违规）。整行 48 热区由外层透明盒承担；要让它自己回到 48，得把尾部槽挪出中层——" +
-            "那是共用组件的改动，落完之后这条读档点就该消失",
+        // `ui/common/CompactInput.kt#INPUT_ROW_HEIGHT_DP` 于 2026-10-06 **删掉这一行**：那一层已经
+        // 整体搬进设计系统的新主人 `core/designsystem/LbFieldInput.kt`（五态可见框，36dp 档由它自己读），
+        // 页面侧那半只剩调用；这正是这条登记当初写的"搬完它就成了主人、这条登记要跟着删"那一步。
+        // `ui/home/ProviderSection.kt#INPUT_ROW_HEIGHT_DP` 同批删行：Key 显隐那颗尾部按钮今天住在
+        // `LbFieldInput` 的尾部槽里（`ProviderSection.kt` 全文不再出现这颗档名，实扫 0 处），
+        // "整行 48 / 中层 36"那两层写法的主人换成了 core，页面不再有直读点。
+        // ⚠ 这两笔都是**换桶之外的事**：数还是那颗 36，只是不再由页面直读；
+        //   两档的其余落点（KbEditActivity、ReplyInput 的默认形参）仍在下面这条账上。
         "ui/KbEditActivity.kt#INPUT_ROW_HEIGHT_DP" to
             "知识库编辑页那几格表单输入直读了档；该改读 CompactInput（或搬进 core 之后的那一颗）",
         "ui/panel/reply/ReplyInput.kt#INPUT_ROW_HEIGHT_DP" to
@@ -1497,8 +1539,13 @@ class UiLayerDependencyContractTest {
                 got == 0
             )
         }
+        // 「LbTextAction( 恰好一处」原来是防止有人把动作再抄一遍进容器分支。第 16 条给 LbEmptyState
+        // 加了轻通知档（LbStateContainer.Notice），它的关闭那颗走 LbTextAction 的**图标档**、
+        // Block/Strip 那颗仍走**文字档**——两支入口都住在 `StateAction` 这一个函数里、
+        // 都指回设计系统那唯一一处文字/图标动作，不是第二个所有者。真正拦"自画"的是上面
+        // 那条 `clickable == 0`；这里因此从 1 放宽到 2（文字 + 图标各一支），不是把闸拆了。
         Regex("""\bLbTextAction\(""").findAll(host).count().let { got ->
-            assertTrue("LbEmptyState 必须经 LbTextAction 画动作，实到 $got 处", got == 1)
+            assertTrue("LbEmptyState 的动作只许经 LbTextAction 画（文字 + 图标两支入口），实到 $got 处", got == 2)
         }
     }
 
@@ -1578,10 +1625,16 @@ class UiLayerDependencyContractTest {
     private data class BrandLedger(val ceiling: Int, val owner: String, val note: String)
 
     private val surfacesLedger: Map<String, BrandLedger> = mapOf(
-        "KnowledgeBaseActivity.kt" to BrandLedger(1, "LbActionCard", "库卡卡内那块品牌浅底是装饰；卡本体的主人是 LbActionCard"),
+        // "KnowledgeBaseActivity.kt" 那一行（原额度 1）于 2026-10-06 L1b **删掉**：库卡卡内那块品牌浅底
+        // 随卡本体一起交回 `core/designsystem/LbListCard.kt`，本页 `.background(` 实扫 0 处。
+        // 账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
         "bubble/FloatingBubble.kt" to BrandLedger(1, "", "悬浮球球体底：设计系统里没有 overlay 悬浮球这一颗（缺件）"),
         "feedback/FeedbackCasesScreen.kt" to BrandLedger(1, "", "导出那排开关的轨道底色：没有开关这一颗（缺 LbSwitch）"),
-        "home/HomeComponents.kt" to BrandLedger(1, "", "只剩军师控制条「停止」那颗实心方块的直涂 Primary 底（AdvisorStopGlyph，热区盒自己无底）：设计系统没有播放/停止这一颗控制键（缺件）。额度 3 → 1 是还债不是放宽——Hero 主动作已归 LbPrimaryButton、状态卡渐变底与四格卡图标盒随 Agent F 把四入口卡并进 LbActionCard 一并离场"),
+        // "home/HomeComponents.kt" 那一行（原额度 1，"只剩军师控制条「停止」那颗实心方块的直涂 Primary 底
+        // （AdvisorStopGlyph，热区盒自己无底）"）于 2026-10-06 **删掉**：那颗 ▶/■ 交回设计系统的
+        // `LbTriangleGlyph`（H1c 全类三角审计那一格），实心方块的直涂 Primary 底随私有 Canvas 一起离场，
+        // 本页 `.background(` 里已经没有品牌色（实到：`lamp.color` 那颗灯与一处非品牌底，都不在本把尺射程）。
+        // 灯与播放/停止字形仍各有主人：`HomeDimens.LAMP_VISIBLE_DP` 与 `AppDimens.ARROW_SIZE_DP`。
         "home/ProviderSection.kt" to BrandLedger(3, "LbRowState", "模型行的选中态该走 LbRowState；第三处是 MiniSwitch 的轨道底（缺件）"),
         "kb/KbOnboardingWizard.kt" to BrandLedger(1, "", "建库向导的进度填充：LbAsyncState 没有进度条档（缺件）"),
         "onboarding/OnboardingOptionCard.kt" to BrandLedger(2, "LbChip", "单选选中态与 LbChip 的 Single 档同一语义；勾选点那一处也在这一行里"),
@@ -1618,7 +1671,10 @@ class UiLayerDependencyContractTest {
         // 方块那一处，所以它在 surfacesLedger 里留着 1 的额度。
         // 这条账本原来还押着一处未解矛盾（"页面 0 次调用 LbActionCard"），随归并完成一并作废。
         "home/ProviderSection.kt" to BrandLedger(2, "LbSettingRow", "模型行与添加行都是带点击的行，主人是 LbSettingRow"),
-        "KnowledgeBaseActivity.kt" to BrandLedger(1, "LbActionCard", "可点的库卡归 LbActionCard，本轮还没转过去"),
+        // "KnowledgeBaseActivity.kt" 那一行（原额度 1，"可点的库卡归 LbActionCard，本轮还没转过去"）
+        // 于 2026-10-06 L1b **删掉**：可点那张卡今天整颗走 `LbListCard`（点击由公共件挂角色与热区），
+        // 页面 `clickable` 子树里涂品牌底的形状实扫 0 处——那句"本轮还没转过去"已经成立了，
+        // 留着就是这条账目明文禁止的"不成立的豁免"。
         "panel/IntentEditorSheet.kt" to BrandLedger(1, "", "启用开关那颗可点盒（chain 上有 clickable、子树涂条件品牌底）：随 SuggestPanel→IntentEditorSheet 改名平移过来，锦囊那颗实心主动作已随页面删除离开。设计系统没有开关这一颗（缺 LbSwitch），与 FeedbackCasesScreen 那排自画开关同一处理"),
         "panel/counseling/CounselingLoadingSection.kt" to BrandLedger(2, "LbPrimaryButton", "脉冲条与开始按钮：开始那颗归 LbPrimaryButton"),
         "panel/counseling/CounselingPanel.kt" to BrandLedger(1, "LbPrimaryButton", "发送那颗条件涂色的可点控件归 LbPrimaryButton"),

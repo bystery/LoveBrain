@@ -59,6 +59,36 @@ interface SettingsStorePort {
 
     // ── 引导与抓取开关 ──
     var hasCompletedOnboarding: Boolean
+
+    /**
+     * 引导进度新键（基线 v1 §6.8，2026-10-05）：**只加键，旧 [hasCompletedOnboarding] 的语义一字不动**。
+     *
+     * - [introSeen]：介绍层看过或明确跳过。它**只豁免介绍**，不豁免后续步骤；
+     * - [guideCursor]：`GuideCursor` 枚举名（`NONE/PROVIDER/ACCESSIBILITY/CAPTURE/DONE/DEFERRED_TO_HINT`），
+     *   空串=从没写过。游标持久化替代 `OnboardingFlow` 里那颗 `remember` 步号（重建即丢的那本旧账）。
+     *
+     * 完成与否**派生自真实状态**（供应商工单有效 / 无障碍已授权 / 捕获已开+披露已同意），
+     * 这两个键不回答"配了没配"，只回答"介绍看过没、指引停在哪一格"。
+     */
+    var introSeen: Boolean
+    var guideCursor: String
+    /**
+     * 介绍层走到第几格（0…3，默认 0）。与上面两颗分工清楚：`introSeen` 只管"介绍层豁免没豁免"、
+     * `guideCursor` 只管"指引停在哪一步"，**这一步是介绍页内部的格号**——把它塞进上面任何一颗
+     * 就是基线 §6.8 明令废掉的"第二本账"（G1b 接线单 §4）。
+     */
+    var introStep: Int
+    /**
+     * 消息捕获总开关。**默认关（fail-closed）**：没写过这颗键 = 用户从没要过捕获 ⇒ 读到关。
+     * 隐私能力不许默认开——旧默认"开"被用户 2026-10-06 原话（"现在你的默认刚打开，
+     * 你的开关就是拨开的"）钉成缺陷，本条即那次修复的端口侧合同。
+     *
+     * 老安装升级不断捕获由实现方在**存储构造期**一次性归一：四件事实齐（键从没写过 +
+     * 无障碍已授予 + 当前版披露已同意 + 范围非空）才落 true，缺一落 false；
+     * 判据是"键在不在盘上"（contains），**不是读出来的值**，写过之后永不再动。
+     * 语义钉在 `SettingsStorePortContractTest`：空存储读到 false、显式写 true/false 原样读回、
+     * 归一第二次跑不写盘也不翻转第一次的结论。
+     */
     var captureEnabled: Boolean
     var accessibilityDisclosureVersion: Int
     var captureAllowedPackages: Set<String>

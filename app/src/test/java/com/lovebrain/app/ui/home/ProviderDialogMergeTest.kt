@@ -99,7 +99,8 @@ class ProviderDialogMergeTest {
         assertEquals(
             "挂载证人：表单第一行的标签应当恰好一个节点（0 个说明本体压根没画出来，" +
                 "那会让下面那条断言假绿）",
-            1, rule.onAllNodesWithText("供应商名称").fetchSemanticsNodes().size
+            1, rule.onAllNodesWithText(ctx.getString(R.string.provider_form_name_label))
+                .fetchSemanticsNodes().size
         )
         listOf("添加供应商", "编辑供应商").forEach { title ->
             val found = rule.onAllNodesWithText(title).fetchSemanticsNodes().size

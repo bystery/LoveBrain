@@ -166,7 +166,13 @@ class ProviderFormSemanticsTest {
 
     /** 这一屏该说得出名字的东西，全部来自 `ProviderFormBody`：内联的那几处 + 已经走资源的那几处 */
     private val expectedControls = listOf(
-        "名称", "https://api.example.com", "留空保留原 Key", "显示", "Thinking mode",
+        // 「名称」「留空保留原 Key」2026-10-06 起走资源（`provider_form_name_placeholder` /
+        // `provider_form_key_placeholder`）⇒ 判据跟着读 `ctx.getString(...)`，不抄中文字面量：
+        // 这台 JVM 解析英文，抄中文的那两句会当场假红（W8 实测：树上念的是 Name / Leave blank…）。
+        ctx.getString(R.string.provider_form_name_placeholder),
+        "https://api.example.com",
+        ctx.getString(R.string.provider_form_key_placeholder),
+        "显示", "Thinking mode",
         setModelLabel, testConnectionLabel, editLabel, deleteLabel, "＋ 添加模型", "取消", saveChangesLabel
     )
 
@@ -285,13 +291,25 @@ class ProviderFormSemanticsTest {
     /**
      * Key 显隐那一颗走哪一档：**它所在那一条字段框**那一档，两轴下限 36、上限 48。
      *
-     * 复验过的那条链（生产 `ui/common/CompactInput.kt`，本机读数对得上）：
-     *  - 外层透明热区盒 `heightIn(min = 48)`——只转焦点、**故意不声明点击语义**；
+     * ⚠ **这一格 2026-10-06 M2c 随"字段接公共件"换过主人，但档位数值一个字没动（仍 36）**，
+     *   所以判据保持原样、只把"它在哪儿"的说法改对（否则下一个人读到的是一条已经不存在的链）：
+     *  - **原判据量的是哪一句旧形制**：Key 尾部那颗以前坐在 `ui/common/CompactInput.kt` 的**中层 36dp 可见胶囊**里，
+     *    自己写着一条永远赢不了父约束的 `heightIn(min = 48)`（父给 maxHeight=36，实量 58x36）——
+     *    那句 min(48) 是死码，D1 §② C4 点名的就是它。
+     *  - **为什么作废、换成什么**：表单接到设计系统 `core/designsystem/LbFieldInput` 之后，
+     *    显隐那颗改走那颗组件的**尾部槽** `trailingAction`，可编辑节点右让 `AppDimens.INPUT_TRAILING_SLOT_DP`(40)，
+     *    尾部按钮自己 `fillMaxHeight` 吃到所在字段框的可见高（仍是 `INPUT_ROW_HEIGHT_DP = 36` 那一档）。
+     *    **可见框那一档没换数**（36），所以这里的下限/上限判据一字不改；改的只是"36 从哪一层来"的出处。
+     *  - **回退成什么会红**：① 把它做回整宽第二颗大按钮 / 排到 Key 行以外 → 同轴那条与 [TouchTier.SITE_FLOOR] 上限先红；
+     *    ② 把尾部槽挪出、让按钮自己抬到 48（可见框跟着长高）→ 越过 [TouchTier.SITE_FLOOR] 上限那条红；
+     *    ③ 缩成 28/20 一档 → 低于 [TouchTier.VISIBLE_FORM_INPUT] 下限那条红。
+     *
+     * 复验过的那条链（生产 `core/designsystem/LbFieldInput.kt`，本机读数与换主人前逐字相同）：
+     *  - 外层透明热区盒 `heightIn(min = 48)`——只转焦点、**故意不声明点击语义**（所以语义树里没有它）；
      *  - 中层可见胶囊 `height(INPUT_ROW_HEIGHT_DP = 36)`；
-     *  - 尾部槽 `Box(align = CenterEnd)` 挂在**中层**那一颗里面。
-     * 所以那颗动作自己写的 `heightIn(min = 48)` 顶不过父约束（父给它的 maxHeight 就是 36）：
+     *  - 尾部槽 `Box(align = CenterEnd)` 挂在**中层**那一颗里面（与旧 CompactInput 同层，只是主人换了）。
      * 360dp 那一档实量 **58x36dp @(274,205)**，320dp+2.0 倍字实量 **72x36dp @(220,249)**——
-     * 两档的高度都是 36，正是父框，而不是它自己要求的 48。
+     * 两档的高度都是 36，正是父框。
      *
      * 于是这一档判的是：
      *  - **下限 [TouchTier.VISIBLE_FORM_INPUT]**：两轴都不许比它所在那条字段框还矮
@@ -499,7 +517,9 @@ class ProviderFormSemanticsTest {
             1, toggleKey.size
         )
         val t = toggleKey.single()
-        val field = targets.firstOrNull { it.editable && it.label == "留空保留原 Key" }
+        val field = targets.firstOrNull {
+            it.editable && it.label == ctx.getString(R.string.provider_form_key_placeholder)
+        }
         checkNotNull(field) {
             "量不到 Key 那一行的可编辑节点（placeholder 那一句改了名就要回来换锚点），实到名字：" +
                 targets.map { it.label }.distinct()
@@ -551,6 +571,18 @@ class ProviderFormSemanticsTest {
      * ——本机注入 `120` 后 `ProviderFormSemanticsTest` 退出码 0。
      * 这一格补的就是"手指到 VM"那一段，写法照 `the key visibility action ...` 那一格：
      * 先判存在与选中位，再点一次看状态真的移动，最后把交出去的账钉死。
+     *
+     * ⚠ **2026-10-06 M2c：这一排的版式按基线换过，但本格的判据一个字没松，也无需松。**
+     *   四颗以前用页面私有的 `LbChipStyles.soft.copy(pillHeight = 24.dp, radius = full, …)`（D1 §② C2 的"难看"），
+     *   现在接设计系统具名分段档 `LbChipStyles.segmented`（内格可见高 `AppDimens.CHIP_SEGMENTED_HEIGHT_DP` = 32、
+     *   圆角 `Sm`、分层外盒把热区垫到全站 48 下限——即 [TouchTier.SITE_FLOOR]，`assertFormTiers` 那格量的就是这颗外盒）。
+     *   **本格量的三件事全是业务硬牙、与形状无关、一条没动**：白名单只这四颗（`GenerationTimeoutTier.options`）、
+     *   互斥单选（`Role.Tab` + `Selected`，`LbChipInteraction.Single` 仍交出）、点哪颗存哪颗（第七颗实参 = 刚点的秒数）。
+     *   为什么**不需要**为形状改判据：本格从头到尾只判"选中位 + 交账"，**没有一处量过那颗 24dp 的可见高**，
+     *   所以形状从 24 抬到 32 既不会让本格假红、也不会让它被悄悄放宽。
+     *   **回退成什么会红**：把 `onClick` 写死成默认档 → 最后那两条 `assertEquals(options[topIdx].seconds, sent.single())` 红；
+     *   把某颗的 `selected` 判据写坏（比如恒不选中）→ `assertIsSelected`/`assertIsNotSelected` 红；
+     *   把互斥改成多选或去掉 `Single`（丢 `Selected` 语义）→ `assertIsSelected` 直接读不到 selected 而红。
      */
     @Test
     fun `the tier row offers exactly four bounded options and saving hands the tapped one over`() {

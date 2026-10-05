@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  审计修复: 默认最小化 Accessibility。
-     1. 移除 flagIncludeNotImportantViews——不再扫描全部 App 的非重要视图
-     2. 只监听必要事件类型（长按 + 窗口状态变化）
-     3. App allowlist 应在代码层实现，不在 XML 声明"支持全部 App" -->
+<!--
+     捕获送达面声明（CAP2，档位 D，2026-10-06）。
+
+     1. 这里**不写 android:packageNames**——范围来自代码层的唯一真源
+        `SecurePrefs.captureAllowedPackages`，由 CopyCaptureService.syncDeclaredPackageScope
+        在服务连上、以及每条事件复检时把 `ServiceInfo.packageNames` 动态设成用户勾选的那一份
+        （范围页保存后即时生效，不用重启服务）。空 allowlist 仍 fail-closed：事件面维持全投，
+        但每一条被 CapturePolicy.decide 的 `allowlist_empty` 全拒——设包名 ≠ 开抓。
+
+     2. 恢复 flagIncludeNotImportantViews。当年（审计）移除它的理由是"别扫全 App 的非重要视图"；
+        如今这一条改由上面的**包名收窄**承担，不再由这颗 flag 承担。包名圈住后，flag 的
+        "扫非重要视图"只在已勾选 App 的帧内生效，扫描面反而比旧配置"没有 packageNames＝全 App 都投"更窄。
+        它补的正是取证 A1 候选②：微信类 importantForAccessibility=no 的气泡长按事件此前可能在框架层就被过滤。
+
+     3. 事件类型仍是"长按 + 窗口状态变化"两步确认，未做持续读屏（**没有**新增 typeWindowContentChanged）。
+        fail-closed allowlist 与两步确认链一律不动。
+
+     签字：隐私/审计口径由主线程拍板采纳档位 D；实现 CAP2；日期 2026-10-06。
+-->
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:accessibilityEventTypes="typeViewLongClicked|typeWindowStateChanged"
     android:accessibilityFeedbackType="feedbackGeneric"
-    android:accessibilityFlags="flagDefault"
+    android:accessibilityFlags="flagDefault|flagIncludeNotImportantViews"
     android:canRetrieveWindowContent="true"
     android:notificationTimeout="50"
     android:description="@string/accessibility_capture_desc" />

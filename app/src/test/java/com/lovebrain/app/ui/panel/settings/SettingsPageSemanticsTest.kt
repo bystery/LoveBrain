@@ -15,6 +15,7 @@ import com.lovebrain.app.R
 import com.lovebrain.app.core.testing.ScrollScan
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
+import com.lovebrain.app.core.testing.TouchTier
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
 import org.junit.Assert.assertEquals
@@ -80,13 +81,15 @@ class SettingsPageSemanticsTest {
     private fun mount(
         matrix: UiMatrix = UiMatrix(360),
         opacityPercent: Int = 60,
-        onBack: () -> Unit = {}
+        onBack: () -> Unit = {},
+        onCollapse: () -> Unit = {}
     ) {
         rule.setContent {
             val deviceDensity = LocalDensity.current.density
             matrix.RenderIn(deviceDensity) {
                 LoveBrainSettingsContent(
                     onBack = onBack,
+                    onCollapse = onCollapse,
                     opacityPercent = opacityPercent,
                     onOpacityPreview = {},
                     onOpacityCommit = {}
@@ -126,7 +129,18 @@ class SettingsPageSemanticsTest {
     }
 
     /**
-     * 这一格判两件事：整页可交互样本仍按**全站下限**量；透明度滑杆按**这一档紧凑件自己那一把尺**量。
+     * 这一格判三件事：页头那一族走 **F3 装饰带档**（与本体 `PanelHeader` 同线）、透明度滑杆走
+     * **这一档紧凑件自己那一把尺**、滑杆横向可拖距离走可拖下限。
+     *
+     * ⚠ **这一档作废了"整页可交互样本一律 ≥48"这一句原判据**（2026-10-06，S1b，用户原话第 17 条）：
+     * 旧形制那一页拿的是 `LbTopBarLevel.Page`，返回那颗自带 48 见方热区（`LbTopBar.kt` 的
+     * `BackControl` = 22dp 字形 / 48 见方），于是"整页可交互样本按全站 48 量"当时是对的——那一页
+     * 唯一的可交互件就是那颗 48 的返回。本轮把齿轮设置页降到 F3 紧凑族：行高 30、`titleMedium`15、
+     * 无分割线、返回字形降档（`LbTextAction` 图标档，28 见方热区 / 16dp 字形），与本体那一族同线。
+     * 回退成用 `LbTopBarLevel.Page`（返回撑回 48、整行 48）**会被下面那两句绝对值一起判红**：
+     * · 短边下限从 `PANEL_HEADER_HOTZONE`（24）起——把返回盒缩到 24 以下红；
+     * · 整行/返回盒不许被撑回旧那一条 48 厚顶栏——`≤ PANEL_HEADER_ROW`（30），48 的返回当场红。
+     * 这两句一头一尾，正是"不是把尺整体调松了事"的凭据（同本体 `PanelHeaderTouchTargetsTest` 的写法）。
      *
      * 滑杆为什么不是 48：界面合同把这一族的小件写成同一档——模式栏「外层 30dp / 内部字形 20dp」、
      * 供应商行内「28dp 盒 / 16dp 字形」、思考模式那颗是 MiniSwitch **36×20dp**。
@@ -150,14 +164,27 @@ class SettingsPageSemanticsTest {
     @Test
     fun `every actionable node on the settings page meets the touch floor`() {
         mount()
+        // 这一页的可交互件此刻只有页头那颗返回（滑杆交出的是进度语义，进不了这份样本，见 opacitySliderTarget）。
+        // 所以整份样本按 F3 装饰带那一档量——将来若在这页加一颗**页级**主动作（该走全站 48），
+        // 要换成 `probe.assertActionablesByTier { 逐颗认档 }`，不许把这一档整屏调松。
+        val headerFloor = TouchTier.PANEL_HEADER_HOTZONE // 短边下限（24）：与本体齿轮同一档
         val seen = scannedTargets()
-        val offenders = seen.filter { it.tooSmall(probe.floorDp) }
+        val offenders = seen.filter { it.tooSmall(headerFloor) }
         assertTrue(
-            "有 ${offenders.size}/${seen.size} 颗可交互节点小于 ${probe.floorDp.toInt()}dp：\n" +
+            "有 ${offenders.size}/${seen.size} 颗页头可交互节点小于 F3 装饰带那一档 ${headerFloor.toInt()}dp：\n" +
                 offenders.joinToString("\n") { "  " + it.describe() } +
                 "\n  下限要垫在带语义的那颗自己身上；外面套一层大盒子等于没改。",
             offenders.isEmpty()
         )
+        // 反向证人（这一半才让上面那句不是"把尺调松了事"）：整行/返回盒不许被撑回旧那一条 48 厚顶栏。
+        // 回退成 `LbTopBarLevel.Page` 时返回那颗 = 48 见方 > 30 → 这里当场红。
+        seen.forEach { node ->
+            assertTrue(
+                "页头节点 ${node.describe()} 高过 F3 装饰带那一档 ${TouchTier.PANEL_HEADER_ROW.toInt()}dp——" +
+                    "这就是本轮要拆掉的旧版式（原话第 17 条'控件大'的可定位来源）。",
+                node.heightDp <= TouchTier.PANEL_HEADER_ROW + 0.6f
+            )
+        }
         // 滑杆那一颗单独按 tag 判（上面那份样本永远不会有它，见 opacitySliderTarget）
         val slider = opacitySliderTarget("整窗设置页")
         probe.assertTargetsMeetFloor(
@@ -223,6 +250,7 @@ class SettingsPageSemanticsTest {
             UiMatrix(360).RenderIn(deviceDensity) {
                 LoveBrainSettingsContent(
                     onBack = {},
+                    onCollapse = {},
                     opacityPercent = incoming.value,
                     onOpacityPreview = {},
                     onOpacityCommit = {}
@@ -261,6 +289,32 @@ class SettingsPageSemanticsTest {
     // 那条"勾选只落调用方一个写入口"的判据要在**那一页**续（本轮不由我改那两个文件）。
     // 顺带留一句仪器教训：这一格以前在同一个用例里 `setContent` 第二次，框架报
     // "Cannot call setContent twice" ⇒ 那一段所有断言从未执行过（红的从来不是产品）。
+
+    /**
+     * 原话第 17 条的后半：「切进设置页之后**收不起窗**」。
+     *
+     * 主面那颗收起长在 `PanelHeader` 里，齿轮一开整窗内容换成这一页，那颗就随整排一起消失，
+     * 而这一页原本只交得出"返回"。现在这一页自己必须再给一颗收起，而且**只把宿主那一次点击投下去**
+     * （状态所有者仍只有宿主那一颗 `dismissPanelToBubble`，这一页不许自己记"收起了没有"）。
+     *
+     * 回退成什么会红：
+     * ① 那颗钮被删掉、或换成不报 `contentDescription` 的自绘 `Box` ⇒ `onNodeWithContentDescription`
+     *    当场抛"没有找到/不止一个"；
+     * ② 页面自己 `remember` 一份收起状态而不投回调 ⇒ 计数 `expected:<1> but was:<0>`；
+     * ③ 一次点击投两遍（例如又给整行挂一颗 clickable）⇒ `expected:<1> but was:<2>`。
+     * 反向证人：`onCollapse` 从来没被调用过的那一版实现（今天改前的形状）在这格就是 0。
+     */
+    @Test
+    fun `the settings page hands the user one collapse and it fires exactly once`() {
+        var collapses = 0
+        mount(onCollapse = { collapses++ })
+        val name = ctx.getString(R.string.panel_collapse)
+        // 恰好一颗：`onNode*` 对"零颗或多颗"都直接失败，这一句同时钉住"没有"与"长第二颗"
+        rule.onNodeWithContentDescription(name).assertIsDisplayed()
+        rule.onNodeWithContentDescription(name).performClick()
+        rule.waitForIdle()
+        assertEquals("点收起只投宿主那一次，这一页不存第二本账", 1, collapses)
+    }
 
     companion object {
         /**

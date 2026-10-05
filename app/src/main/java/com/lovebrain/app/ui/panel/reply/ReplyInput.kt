@@ -1,12 +1,16 @@
 package com.lovebrain.app.ui.panel.reply
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -15,7 +19,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -35,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import com.lovebrain.app.R
 import com.lovebrain.app.feature.composer.ComposerInputKind
 import com.lovebrain.app.model.ChatMessage
@@ -180,14 +189,19 @@ internal const val PANEL_ROUND_SCOPE_TEST_TAG = "round_scope_entry"
 /**
  * 消息输入区。
  *
- * 形状（第4节 页面结构那两行）：
- * · 输入选择行 = 她 / 我 / **补充**，右侧「仅看本轮」入口；
- * · 输入行 = 输入框占可用宽度 + 末端 ＋，次级入口（主动发一句、意图）与它同区相邻。
+ * 形状（依据基线 v1 §3 第 11 条窄窗砍序 + 用户原话第 10 条，见
+ * `handoffs\2026-10-05-P2-宿主接线单.md`）：
+ * · **行 1** = 她 / 我 / 补充 / 输入框(weight 1f) / ＋ 同一条中线；
+ * · **行 2** = 次级控制（意图 / 仅看本轮）。行 2 只在"当前有真实消息"时挂在这里；
+ *   无消息时这两个入口一起收进消息卡内（见 [MessageList] 空态分支的 `secondaryControls` 槽），
+ *   两处二选一、共用同一份状态，绝不在两处各维护一个开关。
  *
- * ⚠ 两行只在**接线之后**才成立：`onOnlyThisRoundChange == null` 且没有次级入口槽位时，
- *   这一屏就是原来那一排（三颗 chip + 输入框 + ➕ 同一条中线），
- *   `RoleChipSemanticsTest` 量的正是那一排没被拆成两行。宿主接上两颗新参数之前，
- *   这里不许长出一个"点了没反应"的假入口。
+ * 行 1 是回复/主动发**共用**的通用形制：主动发（`showRoleChips = showAddButton = false`）时
+ * 行 1 自然退化为只剩输入框——这不是"未接线的旧单行分支"，而是行 1 的窄化实例。
+ *
+ * ⚠ 意图入口今天仍由宿主另画（`LoveBrainPanelScreen.kt:585-597`，属禁区）：本轮把它做成
+ *   [intentEntry] 槽，接线单点名让宿主把那颗 `IntentChip` 灌进行 2；槽没灌东西时行 2 只剩
+ *   「仅看本轮」，与现状等价、不留假入口。
  *
  * 设计来源：
  * · 微信 8.0 聊天界面改版：功能按钮与输入框整合、单手操作、圆润边框
@@ -222,8 +236,18 @@ fun ReplyInput(
     onlyThisRound: Boolean = false,
     /** 那颗入口的点击——**null 就不画这一颗**（不给没接线的屏留假入口） */
     onOnlyThisRoundChange: (() -> Unit)? = null,
-    /** 与 ➕ 同一区的次级入口槽位（主动发一句 / 意图）；本体由宿主放进来，这里只管位置 */
-    secondaryEntries: (@Composable RowScope.() -> Unit)? = null
+    /**
+     * 行 2 的意图入口槽：本体由宿主放进来（今天那颗 `IntentChip`），这里只管"它落在行 2"。
+     * null = 宿主还没把它搬进来（当前生产形态：宿主在 ReplyInput 之后另画一颗，见接线单）。
+     */
+    intentEntry: (@Composable () -> Unit)? = null,
+    /**
+     * 当前是否有真实消息（HER/ME）。为 true 时次级控制（意图 / 仅看本轮）挂在这里（行 2）；
+     * 为 false 时这两颗一起收进消息卡内（[MessageList] 空态分支），这一屏的行 2 让位。
+     * 判据与 [MessageList] 内部过滤 IDEA 的那一口径同源（见 `hasRealDialogueRows`），
+     * 宿主只算一次、两处传同一份——不许一内一外各维护一个开关。
+     */
+    hasRealMessages: Boolean = true
 ) {
     val isEditing = editingIndex >= 0
     val kind = inputKind ?: currentRole.toComposerInputKind()
@@ -232,7 +256,6 @@ fun ReplyInput(
         if (sink != null) sink(next) else onRoleChange(next.toLegacyRole())
     }
     val roundEntryArmed = showRoleChips && onOnlyThisRoundChange != null
-    val splitRows = roundEntryArmed || secondaryEntries != null
 
     // ── 三颗输入对象 chip（她/我/补充） ────────────────────────────────
     val chipsSection: @Composable RowScope.() -> Unit = {
@@ -259,7 +282,7 @@ fun ReplyInput(
         }
     }
 
-    // ── 输入框（占可用宽度） ─────────────────────────────────────────
+    // ── 输入框（吃剩余宽度：weight(1f) 天然满足"挤不缩短它"） ─────────────
     val inputSection: @Composable RowScope.() -> Unit = {
         PanelTextInput(
             value = draftText,
@@ -289,22 +312,9 @@ fun ReplyInput(
         }
     }
 
-    if (!splitRows) {
-        // 旧单行形制（未接线时逐字保持）：她 | 我 | 补充 | 输入框(weight 1f) | 添加
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = Spacing.md)
-        ) {
-            chipsSection()
-            inputSection()
-            addSection()
-        }
-        return
-    }
-
-    // 接线后的两行形制（第4节：输入选择行 / 输入行）
+    // ── 行 1：她 / 我 / 补充 / 输入框 / ＋（回复与主动发共用的通用形制） ──
+    // 主动发（showRoleChips = showAddButton = false）时 chipsSection/addSection 各自短路，
+    // 行 1 自然只剩那颗吃满宽度的输入框——这就是原话第 10 条要的第一行，不是遗留单行分支。
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -315,24 +325,46 @@ fun ReplyInput(
             modifier = Modifier.fillMaxWidth()
         ) {
             chipsSection()
-            // 空白段把「仅看本轮」推到右边——那正是原话里"利用这个空白"的位置
-            Spacer(Modifier.weight(1f))
-            if (roundEntryArmed) {
-                RoundScopeChip(selected = onlyThisRound, onClick = { onOnlyThisRoundChange?.invoke() })
-            }
-        }
-        Spacer(Modifier.height(Spacing.xs))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
             inputSection()
             addSection()
-            // 次级入口与 ➕ 相邻排在同一条输入行上（：意图入口与"主动发一句"相邻）
-            if (secondaryEntries != null) {
-                Spacer(Modifier.width(Spacing.sm))
-                secondaryEntries()
-            }
+        }
+        // ── 行 2：次级控制（意图 / 仅看本轮）。无真实消息时让位给消息卡内的同一组 ──
+        if (hasRealMessages && (roundEntryArmed || intentEntry != null)) {
+            Spacer(Modifier.height(Spacing.xs))
+            ReplySecondaryControls(
+                onlyThisRound = onlyThisRound,
+                onOnlyThisRoundChange = if (roundEntryArmed) onOnlyThisRoundChange else null,
+                intentEntry = intentEntry
+            )
+        }
+    }
+}
+
+/**
+ * 次级控制行（意图 + 仅看本轮）的唯一一份形制（依据基线 v1 §3 第 11 条 / 用户原话第 10 条）。
+ *
+ * 为什么要抽出来：这一组按"有没有真实消息"在两个地方二选一挂载——有消息时是输入区的行 2，
+ * 无消息时收进消息卡内（[MessageList] 空态分支的 `secondaryControls` 槽）。两处必须长一样、
+ * 且读同一份状态，所以把形制收进这一个函数；状态（[onlyThisRound] 与那颗开关的点击、意图入口）
+ * 一律由外面传进来，这里不自存一份（否则就是第二本账）。
+ */
+@Composable
+internal fun ReplySecondaryControls(
+    onlyThisRound: Boolean,
+    onOnlyThisRoundChange: (() -> Unit)?,
+    intentEntry: (@Composable () -> Unit)?,
+    modifier: Modifier = Modifier
+) {
+    val showRound = onOnlyThisRoundChange != null
+    if (!showRound && intentEntry == null) return
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
+    ) {
+        intentEntry?.invoke()
+        if (showRound) {
+            RoundScopeChip(selected = onlyThisRound, onClick = { onOnlyThisRoundChange?.invoke() })
         }
     }
 }
@@ -383,12 +415,13 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 /**
- * 「仅看本轮」那一颗：与三颗 chip 同一形状档，选中带勾（第10节第4条 的可见判据）。
+ * 「仅看本轮」那一颗：与三颗 chip 同一形状档（可见 28dp 胶囊 + 外层 48dp 透明热区），
+ * 选中带勾（第10节第4条 的可见判据）。
  *
- * 这里只负责**把它摆进角色行右侧的空白**并把当前状态读进来；开与不开真正的行为
- * （下一轮快照生效、旧结果标过时）住在 `RoundStateStore` 与主线程那一侧，不归这颗管（）。
- * 颜色档沿用这一族已有的 tokens；"选中轻蓝"的具体 token 由设计系统的主人定，
- * 见交付报告"需"。
+ * 这里只负责把它挂进**次级控制行**（[ReplySecondaryControls]，有消息时在输入区行 2、
+ * 无消息时收进消息卡内）并把当前状态读进来；开与不开真正的行为（下一轮快照生效、
+ * 旧结果标过时）住在 `RoundStateStore` 与主线程那一侧，不归这颗管（）。
+ * 颜色档沿用这一族已有的 tokens；"选中轻蓝"的具体 token 由设计系统的主人定，见交付报告"需"。
  */
 @Composable
 private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
@@ -459,15 +492,21 @@ private fun AddMessageButton(canAdd: Boolean, isEditing: Boolean, onAdd: () -> U
 }
 
 /**
- * 军师备注那一行灰字（ 的渲染件）。
+ * 军师备注那一行**黄色小字**（用户原话第 15 条的渲染件，依据基线 v1 §3.2「不新增色相」）。
  *
- * 它是**这一行**，不是一张卡：宿主把它插在消息列表卡片内、最后一个真实气泡下面
- * （`MessageList` 归 ，插线由主线程接）。三条判据都收在这一个函数里：
- * 1. 没有备注 → 什么都不画，连空标题都不留；
- * 2. 一行、灰色小字、超长省略——省略只发生在**展示**这一侧，
- *    发出去与编辑用的都是传进来的完整正文（那一颗真源在 `ComposerStore.ideaHint()`）；
- * 3. 点击 = 编辑完整正文（宿主编到 `ComposerStore.Intent.BeginNoteEdit`），
- *    这颗自己不带任何状态，所以不可能出现"屏上显示一份、发给军师另一份"。
+ * 它是"最后一条真实消息下方的一行黄色小字"，不是一张大盒子、更不是一张卡：
+ * 1. 没有备注 → 什么都不画，连空标题/大占位都不留；
+ * 2. 一行、`Warning`（现有语义色档里的黄）小字、超长省略——省略只发生在**展示**这一侧，
+ *    发出去与编辑用的都是传进来的完整正文（真源在 `ComposerStore.ideaHint()`）；
+ * 3. 点击 = 编辑完整正文（宿主投 `ComposerStore.Intent.BeginNoteEdit`）；
+ * 4. 传入 [onSwipeClear] 时可像消息一样侧滑清除（阈值复用消息行的 [shouldDeleteBySwipe]）：
+ *    过阈值落 [onSwipeClear]（→ `ComposerStore.Intent.ClearNote`，界面与 prompt 同步清除），
+ *    不到阈值回弹、不触发编辑也不切页。被删对象与回调分离——这里只交"清除备注"这个回调，
+ *    绝不碰消息删除链（备注不是 HER/ME 消息，不进重排数组、不计轮次、不进归档）。
+ *
+ * 可见尺寸就是这一行文字本身（labelMedium + 竖 [Spacing.xs] 内边距），旧的
+ * `heightIn(min = 48)` 大盒子随原话第 15 条一起撤；行版式矮下来后消息列能多露出内容
+ * （"撤掉宿主固定的 160dp 槽、改由消息列内测量"记在 `handoffs\2026-10-05-P2-宿主接线单.md`）。
  *
  * 文案前缀是常量 [ADVISOR_NOTE_PREFIX]，不重复"想法："，也不再画第二块《我的想法》。
  */
@@ -475,7 +514,8 @@ private fun AddMessageButton(canAdd: Boolean, isEditing: Boolean, onAdd: () -> U
 internal fun AdvisorNoteLine(
     noteText: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSwipeClear: (() -> Unit)? = null
 ) {
     // 多行备注在展示侧并成一行（原话要的就是"一行"），正文本身一个字没少
     val text = noteText.trim().replace('\n', ' ')
@@ -484,13 +524,46 @@ internal fun AdvisorNoteLine(
     // 读屏名字进资源（zh + en 各一份）：这一句屏幕上不画，只说给耳朵，
     // 写成内联中文的话英文环境里 TalkBack 念的仍是中文——屏幕上完全看不出来。
     val editAdvisorNoteName = stringResource(R.string.a11y_edit_advisor_note)
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+
+    // ── 侧滑清除：跟手位移 + 过阈值才落回调（复用消息行同一判据，被删对象与回调分离） ──
+    val scope = rememberCoroutineScope()
+    val swipeX = remember { Animatable(0f) }
+    var rowWidthPx by remember { mutableFloatStateOf(0f) }
+    val canSwipeClear = onSwipeClear != null
+
+    Box(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .clip(LoveBrainShape.sm)
             .testTag(ADVISOR_NOTE_TEST_TAG)
+            .graphicsLayer { translationX = swipeX.value }
+            .onSizeChanged { rowWidthPx = it.width.toFloat() }
+            .then(
+                if (canSwipeClear) Modifier.draggable(
+                    state = rememberDraggableState { delta ->
+                        if (rowWidthPx > 0f) {
+                            scope.launch {
+                                swipeX.snapTo((swipeX.value + delta).coerceIn(-rowWidthPx, rowWidthPx))
+                            }
+                        }
+                    },
+                    orientation = Orientation.Horizontal,
+                    enabled = rowWidthPx > 0f,
+                    onDragStopped = {
+                        if (shouldDeleteBySwipe(swipeX.value, rowWidthPx)) {
+                            // 过阈值：先滑出再落"清除备注"，落点仍只认这一次动作，不回消息删除链
+                            val dir = if (swipeX.value < 0f) -1 else 1
+                            scope.launch {
+                                swipeX.animateTo(dir * rowWidthPx)
+                                onSwipeClear?.invoke()
+                                swipeX.snapTo(0f)
+                            }
+                        } else if (swipeX.value != 0f) {
+                            scope.launch { swipeX.animateTo(0f) }  // 不到阈值：回弹，不删、不编辑、不切页
+                        }
+                    }
+                ) else Modifier
+            )
+            // 单击 = 去编辑完整正文（真点才触发；越 slop 的横滑被 draggable 接走，抬指不算点击）
             .clickable(
                 interactionSource = interaction,
                 indication = null,
@@ -502,7 +575,7 @@ internal fun AdvisorNoteLine(
     ) {
         Text(
             text = ADVISOR_NOTE_PREFIX + text,
-            color = TextHint,
+            color = Warning,
             style = AppTypography.labelMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

@@ -75,12 +75,16 @@ class CaptureAppsScreenStatesTest {
 
     private fun vm(
         candidates: List<CaptureApp>?,
-        allowed: Set<String> = emptySet()
+        allowed: Set<String> = emptySet(),
+        disclosure: Boolean = false
     ): SetupViewModel = mockk<SetupViewModel>(relaxed = true).also {
         every { it.captureAllowedPackages } returns MutableStateFlow(allowed)
         every { it.captureEnabled } returns MutableStateFlow(false)
         every { it.isCaptureServiceEnabled(any()) } returns true
         every { it.selectableCaptureTargets(any()) } returns candidates
+        // 这一颗必须显式桩：披露闸门（captureSwitchGateStep）把它当输入，"没桩=relaxed 返回 false"
+        // 与"这台机器真的没同意过"在判据上两回事。
+        every { it.isAccessibilityDisclosureConfirmed() } returns disclosure
     }
 
     private fun mount(model: SetupViewModel) {
@@ -170,7 +174,10 @@ class CaptureAppsScreenStatesTest {
         val model = vm(candidates = null)
         mount(model)
         assertEquals("读失败这一格要走共用错误态", 1, messageCount())
-        verify(exactly = 1) { model.selectableCaptureTargets(any()) }
+        // 新形状（本轮给这一页加了 resume 重读之后）：mount = 初始装配 1 次 + 挂观察者时宿主已 RESUMED
+        // 即时派发的那次 ON_RESUME 再 1 次 = 2 次。这两次都在**装配期**、与重试无关；
+        // 重试"确实又枚举一次"由下面那次 2→3 的增量单独钉，不动这条原语义。
+        verify(exactly = 2) { model.selectableCaptureTargets(any()) }
 
         val target = probe.of(
             rule.onNodeWithTag(LbAsyncTags.ACTION).fetchSemanticsNode("错误态没有重试入口")
@@ -183,7 +190,8 @@ class CaptureAppsScreenStatesTest {
 
         rule.onNodeWithTag(LbAsyncTags.ACTION).performClick()
         rule.waitForIdle()
-        verify(exactly = 2) { model.selectableCaptureTargets(any()) }
+        // 重试真的再枚举一次：在装配期那 2 次之上再涨 1（→ 3）。重试坏掉不枚举就停在 2，红。
+        verify(exactly = 3) { model.selectableCaptureTargets(any()) }
     }
 
     /** 同一份枚举结果换成"空表"，语气必须从错误变成空——这两格分不开就是本轮修掉的那个谎 */
@@ -230,13 +238,57 @@ class CaptureAppsScreenStatesTest {
      * 两个反例都要它红：
      * ① 界面回退成"这一页没有开关，去首页开" → 语义树里找不到那颗带名字的开关，红；
      * ② 每次点击都顺手把 `queryIntentActivities` 再跑一遍（本轮要修的就是这条）
-     *   → `selectableCaptureTargets` 从 1 次变 2 次，红。
+     *   → 在装配期那 2 次（初始 1 + resume 即时 1）之上再涨到 3 次，红。
+     *
+     * 本轮加了 resume 重读，装配期读数从 1 变 2——那是**新形状**（观察者对已 RESUMED 的宿主
+     * 同步补发 ON_RESUME，与 `HomeScreen.kt` 同一族写法），不是重复订阅：`DisposableEffect`
+     * 只 addObserver 一次、onDispose 只 removeObserver 一次。原语义"拨开关不重扫已装应用"照旧钉死
+     * （点击之后不许从 2 涨到 3），一颗 verify 都不丢。
+     */
+    /**
+     * 这台机器**没有这一版的同意记录**时，拨总开关不许直接写开关。
+     *
+     * 钉的是本轮 P0（"无障碍捕获完全失效"那一串）修好之后的闸门顺序：
+     * `captureSwitchGateStep` 里"未同意"排在"权限已授予"之前——权限给了不能替用户同意顶缺，
+     * 所以这一格的正确下落是**先看披露长文**，三样写操作一颗都不许动。
+     * 反例（改坏就红）：把 `!disclosureConfirmed` 那格并回 `accessibilityGranted` 之后
+     * → 这里 `toggleCapture` 变 1、弹窗变 0；弹窗一出现就顺手 `confirmAccessibilityDisclosure()`
+     * → 那是替用户同意，confirm 变 1。
+     */
+    @Test
+    fun `switching on with no agreement record for this version opens the disclosure and writes nothing`() {
+        val model = vm(candidates = listOf(alfred), disclosure = false)
+        mount(model)
+
+        val switch = rule.onAllNodes(
+            hasClickAction() and hasContentDescription(app.getString(R.string.capture_apps_allow))
+        )
+        assertEquals(
+            "这一屏该有恰好一颗说得出「允许捕获」（走资源，不抄中文）的开关",
+            1, switch.fetchSemanticsNodes().size
+        )
+        switch[0].performClick()
+        rule.waitForIdle()
+
+        rule.onNodeWithTag(LbCaptureTags.DISCLOSURE).assertExists()
+        verify(exactly = 0) { model.toggleCapture() }
+        verify(exactly = 0) { model.confirmAccessibilityDisclosure() }
+        verify(exactly = 0) { model.setCaptureAllowed(any(), any()) }
+    }
+
+    /**
+     * 这一版**已经明确同意过**（且权限真授予了）时，拨开关才落到 `toggleCapture()` 恰好一次，
+     * 并且**不重扫已装应用**——原语义留在这一格。
+     *
+     * 装配期读数 = 初始 1 次 + 挂观察者时宿主已 RESUMED 即时派发的 ON_RESUME 再 1 次 = 2 次，
+     * 两次都在拨开关之前；拨完仍停在 2（涨到 3 就是开关那一路多开了一条读取通道）。
      */
     @Test
     fun `the master switch toggles once and does not rescan installed apps`() {
-        val model = vm(candidates = listOf(alfred))
+        val model = vm(candidates = listOf(alfred), disclosure = true)
         mount(model)
-        verify(exactly = 1) { model.selectableCaptureTargets(any()) }
+        // 装配期 = 初始 1 + resume 即时 1 = 2 次；这 2 次都发生在拨开关之前。
+        verify(exactly = 2) { model.selectableCaptureTargets(any()) }
 
         val switch = rule.onAllNodes(
             hasClickAction() and hasContentDescription(app.getString(R.string.capture_apps_allow))
@@ -249,7 +301,9 @@ class CaptureAppsScreenStatesTest {
         rule.waitForIdle()
 
         verify(exactly = 1) { model.toggleCapture() }
-        verify(exactly = 1) { model.selectableCaptureTargets(any()) }
+        rule.onNodeWithTag(LbCaptureTags.DISCLOSURE).assertDoesNotExist()
+        // 原语义仍钉：拨开关**不新增读取**——停在装配期那 2 次，不涨到 3。
+        verify(exactly = 2) { model.selectableCaptureTargets(any()) }
     }
 
     /**

@@ -59,6 +59,34 @@ object AppDimens {
      * 版式高度，不是下限，所以不写成 [TOUCH_TARGET_MIN_DP] 的别名；需要更大的可点面积时由外层盒子补。
      */
     const val ROW_ACTION_COMPACT_MIN_HEIGHT_DP = 32
+    /**
+     * 输入框**尾部槽**的固定版式宽（dp）：字段带尾部件（Key 显隐那一颗）时，可编辑节点
+     * 右侧为它让出这一格，尾部件就落在槽里。原写死在 `CompactInput.kt` 的体里（109 行那颗
+     * 40 字面量，基线 v1 §3.7/改动点 C4）；本轮上提为具名 token，数值一字不改。
+     * 只有主人（`LbFieldInput`）读它；页面不许拿它当通用留白尺子。
+     */
+    const val INPUT_TRAILING_SLOT_DP = 40
+    /**
+     * 输入框**聚焦态**描边宽度（dp）：聚焦必须有可见反馈（基线 v1 §3.7；D1 参考池 #3，
+     * MDC TextField 焦点描边由 1dp 变粗），静息那一档是 [BORDER_WIDTH_DP] 的 1。
+     * 这是全站除 [BORDER_WIDTH_DP] 之外唯一的一条描边宽度，只给输入框族用；
+     * 别的件想要"聚焦变粗"请新立一档，不许回来借这颗。
+     */
+    const val INPUT_FOCUS_BORDER_WIDTH_DP = 1.5f
+    /**
+     * 分段选择器**内格**的可见高度（dp）：热区由分层外盒整行给（≥ [TOUCH_TARGET_MIN_DP]），
+     * 内格自己只占这一档版式（基线 v1 §3.8、D1 §③-7）。与行内小动作那颗
+     * [ROW_ACTION_COMPACT_MIN_HEIGHT_DP] 同数不同用途——那颗是动作盒下限、这颗是分段格高，
+     * 合并它们会让调动作的人顺手动到分段。
+     */
+    const val CHIP_SEGMENTED_HEIGHT_DP = 32
+    /**
+     * 悬浮窗紧凑族的**面板胶囊可见高度**（dp）：可见 28、标签居中（基线 v1 §2 Q2/§3.8）。
+     * 按 Q2 裁决"行容器买热区、胶囊不买版式"：这一档自己不垫 [TOUCH_TARGET_MIN_DP]，
+     * 整行热区归所在行的行容器；行版式 28+4。回复输入行那颗私有 28（`ReplyDimens
+     * .ROLE_CHIP_HEIGHT_DP`）是它的归并目标，替换配方见交接单，不在本轮改页面。
+     */
+    const val CHIP_PANEL_HEIGHT_DP = 28
     const val BORDER_WIDTH_DP = 1             // 细边框 / 分割线宽度
     const val ELEVATION_DEFAULT_DP = 2        // 默认阴影高度
     const val ELEVATION_MAX_DP = 4            // 阴影上限，超限即缺陷

@@ -148,10 +148,13 @@ private fun PanelSettingsPage(
     viewModel: LoveBrainViewModel,
     surface: PanelSurfaceHolder,
     onBack: () -> Unit,
+    /** 原话第 17 条「设置页收不起窗」：这颗只把宿主那一次点击转下去，本页不判断该不该收 */
+    onCollapse: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LoveBrainSettingsContent(
         onBack = onBack,
+        onCollapse = onCollapse,
         opacityPercent = surface.backdropPercent,
         onOpacityPreview = { percent -> surface.setBackdropPreview(percent) },
         onOpacityCommit = { percent ->
@@ -172,6 +175,15 @@ fun LoveBrainPanelScreen(
     onResizeEnd: () -> Unit = {},
     onMove: (Float, Float) -> Unit,
     onCopy: (String) -> Unit,
+    /**
+     * 「去设置」那颗（原话第 8 条）：缺模型供应商时点它要进 **App 主页面**，
+     * 不是悬浮窗里那页调透明度的设置。齿轮那颗仍走 `surface.openSettings()`——
+     * **两条路分开**（指导书 §153 那一行"去设置和齿轮被约定同一个入口"是被推翻的旧约定）。
+     *
+     * 这颗**故意没有默认值**：宿主没接线就得编译不过，不会留下一颗点了没反应的假入口
+     * （本仓库的旧规矩是"没接线就不画"，而这一颗是非画不可的失败出口）。
+     */
+    onOpenAppPage: () -> Unit,
     onCollapse: () -> Unit
 ) {
     val panelMode by viewModel.composer.panelMode.collectAsStateWithLifecycle()
@@ -346,10 +358,23 @@ fun LoveBrainPanelScreen(
             // 之外声明的那颗 ViewModel 与那批 holder 上，所以"切去设置页"既不清空会话、
             // 也不取消已经发出的请求；返回时恢复的就是离开前的那一面（含未提交的输入）。
             if (surface.settingsOpen) {
+                // 原话第 17 条：「切进设置页之后窗口拖不动」。`DragHandle` 原先只长在
+                // `else` 那一支（和统计条共用页头上面那 4dp 那一档），齿轮一开整排被换掉
+                // ⇒ 抓手没了。这一支现在也挂同一颗抓手（同一个所有者、同一个组件，
+                // 只是两处各挂一次；不搬外层的 `Box(height(Spacing.sm))` 那一档，
+                // 因为主面那一档还带着 `UsageStatBar` 的溢出绘制，搬走会连主面的版式一起改）。
+                // 「收不起窗」那一半归设置页自己的紧凑页头（`ui/panel/settings/`，另席地盘，
+                // 已写进接线单），这一层不替它画第二颗关闭钮。
+                Box(modifier = Modifier.fillMaxWidth().height(Spacing.sm)) {
+                    DragHandle(onMove = onMove)
+                }
                 PanelSettingsPage(
                     viewModel = viewModel,
                     surface = surface,
                     onBack = { surface.closeSettings() },
+                    // 收起仍走宿主那一条唯一出口（与主面页头那颗同一个 `dismissPanelToBubble`），
+                    // 设置页里这一颗只是同一个动作的第二个入口，不另存"收起了没有"第二本账。
+                    onCollapse = onCollapse,
                     modifier = Modifier.fillMaxWidth().weight(1f)
                 )
             } else {
@@ -538,6 +563,30 @@ fun LoveBrainPanelScreen(
                 // 正文全拖进纯缩进 diff，复核时看不见真改动）。
                 Column(modifier = Modifier.fillMaxSize()) {
                 val inputFocusRequester = remember { FocusRequester() }
+                // ── 次级控制的两处挂载点，共用同一份状态（原话第 10 条 + 基线 v1 §3.11）──
+                // 口径只算一次：`hasRealDialogueRows(messages)` 就是 `MessageList` 内部那一口，
+                // 有真实消息 → 挂输入区行 2；没有 → 收进消息卡空态分支。两处二选一，绝不在
+                // 两处各存一份开关（那才是"意图与仅看本轮各长两个所有者"的第二本账）。
+                val hasRealRows = hasRealDialogueRows(messages)
+                // 持续意图那颗的本体仍在这里（`IntentChip` 属本页所有），搬的只是**挂载点**：
+                // 从"ReplyInput 之后另画一排"改成灌进 `intentEntry` 槽 ⇒ 屏上只有一条次级行。
+                // 守卫沿用改前那一颗：没有活动知识库就不画——意图按库隔离，没有"这一块库"就无处可存。
+                val intentSlot: (@Composable () -> Unit)? = if (activeKb != null) {
+                    {
+                        IntentChip(
+                            enabled = intentConfig.enabled,
+                            text = intentConfig.text,
+                            onClick = { viewModel.intents.openEditor() }
+                        )
+                    }
+                } else null
+                val secondarySlot: (@Composable () -> Unit) = {
+                    ReplySecondaryControls(
+                        onlyThisRound = onlyThisRound,
+                        onOnlyThisRoundChange = { viewModel.toggleOnlyThisRound() },
+                        intentEntry = intentSlot
+                    )
+                }
                 ReplyInput(
                     draftText = draftText,
                     currentRole = composeRole,
@@ -551,9 +600,13 @@ fun LoveBrainPanelScreen(
                     // 不动 captureRole —— 这正是"选《补充》后新增消息被标成上一个角色"那条原话的修法。
                     inputKind = inputKind,
                     onInputKindChange = { viewModel.composer.accept(ComposerStore.Intent.SetInputKind(it)) },
-                    // ：仅看本轮常驻在角色行右侧（给了回调才画；不传就等于这一屏没有这颗入口）。
+                    // ：仅看本轮常驻在输入行**下方那一行**（给了回调才画；不传就等于这一屏没有这颗入口）。
                     onlyThisRound = onlyThisRound,
                     onOnlyThisRoundChange = { viewModel.toggleOnlyThisRound() },
+                    // 行 2 的意图入口 + 有没有真实消息（决定次级控制挂在行 2 还是收进消息卡内）。
+                    // 这两参是 `ReplyInput` 与 `MessageList` 共用同一口径的那一根线，见上面 hasRealRows。
+                    intentEntry = intentSlot,
+                    hasRealMessages = hasRealRows,
                     onAdd = {
                         val text = draftText.trim()
                         if (text.isNotEmpty()) {
@@ -576,25 +629,13 @@ fun LoveBrainPanelScreen(
                     focusRequester = inputFocusRequester
                 )
 
-                // ── 持续意图入口（ 之后它唯一的宿主） ──
+                // ── 持续意图入口：宿主仍是这一页，**挂载点**已搬进 `ReplyInput` 的行 2 ──
                 // 这颗原来长在「今日锦囊」页的标题行里，而它**从来不是**锦囊的一部分：回复链每次
                 // 生成都读 `intents.config` 拼进 prompt，PRODUCT_SPEC 第2节 把持续意图列在"保留、不许
-                // 借简化删"那一栏，第4节 要它和主动发那颗同区相邻。锦囊页删掉之后这一颗必须换宿主活着，
-                // 于是落在输入行的下一行（第4节 短宽度处理：次级入口移到第二行）。
-                // 守卫沿用改前那一颗：没有活动知识库就不画——意图是按库隔离的，没有"这一块库"就无处可存。
-                if (activeKb != null) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IntentChip(
-                            enabled = intentConfig.enabled,
-                            text = intentConfig.text,
-                            onClick = { viewModel.intents.openEditor() }
-                        )
-                    }
-                }
+                // 借简化删"那一栏。锦囊页删掉之后这一颗换宿主活着过，一度落在这里"另画一排"——
+                // 于是屏上有两排次级控件（这一排 + 输入区那颗「仅看本轮」那一排），正是原话第 10 条
+                // 要收掉的形状。现在它走 `intentEntry` 槽，本体仍由上面 `intentSlot` 提供，
+                // 没有活动知识库依旧不画（意图按库隔离，没有"这一块库"就无处可存）。
 
                 val density = androidx.compose.ui.platform.LocalDensity.current
                 var messageListHeight by remember { mutableStateOf(PanelDimens.MESSAGE_LIST_DEFAULT_HEIGHT_DP.dp) }
@@ -630,7 +671,12 @@ fun LoveBrainPanelScreen(
                     // 页面不另存第二本账；渲染点在消息卡内、最后一个真实气泡下面那一行灰字，
                     // 它不是聊天消息，也不进真实对话列表。点它进同一个编辑器（BeginNoteEdit）。
                     noteText = viewModel.composer.ideaHint().takeIf { it.isNotBlank() },
-                    onEditNote = { viewModel.composer.accept(ComposerStore.Intent.BeginNoteEdit) }
+                    onEditNote = { viewModel.composer.accept(ComposerStore.Intent.BeginNoteEdit) },
+                    // 侧滑清除备注：投的是 `ClearNote`，与被删对象分开记账——
+                    // 绝不让那一下落到 `onDelete` 那条消息删除链上（备注不是聊天消息）。
+                    onClearNote = { viewModel.composer.accept(ComposerStore.Intent.ClearNote) },
+                    // 没有真实消息时次级控制收进这张卡内；与输入区行 2 二选一、读同一份状态。
+                    secondaryControls = if (hasRealRows) null else secondarySlot
                 )
                 DraggableDivider(
                     onDragDelta = { dyPx ->
@@ -720,9 +766,11 @@ fun LoveBrainPanelScreen(
                                     viewModel.undoMemoryCorrection(memoryId)
                                 },
                                 providerReady = isProviderReady,
-                                // 「去设置」与左上角齿轮必须是同一扇门：整窗切设置页，
-                                // 不把用户从没准备去的 Activity 里拽出去
-                                onOpenSettings = { surface.openSettings() },
+                                // 原话第 8 条：缺模型那颗「去设置」进的是 **App 主页面**（这颗由
+                                // `FloatingService` 起 `SetupActivity`），不是悬浮窗里调透明度那一页；
+                                // 左上角那颗齿轮才走 `surface.openSettings()`。**两条路分开**——
+                                // 这里旧注释写的"与齿轮必须是同一扇门"是被用户推翻的旧约定（指导书 §153）。
+                                onOpenSettings = onOpenAppPage,
                                 // 单条改写
                                 rewriteStates = rewriteStates,
                                 onRewrite = { identity, command -> viewModel.rewriteScheme(
@@ -859,7 +907,9 @@ fun LoveBrainPanelScreen(
  * 第二处调用再现场填一对 `WarningBg`/`Warning`——"这条通知是什么语气"由调用方
  * 自选颜色，下一对颜色没有任何地方拦得住（第6节第1条 :490 末句要挡的正是这个形状）。
  * 现在语气走 [LbStateTone] 那张词表（字色与浅底成对，都只在 `LbAsyncState.kt` 里写一次），
- * 容器走 [LbStateContainer.Strip]，那颗关闭转成设计系统里唯一的文字动作。
+ * 容器走 [LbStateContainer.Notice]（原话第 16 条"通知太大"那一格的落点：设计基线 v1.1 §6 把面板
+ * 轻通知收成**单档**——`labelMedium`11/16、圆角 `md`10、内边距横 12 竖 4、关闭那颗 14dp 字形坐
+ * 24dp 盒；原先的 `Strip` 一支整支留着，别处照旧），那颗关闭转成设计系统里唯一的文字动作。
  *
  * 随归并变掉/补齐的三件事，如实记在这儿：
  * - 关闭那颗原来是裸 `Box.clickable`：**没有声明 `role`**，盒子已经 48dp 见方，
@@ -868,6 +918,9 @@ fun LoveBrainPanelScreen(
  *   英文环境下读屏照念中文（DESC 那把尺数到的就是它，中英两份资源其实一直都在）。
  * - 说明文字从 `labelSmall` 抬到组件那一档 `bodyMedium`（同 `RowActionButton` 归进
  *   `LbTextAction` 那次：不换所有者就自己定字号，要留住字号就得给组件开旋钮）。
+ *   **2026-10-06 再改一轮**：面板轻通知按基线 v1.1 §6 收成单档，字阶落 `labelMedium`11/16——
+ *   这一档由 `LbStateContainer.Notice` 那一支自己持有（`StateMessage` 的 `style` 旋钮默认仍是
+ *   `bodyMedium`，`Strip`/`Block` 两支一字未动），页面这一侧不填字号、也不开新旋钮。
  * - 原先那句 `maxLines = 1 + Ellipsis` 不再由组件提供：这三条话都有下半句
  *   （例如「已暂停本轮提及，下次生成将过滤此条记忆」），裁掉的正好是要看的那半句。
  *
@@ -889,7 +942,7 @@ internal fun KbNoticeBanner(
     LbEmptyState(
         message = text,
         tone = tone,
-        container = LbStateContainer.Strip,
+        container = LbStateContainer.Notice,
         action = ScreenAction(stringResource(R.string.a11y_close_notice), onDismiss)
     )
 }
@@ -943,7 +996,14 @@ internal fun ProactiveResultArea(
                 modifier = Modifier.fillMaxWidth().padding(vertical = Spacing.xxl)
             )
             else -> {
-                options.forEach { opt ->
+                // §9（原话第 18 条）：主动发候选补回锦囊的策略载荷后，正文仍是**唯一可发送内容**
+                // （点击复制只复制 `opt.text`，见下面那颗 `clickable`），时机/先别发/需要准备
+                // 三段收成"按需展开的次要行"。三段全空的旧候选看起来与改前一致——不多空行、
+                // 也不多箭头。
+                val strategyOpen = remember { mutableStateMapOf<Int, Boolean>() }
+                options.forEachIndexed { index, opt ->
+                    val strategy = listOf(opt.timing, opt.holdBack, opt.prepare).filter { it.isNotBlank() }
+                    val open = strategyOpen[index] == true
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -957,6 +1017,34 @@ internal fun ProactiveResultArea(
                         if (opt.angle.isNotBlank()) {
                             Spacer(Modifier.height(Spacing.xs))
                             Text("角度：${opt.angle}", style = AppTypography.labelSmall, color = TextHint)
+                        }
+                        if (strategy.isNotEmpty()) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = Spacing.xs)
+                                    .clickable(
+                                        onClickLabel = stringResource(
+                                            if (open) R.string.action_collapse else R.string.action_expand
+                                        )
+                                    ) { strategyOpen[index] = !open }
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_chevron_down),
+                                    contentDescription = null,
+                                    tint = TextHint,
+                                    modifier = Modifier
+                                        .size(14.dp)
+                                        .graphicsLayer { rotationZ = if (open) 180f else 0f }
+                                )
+                            }
+                            if (open) {
+                                strategy.forEach { line ->
+                                    Spacer(Modifier.height(Spacing.xs))
+                                    Text(line, style = AppTypography.bodySmall, color = TextSecondary)
+                                }
+                            }
                         }
                     }
                 }

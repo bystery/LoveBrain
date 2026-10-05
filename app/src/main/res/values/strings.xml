@@ -80,6 +80,13 @@
     <string name="cost_below_cent">不足 %1$s0.01</string>
     <!-- 页级弱化文字动作（LbTextAction）的文案：原来写成内联中文，量出来 38x25dp -->
     <string name="onboarding_skip">跳过</string>
+    <!-- 首页覆盖式引导（原话第 14 条）每格的两条出口与被指那一格的名字。
+         2026-10-06 由 G1b 接线单 §6 正式落键：此前临时借 `onboarding_skip`/
+         `a11y_close_onboarding`/`capture_apps_title`，读起来是"跳过/关闭/捕获范围"，
+         不是"稍后/不再提示/消息捕获"这三件事。 -->
+    <string name="guide_defer">稍后</string>
+    <string name="guide_stop">不再提示</string>
+    <string name="guide_capture_entry">消息捕获</string>
 
     <!-- : 消息捕获 allowlist -->
     <string name="capture_apps_title">捕获范围</string>
@@ -193,6 +200,15 @@
     <string name="a11y_action_cancel">取消</string>
     <string name="a11y_action_edit">编辑</string>
     <string name="a11y_action_delete">删除</string>
+    <!-- 2026-10-06 W7 字面量预算还债（`UiStringLiteralBudgetTest` 组件实参那一栏 实测 53 → 预算 42）：
+         知识库母版页那张卡的第四颗动作「重命名」与动作行里的「导出」原本内联在 Kotlin，
+         「当前使用 / 阶段：X / 已对话 N 轮」三颗是 L1b 把 meta 交回公共件时从一个整句拆出来的。
+         中英同拍（英文那一侧是这次新写的一半），逐条对应上面那颗 key。 -->
+    <string name="a11y_action_rename">重命名</string>
+    <string name="a11y_action_export">导出</string>
+    <string name="kb_card_in_use">当前使用</string>
+    <string name="kb_card_stage">阶段：%1$s</string>
+    <string name="kb_card_turns">已对话 %1$d 轮</string>
     <string name="a11y_set_current_model">设为当前</string>
     <string name="a11y_test_connection">测试连接</string>
     <!-- 备注行（屏幕上只有那行灰字，前缀是 `ADVISOR_NOTE_PREFIX`）的读屏名字：
@@ -283,6 +299,19 @@
     <string name="feedback_reasons">原因：%1$s</string>
     <string name="feedback_exporting">导出中…</string>
     <string name="provider_page_title">模型供应商</string>
+    <!-- 供应商表单的四组分组标题（M2c 接线：`LbFormGroup(title=…)` 的四颗；表单里从此不许再有内联中文）。
+         这四格是"资源补齐"不是"新写文案"：分组标题原本根本没有，是本轮把裸标签并给 `LbFormField` 时长出来的槽。 -->
+    <string name="provider_form_group_basic">基础</string>
+    <string name="provider_form_group_credential">凭据</string>
+    <string name="provider_form_group_models">模型</string>
+    <string name="provider_form_group_request">请求</string>
+    <!-- 供应商表单的字段标签与占位（M2c 换 `LbFormGroup`/`LbFormField`/`LbFieldInput` 那一副骨架时，
+         标签从裸 `Text` 上提到组件实参，内联中文因此进了字面量预算那一栏；这次接回资源）。 -->
+    <string name="provider_form_name_label">供应商名称</string>
+    <string name="provider_form_name_placeholder">名称</string>
+    <string name="provider_form_base_url_label">接口地址（自动补全）</string>
+    <string name="provider_form_key_placeholder">留空保留原 Key</string>
+    <string name="provider_form_model_name_label">模型名称</string>
     <string name="provider_test_success">✓ 连接成功，接口已自动补全</string>
     <string name="provider_test_failed">✗ %1$s 连接失败：%2$s</string>
     <string name="provider_test_no_detail">请检查配置</string>

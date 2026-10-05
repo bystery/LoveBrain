@@ -1,7 +1,10 @@
 package com.lovebrain.app.ui.panel
 
 import android.content.Context
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -16,6 +19,7 @@ import com.lovebrain.app.core.designsystem.LbAsyncTags
 import com.lovebrain.app.core.designsystem.LbStateTone
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
+import com.lovebrain.app.core.testing.TouchTier
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
 import com.lovebrain.app.model.GenerateResult
@@ -62,11 +66,16 @@ import org.robolectric.annotation.GraphicsMode
  * 英文环境下 `a11y_close_notice` 解析成 "Dismiss notice"，所以锚点一律 `getString` 取，
  * 不写死（CI 上红掉的那一批就是这个形状）。
  *
- * ⚠ 还有一条留给下一次改风格：这条通知回执的合同外观是 10sp/14sp 的字、圆角 6、
- * 关闭那颗 14dp 字形坐在 **24dp** 见方盒里。那次改动**这一轮还没落地**，所以下面两处按
- * 全站下限（48dp）量热区的判据现在是对的、也仍然必须按 48 量；等那一档外观真的换成 24dp 盒时，
- * 要把这两处换成 `TouchTier.PANEL_HEADER_HOTZONE` 那一档（24dp），**不是**把它们松成"存在即可"。
- * 现在把它改松就是把一次还没做的改动读成已经做完。
+ * ⚠ 那一档外观**本轮已经落地**（原话第 16 条 / 基线 v1 §6.3、§3.9）：轻通知走设计系统新立的
+ * `LbStateContainer.Notice`——合同外观就是 11sp/16sp 的字、圆角 10、关闭那颗 14dp 字形坐在
+ * **24dp** 见方盒里（[LbTextActionGlyph.Notice]，复用建议卡那一套 labelMedium 紧凑语言）。
+ * 所以下面三处量热区的判据**从全站 48dp 换成 `TouchTier.PANEL_HEADER_HOTZONE`（24dp）那一档**：
+ * 不是松成"存在即可"（仍然逐颗两轴 ≥24），而是量到已经做完的那一档。生产那颗关闭若退回
+ * 48×48 的 `Standard` 文字盒，24dp 一横条会被顶成 56dp，`the notice strip stays within the
+ * compact notice height tier` 那一格的 `boundsInRoot` 几何判据当场红。
+ * ⚠ 前提：宿主 `KbNoticeBanner`（`LoveBrainPanelScreen.kt`，主线程持有）须把
+ * `container = LbStateContainer.Strip` 翻成 `LbStateContainer.Notice`；本测试挂的是生产那一颗，
+ * 未翻则这几格仍读到旧 Strip 的 48dp——那是宿主没接线，不是这一族的问题（见台账 impl-N1b）。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -88,9 +97,18 @@ class NoticeStripSemanticsTest {
         SemanticsProbe(density, AppDimens.TOUCH_TARGET_MIN_DP.toFloat())
     }
 
+    /**
+     * 轻通知档那颗关闭走的是 24dp 见方那一档（[TouchTier.PANEL_HEADER_HOTZONE]，与面板工具条那颗
+     * 齿轮/收起外包盒同档），不是全站 48 下限——原话第 16 条落地后的档位入口（见文件头 ⚠ 段）。
+     */
+    private val noticeFloorDp: Float get() = TouchTier.PANEL_HEADER_HOTZONE
+
     /** 三条真实存在的通知文本（前两条就是 VM 现在会推出去的那两句） */
     private val noticeText = "已暂停本轮提及，下次生成将过滤此条记忆"
     private val errorText = "网络断了，这轮没生成成"
+
+    /** 只给整条高度那一格量边界用的宿主 tag（把 banner 套进一颗 wrap 的 Box，读它自己的 boundsInRoot） */
+    private val BANNER_HOST_TAG = "lb_notice_banner_host"
 
     private val closeLabel: String get() = ctx.getString(R.string.a11y_close_notice)
     private val retryLabel: String get() = ctx.getString(R.string.panel_retry_tap)
@@ -187,8 +205,8 @@ class NoticeStripSemanticsTest {
             closeLabel, way.label
         )
         assertTrue(
-            "热区两轴都要 ≥${probe.floorDp.toInt()}dp，只垫高度不算达标：" + way.describe(),
-            !way.tooSmall(probe.floorDp)
+            "轻通知关闭两轴都要 ≥${noticeFloorDp.toInt()}dp（24dp 那一档，原话第 16 条，不再是 48）：" + way.describe(),
+            !way.tooSmall(noticeFloorDp)
         )
         rule.onNodeWithTag(LbAsyncTags.ACTION).performClick()
         rule.waitForIdle()
@@ -247,10 +265,44 @@ class NoticeStripSemanticsTest {
         assertEquals("两档语气的热区宽度不一致：$a vs $c", a, c, 0.5f)
         assertEquals("两档语气的热区高度不一致：$b vs $d", b, d, 0.5f)
         assertTrue(
-            "两轴都得 ≥${probe.floorDp.toInt()}dp（这一颗的名字是资源给的，宽度有多少是文字撑出来的、" +
-                "多少是垫出来的，这一格分不出来——那种判法见 `LbAsyncStateTest` 用单字标签那一格）：" +
+            "两轴都得 ≥${noticeFloorDp.toInt()}dp（轻通知关闭那一颗走 24dp 见方那一档，" +
+                "Success/Warning 两语气同尺寸、都由同一颗图标档垫出来，不再按 48 量）：" +
                 "实到 ${a.toInt()}x${b.toInt()}dp",
-            a >= probe.floorDp - 0.5f && b >= probe.floorDp - 0.5f
+            a >= noticeFloorDp - 0.5f && b >= noticeFloorDp - 0.5f
+        )
+    }
+
+    /**
+     * 横条**总高**的几何判据（原话第 16 条 / 基线 v1 §6.3）：轻通知档单行必须留在紧凑那一档里。
+     *
+     * 这一格量的是 `boundsInRoot` 的整条高度，不是热区——语义树读得出"这条横条被撑到多高"。
+     * 反面（也是**必须红**的那一个反例）：把关闭那颗从 24dp 图标盒换回 `ScreenAction` 默认那颗
+     * `LbTextActionSize.Standard` 的 48×48 无底文字盒，24dp 一横条会被顶成 56dp（这正是用户第 16 条
+     * 骂"太大"的物理成因）⇒ `≤ 40` 这一句当场红。上限取 40 是给两行那一档留余量、又远低于 56；
+     * 下限 16 挡的是"关闭整个没了、条子塌成一行零高"这种把它改没的坏实现。
+     * ⚠ 挂的是生产那颗 [KbNoticeBanner]，前提是宿主已把它接到 `LbStateContainer.Notice`（见文件头 ⚠ 段）。
+     */
+    @Test
+    fun `the notice strip stays within the compact notice height tier`() {
+        val singleLine = "已记入"
+        rule.setContent {
+            UiMatrix(360, 400).RenderIn(LocalDensity.current.density) {
+                Box(Modifier.testTag(BANNER_HOST_TAG)) {
+                    KbNoticeBanner(text = singleLine, tone = LbStateTone.Success, onDismiss = {})
+                }
+            }
+        }
+        rule.waitForIdle()
+        val bounds = rule.onNodeWithTag(BANNER_HOST_TAG).fetchSemanticsNode().boundsInRoot
+        val heightDp = bounds.height / density
+        assertTrue(
+            "单行轻通知整条高该 ≤40dp（紧凑那一档）；把关闭换回 48×48 Standard 文字盒会顶到 56dp，" +
+                "本格必须红。实到 ${heightDp.toInt()}dp",
+            heightDp <= 40f
+        )
+        assertTrue(
+            "整条高不该塌没（关闭被整个删掉会读到 ~0）：实到 ${heightDp.toInt()}dp",
+            heightDp >= 16f
         )
     }
 
@@ -285,8 +337,8 @@ class NoticeStripSemanticsTest {
             closeLabel, way.label
         )
         assertTrue(
-            "热区两轴都要 ≥${probe.floorDp.toInt()}dp，只垫高度不算达标：" + way.describe(),
-            !way.tooSmall(probe.floorDp)
+            "轻通知关闭两轴都要 ≥${noticeFloorDp.toInt()}dp（24dp 那一档，原话第 16 条，不再是 48）：" + way.describe(),
+            !way.tooSmall(noticeFloorDp)
         )
         // 被撤掉的那颗重复出口不许长回来：整棵树里都读不到那个资源名才算（画成按钮、
         // 画成一行裸文字、挂在说明里都算），"少一颗"不是这一句的意思。

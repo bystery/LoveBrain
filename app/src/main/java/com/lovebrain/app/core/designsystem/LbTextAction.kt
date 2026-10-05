@@ -107,7 +107,16 @@ enum class LbTextActionGlyph {
     RowIcon,
 
     /** 卡片内部挤着排的那一族小动作：复制/赞/踩，13dp 字形（原来写在 `SchemeCardDimens.ACTION_ICON_SIZE_DP`） */
-    Compact
+    Compact,
+
+    /**
+     * 轻通知条尾部那颗关闭：14dp 字形坐在 24dp 见方盒（原话第 16 条 / 基线 v1 §6.3、§3.9）。
+     *
+     * 与 [RowIcon]/[Compact] 同属"有意低于全站下限"的具名矮档，只是这一档更矮：通知条本体只有
+     * 24dp 高，48×48 的无底文字盒会把一条 24dp 的横条顶成 56dp（正是这条把轻通知撑大的元凶）。
+     * 14/24 这对数是 1.3.1 那颗关闭的形状，也是 `LbEmptyState(container = Notice)` 唯一读的那一档。
+     */
+    Notice
 }
 
 // 同上：尺寸写成扩展，枚举构造参数里写 `Header(22.dp)` 时那个数会被读成枚举项自己。
@@ -119,6 +128,7 @@ internal val LbTextActionGlyph.glyphSize: Dp
         LbTextActionGlyph.Inline -> 20.dp
         LbTextActionGlyph.RowIcon -> 16.dp
         LbTextActionGlyph.Compact -> 13.dp
+        LbTextActionGlyph.Notice -> 14.dp
     }
 
 /**
@@ -135,6 +145,10 @@ internal val LbTextActionGlyph.hitSize: Dp
         LbTextActionGlyph.RowIcon -> AppDimens.CARD_ACTION_HIT_DP.dp
         LbTextActionGlyph.Header -> LB_TEXT_ACTION_MIN_DP.dp
         LbTextActionGlyph.Inline -> LB_TEXT_ACTION_MIN_DP.dp
+        // 轻通知关闭那一颗：24dp 见方。这一数与 1.3.1 那颗外包盒同值，比卡内 28 还矮一档——
+        // 通知条本体只有 24dp 高，取 28 会把这条横条整体抬高；`Dimens.kt` 里没有这一颗（那颗矮档属于
+        // 悬浮窗紧凑族的轻通知，本轮不上提到全局 token），所以数只在这一个主人处写成字面量。
+        LbTextActionGlyph.Notice -> 24.dp
     }
 
 /**

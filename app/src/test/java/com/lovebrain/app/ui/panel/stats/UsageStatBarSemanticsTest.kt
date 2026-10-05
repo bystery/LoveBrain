@@ -28,6 +28,7 @@ import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import kotlin.math.abs
 import kotlin.math.roundToInt
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -492,6 +493,36 @@ class UsageStatBarSemanticsTest {
         repeat(3) { rule.mainClock.advanceTimeBy(USAGE_STAT_GROUP_INTERVAL_MS) }
         settle(2)
         assertEquals("一行放得下却换了组", before, probedTexts().map { it.text }.sorted())
+    }
+
+    @Test
+    fun `a short group that fits sits centered on the bar instead of hugging the left edge`() {
+        // §7.2：测量完成后放得下的短组，整条相对实际可用视口居中——不是"只把数值字符 TextAlign.Center
+        // 而整组 Row 仍靠左"，也不是左贴边。这一格读几何、量两侧留白，与被裁/被挤的读数无关。
+        val cell = mutableStateOf(UiMatrix(600))
+        mountBar(cell, shortFields)
+        val viewport = barWidthDp()
+        val painted = paintedCells()
+        assertTrue("这一格一颗统计都没画出来，判据在空转：viewport=${viewport.toInt()}dp", painted.isNotEmpty())
+
+        val leftMargin = painted.minOf { it.leftDp }
+        val rightMargin = viewport - painted.maxOf { it.rightDp }
+        // 反例（这栏的牙）：把 usageStatPageTranslationsPx 的 `!rotates && !oversizedPage` 分支退回
+        // `return List { 0f }` ⇒ 当前页贴在左缘，leftMargin≈0、rightMargin=整条剩余留白 ⇒
+        // 两者相差远大于 1.5dp ⇒ 本栏红；"仍然左贴"由此被区分开。
+        // 只给数字 TextAlign.Center 而 Row 靠左的假居中，同样会让 leftMargin 明显小于 rightMargin ⇒ 红。
+        assertTrue(
+            "放得下的短组没居中（左留白 ${leftMargin.toInt()}dp、右留白 ${rightMargin.toInt()}dp）：" +
+                painted.joinToString(" ") { it.describe() },
+            abs(leftMargin - rightMargin) <= 1.5f
+        )
+        // 居中后整组不应还压在 0 那一线（真左贴会留白≈0）
+        assertTrue("整组仍靠左贴边（左留白=${leftMargin.toInt()}dp）", leftMargin > 1f)
+        // 也不许跑出这一行（半截数字的老坑）
+        assertTrue(
+            "居中把某一格推出了行的右缘：" + painted.joinToString(" ") { it.describe() },
+            painted.maxOf { it.rightDp } <= viewport + 0.5f && painted.minOf { it.leftDp } >= -0.5f
+        )
     }
 
     @Test

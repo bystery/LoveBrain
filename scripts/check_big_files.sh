@@ -12,8 +12,12 @@ set -uo pipefail
 
 BUDGET_DIR="${BUDGET_DIR:-scripts}"
 MAIN_ROOT="${MAIN_ROOT:-app/src/main}"
-LINE_500="$BUDGET_DIR/.txt"
-LINE_800="$BUDGET_DIR/.txt"
+# 2026-10-06：这两颗文件名在公开版里被抹成了 `$BUDGET_DIR/.txt`（同名两行、指向不存在的文件），
+# 于是这把尺从那天起只可能走第 19 行那句 `CANNOT-VERIFY 缺登记文件` 退出 2 —— 从没真跑过一次，
+# 那本账也就从没跟着盘走过。这里按仓库里实际存在的那两份清单把名字接回去，
+# 并允许像其它件一样用环境变量覆盖（判据自测拿小夹具跑时要的就是这个口子）。
+LINE_500="${LINE_500:-$BUDGET_DIR/big-file-500.txt}"
+LINE_800="${LINE_800:-$BUDGET_DIR/big-file-800.txt}"
 
 for f in "$LINE_500" "$LINE_800"; do
   [ -f "$f" ] || { echo "[gate] CANNOT-VERIFY 缺登记文件 $f —— 没有清单就等于没有闸"; exit 2; }

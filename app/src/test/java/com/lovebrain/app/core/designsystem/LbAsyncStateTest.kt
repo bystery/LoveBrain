@@ -1,11 +1,17 @@
 package com.lovebrain.app.core.designsystem
 
 import android.content.Context
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
@@ -116,6 +122,47 @@ class LbAsyncStateTest {
         assertEquals("案例一", shown)
         assertEquals("有内容时不该出现空态版式", 0, actionableCount())
         assertTrue(rule.onAllNodes(hasClickAction()).fetchSemanticsNodes().isEmpty())
+    }
+
+    /**
+     * 四档 modifier 归属里最要紧的那一格：**Content 档的外盒尺寸必须跟随传入约束**（基线 v1 §3.12 / M11）。
+     *
+     * `LbAsyncState` 四支里 Content 那支从前写成 `content(state.value)`、一个字节都没吃传入 `modifier`
+     * （`KbEditActivity` 传下去的 `weight(1f)` 因此在 Content 档被丢弃）。现在写成
+     * `Box(modifier) { content(value) }`——只吃调用方给的尺寸、**不额外 `fillMaxSize()`**。
+     * 这一格量的就是这个形状：给一个可识别的定尺寸 modifier（200×300），content 里那枚探针铺满外盒，
+     * 读回来必须正好是传入的 200×300。
+     *
+     * 反例（**必须红**）：把 `Box(modifier)` 改回 `content(value)`——外盒不再吃约束，
+     * 探针会铺满渲染根（360dp 宽）而不是 200dp，`widthDp` 当场对不上。
+     */
+    @Test
+    fun `the content tier's outer box follows the incoming modifier`() {
+        rule.setContent {
+            UiMatrix(360, 600).RenderIn(LocalDensity.current.density) {
+                LbAsyncState(
+                    state = ScreenState.Content("案例一"),
+                    modifier = Modifier.size(200.dp, 300.dp)
+                ) { value ->
+                    Text(
+                        text = value,
+                        modifier = Modifier.testTag("content_probe").fillMaxSize()
+                    )
+                }
+            }
+        }
+        rule.waitForIdle()
+        val bounds = rule.onNodeWithTag("content_probe").fetchSemanticsNode().boundsInRoot
+        val widthDp = bounds.width / density
+        val heightDp = bounds.height / density
+        assertEquals(
+            "Content 档外盒宽度必须跟随传入的 200dp（回退成 content(value) 会铺满根、读到 360dp）",
+            200f, widthDp, 1f
+        )
+        assertEquals(
+            "Content 档外盒高度必须跟随传入的 300dp（同上，不能塌成 content 的自然高）",
+            300f, heightDp, 1f
+        )
     }
 
     /** 最坏那一格：最窄 + 最大字，热区不能缩 */

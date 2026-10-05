@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -67,13 +68,14 @@ import com.lovebrain.app.GenerationTimeoutTier
 import com.lovebrain.app.core.designsystem.LbAsyncState
 import com.lovebrain.app.core.designsystem.LbChip
 import com.lovebrain.app.core.designsystem.LbChipInteraction
-import com.lovebrain.app.core.designsystem.LbChipLabelAlignment
 import com.lovebrain.app.core.designsystem.LbChipStyles
+import com.lovebrain.app.core.designsystem.LbFieldInput
+import com.lovebrain.app.core.designsystem.LbFormField
+import com.lovebrain.app.core.designsystem.LbFormGroup
 import com.lovebrain.app.core.designsystem.LbRowState
 import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.model.ProviderTicket
-import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.RowActionButton
 import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.core.designsystem.AppDimens
@@ -114,8 +116,10 @@ private object ProviderDimens {
     const val SWITCH_THUMB_SIZE_DP = 16
     const val SWITCH_THUMB_INSET_DP = 2
 
-    /** 超时那一排四颗胶囊的**视觉**高度：四档要挤在同一行里，热区由分层外盒给 */
-    const val TIER_PILL_HEIGHT_DP = 24
+    // 超时档位那一排不再自带私有高度：它接设计系统的具名分段档
+    // `LbChipStyles.segmented`，内格可见高读 `AppDimens.CHIP_SEGMENTED_HEIGHT_DP`（32）、
+    // 热区由那颗分层外盒读到 `AppDimens.TOUCH_TARGET_MIN_DP`（48）。旧的私有
+    // `TIER_PILL_HEIGHT_DP = 24` 与它带进设计系统外的第二把尺一起收编，见 §③-7 / §⑥ 第20条。
 
     /** 旧表单滚动柱写死的那一档：现在只当**封顶**，不再当作实际可用高度 */
     const val FORM_SCROLL_MAX_HEIGHT_DP = 520
@@ -239,6 +243,13 @@ internal fun ProviderManageEntry(
     tickets: List<ProviderTicket>,
     activeTicket: ProviderTicket?,
     providerReady: Boolean,
+    // §③-9 / C8 / §⑥ 第19条：这一格今天只有 Empty/Content 两格，与知识库页（完整四态）不同构。
+    // 补上的 Loading/Error 两格**仍由同一颗 `LbAsyncState` 画**，不自己画第二套状态件。
+    // 两条入参都带默认值：供应商工单是从 `SetupViewModel` 既有的 `tickets` 那一条 StateFlow
+    // 同步读出来的（没有独立的"加载中/读取失败"流），所以默认走今天这条 Empty/Content 路径、
+    // 逐像素不变；等主线程给工单接上真正的加载/读取失败信号，就在这里传值，不改本页、不生第二份状态源。
+    loading: Boolean = false,
+    listError: String? = null,
     onActivate: (String) -> Unit,
     onEdit: (ProviderTicket) -> Unit,
     onDelete: (ProviderTicket) -> Unit,
@@ -321,18 +332,20 @@ internal fun ProviderManageEntry(
                     thickness = AppDimens.BORDER_WIDTH_DP.dp,
                     color = Border.copy(alpha = 0.5f)
                 )
-                // 第6节第3条：空 / 有内容两格由同一个 ScreenState 判定，由 LbAsyncState 画。
-                // 上一版是 if/else 两边各画一次（空态那格虽然已经用了统一组件，
-                // 但"哪一格"仍是这一页自己判的）；现在判定只有一处，版式也只有一处。
-                val listState: ScreenState<List<ProviderTicket>> =
-                    if (tickets.isEmpty()) {
-                        ScreenState.Empty(
-                            message = stringResource(R.string.provider_empty),
-                            action = ScreenAction(stringResource(R.string.provider_add)) { onAdd() }
-                        )
-                    } else {
-                        ScreenState.Content(tickets)
-                    }
+                // 第6节第3条 / §③-9：空 / 加载中 / 失败 / 有内容四格由同一个 ScreenState 判定，
+                // 全部由同一颗 LbAsyncState 画。优先级 Loading > Error > Empty > Content 与知识库页同构，
+                // 判定只在这一处、版式也只在这一处。
+                // Loading/Error 两格由入参驱动（默认 false/null ⇒ 今天这条 Empty/Content 路径逐像素不变），
+                // 本页不新增第二份状态源；工单读取信号接上后由调用方传值即可点亮这两格。
+                val listState: ScreenState<List<ProviderTicket>> = when {
+                    loading -> ScreenState.Loading
+                    !listError.isNullOrBlank() -> ScreenState.Error(message = listError)
+                    tickets.isEmpty() -> ScreenState.Empty(
+                        message = stringResource(R.string.provider_empty),
+                        action = ScreenAction(stringResource(R.string.provider_add)) { onAdd() }
+                    )
+                    else -> ScreenState.Content(tickets)
+                }
                 LbAsyncState(listState) { shownTickets ->
                     Column(modifier = Modifier.fillMaxWidth()) {
                         shownTickets.forEachIndexed { index, t ->
@@ -514,113 +527,200 @@ internal fun ProviderFormBody(
         if (currentModel == removed) currentModel = newList.firstOrNull().orEmpty()
     }
 
+    // 表单骨架换主人：这一柱以前是一条 `spacedBy(Spacing.md)` 的均匀 Column，标签是裸
+    // `Text(labelMedium)`、控件是 `ui/common/CompactInput`、错误是跟在地址后面的
+    // `✗ $formError`——标签/控件/错误三件各写各的（D1 §② C1/C3/C7：标签与字段同距 = 视觉上没分组、
+    // 输入框聚焦一寸不变、错误不归属字段）。现在三段各有主人：分组归 `LbFormGroup`、
+    // 字段（标签→4dp→控件→错误行）归 `LbFormField`、可见框归五态的 `LbFieldInput`。
+    // 组间距由 `LbFormGroup` 自带的 top 16 排，这一柱不再自己 spacedBy（同一段空白不扣两遍）。
     Column(
         modifier = Modifier
-            .padding(Spacing.xl)
+            // 水平只留 8：每一张 `LbFormGroup` 自带 12 的内边距，8+12 = 从前这一柱的 20，
+            // 于是**模型行的可用宽度与换分组框架之前逐字相同**——`assertModelNameKeepsItsSlot`
+            // 那条"行尾四颗不许挤掉模型名"的硬牙钉的就是这段宽（320dp 最坏档也过）。
+            // 竖直仍留 20（浮层里那一柱的上下留白），组间距由 LbFormGroup 自带的 top 16 排。
+            .padding(start = Spacing.md, top = Spacing.xl, end = Spacing.md, bottom = Spacing.xl)
             .heightIn(max = providerFormViewportCap())
             .verticalScroll(rememberScrollState())
             // 键盘让位只在"这一扇自己就是窗口正文"的那条路径上做（弹窗宿主传 true，见
             // [ProviderEditDialog]）。悬浮窗里那一格由宿主的滚动柱统一让位，
             // 这里再让一次就是把同一段空白扣两遍。
-            .then(if (keyboardAwareViewport) Modifier.imePadding() else Modifier),
-        verticalArrangement = Arrangement.spacedBy(Spacing.md)
+            .then(if (keyboardAwareViewport) Modifier.imePadding() else Modifier)
     ) {
-        Text("供应商名称", style = AppTypography.labelMedium, color = TextSecondary)
-        CompactInput(value = name, onValueChange = { name = it }, placeholder = "名称")
-
-        Text("接口地址（自动补全）", style = AppTypography.labelMedium, color = TextSecondary)
-        CompactInput(value = baseUrl, onValueChange = { baseUrl = it }, placeholder = "https://api.example.com")
-        if (!formError.isNullOrEmpty()) {
-            Text("✗ $formError", style = AppTypography.labelSmall, color = Error)
-        }
-
-        Text("API Key", style = AppTypography.labelMedium, color = TextSecondary)
-        CompactInput(
-            value = key,
-            onValueChange = { key = it },
-            placeholder = if (ticket != null && viewModel.getKeyMask(ticket.id).isNotEmpty()) "留空保留原 Key" else "sk-…",
-            passwordVisible = keyVisible,
-            trailingAction = {
-                // 这颗写着 heightIn(min = TOUCH_TARGET_MIN_DP)，但**它赢不了父约束**：它坐在
-                // CompactInput 中层那颗 36dp 的可见胶囊里，maxHeight=36 把它压回 36（语义树实量
-                // 58x36）。那句 min(48) 是一条永远不成立的死码，留着会让下一个人以为这颗已达标。
-                // 现在如实按字段档走：这颗自己 36 高，"点得到"那一半由外层 48 热区整行承担
-                // （点框内空档即获焦）。要让这颗自己回到 48，得把尾部槽从中层挪到外层那一级——
-                // 那是全仓共用组件的改动（还要处理它与外层"点空档获焦"手势抢事件），不在这里偷偷做。
-                TextButton(
-                    onClick = { keyVisible = !keyVisible },
-                    modifier = Modifier.heightIn(min = AppDimens.INPUT_ROW_HEIGHT_DP.dp)
-                ) {
-                    Text(if (keyVisible) "隐藏" else "显示", style = AppTypography.bodySmall, color = Primary)
-                }
+        // ── 基础信息 ────────────────────────────────────────────────────────────
+        LbFormGroup(title = stringResource(R.string.provider_form_group_basic)) {
+            // 名称：以前是裸 `Text("供应商名称")` + `CompactInput`，两者不属于同一个所有者；
+            // 现在标签进 `LbFormField.label`、可见框进五态 `LbFieldInput`。占位仍是那句"名称"。
+            LbFormField(label = stringResource(R.string.provider_form_name_label)) {
+                LbFieldInput(
+                    value = name,
+                    onValueChange = { name = it },
+                    placeholder = stringResource(R.string.provider_form_name_placeholder)
+                )
             }
-        )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            // 那行字与开关的名字由 `MiniSwitchRow` 一处配对好——
-            // 之前这两个东西散在调用点，"忘了给开关起名"在界面上一模一样、
-            // 只有读屏的时候才看得出来。
-            MiniSwitchRow(checked = thinking, onCheckedChange = { thinking = it })
-        }
-
-        // ── 高级：这一张工单愿意等多久 ──────────────────────────────────────────
-        //
-        // 档位挂在**这张工单**上，不是全局一个值：官方 Key 与自建慢服务各留各的等待预算。
-        // 初值直接读传进来的 `ticket`（表单已有的那份工单快照），于是这台机器既不多一份状态、
-        // 也不碰 `viewModel.tickets`（这颗 StateFlow 在本表单里从来没被读过）。
-        //
-        // ⚠ 四档是**白名单**，界面上没有输入框：用户能选的只有这四颗，
-        //    非法值与老数据在 `GenerationTimeoutTier.fromSecondsOrDefault` 那一行落回默认档。
-        //
-        // 这一族原来还有一行"只放宽读回复的时间，连接超时不变"的说明——那是参数原理，
-        // 用户在这四颗里选一个决定不了任何下游行为，所以它属于要删的废话；
-        // 真配置项（标题 + 四档）一个没动。
-        Text(
-            stringResource(R.string.provider_timeout_title),
-            style = AppTypography.labelMedium,
-            color = TextSecondary
-        )
-        // 互斥单选 ⇒ 设计系统那颗的 [LbChipInteraction.Single]：
-        // Role.Tab + Selected 进语义树（读屏念得出"这是选项、现在在哪一档"）。
-        // 四档挤同一行、每档 `weight(1f)` 分宽，与悬浮窗设置页那一排同一份档位源
-        // （`GenerationTimeoutTier`，界面上没有自由输入）：这一族不再排成四块 48dp 见方的卡块。
-        // 矮的是**视觉**那一层（[ProviderDimens.TIER_PILL_HEIGHT_DP]），可点那一层仍由
-        // `layeredTouch` 垫到全局下限——本表单逐颗量尺（ProviderFormSemanticsTest）量的就是这一族。
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            GenerationTimeoutTier.options.forEach { tier ->
-                LbChip(
-                    label = stringResource(R.string.provider_timeout_tier_label, tier.seconds),
-                    selected = tier.seconds == timeoutTier.seconds,
-                    onClick = { timeoutTier = tier },
-                    interaction = LbChipInteraction.Single,
-                    style = timeoutTierChipStyle,
-                    modifier = Modifier.weight(1f)
+            // 接口地址 + 它自己的错误行（C7 的正解）：
+            // `formError` 是 `SetupViewModel` 那一条**整表级**校验流，没有分字段的来源，所以这里把它
+            // 钉到它今天真正对应的那一颗——接口地址（保存前端点校验最常出错的字段）。改的是**归属与所有者**：
+            // 以前它是一行裸 `Text("✗ $formError")` 漂在地址控件下面、和字段无关；现在走 `LbFormField.error`，
+            // 由字段拥有、经 CompositionLocal 把那颗 `LbFieldInput` 的描边转成 Error 态，
+            // 且 error 为 null/空白时错误行**整行不进版式**（不占位、不画透明副本）。
+            // 待 VM 交来分字段错误时，只需把这一处的 `error=` 换成对应字段的值，本页形状不动。
+            LbFormField(label = stringResource(R.string.provider_form_base_url_label), error = formError) {
+                LbFieldInput(
+                    value = baseUrl,
+                    onValueChange = { baseUrl = it },
+                    placeholder = "https://api.example.com"
                 )
             }
         }
 
-        Text("模型列表", style = AppTypography.labelMedium, color = TextSecondary)
-        models.forEachIndexed { i, m ->
-            if (editIndex == i) {
+        // ── 接口凭据 ────────────────────────────────────────────────────────────
+        // ⚠ Key 的既有纪律一条没动：初值恒空（`mutableStateOf("")`）、明文永不回填、
+        //    只在编辑态用 `getKeyMask` 提示"留空保留原 Key"、连接错误信息经 `redactSecrets` 遮蔽、
+        //    Key 值本身不上任何截图/日志/报告。这里换的只有那颗框的**主人**与显隐的**落位**。
+        LbFormGroup(title = stringResource(R.string.provider_form_group_credential)) {
+            LbFormField(label = "API Key") {
+                LbFieldInput(
+                    value = key,
+                    onValueChange = { key = it },
+                    placeholder = if (ticket != null && viewModel.getKeyMask(ticket.id).isNotEmpty())
+                        stringResource(R.string.provider_form_key_placeholder) else "sk-…",
+                    passwordVisible = keyVisible,
+                    // 显隐那颗改走 `LbFieldInput` 的**尾部槽**（item 3 / D1 §② C4）：
+                    // 可编辑节点右侧为它让出 `AppDimens.INPUT_TRAILING_SLOT_DP`(40) 那一格，
+                    // 槽宽只在那颗组件里读一次；这颗自己 `fillMaxHeight` 吃掉所在字段框的可见高度，
+                    // 不再是在中层 36 胶囊里挂一条自输的 `heightIn(min = 36)` 死链。
+                    // 它仍是那颗只翻 `keyVisible` 的文字按钮（名字随状态在"显示/隐藏"间翻），
+                    // Key 值本身一字不上屏；"点得到"由字段外层 48 热区整行兜底。
+                    trailingAction = {
+                        TextButton(
+                            onClick = { keyVisible = !keyVisible },
+                            modifier = Modifier.fillMaxHeight()
+                        ) {
+                            Text(if (keyVisible) "隐藏" else "显示", style = AppTypography.bodySmall, color = Primary)
+                        }
+                    }
+                )
+            }
+        }
+
+        // ── 模型列表 ────────────────────────────────────────────────────────────
+        LbFormGroup(title = stringResource(R.string.provider_form_group_models)) {
+            models.forEachIndexed { i, m ->
+                if (editIndex == i) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                        LbFieldInput(
+                            value = modelInput,
+                            onValueChange = { modelInput = it },
+                            placeholder = stringResource(R.string.provider_form_model_name_label),
+                            modifier = Modifier.weight(1f)
+                        )
+                        LbTextAction(
+                            icon = Icons.Filled.Check,
+                            description = stringResource(R.string.a11y_action_confirm),
+                            glyph = LbTextActionGlyph.Compact,
+                            onClick = { commitModelInput(i) }
+                        )
+                        LbTextAction(
+                            icon = Icons.Filled.Close,
+                            description = stringResource(R.string.a11y_action_cancel),
+                            tone = LbTextActionTone.Muted,
+                            glyph = LbTextActionGlyph.Compact,
+                            onClick = {
+                                modelInput = ""; editIndex = -1
+                            }
+                        )
+                    }
+                } else {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(LoveBrainShape.md)
+                            .background(SurfaceInset)
+                            .padding(horizontal = Spacing.md, vertical = Spacing.xs)
+                    ) {
+                        Text(
+                            m,
+                            style = AppTypography.bodyMedium,
+                            color = if (m == currentModel) PrimaryDark else TextPrimary,
+                            fontWeight = if (m == currentModel) FontWeight.SemiBold else FontWeight.Normal,
+                            // 编辑这一栏**不截断**：列表那一行只省略，而"这条模型名到底是什么"
+                            // 就要在这里看得见，所以让它自己换行排全（外层 weight(1f) 已经把宽度钉住）
+                            modifier = Modifier.weight(1f)
+                        )
+                        // 行尾那四颗走设计系统的**紧凑档**（`LbTextActionGlyph.Compact` = 28dp 见方盒）：
+                        // 行尾若是四颗 48dp 见方盒，一行先被它们占掉 192dp，模型名就没地方长了。
+                        // 角色、`contentDescription` 与语气词表都还是那一颗组件给的，一寸没裁。
+                        LbTextAction(
+                            icon = Icons.Filled.Star,
+                            description = stringResource(R.string.a11y_set_current_model),
+                            tone = if (m == currentModel) {
+                                LbTextActionTone.Accent
+                            } else {
+                                LbTextActionTone.Muted
+                            },
+                            glyph = LbTextActionGlyph.Compact,
+                            onClick = {
+                                currentModel = m
+                                if (ticket != null) viewModel.setTicketModel(ticket.id, m)
+                            }
+                        )
+                        LbTextAction(
+                            icon = ImageVector.vectorResource(R.drawable.ic_unplug),
+                            description = stringResource(R.string.a11y_test_connection),
+                            tone = LbTextActionTone.Accent,
+                            glyph = LbTextActionGlyph.Compact,
+                            onClick = {
+                                testingModel = m
+                                testResult = null
+                                scope.launch {
+                                    val t = ticket ?: ProviderTicket(name = name.ifBlank { "未命名" }, baseUrl = baseUrl, model = m, models = models)
+                                    val result = viewModel.testConnection(t, m, key.trim())
+                                    testingModel = null
+                                    testResult = Triple(m, result.success, result.message)
+                                }
+                            }
+                        )
+                        LbTextAction(
+                            icon = Icons.Filled.Edit,
+                            description = stringResource(R.string.a11y_action_edit),
+                            glyph = LbTextActionGlyph.Compact,
+                            onClick = {
+                                modelInput = m
+                                editIndex = i
+                            }
+                        )
+                        LbTextAction(
+                            icon = Icons.Filled.Delete,
+                            description = stringResource(R.string.a11y_action_delete),
+                            tone = LbTextActionTone.Destructive,
+                            glyph = LbTextActionGlyph.Compact,
+                            onClick = { deleteModel(i) }
+                        )
+                    }
+                }
+                if (testingModel == m) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = Spacing.md)) {
+                        CircularProgressIndicator(color = Primary, modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp), strokeWidth = Spacing.xs)
+                        Spacer(Modifier.width(Spacing.sm))
+                        Text("测试中…", style = AppTypography.labelSmall, color = TextHint)
+                    }
+                }
+            }
+            if (addingModel) {
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                    CompactInput(
+                    LbFieldInput(
                         value = modelInput,
                         onValueChange = { modelInput = it },
-                        placeholder = "模型名称",
+                        placeholder = stringResource(R.string.provider_form_model_name_label),
                         modifier = Modifier.weight(1f)
                     )
                     LbTextAction(
                         icon = Icons.Filled.Check,
                         description = stringResource(R.string.a11y_action_confirm),
                         glyph = LbTextActionGlyph.Compact,
-                        onClick = { commitModelInput(i) }
+                        onClick = { commitModelInput(-1) }
                     )
                     LbTextAction(
                         icon = Icons.Filled.Close,
@@ -628,147 +728,92 @@ internal fun ProviderFormBody(
                         tone = LbTextActionTone.Muted,
                         glyph = LbTextActionGlyph.Compact,
                         onClick = {
-                            modelInput = ""; editIndex = -1
+                            modelInput = ""; addingModel = false
                         }
                     )
                 }
             } else {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                // 实量 **79x22dp、role=无**：这一行只有 22dp 高，读屏也只念得出字、念不出按钮。
+                // 仍是那条"热区与视觉分两层/垫本人"的修法——`clickable` 排在 `padding` 之前，
+                // 否则内边距落在热区外面，等于白垫（同形缺陷在两块面板上量到 10 处，账本 第44节）。
+                Text(
+                    "＋ 添加模型",
+                    style = AppTypography.labelLarge,
+                    color = Primary,
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier
-                        .fillMaxWidth()
                         .clip(LoveBrainShape.md)
-                        .background(SurfaceInset)
+                        .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                        .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                        .clickable(role = Role.Button) { addingModel = true }
                         .padding(horizontal = Spacing.md, vertical = Spacing.xs)
-                ) {
-                    Text(
-                        m,
-                        style = AppTypography.bodyMedium,
-                        color = if (m == currentModel) PrimaryDark else TextPrimary,
-                        fontWeight = if (m == currentModel) FontWeight.SemiBold else FontWeight.Normal,
-                        // 编辑这一栏**不截断**：列表那一行只省略，而"这条模型名到底是什么"
-                        // 就要在这里看得见，所以让它自己换行排全（外层 weight(1f) 已经把宽度钉住）
-                        modifier = Modifier.weight(1f)
-                    )
-                    // 行尾那四颗走设计系统的**紧凑档**（`LbTextActionGlyph.Compact` = 28dp 见方盒）：
-                    // 行尾若是四颗 48dp 见方盒，一行先被它们占掉 192dp，模型名就没地方长了。
-                    // 角色、`contentDescription` 与语气词表都还是那一颗组件给的，一寸没裁。
-                    LbTextAction(
-                        icon = Icons.Filled.Star,
-                        description = stringResource(R.string.a11y_set_current_model),
-                        tone = if (m == currentModel) {
-                            LbTextActionTone.Accent
-                        } else {
-                            LbTextActionTone.Muted
-                        },
-                        glyph = LbTextActionGlyph.Compact,
-                        onClick = {
-                            currentModel = m
-                            if (ticket != null) viewModel.setTicketModel(ticket.id, m)
-                        }
-                    )
-                    LbTextAction(
-                        icon = ImageVector.vectorResource(R.drawable.ic_unplug),
-                        description = stringResource(R.string.a11y_test_connection),
-                        tone = LbTextActionTone.Accent,
-                        glyph = LbTextActionGlyph.Compact,
-                        onClick = {
-                            testingModel = m
-                            testResult = null
-                            scope.launch {
-                                val t = ticket ?: ProviderTicket(name = name.ifBlank { "未命名" }, baseUrl = baseUrl, model = m, models = models)
-                                val result = viewModel.testConnection(t, m, key.trim())
-                                testingModel = null
-                                testResult = Triple(m, result.success, result.message)
-                            }
-                        }
-                    )
-                    LbTextAction(
-                        icon = Icons.Filled.Edit,
-                        description = stringResource(R.string.a11y_action_edit),
-                        glyph = LbTextActionGlyph.Compact,
-                        onClick = {
-                            modelInput = m
-                            editIndex = i
-                        }
-                    )
-                    LbTextAction(
-                        icon = Icons.Filled.Delete,
-                        description = stringResource(R.string.a11y_action_delete),
-                        tone = LbTextActionTone.Destructive,
-                        glyph = LbTextActionGlyph.Compact,
-                        onClick = { deleteModel(i) }
-                    )
-                }
-            }
-            if (testingModel == m) {
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = Spacing.md)) {
-                    CircularProgressIndicator(color = Primary, modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp), strokeWidth = Spacing.xs)
-                    Spacer(Modifier.width(Spacing.sm))
-                    Text("测试中…", style = AppTypography.labelSmall, color = TextHint)
-                }
-            }
-        }
-        if (addingModel) {
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                CompactInput(
-                    value = modelInput,
-                    onValueChange = { modelInput = it },
-                    placeholder = "模型名称",
-                    modifier = Modifier.weight(1f)
-                )
-                LbTextAction(
-                    icon = Icons.Filled.Check,
-                    description = stringResource(R.string.a11y_action_confirm),
-                    glyph = LbTextActionGlyph.Compact,
-                    onClick = { commitModelInput(-1) }
-                )
-                LbTextAction(
-                    icon = Icons.Filled.Close,
-                    description = stringResource(R.string.a11y_action_cancel),
-                    tone = LbTextActionTone.Muted,
-                    glyph = LbTextActionGlyph.Compact,
-                    onClick = {
-                        modelInput = ""; addingModel = false
-                    }
                 )
             }
-        } else {
-            // 实量 **79x22dp、role=无**：这一行只有 22dp 高，读屏也只念得出字、念不出按钮。
-            // 仍是那条"热区与视觉分两层/垫本人"的修法——`clickable` 排在 `padding` 之前，
-            // 否则内边距落在热区外面，等于白垫（同形缺陷在两块面板上量到 10 处，账本 第44节）。
-            Text(
-                "＋ 添加模型",
-                style = AppTypography.labelLarge,
-                color = Primary,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier
-                    .clip(LoveBrainShape.md)
-                    .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                    .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                    .clickable(role = Role.Button) { addingModel = true }
-                    .padding(horizontal = Spacing.md, vertical = Spacing.xs)
-            )
-        }
-        testResult?.let { (m, ok, msg) ->
-            val noDetail = stringResource(R.string.provider_test_no_detail)
-            Text(
-                text = if (ok) {
-                    stringResource(R.string.provider_test_success)
-                } else {
-                    stringResource(
-                        R.string.provider_test_failed,
-                        m,
-                        redactSecrets(msg.orEmpty(), stringResource(R.string.secret_redacted))
-                            .ifBlank { noDetail }
-                    )
-                },
-                style = AppTypography.labelSmall,
-                color = if (ok) Success else Error
-            )
+            testResult?.let { (m, ok, msg) ->
+                val noDetail = stringResource(R.string.provider_test_no_detail)
+                Text(
+                    text = if (ok) {
+                        stringResource(R.string.provider_test_success)
+                    } else {
+                        stringResource(
+                            R.string.provider_test_failed,
+                            m,
+                            redactSecrets(msg.orEmpty(), stringResource(R.string.secret_redacted))
+                                .ifBlank { noDetail }
+                        )
+                    },
+                    style = AppTypography.labelSmall,
+                    color = if (ok) Success else Error
+                )
+            }
         }
 
-        Spacer(Modifier.height(Spacing.xs))
+        // ── 请求设置：这一张工单愿意等多久 + 要不要思考模式 ─────────────────────
+        //
+        // 档位挂在**这张工单**上，不是全局一个值：官方 Key 与自建慢服务各留各的等待预算。
+        // 初值直接读传进来的 `ticket`（表单已有的那份工单快照），于是这台机器既不多一份状态、
+        // 也不碰 `viewModel.tickets`（这颗 StateFlow 在本表单里从来没被读过）。
+        //
+        // ⚠ 业务口径一字没改：四档仍是 `GenerationTimeoutTier.options` 白名单（60/120/180/300）、
+        //    默认仍是 `fromSecondsOrDefault` 回落的那一档（120 秒）、非法值/老数据仍落回默认、
+        //    "点哪一颗存哪一颗"（`onClick = { timeoutTier = tier }` → 保存第七颗实参 `timeoutTier.seconds`）。
+        //    这一族原来还有一行"只放宽读回复的时间"的解释——那是参数原理、属要删的废话，
+        //    真配置项（标题 + 四档）一个没少。
+        //
+        // 换的只有**形状与档位归属**（item 2 / D1 §② C2）：旧的私有
+        // `timeoutTierChipStyle = LbChipStyles.soft.copy(pillHeight = 24.dp, radius = full, …)`
+        // 是"为一页 copy 设计系统档"的病灶，其可见高 24 与 full 圆角正是用户点名的"难看"。
+        // 现在接设计系统的具名分段档 `LbChipStyles.segmented`（基线 §③-7/§⑥ 第20条明写这一族的落点）：
+        // 内格可见高读 `AppDimens.CHIP_SEGMENTED_HEIGHT_DP`(32)、圆角 `Sm`(6)、整行热区由那颗分层外盒
+        // 垫到 `AppDimens.TOUCH_TARGET_MIN_DP`(48)，互斥单选的语义（Role.Tab + Selected）仍由
+        // `LbChipInteraction.Single` 交出、"哪一格选中"仍由 `selected=` 交出。
+        LbFormGroup(title = stringResource(R.string.provider_form_group_request)) {
+            LbFormField(label = stringResource(R.string.provider_timeout_title)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    GenerationTimeoutTier.options.forEach { tier ->
+                        LbChip(
+                            label = stringResource(R.string.provider_timeout_tier_label, tier.seconds),
+                            selected = tier.seconds == timeoutTier.seconds,
+                            onClick = { timeoutTier = tier },
+                            interaction = LbChipInteraction.Single,
+                            style = LbChipStyles.segmented,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+            }
+            // 思考开关：整行可点（item 5 / D1 §② C5，基线 §③-4"热区买一次"）——
+            // 那颗开关自己的 48 见方热区删了，可见轨道仍是 36×20，点整行任意处即翻，
+            // Role.Switch 与 contentDescription 由 `MiniSwitchRow` 那一格统一给。
+            MiniSwitchRow(checked = thinking, onCheckedChange = { thinking = it })
+        }
+
+        // ── 保存 / 取消（表单底部出口，不分组；这一排只留这一颗主按钮） ──────────
+        Spacer(Modifier.height(Spacing.lg))
         val saving by viewModel.saving.collectAsStateWithLifecycle()
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
             TextButton(
@@ -778,19 +823,19 @@ internal fun ProviderFormBody(
                 // 保存的 48 见方低一档，等于把这屏的退路做成最难点的那一颗。
                 // 合同要的是"可见件别被撑大、可点区域仍要合理"，所以这里垫回热区下限，
                 // 而不是把尺子改成 36 来认这个退化。这颗在表单底部的 Row 里，父约束没有压它，
-                // 所以 min(48) 是真的生效（与字段框里那颗尾部按钮不同，见 CompactInput 那一处）。
+                // 所以 min(48) 是真的生效（与字段框里那颗尾部按钮不同，见 `LbFieldInput` 的尾部槽那一处）。
                 modifier = Modifier.weight(1f).heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             ) { Text("取消", style = AppTypography.labelLarge, color = TextSecondary) }
-            // 第6节第1条 :479「页面唯一主动作」——这一屏的主动作是「保存」，它原来是一颗
+            // 第6节第1条「页面唯一主动作」——这一屏的主动作是「保存」，它原来是一颗
             // 手写四态的 Material `Button(containerColor = Primary)`：`enabled` 里那条
             // 与号串 + `if (saving) CircularProgressIndicator` 各管一半状态。
             // 先量再搬（账本 第46节第2条）：**160x48dp、role=Button、有名字，全部达标**
             // ⇒ 这一处又是**归所有者，不是修缺陷**；搬的收益是"非法组合从此不可表达"
             // （原来 `saving = true` 同时字段没填完，Material 那颗会既转圈又灰着，
-            // 而现在 `when` 只有条出口）。
+            // 而现在 `when` 只有一条出口）。
             // ⚠ 两处**有意的改变**要认下来：
             //   1) 标签样式从 `labelLarge` 变成那颗共用的 `titleMedium + Bold`——
-            //      这是"同一语义只长一个样"要的结果，但**本机没有截图证据**（:538 照旧欠着）；
+            //      这是"同一语义只长一个样"要的结果，但**本机没有截图证据**（照旧欠着）；
             //   2) `Loading` 那一档在设计系统里的原意是"点它=停止"，表单里**没有可停的活**，
             //      所以点击必须自己吞掉：`if (saving) return@LbPrimaryButton` 那种"看着能按"
             //      不能留，故 onClick 里显式再判一次 saving。
@@ -840,17 +885,49 @@ private val SECRET_IN_TEXT = Regex(
 )
 
 /**
- * 小型开关：≥48 见方的热区里画一颗 **36×20** 的胶囊，球 16dp、离轨边 2dp。
+ * 那颗 36×20 的**纯视觉**开关轨道：轨道、球、球离轨边都只在这里画一次，
+ * 本身**不带点击、不带语义**——它是给外面那颗"会点的那一层"看的装饰。
  *
- * 两条轴各归各的主人，别拧成一条（与 `CompactInput` 同一个写法）：
- * - **视觉**那一层是旧版那颗小胶囊：36×20 的轨道、16dp 的球、2dp 的边距。
- *   这一屏退回过一颗巨大的 Material `Switch`，也画过 48×32 的自画胶囊——
- *   前者比表单里任何一行都高，后者是把"热区不够"记在版式头上，两种都不作复刻对象。
- * - **热区**那一层是外面这颗带 `toggleable`、`Role.Switch` 与 `contentDescription` 的盒，
- *   两轴都垫到全局那颗下限（[AppDimens.TOUCH_TARGET_MIN_DP]）：胶囊画小了，
- *   手指点得到的范围不跟着缩。里面那颗胶囊自己不参与点击。
+ * 拆出来的原因（基线 §③-4 / D1 §② C5 的"热区买一次"）：轨道既给 standalone 那颗
+ * [MiniSwitch]（消息捕获页直接用它，热区由它自己垫到 48 见方）用，也给整行可点的
+ * [MiniSwitchRow]（供应商表单里那颗，热区由整行给）用。两处共用同一份视觉，
+ * 才不会出现"同一个开关有两种轨道画法"。
+ */
+@Composable
+internal fun MiniSwitchTrack(checked: Boolean) {
+    Box(
+        modifier = Modifier
+            .size(
+                width = ProviderDimens.SWITCH_TRACK_WIDTH_DP.dp,
+                height = ProviderDimens.SWITCH_TRACK_HEIGHT_DP.dp
+            )   // 纯视觉，不参与点击（谁点它由外面那一层决定）
+            .clip(LoveBrainShape.full)
+            .background(if (checked) Primary else Neutral300.copy(alpha = 0.5f))
+    ) {
+        Box(
+            modifier = Modifier
+                .align(if (checked) Alignment.CenterEnd else Alignment.CenterStart)
+                .padding(ProviderDimens.SWITCH_THUMB_INSET_DP.dp)
+                .size(ProviderDimens.SWITCH_THUMB_SIZE_DP.dp)
+                .shadow(1.dp, CircleShape)
+                .clip(CircleShape)
+                .background(Color.White)
+        )
+    }
+}
+
+/**
+ * 小型开关（**standalone** 那一型）：≥48 见方的热区里画一颗 **36×20** 的胶囊。
  *
- * 名字与"思考模式"那行字的配对由 [MiniSwitchRow] 那一处保证，这里只接现成的那句。
+ * 这一型自己就是那颗"会点"的东西：外层带 `toggleable`、`Role.Switch` 与 `contentDescription`
+ * 的盒把两轴都垫到全局下限（[AppDimens.TOUCH_TARGET_MIN_DP]），里面是 [MiniSwitchTrack] 那纯视觉轨道。
+ * 消息捕获页直接用它（那一行没有别的标签可点，所以热区就得落在开关自己这一颗身上）。
+ *
+ * 两条轴各归各的主人，别拧成一条：
+ * - **视觉**那一层是那颗小胶囊：36×20 的轨道、16dp 的球、2dp 的边距（由 [MiniSwitchTrack] 画）。
+ * - **热区**那一层是外面这颗带 `toggleable`/`Role.Switch`/`contentDescription` 的见方盒。
+ *
+ * 名字与"思考模式"那行字的配对由 [MiniSwitchRow] 那一处保证；表单里那一颗改走整行可点，见那里。
  */
 @Composable
 internal fun MiniSwitch(
@@ -872,36 +949,23 @@ internal fun MiniSwitch(
             .semantics { contentDescription = label },
         contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .size(
-                    width = ProviderDimens.SWITCH_TRACK_WIDTH_DP.dp,
-                    height = ProviderDimens.SWITCH_TRACK_HEIGHT_DP.dp
-                )   // 视觉胶囊，不参与点击（热区在外层那颗）
-                .clip(LoveBrainShape.full)
-                .background(if (checked) Primary else Neutral300.copy(alpha = 0.5f))
-        ) {
-            Box(
-                modifier = Modifier
-                    .align(if (checked) Alignment.CenterEnd else Alignment.CenterStart)
-                    .padding(ProviderDimens.SWITCH_THUMB_INSET_DP.dp)
-                    .size(ProviderDimens.SWITCH_THUMB_SIZE_DP.dp)
-                    .shadow(1.dp, CircleShape)
-                    .clip(CircleShape)
-                    .background(Color.White)
-            )
-        }
+        MiniSwitchTrack(checked = checked)
     }
 }
 
 /**
- * "思考模式"那一行：标签 + 开关，**配对由这一处保证**。
+ * "思考模式"那一行：**整行可点**的那一型（基线 §③-4 / D1 §② C5 的"热区买一次"）。
  *
- * 原来这两样散在调用点：`Text("思考模式")` 画在左边，右边那颗开关一个名字都没有
- * （语义树实量：`「」 role=无 48x32dp`）。眼睛看得见配对，读屏看不见——
- * 而"忘了给开关起名"在界面上跟配好了**一模一样**，只有读屏的时候才看得出来。
- * 所以把它收成一格，屏幕上那行字与开关的 `contentDescription` 共用同一条资源
- * （第6节第5条 第②栏的口径：已有说明文字的让节点去指那句现成的话，不再编一份只给读屏看的副本）。
+ * 改之前这里把 [MiniSwitch] 那颗 48×48 见方的热区直接摆在行尾——那颗盒子把**行版式**撑到 48 见方，
+ * 于是标签与胶囊之间凭空一段空白（TEAM_RULES §3 反对的"一颗控件同时买版式与热区"形态），
+ * 而手指要点中的其实只是右边那一小块。现在把这一行修成两条轴各归各位：
+ * - **热区**：整行那一颗 `Row` 自己就是可点的开关（`toggleable` + `Role.Switch` +
+ *   `contentDescription`），高度垫到 [AppDimens.TOUCH_TARGET_MIN_DP]、宽度铺满整行——
+ *   "点得到"买这一次就够了，落在行里任意位置都翻。
+ * - **视觉**：行尾只放 [MiniSwitchTrack] 那颗 **36×20** 的纯视觉轨道，**删掉它自己的 48 见方热区**。
+ *
+ * "思考模式"那行字与开关的 `contentDescription` 仍共用同一条资源（同一处配对，
+ * 第6节第5条 第②栏：已有说明文字的让节点去指那句现成的话，不编一份只给读屏看的副本）。
  */
 @Composable
 internal fun MiniSwitchRow(
@@ -911,30 +975,36 @@ internal fun MiniSwitchRow(
     val label = stringResource(R.string.provider_thinking_mode)
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            // 热区落在整行：这一颗 Row 自己就是那颗 toggle（先垫下限，再挂动作，
+            // clickable/toggleable 排在 padding 之前，免得内边距落在热区外面等于白垫）。
+            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+            .toggleable(
+                value = checked,
+                role = Role.Switch,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onValueChange = onCheckedChange
+            )
+            .semantics { contentDescription = label }
+            .padding(vertical = Spacing.xs)
     ) {
         Text(label, style = AppTypography.labelMedium, color = TextSecondary)
         Spacer(Modifier.weight(1f))
-        MiniSwitch(checked = checked, label = label, onCheckedChange = onCheckedChange)
+        // 里面这颗只是装饰，不接点击（整行的那颗 toggle 才是会点的）
+        MiniSwitchTrack(checked = checked)
     }
 }
 
-/**
- * 超时那一排四颗胶囊的形状档：**设计系统已有档位的参数微调**，不是在页面里再画一条链
- * （`LbChipStyles.soft` + 分层热区 + 钉死胶囊自己的高度），与悬浮窗设置页那一排同一形状。
- *
- * ⚠ 这一档与 `ui/panel/settings/SettingsAdvancedEntry.kt` 里那颗私有的
- * `timeoutTierChipStyle` 现在是**两份同数**：两处都不肯把形状交给对方（一处是弹窗、一处是正文），
- * 而设计系统又没有"超时档位"这一档。要收成一个主人，请在 `LbChipStyles` 里补一档，
- * 两边各自删掉自己那一份 copy——不是由这一屏替那一屏定。
- */
-private val timeoutTierChipStyle = LbChipStyles.soft.copy(
-    radius = LoveBrainShape.full,
-    paddingHorizontal = Spacing.xs,
-    paddingVertical = Spacing.xs,
-    markSelectedWithCheck = false,
-    layeredTouch = true,
-    pillHeight = ProviderDimens.TIER_PILL_HEIGHT_DP.dp,
-    labelAlignment = LbChipLabelAlignment.Center
-)
+// 超时档位那一排的形状档**不再由这一屏私有**：它接设计系统的具名分段档
+// `LbChipStyles.segmented`（`ProviderFormBody` 里那四颗 `LbChip` 直接读它）。
+// 旧的 `timeoutTierChipStyle = LbChipStyles.soft.copy(pillHeight = 24.dp, radius = full, …)` 已删——
+// "为一页 copy 设计系统档、把胶囊自己钉到 24 高 + full 圆角"正是用户点名的"难看"，也是
+// 基线 §③-7 / §⑥ 第20条 明令收编进具名档的那处病灶。具名档自带 32 可见 / Sm 圆角 / 分层 48 热区，
+// 页面这一层只交 `label/selected/onClick`，不再交任何一条形状链。
+//
+// 顺带更正一句旧注释：它曾称这里与 `ui/panel/settings/SettingsAdvancedEntry.kt` 是"两份同数"，
+// 但该文件在本基点**并不存在**（已归档）——"两份私有 copy"是一条失效旧说法，不是要归一的第二份。
+
 

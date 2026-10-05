@@ -71,6 +71,10 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="cost_unknown">—</string>
     <string name="cost_below_cent">Under %1$s0.01</string>
     <string name="onboarding_skip">Skip</string>
+    <!-- 与 values/strings.xml 同拍的三颗引导键（G1b 接线单 §6） -->
+    <string name="guide_defer">Later</string>
+    <string name="guide_stop">Don\'t show again</string>
+    <string name="guide_capture_entry">Message capture</string>
     <string name="capture_apps_title">Capture scope</string>
     <string name="capture_apps_intro">Only the apps you select are captured.</string>
     <string name="capture_apps_none_to_authorize">This device lists no launchable apps, so there is nothing to allow yet.</string>
@@ -164,6 +168,14 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="a11y_action_cancel">Cancel</string>
     <string name="a11y_action_edit">Edit</string>
     <string name="a11y_action_delete">Delete</string>
+    <!-- W7 literal-budget repayment: these five keys mirror the ones just added to values/strings.xml.
+         The Chinese side was copied verbatim from what used to be inline Kotlin literals; the English
+         side is the new half (an English environment used to read Chinese here). -->
+    <string name="a11y_action_rename">Rename</string>
+    <string name="a11y_action_export">Export</string>
+    <string name="kb_card_in_use">In use</string>
+    <string name="kb_card_stage">Stage: %1$s</string>
+    <string name="kb_card_turns">Turns talked: %1$d</string>
     <string name="a11y_set_current_model">Set as current model</string>
     <string name="a11y_test_connection">Test connection</string>
     <!-- Screen-reader name for the advisor-note line (the visible line starts with the
@@ -255,6 +267,17 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="feedback_reasons">Reason: %1$s</string>
     <string name="feedback_exporting">Exporting…</string>
     <string name="provider_page_title">Model provider</string>
+    <!-- 与 values/strings.xml 同拍的四颗分组标题（M2c） -->
+    <string name="provider_form_group_basic">Basics</string>
+    <string name="provider_form_group_credential">Credentials</string>
+    <string name="provider_form_group_models">Models</string>
+    <string name="provider_form_group_request">Request</string>
+    <!-- Provider form field labels / placeholders: mirrors values/strings.xml, same five keys. -->
+    <string name="provider_form_name_label">Provider name</string>
+    <string name="provider_form_name_placeholder">Name</string>
+    <string name="provider_form_base_url_label">Base URL (auto-completed)</string>
+    <string name="provider_form_key_placeholder">Leave blank to keep the current key</string>
+    <string name="provider_form_model_name_label">Model name</string>
     <string name="provider_test_success">✓ Connection OK, endpoint filled in for you</string>
     <string name="provider_test_failed">✗ %1$s failed to connect: %2$s</string>
     <string name="provider_test_no_detail">Check the configuration</string>

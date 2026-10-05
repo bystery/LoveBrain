@@ -66,10 +66,17 @@ class LbTextActionIconTierTest {
     private val siteFloorDp: Float get() = TouchTier.SITE_FLOOR
     private val compactFloorDp: Float get() = TouchTier.CARD_ACTION
 
-    /** 这一档住在哪，就用哪一把尺：页头/行尾 = 全站下限；卡内一排三颗/列表行内 = 紧凑档 */
+    /**
+     * 轻通知条那颗关闭那一档（原话第 16 条 / 基线 v1 §6.3）：24dp 见方，比卡内 28 还矮一档。
+     * 读的是测试侧现成的那一颗 [TouchTier.PANEL_HEADER_HOTZONE]（同值 24），不自己抄第二个数。
+     */
+    private val noticeFloorDp: Float get() = TouchTier.PANEL_HEADER_HOTZONE
+
+    /** 这一档住在哪，就用哪一把尺：页头/行尾 = 全站下限；卡内一排三颗/列表行内 = 紧凑档；轻通知关闭 = 24 档 */
     private fun expectedFloorOf(tier: LbTextActionGlyph): Float = when (tier) {
         LbTextActionGlyph.Header, LbTextActionGlyph.Inline -> siteFloorDp
         LbTextActionGlyph.Compact, LbTextActionGlyph.RowIcon -> compactFloorDp
+        LbTextActionGlyph.Notice -> noticeFloorDp
     }
 
     /**

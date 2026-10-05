@@ -48,12 +48,19 @@ enum class AdvisorMissing(val label: String) {
     KnowledgeUnread("还没读到当前对象的知识库"),
 
     /**
-     * 连接一次都没检查成功过，但也不是"试过失败"。
+     * 这一组身份一次都没检查过，但也不是"试过失败"。
      * 生产里探针端口由 `HomeStatusViewModel` 接 `DeepSeekRepository.testConnectionWithProbe` 供着，
-     * 只有按 ▶ 才走那一次；这一档留给"还没按过开始 / 按过之后身份又换了"的那些格子——
+     * 只有按 ▶ 才走那一次；这一档留给"还没按过开始 / 换了供应商或换了当前对象"的那些格子——
      * 留着它是因为**没检查过绝不能点绿**，而把"没检查"报成"连接失败"是一句假话。
+     *
+     * ⚠ 文案 2026-10-05 由「连接还没检查成功」改成「连接还没检查过」（用户原话："…怎么会不成功呢？
+     * …耗费 token 还谎报"）：原来那句落在"…成功"的否定式里，用户读成"检查失败了"，
+     * 而这一刻的实情只是"还从没为这组身份按过 ▶"。**同一格、同一条字面量、只改话不改形状**：
+     * `UiStringLiteralBudgetTest` 四把尺的锚点（`Text(` / `contentDescription =` / `stateDescription =` /
+     * `Lb…(`）一条都数不到 enum 构造参（见该文件 EX-C2 那族 Context-free 结构性例外的登记原文），
+     * 所以改字面量的**文本**不动任何一栏读数——它不是换桶，也没有新增字面量。
      */
-    ConnectionUnchecked("连接还没检查成功"),
+    ConnectionUnchecked("连接还没检查过"),
 
     ;
 

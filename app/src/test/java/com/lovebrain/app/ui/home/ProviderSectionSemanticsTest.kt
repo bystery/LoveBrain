@@ -192,6 +192,15 @@ class ProviderSectionSemanticsTest {
      * 差别很重要：直接 `MiniSwitch(label = ...)` 等于**测试自己把名字喂进去**，
      * 生产上调用点忘了起名也照样绿（恒绿假闸）。挂这一行，测的就是
      * "屏幕上那行字与开关的名字由同一处配对"这件事本身。
+     *
+     * ⚠ **2026-10-06 M2c（基线 §③-4 / D1 §② C5 的"热区买一次"）**：`MiniSwitchRow` 里那颗 toggle
+     * 从"行尾一个 48×48 见方盒"改成了**整行可点**——`toggleable` + `Role.Switch` + `contentDescription`
+     * 现在挂在这一行的 `Row` 自己身上（高垫到全局下限、宽铺满整行），行尾只剩 36×20 的**纯视觉**轨道。
+     * 于是下面这两格的**判据一字没改，却仍是对的**：
+     *  - "逐颗量到恰好一颗 toggle"——整行只有一个 `ToggleableState`（装饰轨道不挂语义），计数还是 1；
+     *  - "两轴 ≥48"——现在量到的是整行那颗 toggle（宽 = 整行、高 = min 48），比从前那颗 48 见方盒还宽。
+     * **回退成什么会红**：把 toggle 又塞回行尾一颗只垫高度的窄盒（宽 <48）→ `tooSmall` 那条红；
+     *  把装饰轨道也做成可点 → 出现第二颗 toggle → `assertEquals(1, toggles.size)` 红。
      */
     private fun mountSwitch(checked: Boolean) {
         rule.setContent {

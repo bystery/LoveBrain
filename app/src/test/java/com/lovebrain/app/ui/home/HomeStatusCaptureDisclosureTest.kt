@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.app.Application
 import android.provider.Settings
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.state.ToggleableState
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
@@ -23,6 +26,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -56,6 +60,13 @@ private const val WAIT_FOR_BATCH_MS = 10_000L
  * 4. 已授予 → 开关当场生效，不弹披露也不跳设置（"已授予不骚扰"）；
  * 5. 这一版已同意过但未授予 → 直送系统设置，同一篇长文不端第二遍。
  * 关掉捕获永远不设门槛（退出采集不需要前置告知）。
+ *
+ * CAP3（同日，用户第二次追加的原话）在这条链上接了三格，判的都是**分流键换成"是谁开的"**之后
+ * 必须同时成立的三件事：
+ * 6. 开关那一路 + 权限早就给了 → 同意后**当场把"开"续跑**（旧写法拿 `accessibilityGranted`
+ *    当分流键，把这一格错分成"只补记录" ⇒ 开关还是没开、再拨又跳设置、卡好几次）；
+ * 7. 状态卡那一行 + 权限已经给了 → 只补记录，`toggleCount` 必须停在 0（原语义一条不丢）；
+ * 8. "关掉不设门槛"那一格按新形状重摆（开关画的是四件事实，能往下关的前提就是四件全真）。
  *
  * ⚠ 授权读数不是"读不出来就 pass"：`isCaptureServiceEnabled` 与 `isAccessibilityDisclosureConfirmed`
  * 两格都由夹具**明确摆出 true / false 两边**，每一边都真跑过一次组合与点击；
@@ -140,6 +151,19 @@ class HomeStatusCaptureDisclosureTest {
     private fun clickCaptureSwitch() {
         rule.onAllNodes(hasClickAction() and hasContentDescription(switchName))[0].performClick()
         rule.waitForIdle()
+    }
+
+    /**
+     * 那颗胶囊在语义树里**画的是哪一档**（CAP3 之后显示走有效态，不再是偏好位）。
+     * 先钉"恰好一颗 + 确实挂着 toggle 语义"，不然"没画开"可以是空跑。
+     */
+    private fun switchShowsOn(): Boolean {
+        val nodes = rule.onAllNodes(hasClickAction() and hasContentDescription(switchName))
+            .fetchSemanticsNodes()
+        assertEquals("这一屏必须恰好一颗捕获总开关", 1, nodes.size)
+        val state = nodes.single().config.getOrNull(SemanticsProperties.ToggleableState)
+        assertNotNull("开关必须挂 toggle 语义，否则显示那一档没读数", state)
+        return state == ToggleableState.On
     }
 
     private fun clickDisclosureButton(label: String) {
@@ -290,12 +314,24 @@ class HomeStatusCaptureDisclosureTest {
         assertEquals("不该再写一次同意记录", 0, h.confirmCount)
     }
 
-    /** 关掉捕获永远不设门槛：即使没授予、没同意过，也要关得掉 */
+    /**
+     * 关掉捕获永远不设门槛：即使悬浮窗不在、范围之外什么都齐，也要关得掉。
+     *
+     * ⚠ **CAP3（D1）之后这一格的摆法换了**（归因 C：判据按新形状重写，一条原语义没丢）：
+     * 那颗开关画的不再是偏好位，而是**四件事实**（权限 ∧ 意图 ∧ 披露 ∧ 范围），
+     * 所以"看得见一颗拨着的开关、往下关"这一格**只能**摆成四件全真——
+     * 旧夹具那种"没授予 + 没同意 + 旗标还开着"的首屏现在画的就是**关**（用户原话：
+     * 「第一次进入消息捕获页面，会发现开关是打开的」修的正是那一格），
+     * 而那一格里捕获本来就不产事件（服务不在系统名单里 ⇒ 服务侧照旧 fail-closed）。
+     * 反例：闸门给"关掉"加前置告知 → 这一格红；反例：显示与意图并成一根轴
+     * （画的是有效态、落的也是有效态）→ 这一格的 `toggleCount` 会停在 0。
+     */
     @Test
     fun `turning capture off is never blocked by the gate`() {
-        val h = Harness(granted = false, disclosureConfirmed = false)
+        val h = Harness(granted = true, disclosureConfirmed = true)
         h.enabled.value = true
         mount(h)
+        assertTrue("四件全真时那颗开关画的必须是'开'，才谈得上往下关", switchShowsOn())
 
         clickCaptureSwitch()
 
@@ -305,12 +341,78 @@ class HomeStatusCaptureDisclosureTest {
         assertEquals(false, h.enabled.value)
     }
 
+    // ═══════════ 3b. CAP3（D2）：开关那一路的同意，要把"要开"这一格续跑 ═══════════
+
+    /**
+     * 用户原话：「我按照长文把无障碍打开了之后，我看开关还是没开，我想拨开开始跳转到设置了，
+     * 但是我已经开启了啊，卡了好几次」。
+     *
+     * 这一格摆的是**从开关那一路进长文、而权限早就给了**的人（在系统里手动开过无障碍的那一类，
+     * 2026-10-06 那条 P0 的同一个人）。正确的下落：先写同意记录，**再把"开"续跑**——
+     * 当场生效，一次都不该再跳设置。
+     *
+     * 反例（这一格专治的）：弹窗的分流键写回 `accessibilityGranted`
+     * （`if (granted) onDisclosureAgreedInPlace() else onDisclosureAgreed()`）⇒
+     * 这一路被错分成"只补记录"：`toggleCount` 停在 0、开关还是画关，用户只能再拨一次，
+     * 而再拨一次判的是"同意过了 + 没授予"（返回前那一拍读数还旧着）→ 又跳设置 = 卡好几次。
+     * 反例：同意后不管授予没有都翻旗标 → 上面第 2 组那格
+     * （`agreeing writes the consent record before opening system settings`）红。
+     */
+    @Test
+    fun `agreeing from the switch path with the permission already granted turns capture on`() {
+        val h = Harness(granted = true, disclosureConfirmed = false)
+        mount(h)
+        assertFalse("没同意过这一版之前，那颗开关画的是关", switchShowsOn())
+
+        clickCaptureSwitch()
+        assertTrue("权限给了也不能替用户同意：必须先看见长文", dialogShown())
+        clickDisclosureButton("同意并继续")
+
+        assertEquals(
+            "顺序仍是承重的：记录先落地，这一格才允许发生动作",
+            listOf("confirm", "no-intent-yet"), h.confirmOrder
+        )
+        assertEquals("开关那一路的同意必须把'要开'续跑", 1, h.toggleCount)
+        assertEquals(true, h.enabled.value)
+        assertTrue("当场就该画成开（不用再拨第二下）", switchShowsOn())
+        assertNull("权限已经给了，同意后不许再把用户送去系统设置", peekIntent())
+    }
+
+    /**
+     * 另一条入口的语义**一条都不许丢**：状态卡那一行（四件只差记录）走出的同意只补记录。
+     * 上面那一格与这一格是**分流键换掉之后必须同时成立的两半**——只成一半就是又一版"卡好几次"。
+     * 反例：分流键写成"两条路都续跑" → 这一格 `toggleCount` 变 1（把用户开着的捕获当场关掉）。
+     */
+    @Test
+    fun `agreeing from the status row records consent and touches nothing else`() {
+        val h = Harness(granted = true, disclosureConfirmed = false)
+        h.enabled.value = true
+        mount(h)
+        assertTrue(
+            "那一行念的就是披露缺格",
+            hasTextOnScreen(app.getString(R.string.capture_disclosure_title))
+        )
+
+        // 点的是状态行那颗入口，不是开关
+        rule.onAllNodes(hasText(app.getString(R.string.capture_disclosure_title)))[0].performClick()
+        rule.waitForIdle()
+        clickDisclosureButton("同意并继续")
+
+        assertEquals("记录要补上", 1, h.confirmCount)
+        assertEquals("这一路不许拨开关（旗标本来就是开的）", 0, h.toggleCount)
+        assertEquals(true, h.enabled.value)
+        assertNull("这一路也不许跳系统设置", peekIntent())
+    }
+
     // ═══════════ 4. 纯判据矩阵：三颗出口各被走到 ═══════════
 
     /**
      * 八格 = 三根输入轴的全体组合，期望值手写。
-     * 反例：`when` 的分支顺序被换（先判授予再判 targetEnabled）→ "关掉"那四格红；
-     * 反例：`disclosureConfirmed` 默认成 true → (未授予, 未同意) 那一格不再弹窗。
+     * 反例：`when` 的分支顺序被换（先判授予再判未同意）→ "开 · 已授予 · 未同意"那一格红
+     *（**2026-10-06 用户 P0 的原形**：在系统里手动开过无障碍的人永远见不到披露，
+     *  同意记录写不进偏好 ⇒ 服务侧每颗事件都被 CONSENT_PENDING 丢掉，界面却说"已开启"）；
+     * 反例：`disclosureConfirmed` 默认成 true → (未授予, 未同意) 那一格不再弹窗；
+     * 反例：给"关掉"也加前置告知 → 下面那四格全红（退出采集不设门槛是硬要求）。
      */
     @Test
     fun `the gate table derives exactly one step per input row`() {
@@ -324,7 +426,7 @@ class HomeStatusCaptureDisclosureTest {
 
         val rows = listOf(
             Row("开 · 已授予 · 已同意", true, true, true, CaptureGateStep.ApplySwitch),
-            Row("开 · 已授予 · 未同意", true, true, false, CaptureGateStep.ApplySwitch),
+            Row("开 · 已授予 · 未同意", true, true, false, CaptureGateStep.ShowDisclosure),
             Row("开 · 未授予 · 已同意", true, false, true, CaptureGateStep.OpenAccessibilitySettings),
             Row("开 · 未授予 · 未同意", true, false, false, CaptureGateStep.ShowDisclosure),
             Row("关 · 已授予 · 已同意", false, true, true, CaptureGateStep.ApplySwitch),

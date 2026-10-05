@@ -59,6 +59,8 @@ import kotlinx.coroutines.delay
  *    其余页整页停在行外——静止态里「半个数字」这个形状不存在。
  *
  * 一行放得下就只有一组：不轮播、不渐隐、一个指针输入都不接（顶部原有的拖动不受影响）。
+ * 放得下的短组（含首次零值/占位）**相对实际可用视口居中**，不再左贴边（§7.2）：已知宽由
+ * [usageStatPageTranslationsPx] 居中、未测量的首帧由 Box `contentAlignment` 保底居中。
  * 放不下才整组换（[USAGE_STAT_GROUP_INTERVAL_MS]）、淡入淡出（[USAGE_STAT_CROSSFADE_MS]）、
  * 允许横向滑到别的组，两侧各留一条 [USAGE_STAT_FADE_WIDTH] 的渐隐表示「那边还有内容」。
  * 单格本身比这一行还宽时那一格行首对齐、可以横向平移着看完——绝不把金额的后几位裁掉当完整值。
@@ -109,7 +111,8 @@ fun UsageStatBar(
     fields.forEachIndexed { index, item -> slotOf[item] = index }
     val widthOf: (LbMetric) -> Int? = { item -> slotOf[item]?.let { slotWidthPx[it] } }
 
-    // 还没量到的那一帧：按旧版那条平铺（保底切法 + 空宽度），量到之后才可能翻成轮播
+    // 还没量到的那一帧：按保底切法 + 空宽度开出不轮播/不渐隐的方案（§1.1 口径不变），
+    // 摆位由下面 Box 的 contentAlignment 走「先按居中布局」保底——不再默认左贴边露一帧（§7.2）。
     val measuredEverything = viewportPx > 0 && fields.isNotEmpty() && fields.all { widthOf(it) != null }
     val availableWidth = with(density) { viewportPx.toDp() }
 
@@ -218,7 +221,13 @@ fun UsageStatBar(
             .wrapContentHeight(unbounded = true)
             .onSizeChanged { viewportPx = it.width }
             .clipToBounds()
-            .then(swipe)
+            .then(swipe),
+        // §7.2 首帧「先按居中布局」保底：未测量那一帧（viewportPx / 自然宽尚未回灌）不默认左贴边。
+        // Box 的水平位置由 fillMaxWidth 的**量算约束**决定，早于 onSizeChanged 把 viewportPx 灌进
+        // 换组方案，所以这一帧 strip 已按真实视口水平居中；测量完成后回到 TopStart，改由
+        // usageStatPageTranslationsPx 用实测宽相对视口居中（两处不会同时生效 ⇒ 不双移）。
+        // 轮播/超宽那两档 measuredEverything 恒真，走 TopStart，几何不变。
+        contentAlignment = if (!measuredEverything) Alignment.TopCenter else Alignment.TopStart
     ) {
         Row(
             modifier = Modifier

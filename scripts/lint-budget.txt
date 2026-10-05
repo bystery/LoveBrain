@@ -16,10 +16,30 @@
 #   所以这一行按" detector 不再命中"出账，不按"已证明无泄漏"出账；
 #   服务存活期内静态 instance 拿着自己那两扇窗的引用仍然是一个待判断的设计选择，别把这条当成已还。
 
-AutoboxingStateCreation 5
+# 5 → **4**（2026-10-06 W7/G1b，实测出处：本机 `./gradlew :app:lintDebug --offline` 之后
+#   `PYTHON=python bash scripts/check_lint_budget.sh` 报 `STALE AutoboxingStateCreation: 实测 4 < 预算 5`，
+#   读数原样记在 `evidence/2026-10-06-early/W11-lint-budget.txt`）。
+#   还的那一颗点名得到处：**HEAD 的 `ui/panel/OnboardingFlow.kt:48` 写着
+#   `var step by remember { mutableStateOf(0) }`**，本轮（G1b 罩子 + 主线程接线）把介绍层步号
+#   从这一层外提给宿主（`currentStep` / `onStepChange` 两个入参，进程被杀前落 `SettingsStorePort.introStep`），
+#   那颗 boxed `mutableStateOf(0)` 整颗消失——同一判据的文本对账：HEAD 命中点里有
+#   `OnboardingFlow.kt:48` 与 `KbEditActivity.kt:287`，工作树里这两处已不再是那个写法（换进来两颗别的）。
+#   现在剩下的 4 处由 lint 点名：`ui/kb/KbOnboardingWizard.kt:69`、`ui/home/ProviderSection.kt:504`、
+#   `ui/panel/reply/ResultArea.kt:800`、`ui/panel/reply/StreamingTypewriter.kt:41`。
+#   ⚠ 这一档不许用 `--rewrite` 生成（它会吃掉本文件的注释块，坑表 148 记过）。
+AutoboxingStateCreation 4
 ClickableViewAccessibility 1
 DataExtractionRules 1
-DefaultLocale 2
+# 2 → **0**（2026-10-06 W7，同一把尺实测 `STALE DefaultLocale: 0 < 预算 2`，出处同上）。
+#   ⚠ **成因留空，只登读数**：这一格历史上那 2 处命中点在哪，本机没有 HEAD 的 lint 报告可对
+#   （CI 从 2026-09 起就不跑 `check_lint_budget.sh`，指导书 §… 那句"push CI 只留质量底线，
+#   删掉审计门（lint 预算、大文件棘轮等）"），而按文本粗扫当前 main 源码里还有 8 处
+#   不带 `Locale` 的 `.format/.toUpperCase/.toLowerCase` 写法，lint 却报 0——
+#   说明这把 detector 的射程与那份文本扫描不重合（多半是接收者类型/调用形态）。
+#   **不把 0 解释成"我们修好了 locale"**，只登记"这一档现在量到 0"：
+#   下一颗真的 DefaultLocale 命中会从 0 涨到 1 而红，这一格因此比原来更硬，不是把闸关了。
+#   ⚠ 同样不许 `--rewrite`。
+DefaultLocale 0
 IconLauncherShape 5
 IconLocation 2
 InlinedApi 1

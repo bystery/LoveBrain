@@ -16,8 +16,11 @@ import org.junit.Test
  * `loaded` 永远是假，页面一路转圈（异常本身还从 `LaunchedEffect` 穿到组合作用域）。
  * 四格对不对，只有把四个维度摊开才看得住，与 `KbScreenStateMappingTest` 同一副理由。
  *
- * 优先顺序与同族两页一致（Loading > Error > Empty > Content）；唯一多出来的条件是
- * Empty 只在预览那一档成立，最后专门有一格钉它——那种"少一格"的地方最容易被顺手抹平。
+ * 优先顺序：Loading > **（Error / Empty 只在预览那一档成立）** > Content。
+ * 与同族两页不同、且本轮改过的一处：读失败**只在预览那一档**报 Error——编辑态（`isPreview=false`）
+ * 落 Content（缺陷一：`readFailed -> Error` 抢先判在 `isPreview` 之前，害得读失败时连「编辑」都打不开，
+ * 输入框根本画不出来）。"失败优先于空"这条仍然守得住，只是它现在收在预览这一档之内。
+ * 唯一另一处多出来的条件还是 Empty 只在预览那一档成立——那种"少一格"的地方最容易被顺手抹平。
  */
 class KbEditFileScreenStateMappingTest {
 
@@ -66,8 +69,12 @@ class KbEditFileScreenStateMappingTest {
             "Content",   // 空正文 + 编辑 ⇒ 输入框要继续画，不许被空态图换掉
             "Content",   // 有正文 + 预览
             "Content",   // 有正文 + 编辑
-            // loaded=true, readFailed=true（最后 4 行）：Error 吃掉空与内容两档
-            "Error", "Error", "Error", "Error"
+            // loaded=true, readFailed=true（最后 4 行）：Error 只吃**预览**那一档（空/有正文都算预览的失败），
+            // 编辑态（isPreview=false）落 Content —— 读失败也打得开编辑器、保住已写的字（缺陷一修复）
+            "Error",     // 空正文 + 预览 + 读失败
+            "Content",   // 空正文 + 编辑 + 读失败 ⇒ 输入框必须还在
+            "Error",     // 有正文 + 预览 + 读失败
+            "Content"    // 有正文 + 编辑 + 读失败 ⇒ 编辑器继续用残留正文
         )
         assertEquals(expected, allSixteen().map { it::class.simpleName })
     }
@@ -75,9 +82,9 @@ class KbEditFileScreenStateMappingTest {
     // ═══════════ 失败 ≠ 空 ≠ 还在读 ═══════════
 
     @Test
-    fun `a failed read is Error even when a stale draft is still in hand`() {
+    fun `a failed read is Error in preview even when a stale draft is still in hand`() {
         val failed = mapping(loaded = true, readFailed = true, blank = false, isPreview = true)
-        assertTrue("带着的残留正文就更不许画 Content：$failed", failed is ScreenState.Error)
+        assertTrue("预览那一档带着残留正文也不许画 Content：$failed", failed is ScreenState.Error)
         assertEquals(ERROR_MSG, (failed as ScreenState.Error).message)
         // 第6节第3条：错误态必须带重试入口，没有出口的错误态等于把用户关死在这一屏
         assertSame("Error 必须原样交出调用方给的那颗重试", retry, failed.retry)
@@ -87,6 +94,28 @@ class KbEditFileScreenStateMappingTest {
             "读失败时 drafts 是空的，判据若按'空不空'先判就会把失败报成'这篇没有内容'：$blankFailed",
             blankFailed is ScreenState.Error
         )
+    }
+
+    /**
+     * 缺陷一（§7.1 / 原始第 1 条）的正面对手：读失败**不许**挡住编辑态。
+     *
+     * 旧写法 `readFailed -> Error` 判在 `isPreview` 之前，于是点「编辑」落到编辑态还是被抢先画成 Error，
+     * 屏幕上没有输入框——"连输入框都打不开"。现在编辑态永远交回 Content：残留正文（若有）继续可编辑，
+     * 读失败也不清空。回退成旧写法时，这两行的 `isPreview=false` 会变成 Error、当场红。
+     */
+    @Test
+    fun `a failed read still opens the editor in edit mode instead of trapping it in Error`() {
+        val editingWithStaleDraft =
+            mapping(loaded = true, readFailed = true, blank = false, isPreview = false)
+        assertTrue("读失败 + 编辑态必须落 Content 让输入框画出来：$editingWithStaleDraft",
+            editingWithStaleDraft is ScreenState.Content)
+        assertEquals("交回的必须是手里那份残留正文，不许清空：", REAL_TEXT,
+            (editingWithStaleDraft as ScreenState.Content).value)
+
+        val editingBlank =
+            mapping(loaded = true, readFailed = true, blank = true, isPreview = false)
+        assertTrue("读失败 + 编辑态即便正文为空也是 Content（用户就是要点开打字）：$editingBlank",
+            editingBlank is ScreenState.Content)
     }
 
     @Test

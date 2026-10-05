@@ -74,6 +74,15 @@ versionName = "1.4.0-rc1"
         debug {
             // F03: Debug 构建显式标记
             buildConfigField("String", "BUILD_TYPE", "\"debug\"")
+            // 2026-10-06：debug 包也签正式证书。以前只有 release 走 `signingConfigs.release`，
+            // 于是本机构建出来的 app-debug.apk 带的是 `CN=Android Debug` 那把本机 debug key，
+            // 与 GitHub Release 上钉的 `cert_sha256`（scripts/signing-baseline.txt）不是同一把
+            // ⇒ 覆盖安装被 Android 拒（签名不一致），只能卸了重装。
+            // 没有 keystore.properties 时**不指定** signingConfig（保持 AGP 默认 debug key，
+            // 干净检出与 CI 不受影响）；绝不用别的钥匙、也不让 debug 悄悄产出 unsigned。
+            if (keystorePropsFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
     compileOptions {

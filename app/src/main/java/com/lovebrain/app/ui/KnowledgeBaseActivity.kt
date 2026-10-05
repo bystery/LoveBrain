@@ -6,31 +6,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -40,15 +22,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
-import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.LbButtonState
 import com.lovebrain.app.core.designsystem.LbPrimaryButton
 import com.lovebrain.app.core.designsystem.LbAsyncState
@@ -58,7 +36,6 @@ import com.lovebrain.app.core.designsystem.LbDialog
 import com.lovebrain.app.core.designsystem.LbDialogAction
 import com.lovebrain.app.core.designsystem.LbDialogActionTone
 import com.lovebrain.app.model.KnowledgeBase
-import com.lovebrain.app.ui.common.RowActionButton
 import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.ui.kb.KbDimens
 import com.lovebrain.app.ui.kb.OnboardingScreen
@@ -285,11 +262,16 @@ internal fun KbListScreen(
 ) {
     var pendingDelete by remember { mutableStateOf<KnowledgeBase?>(null) }
     var pendingExport by remember { mutableStateOf<KnowledgeBase?>(null) }
+    // 改名的待确认库与临时输入：与 pendingDelete/pendingExport 同一副"pending-X"格局
+    // 收在页面层——卡本体因此只剩"把内容交给公共件"，体里不再自画任何形状（异形账本口径）。
+    var pendingRename by remember { mutableStateOf<KnowledgeBase?>(null) }
+    var renameText by remember { mutableStateOf("") }
 
     ScreenPage(title = "知识库管理", onBack = onBack) {
         Column(
             modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(Spacing.xl)
+            // 基线 v1.1 §3.3：F1 族列表间距 16→12，四页不许再各写各的（旧档 `spacedBy(Spacing.xl)` 作废）。
+            verticalArrangement = Arrangement.spacedBy(Spacing.lg)
         ) {
         // 四态只在这里出现一次。替换前这里是一张自造的 40 行空态卡（图标 + 标题 + 一句
         // "点下方「新建知识库」"的指路文字），版式与反馈案例页、供应商区各不相同。
@@ -299,7 +281,10 @@ internal fun KbListScreen(
                     kb = kb,
                     isActive = kb.name == shown.activeName,
                     onActivate = { onActivate(kb.name) },
-                    onRename = { newName -> onRename(kb.name, newName) },
+                    onRename = {
+                        renameText = kb.displayName
+                        pendingRename = kb
+                    },
                     onEdit = { onEdit(kb.name) },
                     onExport = { pendingExport = kb },
                     onDelete = { pendingDelete = kb }
@@ -374,127 +359,12 @@ internal fun KbListScreen(
                 tone = LbDialogActionTone.Muted)
         )
     }
-}
-
-@Composable
-private fun KbCard(
-    kb: KnowledgeBase,
-    isActive: Boolean,
-    onActivate: () -> Unit,
-    onRename: (String) -> Unit,
-    onEdit: () -> Unit,
-    onExport: () -> Unit,
-    onDelete: () -> Unit
-) {
-    var showRename by remember { mutableStateOf(false) }
-    var renameText by remember { mutableStateOf(kb.displayName) }
-
-    Card(
-        shape = LoveBrainShape.lg,
-        colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-        // 阴影统一收进 2/4 令牌（6→4 为唯一超限修正）
-        // 点卡片主体 = 激活（非当前库时），与供应商行交互一致
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.lg)
-            .clickable(enabled = !isActive, onClick = onActivate)
-    ) {
-        Column(modifier = Modifier.padding(Spacing.xl)) {
-            // 第一行：名称 + 重命名笔 + 当前使用徽章 + 删除
-            //
-            // `height(IntrinsicSize.Min)` 是这一行的**版式**地板：行高只由名字那一行字给
-            // （v1.3.1 量到的就是这一档），而这一行里的两颗小动作各自 `fillMaxHeight()`
-            // 把整行高吃成自己的热区。热区买的是"已经存在的那 22dp"，不是新要的一分钟高度。
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.height(IntrinsicSize.Min)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    // 改名那颗：可见的仍然只有那一行字 + 一颗 14dp 铅笔。
-                    // 把两条边都垫到 48，于是整张卡片的第一行凭空高了一截——
-                    // 用户点的正是"卡片变大了"这一条。现在热区只补**横向余量**与**行高**，
-                    // 两者都是透明的：没有底色、没有边框，屏幕上看不见任何新东西。
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                        .clickable(role = Role.Button) {
-                            renameText = kb.displayName
-                            showRename = true
-                        }
-                ) {
-                    Text(
-                        kb.displayName,
-                        style = AppTypography.titleMedium,
-                        color = TextPrimary,
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 1
-                    )
-                    Spacer(modifier = Modifier.width(Spacing.xs))
-                    Icon(
-                        Icons.Filled.Edit,
-                        contentDescription = "重命名",
-                        tint = TextHint,
-                        modifier = Modifier.size(KbDimens.EDIT_ICON_SIZE_DP.dp)
-                    )
-                }
-                if (isActive) {
-                    Spacer(modifier = Modifier.width(Spacing.sm))
-                    Box(
-                        modifier = Modifier
-                            .background(PrimaryLight, LoveBrainShape.sm)
-                            .padding(horizontal = Spacing.md, vertical = Spacing.xs)
-                    ) {
-                        Text("当前使用", style = AppTypography.labelSmall, color = PrimaryDark, fontWeight = FontWeight.SemiBold)
-                    }
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                // 删除那颗：**画**是 18dp 图标，**点**是这一整颗透明盒（行高 + 全局下限那一档的宽，
-                // 即 `AppDimens.TOUCH_TARGET_MIN_DP`，与上面改名那颗同一把尺）。
-                // `indication = null` 且没有底色，所以这颗盒在屏幕上不存在，只是手指够得着。
-                // role 仍挂在带 clickable 的这一层自己身上（旧写法把 clickable 直接挂在 Icon 上，
-                // 读屏念的是"删除知识库，图像"而不是一个动作）。
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            role = Role.Button,
-                            onClick = onDelete
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        Icons.Filled.Delete,
-                        contentDescription = "删除知识库",
-                        tint = TextHint,
-                        modifier = Modifier.size(AppDimens.ACTION_ICON_SIZE_DP.dp)
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(Spacing.md))
-            // 第二行：阶段/对话信息 + 编辑/导出
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    "阶段：${kb.stage} ｜ 已对话 ${kb.turnCount} 轮",
-                    style = AppTypography.labelSmall,
-                    color = TextHint,
-                    maxLines = 1,
-                    modifier = Modifier.weight(1f)
-                )
-                RowActionButton("编辑") { onEdit() }
-                Spacer(modifier = Modifier.width(Spacing.sm))
-                RowActionButton("导出") { onExport() }
-            }
-        }
-    }
-
-    if (showRename) {
+    // 改名确认：文案与判据一字未动（原挂在卡本体内），只是随"卡本体收成委托壳"
+    // 上提到页面层，与删除/导出两扇确认走同一副格局。
+    pendingRename?.let { kb ->
         LbDialog(
             title = "修改显示名",
-            onDismissRequest = { showRename = false },
+            onDismissRequest = { pendingRename = null },
             body = {
                 OutlinedTextField(
                     value = renameText,
@@ -509,12 +379,74 @@ private fun KbCard(
                 // 空名禁止保存，避免卡片标题变空白
                 enabled = renameText.isNotBlank(),
                 onClick = {
-                    showRename = false
-                    onRename(renameText.trim())
+                    val n = kb.name
+                    val newName = renameText.trim()
+                    pendingRename = null
+                    onRename(n, newName)
                 }
             ),
-            dismiss = LbDialogAction("取消", { showRename = false },
+            dismiss = LbDialogAction("取消", { pendingRename = null },
                 tone = LbDialogActionTone.Muted)
         )
     }
+}
+
+/**
+ * 知识库这一条的卡 = [LbListCard] 本身（基线 v1.1 §3.6；母版页从今天起也**只交内容**，
+ * 卡底形状、字阶、行数上限、动作写法全部归公共件——"母版"不再是"那个还在自己画卡的页面"）。
+ *
+ * 五个槽每一颗都有真源，没有一颗是编出来的：
+ * - `title`：库的显示名（单行 + ellipsis 由公共件钉，页面传不进 `maxLines`）；
+ * - `status`：只有当前在用的库有这一槽（旧档那颗"当前使用"是 `background(PrimaryLight)` 自画徽章，
+ *   §3.4 之后静息结构归描边、状态归状态槽：6dp 点 + `bodySmall`12 字同一行）；
+ * - `meta`：「阶段：X」与「已对话 N 轮」交**两段**，`｜` 分隔符的主人是 `lbMetaLine`（在公共件里），
+ *   页面不再拼整句、也不再并排两颗 `Text`；
+ * - `actions`：编辑 / 导出 / 删除恰好三颗（§3.6 动作行上限）；删除恒走 destructive 档，
+ *   页面挑不了语气；「编辑」「删除」两个词接上仓里**已有**的 `a11y_action_edit` / `a11y_action_delete`
+ *   （中英两份都在盘上，此前只有读屏在用），不是新文案；
+ * - `onClick`：点整卡 = 激活（与旧交互一致）；当前在用的库没有"再激活一次"这件事，交 `null`，
+ *   公共件此时不挂 `Role.Button`（旧档靠 `clickable(enabled = !isActive)` 压死一颗活按钮）。
+ *
+ * ⚠ `detail` 那一颗「重命名」是**第四颗动作，动作行没有它的档**——`⋯` 溢出档还没进设计系统
+ * （缺口登记在 `LbListCardTest.no more than three capsules` 那格的账里）。宁走 `detail` 槽、
+ * 也不偷偷删功能，也不在页面里长第四种动作写法：它仍走 `LbTextAction` 那颗唯一主人的
+ * `RowCapsule` 档。等溢出档补齐，这一颗搬回 `actions`（见 2026-10-06-L1b 接线单）。
+ */
+@Composable
+private fun KbCard(
+    kb: KnowledgeBase,
+    isActive: Boolean,
+    onActivate: () -> Unit,
+    onRename: () -> Unit,
+    onEdit: () -> Unit,
+    onExport: () -> Unit,
+    onDelete: () -> Unit
+) {
+    LbListCard(
+        title = kb.displayName,
+        status = if (isActive) LbListCardStatus(
+            // 三颗读数都走资源：英文环境里这一行以前念的是中文（字面量预算那一栏的债）。
+            stringResource(R.string.kb_card_in_use), LbRowState.Ready
+        ) else null,
+        meta = listOf(
+            stringResource(R.string.kb_card_stage, kb.stage),
+            stringResource(R.string.kb_card_turns, kb.turnCount)
+        ),
+        actions = listOf(
+            LbListCardAction.secondary(stringResource(R.string.a11y_action_edit), onEdit),
+            LbListCardAction.secondary(stringResource(R.string.a11y_action_export), onExport),
+            LbListCardAction.destructive(stringResource(R.string.a11y_action_delete), onDelete)
+        ),
+        onClick = if (isActive) null else onActivate,
+        modifier = Modifier.fillMaxWidth(),
+        detail = {
+            // 第四颗动作的落点（理由见上面那颗 ⚠）：语气走行内次级档，热区走公共件那一颗 48。
+            LbTextAction(
+                label = stringResource(R.string.a11y_action_rename),
+                onClick = onRename,
+                tone = LbTextActionTone.RowSecondary,
+                size = LbTextActionSize.RowCapsule
+            )
+        }
+    )
 }

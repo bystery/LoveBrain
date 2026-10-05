@@ -326,8 +326,9 @@ class ProactiveRoundScopeTest {
     }
 
     /**
-     * 开关**关掉**：原有上下文照旧进请求（草稿 + 画像 + 近期历史）。
-     * 这一格是上面那格的反向证人——没有它，"不含 KB 标记"可能只是因为假库本来就空。
+     * 开关**关掉**（普通分支）：原有相关记忆照旧进请求，并且原始第 18 条补齐后
+     * **本轮真实输入**（备注 / 本轮对话）与**表达偏好**也真的进得去——以前这两个都不在旧行为里。
+     * 这一格是上面那格的反向证人：没有它，"不含 KB 标记"可能只是因为假库本来就空。
      */
     @Test
     fun proactive_with_switch_off_still_hands_the_old_context() {
@@ -336,9 +337,21 @@ class ProactiveRoundScopeTest {
 
         assertTrue("关闭时对方画像标记必须进得去", run.user.contains("KBHER-画像她"))
         assertTrue("关闭时近期历史标记必须进得去", run.user.contains("KBRECENT-近期历史"))
+        // 原始第 18 条：表达偏好此前只在资产里声明、从不接入；现在从 understand/style.md 真读真拼
+        assertTrue("关闭时表达偏好标记必须进得去（不再是假声明）", run.user.contains("KBSTYLE-表达偏好"))
+        // 原始第 18 条：普通分支以前完全不引用 messages / advisorNote，现在本轮输入必须到位
         assertTrue("关闭时用户草稿仍是本轮输入", run.user.contains(draftMarker))
+        assertTrue("关闭时本轮军师备注必须进得去", run.user.contains(noteMarker))
+        dialogueMarkers.forEach { marker ->
+            assertTrue("关闭时本轮真实对话「$marker」必须进得去:\n${run.user}", run.user.contains(marker))
+        }
         assertTrue("关闭时不该出现本轮专用边界声明", !run.user.contains(roundScopeHeader))
-        assertEquals("关闭时读的就是原有那两处库文件（画像 + 近期历史）", listOf("understand/her.md", "moment/recent.md"), run.readPaths)
+        // 白名单随新读取策略显式改写：普通分支多出表达偏好这一处 KB 读（本轮输入不走读口，不在此列）
+        assertEquals(
+            "关闭时读的就是画像 + 近期历史 + 表达偏好这三处库文件",
+            listOf("understand/her.md", "moment/recent.md", "understand/style.md"),
+            run.readPaths
+        )
     }
 
     // ═══════════════════════ 回复：同一条判据覆盖另一条链路 ═══════════════════════

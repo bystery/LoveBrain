@@ -361,13 +361,15 @@ class PromptBuilder(
     /**
      * 主动开场 user prompt——替代旧润色 prompt。
      *
-     * 不同于旧 polish（仅草稿），主动开场包含：
+     * 不同于旧 polish（仅草稿），主动开场普通分支包含（**先本轮真实输入，再相关记忆**）：
      * - 用户草稿（可选，可空）
+     * - 本轮军师备注 [advisorNote]（走 [IntentIdeaBlock.buildAdvisorNoteBlock] 真源，逐字全量）
+     * - 本轮由 [messages] 推断的场景（[CurrentSceneInjection]）与本轮真实对话（[ChatTranscriptBlock]）
      * - 对方画像简要
-     * - 近期对话（最近 2-3 轮）
-     * - 表达偏好（点赞过的风格，如有）
+     * - 近期对话（最近几轮）
+     * - 表达偏好（`understand/style.md`，点赞过的风格，如有）
      *
-     * 不把全部事项历史接回，只取少量可信且相关的信息。
+     * 不把全部事项历史接回，只取少量可信且相关的信息，并各自预算裁剪（画像 500 / 近期末 20 行 / 偏好 200）。
      *
      * ⚠ **主动发也真认「仅看本轮」这颗开关**（这条判据以前只在回复分支上有）。
      * [onlyThisRound] = true 时这一条链路的上下文范围与回复的
@@ -375,9 +377,9 @@ class PromptBuilder(
      * （`knowledgeRepo.readFile` 整条不调用，所以画像 / 近期对话 / 经验 / 旧事项 /
      * 表达偏好 / 阶段 / 持续意图都没有来源）：请求正文里只剩本轮草稿、本轮军师备注
      * [advisorNote]、由本轮对话推断出的场景、本轮真实对话与当前时间。
-     * = false 时逐字沿用上面那套原有上下文——包括草稿与画像的拼装顺序、`take(500)` 与
-     * 时间戳尾部，一个字节都没为这一档改道（字节证据：`PromptByteFreezeBaselineTest`
-     * 里 proactive 组那三行冻结读数仍然通过）。
+     * = false 时按上面那套上下文拼装，但**本轮真实输入（备注/场景/对话）此前根本没被这条分支引用过**
+     * （原始第 18 条要修的正是这里）；本轮把它们接进普通分支，`PromptByteFreezeBaselineTest`
+     * 里 proactive 组那四行冻结读数随之重录——这不是"为这一档改道"，是补回本来就该有的当前输入。
      */
     suspend fun buildProactiveUserPrompt(
         draft: String,
@@ -403,11 +405,32 @@ class PromptBuilder(
             return section + timestampTail
         }
 
+        // 相关记忆走 KB 读口（画像 / 近期对话 / 表达偏好），各自预算裁剪在段内完成。
         val herProfile = if (kb != null) knowledgeRepo.readFile(kb.name, "understand/her.md") else ""
         val recent = if (kb != null) knowledgeRepo.readFile(kb.name, "moment/recent.md") else ""
+        val stylePreference = if (kb != null) knowledgeRepo.readFile(kb.name, "understand/style.md") else ""
+        // 本轮真实输入不走 KB 读口：备注 / 由本轮推断的场景 / 本轮真实对话，直接由入参装配。
+        val noteBlock = IntentIdeaBlock.buildAdvisorNoteBlock(advisorNote)
+        val sceneBlock = CurrentSceneInjection.block(CurrentSceneInjection.infer(messages))
+        // 没有真实 HER/ME 消息时不留一个空的 <chat> 围栏（"无素材"那格给干净上下文）。
+        val hasRealDialogue = messages.any {
+            it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME
+        }
+        val dialogueBlock = if (hasRealDialogue) {
+            val chatBlock = ChatTranscriptBlock.render(messages)
+            chatBlock.header + chatBlock.body
+        } else ""
 
         val section = PromptProactiveSection.build(
-            PromptProactiveSection.Input(draft = draft, herProfile = herProfile, recent = recent)
+            PromptProactiveSection.Input(
+                draft = draft,
+                herProfile = herProfile,
+                recent = recent,
+                noteBlock = noteBlock,
+                sceneBlock = sceneBlock,
+                dialogueBlock = dialogueBlock,
+                stylePreference = stylePreference
+            )
         )
         // 时间戳垫底
         return section + timestampTail

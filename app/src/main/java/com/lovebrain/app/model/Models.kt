@@ -286,11 +286,24 @@ enum class SchemeFeedback {
     NONE, LIKED, DISLIKED
 }
 
-/** 主动发起/润色：单条可直接发送的开场 */
+/**
+ * 主动发起/润色：单条可直接发送的开场。
+ *
+ * 只有 [text] 是可发送正文（点击复制只复制它，见面板 `onCopy(opt.text)`）；
+ * [angle]/[timing]/[holdBack]/[prepare] 都是**辅助策略行**，供展开查看，绝不能拼进 [text]。
+ * 三颗新字段全带默认空串，且是 `options` 数组内对象里的扁平字符串——
+ * 旧版只有 `text`/`angle` 的输出照常解析（缺字段=默认空），
+ * 增量扫描器 [com.lovebrain.app.util.IncrementalJsonObjectScanner] 仍只认数组内 `{...}`，
+ * 不需要为顶层字段换 scanner key。`jsonLenient` 的 `ignoreUnknownKeys` 之所以不再静默丢这三颗，
+ * 正因为它们此刻真在 schema 里（见 `ProactiveOptionFieldsTest` 的正反两测）。
+ */
 @Serializable
 data class ProactiveOption(
     val text: String = "",   // 可直接复制发送的消息
-    val angle: String = ""   // 切入角度，一句话
+    val angle: String = "",  // 切入角度，一句话
+    @SerialName("timing") val timing: String = "",        // 时机：为什么现在适合发、什么时候发
+    @SerialName("hold_back") val holdBack: String = "",   // 先别发/等待条件；空=现在就适合发
+    @SerialName("prepare") val prepare: String = "",      // 需要准备什么真实素材；空=无需准备
 )
 
 /** 持续意图配置（每个知识库一份，存储于 moment/intent.json）

@@ -1,5 +1,7 @@
 package com.lovebrain.app.ui.panel.settings
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -24,7 +27,10 @@ import com.lovebrain.app.PanelBackdropOpacity
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.Border
+import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.TextSecondary
 import kotlin.math.roundToInt
 
@@ -65,9 +71,19 @@ internal fun SettingsOpacityEntry(
     // 滑杆那颗可点节点自己没有文案（M3 给它的是进度语义），读屏就只剩"滑块"两个字。
     val sliderName = stringResource(R.string.settings_opacity_label) + " " + percentReadout
 
+    // 卡容器（依据基线 v1 §6.1：控件包进 SurfaceCard 行——Border 1dp / Lg 16dp 圆角 / 内 12）。
+    // 这一格以前**没有卡底**，那颗滑杆直接坐在面板底上，是"点齿轮进去像另一个 App"的另一半成因；
+    // 现在只补外面那层容器，滑杆自己的取值范围/默认/落库出口/换算口一字未动（样式轮红线）。
+    // ⚠ 卡里那一行的**版式高度**由滑杆自己的 48dp 触摸下限顶出来（§6.1 明写"滑杆那 48 行高不是膨胀点，别缩"），
+    //    所以这一行整体比卡片内边距高——那是热区轴给的，不是这里再叠一层 padding 撑的（三轴分离）。
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(LoveBrainShape.lg)
+            .background(SurfaceCard, LoveBrainShape.lg)
+            .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
+            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
     ) {
         Text(
             text = stringResource(R.string.settings_opacity_label),

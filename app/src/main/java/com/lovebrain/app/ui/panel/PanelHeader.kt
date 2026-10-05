@@ -127,8 +127,9 @@ fun PanelHeader(
             // ── 中：《回复/谈心》弹性占满剩余 ──
             // 这一段与下面滑页那两页读写的**是同一颗数**：`panelMode`。
             // 页索引的换算不在这里重写第二遍，用 `PanelPagePager.kt` 里那一对
-            // `panelModeToPage` / `panelPageToMode`——点 tab 与左右滑从此同一条路，
-            // "tab 高亮在谈心、页面画的是回复"这种第二本账写不出来（第12节第2条）。
+            // `panelModeToPage` / `panelPageToMode`——点 tab 与左右滑从此同一条路（第12节第2条）。
+            // 连时序都是同一颗：那一段高亮的平移与页面那一段过渡都读 `PanelPageMotion.SLIDE_MS`，
+            // 所以点一次 tab 只有一条过渡，不会再读成"抖一下"（原始第 20 条的两半之一）。
             ModeSegmentTwo(
                 selectedIndex = panelModeToPage(panelMode),
                 onSelect = { idx -> onModeChange(panelPageToMode(idx)) },
@@ -188,7 +189,10 @@ private fun ModeSegmentTwo(
 ) {
     val indicatorOffset by animateFloatAsState(
         targetValue = selectedIndex.toFloat(),
-        animationSpec = tween(250, easing = FastOutSlowInEasing),
+        // 时长与页面平移**同一颗主人**（`PanelPageMotion.SLIDE_MS`，基线 v1.1 §6.5）：
+        // 这里原来是裸写的 `tween(250)`，页面那一段是 220ms ⇒ 点一次 tab 有两条不同时长的
+        // 并行过渡，视觉上读成"抖一下"。两段合一之后一次切换只有一条时序。
+        animationSpec = tween(PanelPageMotion.SLIDE_MS, easing = FastOutSlowInEasing),
         label = "modeIndicator"
     )
     val labels = listOf(

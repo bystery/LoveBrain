@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -75,12 +76,30 @@ fun SetupRoot(
     onStartService: () -> Unit,
     onOpenPanel: (Int, Boolean) -> Unit,
     onTempHide: () -> Unit,
-    onRestore: () -> Unit
+    onRestore: () -> Unit,
+    /**
+     * 引导罩子里那颗主动作要的**直达目标**（G1b 接线单 §3）。
+     *
+     * 为什么是"宿主给一颗目标、这一层消费掉"而不是把 `destination` 整体上提：
+     * `destination` 是这一层自己的导航账（`rememberSaveable`），上提会让首页/子页两套代码
+     * 各拿一半导航状态（那是第二本账）。这颗参数只做一件事：**有人点名要跳哪一格**，
+     * 这一层跳完就交回"已消费"，宿主那颗状态于是不会长期挂着、也不会重复导航。
+     * null = 没有要跳的（生产默认；罩子没点主动作时一直是 null）。
+     */
+    guideTarget: HomeDestination? = null,
+    onGuideTargetConsumed: () -> Unit = {}
 ) {
     var destination by rememberSaveable(stateSaver = HomeDestination.Saver) {
         mutableStateOf(HomeDestination.Home)
     }
     val context = LocalContext.current
+    // 直达导航：目标来了就跳，跳完立刻请宿主收回（不收回的话，下一次重组会再跳一次）。
+    LaunchedEffect(guideTarget) {
+        if (guideTarget != null) {
+            destination = guideTarget
+            onGuideTargetConsumed()
+        }
+    }
     // 首页那盏灯的状态机：**容器注册**（di/AppModule.kt 那颗 viewModel {}），挂 Activity 那一棵
     // ViewModelStore 上——所以子页来回、旋转都拿到同一颗，不会因为换 owner 而重建。
     // 重建本身也不会发请求（探针只在按 ▶ 时走），但共用一颗才让"上一次检查属于哪一组身份"
@@ -107,6 +126,9 @@ fun SetupRoot(
                     onNavigateFeedback = { destination = HomeDestination.FeedbackCases },
                     onNavigateProviders = { destination = HomeDestination.Providers },
                     onNavigateCaptureApps = { destination = HomeDestination.CaptureApps },
+                    // 按过"稍后"的人唯一的回程（G1b 接线单 §5）：先清掉盘上的 DEFERRED_TO_HINT，
+                    // 再走导航——顺序反过来的话，回到首页时游标还是"稍后"，罩子从此不再回来。
+                    onResumeGuide = { viewModel.resumeGuide(context) },
                     onBack = { (context as? Activity)?.finish() }
                 )
                 HomeDestination.FeedbackCases -> {

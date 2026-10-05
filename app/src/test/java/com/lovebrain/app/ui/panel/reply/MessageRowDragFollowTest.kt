@@ -400,15 +400,32 @@ class MessageRowDragFollowTest {
      * 同样要画——原话要的就是"只有备注、也能看到这行灰字"。
      * 这一格只买"两个分支都别漏"，画得对不对由 `ChatBubbleAppearanceTest` 那几格在树上判。
      * 反例：只在有聊天的那一支挂 ⇒ 数到 1 颗，红（用户首轮只有备注时看不见自己写的东西）；
-     * 反例：两支各画两遍（同一分支里长出新的一份）⇒ 数到 3 颗，红（同一句灰字出现两次）。
+     * 反例：两支各画两遍（同一分支里长出新的一份）⇒ 数到 3 颗，红（同一句灰字出现两次）；
+     * 反例：某一支改读宿主原文 `noteText` 或自己再拼一遍旧想法行 ⇒ 那句"实参里必须是折叠结果"红。
+     * ⚠ 实参按**括号配对**取，不按"同一行"取：调用点写成多行形制后，`AdvisorNoteLine(` 那一行
+     *   里没有 `advisorNoteText` 这颗字（W6 那一格红的就是这一档），而行内注释掩成空格后
+     *   长度不变 ⇒ 取到的仍是那次调用的实参，一字不多一字不少。
      */
     @Test
     fun `the note line is drawn in both the chat branch and the empty branch`() {
         val hits = linesWith("AdvisorNoteLine(")
         assertEquals("备注灰字只该在两个分支各画一次，实到：" + hits, 2, hits.size)
+        val noteArgumentSlices = Regex("AdvisorNoteLine\\(").findAll(source).map { match ->
+            val open = match.range.first + "AdvisorNoteLine".length
+            val close = SourceScan.closeIndexOf(source, open)
+            assertTrue(
+                "第 ${source.take(open).count { it == '\n' } + 1} 行那颗 AdvisorNoteLine 的括号没配上" +
+                    "（开 $open → 闭 $close），这把尺没咬住实参",
+                close > open + 10 && source[close - 1] == ')'
+            )
+            source.substring(open + 1, close - 1)
+        }.toList()
+        assertEquals("读到的实参数必须与调用点数一致：" + noteArgumentSlices.size, 2, noteArgumentSlices.size)
         // 两处都挂在同一个折叠结果上（不许一支读宿主原文、另一支自己再拼一遍旧想法行）
-        assertEquals("两处读的必须都是 foldAdvisorNote 的那一份：" + hits,
-            2, hits.count { "advisorNoteText" in it })
+        noteArgumentSlices.forEachIndexed { k, args ->
+            assertTrue("第 $k 处必须读折叠结果 advisorNoteText（实参里读不到这一颗）：" + args.take(120),
+                "noteText = advisorNoteText" in args)
+        }
         assertTrue("折叠只该有一颗真源：" + linesWith("foldAdvisorNote("),
             linesWith("foldAdvisorNote(").size == 2)   // 声明一处 + 列表里调用一处
     }

@@ -419,10 +419,12 @@ class GenerationEngine(
      *   由本轮推断的场景与当前时间）；画像、阶段、历史聊天/近期对话、经验、旧事项、
      *   表达偏好、持续意图**一条都不进**，因为 [PromptBuilder.buildProactiveUserPrompt]
      *   在这一档**一次知识库读取都不做**。
-     * - `false` → 逐字沿用原有上下文（画像 + 近期对话 + 草稿），字节级不变。
+     * - `false` → 普通分支带全部相关记忆（画像 + 近期对话 + 表达偏好），并且**先拼本轮真实输入**
+     *   （备注 / 本轮场景 / 本轮真实对话），再拼相关记忆。
      *
-     * [advisorNote] 是本轮军师备注（`ReplyDirective` 那一份），开启时它与草稿一起构成
-     * "本轮允许携带的全部用户输入"；关闭时主动开场原本不读它，保持原行为不硬塞。
+     * [advisorNote] 是本轮军师备注（`ReplyDirective` 那一份）。原始第 18 条之前，普通分支只读画像/近期
+     * 对话、从不引用 [messages] 与 [advisorNote]——用户补了背景但主动发看不见；现在两档都把它们拼进请求正文，
+     * 表达偏好也从 `understand/style.md` 真接了来源（不再是资产里写了却没接入的假声明）。
      */
     fun proactiveStream(
         requestId: String,

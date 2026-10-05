@@ -360,7 +360,13 @@ class UiStringLiteralBudgetTest {
         //   各指回  ）。射程结论不变：字面量写在 enum 构造参、顶层 const 与
         //   `when` 分支上，四个锚点从来都看不见；逐颗搬还会破
         //   `CorrectionRecordRowSemanticsTest` 的逐字断言、生成半中半英标签。
-        Kind.TEXT to 95,
+        // 95 → **90**（W7 2026-10-06，四栏合计 90+4+0+42 = 136，比上一版 95+6+0+42 = 143 少 7 条）：
+        //   本轮 L1b/M2c 把两颗页面上的自画件交回公共件（`LbListCard` / `LbFormField`+`LbFieldInput`），
+        //   文案因此从 `Text(` 那一栏落进 `Lb…(` 那一栏——**换桶不是还债**，所以 COMPONENT 那一栏
+        //   当场从 42 涨到 53、这一栏掉到 90，两栏一起看才是真相。这一栏的数字跟着实到走（降 5），
+        //   那一栏的 11 条则**逐颗搬进资源**（zh + en 同拍，见下面 COMPONENT 那一段），
+        //   搬完 COMPONENT 实测回到 42：棘轮一格没抬，还掉的是 TEXT 2 + DESC 2 + 净新增 4 条。
+        Kind.TEXT to 90,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是
@@ -377,7 +383,13 @@ class UiStringLiteralBudgetTest {
         //   棘轮只许往下走，抬预算等于让闸认输。
         //   ⚠ 同屏那颗 `if (isEditing) "保存修改" else "添加"` 在本栏记 **2 条**（隔着条件括号
         //   的两支都算，见 `expressionAt` 那段），是既有欠账，本轮没动它。
-        Kind.DESC to 6,
+        // 6 → **4**（W7 2026-10-06）：知识库母版页那两颗内联中文的 `contentDescription`
+        //   （HEAD 上在第 436 / 471 行：「重命名」「删除知识库」，挂在页面自画的那两颗图标动作上）消失了——
+        //   动作行整颗交回 `LbListCard`，名字改读资源（`a11y_action_edit` / `a11y_action_delete` /
+        //   本轮新增的 `a11y_action_rename`，zh + en 两份都在盘上）。**真还**：搬完 `KnowledgeBaseActivity.kt`
+        //   这一文件的 DESC 实到 0，而同批 COMPONENT 那一栏先被换成"组件实参里的内联中文"（17→22），
+        //   再把那 11 颗逐颗搬进资源才回到 42——两栏一起降才算还债，见下面那一栏那一段。
+        Kind.DESC to 4,
         Kind.STATE to 0,
         // 78 → **77**：`KbEditScreen` 那四条保存/冲突提示搬进资源。
         // ⚠ 这一栏上一格还涨过一次（78→81）：`LbPrimaryButton` 的锚点按括号配对取实参，
@@ -442,6 +454,24 @@ class UiStringLiteralBudgetTest {
         //   `MemoryCorrectionFlow` −5（"暂停时长"/"标记为错误"进各自 sheet title 资源，
         //   两颗"取消"复用 `a11y_action_cancel`、"确认"复用 `a11y_action_confirm`）。
         //   ⚠ 撞车就复用既有短词 key，不另造第二份；两栏一起降 = 真还（TEXT −6 / COMPONENT −8）。
+        // 42 → **53** → **42**（W7 2026-10-06，本轮唯一一次"这一栏涨过"，涨完当天就还回去）：
+        //   涨的 11 颗全部来自本轮换骨架的两个文件，逐文件对 HEAD 复算（第二把尺与本文件同判据，
+        //   两把尺在同一棵树上读数一致 90/4/0/53 才敢动这张表）：
+        //   ① `KnowledgeBaseActivity.kt` +5：「当前使用」「阶段：X」「已对话 N 轮」（L1b 把 meta 从一个
+        //     整句拆成两段）、「重命名」（原来挂在自画图标的 contentDescription 上，DESC 那一栏的 −1
+        //     就是它）、「导出」（动作行归公共件后新落进 `LbListCardAction.secondary(…)`）。
+        //   ② `ui/home/ProviderSection.kt` +6：M2c 把裸 `Text(label)` 上提成 `LbFormField.label =` /
+        //     `LbFieldInput(placeholder =)`，于是「供应商名称」「接口地址（自动补全）」从 TEXT 栏
+        //     落进这一栏（**换桶，不是还债**——同一批 TEXT 那栏 −3 就是证据），
+        //     另有「名称」「留空保留原 Key」「模型名称」×2 是新落进来的四颗。
+        //   还法：11 颗逐颗接 `stringResource`，中英同拍新增 10 个 key（「模型名称」两处共用一颗，
+        //     所以 11 颗字面量对应 10 个 key：`kb_card_in_use` / `kb_card_stage` / `kb_card_turns` /
+        //     `a11y_action_rename` / `a11y_action_export` / `provider_form_name_label` /
+        //     `provider_form_name_placeholder` / `provider_form_base_url_label` /
+        //     `provider_form_key_placeholder` / `provider_form_model_name_label`）。
+        //   搬完实扫：COMPONENT **53 → 42**（与预算一字不差，**没有抬表**）、TEXT 90、DESC 4、STATE 0。
+        //   ⚠ 这一栏买到的教训：换骨架的活干完必须当场把落进组件实参的中文接上资源，
+        //     否则下一轮这把尺只剩"抬数字认输"一条路——而抬表是不许的。
         Kind.COMPONENT to 42
     )
 

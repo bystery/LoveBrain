@@ -2,9 +2,13 @@ package com.lovebrain.app.ui.panel.reply
 
 import android.content.Context
 import android.view.View
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
@@ -16,6 +20,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.ChatOutgoingBg
 import com.lovebrain.app.core.designsystem.PrimaryLight
 import com.lovebrain.app.core.designsystem.SurfaceCard
@@ -135,6 +140,13 @@ class ChatBubbleAppearanceTest {
     /** 折叠那一对的锚点文案：源在 `MessageList.MessageBody` 那一处（本轮没进资源，改产品文案要回来同步） */
     private val expandWords = "展开"
     private val collapseWords = "收起"
+
+    /**
+     * 备注那一行的自然高对照哨兵（测试侧锚点，不进生产）：
+     * 与备注**同一颗字形档**的单行/双行两颗 `Text`，用来现量"一行"与"两行"这两个数。
+     */
+    private val NOTE_RULER_ONE_LINE = "note_line_ruler_one"
+    private val NOTE_RULER_TWO_LINES = "note_line_ruler_two"
 
     private val edited = mutableListOf<Int>()
     private val noteClicks = mutableListOf<Int>()
@@ -559,13 +571,23 @@ class ChatBubbleAppearanceTest {
     }
 
     /**
-     * 备注钉在**最后一个聊天气泡下面**（ 原话），而且它自己是 48dp 热区的一颗入口。
+     * 备注钉在**最后一个聊天气泡下面**（ 原话），而它自己那一颗粒就是热区：整行宽、带点击落点、
+     * 读屏里是 Button——不是"外层套个大盒子、点击仍挂在子节点上"那种装饰热区。
      * 反例：把备注挂到列表上方或塞进 LazyColumn 尾部跟着滚 ⇒ 第一句红；
-     * 反例：只留一行裸文字（旧空态那颗被投诉的 28dp 形状）⇒ 热区那句红。
+     * 反例：只留半行宽 / 把点击挪到子节点上（外层那颗没身份）⇒ 第二、三句红；
+     * 反例：把 `heightIn(min = 48)` 大盒子抄回来（原话第 15 条撤的那一档）⇒ 最后一句红
+     *        （这一格走 1.0 字档：`AppTypography.labelMedium` 行高 16sp ⇒ 现量的一行 ≈16dp、
+     *         一行半 ≈24dp，48dp 稳稳越线）。
+     * ⚠ 这一档随 TEAM_RULES §3 的三轴分离改过：**可见尺寸**与**触摸热区**不再由同一颗 min 高一起买。
+     *    备注那一行现在买的是"整行宽 + 可点身份"，高度只许是一行字高；取舍与替代出口记在
+     *    `evidence\2026-10-06-early\impl-W7-R-reply.md`。
      */
     @Test
     fun `the note sits under the last bubble and keeps a full touch row`() {
-        mount(listOf(shortHer, shortMe, idea), noteText = "先哄两句")
+        mountNoteWithLineRulers(
+            messages = listOf(shortHer, shortMe, idea),
+            noteText = "先哄两句"
+        )
         val bubbles = laidTagged(MESSAGE_BUBBLE_TEST_TAG)
         val note = nodeOf(ADVISOR_NOTE_TEST_TAG, 0)
         val lastBubble = bubbles.last()
@@ -574,7 +596,18 @@ class ChatBubbleAppearanceTest {
             note.topDp >= lastBubble.topDp + lastBubble.heightDp
         )
         assertTrue("备注该占满自己那一行的宽（它就是热区）：" + note.describe(), note.widthDp > 300f)
-        probe.assertTargetsMeetFloor(listOf(note), 48f, "军师备注那一行")
+        assertTrue(
+            "热区必须是**带点击落点与角色身份的那一颗自己**：" + note.describe(),
+            note.role == "Button"
+        )
+        assertTrue(
+            "点击落点必须挂在备注这一行自己身上，不是外面那层容器：" +
+                rule.onAllNodes(hasTestTag(ADVISOR_NOTE_TEST_TAG) and hasClickAction())
+                    .fetchSemanticsNodes().size,
+            rule.onAllNodes(hasTestTag(ADVISOR_NOTE_TEST_TAG) and hasClickAction())
+                .fetchSemanticsNodes().size == 1
+        )
+        assertNoteRowIsOneTextLine(note, "备注那一行")
     }
 
     /**
@@ -582,28 +615,162 @@ class ChatBubbleAppearanceTest {
      * 大字号（2.0 档）+ 一定撞出宽度上限的长备注，仍只许占一行的高度。
      *
      * ⚠ 本项目已知：`maxLines + Ellipsis` 裁切时语义树永远报完整原串——所以这里**不写**
-     *   "读不到省略号"那种没牙的文本断言，改用同组件的自然高对照：
-     *   反例：把 `maxLines` 放宽到 2 ⇒ 2.0 档那一行灰字量到两行高（≈88dp），红；
+     *   "读不到省略号"那种没牙的文本断言，改用同组件的自然高对照（[mountNoteWithLineRulers] 那两颗哨兵）。
+     *   反例：把 `maxLines` 放宽到 2 ⇒ 2.0 档那一行字量到两行高（≈64dp），越过"一行半"那条中线，红；
      *   反例：把它垫成两行高的卡（旧 IdeaSection 那一档）⇒ 同一条红；
-     *   反例：把字号档位写死（不受 LocalDensity.fontScale 走）⇒ 短/长两格读回同一个"永远 48"，
-     *         此时下面那句"短备注也只有这一档高"与"长备注不许长高"一起说明量到的是盒子而不是裁切。
+     *   反例：字号档写死（不受 LocalDensity.fontScale 走）⇒ 盒子读回 1.0 档的 21dp，
+     *         低于这一格现量的一行高（32dp），盒子那句红；
+     *   反例：单/双两行哨兵读回同一个数（字体档根本没进组合）⇒ [noteLineHeights] 先红，不许空过。
+     * ⚠ 2.0 这一档**故意看不见"48dp 大盒子被抄回来"**：那一档现量的一行半中线正好是 48dp。
+     *   证人住在 1.0 字档那一格（[the note sits under the last bubble and keeps a full touch row]），
+     *   别把这一格当成那一档的重复守卫。
      */
     @Test
     fun `a long note stays one display line even at the largest font step`() {
-        mount(listOf(shortHer), noteText = longNote, matrix = UiMatrix(360, fontScale = 2.0f))
+        mountNoteWithLineRulers(
+            messages = listOf(shortHer),
+            noteText = longNote,
+            matrix = UiMatrix(360, fontScale = 2.0f)
+        )
         val note = nodeOf(ADVISOR_NOTE_TEST_TAG, 0)
+        assertNoteRowIsOneTextLine(note, "长备注")
         assertTrue(
-            "长备注在 2.0 字档只许占一行（48dp 热区那一档），实测 " + note.describe(),
-            note.heightDp in 44f..53f
+            "长的那份仍占满整行宽（不许缩成半行、也不许撑出卡片）：" + note.describe(),
+            note.widthDp > 300f
         )
     }
 
-    /** 同一颗组件的自然高对照：短备注也只有这一档高（长的那格红时，这一格说清盒子本身没变） */
+    /**
+     * 同一颗组件的自然高对照：**长备注与短备注吃的是同一颗盒子**（当场对数，不是两格各抄同一个区间）。
+     * 两棵列表在同一格里各画一份（长的、短的），高的那一档由 [noteLineHeights] 现量。
+     * 反例：长的那份自己换档（多留一行、或多一圈内边距）⇒ 等值那句红；
+     * 反例：短的那份被缩成裸文字（去掉竖内边距之外再削一档）⇒ 等值那句红；
+     * 反例：`maxLines` 只对长的那份生效（另一份本来就一行，看不出回归）⇒ 长的那句"盒子一行半"红。
+     */
     @Test
     fun `a short note takes exactly the same box`() {
-        mount(listOf(shortHer), noteText = "先听我说完", matrix = UiMatrix(360, fontScale = 2.0f))
-        val note = nodeOf(ADVISOR_NOTE_TEST_TAG, 0)
-        assertTrue("短备注也该是那一颗 48dp 热区行，实测 " + note.describe(), note.heightDp in 44f..53f)
+        mountNoteWithLineRulers(
+            messages = listOf(shortHer),
+            noteText = longNote,
+            twinNoteText = "先听我说完",
+            matrix = UiMatrix(360, fontScale = 2.0f)
+        )
+        val notes = probe.laid(
+            rule.onAllNodes(hasTestTag(ADVISOR_NOTE_TEST_TAG), useUnmergedTree = true)
+                .fetchSemanticsNodes().map { probe.of(it) }
+        ).sortedBy { it.topDp }
+        assertEquals("长/短两份备注都该量到：" + notes.joinToString { it.describe() }, 2, notes.size)
+        val longBox = notes.first()
+        val shortBox = notes.last()
+        assertTrue(
+            "长备注与短备注必须是同一颗盒子（长 " + longBox.describe() + " / 短 " + shortBox.describe() + "）",
+            kotlin.math.abs(longBox.heightDp - shortBox.heightDp) <= 1f
+        )
+        assertNoteRowIsOneTextLine(longBox, "长备注", textIndex = 0)
+        assertNoteRowIsOneTextLine(shortBox, "短备注", textIndex = 1)
+    }
+
+    /**
+     * 备注那一行的**自然高对照**（TEAM_RULES §3 三轴分离之后剩下来的那一把尺）。
+     *
+     * 为什么不再拿 48dp 量它：`AdvisorNoteLine` 里那颗 `heightIn(min = 48)` 大盒子随用户原话第 15 条
+     * 一起撤了（原话要的是"最后一条真实消息下面**一行黄色小字**"，而固定 48dp 那一档把消息列的
+     * 可见高度吃掉约三分之一——`evidence\2026-10-05-feedback\source-01-input-note.md` §2.2 记着这一笔）。
+     * 于是"热区"这一轴改由**整行宽 + 可点身份**承担（下面那格钉），"可见尺寸"这一轴只许是一行字高。
+     * 取舍已记进本轮交接件；要回到 48dp 档必须在 `ReplyInput.kt` 那颗件的外层补透明热区（禁区，见交接件）。
+     *
+     * 怎么做到不留魔法数字：哨兵与被测那一行用**同一颗字形档**（`AppTypography.labelMedium`）、
+     * 同一个 `LocalDensity`，所以"一行高 / 两行高"是这一格里现量出来的，不是抄来的常数。
+     */
+    private fun mountNoteWithLineRulers(
+        messages: List<ChatMessage>,
+        noteText: String,
+        twinNoteText: String? = null,
+        matrix: UiMatrix = UiMatrix(360)
+    ) {
+        edited.clear()
+        noteClicks.clear()
+        rule.setContent {
+            drawRoot = LocalView.current
+            matrix.RenderIn(LocalDensity.current.density) {
+                Column {
+                    MessageList(
+                        messages = messages,
+                        editingIndex = -1,
+                        onReorder = { _, _ -> },
+                        onEdit = { edited.add(it) },
+                        onDelete = {},
+                        noteText = noteText,
+                        onEditNote = { noteClicks.add(1) },
+                        modifier = Modifier.weight(1f)
+                    )
+                    // 长/短两份备注吃的是同一颗盒子：两棵列表各画一份，同一格内直接对数
+                    if (twinNoteText != null) {
+                        MessageList(
+                            messages = listOf(shortMe),
+                            editingIndex = -1,
+                            onReorder = { _, _ -> },
+                            onEdit = { edited.add(it) },
+                            onDelete = {},
+                            noteText = twinNoteText,
+                            onEditNote = { noteClicks.add(1) },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    Text(
+                        text = "国",
+                        style = AppTypography.labelMedium,
+                        maxLines = 1,
+                        modifier = Modifier.testTag(NOTE_RULER_ONE_LINE)
+                    )
+                    Text(
+                        text = "国\n国",
+                        style = AppTypography.labelMedium,
+                        maxLines = 2,
+                        modifier = Modifier.testTag(NOTE_RULER_TWO_LINES)
+                    )
+                }
+            }
+        }
+        rule.mainClock.advanceTimeBy(16L)
+    }
+
+    /**
+     * 现量这一档字号的"一行高"与"两行高"。
+     * 哨兵自己也要有牙：两档读回同一个数（字体档没进组合）时这一格先红，不许让判据空过。
+     */
+    private fun noteLineHeights(): Pair<Float, Float> {
+        val one = nodeOf(NOTE_RULER_ONE_LINE, 0).heightDp
+        val two = nodeOf(NOTE_RULER_TWO_LINES, 0).heightDp
+        assertTrue("两行哨兵必须真的比单行高（字体档没跑起来时这一格在空过）：一行 $one、两行 $two",
+            two > one * 1.5f)
+        return one to two
+    }
+
+    /**
+     * 备注那一行"只许占一行"的判据：**盒子与文字各判一次，都落在现量的一行~一行半之间**。
+     * 一行半 = 现量的单/双两档之中线；那一行自己的竖内边距（`Spacing.xs`×2 = 4dp）落在这一截里，
+     * 多出一整行就越过中线条红。
+     * 反例：把 `maxLines` 放宽到 2 ⇒ 文字与盒子都长到两行高，两句一起红；
+     * 反例：把盒子钉成定高而文字仍在两行里跑（"只改盒子"那种写法）⇒ 文字那句红；
+     * 反例：把 48dp 大盒子抄回来（1.0 字档一行 = 17dp、中线 25.5dp）⇒ 盒子那句红。
+     */
+    private fun assertNoteRowIsOneTextLine(note: SemanticsProbe.Target, who: String, textIndex: Int = 0) {
+        val (one, two) = noteLineHeights()
+        val oneAndAHalf = (one + two) / 2f
+        assertTrue(
+            "$who 的盒子只许占一行（现量：一行 $one、一行半 $oneAndAHalf、实测 " + note.describe() + "）",
+            note.heightDp + 0.5f >= one && note.heightDp <= oneAndAHalf
+        )
+        val textNode = probe.of(
+            rule.onAllNodes(hasText(ADVISOR_NOTE_PREFIX, substring = true), useUnmergedTree = true)[textIndex]
+                .fetchSemanticsNode()
+        )
+        assertTrue(
+            "$who 的**文字自己**也只许一行（钉死盒子而字在两行里跑 = 把'一行'做成装饰）：" +
+                textNode.describe(),
+            textNode.heightDp <= oneAndAHalf
+        )
     }
 
     /**

@@ -12,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -63,11 +64,19 @@ import org.robolectric.annotation.GraphicsMode
  * · **保留**：挂上就不再卸。反例：`if (page == 0) … else …`（切档即卸载另一页）或给页槽位
  *   套 `key(currentPage)` ⇒ 那一页 `remember` 里的草稿回不来。
  *   反例：两页一上来全挂 ⇒ "打开面板不许就去读谈心历史"红（那颗读的是盘，主线程）。
- * · **四条优先级**：①子层（气泡横滑删除 / 页内横向卡条）先消费就先赢；②没越过触控 slop
- *   或不是横向主导 ⇒ 不接管；③横向主导但目标页不存在 ⇒ 两端没有第三页；④剩下的区域才归切页；
- *   ⑤头部拖移是另一层的事。①各有一格用**生产子件**跑，并且每格同时判"子件真的动了"与
- *   "页没切"，再用"同一记行程落在页面其余区域必须切得动"当正控制——只判后半的话
- *   "父层根本没手势"也能绿，那是恒真。
+ * · **四条优先级**：①**这一记确实是横向主导**且子层（气泡横滑删除 / 页内横向卡条）先消费 ⇒ 让位；
+ *   ②没越过触控 slop 或不是横向主导 ⇒ 不接管；③横向主导但目标页不存在 ⇒ 两端没有第三页；
+ *   ④剩下的区域才归切页；⑤头部拖移是另一层的事。①各有一格用**生产子件**跑，并且每格同时判
+ *   "子件真的动了"与"页没切"，再用"同一记行程落在页面其余区域必须切得动"当正控制——
+ *   只判后半的话"父层根本没手势"也能绿，那是恒真。
+ *   ⚠ ①这一档本轮**按轴筛**过：`positionChangeConsumed()` 那颗读数不分轴（纵向滚动容器消费后
+ *   同样为 true），照原字面判就等于"这一记手势里出现过一次纵向消费 ⇒ 永久放弃切页"，
+ *   那正是原始第 11 条"要滑好几次"的形状。`子层消费过位移就绝不再试着切页` 那一格现在
+ *   同时钉"横向消费要让位"与"纵向消费不判死刑"两半。
+ * · **松手判定**（原始第 11 条）：位移过 `0.25 × 页宽` 那条线 **或** 末段甩速过 400dp/s 那道门，
+ *   任一够门就翻页（基线 v1.1 §6.5）。注入手势这一侧读不到可信的甩速（`HorizontalVelocityEstimator`
+ *   明写"时间没走动一律 0"，而注入节奏又不是真机的采样率），所以**这一族只按位移轴注入判据**，
+ *   速度那一轴整格交给 `PanelPageMotionTest` 的纯函数格钉；两族不许互相冒充。
  *
  * 真机边界（不假装测过）：手指跟手手感、IME 与悬浮窗 flags 的实际起落仍归真机验收；
  * 这里量的是几何、语义、回调落点与"那一页的状态还活不活着"。
@@ -135,7 +144,12 @@ class PanelPageSwipePagerTest {
      */
     @Composable
     private fun SimplePage(index: Int, extra: @Composable () -> Unit = {}) {
-        remember(index) { mountCounts[index] += 1 }
+        // 挂载计数走 `LaunchedEffect(index)`，不走 `remember(index) { … += 1 }`：
+        // 后者 lint 判 `RememberReturnType`（remember 不许返回 Unit，这是 Error 档，不是提示），
+        // 而且"在 remember 的计算体里改外部状态"本身就是把组合期当副作用桶。
+        // 语义等价：两边都是"键变了才跑一次"，测试读的是挂载次数而不是重组次数；
+        // 读本数的格子都经过 `waitForIdle`/`runOnIdle`（`mountPager:188`），副作用那一拍一定已落。
+        LaunchedEffect(index) { mountCounts[index] += 1 }
         var draft by remember { mutableStateOf("draft-$index") }
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
@@ -202,10 +216,19 @@ class PanelPageSwipePagerTest {
         assertTrue("$why。实到「$tag」=$size；整片读数：" + tree(), size > 0)
     }
 
-    /** 走完一次手势的余波：过渡动画（220ms）与 owner 交接兜底（260ms）都要落地 */
+    /** 走完一次手势的余波：过渡动画（`PanelPageMotion.SLIDE_MS` = 200ms）与 owner 交接兜底（260ms）都要落地 */
     private fun settle() {
         rule.mainClock.advanceTimeBy(400L)
         rule.runOnIdle { }
+    }
+
+    /**
+     * 手动推 n 帧（一帧 16ms）：关掉 `autoAdvance` 之后唯一的推进办法，
+     * 与本仓库既有的写法同源（`PanelUsageMetricSemanticsTest.kt:97`、
+     * `ReplyPrimaryActionsContractTest.kt:180`）。
+     */
+    private fun stepFrames(n: Int) {
+        repeat(n) { rule.mainClock.advanceTimeBy(16L) }
     }
 
     /**
@@ -238,11 +261,19 @@ class PanelPageSwipePagerTest {
     // ─────────────────── A. 仲裁判据本身（纯函数） ───────────────────
 
     /**
-     * ① **子层已消费位移 = 让位**，而且这一档排在所有判据**之前**：横向再足、目标页再存在，
-     * 也不许换页。
-     * 反例：把 `childConsumedPosition` 挪到"横向主导"之后判 ⇒ 三格全红
-     *   （气泡横滑删除与页内卡条被父层抢走）；
-     * 反例：只在手势第一帧读这颗 ⇒ 后面几帧又试着切页，同样红在这里。
+     * ① **横向子层已消费位移 = 让位**：横向再足、目标页再存在，也不许换页。
+     *
+     * ⚠ 本轮改过这一档的**位置**（原判据把 `childConsumedPosition` 排在所有判据之前，
+     * 也就是"这一记手势里出现过任何一次位置消费 ⇒ 永久放弃切页"）。那不是形制问题而是个真 bug：
+     * `positionChangeConsumed()` 不分轴，LazyColumn / verticalScroll 消费**纵向**位移后同一颗
+     * 读数一样是 true ⇒ 用户"斜着起手再转正"的一记横滑会被第一帧的纵滚消费判死，
+     * 读起来就是原始第 11 条的"要滑好几次"。现在先确认这一记确实是横向主导，再谈让位，
+     * 三条旧断言（横向够线 + 消费 ⇒ DeferToChild）**一条没松**，只是多了下面两句新的：
+     * 纵向主导那一档不许再被判成让位。
+     *
+     * 反例：让位判整个删掉 ⇒ 前三句红（一记手势同时删掉一条消息又把页切走）；
+     * 反例：把 `childConsumedPosition` 挪回第一位（不看轴）⇒ 第 4、5 句红（纵滚一次判死刑）；
+     * 反例：只在手势第一帧读这颗 ⇒ 后面几帧又试着切页，前三样同样红在这里。
      */
     @Test
     fun `子层消费过位移就绝不再试着切页`() {
@@ -260,6 +291,16 @@ class PanelPageSwipePagerTest {
             "谈心页左滑（本来就没有第三页）也让位，而不是回绕",
             PageSwipeOutcome.DeferToChild,
             PageSwipe.resolve(1, PANEL_PAGE_COUNT, 1000f, -900f, 0f, 8f, true)
+        )
+        assertEquals(
+            "纵向主导那一记被纵滚容器消费过：不是让位，也仍然不是切页（下一帧还能转正）",
+            PageSwipeOutcome.NotAHorizontalDrag,
+            PageSwipe.resolve(0, PANEL_PAGE_COUNT, 1000f, 20f, 300f, 8f, true)
+        )
+        assertEquals(
+            "同一记行程把轴转过来（横向赢了）：这时才轮到让位那一档",
+            PageSwipeOutcome.DeferToChild,
+            PageSwipe.resolve(0, PANEL_PAGE_COUNT, 1000f, 300f, 20f, 8f, true)
         )
     }
 
@@ -334,25 +375,47 @@ class PanelPageSwipePagerTest {
     }
 
     /**
-     * 松手换页**只看行程**过没过那条线，线的位置是页宽的一个比；线的两侧与压线各钉一格，
-     * 两个方向同一条线；在两端即使过线也不许切。
-     * 反例：比从 0.34 抬到 0.5 ⇒ `commitLineFor(1000)=340` 与"压线该换"两格红
-     *   （窄面板上滑到底也换不了页）；
+     * 松手换页的两条门：**行程过 `0.25 × 页宽`** 或 **末段甩速过 400dp/s**，任一够就算（或关系，
+     * 基线 v1.1 §6.5）。线的两侧与压线各钉一格，两个方向同一条线；在两端即使过线也不许切。
+     *
+     * ⚠ 这一格原来钉的是 `commitLineFor(1000) == 340` 与"**只看行程、判据签名里压根没有速度**"
+     * 那颗旧形制（连同 `:543` 的"短行程快擦不许换页"）。本次需求（原始第 11 条"一点都不丝滑"）
+     * 把这两样都改掉了：0.34 降成 0.25，并加上速度门 ⇒ 旧数字与新"不看速度"两句**必须**红，
+     * 这是合同被按用户原话重写，不是产品回归（`TEAM_RULES.md` §1 第 4 类不能否决第 1 类）。
+     * 改判据的同时，旧格买过的东西一样没丢：压线用 `>=`、两轴同一条线、页宽没量到时不许凭空够线。
+     *
+     * 反例：比从 0.25 抬到 0.5 ⇒ `commitLineFor(1000)=250` 与"压线该换"两格红；
      * 反例：比调到 0.1 ⇒ "差一点点不许换"红（擦一下就换页）；
-     * 反例：给甩速开后门 ⇒ 判据签名里压根没有速度这个入参，"短行程那一格"照样红在这里；
-     * 反例：页宽 0 时把 0 行程当够线 ⇒ "页宽没量到"那一格红。
+     * 反例：**只写位移**（把速度项删掉）⇒ "行程不够但甩速过门"那一格红
+     *   （快扫一小段被弹回去，正是用户说的不丝滑）；
+     * 反例：把"或"写成"且"⇒ 同一格红（慢滑到底也不换了）；
+     * 反例：页宽 0 时把 0 行程当够线 ⇒ "两轴都不够"那一格红。
      */
     @Test
-    fun `松手换页只看行程过没过那条线`() {
-        assertEquals(340.0, PageSwipe.commitLineFor(1000f).toDouble(), 0.0)
-        assertTrue("正好压线就该换（判据是 >=，不是 >）", PageSwipe.shouldCommit(-340f, 1000f))
-        assertTrue("向左同样过线", PageSwipe.shouldCommit(340f, 1000f))
-        assertFalse("差一点点不许换（339.99 < 340）", PageSwipe.shouldCommit(-339.99f, 1000f))
-        assertFalse("左右两侧同一条线", PageSwipe.shouldCommit(339.99f, 1000f))
-        assertFalse("页宽没量到不许凭空够线", PageSwipe.shouldCommit(-500f, 0f))
+    fun `松手换页看行程或甩速任一过门`() {
+        assertEquals(250.0, PageSwipe.commitLineFor(1000f).toDouble(), 0.0)
+        assertTrue("正好压线就该换（判据是 >=，不是 >）", PageSwipe.committedByTravel(-250f, 1000f))
+        assertTrue("向左同样过线", PageSwipe.committedByTravel(250f, 1000f))
+        assertFalse("差一点点不许换（249.99 < 250）", PageSwipe.committedByTravel(-249.99f, 1000f))
+        assertFalse("左右两侧同一条线", PageSwipe.committedByTravel(249.99f, 1000f))
+        assertFalse("页宽没量到不许凭空够线", PageSwipe.committedByTravel(-500f, 0f))
+        // —— 速度那一轴（单凭即过门；单位是 dp/s，换算归手势侧）
+        assertTrue("甩速 400dp/s 压线即过门", PageSwipe.committedByFling(-400f))
+        assertFalse("差一点点不算甩", PageSwipe.committedByFling(-399.99f))
+        assertTrue(
+            "行程只有 100px（不够 250 那条线）但甩速过门 ⇒ 该翻页（只写位移的那颗坏实现红在这儿）",
+            PageSwipe.shouldCommit(-100f, 1000f, -900f)
+        )
+        assertFalse("两轴都不够不许翻", PageSwipe.shouldCommit(-100f, 1000f, -100f))
+        assertFalse("页宽没量到、速度读数也没有 ⇒ 两轴都关着", PageSwipe.shouldCommit(-500f, 0f, 0f))
+        // —— 落点
         assertEquals("过线：回复 → 谈心", 1, PageSwipe.commitTarget(0, -400f, 1000f, PANEL_PAGE_COUNT))
         assertEquals("过线：谈心 → 回复", 0, PageSwipe.commitTarget(1, 400f, 1000f, PANEL_PAGE_COUNT))
         assertEquals("没过线：留在原页", 0, PageSwipe.commitTarget(0, -100f, 1000f, PANEL_PAGE_COUNT))
+        assertEquals(
+            "没过线但甩了一下：跟速度方向走",
+            1, PageSwipe.commitTarget(0, -100f, 1000f, PANEL_PAGE_COUNT, -900f)
+        )
         assertEquals(
             "过线但已经是最右一页：还是原页（不许切出不存在的第三页）",
             1, PageSwipe.commitTarget(1, -400f, 1000f, PANEL_PAGE_COUNT)
@@ -360,6 +423,10 @@ class PanelPageSwipePagerTest {
         assertEquals(
             "过线但已经是最左一页：还是原页",
             0, PageSwipe.commitTarget(0, 400f, 1000f, PANEL_PAGE_COUNT)
+        )
+        assertEquals(
+            "速度过了门也一样：最左一页被往右甩不许回绕",
+            0, PageSwipe.commitTarget(0, -20f, 1000f, PANEL_PAGE_COUNT, 900f)
         )
     }
 
@@ -468,14 +535,25 @@ class PanelPageSwipePagerTest {
     }
 
     /**
-     * ②④ **只有页面其余区域才切页**：够线才换、快擦不换，而点击与纵向滚动都不许被父层吃掉
+     * ②④ **只有页面其余区域才切页**：够线才换、慢擦一小段不换，而点击与纵向滚动都不许被父层吃掉
      * （第5节第3条 明写"不能在整个面板最外层无条件 consume 全部移动事件"）。
+     *
+     * ⚠ 第三段（短行程慢擦）原来钉的是"**快擦**（越过 slop、没越过提交线）一律不投写"。
+     * 那句在旧形制里是**恒真**的：旧判据只看行程，所以任何短行程都不翻页。本轮按基线 v1.1 §6.5
+     * 加了 400dp/s 那道速度门之后，"短行程"三个字不再自动等于"不翻页"——够快就得翻。
+     * 于是这一段的口径收窄成它能判的那一轴：**36px 行程（提交线 90px）+ 每步 3px 的慢擦**，
+     * 甩速按本机注入节奏（≈15ms/步 ⇒ ≈200dp/s）压在门以下；注入不给时间差时
+     * `HorizontalVelocityEstimator` 按口径直接回 0，同样不过门。
+     * 速度那一轴的判据整格交给 `PanelPageMotionTest` 的纯函数格钉（注不出的那一轴交给纯函数，
+     * 是本仓库记过的坑；两族各买各的，不许互相冒充）。
      *
      * 反例：换成 `detectHorizontalDragGestures` 或从 `Initial` 起手势（父层先吃）⇒
      *   "点得动"与"纵向滚得动"两半都红；
-     * 反例：一接管就换页（不看提交线）⇒ "短行程快擦不许换页"红；
+     * 反例：一接管就换页（不看提交线）⇒ 慢擦那一段红；
+     * 反例：提交线比从 0.25 抬到 0.5 ⇒ 第四段红（窄面板滑到底也换不了页）；
+     * 反例：比调到 0.05 ⇒ 慢擦那一段红（擦一下就换页）；
      * 反例：不够线时忘了弹回（松手不回 0）⇒ "弹回之后还在 0"红（半张页留在屏上）；
-     * 反例：提交线写成固定 px 而不是页宽比 ⇒ 换视口时最后两格红（一档过线一档不过线）。
+     * 反例：提交线写成固定 px 而不是页宽比 ⇒ 换视口时红（一档过线一档不过线）。
      */
     @Test
     fun `页面其余区域才切页：点与纵向滚动都不该被吃掉`() {
@@ -537,10 +615,15 @@ class PanelPageSwipePagerTest {
         assertTrue("纵向拖动不许换页：" + pageRequests, pageRequests.isEmpty())
         assertEquals("纵向拖动之后页面还在原位", 0.0, markLeft(0), 1.0)
 
-        // ③ 快擦（越过 slop、没越过提交线）：不换页，页面自己弹回原位
+        // ③ 短行程慢擦（越过 slop、没越过提交线）：不换页，页面自己弹回原位
         rule.runOnIdle { pageRequests.clear() }
-        dragOnFiller(-commitLine * 0.4f)
-        assertTrue("短行程快擦不许换页：" + pageRequests, pageRequests.isEmpty())
+        dragOnFiller(-commitLine * 0.4f, steps = 12)
+        assertTrue(
+            "短行程慢擦不许换页：" + pageRequests +
+                "（每步 " + ((commitLine * 0.4f) / 12f) + "px；本机注入节奏约 15ms/步 ⇒ ≈200dp/s，" +
+                "在 400dp/s 那道门以下 ⇒ 这一格判的是位移轴）",
+            pageRequests.isEmpty()
+        )
         assertEquals("弹回之后回复那一页还在 0", 0.0, markLeft(0), 1.0)
 
         // ④ 够线的横滑：换页，而且只写一次
@@ -548,6 +631,158 @@ class PanelPageSwipePagerTest {
         dragOnFiller(-commitLine * 1.4f)
         assertEquals("够线就该换页：" + pageRequests, listOf(1), pageRequests.toList())
         assertEquals("换完画的是谈心那一页", 0.0, markLeft(1), 1.0)
+    }
+
+    /**
+     * **拖动过程中页面跟着手指走**（原始第 11 条"一点都不丝滑"的第一半：松手才整页跳＝不跟手）。
+     *
+     * ── 这一格的判据换过一次形状，两次实测都留痕（别把"我改绿了"读成"它本来就对"）──────
+     * W6 那一版钉的是"手指**还按着**的那一帧"：注入 down + 四步 moveTo、不抬指，然后读两页的落点。
+     * 结果一路红（`expected:-180.0 but was:0.0`）。W7 先按"读数前没推帧"补了 4 帧，仍然读不到，
+     * 于是把逐帧读数打进断言消息当场量了一次，实到：
+     * `frame0=0.0 frame1=0.0 frame2=0.0 frame3=0.0 frame4=0.0`——**按住那一拍在本仪器上取不到**。
+     * 同一根相机在**抬指后**的第一帧就能报出非 0 落点（隔壁那格 `点 tab 换页的逐帧读数…` 的
+     * [0.0, 0.0, 354.3, 332.3, …] 就是它的正向证人：值确实经 `graphicsLayer` 进语义树，
+     * 只是要有时钟推进才有那一拍），所以这不是生产没落笔，而是"按住不抬指"这个状态
+     * 在 JVM 上没有产出把图层落点送进语义树的那一拍。
+     *
+     * ⇒ 这一格改判**可测的那一半**，而且判得更狠：松手后的**第一帧**必须从手指停下那一格
+     *   （半页宽）接着走。三种坏形状在这一句上分别红：
+     * · 松手才整页跳（不跟手）：相机全程停在 0 ⇒ 第一帧从 0 起飞（约 -28px），离 -177 差整段行程；
+     * · 一接管就整页飞：第一帧直接落在终点 -354，同样超容差；
+     * · 抬指前就投了页号 / 相机被页号带着走：`settle` 之后那一句（整页落满）与
+     *   `只有一颗真owner`、`页面其余区域才切页` 两格一起挡。
+     * "没抬指不许投任何页号写"这一句从本格撤走，不是丢掉：它由 `:462-482` 那族（起始零次、
+     * 一记滑动只投一次、边上不许投）与 `:594` / `:609`（没滑、纵向都不投）钉着。
+     *
+     * ⚠ 仍未验证：**手指按住不动、画面是否逐帧跟着手指走**——真机录像档（指导书 §15.3），
+     * 本 JVM 仪器看不见那一拍。
+     */
+    @Test
+    fun `横滑过程中页面跟着手指走`() {
+        val mode = PageMode()
+        mountPager(mode)
+        val anchor = firstNode(fillerTag).boundsInRoot
+        val start = Offset(anchor.center.x, anchor.center.y)
+        val travel = -pageWidthPx * 0.5f          // 半页宽：够线（0.25 页）但不重要，重要的是起点
+        val tolerance = (pageWidthPx * 0.12f).toDouble()   // 夹持与逐帧写最多差这么多，再多就是没跟手
+        firstInteraction(PANEL_PAGE_PAGER_TEST_TAG).performTouchInput {
+            down(start)
+            for (i in 1..4) moveTo(Offset(start.x + travel * i / 4f, start.y))
+            up()
+        }
+        // ── 本仪器的盲区（W6/W7 两次实测，留痕而不是藏起来）────────────────────
+        // "手指按住不抬"那一拍读不到跟手位移：注入 down+moveTo×4 不抬指时，逐帧推 4 帧的读数
+        // 实测 `frame0=0.0 frame1=0.0 frame2=0.0 frame3=0.0 frame4=0.0`（W7 诊断留痕原样），
+        // 而同一颗相机在**抬指后**的第一帧就能报出非 0 落点（下面那一句钉的就是它）。
+        // 结论：按住状态 JVM 不产"把 graphicsLayer 落点送进语义树"的那一拍，
+        // "按住时到底跟不跟手"只能真机录像（未验证-需真机）；这里改判**可测的那一半**——
+        // 松手第一帧必须从手指停下的位置接着走。这一句挡的正是原始第 11 条那两种坏形制：
+        // · 松手才整页跳（不跟手）：相机一路上都停在 0 ⇒ 第一帧从 0 起飞（≈ -28px），离 -177 差一整段行程；
+        // · 一接管就整页飞：第一帧直接落在终点 -354，同样离 -177 超过容差。
+        rule.mainClock.autoAdvance = false
+        try {
+            stepFrames(1)
+            // 只能读**进场那一页**：抬指一提交，离屏那页当场被 `clearAndSetSemantics` 清掉
+            // （W8 实测第一帧的树读数 `lb_test_page_mark_0=0; lb_test_page_mark_1=1`），
+            // 拿 mark_0 当起点会撞在 markLeft 那枚"不许下树"哨兵上。两页共用同一根相机，
+            // 读 mark_1 的 +半页宽与读 mark_0 的 -半页宽是同一个读数的两面，判据不因此变松。
+            val firstAfterLift = markLeft(1)
+            assertEquals(
+                "松手第一帧目标页该停在半页宽处（等于当前页离开 0 半页宽）；" +
+                    "停在整页宽＝松手才整页跳（不跟手），停在 0＝一接管就整页飞。实测 $firstAfterLift",
+                (pageWidthPx * 0.5f).toDouble(), firstAfterLift, tolerance
+            )
+        } finally {
+            rule.mainClock.autoAdvance = true
+        }
+        settle()
+        // 落满的那一格只能读**进场那一页**：离屏那页从切换一开始就被 `clearAndSetSemantics`
+        // 清掉（既有合同，见 `切页保留各自草稿与谈心历史`），拿 `markLeft(0)` 收尾会撞在
+        // "标记节点该在语义树里"那句哨兵上（W7 实测：`AssertionError at :198`）。
+        assertEquals("画完该整页落在谈心那一页（进场页落满 0）", 0.0, markLeft(1), 1.0)
+        assertEquals("页号必须已经接过去（owner 那一路的账）", 1, mode.value)
+    }
+
+    /**
+     * **点 tab 换页不许闪**（原始第 20 条）：逐帧读数必须①只朝终点走一次、②永远留在视口范围内。
+     *
+     * 形状对照（这两条各挡一种坏实现）：
+     * · 旧形制的闪烁签名：owner 那一帧新页**先被画在终点 0**（那一瞬移就是用户看到的"闪"），
+     *   下一拍才被补偿推回 ±页宽、再重放一次入场 ⇒ 读数序列 0 → +页宽 → …→ 0，**回头了** ⇒ ①红；
+     *   改后的形状：落点只由一根相机决定，页号那一路画不出差别 ⇒ 序列从 +页宽单调走到 0。
+     * · 旧形制的真空白：动画没画完又点一次时，残留位移与"加法补偿"叠出 1.4 页宽 ⇒ 两页都在屏外
+     *   ⇒ ②红（进场那一页的左沿跑到 [-1, 页宽] 之外）。
+     *
+     * 仪器口径与已知边界：
+     * · 必须手动推帧（`autoAdvance = false` + 一帧 16ms），否则 `waitForIdle` 会把那 200ms 一路
+     *   喂完，中间帧根本读不到（同一颗写法在本仓库已有先例：
+     *   `PanelUsageMetricSemanticsTest.kt:92` 冻时钟 + `:97`「一帧 16ms」、
+     *   `LbPrimaryButtonStateTest.kt:248` 与 `:254` 的 `advanceTimeByFrame()`）；
+     * · 只读**进场那一页**：切换一开始离屏那页就被 `clearAndSetSemantics` 清掉（这是既有合同，
+     *   见 `切页保留各自草稿与谈心历史`），所以那一侧的落点在这一格里读不到；
+     *   两条判据都对"具体停在哪一帧"不敏感（单调 + 有界），不做逐帧等值断言。
+     * · 还钉第三件事：**进场那一页必须在 4 帧内出现在语义树里**（它是 owner 写之后由
+     *   `LaunchedEffect` 与页号条件挂上的）。这一半挡"永远不挂"（画面空档）。
+     * · ── 挂上 ≠ 落位（W6 红 [0.0, 0.0, 354.3, …] 的归因，仪器口径）──：新挂载那一页的
+     *   `graphicsLayer` 读数要**再推 1~2 帧**才进语义树（camera 生效在绘制侧，JVM 只有
+     *   时钟推进才有那一拍；W6 读数里 354.3 恰是相机第一 tick 的真值，前两个 0.0 是
+     *   "这一页从没画过"的空层读数，不是"先画在 0"的闪烁帧——真机挂载那一帧就带着位移
+     *   画出来）。所以取样前先空推 4 帧完成**落位**，再从落位后的帧起逐帧取样；
+     *   这一小段（点下去后的前 4 帧）是本仪器的盲区——"落位之前那一瞬画没画在 0"
+     *   在 JVM 上与空层读数同形，判不了 ⇒ 归真机慢放（未验证-需真机，P1d §5.2 同一颗边界）。
+     *   落位之后的三条判据（单调不许回头 / 每帧不许越界 / 终点落 0）**一字未松**，
+     *   回头、越界、不落终点这三种坏形状从取样起照样红。
+     * · 这里量的是几何读数的**顺序与范围**；眼睛看到的到底还是不是"闪"、首帧挂载那颗主线程盘读
+     *   （`CounselingPanel.kt:240` → `loadCounselingHistory`）会不会让进场掉一帧，
+     *   **只能真机逐帧录像**（未验证-需真机；见台账）。
+     */
+    @Test
+    fun `点 tab 换页的逐帧读数只朝终点走一次`() {
+        val mode = PageMode()
+        mountPager(mode)
+        val samples = mutableListOf<Double>()
+        var mountedByFrame = -1
+        rule.mainClock.autoAdvance = false
+        try {
+            rule.runOnIdle { mode.value = 1 }             // 点 tab 打到的就是这一颗 owner 写
+            // 落位拍：空推 4 帧，让进场页的 camera 位移真正写进语义树（见 KDoc 的 W6 归因），
+            // 同时把"4 帧内必须挂上"的那颗账在这一段里记下来。
+            repeat(4) { frame ->
+                stepFrames(1)
+                if (mountedByFrame < 0 && nodesOf(markTags[1]).fetchSemanticsNodes().isNotEmpty()) {
+                    mountedByFrame = frame
+                }
+            }
+            // 逐帧取样：一帧 16ms，取样窗第 5..14 帧 = 80..224ms，全程压在 200ms 过渡与其
+            // 收口上；`markLeft` 自己钉"动画中途那一页不许下树"（节点不在当场红）。
+            repeat(10) {
+                stepFrames(1)
+                samples += markLeft(1)
+            }
+        } finally {
+            rule.mainClock.autoAdvance = true
+        }
+        assertTrue(
+            "进场那一页必须在 4 帧内挂上（更晚就等于那几帧画面上根本没有它，正是「空档」那一族）：" +
+                "实到第 $mountedByFrame 帧",
+            mountedByFrame in 0..3
+        )
+        assertTrue("一帧都没读到（仪器坏了）：$samples", samples.isNotEmpty())
+        for (i in 1 until samples.size) {
+            assertTrue(
+                "进场过程不许回头（0 → 整页宽 → 0 就是\"闪一下再滑进来\"）：第 $i 帧，读数 $samples",
+                samples[i] <= samples[i - 1] + 1.0
+            )
+        }
+        samples.forEach {
+            assertTrue(
+                "每一帧进场那一页都得在视口范围内（两页一起被推出屏外＝真空白）：读数 $it / $samples",
+                it >= -1.0 && it <= pageWidthPx.toDouble() + 1.0
+            )
+        }
+        settle()
+        assertEquals("过渡画完该停在谈心那一页落满 0", 0.0, markLeft(1), 1.0)
     }
 
     /**

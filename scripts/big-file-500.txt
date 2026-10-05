@@ -11,7 +11,9 @@ ui/KbEditActivity.kt  # 771 行（2026-10-04 19:06 wc -l 复核同值；2026-10-
 ui/home/ProviderSection.kt  # 940 行（2026-10-04 19:06 wc -l 现读； 888（2026-10-02，再 758，供应商表单视口自适应+行内图标换具名档）；已过 800，仍在册不新增；未拆——拍板未做）
 domain/GenerationEngine.kt  # 588 行（2026-10-04 19:06 wc -l 现读； 704（2026-10-01，再 690，四处超时实参改档位）——本轮其他窗口把它收下来了，缩账不拆文件）
 ui/panel/reply/ResultArea.kt  # 933 行（2026-10-04 19:29 wc -l 落盘前复测； 18:0x 读 926、19:06 复测 933——P1 窗口此刻正在改这颗，数字仍在动； 911（2026-10-02），再 727，八项合并列表、A–H 显示映射、多卡展开集合与"点卡外收起"观察器都落在这颗；已过 800，按"在册不新增"续登记而不是切文件；未拆——拍板未做）
-ui/KnowledgeBaseActivity.kt  # 521 行（2026-10-04 19:06 wc -l 现读； 509（2026-09-30 现读两次同值）；未拆——拍板未做）
+# 2026-10-06 W8 摘幽灵：ui/KnowledgeBaseActivity.kt 本次实测 **452 行**（2026-10-06 03:2x `wc -l` 现读；
+# 登记时是 521，2026-10-04 复扫 520）——L1b 把母版页那张自画卡底整块交回 `core/designsystem/LbListCard.kt`
+# 之后它自己缩回 500 以内。按这把尺的规矩（"登记的现在其实没跨线了 ⇒ 把清单改短"）删行，不留幽灵。
 feature/composer/ComposerStore.kt  # 774 行（2026-10-04 19:29 wc -l 现读，与 19:06、 18:0x 三读一致； 729（2026-10-03 首次登记，composer 状态跨 500）；未拆——拆文件交产品判，拍板未做）
 ui/panel/reply/ReplyInput.kt  # 536 行（2026-10-04 19:29 wc -l 现读，与 19:06、 18:0x 三读同值；2026-10-03 首次登记，输入区跨 500；未拆——拍板未做）
 # 2026-10-03 摘：ui/panel/SuggestPanel.kt 改名成 ui/panel/IntentEditorSheet.kt（341 行，已跌破 500，出账）；
@@ -19,3 +21,26 @@ ui/panel/reply/ReplyInput.kt  # 536 行（2026-10-04 19:29 wc -l 现读，与 19
 ui/panel/reply/MessageList.kt  # 744 行（2026-10-04 19:29 wc -l 现读； 18:0x 读 739、19 点后 744，这颗也在动； 684（2026-10-02 首次登记）；同一份 composer 列表派生"她/我左右气泡 + 想法固定区"两条展示流，加上横滑逐条删除的行几何与退场动画都归这颗，拆出去会把消息身份路由撕成两处；未拆——拍板未做）
 ui/panel/LoveBrainPanelScreen.kt  # 980 行（2026-10-04 19:06 wc -l 现读； 906（2026-10-02），再 776，齿轮那扇整窗设置页的宿主接线与通知单槽都接在这颗；实施书明写"不要把设置正文合回巨型 Panel 文件"，正文本体已在 ui/panel/settings/，这里只剩宿主路由；已过 800，在册不新增；未拆——拍板未做）
 data/KnowledgeRepository.kt  # 836 行（2026-10-04 19:06 wc -l 现读； 783（2026-10-01，从 >800 档下来那次记 1484→783）——本轮又涨回并再次过 800；按 LoveBrainPanelScreen/ProviderSection 同一条"已过 800 仍在本账原地续登"的惯例不挪册、不切文件；未拆——拍板未做）
+# ── 2026-10-06 W8 新登记（六颗本轮涨过 500 的生产件，逐颗带本次 `wc -l` 现读与 HEAD 对照）──────
+# 这把尺从公开版起就没跑过（`check_big_files.sh` 里那两行清单名被抹成 `.txt`，脚本只会退 2），
+# 所以这一档不是"有人偷偷加巨石"，而是**账第一次跟着盘走**。每颗都写清为什么这次不得不过界、
+# 以及真要继续涨时该从哪里拆——拆不拆仍是拍板项，本账只负责让它可见（第9节 第 8 条禁止机械切文件）。
+core/designsystem/LbChip.kt  # 512 行（2026-10-06 03:2x wc -l 现读；HEAD 432）——本轮把供应商超时档那一排的 segmented 档与谈心模板 chip 的 neutral 档并进来，档的主人只能在这一颗里；再涨就从 `LbChipStyles` 的档位表拆出独立文件（键与判据不动）。未拆——拍板未做
+domain/PromptBuilder.kt  # 513 行（同上现读；HEAD 490）——I1 主动发的上下文注入与"原位置只剩调用"那批委托落在这颗，逐段实现早已外移到 domain/prompt/；再涨就把 proactive/reply 两条装配各自搬进 domain/prompt/，本颗只留分发。未拆——拍板未做
+service/CopyCaptureService.kt  # 528 行（同上现读；HEAD 405）——CAP1 的两步确认链 + 拒绝台账 + CAP2 的允许清单→packageNames 换算与 SharedPreferences 订阅全在这一颗（同一个 AccessibilityService 生命周期只能在服务本体里）。再涨就把"读数与诊断落盘"那一族抽 `service/CaptureDiagnostics.kt`，判定仍留在 `CapturePolicy`。未拆——拍板未做
+ui/feedback/FeedbackCasesScreen.kt  # 548 行（同上现读；HEAD 483，2026-10-03 曾缩到 483 出过账）——本轮 CaseCard 归并进 LbListCard 的同时把导出那一族的三扇浮层收回本页。再涨就按"列表 / 详情 / 导出"三屏各自成件，页头与筛选留在本页。未拆——拍板未做
+ui/home/CaptureAppsScreen.kt  # 528 行（同上现读；HEAD 435）——CAP1 六格真值、resume 重读（用户 2026-10-06 真机读数那条）与披露闸门接线都吃这一屏的同一批合成状态；拆走状态读取会让四颗事实不再同一批落位（那是 §6.7 明令的形状）。再涨只把 `CaptureStatusCard`/`CaptureAppRow` 两颗版式件搬去 `ui/home/CaptureParts.kt`。未拆——拍板未做
+ui/home/HomeCoachMarks.kt  # 522 行（新建件，同上现读）——覆盖式引导那一层：锚点账（`coachAnchor`）、挖洞遮罩、箭头槽与提示板四件必须在同一颗里（遮罩与洞共用同一份 `CoachAnchorRegistry` 读数，分两处就会各读一次位置）。真要继续涨：把 `CoachScrimLayer` 的 Path 运算搬进 core 那颗带洞遮罩缺件（G1b 接线单 §1 已登记），本颗只留编排。未拆——拍板未做
+
+# ── 2026-10-06 C5 续账（CAP4 落码之后，主线程跑 `check_big_files.sh` 第一次点名点到的那颗）────
+# 上面那批"六颗"是 03:2x 那次实扫的数；CAP4 之后 `data/SecurePrefs.kt` 自己涨过了线，
+# 尺当场 FAIL 把它点出来 ⇒ 按这把尺的规矩续账（改短清单只允许发生在"登记的其实没跨线"那一侧）。
+data/SecurePrefs.kt  # 544 行（2026-10-06 05:3x `wc -l` 现读；HEAD 423）——本轮三件事都落在同一颗偏好门面上：
+#   ① CAP4 把 `captureEnabled` 的默认值从 true 翻成 false（隐私能力不许默认开），
+#   ② 同一颗键的**构造期一次性归一** `reconcileLegacyCaptureEnabledOnce`（老安装四件齐才落 true，
+#      幂等凭据是 `prefs.contains(KEY)`；选构造期是因为服务侧 `onServiceConnected` 自己 new `SecurePrefs`，
+#      放 VM 里就会在老用户没开任何页面时静默关掉他的捕获），
+#   ③ 范围变更即时生效要的那颗 `onAnyPreferenceChanged` 订阅门面。
+#   ② 都必须在"任何消费者第一次读它之前"就位，因此搬不走。
+# 再涨该从哪里拆：把**同意/引导那一族键**（`accessibilityDisclosureVersion`、`introStep`、`captureAllowedPackages`）
+# 抽成 `data/CaptureConsentPrefs.kt`，`SecurePrefs` 只留通用读写与订阅门面——拆不拆仍是拍板项，本账只让它可见。未拆——拍板未做

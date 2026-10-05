@@ -175,8 +175,9 @@ data class LbChipStyle(
 /**
  * 芯片的常用形状档位。名字跟着**语义**走，不跟着页面走——
  * 新增一档之前先问"它表达的是不是另一件事"，只是颜色不同的话应该改调用方的档位选择。
- * 页面要微调某一档里某一个数（比如某颗胶囊自己的高度），走 `copy`，**不要新长一档**，
- * 更不要回到页面里自己画那条链。
+ * 页面要微调某一档里某一个数，走 `copy`，**不要新长一档**，更不要回到页面里自己画那条链。
+ * ⚠ 唯一的收口例外（基线 v1 §3.8）：**胶囊自己的高度**这一族不再归页面 `copy`——
+ * 分段看 [segmented]、面板胶囊看 [panelChip]，`copy(pillHeight = …)` 的替换配方在交接单里。
  */
 object LbChipStyles {
 
@@ -200,6 +201,10 @@ object LbChipStyles {
      * [LbChipLabelAlignment.TopStart] 补上这一档之后
      * 这里把它接回原位——**这一档的名字管的是"没有选中态"，标签贴左上属于它的形状**。
      * 要一颗居中的动作芯片请新长一档，不要在这里改数。
+     *
+     * 族属登记（基线 v1 §3.8）：这颗连同 `TopStart` 属于**「无选中态的动作胶囊·模板形」**
+     * 一族（谈心模板那颗归并前的原形）；悬浮窗里"可见 28、标签居中"的面板胶囊是另一族，
+     * 归 [panelChip]，别拿这颗去摆面板行（D1 §② E3 的过高版式就是这么来的）。
      */
     val neutral = LbChipStyle(
         backgroundSelected = SurfaceInset,
@@ -233,6 +238,81 @@ object LbChipStyles {
         markSelectedWithCheck = false,
         touchFloor = false,
         labelMaxLines = 1
+    )
+
+    /**
+     * **分段选择器的一格**（基线 v1 §3.8 / D1 §③-7 的"60/120/180/300 那一族"落点）。
+     *
+     * 三轴各归各位：
+     *  - **可见**：[AppDimens.CHIP_SEGMENTED_HEIGHT_DP]（32dp 一格，比行内动作那颗 [AppDimens.ROW_ACTION_COMPACT_MIN_HEIGHT_DP] 同数不同用途）；
+     *  - **热区**：`layeredTouch = true` + `touchFloor = true` ⇒ 分层外盒垫到 [AppDimens.TOUCH_TARGET_MIN_DP]（整行热区，基线"行容器买热区"这一族）；
+     *  - **相邻布局**：由所在 Row 的 `weight(1f)` 与 `spacedBy` 管，这颗自己不掺宽度。
+     *
+     * 圆角取 `Sm`（6dp）不是 `Full`：分段是一格一格的**方块拼出来的条**，不是药丸；
+     * 沿用 `Full` 会让相邻两格的圆角互相吃掉，读屏与眼睛都看不出"这是四格"。
+     *
+     * ⚠ 这一档**只收可见高度**：`Single`（Role.Tab + Selected）与"哪一格是选中"的语义
+     * 仍由调用方经 [LbChip.interaction] / [LbChip.selected] 交出，档位不管这两件事。
+     * 供应商表单的超时四档与悬浮窗设置页将来复用同一颗时，不许在这里预设任何词表。
+     */
+    val segmented = LbChipStyle(
+        radius = LoveBrainShape.sm,
+        textStyle = AppTypography.labelMedium,
+        labelMaxLines = 1,
+        labelAlignment = LbChipLabelAlignment.Center,
+        textColorSelected = Color.White,
+        textColor = TextSecondary,
+        fontWeightSelected = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
+        backgroundSelected = Primary,
+        background = SurfaceInset,
+        borderSelected = Primary,
+        border = Border,
+        paddingHorizontal = Spacing.sm,
+        paddingVertical = 0.dp,
+        pressedScale = 0.94f,
+        markSelectedWithCheck = false,
+        touchFloor = true,
+        layeredTouch = true,
+        pillHeight = AppDimens.CHIP_SEGMENTED_HEIGHT_DP.dp
+    )
+
+    /**
+     * **悬浮窗紧凑族的面板胶囊**（基线 v1 §2 Q2 / §3.8："可见 28 / 标签居中"那一档）。
+     *
+     * 归并目标：回复输入行那颗私有 28（`ReplyDimens.ROLE_CHIP_HEIGHT_DP`）与意图入口那颗私有 22
+     * 都是它的收编对象（页面只换 `copy(pillHeight=…)` 的数，别的一律不动，见交接台账）。
+     * 与 [neutral] 分家：那颗是"无选中态的动作胶囊·模板形"（`TopStart` 标签贴左上），
+     * 这一颗是"面板行里的可见 28、居中、分层热区"——**族不同、脸不同**（D1 §② E3 的过高版式
+     * 就是把这两族混在一起造成的）。
+     *
+     * 形状沿用 [pill]（同一族面板紧凑胶囊：full 圆角、`PrimaryLight` 选中浅底、`Spacing.sm` 横内距、
+     * 竖直内边距 0、由内容给热区），只把**可见胶囊的高度**钉到
+     * [AppDimens.CHIP_PANEL_HEIGHT_DP]（28），并把热区从"由内容给"改成"由外层透明盒给"
+     * （`layeredTouch = true` + `touchFloor = true`）——这就是 Q2 那句
+     * **"行容器买热区、胶囊不买版式"**：可见 28、整盒热区 ≥48，
+     * 别在这里抬 `pillHeight` 去凑热区。
+     */
+    val panelChip = LbChipStyle(
+        radius = LoveBrainShape.full,
+        textStyle = AppTypography.labelSmall,
+        labelMaxLines = 1,
+        labelAlignment = LbChipLabelAlignment.Center,
+        textColorSelected = PrimaryDark,
+        textColor = TextHint,
+        fontWeightSelected = FontWeight.Medium,
+        fontWeight = FontWeight.Medium,
+        backgroundSelected = PrimaryLight,
+        background = SurfaceInset,
+        borderSelected = PrimarySubtle,
+        border = Border,
+        paddingHorizontal = Spacing.sm,
+        paddingVertical = 0.dp,
+        pressedScale = 0.92f,
+        markSelectedWithCheck = false,
+        touchFloor = true,
+        layeredTouch = true,
+        pillHeight = AppDimens.CHIP_PANEL_HEIGHT_DP.dp
     )
 }
 

@@ -16,10 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,14 +34,29 @@ import com.lovebrain.app.ui.theme.*
  * 4. 再按需配置悬浮窗、捕获权限与个人档案
  *
  * 已有用户不强制重走，也不重置权限和供应商。
+ *
+ * ## 两件事在这一格里改了（用户原话第 14 条）
+ *
+ * 1. **三条出口不再等于"引导结束"**：宿主 `SetupActivity` 把它们分别落成
+ *    稍后 / 派生游标 / 清掉稍后，介绍层之外的引导以首页罩子形态继续（`ui/home/HomeCoachMarks.kt`）。
+ *    这一颗 composable 只管把回调交出去，不写任何持久状态。
+ * 2. **步号不再只住在内存里**：原先 `var currentStep by remember { mutableStateOf(0) }`
+ *    在翻页、旋转与 Activity 重建之后一律回到第 0 格（这正是"一翻页就没了"的另一半）。
+ *    现在步号归宿主（[currentStep] / [onStepChange]），宿主流转 `savedInstanceState`
+ *    并在进程被杀之前把同一步落进 `SettingsStorePort`（那颗键要主线程加，见交接单 §4）。
+ *
+ * @param currentStep 现在第几格（0…3）；越界由这一处钳回合法档，UI 不判第二本账
+ * @param onStepChange 换步的唯一出口——**这一层不再自己 remember 步号**
  */
 @Composable
 fun OnboardingFlow(
     onSkip: () -> Unit,
     onComplete: () -> Unit,
-    onOpenSettings: () -> Unit
+    onOpenSettings: () -> Unit,
+    currentStep: Int = 0,
+    onStepChange: (Int) -> Unit = {}
 ) {
-    var currentStep by remember { mutableStateOf(0) }
+    val step = currentStep.coerceIn(0, LAST_STEP)
 
     // 第6节第1条 表里 `LbScreenScaffold` 那一行说的四件事，这一页原先自己拼了三层：
     // `Box(fillMaxSize).background(SurfaceBase).systemBarsPadding()` 套
@@ -73,16 +84,16 @@ fun OnboardingFlow(
 
             Spacer(Modifier.height(Spacing.xl))
 
-            when (currentStep) {
+            when (step) {
                 0 -> OnboardingStep0(
-                    onNext = { currentStep = 1 }
+                    onNext = { onStepChange(1) }
                 )
                 1 -> OnboardingStep1(
-                    onNext = { currentStep = 2 },
+                    onNext = { onStepChange(2) },
                     onOpenSettings = onOpenSettings
                 )
                 2 -> OnboardingStep2(
-                    onNext = { currentStep = 3 }
+                    onNext = { onStepChange(3) }
                 )
                 else -> OnboardingStep3(
                     onComplete = onComplete,
@@ -91,6 +102,9 @@ fun OnboardingFlow(
             }
     }
 }
+
+/** 介绍层最后一格的号（越界钳制与宿主那面同一把尺） */
+private const val LAST_STEP = 3
 
 /** 步骤 0：演示消息体验 */
 @Composable

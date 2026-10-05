@@ -101,15 +101,27 @@ class UsageStatBarPlanTest {
     }
 
     @Test
-    fun `widths that are not measured yet keep the old flat behaviour`() {
+    fun `the unmeasured frame stays non-rotating and non-fading, centering deferred to the render 保底`() {
         val groups = groupUsageStatFields(fiveFields())
         val layout = planUsageStatLayout(groups, { null }, 100.dp)
-        assertFalse(layout.rotates)
+        assertFalse("未测量那一帧不该开轮播", layout.rotates)
         assertEquals(2, layout.pages.size)
         layout.pages.forEach {
-            assertFalse(it.fadeLeading)
-            assertFalse(it.fadeTrailing)
+            assertFalse("未测量那一帧不该画渐隐（左）", it.fadeLeading)
+            assertFalse("未测量那一帧不该画渐隐（右）", it.fadeTrailing)
         }
+        // §7.2 改写说明：旧名「widths that are not measured yet keep the old flat behaviour」钉的正是
+        // "未测量 ⇒ 平移 0 ⇒ 左贴边"这一被本轮否定的判据。planUsageStatLayout 这一层的输出（不轮播/
+        // 不渐隐）仍然成立、保留；但那"左贴边"改由渲染层保底居中——纯算式拿不到宽时**不猜**，返回 0，
+        // 首帧居中交给 Box contentAlignment（fillMaxWidth 的量算约束先于 onSizeChanged 落定）。
+        // 见台账 impl-I2 与 UsageStatBarSemanticsTest 的首帧注释。反例：若算式改为拿 0 宽去"猜"居中，
+        // 下面这条会红——未测量必须诚实地报 0。
+        val unmeasuredWidths = listOf(0, 0)
+        assertEquals(
+            "宽没量到时算式不猜居中：保持 0，留给渲染层保底",
+            listOf(0f, 0f),
+            usageStatPageTranslationsPx(unmeasuredWidths, 48, viewportPx = 0, page = 0, dragPx = 0f, rotates = false)
+        )
     }
 
     // ═══════════ 3. 一整组也放不下时，拆的是组、不是数字 ═══════════
@@ -200,15 +212,55 @@ class UsageStatBarPlanTest {
     }
 
     @Test
-    fun `a line that holds everything puts every page exactly where the old flat row did`() {
+    fun `a line that holds everything centers the whole row instead of pinning it to the left`() {
+        // §7.2 改写说明：旧栏名「puts every page exactly where the old flat row did」+
+        // `assertEquals(listOf(0f, 0f), translations)` 钉的正是"整行放得下 ⇒ 平移 0 ⇒ 左贴边"——
+        // 被本轮否定的历史判据。按新预期改写为"整条自然排布相对视口居中"。反例（牙）：把
+        // usageStatPageTranslationsPx 的 `!rotates && !oversizedPage` 分支退回 `return List { 0f }`
+        // ⇒ rest(>0) 断言与两侧留白相等这两条当场红；"仍然左贴"由此被区分开。
         val groups = groupUsageStatFields(fiveFields())
         val layout = planUsageStatLayout(groups, { fakeWidth(it) }, 900.dp)
         val widthsPx = layout.pages.map { (it.width!!.value * 4f).toInt() }
         val gapPx = (12.dp.value * 4f).toInt()
+        val viewportPx = (900.dp.value * 4f).toInt()
 
-        val translations = usageStatPageTranslationsPx(widthsPx, gapPx, 3600, 0, 0f, rotates = false)
-        assertEquals(listOf(0f, 0f), translations)
+        val totalRowWidthPx = widthsPx.sum() + gapPx * (widthsPx.size - 1)
+        val rest = (viewportPx - totalRowWidthPx) / 2f
+        assertTrue("整行放得下、宽已知 ⇒ 该有正的居中位移（0 就是左贴边）", rest > 0f)
+
+        val translations = usageStatPageTranslationsPx(widthsPx, gapPx, viewportPx, page = 0, dragPx = 0f, rotates = false)
+        assertEquals("整条自然排布一起平移一个 rest，各页保持自然间距", listOf(rest, rest), translations)
+
+        // 两侧留白相等 = 真的居中；只挪第一格、其余没跟上会在这里红
+        val starts = usageStatNaturalStartsPx(widthsPx, gapPx)
+        val lefts = translations.indices.map { starts[it] + translations[it] }
+        val rowRight = lefts.last() + widthsPx.last()
+        assertEquals("左留白 ≠ 右留白，没相对视口居中", lefts.first().toDouble(), (viewportPx - rowRight).toDouble(), 0.5)
+        // 自然左缘这把尺没被改：居中靠平移，不动自然排布本身
         assertEquals(listOf(0f, (204f * 4f) + gapPx), usageStatNaturalStartsPx(widthsPx, gapPx))
+    }
+
+    @Test
+    fun `a measured short group is centered on the viewport across first, measured, and updated states`() {
+        // 生产真实形状：五格短数据在宽面板上放得下 ⇒ 一整组，静止态就该居中而非左贴（§7.2）
+        val gapPx = 48
+        val viewportPx = 2400
+        val firstShortWidths = listOf(160, 90, 120, 110, 150)   // 今日/本次/首字/累计/已统计 的自然宽（px）
+
+        fun centered(widths: List<Int>): List<Float> =
+            List(widths.size) { (viewportPx - (widths.sum() + gapPx * (widths.size - 1))) / 2f }
+
+        val atFirst = usageStatPageTranslationsPx(firstShortWidths, gapPx, viewportPx, page = 0, dragPx = 0f, rotates = false)
+        assertEquals("首次零值/占位短数据应相对视口居中，不是左贴边", centered(firstShortWidths), atFirst)
+        assertTrue("居中的每一格位移都为正（有一格贴 0 就是没居中）", atFirst.all { it > 0f })
+
+        // 数值更新后（"已统计"变宽，仍放得下）：走同一套居中关系，留白随之收敛但仍相等
+        val updatedWidths = listOf(160, 90, 120, 110, 300)
+        val afterUpdate = usageStatPageTranslationsPx(updatedWidths, gapPx, viewportPx, page = 0, dragPx = 0f, rotates = false)
+        assertEquals("数值更新后仍相对视口居中", centered(updatedWidths), afterUpdate)
+
+        // 三态用同一算式：同一组宽，无论 page 取哪一页（非轮播时都在行里），位移都是同一个 rest
+        assertEquals("非轮播各页同移一个 rest", atFirst, List(5) { atFirst[0] })
     }
 
     @Test

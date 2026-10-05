@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,8 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
@@ -42,14 +38,15 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Error
+import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.LbListCard
 import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.ScreenAction
@@ -60,7 +57,7 @@ import com.lovebrain.app.core.designsystem.SurfaceInset
 import com.lovebrain.app.core.designsystem.TextHint
 import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
-import com.lovebrain.app.core.designsystem.rememberPressScale
+import com.lovebrain.app.core.designsystem.lbMetaLine
 import com.lovebrain.app.model.FeedbackCase
 import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.viewmodel.SetupViewModel
@@ -71,9 +68,20 @@ import kotlinx.coroutines.launch
  *
  * ## 这一页的外观从哪儿来
  *
- * 不自己设计：页头、内容边距、白卡、两行摘要、列表间距全部走知识库那一族已经在用的
- * 那一套（`ScreenPage` + `Card(shape = lg, SurfaceCard)` + `Spacing` 那一档），
- * 与知识库卡、供应商行是同一副壳；这一层只填"案例"这件事的内容。
+ * **抄知识库一级页那张卡的布局语法，不抄它的内容。**母版那一套（`KnowledgeBaseActivity.kt:392-490`）
+ * 是"白卡 + 一行 `titleMedium` SemiBold 单行标题 + 一行 `labelSmall` 元信息 + 行内 `RowCapsule` 动作"，
+ * 今天这一页全部走同一颗公共件 `core/designsystem/LbListCard.kt` 拿：卡底、字阶、行数上限、
+ * 动作写法与槽位间距都由那一颗持有，这一层只交内容（首句 / 余文 / 时间 / 展开层）。
+ * 于是这张卡与知识库卡是**同一个壳、两种业务身份**：这里不会出现"阶段/编辑画像"，
+ * 知识库那边也不会出现"导出 JSON"（`重做页通过判据` 的 M-10 就是逐区核对这一条）。
+ *
+ * 内容优先级按母版重排（D1 §③-9 的 A4 那一条）：
+ * - **标题槽** = 回复的**首句**（[splitFirstSentence]），单行截断；旧写法是把整段正文当标题；
+ * - **摘要槽** = 首句之后的余文，最多两行；折叠时能看到的是"这一条被踩的话开头 + 一点续文"；
+ * - **元信息槽** = 时间，与母版同一档 `labelSmall` 10、同一颗 `lbMetaLine` 合并器（多条才用 `｜`）；
+ * - **展开层** = 全文 + 用户真填过的上下文：六条诊断字段今天合成**一行**（分隔符仍是母版那一个），
+ *   对话快照仍逐行——旧写法是七条 `labelSmall` 平排，那是调试面板不是卡片。
+ *
  * 仓库读写仍归 ViewModel，这一页不 new Repository，也不复制别的 Activity 的逻辑过来。
  *
  * ## 这次删掉的三样东西（都是用户点名的废话，不是数据）
@@ -86,6 +94,8 @@ import kotlinx.coroutines.launch
  * ⚠ 最后一条是**不要展示**，不是删历史数据：`FeedbackCase` 那些字段一个都没动，
  * 旧 `cases.json` 照样读得起来，导出的 JSON 也照样带着原字段（走仓库那一份序列化）。
  * 这一族合同由 `FeedbackCasesSemanticsTest`（展示位）与 `FeedbackExportJsonTest`（数据）两把尺分头钉。
+ * 本轮重排版式**没有**把上面任何一样加回来：`待分析` 与模型那一族仍然不许上屏，
+ * 所以状态槽在这一页交的是 `null`（见 [CaseCard] 那段），不是"忘了填"。
  */
 
 /** 导出只有这一档 MIME；文件名固定 `.json`（，界面上没有可切的格式） */
@@ -253,18 +263,31 @@ fun FeedbackCasesScreen(
                         scope.launch { viewModel.loadFeedbackCases() }
                     }
                 )
-                cases.isEmpty() -> ScreenState.Empty(stringResource(R.string.feedback_empty_hint))
+                // 空态也给出下一步那一颗真实动作（重做页通过判据 M-9：三页空态不许三种写法）。
+                // 为什么是"重试"而不是"去做一条"：这一页没有跳到回复面板的入口（那条路归首页），
+                // 而案例库真会被悬浮窗在别处写进新记录——重新读一次库是这一屏**做得到**的那件事，
+                // 走的还是同一个 `loadFeedbackCases()`，不起第二份状态源。文案复用盘上已有的那一句。
+                cases.isEmpty() -> ScreenState.Empty(
+                    message = stringResource(R.string.feedback_empty_hint),
+                    action = ScreenAction(stringResource(R.string.feedback_retry)) {
+                        scope.launch { viewModel.loadFeedbackCases() }
+                    }
+                )
                 else -> ScreenState.Content(cases)
             }
             if (screenState is ScreenState.Content) {
                 LazyColumn(
                     // 列表拿页头剩下的高度：写 fillMaxSize 会让底边整格伸到屏外。
-                    // 水平那一档归零——外框已经把整列往里推了一档。
+                    // 水平那一档归零——外框已经把整列往里推了一档，本页**不许**再自加水平 padding
+                    // （第二个边距主人会被 `ScreenScaffoldFrameTest` 量成"这一页还在自己写外框"）。
                     modifier = Modifier.fillMaxWidth().weight(1f),
+                    // 基线 §3.3 的目标档：列表间距与卡内 12（`Spacing.lg`）、页尾 16（`Spacing.xl`）。
+                    // ⚠ 这一页能自证的只有列表间距；水平边距那一档 24→16 归 `LbScreenScaffold`
+                    // （M1 那层还没落，见 impl-M3b 台账的"待 M1 归一后回查"）。
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                        top = Spacing.md, bottom = Spacing.xl
+                        top = Spacing.lg, bottom = Spacing.xl
                     ),
-                    verticalArrangement = Arrangement.spacedBy(Spacing.md)
+                    verticalArrangement = Arrangement.spacedBy(Spacing.lg)
                 ) {
                     items(screenState.value, key = { it.caseId }) { c ->
                         CaseCard(
@@ -288,110 +311,122 @@ fun FeedbackCasesScreen(
 }
 
 /**
- * 一张已踩案例卡 = 白卡 + 两行摘要（候选正文 + 小号时间），点整卡展开。
+ * 一张已踩案例卡 = 母版那颗 [LbListCard]，页面只交内容，不再自绘卡底。
  *
- * 默认那一行只有用户真正要看的两样：正文（长文折三行并省略）与时间。
- * 模型名、《待分析》、上下文模式、App 版本与构建类型、tokens、费用都不在这里出现——
- * 字段还在数据里（见文件头那条 ⚠），只是这一屏不再把它们摆在脸面上。
- * 展开那一层只放**真实存在**的上下文：旧数据里用户填过的理由/补充、本轮想法、意图、
- * 点踩当刻冻结的对话。哪一项不存在就不画那一行，绝不摆"暂无XX"那种空字段排。
+ * 三个槽在这一页是**空**的，每一件都有理由，不是漏填：
+ * - `status = null`：状态槽要说的是"这一条现在到哪一步"，而案例的 `status` 只有
+ *   `PENDING` 一种真实生产者（点踩落盘写进去的恒是它），界面上说得出"待分析"是本轮
+ *   明令不许加回的那一句（文件头 ⚠）。没有真实状态就不许编一个状态；
+ * - `actions = emptyList()`：这一页没有单条动作的真源（导出是整库一档、归页头尾部档），
+ *   而设计系统的动作行不许画一颗假的；
+ * - `meta` 只有时间一段：分隔符仍由 `lbMetaLine` 持有，将来有第二段时不用改版式。
+ *
+ * 整卡可点 = 展开/收起（与旧写法同一处操作，读屏听到的仍是 `Role.Button`，
+ * 由公共件那一处声明，页面拿不到角色旋钮）。展开层走 [LbListCard] 的 `detail` 槽，
+ * 画在同一张卡里——留在卡外会让那张白卡裂成两层底。
+ * 而 [hasCaseDetail] 为假时**根本不交那一槽**：没有内容的案例点下去不许长出一段空白
+ * （旧写法靠"展开层逐行判空"做到同一件事，现在把它提到槽位这一层，卡高一寸没动）。
  */
 @Composable
 private fun CaseCard(case: FeedbackCase, expanded: Boolean, onToggle: () -> Unit) {
-    Card(
-        shape = LoveBrainShape.lg,
-        colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-        modifier = Modifier
-            .fillMaxWidth()
-            // 阴影与知识库那张同一档（2/4 令牌里的上限 4）
-            .shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.lg)
-            .clip(LoveBrainShape.lg)
-            .clickable(role = Role.Button) { onToggle() }
-    ) {
-        Column(modifier = Modifier.padding(Spacing.xl)) {
-            Text(
-                text = case.candidateReply,
-                style = AppTypography.bodyMedium,
-                color = TextPrimary,
-                maxLines = if (expanded) Int.MAX_VALUE else COLLAPSED_MAX_LINES,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.fillMaxWidth()
-            )
-            if (case.timestamp.isNotBlank()) {
-                Spacer(Modifier.height(Spacing.xs))
-                Text(
-                    text = case.timestamp,
-                    style = AppTypography.labelSmall,
-                    color = TextHint,
-                    maxLines = 1
-                )
-            }
-            if (expanded) {
-                Spacer(Modifier.height(Spacing.md))
-                ExpandedBody(case)
-            }
+    val (headline, rest) = splitFirstSentence(case.candidateReply)
+    LbListCard(
+        title = headline,
+        summary = rest,
+        meta = listOf(case.timestamp),
+        onClick = onToggle,
+        modifier = Modifier.fillMaxWidth(),
+        detail = if (expanded && hasCaseDetail(case, rest)) {
+            @Composable { CaseDetail(case, rest) }
+        } else {
+            null
         }
-    }
+    )
 }
 
-/** 展开那一层：逐项判"有没有真内容"，空白的一律不画，因此画不出空字段排 */
+/**
+ * 这一条案例**有没有**能展开给人看的东西：全文（首句之外的那一截）或任何一项真实上下文。
+ *
+ * 单独成一顆纯函数，是为了让"空白案例点下去不长东西"这件事能被直接判：
+ * 反例是把这一格写成恒真（`detail` 永远交出去）——那一格会在公共件里留下一段
+ * `Spacer` 与一个空容器，卡变高了而屏上没有多一个字，正是 `a case with no extra data…`
+ * 那一格要挡的坏法。
+ */
+internal fun hasCaseDetail(case: FeedbackCase, rest: String): Boolean =
+    rest.isNotBlank() || case.categories.isNotEmpty() || case.reasons.isNotEmpty() ||
+        case.userNote.isNotBlank() || case.betterVersion.isNotBlank() ||
+        case.ideaHint.isNotBlank() || case.intentText.isNotBlank() ||
+        case.dialogueSnapshot.isNotEmpty()
+
+/**
+ * 展开那一层：逐项判"有没有真内容"，空白的一律不画，因此画不出空字段排。
+ *
+ * 与旧写法的差别只有一处判据级的：六条诊断字段（分类 / 原因 / 补充 / 期望版本 / 本轮想法 / 意图）
+ * 以前是六个各占一行的 `Text`，现在合成**一行**、用母版那一个 `｜` 分隔（`lbMetaLine` 是唯一主人）。
+ * 对话快照仍然逐行：那是"谁说了什么"的次序，压成一行就读不出谁先谁后了。
+ * 全文那一行只在折叠层没排完的时候才画——首句能代表整句（一句而已）时不重复一遍，
+ * 这也挡住了"没有上下文的案例展开后长出一排空字段"那一种坏形状
+ * （`FeedbackCasesSemanticsTest` 的 `a case with no extra data renders no empty field rows`）。
+ */
 @Composable
-private fun ExpandedBody(case: FeedbackCase) {
+private fun CaseDetail(case: FeedbackCase, rest: String) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(Spacing.xs)
     ) {
-        if (case.categories.isNotEmpty()) {
+        if (rest.isNotBlank()) {
             Text(
-                text = stringResource(
-                    R.string.feedback_categories,
-                    categoryNamesOf(case.categories)
-                ),
-                style = AppTypography.labelSmall,
-                color = TextSecondary
+                text = case.candidateReply,
+                style = AppTypography.bodyMedium,
+                color = TextPrimary
             )
         }
-        if (case.reasons.isNotEmpty()) {
-            Text(
-                text = stringResource(
-                    R.string.feedback_reasons,
-                    case.reasons.joinToString(", ")
-                ),
-                style = AppTypography.labelSmall,
-                color = TextSecondary
+        val contextLine = lbMetaLine(
+            listOfNotNull(
+                if (case.categories.isNotEmpty()) {
+                    stringResource(R.string.feedback_categories, categoryNamesOf(case.categories))
+                } else {
+                    null
+                },
+                if (case.reasons.isNotEmpty()) {
+                    stringResource(R.string.feedback_reasons, case.reasons.joinToString(", "))
+                } else {
+                    null
+                },
+                if (case.userNote.isNotBlank()) {
+                    stringResource(R.string.feedback_user_note, case.userNote)
+                } else {
+                    null
+                },
+                if (case.betterVersion.isNotBlank()) {
+                    stringResource(R.string.feedback_better_version, case.betterVersion)
+                } else {
+                    null
+                },
+                if (case.ideaHint.isNotBlank()) {
+                    stringResource(R.string.feedback_idea_hint, case.ideaHint)
+                } else {
+                    null
+                },
+                if (case.intentText.isNotBlank()) {
+                    stringResource(R.string.feedback_intent, case.intentText)
+                } else {
+                    null
+                }
             )
-        }
-        if (case.userNote.isNotBlank()) {
+        )
+        if (contextLine.isNotBlank()) {
+            // 一行元信息：字档与母版那一行同一档（`labelSmall` 10），但这一行**不截断**——
+            // 展开层的用途就是"看全"，裁掉半句理由等于用户自己也不知道当初为什么踩。
             Text(
-                stringResource(R.string.feedback_user_note, case.userNote),
-                style = AppTypography.labelSmall,
-                color = TextSecondary
-            )
-        }
-        if (case.betterVersion.isNotBlank()) {
-            Text(
-                stringResource(R.string.feedback_better_version, case.betterVersion),
-                style = AppTypography.labelSmall,
-                color = Primary
-            )
-        }
-        if (case.ideaHint.isNotBlank()) {
-            Text(
-                stringResource(R.string.feedback_idea_hint, case.ideaHint),
-                style = AppTypography.labelSmall,
-                color = TextSecondary
-            )
-        }
-        if (case.intentText.isNotBlank()) {
-            Text(
-                stringResource(R.string.feedback_intent, case.intentText),
+                text = contextLine,
                 style = AppTypography.labelSmall,
                 color = TextSecondary
             )
         }
         if (case.dialogueSnapshot.isNotEmpty()) {
             Text(
-                stringResource(R.string.feedback_dialogue_title),
+                text = stringResource(R.string.feedback_dialogue_title),
                 style = AppTypography.labelSmall,
                 color = TextSecondary,
                 fontWeight = FontWeight.SemiBold
@@ -415,12 +450,44 @@ private fun ExpandedBody(case: FeedbackCase) {
 }
 
 /**
+ * 句末标点：中英两套 + 换行。换行算句末，但**不把换行符本身**留在标题里
+ * （标题槽是单行，留着一个 `\n` 只是让读屏念出一段空白）。
+ */
+internal val SENTENCE_TERMINATORS = charArrayOf('。', '！', '？', '!', '?', '\n')
+
+/**
+ * 「回复首句当标题」那一步的唯一实现。
+ *
+ * 交回 `首句 to 余文`：
+ * - 只有一句（或压根没有句末标点）⇒ `首句 = 整段`、`余文 = ""`，摘要槽不画，
+ *   于是屏上那一条完整的回复仍然**整条在语义树里**（`FeedbackCasesSemanticsTest` 的夹具正格）；
+ * - 多句 ⇒ 标题只有第一句，其余进摘要（两行），全文走展开层那一行。
+ *
+ * 两头都 `trim()`：卡片标题带着一串空白的话，母版那一行的对齐就白买了。
+ * 纯函数、不判 composable，是为了能被直接判（[splitFirstSentence] 的反例见那颗测试）。
+ */
+internal fun splitFirstSentence(text: String): Pair<String, String> {
+    val source = text.trim()
+    if (source.isEmpty()) return "" to ""
+    val index = source.indexOfFirst { it in SENTENCE_TERMINATORS }
+    if (index < 0) return source to ""
+    val cut = if (source[index] == '\n') index else index + 1
+    return source.substring(0, cut).trim() to source.substring(cut).trim()
+}
+
+/**
  * 页头尾部那颗导出：形状照知识库卡尾部那一族（实心品牌底，零结果时灰），
  * 只保留"点一下导出 JSON"这一个动作。
  *
- * ⚠ 它**没有**换成 `RowActionButton`/`LbTextAction`：那颗公共件今天还没有
- * "禁用仍留在树上、并报得出 disabled" 这一档，而这一格要的正是在零结果时
- * 读屏听得见的 disabled（第6节第5条 :479）。等上补出 `enabled` 槽再并。
+ * ⚠ **缺口，不是选择**：这一颗该并进设计系统的动作档，但今天没有那颗能装它的档——
+ * `LbTextAction(label = …)` 那一支把 `enabled` 写死成 `true`（`LbTextAction.kt:302-315`），
+ * 而这一格要的正是在零结果时"仍在树上、并且报得出 disabled"（`FeedbackCasesSemanticsTest`
+ * 的 `the export action stays visible but reports itself disabled when the list is empty`）。
+ * 图标档那两支有 `enabled` 旋钮，可它是字形档、装不下一句"导出 JSON"。
+ * ⇒ 等的就是具名那一档：**文字动作的 `enabled` 槽**（`LbTextAction(label, onClick, enabled)`，
+ * 禁用仍留在树上报 disabled）；补齐后这一颗整块删掉、改 `RowActionButton`/`LbTextAction` 调用，
+ * 异形与品牌底两本账同时销行。需求已写进 `handoffs/2026-10-05-M3b-公共件缺口.md`。
+ * 本轮**不**新建第四种动作写法：宁可留一处已登记的自绘，也不长第二套形状。
  */
 @Composable
 private fun ExportAction(enabled: Boolean, label: String, onClick: () -> Unit) {
@@ -479,5 +546,3 @@ private fun categoryNamesOf(cats: List<com.lovebrain.app.model.FeedbackCategory>
     for (cat in cats) names.add(categoryDisplayName(cat))
     return names.joinToString(", ")
 }
-
-private const val COLLAPSED_MAX_LINES = 3

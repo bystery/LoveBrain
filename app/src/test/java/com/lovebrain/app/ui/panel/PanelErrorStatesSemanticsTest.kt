@@ -424,6 +424,7 @@ class PanelErrorStatesSemanticsTest {
                         onResize = { _, _ -> },
                         onMove = { _, _ -> },
                         onCopy = { },
+                        onOpenAppPage = { },
                         onCollapse = { }
                     )
                 }

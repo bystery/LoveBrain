@@ -246,7 +246,11 @@ class PromptByteFreezeBaselineTest {
         "system/reply" to Frozen("1b03e8ba79b3c8bb2ee79d1372d5394ed9f7a25359ad1a7e89cf35cfe1e7432f", 20149),
         "system/counseling" to Frozen("6bf2df74fbe0680ee0c6dda5dea4946938b471899dca56b977d68124c0c94177", 5950),
         "system/polish" to Frozen("b5f0d5fb39a12203419c88e800e72c7476543d67142267be315c5c1f724a95cf", 1695),
-        "system/proactive" to Frozen("378de4d4a24fea23dcc0ccc77c6f4c450316eb993dddc5ed7af39f409f94520b", 2370),
+        // 2026-10-05（指导书 §9 原话第 18 条）：主动发的 system 资产补回锦囊的策略载荷
+        // （时机/为什么现在适合/从哪里接/什么时候先别发/发送前要准备什么 + 场景策略与字段口径），
+        // 2370 → 5848 字节。这是**内容真的变了**，不是所有者搬动；变更说明留 TeamWorkspace
+        // `evidence/2026-10-05-feedback/impl-I1-proactive.md`。
+        "system/proactive" to Frozen("6f6b1b9e3365a1c0656c6c9fb47433d948c77240e5ed2a75e6e99774895ddaef", 5848),
         // 2026-10-03：`engine/knowledge_prompt/lessons.md` 这一族改了两次（加"不要输出一级标题/
         // 不要抄字段说明"那两段 + 本轮把 `## 示例` 里那两条 `# [日期] 第N次提取` 摘掉——它一边禁止一边示范，
         // 正是用户实测到的双标题成因）。这一行的期望**只是那颗资产自身的字节**（不拼任何东西），
@@ -262,10 +266,14 @@ class PromptByteFreezeBaselineTest {
         "counseling/user-no-kb" to Frozen("00194dd2ce69d6a6293154da441c4b197d2bb289da1ad92cae198403c7c06ea6", 458),
         "polish/user" to Frozen("e476383f49772e50da345c2c40e71208032ce1579fdadaad88aa424133a95315", 24),
         "polish/blank" to Frozen("8f8ba6bd8b8bf93db498159a70756a7a8356b7c0f5bfea3fa732875fd2a757ec", 39),
-        "proactive/user" to Frozen("77096fea3bd25f78c1d2ec952ae3ca7bd5fd1a5f7ef665bf5bcac3f0fb2a4654", 217),
-        "proactive/blank-draft" to Frozen("8c76e65bc07dc21465ff66cbd683bb192e5c037bf8ea87b2fea27cb0225a8049", 256),
-        "proactive/no-kb" to Frozen("df50bacbdf8d3fcd38f295542317ba92a63a090aef91542754700b124e186d65", 57),
-        "proactive/long-her-and-recent" to Frozen("7d03819a6908b3ae6f904503144d1edc61a9e0d710f359ad2b54e246d13ff68e", 2107),
+        // 2026-10-05（§9.1 那条已确认缺陷的修复）：主动发**普通分支**过去收了 `messages`/`advisorNote`
+        // 两个形参却只用 her/recent，用户填的本轮对话与《补充》进不了 prompt。现在普通分支真拼进去，
+        // 这四行的字节随之变大（`no-kb` 57→468 就是"没库也仍带本轮草稿与消息"的直接证据）。
+        // 仅看本轮那族（下面 only-round 三行）判据不变：仍然 0 次 KB 读取。
+        "proactive/user" to Frozen("dfd1247e3dad398b9d774dc27ab5de8a3eb8772e6fca83e7fb7d7192ea53a824", 673),
+        "proactive/blank-draft" to Frozen("67efe35dc40a45ec8a7b4974685ba3b8c1690e4ced25fb24dcc737afa369e3c4", 301),
+        "proactive/no-kb" to Frozen("0678a6cee84af17d9e3e331e94ce4ed4892f4a7c56a12a9dddeb55b782d80da2", 468),
+        "proactive/long-her-and-recent" to Frozen("a9abe58719274a8ece67ddb46f4da88a47df06d9ff82413034204b4ba6d53b12", 2563),
         "reflect/user" to Frozen("0f56cf98b78c6a54c0882f9a5d55fa296764cd1fa74724283a6b0270e2a7631e", 762),
         "reflect/user-with-analysis" to Frozen("cf8846f0be7ed4b1cc02fe2c310989d8dbcb2a19fc538b740d5c337435177493", 835),
         "lessons/user" to Frozen("778e525c2a58a655a23317f4a49b68994f11f1c841ce6a5c797311ee14b4bbc3", 131),
@@ -861,11 +869,26 @@ class PromptByteFreezeBaselineTest {
         ).forEach { mark ->
             assertEquals("PromptBuilder 里还留着被搬块的实现：$mark", 0, occurrences(text, mark))
         }
-        // 反向半：原位置必须真的在调用两个新所有者（场景段 4 处 + 围栏 4 处——
-        // 两处都从搬运前的 3 处变 4 处，多出的都是  主动开场「仅看本轮」分支同时接上这两颗新所有者；
-        // 处数跟着现场走，字节由 A/B 两组冻结表（含 only-round 三行）钉住「换的是所有者、不是字节」）
-        assertEquals("PromptBuilder 调用新所有者的场景段处数", 4, occurrences(text, "CurrentSceneInjection.block("))
-        assertEquals("PromptBuilder 调用新所有者的围栏处数", 4, occurrences(text, "ChatTranscriptBlock.render("))
+        // 反向半：原位置必须真的在调用两个新所有者。这一格改成「实扫数=登记数」的写法：
+        // 登记数点名到 PromptBuilder 的每一处委托，现场多一处少一处都先红这里——
+        // 改登记之前必须先拿 A/B 两组冻结表对过字节（换的是所有者、不是字节），字节对不上就不许动数字。
+        // 2026-10-05（§9 修复的副作用）：主动发普通分支接场景段所有者（场景 4→5）。
+        // 2026-10-06（原话第 18 条，同一分支的续笔）：普通分支把本轮真实对话也接了回来，
+        //   围栏 4→5——第五处在 PromptBuilder.kt:420（hasRealDialogue 分支），查证是真委托：
+        //   调 ChatTranscriptBlock.render 取 header/body，被搬块的九颗实现记号在 PromptBuilder
+        //   里仍是逐颗 0（上面那一圈 mark 判着），proactive 组冻结行已随之重录。
+        // ⚠ prompt 资产锁归主线程：PromptBuilder 与 domain/prompt 那两颗所有者只许主线程动，
+        //   这一格只是把现实登记下来，不构成任何代理改 prompt 侧的授权。
+        val sceneCallLedger = 5 // 登记：PromptBuilder.kt:232, 246, 272, 395, 414
+        val fenceCallLedger = 5 // 登记：PromptBuilder.kt:233, 249, 268, 396, 420
+        assertEquals(
+            "PromptBuilder 调用新所有者的场景段处数（实扫≠登记 ⇒ 有人加/删了一处委托：先对字节，再改登记）",
+            sceneCallLedger, occurrences(text, "CurrentSceneInjection.block(")
+        )
+        assertEquals(
+            "PromptBuilder 调用新所有者的围栏处数（实扫≠登记 ⇒ 同上）",
+            fenceCallLedger, occurrences(text, "ChatTranscriptBlock.render(")
+        )
         // 搬出去的两颗各自要真的持有这些记号，否则上面那格只是把代码删了
         val scene = java.io.File(src.parent + "/prompt/CurrentSceneInjection.kt")
         val chat = java.io.File(src.parent + "/prompt/ChatTranscriptBlock.kt")

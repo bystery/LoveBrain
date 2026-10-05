@@ -193,15 +193,21 @@ object MainChainHarness {
  * 挂载真实生产 Panel —— 与 FloatingService.ensurePanelCreated 的 setContent 同一组件、
  * 同一 LoveBrainTheme 包裹，只把 Service 侧窗口回调替换为测试收集的 no-op。
  *
- * onCopy / onOpenSettings / onCollapse 由调用方收集，用于断言
+ * onCopy / onOpenAppPage / onCollapse 由调用方收集，用于断言
  * 「点击确实走到生产回调」，而不是测试自造的假按钮。
+ *
+ * ⚠ 2026-10-06：这颗旧名 `onOpenSettings`，而 `LoveBrainPanelScreen` 在 HEAD 上**根本没有**
+ *   `onOpenSettings` 这一参（面板里那颗叫 `surface.openSettings()`，是页内状态，不是宿主回调）
+ *   ⇒ 这一支 androidTest 从公开版起就编不过（CI 的"androidTest 编译"那步会红）。
+ *   随原话第 8 条把名字改成 `onOpenAppPage`（缺模型那颗「去设置」→ App 主页面），
+ *   名字与被测对象对齐，顺手把那颗死参数修活。
  */
 @Composable
 fun ProductionPanel(
     viewModel: LoveBrainViewModel,
     onCopy: (String) -> Unit = {},
     onCollapse: () -> Unit = {},
-    onOpenSettings: () -> Unit = {}
+    onOpenAppPage: () -> Unit = {}
 ) {
     LoveBrainTheme {
         LoveBrainPanelScreen(
@@ -212,7 +218,7 @@ fun ProductionPanel(
             onResize = { _, _ -> },
             onMove = { _, _ -> },
             onCopy = onCopy,
-            onOpenSettings = onOpenSettings,
+            onOpenAppPage = onOpenAppPage,
             onCollapse = onCollapse
         )
     }

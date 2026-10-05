@@ -93,8 +93,18 @@ log "actual images recorded into $STAGE_DIR: $found"
 new_count=0
 while read -r f; do
   name="$(basename "$f")"
-  # roborazzi 的 verify 产物带 _actual 后缀，record 产物不带；对照基线时两种名字都认
-  base="${name%_actual.png}.png"
+  # roborazzi 的 verify 产物带 _actual 后缀，record 产物**不带**。
+  # ⚠ 2026-10-06 本机实量到这条判据原来是假的：旧写法 ${name%_actual.png}.png 在 record 模式下
+  #   去掉后缀失败（名字本来就不带 _actual），却还是把 .png 又拼了一次，
+  #   探的就是 "<类>.<方法>.png.png" —— 永远不存在，于是每张**明明已有提交基线**的图
+  #   都被印成"[没有基线] ← 需要人过眼后单独提交"。
+  #   后果不是难看：本轮重录反馈案例页时，正是这一行把"仓库里有一张过期基线"报成了"没有基线"，
+  #   而"过期基线要人看过才能换掉"恰好是这条边界要保护的那件事。
+  if [ "${name%_actual.png}" != "$name" ]; then
+    base="${name%_actual.png}.png"      # verify 产物：a_actual.png -> a.png
+  else
+    base="$name"                        # record 产物：a.png 本身就是对照名
+  fi
   if [ -f "$GOLDEN_DIR/$base" ]; then
     printf '  [已有基线] %s  %s bytes  sha256 %s…\n' "$name" "$(wc -c <"$f" | tr -d ' ')" "$(sha256_of "$f" | cut -c1-12)"
   else

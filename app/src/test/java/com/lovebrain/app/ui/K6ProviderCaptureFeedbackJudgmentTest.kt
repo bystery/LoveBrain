@@ -232,15 +232,18 @@ class K6ProviderCaptureFeedbackJudgmentTest {
         ),
         Judgment(
             13, "反馈", "ui/feedback/FeedbackCasesScreen.kt", "card",
-            "案例那张白卡（正文摘要 + 小号时间，点整卡展开）",
-            "LbCaseCard", "Card(", 1, ServedBy.NO_OWNER_YET, null,
-            "设计系统那两颗卡主人对不上这一格：`LbActionCard` 是首页入口那一族（图标 + 标题 + 尾部箭头），" +
-                "案例卡是「长文摘要 + 时间 + 展开态」，交给它就得把摘要与展开塞进 core",
-            "★ 判过、但这一层**还没有主人**，所以钉成确切数量：屏幕文件里自己画卡底的地方就是这一处，" +
-                "长出第二处当场红。这一格替代旧的「案例筛选那一族 chip」（ 明令删除，" +
-                "`FilterChip` 与 `filterCategory` 已经从这一屏退场，判决不能留在一条已经不存在的形状上）。" +
-                "等 `LbCaseCard`（或等价的「摘要卡」那一档）真进了设计系统，这一格会先红一次，" +
-                "那时把账翻成 CORE 而不是把数量改大。"
+            "案例那张白卡（首句当标题 + 余文摘要 + 时间元信息，点整卡展开）",
+            "LbListCard", "LbListCard(", 1, ServedBy.CORE, null, "",
+            "★ 已归并、下落从 NO_OWNER_YET 翻成 CORE——**这一格当初就写着" +
+                "「等 LbCaseCard（或等价的摘要卡那一档）真进了设计系统，这一格会先红一次，" +
+                "那时把账翻成 CORE 而不是把数量改大」，2026-10-05 M3b 就是那一次**：" +
+                "主人是 `core/designsystem/LbListCard.kt`（设计基线 v1.1 §3.6 那一张列表卡四槽：" +
+                "标题 `titleMedium`15 SemiBold 单行 ellipsis / 状态 6dp 点 + `bodySmall`12 字同屏 / " +
+                "摘要 `bodyMedium`13 最多两行 / 元信息 `labelSmall`10 用「｜」合成一行 / 动作行 ≤3 颗 RowCapsule），" +
+                "卡底按 §3.4 走 `Border` 1dp + 无阴影。名字用基线给的 `LbListCard` 而不是当初预名的 `LbCaseCard`：" +
+                "同一档摘要卡知识库与消息捕获将来都要用，不该按页面命名（预名的 `LbCaseCard` 因此不在盘上，" +
+                "本文件第③颗反向证人指的 `LbSummaryRow` 也仍不在盘上）。" +
+                "页面那颗 `CaseCard` 只剩「把内容交给公共件」，异形账本已同步把它移进委托壳清单。"
         )
     )
 
@@ -260,9 +263,24 @@ class K6ProviderCaptureFeedbackJudgmentTest {
         )
         assertEquals("row/card/state 三族都得在判决里", setOf("row", "card", "state"),
             judgments.map { it.family }.toSet())
+        // 2026-10-06：判决 13 按**当初写在判决里的约定**翻 CORE（旧文："等 LbCaseCard 真进了设计系统，
+        // 这一格会先红一次，那时把账翻成 CORE 而不是把数量改大"；2026-10-05 M3b 就是预定的那次翻案）。
+        // 于是表里今天零颗 NO_OWNER_YET——这是判决表该续行，不是删牙：
+        //  ① 这一档的**判据**必须还上膛——由 the no-owner-yet branch stays armed... 那格拿合成件
+        //     逐颗打给主判据的 when 走，摘牙当场红；
+        //  ② 表里一出现 NO_OWNER_YET 的实例，主判据当场逐条验它（这条不许有人来放松）；
+        //  ③ "找无主件"另有architecture/OddShapeOwnershipTest 全树扫兜底，这一族的两把尺一横一竖。
+        // 想改下面这个集合只有两条正路：真判出一颗无主下落（回来把集合加一颗），或全仓再无自画形状
+        // 且不登记的那一类（那要在交接件里给撤档理由——本格**没有**撤这一档）。
+        val servedTypes = judgments.map { it.servedBy }.toSet()
         assertEquals(
-            "三种下落都得在判决里：CORE / LEDGERED / NO_OWNER_YET 少一种，就说明有一类下落从没被判过",
-            ServedBy.values().toSet(), judgments.map { it.servedBy }.toSet()
+            "表里实判的下落种类必须逐数对上现实这两档（CORE/LEDGERED 各至少一格真判过）：" +
+                "少一格是漏判，多一格是有人加了颗没判过的下落",
+            setOf(ServedBy.CORE, ServedBy.LEDGERED), servedTypes
+        )
+        assertEquals(
+            "三种下落的枚举一颗都不许被删——从枚举里划掉 NO_OWNER_YET 等于把「找无主件」这只手砍掉",
+            3, ServedBy.values().size
         )
         // 恒绿形状的第一道门：判据不许是"数到零就算对"
         judgments.forEach { j ->
@@ -289,74 +307,83 @@ class K6ProviderCaptureFeedbackJudgmentTest {
                 j.expectCount, got
             )
 
-            when (j.servedBy) {
-                ServedBy.CORE -> {
-                    val decls = declarationsOf(j.owner)
-                    assertEquals(
-                        "判决 ${j.id} 说这一格有 core 主人 ${j.owner}，但它在全树的声明处不是恰好一处：$decls",
-                        1, decls.size
-                    )
-                    assertTrue(
-                        "判决 ${j.id}：${j.owner} 的声明不在 core/designsystem 里（实到 ${decls.single()}）——" +
-                            "那它就不是设计系统的主人，这一格得改判成登记或欠件",
-                        coreFileNames().contains(decls.single())
-                    )
-                    assertEquals(
-                        "判决 ${j.id}：${j.owner} 已经收口了，就不该再有「缺哪一颗旋钮」这句话：${j.coreGap}",
-                        "", j.coreGap
-                    )
-                    assertTrue(
-                        "判决 ${j.id}：已经有 core 主人的格子不许标「core 里那一档已经在盘上」" +
-                            "（那句话是给欠归并那几格用的）",
-                        j.coreTier == null
-                    )
-                }
-                ServedBy.LEDGERED -> {
-                    val decls = declarationsOf(j.owner)
-                    assertEquals(
-                        "判决 ${j.id} 说这一格由 ${j.owner} 画，但它在全树的声明处不是恰好一处：$decls",
-                        1, decls.size
-                    )
-                    val entry = "${decls.single()}#${j.owner}"
-                    assertTrue(
-                        "判决 ${j.id}：${j.owner} 是页面自画的一颗，却没在异形账本里登记（找的是 $entry）。" +
-                            "要么把它登记进去并写明缺哪颗旋钮，要么让它真的有主人——不许两边都不在。",
-                        ledgerEntries.contains(entry)
-                    )
-                    assertTrue(
-                        "判决 ${j.id}：${j.owner} 的声明落在 core/designsystem（${decls.single()}），" +
-                            "却按异形登记——那本账管的是页面里的形状",
-                        !coreFileNames().contains(decls.single())
-                    )
-                    // 登记要分得清是哪一种，两种都不许空着手：
-                    //  欠归并 ⇒ core 那一档必须已经在盘上（下面当场量），此时不该再写"缺哪颗旋钮"；
-                    //  缺件   ⇒ 必须写明缺的那一颗，此时 core 那一档必须还没有。
-                    assertTrue(
-                        "判决 ${j.id}：${j.owner} 要么写明缺哪颗旋钮（缺件），要么给出 core 里已经存在的那一档" +
-                            "并让这一格被当场量过（欠归并）——两个都不填就是把「页面自画」当默认选项；" +
-                            "两个都填就是自相矛盾。coreGap=«${j.coreGap}» coreTier=${j.coreTier?.tierAnchor}",
-                        (j.coreGap.isNotBlank()) xor (j.coreTier != null)
-                    )
-                }
-                ServedBy.NO_OWNER_YET -> {
-                    val decls = declarationsOf(j.owner)
-                    assertTrue(
-                        "判决 ${j.id} 把这一格记成「还没有主人」，可 ${j.owner} 已经在盘上了：$decls。" +
-                            "主人补齐了就要回来把这一格翻成 CORE，不许让它继续挂着欠件",
-                        decls.isEmpty()
-                    )
-                    assertTrue(
-                        "判决 ${j.id}：这一格还没有主人，就必须写明缺哪颗旋钮：«${j.coreGap}»",
-                        j.coreGap.isNotBlank()
-                    )
-                    assertTrue(
-                        "判决 ${j.id}：还没有主人的格子没有「core 里那一档已经在盘上」这回事",
-                        j.coreTier == null
-                    )
-                }
-            }
+            verifyServedBy(j)
 
             j.coreTier?.let { tier -> requireTierNumbersMatch(j, tier) }
+        }
+    }
+
+    /**
+     * 三种下落各自的**归属判据**——从主判据里原样搬出来一颗，一条不松：
+     * 主判据逐格调它；NO_OWNER_YET 那档今天表里零颗实例，由 armed 哨兵格拿合成件打它，
+     * 谁把这一档的牙摘了或放松了，哨兵当场红。
+     */
+    private fun verifyServedBy(j: Judgment) {
+        when (j.servedBy) {
+            ServedBy.CORE -> {
+                val decls = declarationsOf(j.owner)
+                assertEquals(
+                    "判决 ${j.id} 说这一格有 core 主人 ${j.owner}，但它在全树的声明处不是恰好一处：$decls",
+                    1, decls.size
+                )
+                assertTrue(
+                    "判决 ${j.id}：${j.owner} 的声明不在 core/designsystem 里（实到 ${decls.single()}）——" +
+                        "那它就不是设计系统的主人，这一格得改判成登记或欠件",
+                    coreFileNames().contains(decls.single())
+                )
+                assertEquals(
+                    "判决 ${j.id}：${j.owner} 已经收口了，就不该再有「缺哪一颗旋钮」这句话：${j.coreGap}",
+                    "", j.coreGap
+                )
+                assertTrue(
+                    "判决 ${j.id}：已经有 core 主人的格子不许标「core 里那一档已经在盘上」" +
+                        "（那句话是给欠归并那几格用的）",
+                    j.coreTier == null
+                )
+            }
+            ServedBy.LEDGERED -> {
+                val decls = declarationsOf(j.owner)
+                assertEquals(
+                    "判决 ${j.id} 说这一格由 ${j.owner} 画，但它在全树的声明处不是恰好一处：$decls",
+                    1, decls.size
+                )
+                val entry = "${decls.single()}#${j.owner}"
+                assertTrue(
+                    "判决 ${j.id}：${j.owner} 是页面自画的一颗，却没在异形账本里登记（找的是 $entry）。" +
+                        "要么把它登记进去并写明缺哪颗旋钮，要么让它真的有主人——不许两边都不在。",
+                    ledgerEntries.contains(entry)
+                )
+                assertTrue(
+                    "判决 ${j.id}：${j.owner} 的声明落在 core/designsystem（${decls.single()}），" +
+                    "却按异形登记——那本账管的是页面里的形状",
+                    !coreFileNames().contains(decls.single())
+                )
+                // 登记要分得清是哪一种，两种都不许空着手：
+                //  欠归并 ⇒ core 那一档必须已经在盘上（下面当场量），此时不该再写"缺哪颗旋钮"；
+                //  缺件   ⇒ 必须写明缺的那一颗，此时 core 那一档必须还没有。
+                assertTrue(
+                    "判决 ${j.id}：${j.owner} 要么写明缺哪颗旋钮（缺件），要么给出 core 里已经存在的那一档" +
+                        "并让这一格被当场量过（欠归并）——两个都不填就是把「页面自画」当默认选项；" +
+                        "两个都填就是自相矛盾。coreGap=«${j.coreGap}» coreTier=${j.coreTier?.tierAnchor}",
+                    (j.coreGap.isNotBlank()) xor (j.coreTier != null)
+                )
+            }
+            ServedBy.NO_OWNER_YET -> {
+                val decls = declarationsOf(j.owner)
+                assertTrue(
+                    "判决 ${j.id} 把这一格记成「还没有主人」，可 ${j.owner} 已经在盘上了：$decls。" +
+                        "主人补齐了就要回来把这一格翻成 CORE，不许让它继续挂着欠件",
+                    decls.isEmpty()
+                )
+                assertTrue(
+                    "判决 ${j.id}：这一格还没有主人，就必须写明缺哪颗旋钮：«${j.coreGap}»",
+                    j.coreGap.isNotBlank()
+                )
+                assertTrue(
+                    "判决 ${j.id}：还没有主人的格子没有「core 里那一档已经在盘上」这回事",
+                    j.coreTier == null
+                )
+            }
         }
     }
 
@@ -414,6 +441,55 @@ class K6ProviderCaptureFeedbackJudgmentTest {
         // ④ 反向证人：一个不存在的名字必须什么都读不出来。这一条挡住"resolver 恒真"的假绿
         assertEquals("读声明那把尺对一个不存在的名字必须交回空集", emptyList<String>(), declarationsOf("LbOwnerNobodyDrawsThis"))
         assertTrue("账本解析出来只有 ${ledgerEntries.size} 条——少于 30 条就是那本账换了写法", ledgerEntries.size >= 30)
+    }
+
+    /**
+     * NO_OWNER_YET 那一档不许因为表里今天零颗就被悄悄摘牙——三枚合成件直接打给主判据的 when：
+     *  坏件：欠的主人已经在盘上却还把格子记成「还没有主人」⇒ 分支必须抛 AssertionError（牙还在）；
+     *  好件：欠的主人真的还不存在、缺件写明 ⇒ 必须安静通过（这一档不许是恒真的门）；
+     *  懒件：好件把缺件那句擦掉 ⇒ 也必须红（否则「缺件」就成了挡箭牌）。
+     * 回退成什么会红：有人删掉/放松 NO_OWNER_YET 分支（比如摘掉 decls.isEmpty() 那一句）
+     *   ⇒ 坏件不再抛，这一格当场红；有人把这一档从枚举里划掉 ⇒ coverage 那格的哨兵红。
+     * 这一格是判决 13 按预定翻 CORE 之后、替"以后还会有人找无主件"守着的哨兵——不是撤档。
+     */
+    @Test
+    fun `the no-owner-yet branch stays armed even while the table has zero such rows`() {
+        assertEquals(
+            "哨兵本人也判现实：表里今天就该零颗 NO_OWNER_YET——真判出一颗无主下落时，" +
+                "主判据会逐条验它，这一句跟着改（改它要先在交接件里写理由）",
+            0, judgments.count { it.servedBy == ServedBy.NO_OWNER_YET }
+        )
+        val ghost = Judgment(
+            90, "证人", "ui/feedback/FeedbackCasesScreen.kt", "card",
+            "合成件：欠的主人已经在盘上，却还把格子记成「还没有主人」",
+            "LbAsyncState", "LbAsyncState(", 1, ServedBy.NO_OWNER_YET, null,
+            "缺摘要档（证人文案）", "反向证人——这一颗必须被打红"
+        )
+        var threw = false
+        try {
+            verifyServedBy(ghost)
+        } catch (_: AssertionError) {
+            threw = true
+        }
+        assertTrue(
+            "NO_OWNER_YET 的「欠的主人已在盘上必须红」这一牙掉了——分支被删或被放松，" +
+                "无主件从此没人找；判决 13 翻 CORE 不等于撤这一档",
+            threw
+        )
+        val honest = Judgment(
+            91, "证人", "ui/feedback/FeedbackCasesScreen.kt", "card",
+            "合成件：欠的那颗主人真的还没进设计系统",
+            "LbSummaryRow", "LbListCard(", 1, ServedBy.NO_OWNER_YET, null,
+            "缺「摘要行」那一档：整行可点、摘要两行、状态点与字同行", "正向证人——这一颗必须安静通过"
+        )
+        verifyServedBy(honest)
+        var threwAgain = false
+        try {
+            verifyServedBy(honest.copy(coreGap = ""))
+        } catch (_: AssertionError) {
+            threwAgain = true
+        }
+        assertTrue("NO_OWNER_YET 不填缺件也算过——这一档就成了挡箭牌", threwAgain)
     }
 
     /**

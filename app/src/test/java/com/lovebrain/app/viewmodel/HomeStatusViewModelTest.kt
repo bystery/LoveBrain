@@ -163,7 +163,7 @@ class HomeStatusViewModelTest {
             AdvisorState.RunningReady, vm.status.value.state
         )
         assertTrue(
-            "当前身份没有真凭据时必须念出'还没检查成功'这一条，实到缺项：" + vm.status.value.missing,
+            "当前身份没有真凭据时必须念出'连接还没检查过'这一条，实到缺项：" + vm.status.value.missing,
             vm.status.value.missing.contains(AdvisorMissing.ConnectionUnchecked)
         )
     }
@@ -306,6 +306,157 @@ class HomeStatusViewModelTest {
         assertEquals("没按开始也不许把服务停掉", 0, service.stopCount)
     }
 
+    // ═══════════ 3'. 检查一次、结论按身份持续有效（用户原话 2026-10-05「我们只检查一次可以吗」）═══════════
+
+    /**
+     * ② 同身份下**已验证结论不许变黄**：切出去再切回来时知识库那一格"读不动"，
+     * 那不是用户换了对象，所以连接结论必须原样留着；黄字只念"还没读到知识库"这一句真话。
+     * 读回来之后当场是绿，全程 `probe.calls` 还是 1。
+     *
+     * 反例（把改动回退成什么样它会红）：
+     * - 回退成"身份那一位直接吃 `snapshot.name`"（上一版）：Unknown 那一次库名是 null ⇒
+     *   身份漂成 `t1|deepseek-chat|-`，第一段"缺项恰好等于 KnowledgeUnread"当场红
+     *   （多出一条 ConnectionUnchecked），而且第三段永远回不到绿——旧凭据被那一格唯一的槽挤掉了，
+     *   两处一起红，而这正是用户看到的"绿 → 切回来 → 黄"；
+     * - 回退成"返回路径自己补一次检查"（更早那一版）：`assertEquals(1, probe.calls)` 变 2 红。
+     */
+    @Test
+    fun `an unreadable kb read does not void a verified connection`() = runTest {
+        allGood()
+        val vm = newVm()
+        vm.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals("起点是绿", AdvisorState.RunningReady, vm.status.value.state)
+
+        knowledge.presence = HomeKnowledgePresence.Unknown
+        vm.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+
+        assertEquals("读不动不是换对象，一次钱都不许多花", 1, probe.calls)
+        assertEquals(
+            "这一格唯一的真缺项是「知识库读不到」，不许再捎上连接那一句，实到 ${vm.status.value.missing}",
+            listOf(AdvisorMissing.KnowledgeUnread), vm.status.value.missing
+        )
+
+        knowledge.presence = HomeKnowledgePresence.Present
+        vm.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals("读回同一组身份，旧凭据当场取回", AdvisorState.RunningReady, vm.status.value.state)
+        assertEquals(1, probe.calls)
+    }
+
+    /**
+     * ①+④ 右侧是 ■ 的那整段时间（灯绿着、服务在跑）：回前台、返回子页、窗口态脉冲
+     * **一次都不许多发探针**，也不许把已验证结论弄下来。
+     * 反例：把检查写回 `returnedFromSubpage` 或 `init` ⇒ `probe.calls` 从 1 变 2 红；
+     * 反例：结论不绑身份 ⇒ 这一格不红，但下面那格（换新身份必须作废）与上面那格会红。
+     */
+    @Test
+    fun `running under the stop square never sends another probe`() = runTest {
+        allGood()
+        val vm = newVm()
+        vm.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals(AdvisorControl.Stop, vm.status.value.render().control)
+
+        repeat(4) {
+            vm.returnedFromSubpage(overlayGranted = true)   // 切出去再切回来 / 从子页返回
+            service.pulseNow()                              // 回前台那类"窗口态漂了一下"的脉冲
+            advanceUntilIdle()
+        }
+        assertEquals("■ 期间一次都不许多发", 1, probe.calls)
+        assertEquals(AdvisorState.RunningReady, vm.status.value.state)
+        assertNull("绿档不许多余解释", vm.status.value.render().hint)
+    }
+
+    /**
+     * ③ 身份**真的**变了必须作废重检（这一条不许放松成"永远绿"）：换供应商算出一组新身份，
+     * 账上没有它，必须如实念"连接还没检查过"、不许绿；只有切回原来那家才取回旧凭据。
+     * 反例：结论不绑身份（只记"上次成功过"）⇒ 换过去那一段 `assertNotEquals` 红，
+     *   而那家新供应商根本没被验过，用户看到的绿是假的；
+     * 反例：把"作废"写成"抹掉旧账"（旧身份的记录一起清）⇒ 切回来那一段红，
+     *   而且还要再烧一次钱，`assertEquals(1, probe.calls)` 同样拦着。
+     */
+    @Test
+    fun `a genuinely new identity is unchecked while the old one stays restorable`() = runTest {
+        allGood()
+        val vm = newVm()
+        vm.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals(AdvisorState.RunningReady, vm.status.value.state)
+
+        provider.ref = ref(id = "t2", model = "kimi-k2")     // 换供应商：身份两位一起变
+        vm.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertNotEquals("没验过的那家不许还挂着绿", AdvisorState.RunningReady, vm.status.value.state)
+        assertEquals(listOf(AdvisorMissing.ConnectionUnchecked), vm.status.value.missing)
+
+        provider.ref = ref()                                 // 切回原来那家：同一组身份
+        vm.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals("旧凭据按身份取回", AdvisorState.RunningReady, vm.status.value.state)
+        assertEquals("取回结论不该再花一次钱", 1, probe.calls)
+    }
+
+    /**
+     * **只有按 ■ 才清账**（那是用户主动说"这次不算了"），清完下一次按 ▶ 真的重检一次。
+     * 反例：`stopClicked` 不清账 ⇒ 这里 `probe.calls` 停在 1 红，用户明确重开却看不到新的检查
+     *   （合同"下次开始再检查"）；
+     * 反例：把清账也写进 `returnedFromSubpage` ⇒ 上面两格（不作废 / 取回）当场红。
+     */
+    @Test
+    fun `only stopping clears the ledger so the next start really checks`() = runTest {
+        allGood()
+        val vm = newVm()
+        vm.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals(1, probe.calls)
+
+        vm.stopClicked()
+        // ■ 之后重开：平台那条链会把服务起回来（与 `switching provider invalidates now…` 同一手法，
+        // 不是把判据放松——服务真没起来时 ServiceNotRunning 必须自己念出来）
+        service.markRunning()
+        vm.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals("关掉再开 = 用户要重检，这一次必须真的发", 2, probe.calls)
+        assertEquals(AdvisorState.RunningReady, vm.status.value.state)
+    }
+
+    /**
+     * 账本本体：按身份记、按身份取、只有 `clear` 抹掉全部。
+     * 反例：把 `remember` 退化成"只留最后一次"（上一版那一格可空槽的形状）⇒
+     *   第二段 `recall("t1|m|她")` 取回 null 红，而"切回来变黄"就从这个红里长出来。
+     */
+    @Test
+    fun `the ledger remembers one verdict per identity`() {
+        val ledger = HomeConnectionLedger()
+        ledger.remember("t1|m|她", HomeConnectionVerdict.Verified)
+        ledger.remember("t2|m|她", HomeConnectionVerdict.Failed)
+        assertEquals(HomeConnectionVerdict.Verified, ledger.recall("t1|m|她"))
+        assertEquals(HomeConnectionVerdict.Failed, ledger.recall("t2|m|她"))
+        assertNull("没记过的身份交回 null，调用方才能老实说没检查过", ledger.recall("t3|m|她"))
+        assertEquals(2, ledger.remembered)
+        ledger.clear()
+        assertEquals(0, ledger.remembered)
+        assertNull(ledger.recall("t1|m|她"))
+    }
+
+    /**
+     * 「谎报」那一格单独结清：这一档的实话是"从没检查过"，不是"检查失败"。
+     * 反例：把话改回「连接还没检查成功」——它落在"…成功"的否定式里，用户读成"检查失败了"
+     *   （本轮投诉的原话），第一句逐字红；反例：改成带"失败"的任何话 ⇒ 第二句红。
+     * ⚠ 这条改的是**同一条字面量的文本**：enum 构造参不在 `UiStringLiteralBudgetTest`
+     *   四把尺的锚点射程里（EX-C2 那族 Context-free 结构性例外的登记原文），
+     *   所以既没有新增中文字面量、也不是换桶，预算读数一动不动。
+     */
+    @Test
+    fun `the unchecked verdict says a neutral fact and never a failure`() {
+        val label = AdvisorMissing.ConnectionUnchecked.label
+        assertEquals("连接还没检查过", label)
+        assertTrue("没检查过不许念成失败，实到「$label」", !label.contains("失败"))
+        assertTrue("也不许用「…成功」的否定式，实到「$label」", !label.contains("成功"))
+    }
+
     // ═══════════ 4. 缺项与状态一一对应（配置不齐时连请求都不发）═══════════
 
     /** 没配供应商：不烧钱发请求，黄字念"未配置模型供应商"，而且是黄不是红 */
@@ -428,7 +579,7 @@ class HomeStatusViewModelTest {
         Row("连不上", factsOf(connection = HomeConnectionVerdict.Failed),
             AdvisorState.RunningNeedsSetup, AdvisorLamp.Yellow, AdvisorControl.Stop, "连接失败，请检查Key或地址"),
         Row("这一档还没检查过", factsOf(connection = HomeConnectionVerdict.NotChecked),
-            AdvisorState.RunningNeedsSetup, AdvisorLamp.Yellow, AdvisorControl.Stop, "连接还没检查成功"),
+            AdvisorState.RunningNeedsSetup, AdvisorLamp.Yellow, AdvisorControl.Stop, "连接还没检查过"),
         Row("服务没起来", factsOf(running = false, connection = HomeConnectionVerdict.NotApplicable, providerRef = null),
             AdvisorState.RunningNeedsSetup, AdvisorLamp.Yellow, AdvisorControl.Stop,
             "未配置模型供应商 · 军师服务没起来"),
@@ -437,7 +588,7 @@ class HomeStatusViewModelTest {
             "需要悬浮窗权限 · 请为当前对象建立知识库 · 连接失败，请检查Key或地址"),
         // 服务在别人手里起来了（面板那条路），首页没点过开始：不能算红，也不能算绿
         Row("没点过但服务在跑", factsOf(started = false, running = true, connection = HomeConnectionVerdict.NotChecked),
-            AdvisorState.RunningNeedsSetup, AdvisorLamp.Yellow, AdvisorControl.Stop, "连接还没检查成功")
+            AdvisorState.RunningNeedsSetup, AdvisorLamp.Yellow, AdvisorControl.Stop, "连接还没检查过")
     )
 
     /**

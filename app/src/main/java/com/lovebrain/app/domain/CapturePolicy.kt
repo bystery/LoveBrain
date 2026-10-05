@@ -114,4 +114,23 @@ object CapturePolicy {
         val cn = className?.lowercase().orEmpty()
         return cn.contains("edittext") || cn.contains("textfield")
     }
+
+    /**
+     * 事件送达面：把用户勾选的 allowlist 翻成 `ServiceInfo.packageNames` 需要的数组。
+     *
+     * 这是 CAP2（档位 D）里"代码层声明范围"那颗唯一真源——只吃 [allowedPackages]
+     * （= `SecurePrefs.captureAllowedPackages`），不读 Android、不猜样例包名、更不把微信/QQ
+     * 之类写死进来。XML 里没有 `packageNames` 声明，收不收、收谁全看这一颗算出来的数组。
+     *
+     * 纯函数，方便把形状钉成单测（给一份包名集合 ⇒ 断言数组恰是那一份、排序确定；
+     * 空集合 ⇒ 空数组而不是 null）。
+     *
+     * 空集合返回空数组（非 null）的语义：空数组交给系统＝"没声明具体包"＝事件全投，
+     * 但**采集边界不因此放开**——`decide()` 的 fail-closed（`allowlist_empty` → 全拒）仍然兜住每一条，
+     * 所以"设了包名"绝不等于"收全部然后开抓"。
+     *
+     * 排序：`Set` 的迭代序不定，回写给系统的数组要可比对、可断言，故按字典序固定。
+     */
+    fun packageNamesFor(allowedPackages: Set<String>): Array<String> =
+        allowedPackages.filter { it.isNotBlank() }.sorted().toTypedArray()
 }

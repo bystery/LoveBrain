@@ -15,11 +15,13 @@ import com.lovebrain.app.ui.home.AdvisorControl
 import com.lovebrain.app.ui.home.AdvisorLamp
 import com.lovebrain.app.ui.home.AdvisorMissing
 import com.lovebrain.app.ui.home.AdvisorState
+import com.lovebrain.app.ui.home.AdvisorStatus
 import com.lovebrain.app.ui.home.render
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,6 +33,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -314,60 +317,237 @@ class HomeStatusDiProbeTest {
         }
     }
 
-    // ═══════════ 3. 空库不算已建知识库（主线程 2026-10-03 拍）═══════════
+    // ═══════════ 3. 当前对象知识库的存在性判据（指导书 §7.4：有效已选即已建立）═══════════
 
     /**
-     * 三格一起摆：有内容 → 不念建库那一句；两个计数都是 0 → 念"请为当前对象建立知识库"；
-     * 读端口抛异常 → 念"还没读到"，**不许**把"读不动"报成"没有"骗用户重建。
+     * 只筛知识库两格（悬浮权限/供应商/服务/连接与这一族判点无关）。
+     * 反例：知识库判据从缺项表里整个掉线（比如异常被吞成 Present、Missing 不再产出）——
+     * 各格对它摆的**相等**断言当场红，不是一句"存在即可"。
+     */
+    private fun kbSays(status: AdvisorStatus): List<AdvisorMissing> = status.missing.filter {
+        it == AdvisorMissing.NoKnowledgeBase || it == AdvisorMissing.KnowledgeUnread
+    }
+
+    /**
+     * 这一格旧版钉的是"空库 = Missing（主线程 2026-10-03 拍）"，那条行为已被用户原话
+     * 第 13 条否定，2026-10-05 依指导书 §7.4 按新判据改写（台账
+     * `evidence/2026-10-05-feedback/impl-G2-empty-kb.md` 有改写前后对照）。四格：
+     * ① 新建/默认空库（两计数全 0）→ 已建立，既不念"请建立"也不念"还没读到"；
+     * ①' 对话一轮后再读（只有 turnCount 动、库名没动）→ 判定不许出现错误翻转，
+     *     同一身份的已验证结论也不许作废；
+     * ② 只有归档批次数 → 同样不念建库（手写画像那格 turnCount 恒 0，形状与 ① 同一读数）；
+     * ③ 读端口抛异常 → 念"还没读到"，**不许**把"读不动"报成"没有"，更不许绿。
      *
-     * 反例：`getActive() != null` 就算 Present（上一版就是这么写的）→ 第二格红；
-     * 反例：异常吞成 Missing → 第三格念错话；
-     * 反例：只认 turnCount → 有归档批次、但一轮都没提交的那一格会被当成空库（第一格②拦着）。
+     * 反例：把 `turnCount > 0 || topicCount > 0` 的旧判据写回来 → ① 的相等断言当场红；
+     * 反例：把轮数算进身份位 → ①' 会冒出"连接还没检查成功"，红；
+     * 反例：异常吞成 Missing/Present → ③ 的两句各红一条。
      */
     @Test
-    fun `empty library is not a built knowledge base while unreadable is not missing`() = runTest {
+    fun `a selected empty library counts as built while one round later nothing flips`() = runTest {
         val model = configuredStore()
         coEvery { gateway.testConnectionWithProbe(any(), any(), any()) } returns
             ConnectionTestResult(success = true)
 
-        // ① 空库：目录建好了、一格正文都没积累过（新建库的 kb.json 就是这个形状）
+        // ① 新建库的 kb.json 就是这个形状：目录建好、一格正文都没积累过
         coEvery { read.getActive() } returns KnowledgeBase(name = "她", turnCount = 0, topicCount = 0)
         val empty = newHomeStatusViewModel(model, read, gateway)
         empty.playClicked(overlayGranted = true)
         advanceUntilIdle()
         assertEquals(
-            "空库要说建库那一句，而不是'读不到'",
-            listOf(AdvisorMissing.NoKnowledgeBase),
-            empty.status.value.missing.filter {
-                it == AdvisorMissing.NoKnowledgeBase || it == AdvisorMissing.KnowledgeUnread
-            }
+            "选了空库既不许念建库也不许念读不到",
+            emptyList<AdvisorMissing>(), kbSays(empty.status.value)
         )
         val hint = empty.status.value.render().hint.orEmpty()
-        assertTrue("黄字要念得出这一句，实到「$hint」", hint.contains("请为当前对象建立知识库"))
+        assertTrue(
+            "空库的黄字里不许出现建库那一句，实到「$hint」",
+            !hint.contains("请为当前对象建立知识库")
+        )
 
-        // ② 只有归档批次数（turnCount 会随提交轮数走，不能拿它当唯一读数）
+        // ①' 一轮对话之后：turnCount 动了、库名没动——前后都是 Present，旧结论不作废、不补发
+        coEvery { read.getActive() } returns KnowledgeBase(name = "她", turnCount = 1, topicCount = 0)
+        empty.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals("一轮前后判定不许翻转", emptyList<AdvisorMissing>(), kbSays(empty.status.value))
+        assertTrue(
+            "同身份的已验证结论不许因为计数变化就作废，实到缺项 ${empty.status.value.missing}",
+            !empty.status.value.missing.contains(AdvisorMissing.ConnectionUnchecked)
+        )
+        coVerify(exactly = 1) { gateway.testConnectionWithProbe(any(), any(), any()) }
+
+        // ② 只有归档批次数（轮数与归档都不参与存在性，这一格是第二个读数点）
         coEvery { read.getActive() } returns KnowledgeBase(name = "她", turnCount = 0, topicCount = 1)
         val lessonsOnly = newHomeStatusViewModel(model, read, gateway)
         lessonsOnly.playClicked(overlayGranted = true)
         advanceUntilIdle()
-        assertTrue(
-            "积累过就不要念建库那一句，实到 ${lessonsOnly.status.value.missing}",
-            !lessonsOnly.status.value.missing.contains(AdvisorMissing.NoKnowledgeBase)
-        )
+        assertEquals(listOf<AdvisorMissing>(), kbSays(lessonsOnly.status.value))
 
         // ③ 读不动 ≠ 没有
         coEvery { read.getActive() } throws IllegalStateException("disk gone")
         val unreadable = newHomeStatusViewModel(model, read, gateway)
         unreadable.playClicked(overlayGranted = true)
         advanceUntilIdle()
-        assertEquals(
-            listOf(AdvisorMissing.KnowledgeUnread),
-            unreadable.status.value.missing.filter {
-                it == AdvisorMissing.NoKnowledgeBase || it == AdvisorMissing.KnowledgeUnread
-            }
-        )
+        assertEquals(listOf(AdvisorMissing.KnowledgeUnread), kbSays(unreadable.status.value))
         assertTrue(
             "读不动这一格永远不许绿", unreadable.status.value.state != AdvisorState.RunningReady
+        )
+    }
+
+    /**
+     * §7.4 的另一半：真缺失照旧要念。没有活动库、库名空白（无效引用）都还是 `Missing`，
+     * 缺项仍是"请为当前对象建立知识库"。
+     * 反例：修空库误报时把"没有库"也吞成 Present → 两句 `kbSays` 相等各红；
+     * 反例：吞成 Unknown → 筛出来的是 `KnowledgeUnread`，同样红。
+     */
+    @Test
+    fun `no active library and blank library name both still ask to build`() = runTest {
+        val model = configuredStore()
+        coEvery { gateway.testConnectionWithProbe(any(), any(), any()) } returns
+            ConnectionTestResult(success = true)
+
+        coEvery { read.getActive() } returns null
+        val none = newHomeStatusViewModel(model, read, gateway)
+        none.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals(listOf(AdvisorMissing.NoKnowledgeBase), kbSays(none.status.value))
+        assertTrue(
+            "真没选库的黄字要念得出建库那一句，实到「${none.status.value.render().hint.orEmpty()}」",
+            none.status.value.render().hint.orEmpty().contains("请为当前对象建立知识库")
+        )
+
+        coEvery { read.getActive() } returns KnowledgeBase(name = "   ", turnCount = 5, topicCount = 5)
+        val blank = newHomeStatusViewModel(model, read, gateway)
+        blank.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals(
+            "库名空白 = 无效引用，有计数也不算有效库",
+            listOf(AdvisorMissing.NoKnowledgeBase), kbSays(blank.status.value)
+        )
+    }
+
+    /**
+     * 切到另一张**空**库：新库照样算已建立（§7.4 同一条），但身份里库名换了 →
+     * 旧连接结论作废，且**不补发**探针。
+     * 反例：空库判据还在 → 第一句 `kbSays` 红；反例：库名不进身份位 →
+     * `ConnectionUnchecked` 不出现，第二句红；反例：返回路径自己补检查 → `coVerify` 红。
+     */
+    @Test
+    fun `switching to another empty library keeps it built but voids the old verdict`() = runTest {
+        val model = configuredStore()
+        coEvery { gateway.testConnectionWithProbe(any(), any(), any()) } returns
+            ConnectionTestResult(success = true)
+        coEvery { read.getActive() } returns KnowledgeBase(name = "她", turnCount = 0, topicCount = 0)
+        val vm = newHomeStatusViewModel(model, read, gateway)
+        vm.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals(emptyList<AdvisorMissing>(), kbSays(vm.status.value))
+        coVerify(exactly = 1) { gateway.testConnectionWithProbe(any(), any(), any()) }
+
+        coEvery { read.getActive() } returns KnowledgeBase(name = "另一个人", turnCount = 0, topicCount = 0)
+        vm.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals("新的空库同样算已建立，不许念建库", emptyList<AdvisorMissing>(), kbSays(vm.status.value))
+        assertTrue(
+            "切库后旧结论必须作废，实到缺项 ${vm.status.value.missing}",
+            vm.status.value.missing.contains(AdvisorMissing.ConnectionUnchecked)
+        )
+        assertNotEquals(AdvisorState.RunningReady, vm.status.value.state)
+        coVerify(exactly = 1) { gateway.testConnectionWithProbe(any(), any(), any()) }
+    }
+
+    /**
+     * 活动库被删：重读回 `Missing`，身份位没了 → 旧结论作废，永远不许留在绿档。
+     * 反例：删除后 publish 仍吃旧快照（不重读）→ 第一句红；
+     * 反例：作废只写在 runCheck → 第二句红；反例：绿不认身份 → 第三句红。
+     */
+    @Test
+    fun `deleting the active library voids the verdict and asks to build again`() = runTest {
+        val model = configuredStore()
+        coEvery { gateway.testConnectionWithProbe(any(), any(), any()) } returns
+            ConnectionTestResult(success = true)
+        coEvery { read.getActive() } returns KnowledgeBase(name = "她", turnCount = 0, topicCount = 0)
+        val vm = newHomeStatusViewModel(model, read, gateway)
+        vm.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals(emptyList<AdvisorMissing>(), kbSays(vm.status.value))
+
+        coEvery { read.getActive() } returns null
+        vm.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals(
+            "库删了要重新念建库那一句", listOf(AdvisorMissing.NoKnowledgeBase), kbSays(vm.status.value)
+        )
+        assertTrue(
+            "库删了旧结论必须作废，实到缺项 ${vm.status.value.missing}",
+            vm.status.value.missing.contains(AdvisorMissing.ConnectionUnchecked)
+        )
+        assertNotEquals("库删了永远不许是绿的", AdvisorState.RunningReady, vm.status.value.state)
+        coVerify(exactly = 1) { gateway.testConnectionWithProbe(any(), any(), any()) }
+    }
+
+    /**
+     * 只有空库的机器上切供应商：作废与补发纪律和原有那格一致——
+     * **修空库误报不许让任何一格亮绿灯**（§7.4 末段与 F4 的守卫）。
+     * 反例：presence 变 Present 被当成点绿条件 → `ConnectionUnchecked`/非绿两句一起红；
+     * 反例：切供应商不作废 → 第一句红；反例：返回补发付费请求 → `coVerify` 红。
+     */
+    @Test
+    fun `switching provider over an empty library voids the old verdict without turning green`() = runTest {
+        val model = configuredStore()
+        coEvery { gateway.testConnectionWithProbe(any(), any(), any()) } returns
+            ConnectionTestResult(success = true)
+        coEvery { read.getActive() } returns KnowledgeBase(name = "她", turnCount = 0, topicCount = 0)
+        val vm = newHomeStatusViewModel(model, read, gateway)
+        vm.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals(emptyList<AdvisorMissing>(), kbSays(vm.status.value))
+
+        val other = ProviderTicket("t-other", "Kimi", "https://api.other.example", model = "kimi-k2")
+        model.setWorkerTickets(listOf(ticket, other))
+        model.activeTicketId = other.id
+        model.saveWorkerApiKey(other.id, "sk-other-key")
+        vm.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertTrue(
+            "换供应商后旧结论必须作废，实到缺项 ${vm.status.value.missing}",
+            vm.status.value.missing.contains(AdvisorMissing.ConnectionUnchecked)
+        )
+        assertEquals("空库这一格不许顺手红成建库", emptyList<AdvisorMissing>(), kbSays(vm.status.value))
+        assertTrue(
+            "不许因为修空库错误就点绿", vm.status.value.state != AdvisorState.RunningReady
+        )
+        coVerify(exactly = 1) { gateway.testConnectionWithProbe(any(), any(), any()) }
+    }
+
+    /**
+     * 库还没读到（冷启动加载顺序里目录读取在路上）：这一刻只有"正在检查…"，
+     * 不许抢跑念出"建库"或"读不到"；读回来后空库按 Present 落地，全程只发过一次探针。
+     * 反例：把在飞读取当失败（走 Unknown 抢答"还没读到"以外的话/把建库念出来）→ hint 相等句红；
+     * 反例：读取期间就把探针发出去 → `coVerify(exactly = 0)` 红；
+     * 反例：读回来后空库又被判 Missing → 最后一句红。
+     */
+    @Test
+    fun `a kb read still in flight says checking and settles as built without extra probes`() = runTest {
+        val model = configuredStore()
+        coEvery { gateway.testConnectionWithProbe(any(), any(), any()) } returns
+            ConnectionTestResult(success = true)
+        val gate = CompletableDeferred<KnowledgeBase>()
+        coEvery { read.getActive() } coAnswers { gate.await() }
+
+        val vm = newHomeStatusViewModel(model, read, gateway)
+        vm.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals("库没读到之前不许出建库那一句，只许停在检查中", AdvisorState.Checking, vm.status.value.state)
+        assertEquals(
+            "在飞阶段的黄字只有一句'正在检查…'", "正在检查…", vm.status.value.render().hint
+        )
+        coVerify(exactly = 0) { gateway.testConnectionWithProbe(any(), any(), any()) }
+
+        gate.complete(KnowledgeBase(name = "她", turnCount = 0, topicCount = 0))
+        advanceUntilIdle()
+        assertEquals("读回来的空库算已建立", emptyList<AdvisorMissing>(), kbSays(vm.status.value))
+        coVerify(exactly = 1) { gateway.testConnectionWithProbe(any(), any(), any()) }
+        assertTrue(
+            "JVM 上服务起不来，这一格永远不许绿", vm.status.value.state != AdvisorState.RunningReady
         )
     }
 }

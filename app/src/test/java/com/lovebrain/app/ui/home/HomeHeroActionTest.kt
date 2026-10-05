@@ -117,4 +117,42 @@ class HomeHeroActionTest {
             controlRect.height / density <= 56f
         )
     }
+
+    /**
+     * §3.10 的闭合判据（源码级来路）：▶/■ 这两颗形状**必须由设计系统那颗圆角字形件画**，
+     * 页面里不许再留一条自己拼的实心尖 Path。
+     *
+     * 为什么这一格按来路判而不是按像素判：本机没有设备、也没有可用的 AVD/system-image，
+     * "三个角到底圆不圆"这件事在渲染侧永远量不到；而几何那一半已经由
+     * `core/designsystem/LbTriangleGlyphGeometryTest` 按圆弧/切点/半径逐颗证过（纯 JVM、有反例）。
+     * 这里补的是**接缝**：页面是不是真的走了那颗件。
+     *
+     * 反例：
+     * - 有人把 `AdvisorPlayGlyph` 那种 `Path().apply { moveTo/lineTo/lineTo/close }` 抄回来
+     *   ⇒ 前两句红（尖角重新出现在页面上，而且是在没有圆弧概念的地方）；
+     * - 只把三角搬走、停止块仍旧自己 `background(Primary, LoveBrainShape.sm)` 涂一颗固定 6dp
+     *   ⇒ "两颗形状同一个主人" 那句红（两形就变两种语言）；
+     * - 把那颗件改成接受 `cornerRadius:` 或 `color:` 自由参数 ⇒ 本文件测不到，
+     *   但 `LbTriangleGlyphGeometryTest` 第 1 格（比例只有一颗数）会先红。
+     *
+     * ⚠ 注释一律先掩平再判（`SourceScan.maskComments`）：本文件自己的说明里就写着
+     * `Path` / `lineTo` 这两个词，不掩注释的尺会判自己红（坑表那一族"量具自己吃自己"）。
+     */
+    @Test
+    fun `the play and stop shapes come from the shared rounded glyph, not a local sharp path`() {
+        val root = java.io.File("src/main/java/com/lovebrain/app").takeIf { it.isDirectory }
+            ?: java.io.File("app/src/main/java/com/lovebrain/app")
+        val file = java.io.File(root, "ui/home/HomeComponents.kt")
+        assertTrue("找不到 $file——这把尺会恒绿", file.isFile)
+        val code = com.lovebrain.app.core.testing.SourceScan.maskComments(file.readText(Charsets.UTF_8))
+
+        assertEquals("页面里不许再自己拼 Path（§3.10 那颗件才是主人）", 0, Regex("\\bPath\\(\\)").findAll(code).count())
+        assertEquals("页面里不许再自己 lineTo 出尖角", 0, Regex("\\blineTo\\(").findAll(code).count())
+        assertEquals("页面里不许再自己 drawPath", 0, Regex("\\bdrawPath\\(").findAll(code).count())
+        // 一颗调用点，两颗形状（三角 / 停止块）都从它走
+        assertEquals("▶/■ 应各自交出形状档、共用一颗 LbTriangleGlyph(", 1, Regex("\\bLbTriangleGlyph\\s*\\(").findAll(code).count())
+        assertTrue("朝右那颗没走 TriangleRight 档", code.contains("LbTriangleGlyphShape.TriangleRight"))
+        assertTrue("停止那颗没走 StopSquare 档（同件同比例这条就断了）", code.contains("LbTriangleGlyphShape.StopSquare"))
+        assertTrue("字形可见尺寸仍是交进去的那一档", code.contains("HomeDimens.GLYPH_VISIBLE_DP.dp"))
+    }
 }

@@ -2,12 +2,14 @@ package com.lovebrain.app.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.provider.Settings
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.PanelBackdropOpacity
 import com.lovebrain.app.domain.port.SettingsStorePort
 import com.lovebrain.app.model.ProviderTicket
+import com.lovebrain.app.service.CopyCaptureService
 import com.lovebrain.app.util.L
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
@@ -65,6 +67,11 @@ class SecurePrefs(context: Context) : SettingsStorePort {
             .remove("saved_messages")
             .remove("saved_user_hint")
             .apply()
+
+        // CAP4（2026-10-06）：captureEnabled 默认翻成 fail-closed 之后，老安装里
+        // "从没写过这颗键、但四件事实则在抓"的那一档在这里一次性落成 true——升级后捕获不断。
+        // 为什么这一跳、为什么幂等，见函数 KDoc。
+        reconcileLegacyCaptureEnabledOnce(context)
     }
 
     // ═══════════ 旧单 Key 兼容字段（过渡期保留）═══════════
@@ -193,10 +200,73 @@ class SecurePrefs(context: Context) : SettingsStorePort {
 
     // ═══ 消息捕获开关（ 问题 4）═══
 
-    /** 消息捕获总开关：关闭后 CopyCaptureService 在事件入口直接忽略一切捕获，默认开 */
+    /**
+     * 消息捕获总开关：关闭后 CopyCaptureService 在事件入口直接忽略一切捕获。
+     *
+     * **默认关（fail-closed，2026-10-06 CAP4 改）**：没写过这颗键 = 用户从没要过捕获 ⇒ 读出来必须是关。
+     * 旧默认是"开"——全新安装一进消息捕获页开关就是拨开的，而披露没同意、无障碍没授予、范围没选，
+     * 页面显示的那一格就是一句谎。用户原话（"现在你的默认刚打开，你的开关就是拨开的"）把这条钉成
+     * 缺陷，团队据此立的规矩：**隐私能力不许默认开**。
+     *
+     * 老安装升级不断捕获不归这颗默认值管——由 [reconcileLegacyCaptureEnabledOnce] 在构造期
+     * 一次性归一落盘；这颗 getter 永远只回答"没写过就是关"。
+     * 语义钉在 `SettingsStorePortContractTest`（空存储读到 false、显式写 true/false 原样读回）。
+     */
     override var captureEnabled: Boolean
-        get() = prefs.getBoolean(KEY_CAPTURE_ENABLED, true)
+        get() = prefs.getBoolean(KEY_CAPTURE_ENABLED, false)
         set(value) = prefs.edit().putBoolean(KEY_CAPTURE_ENABLED, value).apply()
+
+    /**
+     * 一次性归一 [captureEnabled] 的持久值（CAP4，2026-10-06）。
+     *
+     * **只跑一次的凭据是键本身**：`prefs.contains(KEY_CAPTURE_ENABLED)`。写过——不管写的是 true
+     * 还是 false，不管是用户拨的还是上一趟归一落的——直接返回：不写盘，更不许拿后来的事实
+     * 翻转第一次的结论。所以不需要"是否已归一"的第二本账；也**不许**用"读出来是 true"
+     * 当"写过"的证据：默认翻成关之后，"读到 false"既可能是"从没写过"也可能是"归一落成的 false"，
+     * 读值装不下这两件事——那正是这颗 bug 自己的形状。
+     *
+     * **发生在哪一跳**：SecurePrefs 的构造期（init），先于任何人读这颗键。这是全工程唯一同时
+     * 覆盖两个入口的跳：页面侧走 DI 单例（AppModule），服务侧 `CopyCaptureService.onServiceConnected`
+     * 自己 `SecurePrefs(this)` 也走这里。放在 VM 里会留洞：老用户升级后没打开任何页面时 VM
+     * 永不被构造，服务读到的就是没归一的关——静默关掉正在捕获的老用户，恰是本工单禁的事。
+     * 对 A 席（CaptureAppsScreen 显示改读有效态）无抢颗粒：归一只在构造期写这一颗键一次，
+     * UI 侧只读；此后唯一的写者是 toggleCapture（用户显式动作），同主线程串行，无竞态窗口。
+     *
+     * **落 true 的条件 = 四件事实齐**（缺一落 false，就是用户看到的实话）：
+     * ①本键从没写过（上面那条 contains）；②本应用捕获服务已在系统无障碍启用列表里；
+     * ③当前这一版披露明确同意过（记的版本 >= [CopyCaptureService.CURRENT_DISCLOSURE_VERSION]，
+     * 与 `SetupViewModel.isAccessibilityDisclosureConfirmed` 同一把尺）；④抓取范围非空。
+     * ②③④ 齐是"旧版本真的在抓"的充分证据——旧默认"开"从没被用户显式拨过，而服务侧每一条
+     * 正文都必须穿过这三道闸才会落进捕获。
+     *
+     * 任何一步抛（Keystore 降级、JVM 桩、系统设置读不动）都按"证据不齐"处理 = 落 false：
+     * fail-closed 不因归一自身失败而变宽。
+     */
+    private fun reconcileLegacyCaptureEnabledOnce(context: Context) {
+        if (prefs.contains(KEY_CAPTURE_ENABLED)) return
+        val legacyWasActuallyCapturing = runCatching {
+            isCaptureServiceEnabledForReconciliation(context) &&
+                accessibilityDisclosureVersion >= CopyCaptureService.CURRENT_DISCLOSURE_VERSION &&
+                captureAllowedPackages.isNotEmpty()
+        }.getOrDefault(false)
+        prefs.edit().putBoolean(KEY_CAPTURE_ENABLED, legacyWasActuallyCapturing).apply()
+        L.w("capture_enabled fail-closed reconciliation wrote=$legacyWasActuallyCapturing")
+    }
+
+    /**
+     * 归一用的无障碍启用判据：与 `SetupViewModel.isCaptureServiceEnabled` 逐字同一把尺
+     * （组件全名逐段比对，不 `contains(packageName)` 松判）。为什么不端口化/不共用：
+     * 那是给 data 开一条 system-settings 读通道的新账，而这一格只在构造期读一次——
+     * 两处字面一致由本函数注释与那侧各钉一个反例格看住。
+     */
+    private fun isCaptureServiceEnabledForReconciliation(context: Context): Boolean {
+        val enabled = Settings.Secure.getString(
+            context.contentResolver,
+            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+        ) ?: return false
+        val self = "${context.packageName}/com.lovebrain.app.service.CopyCaptureService"
+        return enabled.split(':').any { it.trim() == self }
+    }
 
     // ═══ 无障碍隐私披露 consent 版本号 ═══
 
@@ -231,6 +301,27 @@ class SecurePrefs(context: Context) : SettingsStorePort {
     /** 移除一个允许抓取的包名 */
     fun removeCaptureAllowedPackage(pkg: String) {
         captureAllowedPackages = captureAllowedPackages - pkg
+    }
+
+    /**
+     * 偏好变更的**可订阅口**：交回一颗取消订阅的闭包（调用方必须在 `onDestroy` 里调它，
+     * 否则 `SharedPreferences` 持着监听器 = 持着整个服务实例，那是漏）。
+     *
+     * 为什么不做成"只报某个键"：本类默认走 `EncryptedSharedPreferences`，
+     * 而它回给监听器的 **key 是加密后的那串**，与 `"capture_allowed_packages"` 永远对不上
+     * （AndroidX 的老坑）。按键名过滤在这里会写成一颗**永远不触发**的监听器——
+     * 比没监听更糟，因为它看起来是接上了的。所以这里**不筛键名**，
+     * 由调用方自己重读那一份真源（幂等：值没变就是空操作，见 `CopyCaptureService.syncDeclaredPackageScope`
+     * 里那句 `allowed == lastAppliedPackageNames` 早退）。
+     *
+     * 存在的理由：无障碍框架按 `ServiceInfo.packageNames` **在框架层就滤掉**不匹配的事件，
+     * 于是"用户刚勾完第二个 App"这件事**不会有任何事件流进服务**来提醒它——
+     * 只靠事件里的复检，新选的那一个永远抓不到，直到服务下次重建。
+     */
+    fun onAnyPreferenceChanged(listener: () -> Unit): () -> Unit {
+        val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ -> listener() }
+        prefs.registerOnSharedPreferenceChangeListener(prefListener)
+        return { runCatching { prefs.unregisterOnSharedPreferenceChangeListener(prefListener) } }
     }
 
     // ═══════════ 工单系统字段（ - ）════════════
@@ -360,6 +451,32 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         set(value) = prefs.edit().putBoolean(KEY_ONBOARDING_DONE, value).apply()
 
     /**
+     * 介绍层看过/明确跳过（基线 v1 §6.8 新增键；与 [hasCompletedOnboarding] 各管各的层：
+     * 这颗只豁免介绍，不代表引导整体完成）。语义钉在 `SettingsStorePortContractTest` 同一份合同里。
+     */
+    override var introSeen: Boolean
+        get() = prefs.getBoolean(KEY_ONBOARDING_INTRO_SEEN, false)
+        set(value) = prefs.edit().putBoolean(KEY_ONBOARDING_INTRO_SEEN, value).apply()
+
+    /**
+     * 引导游标：存 `GuideCursor` 枚举名，空串 = 从没写过（读写方只有 `SetupViewModel`，
+     * 解析与非法值回落也在那一处——这里只是本子上的一行字）。
+     */
+    override var guideCursor: String
+        get() = prefs.getString(KEY_ONBOARDING_GUIDE_CURSOR, "").orEmpty()
+        set(value) = prefs.edit().putString(KEY_ONBOARDING_GUIDE_CURSOR, value).apply()
+
+    /**
+     * 介绍层第几格（0…3）。越界**不在这里钳**——钳制归 `SetupViewModel` 那两颗读写口
+     * （`restoreIntroStep` / `saveIntroStep`），这里只做"存一个整数、读不回脏值（缺省 0）"。
+     * 为什么值得单独一键：见 `SettingsStorePort.introStep` 上方——把格号塞进 `guideCursor`
+     * 就是基线 §6.8 废掉的第二本账。
+     */
+    override var introStep: Int
+        get() = prefs.getInt(KEY_ONBOARDING_INTRO_STEP, 0)
+        set(value) = prefs.edit().putInt(KEY_ONBOARDING_INTRO_STEP, value).apply()
+
+    /**
      * 一次性内存迁移——将旧明文 prefs 中的 provider_key_* 迁移到加密存储后删除。
      * 在 init 中调用，只执行一次（迁移后明文 key 已删除，后续不再命中）。
      */
@@ -412,6 +529,10 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         private const val KEY_TOTAL_ADOPT_COUNT = "total_adopt_count"
         private const val KEY_TOTAL_REWRITE_COUNT = "total_rewrite_count"
         private const val KEY_ONBOARDING_DONE = "onboarding_done"
+        // 引导进度新键（基线 v1 §6.8；旧 onboarding_done 语义不动，迁移规则见 SetupViewModel 那一族）
+        private const val KEY_ONBOARDING_INTRO_SEEN = "onboarding_intro_seen"
+        private const val KEY_ONBOARDING_GUIDE_CURSOR = "onboarding_guide_cursor"
+        private const val KEY_ONBOARDING_INTRO_STEP = "onboarding_intro_step"
         // 无障碍隐私披露 consent 版本号
         private const val KEY_ACCESSIBILITY_DISCLOSURE_VERSION = "accessibility_disclosure_version"
         // 无障碍抓取 allowlist（默认空集 = 不抓任何 App）

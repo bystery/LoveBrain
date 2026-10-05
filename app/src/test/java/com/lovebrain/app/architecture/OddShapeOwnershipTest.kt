@@ -259,8 +259,12 @@ class OddShapeOwnershipTest {
      * `app/src/main` 全树重扫一遍抄下来的，不是手数的**；构建由主线程独占，所以这里的读数
      * 出自同判据的一次全树重扫，主线程复跑这颗套件应当一字不差对上（对不上就是有人又画了新的一颗）。
      *
-     * 实到：**25 颗异形 + 12 颗委托壳 + 1 个交值的状态工厂**（三本账，见下面三颗清单）。
-     * 记的是 39 颗异形，此后各轮陆续归并、随功能删除（锦囊五颗、首页重做撤下三颗、砍掉的设置页一颗、
+     * 实到：**23 颗异形 + 14 颗委托壳 + 1 个交值的状态工厂**（三本账，见下面三颗清单）。
+     * 上一版记的是 24 异形 + 13 壳：2026-10-06 L1b 把知识库母版页那张自画卡底（`KnowledgeBaseActivity.kt#KbCard`）
+     * 也交给同一个主人 `core/designsystem/LbListCard.kt`（基线 v1.1 §3.6：母版页从今天起只交内容），
+     * 页面那一颗退化成"只把内容交给公共件"的委托壳 ⇒ 异形销行一颗、壳加一颗。
+     * 更早：2026-10-05 M3b 把反馈案例那张自绘卡底上提进同一颗公共件，页面那一颗退化成委托壳；
+     * 再更早：记的是 39 颗异形，此后各轮陆续归并、随功能删除（锦囊五颗、首页重做撤下三颗、砍掉的设置页一颗、
      * 点踩面板一颗壳），并新登记页面自画的卡底——本轮（2026-10-03）已按这把尺对 `app/src/main` 全树重扫，
      * 三本账逐条与实扫对齐，摘掉幽灵、补上自画卡底，一条没有靠"把扫描范围缩小"抵掉。
      */
@@ -268,7 +272,9 @@ class OddShapeOwnershipTest {
         "AccessibilityDisclosureDialog.kt#AccessibilityDisclosureDialog",
         "AiLoadingRow.kt#AiLoadingRow",
         "HomeComponents.kt#AssistantStatusCard",
-        "KnowledgeBaseActivity.kt#KbCard",
+        // KnowledgeBaseActivity.kt#KbCard 于 2026-10-06 L1b **移进下面的 expectedShells**：
+        // 卡底形状、字阶、行数上限、动作写法全部交回 `LbListCard`，母版页体里没有 `Card(`、
+        // 没有 `shadow(`、没有自画 `clickable`，只剩一次 `LbListCard(` 调用（与 CaseCard 同一档）。
         "VectorPills.kt#VectorPill",
         "VectorPills.kt#VectorPillsRow",
         "PanelSuggestionCards.kt#ProfileSuggestionCard",
@@ -313,9 +319,12 @@ class OddShapeOwnershipTest {
         "SchemeCollapsedBlock.kt#CardCompactAction",
         // 供应商设置页（SettingsProviderEntry.kt）整页已砍 ⇒ SettingsValueRow 随之消失，从账上摘掉。
         // ── 2026-10-03 本轮新登记的自画卡底 ────────────────────────────────────
-        // 反馈案例那一格的展开卡：Card 底 + 阴影 + 整卡一处点击展开，里面候选回复 + 时间戳两行文本。
-        // 主人：`FeedbackCasesScreen.kt`（列表每格调它）。【真需要自画 / 缺件】`LbActionCard` 交不出展开态与多行正文。
-        "FeedbackCasesScreen.kt#CaseCard",
+        // 反馈案例那张展开卡（`FeedbackCasesScreen.kt#CaseCard`）已于 2026-10-05 **销行**：
+        // 那张卡底（自绘 Card + shadow(4) + 整卡 clickable）整块上提进设计系统新主人
+        // `core/designsystem/LbListCard.kt`（基线 v1.1 §3.6 的列表卡四槽 + §3.4 的"描边管静息"），
+        // 页面那一颗只剩"把内容交给公共件"——形状本身在这一页没了，不是并给别人后仍留在册。
+        // ⇒ 这一行移进下面的 expectedShells（异形 25→24、委托壳 12→13），K6 判决 13 同步从
+        //    NO_OWNER_YET 翻成 CORE。
         // 捕获页授权状态卡：Card 底 + 1dp 描边，里面包 `LbSettingRow`（标题/说明 + 尾部开关 + 状态点）。
         // 主人：`CaptureAppsScreen.kt`（页首一处）。【真需要自画 / 缺件】带底那层没有主人能一并给出。
         "CaptureAppsScreen.kt#CaptureStatusCard",
@@ -350,6 +359,15 @@ class OddShapeOwnershipTest {
         // CaptureAppsScreen.kt#CaptureAppRow 本轮**移进异形账**：它的 leading 槽里自画了一颗 Box 勾选框，
         // 不再是"只转一次参数"的纯壳（见 expectedHandDrawn 同一条）。
         // FeedbackCasesScreen.kt#FilterChip 已随点踩原因面板整块删除 ⇒ 摘掉。
+        // FeedbackCasesScreen.kt#CaseCard 2026-10-05 M3b **从异形账移进这一本**：卡底（形状、描边、
+        // 字阶、行数上限、动作写法）整块上提进 `core/designsystem/LbListCard.kt`，页面那一颗现在
+        // 只把内容（首句 / 余文 / 时间 / 展开层）交给公共件——体里没有 `Card(`、没有 `shadow(`、
+        // 没有 `clickable`，只剩一次 `LbListCard(` 调用。
+        "FeedbackCasesScreen.kt#CaseCard",
+        // KnowledgeBaseActivity.kt#KbCard 2026-10-06 L1b **从异形账移进这一本**（与上面那颗同一个主人、
+        // 同一条理由）：知识库母版页的卡今天只把 title / status / meta / actions / detail 五槽的内容
+        // 交给 `core/designsystem/LbListCard.kt`，形状归公共件——它确实还是"那一颗卡"，但壳里没长出新形状。
+        "KnowledgeBaseActivity.kt#KbCard",
         "LoveBrainPanelScreen.kt#KbNoticeBanner",
         "OnboardingFlow.kt#OnboardingButton",
         "ProviderSection.kt#ProviderEditDialog",

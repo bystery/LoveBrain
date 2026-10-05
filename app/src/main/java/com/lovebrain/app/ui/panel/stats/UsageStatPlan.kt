@@ -18,8 +18,9 @@ import kotlin.math.max
  * 2. 分组看**实测宽度**：按现有字段的先后顺序往这一行里装，装得下就只有一组（不轮播），
  *    装不下才另起一组；一整组也塞不进这一行时，拆的是**组**（退成一格一页），
  *    不是某个数字的后半截；
- * 3. 宽度还没量到的那一帧一律按「放得下」处理（平铺、不轮播、不渐隐），
- *    量到之后才可能翻成轮播——所以首帧与旧版那条平铺一模一样。
+ * 3. 宽度还没量到的那一帧一律按「放得下」处理（**不轮播、不渐隐**；平移留给渲染层，首帧由它按居中
+ *    保底摆放，见 [usageStatPageTranslationsPx] 与 `UsageStatBar` 的 Box `contentAlignment`），
+ *    量到之后才可能翻成轮播。**§7.2**：量到宽且整行放得下的短组相对视口居中，不再默认左贴边。
  *
  * 费用口径不在这里：[LbMetric.value] 是上游已经格式化好的整串（「—」「不足 ¥0.01」「¥0.123」），
  * 本文件不认识 Double，也就没有第二条「把不知道念成 0」的路径。
@@ -151,7 +152,7 @@ data class UsageStatPage(
     val fadeTrailing: Boolean
 )
 
-/** @param rotates 要不要整组轮播：`false` 时所有组同时摆在同一行里，等价旧版那条平铺 */
+/** @param rotates 要不要整组轮播：`false` 时各页同时摆在这一行里，由 [usageStatPageTranslationsPx] 相对视口居中（§7.2） */
 data class UsageStatLayout(
     val pages: List<UsageStatPage>,
     val rotates: Boolean,
@@ -177,7 +178,7 @@ fun planUsageStatLayout(
 
     val groupWidths = groups.map { measuredWidth(it) }
     if (groupWidths.any { it == null }) {
-        // 还没量到：平铺、不轮播、不渐隐
+        // 还没量到：不轮播、不渐隐（这一帧的居中由渲染层保底，见 usageStatPageTranslationsPx 的注释）
         return UsageStatLayout(groups.map { UsageStatPage(it, null, true, false, false) }, false, gap)
     }
 
@@ -228,8 +229,17 @@ fun usageStatNaturalStartsPx(widthsPx: List<Int>, gapPx: Int): List<Float> {
  * 于是「半个数字」在这个组件的静止态里是不存在的形状，而不是「尽量别出现」。
  * 拖动时只把**要进来的那一页**接到边上，其余仍然停在外面——手指跟着走的是整页。
  *
- * [oversizedPage] = 当前页本身就比这一行还宽：它不再居中（居中会把标签和金额的头几位一起裁掉），
- * 改成行首对齐 + [panPx] 横向平移，让用户把这一格**单行**看完。
+ * **不轮播那一档（[rotates] = false 且 [oversizedPage] = false，即整行放得下）现在按 §7.2 居中**：
+ * 一行放得下的短组（首次零值/占位）相对**实际可用视口**居中——把整条自然排布（各页挨个摆开后的
+ * 总宽 [usageStatNaturalStartsPx]）当成一个整体平移 `(viewportPx - 总宽) / 2f`，各页仍保持彼此间的
+ * 自然间距，当前页不再左贴边。这是「三态同一套短组居中关系」里**已知宽度**那一档的算式；
+ * 数值更新后（宽度仍已知、仍放得下）走的是同一条式子，居中关系不变。
+ * 宽度尚未量到（首帧回灌晚于绘制：[viewportPx] = 0 或有页宽为 0）时**不猜**：返回全 0，
+ * 那一帧的居中由渲染层 `UsageStatBar` 的 Box `contentAlignment` 保底（fillMaxWidth 的量算约束先于
+ * onSizeChanged 落定，故首帧即按真实视口居中）——「先按居中布局」，见台账 impl-I2。
+ *
+ * [oversizedPage] = 当前页本身就比这一行还宽：它**不居中**（居中会把标签和金额的头几位一起裁掉），
+ * 保持行首对齐 + [panPx] 横向平移，让用户把这一格**单行**看完（§7.2 明令不许顺手居中的那一档）。
  */
 fun usageStatPageTranslationsPx(
     widthsPx: List<Int>,
@@ -242,7 +252,13 @@ fun usageStatPageTranslationsPx(
     oversizedPage: Boolean = false
 ): List<Float> {
     if (widthsPx.isEmpty()) return emptyList()
-    if (!rotates && !oversizedPage) return List(widthsPx.size) { 0f }
+    if (!rotates && !oversizedPage) {
+        // 整行放得下：宽都量到且总宽不超视口 ⇒ 整条自然排布相对视口居中；否则不猜，留给渲染层保底。
+        val totalRowWidthPx = widthsPx.sum() + gapPx * (widthsPx.size - 1)
+        val canCenter = viewportPx > 0 && widthsPx.all { it > 0 } && totalRowWidthPx <= viewportPx
+        return if (canCenter) List(widthsPx.size) { (viewportPx - totalRowWidthPx) / 2f }
+        else List(widthsPx.size) { 0f }
+    }
     val starts = usageStatNaturalStartsPx(widthsPx, gapPx)
     val current = page.coerceIn(0, widthsPx.lastIndex)
     val clamped = dragPx.coerceIn(-viewportPx.toFloat(), viewportPx.toFloat())

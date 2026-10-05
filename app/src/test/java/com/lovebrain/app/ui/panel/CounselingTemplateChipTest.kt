@@ -34,11 +34,21 @@ import org.robolectric.annotation.GraphicsMode
  * 给一颗按钮写"已选中"是把读屏引向一个不存在的事实（这一条与页头那三档模式正好相反，
  * 那边是真的互斥单选）。
  *
- * 归并时这颗的视觉只动了一处：原来那条链把 `heightIn` 排在 `background` **之后**、
- * `Box` 又没写 `contentAlignment`，于是文字贴着 48dp 胶囊的上沿；
- * `LbChip` 的胶囊一律把文字摆在中轴上，所以这一族的文字往下走了大约十 dp。
- * 这一格因此钉住两件能被量出来的事：**下限仍然过**（48 见方是文字上浮之前挣来的，
- * 不能因为"改成居中"就退回内容高度）与**语义一字未改**。
+ * 归并动了文字的位置，没动热区——本轮（用户原话第 12 条"模板胶囊卡片太高"）在此基础上再收一层：
+ * [TemplateChip] 从 `LbChipStyles.neutral`（单层、可见胶囊被 `touchFloor` 撑到 48 见方、标签钉左上）
+ * 换到面板紧凑胶囊那一档（可见胶囊 [com.lovebrain.app.core.designsystem.AppDimens.CHIP_PANEL_HEIGHT_DP]=28、
+ * 标签居中、`layeredTouch=true` 让**外层透明盒**去拿 48 见方的热区，`touchFloor` 仍开着）。
+ * 于是这一格钉三件能被量出来的事：
+ * 1. **下限仍然过**：热区那 48 没撤——撤的是**可见**厚度，不是点得到的面积（见下面那格）；
+ * 2. **标签回到中轴**：`TopStart` 的"贴顶 + 触底一大截空白"（原话第 12 条的可见成因）用几何判红——
+ *    回退到 `neutral` 那一档时上隙只剩那点内边距、下隙撑到一大截，相等当场红（反向证人内建在断言里）；
+ * 3. **语义一字未改**：还是按钮、不播报选中、读得出自己。
+ *
+ * ⚠ 仪器边界（如实记着，别读成"可见 28 已经量过"）：语义树只暴露那颗**外层可点盒**（合并了文案，48）
+ * 和未合并树里那一条**标签**（`LbChipTierTest` 用的是同一对锚点）。内层那颗 28 胶囊带的是
+ * `clip/background/border`，没有语义槽，JVM 侧读不到它的矩形——"可见高度真的从 48 降到 28"这一半
+ * 只能真机/截图验，本轮登记为**未验证-需真机**（详见交付台账）。这一格能判的是"标签居中 + 热区 48"，
+ * 那正是"过高"里能被机器看见的两半。
  *
  * ⚠ 这一行是 `horizontalScroll`：滚出视口的那几颗在语义树里被压成 `0x0` 或半截，
  * 那不是热区不达标。筛法与样本下限抄 `SuggestCounselingTargetsTest`
@@ -113,7 +123,7 @@ class CounselingTemplateChipTest {
         }
     }
 
-    /** 归并动了文字的位置，没动热区：可点那颗自己仍是 48 见方 */
+    /** 归并动了文字的位置，没动热区；本轮把可见胶囊收到 28 后，外层透明盒仍拿 48 见方的热区 */
     @Test
     fun `the template chips still fill the touch floor`() {
         mount(fakeVm())
@@ -125,6 +135,39 @@ class CounselingTemplateChipTest {
         }
     }
 
+    /**
+     * 标签在可点盒的中轴上，而不是贴顶留一截空白（用户原话第 12 条"卡片太高"里能被几何看见的那一半）。
+     *
+     * 判法照 `LbChipTierTest`：外层那颗可点盒（合并了文案，热区 48）与未合并树里那条标签**各读各的**，
+     * 比"标签上隙 == 下隙"。回退成 `LbChipStyles.neutral`（TopStart）时上隙塌到内边距、下隙撑到一大截，
+     * 这一句当场红——反向证人内建在同一条断言里，不需要另注一件坏形状。
+     */
+    @Test
+    fun `the template chip centers its label instead of pinning it to a full-height top edge`() {
+        mount(fakeVm())
+        // 外层可点盒（合并树里 label 就是这句模板，第一颗完整在视口内）
+        val pill = probe.actionableTargets(rule, "谈心模板 chip·居中")
+            .single { it.label == firstTemplate && it.widthDp > 0f && it.heightDp > 0f }
+        // 标签从不合并树里读——那颗 28 胶囊本身没有语义槽，读得到的只有它里面这条字
+        val inkNodes = rule.onAllNodes(hasText(firstTemplate), useUnmergedTree = true).fetchSemanticsNodes()
+        assertEquals("$firstTemplate 的标签节点应当唯一（不唯一 = 这格没在判那颗 chip）", 1, inkNodes.size)
+        val ink = probe.of(inkNodes.single())
+
+        val toTop = ink.topDp - pill.topDp
+        val toBottom = (pill.topDp + pill.heightDp) - (ink.topDp + ink.heightDp)
+        assertTrue(
+            "模板 chip 的标签没落在热区盒的中轴上（上隙 ${"%.1f".format(toTop)}dp / " +
+                "下隙 ${"%.1f".format(toBottom)}dp）：贴顶留空白就是原话第 12 条那处过高。" +
+                pill.describe() + " / " + ink.describe(),
+            kotlin.math.abs(toTop - toBottom) <= CENTER_TOLERANCE_DP
+        )
+        // 撤的是可见厚度，不是热区：外层那颗仍 ≥ 全站下限（与上面那格同源，这里再钉一次这一颗自己）
+        assertTrue(
+            "居中之余热区不许缩水（外层可点盒仍得 ≥ ${probe.floorDp.toInt()}dp）：" + pill.describe(),
+            !pill.tooSmall(probe.floorDp)
+        )
+    }
+
     /** 点了真的要填进输入框——归并最怕"形状还在、结果没了" */
     @Test
     fun `tapping a template chip writes that template into the draft`() {
@@ -133,5 +176,14 @@ class CounselingTemplateChipTest {
         rule.onAllNodes(hasText(secondTemplate))[0].performClick()
         rule.mainClock.advanceTimeBy(16L)
         verify(exactly = 1) { vm.setCounselingDraft(secondTemplate) }
+    }
+
+    private companion object {
+        /**
+         * 标签上隙与下隙允许的差（dp）：居中都留 8 的余量给字体行盒那点非对称留白；
+         * 回退成 `neutral` 的 TopStart 时这一差撑到 ~20dp（`LbChipTierTest` 里那格判的是
+         * `toBottom - toTop >= 6f` 才算贴顶），8 这一档既能放过居中的抖动、又一定判红贴顶。
+         */
+        const val CENTER_TOLERANCE_DP = 8f
     }
 }

@@ -151,15 +151,15 @@ object UnknownHomeKnowledgePort : HomeKnowledgePort {
  * 当前对象 = active 知识库。不 new 仓库、不 import 具体实现类
  * （`PackageDependencyTest` 那条 viewmodel→data 的账）。
  *
- * **"空库不算已建知识库"**（主线程 2026-10-03 拍，缺项黄字仍按"请为当前对象建立知识库"说）：
- * `kb.json` 上的两个真实计数——`turnCount`（提交过几轮）与 `topicCount`（归档/经验批次数）——
- * 都是 0 时，这一格答 `Missing`。
- * 新建库那一条写死的初值就是 `stage = "待确定"、turnCount = 0`（`KnowledgeCatalogWriteStore.createWithin`），
- * 所以"建了但一格正文都没积累"不会被念成"已就绪"。
+ * **有效已选的库就算已建立**（指导书 §7.4）：`getActive()` 成功读回一个有真名的库，这一格就答 `Present`。
+ * `turnCount`、`topicCount`、阶段、正文有没有内容都**不参与存在性**——新建库的初值就是
+ * `stage = "待确定"、turnCount = 0`（`KnowledgeCatalogWriteStore.createWithin`），手工编辑画像也不动计数
+ * （`KnowledgeProfileStore.contentRevision`），所以"选了库但还没积累"是常态，不该被念成"请为当前对象建立知识库"。
+ * 库内容完整度是另一格独立信息，要展示就另立一格，不许回到存在性里来。
  *
- * ⚠ 这里刻意**不**拿 `turnCount` 当"知识内容是什么"：`KnowledgeProfileStore.contentRevision`
- * 的注释已经把这件事写成判据（同一 turnCount 可以对应完全不同的画像正文），所以这一处只把它当
- * "有没有积累过"的下界读数，不参与任何身份比对（身份比用的是库名，见 `identityOf`）。
+ * 另一半判据同样要守住：**没有活动库 / 库名空白（无效引用）→ `Missing`，读取失败 → `Unknown`**——
+ * 缺项黄字只对这两格分别念"请建立"/"还没读到"，读取中（冷启动首帧，`lastKnowledge` 默认 `Unknown`）
+ * 两者都不是。身份比对用的仍是库名（见 `identityOf`）。
  */
 class ReadPortHomeKnowledgePort(private val read: KnowledgeReadPort) : HomeKnowledgePort {
     override suspend fun currentObjectKb(): HomeKnowledgeSnapshot {
@@ -172,11 +172,8 @@ class ReadPortHomeKnowledgePort(private val read: KnowledgeReadPort) : HomeKnowl
         }
         val name = kb?.name?.takeIf { it.isNotBlank() }
             ?: return HomeKnowledgeSnapshot(HomeKnowledgePresence.Missing, null)
-        val built = kb.turnCount > 0 || kb.topicCount > 0
-        return HomeKnowledgeSnapshot(
-            presence = if (built) HomeKnowledgePresence.Present else HomeKnowledgePresence.Missing,
-            name = name
-        )
+        // 读到了带真名的活动库就算"已建立"：轮数与归档计数不参与这一判（§7.4）
+        return HomeKnowledgeSnapshot(presence = HomeKnowledgePresence.Present, name = name)
     }
 }
 
@@ -201,7 +198,8 @@ internal data class HomeFacts(
  *
  * 两条刻意的取舍：
  * - 没给悬浮窗权限时不再重复念"服务没起来"（那是同一件事的另一半，根因先说）；
- * - 配置不齐时不再念"连接还没检查成功"（[HomeConnectionVerdict.NotApplicable]），
+ * - 配置不齐时不再念"连接还没检查过"（[HomeConnectionVerdict.NotApplicable]，publish 一侧由
+ *   [HomeStatusViewModel.connectionFor] 兑现：没配置 = 这一格根本没有"检查"这件事可言），
  *   但 `Verified` 这一档没有真凭据就**永远不会出现**，绿也就永远不亮。
  */
 internal fun advisorMissingSteps(f: HomeFacts): List<AdvisorMissing> = buildList {
@@ -238,14 +236,49 @@ internal fun advisorStatusOf(f: HomeFacts): AdvisorStatus = when {
 }
 
 /**
+ * **连接结论的账**：身份 → 那一次检查的结论，一条身份记一次，之后一直有效。
+ *
+ * 为什么必须是"一张按身份的账"而不是"一格上次结论"：上一版 `evidence` 只有一个可空槽，
+ * 于是任何一次**事实漂移**（当前对象一时读不到、供应商位读到空）都会算出一个新身份，
+ * 而那一次唯一的槽就被新身份占掉或清空——旧身份那点真凭据**被扔掉**了。用户看到的症状就是
+ * 「配好了 → 绿 → 切出去再切回来 → 黄，还说'连接还没检查成功'」，可他明明能正常生成。
+ * 记成账之后：漂走只是这一格暂时取不到，漂回来（同身份）当场取回，**一次钱都不用再花**。
+ *
+ * 这一张账只在内存里（跟着 VM 活），落盘要写 `data/` 与 `domain/port/`，本轮没有那一格的写入权。
+ */
+internal class HomeConnectionLedger {
+    private val verdicts = LinkedHashMap<String, HomeConnectionVerdict>()
+
+    fun remember(identity: String, verdict: HomeConnectionVerdict) {
+        verdicts[identity] = verdict
+    }
+
+    /** 这一组身份检查过没有；没检查过交回 null，**调用方**决定那一句实话怎么说 */
+    fun recall(identity: String): HomeConnectionVerdict? = verdicts[identity]
+
+    /** 只清账，不改别的：这是用户按 ■ 的语义（"我主动关掉，下次开始重新看"） */
+    fun clear() {
+        verdicts.clear()
+    }
+
+    /** 判据用的读数：账上记了几组身份 */
+    val remembered: Int get() = verdicts.size
+}
+
+/**
  * 首页状态机。
  *
- * 三条纪律写在代码形状里，不是写在注释里：
+ * **检查一次，结果持续有效**（用户原话 2026-10-05：「我们只检查一次可以吗——就是每次首次点击右朝向
+ * 的三角形，之后一直是正方形就不用检测了，耗费 token 还谎报」）。三条纪律写在代码形状里：
  * 1. **请求只由用户点 ▶ 发起**：探针唯一的入口是 [playClicked]。组合、重组、`runningChanges` 脉冲、
- *    进页面、从子页返回（[returnedFromSubpage]）全部只重读事实——身份变了也只是**作废**旧结论，
- *    不补发；下一次检查等下一次按 ▶。
+ *    进页面、从子页返回（[returnedFromSubpage]）全部只重读事实，**一个都不补发**；■（运行中）
+ *    期间同样不发。
  * 2. **迟到响应不能点灯**：每次开始/关闭都推 [checkToken]，回来时号不对（或用户已经关了）就整包丢掉。
- * 3. **绿只认这一组身份下的真凭据**：供应商 id + 生效模型 + 当前对象名，任一项换了旧结论就作废。
+ * 3. **绿只认这一组身份下的真凭据，而凭据按身份记账、不按身份淘汰**：[HomeConnectionLedger] 里
+ *    换供应商 / 换生效模型 / 切当前对象都会算出一个取不到的新身份（于是当场不绿，见纪律 1 的反面），
+ *    切回旧身份则当场取回旧结论；只有 [stopClicked]（用户主动关）才清账。
+ *    "读不到"（[HomeKnowledgePresence.Unknown]）**不算换身份**：那是本机读不动，不是用户换了对象
+ *    （见 [identityKbName]），它只让知识库那一格念"还没读到"，不许顺手把连接那一格的结论作废。
  */
 class HomeStatusViewModel(
     private val service: HomeServicePort = FloatingServiceHomePort,
@@ -254,22 +287,25 @@ class HomeStatusViewModel(
     private val probe: HomeProbePort? = null
 ) : ViewModel() {
 
-    /** 检查冻结下来的那一组身份 + 那一组的连接结论 */
-    private data class Evidence(
-        val identity: String,
-        val connection: HomeConnectionVerdict
-    )
-
     private val _status = MutableStateFlow(AdvisorStatus(AdvisorState.Stopped))
     val status: StateFlow<AdvisorStatus> = _status.asStateFlow()
 
     private var userStarted = false
     private var checking = false
     private var overlayGrantedAtLastRead = false
-    private var evidence: Evidence? = null
 
     /** 最近一次读到的知识库快照：组合期不读盘，所以 publish 只读这一格缓存 */
     private var lastKnowledge = HomeKnowledgeSnapshot(HomeKnowledgePresence.Unknown, null)
+
+    /**
+     * 最近一次**读得动**的库名（presence 不是 Unknown 的那一次才有）。
+     * 身份的这一位只从它取，见 [identityKbName]：读不动时不许把库名猜成"没有"，
+     * 那会把一次真凭据挤成"没检查过"。
+     */
+    private var lastReadableKbName: String? = null
+
+    /** 身份 → 连接结论：见 [HomeConnectionLedger]，"检查一次、之后一直有效"就住在这颗里 */
+    private val ledger = HomeConnectionLedger()
 
     private var checkJob: Job? = null
     private var checkToken = 0L
@@ -293,14 +329,18 @@ class HomeStatusViewModel(
         runCheck()
     }
 
-    /** 点 ■：取消在路上的检查、停服务与悬浮窗、灯落回红。之后回来的响应一律作废 */
+    /**
+     * 点 ■：取消在路上的检查、停服务与悬浮窗、灯落回红。之后回来的响应一律作废。
+     * **这是全文件唯一清 [ledger] 的地方**——只有用户主动关掉，才算"这次不算了，下次开始重新检查"；
+     * 切后台、回前台、返回子页都走不到这里，所以它们作废不了已验证结论。
+     */
     fun stopClicked() {
         checkToken++
         checkJob?.cancel()
         checkJob = null
         checking = false
         userStarted = false
-        evidence = null
+        ledger.clear()
         service.stop()
         publish()
     }
@@ -309,16 +349,19 @@ class HomeStatusViewModel(
      * 进页面（冷启动、从子页返回、Activity resume）：**只重读本地事实，一个请求都不发**。
      *
      * 合同那句"不每次重组发微请求"在这里的形状就是"这一条没有探针"：
-     * 上一版它会在"当前身份与上次结论不是同一组"时**自己补一次检查**，于是
-     * 从供应商页切完回来、或从知识库页切完当前对象回来，都会在没有按下 ▶ 的情况下
-     * 真发一次付费请求。现在这一条只作废旧结论（[publish] 里比身份，身份不对就当作没检查过），
-     * 灯因此落回黄 + "连接还没检查成功"，要重新检查请用户按 ■ 关掉再按 ▶
-     * （合同原话"下次开始再检查"）。
+     * 上一版它会在"当前身份与上次结论不是同一组"时**自己补一次检查**，于是从供应商页切完回来、
+     * 或从知识库页切完当前对象回来，都会在没有按下 ▶ 的情况下真发一次付费请求。
+     *
+     * 而**这一轮修掉的是另一半谎报**：上一版只作废、不记账，身份位一漂那点真凭据就没了，
+     * 灯因此落回黄 + "连接还没检查过"，可用户的生成一直是好的。现在重读只更新事实
+     * （[recordKnowledge]），结论留在 [ledger] 里按身份取得回：同身份漂走又漂回来 = 当场取回，
+     * 不作废也不补发；真的换了供应商/模型/对象 = 取不到旧账（当场不绿），同样不补发。
+     * 要重新检查，请用户按 ■ 关掉再按 ▶（合同原话"下次开始再检查"）。
      */
     fun returnedFromSubpage(overlayGranted: Boolean) {
         overlayGrantedAtLastRead = overlayGranted
         viewModelScope.launch {
-            lastKnowledge = readKnowledge()
+            recordKnowledge(readKnowledge())
             publish()
         }
     }
@@ -333,9 +376,32 @@ class HomeStatusViewModel(
         HomeKnowledgeSnapshot(HomeKnowledgePresence.Unknown, null)
     }
 
-    /** 冻结身份：换供应商 / 换生效模型 / 切当前对象，任何一项都让旧结论作废 */
+    /** 唯一写 [lastKnowledge] / [lastReadableKbName] 的入口：读到 Unknown 时**保留**上一个读得动的库名 */
+    private fun recordKnowledge(snapshot: HomeKnowledgeSnapshot) {
+        lastKnowledge = snapshot
+        if (snapshot.presence != HomeKnowledgePresence.Unknown) lastReadableKbName = snapshot.name
+    }
+
+    /**
+     * 冻结身份：换供应商 / 换生效模型 / 切当前对象，任何一项都让旧结论取不回来（新身份没账）。
+     *
+     * 库这一位用库名（`KnowledgeBase.name` = 目录名）：模型里没有比它更稳的库 id 可取。
+     * 已知代价（台账 2026-10-05）：两张同名库互切不会作废旧结论，改名会。
+     * ⚠ 这一位**不能**混进任何会自己漂的读数（轮数、归档计数、阶段都不算身份，见 `ReadPortHomeKnowledgePort`）：
+     * 漂一次就是一次"谎报没检查过"，还要再烧一次钱才恢复。
+     */
     private fun identityOf(ref: HomeProviderRef?, kbName: String?): String =
         "${ref?.id ?: NO_PROVIDER}|${ref?.model ?: ""}|${kbName ?: NO_KB}"
+
+    /**
+     * 身份里库那一位的取值：
+     * - 读得动（Present / Missing）就用这一次的库名——真没库交回 null，切对象、删库照样作废；
+     * - 读不动（Unknown）就**沿用最近读得动的那个名字**：这是本机读不动，不是用户换了对象，
+     *   知识库那一格会自己念"还没读到当前对象的知识库"，而连接那一格不该因此被说成没检查过。
+     */
+    private fun identityKbName(): String? =
+        if (lastKnowledge.presence == HomeKnowledgePresence.Unknown) lastReadableKbName
+        else lastKnowledge.name
 
     private fun runCheck() {
         val token = ++checkToken
@@ -344,10 +410,11 @@ class HomeStatusViewModel(
         checkJob = viewModelScope.launch {
             val ref = currentProvider()
             val snapshot = readKnowledge()
-            lastKnowledge = snapshot
+            recordKnowledge(snapshot)
             val verdict = probeNow(ref)
             if (token != checkToken || !userStarted) return@launch   // 迟到的响应：关掉了/又点了一次，不作数
-            evidence = Evidence(identityOf(ref, snapshot.name), verdict)
+            // 记在身份上，而不是记在"最后一次"上：这一组的凭据之后一直有效（取回不再花钱）
+            ledger.remember(identityOf(ref, identityKbName()), verdict)
             checking = false
             publish()
         }
@@ -370,8 +437,6 @@ class HomeStatusViewModel(
     private fun publish() {
         val ref = currentProvider()
         val snapshot = lastKnowledge
-        val identity = identityOf(ref, snapshot.name)
-        val live = evidence?.takeIf { it.identity == identity }
         val facts = HomeFacts(
             userStarted = userStarted,
             checking = checking,
@@ -379,10 +444,24 @@ class HomeStatusViewModel(
             serviceRunning = service.isRunning(),
             provider = ref,
             knowledge = snapshot.presence,
-            connection = live?.connection ?: HomeConnectionVerdict.NotChecked
+            connection = connectionFor(ref, identityOf(ref, identityKbName()))
         )
         _status.value = advisorStatusOf(facts)
     }
+
+    /**
+     * 当前这一组身份的连接结论。**三档出口，每一档都是实话**：
+     * - 配置不齐（没供应商 / 没 Key / 没模型）→ [HomeConnectionVerdict.NotApplicable]：
+     *   这一格根本没有"检查"这件事，缺项由 `NoProvider` 自己说。派生表注释（本文件 第 201 行那一格）
+     *   早就写了"配置不齐时不再念连接那一句"，上一版只在**检查时**兑现、publish 漏了，
+     *   于是切回来还会多念一句"连接还没检查过"——那是重复报账，也是把没意义的话摆成缺项；
+     * - 账上取得到 → 原样取回：不作废、不补发（"检查一次、结果持续有效"就落在这两行）；
+     * - 账上取不到（这组身份真的从没按过 ▶）→ [HomeConnectionVerdict.NotChecked]，
+     *   黄字念的是中性事实"连接还没检查过"，**不是**"连接失败"。
+     */
+    private fun connectionFor(ref: HomeProviderRef?, identity: String): HomeConnectionVerdict =
+        if (ref == null || !ref.usable) HomeConnectionVerdict.NotApplicable
+        else ledger.recall(identity) ?: HomeConnectionVerdict.NotChecked
 
     private companion object {
         const val NO_PROVIDER = "-"
