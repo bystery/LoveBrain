@@ -160,6 +160,7 @@ private fun KbManagementScreen(
                 KbEvent.Imported -> feedback = "已导入"
                 KbEvent.ImportFailed -> feedback = "导入失败：不是有效的知识库备份文件"
                 KbEvent.DeleteFailed -> feedback = "删除失败，请重试"
+                KbEvent.RenameFailed -> feedback = "重命名失败，请重试"
             }
         }
     }

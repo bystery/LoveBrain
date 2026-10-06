@@ -41,6 +41,7 @@ sealed interface KbEvent {
     data object Imported : KbEvent
     data object ImportFailed : KbEvent
     data object DeleteFailed : KbEvent
+    data object RenameFailed : KbEvent
 }
 
 /** 建库事务结果 */
@@ -136,13 +137,16 @@ class KnowledgeBaseViewModel(
 
     fun rename(name: String, newDisplayName: String) {
         viewModelScope.launch {
-            try {
+            val ok = try {
                 repo.updateDisplayName(name, newDisplayName)
+                true
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 L.e("updateDisplayName failed", e)
+                false
             }
+            if (!ok) _events.tryEmit(KbEvent.RenameFailed)
             loadState()
         }
     }

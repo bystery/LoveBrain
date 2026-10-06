@@ -5,6 +5,7 @@ import com.lovebrain.app.model.KB_NAME_MAX_LENGTH
 import com.lovebrain.app.model.KnowledgeBase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.util.Locale
 
 /**
@@ -219,24 +220,29 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
         // writeFileCheckedUnlocked（入口侧只读判定 + safeKbFile 路径守门 + 唯一原子写）。
         // 每格落盘什么字节由 `KnowledgeSeedWriteBytesBaselineTest` 逐格钉住（含 schema 正文与 assets 原字节比）。
         storage.writeCatalogTransaction(safeName) {
-            write(KnowledgeCatalogStore.META_FILE, storage.encodeMeta(kb))
+            // 写入失败传播：write 返回 false = 被只读保护或路径非法挡下。
+            // 必须抛异常让上层 ViewModel 捕获报失败，不得假成功（指导书§6）。
+            val metaOk = write(KnowledgeCatalogStore.META_FILE, storage.encodeMeta(kb))
 
             // 全部文件从 assets/schema/ 加载（schema 是知识库结构的唯一来源）
             // 懂得层（慢变量画像）
-            write("understand/me.md", storage.template("me"))
-            write("understand/her.md", storage.template("her"))
-            write("understand/warmth.md", storage.template("warmth"))
-            // 此刻层（快变量上下文）
-            write("moment/topic.md", storage.template("topic"))
-            write("moment/recent.md", storage.template("recent"))
-            write("moment/scene.md", storage.template("scene"))
-            write("moment/plan.md", storage.template("plan"))
-            // 记忆层（长期归档）
-            write("memory/lessons.md", storage.template("lessons"))
-            write("memory/raw_chat.md", storage.template("raw_chat"))
-            write("memory/raw_topic.md", storage.template("raw_topic"))
-            write("memory/raw_scene.md", storage.template("raw_scene"))
-            write("memory/counseling_log.md", storage.template("counseling_log"))
+            val seedOk = metaOk
+                && write("understand/me.md", storage.template("me"))
+                && write("understand/her.md", storage.template("her"))
+                && write("understand/warmth.md", storage.template("warmth"))
+                // 此刻层（快变量上下文）
+                && write("moment/topic.md", storage.template("topic"))
+                && write("moment/recent.md", storage.template("recent"))
+                && write("moment/scene.md", storage.template("scene"))
+                && write("moment/plan.md", storage.template("plan"))
+                // 记忆层（长期归档）
+                && write("memory/lessons.md", storage.template("lessons"))
+                && write("memory/raw_chat.md", storage.template("raw_chat"))
+                && write("memory/raw_topic.md", storage.template("raw_topic"))
+                && write("memory/raw_scene.md", storage.template("raw_scene"))
+                && write("memory/counseling_log.md", storage.template("counseling_log"))
+
+            if (!seedOk) throw IOException("knowledge base seed write failed for $safeName")
         }
 
         if (kb.active) storage.activeKbName = safeName
@@ -279,13 +285,15 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
             storage.inWriteLock { renameWithin(kbName, newDisplay) }
         }
 
-    /** [updateDisplayName] 的锁内核心：空白显示名 no-op，其余只改这一格字段 */
+    /** [updateDisplayName] 的锁内核心：空白显示名 no-op，其余只改这一格字段。
+     *  updateMeta 返回 false = 库不存在 / 只读 / JSON 坏掉——抛异常让上层报失败，不假成功（指导书§6）。 */
     private fun renameWithin(kbName: String, newDisplay: String) {
         if (newDisplay.isBlank()) return
         storage.writeCatalogTransaction(kbName) {
-            updateMeta { kb ->
+            val ok = updateMeta { kb ->
                 kb.copy(displayName = newDisplay.trim(), updatedAt = storage.timestamp())
             }
+            if (!ok) throw IOException("knowledge base rename failed for $kbName")
         }
     }
 
