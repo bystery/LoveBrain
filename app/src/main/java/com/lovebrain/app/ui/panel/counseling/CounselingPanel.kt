@@ -295,7 +295,12 @@ fun CounselingPanel(
                                     borderSelected = PrimarySubtle,
                                     border = PrimarySubtle,
                                     pressedScale = 0.92f,
-                                    markSelectedWithCheck = false
+                                    markSelectedWithCheck = false,
+                                    // §12.1 R12：面板紧凑族——可见 28、标签居中、不垫 48 热区
+                                    pillHeight = AppDimens.CHIP_PANEL_HEIGHT_DP.dp,
+                                    touchFloor = false,
+                                    labelAlignment = LbChipLabelAlignment.Center,
+                                    paddingVertical = 0.dp
                                 )
                             )
                             Spacer(Modifier.width(Spacing.xs))
@@ -319,7 +324,10 @@ fun CounselingPanel(
                                 textColorSelected = TextHint,
                                 labelAlignment = LbChipLabelAlignment.Center,
                                 paddingHorizontal = Spacing.lg,
-                                paddingVertical = Spacing.sm
+                                // §12.1 R12：面板紧凑族——可见 28、不垫 48 热区
+                                pillHeight = AppDimens.CHIP_PANEL_HEIGHT_DP.dp,
+                                touchFloor = false,
+                                paddingVertical = 0.dp
                             )
                         )
                     }
