@@ -230,8 +230,8 @@ class LbListCardContractTest {
                 0, count(code, Regex.escape("R.string.$res"))
             )
         }
-        assertEquals("注件没就位：合成一句 `R.string.feedback_status_pending` 应当数到 1",
-            1, count("stringResource(R.string.feedback_status_pending)", Regex.escape("R.string.feedback_status_pending")))
+        assertEquals("feedback_status_pending 不应再被引用",
+            0, count(code, Regex.escape("R.string.feedback_status_pending")))
     }
 
     /**

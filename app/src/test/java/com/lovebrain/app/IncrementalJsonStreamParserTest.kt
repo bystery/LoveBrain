@@ -720,7 +720,7 @@ class IncrementalJsonStreamParserTest {
             appendLine("model calibration: charsScanned per accumulated-prefix char = $alpha")
             appendLine("MODEL rows are arithmetic from that calibration, NOT executed: the legacy path needs tens of seconds at 16k/64k objects")
             appendLine("  (e.g. legacy would scan $legacyModelAtBiggest chars for the ${rows.last().chars}-char stream that the new path did in ${"%.3f".format(rows.last().newMsMin)}ms)")
-            appendLine("not measured here: on-device frame timing — see :benchmark (Macrobenchmark) and BENCHMARK.md")
+            appendLine("not measured here: on-device frame timing — see :benchmark (Macrobenchmark)")
         }
     }
 

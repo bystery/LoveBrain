@@ -6,7 +6,7 @@ import java.security.MessageDigest
  * Prompt 资产的内容指纹（纯函数）。
  *
  * 之所以从 `PromptBuilder` 里抽出来，是因为"指纹算的是什么"这件事必须能被测：
- * 它关系到缓存什么时候该失效、`BENCHMARK.md` 里那串 hash 指的是什么。
+ * 它关系到缓存什么时候该失效、指纹值对应的是哪几份资产的组合。
  *
  * 两条不显然但会咬人的规则：
  *

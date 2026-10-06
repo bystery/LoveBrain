@@ -43,8 +43,8 @@ class PromptBuilder(
     /**
      * prompt 里的「当前时间」段和 `buildTimestampPrompt()` 都从这个端口取。
      *
-     * 之前它们直接读系统时间，后果有两个：一是同一份冻结输入在 09:59 与 10:01 会
-     * 拼出不同 prompt，于是"BENCHMARK 的 hash 描述的就是这棵树"永远多一个未知量；
+ * 之前它们直接读系统时间，后果有两个：一是同一份冻结输入在 09:59 与 10:01 会
+ * 拼出不同 prompt，于是"资产指纹描述的就是这棵树"永远多一个未知量；
      * 二是任何测试都没法断言"模型被告知的时间是什么"——只能跑一次看它像不像今天。
      */
     private val clock: Clock = SystemClock

@@ -15,7 +15,7 @@ import java.util.Locale
  * 1. [wallClock] —— 轮次块头 `- [yyyy-MM-dd HH:mm]`、归档块标题。写进 recent.md /
  *    raw_topic.md，等于知识库内容的一部分。
  * 2. prompt 里的「## 当前时间」段。同一个输入在 09:59 和 10:01 会得到不同 prompt，
- *    于是"BENCHMARK 那串 hash 描述的是这棵树"这种话永远差一个变量。
+ *    于是"资产指纹描述的是这棵树"这种话永远差一个变量。
  * 3. `System.currentTimeMillis()` 算耗时（GenerationEngine 那 14 处 PERF 计时）。
  *    这类**不进任何状态**，不需要端口，硬套 Clock 只会制造假抽象（YAGNI）。
  *
