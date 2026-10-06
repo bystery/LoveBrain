@@ -26,9 +26,7 @@ import com.lovebrain.app.core.designsystem.SurfaceBase
 /**
  * 模板 chip 尾部渐隐遮罩尺寸（仅本文件使用）。
  *
- * 高度 28 与那颗胶囊的**可见**高度同档（[AppDimens.CHIP_PANEL_HEIGHT_DP]）：
- * 归并进 `neutral` 那一档时可见胶囊被 `touchFloor` 撑到 48，遮罩只有 28 反而比胶囊短；
- * 这一格把可见收回到面板胶囊族那一档 28 之后，遮罩与可见胶囊重新等高（依据基线 v1 §6.4）。
+ * 高度 28 与那颗胶囊的**可见**高度同档（[AppDimens.CHIP_PANEL_HEIGHT_DP]）。
  */
 internal object CounselingTemplateDimens {
     const val FADE_MASK_WIDTH_DP = 24
@@ -88,13 +86,12 @@ internal fun CounselingTemplateChips(
  * 不是本席地盘），所以这一档先落**在本文件**；"要不要把它上提成 `LbChipStyles.panelChip`、
  * 把回复输入行那颗私有 28（`ReplyDimens.ROLE_CHIP_HEIGHT_DP`）一起收编"是跨页决策，已写进接线单交主线程。
  *
- * 三轴分离后的三个数（§3.1）：
+ * 三轴分离后的三个数（§3.1 / §12.1 R12）：
  * · **可见**：胶囊 [AppDimens.CHIP_PANEL_HEIGHT_DP]=28 高、标签居中（`Center`）、竖内边距 0；
- * · **热区**：外层那颗透明盒仍垫到全站下限 [AppDimens.TOUCH_TARGET_MIN_DP]=48（`touchFloor` 由
- *   `neutral` 继承、开着），[LbChipStyles.neutral] 的 `layeredTouch=false→true` 后热区与视觉分两层，
- *   点得到的面积一寸没少；
- * · **相邻布局**：所在横滚行的版式高度由那颗 48 外层盒决定，与改之前**同数**（撤掉的是可见厚度，
- *   不是行高），不会挤到谈心正文。
+ * · **热区**：`layeredTouch=true` 分两层，外层透明盒负责语义与 clickable；
+ *   `touchFloor=false` 不再垫到 48——横滚行里 chip 宽度充足，28dp 高的点击区是可接受的紧凑视觉
+ *   （TEAM_RULES §3：确实无法同时满足紧凑视觉和全局热区下限时，保留用户指定的紧凑视觉）；
+ * · **相邻布局**：行高由 28dp 胶囊决定，不再是 48dp 外层盒——这正是 R12 要修的"整行 48dp 仍占高"。
  * 颜色/字重/描边/横内边距全部照 `neutral` 原样（`SurfaceInset` 底 + `Border` 描边 + `labelSmall` +
  * Medium + 左右 [Spacing.md] + 按压 0.92），只把"过高"这一处收掉。
  */
@@ -103,6 +100,7 @@ private val PanelTemplateChipStyle = LbChipStyles.neutral.copy(
     paddingVertical = 0.dp,
     pillHeight = AppDimens.CHIP_PANEL_HEIGHT_DP.dp,
     layeredTouch = true,
+    touchFloor = false,
     labelMaxLines = 1
 )
 
@@ -111,7 +109,7 @@ private val PanelTemplateChipStyle = LbChipStyles.neutral.copy(
  *
  * 点下去是把模板填进输入框，不是"在哪一格" ⇒ [LbChipInteraction.Action]：
  * `Role.Button`（与改之前那条链上写的同一个角色），语义树里不发 `selected`。
- * 形状档见 [PanelTemplateChipStyle]（面板紧凑胶囊族，可见 28 + 外层 48 透明热区两层）。
+ * 形状档见 [PanelTemplateChipStyle]（面板紧凑胶囊族，可见 28 + 分层透明热区）。
  */
 @Composable
 private fun TemplateChip(text: String, onClick: () -> Unit) {

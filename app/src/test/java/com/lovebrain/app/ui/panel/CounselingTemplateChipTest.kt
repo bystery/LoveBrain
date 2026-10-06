@@ -37,18 +37,20 @@ import org.robolectric.annotation.GraphicsMode
  * 归并动了文字的位置，没动热区——本轮（用户原话第 12 条"模板胶囊卡片太高"）在此基础上再收一层：
  * [TemplateChip] 从 `LbChipStyles.neutral`（单层、可见胶囊被 `touchFloor` 撑到 48 见方、标签钉左上）
  * 换到面板紧凑胶囊那一档（可见胶囊 [com.lovebrain.app.core.designsystem.AppDimens.CHIP_PANEL_HEIGHT_DP]=28、
- * 标签居中、`layeredTouch=true` 让**外层透明盒**去拿 48 见方的热区，`touchFloor` 仍开着）。
+ * 标签居中、`layeredTouch=true` 分两层）。
+ *
+ * R12 / §12.1 修复：`touchFloor` 关掉，行高从 48 降到 28——"整行 48dp 仍占高"就是这一条。
+ * TEAM_RULES §3：确实无法同时满足紧凑视觉和全局热区下限时，保留用户指定的紧凑视觉。
  * 于是这一格钉三件能被量出来的事：
- * 1. **下限仍然过**：热区那 48 没撤——撤的是**可见**厚度，不是点得到的面积（见下面那格）；
+ * 1. **行高不再 48**：热区降到与可见胶囊同高（28dp），横滚行里 chip 宽度充足，可达性可接受；
  * 2. **标签回到中轴**：`TopStart` 的"贴顶 + 触底一大截空白"（原话第 12 条的可见成因）用几何判红——
  *    回退到 `neutral` 那一档时上隙只剩那点内边距、下隙撑到一大截，相等当场红（反向证人内建在断言里）；
  * 3. **语义一字未改**：还是按钮、不播报选中、读得出自己。
  *
- * ⚠ 仪器边界（如实记着，别读成"可见 28 已经量过"）：语义树只暴露那颗**外层可点盒**（合并了文案，48）
+ * ⚠ 仪器边界（如实记着，别读成"可见 28 已经量过"）：语义树只暴露那颗**外层可点盒**（合并了文案）
  * 和未合并树里那一条**标签**（`LbChipTierTest` 用的是同一对锚点）。内层那颗 28 胶囊带的是
  * `clip/background/border`，没有语义槽，JVM 侧读不到它的矩形——"可见高度真的从 48 降到 28"这一半
- * 只能真机/截图验，本轮登记为**未验证-需真机**（详见交付台账）。这一格能判的是"标签居中 + 热区 48"，
- * 那正是"过高"里能被机器看见的两半。
+ * 只能真机/截图验，本轮登记为**未验证-需真机**（详见交付台账）。
  *
  * ⚠ 这一行是 `horizontalScroll`：滚出视口的那几颗在语义树里被压成 `0x0` 或半截，
  * 那不是热区不达标。筛法与样本下限抄 `SuggestCounselingTargetsTest`
@@ -123,14 +125,14 @@ class CounselingTemplateChipTest {
         }
     }
 
-    /** 归并动了文字的位置，没动热区；本轮把可见胶囊收到 28 后，外层透明盒仍拿 48 见方的热区 */
+    /** R12/§12.1：行高从 48 降到 28，热区与可见胶囊同高（横滚行里宽度充足） */
     @Test
-    fun `the template chips still fill the touch floor`() {
+    fun `the template chips height matches the compact pill not the old touch floor`() {
         mount(fakeVm())
         chipsInViewport().forEach { chip ->
             assertTrue(
-                "${chip.label} 的热区不到 ${probe.floorDp.toInt()}dp：" + chip.describe(),
-                !chip.tooSmall(probe.floorDp)
+                "${chip.label} 的热区高度应 ≤ ${com.lovebrain.app.core.designsystem.AppDimens.CHIP_PANEL_HEIGHT_DP}dp（R12 收行占位）:" + chip.describe(),
+                chip.heightDp <= com.lovebrain.app.core.designsystem.AppDimens.CHIP_PANEL_HEIGHT_DP + 1f
             )
         }
     }
@@ -161,10 +163,10 @@ class CounselingTemplateChipTest {
                 pill.describe() + " / " + ink.describe(),
             kotlin.math.abs(toTop - toBottom) <= CENTER_TOLERANCE_DP
         )
-        // 撤的是可见厚度，不是热区：外层那颗仍 ≥ 全站下限（与上面那格同源，这里再钉一次这一颗自己）
+        // R12：行高已收到 28，热区与可见同高；这里只判标签居中
         assertTrue(
-            "居中之余热区不许缩水（外层可点盒仍得 ≥ ${probe.floorDp.toInt()}dp）：" + pill.describe(),
-            !pill.tooSmall(probe.floorDp)
+            "居中之余高度不许回弹到 48（R12 已收行占位）：" + pill.describe(),
+            pill.heightDp <= com.lovebrain.app.core.designsystem.AppDimens.CHIP_PANEL_HEIGHT_DP + 1f
         )
     }
 
