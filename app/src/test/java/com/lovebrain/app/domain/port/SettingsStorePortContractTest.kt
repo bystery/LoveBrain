@@ -292,6 +292,7 @@ class InMemorySettingsStore : SettingsStorePort {
     override var captureAllowedPackages: Set<String> = emptySet()
     override var lastKbEditFile: String? = null
     override var connectionVerified: Boolean = false
+    override var connectionVerifiedIdentity: String = ""
 }
 
 /** fake 必须通过同一套合同 */

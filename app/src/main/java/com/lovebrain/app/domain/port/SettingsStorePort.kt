@@ -108,4 +108,13 @@ interface SettingsStorePort {
      * 语义钉在 [SettingsStorePortContract]：空存储读到 false、显式写 true/false 原样读回。
      */
     var connectionVerified: Boolean
+
+    /**
+     * 落盘 [connectionVerified] 时**所属的供应商身份**（指导书 §11.1）。
+     *
+     * 格式与 [HomeStatusViewModel.identityOf] 一致：`"ticketId|model"`。
+     * 兜底时 [connectionFor] 比较当前身份与此值——只有同一身份才交回 Verified，
+     * 换了供应商/模型不沿用旧结论。空串 = 从没写过。
+     */
+    var connectionVerifiedIdentity: String
 }

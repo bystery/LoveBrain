@@ -399,8 +399,14 @@ class HomeStatusViewModel(
             // 落盘副本：VM 被 Activity 销毁后 ledger 会丢，这颗布尔让重新进页面时
             // 仍能交回 Verified（见 connectionFor 的 ledger 空兜底），不把绿过的灯落回黄。
             when (verdict) {
-                HomeConnectionVerdict.Verified -> store?.connectionVerified = true
-                HomeConnectionVerdict.Failed -> store?.connectionVerified = false
+                HomeConnectionVerdict.Verified -> {
+                    store?.connectionVerified = true
+                    store?.connectionVerifiedIdentity = identity
+                }
+                HomeConnectionVerdict.Failed -> {
+                    store?.connectionVerified = false
+                    store?.connectionVerifiedIdentity = ""
+                }
                 else -> Unit
             }
             checking = false
@@ -457,7 +463,9 @@ class HomeStatusViewModel(
         if (ref == null || !ref.usable) return HomeConnectionVerdict.NotApplicable
         ledger.recall(identity)?.let { return it }
         // 全新 VM（ledger 整本空）：落盘副本兜底，重进屏幕不落回黄
-        if (ledger.remembered == 0 && store?.connectionVerified == true) {
+        // §11.1：只在身份匹配时才兜底——换了供应商/模型不沿用旧结论
+        if (ledger.remembered == 0 && store?.connectionVerified == true &&
+            store?.connectionVerifiedIdentity == identity) {
             return HomeConnectionVerdict.Verified
         }
         return HomeConnectionVerdict.NotChecked

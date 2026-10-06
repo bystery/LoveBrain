@@ -300,6 +300,14 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         get() = prefs.getBoolean(KEY_CONNECTION_VERIFIED, false)
         set(value) = prefs.edit().putBoolean(KEY_CONNECTION_VERIFIED, value).apply()
 
+    /**
+     * 落盘 [connectionVerified] 时所属的供应商身份（指导书 §11.1）。
+     * 空串 = 从没写过；格式 `"ticketId|model"`。
+     */
+    override var connectionVerifiedIdentity: String
+        get() = prefs.getString(KEY_CONNECTION_VERIFIED_IDENTITY, "") ?: ""
+        set(value) = prefs.edit().putString(KEY_CONNECTION_VERIFIED_IDENTITY, value).apply()
+
     /** 追加一个允许抓取的包名 */
     fun addCaptureAllowedPackage(pkg: String) {
         if (pkg.isBlank()) return
@@ -547,6 +555,7 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         private const val KEY_CAPTURE_ALLOWED_PACKAGES = "capture_allowed_packages"
         // 连接检查结论落盘（跨 VM 重建存活）
         private const val KEY_CONNECTION_VERIFIED = "connection_verified"
+private const val KEY_CONNECTION_VERIFIED_IDENTITY = "connection_verified_identity"
 
         // 工单系统键
         private const val KEY_TICKER_LIST_JSON = "worker_tickets_json"
