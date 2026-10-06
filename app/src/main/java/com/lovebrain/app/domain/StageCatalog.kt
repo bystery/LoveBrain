@@ -3,7 +3,7 @@ package com.lovebrain.app.domain
 /**
  * 关系阶段目录：八阶段白名单，全带"期"后缀。
  * 所有阶段值的写入（onboarding 推断 / 向量建议 / reflect 画像更新）与匹配
- * （stage.md / suggest.md 小节提取）一律经此归一化——根治 / 的三套命名打架。
+ * （stage.md 小节提取）一律经此归一化——根治的三套命名打架。
  * 邀约期已废除（动作非状态）：九阶段 → 八阶段。
  */
 object StageCatalog {

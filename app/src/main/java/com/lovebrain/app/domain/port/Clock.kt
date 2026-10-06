@@ -26,7 +26,7 @@ interface Clock {
     /** 落进知识库正文与 prompt 的分钟级时间戳，格式与 [TimeFmt.now] 一致 */
     fun wallClock(): String
 
-    /** 日期粒度（今日锦囊的"当日快照"这类判断用） */
+    /** 日期粒度（意图到期判断、话题老化这类判断用） */
     fun today(): String
 
     /** 毫秒数：给"话题多久没换"这类差值计算用 */
@@ -45,7 +45,7 @@ object SystemClock : Clock {
  * 而 第5节第1条 的目标结构里它最终属于 `core/testing`（等包边界稳定后再模块化）。
  *
  * [advanceMinutes] 存在的原因：光有"固定"测不到依赖时间的逻辑——
- * 冷却、话题老化、当日锦囊换天，都需要时间真的往前走一步才能触发被测分支
+ * 冷却、话题老化、意图到期换天，都需要时间真的往前走一步才能触发被测分支
  * （这正是复核 第9节 第 3 条说的"测试必须真的走进生产路径"）。
  */
 class FixedClock(startMs: Long = DEFAULT_START_MS) : Clock {

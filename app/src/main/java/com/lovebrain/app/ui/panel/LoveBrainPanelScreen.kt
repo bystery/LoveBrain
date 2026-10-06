@@ -129,7 +129,7 @@ private fun rememberPanelSurfaceHolder(initialBackdropPercent: Int): PanelSurfac
  * 齿轮那一扇**整窗设置页**的宿主接线：正文本体住在 `ui/panel/settings/LoveBrainSettingsContent`，
  * 这一格只做两件事——把背景层当前浓度交出去、把预览与写盘两条口接回来。
  *
- * 这一页只剩透明度一项是用户定的（"别的都不要弄"）。撤出去的三段没有失去入口：
+ * 设置页当前包含：透明度滑杆、意图入口（§10.2）、知识库切换（§10.3）。
  * 供应商/模型/超时在首页"模型供应商"那一格，捕获范围在首页"消息捕获"那一格。
  *
  * ⚠ 以前这一格会在**组合阶段同步枚举整机安装包**（`selectableCaptureTargets(context)`）并为了
