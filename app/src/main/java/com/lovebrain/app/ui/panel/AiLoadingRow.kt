@@ -47,7 +47,7 @@ private object AiLoadingDimens {
 /**
  * AI 加载行（ 新建）。
  *
- * 统一锦囊/谈心/回复区的加载样式，替代各处 CircularProgressIndicator 转圈：
+ * 统一谈心/回复区的加载样式，替代各处 CircularProgressIndicator 转圈：
  * 三点跳动（错开 140ms，1.4s 循环）+ 轮换文案（"军师正在 xxx"）+ 可选超时提示。
  * 调研：AI 加载范式——语义化文案替代无意义"加载中"；超时 15s 追加提示降低放弃率。
  */

@@ -240,7 +240,7 @@ fun LoveBrainPanelScreen(
     val stageSuggestion by viewModel.stageSuggestion.collectAsStateWithLifecycle()
     val currentVector by viewModel.currentVector.collectAsStateWithLifecycle()
     val vectorDelta by viewModel.vectorDelta.collectAsStateWithLifecycle()
-    // 持续意图：入口那颗 chip 与编辑器浮层各读一位（ 删掉锦囊页之后，这一屏是它们唯一的宿主）
+    // 持续意图：入口那颗 chip 与编辑器浮层各读一位
     val intentConfig by viewModel.intents.config.collectAsStateWithLifecycle()
     val showIntentEditor by viewModel.intents.showEditor.collectAsStateWithLifecycle()
 
@@ -421,8 +421,7 @@ fun LoveBrainPanelScreen(
                 PanelHeader(
                     panelMode = panelMode,
                     onModeChange = { viewModel.setPanelMode(it) },
-                    // 顶部只剩两段（回复/谈心）：锦囊那一格连同它的可见性开关一起退场，
-                    // 头部不再持有第二颗"哪一页在上面"的账——panelMode 就是唯一那一颗。
+                    // 顶部只剩两段（回复/谈心），panelMode 是唯一那一颗"哪一页在上面"的账。
                     // collapse button
                     onCollapse = onCollapse,
 
@@ -564,7 +563,7 @@ fun LoveBrainPanelScreen(
                     modifier = Modifier.fillMaxWidth().weight(1f)
                 ) { page ->
                 if (page == 0) {
-                // 回复侧只剩这一格：锦囊页与它的 showPlanPanel 开关已随  整删（PRODUCT_SPEC 第2节「确实删除」）
+                // 回复侧只剩这一格。
                 // 原来这一支挂在页外层 Column 上，现在整支搬进页槽位，正文一行没改；
                 // 下面这些行的缩进**故意**留在原来的档位（跟着 `if` 一起再缩一层会把 240 行
                 // 正文全拖进纯缩进 diff，复核时看不见真改动）。
@@ -616,9 +615,8 @@ fun LoveBrainPanelScreen(
                 )
 
                 // ── 持续意图入口：宿主仍是这一页，挂载点已从面板输入行撤走（搬到设置页）──
-                // 这颗原来长在「今日锦囊」页的标题行里，而它**从来不是**锦囊的一部分：回复链每次
-                // 生成都读 `intents.config` 拼进 prompt，PRODUCT_SPEC 第2节 把持续意图列在"保留、不许
-                // 借简化删"那一栏。锦囊页删掉之后这一颗换宿主活着过，一度落在这里"另画一排"——
+                // 回复链每次生成都读 `intents.config` 拼进 prompt，PRODUCT_SPEC 第2节 把持续意图列在"保留、不许
+                // 借简化删"那一栏。这一颗一度落在这里"另画一排"——
                 // 于是屏上有两排次级控件（这一排 + 输入区那颗「仅看本轮」那一排），正是原话第 10 条
                 // 要收掉的形状。意图入口现在走设置页（另一路负责接线），本体仍由上面 `intentSlot`
                 // 提供、没有活动知识库依旧不画（意图按库隔离，没有"这一块库"就无处可存）。
@@ -844,7 +842,7 @@ fun LoveBrainPanelScreen(
         // 同 `CorrectionCenterHost` / `MemoryCorrectionFlowHost` 那两扇的处理）。
         // 显隐只有 `IntentController.showEditor` 一本账：开在哪块库由它自己冻结（openEditor 先绑库
         // 再翻可见性），保存回 `intents.save(...)`，关闭点名到 `dismissEditor()`。
-        // 这一扇在  之前借住在锦囊页里；那一页删掉之后宿主换成这里，能力一个字没减。
+        // 这一扇编辑浮层的宿主是这一页。能力一个字没减。
         // 开合包一层 AnimatedVisibility（200ms 淡入淡出 + 纵向展开/收起，FastOutSlowInEasing），
         // 与 `PanelPageMotion.SLIDE_MS` 同档，不再"啪"地一下弹出/消失。
         AnimatedVisibility(
@@ -1015,7 +1013,7 @@ internal fun ProactiveResultArea(
                 modifier = Modifier.fillMaxWidth().padding(vertical = Spacing.xxl)
             )
             else -> {
-                // §9（原话第 18 条）：主动发候选补回锦囊的策略载荷后，正文仍是**唯一可发送内容**
+                // §9（原话第 18 条）：主动发候选补回策略载荷后，正文仍是**唯一可发送内容**
                 // （点击复制只复制 `opt.text`，见下面那颗 `clickable`），时机/先别发/需要准备
                 // 三段收成"按需展开的次要行"。三段全空的旧候选看起来与改前一致——不多空行、
                 // 也不多箭头。

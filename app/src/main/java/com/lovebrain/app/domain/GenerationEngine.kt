@@ -403,7 +403,7 @@ class GenerationEngine(
     /**
      * 主动发一句：一次点击 = **一条**生成请求。
      *
-     * 锦囊（第12节第1条 已删）那条独立请求流不在了，它"根据已有近况找合适话题/切入点、
+     * 它"根据已有近况找合适话题/切入点、
      * 结合有效持续意图输出一句能发的话"这一半能力是**并进这条流的 prompt**里长出来的
      * （`engine/proactive.md` + `PromptProactiveSection`），不是在这里串两次模型调用：
      * 整条流只碰一次 [AiGateway.generateStream]，事件按 ProactiveStarted → 增量

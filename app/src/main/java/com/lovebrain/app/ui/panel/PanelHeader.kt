@@ -68,8 +68,7 @@ private object HeaderDimens {
  * 整行支持拖拽移动面板。
  *
  * 头部**只有两段**（PRODUCT_SPEC 第4节 那句"只『回复/谈心』两段 + 已有收起；设置是小图标工具操作，
- * 不是第三模式"）。第三段原来是「今日锦囊」， 已按用户授权整删，所以这里连 `showPlanPanel`
- * 与 `onPlanVisibility` 两颗参数一起退场——"哪一页在上面"从此只有 `panelMode` 一本账。
+ * 不是第三模式"）。"哪一页在上面"只有 `panelMode` 一本账。
  */
 @Composable
 fun PanelHeader(
@@ -178,7 +177,7 @@ fun PanelHeader(
  * - 交互层：两段各占 1/2 宽 × 整行高，clickable 与 selected/role 全挂在自己身上。
  * 文字随之从视觉层搬到交互层——它必须跟着"被点的那个节点"走，否则读屏念到的和手指点的是两回事。
  *
- * 第三段（锦囊）随  整删，`segWidth` 从 1/3 换成 1/2；高亮平移仍按段宽算，
+ * `segWidth` 是 1/2（两段）；高亮平移按段宽算，
  * 所以两段之间不会出现"高亮块走到半格就停住"的那种漂移。
  */
 @Composable

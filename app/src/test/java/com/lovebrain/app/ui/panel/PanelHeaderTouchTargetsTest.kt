@@ -27,8 +27,7 @@ import org.robolectric.annotation.GraphicsMode
  * 再减 1dp 内边距的子节点上。复核 第3节第2条 描述的就是这一处，本机第一次量到了。
  *
  * **本轮合同（第3节第2条）把这条窗口装饰带恢复到紧凑档**，于是这一格的尺跟着换档：
- * - 整行 30dp（模式栏外层），两段各占 1/2 宽 × **整行高**（第三段「今日锦囊」随  整删，
- *   `PanelHeader` 连 `showPlanPanel`/`onPlanVisibility` 两颗参数一起退场）；
+ * - 整行 30dp（模式栏外层），两段各占 1/2 宽 × **整行高**；
  * - 齿轮与收起的外包盒 24dp 见方（字形分别 16dp / 20dp）；
  * - 全站那颗下限（`AppDimens.TOUCH_TARGET_MIN_DP` = 48）一处没动——这一格换的是
  *   **这一族的档**，不是把尺调松了事：档位写在调用点上（[TouchTier.PANEL_HEADER_HOTZONE]），

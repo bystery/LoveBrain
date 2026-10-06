@@ -569,9 +569,7 @@ class LoveBrainViewModel(
     /**
      * 某类前台任务是否在跑——一律从 coordinator 派生，不再有独立可写 boolean。
      *
-     * 「今日锦囊」（ 已按用户授权整删）曾经从这里派生 `isSuggesting`；锦囊那条链
-     * （store / 状态出口 / 生成入口 / 缓存 / 停止 / 效果回执）已经整体退场，
-     * 这一族出口只剩回复、谈心、主动发、画像刷新四类。
+     * 这一族出口有回复、谈心、主动发、画像刷新四类。
      */
     private fun busyOf(
         type: ForegroundOperationCoordinator.OperationType
@@ -903,8 +901,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             }
         }
         securePrefs.counselingDraft.let { composer.accept(ComposerStore.Intent.RestoreCounselingDraft(it)) }
-        // 「今日锦囊」的当天缓存恢复随  一起退场（消息/想法本来就是纯内存，杀进程即清）。
-        // SecurePrefs 那对口子（loadSuggestion / saveSuggestion）的删除记在 P2，本类已不再调用。
     }
 
     // ═══════════ 流式生成（委托 GenerationEngine） ═══════════
@@ -914,7 +910,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      *
      * 一个请求 = coordinator 注册的**一个**任务，覆盖"准备 → 网络 → 解析 → 发布"全程。
      * 旧写法是 ViewModel 先 launch 一个 prepJob，再把 scope 交给 Engine 让它 launch 第二个 Job，
-     * 两个 owner 并存；停止时只能一次取消三类操作，误伤并行的改写和锦囊。
+     * 两个 owner 并存；停止时只能一次取消三类操作，误伤并行的改写。
      *
      * 被互斥拒绝时 [ForegroundOperationCoordinator.start] 返回 null 且任务从未启动，
      * 因此这里不需要"先起再回滚"，也不会有不受管理的前台任务。

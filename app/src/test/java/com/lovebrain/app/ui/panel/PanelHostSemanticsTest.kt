@@ -52,8 +52,7 @@ import org.robolectric.annotation.GraphicsMode
  * 整屏就挂得起来并且能空闲（坑表 84：说"做不到"要能答"我是怎么知道的"）。
  *
  * ⚠ **模式现在只由 `panelMode` 一个数驱动**：页头那两段读的是
- * `panelMode == 1 → 谈心`、`else → 回复`。第三段「今日锦囊」与它的 `showPlanPanel`
- * 开关随  整删（`PanelHeader` 连 `showPlanPanel`/`onPlanVisibility` 两颗参数一起退场）。
+ * `panelMode == 1 → 谈心`、`else → 回复`。
  * 这里仍**走生产的点击路径**：
  * 点那一段 → `onModeChange` → `viewModel.setPanelMode(...)` → flow 变 → 重组。
  * 桩的是持有者本身，不是界面。

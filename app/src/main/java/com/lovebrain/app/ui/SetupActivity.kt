@@ -106,7 +106,6 @@ class SetupActivity : ComponentActivity() {
 
     private var pendingOverlayStart = false
     private var pendingPanelMode: Int? = null
-    private var pendingShowPlan: Boolean = false
 
     private fun startFloatingService(): Boolean {
         if (!Settings.canDrawOverlays(this)) {
@@ -123,13 +122,12 @@ class SetupActivity : ComponentActivity() {
         return true
     }
 
-    private fun openPanelFromHome(mode: Int, showPlan: Boolean) {
+    private fun openPanelFromHome(mode: Int) {
         if (!startFloatingService()) {
             pendingPanelMode = mode
-            pendingShowPlan = showPlan
             return
         }
-        EventBus.requestPanel(mode, showPlan)
+        EventBus.requestPanel(mode)
     }
 
     override fun onResume() {
@@ -138,7 +136,7 @@ class SetupActivity : ComponentActivity() {
             pendingOverlayStart = false
             ContextCompat.startForegroundService(this, Intent(this, FloatingService::class.java))
             pendingPanelMode?.let { mode ->
-                EventBus.requestPanel(mode, pendingShowPlan)
+                EventBus.requestPanel(mode)
                 pendingPanelMode = null
             }
         }
@@ -189,7 +187,7 @@ class SetupActivity : ComponentActivity() {
                         SetupRoot(
                             viewModel = viewModel,
                             onStartService = { startFloatingService() },
-                            onOpenPanel = { mode, showPlan -> openPanelFromHome(mode, showPlan) },
+                            onOpenPanel = { mode -> openPanelFromHome(mode) },
                             onTempHide = { tempHideFloating() },
                             onRestore = { restoreFloating() },
                             // 直达导航的两颗：宿主点名，SetupRoot 跳完就把这颗收回 null

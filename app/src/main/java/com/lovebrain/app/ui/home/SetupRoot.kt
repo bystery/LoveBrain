@@ -73,15 +73,15 @@ sealed class HomeDestination {
  * 旧版这里 `when` 里同一个 `CaptureApps` 分支写了两遍（重复的那一份永远不会被执行），
  * 现在只剩一份；`About` / `Usage` 两格随首页那几段一起撤。
  *
- * ⚠ `onOpenPanel` / `onTempHide` / `onRestore` 这三颗回调本轮**不再被使用**：
- * 首页重做后没有"打开军师/临时隐藏"那两处出口了，而签名由宿主 `SetupActivity` 持有、
+ * ⚠ `onTempHide` / `onRestore` 这两颗回调本轮**不再被使用**：
+ * 首页重做后没有"临时隐藏"那处出口了，而签名由宿主 `SetupActivity` 持有、
  * 那一页不归。签名留着不动，收口写进"需"。
  */
 @Composable
 fun SetupRoot(
     viewModel: SetupViewModel,
     onStartService: () -> Unit,
-    onOpenPanel: (Int, Boolean) -> Unit,
+    onOpenPanel: (Int) -> Unit,
     onTempHide: () -> Unit,
     onRestore: () -> Unit,
     /**

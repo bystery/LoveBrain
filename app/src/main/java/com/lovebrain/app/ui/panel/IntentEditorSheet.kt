@@ -22,18 +22,8 @@ import com.lovebrain.app.ui.theme.*
 // ════════════════════════════════════════════════════════════════════════════
 // 持续意图（"这一个阶段一直在推进的那件事"）的入口与编辑器。
 //
-// ## 这个文件为什么以前叫 SuggestPanel
-//
-// 它原先装的是「今日锦囊」整页（第12节第1条 已按用户授权删除的独立功能），而持续意图那颗入口
-// 与这扇编辑浮层是**借在标题行里**长在这个页面上的——它们从来不是锦囊的一部分：
-// 回复链每次生成都读 `intents.config` 拼进 prompt，PRODUCT_SPEC 把持续意图列在
-// "保留、不许借简化删"那一栏， 要并入主动发的"有效持续意图"也靠这一扇录入。
-// 删掉锦囊页时这两颗必须活着，所以留在原路径上；改名成 `IntentEditorSheet.kt` 是
-// 跟着换宿主这一步一起做的（文件用 mv 移，不是删）。
-//
-// ## 宿主（ 之后补齐的那一半接线）
-// 锦囊页没了之后这一族一度**没有任何调用点**画它们。现在的宿主是
-// `ui/panel/LoveBrainPanelScreen.kt` 的回复那一支：
+// ## 宿主
+// 持续意图入口与编辑浮层由 `ui/panel/LoveBrainPanelScreen.kt` 的回复那一支挂载：
 // - [IntentChip] 画在输入行的下一行，守卫仍是 `activeKb != null`（意图按库隔离，没有活动库就无处可存）；
 //   点击 = `viewModel.intents.openEditor()`（先冻结"开在哪块库"再翻可见性，判据在 IntentController 里）。
 // - [IntentEditorDialog] 挂在**面板根部**（与 `CorrectionCenterHost` / `MemoryCorrectionFlowHost`

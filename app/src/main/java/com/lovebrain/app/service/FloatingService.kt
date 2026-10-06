@@ -249,8 +249,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                     L.w("panel request: mode=${req.mode}")
                     if (!panel.isShowing) showPanel()
                     viewModel.setPanelMode(req.mode)
-                    // 「今日锦囊」那一个 Tab（ 已整删）原来在这里多走一步
-                    // `openPlanPanel()/dismissPlanPanel()`；头部只剩两段之后，
+                    // 头部只有回复/谈心两段，setPanelMode 直接切换。
                     // mode 就是"哪一页在上面"唯一那一颗，这里不再补第二次导航。
                 }
             }

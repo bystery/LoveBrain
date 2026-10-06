@@ -18,7 +18,7 @@ object AssetRegistry {
     // ═══ 引擎附加段 ═══
     const val COUNSELING = "engine/counseling.md"
     const val POLISH = "engine/polish.md"
-    const val PROACTIVE = "engine/proactive.md"  // 主动开场引擎（含从锦囊并入的话题切入点能力）
+    const val PROACTIVE = "engine/proactive.md"  // 主动开场引擎（含话题切入点能力）
 
     // ═══ 知识引擎 ═══
     const val LESSONS = "engine/knowledge_prompt/lessons.md"

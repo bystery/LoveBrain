@@ -304,7 +304,7 @@ fun CounselingPanel(
                                 )
                             )
                             Spacer(Modifier.width(Spacing.xs))
-                            // ：共享三角箭头（原 Canvas Path 块与锦囊处逐字相同）
+                            // 共享三角箭头
                             TriangleArrow(color = Primary, rotation = followUpArrowRotation)
                         }
                         // 清空重聊胶囊归进设计系统那颗 [LbChip]（动作入口，点下去清空历史）。
