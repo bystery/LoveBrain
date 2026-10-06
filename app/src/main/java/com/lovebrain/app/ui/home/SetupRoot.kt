@@ -2,6 +2,13 @@ package com.lovebrain.app.ui.home
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -119,7 +126,27 @@ fun SetupRoot(
         contentAlignment = Alignment.TopCenter
     ) {
         Box(modifier = Modifier.fillMaxWidth().widthIn(max = CONTENT_MAX_WIDTH_DP.dp)) {
-            when (destination) {
+            // §9.2：根导航统一前进/返回过渡——子页从右侧滑入、返回时向右滑出，
+            // 与知识库 Activity 的默认方向一致；不每页各补一份负 padding 或一次性淡入。
+            AnimatedContent(
+                targetState = destination,
+                transitionSpec = {
+                    if (targetState == HomeDestination.Home) {
+                        // 返回首页：当前页向右滑出 + 淡出，首页淡入
+                        (slideOutHorizontally(tween(250)) { it } + fadeOut(tween(200))) togetherWith
+                            fadeIn(tween(200))
+                    } else if (initialState == HomeDestination.Home) {
+                        // 前进子页：子页从右侧滑入 + 淡入，首页淡出
+                        fadeIn(tween(200)) togetherWith
+                            (slideOutHorizontally(tween(250)) { -it } + fadeOut(tween(200)))
+                    } else {
+                        // 子页间切换：简单淡入淡出
+                        fadeIn(tween(200)) togetherWith fadeOut(tween(200))
+                    }
+                },
+                label = "rootNav"
+            ) { dest ->
+                when (dest) {
                 HomeDestination.Home -> HomeScreen(
                     homeStatus = homeStatus,
                     onStartService = onStartService,
@@ -146,6 +173,7 @@ fun SetupRoot(
                     BackHandler { destination = HomeDestination.Home }
                     CaptureAppsScreen(viewModel = viewModel, onBack = { destination = HomeDestination.Home })
                 }
+            }
             }
         }
     }
