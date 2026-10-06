@@ -191,7 +191,7 @@ internal const val PANEL_ROUND_SCOPE_TEST_TAG = "round_scope_entry"
  *
  * 形状（依据基线 v1 §3 第 11 条窄窗砍序 + 用户原话第 10 条，见
  * `handoffs\2026-10-05-P2-宿主接线单.md`）：
- * · **行 1** = 她 / 我 / 补充 / ＋ / 🔒（仅看本轮） / 输入框(weight 1f) 同一条中线；
+ * · **行 1** = 她 / 我 / 补充 / 输入框(weight 1f) / ＋ / 🔒（仅看本轮） 同一条中线；
  *   输入框吃剩余宽度（weight 1f），挤也不缩短它。「仅看本轮」那颗用 🔒 符号占位
  *   （contentDescription 仍是 [PANEL_ROUND_SCOPE_LABEL]，给读屏的全名），常驻行 1、
  *   不再随有没有真实消息在行 2 / 消息卡之间二选一挂载。
