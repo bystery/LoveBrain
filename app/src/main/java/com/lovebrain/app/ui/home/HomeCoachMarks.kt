@@ -1,5 +1,7 @@
 package com.lovebrain.app.ui.home
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -271,10 +273,20 @@ fun HomeCoachMarks(
         val placeBelow = target == null ||
             target.bottom + stackPx + reservePx <= boxHeightPx
 
+        // 200ms alpha 渐入：游标落到这一步时遮罩从透明渐入到 0.55，不再硬切。
+        // （退出时游标走到 NONE/DONE → anchorKey 为 null → 早退，组件从树里摘掉 = 无退出动画。
+        // 要做退出动画得改成"组件留在树里 + visible=false"那一套，但那会破"NONE 不画"的合同。）
+        val scrimAlpha by animateFloatAsState(
+            targetValue = CoachMarksDimens.SCRIM_ALPHA,
+            animationSpec = tween(200),
+            label = "scrim_alpha"
+        )
+
         if (target != null) {
             CoachScrimLayer(
                 target = target,
                 swallowOutsideTarget = !pathCleared,
+                scrimAlpha = scrimAlpha,
                 modifier = Modifier.matchParentSize()
             )
             CoachPointerSlot(
@@ -285,6 +297,7 @@ fun HomeCoachMarks(
                     .coerceAtLeast(0f),
                 boxHeightPx = boxHeightPx,
                 outsetPx = outsetPx,
+                alpha = scrimAlpha,
                 modifier = Modifier.align(if (placeBelow) Alignment.TopStart else Alignment.BottomStart)
             )
         }
@@ -299,6 +312,7 @@ fun HomeCoachMarks(
             plateWidth = plateWidth,
             stackPx = stackPx,
             boxHeightPx = boxHeightPx,
+            alpha = scrimAlpha,
             onOpenTarget = {
                 pathCleared = true
                 onOpenTarget()
@@ -328,6 +342,7 @@ fun HomeCoachMarks(
 private fun CoachScrimLayer(
     target: Rect,
     swallowOutsideTarget: Boolean,
+    scrimAlpha: Float,
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current
@@ -365,7 +380,7 @@ private fun CoachScrimLayer(
                     RoundRect(hole.left, hole.top, hole.right, hole.bottom, corner, corner)
                 )
             },
-            color = Color.Black.copy(alpha = CoachMarksDimens.SCRIM_ALPHA)
+            color = Color.Black.copy(alpha = scrimAlpha)
         )
         drawPath(
             path = Path().apply {
@@ -411,6 +426,7 @@ private fun CoachPointerSlot(
     leftPx: Float,
     boxHeightPx: Float,
     outsetPx: Float,
+    alpha: Float = 1f,
     modifier: Modifier = Modifier
 ) {
     // 箭头紧贴 highlight 那一圈外侧；提示板再往下走一整摞（外扩 + 箭头高 + 间距），两者不叠。
@@ -425,6 +441,7 @@ private fun CoachPointerSlot(
         modifier = modifier
             .offset { IntOffset(leftPx.roundToInt(), offsetY) }
             .size(CoachMarksDimens.ARROW_WIDTH_DP.dp, CoachMarksDimens.ARROW_HEIGHT_DP.dp)
+            .graphicsLayer { this.alpha = alpha }
             .testTag(LbCoachTags.POINTER)
     ) {
         LbTriangleGlyph(
@@ -456,6 +473,7 @@ private fun CoachHintPlate(
     plateWidth: Dp,
     stackPx: Float,
     boxHeightPx: Float,
+    alpha: Float = 1f,
     onOpenTarget: () -> Unit,
     onDefer: () -> Unit,
     onStopGuiding: () -> Unit,
@@ -477,6 +495,7 @@ private fun CoachHintPlate(
                 }
             )
             .width(plateWidth)
+            .graphicsLayer { this.alpha = alpha }
             .clip(LoveBrainShape.lg)
             .background(SurfaceCard)
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)

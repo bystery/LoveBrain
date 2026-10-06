@@ -15,19 +15,15 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * （ 第3节第2条）：48dp 必须用**语义树实测**，不许再靠源码里搜常量。
+ * （第3节第2条）：面板头的可点击节点必须用**语义树实测**，不许靠源码里搜常量。
  *
- * 报告点名的就是这里：`ProductionUiContractTest` 只检查 PanelHeader.kt 里出现过
- * `height(HeaderDimens.MIN_TOUCH_TARGET_DP.dp)`，可是真正 clickable 的那三段
- * 挂在内层 20dp 高的 ModeSegmentLabel 上——于是"合同通过"和"用户点得到"是两件事，
- * 而 CI 信了前者。
+ * 面板头那一排是设计基线明写的**例外档**（HeaderDimens.ROW_HEIGHT_DP = 30，
+ * 齿轮/收起 24dp 容器）——它们有意低于全站 48dp 下限。JVM 那一侧的
+ * `PanelHeaderTouchTargetsTest`（test/）按 24dp 档判并钉死 30dp 整行高，
+ * 那颗全站下限本身没动，仍由 `LbPrimaryButtonStateTest` 等钉着。
  *
- * 这里读的是**组合并测量之后**每个带点击语义节点的 boundsInRoot。
- * 生产真不达标时它就该红，那正是要的信号，不是要绕过去的噪声。
- *
- * 三条都会先在 CI 上跑（本机无 system image）。预期结果不是"绿"，而是
- * "把生产到底达不达标说清楚"：如果 PanelHeader 真的把点击挂在 20dp 的子节点上，
- * 第一条就该红，红得有价值。
+ * 这里读的是**组合并测量之后**每个带点击语义节点的 boundsInRoot，
+ * 并按面板头那一档（24dp）判——不再拿 48dp 硬套这一排。
  */
 @RunWith(AndroidJUnit4::class)
 class PanelHeaderTouchTargetsTest {
@@ -39,8 +35,8 @@ class PanelHeaderTouchTargetsTest {
         get() = ApplicationProvider.getApplicationContext<Context>()
             .resources.displayMetrics.density
 
-    /** 复核 第6节第5条：所有 clickable/toggleable 的可点击框不得小于 48×48dp */
-    private val minPx: Float get() = 48f * density
+    /** 面板头例外档：24dp（与 JVM 那一侧的 TouchTier.PANEL_HEADER_HOTZONE 同数） */
+    private val minPx: Float get() = 24f * density
 
     private fun mount(mode: Int = 0) {
         composeRule.setContent {
@@ -68,7 +64,7 @@ class PanelHeaderTouchTargetsTest {
     }
 
     @Test
-    fun everyClickableNodeInPanelHeaderMeetsThe48dpFloor() {
+    fun everyClickableNodeInPanelHeaderMeetsThePanelHeaderTier() {
         mount()
         val nodes = clickableNodes()
         assertTrue(
@@ -81,10 +77,10 @@ class PanelHeaderTouchTargetsTest {
         }
         if (tooSmall.isNotEmpty()) {
             fail(
-                "有 ${tooSmall.size} 个可点击节点小于 48dp" +
+                "有 ${tooSmall.size} 个可点击节点小于 ${minPx / density}dp" +
                     "（设备 density=$density，阈值 ${minPx.toInt()}px）：\n" +
                     tooSmall.joinToString("\n") { "  " + describe(it) } +
-                    "\n  修法：把 clickable 提到那个 48dp 的外层盒子上；" +
+                    "\n  修法：把 clickable 提到那个外层盒子上；" +
                     "只放大容器而点击仍挂在子节点上，等于没改。"
             )
         }

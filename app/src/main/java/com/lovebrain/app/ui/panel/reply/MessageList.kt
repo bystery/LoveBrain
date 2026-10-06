@@ -430,8 +430,8 @@ fun MessageList(
         val speed = edgeSpeedPx
         if (speed == 0f) return@LaunchedEffect
         while (draggedId != null && edgeSpeedPx != 0f) {
-            val consumed = speed - listState.scrollBy(speed)
-            dragOffsetY += consumed
+            val scrolled = listState.scrollBy(speed)
+            dragOffsetY += scrolled
             delay(MessageDimens.DRAG_SCROLL_FRAME_MS)
         }
     }

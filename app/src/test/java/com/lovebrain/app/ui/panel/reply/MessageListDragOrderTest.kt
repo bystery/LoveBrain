@@ -392,7 +392,7 @@ class MessageListDragOrderTest {
         val taskAt = messageListSource.indexOf("LaunchedEffect(dragSession")
         val task = messageListSource.substring(taskAt, (taskAt + 600).coerceAtMost(messageListSource.length))
         assertTrue("边缘滚动那一颗必须补滚动量（不补就被拖行脱离手指）：" + task.take(240),
-            "dragOffsetY += consumed" in task)
+            "dragOffsetY += scrolled" in task)
         assertFalse("但那一颗不许自己夹视口（拿旧槽位算新边界 = 每帧漂一格）：" + task.take(240),
             "clampDraggedRowIntoViewport()" in task)
     }

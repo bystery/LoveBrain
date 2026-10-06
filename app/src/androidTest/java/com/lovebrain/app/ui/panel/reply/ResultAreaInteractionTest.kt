@@ -6,7 +6,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.assertCountEquals
 import com.lovebrain.app.model.GenerateResult
-import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.testing.MainChainHarness
 import org.junit.Assert.assertFalse
 import org.junit.Rule
@@ -74,63 +73,14 @@ class ResultAreaInteractionTest {
     }
 
     // ═══ 2. 风格/方向切换 ═══
-
-    @Test
-    fun resultArea_styleToDirection_switchChangesDisplayedSchemes() {
-        composeRule.setContent {
-            ResultArea(
-                result = makeSuccessResult(),
-                isGenerating = false,
-                streamingCoreText = "",
-                isGeneratingCore = false,
-                streamingSchemes = emptyList(),
-                feedbacks = emptyMap(),
-                onFeedback = { _, _ -> },
-                onCopyScheme = {},
-                onRetry = {},
-                providerReady = true,
-                onOpenSettings = {},
-                generationRoundId = 1
-            )
-        }
-        // 默认 STYLE 模式——推荐回复内容可见
-        composeRule.onNodeWithText("推荐回复内容").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        // 点击"方向"切换到 DIRECTION 模式
-        composeRule.onNodeWithText("方向").performClick()
-        // DIRECTION 模式下应显示 F reply
-        composeRule.onNodeWithText("F reply").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        // 切回风格
-        composeRule.onNodeWithText("风格").performClick()
-        composeRule.onNodeWithText("推荐回复内容").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-    }
+    // 风格/方向切换器已从 ResultArea 退场（两组方案合成一条列表）。
+    // 见 ResultArea.kt:250-252 "这里没有'两组各一排、点着切'那一档了"。
+    // test #2 (styleToDirection_switchChangesDisplayedSchemes) 与 test #9
+    // (directionMode_staysAfterRewriteUI) 随之删除——它们测的 UI 不存在了。
 
     // ═══ 3. Error 渲染 ═══
-
-    @Test
-    fun resultArea_showsError_whenError() {
-        composeRule.setContent {
-            ResultArea(
-                result = GenerateResult.Error("测试错误信息"),
-                isGenerating = false,
-                streamingCoreText = "",
-                isGeneratingCore = false,
-                streamingSchemes = emptyList(),
-                feedbacks = emptyMap(),
-                onFeedback = { _, _ -> },
-                onCopyScheme = {},
-                onRetry = {},
-                providerReady = true,
-                onOpenSettings = {},
-                generationRoundId = 0
-            )
-        }
-        composeRule.onNodeWithText("测试错误信息").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        // ⚠ 锚点不能写"点击重试"四个字：`856d485` 把那颗搬进 `LbTextAction` 并让标签走
-        //   `R.string.panel_retry_tap` ⇒ 英文模拟器上渲染的是 "Tap to retry"，
-        //   写死中文的锚点从此永远找不到节点（ 这一格的红就是"已显示断言失败"）。
-        composeRule.onNodeWithText(UiText.current(R.string.panel_retry_tap))
-            .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-    }
+    // Error 那颗重试按钮已退场（见 ResultArea.kt:345-349 "撤掉的只是那颗重复动作"）。
+    // test #3 (showsError_whenError) 随之删除——它断言的重试节点不存在了。
 
     // ═══ 4. 未配置供应商 ═══
 
@@ -161,34 +111,9 @@ class ResultAreaInteractionTest {
             .assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
     }
 
-    // ═══ 5. `⋯` 菜单可打开——"记入知识库"已移至主操作按钮，不再在 ⋯ 菜单中 ═══
-
-    @Test
-    fun resultArea_utilityMenu_canOpenAndDoesNotContainSaveToKb() {
-        var saveCalled = false
-        composeRule.setContent {
-            ResultArea(
-                result = makeSuccessResult(),
-                isGenerating = false,
-                streamingCoreText = "",
-                isGeneratingCore = false,
-                streamingSchemes = emptyList(),
-                feedbacks = emptyMap(),
-                onFeedback = { _, _ -> },
-                onCopyScheme = {},
-                onRetry = {},
-                providerReady = true,
-                onOpenSettings = {},
-                generationRoundId = 1
-            )
-        }
-        // 点击 ⋯ trigger 打开菜单
-        composeRule.onNodeWithText("⋯").performClick()
-        // "记入知识库"已从 ⋯ 菜单中删除——它现在是 ReplyPrimaryActions 的主操作按钮
-        // （改用 Compose/JUnit 断言：裸 Kotlin assert() 在 instrumentation 下不保证开 -ea，会静默恒真）
-        composeRule.onAllNodesWithText("记入知识库").assertCountEquals(0)
-        assertFalse("onSaveToKb should not be called from ⋯ menu", saveCalled)
-    }
+    // ═══ 5. `⋯` 菜单已退场 ═══
+    // `⋯` 工具菜单触发器已从 ResultArea 退场（见 ResultArea.kt:112-114）。
+    // test #5 (utilityMenu_canOpenAndDoesNotContainSaveToKb) 随之删除——它断言的 ⋯ 节点不存在了。
 
     // ═══ 6. 点击 like 不触发展开 ═══
 
@@ -274,32 +199,5 @@ class ResultAreaInteractionTest {
     }
 
     // ═══ 9. DIRECTION 模式下 F 操作后模式不自动返回 STYLE ═══
-
-    @Test
-    fun resultArea_directionMode_staysAfterRewriteUI() {
-        composeRule.setContent {
-            ResultArea(
-                result = makeSuccessResult(),
-                isGenerating = false,
-                streamingCoreText = "",
-                isGeneratingCore = false,
-                streamingSchemes = emptyList(),
-                feedbacks = emptyMap(),
-                onFeedback = { _, _ -> },
-                onCopyScheme = {},
-                onRetry = {},
-                providerReady = true,
-                onOpenSettings = {},
-                generationRoundId = 1
-            )
-        }
-        // 切换到方向
-        composeRule.onNodeWithText("方向").performClick()
-        // 确认在 DIRECTION 模式
-        composeRule.onNodeWithText("F reply").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        // 风格 Tab 不应高亮选中——验证方向仍被选中
-        composeRule.onNodeWithText("方向").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-        // 确认仍显示方向内容
-        composeRule.onNodeWithText("F reply").assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
-    }
+    // 风格/方向切换器已退场，这条测试随 #2/#9 一起删除（它们测的切换 UI 不存在了）。
 }

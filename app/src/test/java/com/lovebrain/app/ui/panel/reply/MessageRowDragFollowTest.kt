@@ -324,7 +324,7 @@ class MessageRowDragFollowTest {
         assertTrue("那颗任务必须按帧走（没有 delay 就是空转或一帧滚到底）：$after", "delay(" in after)
         assertTrue(
             "滚出去的那一截必须回写进累计位移（不补就被拖行会脱离手指）：$after",
-            "dragOffsetY += consumed" in after
+            "dragOffsetY += scrolled" in after
         )
     }
 

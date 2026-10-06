@@ -1,5 +1,9 @@
 package com.lovebrain.app.ui.panel
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import com.lovebrain.app.core.designsystem.rememberPressScale
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -84,21 +88,27 @@ fun OnboardingFlow(
 
             Spacer(Modifier.height(Spacing.xl))
 
-            when (step) {
-                0 -> OnboardingStep0(
-                    onNext = { onStepChange(1) }
-                )
-                1 -> OnboardingStep1(
-                    onNext = { onStepChange(2) },
-                    onOpenSettings = onOpenSettings
-                )
-                2 -> OnboardingStep2(
-                    onNext = { onStepChange(3) }
-                )
-                else -> OnboardingStep3(
-                    onComplete = onComplete,
-                    onOpenSettings = onOpenSettings
-                )
+            AnimatedContent(
+                targetState = step,
+                transitionSpec = { fadeIn() togetherWith fadeOut() },
+                label = "onboarding_step"
+            ) { currentStep ->
+                when (currentStep) {
+                    0 -> OnboardingStep0(
+                        onNext = { onStepChange(1) }
+                    )
+                    1 -> OnboardingStep1(
+                        onNext = { onStepChange(2) },
+                        onOpenSettings = onOpenSettings
+                    )
+                    2 -> OnboardingStep2(
+                        onNext = { onStepChange(3) }
+                    )
+                    else -> OnboardingStep3(
+                        onComplete = onComplete,
+                        onOpenSettings = onOpenSettings
+                    )
+                }
             }
     }
 }

@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -165,7 +167,12 @@ class SetupActivity : ComponentActivity() {
 
         setContent {
             LoveBrainTheme {
-                if (introOnScreen) {
+                Crossfade(
+                    targetState = introOnScreen,
+                    animationSpec = tween(300),
+                    label = "intro_home"
+                ) { showIntro ->
+                    if (showIntro) {
                     OnboardingFlow(
                         onSkip = { closeIntro(GuideExit.Skip) },
                         onComplete = { closeIntro(GuideExit.Complete) },
@@ -210,6 +217,7 @@ class SetupActivity : ComponentActivity() {
                             }
                         )
                     }
+                }
                 }
             }
         }

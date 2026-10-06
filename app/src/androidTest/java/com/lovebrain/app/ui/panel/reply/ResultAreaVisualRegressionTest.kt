@@ -102,22 +102,13 @@ class ResultAreaVisualRegressionTest {
         composeRule.onNodeWithText("温柔回复内容").assertIsDisplayed()
     }
 
-    // ═══ 3. 风格/方向入口存在 ═══
+    // ═══ 3. 风格/方向入口已退场 ═══
+    // 风格/方向切换器已从 ResultArea 退场（见 ResultArea.kt:250-252）。
+    // test #3 (hasStyleDirectionSwitcher) 随之删除——它断言的"风格"/"方向"节点不存在了。
 
-    @Test
-    fun defaultSuccessResultArea_hasStyleDirectionSwitcher() {
-        setupResultArea()
-        composeRule.onNodeWithText("风格").assertIsDisplayed()
-        composeRule.onNodeWithText("方向").assertIsDisplayed()
-    }
-
-    // ═══ 4. `⋯` overlay 存在 ═══
-
-    @Test
-    fun defaultSuccessResultArea_hasUtilityOverlayTrigger() {
-        setupResultArea()
-        composeRule.onNodeWithText("⋯").assertIsDisplayed()
-    }
+    // ═══ 4. `⋯` overlay 已退场 ═══
+    // `⋯` 工具菜单触发器已从 ResultArea 退场（见 ResultArea.kt:112-114）。
+    // test #4 (hasUtilityOverlayTrigger) 随之删除——它断言的 ⋯ 节点不存在了。
 
     // ═══ 5. "记入知识库"不在默认态直接显示 ═══
 
