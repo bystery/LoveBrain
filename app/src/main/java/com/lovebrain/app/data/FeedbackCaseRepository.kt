@@ -2,7 +2,6 @@ package com.lovebrain.app.data
 
 import android.content.Context
 import com.lovebrain.app.model.CaseStatus
-import com.lovebrain.app.model.DialogueSnapshotEntry
 import com.lovebrain.app.model.FeedbackCase
 import com.lovebrain.app.model.FeedbackCategory
 import com.lovebrain.app.util.L

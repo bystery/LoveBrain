@@ -5,8 +5,6 @@ import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.PromptBuilder.ConfigValidationResult
-import com.lovebrain.app.domain.TopicRecorder
-import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.ProfileTransactionResult
@@ -28,7 +26,6 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before

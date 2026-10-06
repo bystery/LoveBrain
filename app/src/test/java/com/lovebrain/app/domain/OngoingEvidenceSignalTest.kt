@@ -1,6 +1,5 @@
 package com.lovebrain.app.domain
 
-import com.lovebrain.app.model.ChatMessage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

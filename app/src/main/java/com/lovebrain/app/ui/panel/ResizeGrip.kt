@@ -1,7 +1,6 @@
 package com.lovebrain.app.ui.panel
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +25,6 @@ import com.lovebrain.app.AppConfig
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.Neutral400
 import com.lovebrain.app.core.designsystem.Primary
-import com.lovebrain.app.core.designsystem.SurfaceInset
 
 /** 手柄内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 private object GripDimens {

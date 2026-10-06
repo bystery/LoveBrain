@@ -33,7 +33,7 @@ import java.io.File
  * 标题那句话只是换了槽位，**一条文案都没新增**（账记在 `UiStringLiteralBudgetTest` 的两栏）。
  *
  * ⚠ 挂载口径：`LbModalSheet` **不是另一扇窗口**（同一棵 ComposeView 里自画的遮罩 + 卡片），
- * 所以这一整扇浮层在本机挂得上——照 `SheetProbeTest` / `RecordSentDialogSheetTest` 那一份挂法
+ * 所以这一整扇浮层在本机挂得上——照 `SheetProbeTest`（已删） / `RecordSentDialogSheetTest`（已删） 那一份挂法
  * （`UiMatrix(360).RenderIn` + 推进一帧）。账本 第45节第1条 那堵「`Dialog` 窗口 + 文本框永不空闲」的墙
  * 在这里不适用，因此这一格不需要像 `ProviderFormBody` 那样把内容搬出窗口才能量。
  * 浮层卡片自带 `verticalScroll`，底部的两颗出口按 `ScrollScan` 的口径滚过一遍取最大面积

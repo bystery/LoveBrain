@@ -1,6 +1,5 @@
 package com.lovebrain.app.domain
 
-import com.lovebrain.app.AppConfig
 import com.lovebrain.app.domain.port.KnowledgePort
 import com.lovebrain.app.domain.port.Clock
 import com.lovebrain.app.domain.port.SystemClock
@@ -308,31 +307,6 @@ class OngoingContextSelector(
             result.add(cleaned.substring(i, i + 2))
         }
         return result
-    }
-
-    /**
-     * 读取已消费的消息 ID（防重复来源推进证据时间）。
-     * 只保留最近 N 条，防文件无限增长。
-     */
-    private suspend fun readConsumedMessageIds(kbName: String): Set<String> {
-        val content = knowledgeRepo.readFile(kbName, "moment/consumed_msg_ids.json")
-        if (content.isBlank()) return emptySet()
-        return runCatching {
-            kotlinx.serialization.json.Json.decodeFromString<Set<String>>(content)
-        }.getOrDefault(emptySet())
-    }
-
-    /**
-     * 写入已消费的消息 ID，只保留最近 50 条。
-     */
-    private suspend fun writeConsumedMessageIds(kbName: String, ids: Set<String>) {
-        val toKeep = ids.toList().takeLast(50).toSet()
-        val stringSerializer = kotlinx.serialization.serializer<String>()
-        val json = kotlinx.serialization.json.Json.encodeToString(
-            kotlinx.serialization.builtins.SetSerializer(stringSerializer),
-            toKeep
-        )
-        knowledgeRepo.writeFile(kbName, "moment/consumed_msg_ids.json", json)
     }
 
     /**

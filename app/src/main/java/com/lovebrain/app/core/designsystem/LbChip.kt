@@ -277,43 +277,6 @@ object LbChipStyles {
         pillHeight = AppDimens.CHIP_SEGMENTED_HEIGHT_DP.dp
     )
 
-    /**
-     * **悬浮窗紧凑族的面板胶囊**（基线 v1 §2 Q2 / §3.8："可见 28 / 标签居中"那一档）。
-     *
-     * 归并目标：回复输入行那颗私有 28（`ReplyDimens.ROLE_CHIP_HEIGHT_DP`）与意图入口那颗私有 22
-     * 都是它的收编对象（页面只换 `copy(pillHeight=…)` 的数，别的一律不动，见交接台账）。
-     * 与 [neutral] 分家：那颗是"无选中态的动作胶囊·模板形"（`TopStart` 标签贴左上），
-     * 这一颗是"面板行里的可见 28、居中、分层热区"——**族不同、脸不同**（D1 §② E3 的过高版式
-     * 就是把这两族混在一起造成的）。
-     *
-     * 形状沿用 [pill]（同一族面板紧凑胶囊：full 圆角、`PrimaryLight` 选中浅底、`Spacing.sm` 横内距、
-     * 竖直内边距 0、由内容给热区），只把**可见胶囊的高度**钉到
-     * [AppDimens.CHIP_PANEL_HEIGHT_DP]（28），并把热区从"由内容给"改成"由外层透明盒给"
-     * （`layeredTouch = true` + `touchFloor = true`）——这就是 Q2 那句
-     * **"行容器买热区、胶囊不买版式"**：可见 28、整盒热区 ≥48，
-     * 别在这里抬 `pillHeight` 去凑热区。
-     */
-    val panelChip = LbChipStyle(
-        radius = LoveBrainShape.full,
-        textStyle = AppTypography.labelSmall,
-        labelMaxLines = 1,
-        labelAlignment = LbChipLabelAlignment.Center,
-        textColorSelected = PrimaryDark,
-        textColor = TextHint,
-        fontWeightSelected = FontWeight.Medium,
-        fontWeight = FontWeight.Medium,
-        backgroundSelected = PrimaryLight,
-        background = SurfaceInset,
-        borderSelected = PrimarySubtle,
-        border = Border,
-        paddingHorizontal = Spacing.sm,
-        paddingVertical = 0.dp,
-        pressedScale = 0.92f,
-        markSelectedWithCheck = false,
-        touchFloor = true,
-        layeredTouch = true,
-        pillHeight = AppDimens.CHIP_PANEL_HEIGHT_DP.dp
-    )
 }
 
 /** 选中时对勾与文案之间那一个空格——形状的一部分，不是文案 */

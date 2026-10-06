@@ -1,17 +1,12 @@
 package com.lovebrain.app.ui.panel.reply
 
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.assertCountEquals
 import com.lovebrain.app.model.GenerateResult
-import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ReplySchemes
-import com.lovebrain.app.model.SchemeFeedback
-import com.lovebrain.app.model.Scheme
-import com.lovebrain.app.model.SchemeSource
 import com.lovebrain.app.testing.MainChainHarness
 import org.junit.Assert.assertFalse
 import org.junit.Rule

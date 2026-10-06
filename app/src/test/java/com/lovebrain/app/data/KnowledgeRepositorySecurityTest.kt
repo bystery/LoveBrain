@@ -26,7 +26,7 @@ import java.nio.file.Files
  * T2 listAll 正常库（name==目录名）零误伤
  * T3 delete 遍历名返回 false 且 root 外目录无损
  * T4 delete 正常库行为不变
- * 每用例带 withTimeout(10s) 防挂死（沿用 ReentrancyTest 先例）。
+ * 每用例带 withTimeout(10s) 防挂死（沿用 ReentrancyTest（已删）先例）。
  */
 class KnowledgeRepositorySecurityTest {
 

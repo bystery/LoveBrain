@@ -11,8 +11,6 @@
     <string name="panel_save_to_kb">记入知识库</string>
     <string name="panel_stop">停止</string>
     <string name="kb_edit_editor_hint">编辑「%1$s」正文</string>
-    <string name="feedback_note_label">补充说明（可选）</string>
-    <string name="feedback_better_label">你期望怎么回？（可选）</string>
     <string name="scheme_custom_hint">自定义改写要求</string>
     <string name="memory_wrong_input_hint">输入正确内容（可选，留空仅停用）</string>
     <string name="panel_collapse">收起面板</string>
@@ -33,7 +31,6 @@
     <string name="provider_open_settings">去设置</string>
     <string name="hint_saved">已保存</string>
     <string name="hint_conflict_kept_draft">文件已被后台修改，已保留你的草稿，请重新打开查看</string>
-    <string name="hint_conflict_reopen">文件已被后台修改，请重新打开</string>
     <string name="hint_save_failed">保存失败，请重试</string>
     <!-- ：编辑页那一篇"成功但为空"与"没读出来"两格的话。原本空态那句是页面里一颗自画的居中 Text（正是  点名的形状），现在交共用状态件画，句子逐字搬进来、一个字没改。 -->
     <string name="kb_edit_empty_hint">还没有内容，点右上「编辑」添加</string>
@@ -48,23 +45,12 @@
     <string name="state_collapsed">已收起</string>
     <string name="feedback_retry">重试</string>
     <string name="feedback_empty_hint">还没有已踩案例。点踩一条回复就会自动记在这里。</string>
-    <string name="proactive_empty_hint">输入想说的话，点击下方「生成开场」让军师帮你找话题</string>
 
     <!-- : 错误文案 -->
     <string name="error_provider_missing">请先配置一个可用的模型供应商</string>
-    <string name="error_auth">API Key 无效或已过期，请检查设置</string>
-    <string name="error_network">网络连接失败，请检查网络后重试</string>
-    <string name="error_timeout">请求超时，请重试</string>
     <!-- Issue #5 / 复核  ：自定义 Provider 高级设置里的生成超时档位（有界白名单 60/120/180/300，默认 120） -->
     <string name="provider_timeout_title">生成超时上限（高级）</string>
-    <string name="provider_timeout_hint">慢速的兼容服务可以把等待调长；只放宽读回复的时间，连接超时不变</string>
     <string name="provider_timeout_tier_label">%1$d 秒</string>
-    <string name="error_rate_limited">请求过于频繁，请稍后再试</string>
-    <string name="error_prompt_read">读取配置时出错，请重试</string>
-    <string name="error_parse">解析回复失败，请重试</string>
-    <string name="error_storage">保存数据时出错，请重试</string>
-    <string name="error_param_unsupported">模型不支持当前思考模式，已尝试所有降级方案</string>
-    <string name="error_unknown">生成失败，请重试</string>
 
     <!-- : 无障碍 -->
     <string name="a11y_close_onboarding">关闭使用提示</string>
@@ -72,7 +58,6 @@
 
     <!-- : 使用提示 -->
     <string name="onboarding_title">使用提示</string>
-    <string name="onboarding_body">添加对话 -&gt; 生成回复 -&gt; 查看回复方案\n点击方案卡可调整单条措辞\n点踩可记录原因并导出，便于后续复盘和调整\n顶部显示今日/本次/累计花费与生成次数\n困惑时可切「谈心」模式，军师用公正视角帮你分析</string>
     <!-- ：累计费用区分「已知 / 不足一分 / 无法计价」。%1$s 是那一家页面自己带的货币符号（首页 ￥、面板 ¥） -->
     <string name="cost_stated_label">已统计费用</string>
     <string name="cost_stated_row">已统计费用：%1$s</string>
@@ -93,13 +78,10 @@
     <string name="capture_apps_intro">仅捕获你选择的应用</string>
     <string name="capture_apps_none_to_authorize">这台设备没有列出可启动的 App，暂时没有可授权的对象。</string>
     <string name="capture_apps_scan_failed">读不出已安装的 App，请重试。</string>
-    <string name="capture_apps_row_subtitle">已授权 %1$d 个 App</string>
     <string name="capture_apps_row_subtitle_none">未选择 App · 不会捕获任何内容</string>
-    <string name="capture_apps_blocked">支付、银行、密码管理、浏览器等类型不允许授权</string>
     <string name="capture_apps_allow">允许捕获</string>
     <string name="capture_apps_search">搜索 App</string>
     <string name="capture_apps_no_results">没有匹配的 App</string>
-    <string name="capture_apps_back">返回设置</string>
     <!--  页头归一：返回那颗的读屏名字（中英各一份，屏幕上是箭头字形，不占文案位） -->
     <string name="common_back">返回</string>
 
@@ -115,23 +97,13 @@
          数着的那两处），归并时一起进资源，中英各一份。中文逐字照旧。 -->
     <string name="panel_input_changed">输入已修改，当前答案基于修改前内容</string>
     <string name="panel_regenerate_with_new_input">按新输入生成</string>
-    <string name="panel_expand">展开</string>
-    <string name="panel_dislike">点踩</string>
-    <string name="panel_like">点赞</string>
     <string name="panel_copy">复制</string>
-    <string name="panel_send">发送</string>
-    <string name="panel_saved_to_kb">已记入知识库</string>
-    <string name="panel_scheme_label_recommend">推荐</string>
-    <string name="panel_scheme_label_calm">清醒</string>
-    <string name="panel_scheme_label_playful">俏皮</string>
-    <string name="panel_scheme_label_warm">温柔</string>
 
     <!-- : 首页 -->
     <string name="home_capture_status_on">已开启 · 长按消息自动捕获</string>
     <string name="home_capture_status_off">已关闭 · 点击开启</string>
     <string name="home_capture_no_permission">尚未授予无障碍权限</string>
     <string name="home_grant_accessibility">去授权</string>
-    <string name="home_manage">管理</string>
     <string name="home_off">关</string>
     <string name="home_on">开</string>
     <!--  LbStatusBadge：状态词与颜色只有 core/designsystem/LbStatusBadge.kt 一份 -->
@@ -142,14 +114,7 @@
     <string name="status_window_missing">窗口未出现</string>
     <!-- 同一件事首页与前台通知共用一句，旧代码是两处各写一遍（"点击恢复" / "点此恢复"） -->
     <string name="status_hidden_desc">军师已暂时隐藏，点击恢复</string>
-    <string name="home_desc_need_overlay">需要悬浮窗权限才能显示军师浮窗</string>
     <string name="home_desc_not_started">点击启动军师悬浮窗</string>
-    <string name="home_desc_running">军师正在运行，长按消息即可捕获</string>
-    <string name="home_desc_window_missing">服务在运行，但悬浮窗没显示出来。点「打开军师」可直接唤起面板</string>
-    <string name="home_btn_grant_overlay">授权悬浮窗</string>
-    <string name="home_btn_start">启动军师悬浮窗</string>
-    <string name="home_btn_restore">恢复军师</string>
-    <string name="home_btn_open">打开军师</string>
     <string name="panel_phase_analysing">分析对话</string>
     <string name="panel_phase_drafting">生成方案</string>
     <string name="panel_phase_deep_analysing">深度分析</string>
@@ -180,14 +145,12 @@
     <string name="feedback_category_other">其他</string>
     <string name="feedback_format_markdown">Markdown</string>
     <string name="feedback_format_json">JSON</string>
-    <string name="feedback_format_selected">✓ %1$s</string>
 
     <!-- 图标型动作的读屏名字（LbTextAction 图标档）：屏幕上只有字形，这一句是读屏唯一听得见的
          "这颗在干什么"。之前它们散在 Kotlin 里写成内联中文，英文环境下资源翻好了、读屏仍念中文。
          ⚠ 「赞」「踩」两条刻意保持与被替换的那两个内联字面量**逐字相同**：
          `ResultAreaTouchTargetsTest` 钉的就是树上那两个字，判据不能顺手改宽。 -->
     <string name="a11y_home_about">关于</string>
-    <string name="a11y_home_hide_bubble">暂时隐藏浮窗</string>
     <string name="a11y_delete_message">删除消息</string>
     <!-- 消息行撤掉可见「她/我」标签与尾部叉号（本轮合同）之后，角色这一面只剩读屏这一条出口：
          位置与颜色说给眼睛，这两句说给耳朵。第三条是列表尾部那一条备注区的名字。 -->
@@ -218,48 +181,21 @@
     <!-- 悬浮窗齿轮那扇整窗设置页。整页只集中四件事（供应商 / 超时 / 透明度 / 捕获范围），
          标题与标签一律纯文字，不新增图标档；值与保存流程仍走首页那一份配置源。 -->
     <string name="settings_title">设置</string>
-    <string name="settings_provider_title">供应商</string>
-    <string name="settings_advanced_title">高级设置</string>
-    <string name="settings_timeout_label">超时</string>
-    <string name="settings_timeout_unit">秒</string>
-    <string name="settings_model_title">模型</string>
-    <string name="settings_model_none">未选择模型</string>
-    <string name="settings_timeout_needs_provider">先配置供应商</string>
     <string name="settings_opacity_label">透明度</string>
     <string name="settings_opacity_percent">%1$d%%</string>
-    <string name="settings_opacity_hint">只调整背景层的浓淡，正文保持全浓度可读；与面板收起的淡出动画互不影响</string>
-    <string name="settings_opacity_preview_sample">背景变淡时，这行字仍要读得清</string>
-    <string name="settings_provider_delete_confirm">删除「%1$s」？删除后不可恢复，需要重新填写全部配置</string>
 
     <!-- 使用概览页（页头 + 累计统计那一卡）。中文逐字照搬 Kotlin 里原来的那句，一个字没改；
          英文是后补的镜像。之前页名与五行统计标签是内联中文，英文环境下读屏念的是中文。 -->
-    <string name="usage_title">使用概览</string>
-    <string name="usage_cumulative_title">累计统计</string>
-    <string name="usage_generated_count">生成次数：%1$d</string>
-    <string name="usage_copied_count">复制次数：%1$d</string>
-    <string name="usage_adopted_count">采用次数：%1$d</string>
-    <string name="usage_rewritten_count">改写次数：%1$d</string>
-    <string name="usage_adopt_rate">采用率：%1$s</string>
 
     <!-- 关于页。页名那一格不在这里另开一份：与首页那颗入口、与那颗箭头的读屏名字共用
          上面已有的 a11y_home_about（同一句话抄两处迟早漂，同一笔账见反馈案例页那颗入口卡）。 -->
-    <string name="about_version">版本 v%1$s</string>
-    <string name="about_tagline">帮你更自然地表达</string>
-    <string name="about_privacy_title">隐私说明</string>
-    <string name="about_privacy_body">LoveBrain 在本地运行，聊天内容仅发送给你配置的 AI 模型供应商。\n知识库数据存储在本地设备，不上传到任何第三方服务器。</string>
-    <string name="about_diagnostics_title">诊断信息</string>
 
     <!-- 反馈案例页卡片里那几行（列表与展开态）与导出那一族的三种浮层。
          卡片尾部那一行的「未知模型」与四颗状态词原先住在 `statusDisplayName` 那种普通函数里，
          四把尺都看不见它们，可它们在屏幕上、在读屏里；这一族全部中英两份一起进。 -->
     <string name="feedback_card_header">【%1$s】 %2$s</string>
     <string name="feedback_user_note">补充：%1$s</string>
-    <string name="feedback_card_meta">%1$s · %2$s · %3$s</string>
-    <string name="feedback_unknown_model">未知模型</string>
     <string name="feedback_status_pending">待分析</string>
-    <string name="feedback_status_concluded">已有结论</string>
-    <string name="feedback_status_to_verify">待验证</string>
-    <string name="feedback_status_verified">已验证</string>
     <string name="feedback_better_version">期望版本：%1$s</string>
     <string name="feedback_idea_hint">本轮想法：%1$s</string>
     <string name="feedback_intent">意图：%1$s</string>
@@ -273,18 +209,7 @@
     <string name="feedback_app_version">版本：%1$s (%2$s)</string>
     <string name="feedback_token_usage">Token：prompt=%1$d, completion=%2$d</string>
     <!-- 导出预览那一族：三扇浮层的标题、动作词与那两句说明 -->
-    <string name="feedback_export_preview_title">导出预览</string>
-    <string name="feedback_export_failed_title">导出失败</string>
-    <string name="feedback_action_failed_title">操作失败</string>
-    <string name="feedback_export_save">保存</string>
-    <string name="feedback_export_share">分享</string>
-    <string name="feedback_export_copy">复制</string>
-    <string name="feedback_export_copied">✓ 已复制</string>
     <string name="feedback_close">关闭</string>
-    <string name="feedback_share_chooser">分享到</string>
-    <string name="feedback_no_share_app">没有可用的分享应用</string>
-    <string name="feedback_export_hint_copied">已复制到剪贴板，可粘贴到任何位置。</string>
-    <string name="feedback_export_hint_idle">点击「复制」复制到剪贴板，「分享」发送到其他应用，「保存」写入文件。</string>
     <string name="feedback_save_failed_no_stream">保存失败：无法打开输出流</string>
     <string name="feedback_save_failed">保存失败：%1$s</string>
     <string name="feedback_error_unknown">未知错误</string>

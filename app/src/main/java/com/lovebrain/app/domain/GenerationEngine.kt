@@ -15,7 +15,6 @@ import com.lovebrain.app.model.CounselingStarted
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.KnowledgeBase
-import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.ProactiveEvent
 import com.lovebrain.app.model.ProactiveFailed
 import com.lovebrain.app.model.ProactiveOption

@@ -98,7 +98,7 @@ private const val INTENT_MAX_LENGTH = 200
  *
  * 为什么这一族不能用 Material 的 `AlertDialog`：面板跑在 `TYPE_APPLICATION_OVERLAY` 窗口里，
  * 那里没有合适的 activity token，起 Dialog 窗口会直接抛 `WindowManager.BadTokenException`——
- * 那正是 `LbModalSheet` 存在的理由（见它文件头的 KDoc 与 `SheetProbeTest`）。
+ * 那正是 `LbModalSheet` 存在的理由（见它文件头的 KDoc 与 `SheetProbeTest`（已删））。
  * 归并之前这里已经站对了所有者，但**壳里还自己排了一遍版面**：标题、表单、两颗出口
  * 全摊在这颗浮层里，于是它既画浮层又管排版。现在壳只负责"起一扇浮层"，
  * 标题与表单交给 [IntentEditorBody]——与 `ProviderEditDialog` + `ProviderFormBody` 同一分工。

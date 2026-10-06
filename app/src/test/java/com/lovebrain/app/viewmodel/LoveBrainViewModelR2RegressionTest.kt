@@ -48,7 +48,7 @@ class LoveBrainViewModelR2RegressionTest {
         unmockkStatic(Log::class)
     }
 
-    /** 构造 LoveBrainViewModel：init 读取面显式桩（同 DraftPersistTest 先例） */
+    /** 构造 LoveBrainViewModel：init 读取面显式桩（同 DraftPersistTest（已删） 先例） */
     private fun newViewModel(
         engine: GenerationEngine = mockk(relaxed = true),
         knowledgeRepo: KnowledgeRepository = mockk(relaxed = true)

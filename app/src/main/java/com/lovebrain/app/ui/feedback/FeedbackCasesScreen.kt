@@ -52,7 +52,6 @@ import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.core.designsystem.Spacing
-import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.SurfaceInset
 import com.lovebrain.app.core.designsystem.TextHint
 import com.lovebrain.app.core.designsystem.TextPrimary
@@ -68,7 +67,7 @@ import kotlinx.coroutines.launch
  *
  * ## 这一页的外观从哪儿来
  *
- * **抄知识库一级页那张卡的布局语法，不抄它的内容。**母版那一套（`KnowledgeBaseActivity.kt:392-490`）
+ * **抄知识库一级页那张卡的布局语法，不抄它的内容。**母版那一套（`KnowledgeBaseActivity.kt`）
  * 是"白卡 + 一行 `titleMedium` SemiBold 单行标题 + 一行 `labelSmall` 元信息 + 行内 `RowCapsule` 动作"，
  * 今天这一页全部走同一颗公共件 `core/designsystem/LbListCard.kt` 拿：卡底、字阶、行数上限、
  * 动作写法与槽位间距都由那一颗持有，这一层只交内容（首句 / 余文 / 时间 / 展开层）。

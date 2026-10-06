@@ -45,7 +45,7 @@ import org.robolectric.annotation.GraphicsMode
  *
  * 这批判据一律读几何、不读"字符串等不等"。本仓库在这儿栽过：文本挂上
  * `maxLines = 1 + overflow = Ellipsis` 之后，语义树**照样把完整原串报回来**，
- * 于是"串没变"看着就像"没被裁"，判据一点牙都没有（见 `UsageExtremeValuesSemanticsTest`
+ * 于是"串没变"看着就像"没被裁"，判据一点牙都没有（见 `UsageExtremeValuesSemanticsTest`（已删）
  * 与 `EmptyStateOwnershipSemanticsTest` 里为同一件事被逼出来的自然宽控制组）。
  * 所以每一栏都同时挂一份**控制组**：同一颗组件、同一格字号、套在 `requiredWidth(2400dp)` 里，
  * 它必然只排一行——用它量出"一行该多高""每一格自然该多宽"，再拿这把尺量被测那一颗。

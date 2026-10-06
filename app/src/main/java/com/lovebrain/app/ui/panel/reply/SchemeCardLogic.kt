@@ -1,6 +1,5 @@
 package com.lovebrain.app.ui.panel.reply
 
-import com.lovebrain.app.model.RewriteState
 
 /**
  * 从 SchemeCard 抽离的纯机制逻辑——可测试，不依赖 Composable。

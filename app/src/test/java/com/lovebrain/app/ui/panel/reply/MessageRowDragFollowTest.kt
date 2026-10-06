@@ -17,7 +17,7 @@ import java.io.File
  *    逐帧成立。上一版"拖到一半弹回去"缺的就是这笔补偿，那一格正是它的反例。
  * ② 结构那一半只能证明"那一族坏写法没有回来"，它**证明不了手指真的跟上了**：
  *    本机这台仪器注入长按 + 连续拖动的时序判不稳（同一件事见 `MessageRowSwipeDeleteTest`
- *    与 `ReplyGenerateLongPressLayerTest` 开头各自的记录），所以这里刻意不写一条
+ *    与 `ReplyGenerateLongPressLayerTest`（已收档） 开头各自的记录），所以这里刻意不写一条
  *    永远绿不起来的时序格子冒充证据。跟手感本身归真机录屏验收。
  */
 class MessageRowDragFollowTest {

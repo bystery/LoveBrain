@@ -54,7 +54,7 @@ class TopicRecorder(
     /**
      * 时间从端口来，不在这里 `TimeFmt.now()`：轮次块头 `- [yyyy-MM-dd HH:mm]`
      * 和场景时间戳是**写进知识库正文的内容**，不是日志。有了可注入的时钟，
-     * "这一轮落进 recent.md 的块头到底是什么"才能被钉住断言（见 TopicRecorderClockTest）。
+     * "这一轮落进 recent.md 的块头到底是什么"才能被钉住断言（见 TopicRecorderClockTest（已删））。
      */
     private val clock: Clock = SystemClock
 ) {

@@ -9,13 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.core.designsystem.Primary
@@ -36,7 +33,6 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import java.io.File
-import kotlin.math.abs
 
 /**
  * 第6节第5条 第⑤栏「浅色/深色；不支持深色就明确锁浅色」的**锁**（复核账本 :155 那一行下的判语是
@@ -55,7 +51,7 @@ import kotlin.math.abs
  * 三格判的是同一句话的三个层次，任何一层读不到数都抛，不静默。
  *
  * 关于 ③④⑤ 的 `@Config`：类级那一串是**照抄** `PanelHeaderSemanticsTest` /
- * `UsageExtremeValuesSemanticsTest` 的（同一台仪器、同一个 600dp 窗口，不另起炉灶），
+ * `UsageExtremeValuesSemanticsTest`（已删） 的（同一台仪器、同一个 600dp 窗口，不另起炉灶），
  * 只在夜档那三格多带一个 `-night` 词——这一档要的前提就是"系统在要求深色"。
  * 不用 `CompositionLocalProvider(LocalConfiguration …)` 自己伪造：那等于测试把答案喂进去，
  * 生产真去读系统配置时反而没人判。

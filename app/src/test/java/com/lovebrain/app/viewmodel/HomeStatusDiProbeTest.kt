@@ -100,7 +100,7 @@ class HomeStatusDiProbeTest {
         /**
          * 那颗 Main 委托**整类装一次**，用不排队的 `Dispatchers.Unconfined`，而不是每格
          * `setMain(UnconfinedTestDispatcher()) / resetMain()`。这不是口味差异，是修
-         * `the probe uses the stored key…` 那格的 `UncaughtExceptionsBeforeTest`：
+         * `the probe uses the stored key…` 那格的 `UncaughtExceptionsBeforeTest`（已删）：
          * 污染源就是本文件前一格 `the container builds…`——它把 VM 接进**真**容器，
          * `returnedFromSubpage` 的那次本地重读是 `viewModelScope.launch`，挂在仓库的
          * `withContext(Dispatchers.IO)` 上；runTest 的调度器等不到真 IO 线程上那一跳回交，

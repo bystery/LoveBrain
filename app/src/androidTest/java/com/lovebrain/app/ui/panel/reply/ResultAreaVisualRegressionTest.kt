@@ -7,7 +7,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToIndex
 import com.lovebrain.app.model.GenerateResult
-import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.testing.MainChainHarness
 import org.junit.Assert.assertTrue

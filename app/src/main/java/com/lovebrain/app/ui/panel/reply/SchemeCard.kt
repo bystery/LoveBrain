@@ -9,9 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,29 +17,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lovebrain.app.R
 import com.lovebrain.app.model.RewriteCommand
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.model.SchemeIdentity
-import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
-import kotlinx.coroutines.launch
 
 /**
  * 方案卡尺寸常量（骨架屏共用；公共对象供同包 ResultArea 引用）。

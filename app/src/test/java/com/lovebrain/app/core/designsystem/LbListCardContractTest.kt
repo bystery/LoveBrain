@@ -27,7 +27,7 @@ import java.io.File
  * | 动作行只 call `LbTextAction`、且是 `RowCapsule` 档 | 页面/组件里再画一颗 `Box + clickable`（第四种动作写法） |
  * | 案例页不再自绘卡底 | `FeedbackCasesScreen.kt` 里又出现裸 `Card(` 或 `shadow(` |
  * | 母版页（知识库一级）也不再自绘卡底 | `KnowledgeBaseActivity.kt` 里复活旧母版的 `Card(` / `shadow(` / 三种自绘动作写法（改名透明盒、`Box+clickable`、`RowActionButton`）、或页面自己抄 `｜` |
- * | 全站那颗 48 不抄第二份 | 这一族里写 `48.dp` 字面量（`TouchFloorSingleOwnerTest` 同样会红，这里先在本族门口挡住） |
+ * | 全站那颗 48 不抄第二份 | 这一族里写 `48.dp` 字面量（`TouchFloorSingleOwnerTest`（已删）同样会红，这里先在本族门口挡住） |
  *
  * ⚠ 每一格都带**反向证人**：判据自己必须看得见坏形状，否则"数到 0"就是恒绿的假闸
  * （`SourceScanTest` 那几格是这把尺本人的证人，这一格再加一条本族专用的注件）。
@@ -151,7 +151,7 @@ class LbListCardContractTest {
         )
     }
 
-    /** 48 那颗全站下限在本族里只许是被读，不被抄（`TouchFloorSingleOwnerTest` 在本族门口先挡一层） */
+    /** 48 那颗全站下限在本族里只许是被读，不被抄（`TouchFloorSingleOwnerTest`（已删）在本族门口先挡一层） */
     @Test
     fun `the list card family writes no second copy of the site floor`() {
         listOf("core/designsystem/LbListCard.kt" to listCardCode, "ui/feedback/FeedbackCasesScreen.kt" to casesCode)

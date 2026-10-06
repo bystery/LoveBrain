@@ -11,7 +11,6 @@ import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.GenerationInput
-import com.lovebrain.app.model.ReplyCompleted
 import com.lovebrain.app.model.ReplyFailureKind
 import com.lovebrain.app.model.ReplyRequestState
 import com.lovebrain.app.model.ReplyStarted

@@ -10,7 +10,6 @@ import androidx.compose.ui.semantics.getOrNull
 // `androidx/compose/ui/state/ToggleableState.class`，`ui/semantics/` 下没有这一颗；
 // `SemanticsProperties.ToggleableState` 那颗键的值类型也是它——不是猜的路径）。
 import androidx.compose.ui.state.ToggleableState
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText

@@ -22,15 +22,15 @@ import org.junit.Test
  * [SettingsStorePort] 的合同：谁实现偏好/凭据存储，谁就必须给出同样的可观察行为。
  *
  * 沿用仓库既有合同打法（[AiGatewayContract] / [KbArchivePortContract]）——同一批格子对
- * **生产侧**（[ProductionSettingsStoreContractTest]：真 [SecurePrefs]，只是把底层的
+ * **生产侧**（[ProductionSettingsStoreContractTest]（已删）：真 [SecurePrefs]，只是把底层的
  * EncryptedSharedPreferences 换成一份 JVM 可跑的 [FakeSharedPreferences]，其余判据一字不改）
- * 与 **fake 侧**（[InMemorySettingsStoreContractTest]：纯内存 [InMemorySettingsStore]）各跑一遍。
+ * 与 **fake 侧**（[InMemorySettingsStoreContractTest]（已删）：纯内存 [InMemorySettingsStore]）各跑一遍。
  * 于是"内存 fake 有没有把越界钳制、空态默认、同名清理这些做对"第一次变成可被同一份合同咬住的事。
  *
  * CAP4（2026-10-06）一处合同公开重写：`抓取开关默认开` 那格改钉 fail-closed——旧默认被用户原话
  * 否决（隐私能力不许默认开），按 TEAM_RULES §1 记在这里而不是静默改。开关的**一次性归一**是
  * 生产侧构造期行为，fake 没有"盘上键存不存在"这一层，因此单独由
- * [SecurePrefsCaptureEnabledReconciliationTest] 钉在生产侧，不塞进合同抽象类逼 fake 演第二本账。
+ * [SecurePrefsCaptureEnabledReconciliationTest]（已删） 钉在生产侧，不塞进合同抽象类逼 fake 演第二本账。
  */
 abstract class SettingsStorePortContract {
 
@@ -56,7 +56,7 @@ abstract class SettingsStorePortContract {
         // CAP4（2026-10-06）：这一格旧版钉的是"抓取开关默认开"，那条已被用户原话
         // （"现在你的默认刚打开，你的开关就是拨开的"）否决——隐私能力不许默认开。
         // 按 TEAM_RULES §1 依新形状重写，不删格；老安装升级不断捕获归构造期一次性归一管
-        // （`SecurePrefsCaptureEnabledReconciliationTest` 那一族），不靠这颗默认值兜。
+        // （`SecurePrefsCaptureEnabledReconciliationTest`（已删） 那一族），不靠这颗默认值兜。
         assertFalse("没写过这颗键 = 用户从没要过捕获 ⇒ 读出来必须是关（fail-closed）", s.captureEnabled)
         assertEquals(emptyList<ProviderTicket>(), s.getWorkerTickets())
         assertEquals(emptySet<String>(), s.captureAllowedPackages)
@@ -280,7 +280,7 @@ class InMemorySettingsStore : SettingsStorePort {
     // 介绍层第几格：默认 0；钳制归 `SetupViewModel`，fake 这里同样不做第二套（合同测的口径 = 存什么读什么）
     override var introStep: Int = 0
     // CAP4（2026-10-06）：抓取开关默认与生产同形——fail-closed，没写过 = 关。
-    // 一次性归一是生产侧构造期行为（`SecurePrefsCaptureEnabledReconciliationTest` 钉），
+    // 一次性归一是生产侧构造期行为（`SecurePrefsCaptureEnabledReconciliationTest`（已删） 钉），
     // fake 没有"盘上键存不存在"这一层，合同两侧同形的部分只有：默认关 + 显式写入原样读回。
     override var captureEnabled: Boolean = false
     override var accessibilityDisclosureVersion: Int = 0

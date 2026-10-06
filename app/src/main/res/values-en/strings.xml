@@ -9,8 +9,6 @@
     <string name="panel_save_to_kb">Save to knowledge base</string>
     <string name="panel_stop">Stop</string>
     <string name="kb_edit_editor_hint">Edit %1$s</string>
-    <string name="feedback_note_label">Additional note (optional)</string>
-    <string name="feedback_better_label">How would you reply? (optional)</string>
     <string name="scheme_custom_hint">Custom rewrite instruction</string>
     <string name="memory_wrong_input_hint">Enter the correct content (optional; blank only mutes it)</string>
     <string name="panel_collapse">Collapse panel</string>
@@ -28,7 +26,6 @@
     <string name="provider_open_settings">Open settings</string>
     <string name="hint_saved">Saved</string>
     <string name="hint_conflict_kept_draft">The file changed in the background. Your draft was kept - reopen it to compare.</string>
-    <string name="hint_conflict_reopen">The file changed in the background. Please reopen it.</string>
     <string name="hint_save_failed">Save failed, please retry</string>
     <string name="kb_edit_empty_hint">Nothing here yet - tap Edit at the top right to add</string>
     <string name="kb_edit_read_failed">These files could not be read. Please retry.</string>
@@ -42,29 +39,13 @@
     <string name="state_collapsed">Collapsed</string>
     <string name="feedback_retry">Retry</string>
     <string name="feedback_empty_hint">No disliked cases yet. Downvoting a reply records one here automatically.</string>
-    <string name="proactive_empty_hint">Type what you want to say, then tap \"Generate opener\" below for something to talk about</string>
     <string name="error_provider_missing">Configure an available model provider first</string>
-    <string name="error_auth">API key is invalid or expired, please check settings</string>
-    <string name="error_network">Network request failed, check your connection and retry</string>
-    <string name="error_timeout">Request timed out, please retry</string>
     <!-- Issue #5 / audit  : per-provider generation timeout tier (bounded 60/120/180/300, default 120) -->
     <string name="provider_timeout_title">Generation timeout (advanced)</string>
-    <string name="provider_timeout_hint">Raise the wait for slow compatible providers; only the reply read timeout grows, the connect timeout stays fixed</string>
     <string name="provider_timeout_tier_label">%1$d s</string>
-    <string name="error_rate_limited">Too many requests, please try again later</string>
-    <string name="error_prompt_read">Failed to read configuration, please retry</string>
-    <string name="error_parse">Failed to parse the reply, please retry</string>
-    <string name="error_storage">Failed to save data, please retry</string>
-    <string name="error_param_unsupported">This model does not support the current thinking mode; all fallbacks were tried</string>
-    <string name="error_unknown">Generation failed, please retry</string>
     <string name="a11y_close_onboarding">Dismiss tip</string>
     <string name="a11y_close_notice">Dismiss notice</string>
     <string name="onboarding_title">How this works</string>
-    <string name="onboarding_body">Add the conversation -&gt; Generate reply -&gt; Review the options
-Tap an option to reword it
-A thumbs down records why, and can be exported for review
-The header shows today / session / total spend and generation count
-Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</string>
     <!-- : cumulative cost tells apart "known" / "under a cent" / "nothing priceable at all". %1$s = the currency sign each screen uses -->
     <string name="cost_stated_label">Costs counted</string>
     <string name="cost_stated_row">Costs counted: %1$s</string>
@@ -79,13 +60,10 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="capture_apps_intro">Only the apps you select are captured.</string>
     <string name="capture_apps_none_to_authorize">This device lists no launchable apps, so there is nothing to allow yet.</string>
     <string name="capture_apps_scan_failed">Couldn\'t read the installed apps. Please retry.</string>
-    <string name="capture_apps_row_subtitle">%1$d app(s) allowed</string>
     <string name="capture_apps_row_subtitle_none">No app selected · nothing is captured</string>
-    <string name="capture_apps_blocked">Payment, banking, password-manager and browser apps cannot be allowed</string>
     <string name="capture_apps_allow">Allow capture</string>
     <string name="capture_apps_search">Search apps</string>
     <string name="capture_apps_no_results">No matching apps</string>
-    <string name="capture_apps_back">Back to settings</string>
     <string name="common_back">Back</string>
     <string name="panel_analysing_with_seconds">%1$s · %2$ds, tap to stop</string>
     <string name="panel_mode_reply">Reply</string>
@@ -95,21 +73,11 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="panel_result_menu">More actions</string>
     <string name="panel_input_changed">You changed the input — this answer was written from the earlier text</string>
     <string name="panel_regenerate_with_new_input">Regenerate with the new input</string>
-    <string name="panel_expand">Expand</string>
-    <string name="panel_dislike">Thumbs down</string>
-    <string name="panel_like">Thumbs up</string>
     <string name="panel_copy">Copy</string>
-    <string name="panel_send">Send</string>
-    <string name="panel_saved_to_kb">Saved to knowledge base</string>
-    <string name="panel_scheme_label_recommend">Recommended</string>
-    <string name="panel_scheme_label_calm">Level-headed</string>
-    <string name="panel_scheme_label_playful">Playful</string>
-    <string name="panel_scheme_label_warm">Warm</string>
     <string name="home_capture_status_on">On · long-press a message to capture it</string>
     <string name="home_capture_status_off">Off · tap to enable</string>
     <string name="home_capture_no_permission">Accessibility permission not granted yet</string>
     <string name="home_grant_accessibility">Grant</string>
-    <string name="home_manage">Manage</string>
     <string name="home_off">Off</string>
     <string name="home_on">On</string>
     <string name="status_running">Running</string>
@@ -118,14 +86,7 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="status_no_permission">No permission</string>
     <string name="status_window_missing">Window missing</string>
     <string name="status_hidden_desc">Advisor is hidden for now — tap to bring it back</string>
-    <string name="home_desc_need_overlay">Overlay permission is required before the advisor can show a bubble</string>
     <string name="home_desc_not_started">Tap to start the advisor overlay</string>
-    <string name="home_desc_running">Advisor is running — long-press a message to capture it</string>
-    <string name="home_desc_window_missing">The service is alive but no window appeared. Tap Open advisor to bring up the panel directly</string>
-    <string name="home_btn_grant_overlay">Grant overlay</string>
-    <string name="home_btn_start">Start advisor</string>
-    <string name="home_btn_restore">Restore advisor</string>
-    <string name="home_btn_open">Open advisor</string>
     <string name="panel_phase_analysing">Reading the conversation</string>
     <string name="panel_phase_drafting">Drafting replies</string>
     <string name="panel_phase_deep_analysing">Thinking it through</string>
@@ -151,13 +112,11 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="feedback_category_other">Other</string>
     <string name="feedback_format_markdown">Markdown</string>
     <string name="feedback_format_json">JSON</string>
-    <string name="feedback_format_selected">✓ %1$s</string>
 
     <!-- 与 values/strings.xml 同一族：图标型动作的读屏名字。英文环境里 TalkBack 念的就是这一栏，
          所以每一条都必须真的翻——留中文等于"没翻"，而屏幕上根本看不出来。
          「Like / Dislike」对应中文那两条的短标签（屏幕上只有拇指字形）。 -->
     <string name="a11y_home_about">About</string>
-    <string name="a11y_home_hide_bubble">Hide the overlay for now</string>
     <string name="a11y_delete_message">Delete message</string>
     <string name="a11y_message_her">Her message</string>
     <string name="a11y_message_me">My message</string>
@@ -187,49 +146,22 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
          capture scope. Plain text labels only; values and saving still come from the one
          configuration source the home screen uses. -->
     <string name="settings_title">Settings</string>
-    <string name="settings_provider_title">Provider</string>
-    <string name="settings_advanced_title">Advanced</string>
-    <string name="settings_timeout_label">Timeout</string>
-    <string name="settings_timeout_unit">s</string>
-    <string name="settings_model_title">Model</string>
-    <string name="settings_model_none">No model selected</string>
-    <string name="settings_timeout_needs_provider">Set up a provider first</string>
     <string name="settings_opacity_label">Opacity</string>
     <string name="settings_opacity_percent">%1$d%%</string>
-    <string name="settings_opacity_hint">Only the background layer fades; text keeps full contrast. Independent of the panel fade-out animation</string>
-    <string name="settings_opacity_preview_sample">This line must stay readable as the background fades</string>
-    <string name="settings_provider_delete_confirm">Delete \u201c%1$s\u201d? This cannot be undone and the whole configuration has to be entered again</string>
 
     <!-- Usage overview page (page title + the cumulative stats card). Mirrors the keys added to
          values/strings.xml; the Chinese side is copied verbatim from what used to be inline
          literals in Kotlin, so the wording here is the new half. -->
-    <string name="usage_title">Usage overview</string>
-    <string name="usage_cumulative_title">Cumulative stats</string>
-    <string name="usage_generated_count">Replies generated: %1$d</string>
-    <string name="usage_copied_count">Copies: %1$d</string>
-    <string name="usage_adopted_count">Adopted: %1$d</string>
-    <string name="usage_rewritten_count">Rewrites: %1$d</string>
-    <string name="usage_adopt_rate">Adoption rate: %1$s</string>
 
     <!-- About page. Its title reuses the existing a11y_home_about key (the home entry row and the
          icon-only back action already announce that word) instead of adding a third copy. -->
-    <string name="about_version">Version v%1$s</string>
-    <string name="about_tagline">Say it more naturally</string>
-    <string name="about_privacy_title">Privacy</string>
-    <string name="about_privacy_body">LoveBrain runs on your device. Chat content is only sent to the AI model provider you configure.\nKnowledge base data is stored locally and never uploaded to any third-party server.</string>
-    <string name="about_diagnostics_title">Diagnostics</string>
 
     <!-- Feedback cases page: the rows inside a card (collapsed and expanded) and the three
          overlays around exporting. The status words and "Unknown model" used to live in a plain
          function, out of reach of every literal ruler, yet they are on screen and spoken. -->
     <string name="feedback_card_header">[%1$s] %2$s</string>
     <string name="feedback_user_note">Note: %1$s</string>
-    <string name="feedback_card_meta">%1$s · %2$s · %3$s</string>
-    <string name="feedback_unknown_model">Unknown model</string>
     <string name="feedback_status_pending">Pending analysis</string>
-    <string name="feedback_status_concluded">Has a conclusion</string>
-    <string name="feedback_status_to_verify">To verify</string>
-    <string name="feedback_status_verified">Verified</string>
     <string name="feedback_better_version">Version you preferred: %1$s</string>
     <string name="feedback_idea_hint">Idea for this round: %1$s</string>
     <string name="feedback_intent">Intent: %1$s</string>
@@ -243,18 +175,7 @@ Stuck? Switch to \"Talk it through\" for a neutral reading of the situation</str
     <string name="feedback_app_version">Version: %1$s (%2$s)</string>
     <string name="feedback_token_usage">Tokens: prompt=%1$d, completion=%2$d</string>
     <!-- The export preview family: titles, action words and the two hint lines -->
-    <string name="feedback_export_preview_title">Export preview</string>
-    <string name="feedback_export_failed_title">Export failed</string>
-    <string name="feedback_action_failed_title">Action failed</string>
-    <string name="feedback_export_save">Save</string>
-    <string name="feedback_export_share">Share</string>
-    <string name="feedback_export_copy">Copy</string>
-    <string name="feedback_export_copied">✓ Copied</string>
     <string name="feedback_close">Close</string>
-    <string name="feedback_share_chooser">Share to</string>
-    <string name="feedback_no_share_app">No app is available for sharing</string>
-    <string name="feedback_export_hint_copied">Copied to the clipboard - paste it anywhere.</string>
-    <string name="feedback_export_hint_idle">Tap Copy to put it on the clipboard, Share to send it to another app, or Save to write it to a file.</string>
     <string name="feedback_save_failed_no_stream">Save failed: the output stream could not be opened</string>
     <string name="feedback_save_failed">Save failed: %1$s</string>
     <string name="feedback_error_unknown">Unknown error</string>

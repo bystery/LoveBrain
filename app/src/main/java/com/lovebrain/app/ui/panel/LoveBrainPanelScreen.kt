@@ -1,10 +1,5 @@
 package com.lovebrain.app.ui.panel
 
-import com.lovebrain.app.core.designsystem.rememberPressScale
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,7 +7,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -29,7 +23,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,7 +36,6 @@ import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.ProactiveOption
-import com.lovebrain.app.model.SchemeFeedback
 import kotlinx.coroutines.delay
 import com.lovebrain.app.ui.panel.counseling.CounselingPanel
 import com.lovebrain.app.ui.panel.host.ProfileSuggestionCard
@@ -58,7 +50,6 @@ import com.lovebrain.app.viewmodel.LoveBrainViewModel
 import com.lovebrain.app.viewmodel.costReadout
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.ResultMode
-import com.lovebrain.app.model.StageSuggestion
 
 /** 面板数值串那半角货币符号（首页/详情页是全角 `￥`，两边各有守卫钉着，本轮不并——账本 第61节第4条） */
 private const val PANEL_COST_CURRENCY = "¥"
@@ -89,9 +80,7 @@ private object PanelDimens {
     const val MESSAGE_LIST_EMPTY_HEIGHT_DP = 120
     const val MESSAGE_LIST_MIN_HEIGHT_DP = 80
     const val MESSAGE_LIST_MAX_HEIGHT_DP = 400
-    const val TRIO_HEIGHT_DP = 40
     const val TOUCH_TARGET_MIN_DP = AppDimens.TOUCH_TARGET_MIN_DP  // 从 24dp 修正为无障碍下限；数只写在全局那颗
-    const val GENERATE_BUTTON_GAP_DP = 8
 }
 
 private val OnboardGuideLineHeight = 20.sp
@@ -353,31 +342,10 @@ fun LoveBrainPanelScreen(
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border.copy(alpha = 0.5f), LoveBrainShape.xl)
                 .padding(horizontal = Spacing.xl, vertical = Spacing.lg)
         ) {
-            // 齿轮那一扇：整窗内容换成设置页。
-            // 会话、输入、卡片展开态与通知位上那条表都**不在这两支里**——它们住在这一 Column
-            // 之外声明的那颗 ViewModel 与那批 holder 上，所以"切去设置页"既不清空会话、
-            // 也不取消已经发出的请求；返回时恢复的就是离开前的那一面（含未提交的输入）。
-            if (surface.settingsOpen) {
-                // 原话第 17 条：「切进设置页之后窗口拖不动」。`DragHandle` 原先只长在
-                // `else` 那一支（和统计条共用页头上面那 4dp 那一档），齿轮一开整排被换掉
-                // ⇒ 抓手没了。这一支现在也挂同一颗抓手（同一个所有者、同一个组件，
-                // 只是两处各挂一次；不搬外层的 `Box(height(Spacing.sm))` 那一档，
-                // 因为主面那一档还带着 `UsageStatBar` 的溢出绘制，搬走会连主面的版式一起改）。
-                // 「收不起窗」那一半归设置页自己的紧凑页头（`ui/panel/settings/`，另席地盘，
-                // 已写进接线单），这一层不替它画第二颗关闭钮。
-                Box(modifier = Modifier.fillMaxWidth().height(Spacing.sm)) {
-                    DragHandle(onMove = onMove)
-                }
-                PanelSettingsPage(
-                    viewModel = viewModel,
-                    surface = surface,
-                    onBack = { surface.closeSettings() },
-                    // 收起仍走宿主那一条唯一出口（与主面页头那颗同一个 `dismissPanelToBubble`），
-                    // 设置页里这一颗只是同一个动作的第二个入口，不另存"收起了没有"第二本账。
-                    onCollapse = onCollapse,
-                    modifier = Modifier.fillMaxWidth().weight(1f)
-                )
-            } else {
+            // H2（2026-10-06）：原来这里是 `if (settingsOpen) { 设置页 } else { 主面 }`——整棵主面树被换掉。
+            // 现在主面永远在树上，设置页改为盖一层（见 Column 之外那扇 overlay）。
+            // 会话、输入、卡片展开态本就住在 ViewModel 与 holder 上，主面不卸树 ≠ 多保留什么，
+            // 只是主面那些 remember 与收集流不再因切设置页被丢回重建。
                 Box(modifier = Modifier.fillMaxWidth().height(Spacing.sm)) {
                     DragHandle(onMove = onMove)
                     // 顶部使用统计：**永远只占一行**。每一格是"标签＋值"合并成的**一段** Text
@@ -823,8 +791,32 @@ fun LoveBrainPanelScreen(
                 }
                 }
                 }
-            }
         }
+
+    // H2（2026-10-06）：设置页改为盖一层（overlay），不再与主面互斥换树。
+    // 主面那些 remember 与收集流不再因切设置页被丢回重建——会话、输入、卡片展开态
+    // 本就住在 ViewModel 与 holder 上，盖一层只是让它们在树里不被拆掉。
+    if (surface.settingsOpen) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(LoveBrainShape.xl)
+                .background(SurfaceBase.copy(alpha = PanelBackdropOpacity.alphaOf(surface.backdropPercent)))
+                .border(AppDimens.BORDER_WIDTH_DP.dp, Border.copy(alpha = 0.5f), LoveBrainShape.xl)
+                .padding(horizontal = Spacing.xl, vertical = Spacing.lg)
+        ) {
+            Box(modifier = Modifier.fillMaxWidth().height(Spacing.sm)) {
+                DragHandle(onMove = onMove)
+            }
+            PanelSettingsPage(
+                viewModel = viewModel,
+                surface = surface,
+                onBack = { surface.closeSettings() },
+                onCollapse = onCollapse,
+                modifier = Modifier.fillMaxWidth().weight(1f)
+            )
+        }
+    }
 
     // ：点踩原因面板整块摘除（宿主 `DislikeReasonHost`/`DislikeReasonPanel` 已删，原件在 git `67dca22`）。
     // 保存链保留：`viewModel.setFeedback(...)` 那一句仍会建案例并落盘，空原因合法，

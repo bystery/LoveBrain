@@ -1,17 +1,14 @@
 package com.lovebrain.app.ui.panel.reply
 
 import androidx.compose.ui.test.assertCountEquals
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import com.lovebrain.app.core.designsystem.LbTags
@@ -51,7 +48,7 @@ class ReplyPrimaryActionsTest {
 
     /**
      * 生成中 LOADING 条的真实文案。
-     * 生产 GenerationActionButton.kt:105-115 渲染 "$phase · ${elapsedSec}s  点击停止"，
+     * 生产 GeneratingLabel.kt 渲染 "$phase · ${elapsedSec}s  点击停止"，
      * phase 随秒数切换（分析对话/生成方案/深度分析），所以：
      * Compose 1.6.8 的 ui-test 没有 Regex 版 finder，先用恒定后缀「点击停止」定位节点，
      * 再取该节点 semantics 文本做整串正则校验（既不写死秒数，也不放过文案漂移）。

@@ -3,7 +3,6 @@ package com.lovebrain.app.data
 import android.content.Context
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
-import com.lovebrain.app.model.KnowledgeSchemaVersion
 import com.lovebrain.app.domain.port.KnowledgeDocumentPort
 import com.lovebrain.app.domain.port.KnowledgePort
 import com.lovebrain.app.domain.port.KnowledgeRuntimePort
@@ -19,15 +18,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.io.FileOutputStream
-import java.security.MessageDigest
 import java.util.concurrent.atomic.AtomicLong
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
  * 知识库仓储 v3：基于「懂得/此刻/记忆」三层架构。

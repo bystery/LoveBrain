@@ -56,7 +56,7 @@ class LoveBrainViewModelIdeaHintTest {
         unmockkStatic(Log::class)
     }
 
-    /** 构造 LoveBrainViewModel：init 读取面显式桩（同 R2RegressionTest/R5RegressionTest 先例） */
+    /** 构造 LoveBrainViewModel：init 读取面显式桩（同 R2RegressionTest（已删）/R5RegressionTest（已删） 先例） */
     private fun newViewModel(): LoveBrainViewModel {
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0

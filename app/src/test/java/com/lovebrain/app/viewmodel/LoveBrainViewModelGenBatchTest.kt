@@ -107,7 +107,7 @@ class LoveBrainViewModelGenBatchTest {
         return p
     }
 
-    /** 构造 LoveBrainViewModel：init 读取面显式桩（同 R5RegressionTest 先例） */
+    /** 构造 LoveBrainViewModel：init 读取面显式桩（同 R5RegressionTest（已删） 先例） */
     private fun newViewModel(): LoveBrainViewModel {
         prefs = newPrefs()
         topicRecorder = mockk(relaxed = true)

@@ -2,7 +2,6 @@ package com.lovebrain.app.data
 
 import android.content.Context
 import com.lovebrain.app.model.KnowledgeBase
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

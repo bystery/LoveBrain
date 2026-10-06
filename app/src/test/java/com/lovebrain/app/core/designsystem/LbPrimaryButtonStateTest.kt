@@ -87,7 +87,7 @@ class LbPrimaryButtonStateTest {
     /**
      * 与 [mountPrimary] 同形，但**调用方不再往这颗按钮身上贴自己的 tag**。
      *
-     * 实到证据（`ZzStopTagProbeTest` 探针 dump 出来的语义树）：同一个节点上出现两个
+     * 实到证据（`ZzStopTagProbeTest`（已删）探针 dump 出来的语义树）：同一个节点上出现两个
      * `Modifier.testTag` 时，**外面那个（调用方的）赢**——组件自己贴的
      * `LbTags.PRIMARY_STOP` 直接消失，合并树和未合并树都查不到。
      * 生产里浮层这条链（`LoveBrainPanelScreen.kt:428` → `ReplyPrimaryActions.kt:54+`）

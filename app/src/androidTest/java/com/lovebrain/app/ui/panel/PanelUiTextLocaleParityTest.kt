@@ -2,7 +2,6 @@ package com.lovebrain.app.ui.panel
 
 import com.lovebrain.app.R
 import com.lovebrain.app.testing.UiText
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith

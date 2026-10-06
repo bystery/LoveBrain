@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
  *
  * ## 它替代的是什么
  *
- * 母版是知识库一级页那张卡（`ui/KnowledgeBaseActivity.kt:392-490`）：白卡 + 一行标题
+ * 母版是知识库一级页那张卡（`ui/KnowledgeBaseActivity.kt`）：白卡 + 一行标题
  * （`titleMedium` SemiBold 单行）+ 一行 `labelSmall` 元信息 + 行内 `RowActionButton`。
  * 那张卡今天**住在页面里**（异形账本 `KnowledgeBaseActivity.kt#KbCard`，母版本轮只读），
  * 于是每一页想复用它的版式就得再抄一遍壳——已踩案例页就是抄第二遍的那一处
@@ -99,7 +99,7 @@ private object LbListCardDimens {
  * 元信息那一行的分隔符。
  *
  * 它是**标点**，不是文案（不进 `res/`，也不是要翻译的那句话），所以由设计系统持有、全仓只写这一次。
- * 两边各留一个空格是抄母版的读法（`KnowledgeBaseActivity.kt:481`「阶段：X ｜ 已对话 N 轮」），
+ * 两边各留一个空格是抄母版的读法（`KnowledgeBaseActivity.kt`「阶段：X ｜ 已对话 N 轮」），
  * 不是这一颗自己新选的档。
  */
 private const val META_SEPARATOR = " ｜ "
@@ -266,7 +266,7 @@ fun LbListCard(
                     horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
                     modifier = Modifier.fillMaxWidth().testTag(LbListCardTags.ACTION_ROW)
                 ) {
-                    // 母版的读法：元信息占余宽、动作贴尾部（KnowledgeBaseActivity.kt:479-490）。
+                    // 母版的读法：元信息占余宽、动作贴尾部（KnowledgeBaseActivity.kt）。
                     // 这一行没有第二颗"主按钮"——基线 §3.5：同一排只允许一颗。
                     Box(modifier = Modifier.weight(1f))
                     actions.take(LbListCardDimens.MAX_ACTION_SLOTS).forEach { action ->
@@ -289,5 +289,3 @@ fun LbListCard(
     }
 }
 
-/** 这一族用到的 Dp 出口（私有尺寸只读得出这一档，页面拿不到自由 Dp 旋钮） */
-internal val LbListCardStatusDotSize: Dp = LbListCardDimens.STATUS_DOT_DP.dp

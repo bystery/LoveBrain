@@ -27,7 +27,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -145,7 +144,7 @@ private const val DEFAULT_KB_FILE_PATH = "moment/recent.md"
  * 为什么单独抽出来判：旧写法是 `files.first { it.path == "moment/recent.md" }`——
  * 那句在名单里没有「最近两句」时**直接抛**（`NoSuchElementException`），而名单是页面常量，
  * 少一格是随时可能发生的事（这一轮就真的少了一格）。抽成纯函数之后这一格可以用
- * [KbFileInitialSelectionTest] 穷举，不必把 Activity 拖进来。
+ * [KbFileInitialSelectionTest]（已删）穷举，不必把 Activity 拖进来。
  *
  * [DEFAULT_KB_FILE_PATH] 之外的历史值也一律安全回落：上一版本把 `memory/archive.md`
  * 记进过 lastFile（那一段时间名单里确实有「旧版归档」这一格），现在它不在名单里了——

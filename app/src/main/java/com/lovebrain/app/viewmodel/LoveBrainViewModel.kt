@@ -38,7 +38,6 @@ import com.lovebrain.app.feature.stage.StageSuggestionStore
 import com.lovebrain.app.feature.vector.VectorStore
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.CounselingEnded
-import com.lovebrain.app.model.CounselingEvent
 import com.lovebrain.app.model.CounselingStarted
 import com.lovebrain.app.feature.reply.GenerationVersionId
 import com.lovebrain.app.feature.reply.ReplyStore
@@ -48,21 +47,15 @@ import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.GenerationInput
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.ProactiveEnded
-import com.lovebrain.app.model.ProactiveEvent
-import com.lovebrain.app.model.ProactiveFailed
-import com.lovebrain.app.model.ProactiveFirstToken
 import com.lovebrain.app.model.ProactiveOption
-import com.lovebrain.app.model.ProactiveOptions
 import com.lovebrain.app.model.ProactiveStarted
 import com.lovebrain.app.model.ProviderTicket
-import com.lovebrain.app.model.ReplyChunk
 import com.lovebrain.app.model.ReplyCompleted
 import com.lovebrain.app.model.ReplyEvent
 import com.lovebrain.app.model.ResultMode
 import com.lovebrain.app.model.ReplyCleared
 import com.lovebrain.app.model.ReplyRequested
 import com.lovebrain.app.model.ReplyStopped
-import com.lovebrain.app.model.ReplyUiState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.model.ReplyFailureKind
@@ -70,12 +63,8 @@ import com.lovebrain.app.model.ReplyRequestState
 import com.lovebrain.app.model.buildGenerationInput
 import com.lovebrain.app.model.isBusy
 import com.lovebrain.app.model.isPreparing
-import com.lovebrain.app.model.isStreaming
 import com.lovebrain.app.model.requestId
-import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.ProfileTransactionResult
-import com.lovebrain.app.model.ReplyReducer
-import com.lovebrain.app.model.PreconditionReason
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.StageSuggestion
 import com.lovebrain.app.util.Jsons
@@ -94,8 +83,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.boolean
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 /** 谈心记录标题截断：分析首行 */
 private const val TITLE_FIRST_LINE_LIMIT = 60
 /** 谈心记录标题截断：用户消息回退 */

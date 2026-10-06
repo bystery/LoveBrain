@@ -34,7 +34,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * `LbListCard` 的五槽合同（设计基线 v1.1 §3.6 / D1 §③-9，母版 = `KnowledgeBaseActivity.kt:392-490`）。
+ * `LbListCard` 的五槽合同（设计基线 v1.1 §3.6 / D1 §③-9，母版 = `KnowledgeBaseActivity.kt`）。
  *
  * ## 每一格都在判"真复用母版"，不是"换了个壳"
  *

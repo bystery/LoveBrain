@@ -1,6 +1,5 @@
 package com.lovebrain.app.domain.port
 
-import com.lovebrain.app.model.KnowledgeBase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -16,8 +15,8 @@ import org.junit.Test
  * 于是"UI 测试全绿"和"设备上的行为"是两件事。
  *
  * 两个实现各自跑一遍下面全部格子：
- *  - [FileBackedKnowledgePortContractTest]：真实 KnowledgeRepository + 临时目录
- *  - [InMemoryKnowledgePortContractTest] ：内存 fake
+ *  - [FileBackedKnowledgePortContractTest]（已删）：真实 KnowledgeRepository + 临时目录
+ *  - [InMemoryKnowledgePortContractTest]（已删） ：内存 fake
  */
 abstract class KnowledgePortContract {
 

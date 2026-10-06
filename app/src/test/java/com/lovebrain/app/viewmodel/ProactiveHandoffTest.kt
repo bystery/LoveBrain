@@ -7,7 +7,6 @@ import com.lovebrain.app.domain.ForegroundOperationCoordinator
 import com.lovebrain.app.domain.GenerationEngine
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.PromptBuilder.ConfigValidationResult
-import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
@@ -24,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain

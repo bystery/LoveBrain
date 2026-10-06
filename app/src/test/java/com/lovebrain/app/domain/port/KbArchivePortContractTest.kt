@@ -20,8 +20,8 @@ import java.util.zip.ZipOutputStream
  * [KbArchivePort] 的合同：谁实现归档导出/导入，谁就必须给出同样的可观察行为。
  *
  * 复用仓库既有的合同打法（[AiGatewayContract] / [KnowledgePortContract]）——同一份格子
- * 对**生产侧**（[FileBackedKbArchivePortContractTest]：真 `FileKbArchiveTransfer` + 真临时目录
- * + 真 zip）与 **fake 侧**（[InMemoryKbArchivePortContractTest]：内存虚拟库 + 真 zip 流）各跑一遍。
+ * 对**生产侧**（[FileBackedKbArchivePortContractTest]（已删）：真 `FileKbArchiveTransfer` + 真临时目录
+ * + 真 zip）与 **fake 侧**（[InMemoryKbArchivePortContractTest]（已删）：内存虚拟库 + 真 zip 流）各跑一遍。
  * fake 想蒙混只有一条路：把"单顶层目录 / 元数据与目录名一致 / 同名不覆盖"这三道判据也做对。
  */
 abstract class KbArchivePortContract {

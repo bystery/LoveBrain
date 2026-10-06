@@ -292,7 +292,7 @@ class UiLayerDependencyContractTest {
      * 这条是被量出来的：生产里原先有三处各自画 `Color.Black.copy(alpha = …)` 的全屏遮罩
      * （`LbModalSheet` 自己、`RecordSentDialog`、`FeedbackCasesScreen` 的导出 Loading），
      * 后两处还各带一个 `clickable` 挂在整屏上——于是语义树里多出一颗"360x1000 的按钮"，
-     * 其中一处把标题合并成了自己的名字（`SheetProbeTest` 留了改之前的实测原文）。
+     * 其中一处把标题合并成了自己的名字（`SheetProbeTest`（已删）留了改之前的实测原文）。
      *
      * "用同一颗组件却自造样式"这种坏法，第26节 那把按声明处判的尺抓不到（它看的是谁**声明**了组件），
      * 所以要有一把盯着**形状本身**的闸：谁再想自己画一层遮罩，就在这里红。

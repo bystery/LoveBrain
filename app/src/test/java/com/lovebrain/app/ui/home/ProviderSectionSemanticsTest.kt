@@ -265,7 +265,7 @@ class ProviderSectionSemanticsTest {
      * 状态头部 13 个 `remember` 也都在回调里赋值。
      *
      * 三条假设的死法都留证据，别当结论用：
-     * - 光标闪烁：**不是**（`InputFieldLabelsTest`/`RecordSentDialogSheetTest` 挂着文本框是绿的，
+     * - 光标闪烁：**不是**（`InputFieldLabelsTest`/`RecordSentDialogSheetTest`（已删） 挂着文本框是绿的，
      *   它们都不在 Dialog 窗口里）；
      * - 那两颗 spinner：**不是**（条件渲染，挂载时没画出来）；
      * - Dialog + 文本框这一组合：**是它**。

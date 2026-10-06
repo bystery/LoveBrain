@@ -18,7 +18,7 @@ import org.junit.Test
  * - 定时器与手指抢同一颗页号 → 第 7、8 栏红。
  *
  * 一行放得下/放不下的判据用**宽度**说话，不用字符串长度：语义树在被裁切时照样报完整原串，
- * 文本判据看不见裁切（这条教训在本仓库已经踩过一次，见 `UsageExtremeValuesSemanticsTest`
+ * 文本判据看不见裁切（这条教训在本仓库已经踩过一次，见 `UsageExtremeValuesSemanticsTest`（已删）
  * 与 `EmptyStateOwnershipSemanticsTest` 里那份自然宽控制组）。
  */
 class UsageStatBarPlanTest {

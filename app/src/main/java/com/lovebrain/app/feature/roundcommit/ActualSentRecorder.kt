@@ -25,7 +25,7 @@ enum class ActualSentState { IDLE, RECORDED, KB_NOT_FOUND, NO_KB, IO_ERROR }
  * · 每次 [record] 一进来就先回 `IDLE`，让"这一尝试"必然是一次可观察的跳变——这条由本类负责；
  * · 五种结果必须被**穷尽**处理——那条判据住在面板那段接线的 `when`（编译器保证覆盖），
  *   而"有人写 `else -> {}` 满足编译器却吞掉一种结果"这一支由
- *   `ui/panel/RecordSentFailurePathTest` 盯着：它**现算** `ActualSentState.entries`，
+ *   `ui/panel/RecordSentFailurePathTest`（已删）盯着：它**现算** `ActualSentState.entries`，
  *   再逐个去生产源码里找 `ActualSentState.<名字>`，加了新状态而忘了接线就当场红。
  *
  * 为什么读数靠注入的 lambda：`feature` 不许 import `data`/`viewmodel`（第5节第1条 包边界）。

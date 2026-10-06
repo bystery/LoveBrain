@@ -25,7 +25,7 @@ data/KnowledgeRepository.kt  # 836 行（2026-10-04 19:06 wc -l 现读； 783（
 # 这把尺从公开版起就没跑过（`check_big_files.sh` 里那两行清单名被抹成 `.txt`，脚本只会退 2），
 # 所以这一档不是"有人偷偷加巨石"，而是**账第一次跟着盘走**。每颗都写清为什么这次不得不过界、
 # 以及真要继续涨时该从哪里拆——拆不拆仍是拍板项，本账只负责让它可见（第9节 第 8 条禁止机械切文件）。
-core/designsystem/LbChip.kt  # 512 行（2026-10-06 03:2x wc -l 现读；HEAD 432）——本轮把供应商超时档那一排的 segmented 档与谈心模板 chip 的 neutral 档并进来，档的主人只能在这一颗里；再涨就从 `LbChipStyles` 的档位表拆出独立文件（键与判据不动）。未拆——拍板未做
+# 2026-10-06 死码清理：LbChip.kt 从 512 降到 475（删 panelChip 死声明 + KDoc），跌破 500，出账。
 domain/PromptBuilder.kt  # 513 行（同上现读；HEAD 490）——I1 主动发的上下文注入与"原位置只剩调用"那批委托落在这颗，逐段实现早已外移到 domain/prompt/；再涨就把 proactive/reply 两条装配各自搬进 domain/prompt/，本颗只留分发。未拆——拍板未做
 service/CopyCaptureService.kt  # 528 行（同上现读；HEAD 405）——CAP1 的两步确认链 + 拒绝台账 + CAP2 的允许清单→packageNames 换算与 SharedPreferences 订阅全在这一颗（同一个 AccessibilityService 生命周期只能在服务本体里）。再涨就把"读数与诊断落盘"那一族抽 `service/CaptureDiagnostics.kt`，判定仍留在 `CapturePolicy`。未拆——拍板未做
 ui/feedback/FeedbackCasesScreen.kt  # 548 行（同上现读；HEAD 483，2026-10-03 曾缩到 483 出过账）——本轮 CaseCard 归并进 LbListCard 的同时把导出那一族的三扇浮层收回本页。再涨就按"列表 / 详情 / 导出"三屏各自成件，页头与筛选留在本页。未拆——拍板未做

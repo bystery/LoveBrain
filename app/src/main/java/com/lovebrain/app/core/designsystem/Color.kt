@@ -21,7 +21,6 @@ val PrimarySubtle: Color get() = Color.hsl(THEME_HUE, 0.60f, 0.82f)
 
 // ═══ 中性色标（亮色：900 最浅背景 → 50 最深文本；Neutral900 已删，无调用方）═══
 val Neutral800: Color get() = Color.hsl(250f, 0.10f, 0.90f)
-val Neutral700: Color get() = Color.hsl(250f, 0.09f, 0.84f)
 val Neutral600: Color get() = Color.hsl(250f, 0.09f, 0.78f)
 val Neutral500: Color get() = Color.hsl(250f, 0.08f, 0.72f)
 val Neutral400: Color get() = Color.hsl(250f, 0.07f, 0.62f)
@@ -33,7 +32,6 @@ val Neutral50: Color get() = Color.hsl(250f, 0.04f, 0.08f)
 // ═══ 语义色（亮色版）═══
 val Success: Color get() = Color.hsl(152f, 0.55f, 0.30f)
 val SuccessBg: Color get() = Color.hsl(152f, 0.30f, 0.90f)
-val SuccessBorder: Color get() = Color.hsl(152f, 0.40f, 0.70f)
 val Warning: Color get() = Color.hsl(38f, 0.80f, 0.30f)
 val WarningBg: Color get() = Color.hsl(38f, 0.50f, 0.90f)
 val Error: Color get() = Color.hsl(0f, 0.70f, 0.48f)
@@ -62,27 +60,6 @@ val SurfaceInset: Color get() = Color.hsl(250f, 0.08f, 0.92f)
  * 也就是 [PanelBackdropOpacity.DEFAULT_PERCENT] 那一档 = 完全不透明 = 与这一笔之前逐字同形。
  */
 val LocalPanelBackdropDensity = compositionLocalOf { PanelBackdropOpacity.DEFAULT_PERCENT }
-
-/**
- * 大面积卡片底色 = 面板底那一层颜色的**同一个 alpha**，原样搬到卡上。
- *
- * 为什么这一颗不算第二把尺：它没有区间、没有刻度、没有默认值，体里连一个数字都没有，
- * 唯一的换算口就是 [PanelBackdropOpacity.alphaOf]，喂进去的还是面板底用的那同一个百分比。
- * 卡片因此永远不比面板底更实、也永远不自成一套档 —— 滑杆动一格，底和卡一起动。
- *
- * 卡片叠在面板底之上是**有意**的：卡那一层自己就透出聊天背景，而正文区比裸底多压一层，
- * 于是"看得出浓度跟着滑块变"与"正文还读得清"同时成立，不需要给卡片另开一格浓度。
- *
- * [base] 换的是脸不是浓度：与面板底同色的那类大容器传 [SurfaceBase]，正文卡走默认的 [SurfaceCard]。
- * ⚠ 不许拿它当通用 alpha 旋钮用，也不许在页面里再写 `SurfaceCard.copy(alpha = 0.85f)`
- * 那种各自定的分档 —— 同一件事抄回页面就是这一颗要消灭的东西。
- *
- * 只涂底：文字、图标、光标、描边都不乘这个系数；点击与穿透一个字都不碰。
- * 小件（胶囊、芯片、分隔线、图标底）不走这里，否则整屏糊成一层灰雾。
- */
-@Composable
-fun panelBackdropCardColor(base: Color = SurfaceCard): Color =
-    base.copy(alpha = PanelBackdropOpacity.alphaOf(LocalPanelBackdropDensity.current))
 
 // ═══ 文字层次（亮色偏冷深灰；TextHint 与 TextSecondary 保持层级差）═══
 val TextPrimary: Color get() = Color.hsl(250f, 0.10f, 0.12f)

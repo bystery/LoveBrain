@@ -21,7 +21,7 @@ import java.util.Locale
  *
  * ⚠ 金额串那一半刻意**不**收进本文件断言：首页/详情页是两位小数且不锁 Locale、面板走
  * `LoveBrainViewModel.formatYuan`（三位小数、锁 `Locale.US`）。两边各有守卫钉着
- * （`UsageExtremeValuesSemanticsTest` / `CostDisplayTest`），差异记在账本 第61节第4条，本轮不并。
+ * （`UsageExtremeValuesSemanticsTest`（已删） / `CostDisplayTest`），差异记在账本 第61节第4条，本轮不并。
  * 下面的 [homeAmount] 只是"调用方给的那支格式化函数"的形状替身（那里锁了 Locale 好让断言稳定）。
  */
 class CostReadoutTest {

@@ -1,7 +1,6 @@
 package com.lovebrain.app.domain
 
 import com.lovebrain.app.model.DialogueMessage
-import com.lovebrain.app.model.DialogueSpeaker
 import com.lovebrain.app.model.EntityRef
 
 /**

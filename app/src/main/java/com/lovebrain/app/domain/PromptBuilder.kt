@@ -1,7 +1,6 @@
 package com.lovebrain.app.domain
 
 import android.content.Context
-import com.lovebrain.app.AppConfig
 import com.lovebrain.app.domain.port.KnowledgeReadPort
 import com.lovebrain.app.domain.port.Clock
 import com.lovebrain.app.domain.port.SystemClock

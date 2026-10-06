@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.Collections
 import java.util.UUID
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
@@ -272,8 +271,5 @@ class ForegroundOperationCoordinator(
     }
 
     companion object {
-        /** 用于测试注入的时钟无关工具——保持 API 精简，不暴露可变集合 */
-        internal fun frozenTypes(): Set<OperationType> =
-            Collections.unmodifiableSet(OperationType.values().toSet())
     }
 }

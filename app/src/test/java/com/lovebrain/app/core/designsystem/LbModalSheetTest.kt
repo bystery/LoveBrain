@@ -23,7 +23,7 @@ import org.robolectric.annotation.GraphicsMode
 /**
  * 第6节第1条 表里 `LbModalSheet/Dialog` 的 Sheet 半边：浮层里那些"点得下去的出口"合不合 第6节第5条。
  *
- * 这三条断言每一条都对着一个**量出来的**旧缺陷（旧形状实测值见 `SheetProbeTest` 的注释）：
+ * 这三条断言每一条都对着一个**量出来的**旧缺陷（旧形状实测值见 `SheetProbeTest`（已删）的注释）：
  * ① 动作按钮 26dp / 22dp 高 → 现在下限 48dp；
  * ② `confirmLabel = ""` 画出一颗 24x22dp 的无名节点 → 现在标签为空的动**不入树**；
  * ③ 遮罩与"拦截点击"的卡片各挂一次 `clickable` → 现在改用 `pointerInput`，

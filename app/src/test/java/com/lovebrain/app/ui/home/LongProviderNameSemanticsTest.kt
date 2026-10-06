@@ -17,7 +17,6 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
-import com.lovebrain.app.core.designsystem.LbRowState
 import com.lovebrain.app.core.designsystem.LbTags
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
