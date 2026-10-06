@@ -201,10 +201,12 @@ class HomeStatusViewModelTest {
      * 在用户没有按 ▶ 的情况下真发了一次付费请求。合同那句"不每次重组发微请求 + 下次开始再检查"
      * 判的就是这个。
      *
+     * §11.1 修改：连接身份只属于供应商配置，切知识库不再作废连接结论。
+     *
      * 反例（坏实现怎么把这格弄红）：
-     * - 把 `runCheck()` 留在 `returnedFromSubpage` 里 → 换对象那一步 `probe.calls` 变 2；
+     * - 把 `runCheck()` 留在 `returnedFromSubpage` 里 → 换供应商那一步 `probe.calls` 变 2；
      * - 在 `init` 里补一次检查 → 第一段那句 `assertEquals(0, probe.calls)` 当场红；
-     * - 作废只做在 `runCheck` 里、`publish` 不比身份 → 换完当前对象这一格还会报绿。
+     * - 作废只做在 `runCheck` 里、`publish` 不比身份 → 换完供应商这一格还会报绿。
      */
     @Test
     fun `entering the page never sends a probe and only voids a stale conclusion`() = runTest {
@@ -220,13 +222,12 @@ class HomeStatusViewModelTest {
         assertEquals("身份没变的刷新不许再发微请求", 1, probe.calls)
         assertEquals(AdvisorState.RunningReady, vm.status.value.state)
 
-        // 换当前对象 = 新身份：旧的那点成功不再替它说话，但也**不补发**
+        // 切知识库不改连接身份（§11.1）：连接结论原样保留，不补发探针
         knowledge.kbName = "另一个人"
         vm.returnedFromSubpage(overlayGranted = true)
         advanceUntilIdle()
-        assertEquals("切当前对象不许自动发探针（下一次开始才检查）", 1, probe.calls)
-        assertNotEquals(AdvisorState.RunningReady, vm.status.value.state)
-        assertEquals(listOf(AdvisorMissing.ConnectionUnchecked), vm.status.value.missing)
+        assertEquals("切知识库不许自动发探针", 1, probe.calls)
+        assertEquals("切库不改性身份，灯仍绿", AdvisorState.RunningReady, vm.status.value.state)
     }
 
     /** 切供应商同一件事：当场作废，重新检查要等用户真的再按一次 ▶ */
@@ -343,11 +344,11 @@ class HomeStatusViewModelTest {
 
     /**
      * ② 同身份下**已验证结论不许变黄**：切出去再切回来时知识库那一格"读不动"，
-     * 那不是用户换了对象，所以连接结论必须原样留着；黄字只念"还没读到知识库"这一句真话。
+     * 连接身份只属于供应商配置（§11.1），所以连接结论必须原样留着；黄字只念"还没读到知识库"这一句真话。
      * 读回来之后当场是绿，全程 `probe.calls` 还是 1。
      *
      * 反例（把改动回退成什么样它会红）：
-     * - 回退成"身份那一位直接吃 `snapshot.name`"（上一版）：Unknown 那一次库名是 null ⇒
+     * - 回退成"身份里含库名"（上一版）：Unknown 那一次库名是 null ⇒
      *   身份漂成 `t1|deepseek-chat|-`，第一段"缺项恰好等于 KnowledgeUnread"当场红
      *   （多出一条 ConnectionUnchecked），而且第三段永远回不到绿——旧凭据被那一格唯一的槽挤掉了，
      *   两处一起红，而这正是用户看到的"绿 → 切回来 → 黄"；
@@ -463,15 +464,15 @@ class HomeStatusViewModelTest {
     @Test
     fun `the ledger remembers one verdict per identity`() {
         val ledger = HomeConnectionLedger()
-        ledger.remember("t1|m|她", HomeConnectionVerdict.Verified)
-        ledger.remember("t2|m|她", HomeConnectionVerdict.Failed)
-        assertEquals(HomeConnectionVerdict.Verified, ledger.recall("t1|m|她"))
-        assertEquals(HomeConnectionVerdict.Failed, ledger.recall("t2|m|她"))
-        assertNull("没记过的身份交回 null，调用方才能老实说没检查过", ledger.recall("t3|m|她"))
+        ledger.remember("t1|m", HomeConnectionVerdict.Verified)
+        ledger.remember("t2|m", HomeConnectionVerdict.Failed)
+        assertEquals(HomeConnectionVerdict.Verified, ledger.recall("t1|m"))
+        assertEquals(HomeConnectionVerdict.Failed, ledger.recall("t2|m"))
+        assertNull("没记过的身份交回 null，调用方才能老实说没检查过", ledger.recall("t3|m"))
         assertEquals(2, ledger.remembered)
         ledger.clear()
         assertEquals(0, ledger.remembered)
-        assertNull(ledger.recall("t1|m|她"))
+        assertNull(ledger.recall("t1|m"))
     }
 
     /**

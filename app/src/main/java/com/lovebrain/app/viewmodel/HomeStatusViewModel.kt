@@ -159,7 +159,7 @@ object UnknownHomeKnowledgePort : HomeKnowledgePort {
  *
  * 另一半判据同样要守住：**没有活动库 / 库名空白（无效引用）→ `Missing`，读取失败 → `Unknown`**——
  * 缺项黄字只对这两格分别念"请建立"/"还没读到"，读取中（冷启动首帧，`lastKnowledge` 默认 `Unknown`）
- * 两者都不是。身份比对用的仍是库名（见 `identityOf`）。
+ * 两者都不是。
  */
 class ReadPortHomeKnowledgePort(private val read: KnowledgeReadPort) : HomeKnowledgePort {
     override suspend fun currentObjectKb(): HomeKnowledgeSnapshot {
@@ -275,10 +275,9 @@ internal class HomeConnectionLedger {
  *    期间同样不发。
  * 2. **迟到响应不能点灯**：每次开始/关闭都推 [checkToken]，回来时号不对（或用户已经关了）就整包丢掉。
  * 3. **绿只认这一组身份下的真凭据，而凭据按身份记账、不按身份淘汰**：[HomeConnectionLedger] 里
- *    换供应商 / 换生效模型 / 切当前对象都会算出一个取不到的新身份（于是当场不绿，见纪律 1 的反面），
+ *    换供应商 / 换生效模型都会算出一个取不到的新身份（于是当场不绿，见纪律 1 的反面），
  *    切回旧身份则当场取回旧结论；只有 [stopClicked]（用户主动关）才清账。
- *    "读不到"（[HomeKnowledgePresence.Unknown]）**不算换身份**：那是本机读不动，不是用户换了对象
- *    （见 [identityKbName]），它只让知识库那一格念"还没读到"，不许顺手把连接那一格的结论作废。
+ *    连接身份只属于供应商配置（§11.1），切知识库不改连接灯。
  */
 class HomeStatusViewModel(
     private val service: HomeServicePort = FloatingServiceHomePort,
@@ -297,13 +296,6 @@ class HomeStatusViewModel(
 
     /** 最近一次读到的知识库快照：组合期不读盘，所以 publish 只读这一格缓存 */
     private var lastKnowledge = HomeKnowledgeSnapshot(HomeKnowledgePresence.Unknown, null)
-
-    /**
-     * 最近一次**读得动**的库名（presence 不是 Unknown 的那一次才有）。
-     * 身份的这一位只从它取，见 [identityKbName]：读不动时不许把库名猜成"没有"，
-     * 那会把一次真凭据挤成"没检查过"。
-     */
-    private var lastReadableKbName: String? = null
 
     /** 身份 → 连接结论：见 [HomeConnectionLedger]，"检查一次、之后一直有效"就住在这颗里 */
     private val ledger = HomeConnectionLedger()
@@ -377,32 +369,20 @@ class HomeStatusViewModel(
         HomeKnowledgeSnapshot(HomeKnowledgePresence.Unknown, null)
     }
 
-    /** 唯一写 [lastKnowledge] / [lastReadableKbName] 的入口：读到 Unknown 时**保留**上一个读得动的库名 */
+    /** 唯一写 [lastKnowledge] 的入口 */
     private fun recordKnowledge(snapshot: HomeKnowledgeSnapshot) {
         lastKnowledge = snapshot
-        if (snapshot.presence != HomeKnowledgePresence.Unknown) lastReadableKbName = snapshot.name
     }
 
     /**
-     * 冻结身份：换供应商 / 换生效模型 / 切当前对象，任何一项都让旧结论取不回来（新身份没账）。
+     * 冻结身份：换供应商 / 换生效模型让旧结论取不回来（新身份没账）。
      *
-     * 库这一位用库名（`KnowledgeBase.name` = 目录名）：模型里没有比它更稳的库 id 可取。
-     * 已知代价（台账 2026-10-05）：两张同名库互切不会作废旧结论，改名会。
+     * 连接身份只属于供应商配置（指导书 §11.1）：切知识库不改连接灯。
      * ⚠ 这一位**不能**混进任何会自己漂的读数（轮数、归档计数、阶段都不算身份，见 `ReadPortHomeKnowledgePort`）：
      * 漂一次就是一次"谎报没检查过"，还要再烧一次钱才恢复。
      */
-    private fun identityOf(ref: HomeProviderRef?, kbName: String?): String =
-        "${ref?.id ?: NO_PROVIDER}|${ref?.model ?: ""}|${kbName ?: NO_KB}"
-
-    /**
-     * 身份里库那一位的取值：
-     * - 读得动（Present / Missing）就用这一次的库名——真没库交回 null，切对象、删库照样作废；
-     * - 读不动（Unknown）就**沿用最近读得动的那个名字**：这是本机读不动，不是用户换了对象，
-     *   知识库那一格会自己念"还没读到当前对象的知识库"，而连接那一格不该因此被说成没检查过。
-     */
-    private fun identityKbName(): String? =
-        if (lastKnowledge.presence == HomeKnowledgePresence.Unknown) lastReadableKbName
-        else lastKnowledge.name
+    private fun identityOf(ref: HomeProviderRef?): String =
+        "${ref?.id ?: NO_PROVIDER}|${ref?.model ?: ""}"
 
     private fun runCheck() {
         val token = ++checkToken
@@ -415,7 +395,7 @@ class HomeStatusViewModel(
             val verdict = probeNow(ref)
             if (token != checkToken || !userStarted) return@launch   // 迟到的响应：关掉了/又点了一次，不作数
             // 记在身份上，而不是记在"最后一次"上：这一组的凭据之后一直有效（取回不再花钱）
-            ledger.remember(identityOf(ref, identityKbName()), verdict)
+            ledger.remember(identityOf(ref), verdict)
             // 落盘副本：VM 被 Activity 销毁后 ledger 会丢，这颗布尔让重新进页面时
             // 仍能交回 Verified（见 connectionFor 的 ledger 空兜底），不把绿过的灯落回黄。
             when (verdict) {
@@ -452,7 +432,7 @@ class HomeStatusViewModel(
             serviceRunning = service.isRunning(),
             provider = ref,
             knowledge = snapshot.presence,
-            connection = connectionFor(ref, identityOf(ref, identityKbName()))
+            connection = connectionFor(ref, identityOf(ref))
         )
         _status.value = advisorStatusOf(facts)
     }
@@ -485,7 +465,6 @@ class HomeStatusViewModel(
 
     private companion object {
         const val NO_PROVIDER = "-"
-        const val NO_KB = "-"
     }
 }
 
