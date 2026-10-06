@@ -253,6 +253,10 @@ internal fun clampDragOffsetInsideViewport(
  * 边缘自动滚动的速度（px/帧，带符号）：手指落在视口上下边缘 [edgeZonePx] 以内才给速度，
  * 越靠边越快；上边缘为负、下边缘为正、中间是 **0**。
  * 0 就是"立刻停"——那颗唯一的自动滚动任务读到 0 就退出，不需要额外的取消信号。
+ *
+ * 指导书§8：固定 80dp 边缘区在短视口（约 160dp 或更矮）会覆盖/重叠，中央稍动也触发滚动。
+ * 修复：边缘区取 `min(edgeZonePx, viewportHeight / 3)`，保证中间至少有 1/3 视口是安全区。
+ * 在 160dp 视口上边缘区压到 ~53dp，中间 ~53dp 不滚；正常视口仍用 80dp。
  */
 internal fun edgeAutoScrollSpeedPx(
     fingerY: Float,
@@ -264,13 +268,16 @@ internal fun edgeAutoScrollSpeedPx(
     // 视口还没量到（列表尚未布局完成，start == end）时一律不滚：
     // 那一帧凭空给一个速度，用户看到的就是"我还没拖它自己先跑了一下"
     if (viewportEndPx <= viewportStartPx) return 0f
+    // 短视口限流：边缘区不超过视口高度的 1/3，确保中央有安全区
+    val viewportHeight = viewportEndPx - viewportStartPx
+    val effectiveZone = minOf(edgeZonePx, viewportHeight / 3f)
     val toBottom = viewportEndPx - fingerY
     val toTop = fingerY - viewportStartPx
     return when {
         toBottom <= 0f -> MessageDimens.DRAG_EDGE_MAX_SPEED_PX
-        toBottom < edgeZonePx -> depthSpeed(toBottom, edgeZonePx)
+        toBottom < effectiveZone -> depthSpeed(toBottom, effectiveZone)
         toTop <= 0f -> -MessageDimens.DRAG_EDGE_MAX_SPEED_PX
-        toTop < edgeZonePx -> -depthSpeed(toTop, edgeZonePx)
+        toTop < effectiveZone -> -depthSpeed(toTop, effectiveZone)
         else -> 0f
     }
 }
