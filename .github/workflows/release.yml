@@ -47,7 +47,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: '要发布的 tag，例如 v1.4.0-rc1（必须等于 v${versionName}）'
+        description: '要发布的 tag，例如 v1.4.0（必须等于 v${versionName}）'
         required: true
       commit:
         description: '本地签名 APK 构建自的完整 commit SHA（40 位小写）'
@@ -95,7 +95,7 @@ jobs:
           printf 'tag=%s\ncommit=%s\nevidence ref=%s\n' "$TAG" "$BUILD_COMMIT" "$EVIDENCE_REF"
           case "$TAG" in
             v*) ;;
-            *) printf 'TAG must look like v1.2.3 / v1.4.0-rc1, got: %s\n' "$TAG" >&2; exit 1 ;;
+            *) printf 'TAG must look like v1.2.3 / v1.4.0, got: %s\n' "$TAG" >&2; exit 1 ;;
           esac
           if ! printf '%s' "$BUILD_COMMIT" | grep -Eq '^[0-9a-f]{40}$'; then
             printf 'commit must be a full 40-hex sha (an abbreviated one silently matches nothing), got: %s\n' "$BUILD_COMMIT" >&2
