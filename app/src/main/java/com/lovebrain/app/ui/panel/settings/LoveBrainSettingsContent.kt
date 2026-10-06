@@ -29,6 +29,8 @@ import com.lovebrain.app.core.designsystem.LbTextActionGlyph
 import com.lovebrain.app.core.designsystem.LbTextActionTone
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.TextPrimary
+import com.lovebrain.app.model.IntentExpiry
+import com.lovebrain.app.model.KnowledgeBase
 
 /**
  * 这一页紧凑页头那一族的三个数（依据基线 v1 §6.1 / §2-Q13）。
@@ -79,6 +81,13 @@ fun LoveBrainSettingsContent(
     opacityPercent: Int,
     onOpacityPreview: (Int) -> Unit,
     onOpacityCommit: (Int) -> Unit,
+    intentEnabled: Boolean = false,
+    intentText: String = "",
+    intentExpiry: IntentExpiry = IntentExpiry.ONE_DAY,
+    onIntentChange: (String, Boolean, IntentExpiry, Boolean) -> Unit = { _, _, _, _ -> },
+    knowledgeBases: List<KnowledgeBase> = emptyList(),
+    activeKbName: String? = null,
+    onSwitchKb: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -142,6 +151,21 @@ fun LoveBrainSettingsContent(
                 opacityPercent = opacityPercent,
                 onOpacityPreview = onOpacityPreview,
                 onOpacityCommit = onOpacityCommit
+            )
+            // 持续意图入口（原话第 10 条：从面板输入行搬进设置页，收掉屏上那两排次级控件）。
+            // 默认关；开着时展开有效期 + 正文录入。能力与意图编辑浮层同源，落盘仍走 IntentController。
+            Spacer(Modifier.height(Spacing.md))
+            SettingsIntentEntry(
+                intentEnabled = intentEnabled,
+                intentText = intentText,
+                intentExpiry = intentExpiry,
+                onIntentChange = onIntentChange
+            )
+            Spacer(Modifier.height(Spacing.md))
+            SettingsKbSwitcherEntry(
+                knowledgeBases = knowledgeBases,
+                activeKbName = activeKbName,
+                onSwitchKb = onSwitchKb
             )
         }
     }

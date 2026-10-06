@@ -92,6 +92,7 @@ interface KnowledgeRuntimePort {
     // ── 在用库与其结构 ──
     suspend fun listAll(): List<KnowledgeBase>
     suspend fun getActive(): KnowledgeBase?
+    suspend fun setActive(name: String)
     suspend fun migrateIfNeeded(kbName: String)
     suspend fun ensureInitialKnowledgeBase()
     suspend fun updateStage(kbName: String, stage: String)
@@ -127,7 +128,7 @@ interface KnowledgeRuntimePort {
         kbName: String,
         text: String,
         enabled: Boolean,
-        expiry: IntentExpiry = IntentExpiry.UNTIL_DONE,
+        expiry: IntentExpiry = IntentExpiry.ONE_DAY,
         expiryDate: String = "",
         status: IntentStatus = IntentStatus.ACTIVE
     ): IntentConfig

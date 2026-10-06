@@ -526,13 +526,13 @@ class MechanismClosureTest {
     fun f06_expired_date_intent_marked_expired_at_generation() = runBlocking {
         val knowledgeRepo = mockk<KnowledgeRepository>(relaxed = true)
         val kb = KnowledgeBase(name = "test-kb", stage = "暧昧期")
-        // Intent with DATE expiry in the past
+        // Intent with a time-based expiry whose pinned moment is in the past
         val expiredIntent = IntentConfig(
             text = "过期意图",
             enabled = true,
             revision = 1,
-            expiry = IntentExpiry.DATE,
-            expiryDate = "2020-01-01",
+            expiry = IntentExpiry.ONE_DAY,
+            expiryDate = "2020-01-01 00:00",
             status = IntentStatus.ACTIVE
         )
         defaultRepoStubs(knowledgeRepo, kb, expiredIntent)
@@ -573,7 +573,7 @@ class MechanismClosureTest {
 
         // The intent passed to engine should have status EXPIRED
         assertEquals(
-            "Expired DATE intent should be marked EXPIRED at generation time",
+            "Expired time-based intent should be marked EXPIRED at generation time",
             IntentStatus.EXPIRED,
             capturedIntent?.status
         )

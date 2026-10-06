@@ -264,24 +264,27 @@ class AdvisorNoteLineSemanticsTest {
             }
         }
         rule.mainClock.advanceTimeBy(16L)
-        rule.onNodeWithText(PANEL_ROUND_SCOPE_LABEL, substring = true).assertDoesNotExist()
+        rule.onAllNodesWithTag(PANEL_ROUND_SCOPE_TEST_TAG, useUnmergedTree = true)
+            .fetchSemanticsNodes().also {
+                assertTrue("没接线就不许画「仅看本轮」入口", it.isEmpty())
+            }
     }
 
     /**
-     * 接线后这颗住在**行 2**（输入行下方那一排次级控制），而且状态跟着传进来的那颗读。
+     * 接线后这颗住在**行 1**（与「她/我/补充/＋」同一条中线，在 ＋ 右侧、输入框左侧），
+     * 状态跟着传进来的那颗读。
      *
-     * ⚠ 这一格的**位置判据随原话第 10 条改过一轮**：旧判据写的是"在角色行右侧"，
-     *    量的是那颗入口和「她」同一行、`left` 更大。改版后输入行只留
-     *    她/我/补充 + 输入框 + ➕（用户原话"挤也不缩短输入框"），次级入口整组下移到行 2
-     *    ⇒ 行 2 的左沿与行 1 同一条线，`left` 判据必然红。换成**行序**判据（在下面那一行），
-     *    状态、热区、点击只投一次这三半**一字未动**。
+     * ⚠ 这一格的**位置判据随行 2 撤掉改过一轮**：旧判据写的是"在行 2、输入行下方"，
+     *    改版后「仅看本轮」常驻行 1（在 ＋ 与输入框之间），意图入口搬到设置页 ⇒ 行 2 整组撤掉。
+     *    换成**同行序**判据（与「她」同一行、在 ＋ 右侧），状态、热区、点击只投一次这三半
+     *    **一字未动**。可见文案改用 🔒 符号，读屏名仍由 contentDescription（[PANEL_ROUND_SCOPE_LABEL]）给。
      *
      * 反例：这颗自己 `remember { mutableStateOf(false) }` 存一份开关 ⇒ 第二本账，
      *        屏上显示开着而生成用的是另一份值（第10节第4条 说的"画个勾不算完成"）。
-     *        行 2 若被搬到行 1 上面，`top` 那句红。
+     *        行 1 若被搬回行 2，同行那句红。
      */
     @Test
-    fun theRoundScopeEntrySitsOnRowTwoAndReportsItsState() {
+    fun theRoundScopeEntrySitsOnRowOneBesideTheAddButtonAndReportsItsState() {
         var clicks = 0
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
@@ -300,22 +303,23 @@ class AdvisorNoteLineSemanticsTest {
         }
         rule.mainClock.advanceTimeBy(16L)
 
-        val entry = rule.onAllNodesWithText(PANEL_ROUND_SCOPE_LABEL, substring = true)
+        val entry = rule.onAllNodesWithTag(PANEL_ROUND_SCOPE_TEST_TAG, useUnmergedTree = true)
             .fetchSemanticsNodes().single()
         val chip = rule.onAllNodesWithText(ROLE_LABEL_HER).fetchSemanticsNodes().single()
+        val add = rule.onAllNodesWithContentDescription("添加").fetchSemanticsNodes().single()
         val entryBox = probe.of(entry)
         val chipBox = probe.of(chip)
+        val addBox = probe.of(add)
+        val entryMid = entryBox.topDp + entryBox.heightDp / 2f
+        val chipMid = chipBox.topDp + chipBox.heightDp / 2f
         assertTrue(
-            "「仅看本轮」应在输入行**下方**那一行（入口 top ${entryBox.topDp} 必须过「她」" +
-                chipBox.describe() + " 的中线）",
-            entryBox.topDp > chipBox.topDp + chipBox.heightDp / 2f
+            "「仅看本轮」应与「她」同在行 1（入口 mid $entryMid 必须贴近「她」mid $chipMid）",
+            kotlin.math.abs(entryMid - chipMid) < 4f
         )
         assertTrue(
-            "行 2 与行 1 共用同一条左沿（次级入口不许自成一套缩进）：入口 left ${entryBox.leftDp}、" +
-                "「她」left ${chipBox.leftDp}",
-            kotlin.math.abs(entryBox.leftDp - chipBox.leftDp) <= 2f
+            "「仅看本轮」必须在 ＋ 右侧：➕ ${addBox.describe()} 入口 ${entryBox.describe()}",
+            entryBox.leftDp >= (addBox.leftDp + addBox.widthDp) - 1f
         )
-        assertTrue("入口自己得够热区下限：" + entryBox.describe(), !entryBox.tooSmall(probe.floorDp))
         // 状态由外面给：树上的勾选态必须来自传进来的那颗参数，而不是这颗自己的记忆
         // （第10节第4条 那句"只画一个 checked 图标不算完成"判的就是这里——状态得真在语义上）
         assertEquals(
@@ -328,20 +332,17 @@ class AdvisorNoteLineSemanticsTest {
         assertEquals("点击只投一次回调，状态由外面给", 1, clicks)
     }
 
-    // ═══════════ 行 2：意图入口与「仅看本轮」同一行、排在输入行下方 ═══════════
+    // ═══════════ 行 1：仅看本轮常驻，不再随有没有真实消息二选一挂载 ═══════════
 
     /**
-     * 次级控制（意图槽 + 「仅看本轮」）住在**行 2**，与 ➕ 所在那一行分开——
-     * 原话第 10 条要的是"输入框与 ➕ 同一条行、挤也不缩短输入框"，基线 v1 §3 第 11 条的窄窗砍序
-     * 因此把次级入口从 ➕ 右边挪到下面那一行。这一格判的是挪过去之后**仍是一个所有者、仍是一条行**。
+     * 没有真实消息时「仅看本轮」**仍留在行 1**——意图入口搬去设置页后，行 2 整组撤掉，
+     * 「仅看本轮」不再随 `hasRealMessages` 在行 2 / 消息卡之间二选一挂载，常驻行 1。
      *
-     * 回退成什么会红：
-     * · 行 2 里两颗各起一行 ⇒ "同一条行"那句红；
-     * · 行 2 排到输入行**上方** ⇒ "在下方"那句红；
-     * · 宿主绕过 `intentEntry` 槽、在 `ReplyInput` 之后自己再画一排 ⇒ `.single()` 数到 2 颗当场红。
+     * 回退成什么会红：把 `hasRealMessages` 那半个条件加回来（让无消息时不画这颗）⇒
+     * "无真实消息时仍要在行 1"那句红。
      */
     @Test
-    fun secondaryControlsShareRowTwoBelowTheInputRow() {
+    fun theRoundScopeEntryStaysOnRowOneEvenWithoutRealMessages() {
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
                 ReplyInput(
@@ -354,72 +355,17 @@ class AdvisorNoteLineSemanticsTest {
                     onFocusChange = {},
                     onlyThisRound = false,
                     onOnlyThisRoundChange = {},
-                    hasRealMessages = true,
-                    intentEntry = {
-                        androidx.compose.material3.Text("SENTINEL_PROACTIVE")
-                    }
+                    hasRealMessages = false
                 )
             }
         }
         rule.mainClock.advanceTimeBy(16L)
 
-        val entry = rule.onAllNodesWithText("SENTINEL_PROACTIVE").fetchSemanticsNodes().single()
-        val round = rule.onAllNodesWithTag(PANEL_ROUND_SCOPE_TEST_TAG, useUnmergedTree = true)
-            .fetchSemanticsNodes().single()
-        val add = rule.onAllNodesWithContentDescription("添加").fetchSemanticsNodes().single()
-        val entryBox = probe.of(entry)
-        val roundBox = probe.of(round)
-        val addBox = probe.of(add)
-        val entryMid = entryBox.topDp + entryBox.heightDp / 2f
-        val roundMid = roundBox.topDp + roundBox.heightDp / 2f
-        assertTrue(
-            "意图入口与「仅看本轮」不在同一条行上：入口 ${entryBox.describe()} 本轮 ${roundBox.describe()}",
-            kotlin.math.abs(entryMid - roundMid) < 2f
-        )
-        assertTrue(
-            "行 2 必须在 ➕ 那一行下方：➕ ${addBox.describe()} 入口 ${entryBox.describe()}",
-            entryBox.topDp > addBox.topDp + addBox.heightDp / 2f
-        )
-    }
-
-    /**
-     * 没有真实消息时行 2 **让位**给消息卡内那一组（`MessageList` 的 `secondaryControls` 槽）。
-     * 这一格钉的是"二选一"：两处不许同时挂同一组开关，否则就是两本账。
-     *
-     * 回退成什么会红：把 `hasRealMessages &&` 那半个条件删掉 ⇒ 这两颗各数到 1 颗，而应当 0 颗。
-     */
-    @Test
-    fun secondaryControlsYieldToTheMessageCardWhenThereAreNoRealMessages() {
-        rule.setContent {
-            UiMatrix(360).RenderIn(LocalDensity.current.density) {
-                ReplyInput(
-                    draftText = "",
-                    currentRole = ChatMessage.Role.HER,
-                    editingIndex = -1,
-                    onDraftChange = {},
-                    onRoleChange = {},
-                    onAdd = {},
-                    onFocusChange = {},
-                    onlyThisRound = false,
-                    onOnlyThisRoundChange = {},
-                    hasRealMessages = false,
-                    intentEntry = {
-                        androidx.compose.material3.Text("SENTINEL_PROACTIVE")
-                    }
-                )
-            }
-        }
-        rule.mainClock.advanceTimeBy(16L)
-
+        val entries = rule.onAllNodesWithTag(PANEL_ROUND_SCOPE_TEST_TAG, useUnmergedTree = true)
+            .fetchSemanticsNodes()
         assertEquals(
-            "无真实消息时行 2 不许出现意图入口（那一组已收进消息卡内）",
-            0, rule.onAllNodesWithText("SENTINEL_PROACTIVE").fetchSemanticsNodes().size
-        )
-        assertEquals(
-            "无真实消息时行 2 不许出现「仅看本轮」",
-            0,
-            rule.onAllNodesWithTag(PANEL_ROUND_SCOPE_TEST_TAG, useUnmergedTree = true)
-                .fetchSemanticsNodes().size
+            "无真实消息时「仅看本轮」仍应常驻行 1（不许随 hasRealMessages 收走）",
+            1, entries.size
         )
     }
 }

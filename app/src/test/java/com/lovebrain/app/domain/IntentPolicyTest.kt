@@ -4,24 +4,25 @@ import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.IntentExpiry
 import com.lovebrain.app.model.IntentStatus
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * 持续意图的到期与保存校验（`IntentPolicy`）。
+ * 持续意图的到期判定与保存校验（`IntentPolicy`）。
  *
- * 同一把"日期是否已过"的尺此前在**发起生成**和**面板刷新**两处各写了一遍，
- * 保存校验又单独用了第二个时钟（填日期用 `TimeFmt.today()`，判过去用 `LocalDate.now()`）；
- * 搬成一处后，这些都得有用例钉着，否则下次还是靠巧合保持一致。
+ * 新规格下有效期四档：ONE_HOUR / ONE_DAY / ONE_WEEK（时间档，保存时刻算出到期时刻）
+ * 与 COMPLETED（保存即标完成）。到期判定走 "yyyy-MM-dd HH:mm" 字符串比较
+ * （ISO-like 格式字典序 = 时间序）。
  */
 class IntentPolicyTest {
 
-    private val today = "2026-09-24"
+    private val now = "2026-09-24 09:00"
 
     private fun cfg(
         enabled: Boolean = true,
-        expiry: IntentExpiry = IntentExpiry.UNTIL_DONE,
+        expiry: IntentExpiry = IntentExpiry.ONE_DAY,
         expiryDate: String = "",
         status: IntentStatus = IntentStatus.ACTIVE
     ) = IntentConfig(text = "周末约她", enabled = enabled, expiry = expiry, expiryDate = expiryDate, status = status)
@@ -29,101 +30,101 @@ class IntentPolicyTest {
     // ─── 到期判定 ────────────────────────────────────────────────
 
     @Test
-    fun `a dated intent expires the day after its date, for both TODAY and DATE`() {
-        for (expiry in listOf(IntentExpiry.TODAY, IntentExpiry.DATE)) {
+    fun `a time-based intent expires once its pinned moment is in the past`() {
+        for (expiry in listOf(IntentExpiry.ONE_HOUR, IntentExpiry.ONE_DAY, IntentExpiry.ONE_WEEK)) {
             assertTrue(
-                "$expiry 昨天到期就该判过期",
-                IntentPolicy.shouldAutoExpire(cfg(expiry = expiry, expiryDate = "2026-09-23"), today)
-            )
-            assertEquals(
-                "$expiry 当天仍然有效",
-                false,
-                IntentPolicy.shouldAutoExpire(cfg(expiry = expiry, expiryDate = today), today)
+                "$expiry 到期时刻已过就该判过期",
+                IntentPolicy.shouldAutoExpire(cfg(expiry = expiry, expiryDate = "2026-09-24 08:00"), now)
             )
             assertEquals(
                 "$expiry 未到期不判过期",
                 false,
-                IntentPolicy.shouldAutoExpire(cfg(expiry = expiry, expiryDate = "2026-10-01"), today)
+                IntentPolicy.shouldAutoExpire(cfg(expiry = expiry, expiryDate = "2026-09-25 09:00"), now)
             )
         }
     }
 
     @Test
-    fun `until-done never auto-expires whatever the date says`() {
-        assertTrue(
-            IntentPolicy.shouldAutoExpire(cfg(expiry = IntentExpiry.UNTIL_DONE, expiryDate = "2020-01-01"), today).not()
+    fun `COMPLETED never auto-expires whatever the date says`() {
+        assertFalse(
+            IntentPolicy.shouldAutoExpire(cfg(expiry = IntentExpiry.COMPLETED, expiryDate = "2020-01-01 00:00"), now)
         )
     }
 
     @Test
     fun `only an enabled active intent can be auto-expired`() {
-        val past = "2026-09-01"
-        assertTrue(IntentPolicy.shouldAutoExpire(cfg(expiry = IntentExpiry.DATE, expiryDate = past), today))
+        val past = "2026-09-01 00:00"
+        assertTrue(IntentPolicy.shouldAutoExpire(cfg(expiry = IntentExpiry.ONE_DAY, expiryDate = past), now))
         assertEquals(
             "关闭中的意图不该被后台改写状态", false,
-            IntentPolicy.shouldAutoExpire(cfg(enabled = false, expiry = IntentExpiry.DATE, expiryDate = past), today)
+            IntentPolicy.shouldAutoExpire(cfg(enabled = false, expiry = IntentExpiry.ONE_DAY, expiryDate = past), now)
         )
         for (status in listOf(IntentStatus.PAUSED, IntentStatus.COMPLETED, IntentStatus.EXPIRED)) {
             assertEquals(
                 "$status 不是活动态，不再判过期", false,
-                IntentPolicy.shouldAutoExpire(cfg(expiry = IntentExpiry.DATE, expiryDate = past, status = status), today)
+                IntentPolicy.shouldAutoExpire(cfg(expiry = IntentExpiry.ONE_DAY, expiryDate = past, status = status), now)
             )
         }
     }
 
     @Test
     fun `a legacy intent without a date is kept rather than silently expired`() {
-        // 自动填日期之前的老数据：没有日期就没有比较依据，宁可继续注入也不悄悄判死
-        for (expiry in listOf(IntentExpiry.TODAY, IntentExpiry.DATE)) {
+        // 没有到期时刻就没有比较依据，宁可继续注入也不悄悄判死
+        for (expiry in listOf(IntentExpiry.ONE_HOUR, IntentExpiry.ONE_DAY, IntentExpiry.ONE_WEEK)) {
             assertEquals(
                 expiry.toString(), false,
-                IntentPolicy.shouldAutoExpire(cfg(expiry = expiry, expiryDate = ""), today)
+                IntentPolicy.shouldAutoExpire(cfg(expiry = expiry, expiryDate = ""), now)
             )
         }
     }
 
-    // ─── 保存 ────────────────────────────────────────────────────
+    // ─── 到期时刻计算 ────────────────────────────────────────────
 
     @Test
-    fun `TODAY always pins its date to the day being saved on`() {
-        assertEquals(today, IntentPolicy.effectiveExpiryDate(IntentExpiry.TODAY, "2020-01-01", today))
-        assertEquals("2026-10-01", IntentPolicy.effectiveExpiryDate(IntentExpiry.DATE, "2026-10-01", today))
-        assertEquals("", IntentPolicy.effectiveExpiryDate(IntentExpiry.UNTIL_DONE, "", today))
+    fun `each time-based expiry pins its moment relative to the save time`() {
+        assertEquals("2026-09-24 10:00", IntentPolicy.effectiveExpiryDate(IntentExpiry.ONE_HOUR, "", now))
+        assertEquals("2026-09-25 09:00", IntentPolicy.effectiveExpiryDate(IntentExpiry.ONE_DAY, "", now))
+        assertEquals("2026-10-01 09:00", IntentPolicy.effectiveExpiryDate(IntentExpiry.ONE_WEEK, "", now))
     }
 
     @Test
-    fun `a dated intent refuses empty malformed and past-active`() {
-        val empty = IntentPolicy.validateSave(IntentExpiry.DATE, "", IntentStatus.ACTIVE, today)
-        assertTrue("空日期要拒：$empty", empty!!.contains("不能为空"))
-
-        val malformed = IntentPolicy.validateSave(IntentExpiry.DATE, "2026/10/01", IntentStatus.ACTIVE, today)
-        assertTrue("格式不对要拒：$malformed", malformed!!.contains("格式"))
-
-        val past = IntentPolicy.validateSave(IntentExpiry.DATE, "2026-09-01", IntentStatus.ACTIVE, today)
-        assertTrue("过去日期配活动态要拒：$past", past!!.contains("过去"))
+    fun `COMPLETED carries no expiry date`() {
+        assertEquals("", IntentPolicy.effectiveExpiryDate(IntentExpiry.COMPLETED, "2026-10-01 09:00", now))
     }
 
     @Test
-    fun `a past date is fine when the intent is not being kept active`() {
-        for (status in listOf(IntentStatus.PAUSED, IntentStatus.COMPLETED, IntentStatus.EXPIRED)) {
-            assertNull(
-                "$status 归档到过去是合法的",
-                IntentPolicy.validateSave(IntentExpiry.DATE, "2026-09-01", status, today)
-            )
-        }
+    fun `an unparseable now leaves the caller-supplied date untouched`() {
+        // now 坏了宁可不过期也不悄悄改写
+        assertEquals("2026-10-01 09:00",
+            IntentPolicy.effectiveExpiryDate(IntentExpiry.ONE_DAY, "2026-10-01 09:00", "不是日期"))
+    }
+
+    // ─── 完成状态 ────────────────────────────────────────────────
+
+    @Test
+    fun `COMPLETED forces the status to COMPLETED, other expiries keep the given status`() {
+        assertEquals(IntentStatus.COMPLETED, IntentPolicy.effectiveStatus(IntentExpiry.COMPLETED, IntentStatus.ACTIVE))
+        assertEquals(IntentStatus.ACTIVE, IntentPolicy.effectiveStatus(IntentExpiry.ONE_DAY, IntentStatus.ACTIVE))
+        assertEquals(IntentStatus.PAUSED, IntentPolicy.effectiveStatus(IntentExpiry.ONE_WEEK, IntentStatus.PAUSED))
+    }
+
+    // ─── 保存校验 ────────────────────────────────────────────────
+
+    @Test
+    fun `COMPLETED is always a valid save`() {
+        assertNull(IntentPolicy.validateSave(IntentExpiry.COMPLETED, "", IntentStatus.COMPLETED, now))
     }
 
     @Test
-    fun `only the DATE type is date-validated`() {
-        assertNull(IntentPolicy.validateSave(IntentExpiry.TODAY, "", IntentStatus.ACTIVE, today))
-        assertNull(IntentPolicy.validateSave(IntentExpiry.UNTIL_DONE, "乱七八糟", IntentStatus.ACTIVE, today))
-        assertNull(IntentPolicy.validateSave(IntentExpiry.DATE, today, IntentStatus.ACTIVE, today))
-        assertNull(IntentPolicy.validateSave(IntentExpiry.DATE, "2026-10-01", IntentStatus.ACTIVE, today))
+    fun `a time-based save is valid once its moment has been computed`() {
+        assertNull(IntentPolicy.validateSave(IntentExpiry.ONE_HOUR, "2026-09-24 10:00", IntentStatus.ACTIVE, now))
+        assertNull(IntentPolicy.validateSave(IntentExpiry.ONE_DAY, "2026-09-25 09:00", IntentStatus.ACTIVE, now))
+        assertNull(IntentPolicy.validateSave(IntentExpiry.ONE_WEEK, "2026-10-01 09:00", IntentStatus.ACTIVE, now))
     }
 
     @Test
-    fun `unparseable today never turns a valid save into a false rejection`() {
-        // 校验用的"今天"来自同一个时钟；万一它坏了，宁可放行也不能把用户挡在外面
-        assertNull(IntentPolicy.validateSave(IntentExpiry.DATE, "2026-09-01", IntentStatus.ACTIVE, "不是日期"))
+    fun `a blank moment for a time-based save is rejected`() {
+        val reason = IntentPolicy.validateSave(IntentExpiry.ONE_DAY, "", IntentStatus.ACTIVE, now)
+        assertTrue("空到期时刻要拒：$reason", reason!!.contains("不能为空"))
     }
 }

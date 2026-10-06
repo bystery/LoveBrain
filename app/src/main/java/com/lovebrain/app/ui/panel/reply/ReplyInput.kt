@@ -191,17 +191,16 @@ internal const val PANEL_ROUND_SCOPE_TEST_TAG = "round_scope_entry"
  *
  * 形状（依据基线 v1 §3 第 11 条窄窗砍序 + 用户原话第 10 条，见
  * `handoffs\2026-10-05-P2-宿主接线单.md`）：
- * · **行 1** = 她 / 我 / 补充 / 输入框(weight 1f) / ＋ 同一条中线；
- * · **行 2** = 次级控制（意图 / 仅看本轮）。行 2 只在"当前有真实消息"时挂在这里；
- *   无消息时这两个入口一起收进消息卡内（见 [MessageList] 空态分支的 `secondaryControls` 槽），
- *   两处二选一、共用同一份状态，绝不在两处各维护一个开关。
+ * · **行 1** = 她 / 我 / 补充 / ＋ / 🔒（仅看本轮） / 输入框(weight 1f) 同一条中线；
+ *   输入框吃剩余宽度（weight 1f），挤也不缩短它。「仅看本轮」那颗用 🔒 符号占位
+ *   （contentDescription 仍是 [PANEL_ROUND_SCOPE_LABEL]，给读屏的全名），常驻行 1、
+ *   不再随有没有真实消息在行 2 / 消息卡之间二选一挂载。
  *
  * 行 1 是回复/主动发**共用**的通用形制：主动发（`showRoleChips = showAddButton = false`）时
  * 行 1 自然退化为只剩输入框——这不是"未接线的旧单行分支"，而是行 1 的窄化实例。
  *
- * ⚠ 意图入口今天仍由宿主另画（`LoveBrainPanelScreen.kt:585-597`，属禁区）：本轮把它做成
- *   [intentEntry] 槽，接线单点名让宿主把那颗 `IntentChip` 灌进行 2；槽没灌东西时行 2 只剩
- *   「仅看本轮」，与现状等价、不留假入口。
+ * ⚠ 持续意图入口已搬到设置页（不再由宿主灌进来），旧「行 2 次级控制」整组撤掉；
+ *   「仅看本轮」是行 1 上的一颗紧凑胶囊（与 [IntentChip] 同一档 `LbChipStyles.pill`）。
  *
  * 设计来源：
  * · 微信 8.0 聊天界面改版：功能按钮与输入框整合、单手操作、圆润边框
@@ -237,15 +236,8 @@ fun ReplyInput(
     /** 那颗入口的点击——**null 就不画这一颗**（不给没接线的屏留假入口） */
     onOnlyThisRoundChange: (() -> Unit)? = null,
     /**
-     * 行 2 的意图入口槽：本体由宿主放进来（今天那颗 `IntentChip`），这里只管"它落在行 2"。
-     * null = 宿主还没把它搬进来（当前生产形态：宿主在 ReplyInput 之后另画一颗，见接线单）。
-     */
-    intentEntry: (@Composable () -> Unit)? = null,
-    /**
-     * 当前是否有真实消息（HER/ME）。为 true 时次级控制（意图 / 仅看本轮）挂在这里（行 2）；
-     * 为 false 时这两颗一起收进消息卡内（[MessageList] 空态分支），这一屏的行 2 让位。
-     * 判据与 [MessageList] 内部过滤 IDEA 的那一口径同源（见 `hasRealDialogueRows`），
-     * 宿主只算一次、两处传同一份——不许一内一外各维护一个开关。
+     * 当前是否有真实消息（HER/ME）。保留给宿主与 [MessageList] 共用同一口径的那一根线
+     * （见 `hasRealDialogueRows`）；「仅看本轮」现已常驻行 1，这一参不再决定它的挂载点。
      */
     hasRealMessages: Boolean = true
 ) {
@@ -312,9 +304,11 @@ fun ReplyInput(
         }
     }
 
-    // ── 行 1：她 / 我 / 补充 / 输入框 / ＋（回复与主动发共用的通用形制） ──
+    // ── 行 1：她 / 我 / 补充 / ＋ / 🔒（仅看本轮） / 输入框(last, weight 1f) ──
     // 主动发（showRoleChips = showAddButton = false）时 chipsSection/addSection 各自短路，
     // 行 1 自然只剩那颗吃满宽度的输入框——这就是原话第 10 条要的第一行，不是遗留单行分支。
+    // 「仅看本轮」常驻行 1（不再随有没有真实消息在行 2 / 消息卡之间二选一挂载），
+    // 接了回调才画（roundEntryArmed），否则一颗都不长出来。
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -325,46 +319,15 @@ fun ReplyInput(
             modifier = Modifier.fillMaxWidth()
         ) {
             chipsSection()
-            inputSection()
             addSection()
-        }
-        // ── 行 2：次级控制（意图 / 仅看本轮）。无真实消息时让位给消息卡内的同一组 ──
-        if (hasRealMessages && (roundEntryArmed || intentEntry != null)) {
-            Spacer(Modifier.height(Spacing.xs))
-            ReplySecondaryControls(
-                onlyThisRound = onlyThisRound,
-                onOnlyThisRoundChange = if (roundEntryArmed) onOnlyThisRoundChange else null,
-                intentEntry = intentEntry
-            )
-        }
-    }
-}
-
-/**
- * 次级控制行（意图 + 仅看本轮）的唯一一份形制（依据基线 v1 §3 第 11 条 / 用户原话第 10 条）。
- *
- * 为什么要抽出来：这一组按"有没有真实消息"在两个地方二选一挂载——有消息时是输入区的行 2，
- * 无消息时收进消息卡内（[MessageList] 空态分支的 `secondaryControls` 槽）。两处必须长一样、
- * 且读同一份状态，所以把形制收进这一个函数；状态（[onlyThisRound] 与那颗开关的点击、意图入口）
- * 一律由外面传进来，这里不自存一份（否则就是第二本账）。
- */
-@Composable
-internal fun ReplySecondaryControls(
-    onlyThisRound: Boolean,
-    onOnlyThisRoundChange: (() -> Unit)?,
-    intentEntry: (@Composable () -> Unit)?,
-    modifier: Modifier = Modifier
-) {
-    val showRound = onOnlyThisRoundChange != null
-    if (!showRound && intentEntry == null) return
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
-    ) {
-        intentEntry?.invoke()
-        if (showRound) {
-            RoundScopeChip(selected = onlyThisRound, onClick = { onOnlyThisRoundChange?.invoke() })
+            if (roundEntryArmed) {
+                Spacer(Modifier.width(Spacing.sm))
+                RoundScopeChip(
+                    selected = onlyThisRound,
+                    onClick = { onOnlyThisRoundChange?.invoke() }
+                )
+            }
+            inputSection()
         }
     }
 }
@@ -415,34 +378,38 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 /**
- * 「仅看本轮」那一颗：与三颗 chip 同一形状档（可见 28dp 胶囊 + 外层 48dp 透明热区），
- * 选中带勾（第10节第4条 的可见判据）。
+ * 「仅看本轮」那一颗：常驻行 1（在 ＋ 与输入框之间），紧凑胶囊档（[LbChipStyles.pill]，
+ * 与 [IntentChip] 同一档、22dp），选中带勾（第10节第4条 的可见判据）。
  *
- * 这里只负责把它挂进**次级控制行**（[ReplySecondaryControls]，有消息时在输入区行 2、
- * 无消息时收进消息卡内）并把当前状态读进来；开与不开真正的行为（下一轮快照生效、
+ * 可见文案用 🔒 符号占位（"锁在这一轮 / 仅看本轮"），读屏仍念全名 [PANEL_ROUND_SCOPE_LABEL]
+ * （挂在 contentDescription 上）。开与不开真正的行为（下一轮快照生效、
  * 旧结果标过时）住在 `RoundStateStore` 与主线程那一侧，不归这颗管（）。
- * 颜色档沿用这一族已有的 tokens；"选中轻蓝"的具体 token 由设计系统的主人定，见交付报告"需"。
+ *
+ * ⚠ **热区与视觉分两层**（与 [RoleChip] 同一范式、与 `LbChipStyles.segmented` 同一写法）：
+ * `pill` 这一档默认 `touchFloor = false` + `layeredTouch = false`（[IntentChip] 就是这么用的、
+ * 它那一笔欠账登记在 `UiLayerDependencyContractTest` 里）。这一颗长在行 1 上、由
+ * `PanelHostSemanticsTest.every actionable node the panel draws meets the touch floor`
+ * 这一格直接量到，所以这里把这两档都翻成 `true`：外层透明盒垫到 48dp 见方承担点击与语义，
+ * 里面的胶囊仍按 22dp 画——视觉一字不改，手指与读屏拿到的都是 48。
  */
 @Composable
 private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
+    // 可见用 🔒 符号占位（"锁在这一轮 / 仅看本轮"），读屏仍念全名 [PANEL_ROUND_SCOPE_LABEL]。
+    // 紧凑胶囊档与 [IntentChip] 同一档（LbChipStyles.pill, 22dp），选中带勾。
+    // 热区分层：外层 48dp 透明盒承担点击/语义，内层 22dp 胶囊只管可见——与 RoleChip 同一范式。
     LbChip(
-        label = PANEL_ROUND_SCOPE_LABEL,
+        label = "🔒",
         selected = selected,
         onClick = onClick,
         interaction = LbChipInteraction.Multi,
-        modifier = Modifier.testTag(PANEL_ROUND_SCOPE_TEST_TAG),
-        style = LbChipStyles.filled.copy(
-            radius = LoveBrainShape.md,
-            textStyle = AppTypography.labelMedium,
-            fontWeightSelected = FontWeight.Bold,
-            background = SurfaceInset,
-            paddingHorizontal = 9.dp,
-            paddingVertical = 0.dp,
-            pressedScale = 0.92f,
-            pressFeedback = LbChipPressFeedback.Spring,
+        modifier = Modifier
+            .testTag(PANEL_ROUND_SCOPE_TEST_TAG)
+            .semantics { contentDescription = PANEL_ROUND_SCOPE_LABEL },
+        style = LbChipStyles.pill.copy(
+            pillHeight = 22.dp,
             markSelectedWithCheck = true,
-            layeredTouch = true,
-            pillHeight = ReplyDimens.ROLE_CHIP_HEIGHT_DP.dp
+            touchFloor = true,
+            layeredTouch = true
         )
     )
 }

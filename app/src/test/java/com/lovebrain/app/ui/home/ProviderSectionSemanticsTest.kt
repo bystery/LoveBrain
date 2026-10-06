@@ -50,6 +50,8 @@ class ProviderSectionSemanticsTest {
         get() = ApplicationProvider.getApplicationContext<Context>()
             .resources.displayMetrics.density
 
+    private val ctx get() = ApplicationProvider.getApplicationContext<Context>()
+
     private val probe by lazy { SemanticsProbe(density) }
 
     private fun fakeVm(tickets: List<ProviderTicket>, active: ProviderTicket?, ready: Boolean): SetupViewModel {
@@ -143,7 +145,7 @@ class ProviderSectionSemanticsTest {
             "展开后卡片的公告必须换掉，而且是当前语言的词（收起态=${before.contentDescriptions}，" +
                 "展开态=${after.contentDescriptions}）",
             after.contentDescriptions != before.contentDescriptions &&
-                after.contentDescriptions.any { it.contains("Collapse", ignoreCase = true) }
+                after.contentDescriptions.any { it.contains(ctx.getString(R.string.action_collapse)) }
         )
     }
 
@@ -153,7 +155,7 @@ class ProviderSectionSemanticsTest {
         mount(fakeVm(emptyList(), null, false))
         clickCard()
         val targets = probe.actionableTargets(rule, "供应商区（空态）")
-        val addEntry = targets.filter { it.announced.contains("Add", ignoreCase = true) }
+        val addEntry = targets.filter { it.announced.contains(ctx.getString(R.string.provider_add)) }
         assertEquals(
             "空态里应当有一个添加供应商的动作：" + targets.joinToString { it.describe() },
             true, addEntry.isNotEmpty()

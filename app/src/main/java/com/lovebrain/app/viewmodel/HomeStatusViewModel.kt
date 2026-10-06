@@ -284,7 +284,8 @@ class HomeStatusViewModel(
     private val service: HomeServicePort = FloatingServiceHomePort,
     private val provider: HomeProviderPort? = null,
     private val knowledge: HomeKnowledgePort = UnknownHomeKnowledgePort,
-    private val probe: HomeProbePort? = null
+    private val probe: HomeProbePort? = null,
+    private val store: SettingsStorePort? = null
 ) : ViewModel() {
 
     private val _status = MutableStateFlow(AdvisorStatus(AdvisorState.Stopped))
@@ -415,6 +416,13 @@ class HomeStatusViewModel(
             if (token != checkToken || !userStarted) return@launch   // 迟到的响应：关掉了/又点了一次，不作数
             // 记在身份上，而不是记在"最后一次"上：这一组的凭据之后一直有效（取回不再花钱）
             ledger.remember(identityOf(ref, identityKbName()), verdict)
+            // 落盘副本：VM 被 Activity 销毁后 ledger 会丢，这颗布尔让重新进页面时
+            // 仍能交回 Verified（见 connectionFor 的 ledger 空兜底），不把绿过的灯落回黄。
+            when (verdict) {
+                HomeConnectionVerdict.Verified -> store?.connectionVerified = true
+                HomeConnectionVerdict.Failed -> store?.connectionVerified = false
+                else -> Unit
+            }
             checking = false
             publish()
         }
@@ -458,10 +466,22 @@ class HomeStatusViewModel(
      * - 账上取得到 → 原样取回：不作废、不补发（"检查一次、结果持续有效"就落在这两行）；
      * - 账上取不到（这组身份真的从没按过 ▶）→ [HomeConnectionVerdict.NotChecked]，
      *   黄字念的是中性事实"连接还没检查过"，**不是**"连接失败"。
+     *
+     * **落盘兜底**（修"重进屏幕灯落回黄"）：账上取不到 **且账本是空的**（= 全新 VM，Activity 销毁后
+     * 重建的那一次）时，读 [SettingsStorePort.connectionVerified]——上一次按 ▶ 真的连通过就交回
+     * [HomeConnectionVerdict.Verified]，不把已经绿过的灯落回黄。只在账本空时兜底，不在身份变化时兜底：
+     * 换供应商/换模型/切当前对象时 ledger 里已有旧身份的记录（`remembered > 0`），走的是 NotChecked
+     * 那一档——旧身份的结论不许替没验过的新身份说话。
      */
-    private fun connectionFor(ref: HomeProviderRef?, identity: String): HomeConnectionVerdict =
-        if (ref == null || !ref.usable) HomeConnectionVerdict.NotApplicable
-        else ledger.recall(identity) ?: HomeConnectionVerdict.NotChecked
+    private fun connectionFor(ref: HomeProviderRef?, identity: String): HomeConnectionVerdict {
+        if (ref == null || !ref.usable) return HomeConnectionVerdict.NotApplicable
+        ledger.recall(identity)?.let { return it }
+        // 全新 VM（ledger 整本空）：落盘副本兜底，重进屏幕不落回黄
+        if (ledger.remembered == 0 && store?.connectionVerified == true) {
+            return HomeConnectionVerdict.Verified
+        }
+        return HomeConnectionVerdict.NotChecked
+    }
 
     private companion object {
         const val NO_PROVIDER = "-"
@@ -490,5 +510,6 @@ fun newHomeStatusViewModel(
     service = FloatingServiceHomePort,
     provider = SettingsStoreHomeProviderPort(store),
     knowledge = ReadPortHomeKnowledgePort(knowledge),
-    probe = GatewayHomeProbePort(store, gateway)
+    probe = GatewayHomeProbePort(store, gateway),
+    store = store
 )

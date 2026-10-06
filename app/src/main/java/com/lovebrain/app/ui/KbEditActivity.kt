@@ -48,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.lovebrain.app.R
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.heightIn
 import com.lovebrain.app.domain.LessonDoc
@@ -209,14 +210,21 @@ class KbEditActivity : ComponentActivity() {
                 }
 
                 if (!loaded) {
-                    // 加载态也是一整屏，所以它的外框也归同一个所有者——
-                    // 之前这里第二个 `Box(fillMaxSize).background(SurfaceBase)` 是同一套东西的副本
-                    LbScreenScaffold {
+                    // 加载态也是一整屏，所以它的外框归同一个所有者 [ScreenPage]（与知识库列表页、
+                    // 反馈案例页同一副版式），不再自己拼第二个 `LbScreenScaffold + Box(background)`。
+                    // 转圈那一棵照 [LbAsyncState] Loading 档的形状画一次：Primary 色、`Spacing.xl` 见方、
+                    // 带 `LbAsyncTags.LOADING` 锚点（与其它页那一格同一 tag，自动化找得到）。
+                    ScreenPage(title = "知识库编辑", onBack = { finish() }) {
                         Box(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.weight(1f).fillMaxWidth(),
                             contentAlignment = Alignment.Center
                         ) {
-                            CircularProgressIndicator(color = Primary)
+                            CircularProgressIndicator(
+                                color = Primary,
+                                modifier = Modifier
+                                    .size(Spacing.xl)
+                                    .testTag(LbAsyncTags.LOADING)
+                            )
                         }
                     }
                 } else {
@@ -622,6 +630,12 @@ internal fun KbEditScreen(
                                 .semantics { contentDescription = editorName },
                             textStyle = AppTypography.bodyLarge.copy(color = TextPrimary),
                             colors = OutlinedTextFieldDefaults.colors(
+                                // 「摸黑打字」根因之一：colors 没钉文字色与容器底，M3 默认的 onSurface/transparent
+                                // 在这套底色下落成不可读。这里钉成与预览那一支同一对（TextPrimary 字 / SurfaceCard 底）。
+                                focusedTextColor = TextPrimary,
+                                unfocusedTextColor = TextPrimary,
+                                focusedContainerColor = SurfaceCard,
+                                unfocusedContainerColor = SurfaceCard,
                                 focusedBorderColor = PrimarySubtle,
                                 unfocusedBorderColor = Border,
                                 cursorColor = Primary

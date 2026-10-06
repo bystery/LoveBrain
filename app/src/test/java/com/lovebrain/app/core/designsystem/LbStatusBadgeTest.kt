@@ -31,7 +31,7 @@ import org.robolectric.annotation.GraphicsMode
  * 状态变了会补播**（第6节第5条 第②栏）。
  *
  * 三件事各自都有反面：
- * - 五档各有一句中文 + 一句英文（`values-en` 少一条就静默回落到中文，所以两边逐档比）；
+ * - 五档各有一句中文（本项目已改为中文-only，删掉了 `values-en`，不再做中英逐档比）；
  * - 五档的**说法互不相同**（"未启动"与"未授权"若并成一句，卡片就少告诉用户一件事）；
  * - 胶囊带 `contentDescription` 与 `liveRegion = Polite`——后者是"从运行中变成已隐藏时
  *   TalkBack 自己会念"，少了它，视障用户只能主动去找那一格。
@@ -101,18 +101,11 @@ class LbStatusBadgeTest {
     }
 
     @Test
-    fun `every status has its own words in both languages`() {
+    fun `every status has its own words`() {
         val zh = resFor("zh")
-        val en = resFor("en")
         LbStatus.values().forEach { status ->
             val a = zh.getString(status.labelRes)
-            val b = en.getString(status.labelRes)
-            assertTrue("$status 有一边是空的：zh=$a en=$b", a.isNotBlank() && b.isNotBlank())
-            assertNotEquals(
-                "$status 中英两边解析出同一句 ⇒ values-en 根本没有这条，系统静默回落到中文",
-                a, b
-            )
-            assertTrue("$status 在英文下仍是中文：$b", b.none { it in '一'..'鿿' })
+            assertTrue("$status 解析成空白：zh=$a", a.isNotBlank())
         }
         val labels = LbStatus.values().map { zh.getString(it.labelRes) }
         assertEquals(

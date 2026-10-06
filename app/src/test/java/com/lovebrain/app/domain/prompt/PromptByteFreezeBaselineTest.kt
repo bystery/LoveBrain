@@ -216,10 +216,10 @@ class PromptByteFreezeBaselineTest {
         "reply/no-selector" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
         "reply/scene-chain-stale" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
         "reply/budget-overflow" to Frozen("5783d7eccf9d999820ddcfeba10123d2e90b69e41a921ce494b6aba7c92742a2", 26661),
-        "reply/intent-until-done" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
-        "reply/intent-today" to Frozen("3bba8551891ba0b711fc54977d9f928990748c8c26d6de79427eb300be898f59", 2884),
-        "reply/intent-date-future" to Frozen("a2333bcdf71c24fe9db53b9048bff5668dfb570142f745f1ada435de62701b8e", 2878),
-        "reply/intent-date-past" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
+        "reply/intent-one-day" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
+        "reply/intent-one-hour-future" to Frozen("3bba8551891ba0b711fc54977d9f928990748c8c26d6de79427eb300be898f59", 2884),
+        "reply/intent-one-day-future" to Frozen("a2333bcdf71c24fe9db53b9048bff5668dfb570142f745f1ada435de62701b8e", 2878),
+        "reply/intent-one-week-past" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
         "reply/intent-paused" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
         "reply/intent-completed" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
         "reply/correction-wrong-with-text" to Frozen("4bb166f6a7857f789779ddc492130cf501f436569b4755582a87fec9f91861cb", 2832),
@@ -250,7 +250,7 @@ class PromptByteFreezeBaselineTest {
         // （时机/为什么现在适合/从哪里接/什么时候先别发/发送前要准备什么 + 场景策略与字段口径），
         // 2370 → 5848 字节。这是**内容真的变了**，不是所有者搬动；变更说明留 TeamWorkspace
         // `evidence/2026-10-05-feedback/impl-I1-proactive.md`。
-        "system/proactive" to Frozen("6f6b1b9e3365a1c0656c6c9fb47433d948c77240e5ed2a75e6e99774895ddaef", 5848),
+        "system/proactive" to Frozen("34cc15e9fd19922d4b27e14eb6786d9be1fae6903fe608ab9598f6b548c3b55d", 5851),
         // 2026-10-03：`engine/knowledge_prompt/lessons.md` 这一族改了两次（加"不要输出一级标题/
         // 不要抄字段说明"那两段 + 本轮把 `## 示例` 里那两条 `# [日期] 第N次提取` 摘掉——它一边禁止一边示范，
         // 正是用户实测到的双标题成因）。这一行的期望**只是那颗资产自身的字节**（不拼任何东西），
@@ -375,37 +375,42 @@ class PromptByteFreezeBaselineTest {
         Probe("reply/budget-overflow") {
             runBlocking { fx(profileLength = 12_000).builder.buildReplyUserPrompt(kbOf(), twoMsgs, "想幽默一点") }
         },
-        Probe("reply/intent-until-done") {
+        Probe("reply/intent-one-day") {
             runBlocking {
                 fx().builder.buildReplyUserPrompt(
                     kbOf(), twoMsgs, "", intentConfig = IntentConfig(text = "这周把见面的事定下来", enabled = true)
                 )
             }
         },
-        Probe("reply/intent-today") {
-            runBlocking {
-                fx().builder.buildReplyUserPrompt(
-                    kbOf(), twoMsgs, "",
-                    intentConfig = IntentConfig(text = "今天只聊开心的", enabled = true, expiry = IntentExpiry.TODAY)
-                )
-            }
-        },
-        Probe("reply/intent-date-future") {
+        Probe("reply/intent-one-hour-future") {
             runBlocking {
                 fx().builder.buildReplyUserPrompt(
                     kbOf(), twoMsgs, "",
                     intentConfig = IntentConfig(
-                        text = "月底前和好", enabled = true, expiry = IntentExpiry.DATE, expiryDate = "2099-12-31"
+                        text = "今天只聊开心的", enabled = true,
+                        expiry = IntentExpiry.ONE_HOUR, expiryDate = "2099-12-31 09:00"
                     )
                 )
             }
         },
-        Probe("reply/intent-date-past") {
+        Probe("reply/intent-one-day-future") {
             runBlocking {
                 fx().builder.buildReplyUserPrompt(
                     kbOf(), twoMsgs, "",
                     intentConfig = IntentConfig(
-                        text = "早就到期了", enabled = true, expiry = IntentExpiry.DATE, expiryDate = "2020-01-01"
+                        text = "月底前和好", enabled = true,
+                        expiry = IntentExpiry.ONE_DAY, expiryDate = "2099-12-31 09:00"
+                    )
+                )
+            }
+        },
+        Probe("reply/intent-one-week-past") {
+            runBlocking {
+                fx().builder.buildReplyUserPrompt(
+                    kbOf(), twoMsgs, "",
+                    intentConfig = IntentConfig(
+                        text = "早就到期了", enabled = true,
+                        expiry = IntentExpiry.ONE_WEEK, expiryDate = "2020-01-01 00:00"
                     )
                 )
             }

@@ -14,8 +14,8 @@ import com.lovebrain.app.util.TimeFmt
  *
  * 语义约束：
  * - 持续意图区块应用有效期与完成状态——到期或完成的意图不注入；PAUSED 保留文本但不注入。
- * - 有效期三类：TODAY 依赖 status 字段（已过期时 status=EXPIRED）；DATE 用设备本地日期判断过期
- *   （不硬编码 UTC，今天创建的今天有效，明天自动到期）；UNTIL_DONE 依赖 status 字段。
+ * - 有效期四档：ONE_HOUR/ONE_DAY/ONE_WEEK 用设备本地时区算出到期时刻（yyyy-MM-dd HH:mm），
+ *   到期即不注入；COMPLETED 在保存时已把 status 改成 COMPLETED，上面那道 status 守卫已经挡住。
  * - 军师备注区块仅当正文非空时出现，正文**逐字全量**注入（展示端省略过，发给模型不许裁）。
  *
  * ⚠  改名与改语义：这一段以前写着"用户想这样回……请基于这个方向润色出4种方案"，
@@ -28,7 +28,7 @@ object IntentIdeaBlock {
 
     /** 持续意图区块
      *  应用有效期与完成状态——到期或完成的意图不注入。
-     *  使用设备本地时区判断 TODAY 和 DATE 过期。 */
+     *  时间档（ONE_HOUR/ONE_DAY/ONE_WEEK）用设备本地时区判断过期。 */
     fun buildIntentBlock(intentConfig: IntentConfig): String {
         if (!intentConfig.enabled || intentConfig.text.isBlank()) return ""
         // 检查意图状态——COMPLETED/EXPIRED 不注入
@@ -37,21 +37,16 @@ object IntentIdeaBlock {
         // PAUSED 保留文本但不注入
         if (intentConfig.status == IntentStatus.PAUSED) return ""
         // 检查有效期
-        val today = TimeFmt.today()
         when (intentConfig.expiry) {
-            IntentExpiry.TODAY -> {
-                // 仅今天——使用设备本地日期，不硬编码 UTC
-                // 今天创建的意图今天有效，明天自动到期
-                // 由于我们不知道创建日期，依赖 status 字段——已过期时 status=EXPIRED
-            }
-            IntentExpiry.DATE -> {
-                // 指定日期过期
-                if (intentConfig.expiryDate.isNotBlank() && intentConfig.expiryDate < today) {
+            IntentExpiry.ONE_HOUR, IntentExpiry.ONE_DAY, IntentExpiry.ONE_WEEK -> {
+                // 时间档——用设备本地时区算到期，过期不注入
+                val now = TimeFmt.now()
+                if (intentConfig.expiryDate.isNotBlank() && intentConfig.expiryDate < now) {
                     return ""  // 已过期，不注入
                 }
             }
-            IntentExpiry.UNTIL_DONE -> {
-                // 直到手动完成——依赖 status 字段
+            IntentExpiry.COMPLETED -> {
+                // 已完成——依赖 status 字段（COMPLETED 已在保存时写入，上面那道守卫挡住了）
             }
         }
         return "【持续意图】\n${intentConfig.text.trim()}\n\n"

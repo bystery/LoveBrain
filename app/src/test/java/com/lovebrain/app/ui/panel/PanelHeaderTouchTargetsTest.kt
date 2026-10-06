@@ -191,9 +191,13 @@ class PanelHeaderTouchTargetsTest {
             return on.first().label
         }
 
-        assertEquals("初始（回复模式）应选中第一段", "Reply", selectedLabel())
+        val replyLabel = ApplicationProvider.getApplicationContext<Context>()
+            .getString(R.string.panel_mode_reply)
+        val counselingLabel = ApplicationProvider.getApplicationContext<Context>()
+            .getString(R.string.panel_mode_counseling)
+        assertEquals("初始（回复模式）应选中第一段", replyLabel, selectedLabel())
         rule.runOnIdle { panelMode.value = 1 }
-        assertEquals("切到谈心应选中第二段", "Talk it through", selectedLabel())
+        assertEquals("切到谈心应选中第二段", counselingLabel, selectedLabel())
     }
 
     /**

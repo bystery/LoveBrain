@@ -317,23 +317,27 @@ data class IntentConfig(
     val enabled: Boolean = false, // 默认关闭
     val revision: Int = 0,       // 每次保存递增，用于快照识别
     // 有效期与完成状态
-    val expiry: IntentExpiry = IntentExpiry.UNTIL_DONE, // 默认直到手动完成
-    val expiryDate: String = "",  // 指定日期时使用 yyyy-MM-dd 格式
+    val expiry: IntentExpiry = IntentExpiry.ONE_DAY, // 默认一天
+    val expiryDate: String = "",  // 时间档用 yyyy-MM-dd HH:mm 格式（保存时刻计算得出）
     val status: IntentStatus = IntentStatus.ACTIVE    // 当前状态
 )
 
 /**
  * 意图有效期选项。
- * - TODAY: 仅今天（设备本地时区）
- * - DATE: 指定日期
- * - UNTIL_DONE: 直到手动完成（默认）
- * 旧数据无 expiry 字段时反序列化默认为 UNTIL_DONE，保持原语义。
+ * - ONE_HOUR: 一小时（设备本地时区，保存时刻 + 1 小时）
+ * - ONE_DAY: 一天（保存时刻 + 1 天，默认）
+ * - ONE_WEEK: 一个星期（保存时刻 + 7 天）
+ * - COMPLETED: 已完成（保存即标完成，不再注入）
+ *
+ * 旧数据（TODAY/DATE/UNTIL_DONE）反序列化会失败、回退到默认 IntentConfig()，
+ * 与"切库读不出意图就当没有意图"的既有口径一致。
  */
 @Serializable
 enum class IntentExpiry {
-    TODAY,      // 仅今天
-    DATE,       // 指定日期
-    UNTIL_DONE  // 直到手动完成
+    ONE_HOUR,   // 一小时
+    ONE_DAY,    // 一天
+    ONE_WEEK,   // 一个星期
+    COMPLETED   // 已完成
 }
 
 /**

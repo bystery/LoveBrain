@@ -49,7 +49,7 @@ class UiBaselineRegressionTest {
         assertEquals(48, AppDimens.EMPTY_ICON_CONTAINER_DP)
         assertEquals(10, AppDimens.ARROW_SIZE_DP)
         assertEquals(18, AppDimens.ACTION_ICON_SIZE_DP)
-        assertEquals(14, AppDimens.LOADING_SPINNER_SIZE_DP)
+        // LOADING_SPINNER_SIZE_DP 已删除——所有加载 spinner 统一走 Spacing.xl（16dp）
     }
 
     // ═══ 主题色验证 ═══

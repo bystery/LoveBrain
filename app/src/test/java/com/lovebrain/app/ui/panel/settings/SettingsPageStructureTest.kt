@@ -112,6 +112,11 @@ class SettingsPageStructureTest {
      * （面板那扇 overlay 窗口也起不了系统对话框——那里缺的是 Activity 的 window token）。
      * 词边界那一支是必要的：`LbDialog(` 里含 `Dialog(` 这个子串，裸 contains 会把
      * "只走共用所有者"误报成"自己开了一扇窗"（同一族坑：按子串认的锚点会误吃前缀）。
+     *
+     * ⚠ **`LbModalSheet` 在 `SettingsIntentEntry.kt` 里是登记豁免的**：那一格首次打开持续意图
+     * 时弹一扇介绍浮层（复用浮层那一份开合动画与版式），它是**叠加层**、不是把整页切过去——
+     * "设置页本身仍是一页"这条合同断的是页容器，不是禁这页里一颗合法的弹层入口。
+     * 豁免只豁免这一颗文件这一把锚点，别读成"LbModalSheet 在设置页随便用"。
      */
     @Test
     fun `the settings page opens no floating surface and no external window`() {
@@ -123,11 +128,31 @@ class SettingsPageStructureTest {
             "Popup(" to "弹层",
             "startActivity" to "跳外部 Activity"
         )
+        // 登记式豁免（与 UiLayerDependencyContractTest 那一族同形）：路径 -> 为什么这里不是"整页浮层"。
+        // 只豁免"这一颗文件用了这一把锚点"这一件事；豁免消失时这格要红（不许留一条已不成立的豁免）。
+        val sheetExemptions: Map<String, String> = mapOf(
+            "SettingsIntentEntry.kt" to
+                "首次打开持续意图时弹的那扇介绍浮层（LbModalSheet）：它是叠加层、不是页容器，" +
+                    "整页仍是一页；拨开关才触发，确认后写进 prefs 不再弹"
+        )
         val hits = needles.flatMap { (needle, why) ->
-            sources.filter { (_, code) -> code.contains(needle) }.map { "${it.first} 里的「$needle」——$why" }
+            sources.filter { (name, code) ->
+                code.contains(needle) &&
+                    !(needle == "LbModalSheet" && sheetExemptions.containsKey(name))
+            }.map { "${it.first} 里的「$needle」——$why" }
         } + sources.filter { (_, code) -> selfDrawnDialog.containsMatchIn(code) }
             .map { "${it.first} 里自己开了一扇 Dialog(" }
         assertTrue("设置页长出了不该有的容器：\n$hits", hits.isEmpty())
+        // 豁免不是空白支票：被豁免的那颗文件必须还在、且确实还画着 LbModalSheet
+        // （文件被搬走/改名/删掉介绍浮层 ⇒ 这条豁免就成了幽灵，同样红）。
+        sheetExemptions.forEach { (name, why) ->
+            val exempt = sources.firstOrNull { it.first == name }
+                ?: error("豁免登记指向的文件 $name 不在 settings/ 扫描范围内——豁免要一起删，别留着当已有闸（理由：$why）")
+            assertTrue(
+                "$name 画了 LbModalSheet 才许它豁免；看不见 LbModalSheet 说明这颗豁免已经没主人认领了：$why",
+                exempt.second.contains("LbModalSheet")
+            )
+        }
     }
 
     /**

@@ -172,7 +172,7 @@ class ProviderFormSemanticsTest {
         ctx.getString(R.string.provider_form_name_placeholder),
         "https://api.example.com",
         ctx.getString(R.string.provider_form_key_placeholder),
-        "显示", "Thinking mode",
+        "显示", ctx.getString(R.string.provider_thinking_mode),
         setModelLabel, testConnectionLabel, editLabel, deleteLabel, "＋ 添加模型", "取消", saveChangesLabel
     )
 

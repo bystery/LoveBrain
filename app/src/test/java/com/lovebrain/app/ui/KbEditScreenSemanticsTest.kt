@@ -77,6 +77,7 @@ class KbEditScreenSemanticsTest {
      */
     private val ctx get() = ApplicationProvider.getApplicationContext<Context>()
     private val saveLabel: String get() = ctx.getString(com.lovebrain.app.R.string.kb_save)
+    private val backLabel: String get() = ctx.getString(com.lovebrain.app.R.string.common_back)
     private val scan by lazy { ScrollScan(rule, probe) }
 
     private val files = listOf(
@@ -192,7 +193,7 @@ class KbEditScreenSemanticsTest {
     @Test
     fun `the editor screen reports its tabs and both state actions`() {
         val all = scanBothStates()
-        val absent = listOf("Back", "我是谁", "她是谁", "编辑", "预览", "放弃修改", saveLabel)
+        val absent = listOf(backLabel, "我是谁", "她是谁", "编辑", "预览", "放弃修改", saveLabel)
             .filter { !all.containsKey(it) }
         assertTrue("这一屏该量到这 7 类，没量到：" + absent + "；实际：" + all.keys.sorted(),
             absent.isEmpty())

@@ -112,8 +112,8 @@ class MessageListEmptyStateTest {
      *
      * 取值方式与生产同一颗入口：`getString(R.string.…)`，**测试侧不抄第二份文案**——
      * 上一版在这里写了英文字面量，于是"改了 res 里的说法"会把这格判红，而它要判的其实是
-     * "屏幕上那句是不是资源里那句、模式一翻它跟着翻"。中英两份成不成对由
-     * `PanelUiTextLocaleParityJvmTest` 那把尺管（它逐键比 `values` 与 `values-en`）。
+     * "屏幕上那句是不是资源里那句、模式一翻它跟着翻"。本项目已收成单一中文资源
+     * （删掉了 `values-en`），不再做中英逐键比。
      */
     @Test
     fun `both empty state wordings come from resources and switch with the mode`() {

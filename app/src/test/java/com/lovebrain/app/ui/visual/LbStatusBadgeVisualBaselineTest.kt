@@ -27,9 +27,9 @@ import org.robolectric.annotation.GraphicsMode
  * 五档都是生产真会画的：`AssistantStatusCard` 交的是 `status.badge`，
  * 而 `advisorStatus` 那侧五种状态各有生产者（含账本里点名的 `WindowMissing`）。
  *
- * 胶囊上的文字来自 `R.string.status_*`，本机 JVM 的 Robolectric 默认 locale 是英文
- * （`common_back` 实测读回 "Back"，仓库里那一族语义树测试也按这个前提写），
- * 所以这五张图里是 ASCII 词，跨机器同图。
+ * 胶囊上的文字来自 `R.string.status_*`。本项目已收成单一中文资源（删掉了
+ * `values-en`），所以本机 JVM 的 Robolectric 默认 locale（en-US）现在回落到
+ * 默认的 `values/strings.xml`，五张图里是中文词。删 `values-en` 后基线图片需重录。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(

@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -401,16 +403,18 @@ internal fun KbListScreen(
  *   §3.4 之后静息结构归描边、状态归状态槽：6dp 点 + `bodySmall`12 字同一行）；
  * - `meta`：「阶段：X」与「已对话 N 轮」交**两段**，`｜` 分隔符的主人是 `lbMetaLine`（在公共件里），
  *   页面不再拼整句、也不再并排两颗 `Text`；
- * - `actions`：编辑 / 导出 / 删除恰好三颗（§3.6 动作行上限）；删除恒走 destructive 档，
- *   页面挑不了语气；「编辑」「删除」两个词接上仓里**已有**的 `a11y_action_edit` / `a11y_action_delete`
+ * - `actions`：重命名 / 编辑 / 导出恰好三颗次级胶囊（§3.6 动作行上限）。「编辑」「导出」「重命名」
+ *   三个词接上仓里**已有**的 `a11y_action_edit` / `a11y_action_export` / `a11y_action_rename`
  *   （中英两份都在盘上，此前只有读屏在用），不是新文案；
+ * - `trailingIcon`：删除从动作行挪到顶右角的垃圾桶图标。语气仍恒走 [LbTextActionTone.Destructive]，
+ *   热区与角色归 [LbTextAction] 那唯一一处主人（公共件这一槽只给落点，不画 clickable），
+ *   名字接仓里**已有**的 `a11y_action_delete`；点了走页面层那扇既有删除确认弹窗（`pendingDelete`）。
  * - `onClick`：点整卡 = 激活（与旧交互一致）；当前在用的库没有"再激活一次"这件事，交 `null`，
  *   公共件此时不挂 `Role.Button`（旧档靠 `clickable(enabled = !isActive)` 压死一颗活按钮）。
  *
- * ⚠ `detail` 那一颗「重命名」是**第四颗动作，动作行没有它的档**——`⋯` 溢出档还没进设计系统
- * （缺口登记在 `LbListCardTest.no more than three capsules` 那格的账里）。宁走 `detail` 槽、
- * 也不偷偷删功能，也不在页面里长第四种动作写法：它仍走 `LbTextAction` 那颗唯一主人的
- * `RowCapsule` 档。等溢出档补齐，这一颗搬回 `actions`（见 2026-10-06-L1b 接线单）。
+ * ⚠ 改之前「重命名」是动作行装不下的第四颗，挂在 `detail` 槽（理由见 2026-10-06-L1b 接线单）。
+ * 这一轮把删除挪去顶右角、动作行让位给 rename/edit/export 三颗次级胶囊：`detail` 槽退场，
+ * 「⋯ 溢出档」那条债随这一改一并还清——四件事都在屏上、且都走动作行/尾图标这两条有主人的路。
  */
 @Composable
 private fun KbCard(
@@ -433,19 +437,21 @@ private fun KbCard(
             stringResource(R.string.kb_card_turns, kb.turnCount)
         ),
         actions = listOf(
+            LbListCardAction.secondary(stringResource(R.string.a11y_action_rename), onRename),
             LbListCardAction.secondary(stringResource(R.string.a11y_action_edit), onEdit),
-            LbListCardAction.secondary(stringResource(R.string.a11y_action_export), onExport),
-            LbListCardAction.destructive(stringResource(R.string.a11y_action_delete), onDelete)
+            LbListCardAction.secondary(stringResource(R.string.a11y_action_export), onExport)
         ),
         onClick = if (isActive) null else onActivate,
         modifier = Modifier.fillMaxWidth(),
-        detail = {
-            // 第四颗动作的落点（理由见上面那颗 ⚠）：语气走行内次级档，热区走公共件那一颗 48。
+        trailingIcon = {
+            // 删除走顶右角的垃圾桶图标（动作行让位给 rename/edit/export 三颗次级胶囊）：
+            // 语气仍恒 destructive（红），热区与角色归 LbTextAction 那唯一一处主人，
+            // 名字接 a11y_action_delete；点了走页面层那扇既有删除确认弹窗。
             LbTextAction(
-                label = stringResource(R.string.a11y_action_rename),
-                onClick = onRename,
-                tone = LbTextActionTone.RowSecondary,
-                size = LbTextActionSize.RowCapsule
+                icon = Icons.Filled.Delete,
+                description = stringResource(R.string.a11y_action_delete),
+                onClick = onDelete,
+                tone = LbTextActionTone.Destructive
             )
         }
     )

@@ -153,10 +153,10 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         assertEquals("now kb-b", "kb-b", vm.activeKb.value?.name)
         assertEquals("UI intent should be B", "intentB", vm.intents.config.value.text)
 
-        vm.intents.save("newA", true, IntentExpiry.UNTIL_DONE)
+        vm.intents.save("newA", true, IntentExpiry.ONE_DAY)
         delay(200)
 
-        coVerify { knowledgeRepo.saveIntent("kb-a", "newA", true, IntentExpiry.UNTIL_DONE, any(), IntentStatus.ACTIVE) }
+        coVerify { knowledgeRepo.saveIntent("kb-a", "newA", true, IntentExpiry.ONE_DAY, any(), IntentStatus.ACTIVE) }
 
         assertEquals("after save A, UI still B", "kb-b", vm.activeKb.value?.name)
         assertEquals("after save A, UI intent still B", "intentB", vm.intents.config.value.text)

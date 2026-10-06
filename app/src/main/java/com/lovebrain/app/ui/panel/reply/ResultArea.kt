@@ -214,7 +214,7 @@ fun ResultArea(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             CircularProgressIndicator(
                                 color = Primary,
-                                modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp),
+                                modifier = Modifier.size(Spacing.xl),
                                 strokeWidth = Spacing.xs
                             )
                             Spacer(Modifier.width(Spacing.sm))
@@ -873,7 +873,7 @@ private fun CoreLoadingIndicator(
         ) {
             CircularProgressIndicator(
                 color = Primary,
-                modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp),
+                modifier = Modifier.size(Spacing.xl),
                 strokeWidth = Spacing.xs
             )
             Spacer(Modifier.width(Spacing.sm))

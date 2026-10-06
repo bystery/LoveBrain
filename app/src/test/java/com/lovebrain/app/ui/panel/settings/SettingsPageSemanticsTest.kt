@@ -164,27 +164,40 @@ class SettingsPageSemanticsTest {
     @Test
     fun `every actionable node on the settings page meets the touch floor`() {
         mount()
-        // 这一页的可交互件此刻只有页头那颗返回（滑杆交出的是进度语义，进不了这份样本，见 opacitySliderTarget）。
-        // 所以整份样本按 F3 装饰带那一档量——将来若在这页加一颗**页级**主动作（该走全站 48），
-        // 要换成 `probe.assertActionablesByTier { 逐颗认档 }`，不许把这一档整屏调松。
+        // 页头那一族（返回 / 收起）走 F3 装饰带那一档；意图开关那一颗是**页级**控件走全站 48。
+        // 滑杆交出的是进度语义，进不了这份样本，见 opacitySliderTarget。
+        // 所以先把页头那两颗从整份样本里挑出来按 F3 量，再单独判意图开关走 48——
+        // 将来若在这页加一颗**页级**主动作，该走全站 48，不许把这一档整屏调松。
         val headerFloor = TouchTier.PANEL_HEADER_HOTZONE // 短边下限（24）：与本体齿轮同一档
         val seen = scannedTargets()
-        val offenders = seen.filter { it.tooSmall(headerFloor) }
+        val headerNames = setOf(backName, ctx.getString(R.string.panel_collapse))
+        val headerNodes = seen.filter { it.contentDescriptions.any { d -> d in headerNames } }
+        val headerOffenders = headerNodes.filter { it.tooSmall(headerFloor) }
         assertTrue(
-            "有 ${offenders.size}/${seen.size} 颗页头可交互节点小于 F3 装饰带那一档 ${headerFloor.toInt()}dp：\n" +
-                offenders.joinToString("\n") { "  " + it.describe() } +
+            "有 ${headerOffenders.size}/${headerNodes.size} 颗页头可交互节点小于 F3 装饰带那一档 ${headerFloor.toInt()}dp：\n" +
+                headerOffenders.joinToString("\n") { "  " + it.describe() } +
                 "\n  下限要垫在带语义的那颗自己身上；外面套一层大盒子等于没改。",
-            offenders.isEmpty()
+            headerOffenders.isEmpty()
         )
         // 反向证人（这一半才让上面那句不是"把尺调松了事"）：整行/返回盒不许被撑回旧那一条 48 厚顶栏。
         // 回退成 `LbTopBarLevel.Page` 时返回那颗 = 48 见方 > 30 → 这里当场红。
-        seen.forEach { node ->
+        headerNodes.forEach { node ->
             assertTrue(
                 "页头节点 ${node.describe()} 高过 F3 装饰带那一档 ${TouchTier.PANEL_HEADER_ROW.toInt()}dp——" +
                     "这就是本轮要拆掉的旧版式（原话第 17 条'控件大'的可定位来源）。",
                 node.heightDp <= TouchTier.PANEL_HEADER_ROW + 0.6f
             )
         }
+        // 意图开关那一颗是页级控件：MiniSwitch 自带 ≥48 见方热区，按全站下限量。
+        val intentToggle = seen.firstOrNull { it.contentDescriptions.any { d -> d.contains("意图") } }
+        assertTrue(
+            "设置页该有一颗意图开关；实到：${seen.joinToString { it.describe() }}",
+            intentToggle != null
+        )
+        assertTrue(
+            "意图开关走全站 48 下限，不许缩：" + intentToggle!!.describe(),
+            !intentToggle.tooSmall(TouchTier.SITE_FLOOR)
+        )
         // 滑杆那一颗单独按 tag 判（上面那份样本永远不会有它，见 opacitySliderTarget）
         val slider = opacitySliderTarget("整窗设置页")
         probe.assertTargetsMeetFloor(

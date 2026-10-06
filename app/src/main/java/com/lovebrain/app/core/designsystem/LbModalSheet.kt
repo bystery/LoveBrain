@@ -1,5 +1,12 @@
 package com.lovebrain.app.core.designsystem
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -54,6 +61,11 @@ import androidx.compose.ui.unit.dp
 private const val SHEET_MAX_HEIGHT_DP = 560
 
 /**
+ * 浮层开合动画时长——与 `PanelPageMotion.SLIDE_MS` 同档（200ms），整窗动画一致。
+ */
+private const val SHEET_ANIM_MS = 200
+
+/**
  * 动作热区下限：**不自己抄一个数**，指回 [AppDimens.TOUCH_TARGET_MIN_DP]。
  * 保留这个名字是因为读调用方时要看得出"这是浮层动作的下限"，
  * 但"无小于 48dp 热区"是全站口径——数写两遍就等于没有下限。
@@ -62,6 +74,10 @@ const val LB_SHEET_ACTION_MIN_DP = AppDimens.TOUCH_TARGET_MIN_DP
 
 /**
  * 一薄层浮层宿主：遮罩 + 居中卡片。
+ *
+ * 开合走 200ms 淡入/淡出 + 轻微缩放（[FastOutSlowInEasing]），与面板页切换同档，
+ * 不再"啪"地一下弹出/消失。遮罩与卡片共用同一次 `AnimatedVisibility`，
+ * 关闭手势只在可见时拦点击。
  *
  * [dismissable] 关掉时遮罩不再吞点击（用于"必须先做一个选择"那种流程）。
  */
@@ -72,30 +88,40 @@ fun LbModalSheet(
     dismissable: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.5f))
-            // 不用 clickable：那会给一整块遮罩加上"可点击节点"语义，读屏就得多念一口
-            // 没有名字的按钮。手势留在 pointerInput 里。
-            .pointerInput(dismissable) {
-                if (dismissable) detectTapGestures(onTap = { onDismissRequest() })
-            }
+    // 永远在树上、靠可见性翻进/翻出——这样 enter/exit 都跑得到，
+    // 调用方用 `if (show) LbModalSheet(...)` 也能在挂载/卸载那一次播动画。
+    AnimatedVisibility(
+        visible = true,
+        enter = fadeIn(tween(SHEET_ANIM_MS, easing = FastOutSlowInEasing)) +
+            scaleIn(tween(SHEET_ANIM_MS, easing = FastOutSlowInEasing), initialScale = 0.96f),
+        exit = fadeOut(tween(SHEET_ANIM_MS, easing = FastOutSlowInEasing)) +
+            scaleOut(tween(SHEET_ANIM_MS, easing = FastOutSlowInEasing), targetScale = 0.96f)
     ) {
-        Column(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .fillMaxWidth(0.92f)
-                .heightIn(max = SHEET_MAX_HEIGHT_DP.dp)
-                .verticalScroll(rememberScrollState())
-                .clip(LoveBrainShape.lg)
-                .background(SurfaceCard)
-                .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
-                // 卡片内部吞掉点击（点内容不该关浮层）——同理不声明成按钮
-                .pointerInput(Unit) { detectTapGestures { } }
-                .padding(Spacing.lg)
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.5f))
+                // 不用 clickable：那会给一整块遮罩加上"可点击节点"语义，读屏就得多念一口
+                // 没有名字的按钮。手势留在 pointerInput 里。
+                .pointerInput(dismissable) {
+                    if (dismissable) detectTapGestures(onTap = { onDismissRequest() })
+                }
         ) {
-            content()
+            Column(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxWidth(0.92f)
+                    .heightIn(max = SHEET_MAX_HEIGHT_DP.dp)
+                    .verticalScroll(rememberScrollState())
+                    .clip(LoveBrainShape.lg)
+                    .background(SurfaceCard)
+                    .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
+                    // 卡片内部吞掉点击（点内容不该关浮层）——同理不声明成按钮
+                    .pointerInput(Unit) { detectTapGestures { } }
+                    .padding(Spacing.lg)
+            ) {
+                content()
+            }
         }
     }
 }

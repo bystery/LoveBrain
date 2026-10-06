@@ -344,6 +344,12 @@ class KnowledgeRepository(
     // 页面与测试都从 `KnowledgeBaseCatalogPort` 拿它们，那颗端口现在由 [catalogWrites] 实现。
     // 本类留下的是它们要问的四件：唯一那把锁、唯一那条写链、唯一那道路径守门、唯一的编解码尺
     // （见 [CatalogWriteStorage] 那份实现）。
+    //
+    // 2026-10-06：`setActive` 从 `KnowledgeBaseCatalogPort` 那一族搬进 `KnowledgeRuntimePort`——
+    // 悬浮窗设置页要切库，面板侧只持有运行时端口。实现仍转手给 [catalogWrites]，不新增第二条写链。
+    override suspend fun setActive(name: String) = withContext(Dispatchers.IO) {
+        catalogWrites.setActive(name)
+    }
 
     // ═══════════ 持续意图（每 KB 一份，moment/intent.json） ═══════════
 

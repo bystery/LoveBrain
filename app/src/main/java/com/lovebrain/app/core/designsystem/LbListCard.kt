@@ -175,7 +175,14 @@ fun LbListCard(
     meta: List<String> = emptyList(),
     actions: List<LbListCardAction> = emptyList(),
     onClick: (() -> Unit)? = null,
-    detail: (@Composable () -> Unit)? = null
+    detail: (@Composable () -> Unit)? = null,
+    /**
+     * 标题行顶右角的那一颗（尾图标）。与 [actions] 不同族：动作行是「次级动作并排」，
+     * 这一颗是「整卡唯一的破坏性捷径」——母版页把删除从动作行挪到这里，动作行让位给
+     * rename/edit/export 三颗次级胶囊。热区与角色仍归 [LbTextAction] 那唯一一处主人，
+     * 公共件这里只给它一个落点，不画形状、不挂 clickable。
+     */
+    trailingIcon: (@Composable () -> Unit)? = null
 ) {
     Card(
         shape = LoveBrainShape.lg,
@@ -193,17 +200,28 @@ fun LbListCard(
     ) {
         // 卡内边距 = Spacing.lg（12，基线 §3.3 的"卡内 16→12"）。高由内容给，所以这里没有 heightIn。
         Column(modifier = Modifier.padding(Spacing.lg)) {
-            // ── 槽 1 标题 ──────────────────────────────────────────────────────
-            if (title.isNotBlank()) {
-                Text(
-                    text = title,
-                    style = AppTypography.titleMedium,
-                    color = TextPrimary,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = LbListCardDimens.TITLE_MAX_LINES,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.fillMaxWidth().testTag(LbListCardTags.TITLE)
-                )
+            // ── 槽 1 标题（+ 可选尾图标，顶右角）──────────────────────────────────
+            // 标题与尾图标同一行：标题占余宽 + ellipsis，尾图标贴尾部。两颗都没有时不画这一行。
+            if (title.isNotBlank() || trailingIcon != null) {
+                Row(
+                    verticalAlignment = Alignment.Top,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    if (title.isNotBlank()) {
+                        Text(
+                            text = title,
+                            style = AppTypography.titleMedium,
+                            color = TextPrimary,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = LbListCardDimens.TITLE_MAX_LINES,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f).testTag(LbListCardTags.TITLE)
+                        )
+                    }
+                    if (trailingIcon != null) {
+                        trailingIcon()
+                    }
+                }
             }
 
             // ── 槽 2 状态：点与字同一行，缺一不画另一 ─────────────────────────

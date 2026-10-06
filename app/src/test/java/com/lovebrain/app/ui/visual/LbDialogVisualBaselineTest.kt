@@ -49,8 +49,8 @@ import org.robolectric.annotation.GraphicsMode
  * `boundsInRoot`（≥48dp 那条下限），它量不出正文用了哪一档颜色、标题与正文之间的留白、
  * 三颗次级按钮是不是挤在同一行。那些正是"一功能一种格式"最容易漂回去的地方。
  *
- * 文字一律 ASCII：本机 JVM 的 Robolectric 默认 locale 是英文（`common_back` 实测读回
- * "Back"），基线要钉的是版式而不是某个 locale 的字形。
+ * 文字一律 ASCII（测试里写死的字面量，不走资源）：本项目已收成单一中文资源
+ * （删掉了 `values-en`），这里用硬编码 ASCII 是为了让基线只钉版式、不随 locale 漂。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(

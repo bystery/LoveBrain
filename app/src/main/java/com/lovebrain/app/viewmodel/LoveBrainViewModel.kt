@@ -986,8 +986,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             } ?: com.lovebrain.app.model.IntentConfig()
 
             // 到期只有一把尺（IntentPolicy）：这条规则此前在「发起生成」和「面板刷新」
-            // 两处各写了一遍，改一处漏一处
-            val effectiveIntent = if (IntentPolicy.shouldAutoExpire(intentSnapshot, com.lovebrain.app.util.TimeFmt.today())) {
+            // 两处各写了一遍，改一处漏一处。有效期改时间档后用 now()（yyyy-MM-dd HH:mm）比对，
+            // 与 IntentController 刷新路径用的是同一个时钟口径。
+            val effectiveIntent = if (IntentPolicy.shouldAutoExpire(intentSnapshot, com.lovebrain.app.util.TimeFmt.now())) {
                 intentSnapshot.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
             } else intentSnapshot
 
@@ -1680,6 +1681,20 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     }
 
     // ═══════════ 知识库管理 ═══════════
+
+    /**
+     * 悬浮窗设置页切库：写盘后走 [refreshKnowledgeBases] 那条已有的刷新链。
+     */
+    fun switchActiveKb(name: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) { knowledgeRepo.setActive(name) }
+            refreshKnowledgeBases()
+        }
+    }
+
+    /** 悬浮窗设置页列库用。 */
+    suspend fun listKnowledgeBases(): List<KnowledgeBase> =
+        withContext(Dispatchers.IO) { knowledgeRepo.listAll() }
 
     fun refreshKnowledgeBases() {
         viewModelScope.launch {

@@ -6,6 +6,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.R
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.ScrollScan
 import com.lovebrain.app.core.testing.SemanticsProbe
@@ -56,8 +57,8 @@ class IntentEditorSheetMergeTest {
     private val ctx get() = ApplicationProvider.getApplicationContext<Context>()
     private val probe by lazy { SemanticsProbe(ctx.resources.displayMetrics.density) }
 
-    /** 标题那句话的前半截——内联中文字面量（还没还债），所以本机两种语言下都是这个值 */
-    private val titlePrefix = "设置一个持续的对话目标"
+    /** 标题全文——已还债进 R.string.intent_editor_title；本机无 values-en 源文件，两语言下都解析成中文 */
+    private val titleText get() = ctx.getString(R.string.intent_editor_title)
 
     private fun mount(text: String = "周末约她看电影", enabled: Boolean = true) {
         rule.setContent {
@@ -76,7 +77,7 @@ class IntentEditorSheetMergeTest {
     @Test
     fun `the merged sheet still shows its title and shows it exactly once`() {
         mount()
-        val nodes = rule.onAllNodes(hasText(titlePrefix, substring = true)).fetchSemanticsNodes()
+        val nodes = rule.onAllNodes(hasText(titleText, substring = true)).fetchSemanticsNodes()
         assertEquals(
             "浮层顶上那句话归并后仍要读得到，而且只有一份（两份就是各写各的）：" +
                 "实到 ${nodes.size} 个节点",
@@ -85,7 +86,7 @@ class IntentEditorSheetMergeTest {
         // 证人：这棵树确实是那扇浮层，不是空挂载——两颗出口都在树里
         assertTrue(
             "挂载证人：量不到任何文案节点说明浮层压根没起来",
-            rule.onAllNodesWithText("有效期").fetchSemanticsNodes().isNotEmpty()
+            rule.onAllNodesWithText(ctx.getString(R.string.intent_expiry_label)).fetchSemanticsNodes().isNotEmpty()
         )
     }
 
@@ -133,8 +134,8 @@ class IntentEditorSheetMergeTest {
         assertEquals("标题槽全文件只该有一处", 1, Regex("LbModalSheetTitle\\(").findAll(code).count())
         assertEquals("动作行全文件只该有一处", 1, Regex("LbModalSheetActions\\(").findAll(code).count())
         assertEquals(
-            "「" + titlePrefix + "」这句话只该存在一份（两份就是  要收掉的那件事）",
-            1, Regex(titlePrefix).findAll(code).count()
+            "标题资源引用只该存在一份（两份就是各写各的）",
+            1, Regex("R\\.string\\.intent_editor_title").findAll(code).count()
         )
     }
 }

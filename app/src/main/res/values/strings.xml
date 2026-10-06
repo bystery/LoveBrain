@@ -134,7 +134,7 @@
         <item quantity="other">%1$d 条</item>
     </plurals>
     <string name="feedback_export_markdown">导出 MD</string>
-    <string name="feedback_export_json">导出 JSON</string>
+    <string name="feedback_export_json">导出</string>
     <string name="feedback_filter_all">全部</string>
     <!-- 回复结果那一排的"已踩"档：点了踩才出现（用户 2026-10-03 原话）。
          同排的"全部 %d""已赞 %d"此刻还写死在 ResultArea 里，是历史账，
@@ -274,9 +274,27 @@
          五段正文逐字照搬原内联字面量，中文里"节点/供应商/撤销"那几个子串是披露测试的点。 -->
     <string name="capture_disclosure_title">开启消息捕获前，请确认</string>
     <string name="capture_disclosure_agree">同意并继续</string>
-    <string name="capture_disclosure_reads_events">LoveBrain 会接收长按与窗口变化事件，并读取相关界面节点文字，用于判断你主动长按的消息以及“复制”菜单。</string>
+    <string name="capture_disclosure_reads_events">LoveBrain 会接收长按与窗口变化事件，并读取相关界面节点文字，用于判断你主动长按的消息以及"复制"菜单。</string>
     <string name="capture_disclosure_purpose">用于把你主动选择的聊天内容加入悬浮窗，从而生成回复建议。</string>
     <string name="capture_disclosure_sends_provider">当你请求 AI 回复时，相关聊天文字和所需知识上下文会发送给你在 LoveBrain 中配置的 AI 模型供应商。</string>
     <string name="capture_disclosure_writes_kb">捕获内容可在后续操作中写入 LoveBrain 本地知识库，例如聊天归档、谈心记录和画像更新所需的数据。</string>
-    <string name="capture_disclosure_no_autoclick">LoveBrain 不会通过无障碍服务自动点击、自动发送消息。你可以随时关闭“消息捕获”，或在系统设置中撤销无障碍权限。</string>
+    <string name="capture_disclosure_no_autoclick">LoveBrain 不会通过无障碍服务自动点击、自动发送消息。你可以随时关闭"消息捕获"，或在系统设置中撤销无障碍权限。</string>
+
+    <!-- 持续意图入口与编辑浮层（设置页入口 + IntentEditorSheet） -->
+    <string name="intent_entry_title">意图</string>
+    <string name="intent_label">持续意图</string>
+    <string name="intent_expiry_label">有效期</string>
+    <string name="intent_expiry_one_hour">一小时</string>
+    <string name="intent_expiry_one_day">一天</string>
+    <string name="intent_expiry_one_week">一个星期</string>
+    <string name="intent_expiry_completed">已完成</string>
+    <string name="intent_content_label">意图内容</string>
+    <string name="intent_content_placeholder">输入你的持续意图…</string>
+    <string name="intent_intro_body">设一个这一阶段一直在推进的对话目标（如\"约她周末看电影\"）。\n军师每轮生成都会参考它；不想要了随时在这里关掉。</string>
+    <string name="intent_intro_acknowledge">知道了</string>
+    <string name="intent_editor_title">设置一个持续的对话目标（如\"约她周末看电影\"），军师每轮生成时都会参考。</string>
+    <string name="intent_enable_label">启用</string>
+    <string name="intent_enable_switch_label">启用持续意图</string>
+    <string name="intent_too_long_error">意图过长，请精简到 %1$d 字以内</string>
+    <string name="intent_save">保存</string>
 </resources>

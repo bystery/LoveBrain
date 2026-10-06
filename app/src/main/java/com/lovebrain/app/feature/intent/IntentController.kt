@@ -50,8 +50,8 @@ class IntentController(
     private val onNotice: (String) -> Unit = {},
     /** 读写失败的日志：只交出一句话，异常类型由调用方决定怎么落 */
     private val onLog: (String) -> Unit = {},
-    /** "今天"只取一次：填日期与判过期用两个时钟，跨午夜那一下会给出两个不同的今天 */
-    private val readToday: () -> String = { com.lovebrain.app.util.TimeFmt.today() }
+    /** "现在"只取一次：填到期时刻与判过期用同一个时钟，跨小时/跨午夜那一下会给出同一个 now */
+    private val readNow: () -> String = { com.lovebrain.app.util.TimeFmt.now() }
 ) {
 
     private val _config = MutableStateFlow(IntentConfig())
@@ -94,7 +94,7 @@ class IntentController(
             return
         }
         // 自动到期检测——判定规则在 IntentPolicy（可离线单测）；改写失败不改变屏上那份判定
-        val finalConfig = if (IntentPolicy.shouldAutoExpire(current, readToday())) {
+        val finalConfig = if (IntentPolicy.shouldAutoExpire(current, readNow())) {
             val expired = current.copy(status = IntentStatus.EXPIRED)
             try {
                 // 到期同时把这条关掉（enabled=false），屏上那份仍用本地 copy 的 revision——两条都是搬之前的原样
@@ -121,29 +121,36 @@ class IntentController(
      * 校验不过就地拒绝、编辑状态原样留着；落盘成功后还要再过一次身份守卫才改屏、
      * 才关编辑器、才把当前结果标 stale——守卫不过时这些**一个都不做**，晚到的那次保存
      * 只改盘不改脸。
+     *
+     * 到期时刻与完成状态由 [IntentPolicy] 算：时间档（ONE_HOUR/ONE_DAY/ONE_WEEK）用
+     * 保存时刻 + 对应时长；COMPLETED 档把 status 改成 COMPLETED。UI 不再填日期。
+     *
+     * "已开启/已关闭"通知只在 enabled 真的跳变时发一次——文本/有效期编辑不该每按一键就弹一条。
      */
     fun save(
         text: String,
         enabled: Boolean,
-        expiry: IntentExpiry = IntentExpiry.UNTIL_DONE,
+        expiry: IntentExpiry = IntentExpiry.ONE_DAY,
         expiryDate: String = "",
         status: IntentStatus = IntentStatus.ACTIVE
     ) {
         val kbName = editorKbName ?: readActiveKbName() ?: return
-        // TODAY 一律自动写成当天，不依赖 UI 填；同一次保存里所有日期判定共用这一个今天
-        val today = readToday()
-        val effectiveExpiryDate = IntentPolicy.effectiveExpiryDate(expiry, expiryDate, today)
-        // DATE 类型严格校验——空 / 格式不对 / 过去日期配 ACTIVE 都当场拒绝
-        IntentPolicy.validateSave(expiry, effectiveExpiryDate, status, today)?.let { reason ->
+        val now = readNow()
+        val effectiveExpiryDate = IntentPolicy.effectiveExpiryDate(expiry, expiryDate, now)
+        val effectiveStatus = IntentPolicy.effectiveStatus(expiry, status)
+        IntentPolicy.validateSave(expiry, effectiveExpiryDate, effectiveStatus, now)?.let { reason ->
             onWarning(reason)
             return
         }
+        val prevEnabled = _config.value.enabled
         scope.launch {
             try {
-                val updated = writeIntent(kbName, text, enabled, expiry, effectiveExpiryDate, status)
+                val updated = writeIntent(kbName, text, enabled, expiry, effectiveExpiryDate, effectiveStatus)
                 if (readActiveKbName() == kbName) {
                     _config.value = updated
-                    onNotice(if (enabled) "持续意图已开启" else "持续意图已关闭")
+                    if (enabled != prevEnabled) {
+                        onNotice(if (enabled) "持续意图已开启" else "持续意图已关闭")
+                    }
                     _showEditor.value = false
                     onSaved()
                 }

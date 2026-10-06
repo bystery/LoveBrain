@@ -1,5 +1,12 @@
 package com.lovebrain.app.ui.panel
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.produceState
 import com.lovebrain.app.PanelBackdropOpacity
 import com.lovebrain.app.R
 import com.lovebrain.app.feature.composer.ComposerInputKind
@@ -141,6 +149,17 @@ private fun PanelSettingsPage(
     onCollapse: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // 持续意图：设置页那一格读同一份 config，一条写口 onIntentChange 拼一次 save。
+    // · 拨开关 / 改正文（recomputeExpiry=false）：传**已有 expiryDate**，
+    //   [IntentPolicy.effectiveExpiryDate] 保留它，不把计时重置；
+    // · 换有效期档（recomputeExpiry=true）：传空串触发按新档重算到期时刻。
+    val intentConfig by viewModel.intents.config.collectAsStateWithLifecycle()
+    val activeKb by viewModel.activeKb.collectAsStateWithLifecycle()
+    val kbList by produceState(initialValue = emptyList<com.lovebrain.app.model.KnowledgeBase>()) {
+        value = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            viewModel.listKnowledgeBases()
+        }
+    }
     LoveBrainSettingsContent(
         onBack = onBack,
         onCollapse = onCollapse,
@@ -150,6 +169,19 @@ private fun PanelSettingsPage(
             surface.setBackdropPreview(percent)
             viewModel.setPanelBackdropOpacityPercent(percent)
         },
+        intentEnabled = intentConfig.enabled,
+        intentText = intentConfig.text,
+        intentExpiry = intentConfig.expiry,
+        onIntentChange = { text, enabled, expiry, recompute ->
+            viewModel.intents.save(
+                text, enabled, expiry,
+                if (recompute) "" else intentConfig.expiryDate,
+                intentConfig.status
+            )
+        },
+        knowledgeBases = kbList,
+        activeKbName = activeKb?.name,
+        onSwitchKb = { name -> viewModel.switchActiveKb(name) },
         modifier = modifier
     )
 }
@@ -536,8 +568,8 @@ fun LoveBrainPanelScreen(
                 // 有真实消息 → 挂输入区行 2；没有 → 收进消息卡空态分支。两处二选一，绝不在
                 // 两处各存一份开关（那才是"意图与仅看本轮各长两个所有者"的第二本账）。
                 val hasRealRows = hasRealDialogueRows(messages)
-                // 持续意图那颗的本体仍在这里（`IntentChip` 属本页所有），搬的只是**挂载点**：
-                // 从"ReplyInput 之后另画一排"改成灌进 `intentEntry` 槽 ⇒ 屏上只有一条次级行。
+                // 持续意图那颗的本体仍在这里（`IntentChip` 属本页所有）——意图入口已搬到设置页，
+                // 这一槽保留给"搬挂载点"那条接线单的后续接线（另一路负责），这里不灌进 ReplyInput。
                 // 守卫沿用改前那一颗：没有活动知识库就不画——意图按库隔离，没有"这一块库"就无处可存。
                 val intentSlot: (@Composable () -> Unit)? = if (activeKb != null) {
                     {
@@ -548,13 +580,6 @@ fun LoveBrainPanelScreen(
                         )
                     }
                 } else null
-                val secondarySlot: (@Composable () -> Unit) = {
-                    ReplySecondaryControls(
-                        onlyThisRound = onlyThisRound,
-                        onOnlyThisRoundChange = { viewModel.toggleOnlyThisRound() },
-                        intentEntry = intentSlot
-                    )
-                }
                 ReplyInput(
                     draftText = draftText,
                     currentRole = composeRole,
@@ -568,12 +593,10 @@ fun LoveBrainPanelScreen(
                     // 不动 captureRole —— 这正是"选《补充》后新增消息被标成上一个角色"那条原话的修法。
                     inputKind = inputKind,
                     onInputKindChange = { viewModel.composer.accept(ComposerStore.Intent.SetInputKind(it)) },
-                    // ：仅看本轮常驻在输入行**下方那一行**（给了回调才画；不传就等于这一屏没有这颗入口）。
+                    // ：仅看本轮常驻输入行 1（在 ＋ 与输入框之间），给了回调才画。
                     onlyThisRound = onlyThisRound,
                     onOnlyThisRoundChange = { viewModel.toggleOnlyThisRound() },
-                    // 行 2 的意图入口 + 有没有真实消息（决定次级控制挂在行 2 还是收进消息卡内）。
-                    // 这两参是 `ReplyInput` 与 `MessageList` 共用同一口径的那一根线，见上面 hasRealRows。
-                    intentEntry = intentSlot,
+                    // hasRealMessages 与 MessageList 共用同一口径（hasRealRows）；仅看本轮不再随它二选一挂载。
                     hasRealMessages = hasRealRows,
                     onAdd = {
                         val text = draftText.trim()
@@ -597,13 +620,13 @@ fun LoveBrainPanelScreen(
                     focusRequester = inputFocusRequester
                 )
 
-                // ── 持续意图入口：宿主仍是这一页，**挂载点**已搬进 `ReplyInput` 的行 2 ──
+                // ── 持续意图入口：宿主仍是这一页，挂载点已从面板输入行撤走（搬到设置页）──
                 // 这颗原来长在「今日锦囊」页的标题行里，而它**从来不是**锦囊的一部分：回复链每次
                 // 生成都读 `intents.config` 拼进 prompt，PRODUCT_SPEC 第2节 把持续意图列在"保留、不许
                 // 借简化删"那一栏。锦囊页删掉之后这一颗换宿主活着过，一度落在这里"另画一排"——
                 // 于是屏上有两排次级控件（这一排 + 输入区那颗「仅看本轮」那一排），正是原话第 10 条
-                // 要收掉的形状。现在它走 `intentEntry` 槽，本体仍由上面 `intentSlot` 提供，
-                // 没有活动知识库依旧不画（意图按库隔离，没有"这一块库"就无处可存）。
+                // 要收掉的形状。意图入口现在走设置页（另一路负责接线），本体仍由上面 `intentSlot`
+                // 提供、没有活动知识库依旧不画（意图按库隔离，没有"这一块库"就无处可存）。
 
                 val density = androidx.compose.ui.platform.LocalDensity.current
                 var messageListHeight by remember { mutableStateOf(PanelDimens.MESSAGE_LIST_DEFAULT_HEIGHT_DP.dp) }
@@ -642,9 +665,7 @@ fun LoveBrainPanelScreen(
                     onEditNote = { viewModel.composer.accept(ComposerStore.Intent.BeginNoteEdit) },
                     // 侧滑清除备注：投的是 `ClearNote`，与被删对象分开记账——
                     // 绝不让那一下落到 `onDelete` 那条消息删除链上（备注不是聊天消息）。
-                    onClearNote = { viewModel.composer.accept(ComposerStore.Intent.ClearNote) },
-                    // 没有真实消息时次级控制收进这张卡内；与输入区行 2 二选一、读同一份状态。
-                    secondaryControls = if (hasRealRows) null else secondarySlot
+                    onClearNote = { viewModel.composer.accept(ComposerStore.Intent.ClearNote) }
                 )
                 DraggableDivider(
                     onDragDelta = { dyPx ->
@@ -827,7 +848,15 @@ fun LoveBrainPanelScreen(
         // 显隐只有 `IntentController.showEditor` 一本账：开在哪块库由它自己冻结（openEditor 先绑库
         // 再翻可见性），保存回 `intents.save(...)`，关闭点名到 `dismissEditor()`。
         // 这一扇在  之前借住在锦囊页里；那一页删掉之后宿主换成这里，能力一个字没减。
-        if (showIntentEditor) {
+        // 开合包一层 AnimatedVisibility（200ms 淡入淡出 + 纵向展开/收起，FastOutSlowInEasing），
+        // 与 `PanelPageMotion.SLIDE_MS` 同档，不再"啪"地一下弹出/消失。
+        AnimatedVisibility(
+            visible = showIntentEditor,
+            enter = fadeIn(tween(PanelPageMotion.SLIDE_MS, easing = FastOutSlowInEasing)) +
+                expandVertically(tween(PanelPageMotion.SLIDE_MS, easing = FastOutSlowInEasing)),
+            exit = fadeOut(tween(PanelPageMotion.SLIDE_MS, easing = FastOutSlowInEasing)) +
+                shrinkVertically(tween(PanelPageMotion.SLIDE_MS, easing = FastOutSlowInEasing))
+        ) {
             IntentEditorDialog(
                 text = intentConfig.text,
                 enabled = intentConfig.enabled,

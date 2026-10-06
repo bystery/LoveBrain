@@ -56,12 +56,13 @@ class OnboardingScreenSemanticsTest {
     private val scan by lazy { ScrollScan(rule, probe) }
 
     /**
-     * 两颗主动作的名字**走资源**（就在这一格之内：它们从内联债搬进了 `values` + `values-en`），
-     * 判据必须 `getString` 取——本机环境解析出英文，写死"下一步"会 0 命中。
+     * 两颗主动作的名字**走资源**（就在这一格之内：它们从内联债搬进了 `values`），
+     * 判据必须 `getString` 取——写死某一种语言的文案会 0 命中。
      */
     private val ctx get() = ApplicationProvider.getApplicationContext<Context>()
     private val nextLabel: String get() = ctx.getString(com.lovebrain.app.R.string.kb_next_step)
     private val finishLabel: String get() = ctx.getString(com.lovebrain.app.R.string.kb_finish_profile)
+    private val backLabel: String get() = ctx.getString(com.lovebrain.app.R.string.common_back)
 
     private fun mount() {
         rule.setContent {
@@ -90,7 +91,7 @@ class OnboardingScreenSemanticsTest {
         val candidates = targets.filter {
             !it.disabled &&
                 !it.label.contains(nextLabel) && !it.label.contains(finishLabel) &&
-                !it.label.contains("建空档案") && !it.label.contains("Back") &&
+                !it.label.contains("建空档案") && !it.label.contains(backLabel) &&
                 !it.label.contains("补充其他情况") && !it.label.contains("收起补充") &&
                 (it.role == "RadioButton" || it.role == "Checkbox" || it.selected != null)
         }
@@ -144,7 +145,7 @@ class OnboardingScreenSemanticsTest {
     fun `the wizard's first screen reports its options and both header actions`() {
         val seen = firstStep()
         val absent = listOf(
-            "Back", "建空档案", "刚认识/刚加上好友", "有点暧昧/在拉扯",
+            backLabel, "建空档案", "刚认识/刚加上好友", "有点暧昧/在拉扯",
             "已经在一起了", "闹矛盾了/僵住了", "快分了/已经分了", nextLabel
         ).filter { !seen.containsKey(it) }
         assertTrue("首屏该量到这 8 类，没量到：" + absent + "；实际：" + seen.keys.sorted(), absent.isEmpty())

@@ -2,8 +2,6 @@ package com.lovebrain.app.ui.feedback
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,11 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,29 +26,21 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
-import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Error
-import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.LbButtonState
 import com.lovebrain.app.core.designsystem.LbListCard
-import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.LbPrimaryButton
 import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.core.designsystem.Spacing
-import com.lovebrain.app.core.designsystem.SurfaceInset
 import com.lovebrain.app.core.designsystem.TextHint
 import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
@@ -72,7 +60,7 @@ import kotlinx.coroutines.launch
  * 今天这一页全部走同一颗公共件 `core/designsystem/LbListCard.kt` 拿：卡底、字阶、行数上限、
  * 动作写法与槽位间距都由那一颗持有，这一层只交内容（首句 / 余文 / 时间 / 展开层）。
  * 于是这张卡与知识库卡是**同一个壳、两种业务身份**：这里不会出现"阶段/编辑画像"，
- * 知识库那边也不会出现"导出 JSON"（`重做页通过判据` 的 M-10 就是逐区核对这一条）。
+ * 知识库那边也不会出现"导出"（`重做页通过判据` 的 M-10 就是逐区核对这一条）。
  *
  * 内容优先级按母版重排（D1 §③-9 的 A4 那一条）：
  * - **标题槽** = 回复的**首句**（[splitFirstSentence]），单行截断；旧写法是把整段正文当标题；
@@ -215,14 +203,8 @@ fun FeedbackCasesScreen(
                 }
             }
         ) {
-            // 「共多少条」是内容的一行小字，不是页头的第二行；数出来多少条就传多少。
-            Text(
-                text = pluralStringResource(R.plurals.feedback_case_count, cases.size, cases.size),
-                style = AppTypography.labelMedium,
-                color = TextHint
-            )
-
             // 就地短提示：一行小字，不弹窗、不另起一张卡。错误由用户点掉下一动作或重试自然清。
+            // 「共多少条」那一行已删：与知识库一级页同一副版式，内容紧接页头，不再多一条计数小字。
             inlineError?.let { message ->
                 Text(
                     text = message,
@@ -239,8 +221,10 @@ fun FeedbackCasesScreen(
                     modifier = Modifier.padding(top = Spacing.xs)
                 ) {
                     CircularProgressIndicator(
+                        // 与 `LbAsyncState` 那颗页面级 loading 同一档尺寸（`Spacing.xl` 16dp），
+                        // 不再走非标的 `AppDimens.LOADING_SPINNER_SIZE_DP`（14dp）那一档。
                         color = Primary,
-                        modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp),
+                        modifier = Modifier.size(Spacing.xl),
                         strokeWidth = Spacing.xs
                     )
                     Spacer(Modifier.width(Spacing.sm))
@@ -283,8 +267,9 @@ fun FeedbackCasesScreen(
                     // 基线 §3.3 的目标档：列表间距与卡内 12（`Spacing.lg`）、页尾 16（`Spacing.xl`）。
                     // ⚠ 这一页能自证的只有列表间距；水平边距那一档 24→16 归 `LbScreenScaffold`
                     // （M1 那层还没落，见 impl-M3b 台账的"待 M1 归一后回查"）。
+                    // 顶部那一档归零：与知识库一级页同一副版式，首张卡紧接页头，不再多一档 12dp 顶部留白。
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                        top = Spacing.lg, bottom = Spacing.xl
+                        bottom = Spacing.xl
                     ),
                     verticalArrangement = Arrangement.spacedBy(Spacing.lg)
                 ) {
@@ -475,46 +460,22 @@ internal fun splitFirstSentence(text: String): Pair<String, String> {
 }
 
 /**
- * 页头尾部那颗导出：形状照知识库卡尾部那一族（实心品牌底，零结果时灰），
- * 只保留"点一下导出 JSON"这一个动作。
+ * 页头尾部那颗导出：复用设计系统那颗 [LbPrimaryButton]（与知识库一级页底部主动作同一颗件），
+ * 只保留"点一下导出"这一个动作；零结果时切到 [LbButtonState.Disabled]，
+ * 仍在树上、报得出 disabled（`FeedbackCasesSemanticsTest` 的 `the export action stays visible
+ * but reports itself disabled when the list is empty` 钉的就是这一条）。
  *
- * ⚠ **缺口，不是选择**：这一颗该并进设计系统的动作档，但今天没有那颗能装它的档——
- * `LbTextAction(label = …)` 那一支把 `enabled` 写死成 `true`（`LbTextAction.kt:302-315`），
- * 而这一格要的正是在零结果时"仍在树上、并且报得出 disabled"（`FeedbackCasesSemanticsTest`
- * 的 `the export action stays visible but reports itself disabled when the list is empty`）。
- * 图标档那两支有 `enabled` 旋钮，可它是字形档、装不下一句"导出 JSON"。
- * ⇒ 等的就是具名那一档：**文字动作的 `enabled` 槽**（`LbTextAction(label, onClick, enabled)`，
- * 禁用仍留在树上报 disabled）；补齐后这一颗整块删掉、改 `RowActionButton`/`LbTextAction` 调用，
- * 异形与品牌底两本账同时销行。需求已写进 `handoffs/2026-10-05-M3b-公共件缺口.md`。
- * 本轮**不**新建第四种动作写法：宁可留一处已登记的自绘，也不长第二套形状。
+ * 旧写法是这一页唯一一颗自绘的 `Box + background + Text`——异形账本里那一笔，
+ * 本轮并进设计系统动作档销行。可见高度与热区由 [LbPrimaryButton] 那一处持有，
+ * 这一页不再自己画形状、不再自己挂 `Role.Button`。
  */
 @Composable
 private fun ExportAction(enabled: Boolean, label: String, onClick: () -> Unit) {
-    val (interaction, scale) = rememberPressScale(0.96f, "exportBtn")
-    Box(
-        modifier = Modifier
-            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clip(LoveBrainShape.md)
-            .background(if (enabled) Primary else SurfaceInset, LoveBrainShape.md)
-            .clickable(
-                interactionSource = interaction,
-                indication = null,
-                enabled = enabled,
-                role = Role.Button,
-                onClick = onClick
-            )
-            .padding(horizontal = Spacing.md, vertical = Spacing.sm),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            label,
-            style = AppTypography.labelMedium,
-            color = if (enabled) Color.White else TextSecondary,
-            fontWeight = FontWeight.SemiBold
-        )
-    }
+    LbPrimaryButton(
+        state = if (enabled) LbButtonState.Idle else LbButtonState.Disabled,
+        label = label,
+        onClick = onClick
+    )
 }
 
 /**

@@ -340,10 +340,7 @@ fun MessageList(
     // 侧滑清除备注（宿主投 `ComposerStore.Intent.ClearNote`）。null = 没接线 ⇒ 备注不留侧滑出口
     //（沿用"不给没接线的屏留半截手势"的旧规矩）；传进来后备注像消息一样可侧滑删，
     // 被删对象与回调分离：这里落的是"清备注"，绝不走 onDelete 那条消息删除链。
-    onClearNote: (() -> Unit)? = null,
-    // 无真实消息时收进消息卡内的次级控制（意图 + 仅看本轮）。宿主把 [ReplySecondaryControls]
-    // 灌进来；与输入区行 2 二选一挂载、读同一份状态（见 ReplyInput.hasRealMessages）。
-    secondaryControls: (@Composable () -> Unit)? = null
+    onClearNote: (() -> Unit)? = null
 ) {
     val listState = rememberLazyListState()
     val haptics = LocalHapticFeedback.current
@@ -520,12 +517,6 @@ fun MessageList(
                     onSwipeClear = onClearNote,
                     modifier = Modifier.fillMaxWidth().noteSwipeIsNotATap(noteSwipeFlag)
                 )
-            }
-            // 意图 + 仅看本轮：无真实消息时这一组一起收进这块卡内（与输入区行 2 二选一，
-            // 同一份状态由宿主灌进来；见 ReplyInput.hasRealMessages 那一份判据同源）
-            if (secondaryControls != null) {
-                Spacer(Modifier.height(Spacing.sm))
-                secondaryControls()
             }
         }
         return

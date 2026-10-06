@@ -33,7 +33,7 @@ import org.robolectric.annotation.GraphicsMode
  * 这一页把 第6节第3条 那四态收进 `LbAsyncState`（Loading/Error/Empty 三档交共用状态件），
  * Content 那一档下面才是自家的卡片列表。组件级基线钉的是 `LbAsyncState` 那颗组件本身，
  * 这一格钉的是**那一颗摆进这一页、下面再叠一层卡片列表**之后的样子。
- * 页头那一行（标题 / 返回 / 「导出 JSON」）、卡内多行文字的层级、展开后那一摞 metadata，
+ * 页头那一行（标题 / 返回 / 「导出」）、卡内多行文字的层级、展开后那一摞 metadata，
  * 这些在语义树上读不出来，树上只有一串 `role=Button` 与几行文字。
  * 热区与角色由 `FeedbackCasesSemanticsTest` 钉，像素由这一格钉。
  *
@@ -41,7 +41,7 @@ import org.robolectric.annotation.GraphicsMode
  * 第 89 行那条：列表就是全部已踩案例，"全部/理解错误"那一排是用户点名的废话）。
  * 本格的旧基线（2026-10-01 那版）画的正是被否定前的那一屏——「导出 MD」+ Markdown/JSON
  * 切换 + 每行卡底「· 未知模型 · 待分析」。第6节第5条 不许拿那种图要求新页回到旧外观，
- * 所以 2026-10-06 人看过新图（页头「已踩案例」+ 单一「导出 JSON」+ 卡片只有正文与时间）后重录。
+ * 所以 2026-10-06 人看过新图（页头「已踩案例」+ 单一「导出」+ 卡片只有正文与时间）后重录。
  *
  * 只摆「Content·两条案例」那一档：折叠的卡片就是正文 + 时间两行（`FeedbackCasesScreen.kt` 文件头
  * 那条 ⚠ 与 `FeedbackCasesSemanticsTest` 的 「the collapsed card shows the reply and the time and

@@ -1352,25 +1352,11 @@ class UiLayerDependencyContractTest {
             "",
             "谈心那一排的开始按钮与面板主动作同数同用途，主人已有；本轮拆块时先落在页面私有 object，改成引用那颗"
         ),
-        // 下面三颗是持续意图编辑器的**启用开关**（44×24 轨道 + 20 圆钮）：这一族随文件
-        // `SuggestPanel.kt`→`IntentEditorSheet.kt` 改名（见该文件头 KDoc，mv 移非删），
-        // 数与用途一字未改，只是路径跟着换——不是新长一颗矮档。core 里没有开关这一档（缺 LbSwitch），
-        // 与 FeedbackCasesScreen 那排自画开关同一处理：按实到登记、给开关立档。
-        SubFloorNumber(
-            "ui/panel/IntentEditorSheet.kt#44.dp", 44, null,
-            "缺档：意图编辑器启用开关的宽（设计系统无 LbSwitch 这一颗）",
-            "内联字面量本身就是第二颗数：本轮不动生产码，按实到登记，给它立档并改写成引用"
-        ),
-        SubFloorNumber(
-            "ui/panel/IntentEditorSheet.kt#24.dp", 24, null,
-            "缺档：同一颗启用开关轨道的高",
-            "44×24 的可点盒低于下限，与上面那颗成一对，一并等立档"
-        ),
-        SubFloorNumber(
-            "ui/panel/IntentEditorSheet.kt#20.dp", 20, null,
-            "缺档：开关轨道里那枚圆钮的字形",
-            "装饰字形，热区是那颗 44×24 的轨道盒"
-        ),
+        // 下面三颗曾经是持续意图编辑器的**启用开关**（44×24 轨道 + 20 圆钮）：
+        // 那颗自画的 44×24 开关已由 `SettingsIntentEntry.kt` 改用设计系统的 `MiniSwitch` 替掉，
+        // 这三颗数不再出现在任何可点链上（实扫 0 处）。按本文件"并掉了就把这一行删掉，
+        // 别留着当已有闸"的规矩删行——留着就是坑表 71 那一族"表比现实宽"的续集。
+        // `SuggestPanel.kt`→`IntentEditorSheet.kt` 改名（见该文件头 KDoc，mv 移非删）那条也一并清掉。
         // `ui/home/HomeComponents.kt#HomeDimens.LAMP_VISIBLE_DP.dp`（12）这一行于 2026-10-06 **删掉**：
         // 那颗指示灯今天住在 `AdvisorLampDot`（`HomeComponents.kt:174-181`）——一条
         // `Modifier.size().clip().background().testTag()` 的**纯装饰链**，体里没有 clickable、没有角色，
@@ -1629,7 +1615,10 @@ class UiLayerDependencyContractTest {
         // 随卡本体一起交回 `core/designsystem/LbListCard.kt`，本页 `.background(` 实扫 0 处。
         // 账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
         "bubble/FloatingBubble.kt" to BrandLedger(1, "", "悬浮球球体底：设计系统里没有 overlay 悬浮球这一颗（缺件）"),
-        "feedback/FeedbackCasesScreen.kt" to BrandLedger(1, "", "导出那排开关的轨道底色：没有开关这一颗（缺 LbSwitch）"),
+        // "feedback/FeedbackCasesScreen.kt" 那一行（原额度 1，"导出那排开关的轨道底色"）**删掉**：
+        // 页头尾部那颗导出由自绘 `Box + .background(Primary/SurfaceInset, …)` 并进设计系统
+        // `LbPrimaryButton`（Disabled 档报得出 disabled），本页 `.background(` 实扫 0 处。
+        // 账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
         // "home/HomeComponents.kt" 那一行（原额度 1，"只剩军师控制条「停止」那颗实心方块的直涂 Primary 底
         // （AdvisorStopGlyph，热区盒自己无底）"）于 2026-10-06 **删掉**：那颗 ▶/■ 交回设计系统的
         // `LbTriangleGlyph`（H1c 全类三角审计那一格），实心方块的直涂 Primary 底随私有 Canvas 一起离场，
@@ -1642,7 +1631,10 @@ class UiLayerDependencyContractTest {
         "panel/LoveBrainPanelScreen.kt" to BrandLedger(1, "", "面板建议槽的表面浅底，整块形状尚无主人（缺件）"),
         "panel/OnboardingFlow.kt" to BrandLedger(1, "", "首次引导的浅底提示块：内容块，不冒充状态条（缺件）"),
         "panel/PanelHeader.kt" to BrandLedger(1, "LbChip", "模式栏选中那颗实心胶囊与 LbChip 的 filled 档同族；悬浮窗行高另有一格"),
-        "panel/IntentEditorSheet.kt" to BrandLedger(1, "", "开关轨道的条件涂色（if 启用 Primary else SurfaceInset）：随 SuggestPanel→IntentEditorSheet 改名一路从旧账本平移过来，锦囊那颗实心主动作与空态浅底已随锦囊删除离场（各自另有落点），此处只剩这一颗开关底；设计系统没有 LbSwitch 这一颗（缺件）"),
+        // "panel/IntentEditorSheet.kt" 那一行（原额度 1，"开关轨道的条件涂色（if 启用 Primary else SurfaceInset）"）**删掉**：
+        // 那颗自画的 44×24 启用开关已由 `SettingsIntentEntry.kt` 改用设计系统的 `MiniSwitch` 替掉，
+        // 本页 `.background(` 里涂品牌色的形状实扫 0 处（switch 条件底色跟着那颗自画开关一起离场）。
+        // 账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
         "panel/counseling/CounselingLoadingSection.kt" to BrandLedger(3, "LbPrimaryButton", "开始谈心那颗归 LbPrimaryButton；脉冲条与 PrimaryDark 叠层是动画表面（缺件）"),
         "panel/counseling/CounselingPanel.kt" to BrandLedger(2, "LbPrimaryButton", "发送那颗条件涂色归 LbPrimaryButton；另一处是阶段浅底"),
         "panel/host/PanelSuggestionCards.kt" to BrandLedger(2, "", "画像/阶段两张建议卡的浅底：带表态的卡尚无主人（缺件）"),
@@ -1653,7 +1645,8 @@ class UiLayerDependencyContractTest {
         // 已删：A18 把长按"本轮一次生成"那颗自画槽整个摘掉后，本页只剩 LbPrimaryButton 调用、
         // `.background(` 实扫 0 处。债还完了就删行，不留一条不成立的豁免。
         "panel/reply/ResultArea.kt" to BrandLedger(3, "LbChip", "筛选 Tab 选中态该走 LbChip；另两处是结果区浅底装饰"),
-        "panel/reply/SchemeAdjustingBlock.kt" to BrandLedger(1, "LbChip", "卡内调整胶囊的选中底与 LbChip 同族")
+        "panel/reply/SchemeAdjustingBlock.kt" to BrandLedger(1, "LbChip", "卡内调整胶囊的选中底与 LbChip 同族"),
+        "panel/settings/SettingsKbSwitcherEntry.kt" to BrandLedger(1, "", "知识库切换行的活动库高亮底（PrimaryLight 条件涂色）；行尚无设计系统主人（缺件）")
         // panel/suggest/SuggestResultContent.kt 那一行（原额度 1）已删：锦囊结果页整个离场了
         // （`ui/panel/suggest/` 目录已不存在，`SuggestDimens` 在 main 源码树里 0 处引用；IntentEditorSheet
         // 那两行的登记里早就写着"锦囊那颗实心主动作已随页面删除离开"）。账本自己的规矩：路径不在
@@ -1663,7 +1656,10 @@ class UiLayerDependencyContractTest {
 
     private val actionableLedger: Map<String, BrandLedger> = mapOf(
         "bubble/FloatingBubble.kt" to BrandLedger(1, "", "悬浮球本体可点：设计系统没有 overlay 悬浮球这一颗（缺件）"),
-        "feedback/FeedbackCasesScreen.kt" to BrandLedger(1, "", "导出预览那一颗可点窄盒：尚无同类主人（缺件）"),
+        // "feedback/FeedbackCasesScreen.kt" 那一行（原额度 1，"导出预览那一颗可点窄盒"）**删掉**：
+        // 页头尾部那颗导出由自绘 `Box + clickable + 品牌底` 并进设计系统 `LbPrimaryButton`
+        // （Disabled 档报得出 disabled、热区与角色由公共件持有），本页 `clickable` 子树里涂品牌底的
+        // 形状实扫 0 处。账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
         // home/HomeComponents.kt 那一行（原额度 2）已删：Agent F 把首页四入口卡并进 LbActionCard、
         // Hero 主动作归 LbPrimaryButton 之后，本页 `clickable` 子树里涂品牌底的形状实扫 0 处——
         // 只剩军师控制条那一颗：热区盒自己无底，播放/停止字形是私有 composable 调用（Canvas 画三角 /
@@ -1675,13 +1671,17 @@ class UiLayerDependencyContractTest {
         // 于 2026-10-06 L1b **删掉**：可点那张卡今天整颗走 `LbListCard`（点击由公共件挂角色与热区），
         // 页面 `clickable` 子树里涂品牌底的形状实扫 0 处——那句"本轮还没转过去"已经成立了，
         // 留着就是这条账目明文禁止的"不成立的豁免"。
-        "panel/IntentEditorSheet.kt" to BrandLedger(1, "", "启用开关那颗可点盒（chain 上有 clickable、子树涂条件品牌底）：随 SuggestPanel→IntentEditorSheet 改名平移过来，锦囊那颗实心主动作已随页面删除离开。设计系统没有开关这一颗（缺 LbSwitch），与 FeedbackCasesScreen 那排自画开关同一处理"),
+        // "panel/IntentEditorSheet.kt" 那一行（原额度 1，"启用开关那颗可点盒（chain 上有 clickable、子树涂条件品牌底）"）**删掉**：
+        // 那颗自画的 44×24 启用开关已由 `SettingsIntentEntry.kt` 改用设计系统的 `MiniSwitch` 替掉，
+        // 本页 `clickable` 子树里涂品牌底的形状实扫 0 处。账本自己的规矩：债还完了就删行，
+        // 留一条不成立的豁免比没有豁免更坏。
         "panel/counseling/CounselingLoadingSection.kt" to BrandLedger(2, "LbPrimaryButton", "脉冲条与开始按钮：开始那颗归 LbPrimaryButton"),
         "panel/counseling/CounselingPanel.kt" to BrandLedger(1, "LbPrimaryButton", "发送那颗条件涂色的可点控件归 LbPrimaryButton"),
         "panel/reply/MessageList.kt" to BrandLedger(1, "", "气泡行内的可点装饰块：气泡形状尚无主人（缺 LbBubbleRow）"),
         "panel/reply/ReplyInput.kt" to BrandLedger(1, "LbChip", "添加那颗可点胶囊与角色 chip 同族，角色 chip 已转 LbChip"),
         "panel/reply/ResultArea.kt" to BrandLedger(1, "LbChip", "筛选 Tab 那颗可胶囊化；本轮只剩这一处"),
-        "panel/reply/SchemeAdjustingBlock.kt" to BrandLedger(1, "LbChip", "卡内调整胶囊的可点底与 LbChip 同族")
+        "panel/reply/SchemeAdjustingBlock.kt" to BrandLedger(1, "LbChip", "卡内调整胶囊的可点底与 LbChip 同族"),
+        "panel/settings/SettingsKbSwitcherEntry.kt" to BrandLedger(1, "", "知识库切换行可点 + 品牌底（PrimaryLight 条件涂色）；行尚无设计系统主人（缺件）")
     )
 
     /**

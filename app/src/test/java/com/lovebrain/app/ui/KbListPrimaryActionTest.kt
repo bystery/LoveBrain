@@ -141,13 +141,18 @@ class KbListPrimaryActionTest {
     }
 
     /**
-     * 卡上四件事一颗都不许少：重命名 / 编辑 / 导出 / 删除，每颗恰有一颗自己名字的胶囊。
+     * 卡上四件事一颗都不许少：重命名 / 编辑 / 导出 / 删除，每颗恰有一颗自己名字的可交互节点。
+     *
+     * 2026-10-XX：删除从动作行的 destructive 胶囊挪到顶右角的垃圾桶图标（`LbListCard` 的 `trailingIcon`
+     * 槽），动作行让位给 rename/edit/export 三颗次级胶囊。四颗里三颗是文字胶囊、一颗是图标动作，
+     * 但读屏名字都走 `a11y_action_*` 资源——这一格按 label 找，胶囊与图标同一把尺（label 来自文字或
+     * contentDescription，见 `SemanticsProbe.of`）。
      *
      * 「编辑」「删除」的读屏名来自仓里**既有**资源 `a11y_action_edit` / `a11y_action_delete`
      * （判据跟着资源走，不在测试里抄第二份中文）。回退成什么会红：
-     * ① 第四颗动作（重命名）被"收进三颗"这句话偷偷删掉——数不到那颗 label；
-     * ② 删除那颗换了语气档或并名——`destructive` 档的 label 就是资源里那个「删除」，
-     *    改回旧的图标盒（contentDescription「删除知识库」）这一格当场数不到。
+     * ① 三颗次级里某颗被偷删——数不到那颗 label；
+     * ② 删除那颗尾图标换了语气档或并名——`destructive` 图标的 description 就是资源里那个「删除」，
+     *    改回旧的 destructive 胶囊这一格仍认得（label 不变），但若把 description 摘掉这一格当场数不到。
      */
     @Test
     fun `all four library actions are present as named capsules`() {

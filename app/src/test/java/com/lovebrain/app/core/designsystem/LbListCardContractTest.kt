@@ -182,17 +182,17 @@ class LbListCardContractTest {
         assertEquals("案例页不许再读 `CardDefaults`", 0, count(code.withoutImports(), "CardDefaults"))
         assertEquals("列表每一张卡都走那一颗公共件：恰好一处调用（页面自己不许再抄第二份）",
             1, count(code, """\bLbListCard\("""))
-        assertEquals("整页只许有一处自绘可点控件，就是页头尾部那颗 `ExportAction`（缺件，另登记）",
-            1, SourceScan.clickableOffsets(casesCode.withoutImports()).size)
+        assertEquals("整页不再有自绘可点控件：导出那颗已并进设计系统 `LbPrimaryButton`（旧缺件已销行）",
+            0, SourceScan.clickableOffsets(casesCode.withoutImports()).size)
         // 反向证人两半：① 摘 import 这条尺本身要有牙——合成一句真控件必须数得到；
-        // ② 那句 import 本身不许被算成控件（否则"实到 2"永远查不到多出来的那半颗从哪来）。
+        // ② 那句 import 本身不许被算成控件（否则"实到 1"永远查不到多出来的那半颗从哪来）。
         assertEquals(
             "注件没就位：正文里一句 `Modifier.clickable(onClick = { })` 应当数到 1",
             1, SourceScan.clickableOffsets("Box(modifier = Modifier.clickable(onClick = { }))").size
         )
         assertEquals(
             "尺不许把 `import androidx.compose.foundation.clickable` 数成一处自绘控件" +
-                "（流水线和上面「ExportAction 恰好一处」那句、母版页那一格一致：先 withoutImports 再数——" +
+                "（流水线和上面「整页零自绘」那句、母版页那一格一致：先 withoutImports 再数——" +
                 "上一版这半句证人忘了套，量的其实是没摘 import 的整份文本，B 档仪器坏）",
             0, SourceScan.clickableOffsets(
                 ("import androidx.compose.foundation.clickable\n" + "import androidx.compose.foundation.layout.Box")
@@ -243,6 +243,10 @@ class LbListCardContractTest {
      * 这一格把案例页那格的判据**原样扩**到母版页，方向一字未松；每一句都是形状判据，
      * 真实观感仍由截图那一格负责（本机无设备，已登记未验证）。
      *
+     * 2026-10-XX：删除从动作行挪到顶右角的尾图标（`trailingIcon` 槽），动作行让位给
+     * rename/edit/export 三颗次级胶囊。这一改把「重命名」从 `detail` 槽接回 `actions`，
+     * 「⋯ 溢出档」那条债一并还清——四件事都在屏上、且都走动作行/尾图标这两条有主人的路。
+     *
      * 每一句"回退成什么会红"：
      * | 判据 | 回退成什么就红 |
      * | --- | --- |
@@ -253,8 +257,8 @@ class LbListCardContractTest {
      * | `size(48` / `48.dp` = 0 | "把盒子垫到 48"的旧热区写法回来（三轴分离 §3.1：热区归 `LbTextAction`，不归页面） |
      * | `RowActionButton(` = 0 | 第三种动作写法重新进这一页 |
      * | `｜` = 0 | 页面又开始自己拼元信息行——分隔符唯一主人是 `lbMetaLine`（本文件那颗组件的 :105），长第二个主人处，下一次统一就只有一处生效 |
-     * | secondary 恰好 2、destructive 恰好 1 | 「编辑」「导出」被并成一颗或语气被换热区；删除那颗不再是恒 destructive 的唯一档 |
-     * | `LbTextAction(` 恰好 1 且 `RowSecondary` 1 / `Destructive` 0 | `detail` 槽那颗「重命名」（第四颗动作没有档可去，见 2026-10-06-L1b 接线单）被换成自绘盒，或页面自己挑 Destructive 语气 |
+     * | secondary 恰好 3、destructive 恰好 0 | rename/edit/export 三颗次级胶囊；删除挪去尾图标，动作行不再有 destructive 档 |
+     * | `LbTextAction(` 恰好 1 且 `LbTextActionTone.Destructive` 1 / `RowSecondary` 0 / `RowCapsule` 0 | 尾图标那颗垃圾桶走 `LbTextAction` 图标档（destructive 语气），`detail` 槽已退场——页面不再自报 RowSecondary/RowCapsule |
      */
     @Test
     fun `the master page no longer draws its own card`() {
@@ -274,17 +278,17 @@ class LbListCardContractTest {
         assertEquals("全站那颗 48 不许在母版页抄第二份", 0, count(code, """(?<![\d.])48\.dp"""))
         assertEquals("第三种动作写法 `RowActionButton` 已退出这一页", 0, count(code, """RowActionButton\("""))
         assertEquals("元信息分隔符的主人是 `lbMetaLine`：母版页不许自己抄「｜」", 0, count(code, "｜"))
-        assertEquals("动作行恰好两颗次级（编辑/导出）", 2, count(code, """LbListCardAction\.secondary\("""))
-        assertEquals("动作行恰好一颗 destructive（删除），且全页只有这一颗", 1, count(code, """LbListCardAction\.destructive\("""))
-        assertEquals("第四颗动作的 detail 档恰好 call 一次 `LbTextAction`（⋯ 溢出档补齐后这一行改 0、动作行改 4 颗登记）",
+        assertEquals("动作行恰好三颗次级（重命名/编辑/导出）", 3, count(code, """LbListCardAction\.secondary\("""))
+        assertEquals("删除已挪去尾图标，动作行不再有 destructive 档", 0, count(code, """LbListCardAction\.destructive\("""))
+        assertEquals("尾图标那颗垃圾桶走 `LbTextAction` 图标档（detail 槽已退场，全页只剩这一处 LbTextAction 调用）",
             1, count(code, """\bLbTextAction\("""))
-        assertEquals("detail 档那颗也必须走同一颗 RowCapsule（换自绘盒就长第四种写法）",
-            1, count(code, """size = LbTextActionSize\.RowCapsule"""))
-        // 语气这两针脚也是裸标识符（`import …LbTextActionTone.RowSecondary` 这种枚举项 import
+        assertEquals("detail 槽退场：页面不再自报 RowCapsule 档（动作行三颗由公共件自己 call LbTextAction）",
+            0, count(code, """size = LbTextActionSize\.RowCapsule"""))
+        // 语气这两针脚也是裸标识符（`import …LbTextActionTone.Destructive` 这种枚举项 import
         // 是合法写法）：同族规矩，先摘 import 再数，判据本身一寸不松。
-        assertEquals("页面唯一允许自报的语气是重命名那颗的 RowSecondary", 1, count(code.withoutImports(), """LbTextActionTone\.RowSecondary"""))
-        assertEquals("Destructive 语气不许从 `LbListCardAction.destructive` 之外的门进这一页（`LbDialogActionTone.Destructive` 是弹窗档，不归本尺）",
-            0, count(code.withoutImports(), """LbTextActionTone\.Destructive"""))
+        assertEquals("detail 槽退场：页面不再自报 RowSecondary 语气", 0, count(code.withoutImports(), """LbTextActionTone\.RowSecondary"""))
+        assertEquals("删除那颗尾图标自报 Destructive 语气（恒红，页面改不了）",
+            1, count(code.withoutImports(), """LbTextActionTone\.Destructive"""))
 
         // ── 反向证人：这把尺每一句都得看得见对应的坏形状，否则"数到 0"是恒绿的假闸 ──
         assertEquals("注件没就位：合成一句 `shadow(` 应当数到 1",

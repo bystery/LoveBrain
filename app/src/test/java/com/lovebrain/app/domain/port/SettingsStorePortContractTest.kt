@@ -58,6 +58,7 @@ abstract class SettingsStorePortContract {
         // 按 TEAM_RULES §1 依新形状重写，不删格；老安装升级不断捕获归构造期一次性归一管
         // （`SecurePrefsCaptureEnabledReconciliationTest`（已删） 那一族），不靠这颗默认值兜。
         assertFalse("没写过这颗键 = 用户从没要过捕获 ⇒ 读出来必须是关（fail-closed）", s.captureEnabled)
+        assertFalse("没检查过连接 = 默认未验证", s.connectionVerified)
         assertEquals(emptyList<ProviderTicket>(), s.getWorkerTickets())
         assertEquals(emptySet<String>(), s.captureAllowedPackages)
         assertNull(s.loadCounselingResult())
@@ -88,6 +89,7 @@ abstract class SettingsStorePortContract {
         s.totalCostYuan = 3.25
         s.hasCompletedOnboarding = true
         s.captureEnabled = true
+        s.connectionVerified = true
         s.accessibilityDisclosureVersion = 2
 
         assertEquals(1, s.outputMode)
@@ -102,6 +104,9 @@ abstract class SettingsStorePortContract {
         assertTrue("显式写开必须原样读回：fail-closed 改的是默认，不是写通路", s.captureEnabled)
         s.captureEnabled = false
         assertFalse(s.captureEnabled)
+        assertTrue("连接验证写 true 读回 true", s.connectionVerified)
+        s.connectionVerified = false
+        assertFalse("连接验证写 false 读回 false", s.connectionVerified)
         assertEquals(2, s.accessibilityDisclosureVersion)
     }
 
@@ -286,6 +291,7 @@ class InMemorySettingsStore : SettingsStorePort {
     override var accessibilityDisclosureVersion: Int = 0
     override var captureAllowedPackages: Set<String> = emptySet()
     override var lastKbEditFile: String? = null
+    override var connectionVerified: Boolean = false
 }
 
 /** fake 必须通过同一套合同 */

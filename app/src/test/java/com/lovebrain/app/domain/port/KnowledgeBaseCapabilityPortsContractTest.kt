@@ -300,6 +300,10 @@ class InMemoryKnowledgeRuntimePort : KnowledgeRuntimePort {
 
     override suspend fun listAll(): List<KnowledgeBase> = bases.values.toList()
     override suspend fun getActive(): KnowledgeBase? = bases.values.firstOrNull { it.active }
+    override suspend fun setActive(name: String) {
+        val target = bases[name] ?: return
+        bases.values.forEach { bases[it.name] = it.copy(active = it.name == name) }
+    }
     override suspend fun migrateIfNeeded(kbName: String) {}
     override suspend fun ensureInitialKnowledgeBase() {}
     override suspend fun updateStage(kbName: String, stage: String) { stages[kbName] = stage }

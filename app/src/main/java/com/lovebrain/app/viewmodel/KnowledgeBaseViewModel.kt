@@ -276,6 +276,14 @@ class KnowledgeBaseViewModel(
             outcome.exceptionOrNull() is CancellationException -> KbCreationOutcome.Cancelled
             else -> KbCreationOutcome.OnboardingCreateFailed
         }
+        // P0 修复：创建是唯一一个没在 VM 里直接 loadState() 的变更操作——
+        // 重命名/删除/切换/导入都在各自方法里调 loadState()，唯独创建走 Activity 事件总线，
+        // 事件丢了列表就不刷新，新建的库不显示。这里补上，与其它变更操作同路。
+        if (event == KbCreationOutcome.EmptyCreated ||
+            event == KbCreationOutcome.ProfileCreated ||
+            event == KbCreationOutcome.TemplateOnlyCreated) {
+            viewModelScope.launch { loadState() }
+        }
         _events.tryEmit(KbEvent.Creation(event))
     }
 

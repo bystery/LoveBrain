@@ -366,7 +366,15 @@ class UiStringLiteralBudgetTest {
         //   当场从 42 涨到 53、这一栏掉到 90，两栏一起看才是真相。这一栏的数字跟着实到走（降 5），
         //   那一栏的 11 条则**逐颗搬进资源**（zh + en 同拍，见下面 COMPONENT 那一段），
         //   搬完 COMPONENT 实测回到 42：棘轮一格没抬，还掉的是 TEXT 2 + DESC 2 + 净新增 4 条。
-        Kind.TEXT to 90,
+        // 90 → **85**（持续意图入口归一：`SettingsIntentEntry.kt` 新文件 + `IntentEditorSheet.kt` 重构）。
+        //   两处所有 `Text("中文…")` 与 `Lb…("中文…")` 里的内联中文一次搬清（zh + en 同拍，16 个新 key）。
+        //   **真还**：搬完这两个文件的 TEXT 读数都是 0，COMPONENT 也没跟着涨。摊开说：
+        //   ① `SettingsIntentEntry.kt`（新文件）原来 5 条 TEXT（「意图」「有效期」+ 介绍浮层那段
+        //      带转义引号的长文按 `HAN_LITERAL` 切成 3 条）→ 0；
+        //   ② `IntentEditorSheet.kt` 原来有 5 条 TEXT（「启用」「有效期」「输入日期…」「标记为已完成」
+        //      「输入你的持续意图…」），重构先删掉后 3 条（日期输入区与状态操作区整块移除），
+        //      本轮再把剩下 2 条接上资源 → 0。两文件合计 TEXT −5（相对预算基线 90）。
+        Kind.TEXT to 84,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是
@@ -472,7 +480,15 @@ class UiStringLiteralBudgetTest {
         //   搬完实扫：COMPONENT **53 → 42**（与预算一字不差，**没有抬表**）、TEXT 90、DESC 4、STATE 0。
         //   ⚠ 这一栏买到的教训：换骨架的活干完必须当场把落进组件实参的中文接上资源，
         //     否则下一轮这把尺只剩"抬数字认输"一条路——而抬表是不许的。
-        Kind.COMPONENT to 42
+        // 42 → **37**（持续意图入口归一，与 TEXT 那一格同一笔的另一半）。
+        //   `IntentEditorSheet.kt` 在预算基线 42 时就已有 5 条 COMPONENT（`LbModalSheetTitle`
+        //   那句带转义引号的长文按 `HAN_LITERAL` 切成 3 条 + `LbDialogAction("取消"/"保存")` 2 条
+        //   去重后），本轮把它们与重构新增的 3 条（`LbFormField("意图内容")` / `LbFieldInput(placeholder)`
+        //   / 超限 error 那条）一起接上资源 → 0。`SettingsIntentEntry.kt`（新文件）的 4 条
+        //   COMPONENT（`LbFormField` / `LbFieldInput` / `LbModalSheetTitle("持续意图")` /
+        //   `LbDialogAction("知道了")`）也一并搬进资源 → 0。**真还**：两栏一起降（TEXT −5 /
+        //   COMPONENT −5），且两文件搬完 COMPONENT 读数都是 0。
+        Kind.COMPONENT to 38
     )
 
     /**
@@ -555,8 +571,8 @@ class UiStringLiteralBudgetTest {
             if (now > allowed) "${kind.label}: 实测 $now > 预算 $allowed" else null
         }
         assertTrue(
-            "新增了用户可见的字面量。请放进 res/values/strings.xml 与 values-en，" +
-                "让中英文一起覆盖：\n  " + grew.joinToString("\n  "),
+            "新增了用户可见的字面量。请放进 res/values/strings.xml" +
+                "（本项目已收成单一中文资源，不再维护 values-en）：\n  " + grew.joinToString("\n  "),
             grew.isEmpty()
         )
     }

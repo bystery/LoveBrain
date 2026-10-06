@@ -702,7 +702,7 @@ internal fun ProviderFormBody(
                 }
                 if (testingModel == m) {
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = Spacing.md)) {
-                        CircularProgressIndicator(color = Primary, modifier = Modifier.size(AppDimens.LOADING_SPINNER_SIZE_DP.dp), strokeWidth = Spacing.xs)
+                        CircularProgressIndicator(color = Primary, modifier = Modifier.size(Spacing.xl), strokeWidth = Spacing.xs)
                         Spacer(Modifier.width(Spacing.sm))
                         Text("测试中…", style = AppTypography.labelSmall, color = TextHint)
                     }

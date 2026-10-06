@@ -27,7 +27,7 @@ android {
         minSdk = 26
         targetSdk = 35
 versionCode = 9
-versionName = "1.4.0-rc1"
+versionName = "1.4.0"
         // : Compose UI test runner
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

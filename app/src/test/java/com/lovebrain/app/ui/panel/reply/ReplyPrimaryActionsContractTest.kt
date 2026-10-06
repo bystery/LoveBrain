@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbButtonHeightTier
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
@@ -57,6 +58,14 @@ class ReplyPrimaryActionsContractTest {
             .resources.displayMetrics.density
 
     private val probe by lazy { SemanticsProbe(density) }
+
+    /** 文案走资源取，不抄第二份某一种语言的字面量（本项目已收成单一中文资源） */
+    private val ctx get() = ApplicationProvider.getApplicationContext<Context>()
+    private val generateReplyLabel: String get() = ctx.getString(R.string.panel_generate_reply)
+    private val generateReplyWithCount: (Int) -> String get() = { n -> ctx.getString(R.string.panel_generate_reply_with_count, n) }
+    private val generateOpenerLabel: String get() = ctx.getString(R.string.panel_generate_opening)
+    private val retryLabel: String get() = ctx.getString(R.string.panel_retry)
+    private val saveToKbLabel: String get() = ctx.getString(R.string.panel_save_to_kb)
 
     /**
      * 某一**档**的尺：`SemanticsProbe` 的两条边仍然真读 `boundsInRoot`，这里只是把尺换成那一档的数。
@@ -113,7 +122,7 @@ class ReplyPrimaryActionsContractTest {
             "无结果时主操作区只该有一颗全宽生成按钮：" + targets.joinToString { it.describe() },
             1, targets.size
         )
-        assertEquals("Generate reply · 3 messages", targets.single().label)
+        assertEquals(generateReplyWithCount(3), targets.single().label)
         assertTierHeight(tier, targets.single())
         assertTrue(
             "按钮应当铺满这一行的宽度（360dp 槽位），实测 " + targets.single().describe(),
@@ -131,7 +140,7 @@ class ReplyPrimaryActionsContractTest {
                 targets.joinToString { it.describe() },
             1, targets.size
         )
-        assertEquals("Generate reply", targets.single().label)
+        assertEquals(generateReplyLabel, targets.single().label)
         assertTrue("N=0 时按钮必须带 disabled 语义：" + targets.single().describe(), targets.single().disabled)
     }
 
@@ -145,13 +154,13 @@ class ReplyPrimaryActionsContractTest {
         val targets = probeAt(tier).assertAllActionableMeetTouchFloor(rule, "主操作区")
         assertEquals(
             "有结果时应当恰好两颗：" + targets.joinToString { it.describe() },
-            listOf("Retry", "Save to knowledge base"),
+            listOf(retryLabel, saveToKbLabel).sorted(),
             targets.map { it.label }.sorted()
         )
         targets.forEach { assertTierHeight(tier, it) }
         assertTrue(
             "主动发不得挤回这颗按钮的位置：" + targets.joinToString { it.describe() },
-            targets.none { it.label.contains("opener", ignoreCase = true) }
+            targets.none { it.label == generateOpenerLabel }
         )
     }
 
@@ -165,7 +174,7 @@ class ReplyPrimaryActionsContractTest {
             "PROACTIVE 空闲应当只有一颗：" + targets.joinToString { it.describe() },
             1, targets.size
         )
-        assertEquals("Generate opener", targets.single().label)
+        assertEquals(generateOpenerLabel, targets.single().label)
         assertTierHeight(tier, targets.single())
     }
 

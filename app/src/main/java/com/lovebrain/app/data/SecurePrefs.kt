@@ -292,6 +292,14 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         set(value) =
             prefs.edit().putStringSet(KEY_CAPTURE_ALLOWED_PACKAGES, value.toSet()).apply()
 
+    /**
+     * 连接检查结论的落盘副本：见 [SettingsStorePort.connectionVerified] 的端口侧合同。
+     * 默认 false（没按过 ▶ / 上一次失败 = 未验证），与 [captureEnabled] 同一 getBoolean/putBoolean 形。
+     */
+    override var connectionVerified: Boolean
+        get() = prefs.getBoolean(KEY_CONNECTION_VERIFIED, false)
+        set(value) = prefs.edit().putBoolean(KEY_CONNECTION_VERIFIED, value).apply()
+
     /** 追加一个允许抓取的包名 */
     fun addCaptureAllowedPackage(pkg: String) {
         if (pkg.isBlank()) return
@@ -537,6 +545,8 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         private const val KEY_ACCESSIBILITY_DISCLOSURE_VERSION = "accessibility_disclosure_version"
         // 无障碍抓取 allowlist（默认空集 = 不抓任何 App）
         private const val KEY_CAPTURE_ALLOWED_PACKAGES = "capture_allowed_packages"
+        // 连接检查结论落盘（跨 VM 重建存活）
+        private const val KEY_CONNECTION_VERIFIED = "connection_verified"
 
         // 工单系统键
         private const val KEY_TICKER_LIST_JSON = "worker_tickets_json"

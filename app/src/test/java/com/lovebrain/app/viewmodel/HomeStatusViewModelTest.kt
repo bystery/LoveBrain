@@ -1,5 +1,6 @@
 package com.lovebrain.app.viewmodel
 
+import com.lovebrain.app.domain.port.InMemorySettingsStore
 import com.lovebrain.app.ui.home.AdvisorControl
 import com.lovebrain.app.ui.home.AdvisorLamp
 import com.lovebrain.app.ui.home.AdvisorMissing
@@ -307,6 +308,38 @@ class HomeStatusViewModelTest {
     }
 
     // ═══════════ 3'. 检查一次、结论按身份持续有效（用户原话 2026-10-05「我们只检查一次可以吗」）═══════════
+
+    /**
+     * 修"重进屏幕灯落回黄"：Activity 销毁 → VM 重建 → ledger 整本空 → 落盘副本
+     * （`store.connectionVerified`）兜底交回 [HomeConnectionVerdict.Verified]，
+     * 不把已经绿过的灯落回 NotChecked（黄）。
+     *
+     * 反例（修前形状）：ledger 纯内存、随 VM 生灭 → 新 VM 的 `connectionFor` 交回 NotChecked → 黄。
+     * 反例（兜底太宽）：身份变化也查盘 → 换供应商后旧结论替没验过的新身份说话
+     *   （`a genuinely new identity is unchecked…` 那一格红）。
+     * 反例（落盘没写）：`runCheck` 不写盘 → store.connectionVerified 恒 false → 这一格红。
+     *
+     * 模拟"重进屏幕"：全新 VM + `returnedFromSubpage`，不按 ▶、不发探针，灯仍然绿。
+     */
+    @Test
+    fun `a recreated VM reads the persisted verdict instead of resetting to not checked`() = runTest {
+        allGood()
+        val store = InMemorySettingsStore().apply { connectionVerified = true }
+        val vm = HomeStatusViewModel(service, provider, knowledge, probe, store)
+
+        vm.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+
+        assertEquals(
+            "落盘副本在 ledger 空时兜底，重进屏幕不落回 NotChecked",
+            AdvisorState.RunningReady, vm.status.value.state
+        )
+        assertTrue(
+            "不该念连接还没检查过，实到缺项 ${vm.status.value.missing}",
+            !vm.status.value.missing.contains(AdvisorMissing.ConnectionUnchecked)
+        )
+        assertEquals("重进屏幕不该发探针", 0, probe.calls)
+    }
 
     /**
      * ② 同身份下**已验证结论不许变黄**：切出去再切回来时知识库那一格"读不动"，

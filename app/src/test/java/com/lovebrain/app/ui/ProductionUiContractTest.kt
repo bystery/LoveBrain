@@ -379,28 +379,24 @@ class ProductionUiContractTest {
     }
 
     @Test
-    fun `every zh string has an en counterpart`() {
+    fun `strings live in a single locale file with no stray en counterpart`() {
         val zh = File("src/main/res/values/strings.xml").takeIf { it.isFile }
             ?: File("app/src/main/res/values/strings.xml")
+        assertTrue("values/strings.xml must exist", zh.isFile)
+        // 本轮合同把资源收成单一中文文件（values-en/strings.xml 整删）。
+        // 留一份键集对不上的 values-en 在这里会给人「资源已翻好」的假象，而实际上
+        // 它早就与 values 漂移了——这正是原先那颗差集证人要防的同一种漂移，只不过
+        // 现在两边不再存在「对照」关系，所以直接判它不许回来。
         val en = File("src/main/res/values-en/strings.xml").takeIf { it.isFile }
             ?: File("app/src/main/res/values-en/strings.xml")
-        assertTrue("values-en/strings.xml must exist", en.isFile)
-        // ⚠ 键表同时收 `<string name=` 与 `<plurals name=`：这一格原先只认前者，
-        // 而 `feedback_case_count`（页头那句"N 条"，账本 第58节）是复数档——
-        // 只认 `<string` 的话，plurals 少翻一边照样绿，正是这一格要防的那件事。
-        val names = { f: File ->
-            Regex("<(?:string|plurals) name=\"([^\"]+)\"")
-                .findAll(f.readText()).map { it.groupValues[1] }.toSet()
-        }
-        val missing = names(zh) - names(en)
-        val extra = names(en) - names(zh)
-        assertEquals("strings missing in values-en: $missing", emptySet<String>(), missing)
-        assertEquals("values-en defines strings absent from values: $extra", emptySet<String>(), extra)
-        assertTrue(
-            "两边键数必须相等（实到 zh=${names(zh).size} en=${names(en).size}）——" +
-                "上面两条差集判空之外，再钉一颗总量证人：两边同时少同一批键时差集也是空的",
-            names(zh).size == names(en).size
+        assertFalse(
+            "values-en/strings.xml 不应再存在（已收成单一中文资源）：" +
+                "留一份键集对不上的 en 文件会造成「资源已翻」的假象",
+            en.isFile
         )
+        val names = Regex("<(?:string|plurals) name=\"([^\"]+)\"")
+            .findAll(zh.readText()).map { it.groupValues[1] }.toSet()
+        assertTrue("values/strings.xml 里一条键都没有", names.isNotEmpty())
     }
 
     // ─── 死 API 不得复活 ───────────────────────────────────────────

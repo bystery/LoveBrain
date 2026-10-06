@@ -252,9 +252,9 @@ class FeedbackCasesSemanticsTest {
      * 所以它们照样解析得出来——谁把那一排 chip 或 Markdown/JSON 切换接回来，节点当场数得到，
      * 这一格就红。
      *
-     * 正向对照钉在同一棵树里：页头那颗 `feedback_export_json`（「导出 JSON」）必须数得到；
+     * 正向对照钉在同一棵树里：页头那颗 `feedback_export_json`（「导出」）必须数得到；
      * 没有这一句，上面那四个 0 就可能只是"探针压根没进场"那种恒绿。
-     * 逐条 exact 匹配（`substring` 默认关）：「导出 JSON」不等于「JSON」，不会被负例误伤。
+     * 逐条 exact 匹配（`substring` 默认关）：「导出」不等于「JSON」/「导出 MD」，不会被负例误伤。
      */
     @Test
     fun `no filter chips and no export format switch survived`() {

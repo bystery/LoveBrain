@@ -93,5 +93,4 @@ object AppDimens {
     const val EMPTY_ICON_CONTAINER_DP = 48    // 空态图标容器尺寸（版式尺寸，与下限同数但不是下限）
     const val ARROW_SIZE_DP = 10              // Canvas 箭头尺寸
     const val ACTION_ICON_SIZE_DP = 18        // 小操作图标尺寸
-    const val LOADING_SPINNER_SIZE_DP = 14    // 加载 spinner 尺寸
 }

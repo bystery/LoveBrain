@@ -438,12 +438,12 @@ class MemoryRefsFeedTest {
     }
 
     /**
-     * 中英两边各有一份说法：少翻一边，Android **不报错**，直接回落到默认那份
-     * （本项目里是中文），英文设备上就念中文。
-     * `ProductionUiContractTest` 那份键表只管"两边同键"，这一格管"两边真的不同字"。
+     * 每条标签在中文下都能解析出非空说法：少一条 key，Android **不报错**，直接回落到默认那份
+     * （本项目里是中文）。本项目已改为中文-only（删掉了 `values-en`），不再做中英逐键比；
+     * 这里只钉"每条 key 在中文下都解析出非空、且「更多 N 条」真的把条数拼进句子"。
      */
     @Test
-    fun `every label in this family has its own words in both languages`() {
+    fun `every label in this family resolves to its own words`() {
         val watched = listOf(
             R.string.memory_fix_entry,
             R.string.memory_refs_note,
@@ -457,22 +457,16 @@ class MemoryRefsFeedTest {
             R.string.memory_kind_ongoing,
             R.string.memory_kind_lesson
         )
-        val silent = mutableListOf<String>()
+        val blank = mutableListOf<String>()
         for (id in watched) {
             val zh = text("zh", id)
-            val en = text("en", id)
-            assertTrue("资源 id=$id 在某一边解析成空白", zh.isNotBlank() && en.isNotBlank())
-            if (zh == en) silent += "id=$id 两边都是「$zh」"
+            if (zh.isBlank()) blank += "id=$id 解析成空白"
         }
         val moreZh = text("zh", R.string.memory_refs_more, 3)
-        val moreEn = text("en", R.string.memory_refs_more, 3)
-        assertTrue("「更多 N 条」两边都要真把条数拼进句子：zh=$moreZh en=$moreEn",
-            moreZh.contains('3') && moreEn.contains('3'))
-        if (moreZh == moreEn) silent += "memory_refs_more 两边都是「$moreZh」"
+        assertTrue("「更多 N 条」要把条数拼进句子：zh=$moreZh", moreZh.contains('3'))
         assertTrue(
-            "这些文案在中文与英文下解析出同一个字符串——多半是英文那侧没有词条，" +
-                "系统静默回落到了默认的中文文件：\n" + silent.joinToString("\n"),
-            silent.isEmpty()
+            "这些标签在中文下解析成空白：\n" + blank.joinToString("\n"),
+            blank.isEmpty()
         )
     }
 }
