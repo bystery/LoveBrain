@@ -133,7 +133,6 @@
         <item quantity="one">%1$d 条</item>
         <item quantity="other">%1$d 条</item>
     </plurals>
-    <string name="feedback_export_markdown">导出 MD</string>
     <string name="feedback_export_json">导出</string>
     <string name="feedback_filter_all">全部</string>
     <!-- 回复结果那一排的"已踩"档：点了踩才出现（用户 2026-10-03 原话）。
@@ -143,8 +142,6 @@
     <string name="feedback_category_understanding_error">理解错误</string>
     <string name="feedback_category_expression_dislike">表达不喜欢</string>
     <string name="feedback_category_other">其他</string>
-    <string name="feedback_format_markdown">Markdown</string>
-    <string name="feedback_format_json">JSON</string>
 
     <!-- 图标型动作的读屏名字（LbTextAction 图标档）：屏幕上只有字形，这一句是读屏唯一听得见的
          "这颗在干什么"。之前它们散在 Kotlin 里写成内联中文，英文环境下资源翻好了、读屏仍念中文。

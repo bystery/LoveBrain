@@ -260,20 +260,16 @@ class FeedbackCasesSemanticsTest {
     fun `no filter chips and no export format switch survived`() {
         mount(legacyCases)
         assertEquals(
-            "正向对照失效：页头那颗导出都不在树上，下面那四条 0 不算证人",
+            "正向对照失效：页头那颗导出都不在树上，下面那几条 0 不算证人",
             1, rule.onAllNodesWithText(context.getString(R.string.feedback_export_json))
                 .fetchSemanticsNodes().size
         )
-        listOf(
-            R.string.feedback_filter_all,
-            R.string.feedback_format_markdown,
-            R.string.feedback_format_json,
-            R.string.feedback_export_markdown
-        ).forEach { res ->
-            val label = context.getString(res)
-            assertTrue("资源读出来是空的，这条负例就恒真了：$res", label.isNotBlank())
+        // R18：导出只有 JSON 一档，旧格式切换已整组删除——资源也一并清理了。
+        // 这里改用内联字面量做负例探针，不依赖已删的资源 key。
+        listOf("Markdown", "JSON", "导出 MD").forEach { label ->
+            assertTrue("负例探针文案为空", label.isNotBlank())
             assertEquals(
-                "删掉的 chip / 格式切换又露出来了（$res = $label）",
+                "删掉的 chip / 格式切换又露出来了（$label）",
                 0, rule.onAllNodesWithText(label).fetchSemanticsNodes().size
             )
         }
