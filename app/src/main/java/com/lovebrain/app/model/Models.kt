@@ -242,6 +242,64 @@ data class LoveBrainResponse(
             }
             return result
         }
+
+    /**
+     * 八项回复完整性检查（§11.2）：四风格 + 四方向 = 八项。
+     *
+     * - [ReplyCompleteness.Complete]：八项全有非空内容
+     * - [ReplyCompleteness.Partial]：有内容但不足八项；缺失项在 [ReplyCompleteness.Partial.missingLabels]
+     * - [ReplyCompleteness.Duplicated]：有内容但存在把一条正文复制到多个标签的情况
+     * - [ReplyCompleteness.Empty]：全空（解析层会拒绝，这里只是完备）
+     *
+     * UI 层对空卡仍显示"本轮不适合"——这里不做 UI 判断，只给解析层和日志一个
+     * 区分"模型没生成"与"合法不适合"的凭据。指导书要求"不能静默隐藏"，
+     * 所以 [ReplyCompleteness.Partial] 和 [ReplyCompleteness.Duplicated] 要被
+     * 解析层记录并给用户一个轻量提示。
+     */
+    val replyCompleteness: ReplyCompleteness
+        get() {
+            val styleSchemes = schemes
+            val dirSchemes = directionSchemes
+            val allEight = styleSchemes + dirSchemes
+            val nonEmpty = allEight.filter { it.reply.isNotBlank() }
+            if (nonEmpty.isEmpty()) return ReplyCompleteness.Empty
+
+            val missingLabels = allEight.filter { it.reply.isBlank() }.map { it.title }
+            val nonEmptyTexts = nonEmpty.map { it.reply.trim() }
+            val hasDuplicates = nonEmptyTexts.toSet().size < nonEmptyTexts.size
+
+            return when {
+                missingLabels.isEmpty() && !hasDuplicates -> ReplyCompleteness.Complete
+                hasDuplicates -> ReplyCompleteness.Duplicated(
+                    nonEmptyTexts.groupingBy { it }.eachCount().filter { it.value > 1 }.keys,
+                    missingLabels
+                )
+                else -> ReplyCompleteness.Partial(missingLabels)
+            }
+        }
+}
+
+/**
+ * 八项回复完整性状态（§11.2）。
+ *
+ * 解析层用它区分"生成完整""生成不完整（缺项或重复）"和"全空"，
+ * 不拒绝已有候选——指导书要求保留部分内容并明确提示。
+ */
+sealed class ReplyCompleteness {
+    /** 八项全有非空内容且无重复 */
+    data object Complete : ReplyCompleteness()
+
+    /** 有内容但不足八项；[missingLabels] 是缺失项的标题列表（如"清醒""跟进"） */
+    data class Partial(val missingLabels: List<String>) : ReplyCompleteness()
+
+    /** 有内容但存在把一条正文复制到多个标签的情况 */
+    data class Duplicated(
+        val duplicatedTexts: Set<String>,
+        val missingLabels: List<String>
+    ) : ReplyCompleteness()
+
+    /** 全空 */
+    data object Empty : ReplyCompleteness()
 }
 
 /** 面板状态机 */

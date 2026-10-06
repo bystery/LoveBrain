@@ -303,7 +303,9 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
 
     /** 将累积文本解析为 LoveBrainResponse（单次调用：response + analysis）
      * : 至少一个真实非空风格才可作为回复成功；全空 response 被拒绝。
-     * b3-9: 解析降级——当 response 全空但 directions 有非空项时，使用 directions 作为回复。 */
+     * b3-9: 解析降级——当 response 全空但 directions 有非空项时，使用 directions 作为回复。
+     * §11.2: 收尾对八项（四风格+四方向）做轻量完整性检查——
+     *   不足八项时保留已有候选并记录，不拒绝；重复正文也记录。 */
     override fun parseReplyResponse(content: String): LoveBrainResponse {
         val jsonStr = com.lovebrain.app.util.Jsons.extractJsonBlock(content)
             ?: throw IllegalStateException("模型未返回有效 JSON，请重试")
@@ -318,6 +320,20 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
         if (!hasNonEmpty) {
             throw IllegalStateException("返回格式不完整：所有回复方案均为空，请重试")
         }
+
+        // §11.2: 八项完整性轻量检查——保留已有候选，不拒绝，但记录缺失/重复
+        when (val completeness = resp.replyCompleteness) {
+            is com.lovebrain.app.model.ReplyCompleteness.Complete -> { /* 八项齐全，无需提示 */ }
+            is com.lovebrain.app.model.ReplyCompleteness.Partial -> {
+                L.w("PARSE incomplete: missing ${completeness.missingLabels.joinToString(", ")}")
+            }
+            is com.lovebrain.app.model.ReplyCompleteness.Duplicated -> {
+                L.w("PARSE duplicated: ${completeness.duplicatedTexts.size} texts reused across labels" +
+                    ", missing ${completeness.missingLabels.joinToString(", ")}")
+            }
+            com.lovebrain.app.model.ReplyCompleteness.Empty -> { /* 上面已拒绝 */ }
+        }
+
         return resp
     }
 
