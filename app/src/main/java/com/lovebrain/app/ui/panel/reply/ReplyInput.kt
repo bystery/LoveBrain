@@ -304,7 +304,10 @@ fun ReplyInput(
         }
     }
 
-    // ── 行 1：她 / 我 / 补充 / ＋ / 🔒（仅看本轮） / 输入框(last, weight 1f) ──
+    // ── 行 1：她 / 我 / 补充 / [自适应输入框] / ＋ / 🔒（仅看本轮） ──
+    // 指导书§10.1：同一行顺序为 角色→输入框(weight 1f)→＋→仅看本轮符号。
+    // 先放固定控件（chip 段），再让输入框吃剩余宽度（weight 1f），
+    // 最后放 ＋ 与仅看本轮符号——它们在输入框右侧。
     // 主动发（showRoleChips = showAddButton = false）时 chipsSection/addSection 各自短路，
     // 行 1 自然只剩那颗吃满宽度的输入框——这就是原话第 10 条要的第一行，不是遗留单行分支。
     // 「仅看本轮」常驻行 1（不再随有没有真实消息在行 2 / 消息卡之间二选一挂载），
@@ -319,6 +322,7 @@ fun ReplyInput(
             modifier = Modifier.fillMaxWidth()
         ) {
             chipsSection()
+            inputSection()
             addSection()
             if (roundEntryArmed) {
                 Spacer(Modifier.width(Spacing.sm))
@@ -327,7 +331,6 @@ fun ReplyInput(
                     onClick = { onOnlyThisRoundChange?.invoke() }
                 )
             }
-            inputSection()
         }
     }
 }
