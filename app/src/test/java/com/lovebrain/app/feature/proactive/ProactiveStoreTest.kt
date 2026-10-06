@@ -243,4 +243,55 @@ class ProactiveStoreTest {
         )
         assertNull("它不是锦囊自己的状态", s.uiState.value.error)
     }
+
+    // ─── §11.3：主动发 7-10 条数量检查 ─────────────────────────────
+
+    /**
+     * §11.3：不足 7 条时保留已有候选并如实提示"本次只生成 N 条，可重新生成"。
+     * 反例：closeRun 清掉了 options → 已有候选被抹掉，用户看不到已生成的内容；
+     * 反例：closeRun 不写 error → 用户不知道这次数量不够、不知道该不该再点一次。
+     */
+    @Test
+    fun `fewer than seven options keeps them and notes the count for regen`() {
+        val (s, _) = store()
+        s.accept(ProactiveStore.Intent.EnterProactive)
+        s.accept(ProactiveStore.Intent.Apply(ProactiveStarted("r1")))
+        s.accept(ProactiveStore.Intent.Apply(ProactiveOptions("r1", options(3))))
+        s.accept(ProactiveStore.Intent.Apply(ProactiveEnded("r1")))
+
+        assertEquals("候选一条都不许少", 3, s.uiState.value.options.size)
+        assertEquals("本次只生成 3 条，可重新生成", s.uiState.value.error)
+    }
+
+    /**
+     * §11.3：7-10 条算完整成功，不写任何提示。
+     * 反例：7 条也写"不足"提示 → 用户以为生成不完整。
+     */
+    @Test
+    fun `seven to ten options is complete success with no notice`() {
+        val (s, _) = store()
+        s.accept(ProactiveStore.Intent.EnterProactive)
+        s.accept(ProactiveStore.Intent.Apply(ProactiveStarted("r1")))
+        s.accept(ProactiveStore.Intent.Apply(ProactiveOptions("r1", options(7))))
+        s.accept(ProactiveStore.Intent.Apply(ProactiveEnded("r1")))
+
+        assertEquals(7, s.uiState.value.options.size)
+        assertNull("7 条算完整，不该念不足", s.uiState.value.error)
+    }
+
+    /**
+     * §11.3：已有失败文案时不许用数量提示盖掉它。
+     */
+    @Test
+    fun `fewer than seven with existing failure keeps the failure text`() {
+        val (s, _) = store()
+        s.accept(ProactiveStore.Intent.EnterProactive)
+        s.accept(ProactiveStore.Intent.Apply(ProactiveStarted("r1")))
+        s.accept(ProactiveStore.Intent.Apply(ProactiveOptions("r1", options(2))))
+        s.accept(ProactiveStore.Intent.Apply(ProactiveFailed("r1", "生成超时，已保留部分内容")))
+        s.accept(ProactiveStore.Intent.Apply(ProactiveEnded("r1")))
+
+        assertEquals("已有的开场还在", 2, s.uiState.value.options.size)
+        assertEquals("失败文案不许被数量提示盖掉", "生成超时，已保留部分内容", s.uiState.value.error)
+    }
 }

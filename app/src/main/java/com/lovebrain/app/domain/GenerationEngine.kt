@@ -52,6 +52,9 @@ import kotlinx.coroutines.withTimeout
 /** 降级提示驻留时长（reset 前） */
 private const val DEGRADE_HINT_HOLD_MS = 1000L
 
+/** §11.3：主动发有效候选上限，超过按约定收敛 */
+private const val MAX_PROACTIVE_OPTIONS = 10
+
 /** 宽松 JSON（流式提前渲染 response 对象用） */
 val jsonLenient = kotlinx.serialization.json.Json {
     ignoreUnknownKeys = true
@@ -496,6 +499,11 @@ class GenerationEngine(
         if (seen.isEmpty()) {
             val finalOptions = parseProactiveOptions(fullText.ifBlank { buffer.toString() })
             if (finalOptions.isNotEmpty()) emit(ProactiveOptions(requestId, finalOptions))
+        }
+        // §11.3：超过 10 条按约定收敛
+        if (seen.size > MAX_PROACTIVE_OPTIONS) {
+            val capped = seen.take(MAX_PROACTIVE_OPTIONS)
+            emit(ProactiveOptions(requestId, capped))
         }
         emit(ProactiveEnded(requestId))
     }

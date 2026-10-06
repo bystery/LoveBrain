@@ -180,20 +180,28 @@ class ProactiveStore(
     }
 
     /**
-     * 收尾分支（第4节第1条第5条）：**留住已经拿到的东西**，只有什么都没拿到时才开口。
+     * 收尾分支（第4节第1条第5条 + §11.3）：**留住已经拿到的东西**，只有什么都没拿到时才开口。
      *
      * 有开场 ⇒ 不动（：结束不是"用户要看普通回复"，看得见、点得着、能复制就是成功）；
      * 有失败文案 ⇒ 也不动（那句短提示已经在屏幕上了，别用它自己的话把自己盖掉）；
-     * 两者都没有 ⇒ 写 [NO_OPENERS_NOTICE]。这一句是这条链上唯一还会被 [ProactiveEnded] 改写的字段，
-     * 而且它只在**归属门后面**执行——已取消任务的迟到 ended 因此既补不出这句话，
-     * 也不会被这句话复活。
+     * 两者都没有 ⇒ 写 [NO_OPENERS_NOTICE]。
      *
-     * 这里**不发** [Effect.ExitedProactiveMode]，也不清 [UiState.options]：前者会把结果区换走
-     * （就是  那次事故），后者会把停止之前已经流出的那几条抹掉（第4节第1条第5条 第二条）。
+     * §11.3 数量检查：开场不为空但少于 7 条时，写一条轻量提示"本次只生成 N 条，可重新生成"，
+     * **不清已有候选**——它们是真实可用的，用户可以复制或再点一次生成。
+     * 只有 7-10 条时才算完整成功，不写任何提示。
+     *
+     * 这里**不发** [Effect.ExitedProactiveMode]，也不清 [UiState.options]。
      */
     private fun closeRun() {
         val current = _ui.value
-        if (current.options.isNotEmpty() || current.error != null) return
+        if (current.error != null) return
+        if (current.options.isNotEmpty()) {
+            // §11.3：不足 7 条时补提示，但保留已有候选
+            if (current.options.size < MIN_PROACTIVE_OPTIONS) {
+                _ui.value = current.copy(error = "本次只生成 ${current.options.size} 条，可重新生成")
+            }
+            return
+        }
         _ui.value = current.copy(error = NO_OPENERS_NOTICE)
     }
 
@@ -210,5 +218,8 @@ class ProactiveStore(
          *   `UiStringLiteralBudgetTest` 那笔账。
          */
         const val NO_OPENERS_NOTICE = "这次没生成出能用的开场，可再点一次「生成开场」"
+
+        /** §11.3：主动发有效候选下限，不足时如实提示 */
+        const val MIN_PROACTIVE_OPTIONS = 7
     }
 }
