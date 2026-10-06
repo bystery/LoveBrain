@@ -5,20 +5,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.R
@@ -169,8 +164,11 @@ private fun AdjustOption(
 /**
  * 自定义那一格展开后的输入与提交：卡内紧凑档。
  *
- * 输入框 28–36dp、最多两行，字超出这一格就内部滚动——不替卡片要高度（本体固定 158x150）；
- * 提交是小字，不铺成整行大按钮。可编辑节点自己带读屏名字（placeholder 只是举例）。
+ * 输入复用公共 [LbFieldInput]——五态视觉、焦点生命周期、编辑意图信号全走同一颗公共件，
+ * 不再自己 Box + BasicTextField + pointerInput（§7.2「直接复用，不再自己做输入行为」）。
+ *
+ * 卡内紧凑外形通过 [SchemeCardDimens.CUSTOM_FIELD_MIN_HEIGHT_DP]–[SchemeCardDimens.CUSTOM_FIELD_MAX_HEIGHT_DP]
+ * 约束可见高度；提交是小字，不铺成整行大按钮。可编辑节点自己带读屏名字（placeholder 只是举例）。
  */
 @Composable
 private fun CustomRequirementEditor(
@@ -185,49 +183,19 @@ private fun CustomRequirementEditor(
         horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
+        LbFieldInput(
+            value = value,
+            onValueChange = onValueChange,
+            placeholder = name,
             modifier = Modifier
                 .weight(1f)
                 .heightIn(
                     min = SchemeCardDimens.CUSTOM_FIELD_MIN_HEIGHT_DP.dp,
                     max = SchemeCardDimens.CUSTOM_FIELD_MAX_HEIGHT_DP.dp
-                )
-                .clip(LoveBrainShape.sm)
-                .background(SurfaceInset, LoveBrainShape.sm)
-                // 编辑意图：触碰输入框 → 通知宿主进入 EDITING（与 PanelTextInput / LbFieldInput 同一范式）
-                .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
-                    awaitPointerEventScope {
-                        while (true) {
-                            val event = awaitPointerEvent()
-                            if (event.changes.any { it.pressed }) {
-                                onInputIntent()
-                            }
-                        }
-                    }
-                } else Modifier)
-                .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
-        ) {
-            if (value.isEmpty()) {
-                Text(
-                    "如：保留第一句，第二句不要",
-                    style = AppTypography.labelSmall,
-                    color = TextHint,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            BasicTextField(
-                value = value,
-                onValueChange = onValueChange,
-                textStyle = AppTypography.labelSmall.copy(color = TextPrimary),
-                cursorBrush = SolidColor(Primary),
-                maxLines = 2,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .semantics { contentDescription = name }
-            )
-        }
+                ),
+            maxLines = 2,
+            onInputIntent = onInputIntent
+        )
         Text(
             "确认改写",
             style = AppTypography.labelSmall,

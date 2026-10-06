@@ -124,6 +124,7 @@ fun LbFieldInput(
     modifier: Modifier = Modifier,
     passwordVisible: Boolean = true,
     enabled: Boolean = true,
+    maxLines: Int = 1,
     trailingAction: (@Composable () -> Unit)? = null,
     focusRequester: FocusRequester? = null,
     onInputIntent: (() -> Unit)? = null
@@ -198,7 +199,7 @@ fun LbFieldInput(
             BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
-                singleLine = true,
+                singleLine = maxLines == 1,
                 enabled = enabled,
                 textStyle = textStyleBase.copy(color = visual.textColor),
                 visualTransformation = if (passwordVisible) VisualTransformation.None
