@@ -1,6 +1,9 @@
 package com.lovebrain.app.ui.home
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -327,7 +330,12 @@ internal fun ProviderManageEntry(
                 )
             }
 
-            if (expanded) {
+            // §9.2 N18：供应商展开/收起用真实内容渐进，不只是转 chevron
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically(),
+                exit = shrinkVertically()
+            ) {
                 HorizontalDivider(
                     thickness = AppDimens.BORDER_WIDTH_DP.dp,
                     color = Border.copy(alpha = 0.5f)
