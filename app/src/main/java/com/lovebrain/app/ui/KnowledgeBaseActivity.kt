@@ -278,19 +278,27 @@ internal fun KbListScreen(
         // 四态只在这里出现一次。替换前这里是一张自造的 40 行空态卡（图标 + 标题 + 一句
         // "点下方「新建知识库」"的指路文字），版式与反馈案例页、供应商区各不相同。
         LbAsyncState(screenState) { shown ->
-            shown.knowledgeBases.forEach { kb ->
-                KbCard(
-                    kb = kb,
-                    isActive = kb.name == shown.activeName,
-                    onActivate = { onActivate(kb.name) },
-                    onRename = {
-                        renameText = kb.displayName
-                        pendingRename = kb
-                    },
-                    onEdit = { onEdit(kb.name) },
-                    onExport = { pendingExport = kb },
-                    onDelete = { pendingDelete = kb }
-                )
+            // LbAsyncState.Content 的 slot 是 Box——多张卡必须在此处给纵向布局，
+            // 否则 forEach 画出的卡会叠在 Box 同一位置（指导书§6 P0 叠放回归根因）。
+            // ProviderSection.kt 同一族也是自己在这里包 Column。
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(Spacing.lg)
+            ) {
+                shown.knowledgeBases.forEach { kb ->
+                    KbCard(
+                        kb = kb,
+                        isActive = kb.name == shown.activeName,
+                        onActivate = { onActivate(kb.name) },
+                        onRename = {
+                            renameText = kb.displayName
+                            pendingRename = kb
+                        },
+                        onEdit = { onEdit(kb.name) },
+                        onExport = { pendingExport = kb },
+                        onDelete = { pendingDelete = kb }
+                    )
+                }
             }
         }
 
