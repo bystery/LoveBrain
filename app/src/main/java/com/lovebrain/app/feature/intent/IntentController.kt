@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
  * 一处**故意没修**的已知缺口，写在这里而不是留着让人猜：到期检测只挂在"切库"那一条链上
  * （由 ViewModel 的 `refreshKnowledgeBases` await [refreshForKb]）。以前有个
  * `refreshIntentConfig()` 声称"面板可见时也刷"，但它全仓零调用者，已随死代码删掉。
- * ⇒ 面板一直开着跨午夜，那条 TODAY 意图要等到下一次切库才会被标成 EXPIRED。
+ * ⇒ 面板一直开着跨午夜，那条 ONE_DAY 意图要等到下一次切库才会被标成 EXPIRED。
  * 要不要把刷新一路接回面板可见处，是单独的功能决定，不属于这次搬家。
  *
  * 读写仓库一律靠注入：`feature` 不许 import `data`（包边界由 `PackageDependencyTest`
