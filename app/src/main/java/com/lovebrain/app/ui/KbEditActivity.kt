@@ -517,7 +517,9 @@ internal fun KbEditScreen(
             // 阴影统一收进 2/4 令牌（6→4 为唯一超限修正）
             modifier = Modifier.fillMaxWidth().weight(1f).shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.lg)
         ) {
-            Column(modifier = Modifier.padding(Spacing.xl)) {
+            // 指导书§7.1：编辑态精简卡内固定区域，让正文编辑器拿到更多可用高度。
+            // 预览态保持 xl(24dp)；编辑态用 md(16dp)，上下各省 8dp。
+            Column(modifier = Modifier.padding(if (isPreview) Spacing.xl else Spacing.md)) {
                 // 页头那一行（标题 + 「编辑 / 预览」那颗）画在状态件**外面**，四格都在。
                 // 这不是顺手：空态那句"点右上「编辑」添加"指的正是这一行里那颗 toggle，
                 // 它要是跟着 Content 一起消失，就等于把用户指向一个屏幕上没有的按钮。
@@ -526,8 +528,11 @@ internal fun KbEditScreen(
                 val editorValue = editorStates[selectedPath] ?: TextFieldValue(savedText)
                 val liveLen = if (isPreview) savedText.length else editorValue.text.length
 
+                // 编辑态不画 toggle（底部已有「放弃修改」可以回预览），
+                // 标题行只保留分区名+字数标签，由 TextButton 降到纯 Text，省 ~20dp 行高。
+                // bottom padding 编辑态用 xs(8dp)，预览态保持 md(16dp)。
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = Spacing.md),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = if (isPreview) Spacing.md else Spacing.xs),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -538,26 +543,28 @@ internal fun KbEditScreen(
                         color = TextHint,
                         maxLines = 1
                     )
-                    TextButton(
-                        onClick = {
-                            // 每次**从预览进编辑**都把基线对齐"这一篇当前已落盘的正文"（`saved`），
-                            // 而不是 `drafts`。改之前这里存的是 `drafts`：预览→编辑→预览（不保存）
-                            // →再编辑这一串之后，`drafts` 已经带着上一轮没保存的改动，于是基线被刷成
-                            // **脏草稿**，那颗「放弃修改」回的是脏草稿而不是原文，与"放弃恢复原文"不符。
-                            // `saved` 才是"最后一次成功落盘/读回的内容"，切分区/自动保存也会同步它，
-                            // 所以拿 `saved` 当基线让"放弃"回到真正的原文。编辑→预览这一趟不重写基线，
-                            // 纯切渲染，编辑器里的字仍归 editorStates/drafts，一个字都不清。
-                            if (isPreview) {
-                                editBaselines[selectedPath] = saved[selectedPath] ?: ""
+                    if (isPreview) {
+                        TextButton(
+                            onClick = {
+                                // 每次**从预览进编辑**都把基线对齐"这一篇当前已落盘的正文"（`saved`），
+                                // 而不是 `drafts`。改之前这里存的是 `drafts`：预览→编辑→预览（不保存）
+                                // →再编辑这一串之后，`drafts` 已经带着上一轮没保存的改动，于是基线被刷成
+                                // **脏草稿**，那颗「放弃修改」回的是脏草稿而不是原文，与"放弃恢复原文"不符。
+                                // `saved` 才是"最后一次成功落盘/读回的内容"，切分区/自动保存也会同步它，
+                                // 所以拿 `saved` 当基线让"放弃"回到真正的原文。编辑→预览这一趟不重写基线，
+                                // 纯切渲染，编辑器里的字仍归 editorStates/drafts，一个字都不清。
+                                if (isPreview) {
+                                    editBaselines[selectedPath] = saved[selectedPath] ?: ""
+                                }
+                                isPreview = !isPreview
                             }
-                            isPreview = !isPreview
+                            // 这颗与上面那一排分区按钮同一档：v1.3.1 它没有 `heightIn(min = 48)`，
+                            // 可见高度由 M3 TextButton 自己那一档给（量到 40dp）。
+                            // 这里**不写数**：写了就是给 `UiLayerDependencyContractTest` 那张
+                            // "可点链上的数要解得出主人"的表新添一颗没人认领的矮档。
+                        ) {
+                            Text("编辑", style = AppTypography.labelLarge, color = Primary)
                         }
-                        // 这颗与上面那一排分区按钮同一档：v1.3.1 它没有 `heightIn(min = 48)`，
-                        // 可见高度由 M3 TextButton 自己那一档给（量到 40dp）。
-                        // 这里**不写数**：写了就是给 `UiLayerDependencyContractTest` 那张
-                        // "可点链上的数要解得出主人"的表新添一颗没人认领的矮档。
-                    ) {
-                        Text(if (isPreview) "编辑" else "预览", style = AppTypography.labelLarge, color = Primary)
                     }
                 }
 
@@ -646,7 +653,8 @@ internal fun KbEditScreen(
                                 cursorColor = Primary
                             )
                         )
-                        Spacer(modifier = Modifier.height(Spacing.sm))
+                        // 指导书§7.1：编辑态用更紧凑的间距（xs=4dp），预览态保持 sm(8dp)。
+                        Spacer(modifier = Modifier.height(if (isPreview) Spacing.sm else Spacing.xs))
                         // 页内提示行（禁 Toast 铁律：成功小字 2s 消失，失败红字常驻）
                         hint?.let { (msg, isError) ->
                             Text(
