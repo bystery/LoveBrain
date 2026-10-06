@@ -570,18 +570,6 @@ fun LoveBrainPanelScreen(
                 // 有真实消息 → 挂输入区行 2；没有 → 收进消息卡空态分支。两处二选一，绝不在
                 // 两处各存一份开关（那才是"意图与仅看本轮各长两个所有者"的第二本账）。
                 val hasRealRows = hasRealDialogueRows(messages)
-                // 持续意图那颗的本体仍在这里（`IntentChip` 属本页所有）——意图入口已搬到设置页，
-                // 这一槽保留给"搬挂载点"那条接线单的后续接线（另一路负责），这里不灌进 ReplyInput。
-                // 守卫沿用改前那一颗：没有活动知识库就不画——意图按库隔离，没有"这一块库"就无处可存。
-                val intentSlot: (@Composable () -> Unit)? = if (activeKb != null) {
-                    {
-                        IntentChip(
-                            enabled = intentConfig.enabled,
-                            text = intentConfig.text,
-                            onClick = { viewModel.intents.openEditor() }
-                        )
-                    }
-                } else null
                 ReplyInput(
                     draftText = draftText,
                     currentRole = composeRole,
