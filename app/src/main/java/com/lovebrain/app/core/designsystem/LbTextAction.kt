@@ -313,7 +313,8 @@ fun LbTextAction(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     tone: LbTextActionTone = LbTextActionTone.Accent,
-    size: LbTextActionSize = LbTextActionSize.Standard
+    size: LbTextActionSize = LbTextActionSize.Standard,
+    enabled: Boolean = true
 ) {
     val capsule = size.capsuleColor
     LbTextActionHotZone(
@@ -326,7 +327,7 @@ fun LbTextAction(
         capsuleVisualMinHeight = size.capsuleVisualMinHeight,
         description = null,        // 文字档的名字就是那段字：再写一份 contentDescription 会被念两遍
         selected = null,
-        enabled = true,
+        enabled = enabled,
         onClick = onClick
     ) {
         Text(

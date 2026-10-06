@@ -34,9 +34,8 @@ import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Error
 import com.lovebrain.app.core.designsystem.LbAsyncState
-import com.lovebrain.app.core.designsystem.LbButtonState
 import com.lovebrain.app.core.designsystem.LbListCard
-import com.lovebrain.app.core.designsystem.LbPrimaryButton
+import com.lovebrain.app.core.designsystem.LbTextAction
 import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.core.designsystem.ScreenState
@@ -460,21 +459,17 @@ internal fun splitFirstSentence(text: String): Pair<String, String> {
 }
 
 /**
- * 页头尾部那颗导出：复用设计系统那颗 [LbPrimaryButton]（与知识库一级页底部主动作同一颗件），
- * 只保留"点一下导出"这一个动作；零结果时切到 [LbButtonState.Disabled]，
- * 仍在树上、报得出 disabled（`FeedbackCasesSemanticsTest` 的 `the export action stays visible
- * but reports itself disabled when the list is empty` 钉的就是这一条）。
+ * 页头尾部那颗导出：紧凑次级动作（与知识库卡「导出」同族 [LbTextAction]），
+ * 只保留"点一下导出"这一个动作；零结果时切到 disabled。
  *
- * 旧写法是这一页唯一一颗自绘的 `Box + background + Text`——异形账本里那一笔，
- * 本轮并进设计系统动作档销行。可见高度与热区由 [LbPrimaryButton] 那一处持有，
- * 这一页不再自己画形状、不再自己挂 `Role.Button`。
+ * 指导书§9.2：导出走次级动作档，不占主动作 48dp 那颗。
  */
 @Composable
 private fun ExportAction(enabled: Boolean, label: String, onClick: () -> Unit) {
-    LbPrimaryButton(
-        state = if (enabled) LbButtonState.Idle else LbButtonState.Disabled,
+    LbTextAction(
         label = label,
-        onClick = onClick
+        onClick = onClick,
+        enabled = enabled
     )
 }
 
