@@ -429,6 +429,10 @@ internal fun KbEditScreen(
         title = "知识库编辑",
         onBack = { if (anyDirty) saveAllAndExit() else onBack() }
     ) {
+        // 编辑态收起分区三排：键盘弹出时它们仍占固定 ~120dp，会挤压正文编辑器。
+        // 指导书§7.1："在编辑态精简/收起上方固定区域，保证正文视口与保存动作可达"。
+        // 预览态展开三排让用户切文件；编辑态只需要当前分区名 + 编辑器 + 保存。
+        if (isPreview) {
         // 三档分区名留在页面上（它们就是这一页的目录），后面那串括号里的是**内部分层说明**
         // ——"画像/当下/积累"这套词是给我们读代码的人用的，用户看见的只需要名字本身。
         val layers = listOf("画像", "当下", "积累")
@@ -505,6 +509,7 @@ internal fun KbEditScreen(
         //  能安全省下的就是它——省下的每一 dp 都直接回到正文编辑器的可用高度上（H_editor = H_page − 固定项）。
         //  页头段(112)、分区三排(198)按紧凑档不许涨、卡内固定(132)是标题行/动作排/内边距，都不在这一格射程里。
         Spacer(modifier = Modifier.height(Spacing.sm))
+        } // end if (isPreview)
 
         Card(
             shape = LoveBrainShape.lg,
