@@ -529,13 +529,19 @@ fun MessageList(
         return
     }
 
-    // 聊天行与那一行备注同坐在这块旧版圆角底上；备注不参与聊天行的滚动
+    // 聊天行与那一行备注同坐在这块旧版圆角底上
     Column(
         modifier = modifier
             .fillMaxWidth()
             .background(SurfaceInset, LoveBrainShape.lg)
             .padding(Spacing.md)
     ) {
+        // 指导书§12.1 R15：备注随最后消息共同滚动，不钉视口底部。
+        // 备注作为 LazyColumn 的 footer item，随消息一起滚动；
+        // 拖拽重排只在 itemsIndexed 的聊天行上起势，footer 不参与重排。
+        val dialogueIds = remember(dialogueDisplayed) {
+            dialogueDisplayed.map { it.second.id }.toHashSet()
+        }
         LazyColumn(
             state = listState,
             modifier = Modifier
@@ -547,9 +553,11 @@ fun MessageList(
                             val hitItem = listState.layoutInfo.visibleItemsInfo.firstOrNull { item ->
                                 offset.y >= item.offset && offset.y < item.offset + item.size
                             }
-                            if (hitItem != null) {
+                            // 只认聊天行的 id（footer 的 key 不在 dialogueIds 里，不起势）
+                            val hitId = hitItem?.key as? String
+                            if (hitId != null && hitId in dialogueIds) {
                                 // 认人只认 id：随后每一次交换都只改格号，手指底下的那颗不变
-                                draggedId = hitItem.key as? String
+                                draggedId = hitId
                                 dragOffsetY = 0f
                                 edgeSpeedPx = 0f
                                 pendingSwapFromIndex = -1
@@ -647,18 +655,20 @@ fun MessageList(
                     modifier = if (isDragged) Modifier.zIndex(1f) else Modifier.animateItemPlacement()
                 )
             }
-        }
-        // 原话第 15 条："放在最后一条真实消息下面，一行黄色小字"——
-        // 挂在 LazyColumn **之外**，所以它既不在聊天顺序里、也拖不进聊天顺序（重排数组碰不到它）。
-        // 侧滑清除走 onClearNote（→ ClearNote），被删对象与回调分离：绝不落 onDelete 那条消息链。
-        if (advisorNoteText != null) {
-            Spacer(Modifier.height(Spacing.sm))
-            AdvisorNoteLine(
-                noteText = advisorNoteText,
-                onClick = editNoteFromTap,
-                onSwipeClear = onClearNote,
-                modifier = Modifier.fillMaxWidth().noteSwipeIsNotATap(noteSwipeFlag)
-            )
+            // 指导书§12.1 R15：备注作为 LazyColumn footer 随消息共同滚动。
+            // 不在 itemsIndexed 里 → 拖拽重排碰不到它；
+            // 侧滑清除走 onClearNote（→ ClearNote），被删对象与回调分离：绝不落 onDelete 那条消息链。
+            if (advisorNoteText != null) {
+                item(key = "advisor_note_footer") {
+                    Spacer(Modifier.height(Spacing.sm))
+                    AdvisorNoteLine(
+                        noteText = advisorNoteText,
+                        onClick = editNoteFromTap,
+                        onSwipeClear = onClearNote,
+                        modifier = Modifier.fillMaxWidth().noteSwipeIsNotATap(noteSwipeFlag)
+                    )
+                }
+            }
         }
     }
 }

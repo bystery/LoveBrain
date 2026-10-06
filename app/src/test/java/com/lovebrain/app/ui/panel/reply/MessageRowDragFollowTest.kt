@@ -445,7 +445,7 @@ class MessageRowDragFollowTest {
         assertTrue("重排回调交的必须是原列表下标（展示位与它是两件事）",
             source.contains("onReorder(fromPair.first, toPair.first)"))
         assertTrue("拖拽认人只认稳定 id，不许按格号认：" + linesWith("draggedId ="),
-            source.contains("draggedId = hitItem.key as? String"))
+            source.contains("draggedId = hitId") && source.contains("hitItem?.key as? String"))
     }
 
     /**
