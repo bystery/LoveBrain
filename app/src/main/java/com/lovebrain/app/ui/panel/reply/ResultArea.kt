@@ -43,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.LoveBrainResponse
+import com.lovebrain.app.model.ReplyCompleteness
 import com.lovebrain.app.model.RewriteCommand
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
@@ -273,6 +274,27 @@ fun ResultArea(
                     rowState = rowState,
                     onInputIntent = onInputIntent
                 )
+
+                // §11.2: 八项不完整时给用户一条轻量提示——不静默隐藏缺失项
+                when (val completeness = response.replyCompleteness) {
+                    is ReplyCompleteness.Complete -> { /* 八项齐全，无需提示 */ }
+                    is ReplyCompleteness.Partial -> {
+                        Spacer(Modifier.height(Spacing.sm))
+                        ReplyIncompleteNotice(
+                            "本次缺少：${completeness.missingLabels.joinToString("、")}，可重新生成"
+                        )
+                    }
+                    is ReplyCompleteness.Duplicated -> {
+                        Spacer(Modifier.height(Spacing.sm))
+                        val dupHint = if (completeness.missingLabels.isNotEmpty()) {
+                            "本次有重复正文且缺少：${completeness.missingLabels.joinToString("、")}，可重新生成"
+                        } else {
+                            "本次有重复正文，可重新生成"
+                        }
+                        ReplyIncompleteNotice(dupHint)
+                    }
+                    ReplyCompleteness.Empty -> { /* 解析层已拒绝，不会到这里 */ }
+                }
 
                 if (response.analysis.ongoing.isNotEmpty()) {
                     Spacer(Modifier.height(Spacing.sm))
@@ -927,4 +949,29 @@ private fun LocalCorrectionFlowHostIfNeeded(
             )
         }
     )
+}
+
+/**
+ * §11.2：八项回复不完整时的一行轻量提示。
+ *
+ * 指导书要求"用户应能看清是八项中的哪个没生成，不能静默隐藏"。
+ * 这里只做展示——已有的候选卡片仍保留，不删不清；用户可点「重新生成」。
+ * 与主动发那条 [ProactiveStore.closeRun] 同一族轻量提示语言：
+ * 一行小字、Warning 色、不挡操作。
+ */
+@Composable
+private fun ReplyIncompleteNotice(text: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(LoveBrainShape.sm)
+            .background(WarningBg)
+            .padding(horizontal = Spacing.md, vertical = Spacing.sm)
+    ) {
+        Text(
+            text = text,
+            color = Warning,
+            style = AppTypography.labelMedium
+        )
+    }
 }
