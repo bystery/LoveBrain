@@ -304,6 +304,17 @@ class LoveBrainViewModel(
     val activeKb: StateFlow<KnowledgeBase?> = _activeKb.asStateFlow()
 
     /**
+     * 知识库列表快照——悬浮设置页用它显示可切库。
+     *
+     * 以前面板页用 `produceState` 只在首次组合时加载一次，
+     * 设置一直打开时新建/改名后列表陈旧（指导书 §10.3）。
+     * 改成 StateFlow 后 [refreshKnowledgeBases] 每次执行都会更新它，
+     * 面板页用 `collectAsStateWithLifecycle` 自动收到新值。
+     */
+    private val _knowledgeBasesState = MutableStateFlow<List<KnowledgeBase>>(emptyList())
+    val knowledgeBasesState: StateFlow<List<KnowledgeBase>> = _knowledgeBasesState.asStateFlow()
+
+    /**
      * 画像建议卡片：快照 + "确认"这一次尝试的全部判据，主人是 [ProfileUpdateController]
      * （复核 第5节第2条 第 6 步搬的第二块**行为**，原来那是本文件最大的单个成员、98 行）。
      *
@@ -1718,6 +1729,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     roundCorrections.clear()
                 }
                 _activeKb.value = newKb
+                // §10.3：刷新库列表快照——设置一直打开时新建/改名后也能看到最新列表
+                _knowledgeBasesState.value = knowledgeRepo.listAll()
                 // 等 的对象隔离：备注是按"当前对象"暂存的一份补充，切对象必须换账本。
                 // 不投这一颗的话 `_subject` 恒为 null ⇒ 所有库共用同一个暂存位，
                 // A 对象写的"我让军师注意…"会跟着带到 B 对象那屏（用户没要求的串味）。

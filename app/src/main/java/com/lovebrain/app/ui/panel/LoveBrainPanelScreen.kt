@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.runtime.produceState
 import com.lovebrain.app.PanelBackdropOpacity
 import com.lovebrain.app.R
 import com.lovebrain.app.feature.composer.ComposerInputKind
@@ -157,11 +156,8 @@ private fun PanelSettingsPage(
     // · 换有效期档（recomputeExpiry=true）：传空串触发按新档重算到期时刻。
     val intentConfig by viewModel.intents.config.collectAsStateWithLifecycle()
     val activeKb by viewModel.activeKb.collectAsStateWithLifecycle()
-    val kbList by produceState(initialValue = emptyList<com.lovebrain.app.model.KnowledgeBase>()) {
-        value = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-            viewModel.listKnowledgeBases()
-        }
-    }
+    // §10.3：改用 StateFlow 收集——设置一直打开时新建/改名后也能收到最新列表
+    val kbList by viewModel.knowledgeBasesState.collectAsStateWithLifecycle()
     LoveBrainSettingsContent(
         onBack = onBack,
         onCollapse = onCollapse,
