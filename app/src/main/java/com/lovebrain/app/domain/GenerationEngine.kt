@@ -434,7 +434,8 @@ class GenerationEngine(
         knowledgeBase: KnowledgeBase?,
         messages: List<ChatMessage>,
         onlyThisRound: Boolean = false,
-        advisorNote: String = ""
+        advisorNote: String = "",
+        intentConfig: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()
     ): Flow<ProactiveEvent> = flow {
         emit(ProactiveStarted(requestId))
         val providerConfig = deepSeekRepo.snapshotProviderConfig()
@@ -447,7 +448,7 @@ class GenerationEngine(
         // 使用主动开场 prompt：开关关闭时含画像和近期对话，开启时只用本轮草稿/备注与当前对话
         val user = withContext(Dispatchers.IO) {
             promptBuilder.buildProactiveUserPrompt(
-                draft, knowledgeBase, messages, onlyThisRound, advisorNote
+                draft, knowledgeBase, messages, onlyThisRound, advisorNote, intentConfig
             )
         }
         val system = withContext(Dispatchers.IO) { promptBuilder.buildProactiveSystemPrompt() }

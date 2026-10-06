@@ -1792,7 +1792,24 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         ) {
             proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(ProactiveStarted(requestId)))
             try {
-                generationEngine.proactiveStream(requestId, draft, kbSnapshot, messages, onlyThisRound, advisorNote)
+                // §10.2：主动发也注入持续意图——与回复分支同一颗 IntentPolicy 判到期、
+                // 同一颗 IntentIdeaBlock.buildIntentBlock 组 prompt。"仅看本轮"开启时
+                // buildProactiveUserPrompt 走 buildRoundScope 那一路，intent 一条都不进。
+                val intentSnapshot = kbSnapshot?.name?.let { name ->
+                    try {
+                        withContext(Dispatchers.IO) { knowledgeRepo.readIntent(name) }
+                    } catch (e: kotlinx.coroutines.CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        L.w("proactive readIntent failed: ${e.message}")
+                        null
+                    }
+                } ?: com.lovebrain.app.model.IntentConfig()
+                val effectiveIntent =
+                    if (com.lovebrain.app.domain.IntentPolicy.shouldAutoExpire(intentSnapshot, com.lovebrain.app.util.TimeFmt.now())) {
+                        intentSnapshot.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
+                    } else intentSnapshot
+                generationEngine.proactiveStream(requestId, draft, kbSnapshot, messages, onlyThisRound, advisorNote, effectiveIntent)
                     .collect { proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(it)) }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(ProactiveEnded(requestId)))

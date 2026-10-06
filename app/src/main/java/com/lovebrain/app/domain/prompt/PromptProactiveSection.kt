@@ -53,7 +53,8 @@ object PromptProactiveSection {
         val noteBlock: String = "",
         val sceneBlock: String = "",
         val dialogueBlock: String = "",
-        val stylePreference: String = ""
+        val stylePreference: String = "",
+        val intentBlock: String = ""
     )
 
     /**
@@ -81,6 +82,8 @@ object PromptProactiveSection {
         if (input.noteBlock.isNotBlank()) sb.append(input.noteBlock)
         if (input.sceneBlock.isNotBlank()) sb.append(input.sceneBlock)
         if (input.dialogueBlock.isNotBlank()) sb.append(input.dialogueBlock).append("\n")
+        // §10.2：持续意图在本轮真实输入之后、相关记忆之前注入——与回复分支同一顺序。
+        if (input.intentBlock.isNotBlank()) sb.append(input.intentBlock)
 
         // ── 再相关记忆（预算内只取必要事实）──
         if (input.herProfile.isNotBlank()) {

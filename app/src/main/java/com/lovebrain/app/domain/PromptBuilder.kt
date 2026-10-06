@@ -385,7 +385,8 @@ class PromptBuilder(
         kb: KnowledgeBase? = null,
         messages: List<ChatMessage> = emptyList(),
         onlyThisRound: Boolean = false,
-        advisorNote: String = ""
+        advisorNote: String = "",
+        intentConfig: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()
     ): String {
         // 时间戳垫底：两档共用同一颗尾巴，避免"开关切换顺手换了一种时间写法"这种假差异
         val timestampTail = "## 当前时间\n" + clock.wallClock() + "\n"
@@ -411,6 +412,9 @@ class PromptBuilder(
         // 本轮真实输入不走 KB 读口：备注 / 由本轮推断的场景 / 本轮真实对话，直接由入参装配。
         val noteBlock = IntentIdeaBlock.buildAdvisorNoteBlock(advisorNote)
         val sceneBlock = CurrentSceneInjection.block(CurrentSceneInjection.infer(messages))
+        // §10.2：持续意图对普通主动发生效——与回复分支同一颗 IntentIdeaBlock.buildIntentBlock。
+        // 「仅看本轮」那一档在上面已 return，不会走到这里——intent 仅在普通分支注入。
+        val intentBlock = IntentIdeaBlock.buildIntentBlock(intentConfig)
         // 没有真实 HER/ME 消息时不留一个空的 <chat> 围栏（"无素材"那格给干净上下文）。
         val hasRealDialogue = messages.any {
             it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME
@@ -428,7 +432,8 @@ class PromptBuilder(
                 noteBlock = noteBlock,
                 sceneBlock = sceneBlock,
                 dialogueBlock = dialogueBlock,
-                stylePreference = stylePreference
+                stylePreference = stylePreference,
+                intentBlock = intentBlock
             )
         )
         // 时间戳垫底
