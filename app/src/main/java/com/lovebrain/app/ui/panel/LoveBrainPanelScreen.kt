@@ -147,6 +147,7 @@ private fun PanelSettingsPage(
     onBack: () -> Unit,
     /** 原话第 17 条「设置页收不起窗」：这颗只把宿主那一次点击转下去，本页不判断该不该收 */
     onCollapse: () -> Unit,
+    onInputIntent: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     // 持续意图：设置页那一格读同一份 config，一条写口 onIntentChange 拼一次 save。
@@ -182,7 +183,8 @@ private fun PanelSettingsPage(
         knowledgeBases = kbList,
         activeKbName = activeKb?.name,
         onSwitchKb = { name -> viewModel.switchActiveKb(name) },
-        modifier = modifier
+        modifier = modifier,
+        onInputIntent = { onInputIntent("settings") }
     )
 }
 
@@ -789,6 +791,7 @@ fun LoveBrainPanelScreen(
                                     }
                                 },
                                 generationRoundId = generationRoundId,
+                                onInputIntent = { onInputIntent("scheme_adjust") },
                                 modifier = Modifier.fillMaxSize()
                             )
                         }
@@ -834,6 +837,7 @@ fun LoveBrainPanelScreen(
                 surface = surface,
                 onBack = { surface.closeSettings() },
                 onCollapse = onCollapse,
+                onInputIntent = onInputIntent,
                 modifier = Modifier.fillMaxWidth().weight(1f)
             )
         }
@@ -866,7 +870,8 @@ fun LoveBrainPanelScreen(
                 onSave = { text, enabled, expiry, expiryDate, status ->
                     viewModel.intents.save(text, enabled, expiry, expiryDate, status)
                 },
-                onDismiss = { viewModel.intents.dismissEditor() }
+                onDismiss = { viewModel.intents.dismissEditor() },
+                onInputIntent = { onInputIntent("intent_editor") }
             )
         }
 

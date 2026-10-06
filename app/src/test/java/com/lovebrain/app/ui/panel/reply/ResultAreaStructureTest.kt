@@ -90,7 +90,7 @@ class ResultAreaStructureTest {
     // 点着切）已经删掉了，但**来源标识必须原样跟着走**——反馈、改写、撤销、缓存都按
     // `STYLE:A` / `DIRECTION:F` 这种带来源的身份寻址，抹平来源就会把它们绑到错的卡上。
 
-    /** 四风格齐全 + 四条方向（null/空白 = 本轮不存在那一条） */
+    /** 四风格齐全 + 四条方向（null/空白 = 本轮不适合，仍保留为卡） */
     private fun responseOf(
         styles: List<String> = listOf("A 的话术", "B 的话术", "C 的话术", "D 的话术"),
         directions: List<String?> = listOf("F 的话术", "E 的话术", "X 的话术", "S 的话术")
@@ -118,32 +118,32 @@ class ResultAreaStructureTest {
     }
 
     @Test
-    fun `the merged list shows exactly as many items as exist and no placeholders`() {
-        // 方向只活两条（一条 null、一条空白串）⇒ 这一排应当是 4 + 2，不是 4 + 4 张占位卡
+    fun `the merged list keeps all eight schemes including blank direction cards`() {
+        // 方向只活两条（一条 null、一条空白串）⇒ 空回复仍保留为"本轮不适合"卡，不删除
+        // （见 SchemeCollapsedBlock 的空回复态与 Models.kt "toSchemes 不再过滤空回复"）
         val merged = mergedSchemesInRoundOrder(
             responseOf(directions = listOf("F 的话术", null, "X 的话术", "   "))
         )
-        assertEquals("存在的项数是 ${merged.size}，应为 6", 6, merged.size)
+        assertEquals("四风格 + 四方向 = 8 张卡（空回复 = 本轮不适合，不删）", 8, merged.size)
         assertEquals(
-            listOf("STYLE:A", "STYLE:B", "STYLE:C", "STYLE:D", "DIRECTION:F", "DIRECTION:X"),
+            listOf("STYLE:A", "STYLE:B", "STYLE:C", "STYLE:D",
+                "DIRECTION:F", "DIRECTION:E", "DIRECTION:X", "DIRECTION:S"),
             merged.map { it.identity.key }
         )
-        assertTrue("不许把没有内容的项塞进来占位", merged.all { it.reply.isNotBlank() })
     }
 
     @Test
     fun `the merged list reads both groups instead of only the style one`() {
         // 反向证人：风格四条全空时，这一排不能是空的——只读 response.schemes 的实现会在这里红
+        // 空回复仍保留（= 本轮不适合卡），不删——与方向空回复同一判据
         val onlyDirections = mergedSchemesInRoundOrder(
             responseOf(styles = listOf("", "", "", ""))
         )
         assertEquals(
-            listOf("DIRECTION:F", "DIRECTION:E", "DIRECTION:X", "DIRECTION:S"),
+            listOf("STYLE:A", "STYLE:B", "STYLE:C", "STYLE:D",
+                "DIRECTION:F", "DIRECTION:E", "DIRECTION:X", "DIRECTION:S"),
             onlyDirections.map { it.identity.key }
         )
-        assertTrue("两组都空时就该什么都没有，不造占位卡",
-            mergedSchemesInRoundOrder(responseOf(styles = listOf("", "", "", ""),
-                directions = listOf(null, null, null, null))).isEmpty())
     }
 
     @Test

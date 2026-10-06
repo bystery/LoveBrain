@@ -128,6 +128,7 @@ fun ResultArea(
     correctionFlow: MemoryCorrectionFlow? = null,
     // 稳定轮次身份——只在整轮 generate 成功时变化
     generationRoundId: Int = 0,
+    onInputIntent: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     // 卡下方那条文字入口的可见性判据：本轮一条参考信息都没有就不摆空工具块
@@ -187,7 +188,8 @@ fun ResultArea(
                             onCancelRewrite = onCancelRewrite,
                             onCustomRewrite = onCustomRewrite,
                             onReferenceClick = roundRefsClick,
-                            rowState = rowState
+                            rowState = rowState,
+                            onInputIntent = onInputIntent
                         )
                     }
                     // 卡片行下方那条入口在流式那一档也是同一份**公共清单**，不是每张卡一份：
@@ -268,7 +270,8 @@ fun ResultArea(
                     onCancelRewrite = onCancelRewrite,
                     onCustomRewrite = onCustomRewrite,
                     onReferenceClick = roundRefsClick,
-                    rowState = rowState
+                    rowState = rowState,
+                    onInputIntent = onInputIntent
                 )
 
                 if (response.analysis.ongoing.isNotEmpty()) {
@@ -393,17 +396,14 @@ fun ResultArea(
 private enum class SchemeFilter { ALL, LIKED, DISLIKED }
 
 /**
- * 一条横向列表要渲染的方案：四风格在前、四方向在后，按原有顺序接成 A B C D F E X S，
- * 并且只留有内容的项（reply 为空 = 那一条本轮不存在，不占一张卡的位）。
+ * 一条横向列表要渲染的方案：四风格在前、四方向在后，按原有顺序接成 A B C D F E X S。
  *
- * 这里删掉的是"两组各一排、点着切"那层**展示分组**，不是来源标识：
- * [Scheme.source] 与 [Scheme.identity]（`STYLE:A` / `DIRECTION:F`）一个字没动地跟着
- * 传进卡片行——反馈、改写、撤销、缓存都按这份身份寻址，抹平来源就会把它们绑到错的卡上。
- *
- * 顺序也不是重排的：风格组整体在前、方向组整体在后，组内保持模型给的固定位置。
+ * reply 为空的方向卡片不删除——模型按 prompt 有意输出 null 表示"本轮不适合"，
+ * 卡片自身有"本轮不适合"那一张态（见 SchemeCollapsedBlock / SchemeCard），删掉就少了
+ * 一张卡（用户看到 7 而不是 8），也破坏了 A–H 连续编号。
  */
 internal fun mergedSchemesInRoundOrder(response: LoveBrainResponse): List<Scheme> =
-    (response.schemes + response.directionSchemes).filter { it.reply.isNotBlank() }
+    response.schemes + response.directionSchemes
 
 /**
  * 卡片标签上那个**连续编号** A–H：一组四项、两组接起来还是八项，一个都不少
@@ -565,7 +565,8 @@ private fun SchemeCardsRow(
     // 所以每颗卡传的是同一个 toggle（不许编造"这张回复专门引用了某条"的归属）。
     onReferenceClick: (() -> Unit)? = null,
     // 展开集合 / 落点 / 草稿：住在调用方（LazyRow item 之上），换一整轮整包作废
-    rowState: SchemeRowState
+    rowState: SchemeRowState,
+    onInputIntent: (() -> Unit)? = null
 ) {
         // 方案筛选：全部常驻 + 已赞/已踩按状态出现（用户 2026-10-03 原话："《全部》按钮全程显示，
     // 《已赞》按钮点赞了就显示，目前还没有《已踩》按钮需要加上，然后也是点了踩才显示"）
@@ -713,7 +714,8 @@ private fun SchemeCardsRow(
                                 if (rect == null) rowState.cardBoundsInWindow.remove(identityKey)
                                 else rowState.cardBoundsInWindow[identityKey] = rect
                             },
-                            onReferenceClick = onReferenceClick
+                            onReferenceClick = onReferenceClick,
+                            onInputIntent = onInputIntent
                         )
                     }
                 }

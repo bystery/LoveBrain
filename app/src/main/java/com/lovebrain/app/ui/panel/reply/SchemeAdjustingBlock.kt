@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -63,7 +64,8 @@ internal fun SchemeAdjustingBlock(
     customDraft: String? = null,
     onCustomDraftChange: (String) -> Unit = {},
     isCustomInputOpen: Boolean? = null,
-    onCustomInputOpenChange: (Boolean) -> Unit = {}
+    onCustomInputOpenChange: (Boolean) -> Unit = {},
+    onInputIntent: (() -> Unit)? = null
 ) {
     // 读屏名字外面取好再闭包进去：semantics 的 lambda 不是 @Composable
     val customHint = stringResource(R.string.scheme_custom_hint)
@@ -111,6 +113,7 @@ internal fun SchemeAdjustingBlock(
                 value = draft,
                 onValueChange = writeDraft,
                 name = customHint,
+                onInputIntent = onInputIntent,
                 onSubmit = { text ->
                     if (text.isNotBlank()) onCustomRewrite(text.trim())
                 }
@@ -174,7 +177,8 @@ private fun CustomRequirementEditor(
     value: String,
     onValueChange: (String) -> Unit,
     name: String,
-    onSubmit: (String) -> Unit
+    onSubmit: (String) -> Unit,
+    onInputIntent: (() -> Unit)? = null
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -190,6 +194,17 @@ private fun CustomRequirementEditor(
                 )
                 .clip(LoveBrainShape.sm)
                 .background(SurfaceInset, LoveBrainShape.sm)
+                // 编辑意图：触碰输入框 → 通知宿主进入 EDITING（与 PanelTextInput / LbFieldInput 同一范式）
+                .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            if (event.changes.any { it.pressed }) {
+                                onInputIntent()
+                            }
+                        }
+                    }
+                } else Modifier)
                 .padding(horizontal = Spacing.sm, vertical = Spacing.xs)
         ) {
             if (value.isEmpty()) {

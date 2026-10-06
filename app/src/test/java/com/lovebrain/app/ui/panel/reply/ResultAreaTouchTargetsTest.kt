@@ -106,9 +106,9 @@ class ResultAreaTouchTargetsTest {
     private val dislikeLabel: String get() = ctx.getString(R.string.a11y_scheme_dislike)
 
     /**
-     * 四风格齐全 + 四条方向里只有两条有内容（两条 null = 本轮不存在那一条）。
-     * 合成一条列表之后这一排应当是 **6 张卡**——不是"风格那一档的 4 张"，
-     * 也不是"两组各四条、点着切"。
+     * 四风格齐全 + 四条方向里只有两条有内容（两条 null = 本轮不适合，仍保留为卡）。
+     * 合成一条列表之后这一排应当是 **8 张卡**——不是"风格那一档的 4 张"，
+     * 也不是"两组各四条、点着切"，更不是旧版过滤掉空回复后的 6 张。
      */
     private fun fixture(): GenerateResult.Success = GenerateResult.Success(
         LoveBrainResponse(
@@ -352,11 +352,11 @@ class ResultAreaTouchTargetsTest {
     fun `every scheme card in the row meets the floor`() {
         val result = fixture()
         // 滚几档 = 这一排真有几张卡，**从夹具算出来**，不写死。
-        // 判的是合并后的那一条列表（四风格 + 有内容的两条方向 = 6 张）：
+        // 判的是合并后的那一条列表（四风格 + 四方向 = 8 张，空回复 = 本轮不适合仍保留）：
         // 还只渲染风格那一档的实现会在这里当场红——`performScrollToIndex(4)`
         // 会报 "out of bounds [0, 4)"，而不是安静地少滚两档。
         val cards = mergedSchemesInRoundOrder((result as GenerateResult.Success).response).size
-        assertEquals("夹具这一轮该有的卡数", 6, cards)
+        assertEquals("夹具这一轮该有的卡数", 8, cards)
         mount(result, UiMatrix(600))
         val row = schemeRow()
         // 逐张滚过去，每一档都重扫整棵树。要求的是**滚完之后累计**至少见过

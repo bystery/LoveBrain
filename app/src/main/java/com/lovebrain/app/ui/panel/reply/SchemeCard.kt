@@ -149,6 +149,7 @@ fun SchemeCard(
     isCustomInputOpen: Boolean = false,
     onCustomInputOpenChange: (Boolean) -> Unit = {},
     onCardBoundsChanged: ((Rect?) -> Unit)? = null,
+    onInputIntent: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val isEmpty = scheme.reply.isBlank()
@@ -283,6 +284,7 @@ fun SchemeCard(
                             onCustomDraftChange = onCustomDraftChange,
                             isCustomInputOpen = isCustomInputOpen,
                             onCustomInputOpenChange = onCustomInputOpenChange,
+                            onInputIntent = onInputIntent,
                             modifier = Modifier.weight(1f).fillMaxWidth()
                         )
                     }

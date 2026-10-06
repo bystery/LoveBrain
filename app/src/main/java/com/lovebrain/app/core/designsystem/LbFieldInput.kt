@@ -111,6 +111,10 @@ internal fun lbFieldVisualState(
  *
  * @param focusRequester 外部（键盘引导、进入页面自动聚焦）要用的焦点入口。
  *   传了就挂在这一颗输入框上，空档获焦也复用它，不另起第二个焦点拥有者。
+ * @param onInputIntent 悬浮窗宿主里用的**编辑意图信号**：用户碰到输入框 = 想打字，
+ *   宿主收到这一颗就把窗口从 `FLAG_NOT_FOCUSABLE` 切到 EDITING，IME 才能弹出来。
+ *   与 [PanelTextInput] 的 `onInputIntent` 同一范式——触碰输入区 = 想编辑。
+ *   `null`（默认）= 跑在普通 Activity 里（如 SetupActivity 的供应商表单），IME 原生可用，不需要这条信号。
  */
 @Composable
 fun LbFieldInput(
@@ -121,7 +125,8 @@ fun LbFieldInput(
     passwordVisible: Boolean = true,
     enabled: Boolean = true,
     trailingAction: (@Composable () -> Unit)? = null,
-    focusRequester: FocusRequester? = null
+    focusRequester: FocusRequester? = null,
+    onInputIntent: (() -> Unit)? = null
 ) {
     val textStyleBase = AppTypography.bodyMedium
     // 只保留一个焦点入口：外部给了就用外部的，否则用这颗自己创建的。
@@ -147,8 +152,12 @@ fun LbFieldInput(
             .then(
                 if (enabled) {
                     // 只转焦点、不声明点击语义；禁用时整条撤下——"不响应"包含点空档也不获焦
+                    // 点空档获焦时也上报编辑意图（与 PanelTextInput 同一范式：碰到输入区 = 想编辑）
                     Modifier.pointerInput(editFocusRequester) {
-                        detectTapGestures(onTap = { editFocusRequester.requestFocus() })
+                        detectTapGestures(onTap = {
+                            editFocusRequester.requestFocus()
+                            onInputIntent?.invoke()
+                        })
                     }
                 } else {
                     Modifier
@@ -163,6 +172,18 @@ fun LbFieldInput(
                 .clip(LoveBrainShape.md)
                 .background(visual.background)
                 .then(borderChain)
+                // 编辑意图：用户触碰输入框区域 → 通知宿主进入 EDITING（与 PanelTextInput 同一范式）
+                // 检测 Press 事件但不消费，让 BasicTextField 仍能收到点击获焦
+                .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            if (event.changes.any { it.pressed }) {
+                                onInputIntent()
+                            }
+                        }
+                    }
+                } else Modifier)
                 .padding(horizontal = Spacing.lg)
         ) {
             if (value.isEmpty()) {

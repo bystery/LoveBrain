@@ -116,7 +116,8 @@ internal fun IntentEditorDialog(
     expiryDate: String = "",
     status: com.lovebrain.app.model.IntentStatus = com.lovebrain.app.model.IntentStatus.ACTIVE,
     onSave: (String, Boolean, com.lovebrain.app.model.IntentExpiry, String, com.lovebrain.app.model.IntentStatus) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onInputIntent: (() -> Unit)? = null
 ) {
     LbModalSheet(onDismissRequest = onDismiss) {
         IntentEditorBody(
@@ -126,7 +127,8 @@ internal fun IntentEditorDialog(
             expiryDate = expiryDate,
             status = status,
             onSave = onSave,
-            onDismiss = onDismiss
+            onDismiss = onDismiss,
+            onInputIntent = onInputIntent
         )
     }
 }
@@ -148,7 +150,8 @@ internal fun IntentEditorBody(
     expiryDate: String,
     status: com.lovebrain.app.model.IntentStatus,
     onSave: (String, Boolean, com.lovebrain.app.model.IntentExpiry, String, com.lovebrain.app.model.IntentStatus) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onInputIntent: (() -> Unit)? = null
 ) {
     var editText by remember { mutableStateOf(text) }
     var editEnabled by remember { mutableStateOf(enabled) }
@@ -206,7 +209,8 @@ internal fun IntentEditorBody(
             LbFieldInput(
                 value = editText,
                 onValueChange = { editText = it },
-                placeholder = stringResource(R.string.intent_content_placeholder)
+                placeholder = stringResource(R.string.intent_content_placeholder),
+                onInputIntent = onInputIntent
             )
         }
         // 简化字数计数——只一行，超限走上面的错误行

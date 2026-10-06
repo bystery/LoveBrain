@@ -88,7 +88,8 @@ fun LoveBrainSettingsContent(
     knowledgeBases: List<KnowledgeBase> = emptyList(),
     activeKbName: String? = null,
     onSwitchKb: (String) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onInputIntent: (() -> Unit)? = null
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         // 紧凑页头：一颗返回 + 一行页名。返回那颗的名字仍走 `R.string.common_back`、角色与热区
@@ -159,7 +160,8 @@ fun LoveBrainSettingsContent(
                 intentEnabled = intentEnabled,
                 intentText = intentText,
                 intentExpiry = intentExpiry,
-                onIntentChange = onIntentChange
+                onIntentChange = onIntentChange,
+                onInputIntent = onInputIntent
             )
             Spacer(Modifier.height(Spacing.md))
             SettingsKbSwitcherEntry(

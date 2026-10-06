@@ -1384,6 +1384,11 @@ class UiLayerDependencyContractTest {
             "卡内紧凑档在 core 已有主人（28），这一颗是页面私有 object 里的同名第二数"
         ),
         SubFloorNumber(
+            "ui/panel/reply/SchemeAdjustingBlock.kt#SchemeCardDimens.CUSTOM_FIELD_MIN_HEIGHT_DP.dp", 28, "CARD_ACTION_HIT_DP",
+            "",
+            "自定义改写输入框的 min 高度接了 pointerInput（编辑意图信号），进入可点链；28 与同卡调整胶囊同一档"
+        ),
+        SubFloorNumber(
             "ui/panel/reply/SchemeCollapsedBlock.kt#SchemeCardDimens.ACTION_BOX_DP.dp", 28, "CARD_ACTION_HIT_DP",
             "",
             "主人已在 core 立住（LbTextAction 的 Compact 字形档就照它垫两轴）；页面这颗是第二数"

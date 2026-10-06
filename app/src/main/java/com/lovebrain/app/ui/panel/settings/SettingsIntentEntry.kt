@@ -89,7 +89,8 @@ internal fun SettingsIntentEntry(
     intentText: String,
     intentExpiry: IntentExpiry,
     onIntentChange: (String, Boolean, IntentExpiry, Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onInputIntent: (() -> Unit)? = null
 ) {
     val ctx = LocalContext.current
     val prefs = remember {
@@ -186,7 +187,8 @@ internal fun SettingsIntentEntry(
                         value = localText,
                         onValueChange = { localText = it },
                         placeholder = stringResource(R.string.intent_content_placeholder),
-                        focusRequester = fieldFocusRequester
+                        focusRequester = fieldFocusRequester,
+                        onInputIntent = onInputIntent
                     )
                 }
             }
