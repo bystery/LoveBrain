@@ -137,9 +137,13 @@ internal fun SettingsIntentEntry(
                 checked = intentEnabled,
                 label = stringResource(R.string.intent_label),
                 onCheckedChange = { on ->
-                    if (on && !introSeen) showIntro = true
-                    // 拨开关时把当前正文一起带过去——避免"打完字没失焦就拨开关、正文被旧值盖掉"
-                    onIntentChange(localText.trim(), on, intentExpiry, false)
+                    if (on && !introSeen) {
+                        // §10.2：首次拨开只弹介绍浮层，确认前不启用、不落盘、不展开
+                        showIntro = true
+                    } else {
+                        // 非首次（或关闭）：拨开关时把当前正文一起带过去
+                        onIntentChange(localText.trim(), on, intentExpiry, false)
+                    }
                 }
             )
         }
@@ -196,12 +200,12 @@ internal fun SettingsIntentEntry(
     }
 
     // 首次打开的介绍浮层——复用 [LbModalSheet] 的开合动画与版式（标题 + 正文 + 动作行）。
+    // §10.2：确认前不启用、不落盘为开、不展开正文。确认后才落盘 enabled=true；取消保持关闭。
     if (showIntro) {
         LbModalSheet(
             onDismissRequest = {
-                // 取消介绍 = 把开关拨回去，与"还没确认就不算开"一致
+                // 取消介绍 = 不启用，开关保持关
                 showIntro = false
-                onIntentChange(localText.trim(), false, intentExpiry, false)
             }
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -219,6 +223,8 @@ internal fun SettingsIntentEntry(
                             introSeen = true
                             prefs.edit().putBoolean(INTRO_PREF_KEY, true).apply()
                             showIntro = false
+                            // 确认后才落盘 enabled=true——此时才真正启用并展开
+                            onIntentChange(localText.trim(), true, intentExpiry, false)
                         })
                     )
                 )

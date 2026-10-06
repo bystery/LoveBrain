@@ -127,4 +127,50 @@ class IntentPolicyTest {
         val reason = IntentPolicy.validateSave(IntentExpiry.ONE_DAY, "", IntentStatus.ACTIVE, now)
         assertTrue("空到期时刻要拒：$reason", reason!!.contains("不能为空"))
     }
+
+    // ─── §10.2: 完成/到期后重新启用恢复 ACTIVE ───────────────────
+
+    /**
+     * §10.2：effectiveStatus 保留调用方传入的 status——如果调用方传了旧的 COMPLETED，
+     * 时间档不会自动恢复 ACTIVE。这钉住了"恢复 ACTIVE 是 UI 层的职责"这条语义：
+     * UI 层在重新启用/换档时必须传 ACTIVE，不能传旧的终态。
+     */
+    @Test
+    fun `effectiveStatus preserves a stale COMPLETED when the caller passes it`() {
+        // 调用方如果传了旧的 COMPLETED，effectiveStatus 不会自动修
+        assertEquals(
+            IntentStatus.COMPLETED,
+            IntentPolicy.effectiveStatus(IntentExpiry.ONE_DAY, IntentStatus.COMPLETED)
+        )
+    }
+
+    @Test
+    fun `effectiveStatus keeps ACTIVE when the caller passes ACTIVE for a time-based expiry`() {
+        assertEquals(
+            IntentStatus.ACTIVE,
+            IntentPolicy.effectiveStatus(IntentExpiry.ONE_DAY, IntentStatus.ACTIVE)
+        )
+    }
+
+    @Test
+    fun `effectiveStatus keeps EXPIRED when the caller passes it without switching to ACTIVE`() {
+        // 这条钉住的是"不传 ACTIVE 就不会自动恢复"——UI 层的修复必须真的传 ACTIVE
+        assertEquals(
+            IntentStatus.EXPIRED,
+            IntentPolicy.effectiveStatus(IntentExpiry.ONE_DAY, IntentStatus.EXPIRED)
+        )
+    }
+
+    @Test
+    fun `COMPLETED expiry always forces COMPLETED regardless of the passed status`() {
+        // 换到 COMPLETED 档 = 用户点了"已完成"动作，不管旧 status 是什么
+        assertEquals(
+            IntentStatus.COMPLETED,
+            IntentPolicy.effectiveStatus(IntentExpiry.COMPLETED, IntentStatus.ACTIVE)
+        )
+        assertEquals(
+            IntentStatus.COMPLETED,
+            IntentPolicy.effectiveStatus(IntentExpiry.COMPLETED, IntentStatus.EXPIRED)
+        )
+    }
 }

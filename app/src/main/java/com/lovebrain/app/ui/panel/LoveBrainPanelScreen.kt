@@ -43,6 +43,7 @@ import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
+import com.lovebrain.app.model.IntentStatus
 import com.lovebrain.app.model.ProactiveOption
 import kotlinx.coroutines.delay
 import com.lovebrain.app.ui.panel.counseling.CounselingPanel
@@ -174,10 +175,18 @@ private fun PanelSettingsPage(
         intentText = intentConfig.text,
         intentExpiry = intentConfig.expiry,
         onIntentChange = { text, enabled, expiry, recompute ->
+            // §10.2: 完成/到期后重新启用或重新选有效时间时恢复 ACTIVE
+            val wasTerminal = intentConfig.status == IntentStatus.COMPLETED ||
+                intentConfig.status == IntentStatus.EXPIRED
+            val effectiveStatus = when {
+                // 重新启用（从关到开）或换有效期档且旧 status 是终态 → 恢复 ACTIVE
+                (enabled && !intentConfig.enabled) || (recompute && wasTerminal) -> IntentStatus.ACTIVE
+                else -> intentConfig.status
+            }
             viewModel.intents.save(
                 text, enabled, expiry,
                 if (recompute) "" else intentConfig.expiryDate,
-                intentConfig.status
+                effectiveStatus
             )
         },
         knowledgeBases = kbList,
