@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -230,6 +231,17 @@ fun HomeCoachMarks(
     val anchorKey = coachAnchorKeyFor(cursor)
     if (anchorKey == null || copy == null) return
 
+    // ── 第二次引导错位的修复 ──
+    // `CoachAnchorRegistry.Shared` 是全局单例，旧版从未调过 `clear()`，
+    // 上一次引导的锚点坐标会一直残留。第二次引导入场时，首页入口的 `onGloballyPositioned`
+    // 还没来得及回调，罩子先读到旧坐标 → 箭头指到上次的位置（用户原话：
+    // 「第一次引导位置正常，第二次引导错位」）。
+    //
+    // 修复：cursor 换到新的一格时先清账，确保只接受本次入场后新注册的坐标。
+    LaunchedEffect(anchorKey) {
+        registry.clear()
+    }
+
     // "去设置"按过一次就让路：罩子此后不再吃掉目标格之外的点击，用户的手指直接落到被亮的那一格。
     // 游标一换（从子页回来重算）这面就复位，引导本身不消失。
     var pathCleared by remember(cursor) { mutableStateOf(false) }
@@ -239,7 +251,12 @@ fun HomeCoachMarks(
     // 两头都不会跳一次位置，也不会出现"锚点有、罩子还没量到自己"因而画不出来的死角
     val origin = overlayBounds?.topLeft ?: Offset.Zero
     // 锚点记的是根坐标；减去罩子自己的根原点就换成罩板内部的坐标
-    val target = if (anchorRoot == null) {
+    //
+    // ⚠ 第二次引导错位的第二道守卫：只有当罩子自己也量到了位置（overlayBounds != null）
+    // 才信任锚点。罩子刚入场、`onGloballyPositioned` 还没跑那一帧，`overlayBounds` 是 null，
+    // 此时即使 registry 里有残留旧坐标也直接判 target=null（画无锚点退路那一档），
+    // 不会画到错误位置。等罩子量到自己、入口也重新注册之后，自然切到有锚点那一档。
+    val target = if (anchorRoot == null || overlayBounds == null) {
         null
     } else {
         Rect(
