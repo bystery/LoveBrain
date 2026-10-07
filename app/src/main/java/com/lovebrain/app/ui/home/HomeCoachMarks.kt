@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -151,9 +150,11 @@ class CoachAnchorRegistry {
 val LocalCoachAnchorRegistry = compositionLocalOf { CoachAnchorRegistry.Shared }
 
 /**
- * 把一颗入口挂进遮罩引导的锚点账。**这是给 `HomeScreen` 四入口留的接线位**：
- * 现有 `.testTag(LbHomeTags.ENTRY_*)` 后面并一句 `.coachAnchor(LbHomeTags.ENTRY_*)` 就通
- * （`HomeScreen.kt` 本轮不归本席，改动落交接单 §1）。
+ * 把一颗入口挂进遮罩引导的锚点账。
+ *
+ * 生产接线已完成：`HomeScreen` 那四颗 `LbActionCard` 在 `.testTag(LbHomeTags.ENTRY_*)` 后面
+ * 并排挂了 `.coachAnchor(LbHomeTags.ENTRY_*)`（同一把 tag、同一个主人，不再另造一本锚点账）。
+ * 挂法本身就一条规矩：**与 `testTag` 并排在同一条链上**，别各挂一处。
  */
 @Composable
 fun Modifier.coachAnchor(key: String): Modifier {
@@ -212,16 +213,26 @@ private object CoachMarksDimens {
  * 首页遮罩引导本体。**画不画、指哪儿只由 [cursor] 与 [copy] 决定**：
  * `NONE / DONE / DEFERRED_TO_HINT` 三档一格都不画（缺项交回首页黄字行，那一行不归本席）。
  *
- * 锚点没接上（`HomeScreen` 还没挂 [coachAnchor]）时退化成**不遮不挡**的提示板：引导仍在场、
- * 字仍指同一格，只是没有罩子与箭头——这是本轮的可见边界，补一行接线整块回来（交接单 §1）。
+ * 量不到真实锚点时（那一格还没摆出来、或整棵首页正在离场）退化成**不遮不挡**的提示板：
+ * 引导仍在场、字仍指同一格，只是没有罩子与箭头——这是**几何没就绪那一帧**的退路，不是缺接线的借口
+ * （`HomeScreen` 四入口的 `.coachAnchor(...)` 已经接上）。
  *
- * @param onOpenTarget 提示板主动作。本席改不了 `SetupRoot` 的导航参数，这颗今天的语义是
- *   "让路"（罩子不再吃掉目标格之外的点击）；直达导航待主线程接线（交接单 §3）。
+ * ## 只在首页在场（指导书 §9.1「进入子页暂停/移除」）
+ *
+ * [onHome] 是这一族**唯一**的"页面闸"：首页被 `SetupRoot` 换成任一子页时它转 false，罩子整块离场
+ * （连"无锚点退路"那一档的提示板一起收）。原先这里只按锚点/文案早退——子页没有首页锚点，
+ * 罩子就退化成一张浮在子页上的提示板，正是 §9.1 判的那条"遮罩没有限定只在首页显示"。
+ *
+ * @param onOpenTarget 提示板主动作，两件事：① 让路（罩子不再吃掉目标格之外的点击）
+ *   ② 经宿主 `SetupActivity` 的 `guideTarget` 直达那一格子页（G1b 接线单 §3 那条线**已经接上**，
+ *   跳过去之后这一层的 [onHome] 随之转 false）。
  */
 @Composable
 fun HomeCoachMarks(
     cursor: GuideCursor,
     copy: CoachStepCopy?,
+    /** 首页在不在场：false = 正站在子页上，一格都不画（闸由宿主 `SetupActivity` 拿 [HomeDestination] 判） */
+    onHome: Boolean = true,
     onOpenTarget: () -> Unit,
     onDefer: () -> Unit,
     onStopGuiding: () -> Unit,
@@ -229,7 +240,7 @@ fun HomeCoachMarks(
     registry: CoachAnchorRegistry = LocalCoachAnchorRegistry.current
 ) {
     val anchorKey = coachAnchorKeyFor(cursor)
-    if (anchorKey == null || copy == null) return
+    if (anchorKey == null || copy == null || !onHome) return
 
     // ── 第二次引导错位的修复 ──
     // `CoachAnchorRegistry.Shared` 是全局单例，旧版从未调过 `clear()`，
@@ -237,10 +248,12 @@ fun HomeCoachMarks(
     // 还没来得及回调，罩子先读到旧坐标 → 箭头指到上次的位置（用户原话：
     // 「第一次引导位置正常，第二次引导错位」）。
     //
-    // 修复：cursor 换到新的一格时先清账，确保只接受本次入场后新注册的坐标。
-    LaunchedEffect(anchorKey) {
-        registry.clear()
-    }
+    // 修复：换到新的一格（含"从子页回首页"这一趟重新在场）时先清账，只接受本次入场后新注册的坐标。
+    // ⚠ 为什么是 `remember` 而不是 `LaunchedEffect(anchorKey)`：清账必须**排在同一帧里入口那一次
+    // `onGloballyPositioned` 之前**。effect 的派发与 layout 回调谁先跑没合同，抢输的那一帧账本是空的，
+    // 罩子就退化成"没有锚点的提示板"，而且入口没改尺寸、不会再排一次 layout ⇒ 那一趟都不回来。
+    // 写在组合期（本帧 layout 之前）才是确定顺序。
+    remember(anchorKey) { registry.clear() }
 
     // "去设置"按过一次就让路：罩子此后不再吃掉目标格之外的点击，用户的手指直接落到被亮的那一格。
     // 游标一换（从子页回来重算）这面就复位，引导本身不消失。

@@ -53,8 +53,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * - 介绍页只在 `introSeen=false` 时在场；三条出口都只经 [GuideExitPaths] 走
  *   `SetupViewModel` 的公开 API，**没有任何一条再写"引导完成"**（`setContent` 也只调一次，
  *   本仓库记过第二次调它必崩的坑）；
- * - 介绍层收起来之后，引导以 [HomeCoachMarks] 的形态**覆盖在首页上**，指向游标那一格的入口，
- *   滑动、进子页、回来都只是在 ON_RESUME 重算一次游标，不再消失。
+ * - 介绍层收起来之后，引导以 [HomeCoachMarks] 的形态**覆盖在首页上**，指向游标那一格的入口；
+ * - 游标的刷新点有三处，缺一处就是表行判的"子页返回未接上游标刷新"：`onResume`（从系统设置那一趟）、
+ *   罩子三颗回调之后、以及**根导航回到 Home 那一格**（同一 Activity 内的子页来回不走 `onResume`，
+ *   所以 [SetupRoot] 开一颗只读出口 [onHomeDestinationChanged]）；
+ * - 同一个出口还只管一件事：罩子**只在 Home 那一格在场**（§9.1），进子页即整块离场——
+ *   原先罩子只按"锚点没了"退化，结果是一张浮在子页上的提示板。
  */
 class SetupActivity : ComponentActivity() {
 
@@ -80,6 +84,26 @@ class SetupActivity : ComponentActivity() {
      * 只能由 `SetupRoot` 消费一次并交回 null：挂着不撤的话，下一次重组会再跳一次。
      */
     private var pendingGuideTarget by mutableStateOf<HomeDestination?>(null)
+
+    /**
+     * 现在站在根导航哪一格——**[SetupRoot] 的只读出口交进来的那份读数**，本席不回写导航。
+     *
+     * 为什么必须由宿主拿着一份（§9.1「遮罩只在首页、当前步骤存在且真实锚点就绪时显示」）：
+     * `destination` 住在 `SetupRoot`（`rememberSaveable`），罩子 `HomeCoachMarks` 是它的**兄弟节点**、
+     * 拿不到那颗私有态 ⇒ 早先跳进子页后，罩子只按"锚点没了"退化成一张浮在子页上的提示板，
+     * 也就是表行判的"遮罩没有限定只在首页显示"。这一颗就是那条缺的通道，只做"在不在首页"这一个判据。
+     */
+    private var homeDestination by mutableStateOf<HomeDestination>(HomeDestination.Home)
+
+    /** 根导航只读出口的两件事：① 罩子的页面闸 ② 回到 Home 补一次游标刷新（§9.1） */
+    private fun onHomeDestinationChanged(destination: HomeDestination) {
+        homeDestination = destination
+        // 「子页返回也未完整接上游标刷新」的那一格：`SetupRoot` 内的子页来回**不走 `onResume`**
+        // （同一棵 Activity 树里换 destination），少了这一个刷新点，回首页时罩子还停在出发前那一格、
+        // 而盘上的事实可能已经被子页里的操作改过了（配好供应商、开了捕获开关）。
+        // 刷新只经 [publishGuideCursor] 这一颗口，与 onResume/三回调后同一把尺，不开第二本账。
+        if (destination == HomeDestination.Home) publishGuideCursor()
+    }
 
     /**
      * 游标 → 首页子页目的地。这张表与罩子里那本锚点表（`coachAnchorKeyFor`）各管一件事：
@@ -182,7 +206,8 @@ class SetupActivity : ComponentActivity() {
                         }
                     )
                 } else {
-                    // 罩子与首页同层：SetupRoot 一行没改，覆盖层是宿主的兄弟节点
+                    // 罩子与首页同层：覆盖层是宿主的兄弟节点，`SetupRoot` 的导航表（那一棵 `when`）一个字没动。
+                    // 这一层新加的只有一颗**只读出口**——宿主因此才知道"现在是不是站在首页那一格"。
                     Box(modifier = Modifier.fillMaxSize()) {
                         SetupRoot(
                             viewModel = viewModel,
@@ -192,11 +217,15 @@ class SetupActivity : ComponentActivity() {
                             onRestore = { restoreFloating() },
                             // 直达导航的两颗：宿主点名，SetupRoot 跳完就把这颗收回 null
                             guideTarget = pendingGuideTarget,
-                            onGuideTargetConsumed = { pendingGuideTarget = null }
+                            onGuideTargetConsumed = { pendingGuideTarget = null },
+                            onDestinationChanged = { dest -> onHomeDestinationChanged(dest) }
                         )
                         HomeCoachMarks(
                             cursor = guideCursor,
                             copy = coachCopyFor(guideCursor),
+                            // §9.1 的页面闸：进了子页（含知识库那趟之外的三格）整块罩子离场，
+                            // 回 Home 由上面那颗出口重算游标 + 重新在场
+                            onHome = homeDestination == HomeDestination.Home,
                             // 主动作做两件事：① 清掉"稍后"（否则回到首页游标还是 DEFERRED，罩子永不回来）
                             // ② 点名要跳的那一格。原话第 8/14 条要的"缺项点到去设置真的到那一页"
                             // 到这里才是整条闭环（之前只做到"那颗在、点得响、罩子让路"）。

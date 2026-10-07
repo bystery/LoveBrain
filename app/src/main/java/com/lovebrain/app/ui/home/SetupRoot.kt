@@ -17,10 +17,8 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -66,12 +64,30 @@ sealed class HomeDestination {
     }
 }
 
+/** 根导航的前进/后退判据：Home 排最前，三格子页按上面声明的顺序排（§9.2 统一过渡读这一颗） */
+internal val HomeDestination.rank: Int
+    get() = when (this) {
+        HomeDestination.Home -> 0
+        HomeDestination.FeedbackCases -> 1
+        HomeDestination.Providers -> 2
+        HomeDestination.CaptureApps -> 3
+    }
+
 /**
  * 设置页根导航——按 destination 切 Home / FeedbackCases / Providers / CaptureApps。
  *
  * 用 [HomeDestination.Saver] + [rememberSaveable]，旋转/进程重建后恢复 destination。
  * 旧版这里 `when` 里同一个 `CaptureApps` 分支写了两遍（重复的那一份永远不会被执行），
  * 现在只剩一份；`About` / `Usage` 两格随首页那几段一起撤。
+ *
+ * ## 只读出口：destination 现在住在哪一格（§9.1）
+ *
+ * `destination` 是这一层自己的导航账，**不上提**（上提会让首页/子页两套代码各拿一半导航状态）。
+ * [onDestinationChanged] 是这一层唯一的只读出口：**只说"现在站在哪一格"，不回写任何导航**。
+ * 宿主 `SetupActivity` 用它做两件 §9.1 点名的动作：
+ * 1. 罩子整块只在 Home 那一格在场（`HomeCoachMarks(onHome = …)`），进子页即移除；
+ * 2. 回到 Home 时重算一次游标——同一 Activity 内的子页来回**不触发 `onResume`**，
+ *    少了这一个刷新点，回首页的罩子会停在出发前那一格（表行判的"子页返回未接上游标刷新"）。
  *
  * ⚠ `onTempHide` / `onRestore` 这两颗回调本轮**不再被使用**：
  * 首页重做后没有"临时隐藏"那处出口了，而签名由宿主 `SetupActivity` 持有、
@@ -94,16 +110,33 @@ fun SetupRoot(
      * null = 没有要跳的（生产默认；罩子没点主动作时一直是 null）。
      */
     guideTarget: HomeDestination? = null,
-    onGuideTargetConsumed: () -> Unit = {}
+    onGuideTargetConsumed: () -> Unit = {},
+    /**
+     * 只读出口（§9.1）：每次导航真的发生那一刻同步一次，**包括回到 Home**。
+     *
+     * 为什么挂在写点上而不是 `LaunchedEffect(destination)`：后者要等下一帧才通知，
+     * 那 250ms 滑入动画里会有一帧让旧提示板浮在正在进场子的页面上——正是这一条要收的口。
+     */
+    onDestinationChanged: (HomeDestination) -> Unit = {}
 ) {
-    var destination by rememberSaveable(stateSaver = HomeDestination.Saver) {
+    val destinationState = rememberSaveable(stateSaver = HomeDestination.Saver) {
         mutableStateOf(HomeDestination.Home)
     }
+    val destination = destinationState.value
+    // 导航唯一的写点：改这一层的账 + 同步告诉宿主。页内不许再直接写 `destinationState.value`
+    // （绕开这里 = 只读出口漏一次通知 = 罩子留在子页上）。
+    val goTo: (HomeDestination) -> Unit = { dest ->
+        destinationState.value = dest
+        onDestinationChanged(dest)
+    }
     val context = LocalContext.current
+    // 重建/旋转：destination 由 Saver 恢复成子页，而宿主那一颗每次都是新的、默认 Home。
+    // 初次组合补一次同步，否则"restore 到子页"这一格里罩子会错判成"还在首页"。
+    LaunchedEffect(Unit) { onDestinationChanged(destination) }
     // 直达导航：目标来了就跳，跳完立刻请宿主收回（不收回的话，下一次重组会再跳一次）。
     LaunchedEffect(guideTarget) {
         if (guideTarget != null) {
-            destination = guideTarget
+            goTo(guideTarget)
             onGuideTargetConsumed()
         }
     }
@@ -126,8 +159,9 @@ fun SetupRoot(
         contentAlignment = Alignment.TopCenter
     ) {
         Box(modifier = Modifier.fillMaxWidth().widthIn(max = CONTENT_MAX_WIDTH_DP.dp)) {
-            // §9.2：根导航统一前进/返回过渡——子页从右侧滑入、返回时向右滑出，
+            // §9.2：根导航**一整族**统一前进/返回过渡——子页从右侧滑入、返回时向右滑出，
             // 与知识库 Activity 的默认方向一致；不每页各补一份负 padding 或一次性淡入。
+            // 子页↔子页（原先是纯淡入淡出那一支）现在同一把尺：按 [HomeDestination.rank] 判前进/后退。
             AnimatedContent(
                 targetState = destination,
                 transitionSpec = {
@@ -135,13 +169,16 @@ fun SetupRoot(
                         // 返回首页：首页淡入，当前页向右滑出 + 淡出
                         fadeIn(tween(200)) togetherWith
                             (slideOutHorizontally(tween(250)) { it } + fadeOut(tween(200)))
-                    } else if (initialState == HomeDestination.Home) {
-                        // 前进子页：子页从右侧滑入 + 淡入，首页向左滑出 + 淡出
+                    } else if (initialState == HomeDestination.Home ||
+                        targetState.rank > initialState.rank
+                    ) {
+                        // 前进子页：新页从右侧滑入 + 淡入，旧页向左滑出 + 淡出
                         (slideInHorizontally(tween(250)) { it } + fadeIn(tween(200))) togetherWith
                             (slideOutHorizontally(tween(250)) { -it } + fadeOut(tween(200)))
                     } else {
-                        // 子页间切换：简单淡入淡出
-                        fadeIn(tween(200)) togetherWith fadeOut(tween(200))
+                        // 子页退回更靠前的子页：方向反过来，仍是同一族滑入滑出，不留一次性淡入
+                        (slideInHorizontally(tween(250)) { -it } + fadeIn(tween(200))) togetherWith
+                            (slideOutHorizontally(tween(250)) { it } + fadeOut(tween(200)))
                     }
                 },
                 label = "rootNav"
@@ -150,28 +187,28 @@ fun SetupRoot(
                 HomeDestination.Home -> HomeScreen(
                     homeStatus = homeStatus,
                     onStartService = onStartService,
-                    onNavigateFeedback = { destination = HomeDestination.FeedbackCases },
-                    onNavigateProviders = { destination = HomeDestination.Providers },
-                    onNavigateCaptureApps = { destination = HomeDestination.CaptureApps },
+                    onNavigateFeedback = { goTo(HomeDestination.FeedbackCases) },
+                    onNavigateProviders = { goTo(HomeDestination.Providers) },
+                    onNavigateCaptureApps = { goTo(HomeDestination.CaptureApps) },
                     // 按过"稍后"的人唯一的回程（G1b 接线单 §5）：先清掉盘上的 DEFERRED_TO_HINT，
                     // 再走导航——顺序反过来的话，回到首页时游标还是"稍后"，罩子从此不再回来。
                     onResumeGuide = { viewModel.resumeGuide(context) },
                     onBack = { (context as? Activity)?.finish() }
                 )
                 HomeDestination.FeedbackCases -> {
-                    BackHandler { destination = HomeDestination.Home }
+                    BackHandler { goTo(HomeDestination.Home) }
                     FeedbackCasesScreen(
                         viewModel = viewModel,
-                        onBack = { destination = HomeDestination.Home }
+                        onBack = { goTo(HomeDestination.Home) }
                     )
                 }
                 HomeDestination.Providers -> {
-                    BackHandler { destination = HomeDestination.Home }
-                    ProviderSection(viewModel = viewModel, onBack = { destination = HomeDestination.Home })
+                    BackHandler { goTo(HomeDestination.Home) }
+                    ProviderSection(viewModel = viewModel, onBack = { goTo(HomeDestination.Home) })
                 }
                 HomeDestination.CaptureApps -> {
-                    BackHandler { destination = HomeDestination.Home }
-                    CaptureAppsScreen(viewModel = viewModel, onBack = { destination = HomeDestination.Home })
+                    BackHandler { goTo(HomeDestination.Home) }
+                    CaptureAppsScreen(viewModel = viewModel, onBack = { goTo(HomeDestination.Home) })
                 }
             }
             }

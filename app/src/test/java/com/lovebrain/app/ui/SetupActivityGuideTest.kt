@@ -321,8 +321,7 @@ class SetupActivityGuideTest {
         assertEquals(GuideCursor.DONE.name, store.guideCursor)
     }
 
-    /**
-     * 脏游标不炸：盘上被人写过没见过的名字时，读回来是 NONE，重算后落回派生值。
+    /** 脏游标不炸：盘上被人写过没见过的名字时，读回来是 NONE，重算后落回派生值。
      * 回退成什么就红：有人把脏值当 DONE 处理（那就是"引导悄悄没了"）。
      */
     @Test
@@ -331,5 +330,98 @@ class SetupActivityGuideTest {
         val cursor = vm(store).currentGuideCursor(contextWithoutKnowledge())
         assertEquals(GuideCursor.PROVIDER, cursor)
         assertEquals(GuideCursor.PROVIDER.name, store.guideCursor)
+    }
+
+    // ─────────────── D 组：§9.1 页面闸与"子页返回"的游标刷新（形状尺）───────────────
+    //
+    // ⚠ 为什么这三格用源码形状、不挂组件：页面闸的**另一头**是 `SetupRoot` 的导航账（`rememberSaveable`
+    // 的 destination）与 Activity 的 onResume，两者在 `createComposeRule()` 摆出来的那棵树上都没有
+    // 真宿主可推（本仓库在 `CapturePageResumeRefreshTest` 顶上记过同一条仪器事实）。
+    // 闸**本身**的行为（关了整块不画、开了整块回来）由 `HomeCoachMarksSemanticsTest`
+    // 的 `the overlay leaves entirely when a subpage takes the screen` 量语义树，两把尺各管一头。
+
+    private val rootSource: String by lazy {
+        SourceScan.maskComments(mainSourceOf("ui/home/SetupRoot.kt").readText())
+    }
+
+    /** 取 `fun 名字(…) { … }` 那一具的花括号体内（配平，不 `[^}]*`：具里还有别的括号） */
+    private fun bodyOf(code: String, signature: String): String {
+        val start = code.indexOf(signature)
+        assertTrue("`$signature` 不在盘上——这一格会扫了个空集恒绿", start >= 0)
+        val open = code.indexOf('{', start)
+        var depth = 0
+        for (i in open until code.length) {
+            when (code[i]) {
+                '{' -> depth++
+                '}' -> {
+                    depth--
+                    if (depth == 0) return code.substring(open + 1, i)
+                }
+            }
+        }
+        throw AssertionError("`$signature` 的花括号没配平")
+    }
+
+    /**
+     * 罩子必须**只站在首页那一格**（表行：「遮罩没有限定只在首页显示」）。
+     *
+     * 回退成什么就红：
+     * - 宿主不再把页面闸传给罩子 ⇒ 第一句数到 0（罩子退回"只按锚点早退"，子页上浮一张提示板）；
+     * - `SetupRoot` 那颗出口被摘掉或改成"宿主自己判导航" ⇒ 第二/三句数到 0；
+     * - 只读出口被写成第二本导航账（宿主也能改 destination）⇒ `destinationState.value =` 数到 2。
+     */
+    @Test
+    fun `the coach overlay is gated by the page the root nav is standing on`() {
+        assertEquals(
+            "HomeCoachMarks 必须收到页面闸（onHome = 现在是不是 Home 那一格），且只这一处",
+            1, Regex("""onHome\s*=\s*homeDestination == HomeDestination\.Home""").findAll(activitySource).count()
+        )
+        assertEquals(
+            "`SetupRoot` 必须开一颗只读出口给宿主",
+            1, Regex("""onDestinationChanged\s*:""").findAll(rootSource).count()
+        )
+        assertTrue("宿主必须接住那颗出口", activitySource.contains("onDestinationChanged ="))
+        // 只读：这一层的导航账只有一个写点（goTo），宿主一侧一个字都写不进来
+        assertEquals(
+            "destination 只有一个写点：绕开 goTo 直接写 = 只读出口漏一次通知 = 旧板留在子页",
+            1, Regex("""destinationState\.value\s*=""").findAll(rootSource).count()
+        )
+        assertEquals(
+            "九处页内导航（3 前进 + 3 BackHandler + 3 onBack）全都要走那颗会通知出口的唯一写点",
+            9, Regex("""goTo\(HomeDestination\.""").findAll(rootSource).count()
+        )
+        // 反向证人：改前那一版宿主（没有 onHome 这一参）必须被第一句数到 0
+        val oldShape = "HomeCoachMarks(\n cursor = guideCursor,\n copy = coachCopyFor(guideCursor),\n)"
+        assertEquals("注件没就位：改前的形状里该数不到页面闸", 0,
+            Regex("""onHome\s*=\s*homeDestination == HomeDestination\.Home""").findAll(oldShape).count())
+    }
+
+    /**
+     * 「子页返回也未完整接上游标刷新」那一格：回到 Home 必须有刷新点，且**只在回 Home 时**刷。
+     *
+     * 同一棵 Activity 树里换 destination 不走 `onResume`，少了这一步，回首页的罩子还停在出发前那一格，
+     * 而子页里刚配好的供应商/刚开的捕获开关已经在盘上——引导会追着用户指已经做完的那一步。
+     *
+     * 回退成什么就红：刷新点没接 ⇒ 第二句数到 0；刷新写成了无条件（进子页也刷）⇒ 第一句红。
+     */
+    @Test
+    fun `returning home re-derives the cursor without waiting for onResume`() {
+        val handler = bodyOf(activitySource, "fun onHomeDestinationChanged")
+        assertTrue("出口先把读数存进宿主那一颗（罩子的 onHome 读的就是它）",
+            handler.contains("homeDestination = destination"))
+        assertEquals(
+            "回到 Home 那一格必须重算一次游标，且只经 publishGuideCursor 这一颗口（不开第二本账）",
+            1, Regex("""publishGuideCursor\(\)""").findAll(handler).count()
+        )
+        assertTrue(
+            "刷新要挂在「回到 Home」那个判据上：进子页重算等于把离场那一趟再写一遍盘",
+            Regex("""==\s*HomeDestination\.Home\)""").containsMatchIn(handler)
+        )
+        // onResume 那颗刷新点不能被这一条顶掉（从系统设置那一趟走的还是它）
+        assertEquals(
+            "onResume 仍要刷一次（系统授权页那一趟不经过 destination）",
+            1, Regex("""if \(!introOnScreen\) publishGuideCursor\(\)""")
+                .findAll(bodyOf(activitySource, "override fun onResume")).count()
+        )
     }
 }

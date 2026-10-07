@@ -73,6 +73,15 @@ class HomeCoachMarksSemanticsTest {
     /** 每格一本新账（JUnit 每格一个新实例）：账不从上一格漏过来 */
     private val registry = CoachAnchorRegistry()
 
+    /**
+     * 宿主那颗**页面闸**的替身（§9.1）。
+     *
+     * 生产里它由 `SetupActivity` 从 `SetupRoot` 的只读出口 `onDestinationChanged` 喂进来；
+     * 测试没有真导航，就让它直接改这一棵树的形状：**闸一关，首页那一整棵（含四入口替身）一起离场**
+     * ——这正是 `AnimatedContent` 换 destination 时的形状，锚点因此走 `isAttached=false` 那一条销账路径。
+     */
+    private val onHome = androidx.compose.runtime.mutableStateOf(true)
+
     private val plateName: String get() = app.getString(R.string.onboarding_title)
 
     private fun stepCopy(): CoachStepCopy = CoachStepCopy(
@@ -93,29 +102,43 @@ class HomeCoachMarksSemanticsTest {
      *
      * @param anchored 关掉替身的 [coachAnchor]，模拟 `HomeScreen` 那一行还没接上时罩子的退路
      * @param anchorRowBottom 把那一排入口沉到屏幕下沿——用来验"下方放不下就整摞翻到上方"那一支
+     * @param homeInitially 开局首页在不在场（§9.1 的页面闸）；测试中途可用 [onHome] 翻转
      */
     private fun mount(
         cursor: GuideCursor,
         copy: CoachStepCopy? = stepCopy(),
         anchored: Boolean = true,
-        anchorRowBottom: Boolean = false
+        anchorRowBottom: Boolean = false,
+        homeInitially: Boolean = true
     ) {
         opened = 0; deferred = 0; stopped = 0
+        onHome.value = homeInitially
         rule.setContent {
+            val homeNow = onHome.value
             UiMatrix(360, 640).RenderIn(LocalDensity.current.density) {
                 CompositionLocalProvider(LocalCoachAnchorRegistry provides registry) {
                     Box(modifier = Modifier.fillMaxSize()) {
-                        Column(modifier = Modifier.fillMaxSize()) {
-                            if (anchorRowBottom) Spacer(Modifier.weight(1f))
-                            Row(modifier = Modifier.fillMaxWidth()) {
-                                AnchorEntry(LbHomeTags.ENTRY_CAPTURE, anchored)
-                                AnchorEntry(LbHomeTags.ENTRY_PROVIDER, anchored)
+                        // 首页那一整棵（含四入口替身）随页面闸进出——生产里这是 `SetupRoot`
+                        // 换 destination 的那一次装配，替身留在树上就等于骗过了销账那条路
+                        if (homeNow) {
+                            Column(modifier = Modifier.fillMaxSize()) {
+                                if (anchorRowBottom) Spacer(Modifier.weight(1f))
+                                Row(modifier = Modifier.fillMaxWidth()) {
+                                    AnchorEntry(LbHomeTags.ENTRY_CAPTURE, anchored)
+                                    AnchorEntry(LbHomeTags.ENTRY_PROVIDER, anchored)
+                                }
+                                if (!anchorRowBottom) Spacer(Modifier.weight(1f))
                             }
-                            if (!anchorRowBottom) Spacer(Modifier.weight(1f))
+                        } else {
+                            // 子页在场：另一屏的内容（没有首页那四颗锚点）
+                            Column(modifier = Modifier.fillMaxSize()) {
+                                Box(modifier = Modifier.fillMaxWidth().height(80.dp))
+                            }
                         }
                         HomeCoachMarks(
                             cursor = cursor,
                             copy = copy,
+                            onHome = homeNow,
                             onOpenTarget = { opened++ },
                             onDefer = { deferred++ },
                             onStopGuiding = { stopped++ },
@@ -323,6 +346,46 @@ class HomeCoachMarksSemanticsTest {
         assertEquals(0, count(LbCoachTags.SCRIM))
         assertEquals(0, count(LbCoachTags.PLATE))
         assertEquals(0, count(LbCoachTags.POINTER))
+    }
+
+    /**
+     * §9.1 的**页面闸**：根导航换到子页那一刻，罩子整块离场；回首页整块回来。
+     *
+     * 表行判的就是这一条：「遮罩没有限定只在首页显示」——改前这一层只有"锚点/文案"两道早退，
+     * 子页上当然没有首页那四颗锚点，于是罩子退化成"无锚点退路"那张提示板，**浮在子页上**。
+     *
+     * 回退成什么就红：
+     * - 闸被摘掉（`onHome` 不参与早退）⇒ 中间那三条各数到 1（旧板留在子页，正是表行的读数）；
+     * - 闸做过了头、连首页也不画 ⇒ 第一条数到 0；
+     * - 回首页时锚点没随重新入场登记回来 ⇒ 最后一条数到 0，罩子只剩一张贴底的板。
+     */
+    @Test
+    fun `the overlay leaves entirely when a subpage takes the screen`() {
+        mount(GuideCursor.PROVIDER)
+        assertEquals("首页在场：提示板该在", 1, count(LbCoachTags.PLATE))
+        assertEquals("首页在场：遮罩该在", 1, count(LbCoachTags.SCRIM))
+
+        rule.runOnIdle { onHome.value = false }
+        rule.waitForIdle()
+        rule.mainClock.advanceTimeBy(50L)
+        assertEquals("子页不许留遮罩", 0, count(LbCoachTags.SCRIM))
+        assertEquals("子页不许留箭头", 0, count(LbCoachTags.POINTER))
+        assertEquals(
+            "子页最不许留的是那张提示板（§9.1「点击洞和提示按钮都不能把旧板留到子页」）",
+            0, count(LbCoachTags.PLATE)
+        )
+
+        rule.runOnIdle { onHome.value = true }
+        rule.waitForIdle()
+        rule.mainClock.advanceTimeBy(50L)
+        assertEquals("回首页：遮罩整块回来", 1, count(LbCoachTags.SCRIM))
+        assertEquals("回首页：箭头回来并对得上重登记的锚点", 1, count(LbCoachTags.POINTER))
+        assertEquals(
+            "回首页：箭头该正对供应商那颗（不是贴在屏幕底板的退路档）",
+            rectOf(LbHomeTags.ENTRY_PROVIDER).center.x,
+            rectOf(LbCoachTags.POINTER).center.x,
+            6f * density
+        )
     }
 
     // ─────────────────────────── 出口与热区 ───────────────────────────
