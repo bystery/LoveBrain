@@ -201,34 +201,38 @@ internal fun SettingsIntentEntry(
 
     // 首次打开的介绍浮层——复用 [LbModalSheet] 的开合动画与版式（标题 + 正文 + 动作行）。
     // §10.2：确认前不启用、不落盘为开、不展开正文。确认后才落盘 enabled=true；取消保持关闭。
-    if (showIntro) {
-        LbModalSheet(
-            onDismissRequest = {
-                // 取消介绍 = 不启用，开关保持关
-                showIntro = false
-            }
-        ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                LbModalSheetTitle(stringResource(R.string.intent_label))
-                Spacer(Modifier.height(Spacing.sm))
-                Text(
-                    stringResource(R.string.intent_intro_body),
-                    style = AppTypography.bodyMedium,
-                    color = TextPrimary
+    //
+    // 这棵树**常驻**，开合只经 `visible = showIntro` 说话。旧写法是外面裹一句 `if (showIntro) { … }`：
+    // 挂上去那一帧算入场，取消/确认那一帧整棵树被摘掉——[LbModalSheet] 里写的退场动画
+    // 从来没播过（形状记在 `LbModalSheet` 的 `visible` 参数 KDoc，与 `IntentEditorDialog` 同一接线）。
+    // `showIntro` 这颗状态本身一个字没动：它仍然只在"首次拨开"那一记翻起来。
+    LbModalSheet(
+        onDismissRequest = {
+            // 取消介绍 = 不启用，开关保持关
+            showIntro = false
+        },
+        visible = showIntro
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            LbModalSheetTitle(stringResource(R.string.intent_label))
+            Spacer(Modifier.height(Spacing.sm))
+            Text(
+                stringResource(R.string.intent_intro_body),
+                style = AppTypography.bodyMedium,
+                color = TextPrimary
+            )
+            Spacer(Modifier.height(Spacing.md))
+            LbModalSheetActions(
+                listOf(
+                    LbDialogAction(stringResource(R.string.intent_intro_acknowledge), {
+                        introSeen = true
+                        prefs.edit().putBoolean(INTRO_PREF_KEY, true).apply()
+                        showIntro = false
+                        // 确认后才落盘 enabled=true——此时才真正启用并展开
+                        onIntentChange(localText.trim(), true, intentExpiry, false)
+                    })
                 )
-                Spacer(Modifier.height(Spacing.md))
-                LbModalSheetActions(
-                    listOf(
-                        LbDialogAction(stringResource(R.string.intent_intro_acknowledge), {
-                            introSeen = true
-                            prefs.edit().putBoolean(INTRO_PREF_KEY, true).apply()
-                            showIntro = false
-                            // 确认后才落盘 enabled=true——此时才真正启用并展开
-                            onIntentChange(localText.trim(), true, intentExpiry, false)
-                        })
-                    )
-                )
-            }
+            )
         }
     }
 }

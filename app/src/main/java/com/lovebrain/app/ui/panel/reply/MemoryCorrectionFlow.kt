@@ -64,20 +64,54 @@ class MemoryCorrectionFlow {
     var wrongDraft: String by mutableStateOf("")
         private set
 
+    /**
+     * **最后一次**请求到的 memoryId，不随 `dismiss()` 清空——只给渲染那一格当余温用。
+     *
+     * 为什么要有这一份：退场那 200ms 里 `muteTargetId` 已经是 null 了，可卡片还在树上播淡出，
+     * 内容得继续画**最后那一条**。宿主若仍按 `muteTargetId?.let { LbModalSheet(...) }` 挂载，
+     * 就是"请求一清、整棵树跟着没"，`LbModalSheet` 的 exit 动画永远播不到
+     *（形状记在 `LbModalSheet` 的 `visible` 参数 KDoc）。现在 `visible` 由 `muteTargetId`
+     * 说话、内容用这一份余温画完，两件事才分得开。
+     *
+     * ⚠ 它**不是**业务状态：判"现在有没有请求"仍然只看 [muteTargetId] / [wrongTargetId]，
+     * 这一份只是画面余温，`dismiss()` 也不清它（清了就等于把退场那一段内容一起掏空）。
+     */
+    var lastMuteTargetId: String? by mutableStateOf(null)
+        private set
+    var lastWrongTargetId: String? by mutableStateOf(null)
+        private set
+
+    /**
+     * 同一颗余温，给**草稿框**那一路：`dismiss()` 会把 [wrongDraft] 清成空串，
+     * 而退场那 200ms 卡片还在淡出——框里那行字要是跟着清空，用户看到的就是
+     * "自己打的话在一扇正在关的浮层里当场蒸发"。渲染那一格取这一份，[wrongDraft] 的
+     * 业务语义（"dismiss 之后草稿该是空的"）一个字不动。
+     *
+     * 与 [lastWrongTargetId] 同一条规矩：只在**下一次请求**（[requestWrong]）时清，
+     * `dismiss()` 不清。
+     */
+    var lastWrongDraft: String by mutableStateOf("")
+        private set
+
     /** 一次只允许一颗：第二颗请求进来时，前一颗直接被顶掉（不是叠两层遮罩） */
     fun requestMute(memoryId: String) {
         wrongTargetId = null
         muteTargetId = memoryId
+        lastMuteTargetId = memoryId
     }
 
     fun requestWrong(memoryId: String) {
         muteTargetId = null
         wrongTargetId = memoryId
+        lastWrongTargetId = memoryId
         wrongDraft = ""
+        // 新一次请求：余温要一起归零，否则上一轮的草稿会预填进这一轮那张卡
+        lastWrongDraft = ""
     }
 
     fun editWrongDraft(value: String) {
         wrongDraft = value
+        lastWrongDraft = value
     }
 
     fun dismiss() {
@@ -95,6 +129,13 @@ fun rememberMemoryCorrectionFlow(): MemoryCorrectionFlow = remember { MemoryCorr
  *
  * 放在这一层而不是行里，是为了让"遮罩盖满它所在的容器"这句话成立：
  * 传进来越靠近面板顶层，覆盖就越完整。
+ *
+ * 两扇都**常驻在树里**，开合只经 `visible` 说话（旧写法是 `muteTargetId?.let { LbModalSheet(...) }`
+ * / `wrongTargetId?.let { ... }`：请求一清就整棵树被摘掉，[LbModalSheet] 写的退场动画永远播不到，
+ * 形状记在它 `visible` 参数的 KDoc）。卡片里那条 memoryId 取 holder 的
+ * [MemoryCorrectionFlow.lastMuteTargetId] / [MemoryCorrectionFlow.lastWrongTargetId] 那一份余温，
+ * 草稿框取 [MemoryCorrectionFlow.lastWrongDraft] 那一份——退场那 200ms 才画得完整、
+ * 也仍然交得对那一条、那一句话。
  */
 @Composable
 fun MemoryCorrectionFlowHost(
@@ -103,72 +144,78 @@ fun MemoryCorrectionFlowHost(
     onWrong: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    flow.muteTargetId?.let { memoryId ->
-        LbModalSheet(
-            onDismissRequest = { flow.dismiss() },
-            modifier = modifier
-        ) {
-            LbModalSheetTitle(stringResource(R.string.memory_mute_sheet_title))
-            Spacer(Modifier.height(Spacing.md))
-            Column {
-                MuteDuration.entries.forEach { duration ->
-                    CorrectionSubmenuItem(durationLabel(duration)) {
-                        onMute(memoryId, duration)
-                        flow.dismiss()
-                    }
+    // 可见性只看"现在有没有请求"；卡片内容用最后一次那一条（两者都 null 时这一棵从没被画过，
+    // 空串取不到——它落不进组合，只是让类型说得通）。
+    val muteMemoryId: String = flow.muteTargetId ?: flow.lastMuteTargetId ?: ""
+    LbModalSheet(
+        onDismissRequest = { flow.dismiss() },
+        modifier = modifier,
+        visible = flow.muteTargetId != null
+    ) {
+        LbModalSheetTitle(stringResource(R.string.memory_mute_sheet_title))
+        Spacer(Modifier.height(Spacing.md))
+        Column {
+            MuteDuration.entries.forEach { duration ->
+                CorrectionSubmenuItem(durationLabel(duration)) {
+                    onMute(muteMemoryId, duration)
+                    flow.dismiss()
                 }
             }
-            Spacer(Modifier.height(Spacing.sm))
-            // 这一档**没有主动作**：只有一个"取消"。空标签的动不入树（第29节 修过的那条）
-            LbModalSheetActions(
-                listOf(LbDialogAction(stringResource(R.string.a11y_action_cancel), { flow.dismiss() }, tone = LbDialogActionTone.Muted))
-            )
         }
+        Spacer(Modifier.height(Spacing.sm))
+        // 这一档**没有主动作**：只有一个"取消"。空标签的动不入树（第29节 修过的那条）
+        LbModalSheetActions(
+            listOf(LbDialogAction(stringResource(R.string.a11y_action_cancel), { flow.dismiss() }, tone = LbDialogActionTone.Muted))
+        )
     }
 
-    flow.wrongTargetId?.let { memoryId ->
-        LbModalSheet(
-            onDismissRequest = { flow.dismiss() },
-            modifier = modifier
-        ) {
-            LbModalSheetTitle(stringResource(R.string.memory_mark_wrong_sheet_title))
-            Spacer(Modifier.height(Spacing.sm))
-            // 第6节第5条 第②栏：屏幕上那行说明与输入框的读屏名字共用同一条资源
-            val wrongHint = stringResource(R.string.memory_wrong_input_hint)
-            Text(
-                text = wrongHint,
-                style = AppTypography.labelSmall,
-                color = TextSecondary
-            )
-            Spacer(Modifier.height(Spacing.xs))
-            OutlinedTextField(
-                value = flow.wrongDraft,
-                onValueChange = { flow.editWrongDraft(it) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .semantics { contentDescription = wrongHint },
-                placeholder = {
-                    Text(stringResource(R.string.memory_wrong_input_placeholder), style = AppTypography.labelSmall, color = TextHint)
-                },
-                textStyle = AppTypography.labelSmall.copy(color = TextPrimary),
-                singleLine = false,
-                maxLines = 3,
-                shape = LoveBrainShape.sm
-            )
-            Spacer(Modifier.height(Spacing.md))
-            LbModalSheetActions(
-                listOf(
-                    LbDialogAction(stringResource(R.string.a11y_action_cancel), { flow.dismiss() }, tone = LbDialogActionTone.Muted),
-                    LbDialogAction(
-                        label = stringResource(R.string.a11y_action_confirm),
-                        onClick = {
-                            onWrong(memoryId, flow.wrongDraft.trim())
-                            flow.dismiss()
-                        }
-                    )
+    val wrongMemoryId: String = flow.wrongTargetId ?: flow.lastWrongTargetId ?: ""
+    // 草稿同理：dismiss 那一步把 wrongDraft 清了，淡出的那张卡不能因此画出一只空框——
+    // 开着时读业务那一份，退场那一段读余温那一份。
+    val shownWrongDraft: String =
+        if (flow.wrongTargetId != null) flow.wrongDraft else flow.lastWrongDraft
+    LbModalSheet(
+        onDismissRequest = { flow.dismiss() },
+        modifier = modifier,
+        visible = flow.wrongTargetId != null
+    ) {
+        LbModalSheetTitle(stringResource(R.string.memory_mark_wrong_sheet_title))
+        Spacer(Modifier.height(Spacing.sm))
+        // 第6节第5条 第②栏：屏幕上那行说明与输入框的读屏名字共用同一条资源
+        val wrongHint = stringResource(R.string.memory_wrong_input_hint)
+        Text(
+            text = wrongHint,
+            style = AppTypography.labelSmall,
+            color = TextSecondary
+        )
+        Spacer(Modifier.height(Spacing.xs))
+        OutlinedTextField(
+            value = shownWrongDraft,
+            onValueChange = { flow.editWrongDraft(it) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics { contentDescription = wrongHint },
+            placeholder = {
+                Text(stringResource(R.string.memory_wrong_input_placeholder), style = AppTypography.labelSmall, color = TextHint)
+            },
+            textStyle = AppTypography.labelSmall.copy(color = TextPrimary),
+            singleLine = false,
+            maxLines = 3,
+            shape = LoveBrainShape.sm
+        )
+        Spacer(Modifier.height(Spacing.md))
+        LbModalSheetActions(
+            listOf(
+                LbDialogAction(stringResource(R.string.a11y_action_cancel), { flow.dismiss() }, tone = LbDialogActionTone.Muted),
+                LbDialogAction(
+                    label = stringResource(R.string.a11y_action_confirm),
+                    onClick = {
+                        onWrong(wrongMemoryId, shownWrongDraft.trim())
+                        flow.dismiss()
+                    }
                 )
             )
-        }
+        )
     }
 }
 

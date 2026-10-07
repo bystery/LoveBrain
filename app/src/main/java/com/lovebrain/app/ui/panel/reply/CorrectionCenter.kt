@@ -71,6 +71,12 @@ fun rememberCorrectionCenterHolder(): CorrectionCenterHolder =
  * 纠正中心的**唯一渲染处**。
  *
  * [modifier] 由调用方给：挂在面板顶层时，遮罩就盖满面板。
+ *
+ * 开合**只经 [CorrectionCenterHolder.isOpen] 驱动 `visible`**，这一棵树常驻：
+ * 旧写法是体首一句 `if (!holder.isOpen) return`——close 那一帧整棵树被摘掉，
+ * [LbModalSheet] 里那颗 `AnimatedVisibility` 没机会播 exit，所写的退场动画从来没生效过
+ * （同一形状写在 `LbModalSheet` 的 `visible` 参数 KDoc 上）。现在树在，退场才播得完；
+ * 不 open 时 `AnimatedVisibility` 自己不发射任何节点，也就没有"画而不见"那一档代价。
  */
 @Composable
 fun CorrectionCenterHost(
@@ -79,11 +85,10 @@ fun CorrectionCenterHost(
     onUndoCorrection: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    if (!holder.isOpen) return
-
     LbModalSheet(
         onDismissRequest = { holder.close() },
-        modifier = modifier
+        modifier = modifier,
+        visible = holder.isOpen
     ) {
         LbModalSheetTitle("记忆纠正中心")
         Spacer(Modifier.height(Spacing.md))
