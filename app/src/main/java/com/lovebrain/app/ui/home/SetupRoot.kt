@@ -132,9 +132,9 @@ fun SetupRoot(
                 targetState = destination,
                 transitionSpec = {
                     if (targetState == HomeDestination.Home) {
-                        // 返回首页：当前页向右滑出 + 淡出，首页淡入
-                        (slideOutHorizontally(tween(250)) { it } + fadeOut(tween(200))) togetherWith
-                            fadeIn(tween(200))
+                        // 返回首页：首页淡入，当前页向右滑出 + 淡出
+                        fadeIn(tween(200)) togetherWith
+                            (slideOutHorizontally(tween(250)) { it } + fadeOut(tween(200)))
                     } else if (initialState == HomeDestination.Home) {
                         // 前进子页：子页从右侧滑入 + 淡入，首页淡出
                         fadeIn(tween(200)) togetherWith
