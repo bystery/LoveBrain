@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lovebrain.app.data.DeepSeekRepository
+import com.lovebrain.app.data.EventBus
 import com.lovebrain.app.domain.AssetRegistry
 import com.lovebrain.app.domain.OnboardingResultParser
 import com.lovebrain.app.domain.OnboardingSchema
@@ -175,6 +176,9 @@ class KnowledgeBaseViewModel(
                 activeName = repo.getActive()?.name,
                 loaded = true
             )
+            // 通知面板侧的 LoveBrainViewModel 也刷新：用户在 KnowledgeBaseActivity 改名/删除/导入后，
+            // 面板如果一直开着，它的 kbList 不会自动更新——发这条事件让 FloatingService 调 refreshKnowledgeBases()。
+            EventBus.emitKbChanged()
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {

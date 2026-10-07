@@ -105,11 +105,12 @@ internal fun IntentEditorDialog(
     expiry: com.lovebrain.app.model.IntentExpiry = com.lovebrain.app.model.IntentExpiry.ONE_DAY,
     expiryDate: String = "",
     status: com.lovebrain.app.model.IntentStatus = com.lovebrain.app.model.IntentStatus.ACTIVE,
+    visible: Boolean = true,
     onSave: (String, Boolean, com.lovebrain.app.model.IntentExpiry, String, com.lovebrain.app.model.IntentStatus) -> Unit,
     onDismiss: () -> Unit,
     onInputIntent: (() -> Unit)? = null
 ) {
-    LbModalSheet(onDismissRequest = onDismiss) {
+    LbModalSheet(onDismissRequest = onDismiss, visible = visible) {
         IntentEditorBody(
             text = text,
             enabled = enabled,

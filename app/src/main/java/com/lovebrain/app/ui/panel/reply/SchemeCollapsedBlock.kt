@@ -65,6 +65,8 @@ internal fun SchemeCollapsedBlock(
     onFeedback: (SchemeFeedback) -> Unit,
     identityKey: String = "",
     notice: String? = null,
+    /** true = 模型主动说"不适合"（显示"本轮不适合"）；false = 模型没生成（显示"未生成"） */
+    notSuitable: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     // 点过复制：图标立即换成变色对钩，TICK_MS 后自己收回。原 onCopy 动作一个字没改。
@@ -83,7 +85,7 @@ internal fun SchemeCollapsedBlock(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "本轮不适合",
+                text = if (notSuitable) "本轮不适合" else "未生成",
                 color = TextHint,
                 style = AppTypography.labelMedium,
                 textAlign = TextAlign.Center

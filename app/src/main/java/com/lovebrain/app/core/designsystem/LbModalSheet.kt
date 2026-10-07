@@ -86,12 +86,21 @@ fun LbModalSheet(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     dismissable: Boolean = true,
+    /**
+     * 浮层可见性。传 true = 在场（带入场动画），传 false = 退场动画后摘除。
+     *
+     * 旧版写死 `visible = true`，靠调用方 `if (show) LbModalSheet(...)` 挂载/卸载整棵树——
+     * 入场动画能跑（挂载那一帧 visible 从 false→true），但**退场动画永远跑不到**：
+     * 调用方把整棵树摘掉时 `AnimatedVisibility` 没机会播 exit 就一起没了。
+     * 现在这一颗由调用方经 `visible` 参数控制，树一直在，exit 动画才真正生效。
+     * 调用方仍可用旧写法（省 `visible` 参数，默认 true），那档入场动画照跑、
+     * 退场动画退化为"跟着树一起没"——与旧版行为一致，不是更差。
+     */
+    visible: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    // 永远在树上、靠可见性翻进/翻出——这样 enter/exit 都跑得到，
-    // 调用方用 `if (show) LbModalSheet(...)` 也能在挂载/卸载那一次播动画。
     AnimatedVisibility(
-        visible = true,
+        visible = visible,
         enter = fadeIn(tween(SHEET_ANIM_MS, easing = FastOutSlowInEasing)) +
             scaleIn(tween(SHEET_ANIM_MS, easing = FastOutSlowInEasing), initialScale = 0.96f),
         exit = fadeOut(tween(SHEET_ANIM_MS, easing = FastOutSlowInEasing)) +

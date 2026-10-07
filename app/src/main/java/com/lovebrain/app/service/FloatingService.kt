@@ -255,6 +255,14 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             }
         }
 
+        // 订阅 EventBus：KnowledgeBaseActivity 里的改名/删除/导入/建库成功后
+        // 自动刷新面板侧的 KB 列表——面板一直开着时也能看到最新名称与活动库。
+        scope.launch {
+            EventBus.kbChanged.collect {
+                viewModel.refreshKnowledgeBases()
+            }
+        }
+
         // 终版：零保活、不干预无障碍。服务由用户手动开启，系统正常管理。
         showBubble()
 

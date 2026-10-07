@@ -70,4 +70,16 @@ object EventBus {
         _panelRequest.value = null
         return r
     }
+
+    /**
+     * 知识库变更通知：KnowledgeBaseActivity 里的改名/删除/导入/建库成功后发出，
+     * FloatingService 订阅后调 `viewModel.refreshKnowledgeBases()`——
+     * 面板一直开着时也能看到最新列表，不需要关了再开。
+     */
+    private val _kbChanged = MutableSharedFlow<Unit>(extraBufferCapacity = 4)
+    val kbChanged: SharedFlow<Unit> = _kbChanged.asSharedFlow()
+
+    fun emitKbChanged() {
+        _kbChanged.tryEmit(Unit)
+    }
 }

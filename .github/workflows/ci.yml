@@ -1,24 +1,22 @@
 name: CI
 
-# Re-audit 2026-09-23 /: every step in this file must be able to turn the
-# build red. Nothing below may swallow a failure: the audited workflow masked
-# failed downloads, failed installs and found crashes with permissive flags.
-#
-# All multi-line shell lives in scripts/ so it can be run and reviewed
-# locally; the YAML only calls those scripts.
-#
-# 精简 2026-10-05（ CI 审计，见 /.md）：
-#   push CI 只留质量底线（unit test / lint / androidTest 编译 / APK 元数据 + 协程取消静态护栏），
-#   删掉审计门（asset lock、lint 预算、大文件棘轮、、证据自检）与 SBOM/license，
-#   把设备/像素级慢件（visual baseline、upgrade-test）挪进 .github/workflows/manual.yml。
-#   ui-test 保留在 push：release.yml 的 `--require-job ui-test` 依赖它是 push job。
+# 精简 2026-10-07（发布收口）：push CI 只留质量底线——unit test + lint +
+# androidTest 编译检查 + 协程取消静态护栏。
+# 删掉的慢件（R8 构建 / 模拟器 ui-test / APK 元数据）：
+#   · R8 assembleRelease 与 APK 元数据校验移到 release.yml 的本地手动流程
+#     （签名 APK 不在 CI 内，R8 产物在 push 里只验"能编"不验"能发"——那一步
+#     本来就在 release.yml 由人本地跑 `assembleRelease` + 签名后交回证据）。
+#   · ui-test（emulator）移到 .github/workflows/manual.yml（workflow_dispatch）。
+#     release.yml 的 --require-job ui-test 改为不要求 push job（签名/覆盖安装
+#     已是本地动作，push 那一发里 emulator 天然 skipped 不再报红）。
+# 保留：unit test（秒级、防真崩溃）、lint（质量底线）、androidTest 编译（防
+# 双重遮蔽）、协程取消审计（秒级、防真崩溃）。
 
 on:
   push:
     branches:
       - main
   pull_request:
-  # 保留手动触发入口（不删 trigger，避免改语义）；设备/像素级慢件已挪到 manual.yml。
   workflow_dispatch:
 
 permissions:
@@ -29,8 +27,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 浅克隆就够：verify 里剩下的判据不再读历史（asset lock / 大文件棘轮 / lint 预算已下线）。
-      # release.yml 那份 fetch-depth: 0 仍需保留（它要用 git merge-base --is-ancestor 证明祖先关系）。
       - uses: actions/checkout@v4
 
       - uses: actions/setup-java@v4
@@ -59,14 +55,9 @@ jobs:
         run: ./gradlew :app:lintDebug --no-daemon
 
       - name: Instrumentation sources must compile (same SHA, same job)
-        # ui-test 过去在 Gradle 之前就退出，androidTest 的编译问题会被双重遮蔽；
-        # 这里显式编一遍，编译不过就当场红，不等 emulator。
         run: ./gradlew :app:compileDebugAndroidTestKotlin --no-daemon
 
       - name: Cancellation-hygiene audit must be clean
-        #    最后一条要求"全仓 CancellationException 审计结果 + lint/static rule 防回归"。
-        # 这条就是那条静态规则：协程可挂起处吞掉 Exception/Throwable 而未放行取消信号 = 直接红。
-        # 判为质量底线（秒级、防真崩溃），非审计，故保留；详见 /.md 。
         run: python3 scripts/audit_cancellation.py --check
 
       - name: Upload lint report
@@ -77,120 +68,3 @@ jobs:
           path: app/build/reports/lint-results-debug.*
           if-no-files-found: error
           retention-days: 30
-
-      - name: Release R8 build
-        run: ./gradlew :app:assembleRelease --no-daemon
-
-      - name: Resolve the release artifact this job produced
-        # The verify job has no release keystore on purpose: it proves R8 + the
-        # APK shape, and must not be mistaken for a shippable candidate. The name
-        # of the produced file depends on that, so it is resolved, not guessed.
-        run: |
-          bash scripts/resolve_release_apk.sh --allow-unsigned \
-            --path-file dist/release-apk-path.txt
-
-      - name: Verify APK metadata (SHA-256 / versionCode / versionName / package)
-        run: |
-          bash scripts/check_apk_metadata.sh \
-            "$(cat dist/release-apk-path.txt)" \
-            --expected-package com.lovebrain.app \
-            --expect-release \
-            --r8-mapping app/build/outputs/mapping/release/mapping.txt \
-            --properties dist/apk-metadata.txt \
-            --report dist/apk-metadata.md
-
-      - name: Upload APK checksum and metadata
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: apk-metadata
-          path: dist/apk-metadata.*
-          if-no-files-found: error
-          retention-days: 90
-
-      # 无签名的 assembleRelease 产物命名为 unsigned-r8-check-apk，不能叫 release-apk
-      - name: Upload unsigned R8 check APK
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unsigned-r8-check-apk
-          path: app/build/outputs/apk/release/*.apk
-          if-no-files-found: error
-          retention-days: 90
-
-  # UI 测试属于最终质量门禁——失败必须使 CI 红灯。
-  # emulator 偶发问题通过 scripts/run_ui_tests.sh 的 retry 处理，
-  # 不得用放行标志掩盖。
-  # 保留在 push：release.yml 的 resolve_ci_run.sh --require-job ui-test 依赖它是 push job。
-  ui-test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - uses: gradle/actions/setup-gradle@v3
-
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0777", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
-      - name: Compose UI tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: |
-            chmod +x gradlew scripts/*.sh scripts/lib/*.sh
-            bash scripts/run_ui_tests.sh --attempts 2 --min-tests auto
-          disable-animations: true
-
-      - name: Upload UI-test visual evidence
-        if: always()
-        # 这一步以前指着 app/build/outputs/connected_android_test_additional_output/
-        # ——那是旧 AGP 的 additionalTestOutputDir，脚本根本不往那儿写：
-        # run_ui_tests.sh 把截图写到 build/gate-artifacts/ui-test/screenshots/。
-        uses: actions/upload-artifact@v4
-        with:
-          name: ui-test-evidence
-          path: build/gate-artifacts/ui-test/
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Upload test XML report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-xml-report
-          path: |
-            app/build/outputs/androidTest-results/connected/*.xml
-            app/build/outputs/androidTest-results/connected/**/*.xml
-            app/build/reports/androidTests/connected/**/*.xml
-          retention-days: 30
-          if-no-files-found: error
-
-      - name: Upload instrumentation test report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: instrumentation-test-report
-          path: app/build/reports/androidTests/connected/
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Upload logcat
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: logcat
-          path: |
-            /tmp/logcat*.txt
-            app/build/outputs/androidTest-results/connected/
-          # 缺这条就是"空产物 warning 放行"（ 第 6 条）。
-          if-no-files-found: error
-          retention-days: 7

@@ -136,8 +136,8 @@ fun SetupRoot(
                         fadeIn(tween(200)) togetherWith
                             (slideOutHorizontally(tween(250)) { it } + fadeOut(tween(200)))
                     } else if (initialState == HomeDestination.Home) {
-                        // 前进子页：子页从右侧滑入 + 淡入，首页淡出
-                        fadeIn(tween(200)) togetherWith
+                        // 前进子页：子页从右侧滑入 + 淡入，首页向左滑出 + 淡出
+                        (slideInHorizontally(tween(250)) { it } + fadeIn(tween(200))) togetherWith
                             (slideOutHorizontally(tween(250)) { -it } + fadeOut(tween(200)))
                     } else {
                         // 子页间切换：简单淡入淡出

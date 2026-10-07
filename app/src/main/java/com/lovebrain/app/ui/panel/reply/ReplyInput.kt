@@ -429,6 +429,11 @@ private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
 @Composable
 private fun AddMessageButton(canAdd: Boolean, isEditing: Boolean, onAdd: () -> Unit) {
     val (addInteraction, addScale) = rememberPressScale(0.92f, "addScale")
+    // 热区与视觉分两层（与 RoleChip / RoundScopeChip 同一范式）：
+    // 外层透明盒垫到 48dp 见方承担点击/热区下限，内层可见胶囊只有 24dp——
+    // 视觉紧凑（用户要求的"缩小按钮占用空间"），手指与读屏拿到的都是 48。
+    // 旧版把 widthIn(min=48) 撑在外层但内层只有 24dp 可见、且高度只有 36dp，
+    // 两轴都没到 48 → PanelHostSemanticsTest 量的就是这一颗。
     Box(
         modifier = Modifier
             .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)

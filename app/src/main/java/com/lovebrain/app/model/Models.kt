@@ -20,14 +20,21 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 
 /** 一条回复方案（UI 渲染用；tag/title 硬编码补，AI 只输出 reply 文本）
- * reply 为空表示该方向本轮不适合，UI 显示“本轮不适合”且不可复制。
- * Scheme 自身持有 source 字段区分来源——STYLE=四风格，DIRECTION=四方向。 */
+ * reply 为空表示该方向本轮不适合，UI 显示"本轮不适合"且不可复制。
+ * Scheme 自身持有 source 字段区分来源——STYLE=四风格，DIRECTION=四方向。
+ *
+ * [notSuitable] 区分两种"空 reply"：
+ * - true = 模型主动输出 null（合法不适合），UI 显示"本轮不适合"
+ * - false = 模型没生成这一项（真正缺失），UI 显示"未生成"而非"不适合"
+ */
 @Serializable
  data class Scheme(
     val tag: String = "",        // A / B / C / D（风格）或 F / E / X / S（方向）
     val title: String = "",      // 推荐 / 清醒 / 俏皮 / 温柔 或 跟进 / 展开 / 表达 / 转向
     val reply: String = "",      // 话术原文；空 = 本轮不适合
-    val source: SchemeSource = SchemeSource.STYLE  // 来源：风格还是方向
+    val source: SchemeSource = SchemeSource.STYLE,  // 来源：风格还是方向
+    /** 模型主动输出 null = 合法不适合；false = 模型没生成这一项（真正缺失） */
+    val notSuitable: Boolean = false
 ) {
     /** 方案操作身份——统一用于改写/反馈/历史 key */
     val identity: SchemeIdentity get() = SchemeIdentity(source, tag)
@@ -226,18 +233,24 @@ data class LoveBrainResponse(
 
     /** 四方向方案——独立解析，固定位置，null="本轮不适合"
      * directions 异常不影响 response 风格渲染。
-     * 固定返回 4 条，缺失或 null 的位置 reply 为空。
+     * 固定返回 4 条。
+     * directions[i] == null → notSuitable=true（模型主动说"不适合"）
+     * directions[i] 缺失或空串 → notSuitable=false, reply=""（模型没生成这一项）
      * 使用 [ReplyDirection] 作为单一真源。 */
     val directionSchemes: List<Scheme>
         get() {
             val result = mutableListOf<Scheme>()
             for (dir in ReplyDirection.ALL) {
-                val text = directions.getOrNull(dir.index)?.takeIf { it.isNotBlank() } ?: ""
+                val raw = directions.getOrNull(dir.index)
+                val text = raw?.takeIf { it.isNotBlank() } ?: ""
+                // null = 模型主动说"不适合"；空串/缺失 = 模型没生成
+                val suitable = raw != null
                 result.add(Scheme(
                     tag = dir.tag,
                     title = dir.title,
                     reply = text,
-                    source = SchemeSource.DIRECTION
+                    source = SchemeSource.DIRECTION,
+                    notSuitable = suitable && text.isBlank()
                 ))
             }
             return result

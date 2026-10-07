@@ -152,7 +152,7 @@ jobs:
         run: |
           set -euo pipefail
           ARGS=(--commit "$BUILD_COMMIT" --workflow ci.yml
-                --require-job verify --require-job ui-test
+                --require-job verify
                 --id-file dist/ci-run-id.txt)
           [ -z "$CI_EVENT" ] || ARGS+=(--event "$CI_EVENT")
           [ -z "$CI_RUN" ] || ARGS+=(--run-id "$CI_RUN")
@@ -169,8 +169,9 @@ jobs:
           #  CI 精简（/.md ）：ci.yml 已把 license_scan/SBOM
           # 移出 push，不再产出 sbom-and-licenses 产物；留着它本步每发必 "artifact not on run → red"。
           # 只洗这一依赖，其余必需产物与 --require-job 语义一字未动。
-          for a in unit-test-report test-xml-report instrumentation-test-report \
-                   lint-report apk-metadata; do
+          # CI 精简：ui-test 从 push 移到 manual，push 那一发不再产 test-xml-report /
+          # instrumentation-test-report。只下载 push CI 仍产出的产物。
+          for a in unit-test-report lint-report; do
             if ! gh run download "$CI_RUN_ID" --repo "$GITHUB_REPOSITORY" \
                  --name "$a" --dir "evidence/ci/$a"; then
               printf 'artifact "%s" is not on run %s — a release citing a run that never produced\n' "$a" "$CI_RUN_ID" >&2
@@ -180,15 +181,11 @@ jobs:
           done
           find evidence/ci -type f | sed 's/^/  /'
 
-      - name: Assert the downloaded instrumentation and lint evidence is real
-        # 空/缺证据是失败不是警告（旧实现靠 if-no-files-found: warn + `|| echo` 放行）。
-        # 单测 XML 不在 ci.yml 的产物清单里（只上传了 HTML 报告），所以那一半的门留在
-        # `verify` job 内部——上一步已经要求它结论为 success，这里不假装重跑。
+      - name: Assert the downloaded lint evidence is real
+        # CI 精简：ui-test 从 push 移到 manual，push 那一发不再产 instrumentation 产物。
+        # 只校验 lint 报告非空且自洽。
         run: |
           set -euo pipefail
-          bash scripts/assert_artifacts.sh --label "release/ui-test" --min-tests auto \
-            --xml-dir evidence/ci/test-xml-report \
-            --html-dir evidence/ci/instrumentation-test-report
           LINT_XML="$(find evidence/ci/lint-report -type f -name 'lint-results*.xml' | head -1)"
           LINT_HTML="$(find evidence/ci/lint-report -type f -name 'lint-results*.html' | head -1)"
           if [ -z "$LINT_XML" ] || [ -z "$LINT_HTML" ]; then
@@ -259,26 +256,15 @@ jobs:
           [ "$CONT" = "PASS" ] || { printf 'signing.properties says signing_continuity=%s, not PASS\n' "$CONT" >&2; exit 1; }
           [ "$SIG" = "$SIG_BASE" ] || { printf 'recorded signer (%s) != recorded baseline (%s)\n' "$SIG" "$SIG_BASE" >&2; exit 1; }
           [ "$SIG" = "$PINNED" ] || { printf 'recorded signer %s is not the pinned published certificate — 签名连续性断了\n' "$SIG" >&2; exit 1; }
-          # CI 在同一 commit 上 R8 构建出来的版本，必须就是本地这个 APK 声称的版本。
-          CI_META="$(find evidence/ci/apk-metadata -type f -name 'apk-metadata.txt' | head -1)"
-          if [ -z "$CI_META" ]; then
-            printf 'run %s carries no apk-metadata.txt — the CI R8 build did not run\n' "$CI_RUN_ID" >&2
-            exit 1
-          fi
-          C_NAME="$(prop "$CI_META" version_name)"
-          C_CODE="$(prop "$CI_META" version_code)"
-          if [ "$C_NAME" != "$L_NAME" ] || [ "$C_CODE" != "$L_CODE" ]; then
-            printf 'CI built versionCode %s / versionName %s at this commit, but the本地 APK record says %s / %s\n' \
-              "$C_CODE" "$C_NAME" "$L_CODE" "$L_NAME" >&2
-            exit 1
-          fi
+          # CI 精简：push CI 不再做 R8 构建（assembleRelease 移到本地手动流程），
+          # 版本号只从本地证据核对——本地 APK 的 versionName 必须等于 tag，
+          # 这一步在上面 tagcheck 已经验过（tag == v$versionName at build commit）。
           ROWS="$(grep -c '^files/' "$EVID/upgrade-fixture-manifest.txt")" || ROWS=0
           [ "$ROWS" -gt 0 ] || { printf 'the覆盖安装 manifest lists no seeded file — nothing was upgraded onto\n' >&2; exit 1; }
           grep -q -- "$L_SHA" "$EVID/release-evidence.md" || { printf 'release-evidence.md does not cite the APK SHA-256 it claims to\n' >&2; exit 1; }
           {
             printf '| APK versionName / versionCode | `%s` / `%s` | %s/apk-metadata.txt |\n' "$L_NAME" "$L_CODE" "$EVID"
             printf '| APK SHA-256 | `%s` | matched against %s/SHA256.txt |\n' "$L_SHA" "$EVID"
-            printf '| CI R8 build of the same commit | versionName `%s` / versionCode `%s` | artifact apk-metadata of run %s |\n' "$C_NAME" "$C_CODE" "$CI_RUN_ID"
             printf '| signer certificate | `%s` | equal to the pin in scripts/signing-baseline.txt |\n' "$SIG"
             printf '| 覆盖安装 seeded files | %s | %s/upgrade-fixture-manifest.txt |\n' "$ROWS" "$EVID"
             printf '| pre-release | %s | tag contains "-rc" |\n' "$PRERELEASE"

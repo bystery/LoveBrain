@@ -298,6 +298,7 @@ fun SchemeCard(
                             feedback = feedback,
                             identityKey = identityKey,
                             notice = rewriteNotice,
+                            notSuitable = scheme.notSuitable,
                             onCopy = { onCopy(scheme) },
                             onFeedback = { fb -> onFeedback(scheme, fb) },
                             modifier = Modifier.weight(1f).fillMaxWidth()

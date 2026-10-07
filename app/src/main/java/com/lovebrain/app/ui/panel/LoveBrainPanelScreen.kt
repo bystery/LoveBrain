@@ -179,9 +179,15 @@ private fun PanelSettingsPage(
                 (enabled && !intentConfig.enabled) || (recompute && wasTerminal) -> IntentStatus.ACTIVE
                 else -> intentConfig.status
             }
+            // 重新启用到期意图时必须重算期限：旧 expiryDate 已是过去时刻，
+            // 不重算会立刻被 shouldAutoExpire 判过期 → "重新开启后立即失效"。
+            // 换档（recompute=true）本来就传空串触发重算；
+            // 从终态重新启用（wasTerminal && enabled 刚变 true）即使没换档也要传空串。
+            val mustRecomputeExpiry = recompute ||
+                (wasTerminal && enabled && !intentConfig.enabled)
             viewModel.intents.save(
                 text, enabled, expiry,
-                if (recompute) "" else intentConfig.expiryDate,
+                if (mustRecomputeExpiry) "" else intentConfig.expiryDate,
                 effectiveStatus
             )
         },
@@ -360,6 +366,30 @@ fun LoveBrainPanelScreen(
     // 首次组合也会走这一句，那时没有任何焦点，`clearFocus` 是空操作。
     LaunchedEffect(panelMode) {
         focusManager.clearFocus(force = true)
+    }
+
+    // ── 宿主失焦交接（§12.2 补完）─────────────────────────────────────────
+    // 设置页盖层打开/关闭、意图编辑器关闭这三条路径同样需要交出 Compose 焦点。
+    // 旧版只接了 `panelMode` 切页，设置页从主面盖上来（或收回去）时，正在获焦的那根
+    // BasicTextField 不会自动失焦——`onFocusChanged(false)` 不触发，
+    // `PanelInputFocusOwner.activeInputId` 不清、窗口仍挂 EDITING、IME 不收。
+    // 用户从设置页回到主面时光标还停在刚才那格上，长按选区也跟着错位。
+    //
+    // `surface.settingsOpen` 一翻就清一次：打开时主面那几颗输入框被盖在下层、
+    // 不该继续持焦；关闭时设置页那一排输入框跟着退场、也不该留着。
+    // `force = true` 是因为 Compose 默认 `clearFocus` 只清"非主动"焦点，
+    // 用户正在打字那一颗是主动焦点，不清掉它 IME 就不会收。
+    LaunchedEffect(surface.settingsOpen) {
+        focusManager.clearFocus(force = true)
+    }
+
+    // 意图编辑器关闭时同样交出焦点——LbModalSheet 的退场动画跑完之后，
+    // 编辑器里那颗 LbFieldInput 仍可能持焦，不清就会留一个看不见的输入框
+    // 挂着 EDITING。`showIntentEditor` 从 true→false 时清一次。
+    LaunchedEffect(showIntentEditor) {
+        if (!showIntentEditor) {
+            focusManager.clearFocus(force = true)
+        }
     }
 
     // 面板背景浓度送进子树的**唯一**一处接线：只包这一层 provider，里面每一行原样不动。
@@ -843,28 +873,22 @@ fun LoveBrainPanelScreen(
         // 显隐只有 `IntentController.showEditor` 一本账：开在哪块库由它自己冻结（openEditor 先绑库
         // 再翻可见性），保存回 `intents.save(...)`，关闭点名到 `dismissEditor()`。
         // 这一扇编辑浮层的宿主是这一页。能力一个字没减。
-        // 开合包一层 AnimatedVisibility（200ms 淡入淡出 + 纵向展开/收起，FastOutSlowInEasing），
-        // 与 `PanelPageMotion.SLIDE_MS` 同档，不再"啪"地一下弹出/消失。
-        AnimatedVisibility(
-            visible = showIntentEditor,
-            enter = fadeIn(tween(PanelPageMotion.SLIDE_MS, easing = FastOutSlowInEasing)) +
-                expandVertically(tween(PanelPageMotion.SLIDE_MS, easing = FastOutSlowInEasing)),
-            exit = fadeOut(tween(PanelPageMotion.SLIDE_MS, easing = FastOutSlowInEasing)) +
-                shrinkVertically(tween(PanelPageMotion.SLIDE_MS, easing = FastOutSlowInEasing))
-        ) {
+        // visible 直接传给 LbModalSheet：它自己的 AnimatedVisibility 负责入退场动画
+        // （200ms 淡入+缩放 / 200ms 淡出+缩放），不再外裹一层 AnimatedVisibility——
+        // 外裹那一层会在退场时把整棵树摘掉，LbModalSheet 的 exit 动画永远跑不到。
             IntentEditorDialog(
                 text = intentConfig.text,
                 enabled = intentConfig.enabled,
                 expiry = intentConfig.expiry,
                 expiryDate = intentConfig.expiryDate,
                 status = intentConfig.status,
+                visible = showIntentEditor,
                 onSave = { text, enabled, expiry, expiryDate, status ->
                     viewModel.intents.save(text, enabled, expiry, expiryDate, status)
                 },
                 onDismiss = { viewModel.intents.dismissEditor() },
                 onInputIntent = { onInputIntent("intent_editor") }
             )
-        }
 
         // 「记录实际发送」那扇浮层连同它的状态接线一起退场（本体与专属用例进 _archive）。
         // 点赞 / 采用 / 记入知识库这三条机制原样保留；VM 的 `recordActualSentMessage` 也原样留着，
