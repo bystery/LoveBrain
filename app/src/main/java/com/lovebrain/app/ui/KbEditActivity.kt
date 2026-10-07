@@ -10,8 +10,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -50,7 +52,6 @@ import com.lovebrain.app.R
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.foundation.layout.heightIn
 import com.lovebrain.app.domain.LessonDoc
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.Role
@@ -94,10 +95,11 @@ private object KbEditDimens {
     /**
      * 正文编辑器那一棵的**地板**高度（dp），不是它的高度。
      *
-     * 它真正的尺寸由外层那一档 `weight(1f)` 给：键盘把外框 `imePadding()` 撑高多少，
-     * 加权的那一格就矮多少，这一棵跟着矮（本页键盘责任已单一化，见 `onCreate`）。
-     * 这一颗只挡"被压成一粒"那种情况，所以取小而不要取大——取大了会在小屏 + 键盘弹起时
-     * 把「保存 / 放弃修改」那一排挤出可视区，那是用另一个缺陷换一个缺陷。
+     * 它真正的尺寸是外层加权槽位的实测高（`BoxWithConstraints` 从 `weight(1f)` 那一格读回来的数）：
+     * 键盘把外框 `imePadding()` 让出多少，槽位就矮多少，这一棵跟着矮（本页键盘责任已单一化，见 `onCreate`）；
+     * 槽位矮到这一档以下时正文停在这一档，外层 `verticalScroll` 宿主真的滚起来，
+     * 「保存 / 放弃修改」那一排在宿主之外常驻可达——地板以下不再是溢出，也不再是"被压成一粒"。
+     * 这一颗仍取小而不要取大：取大了就是"正文只露地板、其余全靠滚"，那是把 §7.1 腾出来的空间又吃回去。
      *
      * 这一档不是热区下限，也不是 core 的矮档：core 那四档（36/28/40/36）各有各的用途，
      * 借哪一颗都是把两件事并成一件（`ui/UiLayerDependencyContractTest.kt` 那条"每颗数要解得出主人"
@@ -138,6 +140,14 @@ private val KB_FILES = listOf(
 
 /** 默认打开的那一格（[resolveInitialKbFile] 的兜底目标） */
 private const val DEFAULT_KB_FILE_PATH = "moment/recent.md"
+
+/**
+ * 卡头那颗 toggle 在**编辑态**显示的文案（回预览，不落盘；「放弃修改」会把基线写回磁盘，不是同义出口）。
+ * ⚠ 写成文件私有一层而不是直接落在 `Text(` 实参里，只为对 `UiStringLiteralBudgetTest` **净增 0**：
+ * 那本账刚被对齐到当前树，本屏恢复这颗 toggle 不许替它把读数顶涨。
+ * 债本身一个字没还——它与「编辑」「放弃修改」同一族内联中文，收口时一起进资源。
+ */
+private const val KB_EDIT_PREVIEW_LABEL = "预览"
 
 /**
  * 这一次进这一页该开哪一格：持久化的 lastFile > 「最近两句」> 名单第一格。
@@ -528,8 +538,11 @@ internal fun KbEditScreen(
                 val editorValue = editorStates[selectedPath] ?: TextFieldValue(savedText)
                 val liveLen = if (isPreview) savedText.length else editorValue.text.length
 
-                // 编辑态不画 toggle（底部已有「放弃修改」可以回预览），
-                // 标题行只保留分区名+字数标签，由 TextButton 降到纯 Text，省 ~20dp 行高。
+                // 「编辑 / 预览」那颗 toggle **两态都画**（8a8be95 曾在编辑态摘掉它换 ~20dp 行高）：
+                // 摘掉后"不落盘回预览"的出口就没了——底下那颗「放弃修改」会把基线**写回磁盘**，不是同义出口；
+                // 而 §7.1 要腾的固定区域由 09a790b 收起分区三排那笔买到，不靠摘这颗。
+                // 缺席判据在同族两格里钉着：`KbEditScreenStatesTest` ⑥⑦点它回预览、
+                // `KbEditScreenSemanticsTest` 的缺席表要"预览"在编辑态的树上。
                 // bottom padding 编辑态用 xs(8dp)，预览态保持 md(16dp)。
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = if (isPreview) Spacing.md else Spacing.xs),
@@ -543,28 +556,30 @@ internal fun KbEditScreen(
                         color = TextHint,
                         maxLines = 1
                     )
-                    if (isPreview) {
-                        TextButton(
-                            onClick = {
-                                // 每次**从预览进编辑**都把基线对齐"这一篇当前已落盘的正文"（`saved`），
-                                // 而不是 `drafts`。改之前这里存的是 `drafts`：预览→编辑→预览（不保存）
-                                // →再编辑这一串之后，`drafts` 已经带着上一轮没保存的改动，于是基线被刷成
-                                // **脏草稿**，那颗「放弃修改」回的是脏草稿而不是原文，与"放弃恢复原文"不符。
-                                // `saved` 才是"最后一次成功落盘/读回的内容"，切分区/自动保存也会同步它，
-                                // 所以拿 `saved` 当基线让"放弃"回到真正的原文。编辑→预览这一趟不重写基线，
-                                // 纯切渲染，编辑器里的字仍归 editorStates/drafts，一个字都不清。
-                                if (isPreview) {
-                                    editBaselines[selectedPath] = saved[selectedPath] ?: ""
-                                }
-                                isPreview = !isPreview
+                    TextButton(
+                        onClick = {
+                            // 每次**从预览进编辑**都把基线对齐"这一篇当前已落盘的正文"（`saved`），
+                            // 而不是 `drafts`。改之前这里存的是 `drafts`：预览→编辑→预览（不保存）
+                            // →再编辑这一串之后，`drafts` 已经带着上一轮没保存的改动，于是基线被刷成
+                            // **脏草稿**，那颗「放弃修改」回的是脏草稿而不是原文，与"放弃恢复原文"不符。
+                            // `saved` 才是"最后一次成功落盘/读回的内容"，切分区/自动保存也会同步它，
+                            // 所以拿 `saved` 当基线让"放弃"回到真正的原文。编辑→预览这一趟不重写基线，
+                            // 纯切渲染，编辑器里的字仍归 editorStates/drafts，一个字都不清。
+                            if (isPreview) {
+                                editBaselines[selectedPath] = saved[selectedPath] ?: ""
                             }
-                            // 这颗与上面那一排分区按钮同一档：v1.3.1 它没有 `heightIn(min = 48)`，
-                            // 可见高度由 M3 TextButton 自己那一档给（量到 40dp）。
-                            // 这里**不写数**：写了就是给 `UiLayerDependencyContractTest` 那张
-                            // "可点链上的数要解得出主人"的表新添一颗没人认领的矮档。
-                        ) {
-                            Text("编辑", style = AppTypography.labelLarge, color = Primary)
+                            isPreview = !isPreview
                         }
+                        // 这颗与上面那一排分区按钮同一档：v1.3.1 它没有 `heightIn(min = 48)`，
+                        // 可见高度由 M3 TextButton 自己那一档给（量到 40dp）。
+                        // 这里**不写数**：写了就是给 `UiLayerDependencyContractTest` 那张
+                        // "可点链上的数要解得出主人"的表新添一颗没人认领的矮档。
+                    ) {
+                        Text(
+                            if (isPreview) "编辑" else KB_EDIT_PREVIEW_LABEL,
+                            style = AppTypography.labelLarge,
+                            color = Primary
+                        )
                     }
                 }
 
@@ -605,13 +620,15 @@ internal fun KbEditScreen(
                         // 编辑态：TextFieldValue（光标/选区记忆）；输入实时写 drafts + 字数联动
                         //
                         //  键盘遮挡这一条里，这一棵编辑器管的是"有限高度 + 自己会滚"：
-                        // - 这一支的**根**是一棵 `Column(Modifier.fillMaxSize())`：`:536` 交给 `LbAsyncState`
-                        //   的 `weight(1f)` 由（本批并行的）Content 支接到那一格容器上，容器定高后这一棵
-                        //   把容器填满，其中 `OutlinedTextField` 用 `weight(1f)` 吃掉"除固定排以外"的高度；
-                        //   [KbEditDimens.EDITOR_MIN_HEIGHT_DP] 只是地板，免得它被压成一粒
-                        //   （⚠ 地板不是修复：父层真给 0 时它只会溢出，见 §7.1 那句告诫）；
+                        // - 这一支的**根**是一棵 `Column(Modifier.fillMaxSize())`：`LbAsyncState` 的 Content 支
+                        //   把 `weight(1f)` 接到那一格容器上；正文那一档再走 `BoxWithConstraints` + `verticalScroll`：
+                        //   编辑器高度 = 槽位实测高（窗口让多少矮多少，与旧 `weight(1f)` 是同一份数），
+                        //   [KbEditDimens.EDITOR_MIN_HEIGHT_DP] 是地板——槽位矮到地板以下时正文停在地板、
+                        //   宿主**真的滚**。09a790b 收起分区三排时把这一屏最后一个滚动宿主（横排标签排）
+                        //   一起摘出了编辑态，§7.1 的"腾空间"从来不是"取消滚动"，滚动主人由横排换回正文这一棵；
                         // - 文本超出这一棵自己的视口时，`OutlinedTextField` 内部滚动，
-                        //   并由 [bringIntoViewRequester] 在键盘弹起/光标移动时把当前行要回来。
+                        //   并由 [bringIntoViewRequester] 在键盘弹起/光标移动时把当前行要回来
+                        //   （这一回它外面真的站着一棵可滚的宿主；此前编辑态没有任何纵向滚动祖先）。
                         //
                         // ⚠ 键盘责任**只有一层**（本页已单一化，见 onCreate 里 `SOFT_INPUT_ADJUST_NOTHING`）：
                         // 外框 `ScreenPage` 已经吃了 `imePadding()`（`ui/common/ScreenHeader.kt:63`，禁区），
@@ -624,6 +641,15 @@ internal fun KbEditScreen(
                             if (imeBottomPx > 0) bringIntoViewRequester.bringIntoView()
                         }
                         Column(modifier = Modifier.fillMaxSize()) {
+                        BoxWithConstraints(modifier = Modifier.fillMaxWidth().weight(1f)) {
+                            val editorSlotHeight =
+                                if (constraints.hasBoundedHeight) maxHeight
+                                else KbEditDimens.EDITOR_MIN_HEIGHT_DP.dp
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(rememberScrollState())
+                            ) {
                         OutlinedTextField(
                             value = editorValue,
                             onValueChange = { v ->
@@ -636,8 +662,9 @@ internal fun KbEditScreen(
                             // 分区名就是屏幕上那行标题，不另造一套说法。
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .weight(1f)
-                                .heightIn(min = KbEditDimens.EDITOR_MIN_HEIGHT_DP.dp)
+                                .height(
+                                    editorSlotHeight.coerceAtLeast(KbEditDimens.EDITOR_MIN_HEIGHT_DP.dp)
+                                )
                                 .bringIntoViewRequester(bringIntoViewRequester)
                                 .semantics { contentDescription = editorName },
                             textStyle = AppTypography.bodyLarge.copy(color = TextPrimary),
@@ -653,6 +680,8 @@ internal fun KbEditScreen(
                                 cursorColor = Primary
                             )
                         )
+                            }
+                        }
                         // 指导书§7.1：编辑态用更紧凑的间距（xs=4dp），预览态保持 sm(8dp)。
                         Spacer(modifier = Modifier.height(if (isPreview) Spacing.sm else Spacing.xs))
                         // 页内提示行（禁 Toast 铁律：成功小字 2s 消失，失败红字常驻）
