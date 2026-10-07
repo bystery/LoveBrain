@@ -401,7 +401,12 @@ class KnowledgeRepositoryLessonsRewriteTest {
         }
         lockIsHeld.await()
 
-        val job = launch(Dispatchers.IO) {
+        // ⚠ Dispatchers.Unconfined 而不是 IO：full-suite 满载时 IO 池排不上这一颗协程，
+        // `job.cancel()` 可能发生在**体一行都没跑**的时候——那 `observed` 永远不 complete，
+        // 下面那颗 5s 真时钟 watchdog 就成随机红（本机 full 跑法实测炸过一次，单跑永远绿）。
+        // Unconfined 让体在 launch 调用点同步跑到第一个挂起处（等锁），挂起是**构造保证**的，
+        // cancel 于是总在"正挂在锁上"的状态送达——判据从赌调度变成赌语义。
+        val job = launch(Dispatchers.Unconfined) {
             try {
                 repo.readTidyAndReplaceWithRevisionCheck(KB, LessonDoc.LESSONS_PATH, 0) { existing ->
                     composeRan = true
