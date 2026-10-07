@@ -143,10 +143,19 @@ jobs:
           retention-days: 30
 
       - name: Moved-out source-scan family must still run (§13.2 发布前专用入口)
-        # ci-lite 排除档把 `architecture.*`（源码文本/字符串预算/形状所有权/层级依赖）
-        # 移出默认 push（排除档见 app/build.gradle.kts 尾部注释）；这一格是它唯一的运行入口，
-        # 发布前必须绿——移走≠删掉，§13.2 的"不能全删"就在这一步兑现。
-        run: ./gradlew :app:testDebugUnitTest --no-daemon --tests "com.lovebrain.app.architecture.*"
+        # ci-lite 排除档把两族移出默认 push（排除档见 app/build.gradle.kts 尾部注释），
+        # 这一格是它们唯一的运行入口，发布前必须绿——移走≠删掉，§13.2 的"不能全删/不能假绿"就在这一步兑现：
+        #   ① architecture.*——源码文本/字符串预算/形状所有权/层级依赖（§13.2 L340 前半句，原有）；
+        #   ② 逐档矩阵渲染族——UiMatrixFullSweepTest（4 宽×3 字全跑）+ LongProviderNameSemanticsTest
+        #      （FULL + FONT_SCALES 字号族）——§13.2 L340 后半句"昂贵的全量 JVM UI 渲染/多尺寸多字号"，本轮补。
+        # 两族都是**类名档黑名单**移出 push，新测试默认仍跑；这里并列列出、不新建 job、不建第三套发布门禁。
+        # ⚠ 用多个 --tests 并列（Gradle 会把它们取并集），不能塞进一个逗号串——单个 --tests 值里的逗号
+        #   不是分隔符，会被当成一个类名去匹配 ⇒ 谁都不匹配 ⇒ rc=0 空跑＝假绿，正是 §13.2 要防的形状。
+        run: >-
+          ./gradlew :app:testDebugUnitTest --no-daemon
+          --tests "com.lovebrain.app.architecture.*"
+          --tests "com.lovebrain.app.ui.matrix.UiMatrixFullSweepTest"
+          --tests "com.lovebrain.app.ui.home.LongProviderNameSemanticsTest"
 
   # R8 / Release 打包与 APK 元数据校验（原文照搬自 ci.yml@7758148 :81-119 的 verify 步骤）。
   # §13.2（L342）："全量模拟器与 release R8 打包放明确的手动/发布验证，发布前必要的一次仍执行"

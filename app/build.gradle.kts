@@ -200,7 +200,29 @@ dependencies {
 //   ① 视觉快照族 `ui.visual.*`——专用比对入口是 manual job 的 scripts/verify_visual_baseline.sh
 //      （:app:verifyRoborazziDebug），不为 push 陪跑；
 //   ② 源码文本/字符串预算/形状所有权扫描族 `architecture.*`——§13.2 原句点名，随 manual 的
-//      发布前全量步骤跑。
+//      发布前全量步骤跑；
+//   ③【本轮补】昂贵的全量 JVM UI 渲染 / 多尺寸多字号**矩阵循环族**——§13.2 L340 同半句
+//      "昂贵的全量 JVM UI 渲染/多尺寸多字号……移到已有手动工作流"。此前只落了前半句
+//      （快照+源码扫描），"多尺寸多字号"这一半没落实：两类逐档扫的矩阵渲染仍在 push 陪跑。
+//      只移**整类皆为多档 for/forEach 循环**的类（每颗 @Test 都跑满 UiMatrix.FULL / WIDTHS_DP /
+//      FONT_SCALES，无单档语义测试可被误伤）：
+//        · com.lovebrain.app.ui.matrix.UiMatrixFullSweepTest —— 6 格全为 4 宽×3 字逐格扫；
+//          其单档语义判据本就钉在 LbChipTest / LbStatusBadgeTest / LbSettingRowStateTest /
+//          LbPrimaryButtonStateTest（文件头自述"本文件只**扩矩阵**，不改那些用例的判据口径"），
+//          移出后 push 仍保留那四颗单档语义；
+//        · com.lovebrain.app.ui.home.LongProviderNameSemanticsTest —— 2 格皆为 FULL 逐格扫 +
+//          FONT_SCALES 字号族，判据本身依赖宽度/字号上涨，无单档形态可留。
+//      ⚠ 保留清单（不动）：ui.visual.* / architecture.* 之外的**大量 UiMatrix 用点属"单档挂载
+//      夹具"**——只 `UiMatrix(360, …).RenderIn` 钉一次密度/字号，是 §13.2 L338 核心语义回归的载体，
+//      一律保留。带"1 颗矩阵循环 + N 颗单档语义"混合的类也不整类移出（移一颗会连带杀其语义覆盖，
+//      违 §13.2 L338）：HomeScaffoldFrameSemanticsTest / LbAsyncStateTest / KbOnboardingWizardSemanticsTest /
+//      EmptyStateOwnershipSemanticsTest / PanelHeaderTouchTargetsTest / UsageStatBarSemanticsTest /
+//      MessageListEmptyStateTest / HomeScreenStructureTest。本轮 §7–§11 落地的行为测试（含带 FULL 循环的
+//      CaptureAppRowSemanticsTest / CaptureAppsScreenStatesTest）按保护清单一律保留，矩阵循环不作移出面。
+// 这两类经类名档 excludeTestsMatching 移出 push 后，在 manual.yml 的 visual-baseline
+// "发布前扫描族专用入口"同一步骤照跑（--tests 并列），移出 ≠ 删除，§13.2 "不能全删/不能假绿"由此兑现。
+// ⚠ 黑名单制：excludeTestsMatching 只**追加排除**，新写的测试默认仍在 push 跑；不用包名一把梭
+//   （一把梭会把同包里大量"单档挂载夹具"语义测试一并静默漏跑＝假绿）。本地不带开关的全量跑一档不跳。
 // §13.2 要求保留的核心回归族（知识库生命周期与隔离、生成解析与取消、配置/连接状态、范围和意图
 // 装配、本轮直接修复的输入/列表行为）全部留在 push——套件"几千格"的本体是这些快断言族，
 // 不是被移走的渲染/扫描族。本地不带开关的全量跑一档不跳，读数不变。
@@ -211,5 +233,10 @@ tasks.withType<Test>().configureEach {
     if (name == "testDebugUnitTest" && project.hasProperty("ci-lite")) {
         exclude("**/com/lovebrain/app/ui/visual/**")
         exclude("**/com/lovebrain/app/architecture/**")
+        // §13.2 L340 "多尺寸多字号"半句：整类皆为逐档矩阵扫描的两颗，类名档精确移出（黑名单追加）。
+        // 用文件模式而非 `excludeTestsMatching`：后者在 Gradle 8.0 的 Test 任务上不存在
+        // （本机实测脚本编译红），且 `*` 尾一并挡掉 `$1`/lambda 内部类文件。
+        exclude("**/com/lovebrain/app/ui/matrix/UiMatrixFullSweepTest*")
+        exclude("**/com/lovebrain/app/ui/home/LongProviderNameSemanticsTest*")
     }
 }
