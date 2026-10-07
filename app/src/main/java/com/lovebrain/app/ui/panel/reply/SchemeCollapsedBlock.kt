@@ -85,7 +85,7 @@ internal fun SchemeCollapsedBlock(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = if (notSuitable) "本轮不适合" else "未生成",
+                text = stringResource(if (notSuitable) R.string.scheme_not_suitable else R.string.scheme_not_generated),
                 color = TextHint,
                 style = AppTypography.labelMedium,
                 textAlign = TextAlign.Center

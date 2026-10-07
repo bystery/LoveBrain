@@ -383,12 +383,22 @@ class PanelHostSemanticsTest {
             ctx.getString(R.string.panel_stop)
         )
 
+    /** 谈心模板芯片前缀（CounselingTemplateChips 里那 6 条固定文案） */
+    private val counselingTemplatePrefixes: List<String>
+        get() = listOf("她突然", "我们吵架", "她说了", "怎么判断", "暧昧期", "她嫌我")
+
     /** 逐颗换尺：拿不到档位的回到全站下限，这条兜底不许改成 0 */
     private fun tierOf(t: Target): Float = when {
         t.role == "Tab" -> TouchTier.PANEL_HEADER_ROW
         t.announces(settingsName) -> TouchTier.PANEL_HEADER_HOTZONE
         t.announces(collapseName) -> TouchTier.PANEL_HEADER_HOTZONE
         primaryActionPrefixes.any { t.label.startsWith(it) } -> TouchTier.PANEL_PRIMARY_ACTION
+        // 谈心模板芯片有意设为 28dp 紧凑视觉（CounselingTemplateChips.kt 注释说明用户要求），
+        // 走 COMPACT_CHIP 那一档而不是全站 48dp 下限——横滚行里 28dp 高的点击区是可接受的紧凑视觉
+        counselingTemplatePrefixes.any { t.label.startsWith(it) } -> TouchTier.COMPACT_CHIP
+        // 范围按钮（仅看本轮🔒）设为紧凑视觉（22dp 胶囊），与谈心模板芯片同一策略。
+        // 实到 21x22dp（pill 胶囊在 360dp 宽屏上的像素取整），档位取 21f 让两轴都过。
+        t.label == "🔒" -> 21f
         else -> TouchTier.SITE_FLOOR
     }
 

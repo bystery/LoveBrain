@@ -24,7 +24,7 @@ import java.io.File
  * 顶层而不是类里：Kotlin 的 `const val` 不许长在普通类里。
  * 只有本 VM 读它，页面拿的是钳好之后的值（`OnboardingFlow` 与 `SetupActivity` 都不抄这个数）。
  */
-internal const val INTRO_STEP_MAX = 3
+internal const val INTRO_STEP_MAX = 0
 
 /**
  * 设置页 ViewModel（：工单式模型供应商管理）。

@@ -137,7 +137,10 @@ class ViewModelStateOwnershipTest {
         VmStateSite(VmMutableShape.VAR, "replyGenerationContext") to
             "→ 轮次上下文那一块：一轮生成的不可变快照，十几个成员读它、是所有块的公共上游，所以排在最后搬",
         VmStateSite(VmMutableShape.VAR, "recordingRound") to
-            "→ 本轮提交那一块：下一轮的重入闩，只有那条链读写"
+            "→ 本轮提交那一块：下一轮的重入闩，只有那条链读写",
+        VmStateSite(VmMutableShape.FLOW, "_knowledgeBasesState") to
+            "★不搬：知识库列表是面板设置页与首页共用的中心读数，与 _activeKb 同族——" +
+                "单独搬它就是『搬字段不减行』那条教训的复现"
     )
 
     /**

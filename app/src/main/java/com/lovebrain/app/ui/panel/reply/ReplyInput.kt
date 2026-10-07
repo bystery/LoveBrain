@@ -399,7 +399,8 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
 private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
     // 可见用 🔒 符号占位（"锁在这一轮 / 仅看本轮"），读屏仍念全名 [PANEL_ROUND_SCOPE_LABEL]。
     // 紧凑胶囊档与 [IntentChip] 同一档（LbChipStyles.pill, 22dp），选中带勾。
-    // 热区分层：外层 48dp 透明盒承担点击/语义，内层 22dp 胶囊只管可见——与 RoleChip 同一范式。
+    // 热区不垫 48dp——用户要求"缩小按钮占用空间"，与谈心模板芯片同一策略（紧凑视觉优先）。
+    // 触摸档走 COMPACT_CHIP（22dp），不在全站 48dp 下限射程内。
     LbChip(
         label = "🔒",
         selected = selected,
@@ -411,8 +412,8 @@ private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
         style = LbChipStyles.pill.copy(
             pillHeight = 22.dp,
             markSelectedWithCheck = true,
-            touchFloor = true,
-            layeredTouch = true
+            touchFloor = false,
+            layeredTouch = false
         )
     )
 }

@@ -374,7 +374,7 @@ class UiStringLiteralBudgetTest {
         //   ② `IntentEditorSheet.kt` 原来有 5 条 TEXT（「启用」「有效期」「输入日期…」「标记为已完成」
         //      「输入你的持续意图…」），重构先删掉后 3 条（日期输入区与状态操作区整块移除），
         //      本轮再把剩下 2 条接上资源 → 0。两文件合计 TEXT −5（相对预算基线 90）。
-        Kind.TEXT to 82,
+        Kind.TEXT to 81,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是

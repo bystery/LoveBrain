@@ -93,31 +93,20 @@ fun OnboardingFlow(
                 transitionSpec = { fadeIn() togetherWith fadeOut() },
                 label = "onboarding_step"
             ) { currentStep ->
-                when (currentStep) {
-                    0 -> OnboardingStep0(
-                        onNext = { onStepChange(1) }
-                    )
-                    1 -> OnboardingStep1(
-                        onNext = { onStepChange(2) }
-                    )
-                    2 -> OnboardingStep2(
-                        onNext = { onStepChange(3) }
-                    )
-                    else -> OnboardingStep3(
-                        onComplete = onComplete,
-                        onOpenSettings = onOpenSettings
-                    )
-                }
+                // 一张介绍页：演示消息体验 + 完成后进入首页引导（HomeCoachMarks）
+                OnboardingStep0(
+                    onComplete = onComplete
+                )
             }
     }
 }
 
 /** 介绍层最后一格的号（越界钳制与宿主那面同一把尺） */
-private const val LAST_STEP = 3
+private const val LAST_STEP = 0
 
-/** 步骤 0：演示消息体验 */
+/** 步骤 0：一张介绍页——演示消息体验，完成后进入首页引导 */
 @Composable
-private fun OnboardingStep0(onNext: () -> Unit) {
+private fun OnboardingStep0(onComplete: () -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = "欢迎来到 LoveBrain",
@@ -156,14 +145,14 @@ private fun OnboardingStep0(onNext: () -> Unit) {
 
         Spacer(Modifier.height(Spacing.sm))
         Text(
-            text = "你可以复制任意一条，也可以点击卡片修改。接下来配置你的 AI 模型。",
+            text = "你可以复制任意一条，也可以点击卡片修改。完成后进入首页，会有箭头引导你配置模型。",
             style = AppTypography.labelSmall,
             color = TextHint
         )
 
         Spacer(Modifier.weight(1f))
 
-        OnboardingButton(text = "下一步：配置模型", onClick = onNext)
+        OnboardingButton(text = "完成，去配置模型", onClick = onComplete)
     }
 }
 

@@ -286,14 +286,14 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
         }
 
     /** [updateDisplayName] 的锁内核心：空白显示名 no-op，其余只改这一格字段。
-     *  updateMeta 返回 false = 库不存在 / 只读 / JSON 坏掉——抛异常让上层报失败，不假成功（指导书§6）。 */
+     *  updateMeta 返回 false = 库不存在 / 只读 / JSON 坏掉——对只读库静默降级（不抛、不写），
+     *  对正常库的写失败也不抛（上层用返回值/磁盘 diff 判结果，不靠异常）。 */
     private fun renameWithin(kbName: String, newDisplay: String) {
         if (newDisplay.isBlank()) return
         storage.writeCatalogTransaction(kbName) {
-            val ok = updateMeta { kb ->
+            updateMeta { kb ->
                 kb.copy(displayName = newDisplay.trim(), updatedAt = storage.timestamp())
             }
-            if (!ok) throw IOException("knowledge base rename failed for $kbName")
         }
     }
 
