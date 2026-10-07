@@ -4,28 +4,55 @@
 # The gate scripts (scripts/verify_signing_continuity.sh) compare the candidate's
 # signer certificate against cert_sha256 and fail the build on any mismatch.
 #
-# Where this value comes from (three independent sources, all agreeing):
-#   1. Published GitHub Release v1.3.1 body
-#      (https://github.com/bystery/LoveBrain/releases/tag/v1.3.1):
-#        "APK 签名证书 SHA-256:
-#         c2986640bce6e185de55f50268530205ed5d07e123476d67e15a8672fb0b2f7d"
-#   2. The published asset app-release.apk of v1.3.1, verified locally with
-#      apksigner (see cert_sha256_reference_apk below).
-#   3. keystore/lovebrain-release.jks (alias "lovebrain"), locally with keytool.
+# CURRENT PIN — where these values come from (both read from the field, 2026-10-07):
+#   1. D:/TeamWorkspace/keystores/lovebrain-release.jks (alias "lovebrain"),
+#      read with:  keytool -list -v -keystore <path> -alias lovebrain
+#      giving SHA256 98:E1:0B:28:08:BA:0A:B6:C0:47:C2:CF:FF:15:FC:ED:C5:FD:14:DE:
+#                   0F:4D:A9:8D:19:14:A5:49:05:30:DB:AF
+#      and   SHA1   B2:7B:24:F9:EB:67:6D:B4:6A:E8:DB:BF:FA:B7:A0:12:B0:A9:BB:CF
+#   2. The built release APK, read with apksigner through
+#      scripts/verify_signing_continuity.sh — same two digests.
+#   The product keystore.properties storeFile points at that same JKS, so the
+#   build and this pin describe one key.
 #
-# To rotate the release key deliberately, replace this file, get the change
+# KEY ROTATION, 2026-10-07, decided by the product owner.
+#   The certificate pinned before this date was
+#     cert_sha256 c2986640bce6e185de55f50268530205ed5d07e123476d67e15a8672fb0b2f7d
+#     cert_sha1   99970ba6bde2dcb32049bdaff5deb0dd56e63392
+#   it signed the published v1.3.1, and its keystore was deleted before 2026-10-06
+#   and is NOT recoverable. That value is kept here as history only; it is no
+#   longer what releases are signed with.
+#
+# CONSEQUENCE that comes with a rotated key, stated plainly:
+#   An APK signed with the current pin CANNOT upgrade-install over an install of
+#   v1.3.x. Android rejects it (INSTALL_FAILED_UPDATE_INCOMPATIBLE). The only
+#   path from v1.3.x is uninstall + fresh install, and uninstalling takes the
+#   in-app chat data with it. Any gate that asserts "the candidate and the
+#   published v1.3.1 carry the same certificate" therefore describes an
+#   impossible pair and must not be treated as a code defect.
+#   See scripts/run_upgrade_test.sh and scripts/download_release_apk.sh.
+#
+# To rotate the release key deliberately again, replace this file, get the change
 # reviewed, and bump baseline_updated. Never edit it to make a red job green.
 
-baseline_version=v1.3.1
-baseline_updated=2026-09-23
+baseline_version=v1.4.0
+baseline_updated=2026-10-07
 key_alias=lovebrain
+key_alias_note=keytool -list -v showed this alias as a PrivateKeyEntry after the key left Git tracking
 cert_dn=CN=LoveBrain Release, OU=LoveBrain, O=LoveBrain, L=Luoyang, ST=Henan, C=CN
-cert_sha256=c2986640bce6e185de55f50268530205ed5d07e123476d67e15a8672fb0b2f7d
-cert_sha1=99970ba6bde2dcb32049bdaff5deb0dd56e63392
+cert_sha256=98e10b2808ba0ab6c047c2cfff15fcedc5fd14de0f4da98d1914a5490530dbaf
+cert_sha1=b27b24f9eb676db46ae8dbbffab7a012b0a9bbcf
+
+# Historical certificate, kept so old artifacts stay identifiable. Nothing here
+# is compared by the gate; the gate reads cert_sha256 / cert_sha1 above only.
+historical_cert_sha256_v131=c2986640bce6e185de55f50268530205ed5d07e123476d67e15a8672fb0b2f7d
+historical_cert_sha1_v131=99970ba6bde2dcb32049bdaff5deb0dd56e63392
+historical_cert_status=keystore deleted, key unrecoverable, superseded 2026-10-07
 
 # Published v1.3.1 asset, downloaded from GitHub releases on 2026-09-23 and
 # checked with apksigner + sha256sum. Used by scripts/download_release_apk.sh to
-# prove the upgrade fixture really is the shipped v1.3.1 binary.
+# prove the upgrade fixture really is the shipped v1.3.1 binary. The hash below
+# still identifies that file; its SIGNER is the historical certificate above.
 reference_apk_tag=v1.3.1
 reference_apk_name=app-release.apk
 reference_apk_sha256=ad41c9c6b31cff96bd9fb72f55e42cff73364b86880ecbfc46792523a5cb1625
