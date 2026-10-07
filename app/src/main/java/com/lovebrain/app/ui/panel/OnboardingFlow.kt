@@ -98,8 +98,7 @@ fun OnboardingFlow(
                         onNext = { onStepChange(1) }
                     )
                     1 -> OnboardingStep1(
-                        onNext = { onStepChange(2) },
-                        onOpenSettings = onOpenSettings
+                        onNext = { onStepChange(2) }
                     )
                     2 -> OnboardingStep2(
                         onNext = { onStepChange(3) }
@@ -168,11 +167,18 @@ private fun OnboardingStep0(onNext: () -> Unit) {
     }
 }
 
-/** 步骤 1：添加供应商、模型与 Key */
+/**
+ * 步骤 1：添加供应商、模型与 Key
+ *
+ * **这一页不再有「去设置页」按钮**（用户原话：「前 4 页看完才行」）。
+ * 旧版那颗按钮直接调 `onOpenSettings → closeIntro(OpenSettings)`，
+ * 介绍层当场收起来、`introOnScreen=false`，用户再回来时步号已丢、
+ * 引导直接跳到末尾——这就是「点去设置就跳到最后」的根因。
+ * 现在只留「下一步」，供应商的真正配置在介绍层收起后由首页罩子引导。
+ */
 @Composable
 private fun OnboardingStep1(
-    onNext: () -> Unit,
-    onOpenSettings: () -> Unit
+    onNext: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
@@ -183,24 +189,29 @@ private fun OnboardingStep1(
         )
         Spacer(Modifier.height(Spacing.md))
         Text(
-            text = "LoveBrain 需要一个 AI 模型来生成回复。你可以在设置页添加供应商（如 DeepSeek）、模型名称和 API Key。",
+            text = "LoveBrain 需要一个 AI 模型来生成回复。接下来几步看完后，会在首页引导你添加供应商（如 DeepSeek）、模型名称和 API Key。",
             style = AppTypography.bodyMedium,
             color = TextSecondary
         )
         Spacer(Modifier.height(Spacing.xl))
 
-        OnboardingButton(text = "去设置页配置", onClick = onOpenSettings)
-
-        Spacer(Modifier.height(Spacing.md))
-        Text(
-            text = "配置完成后回来继续。",
-            style = AppTypography.labelSmall,
-            color = TextHint
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(PrimaryLight)
+                .padding(Spacing.lg)
+        ) {
+            Text(
+                text = "提示：看完这几步后，首页会出现箭头引导你完成配置。",
+                style = AppTypography.labelMedium,
+                color = PrimaryDark
+            )
+        }
 
         Spacer(Modifier.weight(1f))
 
-        OnboardingButton(text = "已配置，下一步", onClick = onNext)
+        OnboardingButton(text = "下一步", onClick = onNext)
     }
 }
 
