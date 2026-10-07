@@ -9,6 +9,7 @@ import com.lovebrain.app.service.FloatingService
 import com.lovebrain.app.ui.home.AdvisorMissing
 import com.lovebrain.app.ui.home.AdvisorState
 import com.lovebrain.app.ui.home.AdvisorStatus
+import com.lovebrain.app.util.CredentialFingerprint
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -26,8 +27,26 @@ import kotlinx.coroutines.launch
 // 也不在组合期读盘。**消息捕获那类可选辅助权限不在端口里**：手工输入本来就可用，
 // 它不该成为点绿的条件（合同 第7节第2条 末段）。
 
-/** 当前供应商身份：只带"有没有 Key"这个布尔，明文 Key 不下这一层 */
-data class HomeProviderRef(val id: String, val name: String, val model: String, val hasKey: Boolean) {
+/**
+ * 当前供应商身份：带"有没有 Key"这个布尔，再带**生效地址与 Key 各自的不可逆摘要片段**
+ * （[CredentialFingerprint.of]，SHA-256 前 12 位十六进制）。
+ *
+ * ⚠ 明文 Key 与明文地址**都不下这一层**：这一颗会被摆进 [HomeFacts]、进 UI 状态、
+ * 会随 `toString` 进日志与反馈报告，只有摘要可以说出口。§11.1 要的只是"地址/Key 真变了要能判出来"，
+ * 判等用摘要就够，不需要把凭据本身搬来搬去。
+ *
+ * 无 Key / 无地址时那一段是**空串**（与"有值"天然可区分：有值永远是 12 个十六进制字符）。
+ */
+data class HomeProviderRef(
+    val id: String,
+    val name: String,
+    val model: String,
+    val hasKey: Boolean,
+    /** 生效地址的摘要片段：明文 baseUrl 不进身份、不落盘、不进日志（默认空 = 没读到地址） */
+    val baseUrlFingerprint: String = "",
+    /** API Key 的摘要片段：明文 Key 绝不离开 `data/`（默认空 = 没配 Key） */
+    val keyFingerprint: String = ""
+) {
     /** 配置齐不齐 = 有没有模型 + 有没有 Key。本地有 Key 只算"配置存在"，不算"连接成功" */
     val usable: Boolean get() = hasKey && model.isNotBlank()
 }
@@ -104,17 +123,25 @@ object FloatingServiceHomePort : HomeServicePort {
  * `get<SetupViewModel>()` 会拿到**第二颗** SetupViewModel——它的 `_tickets` / `_activeTicket`
  * 是它自己构造时读的那一份。于是"当前供应商"就有了两个主人：供应商页改的是 A 那颗，
  * 灯读的是 B 那颗，"切了供应商"对灯永远是没发生。盘上那一份才是源、VM 里那两份只是它的缓存，
- * 所以灯直接读盘（读的是解密后的布尔，明文 Key 不过这一层）。
+ * 所以灯直接读盘（读的是解密后的那一条 Key，但它当场只折成"有没有"的布尔与一段不可逆摘要；
+ * 明文 Key 与明文地址都不过这一层，见 [HomeProviderRef]）。
  */
 class SettingsStoreHomeProviderPort(private val store: SettingsStorePort) : HomeProviderPort {
     override fun currentProvider(): HomeProviderRef? {
         val id = store.activeTicketId ?: return null
         val ticket = store.getWorkerTickets().firstOrNull { it.id == id } ?: return null
+        // Key 只在这一个局部里活着：读一次，立刻折成"有没有"这颗布尔与一段不可逆摘要，
+        // 明文既不进 ref 也不进身份串（ref 会随 HomeFacts 摆上 UI，还会被 toString 带进日志）。
+        val key = store.getWorkerApiKey(ticket.id)
         return HomeProviderRef(
             id = ticket.id,
             name = ticket.name,
             model = ticket.model,
-            hasKey = !store.getWorkerApiKey(ticket.id).isNullOrBlank()
+            hasKey = !key.isNullOrBlank(),
+            // §11.1：地址与 Key 真变了才让旧成功作废——所以这两位要进身份，
+            // 但进的是摘要片段（无 Key ⇒ 空串），不是凭据本身。
+            baseUrlFingerprint = CredentialFingerprint.of(ticket.baseUrl),
+            keyFingerprint = CredentialFingerprint.of(key)
         )
     }
 }
@@ -375,14 +402,26 @@ class HomeStatusViewModel(
     }
 
     /**
-     * 冻结身份：换供应商 / 换生效模型让旧结论取不回来（新身份没账）。
+     * 冻结身份：换供应商 / 换生效模型 / **换地址 / 换 Key** 让旧结论取不回来（新身份没账）。
      *
-     * 连接身份只属于供应商配置（指导书 §11.1）：切知识库不改连接灯。
+     * 连接身份只属于供应商配置（指导书 §11.1）：切知识库不改连接灯。四位串的形状 =
+     * `工单 id | 生效模型 | 地址摘要 | Key 摘要`，逐字对应 §11.1 末句
+     * 「**地址/Key/模型真正变化才使旧成功无效**」——少任何一位，绿灯就会带着旧凭据继续；
+     * 后两位是 [CredentialFingerprint.of] 出来的 12 位十六进制片段，**明文 Key 与明文地址
+     * 永远不在这串里**（这一串要落 `SharedPreferences`、要进日志可达的 `toString`）。
+     * 没 Key 那一段是空串；没供应商（[NO_PROVIDER]）整串落在 `-|||` 那一档，语义与旧版一致
+     * （配置不齐时连接那一格本来就是 NotApplicable，谁也走不到绿）。
+     *
+     * **纯函数**：只读 ref 的字段，不读盘、不取时钟、不加盐——同一份配置每次算出同一个串，
+     * 这一条算式同时喂 [HomeConnectionLedger.remember]、`store.connectionVerifiedIdentity`
+     * 落盘与 [connectionFor] 的兜底比对（三处一个算式，不许有第二份）。
+     *
      * ⚠ 这一位**不能**混进任何会自己漂的读数（轮数、归档计数、阶段都不算身份，见 `ReadPortHomeKnowledgePort`）：
-     * 漂一次就是一次"谎报没检查过"，还要再烧一次钱才恢复。
+     * 漂一次就是一次"谎报没检查过"，还要再烧一次钱才恢复。地址与 Key 不属于会自己漂的读数——
+     * 它们只在用户真的改配置时漂。
      */
     private fun identityOf(ref: HomeProviderRef?): String =
-        "${ref?.id ?: NO_PROVIDER}|${ref?.model ?: ""}"
+        "${ref?.id ?: NO_PROVIDER}|${ref?.model ?: ""}|${ref?.baseUrlFingerprint ?: ""}|${ref?.keyFingerprint ?: ""}"
 
     private fun runCheck() {
         val token = ++checkToken

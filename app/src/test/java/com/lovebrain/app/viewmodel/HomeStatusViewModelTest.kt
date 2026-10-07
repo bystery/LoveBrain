@@ -48,8 +48,16 @@ class HomeStatusViewModelTest {
 
     private fun newVm(): HomeStatusViewModel = HomeStatusViewModel(service, provider, knowledge, probe)
 
-    private fun ref(id: String = "t1", model: String = "deepseek-chat", hasKey: Boolean = true) =
-        HomeProviderRef(id = id, name = "DeepSeek", model = model, hasKey = hasKey)
+    private fun ref(
+        id: String = "t1",
+        model: String = "deepseek-chat",
+        hasKey: Boolean = true,
+        baseUrlFingerprint: String = "",
+        keyFingerprint: String = ""
+    ) = HomeProviderRef(
+        id = id, name = "DeepSeek", model = model, hasKey = hasKey,
+        baseUrlFingerprint = baseUrlFingerprint, keyFingerprint = keyFingerprint
+    )
 
     /** 全部齐的那一格：权限在、配置在、库在、服务在跑、探针成功 */
     private fun allGood() {
@@ -368,6 +376,49 @@ class HomeStatusViewModelTest {
             listOf(AdvisorMissing.ConnectionUnchecked), otherConfig.status.value.missing
         )
         assertEquals("换配置重进也不许补发探针", 1, probe.calls)
+    }
+
+    /**
+     * §11.1 的末句收口：**只换 Key、只换地址**也算"配置真变了"——旧成功不许借盘变绿。
+     *
+     * 上一格只证到"换 id/model"会作废；身份式若还停在旧两位（`id|model`），下面两趟
+     * `assertNotEquals(RunningReady)` 都会**绿不红**——绿灯带着旧凭据继续，正是这次补
+     * baseUrl/Key 摘要的全部动机。第三段防反方向：算式自己漂（带时间/盐）的话，
+     * 什么都没换的第四趟也留不住绿——两头各钉一把牙。
+     */
+    @Test
+    fun `a rotated key or url is a different identity and may not borrow the persisted green`() = runTest {
+        allGood()
+        val store = InMemorySettingsStore()
+        // 第一趟带着 Key 与地址的摘要真按一次 ▶ 落绿（摘要进身份串，明文不过这一层）
+        provider.ref = ref(baseUrlFingerprint = "bbbbbbbbbbbb", keyFingerprint = "aaaaaaaaaaaa")
+        val firstRun = HomeStatusViewModel(service, provider, knowledge, probe, store)
+        firstRun.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals("第一趟的起点是绿", AdvisorState.RunningReady, firstRun.status.value.state)
+
+        // 只换 Key（id、模型、地址逐字不动）：新 VM 兜底不许替这把新凭据说话
+        provider.ref = ref(baseUrlFingerprint = "bbbbbbbbbbbb", keyFingerprint = "cccccccccccc")
+        val afterKey = HomeStatusViewModel(service, provider, knowledge, probe, store)
+        afterKey.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertNotEquals("换了 Key 的旧绿不许沿用", AdvisorState.RunningReady, afterKey.status.value.state)
+        assertEquals(listOf(AdvisorMissing.ConnectionUnchecked), afterKey.status.value.missing)
+
+        // 只换地址（Key 换回原摘要、id/模型不动）：同理
+        provider.ref = ref(baseUrlFingerprint = "dddddddddddd", keyFingerprint = "aaaaaaaaaaaa")
+        val afterUrl = HomeStatusViewModel(service, provider, knowledge, probe, store)
+        afterUrl.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertNotEquals("换了地址的旧绿不许沿用", AdvisorState.RunningReady, afterUrl.status.value.state)
+
+        // 什么都不换（回到第一趟那份配置）：绿必须还在——摘要不许自己漂
+        provider.ref = ref(baseUrlFingerprint = "bbbbbbbbbbbb", keyFingerprint = "aaaaaaaaaaaa")
+        val sameConfig = HomeStatusViewModel(service, provider, knowledge, probe, store)
+        sameConfig.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals("同 id/模型/地址/Key ⇒ 同一身份，绿必须留住", AdvisorState.RunningReady, sameConfig.status.value.state)
+        assertEquals("这四趟加起来只许第一趟那一次探针", 1, probe.calls)
     }
 
     /**

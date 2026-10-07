@@ -112,9 +112,12 @@ interface SettingsStorePort {
     /**
      * 落盘 [connectionVerified] 时**所属的供应商身份**（指导书 §11.1）。
      *
-     * 格式与 [HomeStatusViewModel.identityOf] 一致：`"ticketId|model"`。
+     * 格式与 [HomeStatusViewModel.identityOf] 逐字一致：`"ticketId|model|地址摘要|Key摘要"`
+     * （后两位是凭据的 12 位十六进制不可逆摘要，明文 Key/地址永远不落这一位；没配时为空串）。
      * 兜底时 [connectionFor] 比较当前身份与此值——只有同一身份才交回 Verified，
-     * 换了供应商/模型不沿用旧结论。空串 = 从没写过。
+     * 换了供应商、模型、**地址或 Key** 都不沿用旧结论。空串 = 从没写过。
+     * 旧版两位格式（`ticketId|model`）的记录升级后天然对不上四位新算式 ⇒ 判"身份不同"重测一次，
+     * 这是 §11.1 要的行为，不是数据损坏，不做迁移洗绿。
      */
     var connectionVerifiedIdentity: String
 }
