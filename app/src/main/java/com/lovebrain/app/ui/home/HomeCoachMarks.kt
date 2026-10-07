@@ -120,20 +120,52 @@ data class CoachStepCopy(
  */
 class CoachAnchorRegistry {
 
-    private val bounds = mutableStateOf<Map<String, Rect>>(emptyMap())
+    /**
+     * 每一格矩形都带着**登记时的纪元**：`beginStep()` 推进纪元后，旧纪元那一批自动不参与
+     * 渲染（读侧按纪元筛），等效于"清账"，但清这件事发生在**纯计算里**而不是组合期的副作用——
+     * lint 的 `RememberReturnType` 禁的就是 `remember { registry.clear() }` 这种返回 Unit 的写法
+     * （CI run#102 当场拦下），而副作用又必须排在同帧入口的 `onGloballyPositioned` 之前，
+     * 两难的正解是把"作废旧坐标"做成**数据**（纪元比对），不是做成**动作**（clear 调用）。
+     */
+    private data class Entry(val rect: Rect, val epoch: Int)
 
-    fun rectFor(key: String): Rect? = bounds.value[key]
+    /**
+     * 现在的纪元：register 落章用。**故意不是 snapshot state**——
+     * 它只在 `beginStep()`（组合期领票根）时变，若也是快照态，组合期写它=向后写入，
+     * 会自己点火重组环。读侧的可见性靠票根：`stepTicket` 这颗值随 `anchorKey` 进 `remember`
+     * 的重组身份，账本 map 仍是快照态（register/release 观察得到），观察链没有断口。
+     */
+    private var epoch = 0
+
+    private val bounds = mutableStateOf<Map<String, Entry>>(emptyMap())
+
+    /**
+     * 罩子换到新的一格时开一步，交回**这一趟的票根**：本次入场之后登记的矩形才盖得上这个章。
+     * 必须组合期调（先于同帧 layout 的登记回调）——所以设计成**有返回值**，`remember` 拿得住、lint 也不咬。
+     */
+    fun beginStep(): Int {
+        epoch += 1
+        return epoch
+    }
 
     fun register(key: String, rect: Rect) {
-        if (bounds.value[key] != rect) bounds.value = bounds.value + (key to rect)
+        val current = bounds.value[key]
+        if (current?.rect != rect || current.epoch != epoch) {
+            bounds.value = bounds.value + (key to Entry(rect, epoch))
+        }
     }
 
     fun release(key: String) {
         if (bounds.value.containsKey(key)) bounds.value = bounds.value - key
     }
 
+    /** 只认票根那一趟登记的坐标：更早的矩形=上一趟的残影，判"没接上"走退路档 */
+    fun rectFor(key: String, ticket: Int): Rect? =
+        bounds.value[key]?.takeIf { it.epoch == ticket }?.rect
+
     /** 换页/离场清账：留着上一屏的矩形会把箭头指到根本没摆出来的地方 */
     fun clear() {
+        epoch += 1
         if (bounds.value.isNotEmpty()) bounds.value = emptyMap()
     }
 
@@ -242,24 +274,22 @@ fun HomeCoachMarks(
     val anchorKey = coachAnchorKeyFor(cursor)
     if (anchorKey == null || copy == null || !onHome) return
 
-    // ── 第二次引导错位的修复 ──
-    // `CoachAnchorRegistry.Shared` 是全局单例，旧版从未调过 `clear()`，
-    // 上一次引导的锚点坐标会一直残留。第二次引导入场时，首页入口的 `onGloballyPositioned`
-    // 还没来得及回调，罩子先读到旧坐标 → 箭头指到上次的位置（用户原话：
-    // 「第一次引导位置正常，第二次引导错位」）。
+    // ── 第二次引导错位的修复（纪元账版）──
+    // `CoachAnchorRegistry.Shared` 是全局单例，旧版从未作废上一趟的坐标。第二次引导入场时，
+    // 首页入口的 `onGloballyPositioned` 还没来得及回调，罩子先读到旧坐标 → 箭头指到上次的位置
+    // （用户原话：「第一次引导位置正常，第二次引导错位」）。
     //
-    // 修复：换到新的一格（含"从子页回首页"这一趟重新在场）时先清账，只接受本次入场后新注册的坐标。
-    // ⚠ 为什么是 `remember` 而不是 `LaunchedEffect(anchorKey)`：清账必须**排在同一帧里入口那一次
-    // `onGloballyPositioned` 之前**。effect 的派发与 layout 回调谁先跑没合同，抢输的那一帧账本是空的，
-    // 罩子就退化成"没有锚点的提示板"，而且入口没改尺寸、不会再排一次 layout ⇒ 那一趟都不回来。
-    // 写在组合期（本帧 layout 之前）才是确定顺序。
-    remember(anchorKey) { registry.clear() }
+    // 旧修法 `remember(anchorKey) { registry.clear() }` 顺序对但形状违规：remember 返回 Unit
+    // 是组合期副作用（CI lint `RememberReturnType` 当场拦）。现在作废做成**数据**：
+    // 换格时 `beginStep()` 领一张票根，只有本趟登记（layout 回调晚于组合，天然盖新章）的
+    // 矩形对得上票根；上一趟的残影不用删也读不到。清副作用没了、顺序语义原样保留。
+    val stepTicket = remember(anchorKey) { registry.beginStep() }
 
     // "去设置"按过一次就让路：罩子此后不再吃掉目标格之外的点击，用户的手指直接落到被亮的那一格。
     // 游标一换（从子页回来重算）这面就复位，引导本身不消失。
     var pathCleared by remember(cursor) { mutableStateOf(false) }
     var overlayBounds by remember { mutableStateOf<Rect?>(null) }
-    val anchorRoot = registry.rectFor(anchorKey)
+    val anchorRoot = registry.rectFor(anchorKey, stepTicket)
     // 罩子铺满宿主那一层，根原点就是它自己的原点：量到之前按 (0,0) 摆，量到之后同一把尺换算，
     // 两头都不会跳一次位置，也不会出现"锚点有、罩子还没量到自己"因而画不出来的死角
     val origin = overlayBounds?.topLeft ?: Offset.Zero
