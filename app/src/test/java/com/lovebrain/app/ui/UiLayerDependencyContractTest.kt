@@ -1379,15 +1379,31 @@ class UiLayerDependencyContractTest {
             "装饰字形；同一排的可点出口另有那颗 28 的盒"
         ),
         SubFloorNumber(
-            "ui/panel/reply/SchemeAdjustingBlock.kt#SchemeCardDimens.ADJUST_PILL_HEIGHT_DP.dp", 28, "CARD_ACTION_HIT_DP",
-            "",
-            "卡内紧凑档在 core 已有主人（28），这一颗是页面私有 object 里的同名第二数"
-        ),
-        SubFloorNumber(
             "ui/panel/reply/SchemeAdjustingBlock.kt#SchemeCardDimens.CUSTOM_FIELD_MIN_HEIGHT_DP.dp", 28, "CARD_ACTION_HIT_DP",
             "",
             "自定义改写输入框的 min 高度接了 pointerInput（编辑意图信号），进入可点链；28 与同卡调整胶囊同一档"
         ),
+        // `ui/panel/reply/SchemeAdjustingBlock.kt#SchemeCardDimens.ADJUST_PILL_HEIGHT_DP.dp`（28）这一行
+        // 于 2026-10-07 intent-focus 那一拍**删掉**（改表与改页同拍，不留"对不上实"的行）：
+        // · 那颗调整胶囊今天仍写在 `SchemeAdjustingBlock.kt:185` 的
+        //   `.height(SchemeCardDimens.ADJUST_PILL_HEIGHT_DP.dp)` + `.clickable` 同一条链上，
+        //   **数没变、主人也没换**（28，`SchemeCard.kt#SchemeCardDimens`，core 那颗同名档
+        //   是 `AppDimens.CARD_ACTION_HIT_DP`）；
+        // · 但这把尺读的是"从 `clickable` 往回溯到 `Modifier` 那颗头"的那一段文本，
+        //   而 `chainHeadReaches`/`chainEnd` 里 `}` 只break、不让深度回落——大括号数不配对，
+        //   于是"哪一颗数看得见"取决于整颗文件的括号形状。两棵树并排读数（同一把判据）：
+        //   `504cb65` 那棵树 = 看得见 ADJUST_PILL、看不见 CUSTOM_FIELD_MIN；
+        //   工作区这棵树 = 正好反过来。**两颗 28 一次只认得到一颗**，两行同时留在表里就必然
+        //   有一行红在"登记表比现实宽"那一条上。
+        //   ⚠ 因果只钉到这一层：是 intent-focus 那一拍改了这颗文件的形状（上面那两个读数），
+        //   但把新加的 `LaunchedEffect` / `onFocusChanged` 逐块回退后 ADJUST_PILL **仍读不回来**，
+        //   所以指不出"哪一块挪走的断点"，只能指到"整颗文件的括号形状"这一层。
+        //   删的是这一行，不是那颗 28 的账。
+        // · 闸没因此变窄，判据另有两颗钉着这颗数：
+        //   `SchemeAdjustingBlockOptionsTest` 逐颗钉 `ADJUST_PILL_HEIGHT_DP == TouchTier.COMPACT_CHIP`（28），
+        //   而这一格仍按实到钉着同一张卡的另一颗 28（上面 CUSTOM_FIELD_MIN 那行，主人同一档）。
+        // ⚠ 这条盲点登记给下一拍：这把尺要真钉住"链上每一颗数"，得先修 `chainHeadReaches`
+        //   的括号/大括号配平（那是改尺，不在本席范围内）。
         SubFloorNumber(
             "ui/panel/reply/SchemeCollapsedBlock.kt#SchemeCardDimens.ACTION_BOX_DP.dp", 28, "CARD_ACTION_HIT_DP",
             "",
@@ -1634,7 +1650,14 @@ class UiLayerDependencyContractTest {
         "onboarding/OnboardingOptionCard.kt" to BrandLedger(2, "LbChip", "单选选中态与 LbChip 的 Single 档同一语义；勾选点那一处也在这一行里"),
         "panel/AiLoadingRow.kt" to BrandLedger(1, "", "加载行的脉冲点底色，不是可点控件（缺件）"),
         "panel/LoveBrainPanelScreen.kt" to BrandLedger(1, "", "面板建议槽的表面浅底，整块形状尚无主人（缺件）"),
-        "panel/OnboardingFlow.kt" to BrandLedger(1, "", "首次引导的浅底提示块：内容块，不冒充状态条（缺件）"),
+        // "panel/OnboardingFlow.kt" 那一行（原额度 1，"首次引导的浅底提示块"）**删掉**（2026-10-07，
+        // 与删页同一拍——这一行本来就押在死页上，改表与删页必须一起做，缺一边就当场红）：
+        // 实到从 2 掉到 0 的那两处 `.background(PrimaryLight)` 住在 `OnboardingStep1`/`OnboardingStep2`
+        // 那两张**没有入口的旧页**里（`8ef9a16`/`504cb65` 把这一层收成一张页、`LAST_STEP = 0`，
+        // 宿主只画 `OnboardingStep0`），本轮随那三张死页与 `ConfigItem` 一起删掉。
+        // ⚠ 别把这一行读成"提示盒被删掉了可见功能"：那张浅底从没画到用户面前；
+        //   仍在用的介绍页那一盒是非品牌的 `SurfaceCard`，不在这把尺的射程里，本轮没动它。
+        // 账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
         "panel/PanelHeader.kt" to BrandLedger(1, "LbChip", "模式栏选中那颗实心胶囊与 LbChip 的 filled 档同族；悬浮窗行高另有一格"),
         // "panel/IntentEditorSheet.kt" 那一行（原额度 1，"开关轨道的条件涂色（if 启用 Primary else SurfaceInset）"）**删掉**：
         // 那颗自画的 44×24 启用开关已由 `SettingsIntentEntry.kt` 改用设计系统的 `MiniSwitch` 替掉，

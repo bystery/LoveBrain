@@ -374,7 +374,18 @@ class UiStringLiteralBudgetTest {
         //   ② `IntentEditorSheet.kt` 原来有 5 条 TEXT（「启用」「有效期」「输入日期…」「标记为已完成」
         //      「输入你的持续意图…」），重构先删掉后 3 条（日期输入区与状态操作区整块移除），
         //      本轮再把剩下 2 条接上资源 → 0。两文件合计 TEXT −5（相对预算基线 90）。
-        Kind.TEXT to 81,
+        // 81 → **73**（2026-10-07 台账席，删 `OnboardingFlow` 那三张死页那一拍）：
+        //   逐文件实测（同一把尺，剥注释）：`ui/panel/OnboardingFlow.kt` TEXT **16 → 8**，
+        //   全仓 81 → 73，DESC / STATE / COMPONENT 三栏一字没动（0 / 0 / 38）。
+        //   ⚠ 这一档是**真删不是换桶**：那 8 条写在 `OnboardingStep1/2/3` 与 `ConfigItem` 里，
+        //   而这一层自 `8ef9a16`/`504cb65` 起只剩一张页（`LAST_STEP = 0`，宿主只画
+        //   `OnboardingStep0`）——那些字面量所属的界面已不存在，所以 COMPONENT 那栏没跟着动。
+        //   留下那 8 条是**仍在画的介绍页**（欢迎标题、说明、演示对话五句、指路那行弱字），
+        //   本轮没搬进资源、也没删：删页那一拍不许顺手把可见文案一起带走。
+        //   ⚠ `ConfigItem(text = "…")` 与 `OnboardingButton(text = "…")` 那五处内联中文
+        //   从来就不在这四把尺的射程里（锚点只认 `Text(` / `contentDescription =` /
+        //   `stateDescription =` / `Lb…(`），它们随死页一起消失了，但**没算进这 −8**。
+        Kind.TEXT to 73,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是

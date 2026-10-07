@@ -381,26 +381,30 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 /**
- * 「仅看本轮」那一颗：常驻行 1（在 ＋ 与输入框之间），紧凑胶囊档（[LbChipStyles.pill]，
- * 与 [IntentChip] 同一档、22dp），选中带勾（第10节第4条 的可见判据）。
+ * 「仅看本轮」那一颗：常驻行 1（在 ＋ 与输入框之间），画在 `LbChipStyles.pill` 那一档上、
+ * 可见高度 22dp（与 [IntentChip] 同一档、同一个 22dp），选中带勾（第10节第4条 的可见判据）。
  *
  * 可见文案用 🔒 符号占位（"锁在这一轮 / 仅看本轮"），读屏仍念全名 [PANEL_ROUND_SCOPE_LABEL]
  * （挂在 contentDescription 上）。开与不开真正的行为（下一轮快照生效、
  * 旧结果标过时）住在 `RoundStateStore` 与主线程那一侧，不归这颗管（）。
  *
- * ⚠ **热区与视觉分两层**（与 [RoleChip] 同一范式、与 `LbChipStyles.segmented` 同一写法）：
- * `pill` 这一档默认 `touchFloor = false` + `layeredTouch = false`（[IntentChip] 就是这么用的、
- * 它那一笔欠账登记在 `UiLayerDependencyContractTest` 里）。这一颗长在行 1 上、由
- * `PanelHostSemanticsTest.every actionable node the panel draws meets the touch floor`
- * 这一格直接量到，所以这里把这两档都翻成 `true`：外层透明盒垫到 48dp 见方承担点击与语义，
- * 里面的胶囊仍按 22dp 画——视觉一字不改，手指与读屏拿到的都是 48。
+ * ⚠ **热区与视觉是同一颗**：下面 `pill.copy` 里 `touchFloor` 与 `layeredTouch` 两档都显式写
+ * `false`，也就是 `pill` 那一档自己的形状（[IntentChip] 用的正是这份默认）。这里**没有**外层
+ * 那颗垫到 48dp 的透明盒，可点节点就是这条 22dp 的胶囊本身——那是用户那句
+ * "缩小按钮占用空间"换来的取舍（与谈心模板芯片同一策略，紧凑视觉优先）。
+ * ⚠ 这一段旧注释写的是"分两层：外层透明盒垫到 48dp 见方、里面仍按 22dp 画，手指与读屏拿到的
+ *   都是 48"，与下面那两档 `false` 相反；本页真按分层画的那两颗是 [RoleChip]
+ *   （`layeredTouch = true`）与 `AddMessageButton`（外层 48dp 见方的透明盒），不是这一颗。
+ * 对照数（别把两档混着说）：设计系统给紧凑胶囊族的那档 `TouchTier.COMPACT_CHIP` 现值是
+ * **28dp**（`core/testing/SemanticsProbe.kt`），这颗比它矮 6dp；48dp 是全站那颗
+ * `AppDimens.TOUCH_TARGET_MIN_DP`。
  */
 @Composable
 private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
     // 可见用 🔒 符号占位（"锁在这一轮 / 仅看本轮"），读屏仍念全名 [PANEL_ROUND_SCOPE_LABEL]。
-    // 紧凑胶囊档与 [IntentChip] 同一档（LbChipStyles.pill, 22dp），选中带勾。
+    // 紧凑胶囊档与 [IntentChip] 同走 LbChipStyles.pill 的默认（可见 22dp、不分层），选中带勾。
     // 热区不垫 48dp——用户要求"缩小按钮占用空间"，与谈心模板芯片同一策略（紧凑视觉优先）。
-    // 触摸档走 COMPACT_CHIP（22dp），不在全站 48dp 下限射程内。
+    // 要对照就先对错档：COMPACT_CHIP 那一族现值是 28dp（这颗还矮它 6dp），48dp 是全站下限那颗。
     LbChip(
         label = "🔒",
         selected = selected,

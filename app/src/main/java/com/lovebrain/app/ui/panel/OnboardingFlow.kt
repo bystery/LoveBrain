@@ -1,12 +1,6 @@
 package com.lovebrain.app.ui.panel
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
-import com.lovebrain.app.core.designsystem.rememberPressScale
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.ui.res.stringResource
 import com.lovebrain.app.R
 import androidx.compose.foundation.layout.Arrangement
@@ -20,22 +14,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 
 /**
- * 新手引导流程——可跳过的短流程。
+ * 新手引导的**介绍层**——一张 LoveBrain 介绍页，可跳过（指导书 §9.1）。
  *
- * 1. 演示消息体验角色（预置结果，不伪装在线生成）
- * 2. 添加供应商、模型与 Key（复用现有连接测试）
- * 3. 手动粘贴一句真实输入，生成第一条可复制回复
- * 4. 再按需配置悬浮窗、捕获权限与个人档案
+ * §9.1 的口径是"保留一张介绍页，后续都在**实际 App 主页面**用遮罩/高亮/箭头指向模型配置、
+ * 无障碍入口、消息捕获"，**不再造第二、第三、第四张教学页**：
+ * 1. 这一页只做一件事——用预置结果演示消息体验（不伪装在线生成），三条出口交给宿主；
+ * 2. 真正的"配模型 / 给无障碍 / 开捕获"三步由首页罩子 `ui/home/HomeCoachMarks.kt` 在场时指，
+ *    缺项与权限回来续接（`SetupViewModel.currentGuideCursor` 从真状态派生）。
  *
  * 已有用户不强制重走，也不重置权限和供应商。
  *
@@ -49,8 +43,11 @@ import com.lovebrain.app.ui.theme.*
  *    现在步号归宿主（[currentStep] / [onStepChange]），宿主流转 `savedInstanceState`
  *    并在进程被杀之前把同一步落进 `SettingsStorePort`（那颗键要主线程加，见交接单 §4）。
  *
- * @param currentStep 现在第几格（0…3）；越界由这一处钳回合法档，UI 不判第二本账
- * @param onStepChange 换步的唯一出口——**这一层不再自己 remember 步号**
+ * @param currentStep 现在第几格；单页那一档恒 0，越界由这一处钳回合法档，UI 不判第二本账
+ * @param onStepChange 换步的唯一出口——**这一层不再自己 remember 步号**（今天一张页，没人调它）
+ * @param onOpenSettings 宿主 `GuideExit.OpenSettings` 那条出口的入口。介绍层这一张页
+ *   **没有**点它的按钮了（`8ef9a16` 撤掉"去设置"那颗就是为治"点去设置跳最后"），
+ *   配置动作从介绍层收起后由首页罩子接手——签名留着是因为出口与落盘那本账还在。
  */
 @Composable
 fun OnboardingFlow(
@@ -88,15 +85,19 @@ fun OnboardingFlow(
 
             Spacer(Modifier.height(Spacing.xl))
 
-            AnimatedContent(
-                targetState = step,
-                transitionSpec = { fadeIn() togetherWith fadeOut() },
-                label = "onboarding_step"
-            ) { currentStep ->
-                // 一张介绍页：演示消息体验 + 完成后进入首页引导（HomeCoachMarks）
-                OnboardingStep0(
-                    onComplete = onComplete
-                )
+            // §9.1「保留一张 LoveBrain 介绍页」：这一层今天**只有一张页**（`LAST_STEP = 0`）。
+            // 原先这里套了一格 `AnimatedContent(targetState = step)`，而 body 永远画同一张页
+            // ——那是一段永不发生的过渡，正是 §9 顶句"真实渐进，不是写个动画函数"点的那种形状，
+            // 所以换成 `key(step)`：只给重组身份，不冒充入场动画。
+            // 底下那三张旧页（`OnboardingStep1/2/3`）与 `ConfigItem` 已删：`8ef9a16`/`504cb65` 把
+            // 这一层收成一张页之后它们再没有入口画（`OnboardingFlow` 只调 `OnboardingStep0`）。
+            // 删页与改表同拍：`UiLayerDependencyContractTest` 的 surfacesLedger 里
+            // `panel/OnboardingFlow.kt` 那一行（额度 1、实到 2 当场红）押的就是这两张死页里的
+            // `.background(PrimaryLight)`；页删干净之后实到 0，按该账本"清零就删行"的规矩一并删行。
+            // ⚠ 那两处品牌浅底**从没画到用户面前**（宿主只渲染步骤 0），所以删掉的不是可见功能；
+            //   仍在用的介绍页那一盒是非品牌的 `SurfaceCard`，这次没动它。
+            key(step) {
+                OnboardingStep0(onComplete = onComplete)
             }
     }
 }
@@ -153,159 +154,6 @@ private fun OnboardingStep0(onComplete: () -> Unit) {
         Spacer(Modifier.weight(1f))
 
         OnboardingButton(text = "完成，去配置模型", onClick = onComplete)
-    }
-}
-
-/**
- * 步骤 1：添加供应商、模型与 Key
- *
- * **这一页不再有「去设置页」按钮**（用户原话：「前 4 页看完才行」）。
- * 旧版那颗按钮直接调 `onOpenSettings → closeIntro(OpenSettings)`，
- * 介绍层当场收起来、`introOnScreen=false`，用户再回来时步号已丢、
- * 引导直接跳到末尾——这就是「点去设置就跳到最后」的根因。
- * 现在只留「下一步」，供应商的真正配置在介绍层收起后由首页罩子引导。
- */
-@Composable
-private fun OnboardingStep1(
-    onNext: () -> Unit
-) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = "配置 AI 模型",
-            style = AppTypography.headlineSmall,
-            color = TextPrimary,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(Modifier.height(Spacing.md))
-        Text(
-            text = "LoveBrain 需要一个 AI 模型来生成回复。接下来几步看完后，会在首页引导你添加供应商（如 DeepSeek）、模型名称和 API Key。",
-            style = AppTypography.bodyMedium,
-            color = TextSecondary
-        )
-        Spacer(Modifier.height(Spacing.xl))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(12.dp))
-                .background(PrimaryLight)
-                .padding(Spacing.lg)
-        ) {
-            Text(
-                text = "提示：看完这几步后，首页会出现箭头引导你完成配置。",
-                style = AppTypography.labelMedium,
-                color = PrimaryDark
-            )
-        }
-
-        Spacer(Modifier.weight(1f))
-
-        OnboardingButton(text = "下一步", onClick = onNext)
-    }
-}
-
-/** 步骤 2：手动粘贴真实输入 */
-@Composable
-private fun OnboardingStep2(onNext: () -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = "试试生成回复",
-            style = AppTypography.headlineSmall,
-            color = TextPrimary,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(Modifier.height(Spacing.md))
-        Text(
-            text = "打开悬浮窗面板，粘贴一句对方说的话（或你自己的话），然后点击生成。你会看到四条不同风格的回复。",
-            style = AppTypography.bodyMedium,
-            color = TextSecondary
-        )
-        Spacer(Modifier.height(Spacing.xl))
-
-        // 演示入口提示
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(12.dp))
-                .background(PrimaryLight)
-                .padding(Spacing.lg)
-        ) {
-            Text(
-                text = "提示：在首页点击「启动悬浮窗」，然后在任意聊天 App 中打开面板即可使用。",
-                style = AppTypography.labelMedium,
-                color = PrimaryDark
-            )
-        }
-
-        Spacer(Modifier.weight(1f))
-
-        OnboardingButton(text = "我试过了，下一步", onClick = onNext)
-    }
-}
-
-/** 步骤 3：按需配置 */
-@Composable
-private fun OnboardingStep3(
-    onComplete: () -> Unit,
-    onOpenSettings: () -> Unit
-) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = "更多配置（可选）",
-            style = AppTypography.headlineSmall,
-            color = TextPrimary,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(Modifier.height(Spacing.md))
-        Text(
-            text = "以下配置可以让 LoveBrain 更好地帮你：",
-            style = AppTypography.bodyMedium,
-            color = TextSecondary
-        )
-        Spacer(Modifier.height(Spacing.md))
-
-        ConfigItem(text = "开启消息捕获——自动抓取对方消息") {
-            onOpenSettings()
-        }
-        Spacer(Modifier.height(Spacing.sm))
-        ConfigItem(text = "创建知识库——记录你和她的情况") {
-            onOpenSettings()
-        }
-        Spacer(Modifier.height(Spacing.sm))
-        ConfigItem(text = "配置个人档案——让回复更贴合你的语气") {
-            onOpenSettings()
-        }
-
-        Spacer(Modifier.weight(1f))
-
-        OnboardingButton(text = "完成", onClick = onComplete)
-    }
-}
-
-@Composable
-private fun ConfigItem(text: String, onClick: () -> Unit) {
-    val (interaction, scale) = rememberPressScale(0.96f, "cfgItem")
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(SurfaceCard)
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
-            .padding(Spacing.lg),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = text,
-            style = AppTypography.bodyMedium,
-            color = TextPrimary,
-            modifier = Modifier.weight(1f)
-        )
-        Text(
-            text = "→",
-            style = AppTypography.bodyMedium,
-            color = TextHint
-        )
     }
 }
 
