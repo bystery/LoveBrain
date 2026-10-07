@@ -2,7 +2,9 @@
 #
 # 发布模型（2026-09-29 用户书面改需求；2026-09-30 复核   /  第 3 条把本文件对齐到它）：
 #   · GitHub Actions 只做**构建与测试** —— 全部在 .github/workflows/ci.yml
-#     （`verify` + `ui-test` 必过；`upgrade-test` 只在 workflow_dispatch 跑）。
+#     （CI 精简后 push/PR 只有 `verify` 一个必过 job；模拟器 ui-test、视觉基线、
+#      R8 打包、覆盖安装都在 .github/workflows/manual.yml，只在 workflow_dispatch 跑，
+#      因此**不在**本文件的门禁里——见下面 "Resolve the CI run" 那一步）。
 #   · R8 签名 APK、覆盖安装验证、签名连续性核对 **全部本地手动**：
 #     命令见 docs/RELEASE_CHECKLIST.md 第 4/5/6/7 步，产物交回仓库
 #     `docs/release-evidence/<tag>/`（只交文本证据，APK 二进制不进仓库）。
@@ -29,11 +31,13 @@
 #     命中 0 发 → exit 1，并列出 API 对该 commit 实际看到的所有 run；
 #     命中 >1 发 → exit 1，列出每个候选 id，要求人显式填下面的 `ci_run` 输入；
 #     显式给了 ci_run → 仍校验它属于 ci.yml、head_sha == commit、且已完成，否则 exit 1；
-#     之后再按 job 名要求 verify / ui-test 结论为 success（那个 job 名**不存在**也算失败）。
+#     之后再按 job 名要求 verify 结论为 success（那个 job 名**不存在**也算失败）。
+#     CI 精简后这里只传一个 --require-job verify：ui-test 已不在 ci.yml 这一发里，
+#     拿它当门禁 = resolve_ci_run.sh 永远 "job not found" → 发布永远找不到任务（§13.2 L342）。
 #
 # 本文件能独立核对的（机器判据，红得起）：
 #   · tag == v${versionName}@那个 build commit，且证据提交在这之后（祖先关系实测）；
-#   · 该 commit 的 CI run 唯一、且 verify + ui-test 全绿；
+#   · 该 commit 的 CI run 唯一、且 verify 全绿（CI 精简后 push 只有这一个必过 job）；
 #   · CI 交出的插桩 XML/HTML 与 lint 报告**非空且自洽**（scripts/assert_artifacts.sh）；
 #   · 本地证据目录与 CI 记录互洽：签名者指纹 == scripts/signing-baseline.txt 钉的公开
 #     发布指纹、versionName/versionCode == CI 那一发 R8 构建的记录、SHA-256 逐条对上。
@@ -143,8 +147,9 @@ jobs:
 
       - name: Resolve the CI run of the build commit and require build+tests green
         # 唯一实现就是脚本，checklist 里人跑的是同一条命令（不写第二份解析逻辑）。
-        # 只要求 verify + ui-test：`upgrade-test` 会印出来但**不门禁**——2026-09-29 起
-        # 签名与覆盖安装是本地动作，push 那一发里它天然是 skipped。
+        # 只要求 verify：`ui-test` 现在住在 manual.yml（workflow_dispatch），它是**另一个
+        # workflow run** 的 job，写进 --require-job 就等于让发布永远找不到任务（§13.2 L342）；
+        # `upgrade-test` 同理——2026-09-29 起签名与覆盖安装是本地动作，push 那一发里它天然 skipped。
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CI_RUN: ${{ github.event.inputs.ci_run }}

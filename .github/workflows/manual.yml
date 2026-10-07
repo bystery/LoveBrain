@@ -1,10 +1,22 @@
 name: Manual
 
 # 手动触发的慢/设备级门禁（从 ci.yml 挪出，见 /.md）。
-# 目的：push CI 不再为像素比对与覆盖安装买单；这两个 job 只在 workflow_dispatch 时跑。
+# 目的：push CI 不再为模拟器、像素比对、R8 打包与覆盖安装买单；这四个 job
+# （ui-test / visual-baseline / r8-release-check / upgrade-test）只在 workflow_dispatch 时跑。
 # 语义守恒：upgrade-test 的 if 条件、四道 secret 门、脚本调用一字未改，只是换了承载文件。
 #   · 原 ci.yml 里 upgrade-test 的 needs: [verify, ui-test] 跨文件失效 → 这里去掉 needs；
 #     如需"UI 先绿再跑升级"，在 dispatch 后按顺序手点即可。
+#
+# §13.2（指导书 LoveBrain_1.4.0 L342）口径："全量模拟器与 release R8 打包放明确的手动/
+# 发布验证，发布前必要的一次仍执行" —— 模拟器 ui-test 必须**存在**于手动层，不能只剩注释里
+# 的名声。ci.yml 的收尾注释（/.md  L9）早就声明"ui-test 移到 manual.yml"，但 bacede8 只从
+# ci.yml 删了它（原 ci.yml@7758148 :121-196），manual.yml 里从未落地 ⇒ 2026-10-07 补回：
+# 下面这个 job 的步骤体是那段原文逐行照搬（checkout / setup-java / setup-gradle / Enable KVM /
+# reactivecircus android-emulator-runner(api-level 29, disable-animations: true) / 四个证据
+# 产物上传 + 各自的 if-no-files-found: error），一个 flag 没松、没加 continue-on-error、
+# 没改成 warn 放行；只把"保留在 push"那句失效的 job 注释换掉。
+# 它不再出现在 push 上，靠的是**本文件只有 workflow_dispatch 触发器**（下面 on: ），
+# 与 upgrade-test job 上那个显式 if 是同一类保险，不构成第三套门禁（§13.2 L340）。
 
 on:
   workflow_dispatch:
@@ -13,6 +25,86 @@ permissions:
   contents: read
 
 jobs:
+  # 全量模拟器 Compose UI 测试（原 ci.yml@7758148 :121-196 的 `ui-test` job）。
+  # UI 测试属于最终质量门禁——在手动这一发里失败必须让该 run 红灯，
+  # emulator 偶发问题通过 scripts/run_ui_tests.sh 的 retry 处理，不得用放行标志掩盖。
+  # 发布前必要的一次 = 手点这一发（§13.2 L342），push/PR 不跑它。
+  # ⚠ 不要在 release.yml 里 --require-job ui-test：它是另一个 workflow run 的 job，
+  #   resolve_ci_run.sh 按 ci.yml 解析，"job 名不存在"直接 exit 1（§13.2 L342 那句
+  #   "不让发布永远找不到任务"就是这个意思）。
+  ui-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0777", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Compose UI tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: |
+            chmod +x gradlew scripts/*.sh scripts/lib/*.sh
+            bash scripts/run_ui_tests.sh --attempts 2 --min-tests auto
+          disable-animations: true
+
+      - name: Upload UI-test visual evidence
+        if: always()
+        # 这一步以前指着 app/build/outputs/connected_android_test_additional_output/
+        # ——那是旧 AGP 的 additionalTestOutputDir，脚本根本不往那儿写：
+        # run_ui_tests.sh 把截图写到 build/gate-artifacts/ui-test/screenshots/。
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-evidence
+          path: build/gate-artifacts/ui-test/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload test XML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-xml-report
+          path: |
+            app/build/outputs/androidTest-results/connected/*.xml
+            app/build/outputs/androidTest-results/connected/**/*.xml
+            app/build/reports/androidTests/connected/**/*.xml
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Upload instrumentation test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: instrumentation-test-report
+          path: app/build/reports/androidTests/connected/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload logcat
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logcat
+          path: |
+            /tmp/logcat*.txt
+            app/build/outputs/androidTest-results/connected/
+          # 缺这条就是"空产物 warning 放行"（ 第 6 条）。
+          if-no-files-found: error
+          retention-days: 7
+
   # 视觉基线：只在 verify 模式比对，绝不自动覆盖 baseline（ :538）。
   # 重新生成基线是显式人工动作：./gradlew :app:recordRoborazziDebug + 人看过 + 单独提交。
   visual-baseline:
@@ -49,6 +141,84 @@ jobs:
             app/build/intermediates/roborazzi/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Moved-out source-scan family must still run (§13.2 发布前专用入口)
+        # ci-lite 排除档把 `architecture.*`（源码文本/字符串预算/形状所有权/层级依赖）
+        # 移出默认 push（排除档见 app/build.gradle.kts 尾部注释）；这一格是它唯一的运行入口，
+        # 发布前必须绿——移走≠删掉，§13.2 的"不能全删"就在这一步兑现。
+        run: ./gradlew :app:testDebugUnitTest --no-daemon --tests "com.lovebrain.app.architecture.*"
+
+  # R8 / Release 打包与 APK 元数据校验（原文照搬自 ci.yml@7758148 :81-119 的 verify 步骤）。
+  # §13.2（L342）："全量模拟器与 release R8 打包放明确的手动/发布验证，发布前必要的一次仍执行"
+  # —— bacede8 把它从 push 删掉并在 ci.yml :6-8 声称"移到 release.yml 的本地手动流程"，
+  # 但 release.yml 里既没有 assembleRelease 也不产元数据（只核对人交回的证据），
+  # 于是 R8/proguard 规则的回归在 CI 侧彻底没人管：debug 编译证明不了 minify 得动。
+  # 这里补回它在手动层的家：只在 workflow_dispatch 跑，push 时间成本为零（§13.2 L340
+  # "不增加新矩阵或第三套发布门禁" —— 本 job 不被 release.yml 的 --require-job 引用，
+  # 不是发布闸，只是一发手动体检）。
+  # ⚠ 产物是 **unsigned**（本 job 没有也不该有签名 secret）：§13.3 L360 明说
+  #   "最新 CI unsigned-r8-check-apk 不能交用户"。正式 APK 仍然只能由本地固定私钥那一把
+  #   产出（§13.3 L358），这个 job 验的是"R8 跑得通 + 包名/版本/mapping 对得上"。
+  # 与原文的差异只有两处，都不动语义：
+  #   1. apk-metadata 上传门禁 always()→success()（原 :103），按 §13.2 L342"报告只有真实
+  #      生成时才上传"，避免 R8/元数据一步失败拖出第二条"找不到产物"的红；
+  #   2. 原文那句 "The verify job has no release keystore on purpose" 里的 job 名改成
+  #      本 job 名（它不再住在 verify 里）。脚本名与 flag 一字未改。
+  r8-release-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Make scripts executable
+        run: chmod +x gradlew scripts/*.sh scripts/lib/*.sh
+
+      - name: Release R8 build
+        run: ./gradlew :app:assembleRelease --no-daemon
+
+      - name: Resolve the release artifact this job produced
+        # The job has no release keystore on purpose: it proves R8 + the
+        # APK shape, and must not be mistaken for a shippable candidate. The name
+        # of the produced file depends on that, so it is resolved, not guessed.
+        run: |
+          bash scripts/resolve_release_apk.sh --allow-unsigned \
+            --path-file dist/release-apk-path.txt
+
+      - name: Verify APK metadata (SHA-256 / versionCode / versionName / package)
+        run: |
+          bash scripts/check_apk_metadata.sh \
+            "$(cat dist/release-apk-path.txt)" \
+            --expected-package com.lovebrain.app \
+            --expect-release \
+            --r8-mapping app/build/outputs/mapping/release/mapping.txt \
+            --properties dist/apk-metadata.txt \
+            --report dist/apk-metadata.md
+
+      - name: Upload APK checksum and metadata
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-metadata
+          path: dist/apk-metadata.*
+          if-no-files-found: error
+          retention-days: 90
+
+      # 无签名的 assembleRelease 产物命名为 unsigned-r8-check-apk，不能叫 release-apk
+      - name: Upload unsigned R8 check APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-r8-check-apk
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+          retention-days: 90
 
   # : 升级安装测试——下载并校验 v1.3.1、安装旧版、真实写夹具、
   # 覆盖安装**签名/R8 Release** 候选、断言数据可读 + schema 已升级 + 主页面可用。

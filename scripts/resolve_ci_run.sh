@@ -18,8 +18,11 @@
 # quietly cites the wrong run's evidence is worse than a red job.
 #
 # Required jobs are checked by NAME against the resolved run's jobs, so the
-# gate can demand exactly the two jobs the current release model keeps in CI
-# (`verify`, `ui-test`) and must NOT demand `upgrade-test`: since 2026-09-29 the
+# gate can demand exactly the jobs the current release model keeps in CI.
+# Since 2026-10-07 (§13.2 slimming) `ui-test` is no longer a push-verify job —
+# it lives in manual.yml as a dispatch-only job — and release.yml therefore
+# passes `--require-job verify` only. The gate must NOT demand `upgrade-test`:
+# since 2026-09-29 the
 # signing + 覆盖安装 run locally, so on a push event that job exists only as
 # `skipped`. Its conclusion is printed either way, it just does not gate.
 #

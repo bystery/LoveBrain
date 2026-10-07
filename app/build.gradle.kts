@@ -194,3 +194,22 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
+
+// §13 CI 精简（§13.2 原文口径）：`-Pci-lite` 只由默认 push/PR 门禁传（ci.yml「Unit tests」步骤）。
+// 指导书点名"移到已有手动工作流"的两族在这里排除：
+//   ① 视觉快照族 `ui.visual.*`——专用比对入口是 manual job 的 scripts/verify_visual_baseline.sh
+//      （:app:verifyRoborazziDebug），不为 push 陪跑；
+//   ② 源码文本/字符串预算/形状所有权扫描族 `architecture.*`——§13.2 原句点名，随 manual 的
+//      发布前全量步骤跑。
+// §13.2 要求保留的核心回归族（知识库生命周期与隔离、生成解析与取消、配置/连接状态、范围和意图
+// 装配、本轮直接修复的输入/列表行为）全部留在 push——套件"几千格"的本体是这些快断言族，
+// 不是被移走的渲染/扫描族。本地不带开关的全量跑一档不跳，读数不变。
+// 懒配置（configureEach）+ 名字判断：`tasks.named("testDebugUnitTest")` 在脚本位置急切执行，
+// 那时 AGP 还没注册变体任务，整条配置链直接炸（本机实测）；`withType<Test>` 不带名字判断
+// 又会把 roborazzi 的 verify/record 同型任务一起排掉——那是"静默漏跑＝假绿"的形状。
+tasks.withType<Test>().configureEach {
+    if (name == "testDebugUnitTest" && project.hasProperty("ci-lite")) {
+        exclude("**/com/lovebrain/app/ui/visual/**")
+        exclude("**/com/lovebrain/app/architecture/**")
+    }
+}

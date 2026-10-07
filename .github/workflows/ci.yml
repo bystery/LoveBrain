@@ -1,16 +1,22 @@
 name: CI
 
-# 精简 2026-10-07（发布收口）：push CI 只留质量底线——unit test + lint +
-# androidTest 编译检查 + 协程取消静态护栏。
-# 删掉的慢件（R8 构建 / 模拟器 ui-test / APK 元数据）：
-#   · R8 assembleRelease 与 APK 元数据校验移到 release.yml 的本地手动流程
-#     （签名 APK 不在 CI 内，R8 产物在 push 里只验"能编"不验"能发"——那一步
-#     本来就在 release.yml 由人本地跑 `assembleRelease` + 签名后交回证据）。
-#   · ui-test（emulator）移到 .github/workflows/manual.yml（workflow_dispatch）。
-#     release.yml 的 --require-job ui-test 改为不要求 push job（签名/覆盖安装
-#     已是本地动作，push 那一发里 emulator 天然 skipped 不再报红）。
-# 保留：unit test（秒级、防真崩溃）、lint（质量底线）、androidTest 编译（防
-# 双重遮蔽）、协程取消审计（秒级、防真崩溃）。
+# 精简 2026-10-07（发布收口，§13.2 L336-344）：push/PR 只有一个 verify job，四件事——
+# unit test + lint + androidTest 编译检查 + 协程取消静态护栏，别的都不在默认门上。
+# 慢件的去处（§13.2 L340/L342："移到已有手动工作流"，不是删掉）：
+#   · R8 assembleRelease + APK 元数据校验（原 ci.yml@7758148 :81-119）
+#     → .github/workflows/manual.yml 的 `r8-release-check`（workflow_dispatch）。
+#     bacede8 曾声称它"移到 release.yml 的本地手动流程"，实测 release.yml 里没有
+#     assembleRelease、也不产元数据（它只核对人本地交回的证据），那句话当时是空的；
+#     现在它有了真家。签名 APK 仍然不在 CI 内：那一发是 --allow-unsigned 的 R8 编译体检，
+#     §13.3 L360 明说 unsigned-r8-check-apk 不能交用户，正式包照旧本地固定私钥手签。
+#   · ui-test（emulator，原 :121-196）→ manual.yml 的 `ui-test` job。
+#     2026-10-07 实测：bacede8 只把它从 ci.yml 删了、manual.yml 里从未落地 ⇒ 已按原文
+#     逐行补回（步骤体 diff 为空）。release.yml 的 --require-job ui-test 因此**不能**恢复：
+#     它是另一个 workflow run 的 job，写进发布门禁 = 发布永远找不到任务（§13.2 L342）。
+# 保留的理由：unit test / lint 是 §13.2 L338 的"核心回归 + 必要 lint"；androidTest 编译
+# 是 L338 的"相关测试编译"（只编不跑，跑在 manual.yml ⇒ L342 的"不重复编译相同测试"）；
+# 协程取消审计秒级、防真崩溃，不属于 L340 点名的"源码文本/字符串预算/形状所有权"扫描。
+# 产物上传门禁：两个报告只在 success() 时上传（§13.2 L342 末段），见下面两步的注释。
 
 on:
   push:
@@ -40,10 +46,17 @@ jobs:
         run: chmod +x gradlew scripts/*.sh scripts/lib/*.sh
 
       - name: Unit tests
-        run: ./gradlew :app:testDebugUnitTest --no-daemon
+        # -Pci-lite：视觉基线一族挪给 manual job 专用入口（§13 精简；
+        # 排除档见 app/build.gradle.kts 尾部，本地全量不带此开关、一档不跳）
+        run: ./gradlew :app:testDebugUnitTest --no-daemon -Pci-lite
 
       - name: Upload unit test report
-        if: always()
+        # §13.2 L342 "报告只有真实生成时才上传，防止一个上游错误拖出多条无意义红"：
+        # 原为 if: always()（ci.yml@504cb65 :46；更早 ci.yml@7758148 :50）——单测那一发
+        # 一旦红，这一步跟着"没有产物"再红一次。改成 success() 后失败只剩一条真红。
+        # if-no-files-found 保持 error 不改成 warn：绿了却没报告文件仍是硬失败，
+        # 不是假绿（旧实现靠 warn + `|| echo` 放行，是审计点名过的坑）。
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: unit-test-report
@@ -61,7 +74,11 @@ jobs:
         run: python3 scripts/audit_cancellation.py --check
 
       - name: Upload lint report
-        if: always()
+        # 同上：原 if: always()（ci.yml@504cb65 :64；更早 ci.yml@7758148 :73）改 success()。
+        # lint 步骤本身失败时报告照样在（lintDebug 会出 xml/html），红的那一条是 lint，
+        # 而不是"上传找不到文件"；androidTest 编译/取消审计失败才会跳过这一步，
+        # 那两种情况下人要的是编译错误与审计输出，不是 lint 报告。
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: lint-report
