@@ -32,8 +32,9 @@ import org.junit.Test
  * 三条纪律各自有格钉着，每格都写明"什么反例会让它红"：
  * 1. 绿只认真凭据：连接成功 + 服务在跑 + 当前对象有知识库 + 权限在（本地有 Key 只算配置存在）；
  * 2. 关掉之后回来的响应不许把灯再点绿（token + `userStarted` 两道）；
- * 3. **探针只由按 ▶ 发起**：冷启动、重组、脉冲、进页面、切供应商/切当前对象都只重读与作废，
- *    一次都不许多发（`probe.calls` 就是这条的读数）。
+ * 3. **探针只由按 ▶ 发起**：冷启动、重组、脉冲、进页面、切供应商、切当前知识库都只重读事实，
+ *    一次都不许多发（`probe.calls` 就是这条的读数）。作废那一步只跟着**供应商配置**走
+ *    （指导书 §11.1：连接身份里没有知识库那一位）。
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeStatusViewModelTest {
@@ -312,22 +313,33 @@ class HomeStatusViewModelTest {
 
     /**
      * 修"重进屏幕灯落回黄"：Activity 销毁 → VM 重建 → ledger 整本空 → 落盘副本
-     * （`store.connectionVerified`）兜底交回 [HomeConnectionVerdict.Verified]，
-     * 不把已经绿过的灯落回 NotChecked（黄）。
+     * （`store.connectionVerified` + 它所绑的那组配置身份，指导书 §11.1）兜底交回
+     * [HomeConnectionVerdict.Verified]，不把已经绿过的灯落回 NotChecked（黄）。
      *
-     * 反例（修前形状）：ledger 纯内存、随 VM 生灭 → 新 VM 的 `connectionFor` 交回 NotChecked → 黄。
-     * 反例（兜底太宽）：身份变化也查盘 → 换供应商后旧结论替没验过的新身份说话
-     *   （`a genuinely new identity is unchecked…` 那一格红）。
-     * 反例（落盘没写）：`runCheck` 不写盘 → store.connectionVerified 恒 false → 这一格红。
+     * 摆形状走**生产写路**（第一趟 VM 真的按一次 ▶），不手摆盘上的字段：§11.1 之后落盘是一对
+     * （布尔 + 成功所属的配置身份，见 `connectionVerifiedIdentity`），"只有布尔、身份位是空串"
+     * 那条记录在生产里根本写不出来，硬摆它测的是不存在的态——上一版这一格就是这么红的
+     * （它只 `apply { connectionVerified = true }`，兜底那句比身份永远对不上）。
      *
-     * 模拟"重进屏幕"：全新 VM + `returnedFromSubpage`，不按 ▶、不发探针，灯仍然绿。
+     * 反例（缺陷态会怎么红）：
+     * - ledger 纯内存、随 VM 生灭、`connectionFor` 不查盘（修前形状）⇒ 第二趟那句 `RunningReady` 红；
+     * - 落盘没写 / 只写了布尔没写身份 ⇒ 第二趟取不到兜底，同一句红；
+     * - **兜底太宽**（不看身份就沿用到盘上那一次成功）⇒ 第三趟那句"换配置不许借盘变绿"红，
+     *   §11.1 的「换配置后新旧 VM 结论可能不同」正是这一句；
+     * - 返回路径自己补发探针 ⇒ 最后一句 `probe.calls` 从 1 变 2 红。
      */
     @Test
     fun `a recreated VM reads the persisted verdict instead of resetting to not checked`() = runTest {
         allGood()
-        val store = InMemorySettingsStore().apply { connectionVerified = true }
-        val vm = HomeStatusViewModel(service, provider, knowledge, probe, store)
+        val store = InMemorySettingsStore()
+        // 第一趟：真按一次 ▶，成功结论与它所属的配置身份一起经生产写路落盘
+        val firstRun = HomeStatusViewModel(service, provider, knowledge, probe, store)
+        firstRun.playClicked(overlayGranted = true)
+        advanceUntilIdle()
+        assertEquals("第一趟的起点是绿", AdvisorState.RunningReady, firstRun.status.value.state)
 
+        // 模拟"重进屏幕"：全新 VM（ledger 整本空）+ 进页面动作，不按 ▶、不发探针
+        val vm = HomeStatusViewModel(service, provider, knowledge, probe, store)
         vm.returnedFromSubpage(overlayGranted = true)
         advanceUntilIdle()
 
@@ -339,7 +351,23 @@ class HomeStatusViewModelTest {
             "不该念连接还没检查过，实到缺项 ${vm.status.value.missing}",
             !vm.status.value.missing.contains(AdvisorMissing.ConnectionUnchecked)
         )
-        assertEquals("重进屏幕不该发探针", 0, probe.calls)
+        assertEquals("重进屏幕不该发探针", 1, probe.calls)
+
+        // 同一块盘、换了配置（§11.1：只有地址/Key/模型真变了才作废）再来一趟新 VM：
+        // 那一次成功不属于这组身份，兜底不许替没验过的新配置说话
+        provider.ref = ref(id = "t9", model = "brand-new")
+        val otherConfig = HomeStatusViewModel(service, provider, knowledge, probe, store)
+        otherConfig.returnedFromSubpage(overlayGranted = true)
+        advanceUntilIdle()
+        assertNotEquals(
+            "换了配置的旧成功借盘变绿 = 对没验过的那家说检查成功",
+            AdvisorState.RunningReady, otherConfig.status.value.state
+        )
+        assertEquals(
+            "换配置重进只许念这一句中性事实，实到缺项 ${otherConfig.status.value.missing}",
+            listOf(AdvisorMissing.ConnectionUnchecked), otherConfig.status.value.missing
+        )
+        assertEquals("换配置重进也不许补发探针", 1, probe.calls)
     }
 
     /**

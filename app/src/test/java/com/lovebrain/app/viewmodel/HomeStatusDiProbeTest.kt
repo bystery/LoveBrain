@@ -63,6 +63,13 @@ import org.koin.core.context.stopKoin
  * ⚠ JVM 上 `FloatingService.instance` 永远是 null，所以**绿档在这一族里不可达**
  * （缺项里总会有"军师服务没起来"那一条）。这一族因此不判"绿"，只判三件事：
  * 请求发了几次、旧结论还在不在、缺项念的是哪一句。
+ *
+ * ⚠ 「旧结论还在不在」这一件的**判据主人换过**：指导书 §11.1（2026-10-06，本轮标尺）写着
+ * 「连接事实只属于实际供应商配置，去掉知识库身份……新建/改名/切知识库不影响连接灯……地址/Key/模型
+ * 真正变化才使旧成功无效」，于是这一族里"切库/删库要作废连接结论"那两句旧判据作废（代码同一判落在
+ * `identityOf(ref)`，见 f65605a）。作废现在只有换供应商/换模型那一条路（`switching provider…` 两格钉着），
+ * 而"切库/删库之后不许念连接那一句、又永远不许绿"这两件新事，由 `switching to another empty library…`
+ * 与 `deleting the active library…` 两格的**逐表相等**钉住。
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeStatusDiProbeTest {
@@ -425,13 +432,25 @@ class HomeStatusDiProbeTest {
     }
 
     /**
-     * 切到另一张**空**库：新库照样算已建立（§7.4 同一条），但身份里库名换了 →
-     * 旧连接结论作废，且**不补发**探针。
-     * 反例：空库判据还在 → 第一句 `kbSays` 红；反例：库名不进身份位 →
-     * `ConnectionUnchecked` 不出现，第二句红；反例：返回路径自己补检查 → `coVerify` 红。
+     * 切到另一张**空**库：新库照样算已建立（§7.4 同一条），连接那一格**不因此作废**，
+     * 而且**不补发**探针。
+     *
+     * 本格旧判据「切库后旧结论必须作废（身份里库名换了）」已被外部指导书 **§11.1**（2026-10-06，
+     * `requests/LoveBrain_1.4.0_发布收口与逐项整改指导书_2026-10-06.md`）翻案：
+     * 「连接事实只属于实际供应商配置，去掉知识库身份……新建/改名/切知识库不影响连接灯……
+     * 地址/Key/模型真正变化才使旧成功无效」——代码侧同一判落在 `identityOf(ref)`。
+     * 同一节末段还写着「实际缺权限/缺库仍显示其真实状态，**不靠把首页所有状态强制绿来修连接**」，
+     * 所以这一格在 JVM 上仍然是黄的，而且必须黄得出台阶来。
+     *
+     * 反例（缺陷态会怎么红）：
+     * - 空库判据回退成 Missing → 头两句 `kbSays` 红；
+     * - 库名/库存在性又混进连接身份（f65605a 之前的形状）→ 缺项多出一条 `ConnectionUnchecked`，
+     *   第三句那句**逐表相等**当场红；
+     * - 返回路径自己补检查 → 两处 `coVerify(exactly = 1)` 红；
+     * - 派生表掉了 `ServiceNotRunning`（服务没起来却报绿）→ 第三句与第四句一起红。
      */
     @Test
-    fun `switching to another empty library keeps it built but voids the old verdict`() = runTest {
+    fun `switching to another empty library keeps it built and leaves the connection verdict alone`() = runTest {
         val model = configuredStore()
         coEvery { gateway.testConnectionWithProbe(any(), any(), any()) } returns
             ConnectionTestResult(success = true)
@@ -446,21 +465,34 @@ class HomeStatusDiProbeTest {
         vm.returnedFromSubpage(overlayGranted = true)
         advanceUntilIdle()
         assertEquals("新的空库同样算已建立，不许念建库", emptyList<AdvisorMissing>(), kbSays(vm.status.value))
-        assertTrue(
-            "切库后旧结论必须作废，实到缺项 ${vm.status.value.missing}",
-            vm.status.value.missing.contains(AdvisorMissing.ConnectionUnchecked)
+        // 逐表相等：切库之后连接那一格不许出现（不作废、也不许被念成失败），
+        // 而这一族唯一剩下的真缺项就是"服务没起来"——绿档因此依旧不可达。
+        assertEquals(
+            "切库不许动连接那一格；JVM 上唯一的真缺项是服务没起来，实到缺项 ${vm.status.value.missing}",
+            listOf(AdvisorMissing.ServiceNotRunning), vm.status.value.missing
         )
-        assertNotEquals(AdvisorState.RunningReady, vm.status.value.state)
+        assertNotEquals(
+            "服务没起来这一态永远不许是绿的（§11.1 末段：不靠强制绿修连接）",
+            AdvisorState.RunningReady, vm.status.value.state
+        )
         coVerify(exactly = 1) { gateway.testConnectionWithProbe(any(), any(), any()) }
     }
 
     /**
-     * 活动库被删：重读回 `Missing`，身份位没了 → 旧结论作废，永远不许留在绿档。
-     * 反例：删除后 publish 仍吃旧快照（不重读）→ 第一句红；
-     * 反例：作废只写在 runCheck → 第二句红；反例：绿不认身份 → 第三句红。
+     * 活动库被删：重读回 `Missing` → 当场念"请为当前对象建立知识库"，而连接那一格**不因删库作废**。
+     *
+     * 本格旧判据「删库 → 身份位没了 → 旧结论作废」同被指导书 **§11.1** 翻案（原文见上面那格）：
+     * 删库改的是知识库那一格，不是供应商配置那一格；而 §11.1 末段「实际缺权限/缺库仍显示其真实状态」
+     * 正是这里第一、第二句要念的那两句真话。
+     *
+     * 反例（缺陷态会怎么红）：
+     * - 删除后 publish 仍吃旧快照（不重读）→ 第一句红（`kbSays` 会是空表）；
+     * - 库的存在性/库名又混进连接身份 → 缺项多出 `ConnectionUnchecked`，第二句那句**逐表相等**红；
+     * - 缺库被吞成 Present（§7.4 修过头）→ 第一、第二句一起红；
+     * - 派生表掉了 `ServiceNotRunning`（绿不认服务）→ 第二句与第三句一起红。
      */
     @Test
-    fun `deleting the active library voids the verdict and asks to build again`() = runTest {
+    fun `deleting the active library asks to build again and leaves the connection verdict alone`() = runTest {
         val model = configuredStore()
         coEvery { gateway.testConnectionWithProbe(any(), any(), any()) } returns
             ConnectionTestResult(success = true)
@@ -476,9 +508,11 @@ class HomeStatusDiProbeTest {
         assertEquals(
             "库删了要重新念建库那一句", listOf(AdvisorMissing.NoKnowledgeBase), kbSays(vm.status.value)
         )
-        assertTrue(
-            "库删了旧结论必须作废，实到缺项 ${vm.status.value.missing}",
-            vm.status.value.missing.contains(AdvisorMissing.ConnectionUnchecked)
+        // 整张缺项表逐格相等：删库之后只许念"缺库 + 服务没起来"这两句真话，
+        // 连接那一格既不许被作废（多出 ConnectionUnchecked），也不许顺手吞掉服务那一条。
+        assertEquals(
+            "删库只改知识库那一格，不许作废连接结论，实到缺项 ${vm.status.value.missing}",
+            listOf(AdvisorMissing.NoKnowledgeBase, AdvisorMissing.ServiceNotRunning), vm.status.value.missing
         )
         assertNotEquals("库删了永远不许是绿的", AdvisorState.RunningReady, vm.status.value.state)
         coVerify(exactly = 1) { gateway.testConnectionWithProbe(any(), any(), any()) }
