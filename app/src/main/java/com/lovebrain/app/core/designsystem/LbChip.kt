@@ -144,7 +144,9 @@ internal val LbChipPressFeedback.pressCurve: FiniteAnimationSpec<Float>
  *        表达"：规范位是语义树里的 `Selected`/`ToggleableState`，勾是画给眼睛的
  * @param touchFloor 要不要把这颗自己的可点节点垫到全局那颗下限
  *        （[AppDimens.TOUCH_TARGET_MIN_DP]）。关掉它只用于**本来就低于下限的既有形状**，
- *        新开的一律别关
+ *        新开的一律别关。它与 [LbChipStyle.pillHeight] 同时给定时按**大小**取（单层那一档
+ *        取两者里更大的那颗，不是让两条约束互相覆盖成一句装饰）；
+ *        要"可见仍紧凑 + 热区到下限"的形状走 [layeredTouch]
  * @param layeredTouch 热区与视觉分两层：外层那颗透明盒子负责下限与语义，
  *        里面的胶囊按自己的尺寸画。有些胶囊一旦铺满 48dp 就会变粗，这一档买的是"视觉不动"
  * @param pillHeight 胶囊自己的高度；`null` = 由内容决定
@@ -341,6 +343,20 @@ fun LbChip(
     } else {
         Modifier
     }
+    // ⚠ **单层那一档的约束链按大小取，不按先后覆盖**（§10.1「看着小，仍占48dp」判的就是这条链）。
+    // 单层的可点节点就是胶囊自己：`height(22.dp)` 排在前面、`heightIn(min = 48.dp)` 排在后面时，
+    // 两条约束直接冲突（min 48 / max 22），Compose 把 min 夹回 max ⇒ 颗粒只有 22dp——
+    // 那句"我垫到全局下限"于是成了**装饰**：读源码的说有 48，量语义树的读到 22，两边都以为修过了。
+    // 这一档要的是「胶囊高度」与「下限」取大；想让可见形状留在 22dp 而热区仍到 48dp，
+    // 走 [LbChipStyle.layeredTouch] 那一档（外盒承担下限，里面那颗按自己高度画）。
+    // 今天所有 `pillHeight` 的调用点要么走分层、要么明确 `touchFloor = false`，
+    // 所以这一句不改任何现有形状，只把没人占用的那个坑填平。
+    val singleLayerPillHeight =
+        if (style.touchFloor && fixedPillHeight != null) {
+            maxOf(fixedPillHeight, AppDimens.TOUCH_TARGET_MIN_DP.dp)
+        } else {
+            fixedPillHeight
+        }
     val actionModifier = when (interaction) {
         LbChipInteraction.Multi -> Modifier.toggleable(
             value = selected,
@@ -398,9 +414,12 @@ fun LbChip(
         }
     } else {
         // 单层：胶囊自己就是那颗可点节点，下限与底色落在同一颗身上
+        // （高度这一档取"胶囊要的高度与下限里更大的那颗"，见上面 singleLayerPillHeight 那条）
         Box(
             modifier = modifier
-                .then(if (fixedPillHeight != null) Modifier.height(fixedPillHeight) else Modifier)
+                .then(
+                    if (singleLayerPillHeight != null) Modifier.height(singleLayerPillHeight) else Modifier
+                )
                 .then(floorModifier)
                 .graphicsLayer { scaleX = scale; scaleY = scale }
                 .clip(style.radius)

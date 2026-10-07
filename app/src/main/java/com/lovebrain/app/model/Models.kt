@@ -20,18 +20,19 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 
 /** 一条回复方案（UI 渲染用；tag/title 硬编码补，AI 只输出 reply 文本）
- * reply 为空表示该方向本轮不适合，UI 显示"本轮不适合"且不可复制。
  * Scheme 自身持有 source 字段区分来源——STYLE=四风格，DIRECTION=四方向。
  *
- * [notSuitable] 区分两种"空 reply"：
- * - true = 模型主动输出 null（合法不适合），UI 显示"本轮不适合"
- * - false = 模型没生成这一项（真正缺失），UI 显示"未生成"而非"不适合"
+ * 空 reply 有**两种**成因（§11.2），由 [notSuitable] 分家，UI 文案各归各：
+ * - true = 模型在这一位输出了 null（协议允许），UI 显示「本轮不适合」
+ * - false = 这一位没生成（缺位、空白串、四风格里的空条），UI 显示「未生成」
+ * 第三种成因「重复凑数」不在这里表达——那一条正文本身是有的，卡不空，
+ * 由 [LoveBrainResponse.replyCompleteness] 的 duplicatedLabels 说。
  */
 @Serializable
  data class Scheme(
     val tag: String = "",        // A / B / C / D（风格）或 F / E / X / S（方向）
     val title: String = "",      // 推荐 / 清醒 / 俏皮 / 温柔 或 跟进 / 展开 / 表达 / 转向
-    val reply: String = "",      // 话术原文；空 = 本轮不适合
+    val reply: String = "",      // 话术原文；空 = 本轮没有正文，成因看 notSuitable
     val source: SchemeSource = SchemeSource.STYLE,  // 来源：风格还是方向
     /** 模型主动输出 null = 合法不适合；false = 模型没生成这一项（真正缺失） */
     val notSuitable: Boolean = false
@@ -104,7 +105,9 @@ object DirectionCatalog {
 }
 
 /** 新格式 response 块：4 种风格回复（recommended/bad_boy/playful/warm）
- * toSchemes 不再过滤空回复，固定返回 4 条（空 reply = 本轮不适合） */
+ * toSchemes 不过滤空回复，固定返回 4 条卡位。
+ * ⚠ 四风格**没有**「合法 null」这一档（format.md 要求四条都出正文）：空白就是没生成，
+ * 所以这里的 [Scheme.notSuitable] 一律留 false，卡片念「未生成」而不是「本轮不适合」（§11.2）。 */
 @Serializable
 data class ReplySchemes(
     val recommended: String = "",
@@ -112,7 +115,7 @@ data class ReplySchemes(
     val playful: String = "",
     val warm: String = ""
 ) {
-    /** 映射为 UI 用的 4 条 Scheme（不再过滤空回复，固定四个方向） */
+    /** 映射为 UI 用的 4 条 Scheme（不过滤空回复，固定四个卡位；空 = 没生成，不是不适合） */
     fun toSchemes(): List<Scheme> = listOf(
         Scheme(tag = "A", title = "推荐", reply = recommended),
         Scheme(tag = "B", title = "清醒", reply = badBoy),
@@ -231,63 +234,70 @@ data class LoveBrainResponse(
     val schemes: List<Scheme>
         get() = response.toSchemes()
 
-    /** 四方向方案——独立解析，固定位置，null="本轮不适合"
+    /** 四方向方案——独立解析，固定位置，null=「本轮不适合」
      * directions 异常不影响 response 风格渲染。
      * 固定返回 4 条。
-     * directions[i] == null → notSuitable=true（模型主动说"不适合"）
-     * directions[i] 缺失或空串 → notSuitable=false, reply=""（模型没生成这一项）
+     *
+     * §11.2 要的三态在这一颗函数里分家（此前 null 与空白串读成同一档）：
+     * - 这一位**根本没出现**（directions 比四短、或整个字段缺失）→ 没生成：reply 空、notSuitable=false
+     * - 这一位出现了、值是 **null** → 协议明确允许的「本轮不适合」（见 system_prompt/format.md
+     *   的 directions 那一节：每个方向只输出一条可直接发送的回复或 null）：reply 空、notSuitable=true
+     * - 这一位出现了、值是**空白串** → 也是没生成（协议没有「空白串」这一档）：reply 空、notSuitable=false
+     * 位置存在与否只能由 `directions.size` 说，`getOrNull` 分不清「值是 null」与「没有这一位」。
      * 使用 [ReplyDirection] 作为单一真源。 */
     val directionSchemes: List<Scheme>
-        get() {
-            val result = mutableListOf<Scheme>()
-            for (dir in ReplyDirection.ALL) {
-                val raw = directions.getOrNull(dir.index)
-                val text = raw?.takeIf { it.isNotBlank() } ?: ""
-                // null = 模型主动说"不适合"；空串/缺失 = 模型没生成
-                val suitable = raw != null
-                result.add(Scheme(
-                    tag = dir.tag,
-                    title = dir.title,
-                    reply = text,
-                    source = SchemeSource.DIRECTION,
-                    notSuitable = suitable && text.isBlank()
-                ))
-            }
-            return result
+        get() = ReplyDirection.ALL.map { dir ->
+            val slotPresent = dir.index < directions.size
+            val raw = directions.getOrNull(dir.index)
+            val text = raw?.takeIf { it.isNotBlank() } ?: ""
+            Scheme(
+                tag = dir.tag,
+                title = dir.title,
+                reply = text,
+                source = SchemeSource.DIRECTION,
+                notSuitable = slotPresent && raw == null
+            )
         }
 
+    /** 八项宇宙本体：四风格在前、四方向在后，与结果区那条横排同一顺序、同一条判据 */
+    val mergedEightItems: List<Scheme>
+        get() = schemes + directionSchemes
+
     /**
-     * 八项回复完整性检查（§11.2）：四风格 + 四方向 = 八项。
+     * 八项回复完整性检查（§11.2）：四风格 + 四方向 = 八项，**三个成因分家**。
      *
-     * - [ReplyCompleteness.Complete]：八项全有非空内容
-     * - [ReplyCompleteness.Partial]：有内容但不足八项；缺失项在 [ReplyCompleteness.Partial.missingLabels]
-     * - [ReplyCompleteness.Duplicated]：有内容但存在把一条正文复制到多个标签的情况
-     * - [ReplyCompleteness.Empty]：全空（解析层会拒绝，这里只是完备）
+     * 计数一律按整池八项（[mergedEightItems]），不按露出来的那几张卡：
+     * - [ReplyCompleteness.Incomplete.missingLabels]：真正没生成的项——reply 空白且**不是**
+     *   合法「本轮不适合」（四风格空白、方向缺位、方向空白串）。合法 null 的方向**不在这一份里**，
+     *   这正是原话要修的「合法 null 与真正缺失混为一谈」。
+     * - [ReplyCompleteness.Incomplete.duplicatedLabels]：同一条正文出现在多于一颗标签上（凑数）。
+     * - [ReplyCompleteness.Incomplete.notSuitableLabels]：协议允许的 null 方向——它不是缺项，
+     *   由空卡自己标这个状态（见 SchemeCollapsedBlock），提示语里不占一份。
      *
-     * UI 层对空卡仍显示"本轮不适合"——这里不做 UI 判断，只给解析层和日志一个
-     * 区分"模型没生成"与"合法不适合"的凭据。指导书要求"不能静默隐藏"，
-     * 所以 [ReplyCompleteness.Partial] 和 [ReplyCompleteness.Duplicated] 要被
-     * 解析层记录并给用户一个轻量提示。
+     * 解析层拿它做记录、UI 拿它做那一句轻提示（见 ResultArea 的 replyCompletenessNotice）；
+     * 三样都不拒绝已有候选——指导书要求保留部分内容。
      */
     val replyCompleteness: ReplyCompleteness
         get() {
-            val styleSchemes = schemes
-            val dirSchemes = directionSchemes
-            val allEight = styleSchemes + dirSchemes
-            val nonEmpty = allEight.filter { it.reply.isNotBlank() }
-            if (nonEmpty.isEmpty()) return ReplyCompleteness.Empty
+            val pool = mergedEightItems
+            val bodies = pool.map { it.reply.trim() }
+            if (bodies.none { it.isNotEmpty() }) return ReplyCompleteness.Empty
 
-            val missingLabels = allEight.filter { it.reply.isBlank() }.map { it.title }
-            val nonEmptyTexts = nonEmpty.map { it.reply.trim() }
-            val hasDuplicates = nonEmptyTexts.toSet().size < nonEmptyTexts.size
+            val missingLabels = pool.filter { it.reply.isBlank() && !it.notSuitable }.map { it.title }
+            val notSuitableLabels = pool.filter { it.reply.isBlank() && it.notSuitable }.map { it.title }
+            val bodyCounts = bodies.filter { it.isNotEmpty() }.groupingBy { it }.eachCount()
+            val duplicatedLabels = pool
+                .filter { it.reply.isNotBlank() && bodyCounts.getValue(it.reply.trim()) > 1 }
+                .map { it.title }
 
             return when {
-                missingLabels.isEmpty() && !hasDuplicates -> ReplyCompleteness.Complete
-                hasDuplicates -> ReplyCompleteness.Duplicated(
-                    nonEmptyTexts.groupingBy { it }.eachCount().filter { it.value > 1 }.keys,
-                    missingLabels
+                missingLabels.isEmpty() && duplicatedLabels.isEmpty() -> ReplyCompleteness.Complete
+                else -> ReplyCompleteness.Incomplete(
+                    missingLabels = missingLabels,
+                    duplicatedLabels = duplicatedLabels,
+                    notSuitableLabels = notSuitableLabels,
+                    totalItems = pool.size
                 )
-                else -> ReplyCompleteness.Partial(missingLabels)
             }
         }
 }
@@ -295,23 +305,31 @@ data class LoveBrainResponse(
 /**
  * 八项回复完整性状态（§11.2）。
  *
- * 解析层用它区分"生成完整""生成不完整（缺项或重复）"和"全空"，
- * 不拒绝已有候选——指导书要求保留部分内容并明确提示。
+ * 解析层用它区分「生成完整」「生成不完整（缺项 / 重复）」和「全空」，
+ * 不拒绝已有候选——指导书要求保留部分内容并如实提示。
+ * 「本轮不适合」是**第三因**，走 [ReplyCompleteness.Incomplete.notSuitableLabels]
+ * 与卡片自己的文案，不混进缺项那份读数里。
  */
 sealed class ReplyCompleteness {
-    /** 八项全有非空内容且无重复 */
+    /** 八项既没有没生成的、也没有重复凑数的。合法 null 的「本轮不适合」不算缺项。 */
     data object Complete : ReplyCompleteness()
 
-    /** 有内容但不足八项；[missingLabels] 是缺失项的标题列表（如"清醒""跟进"） */
-    data class Partial(val missingLabels: List<String>) : ReplyCompleteness()
-
-    /** 有内容但存在把一条正文复制到多个标签的情况 */
-    data class Duplicated(
-        val duplicatedTexts: Set<String>,
-        val missingLabels: List<String>
+    /**
+     * 生成不完整——三份读数各自独立，可以同时非空。
+     *
+     * @param missingLabels 真正没生成的项标题（不含合法 null 的方向）
+     * @param duplicatedLabels 共用同一条正文的项标题（按整池顺序）
+     * @param notSuitableLabels 合法 null 的「本轮不适合」项标题，仅供说明
+     * @param totalItems 整池项数（八项宇宙），提示语要说「八项里的 N 项」，不拿局部数冒充全体
+     */
+    data class Incomplete(
+        val missingLabels: List<String>,
+        val duplicatedLabels: List<String>,
+        val notSuitableLabels: List<String>,
+        val totalItems: Int
     ) : ReplyCompleteness()
 
-    /** 全空 */
+    /** 八项一条正文都没有 */
     data object Empty : ReplyCompleteness()
 }
 

@@ -1,12 +1,14 @@
 package com.lovebrain.app.ui.panel.reply
 
 import com.lovebrain.app.model.LoveBrainResponse
+import com.lovebrain.app.model.ReplyCompleteness
 import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SchemeSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -90,7 +92,7 @@ class ResultAreaStructureTest {
     // 点着切）已经删掉了，但**来源标识必须原样跟着走**——反馈、改写、撤销、缓存都按
     // `STYLE:A` / `DIRECTION:F` 这种带来源的身份寻址，抹平来源就会把它们绑到错的卡上。
 
-    /** 四风格齐全 + 四条方向（null/空白 = 本轮不适合，仍保留为卡） */
+    /** 四风格齐全 + 四条方向（null=合法「本轮不适合」，缺位/空白=没生成；两种都仍保留卡位） */
     private fun responseOf(
         styles: List<String> = listOf("A 的话术", "B 的话术", "C 的话术", "D 的话术"),
         directions: List<String?> = listOf("F 的话术", "E 的话术", "X 的话术", "S 的话术")
@@ -119,8 +121,9 @@ class ResultAreaStructureTest {
 
     @Test
     fun `the merged list keeps all eight schemes including blank direction cards`() {
-        // 方向只活两条（一条 null、一条空白串）⇒ 空回复仍保留为"本轮不适合"卡，不删除
-        // （见 SchemeCollapsedBlock 的空回复态与 Models.kt "toSchemes 不再过滤空回复"）
+        // 方向只活两条（一位输出 null、一位是空白串）⇒ 两张空卡都保留，但**成因不同**：
+        // null 那一张念「本轮不适合」，空白串那一张念「未生成」（§11.2 三因分家，
+        // 卡片文案见 SchemeEmptyCardReasonTest）；这里判的是卡位不许被删
         val merged = mergedSchemesInRoundOrder(
             responseOf(directions = listOf("F 的话术", null, "X 的话术", "   "))
         )
@@ -135,7 +138,8 @@ class ResultAreaStructureTest {
     @Test
     fun `the merged list reads both groups instead of only the style one`() {
         // 反向证人：风格四条全空时，这一排不能是空的——只读 response.schemes 的实现会在这里红
-        // 空回复仍保留（= 本轮不适合卡），不删——与方向空回复同一判据
+        // 空回复仍保留（四风格没有合法 null 这一档，空就是没生成 ⇒ 卡念「未生成」），
+        // 不删——与方向的空卡同一判据：卡位属于八项宇宙
         val onlyDirections = mergedSchemesInRoundOrder(
             responseOf(styles = listOf("", "", "", ""))
         )
@@ -206,6 +210,112 @@ class ResultAreaStructureTest {
             "没有改写状态时也没什么可清",
             !toggleRewriteExpansion(emptySet(), "STYLE:A", null).second
         )
+    }
+
+    // ═══ §11.2 八项提示语：三个成因各归各，合法 null 不占缺项那一格 ═══
+    //
+    // 判的是 replyCompletenessNotice 这颗纯函数的读数（提示条那一侧），与卡片文案分家：
+    // 「本轮不适合」由空卡自己念（见 SchemeEmptyCardReasonTest），提示条只说**真没生成**与**重复凑数**。
+    // 旧混判态下这几格会红在：合法 null 被写进「未生成 N/8 项」那一句里。
+
+    private fun poolOf(
+        styles: List<String> = listOf("推荐的话", "清醒的话", "俏皮的话", "温柔的话"),
+        directions: List<String?> = listOf("跟进的话", "展开的话", "表达的话", "转向的话")
+    ) = LoveBrainResponse(
+        response = ReplySchemes(
+            recommended = styles.getOrNull(0) ?: "",
+            badBoy = styles.getOrNull(1) ?: "",
+            playful = styles.getOrNull(2) ?: "",
+            warm = styles.getOrNull(3) ?: ""
+        ),
+        directions = directions
+    )
+
+    /** 八项齐全 → 不画提示条 */
+    @Test
+    fun `a complete round draws no incomplete notice`() {
+        assertNull(replyCompletenessNotice(poolOf().replyCompleteness))
+    }
+
+    /**
+     * 同一轮里一颗合法 null（方向「展开」）+ 一颗真空缺（风格「清醒」）：
+     * 提示语只许点名「清醒」，「展开」由那张空卡自己说「本轮不适合」。
+     */
+    @Test
+    fun `the notice names true misses only and keeps legal nulls out of it`() {
+        val notice = replyCompletenessNotice(
+            poolOf(
+                styles = listOf("推荐的话", "", "俏皮的话", "温柔的话"),
+                directions = listOf("跟进的话", null, "表达的话", "转向的话")
+            ).replyCompleteness
+        )
+        assertTrue("真空缺必须说得出，实到 $notice", notice != null && notice.contains("清醒"))
+        assertTrue("合法 null 不许冒缺项：$notice", notice != null && !notice.contains("展开"))
+        assertTrue("数量要按整池八项说，不是局部数：$notice", notice != null && notice.contains("1/8"))
+        assertTrue("给的是既有的再生成出口：$notice", notice != null && notice.endsWith("，可重新生成"))
+    }
+
+    /** 重复凑数单独说，与缺项各占一段；两因同时存在时不互相吞掉 */
+    @Test
+    fun `duplicated bodies get their own clause beside the missing one`() {
+        val dupOnly = replyCompletenessNotice(
+            poolOf(
+                styles = listOf("同一句话", "同一句话", "俏皮的话", "温柔的话"),
+                directions = listOf("跟进的话", "展开的话", "表达的话", "转向的话")
+            ).replyCompleteness
+        )
+        assertTrue("只重复时也该有提示：$dupOnly", dupOnly != null && dupOnly.contains("重复"))
+        assertTrue("重复也要按八项宇宙数：$dupOnly", dupOnly != null && dupOnly.contains("2 项正文重复"))
+
+        val both = replyCompletenessNotice(
+            ReplyCompleteness.Incomplete(
+                missingLabels = listOf("清醒"),
+                duplicatedLabels = listOf("推荐", "俏皮"),
+                notSuitableLabels = listOf("展开"),
+                totalItems = 8
+            )
+        )
+        assertTrue("两因要各说一段：$both", both != null && both.contains("未生成 1/8 项：清醒"))
+        assertTrue("两因要各说一段：$both", both != null && both.contains("2 项正文重复：推荐、俏皮"))
+        assertTrue("不适合那份不进提示：$both", both != null && !both.contains("展开"))
+    }
+
+    /** 只有合法 null 时（读数被手工拼出来）不画提示条——卡片自己会说不适合 */
+    @Test
+    fun `legal not-suitable alone never becomes an incomplete notice`() {
+        assertNull(
+            replyCompletenessNotice(
+                ReplyCompleteness.Incomplete(
+                    missingLabels = emptyList(),
+                    duplicatedLabels = emptyList(),
+                    notSuitableLabels = listOf("展开", "转向"),
+                    totalItems = 8
+                )
+            )
+        )
+        // 反向证人：同一份读数里塞进一颗真空缺，提示就必须出现（证明上一行不是恒真）
+        assertTrue(
+            replyCompletenessNotice(
+                ReplyCompleteness.Incomplete(
+                    missingLabels = listOf("转向"),
+                    duplicatedLabels = emptyList(),
+                    notSuitableLabels = listOf("展开"),
+                    totalItems = 8
+                )
+            ) != null
+        )
+    }
+
+    /** 全池八项这条线：合并列表与完整性读数用的是同一个宇宙 */
+    @Test
+    fun `the merged row and the completeness reading share the same eight-item universe`() {
+        val r = poolOf(directions = listOf("跟进的话", null, "表达的话"))
+        assertEquals("合并列表仍是八张卡位", 8, mergedSchemesInRoundOrder(r).size)
+        val c = r.replyCompleteness
+        c as ReplyCompleteness.Incomplete
+        assertEquals("读数里的宇宙也是八项", 8, c.totalItems)
+        assertEquals("缺位那一位算缺项（跟进/展开/表达都有，转向缺）", listOf("转向"), c.missingLabels)
+        assertEquals("合法 null 那一位算不适合", listOf("展开"), c.notSuitableLabels)
     }
 
 }

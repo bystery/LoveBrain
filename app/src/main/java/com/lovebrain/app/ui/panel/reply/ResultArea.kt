@@ -275,25 +275,11 @@ fun ResultArea(
                     onInputIntent = onInputIntent
                 )
 
-                // §11.2: 八项不完整时给用户一条轻量提示——不静默隐藏缺失项
-                when (val completeness = response.replyCompleteness) {
-                    is ReplyCompleteness.Complete -> { /* 八项齐全，无需提示 */ }
-                    is ReplyCompleteness.Partial -> {
-                        Spacer(Modifier.height(Spacing.sm))
-                        ReplyIncompleteNotice(
-                            "本次缺少：${completeness.missingLabels.joinToString("、")}，可重新生成"
-                        )
-                    }
-                    is ReplyCompleteness.Duplicated -> {
-                        Spacer(Modifier.height(Spacing.sm))
-                        val dupHint = if (completeness.missingLabels.isNotEmpty()) {
-                            "本次有重复正文且缺少：${completeness.missingLabels.joinToString("、")}，可重新生成"
-                        } else {
-                            "本次有重复正文，可重新生成"
-                        }
-                        ReplyIncompleteNotice(dupHint)
-                    }
-                    ReplyCompleteness.Empty -> { /* 解析层已拒绝，不会到这里 */ }
+                // §11.2: 八项里真缺的那几项要说出来——不静默隐藏，也不把合法 null 的
+                // 「本轮不适合」报成缺项（那句文案归空卡自己，见 SchemeCollapsedBlock）。
+                replyCompletenessNotice(response.replyCompleteness)?.let { notice ->
+                    Spacer(Modifier.height(Spacing.sm))
+                    ReplyIncompleteNotice(notice)
                 }
 
                 if (response.analysis.ongoing.isNotEmpty()) {
@@ -420,12 +406,44 @@ private enum class SchemeFilter { ALL, LIKED, DISLIKED }
 /**
  * 一条横向列表要渲染的方案：四风格在前、四方向在后，按原有顺序接成 A B C D F E X S。
  *
- * reply 为空的方向卡片不删除——模型按 prompt 有意输出 null 表示"本轮不适合"，
- * 卡片自身有"本轮不适合"那一张态（见 SchemeCollapsedBlock / SchemeCard），删掉就少了
- * 一张卡（用户看到 7 而不是 8），也破坏了 A–H 连续编号。
+ * reply 为空的卡片不删除——八项宇宙里少一张就少了 A–H 的一个编号（用户看到 7 而不是 8）。
+ * 空卡的**成因**由 scheme 自己带（§11.2 三因分家）：合法 null 的方向 notSuitable=true 走
+ * 「本轮不适合」，没生成的那几项走「未生成」，见 SchemeCollapsedBlock。
+ * 顺序与判据的唯一真源在 `LoveBrainResponse.mergedEightItems`，完整性读数与这一排共用它。
  */
 internal fun mergedSchemesInRoundOrder(response: LoveBrainResponse): List<Scheme> =
-    response.schemes + response.directionSchemes
+    response.mergedEightItems
+
+/**
+ * 八项完整性读数 → 用户看得见的那一句轻提示（§11.2「提示与空卡文案各归各」）。
+ *
+ * 纯函数，不挂 Compose，好让 JVM 那侧直接钉住读数：
+ * - 缺项：点名**真正没生成**的那几项，数量按整池八项说（`2/8`），不拿局部数冒充全体；
+ * - 重复：点名共用同一条正文的那几项（凑数）；
+ * - 合法 null 的「本轮不适合」：**不进这一句**——它由空卡自己标，报进缺项就是把协议允许的
+ *   输出说成模型漏了（那正是这一格要推掉的旧混判）。
+ * 无缺项、无重复时返回 null，画面上不出现提示条。
+ */
+internal fun replyCompletenessNotice(completeness: ReplyCompleteness): String? = when (completeness) {
+    ReplyCompleteness.Complete, ReplyCompleteness.Empty -> null
+    is ReplyCompleteness.Incomplete -> {
+        val causes = buildList<String> {
+            if (completeness.missingLabels.isNotEmpty()) {
+                add(
+                    "未生成 ${completeness.missingLabels.size}/${completeness.totalItems} 项：" +
+                        completeness.missingLabels.joinToString("、")
+                )
+            }
+            if (completeness.duplicatedLabels.isNotEmpty()) {
+                add(
+                    "${completeness.duplicatedLabels.size} 项正文重复：" +
+                        completeness.duplicatedLabels.joinToString("、")
+                )
+            }
+        }
+        if (causes.isEmpty()) null else causes.joinToString("；") + "，可重新生成"
+    }
+}
 
 /**
  * 卡片标签上那个**连续编号** A–H：一组四项、两组接起来还是八项，一个都不少

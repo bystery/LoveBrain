@@ -313,7 +313,8 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
         val resp = runCatching { json.decodeFromString<LoveBrainResponse>(jsonStr) }
             .getOrElse { throw IllegalStateException("解析回复失败，请重试") }
 
-        // : 不再用 resp.schemes.isEmpty() 验证——toSchemes 永远返回 4 条（空 reply = 本轮不适合）。
+        // : 不再用 resp.schemes.isEmpty() 验证——toSchemes 永远返回 4 条卡位（空 reply = 没生成，
+        // 合法 null 只存在于四方向那一组）。
         // 改为检查至少一个非空 reply 才算成功。
         // b3-9: schemes 访问器已内置 directions 降级逻辑
         val hasNonEmpty = resp.schemes.any { it.reply.isNotBlank() }
@@ -321,15 +322,17 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
             throw IllegalStateException("返回格式不完整：所有回复方案均为空，请重试")
         }
 
-        // §11.2: 八项完整性轻量检查——保留已有候选，不拒绝，但记录缺失/重复
+        // §11.2: 八项完整性轻量检查——保留已有候选，不拒绝，但按**三个成因**分别记录。
+        // missing 只数真正没生成的那几项；合法 null 的方向走 notSuitable，不混进 missing。
         when (val completeness = resp.replyCompleteness) {
-            is com.lovebrain.app.model.ReplyCompleteness.Complete -> { /* 八项齐全，无需提示 */ }
-            is com.lovebrain.app.model.ReplyCompleteness.Partial -> {
-                L.w("PARSE incomplete: missing ${completeness.missingLabels.joinToString(", ")}")
-            }
-            is com.lovebrain.app.model.ReplyCompleteness.Duplicated -> {
-                L.w("PARSE duplicated: ${completeness.duplicatedTexts.size} texts reused across labels" +
-                    ", missing ${completeness.missingLabels.joinToString(", ")}")
+            is com.lovebrain.app.model.ReplyCompleteness.Complete -> { /* 无缺项、无重复 */ }
+            is com.lovebrain.app.model.ReplyCompleteness.Incomplete -> {
+                L.w(
+                    "PARSE incomplete: missing=${completeness.missingLabels.size}/${completeness.totalItems}" +
+                        " [${completeness.missingLabels.joinToString(", ")}]" +
+                        " duplicated=[${completeness.duplicatedLabels.joinToString(", ")}]" +
+                        " notSuitable=[${completeness.notSuitableLabels.joinToString(", ")}]"
+                )
             }
             com.lovebrain.app.model.ReplyCompleteness.Empty -> { /* 上面已拒绝 */ }
         }
