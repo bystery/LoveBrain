@@ -158,9 +158,27 @@ class CaptureAppRowSemanticsTest {
 
     /** 按行标题找那一行的可交互节点——一行必须**恰好**一颗，多出来就是有人又画了一层点击 */
     private fun rowTarget(label: String): SemanticsProbe.Target {
-        val hits = probe.actionableTargets(rule, "捕获范围页").filter { it.label == label }
+        // 确定性等待（§13.1 对这一族的判词："定点检查异步状态等待"）：CI 的 Linux runner
+        // 读到过"树里还没长出这一行"的那一帧（本机绿、云端 0 颗）。现在**逐帧等到恰 1 颗**再扫：
+        // 上限 3.2s（200 帧）；超时不瞎猜——把整屏可交互 label 的实到计数直接写进红话，
+        // 下一次红从日志里当场定位，不再赌"我机器上绿过一次"。
+        fun scan(): List<SemanticsProbe.Target> =
+            runCatching { probe.actionableTargets(rule, "捕获范围页") }.getOrElse { emptyList() }
+        val deadline = System.currentTimeMillis() + 3_000L
+        var all = scan()
+        while (all.count { it.label == label } != 1 && System.currentTimeMillis() < deadline) {
+            rule.mainClock.advanceTimeBy(16L)
+            all = scan()
+        }
+        if (all.isEmpty()) {
+            org.junit.Assert.fail(
+                "整屏一颗可交互节点都没量到：入口被删或点击语义没挂上——这是事故，不是等待能修的"
+            )
+        }
+        val hits = all.filter { it.label == label }
         assertEquals(
-            "按「$label」应当正好量到一行，实到 ${hits.size} 颗：" + hits.joinToString { it.describe() },
+            "按「$label」应当正好量到一行，实到 ${hits.size} 颗：" + hits.joinToString { it.describe() } +
+                "；整屏 label 实到计数=" + all.groupingBy { it.label }.eachCount(),
             1, hits.size
         )
         return hits.single()
