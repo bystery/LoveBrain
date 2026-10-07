@@ -401,7 +401,7 @@ class HomeStatusViewModel(
             when (verdict) {
                 HomeConnectionVerdict.Verified -> {
                     store?.connectionVerified = true
-                    store?.connectionVerifiedIdentity = identity
+                    store?.connectionVerifiedIdentity = identityOf(ref)
                 }
                 HomeConnectionVerdict.Failed -> {
                     store?.connectionVerified = false
