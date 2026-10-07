@@ -250,7 +250,14 @@ class PromptByteFreezeBaselineTest {
         // （时机/为什么现在适合/从哪里接/什么时候先别发/发送前要准备什么 + 场景策略与字段口径），
         // 2370 → 5848 字节。这是**内容真的变了**，不是所有者搬动；变更说明留 TeamWorkspace
         // `evidence/2026-10-05-feedback/impl-I1-proactive.md`。
-        "system/proactive" to Frozen("34cc15e9fd19922d4b27e14eb6786d9be1fae6903fe608ab9598f6b548c3b55d", 5851),
+        // 2026-10-08 重录 5848→5851→**5854**：漂的这 +3 字节是 `d42b8dc`（N15）那一笔**有需求依据的正文
+        // 改动**——`assets/engine/proactive.md` 行为策略第 3 条「**没有草稿**」的「给少量」按指导书
+        // §11.3 原话「继续清掉无草稿"给少量"的冲突」改成「给 7-10 个」（§4 新需求表行 N15「主动发 7–10 条例子 |
+        // 提示已改；清冲突」、§3 错误清单第 17 条「无草稿仍有"少量"冲突」），「少量」6 字节 → 「 7-10 个」9 字节。
+        // 读数不是手算：prewave 实跑 XML（2026-10-07T08:00:30）打的 `PROMPT-FREEZE|A|system/proactive|
+        // a632f787…|5854` 与现树那颗资产 CRLF→LF 归一后同一把尺复算一致。
+        // ⚠ 载体（assets/engine/proactive.md 与 prompt 资产锁）归主线程，这一格只登记现实读数。
+        "system/proactive" to Frozen("a632f787f23d4477af4fe71e13ab23a3d6bb1f437bb26af1fb09853d73bcfb38", 5854),
         // 2026-10-03：`engine/knowledge_prompt/lessons.md` 这一族改了两次（加"不要输出一级标题/
         // 不要抄字段说明"那两段 + 本轮把 `## 示例` 里那两条 `# [日期] 第N次提取` 摘掉——它一边禁止一边示范，
         // 正是用户实测到的双标题成因）。这一行的期望**只是那颗资产自身的字节**（不拼任何东西），
