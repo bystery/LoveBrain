@@ -299,9 +299,11 @@ class MessageRowDragFollowTest {
      * 边缘滚动只留一颗可取消的任务：`scrollBy` 全文件一处，挂在带拖拽会话键的 `LaunchedEffect` 上，
      * 且它前面 200 字符内不许出现 `launch`（那正是"每个手势事件起一颗新任务"的老写法），
      * 后面必须按帧 `delay`。
+     * §8 之后这一颗**不再自己拿速度滚**：每一帧先问 [runDragFrame]（同一份最新布局），
+     * 只滚它交回的那个量，并把"没滚满"的那一截从补偿里退回来。
      * 反例：`scope.launch { listState.scrollBy(...) }` 回到 onDrag 里 ⇒ 三条判据一起红；
      * 反例：把取消键 `dragSession` 摘掉（任务停不下来）⇒ 第二条红；
-     * 反例：滚动量整个不回填 `dragOffsetY`（滚出去的像素没算进手指位移）⇒ 被拖行会飘，红在最后那句。
+     * 反例：滚不动还照样补满（画位凭空飘）⇒ 最后那句红。
      */
     @Test
     fun `the drag auto scroll stays one cancellable task instead of one launch per frame`() {
@@ -320,11 +322,13 @@ class MessageRowDragFollowTest {
         )
         val before = source.substring((at - 200).coerceAtLeast(0), at)
         assertTrue("不许逐帧 launch 一颗新的滚动任务，实到片段：$before", "launch" !in before)
+        assertTrue("那一帧的量必须由帧判据交回（自己拿速度滚就是旧那颗任务的形状）：$before",
+            "runDragFrame(null, edgeSpeedPx)" in before)
         val after = source.substring(at, (at + 200).coerceAtMost(source.length))
         assertTrue("那颗任务必须按帧走（没有 delay 就是空转或一帧滚到底）：$after", "delay(" in after)
         assertTrue(
-            "滚出去的那一截必须回写进累计位移（不补就被拖行会脱离手指）：$after",
-            "dragOffsetY += scrolled" in after
+            "只按真滚掉的那一截回填累计位移（多补 = 被拖行脱离手指）：$after",
+            "scrollBy(planned.toFloat())" in after && "dragOffsetY += scrolled - planned" in after
         )
     }
 
@@ -442,8 +446,8 @@ class MessageRowDragFollowTest {
         val exits = linesWith("onDelete(")
         assertEquals("交给持有者的删除出口只该有一处：" + exits, 1, exits.size)
         assertTrue("那一处交出去的必须是 id：" + exits.single(), "id" in exits.single())
-        assertTrue("重排回调交的必须是原列表下标（展示位与它是两件事）",
-            source.contains("onReorder(fromPair.first, toPair.first)"))
+        assertTrue("重排交的必须是原始下标那一对（展示位与它是两件事；§8 之后这一对由帧判据交回）",
+            source.contains("onReorder(from, to)"))
         assertTrue("拖拽认人只认稳定 id，不许按格号认：" + linesWith("draggedId ="),
             source.contains("draggedId = hitId") && source.contains("hitItem?.key as? String"))
     }

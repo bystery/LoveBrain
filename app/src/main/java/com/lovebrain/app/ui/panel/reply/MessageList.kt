@@ -35,6 +35,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -107,6 +108,14 @@ internal const val MESSAGE_ROW_TEST_TAG = "message_row"
 internal const val MESSAGE_BUBBLE_TEST_TAG = "message_bubble"
 
 /**
+ * 自动滚动滚完一帧之后，被拖那一格**至少**还要留在视口里的像素数（dp 档，UI 侧乘 density 交进
+ * [budgetedAutoScrollPx]）。16 是"条目还认得出在被回收的边界之内"那一档：LazyColumn 只看布局边界、
+ * 不看 `graphicsLayer` 的 translationY，越过这条线被拖那一条就会被虚拟化掉（手指底下那条凭空不见）。
+ * §8 要的是"被拖条目始终可见"，所以这一档挂在滚动预算上，而不是挂在事后纠错上。
+ */
+internal const val MESSAGE_DRAG_KEEP_VISIBLE_DP = 16
+
+/**
  * 滑动删除的唯一判据（纯函数，可逐值钉死）：|拖量| ≥ 行宽 × 阈值比 → 删。
  * 行宽还没量到（0）时恒不删——第一帧不许凭空满足阈值。
  */
@@ -168,8 +177,26 @@ internal fun foldAdvisorNote(ideaContents: List<String>, noteText: String?): Str
 internal fun hasRealDialogueRows(messages: List<ChatMessage>): Boolean =
     messages.any { it.role != ChatMessage.Role.IDEA }
 
-/** 拖拽中一格在列表里的槽位（展示位 + 布局偏移 + 高度），全 px */
-internal data class DragSlot(val index: Int, val offsetPx: Int, val sizePx: Int)
+/**
+ * 拖拽中一格在列表里的槽位（展示位 + 布局偏移 + 高度 + 认人的 key），全 px。
+ *
+ * `key` 是本轮§8 加的那一维：**帧判据要自己认出"哪一格是被拖那一条"**，不能靠 UI 先查好再喂进来——
+ * UI 侧那一查（`visibleItemsInfo.firstOrNull { it.key == id }`）正是"读的是上一帧布局"的那半截成因，
+ * 把查询搬进纯函数（见 [dragFramePlan]）之后，滚动、交换、夹持三者读的才是**同一份**最新读数。
+ * 默认 null：`dragSwapStep` 那一族的夹具与判据都只量槽位几何，不认人。
+ */
+internal data class DragSlot(
+    val index: Int,
+    val offsetPx: Int,
+    val sizePx: Int,
+    val key: String? = null
+)
+
+/**
+ * 屏上那一行的身份：`index` 与 [DragSlot.index] 同轴（LazyColumn 的条目位），
+ * `originalIndex` 是**持有者列表**的下标——发重排只交这个数（与 [onReorder] 的口径一致）。
+ */
+internal data class DragRow(val index: Int, val originalIndex: Int, val id: String)
 
 /**
  * 与相邻行交换一步的结果：换到哪一个展示位，以及**交换后要从累计位移里扣掉的量**。
@@ -287,7 +314,194 @@ private fun depthSpeed(distancePx: Float, edgeZonePx: Float): Float =
     (MessageDimens.DRAG_EDGE_MAX_SPEED_PX * (1f - distancePx / edgeZonePx))
         .coerceAtLeast(MessageDimens.DRAG_EDGE_MIN_SPEED_PX)
 
-private fun LazyListItemInfo.asDragSlot() = DragSlot(index, offset, size)
+// ═══════════ §8 拖拽帧判据：滚动 / 交换 / 夹持读同一份最新布局 ═══════════
+
+/**
+ * 一帧拖拽的**全部**输入：最新那一份布局 + 当前那一份记账。
+ *
+ * 手指帧与自动滚动帧喂的是同一个类型、同一颗算式（[dragFramePlan]），于是§8 点名的两件事
+ * 在算式这一侧就没有出口：
+ * · "自动滚动只 scrollBy 并加偏移，不检查交换与被拖条目可见性" —— 滚动帧现在**必须**带着
+ *   `rows`（刚读到的 `visibleItemsInfo`）来问，问不出可见槽位就一格都不许滚；
+ * · "即时偏移补偿与旧 layoutInfo 的夹持混用" —— 位移永远相对**它自己那一份槽位**表达
+ *   （见 [DragFramePlan.landingSlot]），旧槽位在这一颗里根本读不到。
+ *
+ * [fingerY] 为 null = 这一帧没有手指事件（自动滚动帧）：速度不再重算，只维持/交回 0。
+ * [requestedScrollPx] = 这一帧想滚的量：手指帧传 0，滚动帧传那颗任务的速度。
+ */
+internal data class DragFrameInput(
+    val rows: List<DragSlot>,
+    val displayed: List<DragRow>,
+    val draggedId: String,
+    val offsetPx: Float,
+    val pendingSwapFromIndex: Int,
+    val landingSlot: DragSlot?,
+    val viewportStartPx: Int,
+    val viewportEndPx: Int,
+    val fingerY: Float?,
+    val edgeZonePx: Float,
+    val requestedScrollPx: Float,
+    val keepVisiblePx: Int
+)
+
+/**
+ * 一帧的判定结果：交回 UI 的全是"该写哪几个数、该发哪一发"，UI 侧一条判据都不留。
+ *
+ * [scrollPx] 是**整数** px（与 `LazyListItemInfo.offset` 同一档），于是"补偿 = 滚动量"逐字成立、
+ * 画位一像素都不漂；滚不动的那一截（视口预算用尽）在这一颗里就已经被截掉，不会补进位移。
+ * [offsetPx] 相对 [landingSlot]（这一帧发了交换就是新落点，否则就是滚完那一格）表达；
+ * [draggedVisible] = false 时 UI 只停、只把条目请回视口，**不**拿任何槽位继续夹或继续算补偿。
+ */
+internal data class DragFramePlan(
+    val scrollPx: Int,
+    val offsetPx: Float,
+    val reorder: Pair<Int, Int>?,
+    val pendingSwapFromIndex: Int,
+    val landingSlot: DragSlot?,
+    val speedPx: Float,
+    val draggedVisible: Boolean
+)
+
+/**
+ * 滚完这一帧之后，被拖那一格**还剩在视口里**吗（纯函数，§8 的"条目不许凭空丢"就是这一条）。
+ *
+ * LazyColumn 回收的是**布局边界**出视口的那些条目，而它看不见 `graphicsLayer` 的 translationY：
+ * 只补位移、不验槽位的那颗旧任务让被拖那一格的边界一路漂出视口，条目被虚拟化掉 ⇒
+ * 用户看到"手指底下那条不见了"（而且累计位移还挂在一个已经不存在的槽位上）。
+ * 所以每一帧的滚动量都夹在"这一格至少还留 [keepVisiblePx] 个像素在视口里"那一档预算内。
+ */
+internal fun budgetedAutoScrollPx(
+    requestedPx: Float,
+    dragged: DragSlot,
+    viewportStartPx: Int,
+    viewportEndPx: Int,
+    keepVisiblePx: Int
+): Int {
+    val requested = requestedPx.toInt()
+    if (requested == 0) return 0
+    if (viewportEndPx <= viewportStartPx) return 0
+    return if (requested > 0) {
+        // 向下滚 = 槽位往视口上沿走：下沿不许退过 start + keepVisiblePx
+        requested.coerceAtMost(
+            (dragged.offsetPx + dragged.sizePx - keepVisiblePx - viewportStartPx).coerceAtLeast(0)
+        )
+    } else {
+        // 向上滚 = 槽位往视口下沿走：上沿不许退过 end - keepVisiblePx
+        requested.coerceAtLeast(
+            (dragged.offsetPx + keepVisiblePx - viewportEndPx).coerceAtMost(0)
+        )
+    }
+}
+
+/**
+ * 拖拽一帧的唯一判据（纯函数，JVM 可逐值钉；UI 只把刚读到的那份 layoutInfo 喂进来）。
+ *
+ * 三条分支按§8 的三处缺陷各挡一档：
+ * ① **量不到被拖那一格**（被自动滚出 `visibleItemsInfo`、或列表被别处改花）⇒ 这一帧
+ *    不滚、不补、不夹、不交换，速度交回 0（那颗任务自己退出），UI 据 `draggedVisible = false`
+ *    把条目请回视口。旧写法在这里会拿着**上一帧**的槽位继续夹、继续加补偿，条目真就没了。
+ * ② **上一次交换还没落地**（[dragSwapIsSettled] 判住）⇒ 这一帧读到的槽位是交换**前**的，
+ *    滚动补偿与它混用就是"交换尚未落到实际布局时跳动"：这一帧一律不滚，位移只按
+ *    [DragFrameInput.landingSlot]（发出交换那帧预测出的落点）夹；落点也没有就原样交回，
+ *    **绝不**退回去用旧槽位夹。
+ * ③ 正常帧：滚动量先过 ① 的预算，然后整份布局按同一个量平移（滚动只搬内容、不改格序），
+ *    交换判据、补偿与视口夹持**全部**读这一份平移后的槽位 ⇒ 三者同一坐标空间、同一帧落地。
+ *    交换发出时把位移改挂到新落点上（[dragSwapStep] 交回的那笔补偿），夹持随即改按落点算，
+ *    于是"发完交换还拿旧槽位夹"这一档在算式里没有出口。
+ */
+internal fun dragFramePlan(input: DragFrameInput): DragFramePlan {
+    val dragged = input.rows.firstOrNull { it.key == input.draggedId }
+    val viewportMeasured = input.viewportEndPx > input.viewportStartPx
+    if (dragged == null || !viewportMeasured) {
+        return DragFramePlan(
+            scrollPx = 0,
+            offsetPx = input.offsetPx,
+            reorder = null,
+            pendingSwapFromIndex = input.pendingSwapFromIndex,
+            landingSlot = input.landingSlot,
+            speedPx = 0f,
+            draggedVisible = dragged != null
+        )
+    }
+    // ② 布局还没追上上一次交换：这一帧只维持手势，一格都不滚
+    if (!dragSwapIsSettled(dragged.index, input.pendingSwapFromIndex)) {
+        val landing = input.landingSlot
+        return DragFramePlan(
+            scrollPx = 0,
+            offsetPx = if (landing == null) input.offsetPx else clampDragOffsetInsideViewport(
+                offsetPx = input.offsetPx,
+                itemLayoutOffsetPx = landing.offsetPx,
+                itemSizePx = landing.sizePx,
+                viewportStartPx = input.viewportStartPx,
+                viewportEndPx = input.viewportEndPx
+            ),
+            reorder = null,
+            pendingSwapFromIndex = input.pendingSwapFromIndex,
+            landingSlot = landing,
+            // 手指帧照旧按手指位置重算；滚动帧维持原速 = 等布局追上那一格再继续滚（不停下来）
+            speedPx = input.fingerY?.let {
+                edgeAutoScrollSpeedPx(it, input.viewportStartPx, input.viewportEndPx, input.edgeZonePx)
+            } ?: input.requestedScrollPx,
+            draggedVisible = true
+        )
+    }
+    // ③ 正常帧：这一帧真滚掉的量（整数 px，滚出视口的预算之外一分都不滚）
+    val scrollPx = budgetedAutoScrollPx(
+        requestedPx = input.requestedScrollPx,
+        dragged = dragged,
+        viewportStartPx = input.viewportStartPx,
+        viewportEndPx = input.viewportEndPx,
+        keepVisiblePx = input.keepVisiblePx
+    )
+    // 整份布局一起平移：格序不变、相邻关系不变，于是交换判据与夹持读的都是**滚动后**的槽位
+    val shifted = dragged.copy(offsetPx = dragged.offsetPx - scrollPx)
+    val above = input.rows.firstOrNull { it.index == shifted.index - 1 }
+        ?.let { it.copy(offsetPx = it.offsetPx - scrollPx) }
+    val below = input.rows.firstOrNull { it.index == shifted.index + 1 }
+        ?.let { it.copy(offsetPx = it.offsetPx - scrollPx) }
+    var offsetPx = input.offsetPx + scrollPx
+    var reorder: Pair<Int, Int>? = null
+    var nextPending = -1
+    var landing: DragSlot? = null
+    val swap = dragSwapStep(shifted, offsetPx, above, below)
+    val from = input.displayed.getOrNull(shifted.index)
+    val to = swap?.let { input.displayed.getOrNull(it.newIndex) }
+    // 只有"这一格此刻确实还是被拖那一条、而且两侧都在屏上那几行里"才发重排：
+    // 相邻格是尾部备注那一行（`displayed` 读不到）时宁可不动，也不按旧下标发一次假交换
+    if (swap != null && from != null && to != null && from.id == input.draggedId) {
+        reorder = from.originalIndex to to.originalIndex
+        offsetPx += swap.offsetCompensationPx
+        nextPending = shifted.index
+        landing = DragSlot(
+            index = swap.newIndex,
+            offsetPx = shifted.offsetPx - swap.offsetCompensationPx.toInt(),
+            sizePx = shifted.sizePx,
+            key = input.draggedId
+        )
+    }
+    // 夹持按**位移所在那一格**算：发了交换就是落点，没发就是滚完的当前格（不许混旧槽位）
+    val clampAgainst = landing ?: shifted
+    val speed = input.fingerY?.let {
+        edgeAutoScrollSpeedPx(it, input.viewportStartPx, input.viewportEndPx, input.edgeZonePx)
+    } ?: if (scrollPx != 0) input.requestedScrollPx else 0f
+    return DragFramePlan(
+        scrollPx = scrollPx,
+        offsetPx = clampDragOffsetInsideViewport(
+            offsetPx = offsetPx,
+            itemLayoutOffsetPx = clampAgainst.offsetPx,
+            itemSizePx = clampAgainst.sizePx,
+            viewportStartPx = input.viewportStartPx,
+            viewportEndPx = input.viewportEndPx
+        ),
+        reorder = reorder,
+        pendingSwapFromIndex = nextPending,
+        landingSlot = landing,
+        speedPx = speed,
+        draggedVisible = true
+    )
+}
+
+private fun LazyListItemInfo.asDragSlot() = DragSlot(index, offset, size, key as? String)
 
 /**
  * 一次手势的观察结果：横向越过触控 slop 就置位。
@@ -363,7 +577,8 @@ fun MessageList(
     // ── 长按拖拽：认人靠稳定 id，画位置靠累计位移 ────────────────────────────
     // 谁在被手指控制（不是"第几格"：交换之后格号在动，id 不动）
     var draggedId by remember { mutableStateOf<String?>(null) }
-    // 这一行从它自己的布局槽位起累计走了多少 px —— 直接写进 translationY
+    // 这一行从**它自己那一份槽位**起累计走了多少 px —— 直接写进 translationY。
+    // 这一颗永远只由 [dragFramePlan] 交回的读数写（槽位与位移成对，不许各拿一份旧账）
     var dragOffsetY by remember { mutableFloatStateOf(0f) }
     // 每一次长按换一个 session 号：自动滚动那颗任务只认这一个键
     var dragSession by remember { mutableIntStateOf(0) }
@@ -371,36 +586,21 @@ fun MessageList(
     var edgeSpeedPx by remember { mutableFloatStateOf(0f) }
     // 上一次交换发出时，被拖那一条站的那一格；< 0 = 没有待落地的交换（见 [dragSwapIsSettled]）
     var pendingSwapFromIndex by remember { mutableIntStateOf(-1) }
+    // 上面那笔累计位移**挂在哪一格**上：发出交换那一帧预测出的落点槽位，布局追上之前一直用它。
+    // 它与 [pendingSwapFromIndex] 是同一件事的两半（从哪格发的 / 该落到哪格），成对写、成对清。
+    var pendingSwapLanding by remember { mutableStateOf<DragSlot?>(null) }
+
+    val density = LocalDensity.current.density
 
     val endDrag: () -> Unit = {
         draggedId = null
         edgeSpeedPx = 0f
         dragOffsetY = 0f
         pendingSwapFromIndex = -1
+        pendingSwapLanding = null
     }
 
-    // 画在手指下的那一夹回视口（长按每一记事件都过这一颗；边缘滚动那一颗靠"补偿 = 滚动量"
-    // 把画位钉在原地，不在这儿夹，理由见下面那颗任务上的记录）。
-    // 指下那颗量不到时（列表被别处改过 / 还没布局）交回速度归零——不许拿着上一帧的速度自己滚下去，
-    // 那正是"我没动、它自己跑"的那一种。
-    val clampDraggedRowIntoViewport: () -> Unit = {
-        val id = draggedId
-        val layout = listState.layoutInfo
-        val item = id?.let { key -> layout.visibleItemsInfo.firstOrNull { it.key == key } }
-        if (item == null) {
-            edgeSpeedPx = 0f
-        } else {
-            dragOffsetY = clampDragOffsetInsideViewport(
-                offsetPx = dragOffsetY,
-                itemLayoutOffsetPx = item.offset,
-                itemSizePx = item.size,
-                viewportStartPx = layout.viewportStartOffset,
-                viewportEndPx = layout.viewportEndOffset
-            )
-        }
-    }
-
-    // 同一份列表派生两件事：聊天行只有 HER/ME 两列，且**带着原始下标**——onEdit/onReorder 的
+    // 同一份列表派生两件事：聊天行只有 HER/ME 两列，且**带着原始下标**——onReorder 的
     // 口径始终是持有者那份列表的下标，过滤掉一条想法不会让编辑落到别的消息上；
     // IDEA 旧数据一律不进聊天顺序，它折进列表尾部那一行灰字（画成第三种颜色的聊天气泡
     // 是把备注冒充成对话）。
@@ -416,6 +616,58 @@ fun MessageList(
     // 长按拖拽的命中判定跑在不随重组重启的 pointerInput 里，索引映射必须每次读最新一份
     val currentDialogue by rememberUpdatedState(dialogueDisplayed)
 
+    // 被拖那一条量不到最新槽位时（被别的改动搬走、或已经滚出 visibleItemsInfo）把它请回视口：
+    // 消息不丢、手势不断。这一颗只做"搬回眼里"这一件事——夹持与补偿都不在这儿发生
+    // （[dragFramePlan] 的①那一支已经把这帧的滚动、补偿、交换全部停掉了）。
+    val dragScope = rememberCoroutineScope()
+    val reshowDraggedRow: (String) -> Unit = { id ->
+        val target = currentDialogue.indexOfFirst { it.second.id == id }
+        if (target >= 0) dragScope.launch { listState.scrollToItem(target) }
+    }
+
+    /**
+     * 拖拽一帧的唯一出口（§8）：**手指帧与自动滚动帧都只走这一颗**，判据一条都不留两处。
+     * 每次都现读 `listState.layoutInfo` 那一份（最新）布局喂进 [dragFramePlan]，于是滚动、
+     * 交换、夹持三者读的是同一帧的槽位；发出去的重排、闸门键与落点都只在这一颗里写。
+     *
+     * [fingerY] 传 null = 这一帧没有手指事件（自动滚动帧）：速度由那颗任务维持，不在这里重算。
+     * 交回这一帧真该滚的量（整数 px），只有那颗任务用它去 `scrollBy`。
+     */
+    val runDragFrame: (Float?, Float) -> Int = { fingerY, requestedScrollPx ->
+        val id = draggedId
+        val layout = listState.layoutInfo
+        val plan = dragFramePlan(
+            DragFrameInput(
+                rows = layout.visibleItemsInfo.map { it.asDragSlot() },
+                displayed = currentDialogue.mapIndexed { position, pair ->
+                    DragRow(index = position, originalIndex = pair.first, id = pair.second.id)
+                },
+                draggedId = id.orEmpty(),
+                offsetPx = dragOffsetY,
+                pendingSwapFromIndex = pendingSwapFromIndex,
+                landingSlot = pendingSwapLanding,
+                viewportStartPx = layout.viewportStartOffset,
+                viewportEndPx = layout.viewportEndOffset,
+                fingerY = fingerY,
+                edgeZonePx = MessageDimens.DRAG_EDGE_ZONE_DP * density,
+                requestedScrollPx = requestedScrollPx,
+                keepVisiblePx = (MESSAGE_DRAG_KEEP_VISIBLE_DP * density).toInt()
+            )
+        )
+        // 位移只吃算式交回的那一个数（滚动补偿、交换补偿与视口夹持都在里头按同一帧槽位算好了）
+        dragOffsetY = plan.offsetPx
+        pendingSwapFromIndex = plan.pendingSwapFromIndex
+        pendingSwapLanding = plan.landingSlot
+        plan.reorder?.let { (from, to) ->
+            onReorder(from, to)
+            haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+        }
+        edgeSpeedPx = plan.speedPx
+        // ①"条目凭空丢"这一档：量不到最新槽位 ⇒ 不拿旧布局继续算，改为把被拖那一条搬回视口
+        if (!plan.draggedVisible && id != null) reshowDraggedRow(id)
+        plan.scrollPx
+    }
+
     // 自动滚动到最新消息：只在用户已接近底部时触发，避免翻看历史时被强制拉回底部
     LaunchedEffect(messages.size) {
         if (dialogueDisplayed.isNotEmpty()) {
@@ -427,18 +679,18 @@ fun MessageList(
     }
 
     // 边缘自动滚动的**唯一**一颗任务：速度变了就重启（上一颗随之取消），速度归零就退出。
-    // 滚出去多少才补偿多少——滚不动（已经到顶/到底）时一分都不补，被拖行不会自己飘走。
-    // 这一颗**只补位移、不夹视口**：`layoutInfo` 要到下一次布局才反映刚滚掉的那一截，
-    // 在这儿夹一次会拿旧槽位算新边界，画出来的位置每帧漂一格；夹的活由 [clampDragOffsetInsideViewport]
-    // 在每一记手指事件上做（那里读到的就是上一帧的布局），而"补偿 = 滚动量"这一条本来就把
-    // 画出来的位置钉在原地，视口内进得来的、滚动中也出不去。
-    // 循环条件带"还在拖 + 还在边缘"：手指抬了、或者那颗已经归零，就不许再多滚一帧。
+    // 每一帧都先过 [runDragFrame]：滚多少、被拖那一格此刻还看不看得见、这一帧该不该发交换、
+    // 位移该挂在哪一格上夹回视口，全是那一颗**读最新那一份 layoutInfo** 之后交回的读数。
+    // 旧写法在这一颗里只 `scrollBy` + 加偏移：条目被滚出 `visibleItemsInfo` 还在继续补、继续拿
+    // 上一帧的槽位算账（=§8 点名的第一处缺陷），交换更要等下一次手指事件才纠错（第二处）。
+    // 滚不动的那一截（列表已到顶/到底）按**真滚掉的量**退回来：补偿永远等于实际滚动量，画位不漂。
+    // 循环条件带"还在拖 + 还在边缘"：手指抬了、那颗归零、或被拖那一条量不到，都不许再多滚一帧。
     LaunchedEffect(dragSession, edgeSpeedPx) {
-        val speed = edgeSpeedPx
-        if (speed == 0f) return@LaunchedEffect
+        if (edgeSpeedPx == 0f) return@LaunchedEffect
         while (draggedId != null && edgeSpeedPx != 0f) {
-            val scrolled = listState.scrollBy(speed)
-            dragOffsetY += scrolled
+            val planned = runDragFrame(null, edgeSpeedPx)
+            val scrolled = if (planned != 0) listState.scrollBy(planned.toFloat()) else 0f
+            if (scrolled != planned.toFloat()) dragOffsetY += scrolled - planned
             delay(MessageDimens.DRAG_SCROLL_FRAME_MS)
         }
     }
@@ -561,6 +813,7 @@ fun MessageList(
                                 dragOffsetY = 0f
                                 edgeSpeedPx = 0f
                                 pendingSwapFromIndex = -1
+                                pendingSwapLanding = null
                                 dragSession++
                                 // 长按这一下手震一次；此后只在真的换了一格时再震（不每像素震）
                                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -568,52 +821,14 @@ fun MessageList(
                         },
                         onDrag = { change, dragAmount ->
                             change.consume()
-                            val id = draggedId ?: return@detectDragGesturesAfterLongPress
+                            if (draggedId == null) return@detectDragGesturesAfterLongPress
                             // ① 先按手指走：这一帧的位移原样累加，不"等交换了才动"
                             dragOffsetY += dragAmount.y
-
-                            val layout = listState.layoutInfo
-                            val items = layout.visibleItemsInfo
-                            val draggedItem = items.firstOrNull { it.key == id }
-                            if (draggedItem != null) {
-                                val slot = draggedItem.asDragSlot()
-                                // 布局追上上一次交换了才接着发：还站在发那次交换的那一格 = 列表还没重组，
-                                // 这一帧既不发第二次重排、也**不扣补偿**（扣了就是凭空瞬移）
-                                if (dragSwapIsSettled(slot.index, pendingSwapFromIndex)) {
-                                    pendingSwapFromIndex = -1
-                                }
-                                val swap = dragSwapStep(
-                                    dragged = slot,
-                                    offsetPx = dragOffsetY,
-                                    above = items.firstOrNull { it.index == slot.index - 1 }?.asDragSlot(),
-                                    below = items.firstOrNull { it.index == slot.index + 1 }?.asDragSlot()
-                                )
-                                val shown = currentDialogue
-                                val fromPair = shown.getOrNull(slot.index)
-                                val toPair = swap?.let { shown.getOrNull(it.newIndex) }
-                                // 只有"这一格此刻确实还是被拖那一条"才发重排：列表还没追上上一次交换时
-                                // 映射是旧的，那种帧宁可不动作，也不按旧下标发一次假的重排
-                                if (swap != null && pendingSwapFromIndex < 0 &&
-                                    fromPair != null && toPair != null &&
-                                    fromPair.second.id == id
-                                ) {
-                                    onReorder(fromPair.first, toPair.first)
-                                    pendingSwapFromIndex = slot.index
-                                    // ② 扣掉交换产生的布局偏移：画在手指下的位置一步都不跳
-                                    dragOffsetY += swap.offsetCompensationPx
-                                    haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                                }
-                                // ③ 边缘速度只写这一个数，滚动交给那一颗唯一任务
-                                edgeSpeedPx = edgeAutoScrollSpeedPx(
-                                    fingerY = change.position.y,
-                                    viewportStartPx = layout.viewportStartOffset,
-                                    viewportEndPx = layout.viewportEndOffset,
-                                    edgeZonePx = MessageDimens.DRAG_EDGE_ZONE_DP * density
-                                )
-                            }
-                            // ④ 最后把画出来的那一夹回视口：手指划到列表外面（备注行、输入区）时
-                            // 长按仍收得到事件，不夹这条就是"消息飞出屏幕"
-                            clampDraggedRowIntoViewport()
+                            // ② 剩下的全是那一颗帧算式的事：现读最新一份布局，在同一坐标空间里
+                            //    判交换（含补偿）、把位移夹回视口、算边缘速度。手指帧不滚（传 0），
+                            //    但读的是与滚动帧**同一颗** [dragFramePlan] ⇒ 没有"只在手指事件里
+                            //    拿上一帧布局夹一次"这种半截账了。
+                            runDragFrame(change.position.y, 0f)
                         },
                         onDragEnd = { endDrag() },
                         onDragCancel = { endDrag() }

@@ -364,63 +364,68 @@ class MessageListDragOrderTest {
     }
 
     /**
-     * 两处写 `dragOffsetY` 的分支里，**只有手指那一半夹视口**：
-     * 边缘滚动那一半靠"补偿 = 滚动量"把画位钉在原地，而 `layoutInfo` 要到下一次布局才反映
-     * 刚滚掉的那一截，在它里面夹会拿旧槽位算新边界、每帧漂一格（这是另一种"不跟手"）。
-     * 反例：夹持从长按那一支摘掉 ⇒ 第二句红（手指划出列表就是飞出屏幕）；
-     * 反例：在自动滚动那颗里也夹 ⇒ 第三句红；
-     * 反例：夹持的调用写了两处 ⇒ 第一句红（同一件事两本账）。
+     * §8 之后这一族的形状变了，这一格跟着改口径（旧格写的是"只有手指那一半夹视口"）：
+     * 夹持算式现在**每一帧**都要跑（手指帧 + 自动滚动帧），但两处都只经同一颗 [dragFramePlan]，
+     * 所以调用点全部落在纯函数里面，composable 里一次都不许有——
+     * 旧写法在 composable 里另读一份 `layoutInfo` 夹一次，读的就是上一帧的布局，
+     * 而那正是表行点名的"交换后仍混用旧布局夹持"。
+     * 反例：把夹持抄回 UI 侧（两处各算一遍）⇒ 第一、二句红；
+     * 反例：滚动那颗任务又开始自己 `scrollBy(speed)` ⇒ 第三句红（旧那颗任务的形状）。
+     * ⚠ 逐值的接线尺在 `MessageListDragScrollFrameTest`，这里只留"谁都不许另算一遍"这一条。
      */
     @Test
-    fun `the viewport clamp sits on the finger branch and nowhere else`() {
+    fun `the viewport clamp lives inside the frame plan and nowhere in the ui`() {
         val clampCalls = messageListSource.lines()
             .filter { "clampDragOffsetInsideViewport(" in it && "internal fun" !in it }
-        assertEquals("夹持算式的调用只该有一处，实到：" + clampCalls, 1, clampCalls.size)
-
-        val helperAt = messageListSource.indexOf("clampDraggedRowIntoViewport()")
-        assertTrue("读不到夹持那一颗 helper 的调用（这一族已经改形状，这把尺要重写）", helperAt >= 0)
-        val helperCalls = messageListSource.split("clampDraggedRowIntoViewport()").size - 1
-        assertEquals("夹持那颗 helper 的调用只许一处（实到 $helperCalls 处）", 1, helperCalls)
-        assertTrue(
-            "那一处必须落在长按起势之后的手指事件里（onDrag 与 onDragEnd 之间）：" +
-                "onDrag 在 ${messageListSource.lastIndexOf("onDrag =")}、" +
-                "onDragEnd 在 ${messageListSource.indexOf("onDragEnd =")}",
-            helperAt > messageListSource.lastIndexOf("onDrag =") &&
-                helperAt < messageListSource.indexOf("onDragEnd =")
-        )
+        assertTrue("夹持算式必须还在（一处都不许多），实到：" + clampCalls, clampCalls.isNotEmpty())
+        val planStart = messageListSource.indexOf("internal fun dragFramePlan(")
+        val planEnd = messageListSource.indexOf("private fun LazyListItemInfo.asDragSlot()")
+        assertTrue("读不到帧判据本体（$planStart→$planEnd），这把尺没咬住东西", planEnd > planStart + 100)
+        clampCalls.forEach {
+            assertTrue("夹持调用必须落在帧判据里（抄回 UI 侧就是拿上一帧布局夹）：" + it.take(60),
+                messageListSource.indexOf(it) in planStart..planEnd)
+        }
+        assertTrue("composable 里不许再自己读一份布局来夹（那一颗 helper 已经并进帧判据）",
+            "clampDraggedRowIntoViewport" !in messageListSource)
 
         val taskAt = messageListSource.indexOf("LaunchedEffect(dragSession")
-        val task = messageListSource.substring(taskAt, (taskAt + 600).coerceAtMost(messageListSource.length))
-        assertTrue("边缘滚动那一颗必须补滚动量（不补就被拖行脱离手指）：" + task.take(240),
-            "dragOffsetY += scrolled" in task)
-        assertFalse("但那一颗不许自己夹视口（拿旧槽位算新边界 = 每帧漂一格）：" + task.take(240),
-            "clampDraggedRowIntoViewport()" in task)
+        val task = messageListSource.substring(taskAt, (taskAt + 700).coerceAtMost(messageListSource.length))
+        assertTrue("那颗任务必须只滚帧判据交回的量（旧写法是自己拿速度滚）：" + task.take(320),
+            "scrollBy(planned.toFloat())" in task && "runDragFrame(null, edgeSpeedPx)" in task)
+        assertFalse("旧那颗任务的形状不许回来（自己拿速度滚 = 不看被拖那一格还在不在）：" + task.take(320),
+            "scrollBy(speed)" in task)
     }
 
     /**
-     * 发重排那一支必须带着"落地闸门"，而且闸门键与发出的那一发**同时**写：
+     * 发重排那一支必须仍带着"落地闸门"，而且闸门键与发出的那一发**同时**写。
+     * §8 之后这些判据都在 [dragFramePlan] 里（UI 只把算式交回的数写回状态），这一格判的是
+     * "判据没有被搬回 UI 侧手抄一遍"：
      * 反例：闸门摘掉 ⇒ 上面时间线那一格先红，这一格再把"闸门只在纯函数那一侧"钉住；
-     * 反例：闸门写成 UI 里的手抄算式 ⇒ 第二句红（判据没法逐值钉）；
-     * 反例：发了重排却不置闸门键（或置成别的下标）⇒ 第三句红（重复那一发又没人挡）。
+     * 反例：发了重排却不交回闸门键 ⇒ 第三句红（重复那一发又没人挡）；
+     * 反例：交换的补偿改由 UI 自己扣 ⇒ 第四句红（同一件事两本账）。
      */
     @Test
     fun `the reorder commit runs through the settle predicate`() {
         val gateLines = messageListSource.lines()
             .filter { "dragSwapIsSettled(" in it && "internal fun" !in it }
-        assertEquals("闸门调用只该有一处（长按那一支），实到：" + gateLines, 1, gateLines.size)
+        assertEquals("闸门调用只该有一处（帧判据里），实到：" + gateLines, 1, gateLines.size)
         assertTrue("闸门本体必须是纯函数（这样它才能被逐值钉，而不是只能对着手势猜）",
             messageListSource.contains("internal fun dragSwapIsSettled("))
-
-        val onReorderAt = messageListSource.indexOf("onReorder(fromPair.first, toPair.first)")
-        assertTrue("读不到发重排那一句（这一族已经改形状，这把尺要重写）", onReorderAt >= 0)
-        val after = messageListSource.substring(onReorderAt,
-            (onReorderAt + 400).coerceAtMost(messageListSource.length))
-        assertTrue("发出交换的同一段里必须同时把闸门键置上（不置就是没人挡重复那一发）：" + after.take(200),
-            "pendingSwapFromIndex = slot.index" in after)
-        assertTrue("同一段也要扣交换产生的布局偏移（扣了才不瞬移）：" + after.take(200),
-            "dragOffsetY += swap.offsetCompensationPx" in after)
-        assertTrue("闸门参与发送条件：" + messageListSource.lines().filter { "pendingSwapFromIndex < 0" in it },
-            messageListSource.contains("pendingSwapFromIndex < 0"))
+        val planBody = messageListSource.substring(
+            messageListSource.indexOf("internal fun dragFramePlan("),
+            messageListSource.indexOf("private fun LazyListItemInfo.asDragSlot()")
+        )
+        assertTrue("闸门必须真的挡住发送条件（帧判据里读不到这一句就是被摘了）：" +
+                planBody.lines().filter { "dragSwapIsSettled(" in it },
+            planBody.contains("if (!dragSwapIsSettled(dragged.index, input.pendingSwapFromIndex))"))
+        assertTrue("补偿必须由帧判据扣进位移（UI 侧不许再写一笔）：" +
+                planBody.lines().filter { "offsetPx += swap.offsetCompensationPx" in it },
+            planBody.contains("offsetPx += swap.offsetCompensationPx"))
+        assertTrue("发出的那一发连着交回闸门键与落点（缺一样就是重复那一发没人挡）",
+            planBody.contains("nextPending = shifted.index") && planBody.contains("landing = DragSlot("))
+        assertTrue("UI 只吃算式交回的那一对原始下标：" +
+                messageListSource.lines().filter { "onReorder(" in it },
+            messageListSource.contains("onReorder(from, to)"))
     }
 
     /**
