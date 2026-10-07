@@ -1,5 +1,10 @@
 package com.lovebrain.app.ui.panel
 
+import android.view.KeyEvent
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.OnBackPressedDispatcherOwner
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -27,6 +32,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -34,6 +41,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.PanelBackdropOpacity
 import com.lovebrain.app.R
@@ -42,7 +51,6 @@ import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.GenerateResult
-import com.lovebrain.app.model.IntentStatus
 import com.lovebrain.app.model.ProactiveOption
 import kotlinx.coroutines.delay
 import com.lovebrain.app.ui.panel.counseling.CounselingPanel
@@ -54,6 +62,7 @@ import com.lovebrain.app.ui.panel.settings.LoveBrainSettingsContent
 import com.lovebrain.app.ui.panel.stats.UsageStatBar
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
+import com.lovebrain.app.domain.IntentPolicy
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 import com.lovebrain.app.viewmodel.costReadout
 import com.lovebrain.app.model.ComposerMode
@@ -92,6 +101,43 @@ private object PanelDimens {
 }
 
 private val OnboardGuideLineHeight = 20.sp
+
+/**
+ * 那三条**只有"进入编辑"信号、没有失焦信号**的输入路（§12.2）。
+ *
+ * 名字就是宿主 `PanelInputFocusOwner.activeInputId` 里记着的那三颗字面量——它们各自经
+ * `onInputIntent("settings")` / `("intent_editor")` / `("scheme_adjust")` 进 EDITING，
+ * 但那条链上只有 `LbFieldInput` 的 `onInputIntent`，没有 `onFocusChange`，
+ * 所以焦点走了也没人替它报一声（对照「reply / counseling」两格：那两格自己会报）。
+ * 面板交接那一句因此要把这三颗逐条点名一次：宿主的 `onInputFocusChanged(id, false)`
+ * 按 `activeInputId` 认人，不是它记着的那一颗就直接 return ⇒ 多发的是空操作，
+ * 不会误关别处的编辑态。
+ *
+ * ⚠ 这三颗的名字**不许**在这里单方面改：改法在各自主人那一格（本轮不许碰那几个文件），
+ * 正解是那三条链把失焦也接上（接线单在账上），接上之后这一份名单就该清空。
+ */
+private val NON_REPORTING_INPUT_IDS = listOf("settings", "intent_editor", "scheme_adjust")
+
+/**
+ * 本屏自己那份 `OnBackPressedDispatcherOwner`（§12.2「返回键先退输入」）。
+ *
+ * 为什么必须有这一颗、而且只能住在这一屏：宿主是 Service 不是 Activity，
+ * `OverlayWindowHost.newComposeView()` 挂的三颗 owner 里没有 OnBackPressedDispatcher 那一颗，
+ * `LocalOnBackPressedDispatcherOwner` 的默认值因此交回 null，而 activity-compose 1.9.0 的
+ * `BackHandler` 拿到 null 走的是 `throw IllegalStateException` 那一条
+ * （对着 `BackHandlerKt` 字节码核过，null 分支是 athrow，不是记一条日志）⇒
+ * 只写 `BackHandler` 会让整扇面板起不来，不是"接不上"。
+ *
+ * 生命周期交的是 **Service 那一颗**（`onStartCommand` 末尾已经落到 RESUMED）：
+ * `BackHandler` 走的 `addCallback(owner, callback)` 按生命周期决定启用与否，停在 CREATED
+ * 的话那颗回调永远是禁用态，返回键同样不会响。
+ *
+ * 本类不判断任何按键：吞不吞那一句由 `LoveBrainPanelScreen` 里 `hasEnabledCallbacks()` 那一格判。
+ */
+private class PanelBackPressedOwner(
+    override val lifecycle: Lifecycle,
+    override val onBackPressedDispatcher: OnBackPressedDispatcher
+) : OnBackPressedDispatcherOwner
 
 /**
  * 这一屏"哪一面在上面"与那一层背景浓度的**视图态持有者**。
@@ -154,6 +200,9 @@ private fun PanelSettingsPage(
     // · 拨开关 / 改正文（recomputeExpiry=false）：传**已有 expiryDate**，
     //   [IntentPolicy.effectiveExpiryDate] 保留它，不把计时重置；
     // · 换有效期档（recomputeExpiry=true）：传空串触发按新档重算到期时刻。
+    // 判据不在这一格写：三条规则（重新启用 / 重新选有效时间 / 只改正文）在
+    // [IntentPolicy.saveDecision] 那一颗纯函数里，设置页与编辑浮层两条路共用它，
+    // 也才可在 JVM 上直接证伪。
     val intentConfig by viewModel.intents.config.collectAsStateWithLifecycle()
     val activeKb by viewModel.activeKb.collectAsStateWithLifecycle()
     // §10.3：改用 StateFlow 收集——设置一直打开时新建/改名后也能收到最新列表
@@ -171,24 +220,19 @@ private fun PanelSettingsPage(
         intentText = intentConfig.text,
         intentExpiry = intentConfig.expiry,
         onIntentChange = { text, enabled, expiry, recompute ->
-            // §10.2: 完成/到期后重新启用或重新选有效时间时恢复 ACTIVE
-            val wasTerminal = intentConfig.status == IntentStatus.COMPLETED ||
-                intentConfig.status == IntentStatus.EXPIRED
-            val effectiveStatus = when {
-                // 重新启用（从关到开）或换有效期档且旧 status 是终态 → 恢复 ACTIVE
-                (enabled && !intentConfig.enabled) || (recompute && wasTerminal) -> IntentStatus.ACTIVE
-                else -> intentConfig.status
-            }
-            // 重新启用到期意图时必须重算期限：旧 expiryDate 已是过去时刻，
-            // 不重算会立刻被 shouldAutoExpire 判过期 → "重新开启后立即失效"。
-            // 换档（recompute=true）本来就传空串触发重算；
-            // 从终态重新启用（wasTerminal && enabled 刚变 true）即使没换档也要传空串。
-            val mustRecomputeExpiry = recompute ||
-                (wasTerminal && enabled && !intentConfig.enabled)
+            val decision = IntentPolicy.saveDecision(
+                current = intentConfig,
+                nextEnabled = enabled,
+                nextExpiry = expiry,
+                callerRequestedRecompute = recompute
+            )
             viewModel.intents.save(
                 text, enabled, expiry,
-                if (mustRecomputeExpiry) "" else intentConfig.expiryDate,
-                effectiveStatus
+                // 到期意图重新开启必须重算期限：旧 expiryDate 已是过去的时刻，
+                // 带着它落盘下一刻就被 shouldAutoExpire 判回 EXPIRED（"重开即失效"）。
+                // 只改正文那一路逐字保留原时刻，不每按一键续期。
+                if (decision.recomputeExpiry) "" else intentConfig.expiryDate,
+                decision.status
             )
         },
         knowledgeBases = kbList,
@@ -351,8 +395,30 @@ fun LoveBrainPanelScreen(
     }
 
     val focusManager = LocalFocusManager.current
+    val keyboard = LocalSoftwareKeyboardController.current
+    // ── 宿主失焦交接的**唯一出口**（§12.2「输入焦点生命周期」）──────────────────
+    // 一次交接同时做三件事，顺序不许倒，也不许在别处再拼第二份：
+    // 1. `keyboard?.hide()`——收输入法。悬浮窗在 EDITING 那一档时输入法挂在**窗口 token** 上，
+    //    只把 Compose 焦点交回去不保证键盘自己收（旧版这三处只"交出"、从不"收键盘"）。
+    // 2. `focusManager.clearFocus(force = true)`——交回 Compose 焦点。`force` 才动得了用户
+    //    正在打字那一颗**主动**焦点；不带 force 的 clearFocus 只清非主动焦点，等于什么都没交。
+    // 3. 把那三条**只有"进入编辑"信号、没有失焦信号**的路逐条点名给宿主
+    //    （[NON_REPORTING_INPUT_IDS]）：`PanelInputFocusOwner.onInputFocusChanged` 按
+    //    `activeInputId` 认人——不是它记着的那一格就直接 return，所以多发的那几句是空操作，
+    //    不会误关别处的编辑态；而真的由这三条路之一进的那一次编辑，这一刻就落回 PASSIVE。
+    //    「reply / counseling」两格不需要这一句：它们自己 `onFocusChanged(false)` 就会报（见上面）。
+    // `rememberUpdatedState` 交出去的是**当下这一份**接线：切页/关层那些 `LaunchedEffect`
+    // 的 key 变了也不会拿第一次组合的旧 lambda 去调新的宿主回调。
+    val handOffInput: () -> Unit = {
+        keyboard?.hide()
+        focusManager.clearFocus(force = true)
+        NON_REPORTING_INPUT_IDS.forEach { onInputFocusChange(it, false) }
+    }
+    val currentHandOffInput by rememberUpdatedState(handOffInput)
     DisposableEffect(onClearComposeFocus) {
-        onClearComposeFocus { focusManager.clearFocus() }
+        // 宿主那一条 releaseInput 链（外点 / 收起 / 销毁）反过来要面板交焦点：
+        // 同一个出口，不再在这里单独写一次不带 force 的 clearFocus。
+        onClearComposeFocus { currentHandOffInput() }
         onDispose { }
     }
 
@@ -360,12 +426,11 @@ fun LoveBrainPanelScreen(
     // 于是同一棵树里**同时**挂着回复那格的 `PanelTextInput` 与谈心那格的 `BasicTextField`——
     // 不交接的话，用户已经滑到谈心那一面，键盘与 `PanelInputFocusOwner.activeInputId`
     // 还停在 "reply" 那根光标上（窗口 flags 也还挂在 EDITING，服务侧据此决定软键盘）。
-    // 这一句只做**交出**：焦点一交回，两格各自的 `onFocusChanged(false)` 会把 activeInputId
-    // 清空、窗口落回 PASSIVE、IME 收起。**不**替下一页抢焦点——抢了就是"滑一下键盘自己弹出来"，
+    // 这一句只做**交出**：不替下一页抢焦点——抢了就是"滑一下键盘自己弹出来"，
     // 那是用户没要求的第二件事；他要在那一面打字就点那一面的输入框（原有的直接获焦路径）。
-    // 首次组合也会走这一句，那时没有任何焦点，`clearFocus` 是空操作。
+    // 首次组合也会走这一句，那时没有任何焦点，`clearFocus` 与 `hide` 都是空操作。
     LaunchedEffect(panelMode) {
-        focusManager.clearFocus(force = true)
+        currentHandOffInput()
     }
 
     // ── 宿主失焦交接（§12.2 补完）─────────────────────────────────────────
@@ -377,25 +442,72 @@ fun LoveBrainPanelScreen(
     //
     // `surface.settingsOpen` 一翻就清一次：打开时主面那几颗输入框被盖在下层、
     // 不该继续持焦；关闭时设置页那一排输入框跟着退场、也不该留着。
-    // `force = true` 是因为 Compose 默认 `clearFocus` 只清"非主动"焦点，
-    // 用户正在打字那一颗是主动焦点，不清掉它 IME 就不会收。
     LaunchedEffect(surface.settingsOpen) {
-        focusManager.clearFocus(force = true)
+        currentHandOffInput()
     }
 
     // 意图编辑器关闭时同样交出焦点——LbModalSheet 的退场动画跑完之后，
-    // 编辑器里那颗 LbFieldInput 仍可能持焦，不清就会留一个看不见的输入框
-    // 挂着 EDITING。`showIntentEditor` 从 true→false 时清一次。
+    // 编辑器里那颗 LbFieldInput 仍可能持焦，不清就会留一个看不见的输入框挂着 EDITING。
+    // `showIntentEditor` 从 true→false 时清一次。
     LaunchedEffect(showIntentEditor) {
         if (!showIntentEditor) {
-            focusManager.clearFocus(force = true)
+            currentHandOffInput()
         }
     }
 
-    // 面板背景浓度送进子树的**唯一**一处接线：只包这一层 provider，里面每一行原样不动。
+    // **返回键 = 先退出输入**（§12.2 缺的那一环，`BackHandler` 这一颗在本屏是**必须自己造 owner**
+    // 才活得成的那一格）。收到这一下之后做三件事：收键盘、交回 Compose 焦点、点名宿主落回
+    // PASSIVE（全走上面那颗唯一出口 `handOffInput`，不在这里再拼一份），然后只把**意图编辑那一扇**
+    // 关掉（与它 X / 遮罩那两条出口同一句 `dismissEditor`）。
+    // 不关整扇面板、不切页、不碰设置页：那些各有自己的所有者（`onCollapse` / 齿轮那扇门）。
+    //
+    // ⚠ 为什么这一格要自己提供一份 `OnBackPressedDispatcherOwner`，而不是像 Activity 那几屏
+    //   直接写 `BackHandler { }`：这一屏的宿主是 Service 不是 Activity，而
+    //   `OverlayWindowHost.newComposeView()` 只挂了 Lifecycle / ViewModelStore / SavedState
+    //   三颗 owner——**没有这一颗**。`LocalOnBackPressedDispatcherOwner` 的默认值沿 ViewTree
+    //   找不到它就交回 null，activity-compose 1.9.0 的 `BackHandler` 走到的是
+    //   `throw IllegalStateException("No OnBackPressedDispatcherOwner was provided …")`
+    //   （本机对着 `BackHandlerKt` 的字节码核过：null 分支是 athrow，不是记日志）。
+    //   ⇒ 光写 `BackHandler` 不是"接不上"，是**整扇面板起不来**。这一颗 owner 与那颗泵按键的
+    //   监听都必须住在这一屏里：窗口的 flags、协程作用域、其余三颗 owner 归别人管，本轮不许碰。
+    // ⚠ 泵这一颗的是 `View.setOnKeyListener`：输入法还开着时，按键先走
+    //   `View.dispatchKeyEventPreIme` 那一站，而 AOSP 在那一站只认宿主 view 上挂着的
+    //   OnKeyListener（且只认 KEYCODE_BACK）；本屏根 view 就是这扇窗的 `mView` ⇒ 这一站收得到。
+    //   只有窗口在 EDITING 才收得到按键（PASSIVE 挂着 NOT_FOCUSABLE），所以"收到返回键"
+    //   那一刻必然正在输入 ⇒ 吞下这一对动作就是把"退输入"做完，不替宿主 App 抢别的返回语义。
+    //   `hasEnabledCallbacks()` 为假（回调被生命周期关掉那一刻）就不吞，原样交回系统。
+    val panelRootView = LocalView.current
+    val backDispatcher = remember { OnBackPressedDispatcher() }
+    val panelLifecycleOwner = LocalLifecycleOwner.current
+    val backOwner = remember(backDispatcher, panelLifecycleOwner) {
+        PanelBackPressedOwner(panelLifecycleOwner.lifecycle, backDispatcher)
+    }
+    DisposableEffect(panelRootView, backDispatcher) {
+        panelRootView.setOnKeyListener { _, keyCode, event ->
+            if (keyCode != KeyEvent.KEYCODE_BACK || !backDispatcher.hasEnabledCallbacks()) {
+                return@setOnKeyListener false
+            }
+            // DOWN 与 UP 一起吞，只在 UP 那一下真的退输入：只吞一半会让这一对动作残缺
+            if (event.action == KeyEvent.ACTION_UP) backDispatcher.onBackPressed()
+            true
+        }
+        onDispose { panelRootView.setOnKeyListener(null) }
+    }
+
+    // 面板背景浓度与**返回键 owner** 送进子树的唯一一处接线：只包这一层 provider，里面每一行原样不动。
     // 这棵子树里的大面积卡片经 `panelBackdropCardColor()` 读浓度（换算口仍是
     // `PanelBackdropOpacity`，这里不提供数字）；面板底那一层照旧直接读 `surface.backdropPercent`。
-    CompositionLocalProvider(LocalPanelBackdropDensity provides surface.backdropPercent) {
+    // `LocalOnBackPressedDispatcherOwner` 必须与浓度同一层 provider：`BackHandler` 读的是
+    // 它**所在位置**的那份值，写在下面这层 provider 之外就还是那颗会抛的 null。
+    CompositionLocalProvider(
+        LocalPanelBackdropDensity provides surface.backdropPercent,
+        LocalOnBackPressedDispatcherOwner provides backOwner
+    ) {
+    // 返回键那一句的正文住在这里（见上面那段：出了这层 provider 就拿不到本屏那份 owner）
+    BackHandler {
+        currentHandOffInput()
+        if (showIntentEditor) viewModel.intents.dismissEditor()
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -883,8 +995,24 @@ fun LoveBrainPanelScreen(
                 expiryDate = intentConfig.expiryDate,
                 status = intentConfig.status,
                 visible = showIntentEditor,
-                onSave = { text, enabled, expiry, expiryDate, status ->
-                    viewModel.intents.save(text, enabled, expiry, expiryDate, status)
+                onSave = { text, enabled, expiry, _, status ->
+                    // 编辑浮层这一路与设置页同一份判据（§10.2）：
+                    // · 到期/完成后在浮层里重新拨开 → 状态恢复 ACTIVE **且**重算期限，
+                    //   旧实现把浮层那份旧 status 原样传下去 ⇒ 重开之后仍是不注入的那一格；
+                    // · 只改了正文（没动开关也没换档）→ 原到期时刻逐字保留，
+                    //   旧实现每次都传空串 ⇒ 每存一次就续一次期。
+                    // 浮层自己交来的 expiryDate 一律不用（那颗恒为空串），由这一格按判据选。
+                    val decision = IntentPolicy.saveDecision(
+                        current = intentConfig,
+                        nextEnabled = enabled,
+                        nextExpiry = expiry,
+                        nextStatus = status
+                    )
+                    viewModel.intents.save(
+                        text, enabled, expiry,
+                        if (decision.recomputeExpiry) "" else intentConfig.expiryDate,
+                        decision.status
+                    )
                 },
                 onDismiss = { viewModel.intents.dismissEditor() },
                 onInputIntent = { onInputIntent("intent_editor") }

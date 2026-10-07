@@ -42,8 +42,9 @@ object IntentPolicy {
      * 时间档的到期时刻——已有就保留，没有就算。
      *
      * 保留是为了：文本编辑 / 开关切换这种"没换有效期档"的保存不该把计时重置——
-     * 每按一键就把"一天"续到此刻+1天，意图就永远不过期了。换档时 UI 传空串触发重算，
-     * 编辑浮层保存也传空串（那是一次"重新设一条意图"的操作）。
+     * 每按一键就把"一天"续到此刻+1天，意图就永远不过期了。哪些保存该重算由
+     * [saveDecision] 判（重新启用、重新选有效时间两类），UI 按那颗 `recomputeExpiry`
+     * 决定传空串还是传已有时刻——设置页与意图编辑浮层两条路共用同一份判据。
      * COMPLETED 不带日期。
      */
     fun effectiveExpiryDate(expiry: IntentExpiry, expiryDate: String, now: String): String {
@@ -66,6 +67,59 @@ object IntentPolicy {
      */
     fun effectiveStatus(expiry: IntentExpiry, status: IntentStatus): IntentStatus =
         if (expiry == IntentExpiry.COMPLETED) IntentStatus.COMPLETED else status
+
+    /**
+     * 一次「保存意图改动」的决议：状态落到哪一格 + 到期时刻要不要按此刻重算。
+     *
+     * 变化理由只有一条：**用户这一刻动的是哪一根**。三条判据（原话 §10.2）：
+     * · **重新启用**（关 → 开，到期/完成后的重开就走这一条）⇒ **必须重算**。
+     *   旧 `expiryDate` 在被标 EXPIRED 那一刻就已经是过去的时刻，带着它落盘，下一次
+     *   [shouldAutoExpire] 立刻把它判回 EXPIRED——"重新开启后立即失效"就是这一条形状。
+     * · **重新选有效时间**（换了有效期档，或 UI 点名要重算）⇒ 同样重算；
+     *   旧状态是终态（COMPLETED / EXPIRED）时一并恢复 ACTIVE，否则重开之后仍然不注入。
+     * · **只改正文 / 只拨关**⇒ 期限逐字不动（[recomputeExpiry] = false，调用方原样把
+     *   已有 `expiryDate` 交回）。每按一键就按"此刻 + 一天"续期，意图就永远不过期了。
+     *
+     * 两条不许越界的地方：
+     * - 恢复 ACTIVE 只在**这一条真的被启用**时发生：开关还拨着关就不改状态，
+     *   也不许把终态洗成活动态；
+     * - 用户**这一次明确点成「已完成」**（[nextStatus] 从别档改成 COMPLETED，或有效期
+     *   从时间档换到 COMPLETED 档）永远压过"恢复 ACTIVE"——完成是状态动作，不是重新启用。
+     *   ⚠ 认的是**这次改动**，不是那份原样传回来的旧值：已完成过的意图被重新拨开时，
+     *   调用方传回的 status 仍是 COMPLETED（编辑浮层就带着旧值回来），那种"带着"不算新的
+     *   完成动作，必须恢复 ACTIVE——否则 §10.2 那句「COMPLETED / EXPIRED 重开仍不注入：
+     *   必须在用户明确重新启用时恢复 ACTIVE」就永远做不到。
+     *
+     * 纯函数、不碰时间：重算与"保留原样"这一步只决定**传不传空串**，
+     * 真正的到期时刻仍由 [effectiveExpiryDate] 用保存那一刻算（同一个时钟只取一次）。
+     */
+    fun saveDecision(
+        current: IntentConfig,
+        nextEnabled: Boolean,
+        nextExpiry: IntentExpiry,
+        nextStatus: IntentStatus = current.status,
+        callerRequestedRecompute: Boolean = false
+    ): IntentSaveDecision {
+        val reactivating = nextEnabled && !current.enabled
+        val expiryRepicked = callerRequestedRecompute || nextExpiry != current.expiry
+        val wasTerminal = current.status == IntentStatus.COMPLETED ||
+            current.status == IntentStatus.EXPIRED
+        // 「这一次被点成完成」：新值与旧值不同才算，旧值原样带回来不算
+        val completedNow = (nextStatus == IntentStatus.COMPLETED && current.status != nextStatus) ||
+            (nextExpiry == IntentExpiry.COMPLETED && current.expiry != nextExpiry)
+        val backToActive = nextEnabled && !completedNow &&
+            (reactivating || (wasTerminal && expiryRepicked))
+        return IntentSaveDecision(
+            status = if (backToActive) IntentStatus.ACTIVE else nextStatus,
+            recomputeExpiry = reactivating || expiryRepicked
+        )
+    }
+
+    /** [saveDecision] 的返回：**状态** + **是否按此刻重算到期时刻**（true = 调用方传空串） */
+    data class IntentSaveDecision(
+        val status: IntentStatus,
+        val recomputeExpiry: Boolean
+    )
 
     /**
      * 保存前的拒绝理由；返回 null 表示可以保存。

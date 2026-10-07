@@ -173,4 +173,137 @@ class IntentPolicyTest {
             IntentPolicy.effectiveStatus(IntentExpiry.COMPLETED, IntentStatus.EXPIRED)
         )
     }
+
+    // ─── §10.2: saveDecision（到期重开要重算期限 / 只改正文保原期限）─────
+
+    /** 到期现场：`IntentController.refreshForKb` 判过期时就是这一份形状（关着 + 旧时刻已过） */
+    private fun expired(
+        expiry: IntentExpiry = IntentExpiry.ONE_DAY,
+        status: IntentStatus = IntentStatus.EXPIRED,
+        enabled: Boolean = false
+    ) = IntentConfig(
+        text = "周末约她", enabled = enabled, expiry = expiry,
+        expiryDate = "2026-09-01 00:00", status = status
+    )
+
+    @Test
+    fun `re-enabling an expired intent restores ACTIVE and demands a recomputed deadline`() {
+        val decision = IntentPolicy.saveDecision(
+            current = expired(), nextEnabled = true, nextExpiry = IntentExpiry.ONE_DAY
+        )
+        assertEquals(IntentStatus.ACTIVE, decision.status)
+        assertTrue("重新启用必须重算期限：旧时刻已是过去，带着它落盘下一刻就被判回 EXPIRED",
+            decision.recomputeExpiry)
+    }
+
+    /**
+     * 这一格把三条判据串成一整条链跑一遍（判据 → 时刻 → 到期判定）：
+     * 断言的是"重开之后那条意图还活着"，这正是用户合同那一行的原话。
+     * 旧缺陷态（`recomputeExpiry = false` ⇒ 把 `2026-10-01 08:00` 原样传下去）在这里会红。
+     */
+    @Test
+    fun `a re-enabled intent is not immediately expired again`() {
+        val current = expired()
+        val decision = IntentPolicy.saveDecision(
+            current = current, nextEnabled = true, nextExpiry = IntentExpiry.ONE_DAY
+        )
+        val written = current.copy(
+            enabled = true,
+            status = decision.status,
+            expiryDate = IntentPolicy.effectiveExpiryDate(
+                current.expiry,
+                if (decision.recomputeExpiry) "" else current.expiryDate,
+                now
+            )
+        )
+        assertEquals("2026-09-25 09:00", written.expiryDate)
+        assertFalse("重开即失效：落盘那一份仍被判过期", IntentPolicy.shouldAutoExpire(written, now))
+        // 反向证人：旧缺陷态把已有时刻原样传下去，这里就必须判过期（否则上面那句是恒绿）
+        val stale = current.copy(
+            enabled = true, status = IntentStatus.ACTIVE,
+            expiryDate = IntentPolicy.effectiveExpiryDate(current.expiry, current.expiryDate, now)
+        )
+        assertTrue("证人失效：带着旧时刻落盘居然不再被判过期，那条断言抓不住东西",
+            IntentPolicy.shouldAutoExpire(stale, now))
+    }
+
+    @Test
+    fun `editing only the text keeps the deadline verbatim and never rewrites the status`() {
+        val current = cfg(expiryDate = "2026-09-25 09:00")
+        val decision = IntentPolicy.saveDecision(
+            current = current, nextEnabled = true, nextExpiry = IntentExpiry.ONE_DAY
+        )
+        assertFalse("只改正文（没动开关、没换档）不许重算期限", decision.recomputeExpiry)
+        assertEquals("期限逐字不变", "2026-09-25 09:00",
+            IntentPolicy.effectiveExpiryDate(current.expiry, current.expiryDate, now))
+        assertEquals(IntentStatus.ACTIVE, decision.status)
+    }
+
+    @Test
+    fun `switching off keeps the deadline and leaves a terminal status alone`() {
+        val decision = IntentPolicy.saveDecision(
+            current = expired(), nextEnabled = false, nextExpiry = IntentExpiry.ONE_DAY
+        )
+        assertFalse(decision.recomputeExpiry)
+        assertEquals("关着的那一格不许被洗成活动态", IntentStatus.EXPIRED, decision.status)
+    }
+
+    @Test
+    fun `changing the expiry option recomputes and brings an expired intent back`() {
+        // 开关本来就拨着（内存里 EXPIRED 但未关）：换档 = 用户明确重新选有效时间
+        val decision = IntentPolicy.saveDecision(
+            current = expired(enabled = true), nextEnabled = true, nextExpiry = IntentExpiry.ONE_WEEK
+        )
+        assertTrue(decision.recomputeExpiry)
+        assertEquals(IntentStatus.ACTIVE, decision.status)
+    }
+
+    @Test
+    fun `a ui flagged recompute on a same-option tap still recomputes`() {
+        // 设置页那颗有效期 chip 每次都传 recomputeExpiry=true，哪怕档位没变
+        val decision = IntentPolicy.saveDecision(
+            current = cfg(expiryDate = "2026-09-25 09:00"),
+            nextEnabled = true, nextExpiry = IntentExpiry.ONE_DAY,
+            callerRequestedRecompute = true
+        )
+        assertTrue(decision.recomputeExpiry)
+        assertEquals(IntentStatus.ACTIVE, decision.status)
+    }
+
+    @Test
+    fun `marking completed wins over the reactivation rule`() {
+        // 到期意图重开的同时又被点成「已完成」：完成是状态动作，不是重新启用
+        val decision = IntentPolicy.saveDecision(
+            current = expired(), nextEnabled = true, nextExpiry = IntentExpiry.COMPLETED,
+            nextStatus = IntentStatus.COMPLETED
+        )
+        assertEquals(IntentStatus.COMPLETED, decision.status)
+        assertTrue(decision.recomputeExpiry)
+        assertEquals("COMPLETED 不带日期", "",
+            IntentPolicy.effectiveExpiryDate(IntentExpiry.COMPLETED, "2026-10-01 08:00", now))
+    }
+
+    @Test
+    fun `a completed intent switched back on comes back ACTIVE with a fresh deadline`() {
+        val current = expired(expiry = IntentExpiry.ONE_HOUR, status = IntentStatus.COMPLETED)
+        val decision = IntentPolicy.saveDecision(
+            current = current, nextEnabled = true, nextExpiry = IntentExpiry.ONE_HOUR
+        )
+        assertEquals(IntentStatus.ACTIVE, decision.status)
+        assertTrue(decision.recomputeExpiry)
+    }
+
+    @Test
+    fun `a brand new intent with no deadline is computed instead of being left blank`() {
+        // 默认那份：没开过、也没日期。第一次启用要算出时刻，否则 validateSave 直接拒
+        val decision = IntentPolicy.saveDecision(
+            current = IntentConfig(), nextEnabled = true, nextExpiry = IntentExpiry.ONE_DAY
+        )
+        assertTrue(decision.recomputeExpiry)
+        assertNull(IntentPolicy.validateSave(
+            IntentExpiry.ONE_DAY,
+            IntentPolicy.effectiveExpiryDate(IntentExpiry.ONE_DAY, "", now),
+            decision.status, now
+        ))
+    }
 }
