@@ -94,6 +94,33 @@ class CaptureAppsScreenStatesTest {
             }
         }
         rule.waitForIdle()
+        awaitCaptureBatch()
+    }
+
+    /**
+     * 等装配那一批 IO 读数**真的落位**，再把控制权交回用例。
+     *
+     * ⚠ 这条等待是必需的，不是保险：`CaptureAppsScreen` 把四颗读数放进 `Dispatchers.IO`
+     * （:215），而 `waitForIdle()` **不跟踪后台线程上的协程**——同族的两颗姊妹用例
+     * （`CaptureAppsScreenTruthTest:124`、`HomeStatusCaptureDisclosureTest:146`）头部把这件事
+     * 写得明明白白："同一条用例两次跑出两种颜色，那样的读数不能拿来定案"。
+     * 本文件此前只靠 `waitForIdle`，CI 机器一忙，`no candidates at all…` 就在
+     * `assertEquals(1, messageCount())` 上数到 0（转圈还在）——2026-10-09 run 37926106535 的红就是它。
+     *
+     * 定点选"转圈消失"而不是"某一行的文字出现"：生产把 `scanning = false` 排在整批赋值的
+     * **最后一颗**（:213 的注释同一条理由），所以 `loading = scanning` 落下来就意味着
+     * 四颗读数都已就位；而空态/错误态根本没有那一行，文字锚点在这些格子里不成立。
+     */
+    private fun awaitCaptureBatch() {
+        // 本仓这一版 Compose 的 `waitUntil` 不交回布尔（同族两颗姊妹用例也只调用、不取值），
+        // 所以等完再独立判一次：没落位就红在这里，而不是带着转圈往下走。
+        rule.waitUntil(WAIT_FOR_BATCH_MS) { spinnerCount() == 0 }
+        val left = spinnerCount()
+        assertTrue(
+            "装配批次在 ${WAIT_FOR_BATCH_MS}ms 内没落位（转圈仍 $left 颗）：" +
+                "这一屏每一格的状态断言都建立在「这一批已落」之上",
+            left == 0
+        )
     }
 
     /**
@@ -111,6 +138,7 @@ class CaptureAppsScreenStatesTest {
             }
         }
         rule.waitForIdle()
+        awaitCaptureBatch()
     }
 
     private fun useCell(next: UiMatrix) {
@@ -161,6 +189,9 @@ class CaptureAppsScreenStatesTest {
     companion object {
         /** 十二格至少该判到这么多颗；低于它就是这格没扫到东西，不是「全达标」 */
         private const val MIN_SWEEP_JUDGED = 12
+
+        /** 等装配那批 IO 落位的上限：体例照同族两颗姊妹用例（10 秒，见 [awaitCaptureBatch]） */
+        private const val WAIT_FOR_BATCH_MS = 10_000L
     }
 
     private fun messageCount() =
@@ -190,6 +221,8 @@ class CaptureAppsScreenStatesTest {
 
         rule.onNodeWithTag(LbAsyncTags.ACTION).performClick()
         rule.waitForIdle()
+        // 重试那一拍同样走 IO：不等落位就去数 `exactly = 3`，快机上碰对、慢机上停在 2（同一族的红）
+        awaitCaptureBatch()
         // 重试真的再枚举一次：在装配期那 2 次之上再涨 1（→ 3）。重试坏掉不枚举就停在 2，红。
         verify(exactly = 3) { model.selectableCaptureTargets(any()) }
     }
