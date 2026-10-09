@@ -42,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
@@ -80,12 +81,41 @@ private object MessageDimens {
     /** 行里留给气泡的横向呼吸位（不是热区，也不是尺寸档） */
     const val ROW_HPAD_DP = 4
     /**
-     * 滑动删除阈值：横向拖过**行宽的这一比**才落删除，不到一律回弹归零。
-     * 0.4 是 Material 滑动删除的通行档——行宽约 300dp 的面板上约 120dp 行程，
-     * 划在"故意拖出去"和"擦到列表想滚动"之间。不给甩动开后门：删除丢内容且不可
-     * 撤销，小面板上速度误判代价太高，判据宁可只做这一条。
+     * 横滑的**位移门槛比例**（§8.2 起点档）：这一颗乘行宽，再被下面两道 dp 夹住，
+     * 真门槛由 [swipeTravelThresholdPx] 算出来。
+     *
+     * 旧的 0.4 与"够线就删"那一条判据一起作废（§8.1 点名的就是它：横滑现在覆盖**两种**动作，
+     * 一条 abs 判据把它们压成了一个）。0.2 也不是"随手换个百分比"——单靠比例在 300dp 宽的
+     * 面板上还是 60dp 行程，所以下面那两根 dp 端点才是真正管住手感的那两根，比例只在大行上收口。
+     */
+    const val SWIPE_ACTION_THRESHOLD_FRACTION = 0.2f
+    /**
+     * 尾部那行军师备注（补充）**侧滑清除**的旧那一档，原样留着：它唯一的消费者是
+     * `ReplyInput.kt` 的 `AdvisorNoteLine`（本轮不动那份文件）。
+     *
+     * 消息行**不再**读这一颗（见 [swipeTravelThresholdPx]）。留着它不是留两套消息入口——
+     * §8.1 那张表里"补充"那一行本来就只有一个动作（两个方向都是删除），
+     * 绝对值判据在那一行上不构成缺陷；它的门槛要不要跟着本轮的位移档降，归管备注行那一席。
      */
     const val SWIPE_DELETE_THRESHOLD_FRACTION = 0.4f
+    /** 位移门槛的下限（dp）：行再窄也不许低过一次有意拖动的最短距离 */
+    const val SWIPE_MIN_TRAVEL_DP = 24f
+    /** 位移门槛的上限（dp）：行再宽也不许拖到那么远（旧 0.4 在长行上要拖 130dp+，就是这一档封顶） */
+    const val SWIPE_MAX_TRAVEL_DP = 48f
+    /**
+     * 快滑档的两端（§8.2 起点，不是平台标准）：末段速度到 [FLICK_MIN_SPEED_DP_PER_SEC]
+     * 且**同方向**位移不少于 [FLICK_MIN_TRAVEL_DP] 才算"有意的一甩"。
+     * 同方向那一条是硬条件：反向回拉时末端速度符号与位移相反，旧峰值不许误触发。
+     */
+    const val FLICK_MIN_SPEED_DP_PER_SEC = 600f
+    const val FLICK_MIN_TRAVEL_DP = 16f
+    /**
+     * 换角色那一次"气泡连续移到另一侧"的落位时长（ms）。
+     *
+     * 与 [EXIT_DURATION_MS] 同一档、同一来源（§4.4 那张表里"弹层约 200ms"那一行的既有基线），
+     * 不是新增的一套节奏：这一族屏幕上只有"退场"和"落位"这两个时长，两者同值。
+     */
+    const val ROLE_SHIFT_DURATION_MS = 200
     /** 空态那个蓝字入口的最小热区——它是一处操作，不是一行说明 */
     const val EMPTY_ACTION_MIN_HEIGHT_DP = AppDimens.TOUCH_TARGET_MIN_DP
     /** 长按拖拽时，离视口上下边缘多近才开始自动滚动 */
@@ -116,11 +146,96 @@ internal const val MESSAGE_BUBBLE_TEST_TAG = "message_bubble"
 internal const val MESSAGE_DRAG_KEEP_VISIBLE_DP = 16
 
 /**
- * 滑动删除的唯一判据（纯函数，可逐值钉死）：|拖量| ≥ 行宽 × 阈值比 → 删。
+ * 一次横滑**最多**落一个业务动作（§8.1 那张表的三行、两种动作）。
+ *
+ * `None` 不是一个"动作"，是"这一记不算数"：没够线、反向回拉、行宽还没量到。
+ * 旧形状里没有这一颗——那时横过阈值一律 `Delete`，向左向右两种意图被同一条 `abs(offset)` 判据
+ * 压成同一件事（§8.1 点名要拆掉的就是那一颗）。
+ */
+internal enum class SwipeAction { None, SwitchRole, Delete }
+
+/**
+ * 尾部那行军师备注（补充）侧滑清除的唯一判据：|拖量| ≥ 行宽 × 0.4 → 清。
  * 行宽还没量到（0）时恒不删——第一帧不许凭空满足阈值。
+ *
+ * ⚠ 这一颗现在**只**服务 `AdvisorNoteLine`（`ReplyInput.kt`，本轮不许动的文件）。
+ * 消息行已经换成 [swipeCommitAction]：§8.1 要拆掉的是"abs(offset) 达阈值就删"这一条判据
+ * **在消息侧覆盖两种操作**那个形状，而补充那一行按同一张表两个方向都只有"删除"一件事。
+ * 拿它当消息行的判据 = 本轮那一格直接红回去（`MessageRowSwipeDeleteTest` 钉的就是这个）。
  */
 internal fun shouldDeleteBySwipe(dragPx: Float, rowWidthPx: Float): Boolean =
     rowWidthPx > 0f && abs(dragPx) >= rowWidthPx * MessageDimens.SWIPE_DELETE_THRESHOLD_FRACTION
+
+/**
+ * 「方向 → 动作」的唯一映射（纯函数，**不看阈值、也不看速度**）：
+ * 普通消息**向内换角色、向外删除**；`Role.IDEA`（补充那一族）两个方向都是删除。
+ *
+ * 输入是**起始角色**：手势开始时就定死动作身份，中途不因为角色被改动而换一个动作
+ * （§8.2 原话"拖动过程中不提前改角色再把第二次阈值当作另一动作"）。
+ * 与"够不够线"分成两颗，是为了让拖动过程中的可见反馈（揭示哪一句）和松手那一刻的落点
+ * （到底落不落）读的是同一个方向判据，而不是各算各的。
+ *
+ * `dragPx == 0` 交回 None：没有方向就没有意图，不许拿"0"当成某个方向的读数。
+ */
+internal fun swipeActionForDirection(startRole: ChatMessage.Role, dragPx: Float): SwipeAction = when {
+    dragPx == 0f -> SwipeAction.None
+    // 补充不是对话的一方，它没有"另一边"，所以两个方向都只有删除
+    startRole == ChatMessage.Role.IDEA -> SwipeAction.Delete
+    else -> {
+        val inward = (startRole == ChatMessage.Role.ME && dragPx < 0f) ||
+            (startRole == ChatMessage.Role.HER && dragPx > 0f)
+        if (inward) SwipeAction.SwitchRole else SwipeAction.Delete
+    }
+}
+
+/**
+ * 位移门槛（px）：`max(24dp, min(48dp, 行宽×20%))`（§8.2 调试起点）。
+ *
+ * ⚠ 那两根端点是 **dp**，指针给的是 **px**：端点必须先乘 density 换算，否则 density=2 的机器上
+ * "48" 其实是 24dp，窄面板与宽面板的判定会各差一倍（§8.2 明写"必须经密度转换"）。
+ * 行宽或 density 没量到 ⇒ 交回无限大：第一帧不许凭空满足任何动作（与旧判据 `rowWidthPx > 0`
+ * 那道门同一目的，只是这里连快滑档一起挡掉）。
+ */
+internal fun swipeTravelThresholdPx(rowWidthPx: Float, density: Float): Float {
+    if (rowWidthPx <= 0f || density <= 0f) return Float.POSITIVE_INFINITY
+    return (rowWidthPx * MessageDimens.SWIPE_ACTION_THRESHOLD_FRACTION).coerceIn(
+        MessageDimens.SWIPE_MIN_TRAVEL_DP * density,
+        MessageDimens.SWIPE_MAX_TRAVEL_DP * density
+    )
+}
+
+/**
+ * 松手那一帧的唯一判据（纯函数，JVM 可逐值钉）：这一记手势落**哪一个**动作，最多一个。
+ *
+ * 两条路各挡一档：
+ * ① **慢拖过线**：位移达到 [swipeTravelThresholdPx] ⇒ 落方向那一侧的动作；
+ * ② **有意快滑**：位移没到线，但同方向位移 ≥16dp 且末段速度 ≥600dp/s（两者都换算过 density）
+ *   ⇒ 同样落那一个动作。速度符号与位移不一致（反向回拉后停手）一律不算，旧峰值不许说话。
+ * 两条都不满足 ⇒ None ⇒ 回弹，什么都不落。
+ *
+ * [velocityXPxPerSec] 是水平末段速度（px/s，带符号）。拖动过程中给这一颗传 0：那时快滑档
+ * 还没有读数，可见反馈只按位移那一档亮（见 [MessageRow] 里那句 `isSwipeArmed`）。
+ */
+internal fun swipeCommitAction(
+    startRole: ChatMessage.Role,
+    dragPx: Float,
+    rowWidthPx: Float,
+    velocityXPxPerSec: Float,
+    density: Float
+): SwipeAction {
+    val action = swipeActionForDirection(startRole, dragPx)
+    if (action == SwipeAction.None) return SwipeAction.None
+    if (rowWidthPx <= 0f || density <= 0f) return SwipeAction.None
+    if (abs(dragPx) >= swipeTravelThresholdPx(rowWidthPx, density)) return action
+    // Kotlin 的 Float 没有 Java 那颗 `signum()`；同向判据写成"都非零且正负号一致"，
+    // 速度为零（拖动中途读数还没来）一律算不同向，旧峰值不许说话。
+    val sameDirection = dragPx != 0f && velocityXPxPerSec != 0f &&
+        (dragPx > 0f) == (velocityXPxPerSec > 0f)
+    return if (sameDirection &&
+        abs(dragPx) >= MessageDimens.FLICK_MIN_TRAVEL_DP * density &&
+        abs(velocityXPxPerSec) >= MessageDimens.FLICK_MIN_SPEED_DP_PER_SEC * density
+    ) action else SwipeAction.None
+}
 
 /**
  * 气泡底色的**三种档**：两列各自的角色色，加一档"这条正处于被操作的状态"。
@@ -561,7 +676,11 @@ fun MessageList(
     // 侧滑清除备注（宿主投 `ComposerStore.Intent.ClearNote`）。null = 没接线 ⇒ 备注不留侧滑出口
     //（沿用"不给没接线的屏留半截手势"的旧规矩）；传进来后备注像消息一样可侧滑删，
     // 被删对象与回调分离：这里落的是"清备注"，绝不走 onDelete 那条消息删除链。
-    onClearNote: (() -> Unit)? = null
+    onClearNote: (() -> Unit)? = null,
+    // §8.1 方向映射里"向内"那一条的落点（宿主投 `ComposerStore.Intent.SwitchMessageRole`，
+    // 交的是**这一条**的稳定 id）。null = 宿主没接换角色出口 ⇒ 向内那一侧**什么都不落**、
+    // 也不揭示那一句（不许退回"横滑一律删"那一档：留着两套入口正是本轮要拆的东西）。
+    onSwitchRole: ((String) -> Unit)? = null
 ) {
     val listState = rememberLazyListState()
     val haptics = LocalHapticFeedback.current
@@ -620,9 +739,15 @@ fun MessageList(
     // 消息不丢、手势不断。这一颗只做"搬回眼里"这一件事——夹持与补偿都不在这儿发生
     // （[dragFramePlan] 的①那一支已经把这帧的滚动、补偿、交换全部停掉了）。
     val dragScope = rememberCoroutineScope()
+    // 同一颗也负责 §8.3 的第四判据"列表发生有效变化后清理拖动态"：被拖那一条**已从数据里
+    // 消失**（拖拽途中被删除/被本轮消耗）时不是"搬回眼里"能解决的——target<0 就地结束这次
+    // 拖拽，五笔状态一起清。旧写法只请回不消失的：条目真没了就什么都不做，`draggedId` 悬住，
+    // 全行的 `reorderActive` 把横滑一直压到抬指才松（L1 复核挑中）。滚出视口≠消失：
+    // 那种 target≥0，走的还是"搬回眼里"那一支。
     val reshowDraggedRow: (String) -> Unit = { id ->
         val target = currentDialogue.indexOfFirst { it.second.id == id }
         if (target >= 0) dragScope.launch { listState.scrollToItem(target) }
+        else endDrag()
     }
 
     /**
@@ -695,10 +820,11 @@ fun MessageList(
         }
     }
 
-    // 删除的两条路（横滑到阈值 / 读屏自定义动作）都只认 id，而且**走同一颗 arm**。
+    // 删除的两条路（横滑**向外**到阈值 / 读屏自定义动作）都只认 id，而且**走同一颗 arm**。
     // 方向一律显式交进来，`swipeExitDirs` 与 `deletingIds` 永远是同一次写入的两笔：
     // 旧写法读屏那一支只置 `deletingIds`、方向靠退场里的 `?: 1` 兜底，于是"同一条消息，
     // 横滑删是往左滑出、读屏删是往右滑出"——两条路各存半份状态，判据也只覆盖得了一条。
+    // 横滑的**向内**那一侧不走这里（它落 [onSwitchRole]，同一条气泡换边、不删、不建）。
     val armDelete: (String, Int) -> Unit = { id, dir ->
         swipeExitDirs[id] = dir
         deletingIds[id] = true
@@ -860,7 +986,11 @@ fun MessageList(
                     onRequestDelete = {
                         armDelete(msg.id, if (msg.role == ChatMessage.Role.ME) 1 else -1)
                     },
-                    onSwipeArmed = { dir -> armDelete(msg.id, dir) },
+                    // 横滑落点：向外 = 删除（走 arm→退场→onDelete，交 id + 退场方向），
+                    // 向内 = 换角色（只交这一条的 id 给宿主，正文/顺序/元数据由持有列表的一方原样保留）。
+                    // 两条路由行内那一颗 [swipeCommitAction] 二选一，一次手势只会走到其中一支。
+                    onDeleteArmed = { dir -> armDelete(msg.id, dir) },
+                    onSwitchRole = onSwitchRole?.let { owner -> { -> owner(msg.id) } },
                     onExitFinished = { finishDelete(msg.id) },
                     // 被手指控制的那一行**不许**再吃 placement 动画：它会对着手指正在占的那一格反向插值，
                     // 于是"拖到一半弹回去"。其余行照常 animateItemPlacement，看得出位置让开了。
@@ -891,7 +1021,11 @@ fun MessageList(
 /**
  * 一条真实对话的整行：HER 靠左白底、ME 靠右微信绿，底色只在**气泡**身上，整行只是手势与锚点。
  * 可见的「她/我」标签与尾部 ❌ 都撤了——角色改由位置 + 读屏标签（[contentDescription]）表达，
- * 删除只剩两条路：横滑过阈值、读屏自定义动作。屏幕默认不放叉号（第5节第2条）。
+ * 删除只剩两条路：横滑**向外**、读屏自定义动作。屏幕默认不放叉号（第5节第2条）。
+ *
+ * §8.1 之后横滑有两种动作，按**起始角色**分：向内 = 换成对方（同一条气泡连续移到另一侧，
+ * id/正文/顺序/时间戳都不动，也不弹确认框），向外 = 删除（走退场）。揭示当前动作的短标签
+ * 画在气泡让开的那一侧，到线之后加重（[isSwipeArmed]）。
  *
  * 三轴分账（第3节第1条）：
  *  · 可见尺寸 = 气泡内容宽（上限一行的八成）+ 横 12 / 竖 6 内边距；
@@ -900,16 +1034,18 @@ fun MessageList(
  * 旧的"整行垫到 48dp 可见高"这一档**本次主动放弃**：它买的是版式高度而不是可点性，
  * 而用户合同要的正是把条目缩下来（取舍记在交接报告，读屏替代出口是那颗自定义删除动作）。
  *
- * 手势分界：按下后先横移越过触控 slop → 这一行水平 draggable 起势（长按计时器被移动取消，
- * "快滑 = 删除候选"）；按住不动到长按阈值 → 重排接管并消费后续事件，draggable 的 enabled
- * 同时被 reorderActive 关掉；首个方向是纵向 → 水平拖不起势，事件留给列表滚动；
- * 没越过 slop 的起落 → 仍是原来的单击编辑。垂直浏览因此不会被误判成删除。
+ * 手势分界（§8.4 那三行的消息侧）：按下后先横移越过触控 slop → 这一行水平 draggable 起势
+ * （长按计时器被移动取消，"快滑 = 本条的动作候选"）；按住不动到长按阈值 → 重排接管并消费后续
+ * 事件，draggable 的 enabled 同时被 reorderActive 关掉；首个方向是纵向 → 水平拖不起势，事件留给
+ * 列表滚动；没越过 slop 的起落 → 仍是原来的单击编辑。垂直浏览因此不会被误判成删除或换角色。
  * 横滑在这一行**自己**的孩子节点上消费，父层（回复/谈心切页）拿不到已经越轴的移动量。
  *
  * [modifier] 是**条目级**那一份（被手指控制那一条的浮起 / 其余行的位移动画），它落在
  * `AnimatedVisibility` 那一颗粒上——也就是列表条目的根节点。这一档不许搬回行内：
  * `zIndex` 只在同一颗粒度的兄弟之间排序，挂在行内的子节点上等于没挂，被拖那一条会被后面
  * 那些不透明气泡整个盖住（"手指底下那条看不见"）。
+ *
+ * [onSwitchRole] 为 null = 宿主没接换角色出口：向内那一侧既不揭示也不落（不许退回"横滑一律删"）。
  */
 @Composable
 private fun MessageRow(
@@ -925,23 +1061,75 @@ private fun MessageRow(
     onToggleExpanded: () -> Unit,
     onEdit: () -> Unit,
     onRequestDelete: () -> Unit,
-    onSwipeArmed: (Int) -> Unit,
+    onDeleteArmed: (Int) -> Unit,
+    onSwitchRole: (() -> Unit)?,
     onExitFinished: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
-    // 行内横向位移：拖到哪画到哪；松手未达阈值由 onDragStopped 弹回 0
+    // 行内横向位移：拖到哪画到哪（拖动期间 snapTo 追手，§4.4"不用缓动追手"那一行）；
+    // 松手未达阈值弹回 0，落了换角色也弹回 0（只有删除那一条把行交给退场动画）
     val swipeX = remember(msg.id) { Animatable(0f) }
     var rowWidthPx by remember(msg.id) { mutableFloatStateOf(0f) }
+    // 气泡本体的宽：换角色那一次要搬的距离 = 行内容宽 - 气泡宽（不量气泡就不知道搬多少）
+    var bubbleWidthPx by remember(msg.id) { mutableFloatStateOf(0f) }
+    val density = LocalDensity.current.density
     val lift by animateFloatAsState(
         targetValue = if (isDragged) MessageDimens.DRAGGED_SCALE else 1f,
         label = "dragScale"
+    )
+    // 「换角色 = 同一条气泡连续移到另一侧」那一档的唯一动画（与 lift 同一颗 animateFloatAsState，
+    // 不是新起一套动画体系）。角色没变时 `side` 与角色档相等 ⇒ 差值 0 ⇒ **稳态一个像素都不搬**，
+    // 版式与这一档加进来之前逐像素相同；只有角色刚落那一档 tween 里差值非零，
+    // 于是气泡从它原来那一侧画起、滑到另一侧，中间不消失、也不新建条目（id 全程没变）。
+    val sideTarget = if (msg.role == ChatMessage.Role.ME) 1f else 0f
+    val side by animateFloatAsState(
+        targetValue = sideTarget,
+        animationSpec = tween(MessageDimens.ROLE_SHIFT_DURATION_MS),
+        label = "bubbleSide"
     )
     // draggable 的 state 只 remember 一次，里面读的那几样要走"最新一份"，
     // 否则重排接管后这一行还在偷偷累积滑动量
     val blocked by rememberUpdatedState(reorderActive || isDeleting || isDragged || rowWidthPx <= 0f)
     val latestWidth by rememberUpdatedState(rowWidthPx)
-    val latestSwipeArmed by rememberUpdatedState(onSwipeArmed)
+    val latestDeleteArmed by rememberUpdatedState(onDeleteArmed)
+    val latestSwitchRole by rememberUpdatedState(onSwitchRole)
+    val latestRole by rememberUpdatedState(msg.role)
+    val latestDensity by rememberUpdatedState(density)
+    // 本次手势的**起始角色**：draggable 起势那一刻抄一份，抬指就作废。
+    // 它同时是"这一记手势还活着"那面旗（揭示标签读这一颗，落动作之后不再亮）。
+    // 之后就算列表把这一条的角色改了，这一记也仍按开始时的身份决定"向内/向外"
+    // （§8.2 点名要挡的那一档），而且一次手势只落一个动作——中途不换动作、不换阈值重算第二遍。
+    var gestureStartRole by remember(msg.id) { mutableStateOf<ChatMessage.Role?>(null) }
+
+    // ── §8.1 的可见反馈：滑动时揭示当前动作，到线之后状态更明确 ──────────────
+    // 位移读数留在 derivedStateOf 里：只有**方向符号**与**到没到线**这两件事变化才重组，
+    // 逐像素重组是这一文件一直避开的那一档（见 AnimatedVisibility 上那条 graphicsLayer 注释）。
+    // ⚠ 三颗都 key 在 swipeX 上：那颗 Animatable 是 `remember(msg.id)` 的，
+    //   不 key 就会在条目换人时还闭着**上一颗** Animatable 读数（读着一个不存在的手势）。
+    val dragIsLeftward by remember(swipeX) { derivedStateOf { swipeX.value < 0f } }
+    val isSwipeRevealed by remember(swipeX) { derivedStateOf { swipeX.value != 0f } }
+    val isSwipeArmed by remember(swipeX) {
+        derivedStateOf {
+            // 速度传 0：快滑那一档要到松手才有读数，拖动过程中"到线"只认位移这一条
+            swipeCommitAction(latestRole, swipeX.value, latestWidth, 0f, latestDensity) !=
+                SwipeAction.None
+        }
+    }
+    val revealedAction = swipeActionForDirection(msg.role, if (dragIsLeftward) -1f else 1f)
+    // 揭示哪一句 = 方向那一侧的动作，且那一侧必须有主人：
+    // 换角色没接线时不揭示（不能承诺一句宿主接不住的动作，与"没接线不留半截手势"同一规矩），
+    // 向内那一侧这时既不亮也不落，一律回弹。
+    val revealLabelRes: Int? = when {
+        // 手势不在进行中（抬指之后位移还在往回走）⇒ 不亮：那一句已经不算数了
+        gestureStartRole == null -> null
+        !isSwipeRevealed -> null
+        revealedAction == SwipeAction.Delete -> R.string.a11y_action_delete
+        revealedAction == SwipeAction.SwitchRole && onSwitchRole != null ->
+            if (msg.role == ChatMessage.Role.ME) R.string.swipe_action_to_her
+            else R.string.swipe_action_to_me
+        else -> null
+    }
 
     // 读屏身份：可见标签撤了，角色不能跟着消失
     val roleAnnouncement = when (msg.role) {
@@ -1002,12 +1190,47 @@ private fun MessageRow(
                     },
                     orientation = Orientation.Horizontal,
                     enabled = !blocked,
-                    onDragStopped = {
-                        if (!blocked && shouldDeleteBySwipe(swipeX.value, latestWidth)) {
-                            // 达到阈值：记下退场方向，走退场→onDelete 那一条路
-                            latestSwipeArmed(if (swipeX.value < 0f) -1 else 1)
-                        } else if (swipeX.value != 0f) {
-                            scope.launch { swipeX.animateTo(0f) }  // 未达阈值：回弹归零，什么都不删
+                    // 起势那一刻把**起始角色**抄死：整记手势的方向→动作都按它算（§8.2）
+                    onDragStarted = { gestureStartRole = latestRole },
+                    // velocity = 水平末段速度（px/s，带符号）：只有快滑那一档用它，而且必须与位移同向
+                    onDragStopped = { velocityPxPerSec ->
+                        val startRole = gestureStartRole ?: latestRole
+                        // 抬指即作废这一记的身份抄本：它同时是"手势还活着"的那面旗
+                        // （揭示标签读它，落动作之后不许再亮着一句已经不算数的动作）
+                        gestureStartRole = null
+                        if (!blocked) {
+                            val dragPx = swipeX.value
+                            // 唯一判据：这一记落哪个动作，最多一个（向内换角色 / 向外删除 / 不算数）
+                            val action = swipeCommitAction(
+                                startRole = startRole,
+                                dragPx = dragPx,
+                                rowWidthPx = latestWidth,
+                                velocityXPxPerSec = velocityPxPerSec,
+                                density = latestDensity
+                            )
+                            when (action) {
+                                // 向外：记下退场方向，走退场→onDelete 那一条路
+                                SwipeAction.Delete -> latestDeleteArmed(if (dragPx < 0f) -1 else 1)
+                                // 向内：同一条气泡换到另一侧（id/正文/顺序/元数据由持有者原样保留，
+                                // 不弹确认框，也不碰输入框当前角色与捕获默认角色）
+                                SwipeAction.SwitchRole -> latestSwitchRole?.invoke()
+                                // 没够线 / 反向回拉：什么都不落
+                                SwipeAction.None -> Unit
+                            }
+                            // 除删除那一条（行交给退场带走）之外都把手势位移弹回 0：
+                            // 换角色那一路用与落位同一档 tween，两条位移合起来才看得见"连续移过去"
+                            if (action != SwipeAction.Delete && dragPx != 0f) {
+                                scope.launch {
+                                    if (action == SwipeAction.SwitchRole) {
+                                        swipeX.animateTo(
+                                            0f,
+                                            tween(MessageDimens.ROLE_SHIFT_DURATION_MS)
+                                        )
+                                    } else {
+                                        swipeX.animateTo(0f)
+                                    }
+                                }
+                            }
                         }
                     }
                 )
@@ -1028,9 +1251,42 @@ private fun MessageRow(
                 .padding(horizontal = MessageDimens.ROW_HPAD_DP.dp),
             contentAlignment = if (isMine) Alignment.CenterEnd else Alignment.CenterStart
         ) {
+            // 行内容宽（px，已经扣掉左右各 4dp 的行留白）：**在组合期间**取一次存成局部数，
+            // 不在 graphicsLayer 那种延后执行的 lambda 里读 `constraints`——
+            // BoxWithConstraints 的 scope 属性挂在会被复用的对象上，延后读到的可能不是这一格
+            val innerWidthPx = constraints.maxWidth.toFloat()
+            // §8.1 那句"滑动时揭示当前动作的短标签"：画在气泡让开的那一侧
+            // （与拖动方向相反的那一头，那一头才是被让出来的地方），到线之后颜色与字重一起加重。
+            // 它刻意排在气泡**之前**=画在气泡底下，也不参与读屏（clearAndSetSemantics：
+            // 这一行念的还是那一句角色公告 + 那一条删除动作，没多出来的话）。
+            revealLabelRes?.let { res ->
+                Text(
+                    text = stringResource(res),
+                    color = when {
+                        !isSwipeArmed -> TextHint
+                        revealedAction == SwipeAction.Delete -> Error
+                        else -> Primary
+                    },
+                    style = AppTypography.labelSmall,
+                    fontWeight = if (isSwipeArmed) FontWeight.SemiBold else FontWeight.Medium,
+                    maxLines = 1,
+                    modifier = Modifier
+                        .align(if (dragIsLeftward) Alignment.CenterEnd else Alignment.CenterStart)
+                        .clearAndSetSemantics { }
+                        .padding(horizontal = Spacing.md)
+                )
+            }
             Column(
                 modifier = Modifier
                     .widthIn(max = maxWidth * MessageDimens.BUBBLE_MAX_WIDTH_FRACTION)
+                    // 换角色那一次的"连续移到另一侧"：稳态差值 = 0 ⇒ 一个像素都不搬，
+                    // 只有角色刚落那一档里从它原来那一侧画起、滑过去（要搬的距离 = 行内容宽 - 气泡宽）
+                    .graphicsLayer {
+                        val crossPx = innerWidthPx - bubbleWidthPx
+                        translationX =
+                            if (crossPx > 0f && crossPx.isFinite()) (side - sideTarget) * crossPx
+                            else 0f
+                    }
                     .testTag(MESSAGE_BUBBLE_TEST_TAG)
                     .background(
                         when (bubbleInkOf(isMine = isMine, isEditing = isEditing, isDragged = isDragged)) {
@@ -1042,6 +1298,9 @@ private fun MessageRow(
                         },
                         LoveBrainShape.md
                     )
+                    // 量在 padding **外面**这一档：要的是气泡那只盒子的宽（含横 12 内边距），
+                    // 不是正文的宽——搬多少按画出来的那只盒子算
+                    .onSizeChanged { bubbleWidthPx = it.width.toFloat() }
                     .padding(
                         horizontal = MessageDimens.BUBBLE_HPAD_DP.dp,
                         vertical = MessageDimens.BUBBLE_VPAD_DP.dp

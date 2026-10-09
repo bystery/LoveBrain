@@ -385,7 +385,12 @@ class UiStringLiteralBudgetTest {
         //   ⚠ `ConfigItem(text = "…")` 与 `OnboardingButton(text = "…")` 那五处内联中文
         //   从来就不在这四把尺的射程里（锚点只认 `Text(` / `contentDescription =` /
         //   `stateDescription =` / `Lb…(`），它们随死页一起消失了，但**没算进这 −8**。
-        Kind.TEXT to 73,
+        // 73 → **72**：主动发候选卡上「角度：」那一行进资源（§14.1 候选卡结构那一拍，
+        // `LoveBrainPanelScreen.kt` 的 `ProactiveOptionCard`）。**真还**：同一拍卡内新增的
+        // 展开区标签（时机/先别发/需要准备）与行格式（"%1$s：%2$s"）连同整卡点击的动作名
+        // `a11y_copy_opener` 一起进的 `values` 资源，页面里没有为它们写过任何内联中文——
+        // 所以这一栏只降不涨；候选卡上剩下的可见文案全部来自资源或模型输出。
+        Kind.TEXT to 72,
         // 11 → **10**：面板引导卡片那颗关闭按钮的 `contentDescription` 原来是**内联中文**
         // 「关闭使用提示」，而 `a11y_close_onboarding` 中英两份资源**一直都在、从没被引用**过
         // ⇒ 英文环境下读屏念中文（面板整屏第一次量到 label=「关闭使用提示」，同屏其它按钮已是

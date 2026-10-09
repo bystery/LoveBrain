@@ -32,6 +32,23 @@ object RewritePrompt {
             .takeLast(limit)
             .joinToString("\n") { msg -> "${roleLabel(msg.role)}：${msg.content}" }
 
+    /**
+     * 「仅看本轮」时改写那一发允许带的上下文（第 7 节第 3 条：
+     * 「回复、主动发和改写都要沿同一范围规则，而不是只修其中一个 prompt」）。
+     *
+     * 剥掉的两段都是**知识库里的持久内容**：表达偏好（`understand/style.md`，点赞记进去的）
+     * 与持续意图（用户留在库里、带有效期的那份）。开着仅看本轮却把它们发出去，
+     * 就是第 14 节第 2 条末句点名的「为提升个性化偷读历史」。
+     * 留下的两样是本轮自己的输入——最近真实对话与军师备注——与
+     * `PromptBuilder.buildReplyUserPromptOnlyThisRound` 那一条链的口径一致：
+     * 三链同范围，判据只在这一处算，调用方不许各写各的。
+     */
+    fun styleAndIntentForScope(
+        style: String?,
+        intentText: String?,
+        onlyThisRound: Boolean
+    ): Pair<String?, String?> = if (onlyThisRound) null to null else style to intentText
+
     private fun roleLabel(role: ChatMessage.Role): String = when (role) {
         ChatMessage.Role.HER -> "她"
         ChatMessage.Role.ME -> "我"

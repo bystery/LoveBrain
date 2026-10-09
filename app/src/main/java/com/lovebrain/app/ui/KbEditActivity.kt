@@ -101,6 +101,19 @@ private object KbEditDimens {
      * 「保存 / 放弃修改」那一排在宿主之外常驻可达——地板以下不再是溢出，也不再是"被压成一粒"。
      * 这一颗仍取小而不要取大：取大了就是"正文只露地板、其余全靠滚"，那是把 §7.1 腾出来的空间又吃回去。
      *
+     * **这一档不会反过来遮住操作（§12.4"不能设置过高最小值遮住操作"按现场几何验过，不是"组件在就算过"）**：
+     * 地板加在**滚动宿主的子节点**上（下面那一棵 `OutlinedTextField.height(...)`），
+     * 而宿主自己是被 `BoxWithConstraints` 那一格的实测高夹住的——子节点要 96dp、宿主只给 S dp 时，
+     * 多出来的 `96 − S` 变成**可滚的余量**而不是把动作排顶出屏的溢出
+     * （`Column` 先量固定兄弟、再把剩下的给 `weight` 那一格，子节点的 min 赢不了父约束）。
+     * 所以它不需要再写一遍"剩余窗口"的函数：S 本身就是 `weight(1f)` 从剩余窗口读回来的。
+     *
+     * ⚠ 剩下没被这一档管住的是另一件事：S 自己被压到接近 0（页级固定 + 卡头 + 动作排
+     * 已经吃掉窗口高减键盘高）时，地板与宿主一起不可见，而这一屏内部**没有东西再可让位**——
+     * 还能让的那几段（页头 112dp 与上下两颗 `Spacer`）住在 `ui/common/ScreenHeader.kt` 的
+     * `ScreenPage` 里（禁区）。那一段本机量不出临界窗口高（`ime` inset 在 JVM 恒 0），
+     * 归真机与主线程协调，不在这里拿一个常数冒充解过。
+     *
      * 这一档不是热区下限，也不是 core 的矮档：core 那四档（36/28/40/36）各有各的用途，
      * 借哪一颗都是把两件事并成一件（`ui/UiLayerDependencyContractTest.kt` 那条"每颗数要解得出主人"
      * 只扫挂在可点链上的数，编辑器这一棵不在射程里）。
@@ -150,6 +163,14 @@ private const val DEFAULT_KB_FILE_PATH = "moment/recent.md"
 private const val KB_EDIT_PREVIEW_LABEL = "预览"
 
 /**
+ * 卡头那颗"正在写盘"转圈的自动化锚点（与 `LbAsyncTags` 同一族用途：文字会变、tag 不会）。
+ *
+ * 挂在**转圈那一棵**而不是挂在整行上：这一格在干净预览态根本不组合，
+ * 判据要的就是"写盘那一趟它出现、写完了它退场"这一个开火形状。
+ */
+internal const val KB_EDIT_SAVING_TAG = "kb_edit_saving"
+
+/**
  * 这一次进这一页该开哪一格：持久化的 lastFile > 「最近两句」> 名单第一格。
  *
  * 为什么单独抽出来判：旧写法是 `files.first { it.path == "moment/recent.md" }`——
@@ -194,11 +215,18 @@ class KbEditActivity : ComponentActivity() {
         // 为什么也不退回 `adjustUnspecified`/`adjustPan`：`adjustPan` 是整扇窗口往上平移，
         // Compose 量到的尺寸一个字没变，`weight(1f)` 那套版式压根不会缩；`adjustUnspecified`
         // 让系统自己猜，可能猜成上面任一种。`ADJUST_NOTHING` 把"谁吃键盘"这一件事交回
-        // Compose 一侧唯一的那层 `imePadding()`，窗口尺寸不再被系统改动，
-        // `WindowInsets.ime` 也才会真的把键盘高度报进来（下面编辑器的 `bringIntoView` 依赖它）。
+        // Compose 一侧唯一的那层 `imePadding()`，窗口尺寸不再被系统改动。
+        // （这颗 requester 与键盘高度**读数**无关：下面编辑态那一棵无论谁让位都要把光标行要回来，
+        //   见那一段的 `bringIntoView`——所以这里不写"bringIntoView 依赖它"那种话，那条依赖已经撤掉了。）
         //
         // ⚠ 这半条（非 edge-to-edge 窗口里 `imePadding()` 究竟收到几个像素的 ime inset）
         // 本机看不出来：Robolectric 给的 insets 恒为 0，`adb devices` 也空。只能真机 + Layout Inspector 验。
+        // ⚠ 还有一条**没被本机关掉的风险**，留在这里不静默改行为：`minSdk = 26`，而 androidx 的
+        // `WindowInsetsCompat.Type.ime()` 在 API 30 以下、且窗口没走 edge-to-edge（本项目三扇 Activity
+        // 都没有 `enableEdgeToEdge`/`setDecorFitsSystemWindows`）时**有可能报 0**。那一批设备上
+        // `ADJUST_NOTHING` + 报 0 = 谁都没让位，键盘直接盖住正文与那两排动作——比塌陷更糟。
+        // 本机既证不出"报 0"，也证不出"报得进"，所以不拿 `ADJUST_RESIZE` 去赌另一头（那会在
+        // API 30+ 变成扣两遍，正是原始反馈点名的形状）。真机验法与两条备选写在回报里，等主线程定档。
         window.setSoftInputMode(
             android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
         )
@@ -295,6 +323,11 @@ internal fun KbEditScreen(
     val savedHint = stringResource(R.string.hint_saved)
     val conflictKeptDraftHint = stringResource(R.string.hint_conflict_kept_draft)
     val saveFailedHint = stringResource(R.string.hint_save_failed)
+    // 卡头那一格"正在写盘"的读屏名字。⚠ 复用 `kb_save` 那颗现成资源（"保存"）而不是新造一句
+    // "保存中"：`strings.xml` 不在本席写入范围内，而 `UiStringLiteralBudgetTest` 那把尺要求
+    // 四栏读数**不多也不少**（少一条同样红）——所以这里既不许内联中文，也不许顺手搬走一条。
+    // 视觉上"保存中"由那颗转圈本身表达（转圈 + 保存那颗换成 Loading 档），不靠新文案。
+    val savingLabel = stringResource(R.string.kb_saving)
     // 下面三句给状态件那一格用（`ScreenState` 收已解析的 String，不收资源 id）
     val emptyDocHint = stringResource(R.string.kb_edit_empty_hint)
     val readFailedHint = stringResource(R.string.kb_edit_read_failed)
@@ -314,6 +347,28 @@ internal fun KbEditScreen(
     var reloadTick by remember { mutableIntStateOf(0) }
     var isPreview by remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
+
+    /**
+     * **正在写盘的那几格**——整屏"保存中"只有这一个真源。
+     *
+     * 三条路都只往这一格里挂号、也只从这一格里读：切分区的静默自动保存、退出前的批量自动保存、
+     * 卡里那颗手动保存。它是**状态**，不是第四套保存逻辑：一个字都没碰落盘顺序与版本语义
+     * （§2.2 第 6 条"不能为了样式改写数据行为"里的那一条）。
+     *
+     * 按**路径**存而不是存一颗整屏布尔：`saveAllAndExit` 那一趟是逐格写的，
+     * 用户要看得见的是"这一格正在写"，不是"这屏有事发生"。
+     */
+    var savingPaths by remember { mutableStateOf(emptySet<String>()) }
+
+    /** 把一次写盘挂进 [savingPaths]；异常/冲突都要摘掉，否则页面永远停在保存中 */
+    suspend fun <T> markingSave(path: String, block: suspend () -> T): T {
+        savingPaths = savingPaths + path
+        try {
+            return block()
+        } finally {
+            savingPaths = savingPaths - path
+        }
+    }
 
     // ── 编辑态状态：内容快照（放弃修改基线）+ 光标记忆 + 页内提示 ──
     val editorStates = remember { mutableStateMapOf<String, TextFieldValue>() }
@@ -364,36 +419,45 @@ internal fun KbEditScreen(
     val anyDirty = files.any { isDirty(it.path) }
 
     // ── 静默自动保存（切文件/退出）；失败返回 false，调用方决定提示 ──
+    // 这一颗是全页唯一的写盘出口（手动保存与「放弃修改」各自另有一趟，都走同一个 saveFile、
+    // 同一份 saved/versions 记账）；这里只加"正在写"的挂号，不改它的顺序、版本校验与返回值语义。
     suspend fun autosave(path: String): Boolean {
         val d = drafts[path] ?: ""
         if (d == (saved[path] ?: "")) return true
         val ver = versions[path]
-        return try {
-            val newVersion = saveFile(path, d, ver)
-            if (newVersion != null) {
-                saved = saved + (path to d)
-                versions = versions + (path to newVersion)
-            } else {
-                L.w("KbEdit version conflict: $path, keeping draft")
+        return markingSave(path) {
+            try {
+                val newVersion = saveFile(path, d, ver)
+                if (newVersion != null) {
+                    saved = saved + (path to d)
+                    versions = versions + (path to newVersion)
+                } else {
+                    L.w("KbEdit version conflict: $path, keeping draft")
+                }
+                newVersion != null
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.w("KbEdit autosave failed: $path")
+                false
             }
-            newVersion != null
-        } catch (e: kotlinx.coroutines.CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            L.w("KbEdit autosave failed: $path")
-            false
         }
     }
 
     // ── 切换统一入口：自动保存上一个 → 切文件 → 记忆 → 回预览态 ──
     fun switchToFile(target: KbFile) {
         if (target.path == selectedPath) return
+        if (selectedPath in savingPaths) return
         scope.launch {
+            // 这一趟究竟有没有真的写字，决定了切过去之后要不要报"已保存"：
+            // 没改动时 autosave 直接返回 true，那句"已保存"就是假话（§2.2 第 6 条要的就是可预期）。
+            val pending = isDirty(selectedPath)
             val ok = autosave(selectedPath)
             if (!ok) {
                 hint = saveFailedHint to true
                 return@launch
             }
+            if (pending) hint = savedHint to false
             selectedPath = target.path
             onLastFileChange(target.path)
             isPreview = true
@@ -401,7 +465,12 @@ internal fun KbEditScreen(
     }
 
     // ── 退出：自动保存全部脏文件；失败则留下并红字提示（不静默丢改动）──
+    // 这一趟的"保存中"与"失败"都从 [savingPaths] / 提示行那**同一个真源**报（§12.4 四态要可辨）。
+    // 旧写法这里两头都没有：写盘那一整段屏上没有任何反应，失败那句红字又住在编辑那一支里，
+    // 而这一趟**只在预览态被按下** ⇒ 用户按返回、什么都没发生，只能反复按那一颗。
     fun saveAllAndExit() {
+        // 连点两次返回不许把同一批文件写两遍（ Loading 那颗仍可点，守卫落在唯一出口上）
+        if (savingPaths.isNotEmpty()) return
         scope.launch {
             var allOk = true
             files.forEach { f ->
@@ -549,13 +618,35 @@ internal fun KbEditScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        "${selected.label} ｜ $liveLen 字",
-
-                        style = AppTypography.labelMedium,
-                        color = TextHint,
-                        maxLines = 1
-                    )
+                    // 卡头左半边这一格是"保存四态"里**正在编辑 / 保存中**那两档唯一的出口（§12.4）。
+                    // 改之前这两档在这一屏根本没有出口：脏小圆点只画在分区那一排的按钮上，
+                    // 而编辑态那一排整个被收起（09a790b 腾高度那一笔），于是"正敲着、还没落盘"
+                    // 这件事在编辑态一个字都看不出来；"保存中"更没有——下面那颗「保存」的
+                    // `state` 是写死的 `LbButtonState.Idle`，写盘那一整趟屏幕上一个变化都没有。
+                    // 预览态且这篇是干净的（生产首屏、也是那张像素基线）这一格**不组合任何一棵**，
+                    // 所以 `KbEditScreenVisualBaselineTest` 的像素一个字没动。
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            "${selected.label} ｜ $liveLen 字",
+                            style = AppTypography.labelMedium,
+                            color = TextHint,
+                            maxLines = 1
+                        )
+                        if (selectedPath in savingPaths) {
+                            Spacer(modifier = Modifier.width(Spacing.sm))
+                            CircularProgressIndicator(
+                                color = Primary,
+                                strokeWidth = Spacing.xs,
+                                modifier = Modifier
+                                    .size(Spacing.md)
+                                    .testTag(KB_EDIT_SAVING_TAG)
+                                    .semantics { contentDescription = savingLabel }
+                            )
+                        } else if (isDirty(selectedPath)) {
+                            Spacer(modifier = Modifier.width(Spacing.sm))
+                            DirtyDot()
+                        }
+                    }
                     TextButton(
                         onClick = {
                             // 每次**从预览进编辑**都把基线对齐"这一篇当前已落盘的正文"（`saved`），
@@ -581,6 +672,22 @@ internal fun KbEditScreen(
                             color = Primary
                         )
                     }
+                }
+
+                // 页内提示行（禁 Toast 铁律：成功小字 2s 消失，失败红字常驻）。
+                // 这一格住在卡头那一行**外面、状态件外面**，预览态与编辑态都画——
+                // 它是"已保存 / 失败"这两档在全屏唯一的出口，而 `hint` 有两个来源根本不在编辑态发生：
+                // 切分区的自动保存失败（`switchToFile`）与退出前的批量自动保存失败（`saveAllAndExit`），
+                // 这两趟都在**预览态**开火。改之前提示行写在编辑那一支的里侧，那两句话因此
+                // 永远画不出来：按了返回、写盘失败、屏上一个字都没变（§12.4 保存状态要可辨）。
+                // `hint` 为 null 时这一格不组合任何一棵 ⇒ 预览态首屏的像素与那张基线完全一致。
+                hint?.let { (msg, isError) ->
+                    Text(
+                        msg,
+                        style = AppTypography.labelSmall,
+                        color = if (isError) Error else TextHint,
+                        modifier = Modifier.fillMaxWidth().padding(bottom = Spacing.xs)
+                    )
                 }
 
                 // 四格只在这一处出口画：Loading / Error / Empty 交共用状态件，Content 才进下面两分支。
@@ -633,12 +740,27 @@ internal fun KbEditScreen(
                         // ⚠ 键盘责任**只有一层**（本页已单一化，见 onCreate 里 `SOFT_INPUT_ADJUST_NOTHING`）：
                         // 外框 `ScreenPage` 已经吃了 `imePadding()`（`ui/common/ScreenHeader.kt:63`，禁区），
                         // 这一页不再自己垫第二遍，也不靠给编辑器加高度去"补" —— 那样只会把同一段键盘空白
-                        // 扣两遍或把保存挤出屏。窗口尺寸不由系统改，`WindowInsets.ime` 才报得进键盘高度，
-                        // 下面那棵编辑器的 `bringIntoView` 才有触发条件。两半都要真机验（本机 insets 恒 0）。
+                        // 扣两遍或把保存挤出屏。全仓另一处 `imePadding()` 在悬浮窗那一族
+                        // （`ui/home/ProviderSection.kt:556`、`ui/panel/settings/LoveBrainSettingsContent.kt:144`），
+                        // 那是**另一扇窗口**（`TYPE_APPLICATION_OVERLAY`），与本页不同树、不构成第二次消费。
+                        // 下面那颗 `bringIntoView` 现在不再把开火条件挂在"Compose 收到了 ime inset"上
+                        // （见那一段），所以窗口到底被不被系统改矮，都不影响光标行要回来这一件事；
+                        // 但"非 edge-to-edge 窗口里 `imePadding()` 究竟收到几个像素"这半条本机量不出
+                        // （Robolectric 的 insets 恒 0、`adb devices` 空）⇒ 仍归真机 + Layout Inspector。
                         val bringIntoViewRequester = remember { BringIntoViewRequester() }
                         val imeBottomPx = WindowInsets.ime.getBottom(LocalDensity.current)
                         LaunchedEffect(imeBottomPx, editorValue.selection, selectedPath) {
-                            if (imeBottomPx > 0) bringIntoViewRequester.bringIntoView()
+                            // 触发条件**不再要求** `imeBottomPx > 0`（旧写法就是这么写的）。
+                            // 这颗 requester 要解决的形状是"编辑器比槽位高"——地板那一档生效、
+                            // 正文停在 96dp 而槽位更矮时，当前行会被裁在滚动视口之外。
+                            // 这件事与**哪一层**消费了键盘无关：
+                            // `ime` inset 报得进来（API 30+，由外框 `imePadding()` 让位）
+                            // 还是报不进（minSdk 26 起那批非 edge-to-edge 窗口里可能是 0，
+                            // 由窗口自己矮掉那一截消费），被裁的都是同一棵。
+                            // 旧写法把出口挂在"Compose 收到过 ime inset"上，
+                            // 后一种世界里它一次都不会开火 ⇒ 光标行回不来。
+                            // `imeBottomPx` 仍留在 key 里：键盘弹出/收起那一趟也要各重算一次。
+                            bringIntoViewRequester.bringIntoView()
                         }
                         Column(modifier = Modifier.fillMaxSize()) {
                         BoxWithConstraints(modifier = Modifier.fillMaxWidth().weight(1f)) {
@@ -684,15 +806,8 @@ internal fun KbEditScreen(
                         }
                         // 指导书§7.1：编辑态用更紧凑的间距（xs=4dp），预览态保持 sm(8dp)。
                         Spacer(modifier = Modifier.height(if (isPreview) Spacing.sm else Spacing.xs))
-                        // 页内提示行（禁 Toast 铁律：成功小字 2s 消失，失败红字常驻）
-                        hint?.let { (msg, isError) ->
-                            Text(
-                                msg,
-                                style = AppTypography.labelSmall,
-                                color = if (isError) Error else TextHint,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
+                        // 「放弃修改 / 保存」那一排留在滚动宿主**之外**：它是这一支唯一常驻可达的动作排，
+                        // 正文矮到地板以下时靠上面那棵宿主滚，不靠把这排顶出屏（§12.4 保存路径必须可见）。
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(Spacing.md),
@@ -708,18 +823,37 @@ internal fun KbEditScreen(
                                     ?: ""
                                 drafts = drafts + (selectedPath to baseline)
                                 editorStates.remove(selectedPath)
-                                scope.launch {
-                                    try {
-                                        val newVer = saveFile(selectedPath, baseline, versions[selectedPath])
-                                        if (newVer != null) {
-                                            saved = saved + (selectedPath to baseline)
-                                            versions = versions + (selectedPath to newVer)
+                                // 「放弃」的范围只覆盖**明确还没落盘的那一部分**（§12.4 原话）。
+                                // `saved` 只在"写成功"或"读回来"时更新，所以 baseline == saved
+                                // 就是说磁盘上已经是这一份：这一趟没有任何未持久化的修改可放弃。
+                                // 旧写法不管有没有改动都照写一次，于是"放弃"伪装成一次保存、
+                                // 把版本号白顶一格（保存契约本身一个字没改，改的是"要不要写"这一步）。
+                                val pending = baseline != (saved[selectedPath] ?: "")
+                                if (pending) {
+                                    scope.launch {
+                                        val ok = markingSave(selectedPath) {
+                                            try {
+                                                val newVer =
+                                                    saveFile(selectedPath, baseline, versions[selectedPath])
+                                                if (newVer != null) {
+                                                    saved = saved + (selectedPath to baseline)
+                                                    versions = versions + (selectedPath to newVer)
+                                                }
+                                                newVer != null
+                                            } catch (e: kotlinx.coroutines.CancellationException) {
+                                                throw e
+                                            } catch (e: Exception) {
+                                                L.w("KbEdit discard save failed: $selectedPath")
+                                                false
+                                            }
                                         }
-                                    } catch (e: kotlinx.coroutines.CancellationException) {
-                                        throw e
-                                    } catch (e: Exception) {
-                                        L.w("KbEdit discard save failed: $selectedPath")
+                                        // 这一趟失败也要说出来：内存里的草稿已回到基线，而磁盘仍是上一份
+                                        // 已保存内容 ⇒ 这一格还是脏的，那颗小圆点与这句红字一起把话说全
+                                        // （失败不许报成已保存，也不许静默把改动吃掉）。
+                                        if (!ok) hint = saveFailedHint to true
+                                        isPreview = true
                                     }
+                                } else {
                                     isPreview = true
                                 }
                             }) {
@@ -733,29 +867,49 @@ internal fun KbEditScreen(
                             // 并把热区留在外层透明盒里（`CompactInput` 的两层写法），
                             // 页面这一侧不该再自己抄一个 44 出来。
                             LbPrimaryButton(
-                                state = LbButtonState.Idle,
+                                // 「保存中」这一档在页面上唯一的出口（§12.4 保存状态要可辨）。
+                                // 改之前这颗的 `state` 是**写死的** `LbButtonState.Idle`：
+                                // 那一次真写盘（`saveFile` → `KbEditViewModel.save` → 版本校验 → IO 落盘）
+                                // 整整一趟里屏幕上一点变化都没有，用户分不清"点了没用上"与"还在写"。
+                                // 归 [savingPaths] 这一个真源 ⇒ 手动这一趟与那两趟自动保存报的是同一件事。
+                                state = if (selectedPath in savingPaths) LbButtonState.Loading
+                                        else LbButtonState.Idle,
                                 label = stringResource(R.string.kb_save),
                                 onClick = {
-                                    val text = editorValue.text
-                                    scope.launch {
-                                        val ver = versions[selectedPath]
-                                        try {
-                                            val newVer = saveFile(selectedPath, text, ver)
+                                    // 同一篇不许并发写：设计系统那颗 Loading 档**仍可点**（它服务的是"生成中/停止"那一族），
+                                    // 于是连点两下就真的写两遍。这一句把"保存只发一次"落在唯一那颗出口上，
+                                    // 不碰写盘顺序、也不碰版本校验。
+                                    if (selectedPath !in savingPaths) {
+                                        val text = editorValue.text
+                                        scope.launch {
+                                            val ver = versions[selectedPath]
+                                            // 区分"抛异常"与"返回 null（版本冲突）"两种失败：
+                                            // 前者那句是「保存失败，请重试」、后者是「冲突但保住草稿」，
+                                            // 两句话各自对用户成立，不许在这一格里被并成一条。
+                                            var threwException = false
+                                            val newVer = markingSave(selectedPath) {
+                                                try {
+                                                    saveFile(selectedPath, text, ver)
+                                                } catch (e: kotlinx.coroutines.CancellationException) {
+                                                    throw e
+                                                } catch (e: Exception) {
+                                                    L.w("KbEdit manual save failed: ${selected.path}")
+                                                    threwException = true
+                                                    null
+                                                }
+                                            }
                                             if (newVer != null) {
                                                 saved = saved + (selectedPath to text)
                                                 versions = versions + (selectedPath to newVer)
                                                 editorStates.remove(selectedPath)
                                                 hint = savedHint to false
                                                 isPreview = true
+                                            } else if (threwException) {
+                                                hint = saveFailedHint to true
                                             } else {
                                                 L.w("KbEdit save conflict: ${selected.path}")
                                                 hint = conflictKeptDraftHint to true
                                             }
-                                        } catch (e: kotlinx.coroutines.CancellationException) {
-                                            throw e
-                                        } catch (e: Exception) {
-                                            L.w("KbEdit manual save failed: ${selected.path}")
-                                            hint = saveFailedHint to true
                                         }
                                     }
                                 }

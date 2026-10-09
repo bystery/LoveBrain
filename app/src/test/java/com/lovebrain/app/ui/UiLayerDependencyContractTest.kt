@@ -1432,7 +1432,20 @@ class UiLayerDependencyContractTest {
         "ui/KbEditActivity.kt#INPUT_ROW_HEIGHT_DP" to
             "知识库编辑页那几格表单输入直读了档；该改读 CompactInput（或搬进 core 之后的那一颗）",
         "ui/panel/reply/ReplyInput.kt#INPUT_ROW_HEIGHT_DP" to
-            "回复那一行的默认形参；合同给这一条的是 28 档、不是通用 36，两档别混：\u21d2 该由回复自己的具名档接手"
+            "回复那一行的默认形参；合同给这一条的是 28 档、不是通用 36，两档别混：\u21d2 该由回复自己的具名档接手",
+        // 2026-10-08 范围符号那一颗（「仅看本轮」）登记：
+        // · 为什么这里非读不可：那颗的**行宽预算**与它自己的**热区边长**必须是同一颗数，
+        //   抄两份就有一处会漂（`ReplyInput.kt#ReplyDimens.ROUND_SCOPE_HIT` 与
+        //   `ROUND_SCOPE_RESERVE` 现在由同一个 val 推出来，整页只有这一处读 core 那颗）。
+        // · 为什么不能改读组件的具名档：这一颗用的是 `LbChip` 的分层档，而 `LbChipStyle`
+        //   那两条分支的外盒只认 `AppDimens.TOUCH_TARGET_MIN_DP`（48 见方），交不出
+        //   "外层按紧凑档垫、里面按 22dp 画"这一档；`LbTextActionGlyph.*.hitSize` 那三颗
+        //   是**文字动作字形**的档，主人不是这颗芯片，拿它给芯片定热区就是认错主人。
+        // · 所以债的方向：core 给 `LbChipStyle` 立一档紧凑外盒（外盒边长由档位说，不再是写死的 48）
+        //   之后，这一页改成只调那一档、这一行登记跟着删。
+        // ⚠ 数没有第二份：仍是指回 core 那一颗具名矮档，页面没有自造第二颗 28。
+        "ui/panel/reply/ReplyInput.kt#CARD_ACTION_HIT_DP" to
+            "范围符号那颗的热区与行宽预算共用 core 紧凑档这一颗数；\u21d2 该由 core/designsystem 给 LbChip 立的紧凑外盒档接手（现缺：分层档的外盒只有 48 见方那一颗）"
     )
 
     /**

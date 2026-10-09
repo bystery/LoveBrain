@@ -86,6 +86,7 @@ private object HomeDimens {
  * - [SETUP_ACTION]：缺项行那颗可点去处，判"黄字旁边到底有没有出口"。
  */
 object LbHomeTags {
+    const val IDENTITY = "lb_home_identity"
     const val STATUS_CARD = "lb_home_status_card"
     const val LAMP = "lb_home_status_lamp"
     const val CONTROL = "lb_home_control"
@@ -144,12 +145,18 @@ internal fun AssistantStatusCard(
             // 文字就是 `render.lampDescription` 那四个既有短句，六档状态各归其一，不新造第五个状态。
             // 只此一行：次级说明那半行要的是新文案（`res/values` 的写入权不在这一席），
             // 没有真源可指就不画，宁可少一行字也不编一行字。
+            //
+            // 字阶这一档本轮抬了一级（`titleMedium` 15/22 → `titleLarge` 18/26，同一族里已有的档）：
+            // 改之前主卡那五个字与四入口那四个标题是**同一个 style 加同一个字重**，
+            // 于是"主卡是视觉焦点、入口不许与主卡同样抢眼"（§5.1）只剩阴影在扛，
+            // 录下来的那张基线上一眼读不出谁是主。抬这一档买的就是这一处层次差——
+            // 不新造字阶、不缩任何别的字，入口那一档一个字没动（那颗件也不在本席写入范围）。
+            // ⚠ 行高 26 < 热区 48：卡高仍是「热区 48 + 上下各 16」那一算式，没被这一档顶高。
             Text(
                 text = render.lampDescription,
                 modifier = Modifier.weight(1f),
-                style = AppTypography.titleMedium,
+                style = AppTypography.titleLarge,
                 color = TextPrimary,
-                fontWeight = FontWeight.SemiBold,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -237,6 +244,14 @@ private fun AdvisorControlButton(
  * 它是**要用户读完去办事**的一句话，不是行脚注。
  * 同一档圆角（10）已经是这一屏既有的一档（入口卡里那块图标底），所以这一格没有长第四种圆角。
  *
+ * ## 那一行的左边缘与主卡的内容柱对齐（§5.1"调整对齐"）
+ *
+ * 容器自己不吃水平边距（左右 24 的唯一主人仍是 `LbScreenScaffold`），但**内距**本轮从
+ * `Spacing.lg`(12) 抬到 `Spacing.xl`(16)：主卡的内容柱就在"卡边 + 16"那一格，
+ * 而这一行是主卡那一档状态的说明、与它同组（它下面那道 8dp 就是这一组的全部距离）。
+ * 原来是 12 ⇒ 同一屏上下相邻的两块文字左边缘差 4dp，读起来像两件不相干的东西。
+ * 数不新写一颗：抬到的就是主卡已经在用的那一个 `Spacing.xl`。
+ *
  * 出口那颗走 [LbTextAction] 的行内胶囊档（[LbTextActionSize.RowCapsule]：可见 32、热区仍 48 两轴），
  * 不在页面自画 `Box + clickable`。`actionLabel == null` 就是这一档缺项**根本没有去处可给**
  * （"服务没起来""连接还没检查过"那一族），此时只画文字、不硬造一颗假按钮。
@@ -253,7 +268,7 @@ internal fun HomeSetupHint(
             .fillMaxWidth()
             .clip(LoveBrainShape.md)
             .background(WarningBg)
-            .padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+            .padding(horizontal = Spacing.xl, vertical = Spacing.sm),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing.md)
     ) {

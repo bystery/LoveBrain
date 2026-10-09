@@ -1,6 +1,7 @@
 package com.lovebrain.app.ui.panel.settings
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,7 @@ import com.lovebrain.app.core.designsystem.LbTextActionTone
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.model.IntentExpiry
+import com.lovebrain.app.model.IntentStatus
 import com.lovebrain.app.model.KnowledgeBase
 
 /**
@@ -54,8 +57,15 @@ private object SettingsHeaderDimens {
 }
 
 /**
- * 悬浮窗齿轮那一扇**整窗设置页**的正文：一行页头「[返回] 设置」，下面是三格——
- * 透明度滑杆、持续意图、知识库切换。
+ * 悬浮窗齿轮那一扇**整窗设置页**的正文：一行页头「[返回] 设置」，下面按 §11.1 那一族的顺序
+ * 依次是三格——透明度、当前知识库、意图。
+ *
+ * 这一页是**一棵 Box**：里面那一列是页头 + 可滚的表单，最外面那一层留给浮层。
+ * 为什么页根必须是 Box（§11.2 点名要查的那件事）：意图那扇介绍浮层的遮罩走
+ * `fillMaxSize()`，而滚动柱交给子节点的最大高度是无限的——浮层画在滚动列里时，
+ * 遮罩只剩自己那一块、白占一个表单槽位、还能被滚走。它因此挂在这一页的最外一层，
+ * 由 [SettingsIntentIntroSheet] 画那一颗设计系统共用的壳（[LbModalSheet]），
+ * 树常驻、开合只经 `visible` 说话，外面不再包第二份动画。
  *
  * 供应商 / 超时档位 / 捕获范围不在这一页：供应商与模型在首页"模型供应商"那一格里
  * 增删改与测试连接，超时四档同一张表单里就有（`ui/home/ProviderSection.kt:576-590`），
@@ -65,13 +75,18 @@ private object SettingsHeaderDimens {
  *
  * 无状态：这一格不持有配置。透明度读数由宿主给，拖动预览与松手写盘各一条回调，
  * 作用在**面板背景层**上；不许走窗口 `ComposeView.alpha` 那条通路（服务侧会复位成 1f）。
- * 意图与知识库切换的配置也由宿主交下来，写口各一条。
+ * 意图与知识库切换的配置也由宿主交下来，写口各一条。这一页唯一自己持有的东西是
+ * 那扇介绍浮层的开合（[SettingsIntentIntroHolder]）与"已经看过介绍"那一条盘上的记录。
  *
  * @param onBack 回到打开设置之前的那一面（回复/谈心由宿主决定恢复哪一面，输入与卡片状态由宿主保留）
  * @param opacityPercent 当前背景层不透明度（100 = 最不透明；刻度与区间归 `PanelBackdropOpacity`）
  * @param onOpacityPreview 拖动每帧：只用来实时预览背景层，不落盘
  * @param onCollapse 右上那颗「收起」：宿主把它接到 `dismissPanelToBubble`，这一页不自己判断该不该收
  * @param onOpacityCommit 松手一次：落盘由宿主处理
+ * @param onIntentChange 意图唯一的写口：`(正文, 启用, 有效期, 是否按此刻重算期限)`
+ * @param intentStatus 那条意图现在的状态（活动／已到期／已完成）——§11.3 那六档判据要读它；
+ *   宿主没接这一颗时按活动态画，与接上之前一模一样，不会多画一格也不会少画一格
+ * @param intentExpiryDate 时间档那条到期时刻（`yyyy-MM-dd HH:mm`，盘上那份），用于"展示期限"
  */
 @Composable
 fun LoveBrainSettingsContent(
@@ -88,9 +103,16 @@ fun LoveBrainSettingsContent(
     activeKbName: String? = null,
     onSwitchKb: (String) -> Unit = {},
     modifier: Modifier = Modifier,
+    intentStatus: IntentStatus = IntentStatus.ACTIVE,
+    intentExpiryDate: String = "",
     onInputIntent: (() -> Unit)? = null
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
+    val context = LocalContext.current
+    // 介绍浮层：可见性与「已经看过」只有这一颗持有者（页面关掉再开 = 回到盘上那份记录）。
+    val intentIntro = rememberSettingsIntentIntroHolder()
+
+    Box(modifier = modifier) {
+        Column(modifier = Modifier.fillMaxSize()) {
         // 紧凑页头：一颗返回 + 一行页名。返回那颗的名字仍走 `R.string.common_back`、角色与热区
         // 由 [LbTextAction] 的图标档保证（本席不给 `LbTopBarLevel` 加 Panel 档，见 [SettingsHeaderDimens] 上方的决策件说明）。
         // 这一行钉在滚动柱之外：键盘再高也不会把"返回"滚出可达范围（判据在 `SettingsPageSemanticsTest`）。
@@ -152,22 +174,50 @@ fun LoveBrainSettingsContent(
                 onOpacityPreview = onOpacityPreview,
                 onOpacityCommit = onOpacityCommit
             )
-            // 持续意图入口（原话第 10 条：从面板输入行搬进设置页，收掉屏上那两排次级控件）。
-            // 默认关；开着时展开有效期 + 正文录入。能力与意图编辑浮层同源，落盘仍走 IntentController。
-            Spacer(Modifier.height(Spacing.md))
-            SettingsIntentEntry(
-                intentEnabled = intentEnabled,
-                intentText = intentText,
-                intentExpiry = intentExpiry,
-                onIntentChange = onIntentChange,
-                onInputIntent = onInputIntent
-            )
+            // §11.1 那一族的顺序：透明度 → **当前知识库** → 意图。
+            // 切库排在意图前面不是排版口味：意图是按库隔离的那一份数据，先认对象、再改这一块的那件事，
+            // 读序与"切库必须取对应数据"同一头。
             Spacer(Modifier.height(Spacing.md))
             SettingsKbSwitcherEntry(
                 knowledgeBases = knowledgeBases,
                 activeKbName = activeKbName,
                 onSwitchKb = onSwitchKb
             )
+            // 持续意图入口（原话第 10 条：从面板输入行搬进设置页，收掉屏上那两排次级控件）。
+            // 默认关；首次拨开只起下面那一层介绍浮层，确认后才启用并展开有效期 + 正文录入。
+            Spacer(Modifier.height(Spacing.md))
+            SettingsIntentEntry(
+                intentEnabled = intentEnabled,
+                intentText = intentText,
+                intentExpiry = intentExpiry,
+                onIntentChange = onIntentChange,
+                intentStatus = intentStatus,
+                intentExpiryDate = intentExpiryDate,
+                ownerKbName = activeKbName,
+                introSeen = intentIntro.seen,
+                introPending = intentIntro.pending,
+                onRequestIntro = { intentIntro.request() },
+                onInputIntent = onInputIntent
+            )
         }
+    }
+
+    // 介绍浮层挂在这一页的最外一层（判据见本页文件头那句 §11.2 的挂载理由）：
+    // 树常驻、开合只经 `visible` 说话，那 200ms 入退场仍由壳里的 `AnimatedVisibility` 持有，
+    // 这里不再包第二层动画（§4.4「先修挂载层级，不重复包动画」）。
+    SettingsIntentIntroSheet(
+        visible = intentIntro.pending,
+        onAcknowledge = {
+            // 确认之后才正式启用：正文交屏幕上这一份（此时还没进编辑，通常是空串），
+            // 换没换档说 `false`——重算期限那一句由启用那件事自己触发（判据在宿主那颗 saveDecision）。
+            intentIntro.acknowledge()
+            IntentIntroRecord.markSeen(context)
+            onIntentChange(intentText, true, intentExpiry, false)
+        },
+        onDismiss = {
+            // 取消／点遮罩 = 保持关闭，一个字都不写
+            intentIntro.cancel()
+        }
+    )
     }
 }

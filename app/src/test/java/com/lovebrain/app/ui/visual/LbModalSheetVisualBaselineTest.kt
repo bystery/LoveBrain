@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onRoot
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.LbDialogAction
@@ -61,21 +62,30 @@ class LbModalSheetVisualBaselineTest {
     @get:Rule
     val rule = createComposeRule()
 
+    /**
+     * 拍法改成本仓既有的显式形态（`FeedbackCasesScreenVisualBaselineTest` 头部记过同一判据）：
+     * 旧的 `captureRoboImage { content }` composable 形态会把内容装进**另一棵**
+     * `RoborazziTransparentActivity` 的 composition，还会在测试收尾多吐一张 `_2`——
+     * 那张 `_2` 从来没有在册基线（在册 0 颗），verify 永远报缺图，record 又在
+     * 内部 idle 等待上撞 `AppNotIdleException`（loading 那格的进度环是不定动画，
+     * 等 idle 就是死等；record 模式实测 5 格全挂在这）。改成
+     * setContent → 手动推两帧定帧 → `onRoot().captureRoboImage()`：拍的就是断言所在的
+     * 同一棵树，落盘回到 `<类名>.<方法名>.png` 的单一命名，与其余 42 张同一规则。
+     */
     private fun shot(dismissable: Boolean = true, content: @Composable () -> Unit) {
         rule.setContent {
             UiMatrix(360, heightDp = 640).RenderIn(LocalDensity.current.density) {
-                captureRoboImage {
-                    LbModalSheet(
-                        onDismissRequest = {},
-                        dismissable = dismissable,
-                        content = content
-                    )
-                }
+                LbModalSheet(
+                    onDismissRequest = {},
+                    dismissable = dismissable,
+                    content = content
+                )
             }
         }
-        // 进度环那一格是不定动画：手动推到定帧，四格都按同一个节拍拍
+        // 进度环那一格是不定动画：手动推到定帧，五格都按同一个节拍拍；**不叫 waitForIdle**
         rule.mainClock.advanceTimeBy(16L)
         rule.mainClock.advanceTimeBy(16L)
+        rule.onRoot().captureRoboImage()
     }
 
     /** 卡片里那一列：标题 + 一句说明 + 动作行——生产三处调用点都是这个形状 */

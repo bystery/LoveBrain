@@ -68,9 +68,23 @@ class MessageRowDragFollowTest {
      * 反例：把判据换成"手指进了那一格的范围就换"（`offset` 与 `offset+size` 那种区间比较）——
      * 一格之内来回抖会一路交换下去，第一帧就满足条件，这一格当场红。
      */
+    /**
+     * §8.3 第四判据"列表发生有效变化后清理拖动态"的**结构那一半**：被拖那一条已从数据里
+     * 消失（拖拽途中被删/被本轮消耗）时，`reshowDraggedRow` 的 else 一支必须就地 `endDrag()`。
+     * 拿掉它，`draggedId` 会悬住、全行横滑被 `reorderActive` 压到抬指（L1 复核挑中的形状）。
+     * ⚠ 这一格只证明"那一支存在且不是空"；拖拽中的手指时序本机注入不稳（头注②），时序归真机。
+     */
     @Test
-    fun `no swap while the dragged centre has not crossed the neighbour centre`() {
-        val dragged = DragSlot(index = 1, offsetPx = 0, sizePx = 40)
+    fun `a dragged row vanishing from the data ends the drag session structurally`() {
+        val hits = linesWith("else endDrag()")
+        assertEquals(
+            "reshowDraggedRow 的「已从数据消失」一支必须当场 endDrag()，实到 ${hits.size} 处",
+            1, hits.size
+        )
+    }
+
+    @Test
+    fun `no swap while the dragged centre has not crossed the neighbour centre`() {        val dragged = DragSlot(index = 1, offsetPx = 0, sizePx = 40)
         val below = DragSlot(index = 2, offsetPx = 44, sizePx = 40)
         // 视觉中心 = 0 + 30 + 20 = 50，相邻中心 = 44 + 20 = 64：还没越过
         assertEquals(null, dragSwapStep(dragged, offsetPx = 30f, above = null, below = below))

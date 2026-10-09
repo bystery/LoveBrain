@@ -259,8 +259,12 @@ class OddShapeOwnershipTest {
      * `app/src/main` 全树重扫一遍抄下来的，不是手数的**；构建由主线程独占，所以这里的读数
      * 出自同判据的一次全树重扫，主线程复跑这颗套件应当一字不差对上（对不上就是有人又画了新的一颗）。
      *
-     * 实到：**23 颗异形 + 14 颗委托壳 + 1 个交值的状态工厂**（三本账，见下面三颗清单）。
-     * 上一版记的是 24 异形 + 13 壳：2026-10-06 L1b 把知识库母版页那张自画卡底（`KnowledgeBaseActivity.kt#KbCard`）
+     * 实到：**23 颗异形 + 15 颗委托壳 + 1 个交值的状态工厂**（三本账，见下面三颗清单）。
+     * 上一版（2026-10-08 悬浮设置波次）异形仍是 23 颗、壳 14→15：那一波为修"意图介绍浮层的挂载层级"
+     * 从 `SettingsIntentEntry.kt` 里拆出 `SettingsIntentIntroSheet`，拆出来时壳里多裹了一层自画 `Column`
+     * ⇒ 被这把尺认成第 24 颗异形；那层容器在 `LbModalSheet` 里本来就有（卡片就是一棵竖列），
+     * 撤掉后这一颗退化成"只把内容交给公共件"的委托壳 ⇒ 进下面第二本账（见该条注释）。
+     * 再上一版记的是 24 异形 + 13 壳：2026-10-06 L1b 把知识库母版页那张自画卡底（`KnowledgeBaseActivity.kt#KbCard`）
      * 也交给同一个主人 `core/designsystem/LbListCard.kt`（基线 v1.1 §3.6：母版页从今天起只交内容），
      * 页面那一颗退化成"只把内容交给公共件"的委托壳 ⇒ 异形销行一颗、壳加一颗。
      * 更早：2026-10-05 M3b 把反馈案例那张自绘卡底上提进同一颗公共件，页面那一颗退化成委托壳；
@@ -334,7 +338,15 @@ class OddShapeOwnershipTest {
         "CaptureAppsScreen.kt#CaptureAppRow",
         // 「加一条消息」那颗：48dp 热区点击盒 + 内层 Box 画圆形实心底与 + 号（随 canAdd 换底色）。
         // 主人：`ReplyInput.kt`（composer 底部一处）。【真需要自画 / 缺件】`LbIconButton` 交不出随 canAdd 切底色的实心圆钮。
-        "ReplyInput.kt#AddMessageButton"
+        "ReplyInput.kt#AddMessageButton",
+        // ── 2026-10-09 主动发展示波次登记 ──────────────────────────────────────
+        // 主动发候选卡：可复制正文在前 + 常驻角度行 + 时机/先别发/需要准备"默认收起、按需展开"
+        // 三段次要行（书 §14.1 的展示结构），整卡点击=复制正文，策略行是卡内独立点击目标。
+        // 主人：`LoveBrainPanelScreen.kt`（`ProactiveResultArea` 的候选列表）。
+        // 【真需要自画 / 缺件】`LbListCard` 的四槽（title/status/meta/actions）装不下
+        // "正文即主角 + 可展开策略层"这一形状；与 `SchemeCard` 同为结果卡但内容结构不同，不硬套。
+        // ⇒ 留账，缺件补齐再并。
+        "LoveBrainPanelScreen.kt#ProactiveOptionCard"
     )
 
     /**
@@ -386,6 +398,17 @@ class OddShapeOwnershipTest {
         "IntentEditorSheet.kt#IntentEditorDialog",
         // 有效期那三颗单选 chip 归进 `LbChip`（Single 互斥），留下"只转一次参数"的壳——调数不是在页面再画链。
         "IntentEditorSheet.kt#IntentExpiryChip",
+        // 2026-10-08 悬浮设置波次登记：`SettingsIntentEntry.kt#SettingsIntentIntroSheet`（意图首次开启
+        // 那一扇介绍浮层，由页面根部那棵 Box 挂在最后一层）是**委托壳**，不是异形。它拆出来时壳里裹了
+        // 一层自画的 `Column(Modifier.fillMaxWidth())`，被这把尺当场认成异形——判据没松，是那层容器
+        // 本就不该存在：`LbModalSheet` 的卡片自己就是一棵竖列（`core/designsystem/LbModalSheet.kt:119`），
+        // 内容再套一列不改任何像素。现在体里只剩 `LbModalSheet(` + `LbModalSheetTitle(` +
+        // `LbModalSheetActions(` 三句设计系统调用（与 `CorrectionCenterHost`、`MemoryCorrectionFlowHost`
+        // 同一分工；需要单独裹一层排版的只有编辑器那种大块内容 ⇒ `IntentEditorDialog` 壳 + `IntentEditorBody`）。
+        // 它与本册那两颗浮层壳各管一件事、互不替代：`IntentEditorDialog` 是**编辑一条意图**的表单
+        // （正文／期限／两颗出口），`ProviderEditDialog` 是**增删改一家供应商**，这一颗只说一句
+        // "这格是干什么的"并交一颗「知道了」——它自己不写任何配置，启用那一句由宿主回调去落。
+        "SettingsIntentEntry.kt#SettingsIntentIntroSheet",
     )
 
     @Test

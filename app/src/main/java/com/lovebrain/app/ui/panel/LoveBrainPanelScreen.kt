@@ -219,6 +219,10 @@ private fun PanelSettingsPage(
         intentEnabled = intentConfig.enabled,
         intentText = intentConfig.text,
         intentExpiry = intentConfig.expiry,
+        // §11.3 那六档里「已到期」与「已完成」只能由真实状态派生：不喂这两颗，屏幕就永远
+        // 画不出到期那一档（设置页那格自己有默认值 = 旧行为，所以漏在这里不报编译错）。
+        intentStatus = intentConfig.status,
+        intentExpiryDate = intentConfig.expiryDate,
         onIntentChange = { text, enabled, expiry, recompute ->
             val decision = IntentPolicy.saveDecision(
                 current = intentConfig,
@@ -784,6 +788,13 @@ fun LoveBrainPanelScreen(
                     onDelete = { id ->
                         viewModel.removeMessageById(id)
                     },
+                    // §8.1 方向映射的另一半：横滑**向内** = 把这一条换成对方（只交 id，
+                    // 新角色由持有列表的一方算，见 ComposerStore.Intent.SwitchMessageRole）。
+                    // 这里不碰 composeRole / inputKind / captureRole —— 换一条消息的说话人
+                    // 不等于改用户此刻在输入行选的那一颗（§8.1 点名的"不能连带改变"）。
+                    onSwitchRole = { id ->
+                        viewModel.composer.accept(ComposerStore.Intent.SwitchMessageRole(id))
+                    },
                     modifier = Modifier.height(
                         if (messages.isEmpty()) PanelDimens.MESSAGE_LIST_EMPTY_HEIGHT_DP.dp
                         else messageListHeight
@@ -1131,6 +1142,16 @@ internal fun ProactiveResultArea(
     onCopy: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // 每张卡"策略行展开没有"的账。以下一批候选为单位收账（见下一格）：
+    // 流式追加（同批内 options 变长）不动它——用户翻开的那张不许自己合上。
+    val strategyOpen = remember { mutableStateMapOf<Int, Boolean>() }
+    // 书 §14.1"默认收起"以**一批**为单位：新一轮开始（store 收到 ProactiveStarted 先清空）
+    // 或用户切走清残留时，上一批翻开的展开态一起收掉——旧实现按 index 记账却从不销账，
+    // 再生成之后新的第 N 张会带着上一轮第 N 张的展开姿态进场。
+    // 展开态只认本批；"清空"这个信号是展示侧唯一拿得到的批次边界（requestId 不出 store）。
+    LaunchedEffect(options.isEmpty()) {
+        if (options.isEmpty()) strategyOpen.clear()
+    }
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(Spacing.sm)
@@ -1165,60 +1186,135 @@ internal fun ProactiveResultArea(
                 modifier = Modifier.fillMaxWidth().padding(vertical = Spacing.xxl)
             )
             else -> {
-                // §9（原话第 18 条）：主动发候选补回策略载荷后，正文仍是**唯一可发送内容**
-                // （点击复制只复制 `opt.text`，见下面那颗 `clickable`），时机/先别发/需要准备
-                // 三段收成"按需展开的次要行"。三段全空的旧候选看起来与改前一致——不多空行、
-                // 也不多箭头。
-                val strategyOpen = remember { mutableStateMapOf<Int, Boolean>() }
+                // §14.1：主动发候选补回策略载荷后，正文仍是**唯一可发送内容**
+                // （点击复制只复制 `opt.text`，见 [ProactiveOptionCard] 那颗整卡点击）。
+                // 时机/先别发/需要准备三段收成"按需展开的次要行"，展开区里每行带自己的类别标签
+                // （标签与行格式全走资源，页面不内联中文——同角度那一行，见资源里的注释）。
+                // 三段全空的旧候选与改前一致：不多空行、也不多箭头。
+                val labels = ProactiveStrategyLabels(
+                    angle = stringResource(R.string.proactive_label_angle),
+                    timing = stringResource(R.string.proactive_label_timing),
+                    holdBack = stringResource(R.string.proactive_label_hold_back),
+                    prepare = stringResource(R.string.proactive_label_prepare),
+                    line = stringResource(R.string.proactive_strategy_line),
+                    copyOpener = stringResource(R.string.a11y_copy_opener)
+                )
+                val expandLabel = stringResource(R.string.action_expand)
+                val collapseLabel = stringResource(R.string.action_collapse)
                 options.forEachIndexed { index, opt ->
-                    val strategy = listOf(opt.timing, opt.holdBack, opt.prepare).filter { it.isNotBlank() }
-                    val open = strategyOpen[index] == true
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(LoveBrainShape.md)
-                            .background(SurfaceCard, LoveBrainShape.md)
-                            .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
-                            .padding(Spacing.lg)
-                            .clickable { onCopy(opt.text) }
-                    ) {
-                        Text(opt.text, style = AppTypography.bodyMedium, color = TextPrimary)
-                        if (opt.angle.isNotBlank()) {
-                            Spacer(Modifier.height(Spacing.xs))
-                            Text("角度：${opt.angle}", style = AppTypography.labelSmall, color = TextHint)
-                        }
-                        if (strategy.isNotEmpty()) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = Spacing.xs)
-                                    .clickable(
-                                        onClickLabel = stringResource(
-                                            if (open) R.string.action_collapse else R.string.action_expand
-                                        )
-                                    ) { strategyOpen[index] = !open }
-                            ) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_chevron_down),
-                                    contentDescription = null,
-                                    tint = TextHint,
-                                    modifier = Modifier
-                                        .size(14.dp)
-                                        .graphicsLayer { rotationZ = if (open) 180f else 0f }
-                                )
-                            }
-                            if (open) {
-                                strategy.forEach { line ->
-                                    Spacer(Modifier.height(Spacing.xs))
-                                    Text(line, style = AppTypography.bodySmall, color = TextSecondary)
-                                }
-                            }
-                        }
-                    }
+                    ProactiveOptionCard(
+                        option = opt,
+                        labels = labels,
+                        expanded = strategyOpen[index] == true,
+                        expandLabel = expandLabel,
+                        collapseLabel = collapseLabel,
+                        onToggleExpanded = { strategyOpen[index] = !(strategyOpen[index] == true) },
+                        onCopy = onCopy
+                    )
                 }
                 if (error != null) {
                     Text(error, style = AppTypography.labelSmall, color = Error)
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 主动发候选卡上那几行策略说明的标签集（书 §14.1：策略说明与可发送正文视觉分离）。
+ *
+ * 全部来自 strings 资源、由调用方一次性取好传进来——卡内不出现任何内联中文/标点
+ * （`UiStringLiteralBudgetTest` 那道栅栏的形状），英文环境也念得到同一套账。
+ * [line] 是"标签：内容"的行格式（冒号住在资源里）。
+ */
+private data class ProactiveStrategyLabels(
+    val angle: String,
+    val timing: String,
+    val holdBack: String,
+    val prepare: String,
+    val line: String,
+    val copyOpener: String
+)
+
+/**
+ * 一张主动发候选卡（书 §14.1 的展示结构，从 `ProactiveResultArea` 里拆出来单独成件）：
+ *
+ * - **可复制正文在前**：`option.text` 独占第一行、正文字阶；角度是它下面那行常驻小字。
+ * - **策略说明为辅、按需展开**：时机/先别发/需要准备三类默认收在一行"类别名"后面
+ *   （收起时也讲得出里面是什么，不是一颗裸箭头），展开后每行带类别标签——
+ *   三类句子长得像，没有标签就分不清哪句是等待依据（§14.2 末行要拦的正是这个混淆）。
+ * - **复制只带走正文**：整卡点击 = `onCopy(option.text)`；角度与三段策略行一个字不进剪贴板。
+ *   点击动作带资源名与 Button 角色，读屏念得出"点了会干什么"。
+ * - 三段全空的候选（旧输出）不画展开行，形状与没有策略载荷的旧版一致。
+ */
+@Composable
+private fun ProactiveOptionCard(
+    option: ProactiveOption,
+    labels: ProactiveStrategyLabels,
+    expanded: Boolean,
+    expandLabel: String,
+    collapseLabel: String,
+    onToggleExpanded: () -> Unit,
+    onCopy: (String) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(LoveBrainShape.md)
+            .background(SurfaceCard, LoveBrainShape.md)
+            .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
+            .padding(Spacing.lg)
+            .clickable(onClickLabel = labels.copyOpener, role = Role.Button) { onCopy(option.text) }
+    ) {
+        // 可发送正文在前（§14.1）：它是这张卡唯一的主角
+        Text(option.text, style = AppTypography.bodyMedium, color = TextPrimary)
+        if (option.angle.isNotBlank()) {
+            Spacer(Modifier.height(Spacing.xs))
+            Text(
+                labels.line.format(labels.angle, option.angle),
+                style = AppTypography.labelSmall,
+                color = TextHint
+            )
+        }
+        val strategy = listOfNotNull(
+            if (option.timing.isBlank()) null else labels.timing to option.timing,
+            if (option.holdBack.isBlank()) null else labels.holdBack to option.holdBack,
+            if (option.prepare.isBlank()) null else labels.prepare to option.prepare
+        )
+        if (strategy.isNotEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = Spacing.xs)
+                    .clickable(onClickLabel = if (expanded) collapseLabel else expandLabel) {
+                        onToggleExpanded()
+                    }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_chevron_down),
+                    contentDescription = null,
+                    tint = TextHint,
+                    modifier = Modifier
+                        .size(14.dp)
+                        .graphicsLayer { rotationZ = if (expanded) 180f else 0f }
+                )
+                Spacer(Modifier.width(Spacing.xs))
+                // 收起态也要说得出展开区里装的是哪几类（§14.1"按需展开"的入口得有名字）
+                Text(
+                    strategy.joinToString(" · ") { it.first },
+                    style = AppTypography.labelSmall,
+                    color = TextHint
+                )
+            }
+            if (expanded) {
+                strategy.forEach { (label, body) ->
+                    Spacer(Modifier.height(Spacing.xs))
+                    Text(
+                        labels.line.format(label, body),
+                        style = AppTypography.bodySmall,
+                        color = TextSecondary
+                    )
                 }
             }
         }

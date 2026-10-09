@@ -35,6 +35,7 @@ import org.junit.rules.TemporaryFolder
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.IOException
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -47,6 +48,12 @@ import java.util.zip.ZipOutputStream
  * 2. 画像完整 / 降级 / 建库失败 / 取消四种结果各发各的事件，UI 只按事件选文案；
  * 3. 未配置供应商时不碰 Repository；
  * 4. 导入导出归 ViewModel，导入后强制修正 active，坏包不落库。
+ *
+ * 2026-10-08 这一族又加了两件事（§12.2 / §12.3 / §2.2 第 4 条）：
+ * 5. 切库、改名、删除的**结果**只认"重读回来的真实数据流"——端口上 setActive 与
+ *    updateDisplayName 都是 `Unit`，写侧被只读保护或目录已不在时是静默降级的，
+ *    只信"调用有没有抛"就会把没落地的改动说成成功；
+ * 6. 建库那趟事务写入的目标库 = 发起时就绑定的那一座，不是落笔时才去问的当前库。
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class KnowledgeBaseViewModelTest {
@@ -356,6 +363,184 @@ class KnowledgeBaseViewModelTest {
 
         assertEquals(emptyList<KbEvent>(), events)
         assertEquals(listOf(kept), model.state.value.knowledgeBases)
+    }
+
+    // ═══════════ 切库 / 改名 / 删除的验收：判据是重读回来的真实数据流 ═══════════
+
+    /**
+     * §12.2「点击非活动卡用于切换当前知识库时，应明确反馈『已切换到……』」。
+     *
+     * 这一格读的是事件里那颗**显示名**：写侧落的是内部库名（目录身份），
+     * 而用户要知道的是刚切到了"哪一座"，两者不是同一个东西——事件要是把内部名端出来，
+     * 卡片那一行念的会是 kb_b 这种目录名（§12.2「不展示内部文件名」同一判据）。
+     */
+    @Test
+    fun `switching the active library names the library it switched to`() = runTest(dispatcher) {
+        val repo = newRepo()
+        val mine = KnowledgeBase(name = "kb_a", displayName = "我的她")
+        val hers = KnowledgeBase(name = "kb_b", displayName = "小雅的库")
+        var activeName = "kb_a"
+        coEvery { repo.listAll() } returns listOf(hers, mine)
+        coEvery { repo.getActive() } answers { if (activeName == "kb_b") hers else mine }
+        coEvery { repo.setActive(any()) } answers { activeName = firstArg() }
+
+        val model = vm(fakeContext(), repo, mockk(relaxed = true))
+        val events = subscribe(model)
+        model.setActive("kb_b")
+        advanceUntilIdle()
+
+        assertEquals(
+            "切库成功要当场说清切到了哪一座，实到 $events",
+            listOf(KbEvent.ActiveSwitched("小雅的库")), events
+        )
+        assertEquals("状态里的活动引用换的是那一座的内部名", "kb_b", model.state.value.activeName)
+    }
+
+    /**
+     * 只读库那一族的真实形状：`setActive` 不抛、也什么都没改（端口上这一员是 Unit，没有失败通道）。
+     * 信"没抛 = 成功"就会把一次没落地的切换报成成功，界面下一帧还是旧的那一座。
+     */
+    @Test
+    fun `a switch the store did not land is reported as a failure`() = runTest(dispatcher) {
+        val repo = newRepo()
+        val mine = KnowledgeBase(name = "kb_a", displayName = "我的她")
+        coEvery { repo.listAll() } returns listOf(mine)
+        coEvery { repo.getActive() } returns mine
+        coEvery { repo.setActive(any()) } returns Unit
+
+        val model = vm(fakeContext(), repo, mockk(relaxed = true))
+        val events = subscribe(model)
+        model.setActive("kb_b")
+        advanceUntilIdle()
+
+        assertEquals("切到了一座没落地的库要说失败，不许沉默", listOf(KbEvent.SwitchFailed), events)
+        assertEquals("kb_a", model.state.value.activeName)
+    }
+
+    /** 重读本身失败时切换不说话：那一格由页面顶上去的 Error 说，这里再判一次就是替没读到的数据编结论 */
+    @Test
+    fun `a switch whose re-read failed leaves the verdict to the error cell`() = runTest(dispatcher) {
+        val repo = newRepo()
+        coEvery { repo.setActive(any()) } returns Unit
+        coEvery { repo.listAll() } throws IOException("keystore key cannot decrypt")
+
+        val model = vm(fakeContext(), repo, mockk(relaxed = true))
+        val events = subscribe(model)
+        model.setActive("kb_b")
+        advanceUntilIdle()
+
+        assertTrue("前提：这一趟要真的落在读失败那一格", model.state.value.loadFailed)
+        assertEquals(emptyList<KbEvent>(), events)
+    }
+
+    @Test
+    fun `a rename the store silently refused is reported as a failure`() = runTest(dispatcher) {
+        val repo = newRepo()
+        val stale = KnowledgeBase(name = "kb_a", displayName = "旧名字")
+        coEvery { repo.listAll() } returns listOf(stale)
+        coEvery { repo.getActive() } returns stale
+        coEvery { repo.updateDisplayName(any(), any()) } returns Unit
+
+        val model = vm(fakeContext(), repo, mockk(relaxed = true))
+        val events = subscribe(model)
+        model.rename("kb_a", "新名字")
+        advanceUntilIdle()
+
+        assertEquals(
+            "盘上还是旧名字 = 这一次改名没落进真实数据流，必须报失败，实到 $events",
+            listOf(KbEvent.RenameFailed), events
+        )
+        assertEquals("旧名字", model.state.value.knowledgeBases.single().displayName)
+    }
+
+    /** 反向证人：改成了就不许报失败——上面那一格单独存在时，"永远报失败"的坏实现也能全绿 */
+    @Test
+    fun `a rename that lands is not reported as a failure`() = runTest(dispatcher) {
+        val repo = newRepo()
+        var display = "旧名字"
+        coEvery { repo.updateDisplayName(any(), any()) } answers { display = secondArg() }
+        coEvery { repo.listAll() } answers { listOf(KnowledgeBase(name = "kb_a", displayName = display)) }
+        coEvery { repo.getActive() } returns null
+
+        val model = vm(fakeContext(), repo, mockk(relaxed = true))
+        val events = subscribe(model)
+        model.rename("kb_a", "  带空白的名字  ")
+        advanceUntilIdle()
+
+        assertEquals("送出去与验收读的是同一份已归一化的名字，实到 $events", emptyList<KbEvent>(), events)
+        assertEquals("带空白的名字", model.state.value.knowledgeBases.single().displayName)
+    }
+
+    /** 写侧说删成了、清单里却还认得这座库 = 这一删没落到真实数据流上（§12.1「列表没刷新」那一支） */
+    @Test
+    fun `a delete that left the library in the list is reported as a failure`() = runTest(dispatcher) {
+        val repo = newRepo()
+        val ghost = KnowledgeBase(name = "kb_a", displayName = "删不掉的库")
+        coEvery { repo.delete("kb_a") } returns true
+        coEvery { repo.listAll() } returns listOf(ghost)
+        coEvery { repo.getActive() } returns ghost
+
+        val model = vm(fakeContext(), repo, mockk(relaxed = true))
+        val events = subscribe(model)
+        model.delete("kb_a")
+        advanceUntilIdle()
+
+        assertEquals(listOf(KbEvent.DeleteFailed), events)
+    }
+
+    /**
+     * §12.3「生成或写入在开始时绑定目标库，切库后迟到结果不能写入新对象」。
+     *
+     * 这里量的是建库那趟事务：库名在发起生成**之前**就定了，画像三段与阶段写的全是它。
+     * 判据是"每一个写入目标 = 这一次 create 拿到名字"，而盘上另有一座一直在用的库当对照——
+     * 把写入改成"落笔时才去问当前库"的坏实现，写出去的就是那座在用的旧库，这一格当场红。
+     */
+    @Test
+    fun `a late generation result writes into the library it bound at the start`() = runTest(dispatcher) {
+        val repo = newRepo()
+        val deepSeek = mockk<DeepSeekRepository>(relaxed = true)
+        readyProvider(deepSeek)
+        val gate = CompletableDeferred<Unit>()
+        coEvery { deepSeek.generateRaw(any(), any()) } coAnswers {
+            gate.await()
+            raw("我是我", "她是她", "温度")
+        }
+        val inUse = KnowledgeBase(name = "kb_in_use", displayName = "在用的旧库")
+        var created: String? = null
+        coEvery { repo.create(any(), any()) } answers {
+            created = firstArg<String>()
+            KnowledgeBase(name = firstArg(), displayName = "AI 取的展示名")
+        }
+        coEvery { repo.listAll() } returns listOf(inUse)
+        coEvery { repo.getActive() } returns inUse
+        val writeTargets = mutableListOf<String>()
+        val stageTargets = mutableListOf<String>()
+        coEvery { repo.writeFile(any(), any(), any()) } coAnswers {
+            writeTargets += firstArg<String>()
+            Unit
+        }
+        coEvery { repo.updateStage(any(), any()) } coAnswers {
+            stageTargets += firstArg<String>()
+            Unit
+        }
+
+        val model = vm(fakeContext(), repo, deepSeek)
+        subscribe(model)
+        model.createKbWithOnboarding(schema())
+        runCurrent()
+        gate.complete(Unit)
+        advanceUntilIdle()
+
+        val bound = created
+        assertTrue(
+            "前提：这一趟建出的库不是盘上那座在用的（否则这条判据分辨不了写给了谁），实到 $bound",
+            bound != null && bound != "kb_in_use"
+        )
+        assertTrue(
+            "迟到的画像每一段都必须写回开始时绑定的那一座（$bound），实到 $writeTargets",
+            writeTargets.isNotEmpty() && writeTargets.all { it == bound }
+        )
+        assertEquals("阶段写的也是同一座库", listOf(bound), stageTargets)
     }
 
     @Test

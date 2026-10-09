@@ -102,7 +102,8 @@ interface SettingsStorePort {
      * 与 [HomeConnectionLedger]（纯内存、随 VM 生灭）分工：ledger 按**身份**记当前 VM 会话内的结论，
      * 这颗布尔只记"上一次按 ▶ 有没有真的连通过"——Activity 销毁、VM 重建之后 ledger 空了，
      * 这颗布尔让 [connectionFor] 在全新 VM 的首次 publish 上仍能交回 [HomeConnectionVerdict.Verified]，
-     * 不把已经绿过的灯落回黄。身份变化（换供应商/换模型/切当前对象）的作废纪律仍由 ledger 的
+     * 不把已经绿过的灯落回黄。身份变化（换供应商 / 换生效模型 / 改地址 / 改 Key；**切知识库不算身份变化**，
+     * 算式见 `HomeStatusViewModel.identityOf`）的作废纪律仍由 ledger 的
      * "按身份取不到 = NotChecked"管，这颗布尔只在 ledger **整本空**（= 全新 VM）时才兜底。
      *
      * 语义钉在 [SettingsStorePortContract]：空存储读到 false、显式写 true/false 原样读回。

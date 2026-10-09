@@ -21,6 +21,16 @@
     <!-- 空态蓝字入口（主动发）：两种模式的文案 -->
     <string name="proactive_empty_send_one">想主动发消息？</string>
     <string name="proactive_empty_turn_off">主动发模式已开启，点击关闭</string>
+    <!-- 书 §14.1：候选卡的策略行标签。可发送正文与策略说明视觉分离——角度是常驻短说明，
+         时机/先别发/需要准备默认收起、按需展开；标签一律从资源取，页面不内联中文。
+         `proactive_strategy_line` 是"标签：内容"的行格式，冒号住在资源里，代码零内联标点。 -->
+    <string name="proactive_label_angle">角度</string>
+    <string name="proactive_label_timing">时机</string>
+    <string name="proactive_label_hold_back">先别发</string>
+    <string name="proactive_label_prepare">需要准备</string>
+    <string name="proactive_strategy_line">%1$s：%2$s</string>
+    <!-- 整卡点击 = 复制可发送正文；读屏要点得出"这颗点了会干什么"（动作名同样进资源） -->
+    <string name="a11y_copy_opener">复制这条开场</string>
     <!-- 折叠控件的读屏公告（stateDescription）：读屏唯一听得见的"现在收起/展开" -->
     <!-- 折叠/展开这类"动作"的公告与供应商空态 -->
     <string name="action_expand">展开</string>
@@ -38,6 +48,13 @@
     <string name="kb_edit_empty_hint">还没有内容，点右上「编辑」添加</string>
     <string name="kb_edit_read_failed">这些文件没读出来，请重试</string>
     <string name="kb_save">保存</string>
+    <!-- 首页缺项行「知识库缺失去管理」那颗出口的标签（书 §5.2：配置缺失要说清哪项没完成＋去对应配置）。
+         上一批首页的活临时借了 `kb_new_kb`「新建知识库」——那是"新建"的动作名，不是"去管理页"的去处名，
+         借读会让用户以为点下去直接建库。单独一颗，不动其它页。 -->
+    <string name="home_go_manage">去管理</string>
+    <!-- 书 §12.4 要「正在编辑、保存中、已保存或失败」四态可辨：那颗转圈以前复用「保存」这颗名，
+         读屏念出来与按钮本身一模一样，等于四态里少了一态。单独一颗，不改行为。 -->
+    <string name="kb_saving">保存中</string>
     <string name="kb_next_step">下一步</string>
     <string name="kb_finish_profile">完成，AI 生成画像</string>
     <string name="provider_save">保存</string>
@@ -154,6 +171,11 @@
          位置与颜色说给眼睛，这两句说给耳朵。第三条是列表尾部那一条备注区的名字。 -->
     <string name="a11y_message_her">她的消息</string>
     <string name="a11y_message_me">我的消息</string>
+    <!-- §8.1 方向映射的横滑揭示标签：消息行拖动过程中亮在气泡让开的那一头（"改成她 / 改成我"），
+         向外那一侧的"删除"复用本文件里既有的 a11y_action_delete 那一颗，不另抄第二份同一个词。
+         这两句屏幕上看得见，所以不进 a11y_ 前缀那一族。 -->
+    <string name="swipe_action_to_her">改成她</string>
+    <string name="swipe_action_to_me">改成我</string>
     <string name="idea_section_title">我的想法</string>
     <string name="a11y_scheme_like">赞</string>
     <string name="a11y_scheme_dislike">踩</string>
@@ -288,7 +310,7 @@
     <string name="intent_expiry_completed">已完成</string>
     <string name="intent_content_label">意图内容</string>
     <string name="intent_content_placeholder">输入你的持续意图…</string>
-    <string name="intent_intro_body">设一个这一阶段一直在推进的对话目标（如\"约她周末看电影\"）。\n军师每轮生成都会参考它；不想要了随时在这里关掉。</string>
+    <string name="intent_intro_body">告诉军师你这段时间希望怎样推进交流。开启后，会在有效期内参考你的意图；你可以随时修改或结束。</string>
     <string name="intent_intro_acknowledge">知道了</string>
     <string name="intent_editor_title">设置一个持续的对话目标（如\"约她周末看电影\"），军师每轮生成时都会参考。</string>
     <string name="intent_enable_label">启用</string>

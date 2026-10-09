@@ -19,6 +19,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.io.File
+import java.io.IOException
 import java.nio.file.Files
 
 /**
@@ -62,7 +63,6 @@ class KnowledgeCatalogWriteOwnershipTest {
         var maxLockDepth = 0
         var activeKb = ""
         var dirNames = listOf<String>()
-        var newest: String? = null
         var present = mutableSetOf<String>()
         var markerPresent = false
         var entries: List<KnowledgeBase> = emptyList()
@@ -80,12 +80,19 @@ class KnowledgeCatalogWriteOwnershipTest {
             }
         }
 
+        /** 让某一格 seed 写被写链拒掉（只读保护 / 路径非法的真实形状就是 write 返回 false） */
+        var refuseSlot: String? = null
+
         override fun writeCatalogTransaction(kbName: String, block: CatalogTx.() -> Unit) {
             check(lockDepth == 1) { "事务必须在一次锁里跑，实到 lockDepth=$lockDepth" }
             transactions += kbName
             events += "tx:$kbName"
             block(object : CatalogTx {
                 override fun write(relativePath: String, content: String): Boolean {
+                    if (relativePath == refuseSlot) {
+                        events += "write-refused:$kbName/$relativePath"
+                        return false
+                    }
                     writtenSlots += kbName to relativePath
                     events += "write:$kbName/$relativePath"
                     return true
@@ -102,8 +109,6 @@ class KnowledgeCatalogWriteOwnershipTest {
         }
 
         override fun catalogDirNames(): List<String> = dirNames
-
-        override fun newestCatalogDirName(): String? = newest
 
         override fun catalogDirPresent(kbName: String): Boolean = kbName in present
 
@@ -238,6 +243,9 @@ class KnowledgeCatalogWriteOwnershipTest {
     /**
      * 删除的三条顺序是承重的：先删正式目录、删成了才动备份（反过来就是"备份没了、库还在"），
      * 只有删掉的是当前库才改激活项。这一格判的就是**事件顺序**。
+     *
+     * `entries` 里那份就是"枚举认下来的下一座库"——写侧的 `nextActiveAfter` 只认它，
+     * 不认 mtime 最新的目录（下面两格专门管这一条）。
      */
     @Test
     fun `delete removes the library before its backups and only then reassigns active`() = runBlocking {
@@ -245,7 +253,7 @@ class KnowledgeCatalogWriteOwnershipTest {
         rec.present += "gone"
         rec.present += "keep"
         rec.dirNames = listOf("gone", "keep")
-        rec.newest = "keep"
+        rec.entries = listOf(KnowledgeBase(name = "keep", displayName = "留下的她", updatedAt = "t"))
         rec.activeKb = "gone"
         val store = KnowledgeCatalogWriteStore(rec)
 
@@ -261,6 +269,87 @@ class KnowledgeCatalogWriteOwnershipTest {
             order
         )
         assertEquals("重新指派当前库不许再拿一次锁", 1, rec.maxLockDepth)
+    }
+
+    /**
+     * §12.3「删除当前库时……选用明确的有效库」「不得删除后让活动引用指向不存在的库」。
+     *
+     * "明确的有效库"= 目录读侧那份枚举认下来的那一座（[KnowledgeCatalogStore] 才是
+     * "这个根下有哪几座库"的唯一回答者）。mtime 最新的**目录**不是库：一次中断的建库、
+     * 坏 kb.json、name 与目录名不等值的元数据都留下一颗进不了清单的目录。
+     * 那一旧判据（挑 mtime 最新的目录）已删；谁把它画回去，这一格与真磁盘那格就红——
+     * active 会落到 shell 上。
+     */
+    @Test
+    fun `deleting the active library hands the choice to a listed library not to the newest directory`() =
+        runBlocking {
+            val rec = Recorder()
+            rec.present += listOf("gone", "her", "shell")
+            rec.dirNames = listOf("gone", "her", "shell")
+            // shell 只是一颗目录名：没有 kb.json，永远进不了清单
+            rec.entries = listOf(KnowledgeBase(name = "her", displayName = "她", updatedAt = "t"))
+            rec.activeKb = "gone"
+            val store = KnowledgeCatalogWriteStore(rec)
+
+            assertTrue(runBlocking { store.delete("gone") })
+
+            assertEquals("当前库必须落在枚举认下来的那一座", "her", rec.activeKb)
+            assertTrue("改的是那一座的 kb.json（三级回退的第一判据同名且 active）",
+                rec.events.contains("meta:her"))
+        }
+
+    /** 一座有效库都不剩时**清除选择**，不拿一颗进不了清单的目录顶上（§12.3「按既有契约清除选择」） */
+    @Test
+    fun `deleting the active library with no valid library left clears the choice`() = runBlocking {
+        val rec = Recorder()
+        rec.present += listOf("gone", "shell")
+        rec.dirNames = listOf("gone", "shell")
+        rec.entries = emptyList()
+        rec.activeKb = "gone"
+        val store = KnowledgeCatalogWriteStore(rec)
+
+        assertTrue(runBlocking { store.delete("gone") })
+
+        assertEquals("没有效库可选就清空，而不是指向一座不是库的目录", "", rec.activeKb)
+        assertEquals("清空选择不许为此逐库改 kb.json", emptyList<String>(), rec.transactions)
+    }
+
+    /**
+     * §12.3「创建完成才出现在可用列表，失败显示失败」。
+     *
+     * seed 半途被写链拒掉时，那颗目录是**这次调用自己造的**（进来前第三道 require 判过它不占位），
+     * 留着它就同时破两条：报了失败、可用列表里却多出一座空库；而它若是盘上第一座，
+     * 偏好里的当前库还是空的，`getActive` 的兜底会把这座半成品当成在用库。
+     */
+    @Test
+    fun `a failed seed write takes back the directory it just made`() = runBlocking {
+        val rec = Recorder()
+        rec.refuseSlot = "moment/plan.md"
+        val store = KnowledgeCatalogWriteStore(rec)
+
+        val thrown = runCatching { store.create("kb_new", "新库") }.exceptionOrNull()
+
+        assertTrue("seed 写不成必须上抛 IOException 让 ViewModel 报失败，实到 $thrown",
+            thrown is IOException)
+        assertTrue("失败的那一次要把自己刚造的目录收回去，事件流：" + rec.events,
+            rec.events.contains("remove:kb_new"))
+        assertEquals("收回自己造的目录不许顺手把当前库改了", "", rec.activeKb)
+        assertEquals("失败的那一次不许排备份", 0, rec.backupsWritten)
+        assertEquals("一次调用仍只许进一次锁", 1, rec.maxLockDepth)
+    }
+
+    /** 反向证人：seed 全落成时那颗目录必须留着——上面那一格单独存在会放行"每次都回收"的坏实现 */
+    @Test
+    fun `a successful seed keeps the directory it made`() = runBlocking {
+        val rec = Recorder()
+        val store = KnowledgeCatalogWriteStore(rec)
+
+        runBlocking { store.create("kb_keep", "留下的新库") }
+
+        assertFalse("成功的那一次一个目录都不许回收：" + rec.events,
+            rec.events.any { it.startsWith("remove:") })
+        assertEquals("kb_keep", rec.activeKb)
+        assertEquals(1, rec.backupsWritten)
     }
 
     @Test
@@ -280,7 +369,6 @@ class KnowledgeCatalogWriteOwnershipTest {
         val rec = Recorder()
         rec.present += "only"
         rec.dirNames = listOf("only")
-        rec.newest = null
         rec.activeKb = "only"
         val store = KnowledgeCatalogWriteStore(rec)
 

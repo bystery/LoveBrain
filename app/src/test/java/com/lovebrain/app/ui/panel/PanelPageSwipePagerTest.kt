@@ -36,10 +36,16 @@ import com.lovebrain.app.R
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.ui.panel.counseling.CounselingPanel
 import com.lovebrain.app.ui.panel.counseling.CounselingTemplateChips
 import com.lovebrain.app.ui.panel.reply.MESSAGE_ROW_TEST_TAG
 import com.lovebrain.app.ui.panel.reply.MessageList
+import com.lovebrain.app.viewmodel.LoveBrainViewModel
+import io.mockk.every
+import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -1022,6 +1028,80 @@ class PanelPageSwipePagerTest {
         assertEquals("右滑之后画的是回复那一页", 0.0, markLeft(0), 1.0)
         assertTrue("滑完之后头部那段高亮也回来了", selected(replyLabel))
         assertFalse("另一段不许还挂着选中态（第二本账的形状）", selected(counselingLabel))
+    }
+
+    /**
+     * 书 §9 末段 + §16.1 第 5 条落在**真谈心页**上的那一半：切到回复再回来，谈心页自己的
+     * 本地状态还在——这里量的不是宿主那几条流（草稿/结果本来就住在 store 里，卸了重挂也还在），
+     * 而是只住在 `CounselingPanel` 自己一句 `remember` 里的那格：「继续追问」那一片的**展开态**。
+     *
+     * 与上面 `切页保留各自草稿与谈心历史` 那格的分工：那一格用占位页证明**页槽位**挂上就不卸；
+     * 这一格用生产页证明**谈心那棵子树**也没被重挂。坏实现恰好分得开：
+     * 反例：给页内容套 `key(currentPage)`，或换回 `if (page == 1) CounselingPanel(...) else …`
+     *   那种"当前页才画"的写法 ⇒ 页槽位计数不动、占位页那格照样绿，**红的只有这一格**
+     *   （展开着的那一片在切回来的那一刻收回去，用户看到的就是一句"我刚才摊开的追问没了"）；
+     * 反例：切页时顺手清了结果/把流式位打回占位 ⇒ 后半句"结果正文还在"红（§16.1 第 6 条
+     *   "流式输出不使整屏反复进入加载态"同一族）。
+     */
+    @Test
+    fun `切页往返保住的是真谈心页自己的状态`() {
+        val counselingVm = mockk<LoveBrainViewModel>(relaxed = true)
+        val composer = mockk<ComposerStore>(relaxed = true)
+        every { counselingVm.composer } returns composer
+        every { composer.counselingDraft } returns MutableStateFlow("她最近回得很慢")
+        every { counselingVm.counselingResult } returns MutableStateFlow("军师：先把事实摆一摆。")
+        every { counselingVm.counselingError } returns MutableStateFlow<String?>(null)
+        every { counselingVm.isCounseling } returns MutableStateFlow(false)
+        every { counselingVm.counselingStreaming } returns MutableStateFlow("")
+        // 那一档会从盘上读一次历史；这里显式桩成空清单，不靠 relaxed 的集合兜底
+        every { counselingVm.loadCounselingHistory() } returns emptyList()
+
+        val followUpChipLabel = "继续追问"
+        val followUpRowText = "想继续追问…"
+        val mode = PageMode(initial = 1)
+        resetCounters()
+        rule.setContent {
+            cell.RenderIn(LocalDensity.current.density) {
+                PanelPagePager(
+                    currentPage = panelModeToPage(mode.value),
+                    onPageChange = { page -> mode.value = panelPageToMode(page) },
+                    modifier = Modifier.fillMaxSize()
+                ) { page ->
+                    if (page == 1) {
+                        CounselingPanel(viewModel = counselingVm, onFocusChange = {})
+                    } else {
+                        SimplePage(page)
+                    }
+                }
+            }
+        }
+        rule.waitForIdle()
+
+        // 把追问那一片摊开（只由 `CounselingPanel` 的一句 remember 管着）
+        rule.onAllNodes(hasText(followUpChipLabel)).onFirst().performClick()
+        rule.waitForIdle()
+        assertEquals(
+            "点开之后追问那一行该在场（不在场 = 这一格根本没在判展开态）",
+            1,
+            rule.onAllNodes(hasText(followUpRowText)).fetchSemanticsNodes().size
+        )
+
+        // 点 tab 那条路切到回复，再切回来
+        rule.runOnIdle { mode.value = 0 }
+        settle()
+        rule.runOnIdle { mode.value = 1 }
+        settle()
+
+        assertEquals(
+            "切到回复再回来，谈心页自己 `remember` 里那份展开态没了 ⇒ 那一棵子树被重挂过" +
+                "（页槽位没卸不等于内容没重建）；实到读数：" + tree(),
+            1,
+            rule.onAllNodes(hasText(followUpRowText)).fetchSemanticsNodes().size
+        )
+        assertTrue(
+            "切页往返之后已经落定的结果正文还要在屏上（§16.1 第 5 条：回来保留结果与真实状态）",
+            rule.onAllNodes(hasText("军师：先把事实摆一摆。")).fetchSemanticsNodes().isNotEmpty()
+        )
     }
 
     private companion object {

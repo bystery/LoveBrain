@@ -252,7 +252,9 @@ class ResultAreaStructureTest {
         assertTrue("真空缺必须说得出，实到 $notice", notice != null && notice.contains("清醒"))
         assertTrue("合法 null 不许冒缺项：$notice", notice != null && !notice.contains("展开"))
         assertTrue("数量要按整池八项说，不是局部数：$notice", notice != null && notice.contains("1/8"))
-        assertTrue("给的是既有的再生成出口：$notice", notice != null && notice.endsWith("，可重新生成"))
+        // 出口做成控件之后，句子里不许再留那句空头承诺（「可重新生成」）：
+        // 能点是 `ReplyIncompleteNotice` 里那颗重试（点击那一拍由 ReplyIncompleteNoticeRetryTest 钉）
+        assertTrue("句子只报缺失，不许写空承诺：$notice", notice != null && !notice.contains("可重新生成"))
     }
 
     /** 重复凑数单独说，与缺项各占一段；两因同时存在时不互相吞掉 */

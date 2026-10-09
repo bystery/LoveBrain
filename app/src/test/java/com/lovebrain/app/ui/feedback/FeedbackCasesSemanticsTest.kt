@@ -1,8 +1,11 @@
 package com.lovebrain.app.ui.feedback
 
 import android.content.Context
+import android.view.View
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -10,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
+import com.lovebrain.app.core.testing.PixelContrastMeter
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
@@ -105,6 +109,9 @@ class FeedbackCasesSemanticsTest {
 
     private val legacyCases: List<FeedbackCase> = Json.decodeFromString(legacyJson)
 
+    /** 像素那一族的唯一通道：挂载时把 Compose 宿主记下来（与 `RenderedPixelContrastTest` 同一写法） */
+    private var drawRoot: View? = null
+
     private fun mount(
         cases: List<FeedbackCase>,
         exportState: SetupViewModel.ExportState = SetupViewModel.ExportState.Idle
@@ -116,6 +123,7 @@ class FeedbackCasesSemanticsTest {
             every { it.exportState } returns MutableStateFlow(exportState)
         }
         rule.setContent {
+            drawRoot = LocalView.current
             UiMatrix(600).RenderIn(LocalDensity.current.density) {
                 FeedbackCasesScreen(viewModel = vm, onBack = {})
             }
@@ -378,9 +386,96 @@ class FeedbackCasesSemanticsTest {
         }
     }
 
+    /**
+     * 指导书§6 那一句「导出可以是有分量的页面动作，但不能只有这里突然出现巨大的方形按钮」的**像素**判据：
+     * 页头那颗导出必须有**自己那一层可见底**（同族三页的文字动作都是那颗 32dp 浅灰胶囊：
+     * 知识库卡的「导出」、供应商行的「编辑/删除」、首页那一格出口），而不是设计系统默认那一档
+     * ——48dp 见方、无底的一整块。
+     *
+     * 为什么必须走像素：语义树里这一族的**可见层没有节点**。`LbTextAction` 两档的**热区**都由同一颗
+     * 外层盒垫到全站 48（`LbTextActionSize.hitSize` 两条都指回同一个下限），胶囊那一层
+     * 只带 `background`/`clip`/`heightIn(min = 32)`，不挂语义。所以"有没有那一层底"在树上读不出来，
+     * 拿它去比尺寸只会得到两档一样的数（这正是本轮不许把判据写成"源码里有 `RowCapsule` 那句话"之后，
+     * 唯一还剩的判别力）。取色通道与 `RenderedPixelContrastTest` 同一条（`drawToBitmap`），不落盘。
+     *
+     * 三条判据按顺序读，缺一条这格就可能是恒绿：
+     * 1. **通电对照**：页头那颗**返回**（图标档，设计系统明写无底）与**标题那一行字**（没有可点层）
+     *    必须读回同一个数——两条"确定没有底"的对照互相咬住，才证明这台尺读到的是页面底本体；
+     * 2. 导出那颗的众数色必须与那一色**不同**（同色 ⇒ 它现在是无底的那一整块）；
+     * 3. 面积下限：那一层底至少铺掉这颗节点的一部分（不写死数，见下面 [fractionOf]），
+     *    挡的是"整颗被染成一屏实心方块"那种反向退化。
+     *
+     * 回退成什么就红：把 `size = LbTextActionSize.RowCapsule` 从 [com.lovebrain.app.ui.feedback.ExportAction]
+     * 拿掉（回到默认 `Standard`）⇒ 第 2 条红；换成页面自画一颗实心方块 ⇒ 第 3 条红。
+     */
     @Test
-    fun `the export action stays visible but reports itself disabled when the list is empty`() {
-        mount(emptyList())
+    fun `the export action paints its own visible layer instead of a bare block in the header`() {
+        mount(legacyCases)
+        val root = checkNotNull(drawRoot) {
+            "挂载时没接上 LocalView——这一格量不到像素，不能让它空过"
+        }
+        val bareControls = listOf(
+            "页头返回那颗（图标档，无底）" to rule.onAllNodes(
+                hasContentDescription(context.getString(R.string.common_back))
+            )[0],
+            "页头标题那一行字（没有可点层）" to rule.onNodeWithText(
+                context.getString(R.string.feedback_cases_title)
+            )
+        )
+        val bareReadings = bareControls.map { (where, node) ->
+            where to PixelContrastMeter.backgroundOf(PixelContrastMeter.capture(rule, root, node))
+        }
+        assertEquals(
+            "两条无底对照读出两色 ⇒ 这台尺接到的不是同一张页面底，后面的判据都不算证人：" +
+                bareReadings.joinToString { (where, color) -> "$where=#%06X".format(color and 0xFFFFFF) },
+            bareReadings.first().second,
+            bareReadings.last().second
+        )
+        val pageBottomArgb = bareReadings.first().second
+
+        val exportShot = PixelContrastMeter.capture(
+            rule,
+            root,
+            rule.onAllNodesWithText(context.getString(R.string.feedback_export_json))[0]
+        )
+        val exportBackground = PixelContrastMeter.backgroundOf(exportShot)
+        assertTrue(
+            ("导出那颗的可见底 #%06X 与页面底 #%06X 同色 ⇒ 它现在是 `LbTextAction` 的默认档" +
+                "（48dp 见方、无底的一整块），正是§6 点名不许出现的那种；")
+                .format(exportBackground and 0xFFFFFF, pageBottomArgb and 0xFFFFFF) +
+                "同族三页的文字动作都带那颗浅灰胶囊底。",
+            exportBackground != pageBottomArgb
+        )
+        // 面积那一轴：那层底铺了多少算多少，但**不许是整颗实心**（读数由本次扫描算出，不写死）。
+        val painted = fractionOf(exportShot, exportBackground)
+        assertTrue(
+            "导出那颗的可见层铺满了整颗节点（占比 ${"%.2f".format(painted)}）——" +
+                "那是又一处\"突然出现的大块\"，不是同族那颗胶囊。读数：${exportShot.width}x${exportShot.height}",
+            painted < 0.9f
+        )
+        assertTrue(
+            "那一层底几乎没铺到东西（占比 ${"%.2f".format(painted)}）⇒ 读到的更像是抗锯齿的边缘而不是胶囊本体",
+            painted > 0.05f
+        )
+    }
+
+    /** 一张小图里等于 [color] 的像素占比（面积轴用本次读数算，不抄任何写死的数） */
+    private fun fractionOf(bitmap: android.graphics.Bitmap, color: Int): Float {
+        var hits = 0
+        var total = 0
+        for (y in 0 until bitmap.height) {
+            for (x in 0 until bitmap.width) {
+                if ((bitmap.getPixel(x, y) ushr 24) != 0xFF) continue
+                total++
+                if (bitmap.getPixel(x, y) == color) hits++
+            }
+        }
+        check(total > 0) { "整块读不到不透明像素——这台仪器没接上渲染" }
+        return hits.toFloat() / total.toFloat()
+    }
+
+    @Test
+    fun `the export action stays visible but reports itself disabled when the list is empty`() {        mount(emptyList())
         assertEquals(
             "零结果时导出那颗要还在树上（灰着也算说得出话）",
             1,

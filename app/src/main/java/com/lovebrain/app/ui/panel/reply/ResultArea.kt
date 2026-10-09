@@ -166,6 +166,13 @@ fun ResultArea(
     val flow = correctionFlow ?: rememberMemoryCorrectionFlow()
     val hostLocally = correctionFlow == null
 
+    // 阅读位置的主人只有一份：**流式档与完成档共用同一颗 ScrollState**。
+    // 原来两个分支各自 `verticalScroll(rememberScrollState())`，流式→完成那一跳换了新的一颗
+    // ⇒ 用户正往下读、结果一落地就弹回顶部——§13.2「结束保留结果位置与当前阅读位置」与
+    // §16.1 第 5 条「返回保留已读位置」在分支切换这一格是同一件事（L1 复核挑中；
+    // 席 C 报告里"纵向滚动住在 ResultArea 层不丢"只对了一半：主人对，主人被换了）。
+    val readScroll = rememberScrollState()
+
     when {
         // Phase 1 加载中：核心回复（schemes）还没出来
         isGeneratingCore -> {
@@ -174,7 +181,7 @@ fun ResultArea(
                 Column(
                     modifier = modifier
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(readScroll)
                         .observeTapOutsideCards(rowState, collapseAll)
                 ) {
                     if (streamingSchemes.isNotEmpty()) {
@@ -257,7 +264,7 @@ fun ResultArea(
             Column(
                 modifier = modifier
                     .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(readScroll)
                     .observeTapOutsideCards(rowState, collapseAll)
             ) {
                 SchemeCardsRow(
@@ -279,7 +286,7 @@ fun ResultArea(
                 // 「本轮不适合」报成缺项（那句文案归空卡自己，见 SchemeCollapsedBlock）。
                 replyCompletenessNotice(response.replyCompleteness)?.let { notice ->
                     Spacer(Modifier.height(Spacing.sm))
-                    ReplyIncompleteNotice(notice)
+                    ReplyIncompleteNotice(notice, onRetry)
                 }
 
                 if (response.analysis.ongoing.isNotEmpty()) {
@@ -423,6 +430,9 @@ internal fun mergedSchemesInRoundOrder(response: LoveBrainResponse): List<Scheme
  * - 合法 null 的「本轮不适合」：**不进这一句**——它由空卡自己标，报进缺项就是把协议允许的
  *   输出说成模型漏了（那正是这一格要推掉的旧混判）。
  * 无缺项、无重复时返回 null，画面上不出现提示条。
+ * 句子只说"缺了哪几项、按整池八项说多少"，**不在话里承诺"可重新生成"**：
+ * 那一件事由提示条里那颗真的能点的动作承担（见 [ReplyIncompleteNotice] 的 `onRetry`），
+ * 一句"可以重试"而没有出口正是 第5节第2条 点名过的"只有描述、没有对应动作"。
  */
 internal fun replyCompletenessNotice(completeness: ReplyCompleteness): String? = when (completeness) {
     ReplyCompleteness.Complete, ReplyCompleteness.Empty -> null
@@ -441,7 +451,7 @@ internal fun replyCompletenessNotice(completeness: ReplyCompleteness): String? =
                 )
             }
         }
-        if (causes.isEmpty()) null else causes.joinToString("；") + "，可重新生成"
+        if (causes.isEmpty()) null else causes.joinToString("；")
     }
 }
 
@@ -970,24 +980,43 @@ private fun LocalCorrectionFlowHostIfNeeded(
 }
 
 /**
- * §11.2：八项回复不完整时的一行轻量提示。
+ * §11.2：八项回复不完整时的一行轻量提示 ＋ 一颗真的能点的「重试」。
  *
  * 指导书要求"用户应能看清是八项中的哪个没生成，不能静默隐藏"。
- * 这里只做展示——已有的候选卡片仍保留，不删不清；用户可点「重新生成」。
+ * 这里只做展示——已有的候选卡片仍保留，不删不清；再生成走 [onRetry]（宿主＝
+ * `viewModel.retryCurrentReply()`，一次点击发一次请求，不自动反复补齐付费请求）。
  * 与主动发那条 [ProactiveStore.closeRun] 同一族轻量提示语言：
  * 一行小字、Warning 色、不挡操作。
+ *
+ * `internal` 而不是 `private`：这一颗要能被 JVM 那侧单独挂起来量「点一次＝回调一次」，
+ * 抽成 internal 是本项目量悬浮窗内联控件的既有做法（同族先例见谈心模板那颗）。
+ * 热区按悬浮窗紧凑档给（[Spacing.sm] / [Spacing.xs] 内边距），**不套全局 48dp 容器**——
+ * 套了就等于把这屏的紧凑档作废（指导书 第4节第3条）。可点性因此是可衡量的权衡，
+ * 真机上要按实际尺寸验收，不宣称为普适无障碍标准。
  */
 @Composable
-private fun ReplyIncompleteNotice(text: String) {
-    Box(
+internal fun ReplyIncompleteNotice(text: String, onRetry: () -> Unit) {
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(LoveBrainShape.sm)
             .background(WarningBg)
-            .padding(horizontal = Spacing.md, vertical = Spacing.sm)
+            .padding(start = Spacing.md, end = Spacing.xs, top = Spacing.xs, bottom = Spacing.xs),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = text,
+            modifier = Modifier.weight(1f),
+            color = Warning,
+            style = AppTypography.labelMedium
+        )
+        // clickable 排在 padding 之前：排后面等于自己把热区削掉一圈（本文件 :323、:791 同一课）
+        Text(
+            text = stringResource(R.string.action_retry),
+            modifier = Modifier
+                .clip(LoveBrainShape.sm)
+                .clickable(onClick = onRetry)
+                .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
             color = Warning,
             style = AppTypography.labelMedium
         )

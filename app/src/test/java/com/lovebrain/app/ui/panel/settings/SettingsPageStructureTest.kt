@@ -2,7 +2,9 @@ package com.lovebrain.app.ui.panel.settings
 
 import com.lovebrain.app.PanelBackdropOpacity
 import com.lovebrain.app.core.testing.SourceScan
+import com.lovebrain.app.model.IntentStatus
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -132,8 +134,10 @@ class SettingsPageStructureTest {
         // 只豁免"这一颗文件用了这一把锚点"这一件事；豁免消失时这格要红（不许留一条已不成立的豁免）。
         val sheetExemptions: Map<String, String> = mapOf(
             "SettingsIntentEntry.kt" to
-                "首次打开持续意图时弹的那扇介绍浮层（LbModalSheet）：它是叠加层、不是页容器，" +
-                    "整页仍是一页；拨开关才触发，确认后写进 prefs 不再弹"
+                "那一格里画不出来的那扇介绍浮层（LbModalSheet）：它是叠加层、不是页容器，" +
+                    "整页仍是一页。画它的那一颗是同一文件的 SettingsIntentIntroSheet，" +
+                    "由页面根部那一棵 Box 挂在最后一层（遮罩才盖得住整页，§11.2）；" +
+                    "拨开关才触发，确认后写进 prefs 不再弹"
         )
         val hits = needles.flatMap { (needle, why) ->
             sources.filter { (name, code) ->
@@ -188,5 +192,163 @@ class SettingsPageStructureTest {
         val code = SourceScan.maskComments(provider.readText(Charsets.UTF_8))
         assertTrue("首页供应商那一屏本来就走 LbDialog 那扇浮层，扫不到说明判据坏了", code.contains("LbDialog("))
         assertTrue("名单里那条不存在的形状不该被误报", !code.contains("BottomSheet"))
+    }
+
+    /** 按文件名取"剥掉注释之后"的那一份源码（这一族的尺都先 mask，免得数到 KDoc 里的举例） */
+    private fun maskedOf(name: String): String =
+        sources.firstOrNull { it.first == name }?.second
+            ?: error("$name 不在 settings/ 的扫描范围内——这一格会恒绿：${sources.map { it.first }}")
+
+    /**
+     * §11.3 那张六档表在代码里只有一处换算（纯函数，不碰 Compose、不读时钟）。
+     *
+     * 三条次序就是判据本身，反例各挡一种坏形状：
+     * · 介绍浮层在场就是「首次待确认」，先于开关——不然"确认之前已经启用"那一格会绿；
+     * · 终态先于开关：自动到期那条链把 `enabled` 一起写成了 false
+     *   （`feature/intent/IntentController.kt` 的 `refreshForKb`），照开关读就退化成「关闭」，
+     *   用户看不见自己刚那条意图、也没有"重新启用"的落点；
+     * · 「开启且未输入」与「有效」分开：空正文不向请求注入（那一半的账在
+     *   `domain/IntentInjectionTest` 的 `empty_intent_text_not_injected`，这一格只管画成哪一档）。
+     */
+    @Test
+    fun `the intent entry has exactly the six states the spec names`() {
+        assertEquals(
+            SettingsIntentState.INTRO_PENDING,
+            settingsIntentStateOf(enabled = false, status = IntentStatus.ACTIVE, hasText = false, introPending = true)
+        )
+        assertEquals(
+            SettingsIntentState.OFF,
+            settingsIntentStateOf(enabled = false, status = IntentStatus.ACTIVE, hasText = false, introPending = false)
+        )
+        assertEquals(
+            SettingsIntentState.ON_WITHOUT_TEXT,
+            settingsIntentStateOf(enabled = true, status = IntentStatus.ACTIVE, hasText = false, introPending = false)
+        )
+        assertEquals(
+            SettingsIntentState.ACTIVE,
+            settingsIntentStateOf(enabled = true, status = IntentStatus.ACTIVE, hasText = true, introPending = false)
+        )
+        assertEquals(
+            "已到期那一档不许塌成「关闭」（§11.3 第五行还要给轻量说明与重新启用的落点）",
+            SettingsIntentState.EXPIRED,
+            settingsIntentStateOf(enabled = false, status = IntentStatus.EXPIRED, hasText = true, introPending = false)
+        )
+        assertEquals(
+            SettingsIntentState.COMPLETED,
+            settingsIntentStateOf(enabled = true, status = IntentStatus.COMPLETED, hasText = true, introPending = false)
+        )
+        // 反向证人：六档真分得开，不是"一律返回同一颗"那种恒绿
+        val six = listOf(
+            SettingsIntentState.INTRO_PENDING, SettingsIntentState.OFF, SettingsIntentState.ON_WITHOUT_TEXT,
+            SettingsIntentState.ACTIVE, SettingsIntentState.EXPIRED, SettingsIntentState.COMPLETED
+        )
+        assertEquals("六档必须各是各的（ distinct 只有 6 才说明这颗换算真的分得开）", 6, six.distinct().size)
+    }
+
+    /**
+     * §11.3「不能把 A 的意图展示或写给 B」那条判据的纯函数那一半。
+     *
+     * 任一侧认不出来（宿主没交库名、或这一稿根本没被编辑过）都放行——拦下没接线那一侧
+     * 会让"从没切过库"的正常保存变成静默失败，那是另一种假象。真正的牙在最后一行。
+     */
+    @Test
+    fun `a draft is only written to the library it was typed on`() {
+        assertTrue(intentWriteOwnedBy(draftOwnerKb = null, currentKb = "kbB"))
+        assertTrue(intentWriteOwnedBy(draftOwnerKb = "kbA", currentKb = null))
+        assertTrue(intentWriteOwnedBy(draftOwnerKb = "kbA", currentKb = "kbA"))
+        assertFalse(
+            "这一稿打在 A 上、屏幕已经是 B：这一记必须被挡下",
+            intentWriteOwnedBy(draftOwnerKb = "kbA", currentKb = "kbB")
+        )
+    }
+
+    /**
+     * §11.1 那一族的顺序：标题/返回一行，下面依次**透明度 → 当前知识库 → 意图**。
+     *
+     * 切库排在意图前面不是排版口味：意图是按库隔离的那一份数据，先认对象、再改那一块的那件事，
+     * 读序与"切库必须取对应数据"同一头。回退成旧的 opacity → intent → kb 会红在最后那一句。
+     */
+    @Test
+    fun `the settings family is organized in the order the spec names`() {
+        val page = maskedOf("LoveBrainSettingsContent.kt")
+        val opacity = page.indexOf("SettingsOpacityEntry(")
+        val switcher = page.indexOf("SettingsKbSwitcherEntry(")
+        val intent = page.indexOf("SettingsIntentEntry(")
+        assertTrue(
+            "三格都得在这一页里（opacity=$opacity kb=$switcher intent=$intent）",
+            opacity >= 0 && switcher >= 0 && intent >= 0
+        )
+        assertTrue(
+            "§11.1 要的顺序是透明度、当前知识库、意图，实到 opacity=$opacity kb=$switcher intent=$intent",
+            opacity < switcher && switcher < intent
+        )
+    }
+
+    /**
+     * §11.3「三个期限与『已经完成』不是四个等价期限」。
+     *
+     * 有效期那一排只有三颗（一小时／一天／一个星期），完成是下面那一行的动作。
+     * `IntentExpiry.COMPLETED` 在这一格里恰好出现一次——就是那颗完成动作：
+     * 回到四颗并排单选会数到 2、把完成整颗删掉会数到 0，两种都红。
+     */
+    @Test
+    fun `the three periods are not four equivalent periods`() {
+        val entry = maskedOf("SettingsIntentEntry.kt")
+        val periodChips = Regex("""IntentExpiryOption\(\s*stringResource""").findAll(entry).count()
+        assertEquals("有效期那一排该恰有三颗期限（第四颗是动作，不是档位）", 3, periodChips)
+        val completedReads = Regex("""IntentExpiry\.COMPLETED""").findAll(entry).count()
+        assertEquals("「已经完成」在这一格里只该是那颗结束动作，实到 $completedReads 处", 1, completedReads)
+    }
+
+    /**
+     * §11.2 点名的挂载层级：介绍浮层由**页面根部**那一层画，不坐在设置行或滚动父级里面。
+     *
+     * 判的是形状而不是意图——语义树那一格（`SettingsPageSemanticsTest` 的 scrim 那格）量今天
+     * 真的盖得住，这一格量"别再改回去"：
+     * · 那一格里再出现 `LbModalSheet(` ⇒ 浮层又回到滚动柱里，红；
+     * · 画浮层的那一颗没接 `visible =` ⇒ 壳里就还是写死 true，退场动画播不到，红；
+     * · 页面没画那一颗、或它又被排回三格那一列里面 ⇒ 红；
+     * · 页面里再出现第二层 `AnimatedVisibility` ⇒ 遮罩与内容被两层动画各包一遍
+     *   （§4.4「先修挂载层级，不重复包动画」；外层那一层在退场时把树摘掉，正是旧缺陷），红。
+     */
+    @Test
+    fun `the intro sheet is hosted by the page root, not by the row inside the scroll column`() {
+        val entry = maskedOf("SettingsIntentEntry.kt")
+        val rowRegion = entry.substringAfter("internal fun SettingsIntentEntry(")
+            .substringBefore("internal fun SettingsIntentIntroSheet(")
+        assertTrue(
+            "介绍浮层又画回意图那一格里了：那一格坐在滚动柱里，滚动柱交给子节点的最大高度是无限的，" +
+                "遮罩只剩自己那一块、还占掉一个表单槽位（§11.2）",
+            !rowRegion.contains("LbModalSheet(")
+        )
+        val sheetRegion = entry.substringAfter("internal fun SettingsIntentIntroSheet(")
+        assertTrue("浮层必须仍走设计系统那颗 LbModalSheet（§11.2「不能再写一份自定义弹窗」）", sheetRegion.contains("LbModalSheet("))
+        assertTrue("那颗壳仍要经 visible 说话（树常驻，退场才播得到）", sheetRegion.contains("visible ="))
+
+        val page = maskedOf("LoveBrainSettingsContent.kt")
+        val sheetAt = page.indexOf("SettingsIntentIntroSheet(")
+        assertTrue("页面根部没画那一颗浮层（遮罩就没人认领了）", sheetAt >= 0)
+        assertTrue(
+            "浮层又被排回三格那一列里面了（它要在三格之后、页面最外那一层）",
+            sheetAt > page.lastIndexOf("SettingsIntentEntry(")
+        )
+        assertFalse(
+            "页面里又给浮层包了第二层 AnimatedVisibility——那 200ms 归壳持有",
+            page.contains("AnimatedVisibility")
+        )
+    }
+
+    /**
+     * 介绍正文的唯一主人是资源那一颗：整族加起来只许引用一次。
+     *
+     * 为什么要这一句（§11.2「不堆成长篇功能宣讲」的另一半）：同一句话被抄第二遍
+     * （或干脆写成内联中文字面量）之后，改文案的人只会改一处，另一处继续对用户说
+     * 那句并不成立的"每轮生成都会参考它"。逐字那句归资源那一个主人，
+     * 而 `UiStringLiteralBudgetTest` 那四把尺在这一族仍然数到 0 条内联中文。
+     */
+    @Test
+    fun `the intro body has exactly one owner`() {
+        val refs = sources.sumOf { (_, code) -> Regex("""R\.string\.intent_intro_body""").findAll(code).count() }
+        assertEquals("介绍正文只许有一处引用（浮层那一颗），实到 $refs", 1, refs)
     }
 }

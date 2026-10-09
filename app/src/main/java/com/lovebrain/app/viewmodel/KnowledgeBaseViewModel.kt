@@ -30,9 +30,10 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.coroutineContext
 
 /**
- * 知识库管理页的一次性事件（导入/导出/删除/建库结果）。
+ * 知识库管理页的一次性事件（导入/导出/删除/建库/切库/改名结果）。
  *
  * 事件不带文案：提示语属于 UI 层，ViewModel 只回传事实，由 Activity 选词。
+ * [KbEvent.ActiveSwitched] 带的是**那个库的显示名**——它是事实的对象名，不是句子的一半。
  */
 sealed interface KbEvent {
     /** 建库事务结果 */
@@ -43,6 +44,17 @@ sealed interface KbEvent {
     data object ImportFailed : KbEvent
     data object DeleteFailed : KbEvent
     data object RenameFailed : KbEvent
+
+    /**
+     * 切库成功（§12.2「点击非活动卡用于切换当前知识库时，应明确反馈『已切换到……』」）。
+     *
+     * 带的必须是**显示名**：卡片那一行念的就是它，内部库名（目录身份）不该出现在给用户的
+     * 那句话里（§12.2「卡片信息不展示内部文件名与路径」同一口径）。
+     */
+    data class ActiveSwitched(val displayName: String) : KbEvent
+
+    /** 切换没能落到那个库上（写失败，或写成了但重读不认这条引用） */
+    data object SwitchFailed : KbEvent
 }
 
 /** 建库事务结果 */
@@ -125,21 +137,50 @@ class KnowledgeBaseViewModel(
 
     fun setActive(name: String) {
         viewModelScope.launch {
-            try {
+            val written = try {
                 repo.setActive(name)
+                true
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 L.e("setActive failed", e)
+                false
             }
             loadState()
+            reportSwitch(name, written)
+        }
+    }
+
+    /**
+     * 切库的结果只认**重读之后的真实数据流**，不认「调用有没有抛」。
+     *
+     * 为什么不能只信调用：目录写侧那一次切库是先写加密偏好、再逐库改 kb.json，
+     * 后者被只读保护拒掉时它是静默返回的（端口上这一员是 `Unit`，压根没有失败通道），
+     * 于是"没抛 = 成功"会把一次没落地的切换说成成功——而 §12.3 要的正是
+     * 「活动库选择…使用同一身份」这条引用真的落在那一个库上。
+     *
+     * 重读本身失败时**一个事件都不发**：那一格由页面顶上去的 Error 说话
+     * （`kbScreenState` 把 Error 排在 Content 之前）。这里再补一句「已切换到」或「切换失败」，
+     * 都是替一次没读到的数据编结论。
+     */
+    private fun reportSwitch(name: String, written: Boolean) {
+        val snapshot = _state.value
+        if (snapshot.loadFailed) return
+        val settled = snapshot.knowledgeBases.firstOrNull { it.name == name }
+        if (written && settled != null && snapshot.activeName == name) {
+            _events.tryEmit(KbEvent.ActiveSwitched(settled.displayName))
+        } else {
+            _events.tryEmit(KbEvent.SwitchFailed)
         }
     }
 
     fun rename(name: String, newDisplayName: String) {
         viewModelScope.launch {
-            val ok = try {
-                repo.updateDisplayName(name, newDisplayName)
+            // 送出去与验收用同一个已归一化的值：写侧还会再 trim 一次，
+            // 不先 trim 就比出"没改成"的假失败。
+            val wanted = newDisplayName.trim()
+            val written = try {
+                repo.updateDisplayName(name, wanted)
                 true
             } catch (e: CancellationException) {
                 throw e
@@ -147,12 +188,30 @@ class KnowledgeBaseViewModel(
                 L.e("updateDisplayName failed", e)
                 false
             }
-            if (!ok) _events.tryEmit(KbEvent.RenameFailed)
             loadState()
+            reportRename(name, wanted, written)
         }
     }
 
-    /** 删除失败不再静默（旧实现留了两个空 if 分支） */
+    /**
+     * 重命名的判据同 [reportSwitch]：`updateDisplayName` 在端口上是 `Unit`，
+     * 只读库、目录已不在、kb.json 坏掉这三种情况它都是**静默不写**（写侧 KDoc 明写的降级），
+     * 不核对真实数据流就会"卡片上名字没变、却一声不响"（§12.3「重命名只影响显示名及必要元数据」
+     * 的另一半是：改没改成得让人知道）。
+     */
+    private fun reportRename(name: String, wanted: String, written: Boolean) {
+        if (!written) {
+            _events.tryEmit(KbEvent.RenameFailed)
+            return
+        }
+        val snapshot = _state.value
+        if (snapshot.loadFailed) return
+        if (snapshot.knowledgeBases.firstOrNull { it.name == name }?.displayName != wanted) {
+            _events.tryEmit(KbEvent.RenameFailed)
+        }
+    }
+
+    /** 删除失败不再静默（旧实现留了两个空 if 分支）；写侧说删成了，还得看清单里是不是真没了 */
     fun delete(name: String) {
         viewModelScope.launch {
             val ok = try {
@@ -163,8 +222,14 @@ class KnowledgeBaseViewModel(
                 L.e("delete failed", e)
                 false
             }
-            if (!ok) _events.tryEmit(KbEvent.DeleteFailed)
             loadState()
+            val snapshot = _state.value
+            when {
+                !ok -> _events.tryEmit(KbEvent.DeleteFailed)
+                !snapshot.loadFailed && snapshot.knowledgeBases.any { it.name == name } ->
+                    // 目录还在清单里 = 这一删根本没落到真实数据流上（§12.1 三分法里的「列表没刷新」那一支）
+                    _events.tryEmit(KbEvent.DeleteFailed)
+            }
         }
     }
 
@@ -216,6 +281,9 @@ class KnowledgeBaseViewModel(
     }
 
     private suspend fun runOnboardingCreation(schema: OnboardingSchema): KbCreationOutcome {
+        // §12.3「生成或写入在开始时绑定目标库」：这一次事务的目标库名在这里就定死，
+        // 下面画像三段与阶段写的都是这一个 name，全程不回来问"现在在用哪一个库"——
+        // 生成期间用户切了库，迟到的结果也只能落进它自己建出来的那一格。
         val name = autoKbName()
         val system = readEngineAsset(AssetRegistry.ONBOARDING)
         // 问卷输入以 JSON Schema 传给引擎（取代文本拼接块）

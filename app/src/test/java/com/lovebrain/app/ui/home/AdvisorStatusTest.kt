@@ -133,4 +133,49 @@ class AdvisorStatusTest {
         assertEquals(AdvisorLamp.Yellow, r.lamp)
         assertNull(r.hint)
     }
+
+    /**
+     * 指导书 §5.2 末段 + §2.2 第 5 条：**每一条被点名的缺项都得有自己的下一步**，
+     * 而那一行末尾至多一颗去处，它只跟着"最有用的那一项"= 清单里的第一条。
+     *
+     * 改之前这一格根本不存在：去处只认"缺供应商"那一条，其余三条（权限 / 没有库 / 没读到）
+     * 是一句只有描述、没有出口的黄字——正是 §2.2 第 5 条点的那个产品问题。
+     *
+     * 反例（每一条都是真会发生的退化形状）：
+     * - 有人把这张表退回"只有 NoProvider 有目的地" ⇒ 那四行里除 NoProvider 外全红；
+     * - 有人给"服务没起来""连接还没检查过"硬造一颗去处 ⇒ 那两行 `assertNull` 红
+     *   （那两条此刻首页给不出目的地，用户按的是状态卡右边那颗 ■/▶）；
+     * - 有人在页面或本文件里再排一遍序、跳过第一条去挑后面那条 ⇒ 最后那三行红
+     *   （把后面那颗按钮摆到前面那件更该办的事上面，就是 §5.2 末段禁的形状）。
+     */
+    @Test
+    fun `each missing step owns its own next move and only the first one gets the capsule`() {
+        // 哨兵：清单加一颗而这张表没人点名时，`when` 当场编译不过；这一句管的是"反过来——
+        // 有人给新加的那颗配了目的地却忘了在这儿登记"，读数对不上就先红在这里。
+        assertEquals("缺项清单仍是七条", 7, AdvisorMissing.values().size)
+        assertEquals(HomeMissingAction.GrantOverlay, AdvisorMissing.OverlayPermission.homeAction)
+        assertEquals(HomeMissingAction.OpenProviders, AdvisorMissing.NoProvider.homeAction)
+        assertEquals(HomeMissingAction.OpenKnowledgeBase, AdvisorMissing.NoKnowledgeBase.homeAction)
+        assertEquals(HomeMissingAction.RetryKnowledgeRead, AdvisorMissing.KnowledgeUnread.homeAction)
+        assertEquals(HomeMissingAction.RetryConnection, AdvisorMissing.ConnectionFailed.homeAction)
+        assertNull(AdvisorMissing.ServiceNotRunning.homeAction)
+        assertNull(AdvisorMissing.ConnectionUnchecked.homeAction)
+
+        assertEquals(
+            "权限排在最前 ⇒ 那颗去处是授权，不是后面那条供应商",
+            HomeMissingAction.GrantOverlay,
+            AdvisorStatus(
+                AdvisorState.RunningNeedsSetup,
+                listOf(AdvisorMissing.OverlayPermission, AdvisorMissing.NoProvider)
+            ).primaryAction
+        )
+        assertNull(
+            "第一条没有目的地 ⇒ 这一行不画去处（宁可少一颗，也不硬造假按钮）",
+            AdvisorStatus(
+                AdvisorState.RunningNeedsSetup,
+                listOf(AdvisorMissing.ServiceNotRunning, AdvisorMissing.NoProvider)
+            ).primaryAction
+        )
+        assertNull("没有缺项就没有去处", AdvisorStatus(AdvisorState.RunningReady).primaryAction)
+    }
 }

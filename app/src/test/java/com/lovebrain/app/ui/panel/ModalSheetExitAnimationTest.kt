@@ -23,6 +23,7 @@ import com.lovebrain.app.ui.panel.reply.CorrectionCenterHost
 import com.lovebrain.app.ui.panel.reply.MemoryCorrectionFlow
 import com.lovebrain.app.ui.panel.reply.MemoryCorrectionFlowHost
 import com.lovebrain.app.ui.panel.reply.durationLabel
+import com.lovebrain.app.ui.panel.settings.LoveBrainSettingsContent
 import com.lovebrain.app.ui.panel.settings.SettingsIntentEntry
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -342,7 +343,12 @@ class ModalSheetExitAnimationTest {
         val saved = mutableListOf<Saved>()
         rule.setContent {
             UiMatrix(360, heightDp = 900).RenderIn(LocalDensity.current.density) {
-                SettingsIntentEntry(
+                LoveBrainSettingsContent(
+                    onBack = {},
+                    onCollapse = {},
+                    opacityPercent = 100,
+                    onOpacityPreview = {},
+                    onOpacityCommit = {},
                     intentEnabled = false,
                     intentText = "",
                     intentExpiry = IntentExpiry.ONE_DAY,
@@ -393,7 +399,7 @@ class ModalSheetExitAnimationTest {
     @Test
     fun `every call site drives the sheet through visible at the top level`() {
         val sites = listOf(
-            Site("panel/settings/SettingsIntentEntry.kt", "internal fun SettingsIntentEntry(", 1),
+            Site("panel/settings/SettingsIntentEntry.kt", "internal fun SettingsIntentIntroSheet(", 1),
             Site("panel/reply/MemoryCorrectionFlow.kt", "fun MemoryCorrectionFlowHost(", 2),
             Site("panel/reply/CorrectionCenter.kt", "fun CorrectionCenterHost(", 1)
         )

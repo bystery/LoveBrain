@@ -50,7 +50,8 @@ enum class AdvisorMissing(val label: String) {
     /**
      * 这一组身份一次都没检查过，但也不是"试过失败"。
      * 生产里探针端口由 `HomeStatusViewModel` 接 `DeepSeekRepository.testConnectionWithProbe` 供着，
-     * 只有按 ▶ 才走那一次；这一档留给"还没按过开始 / 换了供应商或换了当前对象"的那些格子——
+     * 只有按 ▶ 才走那一次；这一档留给"还没按过开始 / 供应商、模型、地址、Key 里有一位变了"的那些格子
+     * （切知识库不改连接身份，见 `HomeStatusViewModel.identityOf`）——
      * 留着它是因为**没检查过绝不能点绿**，而把"没检查"报成"连接失败"是一句假话。
      *
      * ⚠ 文案 2026-10-05 由「连接还没检查成功」改成「连接还没检查过」（用户原话："…怎么会不成功呢？
@@ -70,11 +71,65 @@ enum class AdvisorMissing(val label: String) {
     }
 }
 
+/**
+ * 那一行末尾那颗**去处**走哪一条路（指导书 §5.2 末段 + §2.2 第 5 条）。
+ *
+ * 名单收在这里而不是散在页面的 `if` 里，为的是"哪一条缺项配哪一种下一步"只有一处判据；
+ * 页面只回答"这一条具体怎么跳"（导航 / 平台授权链 / 本地重读 / 再发那一次请求），
+ * 它拿不到"该不该画这颗"的判断——那一半在本文件。
+ *
+ * ⚠ 这一族里**没有**"给 [AdvisorMissing.ServiceNotRunning] 与 [AdvisorMissing.ConnectionUnchecked]
+ * 配一颗去处"这两档：那两条说的是事实，首页此刻没有对应的目的地，硬造一颗按钮就是假出口
+ * （服务那一格的出口是状态卡右边那颗 ■/▶，连接那一格的出口是用户自己按 ▶）。
+ */
+enum class HomeMissingAction {
+    /** 悬浮权限缺 → 走宿主那条平台链（它才认得系统授权页与"回来后继续启动"那半截） */
+    GrantOverlay,
+
+    /** 模型配置缺 → 四入口里的「模型供应商」那一格（§5.2：只有模型配置缺失才去供应商） */
+    OpenProviders,
+
+    /** 当前对象没有知识库 → 知识库管理页（与首页那颗入口卡同一个目的地） */
+    OpenKnowledgeBase,
+
+    /** 资料没读到 → 重读一次本地事实，**一个请求都不发**（§5.2：不伪装无库，也不谎报在检查） */
+    RetryKnowledgeRead,
+
+    /** 本次连接请求失败 → 在**那颗请求的位置**再发那一次（§5.2 末行：重试挂在请求处） */
+    RetryConnection
+}
+
+/**
+ * 一条缺项 → 它在首页有没有下一步。`null` = 这一条此刻没有目的地可给（见 [HomeMissingAction] 那条 ⚠）。
+ *
+ * 这是**状态 → 意图**的一次派生，与 [render] 同一族：页面里不许再出现第二个 `when` 各判一遍。
+ */
+internal val AdvisorMissing.homeAction: HomeMissingAction?
+    get() = when (this) {
+        AdvisorMissing.OverlayPermission -> HomeMissingAction.GrantOverlay
+        AdvisorMissing.NoProvider -> HomeMissingAction.OpenProviders
+        AdvisorMissing.NoKnowledgeBase -> HomeMissingAction.OpenKnowledgeBase
+        AdvisorMissing.KnowledgeUnread -> HomeMissingAction.RetryKnowledgeRead
+        AdvisorMissing.ConnectionFailed -> HomeMissingAction.RetryConnection
+        AdvisorMissing.ServiceNotRunning, AdvisorMissing.ConnectionUnchecked -> null
+    }
+
 /** 状态 + 真实缺项 = 首页那一格的全部输入（无 lambda、无颜色，能被用例逐格比） */
 data class AdvisorStatus(
     val state: AdvisorState,
     val missing: List<AdvisorMissing> = emptyList()
 )
+
+/**
+ * 那一行末尾**至多一颗**去处，它跟着"最有用的那一项"走（§5.2 末段："先显示最有用的一项和对应动作"）。
+ *
+ * "最有用的一项" = 清单里的**第一条**，而清单顺序的唯一主人是
+ * `HomeStatusViewModel.advisorMissingSteps`（权限 → 配置 → 知识库 → 连接 → 服务）——
+ * 页面与本文件都不再排第二遍序，也不"跳过没有目的地的那一条去挑后面那条"
+ * （那等于让一颗后面的大按钮盖住前面那件更该办的事，正是 §5.2 末段禁的形状）。
+ */
+internal val AdvisorStatus.primaryAction: HomeMissingAction?
+    get() = missing.firstOrNull()?.homeAction
 
 /**
  * [AdvisorStatus] 派生出来的渲染产物：灯、控件、两个读屏名字、那一行黄字。

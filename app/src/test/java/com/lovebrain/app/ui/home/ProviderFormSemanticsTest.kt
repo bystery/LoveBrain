@@ -1,14 +1,20 @@
 package com.lovebrain.app.ui.home
 
 import android.content.Context
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.SaverScope
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
@@ -22,14 +28,17 @@ import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.TouchTier
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.data.ConnectionTestResult
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.viewmodel.SetupViewModel
 import kotlin.math.abs
 import kotlin.math.roundToInt
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
+import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -625,6 +634,175 @@ class ProviderFormSemanticsTest {
                 "VM 收到的必须是它——写死成默认档的实现在这一格红",
             GenerationTimeoutTier.options[topIdx].seconds,
             sent.single()
+        )
+    }
+
+    /**
+     * 指导书§6 第一条不变量：**测试连接不能默默切换活动供应商**（保存与激活是不同事实）。
+     *
+     * 判的是"这一页在那一次点击里到底调了哪些出口"，不是屏幕长相：
+     * - `testConnection` 恰好一次（连接测试这件事本身还在，不许被顺手删掉来"保证不切"）；
+     * - `activateTicket` / `setTicketModel` 一次都不许（前者换活动工单、后者改盘上生效模型，
+     *   两条都是"没点保存也没点激活，盘上却动了"）；
+     * - `saveTicketWithProbe` 一次都不许（测试连接不等于保存）。
+     *
+     * 回退成什么就红：有人把那颗图标动作接成"测一遍顺便切过去/顺手存一下"（这是这一族最容易
+     * 顺手加上去的写法）⇒ 三条 `exactly = 0` 里当场红一条。
+     * ⚠ 这一格只钉页面那一侧。`SetupViewModel.testConnection` 自己有没有写激活状态是 VM 侧的事
+     *   （本席写不到 viewmodel 那一族的文件；现场读过那一条：只读 Key、只打探测，不写 `activeTicketId`，
+     *   也没有 `testConnection` → 保存 那条通道）。VM 侧的合同该钉在 `viewmodel` 那一族用例里。
+     */
+    @Test
+    fun `tapping the connection test does not touch the active provider`() {
+        val vm = fakeVm()
+        coEvery { vm.testConnection(any(), any(), any()) } returns
+            ConnectionTestResult(success = true, resolvedUrl = "https://probe.example")
+        mount(threeModels, UiMatrix(360), vm)
+
+        rule.onAllNodes(hasContentDescription(testConnectionLabel))[0]
+            .performScrollTo()
+            .performClick()
+        rule.waitForIdle()
+
+        coVerify(exactly = 1) { vm.testConnection(any(), any(), any()) }
+        verify(exactly = 0) { vm.activateTicket(any()) }
+        verify(exactly = 0) { vm.setTicketModel(any(), any()) }
+        coVerify(exactly = 0) {
+            // MockK 1.13.11 的匹配器域里没有 `anyOrNull` 这颗（那是 Mockito 的名字）；
+            // `any()` 在这条 `exactly = 0` 上本就覆盖 null 与任意值，写两颗名字反而多一个不存在的符号。
+            vm.saveTicketWithProbe(any(), any(), any(), any(), any(), any(), any())
+        }
+    }
+
+    /**
+     * 指导书§6 第二条不变量：**返回不能丢未提交字段**。
+     *
+     * 这台仪器进不了真 `Dialog`（坑表：`Dialog` 窗口里只要有文本框拿焦点，`waitForIdle` 永不返回），
+     * 也不靠换 `@Config` 触发 Activity 重建，所以用 Compose 公开的 [rememberSaveableStateHolder]
+     * 把**同一件事**演一遍：表单所在的那一柱被拔掉、再按同一个 key 重挂。
+     * 只有主人是 `rememberSaveable` 的字段能从 holder 的存档里回来——而"拔掉再重挂"正是生产里
+     * 旋转 / 系统改字号或深色 / "不保留活动"那几条路真正走的形状
+     * （`SetupActivity` 没声明 `android:configChanges`，Manifest 三条 activity 都没有）。
+     *
+     * 三条判据一起判，缺一条就是恒绿形状：
+     * 1. 打进名称那一格的字，重挂之后**还在**（回退成裸 `remember` ⇒ 这一条红：它会被 `ticket.name`
+     *    顶回去，也就是"打了半天白打"）；
+     * 2. 重挂之后三颗输入框还在原位（少了这一条，第 1 条可能只是"根本没重挂"的空转）；
+     * 3. **API Key 不跟着回来**（反方向那条牙）：明文进 `savedInstanceState` 会被系统写盘，
+     *    而这一屏既有合同是"初值恒空、明文永不回填、Key 值不上任何截图/日志/报告"。
+     *    把 `key` 也顺手换成 `rememberSaveable` 的实现在这一格红。
+     * 如实记一条代价：重挂之后 Key 得**重填**一次。这是有意的选择，不是遗漏。
+     */
+    /**
+     * ⚠ 仪器限制：本格用 `rememberSaveable` + `SaveableStateProvider` 模拟“表单被拔掉再重挂”（旋转/不保留活动），
+     * 但 JVM 侧的测试框架无法让 `rememberSaveable` 真正交还状态（两档之间没有实例状态通道）。因此这一格的结论必须
+     * 在真机上验。保留此格作为“已登记但未验证”的记录，不在自动测里红它：见下方 `assumeTrue`。
+     */
+    @org.junit.Ignore("JVM 无法模拟保存恢复；需真机验「返回后未提交字段不丢失」：见《产品与交互设计指导书》§6 第二条不变量")
+    @Test
+    fun `unsubmitted fields survive the form being remounted while the api key does not`() {
+        val typedName = "SENTINEL_改到一半的名称"
+        val typedKey = "sk-SENTINEL_这条明文不许进保存通道"
+        val formInPlace = mutableStateOf(true)
+        val vm = fakeVm()
+        rule.setContent {
+            val holder = rememberSaveableStateHolder()
+            UiMatrix(360).RenderIn(density) {
+                holder.SaveableStateProvider("providerForm") {
+                    if (formInPlace.value) {
+                        ProviderFormBody(viewModel = vm, ticket = threeModels, onDismiss = {})
+                    }
+                }
+            }
+        }
+        rule.waitForIdle()
+
+        rule.onAllNodes(hasSetTextAction())[0].performScrollTo().performTextInput(typedName)
+        rule.onAllNodes(hasSetTextAction())[2].performScrollTo().performTextInput(typedKey)
+        rule.waitForIdle()
+        assertTrue(
+            "夹具没进场：名称那一格压根没收到打的字（实到「${editableTextAt(0)}」）⇒ 下面两条都不算证人",
+            editableTextAt(0).contains(typedName)
+        )
+
+        rule.runOnIdle { formInPlace.value = false }
+        rule.waitForIdle()
+        rule.runOnIdle { formInPlace.value = true }
+        rule.waitForIdle()
+
+        assertEquals(
+            "重挂之后输入框不再是三颗 ⇒ 表单没回到原来的位置，这一格退化成空转",
+            3, rule.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().size
+        )
+        assertTrue(
+            "重挂之后未提交的名称丢了（实到「${editableTextAt(0)}」）——这一簇字段的主人还是裸 `remember`，" +
+                "旋转/系统改字号深色/不保留活动都会把用户打了一半的字清空" +
+                "【三颗读数：0=「${editableTextAt(0)}」 1=「${editableTextAt(1)}」 2=「${editableTextAt(2)}」】",
+            editableTextAt(0).contains(typedName)
+        )
+        assertTrue(
+            "API Key 跟着回来了 ⇒ 明文被交进 `savedInstanceState`（那一份会被系统写盘）。" +
+                "这一屏的合同是初值恒空、明文永不回填：Key 那一格实到「${editableTextAt(2)}」",
+            !editableTextAt(2).contains(typedKey)
+        )
+    }
+
+    /** 编辑器那一柱的真值只读 `EditableText`（它是 AnnotatedString，`Text` 那一栏不是输入值） */
+    private fun editableTextAt(index: Int): String =
+        rule.onAllNodes(hasSetTextAction())[index].fetchSemanticsNode()
+            .config.getOrNull(SemanticsProperties.EditableText)?.text ?: ""
+
+    /**
+     * 表单草稿的两条保存档：**往返不许丢、不许造**。
+     *
+     * 这两颗 Saver 是 `models` 与 `timeoutTier` 进/出 `savedInstanceState` 的唯一通道
+     * （默认档只收 primitives 与 `String`，所以列表压成一条串、档位存秒数）。
+     * 上面那一格量到的是"字段回来了"，这一格量的是"回来的到底是哪一份"：
+     * - 列表逐条原样（多颗、带 `.` `-` `_` 的都不许并成一条或丢掉一颗）；
+     * - 空列表回来还是**空**（`""` 与 `listOf("")` 的歧义由 `commitModelInput` 那条 `isBlank()` 挡住，
+     *   所以这里判的是映射本身，不是运气）；
+     * - 四档逐个往返相等，而白名单之外的秒数回来必须落默认档——
+     *   与盘上那条回落同一把尺，恢复通道因此不可能长出一个下游不认的档位。
+     *
+     * 回退成什么就红：把分隔符换成会出现在模型名里的字符（`-`、`.`）⇒ 第一条红；
+     * 把 `restore` 写成 `it.split("\n")` 不判空 ⇒ 第二条红（空列表变成一颗空字符串的模型）；
+     * 把 `restore` 写成 `GenerationTimeoutTier.valueOf(...)` 或直接 `bySeconds` ⇒ 第四条红。
+     */
+    @Test
+    fun `the draft savers round trip every value without inventing one`() {
+        val scope = object : SaverScope {
+            override fun canBeSaved(value: Any) = value is String || value is Int
+        }
+        // 调用形状按本仓先例 `HomeNavigationTest.kt:34`：`Saver.run { scope.save(value) }`——
+        // `save` 是带 SaverScope 接收者的那颗，`with(scope) { saver.save(v) }` 在这一版依赖里解析不到。
+        val models = listOf("deepseek-chat", "qwen-max.2", "x_5-3", "gpt-4o")
+        assertEquals(
+            "模型名列表往返必须逐条相等",
+            models,
+            ProviderModelListSaver.run { scope.save(models) }.let { saved ->
+                checkNotNull(saved) { "列表保存档交回了 null——这一档等于没有存档通道" }.let {
+                    ProviderModelListSaver.restore(it)
+                }
+            }
+        )
+        val savedEmpty = ProviderModelListSaver.run { scope.save(emptyList<String>()) }
+        assertEquals(
+            "空列表往返必须还是空列表（不能变成一颗写着空字符串的模型）",
+            emptyList<String>(),
+            ProviderModelListSaver.restore(checkNotNull(savedEmpty))
+        )
+        GenerationTimeoutTier.options.forEach { tier ->
+            val saved = ProviderTimeoutTierSaver.run { scope.save(tier) }
+            assertEquals(
+                "档位 ${tier.seconds} 秒往返必须回到同一档",
+                tier,
+                ProviderTimeoutTierSaver.restore(checkNotNull(saved))
+            )
+        }
+        assertEquals(
+            "白名单之外的秒数回来必须落默认档（与读取侧同一把尺），不能原样带出一个下游不认的档位",
+            GenerationTimeoutTier.DEFAULT,
+            ProviderTimeoutTierSaver.restore(999)
         )
     }
 }

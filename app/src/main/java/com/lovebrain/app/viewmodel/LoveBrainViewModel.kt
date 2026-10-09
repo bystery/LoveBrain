@@ -89,6 +89,18 @@ private const val TITLE_FIRST_LINE_LIMIT = 60
 private const val TITLE_FALLBACK_LIMIT = 40
 
 /**
+ * 「仅看本轮」首次轻提示的文案（§2.2 第 3 条"一次轻提示"）：一句话，走通知位那一格，
+ * 不落在行 1、不撑宽输入行。语义对着真实合同写：只带这一轮的真实对话与军师备注
+ * （`PromptBuilder.buildReplyUserPromptOnlyThisRound` 的 KDoc），剥掉的是画像/阶段/记忆/
+ * 意图/偏好那一族持久内容（`RewritePrompt.styleAndIntentForScope` 剥的正是那两段）。
+ * 为什么是常量不是资源键：通知位文案的现行先例（`MemoryCorrectionPolicy` /
+ * `IntentController` 的 onWarning/onNotice）全是层内常量，VM 没有 Context；
+ * `UiStringLiteralBudgetTest` 四把锚点（`Text(` / `contentDescription =` /
+ * `stateDescription =` / `Lb…(`）不数这一层（其顶部例外账本明写顶层 const 不在射程）。
+ */
+internal const val ROUND_SCOPE_FIRST_HINT = "仅看本轮：只带这一轮的对话与备注，不带画像和历史"
+
+/**
  * 军师核心 ViewModel v4（ 后为状态壳：生成逻辑下沉到 GenerationEngine）。
  *
  * 仓库这一格注入 [KnowledgeRuntimePort]：对话运行时对知识库要的那一族（在用库、文档读、
@@ -122,7 +134,19 @@ class LoveBrainViewModel(
      * 写不动任何持久状态也不会抛——设置页因此永远有东西可画，少接一行不会把面板画没。
      */
     private val readBackdropOpacityPercent: (() -> Int)? = null,
-    private val writeBackdropOpacityPercent: ((Int) -> Unit)? = null
+    private val writeBackdropOpacityPercent: ((Int) -> Unit)? = null,
+    /**
+     * 「仅看本轮」首次轻提示的"提示过没有"旗标那一对接口（读 / 写，§2.2 第 3 条"一次轻提示"）。
+     *
+     * 与上面背景浓度那一对同一形状、同一理由：盘上那一格（`round_scope_hint_seen`）住在
+     * `data/SecurePrefs` 这个具体实现类上，而这里的 [securePrefs] 是端口视图、端口面没有这一员；
+     * 页面层按具体类去点加密偏好正是 `PackageDependencyTest` 硬挡的那一条，所以由装配侧
+     * （`di/AppModule`）把 `SecurePrefs.roundScopeHintShown` 那一对接进来。
+     * **没接时这一退化成"读默认（没提示过）、写丢弃"**：旗标只活在 VM 会话内——同一会话
+     * 仍然只弹一次，重启会再弹一次；那是装配缺两行时的可见症状，不是这一格的语义。
+     */
+    private val readRoundScopeHintShown: (() -> Boolean)? = null,
+    private val writeRoundScopeHintShown: ((Boolean) -> Unit)? = null
 ) : ViewModel() {
 
     /**
@@ -636,9 +660,48 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 状态在 [roundStateStore]，VM 只留只读出口与切换入口。 */
     val onlyThisRound: StateFlow<Boolean> = roundStateStore.onlyThisRound
 
+    /**
+     * 「仅看本轮」首次轻提示"提示过没有"（§2.2 第 3 条那次轻提示只弹一次的凭据）。
+     * 落盘先例是持续意图介绍那格（`intent_intro_seen` 落在设置存储，每次回来不再重弹）——
+     * **不许用 remember**（组合一没就忘 = 假持久），也不落在屏上那颗：ReplyInput 那颗只消费
+     * [onlyThisRound]，"提示过没有"是开关事件上游的账（ReplyInput.kt `RoundScopeChip`
+     * KDoc 指的就是这里）。
+     *
+     * 为什么允许它以 `private var` 住在 VM（状态台账那把尺的例外格）：它是**跨会话一次性
+     * 记录**，不参与任何响应式状态图；盘上主人在 `SecurePrefs.roundScopeHintShown`（构造
+     * 那对函数接进来），这里只是盘上那份的会话内副本——放 [RoundStateStore] 反而要给它接
+     * 落盘口子，把一颗纯状态持有者拖成第二个持久化主人。
+     */
+    private var roundScopeHintShown: Boolean = readRoundScopeHintShown?.invoke() ?: false
+        set(value) {
+            field = value
+            writeRoundScopeHintShown?.invoke(value)
+        }
+
     fun toggleOnlyThisRound() {
         // 切换走 store：翻转状态后 store 同步回调 checkInputChanged()，让旧结果标 stale
+        val wasOn = roundStateStore.onlyThisRoundNow
         roundStateStore.accept(RoundStateStore.Intent.ToggleOnlyThisRound)
+        // §2.2 第 3 条的"一次轻提示"只挂在**开**那一跳：弹是开启的反馈，取消/关闭没有它。
+        if (!wasOn) maybeShowRoundScopeFirstHint()
+    }
+
+    /**
+     * 首次轻提示（§2.2 第 3 条"仅看本轮开启时有明显选中态＋中文语义描述与一次轻提示"）：
+     * 屏上出现一条紧凑短通知，说明这一档只带本轮输入、不带画像历史；此后不再弹。
+     *
+     * 判据三条，各钉在 `RoundScopeFirstHintTest`：
+     * · 只在 OFF→ON 那一跳投——生产里把开关写成 true 的活路径只有 [toggleOnlyThisRound]
+     *   这一条（[RoundStateStore.Intent.SetOnlyThisRound] 在生产里只收 false 的复位：
+     *   新轮次/切库；长按 [RoundScope.CurrentRoundOnly] 是每次请求各算各的，不写开关）；
+     * · 投一次就落旗标——旗标从盘上读回来之后，重启后的第一次开启也不再弹；
+     * · 走 [NoticeBoard.Channel.Knowledge]（回执形态 + 到点自散）**不走 Warning**：
+     *   那一格画成黄色警告，§4.4 明写普通提示不许画成大黄警告。
+     */
+    private fun maybeShowRoundScopeFirstHint() {
+        if (roundScopeHintShown) return
+        roundScopeHintShown = true
+        notices.show(NoticeBoard.Channel.Knowledge, ROUND_SCOPE_FIRST_HINT)
     }
 
     // ═══════════ 输入变化提示 + 生成历史与版本回退 ═══════════
@@ -1691,11 +1754,36 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     /**
      * 悬浮窗设置页切库：写盘后走 [refreshKnowledgeBases] 那条已有的刷新链。
+     *
+     * 成败只认**重读之后的真实数据流**（与知识库管理页 `reportSwitch` 同一条判据）：
+     * 写侧那一次切库在被只读保护拒掉时是静默返回的（端口上这一员是 `Unit`，没有失败通道），
+     * "调用没抛"证明不了切换落地。重读回来真的换人才算成功——成功不发通知，
+     * 列表高亮与选中态就是反馈；失败在面板警告位说一句可重试的话，不假成功（§11.1）。
      */
     fun switchActiveKb(name: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) { knowledgeRepo.setActive(name) }
+            val written = try {
+                withContext(Dispatchers.IO) { knowledgeRepo.setActive(name) }
+                true
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("switchActiveKb failed", e)
+                false
+            }
+            val settled = withContext(Dispatchers.IO) {
+                try {
+                    knowledgeRepo.getActive()
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    null
+                }
+            }
             refreshKnowledgeBases()
+            if (!(written && settled?.name == name)) {
+                showPanelWarning("知识库切换没有成功，请重试")
+            }
         }
     }
 
@@ -2335,6 +2423,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 组装改写请求：表达偏好来自知识库，其余是本轮冻结上下文。
      *
      * 拼装规则本身在纯函数 `RewritePrompt` 里（可离线单测）；这里只负责读 style.md。
+     * 「仅看本轮」开着时偏好与持续意图**都不发**（ 第7节第3条 要求回复/主动发/改写三链同范围，
+     * 判据只算一次，见 [RewritePrompt.styleAndIntentForScope]）——style.md 是点赞记进库的持久件，
+     * 偷读它做个性化就是 第14节第2条 末句那一格。
      */
     private suspend fun buildRewriteUserPrompt(
         originalReply: String,
@@ -2344,12 +2435,17 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         ideaHint: String?
     ): String {
         val kbName = replyGenerationContext?.kbName
-        val style = if (kbName.isNullOrBlank()) "" else knowledgeRepo.readFile(kbName, "understand/style.md")
+        val styleFile = if (kbName.isNullOrBlank()) "" else knowledgeRepo.readFile(kbName, "understand/style.md")
+        val (style, intentForThisRequest) = RewritePrompt.styleAndIntentForScope(
+            style = styleFile,
+            intentText = intentText,
+            onlyThisRound = replyGenerationContext?.onlyThisRound == true
+        )
         return RewritePrompt.user(
             originalReply = originalReply,
             instruction = option,
             recentChat = RewritePrompt.recentChat(messages),
-            intentText = intentText,
+            intentText = intentForThisRequest,
             ideaHint = ideaHint,
             style = style
         )

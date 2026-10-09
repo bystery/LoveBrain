@@ -117,9 +117,10 @@ class HomeScaffoldFrameSemanticsTest {
     /**
      * 段顺序从上到下：状态卡 →（黄灯才有）那一行 → 第一排 → 第二排。
      * 顺带量那一行的**左边缘**：本轮给它加了浅底容器，容器自己不许再补一道水平边距
-     * （水平边距的唯一主人还是 `LbScreenScaffold`；卡内那 12dp 是内距，落在容器里侧）。
+     * （水平边距的唯一主人仍是 `LbScreenScaffold`；容器内距落在里侧，且与主卡的内容柱同一条线）。
      * 反例：把黄字挪到四入口下面 ⇒ "黄字在入口之前"那句红；
-     * 反例：给浅底容器外面再写一次 `padding(horizontal = …)` ⇒ 左边缘不再是"边距 + 内距"那一个数；
+     * 反例：那一行的内距与主卡不同档（4dp 之差就是"两块不相干的字"）⇒ 对齐那句红；
+     * 反例：给浅底容器外面再写一次 `padding(horizontal = …)` ⇒ 对齐与"边距只有一个主人"两句一起红；
      * 反例：容器干脆贴着屏幕左沿画（把 scaffold 那道边距吃掉）⇒ 同一句红。
      */
     @Test
@@ -140,13 +141,23 @@ class HomeScaffoldFrameSemanticsTest {
         assertTrue("那一行在状态卡之后", topOf(LbHomeTags.SETUP_HINT) > topOf(LbHomeTags.STATUS_CARD))
         assertTrue("那一行在入口之前", topOf(LbHomeTags.SETUP_HINT) < topOf(LbHomeTags.ENTRY_KNOWLEDGE))
 
-        // 文字那一格的左边缘 = 公共边距 + 容器内距**一层**（12dp），不多不少
+        // §5.1「调整对齐」：这一行是**主卡那一档状态**的说明，它的文字必须与主卡的内容柱同一条左边缘。
+        // 数不写死、也不读源码里那个 padding 常量：对照物是同一棵树里量到的那颗灯（灯就是主卡内容柱的第一格）。
+        // 反例：容器内距与主卡内距不同档（本轮改之前是 12 对 16，同一屏两块文字左边缘差 4dp）⇒ 红；
+        // 反例：给浅底容器外面再写一道水平边距（旧版那"两层"形状）⇒ 红；
+        // 反例：容器干脆贴着屏幕左沿画（把 scaffold 那道边距吃掉）⇒ 后两句一起红。
         val margin = com.lovebrain.app.core.designsystem.LB_SCREEN_HORIZONTAL_MARGIN.value
         val textLeft = rule.onAllNodesWithTag(LbHomeTags.SETUP_HINT, useUnmergedTree = true)
             .fetchSemanticsNodes().first().boundsInRoot.left / density
+        val lampLeft = rule.onAllNodesWithTag(LbHomeTags.LAMP, useUnmergedTree = true)
+            .fetchSemanticsNodes().first().boundsInRoot.left / density
         assertEquals(
-            "缺项那一行的水平边距只有一个主人：实到 ${textLeft.toInt()}dp，应为 边距 + 12dp 内距",
-            margin + 12f, textLeft, 1f
+            "缺项那一行的文字要与主卡的内容柱对齐：实到 行 ${textLeft.toInt()}dp / 灯 ${lampLeft.toInt()}dp",
+            lampLeft, textLeft, 1f
+        )
+        assertTrue(
+            "公共边距只有一个主人（边距 ${margin.toInt()}dp）：容器自己不许贴屏幕左沿画，实到 ${textLeft.toInt()}dp",
+            textLeft > margin
         )
     }
 

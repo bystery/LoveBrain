@@ -20,6 +20,10 @@ import com.lovebrain.app.core.testing.TouchTier
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
 import com.lovebrain.app.ui.panel.reply.PANEL_INPUT_TOUCH_TAG
+import com.lovebrain.app.ui.panel.reply.PANEL_ROUND_SCOPE_LABEL
+import com.lovebrain.app.ui.panel.reply.ROLE_LABEL_HER
+import com.lovebrain.app.ui.panel.reply.ROLE_LABEL_ME
+import com.lovebrain.app.ui.panel.reply.ROLE_LABEL_SUPPLEMENT
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.IntentConfig
@@ -373,6 +377,12 @@ class PanelHostSemanticsTest {
     private val collapseName: String get() = ctx.getString(R.string.panel_collapse)
 
     /**
+     * 「仅看本轮」那颗的读屏名：由页面自己持有（[PANEL_ROUND_SCOPE_LABEL]，挂在 contentDescription 上），
+     * 这里只引用那颗常量，不在测试里抄第二份中文——字面量预算闸管的就是这个。
+     */
+    private val roundScopeName: String get() = PANEL_ROUND_SCOPE_LABEL
+
+    /**
      * 面板主动作那一排的标签前缀（生成 / 带条数的生成 / 停止共用同一颗槽位）。
      * 按前缀认：那条带条数的变体后缀是「· N 条消息」，逐字比会漏。
      */
@@ -387,8 +397,18 @@ class PanelHostSemanticsTest {
     private val counselingTemplatePrefixes: List<String>
         get() = listOf("她突然", "我们吵架", "她说了", "怎么判断", "暧昧期", "她嫌我")
 
+    /** 回复行三颗角色胶囊的读屏名（常量住在 ReplyInput，与生产同一颗源头，不抄第二份） */
+    private val roleChipLabels: List<String>
+        get() = listOf(ROLE_LABEL_HER, ROLE_LABEL_ME, ROLE_LABEL_SUPPLEMENT)
+
     /** 逐颗换尺：拿不到档位的回到全站下限，这条兜底不许改成 0 */
     private fun tierOf(t: Target): Float = when {
+        // 回复行三颗角色胶囊（她/我/补充）：悬浮窗**紧凑胶囊族**，与谈心模板、范围符号同族
+        // （28dp 高胶囊、横滚行、热区分层）。书 §20 F03 点名拆掉的 18dp 宽度幻影占位拆掉后
+        // （core 的 `LbChipStyle.widthFloor`，`RoleChipSemanticsTest` 头部记着判据改写），
+        // 宽度轴=内容定宽、高度轴仍 48 满档——按本族那一档 [TouchTier.COMPACT_CHIP] 量。
+        // ⚠ 必须排在下面那条泛 `role == "Tab"` 之前：页头模式段也是 Tab，它走它自己的 30dp 合同档。
+        t.role == "Tab" && t.label in roleChipLabels -> TouchTier.COMPACT_CHIP
         t.role == "Tab" -> TouchTier.PANEL_HEADER_ROW
         t.announces(settingsName) -> TouchTier.PANEL_HEADER_HOTZONE
         t.announces(collapseName) -> TouchTier.PANEL_HEADER_HOTZONE
@@ -396,9 +416,15 @@ class PanelHostSemanticsTest {
         // 谈心模板芯片有意设为 28dp 紧凑视觉（CounselingTemplateChips.kt 注释说明用户要求），
         // 走 COMPACT_CHIP 那一档而不是全站 48dp 下限——横滚行里 28dp 高的点击区是可接受的紧凑视觉
         counselingTemplatePrefixes.any { t.label.startsWith(it) } -> TouchTier.COMPACT_CHIP
-        // 范围按钮（仅看本轮🔒）设为紧凑视觉（22dp 胶囊），与谈心模板芯片同一策略。
-        // 实到 21x22dp（pill 胶囊在 360dp 宽屏上的像素取整），档位取 21f 让两轴都过。
-        t.label == "🔒" -> 21f
+        // 范围符号那颗（「仅看本轮」）：走紧凑胶囊族那一档，与谈心模板芯片同族不同颗。
+        // ⚠ **按读屏名 + 角色认，不按画在屏上的那个符号认**：上一行写的是 `t.label == "🔒"`，
+        //   §2.2 第 3 条把可见符号换成 `◉` 之后那一行就成了死档，这颗直接掉回兜底的
+        //   [TouchTier.SITE_FLOOR] 48dp（本轮假红的成因）；读屏名是合同要留的那颗，符号才是可换的。
+        //   出路也不是外包 48dp 见方容器：`RoleChipSemanticsTest` 与 `RoundScopeChipFootprintTest`
+        //   钉着"再包一层 48 就是把紧凑档作废"。这颗的热区由 `LbChip` 分层那一档自己垫到
+        //   [TouchTier.COMPACT_CHIP]（= core 那颗 `AppDimens.CARD_ACTION_HIT_DP`），两轴都判。
+        //   名或角色任一不对 ⇒ 仍按 48 量，不是放行。
+        t.role == "Checkbox" && t.announces(roundScopeName) -> TouchTier.COMPACT_CHIP
         else -> TouchTier.SITE_FLOOR
     }
 

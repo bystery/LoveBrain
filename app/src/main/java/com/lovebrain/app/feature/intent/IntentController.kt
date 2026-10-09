@@ -66,7 +66,8 @@ class IntentController(
 
     /**
      * 编辑器绑在**打开那一刻**的库上，不是当前库：切库之后再把内容写进新库就是写错人。
-     * 关闭编辑器时这颗绑定不清掉（与搬之前一致）——下一次打开会重新覆盖它。
+     * 关闭编辑器时这颗绑定**一起清掉**（见 [dismissEditor]）——存活的绑定只有"编辑器开着"
+     * 这一种状态；下一次打开会在 [openEditor] 重新冻结。
      */
     private var editorKbName: String? = null
 
@@ -169,8 +170,11 @@ class IntentController(
         _showEditor.value = true
     }
 
-    /** 关掉编辑器：只收可见性，不动那份库绑定（见 [editorKbName]，与搬之前一致） */
+    /** 关掉编辑器：可见性与那份库绑定**一起收**。绑定只在 [openEditor] 那一刻有意义，
+     *  留着它，下次 save()（退出动画里那颗保存键、或任何漏接线的调用方）会把草稿写进
+     *  用户已经离开的那本库——绑定清空后 save() 退回 [readActiveKbName]，目标回到"此刻真的开着的那本"。 */
     fun dismissEditor() {
         _showEditor.value = false
+        editorKbName = null
     }
 }

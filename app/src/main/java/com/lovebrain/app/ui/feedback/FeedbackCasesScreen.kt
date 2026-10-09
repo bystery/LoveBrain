@@ -36,6 +36,7 @@ import com.lovebrain.app.core.designsystem.Error
 import com.lovebrain.app.core.designsystem.LbAsyncState
 import com.lovebrain.app.core.designsystem.LbListCard
 import com.lovebrain.app.core.designsystem.LbTextAction
+import com.lovebrain.app.core.designsystem.LbTextActionSize
 import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.core.designsystem.ScreenState
@@ -459,16 +460,26 @@ internal fun splitFirstSentence(text: String): Pair<String, String> {
 }
 
 /**
- * 页头尾部那颗导出：紧凑次级动作（与知识库卡「导出」同族 [LbTextAction]），
+ * 页头尾部那颗导出：紧凑次级动作（与知识库卡「导出」、供应商行「编辑/删除」同一形状档
+ * [LbTextActionSize.RowCapsule]，都由 [LbTextAction] 那一颗公共件画），
  * 只保留"点一下导出"这一个动作；零结果时切到 disabled。
  *
  * 指导书§9.2：导出走次级动作档，不占主动作 48dp 那颗。
+ *
+ * ⚠ **`size` 这一颗实参是这一格唯一的形状主人**：`LbTextAction` 的默认档是
+ * [LbTextActionSize.Standard]（48dp 见方、无底——那是空态引导/错误重试那一族"一个人占一格"的
+ * 写法），把它留给默认就等于让这一页的导出长成同族三页（知识库/供应商/捕获）都没有的那一种块。
+ * 两档的**热区**都是全站 48 见方（`LbTextActionSize.hitSize` 两条都指回同一颗下限），
+ * 差的只是可见那一层：胶囊档在热区内侧画一颗 32dp 高、8% 浅灰底的圆胶囊。
+ * 于是"有分量的页面动作"留着（语气仍是 `Accent`，页面唯一主动作），"突然出现的巨大方形按钮"没有。
+ * 热区/角色/命名都归公共件那一处，这一层拿不到那些旋钮。
  */
 @Composable
 private fun ExportAction(enabled: Boolean, label: String, onClick: () -> Unit) {
     LbTextAction(
         label = label,
         onClick = onClick,
+        size = LbTextActionSize.RowCapsule,
         enabled = enabled
     )
 }

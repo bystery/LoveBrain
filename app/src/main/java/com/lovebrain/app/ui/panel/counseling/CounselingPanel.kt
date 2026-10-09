@@ -130,6 +130,10 @@ fun CounselingPanel(
             }
         }
 
+        // 拖动归属（§8.4 表 + §9）：这一条**只调输入框高度**，不是移动悬浮窗的那一颗。
+        // 用户说的"谈心那面透明拖动区太难命中"归页面顶部那条连续命中带（`ui/panel/DragHandle`
+        // + `DragBand`，热区在整屏最上面那一格），把它改粗不等于解决——§9 明写"不能把回复页
+        // 分隔线改粗就宣称解决"。这一条的尺寸本轮一寸没动。
         DraggableDivider(
             onDragDelta = { delta ->
                 inputHeight = (inputHeight + delta / density).coerceIn(48f, 200f)
@@ -268,6 +272,9 @@ fun CounselingPanel(
                         // 继续追问胶囊归进设计系统那颗 [LbChip]：胶囊形状（clip/sm + PrimaryLight 底 +
                         // PrimarySubtle 描边 + labelMedium/PrimaryDark/SemiBold 字 + lg/sm 内边距 + 0.92 按压）
                         // 逐项抄进 [LbChipStyles.soft] 的 `.copy`，不在页面里另画一条 Modifier 链。
+                        // ⚠ 高度/热区/标签位/行数那一档**不在这里写**：走 [counselingCompactChipTier]
+                        //（§9「谈心模板整组用同一紧凑档」——谈心这一族的这一档只有一处主人，
+                        // 这里再抄一遍就是"同一档散在几处、随时各自跑偏回 48 整行占高"的旧形状）。
                         // ⚠ 这是**动作入口**（点下去开/收追问区），不是"在哪一格"——故选
                         // [LbChipInteraction.Action]：`Role.Button`，语义树不发 `selected`；
                         // 展开/收起那句话仍走 `stateDescription`，与改前完全同一槽位。
@@ -283,7 +290,7 @@ fun CounselingPanel(
                                 onClick = { showFollowUp = !showFollowUp },
                                 interaction = LbChipInteraction.Action,
                                 modifier = Modifier.semantics { stateDescription = followUpAnnouncement },
-                                style = LbChipStyles.soft.copy(
+                                style = counselingCompactChipTier(LbChipStyles.soft).copy(
                                     radius = LoveBrainShape.sm,
                                     textStyle = AppTypography.labelMedium,
                                     textColorSelected = PrimaryDark,
@@ -295,12 +302,7 @@ fun CounselingPanel(
                                     borderSelected = PrimarySubtle,
                                     border = PrimarySubtle,
                                     pressedScale = 0.92f,
-                                    markSelectedWithCheck = false,
-                                    // §12.1 R12：面板紧凑族——可见 28、标签居中、不垫 48 热区
-                                    pillHeight = AppDimens.CHIP_PANEL_HEIGHT_DP.dp,
-                                    touchFloor = false,
-                                    labelAlignment = LbChipLabelAlignment.Center,
-                                    paddingVertical = 0.dp
+                                    markSelectedWithCheck = false
                                 )
                             )
                             Spacer(Modifier.width(Spacing.xs))
@@ -308,8 +310,9 @@ fun CounselingPanel(
                             TriangleArrow(color = Primary, rotation = followUpArrowRotation)
                         }
                         // 清空重聊胶囊归进设计系统那颗 [LbChip]（动作入口，点下去清空历史）。
-                        // 档位用 [LbChipStyles.neutral] 再 `.copy`：字色 `TextHint`、字号 `labelMedium`、
-                        // 标签居中、内边距 `lg/sm`——逐项抄改前那条链，不在页面里另画一条 Modifier。
+                        // 档位用 [counselingCompactChipTier] 打底再 `.copy`：字色 `TextHint`、字号 `labelMedium`、
+                        // 内边距 `lg/sm`——逐项抄改前那条链，不在页面里另画一条 Modifier；
+                        // 高度与热区那一档同样不在这里写（与模板行那六颗同一个主人）。
                         LbChip(
                             label = "清空重聊",
                             onClick = {
@@ -318,16 +321,11 @@ fun CounselingPanel(
                                 viewModel.clearCounselingAll()
                             },
                             interaction = LbChipInteraction.Action,
-                            style = LbChipStyles.neutral.copy(
+                            style = counselingCompactChipTier(LbChipStyles.neutral).copy(
                                 textStyle = AppTypography.labelMedium,
                                 textColor = TextHint,
                                 textColorSelected = TextHint,
-                                labelAlignment = LbChipLabelAlignment.Center,
-                                paddingHorizontal = Spacing.lg,
-                                // §12.1 R12：面板紧凑族——可见 28、不垫 48 热区
-                                pillHeight = AppDimens.CHIP_PANEL_HEIGHT_DP.dp,
-                                touchFloor = false,
-                                paddingVertical = 0.dp
+                                paddingHorizontal = Spacing.lg
                             )
                         )
                     }

@@ -257,7 +257,13 @@ class PromptByteFreezeBaselineTest {
         // 读数不是手算：prewave 实跑 XML（2026-10-07T08:00:30）打的 `PROMPT-FREEZE|A|system/proactive|
         // a632f787…|5854` 与现树那颗资产 CRLF→LF 归一后同一把尺复算一致。
         // ⚠ 载体（assets/engine/proactive.md 与 prompt 资产锁）归主线程，这一格只登记现实读数。
-        "system/proactive" to Frozen("a632f787f23d4477af4fe71e13ab23a3d6bb1f437bb26af1fb09853d73bcfb38", 5854),
+        // 2026-10-08 重录 5854 → **6485**：漂的 +631 字节是《产品与交互设计指导书·全面完整版》
+        // §2.2 第 1 条与 §14 点名的**语义冲突修正**（台账 K28），不是所有者搬动——第 5 条把"不忙"从
+        // 收尾场景里剔除并写明它不是暂缓依据、第 7 条「已读不回」不再把"对方在忙"当已证实事实、
+        // 字段口径 hold_back 一档要求"对方明确说在忙"。改前读数按本文件头注的顺序先取后改：
+        // 改前实跑 = `a632f787…|5854`（本文件上一版冻结值），改后实跑 = `b16adb23…|6485`
+        // （本轮 testDebugUnitTest 的 PROMPT-FREEZE 行），两把尺都在本次编译阶段实测，不手算。
+        "system/proactive" to Frozen("b16adb2345c8d14cf009294facd6d43cb54d27fcbfff5e33d845f29a180c7243", 6485),
         // 2026-10-03：`engine/knowledge_prompt/lessons.md` 这一族改了两次（加"不要输出一级标题/
         // 不要抄字段说明"那两段 + 本轮把 `## 示例` 里那两条 `# [日期] 第N次提取` 摘掉——它一边禁止一边示范，
         // 正是用户实测到的双标题成因）。这一行的期望**只是那颗资产自身的字节**（不拼任何东西），

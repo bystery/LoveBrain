@@ -12,6 +12,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.LbTags
 import com.lovebrain.app.core.testing.RenderIn
@@ -25,6 +26,8 @@ import com.lovebrain.app.viewmodel.HomeProviderRef
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -558,6 +561,162 @@ class HomeScreenStructureTest {
         assertEquals("点完去处，那一行还在（没被点掉就消失的假状态）", 1, tagCount(LbHomeTags.SETUP_HINT))
     }
 
+    /** 按下去之后新出现的读数：这一格判的是"那颗去处真的走得到自己那一格" */
+    private data class WayOut(
+        val word: String,
+        val newClicks: List<String>,
+        val startedActivity: String?,
+        val extraRequests: Int,
+        val extraReads: Int
+    )
+
+    /**
+     * 指导书 §5.2 末段 + §2.2 第 5 条：被点名的那**五条**缺项，每一条在屏幕上都给得出**一颗**下一步，
+     * 而且那颗按下去走到的是自己那一格——"组件存在"不等于"用户能用"，这里判的是按下去的读数。
+     *
+     * 改之前只有"缺供应商"那一格有出口，权限 / 没有库 / 读不到三格是一句只有描述没有动作的黄字
+     * （§2.2 第 5 条点名的就是这个产品问题）。
+     *
+     * 五格共用一棵树（`setContent` 一个用例只许一次），换档靠漂 `harnessHolder` / `overlay`；
+     * 每格各记自己那一份读数：导航 sink 的增量、开出去的 Activity、探针增量、知识库重读增量。
+     *
+     * 反例：
+     * - 某一格只画字不给出口 ⇒ 那一格 `去处` 那句红（实到 0 颗）；
+     * - 某一格跳错了门（权限跳到供应商、无库跳到捕获）⇒ 那一格的 sink / Activity 红；
+     * - 「去授权」顺手把探针也发了（替用户花钱）⇒ 那一格 `extraRequests` 红；
+     * - 「重试读库」被写成"再发一次请求"⇒ 同一句红；反过来它谁也没重读 ⇒ `extraReads` 红；
+     * - 本次失败那一格不给重试（用户只能先 ■ 再 ▶）⇒ 那一格 `去处` 红；重试发两次 ⇒ `extraRequests` 红；
+     * - 五格共用一句万能的「去设置」⇒ 三处 `assertNotEquals(settingsWord, …)` 红。
+     */
+    @Test
+    fun `each named missing step offers its own executable next step`() {
+        val application: android.app.Application = ApplicationProvider.getApplicationContext()
+        val shadow = org.robolectric.Shadows.shadowOf(application)
+        val settingsWord = app.getString(R.string.provider_open_settings)
+        mount(HomeStatusHarness())   // 起点：红档那一格，树上还没有那一行
+
+        /** 换到某一档缺项 → 数那颗去处 → 按下去 → 交回"按下去之后新出现的读数" */
+        fun step(granted: Boolean, expectHint: String, setup: HomeStatusHarness.() -> Unit): WayOut {
+            val harness = HomeStatusHarness()
+            harness.service.markRunning()
+            harness.setup()
+            val clicksBefore = clicked.value.size
+            rule.runOnIdle {
+                overlay.value = granted
+                harnessHolder.value = harness
+                harness.vm.playClicked(overlayGranted = granted)
+            }
+            rule.waitForIdle()
+            val hints = hintLines()
+            assertEquals("那一行永远只有一行，实到 $hints", 1, hints.size)
+            assertTrue("$expectHint：那一行要念到它，实到 ${hints.single()}", hints.single().contains(expectHint))
+            val capsules = rule.onAllNodesWithTag(LbHomeTags.SETUP_ACTION, useUnmergedTree = true)
+                .fetchSemanticsNodes()
+            assertEquals("$expectHint：那一行末尾至多一颗去处，实到 ${capsules.size}", 1, capsules.size)
+            val word = probe.of(capsules.first()).label
+            val callsBefore = harness.probe.calls
+            val readsBefore = harness.knowledge.reads
+            rule.onAllNodesWithTag(LbHomeTags.SETUP_ACTION)[0].performClick()
+            rule.waitForIdle()
+            return WayOut(
+                word = word,
+                newClicks = clicked.value.drop(clicksBefore),
+                startedActivity = shadow.nextStartedActivity?.component?.className,
+                extraRequests = harness.probe.calls - callsBefore,
+                extraReads = harness.knowledge.reads - readsBefore
+            )
+        }
+
+        val noProvider = step(granted = true, expectHint = "未配置模型供应商") { provider.ref = null }
+        assertEquals("缺供应商那颗走的就是「模型供应商」那一格的出口", listOf("providers"), noProvider.newClicks)
+        assertEquals("去设置只是导航，一次请求都不许多发", 0, noProvider.extraRequests)
+        assertNull("导航到站内那一格不需要开 Activity", noProvider.startedActivity)
+
+        val noOverlay = step(granted = false, expectHint = "需要悬浮窗权限") {}
+        assertEquals("缺权限那颗走的是宿主那条平台链（只有它认得系统授权页与回来续跑）",
+            listOf("start"), noOverlay.newClicks)
+        assertEquals("授权这一颗不许顺手替用户发请求", 0, noOverlay.extraRequests)
+        assertNotEquals("权限那一格的去处不是万能的『去设置』", settingsWord, noOverlay.word)
+
+        val noKb = step(granted = true, expectHint = "请为当前对象建立知识库") {
+            knowledge.presence = HomeKnowledgePresence.Missing
+        }
+        assertEquals("没有库那颗开出去的是知识库管理页（§5.2：知识库缺失去管理）",
+            "com.lovebrain.app.ui.KnowledgeBaseActivity", noKb.startedActivity)
+        assertEquals("开一页本身不发请求", 0, noKb.extraRequests)
+        assertNotEquals("库那一格的去处不是万能的『去设置』", settingsWord, noKb.word)
+
+        val unread = step(granted = true, expectHint = "还没读到当前对象的知识库") {
+            knowledge.presence = HomeKnowledgePresence.Unknown
+        }
+        assertTrue("读不到那一颗要真的重读一次本地事实（增量 ${unread.extraReads}）", unread.extraReads >= 1)
+        assertEquals("重读事实不等于再花一次钱（探针增量）", 0, unread.extraRequests)
+        assertEquals("重读之后还是读不到就还是那一行，不许伪装成有库", 1, tagCount(LbHomeTags.SETUP_HINT))
+
+        val failed = step(granted = true, expectHint = "连接失败") {
+            probe.outcome = HomeProbeOutcome.Unreachable
+        }
+        assertEquals("本次请求失败的重试就挂在那颗请求的位置：再发**一次**", 1, failed.extraRequests)
+        assertEquals("重试那颗不是导航，不该跳页", emptyList<String>(), failed.newClicks)
+        assertTrue("失败那一格仍然说实话（旧结论没被抹成『还在检查』）：" + hintLines(),
+            hintLines().single().contains("连接失败"))
+    }
+
+    // ═══════════ ⑥b §5.1 的四格构成与"主卡是焦点" ═══════════
+
+    /**
+     * §5.1 第一格「应用标识与必要标题」在场，而且它是**第一格**：
+     * 页头交回设计系统那一颗（`LbTopBarLevel.Identity` 的注释点名的就是首页），页面不自画第二套行高。
+     *
+     * 反例：
+     * - 标识那一格又没了（本轮改之前的形状：整屏从状态卡开始）⇒ 前两句红；
+     * - 有人拿它当第五颗按钮（比如给标识加个"设置"入口）⇒ 最后一句可点节点数红；
+     * - 标识跑到状态卡下面 ⇒ "在状态卡之上"那句红。
+     */
+    @Test
+    fun `the app identity is the first block and adds no actionable node`() {
+        val harness = HomeStatusHarness()
+        harness.parkReady()
+        mount(harness)
+        assertEquals("应用标识那一格只有一颗", 1, tagCount(LbHomeTags.IDENTITY))
+        val identityTop = rule.onAllNodesWithTag(LbHomeTags.IDENTITY, useUnmergedTree = true)
+            .fetchSemanticsNodes().first().boundsInRoot.top
+        val cardTop = rule.onAllNodesWithTag(LbHomeTags.STATUS_CARD, useUnmergedTree = true)
+            .fetchSemanticsNodes().first().boundsInRoot.top
+        assertTrue("标识要在状态卡之上（实到 标识 ${identityTop.toInt()}px / 主卡 ${cardTop.toInt()}px）", identityTop < cardTop)
+        assertEquals(
+            "标识只是标题，不是第五格可点：整屏仍是 1 控件 + 4 入口",
+            5, probe.actionableTargets(rule, "首页·带标识").size
+        )
+    }
+
+    /**
+     * §5.1「主卡是视觉焦点，四入口整齐但不能与主卡同样抢眼」——这一条本轮按**字面量纲**判：
+     * 改之前主卡那行状态名与入口卡那行标题是同一个 style 同一个字重（`titleMedium` + SemiBold），
+     * 层级只剩阴影在扛，录下来的那张基线一眼读不出谁是主。
+     *
+     * 两个数都从**同一棵树本次量**（不写死 dp、也不读源码里的 style 名）：
+     * 反例：有人把主卡那档改回与入口同阶 ⇒ 那句红；
+     * 反例：有人靠"全局缩入口的字"买层级（§4.2 明禁）⇒ 入口标题那一行高会掉到本文件另一格
+     *       `hero and entry cards are two tiers…` 算式之外，那里先红。
+     */
+    @Test
+    fun `the hero line out-types the entry titles`() {
+        val harness = HomeStatusHarness()
+        harness.parkReady()
+        mount(harness)
+        fun textHeightOf(text: String): Float =
+            rule.onAllNodes(hasText(text), useUnmergedTree = true)
+                .fetchSemanticsNodes().first().boundsInRoot.height / density
+        val hero = textHeightOf(HOME_LAMP_READY)
+        val entry = textHeightOf(HOME_ENTRY_KNOWLEDGE)
+        assertTrue(
+            "主卡那一行要比入口标题大一级（实到 主卡 ${hero.toInt()}dp / 入口 ${entry.toInt()}dp）：" +
+                "两档同字阶就是 §5.1 说的「入口与主卡同样抢眼」",
+            hero > entry
+        )
+    }
+
     /**
      * 六档状态在屏幕上要**各说各话**——不许只有灯色在差别（色觉不友好的用户读不出）。
      *
@@ -632,8 +791,8 @@ class HomeScreenStructureTest {
         assertTrue("检查中那一格念『正在检查…』：${seen[1]}", seen[1].contains("正在检查…"))
         assertTrue("缺供应商那一格自带去处：${seen[2]}",
             seen[2].contains("未配置模型供应商") && seen[2].contains("去处=1"))
-        assertTrue("未授权那一格念权限那一条、且没有假去处：${seen[3]}",
-            seen[3].contains("需要悬浮窗权限") && seen[3].contains("去处=0"))
+        assertTrue("未授权那一格念权限那一条，并且那颗去处**是授权那一格的**（去处=1）：${seen[3]}",
+            seen[3].contains("需要悬浮窗权限") && seen[3].contains("去处=1"))
         assertTrue("知识库读不到那一格不说成『没有』也不说成『有』：${seen[4]}",
             seen[4].contains("还没读到当前对象的知识库"))
         assertTrue("运行正常那一格无常驻解释、说的是停止：${seen[5]}",

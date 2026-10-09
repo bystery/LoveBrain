@@ -149,6 +149,11 @@ internal val LbChipPressFeedback.pressCurve: FiniteAnimationSpec<Float>
  *        要"可见仍紧凑 + 热区到下限"的形状走 [layeredTouch]
  * @param layeredTouch 热区与视觉分两层：外层那颗透明盒子负责下限与语义，
  *        里面的胶囊按自己的尺寸画。有些胶囊一旦铺满 48dp 就会变粗，这一档买的是"视觉不动"
+ * @param widthFloor 触控下限沿**宽度轴**要不要也垫到 [AppDimens.TOUCH_TARGET_MIN_DP]。
+ *        高度轴永远跟 [touchFloor] 走，这条旋钮只管宽度：应用管理页的普通控件**保持双轴下限**
+ *        （缺省 true，现行形状一寸不动）；悬浮窗的紧凑胶囊（角色胶囊那类"可见 30dp 宽、
+ *        外盒被撑到 48"）认领 false——横向命中区回落到可见胶囊本体，纵向仍是 48 满档，
+ *        这是 §4.3「三种尺寸分开测」在悬浮窗紧凑档下的取舍，不许拿它当全局缩热区的口子
  * @param pillHeight 胶囊自己的高度；`null` = 由内容决定
  */
 data class LbChipStyle(
@@ -171,6 +176,7 @@ data class LbChipStyle(
     val markSelectedWithCheck: Boolean = true,
     val touchFloor: Boolean = true,
     val layeredTouch: Boolean = false,
+    val widthFloor: Boolean = true,
     val pillHeight: Dp? = null
 )
 
@@ -179,7 +185,9 @@ data class LbChipStyle(
  * 新增一档之前先问"它表达的是不是另一件事"，只是颜色不同的话应该改调用方的档位选择。
  * 页面要微调某一档里某一个数，走 `copy`，**不要新长一档**，更不要回到页面里自己画那条链。
  * ⚠ 唯一的收口例外（基线 v1 §3.8）：**胶囊自己的高度**这一族不再归页面 `copy`——
- * 分段看 [segmented]、面板胶囊看 [panelChip]，`copy(pillHeight = …)` 的替换配方在交接单里。
+ * 分段看 [segmented]；悬浮窗面板胶囊的紧凑档暂未并成具名档，按族各有一个主人：
+ * 谈心一族在 `ui/panel/counseling/CounselingTemplateChips.kt` 的 `counselingCompactChipTier`，
+ * 回复输入行一族在 `ui/panel/reply/ReplyInput.kt` 的 `ReplyDimens`（并档是跨页决策，动前先对两边量）。
  */
 object LbChipStyles {
 
@@ -206,7 +214,8 @@ object LbChipStyles {
      *
      * 族属登记（基线 v1 §3.8）：这颗连同 `TopStart` 属于**「无选中态的动作胶囊·模板形」**
      * 一族（谈心模板那颗归并前的原形）；悬浮窗里"可见 28、标签居中"的面板胶囊是另一族，
-     * 归 [panelChip]，别拿这颗去摆面板行（D1 §② E3 的过高版式就是这么来的）。
+     * 紧凑档主人见 `ui/panel/counseling/CounselingTemplateChips.kt` 的 `counselingCompactChipTier`，
+     * 别拿这颗去摆面板行（D1 §② E3 的过高版式就是这么来的）。
      */
     val neutral = LbChipStyle(
         backgroundSelected = SurfaceInset,
@@ -335,11 +344,19 @@ fun LbChip(
     // 先接到局部：胶囊高度这一档要么"由内容定"（null）要么钉死，两处分支都要用同一个判据
     val fixedPillHeight = style.pillHeight
 
-    // 语义与热区这一层：动作挂在它身上，合并语义把里面的文案收进同一颗节点
+    // 语义与热区这一层：动作挂在它身上，合并语义把里面的文案收进同一颗节点。
+    // 高度轴与宽度轴拆开（§4.3 三种尺寸）：高度轴跟 [LbChipStyle.touchFloor]，
+    // 宽度轴另有 [LbChipStyle.widthFloor]——缺省 true 时与旧形状逐像素相同，
+    // 悬浮窗紧凑族认领 false 才放下那 18dp 的纯占位。
     val floorModifier = if (style.touchFloor) {
-        Modifier
-            .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
-            .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+        if (style.widthFloor) {
+            Modifier
+                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+                .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+        } else {
+            Modifier
+                .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+        }
     } else {
         Modifier
     }

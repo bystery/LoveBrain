@@ -64,7 +64,7 @@ data class VmStateSite(val shape: VmMutableShape, val name: String) : Comparable
  *
  * ⚠ 账本里的名字**只能来自这一格打印出来的实到清单**，不许照叙述填
  * （同一族坑：数形状的尺必须先扫现状、把数打印出来，照心象填就是假账）。
- * 本次登记 11 颗 = 9 FLOW + 2 VAR；COLL / LATEINIT / LEAKED 三支在生产里实测各 0，
+ * 本次登记 12 颗 = 9 FLOW + 3 VAR；COLL / LATEINIT / LEAKED 三支在生产里实测各 0，
  * 所以那三支**只能靠夹具证明它们不是死正则**——"这一格绿了"本身不构成证据。
  */
 class ViewModelStateOwnershipTest {
@@ -125,10 +125,11 @@ class ViewModelStateOwnershipTest {
      * 还留在 ViewModel 里的可写状态——**逐颗点名登记**。
      *
      * 第 20 窗口搬走了八颗（轮次上下文、模式、向量、阶段建议、用量），
-     * 剩下三颗是台账标 ★不搬 / 排在最后搬的：
+     * 剩下四颗是台账标 ★不搬 / 排在最后搬的：
      * · `_activeKb`——激活库是中心读数，六个块都读它，不属于任何单个 feature；
      * · `replyGenerationContext`——一轮生成的不可变快照，是所有块的公共上游；
-     * · `recordingRound`——本轮提交的重入闩。
+     * · `recordingRound`——本轮提交的重入闩；
+     * · `roundScopeHintShown`——仅看本轮首次轻提示的"提示过没有"（落盘格在 SecurePrefs）。
      */
     private val ledger: Map<VmStateSite, String> = mapOf(
         VmStateSite(VmMutableShape.FLOW, "_activeKb") to
@@ -138,6 +139,10 @@ class ViewModelStateOwnershipTest {
             "→ 轮次上下文那一块：一轮生成的不可变快照，十几个成员读它、是所有块的公共上游，所以排在最后搬",
         VmStateSite(VmMutableShape.VAR, "recordingRound") to
             "→ 本轮提交那一块：下一轮的重入闩，只有那条链读写",
+        VmStateSite(VmMutableShape.VAR, "roundScopeHintShown") to
+            "→ 仅看本轮首次轻提示那一块：跨会话一次性记录（'提示过没有'，§2.2 第 3 条），" +
+                "不参与任何响应式状态图；盘上主人在 SecurePrefs.roundScopeHintShown（AppModule 那对函数接进来），" +
+                "VM 只是会话内副本——放 RoundStateStore 得给它接落盘口子，把纯状态持有者拖成第二个持久化主人",
         VmStateSite(VmMutableShape.FLOW, "_knowledgeBasesState") to
             "★不搬：知识库列表是面板设置页与首页共用的中心读数，与 _activeKb 同族——" +
                 "单独搬它就是『搬字段不减行』那条教训的复现"

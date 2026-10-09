@@ -199,4 +199,53 @@ class KnowledgeRepositoryLifecycleTest {
             }
         }
     }
+
+    /**
+     * 删掉当前库之后，下一个当前库只能从**枚举认下来的库**里选，不能从"哪颗目录最近被碰过"里选。
+     *
+     * 盘上摆三颗目录：被删的当前库、一座有效库、一颗 mtime 最新的**半套目录**（没有 kb.json，
+     * 永远进不了清单）。旧的「挑 mtime 最新目录」判据（成员与实现均已删）会挑中那颗半套目录，
+     * 于是当前库指向一座不是库的目录，而同一趟 `activateWithin` 顺手把有效库的 kb.json 全改成
+     * active=false——
+     * 三级回退的第一判据（同名且 active）再也落不下去。这是 §12.1 三分法里的
+     * 「当前库引用错误」那一支，且是 §12.3「不得删除后让活动引用指向不存在的库」正面禁止的那件事。
+     *
+     * 用真磁盘跑一遍是为了让"目录 ≠ 库"这条差别由文件系统说，而不是由替身的记账说。
+     */
+    @Test
+    fun delete_active_kb_hands_the_choice_to_a_listed_library_not_to_the_newest_directory() = runTest {
+        withContext(Dispatchers.IO) {
+            withTimeout(10_000) {
+                val now = "2026-09-13T10:00:00+08:00"
+                val dirA = kbDir("kba")
+                writeKbJson(dirA, KnowledgeBase(name = "kba", displayName = "A", updatedAt = now, active = true))
+                val dirB = kbDir("kbb")
+                writeKbJson(dirB, KnowledgeBase(name = "kbb", displayName = "B", updatedAt = now, active = false))
+                val shell = kbDir("shell")
+
+                // 夹具：让那颗半套目录成为"最近被碰过"的那一颗——即使它 mtime 全根最大，
+                // 选择也必须落到枚举认下的库上；谁把 mtime 判据画回来，这一格就红
+                val newest = System.currentTimeMillis() + 60_000L
+                assertTrue("夹具：setLastModified 没生效", shell.setLastModified(newest))
+                dirB.setLastModified(newest - 10_000L)
+                val mtimeNewest = root.listFiles()
+                    ?.filter { it.isDirectory && !it.name.startsWith(".") }
+                    ?.maxByOrNull { it.lastModified() }?.name
+                assertEquals("夹具：mtime 最新的必须是那颗进不了清单的半套目录", "shell", mtimeNewest)
+
+                var activeName = "kba"
+                val prefs = mockk<SecurePrefs>(relaxed = true)
+                every { prefs.activeKbName } answers { activeName }
+                every { prefs.activeKbName = any<String>() } answers { activeName = arg(0) }
+                val repo = newRepoWithPrefs(prefs)
+
+                assertTrue("删除当前库应当成功", repo.catalogWrites.delete("kba"))
+
+                assertEquals("当前库要落到枚举认下的那一座，而不是 mtime 最新的那颗目录", "kbb", activeName)
+                val bMeta = json.decodeFromString<KnowledgeBase>(File(dirB, "kb.json").readText())
+                assertTrue("被选中那一座的 kb.json 也要跟着落下 active", bMeta.active)
+                assertEquals("活动引用读回来的是同一身份", "kbb", repo.getActive()?.name)
+            }
+        }
+    }
 }

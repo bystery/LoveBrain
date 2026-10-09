@@ -149,6 +149,20 @@ class ComposerStore(
         data class UpdateMessage(val index: Int, val role: ChatMessage.Role, val content: String) : Intent
         data class RemoveMessage(val index: Int) : Intent
         data class RemoveMessageById(val id: String) : Intent
+
+        /**
+         * §8.1 方向映射里"向内"那一条的落点：把**这一条**消息换成对话的另一方（她 ↔ 我）。
+         *
+         * 落点只认稳定 id（与 [RemoveMessageById] 同一口径：横滑的落点在松手那一帧才算清，
+         * 那之前下标可能已经因为增删/重排过期，按下标改就会改到邻居身上）。
+         *
+         * 它只改这一条的角色，其余一律不动——§8.1 点名的"不能连带改变"三件事在这里都有主：
+         * 输入框当前角色（[_inputKind]）、捕获默认角色（[_currentRole]）、正在编辑的对象
+         * （[_editingTarget] / [_editingIndex]）与草稿正文都不在这一颗的射程里。
+         * id、正文、时间戳与列表顺序原样保留（同一条数据换了说话人，不是删一条再建一条）。
+         */
+        data class SwitchMessageRole(val id: String) : Intent
+
         data class ReorderMessages(val from: Int, val to: Int) : Intent
 
         /** 本轮已提交的消息从列表里消耗掉（下一步整轮换新的输入），同时修正编辑位 */
@@ -290,6 +304,7 @@ class ComposerStore(
             is Intent.UpdateMessage -> updateMessage(intent.index, intent.role, intent.content)
             is Intent.RemoveMessage -> removeMessage(intent.index)
             is Intent.RemoveMessageById -> removeMessageById(intent.id)
+            is Intent.SwitchMessageRole -> switchMessageRoleById(intent.id)
             is Intent.ReorderMessages -> reorderMessages(intent.from, intent.to)
             is Intent.ConsumeMessages -> consumeMessages(intent.ids)
             is Intent.RestorePanelMode -> if (intent.mode in 0..1) _panelMode.value = intent.mode
@@ -501,6 +516,40 @@ class ComposerStore(
         val nextList = list.filterNot { it.id == id }
         _messages.value = nextList
         applyEditedList(list, nextList, clearDraftWhenEditingGone = true)
+        onContentChanged()
+    }
+
+    /**
+     * 横滑"向内"那一侧的唯一落点：把这一条换成对话里的**另一方**，别的什么都不动。
+     *
+     * 为什么新角色在这里算、而不是由 UI 交进来：聊天列表只许有 HER/ME 两列（`IDEA` 是内容
+     * 种类、不是对话的一方，见 [realChatOf]），"换边"这件事的定义属于持有列表的一方；
+     * UI 只说"哪一条要换边"。于是 UI 递错方向、或递进一个 `IDEA` 都改不出第三种形状。
+     *
+     * 认不到这条 id（已被删除、已被这一轮消耗掉）⇒ **什么都不做**，绝不按位置猜一条顶上——
+     * 与 [removeMessageById] / [updateMessage] 同一口径：落点只认身份。
+     *
+     * 这里刻意不叫 [applyEditedList]：列表长度、顺序与每一条的 id 都没变，编辑位与草稿不会
+     * 因为一次换边而漂移；§8.1 要的正是不连带改这几样。
+     */
+    private fun switchMessageRoleById(id: String) {
+        val list = _messages.value
+        val index = list.indexOfFirst { it.id == id }
+        if (index < 0) return
+        val current = list[index]
+        val other = when (current.role) {
+            ChatMessage.Role.HER -> ChatMessage.Role.ME
+            ChatMessage.Role.ME -> ChatMessage.Role.HER
+            // 备注不是对话的一方：旧数据里残留的 IDEA 行没有"另一边"，
+            // 换边不许把它冒充成"她说的"或"我说的"（它该折进尾部那行灰字）
+            ChatMessage.Role.IDEA -> return
+        }
+        val next = list.toMutableList()
+        // copy 只换 role：id、正文、时间戳这三样"原有必要元数据"原样跟着走
+        next[index] = current.copy(role = other)
+        _messages.value = next
+        // 说话人变了 ⇒ 拼给模型的 prompt 变了 ⇒ 旧结果该判过时（与增删改同一颗钩子，漏一处
+        // 就得到一个静默的旧回复）
         onContentChanged()
     }
 

@@ -1,23 +1,36 @@
 package com.lovebrain.app.ui.panel.settings
 
 import android.content.Context
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsOff
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTouchInput
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.LbTags
 import com.lovebrain.app.core.testing.ScrollScan
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.TouchTier
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.model.IntentExpiry
+import com.lovebrain.app.model.IntentStatus
+import com.lovebrain.app.model.KnowledgeBase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -37,12 +50,17 @@ import org.robolectric.annotation.GraphicsMode
  *    进度语义 ⇒ 它按 TestTag 单独定位，量仍然用同一把尺（[SemanticsProbe.of] /
  *    `tooSmall` / `assertTargetsMeetFloor`）；同一颗的读屏名字也在这一条里判。
  * 2. 「返回」在**视口很矮**时是否仍然在屏幕上——它钉在滚动柱之外，这一条判的就是这件事；
- * 3. 挂在树上的那一个百分比读数必须是**本次**那一份值（不许抄旧值、也不许再画第二份）。
+ * 3. 挂在树上的那一个百分比读数必须是**本次**那一份值（不许抄旧值、也不许再画第二份）；
+ * 4. 意图那一格的三条看不见的合同：§11.2 首次开启"先介绍、确认才启用、取消保持关闭、
+ *    确认过就不再重复"，§11.2 点名的**挂载层级**（遮罩要盖住这一页，不许挤进表单布局），
+ *    以及 §11.3 的「切库不许把 A 的意图写给 B」与「已到期不许塌成一片空区域」。
+ *    浮层那一半只挂生产那颗 [LoveBrainSettingsContent]（浮层的主人现在在页面根部），
+ *    只挂单量那一格就量不到遮罩到底盖住了谁。
  *
  * 旧版本里还有两条判据（超时那一行"一行四档 + 恰有一档 Selected"、捕获范围"打开后复用首页那一段
  * 选择器并把勾选投回调用方"）。它们随**整窗设置页里的那两栏**一起撤掉：用户 2026-10-03 原话
- * "设置里面暂时先弄一个调透明度的，别的都不要弄"，`LoveBrainSettingsContent` 现在只接
- * `onBack / opacityPercent / onOpacityPreview / onOpacityCommit / modifier` 五个参数。
+ * "设置里面暂时先弄一个调透明度的，别的都不要弄"。那一页现在这一格只交透明度与页头那几条
+ * （意图与知识库那两格由下面 `mountIntent` 那一路交，各自点名），不需要的参数留默认值。
  * 这不是失去能力——超时四档住在首页「模型供应商」那一格的同一张表单里
  * （`ui/home/ProviderSection.kt`），捕获范围住在首页「消息捕获」那一格里
  * （`ui/home/CaptureAppsScreen.kt`）；**要续那两条判据应当在那两个主体上续**，
@@ -71,9 +89,9 @@ class SettingsPageSemanticsTest {
     private val opacityName: String get() = ctx.getString(R.string.settings_opacity_label)
 
     /**
-     * 这一页现在是**无状态**的：透明度读数由宿主给，拖动预览与松手写盘各一条回调。
-     * 参数就那五个（`onBack / opacityPercent / onOpacityPreview / onOpacityCommit / modifier`），
-     * 所以这里也不需要一个假 VM——旧版这一格为了画供应商与超时那两栏才 `mockk` 出一份
+     * 这一页是**无状态**的：透明度读数由宿主给，拖动预览与松手写盘各一条回调；意图与知识库那几格
+     * 的参数都留默认值（意图那几格要用的读态由 [mountIntent] 那一颗点名交，别在这一颗里塞）。
+     * 这里因此不需要一个假 VM——旧版这一格为了画供应商与超时那两栏才 `mockk` 出一份
      * `SetupViewModel`（七条流必须点名返回真流，否则 relaxed 交回的
      * 泛型 mock 一取 `.value` 就 CCE，栈顶还指向一个不存在的行号；那条坑仍写在
      * `ProviderFormSemanticsTest`，只是这一页现在没有可踩的对象了）。
@@ -327,6 +345,365 @@ class SettingsPageSemanticsTest {
         rule.onNodeWithContentDescription(name).performClick()
         rule.waitForIdle()
         assertEquals("点收起只投宿主那一次，这一页不存第二本账", 1, collapses)
+    }
+
+    // ═══════════ 意图那一格：§11.2 的首次开启与挂载层级、§11.3 的六档 ═══════════
+
+    /** 写口那一次交出去的四件（正文／启用／有效期／是否按此刻重算期限）——这一族只有一条写口 */
+    private data class IntentWrite(
+        val text: String,
+        val enabled: Boolean,
+        val expiry: IntentExpiry,
+        val recomputeExpiry: Boolean
+    )
+
+    private val introBodyName: String get() = ctx.getString(R.string.intent_intro_body)
+    private val introAcknowledgeName: String get() = ctx.getString(R.string.intent_intro_acknowledge)
+    private val intentSwitchName: String get() = ctx.getString(R.string.intent_label)
+    private val periodRowLabel: String get() = ctx.getString(R.string.intent_expiry_label)
+
+    /** 「已经看过介绍」那一条记录的唯一主人是盘（不是 `remember`），测前按每一格要的那一档摆好 */
+    private fun putIntroRecord(seen: Boolean) {
+        val editor = ctx.getSharedPreferences(IntentIntroRecord.PREFS_NAME, Context.MODE_PRIVATE).edit()
+        if (seen) editor.putBoolean(IntentIntroRecord.INTRO_SEEN_KEY, true) else editor.remove(IntentIntroRecord.INTRO_SEEN_KEY)
+        editor.commit()
+    }
+
+    private fun kbLibrary(name: String) =
+        KnowledgeBase(name = name, displayName = name, updatedAt = "2026-10-08T09:00:00+08:00", active = true)
+
+    /**
+     * 意图那一格的挂载：整页挂生产那颗 [LoveBrainSettingsContent]（不挂单格——介绍浮层的
+     * 主人现在在页面根部，只挂那一格就量不到遮罩到底盖住了谁）。
+     */
+    private fun mountIntent(
+        writes: MutableList<IntentWrite>,
+        matrix: UiMatrix = UiMatrix(360, heightDp = 900),
+        intentEnabled: Boolean = false,
+        intentText: String = "",
+        intentTextState: MutableState<String>? = null,
+        intentExpiry: IntentExpiry = IntentExpiry.ONE_DAY,
+        intentStatus: IntentStatus = IntentStatus.ACTIVE,
+        intentExpiryDate: String = "",
+        activeKb: MutableState<String?> = mutableStateOf("kbA"),
+        knowledgeBases: List<KnowledgeBase> = listOf(kbLibrary("kbA"), kbLibrary("kbB")),
+        switches: MutableList<String> = mutableListOf(),
+        onBack: () -> Unit = {}
+    ) {
+        rule.setContent {
+            val deviceDensity = LocalDensity.current.density
+            matrix.RenderIn(deviceDensity) {
+                LoveBrainSettingsContent(
+                    onBack = onBack,
+                    onCollapse = {},
+                    opacityPercent = 100,
+                    onOpacityPreview = {},
+                    onOpacityCommit = {},
+                    intentEnabled = intentEnabled,
+                    // 状态那份存在时读状态：切库之后"这一格现在显示哪块库的哪条意图"要能当场翻过来
+                    intentText = intentTextState?.value ?: intentText,
+                    intentExpiry = intentExpiry,
+                    onIntentChange = { text, enabled, expiry, recompute ->
+                        writes += IntentWrite(text, enabled, expiry, recompute)
+                    },
+                    knowledgeBases = knowledgeBases,
+                    activeKbName = activeKb.value,
+                    onSwitchKb = { name -> switches += name },
+                    intentStatus = intentStatus,
+                    intentExpiryDate = intentExpiryDate
+                )
+            }
+        }
+        rule.waitForIdle()
+    }
+
+    private fun introNodes() = rule.onAllNodes(hasText(introBodyName)).fetchSemanticsNodes().size
+
+    /**
+     * §11.2 第一次那一遍：拨开关只把介绍浮层挂起来，确认之前不启用、不落盘、不展开正文；
+     * 「知道了」那一句交的仍是既有的启用那一记（正文=屏幕上那一份、enabled=true、没换档）。
+     */
+    @Test
+    fun `the first toggle only raises the intro and writes nothing until it is acknowledged`() {
+        putIntroRecord(seen = false)
+        val writes = mutableListOf<IntentWrite>()
+        mountIntent(writes = writes)
+        assertEquals("没拨开关之前不该有介绍浮层", 0, introNodes())
+
+        rule.onAllNodes(hasContentDescription(intentSwitchName))[0].performClick()
+        rule.waitForIdle()
+
+        assertEquals("首次拨开该起介绍浮层", 1, introNodes())
+        assertTrue("确认之前一个字都不许落盘（§11.2）：实到 $writes", writes.isEmpty())
+        assertEquals(
+            "确认之前不展开有效期与正文那一区（§11.2「确认后才正式启用并展开内容」）",
+            0, rule.onAllNodes(hasText(periodRowLabel)).fetchSemanticsNodes().size
+        )
+
+        rule.onAllNodes(hasText(introAcknowledgeName))[0].performClick()
+        rule.waitForIdle()
+
+        assertEquals(
+            "「知道了」落的那一句一个字没动：当前正文、enabled=true、没换档",
+            listOf(IntentWrite("", true, IntentExpiry.ONE_DAY, false)), writes.toList()
+        )
+        assertEquals("确认之后浮层收起", 0, introNodes())
+        assertTrue("「已经确认过」必须落到盘上，不然下一次启动又重弹一遍", IntentIntroRecord.seen(ctx))
+    }
+
+    /**
+     * §11.2 点名的挂载判据：遮罩得盖住这一页，浮层不许挤进表单布局。
+     *
+     * 牙齿在这一句：介绍浮层起来之后，用**真指针**点页头那颗「返回」。
+     * · 遮罩挂在页面根部最后一层 → 这一记被遮罩接走（走既有的关闭出口），`onBack` 一次都不响；
+     * · 旧形状（浮层画在那一格里面、坐在滚动柱里）→ 遮罩只剩浮层自己那一块，
+     *   这一记穿到「返回」上 → `backs` 变 1、浮层还挂着 → 这一格当场红。
+     * 这是这一族唯一能在 JVM 上量到"盖住没盖住"的写法：`performClick` 走语义动作、绕过命中测试，
+     * 量不出遮挡，所以这里用 `performTouchInput`。
+     */
+    @Test
+    fun `the intro scrim covers the page instead of taking a slot in the form`() {
+        putIntroRecord(seen = false)
+        var backs = 0
+        val writes = mutableListOf<IntentWrite>()
+        mountIntent(writes = writes, onBack = { backs++ })
+        rule.onAllNodes(hasContentDescription(intentSwitchName))[0].performClick()
+        rule.waitForIdle()
+        assertEquals("先把介绍浮层起来", 1, introNodes())
+
+        rule.onNodeWithContentDescription(backName).performTouchInput { down(center); up() }
+        rule.waitForIdle()
+
+        assertEquals("遮罩没盖住页头时这一记会穿到「返回」上——那正是要修的挂载层级", 0, backs)
+        assertEquals("点遮罩就是既有的那条关闭出口", 0, introNodes())
+        assertTrue("关闭那一条不写盘、不启用（§11.2「取消或返回保持关闭」）：实到 $writes", writes.isEmpty())
+        assertEquals(
+            "取消之后开关仍然关着（不残留半开的表单）",
+            0, rule.onAllNodes(hasText(periodRowLabel)).fetchSemanticsNodes().size
+        )
+
+        // 反向证人：同一颗指针、同一个坐标，遮罩退了之后这一记就真交得出去——
+        // 上面那句 `backs == 0` 不是"什么输入都没生效"读出来的假绿。
+        rule.onNodeWithContentDescription(backName).performTouchInput { down(center); up() }
+        rule.waitForIdle()
+        assertEquals("浮层关掉之后页头那颗返回恢复接点", 1, backs)
+    }
+
+    /**
+     * §11.2「已经确认过介绍后，再次启用无需重复介绍」：这一条读的是盘上那份记录，
+     * 所以换一次挂载（等价于收起面板再进来、甚至重启应用）也不重弹。
+     */
+    @Test
+    fun `a relaunch after the acknowledged intro does not repeat it`() {
+        putIntroRecord(seen = true)
+        val writes = mutableListOf<IntentWrite>()
+        mountIntent(writes = writes)
+
+        rule.onAllNodes(hasContentDescription(intentSwitchName))[0].performClick()
+        rule.waitForIdle()
+
+        assertEquals("已经确认过介绍，再次启用不重复介绍", 0, introNodes())
+        assertEquals(
+            "直接按既有契约启用那一句",
+            listOf(IntentWrite("", true, IntentExpiry.ONE_DAY, false)), writes.toList()
+        )
+    }
+
+    /**
+     * §11.3「不能把 A 的意图展示或写给 B」：这一稿正文是在 A 上打的，切库落到 B 之后
+     * 不许把 A 的正文写给 B；而挡下那一次之后，等新库那份数据上了屏，下一记必须还写得出去
+     * （否则这一格就退化成"永远静默"，那是另一种假成功）。
+     */
+    @Test
+    fun `a draft typed on one library is not written to another`() {
+        putIntroRecord(seen = true)
+        val writes = mutableListOf<IntentWrite>()
+        val activeKb = mutableStateOf<String?>("kbA")
+        val bodyOfActiveKb = mutableStateOf("")
+        mountIntent(
+            writes = writes,
+            intentEnabled = true,
+            intentTextState = bodyOfActiveKb,
+            activeKb = activeKb
+        )
+
+        rule.onAllNodes(hasSetTextAction())[0].performTextInput("先约她")
+        rule.waitForIdle()
+        assertEquals("打字本身不落盘（不逐键写盘、不逐键续期）", 0, writes.size)
+
+        // 切库那一个窗口：屏幕上这块库已经是 kbB，意图正文那份还没跟上
+        rule.runOnIdle { activeKb.value = "kbB" }
+        rule.waitForIdle()
+
+        rule.onAllNodes(hasText(ctx.getString(R.string.intent_expiry_one_hour)))[0].performClick()
+        rule.waitForIdle()
+        assertTrue("切库之后不许把 A 那一稿写给 B：实到 $writes", writes.isEmpty())
+
+        // B 那份数据上了屏（草稿随之交回屏幕上这一份）：接着换档必须真的写得出去，而且写的是 B 那条
+        rule.runOnIdle { bodyOfActiveKb.value = "换个节奏聊" }
+        rule.waitForIdle()
+        rule.onAllNodes(hasText(ctx.getString(R.string.intent_expiry_one_week)))[0].performClick()
+        rule.waitForIdle()
+        assertEquals(
+            "挡一次不等于这一格从此静默：写的是屏幕上这一块库那一条",
+            listOf(IntentWrite("换个节奏聊", true, IntentExpiry.ONE_WEEK, true)),
+            writes.toList()
+        )
+    }
+
+    /**
+     * §11.3 第五行「已到期」：自动到期那条链把开关一起写成了关，这一格不许因此塌成一片空区域——
+     * 正文与期限仍要看得见，开关读着是关（不再注入请求那一侧的真状态），拨开就是重新启用。
+     */
+    @Test
+    fun `an expired intent keeps its body instead of collapsing to an empty row`() {
+        putIntroRecord(seen = true)
+        val writes = mutableListOf<IntentWrite>()
+        mountIntent(
+            writes = writes,
+            intentEnabled = false,
+            intentText = "先约她看电影",
+            intentStatus = IntentStatus.EXPIRED,
+            intentExpiryDate = "2026-10-08 09:00"
+        )
+
+        rule.onAllNodes(hasContentDescription(intentSwitchName))[0].assertIsOff()
+        assertEquals("已到期那一格仍该有正文区（不残留禁用的大空区域 ≠ 把内容整块撤掉）",
+            1, rule.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().size)
+        assertEquals("期限那一行要读得出这条什么时候到的",
+            1, rule.onAllNodes(hasText("2026-10-08 09:00")).fetchSemanticsNodes().size)
+
+        // 重新启用：拨开就是启用，介绍不再重弹
+        rule.onAllNodes(hasContentDescription(intentSwitchName))[0].performClick()
+        rule.waitForIdle()
+        assertEquals(
+            "重新启用那一句交的是既有契约（正文原样、enabled=true、重算由宿主那颗判据说）",
+            listOf(IntentWrite("先约她看电影", true, IntentExpiry.ONE_DAY, false)), writes.toList()
+        )
+    }
+
+    /**
+     * §11.3 第四行「有效」与「已经完成不是第四个期限」：三颗期限 + 下面那行操作（保存／完成），
+     * 而且保存与完成都不重算期限——重算只跟着"重新启用／重新选了一段时间"那两件事。
+     *
+     * ⚠ 这一格量的是**芯片那颗节点**，不是"屏幕上那串字逐字等于期限名"。原因写在
+     * [periodChipCount] 那里：`LbChip` 给选中那一颗的标签前缀一个对勾（`✓ 一天`），
+     * 按整串字面量等值去找会在**恰好选中那一档**上读出 0——三颗明明都在屏上，那是量具瞎，
+     * 不是实现没画（同一坑与同一修法的前例：`ui/home/ProviderFormSemanticsTest.kt` 的超时四档那一格）。
+     * 判据一件没松，现在钉的是三件：
+     * ① 三个期限名各命中**恰一颗芯片**（按设计系统那颗芯片自己的锚点 `LbTags.CHIP` 定位，
+     *    页面上任何一段普通文字都冒充不了"一颗芯片"）⇒ 挪走一排、少一颗、多一颗同名档都红；
+     * ② 期限那一排是**互斥单选**那一族（`Role.Tab`），整页恰三颗 ⇒「已经完成」被塞回这一排当
+     *    第四个期限 = 4 颗、期限被吞掉一档 = 2 颗，两种都红；
+     * ③ 下面那两句写口判据（保存不重算期限、完成重算并落到 `IntentExpiry.COMPLETED`）一个字没动。
+     */
+    @Test
+    fun `saving or completing an intent does not restart its period`() {
+        putIntroRecord(seen = true)
+        val writes = mutableListOf<IntentWrite>()
+        mountIntent(
+            writes = writes,
+            intentEnabled = true,
+            intentText = "先约她看电影",
+            intentExpiry = IntentExpiry.ONE_DAY,
+            intentExpiryDate = "2026-10-09 21:00"
+        )
+        // 三颗期限，不多不少（「已经完成」从这一排搬走了）
+        val periods = listOf(
+            R.string.intent_expiry_one_hour,
+            R.string.intent_expiry_one_day,
+            R.string.intent_expiry_one_week
+        ).map { ctx.getString(it) }
+        periods.forEach { label ->
+            assertEquals(
+                "期限那一排该有「$label」恰一颗芯片（选中那一档带「✓ 」前缀，所以认芯片与子串，不认整串字面量）",
+                1, periodChipCount(label)
+            )
+        }
+        assertEquals(
+            "期限那一排恰三颗互斥单选；「已经完成」是下面那行的动作（Role.Button），不挤进这一排",
+            3, rule.onAllNodes(
+                // 本仓依赖里没有 `hasRole` 这颗现成匹配器，按 `ScrollScan` 那一条先例自己写：
+                // 读节点上的 Role 语义键，等于 Tab 才算一颗互斥单选档；
+                // 「已经完成」挂的是 Role.Button，不会混进这一排（混进来就变 4 颗，当场红）。
+                SemanticsMatcher("role=Tab") {
+                    it.config.contains(SemanticsProperties.Role) &&
+                        it.config[SemanticsProperties.Role] == Role.Tab
+                }
+            ).fetchSemanticsNodes().size
+        )
+
+        rule.onAllNodes(hasText(ctx.getString(R.string.intent_save)))[0].performClick()
+        rule.waitForIdle()
+        assertEquals(
+            "「保存」只交正文，不重算期限",
+            listOf(IntentWrite("先约她看电影", true, IntentExpiry.ONE_DAY, false)), writes.toList()
+        )
+
+        writes.clear()
+        rule.onAllNodes(hasText(ctx.getString(R.string.intent_expiry_completed)))[0].performClick()
+        rule.waitForIdle()
+        assertEquals(
+            "「完成」是结束这条意图的动作：有效期落到 COMPLETED、正文原样",
+            listOf(IntentWrite("先约她看电影", true, IntentExpiry.COMPLETED, true)), writes.toList()
+        )
+    }
+
+    private fun nodeCount(text: String) = rule.onAllNodes(hasText(text)).fetchSemanticsNodes().size
+
+    /**
+     * 期限那一排那一颗芯片的颗数：**认芯片 + 认名字里的子串**，不认整串字面量。
+     *
+     * 为什么不能像别处那样直接按字面量等值找：`LbChip` 在**选中**那一颗的标签前面加一个对勾
+     * （`core/designsystem/LbChip.kt` 里 `LB_CHIP_CHECK + label`，`LbChipStyles.filled` 的
+     * `markSelectedWithCheck` 默认开着），于是"当前是哪一档"那一颗在语义树上的名字是「✓ 一天」。
+     * 按整串等值去找 ⇒ 偏偏**选中那一档**读成 0（本格第一版就红在这里，`expected:<1> but was:<0>`），
+     * 而三颗期限一个都没少画。这一族的坑与写法已有前例：`ui/home/ProviderFormSemanticsTest.kt`
+     * 的超时四档那一格同样注明"子串匹配：选中那颗的名字带对勾前缀"。
+     *
+     * 定位仍然有牙：`LbTags.CHIP` 是设计系统那颗芯片自己的锚点（只挂在带语义那一层），
+     * 所以这一句数的是"期限那一排的芯片"，页面上多写一段同样的文字、或把期限改成一行纯文本，
+     * 都数不出 1。
+     */
+    private fun periodChipCount(label: String) =
+        rule.onAllNodes(hasTestTag(LbTags.CHIP) and hasText(label, substring = true))
+            .fetchSemanticsNodes().size
+
+    /**
+     * §11.1 切库那一条：点下去只把请求交出去，**选中态只跟着宿主那份真状态走**。
+     *
+     * "当前使用"那几个字在这一格有两个主人位：卡片标题那一行 + 活动库那一行，所以全场恰有两颗。
+     * 牙在中间那两句：
+     * · 点非活动那一行 ⇒ 只投一次切库请求，而屏幕上仍然只有两颗"当前使用"（活动标记没跟着手指走）；
+     *   谁要是给这一格加一颗本地乐观态（点下去就先涂自己），那里就长出第三颗 ⇒ 当场红——
+     *   那正是"失败也假成功"的形状（切库落盘之前，选中态不属于这一页）。
+     * · 活动那一行点不动（`enabled = !isActive`）⇒ 再点一次不许多投一句；
+     * · 最后 `runOnIdle` 把宿主那份换成 kbB，"当前使用"仍然只有两颗：成功之后才换人，
+     *   而不是同时指着两块库。
+     */
+    @Test
+    fun `a library row does not repaint itself as the current one before the switch lands`() {
+        val writes = mutableListOf<IntentWrite>()
+        val switches = mutableListOf<String>()
+        val activeKb = mutableStateOf<String?>("kbA")
+        mountIntent(writes = writes, switches = switches, activeKb = activeKb)
+        val currentUse = ctx.getString(R.string.kb_card_in_use)
+
+        assertEquals("标题一颗 + 活动行一颗", 2, nodeCount(currentUse))
+
+        rule.onAllNodes(hasText("kbB"))[0].performClick()
+        rule.waitForIdle()
+        assertEquals("点非活动那一行只投一次切库请求", listOf("kbB"), switches.toList())
+        assertEquals("选中态不许跟着手指走：宿主还没换，标记仍只指着那块库", 2, nodeCount(currentUse))
+
+        rule.onAllNodes(hasText("kbA"))[0].performClick()
+        rule.waitForIdle()
+        assertEquals("正在用的那一行点不动，不许再投一句", listOf("kbB"), switches.toList())
+
+        rule.runOnIdle { activeKb.value = "kbB" }
+        rule.waitForIdle()
+        assertEquals("切成功之后标记跟着换，但同一时刻仍然只有一个当前库", 2, nodeCount(currentUse))
+        assertTrue("这一格不替切库写第二本账：实到 $writes", writes.isEmpty())
     }
 
     companion object {

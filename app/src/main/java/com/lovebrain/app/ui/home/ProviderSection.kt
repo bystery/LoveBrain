@@ -48,6 +48,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -179,8 +181,16 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
     val tickets by viewModel.tickets.collectAsStateWithLifecycle()
     val activeTicket by viewModel.activeTicket.collectAsStateWithLifecycle()
     val providerReady by viewModel.providerReady.collectAsStateWithLifecycle()
-    var editing by remember { mutableStateOf<ProviderTicket?>(null) }
-    var showAdd by remember { mutableStateOf(false) }
+    // ── 「表单在不在场」这两颗归 `rememberSaveable`（指导书§6：返回不能丢未提交字段）──
+    // 宿主 `SetupActivity` 没写 `android:configChanges`（Manifest 三条 activity 都没写），
+    // 所以旋转、系统改字号/深色、开发者选项"不保留活动"都要把整棵页面重挂一遍；
+    // 裸 `remember` 的那一份随树一起没了 ⇒ 弹窗自己关掉，里面已经打进去的字一个不剩。
+    // 存的是**工单 id**而不是 `ProviderTicket`：那颗 data class 进不了 savedInstanceState，
+    // 而工单的真源本来就在 `viewModel.tickets` 这条流里（VM 活过重建），重建后按 id 取回同一份。
+    var editingTicketId by rememberSaveable { mutableStateOf<String?>(null) }
+    var showAdd by rememberSaveable { mutableStateOf(false) }
+    // 删除确认那一格**不是**未提交字段：它一个字都没写，重建后不必回来
+    //（回来了反而是一扇没人认领、点下去就真删的确认窗）。
     var pendingDelete by remember { mutableStateOf<ProviderTicket?>(null) }
 
     // 页头、整屏底色与水平边距都交回 `ScreenPage` 那一族（与知识库两页、捕获范围页、
@@ -198,18 +208,22 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
                 activeTicket = activeTicket,
                 providerReady = providerReady,
                 onActivate = { viewModel.activateTicket(it) },
-                onEdit = { editing = it },
+                onEdit = { editingTicketId = it.id },
                 onDelete = { pendingDelete = it },
                 onAdd = { showAdd = true }
             )
         }
     }
 
+    // 编辑对象按 id 现取，不在这一层再留一份工单副本：`tickets` 才是真源，
+    // 重建之后这一句把出发前那一份原样取回来（取不到就是那张工单已经被删了，弹窗随之收掉）。
+    val editing = editingTicketId?.let { id -> tickets.firstOrNull { it.id == id } }
+
     if (showAdd) {
         ProviderEditDialog(viewModel = viewModel, ticket = null, onDismiss = { showAdd = false })
     }
     editing?.let { t ->
-        ProviderEditDialog(viewModel = viewModel, ticket = t, onDismiss = { editing = null })
+        ProviderEditDialog(viewModel = viewModel, ticket = t, onDismiss = { editingTicketId = null })
     }
 
     pendingDelete?.let { t ->
@@ -235,8 +249,9 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
  * 保存/删除/切换启用一律走首页那三个既有的出口——这一格自己**不做任何业务判断**。
  *
  * ⚠ 抽取是**逐字搬容器**：Card 的那条 Modifier 链、状态点、chevron、`LbAsyncState` 判据、
- * 行底色与那颗「＋ 添加供应商」全部原样，只把三处 `showAdd = true` / `editing = t` /
- * `pendingDelete = t` 换成同义的回调。语义树里每一颗节点、每一个 48dp 热区与搬家前相同
+ * 行底色与那颗「＋ 添加供应商」全部原样，只把三处 `showAdd = true` / `editing = t`（今天写作
+ * `editingTicketId = it.id`，见 [ProviderSection] 那一簇状态声明）/ `pendingDelete = t`
+ * 换成同义的回调。语义树里每一颗节点、每一个 48dp 热区与搬家前相同
  * （证人：`LongProviderNameSemanticsTest`、`ProviderSectionSemanticsTest`）。
  * `expanded` 只有这一格在读，所以它与 chevron 那段动画跟着一起搬进来——首页那层
  * 因此少一颗杂散布尔，而展开/收起这件事仍然只有这一格知道。
@@ -463,6 +478,33 @@ internal fun ProviderEditDialog(
 }
 
 /**
+ * 模型名列表的保存档：一条串、换行做分隔。
+ *
+ * 为什么不直接把 `List<String>` 交给默认档：`savedInstanceState` 那一头只收 primitives / `String`
+ * / `Bundle` 这一族，把列表原样塞进去是一条"今天绿、换台机器红"的赌注。这里把它压成一条串，
+ * 往返由 [ProviderModelListSaver] 一处持有。
+ *
+ * 边界两条，都落在既有判据里：
+ * - 元素恒非空白（`commitModelInput` 那条 `isBlank()` 先拒），所以 `""` ⇔ 空列表 是唯一映射；
+ * - 模型名是单行输入（`modelInput` 只由那一颗字段填），分隔符进不了元素本体。
+ */
+internal val ProviderModelListSaver: Saver<List<String>, String> = Saver(
+    save = { it.joinToString("\n") },
+    restore = { if (it.isEmpty()) emptyList() else it.split("\n") }
+)
+
+/**
+ * 超时档位的保存档：存秒数，回来仍过白名单那道回落。
+ *
+ * 与读取侧 `GenerationTimeoutTier.fromSecondsOrDefault` 同一个函数——恢复通道因此和盘上那条
+ * 共用一把尺，不可能从 `savedInstanceState` 里恢复出一个下游不认的档位。
+ */
+internal val ProviderTimeoutTierSaver: Saver<GenerationTimeoutTier, Int> = Saver(
+    save = { it.seconds },
+    restore = { GenerationTimeoutTier.fromSecondsOrDefault(it) }
+)
+
+/**
  * 供应商表单本体——`ProviderEditDialog` 那扇浮层里、**除了外壳与标题之外**的全部内容。
  *
  * 标题（「添加供应商 / 编辑供应商」）原来画在这一格的第一行，第6节第1条 归并时抬进了
@@ -474,9 +516,12 @@ internal fun ProviderEditDialog(
  * 所以**不是**这里哪颗控件画坏了）。抽出来之后 Dialog 仍在原位、仍在原外壳里，
  * 只是测量可以绕开那扇窗口直接挂这一格。
  *
- * ⚠ 抽的是**容器**，不是"顺手重构"：状态声明、`commitModelInput`/`deleteModel`
- * 与 Column 里的每一行都逐字搬过来（只减缩进）。Dialog 关闭即销毁这些 `remember`
- * 的行为跟搬之前一样——它们仍挂在这棵树的同一个位置上。
+ * ⚠ 抽的是**容器**，不是"顺手重构"：`commitModelInput`/`deleteModel` 与 Column 里的每一行
+ * 都逐字搬过来（只减缩进），状态声明仍挂在**这一棵树的同一个位置上**。
+ * 本轮只换了一件东西的主人：那些还没提交的字段从裸 `remember` 换成 `rememberSaveable`
+ * （指导书§6「返回不能丢未提交字段」；理由、三条例外与各自代价写在下面那一段声明上）。
+ * 「Dialog 关闭即作废」这一条行为一字未动：`rememberSaveable` 的存档只被消费一次，
+ * 用户主动关掉这扇窗再打开，拿回来的仍是 `ticket` 那一份，不是上一次没保存的草稿。
  */
 @Composable
 internal fun ProviderFormBody(
@@ -494,22 +539,37 @@ internal fun ProviderFormBody(
     val scope = rememberCoroutineScope()
     val formError by viewModel.formError.collectAsStateWithLifecycle()
 
-    var name by remember { mutableStateOf(ticket?.name.orEmpty()) }
-    var baseUrl by remember { mutableStateOf(ticket?.baseUrl.orEmpty()) }
+    // ── 这些是**用户还没按保存**的字段：指导书§6 那一句"返回不能丢未提交字段"管的就是这一簇 ──
+    // 主人换成 `rememberSaveable`：宿主 Activity 没有声明 `android:configChanges`，
+    // 旋转、系统里改字号/深色、"不保留活动"都会把这棵表单整株拔掉再重挂；裸 `remember`
+    // 在那一刻等于把用户打了一半的字全清掉，而他并没有点「取消」。
+    // 三条**有意留在 `remember`** 的例外，各有一条理由，不是漏改：
+    // - `key`：明文 Key 不许进 `savedInstanceState`——那一份会被系统写到盘上（进程被回收后仍在），
+    //   而这一屏既有合同是"初值恒空、明文永不回填、Key 值不上任何截图/日志/报告"（见接口凭据那一组）。
+    //   代价如实说：重建之后 Key 得重填一次，宁可重填也不把明文交给系统那条通道；
+    // - `keyVisible`：显隐是观看不是内容，跟着 Key 一起回到"遮蔽"那一档才是自洽的；
+    // - `testingModel` / `testResult`：在飞的那次探测随协程一起断了，恢复出来是一句"测试中…"的假话。
+    var name by rememberSaveable(key = "providerForm.name") { mutableStateOf(ticket?.name.orEmpty()) }
+    var baseUrl by rememberSaveable(key = "providerForm.baseUrl") { mutableStateOf(ticket?.baseUrl.orEmpty()) }
     var key by remember { mutableStateOf("") }
     var keyVisible by remember { mutableStateOf(false) }
-    var thinking by remember { mutableStateOf((ticket?.thinkingMode ?: viewModel.globalThinking) == 1) }
+    var thinking by rememberSaveable {
+        mutableStateOf((ticket?.thinkingMode ?: viewModel.globalThinking) == 1)
+    }
     // 生成超时档位：初值走白名单那道回落（老数据 / null → 默认档 120 秒），
     // 与读取侧 `ProviderConfigResolver` 同一个函数，界面上因此不可能显示出一个下游不认的档位。
-    var timeoutTier by remember {
+    // 恢复那一头也过同一个回落（[ProviderTimeoutTierSaver]），盘外回来的数不可能绕过白名单。
+    var timeoutTier by rememberSaveable(stateSaver = ProviderTimeoutTierSaver) {
         mutableStateOf(GenerationTimeoutTier.fromSecondsOrDefault(ticket?.generateTimeoutSec))
     }
-    var models by remember { mutableStateOf(ticket?.models.orEmpty()) }
-    var currentModel by remember { mutableStateOf(ticket?.model.orEmpty()) }
+    var models by rememberSaveable(stateSaver = ProviderModelListSaver) {
+        mutableStateOf(ticket?.models.orEmpty())
+    }
+    var currentModel by rememberSaveable { mutableStateOf(ticket?.model.orEmpty()) }
 
-    var addingModel by remember { mutableStateOf(false) }
-    var modelInput by remember { mutableStateOf("") }
-    var editIndex by remember { mutableStateOf(-1) }
+    var addingModel by rememberSaveable { mutableStateOf(false) }
+    var modelInput by rememberSaveable { mutableStateOf("") }
+    var editIndex by rememberSaveable { mutableStateOf(-1) }
     var testingModel by remember { mutableStateOf<String?>(null) }
     var testResult by remember { mutableStateOf<Triple<String, Boolean, String?>?>(null) }
 

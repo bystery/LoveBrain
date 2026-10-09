@@ -49,6 +49,39 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 /**
+ * 捕获洪峰去重的那一条判据（§15.1「不能改错层」）。
+ *
+ * 抽成纯函数只有一个理由：这一格的边界（300ms、同一文本、闭区间）此前只能靠真机长按两次去猜，
+ * 现在 JVM 单测能量到（`test/.../data/EventBusCaptureTest.kt`）。判据本身一个字没变：
+ * **同一文本** + **间隔不超窗口** 两个条件缺一个都不拦。
+ *
+ * 三条容易被拿错的口径写在这里，免得下一手把它当成别的东西：
+ * - 不同文本**永远**放行——这条规则不是"所有消息的统一冷却"，谁把它写成冷却窗就是改错层；
+ * - 窗口宽度只有 [AppConfig.BURST_DEDUP_WINDOW_MS] 一颗（本轮 1500→300）；
+ * - 长按与菜单的**事件配对**在 `CopyCaptureService`（寿命那颗是
+ *   [AppConfig.PENDING_MAX_AGE_MS]），不在这一格，不跟着收敛。
+ */
+internal object ClipBurstDedup {
+
+    /** 窗口宽度：全仓只有这一颗读 [AppConfig.BURST_DEDUP_WINDOW_MS]，别处不再抄一份数字 */
+    val windowMs: Long get() = AppConfig.BURST_DEDUP_WINDOW_MS
+
+    /**
+     * `true` = 这一条是同一次手势的系统连发，合并掉（不入库、不亮红点）。
+     *
+     * 「上一次」那一对初值是 `previousText = null` + `previousMs = 0`（见 [FloatingService] 那两颗字段），
+     * 第一次捕获永远走「文本不同」那一支 ⇒ 必然放行，不存在开机之后先吞掉一条的情况。
+     */
+    fun isBurstDuplicate(
+        text: String,
+        previousText: String?,
+        nowMs: Long,
+        previousMs: Long,
+        windowMs: Long = AppConfig.BURST_DEDUP_WINDOW_MS
+    ): Boolean = text == previousText && nowMs - previousMs <= windowMs
+}
+
+/**
  * 军师悬浮窗服务 v5（Koin + EventBus 版）。
  * 气泡 + ComposeView 面板，面板内部全部由 Jetpack Compose 渲染。
  *
@@ -140,7 +173,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     /** 闲置计时器（4s 半透明 → 8s 滑出半隐藏）；随 scope 一起取消，不留第二本账 */
     private var idleJob: Job? = null
 
-    /** 洪峰去重：仅拦 ≤1.5s 内同文本的重复事件（同一次手势的系统连发），不拦用户主动重捕 */
+    /** 洪峰去重的「上一次」那一对：只喂给 [ClipBurstDedup]，判据不在这里重写第二遍 */
     private var lastClipText: String? = null
     private var lastClipTime = 0L
 
@@ -302,11 +335,17 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         }
     }
 
-    /** 返回是否真正入库，调用方据此决定是否亮红点；只拦 1.5s 内的同文本洪峰，间隔更久的重捕一律入库 */
+    /**
+     * 返回是否真正入库，调用方据此决定是否亮红点。
+     *
+     * 只拦 [ClipBurstDedup] 那一条：**≤300ms 内的同一文本**（同一次手势的系统连发）。
+     * 不同文本一律放行，间隔更久的重捕也一律入库——这里没有"所有消息的统一冷却"。
+     * 判据本体是纯函数，边界钉在单元测试里（§15.1）。
+     */
     private fun addClipIfNew(text: String?, role: ChatMessage.Role = viewModel.composer.currentRole.value): Boolean {
         if (text.isNullOrEmpty()) return false
         val now = SystemClock.uptimeMillis()
-        if (text == lastClipText && now - lastClipTime <= AppConfig.BURST_DEDUP_WINDOW_MS) return false
+        if (ClipBurstDedup.isBurstDuplicate(text, lastClipText, now, lastClipTime)) return false
         lastClipText = text
         lastClipTime = now
         viewModel.addMessage(role, text)

@@ -19,6 +19,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +28,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbButtonState
@@ -124,7 +127,20 @@ private fun KbManagementScreen(
     // 未配置供应商二选一弹窗：继续 = 空模板库，取消 = 留在向导内
     var showNoProviderDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) { viewModel.refresh() }
+    // 读盘时机 = 这一页每次回到前台，而不是"组合那一次"。
+    // 挂在 `LaunchedEffect(Unit)` 上会漏掉最常被走的那一趟：去编辑页改完再回来，Activity 只是
+    // resume、这一屏没有重新装配，卡片上还停在出发前那一读（阶段与轮次都是编辑会动的数）——
+    // 这就是 §12.1 三分法里「列表没刷新」那一支，也是 §12.3「正常返回…仍能找到各库」要的件事。
+    // 观察者写法照 `ui/home/CaptureAppsScreen.kt` 那一颗（同一族问题、同一个写法），不立第二套。
+    // 首次进入也走这一条：状态已经是 RESUMED 时 `addObserver` 会当场补发一次 ON_RESUME。
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) viewModel.refresh()
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
 
     LaunchedEffect(viewModel) {
         viewModel.events.collect { event ->
@@ -161,6 +177,11 @@ private fun KbManagementScreen(
                 KbEvent.ImportFailed -> feedback = "导入失败：不是有效的知识库备份文件"
                 KbEvent.DeleteFailed -> feedback = "删除失败，请重试"
                 KbEvent.RenameFailed -> feedback = "重命名失败，请重试"
+                // §12.2 / §2.2 第 4 条：点非活动卡就是切库，切完了必须当场说出切到了哪一座——
+                // 「使用中」那一槽说的是结果，这一句说的是"刚才那一下点出了什么"，两件一起做
+                // 才把"打开"与"启用"这两种混淆解释开。名字由 ViewModel 从真实数据流里取。
+                is KbEvent.ActiveSwitched -> feedback = "已切换到「${event.displayName}」"
+                KbEvent.SwitchFailed -> feedback = "切换失败，请重试"
             }
         }
     }
@@ -270,7 +291,9 @@ internal fun KbListScreen(
     var pendingRename by remember { mutableStateOf<KnowledgeBase?>(null) }
     var renameText by remember { mutableStateOf("") }
 
-    ScreenPage(title = "知识库管理", onBack = onBack) {
+    // §12.2 表第一行：页头与共同管理页同族（`ScreenPage` 那一颗），标题就是「知识库」——
+    // 旧的「知识库管理」是这一页自己加的后缀，其它管理页（反馈案例、模型供应商）都没有。
+    ScreenPage(title = "知识库", onBack = onBack) {
         Column(
             modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
             // 基线 v1.1 §3.3：F1 族列表间距 16→12，四页不许再各写各的（旧档 `spacedBy(Spacing.xl)` 作废）。

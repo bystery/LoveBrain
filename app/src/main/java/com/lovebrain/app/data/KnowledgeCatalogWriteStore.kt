@@ -53,9 +53,6 @@ internal interface CatalogWriteStorage {
     /** knowledge/ 根下所有非隐藏目录名（切库要逐库改 kb.json，含还没元数据的那类目录） */
     fun catalogDirNames(): List<String>
 
-    /** 最近被改过的那个库目录名；一个都没有时 null（删掉当前库之后选下一个） */
-    fun newestCatalogDirName(): String?
-
     /** 这个名字在根下占位了吗。文件也算占位——建库要拒得比"是不是目录"更严 */
     fun catalogDirPresent(kbName: String): Boolean
 
@@ -192,6 +189,10 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
      * 三道拒绝（空名、过长、已占位）都必须发生在建目录**之前**：
      * 长度那条与 [KB_NAME_MAX_LENGTH] 同源，就是因为以前 sanitizer 只过滤字符集不限长度，
      * 于是 101+ 字符的库"建得出来、每一读都被路径守门判非法"，盘上还留下半套 seed 文件。
+     *
+     * 同一条理由管到 seed 写本身：seed 半途失败时这次刚造的目录一并收回（见 [createWithin]），
+     * 「报失败」与「列表里多出一座能用的空库」不许同时发生——§12.3 那句
+     * 「创建完成才出现在可用列表，失败显示失败」要的就是这一条。
      */
     override suspend fun create(name: String, displayName: String): KnowledgeBase =
         withContext(Dispatchers.IO) {
@@ -219,30 +220,42 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
         // 建库的 13 格 seed 全走唯一写链：CatalogTx.write → 仓库的 KnowledgeTx.write →
         // writeFileCheckedUnlocked（入口侧只读判定 + safeKbFile 路径守门 + 唯一原子写）。
         // 每格落盘什么字节由 `KnowledgeSeedWriteBytesBaselineTest` 逐格钉住（含 schema 正文与 assets 原字节比）。
-        storage.writeCatalogTransaction(safeName) {
-            // 写入失败传播：write 返回 false = 被只读保护或路径非法挡下。
-            // 必须抛异常让上层 ViewModel 捕获报失败，不得假成功（指导书§6）。
-            val metaOk = write(KnowledgeCatalogStore.META_FILE, storage.encodeMeta(kb))
+        try {
+            storage.writeCatalogTransaction(safeName) {
+                // 写入失败传播：write 返回 false = 被只读保护或路径非法挡下。
+                // 必须抛异常让上层 ViewModel 捕获报失败，不得假成功（指导书§6）。
+                val metaOk = write(KnowledgeCatalogStore.META_FILE, storage.encodeMeta(kb))
 
-            // 全部文件从 assets/schema/ 加载（schema 是知识库结构的唯一来源）
-            // 懂得层（慢变量画像）
-            val seedOk = metaOk
-                && write("understand/me.md", storage.template("me"))
-                && write("understand/her.md", storage.template("her"))
-                && write("understand/warmth.md", storage.template("warmth"))
-                // 此刻层（快变量上下文）
-                && write("moment/topic.md", storage.template("topic"))
-                && write("moment/recent.md", storage.template("recent"))
-                && write("moment/scene.md", storage.template("scene"))
-                && write("moment/plan.md", storage.template("plan"))
-                // 记忆层（长期归档）
-                && write("memory/lessons.md", storage.template("lessons"))
-                && write("memory/raw_chat.md", storage.template("raw_chat"))
-                && write("memory/raw_topic.md", storage.template("raw_topic"))
-                && write("memory/raw_scene.md", storage.template("raw_scene"))
-                && write("memory/counseling_log.md", storage.template("counseling_log"))
+                // 全部文件从 assets/schema/ 加载（schema 是知识库结构的唯一来源）
+                // 懂得层（慢变量画像）
+                val seedOk = metaOk
+                    && write("understand/me.md", storage.template("me"))
+                    && write("understand/her.md", storage.template("her"))
+                    && write("understand/warmth.md", storage.template("warmth"))
+                    // 此刻层（快变量上下文）
+                    && write("moment/topic.md", storage.template("topic"))
+                    && write("moment/recent.md", storage.template("recent"))
+                    && write("moment/scene.md", storage.template("scene"))
+                    && write("moment/plan.md", storage.template("plan"))
+                    // 记忆层（长期归档）
+                    && write("memory/lessons.md", storage.template("lessons"))
+                    && write("memory/raw_chat.md", storage.template("raw_chat"))
+                    && write("memory/raw_topic.md", storage.template("raw_topic"))
+                    && write("memory/raw_scene.md", storage.template("raw_scene"))
+                    && write("memory/counseling_log.md", storage.template("counseling_log"))
 
-            if (!seedOk) throw IOException("knowledge base seed write failed for $safeName")
+                if (!seedOk) throw IOException("knowledge base seed write failed for $safeName")
+            }
+        } catch (e: Exception) {
+            // seed 半途失败：这一次调用进来时那格名字还没占位（上面第三道 require 判的就是它），
+            // 所以这一颗目录是自己刚造的，收回去不销毁任何旧证据。
+            // 留着它的后果是 §12.3 那两句同时被破：报了失败，可用列表里却多出一座空库；
+            // 而它若是盘上第一座库，偏好里的当前库是空的，getActive 的兜底会把这座半成品当成
+            // 在用库——面板之后的每一格都往它里面写。
+            // 回收仍走仓库那道 canonical 守卫，本类不自己判目录在不在树内；
+            // 备份与当前库都在成功之后才动，失败这一趟一样都不碰。
+            storage.removeCatalogDir(safeName)
+            throw e
         }
 
         if (kb.active) storage.activeKbName = safeName
@@ -268,11 +281,28 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
         val ok = storage.removeCatalogDir(name)
         if (ok) storage.deleteCatalogBackups(name)
         if (ok && storage.activeKbName == name) {
-            val next = storage.newestCatalogDirName()
+            val next = nextActiveAfter(name)
             if (next != null) activateWithin(next) else storage.activeKbName = ""
         }
         return ok
     }
+
+    /**
+     * 删掉的正是当前库时，下一个当前库**只能从枚举认下来的库里选**。
+     *
+     * 「根下 mtime 最新的那个目录名」那一旧判据已删（接口成员与实现一并移除，全仓无调用方）。
+     * 它问的是目录，而目录不是库：一次中断的建库、一份坏掉的 kb.json、一个 name
+     * 与目录名不相等的元数据，都会留下一颗进不了清单的目录（判据见
+     * [KnowledgeCatalogStore]，它才是"这个根下有哪几座库"的唯一回答者）。把当前库交给那一颗，
+     * 得到的就是 §12.3 明令不许出现的「活动引用指向一个不存在的库」——而且 [activateWithin]
+     * 会顺手把清单里每一座库的 kb.json 都改成 active=false，三级回退的第一判据
+     * （同名且 active）从此再也落不下去，界面只能靠兜底读数猜在用哪一个。
+     *
+     * [storage.entries] 已经按 updatedAt 倒序，所以这里选的仍是"最近那一个"，
+     * 只是换成了**真存在的库**里的最近；一个有效库都不剩时清除选择（`""`），不新造一个。
+     */
+    private fun nextActiveAfter(deleted: String): String? =
+        storage.entries().firstOrNull { it.name != deleted }?.name
 
     /**
      * 修改知识库显示名。

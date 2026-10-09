@@ -23,7 +23,6 @@ import com.lovebrain.app.core.testing.UiProbeApplication
 import com.lovebrain.app.feature.composer.MessageListEditing
 import com.lovebrain.app.model.ChatMessage
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -34,19 +33,27 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 消息行的删除：横滑**过阈值**才删那一条、不到阈值什么都不删、屏幕上不再放叉号之后
- * 删除仍要有**读屏**那一条出口；删掉"正在编辑那一条"时交出去的必须是它自己的稳定 id。
+ * 消息行横滑的**方向映射与门槛**（§8.1 / §8.2 / §8.4 消息侧）：
+ * 普通消息向内换角色、向外删除；补充两个方向都是删除；门槛 = `max(24dp, min(48dp, 行宽×20%))`
+ * 再加一档"有意快滑"（同方向 ≥16dp 且末段速度 ≥600dp/s），反向回拉不作数；
+ * 一次手势只落一个动作；纵向浏览与点按编辑都不被吞。
+ *
+ * 这一族**取代**旧的"双向都是删除 + abs(offset) 达 0.4 行宽就删"那一档（台账 R03 已写明
+ * "双向删除被最新方向转换替代"）。旧形状里仍然成立的判据一格没撤：删除仍只认稳定 id、
+ * 读屏仍要有那条出口、擦过去仍不许丢内容——只是"擦过去"与"拖得够远"的那两根线换了。
  *
  * 这里只判 JVM 上几何与语义能判定的事：
- * · 阈值那颗纯函数（`shouldDeleteBySwipe`）逐值钉死，**线的两侧各钉一格**，而且钉到"正好压线"
- *   那一格（`>=` 写成 `>` 会当场红）；行宽没量到 / 为 0 / 为负一律不删；左右两个方向同一条线；
- * · 滑过阈值的删除落点（左、右各一条，且删的是被滑那一条而不是邻居）；
- * · **快速小幅横滑**（越过 slop、没越过阈值）一条都不删——这一格走真实注入路径，
- *   并且同一格里再补一记过阈值的滑：先"擦不误删"、后"真删得掉"，两半合起来才证明那两记
- *   手势打的是同一个对象（只判前一半的话，"手势根本没落到行上"也能绿，那是恒真）；
+ * · 「方向 → 动作」那颗纯函数逐值钉（两种角色 × 两个方向 + 补充 + 零位移），
+ *   **向左与向右必须交回不同的值**（旧的 abs 判据喂它必红）；
+ * · 门槛那颗纯函数按 §8.2 的公式逐值钉，两根 dp 端点**各喂两种 density**：
+ *   把 dp 当 px 用的写法当场红（§8.2 明写"指针数据通常是像素，必须经密度转换"）；
+ * · 松手判据的三条路：慢拖过线、有意快滑（同向）、反向回拉与不足 16dp 的短擦（都不落）；
+ * · 真实注入路径上的四种落点：向外删得掉、向内换角色且**一条都不删**、
+ *   没接线的那一侧**不许退化成删除**、过新门槛的短行程删得掉（旧 0.4 那一档喂它必红）；
+ * · 一次手势只交一个动作（换角色那一记只递一次 id），且删除/换角色都不顺手投"去编辑"；
+ * · 纵向浏览（swipeUp）既不删也不换角色（§8.4 那一行的消息侧）；
  * · 屏幕上没有叉号、但自定义删除动作真实存在且**真能删**（动作自己必须回报 handled=true，
  *   删除必须只落这一条，且不许顺手把这条选进编辑位）；
- * · 纵向浏览（swipeUp）不落在删除的轴上，因此一条都不删；
  * · 尾部那行军师备注**不再是删除对象**，也不再是"擦一下就打开编辑器"的点击落点
  *   （ 之后它只有一个出口 = 真点它才去编辑）；
  * · 删除正在编辑那一条时，编辑指向由 `MessageListEditing.reindex` 这一份口径修正：
@@ -62,16 +69,23 @@ import org.robolectric.annotation.GraphicsMode
  * 的读数（这一份只是读数，不参与红绿，读不到也不许影响判据）：红在① ⇒ 换树读；
  * 红在②而①已经 true ⇒ 生产的读屏出口真没接到删除，改 `MessageList.kt`。
  *
- * ── 关于阈值注入路径的旧记录 ────────────────────────────────────────────
- * 旧版这里写着"未达阈值那条注入路径在本机判不稳，所以只由纯函数逐值判"。这一轮把它补上了：
- * 不稳的是"短滑 + 靠默认 `swipeLeft()` 收行程"这种写法（默认那记会滑过整行宽，本来就过阈值）。
- * 现在这一格自己按 `center` 起按、按已知像素走、抬指，行程与阈值的关系是**算出来的**，
- * 不靠仪器默认值；同一格的后半（过阈值必须删掉）保证这两记手势确实打到了这一行。
- * 真正的手指跟手感、以及 360dp 窄面板上"擦一下会不会误删"的实际体感仍归真机验收。
+ * ── 关于快滑那一档为什么只在纯函数那一面判 ──────────────────────────────
+ * §8.2 的快滑档读的是**末段速度**（px/s，带符号）。本机的指针注入不给可依赖的末段速度读数
+ * （`moveTo` 那几步的间隔由仪器自己推帧决定），于是"注入一记快手"这种格子红绿都不说明问题：
+ * 红可能是产品没接速度，也可能只是那记注入太慢。所以速度那一档逐值钉在
+ * [swipeCommitAction] 上（喂数字，同向/反向/不足 16dp/刚好 600dp/s 各钉一格），
+ * 注入路径只判**位移**那一档。真实手指的速度手感、揭示标签与长气泡的重叠档归真机。
  *
- * ⚠ 纯函数那两格刻意挑 **1000 / 250 这一类行宽**：`宽 × 0.4f` 在 float 上正好落在整百
- * （1000f×0.4f=400f、250f×0.4f=100f，舍入误差不见），于是"压线那一格"判的是 `>=` 本身，
- * 不是浮点噪声。换成 300 这种行宽，阈值会算成 120.000002f，压线格就退化成"差一点点"格。
+ * ── 关于阈值注入路径的旧记录 ────────────────────────────────────────────
+ * 旧版这里写着"未达阈值那条注入路径在本机判不稳，所以只由纯函数逐值判"。后来那一格补上了：
+ * 不稳的是"短滑 + 靠默认 `swipeLeft()` 收行程"这种写法（默认那记会滑过整行宽，本来就过阈值）。
+ * 现在注入那几格自己按 `center` 起按、按**本次量出来的行宽算出行程**再走、抬指，
+ * 行程与门槛的关系是算出来的，不靠仪器默认值；同一格的后半（过门槛必须落动作）
+ * 保证这两记手势打的是同一个对象。
+ *
+ * ⚠ 纯函数那几格刻意挑 **1000 / 500 / 200 这一类行宽**：`宽 × 0.2f` 与那两根 dp 端点在 float 上
+ * 都落在整百/整十（1000×0.2=200、500×0.2=100、200×0.2=40），于是"压线那一格"判的是 `>=` 本身，
+ * 不是浮点噪声。换成 340 这种行宽，门槛会算成 68.000001f，压线格就退化成"差一点点"格。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -95,15 +109,19 @@ class MessageRowSwipeDeleteTest {
     private val idea = ChatMessage(role = ChatMessage.Role.IDEA, content = "先哄两句")
 
     private val deleted = mutableListOf<String>()
+    private val switched = mutableListOf<String>()
     private val edited = mutableListOf<Int>()
     private val noteEdits = mutableListOf<Int>()
 
     private fun mount(
         messages: List<ChatMessage>,
         noteText: String? = null,
-        editingIndex: Int = -1
+        editingIndex: Int = -1,
+        // null = 宿主没接换角色出口（§8.1 向内那一侧这时**既不揭示也不落**，更不许退化成删除）
+        switchOwner: ((String) -> Unit)? = { id -> switched.add(id) }
     ) {
         deleted.clear()
+        switched.clear()
         edited.clear()
         noteEdits.clear()
         rule.setContent {
@@ -115,7 +133,8 @@ class MessageRowSwipeDeleteTest {
                     onEdit = { edited.add(it) },
                     onDelete = { deleted.add(it) },
                     noteText = noteText,
-                    onEditNote = { noteEdits.add(1) }
+                    onEditNote = { noteEdits.add(1) },
+                    onSwitchRole = switchOwner
                 )
             }
         }
@@ -148,100 +167,265 @@ class MessageRowSwipeDeleteTest {
     }.getOrElse { "未合并树读不到这一行（${it::class.simpleName}）" }
 
     /**
-     * 阈值线的两侧各钉一格，连压线那一格一起钉（行宽 1000 ⇒ 线在 400）。
-     * 反例（每条各自会打破一格）：
-     * · `>=` 写成 `>` ⇒ 400f 那一格红（用户要拖到"再过去一点点"才删，手感像失灵）；
-     * · 阈值比从 0.4 调到 0.2/0.3 ⇒ 399.99f 那一格红（擦一下就删了，内容丢得没道理）；
-     * · 阈值比调到 0.5 以上 ⇒ 400f/400.01f 两格红（小面板上根本拖不到线，删除只剩读屏一条路）；
-     * · 判据写成 `dragPx >= 0`（把阈值比改成 0）⇒ 0f 那一格红；
-     * · 忘了 `rowWidthPx > 0` 那道门 ⇒ 行宽 0/负数那三格红（第一帧凭空满足阈值）；
-     * · 只算正方向（漏掉绝对值）⇒ 向左那两格红。
+     * §8.1 那张表的唯一映射（纯函数）：**向左与向右交回不同的动作**，而且按**起始角色**判。
+     * 反例（各自打破一格）：
+     * · 留着旧的"abs(offset) 达阈值就删"那一颗（两个方向都交回 Delete）⇒ 我向左、她向右那两格红；
+     * · 方向映射整个写反（向内删、向外换角色）⇒ 四格全红；
+     * · 按"输入框当前角色"而不是这一条自己的角色判 ⇒ 同一记向左在两种角色上得到同一个值，
+     *   那两格里必有一格红；
+     * · 把"补充"（`Role.IDEA`）也按两列那一族判 ⇒ 它那两格红（补充没有另一边，两向都是删除）；
+     * · 没有位移也落动作（`dragPx == 0` 走进 else 分支）⇒ 0f 那一格红；
+     * · 行程变大就换动作 ⇒ 最后一格红（§8.2："拖动过程中不提前改角色再把第二次阈值当作另一动作"）。
      */
     @Test
-    fun `the swipe threshold sits on four tenths of the row width in both directions`() {
-        assertFalse("差一点点不许删（399.99 < 400 = 0.4×1000）", shouldDeleteBySwipe(399.99f, 1000f))
-        assertTrue("正好压线就该删（判据是 >=，不是 >）", shouldDeleteBySwipe(400f, 1000f))
-        assertTrue(shouldDeleteBySwipe(400.01f, 1000f))
-        assertFalse("向左同样要差一点点才不算", shouldDeleteBySwipe(-399.99f, 1000f))
-        assertTrue("向左过线同样删（双向对称）", shouldDeleteBySwipe(-400f, 1000f))
-        assertFalse("一个像素都没拖", shouldDeleteBySwipe(0f, 1000f))
-        // 行宽没量到 / 非正数 ⇒ 恒不删
-        assertFalse("行宽 0（还没布局）不许凭空满足阈值", shouldDeleteBySwipe(999f, 0f))
-        assertFalse(shouldDeleteBySwipe(-999f, 0f))
-        assertFalse("负行宽是坏读数，不许被 abs 之后当成够阈值", shouldDeleteBySwipe(999f, -1000f))
+    fun `left and right are two different actions picked by the row's starting role`() {
+        // 我（右侧）：向左 = 改成她的消息，向右 = 删除
+        assertEquals(SwipeAction.SwitchRole, swipeActionForDirection(ChatMessage.Role.ME, -1f))
+        assertEquals(SwipeAction.Delete, swipeActionForDirection(ChatMessage.Role.ME, 1f))
+        // 她（左侧）：向左 = 删除，向右 = 改成我的消息
+        assertEquals(SwipeAction.Delete, swipeActionForDirection(ChatMessage.Role.HER, -1f))
+        assertEquals(SwipeAction.SwitchRole, swipeActionForDirection(ChatMessage.Role.HER, 1f))
+        // 补充：两个方向都是删除（"按既有方向体验"= 往哪滑就往哪退场，动作只有一个）
+        assertEquals(SwipeAction.Delete, swipeActionForDirection(ChatMessage.Role.IDEA, -1f))
+        assertEquals(SwipeAction.Delete, swipeActionForDirection(ChatMessage.Role.IDEA, 1f))
+        assertEquals("一个像素都没拖 ⇒ 没有方向就没有意图",
+            SwipeAction.None, swipeActionForDirection(ChatMessage.Role.ME, 0f))
+        // 拖得远只改"到没到线"，不改动作本身
+        assertEquals(SwipeAction.SwitchRole, swipeActionForDirection(ChatMessage.Role.ME, -400f))
     }
 
     /**
-     * 判据是**比例**不是定值 px：同一把拖量在窄行上过线、在宽行上还没过线。
-     * 反例：阈值写成固定 120px（或任何一刀切的 dp 数）⇒ 150/1000 那一格红；
-     * 反例：把两行的行宽读成同一个数（例如都取屏幕宽）⇒ 150/300 与 150/1000 读成同一个结果，红。
+     * 位移门槛（纯函数）：`max(24dp, min(48dp, 行宽×20%))`，两根端点**必须经 density 换成 px**。
+     * 反例（各自打破一格）：
+     * · 门槛比还留着旧的 0.4（行宽 200 ⇒ 线在 80 而不是 40）⇒ 40f 那一格红
+     *   （用户报的"手指滑很远仍不触发"就是这一档）；
+     * · 只改比例、不加那两根 dp 端点（宽行上还是一百多 px）⇒ 1000 那一格红（该被 48dp 封顶）；
+     * · **把 dp 当 px 用**（端点不乘 density）⇒ density=2 那三格红（48dp 该是 96f、24dp 该是 48f）；
+     * · min/max 写反（夹成 `min(24dp, max(48dp, ·))`）⇒ 200/1000 任一格红；
+     * · 行宽或 density 没量到就凭 24dp 给一个门槛 ⇒ 那三格红（第一帧不许凭空满足）。
      */
     @Test
-    fun `a longer row needs a longer swipe than a shorter one`() {
-        assertTrue(shouldDeleteBySwipe(150f, 300f))    // 线在 120
-        assertFalse(shouldDeleteBySwipe(150f, 1000f))  // 线在 400
-        assertFalse(shouldDeleteBySwipe(399f, 1000f))
-        // 另一根行宽上同样按 0.4 走（250 ⇒ 线正好是 100，float 上不漂）
-        assertFalse(shouldDeleteBySwipe(99.99f, 250f))
-        assertTrue(shouldDeleteBySwipe(100f, 250f))
+    fun `the travel threshold is the clamped twenty percent band converted through density`() {
+        // density 1：那两根端点就是 dp 数本身
+        assertEquals("行宽 200 ⇒ 20% = 40，落在 24~48 之间 ⇒ 线在 40",
+            40f, swipeTravelThresholdPx(200f, 1f), 0.001f)
+        assertEquals("行宽 100 ⇒ 20 被下限 24dp 抬住", 24f, swipeTravelThresholdPx(100f, 1f), 0.001f)
+        assertEquals("行宽 1000 ⇒ 200 被上限 48dp 封顶", 48f, swipeTravelThresholdPx(1000f, 1f), 0.001f)
+        // density 2：同一档 dp 换成两倍的 px（这一族就是"dp 当 px"那颗雷的探测器）
+        assertEquals("density=2 ⇒ 上限 48dp = 96px", 96f, swipeTravelThresholdPx(1000f, 2f), 0.001f)
+        assertEquals("density=2 ⇒ 下限 24dp = 48px", 48f, swipeTravelThresholdPx(100f, 2f), 0.001f)
+        // 原话的算式是 `max(24dp, min(48dp, 行宽×20%))`——**上限 48dp 对每一档都成立**，
+        // 所以 density=2 时行宽 500（=250dp）那一格虽然 20% 算出 100px，仍被 48dp=96px 封顶。
+        // （上一版这里写"不封顶"要 100，是把上限只当 dp 值读、漏了它也要过 density 转换。）
+        assertEquals("density=2 ⇒ 中间档 500×0.2=100px 仍被上限 48dp=96px 封顶",
+            96f, swipeTravelThresholdPx(500f, 2f), 0.001f)
+        // 没量到 ⇒ 恒不许满足
+        assertTrue("行宽 0（还没布局）不给门槛", swipeTravelThresholdPx(0f, 1f).isInfinite())
+        assertTrue("负行宽是坏读数，也不给门槛", swipeTravelThresholdPx(-300f, 1f).isInfinite())
+        assertTrue("density 没量到同样不给门槛", swipeTravelThresholdPx(300f, 0f).isInfinite())
     }
 
-    /** 向左滑过阈值 → 走退场动画，退场收尾后恰好投递被滑那条的 id */
+    /**
+     * 松手那一帧的唯一判据（纯函数）：慢拖过线落方向那一侧的动作、有意快滑落**同一个**动作、
+     * 反向回拉与短擦一律不落。一记手势只可能有一个非 None 的结果。
+     *
+     * 反例（各自打破一格）：
+     * · 还按旧的"abs 达阈值就删"（不看方向）⇒ 我向左 -48f 那一格红（该换角色，却报删除）；
+     * · 快滑档整个没接（只认位移）⇒ -30f 配同向 -1300f 那一格红（有意的一甩不算数）；
+     * · 快滑档不看符号（写成 abs(velocity)）⇒ 反向回拉那一格红（旧峰值误触发，§8.2 点名的形状）；
+     * · 快滑档不设最短位移 ⇒ -15.99f 那一格红（擦一下就算了数）；
+     * · 速度端点写成 `> 600`、位移端点写成 `> 16` ⇒ 那两格"刚好压线"红；
+     * · 端点没乘 density ⇒ density=2 那两格红（32px 在 2x 上才是 16dp）；
+     * · 行宽没量到时放行快滑 ⇒ 最后一格红（第一帧凭空落动作）。
+     */
     @Test
-    fun `swiping a row left past the threshold deletes that message`() {
+    fun `a slow drag past the band and a deliberate same direction flick each commit one action`() {
+        // ① 慢拖过线（行宽 1000、density 1 ⇒ 线在 48）
+        assertEquals("我向左过线 = 换角色", SwipeAction.SwitchRole,
+            swipeCommitAction(ChatMessage.Role.ME, -48f, 1000f, 0f, 1f))
+        assertEquals("她向右过线 = 换角色", SwipeAction.SwitchRole,
+            swipeCommitAction(ChatMessage.Role.HER, 48f, 1000f, 0f, 1f))
+        assertEquals("她向左过线 = 删除", SwipeAction.Delete,
+            swipeCommitAction(ChatMessage.Role.HER, -48f, 1000f, 0f, 1f))
+        assertEquals("我向右过线 = 删除", SwipeAction.Delete,
+            swipeCommitAction(ChatMessage.Role.ME, 48f, 1000f, 0f, 1f))
+        assertEquals("补充两向都删（向右）", SwipeAction.Delete,
+            swipeCommitAction(ChatMessage.Role.IDEA, 48f, 1000f, 0f, 1f))
+        assertEquals("补充两向都删（向左）", SwipeAction.Delete,
+            swipeCommitAction(ChatMessage.Role.IDEA, -48f, 1000f, 0f, 1f))
+        assertEquals("差一点点不算", SwipeAction.None,
+            swipeCommitAction(ChatMessage.Role.ME, -47.99f, 1000f, 0f, 1f))
+
+        // ② 有意快滑：位移 30（不到 48 那条线、过了 16dp 那道下限）+ 同向 1300dp/s
+        assertEquals(SwipeAction.SwitchRole,
+            swipeCommitAction(ChatMessage.Role.ME, -30f, 1000f, -1300f, 1f))
+        assertEquals(SwipeAction.Delete,
+            swipeCommitAction(ChatMessage.Role.HER, -30f, 1000f, -1300f, 1f))
+        assertEquals("刚好 600dp/s 也算（判据是 >=，不是 >）", SwipeAction.SwitchRole,
+            swipeCommitAction(ChatMessage.Role.ME, -30f, 1000f, -600f, 1f))
+        assertEquals("刚好 16dp 位移也算", SwipeAction.SwitchRole,
+            swipeCommitAction(ChatMessage.Role.ME, -16f, 1000f, -1300f, 1f))
+        assertEquals("599dp/s 不到档", SwipeAction.None,
+            swipeCommitAction(ChatMessage.Role.ME, -30f, 1000f, -599f, 1f))
+        assertEquals("15.99dp 太短：擦一下不算", SwipeAction.None,
+            swipeCommitAction(ChatMessage.Role.ME, -15.99f, 1000f, -3000f, 1f))
+        // 反向回拉：位移与末端速度符号相反 ⇒ 旧峰值不许说话
+        assertEquals("向右拖出去又拉回来抬手（末段速度向左）不算", SwipeAction.None,
+            swipeCommitAction(ChatMessage.Role.HER, 30f, 1000f, -1300f, 1f))
+        assertEquals("速度读数为 0 时只剩位移那一档", SwipeAction.None,
+            swipeCommitAction(ChatMessage.Role.HER, 30f, 1000f, 0f, 1f))
+        // 快滑那两端同样经 density：2x 机器上 16dp = 32px、600dp/s = 1200px/s
+        assertEquals("24px 在 density=2 上还不够 16dp", SwipeAction.None,
+            swipeCommitAction(ChatMessage.Role.ME, -24f, 2000f, -3000f, 2f))
+        assertEquals("过了换算后的两端才算", SwipeAction.SwitchRole,
+            swipeCommitAction(ChatMessage.Role.ME, -32f, 2000f, -1200f, 2f))
+        // 行宽没量到 ⇒ 连快滑也不放行
+        assertEquals(SwipeAction.None, swipeCommitAction(ChatMessage.Role.ME, -300f, 0f, -3000f, 1f))
+    }
+
+    /**
+     * 向外那一侧的删除（她向左）：过线 → 走退场动画，退场收尾后恰好投递被滑那一条的 id，
+     * 而且**换角色那一侧一次都没被投**（旧形状里根本没有这一档：那时向左向右都是删除，
+     * 两种意图共用一条 abs 判据）。
+     *
+     * 反例：向内/向外写反（她向左成了换角色）⇒ 落点那句红；
+     * 反例：删除与换角色都投了一次（一次手势落了两个动作）⇒ 最后那句红；
+     * 反例：退场收尾按旧下标删/删了邻居 ⇒ 落点那句红。
+     */
+    @Test
+    fun `a her row swiped left past the band deletes it and switches nothing`() {
         mount(listOf(her, me))
         assertEquals("两行都该在：" + mergedRows().size, 2, mergedRows().size)
+        // 她（左列）向左 = 向外 = 删除
         rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[0].performTouchInput { swipeLeft() }
         rule.mainClock.advanceTimeBy(320L)
-        assertEquals("滑到阈值应只删这一条：" + deleted, listOf(her.id), deleted)
+        assertEquals("她向左滑到线应只删这一条：" + deleted, listOf(her.id), deleted)
+        assertTrue("这一记不许同时投换角色：" + switched, switched.isEmpty())
     }
 
-    /** 向右滑同样有效（双向删除）；删的是被滑的那条，不是它的邻居 */
+    /**
+     * 向外那一侧的删除（我向右）：删的是被滑那一行、不是它的邻居，也不换角色。
+     * 反例：把"我向右"接成换角色（右列的方向写反）⇒ 落点那句红 + 换角色那句非空；
+     * 反例：退场收尾按位置猜对象 ⇒ 第一句红（交出去的是邻居的 id）。
+     */
     @Test
-    fun `swiping a row right past the threshold deletes exactly that row`() {
+    fun `a me row swiped right past the band deletes exactly that row`() {
         mount(listOf(her, me))
         val rows = mergedRows()
         assertEquals("两行都该有滑动锚点：" + rows.size, 2, rows.size)
+        // 我（右列）向右 = 向外 = 删除
         rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[1].performTouchInput { swipeRight() }
         rule.mainClock.advanceTimeBy(320L)
-        assertEquals("滑第二行就该删第二行：" + deleted, listOf(me.id), deleted)
+        assertEquals("我向右滑到线删的是第二行：" + deleted, listOf(me.id), deleted)
+        assertTrue("这一记不许同时投换角色：" + switched, switched.isEmpty())
     }
 
     /**
-     * **快速小幅横滑不误删**（第5节第2条/第5节第3条 的合同）：一记 30ms 走完 80px 的快擦，
-     * 越过了触控 slop（所以行的横向拖拽确实起势了）、没越过行宽四成的阈值 ⇒ 一条都不许丢。
+     * 向内那一侧（她向右、我向左）过线 = **换角色**：只递这一条的稳定 id，
+     * 一条都不删、两条都还在（同一条气泡移到另一侧，不是"先消失再新建"），也不顺手投"去编辑"。
      *
-     * 同一格的后半再补一记整行宽的滑：那一条**必须**被删掉。
-     * 为什么要这后半：只判"擦一下没删"的话，"手势根本没落到这一行"（标签变了、锚点没了、
-     * draggable 被关掉）也能绿——那是恒真。补上"同一行随后仍能删掉这一条"，
-     * 就证明这两记手势打的是同一个删除判据，前一半的"没删"是真的没过阈值。
-     *
-     * 反例：阈值比从 0.4 往下调（80px 够线了）⇒ 前一半红（擦一下就丢内容）；
-     * 反例：给甩动/速度开后门（`onDragStopped` 里看 velocity 不看行程）⇒ 前一半红；
-     * 反例：`draggable` 的 enabled 挂错（永远起不了势）或整行不再带删除锚点 ⇒ 后一半红。
+     * 反例：还按 abs 判据把向内也当删除 ⇒ "一条都不许删"与"两条都该还在"两句红；
+     * 反例：向内接成了"编辑那一条"或"改输入框当前角色"那条旧通道 ⇒ 最后一句红
+     *   （这一格只判 UI 交出去的是哪一颗键、交了几次；"输入框角色/捕获默认角色没被连带改"
+     *    由 `feature/composer/ComposerSwitchRoleTest` 在持有列表的那一侧判）。
      */
     @Test
-    fun `a fast short swipe deletes nothing while a full swipe on the same row still does`() {
+    fun `swiping a row inward switches that row's role and deletes nothing`() {
         mount(listOf(her, me))
         assertEquals("两行都该在：" + mergedRows().size, 2, mergedRows().size)
-        // 360dp 面板上这一行的宽约 330–360px ⇒ 阈值在 ~132–144px；80px 远在阈值之内
-        val shortTravel = 80f
+        // 她（左列）向右 = 向内 = 改成我的消息
+        rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[0].performTouchInput { swipeRight() }
+        rule.mainClock.advanceTimeBy(320L)
+        // 我（右列）向左 = 向内 = 改成她的消息
+        rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[1].performTouchInput { swipeLeft() }
+        rule.mainClock.advanceTimeBy(320L)
+
+        assertTrue("向内那一侧一条都不许删：" + deleted, deleted.isEmpty())
+        assertEquals("换角色只递被滑那一条的 id，一次手势一次：" + switched,
+            listOf(her.id, me.id), switched)
+        assertEquals("两条都该还在（同一条换边，不是删一条建一条）：" + mergedRows().size,
+            2, mergedRows().size)
+        assertTrue("换角色不该顺手把这条选进编辑位：" + edited, edited.isEmpty())
+    }
+
+    /**
+     * 宿主**没接**换角色出口时，向内那一侧什么都不落：既不删（不许退回旧的"横滑一律删"那一档，
+     * 留两套入口正是本轮要拆的东西）、也不递 id。
+     *
+     * 反例：向内没接线就 fallback 成删除 ⇒ 第一句红（用户只是想把那句话改成她说的，内容却没了）；
+     * 反例：向外那一侧被一起关掉 ⇒ 后一半红（删除那条路不能因为换角色没接线就跟着没）。
+     */
+    @Test
+    fun `the unwired inward side never falls back to delete while outward still deletes`() {
+        mount(listOf(her, me), switchOwner = null)
+        assertEquals("两行都该在：" + mergedRows().size, 2, mergedRows().size)
+        rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[0].performTouchInput { swipeRight() }
+        rule.mainClock.advanceTimeBy(320L)
+        assertTrue("向内那一侧没主人就什么都不落：" + deleted, deleted.isEmpty())
+        assertEquals("两条都该还在：" + mergedRows().size, 2, mergedRows().size)
+
+        // 向外那一侧照旧删得掉（同一条行、同一个锚点）
+        rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[0].performTouchInput { swipeLeft() }
+        rule.mainClock.advanceTimeBy(320L)
+        assertEquals("向外那一条不许被换角色那一支带没：" + deleted, listOf(her.id), deleted)
+    }
+
+    /**
+     * 两半各钉一根线：**擦过去不算**、**过了新门槛的短行程就该落**。
+     *
+     * 前半：一记 12px 的横擦（越过触控 slop ⇒ 行的横向拖拽确实起势了），位移既不到 16dp
+     * 那道快滑下限、也远不到位移门槛 ⇒ 一条都不丢、一次都不换。行程刻意压在 16dp **以下**，
+     * 这一格才与"注入的末段速度是多少"无关（本机那一份读数不可依赖，见类 KDoc）。
+     *
+     * 后半：按**本次量出来的行宽**算出 §8.2 那一档门槛（`max(24dp, min(48dp, 行宽×20%))`），
+     * 拖到"门槛 + 20px"就必须落删除。这一格是本轮那根"手指滑很远仍不触发"的线：
+     * 反例：门槛还留着旧的 0.4 行宽 ⇒ 这一记（约半成行程）不够线，红；
+     * 反例：门槛被写成另一个过高的百分比/定值 dp ⇒ 同一句红；
+     * 反例：`draggable` 的 enabled 挂错（永远起不了势）或整行不再带锚点 ⇒ 后半红（什么都不落）；
+     * 反例：把 dp 当 px 用 ⇒ density≠1 的机器上门槛算错，前半那句"擦过去不算"可能红。
+     */
+    @Test
+    fun `a graze inside the band does nothing while a swipe just past the new band deletes`() {
+        mount(listOf(her, me))
+        assertEquals("两行都该在：" + mergedRows().size, 2, mergedRows().size)
+        // 前半：12px 的擦（slop 是 8dp，这一记越过了 slop 但两档都不到）
+        val graze = 12f
         rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[0].performTouchInput {
             val start = center
             down(start)   // 1.6.8 的 TouchInjectionScope 只有 down/moveTo/up，`touchDown` 是 1.7 才有的名字
-            moveTo(Offset(start.x - shortTravel / 2f, start.y))   // 15ms
-            moveTo(Offset(start.x - shortTravel, start.y))        // 再 15ms：整段 ~30ms
+            moveTo(Offset(start.x - graze / 2f, start.y))
+            moveTo(Offset(start.x - graze, start.y))
             up()
         }
         rule.mainClock.advanceTimeBy(320L)
-        assertTrue("快速小幅横滑（越过 slop、没越过阈值）不许删掉任何东西：" + deleted, deleted.isEmpty())
+        assertTrue("没到两档里任何一档的横擦不许丢内容：" + deleted, deleted.isEmpty())
+        assertTrue("也不许换角色：" + switched, switched.isEmpty())
         assertEquals("擦一下之后两条都该还在：" + mergedRows().size, 2, mergedRows().size)
 
-        // 后一半：同一行来一记真的过阈值的滑，必须删的就是这一行
-        rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[0].performTouchInput { swipeLeft() }
+        // 后半：门槛按这一轮那三条数**现场算**（行宽是本格量到的，density 是这台机器的）
+        val rowWidthPx = probe.of(
+            rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG)).fetchSemanticsNodes()[0]
+        ).widthDp * density
+        val bandPx = (rowWidthPx * 0.2f).coerceIn(24f * density, 48f * density)
+        // 留 20px 余量：触控 slop 那一段（8dp）可能被拖拽自己吃掉，行内实际累积的是
+        // "越过 slop 之后"的那一截；这一格判的是"过线就落"，不是那 8px 归谁
+        val travel = bandPx + 20f
+        assertTrue(
+            "这一格的行程必须仍**低于旧的那条 0.4 线**，否则它测不出门槛降下来这件事" +
+                "（行宽 " + rowWidthPx + "px ⇒ 旧线 " + rowWidthPx * 0.4f + "px、新线 " + bandPx + "px）",
+            travel < rowWidthPx * 0.4f
+        )
+        rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[0].performTouchInput {
+            val start = center
+            down(start)
+            moveTo(Offset(start.x - travel / 2f, start.y))
+            moveTo(Offset(start.x - travel, start.y))
+            up()
+        }
         rule.mainClock.advanceTimeBy(320L)
-        assertEquals("同一行随后过阈值仍必须删掉这一条（否则前一半是恒真）：" + deleted,
+        assertEquals("过了新门槛的短行程必须落删除（否则门槛等于没降）：" + deleted,
             listOf(her.id), deleted)
+        assertTrue("删除那一侧不许顺带换角色：" + switched, switched.isEmpty())
     }
 
     /**
@@ -318,12 +502,16 @@ class MessageRowSwipeDeleteTest {
      * 删掉**正在编辑**的那一条：交出去的必须是被删那条的稳定 id（不是下标、不是邻居的 id），
      * 因为宿主只认这颗 id 才知道"编辑对象没了"⇒ 编辑位归 -1、对应草稿跟着清。
      *
+     * ⚠ 这一格滑的是**向右**：被滑那一条是 `me`（右列），§8.1 之后它的**向外**才是删除，
+     * 向左已经变成"改成她"（旧版这里写的是 swipeLeft，那个方向现在归换角色那一支）。
+     *
      * 后半是对照（纯函数，同一份口径）：删掉编辑位前一条时编辑位要跟着挪，但**仍指同一条**，
      * 不许把草稿交给顶上来的那一条（ 要禁的就是"用上一个位置猜对象"）。
      *
      * 反例：退场收尾按旧的 `pair.first` 下标删 ⇒ 第一句红（交出去的 id 是邻居的，
      *   于是被删的正在编辑那条没被认出来，草稿转移到下一条）；
      * 反例：删除路径顺带投一次 `onEdit` ⇒ 第二句红（编辑位被 UI 抢改）；
+     * 反例：向内/向外映射写反（向右成了换角色）⇒ 第一句红 + 换角色那句红；
      * 反例：`MessageListEditing.reindex` 被换成算术位移（删前一条就 -1、删自己就留给上一条）
      *   ⇒ 后两句红。
      */
@@ -333,12 +521,13 @@ class MessageRowSwipeDeleteTest {
         mount(before, editingIndex = 1)          // 正在编辑的是 me 那一条
         assertEquals("三行都该在：" + mergedRows().size, 3, mergedRows().size)
 
-        rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[1].performTouchInput { swipeLeft() }
+        rule.onAllNodes(hasTestTag(MESSAGE_ROW_TEST_TAG))[1].performTouchInput { swipeRight() }
         rule.mainClock.advanceTimeBy(320L)
 
         assertEquals("删正在编辑那一条，交出去的必须是它自己的 id：" + deleted,
             listOf(me.id), deleted)
         assertTrue("删除这条消息不该同时投一次『去编辑第 N 条』：" + edited, edited.isEmpty())
+        assertTrue("向外那一侧不许顺带换角色：" + switched, switched.isEmpty())
 
         // 宿主拿收到的 id 摘掉那一条之后，编辑指向的唯一口径是按身份重算
         val after = before.filterNot { it.id == me.id }
@@ -349,11 +538,12 @@ class MessageRowSwipeDeleteTest {
     }
 
     /**
-     * 纵向浏览不是删除：滑动落在这条行的横滑轴之外 ⇒ 一条都不删。
+     * 纵向浏览不属于横滑那一条轴（§8.4："普通列表纵向滑动 = 滚动"）：既不删也不换角色。
      * 前面先钉"两行都在"、后面再钉"两条都还在"，这一句才不是"什么都没发生所以什么都没删"的恒真。
      *
      * 反例：删除判据改成"只要拖了就删"或按 `dragAmount.y` 起势 ⇒ 中间那句红；
-     * 反例：把横滑的 draggable 换成任意方向 draggable ⇒ 同一句红。
+     * 反例：把横滑的 draggable 换成任意方向 draggable ⇒ 同一句红（纵向被吞进横滑轴）；
+     * 反例：换角色那一支也吃纵向位移 ⇒ 最后一句红。
      *（本轮刻意不判"有没有顺带触发点击"：两行装得下、没人消费纵向拖拽时那一格是点击合同的事，
      *  不在删除这族里造一条与删除无关的红。）
      */
@@ -365,6 +555,7 @@ class MessageRowSwipeDeleteTest {
         rule.mainClock.advanceTimeBy(320L)
         assertTrue("上下浏览列表不该被当成删除：" + deleted, deleted.isEmpty())
         assertEquals("浏览之后两条都该还在：" + mergedRows().size, 2, mergedRows().size)
+        assertTrue("纵滑也不该被当成换角色：" + switched, switched.isEmpty())
     }
 
     /**

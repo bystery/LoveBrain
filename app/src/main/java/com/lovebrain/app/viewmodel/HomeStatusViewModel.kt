@@ -495,8 +495,8 @@ class HomeStatusViewModel(
      * **落盘兜底**（修"重进屏幕灯落回黄"）：账上取不到 **且账本是空的**（= 全新 VM，Activity 销毁后
      * 重建的那一次）时，读 [SettingsStorePort.connectionVerified]——上一次按 ▶ 真的连通过就交回
      * [HomeConnectionVerdict.Verified]，不把已经绿过的灯落回黄。只在账本空时兜底，不在身份变化时兜底：
-     * 换供应商/换模型/切当前对象时 ledger 里已有旧身份的记录（`remembered > 0`），走的是 NotChecked
-     * 那一档——旧身份的结论不许替没验过的新身份说话。
+     * 换供应商/换模型/改地址/改 Key 时 ledger 里已有旧身份的记录（`remembered > 0`），走的是 NotChecked
+     * 那一档——旧身份的结论不许替没验过的新身份说话。（切知识库不改身份，算式就是上面那颗 [identityOf]。）
      */
     private fun connectionFor(ref: HomeProviderRef?, identity: String): HomeConnectionVerdict {
         if (ref == null || !ref.usable) return HomeConnectionVerdict.NotApplicable

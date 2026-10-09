@@ -173,13 +173,18 @@ class KnowledgeMigratorBytesBaselineTest {
         "memory/archive.md" to Row("d1fc47026446c82252b353f0de775634db07c7c9389b87abf4a66eb9b9dd1312", "d1fc47026446c82252b353f0de775634db07c7c9389b87abf4a66eb9b9dd1312", 20),
         "memory/counseling_log.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
         "memory/lessons.md" to Row("309a86950a1ede63f99b43ede0b1150db7b53be9444ef71fb3f51586672deeff", "309a86950a1ede63f99b43ede0b1150db7b53be9444ef71fb3f51586672deeff", 6),
-        "memory/plan_archive_v2.md" to Row("78ce4d6f0f156d25313c80bbf4d78cc8c6b5648a1e617f02a00bb418e9559cd3", "d8104096e9adc028c0ae4793d7a88c991b2659e04e7ef3c8a7e0bb9457f96035", 880),
+        // 2026-10-09 模板清理重录（K34：schema 模板剔除系统残留注释，先取改前读数再实测改后读数）：
+        // plan_archive_v2 的归档头带时钟，raw 本就每跑漂、不参与断言（见 Row KDoc），故以 scrubbed 口径留档；
+        // 旧读数 scrubbed=d8104096…|880B（764B 旧模板那一代），新读数 scrubbed=50c7efe1…|159B（本机定向跑实测）。
+        "memory/plan_archive_v2.md" to Row("50c7efe11f608684ae2fba1f69be652bca709fd2e1e946bbd8365c6b51bc849f", "50c7efe11f608684ae2fba1f69be652bca709fd2e1e946bbd8365c6b51bc849f", 159),
         "memory/raw_chat.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
         "memory/raw_scene.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
         "memory/raw_topic.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
         "memory/reflect_history.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
         "memory/topic_log.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
-        "moment/plan.md" to Row("5249947e7786819e4679ba87a6e892e1c710040b4e7e3d3708dab338c8215161", "5249947e7786819e4679ba87a6e892e1c710040b4e7e3d3708dab338c8215161", 167),
+        // 2026-10-09 模板清理重录（K34）：v1 库缺 moment/plan.md ⇒ 迁移器补落 schema 模板 ⇒ 随模板走。
+        // 旧读数 5249947e…|167B（764B 旧模板那一代归一后的量），新读数＝LF 化新模板 43B/0c67181d…（与 fresh-lib 同一对数字，同一来源）。
+        "moment/plan.md" to Row("0c67181d5a230fcc120e0f6acc7fe8e109e0e996fdbad71f8cc265bb13d646ea", "0c67181d5a230fcc120e0f6acc7fe8e109e0e996fdbad71f8cc265bb13d646ea", 43),
         "moment/recent.md" to Row("b790c050c004ee912bbf81335d24380b5151614cdf053d0d28f75d4c99434a7a", "b790c050c004ee912bbf81335d24380b5151614cdf053d0d28f75d4c99434a7a", 12),
         "moment/scene.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
         "moment/topic.md" to Row("eec4ae8e3d7201cce1f880a347ea4432d8472f3ec6c524f809f4fc6f2c7a60c0", "4d3eebf93d57d2beef1cda81f36d2d0606c9b4fab88cbbe626d36821fff282ff", 60),
@@ -212,7 +217,9 @@ class KnowledgeMigratorBytesBaselineTest {
         "memory/raw_scene.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
         "memory/raw_topic.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
         "memory/reflect_history.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
-        "moment/plan.md" to Row("ab07ce5180036d37643394f57f1a80f4772596844b1fd936e1bc39570735e362", "ab07ce5180036d37643394f57f1a80f4772596844b1fd936e1bc39570735e362", 764),
+        // 2026-10-09 模板清理重录（K34）：fresh-lib 的 plan.md 逐字来自资产（无时钟，raw==scrubbed）。
+        // 旧读数 ab07ce51…|764B；资产改后 48B(CRLF, 3bfc86ae…)，迁移器按 LF 落盘 ⇒ 43B/0c67181d…（本机实测）。
+        "moment/plan.md" to Row("0c67181d5a230fcc120e0f6acc7fe8e109e0e996fdbad71f8cc265bb13d646ea", "0c67181d5a230fcc120e0f6acc7fe8e109e0e996fdbad71f8cc265bb13d646ea", 43),
         "moment/scene.md" to Row("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 0),
     )
 

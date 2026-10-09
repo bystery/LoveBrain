@@ -194,9 +194,6 @@ internal class KnowledgeRepoStorage(private val repo: KnowledgeRepository) : KbS
     /** 根下所有非隐藏目录：切库要逐库改 kb.json，含还没元数据的那类目录，所以不经枚举格 */
     override fun catalogDirNames(): List<String> = repo.visibleKbDirs().map { it.name }
 
-    override fun newestCatalogDirName(): String? =
-        repo.visibleKbDirs().maxByOrNull { it.lastModified() }?.name
-
     override fun catalogDirPresent(kbName: String): Boolean = File(repo.knowledgeRoot, kbName).exists()
 
     /** 库目录 + 三层子目录；幂等，"新建"与"补齐"共用这一个形状定义 */

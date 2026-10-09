@@ -73,9 +73,13 @@ object AppConfig {
 
     // ═══ 无障碍服务 ═══
     // pending 生命期（H2）：超过 30s 的旧暂存不再消费——慢菜单(>3s)照捕，只拦久远残留
+    // ⚠ 这一颗**不跟着下面那格一起收敛**：它是"长按 ↔ 菜单"的事件配对预算，不是重复合并。
     const val PENDING_MAX_AGE_MS = 30_000L
-    // 洪峰去重窗口：仅拦 ≤1.5s 内同文本的重复事件（同一次手势的系统连发），不拦用户主动重捕
-    const val BURST_DEDUP_WINDOW_MS = 1500L
+    // 洪峰去重窗口：仅拦 ≤300ms 内**同一文本**的重复事件（同一次手势的系统连发），不拦用户主动重捕。
+    // 含义只有这一条，不是"所有消息的统一冷却"：判据（含"不同文本一律放行"）住在
+    // `service/ClipBurstDedup`，300ms 这一格的边界钉在 `test/.../data/EventBusCaptureTest.kt`。
+    // （1500→300 是用户要的那一格捕获手感；延时、请求超时、待捕获事件寿命、长按识别阈值都不吃这颗数）
+    const val BURST_DEDUP_WINDOW_MS = 300L
 
     // ═══ 知识库更新触发 ═══
     const val LESSON_TRIGGER_INTERVAL = 5    // 每积累 5 个话题触发一次经验提取

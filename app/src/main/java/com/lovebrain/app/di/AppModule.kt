@@ -92,7 +92,11 @@ val appModule = module {
             // `PanelBackdropOpacity` 那把刻度尺都在它身上），VM 只拿到一对函数、不认识具体存储类。
             // 这两行不接时 VM 那侧是"读默认 100%、写丢弃"，面板照常能画，但设置滑杆就不跨重启了。
             readBackdropOpacityPercent = { get<SecurePrefs>().panelBackdropOpacityPercent },
-            writeBackdropOpacityPercent = { get<SecurePrefs>().panelBackdropOpacityPercent = it }
+            writeBackdropOpacityPercent = { get<SecurePrefs>().panelBackdropOpacityPercent = it },
+            // 「仅看本轮」首次轻提示的"提示过没有"旗标（§2.2 第 3 条）：与上面那对同一形状、
+            // 接在同一个 SecurePrefs 上——盘上那一格只有一份，落盘后每次回来不再重弹。
+            readRoundScopeHintShown = { get<SecurePrefs>().roundScopeHintShown },
+            writeRoundScopeHintShown = { get<SecurePrefs>().roundScopeHintShown = it }
         )
     }
     viewModel { SetupViewModel(get(), get(), get(), androidContext()) }  // securePrefs, DeepSeekRepository, FeedbackCaseRepository, Context

@@ -28,18 +28,24 @@ import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Primary
 import com.lovebrain.app.core.designsystem.PrimaryLight
 import com.lovebrain.app.core.designsystem.Spacing
-import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.SurfaceInset
 import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
 import com.lovebrain.app.model.KnowledgeBase
 
 /**
- * 设置页里那一格**知识库切换**：列已有库，点哪条切哪条。
+ * 设置页里那一格**当前知识库**：列当前选择与其他有效库，点哪条切哪条。
  *
- * 格式复用 [SettingsOpacityEntry] / [SettingsIntentEntry] 那一族：
- * `SurfaceCard` 底 + `Border` 描边 + `Spacing.lg` 内边距。
- * 活动库高亮（`PrimaryLight` 底 + `Primary` 描边），非活动库点一下就切。
+ * 容器走那一族唯一的主人 [settingsEntryCard]（与透明度、意图两格同一条链）。
+ * 库里那一行保留自己的活动高亮（`PrimaryLight` 底 + `Primary` 描边）——那是这一格自己的
+ * 语义（"这一块正在用"），不是容器。
+ *
+ * §11.1 那两条判据在这一格的落点：
+ * · **选中态只在切成功之后才动**：高亮读的是宿主交下来的 [activeKbName]（VM 那份真状态），
+ *   这一格不预涂、不乐观更新。点下去之后盘上没换成那块库，屏幕上就不会换成那块库；
+ * · **看得见的只有有效库**：列表来自仓库那一侧的目录扫描，元数据读不出／坏 JSON／目录名与
+ *   声明不符的那几本在数据层就被丢掉了（`data/KnowledgeCatalogStore.kt` 的 `readOne`），
+ *   这一页不再自己筛第二遍，也不把"切库失败"涂成成功。
  */
 @Composable
 internal fun SettingsKbSwitcherEntry(
@@ -48,14 +54,7 @@ internal fun SettingsKbSwitcherEntry(
     onSwitchKb: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(LoveBrainShape.lg)
-            .background(SurfaceCard, LoveBrainShape.lg)
-            .border(AppDimens.BORDER_WIDTH_DP.dp, androidx.compose.ui.graphics.Color(0xFFE0E0E6), LoveBrainShape.lg)
-            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-    ) {
+    Column(modifier = modifier.settingsEntryCard()) {
         Text(
             text = stringResource(R.string.kb_card_in_use),
             style = AppTypography.labelMedium,
