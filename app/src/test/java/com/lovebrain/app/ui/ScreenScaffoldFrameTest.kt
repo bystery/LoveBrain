@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.core.designsystem.LB_SCREEN_HORIZONTAL_MARGIN
+import com.lovebrain.app.core.designsystem.LbAsyncTags
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
@@ -102,6 +104,24 @@ class ScreenScaffoldFrameTest {
         rule.mainClock.advanceTimeBy(16L)
     }
 
+    /**
+     * 等捕获页那一批 IO 读数落位（`LbAsyncState` 的 `LOADING` 节点消失）再往下量。
+     * 本仓这一版 Compose 的 `waitUntil` 不交回布尔，所以等完独立判一次：还在转圈就红在这里
+     * （"批次没落"），而不是带着一屏半的布局去比边距、红成"这一页边距不对"的假话。
+     * 判据与姊妹用例 `CaptureAppsScreenStatesTest.awaitCaptureBatch` 同一颗。
+     */
+    private fun awaitCaptureBatch() {
+        rule.waitUntil(10_000L) {
+            rule.onAllNodesWithTag(LbAsyncTags.LOADING).fetchSemanticsNodes().isEmpty()
+        }
+        val stillLoading = rule.onAllNodesWithTag(LbAsyncTags.LOADING).fetchSemanticsNodes().size
+        assertTrue(
+            "捕获页的 IO 批次在 10000ms 内没落位（转圈仍 $stillLoading 颗）：" +
+                "这一格量的是整页外框，必须建立在「这一批已落」之上，不许带着 Loading 往下量",
+            stillLoading == 0
+        )
+    }
+
     /** 与 `CaptureAppsScreenStatesTest` 同款：relaxed mock 扛不住泛型流，必须点名返回真流 */
     private fun captureVm(): SetupViewModel = mockk<SetupViewModel>(relaxed = true).also {
         every { it.captureAllowedPackages } returns MutableStateFlow(setOf("PACKET_ALFRED"))
@@ -134,6 +154,12 @@ class ScreenScaffoldFrameTest {
     @Test
     fun `the ScreenPage family insets content by the scaffold margin`() {
         mount { CaptureAppsScreen(viewModel = captureVm(), onBack = {}) }
+        // 这一页的安装包枚举挂在 `LaunchedEffect` 的 `Dispatchers.IO` 上（页面因此有真正的
+        // Loading 那一格），而 `rule.waitForIdle()` / 上面那 16ms 手动推帧**都不跟踪后台线程上的
+        // 协程**——机器一忙，`contentLeftInset()` 就在批次落位前读语义树，量到的是半屏（页头还没
+        // 和最左可点行对齐）。同族那颗 `CaptureAppsScreenStatesTest` 已在 CI 上为同一件事红过，
+        // 用的是同一条确定性等待：等 `LbAsyncState` 的 `LOADING` 标签节点消失（批次落）再量。
+        awaitCaptureBatch()
         assertScaffoldMargin("捕获范围页", contentLeftInset())
     }
 
