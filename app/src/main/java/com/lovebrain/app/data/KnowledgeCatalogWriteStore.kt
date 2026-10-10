@@ -3,6 +3,7 @@ package com.lovebrain.app.data
 import com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort
 import com.lovebrain.app.model.KB_NAME_MAX_LENGTH
 import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.model.StageCatalog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -27,6 +28,10 @@ import java.util.Locale
  *    那**唯一**一条写链，只读 schema 拒绝与备份节流都在那条链上，本类绕不过去；
  * 4. 删库那道 canonical 守卫留在仓库（[CatalogWriteStorage.removeCatalogDir]），
  *    本类连"这个目录在不在树内"都不自己判——判据只许有一处。
+ *
+ * 本轮（§4 M01/M02）这份清单多了一员**读**（[CatalogWriteStorage.readCatalogSlot]），
+ * 上面四条一条都没被它松动：它交不出 `File`、也落不下字节，只是把"这座库到底有没有真实内容"
+ * 这件事交给文档格那**唯一**一道守门来回答——判据只许有一处，读法的"一处"算在内。
  *
  * ## 为什么端口上还有三员是转手
  * [KnowledgeBaseCatalogPort] 是页面唯一可见的那颗口，它另外三员（清单、当前库、阶段、正文写）
@@ -80,6 +85,19 @@ internal interface CatalogWriteStorage {
 
     /** 库的清单：判据（隐藏目录、name 与目录名等值、坏元数据丢弃、倒序）在目录读侧那一份 */
     fun entries(): List<KnowledgeBase>
+
+    /**
+     * 守门读某一格的**正文**（缺文件、越界、非法路径都给空串，不抛）。
+     *
+     * 为什么目录写侧需要一把读尺：§4 M01 那句「判断可以复用必须基于真实元数据与内容状态」
+     * 问的就是盘上此刻有什么，而 kb.json 那四格回答不了正文——
+     * `HomeStatusViewModel` 今天明写 turnCount/topicCount/stage/正文都不参与存在性，
+     * 全仓唯一那颗存在性读数（`FileKnowledgePresence`）只数根目录条目、连 kb.json 都不验。
+     * 所以「这座库有没有真实用户内容」这颗判据只能自己去看真内容，
+     * 而看内容只许借文档格那**唯一**一道守门（[KnowledgeDocumentStore.read]），
+     * 不在本类复制第二份 `File(dir, path)` —— 与 [CatalogTx.exists] 同一个理由。
+     */
+    fun readCatalogSlot(kbName: String, relativePath: String): String
 
     /** kb.json 的编码：与枚举侧同一把 Json 尺，不开第二份配置 */
     fun encodeMeta(kb: KnowledgeBase): String
@@ -184,7 +202,8 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
     }
 
     /**
-     * 新建一个知识库：名字归一化 → 三道拒绝 → 一次事务 seed 13 格 → 记激活库 → 排备份。
+     * 新建一个知识库：名字归一化 → 三道拒绝 → **先问能不能复用那顶还没用过的初始库** →
+     * 一次事务 seed 13 格 → 记激活库 → 排备份。
      *
      * 三道拒绝（空名、过长、已占位）都必须发生在建目录**之前**：
      * 长度那条与 [KB_NAME_MAX_LENGTH] 同源，就是因为以前 sanitizer 只过滤字符集不限长度，
@@ -193,6 +212,16 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
      * 同一条理由管到 seed 写本身：seed 半途失败时这次刚造的目录一并收回（见 [createWithin]），
      * 「报失败」与「列表里多出一座能用的空库」不许同时发生——§12.3 那句
      * 「创建完成才出现在可用列表，失败显示失败」要的就是这一条。
+     *
+     * ## 为什么复用判据也在这颗口里，而不是另开一条"首次建库"流程
+     * §4（活台账 M01/M02）把「首次初始化」与「首次正式建库」定为**同一个用户流程的两步**，
+     * 而"第一步留下的那顶空壳还没被人用过"这件事只有在持锁的一刻才判得准。
+     * 判据见 [reusableInitialKb]：它只读真实元数据与真实正文，**目录名不参与**。
+     * 复用时内部身份（目录名 = kb.json 的 name）一个字都不动，只按流程结果改显示名，
+     * 画像三段与阶段仍由调用方走现有 [writeFile] / [updateStage] 两员——
+     * 全程仍是这一把锁、这一条写链，没有第二条文件系统流程。
+     * 不可复用（有用户内容、已被明确使用、或盘上不止一座库）时保持今天的行为：照常加库，
+     * **绝不因为"修复重复"去删任何既有库**。
      */
     override suspend fun create(name: String, displayName: String): KnowledgeBase =
         withContext(Dispatchers.IO) {
@@ -207,13 +236,19 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
         }
         require(!storage.catalogDirPresent(safeName)) { "知识库 '$safeName' 已存在" }
 
+        // 锁内判定与改写之间没有挂起点，也不会有别人插进来：这一步与下一步同属一次持锁。
+        reusableInitialKb()?.let { initial ->
+            // 返回 null = 那一格没改成（只读库 / kb.json 坏掉），落回正常新建，不谎报也不删任何东西
+            adoptInitialKb(initial, displayName)?.let { return it }
+        }
+
         storage.makeCatalogSkeleton(safeName)
 
         val kb = KnowledgeBase(
             name = safeName,
             displayName = displayName.ifBlank { safeName },
             updatedAt = storage.timestamp(),
-            stage = "待确定",
+            stage = INITIAL_STAGE,
             turnCount = 0,
             active = storage.entries().isEmpty()
         )
@@ -261,6 +296,77 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
         if (kb.active) storage.activeKbName = safeName
         storage.scheduleBackup()
         return kb
+    }
+
+    /**
+     * 首次流程可以当目标库的那座初始库；**没有**（含盘上不止一座库）时给 null。
+     *
+     * 「不止一座就新建」是护栏，不是保守：M01 说的复用只发生在「首次初始化 → 首次正式建库」
+     * 这一条用户流程里，而流程能走到第二座库时盘上必然已经有一座带内容的了
+     * （§4 场景④「已有一个真实库再主动新建 ⇒ 正常变 2 个」——那条必须照样变 2 个）。
+     */
+    private fun reusableInitialKb(): KnowledgeBase? {
+        val all = storage.entries()
+        if (all.size != 1) return null
+        return all.first().takeIf { isPristineInitialKb(it) }
+    }
+
+    /**
+     * 「这座库还是不是首次初始化那一步留下的、一个字都没用过的空壳」——全仓唯一回答者。
+     *
+     * 判据的输入**全是盘上的真实读数**（§4「判断可以复用必须基于真实元数据与内容状态」），
+     * 一条都不许是推断：
+     * 1. `kb.json` 的四格：[KnowledgeBase.stage] 仍是初始那一个、
+     *    [KnowledgeBase.turnCount] 与 [KnowledgeBase.topicCount] 仍是 0（对话与归档各只在那里自增）、
+     *    [KnowledgeBase.displayName] 仍是首次 seed 那一个——用户改过名字就是明确使用过；
+     * 2. 画像三段与此刻/记忆各格的**正文**（经 [CatalogWriteStorage.readCatalogSlot] 读真字节）：
+     *    首次 seed 写的是真空内容，任何非空都只能来自用户或模型；
+     * 3. 话题行仍是"等待第一次对话"那一句（[KbTextOps.topicLabel] 是话题行的唯一读法）；
+     * 4. 两份用户台账文件（持续意图、记忆纠正）仍是空的。
+     *
+     * ⚠ **目录名一个字都不参与判断**——既不是充分条件也不是必要条件。
+     *   它只承担"复用后要保留的稳定内部身份"这一件事（[KnowledgeCatalogStore] 强制
+     *   `kb.name == 目录名`，改目录名等于凭空换一座库）。旧版本把同一份空壳落在别的目录名下
+     *   照样算可复用；用户给一座真有内容的库起名 `default` 照样不可复用。
+     *
+     * ⚠ `updatedAt` 与 `active` 都不参与：kb.json 没有 createdAt，一个时间戳既证不了"刚 seed"
+     *   也证不了"被用过"；而 `active` 首次 seed 就写 true，它回答的是"当前在用哪个"，不是"有没有被用过"。
+     */
+    private fun isPristineInitialKb(kb: KnowledgeBase): Boolean {
+        if (kb.stage != INITIAL_STAGE) return false
+        if (kb.turnCount != 0 || kb.topicCount != 0) return false
+        if (kb.displayName != DEFAULT_DISPLAY_NAME) return false
+        // 正文：seed 时是真空内容的每一格，非空即"有真实用户内容"
+        for (path in PRISTINE_BLANK_SLOTS) {
+            if (storage.readCatalogSlot(kb.name, path).isNotBlank()) return false
+        }
+        val topic = storage.readCatalogSlot(kb.name, TOPIC_FILE)
+        if (topic.isNotBlank() && KbTextOps.topicLabel(topic) != KbTextOps.TOPIC_INITIAL_LABEL) return false
+        return true
+    }
+
+    /**
+     * 复用那顶初始库：一次持锁里的**一次事务**，只改 `displayName`（与 `updatedAt`）那一格。
+     *
+     * 内部身份不动（见 [isPristineInitialKb] 那条 ⚠）；画像三段与阶段仍由调用方经现有
+     * [writeFile] / [updateStage] 落进去——§4「复用时继续使用现有 KnowledgeCatalogWriteStore、
+     * 知识库存储事务与互斥机制，不要另写一条文件系统建库流程」要的就是这个形状。
+     *
+     * 显示名为空白时不覆盖（沿用 [renameWithin] 那条 no-op 规矩）；复用后的库不再是空壳，
+     * 下一次新建因此一律走正常加库——复用最多发生一次，不会把第二座也吃掉。
+     *
+     * 返回 null = 那一格没改成（只读库、kb.json 坏掉：`updateMeta` 静默 false 的那两支）。
+     * 调用方据此回到正常新建那条路：「没改成」与「已经改好了」从此分得开。
+     * 备份不在这儿排：这一次事务落的每一个字节都在唯一写链上，节流备份在那条链的下游自己排。
+     */
+    private fun adoptInitialKb(initial: KnowledgeBase, displayName: String): KnowledgeBase? {
+        val newDisplay = displayName.trim().ifBlank { initial.displayName }
+        val stamp = storage.timestamp()
+        var landed = false
+        storage.writeCatalogTransaction(initial.name) {
+            landed = updateMeta { kb -> kb.copy(displayName = newDisplay, updatedAt = stamp) }
+        }
+        return if (landed) initial.copy(displayName = newDisplay, updatedAt = stamp) else null
     }
 
     /**
@@ -349,6 +455,12 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
      * 6. 全部写入成功才标完成
      * 7. 无网络、无模型配置也成功
      *
+     * 这一格只负责**第一步**（把一座可用的空壳摆上盘）。第二步（首次正式建库）由
+     * [create] 承接，它先用 [reusableInitialKb] 问一句"那顶空壳还没人用过吗"，
+     * 有就复用、没有才加库——两条路径因此在同一个用户流程里只留下一座有效库（§4 M01/M02）。
+     * 这里 seed 的形状（画像真·空、话题初始标签、显示名 [DEFAULT_DISPLAY_NAME]）
+     * 就是那颗判据读的三样事实，改任何一样都要回去看 [isPristineInitialKb]。
+     *
      * 这颗口不在 [KnowledgeBaseCatalogPort] 上，而在 `KnowledgeRuntimePort` 上——
      * 调用它是首页启动流程，不是管理页；仓库那侧只留一行转手，seed 与补齐的判断都在这里。
      */
@@ -379,7 +491,7 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
                 name = DEFAULT_KB_NAME,
                 displayName = DEFAULT_DISPLAY_NAME,
                 updatedAt = storage.timestamp(),
-                stage = "待确定",
+                stage = INITIAL_STAGE,
                 turnCount = 0,
                 topicCount = 0,
                 active = true
@@ -471,5 +583,36 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
     companion object {
         private const val DEFAULT_KB_NAME = "default"
         private const val DEFAULT_DISPLAY_NAME = "默认知识库"
+
+        /**
+         * 首次 seed 写进 `kb.json` 的那个阶段。
+         *
+         * 三条 seed 路径（[createWithin]、[ensureInitialKnowledgeBase]、[isPristineInitialKb]）
+         * 读同一个常数，不再各抄一份字面量——判据说"阶段还是不是初始那一个"，
+         * 而写入侧偷偷改字的话，判据会在每一座新库上恒假（复用悄悄失效）。
+         *
+         * 字面量的主人是 `model/StageCatalog.UNKNOWN`（阶段词表唯一那一处），这里只是给它起一个
+         * 读本文件时更好懂的名字；`viewmodel/KnowledgeBaseViewModel` 的问卷回落也读同一颗，
+         * 两侧不再各写一遍"待确定"。
+         */
+        internal const val INITIAL_STAGE = StageCatalog.UNKNOWN
+
+        /** 话题行那一格（判"有没有真的聊过"要读它，也是 seed 里唯一带时钟的正文格） */
+        private const val TOPIC_FILE = "moment/topic.md"
+
+        /**
+         * 首次 seed 写的是**真空内容**的那些格：任何非空都只能来自用户或模型，因此都是"用过"的证据。
+         *
+         * 刻意不列 `moment/plan.md`（seed 就是 schema 模板正文，非空）与 [TOPIC_FILE]（单独判标签）。
+         * `understand/style.md` 两条 seed 路径都不写，用户写了就是内容。
+         * `memory/corrections.json`（纠正台账）与 `moment/intent.json`（持续意图）也在这一列里：
+         * 它们一旦存在就是用户动过台账，跟正文同一个读法、同一道守门。
+         */
+        private val PRISTINE_BLANK_SLOTS = listOf(
+            "understand/me.md", "understand/her.md", "understand/warmth.md", "understand/style.md",
+            "moment/recent.md", "moment/scene.md", "moment/intent.json",
+            "memory/lessons.md", "memory/raw_chat.md", "memory/raw_topic.md",
+            "memory/raw_scene.md", "memory/counseling_log.md", "memory/corrections.json"
+        )
     }
 }

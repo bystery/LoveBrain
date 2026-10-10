@@ -12,10 +12,12 @@ import com.lovebrain.app.domain.OnboardingSchema
 import com.lovebrain.app.domain.port.KbArchivePort
 import com.lovebrain.app.domain.port.KnowledgeBaseCatalogPort
 import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.model.StageCatalog
 import com.lovebrain.app.util.L
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -59,25 +61,26 @@ sealed interface KbEvent {
 
 /** 建库事务结果 */
 enum class KbCreationOutcome {
-    /** 空模板库已创建（无需提示） */
+    /** 空模板库已创建；首次流程里也可能是复用了那座还没被用过的初始库（§4 场景②：结果同样是 1 座可用空库） */
     EmptyCreated,
 
-    /** 知识库已创建且 AI 画像三段齐全 */
+    /** 知识库已创建且 AI 画像三段齐全（创建或复用同一套判据，见 [KnowledgeBaseViewModel.runOnboardingCreation]） */
     ProfileCreated,
 
-    /** 知识库已创建但画像不完整——降级为模板库，需告知用户可稍后补充 */
+    /** 引擎答了话但画像一段都没解析出来——降级为模板库，需告知用户可稍后补充。
+     *  ⚠ 引擎**报错或答了空**不再是这一支：那种情况下一次目录都不许多造（§4 场景⑤） */
     TemplateOnlyCreated,
 
     /** 空模板建库失败（名称碰撞/IO 失败） */
     EmptyCreateFailed,
 
-    /** AI 建库落盘失败 */
+    /** AI 建库落盘失败，或引擎没答出可写的内容：这一次**没有**留下任何新库 */
     OnboardingCreateFailed,
 
     /** 未配置供应商：UI 应弹二选一，确认后改走 [KnowledgeBaseViewModel.createEmptyKb] */
     ProviderNotConfigured,
 
-    /** 生成中被取消：不提示、不建库 */
+    /** 生成中被取消：不提示、不建库；已经自造的那一座会在取消时回收 */
     Cancelled
 }
 
@@ -281,20 +284,30 @@ class KnowledgeBaseViewModel(
     }
 
     private suspend fun runOnboardingCreation(schema: OnboardingSchema): KbCreationOutcome {
-        // §12.3「生成或写入在开始时绑定目标库」：这一次事务的目标库名在这里就定死，
-        // 下面画像三段与阶段写的都是这一个 name，全程不回来问"现在在用哪一个库"——
-        // 生成期间用户切了库，迟到的结果也只能落进它自己建出来的那一格。
+        // §12.3「生成或写入在开始时绑定目标库」：这一次事务**发起时**就绑好"这一次要落进哪一座"，
+        // 全程不回来问"现在在用哪一个库"。注意绑的是"这一次流程的目标库"而不是"这一次要的库名"：
+        // §4（M01/M02）把首次初始化与首次正式建库定为同一个用户流程的两步，盘上要是有那顶
+        // 还没被用过的初始库，写侧会把它当目标库（内部身份不动，只改显示名），
+        // 回来的 `created.name` 就是这一次真正该写进去的那一座。
         val name = autoKbName()
         val system = readEngineAsset(AssetRegistry.ONBOARDING)
         // 问卷输入以 JSON Schema 传给引擎（取代文本拼接块）
         val user = Json.encodeToString(OnboardingSchema.serializer(), schema)
+        // §4 场景⑤「首次问卷失败 ⇒ 不留下额外半成品库」的顺序修法：
+        // 引擎报错时 raw 只能是空串，解析出来的四段也全是空——**还没拿到可写内容就不建目录**。
+        // 旧顺序（raw="" 照样往下走）会在 default 之外再造一座 13 格全模板的空库，
+        // 那正是"首次建库出现两个库"里最难解释的那一支。
         val raw = try {
             withContext(ioContext) { deepSeek.generateRaw(system, user) }
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
             L.e("onboarding generation failed", e)
-            ""
+            return KbCreationOutcome.OnboardingCreateFailed
+        }
+        if (raw.isBlank()) {
+            L.w("onboarding produced nothing; no library is created")
+            return KbCreationOutcome.OnboardingCreateFailed
         }
         // 取消竞态：IO 期间被 cancel 时不再落盘
         if (!coroutineContext.isActive) throw CancellationException("onboarding cancelled")
@@ -303,25 +316,71 @@ class KnowledgeBaseViewModel(
         val display = parsed.display.ifBlank {
             schema.names.counterpart.ifBlank { "我的她" }
         }
-        val stage = parsed.stage.ifBlank { "待确定" }
+        // 回落值读阶段词表那颗主人（`StageCatalog.UNKNOWN`），与写侧 seed 用的
+        // `KnowledgeCatalogWriteStore.INITIAL_STAGE` 同一颗——两处各抄一遍字面量时，
+        // 任何一处改字都会让"这还是不是那顶没用过的空壳"那条判据悄悄恒假（§4）。
+        val stage = parsed.stage.ifBlank { StageCatalog.UNKNOWN }
 
-        if (!createKnowledgeBase(name, display)) return KbCreationOutcome.OnboardingCreateFailed
-        // 只有对应段非空才覆盖模板，空段保留 schema 模板内容
-        if (parsed.me.isNotBlank()) repo.writeFile(name, "understand/me.md", parsed.me)
-        if (parsed.her.isNotBlank()) repo.writeFile(name, "understand/her.md", parsed.her)
-        if (parsed.warmth.isNotBlank()) repo.writeFile(name, "understand/warmth.md", parsed.warmth)
-        repo.updateStage(name, stage)
+        val created = createKnowledgeBase(name, display) ?: return KbCreationOutcome.OnboardingCreateFailed
+        // 目标库自此定死：写侧没复用时 created.name == name（这一次自己造的），
+        // 复用了那顶初始库时 created.name != name（**不是**这一次造的，取消时一个字节都不许回收）。
+        val target = created.name
+        val selfCreated = target == name
+        try {
+            // 只有对应段非空才覆盖模板，空段保留 seed 留下的形状
+            if (parsed.me.isNotBlank()) repo.writeFile(target, "understand/me.md", parsed.me)
+            if (parsed.her.isNotBlank()) repo.writeFile(target, "understand/her.md", parsed.her)
+            if (parsed.warmth.isNotBlank()) repo.writeFile(target, "understand/warmth.md", parsed.warmth)
+            repo.updateStage(target, stage)
+        } catch (e: CancellationException) {
+            // §4 场景⑤另一半：取消落在"目录已落盘、画像还在挂起"这一支时，
+            // 只回收**本次调用自造**的那一座（沿用写侧 seed 失败回收自己目录的同一先例），
+            // 绝不动用户那座——把 selfCreated 判丢一次，就会以"修复重复"为名删掉真实数据。
+            if (selfCreated) discardSelfCreatedKb(target)
+            throw e
+        }
         return if (parsed.hasUsableProfile) KbCreationOutcome.ProfileCreated
         else KbCreationOutcome.TemplateOnlyCreated
     }
 
-    /** 空模板建库 */
+    /**
+     * 回收**这一次**调用自造的那座库（取消/半途失败时用）。
+     *
+     * 三道护栏：① 调用方必须先证明 `kbName` 等于它自己提出的那个库名——写侧复用盘上那座
+     * 初始库时回来的名字不是它，永远走不到这里；② 走 [NonCancellable]：这一次调用已经被
+     * 取消了，用取消中的协程去删等于什么都不会删（那正是要修的形状）；
+     * ③ 回收失败不改口说成功，只留一条错误级日志——下次启动清单里多出一座半成品时查得到。
+     */
+    private suspend fun discardSelfCreatedKb(kbName: String) {
+        withContext(NonCancellable) {
+            val reclaimed = try {
+                repo.delete(kbName)
+            } catch (e: CancellationException) {
+                // 取消信号显式放行（本仓 `audit_cancellation.py` 认这一种形状）：
+                // 这一段虽然套在 NonCancellable 里，一旦被删的那一跳仍然可能把取消抛回来；
+                // 把它记成"回收失败"等于把取消当业务失败上报——那正是这道审计要拦的事。
+                throw e
+            } catch (e: Exception) {
+                L.e("self-created kb $kbName could not be reclaimed after cancellation", e)
+                false
+            }
+            if (!reclaimed) {
+                // 半成品留在盘上 = 下一次启动清单里多一座库。不改口说成功，但要把话说准。
+                L.e("self-created kb $kbName is still on disk after the cancelled creation", null)
+            }
+        }
+    }
+
+    /** 空模板建库（问卷"跳过"那一支） */
     fun createEmptyKb() {
         if (isCreating) return
         creationJob = viewModelScope.launch {
             // cancel-safe: 同上——取消经 finishCreation 转成 Cancelled，不伪装成 CreateFailed
             val outcome = runCatching {
-                if (createKnowledgeBase(autoKbName(), "新知识库")) KbCreationOutcome.EmptyCreated
+                // §4 场景②「全新安装跳过问卷 ⇒ 1 个可使用的空库」：
+                // 首次初始化那一步留下的空壳若还没被用过，它就是这一次要的结果（写侧复用它），
+                // 于是"跳过"得到的是一座能直接用的空库而不是第二座；没有可复用的才真的加一座库。
+                if (createKnowledgeBase(autoKbName(), "新知识库") != null) KbCreationOutcome.EmptyCreated
                 else KbCreationOutcome.EmptyCreateFailed
             }
             finishCreation(outcome)
@@ -334,15 +393,20 @@ class KnowledgeBaseViewModel(
         creationJob = null
     }
 
-    private suspend fun createKnowledgeBase(name: String, displayName: String): Boolean =
+    /**
+     * 建库这一趟交回来的**真实的那座库**（null = 没建成）。
+     *
+     * 返回值不能省：写侧在首次流程里可能把盘上那顶还没用过的初始库当目标库回来，
+     * 那时库名不是调用方提出的那一个（`kb_xxx`），后续每一格都必须写进它拿回来的那一座。
+     */
+    private suspend fun createKnowledgeBase(name: String, displayName: String): KnowledgeBase? =
         try {
             repo.create(name, displayName)
-            true
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
             L.e("kb create failed", e)
-            false
+            null
         }
 
     private fun finishCreation(outcome: Result<KbCreationOutcome>) {

@@ -111,7 +111,14 @@ class KnowledgeBaseViewModelTest {
 
     private fun newRepo(): KnowledgeBaseCatalogPort {
         val repo = mockk<KnowledgeBaseCatalogPort>(relaxed = true)
-        coEvery { repo.create(any(), any()) } returns mockk<KnowledgeBase>(relaxed = true)
+        // create 回来的是**真库名**（生产侧的写侧契约：返回的那一座就是落盘的那一座）。
+        // 用 relaxed mock 交一个 name="" 的假对象，"目标库绑在哪一座"这条判据就什么都测不出来——
+        // 2026-10-10 §4 M01 复用上线后，写侧可能把库里已有的那顶初始空壳当目标库回来，
+        // 所以这一格必须让回来的名字与提出的一致（复用那一支的反面证据在
+        // `a reused initial library is never reclaimed on cancellation` 与真磁盘那一族）。
+        coEvery { repo.create(any(), any()) } answers {
+            KnowledgeBase(name = firstArg(), displayName = secondArg())
+        }
         coEvery { repo.listAll() } returns emptyList()
         coEvery { repo.getActive() } returns null
         return repo
@@ -271,8 +278,17 @@ class KnowledgeBaseViewModelTest {
         )
     }
 
+    /**
+     * 引擎报错 ⇒ **一个目录都不许多造**（§4 场景⑤；2026-10-10 由「降级建库」改成本行为）。
+     *
+     * 这一格改的是既存判据，不是放松：旧断言（raw="" 照样 create，回报 TemplateOnlyCreated）
+     * 正是「首次建库出现两个库」里最难解释的那一支——它在 default 之外又落了一座 13 格全模板的
+     * 空库，而用户看到的是"创建成功"。需求原话要求"还没拿到可写内容就别建目录"，
+     * 于是这里钉的是：报失败、一次 create 都不调、一格画像都不写、一座库都不删。
+     * 跨两条路径的真磁盘形状（旧库字节完全没漂）由 `FirstRunKnowledgeBaseFlowTest` 那族钉。
+     */
     @Test
-    fun `engine failure degrades to a template library, never a fake success`() = runTest(dispatcher) {
+    fun `engine failure creates nothing instead of a half library`() = runTest(dispatcher) {
         val repo = newRepo()
         val deepSeek = mockk<DeepSeekRepository>(relaxed = true)
         readyProvider(deepSeek)
@@ -283,12 +299,112 @@ class KnowledgeBaseViewModelTest {
         model.createKbWithOnboarding(schema())
         advanceUntilIdle()
 
-        // 引擎报错 → 空输出 → 一段都解析不出来 → 只能报「降级建库」，不能报画像成功
-        assertEquals(
-            listOf(KbEvent.Creation(KbCreationOutcome.TemplateOnlyCreated)),
-            events
-        )
+        // 「失败显示失败」（§12.3），而且盘上什么都没发生
+        assertEquals(listOf(KbEvent.Creation(KbCreationOutcome.OnboardingCreateFailed)), events)
+        coVerify(exactly = 0) { repo.create(any(), any()) }
         coVerify(exactly = 0) { repo.writeFile(any(), any(), any()) }
+        coVerify(exactly = 0) { repo.delete(any()) }
+    }
+
+    /** 引擎答了话但答的是空：同一条「没有可写内容就不建目录」，这一支不走异常 */
+    @Test
+    fun `a blank answer creates no library`() = runTest(dispatcher) {
+        val repo = newRepo()
+        val deepSeek = mockk<DeepSeekRepository>(relaxed = true)
+        readyProvider(deepSeek)
+        coEvery { deepSeek.generateRaw(any(), any()) } returns "   "
+
+        val model = vm(fakeContext(), repo, deepSeek)
+        val events = subscribe(model)
+        model.createKbWithOnboarding(schema())
+        advanceUntilIdle()
+
+        assertEquals(listOf(KbEvent.Creation(KbCreationOutcome.OnboardingCreateFailed)), events)
+        coVerify(exactly = 0) { repo.create(any(), any()) }
+    }
+
+    /**
+     * 取消落在"目录已落盘、画像还在挂起"这一支：只回收**这一次自造**的那座。
+     *
+     * 判据是 `created.name == 这一次提出的库名`。写侧复用了盘上那座初始库时回来的名字不是它，
+     * 于是 delete 一次都不许调——那正是"以修复重复为理由自动删除现有库"的禁区。
+     * 真磁盘那一头的同一支（含"复用时库还在、画像还在"）在 `FirstRunKnowledgeBaseFlowTest`。
+     */
+    @Test
+    fun `a cancellation after the create reclaims exactly the library this run made`() = runTest(dispatcher) {
+        val repo = newRepo()
+        val deepSeek = mockk<DeepSeekRepository>(relaxed = true)
+        readyProvider(deepSeek)
+        coEvery { deepSeek.generateRaw(any(), any()) } returns raw("我是我", "她是她", "温度")
+        val made = mutableListOf<String>()
+        coEvery { repo.create(any(), any()) } answers {
+            val requested = firstArg<String>()
+            made += requested
+            KnowledgeBase(name = requested, displayName = "AI 取的展示名")
+        }
+        val gate = CompletableDeferred<Unit>()
+        // 挂起点放在第二段画像上：第一段真的写完（这才叫"取消落在建库之后"），
+        // 而且 mockk 对它已经有一笔记得的调用。
+        // 实参位置按端口签名 `writeFile(kbName, relativePath, content)`：路径是**第二个**实参，
+        // 第三个是正文。抄错一位（曾写 thirdArg）时这个条件恒假——门不会关，流程一路跑到
+        // ProfileCreated，两格红得毫无线索；所以这里另把"门真的关上了"记成可读的实参轨迹，
+        // 取消点没钉住时由那条前提当场报出实到路径，而不是让事件断言替仪器背锅。
+        val seenPaths = mutableListOf<String>()
+        coEvery { repo.writeFile(any(), any(), any()) } coAnswers {
+            val relativePath = secondArg<String>()
+            seenPaths += relativePath
+            if (relativePath == "understand/her.md") gate.await()
+        }
+
+        val model = vm(fakeContext(), repo, deepSeek)
+        val events = subscribe(model)
+        model.createKbWithOnboarding(schema())
+        runCurrent()
+        model.cancelOnboarding()
+        advanceUntilIdle()
+
+        assertEquals(
+            "前提：取消要真的钉在第二段画像上（me.md 已落盘、her.md 挂住、warmth.md 没开始），实到 $seenPaths",
+            listOf("understand/me.md", "understand/her.md"), seenPaths
+        )
+        assertEquals(listOf(KbEvent.Creation(KbCreationOutcome.Cancelled)), events)
+        val selfCreated = made.single()
+        coVerify(exactly = 1) { repo.delete(selfCreated) }
+        coVerify(exactly = 1) { repo.writeFile(selfCreated, "understand/me.md", "我是我") }
+        assertTrue("回收的必须是这一次自造的那个库名", selfCreated.startsWith("kb_"))
+    }
+
+    /** 反向证人：写侧把目标库换成盘上那座初始库时（回来的名字不是这次提出的），一个字节都不许回收 */
+    @Test
+    fun `a reused initial library is never reclaimed on cancellation`() = runTest(dispatcher) {
+        val repo = newRepo()
+        val deepSeek = mockk<DeepSeekRepository>(relaxed = true)
+        readyProvider(deepSeek)
+        coEvery { deepSeek.generateRaw(any(), any()) } returns raw("我是我", "她是她", "温度")
+        // 写侧复用：回来的库名是 default，不是这一次提出的 kb_*
+        coEvery { repo.create(any(), any()) } returns KnowledgeBase(name = "default", displayName = "AI 取的展示名")
+        val gate = CompletableDeferred<Unit>()
+        val seenPaths = mutableListOf<String>()
+        coEvery { repo.writeFile(any(), any(), any()) } coAnswers {
+            val relativePath = secondArg<String>()
+            seenPaths += relativePath
+            if (relativePath == "understand/her.md") gate.await()
+        }
+
+        val model = vm(fakeContext(), repo, deepSeek)
+        val events = subscribe(model)
+        model.createKbWithOnboarding(schema())
+        runCurrent()
+        model.cancelOnboarding()
+        advanceUntilIdle()
+
+        assertEquals(
+            "前提：取消要真的钉在第二段画像上（me.md 已落盘、her.md 挂住、warmth.md 没开始），实到 $seenPaths",
+            listOf("understand/me.md", "understand/her.md"), seenPaths
+        )
+        assertEquals(listOf(KbEvent.Creation(KbCreationOutcome.Cancelled)), events)
+        coVerify(exactly = 0) { repo.delete(any()) }
+        coVerify(exactly = 1) { repo.writeFile("default", "understand/me.md", "我是我") }
     }
 
     @Test

@@ -135,6 +135,18 @@ class KnowledgeCatalogWriteOwnershipTest {
 
         override fun entries(): List<KnowledgeBase> = entries
 
+        /**
+         * 首次流程那颗「还没被人用过吗」的判据要的正文读数。
+         *
+         * 默认全空（= 与首次 seed 同一形状），测试按 `kbName/相对路径` 往里喂内容就能把这座库
+         * 判成"已经被用过了"——本类的牙正在这里：判据一旦改读目录名、改读 updatedAt，
+         * 或者干脆不看内容，下面那两格（复用 / 不复用）当场红。
+         */
+        var slotContents: Map<String, String> = emptyMap()
+
+        override fun readCatalogSlot(kbName: String, relativePath: String): String =
+            slotContents["$kbName/$relativePath"] ?: ""
+
         override fun encodeMeta(kb: KnowledgeBase): String = "meta-of-${kb.name}"
 
         override fun template(name: String): String = "template-$name"
@@ -350,6 +362,161 @@ class KnowledgeCatalogWriteOwnershipTest {
             rec.events.any { it.startsWith("remove:") })
         assertEquals("kb_keep", rec.activeKb)
         assertEquals(1, rec.backupsWritten)
+    }
+
+    // ═══════════ 首次流程的第二步：复用那顶还没用过的初始库（§4 M01/M02 的编排那一面）═══════════
+
+    /** 首次 seed 落盘的那座库在 kb.json 里的真实形状（判据读的元数据四格） */
+    private fun pristineInitial(name: String = "default") = KnowledgeBase(
+        name = name, displayName = "默认知识库", updatedAt = "2026-10-09T10:00:00+08:00",
+        stage = "待确定", turnCount = 0, topicCount = 0, active = true
+    )
+
+    /**
+     * 复用那一趟的编排：一次锁、一次事务、事务开在**那一座**库上，一个目录都不许多造。
+     *
+     * 坏样子：把复用写成"先 create 再改名"（红在 skeleton 与 transactions 两条）、
+     * 写成"另开一条文件系统流程"（红在 transactions 里出现新库名）、
+     * 或把内部身份也改了（红在第一行：回来的 name 就不是 default 了）。
+     */
+    @Test
+    fun `create adopts the unused initial library inside one transaction on that same library`() = runBlocking {
+        val rec = Recorder()
+        rec.entries = listOf(pristineInitial())
+        rec.present += "default"
+        val store = KnowledgeCatalogWriteStore(rec)
+
+        val kb = store.create("kb_first", "小雅的库")
+
+        assertEquals("复用的是那一座：内部身份（目录名 = kb.json 的 name）一个字都不动", "default", kb.name)
+        assertEquals("按流程结果改的只有显示名", "小雅的库", kb.displayName)
+        assertEquals("复用只许开一次事务，而且开在那一座库上：" + rec.transactions,
+            listOf("default"), rec.transactions)
+        assertEquals("复用不许造任何新目录：" + rec.events,
+            emptyList<String>(), rec.events.filter { it.startsWith("skeleton:") })
+        assertEquals("改的是那一份 kb.json", listOf("default"), rec.metaTouched)
+        assertEquals("一次调用只许进一次锁（套第二次就是给重入开新路径）", 1, rec.maxLockDepth)
+        assertEquals("复用没改成当前库，就不许把活动引用指向一座不存在的库", "", rec.activeKb)
+    }
+
+    /**
+     * 「可复用」判据读的是**真实读数**，目录名不参与。
+     *
+     * 这一格把首次 seed 那座库落在一个叫 `legacy_shell` 的目录名下（旧版本、或导入进来的空壳），
+     * 判据照样认它——把判据写成 `kb.name == "default"` 的实现，这里立刻红（ transactions 会多出
+     * 一座新库而不是 legacy_shell）。反过来，用户给一座真有内容的库起名 default 也不会被吃掉，
+     * 那是下面两格的牙。
+     */
+    @Test
+    fun `the reuse judgment does not read the directory name`() = runBlocking {
+        val rec = Recorder()
+        rec.entries = listOf(pristineInitial(name = "legacy_shell"))
+        rec.present += "legacy_shell"
+        val store = KnowledgeCatalogWriteStore(rec)
+
+        val kb = store.create("kb_first", "小雅的库")
+
+        assertEquals("目录名不叫 default 的同一份空壳一样算可复用", "legacy_shell", kb.name)
+        assertEquals(listOf("legacy_shell"), rec.transactions)
+        assertEquals(emptyList<String>(), rec.events.filter { it.startsWith("skeleton:") })
+    }
+
+    /** 元数据四格里任意一格不像"没用过"，都必须照常加第二座库（§4 场景④） */
+    @Test
+    fun `any used metadata fact on its own forces a brand new library`() = runBlocking {
+        val vetoed = listOf(
+            "聊过一轮（turnCount）" to pristineInitial().copy(turnCount = 1),
+            "转过一条归档（topicCount）" to pristineInitial().copy(topicCount = 1),
+            "阶段被写过（stage）" to pristineInitial().copy(stage = "热恋期"),
+            "用户改过显示名（displayName）" to pristineInitial().copy(displayName = "小雅的库")
+        )
+        vetoed.forEach { (what, kb) ->
+            val rec = Recorder()
+            rec.entries = listOf(kb)
+            rec.present += kb.name
+            val store = KnowledgeCatalogWriteStore(rec)
+
+            val made = runBlocking { store.create("kb_new", "新建的库") }
+
+            assertEquals("$what 这座库不该被复用，必须另建：" + rec.events, "kb_new", made.name)
+            assertEquals("$what 时那一份 kb.json 一个字都不许改", emptyList<String>(), rec.metaTouched)
+            assertEquals("$what 时事务只许开在新库上", listOf("kb_new"), rec.transactions)
+        }
+    }
+
+    /**
+     * 正文每一格都得读，而且每一格都能单独否决复用。
+     *
+     * 这一格是"判据不许只看 kb.json"的证人：把 [CatalogWriteStorage.readCatalogSlot] 那一段循环删掉，
+     * 或者把某一条路径漏掉，下面对应的每一次都会变成"复用了那座有内容的库"（红在 transactions 少一座新库、
+     * metaTouched 非空——那就是把用户已经写了画像的库改了名）。
+     */
+    @Test
+    fun `any real content in any slot vetoes the reuse`() = runBlocking {
+        val contentSlots = listOf(
+            "understand/me.md", "understand/her.md", "understand/warmth.md", "understand/style.md",
+            "moment/recent.md", "moment/scene.md", "moment/intent.json",
+            "memory/lessons.md", "memory/raw_chat.md", "memory/raw_topic.md",
+            "memory/raw_scene.md", "memory/counseling_log.md", "memory/corrections.json"
+        )
+        contentSlots.forEach { path ->
+            val rec = Recorder()
+            rec.entries = listOf(pristineInitial())
+            rec.present += "default"
+            rec.slotContents = mapOf("default/$path" to "真实用户内容")
+            val store = KnowledgeCatalogWriteStore(rec)
+
+            val made = runBlocking { store.create("kb_new", "新建的库") }
+
+            assertEquals("$path 有内容 = 这座库被用过了，不许复用它：" + rec.events, "kb_new", made.name)
+            assertEquals("$path 有内容时不许改动那座旧库的 kb.json", emptyList<String>(), rec.metaTouched)
+        }
+        // 话题行读的是标签而不是"非空"：初始那句放行，换掉那句就否决
+        val kept = Recorder().also {
+            it.entries = listOf(pristineInitial()); it.present += "default"
+            it.slotContents = mapOf("default/moment/topic.md" to "- [2026-01-01 00:00] 正在聊：（等待第一次对话）")
+        }
+        assertEquals("初始那句话题（含 schema 模板那一版）仍算没用过", "default",
+            runBlocking { KnowledgeCatalogWriteStore(kept).create("kb_new", "新建的库").name })
+        val moved = Recorder().also {
+            it.entries = listOf(pristineInitial()); it.present += "default"
+            it.slotContents = mapOf("default/moment/topic.md" to "- [2026-10-09 10:00] 正在聊：周末见面")
+        }
+        assertEquals("话题已经被聊走了 = 用过，不许复用", "kb_new",
+            runBlocking { KnowledgeCatalogWriteStore(moved).create("kb_new", "新建的库").name })
+    }
+
+    /** 盘上不止一座库时永不复用：首次流程只在「初始化 + 首次建库」这一条流程里成立 */
+    @Test
+    fun `a catalog with more than one library never offers a reuse target`() = runBlocking {
+        val rec = Recorder()
+        rec.entries = listOf(pristineInitial(), KnowledgeBase(name = "her", displayName = "她的库", updatedAt = "t"))
+        rec.present += listOf("default", "her")
+        val store = KnowledgeCatalogWriteStore(rec)
+
+        val made = runBlocking { store.create("kb_new", "新建的库") }
+
+        assertEquals("两座库时照常加库（§4 场景④）", "kb_new", made.name)
+        assertEquals(emptyList<String>(), rec.metaTouched)
+        assertEquals(listOf("kb_new"), rec.transactions)
+    }
+
+    /**
+     * 显示名空白时不往上盖（沿用 [renameWithin] 那条 no-op 规矩）：
+     * 复用不许把用户看得见的那一格改成空串。
+     */
+    @Test
+    fun `adopting with a blank display name keeps the initial display name`() = runBlocking {
+        val rec = Recorder()
+        rec.entries = listOf(pristineInitial())
+        rec.present += "default"
+        val store = KnowledgeCatalogWriteStore(rec)
+
+        val kb = runBlocking { store.create("kb_new", "   ") }
+
+        assertEquals("复用的还是那一座", "default", kb.name)
+        assertEquals("空白显示名不改名", "默认知识库", kb.displayName)
+        assertEquals(listOf("default"), rec.transactions)
     }
 
     @Test

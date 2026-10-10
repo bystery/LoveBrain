@@ -247,6 +247,16 @@ internal class KnowledgeRepoStorage(private val repo: KnowledgeRepository) : KbS
     /** 枚举判据只有目录读侧那一份 */
     override fun entries(): List<KnowledgeBase> = repo.catalog.list()
 
+    /**
+     * 目录写侧判「这座库有没有真实用户内容」时读正文用的那一把尺。
+     *
+     * 与 [kbExists] / [read] 同一个来源（文档格那唯一一道守门），不为写侧另开一条读路径：
+     * 越界与缺失都给空串，所以"读不到"永远不会被判成"有内容"，也就永远不会把一座真库吃掉。
+     * 无锁——调用方（目录写侧）已经在那把锁里。
+     */
+    override fun readCatalogSlot(kbName: String, relativePath: String): String =
+        repo.documents.read(kbName, relativePath)
+
     /** 编解码共用仓库那一份 Json 配置：给第二个类另配一把尺就等于换了判据 */
     override fun encodeMeta(kb: KnowledgeBase): String =
         repo.json.encodeToString(KnowledgeBase.serializer(), kb)
