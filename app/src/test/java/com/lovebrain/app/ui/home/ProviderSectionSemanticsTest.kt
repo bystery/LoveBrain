@@ -8,8 +8,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
 
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.onFirst
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.LbAsyncTags
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.RenderIn
@@ -350,4 +355,191 @@ class ProviderSectionSemanticsTest {
      *   报错线索留一条通用的：**栈顶行号超出文件长度**
      *   （`ProviderSection.kt:872`，当时全文 583 行）＝是内联/夹具的问题，不是那一行坏了。
      */
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // request2 §一（P0 叠放缺陷）的结构性守卫。
+    //
+    // 根因：`AnimatedVisibility` 的 KDoc 明写「内容若发射多颗布局节点，按 Box 叠放」——
+    // 展开态里的分隔线 / 供应商列表 / 「添加供应商」曾是它的三颗**直接子节点**，
+    // 于是列表与添加入口叠在同一块位置。修法是补一颗真正的纵向 Column，让三者回到同一条排布流。
+    //
+    // 下面四格都**直接挂 `ProviderManageEntry`**（internal，同模块可见）而不是整页：
+    // ①回调可以用录制 lambda 逐颗点验，不绕 `SetupViewModel` 的 mockk 桩（那串坑记在本文件上方）；
+    // ②点「添加」不会开出 `ProviderEditDialog`——Dialog+文本框永不空闲那堵墙（账本 第45节第1条）
+    //   不在这条路径上。既有格（`expanding…`/`an empty provider list…` 等）判据一字未动，
+    // 这几格不替代它们，是补上「叠放」这一问：空态添加格数、48dp 下限、命名等旧判据继续由旧格把守。
+    //
+    // 定位把手：`ProviderExpandTags`（生产侧三颗 testTag，只增语义锚点、不改任何像素）。
+
+    private class RecordedCallbacks {
+        val activated = mutableListOf<String>()
+        val edited = mutableListOf<String>()
+        val deleted = mutableListOf<String>()
+        var adds = 0
+    }
+
+    private val twoTickets = listOf(
+        ProviderTicket(id = "t1", name = "DeepSeek", baseUrl = "https://api.example", model = "r1"),
+        ProviderTicket(id = "t2", name = "一个长得离谱的供应商名字用于压测", baseUrl = "https://api.example", model = "")
+    )
+
+    private fun mountEntry(tickets: List<ProviderTicket>, cb: RecordedCallbacks) {
+        rule.setContent {
+            val deviceDensity = LocalDensity.current.density
+            UiMatrix(360).RenderIn(deviceDensity) {
+                ProviderManageEntry(
+                    tickets = tickets,
+                    activeTicket = null,
+                    providerReady = true,
+                    onActivate = { cb.activated += it },
+                    onEdit = { cb.edited += it.name },
+                    onDelete = { cb.deleted += it.name },
+                    onAdd = { cb.adds++ }
+                )
+            }
+        }
+        rule.waitForIdle()
+    }
+
+    /**
+     * ⚠ **读法必须是未合并语义树**（`useUnmergedTree = true`，与仓里另一把 tag 尺
+     * `DragHandleHitBandTest.rectOf` 的默认值一致）。原因（2026-10-10 实测，别再重踩）：
+     * `ProviderExpandTags.DIVIDER` 与 `.LIST` 那两颗节点**身上只有 TestTag 这一个语义属性**
+     * （一颗 `HorizontalDivider`、一颗空 `Column`），而 TestTag 那颗键的无障碍重要性是"不重要"
+     * ⇒ 它们在**合并后的语义树**里根本不存在：外面那层卡片 `Modifier.clickable{ expanded = … }`
+     * （`ProviderSection.kt:334`）会把这类不重要后代整个吞掉。
+     * 三颗里只有 `ADD_ROW` 活下来——它挂在那颗 `Text` 上，同节点还带着 Text 与 OnClick，才是"重要"节点。
+     * 于是原来的 `onAllNodes(hasTestTag(DIVIDER))`（默认走合并树）拿到**空列表**，
+     * `.single()` 抛 `NoSuchElementException: List is empty`：
+     * 红的是这台仪器读错了树，**不是**那三样没画。改读未合并树后实到
+     * divider@53px / list@54px / add_row@167px 三个严格递增的顶 ⇒ 叠放那条缺陷已经是修好的。
+     * 判据一寸没松：仍然要三颗都在、仍然比顶坐标严格递增、仍然要求添加顶不落在列表矩形之内。
+     */
+    private fun nodesOf(tag: String) =
+        rule.onAllNodes(androidx.compose.ui.test.hasTestTag(tag), useUnmergedTree = true)
+            .fetchSemanticsNodes()
+
+    private fun topOf(tag: String): Float =
+        nodesOf(tag).single().boundsInRoot.top
+
+    /**
+     * 格①（叠放的正判据）：展开态里 分隔线 / 列表 / 添加入口 三条**顶坐标严格递增**，
+     * 且添加入口的顶不在列表柱的矩形之内（真上下排布，不是错开一点的叠放）。
+     *
+     * 喂成什么坏样子会红：
+     * - 撤掉 AnimatedVisibility 里那颗 Column（回到原始缺陷）⇒ 三颗被 Box 叠放，
+     *   三顶相等，第一条断言当场红；
+     * - 换成 `Row` ⇒ 分隔线与列表顶仍相等，红；
+     * - 把添加行用绝对定位/zIndex 浮上去 ⇒ 添加顶落进列表矩形，第二条断言红；
+     * - 顺序写反（添加在前）⇒ 递增断言红。
+     */
+    @Test
+    fun `expanded divider list and add row stack strictly top to bottom`() {
+        val cb = RecordedCallbacks()
+        mountEntry(twoTickets, cb)
+        clickCard()
+
+        val dividerTop = topOf(ProviderExpandTags.DIVIDER)
+        val listTop = topOf(ProviderExpandTags.LIST)
+        val listBottom = nodesOf(ProviderExpandTags.LIST).single().boundsInRoot.bottom
+        val addTop = topOf(ProviderExpandTags.ADD_ROW)
+        assertTrue(
+            "展开态三颗节点必须严格上下排（叠放=修复前回退）：分隔线顶=$dividerTop，列表顶=$listTop，添加顶=$addTop",
+            dividerTop < listTop && listTop < addTop
+        )
+        assertTrue(
+            "添入口的顶不许落在列表柱矩形之内（那仍是叠放）：列表底=$listBottom，添加顶=$addTop",
+            addTop >= listBottom - 0.5f
+        )
+    }
+
+    /**
+     * 格②（回归护栏）：`tickets` 为空时**不画底部添加入口**这件事不变——
+     * 空态只留 `LbAsyncState` 就地那一颗添加动作，且点它走的仍是 `onAdd`。
+     *
+     * 喂成什么坏样子会红：删掉 `if (tickets.isNotEmpty())` 那道闸（底部入口在空态也画出来）
+     * ⇒ ADD_ROW 那格出现，第一断言红；把空态动作的回调接错 ⇒ `adds` 不是 1，第三断言红。
+     * （整页视角下"空态恰一个添加入口"仍由既有格 `an empty provider list offers…` 把守，两格互补不替代。）
+     */
+    @Test
+    fun `empty list does not draw the bottom add row but keeps the empty state action`() {
+        val cb = RecordedCallbacks()
+        mountEntry(emptyList(), cb)
+        clickCard()
+
+        assertEquals(
+            "空态不许再画底部添加行（那会叠出第二个一模一样的入口）",
+            0, nodesOf(ProviderExpandTags.ADD_ROW).size
+        )
+        assertEquals("空态时内容列表柱不在树上", 0, nodesOf(ProviderExpandTags.LIST).size)
+        val actions = rule.onAllNodes(hasTestTag(LbAsyncTags.ACTION)).fetchSemanticsNodes()
+        assertEquals("空态应当恰有一颗就地添加动作：" + actions.size, 1, actions.size)
+        rule.onAllNodes(hasTestTag(LbAsyncTags.ACTION))[0].performClick()
+        assertEquals("点空态添加动作必须打到 onAdd", 1, cb.adds)
+    }
+
+    /**
+     * 格③（业务回调一颗没丢）：选供应商 / 编辑 / 删除 / 添加，四颗都在搬家后的树上点得到、点得对。
+     *
+     * 喂成什么坏样子会红：搬家时漏接任何一条回调（比如列表行的 `onActivate` 被写死空 lambda、
+     * 编辑那颗换了实参没接上）⇒ 对应清单为空或条数不对；
+     * 添加入口被挪出展开区（折叠就能点到）⇒ 折叠态点不到、`adds` 为 0（由格④的节点账一起锁死）。
+     * 行内动作按顶坐标排序取第几行，不赌语义树遍历顺序。
+     */
+    @Test
+    fun `activate edit delete and add callbacks all still fire after the layout fix`() {
+        val cb = RecordedCallbacks()
+        mountEntry(twoTickets, cb)
+        clickCard()
+
+        fun orderByTop(text: String) = rule.onAllNodes(hasText(text)).fetchSemanticsNodes()
+            .let { nodes -> nodes.indices.sortedBy { nodes[it].boundsInRoot.top } }
+            .map { rule.onAllNodes(hasText(text))[it] }
+
+        // 选供应商：点第一行的名字（触点落进行柱，由那颗 fillMaxWidth 的行 clickable 收到）
+        orderByTop("DeepSeek").first().performClick()
+        rule.waitForIdle()
+        assertEquals("点供应商行必须启用那张工单", listOf("t1"), cb.activated)
+
+        // 编辑第二行 / 删除第一行：按顶坐标排序取第几行，不赌语义树遍历顺序
+        orderByTop("编辑")[1].performClick()
+        rule.waitForIdle()
+        assertEquals("点第二行的编辑必须把那张工单交回 onEdit",
+            listOf("一个长得离谱的供应商名字用于压测"), cb.edited)
+
+        orderByTop("删除").first().performClick()
+        rule.waitForIdle()
+        assertEquals("点第一行的删除必须把那张工单交回 onDelete", listOf("DeepSeek"), cb.deleted)
+
+        // 添加：展开区底部那一行
+        rule.onAllNodes(hasTestTag(ProviderExpandTags.ADD_ROW)).onFirst().performClick()
+        assertEquals("点「添加供应商」必须打到 onAdd", 1, cb.adds)
+    }
+
+    /**
+     * 格④（折叠态不多出节点）：修复加的那颗 Column 与其三颗子节点都只在**展开时**存在；
+     * 折叠态整棵树仍只有卡片那一颗可点节点，展开区一个节点都不许漏出来。
+     *
+     * 喂成什么坏样子会红：把 Column（或列表/添加行）挪到 `AnimatedVisibility` **外面**
+     * ⇒ 折叠态就量得到 DIVIDER/LIST/ADD_ROW 三颗 tag，红；
+     * 给卡片外面再裹一层可点的壳 ⇒ 可点节点 >1，红。
+     * （真实触摸命中折叠卡片本身、展开/收起动画的观感，语义树验不了——见报告「只能真机验」。）
+     */
+    @Test
+    fun `collapsed card exposes no expand region nodes`() {
+        val cb = RecordedCallbacks()
+        mountEntry(twoTickets, cb)
+
+        assertEquals(
+            "折叠态整棵树只许有卡片这一颗可点节点",
+            1, rule.onAllNodes(androidx.compose.ui.test.hasClickAction()).fetchSemanticsNodes().size
+        )
+        for (tag in listOf(ProviderExpandTags.DIVIDER, ProviderExpandTags.LIST, ProviderExpandTags.ADD_ROW)) {
+            assertEquals("折叠态不许出现展开区节点：$tag", 0, nodesOf(tag).size)
+        }
+        assertTrue(
+            "折叠态连供应商名字都不该在树上",
+            rule.onAllNodes(hasText("DeepSeek")).fetchSemanticsNodes().isEmpty()
+        )
+    }
 }

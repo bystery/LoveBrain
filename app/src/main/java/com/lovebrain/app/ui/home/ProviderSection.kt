@@ -60,6 +60,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -138,6 +139,19 @@ private object ProviderDimens {
 
     /** 再矮也要留给表单的可见高度——低于这一档，滚动本身也救不了这个表单 */
     const val FORM_MIN_VIEWPORT_HEIGHT_DP = 240
+}
+
+/**
+ * 展开态那三颗节点的**定位把手**（分隔线 / 供应商列表 / 添加入口）。
+ *
+ * 只给语义测试量"三者顶坐标严格递增"这一问用（request2 §一：叠放缺陷的证人）。
+ * 与本页形状、热区、颜色、回调一概无关——加不加这三颗 tag，屏上像素一寸不变；
+ * 先例同 `MessageList.kt#MESSAGE_ROW_TEST_TAG`（页内 internal 常量，不进设计系统）。
+ */
+internal object ProviderExpandTags {
+    const val DIVIDER = "provider_expand_divider"
+    const val LIST = "provider_expand_list"
+    const val ADD_ROW = "provider_expand_add_row"
 }
 
 /**
@@ -377,92 +391,104 @@ internal fun ProviderManageEntry(
                 enter = expandVertically(),
                 exit = shrinkVertically()
             ) {
-                HorizontalDivider(
-                    thickness = AppDimens.BORDER_WIDTH_DP.dp,
-                    color = Border.copy(alpha = 0.5f)
-                )
-                // 第6节第3条 / §③-9：空 / 加载中 / 失败 / 有内容四格由同一个 ScreenState 判定，
-                // 全部由同一颗 LbAsyncState 画。优先级 Loading > Error > Empty > Content 与知识库页同构，
-                // 判定只在这一处、版式也只在这一处。
-                // Loading/Error 两格由入参驱动（默认 false/null ⇒ 今天这条 Empty/Content 路径逐像素不变），
-                // 本页不新增第二份状态源；工单读取信号接上后由调用方传值即可点亮这两格。
-                val listState: ScreenState<List<ProviderTicket>> = when {
-                    loading -> ScreenState.Loading
-                    !listError.isNullOrBlank() -> ScreenState.Error(message = listError)
-                    tickets.isEmpty() -> ScreenState.Empty(
-                        message = stringResource(R.string.provider_empty),
-                        action = ScreenAction(stringResource(R.string.provider_add)) { onAdd() }
+                // 布局缺陷修复（request2 §一）：`AnimatedVisibility` 的 KDoc 明写「内容若发射多颗
+                // 布局节点，按 Box 叠放」——此前分隔线、`LbAsyncState` 列表与「添加供应商」三条兄弟
+                // 节点因此叠在同一块位置上。修法只有一条：补一颗真正的纵向 Column，让三者回到
+                // 同一条上下排布流。Card、`LbAsyncState` 判据、按钮、圆角、颜色与全部业务回调逐字保留。
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    HorizontalDivider(
+                        thickness = AppDimens.BORDER_WIDTH_DP.dp,
+                        color = Border.copy(alpha = 0.5f),
+                        modifier = Modifier.testTag(ProviderExpandTags.DIVIDER)
                     )
-                    else -> ScreenState.Content(tickets)
-                }
-                LbAsyncState(listState) { shownTickets ->
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        shownTickets.forEachIndexed { index, t ->
-                            val active = activeTicket?.id == t.id
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(if (active) PrimaryLight.copy(alpha = 0.5f) else Color.Transparent)
-                                    .clickable { onActivate(t.id) }
-                                    .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
-                            ) {
-                                Box(
+                    // 第6节第3条 / §③-9：空 / 加载中 / 失败 / 有内容四格由同一个 ScreenState 判定，
+                    // 全部由同一颗 LbAsyncState 画。优先级 Loading > Error > Empty > Content 与知识库页同构，
+                    // 判定只在这一处、版式也只在这一处。
+                    // Loading/Error 两格由入参驱动（默认 false/null ⇒ 今天这条 Empty/Content 路径逐像素不变），
+                    // 本页不新增第二份状态源；工单读取信号接上后由调用方传值即可点亮这两格。
+                    val listState: ScreenState<List<ProviderTicket>> = when {
+                        loading -> ScreenState.Loading
+                        !listError.isNullOrBlank() -> ScreenState.Error(message = listError)
+                        tickets.isEmpty() -> ScreenState.Empty(
+                            message = stringResource(R.string.provider_empty),
+                            action = ScreenAction(stringResource(R.string.provider_add)) { onAdd() }
+                        )
+                        else -> ScreenState.Content(tickets)
+                    }
+                    LbAsyncState(listState) { shownTickets ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag(ProviderExpandTags.LIST)
+                        ) {
+                            shownTickets.forEachIndexed { index, t ->
+                                val active = activeTicket?.id == t.id
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier
-                                        .size(ProviderDimens.STATUS_DOT_SIZE_DP.dp)
-                                        .clip(CircleShape)
-                                        .background(if (active) Primary else Color.Transparent)
-                                        .border(
-                                            if (active) 0.dp else AppDimens.BORDER_WIDTH_DP.dp,
-                                            Neutral300,
-                                            CircleShape
-                                        )
-                                )
-                                Spacer(Modifier.width(Spacing.md))
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text(
-                                        t.name,
-                                        style = AppTypography.bodyMedium,
-                                        color = TextPrimary,
-                                        fontWeight = FontWeight.Medium,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
+                                        .fillMaxWidth()
+                                        .background(if (active) PrimaryLight.copy(alpha = 0.5f) else Color.Transparent)
+                                        .clickable { onActivate(t.id) }
+                                        .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(ProviderDimens.STATUS_DOT_SIZE_DP.dp)
+                                            .clip(CircleShape)
+                                            .background(if (active) Primary else Color.Transparent)
+                                            .border(
+                                                if (active) 0.dp else AppDimens.BORDER_WIDTH_DP.dp,
+                                                Neutral300,
+                                                CircleShape
+                                            )
                                     )
-                                    Text(
-                                        t.model.ifBlank { "未配置模型" },
-                                        style = AppTypography.labelSmall,
-                                        color = TextHint,
-                                        // 同上：列表行里长模型名只省略，卡不被它撑开
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
+                                    Spacer(Modifier.width(Spacing.md))
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            t.name,
+                                            style = AppTypography.bodyMedium,
+                                            color = TextPrimary,
+                                            fontWeight = FontWeight.Medium,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                        Text(
+                                            t.model.ifBlank { "未配置模型" },
+                                            style = AppTypography.labelSmall,
+                                            color = TextHint,
+                                            // 同上：列表行里长模型名只省略，卡不被它撑开
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    }
+                                    RowActionButton("编辑") { onEdit(t) }
+                                    Spacer(Modifier.width(Spacing.sm))
+                                    RowActionButton("删除", tint = Error) { onDelete(t) }
+                                }
+                                if (index < shownTickets.lastIndex) {
+                                    HorizontalDivider(
+                                        thickness = AppDimens.BORDER_WIDTH_DP.dp,
+                                        color = Border.copy(alpha = 0.5f)
                                     )
                                 }
-                                RowActionButton("编辑") { onEdit(t) }
-                                Spacer(Modifier.width(Spacing.sm))
-                                RowActionButton("删除", tint = Error) { onDelete(t) }
-                            }
-                            if (index < shownTickets.lastIndex) {
-                                HorizontalDivider(
-                                    thickness = AppDimens.BORDER_WIDTH_DP.dp,
-                                    color = Border.copy(alpha = 0.5f)
-                                )
                             }
                         }
                     }
+                    // 空态已经有自己的添加动作了，这里不再摆第二个一模一样的入口
+                    if (tickets.isNotEmpty()) Text(
+                        stringResource(R.string.provider_add),
+                        style = AppTypography.labelLarge,
+                        color = Primary,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = ProviderDimens.ADD_ROW_MIN_HEIGHT_DP.dp)
+                            .clip(LoveBrainShape.md)
+                            .clickable(role = Role.Button) { onAdd() }
+                            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+                            .testTag(ProviderExpandTags.ADD_ROW)
+                    )
                 }
-                // 空态已经有自己的添加动作了，这里不再摆第二个一模一样的入口
-                if (tickets.isNotEmpty()) Text(
-                    stringResource(R.string.provider_add),
-                    style = AppTypography.labelLarge,
-                    color = Primary,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = ProviderDimens.ADD_ROW_MIN_HEIGHT_DP.dp)
-                        .clip(LoveBrainShape.md)
-                        .clickable(role = Role.Button) { onAdd() }
-                        .padding(horizontal = Spacing.lg, vertical = Spacing.md)
-                )
             }
         }
     }
