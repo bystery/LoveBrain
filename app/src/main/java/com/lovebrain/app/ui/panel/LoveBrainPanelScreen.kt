@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -64,6 +65,9 @@ import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 import com.lovebrain.app.domain.IntentPolicy
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
+import com.lovebrain.app.viewmodel.FloatingServiceHomePort
+import com.lovebrain.app.service.FloatingService
+import com.lovebrain.app.ReplyCardLayout
 import com.lovebrain.app.viewmodel.costReadout
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.ResultMode
@@ -152,10 +156,22 @@ private class PanelBackPressedOwner(
  * 之所以做成一颗持有者而不是两颗局部布尔：本仓对"屏幕函数中间摊一堆局部可见性状态"
  * 是有账的（`UiLayerDependencyContractTest` 那一族），设置页这一格是新增的第 4 面。
  */
-private class PanelSurfaceHolder(initialBackdropPercent: Int) {
+private class PanelSurfaceHolder(
+    initialBackdropPercent: Int,
+    initialCardLayout: ReplyCardLayout
+) {
     var settingsOpen: Boolean by mutableStateOf(false)
         private set
     var backdropPercent: Int by mutableIntStateOf(PanelBackdropOpacity.snapPercent(initialBackdropPercent))
+        private set
+    /**
+     * 回复卡片方向的**组合期内读数**（指导书 2026-10-10 §3）。
+     *
+     * 真源仍是盘上那一格（`ReplyCardLayout.PREF_KEY`，读口写在 `LoveBrainViewModel`）；这一颗只
+     * 负责"拨一下开关当场就换摆法"，不必等面板重开一次。初值由宿主从 VM 的读盘口交进来，
+     * 所以服务重启、窗口重建后仍然跟着盘走，这里不写盘、也不另存一份。
+     */
+    var cardLayout: ReplyCardLayout by mutableStateOf(initialCardLayout)
         private set
 
     fun openSettings() { settingsOpen = true }
@@ -165,17 +181,28 @@ private class PanelSurfaceHolder(initialBackdropPercent: Int) {
     fun setBackdropPreview(percent: Int) {
         backdropPercent = PanelBackdropOpacity.snapPercent(percent)
     }
+
+    /**
+     * 换方向：只换画侧读数；结果集、筛选与阅读位置的主人不在这里（§3 不许清空当前回复）。
+     *
+     * 名字不叫 `setCardLayout`：那颗属性是 `private set`，Kotlin 已经占用了 `setCardLayout` 这颗
+     * JVM setter，同名函数会撞成 platform declaration clash（同一格 JVM 签名）。
+     */
+    fun applyCardLayout(layout: ReplyCardLayout) { cardLayout = layout }
 }
 
 @Composable
-private fun rememberPanelSurfaceHolder(initialBackdropPercent: Int): PanelSurfaceHolder =
-    remember { PanelSurfaceHolder(initialBackdropPercent) }
+private fun rememberPanelSurfaceHolder(
+    initialBackdropPercent: Int,
+    initialCardLayout: ReplyCardLayout
+): PanelSurfaceHolder = remember { PanelSurfaceHolder(initialBackdropPercent, initialCardLayout) }
 
 /**
  * 齿轮那一扇**整窗设置页**的宿主接线：正文本体住在 `ui/panel/settings/LoveBrainSettingsContent`，
  * 这一格只做两件事——把背景层当前浓度交出去、把预览与写盘两条口接回来。
  *
- * 设置页当前包含：透明度滑杆、意图入口（§10.2）、知识库切换（§10.3）。
+ * 设置页当前包含（2026-10-10 §7 的分组）：悬浮助手（开关＋关闭动作）→ 透明度 → 悬浮图标大小 →
+ * 回复显示（卡片纵向排列）→ 当前知识库（§10.3）→ 持续意图（§10.2）。
  * 供应商/模型/超时在首页"模型供应商"那一格，捕获范围在首页"消息捕获"那一格。
  *
  * ⚠ 以前这一格会在**组合阶段同步枚举整机安装包**（`selectableCaptureTargets(context)`）并为了
@@ -194,8 +221,16 @@ private fun PanelSettingsPage(
     /** 原话第 17 条「设置页收不起窗」：这颗只把宿主那一次点击转下去，本页不判断该不该收 */
     onCollapse: () -> Unit,
     onInputIntent: (String) -> Unit,
+    /** 「回到 App 里启动」那颗：拨开时交回既有启动链（授权那一跳只有 Activity 认得，§2） */
+    onOpenAppPage: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // 悬浮助手此刻开着没有：**唯一判据是那颗真实窗口状态**，页面不自己记一份布尔（§2）。
+    // `TEMP_HIDDEN` 读出来仍是"开着"——窗暂时藏了、服务与前台通知都还在跑，
+    // 把它当"已关闭"就是让用户以为窗没了、屏上却还留着一颗会亮回来的球。
+    val windowState by FloatingService.windowStateFlow.collectAsStateWithLifecycle()
+    // 档位读数走 VM 那对函数口子：盘上唯一那一格，刻度尺长在 `AppConfig.BubbleSizeTier`。
+    val bubbleSizeDp = viewModel.bubbleSizeDp
     // 持续意图：设置页那一格读同一份 config，一条写口 onIntentChange 拼一次 save。
     // · 拨开关 / 改正文（recomputeExpiry=false）：传**已有 expiryDate**，
     //   [IntentPolicy.effectiveExpiryDate] 保留它，不把计时重置；
@@ -210,11 +245,36 @@ private fun PanelSettingsPage(
     LoveBrainSettingsContent(
         onBack = onBack,
         onCollapse = onCollapse,
+        assistantOn = FloatingService.isAssistantOn(windowState),
+        // 拨开：这一格起不了授权页那一跳（`startActivity` 在 settings 那一族是禁的），
+        // 交回「去 App 主页面」那颗既有出口——启动与权限检查仍走首页那一条真实链（§2）。
+        onAssistantEnable = onOpenAppPage,
+        // 拨关：与主页 ■ 那颗**同一个端口、同一个方法**，最终 `stopSelf()` 经 `onDestroy` 清理；
+        // 面板/球/前台通知一起退，不留透明窗口（§2 验收）。
+        onAssistantClose = { FloatingServiceHomePort.stop() },
         opacityPercent = surface.backdropPercent,
         onOpacityPreview = { percent -> surface.setBackdropPreview(percent) },
         onOpacityCommit = { percent ->
             surface.setBackdropPreview(percent)
             viewModel.setPanelBackdropOpacityPercent(percent)
+            // 悬浮球与面板背景共用同一个百分比：松手落盘后让球重读一次，
+            // 否则换浓度要重启服务才落到球上（§1「同一百分比同时作用于两者」）。
+            FloatingService.instance?.refreshOverlayDisplaySettings()
+        },
+        bubbleSizeDp = bubbleSizeDp,
+        onBubbleSizeChange = { dp ->
+            viewModel.setBubbleSizeDp(dp)
+            // 立即重读：窗口宽高、球径、角标、边界与面板贴边都从这一档重算（§1 验收：
+            // 「大小更改后可以立即点击、拖动、吸边」），不留给下一次服务启动。
+            FloatingService.instance?.refreshOverlayDisplaySettings()
+        },
+        replyCardVertical = surface.cardLayout == ReplyCardLayout.VERTICAL,
+        // 写盘走 VM 那对口子（唯一那一格），换画侧读数走 surface 那颗组合期内的那一颗 ⇒ 当场换摆法。
+        // 两处都不碰结果集、筛选与阅读位置（§3「切换布局不能重新请求 AI、重新付费或清空当前回复」）。
+        onReplyCardVerticalChange = { vertical ->
+            val next = if (vertical) ReplyCardLayout.VERTICAL else ReplyCardLayout.HORIZONTAL
+            viewModel.setReplyCardLayout(next)
+            surface.applyCardLayout(next)
         },
         intentEnabled = intentConfig.enabled,
         intentText = intentConfig.text,
@@ -341,7 +401,10 @@ fun LoveBrainPanelScreen(
     // 齿轮那扇整窗设置页的开合 + 面板背景浓度的实时预览：这一屏"哪一面在上面"只认这一颗持有者。
     // 背景浓度**不**走 `ComposeView.alpha`（那条通道归窗口淡入淡出动画所有，服务侧会把它复位），
     // 预览值只影响下面那层底色，正文一个字都不乘它。
-    val surface = rememberPanelSurfaceHolder(viewModel.panelBackdropOpacityPercent)
+    val surface = rememberPanelSurfaceHolder(
+        viewModel.panelBackdropOpacityPercent,
+        viewModel.replyCardLayout
+    )
 
     // 稳定轮次身份：整轮 generate 成功时才变。它同时是「本轮参考」展开态的键——
     // 换一整轮就归零，参考信息从来不是跨轮共享的那一份。
@@ -498,13 +561,14 @@ fun LoveBrainPanelScreen(
         onDispose { panelRootView.setOnKeyListener(null) }
     }
 
-    // 面板背景浓度与**返回键 owner** 送进子树的唯一一处接线：只包这一层 provider，里面每一行原样不动。
-    // 这棵子树里的大面积卡片经 `panelBackdropCardColor()` 读浓度（换算口仍是
-    // `PanelBackdropOpacity`，这里不提供数字）；面板底那一层照旧直接读 `surface.backdropPercent`。
-    // `LocalOnBackPressedDispatcherOwner` 必须与浓度同一层 provider：`BackHandler` 读的是
+    // 面板背景浓度**不进子树**：整棵面板只有一个画底色的地方（下面那两层 `.background`），
+    // 它们直接读 `surface.backdropPercent` 并走 `PanelBackdropOpacity.effectiveAlpha` 那一颗尺。
+    // 以前这里还 provides 过一颗 `LocalPanelBackdropDensity`，但全仓**没有任何读取方**
+    // （注释里提到的 `panelBackdropCardColor()` 早已不存在），M10 清掉：
+    // 一把没人读的尺子只会让人以为浓度还有第二个作用点。
+    // `LocalOnBackPressedDispatcherOwner` 必须留在这一层：`BackHandler` 读的是
     // 它**所在位置**的那份值，写在下面这层 provider 之外就还是那颗会抛的 null。
     CompositionLocalProvider(
-        LocalPanelBackdropDensity provides surface.backdropPercent,
         LocalOnBackPressedDispatcherOwner provides backOwner
     ) {
     // 返回键那一句的正文住在这里（见上面那段：出了这层 provider 就拿不到本屏那份 owner）
@@ -518,51 +582,80 @@ fun LoveBrainPanelScreen(
                 .fillMaxSize()
                 // shadow fix
                 .clip(LoveBrainShape.xl)
-                // 面板背景浓度**唯一**的作用点就是这一层颜色的 alpha：`PanelBackdropOpacity.alphaOf`
-                // 把盘上那个整数（40..100，默认 100 = 与从前逐字同形）换成 alpha。
+                // 面板背景浓度**唯一**的作用点就是这一层颜色的 alpha：`PanelBackdropOpacity.effectiveAlpha`
+                // 把盘上那个整数（60..100，默认 100 = 与从前逐字同形）换成 alpha。
+                // 它与悬浮球读的是**同一颗函数**（球那一侧多一个"闲置降档"参数，这里永远是 false：
+                // 面板只有用户正在用时才在屏上，不存在闲置态），所以"同一个百分比同时作用于
+                // 面板背景与悬浮图标"这句话在代码里只有一条实现路径。
                 // 不借 `ComposeView.alpha` ——那条通道归窗口淡入淡出动画所有（服务侧在 present/hide
                 // 路径上会把它复位成 1），借它画浓度第一次收起面板就会把设置抹掉；
                 // 也不压正文：下面所有文字、图标、卡片都保持满不透明度。
-                .background(SurfaceBase.copy(alpha = PanelBackdropOpacity.alphaOf(surface.backdropPercent)))
+                .background(SurfaceBase.copy(alpha = PanelBackdropOpacity.effectiveAlpha(surface.backdropPercent, idleDimmed = false)))
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border.copy(alpha = 0.5f), LoveBrainShape.xl)
-                .padding(horizontal = Spacing.xl, vertical = Spacing.lg)
+                // 顶部那一段内边距（`Spacing.lg`）现在由命中带那只容器**自己占进布局**
+                // （见下面 `DragHandle`：12 + 4 + 4 = 20dp），这里只留左右与底部，
+                // 否则那条带子要么虚高、要么把页头整片顶下去 12dp。页头/滑页/输入区位置一寸没动。
+                .padding(start = Spacing.xl, end = Spacing.xl, bottom = Spacing.lg)
         ) {
             // H2（2026-10-06）：原来这里是 `if (settingsOpen) { 设置页 } else { 主面 }`——整棵主面树被换掉。
             // 现在主面永远在树上，设置页改为盖一层（见 Column 之外那扇 overlay）。
             // 会话、输入、卡片展开态本就住在 ViewModel 与 holder 上，主面不卸树 ≠ 多保留什么，
             // 只是主面那些 remember 与收集流不再因切设置页被丢回重建。
-                Box(modifier = Modifier.fillMaxWidth().height(Spacing.sm)) {
-                    DragHandle(onMove = onMove)
-                    // 顶部使用统计：**永远只占一行**。每一格是"标签＋值"合并成的**一段** Text
-                    // （`maxLines=1`、`softWrap=false`）——旧 Inline 档把一格拆成标签与数值两颗
-                    // 可各自换行的 Text，那正是"冒出第二行"的来源；分组、轮播与渐隐都归 `stats` 那一族。
-                    // 但**换组与横向查看**归 `UsageStatBar`：一行放得下就把五格平铺、不轮播也不渐隐；
-                    // 放不下就按现有字段切出的完整分组整组换，两侧用淡渐隐表示"那边还有内容"。
-                    // 渲染口径一格没改：五格、首字那格的 >0 条件、「—」占位都原样，
-                    // 标签与带单位的数值串也逐字照搬；「今日」「累计」两格的费用仍走**与首页/使用概览页
-                    // 同一颗判据** `costReadout`（`viewmodel/UsageStats.kt`）：一笔可计价记录都没入过账时
-                    // 念「—」，绝不念成 `¥0.000`（未知 ≠ 免费）。页面这一侧不重算任何钱。
-                    // 「本次」那格本来就是 `Double?`：没有数就念「—」，占位串与另两格同一份资源。
-                    // 槽位仍是页头上面那 4dp 那一档：组件按自己一行的高度居中溢出绘制（`unbounded = true`），
-                    // 所以它既挤不出第二行，也不会被那一档夹掉。
-                    val costUnknown = stringResource(R.string.cost_unknown)
-                    val costBelowCent = stringResource(R.string.cost_below_cent, PANEL_COST_CURRENCY)
-                    val panelYuanText: (Double) -> String = { PANEL_COST_CURRENCY + LoveBrainViewModel.formatYuan(it) }
-                    UsageStatBar(
-                        fields = buildList {
-                            add(LbMetric("今日", costReadout(usage.todayCostYuan, costUnknown, costBelowCent, panelYuanText)))
-                            add(LbMetric("本次", usage.lastCostYuan?.let(panelYuanText) ?: costUnknown))
-                            if (usage.lastResponseMs > 0) {
-                                add(LbMetric("首字", "%.1fs".format(usage.lastResponseMs / 1000.0)))
-                            }
-                            add(LbMetric("累计", "${usage.totalGenerateCount}次"))
-                            add(LbMetric("已统计", costReadout(usage.totalCostYuan, costUnknown, costBelowCent, panelYuanText)))
-                        },
-                        modifier = Modifier.fillMaxWidth().wrapContentHeight(unbounded = true).align(Alignment.Center)
-                    )
-                }
-
-                Spacer(Modifier.height(Spacing.sm))
+                // 顶部这一格：**容器自己**就是那条命中带（`DragBand.hitHeight` = 20dp），
+                // 不再靠子节点向上下溢出把带子画到父盒子之外（旧写法与统计条同叠在一只 4dp 盒子里，
+                // 兄弟命中按 z 序倒着走、第一个有命中的那一支走到底 ⇒ 统计那一行之内根本进不到带子）。
+                // 现在统计条挂进带子里面：子层只认领横向（换组），父层认领拖动 ⇒
+                // 同一块矩形里竖向拖动照样移动窗口。⚠ 认领范围按实测说（证人 DragHandleHitBandTest）：
+                // 统计那一格装了换组手势时，整条带子的横向都先归它（Compose 的命中链把子树的
+                // pointer-input 节点连同父层一起收），带子那一段的横向只在它不装手势时才归窗口。
+                // 这一格把根 Column 从前那段顶部内边距（Spacing.lg）与页头之前那颗 Spacer
+                // （Spacing.sm）一起占进布局，页头、滑页、输入区的绝对位置一寸没动。
+                DragHandle(
+                    onMove = onMove,
+                    content = {
+                        // 可见那一格仍是 4dp 那条细槽，摆在带子里第 12dp 那一档 ⇒ 统计那一行的
+                        // 像素位置与今天逐字相同（细可见标记不因为好拖而画粗）。
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopStart)
+                                .offset(y = DragBand.overhangAbove)
+                                .fillMaxWidth()
+                                .height(DragBand.slot)
+                                .testTag(DRAG_HANDLE_SLOT_TAG),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            // 顶部使用统计：**永远只占一行**。每一格是"标签＋值"合并成的**一段** Text
+                            // （`maxLines=1`、`softWrap=false`）——旧 Inline 档把一格拆成标签与数值两颗
+                            // 可各自换行的 Text，那正是"冒出第二行"的来源；分组、轮播与渐隐都归 `stats` 那一族。
+                            // 但**换组与横向查看**归 `UsageStatBar`：一行放得下就把五格平铺、不轮播也不渐隐；
+                            // 放不下就按现有字段切出的完整分组整组换，两侧用淡渐隐表示"那边还有内容"。
+                            // 渲染口径一格没改：五格、首字那格的 >0 条件、「—」占位都原样，
+                            // 标签与带单位的数值串也逐字照搬；「今日」「累计」两格的费用仍走**与首页/使用概览页
+                            // 同一颗判据** `costReadout`（`viewmodel/UsageStats.kt`）：一笔可计价记录都没入过账时
+                            // 念「—」，绝不念成 `¥0.000`（未知 ≠ 免费）。页面这一侧不重算任何钱。
+                            // 「本次」那格本来就是 `Double?`：没有数就念「—」，占位串与另两格同一份资源。
+                            // 槽位仍是页头上面那 4dp 那一档（现在它住在带子里）：组件按自己一行的高度居中
+                            // 溢出绘制（`unbounded = true`），所以它既挤不出第二行，也不会被那一档夹掉。
+                            // ⚠ 它的横向拖拽长在 `UsageStatBar` 自己那颗节点上（子层），**不许**搬到外面那条
+                            // 拖动带上：两颗 owner 一旦并成一颗，带子左右那几 dp 的横滑就不再移动窗口。
+                            val costUnknown = stringResource(R.string.cost_unknown)
+                            val costBelowCent = stringResource(R.string.cost_below_cent, PANEL_COST_CURRENCY)
+                            val panelYuanText: (Double) -> String = { PANEL_COST_CURRENCY + LoveBrainViewModel.formatYuan(it) }
+                            UsageStatBar(
+                                fields = buildList {
+                                    add(LbMetric("今日", costReadout(usage.todayCostYuan, costUnknown, costBelowCent, panelYuanText)))
+                                    add(LbMetric("本次", usage.lastCostYuan?.let(panelYuanText) ?: costUnknown))
+                                    if (usage.lastResponseMs > 0) {
+                                        add(LbMetric("首字", "%.1fs".format(usage.lastResponseMs / 1000.0)))
+                                    }
+                                    add(LbMetric("累计", "${usage.totalGenerateCount}次"))
+                                    add(LbMetric("已统计", costReadout(usage.totalCostYuan, costUnknown, costBelowCent, panelYuanText)))
+                                },
+                                modifier = Modifier.fillMaxWidth().wrapContentHeight(unbounded = true)
+                            )
+                        }
+                    }
+                )
 
                 PanelHeader(
                     panelMode = panelMode,
@@ -875,6 +968,9 @@ fun LoveBrainPanelScreen(
                             ResultArea(
                                 result = result,
                                 isGenerating = isGenerating,
+                                // 回复卡摆法（§3）：默认纵向，设置页那一颗开关换的就是这一颗读数。
+                                // 它**不参与**请求、也不进本轮身份——换方向不重新生成、不重新付费、不清空回复。
+                                cardLayout = surface.cardLayout,
                                 streamingCoreText = streamingCoreText,
                                 isGeneratingCore = isGeneratingCore,
                                 streamingSchemes = streamingSchemes,
@@ -968,19 +1064,23 @@ fun LoveBrainPanelScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(LoveBrainShape.xl)
-                .background(SurfaceBase.copy(alpha = PanelBackdropOpacity.alphaOf(surface.backdropPercent)))
+                .background(SurfaceBase.copy(alpha = PanelBackdropOpacity.effectiveAlpha(surface.backdropPercent, idleDimmed = false)))
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border.copy(alpha = 0.5f), LoveBrainShape.xl)
-                .padding(horizontal = Spacing.xl, vertical = Spacing.lg)
+                // 同主面那一格：顶部内边距交回命中带自己占（这里页头之前没有 Spacer，
+                // 所以带子只占 12 + 4 = 16dp，设置页正文的绝对位置一寸没动）
+                .padding(start = Spacing.xl, end = Spacing.xl, bottom = Spacing.lg)
         ) {
-            Box(modifier = Modifier.fillMaxWidth().height(Spacing.sm)) {
-                DragHandle(onMove = onMove)
-            }
+            DragHandle(
+                onMove = onMove,
+                hitHeight = DragBand.settingsHitHeight
+            )
             PanelSettingsPage(
                 viewModel = viewModel,
                 surface = surface,
                 onBack = { surface.closeSettings() },
                 onCollapse = onCollapse,
                 onInputIntent = onInputIntent,
+                onOpenAppPage = onOpenAppPage,
                 modifier = Modifier.fillMaxWidth().weight(1f)
             )
         }

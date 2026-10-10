@@ -86,8 +86,10 @@ class PanelSettingsDoorTest {
             0, count(panelCode, """onOpenAppPage: \(\) -> Unit =""")
         )
         assertEquals(
-            "参数本体必须在签名里（回退成删掉这颗参数：数到 0）",
-            1, count(panelCode, """onOpenAppPage: \(\) -> Unit,""")
+            "参数本体必须在签名里，而且**两处都要有**：外层面板那颗＋设置页那一格各一颗必填形参" +
+                "（2026-10-10 §2 把「回到 App 里启动」接进设置页那格之后，签名从一处变两处；" +
+                "回退成删掉任一处 = 数到 1 或 0，第一句带默认值仍然当场红）",
+            2, count(panelCode, """onOpenAppPage: \(\) -> Unit,""")
         )
         // 反向证人：那颗"允许静默"的坏形状必须被第一句数到
         assertEquals(

@@ -137,9 +137,56 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         var preHiddenState: WindowState = WindowState.VISIBLE_BUBBLE
             private set
 
+        /**
+         * **真实停止动作的计数锚点**（M05/M06「三个入口必须走到同一颗停止动作」的可证读数）。
+         *
+         * 全仓唯一的加笔者是下面 [setWindowState] 里「第一次落到 [WindowState.STOPPED]」那一次迁移，
+         * 而生产里只有 [onDestroy] 会那么落（这一条钉在
+         * `service/FloatingServiceStopEntryConsistencyTest.kt`，按源码形状判）。
+         *
+         * 为什么账记在这里、不记在三颗入口上：主页方块（`viewmodel/HomeStatusViewModel.kt` 的
+         * `FloatingServiceHomePort.stop()`）、设置页开关（宿主接同一颗端口）、通知栏「停止」
+         * （`ACTION_STOP` → [onStartCommand]）三颗入口的**写法**各不相同，
+         * 但它们唯一的共同终点是 `stopSelf()` → [onDestroy] 那一条清理路径。
+         * 于是"是不是同一颗真停"变成了一个可数的数：
+         * · 真关一次 = +1；
+         * · [WindowState.TEMP_HIDDEN] 隐藏一次 = **+0**（隐藏不是关闭，原话第 4 条）；
+         * · 谁另开一条"落 STOPPED 却不走清理"或"清理了却不落 STOPPED"的路，这一栏就对不上
+         *   （前者会留下透明窗口，后者会留下前台服务通知——两种都是这条要拦的形状）。
+         *
+         * 产品逻辑一个字都不读它：它只是那一条清理路径经过时留下的一笔账。
+         */
+        @Volatile
+        var stopActionCount: Int = 0
+            private set
+
+        /**
+         * 悬浮助手那一格**唯一**的读数判据：开关亮不亮只认 [WindowState]，不认任何一颗新造的布尔。
+         *
+         * 三条口径都是原话点名的：
+         * · [WindowState.STOPPED] → `false`：这才是"关掉了"；
+         * · [WindowState.TEMP_HIDDEN] → `true`：暂时隐藏时服务仍在跑、前台通知仍在、视图与 composition
+         *   都还在（[tempHide] 只把 visibility 设成 GONE），把它读成"已关闭"就会让用户以为已经关了、
+         *   而屏上还留着一颗随时会被 [restoreFromTempHidden] 亮回来的球；
+         * · 用户说的"隐藏就是相当于关闭了"这一句由**入口**实现（关闭那一支真叫 `stopSelf()`），
+         *   不由把 TEMP_HIDDEN 涂成 false 实现——那样第五种状态就只是没写出来的那一颗。
+         */
+        fun isAssistantOn(state: WindowState): Boolean = state != WindowState.STOPPED
+
+        /** 把 [stopActionCount] 摆回起点：只有测试用它，产品侧不调 */
+        fun resetStopActionCount() {
+            stopActionCount = 0
+        }
+
         /** 统一更新 windowState，同步 volatile 和 StateFlow */
         fun setWindowState(state: WindowState) {
+            val previous = windowState
             windowState = state
+            // 真实停止动作的唯一加笔点（判据与理由见 [stopActionCount]）。
+            // 「只有从别处落进 STOPPED 才算一次」⇒ 重复落 STOPPED 幂等，不会数出第二颗。
+            if (state == WindowState.STOPPED && previous != WindowState.STOPPED) {
+                stopActionCount++
+            }
             _windowStateFlow.value = state
         }
     }
@@ -247,7 +294,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                 securePrefs.panelWidth = w
                 securePrefs.panelHeight = h
             },
-            content = { PanelContent() }
+            content = { PanelContent() },
+            // 面板贴哪一边是拿**当前档位的球心**算的（§1：档位一变，球半径就变，贴边结论跟着变）
+            bubbleSizeDp = { viewModel.bubbleSizeDp }
         )
         bubble = OverlayBubbleWindow(
             host = host,
@@ -258,7 +307,13 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             isPanelShowing = { panel.isShowing },
             onBubbleMoved = { panel.reposition() },
             // 球每次被摸一下都要重启闲置计时；计时器本身留在这里（唯一那本账）
-            onUserInteraction = { resetIdleTimer() }
+            onUserInteraction = { resetIdleTimer() },
+            // 档位与浓度这两颗读数由 Service 喂：本类不认识存储类，也不自己发明第二份真值。
+            // 档位＝`BubbleSizeTier` 那一把尺（窗口宽高、球径、角标、吸边都从它推，§1）；
+            // 浓度＝与面板背景**同一个百分比、同一颗换算函数**（`effectiveAlpha`，闲置那一档由
+            // [resetIdleTimer] 那条链上的 dimmed 决定，这里交的是静止态）。
+            bubbleSizeDp = { viewModel.bubbleSizeDp },
+            backdropOpacityPercent = { viewModel.panelBackdropOpacityPercent }
         )
 
         // 订阅 EventBus：接收无障碍服务捕获的消息
@@ -301,6 +356,20 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
 
         lifecycleRegistry.currentState = Lifecycle.State.STARTED
         lifecycleRegistry.currentState = Lifecycle.State.RESUMED
+    }
+
+    /**
+     * 设置页改完**悬浮图标档位 / 背景浓度**之后的重读口（指导书 2026-10-10 §1：
+     * 「大小更改后可以立即点击、拖动、吸边」——不立刻重读就等于换档后要重启服务才生效）。
+     *
+     * 它只把已有的两份读数再取一次：球那一侧按新档位重设窗口宽高并校正位置（宽高与球径、角标、
+     * 吸边、点击区同一把尺推出来，§1 禁的是只对 Compose 缩放而留着旧窗口点击区）；面板那侧
+     * 跟着重贴一次边（贴边算的是**球心**，档位变了结论就变）。
+     * 这里**不**新造状态、不写盘、不碰 `WindowState`：在不在跑仍由那唯一一颗状态说了算。
+     */
+    fun refreshOverlayDisplaySettings() {
+        bubble.refreshDisplaySettings()
+        if (panel.isShowing) panel.reposition()
     }
 
     override fun onDestroy() {

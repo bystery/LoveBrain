@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import com.lovebrain.app.AppConfig
+import com.lovebrain.app.BubbleSizeTier
 import com.lovebrain.app.R
 import com.lovebrain.app.ui.theme.LoveBrainTheme
 
@@ -21,6 +22,8 @@ import com.lovebrain.app.ui.theme.LoveBrainTheme
  * 垂直方向：与球顶部大致对齐，clamp 在安全区（顶留状态栏、底留导航条）。
  *
  * @param bubbleLeft / bubbleTop 球窗口当前位置；球还没建时传 null，回落到球的默认起点
+ * @param bubbleSizeDp **当前档位直径**：球的中心是贴边判断的参照点，它必须跟着档位走，
+ *        否则 48 / 64 两档下面板会按 56 的半径算中心（书 §1 要求所有读数同源）
  */
 internal fun panelPositionFor(
     pw: Int,
@@ -29,9 +32,10 @@ internal fun panelPositionFor(
     screenH: Int,
     bubbleLeft: Int?,
     bubbleTop: Int?,
+    bubbleSizeDp: Int,
     dp: (Int) -> Int
 ): Pair<Int, Int> {
-    val mainSize = dp(AppConfig.BUBBLE_SIZE)
+    val mainSize = dp(bubbleSizeDp)
     val bLeft = bubbleLeft ?: dp(AppConfig.BUBBLE_EDGE_MARGIN)
     val bTop = bubbleTop ?: dp(48)
     val bCx = bLeft + mainSize / 2
@@ -90,7 +94,12 @@ internal class OverlayPanelWindow(
     initialHeight: Int,
     /** 拖拽松手才写 SecurePrefs：每帧都落盘是旧 bug 的修法 */
     private val persistSize: (Int, Int) -> Unit,
-    private val content: @Composable () -> Unit
+    private val content: @Composable () -> Unit,
+    /**
+     * **档位读数口子**：面板贴边定位跟着球的中心走，中心由半径算，所以这里必须拿到同一颗档位。
+     * 默认参数就是标准档 ⇒ 接线之前与从前逐字同形。
+     */
+    private val bubbleSizeDp: () -> Int = { BubbleSizeTier.DEFAULT_DP }
 ) : PanelFocusWindow {
 
     private var composeView: ComposeView? = null
@@ -405,6 +414,7 @@ internal class OverlayPanelWindow(
             screenH = host.screenHeight(),
             bubbleLeft = origin?.first,
             bubbleTop = origin?.second,
+            bubbleSizeDp = bubbleSizeDp(),
             dp = host::dp
         )
     }

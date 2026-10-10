@@ -19,7 +19,7 @@
 
     <!-- : 主动发空态文案 -->
     <!-- 空态蓝字入口（主动发）：两种模式的文案 -->
-    <string name="proactive_empty_send_one">想主动发消息？</string>
+    <string name="proactive_empty_send_one">点此主动发 →</string>
     <string name="proactive_empty_turn_off">主动发模式已开启，点击关闭</string>
     <!-- 书 §14.1：候选卡的策略行标签。可发送正文与策略说明视觉分离——角度是常驻短说明，
          时机/先别发/需要准备默认收起、按需展开；标签一律从资源取，页面不内联中文。
@@ -125,6 +125,15 @@
     <string name="home_grant_accessibility">去授权</string>
     <string name="home_off">关</string>
     <string name="home_on">开</string>
+    <!-- M25 §五 取舍③：首页重新加入一块**累计使用小卡**（新决定优先于旧规「不恢复使用概览」，
+         但只维持一块简洁小卡，不恢复仪表盘）。数字全部来自盘上那五颗既有读数，标签只到这一族；
+         花费那一格的值复用已有的 cost_unknown / cost_below_cent，不造第二份同义文案。 -->
+    <string name="home_usage_generated">累计生成</string>
+    <string name="home_usage_copied">复制</string>
+    <string name="home_usage_adopted">采纳</string>
+    <string name="home_usage_cost">花费</string>
+    <!-- 计数那一格带单位的整串：%1$d 是那五颗读数之一换算出来的数，单位「次」住在资源里 -->
+    <string name="home_usage_count">%1$d 次</string>
     <!--  LbStatusBadge：状态词与颜色只有 core/designsystem/LbStatusBadge.kt 一份 -->
     <string name="status_running">运行中</string>
     <string name="status_hidden">已隐藏</string>
@@ -203,6 +212,24 @@
     <string name="settings_title">设置</string>
     <string name="settings_opacity_label">透明度</string>
     <string name="settings_opacity_percent">%1$d%%</string>
+    <!-- 2026-10-10 指导书 §1/§2/§3/§7：设置页分成「悬浮助手 / 回复显示 / 当前知识库 / 持续意图」四组。
+         分组标题与三档尺寸名一律进资源，不内联进 Kotlin（UiStringLiteralBudgetTest 的 COMPONENT 那一栏
+         会按 `Lb…(` 调用里的字面量计数）。`当前知识库`、`持续意图` 两组的标题沿用已有的 kb 切换器标签与
+         `intent_label`，不另发明第二份同名文案。 -->
+    <string name="settings_group_assistant">悬浮助手</string>
+    <string name="settings_group_reply">回复显示</string>
+    <string name="settings_assistant_label">悬浮助手开启</string>
+    <string name="settings_assistant_close">关闭悬浮助手</string>
+    <string name="settings_bubble_size_label">悬浮图标大小</string>
+    <string name="settings_bubble_size_small">小</string>
+    <string name="settings_bubble_size_standard">标准</string>
+    <string name="settings_bubble_size_large">大</string>
+    <string name="settings_card_vertical_label">回复卡片纵向排列</string>
+    <!-- 2026-10-10 request2 §四「仅看本轮符号」：屏上画的那一颗**符号**（不是词、不是句子）也归这一族持有，
+         `translatable="false"` = 不随语言环境换字形；读屏念的中文全名仍由 `contentDescription` 给。
+         语义两条钉死：单色 ⇒ 吃胶囊那两档墨色；它**不是**锁形（🔒 会被读成"锁住这个窗口"），也不是 emoji 字形。
+         要不要换一个别的字形目前没有出处（那份约 22 KB 的完整 Worker 指导书没落到本机），已登记为待指认。 -->
+    <string name="panel_round_scope_glyph" translatable="false">◉</string>
 
     <!-- 使用概览页（页头 + 累计统计那一卡）。中文逐字照搬 Kotlin 里原来的那句，一个字没改；
          英文是后补的镜像。之前页名与五行统计标签是内联中文，英文环境下读屏念的是中文。 -->

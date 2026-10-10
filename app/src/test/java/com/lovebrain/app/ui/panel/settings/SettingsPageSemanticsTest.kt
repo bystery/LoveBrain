@@ -20,6 +20,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.BubbleSizeTier
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbTags
 import com.lovebrain.app.core.testing.ScrollScan
@@ -110,7 +111,14 @@ class SettingsPageSemanticsTest {
                     onCollapse = onCollapse,
                     opacityPercent = opacityPercent,
                     onOpacityPreview = {},
-                    onOpacityCommit = {}
+                    onOpacityCommit = {},
+assistantOn = true,
+                    onAssistantEnable = {},
+                    onAssistantClose = {},
+                    bubbleSizeDp = BubbleSizeTier.STANDARD_DP,
+                    onBubbleSizeChange = {},
+                    replyCardVertical = true,
+                    onReplyCardVerticalChange = {},
                 )
             }
         }
@@ -284,7 +292,14 @@ class SettingsPageSemanticsTest {
                     onCollapse = {},
                     opacityPercent = incoming.value,
                     onOpacityPreview = {},
-                    onOpacityCommit = {}
+                    onOpacityCommit = {},
+assistantOn = true,
+                    onAssistantEnable = {},
+                    onAssistantClose = {},
+                    bubbleSizeDp = BubbleSizeTier.STANDARD_DP,
+                    onBubbleSizeChange = {},
+                    replyCardVertical = true,
+                    onReplyCardVerticalChange = {},
                 )
             }
         }
@@ -399,6 +414,13 @@ class SettingsPageSemanticsTest {
                     opacityPercent = 100,
                     onOpacityPreview = {},
                     onOpacityCommit = {},
+                    assistantOn = true,
+                    onAssistantEnable = {},
+                    onAssistantClose = {},
+                    bubbleSizeDp = BubbleSizeTier.STANDARD_DP,
+                    onBubbleSizeChange = {},
+                    replyCardVertical = true,
+                    onReplyCardVerticalChange = {},
                     intentEnabled = intentEnabled,
                     // 状态那份存在时读状态：切库之后"这一格现在显示哪块库的哪条意图"要能当场翻过来
                     intentText = intentTextState?.value ?: intentText,
@@ -593,8 +615,9 @@ class SettingsPageSemanticsTest {
      * 判据一件没松，现在钉的是三件：
      * ① 三个期限名各命中**恰一颗芯片**（按设计系统那颗芯片自己的锚点 `LbTags.CHIP` 定位，
      *    页面上任何一段普通文字都冒充不了"一颗芯片"）⇒ 挪走一排、少一颗、多一颗同名档都红；
-     * ② 期限那一排是**互斥单选**那一族（`Role.Tab`），整页恰三颗 ⇒「已经完成」被塞回这一排当
-     *    第四个期限 = 4 颗、期限被吞掉一档 = 2 颗，两种都红；
+     * ② 全页**互斥单选**那一族（`Role.Tab`）恰六颗，并且按标签把两排各钉成"恰三颗"
+     *    （期限那一排＋2026-10-10 新增的图标大小那一排）⇒「已经完成」被塞回期限这一排当
+     *    第四个期限 = 7 颗、期限被吞掉一档 = 5 颗、大小那一排没画 = 3 颗，三种都红；
      * ③ 下面那两句写口判据（保存不重算期限、完成重算并落到 `IntentExpiry.COMPLETED`）一个字没动。
      */
     @Test
@@ -620,12 +643,22 @@ class SettingsPageSemanticsTest {
                 1, periodChipCount(label)
             )
         }
+        sizeRowLabels().forEach { label ->
+            assertEquals(
+                "「悬浮图标大小」那一排该有「$label」恰一颗芯片（2026-10-10 §1 新增的那一排）",
+                1, sizeChipCount(label)
+            )
+        }
         assertEquals(
-            "期限那一排恰三颗互斥单选；「已经完成」是下面那行的动作（Role.Button），不挤进这一排",
-            3, rule.onAllNodes(
+            "全页互斥单选芯片恰六颗＝期限那一排三颗 + 图标大小那一排三颗；" +
+                "期限被吞掉一档=5 颗、「已经完成」被塞回这一排=7 颗、大小那一排没画=3 颗，三种都红",
+            6, rule.onAllNodes(
                 // 本仓依赖里没有 `hasRole` 这颗现成匹配器，按 `ScrollScan` 那一条先例自己写：
                 // 读节点上的 Role 语义键，等于 Tab 才算一颗互斥单选档；
-                // 「已经完成」挂的是 Role.Button，不会混进这一排（混进来就变 4 颗，当场红）。
+                // 「已经完成」挂的是 Role.Button，混不进这一族（混进来就变 7 颗，当场红）。
+                // 2026-10-10：这一页现在有**两排**单选芯片（期限＋图标大小），所以整页读数从 3 变 6；
+                // 直接把 3 改成 6 会丢牙齿（期限少一颗、大小那排被删光，两种都还是 6）⇒
+                // 上面那两组"按标签各恰一颗"把两排分别钉住，这一句只兜"全页不许多长出第三排"。
                 SemanticsMatcher("role=Tab") {
                     it.config.contains(SemanticsProperties.Role) &&
                         it.config[SemanticsProperties.Role] == Role.Tab
@@ -665,6 +698,26 @@ class SettingsPageSemanticsTest {
      * 所以这一句数的是"期限那一排的芯片"，页面上多写一段同样的文字、或把期限改成一行纯文本，
      * 都数不出 1。
      */
+    /**
+     * 「悬浮图标大小」那一排（2026-10-10 §1）的三颗标签。
+     * 与期限那一排共用同一颗芯片锚点 `LbTags.CHIP`，所以按标签数、不按整页颗数判这一排。
+     */
+    private fun sizeRowLabels(): List<String> = listOf(
+        R.string.settings_bubble_size_small,
+        R.string.settings_bubble_size_standard,
+        R.string.settings_bubble_size_large
+    ).map { ctx.getString(it) }
+
+    /**
+     * 「悬浮图标大小」那一排按**整串等值**数，不用子串。
+     *
+     * 子串那一把在这一排上会多数一颗：期限里「一小时」那档也含"小"这个字，
+     * 于是 `hasText("小", substring = true)` 在期限排与大小排各命中一次＝2 颗（本轮实测撞过）。
+     * 分段档 `markSelectedWithCheck = false` ⇒ 选中那颗不带「✓ 」前缀，等值匹配不会漏认。
+     */
+    private fun sizeChipCount(label: String) =
+        rule.onAllNodes(hasTestTag(LbTags.CHIP) and hasText(label)).fetchSemanticsNodes().size
+
     private fun periodChipCount(label: String) =
         rule.onAllNodes(hasTestTag(LbTags.CHIP) and hasText(label, substring = true))
             .fetchSemanticsNodes().size

@@ -55,21 +55,16 @@ fun ReplyPrimaryActions(
     onStop: () -> Unit
 ) {
     when {
-        // 生成中——回复或主动发都显示"停止"；点下去即停止，文案由 reply 层组
-        isGenerating -> {
+        // 生成中——回复(isGenerating)与主动开场(isProactive)在这里选到**同一颗** Loading：
+        // 同一个进度环 + 呼吸外观、同一个停止交互(onStop 一次点击只投一次)。
+        // 两条任务态仍是**分别计算**的两个布尔（VM 里 isGenerating 来自回复 isBusy、
+        // isProactive 来自主动发协调器）；统一的只是"生成中选哪个状态"，不是把两个状态合成一个。
+        // "该停回复还是该停主动发"仍由宿主各自路由（stopProactive / stopGeneration），
+        // 这里只交一颗 onStop，不合并成"猜该停哪个"的回调。
+        isGenerating || isProactive -> {
             LbPrimaryButton(
                 state = LbButtonState.Loading,
-                label = generatingLabel(),
-                onClick = onStop,
-                modifier = modifier.fillMaxWidth(),
-                heightTier = LbButtonHeightTier.PanelPrimaryAction
-            )
-        }
-        // 主动发生成中——简洁停止条（无计时那串字）
-        isProactive -> {
-            LbPrimaryButton(
-                state = LbButtonState.Stop,
-                label = stringResource(R.string.panel_stop),
+                label = if (isGenerating) generatingLabel() else stringResource(R.string.panel_stop),
                 onClick = onStop,
                 modifier = modifier.fillMaxWidth(),
                 heightTier = LbButtonHeightTier.PanelPrimaryAction

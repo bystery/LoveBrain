@@ -8,6 +8,7 @@ import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.core.testing.RenderIn
@@ -286,7 +287,8 @@ class PanelErrorStatesSemanticsTest {
      * ① **不许有下拉式工具入口回来**：这一屏读不出 `DropdownList` 角色，
      *    也读不出「更多操作」那句资源名（资源还在，触发器不许在）。
      *    反例：有人把那颗 `⋯` 换个名字画回来——这一条当场红。
-     * ② **删了入口不等于删了出口**：成功档仍然读得到「纠正记忆」那颗文字入口，
+     * ② **删了入口不等于删了出口**：成功档仍然读得到那条记忆纠正出口（2026-10-10 起字样走资源
+     *    `com.lovebrain.app.R.string.memory_fix_entry`「修正记忆」，所以这一格现取资源，不写死串），
      *    它有角色（`Button`）、热区在全站下限之上。
      *    反例：把总工具菜单整片删光、忘了给纠正中心留那条文字入口——第二条红。
      *
@@ -307,6 +309,11 @@ class PanelErrorStatesSemanticsTest {
             ),
             ready = true
         )
+        // 2026-10-10 §3：结果卡默认档改成**纵向一列**，八张卡摊开之后，这条文字入口落在视口之外。
+        // `SemanticsNode.boundsInRoot` 会被滚动祖先裁掉 ⇒ 屏外那颗读来是 `0x0 @(0,0)`，
+        // 下一句热区判据会把"这一条在屏外"误读成"这一条太小"（量具瞎，不是实现没画）。
+        // 先把它滚进视口再量：量的仍然是那一句要量的东西（热区下限），只是让尺看得见它。
+        rule.runOnIdle { rule.onAllNodes(hasText(ctx.getString(com.lovebrain.app.R.string.memory_fix_entry)))[0].performScrollTo() }
         val targets = probe.actionableTargets(rule, "结果区·成功档")
         val menuDescription = ctx.getString(com.lovebrain.app.R.string.panel_result_menu)
         val dropdowns = targets.filter {
@@ -317,7 +324,7 @@ class PanelErrorStatesSemanticsTest {
                 dropdowns.joinToString { it.describe() },
             dropdowns.isEmpty()
         )
-        val correctionEntry = targets.filter { it.label.contains("纠正记忆") }
+        val correctionEntry = targets.filter { it.label.contains(ctx.getString(com.lovebrain.app.R.string.memory_fix_entry)) }
         assertEquals(
             "结果区下方该且只该有一条「纠正记忆」文字入口（ 表：记忆纠正中心走这条简洁入口）：" +
                 targets.joinToString { it.describe() },

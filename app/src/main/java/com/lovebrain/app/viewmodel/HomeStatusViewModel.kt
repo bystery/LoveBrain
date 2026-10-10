@@ -56,6 +56,29 @@ enum class HomeKnowledgePresence { Present, Missing, Unknown }
 /** 当前对象那一份知识库的读数。[Unknown] 只表示"没读到"，既不是有也不是没有 */
 data class HomeKnowledgeSnapshot(val presence: HomeKnowledgePresence, val name: String?)
 
+/**
+ * 首页那一块累计使用小卡的**只读快照**。2026-10-10 §五 取舍③（活台账 M25）新决定：
+ * 首页重新加入一块累计使用小卡，**替代**旧规「不恢复使用概览/统计仪表盘」——但上限就是
+ * **一块简洁小卡**，不是放行复杂版，所以这里只交出那一屏要画的四颗既有读数，
+ * **不新建第二本统计账**。
+ *
+ * 四颗全部原样来自 [SettingsStorePort] 的 `total*`（`SettingsStorePort.kt:54-58`，
+ * 落盘在 `data/SecurePrefs.kt:472-490`），与悬浮面板顶部那条 `UsageStatBar` 读的是**同一批数**：
+ * 这一格不参与首页那盏灯的三张派生表（[advisorStatusOf] / [advisorMissingSteps] / `render`），
+ * 也不落任何新账、不发任何请求——它是纯只读的一路读数通道。
+ *
+ * ⚠ 端口上那第五颗 `totalRewriteCount`（改写）**故意不在这里**：这一屏只画四格
+ * （累计生成 / 复制 / 采纳 / 花费，`HomeUsageReadout.kt` 与 `HomeUsageCardTest` 都钉着"恰四格"）。
+ * 带上一颗没人读的字段就是留死读数——它会让下一席以为"首页还欠一格没画"，或者干脆把它接进
+ * 某格把小卡撑成仪表盘。要加那一格，先改那一屏的判据，再在这里加字段，顺序不许倒过来。
+ */
+data class HomeUsageReadout(
+    val totalGenerateCount: Int = 0,
+    val totalCostYuan: Double = 0.0,
+    val totalCopyCount: Int = 0,
+    val totalAdoptCount: Int = 0
+)
+
 enum class HomeConnectionVerdict {
     /** 这一组身份下真的发过一次微请求并且成功 */
     Verified,
@@ -317,6 +340,27 @@ class HomeStatusViewModel(
     private val _status = MutableStateFlow(AdvisorStatus(AdvisorState.Stopped))
     val status: StateFlow<AdvisorStatus> = _status.asStateFlow()
 
+    /**
+     * 累计使用那一块小卡的**只读**读数（M25 §五 取舍③）。**这只是一个新增的只读物**：
+     * 它不改 [status]、不参与 [advisorStatusOf] / [advisorMissingSteps] / `render` 那三张派生表，
+     * 也不新建统计账——数字全部原样读自 [store] 上那四颗被这一屏画出来的 `total*`
+     * （端口第五颗 `totalRewriteCount` 不在这一格里，理由见 [HomeUsageReadout]）。
+     * 刷新只发生在**本地重读事实**的那一处（[returnedFromSubpage]），一个请求都不发。
+     */
+    private val _usage = MutableStateFlow(HomeUsageReadout())
+    val usage: StateFlow<HomeUsageReadout> = _usage.asStateFlow()
+
+    /** 只读物：盘上没有偏好存储（测试夹具/端口没接）时交回全默认，不猜、不新建第二本账 */
+    private fun readUsage(): HomeUsageReadout {
+        val store = store ?: return HomeUsageReadout()
+        return HomeUsageReadout(
+            totalGenerateCount = store.totalGenerateCount,
+            totalCostYuan = store.totalCostYuan,
+            totalCopyCount = store.totalCopyCount,
+            totalAdoptCount = store.totalAdoptCount
+        )
+    }
+
     private var userStarted = false
     private var checking = false
     private var overlayGrantedAtLastRead = false
@@ -330,9 +374,25 @@ class HomeStatusViewModel(
     private var checkJob: Job? = null
     private var checkToken = 0L
 
+    /**
+     * 上一次从 [HomeServicePort.runningChanges] 读到的"服务在不在跑"。
+     * 只用来认一次**变迁**（跑起来过 → 不在了），不当事实源：事实仍是 `service.isRunning()`。
+     */
+    private var lastSeenRunning = false
+
     init {
         viewModelScope.launch {
-            service.runningChanges().collect { publish() }
+            service.runningChanges().collect { running ->
+                // 指导书 2026-10-10 §2 验收「关闭后主页显示真实停止状态」：
+                // 从悬浮窗里那颗开关关掉服务，走的仍是与主页 ■ 同一个停止入口，但主页这侧的
+                // `userStarted` 闸门不会被 `stopClicked()` 清——灯于是会说"需要设置"而不是"已停止"。
+                // 这里只认**曾经跑起来、现在不在了**这一条变迁：点了 ▶ 但服务从来没起来的那一支
+                // 没有这条变迁，仍按"那是它自己的一格缺项"画（`HomeStatusViewModelTest` 的
+                // "service that never came up is its own missing step" 那一格钉着这个区别）。
+                if (!running && lastSeenRunning) userStarted = false
+                lastSeenRunning = running
+                publish()
+            }
         }
     }
 
@@ -380,6 +440,8 @@ class HomeStatusViewModel(
      */
     fun returnedFromSubpage(overlayGranted: Boolean) {
         overlayGrantedAtLastRead = overlayGranted
+        // 只读物：与灯无关的一路本地读数，一次读盘、不发请求（见 [usage] 的只读声明）
+        _usage.value = readUsage()
         viewModelScope.launch {
             recordKnowledge(readKnowledge())
             publish()

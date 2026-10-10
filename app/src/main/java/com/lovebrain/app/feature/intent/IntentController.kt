@@ -127,6 +127,16 @@ class IntentController(
      * 保存时刻 + 对应时长；COMPLETED 档把 status 改成 COMPLETED。UI 不再填日期。
      *
      * "已开启/已关闭"通知只在 enabled 真的跳变时发一次——文本/有效期编辑不该每按一键就弹一条。
+     *
+     * **只改正文这一支要有成功回执**（request2 §四「意图保存反馈」）：设置页那颗「保存」与
+     * 失焦落盘走的都是这条链，以前落盘成功屏上一个字都不出，用户感觉不到"存住了"。
+     * 现在写盘真返回、且过了 KB 身份守卫之后，经同一颗 [onNotice]（宿主接到
+     * `NoticeBoard.Channel.Knowledge` = 成功形态短句、3 秒自动消失，**不是**黄色警告那一格）
+     * 发一句「已记录」——文案复用盘上既有资源 `R.string.notice_recorded`（本类没有 Context，
+     * 与 VM 里 `reportDislikeCaseSave` 同一先例：同形字面量，不新开 key）。
+     * 失败那一支不变：仍只走 [onWarning] 的「意图保存失败，内容已保留，请重试」，
+     * 成功回执**绝不早于** `writeIntent` 真返回——点下去就先说成功是这一格禁止的形状。
+     * 换档/完成/拨开关都不是这一支：期限档变了或 enabled 跳变了，就不会重复弹这句「已记录」。
      */
     fun save(
         text: String,
@@ -144,6 +154,10 @@ class IntentController(
             return
         }
         val prevEnabled = _config.value.enabled
+        // 「只改正文」这一支的判据：enabled／有效期档／状态三者都没动，动的只有正文。
+        // 换档与「完成」改 expiry/status、开关改 enabled，都不算这一支，不会多弹一句「已记录」。
+        val bodyOnlySave = enabled == prevEnabled &&
+            expiry == _config.value.expiry && effectiveStatus == _config.value.status
         scope.launch {
             try {
                 val updated = writeIntent(kbName, text, enabled, expiry, effectiveExpiryDate, effectiveStatus)
@@ -151,6 +165,9 @@ class IntentController(
                     _config.value = updated
                     if (enabled != prevEnabled) {
                         onNotice(if (enabled) "持续意图已开启" else "持续意图已关闭")
+                    } else if (bodyOnlySave) {
+                        // 回执只在 writeIntent 真返回之后发；文案 = `R.string.notice_recorded` 的同形字面量
+                        onNotice(INTENT_BODY_SAVED_NOTICE)
                     }
                     _showEditor.value = false
                     onSaved()
@@ -158,7 +175,7 @@ class IntentController(
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
-                // 持久化失败保留编辑状态，只给一句可以重试的话
+                // 持久化失败保留编辑状态，只给一句可以重试的话；不发任何成功回执
                 onWarning("意图保存失败，内容已保留，请重试")
             }
         }
@@ -176,5 +193,14 @@ class IntentController(
     fun dismissEditor() {
         _showEditor.value = false
         editorKbName = null
+    }
+
+    companion object {
+        /**
+         * 「只改正文」落盘成功那一句回执的文案：与盘上资源 `R.string.notice_recorded`（「已记录」）
+         * 逐字同形——本类没有 Context，沿用 VM `reportDislikeCaseSave` 的先例（同形字面量、不新开 key、
+         * 不写进 strings.xml）。改资源那句的人要同步这里，两边各改一半由测试红。
+         */
+        internal const val INTENT_BODY_SAVED_NOTICE = "已记录"
     }
 }

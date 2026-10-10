@@ -39,8 +39,14 @@ private const val ADJUST_OPTIONS_PER_ROW = 2
  * - 不显示方向 chips（方向属于 Result-level）、不往正文下方追加内容。
  *
  * 尺寸全按卡内那一档：粒子视觉高 [SchemeCardDimens.ADJUST_PILL_HEIGHT_DP]、热区同数，
- * 输入框 28–36dp、一至两行、超出内部滚动，提交是小字。卡片本体仍是固定 158x150，
- * 内容顶不下就整块纵向滚动兜底。
+ * 输入框 28–36dp、一至两行、超出内部滚动，提交是小字。卡片本体横向档是固定 158x150
+ * （纵向档宽铺满、高按同一颗 150 当下限按内容长高，见 `SchemeCardDimens.widthFor/heightFor`），
+ * 横向档内容顶不下就整块纵向滚动兜底。
+ *
+ * ⚠ 那句"内容顶不下就整块纵向滚动兜底"只属于**横向档**（[contentHeightBounded]＝true，§3）：
+ * 纵向档卡片自己按内容长高，外层那一条唯一的纵向滚动已经接住了溢出，这里再嵌一条就是
+ * 在可滚的柱里再套一条无限高的滚——所以纵向档这一块的根 Column 不挂 verticalScroll。
+ * 两档共用这一份实现，分叉只有"溢出归谁管"这一条。
  *
  * **草稿与"自定义开没开"这两样在方案卡那条链路上不住在本块里**（[customDraft] /
  * [isCustomInputOpen] 由卡片行按 identity.key 持有）：横向列表会把滑出视口的 item 连同其
@@ -70,7 +76,9 @@ internal fun SchemeAdjustingBlock(
     onCustomDraftChange: (String) -> Unit = {},
     isCustomInputOpen: Boolean? = null,
     onCustomInputOpenChange: (Boolean) -> Unit = {},
-    onInputIntent: (() -> Unit)? = null
+    onInputIntent: (() -> Unit)? = null,
+    /** true＝横向档（卡高固定，本块整块在卡内滚）；false＝纵向档（卡按内容长高，本块摊开不滚） */
+    contentHeightBounded: Boolean = true
 ) {
     // 读屏名字外面取好再闭包进去：semantics 的 lambda 不是 @Composable
     val customHint = stringResource(R.string.scheme_custom_hint)
@@ -112,7 +120,11 @@ internal fun SchemeAdjustingBlock(
         runCatching { customFocusRequester.requestFocus() }
     }
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState()),
+        // 两档唯一的内容侧分叉：横向档（卡高固定）整块在卡内滚；纵向档（卡按内容长高）不挂
+        // 第二条滚动——外层那唯一一颗 `readScroll` 已经接住溢出。判据见文件头 [contentHeightBounded]。
+        // 写成无花括号的 if/else：这一颗文件的括号形状会被 `UiLayerDependencyContractTest`
+        // 那把"沿可点链往回读"的尺碰到，别在这里多出成对花括号。
+        modifier = if (contentHeightBounded) modifier.verticalScroll(rememberScrollState()) else modifier,
         verticalArrangement = Arrangement.spacedBy(Spacing.xs)
     ) {
         RewriteCommand.UI_OPTIONS.chunked(ADJUST_OPTIONS_PER_ROW).forEach { rowCommands ->

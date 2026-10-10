@@ -6,7 +6,9 @@ import android.provider.Settings
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.lovebrain.app.AppConfig
+import com.lovebrain.app.BubbleSizeTier
 import com.lovebrain.app.PanelBackdropOpacity
+import com.lovebrain.app.ReplyCardLayout
 import com.lovebrain.app.domain.port.SettingsStorePort
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.service.CopyCaptureService
@@ -197,6 +199,25 @@ class SecurePrefs(context: Context) : SettingsStorePort {
             prefs.getInt(PanelBackdropOpacity.PREF_KEY, PanelBackdropOpacity.DEFAULT_PERCENT))
         set(value) = prefs.edit()
             .putInt(PanelBackdropOpacity.PREF_KEY, PanelBackdropOpacity.snapPercent(value)).apply()
+
+    /**
+     * 悬浮图标大小（dp）——指导书 2026-10-10 §1 的三档。键、合法档、回落全归 [BubbleSizeTier]，
+     * 这里不复制字面量、也不另发明一套回落：读写两侧共用同一个 [BubbleSizeTier.snapDp]，
+     * 于是盘上只可能出现 48 / 56 / 64 三颗数，窗口宽高与画侧因此永远拿到**同一个**尺寸。
+     */
+    var bubbleSizeDp: Int
+        get() = BubbleSizeTier.snapDp(
+            prefs.getInt(BubbleSizeTier.PREF_KEY, BubbleSizeTier.DEFAULT_DP))
+        set(value) = prefs.edit()
+            .putInt(BubbleSizeTier.PREF_KEY, BubbleSizeTier.snapDp(value)).apply()
+
+    /**
+     * 回复卡片排列方向——指导书 §3。存枚举名（同 `guideCursor` 的先例），脏值与"从没写过"
+     * 都经 [ReplyCardLayout.from] 落回纵向；解析口只有这一处，画侧与 VM 都不再第二次判断。
+     */
+    var replyCardLayout: ReplyCardLayout
+        get() = ReplyCardLayout.from(prefs.getString(ReplyCardLayout.PREF_KEY, null))
+        set(value) = prefs.edit().putString(ReplyCardLayout.PREF_KEY, value.name).apply()
 
     /**
      * 「仅看本轮」首次轻提示的"提示过没有"（§2.2 第 3 条）：true = 那条轻提示已经给过，

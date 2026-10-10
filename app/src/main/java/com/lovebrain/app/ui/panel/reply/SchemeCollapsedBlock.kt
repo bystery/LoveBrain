@@ -56,6 +56,12 @@ object SchemeCopyFeedback {
  * 设计系统那颗文字动作的 48dp 档继续管全站别处——两边都不动。
  *
  * 复制对钩按 [identityKey] + 正文记：只有对应那张卡变勾，正文换版后旧勾自己清。
+ *
+ * [contentHeightBounded]（§3 两种阅读方向唯一的内容侧分叉，由 [SchemeCard] 传下来）：
+ * - true＝横向档，卡片高度固定，正文那一格 `weight(1f)` 撑开剩余高度、超出在**卡内**滚；
+ * - false＝纵向档，卡片按内容长高，正文整条摊开、不嵌第二条滚动（溢出归外层那唯一一颗
+ *   `readScroll`）。此时拿 `weight(1f)`/`verticalScroll` 读到的是无限高度约束，量不出真尺寸。
+ * 默认 true：现有把单块挂起来量的测试仍是原来那一档。
  */
 @Composable
 internal fun SchemeCollapsedBlock(
@@ -69,6 +75,7 @@ internal fun SchemeCollapsedBlock(
     notice: String? = null,
     /** true = 模型主动说"不适合"（显示"本轮不适合"）；false = 模型没生成（显示"未生成"） */
     notSuitable: Boolean = false,
+    contentHeightBounded: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     // 点过复制：图标立即换成变色对钩，TICK_MS 后自己收回。原 onCopy 动作一个字没改。
@@ -96,10 +103,19 @@ internal fun SchemeCollapsedBlock(
     } else {
         Column(modifier = modifier) {
             Box(
+                // 两档唯一的内容侧分叉（判据 [contentHeightBounded]，由 SchemeCard 传下来）：
+                // · 横向档：卡高固定 ⇒ 正文那格 weight(1f) 撑满剩余高度、超出在**卡内**滚；
+                // · 纵向档：卡按内容长高 ⇒ 整条摊开，不 weight、不嵌第二条滚动
+                //   （外层那唯一一颗 `readScroll` 接住溢出；在这里再挂一条就是
+                //   「在已有 verticalScroll 里再嵌一条滚动」那条被点名禁止的坏形状）。
+                // 写成无花括号的 if/else 表达式：这一颗文件的括号形状会被
+                // `UiLayerDependencyContractTest` 那把按链回读的尺碰到，别在这一格里多出成对花括号。
                 modifier = Modifier
-                    .weight(1f)
                     .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
+                    .then(
+                        if (contentHeightBounded) Modifier.weight(1f).verticalScroll(rememberScrollState())
+                        else Modifier
+                    )
             ) {
                 Text(
                     text = reply,

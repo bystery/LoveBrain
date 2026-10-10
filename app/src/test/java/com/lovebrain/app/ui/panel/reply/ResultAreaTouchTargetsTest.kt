@@ -9,6 +9,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
+import com.lovebrain.app.ReplyCardLayout
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.testing.RenderIn
@@ -53,6 +54,16 @@ import org.robolectric.annotation.GraphicsMode
  * 卡内右下角那一排三颗走本轮明写的紧凑档（并由 `assertSchemeActionRowsFitCardContentWidth`
  * 说出"为什么这一排允许低于全站下限"——三颗紧凑档放得进卡内容宽、三颗下限放不下），
  * 其余每一颗仍是全站下限，认不出档的新控件也按全站下限判。
+ *
+ * ⚠ 2026-10-10 §3「回复卡片纵向排列」（默认纵向）落地后，这一族**整族钉在横向档**
+ * （`cardLayout = ReplyCardLayout.HORIZONTAL`），理由是走法本身：这把尺靠 `performScrollToIndex`
+ * 沿那条 `LazyRow` 逐张滚过去，每张卡在某一档完整露出一次才量得准。纵向档那一列是一棵普通
+ * `Column`——八张一次全组合，没有"滚过去才在"这一发；而卡片铺满整行后，右下角那三颗会贴到视口
+ * 右缘，被这把尺"完整落在视口里"那一刀当裁切排除，样本数掉到 [MIN_SAMPLE_SIZE] 以下就变成空转。
+ * 分档于是这样：**热区下限与"三颗放得进 142dp 内容宽"那条几何证人留在本族的横向档**
+ * （判据一条没放宽、形状与本轮之前逐字相同），**纵向档归 `ResultAreaVerticalReadingTest`**
+ * （八条一次数完、跨方向不丢、筛选与回调对得上原卡）。两档共用同一颗 `scheme_cards_row` 锚点，
+ * 所以本文件那句"不为本轮新加夹具件"仍然成立。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -67,11 +78,15 @@ class ResultAreaTouchTargetsTest {
         const val SCHEME_ROW_TAG = "scheme_cards_row"
 
         /**
-         * 结果区下方那条文字入口的名字。它现在是内联文案（还没进 `res/values`），
-         * 所以这里只能写死同一个串；哪天它换成资源，这一格跟着改成 `ctx.getString(...)`——
-         * 别把它悄悄放宽成"有一个按钮就行"，那判的就不是"这一屏说得出这句话"了。
+         * 结果区下方那条文字入口的名字。
+         *
+         * 2026-10-10 起它进了资源（`R.string.memory_fix_entry`，屏上字样统一成「修正记忆」），
+         * 所以这里按旧 KDoc 自己写好的那句"哪天它换成资源，这一格跟着改成 `ctx.getString(...)`"
+         * 现取资源——**不写死串**，也不放宽成"有一个按钮就行"：这一格判的仍是
+         * "这一屏说得出这句话"，只是那句话的主人换成了资源文件（同一把尺、更准的锚点）。
          */
-        const val CORRECTION_ENTRY_LABEL = "纠正记忆"
+        val CORRECTION_ENTRY_LABEL: String
+            get() = ApplicationProvider.getApplicationContext<Context>().getString(R.string.memory_fix_entry)
 
         /**
          * 判断"这两颗是排在同一排里紧挨着的"所用的容差（dp）。
@@ -155,7 +170,9 @@ class ResultAreaTouchTargetsTest {
                     memoryRefs = memoryRefs,
                     memoryRefsExpanded = memoryRefsExpanded,
                     providerReady = true,
-                    onOpenSettings = {}
+                    onOpenSettings = {},
+                    // 这一族量的是横向档那条可滑 LazyRow（分档理由见类头那一段）
+                    cardLayout = ReplyCardLayout.HORIZONTAL
                 )
             }
         }
@@ -418,7 +435,9 @@ class ResultAreaTouchTargetsTest {
                     memoryRefs = listOf(refFixture(refText)),
                     memoryRefsExpanded = expanded.value,
                     providerReady = true,
-                    onOpenSettings = {}
+                    onOpenSettings = {},
+                    // 同族其余各格一样钉横向档（清单可见性判据与方向无关，这里不重开一把尺）
+                    cardLayout = ReplyCardLayout.HORIZONTAL
                 )
             }
         }

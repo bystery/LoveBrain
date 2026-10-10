@@ -17,6 +17,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.AppConfig
+import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Spacing
@@ -78,6 +79,16 @@ class RoleChipSemanticsTest {
 
     private val density: Float
         get() = ApplicationProvider.getApplicationContext<Context>().resources.displayMetrics.density
+
+    /**
+     * 屏上那颗范围符号**现在的主人是资源**（request2 §四「当前硬编码，应改」之后，
+     * 那颗字形住在 `res/values/symbols.xml` 的 `panel_round_scope_glyph`）。
+     * 所以这一格从资源**现取**再对照语义树：页面画的与资源持有的任一边漂了都红在这里
+     * （"要不要换成别的字形"不归这一格说，已登记为待主线程指认，见 `ReplyInputSymbolOwnerTest`）。
+     */
+    private val scopeGlyphFromResource: String
+        get() = ApplicationProvider.getApplicationContext<Context>()
+            .resources.getString(R.string.panel_round_scope_glyph)
 
     private val probe by lazy { SemanticsProbe(density) }
 
@@ -365,7 +376,9 @@ class RoleChipSemanticsTest {
         )
         // 最低档真的接在"两颗"这一级上（三档由 ReplyDimens.chipsCap 一处算，只吃常量与令牌；
         // 视口宽**从生产那颗函数现取**，测试不抄第二份 66/116/48）：
-        // 行 228 的余量 76 落在 [66,116) ⇒ 两颗完整可见、第三颗滑出去接住。
+        // 行 228 的余量 90 落在 [66,116) ⇒ 两颗完整可见、第三颗滑出去接住。
+        // （这一颗余量在 2026-10-10 之前是 76：那一版的固定件预算把符号与前一颗粒之间那段
+        //  `Spacing.sm` 扣了两遍，见 `ReplyDimens.roundScopeFootprint` 的 ⚠ 与 `ReplyInputWidthBudgetTest`。）
         // ⚠ 语义 bounds 会被滚动视口**裁切**（本机探针实测：滑出半截的那颗，裁后右缘正好压在视口线上；
         // 完全滑出的那颗读成 0x0、被 `laid` 筛掉）。所以"完整可见"判 right **严格小于**视口右缘——
         // 压线的那颗算半截，不算完整。滚动范围本身改序后实测 105.6dp（注释在 ReplyInput 的 chipsSection）。
@@ -426,22 +439,25 @@ class RoleChipSemanticsTest {
      * `ReplyDimens` 各常量注释里，数都从主人处现取，测试不抄第二份）。
      * 红条件：谁把门槛改回按**行宽**比（`maxWidth >= 某常量`），行 318 那一格立刻从 116 掉档变红；
      * 谁把 116 改回 156（旧大方盒的账），行 268（默认窗）那一格变红。
+     * ⚠ 这一格**抓不住**"固定件里同一格间隔被扣两遍"那一族（多扣 4dp 时行 268 还剩 126、
+     * 行 228 还剩 76，档位一模一样）：那一条由 `ReplyInputWidthBudgetTest` 钉着
+     * （一颗直接量 88 那份数，另一颗量 254 那条边界——重复预留一回来 254 就掉档）。
      */
     @Test
     fun `the tier table keys off leftover room, not the old 360dp row gate`() {
-        // 行 318 = 生产最高档（PANEL_MAX 350 − 面板左右各 Spacing.xl）：余量 166 ≥ 116 → 全可见档
+        // 行 318 = 生产最高档（PANEL_MAX 350 − 面板左右各 Spacing.xl）：余量 180 ≥ 116 → 全可见档
         assertEquals(
             "行 318 该进三颗全可见档",
             ReplyDimens.ROLE_CHIPS_MAX_WIDTH_DP.toFloat(),
             ReplyDimens.chipsCap(318.dp, 1f, withAdd = true, withScope = true).value
         )
-        // 行 268 = 默认窗（300−32）：余量 116 恰好踩线 → 仍全可见（旧表在这里给的是 96 两颗档）
+        // 行 268 = 默认窗（300−32）：余量 130 ≥ 116 → 仍全可见（旧表在这里给的是 96 两颗档）
         assertEquals(
             "默认窗宽该把第三颗还给屏上（旧 360 门槛正是把它藏掉的根因）",
             ReplyDimens.ROLE_CHIPS_MAX_WIDTH_DP.toFloat(),
             ReplyDimens.chipsCap(268.dp, 1f, withAdd = true, withScope = true).value
         )
-        // 行 228 = 最低窗：余量 76 ∈ [66,116) → 两颗档
+        // 行 228 = 最低窗：余量 90 ∈ [66,116) → 两颗档
         assertEquals(
             "最低窗该停在两颗档",
             ReplyDimens.ROLE_CHIPS_TIGHT_MAX_WIDTH_DP.toFloat(),
@@ -644,8 +660,8 @@ class RoleChipSemanticsTest {
                 "那颗符号画的是 emoji（彩色字形不吃选中墨色，而且锁容易被读成锁窗口）：'$label'",
                 label.none { it.isHighSurrogate() }
             )
-            assertTrue("可见那颗换掉了，不是书里定的 [PANEL_ROUND_SCOPE_GLYPH]：'$label'",
-                label.contains(PANEL_ROUND_SCOPE_GLYPH))
+            assertTrue("可见那颗换掉了，不是资源里定的那一颗单色符号：'$label'",
+                label.contains(scopeGlyphFromResource))
         }
         // 一颗都不许被这颗挤掉：位置仍在 ＋ 之后（§7.1 顺序的最后一格）
         val add = probe.of(rule.onNodeWithContentDescription("添加").fetchSemanticsNode())

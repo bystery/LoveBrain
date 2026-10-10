@@ -275,16 +275,25 @@ class ReplyPrimaryActionsTest {
         assertEquals("停止应恰好触发 1 次", 1, stopClicks.get())
     }
 
-    /** 主动发生成中（isProactive=true）走 STOP 分支 —— 此时才是裸「停止」文案 */
+    /**
+     * 主动发生成中（isProactive=true）。
+     *
+     * 2026-10-10 需求 §二：两条生成流程现在选**同一个 Loading 状态**（进度环＋呼吸），
+     * 文案仍各自那句"停止"（`ProductionUiContractTest` 钉着这个文件里必须留着那句资源引用）。
+     * 于是这一格和上面那格一样，会撞上一次"永不停顿的脉冲动画让测试一直不空闲"——
+     * 修法照同一族先例：关掉 autoAdvance、手动推进固定时长，让断言落在同一帧上。
+     */
     @Test
     fun proactiveGenerating_showsPlainStopButtonAndCallsOnStopOnce() {
         val stopClicks = AtomicInteger(0)
+        composeRule.mainClock.autoAdvance = false
         setActions(
             composerMode = ComposerMode.PROACTIVE,
             isProactive = true,
             onGenerateProactive = {},
             onStop = { stopClicks.incrementAndGet() }
         )
+        composeRule.mainClock.advanceTimeBy(120L)
         composeRule.onNodeWithText(stop).assertIsDisplayedDiagnosed("上一步定位到的节点必须真的显示在屏幕上")
         composeRule.onNodeWithText(generateOpening).assertIsNotDisplayed()
         composeRule.onNodeWithText(stop).performClick()

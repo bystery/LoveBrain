@@ -83,6 +83,18 @@ private object SettingsHeaderDimens {
  * @param onOpacityPreview 拖动每帧：只用来实时预览背景层，不落盘
  * @param onCollapse 右上那颗「收起」：宿主把它接到 `dismissPanelToBubble`，这一页不自己判断该不该收
  * @param onOpacityCommit 松手一次：落盘由宿主处理
+ * @param assistantOn 悬浮助手此刻开着没有——**只能来自真实窗口状态**（`WindowState != STOPPED`），
+ *   本页不许为它存一份、也不给默认值：默认值＝宿主漏接线时屏幕自己猜一个状态（§2）
+ * @param onAssistantEnable 拨开：交宿主走**既有那条启动链**（先查悬浮窗权限，本页不 `startActivity`）
+ * @param onAssistantClose 拨关／「关闭悬浮助手」那颗：交宿主走**与主页 ■ 同一颗**停止入口，
+ *   最终 `stopSelf()` 经 `onDestroy` 清理；本页不自己摘窗、也不接到「暂时隐藏」那一支（§2）
+ * @param bubbleSizeDp 悬浮图标当前档位（dp）；三档刻度与回落在 `AppConfig.BubbleSizeTier`，
+ *   这一页只跟着读数画选中态（§1）
+ * @param onBubbleSizeChange 选一档：写盘与"窗口宽高/球径/角标/贴边同步"都由宿主与服务那一侧完成，
+ *   本页不持有尺寸（§1 明写不许只对 Compose 缩放而留着旧的窗口点击区）
+ * @param replyCardVertical 回复卡片是否纵向排列；真值是 `ReplyCardLayout` 枚举（默认纵向），
+ *   这里只摊成用户能看懂的一颗开关（§3）
+ * @param onReplyCardVerticalChange 换方向：宿主只写那一格，**不重新请求、不清空当前回复**（§3）
  * @param onIntentChange 意图唯一的写口：`(正文, 启用, 有效期, 是否按此刻重算期限)`
  * @param intentStatus 那条意图现在的状态（活动／已到期／已完成）——§11.3 那六档判据要读它；
  *   宿主没接这一颗时按活动态画，与接上之前一模一样，不会多画一格也不会少画一格
@@ -92,9 +104,16 @@ private object SettingsHeaderDimens {
 fun LoveBrainSettingsContent(
     onBack: () -> Unit,
     onCollapse: () -> Unit,
+    assistantOn: Boolean,
+    onAssistantEnable: () -> Unit,
+    onAssistantClose: () -> Unit,
     opacityPercent: Int,
     onOpacityPreview: (Int) -> Unit,
     onOpacityCommit: (Int) -> Unit,
+    bubbleSizeDp: Int,
+    onBubbleSizeChange: (Int) -> Unit,
+    replyCardVertical: Boolean,
+    onReplyCardVerticalChange: (Boolean) -> Unit,
     intentEnabled: Boolean = false,
     intentText: String = "",
     intentExpiry: IntentExpiry = IntentExpiry.ONE_DAY,
@@ -169,10 +188,30 @@ fun LoveBrainSettingsContent(
                 // 与本体那一族头部到内容的节奏同档。水平那一段仍归宿主外框那一个主人（本席不动）。
                 .padding(top = Spacing.md, bottom = Spacing.xl)
         ) {
+            // 指导书 2026-10-10 §7 的分组：悬浮助手（开关 → 透明度 → 图标大小）→ 回复显示 →
+            // 当前知识库 → 持续意图。分组只用**现有那张卡 + 顺序 + 组名那一行字阶**表达，
+            // 不新绘第二套容器、分割线或标题样式（§7 原话：「不得据此新绘制按钮、卡片和分割线样式」
+            // 「使用现有容器的真实布局能力，先比对当前设置页」）。
+            SettingsAssistantEntry(
+                assistantOn = assistantOn,
+                onRequestEnable = onAssistantEnable,
+                onRequestClose = onAssistantClose
+            )
+            Spacer(Modifier.height(Spacing.md))
             SettingsOpacityEntry(
                 opacityPercent = opacityPercent,
                 onOpacityPreview = onOpacityPreview,
                 onOpacityCommit = onOpacityCommit
+            )
+            Spacer(Modifier.height(Spacing.md))
+            SettingsBubbleSizeEntry(
+                sizeDp = bubbleSizeDp,
+                onSizeChange = onBubbleSizeChange
+            )
+            Spacer(Modifier.height(Spacing.md))
+            SettingsReplyLayoutEntry(
+                vertical = replyCardVertical,
+                onVerticalChange = onReplyCardVerticalChange
             )
             // §11.1 那一族的顺序：透明度 → **当前知识库** → 意图。
             // 切库排在意图前面不是排版口味：意图是按库隔离的那一份数据，先认对象、再改这一块的那件事，

@@ -33,21 +33,20 @@ object AppConfig {
     // 面板背景的透明程度**不在这一段**：那是用户可设的持久化项，不是尺寸常量，
     // 住在文件尾部的 [PanelBackdropOpacity]。
 
-    // ═══ 悬浮球（纯主球形态：单击开面板、拖拽吸附、闲置半透明/半隐藏）═══
-    const val BUBBLE_SIZE = 56               // 主球直径 56dp（M3 FAB 标准尺寸，触控达标）
+    // ═══ 悬浮球（纯主球形态：单击开面板、拖拽吸附、闲置降透明）═══
+    // 球的**直径**不在这一段：那是用户可设的三档，住在文件尾部的 [BubbleSizeTier]，
+    // 窗口宽高、图标比例、角标偏移、clamp 与吸边全从那一颗推（M04）。
     const val BUBBLE_EDGE_MARGIN = 2         // 吸附后距屏幕边缘留白（2dp，近乎贴边又不被系统手势区遮挡）
     const val BUBBLE_SNAP_MS = 250           // 边缘吸附动画时长——去掉吸附震动，保留平滑滑向动画
     const val BUBBLE_DRAG_THRESHOLD_DP = 20  // 点击 vs 拖拽判定阈值（累计位移≥20dp 才算拖拽，否则抬起=点击）
 
     // ═══ 悬浮球：闲置降遮挡 + 入场动画 ═══
     const val BUBBLE_IDLE_DIM_MS = 4000L     // 闲置 4s 无交互 → 半透明（AssistiveTouch 降遮挡思路）
-    const val BUBBLE_IDLE_ALPHA = 0.78f      // 闲置半透明 alpha（保持 3:1 对比度下限）
+    // 闲置那一格降多少、降到哪里为止，不在这里：它跟着用户设的百分比走，
+    // 算式在 [PanelBackdropOpacity.effectiveAlpha]（BUBBLE_IDLE_ALPHA 就是那把尺的降幅锚点）。
+    const val BUBBLE_IDLE_ALPHA = 0.78f      // 闲置降遮挡的锚点：完全不透明那一端降到 0.78（保持 3:1 对比度下限）
     const val BUBBLE_ENTRANCE_STIFFNESS = 300f   // 入场 spring 刚度（慢而稳的浮入）
     const val BUBBLE_ENTRANCE_DAMPING = 0.7f     // 入场 spring 阻尼（轻微过冲）
-
-    // ═══ 悬浮球：侧边半隐藏 + 无障碍降动画 ═══
-    const val BUBBLE_HIDE_IDLE_MS = 8000L    // 闲置 8s（半透明之后）→ 滑出侧边半隐藏（QQ 悬挂思路）
-    const val BUBBLE_HIDE_EDGE_DP = 12       // 半隐藏后露边宽度（可点击回弹）
 
     // ═══ 悬浮球角标（ 令牌化：spring 参数外放，数值不变）═══
     const val BUBBLE_BADGE_ENTER_DAMPING = 0.45f   // 角标入场 spring 阻尼（轻微弹跳）
@@ -167,9 +166,9 @@ enum class GenerationTimeoutTier(val seconds: Int) {
  * ⚠ **压的是背景与大面积卡底，不是整扇窗**。把整棵 `ComposeView.alpha` 一起降下来会连正文一起洗淡
  * （文字先于背景失去可读性），而且那条 alpha 归面板的淡入淡出动画所有
  * （`service/OverlayPanelWindow` 里淡出结束与再次打开时都会把它复位）。
- * 作用点有两处，且共用这一把尺：面板根那层 `.background(SurfaceBase.copy(alpha = [alphaOf]))`，
- * 以及压在它上面的大面积容器走 `core/designsystem/panelBackdropCardColor()` ——
- * 只把根调淡、白卡仍然满不透明，等于没有这个设置。
+ * 作用点只有面板那两层底色（`ui/panel/LoveBrainPanelScreen.kt` 的根与设置页那一层），
+ * 加上悬浮球整颗（主图标 + 未读角标）——**四处共用下面 [effectiveAlpha] 这一把尺**。
+ * 只把面板根调淡、球不跟着走，等于"同一个百分比"只做了一半。
  * 底色自身的 alpha 通道与 `View.alpha` 是两层乘积：动画淡出时两者相乘，动画复位碰不到颜色。
  */
 object PanelBackdropOpacity {
@@ -227,4 +226,110 @@ object PanelBackdropOpacity {
     /** 反向换算口：界面交来的是"透明度百分比"时走这里。镜像关系只写这一处，别在界面上手算 `100 - x`。 */
     fun fromTransparencyPercent(transparency: Int?): Int =
         snapPercent(transparency?.let { MAX_PERCENT - it })
+
+    // ═══ 有效 alpha：悬浮球 + 面板背景共用的那一把尺（指导书 2026-10-10 §1「同一百分比同时作用」）═══
+
+    /**
+     * 闲置降遮挡的**绝对降幅**，直接从原来那颗 [AppConfig.BUBBLE_IDLE_ALPHA] 推出来（1f − 0.78f = 0.22f）。
+     * 之所以是"减法挪一格"而不是"再乘一层"：乘法是第二次衰减——用户已经调到 60% 时再乘 0.78 会掉到
+     * 0.468，图标淡到找不着，而那既不是用户要的也不是原意图（原意图只在"完全不透明"这一端要求降到 0.78）。
+     * 取默认档（100%）时本式算出来就是 0.78f，闲置观感与这一笔之前逐字相同。
+     */
+    val IDLE_DIM_DELTA: Float = 1f - AppConfig.BUBBLE_IDLE_ALPHA
+
+    /**
+     * 闲置态的可读下限：降到这里为止，不再往下。
+     * 这一格是"降遮挡"与"球还在不在"那条线——比面板下限 60% 更宽，因为球没有正文要读，
+     * 但它是唯一的手势入口，淡到点不中就等于功能消失。
+     */
+    const val IDLE_ALPHA_FLOOR: Float = 0.50f
+
+    /**
+     * **这一帧该画多浓**——悬浮球（主图标 + 未读角标）与面板背景都只从这一颗取值。
+     *
+     * 语义四条，缺一条就会长出对应的坏实现：
+     * 1. 静止时**严格等于用户设置**（`dimmed = false` 就是 [alphaOf]，不额外加暗一档）；
+     * 2. 闲置时按原有"降遮挡"意图变淡（[IDLE_DIM_DELTA]），但**永不低于 [IDLE_ALPHA_FLOOR]**；
+     * 3. 闲置结束回到用户设置值，不会变得比用户设的更不透明（同一颗纯函数，进出对称）；
+     * 4. 只算一次：结果里已经含了用户档位与闲置降档，画的那一侧**不许再乘** `BUBBLE_IDLE_ALPHA`
+     *    或再乘一次本函数的结果（两次相乘正是 0.468 那一格）。
+     *
+     * 单调且不越过用户设置：`dimmed` 为真时结果 ≤ 静止值，且随用户档位升高而升高。
+     */
+    fun effectiveAlpha(opacityPercentRaw: Int?, idleDimmed: Boolean): Float {
+        val rest = alphaOf(opacityPercentRaw)
+        if (!idleDimmed) return rest
+        return (rest - IDLE_DIM_DELTA).coerceAtLeast(IDLE_ALPHA_FLOOR)
+    }
+}
+
+/**
+ * 悬浮图标大小的三档（指导书 2026-10-10 §1「大小调节」）。
+ *
+ * 只做三档、不做连续 1dp 调节：原话写明「三个档位已覆盖日常需求，也更容易保证布局和手势正确」。
+ * 标准档（[STANDARD_DP] = 56dp）就是这一项出现之前屏幕上那颗球（原来的 `AppConfig.BUBBLE_SIZE`
+ * 那颗单一常量已随这一笔退场，全仓不许再有第二个尺寸真值），所以 §1 验收里
+ * 「默认外观与现有版本一致」由默认值成立，不靠改画。
+ *
+ * **单一真值**：系统窗口宽高、主球与内部图标比例、未读角标偏移、当前位置的边界修正、
+ * 拖动吸边的落点、点击区、面板依据球位算出的贴边坐标，全都必须从同一颗数推出来。
+ * 只对 Compose 用 `scale()` 而把窗口点击区留在 56dp，正是这一格要防的那件事
+ * （书 §1：「不能只对 Compose 使用 scale()，而保持系统窗口原来的 56dp 点击区域」）。
+ */
+object BubbleSizeTier {
+
+    /** 落盘键：读写都只在 `SecurePrefs.bubbleSizeDp` 这一格，画侧不许再发明第二颗键。 */
+    const val PREF_KEY: String = "bubble_size_dp"
+
+    const val SMALL_DP: Int = 48
+    const val STANDARD_DP: Int = 56
+    const val LARGE_DP: Int = 64
+
+    /** 默认档 = 现有版本的外观（§1 验收第一条）。 */
+    const val DEFAULT_DP: Int = STANDARD_DP
+
+    /** 合法档位，从小到大；界面上「小 / 标准 / 大」三颗按这个顺序画。 */
+    val ALLOWED_DP: List<Int> = listOf(SMALL_DP, STANDARD_DP, LARGE_DP)
+
+    /**
+     * 读盘与写盘共用的唯一一格：非法值**就近对齐**到相邻合法档（与 [PanelBackdropOpacity.snapPercent]
+     * 同形状——越界的脏值不许变成"看不见的一颗球"或"点不中的窗口"）。
+     * 落在两档正中间时取较小的那一档（[ALLOWED_DP] 从头扫、第一个最小者胜出，结果确定）。
+     */
+    fun snapDp(raw: Int?): Int {
+        if (raw == null) return DEFAULT_DP
+        return ALLOWED_DP.minByOrNull { kotlin.math.abs(it - raw) } ?: DEFAULT_DP
+    }
+}
+
+/**
+ * 回复结果卡片的排列方向（指导书 2026-10-10 §3）。
+ *
+ * 默认纵向；横向＝「保留现在的横向卡片排列」那一档。两档共用同一套卡逻辑
+ * （稳定身份、复制/赞/踩/改写、自定义改写、已赞已踩筛选、流式与已完成内容），
+ * 且切换方向**不重新请求 AI、不重新付费、不清空当前回复**。
+ *
+ * 落盘存枚举名，先例见 `viewmodel/GuideCursor.from` 与 `SecurePrefs.guideCursor`：
+ * 脏值与"这台机器从没写过"都回落到 [DEFAULT]，**不许抛**。
+ */
+enum class ReplyCardLayout {
+
+    /** 每张卡单独占一行，按当前方案顺序纵向排列（默认）。 */
+    VERTICAL,
+
+    /** 现有的横向卡片排列。 */
+    HORIZONTAL;
+
+    companion object {
+
+        /** 落盘键：读写都只在 `SecurePrefs.replyCardLayout` 这一格。 */
+        const val PREF_KEY: String = "reply_card_layout"
+
+        /** 默认方向（§3「默认开启」＝纵向）。 */
+        val DEFAULT: ReplyCardLayout = VERTICAL
+
+        /** 解析口只有这一处：画侧与 VM 都不许再手写 `== "VERTICAL"` 那种第二次判断。 */
+        fun from(raw: String?): ReplyCardLayout =
+            raw?.let { name -> entries.firstOrNull { it.name == name } } ?: DEFAULT
+    }
 }

@@ -48,9 +48,12 @@ class SettingsPageStructureTest {
      * `= PanelBackdropOpacity.alphaOf(percent)`，写它的目的正是"预览条与真面板永远同一格"），
      * 而它连同预览条一起随用户原话"设置里面暂时先弄一个调透明度的，别的都不要弄"退场。
      * 现在这一族判据直接挂在**唯一那一个换算口** [PanelBackdropOpacity.alphaOf] 上——
-     * 也就是面板真的画出来那两处读的那一颗：面板根那层
-     * `SurfaceBase.copy(alpha = alphaOf(...))`（`ui/panel/LoveBrainPanelScreen.kt:316-321`）
-     * 与大面积卡底 `core/designsystem/Color.kt:81-82 panelBackdropCardColor()`。
+     * 也就是面板真的画出来那两处读的那一颗：面板外框与浮层面板各一层的
+     * `SurfaceBase.copy(alpha = PanelBackdropOpacity.effectiveAlpha(surface.backdropPercent, idleDimmed = false))`
+     * （`ui/panel/LoveBrainPanelScreen.kt` 里那两层，按这一句找、不按行号找）。
+     * ⚠ 2026-10-10 更正一处失真：这里以前还列着"大面积卡底 `Color.kt:81-82 panelBackdropCardColor()`"，
+     * 那颗函数**在 HEAD 上根本不存在**（全仓 grep 只命中注释与本件），它留下的
+     * `LocalPanelBackdropDensity` 也零读取方，已随本轮 M10 清掉——面板里的白卡不跟着变浓淡。
      * **测的仍是同一件事**："界面上交出的每一个数与画出来的 alpha 必须同一来源"——
      * 而且这一层比转发那颗更近，转发那颗再也不可能在中间偷偷算第二遍。
      * 这一格里**没有**任何"预览条画在屏幕上"的断言：那一半的主体被点名删了，

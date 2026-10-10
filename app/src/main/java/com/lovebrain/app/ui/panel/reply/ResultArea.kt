@@ -35,6 +35,7 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import com.lovebrain.app.R
+import com.lovebrain.app.ReplyCardLayout
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -58,7 +59,7 @@ import com.lovebrain.app.ui.theme.*
 /** 结果区内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 internal object ResultDimens {
     /**
-     * 结果区那几条**文字入口**（现在只剩「纠正记忆」）的可点击盒子下限。
+     * 结果区那几条**文字入口**（现在只剩「修正记忆」那颗常驻出口）的可点击盒子下限。
      * 盒子按这颗数垫，里面的字仍按文字档那一号画——"点得中"和"长什么样"是两层，
      * 不能为了前者把后者撑成一颗大按钮。
      */
@@ -130,14 +131,26 @@ fun ResultArea(
     correctionFlow: MemoryCorrectionFlow? = null,
     // 稳定轮次身份——只在整轮 generate 成功时变化
     generationRoundId: Int = 0,
+    // §3「回复卡片纵向排列」：方向由宿主从现有偏好喂进来
+    //（`SecurePrefs.replyCardLayout` → VM → 面板这一格的实参），本组件不读盘、也不自己揣一颗开关。
+    // 默认纵向＝需求原话的"默认开启"；横向＝保留现有的横向卡片排列。
+    // ⚠ 换这一颗**只换摆法**：它不进任何请求参数、不参与 generationRoundId 与 rowState 的身份，
+    // 所以切换方向既不重新请求 AI、也不重新付费、更不清空当前回复。
+    cardLayout: ReplyCardLayout = ReplyCardLayout.VERTICAL,
     onInputIntent: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     // 卡下方那条文字入口的可见性判据：本轮一条参考信息都没有就不摆空工具块
     //（要求的"没有参考信息时不放一个空工具块"），有则每颗卡共用同一个 toggle——
     // 展开的是本轮共享清单，不是"这张卡专属引用"的归属。
+    // ⚠ 还要再过一次 [memoryRefsFeedVisible]（把展开态当 true 问一句"这块**画得出来吗**"）：
+    // 这一份结果当时是「仅看本轮」时清单被那颗布尔挡死，留着卡片那条入口就成了一颗
+    // "点下去什么都不会出现"的死路——入口能给的时刻必须是清单真给得出的时刻。
+    // 判据仍只有那一颗纯函数，这里不重写第二套 when。
+    val feedCanDraw: Boolean =
+        memoryRefsFeedVisible(memoryRefs, showRefs = true, onlyThisRound = frozenOnlyThisRound)
     val roundRefsClick: (() -> Unit)? =
-        if (memoryRefs.isNotEmpty()) onToggleMemoryRefs else null
+        if (feedCanDraw) onToggleMemoryRefs else null
 
     // 卡片行的**行级状态**：哪几张卡在调整展开态、每张卡在窗口里的落点、自定义草稿与
     // 自定义是否展开。四项一律按 identity.key 记，且住在 LazyRow item **之上**——
@@ -198,6 +211,9 @@ fun ResultArea(
                             onCustomRewrite = onCustomRewrite,
                             onReferenceClick = roundRefsClick,
                             rowState = rowState,
+                            // 流式那一档与完成那一档读的是**同一颗**方向：边出卡边换方向也不会
+                            // 出现"上半截横、下半截竖"
+                            cardLayout = cardLayout,
                             onInputIntent = onInputIntent
                         )
                     }
@@ -214,6 +230,14 @@ fun ResultArea(
                             onCollapse = onToggleMemoryRefs
                         )
                     }
+                    // 这条入口与成功档那一条是**同一颗**（本文件下面那颗 `MemoryCorrectionEntry`）：流式那一档
+                    // 原来根本没有这条出口，而本轮没有参考记忆时卡片入口与清单都不画
+                    //（`roundRefsClick` 为 null + `memoryRefsFeedVisible` 判空），流式档就一个字都不剩。
+                    // 清单照样不假装有一轮参考，但出口一直在；清单不在屏上时由它念那一句"这一刻用的是哪份上下文"。
+                    MemoryCorrectionEntry(
+                        feedOnScreen = feedCanDraw && memoryRefsExpanded,
+                        onShowCorrectionCenter = onShowCorrectionCenter
+                    )
                     Spacer(Modifier.height(Spacing.md))
                     Box(
                         modifier = Modifier
@@ -245,6 +269,8 @@ fun ResultArea(
             } else {
                 CoreLoadingIndicator(
                     streamingCoreText = streamingCoreText,
+                    // 占位卡跟着同一颗方向：加载完成那一跳不许顺便把摆法也换了
+                    cardLayout = cardLayout,
                     modifier = modifier
                 )
             }
@@ -280,6 +306,7 @@ fun ResultArea(
                     onCustomRewrite = onCustomRewrite,
                     onReferenceClick = roundRefsClick,
                     rowState = rowState,
+                    cardLayout = cardLayout,
                     onInputIntent = onInputIntent
                 )
 
@@ -311,38 +338,16 @@ fun ResultArea(
                     )
                 }
 
-                // 结果区下方那条「纠正记忆」：一颗文字入口，不常驻大型纠正工具区。
+                // 结果区下方那条「修正记忆」：一颗文字入口，不常驻大型纠正工具区（就是本文件下面那颗 `MemoryCorrectionEntry`）。
                 // 中心里那份清单与撤销动作归 CorrectionCenter，这里只发"打开它"这一句意图。
-                // 热区与字形仍是两层：外层盒子按 ResultDimens.UTILITY_HITBOX_DP 垫到可点下限
-                // 并当那处点击，里面的字按文字档画——把字撑大不是"更好点"，那是把外观一起改了。
-                val (correctionEntryInteraction, correctionEntryScale) =
-                    rememberPressScale(0.96f, "correctionEntryScale")
-                Spacer(Modifier.height(Spacing.xs))
-                Box(
-                    modifier = Modifier
-                        .heightIn(min = ResultDimens.UTILITY_HITBOX_DP.dp)
-                        .widthIn(min = ResultDimens.UTILITY_HITBOX_DP.dp)
-                        .graphicsLayer {
-                            scaleX = correctionEntryScale
-                            scaleY = correctionEntryScale
-                        }
-                        .clip(LoveBrainShape.sm)
-                        // clickable 排在 padding 之前：排后面等于自己把热区削掉一圈
-                        .clickable(
-                            interactionSource = correctionEntryInteraction,
-                            indication = null,
-                            role = Role.Button,
-                            onClick = onShowCorrectionCenter
-                        )
-                        .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "纠正记忆",
-                        style = AppTypography.labelSmall,
-                        color = PrimaryDark
-                    )
-                }
+                // **与本轮有没有参考记忆、与那一轮是不是「仅看本轮」都无关**：那两种状态下
+                // 卡片下方那条入口与那份清单都不画（`roundRefsClick` 为 null / `memoryRefsFeedVisible` 为假），
+                // 这条出口仍在树上，并由它那句说明交代"这一刻军师用的是哪一份上下文、去哪儿改"
+                //（形状、热区与说明句不念第二遍的判据都写在 `MemoryCorrectionEntry` 那一份的 KDoc 里）。
+                MemoryCorrectionEntry(
+                    feedOnScreen = feedCanDraw && memoryRefsExpanded,
+                    onShowCorrectionCenter = onShowCorrectionCenter
+                )
 
                 LocalCorrectionFlowHostIfNeeded(
                     hostLocally = hostLocally,
@@ -405,6 +410,76 @@ fun ResultArea(
         else -> {
             Spacer(modifier = modifier.fillMaxWidth())
         }
+    }
+}
+
+/**
+ * 结果区（含流式出卡那一档）下方那颗**常驻**的纠正出口：`入口 +（清单此刻不在屏上时）那一句上下文说明`。
+ *
+ * 它为什么必须一直画得出（M20：结果区那条记忆纠正入口不易发现）：
+ * [MemoryRefsSection] 那块清单按 [memoryRefsFeedVisible] 的三输入真值表决定画不画——本轮没有真引用、
+ * 或者这一份结果当时是「仅看本轮」时，那块清单**一个字都不画**（那是第10节第3条 不许撤的显示侧保险，
+ * 不许在这里用"补一张空壳/编一条占位条目"去绕开）。可用户在那两种时刻恰恰最需要知道
+ * ① 这一刻军师用的是什么上下文，② 从哪里改它。这两样由这一颗承担，所以它的可见性
+ * **既不看** `memoryRefs` 空不空、**也不看**那颗布尔——它只发"打开纠正中心"这一句意图。
+ *
+ * 那一句话只在**清单本体不在屏上**时跟着入口念一遍（`feedOnScreen` 由调用方用同一颗
+ * [memoryRefsFeedVisible] 算出来，这里不重写第二套 when）：清单展开时那句说明本来就挂在清单头上
+ * （`memory_refs_note`），这一颗再念一遍就是同一句话说两遍。
+ *
+ * 三种坏实现各红在 `MemoryCorrectionEntryTest` 对应那一格上：
+ * - 把出口也挂在"有真引用"之后（本轮没引用 ⇒ 整条出口消失，用户既读不到上下文也改不动）；
+ * - 流式出卡那一档不画出口（旧形状只有成功档有它，卡还在流式里就没路可走）；
+ * - 点它顺手改数据（这颗组件**没有** `onCorrection` 形参——结构上就改不了）。
+ *
+ * 形状仍是"热区与字形两层"：外面那颗盒子按 [ResultDimens.UTILITY_HITBOX_DP] 垫两轴到可点下限
+ * 并当那处点击，里面的字仍按文字档画——把字撑大不是"更好点"，那是把外观一起改了。
+ * `clickable` 排在 `padding` 之前（排后面等于自己把热区削掉一圈，本文件另有两处同一课）。
+ * 这颗盒子留在本文件而不搬去别的所有者：`ProductionUiContractTest` 与 `ResultAreaOwnershipTest`
+ * 那两颗闸就是按"结果区这条入口的热区住在哪里"读源码的（`UTILITY_HITBOX_DP` 现在唯一读它的就是这里）。
+ *
+ * 词表全部走资源（入口 `memory_fix_entry`、说明句 `memory_refs_note`），这里不新增内联中文。
+ */
+@Composable
+internal fun MemoryCorrectionEntry(
+    /** 那份共享清单本体此刻在不在屏上（调用方按 [memoryRefsFeedVisible] 算）：在，则说明句不念第二遍 */
+    feedOnScreen: Boolean,
+    onShowCorrectionCenter: () -> Unit
+) {
+    val (interaction, scale) = rememberPressScale(0.96f, "correctionEntryScale")
+    Spacer(Modifier.height(Spacing.xs))
+    if (!feedOnScreen) {
+        // 一眼说清"这一刻军师用的是哪一份上下文"：清单画不出来的那两种状态由这一句顶上
+        Text(
+            text = stringResource(R.string.memory_refs_note),
+            style = AppTypography.labelSmall,
+            color = TextHint
+        )
+        Spacer(Modifier.height(Spacing.xs))
+    }
+    Box(
+        modifier = Modifier
+            .heightIn(min = ResultDimens.UTILITY_HITBOX_DP.dp)
+            .widthIn(min = ResultDimens.UTILITY_HITBOX_DP.dp)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+            .clip(LoveBrainShape.sm)
+            .clickable(
+                interactionSource = interaction,
+                indication = null,
+                role = Role.Button,
+                onClick = onShowCorrectionCenter
+            )
+            .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.memory_fix_entry),
+            style = AppTypography.labelSmall,
+            color = PrimaryDark
+        )
     }
 }
 
@@ -600,7 +675,26 @@ internal fun toggleRewriteExpansion(
         (expanded + identityKey) to clearPreviousResult
     }
 
-/** 方案卡片行——一条横向可滑列表，Phase 1 完成就立刻渲染 */
+/**
+ * 方案卡片行——**同一套卡片逻辑，两种摆法**（§3「回复卡片纵向排列」，默认纵向），Phase 1 完成就立刻渲染。
+ *
+ * 这一排管着三样东西，**两档共用同一批主人**，方向不改它们的归属：
+ * - 筛选：`filter` 仍住在本行本地（`remember(rowState)`），已赞/已踩按数量出现；
+ * - 阅读位置：不住在这里，仍是 `ResultArea` 那唯一一颗 `readScroll`（本行不新建 ScrollState）；
+ * - 方案集合与行级状态：`rowState` 按 `generationRoundId` 发，展开态/落点/自定义草稿都住在它里面。
+ *
+ * 方向换的**只是容器**：横向档一条 `LazyRow`（划着读、item 滑出视口会被回收）；纵向档一列
+ * `Column`、一卡一行、按 [mergedSchemesInRoundOrder] 那条顺序接排，溢出由外层那条纵向滚动接。
+ * 纵向档**不嵌 `LazyColumn`**——外层 `verticalScroll` 给的正是无限高度约束，在里面再放一棵
+ * 无限高懒列表就是需求点名禁止的坏法（同时也被 `ResultAreaReadingPositionTest` 那三处计数钉着）。
+ * 不嵌也付得起：八项宇宙固定就那 8 张卡位（`LoveBrainResponse.mergedEightItems` = 四风格 + 四方向，
+ * `ResultAreaStructureTest` 逐格数过），没有"再多就爆"的那一档，所以这里**不新造任何截断逻辑**。
+ *
+ * 两档调的是**同一颗 [SchemeCard]**（下面那颗 `cardEntry`）：稳定 identity、复制/赞/踩/改写、
+ * 自定义改写输入与结果、已赞已踩筛选、流式与已完成内容全共用，**没有第二条卡片链**。
+ * 那张设计示意图表达的是布局关系，不是新样式：颜色/边框/圆角/字号/按钮/按压缩放仍由
+ * `SchemeCard` 与设计令牌拥有。
+ */
 @Composable
 private fun SchemeCardsRow(
     schemes: List<Scheme>,
@@ -617,7 +711,10 @@ private fun SchemeCardsRow(
     onReferenceClick: (() -> Unit)? = null,
     // 展开集合 / 落点 / 草稿：住在调用方（LazyRow item 之上），换一整轮整包作废
     rowState: SchemeRowState,
-    onInputIntent: (() -> Unit)? = null
+    onInputIntent: (() -> Unit)? = null,
+    // §3 的方向：由 `ResultArea` 从偏好透传下来（本行不读盘、也不自己发明第三种摆法）。
+    // 它是这一颗**唯一**新增的形参——其余全部原样透传，两档因此共用同一套卡逻辑。
+    cardLayout: ReplyCardLayout = ReplyCardLayout.VERTICAL
 ) {
         // 方案筛选：全部常驻 + 已赞/已踩按状态出现（用户 2026-10-03 原话："《全部》按钮全程显示，
     // 《已赞》按钮点赞了就显示，目前还没有《已踩》按钮需要加上，然后也是点了踩才显示"）
@@ -648,9 +745,81 @@ private fun SchemeCardsRow(
 
     val scrollState = rememberLazyListState()
     // 去掉当前卡片指示器（原 activeIndex 追踪已移除）
-    // 切换筛选时滚动回起点
+    // 切换筛选时滚动回起点：横向档那一条 LazyRow 真的要把第一张挪回眼前；纵向档这一排不住在
+    // LazyList 里（阅读位置仍是外层那唯一一颗 `readScroll`，本行不新建第二颗 ScrollState），
+    // 这句对它就是空转。两档唯一的分叉只有下面"用哪一棵容器"那一处。
     LaunchedEffect(filter) {
         scrollState.scrollToItem(0)
+    }
+
+    //修复：入场动画只在首次出现时播放一次（playedKeys 集合）。
+    // LazyRow item 离开视口会销毁 remember，若动画状态留在 item 内，
+    // 从右向左滑（item 重新组合）会重播动画 → 卡片"闪一下"。提升到外层集合解决。
+    // 它同样住在**方向分叉之外**：切换纵向/横向换的是容器，已经播过的这张卡不许再闪一遍。
+    val playedKeys = remember(rowState) { mutableStateMapOf<String, Boolean>() }
+
+    // 一张回复卡的内容——横向与纵向**共用这一颗**：稳定 identity、复制/赞/踩/改写、
+    // 自定义改写的草稿与开合、落点上报（"点卡外收起"的判据与方向无关）、入场动画，
+    // 全都从同一批参数走。方向只决定它被放进下面哪一棵容器，这里**没有第二套回复卡逻辑**。
+    val cardEntry: @Composable (Scheme) -> Unit = { scheme ->
+        val identityKey = scheme.identity.key
+        // 入场动效：淡入+上移，逐张交错 60ms（仅首次组合播放）
+        val index = displaySchemes.indexOfFirst { it.identity.key == identityKey }
+        var visible by remember { mutableStateOf(playedKeys[identityKey] ?: false) }
+        LaunchedEffect(Unit) {
+            if (!(playedKeys[identityKey] ?: false)) {
+                playedKeys[identityKey] = true
+                visible = true
+            }
+        }
+        AnimatedVisibility(
+            visible = visible,
+            enter = fadeIn(tween(250, delayMillis = index * 60)) +
+                slideInVertically(
+                    initialOffsetY = { it / 6 },
+                    animationSpec = tween(300, delayMillis = index * 60)
+                )
+        ) {
+            SchemeCard(
+                scheme = scheme,
+                feedback = feedbacks[identityKey] ?: SchemeFeedback.NONE,
+                onFeedback = onFeedback,
+                onCopy = onCopyScheme,
+                displayTag = schemeDisplayTag(scheme),
+                rewriteState = rewriteStates[identityKey],
+                onRewrite = onRewrite,
+                onClearRewriteState = onClearRewriteState,
+                onCancelRewrite = onCancelRewrite,
+                isExpanded = rowState.expandedKeys.contains(identityKey),
+                onToggleRewriteExpand = { identity ->
+                    val (nextExpanded, clearPreviousResult) = toggleRewriteExpansion(
+                        expanded = rowState.expandedKeys,
+                        identityKey = identity.key,
+                        rewriteState = rewriteStates[identity.key]
+                    )
+                    if (clearPreviousResult) onClearRewriteState(identity)
+                    // 只切当前这一张：别的卡的展开态原样留着
+                    rowState.expandedKeys = nextExpanded
+                },
+                onCustomRewrite = onCustomRewrite,
+                customDraft = rowState.customDrafts[identityKey] ?: "",
+                onCustomDraftChange = { text ->
+                    rowState.customDrafts[identityKey] = text
+                },
+                isCustomInputOpen = rowState.customOpenKeys[identityKey] == true,
+                onCustomInputOpenChange = { open ->
+                    rowState.customOpenKeys[identityKey] = open
+                },
+                onCardBoundsChanged = { rect ->
+                    if (rect == null) rowState.cardBoundsInWindow.remove(identityKey)
+                    else rowState.cardBoundsInWindow[identityKey] = rect
+                },
+                onReferenceClick = onReferenceClick,
+                onInputIntent = onInputIntent,
+                // 这一颗是两档唯一的新增实参：卡里面的东西一样都不换，只换尺寸语义
+                cardLayout = cardLayout
+            )
+        }
     }
     Column {
         // 筛选 Tab 行：**有方案在架就常驻**（旧合同是"点过赞才出现整排"，本轮按原话翻掉）。
@@ -702,73 +871,34 @@ private fun SchemeCardsRow(
                 )
             }
         } else {
-            //修复：入场动画只在首次出现时播放一次（playedKeys 集合）。
-            // LazyRow item 离开视口会销毁 remember，若动画状态留在 item 内，
-            // 从右向左滑（item 重新组合）会重播动画 → 卡片"闪一下"。提升到外层集合解决。
-            val playedKeys = remember(rowState) { mutableStateMapOf<String, Boolean>() }
-            LazyRow(
-                state = scrollState,
-                horizontalArrangement = Arrangement.spacedBy(Spacing.md),
-                modifier = Modifier.fillMaxWidth()
-                    .testTag("scheme_cards_row")
-            ) {
-                items(displaySchemes, key = { it.identity.key }) { scheme ->
-                    val identityKey = scheme.identity.key
-                    // 入场动效：淡入+上移，逐张交错 60ms（仅首次组合播放）
-                    val index = displaySchemes.indexOfFirst { it.identity.key == identityKey }
-                    var visible by remember { mutableStateOf(playedKeys[identityKey] ?: false) }
-                    LaunchedEffect(Unit) {
-                        if (!(playedKeys[identityKey] ?: false)) {
-                            playedKeys[identityKey] = true
-                            visible = true
-                        }
-                    }
-                    AnimatedVisibility(
-                        visible = visible,
-                        enter = fadeIn(tween(250, delayMillis = index * 60)) +
-                            slideInVertically(
-                                initialOffsetY = { it / 6 },
-                                animationSpec = tween(300, delayMillis = index * 60)
-                            )
-                    ) {
-                        SchemeCard(
-                            scheme = scheme,
-                            feedback = feedbacks[identityKey] ?: SchemeFeedback.NONE,
-                            onFeedback = onFeedback,
-                            onCopy = onCopyScheme,
-                            displayTag = schemeDisplayTag(scheme),
-                            rewriteState = rewriteStates[identityKey],
-                            onRewrite = onRewrite,
-                            onClearRewriteState = onClearRewriteState,
-                            onCancelRewrite = onCancelRewrite,
-                            isExpanded = rowState.expandedKeys.contains(identityKey),
-                            onToggleRewriteExpand = { identity ->
-                                val (nextExpanded, clearPreviousResult) = toggleRewriteExpansion(
-                                    expanded = rowState.expandedKeys,
-                                    identityKey = identity.key,
-                                    rewriteState = rewriteStates[identity.key]
-                                )
-                                if (clearPreviousResult) onClearRewriteState(identity)
-                                // 只切当前这一张：别的卡的展开态原样留着
-                                rowState.expandedKeys = nextExpanded
-                            },
-                            onCustomRewrite = onCustomRewrite,
-                            customDraft = rowState.customDrafts[identityKey] ?: "",
-                            onCustomDraftChange = { text ->
-                                rowState.customDrafts[identityKey] = text
-                            },
-                            isCustomInputOpen = rowState.customOpenKeys[identityKey] == true,
-                            onCustomInputOpenChange = { open ->
-                                rowState.customOpenKeys[identityKey] = open
-                            },
-                            onCardBoundsChanged = { rect ->
-                                if (rect == null) rowState.cardBoundsInWindow.remove(identityKey)
-                                else rowState.cardBoundsInWindow[identityKey] = rect
-                            },
-                            onReferenceClick = onReferenceClick,
-                            onInputIntent = onInputIntent
-                        )
-                    }
+            // 方向的分叉**只在这一处**：两档渲染的都是上面那颗 `cardEntry`，各自只换容器。
+            if (cardLayout == ReplyCardLayout.VERTICAL) {
+                // 纵向档：一卡一行，按当前方案顺序接排（风格在前、方向在后，见
+                // [mergedSchemesInRoundOrder]）。这里用普通 `Column` 而不是 `LazyColumn`：
+                // 外层 `verticalScroll(readScroll)` 给的正是无限高度约束，在里面再嵌一棵无限高
+                // 懒列表就是 §3 点名禁止的坏法（`ResultAreaReadingPositionTest` 也钉着全文件
+                // 只许骨架那一颗私有 ScrollState）。八项宇宙就这 8 张卡位，整列组合得起，
+                // 而且"切换方向后逐条还在"这一格因此在语义树里能一次数完。
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        // 与横向档**同一颗 testTag**：仪器那侧按这一个串找这一排（JVM
+                        // `ResultAreaTouchTargetsTest` 与设备侧两族都吃它），不新增第二个锚点。
+                        .testTag("scheme_cards_row"),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.md)
+                ) {
+                    displaySchemes.forEach { scheme -> cardEntry(scheme) }
+                }
+            } else {
+                // 横向档：现有那条可滑 LazyRow，形状一字不改（划着读；item 滑出视口会被回收，
+                // 所以展开态/落点/草稿那四样仍住在 item 之上的 rowState 里）。
+                LazyRow(
+                    state = scrollState,
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.md),
+                    modifier = Modifier.fillMaxWidth()
+                        .testTag("scheme_cards_row")
+                ) {
+                    items(displaySchemes, key = { it.identity.key }) { scheme -> cardEntry(scheme) }
                 }
             }
             // 去掉卡片下方的四个点（当前卡片指示器）
@@ -836,6 +966,9 @@ private fun SchemeFilterTab(
 @Composable
 private fun CoreLoadingIndicator(
     streamingCoreText: String,
+    // §3：骨架屏那 4 张占位卡**跟着同一颗方向**摆，否则"加载完成那一跳"会从横排翻成纵列——
+    // 正是下面那行注释写着要消除的那次跳变。尺寸仍只从 `SchemeCardDimens` 那两颗分叉口取。
+    cardLayout: ReplyCardLayout = ReplyCardLayout.VERTICAL,
     modifier: Modifier = Modifier
 ) {
     val phrases = remember {
@@ -868,50 +1001,66 @@ private fun CoreLoadingIndicator(
     ) {
         // 骨架卡片占位：4 张灰色卡片，让用户预知即将出现的内容布局
         // 骨架卡尺寸引用 SchemeCardDimens（166→150 对齐实体卡，消除加载完成瞬间跳变）
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(Spacing.md),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items(4) { _ ->
+        // §3 之后这句话更算数了：占位卡与实体卡**读同一颗方向、同一两颗尺寸分叉口**
+        //（横向＝固定 158x150 并排滑；纵向＝铺满整行、按同一颗 150 当下限一卡一行），
+        // 所以加载完成那一跳换的只是"格子里填上真话术"，摆法与尺寸语义一个字都不换。
+        val skeletonPlaceholder: @Composable () -> Unit = {
+            Box(
+                modifier = SchemeCardDimens.heightFor(
+                    cardLayout,
+                    SchemeCardDimens.widthFor(cardLayout, Modifier)
+                )
+                    .clip(LoveBrainShape.lg)
+            ) {
+                // ④ 裁决修复（方案 a）：呼吸 alpha 只作用于独立背景层（无子节点，层 alpha 与色 alpha
+                // 合成恒等），避免外层 graphicsLayer 包子内容造成 s×(s+0.1) 乘算漂移——对齐 GenerateButton 叠层先例
                 Box(
                     modifier = Modifier
-                        .width(SchemeCardDimens.CARD_WIDTH_DP.dp)
-                        .height(SchemeCardDimens.CARD_HEIGHT_DP.dp)
-                        .clip(LoveBrainShape.lg)
-                ) {
-                    // ④ 裁决修复（方案 a）：呼吸 alpha 只作用于独立背景层（无子节点，层 alpha 与色 alpha
-                    // 合成恒等），避免外层 graphicsLayer 包子内容造成 s×(s+0.1) 乘算漂移——对齐 GenerateButton 叠层先例
+                        .matchParentSize()
+                        .graphicsLayer { alpha = skeletonAlpha }
+                        .background(Neutral600)
+                )
+                Column(modifier = Modifier.padding(Spacing.md)) {
+                    // 骨架标签条
                     Box(
                         modifier = Modifier
-                            .matchParentSize()
-                            .graphicsLayer { alpha = skeletonAlpha }
-                            .background(Neutral600)
+                            .width(ResultDimens.SKELETON_TAG_WIDTH_DP.dp)
+                            .height(Spacing.xl)
+                            .clip(LoveBrainShape.sm)
+                            .graphicsLayer { alpha = skeletonAlpha + 0.1f }
+                            .background(Neutral500)
                     )
-                    Column(modifier = Modifier.padding(Spacing.md)) {
-                        // 骨架标签条
+                    Spacer(Modifier.height(Spacing.md))
+                    // 骨架文本行
+                    repeat(3) {
                         Box(
                             modifier = Modifier
-                                .width(ResultDimens.SKELETON_TAG_WIDTH_DP.dp)
-                                .height(Spacing.xl)
+                                .fillMaxWidth()
+                                .height(Spacing.lg)
                                 .clip(LoveBrainShape.sm)
                                 .graphicsLayer { alpha = skeletonAlpha + 0.1f }
                                 .background(Neutral500)
                         )
-                        Spacer(Modifier.height(Spacing.md))
-                        // 骨架文本行
-                        repeat(3) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(Spacing.lg)
-                                    .clip(LoveBrainShape.sm)
-                                    .graphicsLayer { alpha = skeletonAlpha + 0.1f }
-                                    .background(Neutral500)
-                            )
-                            if (it < 2) Spacer(Modifier.height(Spacing.xs))
-                        }
+                        if (it < 2) Spacer(Modifier.height(Spacing.xs))
                     }
                 }
+            }
+        }
+        if (cardLayout == ReplyCardLayout.VERTICAL) {
+            // 纵向档：一卡一行。这里同样**不嵌 LazyColumn**——本柱自己已经吃了那条私有滚动，
+            // 再嵌一棵无限高懒列表就是 §3 点名禁止的坏法（四张占位更没必要）。
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(Spacing.md)
+            ) {
+                repeat(4) { skeletonPlaceholder() }
+            }
+        } else {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(Spacing.md),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(4) { _ -> skeletonPlaceholder() }
             }
         }
         Spacer(Modifier.height(Spacing.md))

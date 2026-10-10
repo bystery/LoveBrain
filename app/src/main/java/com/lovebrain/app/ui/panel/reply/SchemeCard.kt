@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lovebrain.app.ReplyCardLayout
 import com.lovebrain.app.model.RewriteCommand
 import com.lovebrain.app.model.RewriteState
 import com.lovebrain.app.model.Scheme
@@ -42,16 +43,30 @@ import com.lovebrain.app.ui.theme.*
  *   卡在 158-2x8=142dp 的内容宽里放得下，不需要把卡片放大、也不需要让热区互抢点击。
  * 卡内这一族小动作因此由卡片自己画（[SchemeCollapsedBlock] 里那一个私有紧凑件），
  * 设计系统那颗文字动作的 48dp 档位继续管全站别处，两边都不改。
+ *
+ * ⚠ 2026-10-10 §3 加了"纵向阅读"那一档之后，**尺寸语义只有下面 [widthFor] / [heightFor] /
+ * [hasBoundedContentHeight] 三颗分叉口**：一张卡换方向摆不改颜色、边框、圆角、字号、按钮与
+ * 按压缩放，只改"这一颗数当固定值还是当下限"。所以别的文件**不许**再抄一份
+ * `CARD_WIDTH_DP`/`CARD_HEIGHT_DP` 的替代常量，也不许在调用点直接 `.width(...)`/`.height(...)`。
  */
 object SchemeCardDimens {
-    /** 卡宽 = 1.3.1 基线 **158dp**（中途为塞下三颗 48dp 动作抬到 164，已撤回） */
+    /**
+     * 卡宽 = 1.3.1 基线 **158dp**（中途为塞下三颗 48dp 动作抬到 164，已撤回）。
+     * 语义：**横向档**的固定宽（一行里并排滑着读，靠这颗数决定一屏露得出几张）。
+     * 纵向档不读它——那一档宽度铺满整行（见 [widthFor]）。
+     */
     const val CARD_WIDTH_DP = 158
     /**
      * 卡高 = 1.3.1 基线 **150dp**，固定值（旧版那条就是 `height(...)`）。
      * 之前那档 `max=200` 让"默认态"其实能长到 200，等于默认态判据不存在，已撤。
      * 各状态内容层自己有 `weight(1f)` + `verticalScroll`，靠内部滚动不靠卡片膨胀。
+     *
+     * 纵向档（§3）把**同一颗数**当**下限**读：卡片按内容长高、由外层那条纵向滚动接着读，
+     * 但一张卡再矮也不许矮过这一档（见 [heightFor] 与 [hasBoundedContentHeight]）。
+     * 这是一颗数换一种读法，不是第二份尺寸常量。
      */
     const val CARD_HEIGHT_DP = 150
+
     /**
      * 卡内右下角一颗动作的点击盒：**28dp 见方**（触控下限里"卡内紧凑"那一档，
      * 与旧版那颗外盒同数）。三颗并排 = [ACTION_ROW_WIDTH_DP]，放得进 142dp 净宽。
@@ -69,6 +84,44 @@ object SchemeCardDimens {
     /** 自定义那条输入：可编辑盒的下限/上限（一至两行，超出内部滚动，不撑卡片） */
     const val CUSTOM_FIELD_MIN_HEIGHT_DP = 28
     const val CUSTOM_FIELD_MAX_HEIGHT_DP = 36
+
+    // ═══ 两种阅读方向下的尺寸语义（§3：纵向/横向只有这三颗分叉口，别的都不许分叉）═══
+
+    /**
+     * 一张卡在两种方向下的**宽度**：横向档固定 [CARD_WIDTH_DP]（并排滑着读），
+     * 纵向档铺满整行（一卡一行）。
+     *
+     * 纵向档没有"另一颗宽度常量"，因为那不是另一种卡、只是同一种卡的另一种摆法。
+     */
+    fun widthFor(layout: ReplyCardLayout, base: Modifier = Modifier): Modifier =
+        if (layout == ReplyCardLayout.VERTICAL) base.fillMaxWidth() else base.width(CARD_WIDTH_DP.dp)
+
+    /**
+     * 一张卡在两种方向下的**高度**：同一颗 [CARD_HEIGHT_DP]，横向档当固定高、纵向档当下限。
+     *
+     * 纵向档为什么允许长高：那一档的溢出由外层那条纵向滚动接（`ResultArea` 唯一的 `readScroll`），
+     * 不由卡片自己接——所以纵向档**不许**再往卡内塞一条滚动（见 [hasBoundedContentHeight]）。
+     */
+    fun heightFor(layout: ReplyCardLayout, base: Modifier = Modifier): Modifier =
+        if (layout == ReplyCardLayout.VERTICAL) {
+            base.heightIn(min = CARD_HEIGHT_DP.dp)
+        } else {
+            base.height(CARD_HEIGHT_DP.dp)
+        }
+
+    /**
+     * 卡内内容是否坐在**有界高度**里——两档唯一的内容侧分叉判据。
+     *
+     * - 横向档（true）：卡片自己就是那一格的边界，所以正文/调整区靠 `weight(1f)` 撑开、
+     *   超出部分**在卡内滚**（旧形状，一字不变）。
+     * - 纵向档（false）：卡片按内容长高，此时 `weight(1f)` 与卡内 `verticalScroll` 拿到的
+     *   是无限高度（外层 `verticalScroll` 给子节点的就是这一种约束）——那既量不出真尺寸，
+     *   又会在外层滚动里再嵌一条滚动。所以这一档正文整条摊开、由外层读。
+     *
+     * 两档共用同一套卡内容（同一颗 [SchemeCard]、同一批展示块），分叉只有"溢出归谁管"这一条。
+     */
+    fun hasBoundedContentHeight(layout: ReplyCardLayout): Boolean =
+        layout == ReplyCardLayout.HORIZONTAL
 }
 
 /**
@@ -123,6 +176,13 @@ sealed class SchemeCardPresentationState {
  * 内部 `scheme.tag` / `scheme.identity` 一个字没动，正文与回调仍携带原 scheme。
  * [onCardBoundsChanged] 把卡片自己在窗口里的落点报给行容器做"点卡外收起"的判据——
  * 那份 bounds 只服务点击判断，这里不铺任何遮罩、不接跨窗口手势系统。
+ *
+ * [cardLayout] 是这一张卡**唯一的**方向开关（§3「回复卡片纵向排列」）：它只改尺寸语义
+ * （见 [SchemeCardDimens.widthFor] / [SchemeCardDimens.heightFor] /
+ * [SchemeCardDimens.hasBoundedContentHeight]），不改颜色、边框、圆角、字号、按钮与按压缩放，
+ * 也不改身份、回调、展开态与自定义草稿那套逻辑——两档共用下面同一条分发，没有第二张卡。
+ * 默认沿横向档那一组固定尺寸：直接把单卡挂起来量的测试与调用点因此一字不变，
+ * 纵向由卡片行（`ResultArea` 的 `SchemeCardsRow`）显式传。
  */
 @Composable
 fun SchemeCard(
@@ -150,6 +210,7 @@ fun SchemeCard(
     onCustomInputOpenChange: (Boolean) -> Unit = {},
     onCardBoundsChanged: ((Rect?) -> Unit)? = null,
     onInputIntent: (() -> Unit)? = null,
+    cardLayout: ReplyCardLayout = ReplyCardLayout.HORIZONTAL,
     modifier: Modifier = Modifier
 ) {
     val isEmpty = scheme.reply.isBlank()
@@ -219,12 +280,16 @@ fun SchemeCard(
         onDispose { boundsSink.value?.invoke(null) }
     }
 
-    // 卡片本体 + 卡下方那条文字入口。入口画在卡**外**：卡自己仍是固定 158x150，撑不回来。
+    // 卡片本体 + 卡下方那条文字入口。入口画在卡**外**：卡自己那一格撑不回来。
+    // 尺寸只从 SchemeCardDimens 那两颗分叉口取（横向档固定 158x150＝旧形状一字不变；
+    // 纵向档宽铺满、高按同一颗 150 当**下限**按内容长高）。
+    val boundedContentHeight = SchemeCardDimens.hasBoundedContentHeight(cardLayout)
     Column(horizontalAlignment = Alignment.Start) {
         Box(
-            modifier = modifier
-                .width(SchemeCardDimens.CARD_WIDTH_DP.dp)
-                .height(SchemeCardDimens.CARD_HEIGHT_DP.dp)
+            modifier = SchemeCardDimens.heightFor(
+                cardLayout,
+                SchemeCardDimens.widthFor(cardLayout, modifier)
+            )
                 .graphicsLayer { scaleX = scale; scaleY = scale }
                 .shadow(AppDimens.ELEVATION_DEFAULT_DP.dp, LoveBrainShape.lg)
                 .clip(LoveBrainShape.lg)
@@ -239,10 +304,19 @@ fun SchemeCard(
                 ) { if (!isRewriting) onToggleRewriteExpand(identity) })
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
+                // 横向档：卡片高度是固定的，内容层填满它才谈得上"剩余空间给正文"。
+                // 纵向档：卡片按内容长高，`fillMaxSize()` 在这一档拿到的是无限高度（外层
+                // verticalScroll 给的约束），填不出真尺寸——所以只铺宽、不撑高。
+                modifier = (if (boundedContentHeight) Modifier.fillMaxSize() else Modifier.fillMaxWidth())
                     .padding(Spacing.md)
             ) {
+                // 内容层的占位方式：横向档 `weight(1f)` 撑满卡片剩余高度（溢出在卡内滚），
+                // 纵向档整条摊开（溢出交外层那条唯一的纵向滚动）。
+                // 这一颗是两档唯一的内容侧分叉——下面三档展示块本体两档共用同一份实现。
+                val contentBlockModifier: Modifier = Modifier.fillMaxWidth().then(
+                    if (boundedContentHeight) Modifier.weight(1f) else Modifier
+                )
+
                 // 标签行（所有状态都显示）——字母是展示编号，来源身份仍跟着 scheme
                 Box(
                     modifier = Modifier
@@ -263,8 +337,9 @@ fun SchemeCard(
 
                 // 根据 cardState 渲染卡片内容——替换而非追加
                 // 各状态内容层已抽离为同包纯展示子组件（Scheme*Block.kt），此处只做分发。
-                // modifier 中的 weight(1f) 让子组件根节点在 Column 中撑开剩余空间，
-                // 与原内联实现的布局权重完全一致。
+                // 分发的三档**两种阅读方向共用同一份**：横向档 `contentBlockModifier` 带 weight(1f)
+                // 让子组件根节点在固定高度的卡里撑开剩余空间（与原内联实现完全一致），
+                // 纵向档只带 fillMaxWidth()——卡按内容长高，溢出交外层滚动（判据见 contentHeightBounded）。
                 when (cardState) {
                     SchemeCardPresentationState.Rewriting -> {
                         // 改写中：旧正文继续在卡里，底部才是那句进度与停止
@@ -272,7 +347,8 @@ fun SchemeCard(
                             reply = scheme.reply,
                             bodyColor = bodyColor,
                             onCancelRewrite = { onCancelRewrite(identity) },
-                            modifier = Modifier.weight(1f).fillMaxWidth()
+                            modifier = contentBlockModifier,
+                            contentHeightBounded = boundedContentHeight
                         )
                     }
                     SchemeCardPresentationState.Adjusting -> {
@@ -284,7 +360,8 @@ fun SchemeCard(
                             isCustomInputOpen = isCustomInputOpen,
                             onCustomInputOpenChange = onCustomInputOpenChange,
                             onInputIntent = onInputIntent,
-                            modifier = Modifier.weight(1f).fillMaxWidth()
+                            modifier = contentBlockModifier,
+                            contentHeightBounded = boundedContentHeight
                         )
                     }
                     SchemeCardPresentationState.Collapsed,
@@ -300,7 +377,8 @@ fun SchemeCard(
                             notSuitable = scheme.notSuitable,
                             onCopy = { onCopy(scheme) },
                             onFeedback = { fb -> onFeedback(scheme, fb) },
-                            modifier = Modifier.weight(1f).fillMaxWidth()
+                            modifier = contentBlockModifier,
+                            contentHeightBounded = boundedContentHeight
                         )
                     }
                 }

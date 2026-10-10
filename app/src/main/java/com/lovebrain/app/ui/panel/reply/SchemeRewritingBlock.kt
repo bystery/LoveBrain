@@ -28,20 +28,31 @@ import com.lovebrain.app.core.designsystem.*
  * [onCancelRewrite] 就是那一句"停止"：它停的是这一张卡在跑的那一次请求
  * （多张卡可以同时停在展开态，但同一时刻仍只有一个改写请求在跑——卡片这里不新增并发）。
  * modifier（含 weight）由调用方传入。
+ *
+ * [contentHeightBounded]（§3 两档唯一的内容侧分叉，与 [SchemeCollapsedBlock] 同一条判据）：
+ * true＝横向档，旧正文那格 `weight(1f)` 撑满固定高度的卡、超出在卡内滚；
+ * false＝纵向档，卡按正文长高，旧正文整条摊开、不嵌第二条滚动。
+ * 默认 true：把单块挂起来量的测试仍是原来那一档。
  */
 @Composable
 internal fun SchemeRewritingBlock(
     reply: String,
     bodyColor: Color,
     onCancelRewrite: () -> Unit,
+    contentHeightBounded: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         Box(
+            // 两档唯一的内容侧分叉（与 SchemeCollapsedBlock 同一条判据）：横向档旧正文继续
+            // weight(1f) 撑满固定高度的卡并在卡内滚；纵向档整条摊开、不嵌第二条滚动。
+            // 无花括号的 if/else 表达式：别在这一颗可点链所在文件的形状上动尺（见同包那一格注释）。
             modifier = Modifier
-                .weight(1f)
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                .then(
+                    if (contentHeightBounded) Modifier.weight(1f).verticalScroll(rememberScrollState())
+                    else Modifier
+                )
         ) {
             Text(
                 text = reply,

@@ -146,7 +146,26 @@ class LoveBrainViewModel(
      * 仍然只弹一次，重启会再弹一次；那是装配缺两行时的可见症状，不是这一格的语义。
      */
     private val readRoundScopeHintShown: (() -> Boolean)? = null,
-    private val writeRoundScopeHintShown: ((Boolean) -> Unit)? = null
+    private val writeRoundScopeHintShown: ((Boolean) -> Unit)? = null,
+    /**
+     * 悬浮图标大小那一档（dp）的落盘口子（指导书 2026-10-10 §1「大小调节」）。
+     *
+     * 与上面两对同一形状、同一理由：盘上那一格（`BubbleSizeTier.PREF_KEY`）住在 `data/SecurePrefs`
+     * 这个具体实现类上，端口面没有这一员，页面层按具体类去点加密偏好正是 `PackageDependencyTest`
+     * 硬挡的那一条 ⇒ 由装配侧把 `SecurePrefs.bubbleSizeDp` 那一对接进来。
+     * **没接时读默认档 56dp、写丢弃**：默认档就是这一项出现之前的外观，所以少接两行不会让球变大变小。
+     */
+    private val readBubbleSizeDp: (() -> Int)? = null,
+    private val writeBubbleSizeDp: ((Int) -> Unit)? = null,
+    /**
+     * 回复卡片排列方向（纵向 / 横向）的落盘口子（指导书 §3）。
+     *
+     * 同上：盘上那一格是 `ReplyCardLayout.PREF_KEY`，存枚举名，脏值与"从没写过"都经
+     * `AppConfig.kt` 里 `ReplyCardLayout.from` 落回默认纵向。切换方向**不重新请求、不清空回复**——
+     * 这一对只管方向，不碰生成轮次。
+     */
+    private val readReplyCardLayout: (() -> com.lovebrain.app.ReplyCardLayout)? = null,
+    private val writeReplyCardLayout: ((com.lovebrain.app.ReplyCardLayout) -> Unit)? = null
 ) : ViewModel() {
 
     /**
@@ -549,6 +568,36 @@ class LoveBrainViewModel(
      */
     fun setPanelBackdropOpacityPercent(percent: Int) {
         writeBackdropOpacityPercent?.invoke(PanelBackdropOpacity.snapPercent(percent))
+    }
+
+    /**
+     * 悬浮图标当前生效的档位（dp）——指导书 2026-10-10 §1。
+     *
+     * 读数只过一次 [com.lovebrain.app.BubbleSizeTier.snapDp]：装配没接口子时给默认档（56dp＝
+     * 这一项出现之前的外观），接了也只会是 48 / 56 / 64 三颗数之一。**画侧与系统窗口必须拿同一颗数**
+     * （§1 明写不能只对 Compose 用 `scale()` 而让窗口点击区还留在 56dp），所以这里不做第二份换算。
+     */
+    val bubbleSizeDp: Int
+        get() = com.lovebrain.app.BubbleSizeTier.snapDp(readBubbleSizeDp?.invoke())
+
+    /** 写悬浮图标档位：先过 [com.lovebrain.app.BubbleSizeTier.snapDp] 再落盘，下一次读回来就是刚写的那一档。 */
+    fun setBubbleSizeDp(dp: Int) {
+        writeBubbleSizeDp?.invoke(com.lovebrain.app.BubbleSizeTier.snapDp(dp))
+    }
+
+    /**
+     * 回复卡片排列方向（§3）：默认纵向。
+     *
+     * 这一员**只是方向**，不参与生成：读它、换它都不会重新请求 AI、不会重新付费、不会清空当前回复
+     * （结果集与阅读位置的主人在 `ResultArea` / 本轮 `generationRoundId` 那一侧，不在这里）。
+     * 解析口只有 [com.lovebrain.app.ReplyCardLayout.from]（脏值与空值落回默认），这里不第二次判断。
+     */
+    val replyCardLayout: com.lovebrain.app.ReplyCardLayout
+        get() = readReplyCardLayout?.invoke() ?: com.lovebrain.app.ReplyCardLayout.DEFAULT
+
+    /** 写排列方向：落盘存枚举名，下一次读回来就是刚写的那一档。 */
+    fun setReplyCardLayout(layout: com.lovebrain.app.ReplyCardLayout) {
+        writeReplyCardLayout?.invoke(layout)
     }
     // ========================================================
 

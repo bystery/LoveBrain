@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui.panel.reply
 
+import com.lovebrain.app.ReplyCardLayout
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.testing.TouchTier
@@ -55,12 +56,38 @@ class SchemeCardPresentationStateTest {
         )
     }
 
+    /**
+     * 卡片的**两层**（视觉 / 热区）与 §3 之后新增的**两档**（横向 / 纵向）各钉各的。
+     *
+     * ⚠ 判据跟着新形状改过一轮（原来这里只说"卡高是固定值"）：
+     * 纵向档不是第二张卡，而是**同一颗数换一种读法**——
+     * - [SchemeCardDimens.CARD_WIDTH_DP]（158）：横向档的固定宽；纵向档读的是"铺满整行"，
+     *   所以这一颗在新档里**不被读**（不是被替换成第二颗常量）。
+     * - [SchemeCardDimens.CARD_HEIGHT_DP]（150）：横向档的固定高，同时是纵向档的**下限**
+     *   （卡片按内容长高，再矮也不矮过这一档）。
+     * 于是"150 是固定值"这句旧判据的替代关系是：**150 在两档都得 ≥ 卡高，且只有横向档把它当等号**。
+     * 两档各自量到几处、有没有人抄第二份尺寸常量，由 `ReplyCardLayoutTest` 按声明处计数钉
+     * （那里判"只有一处定义"，这一格判"数与档对不对"）——这把尺不许松成"存在就行"。
+     */
     @Test
     fun `SchemeCardDimens keeps the visual layer and the hotspot layer apart`() {
         // 这一档原先判 `3 * 全站下限 = 144`，把卡宽当成了热区的债主，158 当场被它判红。
         // 外观归外观、下限归下限：卡内那一族走自己的紧凑档，而卡片宽度不动。
-        assertEquals("卡宽回到 1.3.1 基线", 158, SchemeCardDimens.CARD_WIDTH_DP)
-        assertEquals("卡高是固定值，不是 min/max 那一档", 150, SchemeCardDimens.CARD_HEIGHT_DP)
+        assertEquals("卡宽仍是 1.3.1 基线（横向档的固定宽；纵向档读铺满，不抄第二颗数）",
+            158, SchemeCardDimens.CARD_WIDTH_DP)
+        assertEquals(
+            "卡高仍是那颗 150：横向档＝固定高，纵向档＝下限（同一颗数两种读法，没有第二份常量）",
+            150, SchemeCardDimens.CARD_HEIGHT_DP
+        )
+        // 方向分叉本身要能判对错（纯函数，坏实现＝两档对调 ⇒ 这里当场红）
+        assertTrue(
+            "横向档卡高固定 ⇒ 内容层该用 weight + 卡内滚动兜住溢出",
+            SchemeCardDimens.hasBoundedContentHeight(ReplyCardLayout.HORIZONTAL)
+        )
+        assertTrue(
+            "纵向档卡按内容长高 ⇒ 内容层不许再拿无限高度去 weight/再嵌一条滚动",
+            !SchemeCardDimens.hasBoundedContentHeight(ReplyCardLayout.VERTICAL)
+        )
         assertEquals(6, SchemeCardDimens.TAG_TO_BODY_GAP_DP)
         assertEquals(6, SchemeCardDimens.TAG_HPAD_DP)
         assertEquals(3, SchemeCardDimens.TAG_VPAD_DP)
@@ -76,6 +103,8 @@ class SchemeCardPresentationStateTest {
         )
         // 几何证人（这才是"可以低于 48"的唯一依据）：三颗合计必须真的放得进卡片自己的内容宽。
         // 内容宽 = 卡宽 - 左右各一处卡片内边距（同一个令牌，不抄第二份数）。
+        // ⚠ 这条理由只对**横向档**说话（158dp 那张固定宽的卡）；纵向档宽度铺满、内容宽更大，
+        // 但按钮一档**不跟着变**——§3 明写新档只换布局、不换按钮与热区，所以两档共用这三颗 28dp。
         val contentWidthDp =
             SchemeCardDimens.CARD_WIDTH_DP - 2 * Spacing.md.value.toInt()
         assertTrue(

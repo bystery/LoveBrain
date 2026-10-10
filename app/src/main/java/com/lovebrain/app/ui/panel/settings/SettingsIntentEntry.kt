@@ -372,6 +372,9 @@ internal fun SettingsIntentEntry(
                 // 必要的保存／完成操作（§11.3 展开顺序的最后一段）。两颗的分工不一样：
                 // 「保存」只交正文、不碰计时（`false`）；「完成」是把这条换成终态那一次换档（`true`），
                 // 终态下面没有期限可言（`effectiveExpiryDate` 对 COMPLETED 一律给空串）。
+                // 「保存」这一支的成功回执（「已记录」）**不在这里发**：这一格看不见落盘结果，
+                // 回执由宿主那条 `IntentController.save` 在写盘真返回之后经统一通知通道发出
+                // （request2 §四「意图保存反馈」；先说成功、后落盘是这一格禁止的形状）。
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(Spacing.xs, Alignment.End)

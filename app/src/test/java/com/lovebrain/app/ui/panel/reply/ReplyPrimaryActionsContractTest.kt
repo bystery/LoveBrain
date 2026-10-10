@@ -2,10 +2,14 @@ package com.lovebrain.app.ui.panel.reply
 
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbButtonHeightTier
+import com.lovebrain.app.core.designsystem.LbTags
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.RenderIn
@@ -19,6 +23,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * 第2节第1条 那张"交互合同应永久钉死"的表，钉在能**真跑**的地方。
@@ -223,6 +228,152 @@ class ReplyPrimaryActionsContractTest {
         assertEquals(
             "$whenLabel 时只能有一个停止入口：" + targets.joinToString { it.describe() },
             1, targets.size
+        )
+    }
+
+    // ═════════════ 生成中"选态"统一（request2 §二第一条 / §四"生成动画"） ═════════════
+
+    /**
+     * 只读**按钮状态**那一面的读数，把"选到 Loading"与"选回 Stop"分成两个值。
+     *
+     * 为什么用 `LbTags.PRIMARY_STOP` 而不是文字：`LbPrimaryButton` 里**只有** Loading 态把
+     * 那颗停止锚点 tag 挂在带 clickable 的盒子上（见 `LbPrimaryButton.kt` 的 Loading 分支），
+     * Stop / Idle / Disabled 三态都没有它。文字会变（Loading 带秒数计时、Stop 是裸「停止」），
+     * tag 不会——所以这一颗粒量的是**选了哪个状态**，正是本轮要统一的那颗旋钮：
+     * 把任一条生成流程改回 `LbButtonState.Stop`，这里立刻读到 `NotLoading`，格子当场红。
+     */
+    private enum class PrimaryButtonStateReading { Loading, NotLoading }
+
+    private fun primaryButtonState(): PrimaryButtonStateReading {
+        val actionables = rule.onAllNodes(hasClickAction()).fetchSemanticsNodes()
+        check(actionables.size == 1) {
+            "生成中这一排只该有一颗主动作，实测 ${actionables.size} 颗"
+        }
+        val hasLoadingStopAnchor =
+            rule.onAllNodes(hasTestTag(LbTags.PRIMARY_STOP)).fetchSemanticsNodes().isNotEmpty()
+        return if (hasLoadingStopAnchor) PrimaryButtonStateReading.Loading
+        else PrimaryButtonStateReading.NotLoading
+    }
+
+    /** 与 [mount] 同一壳，只是把 onStop 接出来计数（用于"停止只投一次"那格） */
+    private fun mountWithStop(
+        composerMode: ComposerMode,
+        isGenerating: Boolean = false,
+        isProactive: Boolean = false,
+        hasReplyResult: Boolean = false,
+        messageCount: Int = 0,
+        onStop: () -> Unit
+    ) {
+        rule.setContent {
+            val deviceDensity = LocalDensity.current.density
+            matrix.RenderIn(deviceDensity) {
+                ReplyPrimaryActions(
+                    composerMode = composerMode,
+                    isGenerating = isGenerating,
+                    isProactive = isProactive,
+                    hasReplyResult = hasReplyResult,
+                    messageCount = messageCount,
+                    onGenerateReply = {},
+                    onGenerateProactive = {},
+                    onRetry = {},
+                    onSaveToKb = {},
+                    onStop = onStop
+                )
+            }
+        }
+    }
+
+    // ═══════════ ① 两条生成流程各一格，各自钉死同一个读数 ═══════════
+    //
+    // 为什么从"同一格里两条流程各挂一次、比两个读数"改成**一档一格**（2026-10-10）：
+    // 本仓的 Compose 规则**一个用例只许 `setContent` 一次**，第二次直接
+    // `IllegalStateException: Cannot call setContent twice per test!`（本仓既知坑，
+    // `UiMatrix`/`RenderIn` 那一族与 `ProviderSectionSemanticsTest` 的"卸树再挂回"都用
+    // 同一颗 `mutableStateOf` 开关绕开；但这里两条流程的差**只在入参**，用不着在同一格挂两次）。
+    // 等值判据没有松成"存在即可"：两格各自把读数钉在**同一个常数** `Loading` 上，
+    // 等值由"两格同值"传递；把任一条流程改回 `Stop` ⇒ 那一格读不到 Loading 的停止锚点，当场红。
+    // 时钟照同文件 `while a reply is generating…` 与 androidTest `proactiveGenerating_…` 的先例：
+    // 生成中那颗是 `rememberInfiniteTransition` 的**无限脉冲**，不关 `autoAdvance` 时
+    // `waitForIdle()` 永远等不到空闲，所以关掉它再手动推几帧，让断言落在同一帧上。
+    @Test
+    fun `reply generating picks the unified loading button state`() {
+        rule.mainClock.autoAdvance = false
+        mount(ComposerMode.REPLY, isGenerating = true, messageCount = 2)
+        repeat(4) { rule.mainClock.advanceTimeByFrame() }
+        assertEquals(
+            "回复生成中应统一到 Loading（进度环+呼吸那颗停止锚点）",
+            PrimaryButtonStateReading.Loading, primaryButtonState()
+        )
+    }
+
+    @Test
+    fun `proactive generating picks the same unified loading button state`() {
+        rule.mainClock.autoAdvance = false
+        mount(ComposerMode.PROACTIVE, isProactive = true)
+        repeat(4) { rule.mainClock.advanceTimeByFrame() }
+        assertEquals(
+            "主动开场生成中应统一到与回复那一路**同一个** Loading 外观（同一格判一份入参）",
+            PrimaryButtonStateReading.Loading, primaryButtonState()
+        )
+    }
+
+    /**
+     * ② 停止交互仍只投一次：一次点击只发一记 onStop（回复那一路）。
+     *
+     * 这一格守的是"不许合并成一颗猜该停哪个的回调"这条边界的**组件侧**证据——`ReplyPrimaryActions`
+     * 只交一颗 `onStop`，点一次恰好投一次，不多投、不双投。
+     * 至于"到底停的是 stopProactive 还是 stopGeneration"由宿主路由（`LoveBrainPanelScreen`），
+     * 不在这一格里判，也不许在这一格合成一颗会自己猜的回调。
+     */
+    @Test
+    fun `tapping the reply generating button dispatches onStop exactly once`() {
+        val replyStops = AtomicInteger(0)
+        rule.mainClock.autoAdvance = false
+        mountWithStop(ComposerMode.REPLY, isGenerating = true, messageCount = 2) {
+            replyStops.incrementAndGet()
+        }
+        repeat(4) { rule.mainClock.advanceTimeByFrame() }
+        rule.onNode(hasClickAction()).performClick()
+        repeat(2) { rule.mainClock.advanceTimeByFrame() }
+        assertEquals("回复生成中点一次只该投一次停止", 1, replyStops.get())
+    }
+
+    /** ② 的另一半：主动开场那一路同样只投一记（同一颗旋钮、同一条判据，见上面那格的注释） */
+    @Test
+    fun `tapping the proactive generating button dispatches onStop exactly once`() {
+        val proactiveStops = AtomicInteger(0)
+        rule.mainClock.autoAdvance = false
+        mountWithStop(ComposerMode.PROACTIVE, isProactive = true) {
+            proactiveStops.incrementAndGet()
+        }
+        repeat(4) { rule.mainClock.advanceTimeByFrame() }
+        rule.onNode(hasClickAction()).performClick()
+        repeat(2) { rule.mainClock.advanceTimeByFrame() }
+        assertEquals("主动开场生成中点一次只该投一次停止", 1, proactiveStops.get())
+    }
+
+    /**
+     * ③ 非生成中的两档外观不变（正向对照），**一档一格**：
+     * 空闲「生成开场」与有结果「重试 / 记入知识库」都还是 Idle，没有 Loading 的停止锚点。
+     * 把这两档也误接成 Loading 会在各自那一格红。
+     */
+    @Test
+    fun `the proactive idle tier keeps its idle appearance`() {
+        mount(ComposerMode.PROACTIVE, messageCount = 0)
+        rule.waitForIdle()
+        assertEquals(
+            "PROACTIVE 空闲不该带 Loading 的停止锚点",
+            0, rule.onAllNodes(hasTestTag(LbTags.PRIMARY_STOP)).fetchSemanticsNodes().size
+        )
+    }
+
+    @Test
+    fun `the result action pair keeps its idle appearance`() {
+        mount(ComposerMode.REPLY, hasReplyResult = true, messageCount = 2)
+        rule.waitForIdle()
+        assertEquals(
+            "结果双出口（重试 / 记入知识库）不该带 Loading 的停止锚点",
+            0, rule.onAllNodes(hasTestTag(LbTags.PRIMARY_STOP)).fetchSemanticsNodes().size
         )
     }
 }

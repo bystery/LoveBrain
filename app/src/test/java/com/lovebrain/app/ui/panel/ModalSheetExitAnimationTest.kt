@@ -11,6 +11,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.BubbleSizeTier
 import com.lovebrain.app.R
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SourceScan
@@ -349,6 +350,13 @@ class ModalSheetExitAnimationTest {
                     opacityPercent = 100,
                     onOpacityPreview = {},
                     onOpacityCommit = {},
+                    assistantOn = true,
+                    onAssistantEnable = {},
+                    onAssistantClose = {},
+                    bubbleSizeDp = BubbleSizeTier.STANDARD_DP,
+                    onBubbleSizeChange = {},
+                    replyCardVertical = true,
+                    onReplyCardVerticalChange = {},
                     intentEnabled = false,
                     intentText = "",
                     intentExpiry = IntentExpiry.ONE_DAY,

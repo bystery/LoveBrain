@@ -111,7 +111,14 @@ val appModule = module {
             // 「仅看本轮」首次轻提示的"提示过没有"旗标（§2.2 第 3 条）：与上面那对同一形状、
             // 接在同一个 SecurePrefs 上——盘上那一格只有一份，落盘后每次回来不再重弹。
             readRoundScopeHintShown = { get<SecurePrefs>().roundScopeHintShown },
-            writeRoundScopeHintShown = { get<SecurePrefs>().roundScopeHintShown = it }
+            writeRoundScopeHintShown = { get<SecurePrefs>().roundScopeHintShown = it },
+            // 悬浮图标档位与回复卡方向那两对（指导书 2026-10-10 §1、§3）：与上面两对同一形状，
+            // 盘上那两格都住在 SecurePrefs 这个具体实现类上（刻度与回落分别在 `BubbleSizeTier`、
+            // `ReplyCardLayout` 身上），VM 只拿到两对函数、不认识存储类。
+            readBubbleSizeDp = { get<SecurePrefs>().bubbleSizeDp },
+            writeBubbleSizeDp = { get<SecurePrefs>().bubbleSizeDp = it },
+            readReplyCardLayout = { get<SecurePrefs>().replyCardLayout },
+            writeReplyCardLayout = { get<SecurePrefs>().replyCardLayout = it }
         )
     }
     // 第四格是 KnowledgePresencePort（老用户判定的"本机有没有知识库"那一员），不再是 Context
