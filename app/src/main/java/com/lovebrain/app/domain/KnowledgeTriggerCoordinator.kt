@@ -10,6 +10,7 @@ import com.lovebrain.app.model.ProfileParseStatus
 import com.lovebrain.app.model.ProfileSuggestion
 import com.lovebrain.app.model.ProfileUpdate
 import com.lovebrain.app.model.ProfileUpdateSchema
+import com.lovebrain.app.model.StageCatalog
 import com.lovebrain.app.model.StageSuggestion
 import com.lovebrain.app.util.L
 import com.lovebrain.app.util.TimeFmt

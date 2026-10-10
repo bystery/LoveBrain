@@ -1,8 +1,8 @@
 package com.lovebrain.app.domain
 
-import android.content.Context
 import com.lovebrain.app.domain.port.KnowledgeReadPort
 import com.lovebrain.app.domain.port.Clock
+import com.lovebrain.app.domain.port.PromptSourcePort
 import com.lovebrain.app.domain.port.SystemClock
 import com.lovebrain.app.domain.prompt.ChatTranscriptBlock
 import com.lovebrain.app.domain.prompt.CurrentSceneInjection
@@ -37,7 +37,12 @@ import com.lovebrain.app.model.ProfileUpdateSchema
  * `domain/prompt/PromptByteFreezeBaselineTest` 的冻结表。
  */
 class PromptBuilder(
-    private val context: Context,
+    /**
+     * 引擎提示词资产的读取口（assets 实现在 data/AssetPromptSource，接线见 di/AppModule.kt）。
+     * 以前这一格是 `android.content.Context`——domain 由此摸到 Android，是登记过的架构债；
+     * 现在按 SettingsStorePort/KbArchivePort 同一张处方换成端口，缺资产的 fail-open 语义在实现侧不变。
+     */
+    private val promptSource: PromptSourcePort,
     private val knowledgeRepo: KnowledgeReadPort,
     private val ongoingSelector: OngoingContextSelector? = null,
     /**
@@ -509,9 +514,7 @@ class PromptBuilder(
     private suspend fun readFileCompat(kbName: String, newPath: String): String =
         knowledgeRepo.readFile(kbName, newPath)
 
-    // E4：asset 缺失不再静默吞掉，记日志便于定位 prompt 段丢失
-    private fun readAsset(path: String): String =
-        runCatching { context.assets.open(path).bufferedReader().use { it.readText() } }
-            .onFailure { com.lovebrain.app.util.L.w("readAsset missing/failed: $path") }
-            .getOrDefault("")
+    // E4：asset 缺失不再静默吞掉，记日志便于定位 prompt 段丢失——日志随 fail-open 兜底一起
+    // 挪进了实现侧（data/AssetPromptSource），这里只问端口拿全文。
+    private fun readAsset(path: String): String = promptSource.read(path)
 }

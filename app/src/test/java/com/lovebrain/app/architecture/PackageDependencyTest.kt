@@ -11,11 +11,19 @@ import java.io.File
  * 第7节 第二步第 4 条「建 package dependency test，禁止 UI import data、domain import Android」，
  * 以及 第4节 表里 DIP/迪米特那两行的 FAIL）。
  *
- * 为什么不是"现在就全绿"：今天的真实存量是 **5 条越界 import，分布在 5 个文件**
- * （本轮 `SecurePrefs` / `KbArchiveTransfer` 端口化后，viewmodel 少掉一处 `java.io.File`：
- * `2dd94c0` 15→10、`ab7457a` 10→6、本轮 6→5；下面那份 baseline 登记 5 条 / 5 个键；
- * `assertEquals(5, …)` 那格每次都在核它）。
- * ⚠ 这一段原来写的是"6 条 / 6 个文件"——还债时顺手把存量叙述也扫了，别再留"注释比实现旧"的假账。
+ * 为什么现在是**全绿**：上面那份 baseline 已经清零——本轮把最后 5 条越界 import 一次还完
+ * （`2dd94c0` 15→10、`ab7457a` 10→6、上一轮 6→5、本轮 5→0），四条各自的还法：
+ * - `domain/PromptBuilder` 的 `android.content.Context` → `domain/port/PromptSourcePort`
+ *   （assets 开口与 fail-open 兜底归 `data/AssetPromptSource`）；
+ * - `model/ProfileUpdate` / `ProfileUpdateSchema` 的 `domain.StageCatalog` → StageCatalog 整体搬进
+ *   model（纯数据目录 + 无副作用归一化函数，domain→model 不在禁单上，语义与取值一个没变）；
+ * - `ui/SetupActivity` 的 `data.EventBus` → `domain/port/PanelRequestPort`
+ *   （EventBus 本体 implements 端口，容器里同一个单例）；
+ * - `viewmodel/SetupViewModel` 的 `java.io.File` → `domain/port/KnowledgePresencePort`
+ *   （磁盘判据归 `data/FileKnowledgePresence`，KnowledgeBaseViewModel 归档那颗的同一张处方）。
+ * ⚠ baseline 是空 map **不等于**这半边棘轮退役：`the recorded debt baseline still matches reality`
+ * 对空 map 照常跑（它是"基线空也要能红"的自检），而任何一条新账都会先在
+ * `no new package dependency violation appears` 与总数那一格红出来——新债没有"登记"这条路可走，只能修。
  * 直接把规则写成硬门禁会让 CI 永久红，然后被人用 `|| true` 关掉——
  * 复核 第9节 第 6 条禁止的正是这个，那比没有门禁更糟。
  *
@@ -26,11 +34,12 @@ import java.io.File
  * 3. 条目总数也比一次，防止"文件登记对了但漏了第二条"。
  *
  * 还债顺序（复核 第7节 第二步第 1 条）：先给这些具体类建端口（AiGateway /
- * KnowledgeReadPort / KnowledgeWritePort）。**原计划第一站"把 domain 的 6 处 `data.*` 换掉"已经做完了**
- * （现在 domain 只剩 `PromptBuilder` 一处 `android.content.Context`），
- * 剩下的 5 条按上面那份登记走：model 撞 domain 两处、ui 撞 data 一处、viewmodel 撞 `java.io.File` 一处
- * （KnowledgeBaseViewModel 那处 `java.io.File` 本轮随 `SecurePrefs` / `KbArchiveTransfer` 端口化还掉了）。
- * 每换掉一处，就重跑 report 脚本、把基线改小。
+ * KnowledgeReadPort / KnowledgeWritePort），再按登记逐条还。**全部还完了**：
+ * domain 的 6 处 `data.*` 与 `PromptBuilder` 那处 `android.content.Context` 都已清掉，
+ * 剩下的 model 撞 domain 两处、ui 撞 data 一处、viewmodel 撞 `java.io.File` 一处
+ * （KnowledgeBaseViewModel 那处随 `SecurePrefs` / `KbArchiveTransfer` 端口化还掉）也按
+ * 类文档那四行的口径清掉，`scripts/package_deps_report.sh` 复扫为 0。
+ * 每换掉一处，就重跑 report 脚本、把基线改小——这一轮把它改到了空。
  */
 class PackageDependencyTest {
 
@@ -76,18 +85,15 @@ class PackageDependencyTest {
     )
 
     /**
-     * 存量债务的逐条登记。来源：bash scripts/package_deps_report.sh（2026-09-24 实扫）。
+     * 存量债务的逐条登记。来源：bash scripts/package_deps_report.sh（2026-09-24 首扫，此后每轮实扫）。
      * 只想缩，不想长；要新增必须先在这里写清"为什么这次不得不过界"。
+     *
+     * 2026-10 本轮把登记过的 5 条全部还清（还法见类文档那四行），这里是**空 map**。
+     * 空不等于拆：`still matches reality` 那颗对空 map 照常跑（"基线空也要能红"的自检），
+     * 任何一条新账都会先在 `no new package dependency violation appears` 红出来——
+     * 想走"登记"这条路，先得让 report 脚本与实扫对得上，再写清为什么非得过界。
      */
-    private val baseline: Map<String, List<String>> = mapOf(
-        "domain/PromptBuilder.kt" to listOf("android.content.Context"),
-        "model/ProfileUpdate.kt" to listOf("com.lovebrain.app.domain.StageCatalog"),
-        "model/ProfileUpdateSchema.kt" to listOf("com.lovebrain.app.domain.StageCatalog"),
-        "ui/SetupActivity.kt" to listOf("com.lovebrain.app.data.EventBus"),
-        // viewmodel/KnowledgeBaseViewModel.kt 的 `java.io.File` 已随归档端口化还掉：
-        // 归档 IO 挪进 data/FileKbArchiveTransfer，页面只交出流，不再自己拼路径。
-        "viewmodel/SetupViewModel.kt" to listOf("java.io.File")
-    )
+    private val baseline: Map<String, List<String>> = emptyMap()
 
     private fun mainRoot(): File {
         val root = File("src/main/java/com/lovebrain/app")
@@ -184,7 +190,11 @@ class PackageDependencyTest {
         assertTrue("domain 层必须禁止具体 data 仓库", forbidden.getValue("domain").contains("com.lovebrain.app.data."))
         assertTrue("ui 层必须禁止直接 import data 仓库", forbidden.getValue("ui").contains("com.lovebrain.app.data."))
         assertTrue("viewmodel 不许自己拼文件路径", forbidden.getValue("viewmodel").contains("java.io.File"))
-        assertEquals("基线条目数必须与 report 脚本同一次统计一致", 5, baseline.values.sumOf { it.size })
+        assertEquals(
+            "基线条目数必须与 report 脚本同一次统计一致（基线已清零：这个 0 同时是" +
+                "「还掉的债不许悄悄记回来」的哨——谁把旧条目塞回 baseline，这里与总数那一格一起红）",
+            0, baseline.values.sumOf { it.size }
+        )
     }
 
     /**
@@ -347,8 +357,8 @@ class PackageDependencyTest {
 
         // 表自己的等号证人：登记数写死在这里，「表比现实宽」就是恒绿的另一种写法
         assertEquals(
-            "装配必需那一族现登 19 颗（本次实扫），表自己错了要先修表",
-            19, entryAssembly.values.sumOf { it.size }
+            "装配必需那一族现登 22 颗（本次实扫：上一波 19 + 端口化三颗实现侧），表自己错了要先修表",
+            22, entryAssembly.values.sumOf { it.size }
         )
         assertEquals("service 侧的越界债现登 5 条，只许缩不许长", 5, entryDebt.values.sumOf { it.size })
 
@@ -552,6 +562,9 @@ class PackageDependencyTest {
             "com.lovebrain.app.data.KnowledgeRepository  (装配必需：single { KnowledgeRepository(File(…), get(), …) } 的构造目标，且那几颗 `single<Knowledge*Port> { get<KnowledgeRepository>() }` 靠点名它来保证端口视图与仓库解析到同一个实例——「只有一个事务 owner」要能从图上读出来)",
             "com.lovebrain.app.data.SecurePrefs  (装配必需：single { SecurePrefs(androidContext()) } 与 single<SettingsStorePort> { get<SecurePrefs>() } 两端——页面拿端口、仓库拿具体类，必须是同一个实例)",
             "com.lovebrain.app.data.FileKbArchiveTransfer  (装配必需：single<KbArchivePort> { … } 的实现侧。**全限定名写法、没有 import 行**，只扫 import 的那把尺对它整个失明，本轮抓得到)",
+            "com.lovebrain.app.data.AssetPromptSource  (装配必需：single<PromptSourcePort> { AssetPromptSource(…) } 的实现侧——domain 只认端口，assets 开口与 fail-open 兜底都归 data。2026-10-10 架构债 5→0 那波新增)",
+            "com.lovebrain.app.data.FileKnowledgePresence  (装配必需：single<KnowledgePresencePort> { FileKnowledgePresence(…) } 的实现侧——knowledge/ 根的路径归属收在 data，VM 不再自己拼 File)",
+            "com.lovebrain.app.data.EventBus  (装配必需：single<PanelRequestPort> { EventBus }——data 唯一主人自己 implements 端口，两个类型解析到**同一个**单例，事件没有第二条通道)",
             "com.lovebrain.app.viewmodel.LoveBrainViewModel  (装配必需：viewModel { LoveBrainViewModel(…) } 的注册目标)",
             "com.lovebrain.app.viewmodel.SetupViewModel  (装配必需：viewModel { SetupViewModel(…) } 的注册目标)",
             "com.lovebrain.app.viewmodel.KnowledgeBaseViewModel  (装配必需：viewModel {} 的注册目标，全限定名写法)",
@@ -582,12 +595,12 @@ class PackageDependencyTest {
     private val entryDebt: Map<String, List<String>> = mapOf(
         "service/CopyCaptureService.kt" to listOf(
             "com.lovebrain.app.data.EventBus  (真越界·存量债：按静态成员用 EventBus.emitCapturedMessage(…)。domain/port 上还没有进程内总线这颗端口，端口化要动 data/ 那一族（本档禁改），所以先点名登记、只许缩)",
-            "com.lovebrain.app.data.SecurePrefs  (真越界·存量债，这一族最重的一条：securePrefs = SecurePrefs(this) 自己 new 了一颗，绕开容器 ⇒ 第二个加密/降级判据持有者，与 AppModule 那格 KDoc「加密与降级判据仍只有 SecurePrefs 一处」直接冲突。它读的三员 captureEnabled / captureAllowedPackages / accessibilityDisclosureVersion 都已经在 SettingsStorePort 上 ⇒ 还法是让它从容器取端口，但那改的是服务的运行形状，不在本档顺手做)",
+            "com.lovebrain.app.data.SecurePrefs  (真越界·存量债：2026-10-08 Q39① 已还掉「自己 new 第二颗」那一半——现在 by inject() 拿的是容器那一颗，实例唯一，与 FloatingService 同源同形，加密/降级判据回到只有一处。剩的这一条与 FloatingService 那格同口径：按**具体类型**注入 ⇒ 端口那层在入口上不生效。它读的三员 captureEnabled / captureAllowedPackages / accessibilityDisclosureVersion 都已经在 SettingsStorePort 上，改走端口视图要连动服务的运行形状，另档处置)",
             "java.io.File  (真越界·存量债：诊断日志自己拼 File(filesDir, DIAG_FILE) 落盘。与 [forbidden] 里 viewmodel 那格 java.io.File 同口径——入口不许自己摸路径；还法要把诊断落盘挪进 data 侧唯一的 IO 主人，本档禁改)"
         ),
         "service/FloatingService.kt" to listOf(
             "com.lovebrain.app.data.EventBus  (真越界·存量债：订阅 capturedMessages / panelRequest 并调 consumePanelRequest()，用的都是 data 里那颗 SharedFlow 的静态成员；缺端口，同 CopyCaptureService 那条)",
-            "com.lovebrain.app.data.SecurePrefs  (真越界·存量债：by inject() 拿的是容器那一颗——实例唯一，比 CopyCaptureService 自己 new 那条轻——但按**具体类型**注入 ⇒ 端口那层在入口上不生效。它用的 panelWidth/panelHeight 两员不在 SettingsStorePort 上，补那两员要连着动端口与它的内存 fake 契约，不在本档文件集)"
+            "com.lovebrain.app.data.SecurePrefs  (真越界·存量债：by inject() 拿的是容器那一颗——实例唯一，CopyCaptureService 自 2026-10-08 Q39① 起同样 by inject() 同源——但按**具体类型**注入 ⇒ 端口那层在入口上不生效。它用的 panelWidth/panelHeight 两员不在 SettingsStorePort 上，补那两员要连着动端口与它的内存 fake 契约，不在本档文件集)"
         )
     )
 }

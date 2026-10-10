@@ -8,6 +8,8 @@ import com.lovebrain.app.GenerationTimeoutTier
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.HttpsTrustGuard
 import com.lovebrain.app.domain.port.SettingsStorePort
+import com.lovebrain.app.domain.port.KnowledgePresencePort
+import com.lovebrain.app.domain.port.PanelRequestPort
 import com.lovebrain.app.domain.CapturePolicy
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.util.L
@@ -17,7 +19,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 
 /**
  * 介绍层一共四格（0…3）——步号钳制的那把尺（`restoreIntroStep` / `saveIntroStep`）。
@@ -42,11 +43,22 @@ class SetupViewModel(
     private val securePrefs: SettingsStorePort,
     private val deepSeekRepo: DeepSeekRepository,
     private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null,
-    /** 只为"本机是否已有知识库"这一项判断存在；测试里可不给，此时按"没有"处理 */
-    private val appContext: Context? = null
+    /**
+     * 只为"本机是否已有知识库"这一项判断存在；测试里可不给，此时按"没有"处理。
+     * 以前这一格是 `Context`，VM 自己拼 `File(filesDir, "knowledge")`——viewmodel 摸到
+     * java.io.File 是登记过的架构债；现照 KbArchivePort 同一张处方换成端口
+     * （实现 data/FileKnowledgePresence，接线见 di/AppModule.kt），IO 与路径归属都在 data 侧。
+     */
+    private val knowledgePresence: KnowledgePresencePort? = null,
+    /**
+     * 「请求打开悬浮面板」的端口（实现 data/EventBus，见那颗端口的 KDoc）。
+     * SetupActivity 以前自己 `by inject()` 取它——Activity 文件里出现 by inject 撞
+     * UiLayer 合同（VM 必须走 ViewModelStore 那格）；现在页面经本类 [requestPanel]
+     * 中转，Activity 不再持任何 inject()。测试里可不给；生产装配由 di 提供，
+     * 不存在未接线的运行态，[requestPanel] 对 null 显式炸而不是静默吞请求。
+     */
+    private val panelRequests: PanelRequestPort? = null
 ) : ViewModel() {
-
-    // ═══════════ 首次引导（原先由 Activity 直接读写 securePrefs，现已收在这里）═══════════
 
     // ═══════════ 首次引导（原先由 Activity 直接读写 securePrefs，现已收在这里）═══════════
 
@@ -199,11 +211,9 @@ class SetupViewModel(
     }
 
     private fun isExistingUser(): Boolean {
-        // 没有 Context 只代表"查不了本机知识库"，不代表其他三条都不成立——
-        // 早先写成 `?: return false` 会让老用户（已有工单/已生成过）在缺 Context 时被当成新人重走引导。
-        val knowledgeRoot = appContext?.filesDir?.let { File(it, "knowledge") }
-        val hasKb = knowledgeRoot != null &&
-            knowledgeRoot.exists() && knowledgeRoot.listFiles()?.isNotEmpty() == true
+        // 没给端口只代表"查不了本机知识库"，不代表其他三条都不成立——
+        // 早先写成 `?: return false` 会让老用户（已有工单/已生成过）在缺依赖时被当成新人重走引导。
+        val hasKb = knowledgePresence?.hasAnyKnowledgeBase() == true
         return com.lovebrain.app.domain.OnboardingDecision.isExistingUser(
             hasWorkerTickets = securePrefs.getWorkerTickets().isNotEmpty(),
             hasActiveTicketId = !securePrefs.activeTicketId.isNullOrBlank(),
@@ -286,6 +296,29 @@ sealed class ExportState {
     private fun resolveActiveTicket(): ProviderTicket? {
         val id = securePrefs.activeTicketId ?: return null
         return _tickets.value.find { it.id == id }
+    }
+
+    /**
+     * 从子页/系统页回来（重新进组合、ON_RESUME）时重读落盘工单：
+     * StateFlow 不自愈，盘上真源被别处写走后，站在出发前快照上的列表不会自己跟上，
+     * 这里按唯一真源补一次。与 [refreshGuideFactsFromStore] 同一颗先例
+     * （进页面/回来只重读事实，不发任何请求）。
+     *
+     * 重算的是**列表事实**：`_tickets` 连同派生的激活态与就绪态一起按盘上真值刷新
+     * （三条 StateFlow 对相等值自带去重，重读是幂等的，不会虚触发重组）。
+     * ⚠ 编辑浮层里那些还没提交的字段归 `ProviderFormBody` 的 rememberSaveable 本地状态，
+     * 与这一条无关——K25 两条不变量（测试连接不切活动供应商 / 返回不丢未提交字段）都不经过这里。
+     */
+    fun refreshTicketsFromStore() {
+        _tickets.value = securePrefs.getWorkerTickets()
+        _activeTicket.value = resolveActiveTicket()
+        refreshReadyState()
+    }
+
+    /** 首页功能卡 → 悬浮面板的请求中转：Activity 不许 `by inject()`（UiLayer 合同），经本类出去 */
+    fun requestPanel(mode: Int) {
+        val port = checkNotNull(panelRequests) { "PanelRequestPort 未接线——生产装配由 di 提供" }
+        port.requestPanel(mode)
     }
 
     // ═══════════ 表单错误态（：http 网络信任拦截，） ═══════════

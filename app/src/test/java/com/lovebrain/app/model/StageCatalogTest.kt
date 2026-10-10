@@ -1,4 +1,4 @@
-package com.lovebrain.app.domain
+package com.lovebrain.app.model
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -8,6 +8,7 @@ import org.junit.Test
 /**
  * StageCatalog 八阶段归一化契约单测（；邀约期已废除）。
  * ：阶段值一律经 StageCatalog，禁止裸写阶段字符串比较。
+ * （StageCatalog 本体已从 domain 搬进 model——纯数据目录整体迁移，本席随包走。）
  */
 class StageCatalogTest {
 

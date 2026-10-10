@@ -65,13 +65,13 @@ internal class KnowledgeProfileStore(private val storage: ProfileStorage) {
     fun stageOf(kbName: String): String = storage.metaOf(kbName)?.stage ?: ""
 
     /**
-     * 阶段白名单归一化（九阶段见 [com.lovebrain.app.domain.StageCatalog]）。
+     * 阶段白名单归一化（八阶段见 [com.lovebrain.app.model.StageCatalog]）。
      *
      * 全仓只有这一处判"这个字符串能不能当阶段用"，也决定拒绝时留不留痕。
      * `opLabel` 只用来把日志指回调用方，不参与判定。
      */
     fun normalizeStage(raw: String, opLabel: String): String? {
-        val normalized = com.lovebrain.app.domain.StageCatalog.normalize(raw)
+        val normalized = com.lovebrain.app.model.StageCatalog.normalize(raw)
         if (normalized == null) {
             storage.note("$opLabel 拒绝非白名单阶段：'$raw'（九阶段见 StageCatalog）")
         }

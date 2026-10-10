@@ -1,7 +1,5 @@
 package com.lovebrain.app.model
 
-import com.lovebrain.app.domain.StageCatalog
-
 /**
  * 画像更新 JSON Schema 单一真源。
  *

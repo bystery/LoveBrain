@@ -1,6 +1,7 @@
 package com.lovebrain.app.data
 
 import android.os.SystemClock
+import com.lovebrain.app.domain.port.PanelRequestPort
 import com.lovebrain.app.util.L
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,8 +13,13 @@ import kotlinx.coroutines.flow.asStateFlow
 /**
  * 轻量级事件总线：解耦 Service 之间的直接静态调用。
  * 由 Koin 管理为单例，所有 Service/ViewModel 通过注入使用。
+ *
+ * 本体 implements [PanelRequestPort]：SetupActivity 那一侧的「请求打开面板」经端口进来
+ * （ui 不认 data 具体类型，PackageDependencyTest 那条债），与本体的 `requestPanel` 是
+ * **同一个函数**——端口只是给同一个单例开的一扇门，事件没有第二条通道
+ * （与 SecurePrefs implements SettingsStorePort 同一张处方）。
  */
-object EventBus {
+object EventBus : PanelRequestPort {
 
     /** 无障碍服务捕获到的消息事件 */
     data class CapturedMessage(
@@ -60,7 +66,8 @@ object EventBus {
     private val _panelRequest = MutableStateFlow<PanelRequest?>(null)
     val panelRequest: StateFlow<PanelRequest?> = _panelRequest.asStateFlow()
 
-    fun requestPanel(mode: Int) {
+    /** [PanelRequestPort] 的实现本体：服务尚未启动时发出的请求，服务订阅后仍能消费到（消费后置空） */
+    override fun requestPanel(mode: Int) {
         _panelRequest.value = PanelRequest(mode)
     }
 

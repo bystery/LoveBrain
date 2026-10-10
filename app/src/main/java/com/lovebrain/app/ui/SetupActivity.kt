@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import com.lovebrain.app.R
-import com.lovebrain.app.data.EventBus
 import com.lovebrain.app.service.FloatingService
 import com.lovebrain.app.ui.home.CoachStepCopy
 import com.lovebrain.app.ui.home.HomeDestination
@@ -151,7 +150,7 @@ class SetupActivity : ComponentActivity() {
             pendingPanelMode = mode
             return
         }
-        EventBus.requestPanel(mode)
+        viewModel.requestPanel(mode)
     }
 
     override fun onResume() {
@@ -160,7 +159,7 @@ class SetupActivity : ComponentActivity() {
             pendingOverlayStart = false
             ContextCompat.startForegroundService(this, Intent(this, FloatingService::class.java))
             pendingPanelMode?.let { mode ->
-                EventBus.requestPanel(mode)
+                viewModel.requestPanel(mode)
                 pendingPanelMode = null
             }
         }

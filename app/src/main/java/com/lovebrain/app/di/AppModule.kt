@@ -63,6 +63,20 @@ val appModule = module {
     single { DeepSeekRepository(get()) }
     // 端口绑定必须显式写 get<具体类>()：写成 get() 会解析到自己，Koin 直接 StackOverflowError
     single<com.lovebrain.app.domain.port.AiGateway> { get<DeepSeekRepository>() }
+    // Prompt 资产读取交给 assets 适配器：domain/PromptBuilder 从此不抱 Context（还 PackageDependencyTest
+    // 基线里 domain 那条债）。缺资产的 fail-open 兜底（空串 + 日志）随读取挪进 AssetPromptSource，
+    // 与旧 readAsset 逐字同语义——端口没有开出第二条资产通道。
+    single<com.lovebrain.app.domain.port.PromptSourcePort> {
+        com.lovebrain.app.data.AssetPromptSource { path -> androidContext().assets.open(path) }
+    }
+    // 「本机是否已有知识库」判给 data 实现：knowledge/ 根的路径归属收在 FileKnowledgePresence，
+    // SetupViewModel 不再自己拼 File（viewmodel 禁 java.io.File 那条债）。
+    single<com.lovebrain.app.domain.port.KnowledgePresencePort> {
+        com.lovebrain.app.data.FileKnowledgePresence(File(androidContext().filesDir, "knowledge"))
+    }
+    // 面板打开请求的端口视图：EventBus 本体 implements PanelRequestPort，两边解析到同一个单例，
+    // 事件没有第二条通道（与上面 SettingsStorePort 那格同一张处方；ui 从此不认 data.EventBus 的类型）。
+    single<com.lovebrain.app.domain.port.PanelRequestPort> { com.lovebrain.app.data.EventBus }
     // 时间是输入，不是日志：domain 里落进正文与 prompt 的时间一律走这个端口。
     // 现在靠构造参数的默认值（SystemClock）注入，绑在这里是为了
     // ① 让测试能在图外换一个 FixedClock，② 让"生产用的是真钟"这件事在图上看得见。
@@ -73,7 +87,8 @@ val appModule = module {
     // Clock 显式 get()，不靠构造参数默认值：默认值是给测试用的后门，
     // 图上必须能看见"生产的时间从哪来"，否则上面那条 single<Clock> 就是装饰。
     single { com.lovebrain.app.domain.OngoingContextSelector(get(), get()) }
-    single { PromptBuilder(androidContext(), get(), get(), get()) }
+    // PromptBuilder 只认 PromptSourcePort（第一格），不再传 androidContext()
+    single { PromptBuilder(get(), get(), get(), get()) }
     single { RoundCommitJournal(get()) }
     // 事务日志必须由容器给出，不能在这里再 new 一个：
     // TopicRecorder 持有手工构造的 journal、容器又注册另一个 journal，
@@ -99,7 +114,8 @@ val appModule = module {
             writeRoundScopeHintShown = { get<SecurePrefs>().roundScopeHintShown = it }
         )
     }
-    viewModel { SetupViewModel(get(), get(), get(), androidContext()) }  // securePrefs, DeepSeekRepository, FeedbackCaseRepository, Context
+    // 第四格是 KnowledgePresencePort（老用户判定的"本机有没有知识库"那一员），不再是 Context
+    viewModel { SetupViewModel(get(), get(), get(), get(), get()) }
     viewModel { com.lovebrain.app.viewmodel.KnowledgeBaseViewModel(androidContext(), get(), get(), get()) }
     viewModel { com.lovebrain.app.viewmodel.KbEditViewModel(get(), get()) }
     // 首页那盏灯（）。装配收在 viewmodel 那一侧的那一颗函数里，这一格只点名一颗跨层类型；
