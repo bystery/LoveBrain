@@ -6,10 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
+import com.lovebrain.app.core.designsystem.LbAsyncTags
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.TouchTier
@@ -84,6 +86,7 @@ class CaptureAppRowSemanticsTest {
             }
         }
         rule.waitForIdle()
+        awaitCaptureBatch()
     }
 
     /**
@@ -104,6 +107,7 @@ class CaptureAppRowSemanticsTest {
             }
         }
         rule.waitForIdle()
+        awaitCaptureBatch()
     }
 
     private fun useCell(next: UiMatrix) {
@@ -154,6 +158,27 @@ class CaptureAppRowSemanticsTest {
     companion object {
         /** 十二格至少该判到这么多颗；低于它就是这格没扫到东西，不是「全达标」 */
         private const val MIN_SWEEP_JUDGED = 12
+        /** 等 IO 装配批次落位的上限（与姊妹用例 CaptureAppsScreenStatesTest 同一颗数） */
+        private const val WAIT_FOR_BATCH_MS = 10_000L
+    }
+
+    /**
+     * 装配批次落位 = `LbAsyncState` 那颗 `LOADING` 节点消失。`waitForIdle()` 不跟踪 `Dispatchers.IO`
+     * 上的协程（本仓 Compose 版 `waitUntil` 也不交回布尔，等完独立判一次），机器一忙，直接
+     * `onAllNodes(hasText(行名))[0]` 就会在行还没进树时数到 0——CI run 38038095725 的
+     * `CaptureAppRowSemanticsTest > each row toggles its own package` 红在这里。
+     * 定点选"转圈消失"而非某行文字：`scanning = false` 是整批赋值的最后一颗，它落下来即四颗读数都在。
+     */
+    private fun awaitCaptureBatch() {
+        rule.waitUntil(WAIT_FOR_BATCH_MS) {
+            rule.onAllNodesWithTag(LbAsyncTags.LOADING).fetchSemanticsNodes().isEmpty()
+        }
+        val left = rule.onAllNodesWithTag(LbAsyncTags.LOADING).fetchSemanticsNodes().size
+        assertTrue(
+            "装配批次在 ${WAIT_FOR_BATCH_MS}ms 内没落位（转圈仍 $left 颗）：" +
+                "这一类每一格都按行名点那一行，必须建立在「这一批已落」之上",
+            left == 0
+        )
     }
 
     /** 按行标题找那一行的可交互节点——一行必须**恰好**一颗，多出来就是有人又画了一层点击 */
