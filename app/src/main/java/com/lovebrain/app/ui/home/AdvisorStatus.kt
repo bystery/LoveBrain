@@ -197,3 +197,26 @@ internal const val HOME_ENTRY_KNOWLEDGE = "知识库"
 internal const val HOME_ENTRY_FEEDBACK = "已踩案例"
 internal const val HOME_ENTRY_CAPTURE = "消息捕获"
 internal const val HOME_ENTRY_PROVIDER = "模型供应商"
+
+/**
+ * 四入口的**简短辅助描述**（M09 §5 第 4 条：恢复入口的辨识度 = 保留当前四个有用入口 +
+ * 适当增加简短辅助描述）。
+ *
+ * 三条纪律：
+ * - **只给还活着的那四格**写话。1.3.1 那四格（知识库 / 今日锦囊 / 谈心模式 / 感情五维）里有三格
+ *   已被替换掉，旧副标题（"每日做法建议""分析关系困局""亲密·信任·承诺"）跟着功能一起离场，
+ *   一个字都不许照搬——搬回来就是给不存在的功能画入口。
+ *   唯一沿用的一句是「她的专属记忆」：那一格功能与目的地都没变（知识库），旧话说的还是它。
+ * - **每句 5–7 字**，与旧版 `FeatureCard` 那一档同长度：入口卡只有半行宽（360dp 屏上约 150dp），
+ *   `LbActionCard` 的副标题槽是 `labelSmall` + `maxLines = 1`，超了就省略号截掉。
+ * - **说的是"点进去能办什么事"**，不是营销话：四句各自指得进那一页的真功能
+ *   （知识库管理 / 点踩案例列表 / 捕获哪些应用 / 模型供应商与连接测试）。
+ *
+ * ⚠ 形状与上面那四颗名字完全一致：走 `internal const`，**不在 `LbActionCard(subtitle = …)`
+ * 调用里内联中文**——后者会进 `UiStringLiteralBudgetTest` 的 COMPONENT 那把尺（锚点 `Lb…(`），
+ * 而 const 声明不在任何锚点射程里（与 `HOME_ENTRY_*`、`HOME_LAMP_*` 同一族既有事实）。
+ */
+internal const val HOME_ENTRY_KNOWLEDGE_SUB = "她的专属记忆"
+internal const val HOME_ENTRY_FEEDBACK_SUB = "复盘说错的对话"
+internal const val HOME_ENTRY_CAPTURE_SUB = "选要读取的应用"
+internal const val HOME_ENTRY_PROVIDER_SUB = "接哪个大模型"

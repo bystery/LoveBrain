@@ -93,7 +93,12 @@ class HomeScreenVisualBaselineTest {
         assertEquals("绿档不许带那一行黄字", 0, tagCount(LbHomeTags.SETUP_HINT))
         assertEquals("第二段：2×2 四入口必须是同一颗卡", 4, tagCount(LbTags.ACTION_CARD))
         assertEquals("整屏不许再有页段标题", 0, tagCount(LbTags.SECTION))
-        assertEquals("整屏不许再有统计格", 0, tagCount(LbTags.METRIC_CELL))
+        // 这条判据的**方向**被 2026-10-10 的新原话替代了：旧规（`requests.md` §5 与上一轮 K22）是
+        // "首页不恢复内部统计"⇒ 那时"整屏不许再有统计格"= 0 是对的；本轮《1.4.1 修复指导》§五 取舍③
+        // 明说"首页可以重新加入累计使用面板…维持一块简洁的小卡，不恢复大而复杂的仪表盘"。
+        // ⇒ 判据从"零颗"改成"**恰好一块卡的四格**"：多一块卡、多一格、或整块没接上读数都红；
+        //   规模上限由 `ui/home/HomeUsageCardTest` 那族钉（卡高 ≤ 一颗入口卡、四格同排、不许有图）。
+        assertEquals("累计使用小卡恰四格（一块卡的规模上限，不许多长）", 4, tagCount(LbTags.METRIC_CELL))
 
         val cells = nodesOf(LbTags.ACTION_CARD)
         val viewportPx = app.resources.displayMetrics.heightPixels

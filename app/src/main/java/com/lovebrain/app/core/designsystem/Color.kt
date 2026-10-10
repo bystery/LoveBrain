@@ -1,9 +1,6 @@
 package com.lovebrain.app.core.designsystem
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
-import com.lovebrain.app.PanelBackdropOpacity
 
 // ══════════════════════════════════════════════════════════════
 // 暗色模式完全删除，全站固定亮色。
@@ -49,17 +46,12 @@ val SurfaceBase: Color get() = Color.hsl(250f, 0.10f, 0.96f)
 val SurfaceCard: Color get() = Color.hsl(250f, 0.06f, 0.99f)
 val SurfaceInset: Color get() = Color.hsl(250f, 0.08f, 0.92f)
 
-// ═══ 面板背景浓度：压在面板底上的大面积卡片所走的**唯一一处**派生底色 ═══
-
-/**
- * 面板背景浓度的**当前读数**：就是盘上那个整数百分比。
- *
- * 区间、刻度、默认值、非法值回落全都只在 [PanelBackdropOpacity] 那一把尺里，这里一个数都不重抄。
- * 提供它的宿主也只有一处：面板根把它的实时预览值送进子树。
- * 不在面板树里画的东西（首页、Activity、引导页）读到的是这里的默认值，
- * 也就是 [PanelBackdropOpacity.DEFAULT_PERCENT] 那一档 = 完全不透明 = 与这一笔之前逐字同形。
- */
-val LocalPanelBackdropDensity = compositionLocalOf { PanelBackdropOpacity.DEFAULT_PERCENT }
+// ═══ 面板背景浓度：不再有第二处派生底色（M10 清理）═══
+// 这一项以前在这里挂过一颗 `LocalPanelBackdropDensity`，配一个 `panelBackdropCardColor()`
+// 让大面积卡片去读浓度。两颗**全仓零读取方**（`rg -n "LocalPanelBackdropDensity"` 只命中
+// 声明处与面板根那一句 provides；`panelBackdropCardColor` 只命中注释），
+// 留着等于让人以为背景透明度还有第二个作用点。真值只有一处：
+// `PanelBackdropOpacity.effectiveAlpha`，由 `ui/panel/LoveBrainPanelScreen.kt` 那两层底色直接读。
 
 // ═══ 文字层次（亮色偏冷深灰；TextHint 与 TextSecondary 保持层级差）═══
 val TextPrimary: Color get() = Color.hsl(250f, 0.10f, 0.12f)

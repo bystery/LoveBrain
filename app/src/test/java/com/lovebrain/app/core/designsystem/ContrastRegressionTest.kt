@@ -90,10 +90,15 @@ class ContrastRegressionTest {
      * - TextHint vs SurfaceCard / SurfaceInset / PrimaryLight
      * - Success vs SurfaceCard；白字 on Success
      * - Warning vs SurfaceCard；Warning vs WarningBg
+     * - 2026-10-10 §5 主卡改回浅蓝底之后加的两对：TextPrimary / TextSecondary vs PrimaryLight
+     *   （主页主卡的标题与次级文案现在住在 `PrimaryLight` 上，这两对是本屏真实存在的组合；
+     *   加在**同一个方法**里，用例数仍为 1，不新开一格）
      */
     @Test
     fun r8_contrast_regression() {
         val textHint = hsl("TextHint")
+        val textPrimary = hsl("TextPrimary")
+        val textSecondary = hsl("TextSecondary")
         val success = hsl("Success")
         val warning = hsl("Warning")
         val surfaceCard = hsl("SurfaceCard")
@@ -104,6 +109,8 @@ class ContrastRegressionTest {
         assertContrastAtLeast("TextHint", "SurfaceCard", textHint, surfaceCard)
         assertContrastAtLeast("TextHint", "SurfaceInset", textHint, surfaceInset)
         assertContrastAtLeast("TextHint", "PrimaryLight", textHint, primaryLight)
+        assertContrastAtLeast("TextPrimary", "PrimaryLight", textPrimary, primaryLight)
+        assertContrastAtLeast("TextSecondary", "PrimaryLight", textSecondary, primaryLight)
         assertContrastAtLeast("Success", "SurfaceCard", success, surfaceCard)
         // 白字 on Success（实心状态底上的白字）
         val white = Triple(0f, 0f, 1f)

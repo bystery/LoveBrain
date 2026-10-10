@@ -1,6 +1,7 @@
 package com.lovebrain.app.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,9 @@ import com.lovebrain.app.core.designsystem.LbTriangleGlyph
 import com.lovebrain.app.core.designsystem.LbTriangleGlyphShape
 import com.lovebrain.app.core.designsystem.LbTriangleGlyphTone
 import com.lovebrain.app.core.designsystem.LoveBrainShape
+import com.lovebrain.app.core.designsystem.Primary
+import com.lovebrain.app.core.designsystem.PrimaryLight
+import com.lovebrain.app.core.designsystem.PrimarySubtle
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.TextPrimary
@@ -46,14 +50,20 @@ import com.lovebrain.app.core.designsystem.rememberPressScale
 // 首页这一屏自己的组件：一条状态卡（hero 档）+ 仅黄灯时那一行缺项。
 // 四入口不在这里——它们直接是设计系统 `LbActionCard` 的紧凑档，页面不再套一层。
 //
-// 依据基线 v1 §1（F2 首页族）+ §3.3/3.4/3.9/3.10 与 §4 的首页裁决（candidate-a 方向）：
+// 依据基线 v1 §1（F2 首页族）+ §3.3/3.4/3.9/3.10 与 §4 的首页裁决（candidate-a 方向），
+// 并按 M09（活台账）§5 那一串"恢复 1.3.1 级别的视觉体验、保留新版状态判断"的方向：
 // **精简不等于空**。这一屏的层级由三件事买出来，一件都不靠新增文案或新增状态：
-// ① hero 状态卡浮起来（`Xl` 24 圆角 + `ELEVATION_DEFAULT` 2 + 四边等距 16），
-//    灯旁边那格不再是一整块空 `Box`，而是屏幕上直接写出来的**状态名**（就是 `lampDescription`
-//    那四个既有短句，不新造第五个状态）；
-// ② 入口卡静在那儿（`Lg` 16 + 内 12 + 无阴影）——描边管静息、阴影管浮起，两档差值一眼读得出；
+// ① hero 状态卡是**这一屏唯一一块浅蓝**（`Xl` 24 圆角 + `PrimaryLight` 底 + `PrimarySubtle`
+//    细描边 + 四边等距 16 + **零阴影**）——三样手段只挑一对，阴影/描边/渐变不叠满；
+//    灯旁边那格不再是屏幕上直接写出来的**状态名**（就是 `lampDescription`
+//    那四个既有短句，不新造第五个状态）那一行孤字，而是"浅蓝块 + 状态名 + 一颗有本体的按钮"；
+// ② 入口卡静在浅蓝之外（`SurfaceCard` 白底 + `Lg` 16 + 内 12 + 无阴影 + 一圈 `Border` 细线）——
+//    描边管静息、浅蓝管焦点，两档差值一眼读得出；
 // ③ 缺项那一行有容器、有字号档，并且自带一颗**能点的去处**（设计系统现有的 `LbTextAction`
 //    行内胶囊档，不新第四种动作写法）。
+// 启停那一颗（`AdvisorControlButton`）走的是**既有图形控制组件**那一族：形状仍由设计系统的
+// `LbTriangleGlyph` 画，动作仍走宿主那条真实服务链，本轮只给它补上"白底 + 一圈 Primary 描边"
+// 这一层按钮本体——第一次打开 App 的人因此是先看见一颗能按的东西，不是先去破译一盏灯。
 // ═════════════════════════════════════════════════════════════
 
 /**
@@ -96,6 +106,11 @@ object LbHomeTags {
     const val ENTRY_FEEDBACK = "lb_home_entry_feedback"
     const val ENTRY_CAPTURE = "lb_home_entry_capture"
     const val ENTRY_PROVIDER = "lb_home_entry_provider"
+    /**
+     * 累计使用那一块只读小卡（M25 §五 取舍③：首页重新加入一块简洁小卡）。
+     * 它自己**不可点**——只是一个读数，不是第五颗按钮，也不并进主卡（主卡仍只有一颗可点）。
+     */
+    const val USAGE_CARD = "lb_home_usage_card"
 }
 
 /**
@@ -122,15 +137,17 @@ internal fun AssistantStatusCard(
 ) {
     Card(
         shape = LoveBrainShape.xl,
-        colors = CardDefaults.cardColors(containerColor = SurfaceCard),
-        // 浮起来那一档：基线 v1 §3.4 只给首页 hero（与浮层/弹窗）这一档阴影。
-        // 于是这一格**不再自己描边**——描边管静息（入口卡那一档）、阴影管浮起，
-        // 同一张卡上双叠是 §3.4 明令禁止的那一种。
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = AppDimens.ELEVATION_DEFAULT_DP.dp
-        ),
+        // ── 浅蓝那一档回来了（M09 §5 第 1 条）：底走 `PrimaryLight`、静息边线走 `PrimarySubtle`，
+        //    两颗都是 1.3.1 那版就在盘上的既有令牌（`core/designsystem/Color.kt:19,20`），本轮**一颗新色都没加**。
+        // ⚠ 三选一不堆满：这一格只买「浅底 + 细描边」这一对。旧格用 `ELEVATION_DEFAULT` 阴影浮起、
+        //    自己不许描边（§3.4 拦的就是同一张卡上 shadow + border 双叠）；本轮把形状换成
+        //    旧版那一圈描边 ⇒ 阴影跟着退到 0。渐变也不叠（v1.3.1 那层 `Brush.linearGradient`
+        //    是压在 PrimaryLight 底上的第三层手段，需求明令不要三样一起上）。
+        colors = CardDefaults.cardColors(containerColor = PrimaryLight),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         modifier = modifier
             .fillMaxWidth()
+            .border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.xl)
             .testTag(LbHomeTags.STATUS_CARD)
     ) {
         Row(
@@ -194,6 +211,26 @@ private fun AdvisorLampDot(lamp: AdvisorLamp) {
  * 形状交回设计系统那颗 [LbTriangleGlyph]：▶ 与 ■ 出自同一颗件、同一个圆化比例
  * （§3.10：边长 × 0.18，20dp → 3.6dp），三个角真圆，不再是三条 `lineTo` 拼出来的尖 Path。
  * 名字与角色挂在带 `clickable` 的那一层盒子上，读屏念"开始军师服务/停止军师服务"。
+ *
+ * ## 这一格现在有"按钮本体"了（M09 §5 第 2 条）
+ *
+ * 旧形状是一颗**完全透明**的热区盒：四边没有任何底、没有任何边，屏上只有 20dp 那一枚蓝色小字形
+ * 漂在卡片上——第一次打开 App 的人得先读懂"三角=启动"才找得到出口。
+ * 现在同一颗盒子上有本体了：`SurfaceCard` 的白底 + 一圈 `Primary` 细描边（`LoveBrainShape.md` 10，
+ * 这一屏既有的一档：缺项那一行与入口卡的图标底用的是同一档），字形墨色仍是 `Primary`
+ * （经 [LbTriangleGlyphTone.Accent]，见那颗件的墨色词表——页面拿不到 `color:` 旋钮，§3.10）。
+ * 于是这一格读起来是"一块能按的东西"，不是一枚装饰。
+ *
+ * ⚠ 三件事这一格**没做**，都是刻意的：
+ * - 没换组件、没换动作：还是同一颗 `AdvisorControlButton`，按下去走的仍是宿主那条
+ *   `onStartService` / `stopClicked`（真实服务控制动作，M09 §5 第 2 条点名要保持的那一颗）；
+ * - 没把可见尺寸垫大：本体只到热区那一档 48dp（`HomeHeroActionTest` 钉着 ≤56dp），
+ *   字形 20dp 一寸没动——动的是"有没有边、有没有底"，不是"多大"；
+ * - 底**不是**品牌色：这一格挂在已经是 `PrimaryLight` 的主卡上，再涂一颗品牌底就是
+ *   「品牌底叠品牌底」那一族旧债（`UiLayerDependencyContractTest` 表面色那把尺的射程），
+ *   所以走中性的 `SurfaceCard`，让层次差由"白底压在浅蓝底上"买出来。
+ *   描边用 `Primary`：`.border(` 不在那三把品牌账的射程里（它们按 `.background(` 与
+ *   `containerColor =` 认），这一档与 1.3.1 那版主卡的 `PrimarySubtle` 描边同一族写法。
  */
 @Composable
 private fun AdvisorControlButton(
@@ -208,6 +245,8 @@ private fun AdvisorControlButton(
             .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .clip(LoveBrainShape.md)
+            .background(SurfaceCard, LoveBrainShape.md)
+            .border(AppDimens.BORDER_WIDTH_DP.dp, Primary, LoveBrainShape.md)
             .clickable(
                 interactionSource = interaction,
                 indication = null,

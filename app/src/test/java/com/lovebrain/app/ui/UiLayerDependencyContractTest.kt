@@ -1305,6 +1305,16 @@ class UiLayerDependencyContractTest {
     )
 
     private val subFloorNumbers = listOf(
+        // 2026-10-10 §1：悬浮球那一颗的尺寸从写死的 56 换成"当前档位"的读数之后，链上不再出现常量，
+        // 这把尺解不出主人（它只认 core/designsystem 里的具名档），所以按实到登记这一处。
+        SubFloorNumber(
+            "ui/bubble/FloatingBubble.kt#mainSize.dp", 48, null,
+            "主人不在 core/designsystem：这颗数是 `AppConfig.BubbleSizeTier` 那把档位尺（48 / 56 / 64）" +
+                "在当前档的读数，经 `BubbleUiState.sizeDp` 交进来；尺只读常量，因此这里读不到来路",
+            "整颗悬浮球就是热区（单击开面板、拖动与吸边都长在它身上），三档里最小的 48dp 恰等于全局下限 ⇒ " +
+                "任何一档都不低于下限；窗口宽高由 Service 侧按同一把尺设（不是对 Compose 缩放而留着旧点击区），" +
+                "所以这一处不是「待并档」，而是尺子本身看不见档位读数"
+        ),
         SubFloorNumber(
             "ui/home/ProviderSection.kt#ProviderDimens.FEATURE_ARROW_SIZE_DP.dp", 20, null,
             "缺档：行尾箭头字形（合同给的就是 20dp 箭头）",
@@ -1435,8 +1445,10 @@ class UiLayerDependencyContractTest {
             "回复那一行的默认形参；合同给这一条的是 28 档、不是通用 36，两档别混：\u21d2 该由回复自己的具名档接手",
         // 2026-10-08 范围符号那一颗（「仅看本轮」）登记：
         // · 为什么这里非读不可：那颗的**行宽预算**与它自己的**热区边长**必须是同一颗数，
-        //   抄两份就有一处会漂（`ReplyInput.kt#ReplyDimens.ROUND_SCOPE_HIT` 与
-        //   `ROUND_SCOPE_RESERVE` 现在由同一个 val 推出来，整页只有这一处读 core 那颗）。
+        //   抄两份就有一处会漂（`ReplyInput.kt#ReplyDimens.ROUND_SCOPE_HIT` 是命中轴与占位轴共同的
+        //   唯一来源，行宽预算经 `roundScopeFootprint(fontScale)` 从它推；2026-10-10 那一版把
+        //   旧的 `ROUND_SCOPE_RESERVE = 热区 + 间隔` 删了——那颗把间隔烧进占位、`tailWidth` 又加一遍，
+        //   同一格 4dp 被扣两次。整页仍然只有这一处读 core 那颗）。
         // · 为什么不能改读组件的具名档：这一颗用的是 `LbChip` 的分层档，而 `LbChipStyle`
         //   那两条分支的外盒只认 `AppDimens.TOUCH_TARGET_MIN_DP`（48 见方），交不出
         //   "外层按紧凑档垫、里面按 22dp 画"这一档；`LbTextActionGlyph.*.hitSize` 那三颗
@@ -1756,15 +1768,21 @@ class UiLayerDependencyContractTest {
     @Test
     fun `brand tones painted through containerColor do not grow`() {
         val perFileBudget = mapOf(
-            "KbEditActivity.kt" to 1                  // 只剩版本选中态那颗（条件涂色）——
+            "KbEditActivity.kt" to 1,                 // 只剩版本选中态那颗（条件涂色）——
                                                      // 「保存」已由 `f5d199d`/本轮归 `LbPrimaryButton`
+            // ⚠ M09（活台账：主页恢复 1.3.1 级别的视觉体验）把 `home/HomeComponents.kt` 这一行**加回来**。
+            //   历史：更早登记的是 2 处，其中一处就是这一行（hero 状态卡那张 Card 的 `containerColor = PrimaryLight`），
+            //   Agent F 把状态卡搬进 `LbActionCard` 后它改念 `containerColor = SurfaceCard`，那一档**代码真归零**
+            //   （**red 3**：不是尺瞎），于是按"还了债就把表改小、不留虚闸"删行，登记总数 2 → 1。
+            //   本轮是那一轮的反面：M09 §5 第 1 条点名"复用旧版已存在的 PrimaryLight / PrimarySubtle / Primary，
+            //   不要新增颜色"，把这一档浅蓝表面**判为该画回来** ⇒ 账跟着加一行、登记总数 1 → 2。
+            //   另两把品牌尺的射程一个字没动：本轮没有新增任何 `.background(品牌色)`
+            //   （启停那颗的本体走中性 `SurfaceCard`，两圈边线走 `.border(`——那两把按
+            //   `.background(` 与 `clickable` 子树认，`.border(` 不在射程；`PrimarySubtle` 按
+            //   `brandToneNoSubtle`/`BRAND_TOKENS` 也不在那两把的射程，只有这一把看得见品牌色）。
+            "home/HomeComponents.kt" to 1             // 首页 hero 状态卡那一档浅蓝表面（M09 §5 第 1 条）
         )
-        // ⚠ **red 3（代码归零，不是尺瞎）**：登记原先是 2 处，另一处是 `home/HomeComponents.kt`
-        //   状态卡那张 Card 的品牌浅底 `containerColor = PrimaryLight`。Agent F 把状态卡搬进
-        //   `LbActionCard` 后它改念 `containerColor = SurfaceCard`（见 HomeComponents:99），
-        //   直涂品牌底这一档在生产里**真的归零了**。按本文件反复立的规矩——"还了债就把表改小、
-        //   不留虚闸"——这一行从表里删掉，登记总数 2 → 1。
-        assertTrue("登记的就是本机实扫的 1 处，表本身错了要先修表", perFileBudget.values.sum() == 1)
+        assertTrue("登记的就是本机实扫的 2 处，表本身错了要先修表", perFileBudget.values.sum() == 2)
 
         val uiRoot = dir("ui")
         val scanned = kotlinFiles(uiRoot).map {

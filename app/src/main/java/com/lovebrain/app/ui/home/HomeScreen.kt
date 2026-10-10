@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.LbActionCard
 import com.lovebrain.app.core.designsystem.LbActionCardIconBlock
+import com.lovebrain.app.core.designsystem.LbMetricGrid
 import com.lovebrain.app.core.designsystem.LbScreenScaffold
 import com.lovebrain.app.core.designsystem.LbTopBar
 import com.lovebrain.app.core.designsystem.LbTopBarLevel
@@ -45,15 +46,19 @@ import com.lovebrain.app.viewmodel.HomeStatusViewModel
  *    `Identity` 这一档在 [com.lovebrain.app.core.designsystem.LbTopBarLevel] 的注释里点名的就是首页；
  *    不带返回钮（这一屏的返回就是退出 Activity，走 [BackHandler]）、不带分割线（那是 `ScreenPage` 那一族的规格）；
  * 1. [AssistantStatusCard]：左边红/黄/绿小灯 + **写在屏幕上的状态名**，右边朝右三角（开始）或方块（停止）；
- *    `Xl` 24 圆角 + 四边等距 16 + `ELEVATION_DEFAULT` 2——这一格是这一屏唯一浮起来的东西；
+ *    `Xl` 24 圆角 + 四边等距 16 + `PrimaryLight` 浅蓝底 + `PrimarySubtle` 细描边 + **零阴影**——
+ *    M09 §5 第 1 条要把 1.3.1 那一级浅蓝层次买回来，用的是旧版就在盘上的那三颗令牌，不新增颜色；
+ *    第 1 条同时明令"不要同时堆满阴影、描边和渐变"，所以这一格**描边与阴影二选一**（选了描边）；
  * 2. 只有黄灯才存在的 [HomeSetupHint]：一行 `bodySmall` 12 的黄字（浅黄底容器，不是裸奔的一行 log），
  *    末尾配一颗设计系统现有的行内胶囊动作——回应"不能只给一句黄警告让用户自己摸索"（§2.2 第 5 条）；
  * 3. 四入口 = 设计系统 `LbActionCard` 的 `GridCell` 紧凑档：`Lg` 16 圆角 + 内 12 + **无阴影**，
- *    只交名字与小图标、**不写副标题**（空的副标题槽默认不画，见那颗组件自己的注释）。
+ *    名字 + 一句 5–7 字的**辅助描述**（M09 §5 第 4 条：旧版每格都带 `subtitle`，上一批收掉空槽之后
+ *    四格只剩名字；文案真源在 `AdvisorStatus.kt` 的 `internal const` 那一族，不在调用里内联中文）。
  *
  * 层级不是靠新文案、也不是靠第五种状态买来的：hero 与入口卡是**两档**（圆角 24 对 16、
- * 内距 16 对 12、阴影 2 对无、状态名 18 对标题 15——最后这一档本轮才拉开，之前两档同字阶同字重，
- * "入口不许与主卡同样抢眼"只剩阴影在扛），段间距 24、卡与缺项 8、入口两排之间 12、列间 12——
+ * 内距 16 对 12、`PrimaryLight` 浅蓝对 `SurfaceCard` 白、状态名 18 对标题 15——
+ * "主卡是视觉焦点、入口不许与主卡同样抢眼"（§5.1）这一条之前只剩阴影在扛，
+ * 现在由浅蓝底 + 字阶两处一起扛），段间距 16、卡与缺项 8、入口两排之间 12、列间 12——
  * 旧版那"三处一律 12dp"读不出层级，四格 + 一卡于是就是五个等大方块。
  *
  * 页面不判任何条件：灯色、形状、黄字全部来自 [AdvisorStatus.render]，那一行末尾**有没有**去处、
@@ -190,9 +195,12 @@ fun HomeScreen(
     LaunchedEffect(Unit) { homeStatus.returnedFromSubpage(overlayGranted) }
 
     LbScreenScaffold {
-        // 段与段之间 24（`xxxl`）：这一档差值是"标识那一行"与"hero 那一块"与"入口那一块"之间
-        // 唯一的视觉断点，旧版三处一律 12 的时候五格读成一张网格。
-        // 水平边距仍只有 `LbScreenScaffold` 那一个主人。
+        // 段与段之间 16（`Spacing.xl`）——M09 §5 第 3 条"收紧主页大区块间距"落在这一格：
+        // 上一版是 `Spacing.xxxl`(24)，与 1.3.1 那条 `Arrangement.spacedBy(Spacing.xl)`＝**16** 对不上，
+        // 主页因此比旧版松一圈。这里换的只是**这一处用哪一档既有 token**，
+        // `Spacing.xxxl` 那颗数值、`Spacing` 整张表、水平边距那颗 24（`LB_SCREEN_HORIZONTAL_MARGIN`）
+        // 一个字都没动，也不靠缩字买密度。
+        // 层次差仍在：段间 16 > 入口两排之间 12 > 卡与缺项 8，标识那一行仍然自成一段。
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -203,7 +211,7 @@ fun HomeScreen(
                 // 没有底距的话最后一排入口会直接坐在导航栏下沿上。
                 .padding(top = LB_SCREEN_HORIZONTAL_MARGIN, bottom = LB_SCREEN_HORIZONTAL_MARGIN)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(Spacing.xxxl)
+            verticalArrangement = Arrangement.spacedBy(Spacing.xl)
         ) {
             // ── 应用标识（§5.1 第一格）：只有名字，没有副标题、没有返回钮、没有分割线。
             //    页头这一格交回设计系统那一颗（`Identity` 档点名的就是首页），页面不自画第二套行高。──
@@ -235,8 +243,12 @@ fun HomeScreen(
             }
 
             // ── 2×2 四入口：同一颗 LbActionCard 紧凑档，两排之间 12、列间 12 ──
-            // 四格那五个数（方块 40 / 图标 22 / 尾部箭头 20 / 卡圆角 16 / 列间 12）与 1.3.1 逐字同值；
-            // 本轮只动了两件事：卡内留白按 §3.3 收到 12、空的副标题槽不再占一格。
+            // 四格那五个数（方块 40 / 图标 22 / 尾部箭头 20 / 卡圆角 16 / 列间 12）与 1.3.1 逐字同值。
+            // M09 §5 第 4 条这一轮补回的是**副标题那一行**：旧版每格都带 4–7 字的辅助描述
+            // （`FeatureCard` 的 `subtitle` 槽），上一批把空槽收掉之后四格只剩名字，
+            // 于是"已踩案例""消息捕获"这种三四个字的名字读不出点进去是什么。
+            // 文案真源仍走 `AdvisorStatus.kt` 那一族 `internal const`（与四颗名字同一形状），
+            // 不在调用里内联中文；四句各指那一页的真功能，旧版那三格已替换掉的功能一句话都不搬。
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.lg)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -247,6 +259,7 @@ fun HomeScreen(
                             .coachAnchor(LbHomeTags.ENTRY_KNOWLEDGE),
                         iconRes = R.drawable.ic_feature_book,
                         title = HOME_ENTRY_KNOWLEDGE,
+                        subtitle = HOME_ENTRY_KNOWLEDGE_SUB,
                         iconBlock = LbActionCardIconBlock.GridCell,
                         onClick = openKnowledgeManagement
                     )
@@ -255,6 +268,7 @@ fun HomeScreen(
                             .coachAnchor(LbHomeTags.ENTRY_FEEDBACK),
                         iconRes = R.drawable.ic_feature_feedback,
                         title = HOME_ENTRY_FEEDBACK,
+                        subtitle = HOME_ENTRY_FEEDBACK_SUB,
                         iconBlock = LbActionCardIconBlock.GridCell,
                         onClick = onNavigateFeedback
                     )
@@ -268,6 +282,7 @@ fun HomeScreen(
                             .coachAnchor(LbHomeTags.ENTRY_CAPTURE),
                         iconRes = R.drawable.ic_copy,
                         title = HOME_ENTRY_CAPTURE,
+                        subtitle = HOME_ENTRY_CAPTURE_SUB,
                         iconBlock = LbActionCardIconBlock.GridCell,
                         onClick = onNavigateCaptureApps
                     )
@@ -276,11 +291,38 @@ fun HomeScreen(
                             .coachAnchor(LbHomeTags.ENTRY_PROVIDER),
                         iconRes = R.drawable.ic_unplug,
                         title = HOME_ENTRY_PROVIDER,
+                        subtitle = HOME_ENTRY_PROVIDER_SUB,
                         iconBlock = LbActionCardIconBlock.GridCell,
                         onClick = onNavigateProviders
                     )
                 }
             }
+
+            // ── 累计使用那一块只读小卡（M25 §五 取舍③，新决定替代旧规「不恢复使用概览」）──
+            // 放在**四入口之后**，是这一屏既有节奏里的最后一格：一个读数，不是第五个目的地，
+            // 也不并进主卡（主卡仍只有一颗可点，由 HomeHeroActionTest 钉）。它自己**不可点**：
+            // 此刻首页没有"使用概览"这一页可去，硬造一颗就是假按钮（与那两条没去处的缺项同一纪律）。
+            // 数字一律来自那一条只读通道（`HomeUsageReadout` 的四颗 `total*`，见 HomeUsageReadout.kt 的
+            // "数字来路只有一条"），界面里没有一颗写死的数；
+            // 四格（生成 / 复制 / 采纳 / 花费）刻意收得比面板那条更窄——只是"一块简洁小卡"，
+            // 不恢复上一轮删掉的版本区/内部指标格（新指导书 §五 取舍③第④条）。
+            // 标签与单位串一律现读资源（`stringResource` 只能在组合期调，故先解成实参再交给
+            // 纯映射 `homeUsageMetrics`——那颗不是 @Composable，不能在它里面摸资源）。
+            val usage by homeStatus.usage.collectAsStateWithLifecycle()
+            val countFormat = stringResource(R.string.home_usage_count)
+            LbMetricGrid(
+                modifier = Modifier.testTag(LbHomeTags.USAGE_CARD),
+                metrics = homeUsageMetrics(
+                    readout = usage,
+                    generatedLabel = stringResource(R.string.home_usage_generated),
+                    copiedLabel = stringResource(R.string.home_usage_copied),
+                    adoptedLabel = stringResource(R.string.home_usage_adopted),
+                    costLabel = stringResource(R.string.home_usage_cost),
+                    countUnit = { n -> String.format(countFormat, n) },
+                    costUnknown = stringResource(R.string.cost_unknown),
+                    costBelowCent = stringResource(R.string.cost_below_cent, HOME_COST_CURRENCY)
+                )
+            )
         }
     }
 }

@@ -37,18 +37,30 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 首页重做之后的**结构**守卫：这一屏只剩三格，而且只有黄灯那一档说话、说了还给得出去处。
+ * 首页重做之后的**结构**守卫：这一屏只剩四格，而且只有黄灯那一档说话、说了还给得出去处。
  *
- * 合同（第7节第1条 / PRODUCT_SPEC 第4节 + 基线 v1 §4 的首页裁决 candidate-a）从上到下写死：
- * ① 一条 hero 状态卡（左灯 + 屏幕上的状态名、右 ▶/■，`Xl` 24 / 内 16 / 浮起 2）
+ * 合同（第7节第1条 / PRODUCT_SPEC 第4节 + 基线 v1 §4 的首页裁决 candidate-a），
+ * 再叠 M09 §5 与 M25 §五 取舍③（2026-10-10 新指导书）两条新决定，从上到下写死：
+ * ① 一条 hero 状态卡（左灯 + 屏幕上的状态名、右 ▶/■，`Xl` 24 / 内 16 / `PrimaryLight` 浅底
+ *    + `PrimarySubtle` 细描边 / **零阴影**——M09 §5 第 1 条把旧版那一级浅蓝层次买了回来，
+ *    而"描边与阴影二选一"仍按 §3.4；启停那颗本体是白底 + 一圈 `Primary` 描边，第 2 条）
  * ② 仅黄色时下面那一行小字（有浅底容器、`bodySmall` 12，末尾一颗现有档的可点去处）
- * ③ 2×2 四入口（`Lg` 16 / 内 12 / 无阴影，空的副标题槽不占位）
+ * ③ 2×2 四入口（`Lg` 16 / 内 12 / 无阴影，每格一句 5–7 字的辅助描述——M09 §5 第 4 条）
+ * ④ **一块累计使用小卡**（设计系统 `LbMetricGrid` 的 Card 档、四格读数、**不可点**、排在四入口之后）：
+ *    这一格的存在本身就是 M25 §五 取舍③ 那句新决定——用户原话「首页可以重新加入累计使用面板……
+ *    维持一块简洁的小卡，不恢复大而复杂的仪表盘」，它**替代**上一轮那条"首页不许再有统计格"的旧规。
+ *    被替代的只是"不许有"，**上限是新决定自带的**，所以这里钉的是具体形状而不是"存在即可"：
+ *    小卡恰 1 块、统计格恰 4 颗、整屏可点仍 5 颗（统计不是第五颗按钮）；数字来路与"不许写死"
+ *    逐颗由 [HomeUsageCardTest] 判，本格只判结构与规模。
  * 删掉的：价值说明那句、大军师介绍卡、当前供应商详情行、服务设置段（捕获开关与授权出口）、
- * 使用统计那一行、反馈/关于两行、About 入口、任何 `LbSection` 页段标题。
+ * 反馈/关于两行、About 入口、任何 `LbSection` 页段标题。
+ * （"使用统计"那一行上一轮随旧规一起删过，本轮由 §五 取舍③ 以④那一块**小卡**的形状请回来；
+ *   请回来的只有那一块小卡——页段标题、旧统计行的其余部分与版本区/内部指标格仍按上面的名单不在场。）
  *
  * 判据全部读语义树（不读源码、不数中文）：整屏可点节点数、四格是不是同一颗组件、
- * 那一行黄字的存在性与内容、段落顺序、热区、卡高的算式。只有"两档圆角/阴影"那一格按来路判
- * （阴影与圆角在树上读不出来，而"两档塌回一档"正是最难查的那种绿），它同样写明反例。
+ * 那一行黄字的存在性与内容、段落顺序、热区、卡高的算式。只有"两档颜色/描边/圆角"那一格按来路判
+ * （色、边线与圆角在树上读不出来，而"两档塌回一档"正是最难查的那种绿），它同样写明反例
+ * 与三把旧形状尺各自的替代关系。
  * 每格都写明什么坏实现会把它压红。
  */
 @RunWith(RobolectricTestRunner::class)
@@ -116,17 +128,28 @@ class HomeScreenStructureTest {
         rule.onAllNodesWithTag(LbHomeTags.SETUP_HINT, useUnmergedTree = true)
             .fetchSemanticsNodes().map { probe.of(it).label }
 
-    // ═══════════ ① 只剩三格：一卡 + 四入口，别的都不许在 ═══════════
+    // ═══════════ ① 只剩"一卡 + 四入口 + 一块只读统计小卡"，别的都不许在 ═══════════
 
     /**
      * 反例：
-     * - 首页又长回第五格（统计行 / 关于行 / 服务设置段任一）⇒ 可点节点数立刻超过 5；
+     * - 首页又长回第五颗**可点**格（关于行 / 服务设置段 / 把统计小卡做成按钮）⇒ 可点节点数立刻超过 5；
      * - 四入口里有一格不是共用那颗卡 ⇒ [LbTags.ACTION_CARD] 少于 4；
-     * - 又给某一格补了页段标题或统计格 ⇒ SECTION / METRIC_CELL 不再是 0。
+     * - 又给某一格补了页段标题 ⇒ SECTION 不再是 0；设置行不再是 0。
      *
      * ⚠ 这里的 5 颗是**绿档**那一格（没有黄字就没有去处）。黄档多出来的那一颗是缺项行末尾的
      * 「去设置」，由下面 `the missing line comes with a way out that spends nothing` 单独判 6 颗，
      * 两格合起来才是"一格不多、但该有去处的那一格不许少"。
+     *
+     * ## M25 §五 取舍③ 的替代关系（旧判据钉的是什么 → 新判据钉的是什么）
+     *
+     * 旧规（`requests.md` §5「不增加无业务价值的统计仪表盘」+ 上一轮 K22「不恢复内部统计」）把这一格钉成
+     * `assertEquals("首页不许再有统计格", 0, tagCount(LbTags.METRIC_CELL))`。2026-10-10 新指导书
+     * §五 取舍③（活台账 M25）明确**替代**那条旧规："首页可以重新加入累计使用面板……维持一块简洁的小卡"。
+     * ⇒ 那条 0 现在红的是"这块小卡没画回来"，方向反了。改钉成**具体形状**、不松成"存在即可"：
+     * - 恰好**一块**统计小卡（`USAGE_CARD` 一颗，不许长出第二张统计卡）；
+     * - 这块小卡**只有四格**读数（`METRIC_CELL` 恰 4——生成/复制/采纳/花费；多一格就是"又大又复杂"那版，红）；
+     * - 这块小卡**不可点**（可点节点仍是 5 颗，统计没被做成第五颗按钮，也没并进主卡）。
+     * 数字来源与"不许写死"由 `HomeUsageCardTest` 逐颗钉，本格只钉规模与"非可点"这两件结构事实。
      */
     @Test
     fun `home is exactly one status card plus four entries and nothing else`() {
@@ -139,11 +162,16 @@ class HomeScreenStructureTest {
         assertEquals("黄字那一行在绿档不存在", 0, tagCount(LbHomeTags.SETUP_HINT))
         assertEquals("首页不许再有页段标题", 0, tagCount(LbTags.SECTION))
         assertEquals("首页不许再有设置行", 0, tagCount(LbTags.SETTING_ROW))
-        assertEquals("首页不许再有统计格", 0, tagCount(LbTags.METRIC_CELL))
+        // M25 取舍③替代旧规（见上面替代关系）：旧钉 0 颗统计格，新钉"一块小卡、四格读数"。
+        assertEquals("累计使用只许一块小卡（M25 取舍③：一块简洁小卡，不许长出第二张统计卡）",
+            1, tagCount(LbHomeTags.USAGE_CARD))
+        assertEquals("那一块小卡只许四格读数（生成/复制/采纳/花费；多一格就回到'大而复杂的仪表盘'）",
+            4, tagCount(LbTags.METRIC_CELL))
 
         val targets = probe.actionableTargets(rule, "首页")
         assertEquals(
-            "整屏可点节点必须是 5 颗（1 控件 + 4 入口），实到：" + targets.joinToString(" | ") { it.describe() },
+            "整屏可点节点必须是 5 颗（1 控件 + 4 入口；统计小卡只读、不是第五颗按钮），实到：" +
+                targets.joinToString(" | ") { it.describe() },
             5, targets.size
         )
         assertEquals("这一屏不许有开关（捕获那颗住在子页）", 0, targets.count { it.isToggle })
@@ -337,12 +365,15 @@ class HomeScreenStructureTest {
     /**
      * 灯、状态名与控件在**同一行**：卡片仍是"一条"，高度由三轴那两数算出来。
      *
-     * 这一格同时钉 §3.1 三轴分离与 §3.4 hero 那一档：卡高 = 热区 48 + 上下各 16 = **80dp**，
+     * 这一格同时钉 §3.1 三轴分离与 hero 那一档的内距：卡高 = 热区 48 + 上下各 16 = **80dp**，
      * 一个数都不许多叠一层（旧版四边不等 16/8/8/8，卡高 64dp；hero 改成等距 16 之后是 80dp）。
      * 反例：
      * - 把灯做成独占一行的大介绍卡（用户说的那一屏"写一堆"）⇒ 高度那句当场红；
      * - 控件跑到卡片下面一行 ⇒ 垂直中心那句红；
-     * - 给卡内再叠一层 `padding` 或把热区垫成 56+ ⇒ 高度不等于 80±1，红。
+     * - 给卡内再叠一层 `padding` 或把热区垫成 56+ ⇒ 高度不等于 80±1，红；
+     * - M09 §5 第 2 条给启停那颗补上"白底 + 一圈描边"的**按钮本体**之后，本体只到热区那一档：
+     *   有人把本体写成 56dp、或为了"更显眼"在盒子里再垫一道 `padding` ⇒ 同一句 80±1 红
+     *   （买的是"看得出来是一颗按钮"，不是把可见那一格撑大——那一半由 `HomeHeroActionTest` ≤56dp 钉）。
      */
     @Test
     fun `lamp and control share one row of a short card`() {
@@ -698,7 +729,7 @@ class HomeScreenStructureTest {
      * 两个数都从**同一棵树本次量**（不写死 dp、也不读源码里的 style 名）：
      * 反例：有人把主卡那档改回与入口同阶 ⇒ 那句红；
      * 反例：有人靠"全局缩入口的字"买层级（§4.2 明禁）⇒ 入口标题那一行高会掉到本文件另一格
-     *       `hero and entry cards are two tiers…` 算式之外，那里先红。
+     *       `the hero card is light blue and the four entries carry their subtitle` 算式之外，那里先红。
      */
     @Test
     fun `the hero line out-types the entry titles`() {
@@ -800,32 +831,84 @@ class HomeScreenStructureTest {
     }
 
     /**
-     * hero 与入口卡是**两档**（§3.4 描边管静息、阴影管浮起 + §3.3 卡内 16→12）。
+     * hero 与入口卡是**两档**（M09 §5 第 1/4 条把形状重立了一次）。
      *
      * 这一格按来路判（读两颗文件的源码，注释先掩平）+ 按几何判（量入口卡的高）：
-     * 阴影与圆角在语义树上读不出来，而"两档塌回一档"恰恰是那种绿得最难查的坏实现。
-     * 反例：
-     * - 两颗都写 `LoveBrainShape.lg`（层级塌了）⇒ hero 那两句红；
-     * - hero 自己再叠一条 `.border(`（shadow + border 双叠）⇒ 那句反向断言红；
-     * - 入口卡被顺手加上 `ELEVATION_DEFAULT` ⇒ 零阴影那句红；
-     * - `GridCell` 的留白回到 16 ⇒ 档位表那句红；而 `Standalone` 若被一起改小（别的页面哪天要用）
-     *   也当场红；
-     * - 空的副标题槽又画回一颗 `Text` ⇒ 几何那四句一起红（卡高从 94dp 涨到 110dp）。
+     * 颜色、描边与高度在语义树上读不出来，而"两档塌回一档"恰恰是那种绿得最难查的坏实现。
+     *
+     * ## 三把尺各自的替代关系（旧格钉的是什么 → 新格钉的是什么）
+     *
+     * ① **hero 浮起那一档 → hero 浅蓝那一档**。
+     *    旧格钉 `"defaultElevation = AppDimens.ELEVATION_DEFAULT_DP.dp" in hero`（阴影 2 是主卡唯一
+     *    的层次手段）。M09 要的是旧版那一级**浅蓝层次**，而第 1 条同时明令"不要同时堆满
+     *    阴影、描边和渐变"⇒ 这一格选了描边：新格钉
+     *    `containerColor = PrimaryLight` + `border(BORDER_WIDTH_DP, PrimarySubtle, Xl)`
+     *    + `defaultElevation = 0.dp`，**等值判据没有松成"存在即可"**（三颗令牌名与数都逐字钉），
+     *    并且反过来钉 `"ELEVATION_DEFAULT_DP" !in hero`。
+     * ② **禁 `.border(` → 禁"阴影与描边双叠"，并逐颗认出那两圈描边各自的主人**。
+     *    旧格那句 `!(".border(" in hero)` 拦的是 shadow + border 双叠（§3.4）。需求现在要旧版那圈
+     *    边线回来，所以"一颗都不许有"这条已经站不住；改成钉**具体形状**：主卡那一圈必须是
+     *    `PrimarySubtle` + `Xl`，启停那颗的本体边线必须是 `Primary` + `Md`，
+     *    同时钉住"阴影退到 0"与"渐变不许再叠第三层"。坏实现照样红：
+     *    给主卡换回阴影（`ELEVATION_DEFAULT_DP` 又出现）⇒ ①那句红；
+     *    把边线涂成 `Border` 灰、或圆角借入口那一档 `Lg` ⇒ ②的整串实参对不上；
+     *    给主卡再加一层 `Brush.linearGradient` ⇒ 三样堆满那句红。
+     * ③ **入口卡高 94dp（空副标题槽不占位）→ 110dp（副标题真画出来）**。
+     *    旧格钉的是"空的副标题槽不许画回一颗 `Text`"，算式 12+40+8+22+12=94；
+     *    M09 §5 第 4 条要的是**每格带一句简短辅助描述**，所以那一行现在是内容不是空槽，
+     *    算式重列为 12+40+8+22+2+14+12=**110**（副标题= `Spacing.xs` 间距 + `labelSmall` 14 行高），
+     *    反向判据同步换掉：旧格的红条件是"副标题槽画回来"，新格的红条件是
+     *    **"副标题没画出来（掉回 94）"或"画了两行/画了第二颗标题"**。
+     *    组件那一半（空串整槽不画）仍然成立，由 `subtitle.isNotEmpty()` 那颗件自己的判据守着，
+     *    本格只判首页这一屏**确实交了四句真话**。
+     *
+     * 其余反例照旧咬得住：两颗都写 `LoveBrainShape.lg`（层级塌了）、
+     * 入口卡被顺手加上 `ELEVATION_DEFAULT`（零阴影那句红）、
+     * `GridCell` 的留白回到 16（档位表红）、`Standalone` 被一起改小（也红）。
      */
     @Test
-    fun `hero and entry cards are two tiers and the empty subtitle slot is gone`() {
+    fun `the hero card is light blue and the four entries carry their subtitle`() {
         val hero = maskedCode("ui/home/HomeComponents.kt")
         val entry = maskedCode("core/designsystem/LbActionCard.kt")
 
-        // ── hero：Xl 24 + 内 16 等距 + 浮起那一档，且不再自己描边
+        // ── hero：Xl 24 + 内 16 等距 + 旧版那一档浅蓝（浅底 + 细描边），阴影这一档退场
         assertTrue("hero 圆角没上 Xl 24", "shape = LoveBrainShape.xl," in hero)
-        assertTrue("hero 没浮到 ELEVATION_DEFAULT 那一档", "defaultElevation = AppDimens.ELEVATION_DEFAULT_DP.dp" in hero)
         assertTrue("hero 内距不是四边等距 16", "padding(Spacing.xl)" in hero)
         assertTrue("hero 又回到四边不等（start/end/top/bottom 各写一个数）",
             !Regex("padding\\(\\s*start =").containsMatchIn(hero))
-        assertTrue("hero 上 shadow + border 双叠（§3.4 明禁）", !(".border(" in hero))
+        assertTrue(
+            "hero 的浅蓝底没走 M09 §5 第 1 条点名那颗既有令牌 PrimaryLight" +
+                "（也不许是新增的一颗色：这里钉的是**整串实参**，换成 SurfaceCard/别的色都红）",
+            "colors = CardDefaults.cardColors(containerColor = PrimaryLight)" in hero
+        )
+        assertTrue(
+            "hero 没画上旧版那一圈 PrimarySubtle 细描边（宽/色/圆角三颗都钉：换成 Border 灰、" +
+                "或把圆角借入口那一档 Lg 都红）",
+            "border(AppDimens.BORDER_WIDTH_DP.dp, PrimarySubtle, LoveBrainShape.xl)" in hero
+        )
+        // ②的替代关系：旧格用"一颗 `.border(` 都不许有"挡双叠，本轮形状选了描边，
+        // 于是双叠这一族改由**阴影那一半**来挡——两条一起钉才等价于原来那一条。
+        assertTrue("hero 的阴影没退到 0（描边 + 阴影双叠正是 §3.4 明令禁止的那一种）",
+            "cardElevation(defaultElevation = 0.dp)" in hero)
+        assertTrue("hero 又把 ELEVATION_DEFAULT 那一档浮起借回来了（本轮选的是描边不是阴影）",
+            "ELEVATION_DEFAULT_DP" !in hero)
+        assertTrue("hero 在浅底与描边之外又叠了第三层手段（渐变）——M09 §5 第 1 条：三样不许堆满",
+            "linearGradient" !in hero && "Brush" !in hero)
 
-        // ── 入口卡：Lg 16 + 内 12 + 零阴影（描边管静息）
+        // ── 启停那颗有按钮本体了（M09 §5 第 2 条）：白底 + 一圈 Primary 细描边，
+        //    买的数是"看得见一颗能按的东西"，热区与字形那两轴一寸没动（由 HomeHeroActionTest 量）。
+        assertTrue(
+            "启停那颗没有可见本体（只剩一枚裸字形漂在卡上＝第一次打开的人得先破译状态灯）",
+            "background(SurfaceCard, LoveBrainShape.md)" in hero &&
+                "border(AppDimens.BORDER_WIDTH_DP.dp, Primary, LoveBrainShape.md)" in hero
+        )
+        // 本体不许涂品牌底：主卡自己已经是 PrimaryLight，品牌底叠品牌底是表面色那把尺的旧债形状。
+        assertTrue(
+            "启停那颗的本体涂了品牌色（浅蓝卡上一块浅蓝按钮＝两档塌成一档，而且长出一处自画品牌底）",
+            !Regex("""\.background\(\s*(?:color\s*=\s*)?Primary""").containsMatchIn(hero)
+        )
+
+        // ── 入口卡：Lg 16 + 内 12 + 零阴影（描边管静息、白底压在浅蓝之外，与 hero 差一档）
         assertTrue("入口卡圆角不是 Lg 16", "shape = LoveBrainShape.lg" in entry)
         assertTrue("入口卡没显式写零阴影", "cardElevation(defaultElevation = 0.dp)" in entry)
         assertTrue("入口卡没留 1dp 描边", ".border(AppDimens.BORDER_WIDTH_DP.dp" in entry)
@@ -834,15 +917,17 @@ class HomeScreenStructureTest {
             "Standalone -> Spacing.xl" in entry)
         // 差值要在场：两颗同档就等于零层级
         assertTrue("hero 与入口卡用了同一档圆角，层级又塌回一格", "LoveBrainShape.xl" !in entry)
+        // 入口卡的底**不许**跟着 hero 变浅蓝：hero 是这一屏唯一的浅蓝块（§5.1 主卡是视觉焦点）
+        assertTrue("入口卡跟着 hero 一起涂浅蓝（两档塌成一档，主卡不再是唯一的焦点）",
+            "containerColor = SurfaceCard" in entry)
 
-        // ── 几何那一半：算式**按现在的真实形状**重列（H1b 台账写的 98dp 是它自己算错的一格——
-        //    方块与标题之间那道间距在生产里是 `Spacing.md`(8dp)，`LbActionCard.kt:159` 本轮
-        //    一个字没动；台账把那一格当成了 `Spacing.lg`(12)）。
+        // ── 几何那一半：算式按 M09 之后的真实形状重列（见上面替代关系 ③）。
         //    真算式 = 内距12(`GridCell.contentPadding`) + 方块40(`GridCell.blockSize`)
-        //             + 间距8(`Spacing.md`) + 标题22(`titleMedium.lineHeight`) + 内距12 = **94dp**。
+        //             + 间距8(`Spacing.md`) + 标题22(`titleMedium.lineHeight`)
+        //             + 间距2(`Spacing.xs`) + 副标题14(`labelSmall.lineHeight`) + 内距12 = **110dp**。
         //    锚点那一侧不吃尺寸：`.coachAnchor(...)` 只有 `onGloballyPositioned`，体里没有尺寸字面量。
-        //    空的副标题槽画回来 ⇒ 卡高 94 + 间距2(`Spacing.xs`) + 副标题行高14 = 110dp，
-        //    下面四句一起红（高度、卡顶到标题的 60dp、标题下沿只剩 12dp 内距、标题行高 22dp）。
+        //    坏实现怎么红：副标题没交进来（那一格空着）⇒ 卡高掉回 94dp，四句一起红；
+        //    副标题写成两行 / 或把标题也抬到两行 ⇒ 卡高超过 112dp，同样红。
         val harness = HomeStatusHarness()
         harness.parkReady()
         mount(harness)
@@ -850,16 +935,22 @@ class HomeScreenStructureTest {
             .fetchSemanticsNodes().first()
         val titles = rule.onAllNodes(hasText(HOME_ENTRY_KNOWLEDGE), useUnmergedTree = true)
             .fetchSemanticsNodes()
-        assertEquals("标题这一行只许画出一颗字（副标题槽是空的，不许有第二行）：实到 ${titles.size}颗", 1, titles.size)
+        val subs = rule.onAllNodes(hasText(HOME_ENTRY_KNOWLEDGE_SUB), useUnmergedTree = true)
+            .fetchSemanticsNodes()
+        assertEquals("标题那一行只许画出一颗字（副标题是另一颗、另一档，不许与标题撞名）：实到 ${titles.size}颗",
+            1, titles.size)
+        assertEquals("入口的辅助描述必须真画到屏幕上（M09 §5 第 4 条；没交 subtitle 就一颗都量不到）：实到 ${subs.size}颗",
+            1, subs.size)
         val title = titles.first().boundsInRoot
+        val subtitle = subs.first().boundsInRoot
         val cardBox = card.boundsInRoot
         fun toDp(px: Float): Float = px / density
 
         val heightDp = toDp(cardBox.height)
-        val expected = 12f + 40f + 8f + 22f + 12f
+        val expected = 12f + 40f + 8f + 22f + 2f + 14f + 12f
         assertTrue(
-            "入口卡高应正好是「内距12 + 方块40 + 间距8 + 标题22 + 内距12」= ${expected.toInt()}dp；" +
-                "空副标题槽画回来会涨到 110dp（94+2+14）。实到 ${heightDp.toInt()}dp",
+            "入口卡高应正好是「内距12 + 方块40 + 间距8 + 标题22 + 间距2 + 副标题14 + 内距12」= " +
+                "${expected.toInt()}dp；副标题那一行没画出来会掉回 94dp（旧形状）。实到 ${heightDp.toInt()}dp",
             kotlin.math.abs(heightDp - expected) <= 2f
         )
         // 卡顶→标题顶 = 内距12 + 方块40 + 间距8 = 60dp：方块那一档与它下面那道间距都在这里结账
@@ -867,12 +958,93 @@ class HomeScreenStructureTest {
             "卡顶到标题那一格之间该是「内距12 + 方块40 + 间距8」= 60dp",
             60f, toDp(title.top - cardBox.top), 1f
         )
-        // 标题下沿到卡底只剩内距 12 ⇒ 标题就是最后一格，底下没占位的空槽
+        // 标题下面只剩「间距2 + 副标题14 + 内距12」= 28dp ⇒ 副标题就是最后一格，底下没占位的空槽
         assertEquals(
-            "标题下面只剩 12dp 内距（空副标题槽回来会多出「间距2 + 行高14」）",
-            12f, toDp(cardBox.bottom - title.bottom), 1f
+            "标题下面该是「间距2 + 副标题14 + 内距12」= 28dp（副标题掉回来会缩成 12dp，多画一行会涨过 28）",
+            28f, toDp(cardBox.bottom - title.bottom), 1f
         )
         assertEquals("标题那一行占的就是 titleMedium 的 22dp 行高", 22f, toDp(title.height), 1f)
+        assertEquals("辅助描述那一行占的就是 labelSmall 的 14dp 行高", 14f, toDp(subtitle.height), 1f)
+        assertTrue("辅助描述必须在标题下面（画到方块那一格、或与标题并排都不是一行辅助描述）",
+            subtitle.top >= title.bottom)
+    }
+
+    /**
+     * 主页那三段之间的**垂直节奏**（M09 §5 第 3 条：收紧主页大区块间距，优先试 `Spacing.xl`
+     * 一类**已有**的档，和 1.3.1 对照，**不改全局 `Spacing` 数值**）。
+     *
+     * 两半各判一件事：①按来路判（读 `HomeScreen.kt` 的源码，注释先掩平）；②按几何判
+     * （绿档真量"主卡底边 → 第一排入口顶边"，数从 `Spacing` 主人那里现读，不写死）。
+     *
+     * 替代关系：**这一格是新立的**。M09 之前没有任何一把尺看过段间距——上一批把它从 16 抬到 24
+     * 时一格都没红，那才是这条债的真实成因（"没人量的维度"不是"已经对的维度"）。
+     *
+     * **M25 §五 取舍③ 之后这一格多管一段**：首页底部新加的那一块累计使用小卡是这一屏的**第四格**，
+     * 于是"从上到下"多出一条段间关系（四入口那一块 → 统计小卡）。旧规（K22「不恢复内部统计」）
+     * 里根本没有这一段可量，所以这不是把旧判据改松，而是**按新增事实补一段**：
+     * 新增的那一格**不许自己发明一道间距**，必须走同一档 `Spacing.xl`，而且必须是最后一格。
+     * 反例：
+     * - 段间距换回 `Spacing.xxxl`（24）⇒ ①"该走 xl 那一档"与 `Spacing.xxxl` 不许在场两句一起红，
+     *   ②也会量出 24 ≠ 16；
+     * - 三档差值被压平（入口两排之间那道 12、或卡与缺项那道 8 被顺手改掉）⇒ 那两句红；
+     * - 统计小卡插在入口两排之间、或与主卡贴在一起 ⇒ "它是最后一格"与"入口底边→小卡顶边 = xl"两句红；
+     * - 小卡那一格外面又套一层 `padding`/`Spacer` 自己造一道间距 ⇒ 那句 xl 量出 16+something，红；
+     * - 页面自己再拼一道水平边距（把 `LbScreenScaffold` 那唯一主人分成两个）⇒ 最后那句红；
+     * - 有人去动 `Spacing.kt` 那颗 `xl` 的数（需求明令不许）⇒ 由
+     *   `core/designsystem/UiBaselineRegressionTest` 里 `assertEquals(16.dp, Spacing.xl)` 那一格先红，
+     *   本格②读的是同一个主人所以**不会**跟着把红洗掉——两把尺各管各的，别把两个数合成一个。
+     */
+    @Test
+    fun `the home blocks vertical rhythm is the tightened xl tier and nothing else`() {
+        val screen = maskedCode("ui/home/HomeScreen.kt")
+        assertTrue(
+            "段与段之间没走 `Spacing.xl`(16) 那一档（M09 §5 第 3 条要买的就是这一处收紧）",
+            "verticalArrangement = Arrangement.spacedBy(Spacing.xl)" in screen
+        )
+        assertTrue(
+            "页面又用回 24 那一档了（本轮收紧的就是它；水平那 24 的唯一主人是 LB_SCREEN_HORIZONTAL_MARGIN）",
+            "Spacing.xxxl" !in screen
+        )
+        assertTrue("入口两排之间那道 12 没了（三档塌成一档就读不出层级）",
+            "Arrangement.spacedBy(Spacing.lg)" in screen)
+        assertTrue("主卡与它那一行缺项之间那道 8 没了（缺项就不像属于主卡那一档状态）",
+            "Arrangement.spacedBy(Spacing.md)" in screen)
+        assertTrue("水平边距那个唯一主人不在场了", "LB_SCREEN_HORIZONTAL_MARGIN" in screen)
+        assertTrue("页面自己又拼了一道水平边距（边距长出第二个主人）",
+            !Regex("""padding\(\s*horizontal\s*=""").containsMatchIn(screen))
+
+        // 几何那一半：绿档没有那一行黄字，所以主卡底边到入口顶边量到的就是**纯段间距**
+        val harness = HomeStatusHarness()
+        harness.parkReady()
+        mount(harness)
+        val cardBottom = rule.onAllNodesWithTag(LbHomeTags.STATUS_CARD, useUnmergedTree = true)
+            .fetchSemanticsNodes().first().boundsInRoot.bottom / density
+        val entryTop = rule.onAllNodesWithTag(LbHomeTags.ENTRY_KNOWLEDGE, useUnmergedTree = true)
+            .fetchSemanticsNodes().first().boundsInRoot.top / density
+        val xl = com.lovebrain.app.core.designsystem.Spacing.xl.value
+        assertEquals(
+            "主卡底边到第一排入口顶边应正好是段间距那一档（$xl dp，从 `Spacing` 主人现读）：" +
+                "实到 ${(entryTop - cardBottom).toInt()}dp",
+            xl.toDouble(), (entryTop - cardBottom).toDouble(), 1.0
+        )
+
+        // ── M25 §五 取舍③ 新加的那一格：同一段间距档位，而且它是这一屏最后一格 ──
+        // 数不写死：读的仍是 `Spacing` 那颗主人（上面那颗 xl），所以这一句不会替谁背书一个像素数。
+        val lastEntryRowBottom = listOf(LbHomeTags.ENTRY_CAPTURE, LbHomeTags.ENTRY_PROVIDER)
+            .flatMap { rule.onAllNodesWithTag(it, useUnmergedTree = true).fetchSemanticsNodes() }
+            .maxOf { it.boundsInRoot.bottom } / density
+        val usage = rule.onAllNodesWithTag(LbHomeTags.USAGE_CARD, useUnmergedTree = true)
+            .fetchSemanticsNodes().first().boundsInRoot
+        assertTrue(
+            "累计使用那一块必须排在四入口**之后**（它是读数不是目的地，不许插进入口网格、" +
+                "也不许抬到主卡上面）：入口底边 ${lastEntryRowBottom.toInt()}dp / 小卡顶边 ${(usage.top / density).toInt()}dp",
+            usage.top / density > lastEntryRowBottom
+        )
+        assertEquals(
+            "四入口那一块到统计小卡之间也必须是段间距那一档（$xl dp）——新增的一格不许自己发明一道间距：" +
+                "实到 ${((usage.top / density) - lastEntryRowBottom).toInt()}dp",
+            xl.toDouble(), (usage.top / density - lastEntryRowBottom).toDouble(), 1.0
+        )
     }
 
     // ═══════════ 本文件自己的两把小尺 ═══════════
