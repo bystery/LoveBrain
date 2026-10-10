@@ -1,6 +1,9 @@
 package com.lovebrain.app.ui.home
 
 import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
 
@@ -11,12 +14,15 @@ import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.data.DeepSeekRepository
+import com.lovebrain.app.domain.port.InMemorySettingsStore
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.viewmodel.SetupViewModel
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -167,6 +173,71 @@ class ProviderSectionSemanticsTest {
         )
         val tooSmall = addEntry.filter { it.tooSmall(probe.floorDp) }
         assertTrue("添加动作的热区不足 48dp：" + tooSmall.joinToString { it.describe() }, tooSmall.isEmpty())
+    }
+
+    /**
+     * Q22「供应商区从子页回来不重读」的证人。
+     *
+     * 喂的坏样子（三步）：**列表已渲染 → 数据在别处变了 → 模拟返回**。
+     * - "在别处变"走**真源**（[InMemorySettingsStore]，同一个 `SetupViewModel` 背后那份落盘），
+     *   不是桩方法——所以重读实现本身（`SetupViewModel.refreshTicketsFromStore` 按盘上真值
+     *   刷新三条流）也和接线一起被这一格判了；这也是本格用**真 VM** 而不是上面 [fakeVm] 的原因。
+     * - "模拟返回"＝卸树再挂回：`SetupRoot` 的 `AnimatedContent` 换页离开/回来就是把这一屏
+     *   整棵拔掉又重挂，重进组合时 `LaunchedEffect(Unit)` 那颗重读点必须再跑一次。
+     *   受"setContent 一格一次"的既有坑约束，用一颗 `mounted` 布尔在**同一次** setContent 里
+     *   完成拔/挂（仓里 Activity 重建那一族测不了的坑表另账）。
+     *
+     * 回退成什么就红：把 ProviderSection 里那两颗回来重读点（`LaunchedEffect(Unit)` /
+     * ON_RESUME 观察者）删掉任何一颗相关接线，重挂后列表仍停在出发前快照，
+     * "新名字"断言红、"旧名字不该还在"断言红。
+     * ⚠ 与 K25 的边界：重读的是**列表流**；编辑浮层的未提交字段归 ProviderFormBody 的
+     * rememberSaveable（证人 `ProviderFormSemanticsTest`），这一格不碰那半条。
+     */
+    @Test
+    fun `returning to the provider section re-reads tickets that changed while away`() {
+        val store = InMemorySettingsStore()
+        store.setWorkerTickets(
+            listOf(
+                ProviderTicket(id = "t1", name = "离开前的名字", baseUrl = "https://api.example", model = "r1")
+            )
+        )
+        val vm = SetupViewModel(store, mockk<DeepSeekRepository>(relaxed = true))
+        var mounted by mutableStateOf(true)
+        rule.setContent {
+            if (mounted) ProviderSection(viewModel = vm, onBack = {})
+        }
+        rule.waitForIdle()
+        clickCard()
+        assertTrue(
+            "先决条件没立住：离开前列表没渲染出旧名字（夹具问题，先查装配）",
+            rule.onAllNodes(androidx.compose.ui.test.hasText("离开前的名字")).fetchSemanticsNodes().isNotEmpty()
+        )
+
+        // 数据在别处变了：同一份真源被另一个宿主写走，本 VM 的流毫不知情（还停在旧快照）
+        store.setWorkerTickets(
+            listOf(
+                ProviderTicket(id = "t1", name = "别处保存的新名字", baseUrl = "https://api.example", model = "r1")
+            )
+        )
+
+        // 模拟返回：离开目的地（整棵卸树）→ 回到这一屏（重新进组合）
+        rule.runOnUiThread { mounted = false }
+        rule.waitForIdle()
+        rule.runOnUiThread { mounted = true }
+        rule.waitForIdle()
+        // 重挂后 [ProviderManageEntry] 的展开态归位成收起（它是一颗本地 remember）——
+        // 不重新点开就断言，等于拿「没展开」去证「没重读」，红是夹具的不是生产的。
+        clickCard()
+        rule.waitForIdle()
+
+        assertTrue(
+            "回到供应商区必须重读落盘工单——列表要反映已保存的事实（Q22）",
+            rule.onAllNodes(androidx.compose.ui.test.hasText("别处保存的新名字")).fetchSemanticsNodes().isNotEmpty()
+        )
+        assertFalse(
+            "出发前的旧快照不许还挂在树上",
+            rule.onAllNodes(androidx.compose.ui.test.hasText("离开前的名字")).fetchSemanticsNodes().isNotEmpty()
+        )
     }
 
     /**

@@ -43,6 +43,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,6 +69,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.R
 import com.lovebrain.app.GenerationTimeoutTier
@@ -175,6 +179,10 @@ private fun providerFormViewportCap(): Dp {
  *
  * 这一层只渲染 `SetupViewModel` 交出来的 StateFlow；连接测试那一步在
  * `scope.launch` 里（见 [ProviderFormBody]），页面上没有任何同步 IO。
+ * 唯一的例外是**回来重读**那两颗效果（ON_RESUME 观察者 + `LaunchedEffect(Unit)`，
+ * 与首页 HomeScreen 同一颗先例）：它们在离开/返回那一刻经
+ * [SetupViewModel.refreshTicketsFromStore] 重读落盘工单——发生在效果里、不在组合期，
+ * 也一个请求都不发。
  */
 @Composable
 fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
@@ -192,6 +200,24 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
     // 删除确认那一格**不是**未提交字段：它一个字都没写，重建后不必回来
     //（回来了反而是一扇没人认领、点下去就真删的确认窗）。
     var pendingDelete by remember { mutableStateOf<ProviderTicket?>(null) }
+
+    // ── 回来重读（与首页 HomeScreen 那一对同一颗先例）：`tickets` 这条 StateFlow 不自愈，
+    //    盘上真源被别处写走后（另一颗宿主 VM 的编辑、外部落盘），站在出发前快照上的列表
+    //    不会自己跟上——两个返回口各补一次 [SetupViewModel.refreshTicketsFromStore]。
+    //    ⚠ 重读的是**列表数据**；编辑浮层里那些还没提交的字段归 ProviderFormBody 的
+    //    rememberSaveable 本地状态，与这一条无关（K25「返回不丢未提交字段」不经过这里）。
+    // 从系统页/悬浮窗那一侧回来：Activity resume，而这一屏可能还挂在树上 → ON_RESUME 补一次
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) viewModel.refreshTicketsFromStore()
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+    // 从同一棵树的其它目的地（首页/捕获范围/已踩案例）返回：AnimatedContent 换页把这一屏
+    // 整棵卸下又挂回，重新进入组合就重读一次
+    LaunchedEffect(Unit) { viewModel.refreshTicketsFromStore() }
 
     // 页头、整屏底色与水平边距都交回 `ScreenPage` 那一族（与知识库两页、捕获范围页、
     // 已踩案例页同一副）；页名走资源，不再在这一页里内联一份中文。

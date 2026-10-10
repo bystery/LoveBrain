@@ -113,19 +113,24 @@ class CopyCaptureRejectLedgerTest {
      * 根因是 `SecurePrefs.captureEnabled` 的默认 true；同一颗键在最后一道闸上的兜底若留 `?: true`，
      * 等于把那份"默认开"又埋深一层——存储读不到时（Keystore 降级、首帧、异常）系统会当成"用户要捕"）。
      *
-     * 两枚证人：
-     * - 正向：开关那一行读的就是 `?: false`；
-     * - 反向：整个服务源码（剥注释后）**不许再出现任何** `?: true`——
+     * 2026-10-08 Q39①：偏好实例从容器注入（非空 `by inject()`），服务不再自造可空的第二实例，
+     * 旧的本地兜底 `?: false` 失去存在理由。**判据没有放松，是搬了家**——
+     * "没写过就是关"的默认由 SecurePrefs 的 fail-closed getter 持有（数据侧证人：
+     * `SettingsStorePortContractTest` 空存储读到 false、显式写原样读回）。本格改钉两件：
+     * - 正向：开关那一行**直连非空真源**（`securePrefs.captureEnabled`），不许再长出 `?.` 逃生口
+     *   或任何本地 elvis 改写；
+     * - 反向：整个服务源码（剥注释后）**不许出现任何** `?: true`——
      *   这条不是装饰：注释里写"以前是 true"不会被数到（`maskComments` 先剥），
      *   有人把别的布尔兜底写成 `?: true` 当场红，逼他明说这一颗为什么默认开。
      */
     @Test
     fun `the switch gate fails closed when the store cannot be read`() {
         val src = serviceSourceMasked()
-        val at = src.indexOf("val capEnabled = securePrefs?.captureEnabled")
+        val at = src.indexOf("val capEnabled = securePrefs.captureEnabled")
         assertTrue("尺读不到开关那一道闸的读数行（换了写法要连这本账一起改）", at >= 0)
         val line = src.substring(at, src.indexOf('\n', at))
-        assertTrue("存储读不到时开关必须按关处理：$line", line.contains("?: false"))
+        assertTrue("开关读数行不许再带可空逃生口（?.）: $line", !line.contains("?."))
+        assertTrue("开关读数行不许有本地 elvis 兜底改写: $line", !line.contains("?:"))
         assertEquals("服务里不许再有第二处 `?: true` 兜底（每一颗默认开的布尔都要单独认账）：",
             0, Regex("""\?\s*:\s*true""").findAll(src).count())
     }

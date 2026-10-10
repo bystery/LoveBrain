@@ -17,6 +17,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import java.io.File
 
 /**
@@ -134,8 +135,9 @@ class CopyCaptureService : AccessibilityService() {
         }
     }
 
-    /** SecurePrefs 实例（用于读取 captureEnabled 开关） */
-    private var securePrefs: SecurePrefs? = null
+    // 与 FloatingService 同源，不再自造第二实例。
+    /** SecurePrefs 实例（Koin 容器单例，`by inject()` 惰性解析；读取开关/范围/披露三员） */
+    private val securePrefs: SecurePrefs by inject()
 
     /** 上一次真正回写给系统的 allowlist（用来判"内容变了没"，避免每条事件都惊动系统）。 */
     private var lastAppliedPackageNames: Set<String> = emptySet()
@@ -186,17 +188,16 @@ class CopyCaptureService : AccessibilityService() {
         clearPending("service_connected_reset")
         instance = this
         isRunning = true
-        securePrefs = SecurePrefs(this)
         L.init(this)
         L.w("CopyCaptureService connected v4 (EventBus, long-press capture)")
         // 服务一连上就把当前范围声明出去（此后 allowlist 变更由 onAccessibilityEvent 里的复检接管，
         // 无需重启服务）。
-        syncDeclaredPackageScope(securePrefs?.captureAllowedPackages ?: emptySet())
+        syncDeclaredPackageScope(securePrefs.captureAllowedPackages)
         // ⚠ 光靠事件里的复检不够：新勾的那一个 App 在**送达面还没跟上之前根本不会有事件进来**
         //（框架按 packageNames 先滤）。所以订阅偏好变更，让范围页一保存就重声明。
         // 幂等由 `syncDeclaredPackageScope` 自己兜（值没变就早退），这里不必再比一次。
-        scopeSubscription = securePrefs?.onAnyPreferenceChanged {
-            syncDeclaredPackageScope(securePrefs?.captureAllowedPackages ?: emptySet())
+        scopeSubscription = securePrefs.onAnyPreferenceChanged {
+            syncDeclaredPackageScope(securePrefs.captureAllowedPackages)
         }
         appendDiag("SERVICE_CONNECTED")
     }
@@ -315,7 +316,7 @@ class CopyCaptureService : AccessibilityService() {
         val pkg = event.packageName?.toString() ?: return
         // CAP2（档位 D）：每条事件先复检范围——allowlist 变了就重设 serviceInfo.packageNames，
         // 范围页保存后不用重启服务就生效。读一次复用，别再读第二遍。
-        val allowed = securePrefs?.captureAllowedPackages ?: emptySet()
+        val allowed = securePrefs.captureAllowedPackages
         syncDeclaredPackageScope(allowed)
         val decision = CapturePolicy.decide(
             CapturePolicy.Observation(
@@ -338,12 +339,12 @@ class CopyCaptureService : AccessibilityService() {
         val type = event.eventType
 
         //  问题 4②：消息捕获总开关前置检查 —— 每次事件读取最新值
-        // 2026-10-06 CAP3/CAP4：读不到存储时按**关**处理（`?: false`）。以前这里写的是 `?: true`，
-        // 与同一颗键在 `SecurePrefs` 里的新默认（fail-closed，没写过就是关）正好相反——
-        // 那一颗是用户报"第一次进来开关就是开的"的根因，兜底值若留在 true，等于在最后一道闸上
-        // 又埋一份"默认开"。判据：`CaptureAccessibilityConfigShapeTest` 与 `CopyCaptureRejectLedgerTest`
-        // 里"开关这一档只念 switch_off 一条拒因"那两格。
-        val capEnabled = securePrefs?.captureEnabled ?: false
+        // 2026-10-06 CAP3/CAP4：开关读不到时按**关**处理。以前这里写的是 `securePrefs?.captureEnabled ?: true`
+        // 与号串上那份"默认开"，是用户报"第一次进来开关就是开的"的根因；同一颗键在 `SecurePrefs`
+        // 里的新默认是 fail-closed（没写过就是关）。2026-10-08 Q39① 起偏好实例从容器注入（非空），
+        // 那道本地空值兜底随之失去存在理由——"没写过就是关"的默认由 SecurePrefs 的 getter 持有，
+        // 判据见 `CopyCaptureRejectLedgerTest` 与 `SettingsStorePortContractTest` 那两格。
+        val capEnabled = securePrefs.captureEnabled
         if (!capEnabled) {
             clearPending("capture_disabled")
             recordCaptureReject("switch_off")
@@ -357,7 +358,7 @@ class CopyCaptureService : AccessibilityService() {
         }
 
         // 无 consent 时不读取节点文字——旧版本用户已开启无障碍但未确认新披露时也拦截
-        val consentVersion = securePrefs?.accessibilityDisclosureVersion ?: 0
+        val consentVersion = securePrefs.accessibilityDisclosureVersion
         if (consentVersion < CURRENT_DISCLOSURE_VERSION) {
             clearPending("disclosure_not_confirmed")
             recordCaptureReject("consent_pending")
