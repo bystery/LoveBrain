@@ -1,11 +1,10 @@
 package com.lovebrain.app.domain.prompt
 
-import android.content.Context
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.port.FixedClock
 import com.lovebrain.app.domain.port.InMemoryKnowledgePort
+import com.lovebrain.app.domain.port.PromptSourcePort
 import com.lovebrain.app.model.ChatMessage
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -17,16 +16,19 @@ import org.junit.Test
  *
  * 判据取的是 `PromptBuilder` 公开入口吐出来的字符串，不是源码里有没有出现某个符号——
  * 后者是本项目已知的恒真形态（"改了函数名就算改了行为"）。
- * 只 round 那一支不读资产（无知识库），所以夹具只需要一颗 relaxed 的 Context：
- * 一旦有人给这一支塞进资产读取，这一格会因为 classpath 上取不到资产而炸，不是静默绿。
+ * 只 round 那一支不读资产（无知识库），所以夹具给的是一颗**一读就抛**的假资产口：
+ * 一旦有人给这一支塞进资产读取，这一格会因为那颗假口当场炸，不是静默绿。
  */
 class PromptBuilderAdvisorNoteTest {
 
     private fun builder(): PromptBuilder {
-        // 这一支（kb=null / only-round）不读资产也不读库：mock 只是把构造参数填满。
+        // 这一支（kb=null / only-round）不读资产也不读库：假口只是把构造参数填满。
         // 真有人给它加上资产读取，上面 KDoc 说的那件事就会发生——测试当场炸，不是静默绿。
-        val ctx = mockk<Context>(relaxed = true)
-        return PromptBuilder(ctx, InMemoryKnowledgePort(), null, FixedClock())
+        // （端口化前这里是 relaxed Context；那颗 mock 在资产上的表现本就是"读不到就别读"，这颗假口把话挑明。）
+        return PromptBuilder(
+            PromptSourcePort { path -> error("这一支不该读资产：$path") },
+            InMemoryKnowledgePort(), null, FixedClock()
+        )
     }
 
     private val twoMsgs = listOf(

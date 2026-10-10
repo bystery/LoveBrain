@@ -1,11 +1,11 @@
 package com.lovebrain.app.domain
 
-import android.content.Context
-import android.content.res.AssetManager
+import com.lovebrain.app.data.AssetPromptSource
 import com.lovebrain.app.domain.port.AiGateway
 import com.lovebrain.app.domain.port.FixedClock
 import com.lovebrain.app.domain.port.InMemoryKnowledgePort
 import com.lovebrain.app.domain.port.KnowledgePort
+import com.lovebrain.app.domain.port.PromptSourcePort
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
@@ -17,8 +17,6 @@ import com.lovebrain.app.model.ReplyMemoryRefs
 import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.model.StreamEvent
 import com.lovebrain.app.model.buildGenerationInput
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -205,12 +203,10 @@ class ProactiveRoundScopeTest {
         return res.bufferedReader().use { it.readText() }
     }
 
-    private val ctx: Context by lazy {
-        val assets = mockk<AssetManager>()
-        every { assets.open(any()) } answers { loadAsset(firstArg<String>()).byteInputStream() }
-        val c = mockk<Context>()
-        every { c.assets } returns assets
-        c
+    private val ctx: PromptSourcePort by lazy {
+        // 端口化后同一形状：生产实现 AssetPromptSource + classpath 那份真资产（读到的字节与
+        // 端口化前 mockk 的 Context.assets 完全一致）
+        AssetPromptSource { path -> loadAsset(path).byteInputStream() }
     }
 
     /** 一次运行：新夹具、新库、新 provider——两档之间不共享任何状态 */

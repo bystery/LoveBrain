@@ -1,14 +1,14 @@
 package com.lovebrain.app.domain.prompt
 
-import android.content.Context
-import android.content.res.AssetManager
 import com.lovebrain.app.AppConfig
+import com.lovebrain.app.data.AssetPromptSource
 import com.lovebrain.app.data.FixedClockZone
 import com.lovebrain.app.domain.AssetRegistry
 import com.lovebrain.app.domain.OngoingContextSelector
 import com.lovebrain.app.domain.PromptBuilder
 import com.lovebrain.app.domain.port.FixedClock
 import com.lovebrain.app.domain.port.InMemoryKnowledgePort
+import com.lovebrain.app.domain.port.PromptSourcePort
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.IntentConfig
@@ -19,8 +19,6 @@ import com.lovebrain.app.model.MemoryCorrection
 import com.lovebrain.app.model.MemoryKind
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.MuteDuration
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -94,13 +92,13 @@ class PromptByteFreezeBaselineTest {
         return res.bufferedReader().use { it.readText() }
     }
 
-    /** 资产真源：test classpath 上那**同一份**文件，禁止副本/内联（沿用邻居手法） */
-    private val ctx: Context by lazy {
-        val assets = mockk<AssetManager>()
-        every { assets.open(any()) } answers { loadAsset(firstArg<String>()).byteInputStream() }
-        val c = mockk<Context>()
-        every { c.assets } returns assets
-        c
+    /**
+     * 资产真源：test classpath 上那**同一份**文件，禁止副本/内联（沿用邻居手法）。
+     * 端口化后第一格走生产实现 [AssetPromptSource]——读到的字节与端口化前
+     * mockk 的 Context.assets 完全一致。
+     */
+    private val ctx: PromptSourcePort by lazy {
+        AssetPromptSource { path -> loadAsset(path).byteInputStream() }
     }
 
     /**

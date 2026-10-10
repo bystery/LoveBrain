@@ -92,7 +92,9 @@ class SetupActivityGuideTest {
         store,
         mockk<DeepSeekRepository>(relaxed = true),
         null,
-        contextWithoutKnowledge()
+        // 第四格是 KnowledgePresencePort（"本机有没有知识库"）：null = 按"没有"处理，
+        // 与端口化前 contextWithoutKnowledge()（空目录）的读数等价。
+        null
     )
 
     // ─────────────────────── A 组：闸门与通道都断了（源码尺）───────────────────────

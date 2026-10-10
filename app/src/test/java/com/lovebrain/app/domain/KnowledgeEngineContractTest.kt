@@ -3,6 +3,7 @@ package com.lovebrain.app.domain
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
+import com.lovebrain.app.model.StageCatalog
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Job

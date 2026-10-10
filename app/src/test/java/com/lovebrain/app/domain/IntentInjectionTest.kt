@@ -3,6 +3,7 @@ package com.lovebrain.app.domain
 import android.content.Context
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.port.PromptSourcePort
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
@@ -47,7 +48,7 @@ class IntentInjectionTest {
             context = mockk<Context>(relaxed = true),
             appScope = appScope
         )
-        promptBuilder = PromptBuilder(mockk<Context>(relaxed = true), knowledgeRepo)
+        promptBuilder = PromptBuilder(PromptSourcePort { "" }, knowledgeRepo)
     }
 
     @After

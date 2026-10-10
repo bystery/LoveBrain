@@ -1,8 +1,8 @@
 package com.lovebrain.app.viewmodel
 
-import android.content.Context
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.SecurePrefs
+import com.lovebrain.app.domain.port.KnowledgePresencePort
 import com.lovebrain.app.model.ProviderTicket
 import io.mockk.every
 import io.mockk.mockk
@@ -10,10 +10,7 @@ import io.mockk.justRun
 import io.mockk.verify
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TemporaryFolder
-import java.io.File
 
 /**
  * 引导可见性判定（从 SetupActivity 收进来的那段数据逻辑）。
@@ -24,13 +21,12 @@ import java.io.File
  * 1. 已完成就不再判、也不再写；
  * 2. 新人（什么都没配）必须看到引导；
  * 3. 老用户要**顺手补上完成标记**，且只补这一次判定；
- * 4. "本机有没有知识库"这个文件系统条件真的参与判定；
- * 5. 没给 Context 时按"没有知识库"处理，而不是崩。
+ * 4. "本机有没有知识库"这个条件真的参与判定（磁盘那一半的判据——目录在哪、怎么算非空——
+ *    端口化后归 `data/FileKnowledgePresence`，由 `FileKnowledgePresenceTest` 单独盖住；
+ *    本席只钉 VM 拿着端口读数怎么判）；
+ * 5. 没给端口时按"没有知识库"处理，而不是崩。
  */
 class SetupViewModelOnboardingTest {
-
-    @get:Rule
-    val tmp = TemporaryFolder()
 
     private fun prefs(
         completed: Boolean = false,
@@ -49,17 +45,12 @@ class SetupViewModelOnboardingTest {
 
     private fun vm(
         prefs: SecurePrefs,
-        context: Context? = null
-    ) = SetupViewModel(prefs, mockk<DeepSeekRepository>(relaxed = true), null, context)
+        presence: KnowledgePresencePort? = null
+    ) = SetupViewModel(prefs, mockk<DeepSeekRepository>(relaxed = true), null, presence)
 
-    private fun contextWithKnowledge(hasKb: Boolean): Context {
-        val root = File(tmp.root, "files").apply { mkdirs() }
-        val knowledge = File(root, "knowledge").apply { mkdirs() }
-        if (hasKb) File(knowledge, "kb_demo").apply { mkdirs() } else knowledge.delete()
-        val ctx = mockk<Context>(relaxed = true)
-        every { ctx.filesDir } returns root
-        return ctx
-    }
+    /** 端口化前这里造真目录（contextWithKnowledge）；现在磁盘判据归 FileKnowledgePresence，VM 侧只喂读数 */
+    private fun presenceWith(hasKb: Boolean): KnowledgePresencePort =
+        mockk { every { hasAnyKnowledgeBase() } returns hasKb }
 
     private fun ticket() = ProviderTicket(
         name = "工单", baseUrl = "https://example.test/v1", model = "deepseek-chat"
@@ -96,35 +87,35 @@ class SetupViewModelOnboardingTest {
     @Test
     fun `a knowledge base on disk counts even with no provider configured`() {
         val prefs = prefs(completed = false)
-        assertFalse(vm(prefs, contextWithKnowledge(hasKb = true)).shouldShowOnboarding())
+        assertFalse(vm(prefs, presenceWith(hasKb = true)).shouldShowOnboarding())
         verify(exactly = 1) { prefs.hasCompletedOnboarding = true }
     }
 
     @Test
     fun `empty knowledge dir does not fake an existing user`() {
         val prefs = prefs(completed = false)
-        assertTrue(vm(prefs, contextWithKnowledge(hasKb = false)).shouldShowOnboarding())
+        assertTrue(vm(prefs, presenceWith(hasKb = false)).shouldShowOnboarding())
     }
 
     @Test
     fun `missing app context degrades to no-knowledge-base instead of crashing`() {
         val prefs = prefs(completed = false)
-        assertTrue(vm(prefs, context = null).shouldShowOnboarding())
+        assertTrue(vm(prefs, presence = null).shouldShowOnboarding())
     }
 
     @Test
     fun `missing app context does not erase the other three conditions`() {
-        // 这条是给"缺 Context 就 return false"那个写法准备的：
+        // 这条是给"缺依赖就 return false"那个写法准备的：
         // 查不了磁盘只该让「有没有知识库」这一条按无处理，
         // 已配工单/已有激活供应商/生成过这三条照样能把老用户认出来。
         assertTrue(
-            !vm(prefs(tickets = listOf(ticket())), context = null).shouldShowOnboarding()
+            !vm(prefs(tickets = listOf(ticket())), presence = null).shouldShowOnboarding()
         )
         assertTrue(
-            !vm(prefs(activeTicketId = "t-1"), context = null).shouldShowOnboarding()
+            !vm(prefs(activeTicketId = "t-1"), presence = null).shouldShowOnboarding()
         )
         assertTrue(
-            !vm(prefs(totalGenerateCount = 1), context = null).shouldShowOnboarding()
+            !vm(prefs(totalGenerateCount = 1), presence = null).shouldShowOnboarding()
         )
     }
 

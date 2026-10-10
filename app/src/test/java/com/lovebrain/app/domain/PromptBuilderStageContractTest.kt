@@ -1,5 +1,6 @@
 package com.lovebrain.app.domain
 
+import com.lovebrain.app.model.StageCatalog
 import org.junit.Assert.assertTrue
 import org.junit.Test
 

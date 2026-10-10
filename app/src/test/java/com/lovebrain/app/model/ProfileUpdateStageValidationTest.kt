@@ -22,7 +22,7 @@ class ProfileUpdateStageValidationTest {
     @Test
     fun `all StageCatalog stages pass validation`() {
         // 逐个验证 StageCatalog 的 8 个合法阶段
-        com.lovebrain.app.domain.StageCatalog.ALL.forEach { stage ->
+        com.lovebrain.app.model.StageCatalog.ALL.forEach { stage ->
             val json = """{"me":"内容","stage_changed":true,"new_stage":"$stage"}"""
             val update = ProfileUpdate.parse(json)
             assertTrue("stage '$stage' should be valid: ${update.error}", update.valid)

@@ -1,12 +1,11 @@
 package com.lovebrain.app.domain
 
-import android.content.Context
 import com.lovebrain.app.domain.port.FixedClock
 import com.lovebrain.app.domain.port.InMemoryKnowledgePort
+import com.lovebrain.app.domain.port.PromptSourcePort
 import com.lovebrain.app.domain.prompt.IntentIdeaBlock
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.KnowledgeBase
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -47,7 +46,8 @@ class ProactiveContextInjectionTest {
         messages: List<ChatMessage>,
         note: String
     ): String = runBlocking {
-        PromptBuilder(mockk<Context>(relaxed = true), port, null, FixedClock())
+        // 以前这里是 relaxed Context（资产读出空串）；端口化后同一形状 = 交回空串的假资产口
+        PromptBuilder(PromptSourcePort { "" }, port, null, FixedClock())
             .buildProactiveUserPrompt(draft, kb, messages, onlyThisRound = false, advisorNote = note)
     }
 
@@ -140,7 +140,7 @@ class ProactiveContextInjectionTest {
     fun `only this round branch injects this-round inputs without reading style md`() {
         val note = "ROUNDNOTE-只按本轮想"
         val prompt = runBlocking {
-            PromptBuilder(mockk<Context>(relaxed = true), port(), null, FixedClock())
+            PromptBuilder(PromptSourcePort { "" }, port(), null, FixedClock())
                 .buildProactiveUserPrompt("ROUNDDRAFT-想约看展", kb, listOf(her("ROUNDHER-周末有空吗"), me("ROUNDME-有啊")), onlyThisRound = true, advisorNote = note)
         }
         assertTrue("仅看本轮仍带本轮备注：$prompt", prompt.contains(note))

@@ -1,12 +1,11 @@
 package com.lovebrain.app.domain
 
-import android.content.Context
 import com.lovebrain.app.domain.port.FixedClock
 import com.lovebrain.app.domain.port.InMemoryKnowledgePort
+import com.lovebrain.app.domain.port.PromptSourcePort
 import com.lovebrain.app.domain.port.SystemClock
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.KnowledgeBase
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -87,7 +86,7 @@ class ClockWiringTest {
     @Test
     fun `prompt timestamp section comes from the port too`() {
         val clock = FixedClock()
-        val builder = PromptBuilder(mockk<Context>(relaxed = true), InMemoryKnowledgePort(), null, clock)
+        val builder = PromptBuilder(PromptSourcePort { "" }, InMemoryKnowledgePort(), null, clock)
 
         assertTrue(
             "buildTimestampPrompt 必须用注入时间：${builder.buildTimestampPrompt()}",

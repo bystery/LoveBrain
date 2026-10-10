@@ -1,9 +1,8 @@
 package com.lovebrain.app.domain
 
-import android.content.Context
-import android.content.res.AssetManager
 import android.util.Log
 import com.lovebrain.app.AppConfig
+import com.lovebrain.app.data.AssetPromptSource
 import com.lovebrain.app.data.DeepSeekRepository
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.model.ChatMessage
@@ -29,7 +28,8 @@ import org.junit.Test
  *
  * 资产真源：test classpath 挂入的 src/main/assets（build.gradle.kts:54-56），
  * 沿用 PromptBuilderStageContractTest.loadAsset 手法，禁止副本/内联资产全文。
- * Context.assets 用 mockk 模拟（回答 = 真资产字节流）。
+ * 资产读取走生产实现 AssetPromptSource（开口 lambda 指到 classpath 那份真资产字节流）——
+ * 端口化前这里是 mockk 的 Context.assets，读到的字节不变。
  */
 class PromptAssemblyOrderContractTest {
 
@@ -59,6 +59,14 @@ class PromptAssemblyOrderContractTest {
         return res.bufferedReader().use { it.readText() }
     }
 
+    /**
+     * PromptBuilder 的第一格（PromptSourcePort）用生产实现 [AssetPromptSource]：
+     * 开口 lambda 指到 test classpath 上那份真资产——与端口化前 mockk 的 Context.assets
+     * 读到同一份字节，fail-open 兜底也因此被这批用例顺带盖住。
+     */
+    private fun assetsFromTestClasspath() =
+        AssetPromptSource { path -> loadAsset(path).byteInputStream() }
+
     private fun newBuilder(lessons: String = DEFAULT_LESSONS): PromptBuilder {
         val repo = mockk<KnowledgeRepository>()
         coEvery { repo.getActive() } returns KnowledgeBase(name = "kb", stage = "暧昧期")
@@ -82,12 +90,8 @@ class PromptAssemblyOrderContractTest {
         coEvery { repo.getTurnCount("kb") } returns 1
         coEvery { repo.readIntent("kb") } returns com.lovebrain.app.model.IntentConfig()
 
-        val assets = mockk<AssetManager>()
-        every { assets.open(any()) } answers { loadAsset(firstArg<String>()).byteInputStream() }
-        val ctx = mockk<Context>()
-        every { ctx.assets } returns assets
         val selector = OngoingContextSelector(repo)
-        return PromptBuilder(ctx, repo, selector)
+        return PromptBuilder(assetsFromTestClasspath(), repo, selector)
     }
 
     private val kb = KnowledgeBase(name = "kb", stage = "暧昧期")
@@ -251,11 +255,7 @@ fun t5_counseling_systemAndUser() = runBlocking {
         coEvery { repoBig.readPlanActive("kb") } returns ""
         coEvery { repoBig.getTopicAgeHours("kb") } returns 99
         coEvery { repoBig.getCurrentTopic("kb") } returns ""
-        val assets = mockk<AssetManager>()
-        every { assets.open(any()) } answers { loadAsset(firstArg<String>()).byteInputStream() }
-        val ctx = mockk<Context>()
-        every { ctx.assets } returns assets
-        val pbBig = PromptBuilder(ctx, repoBig)
+        val pbBig = PromptBuilder(assetsFromTestClasspath(), repoBig)
 
         val user = pbBig.buildReplyUserPrompt(kb, emptyList(), userHint = "")
         val knowledgePart = user.substringBefore("# 本次对话记录")
