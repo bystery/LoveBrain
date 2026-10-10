@@ -15,7 +15,9 @@
 #   * SHA-256 equals the value pinned in scripts/signing-baseline.txt (when the
 #     requested tag is the pinned reference tag)
 #   * versionName inside the APK matches the requested tag
-#   * signer certificate matches the pinned release fingerprint
+#   * signer certificate matches a pinned fingerprint: the CURRENT release key
+#     for any tag, or the HISTORICAL v1.3.1 certificate when the requested tag
+#     IS the pinned reference fixture (that key was rotated 2026-10-07)
 #
 # Usage:
 #   bash scripts/download_release_apk.sh <tag> <out_dir> [owner/repo]
@@ -195,9 +197,31 @@ bash "$SCRIPT_DIR/check_apk_metadata.sh" "$OUT_FILE" \
   --expected-version-name "$EXPECTED_VERSION" \
   --properties "$OUT_DIR/$ASSET_NAME.metadata.txt"
 
-# And must carry the published release certificate.
+# And must carry a release certificate. For the pinned reference tag (v1.3.1)
+# the signer is the HISTORICAL certificate — it predates the 2026-10-07 key
+# rotation and can never match the current pin (scripts/signing-baseline.txt
+# keeps both). Vouch the download against the historical pin in that case; any
+# other tag must match the current pin. The SHA-256 check above stays the
+# primary identity proof either way. (2026-10-07 接线单 C2)
 if [ -f "$BASELINE_FILE" ]; then
-  bash "$SCRIPT_DIR/verify_signing_continuity.sh" "$OUT_FILE" --baseline "$BASELINE_FILE"
+  REF_TAG="$(baseline_value reference_apk_tag "$BASELINE_FILE")"
+  if [ -n "$REF_TAG" ] && [ "$TAG" = "$REF_TAG" ]; then
+    HIST_FP="$(baseline_value historical_cert_sha256_v131 "$BASELINE_FILE" | tr 'A-Z' 'a-f')"
+    [ -n "$HIST_FP" ] || die "baseline has no historical_cert_sha256_v131 to vouch for the $REF_TAG fixture"
+    APKSIGNER="$(find_build_tool apksigner)"
+    REF_OUT="$("$APKSIGNER" verify --print-certs "$(to_native_path "$OUT_FILE")" 2>&1)" || {
+      printf '%s\n' "$REF_OUT" >&2
+      die "downloaded $TAG APK failed signature verification — it is not a real release artifact"
+    }
+    REF_LINE="$(first_match "[Cc]ertificate SHA-256 (digest|fingerprint):[[:space:]]*[0-9A-Fa-f:]+" "$REF_OUT")"
+    [ -n "$REF_LINE" ] || die "could not read the downloaded $TAG APK's certificate SHA-256 from apksigner output"
+    REF_FP="$(normalize_fingerprint "$(printf '%s\n' "$REF_LINE" | sed -E 's/.*(digest|fingerprint):[[:space:]]*//')")"
+    [ "$REF_FP" = "$HIST_FP" ] ||
+      die "downloaded $TAG APK signer $REF_FP != historical v1.3.1 pin $HIST_FP — the fixture is not the shipped binary"
+    ok "downloaded $TAG fixture carries the historical v1.3.1 certificate ($REF_FP)"
+  else
+    bash "$SCRIPT_DIR/verify_signing_continuity.sh" "$OUT_FILE" --baseline "$BASELINE_FILE"
+  fi
 fi
 
 ok "release APK downloaded and verified: $OUT_FILE"

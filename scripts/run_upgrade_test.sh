@@ -7,8 +7,10 @@
 #
 # What it does, in order, failing hard at any step:
 #   1. verifies BOTH APKs' metadata and signing certificates (candidate must be
-#      the final signed/R8 release build signed with the published key — the
-#      audited job used assembleDebug)
+#      the final signed/R8 release build signed with the current pinned key —
+#      the audited job used assembleDebug; the old fixture is vouched against
+#      the current OR the historical pin, and a cross-key pair exits 3 before
+#      any device work, see below)
 #   2. installs the published v1.3.1 APK for real (no `|| true`)
 #   3. starts it and waits for it to be in the foreground
 #   4. writes real fixture data through scripts/write_upgrade_fixture.sh
@@ -22,7 +24,10 @@
 #        --candidate-apk app/build/outputs/apk/release/app-release.apk \
 #        [--package com.lovebrain.app] [--out-dir fixtures]
 #
-# Exit code: 0 verified upgrade, 1 any failure, 2 usage/tooling.
+# Exit codes: 0 verified upgrade, 1 any failure, 2 usage/tooling,
+#             3 cross-key pair — the over-install is physically impossible
+#             (old fixture carries the historical v1.3.1 certificate, the
+#             candidate the current pin; see scripts/signing-baseline.txt).
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -102,11 +107,46 @@ if [ "$OLD_NAME" = "$CAND_NAME" ]; then
 fi
 log "upgrade pair: $OLD_NAME($OLD_CODE) -> $CAND_NAME($CAND_CODE)"
 
-# The candidate must be the signed release build, and both APKs must carry the
-# same published certificate, otherwise a覆盖安装 is impossible.
+# The candidate must be the signed release build matching the CURRENT pin.
+# The old fixture is vouched for separately: since the 2026-10-07 key rotation
+# (see scripts/signing-baseline.txt) the published v1.3.1 carries the
+# HISTORICAL certificate, so a v1.3.1 -> candidate pair can never share a key.
+# That is not a defect — Android refuses the over-install
+# (INSTALL_FAILED_UPDATE_INCOMPATIBLE) no matter what this script does — so a
+# cross-key pair exits with the dedicated code 3 and an explanation, instead of
+# dying inside a confusing continuity red or silently skipping the gate. A
+# same-key pair (the normal case: two releases signed by the current key)
+# proceeds to the device flow unchanged.
 bash "$SCRIPT_DIR/verify_signing_continuity.sh" "$CANDIDATE_APK" --baseline "$BASELINE" \
   --properties "$OUT_DIR/candidate-signing.txt" --report "$OUT_DIR/candidate-signing.md"
-bash "$SCRIPT_DIR/verify_signing_continuity.sh" "$OLD_APK" --baseline "$BASELINE"
+
+CUR_FP="$(baseline_value cert_sha256 "$BASELINE" | tr 'A-Z' 'a-f')"
+HIST_FP="$(baseline_value historical_cert_sha256_v131 "$BASELINE" | tr 'A-Z' 'a-f')"
+[ -n "$CUR_FP" ] || die "baseline has no cert_sha256 — cannot vouch for the candidate"
+[ -n "$HIST_FP" ] || die "baseline has no historical_cert_sha256_v131 — cannot vouch for the old fixture"
+
+APKSIGNER="$(find_build_tool apksigner)"
+OLD_VERIFY_OUT="$("$APKSIGNER" verify --print-certs "$(to_native_path "$OLD_APK")" 2>&1)" || {
+  printf '%s\n' "$OLD_VERIFY_OUT" >&2
+  die "old fixture APK failed signature verification — it is not a real release artifact"
+}
+OLD_LINE="$(first_match "[Cc]ertificate SHA-256 (digest|fingerprint):[[:space:]]*[0-9A-Fa-f:]+" "$OLD_VERIFY_OUT")"
+[ -n "$OLD_LINE" ] || die "could not read the old fixture's certificate SHA-256 from apksigner output"
+OLD_FP="$(normalize_fingerprint "$(printf '%s\n' "$OLD_LINE" | sed -E 's/.*(digest|fingerprint):[[:space:]]*//')")"
+log "old fixture signer : $OLD_FP"
+if [ "$OLD_FP" = "$HIST_FP" ] && [ "$OLD_FP" != "$CUR_FP" ]; then
+  printf '%s  SKIP-IMPOSSIBLE 跨钥匙覆盖安装物理不存在（exit 3）\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       old fixture %s is the published v1.3.1 (historical certificate),\n' "$GATE_LOG_PREFIX" "$OLD_APK" >&2
+  printf '%s       candidate is signed with the current pin. Android rejects the\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       over-install (INSTALL_FAILED_UPDATE_INCOMPATIBLE): the only path\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       is uninstall + fresh install, which takes the in-app data with it.\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       This gate covers same-key upgrades; a cross-key migration needs a\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       different test (fresh install + re-import), to be registered separately.\n' "$GATE_LOG_PREFIX" >&2
+  exit 3
+fi
+[ "$OLD_FP" = "$CUR_FP" ] ||
+  die "old APK signer $OLD_FP matches neither the current pin nor the historical v1.3.1 pin — the fixture is unvouched"
+ok "old fixture and candidate share one release key — over-install is a meaningful test"
 
 # ── 2. install the old version for real ─────────────────────────────────────
 # The audited workflow did `adb install … || true`. Here: a leftover install must

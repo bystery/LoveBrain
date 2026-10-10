@@ -6,8 +6,11 @@
 #      R8 打包、覆盖安装都在 .github/workflows/manual.yml，只在 workflow_dispatch 跑，
 #      因此**不在**本文件的门禁里——见下面 "Resolve the CI run" 那一步）。
 #   · R8 签名 APK、覆盖安装验证、签名连续性核对 **全部本地手动**：
-#     命令见 docs/RELEASE_CHECKLIST.md 第 4/5/6/7 步，产物交回仓库
+#     命令按各支脚本自己的用法头注释跑（scripts/verify_signing_continuity.sh、
+#     run_upgrade_test.sh、emit_release_evidence.sh），产物交回仓库
 #     `docs/release-evidence/<tag>/`（只交文本证据，APK 二进制不进仓库）。
+#     （旧 docs/RELEASE_CHECKLIST.md 已随 docs/ 整体退役进 _archive/2026-10-05-docs/，
+#      不再指它；本文件下方各步与脚本头注释就是现行清单。）
 #   · 发布是**一条人工命令**：APK 与证据由人一起 `gh release create` 上传。
 #
 # ⚠ 签名与覆盖安装**不在 CI 内**。本文件因此不再做下面三件事
@@ -57,7 +60,7 @@ on:
         description: '本地签名 APK 构建自的完整 commit SHA（40 位小写）'
         required: true
       ref:
-        description: '证据文件所在引用（清单第 8 步把 docs/release-evidence/<tag>/ 提交上去的那个）'
+        description: '证据文件所在引用（本地那一跑把 docs/release-evidence/<tag>/ 提交上去的那个）'
         required: false
         default: 'main'
       ci_run:
@@ -226,7 +229,7 @@ jobs:
           } > dist/release-assistant-report.md
           if [ ! -d "$EVID" ]; then
             printf 'no local evidence directory: %s\n' "$EVID" >&2
-            printf '  本地那一跑要交回哪些文件，写在 docs/RELEASE_CHECKLIST.md 第 5-7 步。\n' >&2
+            printf '  本地那一跑要交回哪些文件：本步下面那个 for 循环逐个点的六份。\n' >&2
             exit 1
           fi
           for f in apk-metadata.txt signing.properties SHA256.txt \
@@ -297,7 +300,7 @@ jobs:
               "$TAG" "$BUILD_COMMIT" "$TAG" "${PREREL:+$PREREL }" "$EVID"
             printf '```\n\n'
             printf 'SHA-256 不等就别发：这一步是人唯一还能自己核字节的地方。\n'
-            printf '发完把 Release 页 URL 记回 docs/RELEASE_CHECKLIST.md 第 12 步。\n'
+            printf '发完把 Release 页 URL 记回中央台账 releases/1.4.0.md（其后各版照此）。\n'
           } >> dist/release-assistant-report.md
           cat dist/release-assistant-report.md
           cat dist/release-assistant-report.md >> "$GITHUB_STEP_SUMMARY"

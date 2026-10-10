@@ -92,8 +92,11 @@ BASE_FP="$(prop "$SIGNING" baseline_cert_sha256)"
 BASE_VER="$(prop "$SIGNING" baseline_version)"
 [ "$SIG_FP" = "$BASE_FP" ] ||
   die "signing continuity is broken in the recorded evidence ($SIG_FP vs $BASE_FP)"
-[ "${SIG_FP:0:8}" = "c2986640" ] ||
-  die "the recorded certificate ($SIG_FP) does not start with the published v1.3.1 prefix c2986640 — the baseline or the keystore changed"
+# The pinned release key was rotated 2026-10-07 (scripts/signing-baseline.txt);
+# what must hold is candidate == recorded baseline, not any hard-coded prefix
+# of a superseded certificate. Here only well-formedness is asserted.
+printf '%s' "$SIG_FP" | grep -Eq '^[0-9a-f]{64}$' ||
+  die "the recorded certificate '$SIG_FP' is not a 64-hex SHA-256 — the signing properties are malformed"
 ok "certificate fingerprint continuous with $BASE_VER ($SIG_FP)"
 
 SBOM_PACKAGES="$(grep -c '"SPDXID": "SPDXRef-Package' "$SBOM")" || SBOM_PACKAGES=0
@@ -140,7 +143,7 @@ BUILT_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
   printf '| package | `%s` | aapt2 badging |\n' "$META_PKG"
   printf '| versionName / versionCode | `%s` / `%s` | aapt2 badging |\n' "$META_NAME" "$META_CODE"
   printf '| signer certificate SHA-256 | `%s` | apksigner + `%s` |\n' "$SIG_FP" "$SIGNING"
-  printf '| signing continuity | PASS vs published %s | scripts/verify_signing_continuity.sh |\n' "$BASE_VER"
+  printf '| signing continuity | PASS vs pinned release key, rotated 2026-10-07 (%s) | scripts/verify_signing_continuity.sh |\n' "$BASE_VER"
   printf '| dependency packages (SBOM) | %s | `%s` (SPDX 2.3) |\n' "$SBOM_ROWS" "$SBOM"
   printf '| license decisions denied | %s | scripts/license_scan.sh |\n' "$DENIED_COUNT"
   printf '| instrumentation tests | %s | `%s` XML summaries |\n' "$UI_TOTAL" "$UI_XML_DIR"

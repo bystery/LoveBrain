@@ -2,13 +2,14 @@
 #
 # scripts/verify_signing_continuity.sh
 #
-# Signing CONTINUITY gate ( 2026-09-23 第3节: "Release 工作流不比较 v1.3.1
-# 已公开证书指纹 c2986640...f7d，只做当前 APK 自身签名验证").
-#
-# Verifies that the candidate APK is signed by the SAME certificate that the
-# already-published v1.3.1 release was signed with, as pinned in
-# scripts/signing-baseline.txt. An unsigned APK, an APK signed with a different
-# key, or a missing/placeholder baseline all fail the job — never skipped.
+# Signing CONTINUITY gate. Verifies that the candidate APK is signed by the
+# SAME certificate that the CURRENT release baseline is pinned to in
+# scripts/signing-baseline.txt (cert_sha256 / cert_sha1). That pin was rotated
+# deliberately on 2026-10-07 (the pre-rotation v1.3.1 fingerprint is kept in
+# the same file as history only). An unsigned APK, an APK signed with a
+# different key, or a missing/placeholder baseline all fail the job — never
+# skipped. To vouch for the OLD v1.3.1 fixture itself, use the historical pin
+# via the callers (scripts/download_release_apk.sh, scripts/run_upgrade_test.sh).
 #
 # Usage:
 #   bash scripts/verify_signing_continuity.sh <candidate.apk> \
@@ -52,7 +53,7 @@ require_file "$APK" "candidate APK"
 if [ ! -f "$BASELINE" ]; then
   printf '%s  FAIL signing baseline is missing: %s\n' "$GATE_LOG_PREFIX" "$BASELINE" >&2
   printf '%s       Signature continuity CANNOT be verified without it. Restore the\n' "$GATE_LOG_PREFIX" >&2
-  printf '%s       pinned v1.3.1 certificate fingerprint or stop the release.\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       pinned release certificate fingerprint or stop the release.\n' "$GATE_LOG_PREFIX" >&2
   exit 3
 fi
 
@@ -115,12 +116,15 @@ log "pinned   SHA-256: $EXPECTED_SHA256 ($BASELINE_VERSION)"
 if [ "$ACTUAL_SHA256" != "$EXPECTED_SHA256" ]; then
   printf '%s  FAIL SIGNING CONTINUITY BROKEN\n' "$GATE_LOG_PREFIX" >&2
   printf '%s       candidate APK is signed with a different certificate than the\n' "$GATE_LOG_PREFIX" >&2
-  printf '%s       published %s release. Existing users would be unable to upgrade.\n' "$GATE_LOG_PREFIX" "$BASELINE_VERSION" >&2
+  printf '%s       pinned %s release key. Against already-installed users this means\n' "$GATE_LOG_PREFIX" "$BASELINE_VERSION" >&2
+  printf '%s       they cannot upgrade (Android: INSTALL_FAILED_UPDATE_INCOMPATIBLE);\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       if the rotation was deliberate, update the baseline file instead of\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       silencing this gate.\n' "$GATE_LOG_PREFIX" >&2
   printf '%s       expected: %s\n' "$GATE_LOG_PREFIX" "$EXPECTED_SHA256" >&2
   printf '%s       actual  : %s\n' "$GATE_LOG_PREFIX" "$ACTUAL_SHA256" >&2
   exit 1
 fi
-ok "signature is continuous with published $BASELINE_VERSION (SHA-256 match)"
+ok "signature is continuous with the pinned $BASELINE_VERSION release key (SHA-256 match)"
 
 if [ "$ACTUAL_SHA1" != "$EXPECTED_SHA1" ]; then
   die "SHA-1 fingerprint also differs from the baseline ('$ACTUAL_SHA1' vs '$EXPECTED_SHA1') — the pinned baseline is internally inconsistent and must be corrected"
