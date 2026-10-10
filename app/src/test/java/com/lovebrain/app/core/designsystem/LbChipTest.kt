@@ -104,20 +104,27 @@ class LbChipTest {
         assertEquals("点击要落到这一颗自己的 onClick", "CHIP_A", picked)
     }
 
-    /** `Multi` = Checkbox + `ToggleableState`；对勾留给眼睛，规范位在语义树里 */
+    /** `Multi` = Checkbox + `ToggleableState`；对勾留给眼睛，规范位在语义树里。
+     *  直接挂两颗 `LbChip(Multi)`：`LbChipGroup` 那颗换行容器生产零引用已删（旧账 Q05），
+     *  但多选语义的规范证人不能陪葬——这里就是它的直接形状。 */
     @Test
     fun `a multi-select chip is a checkbox whose toggle state follows the value`() {
         val selected: MutableState<Set<String>> = mutableStateOf(setOf("CHIP_A"))
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
-                LbChipGroup(
-                    labels = listOf("CHIP_A", "CHIP_B"),
-                    isSelected = { it in selected.value },
-                    onToggle = { name ->
-                        selected.value = if (name in selected.value) selected.value - name
-                        else selected.value + name
+                Column {
+                    listOf("CHIP_A", "CHIP_B").forEach { name ->
+                        LbChip(
+                            label = name,
+                            selected = name in selected.value,
+                            onClick = {
+                                selected.value = if (name in selected.value) selected.value - name
+                                else selected.value + name
+                            },
+                            interaction = LbChipInteraction.Multi
+                        )
                     }
-                )
+                }
             }
         }
         rule.mainClock.advanceTimeBy(16L)

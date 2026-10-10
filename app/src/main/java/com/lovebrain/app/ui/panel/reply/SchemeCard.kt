@@ -279,7 +279,6 @@ fun SchemeCard(
                         SchemeAdjustingBlock(
                             onRewrite = { command -> onRewrite(identity, command) },
                             onCustomRewrite = { text -> onCustomRewrite(identity, text) },
-                            onCancel = { onToggleRewriteExpand(identity) },
                             customDraft = customDraft,
                             onCustomDraftChange = onCustomDraftChange,
                             isCustomInputOpen = isCustomInputOpen,

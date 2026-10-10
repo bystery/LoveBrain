@@ -89,9 +89,10 @@ fun ResultArea(
     onRewrite: (SchemeIdentity, RewriteCommand) -> Unit = { _, _ -> },
     onClearRewriteState: (SchemeIdentity) -> Unit = {},
     onCancelRewrite: (SchemeIdentity) -> Unit = {},
-    // 改写完成后界面不再画"返回原版/用这版"那条工具条：完成就是正文换了的一张默认卡。
-    // 这一格接线仍挂在调用方（撤销能力在数据层，不在这里），本组件不再往下传。
-    @Suppress("UNUSED_PARAMETER") onUndoRewrite: (SchemeIdentity) -> Unit = {},
+    // 改写完成后界面不再画"返回原版/用这版"那条工具条：完成就是正文换了的一张默认卡
+    // （§13.3 既定设计）。撤销能力仍住在数据层（RewriteStore，VM 门面 `undoRewrite`
+    // 保留为 JVM 出入口）；本组件不再为它留一颗从不读取的形参——旧的"有槽无行为"
+    // 那颗已删，谁也不许再传。
     // 自定义改写回调
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
     // 「仅看本轮」这一屏**不再画任何开关**：那颗状态住在 RoundStateStore，由长按生成那条

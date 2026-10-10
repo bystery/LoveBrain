@@ -196,7 +196,6 @@ class SchemeAdjustingBlockOptionsTest {
                     SchemeAdjustingBlock(
                         onRewrite = { tapped += it },
                         onCustomRewrite = { customSent += it },
-                        onCancel = {},
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

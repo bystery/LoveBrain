@@ -915,7 +915,6 @@ fun LoveBrainPanelScreen(
                                 ) },
                                 onClearRewriteState = { identity -> viewModel.clearRewriteState(identity.key) },
                                 onCancelRewrite = { identity -> viewModel.cancelRewrite(identity.key) },
-                                onUndoRewrite = { identity -> viewModel.undoRewrite(identity.key) },
                                 onCustomRewrite = { identity, customText ->
                                     viewModel.rewriteSchemeCustom(
                                         identity.source,

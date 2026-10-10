@@ -34,7 +34,8 @@ private const val ADJUST_OPTIONS_PER_ROW = 2
  * - 前三项走现成的 `onRewrite(command)`——传的是 enum 自己，不是屏幕上那行字，
  *   所以"换种说话"这个显示名和枚举里那条稳定名字不一致也不会把请求弄丢；
  * - 点"自定义"才出现输入框与提交，再点一次收回；
- * - 这里**不再画**常驻的"取消/收起"那颗：卡片收起归"点卡片外侧"那一侧判（见 [onCancel]）。
+ * - 这里**不画**常驻的"取消/收起"那颗：收起判定归卡片那一侧（点卡片由
+ *   `onToggleRewriteExpand` 直接收展），本块不留第二颗收起口。
  * - 不显示方向 chips（方向属于 Result-level）、不往正文下方追加内容。
  *
  * 尺寸全按卡内那一档：粒子视觉高 [SchemeCardDimens.ADJUST_PILL_HEIGHT_DP]、热区同数，
@@ -47,8 +48,9 @@ private const val ADJUST_OPTIONS_PER_ROW = 2
  * 上一张卡的草稿落到同名标签的下一张卡上。调用方没传（null）时本块自己临时记一份，
  * 免得"点了没反应"。
  *
- * [onCancel] 是留给"点卡片外侧收起"的接线点：外侧判定归卡片行——点在卡内的胶囊、
- * 输入框或滚动区域都不算外侧，本块也不往卡片外涂任何东西。
+ * 收起判定归卡片那一侧——点在卡内的胶囊、输入框或滚动区域都不算收起，
+ * 本块也不往卡片外涂任何东西；本块不持有闲置的收起形参（旧的那颗从未被
+ * 本块调用过，已删——有槽必有线，没有就删槽）。
  * modifier（含 weight）由调用方传入。
  *
  * **焦点这一头本块是所有者**（§12.2「输入焦点生命周期」，与 `SettingsIntentEntry` 同一形状）：
@@ -61,7 +63,6 @@ private const val ADJUST_OPTIONS_PER_ROW = 2
 internal fun SchemeAdjustingBlock(
     onRewrite: (RewriteCommand) -> Unit,
     onCustomRewrite: (String) -> Unit,
-    onCancel: () -> Unit = {},
     // null = 本块自己临时记一份（调用方没接线时的兜底，不让"点了没反应"发生）；
     // 非 null = 这份草稿/开合归卡片行按 identity.key 持有，本块不私存。
     modifier: Modifier = Modifier,

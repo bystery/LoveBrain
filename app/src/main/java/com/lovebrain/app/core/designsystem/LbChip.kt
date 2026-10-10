@@ -5,10 +5,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -469,43 +466,4 @@ private fun ChipLabel(
         fontWeight = weight,
         maxLines = style.labelMaxLines
     )
-}
-
-/**
- * 一组芯片的换行容器（与 [LbChip] 同一位所有者）。
- *
- * 为什么它也在设计系统里：二级原因那一族原来自己开着一个 `FlowRow`——
- * "芯片排不下就换行、行距等于列距"这件事属于芯片族，不属于那一个面板。
- * 留在页面上就会长成第八颗异形（按形状认的那把尺连 `FlowRow(` 都算自画容器）。
- *
- * 这一颗只服务多选（[LbChipInteraction.Multi]）：单选的互斥关系要调用方自己决定
- * 哪一档算选中，横排还是换行由页面自己的行容器管，这里不替它决定。
- */
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun LbChipGroup(
-    labels: List<String>,
-    isSelected: (String) -> Boolean,
-    onToggle: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    gap: Dp = Spacing.xs,
-    enabled: Boolean = true,
-    style: LbChipStyle = LbChipStyles.filled
-) {
-    FlowRow(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(gap),
-        verticalArrangement = Arrangement.spacedBy(gap)
-    ) {
-        labels.forEach { label ->
-            LbChip(
-                label = label,
-                selected = isSelected(label),
-                enabled = enabled,
-                onClick = { onToggle(label) },
-                interaction = LbChipInteraction.Multi,
-                style = style
-            )
-        }
-    }
 }

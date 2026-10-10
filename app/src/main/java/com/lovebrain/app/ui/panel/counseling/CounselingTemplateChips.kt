@@ -94,11 +94,11 @@ internal fun CounselingTemplateChips(
  * 横向内边距同理留在调用点（模板那颗照 `neutral` 的 `Spacing.md`，结果区那两颗照 `Spacing.lg`，
  * 都是逐项抄改前那条链，本轮不改观感）。
  *
- * ⚠ `core/designsystem` 里那颗具名档（`LbChipStyles.panelChip`）本轮仍**没有**——
- * `LbChip.kt` 的 KDoc 已经在两处指向它，实体却还不存在，回复输入行那一族也还带着自己那颗同名 28
- * （`ReplyDimens.ROLE_CHIP_HEIGHT_DP`，住在 `reply/ReplyInput.kt`，别的席位地盘、本席不碰）。
- * 所以这一档先落在**谈心自己这一族**里；上提与合并是跨页决策，已登记交主线程，
- * 不在这里替公共件发明 API。
+ * ⚠ `core/designsystem` 里那颗具名档（`LbChipStyles.panelChip`）**始终没有落成实体**——
+ * 当年 LbChip.kt KDoc 指向它的两处死引用已在 2026-10-09 收口波改写掉，本段是它最后的
+ * 历史注记（回复输入行那一族的高度档是 `ReplyDimens.ROLE_CHIP_HEIGHT_DP` + `chipsCap`，
+ * 谈心这一族的主人在下面那颗 `counselingCompactChipTier`：两族各归各主，不再共档）。
+ * 上提与合并是跨页决策，要动就先在台账立行，不在这里替公共件发明 API。
  *
  * 三轴分离后的三个数（§3.1 / §12.1 R12）：
  * · **可见**：胶囊 [AppDimens.CHIP_PANEL_HEIGHT_DP] 高、标签居中（`Center`）、竖内边距 0；

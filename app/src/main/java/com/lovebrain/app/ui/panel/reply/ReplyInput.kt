@@ -299,8 +299,8 @@ internal const val PANEL_ROUND_SCOPE_TEST_TAG = "round_scope_entry"
 /**
  * 消息输入区。
  *
- * 形状（§7.1 固定顺序与空间分配；窄窗那一档的依据另见基线 v1 §3 第 11 条与
- * `handoffs\2026-10-05-P2-宿主接线单.md`）：
+ * 形状（§7.1 固定顺序与空间分配；窄窗那一档的依据另见基线 v1 §3 第 11 条，
+ * 宽度预算只住在 [ReplyDimens.chipsCap] 一处）：
  * · **行 1 的视觉顺序** = 她 / 我 / 补充 / 输入框(weight 1f) / ＋ / 范围符号（仅看本轮） 同一条中线。
  *   §7.1 明写这只是**视觉顺序，不是按它算宽度**：宽度先扣固定件（➕ 那颗 48dp 见方的热区、
  *   那颗范围符号、三段必要间隔）与输入框自己那份可见下限，剩下的才给 chip 段——
@@ -666,7 +666,8 @@ private fun AddMessageButton(canAdd: Boolean, isEditing: Boolean, onAdd: () -> U
  *
  * 可见尺寸就是这一行文字本身（labelMedium + 竖 [Spacing.xs] 内边距），旧的
  * `heightIn(min = 48)` 大盒子随原话第 15 条一起撤；行版式矮下来后消息列能多露出内容
- * （"撤掉宿主固定的 160dp 槽、改由消息列内测量"记在 `handoffs\2026-10-05-P2-宿主接线单.md`）。
+ * （宿主固定的 160dp 槽已撤、改由消息列内测量——当年的接线单从未落盘，依据以
+ * 本行 KDoc 与产品规格 §2.2 为准）。
  *
  * 文案前缀是常量 [ADVISOR_NOTE_PREFIX]，不重复"想法："，也不再画第二块《我的想法》。
  */
