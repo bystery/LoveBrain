@@ -2,16 +2,18 @@
 #
 # scripts/run_upgrade_test.sh
 #
-# The whole v1.3.1 -> candidate覆盖升级 gate, driven from one repo-local script so
+# The published-fixture -> candidate覆盖升级 gate (v1.4.0 -> candidate since
+# F04 2026-10-15; the fixture shares the CURRENT pin, so the pair is REAL),
+# driven from one repo-local script so
 # the workflow YAML contains no inline shell ( 第8节 step 1.2 / 第3节).
 #
 # What it does, in order, failing hard at any step:
 #   1. verifies BOTH APKs' metadata and signing certificates (candidate must be
 #      the final signed/R8 release build signed with the current pinned key —
-#      the audited job used assembleDebug; the old fixture is vouched against
-#      the current OR the historical pin, and a cross-key pair exits 3 before
-#      any device work, see below)
-#   2. installs the published v1.3.1 APK for real (no `|| true`)
+#      the audited job used assembleDebug; the old fixture must share the CURRENT
+#      pin — a historical-pin (v1.3.x) fixture exits 3 with the migration warning
+#      before any device work, see below)
+#   2. installs the published v1.4.0 APK for real (no `|| true`)
 #   3. starts it and waits for it to be in the foreground
 #   4. writes real fixture data through scripts/write_upgrade_fixture.sh
 #   5. clears logcat, then upgrade-installs the candidate with -r (data kept)
@@ -26,7 +28,7 @@
 #
 # Exit codes: 0 verified upgrade, 1 any failure, 2 usage/tooling,
 #             3 cross-key pair — the over-install is physically impossible
-#             (old fixture carries the historical v1.3.1 certificate, the
+#             (old fixture carries the historical v1.3.x certificate, the
 #             candidate the current pin; see scripts/signing-baseline.txt).
 set -euo pipefail
 
@@ -54,7 +56,7 @@ done
 DATA_ROOT="/data/data/$PKG"
 [ -n "$OLD_APK" ] || die_usage "--old-apk is required"
 [ -n "$CANDIDATE_APK" ] || die_usage "--candidate-apk is required"
-require_file "$OLD_APK" "old (v1.3.1) APK"
+require_file "$OLD_APK" "old (published fixture) APK"
 # An upgrade gate that installs a file that is not there proves nothing, so the
 # failure message has to say what the release build actually produced.
 if [ ! -f "$CANDIDATE_APK" ]; then
@@ -108,15 +110,14 @@ fi
 log "upgrade pair: $OLD_NAME($OLD_CODE) -> $CAND_NAME($CAND_CODE)"
 
 # The candidate must be the signed release build matching the CURRENT pin.
-# The old fixture is vouched for separately: since the 2026-10-07 key rotation
-# (see scripts/signing-baseline.txt) the published v1.3.1 carries the
-# HISTORICAL certificate, so a v1.3.1 -> candidate pair can never share a key.
-# That is not a defect — Android refuses the over-install
-# (INSTALL_FAILED_UPDATE_INCOMPATIBLE) no matter what this script does — so a
-# cross-key pair exits with the dedicated code 3 and an explanation, instead of
-# dying inside a confusing continuity red or silently skipping the gate. A
-# same-key pair (the normal case: two releases signed by the current key)
-# proceeds to the device flow unchanged.
+# Since F04 (2026-10-15) the upgrade fixture is the published v1.4.0, which
+# carries that SAME current pin — so the normal path here is: old fixture and
+# candidate share one key, and the over-install is a meaningful test.
+# A fixture carrying the HISTORICAL (v1.3.x) certificate stays a loud, dedicated
+# exit 3 with the migration warning: Android refuses that over-install
+# (INSTALL_FAILED_UPDATE_INCOMPATIBLE) no matter what this script does, and the
+# only path from v1.3.x installs is uninstall + fresh install, which takes the
+# in-app data with it. That warning is user-facing policy, kept on purpose.
 bash "$SCRIPT_DIR/verify_signing_continuity.sh" "$CANDIDATE_APK" --baseline "$BASELINE" \
   --properties "$OUT_DIR/candidate-signing.txt" --report "$OUT_DIR/candidate-signing.md"
 
@@ -135,17 +136,18 @@ OLD_LINE="$(first_match "[Cc]ertificate SHA-256 (digest|fingerprint):[[:space:]]
 OLD_FP="$(normalize_fingerprint "$(printf '%s\n' "$OLD_LINE" | sed -E 's/.*(digest|fingerprint):[[:space:]]*//')")"
 log "old fixture signer : $OLD_FP"
 if [ "$OLD_FP" = "$HIST_FP" ] && [ "$OLD_FP" != "$CUR_FP" ]; then
-  printf '%s  SKIP-IMPOSSIBLE 跨钥匙覆盖安装物理不存在（exit 3）\n' "$GATE_LOG_PREFIX" >&2
-  printf '%s       old fixture %s is the published v1.3.1 (historical certificate),\n' "$GATE_LOG_PREFIX" "$OLD_APK" >&2
+  printf '%s  SKIP-IMPOSSIBLE 跨钥匙覆盖安装物理不存在（exit 3，v1.3.x 迁移警示，故意保留）\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       old fixture %s carries the HISTORICAL v1.3.x certificate,\n' "$GATE_LOG_PREFIX" "$OLD_APK" >&2
   printf '%s       candidate is signed with the current pin. Android rejects the\n' "$GATE_LOG_PREFIX" >&2
   printf '%s       over-install (INSTALL_FAILED_UPDATE_INCOMPATIBLE): the only path\n' "$GATE_LOG_PREFIX" >&2
   printf '%s       is uninstall + fresh install, which takes the in-app data with it.\n' "$GATE_LOG_PREFIX" >&2
-  printf '%s       This gate covers same-key upgrades; a cross-key migration needs a\n' "$GATE_LOG_PREFIX" >&2
-  printf '%s       different test (fresh install + re-import), to be registered separately.\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       This gate covers same-key upgrades (fixture: published v1.4.0); a\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       v1.3.x cross-key migration needs a different test (fresh install\n' "$GATE_LOG_PREFIX" >&2
+  printf '%s       + re-import), to be registered separately.\n' "$GATE_LOG_PREFIX" >&2
   exit 3
 fi
 [ "$OLD_FP" = "$CUR_FP" ] ||
-  die "old APK signer $OLD_FP matches neither the current pin nor the historical v1.3.1 pin — the fixture is unvouched"
+  die "old APK signer $OLD_FP is not the current release pin — the fixture is unvouched (F04: the upgrade fixture is the published v1.4.0, same key as the candidate)"
 ok "old fixture and candidate share one release key — over-install is a meaningful test"
 
 # ── 2. install the old version for real ─────────────────────────────────────

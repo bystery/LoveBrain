@@ -206,7 +206,7 @@ jobs:
       - name: Cross-check the local release evidence against the CI records
         # "本地手动"模型下 CI 还能替人做的那半件事：把人交回来的记录，跟 CI 自己的记录、
         # 跟 scripts/signing-baseline.txt 钉的公开指纹逐条对上。对不上就红。
-        # 读 scripts/signing-baseline.txt 不涉及 secret：那是 v1.3.1 发布页上本来就公开的证书指纹。
+        # 读 scripts/signing-baseline.txt 不涉及 secret：那是发布页上本来就公开的证书指纹。
         env:
           PRERELEASE: ${{ steps.tagcheck.outputs.IS_PRERELEASE }}
         run: |

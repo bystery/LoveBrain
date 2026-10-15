@@ -229,8 +229,10 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  # : 升级安装测试——下载并校验 v1.3.1、安装旧版、真实写夹具、
-  # 覆盖安装**签名/R8 Release** 候选、断言数据可读 + schema 已升级 + 主页面可用。
+  # : 升级安装测试——下载并校验发布夹具 v1.4.0（F04，2026-10-15：与候选同钥匙，
+  # 覆盖安装才是"真会发生的一对"；旧 v1.3.1 夹具属跨签名，只保留迁移警示）、
+  # 安装旧版、真实写夹具、覆盖安装**签名/R8 Release** 候选、
+  # 断言数据可读 + schema 达当前下限 + 主页面可用。
   upgrade-test:
     runs-on: ubuntu-latest
     # ⚠ **2026-09-29 用户书面改需求**：CI 不做 release 签名发布，签名与覆盖安装本地手动执行。
@@ -272,14 +274,14 @@ jobs:
           ./gradlew :app:assembleRelease --no-daemon
           bash scripts/resolve_release_apk.sh --require-signed --path-file fixtures/candidate-apk-path.txt
 
-      - name: Download and verify v1.3.1 fixture APK
+      - name: Download and verify the v1.4.0 fixture APK
         # A failed download is a hard failure. The previous version of this step
         # swallowed the failure and marked the whole upgrade gate as skipped.
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          bash scripts/download_release_apk.sh v1.3.1 fixtures \
+          bash scripts/download_release_apk.sh v1.4.0 fixtures \
             --repo "$GITHUB_REPOSITORY" \
             --path-file fixtures/old-apk-path.txt
 

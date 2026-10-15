@@ -2,7 +2,8 @@
 #
 # scripts/write_upgrade_fixture.sh
 #
-# Writes the REAL upgrade fixture with the OLD (v1.3.1) app installed.
+# Writes the REAL upgrade fixture with the OLD published app installed
+# (the pinned fixture since F04 2026-10-15: released v1.4.0, same key as the candidate).
 #
 #  2026-09-23 第3节/第4节: "没有真实'写入升级夹具'; 注释写了, 命令没有做" —
 # the old workflow only had a comment (`# Start old version, write fixture data`)
@@ -80,7 +81,8 @@ KB_DIR="files/knowledge/$KB_NAME"
 log "seeding knowledge base '$KB_NAME' with upgrade fixture data"
 
 # Record the pre-upgrade schema state so the post-upgrade assertion can prove a
-# migration actually occurred (v1.3.1 predates the unified .schema_version file).
+# the schema state really moved. Since F04 the fixture (v1.4.0) normally HAS the
+# unified .schema_version file; the "absent" fallback below stays for older inputs.
 PRE_SCHEMA="$(dev_capture "cat $KB_DIR/.schema_version")"
 PRE_SCHEMA="$(printf '%s' "$PRE_SCHEMA" | tr -d ' \r\n')"
 if [ -z "$PRE_SCHEMA" ]; then

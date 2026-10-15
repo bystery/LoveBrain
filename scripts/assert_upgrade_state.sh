@@ -12,7 +12,7 @@
 #      exists, is non-empty and still contains the fixture sentinel — the old
 #      user data survived and is still readable
 #   3. the knowledge base reports a schema version >= the candidate's CURRENT
-#      schema, i.e. the v1.3.1 data really was migrated
+#      schema, i.e. the fixture data sits at (or was migrated up to) the current floor
 #   4. kb.json is still present, non-empty and parses as JSON
 #   5. the main screens start cleanly and end up resumed/foreground
 #   6. the app process is alive and the logcat dump carries no fatal evidence
