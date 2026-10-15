@@ -5,27 +5,22 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.hasClickAction
-import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
-import com.lovebrain.app.BubbleSizeTier
 import com.lovebrain.app.R
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SourceScan
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
-import com.lovebrain.app.model.IntentExpiry
 import com.lovebrain.app.model.MuteDuration
 import com.lovebrain.app.ui.panel.reply.CorrectionCenterHolder
 import com.lovebrain.app.ui.panel.reply.CorrectionCenterHost
 import com.lovebrain.app.ui.panel.reply.MemoryCorrectionFlow
 import com.lovebrain.app.ui.panel.reply.MemoryCorrectionFlowHost
 import com.lovebrain.app.ui.panel.reply.durationLabel
-import com.lovebrain.app.ui.panel.settings.LoveBrainSettingsContent
-import com.lovebrain.app.ui.panel.settings.SettingsIntentEntry
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -37,16 +32,20 @@ import org.robolectric.annotation.GraphicsMode
 import java.io.File
 
 /**
- * 浮层的**退场**到底播没播——三个调用点各钉一到两格，外加一把源码尺。
+ * 浮层的**退场**到底播没播——三扇浮层各钉一到两格，外加一把源码尺。
  *
  * 缺陷形状（同一句话记在 `LbModalSheet` 的 `visible` 参数 KDoc 上）：公共壳里那棵
  * `AnimatedVisibility` 原来写死 `visible = true`，调用方用 `if (show) { LbModalSheet(...) }`
  * 挂载／卸载整棵树。入场动画能跑（挂上那一帧 visible 从 false 变 true），
  * **退场永远跑不到**：关的那一帧整棵树被摘掉，exit 还没开始播就跟着树一起没了。
- * 现在三处都改成 `visible` 驱动、树常驻：
- * `ui/panel/settings/SettingsIntentEntry.kt`（意图介绍浮层）、
+ * 现在两处都改成 `visible` 驱动、树常驻：
  * `ui/panel/reply/MemoryCorrectionFlow.kt`（暂停时长／标记为错误两扇）、
  * `ui/panel/reply/CorrectionCenter.kt`（纠正中心）。
+ *
+ * 原先这里的第三个调用点是设置页那扇**意图介绍浮层**（`SettingsIntentEntry` 里的
+ * `SettingsIntentIntroSheet`）：开启意图不再先弹一层介绍、也不再往盘上记"首次已看过"，
+ * 那扇浮层的主体已经从生产里删掉，这一族证人因此只剩设置页那两态合同去钉
+ * （见 `ui/panel/settings/SettingsIntentRowTest` 与 `SettingsPageSemanticsTest`），本文件不再挂它。
  *
  * ── 这台仪器量得到什么、量不到什么（诚实边界） ──
  * JVM 语义树**看不见像素与 alpha**，所以这里不声称量到了那 200ms 的淡出曲线本身。
@@ -71,7 +70,7 @@ import java.io.File
  * 「淡出途中仍在树上」这一句永远读到 0，这一格就退化成恒红。关掉之后唯一的推进办法是手动推帧。
  *
  * 挂载槽按 `CorrectionCenterTest` / `MemoryCorrectionFlowTest` 那一族：360x900dp。
- * 这三处生产代码都在同一棵 ComposeView 里自画遮罩（不是另一扇窗口），整扇浮层在本机挂得上。
+ * 这两处生产代码都在同一棵 ComposeView 里自画遮罩（不是另一扇窗口），整扇浮层在本机挂得上。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -87,9 +86,6 @@ class ModalSheetExitAnimationTest {
 
         /** 比退场时长更久：动画一定已经落地 */
         const val SETTLED_MS = 320L
-
-        /** SettingsIntentEntry 记「首次已看过介绍」的那份 prefs：测前先清，否则不弹 */
-        const val SETTINGS_PREFS = "lovebrain_settings"
     }
 
     @get:Rule
@@ -251,7 +247,7 @@ class ModalSheetExitAnimationTest {
      * 三种坏实现各红一处（旧 `if` 挂载形态同样红，因为那时树上根本没有这只框）：
      * ① `value = flow.wrongDraft` ⇒ 淡出途中读出空串；
      * ② 把 `dismiss()` 改成不清草稿 ⇒ 末尾那两句（业务语义）红；
-     * ③ 余温不随下一次 `requestWrong` 归零 ⇒ 上一轮的话预进下一轮那张卡。
+     * ③ 余温不随下一次 `requestWrong` 归零 ⇒ 上一次那句话被预填进新开的那张卡。
      */
     @Test
     fun `the mark wrong sheet does not empty its draft box while it fades`() {
@@ -300,7 +296,7 @@ class ModalSheetExitAnimationTest {
         pump(SETTLED_MS)
         assertEquals("退场播完才摘树", 0, editableNodes().size)
 
-        // 下一轮请求进来：余温必须归零，否则上一轮的话会预填进这一轮那张卡
+        // 新一次请求进来：余温必须归零，否则上一次那句话会预填进新开的那张卡
         // （开着那一格读的是业务那一份，量不出这一条 ⇒ 只对 holder 说一句，它是渲染余温不是业务状态）
         rule.mainClock.autoAdvance = true
         flow.requestWrong("mem-C")
@@ -320,83 +316,7 @@ class ModalSheetExitAnimationTest {
         editableNodes().firstOrNull()?.config
             ?.getOrNull(SemanticsProperties.EditableText)?.text
 
-    // ═══════════ ③ 设置页那扇意图介绍浮层 ═══════════
-
-    /** 「确认后才落盘」那一条业务语义的形状（本轮改的是挂载形态，这一句一个字没动） */
-    private data class Saved(
-        val text: String,
-        val enabled: Boolean,
-        val expiry: IntentExpiry,
-        val recomputeExpiry: Boolean
-    )
-
-    /**
-     * 介绍浮层：确认那一记之后先淡出（树仍在），淡完才摘。
-     *
-     * 顺带钉住两条我没让我动的语义：
-     * · 首次拨开关**只弹浮层**，确认前一颗盘都不落（§10.2）；
-     * · 「知道了」落的仍是 `onIntentChange(当前正文, enabled = true, 当前档, 不换档)` 那一句。
-     */
-    @Test
-    fun `the intent intro is dropped only after its exit has played`() {
-        rule.mainClock.autoAdvance = false
-        ctx.getSharedPreferences(SETTINGS_PREFS, Context.MODE_PRIVATE).edit().clear().commit()
-        val saved = mutableListOf<Saved>()
-        rule.setContent {
-            UiMatrix(360, heightDp = 900).RenderIn(LocalDensity.current.density) {
-                LoveBrainSettingsContent(
-                    onBack = {},
-                    onCollapse = {},
-                    opacityPercent = 100,
-                    onOpacityPreview = {},
-                    onOpacityCommit = {},
-                    assistantOn = true,
-                    onAssistantEnable = {},
-                    onAssistantClose = {},
-                    bubbleSizeDp = BubbleSizeTier.STANDARD_DP,
-                    onBubbleSizeChange = {},
-                    replyCardVertical = true,
-                    onReplyCardVerticalChange = {},
-                    intentEnabled = false,
-                    intentText = "",
-                    intentExpiry = IntentExpiry.ONE_DAY,
-                    onIntentChange = { text, enabled, expiry, recompute ->
-                        saved += Saved(text, enabled, expiry, recompute)
-                    }
-                )
-            }
-        }
-        val body = ctx.getString(R.string.intent_intro_body)
-        val acknowledge = ctx.getString(R.string.intent_intro_acknowledge)
-        val switchName = ctx.getString(R.string.intent_label)
-        pump(SETTLED_MS)
-
-        assertEquals("没拨开关之前不该有介绍浮层", 0, nodesWith(body))
-        val switches = rule.onAllNodes(hasContentDescription(switchName)).fetchSemanticsNodes().size
-        assertEquals("那一格该恰好有一颗开关，实到 $switches", 1, switches)
-
-        // 首次拨开：只弹浮层，确认前不启用、不落盘
-        rule.onAllNodes(hasContentDescription(switchName))[0].performClick()
-        pump(SETTLED_MS)
-        assertEquals("首次拨开该起介绍浮层", 1, nodesWith(body))
-        assertTrue("确认前不许落盘（§10.2）：实到 $saved", saved.isEmpty())
-
-        rule.onAllNodes(hasText(acknowledge))[0].performClick()
-        pump(MID_EXIT_MS)
-        assertEquals(
-            "淡出途中那句话仍该在树上（旧写法 if (showIntro) 在这里读到 0，退场动画播不到）",
-            1, nodesWith(body)
-        )
-        assertEquals(
-            "「知道了」落的那一句一个字没动：当前正文、enabled=true、没换档",
-            listOf(Saved("", true, IntentExpiry.ONE_DAY, false)), saved.toList()
-        )
-
-        pump(SETTLED_MS)
-        assertEquals("退场播完才摘树", 0, nodesWith(body))
-    }
-
-    // ═══════════ ④ 源码尺：三处都不许再把树摘在 exit 之前 ═══════════
+    // ═══════════ ③ 源码尺：两处都不许再把树摘在 exit 之前 ═══════════
 
     /**
      * 语义树判的是「今天真的在淡出」，这一格判的是「别再改回去」：
@@ -407,7 +327,6 @@ class ModalSheetExitAnimationTest {
     @Test
     fun `every call site drives the sheet through visible at the top level`() {
         val sites = listOf(
-            Site("panel/settings/SettingsIntentEntry.kt", "internal fun SettingsIntentIntroSheet(", 1),
             Site("panel/reply/MemoryCorrectionFlow.kt", "fun MemoryCorrectionFlowHost(", 2),
             Site("panel/reply/CorrectionCenter.kt", "fun CorrectionCenterHost(", 1)
         )

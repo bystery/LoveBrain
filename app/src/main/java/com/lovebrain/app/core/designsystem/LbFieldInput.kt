@@ -27,6 +27,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
@@ -108,6 +109,7 @@ internal fun lbFieldVisualState(
  * 并多报一个 Disabled——不是从树上消失（与 `LbChip` 禁用那颗同一判据）。
  *
  * 里面没有任何词表：label、placeholder、错误文案一律由调用方交进来。
+ * 字阶也不由这颗自己定死：它是**参数**（[textStyle]），默认值才是今天那一档。
  *
  * @param focusRequester 外部（键盘引导、进入页面自动聚焦）要用的焦点入口。
  *   传了就挂在这一颗输入框上，空档获焦也复用它，不另起第二个焦点拥有者。
@@ -115,6 +117,13 @@ internal fun lbFieldVisualState(
  *   宿主收到这一颗就把窗口从 `FLAG_NOT_FOCUSABLE` 切到 EDITING，IME 才能弹出来。
  *   与 [PanelTextInput] 的 `onInputIntent` 同一范式——触碰输入区 = 想编辑。
  *   `null`（默认）= 跑在普通 Activity 里（如 SetupActivity 的供应商表单），IME 原生可用，不需要这条信号。
+ * @param textStyle 这一格文字的**字阶档**。默认 [AppTypography.bodyMedium] 就是这颗件今天写死的那一档，
+ *   所以在册的调用点一个都不传时，屏上形状一寸不动——开这一档买的是"这一格能选"，
+ *   不是给全站换脸：字阶的等级表有它自己的主人，个别行要小一档不该成为动全表的理由。
+ *   要动这一档的行是真实存在的版式：窄行里"输入的字比它的行标签还小一档"，
+ *   公共件那一档写死时，屏上就成了"输入的字比标签大"，主次正好倒过来。
+ *   这一档**同时管两处**：可编辑节点与它空着时那行 placeholder（两条链都从这一个参数派生）——
+ *   只接一处会画出半张脸：打的字跟着新档走、灰字提示仍留在旧档，同一行里两种字号打架。
  */
 @Composable
 fun LbFieldInput(
@@ -127,9 +136,9 @@ fun LbFieldInput(
     maxLines: Int = 1,
     trailingAction: (@Composable () -> Unit)? = null,
     focusRequester: FocusRequester? = null,
-    onInputIntent: (() -> Unit)? = null
+    onInputIntent: (() -> Unit)? = null,
+    textStyle: TextStyle = AppTypography.bodyMedium
 ) {
-    val textStyleBase = AppTypography.bodyMedium
     // 只保留一个焦点入口：外部给了就用外部的，否则用这颗自己创建的。
     // 两个 FocusRequester 同时挂在同一节点上会互相覆盖，所以不做"都挂"这种写法。
     val editFocusRequester = focusRequester ?: remember { FocusRequester() }
@@ -191,7 +200,9 @@ fun LbFieldInput(
                 Text(
                     text = placeholder,
                     color = TextHint,
-                    style = textStyleBase,
+                    // 与下面那颗可编辑节点同一档：空着时的提示字与打进去的字得一样大，
+                    // 否则换档只换了一半——同一行里灰字一个字号、打的字另一个字号。
+                    style = textStyle,
                     maxLines = 1,
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
@@ -201,7 +212,8 @@ fun LbFieldInput(
                 onValueChange = onValueChange,
                 singleLine = maxLines == 1,
                 enabled = enabled,
-                textStyle = textStyleBase.copy(color = visual.textColor),
+                // 字阶来自参数、颜色仍由状态表给：这一档换的是大小，不是那一列五态文字色
+                textStyle = textStyle.copy(color = visual.textColor),
                 visualTransformation = if (passwordVisible) VisualTransformation.None
                     else PasswordVisualTransformation(),
                 cursorBrush = SolidColor(Primary),

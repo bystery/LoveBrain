@@ -46,14 +46,14 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 第6节第4条 悬浮面板：**整屏**第一次进这台 JVM 仪器。
+ * 悬浮面板整屏的语义树合同：**整屏**第一次进这台 JVM 仪器。
  *
  * 此前这一族屏是分开量的（`PanelHeader*` 量页头、`ResultArea*` 量结果区、两块面板各自量），
  * 所以页头与主输入**同在一屏**时才会暴露的性质一直是零覆盖：两档切换会不会挪动页头？
- * 输入行里那颗「添加」和「她/我/想法」三颗角色 chip 的热区到底多大？旧账甚至写着
- * "整页要 `LoveBrainViewModel` 所以测不到"（谈心里那颗「继续追问」就记在这条上）——
+ * 输入行里那颗「添加」和「她/我/补充」三颗角色 chip 的热区到底多大？此前还有一种说法是
+ * "整屏要 `LoveBrainViewModel`，所以量不到"（谈心里那颗「继续追问」就被归到这一条上）——
  * 本文件就是那条归因的否证：把 VM collect 的那 47 条 flow 一条条桩住，八个回调给 no-op，
- * 整屏就挂得起来并且能空闲（坑表 84：说"做不到"要能答"我是怎么知道的"）。
+ * 整屏就挂得起来并且能空闲。这里守的是一条仪器纪律：说"做不到"要能答"我是怎么知道的"。
  *
  * ⚠ **模式现在只由 `panelMode` 一个数驱动**：页头那两段读的是
  * `panelMode == 1 → 谈心`、`else → 回复`。
@@ -85,12 +85,17 @@ class PanelHostSemanticsTest {
     private fun fakeIntents(): IntentController = mockk<IntentController>(relaxed = true).also {
         every { it.config } returns MutableStateFlow(IntentConfig())
         every { it.showEditor } returns MutableStateFlow(false)
+        // 写盘在飞吗：面板 `LoveBrainPanelScreen.kt:345` 无条件 collect 这一颗，漂给 relaxed
+        // 就是 `StateFlow<T>.value` 擦除后的裸 Object，一读就 ClassCastException。
+        // false = 此刻没在写盘，与 `IntentController._isSaving` 的初值同形；
+        // 本文件的格子不判"保存中禁用"，这一格既不该留 relaxed，也不该桩成 true。
+        every { it.isSaving } returns MutableStateFlow(false)
     }
 
     private fun fakeVm(): LoveBrainViewModel {
         val vm = mockk<LoveBrainViewModel>(relaxed = true)
 
-        // 第5节第2条 第 6 步：VM 上那 10 条纯转发口已删，状态归 ComposerStore 自己
+        // 转发层退役之后：VM 上那 10 条纯转发口已删，输入状态由 `ComposerStore` 自己持有
         val composer = mockk<ComposerStore>(relaxed = true)
         every { vm.composer } returns composer
         every { composer.panelMode } returns panelModeFlow
@@ -104,9 +109,9 @@ class PanelHostSemanticsTest {
         every { vm.counselingError } returns MutableStateFlow(null)
         every { vm.counselingResult } returns MutableStateFlow(null)
         every { vm.counselingStreaming } returns MutableStateFlow("")
-        // （用户 2026-10-03 原话"点踩就不要弹窗全部删除！！记入就行了"）：VM 上那颗
+        // （2026-10-03 定的产品行为：点踩只记入、不弹任何窗）：VM 上那颗
         // `currentFeedbackCase` 出口随原因面板一起摘除，面板这一侧一个字都不读它
-        // （`ui/panel/LoveBrainPanelScreen.kt:226` 明写"这里**故意不收集**"）。
+        // （`ui/panel/LoveBrainPanelScreen.kt` 里那句"这里**故意不收集**"就是这一笔的出处）。
         // 旧桩替它挂的那一条空流因此删掉——留着就是一句对着不存在的口子的假话。
         // 赞/踩的状态出口仍然只有 `vm.feedbacks` 那一条（下面照旧点名给真流：
         // relaxed 对泛型流交回的是裸 mock，`.value` 一取就 CCE）。
@@ -115,11 +120,11 @@ class PanelHostSemanticsTest {
         // 给一条写明类型的空流——通知位与改动前一样空着（三条通道原先也全是 null）。
         every { vm.currentNotice } returns MutableStateFlow<NoticeBoard.Notice?>(null)
         every { composer.currentRole } returns MutableStateFlow(ChatMessage.Role.HER)
-        // 输入对象（她/我/补充）： 之后面板在 `LoveBrainPanelScreen.kt:190` 无条件 collect
-        // `composer.inputKind`。这条口留给 relaxed 就是本轮 13 红的唯一出处——`StateFlow<T>.value`
-        // 泛型擦除后返回类型是裸 `Object`，relaxed 交回的正是那个 Object，面板一 checkcast 到
-        // `ComposerInputKind` 就 CCE（与上面 `vm.currentNotice` 那条同一个坑，判据一条没松）。
-        // 补的是生产真会走到的那一档：`ComposerStore._inputKind` 的初始值就是 HER（ComposerStore.kt:192），
+        // 输入对象（她/我/补充）这一族改由 `ComposerStore` 持有之后，面板在 `LoveBrainPanelScreen.kt`
+        // 顶层无条件 collect `composer.inputKind`。这条口留给 relaxed 就是这套整屏用例第一次跑起来时那 13 处
+        // 失败的唯一出处——`StateFlow<T>.value` 泛型擦除后返回类型是裸 `Object`，relaxed 交回的正是那个
+        // Object，面板一 checkcast 到 `ComposerInputKind` 就 CCE（与上面 `vm.currentNotice` 那条同一个坑，判据一条没松）。
+        // 补的是生产真会走到的那一档：`ComposerStore._inputKind` 的初始值就是 HER（`ComposerStore` 声明处），
         // 且它与上面那颗 `currentRole = HER` 同轴——`currentRole.toComposerInputKind()` 推出来的
         // 也是 HER，所以这一档不是凭空挑的常数，而是这一台夹具本来就该长成的形状。
         every { composer.inputKind } returns MutableStateFlow(ComposerInputKind.HER)
@@ -202,10 +207,10 @@ class PanelHostSemanticsTest {
     }
 
     /**
-     * 第6节第4条 上半句「顶部两个模式保持固定位置与尺寸」+ 走生产的点击路径真的能换档。
+     * 页头那一段的形状：「顶部两个模式保持固定位置与尺寸」+ 走生产的点击路径真的能换档。
      *
      * 判的是**同一批节点在两档之间位置尺寸完全相同**，不是"看起来没动"。
-     * （第三段「今日锦囊」随  整删，这一格跟着从三档换成两档，判据本身没放松。）
+     * （第三段「今日锦囊」已从面板整颗撤除，这一格跟着从三档换成两档，判据本身没放松。）
      */
     @Test
     fun `the two mode segments keep the same box while the content area changes`() {
@@ -295,10 +300,10 @@ class PanelHostSemanticsTest {
      * 弹窗动作这些仍该是 48 的颗数一起放掉）：模式栏那两段走合同的 30，齿轮/收起的外包盒走
      * 24，面板主动作那一排走 40，认不出档的一律回到全站下限——[tierOf] 不许返回 0 蒙人。
      *
-     * 可编辑那颗走的是另一条轴：本轮把输入的"可见高度"与"热区"拆成两层（可见胶囊 28/36、
+     * 可编辑那颗走的是另一条轴：这一族把输入的"可见高度"与"热区"拆成两层（可见胶囊 28/36、
      * 外层透明盒垫到全站下限），所以判它的方式只能是"包住它的热区过下限、且热区确实把它整个
-     * 含住"——**不是**把可编辑节点自己再抬回 48（那正是这一轮拆掉的东西），也不是放过它
-     * （热区撤掉、或热区只是外面一个大盒子没含住它，这格都红）。
+     * 含住"——**不是**把可编辑节点自己再抬回 48（抬回去就是把这两层合回一层，正是这一族撤掉的形状），
+     * 也不是放过它（热区撤掉、或热区只是外面一个大盒子没含住它，这格都红）。
      *
      * ⚠ **为什么这里不用 `ScrollScan` 那把尺**：这一屏在 `messages.isEmpty()` 时
      * `MessageList` 走 early return，**根本没有纵向滚动容器**（第一次跑就是这么报的：
@@ -377,8 +382,8 @@ class PanelHostSemanticsTest {
     private val collapseName: String get() = ctx.getString(R.string.panel_collapse)
 
     /**
-     * 「仅看本轮」那颗的读屏名：由页面自己持有（[PANEL_ROUND_SCOPE_LABEL]，挂在 contentDescription 上），
-     * 这里只引用那颗常量，不在测试里抄第二份中文——字面量预算闸管的就是这个。
+     * 范围符号那颗的读屏名由页面自己持有：常量 `PANEL_ROUND_SCOPE_LABEL` 挂在 contentDescription 上，
+     * 这里只引用那颗常量，不在测试里抄第二份中文——`UiStringLiteralBudgetTest` 管的就是这一条。
      */
     private val roundScopeName: String get() = PANEL_ROUND_SCOPE_LABEL
 
@@ -404,7 +409,7 @@ class PanelHostSemanticsTest {
     /** 逐颗换尺：拿不到档位的回到全站下限，这条兜底不许改成 0 */
     private fun tierOf(t: Target): Float = when {
         // 回复行三颗角色胶囊（她/我/补充）：悬浮窗**紧凑胶囊族**，与谈心模板、范围符号同族
-        // （28dp 高胶囊、横滚行、热区分层）。书 §20 F03 点名拆掉的 18dp 宽度幻影占位拆掉后
+        // （28dp 高胶囊、横滚行、热区分层）。宽度轴上那颗"外盒白撑到 48、每颗多占 18dp"的幻影占位拆掉后
         // （core 的 `LbChipStyle.widthFloor`，`RoleChipSemanticsTest` 头部记着判据改写），
         // 宽度轴=内容定宽、高度轴仍 48 满档——按本族那一档 [TouchTier.COMPACT_CHIP] 量。
         // ⚠ 必须排在下面那条泛 `role == "Tab"` 之前：页头模式段也是 Tab，它走它自己的 30dp 合同档。
@@ -413,14 +418,15 @@ class PanelHostSemanticsTest {
         t.announces(settingsName) -> TouchTier.PANEL_HEADER_HOTZONE
         t.announces(collapseName) -> TouchTier.PANEL_HEADER_HOTZONE
         primaryActionPrefixes.any { t.label.startsWith(it) } -> TouchTier.PANEL_PRIMARY_ACTION
-        // 谈心模板芯片有意设为 28dp 紧凑视觉（CounselingTemplateChips.kt 注释说明用户要求），
+        // 谈心模板芯片有意设为 28dp 紧凑视觉（`CounselingTemplateChips.kt` 的注释写明这一档是刻意取舍），
         // 走 COMPACT_CHIP 那一档而不是全站 48dp 下限——横滚行里 28dp 高的点击区是可接受的紧凑视觉
         counselingTemplatePrefixes.any { t.label.startsWith(it) } -> TouchTier.COMPACT_CHIP
-        // 范围符号那颗（「仅看本轮」）：走紧凑胶囊族那一档，与谈心模板芯片同族不同颗。
-        // ⚠ **按读屏名 + 角色认，不按画在屏上的那个符号认**：上一行写的是 `t.label == "🔒"`，
-        //   §2.2 第 3 条把可见符号换成 `◉` 之后那一行就成了死档，这颗直接掉回兜底的
-        //   [TouchTier.SITE_FLOOR] 48dp（本轮假红的成因）；读屏名是合同要留的那颗，符号才是可换的。
-        //   出路也不是外包 48dp 见方容器：`RoleChipSemanticsTest` 与 `RoundScopeChipFootprintTest`
+        // 范围符号那颗（读屏名由 `PANEL_ROUND_SCOPE_LABEL` 给）：走紧凑胶囊族那一档，与谈心模板芯片同族不同颗。
+        // ⚠ **按读屏名 + 角色认，不按画在屏上的那个符号认**：这一行早前是按屏上那颗锁形符号的
+        //   字面量匹配；可见符号换成 `◉`（`R.string.panel_round_scope_glyph`）之后那一行就成了死档，
+        //   这颗直接掉回兜底的 [TouchTier.SITE_FLOOR] 48dp（它假红过就是这么来的）：读屏名才是
+        //   这一档要钉住的锚，屏上符号随时可换。出路也不是外包 48dp 见方容器——
+        //   `RoleChipSemanticsTest` 与 `RoundScopeChipFootprintTest`
         //   钉着"再包一层 48 就是把紧凑档作废"。这颗的热区由 `LbChip` 分层那一档自己垫到
         //   [TouchTier.COMPACT_CHIP]（= core 那颗 `AppDimens.CARD_ACTION_HIT_DP`），两轴都判。
         //   名或角色任一不对 ⇒ 仍按 48 量，不是放行。
@@ -448,22 +454,22 @@ class PanelHostSemanticsTest {
         rule.onAllNodes(hasTestTag(PANEL_INPUT_TOUCH_TAG)).fetchSemanticsNodes().map { probe.of(it) }
 
     /**
-     * ⚠ **这里原本有一格，被删掉了，理由要留着**：我一度把那颗「添加」改成
+     * ⚠ **这里原本有一格，被删掉了，理由要留着**：曾有一版把那颗「添加」改成
      * `clickable(enabled = canAdd)`，让空草稿时它"灰着还在"（页面唯一主动作那条合同要求的形状），
-     * 并配了一格断言它带 Disabled。跑完红了两格 —— 都是**别人早就守着**的：
+     * 并配了一格断言它带 Disabled。跑完红了两格 —— 都是**别的守卫早就守着**的：
      * `ComposerAddButtonGatingTest.theAddEntryIsNotActionableWhileTheDraftIsBlank`
-     * （"空草稿时 ➕ 不该带点击语义"）与 `…WithoutAFrame…`
-     * （"没推帧时它已经带上点击语义 = CI 那 7 格的成因"）。
-     * ⇒ "禁用是灰着还在"管的是**页面唯一主动作**（:479 / 第2节第1条 主动发回退合同），
-     * 次级入口的门控由它自己的守卫说了算。生产侧已退回原合同，这一格跟着删掉，
+     * （"空草稿时 ➕ 不该带点击语义"）与同文件那条 `…WithoutAFrame…` 用例
+     * （"没推帧时它已经带上点击语义 = CI 上那 7 处失败的成因"）。
+     * ⇒ "禁用是灰着还在"这一条只管**页面唯一主动作**（那一颗生成/停止钮，含主动发那一路的回退形状），
+     * 次级入口（➕）的门控由它自己的守卫说了算。生产侧已退回原合同，这一格跟着删掉，
      * 别再把它当"漏掉的覆盖面"补回来。
      */
     companion object {
         /**
          * 两档加起来至少该判到这么多颗；低于它就是这格没扫到东西，不是"全达标"。
          *
-         * 原来是 12（三档）。第三档「今日锦囊」随  整删，这一条按**每档约 4 颗**等比降到 8——
-         * 这是换算出来的数，本轮没编译，批次边界第一次跑这格时要按实到读数复核它。
+         * 原来是 12（三档）。第三档「今日锦囊」整颗撤除之后，这一条按**每档约 4 颗**等比降到 8——
+         * 这是换算出来的数，不是这一版形态下的实跑读数；这套用例在当前形状上第一次跑起来时要按实到颗数复核它。
          */
         private const val MIN_JUDGED = 8
 

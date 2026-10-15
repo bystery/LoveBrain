@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 /**
@@ -48,6 +49,10 @@ import androidx.compose.ui.unit.dp
  *
  * [subtitle] 空白就不画，与状态槽同一口径。
  * 尾部那颗动作除高度下限之外还有**宽度**下限（见方）：只垫高度时两字标签会在宽度轴不达标。
+ *
+ * 内缩的分工：**横向内缩归外框**（组卡、浮层、列表容器给），行自己只垫纵向——
+ * 行再垫一遍横 pad 就会与外框叠成双重内缩，同组各行的左右边缘对不齐。
+ * 只靠行自带横向 padding 与外框留距的调用方，要在自己的外框上把这一层补回去。
  */
 @Composable
 fun LbSettingRow(
@@ -77,7 +82,12 @@ fun LbSettingRow(
 
     Row(
         modifier = rowModifier
-            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+            // 横向内缩**不在这一行**：它由外框（设置页的组卡、浮层与页面的容器）一处给齐，
+            // 行只保留纵向呼吸与分隔。以前行自己再垫一遍横 12，与外框叠成"双重内缩"，
+            // 标题就比同一组里别的行多缩一截、左右边缘对不齐。
+            // 原先只靠行自带这一层横向 padding 的调用方（捕获页的白卡与名单）已把
+            // 内缩改交到各自外框上补回，语义没有塌陷。
+            .padding(vertical = Spacing.md)
             .testTag(LbTags.SETTING_ROW),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -176,7 +186,8 @@ fun LbSettingRow(
         }
         // 尾部槽位。⚠ 这一行是补一条**漏了的调用**，不是新形状：
         // `trailing` 在本文件的签名里（见那颗参数）与本组件自己的 KDoc（"[leading] 与 [trailing] 是
-        // @Composable 槽位"）都登记过，`leading` 在 :87 被调用，而 `trailing` 从声明那天起
+        // @Composable 槽位"）都登记过，`leading` 在本函数行首那一支被调用（`if (leading != null)`），
+        // 而 `trailing` 从声明那天起
         // **从来没被调用过一次** —— 传进来的 composable 被静默丢弃。
         // 实到后果（不是推断，是 2026-10-04 全量单测读数）：`CaptureAppsScreen` 那张状态卡的
         // 尾部交的就是这一槽，于是"消息捕获"页画不出那颗总开关，整条
@@ -189,4 +200,32 @@ fun LbSettingRow(
             trailing()
         }
     }
+}
+
+/**
+ * **一行的标签**：整页/全站"这一行在管什么"那几个字的唯一一张脸（`labelLarge` + [TextPrimary]，
+ * 一行、超出省略）。
+ *
+ * 为什么要单独有这一颗：[LbSettingRow] 的标题走 `titleMedium` 粗体，那是**服务设置列表**那一族
+ * （首页、捕获页）的脸；悬浮窗那一族紧凑设置行借它，就会在同一页里出现两种行标题粗细
+ * ——「悬浮助手」比「持续意图」大一档、重一级。行的层次本来由**组名**与**分隔线**表达，
+ * 不由行标题的字阶表达，所以这一族所有行共用这一张脸。
+ *
+ * 字阶取现成的 [AppTypography.labelLarge]（12sp Medium）+ [TextPrimary]，不新造 TextStyle、
+ * 不改全站字阶表。宽度不够时省略号吃掉的是标签自己，不是同一行尾部那颗选择器
+ * （调用方给 `weight(1f)`，尾部控件不给权重先量到自己的下限宽）。
+ */
+@Composable
+fun LbRowLabel(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        style = AppTypography.labelLarge,
+        color = TextPrimary,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = modifier
+    )
 }

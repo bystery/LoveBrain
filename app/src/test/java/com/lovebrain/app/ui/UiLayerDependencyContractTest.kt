@@ -10,8 +10,8 @@ import java.io.File
 /**
  * 职责分层的源码级合同（防"注释式修复"回归）。
  *
- *  第6节 原话是：Activity 只是新增了"这里违反 SRP/DIP、以后应改 ViewModel"的注释，
- * 随后仍直接 inject Repository/SecurePrefs——**记录技术债不等于修复技术债**。
+ * 这一族拦的是"半途修复"那种形状：Activity 只是新增了"这里违反 SRP/DIP、以后应改 ViewModel"的注释，
+ * 随后仍直接 inject Repository/SecurePrefs——记录技术债不等于修复技术债。
  * 因此这条门禁要锁的不是"有没有注释"，而是可静态核对的依赖方向：
  * ui 层不得直接持有 data 层对象，必须经 viewmodel 层转发。
  *
@@ -60,7 +60,8 @@ class UiLayerDependencyContractTest {
      * ⚠ 为什么不用 [codeOf] 那一条：它会删掉注释 ⇒ 行号漂移，而且不分字符串
      * （URL 里的 `//` 会被当注释，把后面整片代码一起吃掉）。分步剥（先剥注释再剥字符串）
      * 也有同一个毛病：第一步读不到的边界会让第二步跨行吞掉一大段。这里只做一趟字符扫描。
-     * 这一份仪器只服务热区那三格；同文件其余格子仍按 [codeOf] 的口径读，两套口径别混。
+     * 这一份仪器只服务下面那几格按 Modifier 链读尺寸的判据（入口是 [pageAndCoreSources]）；
+     * 同文件其余格子仍按 [codeOf] 的口径读，两套口径别混。
      */
     private fun blanked(src: String): String {
         val text = src.replace("\r\n", "\n").replace("\r", "\n")
@@ -151,7 +152,7 @@ class UiLayerDependencyContractTest {
 
     @Test
     fun `production sources carry no debt-note comments without a fix`() {
-        // 报告点名的写法："此处直接 inject Repository 违反 SRP/DIP"
+        // 拦的就是这一族：只写一句"此处直接 inject Repository 违反 SRP/DIP"，代码原样不动
         val pattern = Regex("(审计技术债|修复方向[:：])")
         val offenders = kotlinFiles(appRoot)
             .map { it.name to codeOf(it.readText()) }
@@ -170,7 +171,7 @@ class UiLayerDependencyContractTest {
     }
 
     /**
-     * 第6节第1条：设计系统的组件必须**住在** core/designsystem，且旧名字不许回来。
+     * 设计系统的组件必须**住在** core/designsystem，且旧名字不许回来。
      *
      * 为什么要有这条：搬家的失败模式不是"搬不过去"（编译会红），而是**搬完之后**
      * 有人在 ui/home 里再声明一颗同名的 `HomeActionCard` 顶掉它——core 那份还在、
@@ -199,10 +200,10 @@ class UiLayerDependencyContractTest {
             "HomeSettingRow" to "LbSettingRow",
             "UsageSummary" to "LbMetricGrid",
             "UsageMetric" to "LbMetricCard",
-            // 第6节第1条 的 B 类第一行：两颗平行旋钮（mode + enabled）收成一颗状态
+            // 两颗平行旋钮（mode + enabled）收成一颗状态：按钮那颗与状态那颗各对应一次改名
             "GenerationActionButton" to "LbPrimaryButton",
             "ButtonMode" to "LbButtonState",
-            // 第6节第1条 的 Sheet 半边：面板那套自画浮层归进设计系统。形状**必须**是自画的
+            // 面板那套自画浮层（PanelModal* 那一族）归进设计系统。形状**必须**是自画的
             // （overlay 窗口起不了 Dialog，会抛 BadTokenException），但"谁拥有这个形状"仍只许一处
             "PanelModalHost" to "LbModalSheet",
             "PanelModalTitle" to "LbModalSheetTitle",
@@ -234,10 +235,10 @@ class UiLayerDependencyContractTest {
     }
 
     /**
-     * 第6节第1条 `LbModalSheet/Dialog`：浮层只有**一个所有者**。
+     * 要用户当场做决定的浮层（`LbModalSheet` / `Dialog`）只有**一个所有者**。
      *
      * 为什么不是"数一下少了几处"就完事：`AlertDialog` 是 Material 的东西，谁都能直接 call，
-     * 编译永远不会红。上一格搬家时立的规矩在这里同样适用——收口之后真正要防的是
+     * 编译永远不会红。上面那格"组件只许有一处声明"立的规矩在这里同样适用——归并做完之后真正要防的是
      * "第二天有人在别的页面又直接 call 了一颗"，所以这把尺盯的是**调用点**。
      *
      * 判两条：
@@ -248,10 +249,10 @@ class UiLayerDependencyContractTest {
     @Test
     fun `floating decision surfaces have exactly one owner`() {
         val owner = "core/designsystem/LbDialog.kt"
-        // 这里原本是 `mapOf("ui/home/ProviderSection.kt" to 1)`——那颗供应商编辑器已在 第6节第1条
-        // 归并进 `LbDialog`（标题走 title= 槽、表单走 body= 槽），自画的浮层外壳没有了 ⇒
-        // **这一行按下面那条"豁免消失也要红"的规矩必须删掉**。
-        // 留着不算错，但留着就等于承认"表可以比现实宽"（坑表 71 那一族）。
+        // 这里原本是 `mapOf("ui/home/ProviderSection.kt" to 1)`——那颗供应商编辑器已归并进
+        // `LbDialog`（标题走 title= 槽、表单走 body= 槽），自画的浮层外壳没有了 ⇒
+        // **按下面那条"豁免消失也要红"的规矩，这一行必须删掉**。
+        // 留着不算错，但留着就等于承认"豁免表可以比现实宽"——本文件每一张表都在防这一类。
         val exempt: Map<String, Int> = emptyMap()
         val sources = kotlinFiles(appRoot).map {
             it.relativeTo(appRoot).invariantSeparatorsPath to codeOf(it.readText())
@@ -287,14 +288,14 @@ class UiLayerDependencyContractTest {
     }
 
     /**
-     * 第6节第4条 / 第6节第1条：**整屏遮罩只有一个所有者**。
+     * **整屏遮罩只有一个所有者**：全屏压暗那一层只许设计系统那颗浮层画。
      *
      * 这条是被量出来的：生产里原先有三处各自画 `Color.Black.copy(alpha = …)` 的全屏遮罩
      * （`LbModalSheet` 自己、`RecordSentDialog`、`FeedbackCasesScreen` 的导出 Loading），
      * 后两处还各带一个 `clickable` 挂在整屏上——于是语义树里多出一颗"360x1000 的按钮"，
-     * 其中一处把标题合并成了自己的名字（`SheetProbeTest`（已删）留了改之前的实测原文）。
+     * 其中一处把标题合并成了自己的名字（这两样都是改动之前用一次性语义树探针量到的，探针已随改动删掉）。
      *
-     * "用同一颗组件却自造样式"这种坏法，第26节 那把按声明处判的尺抓不到（它看的是谁**声明**了组件），
+     * "用同一颗组件却自造样式"这种坏法，上面那把按声明处判的尺抓不到（它看的是谁**声明**了组件），
      * 所以要有一把盯着**形状本身**的闸：谁再想自己画一层遮罩，就在这里红。
      *
      * 判据取"画半透明黑底"这个具体写法而不是"有没有 fillMaxSize"：后者到处合法。
@@ -354,7 +355,7 @@ class UiLayerDependencyContractTest {
     }
 
     /**
-     * 第6节第4条 :523：面板上的浮层必须各归**一个 state holder**，不许在屏幕函数里
+     * 面板上的浮层必须各归**一个 state holder**，不许在屏幕函数里
      * 随手 `var showXxx by remember { mutableStateOf(false) }`。
      *
      * 为什么不是"数到 0 就完事"：单看"杂散布尔还有几颗"这一把尺，归零之后它就变成
@@ -369,10 +370,10 @@ class UiLayerDependencyContractTest {
      * - 杂散可见性布尔 **1** 颗：`showOnboard`（引导卡片，不是浮层，但按形状判就会被数进来；
      *   记在这儿是为了"只许往下"，不是给它单独开后门）
      *
-     * 这两个数是**成对改的**。`5d6b71a` 立这把尺时量到 3 / 2；上一格把
+     * 这两个数是**成对改的**。`5d6b71a` 立这把尺时量到 3 / 2；后来把
      * `showSentDialog` + `sentDialogSaving` 收进 `RecordSentFlow` 之后才是 1 / 3。
      * 只降杂散布尔那一侧、不抬 holder 下限的话，下限就停在"几颗都算过"上，
-     * 那把反证的尺当场失效——这正是坑表 71 说的那个坑的续集。
+     * 那把反证的尺当场失效——这一族失效就是本文件反复写的那句"登记表不许比现实宽"。
      */
     @Test
     fun `panel decision surfaces are held by state holders, not ad-hoc booleans`() {
@@ -404,17 +405,17 @@ class UiLayerDependencyContractTest {
      * "谁画整屏底色"那把尺的口径。
      *
      * 三种写法都要认得：`.background(SurfaceBase)`、`.background(color = SurfaceBase)`、
-     * `.background(com.lovebrain...SurfaceBase)`。P5 那发变异证明只认第一种会漏后两种
-     * （见 `the page frame has exactly one owner` 里那段正向对照）。
+     * `.background(com.lovebrain...SurfaceBase)`。注入变异（把一处底色改写成后两种写法、看这格红不红）
+     * 证明只认第一种会漏后两种；这三档的正向对照就写在 `the page frame has exactly one owner` 里。
      */
     private val pageFrameDraw =
         Regex("""background\(\s*(?:color\s*=\s*)?(?:[\w.]+\.)?SurfaceBase\b""")
 
     /**
-     * 第6节第1条 表最后一行：`LbScreenScaffold` —— **页面外框只有一个所有者**。
+     * `LbScreenScaffold` —— **页面外框只有一个所有者**。
      *
      * 判据取"谁画整屏底色"这一个具体写法（`background(SurfaceBase`），
-     * 不取"有没有 fillMaxSize"——后者到处合法。理由与 第29节/第30节 那两把同源：
+     * 不取"有没有 fillMaxSize"——后者到处合法。理由与上面"整屏遮罩只有一个所有者"那把同源：
      * "用了同一个 token 却各页自己拼一层外框"这种坏法，按声明处判的尺抓不到。
      *
      * 名单是**本机实扫**出来的（去注释之后），分两类，别混：
@@ -425,15 +426,15 @@ class UiLayerDependencyContractTest {
      *   `ui/panel/LoveBrainPanelScreen.kt` 跑在 `TYPE_APPLICATION_OVERLAY` 窗口里，
      *   没有系统栏也不受页面边距档管。
      *   （`ui/panel/SuggestPanel.kt` 曾与 LoveBrainPanelScreen 同列这里，因为那一页在 overlay
-     *   里自己画 SurfaceBase；锦囊页 第12节第1条 删除、文件 mv 成 `IntentEditorSheet.kt` 后只剩
+     *   里自己画 SurfaceBase；锦囊结果页整页删除、文件 mv 成 `IntentEditorSheet.kt` 后只剩
      *   编辑浮层的开关/卡片，全不涂 SurfaceBase ⇒ 这一行随现实改小、从表里删掉。）
      *
-     * **欠账清零**（`04259ef` 之后那一格，账本 第58节）：`ui/feedback/FeedbackCasesScreen.kt`
+     * **欠账清零**（提交 `04259ef`）：`ui/feedback/FeedbackCasesScreen.kt`
      * 曾是表里唯一一条"这一页还在自己画外框"的豁免，现已搬进脚手架、那一行从表里删了。
      * 删掉的理由写在这儿，别让下一个人以为豁免还在：它内部一堆区块原本自带 `Spacing.lg`，
      * 搬的时候必须连着把芯片行与列表的 `contentPadding` 一起归零，
      * 否则就是"外面 24 里面又 12"叠两层——那件事做完了，量到的水平边距从 12dp 变 24dp
-     * （证人：`ScreenScaffoldFrameTest` 第四格）。
+     * （证人：`ScreenScaffoldFrameTest` 的 `the feedback cases page insets content by the scaffold margin`）。
      */
     @Test
     fun `the page frame has exactly one owner`() {
@@ -452,7 +453,7 @@ class UiLayerDependencyContractTest {
         val drawers = sources.filter { (_, code) -> pageFrameDraw.containsMatchIn(code) }
             .map { it.first }
 
-        // ⚠ 这把尺**换过口径**，是被 P5 那发变异打出来的（账本 第58节第5条）：原来写成
+        // ⚠ 这把尺**换过口径**，是被一次变异注入打出来的（改出下面两种写法看它红不红）：原来写成
         //   `code.contains("background(SurfaceBase")`，于是两种合法写法它都看不见——
         //   `background(color = SurfaceBase)`（具名实参）与
         //   `background(com.lovebrain.app.core.designsystem.SurfaceBase)`（全限定）。
@@ -488,7 +489,7 @@ class UiLayerDependencyContractTest {
             val got = pageFrameDraw.findAll(code).count()
             // 判 ==，不判 <=：登记着 1 处而实到 0 处，意思是**这笔债已经还了**，
             // 表里那一行必须当场删掉。留一条早已不成立的豁免，比没有豁免更坏——
-            // 它会让下一个人以为这一页已经处理过了（第29节 那把"点名豁免"的尺同一课）。
+            // 它会让下一个人以为这一页已经处理过了（上面那把"点名豁免表"的尺同一课）。
             assertTrue(
                 "$path 实到 $got 处，登记的是 $want。多了是新债；" +
                     "零了是已经还完——那就把这一行从表里删掉，别留着当已有闸",
@@ -498,39 +499,38 @@ class UiLayerDependencyContractTest {
     }
 
     /**
-     * 第6节第1条 :479：页头只有一个所有者。
+     * **页头只有一个所有者**：返回那一颗只许 `LbTopBar` 自己拼。
      *
      * 判据取"谁自己画返回那颗"这个具体形状：箭头字形 `"←"` 或 `KeyboardArrowLeft`。
      * 为什么不是数"有几个 Row"：`Row` 到处合法；而"自己拼一颗返回"必然要画那个字形，
-     * 抓得住。与 第36节 那把"整屏底色只有一个所有者"同族，也是被同一条理由逼出来的——
+     * 抓得住。与上面那把"整屏底色只有一个所有者"同族，也是被同一条理由逼出来的——
      * `PageHeaderConsistencyTest` 量到四式并存时，读屏名字有两派是**空串**。
      *
      * 本机实扫（去注释后）：所有者 1 处；**登记的欠账 1 个文件 2 处**（面板设置那一格紧凑页头，
-     * 见下面 `registeredDebt` 那段——收口条件写在那儿，不许把它读成"已处理"）。
+     * 见下面 `registeredDebt` 那段——这笔债怎么算还清写在那儿，不许把它读成"已处理"）。
      *
-     * ⚠ **勘误（账本 第58节）**：这一格的注释以前写着"反馈案例页没顺手一起搬的理由之一：
+     * ⚠ **勘误**：这一格的注释以前写着"反馈案例页没顺手一起搬的理由之一：
      * 这一页要 `rememberLauncherForActivityResult`，**JVM 上挂不起来**——搬一页却量不到搬的效果，
      * 等于自签"。**那条理由是错的**：`createComposeRule` 下注册 launcher 不报错，
-     * 第57节 的一次性探针就是挂着这一页量到 9 颗节点的；挂不起来的是**触发**那一步
+     * 当时那次一次性语义树探针就是挂着这一页量到 9 颗节点的；挂不起来的是**触发**那一步
      * （`saveLauncher.launch()` 要起真 Activity 选择器）。用一条没验过的"测不到"
-     * 给一笔欠账签字，欠账就会一直活着——这一格本身就是坑表那条"「要 VM」不是测不到的理由"的
-     * 又一个形状。
+     * 给一笔欠账签字，欠账就会一直活着——"要 VM"从来不是"量不到"的理由，这一格就是它的又一个形状。
      *
      * 搬完之后：`(N条)` 那句与页头那颗导出的标签进了资源（英文环境不再念中文），
      * 量到的读屏名字由 `FeedbackCasesSemanticsTest` 那几格钉住
      * （返回那颗现在念 `R.string.common_back`，不再念「←」这个字形）。
-     * 还完之后这一行必须删，不许留着一条已不成立的豁免当"管住了"（同 第36节 那条规矩）。
+     * 还完之后这一行必须删，不许留着一条已不成立的豁免当"管住了"（同上面那把底色尺的规矩）。
      */
     @Test
     fun `the page header has exactly one owner`() {
         val owner = "core/designsystem/LbTopBar.kt"
-        // 2026-10-06 S1b 登记一笔欠账（**不是**放宽判据，这把尺照旧按"字形出现几处"数）：
-        // 面板设置那一格的页头走的是基线 v1.2 的紧凑档（整行 30dp），它确实没有自己拼箭头——
+        // 2026-10-06 登记一笔欠账（**不是**放宽判据，这把尺照旧按"字形出现几处"数）：
+        // 面板设置那一格的页头走的是紧凑档（整行 30dp），它确实没有自己拼箭头——
         // 它把 `Icons.AutoMirrored.Filled.KeyboardArrowLeft` 交给设计系统唯一主人 `LbTextAction`
         // 的 `RowIcon` 档画（16dp 字形 / 28 见方热区）。但这把尺按**字形读数**判，看不见"交给了谁"，
         // 于是 import 一行 + 用法一行 = 2 处，按实到登记。
-        // 收口条件（写死在这里，别让它当"已处理"）：要么这一格改读 `LbTopBar` 的紧凑档
-        // （那需要 core 给 LbTopBar 加一档，属 core 席），要么这把尺改成"只认自画箭头"
+        // 销账条件（写死在这里，别让它当"已处理"）：要么这一格改读 `LbTopBar` 的紧凑档
+        // （那要 core/designsystem 给 LbTopBar 新增一档，得先动公共件），要么这把尺改成"只认自画箭头"
         // （那就得先有反例证人，证明改窄之后仍然抓得住自己拼返回的那一族）。
         val registeredDebt: Map<String, Int> = mapOf(
             "ui/panel/settings/LoveBrainSettingsContent.kt" to 2
@@ -643,13 +643,13 @@ class UiLayerDependencyContractTest {
      * Activity 取 ViewModel 必须经 ViewModelStore。
      *
      * `by inject()` 每次解析一个新实例，配置变更后 VM 内存态（反馈列表、导出状态）直接丢失；
-     * 报告 要的是"数据逻辑归 ViewModel"，如果 VM 活不过旋转，这句话就落不了地。
+     * 分层要的是"数据逻辑归 ViewModel"，可如果 VM 活不过一次旋转，这句话就落不了地。
      */
     @Test
     fun `activities obtain view models through the ViewModelStore not raw injection`() {
         val vmProperty = Regex(":\\s*(\\w+ViewModel)\\s+by\\s+(inject|lazy)")
         // 按**类名**而不是文件名筛 Activity：注入点写在哪个文件里不重要，
-        // 第一版按 "xxxActivity.kt" 过滤，负向用例把 Activity 放进 ZzLayerProbe.kt 就躲过去了。
+        // 第一版按 "xxxActivity.kt" 过滤，注入反例时把那颗 Activity 换个文件名就躲过去了。
         val offenders = kotlinFiles(dir("ui"))
             .map { it.name to codeOf(it.readText()) }
             .filter { (_, code) ->
@@ -688,7 +688,7 @@ class UiLayerDependencyContractTest {
      *
      * ⚠ 这把尺比它替代的那把**严**：多出来的那些处不是新债，是以前看不见的形状（热区分层、
      * "clickable 在外层品牌盒子的尾随 lambda 里"那种嵌套）。所以它只买"别再长新的"，
-     * **不许在本轮顺手宣布"每一处都判完了"**——每一处该不该并、归哪一颗，是逐处读语义的判读。
+     * **不许顺手宣布"每一处都判完了"**——每一处该不该并、归哪一颗，要逐处读语义才能定。
      */
     @Test
     fun `hand-drawn brand-toned actionable widgets do not grow`() {
@@ -718,7 +718,7 @@ class UiLayerDependencyContractTest {
      * 真热区由 `SemanticsProbe` 那些格子量（`LbTextActionTest`、`LbAsyncStateTest`、
      * `OnboardingPrimaryActionTest`、`ProviderFormSemanticsTest`），这一格只买"不许再长出第二个数"。
      *
-     * 本轮合同把若干**明写的矮档**写进了尺寸表（28 卡片/行内紧凑盒、36 输入框与结果双出口、
+     * 设计口径把若干**明写的矮档**写进了尺寸表（28 卡片/行内紧凑盒、36 输入框与结果双出口、
      * 40 面板主动作），它们**不是**第二颗下限：不进这一格的白名单，
      * 而由 `the compact tiers this round names are declared once and read somewhere`
      * 与 `every number on a clickable chain traces back to a design system owner` 两格分别盯
@@ -1135,22 +1135,27 @@ class UiLayerDependencyContractTest {
         }
         // 反向对照：仪器必须能看见一颗没人认领的矮档。对照件是现造的（不借生产文件的形状，
         // 免得哪天那一屏改了写法，这格从"有牙"悄悄退化成"恒真"）。
+        // 两种写法都要钉：`heightIn(min = …)`（热区轴）与 `.size(…)`（字形/盒子轴）——
+        // 这本账里既有 18dp 那种走 `.size(…)` 的装饰件，把它们整类放过就是拿登记拆闸。
         val control = """
             @Composable
             fun ProbeHitBox(onClick: () -> Unit) {
                 Box(
                     modifier = Modifier
                         .heightIn(min = 20.dp)
+                        .size(14.dp)
                         .clickable(role = Role.Button, onClick = onClick)
                 ) { Text("probe") }
             }
         """.trimIndent()
         val probeSites = hitSites(listOf("ui/probe/ProbeControl.kt" to control), index)
+        val probeReadings = probeSites.associate { it.expr to it.value }
         assertTrue(
-            "把一颗 20.dp 的热区注进仪器，这格必须看见它、并且它不在登记表里（看不见就等于整格恒绿）。" +
-                "实到：${probeSites.joinToString { "${it.expr}=${it.value}" }}",
-            probeSites.size == 1 && probeSites[0].value == 20 &&
-                registered["ui/probe/ProbeControl.kt#20.dp"] == null
+            "把两颗没人认领的矮档注进仪器（一颗走 heightIn 的 min 轴、一颗走 .size 的字形轴），这格必须" +
+                "两颗都看见、并且两颗都不在登记表里（看不见就等于整格恒绿）。实到：$probeReadings",
+            probeReadings == mapOf("20.dp" to 20, "14.dp" to 14) &&
+                registered["ui/probe/ProbeControl.kt#20.dp"] == null &&
+                registered["ui/probe/ProbeControl.kt#14.dp"] == null
         )
     }
 
@@ -1217,10 +1222,10 @@ class UiLayerDependencyContractTest {
     }
 
     /**
-     * 本轮合同明写的**矮档**：数值只许写在 core 那一颗，而且必须真被人读。
+     * 设计口径明写的**矮档**：数值只许写在 core 那一颗，而且必须真被人读。
      *
      * 三条各管一件坏事：
-     * ① 合同点名的四档，数值钉在 `Dimens.kt`（36 / 28 / 40 / 36）——数值写在别处或写歪都红；
+     * ① 那四档具名矮档的数值钉在 `Dimens.kt`（36 / 28 / 40 / 36）——数值写在别处或写歪都红；
      * ② `Dimens.kt` 里**每一颗**低于下限的常量都必须被 core 之外至少一处读到（新增一颗死档 ⇒ 红，
      *    这条按"有没有人读"判，不数颗数，也不列名单 ⇒ 上收新档不必改这里）；
      * ③ 页面直接读这些矮档而不走组件的，逐颗点名登记：说明它是谁的替身、该搬到哪。
@@ -1236,7 +1241,7 @@ class UiLayerDependencyContractTest {
 
         val contractTiers = mapOf(
             "INPUT_ROW_HEIGHT_DP" to 36,                    // 通用表单输入框外框
-            "CARD_ACTION_HIT_DP" to 28,                     // 卡片/行内紧凑盒（合同：28 盒）
+            "CARD_ACTION_HIT_DP" to 28,                     // 卡片/行内紧凑盒：设计口径就是 28dp 这一档
             "PANEL_PRIMARY_ACTION_HEIGHT_DP" to 40,         // 面板那一排主动作
             "PANEL_RESULT_ACTION_HEIGHT_DP" to 36           // 结果那一排并列双出口
         )
@@ -1289,11 +1294,11 @@ class UiLayerDependencyContractTest {
     }
 
     /**
-     * 挂在可点链上、又低于全局下限的每一颗数：逐颗登记实到值 + 主人 + 为什么还留在页面里。
+     * 挂在可点链上、低于全局下限**或解不出最终主人**的每一颗数：逐颗登记实到值 + 主人 + 为什么还留在页面里。
      *
-     * 这些就是本轮合同说的"可以紧凑，但语义与合理点击要留住"的具体落点：
+     * 这些就是"可以紧凑，但语义与合理点击要留住"这一档口径的具体落点：
      * 24dp 的齿轮/收起盒、30dp 的模式行、卡内 28dp 紧凑盒都**有意**低于 48dp，
-     * 而它们现在仍住在页面自己的私有 object 里、没指回 core 那颗同名档 ⇒ 记在这里等收口，
+     * 而它们现在仍住在页面自己的私有 object 里、没指回 core 那颗同名档 ⇒ 先登记在这儿等并档那天销行，
      * 不是给它们发"合格"证。数值一改这表就对不上（红），新长一颗没登记的也红。
      */
     private data class SubFloorNumber(
@@ -1301,11 +1306,11 @@ class UiLayerDependencyContractTest {
         val dp: Int,           // 实到的数（登记时打印的就是它）
         val ownerTier: String?, // core 里已有主人的那颗名（没有就填 null）
         val ownerNote: String,  // 没主人时缺的是哪一档
-        val why: String         // 为什么这一处本轮还留在页面里
+        val why: String         // 为什么这一处目前还留在页面里
     )
 
     private val subFloorNumbers = listOf(
-        // 2026-10-10 §1：悬浮球那一颗的尺寸从写死的 56 换成"当前档位"的读数之后，链上不再出现常量，
+        // 2026-10-10：悬浮球那一颗的尺寸从写死的 56 换成"当前档位"的读数之后，链上不再出现常量，
         // 这把尺解不出主人（它只认 core/designsystem 里的具名档），所以按实到登记这一处。
         SubFloorNumber(
             "ui/bubble/FloatingBubble.kt#mainSize.dp", 48, null,
@@ -1321,9 +1326,9 @@ class UiLayerDependencyContractTest {
             "装饰字形，不是热区：那一整行自己指回下限那颗"
         ),
         // 首页 Hero 那一排（HERO_ICON_SIZE_DP 16 / HERO_BUTTON_HEIGHT_DP 40）已从可点链上消失：
-        // Agent F 把四入口卡并进 LbActionCard、Hero 主动作归 LbPrimaryButton 之后，HomeComponents
+        // 四入口卡并进 LbActionCard、Hero 主动作归 LbPrimaryButton 之后，HomeComponents
         // 里没有这两颗数写在链上了（实扫 0 处）。按本文件"并掉了就把这一行删掉"的规矩删行。
-        // `ui/KnowledgeBaseActivity.kt#KbDimens.EDIT_ICON_SIZE_DP.dp`（14）这一行于 2026-10-06 L1b **删掉**：
+        // `ui/KnowledgeBaseActivity.kt#KbDimens.EDIT_ICON_SIZE_DP.dp`（14）这一行于 2026-10-06 **删掉**：
         // 母版页那张卡的动作行改由 `core/designsystem/LbListCard.kt` 那一族动作件画，字形档由公共件读
         // `LbTextAction` 的具名档，页面里那颗 14dp 字形不在任何可点链上了（实扫 0 处）。
         // 按本文件"并掉了就把这一行删掉，别留着当已有闸"的规矩删行。
@@ -1337,11 +1342,13 @@ class UiLayerDependencyContractTest {
             "缺档：悬浮窗模式栏整行高（合同 30dp）",
             "合同明写这一排 30dp；可点面积是每段 1/3 宽 × 整行高，比单独一颗胶囊大得多"
         ),
-        SubFloorNumber(
-            "ui/panel/PanelHeader.kt#HeaderDimens.CONTROL_HEIGHT_DP.dp", 20, null,
-            "缺档：模式胶囊内高（合同 20dp）",
-            "画在行里的胶囊，不是热区；上一颗整行高才是"
-        ),
+        // `ui/panel/PanelHeader.kt#HeaderDimens.CONTROL_HEIGHT_DP.dp`（20）这一行于 2026-10-12 **删掉**：
+        // 「收起」控件并成面板一族共用的那颗（`PanelHeader.kt#PanelCollapseAction`，本体页头与设置页
+        // 页头同一颗——用户点名"复用 复用 复用"）之后，这颗 20dp（共用控件的字形 + 模式胶囊的内高）
+        // 不在任何一条**检出**的可点链上了（实扫 0 处；以前那处实到靠的是邻链回扫的一格巧劲，
+        // 控件提出来之后那一格不再成立）。20dp 本身还在文件里，但它从来不是热区——热区是
+        // 24 见方那两颗外包盒（各有一行在册）。按本文件"对不上实就删行"的规矩删行；
+        // 以后谁再把 20 直接写上可点链，"未登记"那一句会当场要一行新账，棘轮照旧。
         SubFloorNumber(
             "ui/panel/PanelHeader.kt#HeaderDimens.SETTINGS_HOTZONE_DP.dp", 24, null,
             "缺档：悬浮窗工具条的外包盒（合同 24 容器 / 16 字形）",
@@ -1365,10 +1372,10 @@ class UiLayerDependencyContractTest {
         // 下面三颗曾经是持续意图编辑器的**启用开关**（44×24 轨道 + 20 圆钮）：
         // 那颗自画的 44×24 开关已由 `SettingsIntentEntry.kt` 改用设计系统的 `MiniSwitch` 替掉，
         // 这三颗数不再出现在任何可点链上（实扫 0 处）。按本文件"并掉了就把这一行删掉，
-        // 别留着当已有闸"的规矩删行——留着就是坑表 71 那一族"表比现实宽"的续集。
+        // 别留着当已有闸"的规矩删行——留着就成了"登记表比现实宽"那一族的又一个形状。
         // `SuggestPanel.kt`→`IntentEditorSheet.kt` 改名（见该文件头 KDoc，mv 移非删）那条也一并清掉。
         // `ui/home/HomeComponents.kt#HomeDimens.LAMP_VISIBLE_DP.dp`（12）这一行于 2026-10-06 **删掉**：
-        // 那颗指示灯今天住在 `AdvisorLampDot`（`HomeComponents.kt:174-181`）——一条
+        // 那颗指示灯今天住在 `HomeComponents.kt` 里那颗私有的 `AdvisorLampDot`——一条
         // `Modifier.size().clip().background().testTag()` 的**纯装饰链**，体里没有 clickable、没有角色，
         // 也不再带 contentDescription（同一个名字写在旁边那颗可见文字上）。
         // 这本账钉的是"可点链上的低于下限的数"，它不在这条链上了 ⇒ 按"对不上实就删行"处理；
@@ -1394,8 +1401,8 @@ class UiLayerDependencyContractTest {
             "自定义改写输入框的 min 高度接了 pointerInput（编辑意图信号），进入可点链；28 与同卡调整胶囊同一档"
         ),
         // `ui/panel/reply/SchemeAdjustingBlock.kt#SchemeCardDimens.ADJUST_PILL_HEIGHT_DP.dp`（28）这一行
-        // 于 2026-10-07 intent-focus 那一拍**删掉**（改表与改页同拍，不留"对不上实"的行）：
-        // · 那颗调整胶囊今天仍写在 `SchemeAdjustingBlock.kt:185` 的
+        // 于 2026-10-07 那次 intent-focus 改动**删掉**（改表与改页在同一次里做完，不留"对不上实"的行）：
+        // · 那颗调整胶囊今天仍写在 `SchemeAdjustingBlock.kt` 的 `AdjustOption` 里，
         //   `.height(SchemeCardDimens.ADJUST_PILL_HEIGHT_DP.dp)` + `.clickable` 同一条链上，
         //   **数没变、主人也没换**（28，`SchemeCard.kt#SchemeCardDimens`，core 那颗同名档
         //   是 `AppDimens.CARD_ACTION_HIT_DP`）；
@@ -1405,15 +1412,15 @@ class UiLayerDependencyContractTest {
         //   `504cb65` 那棵树 = 看得见 ADJUST_PILL、看不见 CUSTOM_FIELD_MIN；
         //   工作区这棵树 = 正好反过来。**两颗 28 一次只认得到一颗**，两行同时留在表里就必然
         //   有一行红在"登记表比现实宽"那一条上。
-        //   ⚠ 因果只钉到这一层：是 intent-focus 那一拍改了这颗文件的形状（上面那两个读数），
+        //   ⚠ 因果只钉到这一层：是那次 intent-focus 改动改了这颗文件的形状（上面那两个读数），
         //   但把新加的 `LaunchedEffect` / `onFocusChanged` 逐块回退后 ADJUST_PILL **仍读不回来**，
         //   所以指不出"哪一块挪走的断点"，只能指到"整颗文件的括号形状"这一层。
         //   删的是这一行，不是那颗 28 的账。
         // · 闸没因此变窄，判据另有两颗钉着这颗数：
         //   `SchemeAdjustingBlockOptionsTest` 逐颗钉 `ADJUST_PILL_HEIGHT_DP == TouchTier.COMPACT_CHIP`（28），
         //   而这一格仍按实到钉着同一张卡的另一颗 28（上面 CUSTOM_FIELD_MIN 那行，主人同一档）。
-        // ⚠ 这条盲点登记给下一拍：这把尺要真钉住"链上每一颗数"，得先修 `chainHeadReaches`
-        //   的括号/大括号配平（那是改尺，不在本席范围内）。
+        // ⚠ 这条盲点是留给下一次动这把尺的：它要真钉住"链上每一颗数"，得先修 `chainHeadReaches`
+        //   的括号/大括号配平（那是改尺本身，不在这一格能改的范围里）。
         SubFloorNumber(
             "ui/panel/reply/SchemeCollapsedBlock.kt#SchemeCardDimens.ACTION_BOX_DP.dp", 28, "CARD_ACTION_HIT_DP",
             "",
@@ -1423,13 +1430,18 @@ class UiLayerDependencyContractTest {
             "ui/panel/reply/SchemeRewritingBlock.kt#SchemeCardDimens.ACTION_BOX_DP.dp", 28, "CARD_ACTION_HIT_DP",
             "",
             "与折叠态那一排共用同一颗页面私有 28，同样该指回 CARD_ACTION_HIT_DP"
-        )
+        ),
+        // 2026-10-12 **销掉**上一批登记的 `SettingsKbSwitcherEntry.kt#AppDimens.ACTION_ICON_SIZE_DP.dp`：
+        //   知识库那一行的箭头从"装饰 Icon 18dp"换成了原型那一对排印符号（`›` / `⌄`，17 字阶），
+        //   那颗 18 在这颗文件里已经没有落点了。按本文件"还了债就把这一行删掉、不留虚闸"处理。
+        //   替代它的读数：展开那一段与列表每一条都自己垫到全站下限（`TOUCH_TARGET_MIN_DP` 两处），
+        //   这一格里已经没有低于下限的命中档，所以这本账上不再需要它的行。
         // 锦囊进度条那颗 PROGRESS_HEIGHT_DP（6，线粗）已不在可点链上：`ui/panel/suggest/` 整个目录
         // 随锦囊结果页离场（main 源码树里 `SuggestDimens` 0 处引用），实扫 0 处。同样按"还了债就删行"
         // 处理，不留虚闸；它在 surfacesLedger 里那一行也一并删掉了。
     )
 
-    /** 页面直读 core 矮档的落点：这一屏该改读哪一颗具名档（登记着等收口，不是给它发合格证） */
+    /** 页面直读 core 矮档的落点：这一屏该改读哪一颗具名档（登记着等并档那天销行，不是给它发合格证） */
     private val compactTierPageReaders = mapOf(
         // `ui/common/CompactInput.kt#INPUT_ROW_HEIGHT_DP` 于 2026-10-06 **删掉这一行**：那一层已经
         // 整体搬进设计系统的新主人 `core/designsystem/LbFieldInput.kt`（五态可见框，36dp 档由它自己读），
@@ -1443,7 +1455,7 @@ class UiLayerDependencyContractTest {
             "知识库编辑页那几格表单输入直读了档；该改读 CompactInput（或搬进 core 之后的那一颗）",
         "ui/panel/reply/ReplyInput.kt#INPUT_ROW_HEIGHT_DP" to
             "回复那一行的默认形参；合同给这一条的是 28 档、不是通用 36，两档别混：\u21d2 该由回复自己的具名档接手",
-        // 2026-10-08 范围符号那一颗（「仅看本轮」）登记：
+        // 2026-10-08 范围符号那一颗（`onlyThisRound` 那颗开关，屏上画的是 `◉`）登记：
         // · 为什么这里非读不可：那颗的**行宽预算**与它自己的**热区边长**必须是同一颗数，
         //   抄两份就有一处会漂（`ReplyInput.kt#ReplyDimens.ROUND_SCOPE_HIT` 是命中轴与占位轴共同的
         //   唯一来源，行宽预算经 `roundScopeFootprint(fontScale)` 从它推；2026-10-10 那一版把
@@ -1463,7 +1475,7 @@ class UiLayerDependencyContractTest {
     /**
      * "文字动作"在设计系统里只有一个所有者。
      *
-     * 第6节第1条 那张表在 `LbEmptyState` 那一行就写了"可选文字动作；动作热区 ≥48dp"，
+     * 设计口径给 `LbEmptyState` 那一行定的就是"可选文字动作；动作热区 ≥48dp"，
      * 但在这一格之前**这个词只在 `LbAsyncState.kt` 内部存在过**：页面想要一颗别的
      * 文字动作没地方放，于是首次引导自己画了一颗，本机量到 38x25dp。
      * 现在两处共用 `LbTextAction`，这一格看着别再分开长。
@@ -1504,7 +1516,7 @@ class UiLayerDependencyContractTest {
             )
         }
 
-        // 「热区下限」这一把按**两层**读（Agent I 的写法是对的，尺跟着改口径，生产码不动）：
+        // 「热区下限」这一把按**两层**读（生产里那两层写法是对的：尺跟着改口径，生产码不动）：
         // 外层透明盒保证**热区**（minHit，两轴）、内层保证**可见形状**（capsuleVisualMinHeight，
         // 32 那一档版式高）。两层各写一次 `In(min =` 是设计，不是叠语义 ⇒ 判据不再是"数 1 处"，
         // 而是"恰好这两层，且每层指得出自己的锚点"：
@@ -1571,7 +1583,7 @@ class UiLayerDependencyContractTest {
                 got == 0
             )
         }
-        // 「LbTextAction( 恰好一处」原来是防止有人把动作再抄一遍进容器分支。第 16 条给 LbEmptyState
+        // 「LbTextAction( 恰好一处」原来是防止有人把动作再抄一遍进容器分支。后来给 LbEmptyState
         // 加了轻通知档（LbStateContainer.Notice），它的关闭那颗走 LbTextAction 的**图标档**、
         // Block/Strip 那颗仍走**文字档**——两支入口都住在 `StateAction` 这一个函数里、
         // 都指回设计系统那唯一一处文字/图标动作，不是第二个所有者。真正拦"自画"的是上面
@@ -1585,7 +1597,7 @@ class UiLayerDependencyContractTest {
      * 文字动作那一颗盒子的**尺寸下限层数**读数：(`In(min =` 总数, 外层热区那处, 内层视觉那处)。
      *
      * 为什么按层认而不是数总条数：这一族刻意写成两层（外层透明盒垫热区、内层才是可见胶囊），
-     * 旧口径"恰好 1 处"把 Agent I 那两层合法写法读成了"同一颗上叠了语义"。现在外层与内层各有各的
+     * 旧口径"恰好 1 处"把设计系统那两层合法写法读成了"同一颗上叠了语义"。现在外层与内层各有各的
      * 参数锚点（minHit / capsuleVisualMinHeight），第三条同形状的 `In(min =` 才会红——
      * 那正是"同一颗上又叠一层"的形状。宽度轴与高度轴共用同一对参数，所以这一读覆盖两轴。
      */
@@ -1657,7 +1669,7 @@ class UiLayerDependencyContractTest {
     private data class BrandLedger(val ceiling: Int, val owner: String, val note: String)
 
     private val surfacesLedger: Map<String, BrandLedger> = mapOf(
-        // "KnowledgeBaseActivity.kt" 那一行（原额度 1）于 2026-10-06 L1b **删掉**：库卡卡内那块品牌浅底
+        // "KnowledgeBaseActivity.kt" 那一行（原额度 1）于 2026-10-06 **删掉**：库卡卡内那块品牌浅底
         // 随卡本体一起交回 `core/designsystem/LbListCard.kt`，本页 `.background(` 实扫 0 处。
         // 账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
         "bubble/FloatingBubble.kt" to BrandLedger(1, "", "悬浮球球体底：设计系统里没有 overlay 悬浮球这一颗（缺件）"),
@@ -1667,7 +1679,7 @@ class UiLayerDependencyContractTest {
         // 账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
         // "home/HomeComponents.kt" 那一行（原额度 1，"只剩军师控制条「停止」那颗实心方块的直涂 Primary 底
         // （AdvisorStopGlyph，热区盒自己无底）"）于 2026-10-06 **删掉**：那颗 ▶/■ 交回设计系统的
-        // `LbTriangleGlyph`（H1c 全类三角审计那一格），实心方块的直涂 Primary 底随私有 Canvas 一起离场，
+        // `LbTriangleGlyph`（全类实心字形审计见 `SolidGlyphShapeAuditTest`），实心方块的直涂 Primary 底随私有 Canvas 离场，
         // 本页 `.background(` 里已经没有品牌色（实到：`lamp.color` 那颗灯与一处非品牌底，都不在本把尺射程）。
         // 灯与播放/停止字形仍各有主人：`HomeDimens.LAMP_VISIBLE_DP` 与 `AppDimens.ARROW_SIZE_DP`。
         "home/ProviderSection.kt" to BrandLedger(3, "LbRowState", "模型行的选中态该走 LbRowState；第三处是 MiniSwitch 的轨道底（缺件）"),
@@ -1676,12 +1688,12 @@ class UiLayerDependencyContractTest {
         "panel/AiLoadingRow.kt" to BrandLedger(1, "", "加载行的脉冲点底色，不是可点控件（缺件）"),
         "panel/LoveBrainPanelScreen.kt" to BrandLedger(1, "", "面板建议槽的表面浅底，整块形状尚无主人（缺件）"),
         // "panel/OnboardingFlow.kt" 那一行（原额度 1，"首次引导的浅底提示块"）**删掉**（2026-10-07，
-        // 与删页同一拍——这一行本来就押在死页上，改表与删页必须一起做，缺一边就当场红）：
+        // 与删页在同一次改动里做完——这一行本来就押在死页上，改表与删页必须一起做，缺一边就当场红）：
         // 实到从 2 掉到 0 的那两处 `.background(PrimaryLight)` 住在 `OnboardingStep1`/`OnboardingStep2`
         // 那两张**没有入口的旧页**里（`8ef9a16`/`504cb65` 把这一层收成一张页、`LAST_STEP = 0`，
-        // 宿主只画 `OnboardingStep0`），本轮随那三张死页与 `ConfigItem` 一起删掉。
+        // 宿主只画 `OnboardingStep0`），那三张死页与 `ConfigItem` 一起删掉时这两处也跟着没了。
         // ⚠ 别把这一行读成"提示盒被删掉了可见功能"：那张浅底从没画到用户面前；
-        //   仍在用的介绍页那一盒是非品牌的 `SurfaceCard`，不在这把尺的射程里，本轮没动它。
+        //   仍在用的介绍页那一盒是非品牌的 `SurfaceCard`，不在这把尺的射程里，那一次也没动它。
         // 账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
         "panel/PanelHeader.kt" to BrandLedger(1, "LbChip", "模式栏选中那颗实心胶囊与 LbChip 的 filled 档同族；悬浮窗行高另有一格"),
         // "panel/IntentEditorSheet.kt" 那一行（原额度 1，"开关轨道的条件涂色（if 启用 Primary else SurfaceInset）"）**删掉**：
@@ -1695,7 +1707,7 @@ class UiLayerDependencyContractTest {
         "panel/reply/MessageList.kt" to BrandLedger(2, "", "她/我左右气泡是本轮合同指定的语义色，气泡尚无主人（缺 LbBubbleRow）"),
         "panel/reply/ReplyInput.kt" to BrandLedger(1, "LbChip", "添加那颗胶囊底与三颗角色 chip 同族，角色 chip 已转 LbChip"),
         // ReplyPrimaryActions 那一行（原额度 1，`ReplyGenerateSlot` 自涂 `.background(Primary, …)`）
-        // 已删：A18 把长按"本轮一次生成"那颗自画槽整个摘掉后，本页只剩 LbPrimaryButton 调用、
+        // 已删：长按触发的那颗自画生成槽整个摘掉之后，本页只剩 LbPrimaryButton 调用、
         // `.background(` 实扫 0 处。债还完了就删行，不留一条不成立的豁免。
         "panel/reply/ResultArea.kt" to BrandLedger(3, "LbChip", "筛选 Tab 选中态该走 LbChip；另两处是结果区浅底装饰"),
         "panel/reply/SchemeAdjustingBlock.kt" to BrandLedger(1, "LbChip", "卡内调整胶囊的选中底与 LbChip 同族"),
@@ -1713,16 +1725,16 @@ class UiLayerDependencyContractTest {
         // 页头尾部那颗导出由自绘 `Box + clickable + 品牌底` 并进设计系统 `LbPrimaryButton`
         // （Disabled 档报得出 disabled、热区与角色由公共件持有），本页 `clickable` 子树里涂品牌底的
         // 形状实扫 0 处。账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
-        // home/HomeComponents.kt 那一行（原额度 2）已删：Agent F 把首页四入口卡并进 LbActionCard、
+        // home/HomeComponents.kt 那一行（原额度 2）已删：首页四入口卡并进 LbActionCard、
         // Hero 主动作归 LbPrimaryButton 之后，本页 `clickable` 子树里涂品牌底的形状实扫 0 处——
         // 只剩军师控制条那一颗：热区盒自己无底，播放/停止字形是私有 composable 调用（Canvas 画三角 /
-        // 一颗实心方块），这把按"clickable 那次调用的子树"读的尺看不见它。表面色那把尺仍然看得见
-        // 方块那一处，所以它在 surfacesLedger 里留着 1 的额度。
+        // 一颗实心方块），这把按"clickable 那次调用的子树"读的尺看不见它。表面色那把尺当年还看得见
+        // 方块那一处（surfacesLedger 里那一行随字形交回 `LbTriangleGlyph` 之后也删了，见上面那段）。
         // 这条账本原来还押着一处未解矛盾（"页面 0 次调用 LbActionCard"），随归并完成一并作废。
         "home/ProviderSection.kt" to BrandLedger(2, "LbSettingRow", "模型行与添加行都是带点击的行，主人是 LbSettingRow"),
-        // "KnowledgeBaseActivity.kt" 那一行（原额度 1，"可点的库卡归 LbActionCard，本轮还没转过去"）
-        // 于 2026-10-06 L1b **删掉**：可点那张卡今天整颗走 `LbListCard`（点击由公共件挂角色与热区），
-        // 页面 `clickable` 子树里涂品牌底的形状实扫 0 处——那句"本轮还没转过去"已经成立了，
+        // "KnowledgeBaseActivity.kt" 那一行（原额度 1，"可点的库卡归 LbActionCard，当时还没转过去"）
+        // 于 2026-10-06 **删掉**：可点那张卡今天整颗走 `LbListCard`（点击由公共件挂角色与热区），
+        // 页面 `clickable` 子树里涂品牌底的形状实扫 0 处——那句"还没转过去"如今已经不成立了，
         // 留着就是这条账目明文禁止的"不成立的豁免"。
         // "panel/IntentEditorSheet.kt" 那一行（原额度 1，"启用开关那颗可点盒（chain 上有 clickable、子树涂条件品牌底）"）**删掉**：
         // 那颗自画的 44×24 启用开关已由 `SettingsIntentEntry.kt` 改用设计系统的 `MiniSwitch` 替掉，
@@ -1740,27 +1752,27 @@ class UiLayerDependencyContractTest {
     /**
      * 品牌色的**第三个锚点**：从 `containerColor` 那扇门涂进来的品牌色。
      *
-     * 为什么单独一把尺：那份「禁止只在一个页面看起来不一样的按钮/卡片」的清单一直锚在
+     * 为什么单独一把尺："不许让某一个页面长得跟别处不一样"这条口径此前一直只锚在
      * Modifier 链的 `.background(品牌色)` 上，
      * 而 Material 组件涂同层底走的是**具名实参**——
      * `ButtonDefaults.buttonColors(containerColor = Primary)`、
      * `CardDefaults.cardColors(containerColor = PrimaryLight)`。
-     * 前一格把首页那颗唯一主按钮搬进 `LbPrimaryButton` 时才发现它从没进过清单：
+     * 上一次把首页那颗唯一主按钮搬进 `LbPrimaryButton` 时才发现它从没进过上面那两本账：
      * 本机实扫 `Button(` 7 处、涂品牌色 5 处，**全在 `.background(` 那把尺的射程外**。
      * 搬掉首页那颗之后是 4 处 Button + 1 处 Card。
      *
      * ⚠ 与另两把尺一样，**这一格只买"别再长新的"**，它判不了任何一处该不该搬：
      * `containerColor = PrimaryLight` 里既有该走组件的主动作，也有状态卡那种
      * 本来就该是品牌浅底的表面。三把尺各扫各的（表面色 25 / 链上有 clickable 的 18 /
-     * 这扇门的 5），**三个数别合成一个**——这正是坑表 ⑫ 那条的第三次复发。
+     * 这扇门的 5），**三个数别合成一个**——"三把尺各扫各的、却被人并成一个数"这件事已经错过两回。
      *
      * **口径在 `471a512` 换过一次（新旧数不可比）**：旧尺写的是
      * `containerColor\s*=\s*[^,)]*…`，那个字符类**在 `if (canProceed)` 的右括号处就断了**，
      * 于是 `containerColor = if (canProceed) Primary else SurfaceInset` 这种"条件涂色"
-     * 从来没进过计数（本机两处：`KnowledgeBaseActivity:846`、`KbEditActivity:311`）。
-     * ⇒ 历史的 5 / 4 / 3 全是**下界**；现在改成按括号配对取那一段实参（`brandArgumentAt`），
+     * 从来没进过计数（本机两处：`KnowledgeBaseActivity.kt`、`KbEditActivity.kt` 各一处条件涂色）。
+     * ⇒ 历史的 5 / 4 / 3 全是**下界**；现在改成按括号配对取那一段实参（`brandTonedArgs`），
      * 并且下面加了一条**正向对照**证人：两档写法（直涂 / 条件）都得各扫得到——
-     * 漏写法这种毛病不会自己喊人（坑表 88 那一族：按形状认的尺要能把形状的变体认全）。
+     * 漏写法这种毛病不会自己喊人：按形状认的尺，必须把同一形状的变体都认全。
      *
      * 判据按文件记、只许往下（`<=`）；表里的行必须还在盘上（不留"指向不存在文件"的额度）；
      * 扫到 0 说明锚点坏了。
@@ -1769,18 +1781,18 @@ class UiLayerDependencyContractTest {
     fun `brand tones painted through containerColor do not grow`() {
         val perFileBudget = mapOf(
             "KbEditActivity.kt" to 1,                 // 只剩版本选中态那颗（条件涂色）——
-                                                     // 「保存」已由 `f5d199d`/本轮归 `LbPrimaryButton`
-            // ⚠ M09（活台账：主页恢复 1.3.1 级别的视觉体验）把 `home/HomeComponents.kt` 这一行**加回来**。
+                                                     // 「保存」那颗已由 `f5d199d` 归进 `LbPrimaryButton`
+            // ⚠ 主页视觉恢复到 1.3.1 那一档时，把 `home/HomeComponents.kt` 这一行**加回来**。
             //   历史：更早登记的是 2 处，其中一处就是这一行（hero 状态卡那张 Card 的 `containerColor = PrimaryLight`），
-            //   Agent F 把状态卡搬进 `LbActionCard` 后它改念 `containerColor = SurfaceCard`，那一档**代码真归零**
-            //   （**red 3**：不是尺瞎），于是按"还了债就把表改小、不留虚闸"删行，登记总数 2 → 1。
-            //   本轮是那一轮的反面：M09 §5 第 1 条点名"复用旧版已存在的 PrimaryLight / PrimarySubtle / Primary，
+            //   状态卡搬进 `LbActionCard` 后它改念 `containerColor = SurfaceCard`，那一档**代码真归零**
+            //   （当场分辨过：是代码真没了，不是尺瞎），于是按"还了债就把表改小、不留虚闸"删行，登记总数 2 → 1。
+            //   这次加行是那次删行的反面：视觉口径要求"复用旧版已存在的 PrimaryLight / PrimarySubtle / Primary，
             //   不要新增颜色"，把这一档浅蓝表面**判为该画回来** ⇒ 账跟着加一行、登记总数 1 → 2。
-            //   另两把品牌尺的射程一个字没动：本轮没有新增任何 `.background(品牌色)`
+            //   另两把品牌尺的射程一个字没动：这次没有新增任何 `.background(品牌色)`
             //   （启停那颗的本体走中性 `SurfaceCard`，两圈边线走 `.border(`——那两把按
             //   `.background(` 与 `clickable` 子树认，`.border(` 不在射程；`PrimarySubtle` 按
             //   `brandToneNoSubtle`/`BRAND_TOKENS` 也不在那两把的射程，只有这一把看得见品牌色）。
-            "home/HomeComponents.kt" to 1             // 首页 hero 状态卡那一档浅蓝表面（M09 §5 第 1 条）
+            "home/HomeComponents.kt" to 1             // 首页 hero 状态卡那一档浅蓝表面（视觉口径：复用旧版既有品牌色，不新增颜色）
         )
         assertTrue("登记的就是本机实扫的 2 处，表本身错了要先修表", perFileBudget.values.sum() == 2)
 
@@ -1792,7 +1804,7 @@ class UiLayerDependencyContractTest {
         val found = scanned.associate { it.first to it.second.size }
 
         // 正向对照：这把尺**必须认得两种写法**（直涂 / 条件）。
-        // ⚠ 这条证人原先押在**生产实扫**上（"任一档变 0 都要停下来分辨"）。red 3 逼我们分辨完了：
+        // ⚠ 这条证人原先押在**生产实扫**上（"任一档变 0 都要停下来分辨"）。真遇过一次"直涂那一档掉到 0"，分辨完了：
         //   直涂那一档是**代码真归零**（首页状态卡搬进 LbActionCard 后改念 SurfaceCard），不是尺又瞎。
         //   那就不能再让证人依赖"生产恰好还留一颗直涂"——否则哪天连条件也搬完、整档清零，
         //   这把尺反而会误红（恒绿的反面：被代码变化误伤）。改成**现造合成对照**喂进同一把尺：
@@ -1823,7 +1835,7 @@ class UiLayerDependencyContractTest {
         // ⚠ 上面那条 `<=` 只挡"长新的"，**挡不住表比现实宽**：搬掉一处之后实扫 4、
         // 表还写 5，`grew` 是空的、格子照绿。这条等号证人补上另一半——
         // 还了债就得回来把表改小（与字面量预算那句"还掉了就来把数字改小"同一个规矩）。
-        // 它同时是"尺又被改瞎"的报警器：尺一漏数，等号当场不成立（探针 G5 就是钉这个的）。
+        // 它同时是"尺又被改瞎"的报警器：尺一漏数，下面那条等号当场不成立。
         assertEquals(
             "登记总数与实扫不一致（表比现实宽 = 恒绿的另一种写法）：实扫 " + found,
             perFileBudget.values.sum(), found.values.sum()
@@ -1843,15 +1855,15 @@ class UiLayerDependencyContractTest {
      * 旧尺写成 `[^)]*` / `[^,)]*`，那种"在 `if (…)` 的右括号处断掉"的写法它们**全都看不见**——
      * `.background(if (canProceed) Primary else SurfaceInset)` 里 `[^)]*` 走到 `if (canProceed)`
      * 那个右括号就停了，后面那句 `Primary` 永远接不上锚点。
-     * 本机实扫（`_temp/scan_surface_ruler_check.py`）：
+     * 本机用一次性扫描脚本量过（脚本不入库，读数留在这儿当口径变化的证人）：
      * **表面色那把尺旧口径 25 处 / 12 文件，括号配对口径 45 处 / 17 文件**——
      * 少判 20 处（那是**当时那一盘**的实扫读数），其中 `ProviderSection`(4)、`ReplyInput`(2)、
      * `FeedbackCasesScreen`(2)、`OnboardingOptionCard`(2) 四个文件以前**整档不在表里**；
-     * 余下 2 处挂在一颗已整删（）的面板上，宿主已不在盘上，故不再点名，20 这个历史总数保持不动。
+     * 余下 2 处挂在一颗已整页删除的面板上（宿主文件已不在盘上，故不点名），20 这个历史总数保持不动。
      * ⇒ 历史那些"25 / 19 / 5 / 4"全是**下界**，新口径的数字与它们**不可比**。
      *
      * 口径：从锚点走到"顶层逗号"或"本段实参结束"为止（括号配对），中间的内层括号不拦。
-     * 与字面量预算那把尺的 `expressionAt` 同一个思路，注释也一并剥掉（坑表 88）。
+     * 与字面量预算那把尺的 `expressionAt` 同一个思路，注释也一并剥掉——否则注释里的写法会被当成真码。
      */
     private fun brandTonedArgs(code: String, anchor: Regex, tones: Regex): List<String> {
         return anchor.findAll(code).map { m ->
@@ -1885,11 +1897,11 @@ class UiLayerDependencyContractTest {
      * 这条不是 UI 事实的尺（那种一律读语义树），是一条**结构合同**：
      * `ProviderFormBody` 挂在 `ProviderEditDialog` 交给 `LbDialog` 的 `body=` 槽里，
      * 用户看到的仍然是一扇浮层；而本体自己**不许**再含 `Dialog(`——它一旦重新长出浮层，
-     * `ProviderFormSemanticsTest` 就会撞上"Dialog 窗口 + 文本框永不空闲"那堵墙（账本 第45节第1条），
-     * 整屏又会退回"一颗都量不到"的状态。这台机器量不了浮层窗口，所以这一半只能读结构，
+     * `ProviderFormSemanticsTest` 就会撞上"Dialog 窗口 + 文本框永不空闲"那堵墙（这套 JVM 测试环境里
+     * 浮层窗口拿着焦点时组合期永不空闲），整屏又会退回"一颗都量不到"的状态。这台机器量不了浮层窗口，所以这一半只能读结构，
      * 并且要说清楚：读结构证明的是"没被搬坏"，不是"长得对"。
      *
-     * ⚠ 归并到 `LbDialog` 之后本轮的两个数都**换了口径**（1 → 0 与 0 → 2），
+     * ⚠ 归并到 `LbDialog` 之后这一格的两个数都**换了口径**（1 → 0 与 0 → 2），
      * 那是还债不是放宽：原来"这一屏一扇浮层"量的是**自画**的 `Dialog(`，
      * 现在自画的归零了，尺改成"自画的必须为 0 **并且** 两扇浮层都走同一个所有者"——
      * 两头都判，比原来只数一头的旧口径更紧。

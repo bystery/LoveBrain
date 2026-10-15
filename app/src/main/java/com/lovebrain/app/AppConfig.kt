@@ -157,18 +157,25 @@ enum class GenerationTimeoutTier(val seconds: Int) {
  * - 与本仓已有的 [GenerationTimeoutTier] 同一种形状：有界区间 + 一个显式回落口，
  *   绝不把盘上读到的原样数字直接画出去。
  *
- * 区间 `60..100`，默认 `100`，刻度 5%：
- * - 默认 100% 就是今天的样子（面板底是一整块实色），这一笔上线时没人会发现界面变了；
- * - 下限取 60%：这是实施书对"面板背景不透明度"划的那条线（`0.6..1.0`）。再往下调，
- *   面板压在白色聊天界面上和压在深色照片上只差在底那一层，字与宿主的字会糊成一团；
- *   曾经放到 40% 是滑得爽但越过了这条线，现在按规格收回 60。
+ * 区间 `20..100`，默认 `100`，刻度 5%：
+ * - 默认 100% 就是今天的样子（面板底是一整块实色），没动过滑杆的人观感逐字不变；
+ * - 下限取 20%，也就是屏上念到的"最大透明度 80%"。这一档从前收在 60%，理由是"再往下调字会糊"；
+ *   真机回归报回来的却是另一件事：滑到最底那一格，屏幕上仍有一整块实底没动——消息区那块大面积底
+ *   自己涂着一颗满不透明的卡底色，背景层透到哪儿都透不到用户正看着的那一格。
+ *   也就是说旧下限防的那件事（糊）没有发生，发生的是一直推不到头的那种"透不出去"。
+ *   放开之后浓淡只管**底**，正文、图标与气泡里的字一律满不透明；
+ *   字与宿主的字会不会糊由用户在屏上自己看见、自己调回来，代码不再替用户预设"最淡只许到这里"。
  *
  * ⚠ **压的是背景与大面积卡底，不是整扇窗**。把整棵 `ComposeView.alpha` 一起降下来会连正文一起洗淡
  * （文字先于背景失去可读性），而且那条 alpha 归面板的淡入淡出动画所有
  * （`service/OverlayPanelWindow` 里淡出结束与再次打开时都会把它复位）。
- * 作用点只有面板那两层底色（`ui/panel/LoveBrainPanelScreen.kt` 的根与设置页那一层），
- * 加上悬浮球整颗（主图标 + 未读角标）——**四处共用下面 [effectiveAlpha] 这一把尺**。
- * 只把面板根调淡、球不跟着走，等于"同一个百分比"只做了一半。
+ * 作用点只有三处，全部经下面 [effectiveAlpha] 这一把尺：面板那两层底色
+ * （`ui/panel/LoveBrainPanelScreen.kt` 的根与设置页那一层）、由面板根部供出去、
+ * 消息区那两块大面积底读的那颗浓度读数（`ui/panel/reply/MessageList.kt`），
+ * 加上悬浮球整颗（主图标 + 未读角标）。
+ * 只把面板根调淡、球不跟着走，等于"同一个百分比"只做了一半；
+ * 反过来面板透到 20% 而球也掉到 20%，剩下那一半（点不中）比不透明更坏——
+ * 所以球那一侧多带一颗可读下限，见 [IDLE_ALPHA_FLOOR]。
  * 底色自身的 alpha 通道与 `View.alpha` 是两层乘积：动画淡出时两者相乘，动画复位碰不到颜色。
  */
 object PanelBackdropOpacity {
@@ -188,7 +195,7 @@ object PanelBackdropOpacity {
      */
     const val PREF_KEY = "panel_backdrop_opacity_percent"
 
-    const val MIN_PERCENT = 60
+    const val MIN_PERCENT = 20
     const val MAX_PERCENT = 100
 
     /** 默认 = 完全不透明：面板外观与这一笔之前逐字相同，滑杆没被动过的用户不该看到变化 */
@@ -238,28 +245,48 @@ object PanelBackdropOpacity {
     val IDLE_DIM_DELTA: Float = 1f - AppConfig.BUBBLE_IDLE_ALPHA
 
     /**
-     * 闲置态的可读下限：降到这里为止，不再往下。
-     * 这一格是"降遮挡"与"球还在不在"那条线——比面板下限 60% 更宽，因为球没有正文要读，
-     * 但它是唯一的手势入口，淡到点不中就等于功能消失。
+     * 浓度尺上的**可读下限**：闲置那一格降到这里为止，静止那一格也不许低到这里以下
+     * （[effectiveAlpha] 里靠 [readabilityFloor] 这一颗把它同时挂在两态上）。
+     *
+     * ⚠ 这一颗**只托住悬浮球，不托面板**。面板可以一路到 20%（[MIN_PERCENT]），球到 50% 就停：
+     * 这条不对称是有意的，不是漏改。面板淡下去，用户随时看得见自己滑到了哪一格，也能一键滑回来；
+     * 而球是全屏唯一的手势入口，淡到找不着就点不中，那等于功能消失——
+     * 比"挡住了一点视线"坏得多，所以这里宁可让它比用户设的更不透明一点。
+     *
+     * 名字里留着 `IDLE_` 是因为这颗数最初只为闲置那一格设（见 [IDLE_DIM_DELTA]），
+     * 静止那一态现在共用同一颗，不另造第二个数——两态一条线才解释得清"什么时候开始不再变淡"。
      */
     const val IDLE_ALPHA_FLOOR: Float = 0.50f
 
     /**
-     * **这一帧该画多浓**——悬浮球（主图标 + 未读角标）与面板背景都只从这一颗取值。
+     * **这一帧该画多浓**——面板背景（两层底色 + 供出去给消息区大面积底的那颗读数）与悬浮球
+     * 都只从这一颗取值。
      *
-     * 语义四条，缺一条就会长出对应的坏实现：
-     * 1. 静止时**严格等于用户设置**（`dimmed = false` 就是 [alphaOf]，不额外加暗一档）；
-     * 2. 闲置时按原有"降遮挡"意图变淡（[IDLE_DIM_DELTA]），但**永不低于 [IDLE_ALPHA_FLOOR]**；
-     * 3. 闲置结束回到用户设置值，不会变得比用户设的更不透明（同一颗纯函数，进出对称）；
+     * 语义五条，缺一条就会长出对应的坏实现：
+     * 1. 静止时等于用户设置（`idleDimmed = false` 就是 [alphaOf]，不额外加暗一档）。
+     *    唯一的例外是 [readabilityFloor] 为真（悬浮球那一侧）：静止值先被托到 [IDLE_ALPHA_FLOOR]，
+     *    于是低档位上球**比用户设的更不透明**——这条不对称是有意的，理由见那颗下限的注释；
+     * 2. 闲置时按原有"降遮挡"意图变淡（[IDLE_DIM_DELTA]），但降的是**这一帧真的画出来的那颗静止值**，
+     *    不是盘上那个数字：先托下限再降，才不会在低档位上长出"闲置比静止更不透明"的倒挂；
+     *    降完仍不低于 [IDLE_ALPHA_FLOOR]，也不越过静止值；
+     * 3. 闲置结束回到这一侧的静止值（用户档位、或档位与该侧下限里较大的那颗），同一颗纯函数，进出对称；
      * 4. 只算一次：结果里已经含了用户档位与闲置降档，画的那一侧**不许再乘** `BUBBLE_IDLE_ALPHA`
-     *    或再乘一次本函数的结果（两次相乘正是 0.468 那一格）。
+     *    或再乘一次本函数的结果（两次相乘正是 0.468 那一格）；
+     * 5. [readabilityFloor] 默认 `false`：面板那两层底色与供出去的那颗读数都不带这颗下限。
+     *    默认值要是反过来，"最大透明度 80%"会被静悄悄改回 50%，而屏上念的还是 80%。
      *
-     * 单调且不越过用户设置：`dimmed` 为真时结果 ≤ 静止值，且随用户档位升高而升高。
+     * 单调：结果随用户档位升高而不降；`dimmed` 为真时结果 ≤ 同档的静止值
+     * （静止值已经坐在下限上时没有余地可降，两者同浓——那正是那颗下限要的效果，不是缺陷）。
      */
-    fun effectiveAlpha(opacityPercentRaw: Int?, idleDimmed: Boolean): Float {
-        val rest = alphaOf(opacityPercentRaw)
+    fun effectiveAlpha(
+        opacityPercentRaw: Int?,
+        idleDimmed: Boolean,
+        readabilityFloor: Boolean = false
+    ): Float {
+        val userTier = alphaOf(opacityPercentRaw)
+        val rest = if (readabilityFloor) userTier.coerceAtLeast(IDLE_ALPHA_FLOOR) else userTier
         if (!idleDimmed) return rest
-        return (rest - IDLE_DIM_DELTA).coerceAtLeast(IDLE_ALPHA_FLOOR)
+        return (rest - IDLE_DIM_DELTA).coerceAtLeast(IDLE_ALPHA_FLOOR).coerceAtMost(rest)
     }
 }
 

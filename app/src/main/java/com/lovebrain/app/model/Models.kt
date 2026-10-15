@@ -22,7 +22,8 @@ import kotlinx.serialization.json.put
 /** 一条回复方案（UI 渲染用；tag/title 硬编码补，AI 只输出 reply 文本）
  * Scheme 自身持有 source 字段区分来源——STYLE=四风格，DIRECTION=四方向。
  *
- * 空 reply 有**两种**成因（§11.2），由 [notSuitable] 分家，UI 文案各归各：
+ * 空 reply 有**两种**成因（协议上「模型明说这一位不适合」与「模型根本没出这一位」
+ * 是两件事，混成一档就会把合法输出报成生成失败），由 [notSuitable] 分家，UI 文案各归各：
  * - true = 模型在这一位输出了 null（协议允许），UI 显示「本轮不适合」
  * - false = 这一位没生成（缺位、空白串、四风格里的空条），UI 显示「未生成」
  * 第三种成因「重复凑数」不在这里表达——那一条正文本身是有的，卡不空，
@@ -96,7 +97,8 @@ enum class ReplyDirection(val index: Int, val tag: String, val title: String) {
 
 /**
  * 向后兼容的 DirectionCatalog——已废弃，新代码应直接使用 [ReplyDirection]。
- * 保留过渡期引用，避免一次性改动过多文件。
+ * 三个读数全是 [ReplyDirection] 的投影，本身不持有第二份真值，留着不会改变任何行为，
+ * 只是让四方向多一个入口；当前源码树里已经数不到消费方，要摘就先确认调用点真的归零。
  */
 object DirectionCatalog {
     val TAGS: List<String> get() = ReplyDirection.ALL.map { it.tag }
@@ -107,7 +109,7 @@ object DirectionCatalog {
 /** 新格式 response 块：4 种风格回复（recommended/bad_boy/playful/warm）
  * toSchemes 不过滤空回复，固定返回 4 条卡位。
  * ⚠ 四风格**没有**「合法 null」这一档（format.md 要求四条都出正文）：空白就是没生成，
- * 所以这里的 [Scheme.notSuitable] 一律留 false，卡片念「未生成」而不是「本轮不适合」（§11.2）。 */
+ * 所以这里的 [Scheme.notSuitable] 一律留 false，卡片念「未生成」而不是「本轮不适合」。 */
 @Serializable
 data class ReplySchemes(
     val recommended: String = "",
@@ -238,7 +240,7 @@ data class LoveBrainResponse(
      * directions 异常不影响 response 风格渲染。
      * 固定返回 4 条。
      *
-     * §11.2 要的三态在这一颗函数里分家（此前 null 与空白串读成同一档）：
+     * 三种成因在这一颗函数里分家（此前 null 与空白串读成同一档，屏上就把合法输出念成没生成）：
      * - 这一位**根本没出现**（directions 比四短、或整个字段缺失）→ 没生成：reply 空、notSuitable=false
      * - 这一位出现了、值是 **null** → 协议明确允许的「本轮不适合」（见 system_prompt/format.md
      *   的 directions 那一节：每个方向只输出一条可直接发送的回复或 null）：reply 空、notSuitable=true
@@ -264,18 +266,18 @@ data class LoveBrainResponse(
         get() = schemes + directionSchemes
 
     /**
-     * 八项回复完整性检查（§11.2）：四风格 + 四方向 = 八项，**三个成因分家**。
+     * 八项回复完整性检查：四风格 + 四方向 = 八项，**三个成因分家**。
      *
      * 计数一律按整池八项（[mergedEightItems]），不按露出来的那几张卡：
      * - [ReplyCompleteness.Incomplete.missingLabels]：真正没生成的项——reply 空白且**不是**
      *   合法「本轮不适合」（四风格空白、方向缺位、方向空白串）。合法 null 的方向**不在这一份里**，
-     *   这正是原话要修的「合法 null 与真正缺失混为一谈」。
+     *   分成两份的理由就在这：合法 null 与真正缺失混为一谈时，用户会以为模型少生了这一项。
      * - [ReplyCompleteness.Incomplete.duplicatedLabels]：同一条正文出现在多于一颗标签上（凑数）。
      * - [ReplyCompleteness.Incomplete.notSuitableLabels]：协议允许的 null 方向——它不是缺项，
      *   由空卡自己标这个状态（见 SchemeCollapsedBlock），提示语里不占一份。
      *
      * 解析层拿它做记录、UI 拿它做那一句轻提示（见 ResultArea 的 replyCompletenessNotice）；
-     * 三样都不拒绝已有候选——指导书要求保留部分内容。
+     * 三样都不拒绝已有候选——只生出一部分时，那部分也要照原样交回用户，提示只说不丢。
      */
     val replyCompleteness: ReplyCompleteness
         get() {
@@ -303,10 +305,10 @@ data class LoveBrainResponse(
 }
 
 /**
- * 八项回复完整性状态（§11.2）。
+ * 八项回复完整性状态。
  *
  * 解析层用它区分「生成完整」「生成不完整（缺项 / 重复）」和「全空」，
- * 不拒绝已有候选——指导书要求保留部分内容并如实提示。
+ * 不拒绝已有候选——部分内容照样交回用户，只是要如实提示。
  * 「本轮不适合」是**第三因**，走 [ReplyCompleteness.Incomplete.notSuitableLabels]
  * 与卡片自己的文案，不混进缺项那份读数里。
  */
@@ -335,9 +337,9 @@ sealed class ReplyCompleteness {
 
 /** 面板状态机 */
 enum class PanelState {
-    KEYBOARD,          // S1 标准键盘
-    AI_LOADING,    // S3 生成中
-    AI_RESULT      // S4 方案展示
+    KEYBOARD,          // 标准键盘那一档
+    AI_LOADING,    // 生成中
+    AI_RESULT      // 方案展示
 }
 
 /** 生成结果（成功或失败） */
@@ -399,24 +401,43 @@ data class ProactiveOption(
  *
  * 默认关闭（enabled=false），无预设恋爱目标。
  * 跨面板关闭、重启和正常下一轮保留；关闭时保留最后文本但不注入。
- * revision 在每次保存时递增，用于生成时冻结快照识别旧请求。 */
+ * revision 在每次保存时递增，用于生成时冻结快照识别旧请求。
+ *
+ * **有效的判据只有一条**：[enabled] 为真且 [text] 非空（见 [isIntentEffective]）。
+ * 开启就一直开着——没有期限，也没有"已完成"这一档。
+ *
+ * [expiry] / [expiryDate] / [status] 三样是**兼容字段**，不再是判据：
+ * - 盘上老文件（`moment/intent.json`）里就带着它们，读侧照单收下、不迁移、不改写用户数据；
+ *   旧 [IntentStatus.EXPIRED] / [IntentStatus.COMPLETED] / [IntentStatus.PAUSED] 一律按
+ *   "没有期限"处理，**不阻止**开关重新起效；
+ * - 写侧统一：每一次新的保存都落 [IntentStatus.ACTIVE] 加空 [expiryDate]，
+ *   于是旧语义只在读的那一刻被消化掉，不会从新数据里长回来；
+ * - 枚举项一个都不许删：删掉旧值会让老 JSON 反序列化失败，整份配置被当成空——
+ *   那是清空用户写过的意图，不是简化。 */
 @Serializable
 data class IntentConfig(
     val text: String = "",       // 自由文本意图
     val enabled: Boolean = false, // 默认关闭
     val revision: Int = 0,       // 每次保存递增，用于快照识别
-    // 有效期与完成状态
-    val expiry: IntentExpiry = IntentExpiry.ONE_DAY, // 默认一天
-    val expiryDate: String = "",  // 时间档用 yyyy-MM-dd HH:mm 格式（保存时刻计算得出）
-    val status: IntentStatus = IntentStatus.ACTIVE    // 当前状态
+    // 以下三样只为读回老文件而保留，写入时统一成"无期限"，不参与任何判定
+    val expiry: IntentExpiry = IntentExpiry.ONE_DAY,
+    val expiryDate: String = "",
+    val status: IntentStatus = IntentStatus.ACTIVE
 )
 
 /**
- * 意图有效期选项。
- * - ONE_HOUR: 一小时（设备本地时区，保存时刻 + 1 小时）
- * - ONE_DAY: 一天（保存时刻 + 1 天，默认）
- * - ONE_WEEK: 一个星期（保存时刻 + 7 天）
- * - COMPLETED: 已完成（保存即标完成，不再注入）
+ * 这一条意图此刻算不算"开着"：**开 且 正文非空**，别的都不算。
+ *
+ * 注入提示词与进行中事项的检索授权读的是同一颗——两处各写一遍判据，
+ * 就会长成"一处注入、一处检索拒绝"那种自相矛盾的判决（历史上正长成过这样）。
+ * 关着的意图正文仍留在盘上，只是不注入。
+ */
+val IntentConfig.isIntentEffective: Boolean
+    get() = enabled && text.isNotBlank()
+
+/**
+ * 意图有效期的历史档位——**语义已退役**，只保留到能读懂老文件为止
+ * （[IntentConfig] 的字段注释：删枚举项会让老 JSON 解不出来、把用户的意图清掉）。
  *
  * 旧数据（TODAY/DATE/UNTIL_DONE）反序列化会失败、回退到默认 IntentConfig()，
  * 与"切库读不出意图就当没有意图"的既有口径一致。
@@ -430,11 +451,10 @@ enum class IntentExpiry {
 }
 
 /**
- * 意图状态。
- * - ACTIVE: 启用中，正常注入
- * - PAUSED: 暂停，保留文本但不注入
- * - COMPLETED: 完成，不再注入，历史可查看
- * - EXPIRED: 已到期，不再注入，历史可查看
+ * 意图状态的历史档位——同 [IntentExpiry]，只为读回老文件而保留。
+ *
+ * 新语义下只有"开关 + 正文"说了算：读回来的 [PAUSED] / [COMPLETED] / [EXPIRED]
+ * 都不再让一条开着的意图失效，新保存一律写 [ACTIVE]。
  */
 @Serializable
 enum class IntentStatus {

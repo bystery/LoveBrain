@@ -64,7 +64,7 @@ import org.robolectric.annotation.GraphicsMode
  * 5. 条件槽与占位：「首字」只在有耗时时存在；没有数的那几格念「—」而不是 `¥0.000`。
  *
  * 底下三格组件档判据量的还是 `LbMetricGrid` 那一颗（一格两颗 Text 的那一档），
- * 那一份形状没被本轮撤掉，所以那三格仍按 [Cell] 读。
+ * 改成统计条只换了页面顶部那一排的挂法，`LbMetricGrid` 那一份形状还在，所以那三格仍按 [Cell] 读。
  *
  * ⚠ 分工：换组算法、渐隐、自然宽不被压薄这些**组件自己**的合同归
  * `ui/panel/stats/UsageStatBarSemanticsTest` 与 `UsageStatBarPlanTest`，本文件不重抄一遍；
@@ -108,6 +108,11 @@ class PanelUsageMetricSemanticsTest {
     private fun fakeIntents(): IntentController = mockk<IntentController>(relaxed = true).also {
         every { it.config } returns MutableStateFlow(IntentConfig())
         every { it.showEditor } returns MutableStateFlow(false)
+        // 写盘在飞吗：面板 `LoveBrainPanelScreen.kt:345` 无条件 collect 这一颗，漂给 relaxed
+        // 就是 `StateFlow<T>.value` 擦除后的裸 Object，一读就 ClassCastException，整棵组合树
+        // 在挂载那一帧断掉。false = 此刻没在写盘，与 `IntentController._isSaving` 的初值同形；
+        // 本文件的格子不判"保存中禁用"，这一格既不该留 relaxed，也不该桩成 true。
+        every { it.isSaving } returns MutableStateFlow(false)
     }
 
     private fun fakeVm(usage: UsageStats): LoveBrainViewModel =
@@ -124,12 +129,12 @@ class PanelUsageMetricSemanticsTest {
             every { vm.counselingError } returns MutableStateFlow(null)
             every { vm.counselingResult } returns MutableStateFlow<String?>(null)
             every { vm.counselingStreaming } returns MutableStateFlow("")
-            // （用户 2026-10-03 原话"点踩就不要弹窗全部删除！！记入就行了"）：VM 上那颗
+            // 点踩只记入、不弹窗要求全部删除（2026-10-03 定的口径）：VM 上那颗
             // `currentFeedbackCase` 出口随原因面板一起摘除，面板这一侧一个字都不读它
             // （`ui/panel/LoveBrainPanelScreen.kt:226` 明写"这里**故意不收集**"）。旧桩替它挂的
             // 那一条空流删掉；赞/踩的状态出口仍然只有下面那一条 `vm.feedbacks`。
             every { composer.currentRole } returns MutableStateFlow(ChatMessage.Role.HER)
-            // 输入对象（她/我/补充）。 之后面板在 `LoveBrainPanelScreen.kt:190` 无条件 collect
+            // 输入对象（她/我/补充）：面板在 `LoveBrainPanelScreen.kt:190` 无条件 collect
             // `composer.inputKind`，而这一条是本文件唯一漂掉的一格泛型流——relaxed 交回的是裸
             // `Object`（`StateFlow<T>.value` 擦除后的返回类型），面板一 checkcast 就 CCE，
             // 整棵组合树在挂载那一帧就断了：本文件那 6 红全是这一个异常，不是使用统计的形状。
@@ -374,7 +379,7 @@ class PanelUsageMetricSemanticsTest {
             fullLabels, cells.map { it.label }
         )
         // 标签＋数值整串逐字对（「首字」那格只比到标签：数值串走的是没锁 Locale 的
-        // `"%.1fs".format(…)`，逗号/点号随制式变，账本里单独记着那一格）
+        // `"%.1fs".format(…)`，逗号/点号随制式变，所以那一格的数值只判形状、不逐字钉死）
         assertEquals(
             "四格（除「首字」的数值）念回来的整串变了：" + cells.joinToString(" | ") { it.describe() },
             listOf("今日 ¥1.230", "本次 ¥0.500", "累计 42次", "已统计 ¥8.900"),
@@ -387,7 +392,7 @@ class PanelUsageMetricSemanticsTest {
     }
 
     /**
-     * **本轮核心需求**：统计永远只占一行。
+     * **这一族要守住的性质**：统计永远只占一行。
      *
      * 三条一起判才咬得住：
      * · 画得出来的那些格必须**同在一行**（垂直中心一致）——换成一排会折行的布局，
@@ -519,7 +524,7 @@ class PanelUsageMetricSemanticsTest {
     /**
      * 通知位上一次只许**一条**，而且顶部统计不许被它挤开第二行。
      *
-     * 两条一起判的理由：这一轮把三条通道并成一条队列，最坏的坏法是"队列收住了、
+     * 两条一起判的理由：三条通知通道并成一条队列之后，最坏的坏法是"队列收住了、
      * 但页面上给通知新起了一行，顶部那条跟着折成两行"。
      * 排队里那条**根本不该出现在这一屏上**（它还没被显示，也就没有画面），
      * 所以第二条的文案必须读不到——读得到就是"一屏挤两条"回来了。

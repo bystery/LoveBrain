@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-// AlertDialog 已替换为 PanelModalHost，避免 Service 宿主 BadTokenException
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,9 +27,11 @@ import com.lovebrain.app.ui.theme.*
 //   点击 = `viewModel.intents.openEditor()`（先冻结"开在哪块库"再翻可见性，判据在 IntentController 里）。
 // - [IntentEditorDialog] 挂在**面板根部**（与 `CorrectionCenterHost` / `MemoryCorrectionFlowHost`
 //   同一层，遮罩才盖得住整屏），由 `viewModel.intents.showEditor` 这一本账翻起来；
-//   保存回 `viewModel.intents.save(...)`，关闭点名到 `dismissEditor()`。
-// 到期、完成、暂停、按知识库隔离这四条能力全在 `IntentController` / `KnowledgeIntentService`，
-// 这一层只是它们的入口与表单，一处都没减。
+//   保存回 `viewModel.intents.save(正文, 启用)`，关闭点名到 `dismissEditor()`。
+// 这一扇浮层与设置页那一行**同一条语义**：只有"启用开关 + 正文 + 保存"。期限三档、
+// "已完成"那一批控件已经随判据一起退役——两处各留一套会长成"这页干净了、那页还是旧行为"。
+// 按知识库隔离、编辑器开在哪块库这两条能力全在 `IntentController` / `KnowledgeIntentService`，
+// 这一层只是它们的入口与表单。
 // ════════════════════════════════════════════════════════════════════════════
 
 // ═══════════ 持续意图 UI 组件（面板标题行里的紧凑入口 + 编辑浮层） ═══════════
@@ -41,7 +42,7 @@ import com.lovebrain.app.ui.theme.*
  *
  * 它是**入口**不是**选项**：点下去开编辑器，这一颗自己从不"在哪一格" ⇒
  * [LbChipInteraction.Action]。角色这一颗原来**一个都没声明**（`clickable` 没写 `role`），
- * 归并后由组件发 `Role.Button`——那是 第6节第5条 :532 要的那一栏，不是顺手升级；
+ * 归并后由组件发 `Role.Button`——那是无障碍那一栏要的字段，不是顺手升级；
  * 语义树里仍然**不发** `selected`：「开/关」这件事本来就写在自己的名字里
  * （`意图·xxx` / `意图·关`），那里才是它的规范位。
  *
@@ -57,7 +58,7 @@ import com.lovebrain.app.ui.theme.*
  * ⚠ 这一颗**没接**全局那颗 48dp 下限（`touchFloor = false` 就是 pill 那一档的形状，
  * 也是它改之前的形状——那条链上从来只有一个钉死的 `height(22.dp)`，没有 `heightIn`）。
  * 热区仍是 22dp 高，归并按原样交出去：垫上去会把这张标题行的版式换掉，
- * 那是换脸不是归并。这一笔是**既有欠账**，登记着，与有效期那一排同一处理。
+ * 那是换脸不是归并。这一笔是**既有欠账**：低于 48dp 下限要修就得单开一笔，一并改会顺手改掉标题行的长相。
  */
 @Composable
 fun IntentChip(
@@ -86,14 +87,17 @@ fun IntentChip(
 private const val INTENT_MAX_LENGTH = 200
 
 /**
- * 持续意图编辑弹窗（第6节第1条 归并）——浮层那一半的形状归设计系统的 `LbModalSheet`，这一层只转参数。
+ * 持续意图编辑弹窗——浮层那一半的形状归设计系统的 `LbModalSheet`，这一层只转参数。
  *
  * 为什么这一族不能用 Material 的 `AlertDialog`：面板跑在 `TYPE_APPLICATION_OVERLAY` 窗口里，
  * 那里没有合适的 activity token，起 Dialog 窗口会直接抛 `WindowManager.BadTokenException`——
- * 那正是 `LbModalSheet` 存在的理由（见它文件头的 KDoc 与 `SheetProbeTest`（已删））。
- * 归并之前这里已经站对了所有者，但**壳里还自己排了一遍版面**：标题、表单、两颗出口
- * 全摊在这颗浮层里，于是它既画浮层又管排版。现在壳只负责"起一扇浮层"，
- * 标题与表单交给 [IntentEditorBody]——与 `ProviderEditDialog` + `ProviderFormBody` 同一分工。
+ * 那正是 `LbModalSheet` 存在的理由（见它文件头的 KDoc）。
+ * 壳只负责"起一扇浮层"，标题与表单交给 [IntentEditorBody]——与 `ProviderEditDialog` +
+ * `ProviderFormBody` 同一分工。
+ *
+ * [saving] 是宿主那一侧"这次写盘还在飞"的读数：为真时「保存」禁用。判据是
+ * "禁用而不是再开一条协程写同一份草稿"——重复提交在 `IntentController.save` 里也挡了一道，
+ * 屏上这一道是让用户看得见"正在存"。
  *
  * `internal` 是为了让 `IntentEditorSheetMergeTest` 挂**生产那一颗**（连同它的浮层壳），
  * 而不是给测试另开一只旁门（同一形见 `ProviderFormBody`）。
@@ -102,11 +106,9 @@ private const val INTENT_MAX_LENGTH = 200
 internal fun IntentEditorDialog(
     text: String,
     enabled: Boolean,
-    expiry: com.lovebrain.app.model.IntentExpiry = com.lovebrain.app.model.IntentExpiry.ONE_DAY,
-    expiryDate: String = "",
-    status: com.lovebrain.app.model.IntentStatus = com.lovebrain.app.model.IntentStatus.ACTIVE,
     visible: Boolean = true,
-    onSave: (String, Boolean, com.lovebrain.app.model.IntentExpiry, String, com.lovebrain.app.model.IntentStatus) -> Unit,
+    saving: Boolean = false,
+    onSave: (text: String, enabled: Boolean) -> Unit,
     onDismiss: () -> Unit,
     onInputIntent: (() -> Unit)? = null
 ) {
@@ -114,9 +116,7 @@ internal fun IntentEditorDialog(
         IntentEditorBody(
             text = text,
             enabled = enabled,
-            expiry = expiry,
-            expiryDate = expiryDate,
-            status = status,
+            saving = saving,
             onSave = onSave,
             onDismiss = onDismiss,
             onInputIntent = onInputIntent
@@ -125,29 +125,27 @@ internal fun IntentEditorDialog(
 }
 
 /**
- * 意图编辑器本体——浮层里除了遮罩与卡片那两层的**全部**内容：标题、启用开关、有效期、
- * 日期与正文输入框、两颗出口。
+ * 意图编辑器本体——浮层里除了遮罩与卡片那两层的**全部**内容：标题、启用开关、
+ * 正文输入框、两颗出口。
  *
  * 标题原来没有槽位（这一格的第一句就是那段说明文字），归并时把它抬进 `LbModalSheetTitle`，
- * 于是这一扇与 `RecordSentFlowHost`、纠正中心、点踩原因面板长成同一个形状：
+ * 于是这一扇与 `CorrectionCenterHost`、`MemoryCorrectionFlowHost` 这些同层浮行长成同一个形状：
  * 标题 + 正文 + `LbModalSheetActions`，动作仍是同一份 `LbDialogAction` 词表。
- * ⚠ **没有新增任何文案**：那句话只是换了槽位（账记在 `UiStringLiteralBudgetTest` 的两栏）。
+ *
+ * 有效期那三档加"已完成"那一档（以及它们背后的到期时刻）**已经从这一扇摘掉**：
+ * 一条意图算不算开着，只看开关与正文，两处编辑入口共用同一条语义。
  */
 @Composable
 internal fun IntentEditorBody(
     text: String,
     enabled: Boolean,
-    expiry: com.lovebrain.app.model.IntentExpiry,
-    expiryDate: String,
-    status: com.lovebrain.app.model.IntentStatus,
-    onSave: (String, Boolean, com.lovebrain.app.model.IntentExpiry, String, com.lovebrain.app.model.IntentStatus) -> Unit,
+    saving: Boolean,
+    onSave: (text: String, enabled: Boolean) -> Unit,
     onDismiss: () -> Unit,
     onInputIntent: (() -> Unit)? = null
 ) {
     var editText by remember { mutableStateOf(text) }
     var editEnabled by remember { mutableStateOf(enabled) }
-    var editExpiry by remember { mutableStateOf(expiry) }
-    var editStatus by remember { mutableStateOf(status) }
     val overLimit = editText.length > INTENT_MAX_LENGTH
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -166,29 +164,6 @@ internal fun IntentEditorBody(
                 label = stringResource(R.string.intent_enable_switch_label),
                 onCheckedChange = { editEnabled = it }
             )
-        }
-        Spacer(Modifier.height(Spacing.md))
-        // 有效期选择——四档互斥单选：一小时 / 一天 / 一个星期 / 已完成
-        Text(stringResource(R.string.intent_expiry_label), style = AppTypography.labelMedium, color = TextSecondary)
-        Spacer(Modifier.height(Spacing.xs))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
-        ) {
-            IntentExpiryChip(stringResource(R.string.intent_expiry_one_hour), editExpiry == com.lovebrain.app.model.IntentExpiry.ONE_HOUR) {
-                editExpiry = com.lovebrain.app.model.IntentExpiry.ONE_HOUR
-            }
-            IntentExpiryChip(stringResource(R.string.intent_expiry_one_day), editExpiry == com.lovebrain.app.model.IntentExpiry.ONE_DAY) {
-                editExpiry = com.lovebrain.app.model.IntentExpiry.ONE_DAY
-            }
-            IntentExpiryChip(stringResource(R.string.intent_expiry_one_week), editExpiry == com.lovebrain.app.model.IntentExpiry.ONE_WEEK) {
-                editExpiry = com.lovebrain.app.model.IntentExpiry.ONE_WEEK
-            }
-            IntentExpiryChip(stringResource(R.string.intent_expiry_completed), editExpiry == com.lovebrain.app.model.IntentExpiry.COMPLETED) {
-                editExpiry = com.lovebrain.app.model.IntentExpiry.COMPLETED
-                // 选「已完成」即标完成——与设置页同一判据，不再单列「标记为已完成」入口
-                editStatus = com.lovebrain.app.model.IntentStatus.COMPLETED
-            }
         }
         Spacer(Modifier.height(Spacing.md))
         // 文本输入框——归设计系统 [LbFormField] + [LbFieldInput]，不再自己画 Box+BasicTextField。
@@ -215,51 +190,18 @@ internal fun IntentEditorBody(
                 color = if (overLimit) Error else TextHint
             )
         }
-        // 统一操作行：超限时「保存」是**灰着还在**，不是消失——用户得知道少填了什么
+        // 统一操作行：超限时「保存」是**灰着还在**，不是消失——用户得知道少填了什么。
+        // 正在写盘时同样灰着还在：这一拍不许再点出第二次写盘。
         Spacer(Modifier.height(Spacing.md))
         LbModalSheetActions(
             listOf(
                 LbDialogAction(stringResource(R.string.a11y_action_cancel), onDismiss, tone = LbDialogActionTone.Muted),
                 LbDialogAction(
                     label = stringResource(R.string.intent_save),
-                    enabled = !overLimit,
-                    onClick = {
-                        onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled, editExpiry, "", editStatus)
-                    }
+                    enabled = !overLimit && !saving,
+                    onClick = { onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled) }
                 )
             )
         )
     }
-}
-
-/**
- * 有效期选择 chip——归进设计系统那颗 [LbChip]。
- *
- * 语义是**一组里互斥的单选**（"一小时 / 一天 / 一个星期 / 已完成"四选一）：原来自己画的
- * 那条链上把"现在选哪一档"写进字面前缀（`✓ $label`）与底色（Primary / SurfaceCard），
- * 归并后这两件事分别由 [LbChipInteraction.Single] 在语义树里发 `Selected`、由
- * [LbChipStyles.filled] 画实心选中档——同一件事只剩一份。
- *
- * 档位用 [LbChipStyles.filled] 再 `.copy` 两处：字色未选那一档原来是 `TextHint`（比
- * `filled` 默认的 `TextSecondary` 还浅一档），左右内边距原来是 `Spacing.sm`、上下 `Spacing.xs`
- * （比 `filled` 默认的 `lg / sm` 更紧凑——这组三颗挤在一行）。两处都是调用方用 `.copy`
- * 调数，不是在页面里再画一条 Modifier 链（同 `IntentChip` 用 `pill.copy(pillHeight = ...)`）。
- */
-@Composable
-private fun IntentExpiryChip(
-    label: String,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    LbChip(
-        label = label,
-        selected = isSelected,
-        onClick = onClick,
-        interaction = LbChipInteraction.Single,
-        style = LbChipStyles.filled.copy(
-            textColor = TextHint,
-            paddingHorizontal = Spacing.sm,
-            paddingVertical = Spacing.xs
-        )
-    )
 }

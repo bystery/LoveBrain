@@ -45,10 +45,10 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 第6节第4条 的**下半句**：模式切换「不移动主要**输入**」。（工单 W-B）
+ * 这条要求的**下半句**：模式切换「不移动主要**输入**」。
  *
  * 上半句（不移动主要操作）有 `LbPrimaryButtonStateTest` 与 `PanelHostSemanticsTest` 两处在判；
- * 下半句从没被任何机器判过——账本 第53节第5条 只留了一句"照字面读不成立，没自签"，
+ * 下半句从没被任何机器判过——改之前这里只留了一句"照字面读不成立，所以不自签"，
  * 而"没自签"不等于"没量过"：这一族屏一直只有两个数抄在注释里，没有一格读过长什么样。
  * 本文件先把仪器架上去**量**，再谈修。
  *
@@ -56,7 +56,7 @@ import org.robolectric.annotation.GraphicsMode
  *
  * 主要输入 = 语义树里带 `SetText`/`EditableText` 的那一颗（回复档 = `PanelTextInput` 里的
  * `BasicTextField`；谈心档 = `CounselingPanel` 顶部那颗。第三档「今日锦囊」连同它"树里 0 颗
- * 可编辑节点"那一条读数随  整删，
+ * 可编辑节点"那一条读数一起从生产里删掉了，
  * 意图编辑器的两颗要 `showEditor` 才存在）。格式 `宽x高dp @(左,上)`。
  *
  * 【实到读数（本机跑出来的，逐格；宽一律 360dp）。下面这张表不是常量：
@@ -84,45 +84,45 @@ import org.robolectric.annotation.GraphicsMode
  * 字 1.0 → 左 0.0、上 −52.0、宽 +48.0；字 2.0 → 左 0.0、上 −52.0、宽 +48.0。
  * 换档**来回一趟**（回复⇄谈心、回复⇄主动发）：两档字号都逐值回到原位，没有残留。
  *
- * 两条顺带量到的、与 第6节第5条 有关的事实（不在本工单判据里，交账不自签）：
+ * 两条顺带量到的事实（不在本文件的判据里，只登记读数、不自签）：
  * - 回复档那颗可编辑宽度现在是 **252dp**（字 1.0 与 2.0 同宽）——chips 移到独立行之后
- *   输入框吃满整行（360 − 左右各 28dp padding − ➕ 那一颗 ≈ 252）；账本 第53节第4条 当年记的
+ *   输入框吃满整行（360 − 左右各 28dp padding − ➕ 那一颗 ≈ 252）；改之前抄在这一族注释里的
  *   "chips 与 ➕ 垫到 48 见方之后留给输入框 128dp" 那一头已随 chips 换行而打开，
  *   修复前本机在同一台仪器上读到的是更紧的 96dp（字 1.0）/ 82dp（字 2.0）；
  * - 字号 2.0 时整屏那叠固定的东西（页头 + 引导卡 + 向量胶囊）把主输入推到 y=622（1.0 时 313），
  *   也就是最大字那一档这颗已经落到面板中线以下。这一条受那张引导卡在不在树上的影响
  *   （点过"关闭使用提示"就不画了），本机量的是它默认在树上的那一档。
  *
- * 与账本 第53节第5条 那两个数的对账：修复前谈心档 `304x76 @(28,273)` **逐值复现**（同一台仪器、
+ * 与改之前留档的那两个数的对账：修复前谈心档 `304x76 @(28,273)` **逐值复现**（同一台仪器、
  * 同一格配置），回复档那里记的是 `166x48 @(138,261)` 而本机读到 `96x48 @(184,261)`——
- * 那颗归 `LbChip` 之后胶囊自己的宽度换了算法。本轮把 chips 移到独立行、counseling 高度改
+ * 那颗归 `LbChip` 之后胶囊自己的宽度换了算法。把 chips 移到独立行、counseling 高度改
  * content-driven 之后，谈心档变成 `304x48 @(28,261)`、回复档 `252x48 @(28,313)`，与那条
  * 旧账的**方向**仍一致（谈心在回复上方、宽更宽），**量级**已大幅收窄（宽差 208→52、
- * 高差 28→0、左差 156→0），本轮不再追问剩余的上差。
+ * 高差 28→0、左差 156→0），剩下的那截上差不在这里追问（只登记读数）。
  *
  * ═══ 结论怎么读 ═══
  *
  * 两档都有主输入，而且**不是同一颗控件**：回复档那颗原与三颗角色 chip、
  * ➕ 抢同一行（`weight(1f)`），谈心档那颗独占一块 `height(100dp)` 的盒子——
- * 切换模式主输入左/上/宽/高四向都飘。本轮把 chips 移到独立行、counseling 高度改 content-driven
+ * 切换模式主输入左/上/宽/高四向都飘。把 chips 移到独立行、counseling 高度改 content-driven
  * 之后，**宽/高/左差已归零**（回复与谈心都落在 x=28、高 48，宽 252/304），**仅上差因 chips
  * 独立行而增大到 52dp**（回复档 y=313、谈心档 y=261）。"切换模式不移动主要输入"这条在
  * 本面板里从**不成立**变为**大幅改善**：四向里三向归零，剩下一向是 chips 独立行带来的、
  * 可解释且来回可逆的位移（见 ②）。
  *
- * 修法（已做，由主线程本轮一并收尾的两处）：
+ * 已经落下的两处修法：
  * - `ui/panel/reply/ReplyInput.kt`：角色 chips 从输入框同一行移到独立上一行（输入行只剩
  *   input + ➕，输入框吃满整行，宽从 96/82dp 打开到 252dp）；
  * - `ui/panel/counseling/CounselingPanel.kt`：输入框从 `.height(100f.dp)` 固定高度改为
  *   `.heightIn(min = 48f.dp)` content-driven，padding 从全方向 `Spacing.lg` 改为
  *   `padding(horizontal = Spacing.lg)`，占位文案加 `maxLines = 1`——
  *   谈心档那颗从 304x76 变 304x48，与回复档同高。
- * 仍未做、且不该在本工单做的：宿主钉"主输入槽位"（位置与带宽由宿主一处给出）——那要动
- * `LoveBrainPanelScreen.kt`，不在 W-B 授权文件里（工单只点了 `LoveBrainPanelScreen.kt`，
- * `core/designsystem`、`ui/common`、`ui/panel/SuggestPanel.kt` 另属他人地盘），
- * 只改宿主能挪动的东西是"把谈心那颗塞进一个固定高度"——那正是工单禁止的糊法，
+ * 仍未做、也不该在这一族一起做的：宿主钉"主输入槽位"（位置与带宽由宿主一处给出）——那要动
+ * `LoveBrainPanelScreen.kt`，判的是宿主那一层的性质，不该由量输入档的这一格顺手代签。
+ * `core/designsystem`、`ui/common`、`ui/panel/SuggestPanel.kt` 各有各的主人，不在这里改。
+ * 只搬宿主能挪动的东西就成了"把谈心那颗塞进一个固定高度"——那正是要避开的糊法，
  * 也会把 `PanelTextInput` 里那条"height 语义降为最小高度，防系统大字号截断"变成假话。
- * 所以本轮交的是：**实到读数 + 三条守得住的格子**，剩余的上差登记在账，不在这里自签跨模式等式。
+ * 所以这里交的是：**实到读数 + 三条守得住的格子**，剩下的上差只登记读数，不自签跨模式等式。
  *
  * 留下的三条判据（都只判宿主这一层真正拥有的性质，见下面三格的 KDoc）：
  * ①读数入账 + 每档"该有几颗主输入"的形状；②切换模式再切回来，那颗必须回到逐值相同的盒子；
@@ -130,8 +130,8 @@ import org.robolectric.annotation.GraphicsMode
  *   （可见胶囊与热区分层之后，那一层可以是外层透明盒，见下面第三格的 KDoc）。
  *
  * ⚠ 仪器口径沿用 `PanelHostSemanticsTest`：整屏挂 `LoveBrainViewModel` 靠 mockk 逐条桩 flow
- * （坑表 84——"要 VM 所以测不了"不是理由）；换档走**生产的点击路径**（点页头那一段 →
- * `onModeChange` → `setPanelMode` → flow 变 → 重组；第三段的 `openPlanPanel` 随  整删），
+ * （"要 VM 所以测不了"不是理由，逐条桩住就能在 JVM 上挂起来）；换档走**生产的点击路径**（点页头那一段 →
+ * `onModeChange` → `setPanelMode` → flow 变 → 重组；第三段那颗 `openPlanPanel` 已随那一档删掉），
  * 并且每次点完都验
  * "报 selected 的就是刚点的那段"，否则"两档量出同一个盒子"可能是"两档根本没切"的假象；
  * 字号矩阵靠一份 hoisted `UiMatrix` 换约束（`setContent` 一格只能调一次）。
@@ -158,7 +158,7 @@ class PanelMainInputModeSemanticsTest {
     private val draft = MutableStateFlow("")
     private val counselingDraft = MutableStateFlow("")
 
-    /** 这一屏要跑的矩阵格：工单点名的两档字号（同宽 360dp） */
+    /** 这一屏要跑的矩阵格：1.0 与 2.0 两档字号（同宽 360dp；2.0 是系统把字调大那一档） */
     private val cells = listOf(
         UiMatrix(360, 1000, 1.0f),
         UiMatrix(360, 1000, 2.0f)
@@ -167,11 +167,16 @@ class PanelMainInputModeSemanticsTest {
     private fun fakeIntents(): IntentController = mockk<IntentController>(relaxed = true).also {
         every { it.config } returns MutableStateFlow(IntentConfig())
         every { it.showEditor } returns MutableStateFlow(false)
+        // 写盘在飞吗：面板 `LoveBrainPanelScreen.kt:345` 无条件 collect 这一颗，漂给 relaxed
+        // 就是 `StateFlow<T>.value` 擦除后的裸 Object，一读就 ClassCastException，整屏挂在
+        // mount 那一帧。false = 此刻没在写盘，与 `IntentController._isSaving` 的初值同形；
+        // 本文件的格子不判"保存中禁用"，这一格既不该留 relaxed，也不该桩成 true。
+        every { it.isSaving } returns MutableStateFlow(false)
     }
 
     private fun fakeVm(): LoveBrainViewModel {
         val vm = mockk<LoveBrainViewModel>(relaxed = true)
-        // 第5节第2条 第 6 步：VM 上那 10 条纯转发口已删，状态归 ComposerStore 自己
+        // VM 上那 10 条纯转发口已删，状态归 ComposerStore 自己（所以档位读数桩在 composer 那一侧）
         val composer = mockk<ComposerStore>(relaxed = true)
         every { vm.composer } returns composer
         every { composer.panelMode } returns panelModeFlow
@@ -184,7 +189,7 @@ class PanelMainInputModeSemanticsTest {
         every { vm.counselingError } returns MutableStateFlow(null)
         every { vm.counselingResult } returns MutableStateFlow(null)
         every { vm.counselingStreaming } returns MutableStateFlow("")
-        // （用户 2026-10-03 原话"点踩就不要弹窗全部删除！！记入就行了"）：VM 上那颗
+        // 点踩只记入、不弹窗要求全部删除（2026-10-03 定的口径）：VM 上那颗
         // `currentFeedbackCase` 出口随原因面板一起摘除，面板这一侧一个字都不读它
         // （`ui/panel/LoveBrainPanelScreen.kt:226` 明写"这里**故意不收集**"）。旧桩替它挂的
         // 那一条空流删掉；赞/踩的状态出口仍然只有下面那一条 `vm.feedbacks`。
@@ -268,7 +273,7 @@ class PanelMainInputModeSemanticsTest {
     private val replyLabel: String get() = ctx.getString(R.string.panel_mode_reply)
     private val counselingLabel: String get() = ctx.getString(R.string.panel_mode_counseling)
 
-    /** 两档的"名字 → 怎么切过去"，走生产的点击路径（第三档「今日锦囊」随  整删） */
+    /** 两档的"名字 → 怎么切过去"，走生产的点击路径（第三档「今日锦囊」已经不在屏上） */
     private val modes: List<Pair<String, () -> Unit>>
         get() = listOf(
             replyLabel to { tapSegment(replyLabel) },
@@ -283,7 +288,7 @@ class PanelMainInputModeSemanticsTest {
         repeat(3) { rule.mainClock.advanceTimeByFrame() }
         rule.waitForIdle()
         // 点了必须真的换档：那一段自己得报 selected。`performClick()` 只注入坐标、不查语义，
-        // 会静默打空（公共规矩第 3 节）——那样"两档量到同一个盒子"就成了"两档根本没切"的假象。
+        // 会静默打空——那样"两档量到同一个盒子"就成了"两档根本没切"的假象。
         // 不按"全局恰好一颗报 selected"验：回复档那颗角色 chip「她」也带 Selected。
         val all = probe.actionableTargets(rule, "页头")
         val segment = checkNotNull(all.firstOrNull { it.label == label }) {
@@ -367,7 +372,7 @@ class PanelMainInputModeSemanticsTest {
      *
      * 这一格管的是"量到的是不是那两档"：档位认错、输入被删成两颗或零颗都会红。
      * 它**不**判跨档等式——那条等式今天不成立，见文件顶部的结论。
-     * （第三档「今日锦囊」原本"树里 0 颗可编辑节点"那一条判据随  整删——那一档已经不存在，
+     * （第三档「今日锦囊」原本"树里 0 颗可编辑节点"那一条判据已跟着那一档一起删掉——
      *  留着它就等于把"没有这一档"读成"这一档没有输入"。）
      */
     @Test
@@ -457,7 +462,7 @@ class PanelMainInputModeSemanticsTest {
      * 它自己要显示的那行字。
      *
      * ⚠ 这一格原先把 `INPUT_ROW_HEIGHT_DP` 直接套在可编辑节点自己身上：那等于把**可见控件**
-     * 钉成触摸下限那一档。本轮把输入的两条轴拆开了——**可见高度**（回复 28dp、通用表单 36dp，
+     * 钉成触摸下限那一档。现在输入的两条轴是分开的——**可见高度**（回复 28dp、通用表单 36dp，
      * `PanelTextInput` 里是 `heightIn(min = height)`）与**热区**（外层那颗透明盒
      * [PANEL_INPUT_TOUCH_TAG]，垫到全站下限，只负责"点胶囊外的空档也能获焦"）。
      * 于是"装不装得下那行字"这件事，可编辑节点自己**不再是承担者**：本机量到的 96x15 是那颗

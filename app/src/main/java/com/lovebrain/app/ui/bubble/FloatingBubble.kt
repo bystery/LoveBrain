@@ -185,13 +185,17 @@ fun FloatingBubble(
 
     // ═══ 闲置半透明（AssistiveTouch 降遮挡；交互/拖拽时回到用户设置值）═══
     // 有效 alpha 只在 `PanelBackdropOpacity.effectiveAlpha` 那一处算：静止 = 用户设的那一档，
-    // 闲置 = 按原有降遮挡意图挪一格但不低于可读下限。
+    // 闲置 = 按原有降遮挡意图挪一格；两态都不低于可读下限（`readabilityFloor = true`）。
     // ⚠ 这里**不许再乘一次** BUBBLE_IDLE_ALPHA 或 alphaOf()——60% 档两次相乘会掉到 0.468，
     // 那就是"为了让图标变透明而把整颗球洗到看不见"，正是用户点名不要的那件事。
+    // ⚠ `readabilityFloor = true` 只有球这一侧传：浓度尺的下限现在放开到 20%，
+    // 面板淡到 20% 用户看得见也滑得回来，而球是全屏唯一的手势入口——跟着掉到 0.20 就找不着也点不中，
+    // 那等于功能消失。所以"面板可以到 20%、球到 50% 为止"这条不对称是**有意的**，不是漏改。
     val dimAlpha by animateFloatAsState(
         targetValue = PanelBackdropOpacity.effectiveAlpha(
             opacityPercentRaw = state.backdropOpacityPercent,
-            idleDimmed = state.idleDimmed && !state.dragging && !pressed
+            idleDimmed = state.idleDimmed && !state.dragging && !pressed,
+            readabilityFloor = true
         ),
         animationSpec = midSpec,
         label = "bubbleDimAlpha"

@@ -1,6 +1,5 @@
 package com.lovebrain.app.feature.intent
 
-import com.lovebrain.app.domain.IntentPolicy
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.IntentExpiry
 import com.lovebrain.app.model.IntentStatus
@@ -14,22 +13,25 @@ import kotlinx.coroutines.launch
  * 持续意图那一段**行为**的持有者：搬的是行为块，不是字段。
  *
  * 接管三样：屏上那份意图配置（唯一的两个写口是 [refreshForKb] 与 [save]）、编辑器
- * "开/关 + 开在哪块库上"，以及到期改写这条判据本身。原来这些摊在 ViewModel 里一个
+ * "开/关 + 开在哪块库上"，以及"这条算不算开着"那一条判据。原来这些摊在 ViewModel 里一个
  * 一百行的区块上，其中"编辑器绑哪块库"还藏在**一颗裸 `private var`** 里——它和可见性
  * 是一对，拆开放就会长成"卡关了、绑定还在"，下一次保存写进一块已经不显示的库，
  * 而任何行为测试都不会红（结构门禁原本数不到那一支，这一族坑写在
  * `ViewModelStateOwnershipTest` 里）。
  *
- * 三条判据是真的离开了 ViewModel，不是换了个前缀：
- * · 到期改写（[IntentPolicy.shouldAutoExpire] 命中时把盘上那条一起标成 EXPIRED 并关掉）；
- * · KB 身份守卫（读回来与保存之后都再核一次"当前激活库还是不是这块库"，晚到的结果不落屏）；
- * · 编辑器绑定**打开那一刻**的库，不读当前库。
+ * 判据只有一条：**开 且 正文非空**（`model/Models.kt` 的 `isIntentEffective`）。
+ * 期限、"已完成"、"已到期"、"已暂停"都退役了——开启之后不会有任何东西在背后把它关掉。
  *
- * 一处**故意没修**的已知缺口，写在这里而不是留着让人猜：到期检测只挂在"切库"那一条链上
- * （由 ViewModel 的 `refreshKnowledgeBases` await [refreshForKb]）。以前有个
- * `refreshIntentConfig()` 声称"面板可见时也刷"，但它全仓零调用者，已随死代码删掉。
- * ⇒ 面板一直开着跨午夜，那条 ONE_DAY 意图要等到下一次切库才会被标成 EXPIRED。
- * 要不要把刷新一路接回面板可见处，是单独的功能决定，不属于这次搬家。
+ * 三条判据是真的离开了 ViewModel，不是换了个前缀：
+ * · KB 身份守卫（读回来与保存之后都再核一次"当前激活库还是不是这块库"，晚到的结果不落屏）；
+ * · 编辑器绑定**打开那一刻**的库，不读当前库；
+ * · 写侧统一（每次落盘都是"活动态 + 不带期限"，见 [save]），读侧宽容（老文件带着旧字段
+ *   也照样按开关说话，不迁移、不改写盘上的文件）。
+ *
+ * 一处**故意没修**的已知缺口，写在这里而不是留着让人猜：切库时的读取只挂在
+ * `refreshKnowledgeBases` 那一条链上（由 ViewModel await [refreshForKb]）。这一族以前还会
+ * 在读取时把到期的意图标成 EXPIRED 并关掉；判据退役后那条改写整块消失，
+ * 于是"面板一直开着跨午夜，意图被背后悄悄关掉"这一类形状不再有来源。
  *
  * 读写仓库一律靠注入：`feature` 不许 import `data`（包边界由 `PackageDependencyTest`
  * 在看着），所以本类不知道背后是哪块仓库。两条写盘路径的线程形状也与搬之前一致：
@@ -41,7 +43,13 @@ class IntentController(
     private val readActiveKbName: () -> String?,
     /** 读回某块库的意图配置 */
     private val readIntent: suspend (kbName: String) -> IntentConfig,
-    /** 落盘一条意图，返回仓库写后的新配置（revision 已在仓库那一侧 +1） */
+    /**
+     * 落盘一条意图，返回仓库写后的新配置（revision 已在仓库那一侧 +1）。
+     *
+     * 后三个形参（有效期档 / 到期时刻 / 状态）是**仓库端口那一侧的形状**，本类不再对它们
+     * 做任何判定：每一次落盘都交"无期限"那一格（[IntentExpiry] 的默认档 + 空时刻 +
+     * [IntentStatus.ACTIVE]），于是旧的期限语义不会从新数据里长回来。
+     */
     private val writeIntent: suspend
         (kbName: String, text: String, enabled: Boolean, expiry: IntentExpiry, expiryDate: String, status: IntentStatus) -> IntentConfig,
     /** 屏上确认保存成功之后要做的事（"改盘要把当前结果标 stale"那条判据在生成账那一侧） */
@@ -50,8 +58,14 @@ class IntentController(
     private val onNotice: (String) -> Unit = {},
     /** 读写失败的日志：只交出一句话，异常类型由调用方决定怎么落 */
     private val onLog: (String) -> Unit = {},
-    /** "现在"只取一次：填到期时刻与判过期用同一个时钟，跨小时/跨午夜那一下会给出同一个 now */
-    private val readNow: () -> String = { com.lovebrain.app.util.TimeFmt.now() }
+    /**
+     * 「保存成功」那一句回执的文案：由宿主从资源 `intent_saved_notice` 交进来
+     * （本类没有 Context，也拿不到资源表）。宿主没接线时退成 [INTENT_SAVED_NOTICE]，
+     * 与盘上资源逐字同形——两边各改一半由测试红。
+     */
+    private val savedNoticeText: () -> String = { INTENT_SAVED_NOTICE },
+    /** 「保存失败」那一句的文案：同上一颗，交自资源 `intent_save_failed_notice` */
+    private val saveFailedNoticeText: () -> String = { INTENT_SAVE_FAILED_NOTICE }
 ) {
 
     private val _config = MutableStateFlow(IntentConfig())
@@ -64,12 +78,40 @@ class IntentController(
     /** 意图编辑面板的可见性 */
     val showEditor: StateFlow<Boolean> = _showEditor.asStateFlow()
 
+    private val _isSaving = MutableStateFlow(false)
+
+    /**
+     * 这一次写盘还在飞吗：为真时 [save] 就地拒绝，不再开第二条协程写同一份草稿。
+     * 屏上那两颗保存键读这一颗把自己**禁用**（禁用而不是"再点一次再开一条"），
+     * 宿主没接这一颗时 [save] 里那一道 `saveInFlight` 门仍然挡得住重复写盘。
+     */
+    val isSaving: StateFlow<Boolean> = _isSaving.asStateFlow()
+
+    private val _savedReceipts = MutableStateFlow(0)
+
+    /**
+     * 「已保存」这一句成功回执的**纪元票根**：正文真正落盘成功一次就跳一号（失败、以及
+     * 只是开关跳变那两种都不跳——那两种发的是另外的话）。
+     *
+     * 为什么交一个"跳了几次"而不是交一个布尔：布尔要有人负责把它翻回 false，
+     * 于是屏上会长出第二本"这次到底成没成"的账（谁翻、什么时候翻、翻不动怎么办），
+     * 而这一格真正要的是"刚刚又成功了一笔"这一件事本身。读数单调向前，
+     * 看它变了一格就是一次成功，不需要谁去复位它。
+     *
+     * 屏上那颗按钮拿它做"保存成功后自己亮一下"的即时反馈（与统一通知通道那句「已保存」
+     * 同源同拍：两句都在 `writeIntent` 真返回并且过了身份守卫之后才发）。
+     */
+    val savedReceipts: StateFlow<Int> = _savedReceipts.asStateFlow()
+
     /**
      * 编辑器绑在**打开那一刻**的库上，不是当前库：切库之后再把内容写进新库就是写错人。
      * 关闭编辑器时这颗绑定**一起清掉**（见 [dismissEditor]）——存活的绑定只有"编辑器开着"
      * 这一种状态；下一次打开会在 [openEditor] 重新冻结。
      */
     private var editorKbName: String? = null
+
+    /** [isSaving] 的同步镜像：`save()` 不是 suspend，得能在翻协程之前当场问住 */
+    private var saveInFlight = false
 
     /** 生成指纹只要这一个读数：意图 revision 一变，的旧结果就该标 stale */
     fun currentRevision(): Int = _config.value.revision
@@ -83,6 +125,10 @@ class IntentController(
      * 绑定库名刷新——suspend 函数，由调用方在结构化协程里 await（不再 fire-and-forget，
      * 那两个 sibling 协程交错执行正是切库串库的来源）。
      *
+     * 读回来的那份**原样落屏**：不再按到期时刻改写状态，也不再替用户关掉任何东西。
+     * 老文件带着 EXPIRED / COMPLETED / PAUSED 也照读——那些字段已经不是判据（判据在
+     * `model/Models.kt` 的 `isIntentEffective`），把它们当场洗掉等于改写用户写过的东西。
+     *
      * 读失败只是不动屏上内容，不崩 scope；取消按原样重抛（这一支不许被下面的 `Exception` 吞掉）。
      */
     suspend fun refreshForKb(kbName: String) {
@@ -94,24 +140,9 @@ class IntentController(
             onLog("refreshIntentForKb read failed: ${e::class.simpleName}")
             return
         }
-        // 自动到期检测——判定规则在 IntentPolicy（可离线单测）；改写失败不改变屏上那份判定
-        val finalConfig = if (IntentPolicy.shouldAutoExpire(current, readNow())) {
-            val expired = current.copy(status = IntentStatus.EXPIRED)
-            try {
-                // 到期同时把这条关掉（enabled=false），屏上那份仍用本地 copy 的 revision——两条都是搬之前的原样
-                writeIntent(kbName, current.text, false, current.expiry, current.expiryDate, IntentStatus.EXPIRED)
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                onLog("refreshIntentForKb expire save failed: ${e::class.simpleName}")
-            }
-            expired
-        } else {
-            current
-        }
         // KB 身份守卫：只有当前激活库仍是这块库时，这一次读的结果才落到屏上
         if (readActiveKbName() == kbName) {
-            _config.value = finalConfig
+            _config.value = current
         }
     }
 
@@ -119,55 +150,42 @@ class IntentController(
      * 保存这条意图。
      *
      * 绑的是编辑器打开那一刻的库（没有绑定才退回当前库，与搬之前同一个 `?:` 顺序）；
-     * 校验不过就地拒绝、编辑状态原样留着；落盘成功后还要再过一次身份守卫才改屏、
-     * 才关编辑器、才把当前结果标 stale——守卫不过时这些**一个都不做**，晚到的那次保存
-     * 只改盘不改脸。
+     * 落盘成功后还要再过一次身份守卫才改屏、才关编辑器、才把当前结果标 stale——守卫不过时
+     * 这些**一个都不做**，晚到的那次保存只改盘不改脸。
      *
-     * 到期时刻与完成状态由 [IntentPolicy] 算：时间档（ONE_HOUR/ONE_DAY/ONE_WEEK）用
-     * 保存时刻 + 对应时长；COMPLETED 档把 status 改成 COMPLETED。UI 不再填日期。
+     * 写侧统一成"活动态 + 无期限"：`status = ACTIVE`、`expiryDate = ""`。后面三个形参是
+     * 旧调用方的形状，保留只为让还没接线的宿主照样编译，本类一个字都不读它们
+     * （宿主改完两条保存路径后应当从签名上摘掉）。
      *
-     * "已开启/已关闭"通知只在 enabled 真的跳变时发一次——文本/有效期编辑不该每按一键就弹一条。
+     * 回执：
+     * · enabled 真的跳变 ⇒ 「持续意图已开启」/「持续意图已关闭」；
+     * · 没跳变（改正文、空文本再保存都算）⇒ [savedNoticeText] 那一句「已保存」。
+     * 两句都**只在 `writeIntent` 真返回并且过了身份守卫之后**才发——点下去就先说成功是
+     * 这一格禁止的形状。失败只发 [saveFailedNoticeText]（「保存失败，请重试」），
+     * 编辑状态原样留着，不发任何成功回执。
      *
-     * **只改正文这一支要有成功回执**（request2 §四「意图保存反馈」）：设置页那颗「保存」与
-     * 失焦落盘走的都是这条链，以前落盘成功屏上一个字都不出，用户感觉不到"存住了"。
-     * 现在写盘真返回、且过了 KB 身份守卫之后，经同一颗 [onNotice]（宿主接到
-     * `NoticeBoard.Channel.Knowledge` = 成功形态短句、3 秒自动消失，**不是**黄色警告那一格）
-     * 发一句「已记录」——文案复用盘上既有资源 `R.string.notice_recorded`（本类没有 Context，
-     * 与 VM 里 `reportDislikeCaseSave` 同一先例：同形字面量，不新开 key）。
-     * 失败那一支不变：仍只走 [onWarning] 的「意图保存失败，内容已保留，请重试」，
-     * 成功回执**绝不早于** `writeIntent` 真返回——点下去就先说成功是这一格禁止的形状。
-     * 换档/完成/拨开关都不是这一支：期限档变了或 enabled 跳变了，就不会重复弹这句「已记录」。
+     * 重复提交：[saveInFlight] 为真时这一颗直接返回，不再开一条协程写同一份草稿。
      */
     fun save(
         text: String,
-        enabled: Boolean,
-        expiry: IntentExpiry = IntentExpiry.ONE_DAY,
-        expiryDate: String = "",
-        status: IntentStatus = IntentStatus.ACTIVE
+        enabled: Boolean
     ) {
+        if (saveInFlight) return
         val kbName = editorKbName ?: readActiveKbName() ?: return
-        val now = readNow()
-        val effectiveExpiryDate = IntentPolicy.effectiveExpiryDate(expiry, expiryDate, now)
-        val effectiveStatus = IntentPolicy.effectiveStatus(expiry, status)
-        IntentPolicy.validateSave(expiry, effectiveExpiryDate, effectiveStatus, now)?.let { reason ->
-            onWarning(reason)
-            return
-        }
         val prevEnabled = _config.value.enabled
-        // 「只改正文」这一支的判据：enabled／有效期档／状态三者都没动，动的只有正文。
-        // 换档与「完成」改 expiry/status、开关改 enabled，都不算这一支，不会多弹一句「已记录」。
-        val bodyOnlySave = enabled == prevEnabled &&
-            expiry == _config.value.expiry && effectiveStatus == _config.value.status
+        saveInFlight = true
+        _isSaving.value = true
         scope.launch {
             try {
-                val updated = writeIntent(kbName, text, enabled, expiry, effectiveExpiryDate, effectiveStatus)
+                val updated = writeIntent(kbName, text, enabled, IntentExpiry.ONE_DAY, "", IntentStatus.ACTIVE)
                 if (readActiveKbName() == kbName) {
                     _config.value = updated
                     if (enabled != prevEnabled) {
-                        onNotice(if (enabled) "持续意图已开启" else "持续意图已关闭")
-                    } else if (bodyOnlySave) {
-                        // 回执只在 writeIntent 真返回之后发；文案 = `R.string.notice_recorded` 的同形字面量
-                        onNotice(INTENT_BODY_SAVED_NOTICE)
+                        onNotice(if (enabled) INTENT_ENABLED_NOTICE else INTENT_DISABLED_NOTICE)
+                    } else {
+                        onNotice(savedNoticeText())
+                        // 同一拍里给屏上那颗按钮一张纪元票根：正文真的落盘了，按钮才亮
+                        _savedReceipts.value = _savedReceipts.value + 1
                     }
                     _showEditor.value = false
                     onSaved()
@@ -176,7 +194,10 @@ class IntentController(
                 throw e
             } catch (e: Exception) {
                 // 持久化失败保留编辑状态，只给一句可以重试的话；不发任何成功回执
-                onWarning("意图保存失败，内容已保留，请重试")
+                onWarning(saveFailedNoticeText())
+            } finally {
+                saveInFlight = false
+                _isSaving.value = false
             }
         }
     }
@@ -197,10 +218,17 @@ class IntentController(
 
     companion object {
         /**
-         * 「只改正文」落盘成功那一句回执的文案：与盘上资源 `R.string.notice_recorded`（「已记录」）
-         * 逐字同形——本类没有 Context，沿用 VM `reportDislikeCaseSave` 的先例（同形字面量、不新开 key、
-         * 不写进 strings.xml）。改资源那句的人要同步这里，两边各改一半由测试红。
+         * 保存成功的回执文案：与盘上资源 `R.string.intent_saved_notice`（「已保存」）逐字同形。
+         * 本类没有 Context，正常路径由宿主把资源交进来（[savedNoticeText]），这一颗只是没接线时的
+         * 兜底；两边各改一半由测试红。
          */
-        internal const val INTENT_BODY_SAVED_NOTICE = "已记录"
+        internal const val INTENT_SAVED_NOTICE = "已保存"
+
+        /** 保存失败的回执文案：与资源 `R.string.intent_save_failed_notice` 逐字同形 */
+        internal const val INTENT_SAVE_FAILED_NOTICE = "保存失败，请重试"
+
+        /** 开关跳变那一句回执（沿用既有文案，正文编辑不再蹭这一句） */
+        internal const val INTENT_ENABLED_NOTICE = "持续意图已开启"
+        internal const val INTENT_DISABLED_NOTICE = "持续意图已关闭"
     }
 }

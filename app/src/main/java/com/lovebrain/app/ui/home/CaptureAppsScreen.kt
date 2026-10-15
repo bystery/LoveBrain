@@ -4,10 +4,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -68,7 +70,7 @@ private object CaptureRowDimens {
  * 可以在屏幕上观测到的事：那颗总开关的闸门同时吃 `granted` 与 `disclosure`，
  * 两颗分别挂状态的话，用例点开关时读到哪一颗就成了运气。
  *
- * CAP1 加了第四颗 `floatingRunning`：候选③（悬浮窗不在 ⇒ 抓到的内容当场不记）要进
+ * 第四颗 `floatingRunning` 是补进来的：悬浮窗不在 ⇒ 抓到的内容当场不记，这一件要进
  * [captureTruthOf] 的判据，而且**必须与前三颗同一时刻**——分批读会把"悬浮窗刚被划掉"
  * 那一瞬错报成运行中。
  */
@@ -91,14 +93,14 @@ private class CaptureFacts(
  * 必要时搜索。授权判据与允许名单都归 ViewModel/仓库，这一页不 new Repository、
  * 也不复制别的 Activity 的读写逻辑。
  *
- * ## 这次删掉的废话
+ * ## 这一屏不写的东西
  *
  * 重复教程、大段工作原理、内部包名、被拒类别的解释段都不再出现在这一屏；
  * 说明最多一行（`capture_apps_intro`）。数据源与保存出口一个没动：
  * `captureAllowedPackages` 读、`setCaptureAllowed` 写、`CapturePolicy` 的二次拒绝仍在
  * ViewModel 那一侧兜住（界面回退不会把捕获串义带回来，未授权的 App 进不了采集链）。
  *
- * ## 那次同步 IPC 挪走了
+ * ## 同步 IPC 不在组合期
  *
  * 枚举安装包（`queryIntentActivities`）以前挂在 `remember { … }` 上，也就是**组合期同步扫描**：
  * 装机量大时它直接在 UI 线程上要等，错误态重试也一样。现在它只在
@@ -120,9 +122,9 @@ private class CaptureFacts(
  *
  * 关掉捕获永远不设门槛：退出采集不需要前置告知。
  *
- * ## CAP1：那一行状态从此只说真话（2026-10-06）
+ * ## 那一行状态只说真话（2026-10-06）
  *
- * 用户报"显示已开启，但抓不到聊天内容"（A1 取证 source-10 候选①③）：旧状态行只看授权与
+ * 用户报"显示已开启，但抓不到聊天内容"：旧状态行只看授权与
  * allowlist 计数，allowlist 空着时服务侧 `CapturePolicy` 把每条事件 fail-closed 全拒，
  * 悬浮窗没起时长按确认到的内容又当场不记——界面却一路绿灯。
  * 现在那一行念的是 [captureTruthOf] 的六格之一：**权限 ∧ 开关 ∧ 披露 ∧ 范围非空（再加投递的
@@ -130,16 +132,16 @@ private class CaptureFacts(
  * 披露缺的那格行本身还能点（补开披露弹窗），范围缺的那格入口就是下方直接可见的勾选列表。
  * 服务侧的 fail-closed 一个字没改——改的是"静默"，不是"默认拒绝"。
  *
- * ## CAP3：开关那一格画的是"到底成没成"，不是"偏好位是几"（2026-10-06）
+ * ## 开关那一格画的是"到底成没成"，不是"偏好位是几"（2026-10-06）
  *
  * 用户读数：「第一次进入消息捕获页面，开关是打开的……我关闭了重新拨开才触发了长文；
  * 按长文把无障碍打开之后，开关还是没开，再拨又跳去设置，卡好几次，退出重进才发现好了」。
  * 两颗病灶，各归一处，都在这屏：
- * - **D1 首屏谎报**：那颗胶囊以前直读 `captureEnabled`，而那颗偏好位当时**默认就是 true**
- *   （默认值本体已由 CAP4 翻关，另一位的账）。现在显示走 [captureSwitchShowsOn]，
+ * - **首屏谎报**：那颗胶囊以前直读 `captureEnabled`，而那颗偏好位当时**默认就是 true**
+ *   （默认值本体已在别处翻关，那是另一笔账）。现在显示走 [captureSwitchShowsOn]，
  *   吃的就是这一批 IO 读数里那五颗——没同意 / 没授权 / 没选范围，开关**就画成关**，
  *   用户第一下拨的就是真"拨开"，长文当场到；不新增第二颗旗标。
- * - **D2 同意后没接上意图**：那扇弹窗的两条出口以前拿 `accessibilityGranted` 分流，
+ * - **同意后没接上意图**：那扇弹窗的两条出口以前拿 `accessibilityGranted` 分流，
  *   把"开关那一路 + 权限已给"错分成"只补记录"。现在分流认的是 [disclosureEntry]
  *   （**这一记意图**，弹窗开着才存在，不落盘）：开关那一路同意后走
  *   [disclosureAgreedGateStep] 把"要开"续跑，状态卡那一路仍然只补记录、一条语义都没丢。
@@ -147,7 +149,7 @@ private class CaptureFacts(
  * 两根轴各钉各的：显示 = 有效态（[captureSwitchShowsOn]），落盘 = 用户那一记意图
  * （[applyCaptureIntent] + [captureIntentNeedsWrite]）。合一根就会长出
  * "用户拨一下、那一档自己弹回去"的新毛病——判据矩阵在 `CaptureTruthStateTest`，
- * 屏幕读数在 `CaptureAppsScreenTruthTest`，法律链在 `HomeStatusCaptureDisclosureTest`。
+ * 屏幕读数在 `CaptureAppsScreenTruthTest`，告知授权那条链在 `HomeStatusCaptureDisclosureTest`。
  */
 @Composable
 fun CaptureAppsScreen(
@@ -171,7 +173,7 @@ fun CaptureAppsScreen(
     var accessibilityGranted by remember { mutableStateOf(false) }
     // 这一版隐私披露用户有没有**明确同意过**（记的是版本号，不是"看见过"）
     var disclosureConfirmed by remember { mutableStateOf(false) }
-    // 悬浮窗在不在（候选③的投递闸）：与上面三颗同一批 IO 读数落位
+    // 悬浮窗在不在（投递这一路的闸：窗没起 ⇒ 长按确认到的内容当场不记）：与上面三颗同一批 IO 读数落位
     var floatingUp by remember { mutableStateOf(false) }
     /**
      * 那扇披露弹窗**是谁**开出来的（[CaptureDisclosureEntry]）：`null` = 弹窗不在。
@@ -184,15 +186,16 @@ fun CaptureAppsScreen(
     var disclosureEntry by remember { mutableStateOf<CaptureDisclosureEntry?>(null) }
     var query by remember { mutableStateOf("") }
 
-    // **从系统授权页回来必须自己重读一遍**（用户 2026-10-06 真机读数，指导书 第3条 的验收句
-    // "未授权 → 点击去设置 → **返回刷新**"到今天才真的成立）：
+    // **从系统授权页回来必须自己重读一遍**（2026-10-06 真机读数；"未授权 → 点击去设置 →
+    // **返回刷新**"这一条要求到今天才真的成立）：
     // 这一页的四颗事实（扫包 / 无障碍授权 / 这一版同意记录 / 悬浮窗在不在）只在
     // `LaunchedEffect(rescanTick)` 里读一次；跳去系统设置给完权限再回来，Activity 只是 resume，
     // 这一屏**没有重新装配**，于是 `accessibilityGranted` 还留在出发前的 false——
     // 用户看到的正是他描述的那一串：「我已经开启了啊，拨开关却又跳去设置，卡好几次，
     // 退出页面重进才发现好了」（重进 = 重新组合 = 才会重读）。
     // 挂在 resume 而不是挂 `LaunchedEffect(Unit)`：后者只在进入这一格时跑一次，跳回来不会重来。
-    // 体例照 `HomeScreen.kt:110-117` 那一颗（同一族问题、同一个观察者写法），不复述它的判据。
+    // 体例照 `ui/home/HomeScreen.kt` 里 `DisposableEffect` + `LifecycleEventObserver` 那一颗
+    // （同一族问题、同一个观察者写法），不复述它的判据。
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
@@ -351,14 +354,14 @@ fun CaptureAppsScreen(
  * 三样信息各自只有一个来源：
  * - 开关：**画的**是 [captureSwitchShowsOn] 那一档（四件事实的全称读数），**交回的**是
  *   用户想去的那一档（`onCheckedChange` 的新值）——两件事分两根轴，谁也不许替谁顶缺：
- *   拿偏好位当显示就是"第一次进来开关已经拨开"（CAP3 的 D1），拿显示当意图回写就是
+ *   拿偏好位当显示就是"第一次进来开关已经拨开"，拿显示当意图回写就是
  *   "拨一下自己弹回去"。那一格要不要先弹披露由 [captureSwitchGateStep] 判，
  *   这颗组件自己不做任何授权判断，视觉是 36×20 那颗胶囊，
  *   **直接用供应商表单那一颗 [MiniSwitch]**，不在这一页再造一份平行件
  *   （这一档提进 `core/designsystem`，两处一起换掉）；
  * - 状态行：只念 [captureStatusSentence] 从 [CaptureTruthState] 派生的那一句——
  *   权限、开关、披露、范围、悬浮窗**五读一屏各说各的**，四件（+投递）都真才轮到"已开启 · 长按消息自动捕获"。
- *   CAP1 修的就是这一格旧账：旧写法只看授权与计数，allowlist 空着也照样"已授权 0 个"糊过去，
+ *   这一格的旧账就在这里：旧写法只看授权与计数，allowlist 空着也照样"已授权 0 个"糊过去，
  *   而服务侧当场把所有事件全拒；
  * - 状态点：颜色走 [LbRowState]，只有 [CaptureTruthState.Running] 配 [LbRowState.Ready]，
  *   不在页面里再写一遍 `if (ready) Primary else Neutral300`。
@@ -383,33 +386,36 @@ private fun CaptureStatusCard(
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
             .testTag(LbCaptureTags.STATUS_CARD)
     ) {
-        LbSettingRow(
-            title = stringResource(R.string.capture_apps_title),
-            subtitle = stringResource(captureStatusSentence(state)),
-            dot = if (state == CaptureTruthState.Running) {
-                LbRowState.Ready
-            } else {
-                LbRowState.NotReady
-            },
-            onClick = if (state == CaptureTruthState.DisclosurePending) onNeedDisclosure else null,
-            trailing = {
-                // 开关自己带 Role.Switch、48 见方热区与 contentDescription（见 MiniSwitch）；
-                // 画的是 [captureSwitchShowsOn] 那一档，交回的是**用户想去的那一档**，不是"已经翻了"：
-                // 那一格要不要先弹披露、这一笔要不要落盘，全归闸门与 [captureIntentNeedsWrite] 判。
-                MiniSwitch(checked = checked, label = switchName, onCheckedChange = { onToggle(it) })
-            }
-        )
+        // 行的横向内缩由这张白卡给（行组件自己不再垫横向 padding，避免与外框叠成双重内缩）。
+        Box(modifier = Modifier.padding(horizontal = Spacing.lg)) {
+            LbSettingRow(
+                title = stringResource(R.string.capture_apps_title),
+                subtitle = stringResource(captureStatusSentence(state)),
+                dot = if (state == CaptureTruthState.Running) {
+                    LbRowState.Ready
+                } else {
+                    LbRowState.NotReady
+                },
+                onClick = if (state == CaptureTruthState.DisclosurePending) onNeedDisclosure else null,
+                trailing = {
+                    // 开关自己带 Role.Switch、48 见方热区与 contentDescription（见 MiniSwitch）；
+                    // 画的是 [captureSwitchShowsOn] 那一档，交回的是**用户想去的那一档**，不是"已经翻了"：
+                    // 那一格要不要先弹披露、这一笔要不要落盘，全归闸门与 [captureIntentNeedsWrite] 判。
+                    MiniSwitch(checked = checked, label = switchName, onCheckedChange = { onToggle(it) })
+                }
+            )
+        }
     }
 }
 
 /**
- * 状态 → 那一句话。**只复用已有资源，一条新文案都不加**（strings.xml 不在本席独占区，
- * 预算只降不升；专用句已登 `handoffs/2026-10-06-CAP1-文案申请.md`）。
+ * 状态 → 那一句话。**只复用已有资源，一条新文案都不加**（这一处不动 `strings.xml`，
+ * 内联字面量预算只降不升；这六格若要用专用句子，得先有资源键）。
  * 六格六句互不相同——两格共用一句就是"缺的那件事少说一件"，`captureTruthOf` 的
  * 判据矩阵用例把这条分不开钉死了。
  */
 internal fun captureStatusSentence(state: CaptureTruthState): Int = when (state) {
-    // 已开启那句自带"长按"两个字：候选②的"只有长按才会抓"从此在运行态里说得见
+    // 已开启那句自带"长按"两个字："只有长按才会抓"这件事从此在运行态里说得见
     CaptureTruthState.Running -> R.string.home_capture_status_on
     CaptureTruthState.NoPermission -> R.string.home_capture_no_permission
     CaptureTruthState.CaptureSwitchOff -> R.string.home_capture_status_off
@@ -421,11 +427,11 @@ internal fun captureStatusSentence(state: CaptureTruthState): Int = when (state)
 /**
  * 「范围选择内容」这一段的**唯一主人**：搜索框 → 四态勾选列表。
  *
- * 抽出来的唯一动机是复用：悬浮窗齿轮那扇整窗设置页（`ui/panel/settings/SettingsCaptureEntry`）
- * 复用的是同一颗、同一个 `captureAllowedPackages` 状态源，不再有第二份范围数据。
+ * 抽出来的唯一动机是复用：范围选择这一族只留这一颗实现，读的是同一个 `captureAllowedPackages`
+ * 状态源，不再有第二份范围数据（悬浮窗那扇整窗设置页曾接同一颗，那一栏撤掉之后这颗仍是唯一主人）。
  *
  * 与替换前相比少了两句解释（"范围说明 + 已授权数"）——那两行现在归上面那张状态卡，
- * 同一件事在一屏里说两遍就是这次的删除对象；判据、状态格、行组件与保存出口都没换主人。
+ * 同一件事在一屏里说两遍就是要清掉的那类重复；判据、状态格、行组件与保存出口都没换主人。
  *
  * @param candidates 枚举结果；`null` 是那一次同步 IPC 失败了（与"整机没有可授权的 App"是两格）
  * @param loading 第一次枚举还在路上——这一格现在是真的会出现了，因为枚举挪到了 IO 上
@@ -524,7 +530,10 @@ internal fun CaptureAppListRegion(
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(AppDimens.BORDER_WIDTH_DP.dp)
+                verticalArrangement = Arrangement.spacedBy(AppDimens.BORDER_WIDTH_DP.dp),
+                // 每一行以前靠行组件自带的横向 padding 与外框留开距离；横向内缩现在由
+                // 这个列表框一处给（行只管纵向与分隔），不补上标题就会贴到描边上。
+                contentPadding = PaddingValues(horizontal = Spacing.lg)
             ) {
                 items(state.value, key = { it.packageName }) { app ->
                     CaptureAppRow(
@@ -542,7 +551,7 @@ internal fun CaptureAppListRegion(
 }
 
 /**
- * 一行 = 一个可授权 App ⇒ 归 第6节第1条 表里"行"那一族的主人 [LbSettingRow]。
+ * 一行 = 一个可授权 App ⇒ 用设计系统里"行"那一族唯一的主人 [LbSettingRow]，不在页面自拼一行。
  *
  * 行内不再写包名：包名是内部标识，用户要靠它做不了任何决定，而这一屏的行距就那么多。
  * 被二次拒绝的类别仍然显示、仍然按不动，并且仍然**读得出**按不动（`rowEnabled = false`

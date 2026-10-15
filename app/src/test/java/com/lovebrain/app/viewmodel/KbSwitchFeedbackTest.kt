@@ -140,4 +140,43 @@ class KbSwitchFeedbackTest {
             notice?.takeIf { it.channel == NoticeBoard.Channel.Warning }
         )
     }
+
+    /**
+     * 面板这一侧的名单是**醒来那一刻**的快照：悬浮窗的 VM 在服务里 `by inject()` 懒解析一次，
+     * 用户后来在 App 主页面（另一个实例）建的库，本 VM 不收到任何通知——设置页再打开，
+     * 读到的还是旧名单，"当前知识库"那行就没有可换的对象（真机 10-10、10-12 报的是同一件事）。
+     *
+     * 这一格钉的是**打开设置页那一拍的重读**真能把新库带进来：醒来 → 外部建库 → 重读 → 两块都在。
+     * 旧形状（不重读、一直背醒来那份）在这一格当场红：第二句 assertEquals 数到 1。
+     */
+    @Test
+    fun `a library created after the panel woke up shows up when the settings page rereads`() = runBlocking {
+        val kbA = KnowledgeBase(name = "kb-a", stage = "stage-a")
+        val kbB = KnowledgeBase(name = "kb-b", stage = "stage-b")
+        // 盘上的目录用一桶活水装：listAll 每次读它的**当前**内容（与真磁盘同一语义）
+        val catalog = mutableListOf(kbA)
+        val repo = repoStuckAtA(kbA, kbB)
+        coEvery { repo.listAll() } answers { catalog.toList() }
+
+        val vm = makeVm(repo)
+        vm.refreshKnowledgeBases()
+        delay(200)
+        assertEquals(
+            "服务醒来那一份名单只有一块库（与真机同状：建库发生在别的实例）",
+            listOf("kb-a"),
+            vm.knowledgeBasesState.value.map { it.name }
+        )
+
+        // 球一直开着的时候，用户在 App 主页面建了第二块库——本 VM 没有任何通知渠道
+        catalog += kbB
+
+        // 打开设置页那一拍的重读（`PanelSettingsPage` 的 LaunchedEffect 调的就是这一颗）
+        vm.refreshKnowledgeBases()
+        delay(200)
+        assertEquals(
+            "重读之后两块库都得在——没有这一拍，设置页永远背一份醒来时的旧名单（旧形状在这一格红）",
+            listOf("kb-a", "kb-b"),
+            vm.knowledgeBasesState.value.map { it.name }
+        )
+    }
 }

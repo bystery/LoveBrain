@@ -145,32 +145,52 @@ fun PanelHeader(
             )
 
             // ── 右：收起按钮 ──
-            val collapseDescription = stringResource(R.string.panel_collapse)
-            Box(
-                modifier = Modifier
-                    .size(HeaderDimens.COLLAPSE_HOTZONE_DP.dp)
-                    .semantics { contentDescription = collapseDescription }
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        // 角色要自己声明：这是自定义 Box.clickable，Material 不会替我补
-                        // （面板整屏第一次进仪器量到：热区 48x48 达标、`role=无`）
-                        role = Role.Button,
-                        onClick = onCollapse
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_chevron_down),
-                    // 标签只在上面那个热区 Box 上声明一次。这里再声明一遍，
-                    // 语义合并后会拼成「Collapse panel+Collapse panel」，读屏念两遍
-                    // （改之前实测到的就是这串）。图标在这颗按钮里是装饰。
-                    contentDescription = null,
-                    tint = TextSecondary,
-                    modifier = Modifier.size(HeaderDimens.CONTROL_HEIGHT_DP.dp)
-                )
-            }
+            // 面板一族**共用**的那颗（[PanelCollapseAction]）：本体页头与设置页页头长的是同一颗，
+            // 不许哪一页再手写第二份（用户 2026-10-12 原话："复用 复用 复用"）。
+            PanelCollapseAction(onCollapse = onCollapse)
         }
+    }
+}
+
+/**
+ * 面板一族**共用**的那颗「收起」：本体页头（[PanelHeader]）与设置页页头是同一个控件，
+ * 谁也不许另画一份——以前设置页那颗是 `LbTextAction` 另起的 16dp 字形/28dp 热区，
+ * 与本体这颗 20dp 字形/24dp 热区长得不一样，同一次进窗里右上角出现两种"收起"。
+ *
+ * 版式就是本体页头原来的那两格：24dp 见方热区盒 + 20dp 字形（数仍在 [HeaderDimens]，
+ * 这一格只是把"长什么样"从本体页头里提出来给两页共用）。读屏名字只在这层热区盒上声明一次，
+ * 图标当装饰——同一条注释的本体是上面 [PanelHeader] 那颗原来的写法，逐字没改。
+ * 点击行为全部交给宿主那一次转手（收起到球，不是停服务），这一颗不存任何状态。
+ */
+@Composable
+internal fun PanelCollapseAction(
+    onCollapse: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val collapseDescription = stringResource(R.string.panel_collapse)
+    Box(
+        modifier = modifier
+            .size(HeaderDimens.COLLAPSE_HOTZONE_DP.dp)
+            .semantics { contentDescription = collapseDescription }
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                // 角色要自己声明：这是自定义 Box.clickable，Material 不会替我补
+                // （面板整屏第一次进仪器量到：热区 48x48 达标、`role=无`）
+                role = Role.Button,
+                onClick = onCollapse
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_chevron_down),
+            // 标签只在上面那个热区 Box 上声明一次。这里再声明一遍，
+            // 语义合并后会拼成「Collapse panel+Collapse panel」，读屏念两遍
+            // （改之前实测到的就是这串）。图标在这颗按钮里是装饰。
+            contentDescription = null,
+            tint = TextSecondary,
+            modifier = Modifier.size(HeaderDimens.CONTROL_HEIGHT_DP.dp)
+        )
     }
 }
 

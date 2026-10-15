@@ -39,8 +39,7 @@ class IntentEditorBindingTest {
                     status = status
                 )
                 stored
-            },
-            readNow = { "2026-10-09 09:00" }
+            }
         )
     }
 

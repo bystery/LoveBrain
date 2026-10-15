@@ -11,18 +11,18 @@ import org.junit.Test
 import java.io.File
 
 /**
- * 指导书 2026-10-10 §3「回复卡片纵向排列」这一格的账（默认纵向、横向保留现有摆法）。
+ * 回复卡片纵向排列这一族的账：默认纵向、横向保留现有摆法（几条失败信息里留着这条口径的旧编号，读作"默认纵向"即可）。
  *
  * 这一族**两半都有**：
  * - 纯函数那一半（枚举回落、八项上限）判的是"这颗解析口与这一排到底装了几张卡"；
  * - 源码结构那一半判的是"两档是不是**共用同一套卡逻辑**、方向有没有把别的东西一起换掉"。
  *
- * ⚠ 为什么结构那一半按"只有一处定义"来判，而不是去量像素：本轮合同写得很死——
- * 那张示意图表达的是**布局关系**，不是新增 UI 样式；颜色、边框、圆角、字号、按钮与按压缩放
+ * ⚠ 为什么结构那一半按"只有一处定义"来判，而不是去量像素：这一档的口径写得很死——
+ * 纵向要换的只有**布局关系**，不是新增 UI 样式；颜色、边框、圆角、字号、按钮与按压缩放
  * 仍由 [SchemeCard] 与设计令牌拥有。这类"不许有第二份"的债，最便宜的证人就是**声明处计数**：
  * 有人为纵向档复制一张卡（或抄第二份尺寸常量），计数立刻从 1 变 2，当场红。
  * 每一格都另配**反向证人**（同一颗尺在坏形状下必须读不到、在好形状下必须读到），
- * 免得正则写坏了恒绿——本仓库坑表里"扫空集恒绿"那一族。
+ * 免得正则写坏了恒绿——扫到空集就当通过，正是"恒绿"那一族坏法。
  *
  * 行为那一半（切换方向后逐条还在、回调仍落在原 identity、筛选对得上原卡）在
  * `ResultAreaVerticalReadingTest`（Robolectric，真挂起来量）；
@@ -153,11 +153,11 @@ class ReplyCardLayoutTest {
         ).forEach { (needle, what) ->
             assertEquals(
                 "$what 只许有一处定义——纵向档是「同一种卡的另一种摆法」，不是第二张卡：" +
-                    "这里读到 2 就是有人复制了卡片内容层（本轮明令禁止）",
+                    "这里读到 2 就是有人复制了卡片内容层（这一版明令禁止）",
                 1, occurrences(code, needle)
             )
         }
-        // 字号那一档仍只住在 SchemeTextDimens（本轮没动它，留着是防"纵向档顺手调大字号"）
+        // 字号那一档仍只住在 SchemeTextDimens（这一族没动它，留着是防"纵向档顺手调大字号"）
         assertEquals("正文字号只许一处定义", 1, occurrences(code, "BODY_FONT_SIZE = 13.sp"))
         assertEquals("正文行高只许一处定义", 1, occurrences(code, "BODY_LINE_HEIGHT = 18.sp"))
     }
@@ -227,7 +227,7 @@ class ReplyCardLayoutTest {
         val code = masked("ResultArea.kt")
         assertEquals(
             "全文件只许两颗 ScrollState 主人：共用的 `readScroll` + 骨架屏那一颗私有占位。" +
-                "纵向档若要再嵌一条自己的滚动（= 第三颗），就是本轮点名禁止的那条坏法：" +
+                "纵向档若要再嵌一条自己的滚动（= 第三颗），就是这一版点名禁止的那条坏法：" +
                 "「在已有 verticalScroll 里再嵌一条滚动」，实到 " + occurrences(code, "rememberScrollState()"),
             2, occurrences(code, "rememberScrollState()")
         )
@@ -283,7 +283,134 @@ class ReplyCardLayoutTest {
         }
     }
 
+    // ═══ 7. 设置页那一格：两档都是**选项**，不是开 / 关 ═══
+
+    /**
+     * 「回复卡片 [上下 | 左右]」这一行的形状判据（替代关系：旧形状是"组名 + 一行
+     * 『回复卡片纵向排列』+ 一颗开关"，把一个方向说成了"开不开"）。
+     *
+     * 每一颗计数各挡一种回退：
+     * · `LbChip(` 恰两颗 ⇒ 长回开关（0 颗）、或有人把方向摊成三档（3 颗）都红；
+     * · `LbChipInteraction.Single` 与 `LbChipStyles.segmented` 各两颗 ⇒ 选中态仍走互斥单选那一族、
+     *   可见尺寸仍由设计系统那一颗分段档拥有（页面自己 `copy` 一档出来就是第四种形状）；
+     * · `onVerticalChange(` 恰一处 ⇒ 写口仍然只有一条，而且交的是方向；
+     * · 开关那一族（`MiniSwitch` / `Switch(` / `toggleable` / `checked =`）与 `LbSettingRow`、
+     *   旧的组名与「纵向排列」两句文案 **一颗都不许在**；
+     * · 这一行也不再自带卡壳（整组一张外框由页面那一侧拥有）。
+     *
+     * ⚠ 这里判的是来路与形状。"点下去真的换了摆法、只亮一档、旧文案不在屏上"那一半在
+     * `SettingsReplyLayoutEntryTest`（挂起来读语义树）。
+     */
+    @Test
+    fun `the settings row renders the two directions as two options and nothing else`() {
+        val code = maskedSettings("SettingsReplyLayoutEntry.kt")
+        listOf(
+            "LbChip(" to "两档各一颗芯片",
+            "LbChipInteraction.Single" to "两颗都交出互斥单选的选中语义",
+            "LbChipStyles.segmented" to "两颗都走设计系统那一颗分段档",
+            "onVerticalChange(" to "唯一的写口",
+            "selected =" to "两档各自的选中判据"
+        ).forEach { (needle, what) ->
+            assertEquals("$what：这一行只该有两档，实到 " + occurrences(code, needle) + " 处（$needle）",
+                2, occurrences(code, needle))
+        }
+        // 这一版的新形状（对照原型换算表 .segments）：**一条浅底轨道 + 轨道里几格透明文字**，底与描边归
+        // 轨道、格子自己静息不画底。10-11 那一版错画成"两格各自带描边的独立盒"（用户判"根本不一样"那一件），
+        // 这一族的两把尺各挡一种坏法：
+        // · 整行只许**一条** `SettingsSegmentedPill` 轨道容器——两格各画各的盒子那种画法根本没有这颗
+        //   共享轨道，计数 0 当场红；长出第二条也红（一格一条轨道 = 又拆回独立按钮）。
+        // · 两格都走**透明格档** `LbChipStyles.segmentedPill`（不画底不画描边）——退回带描边的
+        //   `LbChipStyles.segmented`（10-11 那一版那颗坏档）时 `segmentedPill` 读数掉到 0，当场红。
+        assertEquals(
+            "整行只许一条分段轨道容器（[两格各自一盒] 那种坏形状根本没有这颗共享轨道）：实到 " +
+                occurrences(code, "SettingsSegmentedPill(") + " 处",
+            1, occurrences(code, "SettingsSegmentedPill(")
+        )
+        assertEquals(
+            "两格都走设计系统那颗**透明格子**档 segmentedPill（底与描边归轨道，不各自一盒）：实到 " +
+                occurrences(code, "LbChipStyles.segmentedPill") + " 处",
+            2, occurrences(code, "LbChipStyles.segmentedPill")
+        )
+        // 行版式与标签的挤压方向：行根走族里那颗行骨架、标签吃掉剩余宽度（窄窗时缩的是标签不是格子）。
+        assertTrue("行根要走 Modifier.settingsEntryRow()（族里那颗行骨架），而不是自带卡壳或裸 Row",
+            code.contains("settingsEntryRow()"))
+        assertTrue("行标签必须吃掉剩余宽度（Modifier.weight(1f)），否则窄窗挤掉的是分段命中区",
+            code.contains("Modifier.weight(1f)"))
+        listOf(
+            "R.string.settings_reply_layout_vertical" to "「上下」那一档的名字",
+            "R.string.settings_reply_layout_horizontal" to "「左右」那一档的名字",
+            "R.string.settings_reply_card_row_label" to "这一行自己的标签"
+        ).forEach { (needle, what) ->
+            assertEquals("$what：名字住资源，这一格里只许引用一次（实到 " +
+                occurrences(code, needle) + " 处，$needle）", 1, occurrences(code, needle))
+        }
+        listOf(
+            "MiniSwitch" to "开关那一族",
+            "Switch(" to "开关那一族",
+            "toggleable" to "切换语义（把选项说成开/关）",
+            "checked =" to "开关的选中判据",
+            "LbSettingRow" to "旧那一行的行壳（组名 + 文案 + 尾部开关）",
+            "R.string.settings_card_vertical_label" to "旧文案「回复卡片纵向排列」",
+            "R.string.settings_group_reply" to "旧组名那一行（组名现在住在页外框外面）",
+            "settingsEntryCard()" to "行自己画的卡壳（卡套卡的另一半来源）"
+        ).forEach { (needle, what) ->
+            assertFalse(
+                "这一格里不许再有$what：看见「$needle」就是旧形状长回来了",
+                code.contains(needle)
+            )
+        }
+    }
+
+    /**
+     * 屏上两档 ↔ 偏好那一颗枚举：只有两档、默认纵向，而且布尔与枚举的桥只有一座。
+     *
+     * 这一格钉的是"设置页这一行**不**持有方向真值"：它只交布尔，枚举与落盘归宿主。
+     * 反例：在这一行里再写一次 `ReplyCardLayout`（第二座桥）、或宿主那侧把布尔当成第三档，
+     * 都会在"这一行读到 0 处 / 宿主读到 1 处"这两句上红。
+     */
+    @Test
+    fun `the row keeps the direction truth in the enum owned by the host`() {
+        val row = maskedSettings("SettingsReplyLayoutEntry.kt")
+        assertEquals("方向的真值不住在这一行：这里不许出现第二次枚举判断",
+            0, occurrences(row, "ReplyCardLayout"))
+        val host = maskedHost("LoveBrainPanelScreen.kt")
+        assertTrue(
+            "布尔 ↔ 枚举那座桥必须在宿主那一侧（点上下 = VERTICAL、点左右 = HORIZONTAL），扫不到说明" +
+                "要么桥被拆了、要么搬去了这一行",
+            host.lines().any { "if (vertical) ReplyCardLayout.VERTICAL else ReplyCardLayout.HORIZONTAL" in it }
+        )
+        assertTrue(
+            "行的读数也从那一颗枚举回来（默认纵向就是枚举那颗 DEFAULT）：扫不到就是宿主自己揣了一份方向",
+            host.lines().any { "surface.cardLayout == ReplyCardLayout.VERTICAL" in it }
+        )
+        assertEquals("写盘口在宿主那一侧恰一处", 1, occurrences(host, "viewModel.setReplyCardLayout("))
+        // 反向证人：这把尺不是扫空集
+        assertTrue("这一屏的两档就是枚举的两档，一档不多一档不少",
+            ReplyCardLayout.entries.size == 2 && ReplyCardLayout.DEFAULT == ReplyCardLayout.VERTICAL)
+    }
+
     // ═══ 夹具 ═══
+
+    /** 设置页那一族的源码（形状判据要跨目录读：这一行的主人住在 `ui/panel/settings`） */
+    private fun settingsSourceFile(name: String): File {
+        val dir = File("src/main/java/com/lovebrain/app/ui/panel/settings").takeIf { it.isDirectory }
+            ?: File("app/src/main/java/com/lovebrain/app/ui/panel/settings")
+        val f = File(dir, name)
+        assertTrue("找不到生产源码：$f（这把尺没有对象，不许静默空过）", f.isFile)
+        return f
+    }
+
+    private fun maskedSettings(name: String): String =
+        SourceScan.maskComments(settingsSourceFile(name).readText(Charsets.UTF_8))
+
+    /** 宿主接线那一颗文件（`ui/panel`）：只读形状，不改它 */
+    private fun maskedHost(name: String): String {
+        val dir = File("src/main/java/com/lovebrain/app/ui/panel").takeIf { it.isDirectory }
+            ?: File("app/src/main/java/com/lovebrain/app/ui/panel")
+        val f = File(dir, name)
+        assertTrue("找不到宿主接线：$f（这一格的桥就没有对象了）", f.isFile)
+        return SourceScan.maskComments(f.readText(Charsets.UTF_8))
+    }
 
     private fun sourceFile(name: String): File {
         val dir = File("src/main/java/com/lovebrain/app/ui/panel/reply").takeIf { it.isDirectory }

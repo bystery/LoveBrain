@@ -45,14 +45,14 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 错误档与未配置档——第6节第3条 点名的四态里"出事的那两格"，在这一族屏上**从来没挂起来过**。
+ * 结果区与谈心的**错误档 / 未配置档**——出事时那一屏的两种状态。
  *
- * 之前只量过成功档（`ResultAreaTouchTargetsTest` 交的是 `GenerateResult.Success`，
- * 面板那一侧交的是"无错误"——锦囊面板那一块连同它那一格已随  整删）。
- * 所以那两格守卫跑得再绿，
+ * 这一族以前只在成功档上量过（`ResultAreaTouchTargetsTest` 交的是 `GenerateResult.Success`，
+ * 面板那一侧交的是"无错误"；锦囊那一块连同它那一格已随功能一起删除）。
+ * 所以那些成功档守卫跑得再绿，
  * 说的也只是"成功时这屏没毛病"——出事时那一屏长什么样，一颗都没读过。
  *
- * ⚠ 先记一条用**读数**纠正过来的旧假设：拿 `Success` 去挂"未配置供应商"那一档，
+ * ⚠ 先记一条只能靠**读数**才纠正得过来的假设：拿 `Success` 去挂"未配置供应商"那一档，
  * 量到的仍是整排方案卡——`when` 里 `result is Success` 排在 `!providerReady` **前面**。
  * 未配置档要 `result = null` 才到得了（判"挂的是哪一档"也得有证人，见下面第一格）。
  */
@@ -83,11 +83,17 @@ class PanelErrorStatesSemanticsTest {
     ): IntentController = mockk<IntentController>(relaxed = true).also {
         every { it.config } returns MutableStateFlow(config)
         every { it.showEditor } returns MutableStateFlow(showEditor)
+        // 写盘在飞吗：面板 `LoveBrainPanelScreen` 顶层无条件 collect 这一颗（`intentSaving`
+        // 那一句 collectAsStateWithLifecycle），漂给 relaxed
+        // 就是 `StateFlow<T>.value` 擦除后的裸 Object，一读就 ClassCastException。
+        // false = 此刻没在写盘，与 `IntentController._isSaving` 的初值同形；
+        // 本文件的格子不判"保存中禁用"，这一格不该留 relaxed，也不该桩成 true。
+        every { it.isSaving } returns MutableStateFlow(false)
     }
 
     private fun fakeVm(counselingError: String?): LoveBrainViewModel =
         mockk<LoveBrainViewModel>(relaxed = true).also { vm ->
-            // 第5节第2条 第 6 步：VM 上那 10 条纯转发口已删，状态归 ComposerStore 自己
+            // VM 上那 10 条纯转发口已删，输入区状态归 ComposerStore 自己持有——所以这里替的是 store 那颗
             val composer = mockk<ComposerStore>(relaxed = true)
             every { vm.composer } returns composer
             // 泛型流一条都不留给 relaxed（relaxed 交回泛型 mock，`.value` 一取就 ClassCastException）
@@ -103,7 +109,8 @@ class PanelErrorStatesSemanticsTest {
 
     private val ctx get() = ApplicationProvider.getApplicationContext<Context>()
 
-    /** 三颗重试的标签**都**走资源（本轮把它们并成一条），锚点必须 `getString` 取 */
+    /** 重试出口的标签一律走资源（`panel_retry_tap`），锚点必须 `getString` 现取：
+     *  写死中文会在文案改动或环境换语言时假红，而屏上其实什么都没坏 */
     private val retryLabel: String get() = ctx.getString(com.lovebrain.app.R.string.panel_retry_tap)
 
     private fun mountResult(result: GenerateResult?, ready: Boolean) {
@@ -138,7 +145,8 @@ class PanelErrorStatesSemanticsTest {
         rule.waitForIdle()
     }
 
-    /** 只看**完整落在视口里**的节点；排除项连尺寸一起打进信息，并压样本下限（同账本 第40节/第44节） */
+    /** 只看**完整落在视口里**的节点；被容器裁掉的排除项连尺寸一起打进报错信息，并压样本下限——
+     *  样本少到空转时两条断言都会假绿，所以先数够颗数再判热区与角色 */
     private fun assertFloorAndRoles(what: String, minSample: Int = 2, allowEmpty: Boolean = false) {
         val all = actionables(what, allowEmpty = allowEmpty)
         if (all.isEmpty()) {
@@ -190,8 +198,8 @@ class PanelErrorStatesSemanticsTest {
      *
      * 只差一处，而且这一处是调用方自己签的：[allowEmpty]。探针那颗"空集就抛"对绝大多数屏
      * 是对的（空集=入口没了/点击语义没挂上），它本身没被改松，这里也没去共用它——
-     * 错误档这一态本轮撤掉了重复出口（同一屏不许有两颗做同一件事的入口），"就地零可点"
-     * 正是合同要的读数，拿一把"空集即抛"的尺去量它，红的是量具。
+     * 错误档这一态要求撤掉重复出口（同一屏不许有两颗做同一件事的入口），"就地零可点"
+     * 正是这条要求要的读数，拿一把"空集即抛"的尺去量它，红的是量具。
      *
      * ⚠ 两份定义有可能各自漂移，所以 `the not-configured state gives one way into settings`
      * 那一格拿**同一屏**把两份读数对照钉住：哪天探针的样本换了义，那一格先红。
@@ -211,11 +219,11 @@ class PanelErrorStatesSemanticsTest {
     @Test
     fun `the result error state does not carry a second primary action`() {
         mountResult(GenerateResult.Error("网络断了，这轮没生成成"), ready = true)
-        // 判据从"就地必须有一颗重试"翻成"就地必须没有"：本轮合同要回复档的主动作
-        // **只有一个插入槽**，无结果时槽上画的就是那颗「生成回复」，结果区里再放一颗重试
-        // 等于同一屏两个入口做同一件事。把那颗按钮加回来，这一格就红。
+        // 判据与直觉相反，所以写清理由：错误档通常"该给一颗重试"，回复档这里偏偏**不许有**——
+        // 回复档的主动作**只有一个插入槽**，无结果时槽上画的就是那颗「生成回复」，
+        // 结果区里再放一颗重试等于同一屏两个入口做同一件事。把那颗按钮加回来，这一格就红。
         // （谈心那一档不同：它没有别的出口，那一格保持"必须有重试"不动。锦囊那一档连同那一格
-        //  一起随  整删——这里不为它留一条"存在即可"的空判据。）
+        //  一起随功能删除——这里不为它留一条"存在即可"的空判据。）
         // 这一态**整档零可点**：不只是"不许有那颗重试"，而是整棵树读不到资源里那句重试的
         // 名字——按钮、裸文字、灰着的任何一种形状加回来都红。
         val targets = actionables("结果区·错误档", allowEmpty = true)
@@ -258,7 +266,7 @@ class PanelErrorStatesSemanticsTest {
         )
         assertFloorAndRoles("结果区·未配置档", minSample = 1)
         // 只判"存在 + 够大 + 有角色"还不够：写死成 Disabled 的引导动作同样能过那三条。
-        // 上一格在表单那边学到的是同一课（禁用量与可用量各要一格）——这次立刻又用上一次。
+        // 表单那一族（`ProviderFormSemanticsTest` 的"禁用态与可用态各有一格"）学到的是同一课，这里再钉一次。
         val way = targets.single()
         assertTrue(
             "未配置档的出口必须真能按（灰着的引导等于没有引导）：" + way.describe(),
@@ -281,7 +289,7 @@ class PanelErrorStatesSemanticsTest {
      * 结果区右上角那颗「⋯」总工具入口**已经不存在了**，这一格跟着换成新语义的两条判据。
      *
      * 原来这一格判的是"点开下拉菜单的那颗要报 `DropdownList`"——那颗触发器连同整条
-     * `⋯` 通路都在这一轮删掉（改完不许改名成「更多」继续堆同样四项），继续留那条断言
+     * `⋯` 通路都已经删掉（改完不许改名成「更多」继续堆同样四项），继续留那条断言
      * 就等于判一件已经不存在的形状。换成两条：
      *
      * ① **不许有下拉式工具入口回来**：这一屏读不出 `DropdownList` 角色，
@@ -292,10 +300,11 @@ class PanelErrorStatesSemanticsTest {
      *    它有角色（`Button`）、热区在全站下限之上。
      *    反例：把总工具菜单整片删光、忘了给纠正中心留那条文字入口——第二条红。
      *
-     * ⚠ 「本轮参考」那条每卡下方的文字入口本轮**量不到**：`ResultArea` 至今没把
-     *   `onReferenceClick` 传进卡片行（那颗形参在 `SchemeCard` 上一直走默认 null），
-     *   面板也就翻不动那份清单。那一格等结果区接线补齐之后再立，写在这里是为了别让它
-     *   被当成"已经判过了"。
+     * ⚠ 卡片下方那条「这轮参考了哪些信息？」的文字入口（`SchemeCardCopy.REFERENCE_ENTRY_LABEL`）
+     *   在这一族**量不到**，原因出在夹具而不在生产：那颗入口只在 `roundRefsClick` 非空时才画，
+     *   而它要求 `memoryRefsFeedVisible` 过关——本文件的 `mountResult` 没交任何记忆参考清单
+     *   （`memoryRefs` 走默认空表），清单为空 ⇒ 入口根本不出现。
+     *   要立那一格，先让夹具交进一份非空的参考清单；写在这里是为了别把它当成"已经判过了"。
      */
     @Test
     fun `the success state has no dropdown utility trigger but keeps its text entry`() {
@@ -309,7 +318,7 @@ class PanelErrorStatesSemanticsTest {
             ),
             ready = true
         )
-        // 2026-10-10 §3：结果卡默认档改成**纵向一列**，八张卡摊开之后，这条文字入口落在视口之外。
+        // 2026-10-10：结果卡默认档改成**纵向一列**，八张卡摊开之后，这条文字入口落在视口之外。
         // `SemanticsNode.boundsInRoot` 会被滚动祖先裁掉 ⇒ 屏外那颗读来是 `0x0 @(0,0)`，
         // 下一句热区判据会把"这一条在屏外"误读成"这一条太小"（量具瞎，不是实现没画）。
         // 先把它滚进视口再量：量的仍然是那一句要量的东西（热区下限），只是让尺看得见它。
@@ -360,11 +369,12 @@ class PanelErrorStatesSemanticsTest {
             every { composer.messages } returns MutableStateFlow(emptyList())
             every { composer.draftText } returns MutableStateFlow("")
             every { composer.currentRole } returns MutableStateFlow(ChatMessage.Role.HER)
-            // 输入对象（她/我/补充）：面板 `LoveBrainPanelScreen.kt:190` 无条件 collect 这一颗，
+            // 输入对象（她/我/补充）：面板 `LoveBrainPanelScreen` 顶层无条件 collect 这一颗
+            //（`inputKind` 那句 collectAsStateWithLifecycle），
             // 漂给 relaxed 就是 `StateFlow<T>.value` 擦除后的裸 `Object`，一读就 CCE，整屏在
-            // mount 那一帧断掉——本文件那 2 红与 `PanelHost`/`PanelUsageMetric`/`PanelMainInputMode`
-            // 同族同因（上面 91 行那条注释写的正是这条规矩，这一格漏了一项）。
-            // 取值 = 生产初值 HER（ComposerStore.kt:192），与上面 `currentRole = HER` 同轴。
+            // mount 那一帧断掉——`PanelHost`/`PanelUsageMetric`/`PanelMainInputMode` 那一族
+            // 红过同一条原因（`fakeIntents` 里 `isSaving` 那三行写的正是这条规矩，这一格原先漏了这一项）。
+            // 取值 = 生产初值 HER（`ComposerStore._inputKind` 的初值），与上面 `currentRole = HER` 同轴。
             // 只补这一颗挂载整屏的夹具：上面 `fakeVm` 那一颗喂的是 `ResultArea`（形参直给，
             // 不读 VM 的 inputKind），它没有这一格就不该补。
             every { composer.inputKind } returns MutableStateFlow(ComposerInputKind.HER)
@@ -377,10 +387,10 @@ class PanelErrorStatesSemanticsTest {
             every { vm.counselingError } returns MutableStateFlow(null)
             every { vm.counselingResult } returns MutableStateFlow<String?>(null)
             every { vm.counselingStreaming } returns MutableStateFlow("")
-            // （用户 2026-10-03 原话"点踩就不要弹窗全部删除！！记入就行了"）：VM 上那颗
+            // 产品口径（2026-10-03 定）：点踩不再弹窗问原因，直接记入就行。VM 上那颗
             // `currentFeedbackCase` 出口随原因面板一起摘除，面板这一侧一个字都不读它
-            // （`ui/panel/LoveBrainPanelScreen.kt:226` 明写"这里**故意不收集**"）。旧桩替它挂的
-            // 那一条空流删掉；这一格用的通知位是下面那颗 `vm.currentNotice`/真实队列，
+            // （`LoveBrainPanelScreen` 里明写"这里**故意不收集**"——一收集就把 UI 状态拉回面板这一侧）。
+            // 旧桩替它挂的那一条空流删掉；这一格用的通知位是下面那颗 `vm.currentNotice`/真实队列，
             // 赞/踩的状态出口则仍然只有 `vm.feedbacks` 那一条。
             every { vm.currentVector } returns MutableStateFlow(emptyMap())
             every { vm.feedbacks } returns MutableStateFlow(emptyMap())

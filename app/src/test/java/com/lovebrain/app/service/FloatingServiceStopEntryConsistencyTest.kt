@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config
 import java.io.File
 
 /**
- * **停止入口一致**那一族（M05/M06）：主页方块、设置页那颗开关、通知栏「停止」三颗入口
+ * **停止入口一致**那一族：主页方块、设置页那颗开关、通知栏「停止」三颗入口
  * 必须落到**同一颗**真实停止动作上，而「暂时隐藏」不是那颗动作。
  *
  * 为什么这一族能在 JVM 上判（本机无设备，一律不签「已验收」）：
@@ -47,15 +47,15 @@ class FloatingServiceStopEntryConsistencyTest {
     // ═══════════ 1. 读数本体：开关亮不亮只认窗口状态 ═══════════
 
     /**
-     * 四档逐格判（原话第 2 条）。
+     * 四档逐格判：开关的亮与灭只由窗口状态推出来，暂时隐藏不算关。
      *
      * 回成什么样子会红：
      * · 把换算写成 `state == VISIBLE_BUBBLE || state == VISIBLE_PANEL`（= 把 TEMP_HIDDEN 读成「已关闭」）
      *   → TEMP_HIDDEN 那颗当场红：用户看见开关是灰的，屏上却还留着一颗随时会亮回来的球；
      * · 换算改成读一颗新造的持久化布尔 → 这一格换不到那颗布尔（编译期就只给 WindowState），
-     *   而第 5 组那两格会红；
+     *   而后面那一族「没有新布尔、没有新键」的两条计数也会跟着对不上（开关后面不许有新布尔）；
      * · 新加第五种状态（例如 `HIDDEN_BY_USER`）→ 那句 `values().size == 4` 当场红，
-     *   而下面那格的状态表逐行判也会多出一行对不上（原话：本次不新增第五种窗口状态）。
+     *   而下面那格的状态表逐行判也会多出一行对不上（这一族的口径：窗口状态就那四档，不新增第五种）。
      */
     @Test
     fun `the assistant reading comes from the real window state and hidden is not off`() {
@@ -157,7 +157,7 @@ class FloatingServiceStopEntryConsistencyTest {
     }
 
     /**
-     * 清理路径**没被绕过**（原话第 3 条）。这一格不重写 onDestroy（现场确认它可靠），
+     * 清理路径**没被绕过**。这一格不起服务、也不重跑 onDestroy（本机跑不起来），所以不重述它的逻辑，
      * 它只做两件负向判：
      * · 摘窗与拆 composition 的那几颗**各恰好一处**，并按原顺序排在 onDestroy 里
      *   （顺序即判据：把 `scope.cancel()` 提到 `bubble.remove()` 之前，动画回调会在视图已摘之后
@@ -213,10 +213,10 @@ class FloatingServiceStopEntryConsistencyTest {
     }
 
     /**
-     * 暂时隐藏那一支仍然是「隐藏」，不是「关闭」（原话第 2 条的后半）。
+     * 暂时隐藏那一支仍然是「隐藏」，不是「关闭」——隐藏里不许出现任何停止动作的零件。
      *
      * 回成什么样子会红：把 `tempHide()` 实现成 `stopSelf()`／拆窗／停前台——任何一件出现
-     * 这一格当场红，第 2 组那格的读数也会跟着对不上。
+     * 这一格当场红，「一次真停一笔，隐藏一笔都不记」那一格的读数也会跟着对不上。
      */
     @Test
     fun `temp hidden stays a hide and never reaches the stop action`() {
@@ -240,7 +240,7 @@ class FloatingServiceStopEntryConsistencyTest {
      * 通知栏那一颗：`ACTION_STOP` → `onStartCommand` 里 `stopSelf()` → `START_NOT_STICKY`。
      *
      * 回成什么样子会红：停止那颗动作被删（用户只剩"杀进程"一条路）；`stopSelf()` 被换成自己拆窗
-     * （绕过清理路径＝第 3 组那格一起红）；或者改成再 `startService` 一次（无保活的承诺就破了）。
+     * （绕过清理路径＝「账只有一个写者，写者就是那条清理路径」那一格一起红）；或者改成再 `startService` 一次（无保活的承诺就破了）。
      */
     @Test
     fun `the notification stop action goes through the same real stop`() {
@@ -295,10 +295,17 @@ class FloatingServiceStopEntryConsistencyTest {
     }
 
     /**
-     * 设置页那一颗：开关拨关与「关闭悬浮助手」都**只**投宿主那一条关闭回调，本页不碰平台。
+     * 设置页那一颗：开关拨关**只**投宿主那一条关闭回调，本页不碰平台，也不再画第二颗关闭动作。
+     *
+     * 分工换过一代：旧形状是"一颗开关 + 尾部一颗『关闭悬浮助手』"两个同义入口，
+     * 现在整格只留那颗开关——所以这里从"关闭动作必须在场"翻成"关闭动作不许在场"，
+     * 卡壳归属也从"格自带 `settingsEntryCard()`"翻成"外框归页面、行不自带壳"。
      *
      * 回成什么样子会红：
-     * · 把「关闭」接到 `tempHide`／`ACTION_TEMP_HIDE`（隐藏当关闭，原话第 2 条禁的那件事）；
+     * · 尾部那颗重复的「关闭悬浮助手」长回来（`LbTextAction`／那颗文案的资源键再出现）——
+     *   同页两个同义入口正是这一族拆掉的东西；
+     * · 格自己再画 `settingsEntryCard()` 卡壳或与页面重复画组名（卡套卡的另一半来源）；
+     * · 把「关闭」接到 `tempHide`／`ACTION_TEMP_HIDE`（隐藏当关闭——开关亮着、服务却没停）；
      * · 页面自己去 `stopForeground`／`removeView`／摘窗（"残余透明层"与"通知还在但窗没了"两种形状）；
      * · 页面自己起服务或跳授权页（`startActivity` 一出现就是第四颗入口，
      *   `SettingsPageStructureTest` 那把闸同时会判红）；
@@ -307,7 +314,7 @@ class FloatingServiceStopEntryConsistencyTest {
     @Test
     fun `the settings switch hands the host one close and does no platform work itself`() {
         val src = masked("src/main/java/com/lovebrain/app/ui/panel/settings/SettingsAssistantEntry.kt")
-        assertEquals("关闭回调的在场形状：声明 + 开关拨关 + 那颗关闭动作", 3, Regex("""onRequestClose""").findAll(src).count())
+        assertEquals("关闭回调的在场形状：声明 + 开关拨关（整格只有这一颗出口，没有第二颗关闭动作）", 2, Regex("""onRequestClose""").findAll(src).count())
         assertEquals("开启回调的在场形状：声明 + 开关拨开", 2, Regex("""onRequestEnable""").findAll(src).count())
         assertTrue(
             "拨关那一支必须投关闭，不是投开启",
@@ -319,11 +326,21 @@ class FloatingServiceStopEntryConsistencyTest {
         ).forEach { needle ->
             assertFalse("设置页那一格自己碰了「$needle」＝清理路径旁边长出第二颗入口", src.contains(needle))
         }
-        // 两颗控件都是既有的件（原话：不要在狭窄顶部再塞一排新图标）
+        // 唯一的开关走既有那颗件；行壳与外框的分工是新版那一族（外框与组名归页面，行不自带壳）
         assertTrue("开关走既有那颗 MiniSwitch", src.contains("MiniSwitch("))
-        assertTrue("行壳走既有那颗 LbSettingRow", src.contains("LbSettingRow("))
-        assertTrue("关闭动作走既有那颗文字档 LbTextAction", src.contains("LbTextAction("))
-        assertTrue("容器走那一族唯一的主人 settingsEntryCard", src.contains("settingsEntryCard()"))
+        // 行壳归本族那一颗：全站公共件 `LbSettingRow` 的标题字阶是 `titleMedium` 粗体，
+        // 借它会让同一页里「悬浮助手」比「持续意图」「当前知识库」大一档——
+        // 这一族的行标签只有一种字（`LbRowLabel`），行的层次由组名与分隔线表达。
+        assertTrue("行壳走本族那一颗 settingsEntryRow()", src.contains("settingsEntryRow()"))
+        assertTrue("行标签走本族唯一那一颗 LbRowLabel", src.contains("LbRowLabel("))
+        assertFalse(
+            "这一行不许再借全站那颗 LbSettingRow 的标题字阶（一页两种粗细就是它带来的）",
+            src.contains("LbSettingRow")
+        )
+        assertFalse("尾部那颗重复的『关闭悬浮助手』不许长回来（文字动作件）", src.contains("LbTextAction"))
+        assertFalse("已废弃的关闭动作资源键不许被引用", src.contains("settings_assistant_close"))
+        assertFalse("卡壳归页面那张组外框，行不许自带 settingsEntryCard", src.contains("settingsEntryCard"))
+        assertFalse("组名由页面画在框外，这一格不许自己再画一颗", src.contains("settings_group_assistant"))
         assertFalse("这一页不许多造一颗「收起」", src.contains("panel_collapse"))
     }
 

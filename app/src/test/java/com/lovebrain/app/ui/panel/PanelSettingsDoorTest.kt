@@ -125,4 +125,45 @@ class PanelSettingsDoorTest {
             1, count("onOpenAppPage = { openAppMainPage() },", """onOpenAppPage = \{ openAppMainPage\(\) \}""")
         )
     }
+
+    /**
+     * 打开设置页那一拍必须重读知识库目录：面板这一侧的 VM 是服务里 `by inject()` 懒解析的，
+     * 建库/改名发生在 App 主页面（另一个实例）——不重读，设置页就一直背服务起来那一刻的
+     * 旧名单，真机上读成"当前知识库无法切换"（10-10、10-12 两轮报的是同一件事）。
+     *
+     * 为什么是源码形状尺：`PanelSettingsPage` 是 private、挂着 `FloatingService.windowStateFlow`
+     * 那颗真对象，JVM 语义树挂不动它（同上面那格的理由）；而这一条的病灶恰好是**接线漏了**，
+     * 判据必须贴着接线本身。数的是 `viewModel.refreshKnowledgeBases()` ——重读只许走
+     * 既有那条链这一颗，页面上另写第二条重读（自造 `listAll` 第二口）也算回退。
+     */
+    @Test
+    fun openingTheSettingsPageRereadsTheKnowledgeCatalog() {
+        // 接线必须存在且恰好一颗：整份面板正文里只许这一处
+        assertEquals(
+            "设置页打开时必须重读目录（`viewModel.refreshKnowledgeBases()` 恰好 1 处，实到 " +
+                "${count(panelCode, """viewModel\.refreshKnowledgeBases\(\)""")} 处）——" +
+                "少了它，面板这一侧的库名单永远停在服务起来那一刻",
+            1, count(panelCode, """viewModel\.refreshKnowledgeBases\(\)""")
+        )
+        // 而且必须长在设置页那一格里（PanelSettingsPage 之后），不是挂在别处充数
+        val settingsPageHead = panelCode.indexOf("private fun PanelSettingsPage")
+        assertTrue("读不到 PanelSettingsPage——面板正文形状换了，这把尺要重写", settingsPageHead >= 0)
+        val afterHead = panelCode.substring(settingsPageHead)
+        assertEquals(
+            "重读那一拍必须挂在设置页的函数体里（实到 ${count(afterHead, """viewModel\.refreshKnowledgeBases\(\)""")} 处）",
+            1, count(afterHead, """viewModel\.refreshKnowledgeBases\(\)""")
+        )
+        // 反向证人①：把接线行删掉的坏形状，两句都得数到 0（证明尺真能看见"没有"）
+        val stripped = panelCode.replace("viewModel.refreshKnowledgeBases()", "")
+        assertEquals(0, count(stripped, """viewModel\.refreshKnowledgeBases\(\)"""))
+        // 反向证人②：多接一颗的坏形状，整份正文那句必须数到 2（证明尺真能看见"多了"）
+        val doubled = panelCode.replace(
+            "viewModel.refreshKnowledgeBases()",
+            "viewModel.refreshKnowledgeBases()\n        viewModel.refreshKnowledgeBases()"
+        )
+        assertEquals(
+            "注件没就位：合成第二颗重读应当数到 2",
+            2, count(doubled, """viewModel\.refreshKnowledgeBases\(\)""")
+        )
+    }
 }

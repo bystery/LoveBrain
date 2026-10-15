@@ -21,7 +21,7 @@
     <!-- 空态蓝字入口（主动发）：两种模式的文案 -->
     <string name="proactive_empty_send_one">点此主动发 →</string>
     <string name="proactive_empty_turn_off">主动发模式已开启，点击关闭</string>
-    <!-- 书 §14.1：候选卡的策略行标签。可发送正文与策略说明视觉分离——角度是常驻短说明，
+    <!-- 候选卡的策略行标签：可发送正文与策略说明视觉分离——角度是常驻短说明，
          时机/先别发/需要准备默认收起、按需展开；标签一律从资源取，页面不内联中文。
          `proactive_strategy_line` 是"标签：内容"的行格式，冒号住在资源里，代码零内联标点。 -->
     <string name="proactive_label_angle">角度</string>
@@ -37,22 +37,23 @@
     <string name="action_collapse">收起</string>
     <string name="provider_empty">还没有供应商</string>
     <string name="provider_add">＋ 添加供应商</string>
-    <!-- 屏幕上那行字与开关的 contentDescription 共用这一条（ 第②栏） -->
+    <!-- 屏幕上那行字与开关的 contentDescription 共用这一颗：两处各写一遍迟早念出两个版本 -->
     <string name="provider_thinking_mode">思考模式</string>
     <string name="panel_retry_tap">点击重试</string>
     <string name="provider_open_settings">去设置</string>
     <string name="hint_saved">已保存</string>
     <string name="hint_conflict_kept_draft">文件已被后台修改，已保留你的草稿，请重新打开查看</string>
     <string name="hint_save_failed">保存失败，请重试</string>
-    <!-- ：编辑页那一篇"成功但为空"与"没读出来"两格的话。原本空态那句是页面里一颗自画的居中 Text（正是  点名的形状），现在交共用状态件画，句子逐字搬进来、一个字没改。 -->
+    <!-- 编辑页那一篇"成功但为空"与"没读出来"两格的话。原本空态那句是页面里一颗自画的居中 Text——
+         同一件事就有两种答案；现在交共用状态件画，句子逐字搬进来、一个字没改。 -->
     <string name="kb_edit_empty_hint">还没有内容，点右上「编辑」添加</string>
     <string name="kb_edit_read_failed">这些文件没读出来，请重试</string>
     <string name="kb_save">保存</string>
-    <!-- 首页缺项行「知识库缺失去管理」那颗出口的标签（书 §5.2：配置缺失要说清哪项没完成＋去对应配置）。
-         上一批首页的活临时借了 `kb_new_kb`「新建知识库」——那是"新建"的动作名，不是"去管理页"的去处名，
+    <!-- 首页缺项行「知识库缺失去管理」那颗出口的标签：配置缺失要说清哪项没完成，并给出对应配置的去处。
+         此前这一行临时借了 `kb_new_kb`「新建知识库」——那是"新建"的动作名，不是"去管理页"的去处名，
          借读会让用户以为点下去直接建库。单独一颗，不动其它页。 -->
     <string name="home_go_manage">去管理</string>
-    <!-- 书 §12.4 要「正在编辑、保存中、已保存或失败」四态可辨：那颗转圈以前复用「保存」这颗名，
+    <!-- 「正在编辑 / 保存中 / 已保存 / 失败」四态必须彼此可辨：那颗转圈以前复用「保存」这颗名，
          读屏念出来与按钮本身一模一样，等于四态里少了一态。单独一颗，不改行为。 -->
     <string name="kb_saving">保存中</string>
     <string name="kb_next_step">下一步</string>
@@ -67,7 +68,8 @@
 
     <!-- : 错误文案 -->
     <string name="error_provider_missing">请先配置一个可用的模型供应商</string>
-    <!-- Issue #5 / 复核  ：自定义 Provider 高级设置里的生成超时档位（有界白名单 60/120/180/300，默认 120） -->
+    <!-- 自定义 Provider 高级设置里的生成超时档位（有界白名单 60/120/180/300，默认 120）：
+         超时只许落在这几档上，服务侧才校验得住，自由输入的秒数管不住 -->
     <string name="provider_timeout_title">生成超时上限（高级）</string>
     <string name="provider_timeout_tier_label">%1$d 秒</string>
 
@@ -84,8 +86,8 @@
     <string name="cost_below_cent">不足 %1$s0.01</string>
     <!-- 页级弱化文字动作（LbTextAction）的文案：原来写成内联中文，量出来 38x25dp -->
     <string name="onboarding_skip">跳过</string>
-    <!-- 首页覆盖式引导（原话第 14 条）每格的两条出口与被指那一格的名字。
-         2026-10-06 由 G1b 接线单 §6 正式落键：此前临时借 `onboarding_skip`/
+    <!-- 首页覆盖式引导每格的两条出口与被指那一格的名字。
+         2026-10-06 正式落键：此前临时借 `onboarding_skip`/
          `a11y_close_onboarding`/`capture_apps_title`，读起来是"跳过/关闭/捕获范围"，
          不是"稍后/不再提示/消息捕获"这三件事。 -->
     <string name="guide_defer">稍后</string>
@@ -101,19 +103,19 @@
     <string name="capture_apps_allow">允许捕获</string>
     <string name="capture_apps_search">搜索应用</string>
     <string name="capture_apps_no_results">没有匹配的应用</string>
-    <!--  页头归一：返回那颗的读屏名字（中英各一份，屏幕上是箭头字形，不占文案位） -->
+    <!-- 页头返回那颗的读屏名字（中英各一份，屏幕上是箭头字形，不占文案位） -->
     <string name="common_back">返回</string>
 
     <!-- /: 面板主操作 -->
     <string name="panel_analysing_with_seconds">%1$s · %2$d 点击停止</string>
     <string name="panel_mode_reply">回复</string>
     <string name="panel_mode_counseling">谈心</string>
-    <!-- 谈心输入框的占位文案与读屏名字共用这一条（ 第②栏） -->
+    <!-- 谈心输入框的占位文案与读屏名字共用这一颗：两处各写一遍迟早念出两个版本 -->
     <string name="counseling_input_hint">说说你的困惑，军师帮你分析…</string>
     <string name="panel_mode_proactive">主动发</string>
     <string name="panel_result_menu">更多操作</string>
-    <!--  通知条归进 LbEmptyState：这两句原来写死在 ResultArea 的自画条里（TEXT 那把尺
-         数着的那两处），归并时一起进资源，中英各一份。中文逐字照旧。 -->
+    <!-- 通知条走共用的 LbEmptyState：这两句原来写死在 ResultArea 的自画条里（`UiStringLiteralBudgetTest`
+         的 TEXT 那一栏数着的就是那两处），一起进资源，中英各一份。中文逐字照旧。 -->
     <string name="panel_input_changed">输入已修改，当前答案基于修改前内容</string>
     <string name="panel_regenerate_with_new_input">按新输入生成</string>
     <string name="panel_copy">复制</string>
@@ -125,7 +127,7 @@
     <string name="home_grant_accessibility">去授权</string>
     <string name="home_off">关</string>
     <string name="home_on">开</string>
-    <!-- M25 §五 取舍③：首页重新加入一块**累计使用小卡**（新决定优先于旧规「不恢复使用概览」，
+    <!-- 首页重新加入一块**累计使用小卡**（新近的决定优先于旧规「不恢复使用概览」，
          但只维持一块简洁小卡，不恢复仪表盘）。数字全部来自盘上那五颗既有读数，标签只到这一族；
          花费那一格的值复用已有的 cost_unknown / cost_below_cent，不造第二份同义文案。 -->
     <string name="home_usage_generated">累计生成</string>
@@ -153,7 +155,7 @@
     <string name="kb_load_failed">读不出知识库列表，请重试</string>
     <string name="action_retry">重试</string>
 
-    <!--  反馈案例页归一（账本 ）：页头、导出、类别与格式芯片这一族名字进资源。
+    <!-- 反馈案例页这一族名字进资源：页头、导出、类别与格式芯片。
          之前它们散在 Kotlin 里，英文环境下读屏照样念中文；类别名现在只有一个来源
          （页头芯片与卡片首行共用 `categoryDisplayName`，不再各写一遍）。 -->
     <string name="feedback_cases_title">已踩案例</string>
@@ -162,9 +164,9 @@
         <item quantity="other">%1$d 条</item>
     </plurals>
     <string name="feedback_export_json">导出</string>
-    <!-- 回复结果那一排的"已踩"档：点了踩才出现（用户 2026-10-03 原话）。
+    <!-- 回复结果那一排的"已踩"档：点了踩才出现（2026-10-03 定下的行为）。
          同排的"全部 %d""已赞 %d"此刻还写死在 ResultArea 里，是历史账，
-         这条只是"新增一条文案不往硬字面量账上再加一笔"，整排并到资源那一刀在批次 D 结清。 -->
+         这条只是"新增一条文案不往硬字面量账上再加一笔"，整排并到资源那一刀留待后续一笔结清。 -->
     <string name="scheme_filter_disliked">已踩 %1$d</string>
     <string name="feedback_category_understanding_error">理解错误</string>
     <string name="feedback_category_expression_dislike">表达不喜欢</string>
@@ -176,11 +178,11 @@
          `ResultAreaTouchTargetsTest` 钉的就是树上那两个字，判据不能顺手改宽。 -->
     <string name="a11y_home_about">关于</string>
     <string name="a11y_delete_message">删除消息</string>
-    <!-- 消息行撤掉可见「她/我」标签与尾部叉号（本轮合同）之后，角色这一面只剩读屏这一条出口：
+    <!-- 消息行撤掉可见「她/我」标签与尾部叉号之后，角色这一面只剩读屏这一条出口：
          位置与颜色说给眼睛，这两句说给耳朵。第三条是列表尾部那一条备注区的名字。 -->
     <string name="a11y_message_her">她的消息</string>
     <string name="a11y_message_me">我的消息</string>
-    <!-- §8.1 方向映射的横滑揭示标签：消息行拖动过程中亮在气泡让开的那一头（"改成她 / 改成我"），
+    <!-- 消息行方向映射的横滑揭示标签：消息行拖动过程中亮在气泡让开的那一头（"改成她 / 改成我"），
          向外那一侧的"删除"复用本文件里既有的 a11y_action_delete 那一颗，不另抄第二份同一个词。
          这两句屏幕上看得见，所以不进 a11y_ 前缀那一族。 -->
     <string name="swipe_action_to_her">改成她</string>
@@ -192,10 +194,10 @@
     <string name="a11y_action_cancel">取消</string>
     <string name="a11y_action_edit">编辑</string>
     <string name="a11y_action_delete">删除</string>
-    <!-- 2026-10-06 W7 字面量预算还债（`UiStringLiteralBudgetTest` 组件实参那一栏 实测 53 → 预算 42）：
+    <!-- 2026-10-06 结清内联字面量预算（`UiStringLiteralBudgetTest` 组件实参那一栏 实测 53 → 预算 42）：
          知识库母版页那张卡的第四颗动作「重命名」与动作行里的「导出」原本内联在 Kotlin，
-         「当前使用 / 阶段：X / 已对话 N 轮」三颗是 L1b 把 meta 交回公共件时从一个整句拆出来的。
-         中英同拍（英文那一侧是这次新写的一半），逐条对应上面那颗 key。 -->
+         「当前使用 / 阶段：X / 已对话 N 轮」三颗是把 meta 那一行交回公共件时从一个整句拆出来的。
+         中英同拍（英文那一侧与中文同批补写），逐条对应上面那颗 key。 -->
     <string name="a11y_action_rename">重命名</string>
     <string name="a11y_action_export">导出</string>
     <string name="kb_card_in_use">当前使用</string>
@@ -207,28 +209,48 @@
          整行可点 = 编辑完整正文，这一句是这颗唯一说给耳朵的"点了会怎样"。 -->
     <string name="a11y_edit_advisor_note">编辑军师备注</string>
 
-    <!-- 悬浮窗齿轮那扇整窗设置页。整页只集中四件事（供应商 / 超时 / 透明度 / 捕获范围），
+    <!-- 悬浮窗齿轮那扇整窗设置页。这一页只放"面板上的显示 + 这一块库的内容 + 助手开关"这三组，
+         供应商与模型、生成超时、消息捕获范围都不在这一页（各有各的入口，别在这一页再列一遍）；
          标题与标签一律纯文字，不新增图标档；值与保存流程仍走首页那一份配置源。 -->
     <string name="settings_title">设置</string>
     <string name="settings_opacity_label">透明度</string>
     <string name="settings_opacity_percent">%1$d%%</string>
-    <!-- 2026-10-10 指导书 §1/§2/§3/§7：设置页分成「悬浮助手 / 回复显示 / 当前知识库 / 持续意图」四组。
+    <!-- 2026-10-11：设置页分成「显示 / 内容 / 悬浮助手」三组，组名画在外框之外。
          分组标题与三档尺寸名一律进资源，不内联进 Kotlin（UiStringLiteralBudgetTest 的 COMPONENT 那一栏
          会按 `Lb…(` 调用里的字面量计数）。`当前知识库`、`持续意图` 两组的标题沿用已有的 kb 切换器标签与
          `intent_label`，不另发明第二份同名文案。 -->
     <string name="settings_group_assistant">悬浮助手</string>
     <string name="settings_group_reply">回复显示</string>
-    <string name="settings_assistant_label">悬浮助手开启</string>
+    <!-- 行标签与组名同字（原型那一行就叫「悬浮助手」）：这一行没有"开启"两个字的位置，
+         开关自己那一份读屏名字与这行标签共用同一条资源，不另造第二份同名文案。 -->
+    <string name="settings_assistant_label">悬浮助手</string>
     <string name="settings_assistant_close">关闭悬浮助手</string>
     <string name="settings_bubble_size_label">悬浮图标大小</string>
     <string name="settings_bubble_size_small">小</string>
     <string name="settings_bubble_size_standard">标准</string>
     <string name="settings_bubble_size_large">大</string>
     <string name="settings_card_vertical_label">回复卡片纵向排列</string>
-    <!-- 2026-10-10 request2 §四「仅看本轮符号」：屏上画的那一颗**符号**（不是词、不是句子）也归这一族持有，
+    <!-- 2026-10-11 设置页重排：整页改成「显示 / 内容」两组 + 单列的「悬浮助手」，
+         组名与行标签一律进资源（不内联进 Kotlin）。一行式分段选择器的档位名沿用上面
+         `settings_bubble_size_small/standard/large`，这里只补两组新名字与"上下/左右"两个选项。 -->
+    <string name="settings_group_display">显示</string>
+    <string name="settings_group_content">内容</string>
+    <string name="settings_bubble_size_row_label">图标大小</string>
+    <string name="settings_reply_card_row_label">回复卡片</string>
+    <string name="settings_reply_layout_vertical">上下</string>
+    <string name="settings_reply_layout_horizontal">左右</string>
+    <string name="settings_kb_current_label">当前知识库</string>
+    <string name="assistant_state_running">运行中</string>
+    <string name="assistant_state_stopped">已停止</string>
+    <!-- 持续意图收成"开关 + 同一行输入与保存"两态；期限/已完成/首次介绍浮层那一批文案随语义一并退役。 -->
+    <string name="intent_row_placeholder">输入希望军师参考的意图…</string>
+    <string name="intent_row_hint">开着时每轮生成都会参考这句。</string>
+    <string name="intent_saved_notice">已保存</string>
+    <string name="intent_save_failed_notice">保存失败，请重试</string>
+    <!-- 2026-10-10：屏上那颗表示"只看这一轮"的**符号**（不是词、不是句子）也归这一族持有，
          `translatable="false"` = 不随语言环境换字形；读屏念的中文全名仍由 `contentDescription` 给。
          语义两条钉死：单色 ⇒ 吃胶囊那两档墨色；它**不是**锁形（🔒 会被读成"锁住这个窗口"），也不是 emoji 字形。
-         要不要换一个别的字形目前没有出处（那份约 22 KB 的完整 Worker 指导书没落到本机），已登记为待指认。 -->
+         这颗字形不是定案：没有可对照的设计材料说清该用哪一颗，要不要换一颗留给用户指认。 -->
     <string name="panel_round_scope_glyph" translatable="false">◉</string>
 
     <!-- 使用概览页（页头 + 累计统计那一卡）。中文逐字照搬 Kotlin 里原来的那句，一个字没改；
@@ -261,7 +283,7 @@
     <string name="feedback_save_failed">保存失败：%1$s</string>
     <string name="feedback_error_unknown">未知错误</string>
 
-    <!-- 2026-10-03「已踩案例 / 捕获 / 供应商」三页归一（ ）：
+    <!-- 2026-10-03「已踩案例 / 捕获 / 供应商」三页的文案接进资源：
          ① 案例卡展开那一层只在旧数据真有内容时画那一行，所以类别与原因各要一句标签；
          ② 导出只剩 JSON 一档，进度与就地短提示用得到的两条；
          ③ 供应商页名接资源（与首页入口同一句话），连接测试那两句从内联中文搬进来；
@@ -271,14 +293,15 @@
     <string name="feedback_reasons">原因：%1$s</string>
     <string name="feedback_exporting">导出中…</string>
     <string name="provider_page_title">模型供应商</string>
-    <!-- 供应商表单的四组分组标题（M2c 接线：`LbFormGroup(title=…)` 的四颗；表单里从此不许再有内联中文）。
-         这四格是"资源补齐"不是"新写文案"：分组标题原本根本没有，是本轮把裸标签并给 `LbFormField` 时长出来的槽。 -->
+    <!-- 供应商表单的四组分组标题（`LbFormGroup(title=…)` 的那四颗；表单里从此不许再有内联中文）。
+         这四格是"资源补齐"不是"新写文案"：分组标题原本根本没有，是把裸标签并给 `LbFormField` 时
+         才长出来的槽。 -->
     <string name="provider_form_group_basic">基础</string>
     <string name="provider_form_group_credential">凭据</string>
     <string name="provider_form_group_models">模型</string>
     <string name="provider_form_group_request">请求</string>
-    <!-- 供应商表单的字段标签与占位（M2c 换 `LbFormGroup`/`LbFormField`/`LbFieldInput` 那一副骨架时，
-         标签从裸 `Text` 上提到组件实参，内联中文因此进了字面量预算那一栏；这次接回资源）。 -->
+    <!-- 供应商表单的字段标签与占位（换成 `LbFormGroup`/`LbFormField`/`LbFieldInput` 那一副骨架时，
+         标签从裸 `Text` 上提到组件实参，内联中文因此进了字面量预算那一栏；这一族再接回资源）。 -->
     <string name="provider_form_name_label">供应商名称</string>
     <string name="provider_form_name_placeholder">名称</string>
     <string name="provider_form_base_url_label">接口地址（自动补全）</string>
@@ -309,14 +332,14 @@
     <string name="memory_kind_ongoing">事项</string>
     <string name="memory_kind_lesson">经验</string>
 
-    <!--  纠正浮层那两颗标题与输入框占位（：修正记忆/仅看本轮文案可懂且行为真实）。
+    <!-- 纠正浮层那两颗标题与输入框占位：这一族文案要说得懂，而且说的和做的必须是同一件事。
          「取消」「确认」与既有短词资源撞车，直接复用 a11y_action_cancel / a11y_action_confirm，
          不再另造第二份 key。中文逐字照搬原内联字面量，一个字没改。 -->
     <string name="memory_mute_sheet_title">暂停时长</string>
     <string name="memory_mark_wrong_sheet_title">标记为错误</string>
     <string name="memory_wrong_input_placeholder">输入正确的内容</string>
 
-    <!--  无障碍披露长文（：供应商页同源组件——包含 AccessibilityDisclosureDialog）。
+    <!-- 无障碍披露长文（与供应商页同源的那一族组件，含 AccessibilityDisclosureDialog）。
          标题与"同意并继续"进资源；"取消"复用上面的 a11y_action_cancel。
          五段正文逐字照搬原内联字面量，中文里"节点/供应商/撤销"那几个子串是披露测试的点。 -->
     <string name="capture_disclosure_title">开启消息捕获前，请确认</string>

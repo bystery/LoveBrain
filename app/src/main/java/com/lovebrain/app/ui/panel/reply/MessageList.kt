@@ -655,6 +655,30 @@ private fun Modifier.noteSwipeIsNotATap(flag: NoteSwipeFlag): Modifier = pointer
     }
 }
 
+/**
+ * 面板根部供出来的**那一帧该画多浓**（0f..1f 的 alpha）。
+ *
+ * 为什么要有这一颗：消息区那两块大面积底以前各自涂着一颗满不透明的 [SurfaceInset]，
+ * 于是设置页那颗浓度滑杆再低也透不到用户正看着的那一格——面板背景透成什么样，
+ * 中间仍是一整块实底。现在大面积底跟着同一把尺走。
+ *
+ * 这颗交下来的**是算完的读数**，不是百分比，也不是第二把尺：主人只有面板根部那一处
+ * `CompositionLocalProvider`，它取的是 `PanelBackdropOpacity.effectiveAlpha`。
+ * 这一族里谁都不许再换算一次、再乘一次（两处乘积正是那颗尺要防的第二次衰减）。
+ *
+ * ⚠ 缺省值是 `1f`（满不透明），这个数字要能站得住：这颗尺只有一个主人，而**脱离面板根的挂载**
+ * ——全部既有 JVM/Robolectric 夹具、以后任何单独挂 [MessageList] 的地方——没有主人可读，
+ * 走的就是缺省值。取 1f 它们才继续画成今天这个样子；取任何小于 1 的数会让那一整批夹具
+ * 在没有滑杆的屏上集体变脸，按像素量底色的那些格子（读不到不透明像素就抛的那台仪器）
+ * 会红在量具上而不是红在产品上。1f 也正是用户没动过滑杆那一档画出来的数，
+ * 所以缺省值与默认档同一个读数，不存在第二本账。
+ *
+ * 只给消息区那两块大面积底用：面板里其余那些 `SurfaceInset` / `SurfaceCard` 一颗都不跟着走——
+ * 它们要么是小件（一起变淡只会糊成一片），要么上面压着用户要读的字。要再多一处大面积底，
+ * 得先说清为什么它也算"整片底"，而不是顺手再读一次这一颗粒子。
+ */
+val LocalPanelBackdropAlpha = compositionLocalOf { 1f }
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MessageList(
@@ -684,6 +708,9 @@ fun MessageList(
 ) {
     val listState = rememberLazyListState()
     val haptics = LocalHapticFeedback.current
+    // 这一帧的浓度（面板根部供出来的成品读数，缺省 1f）：只取一次，两处大面积底共用它。
+    // 这里不读百分比、不调换算口——那一把尺只有一个主人，多一处读就多一本账。
+    val backdropAlpha = LocalPanelBackdropAlpha.current
 
     // 长消息折叠按 msg.id 存储，避免重排/删除后展开状态串到别的消息
     val expandedMessages = remember { mutableStateMapOf<String, Boolean>() }
@@ -850,10 +877,12 @@ fun MessageList(
     if (dialogueDisplayed.isEmpty()) {
         // 空态也坐进同一块圆角底：原话要的是"无消息时这一组（意图 / 仅看本轮）收进消息卡内"，
         // 所以空态分支补上与非空分支同一档容器（SurfaceInset + LoveBrainShape.lg）。
+        // 底色那颗 alpha 走面板根部供出来的浓度读数（[LocalPanelBackdropAlpha]）：
+        // 这一格是屏幕上最大的一片底，它不跟着滑杆走的话，滑到最底仍是一整块实底。
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .background(SurfaceInset, LoveBrainShape.lg)
+                .background(SurfaceInset.copy(alpha = backdropAlpha), LoveBrainShape.lg)
                 .padding(Spacing.md),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -907,11 +936,11 @@ fun MessageList(
         return
     }
 
-    // 聊天行与那一行备注同坐在这块旧版圆角底上
+    // 聊天行与那一行备注同坐在这块旧版圆角底上（浓度与空态那一支同一颗读数，两支持续同浓同淡）
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(SurfaceInset, LoveBrainShape.lg)
+            .background(SurfaceInset.copy(alpha = backdropAlpha), LoveBrainShape.lg)
             .padding(Spacing.md)
     ) {
         // 指导书§12.1 R15：备注随最后消息共同滚动，不钉视口底部。

@@ -28,10 +28,10 @@ import org.junit.Test
 import java.util.TimeZone
 
 /**
- * Prompt 全文**逐字节冻结表**（ 的主证据）。
+ * Prompt 全文**逐字节冻结表**：这一族是"发给模型的那串字节到底漂没漂"的主证据。
  *
  * 为什么另有这一格而不够用 `PromptAssemblyOrderContractTest` 那 11 条：那些格子钉的是
- * 「段序对不对」「某个标记在不在场」，它们看不见「同一个字节漂没漂」。把本轮场景判定与
+ * 「段序对不对」「某个标记在不在场」，它们看不见「同一个字节漂没漂」。把场景判定与
  * 对话记录围栏从 `domain/PromptBuilder.kt` 搬进 `domain/prompt/` 时，段序照样对、标记照样在，
  * 但少一个换行、多一个空格、别名编号挪一位——发给 Provider 的就是另一份 prompt。
  *
@@ -179,25 +179,25 @@ class PromptByteFreezeBaselineTest {
     //
     // 下面 105 行是 **2026-09-30 搬运之前**在同一棵树上实测的读数（那一次跑的生产码还是旧实现：
     // `PromptBuilder` 自己持有场景判定与对话围栏）。读数行由 [checkGroup] 自己打印
-    // （`PROMPT-FREEZE|组|行名|sha|字节数`），本次跑的 test-results XML 里留档。
+    // （`PROMPT-FREEZE|组|行名|sha|字节数`），跑一次的 test-results XML 里就留着档。
     // 期望值先于改动被钉住；搬完之后同一批输入必须逐行对上，对不上就是 prompt 变了。
     private val frozenTable: Map<String, Frozen> = linkedMapOf(
         // ═══ A 组：发给 Provider 的 prompt 全文（71 行）═══
         //
-        // ⚠ （"想法"→"军师备注"）改了 `IntentIdeaBlock.buildAdvisorNoteBlock` 的措辞，
+        // ⚠ 军师备注那段把"想法"改叫"军师备注"（`IntentIdeaBlock.buildAdvisorNoteBlock` 的措辞变了），
         //   于是**只有 userHint 非空的那 4 行**期望字节必然对不上：
         //   `reply/normal`、`reply/aggressive`、`reply/injection-chars`、`reply/budget-overflow`
         //   （最后一行还多一层：备注段变长会挪动预算的裁剪点，别按"替换子串"手算）。
         //   其余各行的 userHint 都是 ""，这一段根本不出现，字节一字不动——
         //   它们继续当"这次没碰别的东西"的证据用。
-        //   这 4 行的新读数**必须由下一次编译阶段实测回填**（行自己会打印 PROMPT-FREEZE|…）。
-        // 2026-10-05 重录（ 读侧净化接线后回填）：漂的实际是 **userHint 非空的全部 7 行**
+        //   这 4 行的新读数**必须由一次真跑实测回填**（行自己会打印 PROMPT-FREEZE|…），不许手算。
+        // 2026-10-05 重录（ lessons 读侧净化接线之后回填）：漂的实际是 **userHint 非空的全部 7 行**
         //   （上面点名的 4 行 + `only-round/normal`、`only-round/injection-chars`，
         //   外加 `reply/plan-injected`；每条都是军师备注段换口的 +273 字节，
         //   `reply/budget-overflow` 字节数没漂、只有 SHA 换）。
-        //    把 `PromptBuilder` 三处 lessons 原文读侧接上 `LessonDoc.purify`：夹具那份
-        //   无节头、无模板行的 LESSONS 洗完逐字恒等（front-matter 单批原样吐回），
-        //   所以下面 7 条新读数不含  的字节贡献，也不该被它再挪动；
+        //   同一次接线把 `PromptBuilder` 三处 lessons 原文读侧接上 `LessonDoc.purify`：夹具那份
+        //   无节头、无模板行的 LESSONS 洗完逐字恒等（front-matter 整批原样吐回），
+        //   所以下面 7 条新读数不含净化那一步的字节贡献，也不该被它再挪动；
         //   真实带模板行的用户文件从此在 prompt 侧也见不到模板行。
         "reply/normal" to Frozen("9b7aa21d8b064a21c1af73abd6f70be1e3f59d9435b6cac6f8a97942dc0a8c4e", 3227),
         "reply/aggressive" to Frozen("b82d608c30a3c24010c54a5408dbaedb7da536f47b9749d34cfd3152e7798a6d", 5053),
@@ -217,9 +217,19 @@ class PromptByteFreezeBaselineTest {
         "reply/intent-one-day" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
         "reply/intent-one-hour-future" to Frozen("3bba8551891ba0b711fc54977d9f928990748c8c26d6de79427eb300be898f59", 2884),
         "reply/intent-one-day-future" to Frozen("a2333bcdf71c24fe9db53b9048bff5668dfb570142f745f1ada435de62701b8e", 2878),
-        "reply/intent-one-week-past" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
-        "reply/intent-paused" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
-        "reply/intent-completed" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
+        // 持续意图那一批（期限退役之后）。⚠ 这三行的期望**不是实跑取的读数**：这颗文件在本机没跑过
+        // 构建，取不到数，于是走**恒等关系**——同一条 `fx()` 夹具、同一段正文
+        // 「这周把见面的事定下来」、同一次 `buildReplyUserPrompt(kbOf(), twoMsgs, "")`，
+        // 所以它们与 `reply/intent-one-day` 那一行**逐字同一串字节**（74bcc71b…/2893 是那一行实跑冻的数）。
+        // 这三行钉的是新判据：`enabled` + 正文非空 ⇒ 注入，旧期限/旧终态都不再挡住。
+        // 下一次实跑重录时若这三行不等 ⇒ 说明某一侧还在偷偷读 status 或 expiryDate（那就是缺陷，不是漂移）。
+        "reply/intent-legacy-past-still-injected" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
+        "reply/intent-legacy-paused-still-injected" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
+        "reply/intent-legacy-completed-still-injected" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
+        // 关着的、正文空着的：整段意图不进 prompt，字节与「没有意图」那一行（`reply/no-selector`）恒等。
+        // 这两行是上面三行的对照——只钉"两处一致"会容下"两处都不注入"，这两行把那一档挡掉。
+        "reply/intent-off-not-injected" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
+        "reply/intent-blank-text-not-injected" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
         "reply/correction-wrong-with-text" to Frozen("4bb166f6a7857f789779ddc492130cf501f436569b4755582a87fec9f91861cb", 2832),
         "reply/correction-wrong-bare" to Frozen("96735afd7e9013b063be6cbe70c5a316995fa7b9a59824194ee7ba892676378e", 2792),
         "reply/correction-legacy-id" to Frozen("49d7c66de8a888407c82f6bea266836c3dc8544a1bdb4ac4d8403c8e12de9922", 2827),
@@ -244,29 +254,29 @@ class PromptByteFreezeBaselineTest {
         "system/reply" to Frozen("1b03e8ba79b3c8bb2ee79d1372d5394ed9f7a25359ad1a7e89cf35cfe1e7432f", 20149),
         "system/counseling" to Frozen("6bf2df74fbe0680ee0c6dda5dea4946938b471899dca56b977d68124c0c94177", 5950),
         "system/polish" to Frozen("b5f0d5fb39a12203419c88e800e72c7476543d67142267be315c5c1f724a95cf", 1695),
-        // 2026-10-05（指导书 §9 原话第 18 条）：主动发的 system 资产补回锦囊的策略载荷
+        // 2026-10-05：主动发的 system 资产补回锦囊的策略载荷
         // （时机/为什么现在适合/从哪里接/什么时候先别发/发送前要准备什么 + 场景策略与字段口径），
-        // 2370 → 5848 字节。这是**内容真的变了**，不是所有者搬动；变更说明留 TeamWorkspace
-        // `evidence/2026-10-05-feedback/impl-I1-proactive.md`。
-        // 2026-10-08 重录 5848→5851→**5854**：漂的这 +3 字节是 `d42b8dc`（N15）那一笔**有需求依据的正文
-        // 改动**——`assets/engine/proactive.md` 行为策略第 3 条「**没有草稿**」的「给少量」按指导书
-        // §11.3 原话「继续清掉无草稿"给少量"的冲突」改成「给 7-10 个」（§4 新需求表行 N15「主动发 7–10 条例子 |
-        // 提示已改；清冲突」、§3 错误清单第 17 条「无草稿仍有"少量"冲突」），「少量」6 字节 → 「 7-10 个」9 字节。
-        // 读数不是手算：prewave 实跑 XML（2026-10-07T08:00:30）打的 `PROMPT-FREEZE|A|system/proactive|
-        // a632f787…|5854` 与现树那颗资产 CRLF→LF 归一后同一把尺复算一致。
-        // ⚠ 载体（assets/engine/proactive.md 与 prompt 资产锁）归主线程，这一格只登记现实读数。
-        // 2026-10-08 重录 5854 → **6485**：漂的 +631 字节是《产品与交互设计指导书·全面完整版》
-        // §2.2 第 1 条与 §14 点名的**语义冲突修正**（台账 K28），不是所有者搬动——第 5 条把"不忙"从
-        // 收尾场景里剔除并写明它不是暂缓依据、第 7 条「已读不回」不再把"对方在忙"当已证实事实、
-        // 字段口径 hold_back 一档要求"对方明确说在忙"。改前读数按本文件头注的顺序先取后改：
-        // 改前实跑 = `a632f787…|5854`（本文件上一版冻结值），改后实跑 = `b16adb23…|6485`
-        // （本轮 testDebugUnitTest 的 PROMPT-FREEZE 行），两把尺都在本次编译阶段实测，不手算。
+        // 2370 → 5848 字节。这是**内容真的变了**，不是所有者搬动。
+        // 2026-10-08 重录 5848→5851→**5854**：漂的这 +3 字节是提交 `d42b8dc` 那一笔对
+        // `assets/engine/proactive.md` 行为策略的正文改动——第 3 条「**没有草稿**」里那句"给少量"
+        // 改成「给 7-10 个」，清掉它同文件输出段"输出 7-10 条"自相矛盾的那条口径：
+        // 「少量」6 字节 → 「 7-10 个」9 字节。
+        // 读数不是手算：2026-10-07T08:00:30 那次实跑 XML 打的 `PROMPT-FREEZE|A|system/proactive|
+        // a632f787…|5854`，与现树那颗资产 CRLF→LF 归一后用同一把尺复算一致。
+        // ⚠ 这颗资产的正文与 prompt 资产锁不写在这一格里：这一格只登记现实读数，
+        //   不许为了让数字对上就去动资产本身。
+        // 2026-10-08 重录 5854 → **6485**：漂的 +631 字节是同一文件里的**语义冲突修正**，
+        // 不是所有者搬动——第 5 条把"对方看起来不忙"从收尾信号里剔除并写明它不是暂缓依据、
+        // 第 7 条「已读不回」不再把"对方在忙"当成已证实的事实、字段口径 hold_back 一档要求
+        // "对方明确说在忙"。改前读数按本文件头注的顺序先取后改：
+        // 改前实跑 = `a632f787…|5854`（本文件此前冻的值），改后实跑 = `b16adb23…|6485`
+        // （同一次 testDebugUnitTest 的 PROMPT-FREEZE 行），两把尺都是实测，不手算。
         "system/proactive" to Frozen("b16adb2345c8d14cf009294facd6d43cb54d27fcbfff5e33d845f29a180c7243", 6485),
         // 2026-10-03：`engine/knowledge_prompt/lessons.md` 这一族改了两次（加"不要输出一级标题/
-        // 不要抄字段说明"那两段 + 本轮把 `## 示例` 里那两条 `# [日期] 第N次提取` 摘掉——它一边禁止一边示范，
-        // 正是用户实测到的双标题成因）。这一行的期望**只是那颗资产自身的字节**（不拼任何东西），
+        // 不要抄字段说明"那两段 + 把 `## 示例` 里那两条 `# [日期] 第N次提取` 摘掉——它一边禁止一边示范，
+        // 正是用户在屏上实测到的双标题成因）。这一行的期望**只是那颗资产自身的字节**（不拼任何东西），
         // 所以按 checkGroup 同一口径（CRLF→LF 归一后取 SHA-256 与 UTF-8 字节数）离线重录；
-        // 编译阶段这一行自己会打 `PROMPT-FREEZE|A|system/lessons|…`，跑一次即可核对。
+        // 跑一次时这一行自己会打 `PROMPT-FREEZE|A|system/lessons|…`，对着核即可。
         // 其余各行一个字节都没动过：这张表里只有这一行是那颗资产的读数。
         "system/lessons" to Frozen("45d0b1843649b2eaf16125009fa95dd14d93130ef4cc35afaa4b962c428ce5a3", 6450),
         "system/reflect" to Frozen("5a057c19f6d4781995238f5222e5fe78698488bac064a3f9bae861abc3e18761", 3146),
@@ -277,10 +287,10 @@ class PromptByteFreezeBaselineTest {
         "counseling/user-no-kb" to Frozen("00194dd2ce69d6a6293154da441c4b197d2bb289da1ad92cae198403c7c06ea6", 458),
         "polish/user" to Frozen("e476383f49772e50da345c2c40e71208032ce1579fdadaad88aa424133a95315", 24),
         "polish/blank" to Frozen("8f8ba6bd8b8bf93db498159a70756a7a8356b7c0f5bfea3fa732875fd2a757ec", 39),
-        // 2026-10-05（§9.1 那条已确认缺陷的修复）：主动发**普通分支**过去收了 `messages`/`advisorNote`
-        // 两个形参却只用 her/recent，用户填的本轮对话与《补充》进不了 prompt。现在普通分支真拼进去，
-        // 这四行的字节随之变大（`no-kb` 57→468 就是"没库也仍带本轮草稿与消息"的直接证据）。
-        // 仅看本轮那族（下面 only-round 三行）判据不变：仍然 0 次 KB 读取。
+        // 2026-10-05（那条已确认缺陷的修复）：主动发**普通分支**过去收了 `messages`/`advisorNote`
+        // 两个形参却只用 her/recent，用户填的当轮对话与《补充》进不了 prompt。现在普通分支真拼进去，
+        // 这四行的字节随之变大（`no-kb` 57→468 就是"没库也仍带当轮草稿与消息"的直接证据）。
+        // 仅看 only-round 那一族（下面三行）判据不变：仍然 0 次 KB 读取。
         "proactive/user" to Frozen("dfd1247e3dad398b9d774dc27ab5de8a3eb8772e6fca83e7fb7d7192ea53a824", 673),
         "proactive/blank-draft" to Frozen("67efe35dc40a45ec8a7b4974685ba3b8c1690e4ced25fb24dcc737afa369e3c4", 301),
         "proactive/no-kb" to Frozen("0678a6cee84af17d9e3e331e94ce4ed4892f4a7c56a12a9dddeb55b782d80da2", 468),
@@ -415,30 +425,52 @@ class PromptByteFreezeBaselineTest {
                 )
             }
         },
-        Probe("reply/intent-one-week-past") {
+        Probe("reply/intent-legacy-past-still-injected") {
             runBlocking {
                 fx().builder.buildReplyUserPrompt(
                     kbOf(), twoMsgs, "",
                     intentConfig = IntentConfig(
-                        text = "早就到期了", enabled = true,
+                        text = "这周把见面的事定下来", enabled = true,
                         expiry = IntentExpiry.ONE_WEEK, expiryDate = "2020-01-01 00:00"
                     )
                 )
             }
         },
-        Probe("reply/intent-paused") {
+        Probe("reply/intent-legacy-paused-still-injected") {
             runBlocking {
                 fx().builder.buildReplyUserPrompt(
                     kbOf(), twoMsgs, "",
-                    intentConfig = IntentConfig(text = "先别提", enabled = true, status = IntentStatus.PAUSED)
+                    intentConfig = IntentConfig(
+                        text = "这周把见面的事定下来", enabled = true,
+                        status = IntentStatus.PAUSED
+                    )
                 )
             }
         },
-        Probe("reply/intent-completed") {
+        Probe("reply/intent-legacy-completed-still-injected") {
             runBlocking {
                 fx().builder.buildReplyUserPrompt(
                     kbOf(), twoMsgs, "",
-                    intentConfig = IntentConfig(text = "办完了", enabled = true, status = IntentStatus.COMPLETED)
+                    intentConfig = IntentConfig(
+                        text = "这周把见面的事定下来", enabled = true,
+                        expiry = IntentExpiry.COMPLETED, status = IntentStatus.COMPLETED
+                    )
+                )
+            }
+        },
+        Probe("reply/intent-off-not-injected") {
+            runBlocking {
+                fx().builder.buildReplyUserPrompt(
+                    kbOf(), twoMsgs, "",
+                    intentConfig = IntentConfig(text = "这周把见面的事定下来", enabled = false)
+                )
+            }
+        },
+        Probe("reply/intent-blank-text-not-injected") {
+            runBlocking {
+                fx().builder.buildReplyUserPrompt(
+                    kbOf(), twoMsgs, "",
+                    intentConfig = IntentConfig(text = "   ", enabled = true)
                 )
             }
         },
@@ -801,7 +833,7 @@ class PromptByteFreezeBaselineTest {
         assertEquals("搬出去的那两块与原位置的字节不同源：$diffs", "", diffs.toString())
     }
 
-    /** 不同的地方说一个字符位置 + 两边各 12 个字符的上下文，不换行打印——红的原话要抄得下来 */
+    /** 不同的地方说一个字符位置 + 两边各 12 个字符的上下文，不换行打印——失败信息要能一整句抄得下来 */
     private fun firstDiff(a: String, b: String): String {
         val n = minOf(a.length, b.length)
         var i = 0
@@ -888,15 +920,19 @@ class PromptByteFreezeBaselineTest {
         // 反向半：原位置必须真的在调用两个新所有者。这一格改成「实扫数=登记数」的写法：
         // 登记数点名到 PromptBuilder 的每一处委托，现场多一处少一处都先红这里——
         // 改登记之前必须先拿 A/B 两组冻结表对过字节（换的是所有者、不是字节），字节对不上就不许动数字。
-        // 2026-10-05（§9 修复的副作用）：主动发普通分支接场景段所有者（场景 4→5）。
-        // 2026-10-06（原话第 18 条，同一分支的续笔）：普通分支把本轮真实对话也接了回来，
-        //   围栏 4→5——第五处在 PromptBuilder.kt:420（hasRealDialogue 分支），查证是真委托：
+        // 2026-10-05（主动发那条"收了形参却不用"的缺陷修完的副作用）：普通分支接上场景段所有者（场景 4→5）。
+        // 2026-10-06（同一分支的续笔）：普通分支把当轮真实对话也接了回来，
+        //   围栏 4→5——第五处在 `buildProactiveUserPrompt` 的 `hasRealDialogue` 分支，查证是真委托：
         //   调 ChatTranscriptBlock.render 取 header/body，被搬块的九颗实现记号在 PromptBuilder
         //   里仍是逐颗 0（上面那一圈 mark 判着），proactive 组冻结行已随之重录。
-        // ⚠ prompt 资产锁归主线程：PromptBuilder 与 domain/prompt 那两颗所有者只许主线程动，
-        //   这一格只是把现实登记下来，不构成任何代理改 prompt 侧的授权。
-        val sceneCallLedger = 5 // 登记：PromptBuilder.kt:232, 246, 272, 395, 414
-        val fenceCallLedger = 5 // 登记：PromptBuilder.kt:233, 249, 268, 396, 420
+        // ⚠ prompt 资产与 domain/prompt 那两颗所有者不在这一格的写入范围里：这一格只把现实
+        //   登记下来，不许为了让数字对上就去动那一侧；登记本身也不构成对那一侧的改动许可。
+        // 五处的落脚点（两个新所有者共用同一批分支，按函数与分支点名，不写行号——行号会随改动漂）：
+        //   buildReplyUserPromptWithRefs —— kb == null 那一支、有库主分支（两处）
+        //   buildReplyUserPromptOnlyThisRound —— 一处
+        //   buildProactiveUserPrompt —— onlyThisRound 那一支、普通分支（两处）
+        val sceneCallLedger = 5 // 场景段委托处数：上面那三颗函数里共 5 处
+        val fenceCallLedger = 5 // 围栏委托处数：同样那 5 处（普通分支那处坐在 hasRealDialogue 里）
         assertEquals(
             "PromptBuilder 调用新所有者的场景段处数（实扫≠登记 ⇒ 有人加/删了一处委托：先对字节，再改登记）",
             sceneCallLedger, occurrences(text, "CurrentSceneInjection.block(")
@@ -920,7 +956,7 @@ class PromptByteFreezeBaselineTest {
 
     /**
      * 原位置只剩调用、不留第二份实现——上一格判的是 PromptBuilder，这一格判的是新目录：
-     * `domain/prompt/` 里只许有被搬的这两块，不许顺手把别的行为也搬过来（那是别人的格子）。
+     * `domain/prompt/` 里只许有被搬的这两块，不许顺手把别的行为也搬过来（别的行为由各自的判据看着）。
      */
     @Test
     fun `domain 下新增的只有 prompt 这两颗`() {

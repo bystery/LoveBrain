@@ -52,6 +52,11 @@ val SurfaceInset: Color get() = Color.hsl(250f, 0.08f, 0.92f)
 // 声明处与面板根那一句 provides；`panelBackdropCardColor` 只命中注释），
 // 留着等于让人以为背景透明度还有第二个作用点。真值只有一处：
 // `PanelBackdropOpacity.effectiveAlpha`，由 `ui/panel/LoveBrainPanelScreen.kt` 那两层底色直接读。
+// 这一族现在**确实多了第二个作用点**，而且这次它有读取方了：消息区那两块大面积底读面板根部
+// 供出来的那颗浓度读数（`LocalPanelBackdropAlpha`，声明在 `ui/panel/reply/MessageList.kt`，
+// 读它的只有那一格，所以主人跟着消费者走，不回到这里）。
+// 没回来的是 `panelBackdropCardColor()` 那一颗派生色：大面积底要的是"底色自己带一颗 alpha"，
+// 不是第三个 token——色还是 [SurfaceInset] 那一颗，浓淡由根部那一把尺给。
 
 // ═══ 文字层次（亮色偏冷深灰；TextHint 与 TextSecondary 保持层级差）═══
 val TextPrimary: Color get() = Color.hsl(250f, 0.10f, 0.12f)

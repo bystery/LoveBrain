@@ -5,6 +5,7 @@ import com.lovebrain.app.domain.port.Clock
 import com.lovebrain.app.domain.port.SystemClock
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.ReplyDirective
+import com.lovebrain.app.model.isIntentEffective
 import com.lovebrain.app.util.L
 import com.lovebrain.app.util.TimeFmt
 
@@ -144,14 +145,10 @@ class OngoingContextSelector(
         val realText = realMessages.joinToString(" ") { it.content }
 
         // 使用 effectiveIntent——从冻结快照读取，不重新 readIntent
-        // 已暂停、已完成、已到期均不参与检索授权
+        // 参与检索授权的条件与注入提示词那一段**完全同一条**：开 且 正文非空
+        // （判据只有 `isIntentEffective` 这一颗，两处各写一遍就会长成"一处注入、一处检索拒绝"）
         val intentConfig = context.effectiveIntent
-        val intentText = if (intentConfig.enabled &&
-            intentConfig.status != com.lovebrain.app.model.IntentStatus.PAUSED &&
-            intentConfig.status != com.lovebrain.app.model.IntentStatus.COMPLETED &&
-            intentConfig.status != com.lovebrain.app.model.IntentStatus.EXPIRED) {
-            intentConfig.text
-        } else ""
+        val intentText = if (intentConfig.isIntentEffective) intentConfig.text else ""
 
         // 用户本轮想法（ReplyDirective）——真实 relevance signal
         val directiveText = context.replyDirective?.text ?: ""

@@ -153,10 +153,13 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         assertEquals("now kb-b", "kb-b", vm.activeKb.value?.name)
         assertEquals("UI intent should be B", "intentB", vm.intents.config.value.text)
 
-        vm.intents.save("newA", true, IntentExpiry.ONE_DAY)
+        vm.intents.save("newA", true)
         delay(200)
 
-        coVerify { knowledgeRepo.saveIntent("kb-a", "newA", true, IntentExpiry.ONE_DAY, any(), IntentStatus.ACTIVE) }
+        // 落盘形状按写侧现在那一颗读：`IntentController.save` 里那一次 `writeIntent` 交的是
+        // 「仓库端口默认的有效期档 + 空到期时刻 + ACTIVE」（feature/intent/IntentController.kt 的 save），
+        // 期限与状态都不再由调用方说了算 ⇒ 这两位在验证里也钉成实值，不留 `any()` 的口子。
+        coVerify { knowledgeRepo.saveIntent("kb-a", "newA", true, IntentExpiry.ONE_DAY, "", IntentStatus.ACTIVE) }
 
         assertEquals("after save A, UI still B", "kb-b", vm.activeKb.value?.name)
         assertEquals("after save A, UI intent still B", "intentB", vm.intents.config.value.text)

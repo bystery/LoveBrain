@@ -152,6 +152,10 @@ internal val LbChipPressFeedback.pressCurve: FiniteAnimationSpec<Float>
  *        外盒被撑到 48"）认领 false——横向命中区回落到可见胶囊本体，纵向仍是 48 满档，
  *        这是 §4.3「三种尺寸分开测」在悬浮窗紧凑档下的取舍，不许拿它当全局缩热区的口子
  * @param pillHeight 胶囊自己的高度；`null` = 由内容决定
+ * @param pillMinWidth 胶囊**自己**的最小宽度（dp 档）；`null` = 由内容决定。
+ *        这一颗管的是**看得见**那一条：调用方从 `modifier` 传进来的 `widthIn` 落在分层写法的
+ *        **外盒**上（那圈是热区），外盒变宽不会让胶囊变宽——分段选择器那一族就因此量到
+ *        "轨道里三格还是挤在一起"。要"最小格宽"真的出现在屏上，用这一颗。
  */
 data class LbChipStyle(
     val radius: Shape = LoveBrainShape.sm,
@@ -174,7 +178,8 @@ data class LbChipStyle(
     val touchFloor: Boolean = true,
     val layeredTouch: Boolean = false,
     val widthFloor: Boolean = true,
-    val pillHeight: Dp? = null
+    val pillHeight: Dp? = null,
+    val pillMinWidth: Dp? = null
 )
 
 /**
@@ -283,6 +288,114 @@ object LbChipStyles {
         touchFloor = true,
         layeredTouch = true,
         pillHeight = AppDimens.CHIP_SEGMENTED_HEIGHT_DP.dp
+    )
+
+    /**
+     * **分段选择器的一格（连排那一族）**：与 [segmented] 的差别只有一处——这一格自己**不画底**。
+     *
+     * 为什么还要第二档而不是改第一档：[segmented] 有别的主人（供应商表单的超时四档），
+     * 换掉它就是全局换按钮脸。这一档买的是"一整条浅底轨道 + 轨道里几格透明文字"那一族形状：
+     * 底与圆角归**轨道容器**（调用方那一条 `Row`），格子里只有文字与选中那一块实心。
+     * 三格各自带描边会读成"三个独立按钮"，轨道读成"一件事的几个选项"——这是语义差别，不是口味。
+     *
+     * 三轴仍各归各位：可见 [AppDimens.CHIP_PANEL_HEIGHT_DP]（28dp）、热区走分层外盒垫到
+     * [AppDimens.TOUCH_TARGET_MIN_DP]（宽度轴不垫：一格两字不该被撑成正方形）、
+     * 相邻间距与最小格宽归调用方那条 `Row`。
+     */
+    val segmentedPill = LbChipStyle(
+        radius = LoveBrainShape.sm,
+        textStyle = AppTypography.labelMedium,
+        labelMaxLines = 1,
+        labelAlignment = LbChipLabelAlignment.Center,
+        textColorSelected = Color.White,
+        textColor = TextHint,
+        fontWeightSelected = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
+        backgroundSelected = Primary,
+        background = Color.Transparent,
+        borderSelected = Primary,
+        border = Color.Transparent,
+        paddingHorizontal = Spacing.md,
+        paddingVertical = 0.dp,
+        pressedScale = 0.94f,
+        markSelectedWithCheck = false,
+        // 可见 28、热区 48 两轴分开买：分层外盒那一条链把可点节点垫到全站下限，里面那颗胶囊按自己
+        // 的高度画。⚠ 别为了"看着小"把这里关掉——真机上"右边的按钮太大"那一格修的是**轨道那条底**
+        // （`SettingsSegmentedPill` 画一条贴住格子的浅底，而不是让格子那圈透明外盒去决定底的厚度），
+        // 关掉下限等于把缩显示顺手缩成缩命中，那是这一族明令不许的形状。
+        touchFloor = true,
+        layeredTouch = true,
+        widthFloor = false,
+        pillHeight = AppDimens.CHIP_PANEL_HEIGHT_DP.dp
+    )
+
+    /**
+     * **行尾那颗实心动作**（"保存"这一族）：底色永远是强调色，不靠 `selected` 表达状态。
+     *
+     * 与 [filled] 的分别：[filled] 的静息档是"白底描边、选中才变蓝"，那是**可选项**的脸。
+     * 一颗永远按下去就执行动作的按钮挂那张脸，屏上就和"输入框"读成同一类东西——
+     * 用户找不到"保存"在哪里。这一档把静息与选中都涂实，选中档只把底色压深一档。
+     *
+     * 可见高度取 [AppDimens.INPUT_ROW_HEIGHT_DP]：它与同一行那颗输入框同数，
+     * 一行里两个并排的东西才有同一条中轴；热区仍由分层外盒垫到 [AppDimens.TOUCH_TARGET_MIN_DP]。
+     *
+     * ⚠ 这一档的宽度轴**照旧垫下限**（`widthFloor` 用缺省 true，与上面那两档分段不同）：
+     * 分段格子是"一件事的几个选项"，三格各垫 48 宽会把标签挤没；这颗是**执行动作的按钮**，
+     * 两轴都到下限才是它该有的命中区。两字标签排开约 46dp，垫到 48 只多出一道 1dp 的边。
+     */
+    val actionSolid = LbChipStyle(
+        radius = LoveBrainShape.md,
+        textStyle = AppTypography.labelMedium,
+        labelMaxLines = 1,
+        labelAlignment = LbChipLabelAlignment.Center,
+        textColorSelected = Color.White,
+        textColor = Color.White,
+        fontWeightSelected = FontWeight.SemiBold,
+        fontWeight = FontWeight.SemiBold,
+        backgroundSelected = PrimaryDark,
+        background = Primary,
+        borderSelected = PrimaryDark,
+        border = Primary,
+        paddingHorizontal = Spacing.lg,
+        paddingVertical = 0.dp,
+        pressedScale = 0.96f,
+        markSelectedWithCheck = false,
+        touchFloor = true,
+        layeredTouch = true,
+        pillHeight = AppDimens.INPUT_ROW_HEIGHT_DP.dp
+    )
+
+    /**
+     * [actionSolid] 的**成功回执档**：同一颗按钮、同一套几何，只把墨与底换成状态色那一对
+     * （[SuccessBg] 底 + [Success] 字），并让文案前面带上那一枚对勾。
+     *
+     * 为什么要有第二档而不是给按钮加一个"变色"参数：这颗件里"选中长什么样"只由档位说
+     * （见 [LbChipStyle.backgroundSelected]），按钮自己不该在页面里再画一条 `when` 换底色——
+     * 那正是这一族归并之前七处各画一遍的形状。
+     *
+     * ⚠ 这一档**只给"刚刚成功了一次"那一拍用**，不是一张常驻的绿按钮：
+     * 它的 `selected` 由调用方在那一拍为真，配合 [markSelectedWithCheck] 交出「✓ …」那一句。
+     */
+    val actionSuccess = LbChipStyle(
+        radius = LoveBrainShape.md,
+        textStyle = AppTypography.labelMedium,
+        labelMaxLines = 1,
+        labelAlignment = LbChipLabelAlignment.Center,
+        textColorSelected = Success,
+        textColor = Success,
+        fontWeightSelected = FontWeight.SemiBold,
+        fontWeight = FontWeight.SemiBold,
+        backgroundSelected = SuccessBg,
+        background = SuccessBg,
+        borderSelected = SuccessBg,
+        border = SuccessBg,
+        paddingHorizontal = Spacing.lg,
+        paddingVertical = 0.dp,
+        pressedScale = 0.96f,
+        markSelectedWithCheck = true,
+        touchFloor = true,
+        layeredTouch = true,
+        pillHeight = AppDimens.INPUT_ROW_HEIGHT_DP.dp
     )
 
 }
@@ -412,6 +525,8 @@ fun LbChip(
             Box(
                 modifier = Modifier
                     .then(if (fixedPillHeight != null) Modifier.height(fixedPillHeight) else Modifier)
+                    // 最小格宽落在**胶囊自己**身上（不是外面那圈热区）：屏上看到的格子才真有那么宽
+                    .then(style.pillMinWidth?.let { Modifier.widthIn(min = it) } ?: Modifier)
                     .graphicsLayer { scaleX = scale; scaleY = scale }
                     .clip(style.radius)
                     .background(backgroundNow, style.radius)
@@ -434,6 +549,7 @@ fun LbChip(
                 .then(
                     if (singleLayerPillHeight != null) Modifier.height(singleLayerPillHeight) else Modifier
                 )
+                .then(style.pillMinWidth?.let { Modifier.widthIn(min = it) } ?: Modifier)
                 .then(floorModifier)
                 .graphicsLayer { scaleX = scale; scaleY = scale }
                 .clip(style.radius)

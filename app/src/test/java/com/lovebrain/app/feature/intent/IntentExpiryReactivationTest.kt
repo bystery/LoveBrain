@@ -1,382 +1,328 @@
 package com.lovebrain.app.feature.intent
 
 import com.lovebrain.app.core.testing.SourceScan
-import com.lovebrain.app.domain.IntentPolicy
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.IntentExpiry
 import com.lovebrain.app.model.IntentStatus
+import com.lovebrain.app.model.isIntentEffective
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
 
 /**
- * §10.2「到期意图重新开启」这条原话的复测账。
+ * 期限语义退役之后，**老数据与新写盘**之间那几条合同。
  *
- * 用户合同那一行写的是两件事，缺一件都算没修：
- * · **重新启用到期意图时必须重算期限**——状态恢复成 ACTIVE 却**仍带入旧的到期时间**，
- *   下一次 `refreshForKb` 的 `shouldAutoExpire` 立刻把它判回 EXPIRED
- *   （"重新开启后立即失效"就是这一条形状）；
- * · **单纯修改正文必须继续保持原期限**——每存一次就按"此刻 + 一档"续期，意图永不过期。
+ * 这一族以前钉的是"到期意图重开必须重算期限"（三档期限 + 已完成那一批规则）。规则本身退了，
+ * 替代关系写在下面，一条都不许悄悄蒸发：
+ * · 「重开必须重算期限，否则下一刻又被判回 EXPIRED」→ 换成
+ *   **「任何一次落盘都不带期限」**（[save] 一律写 `expiryDate = ""` + `status = ACTIVE`），
+ *   于是"重开即失效"那类缺陷再也没有输入可以触发它；
+ * · 「只改正文不许续期」→ 换成**「正文逐字交回仓库，写侧只统一期限那三样」**；
+ * · 「到期自动关」（`refreshForKb` 里那次改写）→ **整块退役**，本文件第一格钉住它不再回来：
+ *   开着的一条意图不许被背后那次读盘改写，更不许被关掉。
  *
- * ## 三条腿，缺一不可
- * 1. **判据本身**（[IntentPolicy.saveDecision]）是纯函数，真值表在 `domain/IntentPolicyTest`；
- *    这里把它接进**真实保存链**（`IntentController.save` → 假仓库 → 落盘那一份配置）。
- * 2. **面板两处调用点确实问的是这一颗**（最后一格的源码形状尺）：判据写对了、页面各自再
- *    随手拼一遍 `wasTerminal`，下一轮漂移回来谁都不会红。
- * 3. **反向证人**（`the witness proves…` 那一格）：拿"旧缺陷态"那两种手写形状各跑一次，
- *    证明上面那些断言在那两种形状下**真的会红**，不是恒绿。
+ * 判据只有一条：**开 且 正文非空**（`model/Models.kt` 的 [isIntentEffective]）。
+ * 旧 `EXPIRED` / `COMPLETED` / `PAUSED` 读进来一律按"没有期限"处理，不阻止开关起效。
  *
- * ⚠ "重开之后会不会立刻失效"这一句为什么能证伪旧缺陷：旧写法把 `intentConfig.expiryDate`
- *   原样传下去 ⇒ 落盘那一份的到期时刻仍在过去 ⇒ [IntentPolicy.shouldAutoExpire] 数到 true。
- *   纯字符串比较，不需要设备、不需要模型。
+ * ⚠ 未跑构建：假仓库 + `Dispatchers.Unconfined`，全部只依赖 JVM。
  */
 class IntentExpiryReactivationTest {
 
-    /** 固定的"现在"：晚于下面那条旧到期时刻，早于任何一档重算出来的时刻 */
-    private val now = "2026-10-06 09:00"
-
-    /** 到期意图现场：到期时刻已经过去（`IntentController.refreshForKb` 到期时就是这样落盘的） */
-    private fun expiredConfig(
-        expiry: IntentExpiry = IntentExpiry.ONE_DAY,
-        text: String = "周末约她"
-    ) = IntentConfig(
-        text = text,
-        enabled = false,
-        expiry = expiry,
-        expiryDate = "2026-10-01 08:00",
-        status = IntentStatus.EXPIRED
+    /** 仓库写回来的那一份，由 [controllerFor] 记账 */
+    private class Fake(
+        var stored: IntentConfig,
+        /** 仓库真的落了哪几份（每次写盘一条），顺序就是到达顺序 */
+        val writes: MutableList<IntentConfig> = mutableListOf()
     )
 
     /**
-     * 一台控制器：读回 [initial]，写盘把落盘那一份交回 [onWrite]。
-     * `Unconfined` 让 `scope.launch` 里那段当场跑完；时钟固定成 [now]，
-     * 所以"重算出来的到期时刻"是可以逐字断言的日期。
+     * 一台控制器：读回 [Fake.stored]（建假仓库时灌进去的那一份），
+     * 写盘把"仓库真正落下的那一份"记进 [Fake.writes]。
+     * `Unconfined` 让 `scope.launch` 那段当场跑完。
      */
     private fun controllerFor(
-        initial: IntentConfig,
-        onWrite: (IntentConfig) -> Unit
-    ): IntentController {
-        var stored = initial
-        return IntentController(
-            scope = CoroutineScope(Dispatchers.Unconfined),
-            readActiveKbName = { "小美" },
-            readIntent = { stored },
-            writeIntent = { _, text, enabled, expiry, expiryDate, status ->
-                stored = IntentConfig(
-                    text = text,
-                    enabled = enabled,
-                    revision = stored.revision + 1,
-                    expiry = expiry,
-                    expiryDate = expiryDate,
-                    status = status
-                )
-                onWrite(stored)
-                stored
-            },
-            readNow = { now }
-        )
-    }
+        fake: Fake,
+        onNotice: (String) -> Unit = {},
+        onWarning: (String) -> Unit = {}
+    ): IntentController = IntentController(
+        scope = CoroutineScope(Dispatchers.Unconfined),
+        readActiveKbName = { "小美" },
+        readIntent = { fake.stored },
+        writeIntent = { _, text, enabled, expiry, expiryDate, status ->
+            fake.stored = IntentConfig(
+                text = text,
+                enabled = enabled,
+                revision = fake.stored.revision + 1,
+                expiry = expiry,
+                expiryDate = expiryDate,
+                status = status
+            )
+            fake.writes += fake.stored
+            fake.stored
+        },
+        onNotice = onNotice,
+        onWarning = onWarning
+    )
 
-    /**
-     * 面板 `PanelSettingsPage.onIntentChange` 那一格的镜像：同一份判据、同一次传参形状
-     * （`recomputeExpiry` 为真才交空串，否则交已有时刻）。形状本身由最后一格钉着不许漂。
-     */
-    private fun saveFromSettings(
-        controller: IntentController,
-        current: IntentConfig,
-        text: String,
+    /** 老文件的样子：带着期限与终态那三样，正文与开关是真值 */
+    private fun legacy(
         enabled: Boolean,
-        expiry: IntentExpiry,
-        callerRequestedRecompute: Boolean
-    ) {
-        val decision = IntentPolicy.saveDecision(
-            current = current,
-            nextEnabled = enabled,
-            nextExpiry = expiry,
-            callerRequestedRecompute = callerRequestedRecompute
-        )
-        controller.save(
-            text, enabled, expiry,
-            if (decision.recomputeExpiry) "" else current.expiryDate,
-            decision.status
-        )
-    }
+        status: IntentStatus,
+        expiryDate: String = "2026-10-01 08:00",
+        expiry: IntentExpiry = IntentExpiry.ONE_WEEK,
+        text: String = "周末约她"
+    ) = IntentConfig(
+        text = text,
+        enabled = enabled,
+        expiry = expiry,
+        expiryDate = expiryDate,
+        status = status
+    )
 
-    /** 面板 `IntentEditorDialog.onSave` 那一格的镜像（浮层自己交来的 expiryDate 一律不用） */
-    private fun saveFromEditor(
-        controller: IntentController,
-        current: IntentConfig,
-        text: String,
-        enabled: Boolean,
-        expiry: IntentExpiry,
-        editorStatus: IntentStatus
-    ) {
-        val decision = IntentPolicy.saveDecision(
-            current = current,
-            nextEnabled = enabled,
-            nextExpiry = expiry,
-            nextStatus = editorStatus
-        )
-        controller.save(
-            text, enabled, expiry,
-            if (decision.recomputeExpiry) "" else current.expiryDate,
-            decision.status
-        )
-    }
-
-    // ─── ① 到期意图重新开启：重算期限 + 恢复 ACTIVE ─────────────────────
-
-    @Test
-    fun `re-enabling an expired intent writes a future deadline and the ACTIVE status`() {
-        val current = expiredConfig()
-        var stored = current
-        val controller = controllerFor(current) { stored = it }
-
-        saveFromSettings(
-            controller, current, text = "周末约她", enabled = true,
-            expiry = IntentExpiry.ONE_DAY, callerRequestedRecompute = false
-        )
-
-        val written = stored
-        assertEquals("重新启用要恢复 ACTIVE", IntentStatus.ACTIVE, written.status)
-        assertTrue("重新启用要 enabled", written.enabled)
-        assertEquals(
-            "重新启用必须按此刻重算期限（旧时刻 " + current.expiryDate + " 已经过去）",
-            "2026-10-07 09:00", written.expiryDate
-        )
-        // 这一句才是"重开后立即失效"那条原话的直接证伪：落盘那一份不该一读就被判过期
-        assertFalse(
-            "重开后落盘那份仍会被判过期 = 立即失效，实到到期时刻 " + written.expiryDate,
-            IntentPolicy.shouldAutoExpire(written, now)
-        )
-    }
-
-    @Test
-    fun `re-enabling through the editor also reactivates, it used to keep the stale status`() {
-        val current = expiredConfig(expiry = IntentExpiry.ONE_WEEK)
-        var stored = current
-        val controller = controllerFor(current) { stored = it }
-
-        // 浮层里 `editStatus` 一直带着传进来的旧 status（EXPIRED）——旧实现原样落盘
-        saveFromEditor(
-            controller, current, text = "周末约她", enabled = true,
-            expiry = IntentExpiry.ONE_WEEK, editorStatus = IntentStatus.EXPIRED
-        )
-
-        assertEquals("浮层里重开也要恢复 ACTIVE", IntentStatus.ACTIVE, stored.status)
-        assertEquals("2026-10-13 09:00", stored.expiryDate)
-        assertFalse(IntentPolicy.shouldAutoExpire(stored, now))
-    }
-
-    @Test
-    fun `a completed intent that is switched back on comes back with a fresh deadline`() {
-        val current = IntentConfig(
-            text = "先把这阵子聊稳", enabled = false, expiry = IntentExpiry.ONE_HOUR,
-            expiryDate = "2026-10-05 10:00", status = IntentStatus.COMPLETED
-        )
-        var stored = current
-        saveFromSettings(
-            controllerFor(current) { stored = it }, current,
-            text = "先把这阵子聊稳", enabled = true,
-            expiry = IntentExpiry.ONE_HOUR, callerRequestedRecompute = false
-        )
-
-        assertEquals(IntentStatus.ACTIVE, stored.status)
-        assertEquals("2026-10-06 10:00", stored.expiryDate)
-    }
+    // ─── ① 那条"到期自动关"必须已经消失：读盘不改写、也不关掉用户开着的那条 ───
 
     /**
-     * 同一句"重开即失效"的另一条来路：意图**关着跨过了到期时刻**。
-     * `shouldAutoExpire` 对未启用的意图不判过期，所以盘上仍是 `ACTIVE + 2026-10-04 08:00`；
-     * 重新拨开时若照原样带走那条时刻，下一次读盘就被标成 EXPIRED。
-     * ⇒ 判据把"任何一次关 → 开"都算重新启用，不只是终态那一档。
+     * 反向证人（旧形状）：旧实现在这条链上判 `shouldAutoExpire` 命中，
+     * 于是**落盘一次**（enabled=false + EXPIRED）再把关掉的配置摆上屏——
+     * "一直开着"的新语义背后悄悄把用户意图关掉，正是这一格要挡的形状。
      */
     @Test
-    fun `an intent whose deadline passed while it was switched off is recomputed too`() {
-        val current = IntentConfig(
-            text = "周末约她", enabled = false, expiry = IntentExpiry.ONE_DAY,
-            expiryDate = "2026-10-04 08:00", status = IntentStatus.ACTIVE
-        )
-        var stored = current
-        saveFromSettings(
-            controllerFor(current) { stored = it }, current,
-            text = "周末约她", enabled = true,
-            expiry = IntentExpiry.ONE_DAY, callerRequestedRecompute = false
-        )
+    fun `reading a kb with a deadline that already passed leaves the intent switched on`() {
+        val current = legacy(enabled = true, status = IntentStatus.ACTIVE, expiryDate = "2020-01-01 00:00")
+        val fake = Fake(current)
+        val controller = controllerFor(fake)
 
-        assertEquals("2026-10-07 09:00", stored.expiryDate)
-        assertEquals(IntentStatus.ACTIVE, stored.status)
-        assertFalse("关着过期后重开仍带入旧时刻 = 重开即失效",
-            IntentPolicy.shouldAutoExpire(stored, now))
+        runBlocking { controller.refreshForKb("小美") }
+
+        assertEquals("读盘那一路不许写盘，实到写盘 ${fake.writes.size} 次", 0, fake.writes.size)
+        assertTrue("过期时刻不再把开着的那条关掉", controller.config.value.enabled)
+        assertEquals("屏上那份仍是盘上读回来的原样", current, controller.config.value)
+        // 这一条才是新判据：老数据带着早已过去的时刻，开关仍在说话
+        assertTrue("过去的时间戳不许让一条开着的意图失效", controller.config.value.isIntentEffective)
     }
 
+    /** 终态那三样都不许让一条**开着**的意图失效——读侧宽容，不迁移、不改写盘上的文件 */
     @Test
-    fun `re-picking the validity period on an expired intent also recomputes`() {
-        val current = expiredConfig()
-        var stored = current
-        saveFromSettings(
-            controllerFor(current) { stored = it }, current,
-            text = "周末约她", enabled = true,
-            expiry = IntentExpiry.ONE_WEEK, callerRequestedRecompute = true
-        )
+    fun `a legacy terminal status read from disk does not disarm a switched-on intent`() {
+        for (status in listOf(IntentStatus.EXPIRED, IntentStatus.COMPLETED, IntentStatus.PAUSED)) {
+            val current = legacy(enabled = true, status = status)
+            val fake = Fake(current)
+            val controller = controllerFor(fake)
 
-        assertEquals(IntentStatus.ACTIVE, stored.status)
-        assertEquals("2026-10-13 09:00", stored.expiryDate)
-    }
+            runBlocking { controller.refreshForKb("小美") }
 
-    // ─── ② 单纯修改正文：期限逐字不变 ─────────────────────────────────
-
-    @Test
-    fun `editing only the text keeps the original deadline verbatim`() {
-        val current = IntentConfig(
-            text = "周末约她", enabled = true, expiry = IntentExpiry.ONE_DAY,
-            expiryDate = "2026-10-08 20:00", status = IntentStatus.ACTIVE
-        )
-        var stored = current
-        saveFromSettings(
-            controllerFor(current) { stored = it }, current,
-            text = "周末约她吃饭", enabled = true,
-            expiry = IntentExpiry.ONE_DAY, callerRequestedRecompute = false
-        )
-
-        assertEquals("只改正文不许动到期时刻", "2026-10-08 20:00", stored.expiryDate)
-        assertEquals(IntentStatus.ACTIVE, stored.status)
-        assertEquals("周末约她吃饭", stored.text)
-    }
-
-    @Test
-    fun `an active intent edited through the editor keeps its deadline too`() {
-        val current = IntentConfig(
-            text = "周末约她", enabled = true, expiry = IntentExpiry.ONE_WEEK,
-            expiryDate = "2026-10-12 07:30", status = IntentStatus.ACTIVE
-        )
-        var stored = current
-        saveFromEditor(
-            controllerFor(current) { stored = it }, current,
-            text = "周末约她", enabled = true,
-            expiry = IntentExpiry.ONE_WEEK, editorStatus = IntentStatus.ACTIVE
-        )
-
-        assertEquals("编辑浮层只改正文也不许续期", "2026-10-12 07:30", stored.expiryDate)
-    }
-
-    @Test
-    fun `switching off keeps the deadline and never rewrites a terminal status`() {
-        val current = expiredConfig()
-        var stored = current
-        saveFromSettings(
-            controllerFor(current) { stored = it }, current,
-            text = "周末约她", enabled = false,
-            expiry = IntentExpiry.ONE_DAY, callerRequestedRecompute = false
-        )
-
-        assertEquals("2026-10-01 08:00", stored.expiryDate)
-        assertEquals("关着的那一格不许被洗成活动态", IntentStatus.EXPIRED, stored.status)
-    }
-
-    @Test
-    fun `marking completed is never overridden by the reactivation rule`() {
-        // 到期意图重开的同时又被点成「已完成」：完成是状态动作，压过"恢复 ACTIVE"
-        val current = expiredConfig()
-        var stored = current
-        saveFromEditor(
-            controllerFor(current) { stored = it }, current,
-            text = "周末约她", enabled = true,
-            expiry = IntentExpiry.COMPLETED, editorStatus = IntentStatus.COMPLETED
-        )
-
-        assertEquals(IntentStatus.COMPLETED, stored.status)
-        assertEquals("COMPLETED 不带到期时刻", "", stored.expiryDate)
-    }
-
-    // ─── ③ 反向证人：旧缺陷态这两种写法都会让上面的断言红 ───────────────
-
-    @Test
-    fun `the witness proves these assertions are not vacuously green`() {
-        val current = expiredConfig()
-
-        // 缺陷态 A：重新启用时把旧到期时刻原样传下去（状态改对了、期限没重算）
-        val carryOldDeadline = IntentPolicy.effectiveExpiryDate(
-            current.expiry, current.expiryDate, now
-        )
-        val resurrectedButStale = current.copy(
-            enabled = true, status = IntentStatus.ACTIVE, expiryDate = carryOldDeadline
-        )
-        assertTrue(
-            "证人失效：带着旧期限落盘居然不再被判过期，那第一格断言就是恒绿",
-            IntentPolicy.shouldAutoExpire(resurrectedButStale, now)
-        )
-        assertEquals(
-            "证人：缺陷态 A 落盘的时刻正是那条已过去的旧时刻",
-            "2026-10-01 08:00", carryOldDeadline
-        )
-
-        // 缺陷态 B：每次保存都传空串触发重算（只改正文也被续期）
-        val alwaysRecomputed = IntentPolicy.effectiveExpiryDate(IntentExpiry.ONE_DAY, "", now)
-        assertNotEquals(
-            "证人：缺陷态 B 把已有时刻换成了此刻加一天，只改正文逐字不变那一格才抓得住",
-            "2026-10-08 20:00", alwaysRecomputed
-        )
-    }
-
-    // ─── 接线形状：面板两处保存口必须真的问这一颗判据 ────────────────────
-
-    /**
-     * 判据住在 `IntentPolicy` 里还不够——**页面得真的去问它**。
-     * 两处保存口（设置页 `onIntentChange` / 编辑浮层 `onSave`）各自再随手拼一遍终态判定，
-     * 就是下一轮漂移回来的入口，所以这一格按形状数。
-     */
-    @Test
-    fun bothPanelSaveDoorsAskThePolicyInsteadOfRecomputingTheRuleThemselves() {
-        val panel = File(appRoot, "ui/panel/LoveBrainPanelScreen.kt")
-        assertTrue("找不到 $panel——这一格会扫了个空集恒绿", panel.isFile)
-        // 注释里写着 `IntentPolicy.saveDecision(` 不算接了线
-        val code = SourceScan.maskComments(panel.readText(Charsets.UTF_8))
-
-        val decisionNeedle = "IntentPolicy.saveDecision("
-        val decisionCalls = code.countOccurrencesOf(decisionNeedle)
-        assertEquals(
-            "面板两处保存口各问一次判据（设置页 + 编辑浮层），实到 $decisionCalls 处",
-            2, decisionCalls
-        )
-
-        val expiryArg = Regex("if\\s*\\(\\s*\\w+\\.recomputeExpiry\\s*\\)\\s*\"\"")
-            .findAll(code).toList()
-        assertEquals(
-            "交空串只由 `recomputeExpiry` 决定，两处各写一次，实到 ${expiryArg.size} 处",
-            2, expiryArg.size
-        )
-        expiryArg.forEach { match ->
-            val tail = code.substring(match.range.last + 1, minOf(match.range.last + 200, code.length))
+            assertEquals("读 $status 那一份不许顺手改写盘上数据", current, controller.config.value)
+            assertTrue("$status 不再阻止开关起效（正文 ${current.text}）", controller.config.value.isIntentEffective)
             assertTrue(
-                "空串那一支之后必须紧跟「否则交已有时刻」：${tail.take(80)}",
-                Regex("""^\s*else\s+\w+\.expiryDate""").containsMatchIn(tail.trimStart())
+                "$status 那份仍注入提示词（退役的是这一格，不是那段正文）",
+                com.lovebrain.app.domain.prompt.IntentIdeaBlock.buildIntentBlock(controller.config.value).isNotBlank()
+            )
+        }
+    }
+
+    // ─── ② 旧终态重开：照样生效，且落盘一律"活动态 + 无期限" ───────────
+
+    @Test
+    fun `switching an expired record back on writes an active record carrying no deadline`() {
+        val current = legacy(enabled = false, status = IntentStatus.EXPIRED)
+        val fake = Fake(current)
+        val controller = controllerFor(fake)
+
+        controller.save("周末约她", enabled = true)
+
+        val written = fake.writes.single()
+        assertTrue("重开就是开着", written.enabled)
+        assertEquals("新落盘一律活动态", IntentStatus.ACTIVE, written.status)
+        assertEquals("新落盘不再带任何到期时刻", "", written.expiryDate)
+        assertTrue("重开之后这条必须算数", written.isIntentEffective)
+    }
+
+    @Test
+    fun `a completed or paused legacy record comes back on the same switch`() {
+        for (status in listOf(IntentStatus.COMPLETED, IntentStatus.PAUSED)) {
+            val current = legacy(enabled = false, status = status)
+            val fake = Fake(current)
+            controllerFor(fake).save("周末约她", enabled = true)
+
+            val written = fake.writes.single()
+            assertEquals("$status 的重开也落活动态", IntentStatus.ACTIVE, written.status)
+            assertEquals("$status 的重开不留期限", "", written.expiryDate)
+            assertTrue("$status 重开后开关起效", written.isIntentEffective)
+        }
+    }
+
+    /**
+     * 替代关系（旧形状 → 新形状）：这一格原来钉的是「**宿主仍传旧四份到期决议**时落盘不变」，
+     * 判据来自那时还能从调用点交进来的 status / expiryDate。签名收成一个 `(正文, 开关)` 之后，
+     * 那条输入通道本身没了，等价的那件事换成 **写侧自己统一落**：
+     * 宿主只能交正文与开关，而屏上那一份还带着旧期限与旧终态时，交回仓库的必须是
+     * `ACTIVE` + 空到期时刻，而不是把 `config.value` 里那三样原样续下去。
+     * 坏实现（`writeIntent(kbName, text, enabled, cfg.expiry, cfg.expiryDate, cfg.status)`，
+     * 也就是"沿用屏上那一份"）在这里当场红——这颗假仓库记的正是控制器**交出去**的那三样。
+     */
+    @Test
+    fun `the write side lands an active deadline-free record over a legacy screen state`() {
+        val current = legacy(enabled = true, status = IntentStatus.COMPLETED, expiryDate = "2026-10-01 08:00")
+        val fake = Fake(current)
+        val controller = controllerFor(fake)
+
+        controller.save("周末约她吃饭", enabled = true)
+
+        val written = fake.writes.single()
+        assertEquals("到期时刻不许从屏上那份旧数据里续回来", "", written.expiryDate)
+        assertEquals("状态不许从屏上那份旧数据里长成 COMPLETED", IntentStatus.ACTIVE, written.status)
+        assertEquals("正文仍逐字交回仓库", "周末约她吃饭", written.text)
+    }
+
+    // ─── ③ 关掉：文本不丢，只是不算 ─────────────────────────────────
+
+    @Test
+    fun `switching off keeps the saved text and just stops counting`() {
+        val current = legacy(enabled = true, status = IntentStatus.ACTIVE, expiryDate = "")
+        val fake = Fake(current)
+        val controller = controllerFor(fake)
+
+        controller.save("周末约她", enabled = false)
+
+        val written = fake.writes.single()
+        assertEquals("关掉那一次正文不许被清空", "周末约她", written.text)
+        assertFalse(written.enabled)
+        assertFalse("关着的意图不算", written.isIntentEffective)
+        assertEquals("重开时回填的仍是那句", "周末约她", controller.config.value.text)
+    }
+
+    @Test
+    fun `saving an empty body while switched on counts as nothing but is still persisted`() {
+        val current = legacy(enabled = true, status = IntentStatus.ACTIVE, expiryDate = "", text = "周末约她")
+        val fake = Fake(current)
+        val controller = controllerFor(fake)
+
+        controller.save("   ", enabled = true)
+
+        val written = fake.writes.single()
+        assertTrue("开关仍开着", written.enabled)
+        assertFalse("空正文不算有效——不注入，但也没被偷偷关掉", written.isIntentEffective)
+        assertEquals("屏上那条仍是刚写回去的", written, controller.config.value)
+    }
+
+    // ─── ④ 接线形状：期限那套判据不许从这一族里长回来 ─────────────────
+
+    /**
+     * 三处消费者必须读**同一颗**判据。
+     *
+     * 为什么还要一格源码尺：判据本身（[isIntentEffective]）写对了，`buildIntentBlock` 与
+     * `selectForInjection` 各自再补一遍 status 守卫，行为测试只在一处喂终态夹具时不会红
+     * ——那正是"一处注入、一处检索拒绝"的来路。
+     * 证人（第二半）：这把尺对合成形状确实数得到，不是扫空集。
+     */
+    @Test
+    fun the_injection_and_the_retrieval_read_the_very_same_predicate() {
+        val consumers = listOf(
+            "domain/prompt/IntentIdeaBlock.kt",
+            "domain/OngoingContextSelector.kt"
+        )
+        for (relative in consumers) {
+            val file = appSource(relative)
+            assertTrue("找不到 $file——这一格会扫了个空集恒绿", file.isFile)
+            val code = SourceScan.maskComments(file.readText(Charsets.UTF_8))
+            // import 那一行也写着这个名字，判据的次数要把它摘掉再数
+            val decisions = code.countOccurrencesOf("isIntentEffective") -
+                code.countOccurrencesOf("model.isIntentEffective")
+            assertEquals(
+                "$relative 只许问一次那颗唯一的判据（实到 $decisions 处）",
+                1, decisions
+            )
+            // 退役的三样不许在这两处重新变成判据
+            for (retired in listOf("IntentStatus.PAUSED", "IntentStatus.COMPLETED", "IntentStatus.EXPIRED", "expiryDate")) {
+                assertEquals(
+                    "$relative 里不该再按『$retired』判定（旧判据的复活形状）",
+                    0, code.countOccurrencesOf(retired)
+                )
+            }
+        }
+
+        // 到期改写这一族整块退役：控制器不再问 IntentPolicy，也没有那颗时钟
+        val controller = appSource("feature/intent/IntentController.kt")
+        assertTrue("找不到 $controller——这一格会扫了个空集恒绿", controller.isFile)
+        val controllerCode = SourceScan.maskComments(controller.readText(Charsets.UTF_8))
+        for (retired in listOf("IntentPolicy", "shouldAutoExpire", "effectiveExpiryDate", "effectiveStatus", "readNow")) {
+            assertEquals(
+                "IntentController 里不该再出现『$retired』（到期自动关与期限校验的来路）",
+                0, controllerCode.countOccurrencesOf(retired)
             )
         }
 
-        // 旧的那二本账不许还留在页面上：终态判定与 `mustRecomputeExpiry` 都该搬进判据
+        // 证人：上面两把尺都能数到"复活写法"，不是恒绿
+        val witness = "if (cfg.status == IntentStatus.EXPIRED) return \"\"\n" +
+            "val now = readNow()\n" + "IntentPolicy.shouldAutoExpire(cfg, now)\n"
+        assertEquals(1, witness.countOccurrencesOf("IntentStatus.EXPIRED"))
+        assertEquals(1, witness.countOccurrencesOf("shouldAutoExpire"))
+        assertEquals(1, witness.countOccurrencesOf("readNow"))
+        // 判据那把尺：import 行确实被摘掉了，第二次判定仍数得到（恒绿写法在这里红）
+        val singleUse = "import com.lovebrain.app.model.isIntentEffective\nval on = cfg.isIntentEffective"
         assertEquals(
-            "页面里不该再自己拼终态判定（`wasTerminal` / `mustRecomputeExpiry`），实到 " +
-                Regex("mustRecomputeExpiry|wasTerminal").findAll(code).count() + " 处",
-            0, Regex("mustRecomputeExpiry|wasTerminal").findAll(code).count()
+            "一次 import + 一次判定应数成 1",
+            1, singleUse.countOccurrencesOf("isIntentEffective") - singleUse.countOccurrencesOf("model.isIntentEffective")
         )
-
-        // 反向证人：这几把尺对合成形状确实数得到，不是扫空集
-        val witness = "val wasTerminal = s == EXPIRED; " +
-            "save(IntentPolicy.saveDecision(a, b).status, " +
-            "if (decision.recomputeExpiry) \"\" else current.expiryDate) // mustRecomputeExpiry"
-        assertEquals(1, witness.countOccurrencesOf(decisionNeedle))
-        assertEquals(1, Regex("if\\s*\\(\\s*\\w+\\.recomputeExpiry\\s*\\)\\s*\"\"").findAll(witness).count())
-        assertTrue(
-            "证人：旧二本账的写法（`wasTerminal` / `mustRecomputeExpiry`）必须被那把尺数到",
-            Regex("mustRecomputeExpiry|wasTerminal").findAll(witness).count() >= 2
+        val doubledUp = singleUse + "\nif (cfg.isIntentEffective && cfg.status != IntentStatus.PAUSED) inject()"
+        assertEquals(
+            "判据被补第二遍时要数成 2（这一格红说明上面那把尺恒绿）",
+            2, doubledUp.countOccurrencesOf("isIntentEffective") - doubledUp.countOccurrencesOf("model.isIntentEffective")
         )
     }
+
+    /** 反向证人：新判据本身不是恒真——四种输入各给一个明确的判决 */
+    @Test
+    fun `the single predicate says no to every shape that is not on with a body`() {
+        assertTrue(IntentConfig(text = "周末约她", enabled = true).isIntentEffective)
+        assertFalse("开着但没正文 ⇒ 不算", IntentConfig(text = "   ", enabled = true).isIntentEffective)
+        assertFalse("关着有正文 ⇒ 不算（正文只是留着待回填）", IntentConfig(text = "周末约她", enabled = false).isIntentEffective)
+        assertFalse("两者都没有 ⇒ 不算", IntentConfig().isIntentEffective)
+        assertFalse(
+            "旧终态 + 关着 ⇒ 依然不算（这一格防的是『把旧 status 当开关读』）",
+            legacy(enabled = false, status = IntentStatus.EXPIRED).isIntentEffective
+        )
+    }
+
+    /**
+     * 时钟只活在夹具里：这个测试文件不许被测代码"顺手"读真实时间（第一格的形状）。
+     *
+     * 替代关系：原来这一格靠一颗注入进控制器的假时钟（`readNow`）来证明"判决与时钟无关"，
+     * 那颗参数已经随期限语义一起从签名上摘掉（摘的动作由下面那把源码尺
+     * `the_injection_and_the_retrieval_read_the_very_same_predicate` 钉着），注入点没了，
+     * 等价的形状就换成**同一份夹具只换到期时刻**：
+     * 未来与过去两个时刻必须给出同一个判决、同一个"零次落盘"。
+     * 反向证人：判决一旦重新去读那个时刻（`expiryDate` 回到判据里，或读 `System.currentTimeMillis()`
+     * 之类），两条里必有一条翻面或产生一次改写，这一格当场红。
+     */
+    @Test
+    fun `the fixture clock is not what decides validity`() {
+        val moments = listOf("2099-12-31 09:00", "2020-01-01 00:00")
+        assertEquals("两个时刻必须是两个不同的输入，否则这一格在扫同一份夹具", 2, moments.distinct().size)
+        val verdicts = moments.map { expiryDate ->
+            val current = legacy(enabled = true, status = IntentStatus.ACTIVE, expiryDate = expiryDate)
+            val fake = Fake(current)
+            val controller = controllerFor(fake)
+            runBlocking { controller.refreshForKb("小美") }
+            assertEquals(
+                "$expiryDate 那一份不许被背后那次读盘改写（实到写盘 ${fake.writes.size} 次）",
+                0, fake.writes.size
+            )
+            controller.config.value.isIntentEffective
+        }
+        assertTrue("未来与过去的时刻给同一个判决，实到 $verdicts", verdicts.all { it })
+        assertEquals("两个时刻读回来的判决都必须是『算数』", listOf(true, true), verdicts)
+    }
+
+    private fun appSource(relative: String): File =
+        File("src/main/java/com/lovebrain/app").takeIf { it.isDirectory }
+            ?.resolve(relative)
+            ?: File("app/src/main/java/com/lovebrain/app/$relative")
 
     private fun String.countOccurrencesOf(needle: String): Int {
         var i = 0
@@ -388,8 +334,4 @@ class IntentExpiryReactivationTest {
             i = at + needle.length
         }
     }
-
-    private val appRoot: File
-        get() = File("src/main/java/com/lovebrain/app").takeIf { it.isDirectory }
-            ?: File("app/src/main/java/com/lovebrain/app")
 }
