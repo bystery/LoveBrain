@@ -24,8 +24,9 @@ import org.robolectric.annotation.Config
  * ——`Spacing.sm` 是间隔令牌，不是字，字号放大时它不跟着长。
  *
  * 下面每一格都能被一个**具体的坏实现**打破（本机不跑构建，标在类 KDoc 末）：
- * · `the fixed tail charges each gap exactly once` ← 把 `Spacing.sm` 再烧回符号那颗占位数
- *   （本轮拆掉的那一版）⇒ 88 变 92，这一格与 `the all-visible tier flips…`（254 那条边界）各红一次；
+ * · `the fixed tail charges each gap exactly once` ← 把间隔再烧回符号那颗占位数、或把死空
+ *   当间隔又垫回一颗 Spacer（两种都是同一格 86 变 90/94）⇒ 这一格与
+ *   `the all-visible tier flips…`（252 那条边界）各红一次；
  * · `the necessary gaps do not grow with the system font` ← 恢复 `* fontScale` 乘整颗
  *   （连固定间隔一起放大）⇒ 字号差值那一格红；
  * · `the scope symbol keeps its own three axes apart` ← 给紧凑件再包一层 48dp 见方
@@ -54,45 +55,58 @@ class ReplyInputWidthBudgetTest {
     // ═══════════ ① 宽度预算里没有同一格重复扣 ═══════════
 
     /**
-     * 固定件预算的**本体**：三段间隔各一份、➕ 一份、范围符号一份，没有第四样。
+     * 固定件预算的**本体**：一段真 Spacer（chip 段→输入框）+ ➕ 占位 + 符号占位，没有第四样。
      *
-     * 期望值不叫 `tailWidth` 自己算（那会自证），而是照行 1 真实画出来的东西拼：
-     * `Spacer(chip→输入框) + Spacer(输入框→➕) + ➕ 的热区 + Spacer(➕→符号) + 符号的热区`。
-     * 坏实现：把 `Spacing.sm` 再烧回符号那颗占位数（本轮拆掉的那一版）⇒ 88 变 92，红在这里。
+     * 2026-10-14 起的账（用户原话「《他》…《➕》就是这一行，现在每行的间隔都不一样」，
+     * 实拍可见间隔 4/4/4/16/23）：行里只给 chip 段→输入框留一颗真 Spacer（[ReplyDimens.SEGMENT_GAP]，
+     * 数值 = ➕ 盒自己的死空 (48−28)/2 = 10）；输入框→➕、➕→符号那两段**不再是 Spacer**，
+     * 就是 ➕ 盒自己左右那两圈死空——已经在这 48 里，账上不再出现第二份。
+     * 期望值不叫 `tailWidth` 自己算（那会自证），而是从令牌拼：
+     * `SEGMENT_GAP(=死空那颗，从 48 与 28 现拼) + ➕ 的热区 + 符号的热区` = 10 + 48 + 28 = 86。
+     * 坏实现一：把间隔再烧回符号那颗占位数 ⇒ 86 变 90，红在这里；
+     * 坏实现二：把死空当间隔又垫回一颗 Spacer ⇒ 同一句也红（86 变 90 或 94）。
      */
     @Test
     fun `the fixed tail charges each gap exactly once`() {
-        val expected = 3f * Spacing.sm.value +
-            AppDimens.TOUCH_TARGET_MIN_DP + AppDimens.CARD_ACTION_HIT_DP
+        val gap = (AppDimens.TOUCH_TARGET_MIN_DP - ReplyDimens.ROLE_CHIP_HEIGHT_DP) / 2f
+        val expected = gap + AppDimens.TOUCH_TARGET_MIN_DP + AppDimens.CARD_ACTION_HIT_DP
         assertEquals(
-            "行 1 固定件应当只有『三段间隔 + ➕ 热区 + 符号热区』这一份账：" +
+            "行 1 固定件应当只有『一段 Spacer + ➕ 热区 + 符号热区』这一份账：" +
                 "预算 ${ReplyDimens.tailWidth(1f, withAdd = true, withScope = true)}，拼出来的 $expected",
             expected,
             ReplyDimens.tailWidth(1f, withAdd = true, withScope = true).value,
             0.01f
         )
-        // 逐颗加回去的那一段：每颗只贡献「自己那一段间隔 + 自己那颗占位」
+        // 逐颗加回去的那一段：➕ 只贡献它自己的占位盒（它与输入框之间那段可见间隔在盒里的死空上）
         val base = ReplyDimens.tailWidth(1f, withAdd = false, withScope = false).value
-        assertEquals("没有 ➕ 与符号时只剩 chip 段那一段间隔", Spacing.sm.value, base, 0.01f)
+        assertEquals("没有 ➕ 与符号时只剩 chip 段那一段间隔", gap, base, 0.01f)
         assertEquals(
-            "➕ 上树只多一段间隔加它自己的热区",
-            Spacing.sm.value + AppDimens.TOUCH_TARGET_MIN_DP,
+            "➕ 上树只多它自己的热区盒（间隔不再另算一份——它在盒里的死空上）",
+            AppDimens.TOUCH_TARGET_MIN_DP.toFloat(),
             ReplyDimens.tailWidth(1f, withAdd = true, withScope = false).value - base,
             0.01f
         )
         assertEquals(
-            "符号上树只多一段间隔加它自己的占位（占位＝热区那颗，间隔不许再烧进占位里）",
-            Spacing.sm.value + ReplyDimens.ROUND_SCOPE_HIT.value,
+            "符号上树只多它自己的占位（占位＝热区那颗，间隔不许再烧进占位里）",
+            ReplyDimens.ROUND_SCOPE_HIT.value,
             ReplyDimens.tailWidth(1f, withAdd = true, withScope = true)
                 .value - ReplyDimens.tailWidth(1f, withAdd = true, withScope = false).value,
             0.01f
         )
         // 占位轴自己也不夹带间隔：它必须正好等于命中轴那颗数（字号 1.0 那一档）
         assertEquals(
-            "占位轴把间隔夹带回来了（本轮拆掉的那颗重复预留）：" +
+            "占位轴把间隔夹带回来了（上一轮拆掉的那颗重复预留）：" +
                 ReplyDimens.roundScopeFootprint(1f),
             ReplyDimens.ROUND_SCOPE_HIT,
             ReplyDimens.roundScopeFootprint(1f)
+        )
+        // 可见间隔的"同一数"那一半：SEGMENT_GAP 必须正好等于 ➕ 盒的死空——
+        // 漂了就是"各段间隔同一数"这件事在预算里先破（屏上那一半由实拍那把像素尺钉）
+        assertEquals(
+            "段间隔与 ➕ 盒的死空不是同一颗数了（各段可见间隔均匀的账本那一半）",
+            (AppDimens.TOUCH_TARGET_MIN_DP - ReplyDimens.ROLE_CHIP_HEIGHT_DP) / 2f,
+            ReplyDimens.SEGMENT_GAP.value,
+            0.01f
         )
     }
 
@@ -233,8 +247,8 @@ class ReplyInputWidthBudgetTest {
      */
     @Test
     fun `the all-visible tier flips exactly where the deduped budget says it flips`() {
-        val fixed = 3f * Spacing.sm.value +
-            AppDimens.TOUCH_TARGET_MIN_DP + AppDimens.CARD_ACTION_HIT_DP
+        val gap = (AppDimens.TOUCH_TARGET_MIN_DP - ReplyDimens.ROLE_CHIP_HEIGHT_DP) / 2f
+        val fixed = gap + AppDimens.TOUCH_TARGET_MIN_DP + AppDimens.CARD_ACTION_HIT_DP
         val input = 2f * Spacing.lg.value + 2f * AppTypography.bodyMedium.fontSize.value
         // 令牌拼出来的这两份，必须与生产函数算出的完全一致（漂了就是两处各说各话）
         assertEquals(
@@ -247,7 +261,7 @@ class ReplyInputWidthBudgetTest {
         )
 
         val threshold = ReplyDimens.ROLE_CHIPS_MAX_WIDTH_DP + fixed + input
-        assertEquals("门槛本体就是本轮那份账：116 + 88 + 50 = 254", 254f, threshold, 0.01f)
+        assertEquals("门槛本体就是本轮那份账：116 + 86 + 50 = 252", 252f, threshold, 0.01f)
         assertEquals(
             "行宽 $threshold（= 三颗档 + 固定件 + 输入框下限）该刚好进全可见档",
             ReplyDimens.ROLE_CHIPS_MAX_WIDTH_DP.toFloat(),
@@ -262,7 +276,7 @@ class ReplyInputWidthBudgetTest {
         )
         // 两颗档与兜底档之间同一条判据：门槛 = 66 + 固定件 + 输入框下限，低 1dp 掉兜底
         val tightThreshold = ReplyDimens.ROLE_CHIPS_TIGHT_MAX_WIDTH_DP + fixed + input
-        assertEquals("两颗档门槛本体：66 + 88 + 50 = 204", 204f, tightThreshold, 0.01f)
+        assertEquals("两颗档门槛本体：66 + 86 + 50 = 202", 202f, tightThreshold, 0.01f)
         assertEquals(
             "行宽 $tightThreshold 该停在两颗档",
             ReplyDimens.ROLE_CHIPS_TIGHT_MAX_WIDTH_DP.toFloat(),
@@ -285,15 +299,16 @@ class ReplyInputWidthBudgetTest {
      */
     @Test
     fun `a row without the add button and the symbol does not pay for them`() {
+        val gap = (AppDimens.TOUCH_TARGET_MIN_DP - ReplyDimens.ROLE_CHIP_HEIGHT_DP) / 2f
         assertEquals(
             "主动发那一排只剩 chip 段与输入框之间那一段间隔",
-            Spacing.sm.value,
+            gap,
             ReplyDimens.tailWidth(1f, withAdd = false, withScope = false).value,
             0.01f
         )
         assertEquals(
             "只有符号、没有 ➕ 时，账上不该出现那颗 48 的盒（份数从令牌拼，不叫被测函数自证）",
-            Spacing.sm.value * 2f + AppDimens.CARD_ACTION_HIT_DP,
+            gap + AppDimens.CARD_ACTION_HIT_DP,
             ReplyDimens.tailWidth(1f, withAdd = false, withScope = true).value,
             0.01f
         )

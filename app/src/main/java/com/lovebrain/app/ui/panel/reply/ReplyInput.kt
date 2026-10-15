@@ -63,7 +63,7 @@ import com.lovebrain.app.ui.theme.*
  *   "补充" 46dp（本机语义树实测）；过去外盒 `widthIn(min = 48)` 带来的 18dp 纯占位
  *   已由 core 那颗宽度轴旋钮收掉（[LbChipStyle.widthFloor]，本页认领 false），
  *   §2.1 第 1 行点名的那颗"额外触控盒"在宽度轴上不复存在；
- * · ➕ 那颗同理 48×48（[ADD_HIT]，可见胶囊 24dp）；
+ * · ➕ 那颗同理 48×48（[ADD_HIT]，可见胶囊 28dp 高=宽，实拍读数）；
  * · 范围符号自己占的是**紧凑档那一颗热区**（[ReplyDimens.ROUND_SCOPE_HIT] = 28dp 见方，
  *   行宽按 [roundScopeFootprint] 扣——占位轴就是那颗热区，**间隔不在它身上烧第二遍**，
  *   见 [tailWidth] 的 ⚠；上限由 `RoundScopeChipFootprintTest` 钉在 48 以下，
@@ -101,8 +101,26 @@ internal object ReplyDimens {
      */
     val CHIP_BOX: Dp = AppDimens.TOUCH_TARGET_MIN_DP.dp
 
-    /** ➕ 那颗的热区盒（同上，可见胶囊只有 24dp 画在里面） */
+    /** ➕ 那颗的热区盒（可见胶囊 28dp 见方画在里面——实拍读数，旧注释写 24 是没量过） */
     val ADD_HIT: Dp = AppDimens.TOUCH_TARGET_MIN_DP.dp
+
+    /**
+     * ➕ 那颗 48 见方热区盒里、可见胶囊（28dp 宽 = [ROLE_CHIP_HEIGHT_DP] 那一档）左右各剩下
+     * 的那一圈**看不见的空**：(48 − 28) / 2 = **10dp**。
+     *
+     * 2026-10-14 起它不再只是"热区比可见大一圈的副产物"：用户原话「《他》…《➕》就是这一行，
+     * 现在每行的间隔都不一样」——实拍量到的可见间隔是 **4 / 4 / 4 / 16 / 23**（chip 之间 4、
+     * chip→输入框 4、输入框→➕ 16、➕→符号 23），后两格大的正是这两圈死空 + 原来那颗 4dp
+     * Spacer。修法是**把死空当节奏用**：行里不再给 ➕ 与符号前面各垫一颗 `Spacing.sm`，
+     * 各段之间的可见间隔一律 = [SEGMENT_GAP] 这一颗（➕ 盒自己的空就是那一段间隔），
+     * 热区 48×48 / 28×28 一寸不动（省下来的 16dp 让给输入框，行反而更紧了）。
+     * 改 ➕ 的盒或胶囊任何一颗，这一颗跟着走；实拍那把像素尺
+     * （`ReplyInputRowCaptureTest`）钉着"各段可见间隔同一数"，漂了它先红。
+     */
+    val ADD_SIDE_DEAD: Dp get() = (ADD_HIT - ROLE_CHIP_HEIGHT_DP.dp) / 2
+
+    /** 行 1 各段之间那一段**可见**间隔（数出处在 [ADD_SIDE_DEAD] 的 KDoc，这里只是别名） */
+    val SEGMENT_GAP: Dp get() = ADD_SIDE_DEAD
 
     /**
      * 那颗范围符号的**热区边长**（命中轴，两轴同一颗）：core 给紧凑族立的那颗具名矮档（28dp），
@@ -150,9 +168,11 @@ internal object ReplyDimens {
     /**
      * 行 1 除 chip 段以外的固定件预算：**每一格只在这里扣一次**。
      *
-     * · 三段必要间隔（chip 段→输入框、输入框→➕、➕→范围符号）各自只出现一次，
-     *   而且**不随字号放大**——它们是 `Spacing.sm` 那颗令牌，不是字；
+     * · chip 段→输入框那一段是行里唯一一颗真 `Spacer`（[SEGMENT_GAP]，见 [ADD_SIDE_DEAD]
+     *   的 KDoc：各段可见间隔同一数），而且**不随字号放大**——它是版式节奏，不是字；
      * · ➕ 与范围符号只按自己的**占位轴**扣（[ADD_HIT] / [roundScopeFootprint]）；
+     *   ➕ 盒与符号之间**不再有** `Spacer`——那一段可见间隔就是 ➕ 盒自己右边那圈死空，
+     *   已经在 [ADD_HIT] 这 48 里，预算里不再烧第二遍；
      * · 哪一件没上树（主动发那一档把 ＋ 与范围符号都短路了）就不扣它的宽——
      *   预算照着**这一排真实有什么**来算，不是照最满的那一档算（照最满算会在没有 ＋ 的屏上
      *   白白让 chip 段多让一档）。
@@ -160,10 +180,10 @@ internal object ReplyDimens {
      *   那一段根本不上树、也就根本不读这颗数），所以它不是一格重复预留，是同一格的唯一一份。
      */
     fun tailWidth(fontScale: Float, withAdd: Boolean, withScope: Boolean): Dp {
-        // chip 段与输入框之间那一段永远在
-        var tail = Spacing.sm
-        if (withAdd) tail += Spacing.sm + ADD_HIT
-        if (withScope) tail += Spacing.sm + roundScopeFootprint(fontScale)
+        // chip 段与输入框之间那一段永远在；➕ 与符号只扣各自的占位盒（间隔在盒自己的死空里）
+        var tail = SEGMENT_GAP
+        if (withAdd) tail += ADD_HIT
+        if (withScope) tail += roundScopeFootprint(fontScale)
         return tail
     }
 
@@ -430,7 +450,10 @@ fun ReplyInput(
                     emitKind(ComposerInputKind.SUPPLEMENT)
                 }
             }
-            Spacer(Modifier.width(Spacing.sm))
+            // chip 段→输入框那一段：行 1 唯一一颗真 Spacer（[ReplyDimens.SEGMENT_GAP]）。
+            // ➕ 与符号前面**不再各垫一颗**——那两段可见间隔是 ➕ 盒自己的死空
+            // （见 [ReplyDimens.ADD_SIDE_DEAD] 的 KDoc，用户 2026-10-14 点名"每行的间隔都不一样"）。
+            Spacer(Modifier.width(ReplyDimens.SEGMENT_GAP))
         }
     }
 
@@ -455,7 +478,8 @@ fun ReplyInput(
 
     val addSection: @Composable RowScope.() -> Unit = {
         if (showAddButton) {
-            Spacer(Modifier.width(Spacing.sm))
+            // 前面**不垫** Spacer：输入框→➕ 的那一段可见间隔就是 ➕ 盒左边那圈死空
+            // （[ReplyDimens.ADD_SIDE_DEAD]）——垫了就是把同一格间隔烧两遍（旧形状量到 16dp）。
             AddMessageButton(
                 canAdd = draftText.isNotBlank(),
                 isEditing = isEditing,
@@ -500,7 +524,9 @@ fun ReplyInput(
                 inputSection()
                 addSection()
                 if (roundEntryArmed) {
-                    Spacer(Modifier.width(Spacing.sm))
+                    // 符号前面**不垫** Spacer（同 addSection 那条账）；只有 ➕ 没上树而符号
+                    // 单独在的那一档才补一颗，别让两格贴死（生产三态到不了这一档，纯护栏）。
+                    if (!showAddButton) Spacer(Modifier.width(ReplyDimens.SEGMENT_GAP))
                     RoundScopeChip(
                         selected = onlyThisRound,
                         onClick = { onOnlyThisRoundChange?.invoke() }
@@ -643,6 +669,13 @@ private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
             .semantics { contentDescription = PANEL_ROUND_SCOPE_LABEL },
         style = LbChipStyles.pill.copy(
             pillHeight = 22.dp,
+            // 胶囊**自己**填满 28 那格（本轮新旋钮 `pillMinWidth`）：可见 14×22 → 28×22。
+            // 为什么：行 1 各段的可见间隔一律 = [ReplyDimens.SEGMENT_GAP]（➕ 盒的死空），
+            // 而那一段的右端点是**➕ 盒的死空右沿 + 符号胶囊左沿**——胶囊还按内容定宽（14）时，
+            // 它在 28 盒里居中、左边又剩 7dp 死空，那一段就量到 17dp（2026-10-14 实拍读数）。
+            // 胶囊填满热区格，死空归零，那一段正好是 ➕ 右沿那一圈 10。
+            // 占位轴与命中轴一寸没动（还是 [ROUND_SCOPE_HIT]），变的只是可见那一轴。
+            pillMinWidth = ReplyDimens.ROUND_SCOPE_HIT,
             markSelectedWithCheck = true,
             touchFloor = false,
             layeredTouch = true

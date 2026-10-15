@@ -249,18 +249,47 @@ class ReplyInputSymbolOwnerTest {
         assertTrue("占位轴里又烧了一段间隔——这就是本轮拆掉的那格重复预留：$footprint",
             !footprint.contains("Spacing."))
 
+        // 2026-10-14 起的形状（用户原话「每行的间隔都不一样」，实拍 4/4/4/16/23）：
+        // 各段可见间隔并成 [ReplyDimens.SEGMENT_GAP] 一颗（= ➕ 盒自己的死空），
+        // tailWidth 里只许它出现恰好一次；输入框→➕、➕→符号那两段不再是 Spacer，
+        // 就是 ➕ 盒自己左右那两圈死空——账上不再有第二份。
         val tail = functionBody(code, "fun tailWidth(")
+        assertTrue(
+            "tailWidth 里不该再出现任何 Spacing 令牌（各段间隔已并成 SEGMENT_GAP 一颗，" +
+                "再出现就是把死空又当间隔烧一遍）：$tail",
+            !tail.contains("Spacing.")
+        )
         assertEquals(
-            "固定件预算里 `Spacing.sm` 该恰好三段（chip→输入框 / 输入框→➕ / ➕→符号）；" +
-                "多一段＝同一格扣两遍，少一段＝有人把间隔藏进件自己那颗数里：" + tail,
-            3, Regex("""Spacing\.sm""").findAll(tail).count()
+            "固定件预算里段间隔该恰好一颗 SEGMENT_GAP（多一颗＝同一格扣两遍，零颗＝间隔没进账）：$tail",
+            1, Regex("""SEGMENT_GAP""").findAll(tail).count()
         )
         val row = functionBody(code, "fun ReplyInput(")
+        // chip 段内部那两颗 4dp（她/我/补充是一组，组内节奏还是 Spacing.sm）+ 组尾那颗 SEGMENT_GAP
+        assertEquals(
+            "chip 组内的 4dp 间隔该恰好两颗（多了就是组里混进了段间隔的账）：$row",
+            2, Regex("""Spacer\(Modifier\.width\(Spacing\.sm\)\)""").findAll(row).count()
+        )
+        assertEquals(
+            "真 Spacer（SEGMENT_GAP）该恰好两颗：chip 段→输入框那一颗 + ➕ 缺席档给符号补的那一颗" +
+                "（多出来的就是把死空又当间隔垫回去的那族）：$row",
+            2, Regex("""Spacer\(Modifier\.width\(ReplyDimens\.SEGMENT_GAP\)\)""").findAll(row).count()
+        )
         val scopeSlot = row.substringBeforeLast("RoundScopeChip(")
             .substringAfterLast("if (roundEntryArmed) {")
         assertEquals(
-            "行 1 画在符号前面那段间隔与预算对不上了（屏上 $scopeSlot）",
-            1, Regex("""Spacer\(Modifier\.width\(Spacing\.sm\)\)""").findAll(scopeSlot).count()
+            "行 1 符号前面不该再有 4dp Spacer（那段可见间隔是 ➕ 盒自己的死空；" +
+                "只有 ➕ 缺席那一档才补一颗 SEGMENT_GAP，屏上 $scopeSlot）",
+            0, Regex("""Spacer\(Modifier\.width\(Spacing\.sm\)\)""").findAll(scopeSlot).count()
+        )
+        assertEquals(
+            "➕ 缺席那一档给符号补的护栏 Spacer 该恰好一颗（两格贴死比松一格更难看）：$scopeSlot",
+            1, Regex("""Spacer\(Modifier\.width\(ReplyDimens\.SEGMENT_GAP\)\)""").findAll(scopeSlot).count()
+        )
+        val addSlot = row.substringBeforeLast("AddMessageButton(")
+            .substringAfterLast("val addSection")
+        assertEquals(
+            "➕ 前面不许再垫 Spacer（旧 16dp 那格的来历，屏上 $addSlot）",
+            0, Regex("""Spacer\(""").findAll(addSlot).count()
         )
     }
 
