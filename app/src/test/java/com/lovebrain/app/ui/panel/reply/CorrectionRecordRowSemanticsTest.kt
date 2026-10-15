@@ -157,7 +157,7 @@ class CorrectionRecordRowSemanticsTest {
     @Test
     fun `an empty center draws no record rows at all`() {
         mount(emptyMap())
-        rule.onNodeWithText("暂无纠正记录。在「本轮参考」中可对记忆发起纠正。").assertExists()
+        rule.onNodeWithText("还没有修正过记忆。军师引用历史记忆时，那条参考清单里可以逐条修正。").assertExists()
         val undos = probe.actionableTargets(rule, "空纠正中心").filter { it.label == "撤销" }
         assertEquals("空态不该有撤销：" + undos.joinToString { it.describe() }, 0, undos.size)
     }

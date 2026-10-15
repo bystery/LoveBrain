@@ -151,7 +151,7 @@ class CorrectionCenterTest {
     @Test
     fun `with no records the center still says so and still lets you leave`() {
         mount(emptyMap())
-        val texts = rule.onAllNodes(hasText("暂无纠正记录。在「本轮参考」中可对记忆发起纠正。"))
+        val texts = rule.onAllNodes(hasText("还没有修正过记忆。军师引用历史记忆时，那条参考清单里可以逐条修正。"))
             .fetchSemanticsNodes().size
         assertEquals("空态文案应当恰好一句，实到 $texts", 1, texts)
         val targets = probe.actionableTargets(rule, "空纠正中心")

@@ -320,6 +320,12 @@
          这四条动作与「撤销」调的就是已有的 MemoryCorrection 机制，不是给对方发新消息。 -->
     <string name="memory_fix_entry">修正记忆</string>
     <string name="memory_refs_note">调整军师本轮参考的记忆</string>
+    <!-- F06（2026-10-15 书 §7）：那一句说明必须跟着**本轮真有没有引用**走。
+         以前没有真引用、或那一轮本来就是「仅看本轮」时，也念同一句"调整军师本轮参考的记忆"，
+         用户点进去只看见"没有记录"——说的是没有的事，那就是误导。三句共用同一颗判据
+         （`ResultArea.memoryContextNoteRes`），不自建第二套 when。 -->
+    <string name="memory_note_no_refs">本轮没有引用历史记忆</string>
+    <string name="memory_note_only_this_round">这一轮只看本轮对话，没用历史记忆</string>
     <string name="memory_refs_more">更多 %1$d 条</string>
     <string name="memory_action_wrong">这条不对</string>
     <string name="memory_action_mute">暂时别提</string>

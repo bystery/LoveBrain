@@ -77,8 +77,11 @@ import org.robolectric.annotation.GraphicsMode
  *   或者把说明句常驻在出口旁边 ⇒ 同一句话在树里出现两次 ⇒ 红（第10节第4条）。
  *
  * ⚠ 锚点全部从资源取（`ctx.getString(...)`）：这台机器的环境解析出英文，写死中文会恒红。
- * 那颗结果区出口的标签走 `memory_fix_entry`（与逐条记忆行上那颗同一个 key），
- * 说明句走 `memory_refs_note`（清单头上那一句，两处共用同一份、只念一遍）。
+ * 那颗结果区出口的标签走 `memory_fix_entry`（与逐条记忆行上那颗同一个 key）。
+ * 出口上方那一句说明**按本轮真有没有引用换档**（F06，书 §7），三颗资源各管一档：
+ * `memory_refs_note`（有真引用、此刻收着）/ `memory_note_only_this_round`（那一轮是「仅看本轮」）/
+ * `memory_note_no_refs`（本轮确实没引用历史记忆）；选哪一句由 `memoryContextNoteRes` 一处决定，
+ * 清单展开时那句仍只挂在清单头上，出口不许念第二遍。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -98,6 +101,8 @@ class MemoryCorrectionEntryTest {
     // 与生产取同一份资源，不抄第二份中文
     private val entryLabel get() = ctx.getString(R.string.memory_fix_entry)
     private val noteLabel get() = ctx.getString(R.string.memory_refs_note)
+    private val noRefsNote get() = ctx.getString(R.string.memory_note_no_refs)
+    private val onlyRoundNote get() = ctx.getString(R.string.memory_note_only_this_round)
     private val wrongLabel get() = ctx.getString(R.string.memory_action_wrong)
     private val muteLabel get() = ctx.getString(R.string.memory_action_mute)
 
@@ -124,7 +129,8 @@ class MemoryCorrectionEntryTest {
 
     /**
      * 把「清单本体 + 那条常驻出口」按**生产里 ResultArea 的接法**挂在一起：
-     * 出口自己不看清单空不空，只看那块清单此刻在不在屏上（同一颗 [memoryRefsFeedVisible] 算出来的）。
+     * 出口自己不看清单空不空，只看那块清单此刻在不在屏上（同一颗 [memoryRefsFeedVisible] 算出来的），
+     * 以及那块清单**画不画得出来**（把展开态当 true 再问一次同一颗）——后者决定那一句说明说什么（F06）。
      */
     private fun mountFeed(
         refs: List<MemoryRef>,
@@ -132,6 +138,7 @@ class MemoryCorrectionEntryTest {
         onlyThisRound: Boolean
     ) {
         val feedOnScreen = memoryRefsFeedVisible(refs, showRefs, onlyThisRound)
+        val feedCanDraw = memoryRefsFeedVisible(refs, showRefs = true, onlyThisRound)
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
                 Box(modifier = Modifier.width(360.dp).height(900.dp)) {
@@ -148,6 +155,8 @@ class MemoryCorrectionEntryTest {
                         )
                         MemoryCorrectionEntry(
                             feedOnScreen = feedOnScreen,
+                            feedCanDraw = feedCanDraw,
+                            onlyThisRound = onlyThisRound,
                             onShowCorrectionCenter = { openCenterCalls++ }
                         )
                     }
@@ -239,7 +248,12 @@ class MemoryCorrectionEntryTest {
             "本轮没有参考记忆时，纠正出口恰恰是唯一能找到的一条路，不许跟着清单一起消失，实到：${spokenTexts()}",
             1, buttonCount(entryLabel)
         )
-        assertEquals("那一刻的上下文由那一句说明交代：清单不在屏上时它必须念得出", 1, plainTextCount(noteLabel))
+        // F06（书 §7）：那一句说明此刻说的是"本轮没有引用历史记忆"，**不是**"调整本轮参考的记忆"
+        assertEquals("没有真引用那一轮念的是那句诚实的短话", 1, plainTextCount(noRefsNote))
+        assertEquals(
+            "没有真引用却念「调整军师本轮参考的记忆」，就是书 §7 点名那句误导（用户点进去只看见空态）",
+            0, plainTextCount(noteLabel)
+        )
         assertTrue(
             "出口要报得出角色并够全站下限，不能是又一颗「点得中但读屏说不出干什么」的自画文字",
             probe.laid(probe.actionableTargets(rule, "空引用档的纠正出口"))
@@ -265,7 +279,13 @@ class MemoryCorrectionEntryTest {
             "那一轮仍然要看得见出口，否则用户既不知道军师用了什么、也改不动它，实到：${spokenTexts()}",
             1, buttonCount(entryLabel)
         )
-        assertEquals("并且那一句上下文说明必须念得出", 1, plainTextCount(noteLabel))
+        // F06（书 §7）：「仅看本轮」那一轮请求里根本没有历史记忆，那一句说的是这一档自己的话
+        assertEquals("那一轮念的是「只看本轮」那一句", 1, plainTextCount(onlyRoundNote))
+        assertEquals("不许念「本轮参考的记忆」（那一轮没有本轮参考）", 0, plainTextCount(noteLabel))
+        assertEquals(
+            "也不许念「本轮没有引用历史记忆」——那一轮的实情是「只看本轮」，两句说的是两件事",
+            0, plainTextCount(noRefsNote)
+        )
     }
 
     /**
@@ -284,7 +304,8 @@ class MemoryCorrectionEntryTest {
         assertEquals("那一轮不许给每张卡挂一颗翻不开的入口", 0, plainTextCount(cardRefsLabel))
         assertEquals("结果区那条出口仍在树上", 1, buttonCount(entryLabel))
         assertEquals("假引用一条都不许念出来", 0, plainTextCount(refA.text))
-        assertEquals("那一句上下文说明念得出", 1, plainTextCount(noteLabel))
+        assertEquals("那一句上下文说明念得出，且念的是「只看本轮」那一句", 1, plainTextCount(onlyRoundNote))
+        assertEquals("整屏那一档也不许把「本轮参考的记忆」念给没有参考的那一轮", 0, plainTextCount(noteLabel))
     }
 
     /**
@@ -365,6 +386,43 @@ class MemoryCorrectionEntryTest {
         assertTrue("静音的目标一颗都没被填", flow.muteTargetId == null)
         assertEquals("点入口不许把四种说法铺开", 0, plainTextCount(wrongLabel))
         assertEquals("点入口不许把时长浮层带出来", 0, plainTextCount(muteLabel))
+    }
+
+    /**
+     * ⑥ F06（2026-10-15 书 §7）那三档话的**真值表**：一句纯函数管到底，三档各说各的事。
+     *
+     * 这一格不挂组合栈（同一族先例：`MemoryRefsFeedTest` 里那颗 `the visibility gate is one
+     * truth table over its three inputs`）——本机这一轮已经证明"能挂载"不等于"能数到"，
+     * 而这条判据要防的是"有人给某一档补了第二处 when"或"两档抄成同一句话"，按资源 id 比最直接。
+     *
+     * 反例形状四条：
+     * · 说明句写死一颗（旧形状：任何时刻都念 `memory_refs_note`）⇒ 后两句红；
+     * · 把「仅看本轮」并到"没有引用"那一档 ⇒ 第三句红（两档说的是两件事：
+     *   那一轮是"用户自己只看本轮"，这一轮是"军师没用到历史记忆"）；
+     * · 新增一档时忘了改这颗 ⇒ 四格里必有一格对不上；
+     * · 两句资源被抄成同一个字 ⇒ 最后那句集合大小从 3 掉到 2。
+     */
+    @Test
+    fun `the context note is one truth table and the three states say three different things`() {
+        assertEquals("有真引用（只是此刻没收着）才念那一句原话",
+            R.string.memory_refs_note, memoryContextNoteRes(feedCanDraw = true, onlyThisRound = false))
+        assertEquals("同一颗判据里 feedCanDraw 为真就压住 onlyThisRound（不许长出第二套 when）",
+            R.string.memory_refs_note, memoryContextNoteRes(feedCanDraw = true, onlyThisRound = true))
+        assertEquals("「仅看本轮」那一轮念自己那句",
+            R.string.memory_note_only_this_round, memoryContextNoteRes(feedCanDraw = false, onlyThisRound = true))
+        assertEquals("其余那一档（本轮确实没引用）念「没有引用」那句",
+            R.string.memory_note_no_refs, memoryContextNoteRes(feedCanDraw = false, onlyThisRound = false))
+
+        val three = listOf(
+            ctx.getString(R.string.memory_refs_note),
+            ctx.getString(R.string.memory_note_only_this_round),
+            ctx.getString(R.string.memory_note_no_refs)
+        )
+        assertTrue("三句都得是实词，不能有空串：" + three, three.all { it.isNotBlank() })
+        assertEquals("三档必须各念各的（两档抄成同一句就是这一版要修的那个误导本身）",
+            3, three.toSet().size)
+        // 反向证人：这把尺数得出"两档撞车"那种写法
+        assertNotEquals("证人：两句不同的资源读出来确实不相等", three[0], three[1])
     }
 
     /**

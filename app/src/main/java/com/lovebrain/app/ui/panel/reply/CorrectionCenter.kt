@@ -94,11 +94,15 @@ fun CorrectionCenterHost(
         Spacer(Modifier.height(Spacing.md))
 
         if (corrections.isEmpty()) {
-            // 空态交回设计系统里那唯一一处：这里原来是一行自己画的文字，说法一个字没改，
+            // 空态交回设计系统里那唯一一处：这里原来是一行自己画的文字，
             // 改的是所有者——同一个"没有记录"不该每页长一个样。
+            // 说法本身按 F06（2026-10-15 书 §7）换成**用户看得懂的那件事**：
+            // 旧那句"暂无纠正记录。在「本轮参考」中可对记忆发起纠正"既写着术语化的"纠正记录"，
+            // 又点名了一颗屏上并不叫这个名字的入口（那条写的是"这轮参考了哪些信息？"），
+            // 用户照着找就找不到。现在说的是"还没有修正过记忆"，指引只描述时机与去处，不编名字。
             // 这一档没有动作（出口就是浮层那颗「关闭」），所以不传 action：
             // 空态里再长一颗可点的东西，就是给同一个决定修第二条路。
-            LbEmptyState(message = "暂无纠正记录。在「本轮参考」中可对记忆发起纠正。")
+            LbEmptyState(message = "还没有修正过记忆。军师引用历史记忆时，那条参考清单里可以逐条修正。")
         } else {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 corrections.forEach { (memoryId, correction) ->

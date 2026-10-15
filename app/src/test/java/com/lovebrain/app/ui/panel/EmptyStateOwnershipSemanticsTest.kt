@@ -85,7 +85,7 @@ class EmptyStateOwnershipSemanticsTest {
 
     /** 两句话就是搬之前页面上念的那两句，逐字钉在这里——要改文案的人必须同时改这一行 */
     private val proactiveHint = "输入想说的话，点击下方「生成开场」让军师帮你找话题"
-    private val correctionEmpty = "暂无纠正记录。在「本轮参考」中可对记忆发起纠正。"
+    private val correctionEmpty = "还没有修正过记忆。军师引用历史记忆时，那条参考清单里可以逐条修正。"
 
     /** 控制组容器的锚点，只在本文件里用 */
     private val CONTROL_TAG = "lb_empty_state_control"

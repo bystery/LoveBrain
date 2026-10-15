@@ -1,5 +1,6 @@
 package com.lovebrain.app.ui.panel.reply
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -233,9 +234,12 @@ fun ResultArea(
                     // 这条入口与成功档那一条是**同一颗**（本文件下面那颗 `MemoryCorrectionEntry`）：流式那一档
                     // 原来根本没有这条出口，而本轮没有参考记忆时卡片入口与清单都不画
                     //（`roundRefsClick` 为 null + `memoryRefsFeedVisible` 判空），流式档就一个字都不剩。
-                    // 清单照样不假装有一轮参考，但出口一直在；清单不在屏上时由它念那一句"这一刻用的是哪份上下文"。
+                    // 清单照样不假装有一轮参考，但出口一直在；清单不在屏上时由它念那一句"这一刻用的是哪份上下文"
+                    // ——那一句跟着真读数换档（F06：没有真引用就不许念"本轮参考的记忆"）。
                     MemoryCorrectionEntry(
                         feedOnScreen = feedCanDraw && memoryRefsExpanded,
+                        feedCanDraw = feedCanDraw,
+                        onlyThisRound = frozenOnlyThisRound,
                         onShowCorrectionCenter = onShowCorrectionCenter
                     )
                     Spacer(Modifier.height(Spacing.md))
@@ -343,9 +347,12 @@ fun ResultArea(
                 // **与本轮有没有参考记忆、与那一轮是不是「仅看本轮」都无关**：那两种状态下
                 // 卡片下方那条入口与那份清单都不画（`roundRefsClick` 为 null / `memoryRefsFeedVisible` 为假），
                 // 这条出口仍在树上，并由它那句说明交代"这一刻军师用的是哪一份上下文、去哪儿改"
-                //（形状、热区与说明句不念第二遍的判据都写在 `MemoryCorrectionEntry` 那一份的 KDoc 里）。
+                //（形状、热区与说明句不念第二遍的判据都写在 `MemoryCorrectionEntry` 那一份的 KDoc 里；
+                //  那一句说的是什么，由 `memoryContextNoteRes` 跟着真读数换档——F06，书 §7）。
                 MemoryCorrectionEntry(
                     feedOnScreen = feedCanDraw && memoryRefsExpanded,
+                    feedCanDraw = feedCanDraw,
+                    onlyThisRound = frozenOnlyThisRound,
                     onShowCorrectionCenter = onShowCorrectionCenter
                 )
 
@@ -414,6 +421,31 @@ fun ResultArea(
 }
 
 /**
+ * 结果区那条出口上方的**那一句说明**该念哪一句（F06，2026-10-15 书 §7）——三档一句话的唯一真源。
+ *
+ * 输入只有两颗已有的真读数，不新造状态：
+ * · `feedCanDraw` 是调用方拿同一颗 [memoryRefsFeedVisible]（把展开态当 `true`）问出来的
+ *   "这一块清单**画得出来吗**"——为真就意味着这一轮**真有**被引用的历史记忆，只是此刻收着没展开；
+ * · `onlyThisRound` 是这一份结果**当时**冻结的范围（`replyGenerationContext.onlyThisRound`）。
+ *
+ * 三档说的话各不相同，而且**不许有两档念同一句**（`MemoryCorrectionEntryTest` 里那格真值表
+ * 按资源 id 比三句互不相等，抄串了就红）：
+ * · 有真引用 ⇒ `memory_refs_note`（"调整军师本轮参考的记忆"）——这一句现在终于只在真有的时候说；
+ * · 「仅看本轮」那一轮 ⇒ `memory_note_only_this_round`（那一轮请求里根本没有历史记忆，
+ *   说"本轮参考的记忆"就是编）；
+ * · 其余（没有真引用） ⇒ `memory_note_no_refs`（"本轮没有引用历史记忆"）。
+ *
+ * `feedCanDraw` 为真时 `onlyThisRound` 必为假（那颗判据里就带着这一条），所以前两档不会撞车；
+ * 真值表那一格仍把 `true + true` 那一格钉成"跟着『有真引用』那一档走"，免得后来人换判据时撞车没人喊。
+ */
+@StringRes
+internal fun memoryContextNoteRes(feedCanDraw: Boolean, onlyThisRound: Boolean): Int = when {
+    feedCanDraw -> R.string.memory_refs_note
+    onlyThisRound -> R.string.memory_note_only_this_round
+    else -> R.string.memory_note_no_refs
+}
+
+/**
  * 结果区（含流式出卡那一档）下方那颗**常驻**的纠正出口：`入口 +（清单此刻不在屏上时）那一句上下文说明`。
  *
  * 它为什么必须一直画得出（M20：结果区那条记忆纠正入口不易发现）：
@@ -423,6 +455,12 @@ fun ResultArea(
  * ① 这一刻军师用的是什么上下文，② 从哪里改它。这两样由这一颗承担，所以它的可见性
  * **既不看** `memoryRefs` 空不空、**也不看**那颗布尔——它只发"打开纠正中心"这一句意图。
  *
+ * **那一句话说的是哪一刻**（F06，2026-10-15 书 §7）：说明句不能永远念同一句"调整军师本轮参考的记忆"。
+ * 没有真引用、或那一轮本来就是「仅看本轮」的时候，屏上却念着"本轮参考的记忆"，用户点进去只看见
+ * "没有记录"——那是书点名的误导形状（"不要同时念『调整本轮参考的记忆』并让用户点进去只看到空态"）。
+ * 现在三档由 [memoryContextNoteRes] 一处判：有真引用（只是清单此刻收着）才念那一句原话，
+ * 其余两档各念自己那句诚实的短话。入口本体、位置、热区都没动——**改的只是那一句说什么**。
+ *
  * 那一句话只在**清单本体不在屏上**时跟着入口念一遍（`feedOnScreen` 由调用方用同一颗
  * [memoryRefsFeedVisible] 算出来，这里不重写第二套 when）：清单展开时那句说明本来就挂在清单头上
  * （`memory_refs_note`），这一颗再念一遍就是同一句话说两遍。
@@ -431,6 +469,8 @@ fun ResultArea(
  * - 把出口也挂在"有真引用"之后（本轮没引用 ⇒ 整条出口消失，用户既读不到上下文也改不动）；
  * - 流式出卡那一档不画出口（旧形状只有成功档有它，卡还在流式里就没路可走）；
  * - 点它顺手改数据（这颗组件**没有** `onCorrection` 形参——结构上就改不了）。
+ * 第四种是 F06 那一族：**没有真引用时仍念"调整军师本轮参考的记忆"** ⇒ 那三格各红在新那一句上
+ * （旧句子数到 0、新句子数到 1），真值表那一格红在档数上。
  *
  * 形状仍是"热区与字形两层"：外面那颗盒子按 [ResultDimens.UTILITY_HITBOX_DP] 垫两轴到可点下限
  * 并当那处点击，里面的字仍按文字档画——把字撑大不是"更好点"，那是把外观一起改了。
@@ -438,20 +478,25 @@ fun ResultArea(
  * 这颗盒子留在本文件而不搬去别的所有者：`ProductionUiContractTest` 与 `ResultAreaOwnershipTest`
  * 那两颗闸就是按"结果区这条入口的热区住在哪里"读源码的（`UTILITY_HITBOX_DP` 现在唯一读它的就是这里）。
  *
- * 词表全部走资源（入口 `memory_fix_entry`、说明句 `memory_refs_note`），这里不新增内联中文。
+ * 词表全部走资源（入口 `memory_fix_entry`、三句说明 `memory_refs_note` /
+ * `memory_note_no_refs` / `memory_note_only_this_round`），这里不新增内联中文。
  */
 @Composable
 internal fun MemoryCorrectionEntry(
     /** 那份共享清单本体此刻在不在屏上（调用方按 [memoryRefsFeedVisible] 算）：在，则说明句不念第二遍 */
     feedOnScreen: Boolean,
+    /** 这一块清单**画得出来吗**（把展开态当 true 问过同一颗判据）：有真引用才念那一句原话 */
+    feedCanDraw: Boolean,
+    /** 这一份结果**当时**是不是「仅看本轮」（冻结读数，不是界面上那颗实时开关） */
+    onlyThisRound: Boolean,
     onShowCorrectionCenter: () -> Unit
 ) {
     val (interaction, scale) = rememberPressScale(0.96f, "correctionEntryScale")
     Spacer(Modifier.height(Spacing.xs))
     if (!feedOnScreen) {
-        // 一眼说清"这一刻军师用的是哪一份上下文"：清单画不出来的那两种状态由这一句顶上
+        // 一眼说清"这一刻军师用的是哪一份上下文"：三档各念自己那句，都由那颗真值表选
         Text(
-            text = stringResource(R.string.memory_refs_note),
+            text = stringResource(memoryContextNoteRes(feedCanDraw, onlyThisRound)),
             style = AppTypography.labelSmall,
             color = TextHint
         )
