@@ -82,9 +82,13 @@ fun IntentChip(
 }
 
 /**
- * 意图编辑浮层的长度上限——超限要**看得见地**提示，不许静默吞掉。
+ * 持续意图的长度上限——超限要**看得见地**提示，不许静默吞掉。
+ *
+ * F05（2026-10-15 书 §6）：这颗数从 private 提为 internal——浮层与设置页那格**共用一把尺**，
+ * 以前它只归浮层，设置入口的保存没有同一条约束（两处入口规则不一致就是这么来的）。
+ * 超限的形状两处同口径：字不截断、话要短、保存灰着还在。
  */
-private const val INTENT_MAX_LENGTH = 200
+internal const val INTENT_MAX_LENGTH = 200
 
 /**
  * 持续意图编辑弹窗——浮层那一半的形状归设计系统的 `LbModalSheet`，这一层只转参数。
@@ -199,7 +203,10 @@ internal fun IntentEditorBody(
                 LbDialogAction(
                     label = stringResource(R.string.intent_save),
                     enabled = !overLimit && !saving,
-                    onClick = { onSave(editText.trim().take(INTENT_MAX_LENGTH), editEnabled) }
+                    // 交出去的是屏上那一稿（trim 掉首尾空白），**不再 take(200)**：
+                    // 超限已经被上面那道门拦住，那一刀永远轮不到落下去；留着它就是留下
+                    // "哪天这道门松了会静默吞字"的第二个形状（书 §6：提示要可见，不许静默截断）。
+                    onClick = { onSave(editText.trim(), editEnabled) }
                 )
             )
         )

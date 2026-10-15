@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -17,6 +19,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppTypography
+import com.lovebrain.app.core.designsystem.Error
 import com.lovebrain.app.core.designsystem.LbRowLabel
 import com.lovebrain.app.core.designsystem.LbChip
 import com.lovebrain.app.core.designsystem.LbChipInteraction
@@ -24,6 +27,7 @@ import com.lovebrain.app.core.designsystem.LbChipStyles
 import com.lovebrain.app.core.designsystem.LbFieldInput
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.ui.home.MiniSwitch
+import com.lovebrain.app.ui.panel.INTENT_MAX_LENGTH
 import kotlinx.coroutines.delay
 
 /**
@@ -96,9 +100,10 @@ internal fun intentWriteOwnedBy(draftOwnerKb: String?, currentKb: String?): Bool
  * 开关与保存都只走这一颗，每次都把当前正文一起带过去，免得"打完字没落盘就先拨开关、正文被旧值盖掉"
  * 那条竞态。那一句「已保存」与那一句「保存失败，请重试」仍由宿主那条写盘链在真正落定之后经
  * **统一通知通道**发出，这一格不替宿主说话；它只把"刚刚又成功了一笔"这一件事画在自己那颗按钮上
- * （[saveReceipts] 那张票根跳一号 ⇒ 亮 [LbChipStyles.actionSuccess] 那一档，文案复用同一条资源
- * `intent_saved_notice`，到 [INTENT_SAVE_FLASH_MS] 自己收回）。失败那一路票根不跳，
- * 所以屏上永远不会先说成功——这一格禁止的形状。
+ * （[saveReceipts] 那张票根**相对本入口上屏时的基线**跳一号 ⇒ 亮 [LbChipStyles.actionSuccess]
+ * 那一档，文案复用同一条资源 `intent_saved_notice`，到 [INTENT_SAVE_FLASH_MS] 自己收回。
+ * 基线那句是 F05B：回执属于这一次点击，不属于历史——别处保存过再进这一页，首帧不许白亮。
+ * 失败那一路票根不跳，所以屏上永远不会先说成功——这一格禁止的形状。
  *
  * 期限与状态在这一格已经没有位置（开关就是启用标志，开着且正文非空才生效），所以写口只把
  * **正文与开没开**这两件事交出去：这一格不选档、不改档，也就不会替用户把到期时刻续一遍。
@@ -110,7 +115,8 @@ internal fun intentWriteOwnedBy(draftOwnerKb: String?, currentKb: String?): Bool
  * @param saving 那一笔写盘还在飞吗——**写侧那唯一的真读数**（`IntentController.isSaving`），
  *   由宿主交下来；这一格不自己推演"我刚才按了一下所以应该在飞"
  * @param saveReceipts 「已保存」成功回执的纪元票根（`IntentController.savedReceipts`）：
- *   每真正落盘成功一次跳一号。0 = 这台机器还没成功保存过 ⇒ 进页面不亮
+ *   每真正落盘成功一次跳一号。这一格只认**相对自己上屏基线的增量**（F05B），
+ *   历史值多大都不点亮首帧
  * @param onInputIntent 触碰输入区时通知宿主进入编辑态（悬浮窗那条键盘通路）
  */
 @Composable
@@ -132,11 +138,21 @@ internal fun SettingsIntentEntry(
     var justSaved by remember { mutableStateOf(false) }
 
     val draft = localText.trim()
+    // 长度那一把尺与浮层入口共用同一颗数（F05A，2026-10-15 书 §6）。超限的形状也同口径：
+    // **字不截断**（继续可编辑）、只多挂一行极短的话（不常驻、不第三行说明卡）、
+    // 保存与开关都交不动（灰着还在，同浮层那一颗）。
+    val overLimit = draft.length > INTENT_MAX_LENGTH
 
-    // 成功回执：票根每跳一号 = 正文真的落盘成功了一次 ⇒ 亮那一档。
-    // 起手 0（这台机器还没成功保存过）不亮，否则一进设置页就看见一颗绿的按钮。
+    // 票根的基线在这颗入口上屏那一刻记下（F05B，书 §6）：「已保存」只许**相对基线跳号**才亮——
+    // 它属于这一次点击，不属于"这台机器历史上成功保存过"。旧写法只判 `!= 0`，
+    // 在别处（浮层）保存过再进设置页，首帧就白亮 1.3 秒。基线走普通 remember：
+    // 键盘弹出这类重组不重置它；整段离开树再回来＝重新进页，基线重记正是该有的行为。
+    var receiptsBaseline by remember { mutableIntStateOf(saveReceipts) }
+
+    // 成功回执：票根相对基线每跳一号 = 这一次正文真的落盘成功了一次 ⇒ 亮那一档。
     LaunchedEffect(saveReceipts) {
-        if (saveReceipts == 0) return@LaunchedEffect
+        if (saveReceipts <= receiptsBaseline) return@LaunchedEffect
+        receiptsBaseline = saveReceipts
         justSaved = true
         delay(INTENT_SAVE_FLASH_MS)
         justSaved = false
@@ -146,7 +162,10 @@ internal fun SettingsIntentEntry(
     // 写成 lambda 而不是本函数里的局部 `fun`：这一族的状态是 `by remember` 那种委托局部量，
     // 赋值要落在闭包里（与本页别处同一写法）。
     val commit: (String, Boolean) -> Unit = { text, enabled ->
-        if (!intentWriteOwnedBy(draftOwnerKb, ownerKbName)) {
+        if (overLimit) {
+            // 超限这一稿哪儿都不去：开关与保存同一条路同一条闸（屏上那句超限话就挂在下面，
+            // 这不是静默失灵——看得见为什么按不动）。
+        } else if (!intentWriteOwnedBy(draftOwnerKb, ownerKbName)) {
             // 屏幕已经换成另一块库：这一稿不写给错的人。主人归零、草稿交回屏幕上那一份，
             // 于是下一次写的是新库那份数据——既没有"静默失灵"，也不留"看着是 A、写进 B"的中间态。
             draftOwnerKb = null
@@ -219,9 +238,19 @@ internal fun SettingsIntentEntry(
                         onClick = { commit(draft, true) },
                         interaction = LbChipInteraction.Action,
                         style = if (justSaved) LbChipStyles.actionSuccess else LbChipStyles.actionSolid,
-                        enabled = !saving
+                        // 超限与在飞同闸（F05A）：灰着还在，不是消失——与浮层那颗同口径
+                        enabled = !saving && !overLimit
                     )
                 }
+            }
+            // 超限时多挂这一行极短的话（只在这一刻存在：不常驻、不是第三行说明卡）。
+            // 文案与浮层共用同一条资源，两处念的是同一句。
+            if (overLimit) {
+                Text(
+                    text = stringResource(R.string.intent_too_long_error, INTENT_MAX_LENGTH),
+                    style = AppTypography.labelMedium,
+                    color = Error
+                )
             }
         }
     }

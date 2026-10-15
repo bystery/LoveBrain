@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -87,6 +88,14 @@ class SettingsPageVisualBaselineTest {
     private val app: Context get() = ApplicationProvider.getApplicationContext()
     private val density: Float get() = app.resources.displayMetrics.density
     private val probe by lazy { SemanticsProbe(density) }
+
+    /**
+     * 宿主那一张成功票根（`IntentController.savedReceipts`）由测试替写侧持有。
+     *
+     * 它是**状态**而不是挂载参数，因为 F05B 之后「已保存」那一档只认"相对这颗入口上屏基线的增量"：
+     * 要拍那一拍，必须先把页面挂起来、再把票根跳一号（挂载时直接交历史值读的是别处那一笔）。
+     */
+    private val intentReceipts = mutableStateOf(0)
 
     /**
      * 在册那一格：360dp 档（**方法名不许改**——roborazzi 的落盘名就是 `<类>.<方法>.png`，
@@ -191,10 +200,26 @@ class SettingsPageVisualBaselineTest {
     fun saveShowsTheSuccessTierRightAfterTheReceiptTicks() {
         // 自动推进会把那一拍 1.3 秒的虚拟时间直接跑完，图就落在收回之后——关掉它，只推几帧
         rule.mainClock.autoAdvance = false
-        mountWholePage(WIDTH_PROTOTYPE_DP, saveReceipts = 1)
+        // F05B（2026-10-15 书 §6）：「已保存」只认**相对本入口上屏基线的增量**。
+        // 所以这一格必须先把页面带着 0 号票根挂起来，再把票根跳一号——
+        // 挂载时就交历史值（旧写法那句 `saveReceipts = 1`）读的是"别处保存过没有"，
+        // 那一拍在真机上是"进设置页白亮一颗绿按钮"，正是这一版要禁掉的形状。
+        mountWholePage(WIDTH_PROTOTYPE_DP)
         repeat(8) { rule.mainClock.advanceTimeByFrame() }
         assertEquals(
-            "成功那一拍屏上那颗按钮该念「已保存」（对勾由档位加）",
+            "首帧（票根还没跳过）那颗按钮仍念「保存」，不许白亮成功那一档",
+            0,
+            rule.onAllNodesWithText(app.getString(R.string.intent_saved_notice), substring = true)
+                .fetchSemanticsNodes().size
+        )
+        // ⚠ 这一族在整页挂载下的时钟姿势：`runOnIdle` 写完状态之后要 **`waitForIdle()` 落定**，
+        // 只推帧不落定时这一页不重组（组件级那一格 `SettingsIntentRowTest` 推帧就够，因为被测那一颗
+        // 就是setContent 的根；这一格被测那颗埋在整页里）。口径与 `core/testing/UiMatrix` 那族先例一致。
+        rule.runOnIdle { intentReceipts.value = 1 }
+        rule.waitForIdle()
+        repeat(8) { rule.mainClock.advanceTimeByFrame() }
+        assertEquals(
+            "票根跳过这一号之后，屏上那颗按钮该念「已保存」（对勾由档位加）",
             1,
             rule.onAllNodesWithText(app.getString(R.string.intent_saved_notice), substring = true)
                 .fetchSemanticsNodes().size
@@ -225,8 +250,7 @@ class SettingsPageVisualBaselineTest {
         intentEnabled: Boolean = true,
         opacityPercent: Int = 80,
         bubbleSizeDp: Int = 56,
-        replyCardVertical: Boolean = true,
-        saveReceipts: Int = 0
+        replyCardVertical: Boolean = true
     ) {
         rule.setContent {
             UiMatrix(widthDp, heightDp = FRAME_HEIGHT_DP).RenderIn(LocalDensity.current.density) {
@@ -250,7 +274,7 @@ class SettingsPageVisualBaselineTest {
                             onBubbleSizeChange = {},
                             replyCardVertical = replyCardVertical,
                             onReplyCardVerticalChange = {},
-                            intentSaveReceipts = saveReceipts,
+                            intentSaveReceipts = intentReceipts.value,
                             intentEnabled = intentEnabled,
                             intentText = "这周把见面的事定下来",
                             onIntentChange = { _, _ -> },

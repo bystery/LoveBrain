@@ -31,6 +31,7 @@ import com.lovebrain.app.core.testing.SourceScan
 import com.lovebrain.app.core.testing.TouchTier
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
+import com.lovebrain.app.ui.panel.INTENT_MAX_LENGTH
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -46,7 +47,7 @@ import kotlin.math.abs
 /**
  * 设置页那一格**持续意图**的行级合同（脸按原型 `.intent-edit` 那一格钉，语义按两态合同钉）。
  *
- * 这一族要钉住的六件事，每件都对应一种"看不出来、坏了也没人喊"的坏法：
+ * 这一族要钉住的八件事，每件都对应一种"看不出来、坏了也没人喊"的坏法：
  * 1. **关 = 输入与保存整段不在树上**，不是"画出来但禁用"；关着也不许把旧文本写空、更不许注入。
  *    同时钉住"屏上不出现期限与终态那一族读数"（旧六档的形状）。
  * 2. **开 = 开关一行 + 紧跟其下的输入一行**，两行各自取族里的行版式（`settingsEntryRow()`）。
@@ -70,13 +71,19 @@ import kotlin.math.abs
  *    于是"请重试"那一句永远配得上一个真按得动的按钮。草稿在失败那一路原样留着。
  *    另一颗门是**切库保护**：这一稿的主人与屏幕上的库不是同一个时不交出去（不写给错的人），
  *    也不留"看着是 A、写进 B"的中间态。
+ * 7. **长度那一把尺与浮层共用同一颗数**（F05A，2026-10-15 书 §6）：正好在上限那一稿正常交出去、
+ *    一个字都不少；过界那一稿**看得见原因**（多挂一行极短的话）、**灰着还在**（不消失）、
+ *    **一个字都不交**（保存与开关同一条闸，两处提交同口径）。这一格也不许再抄第二份字面数。
+ * 8. **「已保存」那一档属于这一次点击**（F05B）：成功票根只认**相对本入口上屏基线的增量**；
+ *    别处（浮层那一扇）保存过的历史值再进这一页，首帧不许白亮 1.3 秒。
  *
  * 屏上**不许有**输入下方那一行灰字说明（`intent_row_hint` 那一句）：原型 `.intent-edit` 里只有输入与
  * 保存两颗，那句话已经由输入框的 placeholder 承担。这条用两处顶：文案集合钉成"此刻该有谁"（多一行
  * 字就红），加源码尺点名 `intent_row_hint` 不许再出现（资源键本身归这一族的主人清，测试不押 `R.string.*`，
  * 否则哪天孤儿清理删掉那颗键会让本文件在谁都没改界面的一天编译不过）。
  *
- * 时钟口径：第 6 件那两格**先**关掉 `mainClock.autoAdvance`，飞行中的读数才抓得住（同一口径的先例：
+ * 时钟口径：第 6 件与第 8 件那几格**先**关掉 `mainClock.autoAdvance`，飞行中／刚亮起的读数才抓得住
+ * （同一口径的先例：
  * `ui/panel/PanelErrorStatesSemanticsTest` 与 `ui/panel/stats/UsageStatBarSemanticsTest` 都在挂载之前
  * 把时钟冻住，因为默认档有机会在 `waitForIdle` 里把那一窗的虚拟时间一路喂完）。
  * ⚠ 反过来，"到点自动放行"那一段**不能**靠"把自动推进打开再 `waitForIdle`"收尾：本机实测那样回来
@@ -111,6 +118,13 @@ class SettingsIntentRowTest {
 
     /** 成功那一档的文案：与宿主那句回执共用同一条资源（这一格不写第二份话） */
     private val savedNotice: String get() = ctx.getString(R.string.intent_saved_notice)
+
+    /**
+     * 超限那一句：与浮层共用同一条资源、同一个数（[INTENT_MAX_LENGTH]）。
+     * 这里的格式化参数**取那颗尺本身**而不是写死 200——写死就把"只有一把尺"这条判据
+     * 自己先违了（哪天尺动了，这一格会红成"屏上念不到那句"，而那其实是量具抄了第二份数）。
+     */
+    private val tooLongMsg: String get() = ctx.getString(R.string.intent_too_long_error, INTENT_MAX_LENGTH)
 
     /**
      * 宿主那几份读数：开关 + 正文 + **写侧那两个真读数**（还在飞吗、成功票根跳了几号）。
@@ -957,6 +971,143 @@ class SettingsIntentRowTest {
         rule.waitForIdle()
         assertTrue("碰到输入区没把编辑意图投给宿主＝输入法弹不出来（实到 $edits 次）", edits >= 1)
         assertTrue("编辑意图不等于写盘：实到 $writes", writes.isEmpty())
+    }
+
+    // ═══════════ 8. 长度那一把尺（F05A）与回执的归属（F05B） ═══════════
+
+    /**
+     * **正好在上限**那一稿与**过界一个字**那一稿的两种形状，一次钉齐（书 §6：提示要可见、温和、
+     * 不会丢文字；保存超限要置灰，不要静默 take(200)）。
+     *
+     * 为什么两半写在同一格里：先按正好 200 字那一稿交成一笔，再把正文推过界，才能证明"交不成"
+     * 这件事是**长度**造成的，而不是"这颗按钮本来就点不动""这一格压根没接写口"。
+     * 反例形状四条：
+     * · 门写成 `>=`（或把尺抄成第二份数）⇒ 前面那句"正好在上限正常交一笔"当场红；
+     * · 静默 `take(200)` ⇒ "上限那一稿交的是整份正文"那条 `assertEquals(期望列表, 实到列表)` 红
+     *   （列表比的是**全文**，不是长度）；
+     * · 超限只把按钮**藏掉** ⇒ `saveTagCount()==1` 与"仍念得出保存"那两句红；
+     * · 只闸保存、不闸开关（旧形状里拨开关仍然把超长那一稿写出去）⇒ 最后那句 `writes.size` 从 1
+     *   变 2 当场红。
+     */
+    @Test
+    fun `a draft at the limit goes whole while one over it says why and writes nothing`() {
+        val host = Host(enabledAtStart = true, textAtStart = "")
+        val writes = mutableListOf<Write>()
+        mountRow(host = host, writes = writes)
+
+        val atLimit = "意".repeat(INTENT_MAX_LENGTH)
+        rule.onNode(hasSetTextAction()).performTextInput(atLimit)
+        rule.waitForIdle()
+        assertEquals("正好在上限那一稿屏上一个字都没被吃掉", INTENT_MAX_LENGTH, editableText().length)
+        assertEquals("正好在上限那一稿不该挂超限那句", 0, nodeCount(tooLongMsg))
+        assertFalse("正好在上限那一稿保存点得动（门是 > 而不是 >=）：" + saveTarget().describe(),
+            saveTarget().disabled)
+        rule.onAllNodes(hasText(saveLabel))[0].performClick()
+        rule.waitForIdle()
+        assertEquals(
+            "上限那一稿正常交一笔，交的是整份正文（这里不静默截断，超限那一侧另有门）",
+            listOf(Write(atLimit, true)), writes.toList()
+        )
+
+        // 过界一个字：形状换成"看得见原因、灰着还在、一个字都不交"
+        rule.onNode(hasSetTextAction()).performTextInput("图")
+        rule.waitForIdle()
+        assertEquals("超限那一稿正文仍然原样留在屏上（不许静默截断，用户得知道自己写了多少）",
+            INTENT_MAX_LENGTH + 1, editableText().length)
+        assertEquals("超限那一句要读得到，且只有一份", 1, nodeCount(tooLongMsg))
+        val gated = saveTarget()
+        assertTrue("超限时那颗「$saveLabel」是按不动的：" + gated.describe(), gated.disabled)
+        assertEquals("按不动不等于消失：那颗仍念得出自己是谁", saveLabel, gated.label)
+        assertEquals("按不动的那一拍那颗仍挂在同一枚锚点上", 1, saveTagCount())
+        assertEquals(
+            "超限的一格文案集合只有这三串（多一行说明卡／旧读数就是又长了一张脸），实到：" +
+                textNodes().joinToString { it.describe() },
+            setOf(rowLabel, saveLabel, tooLongMsg), textNodes().map { it.label }.toSet()
+        )
+
+        rule.onAllNodes(hasText(saveLabel))[0].performClick()
+        rule.waitForIdle()
+        assertEquals("超限那一按不交盘（只多一次看得见的原因，不多一笔脏数据）：实到 $writes", 1, writes.size)
+
+        rule.onAllNodes(hasContentDescription(rowLabel))[0].performClick()
+        rule.waitForIdle()
+        assertEquals("超限那一稿拨开关也不交出去（两处提交同一条闸）：实到 $writes", 1, writes.size)
+    }
+
+    /**
+     * 长度那一把尺**只有一条**（源码那一半）：这一格不许抄第二份数，也不许自己另写一句话。
+     *
+     * 为什么语义树那一半顶不住这一句：把尺抄成 `> 200` 之后，屏上的一切与现在**一模一样**
+     * （提示照样挂、按钮照样灰），只有"哪天浮层那颗尺动了、两处入口又各走各的"这一种坏法看得出来——
+     * 那正是书 §6 抱怨的"两处入口规则不一致"的来路。按符号名判（同一族源码尺先例见
+     * `ui/UiLayerDependencyContractTest`、上面那颗 `intent_row_hint`）。
+     */
+    @Test
+    fun `the length gate reads the one shared ruler and no second copy of the number`() {
+        val code = entrySource()
+        assertTrue("这一格的超限门没引用那颗公共的尺 INTENT_MAX_LENGTH（两处入口各自一份数就是这么回来的）",
+            code.contains("INTENT_MAX_LENGTH"))
+        assertTrue("这一格的超限提示没走浮层那一条资源（两处念的是两句话）",
+            code.contains("R.string.intent_too_long_error"))
+        assertFalse("这一格里出现了字面的长度数——那是第二把尺", code.contains("200"))
+        // 反向证人：这把尺确实数得出"第二把尺"那种写法（不然这三句是恒绿的空转）
+        assertTrue("证人：抄一份字面数进来时这把尺要数得到",
+            "val overLimit = draft.length > 200".contains("200"))
+    }
+
+    /**
+     * 「已保存」那一档属于**这一次点击**（F05B）：成功票根只认相对本入口上屏基线的增量。
+     *
+     * 旧形状 `LaunchedEffect(saveReceipts) { if (saveReceipts == 0) return … }` 读的是"这台机器
+     * 历史上成功保存过没有"：在浮层那一扇保存过一次再进设置页，首帧就白亮 1.3 秒的绿档——
+     * 屏上说了一件这一刻没发生过的事。反例形状两条：
+     * · 判据回成 `!= 0` ⇒ 下面第一句"首帧不亮"当场红（带着历史值 5 进页）；
+     * · 增量那条门写成相等就返回、跳号也不推进基线 ⇒ 第二句"这一笔成功要亮"红。
+     *
+     * ⚠ 时钟同第 6 件那几格的口径：先冻住自动推进，否则 `waitForIdle` 会把那一窗虚拟时间喂完，
+     * "刚亮起"与"已收回"两个读数合成一个。
+     */
+    @Test
+    fun `a receipt left by another entrance does not light the save but this one does`() {
+        rule.mainClock.autoAdvance = false
+        val host = Host(enabledAtStart = true, textAtStart = "先约她")
+        val writes = mutableListOf<Write>()
+        // 别处已经成功保存过 5 次：票根带着**历史值**交下来（这正是"进页首帧白亮"那一条坏法的现场）
+        host.receipts.value = 5
+        rule.setContent {
+            UiMatrix(PROBE_WIDTH_DP, heightDp = 600).RenderIn(LocalDensity.current.density) {
+                SettingsIntentEntry(
+                    intentEnabled = host.enabled.value,
+                    intentText = host.text.value,
+                    saving = host.saving.value,
+                    saveReceipts = host.receipts.value,
+                    onIntentChange = { text, enabled -> writes += Write(text, enabled) },
+                    ownerKbName = "kbA"
+                )
+            }
+        }
+        pump(SETTLE_MS)
+        assertTrue("带着历史票根进页，首帧不许白亮成功那一档（那是别处那一笔的回执）",
+            savedTargets().isEmpty())
+        assertEquals("首帧那颗仍念得出「$saveLabel」", 1, saveNodeCount())
+
+        // 这一页自己按一次，写侧把票根从 5 跳到 6 ⇒ 那一档亮的是**这一笔**
+        rule.onAllNodes(hasText(saveLabel))[0].performClick()
+        pump(SETTLE_MS)
+        assertEquals("按一次交一笔", listOf(Write("先约她", true)), writes.toList())
+        rule.runOnIdle { host.receipts.value = 6 }
+        pump(SETTLE_MS)
+        assertEquals("这一笔落盘成功之后该亮，恰一颗", 1, savedTargets().size)
+
+        // 到点自己收回实心档（推法同第 6 件那一格：不抄生产那个毫秒数）
+        var pushedMs = 0L
+        while (saveNodeCount() == 0 && pushedMs < RELEASE_PUMP_CEILING_MS) {
+            rule.mainClock.advanceTimeBy(RELEASE_PUMP_STEP_MS)
+            rule.waitForIdle()
+            pushedMs += RELEASE_PUMP_STEP_MS
+        }
+        assertEquals("亮过之后要回实心档（虚拟时间已推过 ${pushedMs}ms）", 1, saveNodeCount())
+        assertTrue("收回之后成功那一档不再留在屏上", savedTargets().isEmpty())
     }
 
     companion object {
