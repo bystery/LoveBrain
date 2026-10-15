@@ -15,7 +15,7 @@ import org.junit.Test
  * 周一见面 11 轮回归测试。
  *
  * 场景：
- * PARTNER 说"周一见吧"，USER 说"好" → 创建 meeting event
+ * PARTNER 说"周一见面吧"，USER 说"好" → 创建 meeting event
  * 第 2-10 轮：完全不相关的日常对话（吃什么/洗澡/看剧/累/下课/睡觉等）
  * PARTNER 说"对了，周一几点见？" → 重新相关
  *
@@ -54,11 +54,11 @@ class MeetingPollutionRegressionTest {
 
     @Test
     fun `round 1 injects because message contains keyword`() = runBlocking {
-        //注入是因为消息含"周一""见"关键词，不是因为"首次出现"
+        //注入是因为消息整词含"见面"（F03 后不再认"周一"这种二字切片），不是因为"首次出现"
         coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns ""
 
         val result = selector.selectForInjection("kb", ctx(1,
-            ChatMessage.Role.HER to "周一见吧",
+            ChatMessage.Role.HER to "周一见面吧",
             ChatMessage.Role.ME to "好"
         ))
 
@@ -99,7 +99,7 @@ class MeetingPollutionRegressionTest {
 
         // PARTNER 说"对了，周一几点见？"
         val result = selector.selectForInjection("kb", ctx(11,
-            ChatMessage.Role.HER to "对了，周一几点见？"
+            ChatMessage.Role.HER to "对了，周一几点见面？"
         ))
 
         assertTrue("第 11 轮关键词命中应注入", result.eligibleItems.isNotEmpty())
@@ -109,10 +109,10 @@ class MeetingPollutionRegressionTest {
     @Test
     fun `full 11-round sequence`() = runBlocking {
         // 完整 11 轮序列测试
-        //（注入因为消息含关键词"周一""见"）
+        //（注入因为消息整词含"见面"；二字切片的授权路径已由 F03 撤掉）
         coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns ""
         val r1 = selector.selectForInjection("kb", ctx(1,
-            ChatMessage.Role.HER to "周一见吧",
+            ChatMessage.Role.HER to "周一见面吧",
             ChatMessage.Role.ME to "好"
         ))
         assertEquals("第 1 轮应注入（关键词命中）", 1, r1.eligibleItems.size)
@@ -142,7 +142,7 @@ class MeetingPollutionRegressionTest {
 
         //
         val r11 = selector.selectForInjection("kb", ctx(11,
-            ChatMessage.Role.HER to "对了，周一几点见？"
+            ChatMessage.Role.HER to "对了，周一几点见面？"
         ))
         assertTrue("第 11 轮应重新注入", r11.eligibleItems.isNotEmpty())
     }

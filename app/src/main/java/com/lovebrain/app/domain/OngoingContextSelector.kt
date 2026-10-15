@@ -229,25 +229,27 @@ class OngoingContextSelector(
         val keywords = extractKeywords(itemName)
         if (keywords.isEmpty()) return RelevanceSignals(false, false, false)
 
-        val rawKeywords = extractRawKeywords(itemName)
-        val allKeywords = (keywords + rawKeywords).distinct()
-
+        // F03（2026-10-15 书 §4）：匹配词表只用上面这颗 `extractKeywords` 清出来的明确词。
+        // 下面这颗二字滑动窗口（`extractRawKeywords`，它自己 KDoc 就写着"太宽，会误召回"）
+        // 以前挂在**全部三个判决**上——事项"周末见面"因一句"周末还要加班"就拿到真实证据、
+        // 刷新 lastEvidenceTurn。泛化切片从判据里整个撤掉：宁可轻微召回下降，
+        // 不许虚假相关（书点名不引分词 SDK、不加 Embedding，这里也不发明第二套滑窗）。
         // 1. 真实消息关键词匹配——唯一能更新 lastEvidenceTurn 的信号
         val lowerText = realText.lowercase()
-        val matchedInMessage = allKeywords.any { kw -> lowerText.contains(kw.lowercase()) }
+        val matchedInMessage = keywords.any { kw -> lowerText.contains(kw.lowercase()) }
 
         // 2. ReplyDirective 提到该事项——相关但不刷新证据时间
         var matchedInDirective = false
         if (directiveText.isNotBlank()) {
             val lowerDirective = directiveText.lowercase()
-            matchedInDirective = allKeywords.any { kw -> lowerDirective.contains(kw.lowercase()) }
+            matchedInDirective = keywords.any { kw -> lowerDirective.contains(kw.lowercase()) }
         }
 
         // 3. 持续意图文本提到该事项——相关但不刷新证据时间
         var matchedInIntent = false
         if (intentText.isNotBlank()) {
             val lowerIntent = intentText.lowercase()
-            matchedInIntent = allKeywords.any { kw -> lowerIntent.contains(kw.lowercase()) }
+            matchedInIntent = keywords.any { kw -> lowerIntent.contains(kw.lowercase()) }
         }
 
         return RelevanceSignals(
@@ -287,23 +289,6 @@ class OngoingContextSelector(
         } else {
             keywords
         }
-    }
-
-    /**
-     * 从原始事项名称中提取 2 字滑动窗口关键词。
-     *
-     * 已废弃——二字滑动窗口匹配太宽，会误召回。
-     * "周末见面" 包含 "周末"，消息 "周末还要加班" 即命中，但见面事项没有新证据。
-     * 现在只作为 extractKeywords 的回退参考，不再单独用于 any contains 判断。
-     */
-    private fun extractRawKeywords(name: String): List<String> {
-        val cleaned = name.replace(Regex("[（）()【】\\[\\]「」\"'·\\s,，、]+"), "")
-        if (cleaned.length < 2) return emptyList()
-        val result = mutableListOf<String>()
-        for (i in 0..cleaned.length - 2) {
-            result.add(cleaned.substring(i, i + 2))
-        }
-        return result
     }
 
     /**

@@ -22,18 +22,26 @@ import org.junit.Test
  * 这一族的旧形状正是两处各写各的：注入那一侧看 `expiryDate < now` 与 status，
  * 检索那一侧只看 status，谁都不看另一边的东西。于是同一份"上周设的一天期、现在开着"的意图
  * 会**一边注入、一边拒绝推进事项**，用户看到的是"开关明明开着，军师时灵时不灵"。
- * 现在两处都只问 [IntentConfig] 的那颗判据：**开 且 正文非空**。
+ * 现在两处都只问 [IntentConfig] 的那颗判据：**开、正文非空，且状态是活动档**。
+ * 第三句是 2026-10-15 书 §3（F02）的防线：旧终态（COMPLETED/EXPIRED/PAUSED）就算带着
+ * `enabled=true` 也必须两处都不说话——升级不许把用户点过"已完成"的意图悄悄唤醒；
+ * 日常路径上这类旧文件在唯一读口（`KnowledgeIntentService.decode`）已被归一化成关闭，
+ * 这颗防线挡的是没走那道读口的构造路径。两侧同读一颗判据，"一边注入一边拒绝"的分叉
+ * 形状在这格仍然当场红。
  *
  * ## 有牙在哪儿
- * · 矩阵里那行「开着的 + 早已过去的 `expiryDate`」是**反例钉**：旧实现下注入给 false、
- *   检索给 true，这一格当场红；把任一侧偷偷加回 status/期限守卫，判决就分叉。
- * · 事项名里的关键词（见面/安排）**只出现在意图正文**，夹具里的消息与 `replyDirective` 都碰不到它，
+ * · 旧终态三行（EXPIRED/PAUSED/COMPLETED）**在 F02 之前期望的是"有效"**——那一族合同
+ *   已被书 §3 整批翻案（旧终态＝无效）；文件读侧的归一化由 `IntentStorageTest` 三格
+ *   真盘用例钉，这里钉的是内存配置直达两处消费者时的同判防线。
+ * · 事项名（见面）**只出现在意图正文**，夹具里的消息与 `replyDirective` 都碰不到它，
  *   所以"检索授权"这件事除了意图没有别的来路——判据一失效，`eligible` 立刻空。
  * · 反向对照：关掉开关的同一份输入必须两处都不动（否则整格就成了"两处都恒真"）。
  */
 class IntentInjectionAgreementTest {
 
-    private val plan = "# 事项计划\n\n## 进行中\n见面安排|进行中|[2026-09-15 10:00]约定（当前）\n"
+    // F03（2026-10-15 书 §4）把事项名从"见面安排"改成"见面"：旧夹具能跨"定下见面的日子"
+    // 这类整句授权，靠的正是被撤掉的二字切片；换成整词后，两处同判这条属性才真正被独立钉住。
+    private val plan = "# 事项计划\n\n## 进行中\n见面|进行中|[2026-09-15 10:00]约定（当前）\n"
 
     /** 只有意图正文提到这件事：夹具里的消息与 `replyDirective` 都给不出这个关键词 */
     private val intentBody = "这周把见面的日子定下来"
@@ -78,7 +86,9 @@ class IntentInjectionAgreementTest {
                 expectedValid = true
             ),
             Row(
-                "开着 + 旧的过去期限 = 仍然有效（退役的是期限，不是那句正文）",
+                "开着 + 旧的过去期限（状态仍是活动档）= 有效——期限退役的是判权，不是那句正文；" +
+                    "过去时刻的**旧文件**在 decode 读口就被归一化成关闭（IntentStorageTest 钉），" +
+                    "这颗内存配置直达处不设日期守卫",
                 IntentConfig(
                     text = intentBody, enabled = true, status = IntentStatus.ACTIVE,
                     expiry = IntentExpiry.ONE_WEEK, expiryDate = "2020-01-01 00:00"
@@ -86,25 +96,25 @@ class IntentInjectionAgreementTest {
                 expectedValid = true
             ),
             Row(
-                "开着 + 旧 EXPIRED = 有效",
+                "开着 + 旧 EXPIRED = 无效（F02 防线：旧终态注不进去）",
                 IntentConfig(
                     text = intentBody, enabled = true, status = IntentStatus.EXPIRED,
                     expiry = IntentExpiry.ONE_DAY, expiryDate = "2020-01-01 00:00"
                 ),
-                expectedValid = true
+                expectedValid = false
             ),
             Row(
-                "开着 + 旧 PAUSED = 有效",
+                "开着 + 旧 PAUSED = 无效（同上）",
                 IntentConfig(text = intentBody, enabled = true, status = IntentStatus.PAUSED),
-                expectedValid = true
+                expectedValid = false
             ),
             Row(
-                "开着 + 旧 COMPLETED = 有效",
+                "开着 + 旧 COMPLETED = 无效（用户点过\"已完成\"的意图不许升级后悄悄唤醒）",
                 IntentConfig(
                     text = intentBody, enabled = true, status = IntentStatus.COMPLETED,
                     expiry = IntentExpiry.COMPLETED
                 ),
-                expectedValid = true
+                expectedValid = false
             ),
             Row(
                 "关着 + 有正文 = 无效（文本留着，但不说话）",
@@ -145,7 +155,7 @@ class IntentInjectionAgreementTest {
         val authorized = runBlocking {
             selectorWith(config).selectForInjection("kb", context(config)).eligibleItems.map { it.name }
         }
-        assertEquals("检索授权推进的就是那件被正文提到的事项", listOf("见面安排"), authorized)
+        assertEquals("检索授权推进的就是那件被正文提到的事项", listOf("见面"), authorized)
     }
 
     /** 关掉开关之后：既不进提示词，也不再替事项说话——但正文一个字都没被改写 */

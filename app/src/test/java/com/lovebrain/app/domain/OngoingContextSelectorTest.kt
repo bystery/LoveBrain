@@ -100,6 +100,71 @@ class OngoingContextSelectorTest {
         assertEquals("冷却中且不相关不应注入", 0, result.eligibleItems.size)
     }
 
+    // ─── F03（2026-10-15 书 §4）：二字滑窗整个退出判据 ───
+
+    /**
+     * 书点名那一例：事项"周末见面"被一句"周末还要加班"就触发——旧实现把
+     * `extractRawKeywords` 的二字滑窗（它自己的 KDoc 都写着"太宽，会误召回"）挂在
+     * 三个判决上，"周末"两个字重叠就够刷新证据。
+     * 坏实现＝滑窗被挂回来：这一格第一句当场红（旧形状下 eligible 是 1 不是 0）。
+     */
+    @Test
+    fun `an unrelated weekend complaint does not recall the weekend-meeting item`() = runBlocking {
+        coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("周末见面")
+
+        val ctx = OngoingContextSelector.SelectionContext(
+            messages = messages(ChatMessage.Role.HER to "周末还要加班"),
+            currentTurn = 3,
+            currentTime = "2026-09-19 12:00"
+        )
+        val result = selector.selectForInjection("kb", ctx)
+
+        assertEquals("不许只凭「周末」两个字重叠就注入旧事项（更不许因此刷新证据轮次）",
+            0, result.eligibleItems.size)
+    }
+
+    /** 整词真的出现：照样命中——精修不是把召回降成零，只撤泛化切片 */
+    @Test
+    fun `the full item phrase in a message still recalls the item`() = runBlocking {
+        coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("周末见面")
+
+        val ctx = OngoingContextSelector.SelectionContext(
+            messages = messages(ChatMessage.Role.HER to "我们周末见面别迟到了"),
+            currentTurn = 3,
+            currentTime = "2026-09-19 12:00"
+        )
+        val result = selector.selectForInjection("kb", ctx)
+
+        assertEquals("整词出现必须照常命中", listOf("周末见面"), result.eligibleItems.map { it.name })
+    }
+
+    /**
+     * 书 §4 第 3、4 条合一：持续意图**点名**该事项 ⇒ 相关、注入；
+     * 但 lastEvidenceTurn **只认真实 HER/ME 文本**——注入过一次不许变成"有了新事实"，
+     * 下一轮没有真实消息时它不许靠这一拍续命。
+     */
+    @Test
+    fun `a deliberate intent mention injects without forging message evidence`() = runBlocking {
+        coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("周末见面")
+        coEvery { knowledgeRepo.readIntent("kb") } returns IntentConfig(
+            text = "这周把周末见面的事推进一下", enabled = true
+        )
+
+        val ctx = OngoingContextSelector.SelectionContext(
+            messages = messages(ChatMessage.Role.HER to "今天吃什么"),
+            currentTurn = 7,
+            currentTime = "2026-09-19 12:00",
+            effectiveIntent = IntentConfig(text = "这周把周末见面的事推进一下", enabled = true)
+        )
+        val result = selector.selectForInjection("kb", ctx)
+
+        assertEquals("意图点名的事项要在场上", listOf("周末见面"), result.eligibleItems.map { it.name })
+        assertTrue(
+            "lastEvidenceTurn 不许被意图文本推进（当前轮 7，实到 ${result.eligibleItems.single().lastEvidenceTurn}）",
+            result.eligibleItems.single().lastEvidenceTurn < 7
+        )
+    }
+
     @Test
     fun `keyword match injects item`() = runBlocking {
         coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("计划9-21见面")
