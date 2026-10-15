@@ -403,15 +403,20 @@ data class ProactiveOption(
  * 跨面板关闭、重启和正常下一轮保留；关闭时保留最后文本但不注入。
  * revision 在每次保存时递增，用于生成时冻结快照识别旧请求。
  *
- * **有效的判据只有一条**：[enabled] 为真且 [text] 非空（见 [isIntentEffective]）。
- * 开启就一直开着——没有期限，也没有"已完成"这一档。
+ * **有效的判据**：[enabled] 为真、[text] 非空，且状态是活动档（见 [isIntentEffective]；
+ * 第三句只是旧终态的防线，新数据恒活动档）。
+ * 开启就一直开着——新语义没有期限，也没有"已完成"这一档。
  *
- * [expiry] / [expiryDate] / [status] 三样是**兼容字段**，不再是判据：
- * - 盘上老文件（`moment/intent.json`）里就带着它们，读侧照单收下、不迁移、不改写用户数据；
- *   旧 [IntentStatus.EXPIRED] / [IntentStatus.COMPLETED] / [IntentStatus.PAUSED] 一律按
- *   "没有期限"处理，**不阻止**开关重新起效；
+ * [expiry] / [expiryDate] / [status] 三样是**兼容字段**：
+ * - 盘上老文件（`moment/intent.json`）里就带着它们，读侧照单收下、不改写用户数据；
+ *   但旧终态**不再无害**（F02，2026-10-15 书 §3）：`status ∈ {COMPLETED, EXPIRED, PAUSED}`
+ *   或 `expiry = COMPLETED` 的旧文件在唯一读口（`KnowledgeIntentService.decode`）被归一化成
+ *   **显示关闭**（文本原样保留），旧 ACTIVE 但到期时刻已过去的同样按关闭收——
+ *   升级不该把用户点过"已完成"的意图悄悄唤醒注入；用户此后主动拨开就是无限期启用；
  * - 写侧统一：每一次新的保存都落 [IntentStatus.ACTIVE] 加空 [expiryDate]，
  *   于是旧语义只在读的那一刻被消化掉，不会从新数据里长回来；
+ * - [isIntentEffective] 另留一道防线（status 必须为 ACTIVE）：任何没经过归一化读口的
+ *   旧终态配置（内存里拼出来的、别的构造路径）也注不进提示词；新数据恒 ACTIVE，行为不变；
  * - 枚举项一个都不许删：删掉旧值会让老 JSON 反序列化失败，整份配置被当成空——
  *   那是清空用户写过的意图，不是简化。 */
 @Serializable
@@ -426,14 +431,20 @@ data class IntentConfig(
 )
 
 /**
- * 这一条意图此刻算不算"开着"：**开 且 正文非空**，别的都不算。
+ * 这一条意图此刻算不算"开着"：**开 且 正文非空 且 状态是活动档**，别的都不算。
  *
  * 注入提示词与进行中事项的检索授权读的是同一颗——两处各写一遍判据，
  * 就会长成"一处注入、一处检索拒绝"那种自相矛盾的判决（历史上正长成过这样）。
+ *
+ * 第三句 `status == ACTIVE` 是 F02（2026-10-15 书 §3）的**防线**而不是日常判据：
+ * 新数据每一次保存都落 ACTIVE（`IntentController` 写侧统一），这一句对它们恒真、行为不变；
+ * 它挡的是**没走归一化读口**的旧终态配置——COMPLETED/EXPIRED/PAUSED 就算带着
+ * `enabled=true` 从别处构造出来，也注不进提示词。日常路径上旧文件早在
+ * `KnowledgeIntentService.decode` 被归一化成关闭（文本保留），两道同一口径。
  * 关着的意图正文仍留在盘上，只是不注入。
  */
 val IntentConfig.isIntentEffective: Boolean
-    get() = enabled && text.isNotBlank()
+    get() = enabled && text.isNotBlank() && status == IntentStatus.ACTIVE
 
 /**
  * 意图有效期的历史档位——**语义已退役**，只保留到能读懂老文件为止

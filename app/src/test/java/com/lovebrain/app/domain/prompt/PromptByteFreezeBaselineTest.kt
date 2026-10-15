@@ -217,15 +217,22 @@ class PromptByteFreezeBaselineTest {
         "reply/intent-one-day" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
         "reply/intent-one-hour-future" to Frozen("3bba8551891ba0b711fc54977d9f928990748c8c26d6de79427eb300be898f59", 2884),
         "reply/intent-one-day-future" to Frozen("a2333bcdf71c24fe9db53b9048bff5668dfb570142f745f1ada435de62701b8e", 2878),
-        // 持续意图那一批（期限退役之后）。⚠ 这三行的期望**不是实跑取的读数**：这颗文件在本机没跑过
-        // 构建，取不到数，于是走**恒等关系**——同一条 `fx()` 夹具、同一段正文
-        // 「这周把见面的事定下来」、同一次 `buildReplyUserPrompt(kbOf(), twoMsgs, "")`，
-        // 所以它们与 `reply/intent-one-day` 那一行**逐字同一串字节**（74bcc71b…/2893 是那一行实跑冻的数）。
-        // 这三行钉的是新判据：`enabled` + 正文非空 ⇒ 注入，旧期限/旧终态都不再挡住。
-        // 下一次实跑重录时若这三行不等 ⇒ 说明某一侧还在偷偷读 status 或 expiryDate（那就是缺陷，不是漂移）。
+        // 持续意图那一批（期限退役之后）。⚠ 取值来历分两段：原先这三行走**恒等关系**——
+        // 同一条 `fx()` 夹具、同一段正文「这周把见面的事定下来」、同一次
+        // `buildReplyUserPrompt(kbOf(), twoMsgs, "")`，与 `reply/intent-one-day` 逐字同串；
+        // 2026-10-15 F02 改判后，paused/completed 两行的新冻值是**本轮实跑漂出来的读数**
+        // （与 `reply/no-selector` 恒等＝不含意图段的基础 prompt）。
+        // 2026-10-15 书 §3（F02）把这三行分成两层判据（旧三行原本同钉"照注入"）：
+        // · `past`（ACTIVE + 过去的到期时刻，**直接喂 builder 的内存配置**）：builder 那头的判据
+        //   不看时钟，仍注入——与 `intent-one-day` 逐字同串（74bcc71b…/2893）。文件路径上这份
+        //   早在唯一读口被归一化成关闭，那一刀由 `IntentStorageTest` 真盘格钉，不归这里。
+        // · `paused` / `completed`（enabled=true 配旧终态）：`isIntentEffective` 的第三句防线
+        //   （书点名"至少旧终态不能注入"）让它与"关着"那一档**恒等字节**（4e1d5aad…/2842）。
+        //   键名从 "-still-injected" 改成 "-not-injected"：名字本身在替旧合同说话，留着就是假话。
+        // 下一次实跑重录时若这两组不等 ⇒ 说明某一侧偷偷改读了 status 或 expiryDate。
         "reply/intent-legacy-past-still-injected" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
-        "reply/intent-legacy-paused-still-injected" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
-        "reply/intent-legacy-completed-still-injected" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
+        "reply/intent-legacy-paused-not-injected" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
+        "reply/intent-legacy-completed-not-injected" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
         // 关着的、正文空着的：整段意图不进 prompt，字节与「没有意图」那一行（`reply/no-selector`）恒等。
         // 这两行是上面三行的对照——只钉"两处一致"会容下"两处都不注入"，这两行把那一档挡掉。
         "reply/intent-off-not-injected" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
@@ -436,7 +443,7 @@ class PromptByteFreezeBaselineTest {
                 )
             }
         },
-        Probe("reply/intent-legacy-paused-still-injected") {
+        Probe("reply/intent-legacy-paused-not-injected") {
             runBlocking {
                 fx().builder.buildReplyUserPrompt(
                     kbOf(), twoMsgs, "",
@@ -447,7 +454,7 @@ class PromptByteFreezeBaselineTest {
                 )
             }
         },
-        Probe("reply/intent-legacy-completed-still-injected") {
+        Probe("reply/intent-legacy-completed-not-injected") {
             runBlocking {
                 fx().builder.buildReplyUserPrompt(
                     kbOf(), twoMsgs, "",

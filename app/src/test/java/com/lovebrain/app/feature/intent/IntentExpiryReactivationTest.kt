@@ -26,8 +26,12 @@ import java.io.File
  * · 「到期自动关」（`refreshForKb` 里那次改写）→ **整块退役**，本文件第一格钉住它不再回来：
  *   开着的一条意图不许被背后那次读盘改写，更不许被关掉。
  *
- * 判据只有一条：**开 且 正文非空**（`model/Models.kt` 的 [isIntentEffective]）。
- * 旧 `EXPIRED` / `COMPLETED` / `PAUSED` 读进来一律按"没有期限"处理，不阻止开关起效。
+ * 判据：**开 且 正文非空 且 状态是活动档**（`model/Models.kt` 的 [isIntentEffective]）。
+ * 第三句是 2026-10-15 书 §3（F02）加的防线：旧 `EXPIRED` / `COMPLETED` / `PAUSED` 就算带着
+ * `enabled=true` 也不算数、不注入；日常路径上这类旧文件在唯一读口
+ * （`KnowledgeIntentService.decode`）已被归一化成显示关闭（真盘三格由 `IntentStorageTest` 钉），
+ * 这里①"到期不自动关"两格钉的是**控制器与时刻无关**（时钟不参与任何判决），
+ * 文件级"过去时刻⇒关闭"归读口管，两层各有各的格子。
  *
  * ⚠ 未跑构建：假仓库 + `Dispatchers.Unconfined`，全部只依赖 JVM。
  */
@@ -90,6 +94,10 @@ class IntentExpiryReactivationTest {
      * 反向证人（旧形状）：旧实现在这条链上判 `shouldAutoExpire` 命中，
      * 于是**落盘一次**（enabled=false + EXPIRED）再把关掉的配置摆上屏——
      * "一直开着"的新语义背后悄悄把用户意图关掉，正是这一格要挡的形状。
+     *
+     * ⚠ 这一格钉的是**控制器不持时钟**：直接交给控制器的配置（内存路径）绝不因
+     * `expiryDate` 被背后改写或关掉。文件级"过去的时刻⇒读回关闭"归唯一读口管
+     * （F02 书 §3 第 3 条，`IntentStorageTest` 真盘三格钉着），两层判据、两层格子。
      */
     @Test
     fun `reading a kb with a deadline that already passed leaves the intent switched on`() {
@@ -100,15 +108,21 @@ class IntentExpiryReactivationTest {
         runBlocking { controller.refreshForKb("小美") }
 
         assertEquals("读盘那一路不许写盘，实到写盘 ${fake.writes.size} 次", 0, fake.writes.size)
-        assertTrue("过期时刻不再把开着的那条关掉", controller.config.value.enabled)
-        assertEquals("屏上那份仍是盘上读回来的原样", current, controller.config.value)
-        // 这一条才是新判据：老数据带着早已过去的时刻，开关仍在说话
-        assertTrue("过去的时间戳不许让一条开着的意图失效", controller.config.value.isIntentEffective)
+        assertTrue("控制器不看时钟：过期时刻不许在它背后把开着的那条关掉", controller.config.value.enabled)
+        assertEquals("屏上那份仍是交回来的原样", current, controller.config.value)
+        assertTrue("内存路径的判决不看日期（看日期的那一刀在 decode 读口）",
+            controller.config.value.isIntentEffective)
     }
 
-    /** 终态那三样都不许让一条**开着**的意图失效——读侧宽容，不迁移、不改写盘上的文件 */
+    /**
+     * 旧终态那三样**不再无害**（F02，2026-10-15 书 §3）：`enabled=true` 配上
+     * COMPLETED/EXPIRED/PAUSED 的配置——不管它是从哪条路进到消费者眼前的——
+     * 判据说不算、提示词段是空、盘上数据仍不许被背后改写。
+     * 坏实现两个方向都有牙：把第三句防线摘掉（旧"终态无害"形状）⇒ 第二句红；
+     * 让防线顺手改写屏上那份 ⇒ 第一句红。
+     */
     @Test
-    fun `a legacy terminal status read from disk does not disarm a switched-on intent`() {
+    fun `a legacy terminal status never injects even when the switch field says on`() {
         for (status in listOf(IntentStatus.EXPIRED, IntentStatus.COMPLETED, IntentStatus.PAUSED)) {
             val current = legacy(enabled = true, status = status)
             val fake = Fake(current)
@@ -117,10 +131,11 @@ class IntentExpiryReactivationTest {
             runBlocking { controller.refreshForKb("小美") }
 
             assertEquals("读 $status 那一份不许顺手改写盘上数据", current, controller.config.value)
-            assertTrue("$status 不再阻止开关起效（正文 ${current.text}）", controller.config.value.isIntentEffective)
-            assertTrue(
-                "$status 那份仍注入提示词（退役的是这一格，不是那段正文）",
-                com.lovebrain.app.domain.prompt.IntentIdeaBlock.buildIntentBlock(controller.config.value).isNotBlank()
+            assertFalse("$status 带着 enabled=true 也不算有效（升级不许唤醒注入）",
+                controller.config.value.isIntentEffective)
+            assertEquals(
+                "$status 那份一个字都不许进提示词（用户点过\"已完成\"的就是这一形状）",
+                "", com.lovebrain.app.domain.prompt.IntentIdeaBlock.buildIntentBlock(controller.config.value)
             )
         }
     }
@@ -286,6 +301,10 @@ class IntentExpiryReactivationTest {
         assertFalse(
             "旧终态 + 关着 ⇒ 依然不算（这一格防的是『把旧 status 当开关读』）",
             legacy(enabled = false, status = IntentStatus.EXPIRED).isIntentEffective
+        )
+        assertFalse(
+            "F02 防线：开着 + 旧 COMPLETED ⇒ 不算（书 §3『至少旧终态不能注入』）",
+            legacy(enabled = true, status = IntentStatus.COMPLETED).isIntentEffective
         )
     }
 

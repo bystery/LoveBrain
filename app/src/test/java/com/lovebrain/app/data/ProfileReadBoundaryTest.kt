@@ -210,8 +210,12 @@ class ProfileReadBoundaryTest {
     }
 
     /**
-     * `saveIntent` 这条更硬：它把"外面读到的 revision + 1"**当成返回值交出去**，
+     * `saveIntent` 这条更硬：它曾把"外面读到的 revision + 1"**当成返回值交出去**，
      * 而生成侧靠 revision 判断快照是不是旧的（第五格 `getCorrectionsRevision` 同族问题）。
+     *
+     * 2026-10-15 书 §2（F01）之后这一支连返回值都没了：写门挡下（库不在根内＝写不进去）
+     * 整条以异常传出——"库外的 revision 混进本次结果"从"数值判对"升级成"根本没有结果可混"。
+     * 库外那份文件照旧一个字节不许动。
      */
     @Test
     fun savingIntentDoesNotCarryAnOutsideRevisionIntoTheResult() = runBlocking {
@@ -220,12 +224,12 @@ class ProfileReadBoundaryTest {
             seedKb("inside_kb")
             seedIntent(outside, text = "库外的私密意图", revision = 6)
 
-            val saved = repo.saveIntent("../${outside.name}", text = "新意图", enabled = true)
-
-            assertEquals(
-                "库外的 revision 被推算进本次保存结果了：实到 revision=${saved.revision}。" +
-                    "库不在根内时应按「当前没有意图」算，即 0 → 1",
-                1, saved.revision
+            val outcome = runCatching {
+                repo.saveIntent("../${outside.name}", text = "新意图", enabled = true)
+            }
+            assertTrue(
+                "库不在根内时这次保存必须以失败传出（旧形状返回推算的 revision＝把假成功交回调用方）；实到 ${outcome.getOrNull()}",
+                outcome.isFailure
             )
             val stillThere = File(File(outside, "moment"), "intent.json").readText(Charsets.UTF_8)
             assertTrue(

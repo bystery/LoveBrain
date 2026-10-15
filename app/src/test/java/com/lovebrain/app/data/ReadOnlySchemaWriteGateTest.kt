@@ -147,7 +147,9 @@ class ReadOnlySchemaWriteGateTest {
             runBlocking { repo.writeVectorWithRevisionCheck("kb", mapOf("intimacy" to 99), 0) }
         },
         "setActive" to { runBlocking { repo.catalogWrites.setActive("kb") } },
-        "saveIntent" to { runBlocking { repo.saveIntent("kb", "持续的意图", true) } },
+        // `saveIntent` **不在这一列**（2026-10-15 书 §2 改了它的失败传法）：写门挡下时它现在
+        // 抛 IOException——旧形状"不抛但把新配置当成功返回"正是假成功，屏幕念「已保存」而盘没动。
+        // 这颗写入口的专属判据移到下面 `saveIntent ... throws ...` 一格（审计名单不漏，只是换了判据形状）。
         "saveCorrection" to {
             runBlocking {
                 repo.saveCorrection("kb", "mem-1", CorrectionAction.WRONG, replacementText = "改成这样")
@@ -205,6 +207,30 @@ class ReadOnlySchemaWriteGateTest {
             thrown.isEmpty()
         )
 
+        assertSameTree(before, snapshot())
+    }
+
+    /**
+     * `saveIntent` 在这一族里的专属判据（从上面"不许抛"名单里摘出来的那颗）。
+     *
+     * 2026-10-15 书 §2 之前：只读库上它静默返回新配置——磁盘一个字节没动，调用方却拿到
+     * "成功"，屏幕上「已保存」涂出来。之后：写门挡下必须**以异常传递失败**（控制器的
+     * 「保存失败，请重试」那一支接住），磁盘合同与上面同一条：一个字节都不许多。
+     * 坏实现两个方向都有牙：把它改回静默返回 ⇒ 第一句红；顺手真写进去 ⇒ 第二句红。
+     */
+    @Test
+    fun `saveIntent on a read-only library now throws instead of returning a fake success`() {
+        seedFutureKb()
+        openReadOnly()
+        val before = snapshot()
+
+        val outcome = runCatching {
+            runBlocking { repo.saveIntent("kb", "持续的意图", true) }
+        }
+        assertTrue(
+            "只读库上 saveIntent 必须以异常传失败（旧形状静默 return 新配置＝假成功）；实到 $outcome",
+            outcome.isFailure
+        )
         assertSameTree(before, snapshot())
     }
 

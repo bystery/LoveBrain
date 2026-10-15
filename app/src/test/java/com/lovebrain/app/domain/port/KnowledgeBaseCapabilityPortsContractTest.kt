@@ -216,8 +216,10 @@ abstract class KnowledgeRuntimePortContract {
         }
         assertEquals("推进周末见面", first.text)
         assertTrue(first.enabled)
+        // 第二次保存换"关着"这一档（2026-10-15 书 §3 F02 后旧终态 status 会被唯一读口
+        // 归一化成关闭，拿 PAUSED 测往返量的就不是往返了）：revision 单调与回读等值两条不变。
         val second = runBlocking {
-            p.saveIntent("kb", "推进周末见面", enabled = true, status = IntentStatus.PAUSED)
+            p.saveIntent("kb", "推进周末见面", enabled = false, status = IntentStatus.ACTIVE)
         }
         assertTrue("每次保存 revision 必须单调递增", second.revision > first.revision)
         assertEquals("保存后回读必须等于保存值", second, runBlocking { p.readIntent("kb") })
