@@ -109,7 +109,11 @@ class SceneChainStore(
             val validIds = resolvedIds.filter { id -> id in validSourceMap }
             if (validIds.isEmpty()) {
                 // 所有来源都不合法 → 拒绝该事实（不影响合法事实）
-                com.lovebrain.app.util.L.w("SceneFact rejected (no valid source): $text")
+                // 只记长度与来源数：被拒的正文是从聊天里抽出来的，按 util/L.kt 的隐私红线不许进日志
+                com.lovebrain.app.util.L.w(
+                    "SceneFact rejected (no valid source): textLen=${text.length} " +
+                        "declaredSources=${sf.sourceIds.size}"
+                )
                 continue
             }
 

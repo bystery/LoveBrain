@@ -180,6 +180,8 @@ class OngoingContextSelector(
                 !signals.isRelevant
 
             if (isInCooldown) {
+                // 这里念的是事项标题（用户自己写的那条短目标），不是聊天正文；
+                // 换成标题长度就没有"哪一颗被冷却挡住了"这条读数了，所以保留标题本身。
                 L.w("OngoingContextSelector: '${item.name}' in cooldown (last injected ${cooldownEntry?.lastInjectedTurn}, current ${context.currentTurn})")
                 continue
             }
