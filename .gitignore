@@ -30,6 +30,9 @@ __pycache__/
 *.pem
 *.jks
 *.keystore
+*.p12
+*.pfx
+*.asc
 keystore.properties
 /keystore/
 .env
@@ -40,8 +43,27 @@ secrets.*
 api_key.txt
 **/api_key.txt
 
+# Captures & profiling dumps — these carry whatever was on screen or in memory
+*.pcap
+*.pcapng
+*.har
+*.hprof
+*.trace
+*.dump
+
+# Local exports / backups / editor droppings
+*.bak
+*.swp
+*.orig
+.backup/
+/exports/
+/export/
+/backup/
+/backups/
+
 # On-device data that must never leave the machine (privacy)
 /knowledge_base/
+**/knowledge_base/
 /scr1.png
 *.png.tmp
 
