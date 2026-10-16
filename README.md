@@ -12,7 +12,7 @@
 
 它帮你想回复、找话题、整理关系记忆；**不代聊，也不会替你发送消息**。
 
-[下载安装](https://github.com/bystery/LoveBrain/releases) · [反馈问题](https://github.com/bystery/LoveBrain/issues)
+[下载安装](https://github.com/bystery/LoveBrain/releases/latest) · [反馈问题](https://github.com/bystery/LoveBrain/issues)
 
 </div>
 
@@ -35,7 +35,7 @@
 
 ## 三步开始
 
-1. 从 [Releases](https://github.com/bystery/LoveBrain/releases) 下载 APK 并安装（Android 8.0 及以上）。
+1. 从 [Releases](https://github.com/bystery/LoveBrain/releases/latest) 下载最新 APK 并安装（Android 8.0 及以上）。
 2. 在 App 中配置自己的 AI 服务商、模型和 API Key，按引导开启悬浮窗。
 3. 在聊天界面打开悬浮球，输入或粘贴消息，点击「生成回复」。
 
@@ -52,7 +52,7 @@
 
 ## 版本与升级
 
-最新可下载版本以 [Releases 页面](https://github.com/bystery/LoveBrain/releases) 为准。
+最新可下载版本以 [Releases 页面](https://github.com/bystery/LoveBrain/releases/latest) 为准。
 
 **重要：** 自 v1.4.0 起，发布签名证书已更换。v1.3.1 及更早旧证书版本无法直接覆盖安装新版；卸载旧 App 会删除其本地数据，操作前请先导出并妥善保存需要的内容。v1.4.0 与后续使用相同签名的正式版本可正常覆盖升级。
 
@@ -70,4 +70,6 @@ cd LoveBrain
 
 ## 开源许可
 
-[AGPL-3.0](LICENSE)；商业授权可联系项目维护者。欢迎通过 [Issues](https://github.com/bystery/LoveBrain/issues) 提交建议和问题。
+LoveBrain 以双许可发布，使用者任选其一：**AGPL-3.0**（开源免费，官方全文见 [`LICENSE`](LICENSE)）或**商业许可**（闭源商用，两种选项的完整说明见 [`LICENSING.md`](LICENSING.md)）。
+
+欢迎通过 [Issues](https://github.com/bystery/LoveBrain/issues) 提交建议和问题。
