@@ -43,6 +43,10 @@
 
 支持 DeepSeek 及部分 OpenAI 兼容接口。不同服务商的可用性和费用由对应服务商决定。
 
+## 它是怎么工作的
+
+<img src="images/owerview.jpg" alt="LoveBrain 工作原理：触发捕获 → 检索装配 → 组装提示词 → 流式生成 → 挑选改写 → 后台沉淀 → 闭环回读" width="760"/>
+
 ## 关于隐私
 
 - **不需要 LoveBrain 账号。** 知识库、关系画像和聊天归档主要保存在设备的 App 私有空间，API Key 使用 Android 加密存储。
