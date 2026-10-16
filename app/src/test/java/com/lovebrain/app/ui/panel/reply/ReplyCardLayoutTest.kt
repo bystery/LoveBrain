@@ -162,29 +162,48 @@ class ReplyCardLayoutTest {
         assertEquals("正文行高只许一处定义", 1, occurrences(code, "BODY_LINE_HEIGHT = 18.sp"))
     }
 
-    // ═══ 4. 尺寸语义只有一颗主人：158/150 不换数，也不抄第二份常量 ═══
+    // ═══ 4. 尺寸语义只有一颗主人：158/150 各只有一处声明，纵向档不再读那颗 150 ═══
 
+    /**
+     * 两档各自的尺寸判据（2026-10-17 按新形状重钉过；旧形状那格钉的是"纵向必须
+     * `heightIn(min=150)`"，而它正是用户报"划拉半天都是空白"的那条规则，已翻掉）：
+     * - **横向档一寸没动**：158 与 150 仍各只有一处声明，且各自只被"横向那一支"再读一次；
+     * - **纵向档按内容换高**：直接 `wrapContentHeight()`，旧的 150 下限一个字都不许留
+     *   （不管写成 `heightIn(min = CARD_HEIGHT_DP.dp)`、`min=CARD_HEIGHT_DP` 还是 `min = 150`，三种写法各挡一种）；
+     * - 两档仍在**同一颗** `heightFor()` 里决定，别处不许长出第二处高度分叉。
+     *
+     * ⚠ 这一族判的是"形状与来路"。"纵向短卡到底量到几 dp、长卡会不会被裁"那一半在
+     * `ResultAreaVerticalReadingTest`（Robolectric 真挂起来读语义树），两处不许互相冒充。
+     */
     @Test
-    fun `the card size has one source read two ways, not a second set of constants`() {
+    fun `the card declares each size once and the vertical tier wraps its own content height`() {
         val code = masked("SchemeCard.kt")
-        // 声明处各一颗：没有 VERTICAL_CARD_WIDTH_DP 那种新常量
+        // 声明处各一颗：没有 VERTICAL_CARD_WIDTH_DP / VERTICAL_CARD_HEIGHT_DP 那种新常量
         assertEquals("卡宽只许一处声明", 1, occurrences(code, "const val CARD_WIDTH_DP"))
         assertEquals("卡高只许一处声明", 1, occurrences(code, "const val CARD_HEIGHT_DP"))
-        // 替代关系（判据跟着新形状重钉，不是"存在就行"）：
-        // 158 这一颗被读**两处**——声明 + `widthFor` 里横向档那条固定宽（纵向档读的是铺满，不是第二个数）；
-        // 150 这一颗被读**三处**——声明 + `heightFor` 里横向档的固定高 + 纵向档的 heightIn(min=…)。
-        // 于是"纵向档另抄一颗宽度/高度"这种坏形状在这两格当场红。
+        // 158 这一颗被读**两处**——声明 + `heightFor` 隔壁 `widthFor` 里横向档那条固定宽（纵向档读的是铺满）；
+        // 150 这一颗现在也被读**两处**——声明 + 横向档的固定高（纵向档不读它）。
+        // 于是"纵向档另抄一颗宽度/高度"与"把 150 又接回纵向那一支"这两种坏形状都在这一格当场红。
         assertEquals("158 只许被读两处（声明 + 横向档固定宽），实到 " + occurrences(code, "CARD_WIDTH_DP"),
             2, occurrences(code, "CARD_WIDTH_DP"))
-        assertEquals("150 只许被读三处（声明 + 横向档固定高 + 纵向档下限），实到 " + occurrences(code, "CARD_HEIGHT_DP"),
-            3, occurrences(code, "CARD_HEIGHT_DP"))
+        assertEquals("150 只许被读两处（声明 + 横向档固定高；纵向档不许再读它），实到 " + occurrences(code, "CARD_HEIGHT_DP"),
+            2, occurrences(code, "CARD_HEIGHT_DP"))
         assertEquals("固定宽只许出现在 widthFor 那一颗分叉里", 1, occurrences(code, ".width(CARD_WIDTH_DP.dp)"))
         assertEquals("固定高只许出现在 heightFor 的横向档那一支", 1, occurrences(code, ".height(CARD_HEIGHT_DP.dp)"))
+        // 纵向档的新形状（反向证人两条：0 处＝换回固定高/下限，2 处＝高度分叉长成了两处）
         assertEquals(
-            "纵向档的高度必须是「同一颗 150 当下限」（heightIn(min = CARD_HEIGHT_DP.dp)），" +
-                "不许换成第二颗数、也不许写成无边界的自适应（那会拿到外层那条无限高约束）",
-            1, occurrences(code, "heightIn(min = CARD_HEIGHT_DP.dp)")
+            "纵向档必须直接 `wrapContentHeight()`（一行正文就只占标签＋正文＋操作区＋内边距所需的高）：实到 " +
+                occurrences(code, "wrapContentHeight()") + " 处",
+            1, occurrences(code, "wrapContentHeight()")
         )
+        listOf("heightIn(min = CARD_HEIGHT_DP.dp)", "min = CARD_HEIGHT_DP", "min=CARD_HEIGHT_DP", "min = 150")
+            .forEach { banned ->
+                assertEquals(
+                    "纵向档不许再有任何 150dp 最小高度（那是要修的那段空白本身；写法换一种也照样挡）：" +
+                        "「$banned」实到 " + occurrences(code, banned) + " 处",
+                    0, occurrences(code, banned)
+                )
+            }
         // 三颗分叉口各只有一颗主人
         assertEquals("宽度分叉只许一处定义", 1, occurrences(code, "fun widthFor("))
         assertEquals("高度分叉只许一处定义", 1, occurrences(code, "fun heightFor("))

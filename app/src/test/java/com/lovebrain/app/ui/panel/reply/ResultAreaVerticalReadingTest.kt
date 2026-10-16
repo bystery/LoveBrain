@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -19,6 +20,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import com.lovebrain.app.R
 import com.lovebrain.app.ReplyCardLayout
+import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
@@ -346,5 +348,169 @@ class ResultAreaVerticalReadingTest {
     private fun editableValue(): String? {
         val node = rule.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().firstOrNull() ?: return null
         return node.config.getOrNull(SemanticsProperties.EditableText)?.text
+    }
+
+    // ═══ 6. 纵向档按内容换高（用户报"划拉半天都是空白"那一族：卡高由内容决定，不留固定下限）═══
+    //
+    // ⚠ 这一族量的是**语义树里那张卡自己那一格**的高度，不是源码里有没有 `heightIn`：
+    //   只把源码 grep 改绿不等于交互验收——用户抱怨的是"划拉半天都是空白"，那是屏幕上的高度。
+    // ⚠ 纵向档把卡摊成一列，视口外的节点会被 `boundsInRoot` 裁成 `0x0`（本仓同族坑：先滚进视口再量、
+    //   并排掉零尺寸节点），所以下面每一颗都先 `performScrollTo`。
+    // ⚠ 判据只引生产里那两颗数（`SchemeCardDimens.CARD_HEIGHT_DP` 与 `SchemeTextDimens.BODY_LINE_HEIGHT`），
+    //   测试不抄第三份字面量。
+
+    /** px→dp 与 Compose 内部用的同一把尺（@Config 那一格的 density） */
+    private val dpPerPx: Float get() = ctx.resources.displayMetrics.density
+
+    /** 横向档那颗固定卡高＝纵向档旧的**下限**：本轮要证明的是纵向短卡不再占满这一档 */
+    private val horizontalCardHeightDp: Float get() = SchemeCardDimens.CARD_HEIGHT_DP.toFloat()
+
+    /** 正文一行的版式高（"长回复自然增长"那一格按行数判就靠它） */
+    private val bodyLineHeightDp: Float get() = SchemeTextDimens.BODY_LINE_HEIGHT.value
+
+    /** 按指定正文造一轮完成档结果：`null` 方向位＝协议允许的"本轮不适合"，空串＝"未生成" */
+    private fun successWith(bodies: List<String?>): GenerateResult.Success = GenerateResult.Success(
+        LoveBrainResponse(
+            response = ReplySchemes(
+                recommended = bodies.getOrNull(0) ?: "",
+                badBoy = bodies.getOrNull(1) ?: "",
+                playful = bodies.getOrNull(2) ?: "",
+                warm = bodies.getOrNull(3) ?: ""
+            ),
+            directions = listOf(bodies.getOrNull(4), bodies.getOrNull(5), bodies.getOrNull(6), bodies.getOrNull(7)),
+            analysis = ReplyAnalysis()
+        )
+    )
+
+    private fun mountBodies(
+        bodies: List<String?>,
+        layout: ReplyCardLayout = ReplyCardLayout.VERTICAL
+    ) {
+        val round = successWith(bodies)
+        rule.setContent {
+            val deviceDensity = LocalDensity.current.density
+            UiMatrix(widthDp = 600, heightDp = 1200).RenderIn(deviceDensity) {
+                ResultArea(
+                    result = round,
+                    isGenerating = false,
+                    streamingCoreText = "",
+                    isGeneratingCore = false,
+                    streamingSchemes = emptyList(),
+                    feedbacks = emptyMap(),
+                    onFeedback = { _, _ -> },
+                    onCopyScheme = {},
+                    onRetry = {},
+                    providerReady = true,
+                    onOpenSettings = {},
+                    generationRoundId = 7,
+                    cardLayout = layout
+                )
+            }
+        }
+        settle()
+    }
+
+    /**
+     * 一张卡在语义树里自己那一格的落点：`clickable` 会把子节点文字并进自己那一份语义，
+     * 所以"带这条正文、且可点"的那一个节点就是卡片本体（不是里面那行文字）。
+     * 先把它滚进视口再取，否则视口外那一张会被裁成 `0x0`，看着像"卡塌了"。
+     */
+    private fun cardNode(body: String): androidx.compose.ui.semantics.SemanticsNode {
+        rule.runOnIdle { rule.onNode(hasText(body)).performScrollTo() }
+        rule.waitForIdle()
+        val nodes = rule.onAllNodes(hasText(body) and hasClickAction()).fetchSemanticsNodes()
+            .filter { it.boundsInRoot.height > 0f }
+        assertEquals(
+            "「$body」这张卡该在树里量到恰好一个本体（实到 ${nodes.size} 颗；0 颗=滚不进视口或不可点，>1 颗=文字没被并进同一个可点节点）",
+            1, nodes.size
+        )
+        return nodes.first()
+    }
+
+    private fun cardHeightDp(body: String): Float = cardNode(body).boundsInRoot.height / dpPerPx
+
+    /**
+     * 中间那一格（正文为空、因此**不可点**、也就没有自己的语义节点）的高度：
+     * 由它上下两颗可点卡之间的净距离减掉两处 `spacedBy(Spacing.md)` 算出来。
+     */
+    private fun cardHeightBetween(aboveBody: String, belowBody: String): Float {
+        val above = cardNode(aboveBody)
+        val below = cardNode(belowBody)
+        val gaps = 2 * Spacing.md.value
+        return (below.boundsInRoot.top - above.boundsInRoot.bottom) / dpPerPx - gaps
+    }
+
+    @Test
+    fun `eight one line replies do not stack eight blanks`() {
+        mount(mutableStateOf(ReplyCardLayout.VERTICAL))
+        val floor = horizontalCardHeightDp
+        val heights = BODIES.map { cardHeightDp(it) }
+        heights.forEachIndexed { i, h ->
+            assertTrue(
+                "第 ${i + 1} 张一行回复的卡实到 ${h}dp：纵向档要按内容换高，不许再占满横向档那 ${floor}dp",
+                h < floor
+            )
+            assertTrue("第 ${i + 1} 张卡不许塌成零高（背景/边框错位）：实到 ${h}dp", h > 40f)
+        }
+        val total = heights.sum()
+        assertTrue(
+            "八张一行回复合计 ${total}dp，仍按每张 ${floor}dp 起占的话就是 ${8 * floor}dp——" +
+                "那正是用户那句「划拉半天都是空白」的来源",
+            total < 8 * floor
+        )
+        // 卡矮了但内容一件没少：三颗动作仍逐张在架（体验场景之一：各卡仍有复制/赞/踩）
+        assertEquals("八张卡各一颗复制", 8, rule.onAllNodesWithContentDescription(copyLabel).fetchSemanticsNodes().size)
+        assertEquals("八张卡各一颗赞", 8, rule.onAllNodesWithContentDescription(likeLabel).fetchSemanticsNodes().size)
+    }
+
+    @Test
+    fun `a long reply grows the card instead of being clipped to two lines`() {
+        val short = "这条很短"
+        val long = (1..12).joinToString("；") { "第 $it 段：这一条故意写得很长，用来证明纵向档的卡是跟着正文行数额外汇成的" } +
+            "。不是塞进一格固定高度里再让用户在卡里面划：外面那条滚动才是唯一的滚动主人，卡内再嵌一条滚动是本轮明令禁止的坏法。"
+        mountBodies(listOf(long, short, short + "丙", short + "丁", short + "戊", short + "己", short + "庚", short + "辛"))
+        val longHeight = cardHeightDp(long)
+        val shortHeight = cardHeightDp(short)
+        assertTrue(
+            "长回复实到 ${longHeight}dp、短回复实到 ${shortHeight}dp：正文这三十来行里哪怕只落三行以上，" +
+                "两张卡的高度差也该拉开三行以上（差 ${longHeight - shortHeight}dp）。" +
+                "被裁成固定两行、或卡内再嵌一条滚动，都只会差一行以内",
+            longHeight - shortHeight >= 3 * bodyLineHeightDp
+        )
+        // 反向证人：这一格量的确实是"长的那张"，短的那张没被顺手拉长
+        assertTrue("短回复那张仍该矮于横向档卡高：实到 ${shortHeight}dp", shortHeight < horizontalCardHeightDp)
+    }
+
+    @Test
+    fun `a null direction says not suitable without holding a blank card`() {
+        val s5 = "第五条正文戊"
+        val s7 = "第七条正文庚"
+        mountBodies(listOf("第一条正文甲", "第二条正文乙", "第三条正文丙", "第四条正文丁", s5, null, s7, "第八条正文辛"))
+        assertTrue(
+            "合法 null 的方向该念「本轮不适合」（这句的判据归空卡自己，本轮不动它）",
+            rule.onAllNodes(hasText(ctx.getString(R.string.scheme_not_suitable))).fetchSemanticsNodes().isNotEmpty()
+        )
+        val emptyHeight = cardHeightBetween(s5, s7)
+        assertTrue(
+            "「本轮不适合」那一格实到 ${emptyHeight}dp：只有一行说明的卡不该占满横向档那 ${horizontalCardHeightDp}dp",
+            emptyHeight < horizontalCardHeightDp && emptyHeight > 20f
+        )
+    }
+
+    @Test
+    fun `the horizontal tier still holds its fixed 158 by 150 box`() {
+        // 纵向换高的另一半判据：横向档一寸不许动（固定 158×150 与卡内滚动仍是原形状）
+        mount(mutableStateOf(ReplyCardLayout.HORIZONTAL))
+        val first = cardNode(BODIES[0]).boundsInRoot
+        val expectedHeight = SchemeCardDimens.CARD_HEIGHT_DP.toFloat()
+        val expectedWidth = SchemeCardDimens.CARD_WIDTH_DP.toFloat()
+        assertEquals(
+            "横向档卡高仍是那颗固定数：实到 ${first.height / dpPerPx}dp，应为 ${expectedHeight}dp",
+            expectedHeight, first.height / dpPerPx, 1f
+        )
+        assertEquals(
+            "横向档卡宽仍是那颗固定数：实到 ${first.width / dpPerPx}dp，应为 ${expectedWidth}dp",
+            expectedWidth, first.width / dpPerPx, 1f
+        )
     }
 }

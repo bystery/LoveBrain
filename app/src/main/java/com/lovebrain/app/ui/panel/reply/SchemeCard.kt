@@ -46,7 +46,7 @@ import com.lovebrain.app.ui.theme.*
  *
  * ⚠ 2026-10-10 §3 加了"纵向阅读"那一档之后，**尺寸语义只有下面 [widthFor] / [heightFor] /
  * [hasBoundedContentHeight] 三颗分叉口**：一张卡换方向摆不改颜色、边框、圆角、字号、按钮与
- * 按压缩放，只改"这一颗数当固定值还是当下限"。所以别的文件**不许**再抄一份
+ * 按压缩放，只改"宽度铺满还是固定、高度按内容还是固定"。所以别的文件**不许**再抄一份
  * `CARD_WIDTH_DP`/`CARD_HEIGHT_DP` 的替代常量，也不许在调用点直接 `.width(...)`/`.height(...)`。
  */
 object SchemeCardDimens {
@@ -61,9 +61,9 @@ object SchemeCardDimens {
      * 之前那档 `max=200` 让"默认态"其实能长到 200，等于默认态判据不存在，已撤。
      * 各状态内容层自己有 `weight(1f)` + `verticalScroll`，靠内部滚动不靠卡片膨胀。
      *
-     * 纵向档（§3）把**同一颗数**当**下限**读：卡片按内容长高、由外层那条纵向滚动接着读，
-     * 但一张卡再矮也不许矮过这一档（见 [heightFor] 与 [hasBoundedContentHeight]）。
-     * 这是一颗数换一种读法，不是第二份尺寸常量。
+     * 这颗数**只约束横向档的固定高**：纵向档不读它（见 [heightFor]）——那一档按内容自己有多高就
+     * 多高，由外层那条纵向滚动接住溢出。旧版这里写着"纵向也按同一颗数当下限"，那是制造大段空白
+     * 的那条规则，已按用户抱怨撤掉；不许再抄回来，也不许为纵向档另立第二份尺寸常量。
      */
     const val CARD_HEIGHT_DP = 150
 
@@ -97,14 +97,17 @@ object SchemeCardDimens {
         if (layout == ReplyCardLayout.VERTICAL) base.fillMaxWidth() else base.width(CARD_WIDTH_DP.dp)
 
     /**
-     * 一张卡在两种方向下的**高度**：同一颗 [CARD_HEIGHT_DP]，横向档当固定高、纵向档当下限。
+     * 一张卡在两种方向下的**高度**：横向档把 [CARD_HEIGHT_DP] 当**固定高**，纵向档**不读这颗数**——
+     * 纵向档按内容自己有多高就多高。
      *
-     * 纵向档为什么允许长高：那一档的溢出由外层那条纵向滚动接（`ResultArea` 唯一的 `readScroll`），
-     * 不由卡片自己接——所以纵向档**不许**再往卡内塞一条滚动（见 [hasBoundedContentHeight]）。
+     * 纵向档为什么不留最小高度：那一档一卡一行、最多八张，一行正文的卡也被垫到固定高时，
+     * 空白是按张数累积起来的（用户报的就是"划拉半天都是空白"），而卡里并没有第二件事要说。
+     * 溢出仍由外层那条纵向滚动接（`ResultArea` 唯一的 `readScroll`），
+     * 不由卡片自己接——所以纵向档**不许**再往卡内塞一条滚动，也不许把正文裁成固定几行（见 [hasBoundedContentHeight]）。
      */
     fun heightFor(layout: ReplyCardLayout, base: Modifier = Modifier): Modifier =
         if (layout == ReplyCardLayout.VERTICAL) {
-            base.heightIn(min = CARD_HEIGHT_DP.dp)
+            base.wrapContentHeight()
         } else {
             base.height(CARD_HEIGHT_DP.dp)
         }
@@ -282,7 +285,7 @@ fun SchemeCard(
 
     // 卡片本体 + 卡下方那条文字入口。入口画在卡**外**：卡自己那一格撑不回来。
     // 尺寸只从 SchemeCardDimens 那两颗分叉口取（横向档固定 158x150＝旧形状一字不变；
-    // 纵向档宽铺满、高按同一颗 150 当**下限**按内容长高）。
+    // 纵向档宽铺满、高按内容自己走，不再拿那颗 150 当下限垫着）。
     val boundedContentHeight = SchemeCardDimens.hasBoundedContentHeight(cardLayout)
     Column(horizontalAlignment = Alignment.Start) {
         Box(
