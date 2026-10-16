@@ -5,7 +5,8 @@
 #
 # Anything that does not match a rule is DENIED with NOASSERTION, so adding a
 # dependency with an unusual licence fails the build until it is reviewed here.
-# The app itself is AGPL-3.0 / Commercial dual-license (see LICENSE), so
+# The app itself is AGPL-3.0 / Commercial dual-license (AGPL text in LICENSE,
+# the two options spelled out in LICENSING.md), so
 # runtime dependencies must be compatible with redistributing a binary
 # distribution of it under the commercial license option.
 
