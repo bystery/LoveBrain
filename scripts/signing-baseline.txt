@@ -4,24 +4,22 @@
 # The gate scripts (scripts/verify_signing_continuity.sh) compare the candidate's
 # signer certificate against cert_sha256 and fail the build on any mismatch.
 #
-# CURRENT PIN — where these values come from (both read from the field, 2026-10-07):
-#   1. D:/TeamWorkspace/keystores/lovebrain-release.jks (alias "lovebrain"),
-#      read with:  keytool -list -v -keystore <path> -alias lovebrain
-#      giving SHA256 98:E1:0B:28:08:BA:0A:B6:C0:47:C2:CF:FF:15:FC:ED:C5:FD:14:DE:
-#                   0F:4D:A9:8D:19:14:A5:49:05:30:DB:AF
-#      and   SHA1   B2:7B:24:F9:EB:67:6D:B4:6A:E8:DB:BF:FA:B7:A0:12:B0:A9:BB:CF
-#   2. The built release APK, read with apksigner through
-#      scripts/verify_signing_continuity.sh — same two digests.
-#   The product keystore.properties storeFile points at that same JKS, so the
-#   build and this pin describe one key.
+# Everything below is a PUBLIC property of the release certificate: the same
+# digests anyone can read off an installed or published APK with
+# `apksigner verify --print-certs`. The pin was reviewed as code and recorded
+# here so the gates have one place to read it from. Never edit a value to make a
+# red job green. To rotate the release key deliberately, replace this file, get
+# the change reviewed, and bump baseline_updated.
+#
+# The certificate subject (its DN) is deliberately NOT recorded here. Nothing
+# reads it — scripts/verify_signing_continuity.sh takes it straight off the APK
+# being checked — and copying it into the repo adds a line of machine-local
+# description without adding any verification power.
 #
 # KEY ROTATION, 2026-10-07, decided by the product owner.
-#   The certificate pinned before this date was
-#     cert_sha256 c2986640bce6e185de55f50268530205ed5d07e123476d67e15a8672fb0b2f7d
-#     cert_sha1   99970ba6bde2dcb32049bdaff5deb0dd56e63392
-#   it signed the published v1.3.1, and its keystore was deleted before 2026-10-06
-#   and is NOT recoverable. That value is kept here as history only; it is no
-#   longer what releases are signed with.
+#   The certificate pinned before this date is recorded below as
+#   historical_cert_*; it signed the published v1.3.1 and its key material no
+#   longer exists. That value is history only, not what releases are signed with.
 #
 # CONSEQUENCE that comes with a rotated key, stated plainly:
 #   An APK signed with the current pin CANNOT upgrade-install over an install of
@@ -31,34 +29,28 @@
 #   published v1.3.1 carry the same certificate" therefore describes an
 #   impossible pair and must not be treated as a code defect.
 #   See scripts/run_upgrade_test.sh and scripts/download_release_apk.sh.
-#
-# To rotate the release key deliberately again, replace this file, get the change
-# reviewed, and bump baseline_updated. Never edit it to make a red job green.
 
 baseline_version=v1.4.0
 baseline_updated=2026-10-07
 key_alias=lovebrain
-key_alias_note=keytool -list -v showed this alias as a PrivateKeyEntry after the key left Git tracking
-cert_dn=CN=LoveBrain Release, OU=LoveBrain, O=LoveBrain, L=Luoyang, ST=Henan, C=CN
 cert_sha256=98e10b2808ba0ab6c047c2cfff15fcedc5fd14de0f4da98d1914a5490530dbaf
 cert_sha1=b27b24f9eb676db46ae8dbbffab7a012b0a9bbcf
 
-# Historical certificate, kept so old artifacts stay identifiable. Nothing here
-# is compared by the gate; the gate reads cert_sha256 / cert_sha1 above only.
+# Historical certificate, kept so old artifacts stay identifiable. The release
+# gate compares against cert_sha256 / cert_sha1 above only; scripts/run_upgrade_test.sh
+# additionally reads historical_cert_sha256_v131 below so it can tell a retired
+# v1.3.x fixture apart from an unvouched APK.
 historical_cert_sha256_v131=c2986640bce6e185de55f50268530205ed5d07e123476d67e15a8672fb0b2f7d
 historical_cert_sha1_v131=99970ba6bde2dcb32049bdaff5deb0dd56e63392
 historical_cert_status=keystore deleted, key unrecoverable, superseded 2026-10-07
 
-# Published v1.4.0 asset — the upgrade fixture since 2026-10-15 (F04).
-# Identity read from the release record (releases/1.4.0.md: tag v1.4.0 @ bc44249,
-# asset LoveBrain-1.4.0.apk, 2,911,394 bytes, SHA-256 386939825c…ddc92 re-checked
-# after upload, apksigner certificate == the CURRENT pin below, char by char).
-# Because v1.4.0 carries the CURRENT pin, "v1.4.0 -> candidate" is a REAL same-key
-# over-install pair — the shape scripts/run_upgrade_test.sh actually verifies.
-# The earlier fixture (published v1.3.1, signer = the historical certificate) is
-# history only now: a v1.3.1 -> candidate pair can never share a key, so the
-# upgrade gate must not be pointed at it (see the CONSEQUENCE note above; the
-# uninstall-and-reinstall warning for ≤1.3.2 installs stays user-facing).
+# Published v1.4.0 asset — the upgrade fixture since 2026-10-15.
+# v1.4.0 carries the CURRENT pin, so "v1.4.0 -> candidate" is a REAL same-key
+# over-install pair: the shape scripts/run_upgrade_test.sh verifies. The earlier
+# fixture (published v1.3.1, signer = the historical certificate below) is
+# history only: a v1.3.1 -> candidate pair can never share a key, so the upgrade
+# gate must not be pointed at it (see the CONSEQUENCE note above; the
+# uninstall-and-reinstall warning for <=1.3.2 installs stays user-facing).
 reference_apk_tag=v1.4.0
 reference_apk_name=LoveBrain-1.4.0.apk
 reference_apk_sha256=386939825c8238f0c084110887480c8e0d371da762d0011465a3737f066ddc92
@@ -66,9 +58,9 @@ reference_apk_version_code=9
 reference_apk_version_name=1.4.0
 reference_apk_cert_sha256=98e10b2808ba0ab6c047c2cfff15fcedc5fd14de0f4da98d1914a5490530dbaf
 
-# Historical upgrade fixture, retired 2026-10-15 (F04): the published v1.3.1 asset
-# downloaded 2026-09-23, verified with apksigner + sha256sum. Its SIGNER is the
-# historical certificate above — kept here so old artifacts stay identifiable.
+# Historical upgrade fixture, retired 2026-10-15: the published v1.3.1 asset.
+# Its signer is the historical certificate above; kept so old artifacts stay
+# identifiable.
 historical_reference_apk_tag=v1.3.1
 historical_reference_apk_name=app-release.apk
 historical_reference_apk_sha256=ad41c9c6b31cff96bd9fb72f55e42cff73364b86880ecbfc46792523a5cb1625
