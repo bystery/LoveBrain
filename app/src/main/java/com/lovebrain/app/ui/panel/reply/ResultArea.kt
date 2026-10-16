@@ -119,12 +119,12 @@ fun ResultArea(
     // 结果区下方那条「纠正记忆」文字入口：这里只发"打开纠正中心"这一句意图，
     // 清单与撤销归 CorrectionCenter 自己画
     onShowCorrectionCenter: () -> Unit = {},
-    // 「本轮参考」那份清单的展开态由调用方持有（每张卡下方那条文字入口去翻它）。
+    // 「本轮参考」那份清单的展开态由调用方持有（卡片行下方那一条文字入口去翻它）。
     // 默认收起：收起时 AnimatedVisibility 不占纵向高度。这一层留成入参而不是本地布尔，
     // 是因为翻它的入口在卡片那一侧、渲染清单的是这一块——状态得住在两者之上才换得动。
     memoryRefsExpanded: Boolean = false,
-    // 卡下方那条文字入口点谁：展开的是**本轮共享**的参考清单（不是这张卡专属的证据关联），
-    // 所以每颗卡传的是同一个 toggle；清单没内容时调用方传 null，入口就不渲染。
+    // 卡片行下方那一条文字入口点谁：展开的是**本轮共享**的参考清单（不是这张卡专属的证据关联），
+    // 所以这一颗 toggle 整轮只渲染一次；清单没内容时调用方传 null，入口就不渲染。
     onToggleMemoryRefs: () -> Unit = {},
     // 纠正浮层的状态与渲染归 MemoryCorrectionFlow（这一屏只发意图、不画浮层）。
     // 面板顶层传进来时遮罩盖满面板；没传就在本地建一颗并就地渲染——
@@ -141,8 +141,8 @@ fun ResultArea(
     onInputIntent: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
-    // 卡下方那条文字入口的可见性判据：本轮一条参考信息都没有就不摆空工具块
-    //（要求的"没有参考信息时不放一个空工具块"），有则每颗卡共用同一个 toggle——
+    // 卡片行下方那条文字入口的可见性判据：本轮一条参考信息都没有就不摆空工具块
+    //（要求的"没有参考信息时不放一个空工具块"），有则整轮共用同一个 toggle、只渲染一次——
     // 展开的是本轮共享清单，不是"这张卡专属引用"的归属。
     // ⚠ 还要再过一次 [memoryRefsFeedVisible]（把展开态当 true 问一句"这块**画得出来吗**"）：
     // 这一份结果当时是「仅看本轮」时清单被那颗布尔挡死，留着卡片那条入口就成了一颗
@@ -329,7 +329,7 @@ fun ResultArea(
                 // 「本轮参考」那份清单在主 Column 中按正常文档流渲染，展开态是外面传进来的：
                 // 默认收起时 AnimatedVisibility 不占纵向高度，展开后才正常增加信息高度，
                 // 不覆盖方案卡。清单本体与逐条纠正词表住在 MemoryRefsFeed.kt。
-                // 这一份是**整轮共用的一条清单**：八张卡下面那八条文字入口翻的都是它。
+                // 这一份是**整轮共用的一条清单**：卡片行下面那一条文字入口翻的就是它。
                 if (memoryRefs.isNotEmpty()) {
                     MemoryRefsSection(
                         memoryRefs = memoryRefs,
@@ -751,8 +751,9 @@ private fun SchemeCardsRow(
     onClearRewriteState: (SchemeIdentity) -> Unit = {},
     onCancelRewrite: (SchemeIdentity) -> Unit = {},
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
-    // 每张卡下方那条"这轮参考了哪些信息？"：null=不渲染。展开的是本轮共享清单，
-    // 所以每颗卡传的是同一个 toggle（不许编造"这张回复专门引用了某条"的归属）。
+    // 整轮共用那一条"这轮参考了哪些信息？"：null=这一轮根本不给入口。
+    // 它**不再往下传给每一张卡**——八张卡挂八条同样的入口，点开的是同一份共享清单，
+    // 白占八段滚动距离；这一颗由本行在卡片容器之后渲染一次（纵向/横向两档共用同一条）。
     onReferenceClick: (() -> Unit)? = null,
     // 展开集合 / 落点 / 草稿：住在调用方（LazyRow item 之上），换一整轮整包作废
     rowState: SchemeRowState,
@@ -859,7 +860,8 @@ private fun SchemeCardsRow(
                     if (rect == null) rowState.cardBoundsInWindow.remove(identityKey)
                     else rowState.cardBoundsInWindow[identityKey] = rect
                 },
-                onReferenceClick = onReferenceClick,
+                // 「本轮参考」那条入口不在每张卡下面：它翻的是整轮共用的一份清单，
+                // 由本行在卡片容器之后渲染一次（判据与文案都仍是原来那一颗，没有第二份）。
                 onInputIntent = onInputIntent,
                 // 这一颗是两档唯一的新增实参：卡里面的东西一样都不换，只换尺寸语义
                 cardLayout = cardLayout
@@ -945,6 +947,17 @@ private fun SchemeCardsRow(
                 ) {
                     items(displaySchemes, key = { it.identity.key }) { scheme -> cardEntry(scheme) }
                 }
+            }
+            // 「本轮参考了哪些信息？」这一条入口**一轮只出现一次**，位置在整组方案卡之后：
+            // 八张卡下面挂八条一样的入口，点开翻的都是同一份共享清单，等于用八段 48dp 热区
+            // 换一次点击——省下来的就是用户要划的那段空白。文案与语气仍复用卡片那一族
+            // 既有的那颗常量与设计系统那颗文字动作（不新增第二份文案、不另画盒、不加 Spacer）。
+            if (onReferenceClick != null) {
+                LbTextAction(
+                    label = SchemeCardCopy.REFERENCE_ENTRY_LABEL,
+                    tone = LbTextActionTone.Muted,
+                    onClick = onReferenceClick
+                )
             }
             // 去掉卡片下方的四个点（当前卡片指示器）
         }

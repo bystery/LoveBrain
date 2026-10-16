@@ -59,11 +59,15 @@ import org.robolectric.annotation.GraphicsMode
  *   是空清单，画得出引用就是假引用），但**出口与那一句上下文说明跟着一起消失**就是这一格要红的
  *   那一半。夹具故意传进一份**非空**清单 + `onlyThisRound = true`（那份"对不上"的手上货），
  *   于是断言两头都咬：正文一条读不到（假引用 ⇒ 红），出口与说明句各恰好一颗/一句（整块不画 ⇒ 红）。
- * - **③ 那份清单是整轮共享的**（`every card toggles the same single list`）：
- *   八张卡下方那八条入口翻的是同一块展开区。坏实现是给某一张卡一份分身清单
- *   （数到 2 份正文）、或者给某一条参考编一个"这张卡专属"的归属（点 A 卡只收起 A 下面那块）。
- *   这一格用**行为**判：八张卡下方那八条入口点的是同一颗 toggle，随便点一张，那一份正文整体消失
- *   （按卡分身的话只会收掉那一张下面那块）。
+ * - **③ 那份清单是整轮共享的，而且那条入口一轮只出现一次**
+ *   （`the round offers one shared refs entry and it toggles the single list`）：
+ *   旧形状是八张卡下方各挂一条一模一样的入口去翻同一块展开区（重复的那七段就是用户报的空白），
+ *   2026-10-17 起这一颗由卡片行在整组方案卡之后渲染一次。坏实现是给某一张卡一份分身清单
+ *   （数到 2 份正文）、给某一条参考编一个"这张卡专属"的归属（点一下只收起 A 下面那块）、
+ *   或者把那七条重复入口留着（数到 8 红）。
+ *   这一格用**行为**判：那唯一一条入口点下去，整份正文整体消失、再点一次又整体回来
+ *   （按卡分身的话只会收掉那一张下面那块；只收不展的话那颗是死路）。
+ *   另有 `a round with no real refs shows no refs entry at all` 钉另一头：没有真引用时**零条**。
  *   附带一根禁令钉子（`no per-card copy of the list exists`）：清单本体只许住在
  *   `MemoryRefsFeed.kt`，`SchemeCard.kt` 里一次都不许出现——按卡铺清单就是那套假归属。
  * - **④ 点入口只投一次"打开纠正中心"，不自己改数据**
@@ -289,12 +293,12 @@ class MemoryCorrectionEntryTest {
     }
 
     /**
-     * ②ʼ 同一格在**整屏那一档**的读数：「仅看本轮」那一轮，卡片下方那条入口不许留下
+     * ②ʼ 同一格在**整屏那一档**的读数：「仅看本轮」那一轮，卡片行下方那条入口不许留下
      * （清单真给不出来的时刻，那颗入口就是一颗点下去什么都不会出现的死路），
      * 而结果区那条常驻出口仍然在。
      *
-     * 坏实现：卡片入口只按"手上有没有清单"判（旧写法 `memoryRefs.isNotEmpty()`），
-     * 于是八张卡各挂一颗翻不动的入口 ⇒ 第一句数到 8 红；
+     * 坏实现：那条入口只按"手上有没有清单"判（旧写法 `memoryRefs.isNotEmpty()`），
+     * 于是「仅看本轮」那一轮挂着一颗翻不动的入口 ⇒ 第一句数到 1 红；
      * 或者把出口一起收掉 ⇒ 第二句红。
      */
     @Test
@@ -309,34 +313,75 @@ class MemoryCorrectionEntryTest {
     }
 
     /**
-     * ③ 那份清单是**整轮共享**的：八张卡下方那八条入口翻的是同一块展开区。
+     * ③ 那份清单是**整轮共享**的，而且那条入口**一轮只出现一次**（2026-10-17 那一轮翻掉的形状）。
      *
-     * 判据用行为而不是文案：八张卡下方那八条入口点的是**同一颗** toggle，随便点一张，
-     * 那一份正文都整体消失——若实现给每张卡一份分身清单（或给某条参考编一个"这张卡专属"的归属），
-     * 点一张只收得掉那一张下面那块，正文数不会归零，这一句当场红。
+     * 旧形状是八张卡下面各挂一条一模一样的入口，翻的却是同一块展开区——用户要划的那段空白里
+     * 有七段是重复的。判据仍用行为而不是文案，只是从"数到 >=2 颗"翻成"恰好 1 颗"，
+     * 另一半一分没松：点下去那份共享清单真的收得掉、也真的再展得开。
+     * 坏实现各红在一句上：把那七条重复入口原样留着（第一句数到 8 红）、
+     * 给某一张卡一份分身清单（点一张只收得掉那一张下面那块，正文数不归零）、
+     * 或者那条入口点下去什么都不会发生（后两句红）。
      * 清单本体在时，那句说明只在清单头上念一遍（不跟出口各念一遍）。
      */
     @Test
-    fun `every card toggles the same single list`() {
+    fun `the round offers one shared refs entry and it toggles the single list`() {
         reset()
         mountResultArea(refs = listOf(refA), expanded = true, frozenOnlyThisRound = false)
-        assertTrue(
-            "有真引用时每张卡下方都该给那条入口（实到 $cardRefsLabel 共 ${plainTextCount(cardRefsLabel)} 颗）",
-            plainTextCount(cardRefsLabel) >= 2
+        assertEquals(
+            "整轮只该有一条「本轮参考」入口，实到 $cardRefsLabel 共 ${plainTextCount(cardRefsLabel)} 颗",
+            1, plainTextCount(cardRefsLabel)
         )
+        assertEquals("而且那一条是真点得开的（文案与点击动作挂在同一颗节点上）", 1, buttonCount(cardRefsLabel))
         assertEquals("整轮只有**一份**清单：正文只许念得出一次", 1, plainTextCount(refA.text))
         assertEquals("共享的那一份展开区只有一份说明句", 1, plainTextCount(noteLabel))
 
-        // 点**第一张**卡那条入口（八张卡共用同一个 toggle，点哪张都该收掉同一块；
-        // 取第一颗是因为纵向档下面那几张可能已经划出视口，量不到落点）
+        // 收掉七条重复入口**不许**靠缩小剩下那一条的热区：两轴仍按全站下限判（语义树实量，不是源码里写着）
+        val entryBox = rule.onAllNodes(hasText(cardRefsLabel) and hasClickAction())
+            .fetchSemanticsNodes().first().boundsInRoot
+        val floor = com.lovebrain.app.core.designsystem.AppDimens.TOUCH_TARGET_MIN_DP.toFloat()
+        assertTrue(
+            "那唯一一条入口的可点高度实到 ${entryBox.height / density}dp，低于全站下限 ${floor}dp 就是靠削热区省的空间",
+            entryBox.height / density >= floor
+        )
+        assertTrue(
+            "同一条入口的可点宽度实到 ${entryBox.width / density}dp",
+            entryBox.width / density >= floor
+        )
+
+        // 点那**唯一**一条入口：整份清单收掉
         rule.onAllNodes(hasText(cardRefsLabel) and hasClickAction())[0].performClick()
         rule.mainClock.advanceTimeBy(400L)
         assertEquals(
-            "点任意一张卡那条入口翻的都是同一个 toggle：这一颗下去整份清单就该收掉",
+            "这一颗下去翻的就是同一个 toggle：整份清单就该收掉",
             0, plainTextCount(refA.text)
         )
         assertEquals("收掉之后出口照旧在", 1, buttonCount(entryLabel))
         assertEquals("清单收了，那一句说明改由出口念，仍然只念一遍", 1, plainTextCount(noteLabel))
+        assertEquals("收起之后那一条入口仍然在（不许跟着清单一起消失）", 1, plainTextCount(cardRefsLabel))
+
+        // 再点一次：展得开。只证"收"不证"展"的话，那颗点下去什么都不会出现的死路量不出来
+        rule.onAllNodes(hasText(cardRefsLabel) and hasClickAction())[0].performClick()
+        rule.mainClock.advanceTimeBy(400L)
+        assertEquals("再点一次那份共享清单该重新展开", 1, plainTextCount(refA.text))
+        assertEquals("来回 toggle 之后入口仍只有一条", 1, plainTextCount(cardRefsLabel))
+    }
+
+    /**
+     * ③ʼ 同一格在**整屏那一档**的另一头：本轮没有真引用 ⇒ 那一条入口**一颗都不画**
+     *（既不是"画了但点了没反应"，也不是画八条），而「修正记忆」那条出口照旧在树上。
+     *
+     * 坏实现：入口只按"卡片在不在"判，不看那份清单给不给得出来 ⇒ 第一句数到 1 红。
+     */
+    @Test
+    fun `a round with no real refs shows no refs entry at all`() {
+        reset()
+        mountResultArea(refs = emptyList(), expanded = false, frozenOnlyThisRound = false)
+        assertEquals(
+            "没有真引用时那一条入口不许出现，实到 ${plainTextCount(cardRefsLabel)} 颗",
+            0, plainTextCount(cardRefsLabel)
+        )
+        assertEquals("结果区那条纠正出口照旧在", 1, buttonCount(entryLabel))
+        assertEquals("清单不假造：那份正文一条都读不到", 0, plainTextCount(refA.text))
     }
 
     /**
