@@ -26,12 +26,11 @@ android {
         applicationId = "com.lovebrain.app"
         minSdk = 26
         targetSdk = 35
-// 2026-10-10：1.4.1 / versionCode 10。这一批装的是本轮那几处修复与补齐
-// （首次建库不再造出第二座库、悬浮球透明度与大小、悬浮助手开关、回复卡纵向排列、
-// 供应商展开列表叠放、顶部拖动带命中区、意图保存回执、首页累计使用小卡）。
-// 只推代码：没打 tag、没建 GitHub Release；发版是另一步，要产品负责人点头。
-versionCode = 10
-versionName = "1.4.1"
+// 2026-10-17：1.4.2 / versionCode 11。这一批只有回复卡片的阅读修正：上下排列时卡片按内容
+// 多少决定高度（不再一律垫到固定高，短回复不留大段空白），以及"这轮参考了哪些信息？"
+// 从每张卡下面一条改成整组卡片下面一条。签名沿用同一把发布钥匙，1.4.1 可直接覆盖升级。
+versionCode = 11
+versionName = "1.4.2"
         // : Compose UI test runner
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
