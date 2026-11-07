@@ -173,7 +173,20 @@ class LoveBrainViewModel(
      * 这一对只管方向，不碰生成轮次。
      */
     private val readReplyCardLayout: (() -> com.lovebrain.app.ReplyCardLayout)? = null,
-    private val writeReplyCardLayout: ((com.lovebrain.app.ReplyCardLayout) -> Unit)? = null
+    private val writeReplyCardLayout: ((com.lovebrain.app.ReplyCardLayout) -> Unit)? = null,
+    /**
+     * 批量导入入口首次轻提示的"提示过没有"旗标那一对接口（外部审计 F3-2）。
+     *
+     * 与 [readRoundScopeHintShown] 那一对同一形状、同一理由：盘上那一格
+     * （`batch_import_hint_seen`）住在 `data/SecurePrefs` 这个具体实现类上，而这里的
+     * [securePrefs] 是端口视图、端口面没有这一员，由装配侧（`di/AppModule`）把
+     * `SecurePrefs.batchImportHintShown` 那一对接进来。
+     * **没接时这一退化成"读默认（没提示过）、写丢弃"**：旗标只活在 VM 会话内——
+     * 同一会话仍然只提示一次、发现入口后就永久不再提示；那是装配缺两行时的可见症状，
+     * 不是这一格的语义。
+     */
+    private val readBatchImportHintShown: (() -> Boolean)? = null,
+    private val writeBatchImportHintShown: ((Boolean) -> Unit)? = null
 ) : ViewModel() {
 
     /**
@@ -982,18 +995,72 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         composer.accept(ComposerStore.Intent.AddMessage(role, content))
     }
 
+    // ═══════════ 批量导入（Issue #7）与入口首次轻提示（外部审计 F3-2） ═══════════
+
     /**
-     * 批量导入（Issue #7）：预览确认后的多条消息**按序**一次落进真实对话通道。
+     * 批量导入入口的首次轻提示"提示过没有"（审计 F3-2）。盘上主人在
+     * `SecurePrefs.batchImportHintShown`（构造那对函数接进来），这里只是盘上那份的
+     * 会话内副本——与 [roundScopeHintShown] 同一条账法：**不许用 remember**
+     * （组合一没就忘 = 假持久），也不落在屏上那一格。
+     */
+    private var batchImportHintShown: Boolean = readBatchImportHintShown?.invoke() ?: false
+        set(value) {
+            field = value
+            writeBatchImportHintShown?.invoke(value)
+        }
+
+    /**
+     * 入口轻提示还该不该给（true = 用户还没发现批量导入入口）。旗标落盘的同帧翻 false：
+     * 面板第一次进回复页投一次提示（[maybeShowBatchImportFirstHint]），此后——无论是因为
+     * 提示已经给过、还是用户长按过 ➕（[markBatchImportDiscovered]）、或完成过一次导入
+     * （[importBatchMessages]）——都不再给。通知位一次只显示一条（NoticeBoard 队列），
+     * 这条走回执格、到点自散，不给输入行加任何常驻控件。
+     */
+    private val _batchImportHintVisible = MutableStateFlow(!batchImportHintShown)
+    val batchImportHintVisible: StateFlow<Boolean> = _batchImportHintVisible.asStateFlow()
+
+    /** 旗标与只读出口同帧收口：落盘一次、界面即刻收起提示，两条读数不会分叉。 */
+    private fun resolveBatchImportHint() {
+        if (!batchImportHintShown) batchImportHintShown = true
+        _batchImportHintVisible.value = false
+    }
+
+    /**
+     * 首次进入回复输入面板时给的那条一次性轻提示（审计 F3-2：入口只有 ➕ 的长按，太深，
+     * 给一句"长按 ➕ 可批量导入"的紧凑短通知；文案由屏上经 `stringResource` 交进来——
+     * 与其它通知位文案不同，这一条进 `strings.xml`，英文环境不再念中文）。
+     * 只投一次：投当拍旗标落盘，重启后不再弹。走 [NoticeBoard.Channel.Knowledge]
+     * （回执形态 + 到点自散），不走 Warning——普通提示不许画成大黄警告。
+     */
+    fun maybeShowBatchImportFirstHint(hintText: String) {
+        if (batchImportHintShown) return
+        resolveBatchImportHint()
+        notices.show(NoticeBoard.Channel.Knowledge, hintText)
+    }
+
+    /**
+     * 用户已发现入口：长按过 ➕（打开预览浮层）或完成过一次导入。只收旗标、不投通知——
+     * "发现"是用户自己的动作，不需要再回一句；此后 [maybeShowBatchImportFirstHint]
+     * 永远不再弹（含没接落盘口子时的会话内回落）。
+     */
+    fun markBatchImportDiscovered() {
+        resolveBatchImportHint()
+    }
+
+    /**
+     * 批量导入（Issue #7）：预览确认后的多条消息**按序一次**落进真实对话通道。
      *
-     * 每一条都走 [ComposerStore.Intent.AddMessage]——与手工输入/自动捕获同一漏斗、
-     * 同一存储、同一装配路径（`GenerationInput.dialogue` 只认 HER/ME）。顺序即预览条目
+     * 走 [ComposerStore.Intent.AddMessages]——与手工输入/自动捕获同一漏斗、同一存储、
+     * 同一装配路径（`GenerationInput.dialogue` 只认 HER/ME），一次校验、一次追加、一次
+     * 通知（外部审计 F3：几十条导入不再逐条触发几十次列表更新）。顺序即预览条目
      * 顺序，前后文上下文因此保持。绝不投 SubmitNote/IDEA：军师备注是另一条边界
      * （KNOWN_FAILURES F1/F3），而 [BatchImportDraft] 在构造期就硬挡了 IDEA。
+     *
+     * 审计 F3-2：完成一次导入 = 用户已发现入口，同拍收掉首次轻提示（此后不再提示）。
      */
     fun importBatchMessages(drafts: List<BatchImportDraft>) {
-        drafts.forEach { draft ->
-            composer.accept(ComposerStore.Intent.AddMessage(draft.role, draft.content))
-        }
+        composer.accept(ComposerStore.Intent.AddMessages(drafts))
+        markBatchImportDiscovered()
     }
 
     fun updateMessage(index: Int, role: ChatMessage.Role, content: String) { // facade — delegates to ComposerStore
@@ -1500,7 +1567,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 // ── 冠军引擎事件正式提交点（审计 R2-1 / T4 §1.1）──
                 // 事件入库挂在本产品正式提交历史的同一事务点（topicRecorder.record 成功之后、
                 // commitReplyRound 之前）；生成/shadow 路径不写事件库——用户删掉重来的未确认
-                // 输入永不进事件库，同一输入多次生成只在本提交点记一次（role|text|ts 去重）。
+                // 输入永不进事件库，同一输入多次生成只在本提交点记一次（按 msgUid 去重）。
                 // 提交失败只记日志：冠军事件是辅助账，绝不把本轮产品落盘拖成「保存失败」。
                 // 审计 S1-P0-1（OFF 零副作用）：提交点统一检查 Champion 有效模式+作用域——
                 // 只有有效模式非 OFF（当前接线=SHADOW；S2/S3 未接线被 mode() 收敛为 OFF）
@@ -1514,11 +1581,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     val championMsgs = messagesSnapshot
                         .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
                         .map { m ->
-                            Triple(
-                                if (m.role == ChatMessage.Role.HER) "HER" else "ME",
-                                m.content,
-                                java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
-                                    .format(java.util.Date(m.timestamp))
+                            com.lovebrain.app.domain.champion.ChampionMessage(
+                                role = if (m.role == ChatMessage.Role.HER) "HER" else "ME",
+                                text = m.content,
+                                ts = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
+                                    .format(java.util.Date(m.timestamp)),
+                                msgUid = m.id
                             )
                         }
                     if (championMsgs.isNotEmpty()) {

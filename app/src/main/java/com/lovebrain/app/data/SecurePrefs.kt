@@ -230,6 +230,17 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         get() = prefs.getBoolean(KEY_ROUND_SCOPE_HINT_SHOWN, false)
         set(value) = prefs.edit().putBoolean(KEY_ROUND_SCOPE_HINT_SHOWN, value).apply()
 
+    /**
+     * 批量导入入口首次轻提示的"提示过没有"（外部审计 F3-2）：true = 那条轻提示已经给过，
+     * 或用户已发现入口（长按过 ➕ / 完成过一次导入），此后不再提示。
+     * 与 [roundScopeHintShown] 同一先例——一次性标记格，落盘后每次回来不再重弹。
+     * 消费方是 `LoveBrainViewModel`（经 `di/AppModule` 那对函数接进去）；
+     * 不进 [SettingsStorePort] 端口面：它是面板侧的一次性记录格，页面按端口拿不到它。
+     */
+    var batchImportHintShown: Boolean
+        get() = prefs.getBoolean(KEY_BATCH_IMPORT_HINT_SHOWN, false)
+        set(value) = prefs.edit().putBoolean(KEY_BATCH_IMPORT_HINT_SHOWN, value).apply()
+
     // ═══ 消息捕获开关（ 问题 4）═══
 
     /**
@@ -625,6 +636,9 @@ private const val KEY_CONNECTION_VERIFIED_IDENTITY = "connection_verified_identi
 
         // 「仅看本轮」首次轻提示的"提示过没有"（§2.2 第 3 条；先例同 intent_intro_seen：落盘后不再重弹）
         private const val KEY_ROUND_SCOPE_HINT_SHOWN = "round_scope_hint_seen"
+
+        // 批量导入入口首次轻提示的"提示过没有"（外部审计 F3-2；同一先例：落盘后不再重弹）
+        private const val KEY_BATCH_IMPORT_HINT_SHOWN = "batch_import_hint_seen"
 
         // 工单系统键
         private const val KEY_TICKER_LIST_JSON = "worker_tickets_json"

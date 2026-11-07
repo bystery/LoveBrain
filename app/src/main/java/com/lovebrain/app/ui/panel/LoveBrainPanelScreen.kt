@@ -876,6 +876,17 @@ fun LoveBrainPanelScreen(
                 // 有真实消息 → 挂输入区行 2；没有 → 收进消息卡空态分支。两处二选一，绝不在
                 // 两处各存一份开关（那才是"意图与仅看本轮各长两个所有者"的第二份状态）。
                 val hasRealRows = hasRealDialogueRows(messages)
+                // 批量导入入口的首次轻提示（外部审计 F3-2）：入口只有 ➕ 的长按、太深，
+                // 首次进回复输入面板时走通知位给一条紧凑短提示（文案在 strings.xml，
+                // 经 stringResource 在屏上解析——VM 没有 Context，这一步只能由屏上交进来）。
+                // 旗标与投递都在上游 VM（`maybeShowBatchImportFirstHint`）：
+                // 投一次就落盘，长按过 ➕（onBatchImport 里 mark）或完成过一次导入
+                // （importBatchMessages 里 mark）之后永远不再弹。
+                // 通知位一次只显示一条、到点自散——不给输入行加任何常驻控件。
+                if (composerMode == ComposerMode.REPLY) {
+                    val batchImportHint = stringResource(R.string.batch_import_first_hint)
+                    LaunchedEffect(Unit) { viewModel.maybeShowBatchImportFirstHint(batchImportHint) }
+                }
                 ReplyInput(
                     draftText = draftText,
                     currentRole = composeRole,
@@ -896,7 +907,11 @@ fun LoveBrainPanelScreen(
                     // hasRealMessages 与 MessageList 共用同一口径（hasRealRows）；仅看本轮不再随它二选一挂载。
                     hasRealMessages = hasRealRows,
                     // 批量导入入口（Issue #7）：长按 ➕ 开预览浮层，不改单行输入框布局。
-                    onBatchImport = { surface.openBatchImport() },
+                    // 审计 F3-2：长按 = 用户已发现入口，同拍收掉首次轻提示的旗标（此后不再提示）。
+                    onBatchImport = {
+                        viewModel.markBatchImportDiscovered()
+                        surface.openBatchImport()
+                    },
                     onAdd = {
                         val text = draftText.trim()
                         if (text.isNotEmpty()) {

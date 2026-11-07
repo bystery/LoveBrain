@@ -32,12 +32,12 @@ import java.util.Locale
  * 不用 InMemoryKnowledgePort——因为误判保护与归档完整性都是**落盘语义**，
  * 内存桩复刻 rotate 语义只会测到自己：
  *
- *  1. **单判据不再触发**：模型报 topic_status=new 但同标签、scene 链新鲜、无显式标记
- *     → 不归档、不清空 moment/scene.md 与 moment/recent.md（旧实现 TopicRecorder.kt:123 的误清空输入）；
- *  2. **带佐证触发**：确定性用户标记（USER_MARKER）在场 → 旋转照常发生；
- *     **R5 佐证独立性**：仅 LABEL_CHANGE（与 status=new 同一次模型输出，同源共误）不再触发；
- *     **审计 #09 弱信号规则**：TIME_GAP（旧证据久）/ SCENE_EMPTY 单独命中也不再触发，
- *     需第二个非模型信号；scene 空但 recent 层仍有当前话题内容时不算"无可丢记忆"；
+ *  1. **单判据不再触发**：模型报 topic_status=new 但无任何非模型佐证（同标签、scene 链新鲜、
+ *     recent 有内容、无显式标记；或仅 LABEL_CHANGE 同源共误）→ 不归档、不清空
+ *     moment/scene.md 与 moment/recent.md（旧实现 TopicRecorder.kt:123 的误清空输入）；
+ *  2. **带佐证触发（F1 死锁修复）**：任一非模型源信号（TIME_GAP / SCENE_EMPTY /
+ *     USER_MARKER）+ 模型主张 new 即旋转——自然切换（无白名单用语）不再被永久否决；
+ *     scene 空但 recent 层仍有当前话题内容时仍不算"无可丢记忆"（审计 #09 防线保留）；
  *  3. **归档完整性**：确认切换后，被清的 scene/recent/raw_chat/raw_scene 内容
  *     在清空前已完整落入 memory/raw_topic.md（生产 rotate 的"先追加归档、后清四个源文件"顺序）。
  */
@@ -155,10 +155,42 @@ class TopicSwitchHardeningTest {
     }
 
     @Test
-    fun `label change plus stale scene no longer triggers rotation`() = runBlocking {
-        // 审计 #09 弱信号规则：TIME_GAP 是弱信号——LABEL_CHANGE（与 status=new 同一次模型
-        // 输出，同源共误）不算第二个非模型信号，两者共同在场也不许定案。
+    fun `natural topic switch with stale scene rotates without user marker`() = runBlocking {
+        // F1 死锁修复正向：自然话题切换（聊旧话题 → 聊新话题，模型正确输出 new、无白名单用语）
+        // + scene 证据陈旧（TIME_GAP，非模型佐证）→ 必须确认旋转。
+        // 旧规则在此死锁：TIME_GAP 是"弱信号"需凑第二个，而第二个弱信号与它互斥、永不可达。
         setupKb(sceneOffsetMin = 90)
+        val rotated = recorder().record(
+            kb = KnowledgeBase(name = "kb", displayName = "kb"),
+            messages = messages("跟你说个事" to ChatMessage.Role.HER),
+            scheme = null,
+            topicStatus = "new",
+            topicLabel = "雅思考试"       // 标签变化（LABEL_CHANGE 不参与定案），佐证来自 TIME_GAP
+        )
+        assertTrue("自然切换（模型 new + TIME_GAP、无白名单用语）必须旋转", rotated)
+        assertTrue("归档条目要出现", read("memory/raw_topic.md").contains("## ["))
+        assertTrue("话题标签要更新", read("moment/topic.md").contains("雅思考试"))
+    }
+
+    @Test
+    fun `stale scene corroborates a same-label switch`() = runBlocking {
+        // F1：TIME_GAP 是非模型佐证，单独命中即可定案——不要求白名单用语，也不要求标签变化。
+        setupKb(sceneOffsetMin = 90)  // scene 最新证据 90 分钟前 > 60 分钟阈值 → TIME_GAP
+        val rotated = recorder().record(
+            kb = KnowledgeBase(name = "kb", displayName = "kb"),
+            messages = messages("在吗" to ChatMessage.Role.HER),
+            scheme = null,
+            topicStatus = "new",
+            topicLabel = "午饭"
+        )
+        assertTrue("TIME_GAP 单独命中即可旋转", rotated)
+    }
+
+    @Test
+    fun `empty scene with empty recent rotates without user marker`() = runBlocking {
+        // F1 死锁修复正向：SCENE_EMPTY（scene 空 + recent 空，真·无可丢记忆，审计 #09
+        // recent 非空检查保留）+ 模型主张 new + 无白名单用语 → 旋转。
+        setupKb(sceneContent = "   \n", recent = "")
         val rotated = recorder().record(
             kb = KnowledgeBase(name = "kb", displayName = "kb"),
             messages = messages("跟你说个事" to ChatMessage.Role.HER),
@@ -166,11 +198,8 @@ class TopicSwitchHardeningTest {
             topicStatus = "new",
             topicLabel = "雅思考试"
         )
-        assertFalse("弱信号 + 模型源信号不许触发话题旋转", rotated)
-        assertTrue("场景记忆必须原样保留", read("moment/scene.md").contains("她在吃沙拉"))
-        assertTrue("最近对话必须原样保留", read("moment/recent.md").contains("上次说起的安排"))
-        assertTrue("不许产生归档条目", read("memory/raw_topic.md").isBlank())
-        assertTrue("当前话题标签保持现状", read("moment/topic.md").contains("正在聊：午饭"))
+        assertTrue("SCENE_EMPTY 成立即可旋转", rotated)
+        assertTrue("话题标签要更新", read("moment/topic.md").contains("雅思考试"))
     }
 
     @Test
@@ -190,9 +219,10 @@ class TopicSwitchHardeningTest {
     }
 
     @Test
-    fun `stale scene alone no longer rotates a same-label switch`() = runBlocking {
-        // 审计 #09：旧场景证据久不代表本轮真换了话题——TIME_GAP 单独命中保持现状
-        setupKb(sceneOffsetMin = 90)  // scene 最新证据 90 分钟前 > 60 分钟阈值 → TIME_GAP（弱）
+    fun `fresh scene with no corroboration does not rotate a same-label switch`() = runBlocking {
+        // 反向回归：scene 链新鲜、recent 有内容、无显式标记——模型主张 new 无任何非模型佐证，
+        // 保持现状（TIME_GAP 在 60 分钟阈值之下也不成立）。
+        setupKb(sceneOffsetMin = 10)  // scene 最新证据 10 分钟前 < 60 分钟阈值 → 无 TIME_GAP
         val rotated = recorder().record(
             kb = KnowledgeBase(name = "kb", displayName = "kb"),
             messages = messages("在吗" to ChatMessage.Role.HER),
@@ -200,7 +230,7 @@ class TopicSwitchHardeningTest {
             topicStatus = "new",
             topicLabel = "午饭"
         )
-        assertFalse("TIME_GAP 单独命中不许旋转", rotated)
+        assertFalse("无任何非模型佐证不许旋转", rotated)
         assertTrue("场景记忆必须原样保留", read("moment/scene.md").contains("她在吃沙拉"))
         assertTrue("最近对话必须原样保留", read("moment/recent.md").contains("上次说起的安排"))
     }

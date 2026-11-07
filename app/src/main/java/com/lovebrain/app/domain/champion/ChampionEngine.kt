@@ -181,13 +181,14 @@ class ChampionEngine(
      * 只有用户点「下一轮」确认提交，这里才入库。
      *
      * [turn] < 0 时按事件库 nextTurn 取（与 shadow 同一取号口径：已确认历史最大 turn+1，
-     * 同一轮多次生成/重试取到同一个号）。同键 `role|text|ts` 去重保证同一输入多次提交
-     * 只记一次（uid 复用，turn 取首次落库值）。
+     * 同一轮多次生成/重试取到同一个号）。去重身份 = 每条消息的稳定 [ChampionMessage.msgUid]
+     * （审计 F2-1）：同一 pending 轮重试携带同一 msgUid（同一 ChatMessage.id）→ uid 复用
+     * 只记一次；不同消息（含同分钟同内容的重复文本）msgUid 不同 → 各成一条事件，永不误合。
      */
     suspend fun commitConfirmedTurn(
         contactId: String,
         story: String,
-        messages: List<Triple<String, String, String>>,
+        messages: List<ChampionMessage>,
         turn: Int = -1
     ): List<ChampionEvent> {
         // 审计 S1-P0-1（OFF 零副作用门禁）：事件入库也必须过「有效模式+作用域」这道门。
@@ -210,8 +211,9 @@ class ChampionEngine(
      * 审计 R2-1：**本路径不写事件库**。事件入库唯一入口是 [commitConfirmedTurn]
      * （产品「下一轮」正式提交点）。当前窗口消息以未持久化的 pending 事件参与装配：
      * pending uid = 已入库最大 uid + 1 + 序号，与随后 [commitConfirmedTurn] 真正入库时
-     * `uidSeq` 分配到的 uid 一致（store 不追加时 uidSeq == maxUid+1），shadow 日志里的
-     * source_id 与正式历史可对齐；未确认输入换文本后 pending uid 与入库 uid 一一对应，
+     * `uidSeq` 分配到的 uid 一致（store 不追加时 uidSeq == maxUid+1；窗口全是新消息时
+     * 按序号一一对应。若窗口里含已提交过的消息，正式入库按 msgUid 复用其旧 uid，
+     * pending 序号 uid 与之偏离——shadow 日志的 source_id 只对全新窗口承诺对齐），
      * 放弃的输入则不留任何痕迹。
      */
     suspend fun shadowTurn(
@@ -387,16 +389,16 @@ class ChampionEngine(
  */
 object ChampionIdentity {
 
-    const val PORT_VERSION = "R2-SHADOW-20261106"
+    const val PORT_VERSION = "F2-DEDUP-20261106"
 
     /**
      * champion 包源文件 SHA-256 表（LF 归一，与 AssetFingerprints.canonical 同口径）。
      * 本表是移植批次的**登记值**——源文件再改动时必须更新版本并重走对拍。
      */
-    // 2026-11-06 移植批实测；R2 批更新 ChampionEvent.kt（审计 R2-2 哈希命名）实测值
+    // 2026-11-06 移植批实测；F2 批更新 ChampionEvent.kt（审计 F2-1 去重身份改 msgUid）实测值
     val CHAMPION_SOURCE_SHA256: Map<String, String> = mapOf(
         "ChampionEvent.kt" to
-            "96f556099927f5b0134583695d82b12ff7aef26a1e5004cc2e527461c4c65c6a",
+            "6c0b1d255f6874a5fb27b4870579ebb0b63b89c74769db5cce1c29a64c272e07",
         "EventHistoryAssembler.kt" to
             "78ba82b340667d082cba7f343e34b0da413a1ce5eb713ab3e92165fbb34d7b6a",
         "UncertainBlockDetector.kt" to

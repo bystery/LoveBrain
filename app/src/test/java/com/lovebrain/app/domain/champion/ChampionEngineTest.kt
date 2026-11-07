@@ -176,20 +176,20 @@ class ChampionEngineTest {
         // 不读事件库、不分配 uid、连 champion/events 目录都不创建
         val offEngineAndDir = newEngine(FakeSettings(mode = "OFF"))
         val committed = offEngineAndDir.first.commitConfirmedTurn(
-            "c", "s", listOf(Triple("HER", "周五见？", "2026-11-06 09:59"))
+            "c", "s", listOf(ChampionMessage("HER", "周五见？", "2026-11-06 09:59", "m1"))
         )
         assertTrue("OFF 提交返回空", committed.isEmpty())
         assertFalse("OFF 时不创建事件库目录", File(offEngineAndDir.second, "events").exists())
         // 脏值同样落 OFF（fail-closed）
         val dirty = newEngine(FakeSettings(mode = "nonsense"))
         assertTrue(
-            dirty.first.commitConfirmedTurn("c", "s", listOf(Triple("HER", "x", "t"))).isEmpty()
+            dirty.first.commitConfirmedTurn("c", "s", listOf(ChampionMessage("HER", "x", "t", "m1"))).isEmpty()
         )
         assertFalse(File(dirty.second, "events").exists())
         // S2/S3 未接线被 mode() 收敛为 OFF——同样零 IO
         val unwired = newEngine(FakeSettings(mode = "SINGLE_STYLE"))
         assertTrue(
-            unwired.first.commitConfirmedTurn("c", "s", listOf(Triple("ME", "x", "t"))).isEmpty()
+            unwired.first.commitConfirmedTurn("c", "s", listOf(ChampionMessage("ME", "x", "t", "m1"))).isEmpty()
         )
         assertFalse(File(unwired.second, "events").exists())
     }
@@ -200,13 +200,13 @@ class ChampionEngineTest {
         val (engine, dir) = newEngine(settings)
         // scope 未命中 = 有效模式 OFF = 零 IO
         val missed = engine.commitConfirmedTurn(
-            "c2", "s2", listOf(Triple("HER", "范围外", "t"))
+            "c2", "s2", listOf(ChampionMessage("HER", "范围外", "t", "m1"))
         )
         assertTrue("scope 未命中提交返回空", missed.isEmpty())
         assertFalse("scope 未命中不创建事件库目录", File(dir, "events").exists())
         // scope 命中才真正入库
         val hit = engine.commitConfirmedTurn(
-            "c1", "s1", listOf(Triple("HER", "范围内", "t"))
+            "c1", "s1", listOf(ChampionMessage("HER", "范围内", "t", "m1"))
         )
         assertEquals(1, hit.size)
         assertEquals("范围内", hit.single().text)
@@ -244,8 +244,8 @@ class ChampionEngineTest {
         // 正式提交点入库（uid = pending uid，与 shadow 日志 source_id 一致）
         val committed = runBlocking {
             engine.commitConfirmedTurn("c1", "s1", listOf(
-                Triple("HER", "周五见？", "2026-11-06 09:59"),
-                Triple("ME", "好", "2026-11-06 10:00")
+                ChampionMessage("HER", "周五见？", "2026-11-06 09:59", "m1"),
+                ChampionMessage("ME", "好", "2026-11-06 10:00", "m2")
             ))
         }
         assertEquals(listOf(0L, 1L), committed.map { it.uid })
@@ -276,10 +276,10 @@ class ChampionEngineTest {
             intent = IntentConfig(), advisorNote = "", originalReply = "", timeoutMs = 5_000, providerConfig = null)
         val store = ChampionEventStore(FileChampionEventStorage(File(dir, "events")))
         assertEquals(0, runBlocking { store.events("c__s") }.size)
-        // 正式提交：只记用户最终确认的那一条；重复提交去重不重复入库
+        // 正式提交：只记用户最终确认的那一条；重复提交（同一 pending 轮 = 同 msgUid）去重不重复入库
         runBlocking {
-            engine.commitConfirmedTurn("c", "s", listOf(Triple("HER", "改好的版本", "2026-11-06 09:00")))
-            engine.commitConfirmedTurn("c", "s", listOf(Triple("HER", "改好的版本", "2026-11-06 09:00")))
+            engine.commitConfirmedTurn("c", "s", listOf(ChampionMessage("HER", "改好的版本", "2026-11-06 09:00", "m1")))
+            engine.commitConfirmedTurn("c", "s", listOf(ChampionMessage("HER", "改好的版本", "2026-11-06 09:00", "m1")))
         }
         val all = runBlocking { store.events("c__s") }
         assertEquals(1, all.size)
@@ -290,6 +290,24 @@ class ChampionEngineTest {
             messages = listOf(Triple("ME", "新一条", "2026-11-06 10:00")),
             intent = IntentConfig(), advisorNote = "", originalReply = "", timeoutMs = 5_000, providerConfig = null)
         assertEquals(2, out3.logLine["turn"]!!.jsonPrimitive.content.toInt())
+    }
+
+    @Test
+    fun `two identical messages in the same minute commit as two events`() = runTest {
+        // 审计 F2-1 主案情走完整提交点：对方同一分钟连发两次"好"是两条真实消息——
+        // 不同 ChatMessage.id ⇒ 两条事件；旧 role|text|ts 键在这里把第二条合没了。
+        val settings = FakeSettings(mode = "SHADOW")
+        val (engine, dir) = newEngine(settings)
+        runBlocking {
+            engine.commitConfirmedTurn("c", "s", listOf(
+                ChampionMessage("HER", "好", "2026-11-06 10:05", "m1"),
+                ChampionMessage("HER", "好", "2026-11-06 10:05", "m2")
+            ))
+        }
+        val store = ChampionEventStore(FileChampionEventStorage(File(dir, "events")))
+        val all = runBlocking { store.events("c__s") }
+        assertEquals(2, all.size)
+        assertEquals(listOf("m1", "m2"), all.map { it.msgUid })
     }
 
     @Test

@@ -385,6 +385,8 @@
     <string name="batch_import_empty_result">没有解析出任何消息，请检查粘贴的内容。</string>
     <string name="batch_import_submit">导入 %1$d 条</string>
     <string name="batch_import_cancel">取消</string>
+    <!-- 外部审计 F3-2：批量导入入口（➕ 长按）太深，首次进回复输入面板时走通知位给一条一次性轻提示 -->
+    <string name="batch_import_first_hint">长按「＋」可批量粘贴导入聊天记录</string>
     <string name="a11y_batch_import_row_remove">移除这一条</string>
     <string name="a11y_batch_import">批量导入聊天记录（长按）</string>
 </resources>

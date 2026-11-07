@@ -146,6 +146,20 @@ class ComposerStore(
         data object ClearNote : Intent
 
         data class AddMessage(val role: ChatMessage.Role, val content: String) : Intent
+
+        /**
+         * 批量导入（Issue #7 / 外部审计 F3）的一次落点：预览确认后的多条真实对话**按序一次**追加。
+         *
+         * 为什么不是让调用方循环投 [AddMessage]：几十条导入 = 几十次列表重建与几十次
+         * `onContentChanged`（旧结果标 stale 的钩子），中间没有任何人消费那些中间态。
+         * 这一颗把"一次批量"当一次写入：**一次校验、一次追加、一次通知**（[addMessages]）。
+         *
+         * 与逐条路径的关系：单条 [AddMessage] 原样保留（手工输入/自动捕获仍走它），
+         * 两颗漏斗落进**同一份列表**、同一套 trim 与判空判据，批量不比逐条多任何特权。
+         * 元素是 [BatchImportDraft] 而不是裸 (role, content)：构造期就硬挡了 `IDEA` 与
+         * 空正文——军师备注通道（KNOWN_FAILURES F1/F3 边界）在类型上就进不了批量。
+         */
+        data class AddMessages(val drafts: List<BatchImportDraft>) : Intent
         data class UpdateMessage(val index: Int, val role: ChatMessage.Role, val content: String) : Intent
         data class RemoveMessage(val index: Int) : Intent
         data class RemoveMessageById(val id: String) : Intent
@@ -301,6 +315,7 @@ class ComposerStore(
             is Intent.SubmitNote -> if (intent.text.isNotBlank()) commitSupplement(intent.text.trim())
             Intent.ClearNote -> clearNote()
             is Intent.AddMessage -> addMessage(intent.role, intent.content)
+            is Intent.AddMessages -> addMessages(intent.drafts)
             is Intent.UpdateMessage -> updateMessage(intent.index, intent.role, intent.content)
             is Intent.RemoveMessage -> removeMessage(intent.index)
             is Intent.RemoveMessageById -> removeMessageById(intent.id)
@@ -443,6 +458,30 @@ class ComposerStore(
             return
         }
         _messages.value = _messages.value + ChatMessage(role = role, content = content.trim())
+        onContentChanged()
+    }
+
+    /**
+     * 批量导入的 reducer：**一次校验、一次追加、一次通知**（外部审计 F3 的第一条）。
+     *
+     * 校验与逐条 [addMessage] 同一套判据：空（含全空白）正文不落列表。逐条路径上空正文
+     * 是"no-op、不通知"，批量路径上"有效条目为零"是同一个形状——**零追加、零通知**，
+     * 不是"清一次列表再还原"。[BatchImportDraft] 构造期已挡过一次 IDEA 与空正文，
+     * 这里再判一次是同一防线在 store 侧的镜像：任何绕过构造期的方式（未来反序列化、
+     * 内部重构）都不会让一条空白/备注正文混进真实对话通道。
+     *
+     * 通知只叫**一次** [onContentChanged]：stale 判定是"输入变没变"的布尔钩子，
+     * 几十条一次落与逐条落五十次的最终状态相同，旧结果该被标过时的判定也相同——
+     * 重复通知只会让宿主把同一份 stale 判定白跑几十遍。
+     *
+     * 追加在尾部、顺序即预览顺序；不触碰编辑位/草稿/备注（追加不改变任何既有条目的
+     * 下标与身份，与逐条 [addMessage] 同一口径）。
+     */
+    private fun addMessages(drafts: List<BatchImportDraft>) {
+        if (drafts.isEmpty()) return
+        val valid = drafts.filter { it.content.isNotBlank() }
+        if (valid.isEmpty()) return
+        _messages.value = _messages.value + valid.map { ChatMessage(role = it.role, content = it.content.trim()) }
         onContentChanged()
     }
 

@@ -41,6 +41,8 @@ class OngoingContextSelectorTest {
         coEvery { knowledgeRepo.readIntent(any()) } returns IntentConfig()
         // 默认允许写入冷却文件
         coEvery { knowledgeRepo.writeFile(any(), any(), any()) } returns Unit
+        // 审计 F2-2 格子会经暂存通道推进冷却——先清空进程内暂存注册表，防跨格串味
+        OngoingCooldownStore.clearPendingForTest()
     }
 
     private fun planWithItem(name: String, status: String = "进行中", chain: String = "[2026-09-15 10:00]约定（当前）"): String {
@@ -98,6 +100,87 @@ class OngoingContextSelectorTest {
         val result = selector.selectForInjection("kb", ctx)
 
         assertEquals("冷却中且不相关不应注入", 0, result.eligibleItems.size)
+    }
+
+    // ─── 审计 F2-2：冷却统一生效（与"相关"无关） ───
+
+    /**
+     * 相关 + 冷却中 → 不注入：持续意图点名该事项也不能绕过冷却。
+     * 意图表达的是"保持在意"，不是"每轮必提"；冷却只是防止连发，到期自动恢复。
+     * 旧实现 `!signals.isRelevant` 让相关项每轮绕开冷却——这一格旧形状下 eligible=1。
+     */
+    @Test
+    fun `intent-relevant item within cooldown is still suppressed`() = runBlocking {
+        coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("周末见面")
+        coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns
+            """[{"name":"周末见面","lastInjectedTurn":5,"lastInjectedTime":"2026-09-19 10:00"}]"""
+
+        val ctx = OngoingContextSelector.SelectionContext(
+            messages = messages(ChatMessage.Role.HER to "今天吃什么"),
+            currentTurn = 7,           // 7-5=2 < COOLDOWN_TURNS=3 → 冷却中
+            currentTime = "2026-09-19 12:00",
+            effectiveIntent = IntentConfig(text = "这周把周末见面的事推进一下", enabled = true)
+        )
+        val result = selector.selectForInjection("kb", ctx)
+
+        assertEquals("相关但冷却中不许注入（意图不构成绕过理由）", 0, result.eligibleItems.size)
+    }
+
+    /** 冷却到期 → 注入：相关项冷却结束后自动恢复，不丢功能。 */
+    @Test
+    fun `cooldown expiry restores injection for a relevant item`() = runBlocking {
+        coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("周末见面")
+        coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns
+            """[{"name":"周末见面","lastInjectedTurn":3,"lastInjectedTime":"2026-09-17 10:00"}]"""
+
+        val ctx = OngoingContextSelector.SelectionContext(
+            messages = messages(ChatMessage.Role.HER to "今天吃什么"),
+            currentTurn = 6,           // 6-3=3 ≥ COOLDOWN_TURNS=3 → 冷却到期
+            currentTime = "2026-09-19 12:00",
+            effectiveIntent = IntentConfig(text = "这周把周末见面的事推进一下", enabled = true)
+        )
+        val result = selector.selectForInjection("kb", ctx)
+
+        assertEquals("冷却到期的相关项要恢复注入", listOf("周末见面"), result.eligibleItems.map { it.name })
+    }
+
+    /** 新证据（HER/ME 真实消息命中）→ 立即注入：冷却期内唯一的提前放行通道。 */
+    @Test
+    fun `new real message evidence bypasses cooldown immediately`() = runBlocking {
+        coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("周末见面")
+        coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns
+            """[{"name":"周末见面","lastInjectedTurn":6,"lastInjectedTime":"2026-09-19 11:00"}]"""
+
+        val ctx = OngoingContextSelector.SelectionContext(
+            messages = messages(ChatMessage.Role.HER to "我们周末见面别迟到了"),
+            currentTurn = 7,           // 7-6=1 < 3 → 冷却中，但真实消息整词命中
+            currentTime = "2026-09-19 12:00"
+        )
+        val result = selector.selectForInjection("kb", ctx)
+
+        assertEquals("新真实证据必须立即穿透冷却", listOf("周末见面"), result.eligibleItems.map { it.name })
+        // 穿透冷却的证据要推进证据时间线——走审计 #19 的暂存通道，不直接写盘
+        val staged = OngoingCooldownStore.peek("kb")
+        assertTrue("证据时间线应随本轮暂存推进", staged?.evidenceNames?.contains("周末见面") == true)
+        assertTrue("冷却时间线也应随注入暂存推进", staged?.injectedNames?.contains("周末见面") == true)
+    }
+
+    /** 从未注入过（只推进过证据，lastInjectedTurn=-1）不算冷却中。 */
+    @Test
+    fun `evidence-only entry never counts as cooldown`() = runBlocking {
+        coEvery { knowledgeRepo.readPlanActive("kb") } returns planWithItem("周末见面")
+        coEvery { knowledgeRepo.readFile("kb", "moment/ongoing_cooldown.json") } returns
+            """[{"name":"周末见面","lastInjectedTurn":-1,"lastInjectedTime":"2026-09-19 10:00","lastEvidenceTurn":4}]"""
+
+        val ctx = OngoingContextSelector.SelectionContext(
+            messages = messages(ChatMessage.Role.HER to "今天吃什么"),
+            currentTurn = 1,
+            currentTime = "2026-09-19 12:00",
+            effectiveIntent = IntentConfig(text = "这周把周末见面的事推进一下", enabled = true)
+        )
+        val result = selector.selectForInjection("kb", ctx)
+
+        assertEquals("没注入过就没有冷却", listOf("周末见面"), result.eligibleItems.map { it.name })
     }
 
     // ─── F03（2026-10-15 书 §4）：二字滑窗整个退出判据 ───

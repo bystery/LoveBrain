@@ -35,10 +35,11 @@ class PromptBuilderOngoingDirectiveIntentTest {
 
     private fun fixture(
         plan: String = PLAN,
-        cooldownJson: String = ""
+        cooldownJson: String = "",
+        turnCount: Int = 3
     ): Pair<PromptBuilder, InMemoryKnowledgePort> {
         val port = InMemoryKnowledgePort()
-        port.seedLibrary(KnowledgeBase(name = "kb", displayName = "测试库", stage = "待确定", turnCount = 3, active = true))
+        port.seedLibrary(KnowledgeBase(name = "kb", displayName = "测试库", stage = "待确定", turnCount = turnCount, active = true))
         port.seed("kb", "understand/me.md", "我：喜欢手冲咖啡")
         port.seed("kb", "understand/her.md", "她：猫奴，最近在准备雅思")
         port.seed("kb", "understand/warmth.md", "温度：轻松，会主动找我聊")
@@ -127,17 +128,20 @@ class PromptBuilderOngoingDirectiveIntentTest {
     /**
      * 备注不是消息（F1.1）：备注正文只出现在军师备注段，不进对话围栏、
      * 不冒充 HER/ME 文本——因此**不得刷新 lastEvidenceTurn**（真实消息证据那一格）。
-     * 冷却文件里预置 lastEvidenceTurn=1，备注点名注入之后必须原样保留；
-     * 若有人把备注重新读成消息证据，它会被推进成 currentTurn=3，当场红。
+     * 冷却文件里预置 lastInjectedTurn=1、lastEvidenceTurn=1，当前轮 turnCount=4
+     * （4-1=3 ≥ COOLDOWN_TURNS，冷却已到期——审计 F2-2 统一语义下冷却窗口内的
+     * 备注注入已被上一格测试拦住，本格只管"备注不许伪造证据"）——备注点名注入
+     * 之后两条时间线必须原样保留；若有人把备注重新读成消息证据，它会被推进成
+     * currentTurn=4，当场红。
      */
     @Test
     fun `note text stays out of the chat fence and never forges message evidence`() = runBlocking {
         val note = "军师要求：把周末见面的事安排一下"
         val seededCooldown =
             """[{"name":"周末见面","lastInjectedTurn":1,"lastInjectedTime":"2026-09-15 10:00","lastEvidenceTurn":1}]"""
-        val (builder, port) = fixture(cooldownJson = seededCooldown)
+        val (builder, port) = fixture(cooldownJson = seededCooldown, turnCount = 4)
         val prompt = builder.buildReplyUserPrompt(
-            KnowledgeBase(name = "kb", displayName = "测试库", stage = "待确定", turnCount = 3, active = true),
+            KnowledgeBase(name = "kb", displayName = "测试库", stage = "待确定", turnCount = 4, active = true),
             unrelatedMsgs,
             note
         )
@@ -157,15 +161,15 @@ class PromptBuilderOngoingDirectiveIntentTest {
             "lastInjectedTurn 必须保持 1（Prompt 构造不许推进冷却状态）",
             cooldownJson.contains("\"lastInjectedTurn\":1")
         )
-        assertFalse("Prompt 构造不许改写冷却文件（lastInjectedTurn 推进到本轮 3 = 提前写盘）",
-            cooldownJson.contains("\"lastInjectedTurn\":3"))
+        assertFalse("Prompt 构造不许改写冷却文件（lastInjectedTurn 推进到本轮 4 = 提前写盘）",
+            cooldownJson.contains("\"lastInjectedTurn\":4"))
         assertTrue(
             "lastEvidenceTurn 必须保持 1（备注不是真实消息证据）",
             cooldownJson.contains("\"lastEvidenceTurn\":1")
         )
         assertFalse(
-            "lastEvidenceTurn 不得被备注推进到本轮（3）",
-            cooldownJson.contains("\"lastEvidenceTurn\":3")
+            "lastEvidenceTurn 不得被备注推进到本轮（4）",
+            cooldownJson.contains("\"lastEvidenceTurn\":4")
         )
         val pending = com.lovebrain.app.domain.OngoingCooldownStore.peek("kb")
         assertTrue("本轮推进量要暂存为 pending（提交点消费）", pending != null && pending.injectedNames.contains("周末见面"))

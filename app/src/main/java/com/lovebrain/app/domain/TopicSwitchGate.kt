@@ -30,9 +30,16 @@ import com.lovebrain.app.util.TimeFmt
  * **R5 定案规则**：触发切换需要至少一个**非模型源信号**。模型源信号（目前只有
  * [SIGNAL_LABEL_CHANGE]）永不独立定案。
  *
- * **审计 #09 弱信号规则**：[SIGNAL_SCENE_EMPTY] 与 [SIGNAL_TIME_GAP] 是**弱非模型信号**——
- * 单独一个不得定案，需要第二个非模型信号（旧场景空/证据久都不代表本轮真换了话题，
- * 但**用户显式说换话题**是确定性的）。[SIGNAL_USER_MARKER] 仍可单独定案。
+ * **审计 #09 弱信号规则（已被 F1 修正取代）**：原规则要求 SCENE_EMPTY/TIME_GAP 两个弱信号
+ * 同时在场才可定案——但两者在 [newestSceneMs] 上互斥（SCENE_EMPTY 要求 ==0，TIME_GAP 要求
+ * >0），`weakSignals.size >= 2` 永不可达，自然话题切换（无白名单用语）被永久否决——
+ * 话题旋转死锁（外部审计第三轮 P0）。
+ *
+ * **F1 定案规则（外部审计第三轮）**：模型主张只是主张；**任一非模型源信号**在场即确认——
+ *  - [SIGNAL_SCENE_EMPTY]（scene 空 **且** recent 层无内容，审计 #09 防线保留）、
+ *    [SIGNAL_TIME_GAP]、[SIGNAL_USER_MARKER] 三者任一命中即可定案，佐证可组合、可叠加；
+ *  - [SIGNAL_LABEL_CHANGE] 与 `topic_status=new` 出自同一次模型输出（同源共误），
+ *    **永不参与定案**（S5 禁令维持）：仅标签变化 + 无任何非模型佐证 → 不旋转。
  *
  * 隐私纪律：本类产出的诊断文本只含信号名、毫秒/分钟数与布尔结论，
  * 不含消息正文与话题标签正文（调用方 [TopicRecorder] 直接落 L.w 日志）。
@@ -70,11 +77,13 @@ internal object TopicSwitchGate {
     /**
      * 评估一次 `topic_status=new` 主张。调用方仅在模型主张 new 时调用本函数。
      *
-     * 定案规则（R5 + 审计 #09）：必须命中**可定案的非模型源信号组合**——
+     * 定案规则（F1，外部审计第三轮）：必须命中**至少一个非模型源信号**——
      *  - [SIGNAL_USER_MARKER]（确定性用户表述）单独即可定案；
-     *  - [SIGNAL_SCENE_EMPTY]/[SIGNAL_TIME_GAP] 是弱信号，单独一个不得定案，
-     *    需要第二个非模型信号；
-     *  - [SIGNAL_LABEL_CHANGE] 与 status=new 同一次输出（同源共误），永不参与定案。
+     *  - [SIGNAL_SCENE_EMPTY]（含审计 #09 的 recent 非空检查）/[SIGNAL_TIME_GAP] 任一
+     *    单独命中也定案（二者在 newestSceneMs 上互斥，历史上"需凑两个弱信号"的规则
+     *    让无白名单用语的正常切换永久死锁——见类注释）；
+     *  - [SIGNAL_LABEL_CHANGE] 与 status=new 同一次输出（同源共误），永不参与定案；
+     *    仅它命中（无任何非模型佐证）→ 否决。
      *
      * @param topicLabel 模型给出的新话题标签（调用方已确认非空）
      * @param currentTopic 当前话题标签（[com.lovebrain.app.data.KnowledgeRepository.getCurrentTopic]
@@ -129,25 +138,20 @@ internal object TopicSwitchGate {
             signals.add(SIGNAL_USER_MARKER)
         }
 
-        // 定案（R5 + 审计 #09 弱信号规则）：
-        // - LABEL_CHANGE 是模型源信号，永不参与定案；
-        // - SCENE_EMPTY / TIME_GAP 是弱非模型信号，单独一个不得定案；
-        // - USER_MARKER 单独即可定案；两个弱信号同时在场（当前判据下互斥，规则按通用写）也可定案。
+        // 定案（F1，外部审计第三轮）：
+        // - 任一非模型源信号（SCENE_EMPTY / TIME_GAP / USER_MARKER）在场即确认——
+        //   佐证可组合、可叠加，不要求凑满两个弱信号（旧规则下二者互斥、永不可达，死锁）；
+        // - LABEL_CHANGE 是模型源信号，永不参与定案（S5）；仅它在场 → 否决。
         val nonModelSignals = signals.filterNot { it == SIGNAL_LABEL_CHANGE }
-        val weakSignals = nonModelSignals.filter { it == SIGNAL_SCENE_EMPTY || it == SIGNAL_TIME_GAP }
-        val strongSignals = nonModelSignals.filter { it == SIGNAL_USER_MARKER }
-        return if (strongSignals.isNotEmpty() || weakSignals.size >= 2) {
+        return if (nonModelSignals.isNotEmpty()) {
             Decision(confirmed = true, signals = signals, rejectionReason = null)
         } else {
             val gapMin = if (newestSceneMs > 0) (maxOf(latestMessageTimeMs, nowMs) - newestSceneMs) / 60_000L else -1L
             val reason = when {
-                signals.contains(SIGNAL_LABEL_CHANGE) && nonModelSignals.isEmpty() ->
+                signals.contains(SIGNAL_LABEL_CHANGE) ->
                     "仅 LABEL_CHANGE（与 topic_status=new 同一次模型输出，同源共误，不可独立佐证）；" +
-                        "scene最新条目间隔=${gapMin}min<${MIN_SCENE_GAP_MS / 60_000L}min、无显式换话题标记"
-                weakSignals.size == 1 ->
-                    "仅 ${weakSignals.single()}（弱佐证，需第二个非模型信号：旧证据久/此刻层空" +
-                        "不代表本轮真换了话题）；无显式换话题标记、" +
-                        if (signals.contains(SIGNAL_LABEL_CHANGE)) "LABEL_CHANGE 与主张同源不计" else "topic_label未变化"
+                        "scene最新条目间隔=${gapMin}min<${MIN_SCENE_GAP_MS / 60_000L}min、无显式换话题标记" +
+                        (if (recentHasContent) "、recent层仍有当前内容" else "")
                 else ->
                     "无佐证信号（scene最新条目间隔=${gapMin}min<${MIN_SCENE_GAP_MS / 60_000L}min、" +
                         "topic_label未变化、无显式换话题标记" +

@@ -15,9 +15,11 @@ import kotlinx.serialization.json.Json
  * - **回复永不入库**：模型草稿、候选、点赞偏好永不 append；只有真实消息
  *   （HER=对方 / ME=用户实际发送或捕获）才进 [append]。非 HER/ME 的角色在
  *   [append] 处直接被拒——"回复草稿入库请求被拒"是验收对拍项（规格书 §5.4）。
- * - `uid_by_key` 去重语义：key = `"$role|$text|$ts"`（照 `_key_of` 逐字），
- *   同键复用既有 uid，不重复入库——同一条消息跨轮稳定同 id，
- *   未定段 seq 与历史行 `m_src[uid]` 因此可对齐。
+ * - `uid_by_key` 去重语义（审计 F2-1 修订）：去重身份 = **每条消息的稳定 uid**
+ *   （[ChampionEvent.msgUid]，提交侧 ChatMessage.id——同一 pending 轮重试携带同一
+ *   msgUid，复用既有事件；不同消息 msgUid 不同，永不误合）。旧 `"$role|$text|$ts"`
+ *   键已废弃：提交侧时间只格式化到分钟，对方同一分钟连发两次"好"是两条真实消息，
+ *   旧键会把第二条合进第一条——违反"真实对话顺序不能丢、不能合并真实事实"。
  * - [events] 按 uid 升序返回 = 时间序（Python 列表 append 序 == uid 递增序）。
  * - 每条事件额外带 `turn`（W16 增量）：仅供未定段「（T<turn>）」标注，不进历史行文本。
  *
@@ -27,7 +29,9 @@ import kotlinx.serialization.json.Json
  * **显示名不参与存储键**（只用于日志展示）。删除 KB 重建后新库拿到新的目录名，
  * 不会复用旧库的事件历史——旧库目录删除时其事件文件随键不可达（见 fileFor 哈希命名）。
  * 目录键带 engine 维度（规格书 §2.2：与 kb 投影物理分离的第 7 个写入面）。
- * 回退（flag→OFF）时文件保留不清；重开时按 `role|text|ts` 续用，不回填、不迁移。
+ * 存量兼容（审计 F2-1）：当前模式默认 OFF、shadow 未上线，**无存量用户数据**——
+ * 去重身份换键（role|text|ts → msgUid）不留迁移代码；旧键下落过库的内部验证数据
+ * （msgUid 缺省为空串）按"永不命中去重"对待，重提交即新事件，不回填、不迁移。
  */
 @Serializable
 data class ChampionEvent(
@@ -35,7 +39,14 @@ data class ChampionEvent(
     val role: String,
     val text: String,
     val ts: String,
-    val turn: Int
+    val turn: Int,
+    /**
+     * 稳定消息身份（审计 F2-1 去重键）：提交侧（LoveBrainViewModel.nextRound）传
+     * ChatMessage.id——用户删掉重来/保存失败重试的同一 pending 轮携带同一 msgUid
+     * （uid 复用、不重复入库）；同一分钟同内容的两条不同消息 msgUid 不同（两条事件）。
+     * 必须非空（[ChampionMessage.msgUid]）。
+     */
+    val msgUid: String = ""
 )
 
 /** 持久化状态：有序事件 + 去重索引 + uid 计数器（对应 Python `snapshot`/`restore` 的载荷）。 */
@@ -108,10 +119,24 @@ class FileChampionEventStorage(private val rootDir: File) : ChampionEventStorage
 }
 
 /**
+ * 一条待入库的真实消息（审计 F2-1）：[role]/[text]/[ts] 之外携带 [msgUid]——
+ * 提交侧每条消息的**稳定身份**（ChatMessage.id），是入库去重的唯一键。
+ * msgUid 为空直接被拒：空身份会把多条消息合并成一条，正是本次审计要修的丢消息形状。
+ */
+data class ChampionMessage(
+    val role: String,
+    val text: String,
+    val ts: String,
+    val msgUid: String
+)
+
+/**
  * 有序真实消息存储（对应 `mechanism.py::_uid_for` + `h["events"]`）。
  *
- * [append] 逐条走 `role|text|ts` 去重：新键分配 `uidSeq` 递增的新 uid 并入库，
- * 旧键原样返回既有事件（不入库第二次）。[turn] 只在**新**事件落库时记录。
+ * [append] 逐条按 [ChampionMessage.msgUid] 去重（审计 F2-1）：新身份分配 `uidSeq`
+ * 递增的新 uid 并入库，旧身份原样返回既有事件（不入库第二次）——同一 pending 轮
+ * 重试（同 msgUid）去重命中，同分钟同内容的不同消息（不同 msgUid）各成一条事件。
+ * [turn] 只在**新**事件落库时记录。
  */
 class ChampionEventStore(private val storage: ChampionEventStorage) {
 
@@ -124,43 +149,49 @@ class ChampionEventStore(private val storage: ChampionEventStorage) {
         }
     }
 
-    /** 去重键——照 `_key_of` 逐字：`"$role|$text|$ts"`。 */
-    internal fun keyOf(role: String, text: String, ts: String): String = "$role|$text|$ts"
+    /** 去重身份必须非空（审计 F2-1）：空 msgUid 会把多条消息误合成一条。 */
+    private fun requireMsgUid(msgUid: String) {
+        check(msgUid.isNotBlank()) {
+            "champion events 入库请求缺稳定消息身份（msgUid 为空）——去重键不许为空"
+        }
+    }
 
     /**
-     * 追加一批本轮真实消息，返回**去重后**的事件（顺序与入参一致）。
-     * 同键消息复用既有 uid；同一批内重复键同样只入一次。
+     * 追加一批本轮真实消息，返回**去重后**的事件（顺序与入参一致；同 msgUid 的
+     * 入参条目映射到同一个既有事件对象）。新身份入库，旧身份复用既有 uid。
      */
     suspend fun append(
         key: String,
-        messages: List<Triple<String, String, String>>,
+        messages: List<ChampionMessage>,
         turn: Int
     ): List<ChampionEvent> = mutex.withLock {
         if (messages.isEmpty()) return@withLock emptyList()
-        messages.forEach { requireRealRole(it.first) }
+        messages.forEach { requireRealRole(it.role); requireMsgUid(it.msgUid) }
         val state = storage.load(key)
-        val byKey = HashMap<String, ChampionEvent>()
-        state.events.forEach { byKey[keyOf(it.role, it.text, it.ts)] = it }
+        val byMsgUid = HashMap<String, ChampionEvent>()
+        state.events.forEach { if (it.msgUid.isNotBlank()) byMsgUid[it.msgUid] = it }
         var uidSeq = state.uidSeq
         val out = mutableListOf<ChampionEvent>()
-        var dirty = false
-        for ((role, text, ts) in messages) {
-            val k = keyOf(role, text, ts)
-            val existing = byKey[k]
+        for (msg in messages) {
+            val existing = byMsgUid[msg.msgUid]
             if (existing != null) {
                 out += existing
                 continue
             }
-            val ev = ChampionEvent(uid = uidSeq, role = role, text = text, ts = ts, turn = turn)
+            val ev = ChampionEvent(
+                uid = uidSeq, role = msg.role, text = msg.text, ts = msg.ts,
+                turn = turn, msgUid = msg.msgUid
+            )
             uidSeq++
-            byKey[k] = ev
+            byMsgUid[msg.msgUid] = ev
             out += ev
-            dirty = true
         }
-        if (dirty) {
-            val merged = (state.events + out.filter { it.uid >= state.uidSeq })
-                .distinctBy { keyOf(it.role, it.text, it.ts) }
-            storage.save(key, ChampionEventState(events = merged, uidSeq = uidSeq))
+        // 新事件（uid >= 旧 uidSeq）才需要落盘；复用事件本就在 state.events 里。
+        // uid 由 uidSeq 单调分配、批内同 msgUid 只分配一次，按 uid 去重即足够
+        // （旧的 role|text|ts distinctBy 已废弃——它正是合并同分钟重复消息的那颗）。
+        val newEvents = out.filter { it.uid >= state.uidSeq }.distinctBy { it.uid }
+        if (newEvents.isNotEmpty()) {
+            storage.save(key, ChampionEventState(events = state.events + newEvents, uidSeq = uidSeq))
         }
         out
     }

@@ -31,6 +31,11 @@ import com.lovebrain.app.util.TimeFmt
  *
  * 日期临近只能提高 retrieval priority（使关键词匹配更宽松），
  * 但不能单独成为注入理由。
+ *
+ * 冷却（审计 F2-2，统一语义）：同一事项在无新真实聊天证据时不重复注入，
+ * 与是否"相关"无关——持续意图/本轮备注命中不能绕过冷却；冷却到期
+ * （距 lastInjectedTurn ≥ COOLDOWN_TURNS）或出现新证据（HER/ME 消息命中）后
+ * 恢复注入。
  */
 class OngoingContextSelector(
     private val knowledgeRepo: KnowledgePort,
@@ -173,11 +178,23 @@ class OngoingContextSelector(
                 realEvidenceNames.add(item.name)
             }
 
-            // 冷却检查：如果最近 N 轮已注入且当前无新证据，禁止再注入
+            // 冷却检查（审计 F2-2：冷却统一生效）——产品语义：
+            // 同一事项在**无新真实聊天证据**时不重复注入，与是否"相关"无关。
+            // 旧实现要求 `!signals.isRelevant`，而后续 ACTIVE/DORMANT 筛选本就跳过
+            // 不相关项——结果相关项（意图/备注命中）每轮绕开冷却注入、不相关项本来
+            // 就不注入，冷却状态形同虚设。
+            // - 冷却到期（距 lastInjectedTurn ≥ COOLDOWN_TURNS）自动恢复注入；
+            // - 出现新证据（HER/ME 真实消息关键词命中）立即恢复注入——这是唯一的
+            //   冷却期内提前放行通道；
+            // - 用户显式设置的持续意图**不构成绕过冷却的理由**：意图表达的是"保持在意"，
+            //   不是"每轮必提"；冷却只是防止连发，到期自动恢复，不丢功能。
+            // - lastInjectedTurn < 0（只推进过证据、从未注入过）不算冷却中。
+            // 不做"每三轮禁一次"之类的新发明——只有这一条统一语义。
             val cooldownEntry = cooldown[item.name]
             val isInCooldown = cooldownEntry != null &&
+                cooldownEntry.lastInjectedTurn >= 0 &&
                 (context.currentTurn - cooldownEntry.lastInjectedTurn) < COOLDOWN_TURNS &&
-                !signals.isRelevant
+                !signals.realMessageEvidence
 
             if (isInCooldown) {
                 // 这里念的是事项标题（用户自己写的那条短目标），不是聊天正文；

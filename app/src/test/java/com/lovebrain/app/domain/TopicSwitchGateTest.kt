@@ -11,13 +11,15 @@ import org.junit.Test
  * F2.1 加固门（[TopicSwitchGate]）的判据单测——纯 JVM，不碰端口与仓库。
  *
  * 钉住的行为：
- *  - topic_status=new 的**单判据形态**（同标签 + 新鲜 scene 链 + 无标记）必须被否决——
- *    这正是旧实现 TopicRecorder.kt:123 造成场景记忆误清空的输入；
- *  - **审计 #09 弱信号规则**：SCENE_EMPTY / TIME_GAP 单独命中必须否决（旧场景空、证据久
- *    都不代表本轮真换了话题）；scene 空但 recent 层仍有当前话题内容时根本不算
- *    "无可丢记忆"；只有 USER_MARKER（确定性用户表述）可单独定案；
+ *  - topic_status=new 的**单判据形态**（同标签 + 新鲜 scene 链 + 无标记 + 无任何非模型佐证）
+ *    必须被否决——这正是旧实现 TopicRecorder.kt:123 造成场景记忆误清空的输入；
+ *  - **F1 定案规则（外部审计第三轮死锁修复）**：任一非模型源信号
+ *    （SCENE_EMPTY（含 recent 非空检查）/TIME_GAP/USER_MARKER）+ 模型主张 new 即确认——
+ *    旧"需凑两个弱信号"规则下 SCENE_EMPTY 与 TIME_GAP 在 newestSceneMs 上互斥，
+ *    weakSignals.size>=2 永不可达，自然切换（无白名单用语）被永久否决；
+ *  - scene 空但 recent 层仍有当前话题内容时根本不算"无可丢记忆"（审计 #09 防线保留）；
  *  - **R5 佐证独立性**：LABEL_CHANGE 与 topic_status=new 出自同一次模型输出（同源共误），
- *    单独命中必须否决，只有与非模型源信号共同出现才可确认；
+ *    永不参与定案，仅它命中（无任何非模型佐证）必须否决；
  *  - 否决原因只含信号名与数值，不含消息/标签正文（隐私红线）。
  *
  * 带落盘后果的端到端行为（归档完整性、保持现状）在 TopicSwitchHardeningTest 走真实仓库。
@@ -89,11 +91,12 @@ class TopicSwitchGateTest {
         assertFalse("否决原因不许含标签正文之外的话题行", d.rejectionReason!!.contains("正在聊"))
     }
 
-    // ─── 审计 #09：弱信号不得单独定案 ────────────────────────────────
+    // ─── F1：任一非模型佐证 + 模型主张 new 即确认（自然切换不再死锁）───
 
     @Test
-    fun `time gap alone no longer confirms the switch`() {
-        // 审计 #09：旧场景证据久不代表本轮真换了话题——TIME_GAP 是弱信号，需第二个非模型信号
+    fun `time gap alone confirms a natural switch without user marker`() {
+        // F1 死锁修复正向：场景证据陈旧（TIME_GAP 成立）+ 模型主张 new + 无白名单用语
+        // → 必须确认。旧规则要求凑两个弱信号，而两个弱信号互斥、永不可达。
         val d = evaluate(
             topicLabel = "午饭",
             currentTopic = "午饭",
@@ -103,15 +106,14 @@ class TopicSwitchGateTest {
             latestMessageTimeMs = nowMs,
             nowMs = nowMs
         )
-        assertFalse("TIME_GAP 单独命中不许定案", d.confirmed)
-        assertTrue("否决原因须点名弱信号：${d.rejectionReason}", d.rejectionReason!!.contains("TIME_GAP"))
-        assertTrue("否决原因须写明需要第二个信号：${d.rejectionReason}", d.rejectionReason.contains("第二个非模型信号"))
-        assertTrue("被否决时不许带任何信号：${d.signals}", d.signals.isEmpty())
+        assertTrue("TIME_GAP 是非模型佐证，单独命中即可定案：${d.rejectionReason}", d.confirmed)
+        assertEquals(setOf(TopicSwitchGate.SIGNAL_TIME_GAP), d.signals.toSet())
     }
 
     @Test
-    fun `empty scene alone no longer confirms the switch`() {
-        // 审计 #09：scene 与 recent 此刻层都空（真·无可丢记忆）也保守要求第二个非模型信号
+    fun `empty scene with empty recent confirms a natural switch without user marker`() {
+        // F1 死锁修复正向：scene 与 recent 此刻层都空（真·无可丢记忆，审计 #09 检查保留）
+        // + 模型主张 new + 无白名单用语 → SCENE_EMPTY 单独命中即可定案。
         val d = evaluate(
             topicLabel = "午饭",
             currentTopic = "午饭",
@@ -121,9 +123,8 @@ class TopicSwitchGateTest {
             latestMessageTimeMs = nowMs,
             nowMs = nowMs
         )
-        assertFalse("SCENE_EMPTY 单独命中不许定案", d.confirmed)
-        assertTrue("否决原因须点名弱信号：${d.rejectionReason}", d.rejectionReason!!.contains("SCENE_EMPTY"))
-        assertTrue("被否决时不许带任何信号：${d.signals}", d.signals.isEmpty())
+        assertTrue("SCENE_EMPTY 是非模型佐证，单独命中即可定案：${d.rejectionReason}", d.confirmed)
+        assertEquals(setOf(TopicSwitchGate.SIGNAL_SCENE_EMPTY), d.signals.toSet())
     }
 
     @Test
@@ -203,8 +204,9 @@ class TopicSwitchGateTest {
     }
 
     @Test
-    fun `label change plus time gap alone is still rejected`() {
-        // 审计 #09：TIME_GAP 是弱信号——LABEL_CHANGE（模型源）不算第二个非模型信号
+    fun `label change plus time gap confirms the natural switch`() {
+        // F1：TIME_GAP 是非模型佐证，在场即定案；LABEL_CHANGE（模型源）不参与定案，
+        // 但也不拖累其他佐证——佐证可组合。
         val d = evaluate(
             topicLabel = "雅思考试",
             currentTopic = "午饭",
@@ -214,10 +216,10 @@ class TopicSwitchGateTest {
             latestMessageTimeMs = nowMs,
             nowMs = nowMs
         )
-        assertFalse("弱信号 + 模型源信号不许定案", d.confirmed)
-        assertTrue(
-            "否决原因须同时点名弱信号：${d.rejectionReason}",
-            d.rejectionReason!!.contains("TIME_GAP") && d.rejectionReason.contains("第二个非模型信号")
+        assertTrue("TIME_GAP（非模型佐证）在场即定案：${d.rejectionReason}", d.confirmed)
+        assertEquals(
+            setOf(TopicSwitchGate.SIGNAL_TIME_GAP, TopicSwitchGate.SIGNAL_LABEL_CHANGE),
+            d.signals.toSet()
         )
     }
 
@@ -269,7 +271,7 @@ class TopicSwitchGateTest {
     }
 
     @Test
-    fun `unparsable scene lines count as empty scene`() {
+    fun `unparsable scene lines count as empty scene and corroborate the switch`() {
         val d = evaluate(
             topicLabel = "午饭",
             currentTopic = "午饭",
@@ -279,8 +281,8 @@ class TopicSwitchGateTest {
             latestMessageTimeMs = nowMs,
             nowMs = nowMs
         )
-        assertFalse("无可解析条目按 scene 空处理，但仍需第二个非模型信号", d.confirmed)
-        assertTrue("否决原因按 SCENE_EMPTY 口径给出：${d.rejectionReason}", d.rejectionReason!!.contains("SCENE_EMPTY"))
+        assertTrue("无可解析条目按 scene 空处理，SCENE_EMPTY 是非模型佐证即定案", d.confirmed)
+        assertEquals(setOf(TopicSwitchGate.SIGNAL_SCENE_EMPTY), d.signals.toSet())
     }
 
     @Test
