@@ -18,7 +18,7 @@ import java.io.File
  * | --- | --- |
  * | 面板里 `focusManager.clearFocus(` **恰好一处**，且在唯一出口 `handOffInput` 里 | 有人在某个 `LaunchedEffect` 里再手写一次 `clearFocus`（数到 2）——那份没有 `hide()`、也没点名宿主，就是旧 bug 的续集 |
  * | 那一颗出口同时做 `hide()` / `clearFocus(force = true)` / 点名非上报输入路 | 去掉 `hide()` ⇒ 键盘不收；去掉 `force` ⇒ 主动焦点清不掉；去掉点名 ⇒ 设置页/浮层/自定义改写那三条路的 EDITING 永不退出 |
- * | 四个交接点（注册口 + 切页 + 设置层 + 编辑器）与返回键都只调那一颗出口 | 任何一处改回自己拼 ⇒ `currentHandOffInput()` 数到 4 |
+ * | 五个交接点（注册口 + 切页 + 设置层 + 编辑器 + 批量导入层）与返回键都只调那一颗出口 | 任何一处改回自己拼 ⇒ `currentHandOffInput()` 数到 6 |
  * | 面板里有 `BackHandler` 且**同一层**提供了 `LocalOnBackPressedDispatcherOwner` | 只留 `BackHandler` 不供 owner ⇒ 悬浮窗里拿到 null，activity-compose 1.9.0 走的是 `throw IllegalStateException` 那一条（整扇面板起不来，不是静默失效） |
  * | 返回键由本屏根 view 的 `setOnKeyListener` 在 IME 之前那一站泵进 dispatcher | 删掉监听 ⇒ 回调进了表也没人泵；删掉 `hasEnabledCallbacks()` 守卫 ⇒ 没人听也吞键 |
  * | 自定义改写块有 `FocusRequester` + `onFocusChanged` + 展开那一次点名编辑意图 | 少任何一颗 ⇒ "点了自定义，光标在闪而键盘起不来"回来了 |
@@ -88,11 +88,11 @@ class PanelInputFocusHandoffTest {
 
     @Test
     fun everyHandoffPointGoesThroughThatSingleExit() {
-        // 注册口 / 切页 / 设置层开合 / 编辑器关闭 / 返回键 = 五处
+        // 注册口 / 切页 / 设置层开合 / 编辑器关闭 / 批量导入层开合 / 返回键 = 六处
         val calls = count(panelCode, "currentHandOffInput\\(\\)")
         assertEquals(
-            "五个交接点全部走那一颗出口（实到 $calls 处）：少一处就是那条路又自己拼了一遍",
-            5, calls
+            "六个交接点全部走那一颗出口（实到 $calls 处）：少一处就是那条路又自己拼了一遍",
+            6, calls
         )
         assertTrue(
             "宿主反向那条链（onClearComposeFocus）也必须是同一颗出口",
@@ -104,14 +104,39 @@ class PanelInputFocusHandoffTest {
     }
 
     @Test
+    fun theBatchImportSheetOpeningAndClosingHandsFocusBackThroughThatExit() {
+        // 批量导入浮层的全部关闭路径（遮罩/取消键/提交成功）都汇到 `surface.closeBatchImport()`，
+        // 而粘贴框那颗（batch_import）在名单里没有失焦回报 ⇒ 开/关层这一翻必须自己点那颗
+        // 唯一出口。缺这一句，浮层关了宿主还认为 batch_import 持焦：窗口卡 EDITING、键盘不收。
+        val effect = Regex("""LaunchedEffect\(surface\.batchImportOpen\)\s*\{([^}]*)\}""")
+            .find(panelCode)
+        assertTrue(
+            "面板里必须有一颗 LaunchedEffect(surface.batchImportOpen) 接住浮层开合——" +
+                "关层不交焦点就是审计 06 续那条 P0 原样复发",
+            effect != null
+        )
+        assertTrue(
+            "那颗 LaunchedEffect 的体必须走唯一出口，不许自己拼第二份 clearFocus：\n" +
+                effect!!.groupValues[1],
+            effect.groupValues[1].contains("currentHandOffInput()")
+        )
+        // 反向证人：key 换成别的状态就数不到——这把尺抓的确实是 batchImportOpen 那一颗
+        val wrongKeyShape = "LaunchedEffect(surface.settingsOpen) { currentHandOffInput() }"
+        assertEquals(
+            "证人：对错 key 的形状这把尺必须数到 0",
+            0, Regex("""LaunchedEffect\(surface\.batchImportOpen\)""").findAll(wrongKeyShape).count()
+        )
+    }
+
+    @Test
     fun theNonReportingInputListNamesOnlyIdsThePanelActuallyUses() {
-        // 名单不是凭空写的：那三颗 id 必须真的在面板里作为"进入编辑"信号出现过
+        // 名单不是凭空写的：那四颗 id 必须真的在面板里作为"进入编辑"信号出现过
         val declared = Regex("""NON_REPORTING_INPUT_IDS\s*=\s*listOf\(([^)]*)\)""")
             .find(panelCode)
         assertTrue("面板里找不到那份名单——交接点就没东西可点名", declared != null)
         val ids = Regex("\"([^\"]+)\"").findAll(declared!!.groupValues[1])
             .map { it.groupValues[1] }.toList()
-        assertEquals("名单应有三条只有进入编辑、没有失焦的输入路，实到 $ids", 3, ids.size)
+        assertEquals("名单应有四条只有进入编辑、没有失焦的输入路，实到 $ids", 4, ids.size)
         for (id in ids) {
             assertEquals(
                 "`$id` 必须真的是面板交出去的一颗 onInputIntent id，否则点名的是空名字",

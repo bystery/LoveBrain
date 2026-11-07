@@ -87,4 +87,71 @@ class ReflectCorrectionsFilterTest {
         assertTrue(prompt.contains("她讨厌临时改时间"))
         assertTrue(prompt.contains("我喜欢周末爬山"))
     }
+
+    // ═══ S3 遗漏 A：raw_topic 归档进画像 reflect 前同颗过滤 ═══
+
+    private val rawTopicContent =
+        "# [2026-11-04 10:00] 出差安排\n\n" +
+        "## [2026-11-04 10:00] 状态变化\n" +
+        "- [2026-11-04 09:00] 旧况：她在杭州出差；她感冒了\n\n" +
+        "### [2026-11-04 10:00] 对话记录\n" +
+        "她：她在杭州出差\n" +
+        "我：路上小心\n"
+
+    private fun builderWithTopic(
+        corrections: Map<String, MemoryCorrection>,
+        sceneContent: String = "- [2026-11-05 20:00] 出差：她在杭州出差|src=m1|spk=HER\n",
+        persistedFacts: String = ""
+    ): PromptBuilder {
+        val port = InMemoryKnowledgePort()
+        port.seed(kb, "understand/me.md", "我喜欢周末爬山，不太爱熬夜\n")
+        port.seed(kb, "understand/her.md", "她在杭州做设计，养了一只猫\n")
+        port.seed(kb, "understand/warmth.md", "intimacy：55\ntrust：60\n")
+        port.seed(kb, "memory/lessons.md", "# 批1\n- 她讨厌临时改时间\n")
+        port.seed(kb, "moment/scene.md", sceneContent)
+        port.seed(kb, "memory/raw_topic.md", rawTopicContent)
+        if (persistedFacts.isNotEmpty()) {
+            port.seed(kb, CorrectionExtractionFilter.PERSISTED_FACTS_PATH, persistedFacts)
+        }
+        if (corrections.isNotEmpty()) port.seedCorrections(kb, corrections)
+        return PromptBuilder(
+            PromptSourcePort { path -> error("reflect 提取支不该读资产：$path") },
+            port, null
+        )
+    }
+
+    @Test
+    fun `raw topic flows into reflect verbatim without corrections`() = runBlocking {
+        val prompt = builderWithTopic(emptyMap()).buildReflectUserPrompt(kb)
+        assertTrue("未纠正时话题档案逐字进 reflect", prompt.contains("她在杭州出差"))
+        assertTrue(prompt.contains("她感冒了"))
+        assertTrue(prompt.contains("我：路上小心"))
+    }
+
+    @Test
+    fun `corrected scene fact is stripped from raw topic in reflect prompt`() = runBlocking {
+        val prompt = builderWithTopic(mapOf(
+            "SCENE:moment/scene.md" to MemoryCorrection(
+                memoryId = "SCENE:moment/scene.md",
+                action = CorrectionAction.WRONG
+            )
+        )).buildReflectUserPrompt(kb)
+        assertFalse("scene 生效纠正时归档里的旧值不得进 reflect（遗漏 A）", prompt.contains("她在杭州出差"))
+        assertTrue("相邻事实与相邻对话行保留", prompt.contains("她感冒了") && prompt.contains("我：路上小心"))
+        assertTrue("归档标题保留", prompt.contains("# [2026-11-04 10:00] 出差安排"))
+    }
+
+    @Test
+    fun `persisted basis keeps reflect filtering after scene archived away`() = runBlocking {
+        val prompt = builderWithTopic(
+            mapOf("SCENE:moment/scene.md" to MemoryCorrection(
+                memoryId = "SCENE:moment/scene.md",
+                action = CorrectionAction.WRONG
+            )),
+            sceneContent = "",
+            persistedFacts = "她在杭州出差\n"
+        ).buildReflectUserPrompt(kb)
+        assertFalse("归档清空后持久依据仍挡住旧值（遗漏 B）", prompt.contains("她在杭州出差"))
+        assertTrue("相邻内容保留", prompt.contains("她感冒了"))
+    }
 }

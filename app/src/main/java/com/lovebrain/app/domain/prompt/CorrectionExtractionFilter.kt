@@ -98,17 +98,27 @@ object CorrectionExtractionFilter {
      * 精确集合，供 [filterSceneArchive] / [filterChatArchive] 做条目级 / 行级剔除。
      *
      * 纠正未生效（未纠正 / MUTED 已过期）→ 空集，下游一字不动。
-     * 归档条目自身还没有纠正身份（纠正表不持 recent / raw_* 的 MemoryRef），
-     * 纠正时已过期归档、scene.md 里已不存在的旧事实暂不在此列——条目级化之前宁可漏剔。
+     *
+     *  S3 遗漏 B（归档后过滤依据消失）：旧实现只从**当前** scene.md 现算这批原文——
+     * 话题切换归档后 scene.md 清空，纠正判据随之消失，归档里的被纠正旧值重新漏回
+     * 提取材料。修法：纠正产生时（记忆格 [com.lovebrain.app.data.KnowledgeMemoryStore.save]
+     * 对 scene 文件级纠正）把当时的条目原文持久进 [PERSISTED_FACTS_PATH]，读取侧把这份
+     * 持久依据经 [persistedFacts] 传入——非空时优先采用（并随重复纠正累积），scene.md
+     * 现算降级为旧数据兜底（本功能上线前保存的纠正没有持久依据）。纠正未生效时持久
+     * 依据同样不算数（撤销即恢复放行，读取侧读到空文件）。
+     *
+     * @param persistedFacts 持久依据（[PERSISTED_FACTS_PATH] 解出的条目原文集合，可能为空）
      */
     fun correctedSceneFactTexts(
         kbName: String,
         sceneContent: String,
-        corrections: Map<String, MemoryCorrection>
+        corrections: Map<String, MemoryCorrection>,
+        persistedFacts: Set<String> = emptySet()
     ): Set<String> {
-        if (sceneContent.isBlank()) return emptySet()
         val ref = MemoryRefPolicy.makeRef(kbName, MemoryKind.SCENE, SCENE_SOURCE_PATH, sceneContent)
         if (!MemoryRefPolicy.isCorrected(ref.id, corrections, StringBuilder())) return emptySet()
+        if (persistedFacts.isNotEmpty()) return persistedFacts
+        if (sceneContent.isBlank()) return emptySet()
         return sceneEntryFactTexts(sceneContent)
     }
 
@@ -198,9 +208,49 @@ object CorrectionExtractionFilter {
         return FilteredArchive(text, removed)
     }
 
+    /**
+     * raw_topic 混合归档（状态段条目行 + 对话段自由行）过滤（ F3.3 扩展）：
+     * 两颗过滤依次过——条目行只有 [filterSceneArchive] 会动它，
+     * 对话行只有 [filterChatArchive] 会动它，互不重叠。
+     *
+     * S3 遗漏 A：从 KnowledgeContextReader 的私有 `topicFiltered` 上收为公开单一真源，
+     * 经验/向量读取侧与画像 reflect 侧共用同一颗，不再各写一遍两段串联。
+     */
+    fun filterTopicArchive(content: String, correctedFactTexts: Set<String>): FilteredArchive {
+        val scenes = filterSceneArchive(content, correctedFactTexts)
+        val chats = filterChatArchive(scenes.text, correctedFactTexts)
+        return FilteredArchive(chats.text, scenes.removed + chats.removed)
+    }
+
     // ── 内部：格式解析（纯函数，不读库、不落盘、不持状态） ──
 
-    private const val SCENE_SOURCE_PATH = "moment/scene.md"
+    /** scene.md 的源路径：文件级纠正 ID 与持久依据的唯一键都钉在这一个文件上 */
+    const val SCENE_SOURCE_PATH = "moment/scene.md"
+
+    /**
+     * 「已被纠正的条目原文」持久依据落点（ S3 遗漏 B）。
+     *
+     * scene 文件级纠正保存时由记忆格（`data/KnowledgeMemoryStore`）在**同一次写事务**里
+     * 写入当时 scene.md 的条目原文（一行一条，[sceneEntryFactTexts] 的输出逐字落盘）；
+     * 撤销 scene 纠正时写空。读取侧经知识库通用读口读这份文件、用 [decodePersistedFacts]
+     * 解出集合，喂给 [correctedSceneFactTexts]——归档后 scene.md 已清空时过滤依据不再消失。
+     */
+    const val PERSISTED_FACTS_PATH = "memory/corrected_scene_facts.txt"
+
+    /** 该 memoryId 是否指向 scene.md 的**文件级**纠正（含旧格式 `:hash` 后缀的历史 ID）。 */
+    fun isSceneFileCorrection(memoryId: String): Boolean {
+        val fileLevel = "${MemoryKind.SCENE.name}:$SCENE_SOURCE_PATH"
+        return memoryId == fileLevel || memoryId.startsWith("$fileLevel:")
+    }
+
+    /** 持久依据编码：一行一条事实（事实来自单行条目行，不含换行，无需转义）。 */
+    fun encodePersistedFacts(facts: Collection<String>): String =
+        facts.joinToString("\n")
+
+    /** 持久依据解码：按行拆、trim、丢空行；空/缺失文件 → 空集（走 scene.md 现算兜底）。 */
+    fun decodePersistedFacts(text: String): Set<String> =
+        if (text.isBlank()) emptySet()
+        else text.split('\n').map { it.trim() }.filter { it.isNotEmpty() }.toSet()
 
     /** 场景条目行：`- [yyyy-MM-dd HH:mm] 其余部分`（与 SceneChainStore / RecentRoundStore 同一格式族） */
     private val entryLineRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})]\\s*(.*)$")

@@ -151,7 +151,14 @@ class PromptBuilderOngoingDirectiveIntentTest {
         assertTrue("军师备注段在场", prompt.contains(IntentIdeaBlock.NOTE_BLOCK_HEADER))
 
         val cooldownJson = port.dump()["kb/moment/ongoing_cooldown.json"].orEmpty()
-        assertTrue("冷却文件应已写入", cooldownJson.contains("周末见面"))
+        // 审计 #19：Prompt 构造是"读取/准备请求"，不再直接写冷却盘——文件保持 seed 原样，
+        // 推进量只暂存为 pending，等 TopicRecorder.record 确认提交后才落盘。
+        assertTrue(
+            "lastInjectedTurn 必须保持 1（Prompt 构造不许推进冷却状态）",
+            cooldownJson.contains("\"lastInjectedTurn\":1")
+        )
+        assertFalse("Prompt 构造不许改写冷却文件（lastInjectedTurn 推进到本轮 3 = 提前写盘）",
+            cooldownJson.contains("\"lastInjectedTurn\":3"))
         assertTrue(
             "lastEvidenceTurn 必须保持 1（备注不是真实消息证据）",
             cooldownJson.contains("\"lastEvidenceTurn\":1")
@@ -160,5 +167,10 @@ class PromptBuilderOngoingDirectiveIntentTest {
             "lastEvidenceTurn 不得被备注推进到本轮（3）",
             cooldownJson.contains("\"lastEvidenceTurn\":3")
         )
+        val pending = com.lovebrain.app.domain.OngoingCooldownStore.peek("kb")
+        assertTrue("本轮推进量要暂存为 pending（提交点消费）", pending != null && pending.injectedNames.contains("周末见面"))
+        assertFalse("备注点名不算真实证据，pending 不得推进 lastEvidenceTurn",
+            pending!!.evidenceNames.contains("周末见面"))
+        com.lovebrain.app.domain.OngoingCooldownStore.clearPendingForTest()
     }
 }

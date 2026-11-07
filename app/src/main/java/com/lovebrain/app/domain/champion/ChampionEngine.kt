@@ -190,6 +190,13 @@ class ChampionEngine(
         messages: List<Triple<String, String, String>>,
         turn: Int = -1
     ): List<ChampionEvent> {
+        // 审计 S1-P0-1（OFF 零副作用门禁）：事件入库也必须过「有效模式+作用域」这道门。
+        // 有效模式 OFF（默认未开启、脏值、scope 未命中、S2/S3 未接线被 mode() 收敛为 OFF）
+        // 时**零 IO**：不读事件库、不分配 uid、不建 champion/events 目录，直接返回空。
+        // 当前唯一放行档位 = 已接线的 SHADOW；未来 S2/S3 真正接线后 mode() 自然放行，
+        // 本门禁无需再改。调用方（LoveBrainViewModel 提交点）有同一道前置检查——这里是
+        // 兜底双保险，保证任何入口都绕不开 OFF 边界。
+        if (effectiveMode(contactId, story) == ChampionMode.OFF) return emptyList()
         val key = "${contactId}__${story}"
         val resolvedTurn = if (turn < 0) eventStore.nextTurn(key) else turn
         return eventStore.append(key, messages, resolvedTurn)

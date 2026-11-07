@@ -168,6 +168,50 @@ class ChampionEngineTest {
         assertEquals(ChampionMode.SHADOW, engine.effectiveMode("x", "y"))
     }
 
+    // ── 提交点模式门禁（审计 S1-P0-1：OFF 零副作用）──
+
+    @Test
+    fun `commitConfirmedTurn is a zero-IO no-op when the effective mode is OFF`() = runTest {
+        // 用户没开 Champion（默认 OFF）：提交点必须一个字节都不写——
+        // 不读事件库、不分配 uid、连 champion/events 目录都不创建
+        val offEngineAndDir = newEngine(FakeSettings(mode = "OFF"))
+        val committed = offEngineAndDir.first.commitConfirmedTurn(
+            "c", "s", listOf(Triple("HER", "周五见？", "2026-11-06 09:59"))
+        )
+        assertTrue("OFF 提交返回空", committed.isEmpty())
+        assertFalse("OFF 时不创建事件库目录", File(offEngineAndDir.second, "events").exists())
+        // 脏值同样落 OFF（fail-closed）
+        val dirty = newEngine(FakeSettings(mode = "nonsense"))
+        assertTrue(
+            dirty.first.commitConfirmedTurn("c", "s", listOf(Triple("HER", "x", "t"))).isEmpty()
+        )
+        assertFalse(File(dirty.second, "events").exists())
+        // S2/S3 未接线被 mode() 收敛为 OFF——同样零 IO
+        val unwired = newEngine(FakeSettings(mode = "SINGLE_STYLE"))
+        assertTrue(
+            unwired.first.commitConfirmedTurn("c", "s", listOf(Triple("ME", "x", "t"))).isEmpty()
+        )
+        assertFalse(File(unwired.second, "events").exists())
+    }
+
+    @Test
+    fun `commitConfirmedTurn respects the scope whitelist`() = runTest {
+        val settings = FakeSettings(mode = "SHADOW", scope = setOf("c1|s1"))
+        val (engine, dir) = newEngine(settings)
+        // scope 未命中 = 有效模式 OFF = 零 IO
+        val missed = engine.commitConfirmedTurn(
+            "c2", "s2", listOf(Triple("HER", "范围外", "t"))
+        )
+        assertTrue("scope 未命中提交返回空", missed.isEmpty())
+        assertFalse("scope 未命中不创建事件库目录", File(dir, "events").exists())
+        // scope 命中才真正入库
+        val hit = engine.commitConfirmedTurn(
+            "c1", "s1", listOf(Triple("HER", "范围内", "t"))
+        )
+        assertEquals(1, hit.size)
+        assertEquals("范围内", hit.single().text)
+    }
+
     // ── shadow 全链路 ──
 
     @Test

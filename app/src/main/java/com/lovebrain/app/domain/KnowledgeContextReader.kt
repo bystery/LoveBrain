@@ -25,6 +25,9 @@ import com.lovebrain.app.util.L
  * 见 [CorrectionExtractionFilter.filterSceneArchive] / [filterChatArchive]。未被纠正时
  * 四份文件逐字放行。
  *
+ *  S3 遗漏 B：对撞基准优先取持久依据（`memory/corrected_scene_facts.txt`，记忆格在
+ * scene 纠正保存/撤销时写/清），归档后 scene.md 清空时依据不再消失；[persistedSceneFacts]。
+ *
  * 端口收窄：本类只读不写，所以只依赖 [KnowledgeReadPort]——拿不到 deleteFile /
  * writeFile 那类它根本不该碰的写能力（与 [OngoingPlanStore] 把读、写两条门分别
  * 注入同一思路：端口只按调用方真正用到的开）。
@@ -41,7 +44,11 @@ class KnowledgeContextReader(
         val sceneRaw = knowledgeRepo.readFile(kbName, "moment/scene.md")
         val sceneChain = correctionFiltered(kbName, MemoryKind.SCENE, "moment/scene.md", sceneRaw, corrections)
         //  F3.3 扩展：生效中的 scene 纠正 → "已被纠正的条目原文"对撞基准（recent / raw_* 的剔除基准）
-        val correctedFacts = CorrectionExtractionFilter.correctedSceneFactTexts(kbName, sceneRaw, corrections)
+        //  S3 遗漏 B：优先用持久依据（纠正产生时落盘的原文，归档后 scene.md 清空依据不再消失），
+        //  scene.md 现算降级为旧数据兜底
+        val correctedFacts = CorrectionExtractionFilter.correctedSceneFactTexts(
+            kbName, sceneRaw, corrections, persistedSceneFacts(kbName)
+        )
         val recent = chatFiltered(knowledgeRepo.readFile(kbName, "moment/recent.md"), correctedFacts)
         val rawChat = chatFiltered(knowledgeRepo.readFile(kbName, "memory/raw_chat.md"), correctedFacts)
         val rawScene = sceneFiltered(knowledgeRepo.readFile(kbName, "memory/raw_scene.md"), correctedFacts)
@@ -81,8 +88,10 @@ class KnowledgeContextReader(
         val topic = knowledgeRepo.getCurrentTopic(kbName)
         val sceneRaw = knowledgeRepo.readFile(kbName, "moment/scene.md")
         val sceneChain = correctionFiltered(kbName, MemoryKind.SCENE, "moment/scene.md", sceneRaw, corrections)
-        //  F3.3 扩展：与 getTopicFullContext 同一份对撞基准
-        val correctedFacts = CorrectionExtractionFilter.correctedSceneFactTexts(kbName, sceneRaw, corrections)
+        //  F3.3 扩展：与 getTopicFullContext 同一份对撞基准（含 S3 遗漏 B 的持久依据）
+        val correctedFacts = CorrectionExtractionFilter.correctedSceneFactTexts(
+            kbName, sceneRaw, corrections, persistedSceneFacts(kbName)
+        )
         val recent = chatFiltered(knowledgeRepo.readFile(kbName, "moment/recent.md"), correctedFacts)
         val rawTopic = topicFiltered(knowledgeRepo.readFile(kbName, "memory/raw_topic.md"), correctedFacts)
         logRemovals("getVectorContext", listOf(
@@ -152,15 +161,25 @@ class KnowledgeContextReader(
      * raw_topic 混合归档（状态段条目行 + 对话段自由行）过滤（ F3.3 扩展）：
      * 两颗过滤依次过——条目行只有 [CorrectionExtractionFilter.filterSceneArchive] 会动它，
      * 对话行只有 [CorrectionExtractionFilter.filterChatArchive] 会动它，互不重叠。
+     * S3 遗漏 A：串联逻辑上收为 [CorrectionExtractionFilter.filterTopicArchive] 单一真源，
+     * 这里只剩薄转发。
      */
     private fun topicFiltered(
         content: String,
         correctedFacts: Set<String>
-    ): CorrectionExtractionFilter.FilteredArchive {
-        val scenes = CorrectionExtractionFilter.filterSceneArchive(content, correctedFacts)
-        val chats = CorrectionExtractionFilter.filterChatArchive(scenes.text, correctedFacts)
-        return CorrectionExtractionFilter.FilteredArchive(chats.text, scenes.removed + chats.removed)
-    }
+    ): CorrectionExtractionFilter.FilteredArchive =
+        CorrectionExtractionFilter.filterTopicArchive(content, correctedFacts)
+
+    /**
+     * 「已被纠正的条目原文」持久依据（ S3 遗漏 B）：scene 文件级纠正保存时由记忆格
+     * 落进 `memory/corrected_scene_facts.txt`，归档后 scene.md 清空时过滤依据仍在这里。
+     * 读不到（旧版本没写过）→ 空集，[CorrectionExtractionFilter.correctedSceneFactTexts]
+     * 自动降级为 scene.md 现算兜底。只读不写——写入职责在记忆格的保存/撤销两格。
+     */
+    private suspend fun persistedSceneFacts(kbName: String): Set<String> =
+        CorrectionExtractionFilter.decodePersistedFacts(
+            knowledgeRepo.readFile(kbName, CorrectionExtractionFilter.PERSISTED_FACTS_PATH)
+        )
 
     /** 剔除量记账（隐私红线：只记路径与条数，不记任何被剔除内容） */
     private fun logRemovals(context: String, perPath: List<Pair<String, Int>>) {

@@ -109,7 +109,7 @@ class OngoingContextSelector(
         if (allItems.isEmpty()) return SelectionResult(emptyList(), emptyList(), emptySet())
 
         // 读取冷却状态
-        val cooldown = readCooldown(kbName)
+        val cooldown = cooldownStore.read(kbName)
 
         // 将冷却信息合并到 items
         // 同时读取 lastInjectedTurn 和 lastEvidenceTurn——两者独立
@@ -201,12 +201,25 @@ class OngoingContextSelector(
             injectedNames.add(item.name)
         }
 
-        // 更新冷却状态
-        // - lastInjectedTurn: 只在事项被注入时更新（injectedNames）
-        // - lastEvidenceTurn: 只在真实消息证据时更新（realEvidenceNames）
-        //   持续意图和 ReplyDirective 不刷新证据时间
+        // 更新冷却状态——审计 #19：这里**不再直接写盘**。
+        // Prompt 构造只是"读取/准备请求"，不是"确认一次真实状态变化"：用户生成失败、
+        // 取消或改写消息时，本轮输入永远不会经 TopicRecorder.record 正式提交，
+        // 冷却与证据状态不许提前推进。本轮的推进量暂存为 pending（同库覆盖——
+        // 新一轮的选择取代上一轮未提交的暂存），由 TopicRecorder.record 提交成功后
+        // 按轮次消息指纹消费落盘（见 [OngoingCooldownStore] 与 TopicRecorder.
+        // commitPendingOngoingCooldown）。
+        // - injectedNames: 只在事项被注入时推进 lastInjectedTurn
+        // - realEvidenceNames: 只在真实消息证据时推进 lastEvidenceTurn（持续意图/备注不算）
         if (injectedNames.isNotEmpty() || realEvidenceNames.isNotEmpty()) {
-            updateCooldown(kbName, injectedNames, realEvidenceNames, context.currentTurn)
+            OngoingCooldownStore.stage(
+                PendingCooldownUpdate(
+                    kbName = kbName,
+                    roundFingerprint = OngoingCooldownStore.roundFingerprint(realMessages),
+                    turn = context.currentTurn,
+                    injectedNames = injectedNames.toSet(),
+                    evidenceNames = realEvidenceNames.toSet()
+                )
+            )
         }
 
         return SelectionResult(eligible, itemsWithStatus, injectedNames)
@@ -348,6 +361,61 @@ class OngoingContextSelector(
 
     // ═══════════ 冷却状态持久化（moment/ongoing_cooldown.json） ═══════════
 
+    private val cooldownStore = OngoingCooldownStore(knowledgeRepo, clock)
+
+    companion object {
+        /** 冷却轮数：如果一个事项在最近 N 轮已注入且无新证据，禁止再注入 */
+        const val COOLDOWN_TURNS = 3
+
+        /** DORMANT 阈值——连续 N 轮无新证据 → DORMANT */
+        const val DORMANT_TURNS = 5
+    }
+}
+
+/**
+ * 一轮待确认的进行中事项冷却推进（审计 #19）。
+ *
+ * [OngoingContextSelector.selectForInjection] 在 Prompt 构造时产出本对象并暂存，
+ * 但**不落盘**；只有 [TopicRecorder.record]（一轮提交的确认事务点）成功提交本轮后，
+ * 才按轮次消息指纹消费并写入 moment/ongoing_cooldown.json。
+ * 生成失败 / 取消 / 改写消息 → 本轮永不提交 → 暂存永不匹配 → 冷却与证据状态不推进。
+ *
+ * @param kbName 知识库（暂存按库一个槽位，新一轮选择覆盖旧暂存）
+ * @param roundFingerprint 提交轮指纹（[OngoingCooldownStore.roundFingerprint]）——
+ *                         改一条消息即失配，陈旧暂存不会被误消费
+ * @param turn 选择时的轮次计数（与旧实现写入值一致：提交时轮次尚未自增）
+ * @param injectedNames 本轮被注入的事项（推进 lastInjectedTurn）
+ * @param evidenceNames 本轮有真实消息证据的事项（推进 lastEvidenceTurn）
+ */
+data class PendingCooldownUpdate(
+    val kbName: String,
+    val roundFingerprint: String,
+    val turn: Int,
+    val injectedNames: Set<String>,
+    val evidenceNames: Set<String>
+)
+
+/**
+ * 进行中事项冷却状态（moment/ongoing_cooldown.json）的唯一读写点。
+ *
+ * 读写语义原样继承自旧 OngoingContextSelector 私有实现（JSON 字段名、20 条上限、
+ * 注入/证据两条独立时间线都不变）；变化只有一处——写不再发生在选择时，
+ * 而是经 [stage] → [TopicRecorder] 确认事务点 → [applyUpdate] 的两段式（审计 #19）。
+ *
+ * 暂存注册表挂在 companion（进程内存）：跨实例共享，TopicRecorder 无需经由 DI
+ * 拿到选择器实例即可消费；进程死亡丢失暂存的方向是"冷却不推进"，不是误推进——fail-safe。
+ */
+class OngoingCooldownStore(
+    private val knowledgeRepo: com.lovebrain.app.domain.port.KnowledgePort,
+    private val clock: com.lovebrain.app.domain.port.Clock = com.lovebrain.app.domain.port.SystemClock
+) {
+
+    /** 冷却状态的读侧视图（只暴露两条独立时间线，不暴露存储格式） */
+    data class CooldownState(
+        val lastInjectedTurn: Int,
+        val lastEvidenceTurn: Int
+    )
+
     @kotlinx.serialization.Serializable
     private data class CooldownEntry(
         val name: String,
@@ -357,58 +425,90 @@ class OngoingContextSelector(
         var lastEvidenceTurn: Int = -1
     )
 
-    private suspend fun readCooldown(kbName: String): Map<String, CooldownEntry> {
+    /** 读取某库的冷却状态（文件缺失/损坏按空处理——fail closed，不注入） */
+    suspend fun read(kbName: String): Map<String, CooldownState> {
         val content = knowledgeRepo.readFile(kbName, "moment/ongoing_cooldown.json")
         if (content.isBlank()) return emptyMap()
         return runCatching {
-            val arr = kotlinx.serialization.json.Json.decodeFromString<
-                List<CooldownEntry>>(content)
-            arr.associateBy { it.name }
+            kotlinx.serialization.json.Json.decodeFromString<List<CooldownEntry>>(content)
+                .associate { it.name to CooldownState(it.lastInjectedTurn, it.lastEvidenceTurn) }
         }.getOrDefault(emptyMap())
     }
 
     /**
-     * 更新冷却状态——同时更新 lastInjectedTurn 和 lastEvidenceTurn。
+     * 把一轮待确认的冷却推进写入盘（由 [TopicRecorder] 在提交成功后调用）。
      *
-     * - lastInjectedTurn: 只在事项被注入时更新（injectedNames 中的事项）
-     * - lastEvidenceTurn: 在事项本轮有真实新证据时更新（evidenceNames 中的事项）
+     * - lastInjectedTurn: 只推进 injectedNames 中的事项
+     * - lastEvidenceTurn: 只推进 evidenceNames 中的事项
      *
      * 两者独立：有证据但未注入 → lastEvidenceTurn 更新但 lastInjectedTurn 不更新；
      * 被注入但无新证据 → lastInjectedTurn 更新但 lastEvidenceTurn 不更新。
      */
-    private suspend fun updateCooldown(
-        kbName: String,
-        injectedNames: Set<String>,
-        evidenceNames: Set<String>,
-        currentTurn: Int
-    ) {
-        val existing = readCooldown(kbName).toMutableMap()
+    suspend fun applyUpdate(pending: PendingCooldownUpdate) {
+        val existing = readEntries(pending.kbName).toMutableMap()
         val now = clock.wallClock()
-        for (name in injectedNames) {
+        for (name in pending.injectedNames) {
             val entry = existing[name] ?: CooldownEntry(name, -1, now, -1)
-            entry.lastInjectedTurn = currentTurn
+            entry.lastInjectedTurn = pending.turn
             entry.lastInjectedTime = now
             existing[name] = entry
         }
-        for (name in evidenceNames) {
+        for (name in pending.evidenceNames) {
             val entry = existing[name] ?: CooldownEntry(name, -1, now, -1)
-            entry.lastEvidenceTurn = currentTurn
+            entry.lastEvidenceTurn = pending.turn
             existing[name] = entry
         }
         // 只保留最近 20 条冷却记录，防膨胀
-        val toKeep = existing.values.sortedByDescending { maxOf(it.lastInjectedTurn, it.lastEvidenceTurn) }.take(20)
+        val toKeep = existing.values
+            .sortedByDescending { maxOf(it.lastInjectedTurn, it.lastEvidenceTurn) }
+            .take(20)
         val json = kotlinx.serialization.json.Json.encodeToString(
             kotlinx.serialization.builtins.ListSerializer(CooldownEntry.serializer()),
             toKeep
         )
-        knowledgeRepo.writeFile(kbName, "moment/ongoing_cooldown.json", json)
+        knowledgeRepo.writeFile(pending.kbName, "moment/ongoing_cooldown.json", json)
+    }
+
+    private suspend fun readEntries(kbName: String): Map<String, CooldownEntry> {
+        val content = knowledgeRepo.readFile(kbName, "moment/ongoing_cooldown.json")
+        if (content.isBlank()) return emptyMap()
+        return runCatching {
+            kotlinx.serialization.json.Json.decodeFromString<List<CooldownEntry>>(content)
+                .associateBy { it.name }
+        }.getOrDefault(emptyMap())
     }
 
     companion object {
-        /** 冷却轮数：如果一个事项在最近 N 轮已注入且无新证据，禁止再注入 */
-        const val COOLDOWN_TURNS = 3
+        /** 进程内暂存注册表：kbName → 最近的待确认推进（同库单槽，新选择覆盖旧暂存） */
+        private val pendingByKb = java.util.concurrent.ConcurrentHashMap<String, PendingCooldownUpdate>()
 
-        /** DORMANT 阈值——连续 N 轮无新证据 → DORMANT */
-        const val DORMANT_TURNS = 5
+        /** Prompt 构造阶段暂存一轮待确认推进（同库覆盖：新一轮选择取代上一轮未提交的暂存） */
+        fun stage(update: PendingCooldownUpdate) {
+            pendingByKb[update.kbName] = update
+        }
+
+        /** 查看暂存（测试与诊断用，不消费） */
+        fun peek(kbName: String): PendingCooldownUpdate? = pendingByKb[kbName]
+
+        /**
+         * 确认事务点消费：仅当提交轮指纹与暂存一致才取出并移除。
+         * 指纹不匹配（用户改写消息/换了轮）→ 返回 null 且暂存原样保留，
+         * 交给下一轮选择覆盖——陈旧推进永不落盘。
+         */
+        fun consumeIfMatch(kbName: String, roundFingerprint: String): PendingCooldownUpdate? {
+            val pending = pendingByKb[kbName] ?: return null
+            if (pending.roundFingerprint != roundFingerprint) return null
+            return if (pendingByKb.remove(kbName, pending)) pending else null
+        }
+
+        /** 测试隔离用：清空暂存注册表 */
+        fun clearPendingForTest() = pendingByKb.clear()
+
+        /**
+         * 提交轮指纹：HER/ME 消息的 id+内容。选择侧与提交侧（TopicRecorder）用同一函数，
+         * 同一轮重试/重生成指纹一致；用户改写任何一条消息即失配。
+         */
+        fun roundFingerprint(conversationalMessages: List<ChatMessage>): String =
+            conversationalMessages.joinToString("|") { "${it.id}:${it.content}" }
     }
 }

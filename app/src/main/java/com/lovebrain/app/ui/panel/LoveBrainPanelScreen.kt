@@ -113,20 +113,23 @@ private object PanelDimens {
 private val OnboardGuideLineHeight = 20.sp
 
 /**
- * 这三条输入路**只有"进入编辑"信号、没有失焦信号**，宿主收不到它们交回焦点。
+ * 这四条输入路**只有"进入编辑"信号、没有失焦信号**，宿主收不到它们交回焦点。
  *
- * 名单里的字面量就是宿主 `PanelInputFocusOwner.activeInputId` 里记着的那三颗——它们各自经
- * `onInputIntent("settings")` / `("intent_editor")` / `("scheme_adjust")` 进 EDITING，
- * 但那条链上只有 `LbFieldInput` 的 `onInputIntent`；这颗组件压根没有上报焦点变化的入口，
+ * 名单里的字面量就是宿主 `PanelInputFocusOwner.activeInputId` 里记着的那四颗——它们各自经
+ * `onInputIntent("settings")` / `("intent_editor")` / `("scheme_adjust")` /
+ * `("batch_import")` 进 EDITING，但那条链上只有"进入编辑"这一跳：
+ * 前三颗走 `LbFieldInput`、批量导入的粘贴框走 [com.lovebrain.app.ui.panel.reply.BatchImportSheet]
+ * 的边沿触发触碰上报——这几颗组件都压根没有上报焦点变化的入口，
  * 所以焦点走了也没人替它报一声（对照 "reply / counseling" 两格：那两格自带 `onFocusChange`，
- * 自己会报）。面板交回焦点时因此要把这三颗逐条点名一次：宿主的 `onInputFocusChanged(id, false)`
+ * 自己会报）。面板交回焦点时因此要把这四颗逐条点名一次：宿主的 `onInputFocusChanged(id, false)`
  * 按 `activeInputId` 认人，不是它记着的那一颗就直接 return ⇒ 多发的是空操作，
  * 不会误关别处的编辑态。
  *
- * ⚠ 这三颗名字**不许**在这里单方面改：它们由各调用点自己传进来，要改得连着那三处一起改。
- * 正解是那三条链把失焦也接上（给 `LbFieldInput` 补一个焦点回调），接上之后这一份名单就该清空。
+ * ⚠ 这四颗名字**不许**在这里单方面改：它们由各调用点自己传进来，要改得连着那几处一起改。
+ * 正解是这几条链把失焦也接上（给 `LbFieldInput` 补一个焦点回调），接上之后这一份名单就该清空。
  */
-private val NON_REPORTING_INPUT_IDS = listOf("settings", "intent_editor", "scheme_adjust")
+private val NON_REPORTING_INPUT_IDS =
+    listOf("settings", "intent_editor", "scheme_adjust", "batch_import")
 
 /**
  * 本屏自己那份 `OnBackPressedDispatcherOwner`，用来让返回键先退掉输入。
@@ -500,7 +503,7 @@ fun LoveBrainPanelScreen(
     //    只把 Compose 焦点交回去不保证键盘自己收（此前这三处就是只"交出"、从不"收键盘"）。
     // 2. `focusManager.clearFocus(force = true)`——交回 Compose 焦点。`force` 才动得了用户
     //    正在打字那一颗**主动**焦点；不带 force 的 clearFocus 只清非主动焦点，等于什么都没交。
-    // 3. 把那三条**只有"进入编辑"信号、没有失焦信号**的路逐条点名给宿主
+    // 3. 把那四条**只有"进入编辑"信号、没有失焦信号**的路逐条点名给宿主
     //    （[NON_REPORTING_INPUT_IDS]）：`PanelInputFocusOwner.onInputFocusChanged` 按
     //    `activeInputId` 认人——不是它记着的那一格就直接 return，所以多发的那几句是空操作，
     //    不会误关别处的编辑态；而真的由这三条路之一进的那一次编辑，这一刻就落回 PASSIVE。
@@ -531,8 +534,8 @@ fun LoveBrainPanelScreen(
         currentHandOffInput()
     }
 
-    // ── 另外三条失焦路径也走同一个交接出口 ─────────────────────────────────
-    // 设置页盖层打开/关闭、意图编辑器关闭这三条路径同样需要交出 Compose 焦点。
+    // ── 另外几条失焦路径也走同一个交接出口 ─────────────────────────────────
+    // 设置页盖层打开/关闭、意图编辑器关闭、批量导入浮层开合这三族路径同样需要交出 Compose 焦点。
     // 旧版只接了 `panelMode` 切页，设置页从主面盖上来（或收回去）时，正在获焦的那根
     // BasicTextField 不会自动失焦——`onFocusChanged(false)` 不触发，
     // `PanelInputFocusOwner.activeInputId` 不清、窗口仍挂 EDITING、IME 不收。
@@ -551,6 +554,19 @@ fun LoveBrainPanelScreen(
         if (!showIntentEditor) {
             currentHandOffInput()
         }
+    }
+
+    // 批量导入浮层开合同样交出焦点。粘贴框那颗（`batch_import`）只有"进入编辑"信号、
+    // 没有失焦信号（见 [NON_REPORTING_INPUT_IDS]）：用户在浮层里点过粘贴框后，
+    // `activeInputId` 记着它、窗口挂在 EDITING——但浮层的全部三条关闭路径
+    // （遮罩/返回请求 `onDismissRequest`、取消键、提交成功 `onSubmit`）最终都汇到
+    // `surface.closeBatchImport()` 这一句，粘贴框的 `onFocusChanged(false)` 永远等不到。
+    // 不接这一句，浮层关了宿主还认为 batch_import 持焦：悬浮窗卡在 EDITING、
+    // 键盘收不起来——设置页/意图编辑器当年是同一个病的同一张方子，这里是第四张。
+    // 与设置页同款：`batchImportOpen` 一翻就清一次——打开时主面被盖在下层、
+    // 不该继续持焦；关闭时浮层里那颗粘贴框跟着退场、也不该留着。
+    LaunchedEffect(surface.batchImportOpen) {
+        currentHandOffInput()
     }
 
     // **返回键 = 先退出输入**。这一环在悬浮窗里不会自动成立（`BackHandler` 在本屏必须自己造

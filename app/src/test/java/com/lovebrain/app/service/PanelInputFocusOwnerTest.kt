@@ -166,6 +166,29 @@ class PanelInputFocusOwnerTest {
     }
 
     @Test
+    fun `批量导入浮层关闭后宿主焦点状态回归 PASSIVE`() {
+        // 审计 06 续：BatchPasteField 触摸 → onInputIntent("batch_import") 进 EDITING，
+        // 但粘贴框没有失焦回报入口；浮层关闭时面板侧的交接出口按 NON_REPORTING_INPUT_IDS
+        // 逐颗点名 onInputFocusChanged(id, false)。这一条 JVM 判据证的就是点名那一下
+        // 真的把 batch_import 的编辑态收掉，而不是只清了记号。
+        val (focus, window) = owner()
+        focus.onInputIntent("batch_import")
+        assertEquals(PanelFocusMode.EDITING, focus.mode)
+        window.log.clear()
+
+        focus.onInputFocusChanged("batch_import", focused = false)
+
+        assertNull("浮层已关，粘贴框必须交回输入所有权", focus.activeInputId)
+        assertEquals("宿主焦点状态必须回归 PASSIVE（键盘才收得起来）",
+            PanelFocusMode.PASSIVE, focus.mode)
+        assertEquals(
+            "退出时窗口 flags 必须落回 PASSIVE 那一份（带 NOT_FOCUSABLE）",
+            "applyFlags:${panelFlagsFor(PanelFocusMode.PASSIVE)}",
+            window.log.single { it.startsWith("applyFlags") }
+        )
+    }
+
+    @Test
     fun `get 焦点时只登记所有权，不擅自进编辑态`() {
         val (focus, window) = owner()
 

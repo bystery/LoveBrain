@@ -1,6 +1,7 @@
 package com.lovebrain.app.domain
 
 import com.lovebrain.app.domain.port.InMemoryKnowledgePort
+import com.lovebrain.app.domain.prompt.CorrectionExtractionFilter
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.MemoryCorrection
 import com.lovebrain.app.model.MuteDuration
@@ -215,5 +216,29 @@ class KnowledgeContextReaderCorrectionTest {
         assertTrue("补正值经场景段传导", context.contains("（已纠正：她在苏州出差）"))
         assertFalse("归档里的旧值副本一并剔除", context.contains("她在杭州出差"))
         assertTrue("相邻事实保留", context.contains("她感冒了"))
+    }
+
+    // ═══ S3 遗漏 B：归档（scene.md 清空）后过滤依据不再消失 ═══
+
+    @Test
+    fun `persisted basis keeps archive filtering after scene md is archived away`() = runBlocking {
+        val (port, reader) = newFullReader(wrongCorrection)
+        // 模拟话题切换归档完成：scene.md 已清空，被纠正原文由记忆格持久在依据文件
+        port.seed(kb, "moment/scene.md", "")
+        port.seed(kb, CorrectionExtractionFilter.PERSISTED_FACTS_PATH, "她在杭州出差\n")
+        val context = reader.getTopicFullContext(kb)
+        assertFalse("归档后旧值不得漏回经验提取材料（S3 遗漏 B）", context.contains("她在杭州出差"))
+        assertTrue("相邻内容保留", context.contains("她感冒了"))
+        val vector = reader.getVectorContext(kb)
+        assertFalse("向量重估同判", vector.contains("她在杭州出差"))
+    }
+
+    @Test
+    fun `no persisted basis and empty scene leaves archives untouched`() = runBlocking {
+        // 旧数据兜底：本功能上线前保存的纠正没有持久依据，scene.md 已清空时宁漏勿误
+        val (port, reader) = newFullReader(wrongCorrection)
+        port.seed(kb, "moment/scene.md", "")
+        val context = reader.getTopicFullContext(kb)
+        assertTrue("没有依据就没有剔除，一字不动", context.contains("她在杭州出差"))
     }
 }

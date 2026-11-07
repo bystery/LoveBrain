@@ -503,7 +503,7 @@ class PromptBuilder(
         //  F3.3（提取链消费 corrections，最小改动点）：画像 reflect 读源材料时与注入侧
         // 同一颗纠正过滤（CorrectionExtractionFilter → MemoryRefPolicy 语义）——
         // 被纠正的画像/经验内容不再按原文回流进画像重写。此处只改"提取 prompt"这一支，
-        // 回复装配主函数未动。raw_topic / 谈心分析无 MemoryRef 纠正身份，原样读取。
+        // 回复装配主函数未动。谈心分析无 MemoryRef 纠正身份，原样读取。
         val corrections = knowledgeRepo.readCorrections(kbName)
         val me = correctionFiltered(kbName, MemoryKind.PROFILE, "understand/me.md",
             readFileCompat(kbName, "understand/me.md"), corrections)
@@ -516,7 +516,20 @@ class PromptBuilder(
             kbName, MemoryKind.LESSON, LessonDoc.LESSONS_PATH,
             LessonDoc.purify(knowledgeRepo.readFile(kbName, LessonDoc.LESSONS_PATH)), corrections
         )
-        val rawTopic = knowledgeRepo.readFile(kbName, "memory/raw_topic.md")
+        //  S3 遗漏 A：raw_topic 之前原样进画像更新 prompt（画像/经验已过滤、归档没过滤）。
+        // 现在与 KnowledgeContextReader 的 R4 读取侧走**同一颗**：scene 生效纠正 →
+        // "已被纠正的条目原文"对撞基准（ S3 遗漏 B 的持久依据优先，scene.md 现算兜底）→
+        // raw_topic 按条目级/行级精确剔除。未纠正时逐字放行，与 R4 行为一致。
+        val sceneRaw = readFileCompat(kbName, CorrectionExtractionFilter.SCENE_SOURCE_PATH)
+        val correctedFacts = CorrectionExtractionFilter.correctedSceneFactTexts(
+            kbName, sceneRaw, corrections,
+            CorrectionExtractionFilter.decodePersistedFacts(
+                readFileCompat(kbName, CorrectionExtractionFilter.PERSISTED_FACTS_PATH)
+            )
+        )
+        val rawTopic = CorrectionExtractionFilter
+            .filterTopicArchive(knowledgeRepo.readFile(kbName, "memory/raw_topic.md"), correctedFacts)
+            .text
         val counselingAnalysis = knowledgeRepo.readCounselingAnalysisBlocks(kbName, 2)
         return PromptReflectSection.build(
             PromptReflectSection.Input(

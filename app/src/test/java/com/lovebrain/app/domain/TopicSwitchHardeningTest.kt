@@ -34,9 +34,10 @@ import java.util.Locale
  *
  *  1. **单判据不再触发**：模型报 topic_status=new 但同标签、scene 链新鲜、无显式标记
  *     → 不归档、不清空 moment/scene.md 与 moment/recent.md（旧实现 TopicRecorder.kt:123 的误清空输入）；
- *  2. **带佐证触发**：任一**非模型源**佐证信号命中（TIME_GAP/USER_MARKER/SCENE_EMPTY）→
- *     旋转照常发生；**R5 佐证独立性**：仅 LABEL_CHANGE（与 status=new 同一次模型输出，
- *     同源共误）不再触发，LABEL_CHANGE+TIME_GAP 才触发；
+ *  2. **带佐证触发**：确定性用户标记（USER_MARKER）在场 → 旋转照常发生；
+ *     **R5 佐证独立性**：仅 LABEL_CHANGE（与 status=new 同一次模型输出，同源共误）不再触发；
+ *     **审计 #09 弱信号规则**：TIME_GAP（旧证据久）/ SCENE_EMPTY 单独命中也不再触发，
+ *     需第二个非模型信号；scene 空但 recent 层仍有当前话题内容时不算"无可丢记忆"；
  *  3. **归档完整性**：确认切换后，被清的 scene/recent/raw_chat/raw_scene 内容
  *     在清空前已完整落入 memory/raw_topic.md（生产 rotate 的"先追加归档、后清四个源文件"顺序）。
  */
@@ -82,6 +83,7 @@ class TopicSwitchHardeningTest {
         sceneOffsetMin: Long = 10,
         topic: String = "午饭",
         sceneFact: String = "她在吃沙拉",
+        sceneContent: String? = null,
         rawChat: String = "- [2026-09-24 07:00] 我：第一轮对话存档",
         rawScene: String = "- [2026-09-24 06:00] 旧话题：旧事实存档|src=old-0",
         recent: String = "- [2026-09-24 08:30]\n<!-- round:msgIds:old-0 -->\n她：上次说起的安排\n"
@@ -96,7 +98,7 @@ class TopicSwitchHardeningTest {
         )
         dir.sub("moment").mkdirs()
         dir.sub("memory").mkdirs()
-        dir.sub("moment/scene.md").writeText("- [${sceneTime(sceneOffsetMin)}] $topic：$sceneFact|src=m1\n")
+        dir.sub("moment/scene.md").writeText(sceneContent ?: "- [${sceneTime(sceneOffsetMin)}] $topic：$sceneFact|src=m1\n")
         dir.sub("moment/topic.md").writeText("- [${sceneTime(10)}] 正在聊：$topic")
         dir.sub("moment/recent.md").writeText(recent)
         dir.sub("moment/plan.md").writeText("# 事项计划\n\n## 进行中\n\n## 已结束\n")
@@ -153,8 +155,10 @@ class TopicSwitchHardeningTest {
     }
 
     @Test
-    fun `label change plus stale scene triggers rotation`() = runBlocking {
-        setupKb(sceneOffsetMin = 90)  // TIME_GAP（非模型源）+ LABEL_CHANGE 共同佐证
+    fun `label change plus stale scene no longer triggers rotation`() = runBlocking {
+        // 审计 #09 弱信号规则：TIME_GAP 是弱信号——LABEL_CHANGE（与 status=new 同一次模型
+        // 输出，同源共误）不算第二个非模型信号，两者共同在场也不许定案。
+        setupKb(sceneOffsetMin = 90)
         val rotated = recorder().record(
             kb = KnowledgeBase(name = "kb", displayName = "kb"),
             messages = messages("跟你说个事" to ChatMessage.Role.HER),
@@ -162,14 +166,33 @@ class TopicSwitchHardeningTest {
             topicStatus = "new",
             topicLabel = "雅思考试"
         )
-        assertTrue("非模型源信号在场时标签变化照常佐证，切换照常旋转", rotated)
+        assertFalse("弱信号 + 模型源信号不许触发话题旋转", rotated)
+        assertTrue("场景记忆必须原样保留", read("moment/scene.md").contains("她在吃沙拉"))
+        assertTrue("最近对话必须原样保留", read("moment/recent.md").contains("上次说起的安排"))
+        assertTrue("不许产生归档条目", read("memory/raw_topic.md").isBlank())
+        assertTrue("当前话题标签保持现状", read("moment/topic.md").contains("正在聊：午饭"))
+    }
+
+    @Test
+    fun `stale scene plus explicit user marker triggers rotation`() = runBlocking {
+        // 审计 #09：TIME_GAP（弱）+ USER_MARKER（确定性用户表述，可单独定案）→ 切换确认
+        setupKb(sceneOffsetMin = 90)
+        val rotated = recorder().record(
+            kb = KnowledgeBase(name = "kb", displayName = "kb"),
+            messages = messages("好了，不聊这个了，跟你说个新安排" to ChatMessage.Role.HER),
+            scheme = null,
+            topicStatus = "new",
+            topicLabel = "雅思考试"
+        )
+        assertTrue("弱信号 + 用户显式标记要照常旋转", rotated)
         assertTrue("归档条目要出现", read("memory/raw_topic.md").contains("## ["))
         assertTrue("话题标签要更新", read("moment/topic.md").contains("雅思考试"))
     }
 
     @Test
-    fun `stale scene corroborates a same-label switch`() = runBlocking {
-        setupKb(sceneOffsetMin = 90)  // scene 最新证据 90 分钟前 > 60 分钟阈值 → TIME_GAP
+    fun `stale scene alone no longer rotates a same-label switch`() = runBlocking {
+        // 审计 #09：旧场景证据久不代表本轮真换了话题——TIME_GAP 单独命中保持现状
+        setupKb(sceneOffsetMin = 90)  // scene 最新证据 90 分钟前 > 60 分钟阈值 → TIME_GAP（弱）
         val rotated = recorder().record(
             kb = KnowledgeBase(name = "kb", displayName = "kb"),
             messages = messages("在吗" to ChatMessage.Role.HER),
@@ -177,8 +200,27 @@ class TopicSwitchHardeningTest {
             topicStatus = "new",
             topicLabel = "午饭"
         )
-        assertTrue("时间间隔佐证的切换要照常旋转", rotated)
-        assertTrue("切换后此刻场景链要清空（本轮未提供新场景事实）", read("moment/scene.md").isBlank())
+        assertFalse("TIME_GAP 单独命中不许旋转", rotated)
+        assertTrue("场景记忆必须原样保留", read("moment/scene.md").contains("她在吃沙拉"))
+        assertTrue("最近对话必须原样保留", read("moment/recent.md").contains("上次说起的安排"))
+    }
+
+    @Test
+    fun `empty scene with recent content does not confirm model-reported new`() = runBlocking {
+        // 审计 #09 核心回归：旧场景链空 + 最近对话仍是原话题 + 模型误报 new → 不旋转。
+        // recent.md 仍有当前话题内容，旋转会把 recent 一并归档清空——不许当"无可丢记忆"。
+        setupKb(sceneContent = "   \n")
+        val rotated = recorder().record(
+            kb = KnowledgeBase(name = "kb", displayName = "kb"),
+            messages = messages("跟你说个事" to ChatMessage.Role.HER),
+            scheme = null,
+            topicStatus = "new",
+            topicLabel = "午饭"
+        )
+        assertFalse("scene 空 + recent 有内容 + 无用户标记不许旋转", rotated)
+        assertTrue("最近对话必须原样保留", read("moment/recent.md").contains("上次说起的安排"))
+        assertTrue("不许产生归档条目", read("memory/raw_topic.md").isBlank())
+        assertTrue("当前话题标签保持现状", read("moment/topic.md").contains("正在聊：午饭"))
     }
 
     @Test
@@ -199,10 +241,10 @@ class TopicSwitchHardeningTest {
 
     @Test
     fun `confirmed rotation archives scene recent raw_chat raw_scene before clearing`() = runBlocking {
-        setupKb(sceneOffsetMin = 90)  // TIME_GAP + LABEL_CHANGE：非模型源信号在场才允许切换确认
+        setupKb(sceneOffsetMin = 90)  // TIME_GAP（弱）+ USER_MARKER：确定性用户标记定案才允许切换确认
         val rotated = recorder().record(
             kb = KnowledgeBase(name = "kb", displayName = "kb"),
-            messages = messages("跟你说个事" to ChatMessage.Role.HER),
+            messages = messages("好了，不聊这个了，跟你说个事" to ChatMessage.Role.HER),
             scheme = null,
             topicStatus = "new",
             topicLabel = "雅思考试"

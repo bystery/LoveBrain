@@ -79,6 +79,9 @@ class TopicRecorder(
     // knowledgeRepo 这本仓库同时 implements 读口与写口，同一实例、同一条写链，只是视角收窄。
     private val planStore = OngoingPlanStore(knowledgeRepo, knowledgeRepo)
     private val contextReader = KnowledgeContextReader(knowledgeRepo)
+    // 审计 #19：进行中事项冷却的唯一落盘点——与选择侧共用同一个 store 类
+    // （暂存注册表在 companion 层，这里只负责在确认事务点 apply）。
+    private val ongoingCooldownStore = OngoingCooldownStore(knowledgeRepo, clock)
 
     /**
      * 记录一轮对话 + 处理话题状态 + 更新场景链 + 合并进行中事项。
@@ -134,6 +137,9 @@ class TopicRecorder(
                 topicLabel = topicLabel,
                 currentTopic = curTopic,
                 sceneContent = knowledgeRepo.readFile(kb.name, "moment/scene.md"),
+                // 审计 #09：门必须知道 recent 层是否仍有内容——scene 空但 recent 有当前话题内容
+                // 时不算"无可丢记忆"（旋转会把 recent 一并归档清空）。
+                recentContent = knowledgeRepo.readFile(kb.name, "moment/recent.md"),
                 messageContents = conversationalMessages.map { it.content },
                 latestMessageTimeMs = conversationalMessages.maxOfOrNull { it.timestamp } ?: 0L,
                 nowMs = clock.epochMs()
@@ -190,10 +196,39 @@ class TopicRecorder(
         )
 
         return when (val outcome = journal.commit(kb.name, event) { e -> applyRound(e) }) {
-            is RoundCommitJournal.CommitOutcome.Committed -> outcome.value
-            // 另一个协程在本协程排队等锁时把这一轮提交了：本轮没有新话题切换
-            RoundCommitJournal.CommitOutcome.AlreadyCommitted -> false
+            is RoundCommitJournal.CommitOutcome.Committed -> {
+                commitPendingOngoingCooldown(kb.name, conversationalMessages)
+                outcome.value
+            }
+            // 另一个协程在本协程排队等锁时把这一轮提交了：本轮没有新话题切换。
+            // 冷却暂存同样要消费掉——同一轮的 pending 不许漏到下一轮。
+            RoundCommitJournal.CommitOutcome.AlreadyCommitted -> {
+                commitPendingOngoingCooldown(kb.name, conversationalMessages)
+                false
+            }
         }
+    }
+
+    /**
+     * 审计 #19（读取/准备请求 ≠ 确认一次真实状态变化）：把 Prompt 准备阶段
+     * [OngoingContextSelector.selectForInjection] 暂存的冷却更新在本确认事务点落盘。
+     *
+     * 只消费与本轮 HER/ME 消息指纹匹配的暂存——用户改写消息、换轮或生成失败后的
+     * 陈旧暂存指纹不匹配，冷却与证据状态**不推进**。指纹两侧用同一个
+     * [OngoingCooldownStore.roundFingerprint]，选择侧传冻结快照、这里传提交消息，
+     * 同一轮必然一致。该函数在 journal 提交成功之后调用；冷却写失败只记日志，
+     * 不把已提交的轮次拖成失败（冷却只是防重复注入的辅助状态）。
+     */
+    private suspend fun commitPendingOngoingCooldown(
+        kbName: String,
+        conversationalMessages: List<ChatMessage>
+    ) {
+        val pending = OngoingCooldownStore.consumeIfMatch(
+            kbName,
+            OngoingCooldownStore.roundFingerprint(conversationalMessages)
+        ) ?: return
+        runCatching { ongoingCooldownStore.applyUpdate(pending) }
+            .onFailure { L.w("ongoing cooldown commit failed (round already committed, cooldown 未推进): ${it.message}") }
     }
 
     /**

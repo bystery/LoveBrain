@@ -1502,7 +1502,15 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 // commitReplyRound 之前）；生成/shadow 路径不写事件库——用户删掉重来的未确认
                 // 输入永不进事件库，同一输入多次生成只在本提交点记一次（role|text|ts 去重）。
                 // 提交失败只记日志：冠军事件是辅助账，绝不把本轮产品落盘拖成「保存失败」。
-                if (championEngine != null) {
+                // 审计 S1-P0-1（OFF 零副作用）：提交点统一检查 Champion 有效模式+作用域——
+                // 只有有效模式非 OFF（当前接线=SHADOW；S2/S3 未接线被 mode() 收敛为 OFF）
+                // 才允许写事件库；OFF（默认档）零副作用，连事件库目录都不创建。
+                // commitConfirmedTurn 内部还有同一道门禁兜底（双保险）；这里提前判，
+                // 是为了 OFF 时连消息格式化都不做。
+                if (championEngine != null &&
+                    championEngine.effectiveMode(kbName, kbName) !=
+                        com.lovebrain.app.domain.champion.ChampionMode.OFF
+                ) {
                     val championMsgs = messagesSnapshot
                         .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
                         .map { m ->

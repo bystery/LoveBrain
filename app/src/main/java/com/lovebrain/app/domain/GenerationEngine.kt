@@ -329,7 +329,13 @@ class GenerationEngine(
             // 只写 shadow_log（含两侧输出与装配差异），不 emit 任何事件、不触发记忆写入。
             // 审计 R2-1：真实消息入库不在这里——挂在 LoveBrainViewModel.nextRound 的
             // commitConfirmedTurn（产品正式提交点），生成路径对未确认输入零持久痕迹。
-            if (championMode == com.lovebrain.app.domain.champion.ChampionMode.SHADOW) {
+            // 审计 S1-P0-2（SHADOW 绕过"仅看本轮"）：用户明确选了「仅看本轮」时，正式
+            // 回复不带旧上下文，影子请求也绝不带——这是一次真实模型请求，不能绕过用户
+            // 的上下文选择。最小安全方案：本轮**完全跳过** SHADOW 额外请求，不留
+            // "无历史影子"的半套路径（下一轮开关关掉后影子照常恢复）。
+            if (championMode == com.lovebrain.app.domain.champion.ChampionMode.SHADOW &&
+                !input.onlyThisRound
+            ) {
                 // 审计 R2-3（种子核查）：W1 偏离——种子没传。规格书 §2.5/§125 指定
                 // initial_kb 来源 = KB 画像快照（understand/*.md）。产品侧数据经
                 // KnowledgeRepository.readProfile 冻结进 KbContext.profile（本轮生成

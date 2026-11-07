@@ -191,4 +191,124 @@ class KnowledgeMemoryStoreTest {
         assertEquals(11, revision)
         assertTrue("快照里每条都要带自己的 revision", records.values.all { it.revision == 11 })
     }
+
+    // ════════════ S3 遗漏 B：scene 纠正把"被纠正条目原文"一并持久化 ════════════
+
+    private val sceneWithFacts = "- [2026-11-05 20:00] 出差：她在杭州出差|src=m1|spk=HER；住西湖酒店\n"
+
+    @Test
+    fun `scene file correction persists the corrected fact texts in the same transaction`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 2, ids = listOf("a"))
+        files["kb/moment/scene.md"] = sceneWithFacts
+        val s = store(files)
+
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+
+        assertEquals(
+            "被纠正条目原文随纠正一并持久（归档后 scene.md 清空依据不再消失）",
+            "她在杭州出差\n住西湖酒店",
+            files["kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"]
+        )
+        assertEquals(
+            "顺序：纠正记录 → 持久依据 → revision，同一事务",
+            listOf(
+                KnowledgeMemoryStore.CORRECTIONS_FILE,
+                KnowledgeMemoryStore.PERSISTED_FACTS_FILE,
+                KnowledgeMemoryStore.MEMORY_REVISION_FILE
+            ),
+            writeLog.takeLast(3)
+        )
+        assertEquals("一批 = 一次写事务", 1, transactions.size)
+        assertEquals(3, s.revisionOf("kb"))
+    }
+
+    @Test
+    fun `legacy hash scene id also persists the fact texts`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        files["kb/moment/scene.md"] = sceneWithFacts
+        val s = store(files)
+
+        assertTrue(s.save("kb", "SCENE:moment/scene.md:old123", CorrectionAction.WRONG))
+
+        assertTrue(
+            "旧格式 `:hash` 的 scene ID 同样要落持久依据",
+            files.getValue("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}").contains("她在杭州出差")
+        )
+    }
+
+    @Test
+    fun `non scene correction never touches the persisted facts file`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 1, ids = listOf("a"))
+        files["kb/moment/scene.md"] = sceneWithFacts
+        val s = store(files)
+
+        assertTrue(s.save("kb", "PROFILE:understand/her.md", CorrectionAction.WRONG))
+
+        assertFalse("非 scene 纠正不得写依据文件", files.containsKey("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"))
+        assertEquals(
+            "顺序与旧实现一致：只有纠正记录与 revision",
+            listOf(KnowledgeMemoryStore.CORRECTIONS_FILE, KnowledgeMemoryStore.MEMORY_REVISION_FILE),
+            writeLog.takeLast(2)
+        )
+    }
+
+    @Test
+    fun `scene correction with an empty scene writes no basis file`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        val s = store(files)
+
+        assertTrue("scene.md 为空、无旧依据 → 没有可持久的内容，但纠正本身照常落盘",
+            s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+        assertFalse(files.containsKey("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"))
+        assertEquals(1, s.revisionOf("kb"))
+    }
+
+    @Test
+    fun `re saving the scene correction accumulates archived facts instead of overwriting`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        files["kb/moment/scene.md"] = "- [2026-11-04 09:00] 旧话题：她在杭州出差\n"
+        val s = store(files)
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+
+        // 话题切换归档（旧事实已进 raw_topic），scene.md 换了新话题，用户再次纠正
+        files["kb/moment/scene.md"] = "- [2026-11-06 09:00] 新话题：她感冒了\n"
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.MUTED, muteDuration = MuteDuration.TODAY))
+
+        val persisted = files.getValue("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}")
+        assertTrue("旧话题里被纠正的原文不因覆盖漏回", persisted.contains("她在杭州出差"))
+        assertTrue("新话题的被纠正原文一并累积", persisted.contains("她感冒了"))
+    }
+
+    @Test
+    fun `undoing the scene correction clears the persisted basis`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        files["kb/moment/scene.md"] = sceneWithFacts
+        val s = store(files)
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+        assertTrue(files.containsKey("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"))
+
+        assertTrue(s.undo("kb", "SCENE:moment/scene.md"))
+
+        assertEquals("撤销 = 恢复可信注入，持久依据随之清空", "", files["kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"])
+    }
+
+    @Test
+    fun `undoing a non scene correction leaves the persisted basis alone`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        files["kb/moment/scene.md"] = sceneWithFacts
+        val s = store(files)
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+        assertTrue(s.save("kb", "PROFILE:understand/her.md", CorrectionAction.WRONG))
+
+        assertTrue(s.undo("kb", "PROFILE:understand/her.md"))
+
+        assertTrue("撤销别的纠正不得清空 scene 依据", files.containsKey("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"))
+    }
 }

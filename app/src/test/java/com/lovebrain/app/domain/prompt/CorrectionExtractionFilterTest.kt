@@ -244,4 +244,82 @@ class CorrectionExtractionFilterTest {
         assertTrue("分节标题保留", out.text.contains("## [2026-11-06 10:00] 状态变化") &&
             out.text.contains("### [2026-11-06 10:00] 对话记录"))
     }
+
+    @Test
+    fun `topic archive combined filter is the single source of the scene then chat chain`() {
+        //  S3 遗漏 A：R4 读取侧与 reflect 侧共用这一颗，不许再各写一遍两段串联
+        val corrected = setOf("她在杭州出差")
+        val rawTopic = "# [2026-11-06 10:00] 出差安排\n\n" +
+            "## [2026-11-06 10:00] 状态变化\n" +
+            "- [2026-11-05 09:00] 出差：她在杭州出差；住西湖酒店\n\n" +
+            "### [2026-11-06 10:00] 对话记录\n" +
+            "她：她在杭州出差\n" +
+            "她：今天见客户\n"
+        val out = CorrectionExtractionFilter.filterTopicArchive(rawTopic, corrected)
+        val scenes = CorrectionExtractionFilter.filterSceneArchive(rawTopic, corrected)
+        val manual = CorrectionExtractionFilter.filterChatArchive(scenes.text, corrected)
+        assertEquals("与手动串联逐字一致", manual.text, out.text)
+        assertEquals("剔除量 = 条目级 + 行级两段之和", scenes.removed + manual.removed, out.removed)
+        assertEquals(2, out.removed)
+        // 空基准 / 空内容直通
+        assertEquals(rawTopic, CorrectionExtractionFilter.filterTopicArchive(rawTopic, emptySet()).text)
+        assertEquals(0, CorrectionExtractionFilter.filterTopicArchive("", corrected).removed)
+    }
+
+    // ════════ S3 遗漏 B：持久依据（归档后过滤依据不再消失） ════════
+
+    private val activeSceneWrong = mapOf("SCENE:moment/scene.md" to correction(
+        "SCENE:moment/scene.md", CorrectionAction.WRONG))
+
+    @Test
+    fun `persisted basis survives scene md being archived away`() {
+        // 话题切换归档：scene.md 已清空。旧实现此处返回空集（依据消失）——S3 遗漏 B
+        val facts = CorrectionExtractionFilter.correctedSceneFactTexts(
+            kb, "", activeSceneWrong, setOf("她在杭州出差", "住西湖酒店"))
+        assertEquals("归档清空后持久依据仍给出对撞基准", setOf("她在杭州出差", "住西湖酒店"), facts)
+    }
+
+    @Test
+    fun `persisted basis is ignored when no correction is active`() {
+        assertTrue("未纠正 → 持久依据也不算数（撤销即恢复放行）", CorrectionExtractionFilter
+            .correctedSceneFactTexts(kb, sceneChain, emptyMap(), setOf("她在杭州出差")).isEmpty())
+        val expired = correction("SCENE:moment/scene.md", CorrectionAction.MUTED,
+            muteDuration = MuteDuration.TODAY, muteTimestamp = OffsetDateTime.now().minusDays(1).toString())
+        assertTrue("MUTED 过期恢复 → 同判", CorrectionExtractionFilter
+            .correctedSceneFactTexts(kb, sceneChain, mapOf("SCENE:moment/scene.md" to expired),
+                setOf("她在杭州出差")).isEmpty())
+    }
+
+    @Test
+    fun `non empty persisted basis takes precedence over scene md recomputation`() {
+        // 持久依据是**累积超集**：重复纠正同一文件时，旧话题里被纠正的原文不因覆盖漏回
+        assertEquals(setOf("旧话题里被纠正的旧事实"), CorrectionExtractionFilter
+            .correctedSceneFactTexts(kb, sceneChain, activeSceneWrong, setOf("旧话题里被纠正的旧事实")))
+    }
+
+    @Test
+    fun `empty persisted basis falls back to scene md recomputation`() {
+        assertEquals("旧数据兜底：无持久依据时按 scene.md 现算（R4 原行为）",
+            setOf("她在杭州出差", "住滨江酒店"),
+            CorrectionExtractionFilter.correctedSceneFactTexts(kb, sceneChain, activeSceneWrong, emptySet()))
+    }
+
+    @Test
+    fun `scene file correction id covers stable and legacy hash forms only`() {
+        assertTrue(CorrectionExtractionFilter.isSceneFileCorrection("SCENE:moment/scene.md"))
+        assertTrue("旧格式 `:hash` 后缀也要认", CorrectionExtractionFilter.isSceneFileCorrection("SCENE:moment/scene.md:abc123"))
+        assertFalse("别的 kind 不是 scene 纠正", CorrectionExtractionFilter.isSceneFileCorrection("PROFILE:understand/her.md"))
+        assertFalse("路径不同也不算", CorrectionExtractionFilter.isSceneFileCorrection("SCENE:moment/scene2.md"))
+        assertFalse("ONGOING 条目级不算", CorrectionExtractionFilter.isSceneFileCorrection("ONGOING:moment/plan.md:看电影"))
+        assertFalse(CorrectionExtractionFilter.isSceneFileCorrection(""))
+    }
+
+    @Test
+    fun `persisted facts encode and decode round trip`() {
+        val facts = setOf("她在杭州出差", "住西湖酒店")
+        assertEquals(facts, CorrectionExtractionFilter.decodePersistedFacts(
+            CorrectionExtractionFilter.encodePersistedFacts(facts)))
+        assertTrue("空/缺失文件解成空集（走现算兜底）", CorrectionExtractionFilter.decodePersistedFacts("").isEmpty())
+        assertTrue(CorrectionExtractionFilter.decodePersistedFacts("  \n ").isEmpty())
+    }
 }
