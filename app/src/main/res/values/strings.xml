@@ -373,4 +373,18 @@
     <string name="intent_enable_switch_label">启用持续意图</string>
     <string name="intent_too_long_error">意图过长，请精简到 %1$d 字以内</string>
     <string name="intent_save">保存</string>
+
+    <!-- 批量导入聊天记录（Issue #7：长按 ➕ → 粘贴 → 解析预览 → 指定发言人 → 一次导入） -->
+    <string name="batch_import_title">批量导入聊天记录</string>
+    <string name="batch_import_paste_hint">粘贴微信多选/合并转发复制的聊天文本，解析后逐条确认发言人再导入。</string>
+    <string name="batch_import_paste_placeholder">在此粘贴多行聊天记录…</string>
+    <string name="batch_import_parse">解析预览</string>
+    <string name="batch_import_reparse">重新解析</string>
+    <string name="batch_import_pick_speaker">请为每一条指定「她 / 我」；未指定的条目不会导入。</string>
+    <string name="batch_import_unknown_speaker">发言人未识别</string>
+    <string name="batch_import_empty_result">没有解析出任何消息，请检查粘贴的内容。</string>
+    <string name="batch_import_submit">导入 %1$d 条</string>
+    <string name="batch_import_cancel">取消</string>
+    <string name="a11y_batch_import_row_remove">移除这一条</string>
+    <string name="a11y_batch_import">批量导入聊天记录（长按）</string>
 </resources>

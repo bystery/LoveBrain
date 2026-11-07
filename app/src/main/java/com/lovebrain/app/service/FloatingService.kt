@@ -15,6 +15,7 @@ import android.os.PersistableBundle
 import android.os.SystemClock
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.lifecycle.Lifecycle
@@ -544,6 +545,12 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     @Composable
     private fun PanelContent() {
         val overlayToolbar = rememberOverlayTextToolbar()
+        // H2 配套：把"菜单开没开"告诉窗口层——ACTION_OUTSIDE 判定在菜单/选区手柄
+        // （都是面板 token 的子窗口）显示期间不得释放输入，探针是那一判定的唯一事实源。
+        DisposableEffect(overlayToolbar) {
+            panel.registerTextToolbarShowingProbe { overlayToolbar.isShowing }
+            onDispose { panel.registerTextToolbarShowingProbe(null) }
+        }
         OverlayTextToolbarHost(toolbar = overlayToolbar) {
             LoveBrainPanelScreen(
                 viewModel = viewModel,

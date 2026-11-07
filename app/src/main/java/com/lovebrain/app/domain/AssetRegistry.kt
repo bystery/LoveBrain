@@ -15,6 +15,14 @@ object AssetRegistry {
     const val NATURALNESS = "engine/system_prompt/naturalness_check.md"
     const val AGGRESSIVE = "engine/system_prompt/aggressive.md"
     const val FORMAT = "engine/system_prompt/format.md"
+    // ═══ 冠军引擎资产（T4 Kotlin 移植 W1：arena 双冠军机制移植；不动上面 CORE 四件）═══
+    // v3_system_slim 系精简资产 + champion/ 目录命名空间，由
+    // domain/champion/ChampionPromptAssembler.ChampionAssets 消费。
+    const val CHAMPION_CORE_SLIM = "engine/champion/core_slim.md"
+    const val CHAMPION_NATURALNESS = "engine/champion/naturalness_check.md"
+    const val CHAMPION_REDLINE = "engine/champion/redline.md"
+    const val CHAMPION_FORMAT = "engine/champion/format.md"
+
     // ═══ 引擎附加段 ═══
     const val COUNSELING = "engine/counseling.md"
     const val POLISH = "engine/polish.md"
@@ -40,6 +48,7 @@ object AssetRegistry {
     val ALL: List<String> = listOf(
         CORE, STAGE, REDLINE, NATURALNESS, AGGRESSIVE, FORMAT,
         COUNSELING, POLISH, PROACTIVE,
-        LESSONS, ONBOARDING, REFLECT, VECTOR, ENGINE_README
+        LESSONS, ONBOARDING, REFLECT, VECTOR, ENGINE_README,
+        CHAMPION_CORE_SLIM, CHAMPION_NATURALNESS, CHAMPION_REDLINE, CHAMPION_FORMAT
     ) + SCHEMA_NAMES.map { schema(it) }
 }

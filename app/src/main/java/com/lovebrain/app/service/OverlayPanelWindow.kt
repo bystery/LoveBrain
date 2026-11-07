@@ -111,6 +111,20 @@ internal class OverlayPanelWindow(
     /** 焦点与输入框所有权的唯一持有者；本类只当它的那扇真窗口 */
     private val focus = PanelInputFocusOwner(this)
 
+    /**
+     * Overlay 文字工具栏"正在显示"探针（组合侧经 [registerTextToolbarShowingProbe] 注册）。
+     * null = 未注册（按不显示处理）。为什么需要它见 [ensureCreated] 里 ACTION_OUTSIDE 那条注释。
+     */
+    @Volatile
+    private var textToolbarShowingProbe: (() -> Boolean)? = null
+
+    /** 组合侧注册/注销工具栏显示探针（FloatingService 的 PanelContent 持有 toolbar 实例） */
+    fun registerTextToolbarShowingProbe(probe: (() -> Boolean)?) {
+        textToolbarShowingProbe = probe
+    }
+
+    private fun isTextToolbarShowing(): Boolean = textToolbarShowingProbe?.invoke() ?: false
+
     /** 面板是否处于展示中（窗口状态机由 Service 驱动，这里只记事实） */
     var isShowing = false
         private set
@@ -159,9 +173,16 @@ internal class OverlayPanelWindow(
             // ACTION_OUTSIDE 外点监听：用户点击 Panel 窗口外 →
             // 不关 Panel（用户需边看回复边操作宿主 App），只退出编辑态：
             // 清 Compose 焦点 → 隐藏 IME → Window 恢复 NOT_FOCUSABLE
+            //
+            // H2 例外：自绘文字菜单与选区手柄（OverlayTextToolbar / 选区 Popup）都挂在
+            // **本窗口 token 的子窗口**里，位置常在面板 frame 之外（菜单固定抬高 44dp、
+            // 手柄贴输入框两端）。手指落在这些子窗口上，对本窗口就是 ACTION_OUTSIDE——
+            // 此刻 releaseInput 会当场拆掉选区和菜单（"菜单闪一下消失 / 手柄拖不动 /
+            // 点复制没反应"那一族）。菜单显示期间不释放；菜单收起（面板内新按压 /
+            // 返回键 / 菜单项）后恢复原判定。
             setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_OUTSIDE) {
-                    if (focus.mode == PanelFocusMode.EDITING) {
+                    if (focus.mode == PanelFocusMode.EDITING && !isTextToolbarShowing()) {
                         releaseInput("outside_touch")
                     }
                     true
@@ -278,10 +299,15 @@ internal class OverlayPanelWindow(
     /**
      * 立即隐藏（临时隐藏用）：只改可见性，不留拦截层、不跑淡出。
      * 同样只复位动画那一格；底色透明度不归这一格管。
+     *
+     * H5：临时隐藏**必须**先释放输入（与 [fadeOut] 同一道兜底）。菜单 Popup 是独立子窗口，
+     * `visibility = GONE` 收不掉它——不释放输入的话，长按菜单开着时临时隐藏会留一枚
+     * 孤儿菜单悬浮在宿主 App 上（也把 EDITING 状态泄漏到下一次打开）。
      */
     fun hideInstantly() {
         if (!isShowing) return
         isShowing = false
+        focus.releaseInput("hide_instant")
         composeView?.let { cv ->
             panelExitAnim?.cancel()
             cv.visibility = View.GONE

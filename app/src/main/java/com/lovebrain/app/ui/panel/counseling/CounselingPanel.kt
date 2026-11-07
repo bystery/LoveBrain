@@ -9,6 +9,8 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
@@ -85,15 +87,12 @@ fun CounselingPanel(
                 .background(SurfaceCard)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
                 // 编辑意图：用户触碰输入框区域 → 通知 FloatingService 进入 EDITING
-                // 使用 pointerInput 检测 Press 事件但不消费，让 BasicTextField 仍能收到点击获焦
+                // 边沿触发（H4，同 ReplyInput）：只在每次手势按下那一跳上报一次，
+                // 避免窗口 flags 随每个 pressed 事件反复 updateViewLayout 抖断长按手势。
                 .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
-                    awaitPointerEventScope {
-                        while (true) {
-                            val event = awaitPointerEvent()
-                            if (event.changes.any { it.pressed }) {
-                                onInputIntent()
-                            }
-                        }
+                    awaitEachGesture {
+                        awaitFirstDown(requireUnconsumed = false)
+                        onInputIntent()
                     }
                 } else Modifier)
                 .padding(horizontal = Spacing.lg)
@@ -347,15 +346,11 @@ fun CounselingPanel(
                                         .background(SurfaceInset)
                                         .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
                                         // 编辑意图：追问输入框同样需要进入 EDITING
-                                        // 使用 pointerInput 检测 Press 事件但不消费
+                                        // 边沿触发（H4，同主输入区那颗）：每次手势只上报一次
                                         .then(if (onFollowUpInputIntent != null) Modifier.pointerInput(Unit) {
-                                            awaitPointerEventScope {
-                                                while (true) {
-                                                    val event = awaitPointerEvent()
-                                                    if (event.changes.any { it.pressed }) {
-                                                        onFollowUpInputIntent()
-                                                    }
-                                                }
+                                            awaitEachGesture {
+                                                awaitFirstDown(requireUnconsumed = false)
+                                                onFollowUpInputIntent()
                                             }
                                         } else Modifier)
                                         .padding(horizontal = Spacing.lg, vertical = Spacing.md)

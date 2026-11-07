@@ -340,6 +340,23 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         get() = prefs.getString(KEY_CONNECTION_VERIFIED_IDENTITY, "") ?: ""
         set(value) = prefs.edit().putString(KEY_CONNECTION_VERIFIED_IDENTITY, value).apply()
 
+    /**
+     * 冠军引擎模式（T4 Kotlin 移植 W1）：`OFF | SHADOW | SINGLE_STYLE | FULL`。
+     * **默认 OFF**：没写过这颗键 = 用户从没要过冠军引擎 ⇒ 读出来必须是 OFF（fail-closed，
+     * 与 [captureEnabled] 同一口径——引擎级开关不许默认开）。脏值也按 OFF 读。
+     */
+    override var championEngineMode: String
+        get() = prefs.getString(KEY_CHAMPION_ENGINE_MODE, "OFF") ?: "OFF"
+        set(value) = prefs.edit().putString(KEY_CHAMPION_ENGINE_MODE, value).apply()
+
+    /**
+     * 冠军引擎生效白名单（contactId×story）：条目 `<contactId>|<story>`，`*` = 全体，
+     * **空集 = 全体**（规格书 T4 §3.1 原文口径）。
+     */
+    override var championEngineScope: Set<String>
+        get() = prefs.getStringSet(KEY_CHAMPION_ENGINE_SCOPE, emptySet())?.toSet() ?: emptySet()
+        set(value) = prefs.edit().putStringSet(KEY_CHAMPION_ENGINE_SCOPE, value.toSet()).apply()
+
     /** 追加一个允许抓取的包名 */
     fun addCaptureAllowedPackage(pkg: String) {
         if (pkg.isBlank()) return
@@ -595,5 +612,9 @@ private const val KEY_CONNECTION_VERIFIED_IDENTITY = "connection_verified_identi
         // 工单系统键
         private const val KEY_TICKER_LIST_JSON = "worker_tickets_json"
         private const val KEY_ACTIVE_TICKET_ID = "active_ticket_id"
+
+        // 冠军引擎特征开关（T4 Kotlin 移植 W1；默认 OFF = 现有行为零变化）
+        private const val KEY_CHAMPION_ENGINE_MODE = "champion_engine_mode"
+        private const val KEY_CHAMPION_ENGINE_SCOPE = "champion_engine_scope"
     }
 }

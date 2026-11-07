@@ -973,8 +973,8 @@ class PromptByteFreezeBaselineTest {
         val promptDir = java.io.File(root, "prompt")
         val files = promptDir.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.name }.toList().sorted()
         assertEquals(
-            "domain/prompt 下只许有被搬出来的那几颗",
-            listOf("ChatTranscriptBlock.kt", "CurrentSceneInjection.kt", "IntentIdeaBlock.kt", "MemoryRefPolicy.kt",
+            "domain/prompt 下只许有被搬出来的那几颗（CorrectionExtractionFilter 为  F3.3 新增的纯过滤口，复用 MemoryRefPolicy 语义，不夹带第二份搬移）",
+            listOf("ChatTranscriptBlock.kt", "CorrectionExtractionFilter.kt", "CurrentSceneInjection.kt", "IntentIdeaBlock.kt", "MemoryRefPolicy.kt",
                 "PromptCoreKnowledgeSection.kt", "PromptKnowledgeSection.kt", "PromptProactiveSection.kt",
                 "PromptReflectSection.kt", "PromptVectorSection.kt"),
             files

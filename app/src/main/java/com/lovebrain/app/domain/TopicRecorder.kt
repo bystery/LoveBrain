@@ -18,8 +18,9 @@ import com.lovebrain.app.util.L
  * - 每轮对话记录到 moment/recent.md（最近 2 轮，溢出→对话暂存）
  * - 场景事实写入 moment/scene.md（带时间戳的状态链）
  * - 超过 TTL/最大条数 的状态条目移入 memory/raw_scene.md
- * - 话题切换判定：仅凭 topic_status=new
- * - 话题切换时归档到 memory/raw_topic.md（状态倒序），重置此刻层
+ * - 话题切换判定：topic_status=new 只是主张，必须经 [TopicSwitchGate] 佐证（F2.1 加固）；
+ *   被否决的主张保持现状（不归档、不清空、不改标签），并在诊断日志记录否决原因
+ * - 话题切换确认后归档到 memory/raw_topic.md（状态倒序），重置此刻层
  * - ongoing 进行中事项合并写入 moment/plan.md（跨话题生存）
  * - 轮次/状态条目解析使用真实时间戳校验，防 schema 模板示例行混入
  *
@@ -90,7 +91,8 @@ class TopicRecorder(
      * 幂等判据是 [RoundCommitJournal.isRoundCommitted] + 每投影水位，
      * 不再拿 recent.md 的 HTML marker 当跨文件提交标记。
      *
-     * @param topicStatus 从 AI 回复 JSON 中提取的话题状态（same/drift/new）
+     * @param topicStatus 从 AI 回复 JSON 中提取的话题状态（same/drift/new）；
+     *                    new 只是模型主张，须经 [TopicSwitchGate] 佐证才触发归档/清空
      * @param topicLabel 从 AI 回复 JSON 中提取的话题标签
      * @param sceneFacts 从 AI 回复 JSON 中提取的场景关键事实（带来源 ID）
      * @param ongoing 从 AI 回复 JSON 中提取的进行中事项变化
@@ -120,7 +122,27 @@ class TopicRecorder(
         // 1. 确定本轮变更意图（不写任何 target）——必须在 WAL PREPARED 之前完成
         val curTopic = knowledgeRepo.getCurrentTopic(kb.name)
         val hasTopic = curTopic.isNotBlank() && curTopic != "（等待第一次对话）"
-        val shouldRotate = topicLabel.isNotBlank() && topicStatus == "new"
+
+        // F2.1 加固：topic_status=new 不再单独触发归档/清空——必须经 TopicSwitchGate
+        // 给出至少一个佐证信号（scene 链已空 / 证据时间间隔 / 标签变化 / 用户显式换话题标记）。
+        // 门是纯函数、读的是既有数据字段，不新增模型调用；结论随 event.shouldRotate 进 WAL，
+        // 崩溃恢复与首提走同一个决定，不会出现"恢复路径重新判一次"的分歧。
+        val gate = if (topicLabel.isNotBlank() && topicStatus == "new") {
+            TopicSwitchGate.evaluate(
+                topicLabel = topicLabel,
+                currentTopic = curTopic,
+                sceneContent = knowledgeRepo.readFile(kb.name, "moment/scene.md"),
+                messageContents = conversationalMessages.map { it.content },
+                latestMessageTimeMs = conversationalMessages.maxOfOrNull { it.timestamp } ?: 0L,
+                nowMs = clock.epochMs()
+            )
+        } else null
+        val shouldRotate = gate?.confirmed == true
+        if (gate != null && !gate.confirmed) {
+            // 误判保护：疑似新话题被否决——保持现状（scene/recent 不清、标签不改）。
+            // 只记信号名与数值，不记消息正文与标签正文（util/L.kt 隐私红线）。
+            L.w("疑似新话题被否决（topic_status=new 无佐证）：${gate.rejectionReason}；signals=${gate.signals}")
+        }
 
         // 2. 构建本轮记录（纯函数，不写入）
         val entry = recentStore.buildRoundEntry(
@@ -191,7 +213,7 @@ class TopicRecorder(
         val kbName = event.kbName
         var topicRotated = false
 
-        // 投影 1：话题归档（仅 status=new 且有有效旧话题）
+        // 投影 1：话题归档（仅 status=new 经 TopicSwitchGate 佐证确认且有有效旧话题）
         apply(RoundCommitJournal.PROJ_TOPIC_ROTATE) {
             if (event.shouldRotate && event.hadTopic) {
                 knowledgeRepo.rotateTopic(kbName)

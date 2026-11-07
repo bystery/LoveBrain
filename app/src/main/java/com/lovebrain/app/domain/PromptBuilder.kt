@@ -5,6 +5,7 @@ import com.lovebrain.app.domain.port.Clock
 import com.lovebrain.app.domain.port.PromptSourcePort
 import com.lovebrain.app.domain.port.SystemClock
 import com.lovebrain.app.domain.prompt.ChatTranscriptBlock
+import com.lovebrain.app.domain.prompt.CorrectionExtractionFilter
 import com.lovebrain.app.domain.prompt.CurrentSceneInjection
 import com.lovebrain.app.domain.prompt.IntentIdeaBlock
 import com.lovebrain.app.domain.prompt.MemoryRefPolicy
@@ -16,6 +17,7 @@ import com.lovebrain.app.domain.prompt.PromptVectorSection
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.MemoryCorrection
+import com.lovebrain.app.model.MemoryKind
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.ProfileUpdateSchema
 
@@ -488,11 +490,22 @@ class PromptBuilder(
     }
 
     suspend fun buildReflectUserPrompt(kbName: String): String {
-        val me = readFileCompat(kbName, "understand/me.md")
-        val her = readFileCompat(kbName, "understand/her.md")
-        val warmth = readFileCompat(kbName, "understand/warmth.md")
+        //  F3.3（提取链消费 corrections，最小改动点）：画像 reflect 读源材料时与注入侧
+        // 同一颗纠正过滤（CorrectionExtractionFilter → MemoryRefPolicy 语义）——
+        // 被纠正的画像/经验内容不再按原文回流进画像重写。此处只改"提取 prompt"这一支，
+        // 回复装配主函数未动。raw_topic / 谈心分析无 MemoryRef 纠正身份，原样读取。
+        val corrections = knowledgeRepo.readCorrections(kbName)
+        val me = correctionFiltered(kbName, MemoryKind.PROFILE, "understand/me.md",
+            readFileCompat(kbName, "understand/me.md"), corrections)
+        val her = correctionFiltered(kbName, MemoryKind.PROFILE, "understand/her.md",
+            readFileCompat(kbName, "understand/her.md"), corrections)
+        val warmth = correctionFiltered(kbName, MemoryKind.PROFILE, "understand/warmth.md",
+            readFileCompat(kbName, "understand/warmth.md"), corrections)
         //  读侧净化：同 buildKnowledgeSection，走 `LessonDoc.purify` 那一颗共用口
-        val lessons = LessonDoc.purify(knowledgeRepo.readFile(kbName, LessonDoc.LESSONS_PATH))
+        val lessons = correctionFiltered(
+            kbName, MemoryKind.LESSON, LessonDoc.LESSONS_PATH,
+            LessonDoc.purify(knowledgeRepo.readFile(kbName, LessonDoc.LESSONS_PATH)), corrections
+        )
         val rawTopic = knowledgeRepo.readFile(kbName, "memory/raw_topic.md")
         val counselingAnalysis = knowledgeRepo.readCounselingAnalysisBlocks(kbName, 2)
         return PromptReflectSection.build(
@@ -513,6 +526,20 @@ class PromptBuilder(
 
     private suspend fun readFileCompat(kbName: String, newPath: String): String =
         knowledgeRepo.readFile(kbName, newPath)
+
+    /**
+     * 提取链源材料统一纠正过滤（ F3.3）——[com.lovebrain.app.domain.prompt.CorrectionExtractionFilter]
+     * 的薄转发：null（整段排除）折成空串，其余逐字透传。语义单一真源在那颗 object
+     * （复用 [MemoryRefPolicy] 的 WRONG/MUTED/FINISHED/WRONG_PERSON 判据），这里不另立规则。
+     */
+    private fun correctionFiltered(
+        kbName: String,
+        kind: MemoryKind,
+        sourcePath: String,
+        content: String,
+        corrections: Map<String, MemoryCorrection>
+    ): String =
+        CorrectionExtractionFilter.filterForExtraction(kbName, kind, sourcePath, content, corrections) ?: ""
 
     // E4：asset 缺失不再静默吞掉，记日志便于定位 prompt 段丢失——日志随 fail-open 兜底一起
     // 挪进了实现侧（data/AssetPromptSource），这里只问端口拿全文。

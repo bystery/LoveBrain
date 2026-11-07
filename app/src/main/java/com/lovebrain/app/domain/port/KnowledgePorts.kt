@@ -1,6 +1,7 @@
 package com.lovebrain.app.domain.port
 
 import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.model.MemoryCorrection
 
 /**
  * 知识库读端口（复核 第4节 DIP 行、第5节「domain 只依赖 AiGateway / KnowledgeReadPort /
@@ -24,6 +25,16 @@ interface KnowledgeReadPort {
     suspend fun readCounselingAnalysisBlocks(kbName: String, count: Int): String
     suspend fun getCorrectionsRevision(kbName: String): Int
     suspend fun getLessonCount(kbName: String): Int
+
+    /**
+     * 纠正表（`memory/corrections.json`）读侧口（ F3.3：提取链消费 corrections）。
+     *
+     * 此前纠正表只在页面侧端口（KnowledgeRuntimePort）可见，注入侧（PromptBuilder →
+     * MemoryRefPolicy）经调用方传入；后台提取链（KnowledgeContextReader / reflect）读
+     * 源材料时拿不到它，被纠正过的旧内容按原文回流进经验与画像。现在读端口把这张表
+     * 交给 domain 的读取层——只读，不含写/撤销能力（那仍在页面侧端口）。
+     */
+    suspend fun readCorrections(kbName: String): Map<String, MemoryCorrection>
 }
 
 /**

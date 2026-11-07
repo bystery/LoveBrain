@@ -4,6 +4,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -17,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalTextToolbar
@@ -56,6 +59,10 @@ class OverlayTextToolbar(
 
     override val status: TextToolbarStatus
         get() = statusState.value
+
+    /** 菜单是否正在显示（供窗口层在 ACTION_OUTSIDE 判定时读，见 [OverlayTextToolbarHost] 注释） */
+    val isShowing: Boolean
+        get() = statusState.value == TextToolbarStatus.Shown
 
     override fun showMenu(
         rect: Rect,
@@ -98,13 +105,19 @@ class OverlayTextToolbar(
         Popup(
             alignment = Alignment.TopStart,
             offset = IntOffset(rect.left.toInt(), (rect.top - liftPx).toInt()),
-            // 外点/返回要收得起来：没有 onDismissRequest 时菜单点别处不消失。
             onDismissRequest = { hide() },
             properties = PopupProperties(
                 // 不抢焦点：这是一枚 overlay 自绘菜单，抢了焦点就把底下输入框的选区弄丢了，
                 // 复制/剪切/粘贴的回调本身也就没对象了。
                 focusable = false,
-                dismissOnClickOutside = true,
+                // 关闭点外自动收（H1 根因修复）：Popup 是挂在面板窗口 token 下的**子窗口**，
+                // dismissOnClickOutside 依赖子窗口收到 ACTION_OUTSIDE——在 overlay 悬浮窗场景里
+                // 这条不可靠：打开菜单的那次长按手势还没结束（手指仍按在面板窗口上），
+                // 部分机型/版本会把这次手势的事件判给子窗口之外，菜单**当场**收到 OUTSIDE 收起，
+                // 表现就是"长按菜单闪一下消失"。收起改由两条确定性通道承担：
+                // ① 面板内任何新手势按下 → [OverlayTextToolbarHost] 的按压观察器 hide()；
+                // ② 面板外触摸/失焦 → 输入框失焦后 Compose 自己走 textToolbar.hide()。
+                dismissOnClickOutside = false,
                 dismissOnBackPress = true
             )
         ) {
@@ -163,7 +176,22 @@ fun OverlayTextToolbarHost(
     CompositionLocalProvider(
         androidx.compose.ui.platform.LocalTextToolbar provides toolbar
     ) {
-        Box {
+        Box(
+            modifier = Modifier
+                // 菜单收起的确定性通道（H1 配套）：面板里任何一次**新手势**按下都收掉菜单。
+                // · 菜单项与选区手柄都长在 Popup 子窗口里，事件到不了这一层——操作菜单本身不会误收；
+                // · 打开菜单的那次长按手势在这里只看得到 MOVE/UP（DOWN 发生在菜单出现之前），
+                //   不会刚开就收；下一颗真正的新按压才会收。
+                // · 只观察不消费：文本框选区拖动、点击等原有手势链一概不受影响。
+                .pointerInput(toolbar) {
+                    awaitEachGesture {
+                        awaitFirstDown(requireUnconsumed = false)
+                        if (toolbar.status == TextToolbarStatus.Shown) {
+                            toolbar.hide()
+                        }
+                    }
+                }
+        ) {
             content()
             toolbar.Content()
         }

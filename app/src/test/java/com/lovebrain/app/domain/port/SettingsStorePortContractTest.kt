@@ -169,6 +169,25 @@ abstract class SettingsStorePortContract {
         s.clearCounselingHistory()
         assertNull(s.loadCounselingHistory())
     }
+
+    @Test
+    fun `champion engine mode defaults to OFF and round-trips`() {
+        // T4 Kotlin 移植 W1：引擎级开关默认 OFF——没写过这颗键 = 现有用户行为零变化（fail-closed）
+        val s = newStore()
+        assertEquals("OFF", s.championEngineMode)
+        s.championEngineMode = "SHADOW"
+        assertEquals("SHADOW", s.championEngineMode)
+        s.championEngineMode = "FULL"
+        assertEquals("FULL", s.championEngineMode)
+    }
+
+    @Test
+    fun `champion engine scope round-trips as a set and empty means everyone`() {
+        val s = newStore()
+        assertEquals("空集 = 全体（规格书 T4 §3.1 原文口径）", emptySet<String>(), s.championEngineScope)
+        s.championEngineScope = setOf("contactA|story1", "*")
+        assertEquals(setOf("contactA|story1", "*"), s.championEngineScope)
+    }
 }
 
 /**
@@ -293,6 +312,9 @@ class InMemorySettingsStore : SettingsStorePort {
     override var lastKbEditFile: String? = null
     override var connectionVerified: Boolean = false
     override var connectionVerifiedIdentity: String = ""
+    // 冠军引擎特征开关（T4 W1）：默认与生产同形——fail-closed OFF + 空白名单 = 全体
+    override var championEngineMode: String = "OFF"
+    override var championEngineScope: Set<String> = emptySet()
 }
 
 /** fake 必须通过同一套合同 */

@@ -15,6 +15,7 @@ import com.lovebrain.app.viewmodel.SetupViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import kotlinx.coroutines.launch
 import org.koin.dsl.module
 import java.io.File
 
@@ -95,7 +96,48 @@ val appModule = module {
     // 就等于同一份 WAL 有两把 txMutex——"唯一事务 owner"只剩名字。
     single { TopicRecorder(get(), get(), get()) }
     single { KnowledgeTriggerCoordinator(get(), get(), get(), get()) }
-    single { GenerationEngine(get(), get()) }
+    // ═══ 冠军引擎（T4 Kotlin 移植 W1；默认 OFF——不改变现有用户行为）═══
+    // 第 7 个写入面：champion_events/<contactId>__<story>.jsonl，与 kb 投影物理分离（规格书 §2.2）。
+    single<com.lovebrain.app.domain.champion.ChampionEventStorage> {
+        com.lovebrain.app.domain.champion.FileChampionEventStorage(
+            File(androidContext().filesDir, "champion/events")
+        )
+    }
+    single { com.lovebrain.app.domain.champion.ChampionEventStore(get()) }
+    // Prompt 资产与时间块都复用产品既有真源：资产走 PromptSourcePort（缺文件 fail-open 空
+    // 串语义在实现侧），「当前时间」段直接调 PromptBuilder.buildTimestampPrompt（不复制措辞）。
+    single {
+        com.lovebrain.app.domain.champion.ChampionPromptAssembler(
+            timestampBlock = { get<PromptBuilder>().buildTimestampPrompt() },
+            promptSource = { path -> get<com.lovebrain.app.domain.port.PromptSourcePort>().read(path) }
+        )
+    }
+    single {
+        com.lovebrain.app.domain.champion.ContractGuard(
+            com.lovebrain.app.domain.champion.ContractGuard.FileGuardAuditSink(
+                File(androidContext().filesDir, "champion")
+            )
+        )
+    }
+    single {
+        com.lovebrain.app.domain.champion.ChampionEngine(
+            gateway = get(),
+            eventStore = get(),
+            assembler = get(),
+            guard = get(),
+            settings = get(),
+            clock = get(),
+            // 单 Job owner 合同（SingleOwnerContractTest）：domain 不许接 CoroutineScope/launch。
+            // shadow 的 fire-and-forget 由 app 层（di）用 applicationScope 执行——
+            // scope 所有权与 ForegroundOperationCoordinator 同源，仍是图上可见的唯一 owner。
+            shadowExecutor = { body ->
+                (androidApplication() as LoveBrainApp).applicationScope.launch { body() }
+            },
+            rootDir = File(androidContext().filesDir, "champion")
+        )
+    }
+    // 第三依赖可空（getOrNull）：旧测试图不注册 ChampionEngine 时引擎恒 OFF。
+    single { GenerationEngine(get(), get(), getOrNull()) }
     // ForegroundOperationCoordinator 作为单例——使用 application scope
     single { com.lovebrain.app.domain.ForegroundOperationCoordinator((androidApplication() as LoveBrainApp).applicationScope) }
 

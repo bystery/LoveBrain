@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -39,6 +41,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onLongClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -274,15 +277,14 @@ fun PanelTextInput(
                 .background(SurfaceCard, LoveBrainShape.md)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, if (value.isNotEmpty()) PrimarySubtle else Border, LoveBrainShape.md)
                 // 编辑意图：用户触碰输入框区域 → 通知 FloatingService 进入 EDITING
-                // 使用 pointerInput 检测 Press 事件但不消费，让 BasicTextField 仍能收到点击获焦
+                // 边沿触发（H4）：只在每次手势**按下那一跳**上报一次。旧写法对每个 pressed
+                // 事件都上报——面板窗口 flags（NOT_FOCUSABLE↔可聚焦）就会跟着 updateViewLayout
+                // 反复抖动，长按手势正压在窗口属性更新的同一帧上，手势流可能被系统打断
+                // （选区/长按菜单因此时有时无）。进入编辑一次就够了。
                 .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
-                    awaitPointerEventScope {
-                        while (true) {
-                            val event = awaitPointerEvent()
-                            if (event.changes.any { it.pressed }) {
-                                onInputIntent()
-                            }
-                        }
+                    awaitEachGesture {
+                        awaitFirstDown(requireUnconsumed = false)
+                        onInputIntent()
                     }
                 } else Modifier)
                 .padding(horizontal = Spacing.lg)
@@ -409,7 +411,14 @@ fun ReplyInput(
      * 当前是否有真实消息（HER/ME）。保留给宿主与 [MessageList] 共用同一口径的那一根线
      * （见 `hasRealDialogueRows`）；「仅看本轮」现已常驻行 1，这一参不再决定它的挂载点。
      */
-    hasRealMessages: Boolean = true
+    hasRealMessages: Boolean = true,
+    /**
+     * 「批量导入」入口（Issue #7）：**长按 ➕** 打开粘贴-预览-指定发言人浮层。
+     * 不改单行输入框布局——行 1 的宽度预算、语义树的可点节点数目都不动
+     * （长按挂在 `pointerInput` 上，不新增 OnClick 语义，`ComposerAddButtonGatingTest`
+     * 钉着的那几格照旧）。传 null 就没有这一入口（与「仅看本轮」同一接线惯例）。
+     */
+    onBatchImport: (() -> Unit)? = null
 ) {
     val isEditing = editingIndex >= 0
     val kind = inputKind ?: currentRole.toComposerInputKind()
@@ -483,7 +492,8 @@ fun ReplyInput(
             AddMessageButton(
                 canAdd = draftText.isNotBlank(),
                 isEditing = isEditing,
-                onAdd = onAdd
+                onAdd = onAdd,
+                onBatchImport = onBatchImport
             )
         }
     }
@@ -693,7 +703,19 @@ private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
  *   页面唯一主动作（主动发回退合同），次级入口不在它范围内。
  */
 @Composable
-private fun AddMessageButton(canAdd: Boolean, isEditing: Boolean, onAdd: () -> Unit) {
+private fun AddMessageButton(
+    canAdd: Boolean,
+    isEditing: Boolean,
+    onAdd: () -> Unit,
+    onBatchImport: (() -> Unit)? = null
+) {
+    // 长按 = 批量导入入口（Issue #7）。挂在**外层热区盒**的 pointerInput 上：
+    // · 轻点仍旧直达内层那颗原有的 clickable（子节点 Main pass 先吃，不抢不挡）；
+    // · 按住不动 500ms 触发 onBatchImport——不新增 OnClick 语义，语义树可点节点数不变，
+    //   `ComposerAddButtonGatingTest` 的三格判据（空草稿不可点、一次点击恰好一条）原样成立；
+    // · 读屏的长按动作走 `onLongClick(label)`，名字来自资源（可见字面量预算不加债）。
+    val batchImport = onBatchImport
+    val batchImportLabel = stringResource(R.string.a11y_batch_import)
     val (addInteraction, addScale) = rememberPressScale(0.92f, "addScale")
     // 热区与视觉分两层（与 RoleChip / RoundScopeChip 同一范式）：
     // 外层透明盒垫到 48dp 见方承担点击/热区下限，内层可见胶囊只有 24dp——
@@ -704,6 +726,15 @@ private fun AddMessageButton(canAdd: Boolean, isEditing: Boolean, onAdd: () -> U
         modifier = Modifier
             .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
+            .then(
+                if (batchImport != null) Modifier
+                    .pointerInput(Unit) {
+                        // 长按（批量导入）：pointerInput 不声明 OnClick，不进"可点节点"的账
+                        detectTapGestures(onLongPress = { batchImport() })
+                    }
+                    .semantics { onLongClick(batchImportLabel) { true } }
+                else Modifier
+            )
             .then(
                 if (canAdd) Modifier.clickable(
                     interactionSource = addInteraction,

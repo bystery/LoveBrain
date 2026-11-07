@@ -119,7 +119,17 @@ object PartialJsonObjects {
  */
 class GenerationEngine(
     private val deepSeekRepo: AiGateway,
-    private val promptBuilder: PromptBuilder
+    private val promptBuilder: PromptBuilder,
+    /**
+     * 冠军引擎（T4 Kotlin 移植 W1）。可空：测试与旧图不传 = 恒 OFF，
+     * 现有行为零变化。非 OFF 时按模式做两件事：
+     * - SHADOW：原链路照走，请求结束后 fire-and-forget 追加一次冠军生成，
+     *   只写 champion/shadow_log.jsonl（不 emit、不入 UI、不触发 TopicRecorder）；
+     * - SINGLE_STYLE/FULL：在 parseReplyResponse **之前**对原始返回文本过一次
+     *   ContractGuard（守卫修复的是 JSON 契约，必须在产品解析器之前跑）；
+     *   装配层替换（ChampionPromptAssembler 接管 user prompt）是 S2 的事，本批不接线。
+     */
+    private val championEngine: com.lovebrain.app.domain.champion.ChampionEngine? = null
 ) {
 
     // ═══════════ 回复生成（主生成） ═══════════
@@ -297,6 +307,38 @@ class GenerationEngine(
         if (fullText.isBlank()) {
             emitFailed(requestId, failure?.kind ?: ReplyFailureKind.Unknown(null))
             return@flow
+        }
+
+        // ── 冠军引擎接线（T4 W1；flag OFF / 引擎缺位时整块零调用）──
+        val championContact = input.kbContext?.name ?: ""
+        val championMode = championEngine?.effectiveMode(championContact, championContact)
+            ?: com.lovebrain.app.domain.champion.ChampionMode.OFF
+        if (championMode != com.lovebrain.app.domain.champion.ChampionMode.OFF) {
+            // S2/S3：守卫插在 parseReplyResponse 之前——修复的是原始返回文本的 JSON 契约
+            //（围栏/键名/槽位），必须先跑才能让 Parse 失败分支少吞正文完好的轮次；
+            // 原始文本此刻已被流式落盘/记账（usageTracker + PERF），满足「原文在守卫前已留痕」。
+            if (com.lovebrain.app.domain.champion.ChampionMode.isMainPathGuarded(championMode) && fullText.isNotBlank()) {
+                val repaired = runCatching {
+                    championEngine!!.repairAndAudit(fullText, requestId, championContact)
+                }.getOrNull()
+                if (repaired != null) fullText = repaired
+            }
+            // S1 shadow：原链路结果（成功或失败都算）照常 emit；冠军生成 fire-and-forget，
+            // 只写 shadow_log（含两侧输出与装配差异），不 emit 任何事件、不触发记忆写入。
+            if (championMode == com.lovebrain.app.domain.champion.ChampionMode.SHADOW) {
+                championEngine!!.launchShadow(
+                    requestId = requestId,
+                    contactId = championContact,
+                    story = championContact,
+                    dialogue = input.dialogue,
+                    intent = input.intentConfig,
+                    advisorNote = input.replyDirective.text,
+                    originalReply = fullText,
+                    timeoutMs = providerConfig?.generateTimeoutMs
+                        ?: com.lovebrain.app.AppConfig.GENERATE_TIMEOUT_MS,
+                    providerConfig = providerConfig
+                )
+            }
         }
 
         val parsed = runCatching { deepSeekRepo.parseReplyResponse(fullText) }

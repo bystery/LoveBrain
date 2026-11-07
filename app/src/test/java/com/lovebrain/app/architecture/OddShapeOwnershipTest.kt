@@ -444,7 +444,20 @@ class OddShapeOwnershipTest {
         // 而"一整条轨道把几格圈成一件事"这个容器在仓库里没有主人：`LbFormGroup` 是表单分组、
         // `settingsEntryGroupCard` 是一组一张的外框，两者都不是行里那一条。
         // ⇒ 留账：哪天第二页也要一条轨道，就上提成设计系统件并回来销这一行。
-        "SettingsEntryFamily.kt#SettingsSegmentedPill"
+        "SettingsEntryFamily.kt#SettingsSegmentedPill",
+        // ── 2026-11-06 批量导入（Issue #7）登记 ─────────────────────────────
+        // 批量导入浮层本体：LbModalSheet 的 content 槽里的粘贴框 + 解析行 + 预览条目列，
+        // 是"一次流程多个阶段"的表单容器，`Lb*` 没有对应的组合件。
+        // 主人：`ui/panel/reply/BatchImportSheet.kt`。
+        // 【真需要自画 / 缺件】预览列表（逐条 发言人+正文+她/我指定+移除）在仓库里没有公共件可套。
+        "BatchImportSheet.kt#BatchImportSheet",
+        // 预览的一行：发言人/时间 + 正文 + 两颗指定 chip + ✕。形状是"行卡 + 警示描边
+        // （未识别发言人那一档）"，`LbListCard` 的四槽装不下"chip 组 + 可移除"。
+        // 【真需要自画 / 缺件】缺件补齐再并。
+        "BatchImportSheet.kt#BatchEntryRow",
+        // 预览行里的 ✕ 移除钮：图标 + 48dp 热区 + 资源读屏名。`LbIconButton` 若已有同档
+        // （图标钮）则并回；登记时仓库内无第二处用它画纯图标钮（面板 ➕/齿轮都是自画档）。
+        "BatchImportSheet.kt#RemoveButton"
     )
 
     /**
@@ -504,6 +517,10 @@ class OddShapeOwnershipTest {
         "ReplyInput.kt#RoleChip",
         // ReplyInput.kt#RoundScopeChip：只把参数转给 `LbChip`（filled 档），不在页面自画 ⇒ 委托壳。
         "ReplyInput.kt#RoundScopeChip",
+        // 2026-11-06 登记：批量导入预览行里那两颗 她/我 指定 chip——形状逐项抄
+        // `ReplyInput.kt#RoleChip` 的 filled 档（热区分层、widthFloor=false、28dp 胶囊），
+        // 只转参数给 `LbChip`，不在页面自画 ⇒ 委托壳。
+        "BatchImportSheet.kt#SpeakerPickChip",
         // 2026-10-02：`ResultArea.kt#InputChangedBanner` 从这本账上**销掉**（不是为了让计数对上）：
         // 那颗就地横条整颗删了，"输入已变化 + 按新输入重新生成"那一步交回面板的通知队列
         // （`feature/notice/NoticeBoard` 一条，判据同一条、位置同一处），成功档不再自己画第二条。

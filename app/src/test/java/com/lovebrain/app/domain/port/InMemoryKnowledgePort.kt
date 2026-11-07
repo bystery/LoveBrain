@@ -15,6 +15,8 @@ class InMemoryKnowledgePort : KnowledgePort {
 
     private val files = LinkedHashMap<String, String>()          // "kb/rel/path" -> content
     private val meta = LinkedHashMap<String, KnowledgeBase>()    // kb -> 元数据
+    /** kb -> 纠正表（ F3.3：提取链消费 corrections，fake 与生产同口） */
+    private val corrections = LinkedHashMap<String, Map<String, MemoryCorrection>>()
     /** 这些库被标成"来自未来"，写一律拒绝（与 KnowledgeRepository 的 schema 门禁同语义） */
     val readOnlyLibraries = mutableSetOf<String>()
 
@@ -28,6 +30,11 @@ class InMemoryKnowledgePort : KnowledgePort {
 
     fun seedLibrary(kb: KnowledgeBase) {
         meta[kb.name] = kb
+    }
+
+    /** 预置纠正表（测试用；与生产 readCorrections 同一读口） */
+    fun seedCorrections(kb: String, table: Map<String, MemoryCorrection>) {
+        corrections[kb] = table
     }
 
     fun dump(): Map<String, String> = LinkedHashMap(files)
@@ -58,6 +65,9 @@ class InMemoryKnowledgePort : KnowledgePort {
 
     override suspend fun getCorrectionsRevision(kbName: String): Int =
         files[key(kbName, "memory/.revision")]?.toIntOrNull() ?: 0
+
+    override suspend fun readCorrections(kbName: String): Map<String, MemoryCorrection> =
+        corrections[kbName].orEmpty()
 
     override suspend fun getLessonCount(kbName: String): Int =
         files[key(kbName, "memory/raw_topic.md")].orEmpty()

@@ -20,6 +20,7 @@ import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.domain.port.KnowledgeRuntimePort
 import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.feature.composer.BatchImportDraft
 import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.feedback.CaseSaveOutcome
 import com.lovebrain.app.feature.feedback.caseSaveNoticeText
@@ -972,6 +973,20 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     fun addMessage(role: ChatMessage.Role, content: String) { // facade — delegates to ComposerStore
         composer.accept(ComposerStore.Intent.AddMessage(role, content))
+    }
+
+    /**
+     * 批量导入（Issue #7）：预览确认后的多条消息**按序**一次落进真实对话通道。
+     *
+     * 每一条都走 [ComposerStore.Intent.AddMessage]——与手工输入/自动捕获同一漏斗、
+     * 同一存储、同一装配路径（`GenerationInput.dialogue` 只认 HER/ME）。顺序即预览条目
+     * 顺序，前后文上下文因此保持。绝不投 SubmitNote/IDEA：军师备注是另一条边界
+     * （KNOWN_FAILURES F1/F3），而 [BatchImportDraft] 在构造期就硬挡了 IDEA。
+     */
+    fun importBatchMessages(drafts: List<BatchImportDraft>) {
+        drafts.forEach { draft ->
+            composer.accept(ComposerStore.Intent.AddMessage(draft.role, draft.content))
+        }
     }
 
     fun updateMessage(index: Int, role: ChatMessage.Role, content: String) { // facade — delegates to ComposerStore

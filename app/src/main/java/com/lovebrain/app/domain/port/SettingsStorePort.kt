@@ -121,4 +121,19 @@ interface SettingsStorePort {
      * 这是 §11.1 要的行为，不是数据损坏，不做迁移洗绿。
      */
     var connectionVerifiedIdentity: String
+
+    // ── 冠军引擎特征开关（T4 Kotlin 移植 W1；默认 OFF，不改变现有用户行为）──
+
+    /**
+     * 冠军引擎模式：`OFF | SHADOW | SINGLE_STYLE | FULL`。
+     * **默认 OFF（fail-closed）**：没写过/写错/未登记的值一律按 OFF 读——
+     * 这颗开关的默认语义是"现有用户行为一个字节都不变"。按轮冻结进生成输入，轮中不改。
+     */
+    var championEngineMode: String
+
+    /**
+     * 冠军引擎生效白名单（contactId×story 粒度）：条目格式 `<contactId>|<story>`，
+     * `*` = 全体；**空集 = 全体**（规格书 T4 §3.1 原文口径）。
+     */
+    var championEngineScope: Set<String>
 }

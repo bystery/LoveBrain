@@ -183,8 +183,18 @@ private class PanelSurfaceHolder(
     var cardLayout: ReplyCardLayout by mutableStateOf(initialCardLayout)
         private set
 
+    /**
+     * 「批量导入」浮层开不开（Issue #7）。与 [settingsOpen] 同一颗持有者形状：
+     * 屏幕级决策面走 holder，不在屏函数中间摊裸布尔。
+     */
+    var batchImportOpen: Boolean by mutableStateOf(false)
+        private set
+
     fun openSettings() { settingsOpen = true }
     fun closeSettings() { settingsOpen = false }
+
+    fun openBatchImport() { batchImportOpen = true }
+    fun closeBatchImport() { batchImportOpen = false }
 
     /** 预览：越界与刻度外的值先落回合法刻度，画出去的永远就是盘上可能存着的那一档 */
     fun setBackdropPreview(percent: Int) {
@@ -869,6 +879,8 @@ fun LoveBrainPanelScreen(
                     onOnlyThisRoundChange = { viewModel.toggleOnlyThisRound() },
                     // hasRealMessages 与 MessageList 共用同一口径（hasRealRows）；仅看本轮不再随它二选一挂载。
                     hasRealMessages = hasRealRows,
+                    // 批量导入入口（Issue #7）：长按 ➕ 开预览浮层，不改单行输入框布局。
+                    onBatchImport = { surface.openBatchImport() },
                     onAdd = {
                         val text = draftText.trim()
                         if (text.isNotEmpty()) {
@@ -1168,6 +1180,19 @@ fun LoveBrainPanelScreen(
                 onDismiss = { viewModel.intents.dismissEditor() },
                 onInputIntent = { onInputIntent("intent_editor") }
             )
+
+        // 批量导入浮层（Issue #7）——与意图编辑浮层同层（面板根部渲染，遮罩盖整屏）。
+        // 提交走 importBatchMessages：逐条经 ComposerStore.Intent.AddMessage 进真实对话
+        // 通道（HER/ME），与手工输入同一条存储与装配路径；浮层自身只产 BatchImportDraft
+        // （构造期拒绝 IDEA），军师备注通道在这里没有出口。
+        BatchImportSheet(
+            visible = surface.batchImportOpen,
+            onDismiss = { surface.closeBatchImport() },
+            onSubmit = { drafts ->
+                viewModel.importBatchMessages(drafts)
+                surface.closeBatchImport()
+            }
+        )
 
         // 「记录实际发送」那扇浮层连同它的状态接线一起摘掉，这里不留残件。
         // 点赞 / 采用 / 记入知识库这三条机制原样保留；VM 的 `recordActualSentMessage` 也原样留着，
