@@ -13,7 +13,9 @@ import org.junit.Test
  * 钉住的行为：
  *  - topic_status=new 的**单判据形态**（同标签 + 新鲜 scene 链 + 无标记）必须被否决——
  *    这正是旧实现 TopicRecorder.kt:123 造成场景记忆误清空的输入；
- *  - 每个佐证信号单独命中即可确认；
+ *  - 每个**非模型源**佐证信号单独命中即可确认；
+ *  - **R5 佐证独立性**：LABEL_CHANGE 与 topic_status=new 出自同一次模型输出（同源共误），
+ *    单独命中必须否决，只有与非模型源信号共同出现才可确认；
  *  - 否决原因只含信号名与数值，不含消息/标签正文（隐私红线）。
  *
  * 带落盘后果的端到端行为（归档完整性、保持现状）在 TopicSwitchHardeningTest 走真实仓库。
@@ -79,10 +81,12 @@ class TopicSwitchGateTest {
         assertFalse("否决原因不许含标签正文之外的话题行", d.rejectionReason!!.contains("正在聊"))
     }
 
-    // ─── 每个佐证信号单独命中即确认 ──────────────────────────────────
+    // ─── 每个非模型源佐证信号单独命中即确认 ──────────────────────────
 
     @Test
-    fun `label change alone confirms the switch`() {
+    fun `label change alone no longer confirms the switch`() {
+        // R5 佐证独立性：LABEL_CHANGE 与 topic_status=new 出自同一次模型输出——
+        // 模型一起错时它反而"佐证"错误切换（同源共误），单独命中必须否决。
         val d = evaluate(
             topicLabel = "雅思考试",
             currentTopic = "午饭",
@@ -91,8 +95,46 @@ class TopicSwitchGateTest {
             latestMessageTimeMs = nowMs,
             nowMs = nowMs
         )
-        assertTrue(d.confirmed)
-        assertEquals(listOf(TopicSwitchGate.SIGNAL_LABEL_CHANGE), d.signals)
+        assertFalse("模型源信号单独命中不许定案", d.confirmed)
+        assertTrue(
+            "否决原因须点名 LABEL_CHANGE 同源共误：${d.rejectionReason}",
+            d.rejectionReason!!.contains("LABEL_CHANGE") && d.rejectionReason.contains("同源")
+        )
+        assertTrue("被否决时不许带任何信号：${d.signals}", d.signals.isEmpty())
+    }
+
+    @Test
+    fun `label change plus time gap confirms the switch`() {
+        val d = evaluate(
+            topicLabel = "雅思考试",
+            currentTopic = "午饭",
+            sceneContent = sceneLine(minuteOffset = 90),
+            messageContents = listOf("好累"),
+            latestMessageTimeMs = nowMs,
+            nowMs = nowMs
+        )
+        assertTrue("非模型源信号在场时标签变化照常计入佐证", d.confirmed)
+        assertEquals(
+            setOf(TopicSwitchGate.SIGNAL_TIME_GAP, TopicSwitchGate.SIGNAL_LABEL_CHANGE),
+            d.signals.toSet()
+        )
+    }
+
+    @Test
+    fun `label change plus user marker confirms the switch`() {
+        val d = evaluate(
+            topicLabel = "雅思考试",
+            currentTopic = "午饭",
+            sceneContent = sceneLine(minuteOffset = 10),
+            messageContents = listOf("不聊这个了"),
+            latestMessageTimeMs = nowMs,
+            nowMs = nowMs
+        )
+        assertTrue("用户显式标记（非模型源）在场时标签变化照常计入佐证", d.confirmed)
+        assertEquals(
+            setOf(TopicSwitchGate.SIGNAL_USER_MARKER, TopicSwitchGate.SIGNAL_LABEL_CHANGE),
+            d.signals.toSet()
+        )
     }
 
     @Test
@@ -100,12 +142,13 @@ class TopicSwitchGateTest {
         val d = evaluate(
             topicLabel = " 雅思考试 ",
             currentTopic = "午饭",
-            sceneContent = sceneLine(minuteOffset = 10),
+            sceneContent = sceneLine(minuteOffset = 90),
             messageContents = emptyList(),
             latestMessageTimeMs = nowMs,
             nowMs = nowMs
         )
         assertTrue("比较前只做 trim，前后空白不许掩盖标签变化：${d.signals}", d.confirmed)
+        assertTrue("trim 后标签变化要被识别出来：${d.signals}", d.signals.contains(TopicSwitchGate.SIGNAL_LABEL_CHANGE))
     }
 
     @Test

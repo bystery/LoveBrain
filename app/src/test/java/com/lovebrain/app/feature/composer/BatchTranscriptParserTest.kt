@@ -482,4 +482,129 @@ class BatchTranscriptParserTest {
         assertEquals(1, result.entries.size)
         assertEquals(body, result.entries[0].content)
     }
+    // ───────────────────────── R6 审计回归（冒号行误拆） ─────────────────────────
+    // 冒号行格式里"地址：西湖边"这类字段行是上一条正文的续行，不是发言人叫"地址"的新条。
+    // 修法：已开的冒号/编号条目里，常见字段词 + 该名字从未作为发言人出现 + 冒号后有内容
+    // → 并入上一条并写 warning 标注（T2 原则：不误拆、交预览裁决）；真实短昵称不受影响。
+
+    /** 审计案例：冒号格式里"地址：西湖边"是上一条的续行，不是新发言人 */
+    @Test
+    fun auditCaseColonFormatAddressLineIsContinuationNotNewSpeaker() {
+        val result = BatchTranscriptParser.parse(
+            """
+            小美：周末见面
+            地址：西湖边
+            我：好
+            """.trimIndent()
+        )
+        assertEquals(2, result.entries.size)
+        assertEquals("小美", result.entries[0].speakerName)
+        assertEquals("周末见面\n地址：西湖边", result.entries[0].content)
+        assertEquals("我", result.entries[1].speakerName)
+        assertEquals("好", result.entries[1].content)
+        assertEquals(1, result.warnings.size)
+        assertTrue(result.warnings[0].contains("地址"))
+    }
+
+    /** 变体 · 正文连续两行字段词（电话/备注）：全部并入上一条 */
+    @Test
+    fun colonFormatConsecutiveLabelLinesStayMerged() {
+        val result = BatchTranscriptParser.parse(
+            """
+            小美：给你我的信息
+            电话：13800000000
+            备注：到楼下打电话
+            我：收到
+            """.trimIndent()
+        )
+        assertEquals(2, result.entries.size)
+        assertEquals("小美", result.entries[0].speakerName)
+        assertEquals("给你我的信息\n电话：13800000000\n备注：到楼下打电话", result.entries[0].content)
+        assertEquals("我", result.entries[1].speakerName)
+        assertEquals("收到", result.entries[1].content)
+    }
+
+    /** 变体 · 字段词后接 URL：链接行并入正文，URL 原样保留 */
+    @Test
+    fun colonFormatLabelLineWithUrlStaysMerged() {
+        val result = BatchTranscriptParser.parse(
+            """
+            小美：看这个
+            链接：https://example.com/page?id=1
+            我：打不开
+            """.trimIndent()
+        )
+        assertEquals(2, result.entries.size)
+        assertEquals("看这个\n链接：https://example.com/page?id=1", result.entries[0].content)
+        assertEquals("打不开", result.entries[1].content)
+    }
+
+    /** 编号转发 · 冒号同行开头 + 字段词续行：同样不误拆 */
+    @Test
+    fun numberedFormatLabelLineStaysMerged() {
+        val result = BatchTranscriptParser.parse(
+            """
+            1. 小美：周末见面
+            地址：西湖边
+            2. 我：好
+            """.trimIndent()
+        )
+        assertEquals(2, result.entries.size)
+        assertEquals("小美", result.entries[0].speakerName)
+        assertEquals("周末见面\n地址：西湖边", result.entries[0].content)
+        assertEquals("我", result.entries[1].speakerName)
+    }
+
+    /** 反例 · 真实短昵称发言人（她/他）不吸收进上一条 */
+    @Test
+    fun genuineShortNicknameSpeakersStillSplit() {
+        val result = BatchTranscriptParser.parse(
+            """
+            小美：好
+            她：晚上见
+            他：我也来
+            """.trimIndent()
+        )
+        assertEquals(3, result.entries.size)
+        assertEquals(listOf("小美", "她", "他"), result.entries.map { it.speakerName })
+    }
+
+    /** 反例 · 名字撞字段词但已登记为发言人（如昵称就叫"时间"）：以已出现为准，照常换条 */
+    @Test
+    fun labelNameRegisteredAsSpeakerStillSplits() {
+        val result = BatchTranscriptParser.parse(
+            """
+            时间：周六行吗
+            我：好
+            时间：那周日
+            """.trimIndent()
+        )
+        assertEquals(3, result.entries.size)
+        assertEquals(listOf("时间", "我", "时间"), result.entries.map { it.speakerName })
+    }
+
+    /** 边界 · 首行就是字段词（无可并入的上一条）：维持原行为当新记录，交预览裁决 */
+    @Test
+    fun labelLineAsFirstLineStillBecomesRecord() {
+        val result = BatchTranscriptParser.parse("地址：西湖边")
+        assertEquals(1, result.entries.size)
+        assertEquals("地址", result.entries[0].speakerName)
+    }
+
+    /** 边界 · 块格式正文里字段词行（既有保护）继续归并，不受影响 */
+    @Test
+    fun blockFormatLabelLinesStillMerged() {
+        val result = BatchTranscriptParser.parse(
+            """
+            小美
+            2024-01-01 12:00
+            地址：北京市朝阳区
+            我
+            2024-01-01 12:01
+            好
+            """.trimIndent()
+        )
+        assertEquals(2, result.entries.size)
+        assertEquals("地址：北京市朝阳区", result.entries[0].content)
+    }
 }

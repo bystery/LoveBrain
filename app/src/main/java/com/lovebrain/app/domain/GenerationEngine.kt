@@ -309,7 +309,9 @@ class GenerationEngine(
             return@flow
         }
 
-        // ── 冠军引擎接线（T4 W1；flag OFF / 引擎缺位时整块零调用）──
+        // ── 冠军引擎接线（T4 W1 + 审计 R2；flag OFF / 引擎缺位时整块零调用）──
+        // 注意：S2/S3（SINGLE_STYLE/FULL）未接线——effectiveMode 已把这两档按 OFF 收敛，
+        // 下面的 isMainPathGuarded 分支当前不可达，保留只为接线时不改结构（见 PORT_IDENTITY 登记）。
         val championContact = input.kbContext?.name ?: ""
         val championMode = championEngine?.effectiveMode(championContact, championContact)
             ?: com.lovebrain.app.domain.champion.ChampionMode.OFF
@@ -325,7 +327,21 @@ class GenerationEngine(
             }
             // S1 shadow：原链路结果（成功或失败都算）照常 emit；冠军生成 fire-and-forget，
             // 只写 shadow_log（含两侧输出与装配差异），不 emit 任何事件、不触发记忆写入。
+            // 审计 R2-1：真实消息入库不在这里——挂在 LoveBrainViewModel.nextRound 的
+            // commitConfirmedTurn（产品正式提交点），生成路径对未确认输入零持久痕迹。
             if (championMode == com.lovebrain.app.domain.champion.ChampionMode.SHADOW) {
+                // 审计 R2-3（种子核查）：W1 偏离——种子没传。规格书 §2.5/§125 指定
+                // initial_kb 来源 = KB 画像快照（understand/*.md）。产品侧数据经
+                // KnowledgeRepository.readProfile 冻结进 KbContext.profile（本轮生成
+                // 同一快照），按规格书要求的「平面标量 JSON」传给装配器；
+                // 产品无独立 persona 数据源，persona 缺省（该段非空才出现）。
+                val championSeed = input.kbContext?.profile?.takeIf { it.isNotBlank() }?.let { profileText ->
+                    com.lovebrain.app.domain.champion.ChampionPromptAssembler.ChampionSeed(
+                        initialKb = kotlinx.serialization.json.buildJsonObject {
+                            put("understand_profile", kotlinx.serialization.json.JsonPrimitive(profileText))
+                        }
+                    )
+                }
                 championEngine!!.launchShadow(
                     requestId = requestId,
                     contactId = championContact,
@@ -336,7 +352,8 @@ class GenerationEngine(
                     originalReply = fullText,
                     timeoutMs = providerConfig?.generateTimeoutMs
                         ?: com.lovebrain.app.AppConfig.GENERATE_TIMEOUT_MS,
-                    providerConfig = providerConfig
+                    providerConfig = providerConfig,
+                    seed = championSeed ?: com.lovebrain.app.domain.champion.ChampionPromptAssembler.ChampionSeed()
                 )
             }
         }

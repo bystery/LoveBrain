@@ -247,7 +247,9 @@ class PromptBuilder(
             return PromptBuildResult(prompt, emptyList(), chatBlock.sourceAliasMap)
         }
 
-        val knowledgeOutput = buildKnowledgeSection(kb, aggressive, corrections, messages)
+        // 冻结的军师备注与有效持续意图随链下传：事项筛选（OngoingContextSelector）
+        // 拿的是同一份冻结输入，不从消息正文重新推导
+        val knowledgeOutput = buildKnowledgeSection(kb, aggressive, corrections, messages, userHint, intentConfig)
         // 推断当前场景并注入——场景是本轮属性，不永久改档案
         val sceneBlock = CurrentSceneInjection.block(CurrentSceneInjection.infer(messages))
         val intentBlock = IntentIdeaBlock.buildIntentBlock(intentConfig)
@@ -299,7 +301,9 @@ class PromptBuilder(
         kb: KnowledgeBase,
         aggressive: Boolean,
         corrections: Map<String, MemoryCorrection>,
-        messages: List<ChatMessage>
+        messages: List<ChatMessage>,
+        userHint: String = "",
+        intentConfig: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()
     ): PromptKnowledgeSection.Output {
         val me = readFileCompat(kb.name, "understand/me.md")
         val her = readFileCompat(kb.name, "understand/her.md")
@@ -314,8 +318,14 @@ class PromptBuilder(
         val topic = knowledgeRepo.getCurrentTopic(kb.name)
         val sceneChain = knowledgeRepo.readFile(kb.name, "moment/scene.md")
         val recent = knowledgeRepo.readFile(kb.name, "moment/recent.md")
-        val (_, directive) = com.lovebrain.app.model.splitMessages(messages)
-        val ongoingPlan = selectOngoingForInjection(kb.name, messages, directive)
+        // 冻结备注是一等输入（F1.1：备注不是消息）——不从消息正文重新猜 IDEA。
+        // 旧写法 `splitMessages(messages)` 在冻结路径（GenerationInput.toChatMessages()）
+        // 上永远拿不到 Role.IDEA 消息，directive 恒为 null，军师备注因此从未进入事项筛选。
+        // 现在把冻结的军师备注与冻结的持续意图直接传给 selector（真实 HER/ME 消息
+        // 仍是独立的相关性信号，继续随 messages 传入）。
+        val frozenDirective = userHint.trim().takeIf { it.isNotEmpty() }
+            ?.let { com.lovebrain.app.model.ReplyDirective(it) }
+        val ongoingPlan = selectOngoingForInjection(kb.name, messages, frozenDirective, intentConfig)
 
         return PromptKnowledgeSection.build(
             PromptKnowledgeSection.Input(

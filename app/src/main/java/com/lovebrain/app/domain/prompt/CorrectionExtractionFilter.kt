@@ -77,4 +77,157 @@ object CorrectionExtractionFilter {
         if (lastColon > 0) return corrections[memoryId.substring(0, lastColon)]
         return null
     }
+
+    // ════════════════════════════════════════════════════════════════
+    //  F3.3 扩展（R4 覆盖面）：recent / raw_chat / raw_scene / raw_topic 的回流剔除
+    // ════════════════════════════════════════════════════════════════
+
+    /**
+     * 归档 / 轮次材料的过滤结果：净化后的文本 + 被剔除的条数。
+     * 计数只进日志（路径 + 条数），被剔除的正文按隐私红线不入日志。
+     */
+    data class FilteredArchive(val text: String, val removed: Int)
+
+    /**
+     * 「已被纠正的条目原文」对撞基准（ F3.3 扩展）。
+     *
+     * scene.md 的文件级纠正（`SCENE:moment/scene.md`，[MemoryRefPolicy.isCorrected] 同判，
+     * 含 MUTED 过期恢复）**当前生效**时，scene.md 此刻条目化的各条事实原文就是
+     * "已被纠正的条目原文"——它们经归档（raw_scene / raw_topic 状态段）与对话行
+     * （recent / raw_chat / raw_topic 对话段）原样回流进提取材料。返回这批原文的
+     * 精确集合，供 [filterSceneArchive] / [filterChatArchive] 做条目级 / 行级剔除。
+     *
+     * 纠正未生效（未纠正 / MUTED 已过期）→ 空集，下游一字不动。
+     * 归档条目自身还没有纠正身份（纠正表不持 recent / raw_* 的 MemoryRef），
+     * 纠正时已过期归档、scene.md 里已不存在的旧事实暂不在此列——条目级化之前宁可漏剔。
+     */
+    fun correctedSceneFactTexts(
+        kbName: String,
+        sceneContent: String,
+        corrections: Map<String, MemoryCorrection>
+    ): Set<String> {
+        if (sceneContent.isBlank()) return emptySet()
+        val ref = MemoryRefPolicy.makeRef(kbName, MemoryKind.SCENE, SCENE_SOURCE_PATH, sceneContent)
+        if (!MemoryRefPolicy.isCorrected(ref.id, corrections, StringBuilder())) return emptySet()
+        return sceneEntryFactTexts(sceneContent)
+    }
+
+    /**
+     * 场景条目行 → 事实原文集合。与 SceneChainStore 的落盘格式同源：
+     * 条目行 `- [ts] 标签：事实|src=…|spk=…|subj=…`（新格式）、`事实⟨ids⟩`（旧格式）、纯文本。
+     * 只认 `- [yyyy-MM-dd HH:mm]` 开头的条目行；轮次块头、对话行、空行不产生事实。
+     */
+    fun sceneEntryFactTexts(content: String): Set<String> {
+        if (content.isBlank()) return emptySet()
+        val out = mutableSetOf<String>()
+        for (line in content.lines()) {
+            val trimmed = line.trim()
+            val match = entryLineRegex.find(trimmed) ?: continue
+            val rest = match.groupValues[2]
+            val colonIdx = rest.indexOf('：')
+            val factsRaw = if (colonIdx >= 0) rest.substring(colonIdx + 1) else rest
+            for (seg in factsRaw.split('；', ';')) {
+                val segT = seg.trim()
+                if (segT.isBlank()) continue
+                factTextOf(segT).takeIf { it.isNotBlank() }?.let(out::add)
+            }
+        }
+        return out
+    }
+
+    /**
+     * 场景条目归档（`memory/raw_scene.md` 与 raw_topic.md 的「状态变化」段）条目级过滤。
+     *
+     * 只剔除**事实原文与已纠正事实精确相同**的那一条事实（剥掉 src/spk/subj、⟨ids⟩
+     * 装饰后全文相等）；同一行的相邻事实、时间戳、标签与幸存事实的装饰逐字保留；
+     * 一条事实都不剩的条目行整行省略；没有任何事实被剔除的行（含轮次块头、对话行、空行）
+     * 逐字节不变。不做子串 / 模糊替换——相邻正确内容不可能被波及。
+     */
+    fun filterSceneArchive(content: String, correctedFactTexts: Set<String>): FilteredArchive {
+        if (content.isBlank() || correctedFactTexts.isEmpty()) return FilteredArchive(content, 0)
+        var removed = 0
+        val text = mapLines(content) { line ->
+            val trimmed = line.trim()
+            val match = entryLineRegex.find(trimmed) ?: return@mapLines line
+            val ts = match.groupValues[1]
+            val rest = match.groupValues[2]
+            val colonIdx = rest.indexOf('：')
+            val factsRaw = if (colonIdx >= 0) rest.substring(colonIdx + 1) else rest
+            val kept = mutableListOf<String>()
+            var dropped = 0
+            for (seg in factsRaw.split('；', ';')) {
+                val segT = seg.trim()
+                if (segT.isBlank()) continue
+                if (factTextOf(segT) in correctedFactTexts) {
+                    dropped++
+                    continue
+                }
+                kept.add(segT)
+            }
+            if (dropped == 0) return@mapLines line   // 无剔除：逐字放行（含原始空格与装饰）
+            removed += dropped
+            when {
+                kept.isEmpty() -> null               // 一条事实都不剩 → 整行省略
+                colonIdx >= 0 -> "- [$ts] ${rest.substring(0, colonIdx)}：${kept.joinToString("；")}"
+                else -> "- [$ts] ${kept.joinToString("；")}"
+            }
+        }
+        return FilteredArchive(text, removed)
+    }
+
+    /**
+     * 对话归档（`moment/recent.md` 轮次块、`memory/raw_chat.md`、raw_topic.md 对话记录段）
+     * 行级过滤。
+     *
+     * 只剔除**整行**为「她：/我： + 已纠正事实原文」的对话行（trim 后全文相等，精确匹配）；
+     * 「我的想法：」「我（最终回复：…）：」与非完全匹配的行逐字节保留。对话行通常只是
+     * 事实的转述而非原文——匹配不上就漏剔，宁漏勿误。
+     */
+    fun filterChatArchive(content: String, correctedFactTexts: Set<String>): FilteredArchive {
+        if (content.isBlank() || correctedFactTexts.isEmpty()) return FilteredArchive(content, 0)
+        var removed = 0
+        val text = mapLines(content) { line ->
+            val match = chatLineRegex.find(line.trim())
+            if (match != null && match.groupValues[2].trim() in correctedFactTexts) {
+                removed++
+                null
+            } else {
+                line
+            }
+        }
+        return FilteredArchive(text, removed)
+    }
+
+    // ── 内部：格式解析（纯函数，不读库、不落盘、不持状态） ──
+
+    private const val SCENE_SOURCE_PATH = "moment/scene.md"
+
+    /** 场景条目行：`- [yyyy-MM-dd HH:mm] 其余部分`（与 SceneChainStore / RecentRoundStore 同一格式族） */
+    private val entryLineRegex = Regex("^- \\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})]\\s*(.*)$")
+
+    /** 对话行：`她：…` / `我：…`（ChatMessage.Role 的 label 前缀；最终回复 / 想法行不是这个形状） */
+    private val chatLineRegex = Regex("^(她|我)：(.*)$")
+
+    /** 单条事实 → 原文：剥掉 `|src=…|spk=…|subj=…` 装饰（新格式）与 `⟨ids⟩` 后缀（旧格式） */
+    private fun factTextOf(factText: String): String = when {
+        factText.contains("|src=") || factText.contains("|spk=") || factText.contains("|subj=") ->
+            factText.substringBefore('|').trim()
+        factText.endsWith("⟩") ->
+            Regex("(.*)⟨(.+)⟩$").find(factText)?.groupValues?.get(1)?.trim() ?: factText
+        else -> factText
+    }
+
+    /** 逐行映射：transform 返回 null = 该行剔除；未剔除的行按返回值落位，行尾换行原样保留 */
+    private inline fun mapLines(content: String, transform: (String) -> String?): String {
+        val endsWithNewline = content.endsWith("\n")
+        val body = if (endsWithNewline) content.removeSuffix("\n") else content
+        val out = StringBuilder()
+        for (line in body.split('\n')) {
+            val mapped = transform(line) ?: continue
+            if (out.isNotEmpty()) out.append('\n')
+            out.append(mapped)
+        }
+        if (endsWithNewline && out.isNotEmpty()) out.append('\n')
+        return out.toString()
+    }
 }

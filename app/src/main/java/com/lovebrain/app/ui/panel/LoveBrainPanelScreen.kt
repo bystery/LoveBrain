@@ -1191,7 +1191,10 @@ fun LoveBrainPanelScreen(
             onSubmit = { drafts ->
                 viewModel.importBatchMessages(drafts)
                 surface.closeBatchImport()
-            }
+            },
+            // 审计 R1-3：粘贴框也要上报编辑意图——悬浮窗默认 FLAG_NOT_FOCUSABLE，
+            // 不上报这一颗就永远弹不出 IME（与 intent_editor / settings 同一条链路）
+            onInputIntent = { onInputIntent("batch_import") }
         )
 
         // 「记录实际发送」那扇浮层连同它的状态接线一起摘掉，这里不留残件。

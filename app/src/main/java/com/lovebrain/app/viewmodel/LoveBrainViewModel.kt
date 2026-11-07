@@ -122,6 +122,13 @@ class LoveBrainViewModel(
     // 反馈案例仓库——点踩时本地保存
     private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null,
     /**
+     * 冠军引擎（审计 R2-1）：可空注入（getOrNull），缺位 = 恒 OFF，行为与从前逐字同形。
+     * 只为 [nextRound] 的 `commitConfirmedTurn` 服务——冠军事件入库的唯一入口挂在本 VM
+     * 的产品正式提交点上（T4 §1.1：`actualSent`/下一轮事务点），生成路径（GenerationEngine
+     * 的 shadow）对未确认输入不产生任何持久痕迹。
+     */
+    private val championEngine: com.lovebrain.app.domain.champion.ChampionEngine? = null,
+    /**
      * 面板**背景层**浓度那一格的落盘口子（读 / 写，量纲是整数百分比）。
      *
      * 为什么是装配侧交进来的一对函数，而不是在这里直接写 `securePrefs.panelBackdropOpacityPercent`：
@@ -1489,6 +1496,37 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     }
                 }
                 L.w("PERF t7 kb write done (${System.currentTimeMillis() - t7Start}ms)")
+
+                // ── 冠军引擎事件正式提交点（审计 R2-1 / T4 §1.1）──
+                // 事件入库挂在本产品正式提交历史的同一事务点（topicRecorder.record 成功之后、
+                // commitReplyRound 之前）；生成/shadow 路径不写事件库——用户删掉重来的未确认
+                // 输入永不进事件库，同一输入多次生成只在本提交点记一次（role|text|ts 去重）。
+                // 提交失败只记日志：冠军事件是辅助账，绝不把本轮产品落盘拖成「保存失败」。
+                if (championEngine != null) {
+                    val championMsgs = messagesSnapshot
+                        .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
+                        .map { m ->
+                            Triple(
+                                if (m.role == ChatMessage.Role.HER) "HER" else "ME",
+                                m.content,
+                                java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
+                                    .format(java.util.Date(m.timestamp))
+                            )
+                        }
+                    if (championMsgs.isNotEmpty()) {
+                        try {
+                            championEngine.commitConfirmedTurn(
+                                contactId = kbName,
+                                story = kbName,
+                                messages = championMsgs
+                            )
+                        } catch (e: kotlinx.coroutines.CancellationException) {
+                            throw e
+                        } catch (t: Throwable) {
+                            L.e("champion commitConfirmedTurn failed（不影响本轮产品落盘）", t)
+                        }
+                    }
+                }
 
                 // 写盘成功 → 才提交 UI 状态
                 commitReplyRound(consumedIds)

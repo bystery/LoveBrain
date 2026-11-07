@@ -34,7 +34,9 @@ import java.util.Locale
  *
  *  1. **单判据不再触发**：模型报 topic_status=new 但同标签、scene 链新鲜、无显式标记
  *     → 不归档、不清空 moment/scene.md 与 moment/recent.md（旧实现 TopicRecorder.kt:123 的误清空输入）；
- *  2. **带佐证触发**：任一佐证信号命中 → 旋转照常发生；
+ *  2. **带佐证触发**：任一**非模型源**佐证信号命中（TIME_GAP/USER_MARKER/SCENE_EMPTY）→
+ *     旋转照常发生；**R5 佐证独立性**：仅 LABEL_CHANGE（与 status=new 同一次模型输出，
+ *     同源共误）不再触发，LABEL_CHANGE+TIME_GAP 才触发；
  *  3. **归档完整性**：确认切换后，被清的 scene/recent/raw_chat/raw_scene 内容
  *     在清空前已完整落入 memory/raw_topic.md（生产 rotate 的"先追加归档、后清四个源文件"顺序）。
  */
@@ -132,16 +134,35 @@ class TopicSwitchHardeningTest {
     // ─── 2. 带佐证触发 ──────────────────────────────────────────────
 
     @Test
-    fun `label change corroborates and rotation proceeds`() = runBlocking {
+    fun `label change alone no longer triggers rotation`() = runBlocking {
+        // R5 佐证独立性：LABEL_CHANGE 与 topic_status=new 出自同一次模型输出（同源共误），
+        // 仅模型源信号命中必须保持现状——这正是"模型一起错时 LABEL_CHANGE 反而佐证错误切换"的输入。
         setupKb(sceneOffsetMin = 10)
         val rotated = recorder().record(
             kb = KnowledgeBase(name = "kb", displayName = "kb"),
             messages = messages("跟你说个事" to ChatMessage.Role.HER),
             scheme = null,
             topicStatus = "new",
-            topicLabel = "雅思考试"       // 与当前标签不同 → LABEL_CHANGE 佐证
+            topicLabel = "雅思考试"       // 标签变化（LABEL_CHANGE），但 scene 新鲜、无显式标记
         )
-        assertTrue("标签变化佐证的切换要照常旋转", rotated)
+        assertFalse("仅模型源信号不许触发话题旋转", rotated)
+        assertTrue("场景记忆必须原样保留", read("moment/scene.md").contains("她在吃沙拉"))
+        assertTrue("最近对话必须原样保留", read("moment/recent.md").contains("上次说起的安排"))
+        assertTrue("不许产生归档条目", read("memory/raw_topic.md").isBlank())
+        assertTrue("当前话题标签保持现状", read("moment/topic.md").contains("正在聊：午饭"))
+    }
+
+    @Test
+    fun `label change plus stale scene triggers rotation`() = runBlocking {
+        setupKb(sceneOffsetMin = 90)  // TIME_GAP（非模型源）+ LABEL_CHANGE 共同佐证
+        val rotated = recorder().record(
+            kb = KnowledgeBase(name = "kb", displayName = "kb"),
+            messages = messages("跟你说个事" to ChatMessage.Role.HER),
+            scheme = null,
+            topicStatus = "new",
+            topicLabel = "雅思考试"
+        )
+        assertTrue("非模型源信号在场时标签变化照常佐证，切换照常旋转", rotated)
         assertTrue("归档条目要出现", read("memory/raw_topic.md").contains("## ["))
         assertTrue("话题标签要更新", read("moment/topic.md").contains("雅思考试"))
     }
@@ -178,7 +199,7 @@ class TopicSwitchHardeningTest {
 
     @Test
     fun `confirmed rotation archives scene recent raw_chat raw_scene before clearing`() = runBlocking {
-        setupKb(sceneOffsetMin = 10)
+        setupKb(sceneOffsetMin = 90)  // TIME_GAP + LABEL_CHANGE：非模型源信号在场才允许切换确认
         val rotated = recorder().record(
             kb = KnowledgeBase(name = "kb", displayName = "kb"),
             messages = messages("跟你说个事" to ChatMessage.Role.HER),

@@ -18,6 +18,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.junit.Assert.assertEquals
@@ -144,6 +145,17 @@ class ChampionEngineTest {
     }
 
     @Test
+    fun `S2 S3 tiers are not wired and clamp to OFF with a log`() {
+        // 审计 R2-3：枚举保留档位名，但 SINGLE_STYLE/FULL 无实现——引擎读到按 OFF 处理
+        val single = FakeSettings(mode = "SINGLE_STYLE")
+        assertEquals(ChampionMode.OFF, newEngine(single).first.mode())
+        assertEquals(ChampionMode.OFF, newEngine(single).first.effectiveMode("c", "s"))
+        val full = FakeSettings(mode = "FULL")
+        assertEquals(ChampionMode.OFF, newEngine(full).first.mode())
+        assertEquals(ChampionMode.OFF, newEngine(full).first.effectiveMode("c", "s"))
+    }
+
+    @Test
     fun `effective mode is OFF unless the contactId-story scope hits`() {
         val settings = FakeSettings(mode = "SHADOW", scope = setOf("c1|s1"))
         val (engine, _) = newEngine(settings)
@@ -159,7 +171,7 @@ class ChampionEngineTest {
     // ── shadow 全链路 ──
 
     @Test
-    fun `shadowTurn appends real messages assembles generates guards and logs both sides`() = runTest {
+    fun `shadowTurn assembles generates guards and logs both sides without touching the event store`() = runTest {
         val settings = FakeSettings(mode = "SHADOW")
         val (engine, dir) = newEngine(settings)
         val out = engine.shadowTurn(
@@ -182,11 +194,18 @@ class ChampionEngineTest {
         assertTrue(log["guard_changed"]!!.jsonPrimitive.content == "true")
         assertTrue(log["shadow_reply"]!!.jsonPrimitive.content.contains("\"directions\": [null, null, null, null]"))
         assertEquals(11, log["prompt_tokens"]!!.jsonPrimitive.content.toInt())
-        // 真实消息入库；shadow 回复不入库（reply never committed）
+        // 审计 R2-1：shadow 生成路径不写事件库——未确认输入零持久痕迹
         val store = ChampionEventStore(FileChampionEventStorage(File(dir, "events")))
-        val all = runBlocking { store.events("c1__s1") }
-        assertEquals(2, all.size)
-        assertTrue(all.none { it.text.contains("好的") })
+        assertEquals(0, runBlocking { store.events("c1__s1") }.size)
+        // 正式提交点入库（uid = pending uid，与 shadow 日志 source_id 一致）
+        val committed = runBlocking {
+            engine.commitConfirmedTurn("c1", "s1", listOf(
+                Triple("HER", "周五见？", "2026-11-06 09:59"),
+                Triple("ME", "好", "2026-11-06 10:00")
+            ))
+        }
+        assertEquals(listOf(0L, 1L), committed.map { it.uid })
+        assertTrue(committed.none { it.text.contains("好的") })   // shadow 回复永不入库
         // shadow_log 落盘（jsonl，两侧输出与装配差异）
         engine.appendShadowLog(log)
         val logFile = File(dir, "shadow_log.jsonl")
@@ -200,17 +219,33 @@ class ChampionEngineTest {
     }
 
     @Test
-    fun `shadowTurn dedups replayed messages across turns`() = runTest {
+    fun `abandoned unconfirmed input never reaches the store and re-commit stays deduped`() = runTest {
         val settings = FakeSettings(mode = "SHADOW")
         val (engine, dir) = newEngine(settings)
-        val msgs = listOf(Triple("HER", "同一条", "2026-11-06 09:00"))
-        engine.shadowTurn("r1", "c", "s", turn = -1, messages = msgs, intent = IntentConfig(),
-            advisorNote = "", originalReply = "", timeoutMs = 5_000, providerConfig = null)
-        val out2 = engine.shadowTurn("r2", "c", "s", turn = -1, messages = msgs, intent = IntentConfig(),
-            advisorNote = "", originalReply = "", timeoutMs = 5_000, providerConfig = null)
-        assertEquals(2, out2.logLine["turn"]!!.jsonPrimitive.content.toInt())
+        // 第一次生成（输入会被用户删掉重来）——shadow 只装配
+        engine.shadowTurn("r1", "c", "s", turn = -1,
+            messages = listOf(Triple("HER", "错别字版本", "2026-11-06 09:00")),
+            intent = IntentConfig(), advisorNote = "", originalReply = "", timeoutMs = 5_000, providerConfig = null)
+        // 用户改了输入再生成一次——仍是 shadow，不落库
+        engine.shadowTurn("r2", "c", "s", turn = -1,
+            messages = listOf(Triple("HER", "改好的版本", "2026-11-06 09:00")),
+            intent = IntentConfig(), advisorNote = "", originalReply = "", timeoutMs = 5_000, providerConfig = null)
         val store = ChampionEventStore(FileChampionEventStorage(File(dir, "events")))
-        assertEquals(1, runBlocking { store.events("c__s") }.size)
+        assertEquals(0, runBlocking { store.events("c__s") }.size)
+        // 正式提交：只记用户最终确认的那一条；重复提交去重不重复入库
+        runBlocking {
+            engine.commitConfirmedTurn("c", "s", listOf(Triple("HER", "改好的版本", "2026-11-06 09:00")))
+            engine.commitConfirmedTurn("c", "s", listOf(Triple("HER", "改好的版本", "2026-11-06 09:00")))
+        }
+        val all = runBlocking { store.events("c__s") }
+        assertEquals(1, all.size)
+        assertEquals("改好的版本", all.first().text)
+        assertEquals(1, all.first().turn)
+        // 提交后下一轮 shadow 取到正确 turn（历史已确认）
+        val out3 = engine.shadowTurn("r3", "c", "s", turn = -1,
+            messages = listOf(Triple("ME", "新一条", "2026-11-06 10:00")),
+            intent = IntentConfig(), advisorNote = "", originalReply = "", timeoutMs = 5_000, providerConfig = null)
+        assertEquals(2, out3.logLine["turn"]!!.jsonPrimitive.content.toInt())
     }
 
     @Test
@@ -255,6 +290,10 @@ class ChampionEngineTest {
         val obj = Json.parseToJsonElement(file.readText()).jsonObject
         assertTrue(obj.containsKey("champion_asset_hash"))
         assertEquals("window_expand_b_norecap_uc_guard", obj["arena_candidate"]!!.jsonPrimitive.content)
+        // 审计 R2-3：接线状态显式登记——可用档位只有 OFF/SHADOW，S2/S3 未接线
+        val wired = obj["wired_modes"]!!.jsonArray.map { it.jsonPrimitive.content }
+        assertEquals(listOf("OFF", "SHADOW"), wired)
+        assertTrue(obj["s2_s3_status"]!!.jsonPrimitive.content.contains("NOT_WIRED"))
         val arena = obj["arena_mechanism_sha256"]!!.jsonObject
         assertEquals(5, arena.size)
         assertTrue(arena["mechanism/contract_guard.py"]!!.jsonPrimitive.content.startsWith("c26c68c0"))

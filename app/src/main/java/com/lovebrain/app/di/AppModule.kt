@@ -160,7 +160,9 @@ val appModule = module {
             readBubbleSizeDp = { get<SecurePrefs>().bubbleSizeDp },
             writeBubbleSizeDp = { get<SecurePrefs>().bubbleSizeDp = it },
             readReplyCardLayout = { get<SecurePrefs>().replyCardLayout },
-            writeReplyCardLayout = { get<SecurePrefs>().replyCardLayout = it }
+            writeReplyCardLayout = { get<SecurePrefs>().replyCardLayout = it },
+            // 冠军引擎（审计 R2-1）：可空注入——事件正式提交点在 nextRound。
+            championEngine = getOrNull()
         )
     }
     // 第四格是 KnowledgePresencePort（老用户判定的"本机有没有知识库"那一员），不再是 Context

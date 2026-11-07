@@ -21,7 +21,11 @@ import kotlinx.serialization.json.Json
  * - [events] 按 uid 升序返回 = 时间序（Python 列表 append 序 == uid 递增序）。
  * - 每条事件额外带 `turn`（W16 增量）：仅供未定段「（T<turn>）」标注，不进历史行文本。
  *
- * 存储（[ChampionEventStorage]）按 `contactId__story` 一个键一份 JSON Lines，
+ * 存储（[ChampionEventStorage]）按 `contactId__story` 一个键一份 JSON Lines。
+ * 分区键身份（审计 R2-2）：`contactId` = [com.lovebrain.app.model.KbContext.name] =
+ * KB 目录名（kb.json 的 `name`，建库时 `kb_<时间戳36>_<随机>` 生成，产品全局稳定身份）；
+ * **显示名不参与存储键**（只用于日志展示）。删除 KB 重建后新库拿到新的目录名，
+ * 不会复用旧库的事件历史——旧库目录删除时其事件文件随键不可达（见 fileFor 哈希命名）。
  * 目录键带 engine 维度（规格书 §2.2：与 kb 投影物理分离的第 7 个写入面）。
  * 回退（flag→OFF）时文件保留不清；重开时按 `role|text|ts` 续用，不回填、不迁移。
  */
@@ -51,20 +55,35 @@ interface ChampionEventStorage {
 }
 
 /**
- * 文件实现：每键一个 JSON 文件（`champion_events/<key>.json`，内容为
- * [ChampionEventState] 的 JSON）。域名允许 java.io.File（PackageDependencyTest
- * 的 domain 禁单不含它）；写入是整文件原子替换（tmp → rename），与产品
- * 「只有一个事务 owner」的口径一致——本存储是新增的第 7 个写入面，
- * 不触碰 TopicRecorder 的 WAL/投影链。
+ * 文件实现：每键一个 JSON 文件（`champion_events/<safe>__<sha256-24>.json`，内容为
+ * [ChampionEventState] 的 JSON）。
+ *
+ * 文件名身份（审计 R2-2）：**不允许**用"特殊字符替换成下划线"把 key 映射成文件名——
+ * 那是把多对一映射：不同 key（含异库同名显示名、含路径分隔/空白等脏字符的目录名）
+ * 可以洗成同一个文件名互相覆盖，删库重建同名还会读到别人的旧历史。改为
+ * `清洗前缀(≤48 字符，人读) + "__" + SHA-256(key) 前 24 hex（稳定身份）`：
+ * SHA-256 抗碰撞，键与文件一一对应；键换名即换文件，旧文件自然失联不复活。
+ *
+ * 存量兼容（审计 R2-2 结论）：当前模式默认 OFF、shadow 未上线，**无存量用户数据**——
+ * 直接换键，不留迁移代码；旧命名文件若存在（内部验证机）按不可达废文件对待，不读不删。
+ *
+ * 域名允许 java.io.File（PackageDependencyTest 的 domain 禁单不含它）；写入是整文件
+ * 原子替换（tmp → rename），与产品「只有一个事务 owner」的口径一致——本存储是新增的
+ * 第 7 个写入面，不触碰 TopicRecorder 的 WAL/投影链。
  */
 class FileChampionEventStorage(private val rootDir: File) : ChampionEventStorage {
 
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
 
     private fun fileFor(key: String): File {
+        // 人读前缀：照旧清洗（仅用于肉眼对账，不承担身份职责），截到 48 字符防文件名超长
         val safe = key.map { ch -> if (ch.isLetterOrDigit() || ch in "._-") ch else '_' }
-            .joinToString("")
-        return File(rootDir, "$safe.json")
+            .joinToString("").take(48)
+        // 稳定身份：SHA-256(key) 前 24 hex——碰撞面只剩哈希碰撞（工程上视为不存在）
+        val digest = java.security.MessageDigest.getInstance("SHA-256")
+            .digest(key.toByteArray(Charsets.UTF_8))
+        val hex = digest.joinToString("") { "%02x".format(it) }.take(24)
+        return File(rootDir, "${safe}__${hex}.json")
     }
 
     override fun load(key: String): ChampionEventState {

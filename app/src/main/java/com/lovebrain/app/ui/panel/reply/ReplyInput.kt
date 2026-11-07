@@ -732,7 +732,14 @@ private fun AddMessageButton(
                         // 长按（批量导入）：pointerInput 不声明 OnClick，不进"可点节点"的账
                         detectTapGestures(onLongPress = { batchImport() })
                     }
-                    .semantics { onLongClick(batchImportLabel) { true } }
+                    .semantics {
+                        // 审计 R1-2：读屏的长按必须与手势长按同一行为——只 return true
+                        // 而不调 batchImport() 的旧写法，让 TalkBack 用户宣布"吃掉了这个动作"。
+                        onLongClick(batchImportLabel) {
+                            batchImport()
+                            true
+                        }
+                    }
                 else Modifier
             )
             .then(

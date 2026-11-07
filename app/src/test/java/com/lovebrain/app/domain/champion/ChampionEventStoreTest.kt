@@ -87,4 +87,15 @@ class ChampionEventStoreTest {
         storage.save("a/b\\c d", ChampionEventState(uidSeq = 5))
         assertEquals(5, storage.load("a/b\\c d").uidSeq)
     }
+
+    @Test
+    fun `distinct keys never collapse into one file even when sanitization collides`() {
+        // 审计 R2-2：文件名 = 清洗前缀 + SHA-256(key)——清洗多对一不再导致互相覆盖
+        val dir = tmp.newFolder()
+        val storage = FileChampionEventStorage(dir)
+        storage.save("a/b c", ChampionEventState(uidSeq = 1))
+        storage.save("a_b_c", ChampionEventState(uidSeq = 2))
+        assertEquals(1, storage.load("a/b c").uidSeq)
+        assertEquals(2, storage.load("a_b_c").uidSeq)
+    }
 }

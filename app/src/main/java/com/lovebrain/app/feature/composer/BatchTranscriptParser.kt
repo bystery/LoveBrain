@@ -25,6 +25,8 @@ package com.lovebrain.app.feature.composer
  *    全角冒号一律算新记录；半角冒号只有后面跟空白才算（防止把 `比例3:2`、`https://…`
  *    这类正文当发言人拆掉）。冒号行是**冒号/编号格式**的记录分隔符；块格式正文里的
  *    "地址：北京市"这类行（昵称不是已知发言人）照旧归并进当前条。
+ *    冒号/编号格式里的**字段词行**（"地址：…""备注：…"等元数据前缀，R6 审计回归）
+ *    同样不硬拆：并入上一条 + warning 标注，由预览界面裁决。
  * 3. **编号转发格式**（多选 → 合并转发 → 复制）：
  *    ```
  *    1. 昵称
@@ -217,6 +219,28 @@ object BatchTranscriptParser {
                 allowNewSpeaker = !openExists ||
                     openOrigin == Origin.COLON || openOrigin == Origin.NUMBERED
             )?.let { (name, content) ->
+                // ── R6 审计回归：字段词续行不硬拆为发言人 ─────────────────────
+                // 冒号/编号格式里"地址：西湖边""备注：带伞"这类行是上一条正文的续行，
+                // 不是发言人叫"地址"的新条。判据（宁可不误拆）：已有进行中的冒号/编号
+                // 条目 + 该名字是常见字段词 + 从未作为发言人出现 + 冒号后有内容。
+                // 命中就并入上一条并写 warning 标注，交预览界面裁决（T2 原则）；
+                // 昵称真叫"地址/时间"且已出现过（name in seenSpeakers）时走正常换条。
+                if (openExists &&
+                    (openOrigin == Origin.COLON || openOrigin == Origin.NUMBERED) &&
+                    name !in seenSpeakers &&
+                    content.isNotBlank() &&
+                    name in CONTENT_LABELS
+                ) {
+                    if (openLines.isNotEmpty() && blanks > 0) {
+                        repeat(blanks) { openLines.add("") }
+                    }
+                    openLines.add(line)
+                    warnings.add(
+                        "第 $lineNo 行：「$line」疑似上一条正文的续行（「$name」是常见字段词，" +
+                            "未拆为新发言人）；如确是新发言人，请在预览中手动处理"
+                    )
+                    return i + 1
+                }
                 flushPending()
                 startOpen(name, null, lineNo, Origin.COLON)
                 if (content.isNotBlank()) openLines.add(content)
@@ -303,6 +327,16 @@ object BatchTranscriptParser {
      * 发言人段 1..30 字、不含任何冒号。
      */
     private val COLON_LINE = Regex("^([^：:]{1,30})(?:：|:\\s)(.*)$")
+
+    /**
+     * 常见字段词（R6 审计回归）：冒号/编号格式正文里"地址：…""备注：…"这类续行的
+     * 冒号前缀。极短、语义上是消息元数据而非人称，真实联系人用它当昵称极少见；
+     * 真撞上时只要该名字已作为发言人出现过（seenSpeakers），仍按发言人换条。
+     */
+    private val CONTENT_LABELS = setOf(
+        "地址", "地点", "时间", "日期", "电话", "手机", "座机", "备注", "附", "附言",
+        "邮箱", "邮编", "网址", "链接", "姓名", "性别", "年龄", "坐标", "QQ", "微信"
+    )
 
     /** 空白类：含全角空格 U+3000 与不换行空格 U+00A0（微信粘贴里出现，`\s` 不认） */
     private val WS = "[\\s\\u3000\\u00A0]"

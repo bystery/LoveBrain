@@ -344,10 +344,27 @@ class SecurePrefs(context: Context) : SettingsStorePort {
      * 冠军引擎模式（T4 Kotlin 移植 W1）：`OFF | SHADOW | SINGLE_STYLE | FULL`。
      * **默认 OFF**：没写过这颗键 = 用户从没要过冠军引擎 ⇒ 读出来必须是 OFF（fail-closed，
      * 与 [captureEnabled] 同一口径——引擎级开关不许默认开）。脏值也按 OFF 读。
+     *
+     * 审计 R2-3（模式诚实化）：S2/S3 尚未接线（主请求 prompt 未切
+     * ChampionPromptAssembler），**可用档位只有 OFF/SHADOW**——读/写两侧都把
+     * SINGLE_STYLE/FULL 收敛成 OFF 并记日志（档位名在枚举里保留，登记见
+     * PORT_IDENTITY.json 与 W1_CHAMPION_ENGINE_IMPL.md）。
      */
     override var championEngineMode: String
-        get() = prefs.getString(KEY_CHAMPION_ENGINE_MODE, "OFF") ?: "OFF"
-        set(value) = prefs.edit().putString(KEY_CHAMPION_ENGINE_MODE, value).apply()
+        get() {
+            val raw = prefs.getString(KEY_CHAMPION_ENGINE_MODE, "OFF") ?: "OFF"
+            return if (raw == "SINGLE_STYLE" || raw == "FULL") {
+                L.w("championEngineMode=$raw 未接线（S2/S3 not wired），读为 OFF")
+                "OFF"
+            } else raw
+        }
+        set(value) {
+            val toWrite = if (value == "SINGLE_STYLE" || value == "FULL") {
+                L.w("championEngineMode=$value 未接线（S2/S3 not wired），落为 OFF")
+                "OFF"
+            } else value
+            prefs.edit().putString(KEY_CHAMPION_ENGINE_MODE, toWrite).apply()
+        }
 
     /**
      * 冠军引擎生效白名单（contactId×story）：条目 `<contactId>|<story>`，`*` = 全体，

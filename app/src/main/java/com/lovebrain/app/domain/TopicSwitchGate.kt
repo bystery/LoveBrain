@@ -16,11 +16,19 @@ import com.lovebrain.app.util.TimeFmt
  *    误判的清空代价为零，不阻塞真实切换（否则长冷却后的合法新话题永远转不动）。
  *  - [SIGNAL_TIME_GAP]：scene 链最新证据距本轮（取本轮最新消息时刻与当前时刻较大者）
  *    已超过 [MIN_SCENE_GAP_MS]——话题自然冷却，切换可信。
- *  - [SIGNAL_LABEL_CHANGE]：新 topic_label 与当前话题标签不同——模型自己在说"换了个话题"，
- *    与 status=new 相互印证；同标签的 new 是最主要的误判形态。
+ *  - [SIGNAL_LABEL_CHANGE]：新 topic_label 与当前话题标签不同——模型自己在说"换了个话题"。
+ *    **R5 佐证独立性修正（refs/version_closeout_20261106/R5_TOPIC_GATE_INDEPENDENCE.md）**：
+ *    该标签与 `topic_status=new` 出自**同一次模型输出**，模型一起错时 LABEL_CHANGE
+ *    反而会"佐证"错误切换（同源共误）。因此它降级为**模型源信号**：单独命中不再触发
+ *    切换，只能与其他**非模型源信号**共同出现（锦上添花，不能定案）。
  *  - [SIGNAL_USER_MARKER]：本轮 HER/ME 消息里出现 [EXPLICIT_NEW_TOPIC_MARKERS] 中的
  *    显式换话题表述。这是**确定性白名单、只做佐证**，与已废弃的"关键词列表判场景"不是
  *    一回事：命中是充分佐证之一，未命中不扣任何分。
+ *
+ * **R5 定案规则**：触发切换需要至少一个**非模型源信号**（[SIGNAL_SCENE_EMPTY] /
+ * [SIGNAL_TIME_GAP] / [SIGNAL_USER_MARKER] 任一）。模型源信号（目前只有
+ * [SIGNAL_LABEL_CHANGE]）永不独立定案——规则原表述"两个以上信号且至少一个非模型源"
+ * 在逻辑上被"至少一个非模型源"完全蕴含，故实现只保留后者。
  *
  * 隐私纪律：本类产出的诊断文本只含信号名、毫秒/分钟数与布尔结论，
  * 不含消息正文与话题标签正文（调用方 [TopicRecorder] 直接落 L.w 日志）。
@@ -57,6 +65,10 @@ internal object TopicSwitchGate {
 
     /**
      * 评估一次 `topic_status=new` 主张。调用方仅在模型主张 new 时调用本函数。
+     *
+     * 定案规则（R5 佐证独立性修正）：必须命中**至少一个非模型源信号**
+     * （[SIGNAL_SCENE_EMPTY]/[SIGNAL_TIME_GAP]/[SIGNAL_USER_MARKER] 任一）才 confirmed；
+     * [SIGNAL_LABEL_CHANGE] 与 status=new 同一次输出，单独命中只否决并给出专属否决原因。
      *
      * @param topicLabel 模型给出的新话题标签（调用方已确认非空）
      * @param currentTopic 当前话题标签（[com.lovebrain.app.data.KnowledgeRepository.getCurrentTopic]
@@ -106,15 +118,24 @@ internal object TopicSwitchGate {
             signals.add(SIGNAL_USER_MARKER)
         }
 
-        return if (signals.isNotEmpty()) {
+        // R5 佐证独立性定案：模型源信号（LABEL_CHANGE）与 topic_status=new 同一次输出，
+        // 同源共误——只有非模型源信号才具备独立佐证资格。
+        val nonModelSignals = signals.filterNot { it == SIGNAL_LABEL_CHANGE }
+        return if (nonModelSignals.isNotEmpty()) {
             Decision(confirmed = true, signals = signals, rejectionReason = null)
         } else {
             val gapMin = if (newestSceneMs > 0) (maxOf(latestMessageTimeMs, nowMs) - newestSceneMs) / 60_000L else -1L
+            val reason = if (signals.contains(SIGNAL_LABEL_CHANGE)) {
+                "仅 LABEL_CHANGE（与 topic_status=new 同一次模型输出，同源共误，不可独立佐证）；" +
+                    "scene最新条目间隔=${gapMin}min<${MIN_SCENE_GAP_MS / 60_000L}min、无显式换话题标记"
+            } else {
+                "无佐证信号（scene最新条目间隔=${gapMin}min<${MIN_SCENE_GAP_MS / 60_000L}min、" +
+                    "topic_label未变化、无显式换话题标记）"
+            }
             Decision(
                 confirmed = false,
                 signals = emptyList(),
-                rejectionReason = "无佐证信号（scene最新条目间隔=${gapMin}min<${MIN_SCENE_GAP_MS / 60_000L}min、" +
-                    "topic_label未变化、无显式换话题标记）"
+                rejectionReason = reason
             )
         }
     }

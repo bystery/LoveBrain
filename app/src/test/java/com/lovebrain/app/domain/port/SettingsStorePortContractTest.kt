@@ -177,8 +177,12 @@ abstract class SettingsStorePortContract {
         assertEquals("OFF", s.championEngineMode)
         s.championEngineMode = "SHADOW"
         assertEquals("SHADOW", s.championEngineMode)
+        // 审计 R2-3（模式诚实化）：S2/S3 未接线，设置侧把 SINGLE_STYLE/FULL 收敛成 OFF——
+        // 写档位名也不能让它生效（枚举保留，可用档位只有 OFF/SHADOW）
         s.championEngineMode = "FULL"
-        assertEquals("FULL", s.championEngineMode)
+        assertEquals("OFF", s.championEngineMode)
+        s.championEngineMode = "SINGLE_STYLE"
+        assertEquals("OFF", s.championEngineMode)
     }
 
     @Test
@@ -312,8 +316,13 @@ class InMemorySettingsStore : SettingsStorePort {
     override var lastKbEditFile: String? = null
     override var connectionVerified: Boolean = false
     override var connectionVerifiedIdentity: String = ""
-    // 冠军引擎特征开关（T4 W1）：默认与生产同形——fail-closed OFF + 空白名单 = 全体
+    // 冠军引擎特征开关（T4 W1）：默认与生产同形——fail-closed OFF + 空白名单 = 全体。
+    // 审计 R2-3（模式诚实化）：与生产同形收敛——S2/S3 未接线，读写两侧钳成 OFF。
     override var championEngineMode: String = "OFF"
+        get() = if (field == "SINGLE_STYLE" || field == "FULL") "OFF" else field
+        set(value) {
+            field = if (value == "SINGLE_STYLE" || value == "FULL") "OFF" else value
+        }
     override var championEngineScope: Set<String> = emptySet()
 }
 

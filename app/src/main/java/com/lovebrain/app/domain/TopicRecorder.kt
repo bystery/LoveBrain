@@ -123,8 +123,10 @@ class TopicRecorder(
         val curTopic = knowledgeRepo.getCurrentTopic(kb.name)
         val hasTopic = curTopic.isNotBlank() && curTopic != "（等待第一次对话）"
 
-        // F2.1 加固：topic_status=new 不再单独触发归档/清空——必须经 TopicSwitchGate
-        // 给出至少一个佐证信号（scene 链已空 / 证据时间间隔 / 标签变化 / 用户显式换话题标记）。
+        // F2.1 加固 + R5 佐证独立性修正：topic_status=new 不再单独触发归档/清空——必须经
+        // TopicSwitchGate 命中至少一个**非模型源**佐证信号（scene 链已空 / 证据时间间隔 /
+        // 用户显式换话题标记）。LABEL_CHANGE 与 status=new 出自同一次模型输出（同源共误），
+        // 单独命中不可定案，详见 refs/version_closeout_20261106/R5_TOPIC_GATE_INDEPENDENCE.md。
         // 门是纯函数、读的是既有数据字段，不新增模型调用；结论随 event.shouldRotate 进 WAL，
         // 崩溃恢复与首提走同一个决定，不会出现"恢复路径重新判一次"的分歧。
         val gate = if (topicLabel.isNotBlank() && topicStatus == "new") {

@@ -3,6 +3,8 @@ package com.lovebrain.app.ui.panel.reply
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -20,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -53,12 +56,24 @@ import com.lovebrain.app.ui.theme.*
 fun BatchImportSheet(
     visible: Boolean,
     onDismiss: () -> Unit,
-    onSubmit: (List<BatchImportDraft>) -> Unit
+    onSubmit: (List<BatchImportDraft>) -> Unit,
+    /**
+     * 编辑意图信号（审计 R1-3）：用户碰到粘贴框 = 想打字。
+     * 悬浮窗宿主里窗口默认 FLAG_NOT_FOCUSABLE（PASSIVE），只有把这次触碰上报给
+     * [com.lovebrain.app.service.PanelInputFocusOwner.onInputIntent] 切进 EDITING，
+     * IME 才弹得出来。与 [PanelTextInput] / [com.lovebrain.app.core.designsystem.LbFieldInput]
+     * 的同一范式：null（默认）= 跑在普通 Activity，不需要这条信号。
+     */
+    onInputIntent: (() -> Unit)? = null
 ) {
     // visible 每次翻转都重置整份状态：重开浮层看到的是干净的一版，不是上一次的残稿
     var raw by remember(visible) { mutableStateOf("") }
     var parsed by remember(visible) { mutableStateOf<List<BatchTranscriptParser.Entry>?>(null) }
     var warnings by remember(visible) { mutableStateOf<List<String>>(emptyList()) }
+    // 审计 R1-1（陈旧解析结果）：parsed 是 raw 的派生物，必须与解析那一刻的原文绑定。
+    // parsedRaw 记的就是"解析结果对应哪一版原文"；原文一旦改了，旧 parsed 立即作废，
+    // 预览收回、提交键回到禁用——用户必须重新点解析，提交的永远是他眼前这份原文的结果。
+    var parsedRaw by remember(visible) { mutableStateOf<String?>(null) }
     // 昵称 → 她/我：同一昵称的所有条目一起生效（一份归属，不是每条猜一次）
     var nameRoles by remember(visible) { mutableStateOf<Map<String, ChatMessage.Role>>(emptyMap()) }
     // 未识别发言人的条目按序号各自指定
@@ -85,7 +100,16 @@ fun BatchImportSheet(
         Spacer(Modifier.height(Spacing.sm))
         BatchPasteField(
             value = raw,
-            onValueChange = { raw = it },
+            // 审计 R1-1：原文任何变化都让旧解析结果作废（与解析时刻的原文不一致即失效）
+            onValueChange = { next ->
+                raw = next
+                if (parsedRaw != null && next != parsedRaw) {
+                    parsed = null
+                    warnings = emptyList()
+                    parsedRaw = null
+                }
+            },
+            onInputIntent = onInputIntent,
             placeholder = stringResource(R.string.batch_import_paste_placeholder)
         )
 
@@ -100,6 +124,8 @@ fun BatchImportSheet(
                     val result = BatchTranscriptParser.parse(raw)
                     parsed = result.entries
                     warnings = result.warnings
+                    // 解析结果与这一版原文绑定（审计 R1-1）：之后原文再变，上面 onValueChange 即作废
+                    parsedRaw = raw
                     // 重新解析 = 一切预览态作废，不残留旧归属
                     nameRoles = emptyMap()
                     orphanRoles = emptyMap()
@@ -199,13 +225,28 @@ private fun roleOf(
 
 /** 多行粘贴框（只在浮层里，不碰输入行那颗单行胶囊） */
 @Composable
-private fun BatchPasteField(value: String, onValueChange: (String) -> Unit, placeholder: String) {
+private fun BatchPasteField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    onInputIntent: (() -> Unit)?,
+    placeholder: String
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 96.dp)
             .background(SurfaceInset, LoveBrainShape.md)
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
+            // 审计 R1-3：与 [PanelTextInput] 同一条编辑意图链路——用户碰到输入区 = 想编辑，
+            // 悬浮窗宿主收到就 PASSIVE→EDITING（拆掉 FLAG_NOT_FOCUSABLE，IME 才能弹出）。
+            // 边沿触发（H4）：只在每次手势按下那一跳上报一次，不逐事件重复上报，
+            // 窗口 flags 不被 updateViewLayout 反复抖动。不消费事件，BasicTextField 照常获焦。
+            .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
+                awaitEachGesture {
+                    awaitFirstDown(requireUnconsumed = false)
+                    onInputIntent()
+                }
+            } else Modifier)
             .padding(Spacing.md)
     ) {
         if (value.isEmpty()) {

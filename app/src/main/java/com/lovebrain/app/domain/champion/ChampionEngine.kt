@@ -44,10 +44,11 @@ enum class ChampionMode(val raw: String) {
  * 冠军引擎 facade（T4 Kotlin 移植 §3.2）：
  * ChampionPromptAssembler + ChampionEventStore + ContractGuard + 同一 AiGateway 的组合体。
  *
- * S1 shadow 的语义（规格书 §3.2）：
+ * S1 shadow 的语义（规格书 §3.2；事件时机按审计 R2-1 对齐产品正式提交点）：
  * - 原链路完整照走（原 PromptBuilder + 原记忆管线 + 原渲染），用户看到的一切不变；
  * - 原链路请求发出**之后**（成功或失败都算）追加一次冠军生成：同一批输入装配冠军
- *   prompt（events 正常入库——真实消息本就要入库；shadow 回复**不入库**）→ 过守卫 →
+ *   prompt（**当前窗口只装配不入库**——事件入库唯一入口是 [commitConfirmedTurn]，挂在
+ *   产品「下一轮」正式提交点；shadow 回复**永不入库**）→ 过守卫 →
  *   结果与 guardMeta、prompt/history/uc CU、usage、耗时整体写
  *   `champion/shadow_log.jsonl`（含两侧输出与装配差异）；
  * - **不 emit 任何 ReplyEvent、不进 UI、不触发 TopicRecorder 的 shadow 侧写入**；
@@ -74,7 +75,19 @@ class ChampionEngine(
         private val json = Json { encodeDefaults = true }
     }
 
-    fun mode(): ChampionMode = ChampionMode.fromRaw(settings.championEngineMode)
+    fun mode(): ChampionMode {
+        val m = ChampionMode.fromRaw(settings.championEngineMode)
+        // 审计 R2-3（模式诚实化）：S2/S3 尚未接线——主请求 prompt 仍是原 PromptBuilder，
+        // 枚举里保留了档位名，但**没有可用实现**。读到 SINGLE_STYLE/FULL 一律按 OFF
+        // 处理并记日志，不得借未接线的档位宣称冠军主链路可用（W1/R2 显式登记）。
+        if (m == ChampionMode.SINGLE_STYLE || m == ChampionMode.FULL) {
+            com.lovebrain.app.util.L.w(
+                "championEngineMode=$m 未接线（S2/S3 not wired，见 PORT_IDENTITY.json 登记），按 OFF 处理"
+            )
+            return ChampionMode.OFF
+        }
+        return m
+    }
 
     /**
      * contactId×story 白名单（规格书 §3.1 `champion_engine_scope`）：
@@ -117,6 +130,14 @@ class ChampionEngine(
      * （PARTNER→HER / USER→ME），轮次号取事件库已有最大 turn+1，时间戳按分钟级
      * `yyyy-MM-dd HH:mm` 落（与 Clock 端口同格式）。
      */
+    /** shadow 装配侧的角色白名单：非 HER/ME 的输入在装配前就拒（与 store.append 同口径）。 */
+    private fun requireRealRoleForShadow(role: String, text: String) {
+        check(role == "HER" || role == "ME") {
+            "champion shadow 收到非真实消息（role=$role），拒绝装配 text=${text.take(20)}…"
+        }
+    }
+
+    /** S1 shadow：原链路结果（成功或失败都算）照常 emit；冠军生成 fire-and-forget。 */
     fun launchShadow(
         requestId: String,
         contactId: String,
@@ -126,7 +147,8 @@ class ChampionEngine(
         advisorNote: String,
         originalReply: String,
         timeoutMs: Long,
-        providerConfig: com.lovebrain.app.model.ProviderRequestConfig?
+        providerConfig: com.lovebrain.app.model.ProviderRequestConfig?,
+        seed: ChampionPromptAssembler.ChampionSeed = ChampionPromptAssembler.ChampionSeed()
     ) {
         val msgs = dialogue.map { m ->
             Triple(
@@ -145,14 +167,45 @@ class ChampionEngine(
             advisorNote = advisorNote,
             originalReply = originalReply,
             timeoutMs = timeoutMs,
-            providerConfig = providerConfig
+            providerConfig = providerConfig,
+            seed = seed
         )
+    }
+
+    /**
+     * 正式提交点（T4 §1.1 / 审计 R2-1）：把**已确认**的一轮真实消息写入事件库。
+     *
+     * 调用点 = 产品正式提交历史的同一事务点（`LoveBrainViewModel.nextRound` 里
+     * `topicRecorder.record` 成功之后）——不是生成路径。shadow 生成（[shadowTurn]）
+     * **只装配不落库**：用户删掉重来、放弃的输入在生成路径上不产生任何持久痕迹；
+     * 只有用户点「下一轮」确认提交，这里才入库。
+     *
+     * [turn] < 0 时按事件库 nextTurn 取（与 shadow 同一取号口径：已确认历史最大 turn+1，
+     * 同一轮多次生成/重试取到同一个号）。同键 `role|text|ts` 去重保证同一输入多次提交
+     * 只记一次（uid 复用，turn 取首次落库值）。
+     */
+    suspend fun commitConfirmedTurn(
+        contactId: String,
+        story: String,
+        messages: List<Triple<String, String, String>>,
+        turn: Int = -1
+    ): List<ChampionEvent> {
+        val key = "${contactId}__${story}"
+        val resolvedTurn = if (turn < 0) eventStore.nextTurn(key) else turn
+        return eventStore.append(key, messages, resolvedTurn)
     }
 
     /**
      * 同步执行一轮 shadow（供测试与 [launchShadow] 复用）。
      * 任何异常都收敛为 ok=false 的日志行，绝不向调用方抛。
      * [turn] < 0 时按事件库 nextTurn 取。
+     *
+     * 审计 R2-1：**本路径不写事件库**。事件入库唯一入口是 [commitConfirmedTurn]
+     * （产品「下一轮」正式提交点）。当前窗口消息以未持久化的 pending 事件参与装配：
+     * pending uid = 已入库最大 uid + 1 + 序号，与随后 [commitConfirmedTurn] 真正入库时
+     * `uidSeq` 分配到的 uid 一致（store 不追加时 uidSeq == maxUid+1），shadow 日志里的
+     * source_id 与正式历史可对齐；未确认输入换文本后 pending uid 与入库 uid 一一对应，
+     * 放弃的输入则不留任何痕迹。
      */
     suspend fun shadowTurn(
         requestId: String,
@@ -164,23 +217,29 @@ class ChampionEngine(
         advisorNote: String,
         originalReply: String,
         timeoutMs: Long,
-        providerConfig: ProviderRequestConfig?
+        providerConfig: ProviderRequestConfig?,
+        seed: ChampionPromptAssembler.ChampionSeed = ChampionPromptAssembler.ChampionSeed()
     ): ShadowOutcome {
         val t0 = clock.epochMs()
         val wallClock = clock.wallClock()
         try {
             val key = "${contactId}__${story}"
             val resolvedTurn = if (turn < 0) eventStore.nextTurn(key) else turn
-            // 当前窗口真实消息入库（同键 role|text|ts 去重）；shadow 回复永不入库
-            val cur = eventStore.append(key, messages, resolvedTurn)
-            val all = eventStore.events(key)
+            // 当前窗口只装配、不入库（R2-1）；历史 = 已确认事件（不含任何未提交输入）
+            val committed = eventStore.events(key)
+            val pendingBase = (committed.maxOfOrNull { it.uid } ?: -1L) + 1L
+            val cur = messages.mapIndexed { i, (role, text, ts) ->
+                requireRealRoleForShadow(role, text)
+                ChampionEvent(uid = pendingBase + i, role = role, text = text, ts = ts, turn = resolvedTurn)
+            }
             val prompt = assembler.assemble(
-                events = all,
+                events = committed,
                 curWindow = cur,
                 turn = resolvedTurn,
                 intent = intent,
                 advisorNote = advisorNote,
-                wallClock = wallClock
+                wallClock = wallClock,
+                seed = seed
             )
             val system = assembler.buildSystemPrompt()
             val generated = collect(
@@ -254,13 +313,14 @@ class ChampionEngine(
         advisorNote: String,
         originalReply: String,
         timeoutMs: Long,
-        providerConfig: ProviderRequestConfig?
+        providerConfig: ProviderRequestConfig?,
+        seed: ChampionPromptAssembler.ChampionSeed = ChampionPromptAssembler.ChampionSeed()
     ) {
         shadowExecutor {
             runCatching { ChampionIdentity.writeIdentityFile(rootDir, assembler) }
             val outcome = shadowTurn(
                 requestId, contactId, story, turn, messages, intent,
-                advisorNote, originalReply, timeoutMs, providerConfig
+                advisorNote, originalReply, timeoutMs, providerConfig, seed
             )
             runCatching { appendShadowLog(outcome.logLine) }
         }
@@ -320,16 +380,16 @@ class ChampionEngine(
  */
 object ChampionIdentity {
 
-    const val PORT_VERSION = "W1-SHADOW-20261106"
+    const val PORT_VERSION = "R2-SHADOW-20261106"
 
     /**
      * champion 包源文件 SHA-256 表（LF 归一，与 AssetFingerprints.canonical 同口径）。
      * 本表是移植批次的**登记值**——源文件再改动时必须更新版本并重走对拍。
      */
-    // 2026-11-06 移植批实测（LF 归一，SHA-256；ChampionIdentity 本体也在 ChampionEngine.kt）
+    // 2026-11-06 移植批实测；R2 批更新 ChampionEvent.kt（审计 R2-2 哈希命名）实测值
     val CHAMPION_SOURCE_SHA256: Map<String, String> = mapOf(
         "ChampionEvent.kt" to
-            "f491108b33489e76e7cfcbaa90ea8628690abea4992e438d2c09283e2a7dd87e",
+            "96f556099927f5b0134583695d82b12ff7aef26a1e5004cc2e527461c4c65c6a",
         "EventHistoryAssembler.kt" to
             "78ba82b340667d082cba7f343e34b0da413a1ce5eb713ab3e92165fbb34d7b6a",
         "UncertainBlockDetector.kt" to
@@ -378,6 +438,14 @@ object ChampionIdentity {
             put("written_at", SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Date()))
             put("champion_asset_hash", assetHash(assembler))
             put("arena_candidate", "window_expand_b_norecap_uc_guard")
+            // 审计 R2-3（模式诚实化）：显式登记接线状态。可用档位只有 OFF/SHADOW；
+            // SINGLE_STYLE/FULL 枚举保留但无实现，读到按 OFF 处理并记日志。
+            put("wired_modes", JsonArray(listOf(JsonPrimitive("OFF"), JsonPrimitive("SHADOW"))))
+            put("s2_s3_status", "NOT_WIRED — 主请求 prompt 未切 ChampionPromptAssembler，" +
+                "SINGLE_STYLE/FULL 按 OFF 处理（登记于 W1_CHAMPION_ENGINE_IMPL.md 与 " +
+                "R2_CHAMPION_PERSISTENCE_IDENTITY_FIX.md，接线后更新本登记并走 custody 重验）")
+            put("event_commit_point", "LoveBrainViewModel.nextRound → commitConfirmedTurn " +
+                "（审计 R2-1：shadow 生成路径不写事件库）")
             put("champion_source_sha256", buildJsonObject {
                 CHAMPION_SOURCE_SHA256.forEach { (k, v) -> put(k, v) }
             })
