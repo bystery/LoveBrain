@@ -10,6 +10,7 @@ import com.lovebrain.app.model.OngoingItem
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SceneFact
 import com.lovebrain.app.util.L
+import kotlinx.coroutines.CancellationException
 
 /**
  * 话题生命周期管理器——**一轮提交的事务协调者**。
@@ -228,7 +229,10 @@ class TopicRecorder(
             OngoingCooldownStore.roundFingerprint(conversationalMessages)
         ) ?: return
         runCatching { ongoingCooldownStore.applyUpdate(pending) }
-            .onFailure { L.w("ongoing cooldown commit failed (round already committed, cooldown 未推进): ${it.message}") }
+            .onFailure {
+                if (it is CancellationException) throw it
+                L.w("ongoing cooldown commit failed (round already committed, cooldown 未推进): ${it.message}")
+            }
     }
 
     /**
