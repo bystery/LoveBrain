@@ -22,6 +22,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -590,10 +591,23 @@ class ChampionEngineTest {
         val obj = Json.parseToJsonElement(file.readText()).jsonObject
         assertTrue(obj.containsKey("champion_asset_hash"))
         assertEquals("window_expand_b_norecap_uc_guard", obj["arena_candidate"]!!.jsonPrimitive.content)
-        // 审计 R2-3：接线状态显式登记——可用档位只有 OFF/SHADOW，S2/S3 未接线
-        val wired = obj["wired_modes"]!!.jsonArray.map { it.jsonPrimitive.content }
-        assertEquals(listOf("OFF", "SHADOW"), wired)
+        // 审计 R2-3：接线状态显式登记——S2/S3 未接线按 OFF 处理
         assertTrue(obj["s2_s3_status"]!!.jsonPrimitive.content.contains("NOT_WIRED"))
+        // guide-6 Step 6：LIVE_AUTO 生产接线登记——wired_modes 扩到三档 + 分域候选来源
+        val wired = obj["wired_modes"]!!.jsonArray.map { it.jsonPrimitive.content }
+        assertEquals(listOf("OFF", "SHADOW", "LIVE_AUTO"), wired)
+        assertEquals("LIVE_AUTO", obj["default_mode"]!!.jsonPrimitive.content)
+        assertEquals("LoveBrain PromptBuilder", obj["live_prompt_source"]!!.jsonPrimitive.content)
+        assertTrue(obj["live_candidate_by_turn"]!!.jsonPrimitive.content.contains("<=24"))
+        assertTrue(obj["live_candidate_by_turn"]!!.jsonPrimitive.content.contains(">=25"))
+        assertTrue(obj["legacy_shadow_candidate"]!!.jsonPrimitive.content
+            .contains("CROSS_DOMAIN_NOT_PROMOTED"))
+        assertEquals(3600, obj["history_budget_cu"]!!.jsonPrimitive.int)
+        assertTrue(obj["history_commit_point"]!!.jsonPrimitive.content.contains("nextRound"))
+        assertEquals("BYPASS_CHAMPION_CONTEXT", obj["only_this_round"]!!.jsonPrimitive.content)
+        // 2026-11-12 用户纪律：sha256 防御性分析停用——登记内容照常，哈希登记字段注明停用
+        assertTrue(obj["sha256_registration"]!!.jsonPrimitive.content.contains("DISABLED"))
+        // 历史 hash 表（移植/F2 批次实测值；对应源文件 guide-6 批次零改动，不重算）
         val arena = obj["arena_mechanism_sha256"]!!.jsonObject
         assertEquals(5, arena.size)
         assertTrue(arena["mechanism/contract_guard.py"]!!.jsonPrimitive.content.startsWith("c26c68c0"))

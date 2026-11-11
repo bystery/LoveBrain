@@ -107,6 +107,17 @@ interface KnowledgeRuntimePort {
     suspend fun updateWarmthStageLabel(kbName: String, newStage: String)
 
     /**
+     * 已正式提交轮数（kb.json `turnCount` 原值口径——§5.5/§D 轮次唯一合法来源）。
+     *
+     * guide-6 Step 5：ViewModel 在生成开始各只读一次，冻结进
+     * GenerationInput.KbContext.committedTurnCount（读失败传 null → 域内全链回退
+     * 原生路径，不猜轮次）；生产提交点（nextRound）在 topicRecorder.record 成功后
+     * 再读一次作为提交 turn（读失败传 -1 走事件库 nextTurn 兜底）。分域判据用
+     * 「原值 + 1」的请求轮次口径——本方法永远返回原值，不做任何 +1。
+     */
+    suspend fun getTurnCount(kbName: String): Int
+
+    /**
      * 画像三段 + 阶段 + 向量的一次事务写，带 revision 前置条件。
      *
      * 返回值是 typed result 而不是 Boolean：回滚失败与前置条件不满足要给 UI 两种不同反馈，

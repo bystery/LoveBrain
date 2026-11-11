@@ -517,7 +517,9 @@ class ChampionEngine(
  */
 object ChampionIdentity {
 
-    const val PORT_VERSION = "F2-DEDUP-20261106"
+    // guide-6 Step 6：LIVE_AUTO 生产接线升版（W19-03 分域判决落地；
+    // 上一版 F2-DEDUP-20261106 = 事件去重身份批次）
+    const val PORT_VERSION = "G6-LIVEAUTO-20261112"
 
     /**
      * champion 包源文件 SHA-256 表（LF 归一，与 AssetFingerprints.canonical 同口径）。
@@ -561,10 +563,46 @@ object ChampionIdentity {
         return com.lovebrain.app.domain.AssetFingerprints.hashOf(entries)
     }
 
+    /**
+     * guide-6 Step 6：LIVE_AUTO 生产接线登记（§17 Step 6 / §B.4 环⑧）。
+     * 与 [identityJson] / [writeIdentityFile] 共用，保证每条 shadow 记录与落盘
+     * 身份文件登记同源。登记内容照常写入；**哈希值字段留空**（见 [SHA256_REGISTRATION_NOTE]）。
+     */
+    private const val LIVE_PROMPT_SOURCE = "LoveBrain PromptBuilder"
+    private const val LIVE_CANDIDATE_BY_TURN =
+        "request_turn<=24 -> window_expand_b_norecap_guard(GUARD_SHORT); " +
+            "request_turn>=25 -> window_expand_b_norecap_uc(UC_LONG)"
+    private const val LEGACY_SHADOW_CANDIDATE =
+        "window_expand_b_norecap_uc_guard — CROSS_DOMAIN_NOT_PROMOTED"
+    const val HISTORY_BUDGET_CU = 3600
+    private const val ONLY_THIS_ROUND = "BYPASS_CHAMPION_CONTEXT"
+
+    /**
+     * 2026-11-12 用户纪律：防御性分析（sha256）停用——guide-6 批次改动文件的哈希
+     * 登记字段一律留空，不实测、不手写、不猜测、不冒充（§13.3 条 7-9 原则保留）；
+     * 纪律解除后按 §13.3 实测补登。本表下方的既有三 hash 表为移植/F2 批次的历史
+     * 实测登记值，其对应源文件在 guide-6 批次零改动，登记值继续有效、不重算。
+     */
+    const val SHA256_REGISTRATION_NOTE =
+        "guide-6 wiring batches: hash registration DISABLED (defensive analysis off, 2026-11-12) — " +
+            "hash value fields left empty; existing tables below keep their historical measured values " +
+            "(covered source files untouched by guide-6)"
+
     fun identityJson(assembler: ChampionPromptAssembler): JsonObject = buildJsonObject {
         put("port_version", PORT_VERSION)
         put("champion_asset_hash", assetHash(assembler))
         put("arena_candidate", "window_expand_b_norecap_uc_guard")
+        // guide-6 Step 6：LIVE_AUTO 生产接线登记（wired_modes 从 OFF/SHADOW 扩到 LIVE_AUTO）
+        put("default_mode", "LIVE_AUTO")
+        put("wired_modes", JsonArray(listOf(
+            JsonPrimitive("OFF"), JsonPrimitive("SHADOW"), JsonPrimitive("LIVE_AUTO"))))
+        put("live_prompt_source", LIVE_PROMPT_SOURCE)
+        put("live_candidate_by_turn", LIVE_CANDIDATE_BY_TURN)
+        put("legacy_shadow_candidate", LEGACY_SHADOW_CANDIDATE)
+        put("history_budget_cu", HISTORY_BUDGET_CU)
+        put("history_commit_point", "LoveBrainViewModel.nextRound -> commitConfirmedTurn")
+        put("only_this_round", ONLY_THIS_ROUND)
+        put("sha256_registration", SHA256_REGISTRATION_NOTE)
     }
 
     /** 落盘 PORT_IDENTITY.json（含完整三 hash 表；幂等，每次覆盖为当前身份）。 */
@@ -575,14 +613,23 @@ object ChampionIdentity {
             put("written_at", SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Date()))
             put("champion_asset_hash", assetHash(assembler))
             put("arena_candidate", "window_expand_b_norecap_uc_guard")
-            // 审计 R2-3（模式诚实化）：显式登记接线状态。可用档位只有 OFF/SHADOW；
-            // SINGLE_STYLE/FULL 枚举保留但无实现，读到按 OFF 处理并记日志。
-            put("wired_modes", JsonArray(listOf(JsonPrimitive("OFF"), JsonPrimitive("SHADOW"))))
+            // guide-6 Step 6：LIVE_AUTO 生产接线登记（§B.4 环⑧）。
+            put("default_mode", "LIVE_AUTO")
+            put("wired_modes", JsonArray(listOf(
+                JsonPrimitive("OFF"), JsonPrimitive("SHADOW"), JsonPrimitive("LIVE_AUTO"))))
+            put("live_prompt_source", LIVE_PROMPT_SOURCE)
+            put("live_candidate_by_turn", LIVE_CANDIDATE_BY_TURN)
+            put("legacy_shadow_candidate", LEGACY_SHADOW_CANDIDATE)
+            put("history_budget_cu", HISTORY_BUDGET_CU)
+            put("history_commit_point", "LoveBrainViewModel.nextRound -> commitConfirmedTurn " +
+                "（审计 R2-1：shadow 生成路径不写事件库；topicRecorder.record 成功后才提交）")
+            put("only_this_round", ONLY_THIS_ROUND)
+            // 审计 R2-3（模式诚实化）：显式登记接线状态。SINGLE_STYLE/FULL 枚举保留但无实现，
+            // 读到按 OFF 处理并记日志（LIVE_AUTO 已接线为默认生产档，判据走 ChampionTurnStrategy）。
             put("s2_s3_status", "NOT_WIRED — 主请求 prompt 未切 ChampionPromptAssembler，" +
                 "SINGLE_STYLE/FULL 按 OFF 处理（登记于 W1_CHAMPION_ENGINE_IMPL.md 与 " +
                 "R2_CHAMPION_PERSISTENCE_IDENTITY_FIX.md，接线后更新本登记并走 custody 重验）")
-            put("event_commit_point", "LoveBrainViewModel.nextRound → commitConfirmedTurn " +
-                "（审计 R2-1：shadow 生成路径不写事件库）")
+            put("sha256_registration", SHA256_REGISTRATION_NOTE)
             put("champion_source_sha256", buildJsonObject {
                 CHAMPION_SOURCE_SHA256.forEach { (k, v) -> put(k, v) }
             })

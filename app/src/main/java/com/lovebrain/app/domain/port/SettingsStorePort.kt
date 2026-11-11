@@ -122,12 +122,14 @@ interface SettingsStorePort {
      */
     var connectionVerifiedIdentity: String
 
-    // ── 冠军引擎特征开关（T4 Kotlin 移植 W1；默认 OFF，不改变现有用户行为）──
+    // ── 冠军引擎特征开关（T4 Kotlin 移植 W1；guide-6 Step 6 起 LIVE_AUTO 为默认生产档）──
 
     /**
-     * 冠军引擎模式：`OFF | SHADOW | SINGLE_STYLE | FULL`。
-     * **默认 OFF（fail-closed）**：没写过/写错/未登记的值一律按 OFF 读——
-     * 这颗开关的默认语义是"现有用户行为一个字节都不变"。按轮冻结进生成输入，轮中不改。
+     * 冠军引擎模式：`OFF | SHADOW | SINGLE_STYLE | FULL | LIVE_AUTO`。
+     * **默认 LIVE_AUTO（guide-6 Step 6 生产接线）**：键从未写入（null 哨兵）→ LIVE_AUTO
+     * （正常主请求按轮次自动选分域策略：≤24 域 guard、>24 域 uc）；显式 OFF 永远尊重
+     * （紧急回退原链路）；SHADOW 原样（独立诊断）；SINGLE_STYLE/FULL 与未知脏值
+     * fail-closed 为 OFF（旧档位未接线，收敛语义不动）。按轮冻结进生成输入，轮中不改。
      */
     var championEngineMode: String
 

@@ -314,6 +314,9 @@ class InMemoryKnowledgeRuntimePort : KnowledgeRuntimePort {
     override suspend fun readProfile(kbName: String): String = profiles[kbName] ?: ""
     override suspend fun contentRevision(kbName: String): String = (contentRevisions[kbName] ?: 0).toString()
     override suspend fun updateWarmthStageLabel(kbName: String, newStage: String) { stages[kbName] = newStage }
+    // guide-6 Step 5：运行时端口补读已提交轮数（fake 无提交路径，默认 0 = 首轮口径）
+    private val turnCounts = mutableMapOf<String, Int>()
+    override suspend fun getTurnCount(kbName: String): Int = turnCounts[kbName] ?: 0
 
     override suspend fun applyProfileUpdateAtomically(
         kbName: String, me: String?, her: String?, warmth: String?,

@@ -304,6 +304,12 @@ class LoveBrainViewModel(
         val sourceAliasMap: Map<String, String> = emptyMap(), // B项修复：别名→实际消息ID映射
         val inputFingerprint: String = "", // 输入指纹——对 KB+消息正文+角色+顺序+IDEA+onlyThisRound+intent revision 做哈希
         val onlyThisRound: Boolean = false, // 冻结 onlyThisRound 状态
+        // guide-6 Step 5：本轮冻结的有效 Champion 模式快照（effectiveMode().raw；
+        // "OFF"|"SHADOW"|"LIVE_AUTO"）。生成开始时各只读一次——生成中途改设置不影响
+        // 本轮：引擎分流读 GenerationInput.championMode（单一快照源，§10.1），提交门禁
+        // 与 commitConfirmedTurn 的 modeSnapshot 都只认这份快照，不再现场回读设置。
+        // committedTurnCount 不复制进 context（同一快照已随 GenerationInput 走域内）。
+        val championMode: String = "OFF",
         // 生成本轮真正使用的 system prompt 资产指纹——点踩案例记的是它，不是 App 版本名。
         // 版本名没发就永远算不出"prompt 被改过"，硬编码字符串更会把诊断指向错误的 prompt。
         val promptVersion: String = ""
@@ -1222,6 +1228,25 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             // 三处各自现读开关的话，长按那一条会产出"输入按只读本轮、指纹却按开关"的错配。
             val onlyThisRound = roundStateStore.resolveOnlyThisRound(roundScope)
             val providerConfig = deepSeekRepo.snapshotProviderConfig()
+
+            // ── guide-6 Step 5：Champion 冻结输入——本轮各只读一次（§5.2 拆现场回读）──
+            // 模式快照 = effectiveMode().raw（OFF/SHADOW/LIVE_AUTO；scope 未命中=OFF）。
+            // 已提交轮数 = getTurnCount 原值口径（kb.json turnCount；读失败 → null →
+            // 域内全链回退原生路径，不猜轮次 §5.4）。两项冻结后，本轮内生成中途改设置、
+            // 写盘递增轮数都不再回读——分域判据与提交门禁只认这份快照。
+            val championModeSnapshot =
+                kbName?.let { championEngine?.effectiveMode(it, it)?.raw } ?: "OFF"
+            val committedTurnCountSnapshot = kbName?.let { name ->
+                try {
+                    withContext(Dispatchers.IO) { knowledgeRepo.getTurnCount(name) }
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    L.w("getTurnCount failed: ${e.message}")
+                    null
+                }
+            }
+
             val input = buildGenerationInput(
                 requestId = requestId,
                 messages = snapshot,
@@ -1235,7 +1260,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 providerIdentity = providerConfig?.toIdentity(),
                 kbProfile = kbName?.let { readOrNull("") { knowledgeRepo.readProfile(it) } } ?: "",
                 kbRevision = kbName?.let { readOrNull("") { knowledgeRepo.contentRevision(it) } } ?: "",
-                promptAssetHash = promptBuilder.replyPromptAssetHash()
+                promptAssetHash = promptBuilder.replyPromptAssetHash(),
+                championMode = championModeSnapshot,
+                committedTurnCount = committedTurnCountSnapshot
             )
 
             replyGenerationContext = ReplyGenerationContext(
@@ -1251,6 +1278,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     snapshot, userHint, kbName, onlyThisRound, effectiveIntent.revision
                 ),
                 onlyThisRound = onlyThisRound,
+                championMode = championModeSnapshot,
                 promptVersion = promptBuilder.replyPromptAssetHash()
             )
 
@@ -1569,15 +1597,28 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 // commitReplyRound 之前）；生成/shadow 路径不写事件库——用户删掉重来的未确认
                 // 输入永不进事件库，同一输入多次生成只在本提交点记一次（按 msgUid 去重）。
                 // 提交失败只记日志：冠军事件是辅助账，绝不把本轮产品落盘拖成「保存失败」。
-                // 审计 S1-P0-1（OFF 零副作用）：提交点统一检查 Champion 有效模式+作用域——
-                // 只有有效模式非 OFF（当前接线=SHADOW；S2/S3 未接线被 mode() 收敛为 OFF）
-                // 才允许写事件库；OFF（默认档）零副作用，连事件库目录都不创建。
-                // commitConfirmedTurn 内部还有同一道门禁兜底（双保险）；这里提前判，
-                // 是为了 OFF 时连消息格式化都不做。
+                // 审计 S1-P0-1（OFF 零副作用）：提交点检查 Champion 有效模式+作用域——
+                // guide-6 Step 5：门禁判据从「现场回读 effectiveMode」换成**冻结快照**
+                // context.championMode（与生成输入同一份快照，单一快照源 §10.1）——生成中
+                // 改设置不影响本轮提交判定；fromRaw 对脏值 fail-closed 为 OFF。
+                // OFF（显式回退档）零副作用，连事件库目录都不创建。
+                // commitConfirmedTurn 内部还有同一道门禁兜底（双保险，modeSnapshot 同值）；
+                // 这里提前判，是为了 OFF 时连消息格式化都不做。
                 if (championEngine != null &&
-                    championEngine.effectiveMode(kbName, kbName) !=
+                    com.lovebrain.app.domain.champion.ChampionMode.fromRaw(context.championMode) !=
                         com.lovebrain.app.domain.champion.ChampionMode.OFF
                 ) {
+                    // §10.5：turn = record 成功后的 getTurnCount（record 已把本轮计入），
+                    // 读失败传 -1 → commitConfirmedTurn 内部按事件库 nextTurn 兜底；
+                    // 轮数读失败不影响本轮已保存事实。
+                    val championTurn = try {
+                        withContext(Dispatchers.IO) { knowledgeRepo.getTurnCount(kbName) }
+                    } catch (e: kotlinx.coroutines.CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        L.w("getTurnCount after record failed: ${e.message}")
+                        -1
+                    }
                     val championMsgs = messagesSnapshot
                         .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
                         .map { m ->
@@ -1594,7 +1635,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                             championEngine.commitConfirmedTurn(
                                 contactId = kbName,
                                 story = kbName,
-                                messages = championMsgs
+                                messages = championMsgs,
+                                // guide-6 Step 5：生产链路传冻结快照——commitConfirmedTurn
+                                // 按快照过 scope 门，不再回读设置（旧调用方 null 走原语义）
+                                modeSnapshot = context.championMode,
+                                turn = championTurn
                             )
                         } catch (e: kotlinx.coroutines.CancellationException) {
                             throw e

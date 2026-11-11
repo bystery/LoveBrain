@@ -352,22 +352,30 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         set(value) = prefs.edit().putString(KEY_CONNECTION_VERIFIED_IDENTITY, value).apply()
 
     /**
-     * 冠军引擎模式（T4 Kotlin 移植 W1）：`OFF | SHADOW | SINGLE_STYLE | FULL`。
-     * **默认 OFF**：没写过这颗键 = 用户从没要过冠军引擎 ⇒ 读出来必须是 OFF（fail-closed，
-     * 与 [captureEnabled] 同一口径——引擎级开关不许默认开）。脏值也按 OFF 读。
+     * 冠军引擎模式（T4 Kotlin 移植 W1）：`OFF | SHADOW | SINGLE_STYLE | FULL | LIVE_AUTO`。
      *
-     * 审计 R2-3（模式诚实化）：S2/S3 尚未接线（主请求 prompt 未切
-     * ChampionPromptAssembler），**可用档位只有 OFF/SHADOW**——读/写两侧都把
-     * SINGLE_STYLE/FULL 收敛成 OFF 并记日志（档位名在枚举里保留，登记见
-     * PORT_IDENTITY.json 与 W1_CHAMPION_ENGINE_IMPL.md）。
+     * guide-6 Step 6（§4.2，LIVE_AUTO 生产接线默认启用）：**null 哨兵区分「从未写入」与
+     * 「显式 OFF」**——键不存在（用户从没碰过这颗开关）→ 默认 `LIVE_AUTO`（正常主请求按
+     * 轮次自动选分域策略）；显式 `OFF` → 永远尊重（紧急回退原链路，绝不覆盖用户显式设置
+     * R4，不在启动时无条件写盘）；`SHADOW` 原样（独立诊断档）；`SINGLE_STYLE`/`FULL` 与
+     * 未知脏值 → fail-closed 读为 OFF（原语义不动）。键名 `champion_engine_mode` 不变
+     * （L648）→ 已有显式设置无损迁移。
+     *
+     * 审计 R2-3（模式诚实化）仍有效：S2/S3 尚未接线（主请求 prompt 未切
+     * ChampionPromptAssembler），读/写两侧都把 SINGLE_STYLE/FULL 收敛成 OFF 并记日志
+     * （档位名在枚举里保留，登记见 PORT_IDENTITY.json 与 W1_CHAMPION_ENGINE_IMPL.md）。
      */
     override var championEngineMode: String
         get() {
-            val raw = prefs.getString(KEY_CHAMPION_ENGINE_MODE, "OFF") ?: "OFF"
-            return if (raw == "SINGLE_STYLE" || raw == "FULL") {
-                L.w("championEngineMode=$raw 未接线（S2/S3 not wired），读为 OFF")
-                "OFF"
-            } else raw
+            // null 哨兵：默认值参数必须是 null 才能区分「键不存在」与「显式 OFF」
+            val raw = prefs.getString(KEY_CHAMPION_ENGINE_MODE, null) ?: return "LIVE_AUTO"
+            return when (raw) {
+                "OFF", "SHADOW", "LIVE_AUTO" -> raw
+                else -> {
+                    L.w("championEngineMode=$raw 未接线/脏值（S2/S3 not wired），fail-closed 读为 OFF")
+                    "OFF"
+                }
+            }
         }
         set(value) {
             val toWrite = if (value == "SINGLE_STYLE" || value == "FULL") {
@@ -644,7 +652,8 @@ private const val KEY_CONNECTION_VERIFIED_IDENTITY = "connection_verified_identi
         private const val KEY_TICKER_LIST_JSON = "worker_tickets_json"
         private const val KEY_ACTIVE_TICKET_ID = "active_ticket_id"
 
-        // 冠军引擎特征开关（T4 Kotlin 移植 W1；默认 OFF = 现有行为零变化）
+        // 冠军引擎特征开关（T4 Kotlin 移植 W1；guide-6 Step 6：键不存在默认 LIVE_AUTO，
+        // 显式 OFF 尊重、SINGLE_STYLE/FULL/脏值 fail-closed 为 OFF——getter null 哨兵实现）
         private const val KEY_CHAMPION_ENGINE_MODE = "champion_engine_mode"
         private const val KEY_CHAMPION_ENGINE_SCOPE = "champion_engine_scope"
     }

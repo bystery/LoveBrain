@@ -171,17 +171,27 @@ abstract class SettingsStorePortContract {
     }
 
     @Test
-    fun `champion engine mode defaults to OFF and round-trips`() {
-        // T4 Kotlin 移植 W1：引擎级开关默认 OFF——没写过这颗键 = 现有用户行为零变化（fail-closed）
+    fun `champion engine mode defaults to LIVE_AUTO when never written, explicit OFF respected and round-trips`() {
+        // guide-6 Step 6：null 哨兵区分「从未写入」与「显式 OFF」——键不存在 → LIVE_AUTO
+        // （生产接线默认启用）；显式 OFF 永远尊重（紧急回退原链路，绝不覆盖用户设置）。
         val s = newStore()
+        assertEquals("LIVE_AUTO", s.championEngineMode)
+        // 显式 OFF 写入后 = 用户紧急回退，必须原样读回
+        s.championEngineMode = "OFF"
         assertEquals("OFF", s.championEngineMode)
+        // guide-6 Step 2：LIVE_AUTO 已接线为默认生产档——显式写入原样读回
+        s.championEngineMode = "LIVE_AUTO"
+        assertEquals("LIVE_AUTO", s.championEngineMode)
         s.championEngineMode = "SHADOW"
         assertEquals("SHADOW", s.championEngineMode)
         // 审计 R2-3（模式诚实化）：S2/S3 未接线，设置侧把 SINGLE_STYLE/FULL 收敛成 OFF——
-        // 写档位名也不能让它生效（枚举保留，可用档位只有 OFF/SHADOW）
+        // 写档位名也不能让它生效（枚举保留，可用档位 OFF/SHADOW/LIVE_AUTO）
         s.championEngineMode = "FULL"
         assertEquals("OFF", s.championEngineMode)
         s.championEngineMode = "SINGLE_STYLE"
+        assertEquals("OFF", s.championEngineMode)
+        // 未知脏值 fail-closed：读为 OFF（setter 原样落盘，getter 兜）
+        s.championEngineMode = "gARBAGE"
         assertEquals("OFF", s.championEngineMode)
     }
 
@@ -316,12 +326,18 @@ class InMemorySettingsStore : SettingsStorePort {
     override var lastKbEditFile: String? = null
     override var connectionVerified: Boolean = false
     override var connectionVerifiedIdentity: String = ""
-    // 冠军引擎特征开关（T4 W1）：默认与生产同形——fail-closed OFF + 空白名单 = 全体。
-    // 审计 R2-3（模式诚实化）：与生产同形收敛——S2/S3 未接线，读写两侧钳成 OFF。
-    override var championEngineMode: String = "OFF"
-        get() = if (field == "SINGLE_STYLE" || field == "FULL") "OFF" else field
+    // 冠军引擎特征开关（T4 W1 + guide-6 Step 6）：与生产同形——null 哨兵区分「从未写入」
+    // （→ LIVE_AUTO 默认）与「显式 OFF」（永远尊重）；SINGLE_STYLE/FULL 两侧收敛 OFF、
+    // 未知脏值读侧 fail-closed 为 OFF。
+    private var championEngineModeRaw: String? = null
+    override var championEngineMode: String
+        get() = when (val raw = championEngineModeRaw) {
+            null -> "LIVE_AUTO"
+            "OFF", "SHADOW", "LIVE_AUTO" -> raw
+            else -> "OFF"
+        }
         set(value) {
-            field = if (value == "SINGLE_STYLE" || value == "FULL") "OFF" else value
+            championEngineModeRaw = if (value == "SINGLE_STYLE" || value == "FULL") "OFF" else value
         }
     override var championEngineScope: Set<String> = emptySet()
 }
