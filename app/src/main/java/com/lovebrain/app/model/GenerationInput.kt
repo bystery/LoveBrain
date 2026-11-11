@@ -40,7 +40,13 @@ data class GenerationInput(
     /** 冻结的 Provider 完整非敏感身份（不含 Key） */
     val providerIdentity: ProviderIdentity?,
     /** 冻结的 prompt 资产内容指纹 */
-    val promptAssetHash: String
+    val promptAssetHash: String,
+    /**
+     * 本轮冻结的有效 Champion 模式快照（[com.lovebrain.app.domain.champion.ChampionEngine.effectiveMode].raw：
+     * "OFF"|"SHADOW"|"LIVE_AUTO"）。引擎按此冻结值分流，不再回读设置——生成中途改设置不影响本轮。
+     * 默认 "OFF" 兼容旧调用方/旧测试。
+     */
+    val championMode: String = "OFF"
 ) {
     // 这里以前有一个 fingerprint()，注释写着"覆盖全部会影响输出的冻结字段"。
     // 两句话都不成立：正文只记长度（同 ID 同长度改字会碰撞），而且它把每次都不一样的
@@ -61,7 +67,13 @@ data class KbContext(
     /** 关系画像正文（understand/me|her|warmth|style.md） */
     val profile: String,
     /** 知识内容指纹，不是"提交过几轮"的近似计数 */
-    val revision: String
+    val revision: String,
+    /**
+     * 已正式提交轮数快照（= getTurnCount(kbName) 口径，即 kb.json turnCount 原值）。
+     * 字段名即口径声明：任何"当前请求轮次"一律现场 +1，不落新字段。
+     * 读取失败为 null → 全链回退原生路径（不猜轮次，不默认第 1 轮也不默认第 25 轮）。
+     */
+    val committedTurnCount: Int? = null
 )
 
 /**
@@ -146,7 +158,11 @@ fun buildGenerationInput(
     providerIdentity: ProviderIdentity?,
     kbProfile: String,
     kbRevision: String,
-    promptAssetHash: String
+    promptAssetHash: String,
+    /** 本轮冻结的有效 Champion 模式快照（默认 "OFF" 兼容旧调用方） */
+    championMode: String = "OFF",
+    /** 已正式提交轮数快照（getTurnCount 原值口径）；仅 kb != null 时写进 KbContext，读失败传 null */
+    committedTurnCount: Int? = null
 ): GenerationInput {
     // 分离对话与想法——dialogue 只含 PARTNER/USER，IDEA 进入 ReplyDirective
     val dialogue = messages
@@ -182,7 +198,8 @@ fun buildGenerationInput(
                 name = kb.name,
                 stage = kb.stage,
                 profile = kbProfile,
-                revision = kbRevision
+                revision = kbRevision,
+                committedTurnCount = committedTurnCount
             )
         },
         intentConfig = intentConfig,
@@ -190,6 +207,7 @@ fun buildGenerationInput(
         correctionsRevision = correctionsRevision,
         onlyThisRound = onlyThisRound,
         providerIdentity = providerIdentity,
-        promptAssetHash = promptAssetHash
+        promptAssetHash = promptAssetHash,
+        championMode = championMode
     )
 }

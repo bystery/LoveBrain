@@ -3,7 +3,10 @@ package com.lovebrain.app.domain.champion
 import com.lovebrain.app.domain.port.AiGateway
 import com.lovebrain.app.domain.port.Clock
 import com.lovebrain.app.domain.port.SettingsStorePort
+import com.lovebrain.app.model.DialogueMessage
+import com.lovebrain.app.model.DialogueSpeaker
 import com.lovebrain.app.model.IntentConfig
+import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.LoveBrainResponse
 import com.lovebrain.app.model.ProviderFailure
 import com.lovebrain.app.model.ProviderRequestConfig
@@ -12,6 +15,7 @@ import com.lovebrain.app.model.RawGenerationResult
 import com.lovebrain.app.model.ReplyFailureKind
 import com.lovebrain.app.model.StreamEvent
 import com.lovebrain.app.model.StreamUsage
+import com.lovebrain.app.model.buildGenerationInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
@@ -23,6 +27,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -94,6 +99,22 @@ class ChampionEngineTest {
         override fun wallClock() = "2026-11-06 10:00"
         override fun today() = "2026-11-06"
         override fun epochMs() = 1_790_000_000_000L
+    }
+
+    /** LIVE_AUTO 确定性装配的零模型调用证伪：任何模型入口被触碰即失败。 */
+    private class NoModelGateway : AiGateway {
+        override fun snapshotProviderConfig(): ProviderRequestConfig? = null
+        override fun configForTicket(ticketId: String): ProviderRequestConfig? = null
+        override fun generateStream(
+            systemPrompt: String, userPrompt: String, thinkingOverride: Int?,
+            thinkingShapeIndex: Int, config: ProviderRequestConfig?
+        ): Flow<StreamEvent> = throw AssertionError("prepareLiveContext 不允许调用模型")
+        override suspend fun generateRaw(systemPrompt: String, userPrompt: String): String =
+            throw AssertionError("prepareLiveContext 不允许调用模型")
+        override suspend fun generateRawWithMetadata(systemPrompt: String, userPrompt: String): RawGenerationResult =
+            throw AssertionError("prepareLiveContext 不允许调用模型")
+        override fun parseReplyResponse(content: String): LoveBrainResponse =
+            throw AssertionError("prepareLiveContext 不允许调用 parser")
     }
 
     private class FakeGateway(private val text: String) : AiGateway {
@@ -210,6 +231,223 @@ class ChampionEngineTest {
         )
         assertEquals(1, hit.size)
         assertEquals("范围内", hit.single().text)
+    }
+
+    @Test
+    fun `commitConfirmedTurn honours the frozen mode snapshot without rereading settings`() = runTest {
+        // guide-6 Step 2：生产链路传冻结快照（ReplyGenerationContext.championMode）——
+        // 快照非 OFF：即使当前设置已改回 OFF，本轮提交按冻结快照放行（scope 命中）
+        val (offNow, _) = newEngine(FakeSettings(mode = "OFF"))
+        val committed = offNow.commitConfirmedTurn(
+            "c", "s", listOf(ChampionMessage("HER", "按快照入库", "t", "m1")),
+            modeSnapshot = "LIVE_AUTO"
+        )
+        assertEquals("冻结快照 LIVE_AUTO 放行（不回读设置）", 1, committed.size)
+        // 快照 OFF：即使当前设置是 SHADOW，显式 OFF 快照仍零 IO（尊重显式关闭，§16 条 13）
+        val (shadowNow, shadowDir) = newEngine(FakeSettings(mode = "SHADOW"))
+        assertTrue(
+            shadowNow.commitConfirmedTurn(
+                "c", "s", listOf(ChampionMessage("HER", "x", "t", "m1")), modeSnapshot = "OFF"
+            ).isEmpty()
+        )
+        assertFalse("快照 OFF 不创建事件库目录", File(shadowDir, "events").exists())
+        // 快照脏值 fail-closed：零 IO
+        assertTrue(
+            offNow.commitConfirmedTurn(
+                "c", "s", listOf(ChampionMessage("ME", "y", "t", "m2")), modeSnapshot = "nonsense"
+            ).isEmpty()
+        )
+        // 快照走 scopeAllows：未命中零 IO，命中入库
+        val (scoped, _) = newEngine(FakeSettings(mode = "OFF", scope = setOf("c1|s1")))
+        assertTrue(
+            scoped.commitConfirmedTurn(
+                "c2", "s2", listOf(ChampionMessage("HER", "z", "t", "m3")), modeSnapshot = "LIVE_AUTO"
+            ).isEmpty()
+        )
+        assertEquals(
+            1, scoped.commitConfirmedTurn(
+                "c1", "s1", listOf(ChampionMessage("HER", "z", "t", "m3")), modeSnapshot = "LIVE_AUTO"
+            ).size
+        )
+    }
+
+    // ── LIVE_AUTO 分域与确定性装配（guide-6 §17 Step 2 / §15.1）──
+
+    @Test
+    fun `turn domain table 1 23 24 guard short and 25 40 uc long`() {
+        // 边界 24 单点定义在 SHORT_DOMAIN_MAX_TURN；轮次 1-24 = GUARD_SHORT，25+ = UC_LONG
+        assertEquals(24, ChampionTurnStrategy.SHORT_DOMAIN_MAX_TURN)
+        assertEquals(ChampionTurnStrategy.GUARD_SHORT, ChampionTurnStrategy.forTurn(1))
+        assertEquals(ChampionTurnStrategy.GUARD_SHORT, ChampionTurnStrategy.forTurn(23))
+        assertEquals(ChampionTurnStrategy.GUARD_SHORT, ChampionTurnStrategy.forTurn(24))
+        assertEquals(ChampionTurnStrategy.UC_LONG, ChampionTurnStrategy.forTurn(25))
+        assertEquals(ChampionTurnStrategy.UC_LONG, ChampionTurnStrategy.forTurn(40))
+    }
+
+    @Test
+    fun `LIVE_AUTO is a wired mode but never flips the legacy guard predicate`() {
+        assertEquals(ChampionMode.LIVE_AUTO, ChampionMode.fromRaw("LIVE_AUTO"))
+        val live = newEngine(FakeSettings(mode = "LIVE_AUTO")).first
+        assertEquals(ChampionMode.LIVE_AUTO, live.mode())
+        assertEquals(ChampionMode.LIVE_AUTO, live.effectiveMode("c", "s"))
+        // isMainPathGuarded 只认 S2/S3——LIVE_AUTO 的守卫判据走 strategy，旧档位语义不被偷换
+        assertFalse(ChampionMode.isMainPathGuarded(ChampionMode.LIVE_AUTO))
+        assertTrue(ChampionMode.isMainPathGuarded(ChampionMode.SINGLE_STYLE))
+        assertTrue(ChampionMode.isMainPathGuarded(ChampionMode.FULL))
+    }
+
+    @Test
+    fun `prepareLiveContext returns null when onlyThisRound`() = runTest {
+        // §16 条 14：onlyThisRound 禁读任何 Champion 历史——方法内防御返回 null
+        val (engine, _) = newEngine(FakeSettings(mode = "LIVE_AUTO"), gateway = NoModelGateway())
+        val ctx = engine.prepareLiveContext(
+            "c", "s", currentTurn = 1,
+            dialogue = listOf(DialogueMessage(id = "m1", speaker = DialogueSpeaker.PARTNER, text = "hi")),
+            onlyThisRound = true
+        )
+        assertNull("onlyThisRound 防御返回 null", ctx)
+    }
+
+    @Test
+    fun `prepareLiveContext first turn has empty history guard short and zero IO`() = runTest {
+        val (engine, dir) = newEngine(FakeSettings(mode = "LIVE_AUTO"), gateway = NoModelGateway())
+        val ctx = engine.prepareLiveContext(
+            "c", "s", currentTurn = 1,
+            dialogue = listOf(DialogueMessage(id = "m1", speaker = DialogueSpeaker.PARTNER, text = "周五见？")),
+            onlyThisRound = false
+        )!!
+        assertEquals(ChampionTurnStrategy.GUARD_SHORT, ctx.strategy)
+        assertEquals("无内容不出空标题（§7.3）", "", ctx.historyBlock)
+        assertEquals(0, ctx.historyCu)
+        assertEquals("GUARD_SHORT 的 UC 恒空串", "", ctx.uncertainBlock)
+        assertEquals(0, ctx.uncertainCu)
+        assertEquals(1, ctx.currentTurn)
+        // 装配零写入：不 append/不落盘，连事件库目录都不创建
+        assertFalse("装配不创建事件库目录", File(dir, "events").exists())
+    }
+
+    @Test
+    fun `prepareLiveContext assembles committed history and excludes current msgUids without appending`() = runTest {
+        val (engine, dir) = newEngine(FakeSettings(mode = "LIVE_AUTO"), gateway = NoModelGateway())
+        runBlocking {
+            engine.commitConfirmedTurn(
+                "c", "s",
+                listOf(
+                    ChampionMessage("HER", "周五见？", "2026-11-06 09:59", "m1"),
+                    ChampionMessage("ME", "好", "2026-11-06 10:00", "m2")
+                ),
+                modeSnapshot = "LIVE_AUTO", turn = 1
+            )
+        }
+        // 正常轮：历史块 = 段头 + 两条 m_src 行（HER→PARTNER / ME→USER），当前轮消息不在其中
+        val ctx = engine.prepareLiveContext(
+            "c", "s", currentTurn = 2,
+            dialogue = listOf(DialogueMessage(id = "m3", speaker = DialogueSpeaker.PARTNER, text = "路上吗？")),
+            onlyThisRound = false
+        )!!
+        assertTrue(ctx.historyBlock.startsWith("# 【真实历史消息：仅实际发送；模型回复是草稿，不在此列】"))
+        assertTrue(ctx.historyBlock.contains("m_src[0] | 2026-11-06 09:59 | PARTNER | 周五见？"))
+        assertTrue(ctx.historyBlock.contains("m_src[1] | 2026-11-06 10:00 | USER | 好"))
+        assertFalse(ctx.historyBlock.contains("路上吗？"))
+        assertTrue(ctx.historyCu > 0)
+        // 重复生成边缘：当前轮输入携带已提交的 msgUid（m1）→ priorEvents 按 msgUid 排除，不重计
+        val retry = engine.prepareLiveContext(
+            "c", "s", currentTurn = 2,
+            dialogue = listOf(
+                DialogueMessage(id = "m1", speaker = DialogueSpeaker.PARTNER, text = "周五见？"),
+                DialogueMessage(id = "m4", speaker = DialogueSpeaker.PARTNER, text = "新消息")
+            ),
+            onlyThisRound = false
+        )!!
+        assertFalse("已提交同 msgUid 的当前轮消息不得重复进历史", retry.historyBlock.contains("m_src[0]"))
+        assertTrue(retry.historyBlock.contains("m_src[1]"))
+        // 装配零写入：事件库仍只有两条已提交事件（ChampionEventStore.append 零调用）
+        val store = ChampionEventStore(FileChampionEventStorage(File(dir, "events")))
+        assertEquals(2, runBlocking { store.events("c__s") }.size)
+    }
+
+    @Test
+    fun `multi message turn still counts as one round for the domain split`() = runTest {
+        // 轮次口径（§5.3 排除清单）：一轮可含多条 HER/ME 消息，正式轮数只 +1——
+        // 分域只认 currentTurn 参数（committedTurnCount+1），绝不取 dialogue.size
+        val (engine, _) = newEngine(FakeSettings(mode = "LIVE_AUTO"), gateway = NoModelGateway())
+        val threeMsgs = listOf(
+            DialogueMessage(id = "a", speaker = DialogueSpeaker.PARTNER, text = "第一条"),
+            DialogueMessage(id = "b", speaker = DialogueSpeaker.PARTNER, text = "第二条"),
+            DialogueMessage(id = "c", speaker = DialogueSpeaker.USER, text = "第三条")
+        )
+        val t24 = engine.prepareLiveContext("c", "s", currentTurn = 24, dialogue = threeMsgs, onlyThisRound = false)!!
+        assertEquals("已提交 23 + 1 = 24：即使 3 条消息仍是短域", ChampionTurnStrategy.GUARD_SHORT, t24.strategy)
+        val t25 = engine.prepareLiveContext("c", "s", currentTurn = 25, dialogue = threeMsgs, onlyThisRound = false)!!
+        assertEquals("已提交 24 + 1 = 25：即使 3 条消息仍是长域", ChampionTurnStrategy.UC_LONG, t25.strategy)
+    }
+
+    @Test
+    fun `prepareLiveContext builds uc block only in the long domain`() = runTest {
+        val (engine, _) = newEngine(FakeSettings(mode = "LIVE_AUTO"), gateway = NoModelGateway())
+        runBlocking {
+            engine.commitConfirmedTurn(
+                "c", "s",
+                listOf(ChampionMessage("HER", "听说快递周五到，还没收到呢", "2026-11-06 09:59", "m1")),
+                modeSnapshot = "LIVE_AUTO", turn = 24
+            )
+        }
+        // 短域（第 24 轮）：同数据 UC 恒空——短域禁 UC（禁变相 uc_guard，§0.2）
+        val short = engine.prepareLiveContext(
+            "c", "s", currentTurn = 24,
+            dialogue = listOf(DialogueMessage(id = "m2", speaker = DialogueSpeaker.PARTNER, text = "那周五的事呢")),
+            onlyThisRound = false
+        )!!
+        assertEquals(ChampionTurnStrategy.GUARD_SHORT, short.strategy)
+        assertEquals("", short.uncertainBlock)
+        assertEquals(0, short.uncertainCu)
+        // 长域（第 25 轮）：UC 按 UncertainBlockDetector 规则生成（未定事项在场才注入）
+        val long = engine.prepareLiveContext(
+            "c", "s", currentTurn = 25,
+            dialogue = listOf(DialogueMessage(id = "m2", speaker = DialogueSpeaker.PARTNER, text = "那周五的事呢")),
+            onlyThisRound = false
+        )!!
+        assertEquals(ChampionTurnStrategy.UC_LONG, long.strategy)
+        // UC 只注入命中的分句（clause 粒度），非整条消息原文
+        assertTrue("未定事项在场 → 注入逐字分句", long.uncertainBlock.contains("听说快递周五到"))
+        assertTrue(long.uncertainBlock.startsWith(UncertainBlockDetector.UNCERTAIN_TITLE))
+        assertTrue(long.uncertainCu > 0)
+        assertEquals(long.uncertainCu, UncertainBlockDetector.utf16Len(long.uncertainBlock))
+    }
+
+    @Test
+    fun `generation input freeze defaults stay backward compatible`() {
+        // Step 1：旧调用方（不传新参）→ championMode=OFF、committedTurnCount=null（默认兼容）
+        val legacy = buildGenerationInput(
+            requestId = "r", messages = emptyList(), userHint = "",
+            knowledgeBase = KnowledgeBase(name = "kb1", displayName = "kb1", stage = "S"),
+            intentConfig = IntentConfig(), corrections = emptyMap(), correctionsRevision = 0,
+            onlyThisRound = false, aggressive = false, providerIdentity = null,
+            kbProfile = "p", kbRevision = "v", promptAssetHash = "h"
+        )
+        assertEquals("OFF", legacy.championMode)
+        assertNull("读失败/未传 = null：不猜轮次，全链回退原生", legacy.kbContext?.committedTurnCount)
+        // 生产调用方传冻结快照 → 原值写入（committedTurnCount 只在 kb != null 时进 KbContext）
+        val live = buildGenerationInput(
+            requestId = "r", messages = emptyList(), userHint = "",
+            knowledgeBase = KnowledgeBase(name = "kb1", displayName = "kb1", stage = "S"),
+            intentConfig = IntentConfig(), corrections = emptyMap(), correctionsRevision = 0,
+            onlyThisRound = false, aggressive = false, providerIdentity = null,
+            kbProfile = "p", kbRevision = "v", promptAssetHash = "h",
+            championMode = "LIVE_AUTO", committedTurnCount = 24
+        )
+        assertEquals("LIVE_AUTO", live.championMode)
+        assertEquals(24, live.kbContext?.committedTurnCount)
+        // kb 为 null → KbContext 整体为 null（committedTurnCount 不落空壳）
+        assertNull(
+            buildGenerationInput(
+                requestId = "r", messages = emptyList(), userHint = "", knowledgeBase = null,
+                intentConfig = IntentConfig(), corrections = emptyMap(), correctionsRevision = 0,
+                onlyThisRound = false, aggressive = false, providerIdentity = null,
+                kbProfile = "", kbRevision = "", promptAssetHash = "h",
+                championMode = "LIVE_AUTO", committedTurnCount = 24
+            ).kbContext
+        )
     }
 
     // ── shadow 全链路 ──
