@@ -122,12 +122,15 @@ class GenerationEngine(
     private val promptBuilder: PromptBuilder,
     /**
      * 冠军引擎（T4 Kotlin 移植 W1）。可空：测试与旧图不传 = 恒 OFF，
-     * 现有行为零变化。非 OFF 时按模式做两件事：
+     * 现有行为零变化。非 OFF 时按**冻结输入** [GenerationInput.championMode] 分流（guide-6
+     * §17 Step 4，引擎不再回读设置）：
+     * - LIVE_AUTO：请求前 [ChampionEngine.prepareLiveContext] 装配历史块/UC（零模型调用），
+     *   两块经原生 PromptBuilder 可选参数进主请求；短域（≤24）parse 前过 ContractGuard；
+     *   **不调 launchShadow、不额外调用模型**（§9.2）；
      * - SHADOW：原链路照走，请求结束后 fire-and-forget 追加一次冠军生成，
      *   只写 champion/shadow_log.jsonl（不 emit、不入 UI、不触发 TopicRecorder）；
-     * - SINGLE_STYLE/FULL：在 parseReplyResponse **之前**对原始返回文本过一次
-     *   ContractGuard（守卫修复的是 JSON 契约，必须在产品解析器之前跑）；
-     *   装配层替换（ChampionPromptAssembler 接管 user prompt）是 S2 的事，本批不接线。
+     * - GUARD_SHORT 策略：在 parseReplyResponse **之前**对原始返回文本过一次
+     *   ContractGuard（守卫修复的是 JSON 契约，必须在产品解析器之前跑）。
      */
     private val championEngine: com.lovebrain.app.domain.champion.ChampionEngine? = null
 ) {
@@ -149,19 +152,26 @@ class GenerationEngine(
         // ── 准备阶段：读资产、组 prompt、按冻结 ticketId 取请求配置 ──
         val system: String
         val buildResult: PromptBuilder.PromptBuildResult
+        val liveContext: com.lovebrain.app.domain.champion.ChampionLiveContext?
         val providerConfig: ProviderRequestConfig?
         try {
             system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt() }
             val messages = input.toChatMessages()
             val userHint = input.replyDirective.text
             val knowledgeBase = input.kbContext?.toKnowledgeBase()
+            // guide-6 §17 Step 4：LIVE_AUTO 冻结分流的确定性装配（零模型调用；失败回退原生）
+            liveContext = prepareLiveContextOrNull(input)
             buildResult = withContext(Dispatchers.IO) {
                 if (input.onlyThisRound) {
                     promptBuilder.buildReplyUserPromptOnlyThisRound(messages, userHint)
                 } else {
                     promptBuilder.buildReplyUserPromptWithRefs(
                         knowledgeBase, messages, userHint,
-                        input.replyDirective.aggressive, input.intentConfig, input.corrections
+                        input.replyDirective.aggressive, input.intentConfig, input.corrections,
+                        historicalBlock = liveContext?.historyBlock.orEmpty(),
+                        uncertainBlock = liveContext?.uncertainBlock.orEmpty(),
+                        // selector 口径 = committedTurnCount 原值（§5.5；请求轮次口径只活在 liveContext 内）
+                        currentTurn = input.kbContext?.committedTurnCount
                     )
                 }
             }
@@ -309,59 +319,76 @@ class GenerationEngine(
             return@flow
         }
 
-        // ── 冠军引擎接线（T4 W1 + 审计 R2；flag OFF / 引擎缺位时整块零调用）──
-        // 注意：S2/S3（SINGLE_STYLE/FULL）未接线——effectiveMode 已把这两档按 OFF 收敛，
-        // 下面的 isMainPathGuarded 分支当前不可达，保留只为接线时不改结构（见 PORT_IDENTITY 登记）。
-        val championContact = input.kbContext?.name ?: ""
-        val championMode = championEngine?.effectiveMode(championContact, championContact)
-            ?: com.lovebrain.app.domain.champion.ChampionMode.OFF
-        if (championMode != com.lovebrain.app.domain.champion.ChampionMode.OFF) {
-            // S2/S3：守卫插在 parseReplyResponse 之前——修复的是原始返回文本的 JSON 契约
+        // ── 冠军引擎收尾（guide-6 §17 Step 4：判据全部来自冻结输入，不再回读 effectiveMode）──
+        // 旧 L316 的生成中途回读（effectiveMode）已删除——生成中途改模式/改设置不影响本轮（§16 条 13）。
+        // 守卫（§8.1-8.2）：只认冻结分域策略 GUARD_SHORT（LIVE_AUTO 短域 = 请求轮次 ≤24；
+        // currentTurn == null → liveContext 为 null → 不执行）。旧档位 S2/S3 守卫随中途回读一并移除：
+        // mode() 对 SINGLE_STYLE/FULL 恒收敛 OFF，旧分支本就不可达（PORT_IDENTITY 登记如实保留）。
+        // LIVE_AUTO 不走 SHADOW（§9.2：已是正式生产路径，不再有影子请求/额外模型调用）。
+        if (liveContext?.strategy == com.lovebrain.app.domain.champion.ChampionTurnStrategy.GUARD_SHORT &&
+            fullText.isNotBlank()
+        ) {
+            val championContact = input.kbContext?.name ?: ""
+            // 守卫插在 parseReplyResponse 之前——修复的是原始返回文本的 JSON 契约
             //（围栏/键名/槽位），必须先跑才能让 Parse 失败分支少吞正文完好的轮次；
             // 原始文本此刻已被流式落盘/记账（usageTracker + PERF），满足「原文在守卫前已留痕」。
-            if (com.lovebrain.app.domain.champion.ChampionMode.isMainPathGuarded(championMode) && fullText.isNotBlank()) {
-                val repaired = runCatching {
-                    championEngine!!.repairAndAudit(fullText, requestId, championContact)
-                }.getOrNull()
-                if (repaired != null) fullText = repaired
-            }
-            // S1 shadow：原链路结果（成功或失败都算）照常 emit；冠军生成 fire-and-forget，
-            // 只写 shadow_log（含两侧输出与装配差异），不 emit 任何事件、不触发记忆写入。
-            // 审计 R2-1：真实消息入库不在这里——挂在 LoveBrainViewModel.nextRound 的
-            // commitConfirmedTurn（产品正式提交点），生成路径对未确认输入零持久痕迹。
-            // 审计 S1-P0-2（SHADOW 绕过"仅看本轮"）：用户明确选了「仅看本轮」时，正式
-            // 回复不带旧上下文，影子请求也绝不带——这是一次真实模型请求，不能绕过用户
-            // 的上下文选择。最小安全方案：本轮**完全跳过** SHADOW 额外请求，不留
-            // "无历史影子"的半套路径（下一轮开关关掉后影子照常恢复）。
-            if (championMode == com.lovebrain.app.domain.champion.ChampionMode.SHADOW &&
-                !input.onlyThisRound
-            ) {
-                // 审计 R2-3（种子核查）：W1 偏离——种子没传。规格书 §2.5/§125 指定
-                // initial_kb 来源 = KB 画像快照（understand/*.md）。产品侧数据经
-                // KnowledgeRepository.readProfile 冻结进 KbContext.profile（本轮生成
-                // 同一快照），按规格书要求的「平面标量 JSON」传给装配器；
-                // 产品无独立 persona 数据源，persona 缺省（该段非空才出现）。
-                val championSeed = input.kbContext?.profile?.takeIf { it.isNotBlank() }?.let { profileText ->
-                    com.lovebrain.app.domain.champion.ChampionPromptAssembler.ChampionSeed(
-                        initialKb = kotlinx.serialization.json.buildJsonObject {
-                            put("understand_profile", kotlinx.serialization.json.JsonPrimitive(profileText))
-                        }
-                    )
+            // 守卫异常 → getOrNull() = null → 保留原文进 parser（R2：守卫故障不拖垮回复）。
+            val repaired = runCatching {
+                championEngine!!.repairAndAudit(fullText, requestId, championContact)
+            }.getOrNull()
+            if (repaired != null && repaired != fullText) {
+                fullText = repaired
+                // §8.3：UI 流式状态必须与最终文本一致——先 reset 既有流式内容，
+                // 再把修复全文经同一 reducer 重放：ReplyChunk 一次 + 单对象扫描器重扫出
+                // ReplySchemesArrived（复用 attempts 循环 L250-259 的既有范式，不另建 UI 状态源）。
+                // 守卫未修改原文时整个块不 emit（上面的 != 判据），不发多余 reset。
+                emit(ReplyChunkReset(requestId))
+                emit(ReplySchemesReset(requestId))
+                emit(ReplyChunk(requestId, repaired))
+                val repairedScanner = IncrementalSingleObjectScanner("response")
+                val objStr = repairedScanner.feed(repaired)
+                if (objStr != null) {
+                    val schemes = runCatching {
+                        jsonLenient.decodeFromString<com.lovebrain.app.model.ReplySchemes>(objStr).toSchemes()
+                    }.getOrDefault(emptyList())
+                    if (schemes.isNotEmpty()) emit(ReplySchemesArrived(requestId, schemes))
                 }
-                championEngine!!.launchShadow(
-                    requestId = requestId,
-                    contactId = championContact,
-                    story = championContact,
-                    dialogue = input.dialogue,
-                    intent = input.intentConfig,
-                    advisorNote = input.replyDirective.text,
-                    originalReply = fullText,
-                    timeoutMs = providerConfig?.generateTimeoutMs
-                        ?: com.lovebrain.app.AppConfig.GENERATE_TIMEOUT_MS,
-                    providerConfig = providerConfig,
-                    seed = championSeed ?: com.lovebrain.app.domain.champion.ChampionPromptAssembler.ChampionSeed()
+            }
+        }
+        // S1 shadow：判据来源改为冻结快照（input.championMode；显式 OFF 短路，§16 条 13），
+        // 不再回读设置。LIVE_AUTO 恒不进这里（只有 SHADOW 档走影子）；onlyThisRound 保留原语义：
+        // 用户明确选了「仅看本轮」时影子请求整块跳过（审计 S1-P0-2）。
+        // 审计 R2-1：真实消息入库不在这里——挂在 LoveBrainViewModel.nextRound 的
+        // commitConfirmedTurn（产品正式提交点），生成路径对未确认输入零持久痕迹。
+        if (input.championMode == com.lovebrain.app.domain.champion.ChampionMode.SHADOW.raw &&
+            !input.onlyThisRound
+        ) {
+            val championContact = input.kbContext?.name ?: ""
+            // 审计 R2-3（种子核查）：W1 偏离——种子没传。规格书 §2.5/§125 指定
+            // initial_kb 来源 = KB 画像快照（understand/*.md）。产品侧数据经
+            // KnowledgeRepository.readProfile 冻结进 KbContext.profile（本轮生成
+            // 同一快照），按规格书要求的「平面标量 JSON」传给装配器；
+            // 产品无独立 persona 数据源，persona 缺省（该段非空才出现）。
+            val championSeed = input.kbContext?.profile?.takeIf { it.isNotBlank() }?.let { profileText ->
+                com.lovebrain.app.domain.champion.ChampionPromptAssembler.ChampionSeed(
+                    initialKb = kotlinx.serialization.json.buildJsonObject {
+                        put("understand_profile", kotlinx.serialization.json.JsonPrimitive(profileText))
+                    }
                 )
             }
+            championEngine!!.launchShadow(
+                requestId = requestId,
+                contactId = championContact,
+                story = championContact,
+                dialogue = input.dialogue,
+                intent = input.intentConfig,
+                advisorNote = input.replyDirective.text,
+                originalReply = fullText,
+                timeoutMs = providerConfig?.generateTimeoutMs
+                    ?: com.lovebrain.app.AppConfig.GENERATE_TIMEOUT_MS,
+                providerConfig = providerConfig,
+                seed = championSeed ?: com.lovebrain.app.domain.champion.ChampionPromptAssembler.ChampionSeed()
+            )
         }
 
         val parsed = runCatching { deepSeekRepo.parseReplyResponse(fullText) }
@@ -379,6 +406,48 @@ class GenerationEngine(
             )
         )
         L.w("PERF t3 ★ result rendered (+${System.currentTimeMillis() - t0}ms)")
+    }
+
+    /**
+     * LIVE_AUTO 本轮确定性装配入口（guide-6 §17 Step 4）。
+     *
+     * 分支判据全部来自 [GenerationInput] 冻结字段（§16 末段警示：引擎不读 SecurePrefs /
+     * ViewModel 状态），顺序即 §9.3-9.4 三分支序：
+     * 1. [GenerationInput.onlyThisRound] 第一判据——不调 prepareLiveContext、不读事件库、
+     *    不注入两块、不 Guard（§16 条 14：不偷读旧历史）；
+     * 2. 冻结 championMode != "LIVE_AUTO"（显式 OFF / SHADOW）短路——OFF 全链回退原生路径
+     *    （§16 条 13），SHADOW 走收尾块自己的影子分支；
+     * 3. kbContext 缺失（无有效知识库身份）或 committedTurnCount == null（轮次缺失）→ null，
+     *    不猜轮次（§5.4：不默认第 1 轮也不默认第 25 轮）；
+     * 4. championEngine 注入缺失 → null（§9.4）。
+     *
+     * 调用本身零模型调用、不启动协程/SHADOW（prepareLiveContext 的职责边界）。
+     * 非取消异常 → 记日志得 null：辅助机制故障绝不拖垮产品回复（R5）；
+     * [kotlinx.coroutines.CancellationException] 原样上抛（§16 条 8）。
+     */
+    private suspend fun prepareLiveContextOrNull(
+        input: GenerationInput
+    ): com.lovebrain.app.domain.champion.ChampionLiveContext? {
+        if (input.onlyThisRound) return null
+        if (input.championMode != com.lovebrain.app.domain.champion.ChampionMode.LIVE_AUTO.raw) return null
+        val kb = input.kbContext ?: return null
+        val committedTurnCount = kb.committedTurnCount ?: return null
+        val engine = championEngine ?: return null
+        return try {
+            engine.prepareLiveContext(
+                contactId = kb.name,
+                story = kb.name,
+                // 请求轮次口径（§D 守则 1）：currentTurn = committedTurnCount + 1，只活在局部/ChampionLiveContext
+                currentTurn = committedTurnCount + 1,
+                dialogue = input.dialogue,
+                onlyThisRound = false
+            )
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            L.e("prepareLiveContext failed, falling back to native prompt path", e)
+            null
+        }
     }
 
     private suspend fun kotlinx.coroutines.flow.FlowCollector<ReplyEvent>.emitFailed(

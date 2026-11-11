@@ -186,7 +186,10 @@ class GenerationEngineChampionShadowScopeTest {
         providerIdentity = CountingGateway.ticketConfig.toIdentity(),
         kbProfile = "",
         kbRevision = "rev",
-        promptAssetHash = "assets"
+        promptAssetHash = "assets",
+        // guide-6 §17 Step 4：SHADOW 判据来源改为冻结快照（引擎收尾块不再回读设置）——
+        // 影子行为语义不变，来源从 settings 换成 GenerationInput.championMode
+        championMode = "SHADOW"
     )
 
     // ── 判据 ──
